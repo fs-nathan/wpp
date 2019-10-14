@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import 'normalize.css';
@@ -24,10 +24,8 @@ sagaMiddleware.run(rootSaga);
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={store}>
-      <StylesProvider injectFirst>       
-        <Suspense>
-          <App />
-        </Suspense> 
+      <StylesProvider injectFirst>        
+        <App />
       </StylesProvider>
     </Provider>
   </I18nextProvider>
