@@ -13,7 +13,8 @@ import { connect } from 'react-redux';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import { sortUser } from '../../../../actions/user/sortUser';
-import { CustomEventListener, CustomEventDispose, SORT_USER } from '../../../../constants/events';
+import { CustomEventListener, CustomEventDispose, SORT_USER, UPDATE_USER } from '../../../../constants/events';
+import _ from 'lodash';
 
 const Container = styled.div`
   grid-area: left;
@@ -40,12 +41,14 @@ const StyledList = styled(List)`
 
 function UserList({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser }) {
 
-  const { data: { users }, loading: getUserOfRoomLoading, error: getUserOfRoomError } = getUserOfRoom;
+  const { data: { users: _users }, loading: getUserOfRoomLoading, error: getUserOfRoomError } = getUserOfRoom;
   const { loading: sortUserLoading, error: sortUserError } = sortUser;
   const loading = getUserOfRoomLoading || sortUserLoading;
   const error = getUserOfRoomError || sortUserError;
   const location = useLocation();
   const { userId, departmentId } = useParams();
+  const [searchPatern, setSearchPatern] = React.useState('');
+  const users = _users.filter(user => _.get(user, 'name').includes(searchPatern));
 
   React.useEffect(() => {
     doGetUserOfRoom({ roomId: departmentId });
@@ -57,9 +60,11 @@ function UserList({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser }) {
     };
 
     CustomEventListener(SORT_USER, doGetUserOfRoomHandler);
+    CustomEventListener(UPDATE_USER, doGetUserOfRoomHandler);
 
     return () => {
       CustomEventDispose(SORT_USER, doGetUserOfRoomHandler);
+      CustomEventDispose(UPDATE_USER, doGetUserOfRoomHandler);
     }
   }, [doGetUserOfRoom, departmentId]);
 
@@ -91,7 +96,12 @@ function UserList({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser }) {
             <ColorTypo uppercase>Danh sách Thành viên</ColorTypo>
           </Header>
           <Banner>
-            <SearchInput fullWidth placeholder='Tìm thành viên'/>  
+            <SearchInput 
+              value={searchPatern}
+              onChange={evt => setSearchPatern(evt.target.value)}
+              fullWidth 
+              placeholder='Tìm thành viên'  
+            />  
           </Banner>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId={departmentId}>

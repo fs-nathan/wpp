@@ -23,6 +23,11 @@ import listUserRole, { initialState as listUserRoleInitialState } from './userRo
 import createUserRole, { initialState as createUserRoleInitialState } from './userRole/createUserRole';
 import updateUserRole, { initialState as updateUserRoleInitialState } from './userRole/updateUserRole';
 import deleteUserRole, { initialState as deleteUserRoleInitialState } from './userRole/deleteUserRole';
+import publicMember, { initialState as publicMemberInitialState } from './user/publicMember';
+import privateMember, { initialState as privateMemberInitialState } from './user/privateMember';
+import searchUser, { initialState as searchUserInitialState } from './user/searchUser';
+import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } from './user/inviteUserJoinGroup';
+import banUserFromGroup, { initialState as banUserFromGroupInitialState } from './user/banUserFromGroup';
 
 const rootReducer = combineReducers({
   authentications,
@@ -41,6 +46,11 @@ const rootReducer = combineReducers({
     detailUser,
     uploadDocumentsUser,
     updateUser,
+    publicMember,
+    privateMember,
+    searchUser,
+    inviteUserJoinGroup,
+    banUserFromGroup,
   }),
   icon: combineReducers({
     listIcon,
@@ -82,6 +92,11 @@ export const DEFAULT_STATE = {
     detailUser: detailUserInitialState,
     uploadDocumentsUser: uploadDocumentsUserInitialState,
     updateUser: updateUserInitialState,
+    publicMember: publicMemberInitialState,
+    privateMember: privateMemberInitialState,
+    searchUser: searchUserInitialState,
+    inviteUserJoinGroup: inviteUserJoinGroupInitialState,
+    banUserFromGroup: banUserFromGroupInitialState,
   },
   icon: {
     listIcon: listIconInitialState,

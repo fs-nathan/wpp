@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { 
-  Slide, Dialog, DialogTitle, DialogContent, 
+  Fade, Dialog, DialogTitle, DialogContent, 
   DialogActions, IconButton, TableCell,
   Table, TableHead, TableBody, TableRow,
 } from '@material-ui/core';
@@ -55,7 +55,7 @@ const TableCellChipsWrapper = styled(TableCell)`
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='down' ref={ref} {...props} />;
+  return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
 function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosition, doDeletePosition }) {

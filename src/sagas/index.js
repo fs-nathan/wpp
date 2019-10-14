@@ -47,6 +47,16 @@ import { UPDATE_USER_ROLE } from '../constants/actions/userRole/updateUserRole';
 import { updateUserRole } from './userRole/updateUserRole';
 import { DELETE_USER_ROLE } from '../constants/actions/userRole/deleteUserRole';
 import { deleteUserRole } from './userRole/deleteUserRole';
+import { PUBLIC_MEMBER } from '../constants/actions/user/publicMember';
+import { publicMember } from './user/publicMember';
+import { PRIVATE_MEMBER } from '../constants/actions/user/privateMember';
+import { privateMember } from './user/privateMember';
+import { SEARCH_USER } from '../constants/actions/user/searchUser';
+import { searchUser } from './user/searchUser';
+import { INVITE_USER_JOIN_GROUP } from '../constants/actions/user/inviteUserJoinGroup';
+import { inviteUserJoinGroup } from './user/inviteUserJoinGroup';
+import { BAN_USER_FROM_GROUP } from '../constants/actions/user/banUserFromGroup';
+import { banUserFromGroup } from './user/banUserFromGroup';
 
 function* rootSaga() {
   yield takeLeading(LOGIN, login);
@@ -74,6 +84,11 @@ function* rootSaga() {
   yield takeLeading(CREATE_USER_ROLE, createUserRole);
   yield takeLeading(UPDATE_USER_ROLE, updateUserRole);
   yield takeLeading(DELETE_USER_ROLE, deleteUserRole);
+  yield takeLeading(PUBLIC_MEMBER, publicMember);
+  yield takeLeading(PRIVATE_MEMBER, privateMember);
+  yield takeLeading(SEARCH_USER, searchUser);
+  yield takeLeading(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
+  yield takeLeading(BAN_USER_FROM_GROUP, banUserFromGroup);
 };
 
 export default rootSaga;

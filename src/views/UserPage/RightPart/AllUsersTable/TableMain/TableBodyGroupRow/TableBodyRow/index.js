@@ -12,6 +12,10 @@ import {
 import ColorTypo from '../../../../../../../components/ColorTypo';
 import ColorChip from '../../../../../../../components/ColorChip';
 import PermissionSettingsModal from '../../../../../Modals/PermissionSettings';
+import { publicMember } from '../../../../../../../actions/user/publicMember';
+import { privateMember } from '../../../../../../../actions/user/privateMember';
+import { banUserFromGroup } from '../../../../../../../actions/user/banUserFromGroup';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
 const StyledTableBodyRow = styled(TableRow)`
@@ -36,7 +40,7 @@ const StyledTableBodyCell = styled(TableCell)`
   }
 `;
 
-function TableBodyRow({ user, index, departmentId }) {
+function TableBodyRow({ user, index, departmentId, doPublicMember, doPrivateMember, doBanUserFromGroup }) {
 
   const location = useLocation();
   const history = useHistory();
@@ -56,6 +60,26 @@ function TableBodyRow({ user, index, departmentId }) {
     }
   }
 
+  function handleChangeState(user) {
+    if (_.get(user, 'state') === 0) {
+      doPublicMember({
+        userId: _.get(user, 'id'),
+      });
+    } else {
+      doPrivateMember({
+        userId: _.get(user, 'id'),
+      });
+    }
+    setAnchorEl(null);
+  }
+
+  function handleLeaveGroup(user) {
+    doBanUserFromGroup({
+      userId: _.get(user, 'id'),
+    });
+    setAnchorEl(null);
+  }
+
   return (
     <Draggable 
       draggableId={_.get(user, 'id', '')}
@@ -64,7 +88,7 @@ function TableBodyRow({ user, index, departmentId }) {
       {(provided) => (
         <StyledTableBodyRow 
           hover
-          onClick={() => history.push(`${location.pathname}/thong-tin/${departmentId}/nguoi-dung/${_.get(user, 'id', '')}`)}
+          onClick={() => history.push(`${location.pathname.replace('/them-thanh-vien', '')}/thong-tin/${departmentId}/nguoi-dung/${_.get(user, 'id', '')}`)}
           innerRef={provided.innerRef}
           {...provided.draggableProps} 
         >
@@ -124,9 +148,9 @@ function TableBodyRow({ user, index, departmentId }) {
                 horizontal: 'right',
               }}
             >
-              <MenuItem onClick={handleClose()}>{t('views.user_page.right_part.users_table.table_main.table_body_row.change_state')}</MenuItem>
+              <MenuItem onClick={evt => handleChangeState(user)}>{t('views.user_page.right_part.users_table.table_main.table_body_row.change_state')}</MenuItem>
               <MenuItem onClick={handleClose(true)}>{t('views.user_page.right_part.users_table.table_main.table_body_row.manage_permission')}</MenuItem>
-              <MenuItem onClick={handleClose()}>{t('views.user_page.right_part.users_table.table_main.table_body_row.leave_group')}</MenuItem>
+              <MenuItem onClick={evt => handleLeaveGroup(user)}>{t('views.user_page.right_part.users_table.table_main.table_body_row.leave_group')}</MenuItem>
             </Menu>
             <PermissionSettingsModal open={open} setOpen={setOpen} />
           </StyledTableBodyCell>
@@ -136,4 +160,15 @@ function TableBodyRow({ user, index, departmentId }) {
   );
 }
 
-export default TableBodyRow;
+const mapDispatchToProps = dispatch => {
+  return {
+    doPublicMember: ({ userId }) => dispatch(publicMember({ userId })),
+    doPrivateMember: ({ userId }) => dispatch(privateMember({ userId })),
+    doBanUserFromGroup: ({ userId }) => dispatch(banUserFromGroup({ userId })),
+  }
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(TableBodyRow);

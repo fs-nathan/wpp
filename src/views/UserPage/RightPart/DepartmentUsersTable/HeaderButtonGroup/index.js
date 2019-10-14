@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { ButtonGroup, Button, Menu, MenuItem } from '@material-ui/core';
@@ -9,7 +10,7 @@ import {
   mdiAccountCheck,
   mdiDotsVertical,
 } from '@mdi/js';
-import SearchModal from '../../../Modals/SearchModal';
+import SearchInput from '../../../../../components/SearchInput';
 import TitleManagerModal from '../../../Modals/TitleManager';
 import RoleManagerModal from '../../../Modals/RoleManager';
 import LogoManagerModal from '../../../Modals/LogoManager';
@@ -41,15 +42,35 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const StyledMenuItem = styled(MenuItem)`
+  && {
+    background-color: #fff;
+    & > span:last-child {
+      display: none;
+    }
+  }
+`;
+
 function HeaderButtonGroup({ handleSearchChange }) {
 
   const location = useLocation();
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [openSearchModal, setOpenSearchModal] = React.useState(false);
+  const [searchEl, setSearchEl] = React.useState(null);
   const [moreModal, setMoreModal] = React.useState(0);
+  const [search, setSearch] = React.useState('');
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget);
+  }
+
+  function handleSearchClick(evt) {
+    setSearchEl(evt.currentTarget);
+  }
+
+  function handleSearchInput(evt) {
+    setSearch(evt.target.value);
+    handleSearchChange(evt.target.value);
   }
 
   function handleClose(id = 0) {
@@ -59,13 +80,17 @@ function HeaderButtonGroup({ handleSearchChange }) {
     }
   }
 
+  function handleSearchClose() {
+    setSearchEl(null);
+  }
+
   return (
     <React.Fragment>
       <ButtonGroup
         size='small'
         variant="text"
       >
-        <StyledButton disableRipple onClick={() => setOpenSearchModal(true)}>
+        <StyledButton disableRipple onClick={handleSearchClick}>
           <div>
             <Icon path={mdiMagnify} size={1} />
           </div>
@@ -91,6 +116,24 @@ function HeaderButtonGroup({ handleSearchChange }) {
         </StyledButton>
       </ButtonGroup>
       <Menu
+        anchorEl={searchEl}
+        keepMounted
+        open={Boolean(searchEl)}
+        onClose={handleSearchClose}
+        transformOrigin={{
+          vertical: -30,
+          horizontal: 'right',
+        }}
+      >
+        <StyledMenuItem>
+          <SearchInput
+            value={search}
+            onChange={handleSearchInput}
+            placeholder={t('views.user_page.modals.search_modal.search_label')}
+          />
+        </StyledMenuItem>
+      </Menu>
+      <Menu
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
@@ -106,7 +149,6 @@ function HeaderButtonGroup({ handleSearchChange }) {
         <MenuItem onClick={handleClose(3)}>Quản lý biểu tượng</MenuItem>
         <MenuItem onClick={handleClose(4)}>Cài đặt bảng</MenuItem>
       </Menu>
-      <SearchModal open={openSearchModal} setOpen={setOpenSearchModal} onChange={handleSearchChange}/>
       <TitleManagerModal open={moreModal === 1} setOpen={setMoreModal} />
       <RoleManagerModal open={moreModal === 2} setOpen={setMoreModal} />
       <LogoManagerModal open={moreModal === 3} setOpen={setMoreModal} />

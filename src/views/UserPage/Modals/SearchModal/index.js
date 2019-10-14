@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { 
-  Slide, Dialog, DialogTitle, DialogContent, 
+  Fade, Dialog, DialogTitle, DialogContent, 
   DialogActions, IconButton,
 } from '@material-ui/core';
 import Icon from '@mdi/react';
@@ -28,7 +28,7 @@ const StyledDialogTitle = styled(DialogTitle)`
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='down' ref={ref} {...props} />;
+  return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
 function SearchModal({ open, setOpen, onChange = () => null }) {

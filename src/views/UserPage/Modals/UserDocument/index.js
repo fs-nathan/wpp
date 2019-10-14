@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { 
-  Slide, Dialog, DialogTitle, DialogContent, 
+  Fade, Dialog, DialogTitle, DialogContent, 
   DialogActions, Avatar, IconButton, 
   List, ListItem, ListItemText, ListItemAvatar,
 } from '@material-ui/core';
@@ -29,7 +29,7 @@ const StyledDialogTitle = styled(DialogTitle)`
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='down' ref={ref} {...props} />;
+  return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
 function UserDocument({ open, setOpen, files }) {

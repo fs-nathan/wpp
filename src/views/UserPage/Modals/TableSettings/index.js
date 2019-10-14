@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Slide, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from '@material-ui/core';
+import { Fade, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js'; 
 import ColorButton from '../../../../components/ColorButton';
@@ -25,7 +25,7 @@ const StyledDialogTitle = styled(DialogTitle)`
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='down' ref={ref} {...props} />;
+  return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
 function TableSettings({ open, setOpen }) {

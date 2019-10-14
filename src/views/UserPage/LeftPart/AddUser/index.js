@@ -9,6 +9,13 @@ import avatar from '../../../../assets/avatar.jpg';
 import { IconButton, Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
+import { connect } from 'react-redux';
+import { searchUser } from '../../../../actions/user/searchUser';
+import { inviteUserJoinGroup } from '../../../../actions/user/inviteUserJoinGroup';
+import _ from 'lodash';
+import LoadingBox from '../../../../components/LoadingBox';
+import ErrorBox from '../../../../components/ErrorBox';
+import { CustomEventListener, CustomEventDispose, INVITE_USER_JOIN_GROUP } from '../../../../constants/events';
 
 const Container = styled.div`
   grid-area: left;
@@ -57,37 +64,33 @@ const StyledList = styled(List)`
   }
 `;
 
-function DesiringUserList() {
+function DesiringUserList({ users, handleInviteUser }) {
+
+  function handleSendInvite(userId) {
+    handleInviteUser({ userId });
+  }
+
   return (
     <StyledList>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar src={avatar} alt='avatar' />
-        </ListItemAvatar>
-        <ListItemText 
-          primary={
-            <ColorTypo component='span' color='green'>VietApp</ColorTypo>  
-          }
-          secondary={
-            <ColorTypo component='small' variant='caption'>vietapp@gmail.com</ColorTypo>
-          }
-        />
-        <ColorChip color='green' badge size='small' label='Đã nhận' />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar src={avatar} alt='avatar' />
-        </ListItemAvatar>
-        <ListItemText 
-          primary={
-            <ColorTypo component='span' color='green'>VietApp</ColorTypo>  
-          }
-          secondary={
-            <ColorTypo component='small' variant='caption'>vietapp@gmail.com</ColorTypo>
-          }
-        />
-        <ColorChip color='green' badge size='small' label='Đã nhận' />
-      </ListItem>
+      {users.map(user => (
+        <ListItem key={_.get(user, 'id')}>
+          <ListItemAvatar>
+            <Avatar src={_.get(user, 'avatar')} alt='avatar' />
+          </ListItemAvatar>
+          <ListItemText 
+            primary={
+              <ColorTypo component='span' color='green'>{_.get(user, 'name', '')}</ColorTypo>  
+            }
+            secondary={
+              <ColorTypo component='small' variant='caption'>{_.get(user, 'email', '')}</ColorTypo>
+            }
+          />
+          <ColorChip onClick={() => _.get(user, 'send_invite', false) === false && handleSendInvite(_.get(user, 'id'))} badge size='small' 
+            label={_.get(user, 'send_invite', false) ? "Đã mời" : "Mời"}
+            color={_.get(user, 'send_invite', false) ? "green" : "orange"}
+          />
+        </ListItem>
+      ))}
     </StyledList>
   );
 }
@@ -149,9 +152,26 @@ function RequestingUserList() {
   );
 }
 
-function DepartmentInfo() {
+function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInviteUserJoinGroup }) {
 
+  const { data: { data }, loading: searchUserLoading, error: searchUserError } = searchUser;
+  const { loading: inviteUserJoinGroupLoading, error: inviteUserJoinGroupError } = inviteUserJoinGroup;
+  const loading = searchUserLoading || inviteUserJoinGroupLoading;
+  const error = searchUserError || inviteUserJoinGroupError;
+  const [searchPatern, setSearchPatern] = React.useState('');
   const location = useLocation();
+
+  React.useEffect(() => {
+    const doSearchUserHandler = () => {
+      doSearchUser({ info: searchPatern });
+    };
+
+    CustomEventListener(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
+
+    return () => {
+      CustomEventDispose(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
+    }
+  }, [doSearchUser, searchPatern]);
 
   return (
     <Container>
@@ -169,10 +189,16 @@ function DepartmentInfo() {
         <div> 
           <SearchInput 
             placeholder='Tìm thành viên'
+            value={searchPatern}
+            onChange={evt => setSearchPatern(evt.target.value)}
           />
-          <ColorButton variant='contained' variantColor='orange'>Lọc</ColorButton>
+          <ColorButton variant='contained' variantColor='orange' onClick={() => doSearchUser({ info: searchPatern })}>Lọc</ColorButton>
         </div>
-        <DesiringUserList />
+        {loading && <LoadingBox />}
+        {error !== null && <ErrorBox size={16} />}
+        {!loading && error === null && (
+          <DesiringUserList users={data} handleInviteUser={doInviteUserJoinGroup} />
+        )}
       </StyledBox>
       <StyledHr />
       <StyledBox>
@@ -185,4 +211,21 @@ function DepartmentInfo() {
   )
 }
 
-export default DepartmentInfo;
+const mapStateToProps = state => {
+  return {
+    searchUser: state.user.searchUser,
+    inviteUserJoinGroup: state.user.inviteUserJoinGroup,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    doSearchUser: ({ info }) => dispatch(searchUser({ info })),
+    doInviteUserJoinGroup: ({ userId }) => dispatch(inviteUserJoinGroup({ userId })),
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DepartmentInfo);

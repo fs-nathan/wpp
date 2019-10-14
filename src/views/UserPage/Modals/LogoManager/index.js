@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { 
-  Slide, Dialog, DialogTitle, DialogContent, 
+  Fade, Dialog, DialogTitle, DialogContent, 
   DialogActions, Avatar, ButtonBase, IconButton,
 } from '@material-ui/core';
 import Icon from '@mdi/react';
@@ -61,7 +61,7 @@ const LogoBox = styled(({ isSelected, ...rest }) => <div {...rest} />)`
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='down' ref={ref} {...props} />;
+  return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
 function LogoManager({ open, setOpen, listIcon, doListIcon, onSelectIcon = (icon_url) => null }) {

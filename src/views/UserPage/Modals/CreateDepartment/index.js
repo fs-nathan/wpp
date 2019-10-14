@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Slide, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Avatar, IconButton } from '@material-ui/core';
+import { Fade, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Avatar, IconButton } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js'; 
 import LogoManagerModal from '../LogoManager';
@@ -45,7 +45,7 @@ const LogoBox = styled.div`
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='down' ref={ref} {...props} />;
+  return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
 function CreateDepartment({ updateDepartment = null, open, setOpen, createRoom, doCreateRoom, updateRoom, doUpdateRoom }) {

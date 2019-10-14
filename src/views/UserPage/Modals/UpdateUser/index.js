@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { 
-  Slide, Dialog, DialogTitle, DialogContent, 
+  Fade, Dialog, DialogTitle, DialogContent, 
   FormControl, DialogActions, IconButton, 
   InputLabel, Select, MenuItem, TextField 
 } from '@material-ui/core';
@@ -41,7 +41,7 @@ const StyledFormControl = styled(FormControl)`
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='down' ref={ref} {...props} />;
+  return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
 function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMajor, listLevel, doListRoom, doListPosition, doListMajor, doListLevel, updateUser, doUpdateUser }) {
