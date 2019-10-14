@@ -1,0 +1,163 @@
+import React from 'react';
+import styled from 'styled-components';
+import Icon from '@mdi/react';
+import { mdiDotsHorizontal } from '@mdi/js';
+import { 
+  Avatar, IconButton, Menu, MenuItem, ButtonGroup,Collapse,
+} from '@material-ui/core';
+import ColorTypo from '../../../../../components/ColorTypo';
+import ColorChip from '../../../../../components/ColorChip';
+import ColorButton from '../../../../../components/ColorButton';
+import SearchInput from '../../../../../components/SearchInput';
+import avatar from '../../../../../assets/avatar.jpg';
+
+const Container = styled.div`
+  padding: 10px 0;
+`;
+
+const StyledListItem = styled.li`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledTitleBox = styled.div`
+  display: flex;
+  align-items: center;
+  & > *:not(:first-child) {
+    margin-left: 5px;
+  }
+  & > *:last-child   {
+    margin-left: auto;
+  }
+`;
+
+const StyledContentBox = styled.div`
+  margin-left: 30px;
+  margin-top: 10px;
+  background-color: #eee;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight: bold;
+`;
+
+const CustomListItem = ({ isDemand = false }) => {
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (evt) => {
+    setAnchorEl(evt.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
+  return (
+    <React.Fragment>
+      <StyledListItem>
+        <StyledTitleBox>
+          <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
+          <div>
+            <ColorTypo variant='body1'>Nguyễn Văn A</ColorTypo>
+            <ColorTypo variant='caption'>
+              <ColorChip color={isDemand ? 'orange' : 'green'} label={isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
+            </ColorTypo>
+          </div>
+          <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+            <Icon path={mdiDotsHorizontal} size={1} />
+          </IconButton>
+        </StyledTitleBox>
+        <StyledContentBox>
+          <ColorTypo bold>Lorem ipsum dolor sit.</ColorTypo>
+        </StyledContentBox>
+      </StyledListItem>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        transformOrigin={{
+          vertical: -30,
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+      </Menu>
+    </React.Fragment>
+  );
+}
+
+const StyledList = styled.ul`
+  margin-top: 20px;
+  padding-inline-start: 0 !important;
+  list-style-type: none;
+  & > li {
+    padding: 8px 0;
+  }
+`;
+
+const ListDemand = () => { 
+  return (
+    <React.Fragment>  
+      <SearchInput
+        fullWidth
+        placeholder="Nhập từ khóa"
+      />
+      <StyledList>
+        {Array.from({ length: 3, }).map((_, index) => {
+          return (
+            <CustomListItem key={index} isDemand={index % 2 === 0} />
+          )
+        })}    
+      </StyledList>
+    </React.Fragment>
+  );
+}
+
+const StyledButtonGroup = styled(ButtonGroup)`
+  margin: 8px 0 20px 0;
+`;
+
+function TabBody() {
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Container>
+      <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
+        <ColorButton 
+          onClick={evt => handleChange(evt, 0)}
+        >
+          {value === 0 ? <ColorTypo bold>Tất cả (4)</ColorTypo> : <ColorTypo color='gray'>Tất cả (4)</ColorTypo>}
+        </ColorButton>
+        <ColorButton 
+          onClick={evt => handleChange(evt, 1)}
+        >
+          {value === 1 ? <ColorTypo bold>Chỉ đạo (2)</ColorTypo> : <ColorTypo color='gray'>Chỉ đạo (2)</ColorTypo>}
+        </ColorButton>
+        <ColorButton 
+          onClick={evt => handleChange(evt, 2)}
+        >
+          {value === 2 ? <ColorTypo bold>Quyết định (2)</ColorTypo> : <ColorTypo color='gray'>Quyết định (2)</ColorTypo>}
+        </ColorButton>
+      </StyledButtonGroup>
+      <Collapse in={value === 0} mountOnEnter unmountOnExit>
+        <ListDemand />
+      </Collapse>
+      <Collapse in={value === 1} mountOnEnter unmountOnExit>
+        {null}
+      </Collapse>
+      <Collapse in={value === 2} mountOnEnter unmountOnExit>
+        {null}
+      </Collapse>
+    </Container>
+  )
+}
+
+export default TabBody;

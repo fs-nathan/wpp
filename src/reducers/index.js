@@ -1,0 +1,109 @@
+import { combineReducers } from 'redux';
+import authentications, { initialState as authenticationsInitialState } from './authentications';
+import listRoom, { initialState as listRoomInitialState } from './room/listRoom';
+import detailRoom, { initialState as detailRoomInitialState } from './room/detailRoom';
+import getUserOfRoom, { initialState as getUserOfRoomInitialState } from './room/getUserOfRoom';
+import listUserOfGroup, { initialState as listUserOfGroupInitialState } from './user/listUserOfGroup';
+import sortUser, { initialState as sortUserInitialState } from './user/sortUser';
+import listIcon, { initialState as listIconInitialState } from './icon/listIcon';
+import createRoom, { initialState as createRoomInitialState } from './room/createRoom';
+import deleteRoom, { initialState as deleteRoomInitialState } from './room/deleteRoom'; 
+import updateRoom, { initialState as updateRoomInitialState } from './room/updateRoom';
+import sortRoom, { initialState as sortRoomInitialState } from './room/sortRoom';
+import detailUser, { initialState as detailUserInitialState } from './user/detailUser';
+import uploadDocumentsUser, { initialState as uploadDocumentsUserInitialState } from './user/uploadDocumentsUser';
+import listMajor, { initialState as listMajorInitialState } from './major/listMajor';
+import listPosition, { initialState as listPositionInitialState } from './position/listPosition';
+import listLevel, { initialState as listLevelInitialState } from './level/listLevel';
+import updateUser, { initialState as updateUserInitialState } from './user/updateUser';
+import createPosition, { initialState as createPositionInitialState } from './position/createPosition';
+import updatePosition, { initialState as updatePositionInitialState } from './position/updatePosition';
+import deletePosition, { initialState as deletePositionInitialState } from './position/deletePosition';
+import listUserRole, { initialState as listUserRoleInitialState } from './userRole/listUserRole';
+import createUserRole, { initialState as createUserRoleInitialState } from './userRole/createUserRole';
+import updateUserRole, { initialState as updateUserRoleInitialState } from './userRole/updateUserRole';
+import deleteUserRole, { initialState as deleteUserRoleInitialState } from './userRole/deleteUserRole';
+
+const rootReducer = combineReducers({
+  authentications,
+  room: combineReducers({
+    listRoom,
+    detailRoom,
+    getUserOfRoom,
+    createRoom,
+    deleteRoom,
+    updateRoom,
+    sortRoom,
+  }),
+  user: combineReducers({
+    listUserOfGroup,
+    sortUser,
+    detailUser,
+    uploadDocumentsUser,
+    updateUser,
+  }),
+  icon: combineReducers({
+    listIcon,
+  }),
+  position: combineReducers({
+    listPosition,
+    createPosition,
+    updatePosition,
+    deletePosition,
+  }),
+  level: combineReducers({
+    listLevel,
+  }),
+  major: combineReducers({
+    listMajor,
+  }),
+  userRole: combineReducers({
+    listUserRole,
+    createUserRole,
+    updateUserRole,
+    deleteUserRole,
+  }),
+});
+
+export const DEFAULT_STATE = {
+  authentications: authenticationsInitialState,
+  room: {
+    listRoom: listRoomInitialState,
+    detailRoom: detailRoomInitialState,
+    getUserOfRoom: getUserOfRoomInitialState,
+    createRoom: createRoomInitialState,
+    deleteRoom: deleteRoomInitialState,
+    updateRoom: updateRoomInitialState,
+    sortRoom: sortRoomInitialState,
+  },
+  user: {
+    listUserOfGroup: listUserOfGroupInitialState,
+    sortUser: sortUserInitialState,
+    detailUser: detailUserInitialState,
+    uploadDocumentsUser: uploadDocumentsUserInitialState,
+    updateUser: updateUserInitialState,
+  },
+  icon: {
+    listIcon: listIconInitialState,
+  },
+  position: {
+    listPosition: listPositionInitialState,
+    createPosition: createPositionInitialState,
+    updatePosition: updatePositionInitialState,
+    deletePosition: deletePositionInitialState,
+  },
+  level: {
+    listLevel: listLevelInitialState,
+  },
+  major: {
+    listMajor: listMajorInitialState,
+  },
+  userRole: {
+    listUserRole: listUserRoleInitialState,
+    createUserRole: createUserRoleInitialState,
+    updateUserRole: updateUserRoleInitialState,
+    deleteUserRole: deleteUserRoleInitialState,
+  },
+};
+
+export default rootReducer;

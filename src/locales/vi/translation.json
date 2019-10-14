@@ -1,0 +1,81 @@
+{
+  "views": {
+    "user_page": {
+      "modals": {
+        "search_modal": {
+          "search_title": "Tìm kiếm",
+          "search_label": "Nhập nội dung cần tìm",
+          "search_button": "Tìm"
+        },
+        "update_user": {
+          "room_select": "Chọn Phòng/Ban",
+          "position_select": "Chọn chức danh",
+          "level_select": "Chọn trình độ",
+          "major_select": "Chọn chuyên ngành",
+          "description": "Mô tả công việc",
+          "description_helper": "Tối đa {{max_count}} ký tự",
+          "ok_button": "Hoàn thành"
+        }
+      },
+      "right_part": {
+        "users_table": {
+          "header_button_group": {
+            "search_label": "Tìm kiếm",
+            "add_user_label": "Thêm thành viên",
+            "verify_user_label": "Duyệt thành viên",
+            "more_label": "Thêm",
+            "title_manager_menu_item": "Quản lý chức danh",
+            "role_manager_menu_item": "Quản lý vai trò",
+            "logo_manager_menu_item": "Quản lý biểu tượng",
+            "table_settings_menu_item": "Cài đặt bảng"
+          }, 
+          "table_main": {
+            "no_data_label": "Không có dữ liệu",
+            "table_header_row": {
+              "name_cell": "Họ và tên",
+              "position_cell": "Chức danh",
+              "birthday_cell": "Ngày sinh",
+              "gender_cell": "Giới tính",
+              "email_cell": "Email",
+              "phone_cell": "Điện thoại",
+              "role_cell": "Vai trò",
+              "status_cell": "Trạng thái"
+            },
+            "table_body_row": {
+              "state_label": {
+                "public": "Công khai",
+                "private": "Bí mật"
+              },
+              "change_state": "Chuyển trạng thái",
+              "manage_permission": "Phân quyền",
+              "leave_group": "Rời nhóm"
+            }
+          },
+          "create_account_label": "Tạo tài khoản",
+          "table_title": "Danh sách nhân sự",
+          "total_user_count": "Đã có {{user_count}} thành viên",
+          "upgrade_sublabel": "(Nâng cấp)"
+        },
+        "user_info": {
+          "date_join": "Ngày tham gia",
+          "modify_info": "Chỉnh sửa",
+          "room_name": "Phòng/Ban/Nhóm",
+          "position_name": "Chức danh",
+          "level_name": "Trình độ",
+          "major_name": "Chuyên ngành",
+          "description": "Mô tả công việc",
+          "documents_view": "Xem file hồ sơ",
+          "upload_documents_error": "Upload file bị lỗi",
+          "upload_documents": "Upload file hồ sơ",
+          "infomation": "Thông tin cá nhân",
+          "name": "Họ tên đầy đủ",
+          "birthday": "Ngày sinh",
+          "gender": "Giới tính",
+          "email": "Email",
+          "phone": "Điện thoại",
+          "address": "Địa chỉ"
+        }
+      }
+    }
+  }
+}
