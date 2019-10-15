@@ -33,7 +33,7 @@ function TableBodyRowGroup({ room, searchPatern = '' }) {
       for (const key in user) {
         if (
           user.hasOwnProperty(key) &&
-          _.includes(user[key], searchPatern)
+          _.includes(user[key].toString().toLowerCase(), searchPatern.toLowerCase())
         ) return true;
       }
       return false;
@@ -50,7 +50,7 @@ function TableBodyRowGroup({ room, searchPatern = '' }) {
           {...provided.droppableProps}
         >
           <StyledTableBodyRow show={show || snapshot.isDraggingOver}>
-            <StyledTableBodyCell colSpan={10}>
+            <StyledTableBodyCell colSpan={11}>
               <CustomButton 
                 fullWidth 
                 onClick={() => setShow(!show)}
@@ -60,7 +60,7 @@ function TableBodyRowGroup({ room, searchPatern = '' }) {
                   : <Icon path={mdiChevronUp} size={1} />
                 }  
               >
-                {_.get(room, 'name', '')}
+                {_.get(room, 'name', '') === 'default' ? 'Mặc định' : _.get(room, 'name', '')}
               </CustomButton>
             </StyledTableBodyCell>
           </StyledTableBodyRow>

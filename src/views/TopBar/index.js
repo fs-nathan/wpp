@@ -20,6 +20,7 @@ const Container = styled.div`
   & > *:last-child {
     margin-left: auto;
   }
+  z-index: 999;
 `;
 
 const LeftPart = styled.div`

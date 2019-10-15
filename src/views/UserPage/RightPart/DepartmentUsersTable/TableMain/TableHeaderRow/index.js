@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { TableCell, TableRow } from '@material-ui/core';
 import Icon from '@mdi/react';
@@ -23,40 +24,45 @@ const StyledTableHeadCell = styled(({children, ...rest}) =>
     justify-content: center;
     font-size: 11px;
   }
-  &:nth-child(2) > div, &:nth-child(6) > div, &:nth-child(9) > div {
+  &:nth-child(3) > div, &:nth-child(7) > div, &:nth-child(10) > div {
     justify-content: start;
   }
 `;
 
 function TableHeaderRow() {
+
+  const { t } = useTranslation();
+
   return (
     <StyledTableHeadRow>
       <StyledTableHeadCell>
         <Icon path={mdiDragVertical} size={1} color={'rgb(102, 102, 102)'}/>
       </StyledTableHeadCell>
       <StyledTableHeadCell>
-        Họ và tên
       </StyledTableHeadCell>
       <StyledTableHeadCell>
-        Chức danh
+        {t('views.user_page.right_part.users_table.table_main.table_header_row.name_cell')}
       </StyledTableHeadCell>
       <StyledTableHeadCell>
-        Năm sinh
+        {t('views.user_page.right_part.users_table.table_main.table_header_row.position_cell')}
       </StyledTableHeadCell>
       <StyledTableHeadCell>
-        Giới tính
+        {t('views.user_page.right_part.users_table.table_main.table_header_row.birthday_cell')}
       </StyledTableHeadCell>
       <StyledTableHeadCell>
-        Email
+        {t('views.user_page.right_part.users_table.table_main.table_header_row.gender_cell')}
       </StyledTableHeadCell>
       <StyledTableHeadCell>
-        Điện thoại
+        {t('views.user_page.right_part.users_table.table_main.table_header_row.email_cell')}
       </StyledTableHeadCell>
       <StyledTableHeadCell>
-        Vai trò
+        {t('views.user_page.right_part.users_table.table_main.table_header_row.phone_cell')}
       </StyledTableHeadCell>
       <StyledTableHeadCell>
-        Trạng thái
+        {t('views.user_page.right_part.users_table.table_main.table_header_row.role_cell')}
+      </StyledTableHeadCell>
+      <StyledTableHeadCell>
+        {t('views.user_page.right_part.users_table.table_main.table_header_row.status_cell')}
       </StyledTableHeadCell>
       <StyledTableHeadCell>
       </StyledTableHeadCell>

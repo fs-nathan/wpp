@@ -14,9 +14,9 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import { CustomEventListener, CustomEventDispose, DELETE_ROOM, UPDATE_ROOM } from '../../../../constants/events.js';
 import CreateDepartment from '../../Modals/CreateDepartment';
+import avatar from '../../../../assets/avatar.jpg';
  
 const Container = styled.div`
-  grid-area: left;
   border-right: 1px solid rgba(0, 0, 0, .2);
   padding: 15px;
   & > *:not(:last-child) {
@@ -33,6 +33,11 @@ const Header = styled.div`
     margin-left: 10px;
   }
   border-bottom: 1px solid rgba(0, 0, 0, .1);
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0px;
+  background-color: #fff;
+  z-index: 10;
 `;
 
 const LogoBox = styled.div`
@@ -59,7 +64,31 @@ const ActionBox = styled.div`
   }
 `;
 
-function DepartmentInfo({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom }) {
+function DefaultDepartment({ subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
+  return (
+    <React.Fragment>
+      {subSlide && <SubSlideComp handleSubSlide={handleSubSlide} />}
+      {!subSlide && (
+        <Container>
+          <Header>
+            <IconButton component={Link} to='/thanh-vien'>
+              <Icon path={mdiChevronLeft} size={1} />
+            </IconButton>
+            <ColorTypo uppercase>Chi tiết phòng ban</ColorTypo>
+          </Header>
+          <LogoBox>
+            <Avatar style={{ width: 60, height: 60 }} src={avatar} alt='avatar' />
+            <ColorTypo uppercase bold color='green' variant='h6'>
+              Mặc định
+            </ColorTypo>
+          </LogoBox>
+        </Container>
+      )}
+    </React.Fragment>
+  );
+}
+
+function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
   
   const { departmentId } = useParams();
   const history = useHistory();
@@ -94,44 +123,58 @@ function DepartmentInfo({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom }) 
   }
   
   return (
-    <Container>
-      {loading && (<LoadingBox />)}
-      {error !== null && (<ErrorBox />)}
-      {!loading && error === null && (
-        <React.Fragment>
-          <Header>
-            <IconButton component={Link} to='/thanh-vien'>
-              <Icon path={mdiChevronLeft} size={1} />
-            </IconButton>
-            <ColorTypo uppercase>Chi tiết phòng ban</ColorTypo>
-          </Header>
-          <LogoBox>
-            <Avatar style={{ width: 60, height: 60 }} src={_.get(room, 'icon')} alt='avatar' />
-            <ColorTypo uppercase bold color='green' variant='h6'>
-              {_.get(room, 'name', '')}
-            </ColorTypo>
-            <ColorTypo>
-              Số nhân sự: {_.get(room, 'number_member', '')} thành viên
-            </ColorTypo>
-          </LogoBox>
-          <ColorTypo uppercase bold color='gray'>
-            Giới thiệu
-          </ColorTypo>
-          <IntroBox>
-            <ColorTypo>
-              {_.get(room, 'description', '')}  
-            </ColorTypo>
-          </IntroBox>
-          <ActionBox>
-            <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
-            <hr />
-            <ColorButton onClick={() => handleDeleteDepartment(departmentId)} variant='text' variantColor='red' size='small' fullWidth>Xóa Phòng/Ban/Nhóm</ColorButton>
-          </ActionBox>
-          <CreateDepartment updateDepartment={room} open={openUpdateModal} setOpen={setOpenUpdateModal} />
-        </React.Fragment>
+    <React.Fragment>
+      {subSlide && <SubSlideComp handleSubSlide={handleSubSlide} />}
+      {!subSlide && (
+        <Container>
+          {loading && (<LoadingBox />)}
+          {error !== null && (<ErrorBox />)}
+          {!loading && error === null && (
+            <React.Fragment>
+              <Header>
+                <IconButton component={Link} to='/thanh-vien'>
+                  <Icon path={mdiChevronLeft} size={1} />
+                </IconButton>
+                <ColorTypo uppercase>Chi tiết phòng ban</ColorTypo>
+              </Header>
+              <LogoBox>
+                <Avatar style={{ width: 60, height: 60 }} src={_.get(room, 'icon')} alt='avatar' />
+                <ColorTypo uppercase bold color='green' variant='h6'>
+                  {_.get(room, 'name', '')}
+                </ColorTypo>
+                <ColorTypo>
+                  Số nhân sự: {_.get(room, 'number_member', '')} thành viên
+                </ColorTypo>
+              </LogoBox>
+              <ColorTypo uppercase bold color='gray'>
+                Giới thiệu
+              </ColorTypo>
+              <IntroBox>
+                <ColorTypo>
+                  {_.get(room, 'description', '')}  
+                </ColorTypo>
+              </IntroBox>
+              <ActionBox>
+                <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
+                <hr />
+                <ColorButton onClick={() => handleDeleteDepartment(departmentId)} variant='text' variantColor='red' size='small' fullWidth>Xóa Phòng/Ban/Nhóm</ColorButton>
+              </ActionBox>
+              <CreateDepartment updateDepartment={room} open={openUpdateModal} setOpen={setOpenUpdateModal} />
+            </React.Fragment>
+          )}
+        </Container>
       )}
-    </Container>
+    </React.Fragment>
   )
+}
+
+function DepartmentInfo({ ...rest }) {  
+  const { departmentId } = useParams();
+  if (departmentId === 'default') {
+    return <DefaultDepartment {...rest} />;
+  } else {
+    return <NormalDepartment {...rest} />
+  }
 }
 
 const mapStateToProps = state => {

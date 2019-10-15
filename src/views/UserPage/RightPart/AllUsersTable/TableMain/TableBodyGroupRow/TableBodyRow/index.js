@@ -17,6 +17,8 @@ import { privateMember } from '../../../../../../../actions/user/privateMember';
 import { banUserFromGroup } from '../../../../../../../actions/user/banUserFromGroup';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import LoadingBox from '../../../../../../../components/LoadingBox';
+import { CustomEventListener, CustomEventDispose, PUBLIC_MEMBER, PRIVATE_MEMBER } from '../../../../../../../constants/events';
 
 const StyledTableBodyRow = styled(TableRow)`
   background-color: #fff;
@@ -35,7 +37,7 @@ const StyledTableBodyCell = styled(TableCell)`
     height: 30px;
     margin-right: 0;
   }
-  &:nth-child(3), &:nth-child(4), &:nth-child(5), &:nth-child(7), &:nth-child(8) {
+  &:nth-child(4), &:nth-child(5), &:nth-child(6), &:nth-child(8), &:nth-child(9) {
     text-align: center;
   }
 `;
@@ -45,9 +47,28 @@ function TableBodyRow({ user, index, departmentId, doPublicMember, doPrivateMemb
   const location = useLocation();
   const history = useHistory();
   const { t } = useTranslation();
-  const [isHover, setIsHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
+  const [state, setState] = React.useState(_.get(user, 'state', 0));
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    setState(_.get(user, 'state', 0));
+  }, [user]);
+
+  React.useEffect(() => {
+    const loadingFalseHandler = () => {
+      setLoading(false);
+    };
+
+    CustomEventListener(PUBLIC_MEMBER, loadingFalseHandler);
+    CustomEventListener(PRIVATE_MEMBER, loadingFalseHandler);
+
+    return () => {
+      CustomEventDispose(PUBLIC_MEMBER, loadingFalseHandler);
+      CustomEventDispose(PRIVATE_MEMBER, loadingFalseHandler);
+    }
+  }, [])
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget);
@@ -61,11 +82,14 @@ function TableBodyRow({ user, index, departmentId, doPublicMember, doPrivateMemb
   }
 
   function handleChangeState(user) {
-    if (_.get(user, 'state') === 0) {
+    setLoading(true);
+    if (state === 0) {
+      setState(1);
       doPublicMember({
         userId: _.get(user, 'id'),
       });
     } else {
+      setState(0);
       doPrivateMember({
         userId: _.get(user, 'id'),
       });
@@ -92,14 +116,13 @@ function TableBodyRow({ user, index, departmentId, doPublicMember, doPrivateMemb
           innerRef={provided.innerRef}
           {...provided.draggableProps} 
         >
-          <StyledTableBodyCell
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
-          >
+          <StyledTableBodyCell>
             <div {...provided.dragHandleProps}>
-              {!isHover && <Avatar style={{width: 30, height: 30}} src={_.get(user, 'avatar')} alt='avatar' />}
-              {isHover && <Icon path={mdiDragVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>}
+              <Icon path={mdiDragVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
             </div>
+          </StyledTableBodyCell>
+          <StyledTableBodyCell>
+            <Avatar style={{width: 30, height: 30}} src={_.get(user, 'avatar')} alt='avatar' />
           </StyledTableBodyCell>
           <StyledTableBodyCell>
             <ColorTypo>{_.get(user, 'name', '')}</ColorTypo>
@@ -125,13 +148,16 @@ function TableBodyRow({ user, index, departmentId, doPublicMember, doPrivateMemb
             <ColorTypo color='green'>{_.get(user, 'role', '')}</ColorTypo>
           </StyledTableBodyCell>
           <StyledTableBodyCell>
-            <ColorChip badge size='small' color={_.get(user, 'state', 1) === 0 ? 'red' : 'green'} 
-              label={
-                _.get(user, 'state', 1) === 0 
-                ? `${t('views.user_page.right_part.users_table.table_main.table_body_row.state_label.private')}` 
-                : `${t('views.user_page.right_part.users_table.table_main.table_body_row.state_label.public')}`
-              } 
-            />
+            {loading && <LoadingBox size={8} />}
+            {!loading && (
+              <ColorChip badge size='small' color={state === 0 ? 'red' : 'green'} 
+                label={
+                  state === 0 
+                  ? `${t('views.user_page.right_part.users_table.table_main.table_body_row.state_label.private')}` 
+                  : `${t('views.user_page.right_part.users_table.table_main.table_body_row.state_label.public')}`
+                } 
+              />
+            )}
           </StyledTableBodyCell>
           <StyledTableBodyCell onClick={evt => evt.stopPropagation()}>
             <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} size='small'>

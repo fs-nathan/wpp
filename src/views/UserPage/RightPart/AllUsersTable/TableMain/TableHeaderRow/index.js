@@ -24,7 +24,7 @@ const StyledTableHeadCell = styled(({children, ...rest}) =>
     justify-content: center;
     font-size: 11px;
   }
-  &:nth-child(2) > div, &:nth-child(6) > div, &:nth-child(9) > div {
+  &:nth-child(3) > div, &:nth-child(7) > div, &:nth-child(10) > div {
     justify-content: start;
   }
 `;
@@ -37,6 +37,8 @@ function TableHeaderRow() {
     <StyledTableHeadRow>
       <StyledTableHeadCell>
         <Icon path={mdiDragVertical} size={1} color={'rgb(102, 102, 102)'}/>
+      </StyledTableHeadCell>
+      <StyledTableHeadCell>
       </StyledTableHeadCell>
       <StyledTableHeadCell>
         {t('views.user_page.right_part.users_table.table_main.table_header_row.name_cell')}

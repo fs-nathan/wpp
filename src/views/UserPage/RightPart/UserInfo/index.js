@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { Avatar, ListItem, List, ListItemText } from '@material-ui/core';
+import { Avatar, ListItem, List, ListItemText, IconButton } from '@material-ui/core';
 import avatar from '../../../../assets/avatar.jpg';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
@@ -16,9 +16,14 @@ import { connect } from 'react-redux';
 import { detailUser } from '../../../../actions/user/detailUser';
 import { uploadDocumentsUser } from '../../../../actions/user/uploadDocumentsUser';
 import _ from 'lodash';
+import Icon from '@mdi/react';
+import {
+  mdiFullscreenExit,
+} from '@mdi/js';
 import { CustomEventListener, CustomEventDispose, UPLOAD_DOCUMENTS_USER, UPDATE_USER } from '../../../../constants/events';
 
 const Container = styled.div`
+  height: 100%;
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: minmax(450px, 3fr) minmax(350px, 2fr);
@@ -93,13 +98,16 @@ const SideBox = styled.div`
   grid-area: side;
 `;
 
-const SideHeader = styled.div`
+const SideHeader = styled(({ expand, ...rest }) => <div {...rest} />)`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 6rem;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
+  & > *:last-child {
+    margin-left: ${props => props.expand ? '32px' : 0};
+  }
 `;
 
 const SideList = styled(List)`
@@ -110,7 +118,7 @@ const SideList = styled(List)`
   }
 `;
 
-function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocumentsUser }) {
+function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocumentsUser, expand, handleExpand }) {
 
   const { t } = useTranslation();
   const [openDocumentsModal, setOpenDocumentsModal] = React.useState(false);
@@ -195,8 +203,13 @@ function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocum
             </MainFooter>
           </MainBox>
           <SideBox>
-            <SideHeader>
+            <SideHeader expand={expand}>
               <ColorTypo bold uppercase>{t('views.user_page.right_part.user_info.infomation')}</ColorTypo>
+              {expand && (
+                <IconButton onClick={() => handleExpand(!expand)}>
+                  <Icon path={mdiFullscreenExit} size={1} />
+                </IconButton>
+              )}
             </SideHeader>
             <SideList>
               <StyledListItem>

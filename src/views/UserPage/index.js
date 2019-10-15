@@ -9,40 +9,102 @@ import AllUsersTable from './RightPart/AllUsersTable';
 import DepartmentUsersTable from './RightPart/DepartmentUsersTable';
 import UserInfo from './RightPart/UserInfo';
 
-const Container = styled.div`
+const Container = styled(({ expand, ...rest }) => <div {...rest} />)`
   height: 100%;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
-  grid-template-areas:
-    "left right";
+  grid-template-columns: ${props => props.expand ? 'auto' : 'minmax(300px, 1fr) minmax(800px, 3fr)'};
+`;
+
+const LeftDiv = styled(({ expand, ...rest }) => <div {...rest} />)`
+  display: ${props => props.expand ? 'none' : 'inherit'};
+  overflow-y: auto;
+`;
+
+const RightDiv = styled.div`
+  overflow-y: auto;
 `;
 
 function UserPage() {
+
+  const [expand, setExpand] = React.useState(false);
+  const [subSlide, setSubSlide] = React.useState(false);
+
+  function handleExpand(expand) {
+    setExpand(expand);
+  }
+
+  function handleSubSlide(subSlide) {
+    setSubSlide(subSlide);
+  }
+
   return (
-    <Container> 
+    <Container expand={expand}>
       <Route 
         path='/thanh-vien'
         render={({ match: { url, } }) => (
-          <React.Fragment>
-            <Route path={`${url}/`} component={DepartmentList} exact />
-            <Route path={`${url}/them-thanh-vien`} component={AddUser} />
-            <Route path={`${url}/thong-tin/:departmentId`} component={DepartmentInfo} exact />
-            <Route path={`${url}/thong-tin/:departmentId/them-thanh-vien`} component={AddUser} />
+          <LeftDiv expand={expand}>
+            <Route path={`${url}/`} 
+              render={props => 
+                <DepartmentList 
+                  {...props} 
+                  subSlide={subSlide} 
+                  handleSubSlide={handleSubSlide} 
+                  subSlideComp={AddUser} 
+                />
+              } 
+              exact />
+            <Route path={`${url}/thong-tin/:departmentId`} 
+              render={props => 
+                <DepartmentInfo 
+                  {...props} 
+                  subSlide={subSlide} 
+                  handleSubSlide={handleSubSlide} 
+                  subSlideComp={AddUser} 
+                />
+              } 
+              exact />
             <Route path={`${url}/thong-tin/:departmentId/nguoi-dung/:userId`} component={UserList} />
-          </React.Fragment>
+          </LeftDiv>
         )}
       />
       <Route 
         path='/thanh-vien'
         render={({ match: { url, } }) => (
-          <React.Fragment>
-            <Route path={`${url}/`} component={AllUsersTable} exact />
-            <Route path={`${url}/them-thanh-vien`} component={AllUsersTable} />
-            <Route path={`${url}/thong-tin/:departmentId`} component={DepartmentUsersTable} exact />
-            <Route path={`${url}/thong-tin/:departmentId/them-thanh-vien`} component={DepartmentUsersTable} />
-            <Route path={`${url}/thong-tin/:departmentId/nguoi-dung/:userId`} component={UserInfo} />
-          </React.Fragment>
+          <RightDiv>
+            <Route path={`${url}/`} 
+              render={props => 
+                <AllUsersTable 
+                  {...props} 
+                  expand={expand}
+                  handleExpand={handleExpand} 
+                  handleSubSlide={handleSubSlide}
+                />
+              } 
+              exact 
+            />
+            <Route path={`${url}/thong-tin/:departmentId`} 
+              render={props => 
+                <DepartmentUsersTable 
+                  {...props} 
+                  expand={expand}
+                  handleExpand={handleExpand} 
+                  handleSubSlide={handleSubSlide}
+                />
+              }
+              exact 
+            />
+            <Route path={`${url}/thong-tin/:departmentId/nguoi-dung/:userId`} 
+              render={props => 
+                <UserInfo 
+                  {...props} 
+                  expand={expand}
+                  handleExpand={handleExpand}
+                />
+              }
+              exact 
+            />
+          </RightDiv>
         )}
       />
     </Container>

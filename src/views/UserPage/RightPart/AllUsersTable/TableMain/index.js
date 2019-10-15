@@ -13,8 +13,7 @@ import LoadingBox from '../../../../../components/LoadingBox';
 import ErrorBox from '../../../../../components/ErrorBox';
 import { 
   CustomEventListener, CustomEventDispose, 
-  SORT_USER, CREATE_ROOM, SORT_ROOM, 
-  PUBLIC_MEMBER, PRIVATE_MEMBER, 
+  SORT_USER, CREATE_ROOM, SORT_ROOM,
   INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP,
 } from '../../../../../constants/events';
  
@@ -39,8 +38,6 @@ function TableMain({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, s
     CustomEventListener(SORT_USER, doListUserOfGroupHandler);
     CustomEventListener(CREATE_ROOM, doListUserOfGroupHandler);
     CustomEventListener(SORT_ROOM, doListUserOfGroupHandler);
-    CustomEventListener(PUBLIC_MEMBER, doListUserOfGroupHandler);
-    CustomEventListener(PRIVATE_MEMBER, doListUserOfGroupHandler);
     CustomEventListener(INVITE_USER_JOIN_GROUP, doListUserOfGroupHandler);
     CustomEventListener(BAN_USER_FROM_GROUP, doListUserOfGroupHandler);
     
@@ -48,8 +45,6 @@ function TableMain({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, s
       CustomEventDispose(SORT_USER, doListUserOfGroupHandler);
       CustomEventDispose(CREATE_ROOM, doListUserOfGroupHandler);
       CustomEventDispose(SORT_ROOM, doListUserOfGroupHandler);
-      CustomEventDispose(PUBLIC_MEMBER, doListUserOfGroupHandler);
-      CustomEventDispose(PRIVATE_MEMBER, doListUserOfGroupHandler);
       CustomEventDispose(INVITE_USER_JOIN_GROUP, doListUserOfGroupHandler);
       CustomEventDispose(BAN_USER_FROM_GROUP, doListUserOfGroupHandler);
     }

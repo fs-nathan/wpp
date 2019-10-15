@@ -28,6 +28,8 @@ import privateMember, { initialState as privateMemberInitialState } from './user
 import searchUser, { initialState as searchUserInitialState } from './user/searchUser';
 import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } from './user/inviteUserJoinGroup';
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from './user/banUserFromGroup';
+import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
+import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
 
 const rootReducer = combineReducers({
   authentications,
@@ -54,6 +56,8 @@ const rootReducer = combineReducers({
   }),
   icon: combineReducers({
     listIcon,
+    createIcon,
+    deleteIcon,
   }),
   position: combineReducers({
     listPosition,
@@ -100,6 +104,8 @@ export const DEFAULT_STATE = {
   },
   icon: {
     listIcon: listIconInitialState,
+    createIcon: createIconInitialState,
+    deleteIcon: deleteIconInitialState,
   },
   position: {
     listPosition: listPositionInitialState,

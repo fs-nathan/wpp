@@ -12,8 +12,7 @@ import ErrorBox from '../../../../../components/ErrorBox';
 import ColorTypo from '../../../../../components/ColorTypo';
 import { 
   CustomEventListener, CustomEventDispose, 
-  SORT_USER, PUBLIC_MEMBER, PRIVATE_MEMBER, 
-  INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, 
+  SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, 
 } from '../../../../../constants/events';
 import _ from 'lodash';
 
@@ -31,7 +30,7 @@ function TableMain({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser, searc
       for (const key in user) {
         if (
           user.hasOwnProperty(key) &&
-          _.includes(user[key], searchPatern)
+          _.includes(user[key].toString().toLowerCase(), searchPatern.toLowerCase())
         ) return true;
       }
       return false;
@@ -52,15 +51,11 @@ function TableMain({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser, searc
     };
     
     CustomEventListener(SORT_USER, doGetUserOfRoomHandler);
-    CustomEventListener(PUBLIC_MEMBER, doGetUserOfRoomHandler);
-    CustomEventListener(PRIVATE_MEMBER, doGetUserOfRoomHandler);
     CustomEventListener(INVITE_USER_JOIN_GROUP, doGetUserOfRoomHandler);
     CustomEventListener(BAN_USER_FROM_GROUP, doGetUserOfRoomHandler);
 
     return () => {
       CustomEventDispose(SORT_USER, doGetUserOfRoomHandler);
-      CustomEventDispose(PUBLIC_MEMBER, doGetUserOfRoomHandler);
-      CustomEventDispose(PRIVATE_MEMBER, doGetUserOfRoomHandler);
       CustomEventDispose(INVITE_USER_JOIN_GROUP, doGetUserOfRoomHandler);
       CustomEventDispose(BAN_USER_FROM_GROUP, doGetUserOfRoomHandler)
     }

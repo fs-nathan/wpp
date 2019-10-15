@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorButton from '../../../../components/ColorButton';
 import ColorChip from '../../../../components/ColorChip';
@@ -18,7 +17,6 @@ import ErrorBox from '../../../../components/ErrorBox';
 import { CustomEventListener, CustomEventDispose, INVITE_USER_JOIN_GROUP } from '../../../../constants/events';
 
 const Container = styled.div`
-  grid-area: left;
   border-right: 1px solid rgba(0, 0, 0, .2);
   padding: 15px;
   & > *:not(:last-child) {
@@ -42,6 +40,11 @@ const Header = styled.div`
   & > :last-child {
     margin-left: auto;
   }
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0px;
+  background-color: #fff;
+  z-index: 10;
 `;
 
 const StyledBox = styled.div`
@@ -64,12 +67,17 @@ const StyledList = styled(List)`
   }
 `;
 
-function DesiringUserList({ users, handleInviteUser }) {
+function DesiringUserList({ users, handleInviteUser, isSearched }) {
 
   function handleSendInvite(userId) {
     handleInviteUser({ userId });
   }
 
+  if (isSearched && users.length === 0) 
+  return (
+    <ColorTypo color='gray'>Không tìm thấy tài khoản</ColorTypo>
+  )
+  else 
   return (
     <StyledList>
       {users.map(user => (
@@ -152,14 +160,14 @@ function RequestingUserList() {
   );
 }
 
-function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInviteUserJoinGroup }) {
+function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInviteUserJoinGroup, handleSubSlide }) {
 
   const { data: { data }, loading: searchUserLoading, error: searchUserError } = searchUser;
   const { loading: inviteUserJoinGroupLoading, error: inviteUserJoinGroupError } = inviteUserJoinGroup;
   const loading = searchUserLoading || inviteUserJoinGroupLoading;
   const error = searchUserError || inviteUserJoinGroupError;
   const [searchPatern, setSearchPatern] = React.useState('');
-  const location = useLocation();
+  const [isSearched, setIsSearched] = React.useState(false);
 
   React.useEffect(() => {
     const doSearchUserHandler = () => {
@@ -177,7 +185,7 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
     <Container>
       <Header>
         <ColorTypo uppercase>Thêm thành viên</ColorTypo>
-        <IconButton component={Link} to={`${location.pathname.replace('/them-thanh-vien', '')}`}>
+        <IconButton onClick={() => handleSubSlide(false)}>
           <Icon path={mdiClose} size={1} />
         </IconButton>
       </Header>
@@ -192,12 +200,15 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
             value={searchPatern}
             onChange={evt => setSearchPatern(evt.target.value)}
           />
-          <ColorButton variant='contained' variantColor='orange' onClick={() => doSearchUser({ info: searchPatern })}>Lọc</ColorButton>
+          <ColorButton variant='contained' variantColor='orange' onClick={() => {
+            doSearchUser({ info: searchPatern });
+            setIsSearched(true);
+          }}>Lọc</ColorButton>
         </div>
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox size={16} />}
         {!loading && error === null && (
-          <DesiringUserList users={data} handleInviteUser={doInviteUserJoinGroup} />
+          <DesiringUserList users={data} handleInviteUser={doInviteUserJoinGroup} isSearched={isSearched} />
         )}
       </StyledBox>
       <StyledHr />

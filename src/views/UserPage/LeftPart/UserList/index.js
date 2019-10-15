@@ -17,7 +17,6 @@ import { CustomEventListener, CustomEventDispose, SORT_USER, UPDATE_USER } from 
 import _ from 'lodash';
 
 const Container = styled.div`
-  grid-area: left;
   border-right: 1px solid rgba(0, 0, 0, .2);
 `;
 

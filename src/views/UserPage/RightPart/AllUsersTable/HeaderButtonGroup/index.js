@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
 import { ButtonGroup, Button, Menu, MenuItem } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
   mdiMagnify,
   mdiAccountPlus,
   mdiDotsVertical,
+  mdiFullscreen,
+  mdiFullscreenExit,
 } from '@mdi/js';
 import SearchInput from '../../../../../components/SearchInput';
 import TitleManagerModal from '../../../Modals/TitleManager';
@@ -50,15 +51,13 @@ const StyledMenuItem = styled(MenuItem)`
   }
 `;
 
-function HeaderButtonGroup({ handleSearchChange }) {
+function HeaderButtonGroup({ handleSearchChange, expand, handleExpand, handleSubSlide }) {
 
-  const location = useLocation();
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [searchEl, setSearchEl] = React.useState(null);
   const [moreModal, setMoreModal] = React.useState(0);
   const [search, setSearch] = React.useState('');
-
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget);
   }
@@ -95,11 +94,29 @@ function HeaderButtonGroup({ handleSearchChange }) {
           </div>
           <span>{t('views.user_page.right_part.users_table.header_button_group.search_label')}</span>
         </StyledButton>
-        <StyledButton disableRipple component={Link} to={`${location.pathname}/them-thanh-vien`}>
+        <StyledButton disableRipple onClick={() => handleSubSlide(true)}>
           <div>
             <Icon path={mdiAccountPlus} size={1} />
           </div>
           <span>{t('views.user_page.right_part.users_table.header_button_group.add_user_label')}</span>
+        </StyledButton>
+        <StyledButton disableRipple onClick={() => handleExpand(!expand)}>
+          {expand && (
+            <React.Fragment>
+              <div>
+                <Icon path={mdiFullscreenExit} size={1} />
+              </div>
+              <span>{t('views.user_page.right_part.users_table.header_button_group.expand_false_label')}</span>
+            </React.Fragment>
+          )}
+          {!expand && (
+            <React.Fragment>
+              <div>
+                <Icon path={mdiFullscreen} size={1} />
+              </div>
+              <span>{t('views.user_page.right_part.users_table.header_button_group.expand_true_label')}</span>
+            </React.Fragment>
+          )}
         </StyledButton>
         <StyledButton disableRipple aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
           <div>

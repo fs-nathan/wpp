@@ -24,6 +24,11 @@ const Header = styled.div`
   padding: 10px 20px;
   display: flex;
   align-items: center;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0px;
+  background-color: #fff;
+  z-index: 10;
 `;
 
 const RightHeader = styled.div`
@@ -33,7 +38,43 @@ const RightHeader = styled.div`
   }
 `;
 
-function DepartmentUserTable({ detailRoom, doDetailRoom }) {
+function DefaultUserTable({ expand, handleExpand, handleSubSlide }) {
+
+  const [searchPatern, setSearchPatern] = React.useState('');
+
+  return (
+    <Container>
+      <Header>
+        <div>
+          <ColorTypo color='green' uppercase>
+            &#9733; Mặc định
+          </ColorTypo>
+        </div>
+        <RightHeader>
+          <HeaderButtonGroup 
+            handleSearchChange={newSearchPatern => setSearchPatern(newSearchPatern)}
+            expand={expand}
+            handleExpand={handleExpand}
+            handleSubSlide={handleSubSlide}
+          />
+          <ColorButton 
+            size='small'
+            variantColor='orange' 
+            variant='contained'
+            startIcon={
+              <Icon path={mdiPlus} size={0.8} color={'#fff'} />
+            }
+          >
+            Tạo tài khoản
+          </ColorButton>
+        </RightHeader> 
+      </Header>
+      <TableMain searchPatern={searchPatern} />
+    </Container>
+  );
+}
+
+function NormalUserTable({ detailRoom, doDetailRoom, expand, handleExpand, handleSubSlide  }) {
 
   const { t } = useTranslation();
   const { departmentId } = useParams();
@@ -62,7 +103,12 @@ function DepartmentUserTable({ detailRoom, doDetailRoom }) {
             </ColorTypo>
           </div>
           <RightHeader>
-            <HeaderButtonGroup handleSearchChange={newSearchPatern => setSearchPatern(newSearchPatern)}/>
+            <HeaderButtonGroup 
+              handleSearchChange={newSearchPatern => setSearchPatern(newSearchPatern)}
+              expand={expand}
+              handleExpand={handleExpand}
+              handleSubSlide={handleSubSlide}
+            />
             <ColorButton 
               size='small'
               variantColor='orange' 
@@ -80,6 +126,16 @@ function DepartmentUserTable({ detailRoom, doDetailRoom }) {
       <TableMain searchPatern={searchPatern} />
     </Container>
   )
+}
+
+function DepartmentUserTable({ ...rest }) {
+  const { departmentId } = useParams();
+
+  if (departmentId === 'default') {
+    return <DefaultUserTable { ...rest }/>
+  } else {
+    return <NormalUserTable {...rest} />
+  }
 }
 
 const mapStateToProps = state => {

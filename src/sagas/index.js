@@ -57,6 +57,10 @@ import { INVITE_USER_JOIN_GROUP } from '../constants/actions/user/inviteUserJoin
 import { inviteUserJoinGroup } from './user/inviteUserJoinGroup';
 import { BAN_USER_FROM_GROUP } from '../constants/actions/user/banUserFromGroup';
 import { banUserFromGroup } from './user/banUserFromGroup';
+import { CREATE_ICON } from '../constants/actions/icon/createIcon';
+import { createIcon } from './icon/createIcon';
+import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
+import { deleteIcon } from './icon/deleteIcon';
 
 function* rootSaga() {
   yield takeLeading(LOGIN, login);
@@ -89,6 +93,8 @@ function* rootSaga() {
   yield takeLeading(SEARCH_USER, searchUser);
   yield takeLeading(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
   yield takeLeading(BAN_USER_FROM_GROUP, banUserFromGroup);
+  yield takeLeading(CREATE_ICON, createIcon);
+  yield takeLeading(DELETE_ICON, deleteIcon);
 };
 
 export default rootSaga;

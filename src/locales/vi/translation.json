@@ -22,7 +22,8 @@
           "header_button_group": {
             "search_label": "Tìm kiếm",
             "add_user_label": "Thêm thành viên",
-            "verify_user_label": "Duyệt thành viên",
+            "expand_true_label": "Mở rộng",
+            "expand_false_label": "Thu gọn",
             "more_label": "Thêm",
             "title_manager_menu_item": "Quản lý chức danh",
             "role_manager_menu_item": "Quản lý vai trò",
@@ -44,7 +45,7 @@
             "table_body_row": {
               "state_label": {
                 "public": "Công khai",
-                "private": "Bí mật"
+                "private": "Hạn chế"
               },
               "change_state": "Chuyển trạng thái",
               "manage_permission": "Phân quyền",

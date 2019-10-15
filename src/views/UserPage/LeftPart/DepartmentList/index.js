@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link, useLocation } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import ColorTypo from '../../../../components/ColorTypo';
 import SearchInput from '../../../../components/SearchInput';
@@ -18,7 +19,6 @@ import avatar from '../../../../assets/avatar.jpg';
 import _ from 'lodash';
 
 const Container = styled.div`
-  grid-area: left;
   border-right: 1px solid rgba(0, 0, 0, .2);
 `;
 
@@ -26,13 +26,13 @@ const Header = styled.div`
   padding: 15px;
   display: flex;
   align-items: center;
-  & > *:not(:first-child) {
-    margin-left: 10px;
-    &:last-child {
-      margin-left: auto;
-    }
-  }
+  justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0px;
+  background-color: #fff;
+  z-index: 10;
 `;
 
 const Banner = styled.div`
@@ -53,9 +53,10 @@ const StyledListItem = styled(ListItem)`
   }
 `;
 
-function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom }) {
+function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
 
   const [openModal, setOpenModal] = React.useState(false);
+  const location = useLocation(); 
   const { data: { rooms: _rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
   const { loading: sortRoomLoading, error: sortRoomError } = sortRoom;
   const [searchPatern, setSearchPatern] = React.useState('');
@@ -97,61 +98,89 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom }) {
   }
 
   return (
-    <Container>
-      {loading && <LoadingBox />}
-      {(error !== null) && <ErrorBox />}
-      {!loading && (error === null) && (
-        <React.Fragment>
-          <Header>
-            <Icon path={mdiDrag} size={1} />
-            <ColorTypo uppercase>Danh sách Phòng/Ban/Nhóm</ColorTypo>
-            <IconButton onClick={() => setOpenModal(true)}>
-              <Icon path={mdiPlus} size={1} />
-            </IconButton>
-          </Header>
-          <Banner>
-            <SearchInput 
-              fullWidth 
-              placeholder='Tìm Phòng/Ban/Nhóm'
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
-            />  
-          </Banner>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={'department-list'}>
-              {provided => (
-                <StyledList
-                  innerRef={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <StyledListItem>
-                    <div>
-                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
-                    </div>
-                    <Avatar src={avatar} alt='avatar' />
-                    <ListItemText 
-                      primary={
-                        <ColorTypo component='span' bold>Tất cả</ColorTypo>  
-                      }
-                      secondary={
-                        <ColorTypo component='small' color='green' variant='caption'>
-                        {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
-                        </ColorTypo>
-                      }
-                    />
-                  </StyledListItem>
-                  {rooms.map((room, index) => (
-                    <CustomListItem key={index} room={room} index={index} />  
-                  ))}
-                  {provided.placeholder}
-                </StyledList>
-              )}
-            </Droppable>
-          </DragDropContext>
-          <CreateDepartmentModal open={openModal} setOpen={setOpenModal} />
-        </React.Fragment>
+    <React.Fragment>
+      {subSlide && <SubSlideComp handleSubSlide={handleSubSlide} />}
+      {!subSlide && (
+        <Container>
+          {loading && <LoadingBox />}
+          {(error !== null) && <ErrorBox />}
+          {!loading && (error === null) && (
+            <React.Fragment>
+              <Header>
+                <Icon path={mdiDrag} size={1} />
+                <ColorTypo uppercase>Danh sách bộ phận</ColorTypo>
+                <IconButton onClick={() => setOpenModal(true)}>
+                  <Icon path={mdiPlus} size={1} />
+                </IconButton>
+              </Header>
+              <Banner>
+                <SearchInput 
+                  fullWidth 
+                  placeholder='Tìm Phòng/Ban/Nhóm'
+                  value={searchPatern}
+                  onChange={evt => setSearchPatern(evt.target.value)}
+                />  
+              </Banner>
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId={'department-list'}>
+                  {provided => (
+                    <StyledList
+                      innerRef={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      <StyledListItem button
+                        to={`${location.pathname}`}
+                        component={Link}
+                      >
+                        <div>
+                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
+                        </div>
+                        <Avatar src={avatar} alt='avatar' />
+                        <ListItemText 
+                          primary={
+                            <ColorTypo component='span' bold>Tất cả</ColorTypo>  
+                          }
+                          secondary={
+                            <ColorTypo component='small' color='green' variant='caption'>
+                            {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
+                            </ColorTypo>
+                          }
+                        />
+                      </StyledListItem>
+                      {rooms.map((room, index) => (
+                        <CustomListItem key={index} room={room} index={index} />  
+                      ))}
+                      {provided.placeholder}
+                      <StyledListItem
+                        button
+                        component={Link}
+                        to={`${location.pathname}/thong-tin/default`
+                      }>
+                        <div>
+                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
+                        </div>
+                        <Avatar src={avatar} alt='avatar' />
+                        <ListItemText 
+                          primary={
+                            <ColorTypo component='span' bold>Mặc định</ColorTypo>  
+                          }
+                          secondary={
+                            <ColorTypo component='small' color='green' variant='caption'>
+                            {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
+                            </ColorTypo>
+                          }
+                        />
+                      </StyledListItem>
+                    </StyledList>
+                  )}
+                </Droppable>
+              </DragDropContext>
+              <CreateDepartmentModal open={openModal} setOpen={setOpenModal} />
+            </React.Fragment>
+          )}
+        </Container>
       )}
-    </Container>
+    </React.Fragment>
   )
 }
 

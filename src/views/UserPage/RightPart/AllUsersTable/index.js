@@ -23,6 +23,11 @@ const Header = styled.div`
   padding: 10px 20px;
   display: flex;
   align-items: center;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0px;
+  background-color: #fff;
+  z-index: 10;
 `;
 
 const RightHeader = styled.div`
@@ -32,7 +37,7 @@ const RightHeader = styled.div`
   }
 `;
 
-function AllUsersTable({ listRoom, doListRoom }) {
+function AllUsersTable({ listRoom, doListRoom, expand, handleExpand, handleSubSlide }) {
 
   const { t } = useTranslation();
   const [searchPatern, setSearchPatern] = React.useState('');
@@ -63,7 +68,12 @@ function AllUsersTable({ listRoom, doListRoom }) {
               </ColorTypo>
             </div>
             <RightHeader>
-              <HeaderButtonGroup handleSearchChange={newSearchPatern => setSearchPatern(newSearchPatern)} />
+              <HeaderButtonGroup 
+                handleSearchChange={newSearchPatern => setSearchPatern(newSearchPatern)} 
+                expand={expand}
+                handleExpand={handleExpand}
+                handleSubSlide={handleSubSlide}
+              />
               <ColorButton 
                 size='small'
                 variantColor='orange' 
