@@ -72,11 +72,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreateIcon, deleteIcon, doDeleteIcon, onSelectIcon = (icon_url) => null }) {
 
-  const { data: { icons }, error: listIconError, loading: listIconLoading } = listIcon;
+  const { data: { icons: _icons }, error: listIconError, loading: listIconLoading } = listIcon;
   const { error: deleteIconError, loading: deleteIconLoading } = deleteIcon;
   const { error: createIconError, loading: createIconLoading } = createIcon;
   const error = listIconError || deleteIconError;
-  const [selectedIcon, setSelectedIcon] = React.useState(icons[0]);
+  const [selectedIcon, setSelectedIcon] = React.useState(_icons[0]);
+  const [icons, setIcons] = React.useState(_icons);
+
+  React.useEffect(() => {
+    setIcons(_icons);
+  }, [_icons]);
 
   React.useEffect(() => {
     doListIcon();
@@ -86,17 +91,11 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
     const doListIconHandler = () => {
       doListIcon();
     }
-
     CustomEventListener(CREATE_ICON, doListIconHandler);
-    CustomEventListener(DELETE_ICON, doListIconHandler);
-
     return () => {
       CustomEventDispose(CREATE_ICON, doListIconHandler);
-      CustomEventDispose(DELETE_ICON, doListIconHandler);
     }
   }, [doListIcon]);
-
-  
 
   function selectIcon(iconId) {
     setOpen(false);
@@ -104,9 +103,14 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
   }
 
   function handleDeleteIcon(icon) {
+    function deleteIconHandler() {
+      setIcons(_.filter(icons, _icon => _.get(_icon, 'id') !== _.get(icon, 'id')));
+      CustomEventDispose(DELETE_ICON, deleteIconHandler);
+    }
+    CustomEventListener(DELETE_ICON, deleteIconHandler);
     doDeleteIcon({
       iconId: _.get(icon, 'id'),
-    })
+    });
   }
 
   function handleUploadIcon(evt) {
