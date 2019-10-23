@@ -5,6 +5,12 @@ import { darken } from '@material-ui/core/styles';
 import colorPal from '../../helpers/colorPalette';
 
 const ColorButton = styled(({ variantColor, variant, ...rest }) => <Button variant={variant} {...rest} />)`
+  && {
+    box-shadow: none;
+  }
+  & > span:last-child {
+    display: none;
+  }
   ${props => props.variant === 'contained' && css`
     background-color: ${props => props.variantColor ? colorPal[props.variantColor][0] : colorPal['default'][0]};
     color: ${props => props.variantColor ? colorPal[props.variantColor][1] : colorPal['default'][1]};

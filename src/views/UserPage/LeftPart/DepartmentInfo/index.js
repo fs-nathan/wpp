@@ -1,43 +1,27 @@
 import React from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorButton from '../../../../components/ColorButton';
-import { IconButton, Avatar } from '@material-ui/core';
-import Icon from '@mdi/react';
+import { Avatar } from '@material-ui/core';
 import { mdiChevronLeft } from '@mdi/js';
 import { connect } from 'react-redux';
 import { detailRoom } from '../../../../actions/room/detailRoom';
 import { deleteRoom } from '../../../../actions/room/deleteRoom';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
+import LeftSideContainer from '../../../../components/LeftSideContainer';
 import { CustomEventListener, CustomEventDispose, DELETE_ROOM, UPDATE_ROOM } from '../../../../constants/events.js';
 import CreateDepartment from '../../Modals/CreateDepartment';
 import avatar from '../../../../assets/avatar.jpg';
- 
-const Container = styled.div`
-  border-right: 1px solid rgba(0, 0, 0, .2);
-  padding: 15px;
-  & > *:not(:last-child) {
-    padding-bottom: 15px;
-  }
-  display: flex;
-  flex-direction: column;
-`;
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  & > *:not(:first-child) {
-    margin-left: 10px;
-  }
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0px;
-  background-color: #fff;
-  z-index: 10;
+const Container = styled.div`
+  padding: 0 8px;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr max-content;
+  grid-template-columns: auto; 
 `;
 
 const LogoBox = styled.div`
@@ -55,34 +39,41 @@ const IntroBox = styled.div`
 `;
 
 const ActionBox = styled.div`
+  margin: 16px 0;
   & > hr {
-    border: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
   }
   & > * {
     text-transform: none;
     justify-content: flex-start;
+    & > span:last-child {
+      display: none;
+    }
   }
 `;
 
 function DefaultDepartment({ subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
+  
+  const history = useHistory();
+
   return (
     <React.Fragment>
       {subSlide && <SubSlideComp handleSubSlide={handleSubSlide} />}
       {!subSlide && (
-        <Container>
-          <Header>
-            <IconButton component={Link} to='/thanh-vien'>
-              <Icon path={mdiChevronLeft} size={1} />
-            </IconButton>
-            <ColorTypo uppercase>Chi tiết phòng ban</ColorTypo>
-          </Header>
+        <LeftSideContainer
+          leftAction={{
+            iconPath: mdiChevronLeft,
+            onClick: () => history.push('/thanh-vien')
+          }}
+          title='Chi tiết bộ phận'
+        >
           <LogoBox>
             <Avatar style={{ width: 60, height: 60 }} src={avatar} alt='avatar' />
             <ColorTypo uppercase bold color='green' variant='h6'>
               Mặc định
             </ColorTypo>
           </LogoBox>
-        </Container>
+        </LeftSideContainer>
       )}
     </React.Fragment>
   );
@@ -117,6 +108,7 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
   }, [history, departmentId, doDetailRoom]);
 
   function handleDeleteDepartment(departmentId) {
+    if (window.confirm('Bạn chắc chắn muốn xóa?'))
     doDeleteRoom({ 
       roomId: departmentId,
     });
@@ -126,43 +118,47 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
     <React.Fragment>
       {subSlide && <SubSlideComp handleSubSlide={handleSubSlide} />}
       {!subSlide && (
-        <Container>
+        <React.Fragment>
           {loading && (<LoadingBox />)}
           {error !== null && (<ErrorBox />)}
           {!loading && error === null && (
-            <React.Fragment>
-              <Header>
-                <IconButton component={Link} to='/thanh-vien'>
-                  <Icon path={mdiChevronLeft} size={1} />
-                </IconButton>
-                <ColorTypo uppercase>Chi tiết phòng ban</ColorTypo>
-              </Header>
-              <LogoBox>
-                <Avatar style={{ width: 60, height: 60 }} src={_.get(room, 'icon')} alt='avatar' />
-                <ColorTypo uppercase bold color='green' variant='h6'>
-                  {_.get(room, 'name', '')}
-                </ColorTypo>
-                <ColorTypo>
-                  Số nhân sự: {_.get(room, 'number_member', '')} thành viên
-                </ColorTypo>
-              </LogoBox>
-              <ColorTypo uppercase bold color='gray'>
-                Giới thiệu
-              </ColorTypo>
-              <IntroBox>
-                <ColorTypo>
-                  {_.get(room, 'description', '')}  
-                </ColorTypo>
-              </IntroBox>
-              <ActionBox>
-                <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
-                <hr />
-                <ColorButton onClick={() => handleDeleteDepartment(departmentId)} variant='text' variantColor='red' size='small' fullWidth>Xóa Phòng/Ban/Nhóm</ColorButton>
-              </ActionBox>
+            <LeftSideContainer
+              leftAction={{
+                iconPath: mdiChevronLeft,
+                onClick: () => history.push('/thanh-vien')
+              }}
+              title='Chi tiết bộ phận'
+            >
+              <Container>
+                <div>
+                  <LogoBox>
+                    <Avatar style={{ width: 60, height: 60 }} src={_.get(room, 'icon')} alt='avatar' />
+                    <ColorTypo uppercase bold color='green' variant='h6'>
+                      {_.get(room, 'name', '')}
+                    </ColorTypo>
+                    <ColorTypo>
+                      Số nhân sự: {_.get(room, 'number_member', '')} thành viên
+                    </ColorTypo>
+                  </LogoBox>
+                  <ColorTypo uppercase bold color='gray'>
+                    Giới thiệu
+                  </ColorTypo>
+                  <IntroBox>
+                    <ColorTypo>
+                      {_.get(room, 'description', '')}  
+                    </ColorTypo>
+                  </IntroBox>
+                </div>
+                <ActionBox>
+                  <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
+                  <hr />
+                  <ColorButton onClick={() => handleDeleteDepartment(departmentId)} variant='text' variantColor='red' size='small' fullWidth>Xóa Phòng/Ban/Nhóm</ColorButton>
+                </ActionBox>
+              </Container>
               <CreateDepartment updateDepartment={room} open={openUpdateModal} setOpen={setOpenUpdateModal} />
-            </React.Fragment>
+            </LeftSideContainer>
           )}
-        </Container>
+        </React.Fragment>
       )}
     </React.Fragment>
   )

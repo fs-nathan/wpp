@@ -31,7 +31,7 @@ apiService.interceptors.response.use(
       apiService
         .post("login", {
           email: "ducpminh668@gmail.com",
-          password: "12345678"
+          password: "12345678",
         })
         .then(response => {
           localStorage.setItem("token", response.data.accessToken);

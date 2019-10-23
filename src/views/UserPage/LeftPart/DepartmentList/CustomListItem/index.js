@@ -1,22 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
-import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
-import { Avatar, ListItem, ListItemText } from '@material-ui/core';
+import { Avatar, ListItemText } from '@material-ui/core';
+import { StyledListItem, Primary, Secondary } from '../../../../../components/CustomList';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
-import ColorTypo from '../../../../../components/ColorTypo';
-
-const Container = styled(ListItem)`
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background-color: #fff;
-  & > *:not(:first-child) {
-    margin-left: 8px;
-  }
-`;
 
 function CustomListItem({ room, index }) {
   const location = useLocation();
@@ -28,8 +17,7 @@ function CustomListItem({ room, index }) {
       index={index}  
     >
       {(provided) => (
-        <Container 
-          button
+        <StyledListItem 
           component={Link}
           to={`${location.pathname}/thong-tin/${_.get(room, 'id', '')}`}
           innerRef={provided.innerRef}
@@ -40,16 +28,16 @@ function CustomListItem({ room, index }) {
           <div {...provided.dragHandleProps}>
             <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'}/>
           </div>
-          <Avatar src={room.icon} alt='avatar' />
+          <Avatar style={{ height: 50, width: 50, }} src={room.icon} alt='avatar' />
           <ListItemText 
             primary={
-              <ColorTypo component='span'>{_.get(room, 'name', '')}</ColorTypo>  
+              <Primary>{_.get(room, 'name', '')}</Primary>  
             }
             secondary={
-              <ColorTypo component='small' color='green' variant='caption'>{_.get(room, 'number_member', 0)} thành viên</ColorTypo>
+              <Secondary>{_.get(room, 'number_member', 0)} thành viên</Secondary>
             }
           />
-        </Container>
+        </StyledListItem>
       )}
     </Draggable>
   )

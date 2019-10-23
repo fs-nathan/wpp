@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import ColorTypo from '../../../../components/ColorTypo';
-import ColorButton from '../../../../components/ColorButton';
-import ColorChip from '../../../../components/ColorChip';
+import PillButton from '../../../../components/PillButton';
 import SearchInput from '../../../../components/SearchInput';
+import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
 import avatar from '../../../../assets/avatar.jpg';
-import { IconButton, Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
-import Icon from '@mdi/react';
+import { Avatar, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import { connect } from 'react-redux';
 import { searchUser } from '../../../../actions/user/searchUser';
@@ -14,41 +13,12 @@ import { inviteUserJoinGroup } from '../../../../actions/user/inviteUserJoinGrou
 import _ from 'lodash';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
+import LeftSideContainer from '../../../../components/LeftSideContainer';
+import colorPal from '../../../../helpers/colorPalette';
 import { CustomEventListener, CustomEventDispose, INVITE_USER_JOIN_GROUP } from '../../../../constants/events';
 
-const Container = styled.div`
-  border-right: 1px solid rgba(0, 0, 0, .2);
-  padding: 15px;
-  & > *:not(:last-child) {
-    padding-bottom: 8px;
-  }
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledHr = styled.hr`
-  && {
-    padding-bottom: 0px;
-    border: 1px solid rgba(0, 0, 0, .1);
-    width: 100%;
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  & > :last-child {
-    margin-left: auto;
-  }
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0px;
-  background-color: #fff;
-  z-index: 10;
-`;
-
 const StyledBox = styled.div`
-  padding: 15px 0;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   & > *:not(:last-child) {
@@ -59,11 +29,8 @@ const StyledBox = styled.div`
     justify-content: space-between;
     align-items: center;
   }
-`;
-
-const StyledList = styled(List)`
-  & > * {
-    padding: 8px 0;
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
   }
 `;
 
@@ -81,23 +48,27 @@ function DesiringUserList({ users, handleInviteUser, isSearched }) {
   return (
     <StyledList>
       {users.map(user => (
-        <ListItem key={_.get(user, 'id')}>
+        <StyledListItem key={_.get(user, 'id')}>
           <ListItemAvatar>
-            <Avatar src={_.get(user, 'avatar')} alt='avatar' />
+            <Avatar style={{ width: 50, height: 50, }} src={_.get(user, 'avatar')} alt='avatar' />
           </ListItemAvatar>
           <ListItemText 
             primary={
-              <ColorTypo component='span' color='green'>{_.get(user, 'name', '')}</ColorTypo>  
+              <Primary>{_.get(user, 'name', '')}</Primary>  
             }
             secondary={
-              <ColorTypo component='small' variant='caption'>{_.get(user, 'email', '')}</ColorTypo>
+              <Secondary>{_.get(user, 'email', '')}</Secondary>
             }
           />
-          <ColorChip onClick={() => _.get(user, 'send_invite', false) === false && handleSendInvite(_.get(user, 'id'))} badge size='small' 
-            label={_.get(user, 'send_invite', false) ? "Đã mời" : "Mời"}
-            color={_.get(user, 'send_invite', false) ? "green" : "orange"}
-          />
-        </ListItem>
+          <PillButton 
+            onClick={() => _.get(user, 'send_invite', false) === false && handleSendInvite(_.get(user, 'id'))} 
+            size='small' 
+            background={_.get(user, 'send_invite', false) ? colorPal['green'][0] : colorPal['orange'][0]}
+            text={_.get(user, 'send_invite', false) ? colorPal['green'][1] : colorPal['orange'][1]}
+          >
+            {_.get(user, 'send_invite', false) ? "Đã mời" : "Mời"}
+          </PillButton>
+        </StyledListItem>
       ))}
     </StyledList>
   );
@@ -116,46 +87,74 @@ const StyledSecondary = styled.span`
 function RequestingUserList() {
   return (
     <StyledList>
-      <ListItem>
+      <StyledListItem>
         <ListItemAvatar>
-          <Avatar src={avatar} alt='avatar' />
+          <Avatar style={{ width: 50, height: 50, }} src={avatar} alt='avatar' />
         </ListItemAvatar>
         <ListItemText 
           primary={
-            <ColorTypo component='span' color='green'>VietApp</ColorTypo>  
+            <Primary>VietApp</Primary>  
           }
           secondary={
             <StyledSecondary>
-              <ColorTypo component='small' variant='caption'>vietapp@gmail.com</ColorTypo>
+              <Secondary>vietapp@gmail.com</Secondary>
               <span>
-                <ColorChip component='small' color='green' badge size='small' label='Duyệt' onClick={() => null} />
-                <ColorChip component='small' color='red' badge size='small' label='Từ chối' onClick={() => null} />
+                <PillButton 
+                  onClick={() => null} 
+                  size='small' 
+                  background={colorPal['green'][0]}
+                  text={colorPal['green'][1]}
+                >
+                  Duyệt
+                </PillButton>
+                <PillButton 
+                  onClick={() => null} 
+                  size='small' 
+                  background={colorPal['red'][0]}
+                  text={colorPal['red'][1]}
+                >
+                  Từ chối
+                </PillButton>
               </span>
             </StyledSecondary>
           }
         />
         <ColorTypo component='small' variant='caption'>3 phút</ColorTypo>
-      </ListItem>
-      <ListItem>
+      </StyledListItem>
+      <StyledListItem>
         <ListItemAvatar>
-          <Avatar src={avatar} alt='avatar' />
+          <Avatar style={{ width: 50, height: 50, }} src={avatar} alt='avatar' />
         </ListItemAvatar>
         <ListItemText 
           primary={
-            <ColorTypo component='span' color='green'>VietApp</ColorTypo>  
+            <Primary>VietApp</Primary>  
           }
           secondary={
             <StyledSecondary>
-              <ColorTypo component='small' variant='caption'>vietapp@gmail.com</ColorTypo>
+              <Secondary>vietapp@gmail.com</Secondary>
               <span>
-                <ColorChip component='small' color='green' badge size='small' label='Duyệt' onClick={() => null} />
-                <ColorChip component='small' color='red' badge size='small' label='Từ chối' onClick={() => null} />
+                <PillButton 
+                  onClick={() => null} 
+                  size='small' 
+                  background={colorPal['green'][0]}
+                  text={colorPal['green'][1]}
+                >
+                  Duyệt
+                </PillButton>
+                <PillButton 
+                  onClick={() => null} 
+                  size='small' 
+                  background={colorPal['red'][0]}
+                  text={colorPal['red'][1]}
+                >
+                  Từ chối
+                </PillButton>
               </span>
             </StyledSecondary>
           }
         />
         <ColorTypo component='small' variant='caption'>3 phút</ColorTypo>
-      </ListItem>
+      </StyledListItem>
     </StyledList>
   );
 }
@@ -182,14 +181,13 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
   }, [doSearchUser, searchPatern]);
 
   return (
-    <Container>
-      <Header>
-        <ColorTypo uppercase>Thêm thành viên</ColorTypo>
-        <IconButton onClick={() => handleSubSlide(false)}>
-          <Icon path={mdiClose} size={1} />
-        </IconButton>
-      </Header>
-      <StyledHr />
+    <LeftSideContainer
+      title='Thêm thành viên'
+      rightAction={{
+        iconPath: mdiClose,
+        onClick: () => handleSubSlide(false),
+      }}
+    >
       <StyledBox>
         <ColorTypo bold>
           Mời thành viên tham gia nhóm
@@ -200,10 +198,17 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
             value={searchPatern}
             onChange={evt => setSearchPatern(evt.target.value)}
           />
-          <ColorButton variant='contained' variantColor='orange' onClick={() => {
-            doSearchUser({ info: searchPatern });
-            setIsSearched(true);
-          }}>Lọc</ColorButton>
+          <PillButton 
+            size='medium'
+            background={colorPal['gray'][0]}
+            text={colorPal['gray'][1]}
+            onClick={() => {
+              if (searchPatern !== '') {
+                doSearchUser({ info: searchPatern });
+                setIsSearched(true);
+              }
+            }}  
+          >Lọc</PillButton>
         </div>
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox size={16} />}
@@ -211,14 +216,13 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
           <DesiringUserList users={data} handleInviteUser={doInviteUserJoinGroup} isSearched={isSearched} />
         )}
       </StyledBox>
-      <StyledHr />
       <StyledBox>
         <ColorTypo bold>
           Thành viên yêu cầu tham gia nhóm
         </ColorTypo>
         <RequestingUserList />
       </StyledBox>
-    </Container>
+    </LeftSideContainer>
   )
 }
 

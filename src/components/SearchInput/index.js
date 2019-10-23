@@ -1,34 +1,44 @@
 import React from 'react';
 import { InputBase } from '@material-ui/core';
 import styled from 'styled-components';
-import searchIcon from '../../assets/search-icon.jpg';
+import Icon from '@mdi/react';
+import {
+  mdiMagnify,
+} from '@mdi/js';
+
+const Container = styled.div`
+  position: relative;
+  line-height: 1.3;
+  height: 35px;
+  & > svg:first-child {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    z-index: 10;
+  }
+`;
 
 const SearchBoxBase = styled(InputBase)`
-  padding: .275rem .75rem .275rem 2.5rem;
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: .175rem .65rem .175rem 2.35rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.3;
+  height: 35px;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
-  background-image: url(${searchIcon});
-  background-repeat: no-repeat;
-  background-size: 16px;
-  background-position: 9px;
+  background-color: #f6f6f6;
   border-radius: 999px;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  &:focus-within {
-    color: #495057;
-    background-color: #fff;
-    border-color: #31b586;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(49, 181, 134, .25);
-  }
 `;
 
 function SearchBox({ ...rest }) {
   return (
-    <SearchBoxBase 
-      {...rest}
-    />
+    <Container>
+      <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' />
+      <SearchBoxBase 
+        {...rest}
+      />
+    </Container>
   )
 }
 

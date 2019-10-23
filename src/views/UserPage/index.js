@@ -18,11 +18,10 @@ const Container = styled(({ expand, ...rest }) => <div {...rest} />)`
 
 const LeftDiv = styled(({ expand, ...rest }) => <div {...rest} />)`
   display: ${props => props.expand ? 'none' : 'inherit'};
-  overflow-y: auto;
 `;
 
 const RightDiv = styled.div`
-  overflow-y: auto;
+  border-left: 1px solid rgba(0, 0, 0, .1);
 `;
 
 function UserPage() {

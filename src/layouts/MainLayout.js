@@ -33,7 +33,7 @@ const LogoBox = styled(Link)`
 
 const ContentBox = styled.div`
   grid-area: main;
-  overflow-y: auto;
+  overflow: hidden;
   &::-webkit-scrollbar-track{
     background-color: unset !important;
   }
@@ -77,8 +77,11 @@ const ContentBox = styled.div`
 function MainLayout({ doLogin, doLoginCheckState }) {
 
   React.useEffect(() => {
-    doLoginCheckState();
-  }, [doLoginCheckState]);
+    doLogin({
+      email: "ducpminh668@gmail.com",
+      password: "12345678",
+    });
+  }, [doLogin]);
   
   function configRoute(routes) {
     if (routes.length === 0) return;

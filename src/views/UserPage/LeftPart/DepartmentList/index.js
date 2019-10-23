@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import ColorTypo from '../../../../components/ColorTypo';
 import SearchInput from '../../../../components/SearchInput';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
-import { IconButton, List, Avatar, ListItem, ListItemText } from '@material-ui/core';
+import LeftSideContainer from '../../../../components/LeftSideContainer';
+import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
+import { Avatar, ListItemText } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiDrag, mdiDragVertical } from '@mdi/js';
 import CustomListItem from './CustomListItem';
@@ -18,39 +19,8 @@ import { CustomEventListener, CustomEventDispose, CREATE_ROOM, SORT_ROOM } from 
 import avatar from '../../../../assets/avatar.jpg';
 import _ from 'lodash';
 
-const Container = styled.div`
-  border-right: 1px solid rgba(0, 0, 0, .2);
-`;
-
-const Header = styled.div`
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0px;
-  background-color: #fff;
-  z-index: 10;
-`;
-
 const Banner = styled.div`
   padding: 15px;
-`;
-
-const StyledList = styled(List)`
-  padding: 8px 0;
-`;
-
-const StyledListItem = styled(ListItem)`
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background-color: #fff;
-  & > *:not(:first-child) {
-    margin-left: 8px;
-  }
 `;
 
 function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
@@ -101,18 +71,21 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
     <React.Fragment>
       {subSlide && <SubSlideComp handleSubSlide={handleSubSlide} />}
       {!subSlide && (
-        <Container>
+        <React.Fragment>
           {loading && <LoadingBox />}
           {(error !== null) && <ErrorBox />}
           {!loading && (error === null) && (
-            <React.Fragment>
-              <Header>
-                <Icon path={mdiDrag} size={1} />
-                <ColorTypo uppercase>Danh sách bộ phận</ColorTypo>
-                <IconButton onClick={() => setOpenModal(true)}>
-                  <Icon path={mdiPlus} size={1} />
-                </IconButton>
-              </Header>
+            <LeftSideContainer
+              title='Danh sách bộ phận'
+              leftAction={{
+                iconPath: mdiDrag,
+                onClick: null,
+              }}
+              rightAction={{
+                iconPath: mdiPlus,
+                onClick: () => setOpenModal(true),
+              }}
+            >
               <Banner>
                 <SearchInput 
                   fullWidth 
@@ -128,22 +101,22 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
                       innerRef={provided.innerRef}
                       {...provided.droppableProps}
                     >
-                      <StyledListItem button
+                      <StyledListItem
                         to={`${location.pathname}`}
                         component={Link}
                       >
                         <div>
                           <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
                         </div>
-                        <Avatar src={avatar} alt='avatar' />
+                        <Avatar style={{ height: 50, width: 50, }} src={avatar} alt='avatar' />
                         <ListItemText 
                           primary={
-                            <ColorTypo component='span' bold>Tất cả</ColorTypo>  
+                            <Primary>Tất cả</Primary>  
                           }
                           secondary={
-                            <ColorTypo component='small' color='green' variant='caption'>
-                            {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
-                            </ColorTypo>
+                            <Secondary>
+                              {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
+                            </Secondary>
                           }
                         />
                       </StyledListItem>
@@ -152,22 +125,21 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
                       ))}
                       {provided.placeholder}
                       <StyledListItem
-                        button
                         component={Link}
                         to={`${location.pathname}/thong-tin/default`
                       }>
                         <div>
                           <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
                         </div>
-                        <Avatar src={avatar} alt='avatar' />
+                        <Avatar style={{ height: 50, width: 50, }} src={avatar} alt='avatar' />
                         <ListItemText 
                           primary={
-                            <ColorTypo component='span' bold>Mặc định</ColorTypo>  
+                            <Primary>Mặc định</Primary>  
                           }
                           secondary={
-                            <ColorTypo component='small' color='green' variant='caption'>
-                            {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
-                            </ColorTypo>
+                            <Secondary>
+                              {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
+                            </Secondary>
                           }
                         />
                       </StyledListItem>
@@ -176,9 +148,9 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
                 </Droppable>
               </DragDropContext>
               <CreateDepartmentModal open={openModal} setOpen={setOpenModal} />
-            </React.Fragment>
+            </LeftSideContainer>
           )}
-        </Container>
+        </React.Fragment>
       )}
     </React.Fragment>
   )

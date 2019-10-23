@@ -1,22 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
-import { Avatar, ListItem, ListItemText } from '@material-ui/core';
+import { StyledListItem, Primary, Secondary } from '../../../../../components/CustomList';
+import { Avatar, ListItemText } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
-import ColorTypo from '../../../../../components/ColorTypo';
 import _ from 'lodash';
-
-const Container = styled(ListItem)`
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background-color: #fff;
-  & > *:not(:first-child) {
-    margin-left: 8px;
-  }
-`;
 
 function CustomListItem({ user, index }) {
 
@@ -30,7 +19,7 @@ function CustomListItem({ user, index }) {
       index={index}  
     >
       {(provided) => (
-        <Container 
+        <StyledListItem 
           component={Link}
           to={`${location.pathname.replace(`${userId}`, `${_.get(user, 'id', '')}`)}`}
           innerRef={provided.innerRef}
@@ -41,16 +30,16 @@ function CustomListItem({ user, index }) {
           <div {...provided.dragHandleProps}>
             <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'}/>
           </div>
-          <Avatar src={_.get(user, 'avatar', '')} alt='avatar' />
+          <Avatar style={{ width: 50, height: 50, }} src={_.get(user, 'avatar', '')} alt='avatar' />
           <ListItemText 
             primary={
-              <ColorTypo component='span'>{_.get(user, 'name', '')}</ColorTypo>  
+              <Primary>{_.get(user, 'name', '')}</Primary>  
             }
             secondary={
-              <ColorTypo component='small' color='green' variant='caption'>{_.get(user, 'room', '')}</ColorTypo>
+              <Secondary>{_.get(user, 'room', '')}</Secondary>
             }
           />
-        </Container>
+        </StyledListItem>
       )}
     </Draggable>
   )

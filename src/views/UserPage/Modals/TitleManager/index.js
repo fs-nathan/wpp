@@ -1,15 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { 
-  Fade, Dialog, DialogTitle, DialogContent, 
-  DialogActions, IconButton, TableCell,
-  Table, TableHead, TableBody, TableRow,
+  TableCell, Table, TableHead, TableBody, TableRow,
 } from '@material-ui/core';
-import Icon from '@mdi/react';
-import { mdiClose } from '@mdi/js'; 
 import ColorButton from '../../../../components/ColorButton';
-import ColorTypo from '../../../../components/ColorTypo';
-import ColorChip from '../../../../components/ColorChip';
+import PillButton from '../../../../components/PillButton';
+import colorPal from '../../../../helpers/colorPalette';
 import TitleCreateAndUpdateModal from './TitleCreateAndUpdate';
 import { listPosition } from '../../../../actions/position/listPosition';
 import { deletePosition } from '../../../../actions/position/deletePosition';
@@ -17,22 +13,8 @@ import { connect } from 'react-redux';
 import { CustomEventListener, CustomEventDispose, CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION } from '../../../../constants/events';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
+import CustomModal from '../../../../components/CustomModal';
 import _ from 'lodash';
-
-const StyledDialogContent = styled(DialogContent)`
-  & > *:not(:last-child) {
-    margin-bottom: 8px;
-  }
-`;
-
-const StyledDialogTitle = styled(DialogTitle)`
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > h2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
 
 const StyledTableHead = styled(TableHead)` 
   background-color: #eee; 
@@ -53,10 +35,6 @@ const TableCellChipsWrapper = styled(TableCell)`
     }
   }
 `;
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Fade direction='down' ref={ref} {...props} />;
-}); 
 
 function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosition, doDeletePosition }) {
 
@@ -93,68 +71,69 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
   }
 
   function handleDeletePosition(position) {
-    doDeletePosition({
-      positionId: _.get(position, 'id'),
-    });
+    if (window.confirm('Bạn chắc chắn muốn xóa vị trí?')) {
+      doDeletePosition({
+        positionId: _.get(position, 'id'),
+      });
+    }
   }
 
   return (
     <React.Fragment>
-      <Dialog
-        maxWidth='sm'
-        fullWidth
+      <CustomModal
         open={open}
-        TransitionComponent={Transition}
-        onClose={() => setOpen(0)}
-        aria-labelledby="alert-dialog-slide-title"
+        setOpen={setOpen}
+        title='Quản lý chức danh'
+        onCancle={() => setOpen(0)}
       >
-        <StyledDialogTitle id="alert-dialog-slide-title">
-          <ColorTypo uppercase>Quản lý chức danh</ColorTypo>
-          <IconButton onClick={() => setOpen(0)}>
-            <Icon path={mdiClose} size={1} />
-          </IconButton>
-        </StyledDialogTitle>
-        <StyledDialogContent>
-          {loading && <LoadingBox />}
-          {error !== null && <ErrorBox />}
-          {!loading && error === null && (
-            <Table>
-              <StyledTableHead>
-                <TableRow>
-                  <TableCell>Tên chức danh</TableCell>
-                  <TableCell>Mô tả</TableCell>
-                  <TableCell>
-                    <ColorButton variantColor='orange' size='small' variant='contained'
-                      onClick={() => handleSelectedPosition(null)}
-                    >
-                      + Thêm mới
-                    </ColorButton>
-                  </TableCell>
+        {loading && <LoadingBox />}
+        {error !== null && <ErrorBox />}
+        {!loading && error === null && (
+          <Table>
+            <StyledTableHead>
+              <TableRow>
+                <TableCell>Tên chức danh</TableCell>
+                <TableCell>Mô tả</TableCell>
+                <TableCell>
+                  <ColorButton variantColor='orange' size='small' variant='contained'
+                    onClick={() => handleSelectedPosition(null)}
+                  >
+                    + Thêm mới
+                  </ColorButton>
+                </TableCell>
+              </TableRow>
+            </StyledTableHead>
+            <StyledTableBody>
+              {positions.map(position => (
+                <TableRow key={_.get(position, 'id', '')}>
+                  <TableCell>{_.get(position, 'name', '')}</TableCell>
+                  <TableCell>{_.get(position, 'description', '')}</TableCell>
+                  <TableCellChipsWrapper>
+                    <div>
+                      <PillButton 
+                        onClick={() => handleSelectedPosition(position)}
+                        background={colorPal['green'][0]}
+                        text={colorPal['green'][1]}
+                        size='small' 
+                      >
+                        Sửa
+                      </PillButton>
+                      <PillButton 
+                        onClick={() => handleDeletePosition(position)}
+                        background={colorPal['red'][0]}
+                        text={colorPal['red'][1]}
+                        size='small' 
+                      >
+                        Xóa
+                      </PillButton>
+                     </div>
+                  </TableCellChipsWrapper>
                 </TableRow>
-              </StyledTableHead>
-              <StyledTableBody>
-                {positions.map(position => (
-                  <TableRow key={_.get(position, 'id', '')}>
-                    <TableCell>{_.get(position, 'name', '')}</TableCell>
-                    <TableCell>{_.get(position, 'description', '')}</TableCell>
-                    <TableCellChipsWrapper>
-                      <div>
-                        <ColorChip onClick={() => handleSelectedPosition(position)} label='Sửa' color='green' size='small' badge />
-                        <ColorChip onClick={() => handleDeletePosition(position)} label='Xóa' color='red' size='small' badge />
-                      </div>
-                    </TableCellChipsWrapper>
-                  </TableRow>
-                ))}
-              </StyledTableBody>
-            </Table>
-          )}
-        </StyledDialogContent>
-        <DialogActions>
-          <ColorButton onClick={() => setOpen(0)} variant='text' variantColor='green'>
-            Xong
-          </ColorButton>
-        </DialogActions>
-      </Dialog>
+              ))}
+            </StyledTableBody>
+          </Table>
+        )}
+      </CustomModal>
       <TitleCreateAndUpdateModal updatedPosition={updatedPosition} open={openCAU !== 0} setOpen={setOpenCAU} />
     </React.Fragment>
   )

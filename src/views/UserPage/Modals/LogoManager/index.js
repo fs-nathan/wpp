@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { 
-  Fade, Dialog, DialogTitle, DialogContent, 
-  DialogActions, Avatar, ButtonBase, IconButton,
+  Avatar, ButtonBase,
 } from '@material-ui/core';
-import Icon from '@mdi/react';
-import { mdiClose } from '@mdi/js'; 
 import ColorButton from '../../../../components/ColorButton';
+import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -18,25 +16,6 @@ import { createIcon } from '../../../../actions/icon/createIcon';
 import { deleteIcon } from '../../../../actions/icon/deleteIcon';
 import _ from 'lodash';
 import { CustomEventListener, CustomEventDispose, CREATE_ICON, DELETE_ICON } from '../../../../constants/events';
-
-const StyledDialogContent = styled(DialogContent)`
-  & > *:not(:last-child) {
-    margin-bottom: 8px;
-  }
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > input[type=file] {
-    display: none;
-  }
-`;
-
-const StyledDialogTitle = styled(DialogTitle)`
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > h2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
 
 const LogoList = styled(({ cols, ...rest }) => <div {...rest} />)`
   display: grid;
@@ -65,10 +44,6 @@ const LogoBox = styled(({ isSelected, ...rest }) => <div {...rest} />)`
     }
   }
 `;
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Fade direction='down' ref={ref} {...props} />;
-}); 
 
 function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreateIcon, deleteIcon, doDeleteIcon, onSelectIcon = (icon_url) => null }) {
 
@@ -103,14 +78,16 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
   }
 
   function handleDeleteIcon(icon) {
-    function deleteIconHandler() {
-      setIcons(_.filter(icons, _icon => _.get(_icon, 'id') !== _.get(icon, 'id')));
-      CustomEventDispose(DELETE_ICON, deleteIconHandler);
+    if (window.confirm('Bạn chắc chắn muốn xóa biểu tượng?'))  {  
+      function deleteIconHandler() {
+        setIcons(_.filter(icons, _icon => _.get(_icon, 'id') !== _.get(icon, 'id')));
+        CustomEventDispose(DELETE_ICON, deleteIconHandler);
+      }
+      CustomEventListener(DELETE_ICON, deleteIconHandler);
+      doDeleteIcon({
+        iconId: _.get(icon, 'id'),
+      });
     }
-    CustomEventListener(DELETE_ICON, deleteIconHandler);
-    doDeleteIcon({
-      iconId: _.get(icon, 'id'),
-    });
   }
 
   function handleUploadIcon(evt) {
@@ -121,22 +98,13 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
   }
 
   return (
-    <Dialog
-      maxWidth='sm'
-      fullWidth
+    <CustomModal
       open={open}
-      TransitionComponent={Transition}
-      onClose={() => setOpen(false)}
-      aria-labelledby="alert-dialog-slide-title"
+      setOpen={setOpen}
+      title='Quản lý biểu tượng'
+      onConfirm={() => selectIcon(selectedIcon)}
     >
-      <StyledDialogTitle id="alert-dialog-slide-title">
-        <ColorTypo uppercase>Quản lý biểu tượng</ColorTypo>
-        <IconButton onClick={() => setOpen(false)}>
-          <Icon path={mdiClose} size={1} />
-        </IconButton>
-      </StyledDialogTitle>
-      <StyledDialogContent>
-        {listIconLoading && <LoadingBox />}
+      {listIconLoading && <LoadingBox />}
         {error !== null && <ErrorBox />}
         {!listIconLoading && error === null && (
           <React.Fragment>
@@ -179,13 +147,7 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
             </ColorButton>
           </React.Fragment>
         )}
-      </StyledDialogContent>
-      <DialogActions>
-        <ColorButton onClick={() => selectIcon(selectedIcon)} variant='text' variantColor='green'>
-          Hoàn thành
-        </ColorButton>
-      </DialogActions>
-    </Dialog>
+    </CustomModal>
   )
 }
 

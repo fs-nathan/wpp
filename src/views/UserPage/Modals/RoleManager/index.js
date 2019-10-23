@@ -1,15 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { 
-  Fade, Dialog, DialogTitle, DialogContent, 
-  DialogActions, IconButton, TableCell,
-  Table, TableHead, TableBody, TableRow,
+  TableCell, Table, TableHead, TableBody, TableRow,
 } from '@material-ui/core';
-import Icon from '@mdi/react';
-import { mdiClose } from '@mdi/js'; 
 import ColorButton from '../../../../components/ColorButton';
-import ColorTypo from '../../../../components/ColorTypo';
-import ColorChip from '../../../../components/ColorChip';
+import CustomModal from '../../../../components/CustomModal';
+import PillButton from '../../../../components/PillButton';
+import colorPal from '../../../../helpers/colorPalette';
 import RoleCreateAndUpdateModal from './RoleCreateAndUpdate';
 import { listUserRole } from '../../../../actions/userRole/listUserRole';
 import { deleteUserRole } from '../../../../actions/userRole/deleteUserRole';
@@ -19,21 +16,6 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import _ from 'lodash';
 
-const StyledDialogContent = styled(DialogContent)`
-  & > *:not(:last-child) {
-    margin-bottom: 8px;
-  }
-`;
-
-const StyledDialogTitle = styled(DialogTitle)`
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > h2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
-
 const StyledTableHead = styled(TableHead)` 
   background-color: #eee; 
   & * {
@@ -42,6 +24,9 @@ const StyledTableHead = styled(TableHead)`
 `;
 
 const StyledTableBody = styled(TableBody)`
+  && > *:last-child {
+    border-bottom: none;
+  }
 `;
 
 const TableCellChipsWrapper = styled(TableCell)`
@@ -53,10 +38,6 @@ const TableCellChipsWrapper = styled(TableCell)`
     }
   }
 `;
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Fade direction='down' ref={ref} {...props} />;
-}); 
 
 function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRole, doDeleteUserRole }) {
 
@@ -93,68 +74,68 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
   }
 
   function handleDeleteUserRole(userRole) {
-    doDeleteUserRole({
-      userRoleId: _.get(userRole, 'id'),
-    });
+    if (window.confirm('Bạn chắc chắn muốn xóa vai trò?')) {
+      doDeleteUserRole({
+        userRoleId: _.get(userRole, 'id'),
+      });
+    }
   }
 
   return (
     <React.Fragment>
-      <Dialog
-        maxWidth='sm'
-        fullWidth
+      <CustomModal
         open={open}
-        TransitionComponent={Transition}
-        onClose={() => setOpen(0)}
-        aria-labelledby="alert-dialog-slide-title"
+        setOpen={setOpen}
+        title='Quản lý vai trò'
       >
-        <StyledDialogTitle id="alert-dialog-slide-title">
-          <ColorTypo uppercase>Quản lý vai trò</ColorTypo>
-          <IconButton onClick={() => setOpen(0)}>
-            <Icon path={mdiClose} size={1} />
-          </IconButton>
-        </StyledDialogTitle>
-        <StyledDialogContent>
-          {loading && <LoadingBox />}
-          {error !== null && <ErrorBox />}
-          {!loading && error === null && (
-            <Table>
-              <StyledTableHead>
-                <TableRow>
-                  <TableCell>Tên vai trò</TableCell>
-                  <TableCell>Mô tả</TableCell>
-                  <TableCell>
-                    <ColorButton variantColor='orange' size='small' variant='contained'
-                      onClick={() => handleSelectedUserRole(null)}
-                    >
-                      + Thêm mới
-                    </ColorButton>
-                  </TableCell>
+        {loading && <LoadingBox />}
+        {error !== null && <ErrorBox />}
+        {!loading && error === null && (
+          <Table>
+            <StyledTableHead>
+              <TableRow>
+                <TableCell>Tên vai trò</TableCell>
+                <TableCell>Mô tả</TableCell>
+                <TableCell>
+                  <ColorButton variantColor='orange' size='small' variant='contained'
+                    onClick={() => handleSelectedUserRole(null)}
+                  >
+                    + Thêm mới
+                  </ColorButton>
+                </TableCell>
+              </TableRow>
+            </StyledTableHead>
+            <StyledTableBody>
+              {userRoles.map(userRole => (
+                <TableRow key={_.get(userRole, 'id')}>
+                  <TableCell>{_.get(userRole, 'name', '')}</TableCell>
+                  <TableCell>{_.get(userRole, 'description', '')}</TableCell>
+                  <TableCellChipsWrapper>
+                    <div>
+                      <PillButton 
+                        onClick={() => handleSelectedUserRole(userRole)}
+                        background={colorPal['green'][0]}
+                        text={colorPal['green'][1]}
+                        size='small' 
+                      >
+                        Sửa
+                      </PillButton>
+                      <PillButton 
+                        onClick={() => handleDeleteUserRole(userRole)}
+                        background={colorPal['red'][0]}
+                        text={colorPal['red'][1]}
+                        size='small' 
+                      >
+                        Xóa
+                      </PillButton>
+                    </div>
+                  </TableCellChipsWrapper>
                 </TableRow>
-              </StyledTableHead>
-              <StyledTableBody>
-                {userRoles.map(userRole => (
-                  <TableRow key={_.get(userRole, 'id')}>
-                    <TableCell>{_.get(userRole, 'name', '')}</TableCell>
-                    <TableCell>{_.get(userRole, 'description', '')}</TableCell>
-                    <TableCellChipsWrapper>
-                      <div>
-                        <ColorChip onClick={() => handleSelectedUserRole(userRole)} label='Sửa' color='green' size='small' badge />
-                        <ColorChip onClick={() => handleDeleteUserRole(userRole)} label='Xóa' color='red' size='small' badge />
-                      </div>
-                    </TableCellChipsWrapper>
-                  </TableRow>
-                ))}
-              </StyledTableBody>
-            </Table>
-          )}
-        </StyledDialogContent>
-        <DialogActions>
-          <ColorButton onClick={() => setOpen(0)} variant='text' variantColor='green'>
-            Xong
-          </ColorButton>
-        </DialogActions>
-      </Dialog>
+              ))}
+            </StyledTableBody>
+          </Table>
+        )}
+      </CustomModal>
       <RoleCreateAndUpdateModal updatedUserRole={updatedUserRole} open={openCAU !== 0} setOpen={setOpenCAU} />
     </React.Fragment>
   )

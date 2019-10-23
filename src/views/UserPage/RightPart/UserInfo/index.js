@@ -6,8 +6,8 @@ import { Avatar, ListItem, List, ListItemText, IconButton } from '@material-ui/c
 import avatar from '../../../../assets/avatar.jpg';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
-import ColorChip from '../../../../components/ColorChip';
 import ColorButton from '../../../../components/ColorButton';
+import PillButton from '../../../../components/PillButton';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import UserDocumentModal from '../../Modals/UserDocument';
@@ -23,7 +23,7 @@ import {
 import { CustomEventListener, CustomEventDispose, UPLOAD_DOCUMENTS_USER, UPDATE_USER } from '../../../../constants/events';
 
 const Container = styled.div`
-  height: 100%;
+  min-height: 100%;
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: minmax(450px, 3fr) minmax(350px, 2fr);
@@ -161,7 +161,12 @@ function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocum
                 <ColorTypo color='green' bold variant='h6'>{_.get(user, 'name', '')}</ColorTypo>
                 <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {_.get(user, 'date_join', '')}</ColorTypo>
               </div>
-              <ColorChip color='gray' onClick={() => setOpenUpdateModal(true)} label={t('views.user_page.right_part.user_info.modify_info')}/>
+              <PillButton 
+                size='medium'
+                onClick={() => setOpenUpdateModal(true)}
+              >
+                {t('views.user_page.right_part.user_info.modify_info')}
+              </PillButton>
             </MainHeader>
             <MainList>
               <StyledListItem>

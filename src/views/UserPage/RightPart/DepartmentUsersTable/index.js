@@ -1,156 +1,336 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import { Avatar, IconButton, Menu, MenuItem,  } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
-  mdiPlus,
+  mdiAccountPlus,
+  mdiDotsVertical,
 } from '@mdi/js';
-import ColorTypo from '../../../../components/ColorTypo';
-import HeaderButtonGroup from './HeaderButtonGroup';
-import ColorButton from '../../../../components/ColorButton';
-import TableMain from './TableMain';
+import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { detailRoom } from '../../../../actions/room/detailRoom';
+import { getUserOfRoom } from '../../../../actions/room/getUserOfRoom';
+import { sortUser } from '../../../../actions/user/sortUser';
+import { publicMember } from '../../../../actions/user/publicMember';
+import { privateMember } from '../../../../actions/user/privateMember';
+import { banUserFromGroup } from '../../../../actions/user/banUserFromGroup';
 import { connect } from 'react-redux';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
-import _ from 'lodash';
-import { useParams } from 'react-router-dom';
+import CustomTable from '../../../../components/CustomTable';
+import CustomBadge from '../../../../components/CustomBadge';
+import { get } from 'lodash';
+import TitleManagerModal from '../../Modals/TitleManager';
+import RoleManagerModal from '../../Modals/RoleManager';
+import LogoManagerModal from '../../Modals/LogoManager';
+import TableSettingsModal from '../../Modals/TableSettings';
+import PermissionSettingsModal from '../../Modals/PermissionSettings';
+import { 
+  CustomEventListener, CustomEventDispose, 
+  SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP,
+} from '../../../../constants/events';
 
 const Container = styled.div`
   grid-area: right;
+  min-height: 100%;
 `;
 
-const Header = styled.div`
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0px;
-  background-color: #fff;
-  z-index: 10;
-`;
+const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
 
-const RightHeader = styled.div`
-  margin-left: auto;
-  & > *:last-child {
-    margin-left: 20px;
+  const [state, setState] = React.useState(get(user, 'state', 0));
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+
+  function handleClick(evt) {
+    setAnchorEl(evt.currentTarget);
   }
-`;
 
-function DefaultUserTable({ expand, handleExpand, handleSubSlide }) {
+  function handleClose(openModal = false) {
+    return evt => {
+      setOpen(openModal);
+      setAnchorEl(null);
+    }
+  }
 
-  const [searchPatern, setSearchPatern] = React.useState('');
+  function changeState(user) {
+    if (state === 0) {
+      handleChangeState({
+        state: 1,
+      });
+      setState(1);
+      doPublicMember({
+        userId: get(user, 'id'),
+      });
+    } else {
+      handleChangeState({
+        state: 0,
+      });
+      setState(0);
+      doPrivateMember({
+        userId: get(user, 'id'),
+      });
+    }
+    setAnchorEl(null);
+  }
+
+  function handleLeaveGroup(user) {
+    if (window.confirm('Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?')) {
+      doBanUserFromGroup({
+        userId: get(user, 'id'),
+      });
+      setAnchorEl(null);
+    }
+  }
 
   return (
-    <Container>
-      <Header>
-        <div>
-          <ColorTypo color='green' uppercase>
-            &#9733; Mặc định
-          </ColorTypo>
-        </div>
-        <RightHeader>
-          <HeaderButtonGroup 
-            handleSearchChange={newSearchPatern => setSearchPatern(newSearchPatern)}
-            expand={expand}
-            handleExpand={handleExpand}
-            handleSubSlide={handleSubSlide}
-          />
-          <ColorButton 
-            size='small'
-            variantColor='orange' 
-            variant='contained'
-            startIcon={
-              <Icon path={mdiPlus} size={0.8} color={'#fff'} />
-            }
-          >
-            Tạo tài khoản
-          </ColorButton>
-        </RightHeader> 
-      </Header>
-      <TableMain searchPatern={searchPatern} />
-    </Container>
+    <div onClick={evt => evt.stopPropagation()}>
+      <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} size='small'>
+        <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose()}
+        transformOrigin={{
+          vertical: -30,
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={evt => changeState(user)}>Chuyển trạng thái</MenuItem>
+        <MenuItem onClick={handleClose(true)}>Phân quyền</MenuItem>
+        <MenuItem onClick={evt => handleLeaveGroup(user)}>Rời nhóm</MenuItem>
+      </Menu>
+      <PermissionSettingsModal open={open} setOpen={setOpen} />
+    </div>
   );
 }
 
-function NormalUserTable({ detailRoom, doDetailRoom, expand, handleExpand, handleSubSlide  }) {
+function StateBadge({ row, stateObj }) {
+  const [stateOfRow, setStateOfRow] = React.useState(stateObj[get(row, 'id')]);
+  
+  React.useEffect(() => {
+    setStateOfRow(stateObj[get(row, 'id')]);
+  }, [row, stateObj]);
 
-  const { t } = useTranslation();
+  if (get(stateOfRow, 'state', 0) === 0) {
+    return (
+      <CustomBadge color='#ec1000'>
+        Hạn chế
+      </CustomBadge>
+    )
+  } else {
+    return (
+      <CustomBadge color='#48bb78'>
+        Công khai
+      </CustomBadge>
+    )
+  }
+}
+
+function DepartmentUsersTable({ 
+  detailRoom, doDetailRoom,
+  getUserOfRoom, doGetUserOfRoom,
+  sortUser, doSortUser,
+  expand, handleExpand, handleSubSlide,
+  doPublicMember, doPrivateMember,
+  doBanUserFromGroup, 
+}) {
+
   const { departmentId } = useParams();
-  const [searchPatern, setSearchPatern] = React.useState('');
-  const { data: { room }, loading, error } = detailRoom;
+  const location = useLocation();
+  const history = useHistory();
+
+  const { data: { room }, loading: detailRoomLoading, error: detailRoomError } = detailRoom;
+  const { data: { users }, loading: getUserOfRoomLoading, error: getUserOfRoomError } = getUserOfRoom;
+  const { loading: sortUserLoading, error: sortUserError } = sortUser;
+
+  const loading = detailRoomLoading || sortUserLoading || getUserOfRoomLoading;
+  const error = detailRoomError || sortUserError || getUserOfRoomError;
+  const [moreModal, setMoreModal] = React.useState(0);
+
+  const [stateObj, setStateObj] = React.useState({});
 
   React.useEffect(() => {
+    if (departmentId !== 'default')
     doDetailRoom({
       roomId: departmentId,
     });
   }, [doDetailRoom, departmentId]);
 
+  React.useEffect(() => {
+    doGetUserOfRoom({
+      roomId: departmentId,
+    });
+  }, [doGetUserOfRoom, departmentId]);
+
+  React.useEffect(() => {
+    const { data: { users } } = getUserOfRoom;
+    let _stateObj = {};
+    users.forEach(user => {
+      _stateObj[get(user, 'id')] = {
+        state: get(user, 'state'),
+      };
+    });
+    setStateObj(_stateObj);
+  }, [getUserOfRoom]);
+
+  function handleChangeState(userId) {
+    return (options) => {
+      let _stateObj = { ...stateObj };
+      _stateObj[userId] = {
+        ..._stateObj[userId],
+        ...options,
+      }
+      setStateObj(_stateObj);
+    }
+  }
+
+  React.useEffect(() => {
+    const doGetUserOfRoomHandler = () => {
+      doGetUserOfRoom({
+        roomId: departmentId,
+      });
+    };
+    
+    CustomEventListener(SORT_USER, doGetUserOfRoomHandler);
+    CustomEventListener(INVITE_USER_JOIN_GROUP, doGetUserOfRoomHandler);
+    CustomEventListener(BAN_USER_FROM_GROUP, doGetUserOfRoomHandler);
+
+    return () => {
+      CustomEventDispose(SORT_USER, doGetUserOfRoomHandler);
+      CustomEventDispose(INVITE_USER_JOIN_GROUP, doGetUserOfRoomHandler);
+      CustomEventDispose(BAN_USER_FROM_GROUP, doGetUserOfRoomHandler)
+    }
+  }, [doGetUserOfRoom, departmentId]);
+
   return (
     <Container>
-      <Header>
       {loading && <LoadingBox />}
       {error !== null && <ErrorBox />}
       {!loading && error === null && (
-        <React.Fragment>
-          <div>
-            <ColorTypo color='green' uppercase>
-              &#9733; {_.get(room, 'name', '')}
-            </ColorTypo>
-            <ColorTypo variant='caption'>
-              {t('views.user_page.right_part.users_table.total_user_count', { user_count: _.get(room, 'number_member', 0) })}
-            </ColorTypo>
-          </div>
-          <RightHeader>
-            <HeaderButtonGroup 
-              handleSearchChange={newSearchPatern => setSearchPatern(newSearchPatern)}
-              expand={expand}
-              handleExpand={handleExpand}
-              handleSubSlide={handleSubSlide}
-            />
-            <ColorButton 
-              size='small'
-              variantColor='orange' 
-              variant='contained'
-              startIcon={
-                <Icon path={mdiPlus} size={0.8} color={'#fff'} />
-              }
-            >
-              Tạo tài khoản
-            </ColorButton>
-          </RightHeader> 
-        </React.Fragment>
+        <CustomTable
+          options={{
+            title: `${ departmentId === 'default' ? 'Mặc định' : get(room, 'name', '') }`,
+            subTitle: `${ departmentId === 'default' ? '' : `Đã có ${get(room, 'number_member', 0)} thành viên`}`,
+            subActions: [{
+              label: 'Thêm thành viên',
+              iconPath: mdiAccountPlus,
+              onClick: () => handleSubSlide(true),
+            }],
+            mainAction: {
+              label: '+ Thêm tài khoản',
+              onClick: null,  
+            },
+            expand: {
+              bool: expand,
+              toggleExpand: () => handleExpand(!expand),
+            },
+            moreMenu: [{
+              label: 'Quản lý chức danh',
+              onClick: () => setMoreModal(1),
+            }, {
+              label: 'Quản lý vai trò',
+              onClick: () => setMoreModal(2),
+            }, {
+              label: 'Quản lý biểu tượng',
+              onClick: () => setMoreModal(3),
+            }, {
+              label: 'Cài đặt bảng',
+              onClick: () => setMoreModal(4),
+            }],
+            grouped: {
+              bool: false,
+            },
+            row: {
+              id: 'id',
+              onClick: (row) => history.push(`${location.pathname}/nguoi-dung/${get(row, 'id', '')}`),
+            },
+            draggable: {
+              bool: true,
+              onDragEnd: result => {
+                const { source, destination, draggableId } = result;
+                if (!destination) return;
+                if (
+                  destination.droppableId === source.droppableId &&
+                  destination.index === source.index
+                ) return;
+                doSortUser({
+                  userId: draggableId,
+                  roomId: destination.droppableId,
+                  sortIndex: destination.index,
+                });
+              }, 
+            }
+          }}
+          columns={[{
+            label: '',
+            field: (row) => <Avatar src={get(row, 'avatar')} alt='avatar' />,
+          }, {
+            label: 'Họ và tên',
+            field: 'name',
+          }, {
+            label: 'Chức danh',
+            field: 'position',
+          }, {
+            label: 'Ngày sinh',
+            field: (row) =>(new Date(get(row, 'birthday', 0))).toLocaleDateString(),
+          }, {
+            label: 'Giới tính',
+            field: 'gender',
+          }, {
+            label: 'Email',
+            field: 'email',
+          }, {
+            label: 'Điện thoại',
+            field: 'phone',
+          }, {
+            label: 'Vai trò',
+            field: 'role',
+          }, {
+            label: 'Trạng thái',
+            field: (row) => <StateBadge row={row} stateObj={stateObj} />,
+          }, {
+            label: '',
+            field: (row) => <PermissionButton 
+                              user={row} 
+                              handleChangeState={handleChangeState(get(row, 'id'))} 
+                              doPublicMember={doPublicMember}
+                              doPrivateMember={doPrivateMember}
+                              doBanUserFromGroup={doBanUserFromGroup}
+                            />,
+          }]}
+          data={users}
+        />
       )}
-      </Header>
-      <TableMain searchPatern={searchPatern} />
+      <TitleManagerModal open={moreModal === 1} setOpen={setMoreModal} />
+      <RoleManagerModal open={moreModal === 2} setOpen={setMoreModal} />
+      <LogoManagerModal open={moreModal === 3} setOpen={setMoreModal} />
+      <TableSettingsModal open={moreModal === 4} setOpen={setMoreModal} />
     </Container>
   )
-}
-
-function DepartmentUserTable({ ...rest }) {
-  const { departmentId } = useParams();
-
-  if (departmentId === 'default') {
-    return <DefaultUserTable { ...rest }/>
-  } else {
-    return <NormalUserTable {...rest} />
-  }
 }
 
 const mapStateToProps = state => {
   return {
     detailRoom: state.room.detailRoom,
+    getUserOfRoom: state.room.getUserOfRoom,
+    sortUser: state.user.sortUser,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     doDetailRoom: ({ roomId }) => dispatch(detailRoom({ roomId })),
+    doGetUserOfRoom: ({ roomId }) => dispatch(getUserOfRoom({ roomId })),
+    doSortUser: ({ roomId, userId, sortIndex }) => dispatch(sortUser({ roomId, userId, sortIndex })),
+    doPublicMember: ({ userId }) => dispatch(publicMember({ userId })),
+    doPrivateMember: ({ userId }) => dispatch(privateMember({ userId })),
+    doBanUserFromGroup: ({ userId }) => dispatch(banUserFromGroup({ userId })),
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DepartmentUserTable);
+)(DepartmentUsersTable);

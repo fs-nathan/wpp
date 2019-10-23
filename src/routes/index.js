@@ -7,6 +7,8 @@ import DocumentPage from '../views/DocumentPage';
 import JobPage from '../views/JobPage';
 import JobDetailPage from '../views/JobDetailPage';
 
+import TestPage from '../__test__';
+
 const routes = [
   {
     path: "/",
@@ -19,7 +21,6 @@ const routes = [
   },
   {
     path: "/thanh-vien",
-
     component: () => <UserPage />,
   },
   {
@@ -37,6 +38,10 @@ const routes = [
   {
     path: "/chi-tiet-cong-viec",
     component: () => <JobDetailPage />,
+  },
+  {
+    path: "/__test__",
+    component: () => <TestPage />,
   },
   {
     path: "",
