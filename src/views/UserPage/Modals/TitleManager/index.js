@@ -14,6 +14,7 @@ import { CustomEventListener, CustomEventDispose, CREATE_POSITION, UPDATE_POSITI
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import CustomModal from '../../../../components/CustomModal';
+import AlertModal from '../../../../components/AlertModal';
 import _ from 'lodash';
 
 const StyledTableHead = styled(TableHead)` 
@@ -44,6 +45,8 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
   const loading = listPositionLoading || deletePositionLoading;
   const error = listPositionError || deletePositionError;
   const [updatedPosition, setUpdatedPosition] = React.useState(null);
+  const [alert, setAlert] = React.useState(false);
+  const [delPos, setDelPos] = React.useState();
 
   React.useEffect(() => {
     doListPosition();
@@ -71,11 +74,9 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
   }
 
   function handleDeletePosition(position) {
-    if (window.confirm('Bạn chắc chắn muốn xóa vị trí?')) {
-      doDeletePosition({
-        positionId: _.get(position, 'id'),
-      });
-    }
+    doDeletePosition({
+      positionId: _.get(position, 'id'),
+    });
   }
 
   return (
@@ -119,7 +120,10 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
                         Sửa
                       </PillButton>
                       <PillButton 
-                        onClick={() => handleDeletePosition(position)}
+                        onClick={() => {
+                          setDelPos(position)
+                          setAlert(true)
+                        }}
                         background={colorPal['red'][0]}
                         text={colorPal['red'][1]}
                         size='small' 
@@ -135,6 +139,12 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
         )}
       </CustomModal>
       <TitleCreateAndUpdateModal updatedPosition={updatedPosition} open={openCAU !== 0} setOpen={setOpenCAU} />
+      <AlertModal 
+        open={alert}
+        setOpen={setAlert}
+        content='Bạn chắc chắn muốn xóa vị trí?'
+        onConfirm={() => handleDeletePosition(delPos)}
+      />
     </React.Fragment>
   )
 }

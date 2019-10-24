@@ -63,7 +63,7 @@ function UserPage() {
                 />
               } 
               exact />
-            <Route path={`${url}/thong-tin/:departmentId/nguoi-dung/:userId`} component={UserList} />
+            <Route path={`${url}/nguoi-dung/:userId`} component={UserList} />
           </LeftDiv>
         )}
       />
@@ -93,7 +93,7 @@ function UserPage() {
               }
               exact 
             />
-            <Route path={`${url}/thong-tin/:departmentId/nguoi-dung/:userId`} 
+            <Route path={`${url}/nguoi-dung/:userId`} 
               render={props => 
                 <UserInfo 
                   {...props} 

@@ -34,7 +34,7 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
   const loading = listRoomLoading || sortRoomLoading;
   const error = listRoomError || sortRoomError;
 
-  const rooms = _.filter(_rooms, room => _.get(room, 'name', '').includes(searchPatern));
+  const rooms = _.filter(_rooms, room => _.get(room, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()));
 
   React.useEffect(() => {
     doListRoom();
@@ -89,7 +89,7 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
               <Banner>
                 <SearchInput 
                   fullWidth 
-                  placeholder='Tìm Phòng/Ban/Nhóm'
+                  placeholder='Tìm bộ phận'
                   value={searchPatern}
                   onChange={evt => setSearchPatern(evt.target.value)}
                 />  

@@ -6,6 +6,7 @@ import {
 import ColorButton from '../../../../components/ColorButton';
 import CustomModal from '../../../../components/CustomModal';
 import PillButton from '../../../../components/PillButton';
+import AlertModal from '../../../../components/AlertModal';
 import colorPal from '../../../../helpers/colorPalette';
 import RoleCreateAndUpdateModal from './RoleCreateAndUpdate';
 import { listUserRole } from '../../../../actions/userRole/listUserRole';
@@ -47,6 +48,8 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
   const error = listUserRoleError || deleteUserRoleError;
   const [openCAU, setOpenCAU] = React.useState(0);
   const [updatedUserRole, setUpdatedUserRole] = React.useState(null);
+  const [alert, setAlert] = React.useState(false);
+  const [delUserRole, setDelUserRole] = React.useState();
 
   React.useEffect(() => {
     doListUserRole();
@@ -74,11 +77,9 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
   }
 
   function handleDeleteUserRole(userRole) {
-    if (window.confirm('Bạn chắc chắn muốn xóa vai trò?')) {
-      doDeleteUserRole({
-        userRoleId: _.get(userRole, 'id'),
-      });
-    }
+    doDeleteUserRole({
+      userRoleId: _.get(userRole, 'id'),
+    });
   }
 
   return (
@@ -121,7 +122,10 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
                         Sửa
                       </PillButton>
                       <PillButton 
-                        onClick={() => handleDeleteUserRole(userRole)}
+                        onClick={() => {
+                          setDelUserRole(userRole)
+                          setAlert(true)
+                        }}
                         background={colorPal['red'][0]}
                         text={colorPal['red'][1]}
                         size='small' 
@@ -137,6 +141,12 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
         )}
       </CustomModal>
       <RoleCreateAndUpdateModal updatedUserRole={updatedUserRole} open={openCAU !== 0} setOpen={setOpenCAU} />
+      <AlertModal 
+        open={alert}
+        setOpen={setAlert}
+        content='Bạn chắc chắn muốn xóa vai trò?'
+        onConfirm={() => handleDeleteUserRole(delUserRole)}
+      />
     </React.Fragment>
   )
 }

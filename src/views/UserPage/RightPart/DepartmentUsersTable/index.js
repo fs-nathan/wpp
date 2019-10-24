@@ -18,6 +18,7 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import CustomTable from '../../../../components/CustomTable';
 import CustomBadge from '../../../../components/CustomBadge';
+import AlertModal from '../../../../components/AlertModal';
 import { get } from 'lodash';
 import TitleManagerModal from '../../Modals/TitleManager';
 import RoleManagerModal from '../../Modals/RoleManager';
@@ -39,6 +40,7 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
   const [state, setState] = React.useState(get(user, 'state', 0));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget);
@@ -73,12 +75,10 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
   }
 
   function handleLeaveGroup(user) {
-    if (window.confirm('Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?')) {
-      doBanUserFromGroup({
-        userId: get(user, 'id'),
-      });
-      setAnchorEl(null);
-    }
+    doBanUserFromGroup({
+      userId: get(user, 'id'),
+    });
+    setAnchorEl(null);
   }
 
   return (
@@ -99,9 +99,15 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
       >
         <MenuItem onClick={evt => changeState(user)}>Chuyển trạng thái</MenuItem>
         <MenuItem onClick={handleClose(true)}>Phân quyền</MenuItem>
-        <MenuItem onClick={evt => handleLeaveGroup(user)}>Rời nhóm</MenuItem>
+        <MenuItem onClick={evt => setAlert(true)}>Rời nhóm</MenuItem>
       </Menu>
       <PermissionSettingsModal open={open} setOpen={setOpen} />
+      <AlertModal 
+        open={alert}
+        setOpen={setAlert}
+        content='Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?'
+        onConfirm={() => handleLeaveGroup(user)}
+      />
     </div>
   );
 }
@@ -244,7 +250,7 @@ function DepartmentUsersTable({
             },
             row: {
               id: 'id',
-              onClick: (row) => history.push(`${location.pathname}/nguoi-dung/${get(row, 'id', '')}`),
+              onClick: (row) => history.push(`${location.pathname.replace(`/thong-tin/${departmentId}`, '')}/nguoi-dung/${get(row, 'id', '')}`),
             },
             draggable: {
               bool: true,

@@ -15,7 +15,7 @@ function CustomListItem({ user, index }) {
 
   return (
     <Draggable 
-      draggableId={_.get(user, 'id', '')}
+      draggableId={_.get(user, 'id')}
       index={index}  
     >
       {(provided) => (
@@ -36,7 +36,7 @@ function CustomListItem({ user, index }) {
               <Primary>{_.get(user, 'name', '')}</Primary>  
             }
             secondary={
-              <Secondary>{_.get(user, 'room', '')}</Secondary>
+              <Secondary></Secondary>
             }
           />
         </StyledListItem>

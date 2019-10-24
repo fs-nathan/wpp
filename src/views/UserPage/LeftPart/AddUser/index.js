@@ -159,6 +159,10 @@ function RequestingUserList() {
   );
 }
 
+const StyledSearchInput = styled(SearchInput)`
+  width: 80%;
+`;
+
 function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInviteUserJoinGroup, handleSubSlide }) {
 
   const { data: { data }, loading: searchUserLoading, error: searchUserError } = searchUser;
@@ -193,15 +197,15 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
           Mời thành viên tham gia nhóm
         </ColorTypo>
         <div> 
-          <SearchInput 
-            placeholder='Tìm thành viên'
+          <StyledSearchInput 
+            placeholder='Tìm kiếm thành viên'
             value={searchPatern}
             onChange={evt => setSearchPatern(evt.target.value)}
           />
           <PillButton 
             size='medium'
-            background={colorPal['gray'][0]}
-            text={colorPal['gray'][1]}
+            background={'#eee'}
+            text={'#333'}
             onClick={() => {
               if (searchPatern !== '') {
                 doSearchUser({ info: searchPatern });

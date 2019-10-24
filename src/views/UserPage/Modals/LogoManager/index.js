@@ -8,6 +8,7 @@ import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
+import AlertModal from '../../../../components/AlertModal';
 import colorPal from '../../../../helpers/colorPalette';
 import avatar from '../../../../assets/avatar.jpg';
 import { connect } from 'react-redux';
@@ -52,7 +53,9 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
   const { error: createIconError, loading: createIconLoading } = createIcon;
   const error = listIconError || deleteIconError;
   const [selectedIcon, setSelectedIcon] = React.useState(_icons[0]);
+  const [delIcon, setDelIcon] = React.useState(null);
   const [icons, setIcons] = React.useState(_icons);
+  const [alert, setAlert] = React.useState(false);
 
   React.useEffect(() => {
     setIcons(_icons);
@@ -78,16 +81,14 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
   }
 
   function handleDeleteIcon(icon) {
-    if (window.confirm('Bạn chắc chắn muốn xóa biểu tượng?'))  {  
-      function deleteIconHandler() {
-        setIcons(_.filter(icons, _icon => _.get(_icon, 'id') !== _.get(icon, 'id')));
-        CustomEventDispose(DELETE_ICON, deleteIconHandler);
-      }
-      CustomEventListener(DELETE_ICON, deleteIconHandler);
-      doDeleteIcon({
-        iconId: _.get(icon, 'id'),
-      });
+    function deleteIconHandler() {
+      setIcons(_.filter(icons, _icon => _.get(_icon, 'id') !== _.get(icon, 'id')));
+      CustomEventDispose(DELETE_ICON, deleteIconHandler);
     }
+    CustomEventListener(DELETE_ICON, deleteIconHandler);
+    doDeleteIcon({
+      iconId: _.get(icon, 'id'),
+    });
   }
 
   function handleUploadIcon(evt) {
@@ -126,11 +127,14 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
                     <Avatar src={_.get(icon, 'url_full')} alt='avatar' />
                   </ButtonBase>
                   <ColorButton fullWidth variant='text' size='small' variantColor='red'
-                    onClick={() => handleDeleteIcon(icon)}
+                    onClick={() => {
+                      setDelIcon(icon);
+                      setAlert(true);
+                    }}
                   >
                     {deleteIconLoading && <LoadingBox size={8} />}
                     {!deleteIconLoading && 'Xóa'}
-                  </ColorButton>
+                  </ColorButton>      
                 </LogoBox>
               ))}
             </LogoList>
@@ -145,6 +149,12 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
               {createIconError !== null && 'Xảy ra lỗi'}
               {!createIconLoading && createIconError === null && `+ Tải biểu tượng`}
             </ColorButton>
+            <AlertModal 
+              open={alert}
+              setOpen={setAlert}
+              content='Bạn chắc chắn muốn xóa biểu tượng?'
+              onConfirm={() => handleDeleteIcon(delIcon)}
+            />
           </React.Fragment>
         )}
     </CustomModal>

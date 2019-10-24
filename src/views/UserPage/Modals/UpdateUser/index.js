@@ -18,6 +18,7 @@ import _ from 'lodash';
 
 const StyledFormControl = styled(FormControl)`
   min-width: 300px;
+  max-width: 100%;
 `;
 
 function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMajor, listLevel, doListRoom, doListPosition, doListMajor, doListLevel, updateUser, doUpdateUser }) {

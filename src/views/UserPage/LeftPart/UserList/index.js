@@ -4,50 +4,61 @@ import { useLocation, useParams, useHistory } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import SearchInput from '../../../../components/SearchInput';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
-import { StyledList } from '../../../../components/CustomList';
+import { StyledList, StyledListItem } from '../../../../components/CustomList';
 import { mdiChevronLeft } from '@mdi/js';
 import CustomListItem from './CustomListItem';
-import { getUserOfRoom } from '../../../../actions/room/getUserOfRoom';
+import { listUserOfGroup } from '../../../../actions/user/listUserOfGroup';
 import { connect } from 'react-redux';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import { sortUser } from '../../../../actions/user/sortUser';
 import { CustomEventListener, CustomEventDispose, SORT_USER, UPDATE_USER } from '../../../../constants/events';
-import _ from 'lodash';
+import { get } from 'lodash';
 
 const Banner = styled.div`
   padding: 15px;
 `;
 
-function UserList({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser }) {
+const CustomStyledList = styled(StyledList)`
+  && {
+    padding: 0;
+  }
+  && > li:hover {
+    background: rgba(0, 0, 0, 0);
+  }
+  &&:nth-child(2) {
+    padding: 8px 0;
+  }
+`;
 
-  const { data: { users: _users }, loading: getUserOfRoomLoading, error: getUserOfRoomError } = getUserOfRoom;
+function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, }) {
+  
+  const { data: { rooms }, loading: listUserOfGroupLoading, error: listUserOfGroupError } = listUserOfGroup;
   const { loading: sortUserLoading, error: sortUserError } = sortUser;
-  const loading = getUserOfRoomLoading || sortUserLoading;
-  const error = getUserOfRoomError || sortUserError;
+  const loading = listUserOfGroupLoading || sortUserLoading;
+  const error = listUserOfGroupError || sortUserError;
   const location = useLocation();
   const history = useHistory();
-  const { userId, departmentId } = useParams();
+  const { userId } = useParams();
   const [searchPatern, setSearchPatern] = React.useState('');
-  const users = _users.filter(user => _.get(user, 'name').includes(searchPatern));
 
   React.useEffect(() => {
-    doGetUserOfRoom({ roomId: departmentId });
-  }, [doGetUserOfRoom, departmentId]);
+    doListUserOfGroup();
+  }, [doListUserOfGroup]);
 
   React.useEffect(() => {
-    const doGetUserOfRoomHandler = () => {
-      doGetUserOfRoom({ roomId: departmentId });
+    const doListUserOfGroupHandler = () => {
+      doListUserOfGroup();
     };
 
-    CustomEventListener(SORT_USER, doGetUserOfRoomHandler);
-    CustomEventListener(UPDATE_USER, doGetUserOfRoomHandler);
+    CustomEventListener(SORT_USER, doListUserOfGroupHandler);
+    CustomEventListener(UPDATE_USER, doListUserOfGroupHandler);
 
     return () => {
-      CustomEventDispose(SORT_USER, doGetUserOfRoomHandler);
-      CustomEventDispose(UPDATE_USER, doGetUserOfRoomHandler);
+      CustomEventDispose(SORT_USER, doListUserOfGroupHandler);
+      CustomEventDispose(UPDATE_USER, doListUserOfGroupHandler);
     }
-  }, [doGetUserOfRoom, departmentId]);
+  }, [doListUserOfGroup]);
 
 
   function onDragEnd(result) {
@@ -72,7 +83,7 @@ function UserList({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser }) {
         <LeftSideContainer
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push(`${location.pathname.replace(`/thong-tin/${departmentId}/nguoi-dung/${userId}`, '')}`),
+            onClick: () => history.push(`${location.pathname.replace(`/nguoi-dung/${userId}`, '')}`),
           }}
           title='Danh sách thành viên'
         >
@@ -85,19 +96,32 @@ function UserList({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser }) {
             />  
           </Banner>
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={departmentId}>
-              {provided => (
-                <StyledList
-                  innerRef={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {users.map((user, index) => (
-                    <CustomListItem key={index} user={user} index={index} />  
-                  ))}
-                  {provided.placeholder}
-                </StyledList>
-              )}
-            </Droppable>
+            {rooms.map((room, index) => {
+              const users = get(room, 'users', []);
+              return (
+                <Droppable key={index} droppableId={get(room, 'id')}>
+                  {provided => (
+                    <CustomStyledList
+                      innerRef={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      <StyledListItem>
+                        {get(room, 'name', '') === 'default' ? 'Mặc định' : get(room, 'name', '')}
+                      </StyledListItem>
+                      {users.map((user, index) => {
+                        if (get(user, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()))
+                          return (
+                            <CustomListItem key={index} user={user} index={index} />  
+                          );
+                        else 
+                          return null;
+                      })}
+                      {provided.placeholder}
+                    </CustomStyledList>
+                  )}
+                </Droppable>
+              );
+            })}
           </DragDropContext>
         </LeftSideContainer>
       )}
@@ -107,17 +131,17 @@ function UserList({ getUserOfRoom, doGetUserOfRoom, sortUser, doSortUser }) {
 
 const mapStateToProps = state => {
   return {
-    getUserOfRoom: state.room.getUserOfRoom,
+    listUserOfGroup: state.user.listUserOfGroup,
     sortUser: state.user.sortUser,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    doGetUserOfRoom: ({ roomId }) => dispatch(getUserOfRoom({ roomId })),
+    doListUserOfGroup: () => dispatch(listUserOfGroup()),
     doSortUser: ({ userId, roomId, sortIndex }) => dispatch(sortUser({ userId, roomId, sortIndex })),
   }
-}
+};
 
 export default connect(
   mapStateToProps,

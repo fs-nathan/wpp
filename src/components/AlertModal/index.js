@@ -13,13 +13,11 @@ import ColorTypo from '../ColorTypo';
 import colorPal from '../../helpers/colorPalette';
 
 const StyledDialogContent = styled(DialogContent)`
-  & > *:not(:last-child) {
-    margin-bottom: 8px;
-  }
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > input[type=file] {
-    display: none;
-  }
 `;
 
 const StyledDialogTitle = styled(DialogTitle)`
@@ -35,6 +33,12 @@ const StyledDialogTitle = styled(DialogTitle)`
 
 const StyledDialogActions = styled(DialogActions)`
   padding: 15px 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  & > *:not(:first-child) {
+    margin-left: 8px;
+  }
 `;
 
 const ActionsAcceptButton = styled(ButtonBase)`
@@ -53,9 +57,25 @@ const ActionsAcceptButton = styled(ButtonBase)`
   }
 `;
 
+const ActionsCancleButton = styled(ButtonBase)`
+  padding: 8px 16px;
+  background-color: #fff;
+  &:hover {
+    background-color: #eee;
+  }
+  color: #222;
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  & > span:last-child {
+    display: none;
+  }
+`;
+
 const StyledDialog = styled(Dialog)`
   & > div:nth-child(3) > div {
-    min-width: 500px;
+    min-width: 300px;
   }
 `;
 
@@ -63,7 +83,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function CustomModal({ title, children, onConfirm = () => null, onCancle = () => null, open, setOpen }) {
+function CustomModal({ open, setOpen, content, onConfirm = () => null, onCancle = () => null, }) {
 
   function handleCancle() {
     setOpen(false);
@@ -84,18 +104,21 @@ function CustomModal({ title, children, onConfirm = () => null, onCancle = () =>
       aria-labelledby="alert-dialog-slide-title"
     >
       <StyledDialogTitle id="alert-dialog-slide-title">
-        <ColorTypo uppercase>{title}</ColorTypo>
+        <ColorTypo uppercase>Thông báo hệ thống</ColorTypo>
         <IconButton onClick={() => handleCancle()}>
           <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
         </IconButton>
       </StyledDialogTitle>
       <StyledDialogContent>
-        {children}
+        {content}
       </StyledDialogContent>
       <StyledDialogActions>
         <ActionsAcceptButton onClick={() => handleConfirm()}>
-          Hoàn thành
+          Đồng ý
         </ActionsAcceptButton>
+        <ActionsCancleButton onClick={() => handleCancle()}>
+          Hủy
+        </ActionsCancleButton>
       </StyledDialogActions>
     </StyledDialog>
   )

@@ -159,7 +159,7 @@ function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocum
               <Avatar style={{ width: 60, height: 60, }} src={_.get(user, 'avatar')} alt='avatar' />
               <div>
                 <ColorTypo color='green' bold variant='h6'>{_.get(user, 'name', '')}</ColorTypo>
-                <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {_.get(user, 'date_join', '')}</ColorTypo>
+                <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {new Date(_.get(user, 'date_join', '')).toLocaleDateString()}</ColorTypo>
               </div>
               <PillButton 
                 size='medium'

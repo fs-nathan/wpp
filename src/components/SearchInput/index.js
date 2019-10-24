@@ -7,6 +7,7 @@ import {
 } from '@mdi/js';
 
 const Container = styled.div`
+  width: 100%;
   position: relative;
   line-height: 1.3;
   height: 35px;
@@ -29,11 +30,12 @@ const SearchBoxBase = styled(InputBase)`
   background-clip: padding-box;
   background-color: #f6f6f6;
   border-radius: 999px;
+  width: 100%;
 `;
 
-function SearchBox({ ...rest }) {
+function SearchBox({ classes, className, ...rest }) {
   return (
-    <Container>
+    <Container classes={classes} className={className}>
       <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' />
       <SearchBoxBase 
         {...rest}

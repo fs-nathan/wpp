@@ -3,6 +3,7 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
+import ColorTextField from '../../../../components/ColorTextField';
 import ColorButton from '../../../../components/ColorButton';
 import { Avatar } from '@material-ui/core';
 import { mdiChevronLeft } from '@mdi/js';
@@ -12,12 +13,13 @@ import { deleteRoom } from '../../../../actions/room/deleteRoom';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
+import AlertModal from '../../../../components/AlertModal';
 import { CustomEventListener, CustomEventDispose, DELETE_ROOM, UPDATE_ROOM } from '../../../../constants/events.js';
 import CreateDepartment from '../../Modals/CreateDepartment';
 import avatar from '../../../../assets/avatar.jpg';
 
 const Container = styled.div`
-  padding: 0 8px;
+  padding: 0 16px;
   height: 100%;
   display: grid;
   grid-template-rows: 1fr max-content;
@@ -39,15 +41,18 @@ const IntroBox = styled.div`
 `;
 
 const ActionBox = styled.div`
-  margin: 16px 0;
-  & > hr {
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-  }
+  margin-top: 8px;
+  padding: 8px 0 16px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   & > * {
     text-transform: none;
     justify-content: flex-start;
     & > span:last-child {
       display: none;
+    }
+    background-color: #fff;
+    &:hover {
+      background-color: #fff;
     }
   }
 `;
@@ -85,6 +90,7 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
   const history = useHistory();
   const { data: { room }, error, loading } = detailRoom;
   const [openUpdateModal, setOpenUpdateModal] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
 
   React.useEffect(() => {
     doDetailRoom({ roomId: departmentId });
@@ -108,7 +114,6 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
   }, [history, departmentId, doDetailRoom]);
 
   function handleDeleteDepartment(departmentId) {
-    if (window.confirm('Bạn chắc chắn muốn xóa?'))
     doDeleteRoom({ 
       roomId: departmentId,
     });
@@ -144,18 +149,23 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
                     Giới thiệu
                   </ColorTypo>
                   <IntroBox>
-                    <ColorTypo>
-                      {_.get(room, 'description', '')}  
-                    </ColorTypo>
+                    <ColorTextField
+                      value={_.get(room, 'description', '')}  
+                    />
                   </IntroBox>
                 </div>
                 <ActionBox>
                   <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
-                  <hr />
-                  <ColorButton onClick={() => handleDeleteDepartment(departmentId)} variant='text' variantColor='red' size='small' fullWidth>Xóa Phòng/Ban/Nhóm</ColorButton>
+                  <ColorButton onClick={() => setAlert(true)} variant='text' variantColor='red' size='small' fullWidth>Xóa bộ phận</ColorButton>
                 </ActionBox>
               </Container>
               <CreateDepartment updateDepartment={room} open={openUpdateModal} setOpen={setOpenUpdateModal} />
+              <AlertModal
+                open={alert}
+                setOpen={setAlert}
+                content='Bạn chắc chắn muốn xóa?'
+                onConfirm={() => handleDeleteDepartment(departmentId)}
+              />
             </LeftSideContainer>
           )}
         </React.Fragment>
