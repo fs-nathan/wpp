@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
 import { mdiBorderNoneVariant } from '@mdi/js';
 import { IconButton } from '@material-ui/core';
@@ -36,10 +37,13 @@ const Title = styled.p`
   text-transform: uppercase;
 `;
 
-const Body = styled.div`
+const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  overflow-y: auto;
+  & > div:first-child {
+    padding-right: 12px;
+    padding-bottom: 12px;
+  }
 `;
 
 const StyledIconButton = styled(IconButton)`
@@ -94,7 +98,10 @@ function LeftSideContainer({
         <Title>{title}</Title>
         {parseAction(rightAction)}
       </Header>
-      <Body>
+      <Body
+        autoHide
+        autoHideTimeout={500}
+      >
         {children}
       </Body>
     </Container>
