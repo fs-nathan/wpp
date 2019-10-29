@@ -40,14 +40,7 @@ function HeaderButtonGroup() {
     <React.Fragment>
       <ButtonGroup
         size='small'
-        variant="text"
-      >
-        <StyledButton disableRipple>
-          <div>
-            <Icon path={mdiMagnify} size={1} />
-          </div>
-          <span>Tìm kiếm</span>
-        </StyledButton>
+        variant="text">
         <StyledButton disableRipple>
           <div>
             <Icon path={mdiDownload} size={1} />
@@ -59,6 +52,12 @@ function HeaderButtonGroup() {
             <Icon path={mdiTrashCan} size={1} />
           </div>
           <span>Xóa</span>
+        </StyledButton>
+        <StyledButton disableRipple>
+          <div>
+            <Icon path={mdiMagnify} size={1} />
+          </div>
+          <span>Tìm kiếm</span>
         </StyledButton>
       </ButtonGroup>
     </React.Fragment>

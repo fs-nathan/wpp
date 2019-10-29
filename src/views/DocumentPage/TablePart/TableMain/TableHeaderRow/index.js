@@ -3,25 +3,31 @@ import styled from 'styled-components';
 import { TableCell, TableRow, Checkbox } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
-  mdiDragVertical,
+  // mdiDragVertical,
+  mdiSortDescending, mdiSortAscending
 } from '@mdi/js';
 
 const StyledTableHeadRow = styled(TableRow)`
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, 0);
 `;
 
-const StyledTableHeadCell = styled(({children, ...rest}) => 
-  <TableCell {...rest}>
+const StyledTableHeadCell = styled(({ children, ...rest }) =>
+  <TableCell {...rest} onClick={() => console.log("LALLA")}>
     <div>{children}</div>
   </TableCell>
 )`
-  font-weight: bold;
-  color: rgb(102, 102, 102);
+  color: gray;
   padding: 8px;
   & > div {
-    display: flex;
-    justify-content: center;
-    font-size: 11px;
+    font-size: 1.2rem;
+    display: inline-flex;
+  }
+  & > div > svg {
+    margin-left: 4px;
+  }
+  &:not(:first-child):hover {
+    color: black;
+    font-weight: bold;
   }
   &:nth-child(4) > div {
     justify-content: start;
@@ -31,20 +37,26 @@ const StyledTableHeadCell = styled(({children, ...rest}) =>
 function TableHeaderRow() {
   return (
     <StyledTableHeadRow>
-      <StyledTableHeadCell>
+      {/* <StyledTableHeadCell>
         <Icon path={mdiDragVertical} size={1} color={'rgb(102, 102, 102)'}/>
-      </StyledTableHeadCell>
+      </StyledTableHeadCell> */}
       <StyledTableHeadCell>
         <Checkbox />
       </StyledTableHeadCell>
-      <StyledTableHeadCell>
+      <StyledTableHeadCell align="center">
         Loại
       </StyledTableHeadCell>
-      <StyledTableHeadCell>
+      <StyledTableHeadCell style={{ width: "40%" }}>
         Tên tài liệu
+        <Icon
+          path={mdiSortAscending} size={1}
+        />
       </StyledTableHeadCell>
-      <StyledTableHeadCell>
+      <StyledTableHeadCell style={{ width: "18%" }} align="center">
         Nơi lưu trữ
+        <Icon
+          path={mdiSortDescending} size={1}
+        />
       </StyledTableHeadCell>
       <StyledTableHeadCell>
         Ngày tạo
@@ -52,8 +64,8 @@ function TableHeaderRow() {
       <StyledTableHeadCell>
         Người tạo
       </StyledTableHeadCell>
-      <StyledTableHeadCell>
-        Kích cỡ
+      <StyledTableHeadCell align="right" style={{paddingRight: 16}}>
+        Kích thước
       </StyledTableHeadCell>
     </StyledTableHeadRow>
   )

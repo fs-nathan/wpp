@@ -44,9 +44,10 @@ function TableMain() {
                     {...provided.droppableProps}
                   >
                     {data.map((row, index) => (
+                      
                       <TableBodyRow key={index} index={index} row={row} group={null} />
                     ))}
-                    {provided.placeholder}  
+                    {provided.placeholder}
                   </TableBody>
                 )}
               </Droppable>
