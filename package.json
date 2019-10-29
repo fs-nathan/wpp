@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.5.0",
+    "@material-ui/icons": "^4.5.1",
     "@material-ui/styles": "^4.5.0",
     "@mdi/js": "^4.4.95",
     "@mdi/react": "^1.2.1",
