@@ -9,7 +9,7 @@ const StyledTypo = styled(({ color, uppercase, bold, ...rest }) => <Typography {
     text-transform: uppercase;
   `}
   ${props => props.bold && css`
-    font-weight: 400;
+    font-weight: 700;
   `}
 `;
 

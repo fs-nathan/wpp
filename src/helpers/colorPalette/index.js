@@ -11,6 +11,9 @@ const colors = {
   'yellow': ['#ffc107', '#fff'],
   'teal': ['#20c997', '#fff'],
   'gray': ['#a5a0a0', '#fff'],
+  'light-blue' : ['#4b99fe', '#fff'],
+  'white': ['#f0f0f0', '#8b8b8b'],
+  'grey': ['#f8dbd7', '#f16978']
 };
 
 export default colors;

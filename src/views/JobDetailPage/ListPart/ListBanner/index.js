@@ -34,7 +34,7 @@ function ListBanner() {
           key={index} 
           label={jobType} 
           onClick={() => setSelected(index)}
-          color={selected === index ? 'blue' : 'gray'}
+          color={selected === index ? 'light-blue' : 'white'}
           size='small'
         />
       ))} 
