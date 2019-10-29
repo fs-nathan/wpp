@@ -17,6 +17,9 @@ const colors = {
   'redlight': ['#fdd2d9', '#fa6880'],
   'purplelight': ['#fdd2fc', '#c91dc5'],
   'indigolight': ['#d0e1ff', '#4886f1']
+  'light-blue' : ['#4b99fe', '#fff'],
+  'white': ['#f0f0f0', '#8b8b8b'],
+  'grey': ['#f8dbd7', '#f16978']
 };
 
 export default colors;

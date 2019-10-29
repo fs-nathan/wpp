@@ -40,22 +40,22 @@ function ListBodyItem() {
   function renderJobName() {
     return (
       <NameContainer variant='space-between'>
-        <ColorTypo bold>Phân tích ứng dụng ...</ColorTypo>
+        <ColorTypo bold style={{ fontSize: 16 }}>Phân tích ứng dụng ...</ColorTypo>
         <ColorChip color='red' badge label={1} size='small' />
       </NameContainer>
     )
   }
-  
+
   function renderJobContent() {
     return (
       <ContentContainer>
         <div>
-          <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20}}/>
+          <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20 }} />
           <ColorTypo variant='body2'>Do something</ColorTypo>
         </div>
         <div>
-          <ColorChip color='red' badge label={'Quá hạn'} size='small' />
-          <Icon path={mdiPin} size={0.8} />
+          <ColorChip color='grey' badge label={'Quá hạn'} size='small' />
+          <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)' }} path={mdiPin} size={0.8} />
         </div>
       </ContentContainer>
     )
@@ -64,12 +64,12 @@ function ListBodyItem() {
   return (
     <Container button>
       <ListItemAvatar>
-        <SimpleDonutChart percentDone={70} />
+        <SimpleDonutChart percentDone={38} />
       </ListItemAvatar>
-      <ListItemText 
-        disableTypography 
-        primary={renderJobName()} 
-        secondary={renderJobContent()} 
+      <ListItemText
+        disableTypography
+        primary={renderJobName()}
+        secondary={renderJobContent()}
       />
     </Container>
   )
