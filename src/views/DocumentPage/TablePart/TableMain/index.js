@@ -3,8 +3,6 @@ import { Table, TableHead, TableBody } from '@material-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TableBodyRow from './TableBodyRow';
 import TableHeaderRow from './TableHeaderRow';
-import { connect } from 'react-redux';
-import { filterDocs, setAllDataDocuments } from '../../../../actions/documents'
 // import _ from 'lodash'
 
 // function filterTaskByProperty (propertyName) {
@@ -12,7 +10,6 @@ import { filterDocs, setAllDataDocuments } from '../../../../actions/documents'
 // }
 
 function TableMain(props) {
-
   const { data, setData } = props
 
   function onDragEnd(result) {
@@ -54,6 +51,7 @@ function TableMain(props) {
                 <TableBody
                   innerRef={provided.innerRef}
                   {...provided.droppableProps}
+                  
                 >
                   {docs.map((doc, index) => (
                     <TableBodyRow 
@@ -74,21 +72,4 @@ function TableMain(props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    docs: state.documents.docs,
-    data: state.documents
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    filterDocs: payload => dispatch(filterDocs(payload)),
-    setData: payload => dispatch(setAllDataDocuments(payload))
-  };
-};
-
-export default connect(
-  mapStateToProps, 
-  mapDispatchToProps,
-)(TableMain);
+export default TableMain;

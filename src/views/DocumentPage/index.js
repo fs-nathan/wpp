@@ -1,7 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import ListPart from './ListPart';
-import TablePart from './TablePart';
+import React from 'react'
+import styled from 'styled-components'
+import ListPart from './ListPart'
+import TablePart from './TablePart'
+import { connect } from 'react-redux'
+import { 
+  filterDocs, setAllDataDocuments, changeTab 
+} from '../../actions/documents'
 
 const Container = styled.div`
   height: 100%;
@@ -12,13 +16,32 @@ const Container = styled.div`
     "list table";
 `;
 
-function DocumentPage() {
+function DocumentPage(props) {
   return (
     <Container>
-      <ListPart />
-      <TablePart />
+      <ListPart {...props}/>
+      <TablePart {...props}/>
     </Container>
   )
 }
 
-export default DocumentPage;
+const mapStateToProps = state => {
+  return {
+    data: state.documents,
+    activeTabId: state.documents.activeTabId,
+    docs: state.documents.docs,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    changeTab: payload => dispatch(changeTab(payload)),
+    filterDocs: payload => dispatch(filterDocs(payload)),
+    setData: payload => dispatch(setAllDataDocuments(payload))
+  };
+};
+
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps,
+)(DocumentPage);

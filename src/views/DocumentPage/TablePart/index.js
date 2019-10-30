@@ -1,15 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import {
-  mdiUpload,
-  mdiClockOutline
-} from '@mdi/js';
+import { mdiUpload } from '@mdi/js';
 import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
 import ColorButton from '../../../components/ColorButton';
 import TableMain from './TableMain';
 import { ListItemIcon } from '@material-ui/core';
+import { getActiveTab } from '../commonFunction'
 
 const Container = styled.div`
   grid-area: table;
@@ -28,17 +26,20 @@ const RightHeader = styled.div`
   }
 `;
 
-function TablePart() {
+function TablePart(props) {
+
+  const activeTab = getActiveTab(props.activeTabId)
+
   return (
     <Container>
       <Header>
         <ListItemIcon style={{minWidth: 40}}>
-          <Icon path={mdiClockOutline} size={1.5} />
+          <Icon path={activeTab.icon} size={1.5} />
         </ListItemIcon>
         <ColorTypo color='green' uppercase 
           style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
           {/* &#9733;  */}
-          Tài liệu gần đây
+          {activeTab.name}
         </ColorTypo>
         <RightHeader>
           <HeaderButtonGroup />
@@ -54,7 +55,7 @@ function TablePart() {
           </ColorButton>
         </RightHeader>
       </Header>
-      <TableMain />
+      <TableMain {...props}/>
     </Container>
   )
 }

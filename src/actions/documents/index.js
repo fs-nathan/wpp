@@ -1,9 +1,15 @@
 import {
+  CHANGE_TAB,
   FILTER_DOCUMENTS,
-  SET_ALL_DATA_DOCUMENTS
-} from '../../constants/actions/documents';
+  SET_ALL_DATA_DOCUMENTS,
+} from '../../constants/actions/documents'
 
-export const filterDocs = (filteredDocs) => ({
+export const changeTab = tabId => ({
+  type: CHANGE_TAB,
+  payload: tabId
+});
+
+export const filterDocs = filteredDocs => ({
   type: FILTER_DOCUMENTS,
   payload: filteredDocs
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, MenuItem, IconButton, Typography, TextField, Dialog, Button, withStyles, Radio, RadioGroup } from '@material-ui/core';
+import { Select, MenuItem, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input } from '@material-ui/core';
 import styled from 'styled-components';
 import { mdiPlus, mdiApps, mdiHelpCircle } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -11,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FormLabel from '@material-ui/core/FormLabel';
+
 import { func } from 'prop-types';
 
 
@@ -23,12 +23,20 @@ const Header = styled.div`
   }
 `;
 
-const InputText = styled(TextField)`
-  & > label {
-    font-size: 16px;
-    color: #505050;
-}
+const StartEndDay = styled(Typography)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
 `
+
+const StartTime = styled(Typography)`
+  margin-right: 20px;
+`
+const StartEndDate = styled(Typography)`
+  margin: 0 15px;
+`
+
 const Typotitle = styled(Typography)`
   font-size: 16px;
   color: #444444;
@@ -41,13 +49,24 @@ const ProgressWork = styled(Typography)`
   margin-top: 25px;
 `
 
-const TypoStartEnd = styled(Typography)`
-  
+const TitleText = styled(Typography)`
+  display: flex;
+  justify-content: space-between;
+  & > *:first-child {
+    font-size: 15px;
+    color: #444444;
+  }
+  & > *:last-child {
+    color: #fa0000;
+    font-size: 14px;
+    font-style: italic;
+  }
 `
 
 const OutlineInput = styled(OutlinedInput)`
 & > input {
   padding: 10px 5px;
+  margin-left: 10px;
 }
 `
 
@@ -69,6 +88,20 @@ const CustomSelect = styled(Select)`
     border-bottom: none !important;
   }
 `;
+
+const BeginTime = styled(Typography)`
+  width: 50px;
+  margin-right: 20px;
+`
+const EndTime = styled(Typography)`
+  width: 50px;
+  margin-right: 20px;
+`
+const TypoText = styled(Typography)`
+  font-size: 15px;
+  color: #505050;
+  margin: 20px 0;
+`
 
 const styles = theme => ({
   root: {
@@ -125,9 +158,61 @@ function ListHeaderSelect({ setShow }) {
   )
 }
 
-function CustomizedDialogs() {
+function CommonControlForm(props) {
+  const [value, setValue] = React.useState(props.label1);
+  return (
+    <FormControl component="fieldset" >
+      <RadioGroup aria-label="position" name="position" value={value} onChange={event => setValue(event.target.value)} row>
+        <FormControlLabel
+          value={props.label1}
+          control={<Radio color="primary" />}
+          label={props.label1}
+          labelPlacement="end"
+        />
+        <FormControlLabel
+          value={props.label2}
+          control={<Radio color="primary" />}
+          label={props.label2}
+          labelPlacement="end"
+        />
+        <FormControlLabel
+          value={props.label3}
+          control={<Radio color="primary" />}
+          label={props.label3}
+          labelPlacement="end"
+        />
+      </RadioGroup>
+    </FormControl>
+  )
+}
 
-};
+function CommonPriorityForm(props) {
+  const [valuePF, setValuePF] = React.useState(props.label1);
+  return (
+    <FormControl component="fieldset" >
+      <RadioGroup aria-label="position" name="position" value={valuePF} onChange={event => setValuePF(event.target.value)} row>
+        <FormControlLabel
+          value={props.label1}
+          control={<Radio color="primary" />}
+          label={props.label1}
+          labelPlacement="end"
+        />
+        <FormControlLabel
+          value={props.label2}
+          control={<Radio color="primary" />}
+          label={props.label2}
+          labelPlacement="end"
+        />
+        <FormControlLabel
+          value={props.label3}
+          control={<Radio color="primary" />}
+          label={props.label3}
+          labelPlacement="end"
+        />
+      </RadioGroup>
+    </FormControl>
+  )
+}
 
 function ListHeader() {
   const [open, setOpen] = React.useState(false);
@@ -140,11 +225,15 @@ function ListHeader() {
     setOpen(false);
   }
 
-  const [value, setValue] = React.useState('female');
+  const [state, setState] = React.useState('');
 
-  const handleChange = event => {
-    setValue(event.target.value);
+  const handleChangeGroup = name => event => {
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
   };
+
   return (
     <div>
       <Header>
@@ -168,43 +257,71 @@ function ListHeader() {
           Tạo công việc
         </DialogTitle>
         <DialogContent dividers>
-          <InputText
-            label="Tên công việc"
-            fullWidth
-          />
-          <ProgressWork>
-            <Typotitle gutterBottom>
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}>Tên công việc</Typography>
+              <Typography component={'span'}>(tối đa 100 ký tự)</Typography>
+            </TitleText>
+            <Input
+              fullWidth
+            />
+          </Typography>
+          <ProgressWork component={'span'}>
+            <Typotitle component={'span'}>
               Tiến độ công việc
           </Typotitle>
-            <Typography>
+            <Typography component={'span'}>
               Đặt mặc định <Icon path={mdiHelpCircle} color={"black"} size={1} />
             </Typography>
           </ProgressWork>
-          <FormControl component="fieldset" variant="outlined">
-            <RadioGroup aria-label="position" name="position" value={value} onChange={handleChange} row>
-              <FormControlLabel
-                value="Ngày và giờ (mặc định)"
-                control={<Radio color="primary" />}
-                label="Ngày và giờ (mặc định)"
-                labelPlacement="end"
-              />
-              <FormControlLabel
-                value="Chỉ nhập ngày"
-                control={<Radio color="primary" />}
-                label="Chỉ nhập ngày"
-                labelPlacement="end"
-              />
-              <FormControlLabel
-                value="Không yêu cầu"
-                control={<Radio color="primary" />}
-                label="Không yêu cầu"
-                labelPlacement="end"
-              />
-              <Typography>Bắt đầu
-              <OutlineInput />
-              </Typography>
-            </RadioGroup>
-          </FormControl>
+          <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
+          <StartEndDay component={'span'}>
+            <BeginTime component={'span'}>Bắt đầu</BeginTime>
+            <OutlineInput />
+            <StartEndDate component={'span'}>Ngày</StartEndDate>
+            <OutlineInput />
+          </StartEndDay>
+          <StartEndDay component={'span'}>
+            <EndTime component={'span'}>Kết thúc</EndTime>
+            <OutlineInput />
+            <StartEndDate component={'span'}>Ngày</StartEndDate>
+            <OutlineInput />
+          </StartEndDay>
+          <TypoText component={'div'}> Chọn nhóm việc </TypoText>
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}> Nhóm mặc định </Typography>
+              <Typography component={'span'}></Typography>
+            </TitleText>
+            <FormControl fullWidth style={{ marginBottom: 50 }}>
+              <Select
+                onChange={handleChangeGroup('')}
+                native
+              >
+                <option value={10}>Ten</option>
+                <option value={20}>Twenty</option>
+                <option value={30}>Thirty</option>
+              </Select>
+            </FormControl>
+          </Typography>
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}> Mô tả công việc </Typography>
+              <Typography component={'span'}>(Tối đa 500 kí tự)</Typography>
+            </TitleText>
+            <Input
+              style={{ marginBottom: 10 }}
+              fullWidth
+            />
+          </Typography>
+          <Typography component={'span'}>
+            <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
+            <CommonPriorityForm label1='Thấp' label2='Trung bình' label3='Cao' />
+          </Typography >
+          <Typography component={'span'}>
+            <TypoText component={'div'}> Hình thức giao việc </TypoText>
+            <CommonControlForm label1='Được giao' label2='Tự đề xuất' label3='Giao việc cho' />
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">

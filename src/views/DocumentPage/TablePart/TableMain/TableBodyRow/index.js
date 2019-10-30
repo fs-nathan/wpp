@@ -11,6 +11,8 @@ import avatar from '../../../../../assets/avatar.jpg';
 import folderIcon from '../../../../../assets/folder.png';
 import jpgFileIcon from '../../../../../assets/file_jpg_type.png';
 import colorPal from '../../../../../helpers/colorPalette'
+import { getActiveTab } from '../../../commonFunction'
+import { VARIABLE_TYPE, FIELD_TYPE } from '../../../../../constants/documentCell'
 
 const StyledTableBodyRow = styled(TableRow)`
   background-color: #fff;
@@ -26,6 +28,17 @@ const StyledTableBodyCell = styled(TableCell)`
   }
 `;
 
+const WrapAvatar = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const FullAvatar = styled(props =>
+  <Avatar
+    src={props.src} alt="avatar"
+    style={{ borderRadius: "unset", width: 35, height: 35 }}
+  />)``;
+
 const MainTypo = styled(({ color, uppercase, bold, ...rest }) => <Typography {...rest} />)`
   color: ${props => props.color ? colorPal[props.color][0] : colorPal['default'][0]};
   ${props => props.uppercase && css`
@@ -40,20 +53,90 @@ const MainTypo = styled(({ color, uppercase, bold, ...rest }) => <Typography {..
   }
 `;
 
-function GetFileByType({ type, name, size, location, date }) {
-  let color, src
+function getIconByType(type) {
   switch (type) {
     case "jpg":
-      color = "blue"
-      src = jpgFileIcon
-      break;
+      return jpgFileIcon
     case "folder":
-      color = "black"
-      src = folderIcon
-      break;
+      return folderIcon
     default:
-      break;
+      return ""
   }
+}
+
+function getCell(key, col, doc) {
+  const type = col.type
+  let text = "", color = "", path = ""
+
+  switch (type[1]) {
+    case VARIABLE_TYPE.TYPE:
+      path = getIconByType(doc.type)
+      break
+    case VARIABLE_TYPE.NAME:
+      text = doc.name
+      color = "blue"
+      break
+    case VARIABLE_TYPE.LOCATION:
+      text = doc.location
+      color = "blue"
+      break
+    case VARIABLE_TYPE.AVATAR:
+      // TODO: load image
+      path = avatar
+      break
+    case VARIABLE_TYPE.SIZE:
+      text = doc.size
+      color = "black"
+      break
+    case VARIABLE_TYPE.DATE:
+      text = doc.date
+      color = "black"
+      break
+    default:
+      break
+  }
+
+  switch (type[0]) {
+    case FIELD_TYPE.ICON:
+      return (
+        <StyledTableBodyCell key={key} align={col.align}>
+          <WrapAvatar>
+            <FullAvatar src={path} />
+          </WrapAvatar>
+        </StyledTableBodyCell>
+      )
+    case FIELD_TYPE.AVATAR:
+      return (
+        <StyledTableBodyCell key={key} align={col.align}>
+          <WrapAvatar>
+            <Avatar src={path} />
+          </WrapAvatar>
+        </StyledTableBodyCell>
+      )
+    case FIELD_TYPE.CLICK_TEXT:
+      return (
+        <StyledTableBodyCell key={key} align={col.align}>
+          <MainTypo color={color}>
+            {text}
+          </MainTypo>
+        </StyledTableBodyCell>
+      )
+    case FIELD_TYPE.NORMAL_TEXT:
+      return (
+        <StyledTableBodyCell key={key} align={col.align}>
+          <ColorTypo color={color}>
+            {text}
+          </ColorTypo>
+        </StyledTableBodyCell>
+      )
+    default:
+      return(<div></div>)
+  }
+}
+
+function getRow(props) {
+
+  const activeTab = getActiveTab(props.activeTabId)
 
   return (
     <StyledTableBodyRow
@@ -69,7 +152,12 @@ function GetFileByType({ type, name, size, location, date }) {
       <StyledTableBodyCell>
         <Checkbox />
       </StyledTableBodyCell>
-      <StyledTableBodyCell align="center">
+
+      {activeTab.columns.map((col, idx) => getCell(idx, col, props.doc))}
+
+
+
+      {/* <StyledTableBodyCell align="center">
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Avatar
             src={src} alt='avatar'
@@ -94,7 +182,11 @@ function GetFileByType({ type, name, size, location, date }) {
       </StyledTableBodyCell>
       <StyledTableBodyCell align="right">
         <ColorTypo style={{ paddingRight: 8 }}>{size + " MB"}</ColorTypo>
-      </StyledTableBodyCell>
+      </StyledTableBodyCell> */}
+
+
+
+
     </StyledTableBodyRow>
   );
 }
@@ -107,7 +199,7 @@ function TableBodyRow(props) {
     // index={index}  
     // >
     // {(provided) => ( 
-    GetFileByType(props.doc)
+    getRow(props)
 
     //   )}
     // </Draggable>

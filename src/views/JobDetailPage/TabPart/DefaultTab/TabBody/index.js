@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiArrowRightBoldCircle, mdiCheckCircle, mdiCheckboxBlankCircleOutline, mdiChevronRight } from '@mdi/js';
 import { List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem, withStyles, Button, Dialog, IconButton, Typography } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -143,7 +144,7 @@ function DropdownButton({ values }) {
         onClose={handleClose}
         transformOrigin={{
           vertical: 130,
-          horizontal: 'top',
+          horizontal: 0,
         }}
       >
         {
@@ -154,6 +155,7 @@ function DropdownButton({ values }) {
                   <ListItemIcon >
                     <Icon path={mdiCheckCircle} size={1} color={colorPal['green'][0]} />
                   </ListItemIcon>
+                  
                 ) : (
                     <ListItemIcon>
                       <Icon path={mdiCheckboxBlankCircleOutline} size={1} color={colorPal['default'][0]} />
@@ -162,6 +164,7 @@ function DropdownButton({ values }) {
                 <ListItemText >
                   {value}
                 </ListItemText>
+                <Divider />
               </MenuItem>
             );
           })
