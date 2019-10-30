@@ -40,9 +40,7 @@ const StyledListItem = styled(ListItem)`
 `
 
 function ListPart(props) {
-  console.log("REFRESH")
   const changeTab = tabId => () => {
-    console.log("TAO DOI TAB NE")
     props.changeTab(tabId)
   }
 
