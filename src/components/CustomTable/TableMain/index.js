@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { Table, TableHead, TableBody } from '@material-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { CustomTableContext } from '../index';
@@ -7,8 +8,11 @@ import TableHeaderRow from './TableHeaderRow';
 import TableBodyGroupRow from './TableBodyGroupRow';
 import TableBodyRow from './TableBodyGroupRow/TableBodyRow'; 
 
-const Container = styled.div`
-  overflow-y: auto;
+const Container = styled(Scrollbars)`
+  & > div:first-child {
+    padding-right: 12px;
+    padding-bottom: 12px;
+  }
 `;
 
 function TableMain() {
@@ -16,7 +20,10 @@ function TableMain() {
   const { options, data } = React.useContext(CustomTableContext);
 
   return (
-    <Container>
+    <Container
+      autoHide
+      autoHideTimeout={500}
+    >
       <Table>
         <TableHead>
           <TableHeaderRow />
@@ -37,9 +44,10 @@ function TableMain() {
                     {...provided.droppableProps}
                   >
                     {data.map((row, index) => (
+                      
                       <TableBodyRow key={index} index={index} row={row} group={null} />
                     ))}
-                    {provided.placeholder}  
+                    {provided.placeholder}
                   </TableBody>
                 )}
               </Droppable>

@@ -3,38 +3,14 @@ import { Table, TableHead, TableBody } from '@material-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TableBodyRow from './TableBodyRow';
 import TableHeaderRow from './TableHeaderRow';
+// import _ from 'lodash'
 
-const __data = {
-  tasks: {
-    'task-1': {
-      id: 'task-1',
-      content: 20,
-    },
-    'task-2': {
-      id: 'task-2',
-      content: 40,
-    },
-    'task-3': {
-      id: 'task-3',
-      content: 60,
-    },
-    'task-4': {
-      id: 'task-4',
-      content: 80,
-    },
-  },
-  columns: {
-    'column-1': {
-      id: 'column-1',
-      tasksId: ['task-1', 'task-2', 'task-3', 'task-4']
-    }
-  },
-  columnOrder: ['column-1'],
-};
+// function filterTaskByProperty (propertyName) {
+//   __data.tasks = _.sortBy(__data.tasks, [propertyName])
+// }
 
-function TableMain() {
-
-  const [data, setData] = React.useState(__data);
+function TableMain(props) {
+  const { data, setData } = props
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -63,21 +39,27 @@ function TableMain() {
   return (
     <Table>
       <TableHead>
-        <TableHeaderRow />
+        <TableHeaderRow {...props}/>
       </TableHead>
       <DragDropContext onDragEnd={onDragEnd}>
         {data.columnOrder.map((columnId, index) => {
           const column = data.columns[columnId];
-          const tasks = column.tasksId.map(taskId => data.tasks[taskId]);
+          const docs = column.tasksId.map(taskId => data.docs[taskId]);
           return (
             <Droppable droppableId={column.id} key={index}>
               {provided => (
                 <TableBody
                   innerRef={provided.innerRef}
                   {...provided.droppableProps}
+                  
                 >
-                  {tasks.map((task, index) => (
-                    <TableBodyRow key={task.id} task={task} index={index} />  
+                  {docs.map((doc, index) => (
+                    <TableBodyRow 
+                      key={doc.id} 
+                      doc={doc} 
+                      index={index} 
+                      {...props}
+                    />  
                   ))}
                   {provided.placeholder}
                 </TableBody>

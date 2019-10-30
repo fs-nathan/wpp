@@ -18,7 +18,7 @@ const describeArc = (x, y, radius, startAngle, endAngle) => {
   return d;       
 }
 
-function SimpleDonutChart({ percentDone = 0, color = '#31b586', variant = 'normal' }) {
+function SimpleDonutChart({ percentDone = 0, color = '#7da4e8', variant = 'normal' }) {
   const deg = (percentDone / 100) * 360;
   
   let size, fontSize;

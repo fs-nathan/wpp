@@ -1,9 +1,19 @@
 import React from 'react';
-import { Select, MenuItem, IconButton } from '@material-ui/core';
+import { Select, MenuItem, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input } from '@material-ui/core';
 import styled from 'styled-components';
-import { mdiPlus } from '@mdi/js';
+import { mdiPlus, mdiApps, mdiHelpCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import SearchInput from '../../../../components/SearchInput';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import CloseIcon from '@material-ui/icons/Close';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+
+import { func } from 'prop-types';
+
 
 const Header = styled.div`
   padding: 0;
@@ -12,6 +22,53 @@ const Header = styled.div`
     margin-bottom: 5px;
   }
 `;
+
+const StartEndDay = styled(Typography)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+`
+
+const StartTime = styled(Typography)`
+  margin-right: 20px;
+`
+const StartEndDate = styled(Typography)`
+  margin: 0 15px;
+`
+
+const Typotitle = styled(Typography)`
+  font-size: 16px;
+  color: #444444;
+`
+
+const ProgressWork = styled(Typography)`
+  display: flex;
+  justify-content: space-between;
+  align-item: center;
+  margin-top: 25px;
+`
+
+const TitleText = styled(Typography)`
+  display: flex;
+  justify-content: space-between;
+  & > *:first-child {
+    font-size: 15px;
+    color: #444444;
+  }
+  & > *:last-child {
+    color: #fa0000;
+    font-size: 14px;
+    font-style: italic;
+  }
+`
+
+const OutlineInput = styled(OutlinedInput)`
+& > input {
+  padding: 10px 5px;
+  margin-left: 10px;
+}
+`
 
 const HeaderBottomBox = styled.div`
   display: flex;
@@ -32,12 +89,68 @@ const CustomSelect = styled(Select)`
   }
 `;
 
-function ListHeaderSelect() {
+const BeginTime = styled(Typography)`
+  width: 50px;
+  margin-right: 20px;
+`
+const EndTime = styled(Typography)`
+  width: 50px;
+  margin-right: 20px;
+`
+const TypoText = styled(Typography)`
+  font-size: 15px;
+  color: #505050;
+  margin: 20px 0;
+`
 
-  const [value, setValue] = React.useState(0);
+const styles = theme => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const DialogTitle = withStyles(styles)(props => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles(theme => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
+
+
+function ListHeaderSelect({ setShow }) {
+
+  const [value] = React.useState(0);
 
   return (
-    <CustomSelect value={value} onChange={evt => setValue(evt.target.value)}>
+    <CustomSelect value={value} >
+      <Icon path={mdiApps} size={1.5} />
       <MenuItem value={0}>Job-1</MenuItem>
       <MenuItem value={1}>Job-2</MenuItem>
       <MenuItem value={2}>Job-3</MenuItem>
@@ -45,18 +158,181 @@ function ListHeaderSelect() {
   )
 }
 
-function ListHeader() {
+function CommonControlForm(props) {
+  const [value, setValue] = React.useState(props.label1);
   return (
-    <Header>
-      <ListHeaderSelect />
-      <HeaderBottomBox>
-        <SearchInput placeholder='Tìm công việc trong dự án' />
-        <IconButton>
-          <Icon path={mdiPlus} size={1} />
-        </IconButton>
-      </HeaderBottomBox>
-    </Header>
+    <FormControl component="fieldset" >
+      <RadioGroup aria-label="position" name="position" value={value} onChange={event => setValue(event.target.value)} row>
+        <FormControlLabel
+          value={props.label1}
+          control={<Radio color="primary" />}
+          label={props.label1}
+          labelPlacement="end"
+        />
+        <FormControlLabel
+          value={props.label2}
+          control={<Radio color="primary" />}
+          label={props.label2}
+          labelPlacement="end"
+        />
+        <FormControlLabel
+          value={props.label3}
+          control={<Radio color="primary" />}
+          label={props.label3}
+          labelPlacement="end"
+        />
+      </RadioGroup>
+    </FormControl>
   )
 }
+
+function CommonPriorityForm(props) {
+  const [valuePF, setValuePF] = React.useState(props.label1);
+  return (
+    <FormControl component="fieldset" >
+      <RadioGroup aria-label="position" name="position" value={valuePF} onChange={event => setValuePF(event.target.value)} row>
+        <FormControlLabel
+          value={props.label1}
+          control={<Radio color="primary" />}
+          label={props.label1}
+          labelPlacement="end"
+        />
+        <FormControlLabel
+          value={props.label2}
+          control={<Radio color="primary" />}
+          label={props.label2}
+          labelPlacement="end"
+        />
+        <FormControlLabel
+          value={props.label3}
+          control={<Radio color="primary" />}
+          label={props.label3}
+          labelPlacement="end"
+        />
+      </RadioGroup>
+    </FormControl>
+  )
+}
+
+function ListHeader() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  }
+
+  const [state, setState] = React.useState('');
+
+  const handleChangeGroup = name => event => {
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
+  };
+
+  return (
+    <div>
+      <Header>
+        <ListHeaderSelect />
+        <HeaderBottomBox>
+          <SearchInput placeholder='Tìm công việc trong dự án...' />
+          <IconButton
+            style={{
+              marginLeft: "10px",
+              padding: "7px"
+            }}
+            onClick={handleClickOpen}
+          >
+            <Icon path={mdiPlus} size={1.2} />
+          </IconButton>
+        </HeaderBottomBox>
+      </Header>
+      {/* mo modal tao cong viec moi */}
+      <Dialog aria-labelledby="customized-dialog-title" open={open} fullWidth>
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Tạo công việc
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}>Tên công việc</Typography>
+              <Typography component={'span'}>(tối đa 100 ký tự)</Typography>
+            </TitleText>
+            <Input
+              fullWidth
+            />
+          </Typography>
+          <ProgressWork component={'span'}>
+            <Typotitle component={'span'}>
+              Tiến độ công việc
+          </Typotitle>
+            <Typography component={'span'}>
+              Đặt mặc định <Icon path={mdiHelpCircle} color={"black"} size={1} />
+            </Typography>
+          </ProgressWork>
+          <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
+          <StartEndDay component={'span'}>
+            <BeginTime component={'span'}>Bắt đầu</BeginTime>
+            <OutlineInput />
+            <StartEndDate component={'span'}>Ngày</StartEndDate>
+            <OutlineInput />
+          </StartEndDay>
+          <StartEndDay component={'span'}>
+            <EndTime component={'span'}>Kết thúc</EndTime>
+            <OutlineInput />
+            <StartEndDate component={'span'}>Ngày</StartEndDate>
+            <OutlineInput />
+          </StartEndDay>
+          <TypoText component={'div'}> Chọn nhóm việc </TypoText>
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}> Nhóm mặc định </Typography>
+              <Typography component={'span'}></Typography>
+            </TitleText>
+            <FormControl fullWidth style={{ marginBottom: 50 }}>
+              <Select
+                onChange={handleChangeGroup('')}
+                native
+              >
+                <option value={10}>Ten</option>
+                <option value={20}>Twenty</option>
+                <option value={30}>Thirty</option>
+              </Select>
+            </FormControl>
+          </Typography>
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}> Mô tả công việc </Typography>
+              <Typography component={'span'}>(Tối đa 500 kí tự)</Typography>
+            </TitleText>
+            <Input
+              style={{ marginBottom: 10 }}
+              fullWidth
+            />
+          </Typography>
+          <Typography component={'span'}>
+            <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
+            <CommonPriorityForm label1='Thấp' label2='Trung bình' label3='Cao' />
+          </Typography >
+          <Typography component={'span'}>
+            <TypoText component={'div'}> Hình thức giao việc </TypoText>
+            <CommonControlForm label1='Được giao' label2='Tự đề xuất' label3='Giao việc cho' />
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose} color="primary">
+            Save changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+    </div>
+  )
+}
+
 
 export default ListHeader;
