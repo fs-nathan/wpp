@@ -92,6 +92,8 @@ function getCell(key, col, doc) {
       text = doc.date
       color = "black"
       break
+    default:
+      break
   }
 
   switch (type[0]) {
@@ -127,6 +129,8 @@ function getCell(key, col, doc) {
           </ColorTypo>
         </StyledTableBodyCell>
       )
+    default:
+      return(<div></div>)
   }
 }
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { TableCell, TableRow, Checkbox } from '@material-ui/core';
-import Icon from '@mdi/react';
-import {
+// import Icon from '@mdi/react';
+// import {
   // mdiDragVertical,
-  mdiSortDescending, mdiSortAscending
-} from '@mdi/js';
+//   mdiSortDescending, mdiSortAscending
+// } from '@mdi/js';
 import {
   getActiveTab
 } from '../../../commonFunction'
