@@ -30,9 +30,11 @@ import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } 
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from './user/banUserFromGroup';
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
+import documents from './documents'
 
 const rootReducer = combineReducers({
   authentications,
+  documents,
   room: combineReducers({
     listRoom,
     detailRoom,

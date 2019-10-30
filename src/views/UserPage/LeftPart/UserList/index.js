@@ -31,6 +31,13 @@ const CustomStyledList = styled(StyledList)`
   }
 `;
 
+const RoomNameSpan = styled.span`
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #9c9c9c;
+  padding: 15px;
+`;
+
 function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, }) {
   
   const { data: { rooms }, loading: listUserOfGroupLoading, error: listUserOfGroupError } = listUserOfGroup;
@@ -106,7 +113,9 @@ function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, })
                       {...provided.droppableProps}
                     >
                       <StyledListItem>
-                        {get(room, 'name', '') === 'default' ? 'Mặc định' : get(room, 'name', '')}
+                        <RoomNameSpan>
+                          {get(room, 'name', '') === 'default' ? 'Mặc định' : get(room, 'name', '')}
+                        </RoomNameSpan>
                       </StyledListItem>
                       {users.map((user, index) => {
                         if (get(user, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()))
