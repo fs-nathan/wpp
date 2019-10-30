@@ -28,7 +28,7 @@ const RightHeader = styled.div`
   }
 `;
 
-function TablePart() {
+function TablePart(props) {
   return (
     <Container>
       <Header>
@@ -54,7 +54,7 @@ function TablePart() {
           </ColorButton>
         </RightHeader>
       </Header>
-      <TableMain />
+      <TableMain {...props}/>
     </Container>
   )
 }

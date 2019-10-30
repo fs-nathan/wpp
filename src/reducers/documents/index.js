@@ -1,9 +1,12 @@
 import {
+    CHANGE_TAB,
     FILTER_DOCUMENTS,
     SET_ALL_DATA_DOCUMENTS
 } from '../../constants/actions/documents';
+import * as TABS from '../../constants/documentTabType'
 
 const initialState = {
+    activeTabId: TABS.RECENT_TAB.id,
     docs: {
         'task-1': {
             id: 'task-1',
@@ -57,6 +60,11 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 docs: action.payload
+            };
+        case CHANGE_TAB:
+            return {
+                ...state,
+                activeTabId: action.payload
             };
         case SET_ALL_DATA_DOCUMENTS:
             return action.payload
