@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, MenuItem, IconButton, Typography, makeStyles, Dialog, Button, withStyles, Radio, RadioGroup, Input, Fab } from '@material-ui/core';
+import { Select, MenuItem, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input } from '@material-ui/core';
 import styled from 'styled-components';
 import { mdiPlus, mdiApps, mdiHelpCircle } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -11,8 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import NavigationIcon from '@material-ui/icons/Navigation';
-import FormLabel from '@material-ui/core/FormLabel';
+
 import { func } from 'prop-types';
 
 
@@ -315,10 +314,10 @@ function ListHeader() {
               fullWidth
             />
           </Typography>
-          <Typography>
+          <Typography component={'span'}>
             <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
             <CommonPriorityForm label1='Thấp' label2='Trung bình' label3='Cao' />
-          </Typography>
+          </Typography >
           <Typography component={'span'}>
             <TypoText component={'div'}> Hình thức giao việc </TypoText>
             <CommonControlForm label1='Được giao' label2='Tự đề xuất' label3='Giao việc cho' />
