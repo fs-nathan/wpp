@@ -7,7 +7,7 @@ import HeaderButtonGroup from './HeaderButtonGroup';
 import ColorButton from '../../../components/ColorButton';
 import TableMain from './TableMain';
 import { ListItemIcon } from '@material-ui/core';
-import * as TABS from '../../../constants/documentTabType'
+import { getActiveTab } from '../commonFunction'
 
 const Container = styled.div`
   grid-area: table;
@@ -28,15 +28,7 @@ const RightHeader = styled.div`
 
 function TablePart(props) {
 
-  // Find current active tab
-  // - Init object that hold the result tab
-  let activeTab = {}
-  // - Cause tab in constant file is object
-  // So we need convert to array
-  // Then compare current active tab id with each object's id
-  const obj = Object.entries(TABS).find(obj => obj[1].id === props.activeTabId)
-  // - If found tab => Set it to result tab
-  if(obj) activeTab = obj[1]
+  const activeTab = getActiveTab(props.activeTabId)
 
   return (
     <Container>

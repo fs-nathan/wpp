@@ -12,7 +12,7 @@ import {
 } from '@mdi/js';
 import ColorTypo from '../../../components/ColorTypo';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import * as TABS from '../../../constants/documentTabType'
+import * as TABS from '../../../constants/documentTab'
 
 const Container = styled.div`
   grid-area: list;

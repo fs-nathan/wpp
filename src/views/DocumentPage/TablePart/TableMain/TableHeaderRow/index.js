@@ -6,6 +6,9 @@ import {
   // mdiDragVertical,
   mdiSortDescending, mdiSortAscending
 } from '@mdi/js';
+import {
+  getActiveTab
+} from '../../../commonFunction'
 
 const StyledTableHeadRow = styled(TableRow)`
   background-color: rgba(0, 0, 0, 0);
@@ -32,9 +35,15 @@ const StyledTableHeadCell = styled(({ children, ...rest }) =>
   &:nth-child(4) > div {
     justify-content: start;
   }
+  &:last-child {
+    padding: 16px;
+  }
 `;
 
-function TableHeaderRow() {
+function TableHeaderRow(props) {
+  
+  const activeTab = getActiveTab(props.activeTabId)
+
   return (
     <StyledTableHeadRow>
       {/* <StyledTableHeadCell>
@@ -43,7 +52,18 @@ function TableHeaderRow() {
       <StyledTableHeadCell>
         <Checkbox />
       </StyledTableHeadCell>
-      <StyledTableHeadCell align="center">
+
+      {activeTab.columns.map((col, idx) => {
+        return (
+          <StyledTableHeadCell 
+            key={`header ${idx}`} 
+            align={col.align} 
+            style={col.additionStyle}>
+            {col.name}
+          </StyledTableHeadCell>
+        )
+      })}
+      {/* <StyledTableHeadCell align="center">
         Loại
       </StyledTableHeadCell>
       <StyledTableHeadCell style={{ width: "40%" }}>
@@ -66,7 +86,11 @@ function TableHeaderRow() {
       </StyledTableHeadCell>
       <StyledTableHeadCell align="right" style={{paddingRight: 16}}>
         Kích thước
-      </StyledTableHeadCell>
+      </StyledTableHeadCell> */}
+
+
+
+
     </StyledTableHeadRow>
   )
 }
