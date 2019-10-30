@@ -3,63 +3,18 @@ import { Table, TableHead, TableBody } from '@material-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TableBodyRow from './TableBodyRow';
 import TableHeaderRow from './TableHeaderRow';
+import { connect } from 'react-redux';
+import { filterDocs, setAllDataDocuments } from '../../../../actions/documents'
 // import _ from 'lodash'
-
-const __data = {
-  tasks: {
-    'task-1': {
-      id: 'task-1',
-      content: 20,
-      name: "Dự án thiết kế website Phúc An",
-      type: "folder",
-      location: "Văn Thư",
-      size: "10.3",
-      date: "02/02/2019"
-    },
-    'task-2': {
-      id: 'task-2',
-      content: 40,
-      name: "Ảnh mẫu gửi khách hàng.jpg",
-      type: "jpg",
-      location: "Marketing",
-      size: "30",
-      date: "01/03/2019"
-    },
-    'task-3': {
-      id: 'task-3',
-      content: 60,
-      name: "Ảnh mẫu gửi khách hàng 2.jpg",
-      type: "jpg",
-      location: "Văn Thư",
-      size: "20.5",
-      date: "05/02/2019"
-    },
-    'task-4': {
-      id: 'task-4',
-      content: 80,
-      name: "Ảnh mẫu gửi khách hàng 3.jpg",
-      type: "jpg",
-      location: "Thiết kế",
-      size: "5",
-      date: "28/12/2018"
-    },
-  },
-  columns: {
-    'column-1': {
-      id: 'column-1',
-      tasksId: ['task-1', 'task-2', 'task-3', 'task-4']
-    }
-  },
-  columnOrder: ['column-1'],
-};
 
 // function filterTaskByProperty (propertyName) {
 //   __data.tasks = _.sortBy(__data.tasks, [propertyName])
 // }
 
-function TableMain() {
+function TableMain(props) {
 
-  const [data, setData] = React.useState(__data);
+  const { data, setData } = props
+
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
     if (!destination) return;
@@ -87,12 +42,12 @@ function TableMain() {
   return (
     <Table>
       <TableHead>
-        <TableHeaderRow />
+        <TableHeaderRow {...props}/>
       </TableHead>
       <DragDropContext onDragEnd={onDragEnd}>
         {data.columnOrder.map((columnId, index) => {
           const column = data.columns[columnId];
-          const tasks = column.tasksId.map(taskId => data.tasks[taskId]);
+          const docs = column.tasksId.map(taskId => data.docs[taskId]);
           return (
             <Droppable droppableId={column.id} key={index}>
               {provided => (
@@ -100,8 +55,13 @@ function TableMain() {
                   innerRef={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  {tasks.map((task, index) => (
-                    <TableBodyRow key={task.id} task={task} index={index} />  
+                  {docs.map((doc, index) => (
+                    <TableBodyRow 
+                      key={doc.id} 
+                      doc={doc} 
+                      index={index} 
+                      {...props}
+                    />  
                   ))}
                   {provided.placeholder}
                 </TableBody>
@@ -114,4 +74,21 @@ function TableMain() {
   )
 }
 
-export default TableMain;
+const mapStateToProps = state => {
+  return {
+    docs: state.documents.docs,
+    data: state.documents
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    filterDocs: payload => dispatch(filterDocs(payload)),
+    setData: payload => dispatch(setAllDataDocuments(payload))
+  };
+};
+
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps,
+)(TableMain);
