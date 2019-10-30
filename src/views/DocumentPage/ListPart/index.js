@@ -40,12 +40,18 @@ const StyledListItem = styled(ListItem)`
 `
 
 function ListPart(props) {
+
+  // Handle change tab event of user
   const changeTab = tabId => () => {
     props.changeTab(tabId)
   }
 
+  // Get different style of each tab when user change tab
   const getTabButtonStyle = tabId => {
+    // Compare tab id with current active tab id
+    // Then return compatible style
     return {
+      transition: "1s",
       backgroundColor: props.activeTabId === tabId
         ? "rgba(0, 0, 0, 0.2)"
         : "transparent"
