@@ -99,7 +99,7 @@ function GetFileByType({ type, name, size, location, date }) {
   );
 }
 
-function TableBodyRow({ task, index }) {
+function TableBodyRow(props) {
 
   return (
     // <Draggable 
@@ -107,7 +107,7 @@ function TableBodyRow({ task, index }) {
     // index={index}  
     // >
     // {(provided) => ( 
-    GetFileByType(task)
+    GetFileByType(props.doc)
 
     //   )}
     // </Draggable>
