@@ -1,6 +1,10 @@
 import React from 'react';
-import { Avatar, IconButton, Menu, MenuItem, withStyles, Button, Dialog, Typography, TextField } from '@material-ui/core';
+import { Avatar, IconButton, Menu, MenuItem, withStyles, Button, Dialog, Typography, TextField, Input, FormControl, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -10,26 +14,7 @@ import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import avatar from '../../../../../assets/avatar.jpg';
-
-const currencies = [
-  {
-    value: 'USD',
-    label: '$',
-  },
-  {
-    value: 'EUR',
-    label: '€',
-  },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
-];
-
+import { mdiMenuDown } from '@mdi/js';
 
 const Container = styled.div`
   padding: 0 0 0 20px;
@@ -48,20 +33,31 @@ const StyledIconButton = styled(IconButton)`
   margin-left: auto;
 `;
 // cac bien cua modal chinh sua cong viec
-const TextLabel = styled(TextField)`
-  margin-bottom: 25px;
-  & > label {
-    
-    font-size: 16px;
-    color: #505050;
+const TitleText = styled(Typography)`
+  display: flex;
+  justify-content: space-between
+  & > *:first-child {
+    font-size: 15px;
+  color: #505050;
   }
-  & > input {
-    padding: 20px 0 7px;
+  & > *:last-child {
+    color: #fa0000
+    font-size: 14px;
+    font-style: italic;
   }
 `
+
 const TypoText = styled(Typography)`
-  font-size: 16px;
-  color: #505050
+  font-size: 15px;
+  color: #505050;
+  margin: 20px 0;
+`
+
+const GroupRadio = styled(RadioGroup)`
+  & > label {
+    margin-right: 80px;
+    margin-bottom: 30px;
+  }
 `
 
 const styles = theme => ({
@@ -105,32 +101,27 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 // end bien modal chinh sua cong viec
-// cac bien cua textfield
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    width: 570,
-  },
-  menu: {
-    width: 570,
-  },
-}));
 
-// end textfield
 function TabHeader() {
-  const classes = useStyles();
-  const [currency, setCurrency] = React.useState('EUR');
-
-  const handleChange = event => {
-    setCurrency(event.target.value);
-  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [open, setOpen] = React.useState(false);
+
+  const [state, setState] = React.useState('');
+
+  const handleChange = name => event => {
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
+  };
+
+  const [value, setValue] = React.useState('Được giao');
+
+  const handleChangeRadio = event => {
+    setValue(event.target.value);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -179,36 +170,78 @@ function TabHeader() {
           Chỉnh sửa công việc
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            <TextLabel label="Search field" fullWidth />
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}> Tên công việc </Typography>
+              <Typography component={'span'}>(Tối đa 100 kí tự)</Typography>
+            </TitleText>
+            <Input
+              inputProps={{
+                'aria-label': 'description',
+              }}
+              fullWidth
+            />
           </Typography>
-          <TypoText>
-            Chọn nhóm việc
-          </TypoText>
-          <TextField
-            id="standard-select-currency"
-            select
-            label="Chọn mặc định"
-            className={classes.textField}
-            value={currency}
-            onChange={handleChange}
-            SelectProps={{
-              MenuProps: {
-                className: classes.menu,
-              },
-            }}
-            margin="normal"
-          >
-            {currencies.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+          <TypoText component={'div'}> Chọn nhóm việc </TypoText>
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}> Nhóm mặc định </Typography>
+              <Typography component={'span'}></Typography>
+            </TitleText>
+            <FormControl fullWidth style={{ marginBottom: 50 }}>
+              <Select
+                native
+                onChange={handleChange('')}
+              >
+                
+                <option value={10}>Ten</option>
+                <option value={20}>Twenty</option>
+                <option value={30}>Thirty</option>
+              </Select>
+            </FormControl>
+          </Typography>
+          <Typography component={'span'}>
+            <TitleText component={'span'}>
+              <Typography component={'span'}> Mô tả công việc </Typography>
+              <Typography component={'span'}>(Tối đa 500 kí tự)</Typography>
+            </TitleText>
+            <Input
+              style={{ marginBottom: 10 }}
+              inputProps={{
+                'aria-label': 'description',
+              }}
+              fullWidth
+            />
+          </Typography>
+          <Typography component={'span'}>
+          <TypoText component={'div'}> Hình thức giao việc </TypoText>
+            <FormControl component="fieldset">
+              <GroupRadio aria-label="position" name="position" value={value} onChange={handleChangeRadio} row>
+                <FormControlLabel
+                  value="Được giao"
+                  control={<Radio color="primary" />}
+                  label="Được giao"
+                  labelPlacement="end"
+                />
+              <FormControlLabel
+                  value="Tự đề xuất"
+                  control={<Radio color="primary" />}
+                  label="Tự đề xuất"
+                  labelPlacement="end"
+                />
+              <FormControlLabel
+                  value="Giao việc cho"
+                  control={<Radio color="primary" />}
+                  label="Giao việc cho"
+                  labelPlacement="end"
+                />
+              </GroupRadio>
+            </FormControl>
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClickClose} color="primary">
-            Save changes
+            Hoàn Thành
           </Button>
         </DialogActions>
       </Dialog>
@@ -217,4 +250,4 @@ function TabHeader() {
   );
 }
 
-export default TabHeader;
+export default TabHeader

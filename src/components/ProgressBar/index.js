@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiSquare } from '@mdi/js';
+import { mdiCircle } from '@mdi/js';
 import ColorTypo from '../ColorTypo';
 
 const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTarget, ...rest }) => 
@@ -107,11 +107,11 @@ function ProgressBar(props) {
     <div>
       <ProgressBarBox {...props} />
       <LegendBox>
-        <Icon path={mdiSquare} size={1} color={props.colorDone || 'rgb(49, 181, 134)'} />
+        <Icon path={mdiCircle} size={1} color={props.colorDone || 'rgb(49, 181, 134)'} />
         <ColorTypo>Hoàn thành thực tế</ColorTypo>
       </LegendBox>
       <LegendBox>
-        <Icon path={mdiSquare} size={1} color={props.colorTarget || '#ff9800'} />
+        <Icon path={mdiCircle} size={1} color={props.colorTarget || '#ff9800'} />
         <ColorTypo>Kế hoạch</ColorTypo>
       </LegendBox>
     </div>

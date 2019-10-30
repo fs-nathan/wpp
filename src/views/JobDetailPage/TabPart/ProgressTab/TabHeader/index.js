@@ -13,13 +13,15 @@ const Container = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   & > *:first-child {
     margin-right: auto;
+    margin-left: 20px;
+    font-size: 16px;
   }
 `;
 
 function TabHeader({ setShow }) {
   return (
     <Container>
-      <ColorTypo uppercase>Tiến độ công việc</ColorTypo>
+      <ColorTypo uppercase bold>Tiến độ công việc</ColorTypo>
       <IconButton>
         <Icon path={mdiSettings} size={1}/>
       </IconButton>
