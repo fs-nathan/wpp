@@ -1,6 +1,5 @@
 import React from 'react';
 import { Avatar, IconButton, Menu, MenuItem, withStyles, Button, Dialog, Typography, TextField, Input, FormControl, Select } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -22,7 +21,7 @@ const Container = styled.div`
   align-items: center;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 99px;
+  height: 92px;
 `;
 
 const TagsContainer = styled.div`
@@ -161,7 +160,7 @@ function TabHeader() {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleClickOpen}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={handleClose,handleClickOpen}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={handleClose}>Xóa</MenuItem>
       </Menu>
       {/* modal chinh sua cong viec */}
