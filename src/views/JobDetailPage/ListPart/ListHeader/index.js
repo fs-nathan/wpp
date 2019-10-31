@@ -13,12 +13,14 @@ import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import addMemberIcon from '../../../../assets/addMemberIcon.png'
 import colorPal from '../../../../helpers/colorPalette'
+import AddMemberModal from './AddMemberModal'
 
 import { func } from 'prop-types';
 
 
 const Header = styled.div`
   padding: 0;
+  height: 92px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > * {
     margin-bottom: 5px;
@@ -101,10 +103,7 @@ const TypoText = styled(Typography)`
   color: #505050;
   margin: 20px 0;
 `
-const FooterButtons = styled(Typography)`
-  display: flex;
-  justify-content: space-between;
-`
+
 
 const PriorityFormControl = styled(FormControl)`
   display: flex;
@@ -116,7 +115,7 @@ const PriorityRadioGroup = styled(RadioGroup)`
 
 const SpecialControlLabel = styled(FormControlLabel)`
   background-color: ${props => props.checked 
-    ? colorPal['orange'][0] 
+    ? colorPal['#ffd3b4'][0] 
     : colorPal['grey'][0]};
   width: 30%;
   border-radius: 4px;
@@ -241,50 +240,6 @@ function CommonPriorityForm(props) {
   )
 }
 
-// function AddMemberModal() {
-//   const [openAddMember, setOpenAddMember] = React.useState(false);
-
-//   const handleClickOpenAddMember = () => {
-//     setOpen(true);
-//   };
-
-//   const handleCloseAddMember = () => {
-//     setOpen(false);
-//   }
-//   return(
-//     <div>
-//       <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
-//         Open dialog
-//       </Button>
-//       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-//         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-//           Modal title
-//         </DialogTitle>
-//         <DialogContent dividers>
-//           <Typography gutterBottom>
-//             Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-//             in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-//           </Typography>
-//           <Typography gutterBottom>
-//             Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-//             lacus vel augue laoreet rutrum faucibus dolor auctor.
-//           </Typography>
-//           <Typography gutterBottom>
-//             Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-//             scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-//             auctor fringilla.
-//           </Typography>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button autoFocus onClick={handleClose} color="primary">
-//             Save changes
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-//     </div>
-//   )
-// }
-
 function ListHeader() {
   const [open, setOpen] = React.useState(false);
 
@@ -299,6 +254,7 @@ function ListHeader() {
 
 
   const [state, setState] = React.useState('');
+  const [openAddModal, setOpenAddModal] = React.useState(false);
 
   const handleChangeGroup = name => event => {
     setState({
@@ -398,15 +354,20 @@ function ListHeader() {
         </DialogContent>
         <DialogActions>
          
-            {/* <Button onClick={handleClickOpenAddMember} >
+            <Button onClick={() => {
+              handleClose()
+              setOpenAddModal(true)
+            }} >
               <img src={addMemberIcon} alt='addMemberIcon' />
-            </Button> */}
+            </Button>
+            
+            
           <Button autoFocus onClick={handleClose} color="primary">
             TẠO VIỆC
           </Button>
         </DialogActions>
       </Dialog>
-          
+      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal}/>
     </div>
   )
 }
