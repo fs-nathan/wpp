@@ -12,6 +12,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import addMemberIcon from '../../../../assets/addMemberIcon.png'
+import colorPal from '../../../../helpers/colorPalette'
+
 import { func } from 'prop-types';
 
 
@@ -104,6 +106,30 @@ const FooterButtons = styled(Typography)`
   justify-content: space-between;
 `
 
+const PriorityFormControl = styled(FormControl)`
+  display: flex;
+`
+
+const PriorityRadioGroup = styled(RadioGroup)`
+  justify-content: space-evenly;
+`
+
+const SpecialControlLabel = styled(FormControlLabel)`
+  background-color: ${props => props.checked 
+    ? colorPal['orange'][0] 
+    : colorPal['grey'][0]};
+  width: 30%;
+  border-radius: 4px;
+  margin: 0;
+  justify-content: center;
+  padding: 10px 0;
+  & > span:first-child { display: none; }
+`;
+
+// Define variable using in form
+let priorityList = ['Thấp', 'Trung bình', 'Cao']
+let priority = priorityList[0]
+
 const styles = theme => ({
   root: {
     margin: 0,
@@ -163,9 +189,11 @@ function ListHeaderSelect({ setShow }) {
 
 function CommonControlForm(props) {
   const [value, setValue] = React.useState(props.label1);
+  console.log(value)
   return (
-    <FormControl component="fieldset" >
-      <RadioGroup aria-label="position" name="position" value={value} onChange={event => setValue(event.target.value)} row>
+    <FormControl component="fieldset">
+      <RadioGroup aria-label="position" name="position" value={value}
+        onChange={event => setValue(event.target.value)} row>
         <FormControlLabel
           value={props.label1}
           control={<Radio color="primary" />}
@@ -190,76 +218,72 @@ function CommonControlForm(props) {
 }
 
 function CommonPriorityForm(props) {
-  const [valuePF, setValuePF] = React.useState(props.label1);
+  const [value, setValue] = React.useState(priority)
+  console.log(value)
   return (
-    <FormControl component="fieldset" >
-      <RadioGroup aria-label="position" name="position" value={valuePF} onChange={event => setValuePF(event.target.value)} row>
-        <FormControlLabel
-          value={props.label1}
-          control={<Radio color="primary" />}
-          label={props.label1}
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          value={props.label2}
-          control={<Radio color="primary" />}
-          label={props.label2}
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          value={props.label3}
-          control={<Radio color="primary" />}
-          label={props.label3}
-          labelPlacement="end"
-        />
-      </RadioGroup>
-    </FormControl>
+    <PriorityFormControl component="fieldset">
+      <PriorityRadioGroup
+        aria-label="position" name="position" value={value}
+        onChange={event => setValue(event.target.value)} row>
+        {
+          props.labels.map((label, idx) =>
+            <SpecialControlLabel
+              key={idx}
+              value={label}
+              control={<Radio />}
+              label={label}
+              checked={value === label}
+            />
+          )
+        }
+      </PriorityRadioGroup>
+    </PriorityFormControl>
   )
 }
 
-function AddMemberModal() {
-  const [openAddMember, setOpenAddMember] = React.useState(false);
+// function AddMemberModal() {
+//   const [openAddMember, setOpenAddMember] = React.useState(false);
 
-  const handleClickOpenAddMember = () => {
-    setOpen(true);
-  };
+//   const handleClickOpenAddMember = () => {
+//     setOpen(true);
+//   };
 
-  const handleCloseAddMember = () => {
-    setOpen(false);
-  }
-  return(
-    <div>
-      <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
-        Open dialog
-      </Button>
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-            lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-            scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-            auctor fringilla.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Save changes
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  )
-}
+//   const handleCloseAddMember = () => {
+//     setOpen(false);
+//   }
+//   return(
+//     <div>
+//       <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
+//         Open dialog
+//       </Button>
+//       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+//         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+//           Modal title
+//         </DialogTitle>
+//         <DialogContent dividers>
+//           <Typography gutterBottom>
+//             Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
+//             in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+//           </Typography>
+//           <Typography gutterBottom>
+//             Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
+//             lacus vel augue laoreet rutrum faucibus dolor auctor.
+//           </Typography>
+//           <Typography gutterBottom>
+//             Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
+//             scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
+//             auctor fringilla.
+//           </Typography>
+//         </DialogContent>
+//         <DialogActions>
+//           <Button autoFocus onClick={handleClose} color="primary">
+//             Save changes
+//           </Button>
+//         </DialogActions>
+//       </Dialog>
+//     </div>
+//   )
+// }
 
 function ListHeader() {
   const [open, setOpen] = React.useState(false);
@@ -365,7 +389,7 @@ function ListHeader() {
           </Typography>
           <Typography component={'span'}>
             <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
-            <CommonPriorityForm label1='Thấp' label2='Trung bình' label3='Cao' />
+            <CommonPriorityForm labels={priorityList} />
           </Typography >
           <Typography component={'span'}>
             <TypoText component={'div'}> Hình thức giao việc </TypoText>
@@ -374,9 +398,9 @@ function ListHeader() {
         </DialogContent>
         <DialogActions>
          
-            <Button onClick={handleClickOpenAddMember} >
+            {/* <Button onClick={handleClickOpenAddMember} >
               <img src={addMemberIcon} alt='addMemberIcon' />
-            </Button>
+            </Button> */}
           <Button autoFocus onClick={handleClose} color="primary">
             TẠO VIỆC
           </Button>
