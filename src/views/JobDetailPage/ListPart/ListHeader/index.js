@@ -11,13 +11,16 @@ import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import addMemberIcon from '../../../../assets/addMemberIcon.png'
 import colorPal from '../../../../helpers/colorPalette'
+import AddMemberModal from './AddMemberModal'
 
 import { func } from 'prop-types';
 
 
 const Header = styled.div`
   padding: 0;
+  height: 92px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > * {
     margin-bottom: 5px;
@@ -31,9 +34,6 @@ const StartEndDay = styled(Typography)`
   margin-top: 15px;
 `
 
-const StartTime = styled(Typography)`
-  margin-right: 20px;
-`
 const StartEndDate = styled(Typography)`
   margin: 0 15px;
 `
@@ -104,6 +104,7 @@ const TypoText = styled(Typography)`
   margin: 20px 0;
 `
 
+
 const PriorityFormControl = styled(FormControl)`
   display: flex;
 `
@@ -114,7 +115,7 @@ const PriorityRadioGroup = styled(RadioGroup)`
 
 const SpecialControlLabel = styled(FormControlLabel)`
   background-color: ${props => props.checked 
-    ? colorPal['orange'][0] 
+    ? colorPal['#ffd3b4'][0] 
     : colorPal['grey'][0]};
   width: 30%;
   border-radius: 4px;
@@ -164,7 +165,9 @@ const DialogContent = withStyles(theme => ({
 const DialogActions = withStyles(theme => ({
   root: {
     margin: 0,
+    justifyContent: 'space-between',
     padding: theme.spacing(1),
+
   },
 }))(MuiDialogActions);
 
@@ -248,7 +251,10 @@ function ListHeader() {
     setOpen(false);
   }
 
+
+
   const [state, setState] = React.useState('');
+  const [openAddModal, setOpenAddModal] = React.useState(false);
 
   const handleChangeGroup = name => event => {
     setState({
@@ -347,12 +353,21 @@ function ListHeader() {
           </Typography>
         </DialogContent>
         <DialogActions>
+         
+            <Button onClick={() => {
+              handleClose()
+              setOpenAddModal(true)
+            }} >
+              <img src={addMemberIcon} alt='addMemberIcon' />
+            </Button>
+            
+            
           <Button autoFocus onClick={handleClose} color="primary">
-            Save changes
+            TẠO VIỆC
           </Button>
         </DialogActions>
       </Dialog>
-
+      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal}/>
     </div>
   )
 }
