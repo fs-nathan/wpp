@@ -2,14 +2,15 @@ import React from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiChevronRight } from '@mdi/js';
+import { mdiClose  } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 
 const Container = styled.div`
-  padding: 10px 0;
+
   display: flex;
   align-items: center;
   background-color: #fff;
+  height: 92px;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   & > *:first-child {
     margin-right: auto;
@@ -21,7 +22,7 @@ function TabHeader({ setShow }) {
     <Container>
       <ColorTypo uppercase>Chia sẻ vị trí</ColorTypo>
       <IconButton onClick={() => setShow(0)}>
-        <Icon path={mdiChevronRight} size={1}/>
+        <Icon path={mdiClose } size={1}/>
       </IconButton>
     </Container>
   );

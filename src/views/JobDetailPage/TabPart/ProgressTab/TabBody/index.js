@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Avatar, Table, TableHead, TableBody, TableRow, TableCell, Typography } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ProgressBar from '../../../../../components/ProgressBar';
 import colorPal from '../../../../../helpers/colorPalette';
@@ -8,8 +8,9 @@ import avatar from '../../../../../assets/avatar.jpg';
 
 const Container = styled.div`
   padding: 10px 0;
+
   & > *:not(last-child) {
-    margin-top: 10px;
+    margin-top: 30px;
   }
   & > hr {
     border-color: rgba(0, 0, 0, .1);
@@ -58,7 +59,7 @@ const TypoTitle = styled(ColorTypo)`
   margin-left: 20px;
 `
 const Progress  = styled(ProgressBar)`
-  margin: 0 20px 40px 20px;
+  margin: 0 20px 85px 20px;
 `
 const TableHistory = styled(Table)`
   margin-left: 20px;
@@ -86,6 +87,7 @@ function TabBody() {
         </EndDateBox>
       </StartEndDateBox>
       <Progress percentDone={28} percentTarget={70} colorDone={colorPal['green'][0]} colorTarget={colorPal['orange'][0]}  />
+      <Typography style={{ marginBottom: 50}} />
       <hr />
       <TypoTitle bold variant='subtitle1' >Lịch sử điều chỉnh tiến độ</TypoTitle>
       <TableHistory style={{ marginLeft: 20, marginRight: 20, borderBottomStyle: "dashed"}}>

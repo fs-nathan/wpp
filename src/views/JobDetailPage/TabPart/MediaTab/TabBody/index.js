@@ -15,7 +15,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
 
 const Container = styled.div`
-  padding: 10px 0;
+  padding: 10px 20px;
 `;
 
 const MediaBox = () => { 
@@ -27,7 +27,7 @@ const MediaBox = () => {
       {Array.from({ length: 7 }).map((_, index) => {
         return (
           <GridListTile key={`1-${index}`}>
-            <img src={avatar} alt='avatar' />
+            <img src={avatar} alt='avatar'/>
           </GridListTile>
         );
       })}
