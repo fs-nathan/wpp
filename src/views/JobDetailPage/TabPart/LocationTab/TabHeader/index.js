@@ -6,7 +6,6 @@ import { mdiClose  } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 
 const Container = styled.div`
-
   display: flex;
   align-items: center;
   background-color: #fff;
@@ -14,13 +13,15 @@ const Container = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   & > *:first-child {
     margin-right: auto;
+    margin-left: 20px;
+    font-size: 16px;
   }
 `;
 
 function TabHeader({ setShow }) {
   return (
     <Container>
-      <ColorTypo uppercase>Chia sẻ vị trí</ColorTypo>
+      <ColorTypo uppercase bold>Chia sẻ vị trí</ColorTypo>
       <IconButton onClick={() => setShow(0)}>
         <Icon path={mdiClose } size={1}/>
       </IconButton>

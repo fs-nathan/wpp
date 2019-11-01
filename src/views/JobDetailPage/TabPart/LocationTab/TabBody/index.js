@@ -13,7 +13,7 @@ import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 
 const Container = styled.div`
-  padding: 10px 0;
+  padding: 10px 20px;
 `;
 
 const CustomListItem = () => {
