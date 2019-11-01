@@ -14,6 +14,7 @@ const colors = {
   'greenlight': ['#fff', '#20c997'],
   'orangelight': ['#fdedd5', '#fd7e14'],
   'bluelight': ['#d2fdf6', '#1abc9c'],
+  'light-green': ['#d2fde1', '#2fbe86'],
   'redlight': ['#fdd2d9', '#fa6880'],
   'purplelight': ['#fdd2fc', '#c91dc5'],
   'indigolight': ['#d0e1ff', '#4886f1'],

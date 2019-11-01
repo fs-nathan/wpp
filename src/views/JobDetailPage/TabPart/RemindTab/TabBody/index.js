@@ -76,7 +76,7 @@ const RemindList = () => {
               <StyledTitleBox>
                 <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
                 <ColorTypo variant='body1'>{elem.title}</ColorTypo>
-                <ColorChip color='orange' size='small' badge label={elem.badge} />
+                <ColorChip color='orangelight' size='small' badge label={elem.badge} />
               </StyledTitleBox>
               <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
                 <Icon path={mdiDotsVertical} size={1} color={'rgba(0, 0, 0, 1)'} />
