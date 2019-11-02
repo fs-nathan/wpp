@@ -16,10 +16,10 @@ const StyledList = styled(List)`
 function ListBody() {
   return (
     <StyledList>
-      <ListBodySubHeader subPrimary={'Thiết kế giao diện'} subSecondary={'(1 việc)'}/>
+      <ListBodySubHeader subPrimary={`Thiết kế giao diện`} subSecondary={`(2 việc)`}/>
       <ListBodyItem />
       <ListBodyItem />
-      <ListBodySubHeader subPrimary={'Thiết kế giao diện'} subSecondary={'(1 việc)'}/>
+      <ListBodySubHeader subPrimary={'Thiết kế giao diện'} subSecondary={'(2 việc)'}/>
       <ListBodyItem />
       <ListBodyItem />
     </StyledList>

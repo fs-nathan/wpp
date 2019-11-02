@@ -1,17 +1,72 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiDotsHorizontal } from '@mdi/js';
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { mdiDotsVertical } from '@mdi/js';
+import { Avatar, List, ListItem, ListItemAvatar, ListItemText, IconButton, Menu, MenuItem, Typography } from '@material-ui/core';
 import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
+import ColorTypo from '../../../../../components/ColorTypo'
+import ColorChip from '../../../../../components/ColorChip';
+import colorPal from '../../../../../helpers/colorPalette';
+
+const members = [
+  { id: 1, name: 'Trần Văn Nam', role: 'Giám đốc', projectRole: 'Admin', authorityList: ['Giao việc'] },
+  { id: 2, name: 'Trần Văn Nam', projectRole: 'Quản lý', authorityList: ['Giao việc', 'Giám sát'] },
+  { id: 3, name: 'Trần Văn Nam', role: 'Khác', projectRole: 'Admin', authorityList: ['Giao việc'] },
+]
 
 const Container = styled.div`
-  padding: 10px 0;
+  padding: 10px 20px;
 `;
 
-const MemberListItem = () => {
-  
+const StyledListItem = styled(ListItem)`
+    padding : 7px 0;
+`
+
+const BadgeItem = styled(ColorChip)`
+  font-weight: 600;
+  border-radius: 3px;
+  margin-right: 6px;
+`
+const TextName = styled(ColorTypo)`
+  font-size: 15px;
+  padding-right: 4px;
+`
+const Text = styled(ColorTypo)`
+  font-size: 14px;
+  color: ${colorPal['gray'][0]}
+  border-left: 1px solid ${colorPal['gray'][0]}
+  padding-left: 3px;
+  display: inline;
+`
+const StyledDiv = styled.div`
+  display: flex;
+  margin-bottom: 7px;
+`
+
+const BadgeAdmin = styled(ColorTypo)`
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 7px;
+`
+
+const getBadgeProjectRole = (projectRole) => {
+  let color = ""
+  switch(projectRole){
+    case "Admin":
+      color = "red";
+      break;
+    default:
+      color = "black";
+      break;
+  }
+  return (
+    <BadgeAdmin color={color} variant='caption'>{projectRole}</BadgeAdmin>
+  )
+}
+
+const MemberListItem = ({ name, role, projectRole, authorityList }) => {
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -24,18 +79,39 @@ const MemberListItem = () => {
 
   return (
     <React.Fragment>
-      <ListItem>
+      <StyledListItem>
         <ListItemAvatar>
-          <Avatar src={avatar} alt='avatar' />
+          <Avatar src={avatar} alt='avatar' style={{ width: 50, height: 50 }} />
         </ListItemAvatar>
         <ListItemText
-          primary={'Nguyễn Văn A'}
-          secondary={'Thêm lúc 19:00 - 09/09/2019'}
+          primary={
+            <React.Fragment>
+              <StyledDiv>
+                <TextName bold>{name}</TextName>
+                {
+                  role &&
+                  <Text component="span">{role}</Text>
+                }
+              </StyledDiv>
+            </React.Fragment>
+          }
+          secondary={
+            <React.Fragment>
+              <StyledDiv>
+                {getBadgeProjectRole(projectRole)}
+                {
+                  authorityList.map((authority, index) => 
+                    <BadgeItem key={index} color={'light-green'} label={authority} size='small' badge component='small' /> 
+                  ) 
+                }
+              </StyledDiv>
+            </React.Fragment>
+          }
         />
         <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-          <Icon path={mdiDotsHorizontal} size={1} />
+          <Icon path={mdiDotsVertical} size={1} />
         </IconButton>
-      </ListItem>
+      </StyledListItem>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -47,6 +123,7 @@ const MemberListItem = () => {
           horizontal: 'right',
         }}
       >
+        <MenuItem onClick={handleClose}>Chi tiết</MenuItem>
         <MenuItem onClick={handleClose}>Xóa</MenuItem>
       </Menu>
     </React.Fragment>
@@ -54,13 +131,13 @@ const MemberListItem = () => {
 }
 
 const MemberList = () => {
-  const [data] = React.useState([1, 2, 3]);
+  const [data] = React.useState(members);
 
   return (
     <List>
-      {data.map((elem, index) => {
+      {data.map((element, index) => {
         return (
-          <MemberListItem key={index} />
+          <MemberListItem key={element.id} {...element}/>
         );
       })}
     </List>
@@ -70,7 +147,7 @@ const MemberList = () => {
 function TabBody() {
   return (
     <Container>
-      <SearchInput placeholder={'Nhập từ khóa'} fullWidth/>
+      <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
       <MemberList />
     </Container>
   )
