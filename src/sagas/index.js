@@ -61,6 +61,20 @@ import { CREATE_ICON } from '../constants/actions/icon/createIcon';
 import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
 import { deleteIcon } from './icon/deleteIcon';
+import { CREATE_PROJECT_GROUP } from '../constants/actions/projectGroup/createProjectGroup';
+import { createProjectGroup } from './projectGroup/createProjectGroup';
+import { EDIT_PROJECT_GROUP } from '../constants/actions/projectGroup/editProjectGroup';
+import { editProjectGroup } from './projectGroup/editProjectGroup';
+import { LIST_PROJECT_GROUP } from '../constants/actions/projectGroup/listProjectGroup';
+import { listProjectGroup } from './projectGroup/listProjectGroup';
+import { DELETE_PROJECT_GROUP } from '../constants/actions/projectGroup/deleteProjectGroup';
+import { deleteProjectGroup } from './projectGroup/deleteProjectGroup';
+import { SORT_PROJECT_GROUP } from '../constants/actions/projectGroup/sortProjectGroup';
+import { sortProjectGroup } from './projectGroup/sortProjectGroup';
+import { DETAIL_PROJECT_GROUP } from '../constants/actions/projectGroup/detailProjectGroup';
+import { detailProjectGroup } from './projectGroup/detailProjectGroup';
+import { MEMBER_PROJECT_GROUP } from '../constants/actions/projectGroup/memberProjectGroup';
+import { memberProjectGroup } from './projectGroup/memberProjectGroup';
 
 function* rootSaga() {
   yield takeLeading(LOGIN, login);
@@ -95,6 +109,13 @@ function* rootSaga() {
   yield takeLeading(BAN_USER_FROM_GROUP, banUserFromGroup);
   yield takeLeading(CREATE_ICON, createIcon);
   yield takeLeading(DELETE_ICON, deleteIcon);
+  yield takeLeading(CREATE_PROJECT_GROUP, createProjectGroup);
+  yield takeLeading(EDIT_PROJECT_GROUP, editProjectGroup);
+  yield takeLeading(LIST_PROJECT_GROUP, listProjectGroup);
+  yield takeLeading(DELETE_PROJECT_GROUP, deleteProjectGroup);
+  yield takeLeading(SORT_PROJECT_GROUP, sortProjectGroup);
+  yield takeLeading(DETAIL_PROJECT_GROUP, detailProjectGroup);
+  yield takeLeading(MEMBER_PROJECT_GROUP, memberProjectGroup);
 };
 
 export default rootSaga;

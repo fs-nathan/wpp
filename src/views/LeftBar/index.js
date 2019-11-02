@@ -50,7 +50,7 @@ function LeftBar() {
         <Icon path={mdiViewDashboard} size={1.5} color={"#fff"} />
         <span>Trang chủ</span>
       </NavLink>
-      <NavLink to="/du-an">  
+      <NavLink to="/projects">  
         <Icon path={mdiApps} size={1.5} color={"#fff"} />
         <span>Dự án</span>
       </NavLink>
