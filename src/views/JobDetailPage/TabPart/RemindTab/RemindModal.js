@@ -99,6 +99,11 @@ const useStyles = makeStyles(theme => ({
   const InputOutline = styled(OutlinedInput)`
     width: 420px;
   `
+  const TextRemind = styled(Typography)`
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+  `
 
 const styles = theme => ({
     root: {
@@ -187,7 +192,7 @@ function RemindModal(props) {
               <DivTitle component="span">
                 <TexTitle component="span">Ngày nhắc</TexTitle>
                 <TexTitle component="span">Giờ nhắc</TexTitle>
-                <Typography component="span" style={{ fontSize: 15 }}>Nhắc hẹn định kỳ</Typography>
+                <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
               </DivTitle>
               <Div>
                 <TextField component="span"
