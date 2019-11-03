@@ -10,23 +10,25 @@ import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
+import TimeField from 'react-simple-timefield';
+
 
 const currencies = [
   {
     value: 'USD',
-    label: '$',
+    label: 'Ngày bắt đầu & kết thúc',
   },
   {
     value: 'EUR',
-    label: '€',
+    label: 'Ngày bắt đầu & kết thúc',
   },
   {
     value: 'BTC',
-    label: '฿',
+    label: 'Ngày bắt đầu & kết thúc',
   },
   {
     value: 'JPY',
-    label: '¥',
+    label: 'Ngày bắt đầu & kết thúc',
   },
 ];
 
@@ -83,7 +85,16 @@ const Div = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
+`
+const InputTime = styled(TimeField)`
+  width: 146px !important;
+  padding: 10px 5px 10px 13px;
+  border: 0;
+  border-radius: 4px;
+`
+const DivTime = styled.div`
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
 `
 
 const styles = theme => ({
@@ -127,7 +138,15 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 
+
+
+
 function TabHeader({ setShow }) {
+  const [time, setTime] = React.useState('')
+
+  const handleTime = () => {
+    setTime(time);
+  }
   // bien cua modal cong viec con
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
@@ -183,15 +202,19 @@ function TabHeader({ setShow }) {
           </Div>
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
-            <OutlineInput />
+            <DivTime>
+              <InputTime value={time} onChange={handleTime} />
+            </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput />
+            <OutlineInput type={'date'}/>
           </StartEndDay>
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
-            <OutlineInput />
+            <DivTime>
+              <InputTime value={time} onChange={handleTime} />
+            </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput />
+            <OutlineInput type={'date'}/>
           </StartEndDay>
         </DialogContent>
         <DialogActions>

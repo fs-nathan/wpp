@@ -41,6 +41,10 @@ const StyledContentBox = styled.div`
 const Text = styled(ColorTypo)`
   font-size: 15px;
 `
+const Badge = styled(ColorChip)`
+  border-radius: 3px !important;
+  
+`
 
 const CustomListItem = ({ isDemand = false }) => {
 
@@ -62,7 +66,7 @@ const CustomListItem = ({ isDemand = false }) => {
           <div>
             <Text variant='body1' bold>Nguyễn Văn A</Text>
             <ColorTypo variant='caption'>
-              <ColorChip color={isDemand ? 'orangelight' : 'bluelight'} label={isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
+              <Badge color={isDemand ? 'orangelight' : 'bluelight'} label={isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
             </ColorTypo>
           </div>
           <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">

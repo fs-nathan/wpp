@@ -108,7 +108,7 @@ function TabHeader({ setShow }) {
           Tạo đề xuất
         </DialogTitle>
         <DialogContent dividers>
-          <TexTitle >Phạm vi điều chỉnh </TexTitle>
+          <TexTitle >Chọn người duyệt</TexTitle>
           <IntegrationReactSelect/>
           <TitleText component="div">Nội dung</TitleText>
           <Text component="span"

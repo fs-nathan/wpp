@@ -3,7 +3,6 @@ import { Avatar, IconButton, Menu, MenuItem, withStyles, Button, Dialog, Typogra
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -13,7 +12,6 @@ import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import avatar from '../../../../../assets/avatar.jpg';
-import { mdiMenuDown } from '@mdi/js';
 
 const Container = styled.div`
   padding: 0 0 0 20px;
@@ -144,7 +142,7 @@ function TabHeader() {
         <ColorTypo bold uppercase>Nguyễn Hữu Thành</ColorTypo>
         <ColorTypo color='blue' variant='caption' uppercase>Giám đốc - Phụ trách</ColorTypo>
         <br />
-        <ColorTypo variant='caption'>08:00 - 12/12/2012</ColorTypo>
+        <ColorTypo variant='caption' style={{ color: '#cfcfcf'}}>Đã được giao lúc 08:00 ngày 12/12/2012</ColorTypo>
       </TagsContainer>
       <StyledIconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />

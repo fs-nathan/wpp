@@ -66,6 +66,9 @@ const Content = styled.div`
   display: flex;
   justify-content: space-between;
 `
+const Badge = styled(ColorChip)`
+  border-radius: 3px !important;
+`
 
 const MemberMenuLists = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -132,7 +135,7 @@ const RemindList = () => {
                 <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
                 <ColorTypo variant='body1'>{elem.title}</ColorTypo>
                 {elem && elem.badge.map((item, key) => (
-                  <ColorChip key={key} color='orangelight' size='small' badge label={item + "" + key} />))
+                  <Badge key={key} color='orangelight' size='small' badge label={item + ""} />))
                 }
               </StyledTitleBox>
 

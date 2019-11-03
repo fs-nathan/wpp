@@ -118,9 +118,9 @@ const TitleDescription = styled(Typography)`
     font-weight: 400;
 `
 const ContentDescription = styled(Typography)`
-font-size: 17px;
-font-weight: 400;
-color: ${colorPal['black'][0]}
+  font-size: 17px;
+  font-weight: 400;
+  color: ${colorPal['black'][0]}
 `
 
 const ButtonFile = styled.label`
@@ -137,10 +137,10 @@ const ButtonFile = styled.label`
       }
 `
 const TitleText = styled(Typography)`
-font-weight: 400;
-font-size: 16px;
-color: rgba(0, 0, 0, 0.54);
-margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.54);
+  margin-bottom: 10px;
 `
 
 const useStyles = makeStyles(theme => ({
@@ -341,7 +341,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
                 type="file"
               />
               <ButtonFile htmlFor="contained-button-file">
-                <Button variant="contained" component="span" maxWidth={'md'} className={classes.button}>
+                <Button variant="contained" component="span" fullWidth className={classes.button}>
                   <img src={file_jpg} style={{ width: 20, height: 20, marginRight: 10 }} />
                   Xem file hồ sơ
                 </Button>
@@ -351,27 +351,27 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
             <StyledStaff component={'div'}>
               <TextItem > Thông tin cá nhân</TextItem>
               <Typography component="div" style={{ paddingTop: 20, paddingLeft: 20 }}>
-                <Typography component='div' style={{ marginBottom: 25}}>
+                <Typography component='div' style={{ marginBottom: 25 }}>
                   <TitleText >Họ và tên đầy đủ:</TitleText>
                   <ContentDescription>{staff.name}</ContentDescription>
                 </Typography>
-                <Typography component='div' style={{ marginBottom: 25}}>
+                <Typography component='div' style={{ marginBottom: 25 }}>
                   <TitleText >Ngày sinh:</TitleText>
                   <ContentDescription>{staff.birthday}</ContentDescription>
                 </Typography>
-                <Typography component='div' style={{ marginBottom: 25}}>
+                <Typography component='div' style={{ marginBottom: 25 }}>
                   <TitleText >Giới tính:</TitleText>
                   <ContentDescription>{staff.gender}</ContentDescription>
                 </Typography>
-                <Typography component='div' style={{ marginBottom: 25}}>
+                <Typography component='div' style={{ marginBottom: 25 }}>
                   <TitleText >Email:</TitleText>
                   <ContentDescription>{staff.email}</ContentDescription>
                 </Typography>
-                <Typography component='div' style={{ marginBottom: 25}}>
+                <Typography component='div' style={{ marginBottom: 25 }}>
                   <TitleText >Điện thoại:</TitleText>
                   <ContentDescription>{staff.phonenumber}</ContentDescription>
                 </Typography>
-                <Typography component='div' style={{ marginBottom: 25}}>
+                <Typography component='div' style={{ marginBottom: 25 }}>
                   <TitleText >Địa chỉ:</TitleText>
                   <ContentDescription>{staff.address}</ContentDescription>
                 </Typography>
