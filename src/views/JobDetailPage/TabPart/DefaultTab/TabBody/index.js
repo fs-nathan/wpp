@@ -1,12 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiArrowRightBoldCircle, mdiCheckCircle, mdiCheckboxBlankCircleOutline, mdiChevronRight } from '@mdi/js';
-import { List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem, withStyles, Button, Dialog, IconButton, Typography } from '@material-ui/core';
+import { mdiArrowRightBoldCircle, mdiCheckCircle, mdiCheckboxBlankCircleOutline, mdiChevronRight, mdiPin } from '@mdi/js';
+import { List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorButton from '../../../../../components/ColorButton';
@@ -58,49 +55,12 @@ const SimpleSmallProgressBarWrapper = styled.div`
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
+  border-radius: 3px !important
 `
-// các biến của modal
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
+const ContentText = styled(ColorTypo)`
+  font-weight: 500;
 
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          {/* <CloseIcon /> */}
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions);
-
-// end modal
+`
 
 function DropdownButton({ values }) {
 
@@ -155,7 +115,7 @@ function DropdownButton({ values }) {
                   <ListItemIcon >
                     <Icon path={mdiCheckCircle} size={1} color={colorPal['green'][0]} />
                   </ListItemIcon>
-                  
+
                 ) : (
                     <ListItemIcon>
                       <Icon path={mdiCheckboxBlankCircleOutline} size={1} color={colorPal['default'][0]} />
@@ -183,10 +143,11 @@ function TabBody({ setShow }) {
 
           <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>
             Tên công việc
-            </ColorTypo>
-          <ColorTypo component='span'>
+          </ColorTypo>
+          <ContentText component='span'>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure, aliquam.
-            </ColorTypo>
+            <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)' }} path={mdiPin} size={0.8} />
+          </ContentText>
 
         </ListItemText>
       </ListItem>

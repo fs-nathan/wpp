@@ -12,7 +12,7 @@ import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 
 const Container = styled.div`
-  padding: 10px 0;
+  padding: 10px 20px;
 `;
 
 const StyledListItem = styled.li`
@@ -32,13 +32,19 @@ const StyledTitleBox = styled.div`
 `;
 
 const StyledContentBox = styled.div`
-  margin-left: 30px;
-  margin-top: 10px;
-  background-color: #eee;
+  margin-left: 20px;
+  margin-top: 5px;
   padding: 8px 10px;
-  border-radius: 999px;
-  font-weight: bold;
+  font-weight: 500;
 `;
+
+const Text = styled(ColorTypo)`
+  font-size: 15px;
+`
+const Badge = styled(ColorChip)`
+  border-radius: 3px !important;
+  
+`
 
 const CustomListItem = ({ isDemand = false }) => {
 
@@ -58,9 +64,9 @@ const CustomListItem = ({ isDemand = false }) => {
         <StyledTitleBox>
           <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
           <div>
-            <ColorTypo variant='body1'>Nguyễn Văn A</ColorTypo>
+            <Text variant='body1' bold>Nguyễn Văn A</Text>
             <ColorTypo variant='caption'>
-              <ColorChip color={isDemand ? 'orange' : 'green'} label={isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
+              <Badge color={isDemand ? 'orangelight' : 'bluelight'} label={isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
             </ColorTypo>
           </div>
           <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
@@ -68,7 +74,7 @@ const CustomListItem = ({ isDemand = false }) => {
           </IconButton>
         </StyledTitleBox>
         <StyledContentBox>
-          <ColorTypo bold>Lorem ipsum dolor sit.</ColorTypo>
+          <Text >Lorem ipsum dolor sit.</Text>
         </StyledContentBox>
       </StyledListItem>
       <Menu

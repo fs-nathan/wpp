@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiDownload, mdiDotsHorizontal, mdiImage, mdiFile, mdiLink } from '@mdi/js';
-import { 
-  List, ListItem, ListItemAvatar, ListItemText, 
+import { mdiDownload, mdiDotsHorizontal, mdiImage, mdiFile, mdiLink, mdiDotsHorizontalCircle } from '@mdi/js';
+import {
+  List, ListItem, ListItemAvatar, ListItemText,
   Avatar, IconButton, Menu, MenuItem, ButtonGroup,
   GridList, GridListTile, ListSubheader, ListItemIcon,
-  Collapse,
+  Collapse
 } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorButton from '../../../../../components/ColorButton';
@@ -15,30 +15,101 @@ import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
 
 const Container = styled.div`
-  padding: 10px 0;
+  padding: 10px 20px;
 `;
 
-const MediaBox = () => { 
+const SubHeader = styled(ListSubheader)`
+  padding: 0;
+  font-size: 14px;
+`
+const ImageMedia = styled(GridListTile)`
+  height: 84px !important;
+  width: 84px !important;
+  margin-right: 4px;
+  margin-bottom: 19px;
+  padding: 0;
+  position: relative;
+`
+
+const Image = styled.img`
+  height: 80px;
+  width: 80px;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px
+  z-index: 2;
+  cursor: pointer;
+  &:hover {
+
+    opacity: 0.7
+  }
+`
+const ButtonIcon = styled(IconButton)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+`
+const MenuListItem = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  function handleClick(evt) {
+    setAnchorEl(evt.currentTarget)
+  }
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
   return (
-    <GridList cellHeight={60} cols={6}>
-      <GridListTile key='header-1' cols={6} style={{ height: 'auto' }}>
-        <ListSubheader component='div'>09/09/2019</ListSubheader>
+          <div>  
+            <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" size={'small'} >
+              <Icon path={mdiDotsHorizontal} size={1} color={'#fff'} />
+            </ButtonIcon>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              transformOrigin={{
+                vertical: -31,
+                horizontal: -21,
+              }}
+            >
+              <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
+              <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
+              <MenuItem onClick={handleClose}>Xóa</MenuItem>
+            </Menu>
+          </div>
+  )
+}
+
+const MediaBox = ({isHover}) => {
+  // { isHover 
+
+  // }
+  return (
+    <GridList cellHeight={60} cols={5}>
+      <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
+        <SubHeader component='span'>09/09/2019</SubHeader>
       </GridListTile>
       {Array.from({ length: 7 }).map((_, index) => {
         return (
-          <GridListTile key={`1-${index}`}>
-            <img src={avatar} alt='avatar' />
-          </GridListTile>
+          <ImageMedia key={`1-${index}`}>
+            <Image src={avatar} alt='avatar' />   
+            <MenuListItem />
+          </ImageMedia>
         );
       })}
-      <GridListTile key='header-2' cols={6} style={{ height: 'auto' }}>
-        <ListSubheader component='div'>08/09/2019</ListSubheader>
+      <GridListTile key='header-2' cols={5} style={{ height: 'auto' }}>
+        <SubHeader component='span'>08/09/2019</SubHeader>
       </GridListTile>
       {Array.from({ length: 3 }).map((_, index) => {
         return (
-          <GridListTile key={`2-${index}`}>
-            <img src={avatar} alt='avatar' />
-          </GridListTile>
+          <ImageMedia key={`2-${index}`}>
+            <Image src={avatar} alt='avatar' />
+            <MenuListItem />
+          </ImageMedia>
         );
       })}
     </GridList>
@@ -48,7 +119,7 @@ const MediaBox = () => {
 const MediaContainer = () => {
   return (
     <React.Fragment>
-      <SearchInput fullWidth placeholder='Nhập từ khóa media'/>
+      <SearchInput fullWidth placeholder='Nhập tên media, ngày đăng, người đăng...' />
       <MediaBox />
     </React.Fragment>
   );
@@ -71,7 +142,7 @@ const FileBoxStyledListItem = styled(ListItem)`
   }
 `;
 
-const FileBox = () => { 
+const FileBox = () => {
 
   const CustomListItem = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -161,7 +232,7 @@ const LinkBox = () => {
             <Avatar src={avatar} alt='avatar' />
           </ListItemAvatar>
           <ListItemText>
-            <a href='https://google.com.vn'>https://google.com.vn</a>
+            <a href='https://google.com.vn' target="_blank">https://google.com.vn</a>
           </ListItemText>
           <ListItemIcon>
             <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
@@ -191,9 +262,9 @@ const LinkBox = () => {
   return (
     <List subheader={<li />}>
       <ListSubheader component='div'>09/09/2019</ListSubheader>
-      <CustomListItem/>
-      <CustomListItem/>
-      <CustomListItem/>
+      <CustomListItem />
+      <CustomListItem />
+      <CustomListItem />
     </List>
   );
 }
@@ -222,20 +293,20 @@ function TabBody() {
   return (
     <Container>
       <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
-        <ColorButton 
-          startIcon={<Icon path={mdiImage} size={1} color={value === 0 ? colorPal['default'][0] : colorPal['gray'][0]} />} 
+        <ColorButton
+          startIcon={<Icon path={mdiImage} size={1} color={value === 0 ? colorPal['default'][0] : colorPal['gray'][0]} />}
           onClick={evt => handleChange(evt, 0)}
         >
           {value === 0 ? <ColorTypo bold>Media</ColorTypo> : <ColorTypo color='gray'>Media</ColorTypo>}
         </ColorButton>
-        <ColorButton 
-          startIcon={<Icon path={mdiFile} size={1} color={value === 1 ? colorPal['default'][0] : colorPal['gray'][0]} />}  
+        <ColorButton
+          startIcon={<Icon path={mdiFile} size={1} color={value === 1 ? colorPal['default'][0] : colorPal['gray'][0]} />}
           onClick={evt => handleChange(evt, 1)}
         >
           {value === 1 ? <ColorTypo bold>File</ColorTypo> : <ColorTypo color='gray'>File</ColorTypo>}
         </ColorButton>
-        <ColorButton 
-          startIcon={<Icon path={mdiLink} size={1} color={value === 2 ? colorPal['default'][0] : colorPal['gray'][0]} />}  
+        <ColorButton
+          startIcon={<Icon path={mdiLink} size={1} color={value === 2 ? colorPal['default'][0] : colorPal['gray'][0]} />}
           onClick={evt => handleChange(evt, 2)}
         >
           {value === 2 ? <ColorTypo bold>Link</ColorTypo> : <ColorTypo color='gray'>Link</ColorTypo>}

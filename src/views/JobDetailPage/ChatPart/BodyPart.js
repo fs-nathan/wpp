@@ -10,6 +10,7 @@ import * as MaterialIcon from '@material-ui/icons'
 // import colors from '../../../helpers/colorPalette'
 import fakeAvatar from '../../../assets/avatar.jpg'
 import AvatarCircleList from '../../../components/AvatarCircleList'
+import DetailMessage from './DetailMessage'
 
 const Container = styled.div`
 `
@@ -162,6 +163,7 @@ export default function BodyPart(props) {
                 <ProjectDetailMessage />
                 <MessageParent isUser content="Tạo project mới"/>
                 <MessageParent content="Ae triển khai công việc nhé !!!"/>
+                <DetailMessage />
                 <div style={{ height: 800 }}></div>
             </WrapChat>
         </Container>

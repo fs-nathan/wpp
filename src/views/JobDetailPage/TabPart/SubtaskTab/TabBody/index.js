@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiCheckCircleOutline, mdiDragVertical, mdiDotsVertical } from '@mdi/js';
+import { mdiCheck, mdiDragVertical, mdiDotsVertical, mdiSend } from '@mdi/js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { List, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton, Menu, MenuItem, Dialog, withStyles, Typography, Button, TextField, InputBase } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import SearchInput from '../../../../../components/SearchInput';
@@ -11,12 +15,21 @@ import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
 
 const Container = styled.div`
-  padding: 10px 0;
+  padding: 0;
 `;
 
 const StyledList = styled(List)`
   padding: 8px 0;
 `;
+const TextTitle = styled(ColorTypo)`
+  font-size: 16px;
+  color: ${colorPal['gray'][0]};
+  margin-left: 30px
+`
+const Search = styled(SearchInput)`
+
+  
+`
 
 const __data = {
   tasks: {
@@ -59,8 +72,68 @@ const AllSubtaskListItemContainer = styled(ListItem)`
   padding: 8px 0;
 `;
 
-function AllSubtaskListItem({ task, index }) {
+const TexTitle = styled(Typography)`
+  font-size: 14px;
+  color: ${colorPal['gray'][0]}
+  margin-bottom: 30px;
+`
+const TextInput = styled(TextField)`
+  font-size: 14px;
+  margin-bottom: 20px
+`
 
+// các bien chinh sua cong viec con
+const styles = theme => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const DialogTitle = withStyles(styles)(props => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles(theme => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
+
+// end modal chinh sua cong viec con
+function AllSubtaskListItem({ task, index }) {
+  // bien chinh sua cong viec con
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClickClose = () => {
+    setOpen(false);
+  };
+  // end
   const [isHover, setIsHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -73,30 +146,30 @@ function AllSubtaskListItem({ task, index }) {
   }
 
   return (
-    <Draggable 
+    <Draggable
       draggableId={task.id}
-      index={index}  
+      index={index}
     >
       {(provided) => (
-        <AllSubtaskListItemContainer 
+        <AllSubtaskListItemContainer
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}  
+          onMouseLeave={() => setIsHover(false)}
         >
           <div {...provided.dragHandleProps}>
-            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'}/>
+            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
           </div>
           {
-          !isHover 
-            ? <Avatar style={{ width: 43.5, height: 43.5, }} src={avatar} alt='avatar' />
-            : <IconButton>
-              <Icon path={mdiCheckCircleOutline} size={1} color={colorPal['blue'][0]} />
-            </IconButton>
+            !isHover
+              ? <Avatar style={{ width: 43.5, height: 43.5, }} src={avatar} alt='avatar' />
+              : <IconButton>
+                <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
+              </IconButton>
           }
-          <ColorTypo>Thiết kế {task.content}</ColorTypo>
+          <ItemList>Thiết kế {task.content}</ItemList>
           <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-            <Icon path={mdiDotsVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'}/>
+            <Icon path={mdiDotsVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
           </IconButton>
           <Menu
             id="simple-menu"
@@ -109,9 +182,26 @@ function AllSubtaskListItem({ task, index }) {
               horizontal: 'right',
             }}
           >
-            <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+            <MenuItem onClick={handleClickClose, handleClickOpen}>Chỉnh sửa</MenuItem>
             <MenuItem onClick={handleClose}>Xóa</MenuItem>
           </Menu>
+          {/* Modal chinh sua cong viec con */}
+          <Dialog aria-labelledby="customized-dialog-title" open={open} fullWidth>
+            <DialogTitle id="customized-dialog-title" onClose={handleClickClose}>
+              Chỉnh sửa công việc con
+            </DialogTitle>
+            <DialogContent dividers>
+              <TexTitle >Nội dung công việc </TexTitle>
+              <TextInput
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClickClose} color="primary">
+                Hoàn Thành
+              </Button>
+            </DialogActions>
+          </Dialog>
         </AllSubtaskListItemContainer>
       )}
     </Draggable>
@@ -159,7 +249,7 @@ function AllSubtaskList() {
                 {...provided.droppableProps}
               >
                 {tasks.map((task, index) => (
-                  <AllSubtaskListItem key={task.id} task={task} index={index} />  
+                  <AllSubtaskListItem key={task.id} task={task} index={index} />
                 ))}
                 {provided.placeholder}
               </StyledList>
@@ -178,23 +268,32 @@ const FinishedSubtaskListItemTextSecondary = styled.span`
     margin-right: 10px;
   }
 `;
+const ItemList = styled(ListItemText)`
+  & > span {
+    font-size: 16px;
+  }
+`
+const Badge = styled(ColorChip)`
+  border-radius: 3px !important;
+`
 
 const FinishedSubtaskList = () => {
   const [data] = React.useState([1, 2, 3, 4]);
+
 
   return (
     <List>
       {data.map((elem, index) => {
         return (
-          <ListItem key={index}>
+          <ListItem key={index} style={{ paddingLeft: 30 }}>
             <ListItemAvatar>
               <Avatar src={avatar} alt='avatar' />
             </ListItemAvatar>
-            <ListItemText
+            <ItemList
               primary={`Xong việc ${elem}`}
               secondary={
                 <FinishedSubtaskListItemTextSecondary>
-                  <ColorChip component='small' color='blue' badge size='small' label={'Hoàn thành'} />
+                  <Badge component='small' color='bluelight' badge size='small' label={'Hoàn thành'} />
                   lúc 19:00 - 09/09/2019
                 </FinishedSubtaskListItemTextSecondary>
               }
@@ -206,12 +305,43 @@ const FinishedSubtaskList = () => {
   );
 }
 
-function TabBody() {
+const NewWork = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  align-item: center;
+
+`
+const InputText = styled(InputBase)`
+  padding-left: 30px;
+  font-size: 16px;
+  align-item: center;
+`
+const Div = styled.div`
+  margin: 10px 20px;
+`
+
+function TabBody(props) {
   return (
     <Container>
-      <SearchInput placeholder={'Nhập từ khóa'} fullWidth/>
+      {props.isClicked ?
+        <NewWork>
+          <InputText
+            inputProps={{ 'aria-label': 'naked' }}
+            placeholder={'Nhập tên công việc...'}
+          />
+          <IconButton style={{ paddingBottom: 9}}>
+            <Icon path={mdiSend} size={1} color={'gray'} />
+          </IconButton>
+        </NewWork>
+        :
+        <Div>
+          <Search placeholder={'Nhập từ khóa'} />
+        </Div>
+      }
       <AllSubtaskList />
-      <ColorTypo>Hoàn thành</ColorTypo>
+      <TextTitle uppercase bold>Hoàn thành</TextTitle>
       <FinishedSubtaskList />
     </Container>
   )
