@@ -20,7 +20,7 @@ const jobTypes = [
   'Đang làm',
   'Hoàn thành',
   'Quá hạn',
-  'Nhóm việc',
+  'Tạm dừng',
 ];
 
 function ListBanner() {

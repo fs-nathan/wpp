@@ -7,17 +7,17 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import SearchInput from '../../../../components/SearchInput';
 import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from '@material-ui/icons/Add';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { ListItem, Avatar, Chip, Table, TableBody, TableHead, TableRow, Paper, TableCell, Menu, MenuItem, IconButton } from '@material-ui/core';
 import avatar from '../../../../assets/avatar.jpg';
 import ColorTypo from '../../../../components/ColorTypo';
+import ColorChip from '../../../../components/ColorChip';
 import Icon from '@mdi/react';
 import { mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
-
-
+import RoleMemberModal from './RoleMemberModal';
+import PriorityMemberModal from './PriorityMemberModal'
 
 const StyledListItem = styled(ListItem)`
   display: flex;
@@ -117,7 +117,12 @@ const FlexJobMember = styled(Typography)`
 const MemberTable = styled(TableCell)`
     padding: 5px 0 5px 10px;
 `
-
+const ChipPriority = styled(Chip)`
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100px;
+    padding: 0 10px;
+`
 function PRojectMember(props) {
     let handleClick = () => {
 
@@ -149,9 +154,11 @@ function MemberDetail(props) {
 }
 
 function MemberPriority(props) {
-    const handleOpenPriorityModal = () => {
-
-    }
+    const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     if (props.master) {
         return (
@@ -160,23 +167,50 @@ function MemberPriority(props) {
     }
 
     return (
-        <Chip
+        <div>
+        <ChipPriority
             size="small"
             label={props.label}
-            onClick={handleOpenPriorityModal}
+            onClick={() => {
+                handleClose()
+                setOpenPriorityModal(true)
+            }}
             icon={<ArrowDropDownIcon />}
         />
+        <PriorityMemberModal isOpen={openPriorityModal} setOpen={setOpenPriorityModal} />
+        </div>
     )
 }
 
 function MemberRole(props) {
-    const handleOpenRoleModal = () => {
-
-    }
+    const [openRoleModal, setOpenRoleModal] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
-        <IconButton size='small' onClick={handleOpenRoleModal} aria-controls="simple-menu" >
-            <Icon path={mdiPlusCircleOutline} size={1} />
-        </IconButton>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+        <div>
+            <div>
+            <ColorChip color='grey' badge label={props.role1} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            <ColorChip color='grey' badge label={props.role2} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            </div>
+            <div>
+            <ColorChip color='grey' badge label={props.role3} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            <ColorChip color='grey' badge label={props.role4} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            </div>            
+        </div>
+        <IconButton style={{float: 'right'}}
+            size='small' 
+            onClick={() => {
+                handleClose()
+                setOpenRoleModal(true)
+              }}
+            >
+                <Icon path={mdiPlusCircleOutline} size={1} style={{ fill: '#b0b0b0' }} />
+            </IconButton>
+            <RoleMemberModal isOpen={openRoleModal} setOpen={setOpenRoleModal}/>
+        </div>
     )
 }
 
@@ -198,22 +232,21 @@ function TableMember() {
     let AvatarMember = <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />
 
     const AddData = [
-        createData(AvatarMember, <MemberDetail name='Minh' email='minh@gmail.com' />, <MemberPriority label='Admin' master />, <MemberRole />),
-        createData(AvatarMember, <MemberDetail name='Minh23' email='minh23@gmail.com' />, <MemberPriority label='Admin' />, <MemberRole />),
-        createData(AvatarMember, <MemberDetail name='Minh13' email='minh13@gmail.com' />, <MemberPriority label='Quản lý' />, <MemberRole />),
-        createData(AvatarMember, <MemberDetail name='Minh11' email='minh11@gmail.com' />, <MemberPriority label='Thành viên' />, <MemberRole />)
+        createData(AvatarMember, <MemberDetail name='Nguyễn Hữu Thành' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' master />, <MemberRole role1='Giao việc' role2='Giám sát' role3='Phê duyệt' role4='Thực hiện'/>),
+        createData(AvatarMember, <MemberDetail name='Nguyễn Bá Hùng' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' />, <MemberRole role1='Giám sát' role2='Phê duyệt'/>),
+        createData(AvatarMember, <MemberDetail name='Phạm Thanh Ngọc' email='huuthanh@gmail.com' />, <MemberPriority label='Quản lý' />, <MemberRole />),
+        createData(AvatarMember, <MemberDetail name='VietApp' email='huuthanh@gmail.com' />, <MemberPriority label='Thành viên' />, <MemberRole />)
     ];
-
 
     return (
         <Paper className={classes.root}>
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow style={{ background: '#f7f7f7' }}>
-                        <MemberTable></MemberTable>
-                        <MemberTable>Thành viên</MemberTable>
-                        <MemberTable>Nhóm quyền</MemberTable>
-                        <MemberTable>Vai trò</MemberTable>
+                        <MemberTable style={{ width: '9%' }}></MemberTable>
+                        <MemberTable style={{ width: '30%' }}>Thành viên</MemberTable>
+                        <MemberTable style={{ width: '20%' }}>Nhóm quyền</MemberTable>
+                        <MemberTable style={{ width: '32%' }}>Vai trò</MemberTable>
                         <MemberTable></MemberTable>
                     </TableRow>
                 </TableHead>
@@ -227,7 +260,7 @@ function TableMember() {
                             <MemberTable>{AddData.permission}</MemberTable>
                             <MemberTable>{AddData.role}</MemberTable>
                             <MemberTable>
-                                <IconButton size='small' onClick={handleClickEliminate} aria-controls="simple-menu" >
+                                <IconButton size='small' onClick={handleClickEliminate} >
                                     <Icon path={mdiDotsVertical} size={1} />
                                 </IconButton>
                                 <Menu
@@ -253,14 +286,13 @@ function TableMember() {
 }
 
 function AddMemberModal(props) {
-
     const handleClose = () => {
         props.setOpen(false);
     };
 
     return (
         <div>
-            <Dialog maxWidth="lg" onClose={handleClose} aria-labelledby="customized-dialog-title" open={props.isOpen}>
+            <Dialog maxWidth="lg" fullWidth onClose={handleClose} open={props.isOpen}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Thành viên công việc
         </DialogTitle>
@@ -277,8 +309,8 @@ function AddMemberModal(props) {
                                 <ButtonAddAll >
                                     + Thêm tất cả
                         </ButtonAddAll>
-                                <PRojectMember name='Khắc Điệp' email='dieptk95@gmail.com' role='Giám đốc dự án'/>
-                                <PRojectMember name='Nguyễn Mai Anh' email='maianhdigital@gmail.com' role='Chuyên viên'/>
+                                <PRojectMember name='Khắc Điệp' email='dieptk95@gmail.com' role='Giám đốc dự án' />
+                                <PRojectMember name='Nguyễn Mai Anh' email='maianhdigital@gmail.com' role='Chuyên viên' />
                             </Typography>
                         </BorderGrid>
                         <Typography component="div">
