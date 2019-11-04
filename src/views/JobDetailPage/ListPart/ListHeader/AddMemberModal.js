@@ -16,7 +16,8 @@ import ColorTypo from '../../../../components/ColorTypo';
 import ColorChip from '../../../../components/ColorChip';
 import Icon from '@mdi/react';
 import { mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
-import RoleMemberModal from './RoleMemberModal'
+import RoleMemberModal from './RoleMemberModal';
+import PriorityMemberModal from './PriorityMemberModal'
 
 const StyledListItem = styled(ListItem)`
   display: flex;
@@ -116,7 +117,12 @@ const FlexJobMember = styled(Typography)`
 const MemberTable = styled(TableCell)`
     padding: 5px 0 5px 10px;
 `
-
+const ChipPriority = styled(Chip)`
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100px;
+    padding: 0 10px;
+`
 function PRojectMember(props) {
     let handleClick = () => {
 
@@ -148,9 +154,11 @@ function MemberDetail(props) {
 }
 
 function MemberPriority(props) {
-    const handleOpenPriorityModal = () => {
-
-    }
+    const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     if (props.master) {
         return (
@@ -159,12 +167,18 @@ function MemberPriority(props) {
     }
 
     return (
-        <Chip
+        <div>
+        <ChipPriority
             size="small"
             label={props.label}
-            onClick={handleOpenPriorityModal}
+            onClick={() => {
+                handleClose()
+                setOpenPriorityModal(true)
+            }}
             icon={<ArrowDropDownIcon />}
         />
+        <PriorityMemberModal isOpen={openPriorityModal} setOpen={setOpenPriorityModal} />
+        </div>
     )
 }
 
@@ -175,14 +189,18 @@ function MemberRole(props) {
         setOpen(false);
     };
     return (
+        <div style={{display: 'flex', alignItems: 'center'}}>
         <div>
             <div>
             <ColorChip color='grey' badge label={props.role1} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
             <ColorChip color='grey' badge label={props.role2} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            </div>
+            <div>
             <ColorChip color='grey' badge label={props.role3} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
             <ColorChip color='grey' badge label={props.role4} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
             </div>            
-            <IconButton 
+        </div>
+        <IconButton style={{float: 'right'}}
             size='small' 
             onClick={() => {
                 handleClose()
@@ -215,7 +233,7 @@ function TableMember() {
 
     const AddData = [
         createData(AvatarMember, <MemberDetail name='Nguyễn Hữu Thành' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' master />, <MemberRole role1='Giao việc' role2='Giám sát' role3='Phê duyệt' role4='Thực hiện'/>),
-        createData(AvatarMember, <MemberDetail name='Nguyễn Bá Hùng' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' />, <MemberRole />),
+        createData(AvatarMember, <MemberDetail name='Nguyễn Bá Hùng' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' />, <MemberRole role1='Giám sát' role2='Phê duyệt'/>),
         createData(AvatarMember, <MemberDetail name='Phạm Thanh Ngọc' email='huuthanh@gmail.com' />, <MemberPriority label='Quản lý' />, <MemberRole />),
         createData(AvatarMember, <MemberDetail name='VietApp' email='huuthanh@gmail.com' />, <MemberPriority label='Thành viên' />, <MemberRole />)
     ];
@@ -226,9 +244,9 @@ function TableMember() {
                 <TableHead>
                     <TableRow style={{ background: '#f7f7f7' }}>
                         <MemberTable style={{ width: '9%' }}></MemberTable>
-                        <MemberTable style={{ width: '35%' }}>Thành viên</MemberTable>
-                        <MemberTable style={{ width: '25%' }}>Nhóm quyền</MemberTable>
-                        <MemberTable style={{ width: '21%' }}>Vai trò</MemberTable>
+                        <MemberTable style={{ width: '30%' }}>Thành viên</MemberTable>
+                        <MemberTable style={{ width: '20%' }}>Nhóm quyền</MemberTable>
+                        <MemberTable style={{ width: '32%' }}>Vai trò</MemberTable>
                         <MemberTable></MemberTable>
                     </TableRow>
                 </TableHead>
@@ -242,7 +260,7 @@ function TableMember() {
                             <MemberTable>{AddData.permission}</MemberTable>
                             <MemberTable>{AddData.role}</MemberTable>
                             <MemberTable>
-                                <IconButton size='small' onClick={handleClickEliminate} aria-controls="simple-menu" >
+                                <IconButton size='small' onClick={handleClickEliminate} >
                                     <Icon path={mdiDotsVertical} size={1} />
                                 </IconButton>
                                 <Menu
@@ -274,7 +292,7 @@ function AddMemberModal(props) {
 
     return (
         <div>
-            <Dialog maxWidth="lg" onClose={handleClose} open={props.isOpen}>
+            <Dialog maxWidth="lg" fullWidth onClose={handleClose} open={props.isOpen}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Thành viên công việc
         </DialogTitle>

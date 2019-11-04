@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -8,6 +8,14 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import { Input, InputAdornment } from '@material-ui/core';
+import styled from 'styled-components';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 const styles = theme => ({
@@ -22,6 +30,15 @@ const styles = theme => ({
     color: theme.palette.grey[500],
   },
 });
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  formControl: {
+    margin: theme.spacing(3),
+  },
+}));
 
 const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
@@ -50,8 +67,19 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
- function RoleMemberModal(props) {
-  
+function RoleMemberModal(props) {
+  const classes = useStyles();
+  const [state, setState] = React.useState({
+    gilad: true,
+    jason: false,
+    antoine: false,
+  });
+
+  const handleChange = name => event => {
+    setState({ ...state, [name]: event.target.checked });
+  };
+
+  const { gilad, jason, antoine } = state;  
 
   const handleClose = () => {
     props.setOpen(false);
@@ -59,33 +87,43 @@ const DialogActions = withStyles(theme => ({
 
   return (
     <div>
-      <Dialog onClose={handleClose} open={props.isOpen}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
+      <Dialog maxWidth="sm" fullWidth onClose={handleClose} open={props.isOpen}>
+        <DialogTitle onClose={handleClose}>
+          Vai trò thành viên
         </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-            lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-            scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-            auctor fringilla.
-          </Typography>
+        <DialogContent >
+          <Input
+            fullWidth
+            placeholder='Nhập vai trò...'
+            endAdornment={<InputAdornment position="end"><Button variant="contained">Thêm</Button></InputAdornment>}
+          />
+          <FormControl component="fieldset" className={classes.formControl}>           
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox checked={gilad} onChange={handleChange('gilad')} value="gilad" />}
+                label="Gilad Gray"
+              />
+              <FormControlLabel
+                control={<Checkbox checked={jason} onChange={handleChange('jason')} value="jason" />}
+                label="Jason Killian"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox checked={antoine} onChange={handleChange('antoine')} value="antoine" />
+                }
+                label="Antoine Llorca"
+              />
+            </FormGroup>
+            </FormControl>
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Save changes
+          <DialogActions>
+            <Button autoFocus onClick={handleClose} color="primary">
+              Save changes
           </Button>
-        </DialogActions>
+          </DialogActions>
       </Dialog>
     </div>
-  );
-}
-
+      );
+    }
+    
 export default RoleMemberModal;
