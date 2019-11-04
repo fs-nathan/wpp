@@ -1,7 +1,9 @@
-import React, { useEffect, 
+import React, {
+    useEffect,
     // useRef 
 } from 'react'
 import styled from 'styled-components'
+import DetailMess from './DetailMessage'
 
 const Container = styled.div`
 `
@@ -13,23 +15,22 @@ const WrapChat = styled.div`
 `
 
 
-
 export default function BodyPart(props) {
 
-    let chatRef =null
-    
+    let chatRef = null
+
     useEffect(() => {
-        if(chatRef) {
+        if (chatRef) {
             chatRef.scrollTop = 700
             console.log(chatRef)
-        // chatRef.scrollIntoView({ behavior: "smooth" });
+            // chatRef.scrollIntoView({ behavior: "smooth" });
         }
     }, [chatRef])
 
     return (
         <Container>
             <WrapChat ref={ref => chatRef = ref}>
-                <div style={{ height: 400 }}>123123123123123</div>
+                <DetailMess />
                 <div style={{ height: 400 }}>123123123123123</div>
                 <div style={{ height: 400 }}>123123123123123</div>
                 <div style={{ height: 400 }}>123123123123123</div>
