@@ -71,7 +71,7 @@ function TopBar() {
         <InfoBox>
           <div>
             <div>HungThanhXD</div>
-            <Chip badge color='orange' label="Pro"/>
+            <Chip badge color='orange' label="Pro" />
           </div>
           <div>
             <GreenText>huuthanhxd@gmail.com</GreenText>
