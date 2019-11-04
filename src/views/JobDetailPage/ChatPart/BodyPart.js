@@ -32,7 +32,7 @@ const WrapMessageRow = styled.div`
 const WrapMessage = styled.div`
     background-color: ${props => props.isUser ? '#dbfff3' : '#fff'};
     min-height: 30px;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -85,14 +85,14 @@ const ProjectText = styled(Typography)`
 
 function MessageParent(props) {
     const {
-        isUser
+        isUser, content
     } = props
     return (
         <WrapMessageRow isUser={isUser}>
             {!isUser && <Avatar src={fakeAvatar} />}
 
             <WrapMessage isUser={isUser}>
-                123123123123123
+                {content}
             </WrapMessage>
             <WrapFunctionBar>
                 <FunctionButton>
@@ -160,8 +160,8 @@ export default function BodyPart(props) {
             <WrapChat ref={ref => chatRef = ref}>
                 <NotifyText />
                 <ProjectDetailMessage />
-                <MessageParent isUser />
-                <MessageParent />
+                <MessageParent isUser content="Tạo project mới"/>
+                <MessageParent content="Ae triển khai công việc nhé !!!"/>
                 <div style={{ height: 800 }}></div>
             </WrapChat>
         </Container>
