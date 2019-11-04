@@ -34,7 +34,7 @@ const ChatInput = styled.input`
 `
 
 const LikeIcon = styled(MaterialIcon.ThumbUp)`
-    color: ${colors['like'][0]};
+    color: ${colors['green'][0]};
 `
 
 const LikeButton = styled(IconButton)`
@@ -75,13 +75,19 @@ function renderFunctionBar(props) {
     )
 }
 
+function renderChatBar() {
+    return (
+        <WrapInputMessage>
+            <ChatInput type="text" placeholder="Nhập @ gợi ý, nội dung thảo luận..." />
+        </WrapInputMessage>
+    )
+}
+
 export default function FooterPart() {
     return (
         <>
             {renderFunctionBar()}
-            <WrapInputMessage>
-                <ChatInput type="text" placeholder="Nhập @ gợi ý, nội dung thảo luận..."/>
-            </WrapInputMessage>
+            {renderChatBar()}
         </>
     )
 }

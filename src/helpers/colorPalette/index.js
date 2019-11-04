@@ -21,7 +21,6 @@ const colors = {
   'white': ['#f0f0f0', '#8b8b8b'],
   'grey': ['#f8dbd7', '#f16978'],
   'black': ['#000', '#fff'],
-  'like': ['#0099ff'],
 };
 
 export default colors;
