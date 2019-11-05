@@ -11,9 +11,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import addMemberIcon from '../../../../assets/addMemberIcon.png'
-import colorPal from '../../../../helpers/colorPalette'
-import AddMemberModal from './AddMemberModal'
+import addMemberIcon from '../../../../assets/addMemberIcon.png';
+import colorPal from '../../../../helpers/colorPalette';
+import AddMemberModal from './AddMemberModal';
+import TimeField from 'react-simple-timefield';
 
 import { func } from 'prop-types';
 
@@ -90,11 +91,7 @@ const CustomSelect = styled(Select)`
   }
 `;
 
-const BeginTime = styled(Typography)`
-  width: 50px;
-  margin-right: 20px;
-`
-const EndTime = styled(Typography)`
+const BeginEndTime = styled(Typography)`
   width: 50px;
   margin-right: 20px;
 `
@@ -103,7 +100,16 @@ const TypoText = styled(Typography)`
   color: #505050;
   margin: 20px 0;
 `
-
+const InputTime = styled(TimeField)`
+  width: 146px !important;
+  padding: 10px 5px 10px 13px;
+  border: 0;
+  border-radius: 4px;
+`
+const DivTime = styled.div`
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+`
 
 const PriorityFormControl = styled(FormControl)`
   display: flex;
@@ -263,6 +269,12 @@ function ListHeader() {
       [name]: event.target.value,
     });
   };
+  
+  const [time, setTime] = React.useState('')
+
+  const handleTime = () => {
+    setTime(time);
+  }
 
   return (
     <div >
@@ -306,16 +318,20 @@ function ListHeader() {
           </ProgressWork>
           <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
           <StartEndDay component={'span'}>
-            <BeginTime component={'span'}>Bắt đầu</BeginTime>
-            <OutlineInput />
+            <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
+            <DivTime>
+              <InputTime value={time} onChange={handleTime} />
+            </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput />
+            <OutlineInput type={'date'}/>
           </StartEndDay>
           <StartEndDay component={'span'}>
-            <EndTime component={'span'}>Kết thúc</EndTime>
-            <OutlineInput />
+            <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
+            <DivTime>
+              <InputTime value={time} onChange={handleTime} />
+            </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput />
+            <OutlineInput type={'date'}/>
           </StartEndDay>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
           <Typography component={'span'}>
