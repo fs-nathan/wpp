@@ -5,6 +5,8 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
 import MultiSlider, { Progress, Dot } from 'react-multi-bar-slider';
+import { mdiCircle } from '@mdi/js';
+import Icon from '@mdi/react'
 
 const Container = styled.div`
   padding: 10px 0;
@@ -63,14 +65,16 @@ const TypoTitle = styled(ColorTypo)`
 // `
 const TableHistory = styled(Table)`
   margin-left: 20px;
-  border-bottom-style: dashed;
   & > *:first-child {
-    border-bottom-style: dashed;
+    
   }
 `
 
 const TableRowItem = styled(TableRow)`
-  border-bottom-style: dashed;
+  border-bottom: 1px dashed grey;
+  & > th, td {
+    border-bottom: none;
+  }
 `
 
 const ProgressBar = styled(MultiSlider)`
@@ -125,9 +129,17 @@ const TextProgressToday = styled(Typography)`
     margin: 14px;
     color: red;
   }
-
   
 `
+const LegendBox = styled.div`
+  margin: 10px 20px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  & > *:first-child {
+    margin-right: 10px;
+  }
+`;
 
 
 // const ProgressBarActive = (props) => {
@@ -202,17 +214,23 @@ function TabBody() {
         </Progress>
 
       </ProgressBar>
+      <LegendBox>
+        <Icon path={mdiCircle} size={1} color={'rgb(49, 181, 134)'} />
+        <ColorTypo>Hoàn thành thực tế</ColorTypo>
+      </LegendBox>
+      <LegendBox>
+        <Icon path={mdiCircle} size={1} color={'#ff9800'} />
+        <ColorTypo>Kế hoạch</ColorTypo>
+      </LegendBox>
       {/* progress end */}
-
-      <hr />
       <TypoTitle bold variant='subtitle1' >Lịch sử điều chỉnh tiến độ</TypoTitle>
-      <TableHistory style={{ marginLeft: 20, marginRight: 20, borderBottomStyle: "dashed" }}>
+      <TableHistory style={{ marginLeft: 20, marginRight: 20 }}>
         <TableHead>
-          <TableRow>
+          <TableRowItem>
             <TableCell></TableCell>
             <TableCell>Lần thứ</TableCell>
             <TableCell>Nội dung điều chỉnh</TableCell>
-          </TableRow>
+          </TableRowItem>
         </TableHead>
         <TableBody>
           <TableRowItem>

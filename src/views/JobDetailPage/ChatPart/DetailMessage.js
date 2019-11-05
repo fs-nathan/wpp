@@ -1,11 +1,13 @@
 import React from 'react'
-import { Avatar, Typography, ListItemText, ListItem } from '@material-ui/core';
+import { Avatar, Typography, ListItemText, ListItem, CardMedia } from '@material-ui/core';
 import styled from 'styled-components';
 import avatar from '../../../assets/avatar.jpg'
 import colorPal from '../../../helpers/colorPalette'
-import { mdiClockOutline, mdiArrowRightBold, mdiCheckCircleOutline, mdiAlarm   } from '@mdi/js';
+import { mdiClockOutline, mdiArrowRightBold, mdiCheckCircleOutline, mdiAlarm, mdiFileTree } from '@mdi/js';
+
 import Icon from '@mdi/react';
 import * as MaterialIcon from '@material-ui/icons'
+import ImageChatTest from '../../../assets/imageChatTest.jpg'
 
 
 
@@ -182,9 +184,15 @@ const WorkChildMess = styled(Typography)`
     & > div:nth-child(2) {
         display: flex;
         align-items: center;
-        & > div > svg {
-            color: #6e6d6d;
+        & > div {
             margin-right: 10px;
+            background-color: #e3e6e4;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            justify-content: center;
+            display: flex;
+            align-items: center;
         }
     }
     
@@ -224,6 +232,11 @@ const RemindMess = styled(Typography)`
         }
     }
 `
+
+const ImageChatMess = styled(Typography)`
+
+`
+
 const getSubColorRole = (role, authorityList) => {
     let color = ""
     switch (role) {
@@ -337,8 +350,10 @@ const AdjustmentProgress = () => {
     return (
         <AdjustmentProgressMess component='div'>
             <Typography>Đã điều chỉnh tiến độ </Typography>
+            <Typography component='div'>
                 <Icon path={mdiClockOutline} size={1.2} color={'gray'} />
                 <Typography component='div'>Ngày bắt đầu: 09:15 - 20/09/2019</Typography>
+            </Typography>
         </AdjustmentProgressMess>
     )
 }
@@ -371,13 +386,15 @@ const UpdateStatusWork = () => {
         </UpdateStatusWorkMess>
     )
 }
+
+
 const WorkChild = () => {
     return (
         <WorkChildMess component='div'>
             <Typography>Đã tạo công việc con</Typography>
             <Typography component='div'>
                 <Typography component='div'>
-                    <MaterialIcon.AccountTree size={0.7} />
+                    <Icon path={mdiFileTree} size={0.8} color={'gray'} />
                 </Typography>
                 <Typography component='span'>Đàm phán hợp đồng</Typography>
             </Typography>
@@ -399,7 +416,7 @@ const Remind = () => {
         <RemindMess component='div'>
             <Typography>Đã tạo nhắc hẹn</Typography>
             <ListItem>
-                <Icon path={mdiAlarm} size={1} color={'white'}/>
+                <Icon path={mdiAlarm} size={1} color={'white'} />
                 <ListItemText
                     style={{ margin: 0 }}
                     primary={
@@ -413,6 +430,17 @@ const Remind = () => {
                 />
             </ListItem>
         </RemindMess>
+    )
+}
+const ImageChat = () => {
+    return (
+        <ImageChatMess component='div'>
+            <CardMedia
+                component="img"
+                height="auto"
+                image={ImageChatTest}
+            />
+        </ImageChatMess>
     )
 }
 export default function DetailMessage() {
@@ -460,6 +488,9 @@ export default function DetailMessage() {
                             }
                             {(element.id === 12) &&
                                 <Remind />
+                            }
+                            {(element.id === 13) &&
+                                <ImageChat />
                             }
                         </StyledFrameMess>
                     </Typography>

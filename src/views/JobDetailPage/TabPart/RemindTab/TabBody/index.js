@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  Avatar, IconButton, Menu, MenuItem,
-  MenuList, Popper, Grow, Paper, ClickAwayListener
+  Avatar, IconButton, Menu, MenuItem
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
@@ -60,6 +59,7 @@ const StyledContentBox = styled.div`
 
 const Container = styled.div`
   padding: 10px 20px;
+  background-color: #f8f8f8;
 `;
 
 const Content = styled.div`
