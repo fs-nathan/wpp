@@ -40,6 +40,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const AddButton = styled(Button)`
+  margin-bottom: 15px;
+  padding: 3px;
+  background: #19bb9b;
+  color: #ace5da;
+  text-transform: none;
+`
+const CheckboxText = styled(FormControlLabel)`
+  & > *:last-child {
+    font-weight: 500;
+  }
+`
+
 const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
@@ -70,16 +83,17 @@ const DialogActions = withStyles(theme => ({
 function RoleMemberModal(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
+    nameRole1: false,
+    nameRole2: false,
+    nameRole3: false,
+    nameRole4: false,
   });
 
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
   };
 
-  const { gilad, jason, antoine } = state;  
+  const { role1, role2, role3, role4 } = state;
 
   const handleClose = () => {
     props.setOpen(false);
@@ -91,39 +105,46 @@ function RoleMemberModal(props) {
         <DialogTitle onClose={handleClose}>
           Vai trò thành viên
         </DialogTitle>
-        <DialogContent >
+        <DialogContent dividers>
           <Input
+            style={{fontStyle: 'italic'}}
             fullWidth
             placeholder='Nhập vai trò...'
-            endAdornment={<InputAdornment position="end"><Button variant="contained">Thêm</Button></InputAdornment>}
+            endAdornment={<InputAdornment position="end"><AddButton variant="contained">Thêm</AddButton></InputAdornment>}
           />
-          <FormControl component="fieldset" className={classes.formControl}>           
+          <FormControl component="fieldset" className={classes.formControl}>
             <FormGroup>
-              <FormControlLabel
-                control={<Checkbox checked={gilad} onChange={handleChange('gilad')} value="gilad" />}
-                label="Gilad Gray"
+              <CheckboxText
+                
+                control={<Checkbox color="primary" checked={role1} onChange={handleChange('nameRole1')} value="Giao việc" />}
+                label="Giao việc"
               />
-              <FormControlLabel
-                control={<Checkbox checked={jason} onChange={handleChange('jason')} value="jason" />}
-                label="Jason Killian"
+              <CheckboxText
+                color="primary"
+                control={<Checkbox color="primary" checked={role2} onChange={handleChange('nameRole2')} value="Giám sát" />}
+                label="Giám sát"
               />
-              <FormControlLabel
-                control={
-                  <Checkbox checked={antoine} onChange={handleChange('antoine')} value="antoine" />
-                }
-                label="Antoine Llorca"
+              <CheckboxText 
+                color="primary"
+                control={<Checkbox color="primary" checked={role3} onChange={handleChange('nameRole3')} value="Phê duyệt" />}
+                label="Phê duyệt"
+              />
+              <CheckboxText
+                color="primary"
+                control={<Checkbox color="primary" checked={role4} onChange={handleChange('nameRole4')} value="Thực hiện" />}
+                label="Thực hiện"
               />
             </FormGroup>
-            </FormControl>
+          </FormControl>
         </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={handleClose} color="primary">
-              Save changes
+        <DialogActions>
+          <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
+            HOÀN THÀNH
           </Button>
-          </DialogActions>
+        </DialogActions>
       </Dialog>
     </div>
-      );
-    }
-    
+  );
+}
+
 export default RoleMemberModal;

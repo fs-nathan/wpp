@@ -36,42 +36,39 @@ const ContentContainer = styled.div`
   }
 `;
 
-function ListBodyItem() {
-
-  function renderJobName() {
-    return (
-      <NameContainer variant='space-between'>
-        <ColorTypo bold style={{ fontSize: 16 }}>Phân tích ứng dụng ...</ColorTypo>
-        <Chip label={1} size='small' style={{borderRadius: '50%', width: 16, height: 16, color: 'white', backgroundColor: 'red' }} />
-      </NameContainer>
-    )
-  }
-
-  function renderJobContent() {
-    return (
-      <ContentContainer>
-        <div>
-          <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20 }} />
-          <ColorTypo variant='body2'>Do something</ColorTypo>
-        </div>
-        <div>
-          <ColorChip color='grey' badge label={'Quá hạn'} size='small' style={{ borderRadius: '2px'}}/>
-          <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)' }} path={mdiPin} size={0.8} />
-        </div>
-      </ContentContainer>
-    )
-  }
-
+function JobName() {
   return (
-    <Container button style={{padding: '0 0 10px 0'}}>
+    <NameContainer variant='space-between'>
+      <ColorTypo bold style={{ fontSize: 16 }}>Phân tích ứng dụng ...</ColorTypo>
+      <Chip label={1} size='small' style={{ borderRadius: '50%', width: 16, height: 16, color: 'white', backgroundColor: 'red' }} />
+    </NameContainer>
+  )
+}
+function JobContent() {
+  return (
+    <ContentContainer>
+      <div>
+        <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20 }} />
+        <ColorTypo variant='body2'>Do something</ColorTypo>
+      </div>
+      <div>
+        <ColorChip color='grey' badge label={'Quá hạn'} size='small' style={{ borderRadius: '2px' }} />
+        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)' }} path={mdiPin} size={0.8} />
+      </div>
+    </ContentContainer>
+  )
+}
+
+function ListBodyItem() {
+  return (
+    <Container button style={{ padding: '0 0 10px 0' }}>
       <ListItemAvatar>
         <SimpleDonutChart percentDone={38} />
       </ListItemAvatar>
-      <ListItemText
-        disableTypography
-        primary={renderJobName()}
-        secondary={renderJobContent()}
-      />
+      <ListItemText disableTypography>
+        <JobName />
+        <JobContent />
+      </ListItemText>
     </Container>
   )
 }

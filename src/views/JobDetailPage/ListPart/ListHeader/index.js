@@ -279,8 +279,8 @@ function ListHeader() {
         </HeaderBottomBox>
       </Header>
       {/* mo modal tao cong viec moi */}
-      <Dialog aria-labelledby="customized-dialog-title" open={open} fullWidth>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+      <Dialog open={open} fullWidth>
+        <DialogTitle onClose={handleClose}>
           Tạo công việc
         </DialogTitle>
         <DialogContent dividers>
@@ -360,7 +360,7 @@ function ListHeader() {
             </Button>
             
             
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
             TẠO VIỆC
           </Button>
         </DialogActions>

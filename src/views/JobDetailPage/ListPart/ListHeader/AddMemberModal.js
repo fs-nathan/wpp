@@ -320,9 +320,9 @@ function AddMemberModal(props) {
                             <TableMember />
                         </Typography>
                     </GridArea>
-                </DialogContent>
+                </DialogContent>    
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose} color="primary">
+                    <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
                         Cập nhật
           </Button>
                 </DialogActions>
