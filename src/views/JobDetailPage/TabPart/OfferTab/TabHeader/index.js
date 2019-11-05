@@ -1,8 +1,8 @@
 import React from 'react';
-import { IconButton, Dialog, Button, TextField, withStyles, Typography, InputAdornment  } from '@material-ui/core';
+import { IconButton, Dialog, Button, TextField, withStyles, Typography, InputAdornment } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiClose , mdiPlus, mdiCloudDownloadOutline } from '@mdi/js';
+import { mdiClose, mdiPlus, mdiCloudDownloadOutline } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import CloseIcon from '@material-ui/icons/Close';
@@ -10,6 +10,9 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IntegrationReactSelect from '../../Tag/index'
+import colorPal from '../../../../../helpers/colorPalette';
+import { makeStyles } from '@material-ui/core/styles';
+
 
 const Container = styled.div`
   display: flex;
@@ -42,7 +45,19 @@ const TitleText = styled(Typography)`
   font-size: 15px;
   margin: 15px 0;
 `
-
+const ButtonFile = styled.label`
+      & > span {
+        margin: 20px 0 0 0;
+        & > span {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          padding: 3px 10px;
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+`
 // bien cua modal
 const styles = theme => ({
   root: {
@@ -56,6 +71,15 @@ const styles = theme => ({
     color: theme.palette.grey[500],
   },
 });
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+  input: {
+    display: 'none',
+  },
+}));
 
 const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
@@ -87,6 +111,7 @@ const DialogActions = withStyles(theme => ({
 
 
 function TabHeader({ setShow }) {
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -98,10 +123,10 @@ function TabHeader({ setShow }) {
     <Container>
       <ColorTypo uppercase bold>Đề xuất - Phê duyệt</ColorTypo>
       <IconButton onClick={handleClickClose, handleClickOpen}>
-        <Icon path={mdiPlus} size={1}/>
+        <Icon path={mdiPlus} size={1} />
       </IconButton>
       <IconButton onClick={() => setShow(0)}>
-        <Icon path={mdiClose } size={1}/>
+        <Icon path={mdiClose} size={1} />
       </IconButton>
       <Dialog aria-labelledby="customized-dialog-title" open={open} fullWidth>
         <DialogTitle id="customized-dialog-title" onClose={handleClickClose}>
@@ -109,26 +134,32 @@ function TabHeader({ setShow }) {
         </DialogTitle>
         <DialogContent dividers>
           <TexTitle >Chọn người duyệt</TexTitle>
-          <IntegrationReactSelect/>
+          <IntegrationReactSelect />
           <TitleText component="div">Nội dung</TitleText>
           <Text component="span"
-          id="outlined-full-width"
-          placeholder="Nhập nội dung nhắc hẹn"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="outlined"
-        />
-        <TextField
-          value={'Đính kèm tài liệu'}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"><Icon path={mdiCloudDownloadOutline} size={1} /></InputAdornment>,
-          }}
-          variant="outlined"
-          fullWidth
-        />
+            id="outlined-full-width"
+            placeholder="Nhập nội dung nhắc hẹn"
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
+          />
+          <input
+                accept="image/*"
+                className={classes.input}
+                id="outlined-button-file"
+                multiple
+                type="file"
+              />
+              <ButtonFile htmlFor="outlined-button-file">
+                <Button variant="outlined" component="span" fullWidth className={classes.button}>
+                  <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
+                  Đính kèm tài liệu
+                </Button>
+              </ButtonFile>
+          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClickClose} color="primary">
