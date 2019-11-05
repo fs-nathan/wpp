@@ -77,7 +77,6 @@ const ProgressBar = styled(MultiSlider)`
   border-radius: 5px !important;
   margin-bottom: 100px !important;
   & > *:first-child {
-    z-index: 10;
     border-radius: 5px;
     background-repeat: repeat!important;
     background-size: 1rem 1rem!important;
@@ -85,7 +84,6 @@ const ProgressBar = styled(MultiSlider)`
     border-top-right-radius: 0;
     background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)!important;
     & > span {
-      z-index: 10;
       border: 1px solid #AAA;
       background-color: #a5a0a0;
       border-radius: 1px;
@@ -180,9 +178,9 @@ function TabBody() {
       </StartEndDateBox>
       {/* progress */}
       <ProgressBar
-        width={500}
+        width={450}
         height={20}
-        slidableZoneSize={20}
+        slidableZoneSize={30}
         backgroundColor="#edeff0"
         equalColor="#3ac5aa"
         style={{ margin: 'auto' }}

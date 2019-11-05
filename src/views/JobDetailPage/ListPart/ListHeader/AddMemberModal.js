@@ -162,7 +162,7 @@ function MemberPriority(props) {
 
     if (props.master) {
         return (
-            <div style={{ color: '#fd7e14', padding: '0 10px' }}>{props.label}</div>
+            <div style={{ color: '#fd7e14', padding: '0 25px' }}>{props.label}</div>
         )
     }
 
@@ -245,7 +245,7 @@ function TableMember() {
                     <TableRow style={{ background: '#f7f7f7' }}>
                         <MemberTable style={{ width: '9%' }}></MemberTable>
                         <MemberTable style={{ width: '30%' }}>Thành viên</MemberTable>
-                        <MemberTable style={{ width: '20%' }}>Nhóm quyền</MemberTable>
+                        <MemberTable style={{ width: '20%', paddingLeft: 30 }}>Nhóm quyền</MemberTable>
                         <MemberTable style={{ width: '32%' }}>Vai trò</MemberTable>
                         <MemberTable></MemberTable>
                     </TableRow>
@@ -257,7 +257,7 @@ function TableMember() {
                             <MemberTable component="th" scope="row">
                                 {AddData.name}
                             </MemberTable>
-                            <MemberTable>{AddData.permission}</MemberTable>
+                            <MemberTable style={{ paddingLeft: 17}}>{AddData.permission}</MemberTable>
                             <MemberTable>{AddData.role}</MemberTable>
                             <MemberTable>
                                 <IconButton size='small' onClick={handleClickEliminate} >
