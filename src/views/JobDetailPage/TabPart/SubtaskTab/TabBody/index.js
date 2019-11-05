@@ -273,6 +273,9 @@ const ItemList = styled(ListItemText)`
     font-size: 16px;
   }
 `
+const Badge = styled(ColorChip)`
+  border-radius: 3px !important;
+`
 
 const FinishedSubtaskList = () => {
   const [data] = React.useState([1, 2, 3, 4]);
@@ -290,7 +293,7 @@ const FinishedSubtaskList = () => {
               primary={`Xong việc ${elem}`}
               secondary={
                 <FinishedSubtaskListItemTextSecondary>
-                  <ColorChip component='small' color='bluelight' badge size='small' label={'Hoàn thành'} />
+                  <Badge component='small' color='bluelight' badge size='small' label={'Hoàn thành'} />
                   lúc 19:00 - 09/09/2019
                 </FinishedSubtaskListItemTextSecondary>
               }

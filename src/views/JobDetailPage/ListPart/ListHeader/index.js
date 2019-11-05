@@ -251,8 +251,6 @@ function ListHeader() {
     setOpen(false);
   }
 
-
-
   const [state, setState] = React.useState('');
   const [openAddModal, setOpenAddModal] = React.useState(false);
 

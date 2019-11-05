@@ -65,7 +65,7 @@ const StyleContent = styled(ColorTypo)`
   font-size: 14px;
 `
 const Badge = styled(ColorChip)`
-  border-radius: 3px;
+  border-radius: 3px !important;
 `
 
 const styles = theme => ({

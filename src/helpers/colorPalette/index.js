@@ -22,7 +22,7 @@ const colors = {
   'white': ['#f0f0f0', '#8b8b8b'],
   'grey': ['#f8dbd7', '#f16978'],
   'black': ['#000', '#fff'],
-  '#ffd3b4' : ['#ffd3b4' , '#fff']
+  '#ffd3b4' : ['#ffd3b4' , '#fff'],
 };
 
 export default colors;

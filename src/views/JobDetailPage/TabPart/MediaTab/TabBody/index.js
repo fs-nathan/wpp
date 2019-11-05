@@ -37,7 +37,12 @@ const Image = styled.img`
   margin: 0;
   padding: 0;
   border-radius: 5px
-  z-index: 0;
+  z-index: 2;
+  cursor: pointer;
+  &:hover {
+
+    opacity: 0.7
+  }
 `
 const ButtonIcon = styled(IconButton)`
   position: absolute;
@@ -54,10 +59,11 @@ const MenuListItem = () => {
   function handleClose() {
     setAnchorEl(null);
   }
+
   return (
           <div>  
-            <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" size={'small'}>
-              <Icon path={mdiDotsHorizontal} size={1} color={'rgba(0, 0, 0, 1)'} />
+            <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" size={'small'} >
+              <Icon path={mdiDotsHorizontal} size={1} color={'#fff'} />
             </ButtonIcon>
             <Menu
               id="simple-menu"
@@ -78,7 +84,10 @@ const MenuListItem = () => {
   )
 }
 
-const MediaBox = () => {
+const MediaBox = ({isHover}) => {
+  // { isHover 
+
+  // }
   return (
     <GridList cellHeight={60} cols={5}>
       <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
@@ -87,7 +96,7 @@ const MediaBox = () => {
       {Array.from({ length: 7 }).map((_, index) => {
         return (
           <ImageMedia key={`1-${index}`}>
-            <Image src={avatar} alt='avatar' />
+            <Image src={avatar} alt='avatar' />   
             <MenuListItem />
           </ImageMedia>
         );
@@ -223,7 +232,7 @@ const LinkBox = () => {
             <Avatar src={avatar} alt='avatar' />
           </ListItemAvatar>
           <ListItemText>
-            <a href='https://google.com.vn'>https://google.com.vn</a>
+            <a href='https://google.com.vn' target="_blank">https://google.com.vn</a>
           </ListItemText>
           <ListItemIcon>
             <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">

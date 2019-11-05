@@ -6,13 +6,18 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import SearchInput from '../../../../components/SearchInput';
-import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import { ListItem, Avatar, Chip, Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@material-ui/core';
+import { ListItem, Avatar, Chip, Table, TableBody, TableHead, TableRow, Paper, TableCell, Menu, MenuItem, IconButton } from '@material-ui/core';
 import avatar from '../../../../assets/avatar.jpg';
 import ColorTypo from '../../../../components/ColorTypo';
+import ColorChip from '../../../../components/ColorChip';
+import Icon from '@mdi/react';
+import { mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
+import RoleMemberModal from './RoleMemberModal';
+import PriorityMemberModal from './PriorityMemberModal'
 
 const StyledListItem = styled(ListItem)`
   display: flex;
@@ -101,33 +106,193 @@ const MemberProject = styled(Typography)`
     color: #817f8d;
     font-size: 18px;
 `
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+const FlexJobMember = styled(Typography)`
+    display: flex;
+    align-items: center
+    height: 60px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-left: 25px;
+`
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-
-function AddMemberModal(props) {
-    const classes = useStyles();
-
-    const handleClose = () => {
-        props.setOpen(false);
-    };
-
+const MemberTable = styled(TableCell)`
+    padding: 5px 0 5px 10px;
+`
+const ChipPriority = styled(Chip)`
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100px;
+    padding: 0 10px;
+`
+function PRojectMember(props) {
     let handleClick = () => {
 
     }
 
     return (
+        <StyledListItem>
+            <Avatar src={avatar} alt='avatar' />
+            <div>
+                <ColorTypo bold fontSize>{props.name}</ColorTypo>
+                <ColorTypo>{props.email}</ColorTypo>
+                <ColorTypo color="orange">{props.role}</ColorTypo>
+            </div>
+            <Chip bold
+                label="Thêm"
+                onClick={handleClick}
+            />
+        </StyledListItem>
+    )
+}
+
+function MemberDetail(props) {
+    return (
         <div>
-            <Dialog maxWidth="lg" onClose={handleClose} aria-labelledby="customized-dialog-title" open={props.isOpen}>
+            <ColorTypo bold fontSize>{props.name}</ColorTypo>
+            <ColorTypo>{props.email}</ColorTypo>
+        </div>
+    )
+}
+
+function MemberPriority(props) {
+    const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    if (props.master) {
+        return (
+            <div style={{ color: '#fd7e14', padding: '0 10px' }}>{props.label}</div>
+        )
+    }
+
+    return (
+        <div>
+        <ChipPriority
+            size="small"
+            label={props.label}
+            onClick={() => {
+                handleClose()
+                setOpenPriorityModal(true)
+            }}
+            icon={<ArrowDropDownIcon />}
+        />
+        <PriorityMemberModal isOpen={openPriorityModal} setOpen={setOpenPriorityModal} />
+        </div>
+    )
+}
+
+function MemberRole(props) {
+    const [openRoleModal, setOpenRoleModal] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
+    return (
+        <div style={{display: 'flex', alignItems: 'center'}}>
+        <div>
+            <div>
+            <ColorChip color='grey' badge label={props.role1} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            <ColorChip color='grey' badge label={props.role2} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            </div>
+            <div>
+            <ColorChip color='grey' badge label={props.role3} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            <ColorChip color='grey' badge label={props.role4} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+            </div>            
+        </div>
+        <IconButton style={{float: 'right'}}
+            size='small' 
+            onClick={() => {
+                handleClose()
+                setOpenRoleModal(true)
+              }}
+            >
+                <Icon path={mdiPlusCircleOutline} size={1} style={{ fill: '#b0b0b0' }} />
+            </IconButton>
+            <RoleMemberModal isOpen={openRoleModal} setOpen={setOpenRoleModal}/>
+        </div>
+    )
+}
+
+function createData(AvatarMember, name, permission, role) {
+    return { AvatarMember, name, permission, role };
+}
+
+function TableMember() {
+    const classes = useStyles();
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleClickEliminate = (evt) => {
+        setAnchorEl(evt.currentTarget);
+    }
+    const handleCloseEliminate = () => {
+        setAnchorEl(null);
+    }
+
+    let AvatarMember = <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />
+
+    const AddData = [
+        createData(AvatarMember, <MemberDetail name='Nguyễn Hữu Thành' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' master />, <MemberRole role1='Giao việc' role2='Giám sát' role3='Phê duyệt' role4='Thực hiện'/>),
+        createData(AvatarMember, <MemberDetail name='Nguyễn Bá Hùng' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' />, <MemberRole role1='Giám sát' role2='Phê duyệt'/>),
+        createData(AvatarMember, <MemberDetail name='Phạm Thanh Ngọc' email='huuthanh@gmail.com' />, <MemberPriority label='Quản lý' />, <MemberRole />),
+        createData(AvatarMember, <MemberDetail name='VietApp' email='huuthanh@gmail.com' />, <MemberPriority label='Thành viên' />, <MemberRole />)
+    ];
+
+    return (
+        <Paper className={classes.root}>
+            <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                    <TableRow style={{ background: '#f7f7f7' }}>
+                        <MemberTable style={{ width: '9%' }}></MemberTable>
+                        <MemberTable style={{ width: '30%' }}>Thành viên</MemberTable>
+                        <MemberTable style={{ width: '20%' }}>Nhóm quyền</MemberTable>
+                        <MemberTable style={{ width: '32%' }}>Vai trò</MemberTable>
+                        <MemberTable></MemberTable>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {AddData.map(AddData => (
+                        <TableRow key={AddData.name}>
+                            <MemberTable>{AddData.AvatarMember}</MemberTable>
+                            <MemberTable component="th" scope="row">
+                                {AddData.name}
+                            </MemberTable>
+                            <MemberTable>{AddData.permission}</MemberTable>
+                            <MemberTable>{AddData.role}</MemberTable>
+                            <MemberTable>
+                                <IconButton size='small' onClick={handleClickEliminate} >
+                                    <Icon path={mdiDotsVertical} size={1} />
+                                </IconButton>
+                                <Menu
+                                    id="simple-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleCloseEliminate}
+                                    transformOrigin={{
+                                        vertical: -30,
+                                        horizontal: 'right',
+                                    }}
+                                >
+                                    <MenuItem onClick={handleCloseEliminate}>Loại trừ</MenuItem>
+                                </Menu>
+                            </MemberTable>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </Paper>
+    )
+}
+
+function AddMemberModal(props) {
+    const handleClose = () => {
+        props.setOpen(false);
+    };
+
+    return (
+        <div>
+            <Dialog maxWidth="lg" fullWidth onClose={handleClose} open={props.isOpen}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Thành viên công việc
         </DialogTitle>
@@ -144,64 +309,16 @@ function AddMemberModal(props) {
                                 <ButtonAddAll >
                                     + Thêm tất cả
                         </ButtonAddAll>
-                                <StyledListItem>
-                                    <Avatar src={avatar} alt='avatar' />
-                                    <div>
-                                        <ColorTypo bold fontSize>Khắc Điệp</ColorTypo>
-                                        <ColorTypo> dieptk95@gmail.com</ColorTypo>
-                                        <ColorTypo color="orange">Giám đốc dự án</ColorTypo>
-                                    </div>
-                                    <Chip bold
-                                        label="Thêm"
-                                        onClick={handleClick}
-                                    />
-                                </StyledListItem>
-                                <StyledListItem>
-                                    <Avatar src={avatar} alt='avatar' />
-                                    <div>
-                                        <ColorTypo bold fontSize>Nguyễn Mai Anh</ColorTypo>
-                                        <ColorTypo> maianhdigital@gmail.com</ColorTypo>
-                                        <ColorTypo color="orange">Chuyên viên</ColorTypo>
-                                    </div>
-                                    <Chip bold
-                                        label="Thêm"
-                                        onClick={handleClick}
-                                    />
-                                </StyledListItem>
+                                <PRojectMember name='Khắc Điệp' email='dieptk95@gmail.com' role='Giám đốc dự án' />
+                                <PRojectMember name='Nguyễn Mai Anh' email='maianhdigital@gmail.com' role='Chuyên viên' />
                             </Typography>
                         </BorderGrid>
                         <Typography component="div">
-                            <FlexMemberProject component="div">
+                            <FlexJobMember component="div">
                                 <MemberProject component={'div'}>Thành viên công việc</MemberProject>
-                            </FlexMemberProject>
-                            <Paper className={classes.root}>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Dessert (100g serving)</TableCell>
-                                        <TableCell align="right">Calories</TableCell>
-                                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {rows.map(row => (
-                                        <TableRow key={row.name}>
-                                            <TableCell component="th" scope="row">
-                                                {row.name}
-                                            </TableCell>
-                                            <TableCell align="right">{row.calories}</TableCell>
-                                            <TableCell align="right">{row.fat}</TableCell>
-                                            <TableCell align="right">{row.carbs}</TableCell>
-                                            <TableCell align="right">{row.protein}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Paper>
+                            </FlexJobMember>
+                            <TableMember />
                         </Typography>
-                        
                     </GridArea>
                 </DialogContent>
                 <DialogActions>
@@ -210,7 +327,7 @@ function AddMemberModal(props) {
           </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </div >
     );
 }
 

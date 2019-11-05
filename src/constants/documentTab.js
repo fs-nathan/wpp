@@ -11,9 +11,11 @@ import { VARIABLE_TYPE, FIELD_TYPE } from './documentCell'
 // change the information of right panel)
 // + name: Tab header
 // + icon: Path of google material icon
-// + columns: List of column name in table of tab
-// + columnSize: Size of each column (follow by index of columns 
-// variable) in table of tab
+// + columns: List of column in table of tab including:
+//      - name
+//      - additionStyle
+//      - align
+//      - type
 export const RECENT_TAB = {
     id: 0,
     name: 'Tài liệu gần đây',

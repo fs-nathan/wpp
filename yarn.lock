@@ -8404,7 +8404,15 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.3"
 
+<<<<<<< HEAD
 prop-types@15.7.2, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+=======
+<<<<<<< HEAD
+prop-types@15.7.2, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+=======
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+>>>>>>> dev_quan
+>>>>>>> 4de1a59f5fa90aeddc82813acec527b90375077a
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8669,6 +8677,7 @@ react-i18next@^10.13.1:
     "@babel/runtime" "^7.3.1"
     html-parse-stringify2 "2.0.1"
 
+<<<<<<< HEAD
 react-image@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-image/-/react-image-2.2.1.tgz#2aa7832be93023e918adae66b0d1b37d06eed293"
@@ -8676,6 +8685,11 @@ react-image@^2.2.1:
   dependencies:
     prop-types "15.7.2"
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> dev_quan
+>>>>>>> 4de1a59f5fa90aeddc82813acec527b90375077a
 react-input-autosize@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-2.2.2.tgz#fcaa7020568ec206bc04be36f4eb68e647c4d8c2"
@@ -8698,6 +8712,14 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+<<<<<<< HEAD
+=======
+react-multi-bar-slider@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-multi-bar-slider/-/react-multi-bar-slider-1.4.0.tgz#b1cb008a1ddf6a9f9f88bf68316e77a427d719eb"
+  integrity sha512-cgQ8Qr+zD0swVKKRqpqYXhN31Mge29oTt/nfJRiju5VlM5bT7tC6nalhr5aBF2y0Ik221Nruh+UUMxrZSwMPUg==
+
+>>>>>>> 4de1a59f5fa90aeddc82813acec527b90375077a
 react-redux@^7.0.3, react-redux@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.1.tgz#ce6eee1b734a7a76e0788b3309bf78ff6b34fa0a"
@@ -8814,6 +8836,14 @@ react-select@^3.0.8:
     react-input-autosize "^2.2.2"
     react-transition-group "^2.2.1"
 
+<<<<<<< HEAD
+=======
+react-simple-timefield@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-simple-timefield/-/react-simple-timefield-3.0.0.tgz#a1702a8fa0ace0764ff51516bf1d719d2eb7c5fe"
+  integrity sha512-DW2+1PWIOqIlfG23rJGN67mMbb1HJfcRmDKVN9mlbE01fFz6oaJ9WCdGCXiABiuMOhx+yEf2wj7fRBwFqUV4ZA==
+
+>>>>>>> 4de1a59f5fa90aeddc82813acec527b90375077a
 react-transition-group@^2.2.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"

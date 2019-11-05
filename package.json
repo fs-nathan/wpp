@@ -22,11 +22,13 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.10.2",
     "react-i18next": "^10.13.1",
+    "react-multi-bar-slider": "^1.4.0",
     "react-image": "^2.2.1",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-select": "^3.0.8",
+    "react-simple-timefield": "^3.0.0",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
     "styled-components": "^4.4.0"
