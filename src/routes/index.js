@@ -20,7 +20,7 @@ const routes = [
     component: () => <ProjectPage />,
   },
   {
-    path: "/thanh-vien",
+    path: "/departments",
     component: () => <UserPage />,
   },
   {

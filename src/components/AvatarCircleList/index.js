@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { get } from 'lodash';
 import ColorTypo from '../ColorTypo';
 import { Tooltip } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   display: flex;
@@ -72,6 +73,11 @@ function AvatarCircleList({ display, users = [] }) {
       )}
     </Container>
   )
+}
+
+AvatarCircleList.propTypes = {
+  display: PropTypes.number.isRequired,
+  users: PropTypes.array.isRequired,
 }
 
 export default AvatarCircleList;

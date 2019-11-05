@@ -3,8 +3,9 @@ import styled, { css } from 'styled-components';
 import { Button } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles';
 import colorPal from '../../helpers/colorPalette';
+import PropTypes from 'prop-types';
 
-const ColorButton = styled(({ variantColor, variant, ...rest }) => <Button variant={variant} {...rest} />)`
+const ColorButton = styled(({ variantColor, variant = 'text', ...rest }) => <Button variant={variant} {...rest} />)`
   && {
     box-shadow: none;
   }
@@ -29,5 +30,10 @@ const ColorButton = styled(({ variantColor, variant, ...rest }) => <Button varia
     color: ${props => props.variantColor ? colorPal[props.variantColor][0] : colorPal['default'][0]};
   `}
 `;
+
+ColorButton.propTypes = {
+  variantColor: PropTypes.string,
+  variant: PropTypes.oneOf(['contained', 'text', 'outlined']),
+}
 
 export default ColorButton;

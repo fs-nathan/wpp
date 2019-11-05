@@ -3,7 +3,7 @@ import { updateRoomSuccess, updateRoomFail } from '../../actions/room/updateRoom
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPDATE_ROOM } from '../../constants/events';
 
-async function doUpdateRoom({ roomId, name, icon, description }) {
+async function doUpdateRoom({ roomId, name, icon, description, members }) {
   try {
     const config = {
       url: '/update-room',
@@ -13,6 +13,7 @@ async function doUpdateRoom({ roomId, name, icon, description }) {
         name,
         icon,
         description,
+        members,
       },
     }
     const result = await apiService(config);
@@ -24,8 +25,8 @@ async function doUpdateRoom({ roomId, name, icon, description }) {
 
 function* updateRoom(action) {
   try {
-    yield call(doUpdateRoom, action.options);
-    yield put(updateRoomSuccess());
+    const { room } = yield call(doUpdateRoom, action.options);
+    yield put(updateRoomSuccess({ room }));
     CustomEventEmitter(UPDATE_ROOM);
   } catch (error) {
     yield put(updateRoomFail(error));

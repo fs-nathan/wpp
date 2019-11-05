@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { deleteProjectSuccess, deleteProjectFail } from '../../actions/project/deleteProject';
 import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, UPDATE_PROJECT } from '../../constants/events';
+import { CustomEventEmitter, DELETE_PROJECT } from '../../constants/events';
 
 async function doDeleteProject({ projectId }) {
   try {
@@ -23,7 +23,7 @@ function* deleteProject(action) {
   try {
     yield call(doDeleteProject, action.options);
     yield put(deleteProjectSuccess());
-    CustomEventEmitter(UPDATE_PROJECT);
+    CustomEventEmitter(DELETE_PROJECT);
   } catch (error) {
     yield put(deleteProjectFail(error));
   }

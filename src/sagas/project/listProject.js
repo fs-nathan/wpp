@@ -5,8 +5,8 @@ import { apiService } from '../../constants/axiosInstance';
 async function doListProject({ groupProject, type, status }) {
   try {
     const config = {
-      url: '/project/create',
-      method: 'post',
+      url: '/project/list',
+      method: 'get',
       data: {
         group_project: groupProject,
         type,

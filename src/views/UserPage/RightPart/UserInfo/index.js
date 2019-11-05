@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { Avatar, ListItem, List, ListItemText, IconButton } from '@material-ui/core';
-import avatar from '../../../../assets/avatar.jpg';
+import { ListItem, List, ListItemText, IconButton } from '@material-ui/core';
+import CustomAvatar from '../../../../components/CustomAvatar';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
 import ColorButton from '../../../../components/ColorButton';
@@ -132,7 +132,7 @@ function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocum
   }, [doDetailUser, userId]);
 
   React.useEffect(() => {
-    const doDetailUserHandler = () => doDetailUser({ userId });
+    const doDetailUserHandler = () => doDetailUser({ userId }, true);
 
     CustomEventListener(UPLOAD_DOCUMENTS_USER, doDetailUserHandler);
     CustomEventListener(UPDATE_USER, doDetailUserHandler);
@@ -156,7 +156,7 @@ function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocum
         <Container>
           <MainBox>
             <MainHeader>
-              <Avatar style={{ width: 60, height: 60, }} src={_.get(user, 'avatar')} alt='avatar' />
+              <CustomAvatar style={{ width: 60, height: 60, }} src={_.get(user, 'avatar')} alt='avatar' />
               <div>
                 <ColorTypo color='green' bold variant='h6'>{_.get(user, 'name', '')}</ColorTypo>
                 <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {new Date(_.get(user, 'date_join', '')).toLocaleDateString()}</ColorTypo>
@@ -191,8 +191,8 @@ function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocum
               </StyledListItem>
             </MainList>
             <MainFooter>
-              <StyledButton fullWidth onClick={() => setOpenDocumentsModal(true)}>
-                <Avatar src={avatar} alt='avatar' />
+              <StyledButton variant='text' fullWidth onClick={() => setOpenDocumentsModal(true)}>
+                <CustomAvatar alt='avatar' />
                 <ColorTypo>{t('views.user_page.right_part.user_info.documents_view')}</ColorTypo>
               </StyledButton>
               <input
@@ -200,11 +200,17 @@ function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocum
                 type="file" 
                 onChange={handleUploadFile}
               />
-              <ColorButton variant='text' variantColor='blue' size='small' component='label' htmlFor='raised-button-file'>
-                {uploadDocumentsUserLoading && <LoadingBox size={16} />}
-                {uploadDocumentsUserError !== null && `${t('views.user_page.right_part.user_info.upload_documents_error')}`}
-                {!uploadDocumentsUserLoading && uploadDocumentsUserError === null && `+ ${t('views.user_page.right_part.user_info.upload_documents')}`}
-              </ColorButton>
+              {uploadDocumentsUserLoading && (
+                <ColorButton variant='text' variantColor='blue' size='small'>
+                  <LoadingBox size={16} />
+                </ColorButton>
+              )}
+              {!uploadDocumentsUserLoading && (
+                <ColorButton variant='text' variantColor='blue' size='small' component='label' htmlFor='raised-button-file'>
+                  {uploadDocumentsUserError !== null && `${t('views.user_page.right_part.user_info.upload_documents_error')}`}
+                  {uploadDocumentsUserError === null && `+ ${t('views.user_page.right_part.user_info.upload_documents')}`}
+                </ColorButton>
+              )}
             </MainFooter>
           </MainBox>
           <SideBox>
@@ -296,7 +302,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doDetailUser: ({ userId }) => dispatch(detailUser({ userId })),
+    doDetailUser: ({ userId }, quite) => dispatch(detailUser({ userId }, quite)),
     doUploadDocumentsUser: ({ userId, file }) => dispatch(uploadDocumentsUser({ userId, file })),
   };
 };

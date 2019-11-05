@@ -55,7 +55,7 @@ function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, })
 
   React.useEffect(() => {
     const doListUserOfGroupHandler = () => {
-      doListUserOfGroup();
+      doListUserOfGroup(true);
     };
 
     CustomEventListener(SORT_USER, doListUserOfGroupHandler);
@@ -90,7 +90,7 @@ function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, })
         <LeftSideContainer
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push(`${location.pathname.replace(`/nguoi-dung/${userId}`, '')}`),
+            onClick: () => history.push(`${location.pathname.replace(`/members/${userId}`, '')}`),
           }}
           title='Danh sách thành viên'
         >
@@ -147,7 +147,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListUserOfGroup: () => dispatch(listUserOfGroup()),
+    doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
     doSortUser: ({ userId, roomId, sortIndex }) => dispatch(sortUser({ userId, roomId, sortIndex })),
   }
 };

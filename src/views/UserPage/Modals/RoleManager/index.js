@@ -40,12 +40,22 @@ const TableCellChipsWrapper = styled(TableCell)`
   }
 `;
 
-function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRole, doDeleteUserRole }) {
+const StyledTableCell = styled(TableCell)`
+  font-weight: 500;
+  &:first-child {
+    min-width: 200px;
+  }
+`;
 
-  const { data: { userRoles }, loading: listUserRoleLoading, error: listUserRoleError } = listUserRole;
-  const { loading: deleteUserRoleLoading, error: deleteUserRoleError } = deleteUserRole;
-  const loading = listUserRoleLoading || deleteUserRoleLoading;
-  const error = listUserRoleError || deleteUserRoleError;
+const StyledTable = styled(Table)`
+  & * {
+    font-size: 14px;
+  }
+`;
+
+function RoleManager({ open, setOpen, listUserRole, doListUserRole, doDeleteUserRole }) {
+
+  const { data: { userRoles }, loading, error } = listUserRole;
   const [openCAU, setOpenCAU] = React.useState(0);
   const [updatedUserRole, setUpdatedUserRole] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
@@ -57,7 +67,7 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
 
   React.useEffect(() => {
     const doListUserRoleHandler = () => {
-      doListUserRole();
+      doListUserRole(true);
     };
 
     CustomEventListener(CREATE_USER_ROLE, doListUserRoleHandler);
@@ -92,11 +102,11 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox />}
         {!loading && error === null && (
-          <Table>
+          <StyledTable>
             <StyledTableHead>
               <TableRow>
-                <TableCell>Tên vai trò</TableCell>
-                <TableCell>Mô tả</TableCell>
+                <StyledTableCell>Tên vai trò</StyledTableCell>
+                <StyledTableCell>Mô tả</StyledTableCell>
                 <TableCell>
                   <ColorButton variantColor='orange' size='small' variant='contained'
                     onClick={() => handleSelectedUserRole(null)}
@@ -109,15 +119,15 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
             <StyledTableBody>
               {userRoles.map(userRole => (
                 <TableRow key={_.get(userRole, 'id')}>
-                  <TableCell>{_.get(userRole, 'name', '')}</TableCell>
+                  <StyledTableCell>{_.get(userRole, 'name', '')}</StyledTableCell>
                   <TableCell>{_.get(userRole, 'description', '')}</TableCell>
                   <TableCellChipsWrapper>
                     <div>
                       <PillButton 
                         onClick={() => handleSelectedUserRole(userRole)}
-                        background={colorPal['green'][0]}
-                        text={colorPal['green'][1]}
-                        size='small' 
+                        background={'#eeeeee'}
+                        text={'#222222'}
+                        size='large'
                       >
                         Sửa
                       </PillButton>
@@ -126,9 +136,9 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
                           setDelUserRole(userRole)
                           setAlert(true)
                         }}
-                        background={colorPal['red'][0]}
-                        text={colorPal['red'][1]}
-                        size='small' 
+                        background={'#eeeeee'}
+                        text={colorPal['red'][0]}
+                        size='large' 
                       >
                         Xóa
                       </PillButton>
@@ -137,7 +147,7 @@ function RoleManager({ open, setOpen, listUserRole, doListUserRole, deleteUserRo
                 </TableRow>
               ))}
             </StyledTableBody>
-          </Table>
+          </StyledTable>
         )}
       </CustomModal>
       <RoleCreateAndUpdateModal updatedUserRole={updatedUserRole} open={openCAU !== 0} setOpen={setOpenCAU} />
@@ -160,7 +170,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListUserRole: () => dispatch(listUserRole()),
+    doListUserRole: (quite) => dispatch(listUserRole(quite)),
     doDeleteUserRole: ({ userRoleId }) => dispatch(deleteUserRole({ userRoleId })),
   }
 };

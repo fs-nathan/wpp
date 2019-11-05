@@ -22,8 +22,8 @@ async function doCreatePosition({ name, description }) {
 
 function* createPosition(action) {
   try {
-    const { position_id: positionId } = yield call(doCreatePosition, action.options);
-    yield put(createPositionSuccess({ positionId }));
+    const { position } = yield call(doCreatePosition, action.options);
+    yield put(createPositionSuccess({ position }));
     CustomEventEmitter(CREATE_POSITION);
   } catch (error) {
     yield put(createPositionFail(error));

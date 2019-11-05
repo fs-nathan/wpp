@@ -8,6 +8,7 @@ import {
   lighten,
 } from '@material-ui/core/styles';
 import Icon from '@mdi/react';
+import PropTypes from 'prop-types';
 import { mdiClose } from '@mdi/js'; 
 import ColorTypo from '../ColorTypo';
 import colorPal from '../../helpers/colorPalette';
@@ -123,5 +124,13 @@ function CustomModal({ open, setOpen, content, onConfirm = () => null, onCancle 
     </StyledDialog>
   )
 }
+
+CustomModal.propTypes = {
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired, 
+  content: PropTypes.node.isRequired, 
+  onConfirm: PropTypes.func, 
+  onCancle: PropTypes.func,
+};
 
 export default CustomModal;

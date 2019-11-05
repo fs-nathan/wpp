@@ -7,22 +7,22 @@ import CustomModal from '../../../../../components/CustomModal';
 import { createPosition } from '../../../../../actions/position/createPosition';
 import { updatePosition } from '../../../../../actions/position/updatePosition';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import { get } from 'lodash';
 
 function TitleManager({ open, setOpen, updatedPosition = null, doCreatePosition, doUpdatePosition }) {
 
-  const [name, setName] = React.useState(_.get(updatedPosition, 'name', ''));
-  const [description, setDescription] = React.useState(_.get(updatedPosition, 'description', ''));
+  const [name, setName] = React.useState(get(updatedPosition, 'name', ''));
+  const [description, setDescription] = React.useState(get(updatedPosition, 'description', ''));
 
   React.useEffect(() => {
-    setName(_.get(updatedPosition, 'name', ''));
-    setDescription(_.get(updatedPosition, 'description', ''));
+    setName(get(updatedPosition, 'name', ''));
+    setDescription(get(updatedPosition, 'description', ''));
   }, [updatedPosition]);
 
   function handleSubmit() {
     if (updatedPosition) {
       doUpdatePosition({
-        positionId: _.get(updatedPosition, 'id'),
+        positionId: get(updatedPosition, 'id'),
         name,
         description,
       })
@@ -75,10 +75,6 @@ function TitleManager({ open, setOpen, updatedPosition = null, doCreatePosition,
   )
 }
 
-const mapStateToProps = state => {
-  return {}
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     doCreatePosition: ({ name, description }) => dispatch(createPosition({ name, description })),
@@ -87,6 +83,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(TitleManager);

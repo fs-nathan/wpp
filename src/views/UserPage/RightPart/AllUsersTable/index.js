@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, IconButton, Menu, MenuItem,  } from '@material-ui/core';
+import { IconButton, Menu, MenuItem,  } from '@material-ui/core';
+import CustomAvatar from '../../../../components/CustomAvatar';
 import Icon from '@mdi/react';
 import {
   mdiAccountPlus,
@@ -28,7 +29,7 @@ import PermissionSettingsModal from '../../Modals/PermissionSettings';
 import { 
   CustomEventListener, CustomEventDispose, 
   SORT_USER, SORT_ROOM, CREATE_ROOM,
-  INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP,
+  INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PRIVATE_MEMBER, PUBLIC_MEMBER,
 } from '../../../../constants/events';
 
 const Container = styled.div`
@@ -43,9 +44,12 @@ const SubTitle = styled.span`
   }
 `;
 
-const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
+const NameSpan = styled.span`
+  font-weight: 500;
+`;
 
-  const [state, setState] = React.useState(get(user, 'state', 0));
+const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
@@ -62,19 +66,11 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
   }
 
   function changeState(user) {
-    if (state === 0) {
-      handleChangeState({
-        state: 1,
-      });
-      setState(1);
+    if (get(user, 'state') === 0) {
       doPublicMember({
         userId: get(user, 'id'),
       });
     } else {
-      handleChangeState({
-        state: 0,
-      });
-      setState(0);
       doPrivateMember({
         userId: get(user, 'id'),
       });
@@ -120,14 +116,8 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
   );
 }
 
-function StateBadge({ row, stateObj }) {
-  const [stateOfRow, setStateOfRow] = React.useState(stateObj[get(row, 'id')]);
-  
-  React.useEffect(() => {
-    setStateOfRow(stateObj[get(row, 'id')]);
-  }, [row, stateObj]);
-
-  if (get(stateOfRow, 'state', 0) === 0) {
+function StateBadge({ user }) {
+  if (get(user, 'state', 0) === 0) {
     return (
       <CustomBadge color='#ec1000'>
         Hạn chế
@@ -156,13 +146,10 @@ function AllUsersTable({
 
   const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
   const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
-  const { error: sortUserError, loading: sortUserLoading } = sortUser;
 
-  const loading = listUserOfGroupLoading || sortUserLoading || listRoomLoading;
-  const error = listUserOfGroupError || sortUserError || listRoomError;
+  const loading = listUserOfGroupLoading || listRoomLoading;
+  const error = listUserOfGroupError || listRoomError;
   const [moreModal, setMoreModal] = React.useState(0);
-
-  const [stateObj, setStateObj] = React.useState({});
 
   React.useEffect(() => {
     doListRoom();
@@ -173,33 +160,8 @@ function AllUsersTable({
   }, [doListUserOfGroup]);
 
   React.useEffect(() => {
-    const { data: { rooms } } = listUserOfGroup;
-    let _stateObj = {};
-    rooms.forEach(room => {
-      const users = get(room, 'users', []);
-      users.forEach(user => {
-        _stateObj[get(user, 'id')] = {
-          state: get(user, 'state'),
-        };
-      });
-    });
-    setStateObj(_stateObj);
-  }, [listUserOfGroup]);
-
-  function handleChangeState(userId) {
-    return (options) => {
-      let _stateObj = { ...stateObj };
-      _stateObj[userId] = {
-        ..._stateObj[userId],
-        ...options,
-      }
-      setStateObj(_stateObj);
-    }
-  }
-
-  React.useEffect(() => {
     const doListUserOfGroupHandler = () => {
-      doListUserOfGroup();
+      doListUserOfGroup(true);
     };
     
     CustomEventListener(SORT_USER, doListUserOfGroupHandler);
@@ -207,6 +169,8 @@ function AllUsersTable({
     CustomEventListener(SORT_ROOM, doListUserOfGroupHandler);
     CustomEventListener(INVITE_USER_JOIN_GROUP, doListUserOfGroupHandler);
     CustomEventListener(BAN_USER_FROM_GROUP, doListUserOfGroupHandler);
+    CustomEventListener(PUBLIC_MEMBER, doListUserOfGroupHandler);
+    CustomEventListener(PRIVATE_MEMBER, doListUserOfGroupHandler);
     
     return () => {
       CustomEventDispose(SORT_USER, doListUserOfGroupHandler);
@@ -214,6 +178,8 @@ function AllUsersTable({
       CustomEventDispose(SORT_ROOM, doListUserOfGroupHandler);
       CustomEventDispose(INVITE_USER_JOIN_GROUP, doListUserOfGroupHandler);
       CustomEventDispose(BAN_USER_FROM_GROUP, doListUserOfGroupHandler);
+      CustomEventDispose(PUBLIC_MEMBER, doListUserOfGroupHandler);
+      CustomEventDispose(PRIVATE_MEMBER, doListUserOfGroupHandler);
     }
   }, [doListUserOfGroup]);
 
@@ -264,7 +230,7 @@ function AllUsersTable({
             },
             row: {
               id: 'id',
-              onClick: (row, group) => history.push(`${location.pathname}/nguoi-dung/${get(row, 'id')}`),
+              onClick: (row) => history.push(`${location.pathname}/members/${get(row, 'id')}`),
             },
             draggable: {
               bool: true,
@@ -285,10 +251,10 @@ function AllUsersTable({
           }}
           columns={[{
             label: '',
-            field: (row) => <Avatar src={get(row, 'avatar')} alt='avatar' />,
+            field: (row) => <CustomAvatar src={get(row, 'avatar')} alt='avatar' />,
           }, {
             label: 'Họ và tên',
-            field: 'name',
+            field: (row) => <NameSpan>{get(row, 'name', '')}</NameSpan>,
           }, {
             label: 'Chức danh',
             field: 'position',
@@ -309,12 +275,11 @@ function AllUsersTable({
             field: 'role',
           }, {
             label: 'Trạng thái',
-            field: (row) => <StateBadge row={row} stateObj={stateObj} />,
+            field: (row) => <StateBadge user={row} />,
           }, {
             label: '',
             field: (row) => <PermissionButton 
                               user={row} 
-                              handleChangeState={handleChangeState(get(row, 'id'))} 
                               doPublicMember={doPublicMember}
                               doPrivateMember={doPrivateMember}
                               doBanUserFromGroup={doBanUserFromGroup}
@@ -341,8 +306,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListRoom: () => dispatch(listRoom()),
-    doListUserOfGroup: () => dispatch(listUserOfGroup()),
+    doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
     doSortUser: ({ roomId, userId, sortIndex }) => dispatch(sortUser({ roomId, userId, sortIndex })),
     doPublicMember: ({ userId }) => dispatch(publicMember({ userId })),
     doPrivateMember: ({ userId }) => dispatch(privateMember({ userId })),

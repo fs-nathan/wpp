@@ -4,8 +4,9 @@ import {
   DETAIL_USER_SUCCESS,
 } from '../../constants/actions/user/detailUser';
 
-export const detailUser = ({ userId }) => ({
+export const detailUser = ({ userId }, quite = false) => ({
   type: DETAIL_USER,
+  quite,
   options: {
     userId,
   },

@@ -5,7 +5,9 @@ import {
 } from '../../constants/actions/room/updateRoom';
 
 export const initialState = {
-  data: {},
+  data: {
+    room: null,
+  },
   error: null,
   loading: false,
 };
@@ -21,6 +23,7 @@ function reducer(state = initialState, action) {
     case UPDATE_ROOM_SUCCESS: 
       return {
         ...state,
+        data: action.data,
         error: null,
         loading: false,
       };

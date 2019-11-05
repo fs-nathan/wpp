@@ -73,10 +73,6 @@ function RoleCreateAndUpdate({ open, setOpen, updatedUserRole = null, doCreateUs
   )
 }
 
-const mapStateToProps = state => {
-  return {}
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     doCreateUserRole: ({ name, description }) => dispatch(createUserRole({ name, description })),
@@ -85,6 +81,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(RoleCreateAndUpdate);

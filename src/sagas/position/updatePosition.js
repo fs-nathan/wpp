@@ -23,8 +23,8 @@ async function doUpdatePosition({ positionId, name, description }) {
 
 function* updatePosition(action) {
   try {
-    yield call(doUpdatePosition, action.options);
-    yield put(updatePositionSuccess());
+    const { position } = yield call(doUpdatePosition, action.options);
+    yield put(updatePositionSuccess({ position }));
     CustomEventEmitter(UPDATE_POSITION);
   } catch (error) {
     yield put(updatePositionFail(error));

@@ -66,7 +66,7 @@ function LeftBar() {
         <Icon path={mdiFolderMultipleOutline} size={1.5} color={"#fff"} />
         <span>Tài liệu</span>
       </NavLink>
-      <NavLink to="/thanh-vien">  
+      <NavLink to="/departments">  
         <Icon path={mdiAccountGroup} size={1.5} color={"#fff"} />
         <span>Thành viên</span>
       </NavLink>

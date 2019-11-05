@@ -4,6 +4,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
 import { mdiBorderNoneVariant } from '@mdi/js';
 import { IconButton, Avatar } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   height: 100%;
@@ -109,6 +110,13 @@ function LeftSideContainer({
       </Body>
     </Container>
   )
+}
+
+LeftSideContainer.propTypes = {
+  leftAction: PropTypes.object,
+  rightAction: PropTypes.object,
+  children: PropTypes.node,
+  title: PropTypes.node,
 }
 
 export default LeftSideContainer;

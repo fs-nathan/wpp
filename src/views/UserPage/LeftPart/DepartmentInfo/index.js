@@ -5,7 +5,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
 import ColorButton from '../../../../components/ColorButton';
-import { Avatar } from '@material-ui/core';
+import CustomAvatar from '../../../../components/CustomAvatar';
 import { mdiChevronLeft } from '@mdi/js';
 import { connect } from 'react-redux';
 import { detailRoom } from '../../../../actions/room/detailRoom';
@@ -16,7 +16,6 @@ import LeftSideContainer from '../../../../components/LeftSideContainer';
 import AlertModal from '../../../../components/AlertModal';
 import { CustomEventListener, CustomEventDispose, DELETE_ROOM, UPDATE_ROOM } from '../../../../constants/events.js';
 import CreateDepartment from '../../Modals/CreateDepartment';
-import avatar from '../../../../assets/avatar.jpg';
 
 const Container = styled.div`
   padding: 0 16px;
@@ -68,12 +67,12 @@ function DefaultDepartment({ subSlide, handleSubSlide, subSlideComp: SubSlideCom
         <LeftSideContainer
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push('/thanh-vien')
+            onClick: () => history.push('/departments')
           }}
           title='Chi tiết bộ phận'
         >
           <LogoBox>
-            <Avatar style={{ width: 60, height: 60 }} src={avatar} alt='avatar' />
+            <CustomAvatar style={{ width: 60, height: 60 }} alt='avatar' />
             <ColorTypo uppercase bold color='green' variant='h6'>
               Mặc định
             </ColorTypo>
@@ -98,10 +97,10 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
 
   React.useEffect(() => {
     const historyPushHandler = () => {
-      history.push('/thanh-vien');
+      history.push('/departments');
     };
     const doDetailRoomHandler = () => {
-      doDetailRoom({ roomId: departmentId });
+      doDetailRoom({ roomId: departmentId }, true);
     };
 
     CustomEventListener(DELETE_ROOM, historyPushHandler);
@@ -130,14 +129,14 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
             <LeftSideContainer
               leftAction={{
                 iconPath: mdiChevronLeft,
-                onClick: () => history.push('/thanh-vien')
+                onClick: () => history.push('/departments')
               }}
               title='Chi tiết bộ phận'
             >
               <Container>
                 <div>
                   <LogoBox>
-                    <Avatar style={{ width: 60, height: 60 }} src={_.get(room, 'icon')} alt='avatar' />
+                    <CustomAvatar style={{ width: 60, height: 60 }} src={_.get(room, 'icon')} alt='avatar' />
                     <ColorTypo uppercase bold color='green' variant='h6'>
                       {_.get(room, 'name', '')}
                     </ColorTypo>
@@ -192,7 +191,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doDetailRoom: ({ roomId }) => dispatch(detailRoom({ roomId })),
+    doDetailRoom: ({ roomId }, quite) => dispatch(detailRoom({ roomId }, quite)),
     doDeleteRoom: ({ roomId }) => dispatch(deleteRoom({ roomId })),
   };
 };

@@ -15,7 +15,7 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import CustomModal from '../../../../components/CustomModal';
 import AlertModal from '../../../../components/AlertModal';
-import _ from 'lodash';
+import { get } from 'lodash';
 
 const StyledTableHead = styled(TableHead)` 
   background-color: #eee; 
@@ -37,13 +37,23 @@ const TableCellChipsWrapper = styled(TableCell)`
   }
 `;
 
-function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosition, doDeletePosition }) {
+const StyledTableCell = styled(TableCell)`
+  font-weight: 500;
+  &:first-child {
+    min-width: 200px;
+  }
+`;
+
+const StyledTable = styled(Table)`
+  & * {
+    font-size: 14px;
+  }
+`;
+
+function TitleManager({ open, setOpen, listPosition, doListPosition, doDeletePosition }) {
 
   const [openCAU, setOpenCAU] = React.useState(0);
-  const { data: { positions }, loading: listPositionLoading, error: listPositionError } = listPosition;
-  const { loading: deletePositionLoading, error: deletePositionError } = deletePosition;
-  const loading = listPositionLoading || deletePositionLoading;
-  const error = listPositionError || deletePositionError;
+  const { data: { positions }, loading, error } = listPosition;
   const [updatedPosition, setUpdatedPosition] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
   const [delPos, setDelPos] = React.useState();
@@ -54,7 +64,7 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
 
   React.useEffect(() => {
     const doListPositionHandler = () => {
-      doListPosition();
+      doListPosition(true);
     };
 
     CustomEventListener(CREATE_POSITION, doListPositionHandler);
@@ -75,7 +85,7 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
 
   function handleDeletePosition(position) {
     doDeletePosition({
-      positionId: _.get(position, 'id'),
+      positionId: get(position, 'id'),
     });
   }
 
@@ -90,11 +100,13 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox />}
         {!loading && error === null && (
-          <Table>
+          <StyledTable
+            fullWidth
+          >
             <StyledTableHead>
               <TableRow>
-                <TableCell>Tên chức danh</TableCell>
-                <TableCell>Mô tả</TableCell>
+                <StyledTableCell>Tên chức danh</StyledTableCell>
+                <StyledTableCell>Mô tả</StyledTableCell>
                 <TableCell>
                   <ColorButton variantColor='orange' size='small' variant='contained'
                     onClick={() => handleSelectedPosition(null)}
@@ -106,16 +118,16 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
             </StyledTableHead>
             <StyledTableBody>
               {positions.map(position => (
-                <TableRow key={_.get(position, 'id', '')}>
-                  <TableCell>{_.get(position, 'name', '')}</TableCell>
-                  <TableCell>{_.get(position, 'description', '')}</TableCell>
+                <TableRow key={get(position, 'id', '')}>
+                  <StyledTableCell>{get(position, 'name', '')}</StyledTableCell>
+                  <TableCell>{get(position, 'description', '')}</TableCell>
                   <TableCellChipsWrapper>
                     <div>
                       <PillButton 
                         onClick={() => handleSelectedPosition(position)}
-                        background={colorPal['green'][0]}
-                        text={colorPal['green'][1]}
-                        size='small' 
+                        background={'#eeeeee'}
+                        text={'#222222'}
+                        size='large' 
                       >
                         Sửa
                       </PillButton>
@@ -124,9 +136,9 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
                           setDelPos(position)
                           setAlert(true)
                         }}
-                        background={colorPal['red'][0]}
-                        text={colorPal['red'][1]}
-                        size='small' 
+                        background={'#eeeeee'}
+                        text={colorPal['red'][0]}
+                        size='large' 
                       >
                         Xóa
                       </PillButton>
@@ -135,7 +147,7 @@ function TitleManager({ open, setOpen, listPosition, doListPosition, deletePosit
                 </TableRow>
               ))}
             </StyledTableBody>
-          </Table>
+          </StyledTable>
         )}
       </CustomModal>
       <TitleCreateAndUpdateModal updatedPosition={updatedPosition} open={openCAU !== 0} setOpen={setOpenCAU} />
@@ -158,7 +170,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListPosition: () => dispatch(listPosition()),
+    doListPosition: (quite) => dispatch(listPosition(quite)),
     doDeletePosition: ({ positionId }) => dispatch(deletePosition({ positionId })),
   }
 };
