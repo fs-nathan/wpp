@@ -19,7 +19,7 @@ import { func } from 'prop-types';
 
 
 const Header = styled.div`
-  padding: 0;
+  padding: 0 15px;
   height: 92px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > * {
@@ -117,11 +117,11 @@ const SpecialControlLabel = styled(FormControlLabel)`
   background-color: ${props => props.checked 
     ? colorPal['#ffd3b4'][0] 
     : colorPal['grey'][0]};
-  width: 30%;
-  border-radius: 4px;
+  width: 27%;
+  border-radius: 30px;
   margin: 0;
   justify-content: center;
-  padding: 10px 0;
+  padding: 5px 0;
   & > span:first-child { display: none; }
 `;
 
@@ -171,6 +171,9 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
+const DefaultFlex = styled(Typography)`
+  display: flex;
+`
 
 function ListHeaderSelect({ setShow }) {
 
@@ -262,7 +265,7 @@ function ListHeader() {
   };
 
   return (
-    <div>
+    <div >
       <Header>
         <ListHeaderSelect />
         <HeaderBottomBox>
@@ -279,7 +282,7 @@ function ListHeader() {
         </HeaderBottomBox>
       </Header>
       {/* mo modal tao cong viec moi */}
-      <Dialog open={open} fullWidth>
+      <Dialog open={open} fullWidth onClose={handleClose}>
         <DialogTitle onClose={handleClose}>
           Tạo công việc
         </DialogTitle>
@@ -297,9 +300,9 @@ function ListHeader() {
             <Typotitle component={'span'}>
               Tiến độ công việc
           </Typotitle>
-            <Typography component={'span'}>
+            <DefaultFlex component={'span'}>
               Đặt mặc định <Icon path={mdiHelpCircle} color={"black"} size={1} />
-            </Typography>
+            </DefaultFlex>
           </ProgressWork>
           <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
           <StartEndDay component={'span'}>
