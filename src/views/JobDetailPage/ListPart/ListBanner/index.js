@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import ColorChip from '../../../../components/ColorChip';
 
 const Container = styled.div`
-  padding: 10px 0;
+  padding: 10px 15px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  
   & > * {
     margin-right: 10px;
     margin-bottom: 5px;

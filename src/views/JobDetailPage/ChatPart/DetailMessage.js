@@ -3,7 +3,7 @@ import { Avatar, Typography, ListItemText, ListItem, CardMedia } from '@material
 import styled from 'styled-components';
 import avatar from '../../../assets/avatar.jpg'
 import colorPal from '../../../helpers/colorPalette'
-import { mdiClockOutline, mdiArrowRightBold, mdiAlarm, mdiFileTree, mdiDownload,mdiLinkVariant, mdiLinkOff, mdiMapMarker, mdiEmailSend, mdiBullhorn } from '@mdi/js';
+import { mdiClockOutline, mdiArrowRightBold, mdiAlarm, mdiFileTree, mdiDownload, mdiLinkVariant, mdiLinkOff, mdiMapMarker, mdiEmailSend, mdiBullhorn } from '@mdi/js';
 import Icon from '@mdi/react';
 import ImageChatTest from '../../../assets/imageChatTest.jpg'
 import NoImage from '../../../assets/no-img.png'
@@ -456,11 +456,11 @@ const ImageChat = () => {
 
 const NoImageChat = () => {
     return (
-            <CardMedia
-                component="img"
-                height="214px"
-                image={NoImage}
-            />
+        <CardMedia
+            component="img"
+            height="214px"
+            image={NoImage}
+        />
     )
 }
 const DocumentChatMess = styled(Typography)`
@@ -541,7 +541,7 @@ const ShareLink = () => {
             <Typography component='div'>
                 <ListItem>
                     <div>
-                        <Icon path={mdiLinkVariant} size={2} color={'white'}/>
+                        <Icon path={mdiLinkVariant} size={2} color={'white'} />
                     </div>
                     <ListItemText
                         style={{ margin: 0 }}
@@ -626,7 +626,7 @@ const ShareLocation = () => {
         <ShareLocationMess component='div'>
             <Typography component='p'>Đã chia sẻ vị trí</Typography>
             <ListItem>
-                <Icon path={mdiMapMarker } size={1} color={'white'} />
+                <Icon path={mdiMapMarker} size={1} color={'white'} />
                 <ListItemText
                     style={{ margin: 0 }}
                     primary={
@@ -681,7 +681,7 @@ const ApproveOffer = () => {
             <Typography component='p'>Đã duyệt đề xuất</Typography>
             <Typography component='div'>
                 <Typography component='div'>
-                    <Icon path={mdiEmailSend } size={0.8} color={'white'} />
+                    <Icon path={mdiEmailSend} size={0.8} color={'white'} />
                 </Typography>
                 <Typography component='p'>Anh cho em nghỉ ngày mai nhé</Typography>
             </Typography>
@@ -709,16 +709,16 @@ const ReplyImageMess = styled(Typography)`
 const ReplyImg = () => {
     return (
         <>
-        <ReplyImageMess component='div'>
-            <Typography component='div'>
-                <CardMedia
-                    component="img"
-                    height="auto"
-                    image={ImageChatTest}
-                />
-            </Typography>
-        </ReplyImageMess>
-        <Typography component='p'>Bức ảnh quá đẹp, tks!</Typography>
+            <ReplyImageMess component='div'>
+                <Typography component='div'>
+                    <CardMedia
+                        component="img"
+                        height="auto"
+                        image={ImageChatTest}
+                    />
+                </Typography>
+            </ReplyImageMess>
+            <Typography component='p'>Bức ảnh quá đẹp, tks!</Typography>
         </>
     )
 }
@@ -731,7 +731,6 @@ const WrapCommonRow = styled.span`
 const WrapProjectMessage = styled.div`
     background-color: white;
     border-radius: 20px;
-    height: 380px;
     width: 380px;
     display: flex;
     border-radius: 10px;
@@ -754,6 +753,22 @@ const WrapProjectMessage = styled.div`
     }
     & > div:nth-child(2) {
         display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid;
+        padding: 15px 0;
+    }
+    & > div:nth-child(3) {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        & > div {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+        }
     }
 `
 
@@ -765,12 +780,17 @@ function RemindMessage(props) {
                     <span>Nhắc hẹn</span>
                 </Typography>
                 <Typography component='div'>
-                    <Typography></Typography>
-                    <Typography></Typography>
-                    <Typography></Typography>
-                    <Typography></Typography>
+                    <Typography component='div'>Tháng 9</Typography>
+                    <Typography component='div'>17</Typography>
+                    <Typography component='div'>Tiến độ thực tế chậm so với kế hoạch 20%</Typography>
+                    <Typography component='div'>Lúc 09:25 ngày 17/09/2019 - Nhắc 1 lần</Typography>
                 </Typography>
-                <Typography component='div'>a</Typography>
+                <Typography component='div'>
+                    <Typography component='div'>
+                        <Icon path={mdiAlarm} size={1} />
+                        <Typography component='span'>Xem chi tiết</Typography>
+                    </Typography>
+                </Typography>
             </WrapProjectMessage>
         </WrapCommonRow>
     )
@@ -827,7 +847,7 @@ export default function DetailMessage() {
                                 <ImageChat />
                             }
                             {(element.id === 14) &&
-                                <NoImageChat /> 
+                                <NoImageChat />
                             }
                             {(element.id === 15) &&
                                 <DocumentChat />
