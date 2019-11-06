@@ -10,6 +10,7 @@ import ColorChip from '../../../../../components/ColorChip';
 import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
+import DemandModal from '../DemandModal'
 
 const Container = styled.div`
   padding: 10px 20px;
@@ -46,7 +47,7 @@ const Badge = styled(ColorChip)`
   
 `
 
-const CustomListItem = ({ isDemand = false }) => {
+const CustomListItem = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -66,7 +67,7 @@ const CustomListItem = ({ isDemand = false }) => {
           <div>
             <Text variant='body1' bold>Nguyễn Văn A</Text>
             <ColorTypo variant='caption'>
-              <Badge color={isDemand ? 'orangelight' : 'bluelight'} label={isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
+              <Badge color={props.isDemand ? 'orangelight' : 'bluelight'} label={props.isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
             </ColorTypo>
           </div>
           <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
@@ -88,7 +89,9 @@ const CustomListItem = ({ isDemand = false }) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={() => {
+          props.handleClickOpen()
+        }}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={handleClose}>Xóa</MenuItem>
       </Menu>
     </React.Fragment>
@@ -105,6 +108,14 @@ const StyledList = styled.ul`
 `;
 
 const ListDemand = () => { 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <React.Fragment>  
       <SearchInput
@@ -114,10 +125,13 @@ const ListDemand = () => {
       <StyledList>
         {Array.from({ length: 3, }).map((_, index) => {
           return (
-            <CustomListItem key={index} isDemand={index % 2 === 0} />
+            <CustomListItem key={index} isDemand={index % 2 === 0} handleClickOpen={() => handleClickOpen()}/>
           )
         })}    
       </StyledList>
+      
+      {/* modal chi dao quyet dinh */}
+      <DemandModal isOpen={open} handleClose={handleClose} handleOpen={handleClickOpen}/>
     </React.Fragment>
   );
 }
