@@ -24,7 +24,7 @@ const WrapMessageRow = styled.div`
     display: flex;
     flex-direction: ${props => props.isUser ? 'row-reverse' : 'row'};
     align-items: center;
-    &:hover > .hSyBQp {
+    &:hover > .wrap-function-message {
         display: block;
     }
     margin-bottom: 10px;
@@ -96,13 +96,14 @@ const Time = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
-    background-color: white;
+    background-color: #d7d7d8;
+    color: #f5f5f5;
     border-radius: 10px;
     padding: 8px;
 `
 
 const Line = styled.div`
-    border: 1px solid grey;
+    border: 1px solid #e6e7e8;
     position: absolute;
     top: 50%;
     width: 100%;
@@ -120,7 +121,7 @@ function MessageParent(props) {
             <WrapMessage isUser={isUser}>
                 {content}
             </WrapMessage>
-            <WrapFunctionBar>
+            <WrapFunctionBar className="wrap-function-message">
                 <FunctionButton>
                     <MaterialIcon.ScreenShare size="small" />
                 </FunctionButton>
