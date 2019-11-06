@@ -30,7 +30,7 @@ function SimpleDonutChart({ percentDone = 0, color = '#7da4e8', variant = 'norma
       break;
     }
     default: {
-      size = 60;
+      size = 50;
       fontSize = 14;
     }
   };

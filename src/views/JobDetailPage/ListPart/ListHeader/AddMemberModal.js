@@ -240,7 +240,7 @@ function TableMember() {
 
     return (
         <Paper className={classes.root}>
-            <Table className={classes.table} aria-label="simple table">
+            <Table className={classes.table}>
                 <TableHead>
                     <TableRow style={{ background: '#f7f7f7' }}>
                         <MemberTable style={{ width: '9%' }}></MemberTable>
@@ -293,7 +293,7 @@ function AddMemberModal(props) {
     return (
         <div>
             <Dialog maxWidth="lg" fullWidth onClose={handleClose} open={props.isOpen}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                <DialogTitle onClose={handleClose}>
                     Thành viên công việc
         </DialogTitle>
                 <DialogContent dividers>
@@ -320,9 +320,9 @@ function AddMemberModal(props) {
                             <TableMember />
                         </Typography>
                     </GridArea>
-                </DialogContent>
+                </DialogContent>    
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose} color="primary">
+                    <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
                         Cập nhật
           </Button>
                 </DialogActions>

@@ -8,7 +8,9 @@ const Container = styled.div`
   grid-area: list;
   border-right: 1px solid rgba(0, 0, 0, .2);
   padding: 15px;
-  overflow: scroll
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 15px 0;
 `;
 
 function ListPart() {
