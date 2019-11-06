@@ -185,8 +185,12 @@ function ListHeaderSelect({ setShow }) {
 
   const [value] = React.useState(0);
 
+  const handleChange = e => {
+    console.log(e.target.value)
+  }
+
   return (
-    <CustomSelect value={value} >
+    <CustomSelect value={value} onChange={handleChange}>
       <Icon path={mdiApps} size={1.5} />
       <MenuItem value={0}>Job-1</MenuItem>
       <MenuItem value={1}>Job-2</MenuItem>
