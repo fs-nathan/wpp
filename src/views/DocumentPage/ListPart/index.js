@@ -4,11 +4,14 @@ import Icon from '@mdi/react';
 import {
   mdiClockOutline,
   mdiFileDocumentBox,
+  mdiFileDocumentBoxOutline,
+  mdiFolderOpenOutline,
   mdiFileMoveOutline,
   mdiFileUndoOutline,
   mdiBriefcaseAccount,
   mdiGoogleDrive,
   mdiTrashCan,
+  mdiTrashCanOutline
 } from '@mdi/js';
 import ColorTypo from '../../../components/ColorTypo';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
@@ -39,6 +42,12 @@ const StyledListItem = styled(ListItem)`
  }
 `
 
+const IconItem = styled(Icon)`
+ background-color: rgba(0, 0, 0, 0.1);
+ padding: 8px;
+ border-radius: 30px
+`
+
 function ListPart(props) {
 
   // Handle change tab event of user
@@ -52,8 +61,9 @@ function ListPart(props) {
     // Then return compatible style
     return {
       transition: "1s",
+      margin: "10px 0",
       backgroundColor: props.activeTabId === tabId
-        ? "rgba(0, 0, 0, 0.2)"
+        ? "rgba(0, 0, 0, 0.1)"
         : "transparent"
     }
   }
@@ -68,7 +78,7 @@ function ListPart(props) {
           style={getTabButtonStyle(TABS.RECENT_TAB.id)}
           onClick={changeTab(TABS.RECENT_TAB.id)}>
           <ListItemIcon>
-            <Icon path={mdiClockOutline} size={2} />
+            <IconItem path={mdiClockOutline} size={1.5} />
           </ListItemIcon>
           <ListItemText>
             <ColorTypo bold>
@@ -80,7 +90,7 @@ function ListPart(props) {
           style={getTabButtonStyle(TABS.PROJECT_DOCUMENT_TAB.id)}
           onClick={changeTab(TABS.PROJECT_DOCUMENT_TAB.id)}>
           <ListItemIcon>
-            <Icon path={mdiFileDocumentBox} size={2} />
+            <IconItem path={mdiFileDocumentBoxOutline} size={1.5} />
           </ListItemIcon>
           <ListItemText>
             <ColorTypo bold>
@@ -92,7 +102,7 @@ function ListPart(props) {
           style={getTabButtonStyle(TABS.MY_SHARING_TAB.id)}
           onClick={changeTab(TABS.MY_SHARING_TAB.id)}>
           <ListItemIcon>
-            <Icon path={mdiFileMoveOutline} size={2} />
+            <IconItem path={mdiFileMoveOutline} size={1.5} />
           </ListItemIcon>
           <ListItemText>
             <ColorTypo bold>
@@ -104,7 +114,7 @@ function ListPart(props) {
           style={getTabButtonStyle(TABS.OTHER_SHARING_TAB.id)}
           onClick={changeTab(TABS.OTHER_SHARING_TAB.id)}>
           <ListItemIcon>
-            <Icon path={mdiFileUndoOutline} size={2} />
+            <IconItem path={mdiFileUndoOutline} size={1.5} />
           </ListItemIcon>
           <ListItemText>
             <ColorTypo
@@ -117,7 +127,7 @@ function ListPart(props) {
           style={getTabButtonStyle(TABS.MY_DOCUMENT_TAB.id)}
           onClick={changeTab(TABS.MY_DOCUMENT_TAB.id)}>
           <ListItemIcon>
-            <Icon path={mdiBriefcaseAccount} size={2} />
+            <IconItem path={mdiFolderOpenOutline} size={1.5} />
           </ListItemIcon>
           <ListItemText>
             <ColorTypo bold>
@@ -129,7 +139,7 @@ function ListPart(props) {
           style={getTabButtonStyle(TABS.GOOGLE_DRIVE_TAB.id)}
           onClick={changeTab(TABS.GOOGLE_DRIVE_TAB.id)}>
           <ListItemIcon>
-            <Icon path={mdiGoogleDrive} size={2} />
+            <IconItem path={mdiGoogleDrive} size={1.5} />
           </ListItemIcon>
           <ListItemText>
             <ColorTypo bold>Google Drive</ColorTypo>
@@ -139,7 +149,7 @@ function ListPart(props) {
           style={getTabButtonStyle(TABS.BIN_TAB.id)}
           onClick={changeTab(TABS.BIN_TAB.id)}>
           <ListItemIcon>
-            <Icon path={mdiTrashCan} size={2} />
+            <IconItem path={mdiTrashCanOutline} size={1.5} />
           </ListItemIcon>
           <ListItemText>
             <ColorTypo bold>Thùng rác</ColorTypo>
