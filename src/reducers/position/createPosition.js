@@ -6,7 +6,7 @@ import {
 
 export const initialState = {
   data: {
-    positionId: null,  
+    position: null,  
   },
   error: null,
   loading: false,

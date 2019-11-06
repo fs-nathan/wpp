@@ -7,16 +7,22 @@ import {
 import { 
   lighten,
 } from '@material-ui/core/styles';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js'; 
 import ColorTypo from '../ColorTypo';
 import colorPal from '../../helpers/colorPalette';
+import PropTypes from 'prop-types';
+
+const StyledScrollbars = styled(Scrollbars)`
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  min-height: 400px;
+`;
 
 const StyledDialogContent = styled(DialogContent)`
   & > *:not(:last-child) {
     margin-bottom: 8px;
   }
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
   & > input[type=file] {
     display: none;
   }
@@ -55,7 +61,8 @@ const ActionsAcceptButton = styled(ButtonBase)`
 
 const StyledDialog = styled(Dialog)`
   & > div:nth-child(3) > div {
-    min-width: 500px;
+    overflow: hidden;
+    min-width: 600px;
   }
 `;
 
@@ -77,7 +84,7 @@ function CustomModal({ title, children, onConfirm = () => null, onCancle = () =>
 
   return (
     <StyledDialog
-      maxWidth='sm'
+      maxWidth='lg'
       open={open}
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
@@ -89,9 +96,14 @@ function CustomModal({ title, children, onConfirm = () => null, onCancle = () =>
           <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
         </IconButton>
       </StyledDialogTitle>
-      <StyledDialogContent>
-        {children}
-      </StyledDialogContent>
+      <StyledScrollbars
+        autoHide
+        autoHideTimeout={500}
+      >
+        <StyledDialogContent>
+          {children}
+        </StyledDialogContent>
+      </StyledScrollbars>
       <StyledDialogActions>
         <ActionsAcceptButton onClick={() => handleConfirm()}>
           Hoàn thành
@@ -100,5 +112,14 @@ function CustomModal({ title, children, onConfirm = () => null, onCancle = () =>
     </StyledDialog>
   )
 }
+
+CustomModal.propTypes = {
+  title: PropTypes.string.isRequired, 
+  children: PropTypes.node, 
+  onConfirm: PropTypes.func, 
+  onCancle: PropTypes.func, 
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired,
+};
 
 export default CustomModal;

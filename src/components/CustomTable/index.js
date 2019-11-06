@@ -7,6 +7,7 @@ import colorPal from '../../helpers/colorPalette';
 import { darken } from '@material-ui/core/styles';
 import Icon from '@mdi/react';
 import { mdiCoin, mdiCalendar } from '@mdi/js';
+import PropTypes from 'prop-types';
 
 export const CustomTableContext = React.createContext();
 export const CustomTableProvider = CustomTableContext.Provider;
@@ -161,107 +162,6 @@ function CustomTableWrapper({ options, columns, data }) {
     },
   };
 
-  /*
-  const defaultColumns = [{
-    label: 'Label 1',
-    field: 'label_1',
-    renderLabel: () => 'Label 1',
-    renderField: null,
-  }, {
-    label: 'Label 2',
-    field: 'label_2',
-    renderLabel: () => 'Label 2',
-    renderField: null,
-  }, {
-    label: 'Label 3',
-    field: 'label_3',
-    renderLabel: null,
-    renderField: null,
-  }, {
-    label: 'Label 4',
-    field: 'label_4',
-    renderLabel: () => 'Label 4',
-    renderField: null,
-  }, {
-    label: 'Label 5',
-    field: 'label_5',
-    renderLabel: () => <Icon path={mdiCoin} size={1} />,
-    renderField: null,
-  }];
-
-  const defaultData = [{
-    group: 'Group 1',
-    id: 'G1',
-    items: [{
-      id: 'G1-1',
-      label_1: '1-1-1',
-      label_2: '1-1-2',
-      label_3: '1-1-3',
-      label_4: '1-1-4',
-      label_5: '1-1-5',
-    }, {
-      id: 'G1-2',
-      label_1: '1-2-1',
-      label_2: '1-2-2',
-      label_3: '1-2-3',
-      label_4: '1-2-4',
-      label_5: '1-2-5',
-    }, {
-      id: 'G1-3',
-      label_1: '1-3-1',
-      label_2: '1-3-2',
-      label_3: '1-3-3',
-      label_4: '1-3-4',
-      label_5: '1-3-5',
-    }],
-  }, {
-    group: 'Group 2',
-    id: 'G2',
-    items: [{
-      id: 'G2-1',
-      label_1: '2-1-1',
-      label_2: '2-1-2',
-      label_3: '2-1-3',
-      label_4: '2-1-4',
-      label_5: '2-1-5',
-    }],
-  }, {
-    group: 'Group 3',
-    id: 'G3',
-    items: [{
-      id: 'G3-1',
-      label_1: '3-1-1',
-      label_2: '3-1-2',
-      label_3: '3-1-3',
-      label_4: '3-1-4',
-      label_5: '3-1-5',
-    }, {
-      id: 'G3-2',
-      label_1: '3-2-1',
-      label_2: '3-2-2',
-      label_3: '3-2-3',
-      label_4: '3-2-4',
-      label_5: '3-2-5',
-    }],
-  }];
-
-  const _defaultData = [{
-    id: 'R-1',
-    label_1: '3-1-1',
-    label_2: '3-1-2',
-    label_3: '3-1-3',
-    label_4: '3-1-4',
-    label_5: '3-1-5',
-  }, {
-    id: 'R-2',
-    label_1: '3-2-1',
-    label_2: '3-2-2',
-    label_3: '3-2-3',
-    label_4: '3-2-4',
-    label_5: '3-2-5',
-  }];
-  */
-
   const context = {
     options: {
       ...defaultOptions,
@@ -269,13 +169,19 @@ function CustomTableWrapper({ options, columns, data }) {
     },
     columns: columns || [],
     data: data || [],
-  }
+  };
 
   return (
     <CustomTableProvider value={context}>
       <CustomTable />
     </CustomTableProvider>
   )
+}
+
+CustomTableWrapper.propTypes = {
+  options: PropTypes.object.isRequired, 
+  columns: PropTypes.array.isRequired, 
+  data: PropTypes.array.isRequired,
 }
 
 export default CustomTableWrapper;

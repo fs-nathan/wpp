@@ -30,6 +30,26 @@ import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } 
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from './user/banUserFromGroup';
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
+import createProjectGroup, { initialState as createProjectGroupInitialState } from './projectGroup/createProjectGroup';
+import editProjectGroup, { initialState as editProjectGroupInitialState } from './projectGroup/editProjectGroup';
+import listProjectGroup, { initialState as listProjectGroupInitialState } from './projectGroup/listProjectGroup';
+import deleteProjectGroup, { initialState as deleteProjectGroupInitialState } from './projectGroup/deleteProjectGroup';
+import sortProjectGroup, { initialState as sortProjectGroupInitialState } from './projectGroup/sortProjectGroup';
+import detailProjectGroup, { initialState as detailProjectGroupInitialState } from './projectGroup/detailProjectGroup';
+import memberProjectGroup, { initialState as memberProjectGroupInitialState } from './projectGroup/memberProjectGroup';
+import createProject, { initialState as createProjectInitialState } from './project/createProject';
+import addMemberProject, { initialState as addMemberProjectInitialState } from './project/addMemberProject';
+import deleteProject, { initialState as deleteProjectInitialState } from './project/deleteProject';
+import listProject, { initialState as listProjectInitialState } from './project/listProject';
+import detailProject, { initialState as detailProjectInitialState } from './project/detailProject';
+import hideProject, { initialState as hideProjectInitialState } from './project/hideProject';
+import memberProject, { initialState as memberProjectInitialState } from './project/memberProject';
+import updateProject, { initialState as updateProjectInitialState } from './project/updateProject';
+import removeMemberProject, { initialState as removeMemberProjectInitialState } from './project/removeMemberProject';
+import updateStateJoinTask, { initialState as updateStateJoinTaskInitialState } from './project/updateStateJoinTask';
+import addProjectRoleToMember, { initialState as addProjectRoleToMemberInitialState } from './project/addProjectRoleToMember';
+import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from './project/removeProjectRoleFromMember';
+import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from './project/updateGroupPermissionMember';
 import documents from './documents'
 
 const rootReducer = combineReducers({
@@ -79,6 +99,30 @@ const rootReducer = combineReducers({
     updateUserRole,
     deleteUserRole,
   }),
+  projectGroup: combineReducers({
+    createProjectGroup,
+    editProjectGroup,
+    listProjectGroup,
+    deleteProjectGroup,
+    sortProjectGroup,
+    detailProjectGroup,
+    memberProjectGroup,
+  }),
+  project: combineReducers({
+    createProject,
+    updateProject,
+    deleteProject,
+    listProject,
+    detailProject,
+    hideProject,
+    memberProject,
+    addMemberProject,
+    removeMemberProject,
+    updateStateJoinTask,
+    addProjectRoleToMember,
+    removeProjectRoleFromMember,
+    updateGroupPermissionMember,
+  }),
 });
 
 export const DEFAULT_STATE = {
@@ -127,6 +171,30 @@ export const DEFAULT_STATE = {
     updateUserRole: updateUserRoleInitialState,
     deleteUserRole: deleteUserRoleInitialState,
   },
+  projectGroup: {
+    createProjectGroup: createProjectGroupInitialState,
+    editProjectGroup: editProjectGroupInitialState,
+    listProjectGroup: listProjectGroupInitialState,
+    deleteProjectGroup: deleteProjectGroupInitialState,
+    sortProjectGroup: sortProjectGroupInitialState,
+    detailProjectGroup: detailProjectGroupInitialState,
+    memberProjectGroup: memberProjectGroupInitialState,
+  },
+  project: {
+    createProject: createProjectInitialState,
+    updateProject: updateProjectInitialState,
+    deleteProject: deleteProjectInitialState,
+    listProject: listProjectInitialState,
+    detailProject: detailProjectInitialState,
+    hideProject: hideProjectInitialState,
+    memberProject: memberProjectInitialState,
+    addMemberProject: addMemberProjectInitialState,
+    removeMemberProject: removeMemberProjectInitialState,
+    updateStateJoinTask: updateStateJoinTaskInitialState,
+    addProjectRoleToMember: addProjectRoleToMemberInitialState,
+    removeProjectRoleFromMember: removeProjectRoleFromMemberInitialState,
+    updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
+  }
 };
 
 export default rootReducer;

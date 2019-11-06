@@ -19,7 +19,7 @@ const StyledTableBodyRow = styled(TableRow)`
 
 const StyledTableBodyCell = styled(TableCell)`
   padding: 8px;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 function TableBodyRow({ index, row, group }) {

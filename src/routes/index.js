@@ -16,11 +16,11 @@ const routes = [
     component: () => <HomePage />,
   },
   {
-    path: "/du-an",
+    path: "/projects",
     component: () => <ProjectPage />,
   },
   {
-    path: "/thanh-vien",
+    path: "/departments",
     component: () => <UserPage />,
   },
   {

@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import avatar from '../../assets/avatar.jpg';
+import { get } from 'lodash';
+import ColorTypo from '../ColorTypo';
+import { Tooltip } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   display: flex;
@@ -33,21 +36,48 @@ const Container = styled.div`
   }
 `;
 
-function AvatarCircleList({ total, display }) {
+function AvatarCircle({ user, ...props }) {
+  return (
+    <div {...props}>
+      <img src={get(user, 'avatar')} alt='avatar' />
+    </div>
+  );
+}
+
+function AvatarCircleList({ display, users = [] }) {
   return (
     <Container>
-      {Array.from({ length: display }).map((_, index) => {
-        return (
-          <div key={index}>
-            <img src={avatar} alt='avatar' />
+      {users.length > 0 && (
+        <React.Fragment>
+          {users.slice(display).map((user, index) => {
+            return (
+              <Tooltip 
+                key={index}
+                title={get(user, 'name', '')}
+              >
+                <AvatarCircle 
+                  user={user}
+                />
+              </Tooltip>
+            )
+          })}
+          <div>
+            <div>{users.length-display}+</div>
           </div>
-        );
-      })}
-      <div>
-        <div>{total-display}+</div>
-      </div>
+        </React.Fragment>
+      )}
+      {users.length === 0 && (
+        <ColorTypo color='gray' variant='caption'>
+          Không có dữ liệu
+        </ColorTypo>
+      )}
     </Container>
   )
+}
+
+AvatarCircleList.propTypes = {
+  display: PropTypes.number.isRequired,
+  users: PropTypes.array.isRequired,
 }
 
 export default AvatarCircleList;

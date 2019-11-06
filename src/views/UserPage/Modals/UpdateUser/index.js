@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { 
-  FormControl, InputLabel, Select, MenuItem, TextField 
+  FormControl, TextField 
 } from '@material-ui/core';
 import ColorTypo from '../../../../components/ColorTypo';
+import CustomSelect from '../../../../components/CustomSelect';
 import ErrorBox from '../../../../components/ErrorBox';
 import LoadingBox from '../../../../components/LoadingBox';
 import CustomModal from '../../../../components/CustomModal';
@@ -14,11 +15,36 @@ import { listMajor } from '../../../../actions/major/listMajor';
 import { listLevel } from '../../../../actions/level/listLevel';
 import { updateUser } from '../../../../actions/user/updateUser';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import { get, find } from 'lodash';
 
 const StyledFormControl = styled(FormControl)`
   min-width: 300px;
   max-width: 100%;
+  & > * {
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+`;
+
+const StyledTextField = styled(TextField)`
+  && > div {
+    &::before {
+      border-bottom: none !important;
+    }
+    &::after {
+      border-bottom: none !important;
+    }
+    padding: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+    &:focus-within {
+      padding: 7px;
+      border: 2px solid #2684ff;
+    }
+  }
 `;
 
 function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMajor, listLevel, doListRoom, doListPosition, doListMajor, doListLevel, updateUser, doUpdateUser }) {
@@ -29,11 +55,11 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
   const { data: { majors }, error: listMajorError, laoding: listMajorLoading } = listMajor;
   const { data: { levels }, error: listLevelError, laoding: listLevelLoading } = listLevel;
 
-  const [room, setRoom] = React.useState(_.find(rooms, { id: _.get(updatedUser, 'room_id', '') }));
-  const [position, setPosition] = React.useState(_.find(positions, { id: _.get(updatedUser, 'position_id', '') }));
-  const [major, setMajor] = React.useState(_.find(majors, { id: _.get(updatedUser, 'major_id', '') }));
-  const [level, setLevel] = React.useState(_.find(levels, { id: _.get(updatedUser, 'level_id', '') }));
-  const [description, setDescription] = React.useState(_.get(updatedUser, 'description', ''));
+  const [room, setRoom] = React.useState(find(rooms, { id: get(updatedUser, 'room_id', '') }));
+  const [position, setPosition] = React.useState(find(positions, { id: get(updatedUser, 'position_id', '') }));
+  const [major, setMajor] = React.useState(find(majors, { id: get(updatedUser, 'major_id', '') }));
+  const [level, setLevel] = React.useState(find(levels, { id: get(updatedUser, 'level_id', '') }));
+  const [description, setDescription] = React.useState(get(updatedUser, 'description', ''));
   
   const loading = listRoomLoading || listPositionLoading || listMajorLoading || listLevelLoading;
   const error = listRoomError || listPositionError || listMajorError || listLevelError;
@@ -45,13 +71,33 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
     doListLevel()
   }, [doListRoom, doListPosition, doListMajor, doListLevel]);
 
+  React.useEffect(() => {
+    setDescription(get(updatedUser, 'description', ''));
+  }, [updatedUser]);
+
+  React.useEffect(() => {
+    setRoom(find(rooms, { id: get(updatedUser, 'room_id', '') }));
+  }, [rooms, updatedUser]);
+
+  React.useEffect(() => {
+    setPosition(find(positions, { id: get(updatedUser, 'position_id', '') }));
+  }, [positions, updatedUser]);
+
+  React.useEffect(() => {
+    setMajor(find(majors, { id: get(updatedUser, 'major_id', '') }));
+  }, [majors, updatedUser]);
+
+  React.useEffect(() => {
+    setLevel(find(levels, { id: get(updatedUser, 'level_id', '') }));
+  }, [levels, updatedUser]);
+
   function handleUpdateUser(evt) {
     doUpdateUser({
-      userId: _.get(updatedUser, 'id'),
-      roomId: _.get(room, 'id'),
-      positionId: _.get(position, 'id'),
-      majorId: _.get(major, 'id'),
-      levelId: _.get(level, 'id'),
+      userId: get(updatedUser, 'id'),
+      roomId: get(room, 'id'),
+      positionId: get(position, 'id'),
+      majorId: get(major, 'id'),
+      levelId: get(level, 'id'),
       description,
     });
     setOpen(false);
@@ -62,7 +108,7 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
       <CustomModal
         open={open}
         setOpen={setOpen}
-        title={_.get(updatedUser, 'name', '')}
+        title={get(updatedUser, 'name', '')}
         onConfirm={() => handleUpdateUser()}
       >
         {loading && <LoadingBox />}
@@ -70,87 +116,91 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
         {!loading && error === null && (
           <React.Fragment>
             <StyledFormControl fullWidth>
-              <InputLabel htmlFor='room-select'>
+              <label htmlFor='room-select'>
                 {t("views.user_page.modals.update_user.room_select")}
-              </InputLabel>
-              <Select
-                value={room}
-                renderValue={room => _.get(room, 'name', '')}
-                onChange={evt => setRoom(evt.target.value)}
-                inputProps={{
-                  name: 'room',
-                  id: 'room-select',
+              </label>
+              <CustomSelect
+                options={
+                  rooms.map(room => ({
+                      value: get(room, 'id'),
+                      label: get(room, 'name', ''),
+                    })
+                  )}
+                value={{
+                  value: get(room, 'id'),
+                  label: get(room, 'name', '')
                 }}
-              >
-                {rooms.map(room => (
-                  <MenuItem value={room} key={room.id}>{_.get(room, 'name', '')}</MenuItem>
-                ))}
-              </Select>
+                onChange={({ value: roomId }) => setRoom(find(rooms, { id: roomId }))}
+              />
             </StyledFormControl>
             <StyledFormControl fullWidth>
-              <InputLabel htmlFor='position-select'>
+              <label htmlFor='position-select'>
                 {t("views.user_page.modals.update_user.position_select")}
-              </InputLabel>
-              <Select
-                value={position}
-                renderValue={position => _.get(position, 'name', '')}
-                onChange={evt => setPosition(evt.target.value)}
-                inputProps={{
-                  name: 'position',
-                  id: 'position-select',
+              </label>
+              <CustomSelect
+                options={
+                  positions.map(position => ({
+                      value: get(position, 'id'),
+                      label: get(position, 'name', ''),
+                    })
+                  )}
+                value={{
+                  value: get(position, 'id'),
+                  label: get(position, 'name', ''),
                 }}
-              >
-                {positions.map(position => (
-                  <MenuItem value={position} key={position.id}>{_.get(position, 'name', '')}</MenuItem>
-                ))}
-              </Select>
+                onChange={({ value: positionId }) => setPosition(find(positions, { id: positionId }))}
+              />
             </StyledFormControl>
             <StyledFormControl fullWidth>
-              <InputLabel htmlFor='level-select'>
+              <label htmlFor='level-select'>
                 {t("views.user_page.modals.update_user.level_select")}
-              </InputLabel>
-              <Select
-                value={level}
-                renderValue={level => _.get(level, 'name', '')}
-                onChange={evt => setLevel(evt.target.value)}
-                inputProps={{
-                  name: 'level',
-                  id: 'level-select',
+              </label>
+              <CustomSelect
+                options={
+                  levels.map(level => ({
+                      value: get(level, 'id'),
+                      label: get(level, 'name', ''),
+                    })
+                  )}
+                value={{
+                  value: get(level, 'id'),
+                  label: get(level, 'name', ''),
                 }}
-              >
-                {levels.map(level => (
-                  <MenuItem value={level} key={level.id}>{_.get(level, 'name', '')}</MenuItem>
-                ))}
-              </Select>
+                onChange={({ value: levelId }) => setLevel(find(levels, { id: levelId }))}
+              />
             </StyledFormControl>
             <StyledFormControl fullWidth>
-              <InputLabel htmlFor='major-select'>
+              <label htmlFor='major-select'>
                 {t("views.user_page.modals.update_user.major_select")}
-              </InputLabel>
-              <Select
-                value={major}
-                renderValue={major => _.get(major, 'name', '')}
-                onChange={evt => setMajor(evt.target.value)}
-                inputProps={{
-                  name: 'major',
-                  id: 'major-select',
+              </label>
+              <CustomSelect
+                options={
+                  majors.map(major => ({
+                      value: get(major, 'id'),
+                      label: get(major, 'name', ''),
+                    })
+                  )}
+                value={{
+                  value: get(major, 'id'),
+                  label: get(major, 'name', ''),
                 }}
-              >
-                {majors.map(major => (
-                  <MenuItem value={major} key={major.id}>{_.get(major, 'name', '')}</MenuItem>
-                ))}
-              </Select>
+                onChange={({ value: majorId }) => setMajor(find(majors, { id: majorId }))}
+              />
             </StyledFormControl>
-            <TextField 
-              id='description'
-              label={t("views.user_page.modals.update_user.description")}
-              value={description}
-              onChange={evt => setDescription(evt.target.value)}
-              multiline
-              rowsMax={4}
-              fullWidth
-              helperText={<ColorTypo component='span' color='red'>{t("views.user_page.modals.update_user.description_helper", { max_count: 500 })}</ColorTypo>}
-            />
+            <StyledFormControl fullWidth>
+              <label htmlFor='description'>
+                {t("views.user_page.modals.update_user.description")}
+              </label>
+              <StyledTextField 
+                id='description'
+                value={description}
+                onChange={evt => setDescription(evt.target.value)}
+                multiline
+                rowsMax={4}
+                fullWidth
+                helperText={<ColorTypo component='span' color='red'>{t("views.user_page.modals.update_user.description_helper", { max_count: 500 })}</ColorTypo>}
+              />
+            </StyledFormControl>
           </React.Fragment>
         )}
       </CustomModal>

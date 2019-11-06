@@ -4,8 +4,9 @@ import {
   DETAIL_ROOM_SUCCESS,
 } from '../../constants/actions/room/detailRoom';
 
-export const detailRoom = ({ roomId }) => ({
+export const detailRoom = ({ roomId }, quite = false) => ({
   type: DETAIL_ROOM,
+  quite,
   options: {
     roomId,
   },

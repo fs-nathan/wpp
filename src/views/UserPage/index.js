@@ -40,7 +40,7 @@ function UserPage() {
   return (
     <Container expand={expand}>
       <Route 
-        path='/thanh-vien'
+        path='/departments'
         render={({ match: { url, } }) => (
           <LeftDiv expand={expand}>
             <Route path={`${url}/`} 
@@ -53,7 +53,7 @@ function UserPage() {
                 />
               } 
               exact />
-            <Route path={`${url}/thong-tin/:departmentId`} 
+            <Route path={`${url}/:departmentId`} 
               render={props => 
                 <DepartmentInfo 
                   {...props} 
@@ -63,12 +63,12 @@ function UserPage() {
                 />
               } 
               exact />
-            <Route path={`${url}/nguoi-dung/:userId`} component={UserList} />
+            <Route path={`${url}/members/:userId`} component={UserList} />
           </LeftDiv>
         )}
       />
       <Route 
-        path='/thanh-vien'
+        path='/departments'
         render={({ match: { url, } }) => (
           <RightDiv>
             <Route path={`${url}/`} 
@@ -82,7 +82,7 @@ function UserPage() {
               } 
               exact 
             />
-            <Route path={`${url}/thong-tin/:departmentId`} 
+            <Route path={`${url}/:departmentId`} 
               render={props => 
                 <DepartmentUsersTable 
                   {...props} 
@@ -93,7 +93,7 @@ function UserPage() {
               }
               exact 
             />
-            <Route path={`${url}/nguoi-dung/:userId`} 
+            <Route path={`${url}/members/:userId`} 
               render={props => 
                 <UserInfo 
                   {...props} 

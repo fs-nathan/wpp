@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
 import { mdiBorderNoneVariant } from '@mdi/js';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Avatar } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   height: 100%;
@@ -76,7 +77,10 @@ function LeftSideContainer({
 }) {
 
   const parseAction = (action) => (
-    typeof(action.onClick) === 'function' ? (
+    action.avatar ? (
+      <Avatar src={action.avatar} alt='avatar' />
+    ) 
+    : typeof(action.onClick) === 'function' ? (
       <StyledIconButton size='small' onClick={action.onClick}>
         <Icon path={action.iconPath} size={1} color='rgba(0, 0, 0, 0.54)' />
       </StyledIconButton>
@@ -106,6 +110,13 @@ function LeftSideContainer({
       </Body>
     </Container>
   )
+}
+
+LeftSideContainer.propTypes = {
+  leftAction: PropTypes.object,
+  rightAction: PropTypes.object,
+  children: PropTypes.node,
+  title: PropTypes.node,
 }
 
 export default LeftSideContainer;

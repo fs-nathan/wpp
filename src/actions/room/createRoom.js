@@ -4,19 +4,20 @@ import {
   CREATE_ROOM_SUCCESS,
 } from '../../constants/actions/room/createRoom';
 
-export const createRoom = ({ name, icon, description }) => ({
+export const createRoom = ({ name, icon, description, members }) => ({
   type: CREATE_ROOM,
   options: {
     name,
     icon,
     description,
+    members,
   },
 });
 
-export const createRoomSuccess = ({ roomId }) => ({
+export const createRoomSuccess = ({ room }) => ({
   type: CREATE_ROOM_SUCCESS,
   data: {
-    roomId,
+    room,
   },
 });
 

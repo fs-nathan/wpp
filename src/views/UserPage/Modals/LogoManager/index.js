@@ -10,12 +10,11 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import AlertModal from '../../../../components/AlertModal';
 import colorPal from '../../../../helpers/colorPalette';
-import avatar from '../../../../assets/avatar.jpg';
 import { connect } from 'react-redux';
 import { listIcon } from '../../../../actions/icon/listIcon';
 import { createIcon } from '../../../../actions/icon/createIcon';
 import { deleteIcon } from '../../../../actions/icon/deleteIcon';
-import _ from 'lodash';
+import { get } from 'lodash';
 import { CustomEventListener, CustomEventDispose, CREATE_ICON, DELETE_ICON } from '../../../../constants/events';
 
 const LogoList = styled(({ cols, ...rest }) => <div {...rest} />)`
@@ -48,18 +47,17 @@ const LogoBox = styled(({ isSelected, ...rest }) => <div {...rest} />)`
 
 function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreateIcon, deleteIcon, doDeleteIcon, onSelectIcon = (icon_url) => null }) {
 
-  const { data: { icons: _icons }, error: listIconError, loading: listIconLoading } = listIcon;
+  const { data: { icons, defaults }, error: listIconError, loading: listIconLoading } = listIcon;
   const { error: deleteIconError, loading: deleteIconLoading } = deleteIcon;
   const { error: createIconError, loading: createIconLoading } = createIcon;
   const error = listIconError || deleteIconError;
-  const [selectedIcon, setSelectedIcon] = React.useState(_icons[0]);
+  const [selectedIcon, setSelectedIcon] = React.useState(icons[0]);
   const [delIcon, setDelIcon] = React.useState(null);
-  const [icons, setIcons] = React.useState(_icons);
   const [alert, setAlert] = React.useState(false);
 
   React.useEffect(() => {
-    setIcons(_icons);
-  }, [_icons]);
+    setSelectedIcon(icons[0]);
+  }, [icons]);
 
   React.useEffect(() => {
     doListIcon();
@@ -67,11 +65,13 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
 
   React.useEffect(() => {
     const doListIconHandler = () => {
-      doListIcon();
+      doListIcon(true);
     }
     CustomEventListener(CREATE_ICON, doListIconHandler);
+    CustomEventListener(DELETE_ICON, doListIconHandler);
     return () => {
       CustomEventDispose(CREATE_ICON, doListIconHandler);
+      CustomEventDispose(DELETE_ICON, doListIconHandler);
     }
   }, [doListIcon]);
 
@@ -81,13 +81,8 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
   }
 
   function handleDeleteIcon(icon) {
-    function deleteIconHandler() {
-      setIcons(_.filter(icons, _icon => _.get(_icon, 'id') !== _.get(icon, 'id')));
-      CustomEventDispose(DELETE_ICON, deleteIconHandler);
-    }
-    CustomEventListener(DELETE_ICON, deleteIconHandler);
     doDeleteIcon({
-      iconId: _.get(icon, 'id'),
+      iconId: get(icon, 'id'),
     });
   }
 
@@ -111,10 +106,14 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
           <React.Fragment>
             <ColorTypo>Biểu tượng có sẵn</ColorTypo>
             <LogoList cols={8}>
-              {Array.from({ length: 4 }).map((icon, index) => (
-                <LogoBox key={index}>
-                  <ButtonBase>
-                    <Avatar src={avatar} alt='avatar' />
+              {defaults.map(icon => (
+                <LogoBox key={get(icon, 'url_icon')} isSelected={get(selectedIcon, 'url_sort', 'x') === get(icon, 'icon', 'y')}>
+                  <ButtonBase onClick={() => setSelectedIcon({
+                    id: get(icon, 'id'),
+                    url_sort: get(icon, 'icon'),
+                    url_full: get(icon, 'url_icon'),
+                  })}>
+                    <Avatar src={get(icon, 'url_icon')} alt='avatar' />
                   </ButtonBase>
                 </LogoBox>
               ))}
@@ -122,9 +121,9 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
             <ColorTypo>Biểu tượng tải lên</ColorTypo>
             <LogoList cols={8}>
               {icons.map(icon => (
-                <LogoBox key={_.get(icon, 'id', '')} isSelected={_.get(selectedIcon, 'id', 'x') === _.get(icon, 'id', 'y')}>
+                <LogoBox key={get(icon, 'id', '')} isSelected={get(selectedIcon, 'id', 'x') === get(icon, 'id', 'y')}>
                   <ButtonBase onClick={() => setSelectedIcon(icon)}>
-                    <Avatar src={_.get(icon, 'url_full')} alt='avatar' />
+                    <Avatar src={get(icon, 'url_full')} alt='avatar' />
                   </ButtonBase>
                   <ColorButton fullWidth variant='text' size='small' variantColor='red'
                     onClick={() => {
@@ -142,13 +141,24 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
               accept='image/*'
               id="raised-button-file"
               type="file" 
-              onChange={handleUploadIcon}
+              onChange={evt => {
+                if (createIconLoading) {
+                  return;
+                }
+                handleUploadIcon(evt);
+              }}
             />
-            <ColorButton variant='text' variantColor='green' size='small' component='label' htmlFor='raised-button-file'>
-              {createIconLoading && <LoadingBox size={16} />}
-              {createIconError !== null && 'Xảy ra lỗi'}
-              {!createIconLoading && createIconError === null && `+ Tải biểu tượng`}
-            </ColorButton>
+            {createIconLoading && (
+              <ColorButton variant='text' variantColor='green' size='small'>
+                <LoadingBox size={16} />
+              </ColorButton>
+            )}
+            {!createIconLoading && (
+              <ColorButton variant='text' variantColor='green' size='small' component='label' htmlFor='raised-button-file'>
+                {createIconError !== null && 'Xảy ra lỗi, hãy thử lại'}
+                {createIconError === null && `+ Tải biểu tượng`}
+              </ColorButton>
+            )}
             <AlertModal 
               open={alert}
               setOpen={setAlert}
@@ -171,7 +181,7 @@ const mapStateToProps = state => {
 
 const mapDispathToProps = dispatch => {
   return {
-    doListIcon: () => dispatch(listIcon()),
+    doListIcon: (quite) => dispatch(listIcon(quite)),
     doCreateIcon: ({ icon }) => dispatch(createIcon({ icon })),
     doDeleteIcon: ({ iconId }) => dispatch(deleteIcon({ iconId })),
   }

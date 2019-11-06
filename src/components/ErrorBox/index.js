@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiCloseCircle } from '@mdi/js';
 import ColorTypo from '../ColorTypo';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   height: 100%;
@@ -26,3 +27,8 @@ export default function ErrorBox({ children = 'Có lỗi xảy ra', size = 3, ..
     </Container>
   );
 }
+
+ErrorBox.propTypes = {
+  children: PropTypes.node,
+  size: PropTypes.number,
+};

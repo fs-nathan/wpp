@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Badge } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import colorPal from '../../helpers/colorPalette';
 
 const StyledBadge = styled(({ variantColor, ...rest }) => <Badge {...rest} />)`
@@ -17,5 +18,9 @@ const StyledBadge = styled(({ variantColor, ...rest }) => <Badge {...rest} />)`
     }
   `}
 `;
+
+StyledBadge.propTypes = {
+  variantColor: PropTypes.string,
+}
 
 export default StyledBadge;

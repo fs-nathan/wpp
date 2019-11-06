@@ -4,8 +4,9 @@ import {
   LIST_ROOM_FAIL,
 } from '../../constants/actions/room/listRoom';
 
-export const listRoom = () => ({
+export const listRoom = (quite = false) => ({
   type: LIST_ROOM,
+  quite,
 });
 
 export const listRoomSuccess = ({ rooms }) => ({

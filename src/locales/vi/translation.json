@@ -8,7 +8,7 @@
           "search_button": "Tìm"
         },
         "update_user": {
-          "room_select": "Chọn Phòng/Ban",
+          "room_select": "Chọn bộ phận",
           "position_select": "Chọn chức danh",
           "level_select": "Chọn trình độ",
           "major_select": "Chọn chuyên ngành",
@@ -60,7 +60,7 @@
         "user_info": {
           "date_join": "Ngày tham gia",
           "modify_info": "Chỉnh sửa",
-          "room_name": "Phòng/Ban/Nhóm",
+          "room_name": "Bộ phận",
           "position_name": "Chức danh",
           "level_name": "Trình độ",
           "major_name": "Chuyên ngành",

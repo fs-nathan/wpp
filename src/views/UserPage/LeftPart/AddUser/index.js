@@ -4,8 +4,8 @@ import ColorTypo from '../../../../components/ColorTypo';
 import PillButton from '../../../../components/PillButton';
 import SearchInput from '../../../../components/SearchInput';
 import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
-import avatar from '../../../../assets/avatar.jpg';
-import { Avatar, ListItemAvatar, ListItemText } from '@material-ui/core';
+import CustomAvatar from '../../../../components/CustomAvatar';
+import { ListItemAvatar, ListItemText } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import { connect } from 'react-redux';
 import { searchUser } from '../../../../actions/user/searchUser';
@@ -18,7 +18,18 @@ import colorPal from '../../../../helpers/colorPalette';
 import { CustomEventListener, CustomEventDispose, INVITE_USER_JOIN_GROUP } from '../../../../constants/events';
 
 const StyledBox = styled.div`
-  padding: 8px;
+  &:nth-child(1) {
+    padding: 15px;
+  };
+  &:nth-child(2) {
+    padding: 5px 0;
+    & > *:first-child {
+      padding: 15px;
+    }
+    & li {
+      padding: 5px 15px;
+    }
+  }
   display: flex;
   flex-direction: column;
   & > *:not(:last-child) {
@@ -50,7 +61,7 @@ function DesiringUserList({ users, handleInviteUser, isSearched }) {
       {users.map(user => (
         <StyledListItem key={_.get(user, 'id')}>
           <ListItemAvatar>
-            <Avatar style={{ width: 50, height: 50, }} src={_.get(user, 'avatar')} alt='avatar' />
+            <CustomAvatar style={{ width: 50, height: 50, }} src={_.get(user, 'avatar')} alt='avatar' />
           </ListItemAvatar>
           <ListItemText 
             primary={
@@ -61,8 +72,8 @@ function DesiringUserList({ users, handleInviteUser, isSearched }) {
             }
           />
           <PillButton 
-            onClick={() => _.get(user, 'send_invite', false) === false && handleSendInvite(_.get(user, 'id'))} 
-            size='small' 
+            size='small'
+            onClick={() => _.get(user, 'send_invite', false) === false && handleSendInvite(_.get(user, 'id'))}
             background={_.get(user, 'send_invite', false) ? colorPal['green'][0] : colorPal['orange'][0]}
             text={_.get(user, 'send_invite', false) ? colorPal['green'][1] : colorPal['orange'][1]}
           >
@@ -89,7 +100,7 @@ function RequestingUserList() {
     <StyledList>
       <StyledListItem>
         <ListItemAvatar>
-          <Avatar style={{ width: 50, height: 50, }} src={avatar} alt='avatar' />
+          <CustomAvatar style={{ width: 50, height: 50, }} alt='avatar' />
         </ListItemAvatar>
         <ListItemText 
           primary={
@@ -100,18 +111,18 @@ function RequestingUserList() {
               <Secondary>vietapp@gmail.com</Secondary>
               <span>
                 <PillButton 
+                  size='medium'
                   onClick={() => null} 
-                  size='small' 
-                  background={colorPal['green'][0]}
-                  text={colorPal['green'][1]}
+                  background={'#eeeeee'}
+                  text={'#222222'}
                 >
                   Duyệt
                 </PillButton>
                 <PillButton 
+                  size='medium'
                   onClick={() => null} 
-                  size='small' 
-                  background={colorPal['red'][0]}
-                  text={colorPal['red'][1]}
+                  background={'#eeeeee'}
+                  text={colorPal['red'][0]}
                 >
                   Từ chối
                 </PillButton>
@@ -119,11 +130,11 @@ function RequestingUserList() {
             </StyledSecondary>
           }
         />
-        <ColorTypo component='small' variant='caption'>3 phút</ColorTypo>
+        <ColorTypo component='small'>3 phút</ColorTypo>
       </StyledListItem>
       <StyledListItem>
         <ListItemAvatar>
-          <Avatar style={{ width: 50, height: 50, }} src={avatar} alt='avatar' />
+          <CustomAvatar style={{ width: 50, height: 50, }} alt='avatar' />
         </ListItemAvatar>
         <ListItemText 
           primary={
@@ -134,18 +145,18 @@ function RequestingUserList() {
               <Secondary>vietapp@gmail.com</Secondary>
               <span>
                 <PillButton 
+                  size='medium'
                   onClick={() => null} 
-                  size='small' 
-                  background={colorPal['green'][0]}
-                  text={colorPal['green'][1]}
+                  background={'#eeeeee'}
+                  text={'#222222'}
                 >
                   Duyệt
                 </PillButton>
                 <PillButton 
+                  size='medium'
                   onClick={() => null} 
-                  size='small' 
-                  background={colorPal['red'][0]}
-                  text={colorPal['red'][1]}
+                  background={'#eeeeee'}
+                  text={colorPal['red'][0]}
                 >
                   Từ chối
                 </PillButton>
@@ -153,14 +164,14 @@ function RequestingUserList() {
             </StyledSecondary>
           }
         />
-        <ColorTypo component='small' variant='caption'>3 phút</ColorTypo>
+        <ColorTypo component='small'>3 phút</ColorTypo>
       </StyledListItem>
     </StyledList>
   );
 }
 
 const StyledSearchInput = styled(SearchInput)`
-  width: 80%;
+  width: 70%;
 `;
 
 function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInviteUserJoinGroup, handleSubSlide }) {
@@ -203,7 +214,7 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
             onChange={evt => setSearchPatern(evt.target.value)}
           />
           <PillButton 
-            size='medium'
+            size='large'
             background={'#eee'}
             text={'#333'}
             onClick={() => {

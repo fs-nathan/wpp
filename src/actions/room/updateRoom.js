@@ -4,18 +4,22 @@ import {
   UPDATE_ROOM_SUCCESS,
 } from '../../constants/actions/room/updateRoom';
 
-export const updateRoom = ({ roomId, name, icon, description }) => ({
+export const updateRoom = ({ roomId, name, icon, description, members }) => ({
   type: UPDATE_ROOM,
   options: {
     roomId,
     name,
     icon,
     description,
+    members,
   },
 });
 
-export const updateRoomSuccess = () => ({
+export const updateRoomSuccess = ({ room }) => ({
   type: UPDATE_ROOM_SUCCESS,
+  data: {
+    room,
+  }
 });
 
 export const updateRoomFail = (error) => ({

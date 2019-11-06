@@ -2,7 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import { listIconSuccess, listIconFail } from '../../actions/icon/listIcon';
 import { apiService } from '../../constants/axiosInstance';
 
-async function doListIcon() {
+async function doListCreatedIcon() {
   try {
     const config = {
       url: '/list-icon',
@@ -15,10 +15,37 @@ async function doListIcon() {
   }
 }
 
+async function doListDefaultIcon() {
+  try {
+    const config = {
+      url: '/get-icon-default',
+      method: 'get',
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function doListIcon() {
+  try {
+    const result = await Promise.all([doListDefaultIcon(), doListCreatedIcon()]);
+    const { icons: defaults } = result[0];
+    const { icons } = result[1];
+    return ({
+      icons, 
+      defaults, 
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
 function* listIcon() {
   try {
-    const { icons } = yield call(doListIcon);
-    yield put(listIconSuccess({ icons }));
+    const { icons, defaults } = yield call(doListIcon);
+    yield put(listIconSuccess({ icons, defaults }));
   } catch (error) {
     yield put(listIconFail(error));
   }

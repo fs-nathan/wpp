@@ -1,9 +1,9 @@
 import React from 'react';
 import { 
-  Avatar, List, ListItem, ListItemText, ListItemAvatar,
+  List, ListItem, ListItemText, ListItemAvatar,
 } from '@material-ui/core';
 import CustomModal from '../../../../components/CustomModal';
-import avatar from '../../../../assets/avatar.jpg';
+import CustomAvatar from '../../../../components/CustomAvatar';
 import _ from 'lodash';
 
 function UserDocument({ open, setOpen, files }) {
@@ -18,7 +18,7 @@ function UserDocument({ open, setOpen, files }) {
         {files.map(file => (
           <ListItem button key={_.get(file, 'id', '')} component='a' href={_.get(file, 'url', '/')} target='_blank'>
             <ListItemAvatar>
-              <Avatar src={avatar} alt='avatar' />
+              <CustomAvatar alt='avatar' />
             </ListItemAvatar>
             <ListItemText
               primary={_.get(file, 'name', '')}

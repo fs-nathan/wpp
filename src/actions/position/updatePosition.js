@@ -13,8 +13,11 @@ export const updatePosition = ({ positionId, name, description }) => ({
   }
 });
 
-export const updatePositionSuccess = () => ({
+export const updatePositionSuccess = ({ position }) => ({
   type: UPDATE_POSITION_SUCCESS,
+  data: {
+    position,
+  }
 });
 
 export const updatePositionFail = (error) => ({

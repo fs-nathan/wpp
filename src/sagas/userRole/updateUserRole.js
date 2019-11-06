@@ -23,8 +23,8 @@ async function doUpdatePosition({ userRoleId, name, description }) {
 
 function* updateUserRole(action) {
   try {
-    yield call(doUpdatePosition, action.options);
-    yield put(updateUserRoleSuccess());
+    const { user_role: userRole } = yield call(doUpdatePosition, action.options);
+    yield put(updateUserRoleSuccess({ userRole }));
     CustomEventEmitter(UPDATE_USER_ROLE);
   } catch (error) {
     yield put(updateUserRoleFail(error));

@@ -6,7 +6,7 @@ import { CustomEventEmitter, CREATE_ICON } from '../../constants/events';
 async function doCreateIcon({ icon }) {
   try {
     const formData = new FormData();
-    formData.append('icon', icon);
+    formData.append('image', icon);
     const config = {
       url: '/create-icon',
       method: 'post',

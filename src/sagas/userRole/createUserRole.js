@@ -22,8 +22,8 @@ async function doCreatePosition({ name, description }) {
 
 function* createUserRole(action) {
   try {
-    const { user_role_id: userRoleId } = yield call(doCreatePosition, action.options);
-    yield put(createUserRoleSuccess({ userRoleId }));
+    const { user_role: userRole } = yield call(doCreatePosition, action.options);
+    yield put(createUserRoleSuccess({ userRole }));
     CustomEventEmitter(CREATE_USER_ROLE);
   } catch (error) {
     yield put(createUserRoleFail(error));

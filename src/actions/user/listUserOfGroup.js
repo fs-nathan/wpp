@@ -4,8 +4,9 @@ import {
   LIST_USER_OF_GROUP_SUCCESS,
 } from '../../constants/actions/user/listUserOfGroup';
 
-export const listUserOfGroup = () => ({
+export const listUserOfGroup = (quite = false) => ({
   type: LIST_USER_OF_GROUP,
+  quite,
 });
 
 export const listUserOfGroupSuccess = ({ rooms }) => ({

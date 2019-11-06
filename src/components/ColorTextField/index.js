@@ -2,8 +2,9 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { TextField } from '@material-ui/core';
 import colorPal from '../../helpers/colorPalette';
+import PropTypes from 'prop-types';
 
-const StyledTypo = styled(({ color, uppercase, bold, ...rest }) => <TextField multiline disabled {...rest} />)`
+const ColorTextField = styled(({ color, uppercase, bold, ...rest }) => <TextField multiline disabled {...rest} />)`
   width: 100%;
   && > div {
     &::before {
@@ -19,4 +20,10 @@ const StyledTypo = styled(({ color, uppercase, bold, ...rest }) => <TextField mu
   }
 `;
 
-export default StyledTypo;
+ColorTextField.propTypes = {
+  color: PropTypes.string,
+  uppercase: PropTypes.bool,
+  bold: PropTypes.bool,
+}
+
+export default ColorTextField;

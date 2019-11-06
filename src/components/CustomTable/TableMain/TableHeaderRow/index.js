@@ -15,6 +15,7 @@ const StyledTableHeadCell = styled(TableCell)`
   font-weight: bold;
   color: rgb(102, 102, 102);
   padding: 8px;
+  font-size: 14px;
 `;
 
 function TableHeaderRow() {
