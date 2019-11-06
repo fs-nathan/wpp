@@ -15,20 +15,12 @@ import { withStyles } from '@material-ui/core/styles';
 const currencies = [
   {
     value: 'USD',
-    label: '$',
+    label: 'Quyết định',
   },
   {
     value: 'EUR',
-    label: '€',
-  },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
+    label: 'Chỉ đạo',
+  }
 ];
 
 const Container = styled.div`
@@ -60,6 +52,9 @@ const HelperText = styled(TextField)`
   & > *:last-child {
     font-size: 12px;
     margin: 8px 0 0;
+    & > select {
+      font-size: 14px;
+    }
   }
 `
 const Text = styled(TextField)`

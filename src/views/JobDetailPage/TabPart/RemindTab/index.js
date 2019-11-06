@@ -6,7 +6,7 @@ import TabBody from './TabBody';
 function RemindTab({ show, setShow }) {
   return (
     <Slide in={show === 3} direction='left' mountOnEnter unmountOnExit>
-      <div>
+      <div style={{ height: '100%'}}>
         <TabHeader setShow={setShow} />
         <TabBody />
       </div>

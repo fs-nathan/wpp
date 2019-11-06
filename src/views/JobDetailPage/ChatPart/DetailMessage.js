@@ -3,11 +3,10 @@ import { Avatar, Typography, ListItemText, ListItem, CardMedia } from '@material
 import styled from 'styled-components';
 import avatar from '../../../assets/avatar.jpg'
 import colorPal from '../../../helpers/colorPalette'
-import { mdiClockOutline, mdiArrowRightBold, mdiCheckCircleOutline, mdiAlarm, mdiFileTree } from '@mdi/js';
-
+import { mdiClockOutline, mdiArrowRightBold, mdiAlarm, mdiFileTree } from '@mdi/js';
 import Icon from '@mdi/react';
-import * as MaterialIcon from '@material-ui/icons'
 import ImageChatTest from '../../../assets/imageChatTest.jpg'
+import NoImage from '../../../assets/no-img.png'
 
 
 
@@ -40,10 +39,6 @@ const StyledFrameMess = styled(Typography)`
     border-radius: 10px;
     background-color: #fffefa;
     margin: 5px;
-`
-const AvatarMess = styled(Avatar)`
-    height: 30px;
-    width: 30px;
 `
 // const StyledSubText = styled(Typography)`
 //     color: 
@@ -443,6 +438,18 @@ const ImageChat = () => {
         </ImageChatMess>
     )
 }
+
+const NoImageChat = () => {
+    return (
+        <ImageChatMess component='div'>
+            <CardMedia
+                component="img"
+                height="auto"
+                image={NoImage}
+            />
+        </ImageChatMess>
+    )
+}
 export default function DetailMessage() {
     //const [data] = React.useState(members);
     return (
@@ -491,6 +498,9 @@ export default function DetailMessage() {
                             }
                             {(element.id === 13) &&
                                 <ImageChat />
+                            }
+                            {(element.id === 14) &&
+                                <NoImageChat /> 
                             }
                         </StyledFrameMess>
                     </Typography>

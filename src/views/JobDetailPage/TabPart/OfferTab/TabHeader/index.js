@@ -53,7 +53,7 @@ const ButtonFile = styled.label`
           align-items: center;
           justify-content: start;
           padding: 3px 10px;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 500;
         }
       }

@@ -12,6 +12,7 @@ import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import avatar from '../../../../../assets/avatar.jpg';
+import InputSelect from '../InputSelect';
 
 const Container = styled.div`
   padding: 0 0 0 20px;
@@ -180,22 +181,12 @@ function TabHeader() {
             />
           </Typography>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
-          <Typography component={'span'}>
-            <TitleText component={'span'}>
-              <Typography component={'span'}> Nhóm mặc định </Typography>
+          <Typography component={'div'} style={{ marginBottom: 25}}>
+            <TitleText component={'div'} style={{ marginBottom: 10}}>
+              <Typography component={'span'} > Nhóm mặc định </Typography>
               <Typography component={'span'}></Typography>
             </TitleText>
-            <FormControl fullWidth style={{ marginBottom: 50 }}>
-              <Select
-                native
-                onChange={handleChange('')}
-              >
-                
-                <option value={10}>Ten</option>
-                <option value={20}>Twenty</option>
-                <option value={30}>Thirty</option>
-              </Select>
-            </FormControl>
+            <InputSelect />
           </Typography>
           <Typography component={'span'}>
             <TitleText component={'span'}>
