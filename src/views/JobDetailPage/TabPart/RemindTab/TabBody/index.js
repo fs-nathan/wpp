@@ -60,6 +60,7 @@ const StyledContentBox = styled.div`
 const Container = styled.div`
   padding: 10px 20px;
   background-color: #f8f8f8;
+  height: 100%;
 `;
 
 const Content = styled.div`

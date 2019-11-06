@@ -1,14 +1,13 @@
 import React from 'react'
-import { Avatar, Typography, ListItemText, ListItem, CardMedia } from '@material-ui/core';
+import { Avatar, Typography, ListItemText, ListItem, CardMedia, Button } from '@material-ui/core';
 import styled from 'styled-components';
 import avatar from '../../../assets/avatar.jpg'
 import colorPal from '../../../helpers/colorPalette'
-import { mdiClockOutline, mdiArrowRightBold, mdiCheckCircleOutline, mdiAlarm, mdiFileTree } from '@mdi/js';
-
+import { mdiClockOutline, mdiArrowRightBold, mdiAlarm, mdiFileTree, mdiDownload, mdiLinkVariant, mdiLinkOff, mdiMapMarker, mdiEmailSend, mdiBullhorn } from '@mdi/js';
 import Icon from '@mdi/react';
-import * as MaterialIcon from '@material-ui/icons'
 import ImageChatTest from '../../../assets/imageChatTest.jpg'
-
+import NoImage from '../../../assets/no-img.png'
+import iconXls from '../../../assets/xls.png'
 
 
 
@@ -27,6 +26,12 @@ const members = [
     { id: 12, name: 'Nguyễn Văn Hà', role: 'Trưởng phòng', projectRole: 'Admin', authorityList: ['Thực hiện'] },
     { id: 13, name: 'Trần Văn Giang', role: 'TGĐ', projectRole: 'Admin', authorityList: ['Giám sát'] },
     { id: 14, name: 'Hà Thanh Mai', role: 'Nhân viên', projectRole: 'Khác    ', authorityList: ['Thực hiện'] },
+    { id: 15, name: 'Hà Thanh Mai', role: 'Nhân viên', projectRole: 'Khác    ', authorityList: ['Thực hiện'] },
+    { id: 16, name: 'Trần Văn Giang', role: 'TGĐ', projectRole: 'Admin', authorityList: ['Giám sát'] },
+    { id: 17, name: 'Hà Thanh Mai', role: 'Nhân viên', projectRole: 'Khác    ', authorityList: ['Thực hiện'] },
+    { id: 18, name: 'Nguyễn Văn Hà', role: 'Trưởng phòng', projectRole: 'Admin', authorityList: ['Thực hiện'] },
+    { id: 19, name: 'Trần Văn Giang', role: 'TGĐ', projectRole: 'Admin', authorityList: ['Giám sát'] },
+    { id: 20, name: 'Hà Thanh Mai', role: 'Nhân viên', projectRole: 'Khác    ', authorityList: ['Thực hiện'] },
 ]
 
 
@@ -41,10 +46,6 @@ const StyledFrameMess = styled(Typography)`
     background-color: #fffefa;
     margin: 5px;
 `
-const AvatarMess = styled(Avatar)`
-    height: 30px;
-    width: 30px;
-`
 // const StyledSubText = styled(Typography)`
 //     color: 
 // `
@@ -56,185 +57,6 @@ const StyledTextContentMess = styled(Typography)`
     font-size: 15px;
     font-weight: 500;
     margin-bottom: 10px;
-`
-const QuoteMessDetail = styled(Typography)`
-    width: auto;
-    height: auto;
-    border-radius: 10px;
-    background-color: #f7f7f7;
-    border-left: 3px solid #4e9bff;
-    padding: 10px;
-    margin-bottom: 13px;
-    & > *:first-child {
-        font-size: 12px;
-        color: ${colorPal['gray'][0]};
-        margin-bottom: 2px;
-    }
-    & > *:last-child {
-        font-size: 13px;
-        color: ${colorPal['gray'][0]};
-        font-weight: 500;
-    }
-`
-const ConversationDelete = styled(Typography)`
-    & > p:nth-child(1) {
-        font-size: 14px;
-        color: #acacac;
-        font-weight: 500;
-    }
-    & > p:nth-child(2) {
-        font-size: 11px;
-        color: #939292;
-    }
-`
-const AddMemberMess = styled(Typography)`
-    & > p {
-        font-size: 14px;
-        color: #6e6d6d;
-    }
-    & > li {
-        padding: 10px 10px 10px 0;
-        & > div:nth-child(1) {
-            margin-right: 7px;
-        }
-        & > div:nth-child(2) {
-            & > *:last-child {
-                font-size: 11px;
-                color: ${colorPal['gray'][0]}
-            }
-        }
-    }
-`
-
-const DeleteMemberMess = styled(Typography)`
-    & > p {
-        font-size: 14px;
-        color: red;
-    }
-    & > li {
-        padding: 10px 10px 10px 0;
-        & > div:nth-child(1) {
-            margin-right: 7px;
-            height: 30px;
-            width: 30px;
-        }
-        & > div:nth-child(2) {
-            & > div {
-                font-size: 14px;
-                color: ${colorPal['gray'][0]}
-            }
-        }
-    }
-`
-const AdjustmentProgressMess = styled(Typography)`
-    margin-bottom: 20px; 
-    & > p {
-        font-size: 13px;
-        color: #6e6d6d;
-    }
-    & > div {
-        display: flex;
-        align-items: center;
-        margin-top: 7px;
-        & > svg {
-            margin-right: 7px;
-        }
-    }
-`
-
-const UpdateProgressMess = styled(Typography)`
-    & > p:nth-child(1) {
-        font-size: 14px;
-        color: #6e6d6d;
-        margin-bottom: 10px;
-    }
-    & > p:nth-child(2) {
-        font-size: 15px;
-        margin-bottom: 20px;
-    }
-`
-const UpdateNameWorkMess = styled(Typography)`
-    & > p:nth-child(1) {
-        font-size: 14px;
-        color: #6e6d6d;
-        margin-bottom: 10px;
-    }
-    & > p:nth-child(2) {
-        font-size: 14px;
-        margin-bottom: 20px;
-    }
-`
-const UpdateStatusWorkMess = styled(Typography)`
-    margin-bottom: 20px;
-    & > div:nth-child(2) {    
-        display: flex;
-        align-items: center;
-        margin-top: 10px;
-        & > svg {
-            margin: 0 10px;
-        }
-    }
-`
-const WorkChildMess = styled(Typography)`
-    & > p:nth-child(1) {
-        font-size: 14px;
-        color: #6e6d6d;
-        margin-bottom: 10px;
-    }
-    & > div:nth-child(2) {
-        display: flex;
-        align-items: center;
-        & > div {
-            margin-right: 10px;
-            background-color: #e3e6e4;
-            height: 30px;
-            width: 30px;
-            border-radius: 50%;
-            justify-content: center;
-            display: flex;
-            align-items: center;
-        }
-    }
-    
-`
-const DeleteWorkChildMess = styled(Typography)`
-    margin-bottom: 20px;
-    & > p:nth-child(1) {
-        font-size: 14px;
-        color: red;
-        margin-bottom: 10px;
-    }
-    & > p:nth-child(2) {
-        font-size: 14px;
-        color: ${colorPal['gray'][0]}
-    }
-`
-const RemindMess = styled(Typography)`
-    & > p {
-        font-size: 14px;
-        color: #6e6d6d;
-    }
-    & > li {
-        padding: 10px 10px 10px 0;
-        & > svg {
-            width: 40px;
-            height: 40px;
-            border-radius: 4px;
-            margin-right: 10px;
-            background-color: #fc0845;
-            padding: 10px;
-        }
-        & > div:nth-child(2) {
-            & > *:last-child {
-                font-size: 11px;
-                color: ${colorPal['gray'][0]}
-            }
-        }
-    }
-`
-
-const ImageChatMess = styled(Typography)`
-
 `
 
 const getSubColorRole = (role, authorityList) => {
@@ -286,6 +108,26 @@ const ContentMessage = ({ content }) => {
         </StyledTextContentMess>
     )
 }
+// QuoteDetail
+const QuoteMessDetail = styled(Typography)`
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    background-color: #f7f7f7;
+    border-left: 3px solid #4e9bff;
+    padding: 10px;
+    margin-bottom: 13px;
+    & > *:first-child {
+        font-size: 12px;
+        color: ${colorPal['gray'][0]};
+        margin-bottom: 2px;
+    }
+    & > *:last-child {
+        font-size: 13px;
+        color: ${colorPal['gray'][0]};
+        font-weight: 500;
+    }
+`
 
 const QuoteDetailMess = ({ name, content }) => {
     return (
@@ -295,6 +137,18 @@ const QuoteDetailMess = ({ name, content }) => {
         </QuoteMessDetail>
     )
 }
+// Conversation
+const ConversationDelete = styled(Typography)`
+    & > p:nth-child(1) {
+        font-size: 14px;
+        color: #acacac;
+        font-weight: 500;
+    }
+    & > p:nth-child(2) {
+        font-size: 11px;
+        color: #939292;
+    }
+`
 
 const DeleteConversation = () => {
     return (
@@ -304,6 +158,25 @@ const DeleteConversation = () => {
         </ConversationDelete>
     )
 }
+// Add member
+const AddMemberMess = styled(Typography)`
+    & > p {
+        font-size: 14px;
+        color: #6e6d6d;
+    }
+    & > li {
+        padding: 10px 10px 10px 0;
+        & > div:nth-child(1) {
+            margin-right: 7px;
+        }
+        & > div:nth-child(2) {
+            & > *:last-child {
+                font-size: 11px;
+                color: ${colorPal['gray'][0]}
+            }
+        }
+    }
+`
 
 const AddMembers = ({ name, role }) => {
     return (
@@ -326,6 +199,27 @@ const AddMembers = ({ name, role }) => {
         </AddMemberMess>
     )
 }
+// delete member
+const DeleteMemberMess = styled(Typography)`
+    & > p {
+        font-size: 14px;
+        color: red;
+    }
+    & > li {
+        padding: 10px 10px 10px 0;
+        & > div:nth-child(1) {
+            margin-right: 7px;
+            height: 30px;
+            width: 30px;
+        }
+        & > div:nth-child(2) {
+            & > div {
+                font-size: 14px;
+                color: ${colorPal['gray'][0]}
+            }
+        }
+    }
+`
 
 const DeleteMember = ({ name }) => {
     return (
@@ -345,6 +239,22 @@ const DeleteMember = ({ name }) => {
         </DeleteMemberMess>
     )
 }
+// Adjustment progress
+const AdjustmentProgressMess = styled(Typography)`
+    margin-bottom: 20px; 
+    & > p {
+        font-size: 13px;
+        color: #6e6d6d;
+    }
+    & > div {
+        display: flex;
+        align-items: center;
+        margin-top: 7px;
+        & > svg {
+            margin-right: 7px;
+        }
+    }
+`
 
 const AdjustmentProgress = () => {
     return (
@@ -357,6 +267,18 @@ const AdjustmentProgress = () => {
         </AdjustmentProgressMess>
     )
 }
+// update progress
+const UpdateProgressMess = styled(Typography)`
+    & > p:nth-child(1) {
+        font-size: 14px;
+        color: #6e6d6d;
+        margin-bottom: 10px;
+    }
+    & > p:nth-child(2) {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+`
 
 const UpdateProgress = () => {
     return (
@@ -366,6 +288,18 @@ const UpdateProgress = () => {
         </UpdateProgressMess>
     )
 }
+// update name
+const UpdateNameWorkMess = styled(Typography)`
+    & > p:nth-child(1) {
+        font-size: 14px;
+        color: #6e6d6d;
+        margin-bottom: 10px;
+    }
+    & > p:nth-child(2) {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+`
 
 const UpdateNameWork = () => {
     return (
@@ -375,6 +309,18 @@ const UpdateNameWork = () => {
         </UpdateNameWorkMess>
     )
 }
+// update status
+const UpdateStatusWorkMess = styled(Typography)`
+    margin-bottom: 20px;
+    & > div:nth-child(2) {    
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        & > svg {
+            margin: 0 10px;
+        }
+    }
+`
 
 const UpdateStatusWork = () => {
     return (
@@ -387,6 +333,29 @@ const UpdateStatusWork = () => {
     )
 }
 
+// work 
+const WorkChildMess = styled(Typography)`
+    & > p:nth-child(1) {
+        font-size: 14px;
+        color: #6e6d6d;
+        margin-bottom: 10px;
+    }
+    & > div:nth-child(2) {
+        display: flex;
+        align-items: center;
+        & > div {
+            margin-right: 10px;
+            background-color: #e3e6e4;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+        }
+    }
+    
+`
 
 const WorkChild = () => {
     return (
@@ -401,6 +370,19 @@ const WorkChild = () => {
         </WorkChildMess>
     )
 }
+// delete work
+const DeleteWorkChildMess = styled(Typography)`
+    margin-bottom: 20px;
+    & > p:nth-child(1) {
+        font-size: 14px;
+        color: red;
+        margin-bottom: 10px;
+    }
+    & > p:nth-child(2) {
+        font-size: 14px;
+        color: ${colorPal['gray'][0]}
+    }
+`
 
 const DeleteWorkChild = () => {
     return (
@@ -410,6 +392,30 @@ const DeleteWorkChild = () => {
         </DeleteWorkChildMess>
     )
 }
+// remind
+const RemindMess = styled(Typography)`
+    & > p {
+        font-size: 14px;
+        color: #6e6d6d;
+    }
+    & > li {
+        padding: 10px 10px 10px 0;
+        & > svg {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            margin-right: 10px;
+            background-color: #fc0845;
+            padding: 10px;
+        }
+        & > div:nth-child(2) {
+            & > *:last-child {
+                font-size: 11px;
+                color: ${colorPal['gray'][0]}
+            }
+        }
+    }
+`
 
 const Remind = () => {
     return (
@@ -432,6 +438,10 @@ const Remind = () => {
         </RemindMess>
     )
 }
+// ====== image
+const ImageChatMess = styled(Typography)`
+
+`
 const ImageChat = () => {
     return (
         <ImageChatMess component='div'>
@@ -443,10 +453,386 @@ const ImageChat = () => {
         </ImageChatMess>
     )
 }
+
+const NoImageChat = () => {
+    return (
+        <CardMedia
+            component="img"
+            height="214px"
+            image={NoImage}
+        />
+    )
+}
+const DocumentChatMess = styled(Typography)`
+    & > p {
+        color: #6e6d6d;
+    }
+    & > *:last-child {
+        display: flex;
+        & > li {
+            padding: 8px 0;
+            & > img {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+            & > div > div {
+                font-weight: bold;
+                color: #07a2f5;
+            }
+        }
+    }
+`
+const DocumentChat = () => {
+    return (
+        <DocumentChatMess component='div'>
+            <Typography component='p'>Đã chia sẻ tài liệu</Typography>
+            <Typography component='div'>
+                <ListItem>
+                    <img src={iconXls} alt='avatar' />
+                    <ListItemText
+                        style={{ margin: 0 }}
+                        primary={
+                            <Typography component='div'>
+                                Bảng tổng hợp khách.xlsx
+                            </Typography>
+                        }
+                        secondary={
+                            <Typography component='p'>912KB</Typography>
+                        }
+                    />
+                </ListItem>
+                <Icon path={mdiDownload} size={2} color={'gray'} />
+            </Typography>
+        </DocumentChatMess>
+    )
+}
+
+const ShareLinkMess = styled(Typography)`
+    & > p {
+        font-size: 14px;
+        color: #6e6d6d;
+    }
+    & > *:last-child > li {
+        padding-left: 0;
+        & > div:nth-child(1) {
+            padding: 0;
+            & > svg {
+                width: 37px;
+                height: 37px;
+                border-radius: 4px;
+                margin-right: 12px;
+                background-color: #0494e0;
+                padding: 10px;
+            }
+        }
+        & > div:nth-child(2) > div > a {
+            font-size: 15px;
+            font-weight: bold;
+            color: #0494e0;
+        }
+
+    }
+`
+const ShareLink = () => {
+    return (
+        <ShareLinkMess component='div'>
+            <Typography component='p'>Đã chia sẻ link</Typography>
+            <Typography component='div'>
+                <ListItem>
+                    <div>
+                        <Icon path={mdiLinkVariant} size={2} color={'white'} />
+                    </div>
+                    <ListItemText
+                        style={{ margin: 0 }}
+                        primary={
+                            <Typography component='div'>
+                                <a href='https://vtask.net/' target="_blank">https://vtask.net/</a>
+                            </Typography>
+                        }
+                    />
+                </ListItem>
+            </Typography>
+        </ShareLinkMess>
+    )
+}
+const DeleteLinkMess = styled(Typography)`
+    & > li {
+        padding: 10px 10px 10px 0;
+        & > svg {
+            width: 37px;
+            height: 37px;
+            border-radius: 4px;
+            margin-right: 12px;
+            background-color: #a4a6a6;
+            padding: 10px;
+        }
+        & > div:nth-child(2) {
+            & > *:last-child {
+                font-size: 11px;
+                color: ${colorPal['gray'][0]}
+            }
+        }
+    }
+`
+const DeleteLink = () => {
+    return (
+        <DeleteLinkMess component='div'>
+            <ListItem>
+                <Icon path={mdiLinkOff} size={2} color={'white'} />
+                <ListItemText
+                    style={{ margin: 0 }}
+                    primary={
+                        <Typography component='div'>
+                            Link đã được xóa
+                        </Typography>
+                    }
+                    secondary={
+                        <Typography component='p'>Lúc 09:12 - 12/09/2019</Typography>
+                    }
+                />
+            </ListItem>
+        </DeleteLinkMess>
+    )
+}
+const ShareLocationMess = styled(Typography)`
+    & > p {
+        font-size: 14px;
+        color: #6e6d6d;
+        margin-bottom: 8px;
+    }
+    & > *:last-child {
+        padding-left: 0;
+            padding: 0;
+            & > svg {
+                width: 37px;
+                height: 37px;
+                border-radius: 50%;
+                margin-right: 12px;
+                background-color: #ffa305;
+                padding: 10px;
+            }
+            & > div:nth-child(2) > div {
+                font-weight: 400;
+                font-size: 15px;
+            }
+        }
+
+    }
+`
+
+const ShareLocation = () => {
+    return (
+        <ShareLocationMess component='div'>
+            <Typography component='p'>Đã chia sẻ vị trí</Typography>
+            <ListItem>
+                <Icon path={mdiMapMarker} size={1} color={'white'} />
+                <ListItemText
+                    style={{ margin: 0 }}
+                    primary={
+                        <Typography component='div'>
+                            Công ty CP XNK Việt Nam
+                        </Typography>
+                    }
+                    secondary={
+                        <Typography component='p'>Số 32,ngõ 32,đường Giải Phóng</Typography>
+                    }
+                />
+            </ListItem>
+        </ShareLocationMess>
+    )
+}
+// ApproveOffer
+const ApproveOfferMess = styled(Typography)`
+    & > p:nth-child(1) {
+        font-size: 14px;
+        color: #6e6d6d;
+        margin-bottom: 8px;
+    }
+    & > div {
+        width: auto;
+        height: auto;
+        border-radius: 10px;
+        background-color: #f7f7f7;
+        border-left: 3px solid #4e9bff;
+        padding: 5px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        & > div {
+            height: 23px;
+            width: 23px;
+            display: flex;
+            background: #05f4fc;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            border-radius: 50%
+        }
+        & > p {
+            color: #a6a6a6
+        }
+    }
+`
+const ApproveOffer = () => {
+    return (
+        <ApproveOfferMess component='div'>
+            <Typography component='p'>Đã duyệt đề xuất</Typography>
+            <Typography component='div'>
+                <Typography component='div'>
+                    <Icon path={mdiEmailSend} size={0.8} color={'white'} />
+                </Typography>
+                <Typography component='p'>Anh cho em nghỉ ngày mai nhé</Typography>
+            </Typography>
+            <Typography component='p'>Tôi đồng ý mười tay</Typography>
+        </ApproveOfferMess>
+    )
+}
+// reply image
+const ReplyImageMess = styled(Typography)`
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    background-color: #f7f7f7;
+    border-left: 3px solid #4e9bff;
+    padding: 10px;
+    margin-bottom: 13px;
+    & > *:first-child {
+        & > img {
+            height: 60px;
+            width: 97px;
+        }
+    }
+`
+
+const ReplyImg = () => {
+    return (
+        <>
+            <ReplyImageMess component='div'>
+                <Typography component='div'>
+                    <CardMedia
+                        component="img"
+                        height="auto"
+                        image={ImageChatTest}
+                    />
+                </Typography>
+            </ReplyImageMess>
+            <Typography component='p'>Bức ảnh quá đẹp, tks!</Typography>
+        </>
+    )
+}
+
+const WrapCommonRow = styled.span`
+    display: flex;
+    justify-content:center;
+    align-items: center;
+`
+const WrapProjectMessage = styled.div`
+    background-color: white;
+    border-radius: 20px;
+    width: 380px;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    & > div:nth-child(1) {
+        background: red;
+        text-align: center;
+        padding: 13px 0 25px 0;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        & > span {
+            text-align: center;
+            font-weight: 600;
+            background: red;
+            color: white;
+            font-size: 14px;
+            padding-bottom: 9px;
+            border-bottom: 2px solid white;
+        }
+    }
+    & > div:nth-child(2) {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid #bfbfbf;
+        padding: 15px 0;
+        & > div:nth-child(1){
+            font-size: 16px;
+            font-weight: bold;
+        }
+        & > div:nth-child(2) {
+            font-size: 76px;
+            font-weight: bold;
+        }
+        & > div:nth-child(3) {
+            font-size: 19px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin: 0 10px;
+            text-align: center;
+        }
+        & > div:nth-child(4) {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #a6a6a6;
+        }
+    }
+    & > button {
+        & > span > div{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        & > div {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            & > svg {
+                margin-right: 7px;
+            }
+            & > span {
+                color : #05bdfa;
+                font-size: 14px;
+                font-weight: 500;
+            }
+        }
+    }
+}
+`
+
+function RemindMessage(props) {
+    return (
+        <WrapCommonRow>
+            <WrapProjectMessage>
+                <Typography component='div'>
+                    <span>Nhắc hẹn</span>
+                </Typography>
+                <Typography component='div'>
+                    <Typography component='div'>Tháng 9</Typography>
+                    <Typography component='div'>17</Typography>
+                    <Typography component='div' >Tiến độ thực tế chậm so với kế hoạch 20%</Typography>
+                    <Typography component='div'>Lúc 09:25 ngày 17/09/2019 - Nhắc 1 lần</Typography>
+                </Typography>
+                <Button>
+                    <Typography component='div'>
+                        <Typography component='div'>
+                            <Icon path={mdiAlarm} size={1.3} color={'#05bdfa'} />
+                            <Typography component='span'>Xem chi tiết</Typography>
+                        </Typography>
+                    </Typography>
+                </Button>
+            </WrapProjectMessage>
+        </WrapCommonRow>
+    )
+}
+
 export default function DetailMessage() {
     //const [data] = React.useState(members);
     return (
         <Container>
+            <RemindMessage />
             {members.map((element, index) => {
                 return (
                     <Typography component='div'>
@@ -491,6 +877,27 @@ export default function DetailMessage() {
                             }
                             {(element.id === 13) &&
                                 <ImageChat />
+                            }
+                            {(element.id === 14) &&
+                                <NoImageChat />
+                            }
+                            {(element.id === 15) &&
+                                <DocumentChat />
+                            }
+                            {(element.id === 16) &&
+                                <ShareLink />
+                            }
+                            {(element.id === 17) &&
+                                <DeleteLink />
+                            }
+                            {(element.id === 18) &&
+                                <ShareLocation />
+                            }
+                            {(element.id === 19) &&
+                                <ApproveOffer />
+                            }
+                            {(element.id === 20) &&
+                                <ReplyImg />
                             }
                         </StyledFrameMess>
                     </Typography>

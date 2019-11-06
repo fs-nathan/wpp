@@ -6,8 +6,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 const StyledSubHeader = styled(ListSubheader)`
   padding: 0;
   display: flex;
-  align-items: center;
-  
+  align-items: center;  
 `;
 
 function ListBodySubHeader({ subPrimary, subSecondary }) {

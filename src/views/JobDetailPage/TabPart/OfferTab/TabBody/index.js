@@ -16,6 +16,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import colorPal from '../../../../../helpers/colorPalette';
 import CloseIcon from '@material-ui/icons/Close';
+import OfferModal from '../OfferModal'
 
 const Container = styled.div`
   padding: 10px 20px;
@@ -109,7 +110,7 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 
-const ApprovedBox = ({ approved = false }) => {
+const ApprovedBox = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -131,7 +132,7 @@ const ApprovedBox = ({ approved = false }) => {
 
   return (
     <React.Fragment>
-      {approved && (
+      {props.approved && (
         <React.Fragment>
           <ApprovedContainer>
             <StyledTitleBox>
@@ -158,12 +159,12 @@ const ApprovedBox = ({ approved = false }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+            <MenuItem onClick={() => props.handleClickOpen()}>Chỉnh sửa</MenuItem>
             <MenuItem onClick={handleClose}>Xóa</MenuItem>
           </Menu>
         </React.Fragment>
       )}
-      {!approved && (
+      {!props.approved && (
         <React.Fragment>
           <ApprovedContainer>
             <StyledTitleBox>
@@ -235,7 +236,7 @@ const StyledContentBox = styled.div`
 `;
 
 
-const CustomListItem = ({ approved = false }) => {
+const CustomListItem = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -265,7 +266,7 @@ const CustomListItem = ({ approved = false }) => {
         <StyledContentBox>
           <StyleContent >Lorem ipsum dolor sit.</StyleContent>
         </StyledContentBox>
-        <ApprovedBox approved={approved} />
+        <ApprovedBox approved={props.approved} handleClickOpen={() => props.handleClickOpen()}/>
       </StyledListItem>
       <Menu
         id="simple-menu"
@@ -278,7 +279,9 @@ const CustomListItem = ({ approved = false }) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={() =>
+          props.handleClickOpen()
+        }>Chỉnh sửa</MenuItem>
         <MenuItem onClick={handleClose}>Xóa</MenuItem>
       </Menu>
     </React.Fragment>
@@ -296,7 +299,7 @@ const StyledList = styled.ul`
   }
 `;
 
-const ListOffer = () => {
+const ListOffer = (props) => {
   return (
     <React.Fragment>
       <SearchInput
@@ -306,7 +309,7 @@ const ListOffer = () => {
       <StyledList>
         {Array.from({ length: 3, }).map((_, index) => {
           return (
-            <CustomListItem key={index} approved={index % 2 === 0} />
+            <CustomListItem key={index} approved={index % 2 === 0} handleClickOpen={() => props.handleClickOpen()} handleClickClose={() => props.handleClickClose()}/>
           )
         })}
       </StyledList>
@@ -325,7 +328,13 @@ function TabBody() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClickClose = () => {
+    setOpen(false);
+  };
   return (
     <Container>
       <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
@@ -346,7 +355,7 @@ function TabBody() {
         </ColorButton>
       </StyledButtonGroup>
       <Collapse in={value === 0} mountOnEnter unmountOnExit>
-        <ListOffer />
+        <ListOffer handleClickClose={() => handleClickClose()} handleClickOpen={() => handleClickOpen()}/>
       </Collapse>
       <Collapse in={value === 1} mountOnEnter unmountOnExit>
         {null}
@@ -354,6 +363,7 @@ function TabBody() {
       <Collapse in={value === 2} mountOnEnter unmountOnExit>
         {null}
       </Collapse>
+      <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}/>
     </Container>
   )
 }

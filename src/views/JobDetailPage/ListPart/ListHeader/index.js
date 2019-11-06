@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, MenuItem, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input } from '@material-ui/core';
 import styled from 'styled-components';
-import { mdiPlus, mdiApps, mdiHelpCircle } from '@mdi/js';
+import { mdiPlus, mdiApps, mdiHelpCircle, mdiChevronDown } from '@mdi/js';
 import Icon from '@mdi/react';
 import SearchInput from '../../../../components/SearchInput';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -120,8 +120,8 @@ const PriorityRadioGroup = styled(RadioGroup)`
 `
 
 const SpecialControlLabel = styled(FormControlLabel)`
-  background-color: ${props => props.checked 
-    ? colorPal['#ffd3b4'][0] 
+  background-color: ${props => props.checked
+    ? colorPal['#ffd3b4'][0]
     : colorPal['grey'][0]};
   width: 27%;
   border-radius: 30px;
@@ -180,22 +180,30 @@ const DialogActions = withStyles(theme => ({
 const DefaultFlex = styled(Typography)`
   display: flex;
 `
+const HeaderText = styled(Typography)`
+  font-weight: 500;
+  font-size: 15px;
+`
 
 function ListHeaderSelect({ setShow }) {
 
-  const [value] = React.useState(0);
-
-  const handleChange = e => {
-    console.log(e.target.value)
+  const openListProject = () => {
+    setShow(true)
   }
-
+  
   return (
-    <CustomSelect value={value} onChange={handleChange}>
-      <Icon path={mdiApps} size={1.5} />
-      <MenuItem value={0}>Job-1</MenuItem>
-      <MenuItem value={1}>Job-2</MenuItem>
-      <MenuItem value={2}>Job-3</MenuItem>
-    </CustomSelect>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>     
+      <HeaderText component={'div'}>Phát triển ứng dụng Mytour Việt Nam...</HeaderText>
+      <IconButton
+        onClick={openListProject}
+        style={{
+          marginLeft: "10px",
+          padding: "7px"
+        }}
+      >
+        <Icon path={mdiChevronDown} size={1.2} />
+      </IconButton>
+    </div>
   )
 }
 
@@ -253,7 +261,7 @@ function CommonPriorityForm(props) {
   )
 }
 
-function ListHeader() {
+function ListHeader(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -273,7 +281,7 @@ function ListHeader() {
       [name]: event.target.value,
     });
   };
-  
+
   const [time, setTime] = React.useState('')
 
   const handleTime = () => {
@@ -283,7 +291,7 @@ function ListHeader() {
   return (
     <div >
       <Header>
-        <ListHeaderSelect />
+        <ListHeaderSelect {...props}/>
         <HeaderBottomBox>
           <SearchInput placeholder='Tìm công việc trong dự án...' />
           <IconButton
@@ -327,7 +335,7 @@ function ListHeader() {
               <InputTime value={time} onChange={handleTime} />
             </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput type={'date'}/>
+            <OutlineInput type={'date'} />
           </StartEndDay>
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
@@ -335,7 +343,7 @@ function ListHeader() {
               <InputTime value={time} onChange={handleTime} />
             </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput type={'date'}/>
+            <OutlineInput type={'date'} />
           </StartEndDay>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
           <Typography component={'span'}>
@@ -374,21 +382,21 @@ function ListHeader() {
           </Typography>
         </DialogContent>
         <DialogActions>
-         
-            <Button onClick={() => {
-              handleClose()
-              setOpenAddModal(true)
-            }} >
-              <img src={addMemberIcon} alt='addMemberIcon' />
-            </Button>
-            
-            
+
+          <Button onClick={() => {
+            handleClose()
+            setOpenAddModal(true)
+          }} >
+            <img src={addMemberIcon} alt='addMemberIcon' />
+          </Button>
+
+
           <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
             TẠO VIỆC
           </Button>
         </DialogActions>
       </Dialog>
-      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal}/>
+      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>
   )
 }

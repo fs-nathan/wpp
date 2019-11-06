@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiClose , mdiSettings } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
+import AddMemberModal from '../../../ListPart/ListHeader/AddMemberModal'
 
 const Container = styled.div`
   display: flex;
@@ -19,15 +20,17 @@ const Container = styled.div`
 `;
 
 function TabHeader({ setShow }) {
+  const [openAddModal, setOpenAddModal] = React.useState(false);
   return (
     <Container>
       <ColorTypo uppercase bold>Thành viên</ColorTypo>
       <IconButton>
-        <Icon path={mdiSettings} size={1}/>
+        <Icon path={mdiSettings} size={1} onClick={() => setOpenAddModal(true)}/>
       </IconButton>
       <IconButton onClick={() => setShow(0)}>
         <Icon path={mdiClose } size={1}/>
       </IconButton>
+      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal}/>
     </Container>
   );
 }
