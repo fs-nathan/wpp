@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Typography, ListItemText, ListItem, CardMedia } from '@material-ui/core';
+import { Avatar, Typography, ListItemText, ListItem, CardMedia, Button } from '@material-ui/core';
 import styled from 'styled-components';
 import avatar from '../../../assets/avatar.jpg'
 import colorPal from '../../../helpers/colorPalette'
@@ -756,10 +756,31 @@ const WrapProjectMessage = styled.div`
         justify-content: center;
         flex-direction: column;
         align-items: center;
-        border-bottom: 1px solid;
+        border-bottom: 1px solid #bfbfbf;
         padding: 15px 0;
+        & > div:nth-child(1){
+            font-size: 16px;
+            font-weight: bold;
+        }
+        & > div:nth-child(2) {
+            font-size: 76px;
+            font-weight: bold;
+        }
+        & > div:nth-child(3) {
+            font-size: 19px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin: 0 10px;
+            text-align: center;
+        }
+        & > div:nth-child(4) {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #a6a6a6;
+        }
     }
-    & > div:nth-child(3) {
+    & > button {
+        & > span > div{
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -768,8 +789,17 @@ const WrapProjectMessage = styled.div`
             display: flex;
             align-items: center;
             padding: 15px 0;
+            & > svg {
+                margin-right: 7px;
+            }
+            & > span {
+                color : #05bdfa;
+                font-size: 14px;
+                font-weight: 500;
+            }
         }
     }
+}
 `
 
 function RemindMessage(props) {
@@ -782,15 +812,17 @@ function RemindMessage(props) {
                 <Typography component='div'>
                     <Typography component='div'>Tháng 9</Typography>
                     <Typography component='div'>17</Typography>
-                    <Typography component='div'>Tiến độ thực tế chậm so với kế hoạch 20%</Typography>
+                    <Typography component='div' >Tiến độ thực tế chậm so với kế hoạch 20%</Typography>
                     <Typography component='div'>Lúc 09:25 ngày 17/09/2019 - Nhắc 1 lần</Typography>
                 </Typography>
-                <Typography component='div'>
+                <Button>
                     <Typography component='div'>
-                        <Icon path={mdiAlarm} size={1} />
-                        <Typography component='span'>Xem chi tiết</Typography>
+                        <Typography component='div'>
+                            <Icon path={mdiAlarm} size={1.3} color={'#05bdfa'} />
+                            <Typography component='span'>Xem chi tiết</Typography>
+                        </Typography>
                     </Typography>
-                </Typography>
+                </Button>
             </WrapProjectMessage>
         </WrapCommonRow>
     )
