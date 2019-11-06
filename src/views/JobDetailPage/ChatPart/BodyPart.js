@@ -84,6 +84,31 @@ const ProjectText = styled(Typography)`
     font-weight: bold;
 `
 
+const WrapTime = styled.div`
+    position: relative;
+    margin-bottom: 10px;
+    height: 20px;
+`
+
+const Time = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: white;
+    border-radius: 10px;
+    padding: 8px;
+`
+
+const Line = styled.div`
+    border: 1px solid grey;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+`
+
 function MessageParent(props) {
     const {
         isUser, content
@@ -119,6 +144,15 @@ function NotifyText(props) {
             <MemberText>{"Nguyễn Hữu Thành"}</MemberText>
             <SubText>&nbsp;{"đã tạo công việc mới"}</SubText>
         </WrapCommonRow>
+    )
+}
+
+function TimeText(props) {
+    return (
+        <WrapTime>
+            <Line />
+            <Time>09:03 hôm nay</Time>
+        </WrapTime>
     )
 }
 
@@ -159,10 +193,11 @@ export default function BodyPart(props) {
     return (
         <Container>
             <WrapChat ref={ref => chatRef = ref}>
+                <TimeText />
                 <NotifyText />
                 <ProjectDetailMessage />
-                <MessageParent isUser content="Tạo project mới"/>
-                <MessageParent content="Ae triển khai công việc nhé !!!"/>
+                <MessageParent isUser content="Tạo project mới" />
+                <MessageParent content="Ae triển khai công việc nhé !!!" />
                 <DetailMessage />
                 <div style={{ height: 800 }}></div>
             </WrapChat>
