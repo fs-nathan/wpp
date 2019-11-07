@@ -88,7 +88,7 @@ const Text = styled(TextField)`
       margin-bottom: 20px;
       & > input {
         font-size: 16px;
-        margin-bottom: 100px;
+        margin-bottom: 30px;
       }
     }
   `
@@ -244,10 +244,11 @@ function RemindModal(props) {
         <Text component="span"
           placeholder="Nhập nội dung nhắc hẹn"
           fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={data.content}
+          multiline rows="4"
+          // InputLabelProps={{
+          //   shrink: true,
+          // }}
+          // value={data.content}
           variant="outlined"
         />
       </DialogContent>

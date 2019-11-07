@@ -136,7 +136,7 @@ function ProjectMember(props) {
                 <ColorTypo>{props.email}</ColorTypo>
                 <ColorTypo color="orange">{props.label}</ColorTypo>
             </div>
-            <Chip bold
+            <Chip bold="true"
                 label="Thêm"
                 onClick={handleClick}
             />

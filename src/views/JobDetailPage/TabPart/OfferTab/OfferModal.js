@@ -111,9 +111,10 @@ const OfferModal = (props) => {
                 placeholder="Nhập nội dung nhắc hẹn"
                 fullWidth
                 margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
+                multiline rows="4"
+                // InputLabelProps={{
+                //     shrink: true,
+                // }}
                 variant="outlined"
             />
             <input
