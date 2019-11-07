@@ -57,8 +57,17 @@ const ExpansionPanelDetails = styled(MuiExpansionPanelDetails)`
 `
 
 const Projects = (props) => {
+  const ProjectsDetail = styled.div`
+  padding: 12px 0;
+  font-weight: 500;
+  border-bottom: 1px solid #0000001a;
+  & > *:first-child {
+    border-top: 1px solid #0000001a;
+  }
+  `
+
   return (
-    <div>{props.title}</div>
+    <ProjectsDetail>{props.title}</ProjectsDetail>
   )
 }
 
@@ -79,11 +88,8 @@ const ExpansionProject = styled(ExpansionPanel)`
     & > div {
       & > div {
         & > div {
-          & > div {
-            border-bottom: 1px solid #0000001a;
-            // padding: 12px 0;
-          }
           & > *:first-child {
+            padding: 0 0 0 10px;
             border-top: 1px solid #0000001a;
           }
         }
@@ -92,7 +98,7 @@ const ExpansionProject = styled(ExpansionPanel)`
   }
 `
 
-function ListProjectHeader({setShow}) {
+function ListProjectHeader({ setShow }) {
 
   const closeListProject = () => {
     setShow(false)
@@ -106,7 +112,7 @@ function ListProjectHeader({setShow}) {
           <div>DANH SÁCH DỰ ÁN</div>
         </div>
         <IconButton
-        onClick={closeListProject}
+          onClick={closeListProject}
         >
           <Icon path={mdiWindowClose} size={1.2} />
         </IconButton>
@@ -120,7 +126,7 @@ function ListProjectBody({ subPrimary }) {
   return (
     <StyledList>
       <StyledBodyTitle disableSticky>
-        <ColorTypo style={{ color: '#828282',  fontWeight: 500 }}>{subPrimary}</ColorTypo>
+        <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>{subPrimary}</ColorTypo>
       </StyledBodyTitle>
     </StyledList>
   )
@@ -129,33 +135,21 @@ function ListProjectBody({ subPrimary }) {
 let fakeData = [
   {
     id: 1, name: 'Phòng quản lý dự án',
-    projects: ['Dự án đầu tư khu đô thị Nam Từ Liêm 1', 'Dự án đầu tư khu đô thị Nam Từ Liêm 2', 'Dự án đầu tư khu đô thị Nam Từ Liêm 3'],
+    projects: ['Dự án đầu tư khu đô thị Nam Từ Liêm', 'Dự án đầu tư khu đô thị Nam Từ Liêm', 'Dự án đầu tư khu đô thị Nam Từ Liêm'],
     open: true,
   },
   {
     id: 2, name: 'Phòng tổ chức hành chính',
-    projects: ['Dự án đầu tư khu đô thị Nam Từ Liêm 4', 'Dự án đầu tư khu đô thị Nam Từ Liêm 5', 'Dự án đầu tư khu đô thị Nam Từ Liêm 6'],
+    projects: ['Dự án đầu tư khu đô thị Nam Từ Liêm', 'Dự án đầu tư khu đô thị Nam Từ Liêm', 'Dự án đầu tư khu đô thị Nam Từ Liêm'],
     open: true
   }
 ]
 
 function ListProject(props) {
 
-  const [open, setOpen] = React.useState(1)
-
-  const handleChange = id => (event, isExpanded) => {
-    // console.log(id)
-    // let idx = rooms.findIndex(room => room.id === id)
-    // if (idx !== -1) {
-    //   rooms[idx].open = !isExpanded
-    //   setRooms(rooms)
-    // }
-  };
-
   return (
-    // <Slide in={show} direction='left' mountOnEnter unmountOnExit>
     <Container {...props}>
-      <ListProjectHeader {...props}/>
+      <ListProjectHeader {...props} />
       {
         fakeData.map(room => {
           return (
@@ -168,9 +162,9 @@ function ListProject(props) {
                   <ListProjectBody subPrimary={room.name.toUpperCase()} />
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                {
-                  room.projects.map((project, projectIdx) => <Projects key={projectIdx} title={project} />)
-                }
+                  {
+                    room.projects.map((project, projectIdx) => <Projects key={projectIdx} title={project} />)
+                  }
                 </ExpansionPanelDetails>
               </ExpansionProject>
             </div>
@@ -178,7 +172,6 @@ function ListProject(props) {
         })
       }
     </Container>
-    // </Slide>
   )
 }
 

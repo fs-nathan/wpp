@@ -15,16 +15,21 @@ import addMemberIcon from '../../../../assets/addMemberIcon.png';
 import colorPal from '../../../../helpers/colorPalette';
 import AddMemberModal from './AddMemberModal';
 import TimeField from 'react-simple-timefield';
+import InputSelect from '../../TabPart/DefaultTab/InputSelect'
 
 import { func } from 'prop-types';
 
 
 const Header = styled.div`
   padding: 0 15px;
-  height: 92px;
+  height: 85px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > * {
+    display: flex; 
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 5px;
+    cursor: pointer;
   }
 `;
 
@@ -179,10 +184,20 @@ const DialogActions = withStyles(theme => ({
 
 const DefaultFlex = styled(Typography)`
   display: flex;
+  color: #4380fe
+  & > svg {
+    margin-left: 5px;
+    & > path {      
+      fill: #bbbbbb
+    }
+  }
 `
 const HeaderText = styled(Typography)`
   font-weight: 500;
   font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 function ListHeaderSelect({ setShow }) {
@@ -190,12 +205,12 @@ function ListHeaderSelect({ setShow }) {
   const openListProject = () => {
     setShow(true)
   }
-  
+
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>     
-      <HeaderText component={'div'}>Phát triển ứng dụng Mytour Việt Nam...</HeaderText>
+    <div onClick={openListProject}>
+      <HeaderText component={'div'} >Phát triển ứng dụng Mytour Việt Nam...</HeaderText>
       <IconButton
-        onClick={openListProject}
+        
         style={{
           marginLeft: "10px",
           padding: "7px"
@@ -291,7 +306,7 @@ function ListHeader(props) {
   return (
     <div >
       <Header>
-        <ListHeaderSelect {...props}/>
+        <ListHeaderSelect {...props} />
         <HeaderBottomBox>
           <SearchInput placeholder='Tìm công việc trong dự án...' />
           <IconButton
@@ -325,7 +340,7 @@ function ListHeader(props) {
               Tiến độ công việc
           </Typotitle>
             <DefaultFlex component={'span'}>
-              Đặt mặc định <Icon path={mdiHelpCircle} color={"black"} size={1} />
+              Đặt mặc định <Icon path={mdiHelpCircle} size={1} />
             </DefaultFlex>
           </ProgressWork>
           <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
@@ -342,30 +357,21 @@ function ListHeader(props) {
             <DivTime>
               <InputTime value={time} onChange={handleTime} />
             </DivTime>
-            <StartEndDate component={'span'}>Ngày</StartEndDate>
+            <StartEndDate component={'div'}>Ngày</StartEndDate>
             <OutlineInput type={'date'} />
           </StartEndDay>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
-          <Typography component={'span'}>
-            <TitleText component={'span'}>
-              <Typography component={'span'}> Nhóm mặc định </Typography>
-              <Typography component={'span'}></Typography>
+          <Typography component={'div'} style={{marginBottom: '30px'}}>
+            <TitleText component={'div'}>
+              <Typography component={'div'}> Nhóm mặc định </Typography>
+              <Typography component={'div'}></Typography>
             </TitleText>
-            <FormControl fullWidth style={{ marginBottom: 50 }}>
-              <Select
-                onChange={handleChangeGroup('')}
-                native
-              >
-                <option value={10}>Ten</option>
-                <option value={20}>Twenty</option>
-                <option value={30}>Thirty</option>
-              </Select>
-            </FormControl>
+            <InputSelect />
           </Typography>
-          <Typography component={'span'}>
-            <TitleText component={'span'}>
-              <Typography component={'span'}> Mô tả công việc </Typography>
-              <Typography component={'span'}>(Tối đa 500 kí tự)</Typography>
+          <Typography component={'div'}>
+            <TitleText component={'div'}>
+              <Typography component={'div'}> Mô tả công việc </Typography>
+              <Typography component={'div'}>(Tối đa 500 kí tự)</Typography>
             </TitleText>
             <Input
               style={{ marginBottom: 10 }}
