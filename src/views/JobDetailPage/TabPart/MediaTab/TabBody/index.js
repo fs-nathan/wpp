@@ -17,7 +17,7 @@ import avatar from '../../../../../assets/avatar.jpg';
 import iconDoc from '../../../../../assets/doc.png';
 
 const Container = styled.div`
-  padding: 10px 20px;
+  padding: 20px;
 `;
 
 const SubHeader = styled(ListSubheader)`

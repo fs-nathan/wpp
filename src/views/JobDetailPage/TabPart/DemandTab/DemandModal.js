@@ -1,9 +1,6 @@
 import React from 'react';
 import { IconButton, Button, Dialog, Typography, TextField } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiClose, mdiPlus } from '@mdi/js';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -124,14 +121,16 @@ const DemandModal = (props) => {
                 ))}
             </HelperText>
             <TitleText component="div">Nội dung</TitleText>
-            <Text component="span"
+            <Text 
+                component="span"
                 id="outlined-full-width"
                 placeholder="Nhập nội dung nhắc hẹn"
                 fullWidth
                 margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
+                multiline rows="4"
+                // InputLabelProps={{
+                //     shrink: true,
+                // }}
                 variant="outlined"
             />
         </DialogContent>

@@ -192,7 +192,7 @@ function TabBody() {
       <ProgressBar
         width={450}
         height={20}
-        slidableZoneSize={30}
+        slidableZoneSize={40}
         backgroundColor="#edeff0"
         equalColor="#3ac5aa"
         style={{ margin: 'auto' }}

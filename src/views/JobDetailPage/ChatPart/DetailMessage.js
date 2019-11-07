@@ -36,15 +36,17 @@ const members = [
 
 
 const Container = styled.div`
-    margin: 20px
+    margin: 20px 0;
 `
 const StyledFrameMess = styled(Typography)`
     height: auto;
     padding: 11px 15px 10px 17px;
     width: 300px;
     border-radius: 10px;
-    background-color: #fffefa;
-    margin: 5px;
+    background-color: #fff;
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ececec;
+
 `
 // const StyledSubText = styled(Typography)`
 //     color: 
@@ -54,9 +56,9 @@ const Content = styled.div`
     margin-bottom: 14px;
 `
 const StyledTextContentMess = styled(Typography)`
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 10px;
+    font-weight: inherit;
+    font-size: 16px;
+    color: #222;
 `
 
 const getSubColorRole = (role, authorityList) => {

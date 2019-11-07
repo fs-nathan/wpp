@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   background-color: #fff;
-  height: 92px;
+  height: 105px;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   & > *:first-child {
     margin-right: auto;

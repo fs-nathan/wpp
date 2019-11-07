@@ -12,7 +12,7 @@ const Container = styled.div`
   align-items: center;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 92px;
+  height: 105px;
   & > *:first-child {
     margin-right: auto;
     font-size: 16px;
