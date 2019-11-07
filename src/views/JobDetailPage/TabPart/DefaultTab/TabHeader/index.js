@@ -1,104 +1,35 @@
 import React from 'react';
-import { Avatar, IconButton, Menu, MenuItem, withStyles, Button, Dialog, Typography, TextField, Input, FormControl, Select } from '@material-ui/core';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CloseIcon from '@material-ui/icons/Close';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
+import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import avatar from '../../../../../assets/avatar.jpg';
-import InputSelect from '../InputSelect';
-
+import EditWorkModal from '../EditWorkModal'
 const Container = styled.div`
-  padding: 0 0 0 20px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 92px;
+  height: 85px;
 `;
 
 const TagsContainer = styled.div`
   margin-left: 10px;
+  & > p {
+    font-size: 16px;
+  }
+  & > span:nth-child(1) {
+    color: #007bff;
+    text-transform: unset;
+    font-size: 13px;
+  }
 `;
 
 const StyledIconButton = styled(IconButton)`
   margin-left: auto;
 `;
-// cac bien cua modal chinh sua cong viec
-const TitleText = styled(Typography)`
-  display: flex;
-  justify-content: space-between
-  & > *:first-child {
-    font-size: 15px;
-  color: #505050;
-  }
-  & > *:last-child {
-    color: #fa0000
-    font-size: 14px;
-    font-style: italic;
-  }
-`
-
-const TypoText = styled(Typography)`
-  font-size: 15px;
-  color: #505050;
-  margin: 20px 0;
-`
-
-const GroupRadio = styled(RadioGroup)`
-  & > label {
-    margin-right: 80px;
-    margin-bottom: 30px;
-  }
-`
-
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions);
-
-// end bien modal chinh sua cong viec
 
 function TabHeader() {
 
@@ -138,12 +69,12 @@ function TabHeader() {
 
   return (
     <Container>
-      <Avatar style={{ width: 50, height: 50 }} src={avatar} alt='avatar' />
+      <Avatar style={{ width: 60, height: 60 }} src={avatar} alt='avatar' />
       <TagsContainer>
-        <ColorTypo bold uppercase>Nguyễn Hữu Thành</ColorTypo>
-        <ColorTypo color='blue' variant='caption' uppercase>Giám đốc - Phụ trách</ColorTypo>
+        <ColorTypo bold >Nguyễn Hữu Thành</ColorTypo>
+        <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13}}>Giám đốc - Phụ trách</ColorTypo>
         <br />
-        <ColorTypo variant='caption' style={{ color: '#cfcfcf'}}>Đã được giao lúc 08:00 ngày 12/12/2012</ColorTypo>
+        <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12}}>Đã được giao lúc 08:00 ngày 12/12/2012</ColorTypo>
       </TagsContainer>
       <StyledIconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
@@ -162,78 +93,7 @@ function TabHeader() {
         <MenuItem onClick={handleClose,handleClickOpen}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={handleClose}>Xóa</MenuItem>
       </Menu>
-      {/* modal chinh sua cong viec */}
-      <Dialog aria-labelledby="customized-dialog-title" open={open} fullWidth>
-        <DialogTitle id="customized-dialog-title" onClose={handleClickClose}>
-          Chỉnh sửa công việc
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography component={'span'}>
-            <TitleText component={'span'}>
-              <Typography component={'span'}> Tên công việc </Typography>
-              <Typography component={'span'}>(Tối đa 100 kí tự)</Typography>
-            </TitleText>
-            <Input
-              inputProps={{
-                'aria-label': 'description',
-              }}
-              fullWidth
-            />
-          </Typography>
-          <TypoText component={'div'}> Chọn nhóm việc </TypoText>
-          <Typography component={'div'} style={{ marginBottom: 25}}>
-            <TitleText component={'div'} style={{ marginBottom: 10}}>
-              <Typography component={'span'} > Nhóm mặc định </Typography>
-              <Typography component={'span'}></Typography>
-            </TitleText>
-            <InputSelect />
-          </Typography>
-          <Typography component={'span'}>
-            <TitleText component={'span'}>
-              <Typography component={'span'}> Mô tả công việc </Typography>
-              <Typography component={'span'}>(Tối đa 500 kí tự)</Typography>
-            </TitleText>
-            <Input
-              style={{ marginBottom: 10 }}
-              inputProps={{
-                'aria-label': 'description',
-              }}
-              fullWidth
-            />
-          </Typography>
-          <Typography component={'span'}>
-          <TypoText component={'div'}> Hình thức giao việc </TypoText>
-            <FormControl component="fieldset">
-              <GroupRadio aria-label="position" name="position" value={value} onChange={handleChangeRadio} row>
-                <FormControlLabel
-                  value="Được giao"
-                  control={<Radio color="primary" />}
-                  label="Được giao"
-                  labelPlacement="end"
-                />
-              <FormControlLabel
-                  value="Tự đề xuất"
-                  control={<Radio color="primary" />}
-                  label="Tự đề xuất"
-                  labelPlacement="end"
-                />
-              <FormControlLabel
-                  value="Giao việc cho"
-                  control={<Radio color="primary" />}
-                  label="Giao việc cho"
-                  labelPlacement="end"
-                />
-              </GroupRadio>
-            </FormControl>
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClickClose} color="primary">
-            Hoàn Thành
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* end modal */}
+      <EditWorkModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
     </Container>
   );
 }

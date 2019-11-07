@@ -31,16 +31,6 @@ const GreenRadio = withStyles({
     checked: {}
 })((props) => <Radio color="default" {...props} />);
 
-const useStyles = makeStyles({
-    root: {
-        width: "100%",
-        overflowX: "auto"
-    },
-    table: {
-        minWidth: 650
-    }
-});
-
 const styles = theme => ({
     root: {
         margin: 0,
@@ -138,8 +128,6 @@ function PriorityMemberModal(props) {
     const [selectedValue, setSelectedValue] = React.useState('a');
 
     const handleChange = (event) => {
-        console.log('eventttt', event.target.value);
-
         setSelectedValue(event.target.value);
     };
     const handleClose = () => {

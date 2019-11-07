@@ -8,10 +8,9 @@ import ListProject from '../ListPart/ListProject'
 const Container = styled.div`
   grid-area: list;
   border-right: 1px solid rgba(0, 0, 0, .2);
-  padding: 15px;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: 15px 0;
+  padding: 13px 0;
 `;
 
 const WrapListTask = styled.div`
