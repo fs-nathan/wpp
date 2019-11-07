@@ -6,7 +6,8 @@ import {
 
 export const initialState = {
   data: {
-    members: [],
+    membersAdded: [],
+    membersFree: [],
   },
   error: null,
   loading: false,
@@ -18,7 +19,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         error: null,
-        loading: true,
+        loading: action.quite ? false : true,
       };
     case MEMBER_PROJECT_SUCCESS: 
       return {

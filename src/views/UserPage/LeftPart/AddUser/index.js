@@ -10,25 +10,24 @@ import { mdiClose } from '@mdi/js';
 import { connect } from 'react-redux';
 import { searchUser } from '../../../../actions/user/searchUser';
 import { inviteUserJoinGroup } from '../../../../actions/user/inviteUserJoinGroup';
-import _ from 'lodash';
+import { get } from 'lodash';
+import { useTranslation } from 'react-i18next';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import colorPal from '../../../../helpers/colorPalette';
 import { CustomEventListener, CustomEventDispose, INVITE_USER_JOIN_GROUP } from '../../../../constants/events';
 
-const StyledBox = styled.div`
-  &:nth-child(1) {
+const StyledBox = styled.div`  
+  padding: 5px 0;
+  & > *:first-child {
     padding: 15px;
-  };
-  &:nth-child(2) {
-    padding: 5px 0;
-    & > *:first-child {
-      padding: 15px;
-    }
-    & li {
-      padding: 5px 15px;
-    }
+  }
+  &:first-child > div {
+    padding: 0 15px;
+  }
+  & li {
+    padding: 5px 15px;
   }
   display: flex;
   flex-direction: column;
@@ -47,38 +46,48 @@ const StyledBox = styled.div`
 
 function DesiringUserList({ users, handleInviteUser, isSearched }) {
 
+  const { t } = useTranslation();
+
   function handleSendInvite(userId) {
     handleInviteUser({ userId });
   }
 
   if (isSearched && users.length === 0) 
   return (
-    <ColorTypo color='gray'>Không tìm thấy tài khoản</ColorTypo>
+    <ColorTypo color='gray'>
+      {t("views.user_page.left_part.add_user.no_accounts")}
+    </ColorTypo>
   )
   else 
   return (
     <StyledList>
       {users.map(user => (
-        <StyledListItem key={_.get(user, 'id')}>
+        <StyledListItem key={get(user, 'id')}>
           <ListItemAvatar>
-            <CustomAvatar style={{ width: 50, height: 50, }} src={_.get(user, 'avatar')} alt='avatar' />
+            <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
           </ListItemAvatar>
           <ListItemText 
             primary={
-              <Primary>{_.get(user, 'name', '')}</Primary>  
+              <Primary>{get(user, 'name', '')}</Primary>  
             }
             secondary={
-              <Secondary>{_.get(user, 'email', '')}</Secondary>
+              <StyledSecondary>
+              <Secondary>{get(user, 'email', '')}</Secondary>
+                <span>
+                  <PillButton 
+                    size='medium'
+                    onClick={() => get(user, 'send_invite', false) === false && handleSendInvite(get(user, 'id'))}  
+                    background={'#eeeeee'}
+                    text={get(user, 'send_invite', false) ? '#222222' : colorPal['green'][0]}
+                  >
+                    {get(user, 'send_invite', false) 
+                    ? t("views.user_page.left_part.add_user.invited")
+                    : t("views.user_page.left_part.add_user.invite")}
+                  </PillButton>
+                </span>
+              </StyledSecondary>
             }
           />
-          <PillButton 
-            size='small'
-            onClick={() => _.get(user, 'send_invite', false) === false && handleSendInvite(_.get(user, 'id'))}
-            background={_.get(user, 'send_invite', false) ? colorPal['green'][0] : colorPal['orange'][0]}
-            text={_.get(user, 'send_invite', false) ? colorPal['green'][1] : colorPal['orange'][1]}
-          >
-            {_.get(user, 'send_invite', false) ? "Đã mời" : "Mời"}
-          </PillButton>
         </StyledListItem>
       ))}
     </StyledList>
@@ -96,6 +105,9 @@ const StyledSecondary = styled.span`
 `;
 
 function RequestingUserList() {
+
+  const { t } = useTranslation();
+
   return (
     <StyledList>
       <StyledListItem>
@@ -116,7 +128,7 @@ function RequestingUserList() {
                   background={'#eeeeee'}
                   text={'#222222'}
                 >
-                  Duyệt
+                  {t("views.user_page.left_part.add_user.accept_request")}
                 </PillButton>
                 <PillButton 
                   size='medium'
@@ -124,13 +136,15 @@ function RequestingUserList() {
                   background={'#eeeeee'}
                   text={colorPal['red'][0]}
                 >
-                  Từ chối
+                  {t("views.user_page.left_part.add_user.deny_request")}
                 </PillButton>
               </span>
             </StyledSecondary>
           }
         />
-        <ColorTypo component='small'>3 phút</ColorTypo>
+        <ColorTypo component='small'>
+          {t("views.user_page.left_part.add_user.time", { minute: 3 })}
+        </ColorTypo>
       </StyledListItem>
       <StyledListItem>
         <ListItemAvatar>
@@ -150,7 +164,7 @@ function RequestingUserList() {
                   background={'#eeeeee'}
                   text={'#222222'}
                 >
-                  Duyệt
+                  {t("views.user_page.left_part.add_user.accept_request")}
                 </PillButton>
                 <PillButton 
                   size='medium'
@@ -158,13 +172,15 @@ function RequestingUserList() {
                   background={'#eeeeee'}
                   text={colorPal['red'][0]}
                 >
-                  Từ chối
+                  {t("views.user_page.left_part.add_user.deny_request")}
                 </PillButton>
               </span>
             </StyledSecondary>
           }
         />
-        <ColorTypo component='small'>3 phút</ColorTypo>
+        <ColorTypo component='small'>
+          {t("views.user_page.left_part.add_user.time", { minute: 3 })}
+        </ColorTypo>
       </StyledListItem>
     </StyledList>
   );
@@ -176,6 +192,7 @@ const StyledSearchInput = styled(SearchInput)`
 
 function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInviteUserJoinGroup, handleSubSlide }) {
 
+  const { t } = useTranslation();
   const { data: { data }, loading: searchUserLoading, error: searchUserError } = searchUser;
   const { loading: inviteUserJoinGroupLoading, error: inviteUserJoinGroupError } = inviteUserJoinGroup;
   const loading = searchUserLoading || inviteUserJoinGroupLoading;
@@ -197,7 +214,7 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
 
   return (
     <LeftSideContainer
-      title='Thêm thành viên'
+      title={t("views.user_page.left_part.add_user.title")}
       rightAction={{
         iconPath: mdiClose,
         onClick: () => handleSubSlide(false),
@@ -205,11 +222,11 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
     >
       <StyledBox>
         <ColorTypo bold>
-          Mời thành viên tham gia nhóm
+          {t("views.user_page.left_part.add_user.invite_member")}
         </ColorTypo>
         <div> 
           <StyledSearchInput 
-            placeholder='Tìm kiếm thành viên'
+            placeholder={t("views.user_page.left_part.add_user.find_member")}
             value={searchPatern}
             onChange={evt => setSearchPatern(evt.target.value)}
           />
@@ -223,7 +240,9 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
                 setIsSearched(true);
               }
             }}  
-          >Lọc</PillButton>
+          >
+            {t("views.user_page.left_part.add_user.find_member_button")}
+          </PillButton>
         </div>
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox size={16} />}
@@ -233,7 +252,7 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
       </StyledBox>
       <StyledBox>
         <ColorTypo bold>
-          Thành viên yêu cầu tham gia nhóm
+          {t("views.user_page.left_part.add_user.request_member_title")}
         </ColorTypo>
         <RequestingUserList />
       </StyledBox>

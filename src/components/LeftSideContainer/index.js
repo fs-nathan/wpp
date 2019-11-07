@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
 import { mdiBorderNoneVariant } from '@mdi/js';
-import { IconButton, Avatar } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
+import CustomAvatar from '../CustomAvatar';
 import PropTypes from 'prop-types';
 
 const Container = styled.div`
@@ -78,7 +79,7 @@ function LeftSideContainer({
 
   const parseAction = (action) => (
     action.avatar ? (
-      <Avatar src={action.avatar} alt='avatar' />
+      <CustomAvatar src={action.avatar} alt='avatar' />
     ) 
     : typeof(action.onClick) === 'function' ? (
       <StyledIconButton size='small' onClick={action.onClick}>

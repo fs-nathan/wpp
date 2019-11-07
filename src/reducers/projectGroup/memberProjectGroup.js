@@ -18,7 +18,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         error: null,
-        loading: true,
+        loading: action.quite ? false : true,
       };
     case MEMBER_PROJECT_GROUP_SUCCESS: 
       return {

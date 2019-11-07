@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { get } from 'lodash';
 import ColorTypo from '../ColorTypo';
+import CustomAvatar from '../CustomAvatar';
 import { Tooltip } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   & > div {
     display: flex;
@@ -15,6 +15,7 @@ const Container = styled.div`
     align-items: center;
     width: 20px;
     height: 20px;
+    z-index: 1;
     margin-left: -2px;
     border-radius: 100%;
     background-color: #fff;
@@ -28,45 +29,52 @@ const Container = styled.div`
         font-size: 10px;
       }
     }
-    & > img {
-      width: 20px;
-      height: 20pxl
-      border-radius: 100%;
-    }
   }
 `;
 
-function AvatarCircle({ user, ...props }) {
+function AvatarCircle({ user }) {
   return (
-    <div {...props}>
-      <img src={get(user, 'avatar')} alt='avatar' />
-    </div>
+    <CustomAvatar
+      style={{ width: 20, height: 20, }} 
+      src={get(user, 'avatar')} alt='avatar'
+    />
   );
 }
 
 function AvatarCircleList({ display, users = [] }) {
+
+  const [usersArr, setUsersArr] = React.useState(users);
+
+  React.useEffect(() => {
+    setUsersArr(users);
+  }, [users]);
+
   return (
     <Container>
-      {users.length > 0 && (
+      {usersArr.length > 0 && (
         <React.Fragment>
-          {users.slice(display).map((user, index) => {
+          {usersArr.slice(0, display).map((user, index) => {
             return (
               <Tooltip 
                 key={index}
                 title={get(user, 'name', '')}
               >
-                <AvatarCircle 
-                  user={user}
-                />
+                <div>  
+                  <AvatarCircle 
+                    user={user}
+                  />
+                </div>
               </Tooltip>
             )
           })}
-          <div>
-            <div>{users.length-display}+</div>
-          </div>
+          {display < usersArr.length && (  
+            <div>
+              <div>{usersArr.length-display}+</div>
+            </div>
+          )}
         </React.Fragment>
       )}
-      {users.length === 0 && (
+      {usersArr.length === 0 && (
         <ColorTypo color='gray' variant='caption'>
           Không có dữ liệu
         </ColorTypo>

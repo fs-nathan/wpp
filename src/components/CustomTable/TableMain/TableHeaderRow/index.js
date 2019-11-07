@@ -6,9 +6,11 @@ import {
   mdiDragVertical,
 } from '@mdi/js';
 import { CustomTableContext } from '../../index';
+import { get } from 'lodash';
 
 const StyledTableHeadRow = styled(TableRow)`
   background-color: #f4f4f4;
+  height: 42px;
 `;
 
 const StyledTableHeadCell = styled(TableCell)`
@@ -31,7 +33,7 @@ function TableHeaderRow() {
       )}
       {columns.map((column, index) => (
         <StyledTableHeadCell key={index}>
-          {typeof(column.label) === 'function' ? column.label() : column.label}
+          {typeof(column.label) === 'function' ? column.label() : get(column, 'label', '')}
         </StyledTableHeadCell>
       ))}
     </StyledTableHeadRow>

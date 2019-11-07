@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
-import { Avatar } from '@material-ui/core';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import { StyledListItem } from '../../../../../components/CustomList';
+import CustomAvatar from '../../../../../components/CustomAvatar';
 import { get } from 'lodash';
 
 const Container = styled(StyledListItem)`
@@ -36,7 +36,7 @@ function CustomListItem({ projectGroup, index }) {
       {(provided) => (
         <Container 
           component={Link}
-          to={`${location.pathname}/detail/${get(projectGroup, 'id', '')}`}
+          to={`${location.pathname}/${get(projectGroup, 'id', '')}`}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}
@@ -45,7 +45,7 @@ function CustomListItem({ projectGroup, index }) {
           <div {...provided.dragHandleProps}>
             <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'}/>
           </div>
-          <Avatar src={get(projectGroup, 'icon')} alt='avatar' />
+          <CustomAvatar style={{ height: 50, width: 50, }} src={get(projectGroup, 'icon')} alt='avatar' />
           <TextSpan>
             <ColorTypo>{get(projectGroup, 'name', '')}</ColorTypo>
             &nbsp;

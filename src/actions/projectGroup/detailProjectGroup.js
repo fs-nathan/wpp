@@ -4,8 +4,9 @@ import {
   DETAIL_PROJECT_GROUP_SUCCESS,
 } from '../../constants/actions/projectGroup/detailProjectGroup';
 
-export const detailProjectGroup = ({ projectGroupId }) => ({
+export const detailProjectGroup = ({ projectGroupId }, quite = false) => ({
   type: DETAIL_PROJECT_GROUP,
+  quite,
   options: {
     projectGroupId,
   }

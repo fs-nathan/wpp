@@ -1,5 +1,6 @@
 import React from 'react';
-import _ from 'lodash';
+import { get } from 'lodash';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
@@ -59,6 +60,7 @@ const ActionBox = styled.div`
 function DefaultDepartment({ subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
   
   const history = useHistory();
+  const { t } = useTranslation();
 
   return (
     <React.Fragment>
@@ -69,12 +71,12 @@ function DefaultDepartment({ subSlide, handleSubSlide, subSlideComp: SubSlideCom
             iconPath: mdiChevronLeft,
             onClick: () => history.push('/departments')
           }}
-          title='Chi tiết bộ phận'
+          title={t('views.user_page.left_part.department_info.modal_title')}
         >
           <LogoBox>
             <CustomAvatar style={{ width: 60, height: 60 }} alt='avatar' />
             <ColorTypo uppercase bold color='green' variant='h6'>
-              Mặc định
+              {t('views.user_page.left_part.department_info.default')}
             </ColorTypo>
           </LogoBox>
         </LeftSideContainer>
@@ -83,8 +85,9 @@ function DefaultDepartment({ subSlide, handleSubSlide, subSlideComp: SubSlideCom
   );
 }
 
-function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
+function NormalDepartment({ detailRoom, doDetailRoom, doDeleteRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
   
+  const { t } = useTranslation();
   const { departmentId } = useParams();
   const history = useHistory();
   const { data: { room }, error, loading } = detailRoom;
@@ -131,38 +134,42 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
                 iconPath: mdiChevronLeft,
                 onClick: () => history.push('/departments')
               }}
-              title='Chi tiết bộ phận'
+              title={t('views.user_page.left_part.department_info.modal_title')}
             >
               <Container>
                 <div>
                   <LogoBox>
-                    <CustomAvatar style={{ width: 60, height: 60 }} src={_.get(room, 'icon')} alt='avatar' />
+                    <CustomAvatar style={{ width: 60, height: 60 }} src={get(room, 'icon')} alt='avatar' />
                     <ColorTypo uppercase bold color='green' variant='h6'>
-                      {_.get(room, 'name', '')}
+                      {get(room, 'name', '')}
                     </ColorTypo>
                     <ColorTypo>
-                      Số nhân sự: {_.get(room, 'number_member', '')} thành viên
+                      {t('views.user_page.left_part.department_info.member_count', { member_count: get(room, 'number_member', '') })}
                     </ColorTypo>
                   </LogoBox>
                   <ColorTypo uppercase bold color='gray'>
-                    Giới thiệu
+                    {t('views.user_page.left_part.department_info.intro')}
                   </ColorTypo>
                   <IntroBox>
                     <ColorTextField
-                      value={_.get(room, 'description', '')}  
+                      value={get(room, 'description', '')}  
                     />
                   </IntroBox>
                 </div>
                 <ActionBox>
-                  <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
-                  <ColorButton onClick={() => setAlert(true)} variant='text' variantColor='red' size='small' fullWidth>Xóa bộ phận</ColorButton>
+                  <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>
+                    {t('views.user_page.left_part.department_info.update')}
+                  </ColorButton>
+                  <ColorButton onClick={() => setAlert(true)} variant='text' variantColor='red' size='small' fullWidth>
+                    {t('views.user_page.left_part.department_info.delete')}
+                  </ColorButton>
                 </ActionBox>
               </Container>
               <CreateDepartment updateDepartment={room} open={openUpdateModal} setOpen={setOpenUpdateModal} />
               <AlertModal
                 open={alert}
                 setOpen={setAlert}
-                content='Bạn chắc chắn muốn xóa?'
+                content={t('views.user_page.left_part.department_info.alert_content')}
                 onConfirm={() => handleDeleteDepartment(departmentId)}
               />
             </LeftSideContainer>

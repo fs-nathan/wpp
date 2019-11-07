@@ -30,7 +30,7 @@ function CreateDepartment({ updateDepartment = null, open, setOpen, doCreateRoom
 
   const [name, setName] = React.useState(get(updateDepartment, 'name', ''));
   const [description, setDescription] = React.useState(get(updateDepartment, 'description', ''));
-  const __icon = get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/1568456743119-teamwork.png');
+  const __icon = get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png');
   const [icon, setIcon] = React.useState({
     url_full: __icon,
     url_sort: __icon.replace('https://storage.googleapis.com', ''),

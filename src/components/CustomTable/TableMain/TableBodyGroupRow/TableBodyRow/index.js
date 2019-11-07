@@ -6,6 +6,7 @@ import { CustomTableContext } from '../../../index';
 import { includes } from 'lodash';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
+import { get } from 'lodash';
 
 const StyledTableBodyRow = styled(TableRow)`
   background-color: #fff;
@@ -56,7 +57,7 @@ function TableBodyRow({ index, row, group }) {
             </StyledTableBodyCell>
             {columns.map((column, index) => (
               <StyledTableBodyCell key={index}>
-                {typeof(column.field) === 'function' ? column.field(row) : row[column.field]}
+                {typeof(column.field) === 'function' ? column.field(row) : get(row, column.field, '')}
               </StyledTableBodyCell>
             ))}
           </StyledTableBodyRow>
@@ -69,7 +70,7 @@ function TableBodyRow({ index, row, group }) {
       >
         {columns.map((column, index) => (
           <StyledTableBodyCell key={index}>
-            {column.renderField !== null ? column.renderField(row) : row[column.field]}
+            {typeof(column.field) === 'function' ? column.field(row) : row[column.field]}
           </StyledTableBodyCell>
         ))}
       </StyledTableBodyRow>

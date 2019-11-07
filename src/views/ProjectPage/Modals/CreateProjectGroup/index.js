@@ -31,7 +31,7 @@ function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createPr
 
   const [name, setName] = React.useState(_.get(updateProjectGroup, 'name', ''));
   const [description, setDescription] = React.useState(_.get(updateProjectGroup, 'description', ''));
-  const __icon = _.get(updateProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/1568456743119-teamwork.png');
+  const __icon = _.get(updateProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png');
   const [icon, setIcon] = React.useState({
     url_full: __icon,
     url_sort: __icon.replace('https://storage.googleapis.com', ''),

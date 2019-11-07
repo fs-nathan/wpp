@@ -27,14 +27,13 @@ const Banner = styled.div`
   }
 `;
 
-function ProjectList({ listProjectGroup, doListProjectGroup, sortProjectGroup, doSortProjectGroup, }) {
+function ProjectList({ listProjectGroup, doListProjectGroup, doSortProjectGroup, }) {
 
   const { data: { projectGroups }, error: listProjectGroupError, loading: listProjectGroupLoading } = listProjectGroup;
-  const { error: sortProjectGroupError, loading: sortProjectGroupLoading } = sortProjectGroup;
   const [openModal, setOpenModal] = React.useState(false);
 
-  const loading = listProjectGroupLoading || sortProjectGroupLoading;
-  const error = listProjectGroupError || sortProjectGroupError;
+  const loading = listProjectGroupLoading;
+  const error = listProjectGroupError;
 
   React.useEffect(() => {
     doListProjectGroup();
@@ -42,7 +41,7 @@ function ProjectList({ listProjectGroup, doListProjectGroup, sortProjectGroup, d
 
   React.useEffect(() => {
     const doListProjectGroupHandler = () => {
-      doListProjectGroup();
+      doListProjectGroup(true);
     };
 
     CustomEventListener(CREATE_PROJECT_GROUP, doListProjectGroupHandler);
@@ -108,13 +107,12 @@ function ProjectList({ listProjectGroup, doListProjectGroup, sortProjectGroup, d
 const mapStateToProps = state => {
   return {
     listProjectGroup: state.projectGroup.listProjectGroup,
-    sortProjectGroup: state.projectGroup.sortProjectGroup,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListProjectGroup: () => dispatch(listProjectGroup()),
+    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
     doSortProjectGroup: ({ projectGroupId, sortIndex }) => dispatch(sortProjectGroup({ projectGroupId, sortIndex })),
   }
 }

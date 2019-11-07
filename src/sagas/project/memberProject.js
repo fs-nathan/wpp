@@ -20,8 +20,8 @@ async function doMemberProject({ projectId }) {
 
 function* memberProject(action) {
   try {
-    const { member_added: members } = yield call(doMemberProject, action.options);
-    yield put(memberProjectSuccess({ members }));
+    const { member_added: membersAdded, member_frees: membersFree } = yield call(doMemberProject, action.options);
+    yield put(memberProjectSuccess({ membersAdded, membersFree }));
   } catch (error) {
     yield put(memberProjectFail(error));
   }

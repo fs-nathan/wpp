@@ -51,13 +51,21 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
   const { error: deleteIconError, loading: deleteIconLoading } = deleteIcon;
   const { error: createIconError, loading: createIconLoading } = createIcon;
   const error = listIconError || deleteIconError;
-  const [selectedIcon, setSelectedIcon] = React.useState(icons[0]);
+  const [selectedIcon, setSelectedIcon] = React.useState({
+    id: get(defaults[0], 'id'),
+    url_sort: get(defaults[0], 'icon'),
+    url_full: get(defaults[0], 'url_icon'),
+  });
   const [delIcon, setDelIcon] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
 
   React.useEffect(() => {
-    setSelectedIcon(icons[0]);
-  }, [icons]);
+    setSelectedIcon({  
+      id: get(defaults[0], 'id'),
+      url_sort: get(defaults[0], 'icon'),
+      url_full: get(defaults[0], 'url_icon'),
+    });
+  }, [defaults]);
 
   React.useEffect(() => {
     doListIcon();

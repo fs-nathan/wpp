@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Route } from 'react-router-dom';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
-import ProjectGroupTable from './RightPart/ProjectGroupTable';
+import ProjectGroupTable from './RightPart/AllProjectTable';
 
 const Container = styled(({ expand, ...rest }) => <div {...rest} />)`
   height: 100%;
@@ -40,7 +40,7 @@ function ProjectPage() {
               } 
               exact 
             />
-            <Route path={`${url}/detail/:projectGroupId`} 
+            <Route path={`${url}/:projectGroupId`} 
               render={props => 
                 <ProjectGroupDetail {...props} />
               } 

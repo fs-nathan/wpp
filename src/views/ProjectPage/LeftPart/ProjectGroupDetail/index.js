@@ -97,8 +97,8 @@ function DepartmentInfo({ detailProjectGroup, doDetailProjectGroup, memberProjec
       history.push('/projects');
     };
     const doDetailAndMemberProjectGroupHandler = () => {
-      doDetailProjectGroup({ projectGroupId: projectGroupId });
-      doMemberProjectGroup({ projectGroupId: projectGroupId });
+      doDetailProjectGroup({ projectGroupId: projectGroupId }, true);
+      doMemberProjectGroup({ projectGroupId: projectGroupId }, true);
     };
 
     CustomEventListener(DELETE_PROJECT_GROUP, historyPushHandler);
@@ -241,8 +241,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doDetailProjectGroup: ({ projectGroupId }) => dispatch(detailProjectGroup({ projectGroupId })),
-    doMemberProjectGroup: ({ projectGroupId }) => dispatch(memberProjectGroup({ projectGroupId })),
+    doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),
+    doMemberProjectGroup: ({ projectGroupId }, quite) => dispatch(memberProjectGroup({ projectGroupId }, quite)),
     doDeleteProjectGroup: ({ projectGroupId }) => dispatch(deleteProjectGroup({ projectGroupId })),
   };
 };
