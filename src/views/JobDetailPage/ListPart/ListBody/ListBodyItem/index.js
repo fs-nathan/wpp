@@ -68,6 +68,20 @@ function JobName(props) {
   )
 }
 function JobContent(props) {
+  const [colorStatus, setColorStatus] = React.useState(null)
+  
+  React.useEffect(() => {
+    switch (props.label) {
+      case 'Quá hạn':
+        setColorStatus('grey')
+        break;
+      case 'Đang chờ':
+          setColorStatus('orangelight')
+          break;
+      default:
+        break;
+    }
+  })
   return (
     <ContentContainer>
       <div>
@@ -78,7 +92,7 @@ function JobContent(props) {
         <div style={{color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '14px'}}>{props.time}</div>
       </div>
       <div>
-        <ColorChip color='grey' badge label={props.label} size='small' style={{ borderRadius: '2px', padding: '0 5px' }} />
+        <ColorChip color={colorStatus} badge label={props.label} size='small' style={{ borderRadius: '2px', padding: '0 5px' }} />
         <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)' }} path={mdiPin} size={0.8} />
       </div>
     </ContentContainer>
