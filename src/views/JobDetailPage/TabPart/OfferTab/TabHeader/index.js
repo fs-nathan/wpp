@@ -11,7 +11,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   background-color: #fff;
-  height: 105px;
+  height: 85px;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   & > *:first-child {
     margin-right: auto;

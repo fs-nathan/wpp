@@ -51,7 +51,7 @@ const StyledTitleBox = styled.div`
 
 const StyledContentBox = styled.div`
   margin: 10px 0 30px 30px;
-  background-color: #eee;
+  background-color: #f8f8f8;
   padding: 13px 15px;
   border-radius: 10px;
   font-weight: bold;
@@ -59,7 +59,6 @@ const StyledContentBox = styled.div`
 
 const Container = styled.div`
   padding: 10px 20px;
-  background-color: #f8f8f8;
   height: 100%;
 `;
 
