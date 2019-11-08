@@ -5,7 +5,8 @@ import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import avatar from '../../../../../assets/avatar.jpg';
-import EditWorkModal from '../EditWorkModal'
+// import EditWorkModal from '../EditWorkModal'
+import EditMemberModal from '../../../ListPart/ListHeader/AddMemberModal'
 const Container = styled.div`
   padding: 0 20px;
   display: flex;
@@ -31,7 +32,7 @@ const StyledIconButton = styled(IconButton)`
   margin-left: auto;
 `;
 
-function TabHeader() {
+function TabHeader(props) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -43,7 +44,7 @@ function TabHeader() {
     setState({
       ...state,
       [name]: event.target.value,
-    });
+    }); 
   };
 
   const [value, setValue] = React.useState('Được giao');
@@ -66,7 +67,11 @@ function TabHeader() {
   function handleClose() {
     setAnchorEl(null);
   }
-
+  //  bien tam dung
+  const [pause, setIsPause] = React.useState(true)
+  const handleClickPause = () => {
+    setIsPause(!pause)
+  }
   return (
     <Container>
       <Avatar style={{ width: 60, height: 60 }} src={avatar} alt='avatar' />
@@ -91,9 +96,20 @@ function TabHeader() {
         }}
       >
         <MenuItem onClick={handleClose,handleClickOpen}>Chỉnh sửa</MenuItem>
+        { pause ? 
+          <MenuItem onClick={() =>{
+            props.onClickPause()
+            handleClickPause()
+          }}>Tạm dừng</MenuItem>
+          :
+          <MenuItem onClick={() =>{ 
+            props.onClickPause()
+            handleClickPause()
+          }}>Hủy tạm dừng</MenuItem>
+        }
         <MenuItem onClick={handleClose}>Xóa</MenuItem>
       </Menu>
-      <EditWorkModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
+      <EditMemberModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
     </Container>
   );
 }

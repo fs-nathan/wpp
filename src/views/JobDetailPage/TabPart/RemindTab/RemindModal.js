@@ -240,15 +240,26 @@ function RemindModal(props) {
           </div>
         }
         {/* ------- */}
-        <TitleText component="div">Nội dung</TitleText>
+        {/* <TitleText component="div">Nội dung</TitleText>
         <Text component="span"
           placeholder="Nhập nội dung nhắc hẹn"
           fullWidth
           multiline rows="4"
-          // InputLabelProps={{
-          //   shrink: true,
-          // }}
-          // value={data.content}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={data.content}
+          variant="outlined"
+        /> */}
+        <TextField
+          id="outlined-multiline-static"
+          label="Nội dung"
+          fullWidth
+          multiline
+          rows="7"
+          defaultValue=""
+          margin="normal"
+          placeholder="Nhập nội dung nhắc hẹn"
           variant="outlined"
         />
       </DialogContent>

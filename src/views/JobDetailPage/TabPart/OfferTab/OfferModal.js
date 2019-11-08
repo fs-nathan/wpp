@@ -96,49 +96,49 @@ const DialogActions = withStyles(theme => ({
 // end modal
 
 const OfferModal = (props) => {
-    
-  const classes = useStyles();
-    return (<Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
-        <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
-            Tạo đề xuất
-        </DialogTitle>
-        <DialogContent dividers>
-            <TexTitle >Chọn người duyệt</TexTitle>
-            <IntegrationReactSelect />
-            <TitleText component="div">Nội dung</TitleText>
-            <Text component="span"
-                id="outlined-full-width"
-                placeholder="Nhập nội dung nhắc hẹn"
-                fullWidth
-                margin="normal"
-                multiline rows="4"
-                // InputLabelProps={{
-                //     shrink: true,
-                // }}
-                variant="outlined"
-            />
-            <input
-                accept="image/*"
-                className={classes.input}
-                id="outlined-button-file"
-                multiple
-                type="file"
-            />
-            <ButtonFile htmlFor="outlined-button-file">
-                <Button variant="outlined" component="span" fullWidth className={classes.button}>
-                    <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
-                    Đính kèm tài liệu
-                </Button>
-            </ButtonFile>
 
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={props.handleClickClose} color="primary">
-                Hoàn Thành
+  const classes = useStyles();
+  return (<Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
+    <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
+      Tạo đề xuất
+        </DialogTitle>
+    <DialogContent dividers>
+      <TexTitle >Chọn người duyệt</TexTitle>
+      <IntegrationReactSelect />
+      <TextField
+        id="outlined-multiline-static"
+        label="Nội dung phê duyệt"
+        fullWidth
+        multiline
+        rows="7"
+        defaultValue=""
+        margin="normal"
+        placeholder="Nhập nội dung"
+        variant="outlined"
+        style={{ marginTop: 20}}
+      />
+      <input
+        accept="image/*"
+        className={classes.input}
+        id="outlined-button-file"
+        multiple
+        type="file"
+      />
+      <ButtonFile htmlFor="outlined-button-file">
+        <Button variant="outlined" component="span" fullWidth className={classes.button}>
+          <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
+          Đính kèm tài liệu
+                </Button>
+      </ButtonFile>
+
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={props.handleClickClose} color="primary">
+        Hoàn Thành
           </Button>
-        </DialogActions>
-    </Dialog>
-    )
+    </DialogActions>
+  </Dialog>
+  )
 }
 
 export default OfferModal

@@ -70,8 +70,6 @@ const AllSubtaskListItemContainer = styled(ListItem)`
 
 
 
-
-// end modal chinh sua cong viec con
 function AllSubtaskListItem({ task, index }) {
   // bien chinh sua cong viec con
   const [open, setOpen] = React.useState(false);

@@ -12,7 +12,7 @@ const Container = styled.div`
 const WrapHeader = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   padding: 0 10px;
-  height: 100px;
+  height: 85px;
 `;
 
 const WrapBody = styled.div`

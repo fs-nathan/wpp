@@ -8,11 +8,15 @@ const Container = styled.div`
 `
 
 function DefaultTab({ show, setShow }) {
+  const [isPause, setIsPause] = React.useState(false);
+  const handleClick = () => { setIsPause(!isPause) }
   return (
     <Slide in={show === 0} direction='left' mountOnEnter unmountOnExit>
       <Container>
-        <TabHeader/>
-        <TabBody setShow={setShow} />
+        <TabHeader onClickPause={() => {
+          handleClick()
+        }} />
+        <TabBody setShow={setShow} isPause={isPause} />
       </Container>
     </Slide>
   )
