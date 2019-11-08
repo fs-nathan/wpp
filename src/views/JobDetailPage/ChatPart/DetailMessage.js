@@ -155,8 +155,8 @@ const ConversationDelete = styled(Typography)`
 const DeleteConversation = () => {
     return (
         <ConversationDelete component='div'>
-            <Typography component='div'>Thảo luận đã được xóa</Typography>
-            <Typography component='div'>Lúc 09:12 - 12/09/2019</Typography>
+            <Typography component='p'>Thảo luận đã được xóa</Typography>
+            <Typography component='p'>Lúc 09:12 - 12/09/2019</Typography>
         </ConversationDelete>
     )
 }
@@ -626,7 +626,7 @@ const ShareLocationMess = styled(Typography)`
 const ShareLocation = () => {
     return (
         <ShareLocationMess component='div'>
-            <Typography component='div'>Đã chia sẻ vị trí</Typography>
+            <Typography component='p'>Đã chia sẻ vị trí</Typography>
             <ListItem>
                 <Icon path={mdiMapMarker} size={1} color={'white'} />
                 <ListItemText
@@ -680,14 +680,14 @@ const ApproveOfferMess = styled(Typography)`
 const ApproveOffer = () => {
     return (
         <ApproveOfferMess component='div'>
-            <Typography component='div'>Đã duyệt đề xuất</Typography>
+            <Typography component='p'>Đã duyệt đề xuất</Typography>
             <Typography component='div'>
                 <Typography component='div'>
                     <Icon path={mdiEmailSend} size={0.8} color={'white'} />
                 </Typography>
-                <Typography component='div'>Anh cho em nghỉ ngày mai nhé</Typography>
+                <Typography component='p'>Anh cho em nghỉ ngày mai nhé</Typography>
             </Typography>
-            <Typography component='div'>Tôi đồng ý mười tay</Typography>
+            <Typography component='p'>Tôi đồng ý mười tay</Typography>
         </ApproveOfferMess>
     )
 }
@@ -729,6 +729,7 @@ const WrapCommonRow = styled.span`
     display: flex;
     justify-content:center;
     align-items: center;
+    margin-bottom: 10px;
 `
 const WrapProjectMessage = styled.div`
     background-color: white;
