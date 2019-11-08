@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, MenuItem, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input } from '@material-ui/core';
+import { Select, MenuItem, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 import { mdiPlus, mdiApps, mdiHelpCircle, mdiChevronDown } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -28,7 +28,6 @@ const Header = styled.div`
     display: flex; 
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 5px;
     cursor: pointer;
   }
 `;
@@ -199,6 +198,15 @@ const HeaderText = styled(Typography)`
   overflow: hidden;
   text-overflow: ellipsis;
 `
+const InputTextJob = styled(TextField)`
+    & > label {
+        font-size: 14px
+    }
+    & > *:last-child {
+        color: red;
+        margin-left: 10px
+    }
+`
 
 function ListHeaderSelect({ setShow }) {
 
@@ -210,7 +218,7 @@ function ListHeaderSelect({ setShow }) {
     <div onClick={openListProject}>
       <HeaderText component={'div'} >Phát triển ứng dụng Mytour Việt Nam...</HeaderText>
       <IconButton
-        
+
         style={{
           marginLeft: "10px",
           padding: "7px"
@@ -328,12 +336,19 @@ function ListHeader(props) {
         <DialogContent dividers>
           <Typography component={'span'}>
             <TitleText component={'span'}>
-              <Typography component={'span'}>Tên công việc</Typography>
-              <Typography component={'span'}>(tối đa 100 ký tự)</Typography>
+              <InputTextJob
+                id="outlined-helperText"
+                label="Tên công việc"
+                helperText="(Tối đa 100 kí tự)"
+                margin="normal"
+                fullWidth
+              />
+              {/* <Typography component={'span'}>Tên công việc</Typography>
+              <Typography component={'span'}>(tối đa 100 ký tự)</Typography> */}
             </TitleText>
-            <Input
+            {/* <Input
               fullWidth
-            />
+            /> */}
           </Typography>
           <ProgressWork component={'span'}>
             <Typotitle component={'span'}>
@@ -361,7 +376,7 @@ function ListHeader(props) {
             <OutlineInput type={'date'} />
           </StartEndDay>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
-          <Typography component={'div'} style={{marginBottom: '30px'}}>
+          <Typography component={'div'} style={{ marginBottom: '30px' }}>
             <TitleText component={'div'}>
               <Typography component={'div'}> Nhóm mặc định </Typography>
               <Typography component={'div'}></Typography>
@@ -370,13 +385,20 @@ function ListHeader(props) {
           </Typography>
           <Typography component={'div'}>
             <TitleText component={'div'}>
-              <Typography component={'div'}> Mô tả công việc </Typography>
-              <Typography component={'div'}>(Tối đa 500 kí tự)</Typography>
+              <InputTextJob
+                id="outlined-helperText"
+                label="Mô tả công việc"
+                helperText="(Tối đa 500 kí tự)"
+                margin="normal"
+                fullWidth
+              />
+              {/* <Typography component={'div'}> Mô tả công việc </Typography>
+              <Typography component={'div'}>(Tối đa 500 kí tự)</Typography> */}
             </TitleText>
-            <Input
+            {/* <Input
               style={{ marginBottom: 10 }}
               fullWidth
-            />
+            /> */}
           </Typography>
           <Typography component={'span'}>
             <TypoText component={'div'}>Mức độ ưu tiên</TypoText>

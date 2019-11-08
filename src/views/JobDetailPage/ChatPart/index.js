@@ -18,7 +18,6 @@ const WrapHeader = styled.div`
 const WrapBody = styled.div`
   background-color: #f8f8f8;
   height: calc(100% - 230px);
-  overflow-y: scroll;
   overflow-x: hidden;
   padding: 10px;
 `;

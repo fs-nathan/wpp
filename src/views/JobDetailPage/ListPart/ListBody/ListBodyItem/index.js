@@ -75,7 +75,7 @@ function JobContent(props) {
           <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20 }} />
           <ColorTypo color='#7a869a' style={{ fontSize: '14px', textOverflow: 'ellipsis', width: '160px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.description}</ColorTypo>
         </div>
-        <div style={{color: '#7a869a', padding: '5px', marginRight: '10px'}}>{props.time}</div>
+        <div style={{color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '14px'}}>{props.time}</div>
       </div>
       <div>
         <ColorChip color='grey' badge label={props.label} size='small' style={{ borderRadius: '2px', padding: '0 5px' }} />
