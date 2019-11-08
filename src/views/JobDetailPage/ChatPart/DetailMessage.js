@@ -78,7 +78,7 @@ const getSubColorRole = (role, authorityList) => {
             break;
     }
     return (
-        <Typography style={{ color: color }}>{role}-{authorityList}</Typography>
+        <Typography component='div' style={{ color: color }}>{role}-{authorityList}</Typography>
     )
 }
 
@@ -134,8 +134,8 @@ const QuoteMessDetail = styled(Typography)`
 const QuoteDetailMess = ({ name, content }) => {
     return (
         <QuoteMessDetail component='div'>
-            <Typography component='p'>{name}</Typography>
-            <Typography component='p'>{content}</Typography>
+            <Typography component='div'>{name}</Typography>
+            <Typography component='div'>{content}</Typography>
         </QuoteMessDetail>
     )
 }
@@ -155,8 +155,8 @@ const ConversationDelete = styled(Typography)`
 const DeleteConversation = () => {
     return (
         <ConversationDelete component='div'>
-            <Typography component='p'>Thảo luận đã được xóa</Typography>
-            <Typography component='p'>Lúc 09:12 - 12/09/2019</Typography>
+            <Typography component='div'>Thảo luận đã được xóa</Typography>
+            <Typography component='div'>Lúc 09:12 - 12/09/2019</Typography>
         </ConversationDelete>
     )
 }
@@ -183,7 +183,7 @@ const AddMemberMess = styled(Typography)`
 const AddMembers = ({ name, role }) => {
     return (
         <AddMemberMess component='div'>
-            <Typography component='p'>Đã thêm thành viên</Typography>
+            <Typography component='div'>Đã thêm thành viên</Typography>
             <ListItem>
                 <Avatar src={avatar} />
                 <ListItemText
@@ -194,7 +194,7 @@ const AddMembers = ({ name, role }) => {
                         </Typography>
                     }
                     secondary={
-                        <Typography component='p'>{role}</Typography>
+                        <Typography component='div'>{role}</Typography>
                     }
                 />
             </ListItem>
@@ -226,7 +226,7 @@ const DeleteMemberMess = styled(Typography)`
 const DeleteMember = ({ name }) => {
     return (
         <DeleteMemberMess component='div'>
-            <Typography component='p'>Đã xóa thành viên</Typography>
+            <Typography component='div'>Đã xóa thành viên</Typography>
             <ListItem>
                 <Avatar src={avatar} />
                 <ListItemText
@@ -433,7 +433,7 @@ const Remind = () => {
                         </Typography>
                     }
                     secondary={
-                        <Typography component='p'>Nhắc hẹn lúc 09:00 hàng ngày</Typography>
+                        <Typography component='div'>Nhắc hẹn lúc 09:00 hàng ngày</Typography>
                     }
                 />
             </ListItem>
@@ -488,7 +488,7 @@ const DocumentChatMess = styled(Typography)`
 const DocumentChat = () => {
     return (
         <DocumentChatMess component='div'>
-            <Typography component='p'>Đã chia sẻ tài liệu</Typography>
+            <Typography component='div'>Đã chia sẻ tài liệu</Typography>
             <Typography component='div'>
                 <ListItem>
                     <img src={iconXls} alt='avatar' />
@@ -500,7 +500,7 @@ const DocumentChat = () => {
                             </Typography>
                         }
                         secondary={
-                            <Typography component='p'>912KB</Typography>
+                            <Typography component='div'>912KB</Typography>
                         }
                     />
                 </ListItem>
@@ -539,7 +539,7 @@ const ShareLinkMess = styled(Typography)`
 const ShareLink = () => {
     return (
         <ShareLinkMess component='div'>
-            <Typography component='p'>Đã chia sẻ link</Typography>
+            <Typography component='div'>Đã chia sẻ link</Typography>
             <Typography component='div'>
                 <ListItem>
                     <div>
@@ -590,7 +590,7 @@ const DeleteLink = () => {
                         </Typography>
                     }
                     secondary={
-                        <Typography component='p'>Lúc 09:12 - 12/09/2019</Typography>
+                        <Typography component='div'>Lúc 09:12 - 12/09/2019</Typography>
                     }
                 />
             </ListItem>
@@ -626,7 +626,7 @@ const ShareLocationMess = styled(Typography)`
 const ShareLocation = () => {
     return (
         <ShareLocationMess component='div'>
-            <Typography component='p'>Đã chia sẻ vị trí</Typography>
+            <Typography component='div'>Đã chia sẻ vị trí</Typography>
             <ListItem>
                 <Icon path={mdiMapMarker} size={1} color={'white'} />
                 <ListItemText
@@ -637,7 +637,7 @@ const ShareLocation = () => {
                         </Typography>
                     }
                     secondary={
-                        <Typography component='p'>Số 32,ngõ 32,đường Giải Phóng</Typography>
+                        <Typography component='div'>Số 32,ngõ 32,đường Giải Phóng</Typography>
                     }
                 />
             </ListItem>
@@ -680,14 +680,14 @@ const ApproveOfferMess = styled(Typography)`
 const ApproveOffer = () => {
     return (
         <ApproveOfferMess component='div'>
-            <Typography component='p'>Đã duyệt đề xuất</Typography>
+            <Typography component='div'>Đã duyệt đề xuất</Typography>
             <Typography component='div'>
                 <Typography component='div'>
                     <Icon path={mdiEmailSend} size={0.8} color={'white'} />
                 </Typography>
-                <Typography component='p'>Anh cho em nghỉ ngày mai nhé</Typography>
+                <Typography component='div'>Anh cho em nghỉ ngày mai nhé</Typography>
             </Typography>
-            <Typography component='p'>Tôi đồng ý mười tay</Typography>
+            <Typography component='div'>Tôi đồng ý mười tay</Typography>
         </ApproveOfferMess>
     )
 }
@@ -720,7 +720,7 @@ const ReplyImg = () => {
                     />
                 </Typography>
             </ReplyImageMess>
-            <Typography component='p'>Bức ảnh quá đẹp, tks!</Typography>
+            <Typography component='div'>Bức ảnh quá đẹp, tks!</Typography>
         </>
     )
 }

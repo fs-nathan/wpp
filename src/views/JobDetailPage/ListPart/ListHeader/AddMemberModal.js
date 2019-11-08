@@ -120,8 +120,9 @@ const MemberTable = styled(TableCell)`
 const ChipPriority = styled(Chip)`
     display: flex;
     flex-direction: row-reverse;
-    width: 100px;
+    width: 110px;
     padding: 0 10px;
+    justify-content: space-between;
 `
 function ProjectMember(props) {
     let handleClick = () => {
@@ -136,7 +137,7 @@ function ProjectMember(props) {
                 <ColorTypo>{props.email}</ColorTypo>
                 <ColorTypo color="orange">{props.label}</ColorTypo>
             </div>
-            <Chip bold="true"
+            <Chip bold= "true"
                 label="Thêm"
                 onClick={handleClick}
             />
