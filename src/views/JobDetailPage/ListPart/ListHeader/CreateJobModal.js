@@ -17,7 +17,6 @@ import AddMemberModal from './AddMemberModal';
 import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/DefaultTab/InputSelect'
 
-import { func } from 'prop-types';
 
 
 const Header = styled.div`
@@ -276,12 +275,18 @@ function CreateJobModal(props) {
   }
 
   return (
-    
+
     <div>
       <Dialog open={props.isOpen} fullWidth onClose={handleClose}>
-        <DialogTitle onClose={handleClose}>
-          Tạo công việc
-        </DialogTitle>
+        {props.isRight ?
+          <DialogTitle onClose={handleClose}>
+            Chỉnh sửa công việc
+          </DialogTitle>
+          :
+          <DialogTitle onClose={handleClose}>
+            Tạo công việc
+          </DialogTitle>
+        }
         <DialogContent dividers>
           <Typography component={'span'}>
             <TitleText component={'span'}>
@@ -359,16 +364,26 @@ function CreateJobModal(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-
-          <Button onClick={() => {
-            handleClose()
-            setOpenAddModal(true)
-          }} >
-            <img src={addMemberIcon} alt='addMemberIcon' />
+          {props.isRight ?
+            <>
+            <span></span>
+            <Button onClick={handleClose} color="primary">
+              Hoàn Thành
+            </Button>
+            </>
+            :
+            <>
+            <Button onClick={() => {
+              handleClose()
+              setOpenAddModal(true)
+            }} >
+              <img src={addMemberIcon} alt='addMemberIcon' />
+            </Button>
+            <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
+              TẠO VIỆC
           </Button>
-          <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
-            TẠO VIỆC
-          </Button>
+          </>
+          }
         </DialogActions>
       </Dialog>
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

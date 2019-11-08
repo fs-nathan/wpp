@@ -11,7 +11,7 @@ const Container = styled.div`
   align-items: center;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 105px;
+  height: 85px;
   overflow-y: hidden;
   & > *:first-child {
     margin-right: auto;

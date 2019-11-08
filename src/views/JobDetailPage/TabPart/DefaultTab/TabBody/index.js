@@ -38,6 +38,7 @@ const ListItemTab = styled(ListItem)`
 `;
 
 const StyledList = styled(List)`
+  overflow: scroll;
   & > * {
     padding: 20px;
     & > div {
@@ -224,7 +225,6 @@ function TabBody(props) {
         <AvatarCircleList total={20} display={6} />
       </ListItemTab>
     </StyledList>
-
   )
 }
 

@@ -6,6 +6,10 @@ import styled from 'styled-components'
 const Container = styled.div`
   overflow: auto
 `
+const TabBodyDefault = styled(TabBody)`
+  height: calc(100% - 230px);
+  overflow-x: hidden;
+`
 
 function DefaultTab({ show, setShow }) {
   const [isPause, setIsPause] = React.useState(false);
@@ -16,7 +20,7 @@ function DefaultTab({ show, setShow }) {
         <TabHeader onClickPause={() => {
           handleClick()
         }} />
-        <TabBody setShow={setShow} isPause={isPause} />
+        <TabBodyDefault setShow={setShow} isPause={isPause} />
       </Container>
     </Slide>
   )

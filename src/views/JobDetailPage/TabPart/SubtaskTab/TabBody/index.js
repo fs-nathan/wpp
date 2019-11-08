@@ -209,7 +209,16 @@ const Badge = styled(ColorChip)`
 
 const FinishedSubtaskList = () => {
   const [data] = React.useState([1, 2, 3, 4]);
+  // const [isHover, setIsHover] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
+  function handleClick(evt) {
+    setAnchorEl(evt.currentTarget)
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
 
   return (
     <List>
@@ -228,6 +237,22 @@ const FinishedSubtaskList = () => {
                 </FinishedSubtaskListItemTextSecondary>
               }
             />
+            <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+              <Icon path={mdiDotsVertical} size={1} color={'rgba(0, 0, 0, 1)'} />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              transformOrigin={{
+                vertical: -30,
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem onClick={handleClose}>Xóa</MenuItem>
+            </Menu>
           </ListItem>
         );
       })}
