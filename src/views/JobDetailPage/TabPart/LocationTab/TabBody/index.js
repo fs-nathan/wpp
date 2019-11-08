@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiDotsHorizontal } from '@mdi/js';
+import { mdiDotsHorizontal, mdiMapMarker  } from '@mdi/js';
 import { 
   List, ListItem, ListItemAvatar, ListItemText, 
   Avatar, IconButton, Menu, MenuItem, ButtonGroup,
@@ -15,6 +15,17 @@ import avatar from '../../../../../assets/avatar.jpg';
 const Container = styled.div`
   padding: 10px 20px;
 `;
+const ItemAvatar = styled(ListItemAvatar)`
+  & > div {
+    background: #d6d6d6;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`
 
 const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -30,9 +41,11 @@ const CustomListItem = () => {
   return (
     <React.Fragment>
       <ListItem>
-        <ListItemAvatar>
-          <Avatar src={avatar} alt='avatar' />
-        </ListItemAvatar>
+        <ItemAvatar>
+          <div>
+            <Icon path={mdiMapMarker } alt='map' size={1.1} color={'ff9d00'}/>
+          </div>
+        </ItemAvatar>
         <ListItemText 
           primary={'ABC đã chia sẻ vị trí'}
           secondary={

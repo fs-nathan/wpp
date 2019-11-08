@@ -27,9 +27,9 @@ const useStyles = makeStyles({
 })
 
 const Container = styled.div`
-    margin: 5px 0;
     display: flex;
     align-items: center;
+    height: 85px;
 `
 
 const WrapAvatars = styled.div`

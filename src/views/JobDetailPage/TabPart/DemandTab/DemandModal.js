@@ -6,17 +6,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { withStyles } from '@material-ui/core/styles';
-
-const currencies = [
-    {
-        value: 'USD',
-        label: 'Quyết định',
-    },
-    {
-        value: 'EUR',
-        label: 'Chỉ đạo',
-    }
-];
+import  OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
 
 const styles = theme => ({
     root: {
@@ -91,12 +81,7 @@ const DialogActions = withStyles(theme => ({
 
 const DemandModal = (props) => {
 
-  // bien menu item
-  const [currency, setCurrency] = React.useState('EUR');
-
-  const handleChange = event => {
-    setCurrency(event.target.value);
-  };
+ 
     return (
     <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
         <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
@@ -104,22 +89,7 @@ const DemandModal = (props) => {
         </DialogTitle>
         <DialogContent dividers>
             <TexTitle >Chọn loại</TexTitle>
-            <HelperText component="span"
-                select
-                value={currency}
-                onChange={handleChange}
-                SelectProps={{
-                    native: true,
-                }}
-                variant="outlined"
-                fullWidth
-            >
-                {currencies.map(option => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </HelperText>
+            <OutlinedInputSelect />
             <TitleText component="div">Nội dung</TitleText>
             <Text 
                 component="span"
