@@ -150,7 +150,7 @@ function MemberDetail(props) {
         <div>
             <ColorTypo bold fontSize>{props.name}</ColorTypo>
             <ColorTypo>{props.email}</ColorTypo>
-        </div>
+        </div>   
     )
 }
 
