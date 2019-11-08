@@ -15,7 +15,8 @@ import addMemberIcon from '../../../../assets/addMemberIcon.png';
 import colorPal from '../../../../helpers/colorPalette';
 import AddMemberModal from './AddMemberModal';
 import TimeField from 'react-simple-timefield';
-import InputSelect from '../../TabPart/DefaultTab/InputSelect'
+import InputSelect from '../../TabPart/DefaultTab/InputSelect';
+import CreateJobModal from './CreateJobModal';
 
 import { func } from 'prop-types';
 
@@ -296,7 +297,6 @@ function ListHeader(props) {
   }
 
   const [state, setState] = React.useState('');
-  const [openAddModal, setOpenAddModal] = React.useState(false);
 
   const handleChangeGroup = name => event => {
     setState({
@@ -310,9 +310,10 @@ function ListHeader(props) {
   const handleTime = () => {
     setTime(time);
   }
+  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
 
   return (
-    <div >
+      <div >
       <Header>
         <ListHeaderSelect {...props} />
         <HeaderBottomBox>
@@ -322,109 +323,15 @@ function ListHeader(props) {
               marginLeft: "10px",
               padding: "7px"
             }}
-            onClick={handleClickOpen}
-          >
+            onClick={() => {
+            handleClose()
+            setOpenCreateJobModal(true)
+          }} >
             <Icon path={mdiPlus} size={1.2} />
           </IconButton>
         </HeaderBottomBox>
       </Header>
-      {/* mo modal tao cong viec moi */}
-      <Dialog open={open} fullWidth onClose={handleClose}>
-        <DialogTitle onClose={handleClose}>
-          Tạo công việc
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography component={'span'}>
-            <TitleText component={'span'}>
-              <InputTextJob
-                id="outlined-helperText"
-                label="Tên công việc"
-                helperText="(Tối đa 100 kí tự)"
-                margin="normal"
-                fullWidth
-              />
-              {/* <Typography component={'span'}>Tên công việc</Typography>
-              <Typography component={'span'}>(tối đa 100 ký tự)</Typography> */}
-            </TitleText>
-            {/* <Input
-              fullWidth
-            /> */}
-          </Typography>
-          <ProgressWork component={'span'}>
-            <Typotitle component={'span'}>
-              Tiến độ công việc
-          </Typotitle>
-            <DefaultFlex component={'span'}>
-              Đặt mặc định <Icon path={mdiHelpCircle} size={1} />
-            </DefaultFlex>
-          </ProgressWork>
-          <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
-          <StartEndDay component={'span'}>
-            <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
-            <DivTime>
-              <InputTime value={time} onChange={handleTime} />
-            </DivTime>
-            <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput type={'date'} />
-          </StartEndDay>
-          <StartEndDay component={'span'}>
-            <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
-            <DivTime>
-              <InputTime value={time} onChange={handleTime} />
-            </DivTime>
-            <StartEndDate component={'div'}>Ngày</StartEndDate>
-            <OutlineInput type={'date'} />
-          </StartEndDay>
-          <TypoText component={'div'}> Chọn nhóm việc </TypoText>
-          <Typography component={'div'} style={{ marginBottom: '30px' }}>
-            <TitleText component={'div'}>
-              <Typography component={'div'}> Nhóm mặc định </Typography>
-              <Typography component={'div'}></Typography>
-            </TitleText>
-            <InputSelect />
-          </Typography>
-          <Typography component={'div'}>
-            <TitleText component={'div'}>
-              <InputTextJob
-                id="outlined-helperText"
-                label="Mô tả công việc"
-                helperText="(Tối đa 500 kí tự)"
-                margin="normal"
-                fullWidth
-              />
-              {/* <Typography component={'div'}> Mô tả công việc </Typography>
-              <Typography component={'div'}>(Tối đa 500 kí tự)</Typography> */}
-            </TitleText>
-            {/* <Input
-              style={{ marginBottom: 10 }}
-              fullWidth
-            /> */}
-          </Typography>
-          <Typography component={'span'}>
-            <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
-            <CommonPriorityForm labels={priorityList} />
-          </Typography >
-          <Typography component={'span'}>
-            <TypoText component={'div'}> Hình thức giao việc </TypoText>
-            <CommonControlForm label1='Được giao' label2='Tự đề xuất' label3='Giao việc cho' />
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-
-          <Button onClick={() => {
-            handleClose()
-            setOpenAddModal(true)
-          }} >
-            <img src={addMemberIcon} alt='addMemberIcon' />
-          </Button>
-
-
-          <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
-            TẠO VIỆC
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
+      <CreateJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} />
     </div>
   )
 }
