@@ -1,6 +1,6 @@
 import React from 'react';
 import { Slide, IconButton, ListSubheader, List } from '@material-ui/core';
-import { mdiWindowClose, mdiApps, mdiMenuUp } from '@mdi/js';
+import { mdiClose , mdiDrag, mdiMenuUp } from '@mdi/js';
 import Icon from '@mdi/react';
 import styled from 'styled-components';
 import SearchInput from '../../../components/SearchInput';
@@ -19,15 +19,12 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-bottom: 17px;
-  & > *:first-child {
-    display: flex;
-    align-items: center;
   & > svg {
-    fill: #c9c9c9;
+    color: rbga(0,0,0,0.54);
   }
   & > div {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: normal;
     padding: 0 15px;
   }
   }
@@ -107,14 +104,12 @@ function ListProjectHeader({ setShow }) {
   return (
     <div style={{ marginBottom: 17 }}>
       <Header>
-        <div>
-          <Icon path={mdiApps} size={1.5} />
-          <div>DANH SÁCH DỰ ÁN</div>
-        </div>
+        <Icon path={mdiDrag} size={1}/>
+        <div>DANH SÁCH DỰ ÁN</div>
         <IconButton
           onClick={closeListProject}
         >
-          <Icon path={mdiWindowClose} size={1.2} />
+          <Icon path={mdiClose } size={1} color={'rbga(0,0,0,0.54)'} />
         </IconButton>
       </Header>
       <SearchInput placeholder='Tìm dự án' />

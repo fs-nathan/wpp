@@ -58,6 +58,10 @@ const ContentContainer = styled.div`
   }
 `;
 
+const BadgeItem = styled(ColorChip)`
+  font-weight: 600;
+  border-radius: 3px !important
+`
 
 function JobName(props) {
   return (
@@ -92,8 +96,8 @@ function JobContent(props) {
         <div style={{color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '14px'}}>{props.time}</div>
       </div>
       <div>
-        <ColorChip color={colorStatus} badge label={props.label} size='small' style={{ borderRadius: '2px', padding: '0 5px' }} />
-        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)' }} path={mdiPin} size={0.8} />
+        <BadgeItem color='redlight' badge label={props.label} size='small' />
+        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', position: 'fixed' }} path={mdiPin} size={0.8} />
       </div>
     </ContentContainer>
   )
@@ -113,7 +117,7 @@ function JobUnit(props) {
 function ListBodyItem(props) {
   return (
     <Container>
-      <ListItemAvatar style={{ padding: '0 15px' }}>
+      <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.progress} />
       </ListItemAvatar>
       <JobUnit {...props} />

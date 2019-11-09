@@ -272,6 +272,7 @@ const InputText = styled(InputBase)`
   padding-left: 30px;
   font-size: 16px;
   align-item: center;
+  width: 100%;
 `
 const Div = styled.div`
   margin: 10px 20px;

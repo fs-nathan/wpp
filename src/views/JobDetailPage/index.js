@@ -8,7 +8,7 @@ const Container = styled.div`
   height: 100%;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: minmax(200px, 3fr) minmax(400px, 5fr) minmax(200px, 4fr);
+  grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(200px, 29%);
   grid-template-areas: 
     "list chat tab";
 `;

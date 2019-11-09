@@ -143,8 +143,8 @@ function TabBody(props) {
             Tên công việc
           </ColorTypo>
           <ContentText component='span'>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure, aliquam.
-            <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)' }} path={mdiPin} size={0.8} />
+            <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure, aliquam.</span>
+            <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)',margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} />
           </ContentText>
 
         </ListItemText>
