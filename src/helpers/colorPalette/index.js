@@ -23,6 +23,7 @@ const colors = {
   'grey': ['#f8dbd7', '#f16978'],
   'black': ['#000', '#fff'],
   '#ffd3b4' : ['#ffd3b4' , '#fff'],
+  'redIcon': ['#fff' , '#dc3545']
 };
 
 export default colors;

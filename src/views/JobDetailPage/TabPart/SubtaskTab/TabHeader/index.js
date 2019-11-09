@@ -19,15 +19,40 @@ const Container = styled.div`
     margin-left: 20px
   }
 `;
+const ButtonCancel = styled.p`
+  background: #edeff0;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+  padding: 12px 8px;
+  margin-right: 5spx;
+  border-radius: 50%;
+`
 
 function TabHeader(props) {
   // console.log('header props::', props)
+  const [isPlus, setOnPlus] = React.useState(true)
+  const handleClick = () => {
+    setOnPlus(!isPlus)
+  }
   return (
     <Container>
       <ColorTypo uppercase bold>Công việc con</ColorTypo>
-      <IconButton onClick={() => props.onClickPlusIcon()}>
-        <Icon path={mdiPlus} size={1} />
-      </IconButton>
+      {isPlus ?
+        <IconButton onClick={() => {
+          props.onClickPlusIcon()
+          handleClick()
+        }
+        }>
+          <Icon path={mdiPlus} size={1} />
+        </IconButton>
+        :
+        <ButtonCancel onClick={() => {
+          props.onClickPlusIcon()
+          handleClick()
+        }
+        }>Hủy</ButtonCancel>
+      }
       <IconButton onClick={() => props.setShow(0)}>
         <Icon path={mdiClose} size={1} />
       </IconButton>

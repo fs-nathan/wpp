@@ -6,13 +6,15 @@ import {
   List, ListItem, ListItemAvatar, ListItemText,
   Avatar, IconButton, Menu, MenuItem, ButtonGroup,
   GridList, GridListTile, ListSubheader, ListItemIcon,
-  Collapse
+  Collapse,
+  Typography
 } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
 import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
+import iconDoc from '../../../../../assets/doc.png';
 
 const Container = styled.div`
   padding: 10px 20px;
@@ -36,11 +38,9 @@ const Image = styled.img`
   width: 80px;
   margin: 0;
   padding: 0;
-  border-radius: 5px
-  z-index: 2;
+  border-radius: 5px;
   cursor: pointer;
   &:hover {
-
     opacity: 0.7
   }
 `
@@ -48,8 +48,14 @@ const ButtonIcon = styled(IconButton)`
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 1;
 `
+const Div = styled.div`
+  display: none;
+  ${ImageMedia}:hover & {
+    display: inline;
+  }
+`
+
 const MenuListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -61,7 +67,7 @@ const MenuListItem = () => {
   }
 
   return (
-          <div>  
+          <Div>  
             <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" size={'small'} >
               <Icon path={mdiDotsHorizontal} size={1} color={'#fff'} />
             </ButtonIcon>
@@ -80,7 +86,7 @@ const MenuListItem = () => {
               <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
               <MenuItem onClick={handleClose}>Xóa</MenuItem>
             </Menu>
-          </div>
+          </Div>
   )
 }
 
@@ -158,7 +164,7 @@ const FileBox = () => {
     return (
       <React.Fragment>
         <FileBoxStyledListItem>
-          <img src={avatar} alt='avatar' />
+          <img src={iconDoc} alt='avatar' />
           <div>
             <ColorTypo variant='body1'>Do an.Update1-13.8.19.docx</ColorTypo>
             <ColorTypo variant='caption'>
@@ -212,6 +218,23 @@ const FileContainer = () => {
   );
 }
 
+const ListItemLink = styled(ListItem)`
+  padding-left: 0;
+  & > *:first-child {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #e4e3e3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 23px;
+  }
+`
+const HeaderSubText = styled(ListSubheader)`
+  font-size: 13px;
+  color: #6e6d6d;
+`
 const LinkBox = () => {
 
   const CustomListItem = () => {
@@ -227,10 +250,10 @@ const LinkBox = () => {
 
     return (
       <React.Fragment>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar src={avatar} alt='avatar' />
-          </ListItemAvatar>
+        <ListItemLink >
+          <Typography component='div'>
+            <Icon path={mdiLink} size={1} color={'green'}/>
+          </Typography>
           <ListItemText>
             <a href='https://google.com.vn' target="_blank">https://google.com.vn</a>
           </ListItemText>
@@ -239,7 +262,7 @@ const LinkBox = () => {
               <Icon path={mdiDotsHorizontal} size={1} />
             </IconButton>
           </ListItemIcon>
-        </ListItem>
+        </ListItemLink>
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
@@ -261,7 +284,7 @@ const LinkBox = () => {
 
   return (
     <List subheader={<li />}>
-      <ListSubheader component='div'>09/09/2019</ListSubheader>
+      <HeaderSubText component='p' style={{ padding: 0, margin: 0}}>09/09/2019</HeaderSubText>
       <CustomListItem />
       <CustomListItem />
       <CustomListItem />

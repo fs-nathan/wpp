@@ -2,7 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
-import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import { 
+  IconButton, Menu, MenuItem, Popover,
+  List, ListItem, ListItemText, ListSubheader,
+  Button, OutlinedInput,
+} from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
   mdiDownload,
@@ -10,6 +14,7 @@ import {
   mdiCalendar,
   mdiAccount,
   mdiDotsVertical,
+  mdiCheckCircle
 } from '@mdi/js';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -66,25 +71,107 @@ const DurationBox = styled.div`
   }
 `;
 
-const CustomMenu = styled(({selected, ...rest}) => <Menu {...rest} />)`
-  & li {
+const CustomMenuItem = styled(({selected, ...rest}) => <MenuItem {...rest} />)`
+  display: flex;
+  align-items: center;
+  color: ${props => props.selected ? '#05b50c' : '#222'};
+  & > svg {
+    fill: ${props => props.selected ? '#05b50c' : '#888'};
+    margin-right: 10px;
+  }
+  &:nth-child(2), &:nth-child(4), &:nth-child(7) {  
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: #222;
+  }
+`;
+
+const StyledListSubheader = styled(ListSubheader)`
+  text-transform: uppercase;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+`;
+
+const TimeBox = styled.div`
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 200px 400px;
+  grid-template-areas:
+    "side main";
+`;
+
+const SideBar = styled.div`
+  grid-area: side;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+`;
+
+const MainBar = styled.div`
+  grid-area: main;
+`;
+
+const SubHeader = styled.div`
+  padding: 15px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 500;
+  font-size: 14px;
+  height: 18px;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 80%;
+`;
+
+const YearBox = styled.div`
+  padding: 15px 0;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  background-color: #ddd;
+  width: 90%;
+`;
+
+const DateWrapper = styled.div`
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  & > div {  
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    &:last-child {
+      text-align: right;
+    }
     & > span {
-      font-size: 10px;
-      color: ${props => props.selected ? '#05b50c' : '#888'};
-      margin-right: 10px;
+      font-size: 14px;
+      margin-bottom: 15px;
     }
-    &:nth-child(2), &:nth-child(4), &:nth-child(7) {  
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
-      color: #222;
-    }
+  }
+`;
+
+const StyledButton = styled(Button)`
+  && {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 10px auto;
+    background-color: #05b50c;
+    color: #fff;
+    width: 60%;
+  }
+  &&:hover {
+    background-color: #05b50c;
+    color: #fff;
   }
 `;
 
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
-    case 1: 
+    case 1:   
       return ({
         color: '#4a96ba',
         name: 'Thấp',
@@ -183,6 +270,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
 
   const [filterAnchor, setFilterAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
+  const [timeAnchor, setTimeAnchor] = React.useState(null);
 
   React.useEffect(() => {
     doListProject({});
@@ -194,6 +282,10 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
 
   function handleDownloadClose() {
     setDownloadAnchor(null);
+  }
+
+  function handleTimeClose() {
+    setTimeAnchor(null);
   }
 
   return (
@@ -217,7 +309,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
               }, {
                 label: 'Năm 2019',
                 iconPath: mdiCalendar,
-                onClick: () => null,
+                onClick: (evt) => setTimeAnchor(evt.currentTarget),
               }],
               mainAction: {
                 label: '+ Tạo dự án',
@@ -296,7 +388,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
             }]}
             data={projects}
           />
-          <CustomMenu
+          <Menu
             id="filter-menu"
             anchorEl={filterAnchor}
             open={Boolean(filterAnchor)}
@@ -306,16 +398,16 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
               horizontal: 'right',
             }}
           >
-            <MenuItem onClick={handleFilterClose} ><span>⬤</span> Tất cả</MenuItem>
-            <MenuItem onClick={handleFilterClose} ><span>⬤</span> Hoạt động</MenuItem>
-            <MenuItem onClick={handleFilterClose} ><span>⬤</span> Ẩn</MenuItem>
-            <MenuItem onClick={handleFilterClose} ><span>⬤</span> Đang thực hiện</MenuItem>
-            <MenuItem onClick={handleFilterClose} ><span>⬤</span> Hoàn thành</MenuItem>
-            <MenuItem onClick={handleFilterClose} ><span>⬤</span> Quá hạn</MenuItem>
-            <MenuItem onClick={handleFilterClose} ><span>⬤</span> Bạn tạo</MenuItem>
-            <MenuItem onClick={handleFilterClose} ><span>⬤</span> Bạn tham gia</MenuItem>
-          </CustomMenu>
-          <Menu
+            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Tất cả</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Hoạt động</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Ẩn</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Đang thực hiện</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Hoàn thành</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Quá hạn</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Bạn tạo</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Bạn tham gia</CustomMenuItem>
+          </Menu>
+          <Popover
             id="download-menu"
             anchorEl={downloadAnchor}
             open={Boolean(downloadAnchor)}
@@ -325,8 +417,82 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
               horizontal: 'right',
             }}
           >
-            <MenuItem onClick={handleDownloadClose} >Xuất ra file excel</MenuItem>
-          </Menu>
+            <List
+              subheader={
+                <StyledListSubheader component="div">
+                  Tải xuống File
+                </StyledListSubheader>
+              }
+            >
+              <ListItem button onClick={handleDownloadClose}>
+                <ListItemText primary={'Xuất ra file Excel .xls'} />
+              </ListItem>
+            </List>
+          </Popover>
+          <Popover
+            id="time-menu"
+            anchorEl={timeAnchor}
+            open={Boolean(timeAnchor)}
+            onClose={handleTimeClose}
+            transformOrigin={{
+              vertical: -30,
+              horizontal: 'right',
+            }}
+          >
+            <TimeBox>
+              <SideBar>
+                <List
+                  subheader={
+                    <StyledListSubheader component="div">
+                      Tùy chỉnh
+                    </StyledListSubheader>
+                  }
+                >
+                  <ListItem button>
+                    <ListItemText primary={'Năm nay'} />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary={'Tháng này'} />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary={'Tháng trước'} />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary={'Tuần này'} />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary={'Tuần trước'} />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary={'Mọi lúc'} />
+                  </ListItem>
+                </List>
+              </SideBar>
+              <MainBar>
+                <SubHeader>Thời gian được chọn</SubHeader>
+                <Content>  
+                  <YearBox>Năm 2019</YearBox>
+                  <DateWrapper>
+                    <div>
+                      <span>Từ ngày</span>
+                      <OutlinedInput 
+                        variant='outlined'
+                        type='date' 
+                      />
+                    </div>
+                    <div>
+                      <span>Đến ngày</span>
+                      <OutlinedInput 
+                        variant='outlined'
+                        type='date' 
+                      />
+                    </div>
+                  </DateWrapper>
+                  <StyledButton fullWidth>Áp dụng</StyledButton>
+                </Content>
+              </MainBar>
+            </TimeBox>
+          </Popover>
         </React.Fragment>
       )}
     </Container>

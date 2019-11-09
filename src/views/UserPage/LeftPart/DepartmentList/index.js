@@ -23,6 +23,10 @@ const Banner = styled.div`
   padding: 15px;
 `;
 
+const StyledPrimary = styled(Primary)`
+  font-weight: 500;
+`;
+
 function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
 
   const [openModal, setOpenModal] = React.useState(false);
@@ -108,7 +112,7 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
                         <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
                         <ListItemText 
                           primary={
-                            <Primary>Tất cả</Primary>  
+                            <StyledPrimary>Tất cả</StyledPrimary>  
                           }
                           secondary={
                             <Secondary>
@@ -131,7 +135,7 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
                         <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
                         <ListItemText 
                           primary={
-                            <Primary>Mặc định</Primary>  
+                            <StyledPrimary>Mặc định</StyledPrimary>  
                           }
                           secondary={
                             <Secondary>

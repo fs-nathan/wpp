@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { 
   Avatar, ButtonBase,
 } from '@material-ui/core';
+import CropModal from './Cropper';
 import ColorButton from '../../../../components/ColorButton';
 import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
@@ -58,6 +59,8 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
   });
   const [delIcon, setDelIcon] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
+  const [image, setImage] = React.useState(null);
+  const [crop, setCrop] = React.useState(false);
 
   React.useEffect(() => {
     setSelectedIcon({  
@@ -96,9 +99,14 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
 
   function handleUploadIcon(evt) {
     const icon = evt.target.files[0];
+    setImage(icon);
+    setCrop(true);
+  }
+
+  function uploadIcon(icon) {
     doCreateIcon({
       icon,
-    })
+    });
   }
 
   return (
@@ -173,6 +181,7 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
               content='Bạn chắc chắn muốn xóa biểu tượng?'
               onConfirm={() => handleDeleteIcon(delIcon)}
             />
+            <CropModal open={crop} setOpen={setCrop} image={image} uploadImage={uploadIcon} />
           </React.Fragment>
         )}
     </CustomModal>

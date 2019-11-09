@@ -11,15 +11,16 @@ import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import addMemberIcon from '../../../../assets/addMemberIcon.png'
-import colorPal from '../../../../helpers/colorPalette'
-import AddMemberModal from './AddMemberModal'
+import addMemberIcon from '../../../../assets/addMemberIcon.png';
+import colorPal from '../../../../helpers/colorPalette';
+import AddMemberModal from './AddMemberModal';
+import TimeField from 'react-simple-timefield';
 
 import { func } from 'prop-types';
 
 
 const Header = styled.div`
-  padding: 0;
+  padding: 0 15px;
   height: 92px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > * {
@@ -90,11 +91,7 @@ const CustomSelect = styled(Select)`
   }
 `;
 
-const BeginTime = styled(Typography)`
-  width: 50px;
-  margin-right: 20px;
-`
-const EndTime = styled(Typography)`
+const BeginEndTime = styled(Typography)`
   width: 50px;
   margin-right: 20px;
 `
@@ -103,7 +100,16 @@ const TypoText = styled(Typography)`
   color: #505050;
   margin: 20px 0;
 `
-
+const InputTime = styled(TimeField)`
+  width: 146px !important;
+  padding: 10px 5px 10px 13px;
+  border: 0;
+  border-radius: 4px;
+`
+const DivTime = styled.div`
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+`
 
 const PriorityFormControl = styled(FormControl)`
   display: flex;
@@ -117,11 +123,11 @@ const SpecialControlLabel = styled(FormControlLabel)`
   background-color: ${props => props.checked 
     ? colorPal['#ffd3b4'][0] 
     : colorPal['grey'][0]};
-  width: 30%;
-  border-radius: 4px;
+  width: 27%;
+  border-radius: 30px;
   margin: 0;
   justify-content: center;
-  padding: 10px 0;
+  padding: 5px 0;
   & > span:first-child { display: none; }
 `;
 
@@ -171,6 +177,9 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
+const DefaultFlex = styled(Typography)`
+  display: flex;
+`
 
 function ListHeaderSelect({ setShow }) {
 
@@ -260,9 +269,15 @@ function ListHeader() {
       [name]: event.target.value,
     });
   };
+  
+  const [time, setTime] = React.useState('')
+
+  const handleTime = () => {
+    setTime(time);
+  }
 
   return (
-    <div>
+    <div >
       <Header>
         <ListHeaderSelect />
         <HeaderBottomBox>
@@ -279,8 +294,8 @@ function ListHeader() {
         </HeaderBottomBox>
       </Header>
       {/* mo modal tao cong viec moi */}
-      <Dialog aria-labelledby="customized-dialog-title" open={open} fullWidth>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+      <Dialog open={open} fullWidth onClose={handleClose}>
+        <DialogTitle onClose={handleClose}>
           Tạo công việc
         </DialogTitle>
         <DialogContent dividers>
@@ -297,22 +312,26 @@ function ListHeader() {
             <Typotitle component={'span'}>
               Tiến độ công việc
           </Typotitle>
-            <Typography component={'span'}>
+            <DefaultFlex component={'span'}>
               Đặt mặc định <Icon path={mdiHelpCircle} color={"black"} size={1} />
-            </Typography>
+            </DefaultFlex>
           </ProgressWork>
           <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
           <StartEndDay component={'span'}>
-            <BeginTime component={'span'}>Bắt đầu</BeginTime>
-            <OutlineInput />
+            <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
+            <DivTime>
+              <InputTime value={time} onChange={handleTime} />
+            </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput />
+            <OutlineInput type={'date'}/>
           </StartEndDay>
           <StartEndDay component={'span'}>
-            <EndTime component={'span'}>Kết thúc</EndTime>
-            <OutlineInput />
+            <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
+            <DivTime>
+              <InputTime value={time} onChange={handleTime} />
+            </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput />
+            <OutlineInput type={'date'}/>
           </StartEndDay>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
           <Typography component={'span'}>
@@ -360,7 +379,7 @@ function ListHeader() {
             </Button>
             
             
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
             TẠO VIỆC
           </Button>
         </DialogActions>

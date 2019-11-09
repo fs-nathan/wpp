@@ -162,7 +162,7 @@ function MemberPriority(props) {
 
     if (props.master) {
         return (
-            <div style={{ color: '#fd7e14', padding: '0 10px' }}>{props.label}</div>
+            <div style={{ color: '#fd7e14', padding: '0 25px' }}>{props.label}</div>
         )
     }
 
@@ -240,12 +240,12 @@ function TableMember() {
 
     return (
         <Paper className={classes.root}>
-            <Table className={classes.table} aria-label="simple table">
+            <Table className={classes.table}>
                 <TableHead>
                     <TableRow style={{ background: '#f7f7f7' }}>
                         <MemberTable style={{ width: '9%' }}></MemberTable>
                         <MemberTable style={{ width: '30%' }}>Thành viên</MemberTable>
-                        <MemberTable style={{ width: '20%' }}>Nhóm quyền</MemberTable>
+                        <MemberTable style={{ width: '20%', paddingLeft: 30 }}>Nhóm quyền</MemberTable>
                         <MemberTable style={{ width: '32%' }}>Vai trò</MemberTable>
                         <MemberTable></MemberTable>
                     </TableRow>
@@ -257,7 +257,7 @@ function TableMember() {
                             <MemberTable component="th" scope="row">
                                 {AddData.name}
                             </MemberTable>
-                            <MemberTable>{AddData.permission}</MemberTable>
+                            <MemberTable style={{ paddingLeft: 17}}>{AddData.permission}</MemberTable>
                             <MemberTable>{AddData.role}</MemberTable>
                             <MemberTable>
                                 <IconButton size='small' onClick={handleClickEliminate} >
@@ -293,7 +293,7 @@ function AddMemberModal(props) {
     return (
         <div>
             <Dialog maxWidth="lg" fullWidth onClose={handleClose} open={props.isOpen}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                <DialogTitle onClose={handleClose}>
                     Thành viên công việc
         </DialogTitle>
                 <DialogContent dividers>
@@ -320,9 +320,9 @@ function AddMemberModal(props) {
                             <TableMember />
                         </Typography>
                     </GridArea>
-                </DialogContent>
+                </DialogContent>    
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose} color="primary">
+                    <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
                         Cập nhật
           </Button>
                 </DialogActions>
