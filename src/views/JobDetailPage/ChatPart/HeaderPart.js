@@ -6,7 +6,8 @@ import {
     IconButton, Typography, Avatar, Grid,
     RadioGroup, Radio, FormControlLabel, FormControl
 } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search';
+import Icon from '@mdi/react';
+import { mdiMagnify } from '@mdi/js';
 import avatarType from '../../../constants/avatarType'
 import fakeAvatar from '../../../assets/avatar.jpg'
 
@@ -21,8 +22,8 @@ const useStyles = makeStyles({
         paddingBottom: "0 !important",
     },
     smallAvatar: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
     },
 })
 
@@ -42,7 +43,8 @@ const WrapRoomDescription = styled.div`
 `
 
 const ProjectText = styled(Typography)`
-
+    font-size: 24px;
+    font-weight: 500;
 `
 
 // const WrapNotification = styled.div`
@@ -175,8 +177,8 @@ function renderAvatars(props) {
 function renderRoomDescription(props) {
     return (
         <WrapRoomDescription>
-            <ProjectText variant="h4">
-                Thảo Luận
+            <ProjectText >
+                Thảo Iuận
             </ProjectText>
             <TabForm tabs={tabs}/>
         </WrapRoomDescription>
@@ -187,7 +189,7 @@ function renderFunctionBar(props) {
     return (
         <>
             <IconButton>
-                <SearchIcon/>
+                <Icon path={mdiMagnify} size={1.2}/>
             </IconButton>
         </>
     )

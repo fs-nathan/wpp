@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 const ButtonCancel = styled.p`
   background: #edeff0;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   margin: 0;
   padding: 12px 8px;
