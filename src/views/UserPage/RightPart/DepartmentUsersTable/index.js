@@ -181,9 +181,8 @@ function DepartmentUsersTable({
 
   return (
     <Container>
-      {loading && <LoadingBox />}
       {error !== null && <ErrorBox />}
-      {!loading && error === null && (
+      {error === null && (
         <CustomTable
           options={{
             title: `${ departmentId === 'default' ? 'Mặc định' : get(room, 'name', '') }`,
@@ -236,7 +235,11 @@ function DepartmentUsersTable({
                   sortIndex: destination.index,
                 });
               }, 
-            }
+            },
+            loading: {
+              bool: loading,
+              component: () => <LoadingBox />,
+            },
           }}
           columns={[{
             label: '',

@@ -7,7 +7,7 @@ async function doMemberProject({ projectId }) {
     const config = {
       url: '/project/members',
       method: 'get',
-      data: {
+      params: {
         project_id: projectId,
       },
     }

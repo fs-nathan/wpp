@@ -160,6 +160,10 @@ function CustomTableWrapper({ options, columns, data }) {
       bool: true,
       onDragEnd: () => null,
     },
+    loading: {
+      bool: false,
+      component: () => null,
+    },
   };
 
   const context = {

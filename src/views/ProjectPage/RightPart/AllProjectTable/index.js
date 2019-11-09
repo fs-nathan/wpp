@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { 
   IconButton, Menu, MenuItem, Popover,
   List, ListItem, ListItemText, ListSubheader,
@@ -26,6 +27,7 @@ import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
 import AlertModal from '../../../../components/AlertModal';
 import { listProject } from '../../../../actions/project/listProject'
+import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
 
 const Container = styled.div`
   grid-area: table;
@@ -71,7 +73,7 @@ const DurationBox = styled.div`
   }
 `;
 
-const CustomMenuItem = styled(({selected, ...rest}) => <MenuItem {...rest} />)`
+const CustomMenuItem = styled(({ selected, ...rest }) => (<MenuItem {...rest} />))`
   display: flex;
   align-items: center;
   color: ${props => props.selected ? '#05b50c' : '#222'};
@@ -79,9 +81,8 @@ const CustomMenuItem = styled(({selected, ...rest}) => <MenuItem {...rest} />)`
     fill: ${props => props.selected ? '#05b50c' : '#888'};
     margin-right: 10px;
   }
-  &:nth-child(2), &:nth-child(4), &:nth-child(7) {  
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    color: #222;
+  &:nth-child(2), &:nth-child(4), &:nth-child(8) {  
+    border-top: 1px solid #f4f4f4;
   }
 `;
 
@@ -264,20 +265,86 @@ const SettingButton = () => {
   );
 }
 
-function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
+function AllProjectTable({ expand, handleExpand, listProject, doListProject, detailProjectGroup, doDetailProjectGroup }) {
 
-  const { data: { projects }, loading, error } = listProject;
+  const { projectGroupId } = useParams();
+
+  const { data: { projects }, loading: listProjectLoading, error: listProjectError } = listProject;
+  const { data: { projectGroup }, loading: detailProjectGroupLoading, error: detailProjectGroupError } = detailProjectGroup;
+
+  const loading = listProjectLoading || detailProjectGroupLoading;
+  const error = listProjectError || detailProjectGroupError;
 
   const [filterAnchor, setFilterAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
 
-  React.useEffect(() => {
-    doListProject({});
-  }, [doListProject]);
+  const [filter, setFilter] = React.useState(0);
 
-  function handleFilterClose() {
-    setFilterAnchor(null);
+  React.useEffect(() => {
+    let options = {};
+    if (projectGroupId) {
+      options = { 
+        ...options,
+        groupProject: projectGroupId,
+      };
+    }
+    switch (filter) {
+      case 0: 
+        break;
+      case 1:
+        options = {
+          ...options,
+          type: 'active',
+        };
+        break;
+      case 2: 
+        options = {
+          ...options,
+          type: 'hidden',
+        };
+        break;
+      case 3: 
+        options = {
+          ...options,
+          status: 0,
+        };
+        break;
+      case 4: 
+        options = {
+          ...options,
+          status: 1,
+        };
+        break;
+      case 5: 
+        options = {
+          ...options,
+          status: 2,
+        };
+        break;
+      case 6: 
+        options = {
+          ...options,
+          status: 3,
+        };
+        break;
+      default:
+        break;
+    }
+    doListProject(options);
+  }, [doListProject, projectGroupId, filter]);
+
+  React.useEffect(() => {
+    if (projectGroupId) doDetailProjectGroup({ projectGroupId });
+  }, [projectGroupId]);
+
+  function handleFilterClose(filter = null) {
+    return evt => {
+      if (filter !== null) {
+        setFilter(filter);
+      }
+      setFilterAnchor(null);
+    }
   }
 
   function handleDownloadClose() {
@@ -290,13 +357,12 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
 
   return (
     <Container>
-      {loading && <LoadingBox />}
       {error !== null && <ErrorBox />}
-      {!loading && error === null && (
+      {error === null && (
         <React.Fragment>
           <CustomTable
             options={{
-              title: 'Tất cả',
+              title: `${loading ? '...' : projectGroupId ? get(projectGroup, 'name', 'Tất cả') : 'Tất cả'}`,
               subTitle: '',
               subActions: [{
                 label: 'Hoạt động',
@@ -334,6 +400,10 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
                 onDragEnd: result => {
                   return;
                 }, 
+              },
+              loading: {
+                bool: loading,
+                component: () => <LoadingBox />,
               },
             }}
             columns={[{
@@ -392,20 +462,21 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
             id="filter-menu"
             anchorEl={filterAnchor}
             open={Boolean(filterAnchor)}
-            onClose={handleFilterClose}
+            onClose={handleFilterClose()}
             transformOrigin={{
               vertical: -30,
               horizontal: 'right',
             }}
           >
-            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Tất cả</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Hoạt động</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Ẩn</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Đang thực hiện</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Hoàn thành</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Quá hạn</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Bạn tạo</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose} ><Icon path={mdiCheckCircle} size={0.7} /> Bạn tham gia</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(0)} selected={filter === 0} ><Icon path={mdiCheckCircle} size={0.7} /> Tất cả</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(1)} selected={filter === 1} ><Icon path={mdiCheckCircle} size={0.7} /> Hoạt động</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(2)} selected={filter === 2} ><Icon path={mdiCheckCircle} size={0.7} /> Ẩn</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(3)} selected={filter === 3} ><Icon path={mdiCheckCircle} size={0.7} /> Đang chờ</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(4)} selected={filter === 4} ><Icon path={mdiCheckCircle} size={0.7} /> Đang thực hiện</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(5)} selected={filter === 5} ><Icon path={mdiCheckCircle} size={0.7} /> Hoàn thành</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(6)} selected={filter === 6} ><Icon path={mdiCheckCircle} size={0.7} /> Quá hạn</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(7)} selected={filter === 7} ><Icon path={mdiCheckCircle} size={0.7} /> Bạn tạo</CustomMenuItem>
+            <CustomMenuItem onClick={handleFilterClose(8)} selected={filter === 8} ><Icon path={mdiCheckCircle} size={0.7} /> Bạn tham gia</CustomMenuItem>
           </Menu>
           <Popover
             id="download-menu"
@@ -502,12 +573,14 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject }) {
 const mapStateToProps = state => {
   return {
     listProject: state.project.listProject,
+    detailProjectGroup: state.projectGroup.detailProjectGroup,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListProject: (quite) => dispatch(listProject(quite)),
+    doListProject: (options, quite) => dispatch(listProject(options, quite)),
+    doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),
   }
 }
 

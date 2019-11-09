@@ -72,86 +72,89 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
     <React.Fragment>
       {subSlide && <SubSlideComp handleSubSlide={handleSubSlide} />}
       {!subSlide && (
-        <React.Fragment>
-          {loading && <LoadingBox />}
-          {(error !== null) && <ErrorBox />}
-          {!loading && (error === null) && (
-            <LeftSideContainer
-              title='Danh sách bộ phận'
-              leftAction={{
-                iconPath: mdiDrag,
-                onClick: null,
-              }}
-              rightAction={{
-                iconPath: mdiPlus,
-                onClick: () => setOpenModal(true),
-              }}
-            >
-              <Banner>
-                <SearchInput 
-                  fullWidth 
-                  placeholder='Tìm bộ phận'
-                  value={searchPatern}
-                  onChange={evt => setSearchPatern(evt.target.value)}
-                />  
-              </Banner>
-              <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId={'department-list'}>
-                  {provided => (
-                    <StyledList
-                      innerRef={provided.innerRef}
-                      {...provided.droppableProps}
+        <>
+        {error !== null && <ErrorBox />}
+        {error === null && (
+          <LeftSideContainer
+            title='Danh sách bộ phận'
+            leftAction={{
+              iconPath: mdiDrag,
+              onClick: null,
+            }}
+            rightAction={{
+              iconPath: mdiPlus,
+              onClick: () => setOpenModal(true),
+            }}
+            loading={{
+              bool: loading,
+              component: () => <LoadingBox />,
+            }}
+          >
+            <Banner>
+              <SearchInput 
+                fullWidth 
+                placeholder='Tìm bộ phận'
+                value={searchPatern}
+                onChange={evt => setSearchPatern(evt.target.value)}
+              />  
+            </Banner>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId={'department-list'}>
+                {provided => (
+                  <StyledList
+                    innerRef={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <StyledListItem
+                      to={`${location.pathname}`}
+                      component={Link}
                     >
-                      <StyledListItem
-                        to={`${location.pathname}`}
-                        component={Link}
-                      >
-                        <div>
-                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
-                        </div>
-                        <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                        <ListItemText 
-                          primary={
-                            <StyledPrimary>Tất cả</StyledPrimary>  
-                          }
-                          secondary={
-                            <Secondary>
-                              {rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
-                            </Secondary>
-                          }
-                        />
-                      </StyledListItem>
-                      {rooms.map((room, index) => (
-                        <CustomListItem key={get(room, 'id')} room={room} index={index} />  
-                      ))}
-                      {provided.placeholder}
-                      <StyledListItem
-                        component={Link}
-                        to={`${location.pathname}/default`
-                      }>
-                        <div>
-                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
-                        </div>
-                        <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                        <ListItemText 
-                          primary={
-                            <StyledPrimary>Mặc định</StyledPrimary>  
-                          }
-                          secondary={
-                            <Secondary>
-                              {rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
-                            </Secondary>
-                          }
-                        />
-                      </StyledListItem>
-                    </StyledList>
-                  )}
-                </Droppable>
-              </DragDropContext>
-              <CreateDepartmentModal open={openModal} setOpen={setOpenModal} />
-            </LeftSideContainer>
-          )}
-        </React.Fragment>
+                      <div>
+                        <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
+                      </div>
+                      <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
+                      <ListItemText 
+                        primary={
+                          <StyledPrimary>Tất cả</StyledPrimary>  
+                        }
+                        secondary={
+                          <Secondary>
+                            {rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
+                          </Secondary>
+                        }
+                      />
+                    </StyledListItem>
+                    {rooms.map((room, index) => (
+                      <CustomListItem key={get(room, 'id')} room={room} index={index} />  
+                    ))}
+                    {provided.placeholder}
+                    <StyledListItem
+                      component={Link}
+                      to={`${location.pathname}/default`
+                    }>
+                      <div>
+                        <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
+                      </div>
+                      <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
+                      <ListItemText 
+                        primary={
+                          <StyledPrimary>Mặc định</StyledPrimary>  
+                        }
+                        secondary={
+                          <Secondary>
+                            {rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
+                          </Secondary>
+                        }
+                      />
+                    </StyledListItem>
+                  </StyledList>
+                )}
+              </Droppable>
+            </DragDropContext>
+            <CreateDepartmentModal open={openModal} setOpen={setOpenModal} />
+          </LeftSideContainer>
+        )}
+        </>
       )}
     </React.Fragment>
   )

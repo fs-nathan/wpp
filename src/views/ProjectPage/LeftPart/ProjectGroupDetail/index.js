@@ -118,18 +118,21 @@ function DepartmentInfo({ detailProjectGroup, doDetailProjectGroup, memberProjec
   
   return (
     <React.Fragment>
-      {loading && (<LoadingBox />)}
       {error !== null && (<ErrorBox />)}
-      {!loading && error === null && (
+      {error === null && (
         <LeftSideContainer
           leftAction={{
-            avatar: get(projectGroup, 'icon'),
+            avatar: loading ? null : get(projectGroup, 'icon'),
           }}
           rightAction={{
             iconPath: mdiClose,
             onClick: () => history.push('/projects')
           }}
-          title={get(projectGroup, 'name', '')}
+          title={loading ? '...' : get(projectGroup, 'name', '')}
+          loading={{
+            bool: loading,
+            component: () => <LoadingBox />
+          }}
         >
           <Container>
             <div>

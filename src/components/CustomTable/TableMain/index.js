@@ -24,36 +24,39 @@ function TableMain() {
       autoHide
       autoHideTimeout={500}
     >
-      <Table>
-        <TableHead>
-          <TableHeaderRow />
-        </TableHead>
-        <DragDropContext onDragEnd={options.draggable.onDragEnd}>
-          {options.grouped.bool 
-            ? (
-            data.map((group, index) => (
-              <TableBodyGroupRow group={group} key={index} />
-            )))
-            : (
-              <Droppable
-                droppableId={'custom-table-droppable-id'}
-              >
-                {(provided, snapshot) => (
-                  <TableBody
-                    innerRef={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    {data.map((row, index) => (
-                      
-                      <TableBodyRow key={index} index={index} row={row} group={null} />
-                    ))}
-                    {provided.placeholder}
-                  </TableBody>
-                )}
-              </Droppable>
-            )}
-        </DragDropContext>
-      </Table>
+      {options.loading.bool && options.loading.component()}
+      {!options.loading.bool && (
+        <Table>
+          <TableHead>
+            <TableHeaderRow />
+          </TableHead>
+          <DragDropContext onDragEnd={options.draggable.onDragEnd}>
+            {options.grouped.bool 
+              ? (
+              data.map((group, index) => (
+                <TableBodyGroupRow group={group} key={index} />
+              )))
+              : (
+                <Droppable
+                  droppableId={'custom-table-droppable-id'}
+                >
+                  {(provided, snapshot) => (
+                    <TableBody
+                      innerRef={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      {data.map((row, index) => (
+                        
+                        <TableBodyRow key={index} index={index} row={row} group={null} />
+                      ))}
+                      {provided.placeholder}
+                    </TableBody>
+                  )}
+                </Droppable>
+              )}
+          </DragDropContext>
+        </Table>
+      )}
     </Container>
   )
 }

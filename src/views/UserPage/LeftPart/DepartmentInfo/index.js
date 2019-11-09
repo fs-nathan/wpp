@@ -125,17 +125,20 @@ function NormalDepartment({ detailRoom, doDetailRoom, doDeleteRoom, subSlide, ha
     <React.Fragment>
       {subSlide && <SubSlideComp handleSubSlide={handleSubSlide} />}
       {!subSlide && (
-        <React.Fragment>
-          {loading && (<LoadingBox />)}
+        <>
           {error !== null && (<ErrorBox />)}
-          {!loading && error === null && (
+          {error === null && (
             <LeftSideContainer
               leftAction={{
                 iconPath: mdiChevronLeft,
                 onClick: () => history.push('/departments')
               }}
               title={t('views.user_page.left_part.department_info.modal_title')}
-            >
+              loading={{
+                bool: loading,
+                component: () => <LoadingBox />,
+              }}
+            > 
               <Container>
                 <div>
                   <LogoBox>
@@ -174,7 +177,7 @@ function NormalDepartment({ detailRoom, doDetailRoom, doDeleteRoom, subSlide, ha
               />
             </LeftSideContainer>
           )}
-        </React.Fragment>
+        </>
       )}
     </React.Fragment>
   )

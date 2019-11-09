@@ -72,15 +72,18 @@ function ProjectList({ listProjectGroup, doListProjectGroup, doSortProjectGroup,
   }
 
   return (
-    <React.Fragment>
-      {loading && <LoadingBox />}
+    <>
       {error !== null && <ErrorBox />}
-      {!loading && error === null && (
+      {error === null && (
         <LeftSideContainer
           title='Nhóm dự án'
           rightAction={{
             iconPath: mdiPlus,
             onClick: () => setOpenModal(true),
+          }}
+          loading={{
+            bool: loading,
+            component: () => <LoadingBox />,
           }}
         >
           <Banner>
@@ -143,7 +146,7 @@ function ProjectList({ listProjectGroup, doListProjectGroup, doSortProjectGroup,
           <CreateProjectGroup open={openModal} setOpen={setOpenModal} />
         </LeftSideContainer>
       )}
-    </React.Fragment>
+    </>
   )
 }
 

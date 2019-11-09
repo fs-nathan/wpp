@@ -63,6 +63,16 @@ function ProjectPage() {
               } 
               exact 
             />
+            <Route path={`${url}/:projectGroupId`} 
+              render={props => 
+                <ProjectGroupTable 
+                  {...props}
+                  expand={expand}
+                  handleExpand={handleExpand} 
+                />
+              } 
+              exact 
+            />
           </RightDiv>
         )}
       />

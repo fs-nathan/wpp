@@ -7,7 +7,7 @@ async function doDetailProject({ projectId }) {
     const config = {
       url: '/project/detail',
       method: 'get',
-      data: {
+      params: {
         project_id: projectId,
       },
     }

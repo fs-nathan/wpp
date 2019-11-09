@@ -33,7 +33,7 @@ const Header = styled.div`
 
 const Title = styled.p`
   padding: 0;
-  margin: 0;
+  margin: 0 5px;
   color: #222222;
   font-size: 15px;
   text-transform: uppercase;
@@ -75,6 +75,10 @@ function LeftSideContainer({
   },
   title,
   children,
+  loading = {
+    bool: false,
+    component: () => null,
+  },
 }) {
 
   const parseAction = (action) => (
@@ -103,12 +107,15 @@ function LeftSideContainer({
         <Title>{title}</Title>
         {parseAction(rightAction)}
       </Header>
-      <Body
-        autoHide
-        autoHideTimeout={500}
-      >
-        {children}
-      </Body>
+      {loading.bool && loading.component()}
+      {!loading.bool && (
+        <Body
+          autoHide
+          autoHideTimeout={500}
+        >
+          {children}
+        </Body>
+      )}
     </Container>
   )
 }

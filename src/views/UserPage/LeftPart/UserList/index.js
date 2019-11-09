@@ -83,58 +83,57 @@ function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, })
   }
 
   return (
-    <React.Fragment>
-      {loading && <LoadingBox />}
-      {error !== null && <ErrorBox />}
-      {!loading && error === null && (
-        <LeftSideContainer
-          leftAction={{
-            iconPath: mdiChevronLeft,
-            onClick: () => history.push(`${location.pathname.replace(`/members/${userId}`, '')}`),
-          }}
-          title='Danh sách thành viên'
-        >
-          <Banner>
-            <SearchInput 
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
-              fullWidth 
-              placeholder='Tìm thành viên'  
-            />  
-          </Banner>
-          <DragDropContext onDragEnd={onDragEnd}>
-            {rooms.map((room, index) => {
-              const users = get(room, 'users', []);
-              return (
-                <Droppable key={index} droppableId={get(room, 'id')}>
-                  {provided => (
-                    <CustomStyledList
-                      innerRef={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      <StyledListItem>
-                        <RoomNameSpan>
-                          {get(room, 'name', '') === 'default' ? 'Mặc định' : get(room, 'name', '')}
-                        </RoomNameSpan>
-                      </StyledListItem>
-                      {users.map((user, index) => {
-                        if (get(user, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()))
-                          return (
-                            <CustomListItem key={index} user={user} index={index} />  
-                          );
-                        else 
-                          return null;
-                      })}
-                      {provided.placeholder}
-                    </CustomStyledList>
-                  )}
-                </Droppable>
-              );
-            })}
-          </DragDropContext>
-        </LeftSideContainer>
-      )}
-    </React.Fragment>
+    <>
+    {error !== null && <ErrorBox />}
+    {error === null && (
+      <LeftSideContainer
+        leftAction={{
+          iconPath: mdiChevronLeft,
+          onClick: () => history.push(`${location.pathname.replace(`/members/${userId}`, '')}`),
+        }}
+        title='Danh sách thành viên'
+      >
+        <Banner>
+          <SearchInput 
+            value={searchPatern}
+            onChange={evt => setSearchPatern(evt.target.value)}
+            fullWidth 
+            placeholder='Tìm thành viên'  
+          />  
+        </Banner>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {rooms.map((room, index) => {
+            const users = get(room, 'users', []);
+            return (
+              <Droppable key={index} droppableId={get(room, 'id')}>
+                {provided => (
+                  <CustomStyledList
+                    innerRef={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <StyledListItem>
+                      <RoomNameSpan>
+                        {get(room, 'name', '') === 'default' ? 'Mặc định' : get(room, 'name', '')}
+                      </RoomNameSpan>
+                    </StyledListItem>
+                    {users.map((user, index) => {
+                      if (get(user, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()))
+                        return (
+                          <CustomListItem key={index} user={user} index={index} />  
+                        );
+                      else 
+                        return null;
+                    })}
+                    {provided.placeholder}
+                  </CustomStyledList>
+                )}
+              </Droppable>
+            );
+          })}
+        </DragDropContext>
+      </LeftSideContainer>
+    )}
+    </>
   )
 }
 

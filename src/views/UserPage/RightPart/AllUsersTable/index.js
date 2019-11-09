@@ -185,9 +185,8 @@ function AllUsersTable({
 
   return (
     <Container>
-      {loading && <LoadingBox />}
       {error !== null && <ErrorBox />}
-      {!loading && error === null && (
+      {error === null && (
         <CustomTable
           options={{
             title: 'Danh sách nhân sự',
@@ -247,7 +246,11 @@ function AllUsersTable({
                   sortIndex: destination.index,
                 });
               }, 
-            }
+            },
+            loading: {
+              bool: loading,
+              component: () => <LoadingBox />,
+            },
           }}
           columns={[{
             label: '',

@@ -7,7 +7,7 @@ async function doListProject({ groupProject, type, status }) {
     const config = {
       url: '/project/list',
       method: 'get',
-      data: {
+      params: {
         group_project: groupProject,
         type,
         status,
