@@ -18,6 +18,7 @@ import {
   mdiCheckCircle
 } from '@mdi/js';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
+import CreateProjectModal from '../../Modals/CreateProject';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import CustomTable from '../../../../components/CustomTable';
@@ -170,6 +171,10 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const TimeListItem = styled(({ selected, ...rest }) => (<ListItem {...rest} />))`
+  border-left: 3px solid ${props => props.selected ? '#05b50c' : '#fff'};
+`;
+
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 1:   
@@ -275,11 +280,14 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
   const loading = listProjectLoading || detailProjectGroupLoading;
   const error = listProjectError || detailProjectGroupError;
 
+  const [openCreateProject, setOpenCreateProject] = React.useState(false);
+
   const [filterAnchor, setFilterAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
 
   const [filter, setFilter] = React.useState(0);
+  const [time, setTime] = React.useState(0);
 
   React.useEffect(() => {
     let options = {};
@@ -351,8 +359,13 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
     setDownloadAnchor(null);
   }
 
-  function handleTimeClose() {
-    setTimeAnchor(null);
+  function handleTimeClose(time = null) {
+    return evt => {
+      if (time !== null) {
+        setTime(time);
+      }
+      setTimeAnchor(null);
+    };
   }
 
   return (
@@ -379,7 +392,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
               }],
               mainAction: {
                 label: '+ Tạo dự án',
-                onClick: () => null,  
+                onClick: (evt) => setOpenCreateProject(true),  
               },
               expand: {
                 bool: expand,
@@ -504,7 +517,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
             id="time-menu"
             anchorEl={timeAnchor}
             open={Boolean(timeAnchor)}
-            onClose={handleTimeClose}
+            onClose={handleTimeClose()}
             transformOrigin={{
               vertical: -30,
               horizontal: 'right',
@@ -519,24 +532,24 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
                     </StyledListSubheader>
                   }
                 >
-                  <ListItem button>
+                  <TimeListItem button onClick={handleTimeClose(0)} selected={time === 0}>
                     <ListItemText primary={'Năm nay'} />
-                  </ListItem>
-                  <ListItem button>
+                  </TimeListItem>
+                  <TimeListItem button onClick={handleTimeClose(1)} selected={time === 1}>
                     <ListItemText primary={'Tháng này'} />
-                  </ListItem>
-                  <ListItem button>
+                  </TimeListItem>
+                  <TimeListItem button onClick={handleTimeClose(2)} selected={time === 2}>
                     <ListItemText primary={'Tháng trước'} />
-                  </ListItem>
-                  <ListItem button>
+                  </TimeListItem>
+                  <TimeListItem button onClick={handleTimeClose(3)} selected={time === 3}>
                     <ListItemText primary={'Tuần này'} />
-                  </ListItem>
-                  <ListItem button>
+                  </TimeListItem>
+                  <TimeListItem button onClick={handleTimeClose(4)} selected={time === 4}>
                     <ListItemText primary={'Tuần trước'} />
-                  </ListItem>
-                  <ListItem button>
+                  </TimeListItem>
+                  <TimeListItem button onClick={handleTimeClose(5)} selected={time === 5}>
                     <ListItemText primary={'Mọi lúc'} />
-                  </ListItem>
+                  </TimeListItem>
                 </List>
               </SideBar>
               <MainBar>
@@ -564,6 +577,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
               </MainBar>
             </TimeBox>
           </Popover>
+          <CreateProjectModal open={openCreateProject} setOpen={setOpenCreateProject} />
         </React.Fragment>
       )}
     </Container>

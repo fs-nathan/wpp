@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TextField, Avatar } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import LogoManagerModal from '../../../UserPage/Modals/LogoManager';
 import CustomModal from '../../../../components/CustomModal';
+import CustomAvatar from '../../../../components/CustomAvatar';
 import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -108,7 +109,7 @@ function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createPr
                 <ColorTypo>Biểu tượng nhóm</ColorTypo>
                 <ColorButton color='primary' onClick={() => setOpenLogoModal(true)}>+ Chọn biểu tượng</ColorButton>
               </div>
-              <Avatar src={icon.url_full} alt='avatar' />
+              <CustomAvatar src={icon.url_full} alt='avatar' />
             </LogoBox>
           </React.Fragment>
         )}

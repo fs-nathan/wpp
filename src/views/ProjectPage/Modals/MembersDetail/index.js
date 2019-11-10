@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { 
-  TableCell, Table, TableHead, TableBody, TableRow, Avatar,
+  TableCell, Table, TableHead, TableBody, TableRow,
 } from '@material-ui/core';
 import CustomModal from '../../../../components/CustomModal';
+import CustomAvatar from '../../../../components/CustomAvatar';
 import colorPal from '../../../../helpers/colorPalette';
 import { get } from 'lodash';
 
@@ -49,7 +50,7 @@ function MembersDetail({ open, setOpen, members, }) {
             {members.map(member => (
               <TableRow key={get(member, 'id')}>
                 <TableCell>
-                  <Avatar src={get(member, 'avatar')} alt='avatar' />
+                  <CustomAvatar src={get(member, 'avatar')} alt='avatar' />
                 </TableCell>
                 <UserTableCell>
                   <span>{get(member, 'name', '')}</span>
