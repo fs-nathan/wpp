@@ -25,6 +25,16 @@ const ItemAvatar = styled(ListItemAvatar)`
     align-items: center;
   }
 `
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -56,9 +66,9 @@ const CustomListItem = () => {
           }
         />
         <ListItemIcon>
-          <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
             <Icon path={mdiDotsHorizontal} size={1} />
-          </IconButton>
+          </ButtonIcon>
         </ListItemIcon>
       </ListItem>
       <Menu

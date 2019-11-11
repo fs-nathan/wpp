@@ -39,6 +39,7 @@ const GroupRadio = styled(RadioGroup)`
   }
 `
 
+
 const styles = theme => ({
   root: {
     margin: 0,
@@ -94,7 +95,7 @@ const EditWorkModal = (props) => {
       <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
         Chỉnh sửa công việc
       </DialogTitle>
-      <DialogContent dividers>
+      <DialogContent dividers style={{ overflow: 'hidden'}}>
         <Typography component={'span'}>
         <TitleText component={'span'}>
                 <InputTextJob

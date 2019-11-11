@@ -84,9 +84,9 @@ const ApprovedBox = (props) => {
                   <Badge component='small' color='bluelight' badge size='small' label={'Duyệt'} />
                 </ColorTypo>
               </div>
-              <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+              <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
                 <Icon path={mdiDotsHorizontal} size={1} />
-              </IconButton>
+              </ButtonIcon>
             </StyledTitleBox>
             <StyledContentBox>
               <ColorTypo variant='caption'>18:00 - 12/12/2019</ColorTypo>
@@ -146,6 +146,17 @@ const StyledContentBox = styled.div`
   font-weight: bold;
 `;
 
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
+
 
 const CustomListItem = (props) => {
 
@@ -170,9 +181,9 @@ const CustomListItem = (props) => {
               <Badge component='small' size='small' badge color='orangelight' label={'Đề xuất'} /> với <ColorTypo color='orange' variant='caption'>Trần Văn B</ColorTypo> lúc 08:00 - 12/12/2019
             </ColorTypo>
           </div>
-          <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
             <Icon path={mdiDotsHorizontal} size={1} />
-          </IconButton>
+          </ButtonIcon>
         </StyledTitleBox>
         <StyledContentBox>
           <StyleContent >Lorem ipsum dolor sit.</StyleContent>

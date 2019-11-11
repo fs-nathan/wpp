@@ -28,6 +28,16 @@ const ButtonCancel = styled.p`
   margin-right: 5spx;
   border-radius: 50%;
 `
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 function TabHeader(props) {
   // console.log('header props::', props)
@@ -39,13 +49,13 @@ function TabHeader(props) {
     <Container>
       <ColorTypo uppercase bold>Công việc con</ColorTypo>
       {isPlus ?
-        <IconButton onClick={() => {
+        <ButtonIcon onClick={() => {
           props.onClickPlusIcon()
           handleClick()
         }
         }>
           <Icon path={mdiPlus} size={1} />
-        </IconButton>
+        </ButtonIcon>
         :
         <ButtonCancel onClick={() => {
           props.onClickPlusIcon()
@@ -53,9 +63,9 @@ function TabHeader(props) {
         }
         }>Hủy</ButtonCancel>
       }
-      <IconButton onClick={() => props.setShow(0)}>
+      <ButtonIcon onClick={() => props.setShow(0)}>
         <Icon path={mdiClose} size={1} />
-      </IconButton>
+      </ButtonIcon>
     </Container>
   );
 }

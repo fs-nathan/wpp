@@ -68,6 +68,16 @@ const TabLabel = styled(FormControlLabel)`
   & > span:first-child { display: none; }
 `;
 
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 // const NotifyText = styled.div`
 //     color: ${colors['black'][0]};
@@ -188,9 +198,9 @@ function renderRoomDescription(props) {
 function renderFunctionBar(props) {
     return (
         <>
-            <IconButton>
+            <ButtonIcon>
                 <Icon path={mdiMagnify} size={1.2}/>
-            </IconButton>
+            </ButtonIcon>
         </>
     )
 }

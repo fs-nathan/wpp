@@ -19,6 +19,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-bottom: 17px;
+  margin-top: 9px;
   & > svg {
     color: rbga(0,0,0,0.54);
   }
@@ -94,6 +95,16 @@ const ExpansionProject = styled(ExpansionPanel)`
     }
   }
 `
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 function ListProjectHeader({ setShow }) {
 
@@ -104,13 +115,13 @@ function ListProjectHeader({ setShow }) {
   return (
     <div style={{ marginBottom: 17 }}>
       <Header>
-        <Icon path={mdiDrag} size={1}/>
+        <Icon path={mdiDrag} size={1} color={'#000000'}/>
         <div>DANH SÁCH DỰ ÁN</div>
-        <IconButton
+        <ButtonIcon
           onClick={closeListProject}
         >
-          <Icon path={mdiClose } size={1} color={'rbga(0,0,0,0.54)'} />
-        </IconButton>
+          <Icon path={mdiClose} size={1} />
+        </ButtonIcon>
       </Header>
       <SearchInput placeholder='Tìm dự án' />
     </div>
