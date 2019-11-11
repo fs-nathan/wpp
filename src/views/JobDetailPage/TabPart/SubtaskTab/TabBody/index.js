@@ -68,6 +68,17 @@ const AllSubtaskListItemContainer = styled(ListItem)`
   padding: 8px 0;
 `;
 
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
+
 
 
 function AllSubtaskListItem({ task, index }) {
@@ -104,19 +115,19 @@ function AllSubtaskListItem({ task, index }) {
           onMouseLeave={() => setIsHover(false)}
         >
           <div {...provided.dragHandleProps}>
-            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
+            <Icon path={mdiDragVertical} size={1} />
           </div>
           {
             !isHover
               ? <Avatar style={{ width: 43.5, height: 43.5, }} src={avatar} alt='avatar' />
-              : <IconButton>
+              : <ButtonIcon>
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
-              </IconButton>
+              </ButtonIcon>
           }
           <ItemList>Thiết kế {task.content}</ItemList>
-          <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-            <Icon path={mdiDotsVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
-          </IconButton>
+          <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+            <Icon path={mdiDotsVertical} size={1} />
+          </ButtonIcon>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -237,9 +248,9 @@ const FinishedSubtaskList = () => {
                 </FinishedSubtaskListItemTextSecondary>
               }
             />
-            <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-              <Icon path={mdiDotsVertical} size={1} color={'rgba(0, 0, 0, 1)'} />
-            </IconButton>
+            <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+              <Icon path={mdiDotsVertical} size={1} />
+            </ButtonIcon>
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
@@ -287,9 +298,9 @@ function TabBody(props) {
             inputProps={{ 'aria-label': 'naked' }}
             placeholder={'Nhập tên công việc...'}
           />
-          <IconButton style={{ paddingBottom: 9}}>
+          <ButtonIcon style={{ paddingBottom: 9}}>
             <Icon path={mdiSend} size={1} color={'gray'} />
-          </IconButton>
+          </ButtonIcon>
         </NewWork>
         :
         <Div>

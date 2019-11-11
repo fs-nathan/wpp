@@ -44,6 +44,12 @@ const ButtonFile = styled.label`
         }
       }
 `
+const TextContent = styled(TextField)`
+  & > label {
+      font-size: 14px;
+      z-index: 0
+  }
+`
 // bien cua modal
 const styles = theme => ({
   root: {
@@ -105,7 +111,7 @@ const OfferModal = (props) => {
     <DialogContent dividers>
       <TexTitle >Chọn người duyệt</TexTitle>
       <IntegrationReactSelect />
-      <TextField
+      <TextContent
         id="outlined-multiline-static"
         label="Nội dung phê duyệt"
         fullWidth

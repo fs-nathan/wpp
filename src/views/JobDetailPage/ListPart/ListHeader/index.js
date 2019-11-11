@@ -208,6 +208,16 @@ const InputTextJob = styled(TextField)`
         margin-left: 10px
     }
 `
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 function ListHeaderSelect({ setShow }) {
 
@@ -216,17 +226,17 @@ function ListHeaderSelect({ setShow }) {
   }
 
   return (
-    <div onClick={openListProject}>
+    <div onClick={openListProject} style={{ marginTop: 8}}>
       <HeaderText component={'div'} >Phát triển ứng dụng Mytour Việt Nam...</HeaderText>
-      <IconButton
+      <ButtonIcon
 
         style={{
           marginLeft: "10px",
           padding: "7px"
         }}
       >
-        <Icon path={mdiChevronDown} size={1.2} />
-      </IconButton>
+        <Icon path={mdiChevronDown} size={1.2}/>
+      </ButtonIcon>
     </div>
   )
 }
@@ -317,8 +327,8 @@ function ListHeader(props) {
       <Header>
         <ListHeaderSelect {...props} />
         <HeaderBottomBox>
-          <SearchInput placeholder='Tìm công việc trong dự án...' />
-          <IconButton
+          <SearchInput placeholder='Tìm công việc trong dự án...' style={{ height: 'auto'}}/>
+          <ButtonIcon
             style={{
               marginLeft: "10px",
               padding: "7px"
@@ -327,8 +337,8 @@ function ListHeader(props) {
             handleClose()
             setOpenCreateJobModal(true)
           }} >
-            <Icon path={mdiPlus} size={1.2} />
-          </IconButton>
+            <Icon path={mdiPlus} size={1.2}/>
+          </ButtonIcon>
         </HeaderBottomBox>
       </Header>
       <CreateJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} />

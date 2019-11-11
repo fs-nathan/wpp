@@ -41,7 +41,7 @@ const Container = styled.div`
 const StyledFrameMess = styled(Typography)`
     height: auto;
     padding: 11px 15px 10px 17px;
-    width: 300px;
+    width: 350px;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);

@@ -32,7 +32,17 @@ const TagsContainer = styled.div`
 
 const StyledIconButton = styled(IconButton)`
   margin-left: auto;
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
 `;
+
+
 
 function TabHeader(props) {
   const [isRight, setIsRight] = React.useState(true);

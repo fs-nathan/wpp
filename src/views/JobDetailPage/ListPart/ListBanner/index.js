@@ -11,7 +11,7 @@ const Container = styled.div`
   & > * {
     margin-right: 10px;
     margin-bottom: 5px;
-    padding: 0 10px;
+    padding: 0 5px;
     & > span {
       font-size: 12px;
     }

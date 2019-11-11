@@ -21,6 +21,16 @@ const Container = styled.div`
     font-size: 16px;
   }
 `;
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 
 function TabHeader({ setShow }) {
@@ -35,12 +45,12 @@ function TabHeader({ setShow }) {
   return (
     <Container>
       <ColorTypo uppercase bold>Chỉ đạo - Quyết định</ColorTypo>
-      <IconButton onClick={handleClose,handleClickOpen}>
+      <ButtonIcon onClick={handleClose,handleClickOpen}>
         <Icon path={mdiPlus} size={1}/>
-      </IconButton>
-      <IconButton onClick={() => setShow(0)}>
+      </ButtonIcon>
+      <ButtonIcon onClick={() => setShow(0)}>
         <Icon path={mdiClose } size={1}/>
-      </IconButton>
+      </ButtonIcon>
       {/* modal chi dao quyet dinh */}
       <DemandModal isOpen={open} handleClose={handleClose} handleOpen={handleClickOpen}/>
     </Container>

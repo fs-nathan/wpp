@@ -19,17 +19,28 @@ const Container = styled.div`
   }
 `;
 
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
+
 function TabHeader({ setShow }) {
   const [openAddModal, setOpenAddModal] = React.useState(false);
   return (
     <Container>
       <ColorTypo uppercase bold>Thành viên</ColorTypo>
-      <IconButton>
+      <ButtonIcon>
         <Icon path={mdiSettings} size={1} onClick={() => setOpenAddModal(true)}/>
-      </IconButton>
-      <IconButton onClick={() => setShow(0)}>
+      </ButtonIcon>
+      <ButtonIcon onClick={() => setShow(0)}>
         <Icon path={mdiClose } size={1}/>
-      </IconButton>
+      </ButtonIcon>
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal}/>
     </Container>
   );

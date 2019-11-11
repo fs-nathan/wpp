@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import {
     IconButton, Typography, Avatar
 } from '@material-ui/core'
+import Icon from '@mdi/react';
+import { mdiShare } from '@mdi/js';
 import * as MaterialIcon from '@material-ui/icons'
 // import colors from '../../../helpers/colorPalette'
 import fakeAvatar from '../../../assets/avatar.jpg'
@@ -123,7 +125,7 @@ function MessageParent(props) {
             </WrapMessage>
             <WrapFunctionBar className="wrap-function-message">
                 <FunctionButton>
-                    <MaterialIcon.ScreenShare size="small" />
+                    <Icon path={mdiShare} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
                 </FunctionButton>
                 <FunctionButton>
                     <MaterialIcon.ThumbUp size="small" />

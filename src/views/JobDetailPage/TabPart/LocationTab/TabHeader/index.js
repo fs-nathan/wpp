@@ -17,14 +17,24 @@ const Container = styled.div`
     font-size: 16px;
   }
 `;
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 function TabHeader({ setShow }) {
   return (
     <Container>
       <ColorTypo uppercase bold>Chia sẻ vị trí</ColorTypo>
-      <IconButton onClick={() => setShow(0)}>
+      <ButtonIcon onClick={() => setShow(0)}>
         <Icon path={mdiClose } size={1}/>
-      </IconButton>
+      </ButtonIcon>
     </Container>
   );
 }

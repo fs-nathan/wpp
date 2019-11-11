@@ -69,7 +69,16 @@ const Content = styled.div`
 const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
-
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 const MemberMenuLists = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -82,9 +91,9 @@ const MemberMenuLists = (props) => {
   }
   return (
     <div>
-      <IconButton onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
-        <Icon path={mdiDotsVertical} size={1} color={'rgba(0, 0, 0, 1)'} />
-      </IconButton>
+      <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
+        <Icon path={mdiDotsVertical} size={1}  />
+      </ButtonIcon>
       <Menu
             id={"simple-menu" + props.idx}
             anchorEl={anchorEl}
