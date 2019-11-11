@@ -55,6 +55,16 @@ const Div = styled.div`
     display: inline;
   }
 `
+const Button = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 const MenuListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -168,17 +178,17 @@ const FileBox = () => {
           <div>
             <ColorTypo variant='body1'>Do an.Update1-13.8.19.docx</ColorTypo>
             <ColorTypo variant='caption'>
-              <IconButton size='small'>
+              <Button size='small'>
                 <Icon path={mdiDownload} size={1} />
-              </IconButton>
+              </Button>
               1.1 MB
             </ColorTypo>
           </div>
           <div>
             <ColorTypo variant='body1'>13/08/2019</ColorTypo>
-            <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+            <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
               <Icon path={mdiDotsHorizontal} size={1} />
-            </IconButton>
+            </Button>
           </div>
         </FileBoxStyledListItem>
         <Menu
@@ -258,9 +268,9 @@ const LinkBox = () => {
             <a href='https://google.com.vn' target="_blank">https://google.com.vn</a>
           </ListItemText>
           <ListItemIcon>
-            <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+            <Button onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
               <Icon path={mdiDotsHorizontal} size={1} />
-            </IconButton>
+            </Button>
           </ListItemIcon>
         </ListItemLink>
         <Menu

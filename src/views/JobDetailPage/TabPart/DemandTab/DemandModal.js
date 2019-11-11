@@ -43,12 +43,9 @@ const HelperText = styled(TextField)`
   }
 `
 const Text = styled(TextField)`
-  & > *:first-child {
-    margin-bottom: 20px;
-    & > input {
-      font-size: 16px;
-      margin-bottom: 100px;
-    }
+  & > label {
+      font-size: 14px;
+      z-index: 0
   }
 `
 
@@ -90,7 +87,6 @@ const DemandModal = (props) => {
       <DialogContent dividers>
         <TexTitle >Chọn loại</TexTitle>
         <OutlinedInputSelect />
-        <TitleText component="div">Nội dung</TitleText>
         {/* <Text 
                 component="span"
                 id="outlined-full-width"
@@ -103,7 +99,7 @@ const DemandModal = (props) => {
                 }}
                 variant="outlined"
             /> */}
-        <TextField
+        <Text 
           id="outlined-multiline-static"
           label="Nội dung"
           fullWidth

@@ -13,7 +13,6 @@ import MemberTab from './MemberTab';
 const Container = styled.div`
   grid-area: tab;
   padding: 0px;
-  overflow: hidden;
 `;
 
 function TabPart() {

@@ -22,12 +22,25 @@ const ApprovedContainer = styled.div`
   margin-top: 10px;
 `;
 
-const StyledButton = styled(({ color, ...rest }) => <Button {...rest} />)`
-  font-size: 11px;
-  border-radius: 999px;
-  & > span {
-    color : ${props => props.color ? props.color : 'rgba(0, 0, 0, .4)'};
-      display: flex;
+// const StyledButton = styled(({ color, ...rest }) => <Button {...rest} />)`
+//   font-size: 11px;
+//   border-radius: 999px;
+//   & > span {
+//     color : ${props => props.color ? props.color : 'rgba(0, 0, 0, .4)'};
+//       display: flex;
+//   }
+// `
+
+const StyledButton = styled(Button)`
+  box-shadow: none;
+  background: none;
+  color: #2196F3;
+  padding: 3px 9px;
+  border : 1px solid #2196F3;
+  &:hover {
+    box-shadow: none;
+  background: #2196F3;
+  color: white;
   }
 `
 
@@ -71,9 +84,9 @@ const ApprovedBox = (props) => {
                   <Badge component='small' color='bluelight' badge size='small' label={'Duyệt'} />
                 </ColorTypo>
               </div>
-              <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+              <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
                 <Icon path={mdiDotsHorizontal} size={1} />
-              </IconButton>
+              </ButtonIcon>
             </StyledTitleBox>
             <StyledContentBox>
               <ColorTypo variant='caption'>18:00 - 12/12/2019</ColorTypo>
@@ -96,8 +109,8 @@ const ApprovedBox = (props) => {
         <React.Fragment>
           <ApprovedContainer>
             <StyledTitleBox>
-              <StyledButton variant="contained" size="small" color='#3498eb' onClick={handleClickOpen}>Phê duyệt</StyledButton>
-              <StyledButton variant="contained" size="small" color='#eb3434'>Từ chối</StyledButton>
+              <StyledButton variant="contained" size="small"  onClick={handleClickOpen}>Phê duyệt</StyledButton>
+              <Button variant="outlined" size="small" >Từ chối</Button>
               <span />
             </StyledTitleBox>
             <ApproveModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}/>
@@ -127,11 +140,22 @@ const StyledTitleBox = styled.div`
 const StyledContentBox = styled.div`
   margin-left: 30px;
   margin-top: 10px;
-  background-color: #eee;
+  background-color: #f9f9f9;
   padding: 8px 10px;
   border-radius: 5px;
   font-weight: bold;
 `;
+
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 
 const CustomListItem = (props) => {
@@ -157,9 +181,9 @@ const CustomListItem = (props) => {
               <Badge component='small' size='small' badge color='orangelight' label={'Đề xuất'} /> với <ColorTypo color='orange' variant='caption'>Trần Văn B</ColorTypo> lúc 08:00 - 12/12/2019
             </ColorTypo>
           </div>
-          <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
             <Icon path={mdiDotsHorizontal} size={1} />
-          </IconButton>
+          </ButtonIcon>
         </StyledTitleBox>
         <StyledContentBox>
           <StyleContent >Lorem ipsum dolor sit.</StyleContent>
@@ -191,8 +215,8 @@ const StyledList = styled.ul`
   padding-inline-start: 0 !important;
   list-style-type: none;
   & > li {
-    padding: 8px 0;
-    border-bottom: 1px solid #a5a0a0;
+    padding: 8px 0 20px 0;
+    border-bottom: 1px solid #dedede;
     margin: 17px 0;
   }
 `;

@@ -34,6 +34,7 @@ const useStyles = makeStyles({
     root: {
         width: '100%',
         overflowX: 'auto',
+        boxShadow: 'none'
     },
     table: {
         minWidth: 650,
@@ -87,11 +88,12 @@ const GridArea = styled(Typography)`
 `
 const ButtonAddAll = styled(Button)`
     color: #417cbf;
-    margin: 10px 0;
+    margin: 10px 5px;
 `
 
 const BorderGrid = styled(Typography)`
     border-right: 1px solid #e0e0e0;
+    min-height: 660px;
 `
 const FlexMemberProject = styled(Typography)` 
     display: flex;
@@ -137,7 +139,7 @@ function ProjectMember(props) {
                 <ColorTypo>{props.email}</ColorTypo>
                 <ColorTypo color="orange">{props.label}</ColorTypo>
             </div>
-            <Chip bold= "true"
+            <Chip bold="true"
                 label="Thêm"
                 onClick={handleClick}
             />
@@ -150,7 +152,7 @@ function MemberDetail(props) {
         <div>
             <ColorTypo bold fontSize>{props.name}</ColorTypo>
             <ColorTypo>{props.email}</ColorTypo>
-        </div>   
+        </div>
     )
 }
 
@@ -163,7 +165,7 @@ function MemberPriority(props) {
 
     if (props.master) {
         return (
-            <div style={{ color: '#fd7e14', padding: '0 25px' }}>{props.label}</div>
+            <div style={{ color: '#fd7e14', padding: '0 30px' }}>{props.label}</div>
         )
     }
 
@@ -397,7 +399,7 @@ function AddMemberModal(props) {
                 role4={item.role[3] && item.role[3]} />
         }
     }))
-    
+
     const handleClose = () => {
         props.setOpen(false);
         setListMemberProject(listMemberProject.map((item, key) => {
@@ -435,18 +437,18 @@ function AddMemberModal(props) {
     }
     return (
         <div>
-            <Dialog maxWidth="lg" fullWidth onClose={handleClose} open={props.isOpen}>
+            <Dialog maxWidth="xl" onClose={handleClose} open={props.isOpen}>
                 <DialogTitle onClose={handleClose}>
                     Thành viên công việc
         </DialogTitle>
-                <DialogContent dividers>
-                    <GridArea component={'div'} >
+                <DialogContent dividers style={{ padding: 0  }}>
+                    <GridArea component={'div'} style={{ borderBottom: 'none'}} >
                         <BorderGrid component={'div'}>
                             <FlexMemberProject component={'span'}>
                                 <MemberProject component={'div'}>Thành viên dự án</MemberProject>
                             </FlexMemberProject>
                             <Typography component="span">
-                                <div style={{ margin: '10px 15px 0 5px' }}>
+                                <div style={{ margin: '10px 10px 0 10px' }}>
                                     <SearchInput placeholder='Tìm thành viên' />
                                 </div>
                                 <ButtonAddAll onClick={handleAddAll}>
@@ -459,7 +461,7 @@ function AddMemberModal(props) {
                             <FlexJobMember component="div">
                                 <MemberProject component={'div'}>Thành viên công việc</MemberProject>
                             </FlexJobMember>
-                            <TableMember listMemberJobState={listMemberJobState} />
+                            <TableMember listMemberJobState={listMemberJobState} style={{ boxShadow: 'none'}}/>
                         </Typography>
                     </GridArea>
                 </DialogContent>

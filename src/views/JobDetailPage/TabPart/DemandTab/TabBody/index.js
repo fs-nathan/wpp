@@ -46,6 +46,16 @@ const Badge = styled(ColorChip)`
   border-radius: 3px !important;
   
 `
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 const CustomListItem = (props) => {
 
@@ -59,6 +69,7 @@ const CustomListItem = (props) => {
     setAnchorEl(null);
   }
 
+
   return (
     <React.Fragment>
       <StyledListItem>
@@ -70,9 +81,9 @@ const CustomListItem = (props) => {
               <Badge color={props.isDemand ? 'orangelight' : 'bluelight'} label={props.isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
             </ColorTypo>
           </div>
-          <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
             <Icon path={mdiDotsHorizontal} size={1} />
-          </IconButton>
+          </ButtonIcon>
         </StyledTitleBox>
         <StyledContentBox>
           <Text >Lorem ipsum dolor sit.</Text>

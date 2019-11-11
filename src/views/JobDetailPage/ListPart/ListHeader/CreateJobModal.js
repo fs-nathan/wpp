@@ -15,9 +15,8 @@ import addMemberIcon from '../../../../assets/addMemberIcon.png';
 import colorPal from '../../../../helpers/colorPalette';
 import AddMemberModal from './AddMemberModal';
 import TimeField from 'react-simple-timefield';
-import InputSelect from '../../TabPart/DefaultTab/InputSelect'
+import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect'
 
-import { func } from 'prop-types';
 
 
 const Header = styled.div`
@@ -52,7 +51,7 @@ const ProgressWork = styled(Typography)`
   display: flex;
   justify-content: space-between;
   align-item: center;
-  margin-top: 25px;
+  margin-top: 20px;
 `
 
 const TitleText = styled(Typography)`
@@ -102,7 +101,7 @@ const BeginEndTime = styled(Typography)`
 const TypoText = styled(Typography)`
   font-size: 15px;
   color: #505050;
-  margin: 20px 0;
+  margin: 20px 0 15px 0;
 `
 const InputTime = styled(TimeField)`
   width: 146px !important;
@@ -193,12 +192,22 @@ const DefaultFlex = styled(Typography)`
 `
 
 const InputTextJob = styled(TextField)`
+    margin: 0;
     & > label {
-        font-size: 14px
+        font-size: 14px;
+        z-index: 0
     }
     & > *:last-child {
         color: red;
         margin-left: 10px
+    }
+`
+
+const TextInputSelect = styled(InputSelect)`
+    & > *:first-child {
+        & > *:first-child {
+          padding: 6px;
+        }
     }
 `
 
@@ -276,13 +285,19 @@ function CreateJobModal(props) {
   }
 
   return (
-    
+
     <div>
       <Dialog open={props.isOpen} fullWidth onClose={handleClose}>
-        <DialogTitle onClose={handleClose}>
-          Tạo công việc
-        </DialogTitle>
-        <DialogContent dividers>
+        {props.isRight ?
+          <DialogTitle onClose={handleClose}>
+            Chỉnh sửa công việc
+          </DialogTitle>
+          :
+          <DialogTitle onClose={handleClose}>
+            Tạo công việc
+          </DialogTitle>
+        }
+        <DialogContent dividers style={{ overflow: 'hidden'}}>
           <Typography component={'span'}>
             <TitleText component={'span'}>
               <InputTextJob
@@ -290,6 +305,7 @@ function CreateJobModal(props) {
                 label="Tên công việc"
                 helperText="(Tối đa 100 kí tự)"
                 margin="normal"
+                variant="outlined"
                 fullWidth
               />
               {/* <Typography component={'span'}>Tên công việc</Typography>
@@ -325,12 +341,12 @@ function CreateJobModal(props) {
             <OutlineInput type={'date'} />
           </StartEndDay>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
-          <Typography component={'div'} style={{ marginBottom: '30px' }}>
+          <Typography component={'div'} style={{ marginBottom: '20px' }}>
             <TitleText component={'div'}>
-              <Typography component={'div'}> Nhóm mặc định </Typography>
+              <Typography component={'div'} style={{ marginBottom: 10}}> Nhóm mặc định </Typography>
               <Typography component={'div'}></Typography>
             </TitleText>
-            <InputSelect />
+            <TextInputSelect />
           </Typography>
           <Typography component={'div'}>
             <TitleText component={'div'}>
@@ -340,6 +356,8 @@ function CreateJobModal(props) {
                 helperText="(Tối đa 500 kí tự)"
                 margin="normal"
                 fullWidth
+                variant="outlined"
+                
               />
               {/* <Typography component={'div'}> Mô tả công việc </Typography>
               <Typography component={'div'}>(Tối đa 500 kí tự)</Typography> */}
@@ -359,16 +377,26 @@ function CreateJobModal(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-
-          <Button onClick={() => {
-            handleClose()
-            setOpenAddModal(true)
-          }} >
-            <img src={addMemberIcon} alt='addMemberIcon' />
+          {props.isRight ?
+            <>
+            <span></span>
+            <Button onClick={handleClose} color="primary">
+              Hoàn Thành
+            </Button>
+            </>
+            :
+            <>
+            <Button onClick={() => {
+              handleClose()
+              setOpenAddModal(true)
+            }} >
+              <img src={addMemberIcon} alt='addMemberIcon' />
+            </Button>
+            <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
+              TẠO VIỆC
           </Button>
-          <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
-            TẠO VIỆC
-          </Button>
+          </>
+          }
         </DialogActions>
       </Dialog>
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

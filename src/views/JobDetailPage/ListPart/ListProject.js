@@ -1,6 +1,6 @@
 import React from 'react';
 import { Slide, IconButton, ListSubheader, List } from '@material-ui/core';
-import { mdiWindowClose, mdiApps, mdiMenuUp } from '@mdi/js';
+import { mdiClose , mdiDrag, mdiMenuUp } from '@mdi/js';
 import Icon from '@mdi/react';
 import styled from 'styled-components';
 import SearchInput from '../../../components/SearchInput';
@@ -19,15 +19,13 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-bottom: 17px;
-  & > *:first-child {
-    display: flex;
-    align-items: center;
+  margin-top: 9px;
   & > svg {
-    fill: #c9c9c9;
+    color: rbga(0,0,0,0.54);
   }
   & > div {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: normal;
     padding: 0 15px;
   }
   }
@@ -89,11 +87,21 @@ const ExpansionProject = styled(ExpansionPanel)`
       & > div {
         & > div {
           & > *:first-child {
-            padding: 0 0 0 10px;
+            padding: 0;
             border-top: 1px solid #0000001a;
           }
         }
       }
+    }
+  }
+`
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
     }
   }
 `
@@ -107,15 +115,13 @@ function ListProjectHeader({ setShow }) {
   return (
     <div style={{ marginBottom: 17 }}>
       <Header>
-        <div>
-          <Icon path={mdiApps} size={1.5} />
-          <div>DANH SÁCH DỰ ÁN</div>
-        </div>
-        <IconButton
+        <Icon path={mdiDrag} size={1} color={'#000000'}/>
+        <div>DANH SÁCH DỰ ÁN</div>
+        <ButtonIcon
           onClick={closeListProject}
         >
-          <Icon path={mdiWindowClose} size={1.2} />
-        </IconButton>
+          <Icon path={mdiClose} size={1} />
+        </ButtonIcon>
       </Header>
       <SearchInput placeholder='Tìm dự án' />
     </div>
@@ -154,10 +160,9 @@ function ListProject(props) {
         fakeData.map(room => {
           return (
             <div key={room.id}>
-              <ExpansionProject>
+              <ExpansionProject defaultExpanded>
                 <ExpansionPanelSummary
                   expandIcon={<Icon path={mdiMenuUp} size={1} />}
-                  aria-controls="panel1bh-content"
                   id="panel1bh-header">
                   <ListProjectBody subPrimary={room.name.toUpperCase()} />
                 </ExpansionPanelSummary>

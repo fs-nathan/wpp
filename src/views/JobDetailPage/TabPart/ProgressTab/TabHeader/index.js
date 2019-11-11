@@ -11,7 +11,7 @@ const Container = styled.div`
   align-items: center;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 105px;
+  height: 85px;
   overflow-y: hidden;
   & > *:first-child {
     margin-right: auto;
@@ -19,6 +19,17 @@ const Container = styled.div`
     font-size: 16px;
   }
 `;
+
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 function TabHeader({ setShow }) {
   const [time, setTime] = React.useState('')
@@ -37,12 +48,12 @@ function TabHeader({ setShow }) {
   return (
     <Container>
       <ColorTypo uppercase bold>Tiến độ công việc</ColorTypo>
-      <IconButton onClick={handleClickClose, handleClickOpen}>
+      <ButtonIcon onClick={handleClickClose, handleClickOpen}>
         <Icon path={mdiSettings} size={1} />
-      </IconButton>
-      <IconButton onClick={() => setShow(0)}>
+      </ButtonIcon>
+      <ButtonIcon onClick={() => setShow(0)}>
         <Icon path={mdiClose} size={1} />
-      </IconButton>
+      </ButtonIcon>
       {/* modal tao moi cong viec con */}
       <ProgressModal isOpen={open} handleClickOpen={handleClickOpen} handleClickClose={handleClickClose} />
     </Container>

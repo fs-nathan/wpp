@@ -10,7 +10,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   background-color: #fff;
-  height: 105px;
+  height: 85px;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   & > *:first-child {
     margin-right: auto;
@@ -18,6 +18,16 @@ const Container = styled.div`
     font-size: 16px;
   }
 `;
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 function TabHeader({ setShow }) {
   // bien cua modal cong viec con
@@ -32,12 +42,12 @@ function TabHeader({ setShow }) {
   return (
     <Container>
       <ColorTypo uppercase bold>Nhắc hẹn</ColorTypo>
-      <IconButton onClick={handleClickOpen}>
+      <ButtonIcon onClick={handleClickOpen}>
         <Icon path={mdiPlus} size={1} />
-      </IconButton>
-      <IconButton onClick={() => setShow(0)}>
+      </ButtonIcon>
+      <ButtonIcon onClick={() => setShow(0)}>
         <Icon path={mdiClose} size={1} />
-      </IconButton>
+      </ButtonIcon>
       {/* modal tao moi cong viec con */}
       <RemindModal isOpen={isOpen} handleClickClose={handleClickClose} />
     </Container>

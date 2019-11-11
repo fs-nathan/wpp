@@ -52,8 +52,17 @@ const BadgeAdmin = styled(ColorTypo)`
   margin-right: 7px;
 `
 const MenuItemCheck = styled(MenuItem)`
-
   padding-right: 30px;
+`
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
 `
 
 const getBadgeProjectRole = (projectRole) => {
@@ -122,9 +131,9 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
             </React.Fragment>
           }
         />
-        <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+        <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
           <Icon path={mdiDotsVertical} size={1} />
-        </IconButton>
+        </ButtonIcon>
       </StyledListItem>
       <Menu
         id="simple-menu"

@@ -12,7 +12,7 @@ const Container = styled.div`
   align-items: center;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 105px;
+  height: 85px;
   & > *:first-child {
     margin-right: auto;
     font-size: 16px;
@@ -21,12 +21,22 @@ const Container = styled.div`
 `;
 const ButtonCancel = styled.p`
   background: #edeff0;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   margin: 0;
   padding: 12px 8px;
   margin-right: 5spx;
   border-radius: 50%;
+`
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
 `
 
 function TabHeader(props) {
@@ -39,13 +49,13 @@ function TabHeader(props) {
     <Container>
       <ColorTypo uppercase bold>Công việc con</ColorTypo>
       {isPlus ?
-        <IconButton onClick={() => {
+        <ButtonIcon onClick={() => {
           props.onClickPlusIcon()
           handleClick()
         }
         }>
           <Icon path={mdiPlus} size={1} />
-        </IconButton>
+        </ButtonIcon>
         :
         <ButtonCancel onClick={() => {
           props.onClickPlusIcon()
@@ -53,9 +63,9 @@ function TabHeader(props) {
         }
         }>Hủy</ButtonCancel>
       }
-      <IconButton onClick={() => props.setShow(0)}>
+      <ButtonIcon onClick={() => props.setShow(0)}>
         <Icon path={mdiClose} size={1} />
-      </IconButton>
+      </ButtonIcon>
     </Container>
   );
 }

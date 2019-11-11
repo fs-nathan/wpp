@@ -51,7 +51,7 @@ const StyledTitleBox = styled.div`
 
 const StyledContentBox = styled.div`
   margin: 10px 0 30px 30px;
-  background-color: #eee;
+  background-color: #f8f8f8;
   padding: 13px 15px;
   border-radius: 10px;
   font-weight: bold;
@@ -59,7 +59,6 @@ const StyledContentBox = styled.div`
 
 const Container = styled.div`
   padding: 10px 20px;
-  background-color: #f8f8f8;
   height: 100%;
 `;
 
@@ -70,7 +69,16 @@ const Content = styled.div`
 const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
-
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 const MemberMenuLists = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -83,9 +91,9 @@ const MemberMenuLists = (props) => {
   }
   return (
     <div>
-      <IconButton onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
-        <Icon path={mdiDotsVertical} size={1} color={'rgba(0, 0, 0, 1)'} />
-      </IconButton>
+      <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
+        <Icon path={mdiDotsVertical} size={1}  />
+      </ButtonIcon>
       <Menu
             id={"simple-menu" + props.idx}
             anchorEl={anchorEl}

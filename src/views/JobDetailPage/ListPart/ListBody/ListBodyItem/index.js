@@ -58,6 +58,10 @@ const ContentContainer = styled.div`
   }
 `;
 
+const BadgeItem = styled(ColorChip)`
+  font-weight: 600;
+  border-radius: 3px !important
+`
 
 function JobName(props) {
   return (
@@ -87,13 +91,13 @@ function JobContent(props) {
       <div>
         <div>
           <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20 }} />
-          <ColorTypo color='#7a869a' style={{ fontSize: '14px', textOverflow: 'ellipsis', width: '160px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.description}</ColorTypo>
+          <ColorTypo color='#7a869a' style={{ fontSize: '13px', textOverflow: 'ellipsis', width: '160px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.description}</ColorTypo>
         </div>
-        <div style={{color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '14px'}}>{props.time}</div>
+        <div style={{color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '13px'}}>{props.time}</div>
       </div>
-      <div>
-        <ColorChip color={colorStatus} badge label={props.label} size='small' style={{ borderRadius: '2px', padding: '0 5px' }} />
-        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)' }} path={mdiPin} size={0.8} />
+      <div style={{display: 'flex'}}>
+        <BadgeItem color='redlight' badge label={props.label} size='small' />
+        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} />
       </div>
     </ContentContainer>
   )
@@ -113,7 +117,7 @@ function JobUnit(props) {
 function ListBodyItem(props) {
   return (
     <Container>
-      <ListItemAvatar style={{ padding: '0 15px' }}>
+      <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.progress} />
       </ListItemAvatar>
       <JobUnit {...props} />
