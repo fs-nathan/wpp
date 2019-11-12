@@ -30,6 +30,7 @@ import {
   SORT_USER, SORT_ROOM, CREATE_ROOM,
   INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP,
 } from '../../../../constants/events';
+import * as routes from '../../../../constants/routes'
 
 const Container = styled.div`
   grid-area: right;
@@ -42,6 +43,7 @@ const SubTitle = styled.span`
     color: blue;
   }
 `;
+
 
 const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
 
@@ -264,7 +266,7 @@ function AllUsersTable({
             },
             row: {
               id: 'id',
-              onClick: (row, group) => history.push(`${location.pathname}/nguoi-dung/${get(row, 'id')}`),
+              onClick: (row, group) => history.push(`${location.pathname + routes.user}/${get(row, 'id')}`),
             },
             draggable: {
               bool: true,

@@ -7,6 +7,7 @@ import avatar from '../../../../../assets/avatar.jpg';
 import MultiSlider, { Progress, Dot } from 'react-multi-bar-slider';
 import { mdiCircle } from '@mdi/js';
 import Icon from '@mdi/react'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 const Container = styled.div`
   padding: 10px 0;
@@ -140,7 +141,11 @@ const LegendBox = styled.div`
     margin-right: 10px;
   }
 `;
-
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+  
+`;
 
 // const ProgressBarActive = (props) => {
 //   const [progress, setStateProgress] = React.useState(10)
@@ -177,6 +182,7 @@ function TabBody() {
     setStateProgress(progress)
   }
   return (
+    <Body>
     <Container>
       <StartEndDateBox>
         <StartDateBox>
@@ -190,7 +196,7 @@ function TabBody() {
       </StartEndDateBox>
       {/* progress */}
       <ProgressBar
-        width={450}
+        width={400}
         height={20}
         slidableZoneSize={40}
         backgroundColor="#edeff0"
@@ -274,6 +280,7 @@ function TabBody() {
         </TableBody>
       </TableHistory>
     </Container>
+    </Body>
   )
 }
 

@@ -11,6 +11,12 @@ import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 import DemandModal from '../DemandModal'
+import { Scrollbars } from 'react-custom-scrollbars';
+
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+`
 
 const Container = styled.div`
   padding: 0 20px;
@@ -160,6 +166,7 @@ function TabBody() {
   };
 
   return (
+    <Body>
     <Container>
       <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
         <ColorButton 
@@ -188,6 +195,7 @@ function TabBody() {
         {null}
       </Collapse>
     </Container>
+    </Body>
   )
 }
 

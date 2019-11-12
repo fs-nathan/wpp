@@ -15,6 +15,8 @@ import SearchInput from '../../../../../components/SearchInput';
 import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
 import iconDoc from '../../../../../assets/doc.png';
+import { Scrollbars } from 'react-custom-scrollbars';
+
 
 const Container = styled.div`
   padding: 20px;
@@ -245,6 +247,11 @@ const HeaderSubText = styled(ListSubheader)`
   font-size: 13px;
   color: #6e6d6d;
 `
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+  
+`;
 const LinkBox = () => {
 
   const CustomListItem = () => {
@@ -324,6 +331,7 @@ function TabBody() {
   };
 
   return (
+    <Body>
     <Container>
       <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
         <ColorButton
@@ -355,6 +363,7 @@ function TabBody() {
         <LinkContainer />
       </Collapse>
     </Container>
+    </Body>
   )
 }
 

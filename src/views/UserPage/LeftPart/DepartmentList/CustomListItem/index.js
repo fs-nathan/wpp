@@ -6,6 +6,7 @@ import { Avatar, ListItemText } from '@material-ui/core';
 import { StyledListItem, Primary, Secondary } from '../../../../../components/CustomList';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
+import * as routes from '../../../../../constants/routes'
 
 function CustomListItem({ room, index }) {
   const location = useLocation();
@@ -19,7 +20,7 @@ function CustomListItem({ room, index }) {
       {(provided) => (
         <StyledListItem 
           component={Link}
-          to={`${location.pathname}/thong-tin/${_.get(room, 'id', '')}`}
+          to={`${location.pathname + routes.information}/${_.get(room, 'id', '')}`}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}

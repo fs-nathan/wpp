@@ -11,6 +11,7 @@ import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 import colorPal from '../../../../../helpers/colorPalette';
 import RemindModal from '../RemindModal'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 
 const __data = [
@@ -79,6 +80,11 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+  
+`;
 const MemberMenuLists = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -165,10 +171,12 @@ const RemindList = () => {
 
 function TabBody() {
   return (
+    <Body>
     <Container>
       <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
       <RemindList />
     </Container>
+    </Body>
   )
 }
 

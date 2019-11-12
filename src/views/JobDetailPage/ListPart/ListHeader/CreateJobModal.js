@@ -297,7 +297,7 @@ function CreateJobModal(props) {
             Tạo công việc
           </DialogTitle>
         }
-        <DialogContent dividers style={{ overflow: 'hidden'}}>
+        <DialogContent dividers style={{ overflow: 'hidden', minHeight: 690}}>
           <Typography component={'span'}>
             <TitleText component={'span'}>
               <InputTextJob

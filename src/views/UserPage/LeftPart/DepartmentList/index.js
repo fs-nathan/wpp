@@ -18,6 +18,7 @@ import { sortRoom } from '../../../../actions/room/sortRoom';
 import { CustomEventListener, CustomEventDispose, CREATE_ROOM, SORT_ROOM } from '../../../../constants/events';
 import avatar from '../../../../assets/avatar.jpg';
 import _ from 'lodash';
+import * as routes from '../../../../constants/routes'
 
 const Banner = styled.div`
   padding: 15px;
@@ -126,7 +127,7 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
                       {provided.placeholder}
                       <StyledListItem
                         component={Link}
-                        to={`${location.pathname}/thong-tin/default`
+                        to={`${location.pathname + routes.information}/default`
                       }>
                         <div>
                           <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
