@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { get } from 'lodash';
+import moment from 'moment';
+import { get, sortBy, reverse } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { 
@@ -15,7 +16,8 @@ import {
   mdiCalendar,
   mdiAccount,
   mdiDotsVertical,
-  mdiCheckCircle
+  mdiCheckCircle,
+  mdiShieldAccount,
 } from '@mdi/js';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
 import CreateProjectModal from '../../Modals/CreateProject';
@@ -146,9 +148,6 @@ const DateWrapper = styled.div`
   & > div {  
     display: flex;
     flex-direction: column;
-    &:last-child {
-      text-align: right;
-    }
     & > span {
       font-size: 14px;
       margin-bottom: 15px;
@@ -163,7 +162,7 @@ const StyledButton = styled(Button)`
     margin: 10px auto;
     background-color: #05b50c;
     color: #fff;
-    width: 60%;
+    width: 90%;
   }
   &&:hover {
     background-color: #05b50c;
@@ -274,7 +273,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
 
   const { projectGroupId } = useParams();
 
-  const { data: { projects }, loading: listProjectLoading, error: listProjectError } = listProject;
+  const { data: { projects: _projects }, loading: listProjectLoading, error: listProjectError } = listProject;
   const { data: { projectGroup }, loading: detailProjectGroupLoading, error: detailProjectGroupError } = detailProjectGroup;
 
   const loading = listProjectLoading || detailProjectGroupLoading;
@@ -288,6 +287,71 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
 
   const [filter, setFilter] = React.useState(0);
   const [time, setTime] = React.useState(0);
+  const [sortField, setSortField] = React.useState(null);
+  const [sortType, setSortType] = React.useState(1);
+  const [projects, setProjects] = React.useState(_projects);
+  const [startDate, setStartDate] = React.useState(moment().toDate());
+  const [endDate, setEndDate] = React.useState(moment().toDate());
+  const [timeTitle, setTimeTitle] = React.useState(`Năm ${moment().year()}`);
+
+  React.useEffect(() => {
+    setProjects(_projects);
+  }, [_projects]);
+
+  React.useEffect(() => {
+    if (sortField) {
+      let newProjects = sortBy(projects, [o => get(o, sortField)]);
+      if (sortType === -1) reverse(newProjects);
+      setProjects(newProjects);
+    }
+  }, [sortField, sortType]);
+
+  React.useEffect(() => {
+    switch (time) {
+      case 0: {
+        setStartDate(moment().startOf('year').toDate());
+        setEndDate(moment().endOf('year').toDate());
+        setTimeTitle(`Năm ${moment().year()}`);
+        return;
+      }
+      case 1: {
+        setStartDate(moment().startOf('month').toDate());
+        setEndDate(moment().endOf('month').toDate());
+        setTimeTitle(`Tháng ${moment().month() + 1}, năm ${moment().year()}`);
+        return;
+      }
+      case 2: {
+        setStartDate(moment().subtract(1, 'M').startOf('month').toDate());
+        setEndDate(moment().subtract(1, 'M').endOf('month').toDate());
+        setTimeTitle(`Tháng ${moment().subtract(1, 'M').month() + 1}, năm ${moment().subtract(1, 'M').year()}`);
+        return;
+      }
+      case 3: {
+        setStartDate(moment().startOf('isoWeek').toDate());
+        setEndDate(moment().endOf('isoWeek').toDate());
+        setTimeTitle(`Tuần ${moment().isoWeek()}, năm ${moment().year()}`);
+        return;
+      }
+      case 4: {
+        setStartDate(moment().subtract(1, 'w').startOf('isoWeek').toDate());
+        setEndDate(moment().subtract(1, 'w').endOf('isoWeek').toDate());
+        setTimeTitle(`Tuần ${moment().subtract(1, 'w').isoWeek()}, năm ${moment().subtract(1, 'w').year()}`);
+        return;
+      }
+      case 5: {
+        setStartDate(moment().toDate());
+        setEndDate(moment().toDate());
+        setTimeTitle(`Toàn bộ thời gian`);
+        return;
+      }
+      case 6: {
+        setTimeTitle(`Tùy chọn`);
+        return;
+      }
+      default: 
+        return;
+    }
+  }, [time]);
 
   React.useEffect(() => {
     let options = {};
@@ -359,13 +423,13 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
     setDownloadAnchor(null);
   }
 
-  function handleTimeClose(time = null) {
-    return evt => {
-      if (time !== null) {
-        setTime(time);
-      }
-      setTimeAnchor(null);
-    };
+  function handleSortColumn(field) {
+    if (field !== sortField) {
+      setSortField(field);
+      setSortType(1);
+    } else {
+      setSortType(prev => prev * -1);
+    }
   }
 
   return (
@@ -420,11 +484,12 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
               },
             }}
             columns={[{
-              label: '',
+              label: () => <Icon path={mdiShieldAccount} size={1} color={'rgb(102, 102, 102)'}/>,
               field: (row) => <CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' />,
             }, {
               label: 'Dự án',
               field: 'name',
+              sort: (evt) => handleSortColumn('name'),
             }, {
               label: 'Trạng thái',
               field: (row) => <StateBox stateName={decodeStateName(get(row, 'state_name', '')).color}>
@@ -435,11 +500,13 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
                                   {get(row, 'state_name', '') === 'expired' ? get(row, 'day_expired', 0) : get(row, 'day_implement', 0)} ngày
                                 </small>
                               </StateBox>,
+              sort: (evt) => handleSortColumn('state_name'),
             }, {
               label: 'Hoàn thành',
               field: (row) => <ProgressBar>
                                 <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />
                               </ProgressBar>,
+              sort: (evt) => handleSortColumn('complete'),
             }, {
               label: 'Tiến độ',
               field: (row) => <DurationBox>
@@ -448,11 +515,13 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
                                   {(new Date(get(row, 'date_start'))).toLocaleDateString()} - {(new Date(get(row, 'date_end'))).toLocaleDateString()}
                                 </small>
                               </DurationBox>,
+              sort: (evt) => handleSortColumn('duration'),
             }, {
               label: 'Ưu tiên',
               field: (row) => <StyledBadge color={decodePriorityCode(get(row, 'priority_code', 0)).color}>
                                 {decodePriorityCode(get(row, 'priority_code', 0)).name}  
                               </StyledBadge>,
+              sort: (evt) => handleSortColumn('priority_code'),
             }, {
               label: () => <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'}/>,
               field: row => <AvatarCircleList 
@@ -517,7 +586,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
             id="time-menu"
             anchorEl={timeAnchor}
             open={Boolean(timeAnchor)}
-            onClose={handleTimeClose()}
+            onClose={evt => setTimeAnchor(null)}
             transformOrigin={{
               vertical: -30,
               horizontal: 'right',
@@ -532,43 +601,52 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
                     </StyledListSubheader>
                   }
                 >
-                  <TimeListItem button onClick={handleTimeClose(0)} selected={time === 0}>
+                  <TimeListItem button onClick={evt => setTime(0)} selected={time === 0}>
                     <ListItemText primary={'Năm nay'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={handleTimeClose(1)} selected={time === 1}>
+                  <TimeListItem button onClick={evt => setTime(1)} selected={time === 1}>
                     <ListItemText primary={'Tháng này'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={handleTimeClose(2)} selected={time === 2}>
+                  <TimeListItem button onClick={evt => setTime(2)} selected={time === 2}>
                     <ListItemText primary={'Tháng trước'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={handleTimeClose(3)} selected={time === 3}>
+                  <TimeListItem button onClick={evt => setTime(3)} selected={time === 3}>
                     <ListItemText primary={'Tuần này'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={handleTimeClose(4)} selected={time === 4}>
+                  <TimeListItem button onClick={evt => setTime(4)} selected={time === 4}>
                     <ListItemText primary={'Tuần trước'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={handleTimeClose(5)} selected={time === 5}>
+                  <TimeListItem button onClick={evt => setTime(5)} selected={time === 5}>
                     <ListItemText primary={'Mọi lúc'} />
+                  </TimeListItem>
+                  <TimeListItem button onClick={evt => setTime(6)} selected={time === 6}>
+                    <ListItemText primary={'Tùy chọn'} />
                   </TimeListItem>
                 </List>
               </SideBar>
               <MainBar>
                 <SubHeader>Thời gian được chọn</SubHeader>
                 <Content>  
-                  <YearBox>Năm 2019</YearBox>
+                  <YearBox>{timeTitle}</YearBox>
                   <DateWrapper>
                     <div>
                       <span>Từ ngày</span>
                       <OutlinedInput 
+                        disabled={time !== 6}
                         variant='outlined'
-                        type='date' 
+                        type={time === 5 ? 'text' : 'date'}
+                        value={time === 5 ? 'All' : moment(startDate).format('YYYY-MM-DD')}
+                        onChange={evt => setStartDate(moment(evt.target.value).toDate())}
                       />
                     </div>
                     <div>
                       <span>Đến ngày</span>
                       <OutlinedInput 
+                        disabled={time !== 6}
                         variant='outlined'
-                        type='date' 
+                        type={time === 5 ? 'text' : 'date'}
+                        value={time === 5 ? 'All' : moment(endDate).format('YYYY-MM-DD')}
+                        onChange={evt => setEndDate(moment(evt.target.value).toDate())}
                       />
                     </div>
                   </DateWrapper>

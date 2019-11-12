@@ -90,7 +90,7 @@ function CustomTable() {
             <span>&#9733;</span>
             <p>{typeof(options.title) === 'function' ? options.title() : options.title}</p>
           </div>
-          <span>{typeof(options.subTitle) === 'function' ? options.subTitle() : options.subTitle}</span>
+          {options.subTitle ? <span>{typeof(options.subTitle) === 'function' ? options.subTitle() : options.subTitle}</span> : null}
         </LeftHeader>
         <RightHeader>
           <HeaderButtonGroup />

@@ -1,49 +1,61 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ButtonBase } from '@material-ui/core';
 import Icon from '@mdi/react';
-import { mdiPlusCircleOutline, mdiContentCopy } from '@mdi/js';
+import { mdiNotePlusOutline, mdiContentCopy } from '@mdi/js';
 import CustomModal from '../../../../components/CustomModal';
 
 const Container = styled.div`
   width: 100%;
-  margin-top: 70px;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
 `;
 
-const ButtonCase = styled(ButtonBase)`
-  width: 180px;
-  height: 180px;
+const ButtonCase = styled.div`
+  margin-top: 32px;
+  width: 80%;
+  height: 100px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
   border: 1px solid #555;
-  border-radius: 18px;
+  border-radius: 8px;
   transition: border 0.15s ease-in-out;
-  & > svg {
-    fill: #555;
-    transition: fill 0.15s ease-in-out;
+  & > div:first-child {
+    width: 20%;
+    text-align: center;
+    svg {
+      fill: #555;
+      transition: fill 0.15s ease-in-out;
+    }
   }
-  & > span:not(:last-child) {
-    margin-top: 16px;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 500;
-    color: #555;
-    transition: color 0.15s ease-in-out;
-  }
-  & > span:last-child {
-    display: none;
+  & > div:last-child {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 16px;
+    & > span:first-child {
+      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: 500;
+      color: #555;
+      transition: color 0.15s ease-in-out;
+    }
+    & > span:last-child {
+      font-size: 14px;
+      color: #555;
+    }
   }
   &:hover {
+    cursor: pointer;
     border: 1px solid #05b50c;  
-    & > svg {
+    & > div:first-child > svg {
       fill: #05b50c;
     }
-    & > span:not(:last-child) {
+    & > div:last-child > span:first-child {
       color: #05b50c;
     }
   }
@@ -59,12 +71,22 @@ function CreateProjectGroup({ open, setOpen, }) {
     >
       <Container>
         <ButtonCase>
-          <Icon path={mdiPlusCircleOutline} size={2}/>
-          <span>Tạo mới dự án</span>
+          <div>
+            <Icon path={mdiNotePlusOutline} size={2}/>
+          </div>
+          <div>
+            <span>Tạo mới dự án</span>
+            <span>Bắt đầu dự án bằng cách tạo mới hoàn toàn các thông số của dự án</span>
+          </div>
         </ButtonCase>
         <ButtonCase>
-          <Icon path={mdiContentCopy} size={2}/>
-          <span>Sao chép dự án</span>
+          <div>
+            <Icon path={mdiContentCopy} size={2}/>
+          </div>
+          <div>
+            <span>Sao chép dự án</span>
+            <span>Tạo dự án mới bằng cách sao chép các thông số của dự án cũ như: Danh mục công việc, tiến độ, ...</span>
+          </div>
         </ButtonCase>
       </Container>
     </CustomModal>
