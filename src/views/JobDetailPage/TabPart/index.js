@@ -15,7 +15,7 @@ const Container = styled.div`
   padding: 0px;
 `;
 
-function TabPart() {
+function TabPart(props) {
 
   const [show, setShow] = React.useState(0);
 

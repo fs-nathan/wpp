@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import ListPart from './ListPart';
 import ChatPart from './ChatPart';
 import TabPart from './TabPart';
+import { connect } from 'react-redux'
+import { getOffer } from '../../actions/taskDetail/taskDetailActions'
 
 const Container = styled.div`
   height: 100%;
@@ -13,14 +15,30 @@ const Container = styled.div`
     "list chat tab";
 `;
 
-function JobDetailPage() {
+function JobDetailPage(props) {
+  // props.getOfferByTaskId("5da18ce8aa75001b8060eb12")
   return (
     <Container>
-      <ListPart />
-      <ChatPart />
-      <TabPart />
+      <ListPart {...props} />
+      <ChatPart {...props} />
+      <TabPart {...props} />
     </Container>
   )
 }
 
-export default JobDetailPage;
+const mapStateToProps = state => {
+  return {
+    offer: state.taskDetail.taskOffer.offer
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getOfferByTaskId: taskId => dispatch(getOffer({ taskId })),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(JobDetailPage);
