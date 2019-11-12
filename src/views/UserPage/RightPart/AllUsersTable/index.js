@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IconButton, Menu, MenuItem,  } from '@material-ui/core';
-import CustomAvatar from '../../../../components/CustomAvatar';
+import { Avatar, IconButton, Menu, MenuItem, } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
   mdiAccountPlus,
@@ -26,10 +25,10 @@ import RoleManagerModal from '../../Modals/RoleManager';
 import LogoManagerModal from '../../Modals/LogoManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import PermissionSettingsModal from '../../Modals/PermissionSettings';
-import { 
-  CustomEventListener, CustomEventDispose, 
+import {
+  CustomEventListener, CustomEventDispose,
   SORT_USER, SORT_ROOM, CREATE_ROOM,
-  INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PRIVATE_MEMBER, PUBLIC_MEMBER,
+  INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP,
 } from '../../../../constants/events';
 import * as routes from '../../../../constants/routes'
 
@@ -48,6 +47,7 @@ const SubTitle = styled.span`
 
 const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
 
+  const [state, setState] = React.useState(get(user, 'state', 0));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
@@ -64,11 +64,19 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
   }
 
   function changeState(user) {
-    if (get(user, 'state') === 0) {
+    if (state === 0) {
+      handleChangeState({
+        state: 1,
+      });
+      setState(1);
       doPublicMember({
         userId: get(user, 'id'),
       });
     } else {
+      handleChangeState({
+        state: 0,
+      });
+      setState(0);
       doPrivateMember({
         userId: get(user, 'id'),
       });
@@ -86,7 +94,7 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
   return (
     <div onClick={evt => evt.stopPropagation()}>
       <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} size='small'>
-        <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
+        <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)' />
       </IconButton>
       <Menu
         id="simple-menu"
@@ -104,7 +112,7 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
         <MenuItem onClick={evt => setAlert(true)}>Rời nhóm</MenuItem>
       </Menu>
       <PermissionSettingsModal open={open} setOpen={setOpen} />
-      <AlertModal 
+      <AlertModal
         open={alert}
         setOpen={setAlert}
         content='Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?'
@@ -114,8 +122,14 @@ const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMe
   );
 }
 
-function StateBadge({ user }) {
-  if (get(user, 'state', 0) === 0) {
+function StateBadge({ row, stateObj }) {
+  const [stateOfRow, setStateOfRow] = React.useState(stateObj[get(row, 'id')]);
+
+  React.useEffect(() => {
+    setStateOfRow(stateObj[get(row, 'id')]);
+  }, [row, stateObj]);
+
+  if (get(stateOfRow, 'state', 0) === 0) {
     return (
       <CustomBadge color='#ec1000'>
         Hạn chế
@@ -130,13 +144,13 @@ function StateBadge({ user }) {
   }
 }
 
-function AllUsersTable({ 
+function AllUsersTable({
   listRoom, doListRoom,
   sortUser, doSortUser,
-  listUserOfGroup, doListUserOfGroup, 
+  listUserOfGroup, doListUserOfGroup,
   expand, handleExpand, handleSubSlide,
   doPublicMember, doPrivateMember,
-  doBanUserFromGroup, 
+  doBanUserFromGroup,
 }) {
 
   const location = useLocation();
@@ -144,10 +158,13 @@ function AllUsersTable({
 
   const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
   const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
+  const { error: sortUserError, loading: sortUserLoading } = sortUser;
 
-  const loading = listUserOfGroupLoading || listRoomLoading;
-  const error = listUserOfGroupError || listRoomError;
+  const loading = listUserOfGroupLoading || sortUserLoading || listRoomLoading;
+  const error = listUserOfGroupError || sortUserError || listRoomError;
   const [moreModal, setMoreModal] = React.useState(0);
+
+  const [stateObj, setStateObj] = React.useState({});
 
   React.useEffect(() => {
     doListRoom();
@@ -158,26 +175,47 @@ function AllUsersTable({
   }, [doListUserOfGroup]);
 
   React.useEffect(() => {
+    const { data: { rooms } } = listUserOfGroup;
+    let _stateObj = {};
+    rooms.forEach(room => {
+      const users = get(room, 'users', []);
+      users.forEach(user => {
+        _stateObj[get(user, 'id')] = {
+          state: get(user, 'state'),
+        };
+      });
+    });
+    setStateObj(_stateObj);
+  }, [listUserOfGroup]);
+
+  function handleChangeState(userId) {
+    return (options) => {
+      let _stateObj = { ...stateObj };
+      _stateObj[userId] = {
+        ..._stateObj[userId],
+        ...options,
+      }
+      setStateObj(_stateObj);
+    }
+  }
+
+  React.useEffect(() => {
     const doListUserOfGroupHandler = () => {
-      doListUserOfGroup(true);
+      doListUserOfGroup();
     };
-    
+
     CustomEventListener(SORT_USER, doListUserOfGroupHandler);
     CustomEventListener(CREATE_ROOM, doListUserOfGroupHandler);
     CustomEventListener(SORT_ROOM, doListUserOfGroupHandler);
     CustomEventListener(INVITE_USER_JOIN_GROUP, doListUserOfGroupHandler);
     CustomEventListener(BAN_USER_FROM_GROUP, doListUserOfGroupHandler);
-    CustomEventListener(PUBLIC_MEMBER, doListUserOfGroupHandler);
-    CustomEventListener(PRIVATE_MEMBER, doListUserOfGroupHandler);
-    
+
     return () => {
       CustomEventDispose(SORT_USER, doListUserOfGroupHandler);
       CustomEventDispose(CREATE_ROOM, doListUserOfGroupHandler);
       CustomEventDispose(SORT_ROOM, doListUserOfGroupHandler);
       CustomEventDispose(INVITE_USER_JOIN_GROUP, doListUserOfGroupHandler);
       CustomEventDispose(BAN_USER_FROM_GROUP, doListUserOfGroupHandler);
-      CustomEventDispose(PUBLIC_MEMBER, doListUserOfGroupHandler);
-      CustomEventDispose(PRIVATE_MEMBER, doListUserOfGroupHandler);
     }
   }, [doListUserOfGroup]);
 
@@ -189,7 +227,7 @@ function AllUsersTable({
         <CustomTable
           options={{
             title: 'Danh sách nhân sự',
-            subTitle: () => 
+            subTitle: () =>
               <SubTitle>
                 Đã có {rooms.reduce((sum, room) => sum += get(room, 'number_member', 0), 0)} thành viên
                 <span> (Nâng cấp)</span>
@@ -201,7 +239,7 @@ function AllUsersTable({
             }],
             mainAction: {
               label: '+ Thêm tài khoản',
-              onClick: null,  
+              onClick: null,
             },
             expand: {
               bool: expand,
@@ -244,21 +282,21 @@ function AllUsersTable({
                   roomId: destination.droppableId,
                   sortIndex: destination.index,
                 });
-              }, 
+              },
             }
           }}
           columns={[{
             label: '',
-            field: (row) => <CustomAvatar src={get(row, 'avatar')} alt='avatar' />,
+            field: (row) => <Avatar src={get(row, 'avatar')} alt='avatar' />,
           }, {
             label: 'Họ và tên',
-            field: (row) => <NameSpan>{get(row, 'name', '')}</NameSpan>,
+            field: 'name',
           }, {
             label: 'Chức danh',
             field: 'position',
           }, {
             label: 'Ngày sinh',
-            field: (row) =>(new Date(get(row, 'birthday', 0))).toLocaleDateString(),
+            field: (row) => (new Date(get(row, 'birthday', 0))).toLocaleDateString(),
           }, {
             label: 'Giới tính',
             field: 'gender',
@@ -273,15 +311,16 @@ function AllUsersTable({
             field: 'role',
           }, {
             label: 'Trạng thái',
-            field: (row) => <StateBadge user={row} />,
+            field: (row) => <StateBadge row={row} stateObj={stateObj} />,
           }, {
             label: '',
-            field: (row) => <PermissionButton 
-                              user={row} 
-                              doPublicMember={doPublicMember}
-                              doPrivateMember={doPrivateMember}
-                              doBanUserFromGroup={doBanUserFromGroup}
-                            />,
+            field: (row) => <PermissionButton
+              user={row}
+              handleChangeState={handleChangeState(get(row, 'id'))}
+              doPublicMember={doPublicMember}
+              doPrivateMember={doPrivateMember}
+              doBanUserFromGroup={doBanUserFromGroup}
+            />,
           }]}
           data={group}
         />
@@ -304,8 +343,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListRoom: (quite) => dispatch(listRoom(quite)),
-    doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
+    doListRoom: () => dispatch(listRoom()),
+    doListUserOfGroup: () => dispatch(listUserOfGroup()),
     doSortUser: ({ roomId, userId, sortIndex }) => dispatch(sortUser({ roomId, userId, sortIndex })),
     doPublicMember: ({ userId }) => dispatch(publicMember({ userId })),
     doPrivateMember: ({ userId }) => dispatch(privateMember({ userId })),

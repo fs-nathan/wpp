@@ -7,8 +7,7 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
-import { ListItemText } from '@material-ui/core';
-import CustomAvatar from '../../../../components/CustomAvatar';
+import { Avatar, ListItemText } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiDrag, mdiDragVertical } from '@mdi/js';
 import CustomListItem from './CustomListItem';
@@ -28,12 +27,15 @@ const Banner = styled.div`
 function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
 
   const [openModal, setOpenModal] = React.useState(false);
-  const location = useLocation(); 
-  const { data: { rooms: _rooms }, loading: listRoomLoading, error } = listRoom;
-  const loading = listRoomLoading;
+  const location = useLocation();
+  const { data: { rooms: _rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
+  const { loading: sortRoomLoading, error: sortRoomError } = sortRoom;
   const [searchPatern, setSearchPatern] = React.useState('');
 
-  const rooms = filter(_rooms, room => get(room, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()));
+  const loading = listRoomLoading || sortRoomLoading;
+  const error = listRoomError || sortRoomError;
+
+  const rooms = _.filter(_rooms, room => _.get(room, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()));
 
   React.useEffect(() => {
     doListRoom();
@@ -41,7 +43,7 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
 
   React.useEffect(() => {
     const doListRoomHandler = () => {
-      doListRoom(true);
+      doListRoom();
     };
 
     CustomEventListener(CREATE_ROOM, doListRoomHandler);
@@ -86,12 +88,12 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
               }}
             >
               <Banner>
-                <SearchInput 
-                  fullWidth 
+                <SearchInput
+                  fullWidth
                   placeholder='Tìm bộ phận'
                   value={searchPatern}
                   onChange={evt => setSearchPatern(evt.target.value)}
-                />  
+                />
               </Banner>
               <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId={'department-list'}>
@@ -105,39 +107,39 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
                         component={Link}
                       >
                         <div>
-                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
+                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
                         </div>
-                        <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                        <ListItemText 
+                        <Avatar style={{ height: 50, width: 50, }} src={avatar} alt='avatar' />
+                        <ListItemText
                           primary={
-                            <Primary>Tất cả</Primary>  
+                            <Primary>Tất cả</Primary>
                           }
                           secondary={
                             <Secondary>
-                              {rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
+                              {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
                             </Secondary>
                           }
                         />
                       </StyledListItem>
                       {rooms.map((room, index) => (
-                        <CustomListItem key={get(room, 'id')} room={room} index={index} />  
+                        <CustomListItem key={index} room={room} index={index} />
                       ))}
                       {provided.placeholder}
                       <StyledListItem
                         component={Link}
                         to={`${location.pathname + routes.information}/default`
-                      }>
+                        }>
                         <div>
-                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
+                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
                         </div>
-                        <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                        <ListItemText 
+                        <Avatar style={{ height: 50, width: 50, }} src={avatar} alt='avatar' />
+                        <ListItemText
                           primary={
-                            <Primary>Mặc định</Primary>  
+                            <Primary>Mặc định</Primary>
                           }
                           secondary={
                             <Secondary>
-                              {rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
+                              {rooms.reduce((sum, room) => sum += _.get(room, 'number_member'), 0)} thành viên
                             </Secondary>
                           }
                         />
@@ -164,7 +166,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListRoom: () => dispatch(listRoom()),
     doSortRoom: ({ roomId, sortIndex }) => dispatch(sortRoom({ roomId, sortIndex })),
   }
 }
