@@ -31,10 +31,14 @@ import banUserFromGroup, { initialState as banUserFromGroupInitialState } from '
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
 import documents from './documents'
+import taskOffer from './taskDetail/offer'
 
 const rootReducer = combineReducers({
   authentications,
   documents,
+  taskDetail: combineReducers({
+    taskOffer
+  }),
   room: combineReducers({
     listRoom,
     detailRoom,
