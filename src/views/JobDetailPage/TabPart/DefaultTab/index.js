@@ -26,10 +26,6 @@ const Header = styled(TabHeader)`
   z-index: 999;
 `
 
-const Body = styled(TabBody)`
-  grid-area: body;
-  height: 100%;
-`
 
 function DefaultTab({ show, setShow }) {
   const [isPause, setIsPause] = React.useState(false);
@@ -40,7 +36,7 @@ function DefaultTab({ show, setShow }) {
         <Header onClickPause={() => {
           handleClick()
         }} />
-        <Body setShow={setShow} isPause={isPause} />
+        <TabBody setShow={setShow} isPause={isPause} />
       </Container>
     </Slide>
   )

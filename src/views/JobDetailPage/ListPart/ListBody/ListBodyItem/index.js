@@ -93,11 +93,11 @@ function JobContent(props) {
           <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20 }} />
           <ColorTypo color='#7a869a' style={{ fontSize: '13px', textOverflow: 'ellipsis', width: '160px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.description}</ColorTypo>
         </div>
-        <div style={{color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '14px'}}>{props.time}</div>
+        <div style={{color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '13px'}}>{props.time}</div>
       </div>
-      <div>
+      <div style={{display: 'flex'}}>
         <BadgeItem color='redlight' badge label={props.label} size='small' />
-        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', position: 'fixed' }} path={mdiPin} size={0.8} />
+        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} />
       </div>
     </ContentContainer>
   )

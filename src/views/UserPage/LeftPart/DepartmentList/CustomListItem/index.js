@@ -7,6 +7,7 @@ import { StyledListItem, Primary, Secondary } from '../../../../../components/Cu
 import CustomAvatar from '../../../../../components/CustomAvatar';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
+import * as routes from '../../../../../constants/routes'
 
 function CustomListItem({ room, index }) {
   const location = useLocation();
@@ -20,7 +21,7 @@ function CustomListItem({ room, index }) {
       {(provided) => (
         <StyledListItem 
           component={Link}
-          to={`${location.pathname}/${get(room, 'id')}`}
+          to={`${location.pathname + routes.information}/${_.get(room, 'id', '')}`}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}

@@ -87,7 +87,7 @@ const ExpansionProject = styled(ExpansionPanel)`
       & > div {
         & > div {
           & > *:first-child {
-            padding: 0 0 0 10px;
+            padding: 0;
             border-top: 1px solid #0000001a;
           }
         }
@@ -160,10 +160,9 @@ function ListProject(props) {
         fakeData.map(room => {
           return (
             <div key={room.id}>
-              <ExpansionProject>
+              <ExpansionProject defaultExpanded>
                 <ExpansionPanelSummary
                   expandIcon={<Icon path={mdiMenuUp} size={1} />}
-                  aria-controls="panel1bh-content"
                   id="panel1bh-header">
                   <ListProjectBody subPrimary={room.name.toUpperCase()} />
                 </ExpansionPanelSummary>

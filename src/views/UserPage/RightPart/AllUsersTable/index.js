@@ -31,6 +31,7 @@ import {
   SORT_USER, SORT_ROOM, CREATE_ROOM,
   INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PRIVATE_MEMBER, PUBLIC_MEMBER,
 } from '../../../../constants/events';
+import * as routes from '../../../../constants/routes'
 
 const Container = styled.div`
   grid-area: right;
@@ -44,11 +45,8 @@ const SubTitle = styled.span`
   }
 `;
 
-const NameSpan = styled.span`
-  font-weight: 500;
-`;
 
-const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
+const PermissionButton = ({ handleChangeState, user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
@@ -230,7 +228,7 @@ function AllUsersTable({
             },
             row: {
               id: 'id',
-              onClick: (row) => history.push(`${location.pathname}/members/${get(row, 'id')}`),
+              onClick: (row, group) => history.push(`${location.pathname + routes.user}/${get(row, 'id')}`),
             },
             draggable: {
               bool: true,

@@ -30,6 +30,7 @@ import {
   CustomEventListener, CustomEventDispose, 
   SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER,
 } from '../../../../constants/events';
+import * as routes from '../../../../constants/routes'
 
 const Container = styled.div`
   grid-area: right;
@@ -219,7 +220,7 @@ function DepartmentUsersTable({
             },
             row: {
               id: 'id',
-              onClick: (row) => history.push(`${location.pathname.replace(`/${departmentId}`, '')}/members/${get(row, 'id', '')}`),
+              onClick: (row) => history.push(`${location.pathname.replace(`${routes.information + '/' + departmentId}`, '')}${routes.user}/${get(row, 'id', '')}`),
             },
             draggable: {
               bool: true,

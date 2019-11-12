@@ -12,6 +12,8 @@ import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 import OfferModal from '../OfferModal';
 import ApproveModal from '../ApproveModal'
+import { Scrollbars } from 'react-custom-scrollbars'
+
 
 const Container = styled.div`
   padding: 10px 20px;
@@ -43,6 +45,11 @@ const StyledButton = styled(Button)`
   color: white;
   }
 `
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+  
+`;
 
 const StyleContent = styled(ColorTypo)`
   font-size: 14px;
@@ -258,6 +265,7 @@ function TabBody() {
     setOpen(false);
   };
   return (
+    <Body>
     <Container>
       <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
         <ColorButton
@@ -287,6 +295,7 @@ function TabBody() {
       </Collapse>
       <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}/>
     </Container>
+    </Body>
   )
 }
 

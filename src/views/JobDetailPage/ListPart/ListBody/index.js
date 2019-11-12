@@ -13,13 +13,7 @@ const StyledList = styled(List)`
   }
 `;
 
-const Container = styled.div`
-  
-  
-  overflow: scroll;
-  margin-right: -17px;
-  margin-bottom: -17px;
-`
+
 
 const detailProject = [
   { progress: 36, title: 'Phân tích ứng dụng ...', description: 'Đã thêm thành viên', status: 'Quá hạn', notification: 2, time: '34 phút' },
@@ -35,13 +29,13 @@ const detailProject = [
 function ListBody() {
   return (
     
-    <Container>
+    <div >
     <StyledList>      
         <ListBodySubHeader subPrimary='Thiết kế giao diện' subSecondary='(2 việc)' />
         {detailProject.map(detail => <ListBodyItem {...detail} />)}
         <ListBodySubHeader subPrimary='Mặc định' subSecondary='(0 việc)' />      
     </StyledList>
-    </Container>
+    </div>
     
   )
 }

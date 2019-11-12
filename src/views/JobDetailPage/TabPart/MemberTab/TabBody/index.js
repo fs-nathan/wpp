@@ -9,6 +9,7 @@ import ColorTypo from '../../../../../components/ColorTypo'
 import ColorChip from '../../../../../components/ColorChip';
 import colorPal from '../../../../../helpers/colorPalette';
 import MemberModal from '../MemberModal'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 const members = [
   { id: 1, name: 'Trần Văn Nam', role: 'Giám đốc', projectRole: 'Admin', authorityList: ['Giao việc'] },
@@ -64,6 +65,11 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+  
+`;
 
 const getBadgeProjectRole = (projectRole) => {
   let color = ""
@@ -171,10 +177,12 @@ const MemberList = () => {
 
 function TabBody() {
   return (
+    <Body>
     <Container>
       <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
       <MemberList />
     </Container>
+    </Body>
   )
 }
 

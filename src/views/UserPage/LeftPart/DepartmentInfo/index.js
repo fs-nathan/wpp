@@ -16,6 +16,8 @@ import LeftSideContainer from '../../../../components/LeftSideContainer';
 import AlertModal from '../../../../components/AlertModal';
 import { CustomEventListener, CustomEventDispose, DELETE_ROOM, UPDATE_ROOM } from '../../../../constants/events.js';
 import CreateDepartment from '../../Modals/CreateDepartment';
+import avatar from '../../../../assets/avatar.jpg';
+import * as routes from '../../../../constants/routes'
 
 const Container = styled.div`
   padding: 0 16px;
@@ -67,7 +69,7 @@ function DefaultDepartment({ subSlide, handleSubSlide, subSlideComp: SubSlideCom
         <LeftSideContainer
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push('/departments')
+            onClick: () => history.push(routes.member)
           }}
           title='Chi tiết bộ phận'
         >
@@ -97,7 +99,7 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
 
   React.useEffect(() => {
     const historyPushHandler = () => {
-      history.push('/departments');
+      history.push(routes.member);
     };
     const doDetailRoomHandler = () => {
       doDetailRoom({ roomId: departmentId }, true);
@@ -129,7 +131,7 @@ function NormalDepartment({ detailRoom, doDetailRoom, deleteRoom, doDeleteRoom, 
             <LeftSideContainer
               leftAction={{
                 iconPath: mdiChevronLeft,
-                onClick: () => history.push('/departments')
+                onClick: () => history.push(routes.member)
               }}
               title='Chi tiết bộ phận'
             >

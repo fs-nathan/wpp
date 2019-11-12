@@ -11,7 +11,7 @@ import { func } from 'prop-types';
 
 const Header = styled.div`
   padding: 0 15px;
-  height: 85px;
+  height: 77px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > * {
     display: flex; 

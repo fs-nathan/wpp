@@ -8,6 +8,7 @@ import UserList from './LeftPart/UserList';
 import AllUsersTable from './RightPart/AllUsersTable';
 import DepartmentUsersTable from './RightPart/DepartmentUsersTable';
 import UserInfo from './RightPart/UserInfo';
+import * as routes from '../../constants/routes'
 
 const Container = styled(({ expand, ...rest }) => <div {...rest} />)`
   height: 100%;
@@ -40,7 +41,7 @@ function UserPage() {
   return (
     <Container expand={expand}>
       <Route 
-        path='/departments'
+        path={routes.member}
         render={({ match: { url, } }) => (
           <LeftDiv expand={expand}>
             <Route path={`${url}/`} 
@@ -53,7 +54,7 @@ function UserPage() {
                 />
               } 
               exact />
-            <Route path={`${url}/:departmentId`} 
+            <Route path={`${url + routes.information}/:departmentId`} 
               render={props => 
                 <DepartmentInfo 
                   {...props} 
@@ -63,12 +64,12 @@ function UserPage() {
                 />
               } 
               exact />
-            <Route path={`${url}/members/:userId`} component={UserList} />
+            <Route path={`${url + routes.user}/:userId`} component={UserList} />
           </LeftDiv>
         )}
       />
       <Route 
-        path='/departments'
+        path={routes.member}
         render={({ match: { url, } }) => (
           <RightDiv>
             <Route path={`${url}/`} 
@@ -82,7 +83,7 @@ function UserPage() {
               } 
               exact 
             />
-            <Route path={`${url}/:departmentId`} 
+            <Route path={`${url + routes.information}/:departmentId`} 
               render={props => 
                 <DepartmentUsersTable 
                   {...props} 
@@ -93,7 +94,7 @@ function UserPage() {
               }
               exact 
             />
-            <Route path={`${url}/members/:userId`} 
+            <Route path={`${url + routes.user}/:userId`} 
               render={props => 
                 <UserInfo 
                   {...props} 

@@ -10,6 +10,7 @@ import {
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const Container = styled.div`
   padding: 10px 20px;
@@ -35,6 +36,10 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+`;
 
 const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -132,6 +137,7 @@ function TabBody() {
   };
 
   return (
+    <Body>
     <Container>
       <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
         <ColorButton 
@@ -152,6 +158,7 @@ function TabBody() {
         {null}
       </Collapse>
     </Container>
+    </Body>
   )
 }
 

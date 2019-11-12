@@ -14,6 +14,7 @@ import ErrorBox from '../../../../components/ErrorBox';
 import { sortUser } from '../../../../actions/user/sortUser';
 import { CustomEventListener, CustomEventDispose, SORT_USER, UPDATE_USER } from '../../../../constants/events';
 import { get } from 'lodash';
+import * as routes from '../../../../constants/routes'
 
 const Banner = styled.div`
   padding: 15px;
@@ -90,7 +91,7 @@ function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, })
         <LeftSideContainer
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push(`${location.pathname.replace(`/members/${userId}`, '')}`),
+            onClick: () => history.push(`${location.pathname.replace(`${routes.user + '/' + userId}`, '')}`),
           }}
           title='Danh sách thành viên'
         >

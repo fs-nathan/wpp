@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiArrowRightBoldCircle, mdiCheckCircle, mdiCheckboxBlankCircleOutline, mdiChevronRight, mdiPin } from '@mdi/js';
 import { List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem } from '@material-ui/core';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Divider from '@material-ui/core/Divider';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
@@ -38,7 +39,6 @@ const ListItemTab = styled(ListItem)`
 `;
 
 const StyledList = styled(List)`
-  overflow: scroll;
   & > * {
     padding: 20px;
     & > div {
@@ -59,6 +59,11 @@ const ContentText = styled(ColorTypo)`
   font-weight: 500;
   font-size: 15px;
 `
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+  
+`;
 
 function DropdownButton({ values }) {
 
@@ -135,6 +140,7 @@ function DropdownButton({ values }) {
 function TabBody(props) {
 
   return (
+    <Body>
     <StyledList>
       <ListItem>
         <ListItemText>
@@ -225,6 +231,7 @@ function TabBody(props) {
         <AvatarCircleList total={20} display={6} />
       </ListItemTab>
     </StyledList>
+    </Body>
   )
 }
 
