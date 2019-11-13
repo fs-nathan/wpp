@@ -27,7 +27,7 @@ function TabPart(props) {
       <RemindTab show={show} setShow={setShow} />
       <MediaTab show={show} setShow={setShow} />
       <LocationTab show={show} setShow={setShow} />
-      <OfferTab show={show} setShow={setShow} />
+      <OfferTab show={show} setShow={setShow} {...props}/>
       <DemandTab show={show} setShow={setShow} />
       <MemberTab show={show} setShow={setShow} />
     </Container>

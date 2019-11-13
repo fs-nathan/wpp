@@ -25,12 +25,12 @@ const Header = styled(TabHeader)`
   background-color: #fff;
   z-index: 999;
 `
-function OfferTab({ show, setShow }) {
+function OfferTab(props) {
   return (
-    <Slide in={show === 6} direction='left' mountOnEnter unmountOnExit>
+    <Slide in={props.show === 6} direction='left' mountOnEnter unmountOnExit>
       <Container>
-        <Header setShow={setShow} />
-        <TabBody />
+        <Header setShow={props.setShow} {...props} />
+        <TabBody {...props}/>
       </Container>
     </Slide>
   )

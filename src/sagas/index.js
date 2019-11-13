@@ -61,8 +61,9 @@ import { CREATE_ICON } from '../constants/actions/icon/createIcon';
 import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
 import { deleteIcon } from './icon/deleteIcon';
-import { GET_OFFER_REQUEST } from '../constants/actions/taskDetail/taskDetailConst'
-import { getOffer } from './taskDetail/TaskDetailSaga'
+import { GET_OFFER_REQUEST, CREATE_OFFER_REQUEST } from '../constants/actions/taskDetail/taskDetailConst';
+import { getOffer, createOffer } from './taskDetail/TaskDetailSaga';
+
 
 function* rootSaga() {
   yield takeLeading(LOGIN, login);
@@ -98,6 +99,7 @@ function* rootSaga() {
   yield takeLeading(CREATE_ICON, createIcon);
   yield takeLeading(DELETE_ICON, deleteIcon);
   yield takeLeading(GET_OFFER_REQUEST, getOffer);
+  yield takeLeading(CREATE_OFFER_REQUEST, createOffer);
 };
 
 export default rootSaga;
