@@ -1,4 +1,4 @@
-import { takeLatest } from 'redux-saga/effects';
+import { takeLatest, takeLeading } from 'redux-saga/effects';
 import { LOGIN, LOGIN_CHECK_STATE } from '../constants/actions/authentications';
 import { login, loginCheckState } from './authentications';
 import { LIST_ROOM } from '../constants/actions/room/listRoom';
@@ -61,6 +61,8 @@ import { CREATE_ICON } from '../constants/actions/icon/createIcon';
 import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
 import { deleteIcon } from './icon/deleteIcon';
+import { GET_OFFER_REQUEST } from '../constants/actions/taskDetail/taskDetailConst'
+import { getOffer } from './taskDetail/TaskDetailSaga';
 import { CREATE_PROJECT_GROUP } from '../constants/actions/projectGroup/createProjectGroup';
 import { createProjectGroup } from './projectGroup/createProjectGroup';
 import { EDIT_PROJECT_GROUP } from '../constants/actions/projectGroup/editProjectGroup';
@@ -101,6 +103,8 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../constants/actions/project/re
 import { removeProjectRoleFromMember } from './project/removeProjectRoleFromMember';
 import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/updateGroupPermissionMember';
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
+import { GET_SUBTASK_REQUEST } from '../constants/actions/taskDetail/taskDetailConst'
+import { getSubTask } from './taskDetail/TaskDetailSaga'
 
 function* rootSaga() {
   yield takeLatest(LOGIN, login);
@@ -155,6 +159,8 @@ function* rootSaga() {
   yield takeLatest(ADD_PROJECT_ROLE_TO_MEMBER, addProjectRoleToMember);
   yield takeLatest(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
   yield takeLatest(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
+  yield takeLatest(GET_OFFER_REQUEST, getOffer);
+  yield takeLeading(GET_SUBTASK_REQUEST, getSubTask);
 };
 
 export default rootSaga;

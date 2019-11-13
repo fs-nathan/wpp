@@ -13,11 +13,11 @@ const apiService = axios.create({
 
 apiService.interceptors.request.use(
   function(config) {
-    const accessToken = localStorage.getItem("token");
-    const group_active = localStorage.getItem("group-active");
-    config.headers["Authorization"] = `Bearer ${accessToken}`;
-    config.headers["group-active"] = group_active;
-    return config;
+    const accessToken = localStorage.getItem("token")
+    const group_active = localStorage.getItem("group-active")
+    config.headers["Authorization"] = `Bearer ${accessToken}`
+    config.headers["group-active"] = group_active
+    return config
   } 
 )
 
@@ -31,7 +31,7 @@ apiService.interceptors.response.use(
       apiService
         .post("login", {
           email: "ducpminh668@gmail.com",
-          password: "12345678",
+          password: "12345678", 
         })
         .then(response => {
           localStorage.setItem("token", response.data.accessToken);

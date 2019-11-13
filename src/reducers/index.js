@@ -51,10 +51,14 @@ import addProjectRoleToMember, { initialState as addProjectRoleToMemberInitialSt
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from './project/removeProjectRoleFromMember';
 import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from './project/updateGroupPermissionMember';
 import documents from './documents'
+import taskOffer from './taskDetail/offer'
 
 const rootReducer = combineReducers({
   authentications,
   documents,
+  taskDetail: combineReducers({
+    taskOffer
+  }),
   room: combineReducers({
     listRoom,
     detailRoom,
