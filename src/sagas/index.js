@@ -61,16 +61,9 @@ import { CREATE_ICON } from '../constants/actions/icon/createIcon';
 import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
 import { deleteIcon } from './icon/deleteIcon';
-<<<<<<< HEAD
-import { GET_OFFER_REQUEST, CREATE_OFFER_REQUEST } from '../constants/actions/taskDetail/taskDetailConst';
-import { getOffer, createOffer } from './taskDetail/TaskDetailSaga';
+import { GET_OFFER_REQUEST, CREATE_OFFER_REQUEST, GET_SUBTASK_REQUEST } from '../constants/actions/taskDetail/taskDetailConst';
+import { getOffer, createOffer, getSubTask } from './taskDetail/TaskDetailSaga';
 
-=======
-import { GET_OFFER_REQUEST } from '../constants/actions/taskDetail/taskDetailConst'
-import { getOffer } from './taskDetail/TaskDetailSaga'
-import { GET_SUBTASK_REQUEST } from '../constants/actions/taskDetail/taskDetailConst'
-import { getSubTask } from  './taskDetail/TaskDetailSaga'
->>>>>>> origin/NghiemTien
 
 function* rootSaga() {
   yield takeLeading(LOGIN, login);
