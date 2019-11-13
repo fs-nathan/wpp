@@ -30,14 +30,16 @@ import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } 
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from './user/banUserFromGroup';
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
-import documents from './documents'
-import taskOffer from './taskDetail/offer'
+import documents from './documents';
+import taskOffer from './taskDetail/offer';
+import subTask from './taskDetail/subTask';
 
 const rootReducer = combineReducers({
   authentications,
   documents,
   taskDetail: combineReducers({
-    taskOffer
+    taskOffer,
+    subTask
   }),
   room: combineReducers({
     listRoom,

@@ -8,7 +8,7 @@ import { CustomEventEmitter, DELETE_ROOM } from '../../constants/events';
 async function doGetSubTask({ taskId }) {
   try {
     const config = {
-      url: '/task/get-subtask?task_id='+ taskId,
+      url: 'task/get-subtask?task_id=' + taskId,
       method: 'get'
     }
     const result = await apiService(config);
@@ -19,23 +19,45 @@ async function doGetSubTask({ taskId }) {
 }
 
 function* getSubTask(action) {
-    try {
-        const res = yield call(doGetSubTask, action.options)
-        yield put(actions.getSubTaskSuccess(res))
-        console.log("GOI API NE", res)
-    // CustomEventEmitter(DELETE_ROOM);
+  try {
+    const res = yield call(doGetSubTask, action.options)
+    yield put(actions.getSubTaskSuccess(res))
   } catch (error) {
     yield put(actions.getSubTaskFail(error))
   }
 }
+// post
+async function doPostSubTask(payload) {
+  try {
+    const config = {
+      url: 'task/create-subtask',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
+function* postSubTask(action) {
+  try {
+    const res = yield call(doPostSubTask, action.options)
+    console.log("Api post sub-task", res)
+    yield put(actions.postSubTaskSuccess(res))
+    yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
+  } catch (error) {
+    yield put(actions.postSubTaskFail(error))
+  }
+}
 
 
 //Offer::
 async function doGetOffer({ taskId }) {
   try {
     const config = {
-      url: '/task/get-offer?task_id='+ taskId,
+      url: '/task/get-offer?task_id=' + taskId,
       method: 'get'
     }
     const result = await apiService(config);
@@ -46,10 +68,10 @@ async function doGetOffer({ taskId }) {
 }
 
 function* getOffer(action) {
-    try {
-        const res = yield call(doGetOffer, action.options)
-        yield put(actions.getOfferSuccess(res))
-        console.log("GOI API NE", res)
+  try {
+    const res = yield call(doGetOffer, action.options)
+    yield put(actions.getOfferSuccess(res))
+    console.log("GOI API NE", res)
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.getOfferFail(error))
@@ -57,6 +79,7 @@ function* getOffer(action) {
 }
 
 export {
-    getOffer,
-    getSubTask
+  getOffer,
+  getSubTask,
+  postSubTask
 }
