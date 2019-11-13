@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { userState } from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiDragVertical, mdiDotsVertical, mdiSend } from '@mdi/js';
@@ -20,15 +20,28 @@ const StyledList = styled(List)`
 const TextTitle = styled(ColorTypo)`
   font-size: 16px;
   color: ${colorPal['gray'][0]};
-  margin-left: 30px
+  margin-left: 30pxreact-beautiful-dnd
 `
 const Search = styled(SearchInput)`
 
   
 `
 
+function convertResponseDataToMotionData(responseData) {
+  let motionData = {
+    data: {},
+    columns: { 'column-1': { id: 'column-1' } },
+    columnOrder: ['column-1'],
+  }
+  for (const item of responseData) {
+    motionData.data[item.id] = item
+  }
+  motionData.columns['column-1'].dataIdArr = responseData.map(item => item.id)
+  return motionData
+}
+
 const __data = {
-  tasks: {
+  data: {
     'task-1': {
       id: 'task-1',
       content: 1,
@@ -49,7 +62,7 @@ const __data = {
   columns: {
     'column-1': {
       id: 'column-1',
-      tasksId: ['task-1', 'task-2', 'task-3', 'task-4'],
+      dataIdArr: ['task-1', 'task-2', 'task-3', 'task-4'],
     }
   },
   columnOrder: ['column-1'],
@@ -101,7 +114,6 @@ function AllSubtaskListItem({ task, index }) {
   function handleClose() {
     setAnchorEl(null);
   }
-
   return (
     <Draggable
       draggableId={task.id}
@@ -124,7 +136,7 @@ function AllSubtaskListItem({ task, index }) {
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
               </ButtonIcon>
           }
-          <ItemList>Thiết kế {task.content}</ItemList>
+          <ItemList>{task.name}</ItemList>
           <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
             <Icon path={mdiDotsVertical} size={1} />
           </ButtonIcon>
@@ -149,9 +161,17 @@ function AllSubtaskListItem({ task, index }) {
   )
 }
 
-function AllSubtaskList() {
 
-  const [data, setData] = React.useState(__data);
+
+function AllSubtaskList(props) {
+
+
+  // const [data, setData] = React.useState(__data);
+  const [data, setData] = React.useState(
+    props.subTasks.length
+      ? convertResponseDataToMotionData(props.subTasks)
+      : __data
+  )
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -161,12 +181,12 @@ function AllSubtaskList() {
       destination.index === source.index
     ) return;
     const column = data.columns[source.droppableId];
-    const newTasksId = Array.from(column.tasksId);
+    const newTasksId = Array.from(column.dataIdArr);
     newTasksId.splice(source.index, 1);
     newTasksId.splice(destination.index, 0, draggableId);
     const newColumn = {
       ...column,
-      tasksId: newTasksId,
+      dataIdArr: newTasksId,
     };
     setData({
       ...data,
@@ -177,11 +197,16 @@ function AllSubtaskList() {
     });
   }
 
+  React.useEffect(() => {
+    // Reset sub task when changing props
+    setData(convertResponseDataToMotionData(props.subTasks))
+  },[props.subTasks])
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {data.columnOrder.map((columnId, index) => {
         const column = data.columns[columnId];
-        const tasks = column.tasksId.map(taskId => data.tasks[taskId]);
+        const tasks = column.dataIdArr.map(taskId => data.data[taskId]);
         return (
           <Droppable droppableId={column.id} key={index}>
             {provided => (
@@ -190,7 +215,7 @@ function AllSubtaskList() {
                 {...provided.droppableProps}
               >
                 {tasks.map((task, index) => (
-                  <AllSubtaskListItem key={task.id} task={task} index={index} />
+                  <AllSubtaskListItem key={task.id} task={task} index={index} {...props} />
                 ))}
                 {provided.placeholder}
               </StyledList>
@@ -218,7 +243,7 @@ const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
 
-const FinishedSubtaskList = () => {
+const FinishedSubtaskList = (props) => {
   const [data] = React.useState([1, 2, 3, 4]);
   // const [isHover, setIsHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -290,6 +315,21 @@ const Div = styled.div`
 `
 
 function TabBody(props) {
+  // const [data, setData] = React.useState({ name: "" })
+  const [name, setName] = React.useState("")
+
+  const setStateSubTask = (e) => {
+    // let newData = JSON.parse(JSON.stringify(data))
+    // newData.name = e.target.value/
+    // setData(newData)
+    setName(e.target.value)
+  }
+
+  const createSubTask = (taskId, name) => {
+    props.postSubTaskByTaskId(taskId, name)
+    setName("")
+  }
+
   return (
     <Container>
       {props.isClicked ?
@@ -297,8 +337,14 @@ function TabBody(props) {
           <InputText
             inputProps={{ 'aria-label': 'naked' }}
             placeholder={'Nhập tên công việc...'}
+            onChange={setStateSubTask}
+            value={name}
           />
-          <ButtonIcon style={{ paddingBottom: 9}}>
+          <ButtonIcon
+            style={{ paddingBottom: 9 }}
+            onClick={() => {
+              createSubTask("5da183cfc46d8515e03fa9e8", name)
+            }}>
             <Icon path={mdiSend} size={1} color={'gray'} />
           </ButtonIcon>
         </NewWork>
@@ -307,7 +353,7 @@ function TabBody(props) {
           <Search placeholder={'Nhập từ khóa'} />
         </Div>
       }
-      <AllSubtaskList />
+      <AllSubtaskList {...props} />
       <TextTitle uppercase bold>Hoàn thành</TextTitle>
       <FinishedSubtaskList />
     </Container>

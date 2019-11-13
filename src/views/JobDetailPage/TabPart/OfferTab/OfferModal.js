@@ -103,6 +103,8 @@ const DialogActions = withStyles(theme => ({
 
 const OfferModal = (props) => {
 
+  const [content, setContent] = React.useState("")
+
   const classes = useStyles();
   return (<Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
     <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
@@ -117,11 +119,12 @@ const OfferModal = (props) => {
         fullWidth
         multiline
         rows="7"
-        defaultValue=""
         margin="normal"
         placeholder="Nhập nội dung"
         variant="outlined"
-        style={{ marginTop: 20}}
+        style={{ marginTop: 20 }}
+        value={content}
+        onChange={e => setContent(e.target.value)}
       />
       <input
         accept="image/*"
@@ -139,7 +142,12 @@ const OfferModal = (props) => {
 
     </DialogContent>
     <DialogActions>
-      <Button onClick={props.handleClickClose} color="primary">
+      <Button
+        color="primary"
+        onClick={() => {
+          props.handleClickClose()
+          props.createOfferByTaskId("5da18ce8aa75001b8060eb12", content)
+        }}>
         Hoàn Thành
           </Button>
     </DialogActions>
