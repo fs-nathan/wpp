@@ -4,7 +4,7 @@ import ListPart from './ListPart';
 import ChatPart from './ChatPart';
 import TabPart from './TabPart';
 import { connect } from 'react-redux'
-import { getOffer, createOffer } from '../../actions/taskDetail/taskDetailActions'
+import { getOffer, createOffer, getSubTask } from '../../actions/taskDetail/taskDetailActions'
 
 const Container = styled.div`
   height: 100%;
@@ -38,6 +38,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    // sub-task
+    getSubTaskByTaskId: taskId => dispatch(getSubTask({ taskId })),
+
+
+    // offer
     getOfferByTaskId: taskId => dispatch(getOffer({ taskId })),
     createOfferByTaskId: (createId, content) => {
       dispatch(createOffer({ createId, content }))}
