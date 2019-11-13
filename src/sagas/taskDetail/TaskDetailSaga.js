@@ -68,18 +68,48 @@ async function doGetOffer({ taskId }) {
 }
 
 function* getOffer(action) {
-  try {
-    const res = yield call(doGetOffer, action.options)
-    yield put(actions.getOfferSuccess(res))
-    console.log("GOI API NE", res)
-    // CustomEventEmitter(DELETE_ROOM);
-  } catch (error) {
-    yield put(actions.getOfferFail(error))
-  }
+    try {
+        const res = yield call(doGetOffer, action.options)
+        yield put(actions.getOfferSuccess(res))
+        // CustomEventEmitter(DELETE_ROOM);gi
+    } catch (error) {
+        yield put(actions.getOfferFail(error))
+    }
+}
+
+async function doCreateOffer({ createId, content }) {
+    try {
+        const config = {
+            url: '/task/create-offer',
+            method: 'post',
+            data: {
+                task_id: createId,
+                content
+            }
+        }
+        const result = await apiService(config);
+        return result.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+function* createOffer(action) {
+    try {
+        const res = yield call(doCreateOffer, action.options)
+        console.log("GOI API NE", res)
+        yield put(actions.createOfferSuccess(res))
+        yield put(actions.getOffer({ taskId: "5da18ce8aa75001b8060eb12" }))
+
+        // CustomEventEmitter(DELETE_ROOM);
+    } catch (error) {
+        yield put(actions.getOfferFail(error))
+    }
 }
 
 export {
-  getOffer,
-  getSubTask,
-  postSubTask
+    getOffer,
+    createOffer,
+    getSubTask,
+    postSubTask
 }

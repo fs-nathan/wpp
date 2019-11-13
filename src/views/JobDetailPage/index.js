@@ -4,7 +4,7 @@ import ListPart from './ListPart';
 import ChatPart from './ChatPart';
 import TabPart from './TabPart';
 import { connect } from 'react-redux'
-import { getOffer, getSubTask, postSubTask } from '../../actions/taskDetail/taskDetailActions'
+import { getOffer, createOffer, getSubTask, postSubTask } from '../../actions/taskDetail/taskDetailActions'
 
 const Container = styled.div`
   height: 100%;
@@ -18,16 +18,15 @@ const Container = styled.div`
 function JobDetailPage(props) {
 
   useEffect(() => {
-    // props.getOfferByTaskId("5da18ce8aa75001b8060eb12");
     props.getSubTaskByTaskId("5da183cfc46d8515e03fa9e8")
-    // ....
+    props.getOfferByTaskId("5da18ce8aa75001b8060eb12")
   }, [])
-
+  
   return (
     <Container>
       <ListPart {...props} />
       <ChatPart {...props} />
-      <TabPart {...props} />
+      <TabPart  {...props} />
     </Container>
   )
 }
@@ -48,6 +47,8 @@ const mapDispatchToProps = dispatch => {
 
     // offer
     getOfferByTaskId: taskId => dispatch(getOffer({ taskId })),
+    createOfferByTaskId: (createId, content) => {
+      dispatch(createOffer({ createId, content }))}
   };
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiClose, mdiPlus,  } from '@mdi/js';
+import { mdiClose, mdiPlus, } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import OfferModal from '../OfferModal'
 
@@ -30,7 +30,7 @@ const ButtonIcon = styled(IconButton)`
   }
 `
 
-function TabHeader({ setShow }) {
+function TabHeader(props) {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,13 +41,13 @@ function TabHeader({ setShow }) {
   return (
     <Container>
       <ColorTypo uppercase bold>Đề xuất - Phê duyệt</ColorTypo>
-      <ButtonIcon onClick={handleClickClose, handleClickOpen}>
+      <ButtonIcon onClick={handleClickClose, handleClickOpen} >
         <Icon path={mdiPlus} size={1} />
       </ButtonIcon>
-      <ButtonIcon onClick={() => setShow(0)}>
+      <ButtonIcon onClick={() => { props.setShow(0) }}>
         <Icon path={mdiClose} size={1} />
       </ButtonIcon>
-      <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}/>
+      <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} {...props} />
     </Container>
   );
 }

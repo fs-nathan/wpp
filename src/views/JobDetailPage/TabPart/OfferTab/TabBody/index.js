@@ -116,11 +116,11 @@ const ApprovedBox = (props) => {
         <React.Fragment>
           <ApprovedContainer>
             <StyledTitleBox>
-              <StyledButton variant="contained" size="small"  onClick={handleClickOpen}>Phê duyệt</StyledButton>
+              <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
               <Button variant="outlined" size="small" >Từ chối</Button>
               <span />
             </StyledTitleBox>
-            <ApproveModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}/>
+            <ApproveModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
           </ApprovedContainer>
         </React.Fragment>
       )}
@@ -168,6 +168,10 @@ const ButtonIcon = styled(IconButton)`
 const CustomListItem = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const {
+    content, dataHander, date_create, status,
+    user_create_avatar, user_create_name, user_can_handers
+  } = props.offer
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -181,11 +185,15 @@ const CustomListItem = (props) => {
     <React.Fragment>
       <StyledListItem>
         <StyledTitleBox>
-          <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
+          <Avatar style={{ width: 25, height: 25 }} src={user_create_avatar} alt='avatar' />
           <div>
-            <StyleContent variant='body1' bold> Nguyễn Văn A</StyleContent>
+            <StyleContent variant='body1' bold>{user_create_name}</StyleContent>
             <ColorTypo variant='caption'>
-              <Badge component='small' size='small' badge color='orangelight' label={'Đề xuất'} /> với <ColorTypo color='orange' variant='caption'>Trần Văn B</ColorTypo> lúc 08:00 - 12/12/2019
+              <Badge component='small' size='small' badge color='orangelight' label={'Đề xuất'} />
+              &nbsp;
+              với
+              &nbsp;
+            <ColorTypo color='orange' variant='caption'>{user_can_handers.join(", ")}</ColorTypo> lúc {date_create}
             </ColorTypo>
           </div>
           <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
@@ -193,9 +201,9 @@ const CustomListItem = (props) => {
           </ButtonIcon>
         </StyledTitleBox>
         <StyledContentBox>
-          <StyleContent >Lorem ipsum dolor sit.</StyleContent>
+          <StyleContent>{content}</StyleContent>
         </StyledContentBox>
-        <ApprovedBox approved={props.approved} handleClickOpen={() => props.handleClickOpen()}/>
+        <ApprovedBox approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
       </StyledListItem>
       <Menu
         id="simple-menu"
@@ -236,11 +244,16 @@ const ListOffer = (props) => {
         placeholder="Nhập từ khóa"
       />
       <StyledList>
-        {Array.from({ length: 3, }).map((_, index) => {
+        {props.offer.map((item) => {
           return (
-            <CustomListItem key={index} approved={index % 2 === 0} handleClickOpen={() => props.handleClickOpen()} handleClickClose={() => props.handleClickClose()}/>
+            <CustomListItem
+              key={item.id} offer={item}
+              handleClickOpen={() => props.handleClickOpen()}
+              handleClickClose={() => props.handleClickClose()} />
           )
         })}
+
+
       </StyledList>
     </React.Fragment>
   );
@@ -250,7 +263,7 @@ const StyledButtonGroup = styled(ButtonGroup)`
   margin: 8px 0 20px 0;
 `;
 
-function TabBody() {
+function TabBody(props) {
 
   const [value, setValue] = React.useState(0);
 
@@ -266,35 +279,39 @@ function TabBody() {
   };
   return (
     <Body>
-    <Container>
-      <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
-        <ColorButton
-          onClick={evt => handleChange(evt, 0)}
-        >
-          {value === 0 ? <ColorTypo bold>Tất cả (4)</ColorTypo> : <ColorTypo color='gray'>Tất cả (4)</ColorTypo>}
-        </ColorButton>
-        <ColorButton
-          onClick={evt => handleChange(evt, 1)}
-        >
-          {value === 1 ? <ColorTypo bold>Đã duyệt (2)</ColorTypo> : <ColorTypo color='gray'>Đã duyệt (2)</ColorTypo>}
-        </ColorButton>
-        <ColorButton
-          onClick={evt => handleChange(evt, 2)}
-        >
-          {value === 2 ? <ColorTypo bold>Chờ duyệt (2)</ColorTypo> : <ColorTypo color='gray'>Chờ duyệt (2)</ColorTypo>}
-        </ColorButton>
-      </StyledButtonGroup>
-      <Collapse in={value === 0} mountOnEnter unmountOnExit>
-        <ListOffer handleClickClose={() => handleClickClose()} handleClickOpen={() => handleClickOpen()}/>
-      </Collapse>
-      <Collapse in={value === 1} mountOnEnter unmountOnExit>
-        {null}
-      </Collapse>
-      <Collapse in={value === 2} mountOnEnter unmountOnExit>
-        {null}
-      </Collapse>
-      <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}/>
-    </Container>
+      <Container>
+        <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
+          <ColorButton
+            onClick={evt => handleChange(evt, 0)}
+          >
+            {value === 0 ? <ColorTypo bold>Tất cả (4)</ColorTypo> : <ColorTypo color='gray'>Tất cả (4)</ColorTypo>}
+          </ColorButton>
+          <ColorButton
+            onClick={evt => handleChange(evt, 1)}
+          >
+            {value === 1 ? <ColorTypo bold>Đã duyệt (2)</ColorTypo> : <ColorTypo color='gray'>Đã duyệt (2)</ColorTypo>}
+          </ColorButton>
+          <ColorButton
+            onClick={evt => handleChange(evt, 2)}
+          >
+            {value === 2 ? <ColorTypo bold>Chờ duyệt (2)</ColorTypo> : <ColorTypo color='gray'>Chờ duyệt (2)</ColorTypo>}
+          </ColorButton>
+        </StyledButtonGroup>
+        <Collapse in={value === 0} mountOnEnter unmountOnExit>
+          <ListOffer
+            handleClickClose={() => handleClickClose()}
+            handleClickOpen={() => handleClickOpen()}
+            {...props}
+          />
+        </Collapse>
+        <Collapse in={value === 1} mountOnEnter unmountOnExit>
+          {null}
+        </Collapse>
+        <Collapse in={value === 2} mountOnEnter unmountOnExit>
+          {null}
+        </Collapse>
+        <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
+      </Container>
     </Body>
   )
 }

@@ -198,6 +198,7 @@ function AllSubtaskList(props) {
   }
 
   React.useEffect(() => {
+    // Reset sub task when changing props
     setData(convertResponseDataToMotionData(props.subTasks))
   },[props.subTasks])
 
@@ -326,6 +327,7 @@ function TabBody(props) {
 
   const createSubTask = (taskId, name) => {
     props.postSubTaskByTaskId(taskId, name)
+    setName("")
   }
 
   return (

@@ -1,9 +1,5 @@
 // Import actions
-import {
-    GET_OFFER_FAIL,
-    GET_OFFER_REQUEST,
-    GET_OFFER_SUCCESS
-} from '../../constants/actions/taskDetail/taskDetailConst'
+import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 
 // Initial state for store
 const initialState = {
@@ -15,25 +11,45 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
-        case GET_OFFER_SUCCESS:
-            return {
-                ...state,
-                isFetching: false,
-                dataFetched: true,
-                offer: action.payload
-            };
-        case GET_OFFER_REQUEST:
+        case types.GET_OFFER_REQUEST:
             return {
                 ...state,
                 isFetching: true
             }
-        case GET_OFFER_FAIL:
+        case types.GET_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+                offer: action.payload.offers
+            };
+        case types.GET_OFFER_FAIL:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: false,
                 error: true,
             }
+        case types.CREATE_OFFER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.CREATE_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+            };
+
+        case types.CREATE_OFFER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+
         default:
             return state;
     }
