@@ -146,7 +146,8 @@ const OfferModal = (props) => {
         color="primary"
         onClick={() => {
           props.handleClickClose()
-          props.createOfferByTaskId("5da18ce8aa75001b8060eb12", content)
+          if(content)
+            props.createOfferByTaskId("5da18ce8aa75001b8060eb12", content)
         }}>
         Hoàn Thành
           </Button>

@@ -61,12 +61,9 @@ import { CREATE_ICON } from '../constants/actions/icon/createIcon';
 import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
 import { deleteIcon } from './icon/deleteIcon';
-import { 
-  GET_OFFER_REQUEST, CREATE_OFFER_REQUEST, GET_SUBTASK_REQUEST, POST_SUBTASK_REQUEST 
-} from '../constants/actions/taskDetail/taskDetailConst'
-import { 
-  getOffer, createOffer, getSubTask, postSubTask 
-} from  './taskDetail/TaskDetailSaga'
+import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
+import * as taskDetailSaga from  './taskDetail/TaskDetailSaga';
+
 
 function* rootSaga() {
   yield takeLeading(LOGIN, login);
@@ -101,10 +98,13 @@ function* rootSaga() {
   yield takeLeading(BAN_USER_FROM_GROUP, banUserFromGroup);
   yield takeLeading(CREATE_ICON, createIcon);
   yield takeLeading(DELETE_ICON, deleteIcon);
-  yield takeLeading(GET_OFFER_REQUEST, getOffer);
-  yield takeLeading(CREATE_OFFER_REQUEST, createOffer);
-  yield takeLeading(GET_SUBTASK_REQUEST, getSubTask);
-  yield takeLeading(POST_SUBTASK_REQUEST, postSubTask);
+  yield takeLeading(taskDetailType.GET_OFFER_REQUEST, taskDetailSaga.getOffer);
+  yield takeLeading(taskDetailType.CREATE_OFFER_REQUEST, taskDetailSaga.createOffer);
+  yield takeLeading(taskDetailType.UPDATE_OFFER_REQUEST, taskDetailSaga.updateOffer);
+  yield takeLeading(taskDetailType.DELETE_OFFER_REQUEST, taskDetailSaga.deleteOffer);
+  yield takeLeading(taskDetailType.GET_SUBTASK_REQUEST, taskDetailSaga.getSubTask);
+  yield takeLeading(taskDetailType.POST_SUBTASK_REQUEST, taskDetailSaga.postSubTask);
+ 
 };
 
 export default rootSaga;

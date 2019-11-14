@@ -68,3 +68,33 @@ export const createOfferFail = (error) => ({
     type: types.CREATE_OFFER_FAIL,
     error: error,
 });
+
+export const updateOffer = (payload) => ({
+    type: types.UPDATE_OFFER_REQUEST,
+    payload
+});
+
+export const updateOfferSuccess = (payload) => ({
+    type: types.UPDATE_OFFER_SUCCESS,
+    payload
+});
+
+export const updateOfferFail = (error) => ({
+    type: types.UPDATE_OFFER_FAIL,
+    error: error,
+});
+
+export const deleteOffer = ({ offer_id }) => ({
+    type: types.DELETE_OFFER_REQUEST,
+    payload: offer_id
+});
+
+export const deleteOfferSuccess = (offer_id) => ({
+    type: types.DELETE_OFFER_SUCCESS,
+    payload: offer_id
+});
+
+export const deleteOfferFail = (error) => ({
+    type: types.DELETE_OFFER_FAIL,
+    error: error,
+});
