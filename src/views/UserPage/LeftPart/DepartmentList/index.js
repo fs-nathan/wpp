@@ -13,11 +13,8 @@ import Icon from '@mdi/react';
 import { mdiPlus, mdiDrag, mdiDragVertical } from '@mdi/js';
 import CustomListItem from './CustomListItem';
 import CreateDepartmentModal from '../../Modals/CreateDepartment';
-import { UserPageContext } from '../../index';
 import { connect } from 'react-redux';
-import { listRoom } from '../../../../actions/room/listRoom';
 import { sortRoom } from '../../../../actions/room/sortRoom';
-import { CustomEventListener, CustomEventDispose, CREATE_ROOM, SORT_ROOM } from '../../../../constants/events';
 import { filter, get } from 'lodash';
 
 const Banner = styled.div`
@@ -28,9 +25,7 @@ const StyledPrimary = styled(Primary)`
   font-weight: 500;
 `;
 
-function DepartmentList({ doListRoom, doSortRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
-
-  const { listRoom, } = React.useContext(UserPageContext);
+function DepartmentList({ listRoom, doSortRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
 
   const [openModal, setOpenModal] = React.useState(false);
   const location = useLocation(); 
@@ -39,20 +34,6 @@ function DepartmentList({ doListRoom, doSortRoom, subSlide, handleSubSlide, subS
   const [searchPatern, setSearchPatern] = React.useState('');
 
   const rooms = filter(_rooms, room => get(room, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()));
-
-  React.useEffect(() => {
-    const doListRoomHandler = () => {
-      doListRoom(true);
-    };
-
-    CustomEventListener(CREATE_ROOM, doListRoomHandler);
-    CustomEventListener(SORT_ROOM, doListRoomHandler);
-
-    return () => {
-      CustomEventDispose(CREATE_ROOM, doListRoomHandler);
-      CustomEventDispose(SORT_ROOM, doListRoomHandler);
-    }
-  }, []);
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -159,14 +140,19 @@ function DepartmentList({ doListRoom, doSortRoom, subSlide, handleSubSlide, subS
   )
 }
 
+const mapStateToProps = state => {
+  return {
+    listRoom: state.room.listRoom,
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    doListRoom: (quite) => dispatch(listRoom(quite)),
     doSortRoom: ({ roomId, sortIndex }) => dispatch(sortRoom({ roomId, sortIndex })),
-  }
-}
+  };
+};
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(DepartmentList);

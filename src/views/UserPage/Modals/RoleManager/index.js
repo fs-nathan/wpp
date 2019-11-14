@@ -53,33 +53,13 @@ const StyledTable = styled(Table)`
   }
 `;
 
-function RoleManager({ open, setOpen, listUserRole, doListUserRole, doDeleteUserRole }) {
+function RoleManager({ open, setOpen, listUserRole, doDeleteUserRole }) {
 
   const { data: { userRoles }, loading, error } = listUserRole;
   const [openCAU, setOpenCAU] = React.useState(0);
   const [updatedUserRole, setUpdatedUserRole] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
   const [delUserRole, setDelUserRole] = React.useState();
-
-  React.useEffect(() => {
-    doListUserRole();
-  }, [doListUserRole]);
-
-  React.useEffect(() => {
-    const doListUserRoleHandler = () => {
-      doListUserRole(true);
-    };
-
-    CustomEventListener(CREATE_USER_ROLE, doListUserRoleHandler);
-    CustomEventListener(UPDATE_USER_ROLE, doListUserRoleHandler);
-    CustomEventListener(DELETE_USER_ROLE, doListUserRoleHandler);
-
-    return () => {
-      CustomEventDispose(CREATE_USER_ROLE, doListUserRoleHandler);
-      CustomEventDispose(UPDATE_USER_ROLE, doListUserRoleHandler);
-      CustomEventDispose(DELETE_USER_ROLE, doListUserRoleHandler);
-    }
-  }, [doListUserRole]);
 
   function handleSelectedUserRole(selectedRole) {
     setUpdatedUserRole(selectedRole);

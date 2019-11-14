@@ -133,9 +133,9 @@ function StateBadge({ user }) {
 }
 
 function AllUsersTable({ 
-  listRoom, doListRoom,
-  sortUser, doSortUser,
-  listUserOfGroup, doListUserOfGroup, 
+  listRoom,
+  doSortUser,
+  listUserOfGroup, 
   expand, handleExpand, handleSubSlide,
   doPublicMember, doPrivateMember,
   doBanUserFromGroup, 
@@ -150,38 +150,6 @@ function AllUsersTable({
   const loading = listUserOfGroupLoading || listRoomLoading;
   const error = listUserOfGroupError || listRoomError;
   const [moreModal, setMoreModal] = React.useState(0);
-
-  React.useEffect(() => {
-    doListRoom();
-  }, [doListRoom]);
-
-  React.useEffect(() => {
-    doListUserOfGroup();
-  }, [doListUserOfGroup]);
-
-  React.useEffect(() => {
-    const doListUserOfGroupHandler = () => {
-      doListUserOfGroup(true);
-    };
-    
-    CustomEventListener(SORT_USER, doListUserOfGroupHandler);
-    CustomEventListener(CREATE_ROOM, doListUserOfGroupHandler);
-    CustomEventListener(SORT_ROOM, doListUserOfGroupHandler);
-    CustomEventListener(INVITE_USER_JOIN_GROUP, doListUserOfGroupHandler);
-    CustomEventListener(BAN_USER_FROM_GROUP, doListUserOfGroupHandler);
-    CustomEventListener(PUBLIC_MEMBER, doListUserOfGroupHandler);
-    CustomEventListener(PRIVATE_MEMBER, doListUserOfGroupHandler);
-    
-    return () => {
-      CustomEventDispose(SORT_USER, doListUserOfGroupHandler);
-      CustomEventDispose(CREATE_ROOM, doListUserOfGroupHandler);
-      CustomEventDispose(SORT_ROOM, doListUserOfGroupHandler);
-      CustomEventDispose(INVITE_USER_JOIN_GROUP, doListUserOfGroupHandler);
-      CustomEventDispose(BAN_USER_FROM_GROUP, doListUserOfGroupHandler);
-      CustomEventDispose(PUBLIC_MEMBER, doListUserOfGroupHandler);
-      CustomEventDispose(PRIVATE_MEMBER, doListUserOfGroupHandler);
-    }
-  }, [doListUserOfGroup]);
 
   return (
     <Container>

@@ -26,10 +26,7 @@ import RoleManagerModal from '../../Modals/RoleManager';
 import LogoManagerModal from '../../Modals/LogoManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import PermissionSettingsModal from '../../Modals/PermissionSettings';
-import { 
-  CustomEventListener, CustomEventDispose, 
-  SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER,
-} from '../../../../constants/events';
+import { Context as UserPageContext } from '../../index';
 
 const Container = styled.div`
   grid-area: right;
@@ -125,14 +122,15 @@ function StateBadge({ user }) {
 }
 
 function DepartmentUsersTable({ 
-  detailRoom, doDetailRoom,
-  getUserOfRoom, doGetUserOfRoom,
-  sortUser, doSortUser,
+  detailRoom,
+  getUserOfRoom,
+  doSortUser,
   expand, handleExpand, handleSubSlide,
   doPublicMember, doPrivateMember,
   doBanUserFromGroup, 
 }) {
 
+  const { setDepartmentId } = React.useContext(UserPageContext);
   const { departmentId } = useParams();
   const location = useLocation();
   const history = useHistory();
@@ -145,39 +143,8 @@ function DepartmentUsersTable({
   const [moreModal, setMoreModal] = React.useState(0);
 
   React.useEffect(() => {
-    if (departmentId !== 'default')
-    doDetailRoom({
-      roomId: departmentId,
-    });
-  }, [doDetailRoom, departmentId]);
-
-  React.useEffect(() => {
-    doGetUserOfRoom({
-      roomId: departmentId,
-    });
-  }, [doGetUserOfRoom, departmentId]);
-
-  React.useEffect(() => {
-    const doGetUserOfRoomHandler = () => {
-      doGetUserOfRoom({
-        roomId: departmentId,
-      }, true);
-    };
-    
-    CustomEventListener(SORT_USER, doGetUserOfRoomHandler);
-    CustomEventListener(INVITE_USER_JOIN_GROUP, doGetUserOfRoomHandler);
-    CustomEventListener(BAN_USER_FROM_GROUP, doGetUserOfRoomHandler);
-    CustomEventListener(PUBLIC_MEMBER, doGetUserOfRoomHandler);
-    CustomEventListener(PRIVATE_MEMBER, doGetUserOfRoomHandler);
-
-    return () => {
-      CustomEventDispose(SORT_USER, doGetUserOfRoomHandler);
-      CustomEventDispose(INVITE_USER_JOIN_GROUP, doGetUserOfRoomHandler);
-      CustomEventDispose(BAN_USER_FROM_GROUP, doGetUserOfRoomHandler)
-      CustomEventDispose(PUBLIC_MEMBER, doGetUserOfRoomHandler);
-      CustomEventDispose(PRIVATE_MEMBER, doGetUserOfRoomHandler);
-    }
-  }, [doGetUserOfRoom, departmentId]);
+    setDepartmentId(departmentId);
+  }, [departmentId]);
 
   return (
     <Container>

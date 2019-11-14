@@ -47,7 +47,7 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMajor, listLevel, doListRoom, doListPosition, doListMajor, doListLevel, updateUser, doUpdateUser }) {
+function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMajor, listLevel, doUpdateUser }) {
 
   const { t } = useTranslation();
   const { data: { rooms }, error: listRoomError, laoding: listRoomLoading } = listRoom;
@@ -63,13 +63,6 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
   
   const loading = listRoomLoading || listPositionLoading || listMajorLoading || listLevelLoading;
   const error = listRoomError || listPositionError || listMajorError || listLevelError;
-
-  React.useEffect(() => {
-    doListRoom();
-    doListPosition();
-    doListMajor();
-    doListLevel()
-  }, [doListRoom, doListPosition, doListMajor, doListLevel]);
 
   React.useEffect(() => {
     setDescription(get(updatedUser, 'description', ''));

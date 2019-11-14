@@ -70,22 +70,6 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
     });
   }, [defaults]);
 
-  React.useEffect(() => {
-    doListIcon();
-  }, [doListIcon]);
-
-  React.useEffect(() => {
-    const doListIconHandler = () => {
-      doListIcon(true);
-    }
-    CustomEventListener(CREATE_ICON, doListIconHandler);
-    CustomEventListener(DELETE_ICON, doListIconHandler);
-    return () => {
-      CustomEventDispose(CREATE_ICON, doListIconHandler);
-      CustomEventDispose(DELETE_ICON, doListIconHandler);
-    }
-  }, [doListIcon]);
-
   function selectIcon(iconId) {
     setOpen(false);
     onSelectIcon(selectedIcon);

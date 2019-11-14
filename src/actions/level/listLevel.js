@@ -4,8 +4,9 @@ import {
   LIST_LEVEL_FAIL,
 } from '../../constants/actions/level/listLevel';
 
-export const listLevel = () => ({
+export const listLevel = (quite = false) => ({
   type: LIST_LEVEL,
+  quite,
 });
 
 export const listLevelSuccess = ({ levels }) => ({

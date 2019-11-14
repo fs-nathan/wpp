@@ -38,7 +38,7 @@ const RoomNameSpan = styled.span`
   padding: 15px;
 `;
 
-function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, }) {
+function UserList({ listUserOfGroup, sortUser, doSortUser, }) {
   
   const { data: { rooms }, loading: listUserOfGroupLoading, error: listUserOfGroupError } = listUserOfGroup;
   const { loading: sortUserLoading, error: sortUserError } = sortUser;
@@ -48,25 +48,6 @@ function UserList({ listUserOfGroup, doListUserOfGroup, sortUser, doSortUser, })
   const history = useHistory();
   const { userId } = useParams();
   const [searchPatern, setSearchPatern] = React.useState('');
-
-  React.useEffect(() => {
-    doListUserOfGroup();
-  }, [doListUserOfGroup]);
-
-  React.useEffect(() => {
-    const doListUserOfGroupHandler = () => {
-      doListUserOfGroup(true);
-    };
-
-    CustomEventListener(SORT_USER, doListUserOfGroupHandler);
-    CustomEventListener(UPDATE_USER, doListUserOfGroupHandler);
-
-    return () => {
-      CustomEventDispose(SORT_USER, doListUserOfGroupHandler);
-      CustomEventDispose(UPDATE_USER, doListUserOfGroupHandler);
-    }
-  }, [doListUserOfGroup]);
-
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;

@@ -15,8 +15,9 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import AlertModal from '../../../../components/AlertModal';
-import { CustomEventListener, CustomEventDispose, DELETE_ROOM, UPDATE_ROOM } from '../../../../constants/events.js';
+import { CustomEventListener, CustomEventDispose, DELETE_ROOM } from '../../../../constants/events.js';
 import CreateDepartment from '../../Modals/CreateDepartment';
+import { Context as UserPageContext } from '../../index';
 
 const Container = styled.div`
   padding: 0 16px;
@@ -85,8 +86,9 @@ function DefaultDepartment({ subSlide, handleSubSlide, subSlideComp: SubSlideCom
   );
 }
 
-function NormalDepartment({ detailRoom, doDetailRoom, doDeleteRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
+function NormalDepartment({ detailRoom, doDeleteRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
   
+  const { setDepartmentId } = React.useContext(UserPageContext);
   const { t } = useTranslation();
   const { departmentId } = useParams();
   const history = useHistory();
@@ -95,25 +97,20 @@ function NormalDepartment({ detailRoom, doDetailRoom, doDeleteRoom, subSlide, ha
   const [alert, setAlert] = React.useState(false);
 
   React.useEffect(() => {
-    doDetailRoom({ roomId: departmentId });
-  }, [departmentId, doDetailRoom]);
+    setDepartmentId(departmentId);
+  }, [departmentId]);
 
   React.useEffect(() => {
     const historyPushHandler = () => {
       history.push('/departments');
     };
-    const doDetailRoomHandler = () => {
-      doDetailRoom({ roomId: departmentId }, true);
-    };
 
     CustomEventListener(DELETE_ROOM, historyPushHandler);
-    CustomEventListener(UPDATE_ROOM, doDetailRoomHandler);
     
     return () => {
       CustomEventDispose(DELETE_ROOM, historyPushHandler);
-      CustomEventDispose(UPDATE_ROOM, doDetailRoomHandler);
     };
-  }, [history, departmentId, doDetailRoom]);
+  }, [history]);
 
   function handleDeleteDepartment(departmentId) {
     doDeleteRoom({ 

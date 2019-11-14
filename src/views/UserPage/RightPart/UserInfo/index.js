@@ -20,7 +20,7 @@ import Icon from '@mdi/react';
 import {
   mdiFullscreenExit,
 } from '@mdi/js';
-import { CustomEventListener, CustomEventDispose, UPLOAD_DOCUMENTS_USER, UPDATE_USER } from '../../../../constants/events';
+import { Context as UserPageContext } from '../../index';
 
 const Container = styled.div`
   min-height: 100%;
@@ -118,8 +118,9 @@ const SideList = styled(List)`
   }
 `;
 
-function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocumentsUser, expand, handleExpand }) {
+function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expand, handleExpand }) {
 
+  const { setUserId } = React.useContext(UserPageContext);
   const { t } = useTranslation();
   const [openDocumentsModal, setOpenDocumentsModal] = React.useState(false);
   const [openUpdateModal, setOpenUpdateModal] = React.useState(false);
@@ -128,20 +129,8 @@ function UserInfo({ detailUser, doDetailUser, uploadDocumentsUser, doUploadDocum
   const { error: uploadDocumentsUserError, loading: uploadDocumentsUserLoading } = uploadDocumentsUser;
 
   React.useEffect(() => {
-    doDetailUser({ userId });
-  }, [doDetailUser, userId]);
-
-  React.useEffect(() => {
-    const doDetailUserHandler = () => doDetailUser({ userId }, true);
-
-    CustomEventListener(UPLOAD_DOCUMENTS_USER, doDetailUserHandler);
-    CustomEventListener(UPDATE_USER, doDetailUserHandler);
-
-    return () => {
-      CustomEventDispose(UPLOAD_DOCUMENTS_USER, doDetailUserHandler);
-      CustomEventDispose(UPDATE_USER, doDetailUserHandler);
-    }
-  }, [doDetailUser, userId]);
+    setUserId(userId);
+  }, [userId]);
 
   function handleUploadFile(evt) {
     const file = evt.target.files[0];

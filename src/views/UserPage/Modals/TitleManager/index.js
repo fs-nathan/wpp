@@ -50,33 +50,13 @@ const StyledTable = styled(Table)`
   }
 `;
 
-function TitleManager({ open, setOpen, listPosition, doListPosition, doDeletePosition }) {
+function TitleManager({ open, setOpen, listPosition, doDeletePosition }) {
 
   const [openCAU, setOpenCAU] = React.useState(0);
   const { data: { positions }, loading, error } = listPosition;
   const [updatedPosition, setUpdatedPosition] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
   const [delPos, setDelPos] = React.useState();
-
-  React.useEffect(() => {
-    doListPosition();
-  }, [doListPosition]);
-
-  React.useEffect(() => {
-    const doListPositionHandler = () => {
-      doListPosition(true);
-    };
-
-    CustomEventListener(CREATE_POSITION, doListPositionHandler);
-    CustomEventListener(UPDATE_POSITION, doListPositionHandler);
-    CustomEventListener(DELETE_POSITION, doListPositionHandler);
-
-    return () => {
-      CustomEventDispose(CREATE_POSITION, doListPositionHandler);
-      CustomEventDispose(UPDATE_POSITION, doListPositionHandler);
-      CustomEventDispose(DELETE_POSITION, doListPositionHandler);
-    }
-  }, [doListPosition]);
 
   function handleSelectedPosition(selectedPos) {
     setUpdatedPosition(selectedPos);
