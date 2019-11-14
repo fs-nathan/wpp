@@ -13,6 +13,7 @@ import Icon from '@mdi/react';
 import { mdiPlus, mdiDrag, mdiDragVertical } from '@mdi/js';
 import CustomListItem from './CustomListItem';
 import CreateDepartmentModal from '../../Modals/CreateDepartment';
+import { UserPageContext } from '../../index';
 import { connect } from 'react-redux';
 import { listRoom } from '../../../../actions/room/listRoom';
 import { sortRoom } from '../../../../actions/room/sortRoom';
@@ -27,7 +28,9 @@ const StyledPrimary = styled(Primary)`
   font-weight: 500;
 `;
 
-function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
+function DepartmentList({ doListRoom, doSortRoom, subSlide, handleSubSlide, subSlideComp: SubSlideComp }) {
+
+  const { listRoom, } = React.useContext(UserPageContext);
 
   const [openModal, setOpenModal] = React.useState(false);
   const location = useLocation(); 
@@ -36,10 +39,6 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
   const [searchPatern, setSearchPatern] = React.useState('');
 
   const rooms = filter(_rooms, room => get(room, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()));
-
-  React.useEffect(() => {
-    doListRoom();
-  }, [doListRoom]);
 
   React.useEffect(() => {
     const doListRoomHandler = () => {
@@ -53,7 +52,7 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
       CustomEventDispose(CREATE_ROOM, doListRoomHandler);
       CustomEventDispose(SORT_ROOM, doListRoomHandler);
     }
-  }, [doListRoom]);
+  }, []);
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -160,13 +159,6 @@ function DepartmentList({ listRoom, doListRoom, sortRoom, doSortRoom, subSlide, 
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    listRoom: state.room.listRoom,
-    sortRoom: state.room.sortRoom,
-  }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     doListRoom: (quite) => dispatch(listRoom(quite)),
@@ -175,6 +167,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(DepartmentList);
