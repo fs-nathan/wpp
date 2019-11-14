@@ -120,7 +120,7 @@ const ApprovedBox = (props) => {
               <Button variant="outlined" size="small" >Từ chối</Button>
               <span />
             </StyledTitleBox>
-            <ApproveModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
+            <ApproveModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} {...props} />
           </ApprovedContainer>
         </React.Fragment>
       )}
@@ -216,10 +216,13 @@ const CustomListItem = (props) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={() =>
+        <MenuItem onClick={() => {
           props.handleClickOpen()
-        }>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+        }}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={() => {
+          props.deleteOfferByTaskId(props.offer.id)
+          handleClose()
+        }}>Xóa</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -244,9 +247,11 @@ const ListOffer = (props) => {
         placeholder="Nhập từ khóa"
       />
       <StyledList>
+
         {props.offer.map((item) => {
           return (
             <CustomListItem
+              {...props}
               key={item.id} offer={item}
               handleClickOpen={() => props.handleClickOpen()}
               handleClickClose={() => props.handleClickClose()} />
@@ -310,7 +315,7 @@ function TabBody(props) {
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
           {null}
         </Collapse>
-        <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
+        <OfferModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
       </Container>
     </Body>
   )

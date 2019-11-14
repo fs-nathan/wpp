@@ -107,6 +107,8 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../constants/actions/project/re
 import { removeProjectRoleFromMember } from './project/removeProjectRoleFromMember';
 import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/updateGroupPermissionMember';
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
+import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
+import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
 
 function* rootSaga() {
   yield takeLatest(LOGIN, login);
@@ -161,10 +163,14 @@ function* rootSaga() {
   yield takeLatest(ADD_PROJECT_ROLE_TO_MEMBER, addProjectRoleToMember);
   yield takeLatest(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
   yield takeLatest(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
-  yield takeLatest(GET_OFFER_REQUEST, getOffer);
-  yield takeLeading(CREATE_OFFER_REQUEST, createOffer);
-  yield takeLeading(GET_SUBTASK_REQUEST, getSubTask);
-  yield takeLeading(POST_SUBTASK_REQUEST, postSubTask);
+  yield takeLeading(taskDetailType.GET_OFFER_REQUEST, taskDetailSaga.getOffer);
+  yield takeLeading(taskDetailType.CREATE_OFFER_REQUEST, taskDetailSaga.createOffer);
+  yield takeLeading(taskDetailType.UPDATE_OFFER_REQUEST, taskDetailSaga.updateOffer);
+  yield takeLeading(taskDetailType.DELETE_OFFER_REQUEST, taskDetailSaga.deleteOffer);
+  yield takeLeading(taskDetailType.GET_SUBTASK_REQUEST, taskDetailSaga.getSubTask);
+  yield takeLeading(taskDetailType.POST_SUBTASK_REQUEST, taskDetailSaga.postSubTask);
+  yield takeLeading(taskDetailType.UPDATE_SUBTASK_REQUEST, taskDetailSaga.updateSubTask);
+  yield takeLeading(taskDetailType.DELETE_SUBTASK_REQUEST, taskDetailSaga.deleteSubTask);
 };
 
 export default rootSaga;
