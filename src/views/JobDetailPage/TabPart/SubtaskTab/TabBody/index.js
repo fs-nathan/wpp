@@ -10,6 +10,8 @@ import SearchInput from '../../../../../components/SearchInput';
 import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
 import SubtaskModal from '../SubtaskModal'
+import { Scrollbars } from 'react-custom-scrollbars'
+import DeleteModalSubTask from '../ModalDeleteSubTask'
 const Container = styled.div`
   padding: 0;
 `;
@@ -94,11 +96,14 @@ const ButtonIcon = styled(IconButton)`
 
 
 
-function AllSubtaskListItem({ task, index }) {
+function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
+  // console.log("task id",task.id);
+  
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
+    setAnchorEl(null);
   };
   const handleClickClose = () => {
     setOpen(false);
@@ -114,10 +119,21 @@ function AllSubtaskListItem({ task, index }) {
   function handleClose() {
     setAnchorEl(null);
   }
+// bien modal delete
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
+
+  const handleOpenModalDelete = () => {
+    setOpenDelete(true);
+    setAnchorEl(null);
+  };   
+  const handleCloseModalDelete = () => {
+    setOpenDelete(false);
+  };
   return (
+
     <Draggable
-      draggableId={task.id}
-      index={index}
+      draggableId={props.task.id}
+      index={props.index}
     >
       {(provided) => (
         <AllSubtaskListItemContainer
@@ -136,8 +152,8 @@ function AllSubtaskListItem({ task, index }) {
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
               </ButtonIcon>
           }
-          <ItemList>{task.name}</ItemList>
-          <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ItemList>{props.task.name}</ItemList>
+          <ButtonIcon style={{ marginRight: 16}} onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
             <Icon path={mdiDotsVertical} size={1} />
           </ButtonIcon>
           <Menu
@@ -151,10 +167,11 @@ function AllSubtaskListItem({ task, index }) {
               horizontal: 'right',
             }}
           >
-            <MenuItem onClick={handleClickClose, handleClickOpen}>Chỉnh sửa</MenuItem>
-            <MenuItem onClick={handleClose}>Xóa</MenuItem>
+            <MenuItem onClick={handleClickOpen} >Chỉnh sửa</MenuItem>
+            <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
           </Menu>
-          <SubtaskModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
+          <SubtaskModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} task={props.task.id} name={props.task.name} {...props}/>
+          <DeleteModalSubTask isOpen={isOpenDelete} handleCloseModalDelete={handleCloseModalDelete} handleOpenModalDelete={handleOpenModalDelete} task={props.task.id} {...props}/>
         </AllSubtaskListItemContainer>
       )}
     </Draggable>
@@ -165,7 +182,8 @@ function AllSubtaskListItem({ task, index }) {
 
 function AllSubtaskList(props) {
 
-
+  // console.log('data props', props);
+  
   // const [data, setData] = React.useState(__data);
   const [data, setData] = React.useState(
     props.subTasks.length
@@ -313,6 +331,11 @@ const InputText = styled(InputBase)`
 const Div = styled.div`
   margin: 10px 20px;
 `
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+  
+`;
 
 function TabBody(props) {
   // const [data, setData] = React.useState({ name: "" })
@@ -331,6 +354,7 @@ function TabBody(props) {
   }
 
   return (
+    <Body>
     <Container>
       {props.isClicked ?
         <NewWork>
@@ -354,9 +378,10 @@ function TabBody(props) {
         </Div>
       }
       <AllSubtaskList {...props} />
-      <TextTitle uppercase bold>Hoàn thành</TextTitle>
+      <TextTitle uppercase bold style={{ paddingLeft: 30}}>Hoàn thành</TextTitle>
       <FinishedSubtaskList />
     </Container>
+    </Body>
   )
 }
 

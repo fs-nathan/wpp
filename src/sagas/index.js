@@ -62,10 +62,10 @@ import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
 import { deleteIcon } from './icon/deleteIcon';
 import { 
-  GET_OFFER_REQUEST, CREATE_OFFER_REQUEST, GET_SUBTASK_REQUEST, POST_SUBTASK_REQUEST 
+  GET_OFFER_REQUEST, CREATE_OFFER_REQUEST, GET_SUBTASK_REQUEST, POST_SUBTASK_REQUEST, UPDATE_SUBTASK_REQUEST, DELETE_SUBTASK_REQUEST
 } from '../constants/actions/taskDetail/taskDetailConst'
 import { 
-  getOffer, createOffer, getSubTask, postSubTask 
+  getOffer, createOffer, getSubTask, postSubTask , updateSubTask, deleteSubTask
 } from  './taskDetail/TaskDetailSaga'
 
 function* rootSaga() {
@@ -105,6 +105,8 @@ function* rootSaga() {
   yield takeLeading(CREATE_OFFER_REQUEST, createOffer);
   yield takeLeading(GET_SUBTASK_REQUEST, getSubTask);
   yield takeLeading(POST_SUBTASK_REQUEST, postSubTask);
+  yield takeLeading(UPDATE_SUBTASK_REQUEST, updateSubTask);
+  yield takeLeading(DELETE_SUBTASK_REQUEST, deleteSubTask);
 };
 
 export default rootSaga;

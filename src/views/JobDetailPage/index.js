@@ -4,7 +4,7 @@ import ListPart from './ListPart';
 import ChatPart from './ChatPart';
 import TabPart from './TabPart';
 import { connect } from 'react-redux'
-import { getOffer, createOffer, getSubTask, postSubTask } from '../../actions/taskDetail/taskDetailActions'
+import { getOffer, createOffer, getSubTask, postSubTask, updateSubTask, deleteSubTask } from '../../actions/taskDetail/taskDetailActions'
 
 const Container = styled.div`
   height: 100%;
@@ -44,7 +44,8 @@ const mapDispatchToProps = dispatch => {
     // sub-task
     getSubTaskByTaskId: taskId => dispatch(getSubTask({ taskId })),
     postSubTaskByTaskId: (taskId, name) => dispatch(postSubTask({ task_id: taskId, name })),
-
+    updateSubTaskByTaskId: (taskId, name) => dispatch(updateSubTask({ sub_task_id: taskId, name})),
+    deleteSubTaskByTaskId: (taskId) => dispatch(deleteSubTask({sub_task_id: taskId})),
     // offer
     getOfferByTaskId: taskId => dispatch(getOffer({ taskId })),
     createOfferByTaskId: (createId, content) => {
