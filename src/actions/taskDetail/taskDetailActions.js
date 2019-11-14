@@ -17,7 +17,7 @@ export const getSubTaskFail = (error) => ({
     type: types.GET_SUBTASK_FAIL,
     error: error,
 });
-
+// =======
 export const postSubTask = (payload) => ({
     type: types.POST_SUBTASK_REQUEST,
     options: payload,
@@ -32,6 +32,42 @@ export const postSubTaskFail = (error) => ({
     type: types.POST_SUBTASK_FAIL,
     error: error,
 });
+// =====
+export const updateSubTask = ({ sub_task_id, name}) => ({
+    type: types.UPDATE_SUBTASK_REQUEST,
+    options: {
+        sub_task_id,
+        name
+    },
+});
+
+export const updateSubTaskSuccess = (payload) => ({
+    type: types.UPDATE_SUBTASK_SUCCESS,
+    payload
+});
+
+export const updateSubTaskFail = (error) => ({
+    type: types.UPDATE_SUBTASK_FAIL,
+    error: error,
+});
+// =====
+export const deleteSubTask = ({sub_task_id}) => ({
+    type: types.DELETE_SUBTASK_REQUEST,
+    options: {
+        sub_task_id
+    },
+});
+
+export const deleteSubTaskSuccess = (payload) => ({
+    type: types.DELETE_SUBTASK_SUCCESS,
+    payload
+});
+
+export const deleteSubTaskFail = (error) => ({
+    type: types.DELETE_SUBTASK_FAIL,
+    error: error,
+});
+
 
 //  offer
 export const getOffer = ({ taskId }) => ({

@@ -44,7 +44,8 @@ const mapDispatchToProps = dispatch => {
     // sub-task
     getSubTaskByTaskId: taskId => dispatch(taskDetailAction.getSubTask({ taskId })),
     postSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.postSubTask({ task_id: taskId, name })),
-
+    updateSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: taskId, name})),
+    deleteSubTaskByTaskId: (taskId) => dispatch(taskDetailAction.deleteSubTask({sub_task_id: taskId})),
     // offer
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
     createOfferByTaskId: (createId, content) => {dispatch(taskDetailAction.createOffer({ createId, content }))},

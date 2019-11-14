@@ -59,6 +59,9 @@ const styles = theme => ({
   
 
 const SubtaskModal = (props) => {
+  console.log('props task', props.task.id);
+  
+  const [name, setStateName] = React.useState(props.name)
     return (
         // {/* Modal chinh sua cong viec con */}
         <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
@@ -70,10 +73,15 @@ const SubtaskModal = (props) => {
             label="Nội dung công việc"
             margin="normal"
             fullWidth
+            onChange={e => setStateName(e.target.value)}
+            value={name}
             />
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClickClose} color="primary">
+          <Button onClick={() => {
+            props.handleClickClose()
+            props.updateSubTaskByTaskId(props.task.id, name)
+            }} color="primary">
             Hoàn Thành
           </Button>
         </DialogActions>

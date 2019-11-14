@@ -47,6 +47,42 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
+        case types.UPDATE_SUBTASK_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.UPDATE_SUBTASK_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.UPDATE_SUBTASK_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.DELETE_SUBTASK_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.DELETE_SUBTASK_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.DELETE_SUBTASK_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
         default:
             return state;
     }
