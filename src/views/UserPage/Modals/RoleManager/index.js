@@ -12,7 +12,6 @@ import RoleCreateAndUpdateModal from './RoleCreateAndUpdate';
 import { listUserRole } from '../../../../actions/userRole/listUserRole';
 import { deleteUserRole } from '../../../../actions/userRole/deleteUserRole';
 import { connect } from 'react-redux'; 
-import { CustomEventListener, CustomEventDispose, CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE } from '../../../../constants/events';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import _ from 'lodash';

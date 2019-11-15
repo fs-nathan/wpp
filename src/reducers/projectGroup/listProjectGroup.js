@@ -4,9 +4,6 @@ import {
   LIST_PROJECT_GROUP_FAIL,
 } from '../../constants/actions/projectGroup/listProjectGroup';
 import {
-  CREATE_PROJECT_GROUP,
-} from '../../constants/actions/projectGroup/createProjectGroup';
-import {
   EDIT_PROJECT_GROUP,
 } from '../../constants/actions/projectGroup/editProjectGroup';
 import {
@@ -15,7 +12,7 @@ import {
 import {
   SORT_PROJECT_GROUP,
 } from '../../constants/actions/projectGroup/sortProjectGroup';
-import { concat, findIndex, get, remove, slice } from 'lodash';
+import { findIndex, get, remove, slice } from 'lodash';
 
 export const initialState = {
   data: {

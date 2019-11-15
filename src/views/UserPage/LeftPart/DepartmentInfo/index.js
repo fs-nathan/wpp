@@ -98,7 +98,7 @@ function NormalDepartment({ detailRoom, doDeleteRoom, subSlide, handleSubSlide, 
 
   React.useEffect(() => {
     setDepartmentId(departmentId);
-  }, [departmentId]);
+  }, [setDepartmentId, departmentId]);
 
   React.useEffect(() => {
     const historyPushHandler = () => {

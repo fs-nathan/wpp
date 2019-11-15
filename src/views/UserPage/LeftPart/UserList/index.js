@@ -9,10 +9,8 @@ import { mdiChevronLeft } from '@mdi/js';
 import CustomListItem from './CustomListItem';
 import { listUserOfGroup } from '../../../../actions/user/listUserOfGroup';
 import { connect } from 'react-redux';
-import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import { sortUser } from '../../../../actions/user/sortUser';
-import { CustomEventListener, CustomEventDispose, SORT_USER, UPDATE_USER } from '../../../../constants/events';
 import { get } from 'lodash';
 
 const Banner = styled.div`

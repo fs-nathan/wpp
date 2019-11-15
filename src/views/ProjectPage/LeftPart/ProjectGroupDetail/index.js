@@ -10,6 +10,7 @@ import AvatarCircleList from '../../../../components/AvatarCircleList';
 import Icon from '@mdi/react';
 import { mdiClose, mdiSquare } from '@mdi/js';
 import { connect } from 'react-redux';
+import { Context as ProjectGroupContext } from '../../index';
 import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
 import { memberProjectGroup } from '../../../../actions/projectGroup/memberProjectGroup';
 import { deleteProjectGroup } from '../../../../actions/projectGroup/deleteProjectGroup';
@@ -17,7 +18,7 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import AlertModal from '../../../../components/AlertModal';
-import { CustomEventListener, CustomEventDispose, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP } from '../../../../constants/events.js';
+import { CustomEventListener, CustomEventDispose, DELETE_PROJECT_GROUP } from '../../../../constants/events.js';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
 import MembersDetail from '../../Modals/MembersDetail';
 
@@ -75,8 +76,9 @@ const StyledColorTypo = styled(ColorTypo)`
   margin-top: 8px;
 `;
 
-function DepartmentInfo({ detailProjectGroup, doDetailProjectGroup, memberProjectGroup, doMemberProjectGroup, deleteProjectGroup, doDeleteProjectGroup }) {
+function DepartmentInfo({ detailProjectGroup, memberProjectGroup, doDeleteProjectGroup }) {
   
+  const { setProjectGroupId } = React.useContext(ProjectGroupContext);
   const { projectGroupId } = useParams();
   const history = useHistory();
   const { data: { projectGroup }, error: detailProjectGroupError, loading: detailProjectGroupLoading } = detailProjectGroup;
@@ -86,29 +88,23 @@ function DepartmentInfo({ detailProjectGroup, doDetailProjectGroup, memberProjec
   const [openUpdateModal, setOpenUpdateModal] = React.useState(false);
   const [openMemberModal, setOpenMemberModal] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
-
+    
   React.useEffect(() => {
-    doDetailProjectGroup({ projectGroupId: projectGroupId });
-    doMemberProjectGroup({ projectGroupId: projectGroupId });
-  }, [projectGroupId, doDetailProjectGroup, doMemberProjectGroup]);
+    console.log('y');
+    setProjectGroupId(projectGroupId);
+  }, [setProjectGroupId, projectGroupId]);
 
   React.useEffect(() => {
     const historyPushHandler = () => {
       history.push('/projects');
     };
-    const doDetailAndMemberProjectGroupHandler = () => {
-      doDetailProjectGroup({ projectGroupId: projectGroupId }, true);
-      doMemberProjectGroup({ projectGroupId: projectGroupId }, true);
-    };
 
     CustomEventListener(DELETE_PROJECT_GROUP, historyPushHandler);
-    CustomEventListener(EDIT_PROJECT_GROUP, doDetailAndMemberProjectGroupHandler);
     
     return () => {
       CustomEventDispose(DELETE_PROJECT_GROUP, historyPushHandler);
-      CustomEventDispose(EDIT_PROJECT_GROUP, doDetailAndMemberProjectGroupHandler);
     };
-  }, [history, projectGroupId, doDetailProjectGroup, doMemberProjectGroup]);
+  }, [history, projectGroupId]);
 
   function handleDeleteDepartment(projectGroupId) {
     doDeleteProjectGroup({ 

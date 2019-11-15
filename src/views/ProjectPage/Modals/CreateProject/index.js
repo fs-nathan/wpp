@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiNotePlusOutline, mdiContentCopy } from '@mdi/js';
 import CustomModal from '../../../../components/CustomModal';
+import CreateNewProjectModal from '../CreateNewProject';
 
 const Container = styled.div`
   width: 100%;
@@ -63,6 +64,8 @@ const ButtonCase = styled.div`
 
 function CreateProjectGroup({ open, setOpen, }) {
 
+  const [createNew, setCreateNew] = React.useState(false);
+
   return (
     <CustomModal
       title='Tạo dự án'
@@ -70,7 +73,10 @@ function CreateProjectGroup({ open, setOpen, }) {
       setOpen={setOpen}
     >
       <Container>
-        <ButtonCase>
+        <ButtonCase onClick={evt => {
+          setCreateNew(true);
+          setOpen(false);
+        }}>
           <div>
             <Icon path={mdiNotePlusOutline} size={2}/>
           </div>
@@ -89,6 +95,7 @@ function CreateProjectGroup({ open, setOpen, }) {
           </div>
         </ButtonCase>
       </Container>
+      <CreateNewProjectModal open={createNew} setOpen={setCreateNew} />
     </CustomModal>
   )
 }

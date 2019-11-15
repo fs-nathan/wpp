@@ -144,7 +144,7 @@ function DepartmentUsersTable({
 
   React.useEffect(() => {
     setDepartmentId(departmentId);
-  }, [departmentId]);
+  }, [departmentId, setDepartmentId]);
 
   return (
     <Container>

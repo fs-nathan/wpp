@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { get, sortBy, reverse } from 'lodash';
+import { get, sortBy, reverse, filter as filterArr } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { 
@@ -19,6 +19,7 @@ import {
   mdiCheckCircle,
   mdiShieldAccount,
 } from '@mdi/js';
+import { Context as ProjectPageContext } from '../../index';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
 import CreateProjectModal from '../../Modals/CreateProject';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -29,7 +30,7 @@ import CustomAvatar from '../../../../components/CustomAvatar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
 import AlertModal from '../../../../components/AlertModal';
-import { listProject } from '../../../../actions/project/listProject'
+import { listProject } from '../../../../actions/project/listProject';
 import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
 
 const Container = styled.div`
@@ -76,7 +77,7 @@ const DurationBox = styled.div`
   }
 `;
 
-const CustomMenuItem = styled(({ selected, ...rest }) => (<MenuItem {...rest} />))`
+const CustomMenuItem = styled(({ selected, refs, ...rest }) => (<MenuItem {...rest} />))`
   display: flex;
   align-items: center;
   color: ${props => props.selected ? '#05b50c' : '#222'};
@@ -269,8 +270,9 @@ const SettingButton = () => {
   );
 }
 
-function AllProjectTable({ expand, handleExpand, listProject, doListProject, detailProjectGroup, doDetailProjectGroup }) {
+function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup, }) {
 
+  const { setProjectGroupId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
 
   const { data: { projects: _projects }, loading: listProjectLoading, error: listProjectError } = listProject;
@@ -295,8 +297,33 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
   const [timeTitle, setTimeTitle] = React.useState(`Năm ${moment().year()}`);
 
   React.useEffect(() => {
-    setProjects(_projects);
-  }, [_projects]);
+    let projects = _projects;
+    switch (filter) {
+      case 0: 
+        break;
+      case 1:
+        projects = filterArr(projects, { 'visibility': true });
+        break;
+      case 2: 
+        projects = filterArr(projects, { 'visibility': false });
+        break;
+      case 3: 
+        projects = filterArr(projects, { 'state_name': 'waiting' });
+        break;
+      case 4: 
+        projects = filterArr(projects, { 'state_name': 'doing' });
+        break;
+      case 5: 
+        projects = filterArr(projects, { 'state_name': 'finished' });
+        break;
+      case 6: 
+        projects = filterArr(projects, { 'state_name': 'expired' });
+        break;
+      default:
+        break;
+    }
+    setProjects(projects);
+  }, [_projects, filter]);
 
   React.useEffect(() => {
     if (sortField) {
@@ -304,7 +331,7 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
       if (sortType === -1) reverse(newProjects);
       setProjects(newProjects);
     }
-  }, [sortField, sortType]);
+  }, [sortField, sortType, projects]);
 
   React.useEffect(() => {
     switch (time) {
@@ -354,61 +381,8 @@ function AllProjectTable({ expand, handleExpand, listProject, doListProject, det
   }, [time]);
 
   React.useEffect(() => {
-    let options = {};
-    if (projectGroupId) {
-      options = { 
-        ...options,
-        groupProject: projectGroupId,
-      };
-    }
-    switch (filter) {
-      case 0: 
-        break;
-      case 1:
-        options = {
-          ...options,
-          type: 'active',
-        };
-        break;
-      case 2: 
-        options = {
-          ...options,
-          type: 'hidden',
-        };
-        break;
-      case 3: 
-        options = {
-          ...options,
-          status: 0,
-        };
-        break;
-      case 4: 
-        options = {
-          ...options,
-          status: 1,
-        };
-        break;
-      case 5: 
-        options = {
-          ...options,
-          status: 2,
-        };
-        break;
-      case 6: 
-        options = {
-          ...options,
-          status: 3,
-        };
-        break;
-      default:
-        break;
-    }
-    doListProject(options);
-  }, [doListProject, projectGroupId, filter]);
-
-  React.useEffect(() => {
-    if (projectGroupId) doDetailProjectGroup({ projectGroupId });
-  }, [projectGroupId]);
+    setProjectGroupId(projectGroupId);
+  }, [setProjectGroupId, projectGroupId]);
 
   function handleFilterClose(filter = null) {
     return evt => {

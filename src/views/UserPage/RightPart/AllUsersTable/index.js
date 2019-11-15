@@ -26,11 +26,6 @@ import RoleManagerModal from '../../Modals/RoleManager';
 import LogoManagerModal from '../../Modals/LogoManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import PermissionSettingsModal from '../../Modals/PermissionSettings';
-import { 
-  CustomEventListener, CustomEventDispose, 
-  SORT_USER, SORT_ROOM, CREATE_ROOM,
-  INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PRIVATE_MEMBER, PUBLIC_MEMBER,
-} from '../../../../constants/events';
 
 const Container = styled.div`
   grid-area: right;

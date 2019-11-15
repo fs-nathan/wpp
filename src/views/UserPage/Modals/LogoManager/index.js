@@ -16,7 +16,6 @@ import { listIcon } from '../../../../actions/icon/listIcon';
 import { createIcon } from '../../../../actions/icon/createIcon';
 import { deleteIcon } from '../../../../actions/icon/deleteIcon';
 import { get } from 'lodash';
-import { CustomEventListener, CustomEventDispose, CREATE_ICON, DELETE_ICON } from '../../../../constants/events';
 
 const LogoList = styled(({ cols, ...rest }) => <div {...rest} />)`
   display: grid;

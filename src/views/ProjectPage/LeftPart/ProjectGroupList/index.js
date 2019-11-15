@@ -18,7 +18,6 @@ import CustomListItem from './CustomListItem';
 import { connect } from 'react-redux';
 import { listProjectGroup } from '../../../../actions/projectGroup/listProjectGroup';
 import { sortProjectGroup } from '../../../../actions/projectGroup/sortProjectGroup';
-import { CustomEventListener, CustomEventDispose, CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP } from '../../../../constants/events';
 
 const Banner = styled.div`
   padding: 15px;
@@ -28,7 +27,7 @@ const StyledPrimary = styled(Primary)`
   font-weight: 500;
 `;
 
-function ProjectList({ listProjectGroup, doListProjectGroup, doSortProjectGroup, }) {
+function ProjectList({ listProjectGroup, doSortProjectGroup, }) {
 
   const location = useLocation();
   const { data: { projectGroups: _projectGroups }, error: listProjectGroupError, loading: listProjectGroupLoading } = listProjectGroup;
@@ -40,28 +39,10 @@ function ProjectList({ listProjectGroup, doListProjectGroup, doSortProjectGroup,
 
   const projectGroups = filter(_projectGroups, projectGroup => get(projectGroup, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()));
 
-  React.useEffect(() => {
-    doListProjectGroup();
-  }, [doListProjectGroup]);
-
-  React.useEffect(() => {
-    const doListProjectGroupHandler = () => {
-      doListProjectGroup(true);
-    };
-
-    CustomEventListener(CREATE_PROJECT_GROUP, doListProjectGroupHandler);
-    CustomEventListener(SORT_PROJECT_GROUP, doListProjectGroupHandler);
-
-    return () => {
-      CustomEventDispose(CREATE_PROJECT_GROUP, doListProjectGroupHandler);
-      CustomEventDispose(SORT_PROJECT_GROUP, doListProjectGroupHandler);
-    }
-  }, [doListProjectGroup]);
-
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
     if (!destination) return;
-    if (
+    if ( 
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) return;

@@ -130,7 +130,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
 
   React.useEffect(() => {
     setUserId(userId);
-  }, [userId]);
+  }, [setUserId, userId]);
 
   function handleUploadFile(evt) {
     const file = evt.target.files[0];
