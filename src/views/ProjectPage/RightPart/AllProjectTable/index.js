@@ -22,6 +22,7 @@ import {
 import { Context as ProjectPageContext } from '../../index';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
 import CreateProjectModal from '../../Modals/CreateProject';
+import EditProjectModal from '../../Modals/EditProject';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import CustomTable from '../../../../components/CustomTable';
@@ -225,7 +226,7 @@ function decodeStateName(stateName) {
   }
 }
 
-const SettingButton = () => {
+const SettingButton = ({ onEditProject }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [setting, setSetting] = React.useState(false);
@@ -256,7 +257,10 @@ const SettingButton = () => {
         }}
       >
         <MenuItem onClick={evt => setSetting(true)}>Cài đặt</MenuItem>
-        <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={evt => {
+          handleClose(evt);
+          onEditProject(evt);
+        }}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={handleClose}>Ẩn</MenuItem>
         <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
       </Menu>
@@ -295,6 +299,9 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
   const [startDate, setStartDate] = React.useState(moment().toDate());
   const [endDate, setEndDate] = React.useState(moment().toDate());
   const [timeTitle, setTimeTitle] = React.useState(`Năm ${moment().year()}`);
+
+  const [edittingProject, setEdittingProject] = React.useState(null);
+  const [openEditProject, setOpenEditProject] = React.useState(false);
 
   React.useEffect(() => {
     let projects = _projects;
@@ -510,7 +517,12 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
                             />,
             }, {
               label: '',
-              field: row => <SettingButton />,
+              field: row => <SettingButton 
+                              onEditProject={evt => {
+                                setEdittingProject(row);
+                                setOpenEditProject(true);
+                              }}
+                            />,
             }]}
             data={projects}
           />
@@ -630,6 +642,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
             </TimeBox>
           </Popover>
           <CreateProjectModal open={openCreateProject} setOpen={setOpenCreateProject} />
+          <EditProjectModal curProject={edittingProject} open={openEditProject} setOpen={setOpenEditProject} />
         </React.Fragment>
       )}
     </Container>

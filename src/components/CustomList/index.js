@@ -14,6 +14,7 @@ export const StyledListItem = styled(ListItem)`
     margin-left: 12px;
   }
   &:hover {
+    cursor: pointer;
     background-color: #F2F5FA;
   }
   &:focus {

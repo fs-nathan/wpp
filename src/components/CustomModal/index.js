@@ -70,7 +70,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function CustomModal({ title, children, onConfirm = () => null, onCancle = () => null, open, setOpen }) {
+function CustomModal({ title, children, onConfirm = () => null, onCancle = () => null, open, setOpen, fullWidth = false }) {
 
   function handleCancle() {
     setOpen(false);
@@ -84,7 +84,8 @@ function CustomModal({ title, children, onConfirm = () => null, onCancle = () =>
 
   return (
     <StyledDialog
-      maxWidth='lg'
+      maxWidth='md'
+      fullWidth={fullWidth}
       open={open}
       TransitionComponent={Transition}
       onClose={() => handleCancle()}

@@ -10,6 +10,7 @@ import CustomListItem from './CustomListItem';
 import { listUserOfGroup } from '../../../../actions/user/listUserOfGroup';
 import { connect } from 'react-redux';
 import ErrorBox from '../../../../components/ErrorBox';
+import LoadingBox from '../../../../components/LoadingBox';
 import { sortUser } from '../../../../actions/user/sortUser';
 import { get } from 'lodash';
 
@@ -71,6 +72,10 @@ function UserList({ listUserOfGroup, sortUser, doSortUser, }) {
           onClick: () => history.push(`${location.pathname.replace(`/members/${userId}`, '')}`),
         }}
         title='Danh sách thành viên'
+        loading={{
+          bool: loading,
+          components: () => <LoadingBox />
+        }}
       >
         <Banner>
           <SearchInput 

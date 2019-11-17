@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiNotePlusOutline, mdiContentCopy } from '@mdi/js';
 import CustomModal from '../../../../components/CustomModal';
 import CreateNewProjectModal from '../CreateNewProject';
+import CopyProjectModal from '../CopyProject';
 
 const Container = styled.div`
   width: 100%;
@@ -65,6 +66,7 @@ const ButtonCase = styled.div`
 function CreateProjectGroup({ open, setOpen, }) {
 
   const [createNew, setCreateNew] = React.useState(false);
+  const [copy, setCopy] = React.useState(false);
 
   return (
     <CustomModal
@@ -75,7 +77,7 @@ function CreateProjectGroup({ open, setOpen, }) {
       <Container>
         <ButtonCase onClick={evt => {
           setCreateNew(true);
-          setOpen(false);
+          setCopy(false);
         }}>
           <div>
             <Icon path={mdiNotePlusOutline} size={2}/>
@@ -85,7 +87,10 @@ function CreateProjectGroup({ open, setOpen, }) {
             <span>Bắt đầu dự án bằng cách tạo mới hoàn toàn các thông số của dự án</span>
           </div>
         </ButtonCase>
-        <ButtonCase>
+        <ButtonCase onClick={evt => {
+          setCreateNew(false);
+          setCopy(true);
+        }}>
           <div>
             <Icon path={mdiContentCopy} size={2}/>
           </div>
@@ -96,6 +101,7 @@ function CreateProjectGroup({ open, setOpen, }) {
         </ButtonCase>
       </Container>
       <CreateNewProjectModal open={createNew} setOpen={setCreateNew} />
+      <CopyProjectModal open={copy} setOpen={setCopy} />
     </CustomModal>
   )
 }
