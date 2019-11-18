@@ -1,7 +1,7 @@
 import React from 'react';
-import { Select, MenuItem, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input, TextField } from '@material-ui/core';
+import { Select, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input, TextField } from '@material-ui/core';
 import styled from 'styled-components';
-import { mdiPlus, mdiApps, mdiHelpCircle, mdiChevronDown } from '@mdi/js';
+import {  mdiHelpCircle ,mdiAccountPlusOutline} from '@mdi/js';
 import Icon from '@mdi/react';
 import SearchInput from '../../../../components/SearchInput';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -275,6 +275,13 @@ function CommonPriorityForm(props) {
   )
 }
 
+const ButtonImage = styled(Button)`
+  transform: scaleX(-1);
+  padding: 6px 0;
+  min-width: 54px;
+  border: 1px solid #abaaa9;
+`
+
 function CreateJobModal(props) {
   const [open, setOpen] = React.useState(false);
 
@@ -396,12 +403,12 @@ function CreateJobModal(props) {
             </>
             :
             <>
-            <Button onClick={() => {
+            <ButtonImage onClick={() => {
               handleClose()
               setOpenAddModal(true)
             }} >
-              <img src={addMemberIcon} alt='addMemberIcon' />
-            </Button>
+              <Icon path={mdiAccountPlusOutline } alt='addMemberIcon' size={1} color={'#abaaa9'} />
+            </ButtonImage>
             <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
               TẠO VIỆC
           </Button>

@@ -8,7 +8,7 @@ import Icon from '@mdi/react';
 import ImageChatTest from '../../../assets/imageChatTest.jpg'
 import NoImage from '../../../assets/no-img.png'
 import iconXls from '../../../assets/xls.png'
-
+import ModalImage from '../ModalImage'
 
 
 const members = [
@@ -442,16 +442,27 @@ const Remind = () => {
 }
 // ====== image
 const ImageChatMess = styled(Typography)`
-
+    cursor: pointer;
 `
-const ImageChat = () => {
+const ImageChat = (props) => {
+    const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  }
     return (
         <ImageChatMess component='div'>
             <CardMedia
                 component="img"
                 height="auto"
                 image={ImageChatTest}
+                onClick= {() => handleClickOpen()}
             />
+            <ModalImage isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen}/>
         </ImageChatMess>
     )
 }
@@ -460,7 +471,7 @@ const NoImageChat = () => {
     return (
         <CardMedia
             component="img"
-            height="214px"
+            height="220px"
             image={NoImage}
         />
     )
@@ -831,7 +842,7 @@ function RemindMessage(props) {
     )
 }
 
-export default function DetailMessage() {
+export default function DetailMessage(props) {
     //const [data] = React.useState(members);
     return (
         <Container>
@@ -879,7 +890,7 @@ export default function DetailMessage() {
                                 <Remind />
                             }
                             {(element.id === 13) &&
-                                <ImageChat />
+                                <ImageChat {...props}/>
                             }
                             {(element.id === 14) &&
                                 <NoImageChat />

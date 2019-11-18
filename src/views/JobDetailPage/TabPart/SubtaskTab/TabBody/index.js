@@ -98,7 +98,7 @@ const ButtonIcon = styled(IconButton)`
 
 function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
-  
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -328,7 +328,9 @@ const NewWork = styled.div`
   justify-content: space-between;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-top: 1px solid rgba(0, 0, 0, .1);
   align-item: center;
+  margin-bottom: 12px;
 
 `
 const InputText = styled(InputBase)`
@@ -363,7 +365,7 @@ function TabBody(props) {
   }
 
   return (
-    <Body>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         {props.isClicked ?
           <NewWork>
@@ -374,7 +376,7 @@ function TabBody(props) {
               value={name}
             />
             <ButtonIcon
-              style={{ paddingBottom: 9 }}
+              style={{ paddingBottom: 9, marginRight: 14 }}
               onClick={() => {
                 createSubTask("5da183cfc46d8515e03fa9e8", name)
               }}>

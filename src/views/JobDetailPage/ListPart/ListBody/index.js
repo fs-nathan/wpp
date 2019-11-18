@@ -3,16 +3,20 @@ import styled from 'styled-components';
 import { List } from '@material-ui/core';
 import ListBodySubHeader from './ListBodySubHeader';
 import ListBodyItem from './ListBodyItem';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const StyledList = styled(List)`
-  padding: 10px 0; 
+  padding: 10px 0 150px 0; 
     & > li {
       &:not(:last-child) {
         margin-bottom: 10px;
     }
   }
 `;
-
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+`;
 
 
 const detailProject = [
@@ -29,13 +33,13 @@ const detailProject = [
 function ListBody() {
   return (
     
-    <div >
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
     <StyledList>      
         <ListBodySubHeader subPrimary='Thiết kế giao diện' subSecondary='(2 việc)' />
         {detailProject.map(detail => <ListBodyItem {...detail} />)}
         <ListBodySubHeader subPrimary='Mặc định' subSecondary='(0 việc)' />      
     </StyledList>
-    </div>
+    </Body>
     
   )
 }

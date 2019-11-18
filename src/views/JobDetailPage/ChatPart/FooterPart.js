@@ -3,8 +3,11 @@ import styled from 'styled-components'
 import {
     IconButton
 } from '@material-ui/core'
+import { mdiAlarmPlus, mdiFileTree, mdiPaperclip, mdiImage, mdiEmoticon, mdiAt } from '@mdi/js';
+import Icon from '@mdi/react'
 import * as MaterialIcon from '@material-ui/icons'
 import colors from '../../../helpers/colorPalette'
+import IconLike from '../../../assets/like.svg'
 
 const WrapFunctionBar = styled.div`
     height: 50px;
@@ -28,6 +31,7 @@ const ChatInput = styled.input`
     border: none;
     width: 100%;
     height: 100%;
+    font-size: 15px;
     &:focus {
         outline: none;
     }
@@ -43,33 +47,45 @@ const LikeButton = styled(IconButton)`
     }
 `
 
+const ButtonIcon = styled(IconButton)`
+  margin-left: auto;
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`;
+
 function renderFunctionBar(props) {
     return (
         <WrapFunctionBar>
             <div>
-                <IconButton>
-                    <MaterialIcon.AlternateEmail />
-                </IconButton>
-                <IconButton>
-                    <MaterialIcon.EmojiEmotions />
-                </IconButton>
-                <IconButton>
-                    <MaterialIcon.Image />
-                </IconButton>
-                <IconButton>
-                    <MaterialIcon.AttachFile />
-                </IconButton>
-                <IconButton>
-                    <MaterialIcon.AccountTree />
-                </IconButton>
-                <IconButton>
-                    <MaterialIcon.AlarmAdd />
-                </IconButton>
+                <ButtonIcon>
+                    <Icon path={mdiAt} size={1.2} />
+                </ButtonIcon>
+                <ButtonIcon>
+                    <Icon path={mdiEmoticon} size={1.2} />
+                </ButtonIcon>
+                <ButtonIcon>
+                    <Icon path={mdiImage} size={1.2} />
+                </ButtonIcon>
+                <ButtonIcon>
+                    <Icon path={mdiPaperclip} size={1.2} />
+                </ButtonIcon>
+                <ButtonIcon>
+                    <Icon path={mdiFileTree} size={1.2} />
+                </ButtonIcon>
+                <ButtonIcon>
+                    <Icon path={mdiAlarmPlus} size={1.2} />
+                </ButtonIcon>
             </div>
             <div>
-                <LikeButton>
-                    <LikeIcon />
-                </LikeButton>
+                <ButtonIcon>
+                    <img src={IconLike} style={{ width: 25, height: 25}} />
+                </ButtonIcon>
             </div>
         </WrapFunctionBar>
     )

@@ -10,7 +10,7 @@ import Chip from '@material-ui/core/Chip';
 import avatar from '../../../../../assets/avatar.jpg';
 
 const Container = styled.a`
-    padding: 10px 0;
+    padding: 10px 8px 10px 0;
     display: flex;
     justify-content: center;
     align-items: center;
