@@ -11,6 +11,7 @@ import {
   CustomEventListener, CustomEventDispose, 
   CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
   CREATE_ICON, DELETE_ICON,
+  CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT, HIDE_PROJECT,
 } from '../../constants/events';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
@@ -69,12 +70,16 @@ function ProjectPage({
     CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
     CustomEventListener(DELETE_PROJECT_GROUP, reloadListProjectGroup);
     CustomEventListener(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(CREATE_PROJECT, reloadListProjectGroup);
+    CustomEventListener(DELETE_PROJECT, reloadListProjectGroup);
 
     return () => {
       CustomEventDispose(CREATE_PROJECT_GROUP, reloadListProjectGroup);
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
       CustomEventDispose(DELETE_PROJECT_GROUP, reloadListProjectGroup);
       CustomEventDispose(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(CREATE_PROJECT, reloadListProjectGroup);
+      CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
     }
   }, [doListProjectGroup]);
 
@@ -116,6 +121,24 @@ function ProjectPage({
     doListProject({
       groupProject: projectGroupId,
     });
+
+    const reloadListProject = () => {
+      doListProject({
+        groupProject: projectGroupId,
+      }, true);
+    }
+
+    CustomEventListener(CREATE_PROJECT, reloadListProject);
+    CustomEventListener(UPDATE_PROJECT, reloadListProject);
+    CustomEventListener(DELETE_PROJECT, reloadListProject);
+    CustomEventListener(HIDE_PROJECT, reloadListProject);
+
+    return () => {
+      CustomEventDispose(CREATE_PROJECT, reloadListProject);
+      CustomEventDispose(UPDATE_PROJECT, reloadListProject);
+      CustomEventDispose(DELETE_PROJECT, reloadListProject);
+      CustomEventDispose(HIDE_PROJECT, reloadListProject);
+    }
   }, [projectGroupId, doListProject]);
 
   const [expand, setExpand] = React.useState(false);

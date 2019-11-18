@@ -47,6 +47,7 @@ const ButtonCase = styled.div`
       transition: color 0.15s ease-in-out;
     }
     & > span:last-child {
+      margin-top: 16px;
       font-size: 14px;
       color: #555;
     }

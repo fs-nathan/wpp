@@ -19,7 +19,7 @@ import { mdiChevronDown, mdiChevronUp } from '@mdi/js';
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: auto;
+  grid-template-rows: 1fr;
   grid-template-columns: 2fr 3fr;
   grid-template-areas:
     "left right";
@@ -31,11 +31,13 @@ const Container = styled.div`
 
 const LeftSide = styled.div`
   grid-area: left;
+  height: 350px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const RightSide = styled.div`
   grid-area: right;
+  height: 350px;
 `;
 
 const StyledTypo = styled(ColorTypo)`
@@ -46,15 +48,24 @@ const StyledTypo = styled(ColorTypo)`
 
 const StyledFormControl = styled(FormControl)`
   padding: 5px 10px;
+  & > legend {
+    margin-bottom: 8px;
+  }
 `;
 
 const StyledFormLabel = styled(FormLabel)`
   font-size: 14px;
 `;
 
-const ListContainer = styled(Scrollbars)`
+const ListContainer = styled.div`
   margin-top: 8px;
-  max-height: 300px;
+`;
+
+const FormContainer = styled.div`
+  width: 80%;
+`;
+
+const StyledScrollbars = styled(Scrollbars)`
   & > div:last-child {
     z-index: 999;
   }
@@ -158,71 +169,80 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
       >
         <Container>
           <LeftSide>
-            <StyledTypo color='gray' uppercase bold>Chọn dự án sao chép</StyledTypo>
-            <SearchInput 
-              fullWidth 
-              placeholder='Tìm dự án'
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
-            />  
-            <ListContainer
+            <StyledScrollbars
               autoHide
               autoHideTimeout={500}
             >
-              {customProjects.map(projectGroup => (
-                <ProjectGroupList
-                  projectGroup={projectGroup}
-                  key={get(projectGroup, 'id')} 
-                />
-              ))}
-            </ListContainer>
+              <StyledTypo color='gray' uppercase bold>Chọn dự án sao chép</StyledTypo>
+              <SearchInput 
+                fullWidth 
+                placeholder='Tìm dự án'
+                value={searchPatern}
+                onChange={evt => setSearchPatern(evt.target.value)}
+              />  
+              <ListContainer>
+                {customProjects.map(projectGroup => (
+                  <ProjectGroupList
+                    projectGroup={projectGroup}
+                    key={get(projectGroup, 'id')} 
+                  />
+                ))}
+              </ListContainer>
+            </StyledScrollbars>
           </LeftSide>
           <RightSide>
-            <StyledTypo color='gray' uppercase bold>Thông tin dự án</StyledTypo>
-            <TextField
-              value={name}
-              onChange={evt => setName(evt.target.value)}
-              margin="normal"
-              variant="outlined"
-              label='Tên dự án mới'
-              fullWidth
-              helperText={
-                <ColorTypo variant='caption' color='red'>
-                  Tối đa 200 ký tự
-                </ColorTypo>
-              }
-            />
-            <TextField
-              value={description}
-              onChange={evt => setDescription(evt.target.value)}
-              margin="normal"
-              variant="outlined"
-              label='Mô tả dự án mới'
-              fullWidth
-              multiline
-              rowsMax='6'
-              helperText={
-                <ColorTypo variant='caption' color='red'>
-                  Tối đa 500 ký tự
-                </ColorTypo>
-              }
-            />
-            <StyledFormControl component="fieldset" fullWidth>
-              <StyledFormLabel component="legend">Cài đặt thành viên</StyledFormLabel>
-              <RadioGroup aria-label="member-setting" name="member-setting" value={memSetting} onChange={evt => setMemSetting(parseInt(evt.target.value))}>
-                <FormControlLabel value={0} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
-                <FormControlLabel value={1} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
-              </RadioGroup>
-            </StyledFormControl>
-            <StyledFormControl component="fieldset">
-              <StyledFormLabel component="legend">Chọn ngày bắt đầu tiến độ</StyledFormLabel>
-              <OutlinedInput 
-                variant='outlined'
-                type='date'
-                value={moment(startDate).format('YYYY-MM-DD')}
-                onChange={evt => setStartDate(moment(evt.target.value).toDate())}
-              />
-            </StyledFormControl>
+            <StyledScrollbars
+              autoHide
+              autoHideTimeout={500}
+            >
+              <StyledTypo color='gray' uppercase bold>Thông tin dự án</StyledTypo>
+              <FormContainer>
+                <TextField
+                  value={name}
+                  onChange={evt => setName(evt.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                  label='Tên dự án mới'
+                  fullWidth
+                  helperText={
+                    <ColorTypo variant='caption' color='red'>
+                      Tối đa 200 ký tự
+                    </ColorTypo>
+                  }
+                />
+                <TextField
+                  value={description}
+                  onChange={evt => setDescription(evt.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                  label='Mô tả dự án mới'
+                  fullWidth
+                  multiline
+                  rowsMax='6'
+                  helperText={
+                    <ColorTypo variant='caption' color='red'>
+                      Tối đa 500 ký tự
+                    </ColorTypo>
+                  }
+                />
+                <StyledFormControl component="div" fullWidth>
+                  <StyledFormLabel component="legend">Cài đặt thành viên</StyledFormLabel>
+                  <RadioGroup aria-label="member-setting" name="member-setting" value={memSetting} onChange={evt => setMemSetting(parseInt(evt.target.value))}>
+                    <FormControlLabel value={0} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
+                    <FormControlLabel value={1} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
+                  </RadioGroup>
+                </StyledFormControl>
+                <StyledFormControl component="div" fullWidth>
+                  <StyledFormLabel component="legend">Chọn ngày bắt đầu tiến độ</StyledFormLabel>
+                  <OutlinedInput 
+                    variant='outlined'
+                    type='date'
+                    value={moment(startDate).format('YYYY-MM-DD')}
+                    onChange={evt => setStartDate(moment(evt.target.value).toDate())}
+                  />
+                </StyledFormControl>
+              </FormContainer>
+            </StyledScrollbars>
           </RightSide>
         </Container>
       </CustomModal>

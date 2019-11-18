@@ -33,6 +33,8 @@ import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBa
 import AlertModal from '../../../../components/AlertModal';
 import { listProject } from '../../../../actions/project/listProject';
 import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
+import { deleteProject } from '../../../../actions/project/deleteProject';
+import { hideProject } from '../../../../actions/project/hideProject';
 
 const Container = styled.div`
   grid-area: table;
@@ -178,17 +180,17 @@ const TimeListItem = styled(({ selected, ...rest }) => (<ListItem {...rest} />))
 
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
-    case 1:   
+    case 0:   
       return ({
         color: '#4a96ba',
         name: 'Thấp',
       });
-    case 2: 
+    case 1: 
       return ({
         color: '#c49c56',
         name: 'Trung bình',
       });
-    case 3: 
+    case 2: 
       return ({
         color: '#d63340',
         name: 'Cao',
@@ -226,7 +228,7 @@ function decodeStateName(stateName) {
   }
 }
 
-const SettingButton = ({ onEditProject }) => {
+const SettingButton = ({ onEditProject, onHideProject, onDeleteProject }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [setting, setSetting] = React.useState(false);
@@ -261,7 +263,10 @@ const SettingButton = ({ onEditProject }) => {
           handleClose(evt);
           onEditProject(evt);
         }}>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={handleClose}>Ẩn</MenuItem>
+        <MenuItem onClick={evt => { 
+          handleClose(evt); 
+          onHideProject(); 
+        }}>Ẩn</MenuItem>
         <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
       </Menu>
       <ProjectSettingModal open={setting} setOpen={setSetting}/>
@@ -269,12 +274,17 @@ const SettingButton = ({ onEditProject }) => {
         open={alert}
         setOpen={setAlert}
         content='Bạn chắc chắn muốn xóa dự án?'
+        onCancle={handleClose}
+        onConfirm={() => {
+          handleClose();
+          onDeleteProject();
+        }}
       />
     </div>
   );
 }
 
-function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup, }) {
+function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup, doDeleteProject, doHideProject }) {
 
   const { setProjectGroupId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
@@ -338,7 +348,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
       if (sortType === -1) reverse(newProjects);
       setProjects(newProjects);
     }
-  }, [sortField, sortType, projects]);
+  }, [sortField, sortType]);
 
   React.useEffect(() => {
     switch (time) {
@@ -413,6 +423,14 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
     }
   }
 
+  function handleHideProject(projectId) {
+    doHideProject({ projectId });
+  }
+
+  function handleDeleteProject(projectId) {
+    doDeleteProject({ projectId });
+  }
+
   return (
     <Container>
       {error !== null && <ErrorBox />}
@@ -454,10 +472,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
                 bool: false,
               },
               draggable: {
-                bool: true,
-                onDragEnd: result => {
-                  return;
-                }, 
+                bool: false,
               },
               loading: {
                 bool: loading,
@@ -522,6 +537,8 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
                                 setEdittingProject(row);
                                 setOpenEditProject(true);
                               }}
+                              onHideProject={() => handleHideProject(get(row, 'id'))}
+                              onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
                             />,
             }]}
             data={projects}
@@ -659,6 +676,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
+    doDeleteProject: ({ projectId }) => dispatch(deleteProject({ projectId })),
+    doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
     doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),
   }
 }

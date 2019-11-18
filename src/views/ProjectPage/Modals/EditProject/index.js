@@ -23,14 +23,14 @@ function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpd
   const [name, setName] = React.useState(get(curProject, 'name', ''));
   const [description, setDescription] = React.useState(get(curProject, 'description', ''));
   const [projectGroup, setProjectGroup] = React.useState(find(projectGroups, { id: get(curProject, 'project_group_id') }) || projectGroups[0]);
-  const [priority, setPriority] = React.useState(get(curProject, 'priority', 1));
+  const [priority, setPriority] = React.useState(get(curProject, 'priority_code', 0));
   const [currency, setCurrency] = React.useState(get(curProject, 'currency', 0));
 
   React.useEffect(() => {
     setName(get(curProject, 'name', ''));
     setDescription(get(curProject, 'description', ''));
     setProjectGroup(find(projectGroups, { id: get(curProject, 'project_group_id') }) || projectGroups[0]);
-    setPriority(get(curProject, 'priority', 1));
+    setPriority(get(curProject, 'priority_code', 0));
     setCurrency(get(curProject, 'currency', 0));
   }, [curProject])
 
@@ -107,13 +107,13 @@ function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpd
           <CustomSelect
             options={
               ['Thấp', 'Trung bình', 'Cao'].map((priority, index) => ({
-                  value: index + 1,
+                  value: index,
                   label: priority,
                 })
               )}
             value={{
               value: priority,
-              label: ['Thấp', 'Trung bình', 'Cao'][priority - 1],
+              label: ['Thấp', 'Trung bình', 'Cao'][priority],
             }}
             onChange={({ value }) => setPriority(value)}
           />

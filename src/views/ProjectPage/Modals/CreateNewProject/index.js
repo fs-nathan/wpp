@@ -50,7 +50,7 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
           onChange={evt => setName(evt.target.value)}
           margin="normal"
           variant="outlined"
-          label='Tên bộ phận'
+          label='Tên dự án'
           fullWidth
           helperText={
             <ColorTypo variant='caption' color='red'>
@@ -63,7 +63,7 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
           onChange={evt => setDescription(evt.target.value)}
           margin="normal"
           variant="outlined"
-          label='Mô tả bộ phận'
+          label='Mô tả dự án'
           fullWidth
           multiline
           rowsMax='6'
@@ -107,24 +107,6 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
               label: ['Thấp', 'Trung bình', 'Cao'][priority],
             }}
             onChange={({ value }) => setPriority(value)}
-          />
-        </StyledFormControl>
-        <StyledFormControl fullWidth>
-          <label htmlFor='room-select'>
-            Tiền tệ dự án
-          </label>
-          <CustomSelect
-            options={
-              ['VNĐ', 'USD'].map((priority, index) => ({
-                  value: index,
-                  label: priority,
-                })
-              )}
-            value={{
-              value: currency,
-              label: ['VNĐ', 'USD'][currency],
-            }}
-            onChange={({ value }) => setCurrency(value)}
           />
         </StyledFormControl>
       </CustomModal>
