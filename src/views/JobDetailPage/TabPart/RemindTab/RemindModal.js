@@ -227,7 +227,6 @@ function RemindModal(props) {
               label="Mốc tiến độ cần nhắc"
               variant="outlined"
               endAdornment={<InputAdornment position="end">%</InputAdornment>}
-              labelWidth={0}
             />
             <Button variant="contained" style={{ marginLeft: 10 }}>Thêm</Button>
             <Typography component={'div'}>

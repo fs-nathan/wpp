@@ -7,14 +7,14 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function ModalDeleteConfirm(props) {
-  
+
   return (
     <div>
       <Dialog
         open={props.isOpen}
         onClose={props.handleCloseModalDelete}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        // aria-labelledby="alert-dialog-title"
+        // aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">{"Thông báo hệ thống"}</DialogTitle>
         <DialogContent>
@@ -26,10 +26,12 @@ export default function ModalDeleteConfirm(props) {
           <Button onClick={props.handleCloseModalDelete} color="primary">
             Hủy
           </Button>
-          <Button onClick={() => {
+          <Button
+            color="primary" autoFocus
+            onClick={() => {
               props.handleCloseModalDelete()
               props.confirmDelete()
-              }} color="primary" autoFocus> Xóa </Button>
+            }} > Xóa </Button>
         </DialogActions>
       </Dialog>
     </div>
