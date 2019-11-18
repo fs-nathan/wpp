@@ -120,7 +120,7 @@ const ApprovedBox = (props) => {
               <Button variant="outlined" size="small" >Từ chối</Button>
               <span />
             </StyledTitleBox>
-            <ApproveModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} {...props} />
+            <ApproveModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}  />
           </ApprovedContainer>
         </React.Fragment>
       )}

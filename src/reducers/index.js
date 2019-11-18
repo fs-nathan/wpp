@@ -32,6 +32,7 @@ import createIcon, { initialState as createIconInitialState } from './icon/creat
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
 import documents from './documents';
 import taskOffer from './taskDetail/offer';
+import taskRemind from './taskDetail/remind'
 import subTask from './taskDetail/subTask';
 
 const rootReducer = combineReducers({
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   documents,
   taskDetail: combineReducers({
     taskOffer,
+    taskRemind,
     subTask
   }),
   room: combineReducers({

@@ -59,7 +59,6 @@ const styles = theme => ({
   
 
 const SubtaskModal = (props) => {
-  console.log('props task', props.task.id);
   
   const [name, setStateName] = React.useState(props.name)
     return (

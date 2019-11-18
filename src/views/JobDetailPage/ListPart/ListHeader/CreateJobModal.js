@@ -151,6 +151,7 @@ const styles = theme => ({
   },
 });
 
+
 const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
@@ -209,6 +210,15 @@ const TextInputSelect = styled(InputSelect)`
           padding: 6px;
         }
     }
+`
+
+const TitleDialog = styled(DialogTitle)`
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: white;
+    border-bottom: 1px solid #0000001f;
 `
 
 function CommonControlForm(props) {
@@ -289,15 +299,15 @@ function CreateJobModal(props) {
     <div>
       <Dialog open={props.isOpen} fullWidth onClose={handleClose}>
         {props.isRight ?
-          <DialogTitle onClose={handleClose}>
+          <TitleDialog onClose={handleClose}>
             Chỉnh sửa công việc
-          </DialogTitle>
+          </TitleDialog>
           :
-          <DialogTitle onClose={handleClose}>
+          <TitleDialog onClose={handleClose} >
             Tạo công việc
-          </DialogTitle>
+          </TitleDialog>
         }
-        <DialogContent dividers style={{ overflow: 'hidden', minHeight: 690}}>
+        <DialogContent dividers style={{ overflow: 'hidden', minHeight: 690, borderTop: 'none'}}>
           <Typography component={'span'}>
             <TitleText component={'span'}>
               <InputTextJob

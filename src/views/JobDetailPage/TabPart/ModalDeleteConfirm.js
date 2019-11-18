@@ -6,8 +6,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function DeleteModalSubTask(props) {
-console.log('delete', props.task.id)
+export default function ModalDeleteConfirm(props) {
+
   return (
     <div>
       <Dialog
@@ -16,10 +16,10 @@ console.log('delete', props.task.id)
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Xóa công việc con"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Thông báo hệ thống"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Bạn có muốn xóa công việc con này?
+            Bạn có chắc muốn xoá không?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -27,8 +27,11 @@ console.log('delete', props.task.id)
             Hủy
           </Button>
           <Button onClick={() => {
+            console.log('delete', props.task.id)
               props.handleCloseModalDelete()
-              props.deleteSubTaskByTaskId(props.task.id)}} color="primary" autoFocus> Xóa </Button>
+              props.confirmDelete()
+              // props.deleteSubTaskByTaskId(props.task.id)
+              }} color="primary" autoFocus> Xóa </Button>
         </DialogActions>
       </Dialog>
     </div>

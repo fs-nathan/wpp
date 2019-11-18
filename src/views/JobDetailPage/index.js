@@ -19,6 +19,7 @@ function JobDetailPage(props) {
 
   useEffect(() => {
     props.getSubTaskByTaskId("5da183cfc46d8515e03fa9e8")
+    props.getRemindByTaskId("5da1821ad219830d90402fd8")
     props.getOfferByTaskId("5da18ce8aa75001b8060eb12")
   }, [])
   
@@ -35,7 +36,9 @@ const mapStateToProps = state => {
 
   return {
     offer: state.taskDetail.taskOffer.offer,
-    subTasks: state.taskDetail.subTask.subTasks
+    remind: state.taskDetail.taskRemind.remind,
+    subTasks: state.taskDetail.subTask.subTasks,
+   
   }
 }
 
@@ -45,7 +48,9 @@ const mapDispatchToProps = dispatch => {
     getSubTaskByTaskId: taskId => dispatch(taskDetailAction.getSubTask({ taskId })),
     postSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.postSubTask({ task_id: taskId, name })),
     updateSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: taskId, name})),
-    deleteSubTaskByTaskId: (taskId) => dispatch(taskDetailAction.deleteSubTask({sub_task_id: taskId})),
+    deleteSubTaskByTaskId: taskId => dispatch(taskDetailAction.deleteSubTask({sub_task_id: taskId})),
+    // remind
+    getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({taskId})),
     // offer
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
     createOfferByTaskId: (createId, content) => {dispatch(taskDetailAction.createOffer({ createId, content }))},

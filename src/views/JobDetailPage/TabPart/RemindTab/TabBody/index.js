@@ -10,9 +10,9 @@ import ColorChip from '../../../../../components/ColorChip';
 import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 import colorPal from '../../../../../helpers/colorPalette';
-import RemindModal from '../RemindModal'
-import { Scrollbars } from 'react-custom-scrollbars'
-
+import RemindModal from '../RemindModal';
+import { Scrollbars } from 'react-custom-scrollbars';
+import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 
 const __data = [
   { badge: 'Hằng ngày', content: 'Liên hệ chăm sóc khách hàng', title: 'Nhắc hẹn vào lúc 08:30 ngày 12/12/2012' },
@@ -86,6 +86,7 @@ const Body = styled(Scrollbars)`
   
 `;
 const MemberMenuLists = (props) => {
+  // console.log('props.....', props)
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
@@ -95,56 +96,74 @@ const MemberMenuLists = (props) => {
   function handleClose() {
     setAnchorEl(null)
   }
+
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
+  const handleOpenModalDelete = () => {
+    setOpenDelete(true);
+    setAnchorEl(null);
+  };   
+  const handleCloseModalDelete = () => {
+    setOpenDelete(false);
+  };
+  const confirmDelete = () => {
+    props.deleteRemindByTaskId(props.task.id)
+  }
+
   return (
     <div>
       <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
-        <Icon path={mdiDotsVertical} size={1}  />
+        <Icon path={mdiDotsVertical} size={1} />
       </ButtonIcon>
       <Menu
-            id={"simple-menu" + props.idx}
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            transformOrigin={{
-              vertical: -30,
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={() => {
-              props.handleClickOpen(props.idx);
-              handleClose();
-              }}>Chỉnh sửa</MenuItem>
-            <MenuItem onClick={() => {handleClose()}}>Xóa</MenuItem>
-          </Menu> 
-
+        id={"simple-menu" + props.idx}
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        transformOrigin={{
+          vertical: -30,
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={() => {
+          props.handleClickOpen(props.idx);
+          handleClose();
+        }}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={() => { handleClose() }}>Xóa</MenuItem>
+      </Menu>
+      <ModalDeleteConfirm 
+      confirmDelete={confirmDelete} 
+      isOpen={isOpenDelete} 
+      handleCloseModalDelete={handleCloseModalDelete} 
+      handleOpenModalDelete={handleOpenModalDelete} 
+      // task={props.task.id} 
+      {...props} />
     </div>
   )
 }
 
-const RemindList = () => {
-
+const RemindList = (props) => {
+  console.log('propsssss', props)
   const [open, _setOpen] = React.useState(false);
   const [elemState, _setElem] = React.useState({})
 
   const [data] = React.useState(__data);
   // Toogle popup array contains status of each popup
   let arrOpens = mockDataEle.map(() => ({ isOpen: false }))
-  const [isOpens, setOpen] = React.useState(arrOpens);
   const handleClickOpen = (elem) => {
     _setOpen(true)
     _setElem(elem)
-    
+
   };
   const handleClickClose = () => {
     _setOpen(false)
   };
-  
+
   return (
     <StyledList>
       {mockDataEle.map((elem, idx) => {
         return (
-          <StyledListItem key={idx}>
+          <StyledListItem key={idx} {...props}>            
             <Content>
               <StyledTitleBox>
                 <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
@@ -154,13 +173,13 @@ const RemindList = () => {
                 }
               </StyledTitleBox>
 
-              <MemberMenuLists idx={idx} handleClickOpen={() => handleClickOpen(elem)}/>
+              <MemberMenuLists idx={idx} handleClickOpen={() => handleClickOpen(elem)} />
 
             </Content>
             <StyledContentBox>
               {elem.content}
             </StyledContentBox>
-            
+
           </StyledListItem>
         );
       })}
@@ -169,13 +188,13 @@ const RemindList = () => {
   );
 }
 
-function TabBody() {
+function TabBody(props) {
   return (
     <Body>
-    <Container>
-      <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
-      <RemindList />
-    </Container>
+      <Container>
+        <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
+        <RemindList {...props} />
+      </Container>
     </Body>
   )
 }

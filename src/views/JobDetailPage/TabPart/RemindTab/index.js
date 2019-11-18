@@ -25,12 +25,12 @@ const Header = styled(TabHeader)`
   background-color: #fff;
   z-index: 999;
 `
-function RemindTab({ show, setShow }) {
+function RemindTab(props) {
   return (
-    <Slide in={show === 3} direction='left' mountOnEnter unmountOnExit>
+    <Slide in={props.show === 3} direction='left' mountOnEnter unmountOnExit>
       <Container style={{ height: '100%'}}>
-        <Header setShow={setShow} />
-        <TabBody />
+        <Header setShow={props.setShow} />
+        <TabBody {...props}/>
       </Container>
     </Slide>
   )

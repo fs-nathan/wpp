@@ -67,8 +67,25 @@ export const deleteSubTaskFail = (error) => ({
     type: types.DELETE_SUBTASK_FAIL,
     error: error,
 });
+// =====
 
+//remind
+export const getRemind = ({ taskId }) => ({
+    type: types.GET_REMIND_REQUEST,
+    options: {
+        taskId
+    },
+});
 
+export const getRemindSuccess = (payload) => ({
+    type: types.GET_REMIND_SUCCESS,
+    payload
+});
+
+export const getRemindFail = (error) => ({
+    type: types.GET_REMIND_FAIL,
+    error: error
+});
 //  offer
 export const getOffer = ({ taskId }) => ({
     type: types.GET_OFFER_REQUEST,

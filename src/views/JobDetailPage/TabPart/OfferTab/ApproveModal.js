@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-   IconButton, Button, Dialog, Typography, InputBase, TextField
+  IconButton, Button, Dialog, Typography, InputBase, TextField
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -37,61 +37,62 @@ const InputText = styled(InputBase)`
 // `
 
 const styles = theme => ({
-    root: {
-      margin: 0,
-      padding: theme.spacing(2),
-    },
-    closeButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.grey[500],
-    },
-  });
-  
-  const DialogTitle = withStyles(styles)(props => {
-    const { children, classes, onClose, ...other } = props;
-    return (
-      <MuiDialogTitle disableTypography className={classes.root} {...other}>
-        <Typography variant="h6">{children}</Typography>
-        {onClose ? (
-          <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </MuiDialogTitle>
-    );
-  });
-  
-  const DialogContent = withStyles(theme => ({
-    root: {
-      padding: theme.spacing(2),
-    },
-  }))(MuiDialogContent);
-  
-  const DialogActions = withStyles(theme => ({
-    root: {
-      margin: 0,
-      padding: theme.spacing(1),
-    },
-  }))(MuiDialogActions);
-  
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const DialogTitle = withStyles(styles)(props => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles(theme => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
+
 
 const ApproveModal = (props) => {
-    return (
-        // {/* modal phe duyet */}
-        <Dialog onClose={props.handleClickClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
-        <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
-          Phê duyệt đề xuất
+  
+  return (
+    // {/* modal phe duyet */}
+    <Dialog onClose={props.handleClickClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
+      <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
+        Phê duyệt đề xuất
       </DialogTitle>
-        <DialogContent dividers>
-          <TexTitle >Nội dung công việc </TexTitle>
-          <InputText
-            inputProps={{ 'aria-label': 'naked' }}
-            value={'Xin phê duyệt chi phí tiếp khách'}
-            fullWidth
-          />
-          {/* <TitleText component="div">Nội dung phê duyệt(nếu có)</TitleText>
+      <DialogContent dividers>
+        <TexTitle >Nội dung công việc </TexTitle>
+        <InputText
+          inputProps={{ 'aria-label': 'naked' }}
+          value={'Xin phê duyệt chi phí tiếp khách'}
+          fullWidth
+        />
+        {/* <TitleText component="div">Nội dung phê duyệt(nếu có)</TitleText>
           <Text component="span"
             id="outlined-full-width"
             value={'Đồng ý phê duyệt'}
@@ -102,7 +103,7 @@ const ApproveModal = (props) => {
             }}
             variant="outlined"
           /> */}
-          <TextField
+        <TextField
           id="outlined-multiline-static"
           label="Nội dung phê duyệt"
           fullWidth
@@ -114,21 +115,22 @@ const ApproveModal = (props) => {
           variant="outlined"
         />
 
-        </DialogContent>
-        <DialogActions>
-          <Button 
-          autoFocus 
+      </DialogContent>
+      <DialogActions>
+        <Button
+          autoFocus
           color="primary"
           onClick={() => {
-
+            console.log('props', props.updateOfferByOfferId())
             props.handleClickClose()
-          }} 
-          >
-            Phê duyệt
+            props.updateOfferByOfferId()
+          }}
+        >
+          Phê duyệt
           </Button>
-        </DialogActions>
-      </Dialog>
-    )
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 export default ApproveModal;

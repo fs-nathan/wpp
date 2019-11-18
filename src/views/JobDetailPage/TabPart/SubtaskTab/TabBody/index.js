@@ -11,7 +11,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
 import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
-import DeleteModalSubTask from '../ModalDeleteSubTask'
+import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 const Container = styled.div`
   padding: 0;
 `;
@@ -98,7 +98,7 @@ const ButtonIcon = styled(IconButton)`
 
 function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
-  // console.log("task id",task.id);
+ 
   
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
@@ -129,6 +129,10 @@ function AllSubtaskListItem(props) {
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
+  const confirmDelete = () => {
+    props.deleteSubTaskByTaskId(props.task.id)
+  }
+
   return (
 
     <Draggable
@@ -171,7 +175,7 @@ function AllSubtaskListItem(props) {
             <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
           </Menu>
           <SubtaskModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} task={props.task.id} name={props.task.name} {...props}/>
-          <DeleteModalSubTask isOpen={isOpenDelete} handleCloseModalDelete={handleCloseModalDelete} handleOpenModalDelete={handleOpenModalDelete} task={props.task.id} {...props}/>
+          <ModalDeleteConfirm confirmDelete={confirmDelete} isOpen={isOpenDelete} handleCloseModalDelete={handleCloseModalDelete} handleOpenModalDelete={handleOpenModalDelete} task={props.task.id} {...props}/>
         </AllSubtaskListItemContainer>
       )}
     </Draggable>
