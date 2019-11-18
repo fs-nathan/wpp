@@ -11,7 +11,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
 import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
-import DeleteModalSubTask from '../ModalDeleteSubTask'
+import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 const Container = styled.div`
   padding: 0;
 `;
@@ -98,8 +98,7 @@ const ButtonIcon = styled(IconButton)`
 
 function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
-  // console.log("task id",task.id);
-  
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -119,16 +118,20 @@ function AllSubtaskListItem(props) {
   function handleClose() {
     setAnchorEl(null);
   }
-// bien modal delete
+  // bien modal delete
   const [isOpenDelete, setOpenDelete] = React.useState(false);
 
   const handleOpenModalDelete = () => {
     setOpenDelete(true);
     setAnchorEl(null);
-  };   
+  };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
+  const confirmDelete = () => {
+    props.deleteSubTaskByTaskId(props.task.id)
+  }
+
   return (
 
     <Draggable
@@ -153,11 +156,10 @@ function AllSubtaskListItem(props) {
               </ButtonIcon>
           }
           <ItemList>{props.task.name}</ItemList>
-          <ButtonIcon style={{ marginRight: 16}} onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
             <Icon path={mdiDotsVertical} size={1} />
           </ButtonIcon>
           <Menu
-            id="simple-menu"
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
@@ -170,8 +172,15 @@ function AllSubtaskListItem(props) {
             <MenuItem onClick={handleClickOpen} >Chỉnh sửa</MenuItem>
             <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
           </Menu>
-          <SubtaskModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} task={props.task.id} name={props.task.name} {...props}/>
-          <DeleteModalSubTask isOpen={isOpenDelete} handleCloseModalDelete={handleCloseModalDelete} handleOpenModalDelete={handleOpenModalDelete} task={props.task.id} {...props}/>
+          <SubtaskModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} task={props.task.id} name={props.task.name} {...props} />
+          <ModalDeleteConfirm
+            confirmDelete={confirmDelete}
+            isOpen={isOpenDelete}
+            handleCloseModalDelete={handleCloseModalDelete}
+            handleOpenModalDelete={handleOpenModalDelete}
+            // task={props.task.id}
+            {...props}
+          />
         </AllSubtaskListItemContainer>
       )}
     </Draggable>
@@ -183,7 +192,7 @@ function AllSubtaskListItem(props) {
 function AllSubtaskList(props) {
 
   // console.log('data props', props);
-  
+
   // const [data, setData] = React.useState(__data);
   const [data, setData] = React.useState(
     props.subTasks.length
@@ -218,7 +227,7 @@ function AllSubtaskList(props) {
   React.useEffect(() => {
     // Reset sub task when changing props
     setData(convertResponseDataToMotionData(props.subTasks))
-  },[props.subTasks])
+  }, [props.subTasks])
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -319,7 +328,9 @@ const NewWork = styled.div`
   justify-content: space-between;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-top: 1px solid rgba(0, 0, 0, .1);
   align-item: center;
+  margin-bottom: 12px;
 
 `
 const InputText = styled(InputBase)`
@@ -354,33 +365,33 @@ function TabBody(props) {
   }
 
   return (
-    <Body>
-    <Container>
-      {props.isClicked ?
-        <NewWork>
-          <InputText
-            inputProps={{ 'aria-label': 'naked' }}
-            placeholder={'Nhập tên công việc...'}
-            onChange={setStateSubTask}
-            value={name}
-          />
-          <ButtonIcon
-            style={{ paddingBottom: 9 }}
-            onClick={() => {
-              createSubTask("5da183cfc46d8515e03fa9e8", name)
-            }}>
-            <Icon path={mdiSend} size={1} color={'gray'} />
-          </ButtonIcon>
-        </NewWork>
-        :
-        <Div>
-          <Search placeholder={'Nhập từ khóa'} />
-        </Div>
-      }
-      <AllSubtaskList {...props} />
-      <TextTitle uppercase bold style={{ paddingLeft: 30}}>Hoàn thành</TextTitle>
-      <FinishedSubtaskList />
-    </Container>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+      <Container>
+        {props.isClicked ?
+          <NewWork>
+            <InputText
+              inputProps={{ 'aria-label': 'naked' }}
+              placeholder={'Nhập tên công việc...'}
+              onChange={setStateSubTask}
+              value={name}
+            />
+            <ButtonIcon
+              style={{ paddingBottom: 9, marginRight: 14 }}
+              onClick={() => {
+                createSubTask("5da183cfc46d8515e03fa9e8", name)
+              }}>
+              <Icon path={mdiSend} size={1} color={'gray'} />
+            </ButtonIcon>
+          </NewWork>
+          :
+          <Div>
+            <Search placeholder={'Nhập từ khóa'} />
+          </Div>
+        }
+        <AllSubtaskList {...props} />
+        <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Hoàn thành</TextTitle>
+        <FinishedSubtaskList />
+      </Container>
     </Body>
   )
 }

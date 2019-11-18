@@ -120,7 +120,7 @@ const ApprovedBox = (props) => {
               <Button variant="outlined" size="small" >Từ chối</Button>
               <span />
             </StyledTitleBox>
-            <ApproveModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} {...props} />
+            <ApproveModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}  />
           </ApprovedContainer>
         </React.Fragment>
       )}
@@ -206,7 +206,6 @@ const CustomListItem = (props) => {
         <ApprovedBox approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
       </StyledListItem>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -218,10 +217,11 @@ const CustomListItem = (props) => {
       >
         <MenuItem onClick={() => {
           props.handleClickOpen()
+          setAnchorEl(null)
         }}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={() => {
           props.deleteOfferByTaskId(props.offer.id)
-          handleClose()
+          setAnchorEl(null)
         }}>Xóa</MenuItem>
       </Menu>
     </React.Fragment>
@@ -271,7 +271,6 @@ const StyledButtonGroup = styled(ButtonGroup)`
 function TabBody(props) {
 
   const [value, setValue] = React.useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -283,7 +282,7 @@ function TabBody(props) {
     setOpen(false);
   };
   return (
-    <Body>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
           <ColorButton

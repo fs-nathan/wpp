@@ -2,7 +2,7 @@ import React from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiClose, mdiPlus } from '@mdi/js';
+import { mdiChevronLeft , mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 
 
@@ -10,14 +10,10 @@ import ColorTypo from '../../../../../components/ColorTypo';
 const Container = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   height: 85px;
-  & > *:first-child {
-    margin-right: auto;
-    font-size: 16px;
-    margin-left: 20px
-  }
 `;
 const ButtonCancel = styled.p`
   background: #edeff0;
@@ -25,7 +21,7 @@ const ButtonCancel = styled.p`
   font-weight: 500;
   margin: 0;
   padding: 12px 8px;
-  margin-right: 5spx;
+  margin-right: 5px;
   border-radius: 50%;
 `
 const ButtonIcon = styled(IconButton)`
@@ -47,7 +43,10 @@ function TabHeader(props) {
   }
   return (
     <Container>
-      <ColorTypo uppercase bold>Công việc con</ColorTypo>
+      <ButtonIcon onClick={() => props.setShow(0)}>
+        <Icon path={mdiChevronLeft } size={1} />
+      </ButtonIcon>
+      <ColorTypo uppercase bold style={{ fontSize: 17 }}>Công việc con</ColorTypo>
       {isPlus ?
         <ButtonIcon onClick={() => {
           props.onClickPlusIcon()
@@ -63,9 +62,6 @@ function TabHeader(props) {
         }
         }>Hủy</ButtonCancel>
       }
-      <ButtonIcon onClick={() => props.setShow(0)}>
-        <Icon path={mdiClose} size={1} />
-      </ButtonIcon>
     </Container>
   );
 }

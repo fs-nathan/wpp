@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Typography, Dialog, Button, TextField, withStyles, InputAdornment } from '@material-ui/core';
+import { IconButton, Typography, Dialog, Button, TextField, withStyles, InputAdornment, FilledInput } from '@material-ui/core';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -98,7 +98,7 @@ const BadgeItem = styled(ColorChip)`
     margin: 5px 6px 5px 0;
   `
 
-const InputOutline = styled(OutlinedInput)`
+const InputOutline = styled(FilledInput)`
     width: 420px;
   `
 const TextRemind = styled(Typography)`
@@ -190,7 +190,7 @@ function RemindModal(props) {
     setData({ ...data, [att]: event.target.value });
   };
   return (
-    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
+    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={() => props.handleClickClose()} fullWidth>
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
         Nhắc hẹn
       </DialogTitle>
@@ -222,14 +222,11 @@ function RemindModal(props) {
           </Typography>
           :
           <div>
-            <TexTitle component="div">Mốc tiến độ cần nhắc</TexTitle>
-            <InputOutline
-              id="outlined-adornment-weight"
-              // value={values.weight}
-              // onChange={handleChange('weight')}
+            <TexTitle component="div"></TexTitle>
+            <InputOutline             
+              label="Mốc tiến độ cần nhắc"
+              variant="outlined"
               endAdornment={<InputAdornment position="end">%</InputAdornment>}
-              aria-describedby="outlined-weight-helper-text"
-              labelWidth={0}
             />
             <Button variant="contained" style={{ marginLeft: 10 }}>Thêm</Button>
             <Typography component={'div'}>

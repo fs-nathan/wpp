@@ -103,21 +103,26 @@ function TabHeader(props) {
         }}
       >
         <MenuItem onClick={() => {
-          handleClose()
           setOpenCreateJobModal(true)
+          setAnchorEl(null);
         }}>Chỉnh sửa</MenuItem>
         {pause ?
           <MenuItem onClick={() => {
             props.onClickPause()
             handleClickPause()
+            setAnchorEl(null);
           }}>Tạm dừng</MenuItem>
           :
           <MenuItem onClick={() => {
             props.onClickPause()
             handleClickPause()
+            setAnchorEl(null);
           }}>Hủy tạm dừng</MenuItem>
         }
-        <MenuItem onClick={handleCloseMenu}>Xóa</MenuItem>
+        <MenuItem onClick={() => {
+        handleCloseMenu()
+        setAnchorEl(null)
+        }}>Xóa</MenuItem>
       </Menu>
       <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={isRight} />
     </Container>

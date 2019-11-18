@@ -177,7 +177,7 @@ const MemberList = () => {
 
 function TabBody() {
   return (
-    <Body>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
     <Container>
       <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
       <MemberList />

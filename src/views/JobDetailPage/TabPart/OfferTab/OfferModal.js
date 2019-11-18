@@ -106,7 +106,7 @@ const OfferModal = (props) => {
   const [content, setContent] = React.useState("")
 
   const classes = useStyles();
-  return (<Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
+  return (<Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={props.handleClickClose} fullWidth>
     <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
       Tạo đề xuất
         </DialogTitle>

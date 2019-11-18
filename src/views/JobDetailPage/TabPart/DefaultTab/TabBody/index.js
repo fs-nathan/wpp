@@ -140,7 +140,7 @@ function DropdownButton({ values }) {
 function TabBody(props) {
 
   return (
-    <Body>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
     <StyledList>
       <ListItem>
         <ListItemText>
