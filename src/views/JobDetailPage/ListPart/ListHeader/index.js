@@ -1,12 +1,10 @@
 import React from 'react';
 import { IconButton, Typography, TextField } from '@material-ui/core';
 import styled from 'styled-components';
-import { mdiPlus, mdiApps, mdiHelpCircle, mdiChevronDown } from '@mdi/js';
+import { mdiPlus,mdiChevronDown } from '@mdi/js';
 import Icon from '@mdi/react';
 import SearchInput from '../../../../components/SearchInput';
 import CreateJobModal from './CreateJobModal';
-
-import { func } from 'prop-types';
 
 
 const Header = styled.div`

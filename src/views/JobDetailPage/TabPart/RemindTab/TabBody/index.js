@@ -10,7 +10,7 @@ import ColorChip from '../../../../../components/ColorChip';
 import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 import colorPal from '../../../../../helpers/colorPalette';
-import RemindModal from '../RemindModal';
+import RemindModal from '../RemindModal'; 
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 
@@ -190,7 +190,7 @@ const RemindList = (props) => {
 
 function TabBody(props) {
   return (
-    <Body>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
         <RemindList {...props} />

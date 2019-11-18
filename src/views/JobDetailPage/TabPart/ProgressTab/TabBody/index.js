@@ -182,7 +182,7 @@ function TabBody() {
     setStateProgress(progress)
   }
   return (
-    <Body>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
     <Container>
       <StartEndDateBox>
         <StartDateBox>

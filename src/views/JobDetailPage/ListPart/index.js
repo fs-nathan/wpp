@@ -12,27 +12,15 @@ const Container = styled.div`
 
 const WrapListTask = styled.div`
   display: ${props => props.show ? 'block' : 'none'};
-`
-const Tab = styled.div`
   height: 100%;
   display: grid;
   grid-template-rows: 165px calc(100vh - 70px - 50px);
   grid-template-columns: 1fr;
   grid-template-areas: 
     "header"
-    "banner"
     "body";
-`;
-
-const Banner = styled(ListBanner)`
-  grid-area: banner;
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0px;
-  background-color: #fff;
-  z-index: 999;
-`;
-const Header = styled(ListHeader)`
+`
+const Header = styled.div`
   grid-area: header;
   position: -webkit-sticky; /* Safari */
   position: sticky;
@@ -43,15 +31,16 @@ const Header = styled(ListHeader)`
 
 function ListTask(props) {
   return (
-   
-      <WrapListTask {...props}>
-      
-          <Header {...props} />
-          <Banner />
-        <ListBody />
-        
-      </WrapListTask>
-    
+
+    <WrapListTask {...props}>
+      <Header>
+        <ListHeader {...props} />
+        <ListBanner />
+      </Header>
+      <ListBody />
+
+    </WrapListTask>
+
   )
 }
 

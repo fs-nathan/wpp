@@ -137,7 +137,7 @@ function TabBody() {
   };
 
   return (
-    <Body>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
     <Container>
       <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
         <ColorButton 
