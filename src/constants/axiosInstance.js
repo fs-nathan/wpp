@@ -17,6 +17,7 @@ apiService.interceptors.request.use(
     const group_active = localStorage.getItem("group-active")
     config.headers["Authorization"] = `Bearer ${accessToken}`
     config.headers["group-active"] = group_active
+    config.headers["task_id"] = "5da1821ad219830d90402fd8" // Fixed task id in header (it should be pass from saga)
     return config
   } 
 )

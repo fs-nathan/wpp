@@ -86,7 +86,6 @@ const Body = styled(Scrollbars)`
   
 `;
 const MemberMenuLists = (props) => {
-  // console.log('props.....', props)
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
@@ -101,16 +100,18 @@ const MemberMenuLists = (props) => {
   const handleOpenModalDelete = () => {
     setOpenDelete(true);
     setAnchorEl(null);
-  };   
+  };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteRemindByTaskId(props.task.id)
+    props.deleteRemindWByRemindId(props.item.id)
   }
 
+
+  console.log('props', props.item)
   return (
-    <div>
+    <div >
       <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
       </ButtonIcon>
@@ -129,55 +130,53 @@ const MemberMenuLists = (props) => {
           props.handleClickOpen(props.idx);
           handleClose();
         }}>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={() => { handleClose() }}>Xóa</MenuItem>
+        <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
       </Menu>
-      <ModalDeleteConfirm 
-      confirmDelete={confirmDelete} 
-      isOpen={isOpenDelete} 
-      handleCloseModalDelete={handleCloseModalDelete} 
-      handleOpenModalDelete={handleOpenModalDelete} 
-      // task={props.task.id} 
-      {...props} />
+      <ModalDeleteConfirm
+        confirmDelete={confirmDelete}
+        isOpen={isOpenDelete}
+        handleCloseModalDelete={handleCloseModalDelete}
+        handleOpenModalDelete={handleOpenModalDelete}
+        // task={props.task.id} 
+        {...props} />
     </div>
   )
 }
 
 const RemindList = (props) => {
-  console.log('propsssss', props)
   const [open, _setOpen] = React.useState(false);
   const [elemState, _setElem] = React.useState({})
 
   const [data] = React.useState(__data);
   // Toogle popup array contains status of each popup
-  let arrOpens = mockDataEle.map(() => ({ isOpen: false }))
-  const handleClickOpen = (elem) => {
+  const handleClickOpen = (item) => {
     _setOpen(true)
-    _setElem(elem)
+    _setElem(item)
 
   };
   const handleClickClose = () => {
     _setOpen(false)
   };
-
+  
   return (
     <StyledList>
-      {mockDataEle.map((elem, idx) => {
+      {props.remind.map((item, idx) => {
         return (
-          <StyledListItem key={idx} {...props}>            
+          <StyledListItem key={idx} {...props}>
             <Content>
               <StyledTitleBox>
-                <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
-                <ColorTypo variant='body1'>{elem.title}</ColorTypo>
-                {elem && elem.badge.map((item, key) => (
+                <Avatar style={{ width: 25, height: 25 }} src={item.user_create_avatar} alt='avatar' />
+                {/* <ColorTypo variant='body1'>{elem.title}</ColorTypo> */}
+                {/* {elem && elem.badge.map((item, key) => (
                   <Badge key={key} color='orangelight' size='small' badge label={item + ""} />))
-                }
+                } */}
               </StyledTitleBox>
 
-              <MemberMenuLists idx={idx} handleClickOpen={() => handleClickOpen(elem)} />
+              <MemberMenuLists idx={idx} handleClickOpen={() => handleClickOpen(item)} item={item} {...props} />
 
             </Content>
             <StyledContentBox>
-              {elem.content}
+              {item.content}
             </StyledContentBox>
 
           </StyledListItem>

@@ -63,8 +63,8 @@ const SubtaskModal = (props) => {
   const [name, setStateName] = React.useState(props.name)
     return (
         // {/* Modal chinh sua cong viec con */}
-        <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
-        <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
+        <Dialog open={props.isOpen} fullWidth>
+        <DialogTitle onClose={props.handleClickClose}>
           Chỉnh sửa công việc con
         </DialogTitle>
         <DialogContent dividers>

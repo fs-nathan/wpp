@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function ModalDeleteConfirm(props) {
-
+  
   return (
     <div>
       <Dialog
@@ -27,10 +27,8 @@ export default function ModalDeleteConfirm(props) {
             Hủy
           </Button>
           <Button onClick={() => {
-            console.log('delete', props.task.id)
               props.handleCloseModalDelete()
               props.confirmDelete()
-              // props.deleteSubTaskByTaskId(props.task.id)
               }} color="primary" autoFocus> Xóa </Button>
         </DialogActions>
       </Dialog>

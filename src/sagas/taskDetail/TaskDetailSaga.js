@@ -1,8 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import * as actions from '../../actions/taskDetail/taskDetailActions';
 import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, DELETE_ROOM } from '../../constants/events';
-
 
 // Sub-task::
 async function doGetSubTask({ taskId }) {
@@ -44,7 +42,6 @@ async function doPostSubTask(payload) {
 function* postSubTask(action) {
   try {
     const res = yield call(doPostSubTask, action.options)
-    // console.log("Api post sub-task", res)
     yield put(actions.postSubTaskSuccess(res))
     yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
   } catch (error) {
@@ -71,7 +68,6 @@ async function doUpdateSubTask(payload) {
 function* updateSubTask(action) {
   try {
     const res = yield call(doUpdateSubTask, action.options)
-    // console.log("Api update sub-task", res)
     yield put(actions.updateSubTaskSuccess(res))
     yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
   } catch (error) {
@@ -95,7 +91,6 @@ async function doDeleteSubTask({ sub_task_id }) {
 }
 
 function* deleteSubTask(action) {
-  console.log('action delete', action);
   
   try {
     const res = yield call(doDeleteSubTask, action.options)
@@ -181,34 +176,32 @@ function* getRemind(action) {
 //     yield put(actions.updateSubTaskFail(error))
 //   }
 // }
-// // ==== delete
-// async function doDeleteSubTask({ sub_task_id }) {
-  
-//   try {
-//     const config = {
-//       url: 'task/delete-subtask?sub_task_id='+ sub_task_id,
-//       method: 'post',
-//       data: { sub_task_id}
-//     }
-//     const result = await apiService(config);
-//     return result.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+// ==== delete
+async function doDeleteRemind({ remind_id }) {
+  console.log('remind', remind_id)
+  try {
+    const config = {
+      url: 'task/delete-remind',
+      method: 'post',
+      data: {remind_id}
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
-// function* deleteSubTask(action) {
-//   console.log('action delete', action);
-  
-//   try {
-//     const res = yield call(doDeleteSubTask, action.options)
-//     console.log("Api delete sub-task", res)
-//     yield put(actions.deleteSubTaskSuccess(res))
-//     yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
-//   } catch (error) {
-//     yield put(actions.deleteSubTaskFail(error))
-//   }
-// }
+function* deleteRemind(action) {
+  try {
+    const res = yield call(doDeleteRemind, action.payload)
+    console.log("Api delete", res)
+    yield put(actions.deleteRemindSuccess(res))
+    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
+  } catch (error) {
+    yield put(actions.deleteRemindFail(error))
+  }
+}
 //Offer::
 async function doGetOffer({ taskId }) {
   try {
@@ -291,11 +284,10 @@ function* updateOffer(action) {
 
 async function doDeleteOffer(offer_id) {
   try {
-    console.log('hahahahaha', offer_id)
     const config = {
       url: '/task/delete-offer/',
       method: 'post',
-      body: {
+      data: {
         offer_id
       }
     }
@@ -327,6 +319,7 @@ export {
   
   // Remind::
   getRemind,
+  deleteRemind,
 
   // Sub-Task::
   getSubTask,

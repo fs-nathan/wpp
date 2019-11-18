@@ -98,14 +98,21 @@ function* rootSaga() {
   yield takeLeading(BAN_USER_FROM_GROUP, banUserFromGroup);
   yield takeLeading(CREATE_ICON, createIcon);
   yield takeLeading(DELETE_ICON, deleteIcon);
+
+  //Offer::
   yield takeLeading(taskDetailType.GET_OFFER_REQUEST, taskDetailSaga.getOffer);
   yield takeLeading(taskDetailType.CREATE_OFFER_REQUEST, taskDetailSaga.createOffer);
   yield takeLeading(taskDetailType.UPDATE_OFFER_REQUEST, taskDetailSaga.updateOffer);
   yield takeLeading(taskDetailType.DELETE_OFFER_REQUEST, taskDetailSaga.deleteOffer);
+
+  //Subtask::
   yield takeLeading(taskDetailType.GET_SUBTASK_REQUEST, taskDetailSaga.getSubTask);
   yield takeLeading(taskDetailType.POST_SUBTASK_REQUEST, taskDetailSaga.postSubTask);
   yield takeLeading(taskDetailType.UPDATE_SUBTASK_REQUEST, taskDetailSaga.updateSubTask);
   yield takeLeading(taskDetailType.DELETE_SUBTASK_REQUEST, taskDetailSaga.deleteSubTask);
+  //Remind::
+  yield takeLeading(taskDetailType.GET_REMIND_REQUEST, taskDetailSaga.getRemind);
+  yield takeLeading(taskDetailType.DELETE_REMIND_REQUEST, taskDetailSaga.deleteRemind);
 };
 
 export default rootSaga;

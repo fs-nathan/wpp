@@ -51,6 +51,11 @@ const mapDispatchToProps = dispatch => {
     deleteSubTaskByTaskId: taskId => dispatch(taskDetailAction.deleteSubTask({sub_task_id: taskId})),
     // remind
     getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({taskId})),
+    // createRemindWithTimeDetail: () => dispatch(taskDetailAction.createRemindWithTime()),
+    // createRemindWithDurationDetail: () => dispatch(taskDetailAction.createRemindWithDuration()),
+    // updateRemindWithTimeDetail: () => dispatch(taskDetailAction.updateRemindWithTime()),
+    // updateRemindWithDurationDetail: () => dispatch(taskDetailAction.updateRemindWithDuration()),
+    deleteRemindWByRemindId: remindId => dispatch(taskDetailAction.deleteRemind({remind_id: remindId})),
     // offer
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
     createOfferByTaskId: (createId, content) => {dispatch(taskDetailAction.createOffer({ createId, content }))},
