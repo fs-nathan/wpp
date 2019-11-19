@@ -20,9 +20,11 @@ const StyledTableBody = styled(TableBody)`
 
 const UserTableCell = styled(TableCell)`
   & > span {
+    font-size: 14px;
     color: ${colorPal['green'][0]};
   }
   & > small {
+    font-size: 12px;
     color: ${colorPal['gray'][0]};
   }
 `;
@@ -54,6 +56,7 @@ function MembersDetail({ open, setOpen, members, }) {
                 </TableCell>
                 <UserTableCell>
                   <span>{get(member, 'name', '')}</span>
+                  <br />
                   <small>{get(member, 'email', '')}</small>  
                 </UserTableCell>
                 <TableCell>{get(member, 'position', '')}</TableCell>

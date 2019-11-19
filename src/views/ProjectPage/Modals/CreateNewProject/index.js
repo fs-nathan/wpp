@@ -17,6 +17,12 @@ const StyledFormControl = styled(FormControl)`
   }
 `;
 
+const CustomTextField = styled(TextField)`
+  & > label {
+    z-index: 0;
+  }
+`;
+
 function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, }) {
 
   const { data: { projectGroups } } = listProjectGroup;
@@ -25,6 +31,10 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
   const [projectGroup, setProjectGroup] = React.useState(projectGroups[0]);
   const [priority, setPriority] = React.useState(0);
   const [currency, setCurrency] = React.useState(0);
+
+  React.useEffect(() => {
+    setProjectGroup(projectGroups[0]);
+  }, [projectGroups]);
 
   function handleCreateNewProject() {
     doCreateProject({
@@ -45,34 +55,6 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
         setOpen={setOpen}
         onConfirm={() => handleCreateNewProject()}
       >
-        <TextField
-          value={name}
-          onChange={evt => setName(evt.target.value)}
-          margin="normal"
-          variant="outlined"
-          label='Tên dự án'
-          fullWidth
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              Tối đa 200 ký tự
-            </ColorTypo>
-          }
-        />
-        <TextField
-          value={description}
-          onChange={evt => setDescription(evt.target.value)}
-          margin="normal"
-          variant="outlined"
-          label='Mô tả dự án'
-          fullWidth
-          multiline
-          rowsMax='6'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              Tối đa 500 ký tự
-            </ColorTypo>
-          }
-        />
         <StyledFormControl fullWidth>
           <label htmlFor='room-select'>
             Nhóm dự án
@@ -91,6 +73,34 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
             onChange={({ value: projectGroupId }) => setProjectGroup(find(projectGroups, { id: projectGroupId }))}
           />
         </StyledFormControl>
+        <CustomTextField
+          value={name}
+          onChange={evt => setName(evt.target.value)}
+          margin="normal"
+          variant="outlined"
+          label='Tên dự án'
+          fullWidth
+          helperText={
+            <ColorTypo variant='caption' color='red'>
+              Tối đa 200 ký tự
+            </ColorTypo>
+          }
+        />
+        <CustomTextField
+          value={description}
+          onChange={evt => setDescription(evt.target.value)}
+          margin="normal"
+          variant="outlined"
+          label='Mô tả dự án'
+          fullWidth
+          multiline
+          rowsMax='6'
+          helperText={
+            <ColorTypo variant='caption' color='red'>
+              Tối đa 500 ký tự
+            </ColorTypo>
+          }
+        />
         <StyledFormControl fullWidth>
           <label htmlFor='room-select'>
             Mức độ ưu tiên

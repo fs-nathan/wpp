@@ -90,7 +90,6 @@ function DepartmentInfo({ detailProjectGroup, memberProjectGroup, doDeleteProjec
   const [alert, setAlert] = React.useState(false);
     
   React.useEffect(() => {
-    console.log('y');
     setProjectGroupId(projectGroupId);
   }, [setProjectGroupId, projectGroupId]);
 

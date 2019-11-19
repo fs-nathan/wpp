@@ -228,6 +228,17 @@ function decodeStateName(stateName) {
   }
 }
 
+function displayDateRange(from, to) {
+  if (
+    (from instanceof Date && !isNaN(from)) && 
+    (to instanceof Date && !isNaN(to))
+  ) {
+    return `${from.toLocaleDateString()} - ${to.toLocaleDateString()}`;
+  } else {
+    return 'Không xác định';
+  }
+}
+
 const SettingButton = ({ onEditProject, onHideProject, onDeleteProject }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -312,6 +323,18 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
 
   const [edittingProject, setEdittingProject] = React.useState(null);
   const [openEditProject, setOpenEditProject] = React.useState(false);
+
+  const filterTitle = [
+    'Tất cả',
+    'Hoạt động',
+    'Ẩn',
+    'Đang chờ',
+    'Đang thực hiện',
+    'Hoàn thành',
+    'Quá hạn',
+    'Bạn tạo',
+    'Bạn tham gia',
+  ];
 
   React.useEffect(() => {
     let projects = _projects;
@@ -441,7 +464,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
               title: `${loading ? '...' : projectGroupId ? get(projectGroup, 'name', 'Tất cả') : 'Tất cả'}`,
               subTitle: '',
               subActions: [{
-                label: 'Hoạt động',
+                label: filterTitle[filter],
                 iconPath: mdiFilterOutline,
                 onClick: (evt) => setFilterAnchor(evt.currentTarget),
               }, {
@@ -508,7 +531,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
               field: (row) => <DurationBox>
                                 <span>{get(row, 'duration', 0)} ngày</span>
                                 <small>
-                                  {(new Date(get(row, 'date_start'))).toLocaleDateString()} - {(new Date(get(row, 'date_end'))).toLocaleDateString()}
+                                  {displayDateRange(new Date(get(row, 'date_start')), new Date(get(row, 'date_end')))}
                                 </small>
                               </DurationBox>,
               sort: (evt) => handleSortColumn('duration'),
@@ -553,15 +576,15 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
               horizontal: 'right',
             }}
           >
-            <CustomMenuItem onClick={handleFilterClose(0)} selected={filter === 0} ><Icon path={mdiCheckCircle} size={0.7} /> Tất cả</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose(1)} selected={filter === 1} ><Icon path={mdiCheckCircle} size={0.7} /> Hoạt động</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose(2)} selected={filter === 2} ><Icon path={mdiCheckCircle} size={0.7} /> Ẩn</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose(3)} selected={filter === 3} ><Icon path={mdiCheckCircle} size={0.7} /> Đang chờ</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose(4)} selected={filter === 4} ><Icon path={mdiCheckCircle} size={0.7} /> Đang thực hiện</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose(5)} selected={filter === 5} ><Icon path={mdiCheckCircle} size={0.7} /> Hoàn thành</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose(6)} selected={filter === 6} ><Icon path={mdiCheckCircle} size={0.7} /> Quá hạn</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose(7)} selected={filter === 7} ><Icon path={mdiCheckCircle} size={0.7} /> Bạn tạo</CustomMenuItem>
-            <CustomMenuItem onClick={handleFilterClose(8)} selected={filter === 8} ><Icon path={mdiCheckCircle} size={0.7} /> Bạn tham gia</CustomMenuItem>
+            {filterTitle.map((title, index) => (
+              <CustomMenuItem 
+                key={index}
+                onClick={handleFilterClose(index)} 
+                selected={filter === index} 
+              >
+                <Icon path={mdiCheckCircle} size={0.7} /> {title}
+              </CustomMenuItem>
+            ))}
           </Menu>
           <Popover
             id="download-menu"

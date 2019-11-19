@@ -70,6 +70,7 @@ function CreateProjectGroup({ open, setOpen, }) {
   const [copy, setCopy] = React.useState(false);
 
   return (
+    <>
     <CustomModal
       title='Tạo dự án'
       open={open}
@@ -79,6 +80,7 @@ function CreateProjectGroup({ open, setOpen, }) {
         <ButtonCase onClick={evt => {
           setCreateNew(true);
           setCopy(false);
+          setOpen(false);
         }}>
           <div>
             <Icon path={mdiNotePlusOutline} size={2}/>
@@ -91,6 +93,7 @@ function CreateProjectGroup({ open, setOpen, }) {
         <ButtonCase onClick={evt => {
           setCreateNew(false);
           setCopy(true);
+          setOpen(false);
         }}>
           <div>
             <Icon path={mdiContentCopy} size={2}/>
@@ -101,9 +104,10 @@ function CreateProjectGroup({ open, setOpen, }) {
           </div>
         </ButtonCase>
       </Container>
-      <CreateNewProjectModal open={createNew} setOpen={setCreateNew} />
-      <CopyProjectModal open={copy} setOpen={setCopy} />
     </CustomModal>
+    <CreateNewProjectModal open={createNew} setOpen={setCreateNew} />
+    <CopyProjectModal open={copy} setOpen={setCopy} />
+    </>
   )
 }
 
