@@ -37,8 +37,8 @@ const mapStateToProps = state => {
   return {
     offer: state.taskDetail.taskOffer.offer,
     remind: state.taskDetail.taskRemind.remind,
-    subTasks: state.taskDetail.subTask.subTasks,
-   
+    uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
+    completeSubTasks: state.taskDetail.subTask.completeSubTasks,
   }
 }
 
@@ -49,6 +49,7 @@ const mapDispatchToProps = dispatch => {
     postSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.postSubTask({ task_id: taskId, name })),
     updateSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: taskId, name})),
     deleteSubTaskByTaskId: taskId => dispatch(taskDetailAction.deleteSubTask({sub_task_id: taskId})),
+    completeSubTaskByTaskId: taskId => dispatch(taskDetailAction.completeSubTask({sub_task_id: taskId})),
     // remind
     getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({taskId})),
     // createRemindWithTimeDetail: () => dispatch(taskDetailAction.createRemindWithTime()),

@@ -8,9 +8,9 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import avatar from '../../assets/avatar.jpg'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
-import { mdiDownload, mdiShare, mdiInformation } from '@mdi/js';
+import { mdiDownload, mdiShare, mdiInformation, mdiChevronLeftCircle, mdiChevronRightCircle } from '@mdi/js';
 import Icon from '@mdi/react'
-
+import ImageTest from '../../assets/imageChatTest.jpg'
 const styles = theme => ({
     closeButton: {
         color: theme.palette.grey[500],
@@ -44,7 +44,7 @@ const TitleImg = styled(Typography)`
 `
 const GroupActionButton = styled(Typography)`
     display : flex;
-    margin-left: -100px;
+    margin-left: -150px;
 `
 const ButtonAction = styled(Typography)`
     display: flex;
@@ -91,15 +91,15 @@ const DialogTitle = withStyles(styles)(props => {
             </Typography>
             <GroupActionButton component='div'>
                 <ButtonAction component='div'>
-                    <Icon path={mdiDownload} size={1} color={'#fff'}/>
+                    <Icon path={mdiDownload} size={1} color={'#fff'} />
                     <Typography component='div'>Tải xuống</Typography>
                 </ButtonAction>
                 <ButtonAction component='div'>
-                    <Icon path={mdiShare} size={1} color={'#fff'}/>
+                    <Icon path={mdiShare} size={1} color={'#fff'} />
                     <Typography component='div'>Chia sẻ</Typography>
                 </ButtonAction>
                 <ButtonAction component='div'>
-                    <Icon path={mdiInformation} size={1} color={'#fff'}/>
+                    <Icon path={mdiInformation} size={1} color={'#fff'} />
                     <Typography component='div'>Chi tiết</Typography>
                 </ButtonAction>
             </GroupActionButton>
@@ -128,9 +128,17 @@ const StyledDialog = styled(Dialog)`
     }
 `
 const ContentDialog = styled(DialogContent)`
-    opacity: 0.2;
     background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & > img {
+        max-height: 700px;
+        max-width: 1300px;
+        opacity: 1;
+    }
 `
+
 
 const ModalImage = (props) => {
     const theme = useTheme();
@@ -143,10 +151,15 @@ const ModalImage = (props) => {
             fullScreen={fullScreen}
         >
             <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
-
             </DialogTitle>
             <ContentDialog dividers>
-
+                <IconButton>
+                    <Icon path={mdiChevronLeftCircle} size={5} />
+                </IconButton>
+                <img src={ImageTest} />
+                <IconButton>
+                    <Icon path={mdiChevronRightCircle} size={5} />
+                </IconButton>
             </ContentDialog>
             <DialogActions>
 

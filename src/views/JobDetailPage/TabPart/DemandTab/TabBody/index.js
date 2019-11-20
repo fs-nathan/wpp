@@ -19,7 +19,7 @@ const Body = styled(Scrollbars)`
 `
 
 const Container = styled.div`
-  padding: 0 20px;
+  padding: 0 20px 50px 20px;
 `;
 
 const StyledListItem = styled.li`

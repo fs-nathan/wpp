@@ -94,15 +94,43 @@ function* deleteSubTask(action) {
   
   try {
     const res = yield call(doDeleteSubTask, action.options)
-    console.log("Api delete sub-task", res)
     yield put(actions.deleteSubTaskSuccess(res))
     yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error))
   }
 }
+// ===== complete sub task
+async function doCompleteSubTask(payload) {
+  try {
+    const config = {
+      url: 'task/complete-subtask',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
-// Remind::
+function* completeSubTask(action) {
+  try {
+    const res = yield call(doCompleteSubTask, action.options)
+    yield put(actions.completeSubTaskSuccess(res))
+    yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
+  } catch (error) {
+    yield put(actions.completeSubTaskFail(error))
+  }
+}
+
+
+
+
+
+
+// Remind::::::::::::::::::::::::::::::::::::::::::::::::
 async function doGetRemind({ taskId }) {
   try {
     const config = {
@@ -325,5 +353,6 @@ export {
   getSubTask,
   postSubTask,
   updateSubTask,
-  deleteSubTask
+  deleteSubTask,
+  completeSubTask,
 }

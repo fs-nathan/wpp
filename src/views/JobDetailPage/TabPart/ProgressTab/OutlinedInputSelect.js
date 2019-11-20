@@ -6,11 +6,11 @@ import NoSsr from '@material-ui/core/NoSsr';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
+  { label: 'Công việc 1' },
+  { label: 'Công việc 2' },
+  { label: 'Công việc 3' },
+  { label: 'Công việc 4' },
+  { label: 'Công việc 5' },
 
 ].map(suggestion => ({
   value: suggestion.label,
@@ -37,6 +37,7 @@ function Option(props) {
       style={{
         fontWeight: props.isSelected ? 500 : 400,
         zIndex: 99999,
+        
       }}
       {...props.innerProps}
     >

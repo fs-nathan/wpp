@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 
 const TitleText = styled(Typography)`
     font-size: 15px;
-    margin: 20px 0
+    margin: 0 0 15px 0;
   `
 
 const TexTitle = styled(Typography)`
@@ -75,7 +75,7 @@ const HelperText = styled(TextField)`
   `
 const DivTitle = styled.div`
     display: flex;
-    margin: 30px 0 10px 0;
+    margin: 15px 0 0 0;
   `
 
 const Div = styled.div`
@@ -123,6 +123,12 @@ const SelectInput = styled.div`
     width: 160px;
     & > div > div > div  {
         padding : 7px 0;
+    }
+`
+const ContentText = styled(TextField)`
+    & > label {
+      font-size: 14px;
+      z-index: 0
     }
 `
 
@@ -194,7 +200,7 @@ function RemindModal(props) {
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
         Nhắc hẹn
       </DialogTitle>
-      <DialogContent dividers>
+      <DialogContent dividers style={{ overflow: 'hidden'}}>
         <TitleText component="div">Loại nhắc hẹn</TitleText>
         <OutlinedInputSelect />
         {/* Middle JSX */}
@@ -248,7 +254,7 @@ function RemindModal(props) {
           value={data.content}
           variant="outlined"
         /> */}
-        <TextField
+        <ContentText
           id="outlined-multiline-static"
           label="Nội dung"
           fullWidth
@@ -258,6 +264,7 @@ function RemindModal(props) {
           margin="normal"
           placeholder="Nhập nội dung nhắc hẹn"
           variant="outlined"
+          styled={{ zIndex: 1 }}
         />
       </DialogContent>
       <DialogActions>
