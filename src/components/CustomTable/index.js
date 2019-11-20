@@ -8,6 +8,7 @@ import { darken } from '@material-ui/core/styles';
 import Icon from '@mdi/react';
 import { mdiCoin, mdiCalendar } from '@mdi/js';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 
 export const CustomTableContext = React.createContext();
 export const CustomTableProvider = CustomTableContext.Provider;
@@ -88,18 +89,20 @@ function CustomTable() {
         <LeftHeader>
           <div>
             <span>&#9733;</span>
-            <p>{typeof(options.title) === 'function' ? options.title() : options.title}</p>
+            <p>{typeof(get(options, 'title')) === 'function' ? options.title() : get(options, 'title', '')}</p>
           </div>
-          {options.subTitle ? <span>{typeof(options.subTitle) === 'function' ? options.subTitle() : options.subTitle}</span> : null}
+          {get(options, 'subTitle') ? <span>{typeof(get(options, 'subTitle')) === 'function' ? options.subTitle() : get(options, 'subTitle', '')}</span> : null}
         </LeftHeader>
         <RightHeader>
           <HeaderButtonGroup />
-          <StyledButton 
-            size='small'
-            onClick={options.mainAction.onClick}
-          >
-            {options.mainAction.label}
-          </StyledButton>
+          {get(options, 'mainAction') && (
+            <StyledButton 
+              size='small'
+              onClick={get(options, 'mainAction.onClick', () => null)}
+            >
+              {get(options, 'mainAction.label', '')}
+            </StyledButton>
+          )}
         </RightHeader>   
       </Header>
       <StyledTableMain />

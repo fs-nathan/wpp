@@ -9,6 +9,7 @@ import {
 } from '@mdi/js';
 import TableBodyRow from './TableBodyRow';
 import { CustomTableContext } from '../../index';
+import { get } from 'lodash';
 
 const StyledTableBodyRow = styled(TableRow)`
   background-color: #f2f2f263;
@@ -46,7 +47,7 @@ function TableBodyGroupRow({ group }) {
 
   return (
     <Droppable
-      droppableId={group[options.grouped.id]}
+      droppableId={group[get(options, 'grouped.id')]}
     >
       {(provided, snapshot) => (
         <TableBody
@@ -54,7 +55,7 @@ function TableBodyGroupRow({ group }) {
           {...provided.droppableProps}
         >
           <StyledTableBodyRow>
-            <StyledTableBodyCell colSpan={columns.length + 1}>
+            <StyledTableBodyCell colSpan={get(columns, 'length', 0) + 1}>
               <CustomButton 
                 fullWidth 
                 size='small'
@@ -65,11 +66,11 @@ function TableBodyGroupRow({ group }) {
                   : <Icon path={mdiChevronUp} size={1} color='#8d8d8d' />
                 }  
               >
-                {typeof(options.grouped.label) === 'function' ? options.grouped.label(group) : group[options.grouped.label]}
+                {typeof(get(options, 'grouped.label')) === 'function' ? options.grouped.label(group) : group[get(options, 'grouped.label')]}
               </CustomButton>
             </StyledTableBodyCell>
           </StyledTableBodyRow>
-          {(open || snapshot.isDraggingOver) && group[options.grouped.item].map((row, index) => (
+          {(open || snapshot.isDraggingOver) && group[get(options, 'grouped.item')].map((row, index) => (
             <TableBodyRow key={index} index={index} row={row} group={group} />
           ))}
           {provided.placeholder}  

@@ -7,6 +7,7 @@ import { CustomTableContext } from '../index';
 import TableHeaderRow from './TableHeaderRow';
 import TableBodyGroupRow from './TableBodyGroupRow';
 import TableBodyRow from './TableBodyGroupRow/TableBodyRow'; 
+import { get } from 'lodash';
 
 const Container = styled(Scrollbars)`
   & > div:first-child {
@@ -24,14 +25,14 @@ function TableMain() {
       autoHide
       autoHideTimeout={500}
     >
-      {options.loading.bool && options.loading.component()}
-      {!options.loading.bool && (
+      {get(options, 'loading.bool') && get(options, 'loading.component')()}
+      {!get(options, 'loading.bool') && (
         <Table>
           <TableHead>
             <TableHeaderRow />
           </TableHead>
-          <DragDropContext onDragEnd={options.draggable.onDragEnd}>
-            {options.grouped.bool 
+          <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)}>
+            {get(options, 'grouped.bool')
               ? (
               data.map((group, index) => (
                 <TableBodyGroupRow group={group} key={index} />

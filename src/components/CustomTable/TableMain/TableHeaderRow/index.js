@@ -44,7 +44,7 @@ function TableHeaderRow() {
       {columns.map((column, index) => (
         <StyledTableHeadCell key={index}>
           <div>
-            {typeof(column.label) === 'function' ? column.label() : get(column, 'label', '')}
+            {typeof(get(column, 'label')) === 'function' ? column.label() : get(column, 'label', '')}
             {get(column, 'sort') 
               ? <IconButton size='small' onClick={get(column, 'sort', () => null)}><Icon path={mdiSwapVertical} size={1} color='#8d8d8d'/></IconButton> 
               : null}

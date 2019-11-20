@@ -8,7 +8,7 @@ import ColorTextField from '../../../../components/ColorTextField';
 import ColorButton from '../../../../components/ColorButton';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import Icon from '@mdi/react';
-import { mdiClose, mdiSquare } from '@mdi/js';
+import { mdiChevronLeft, mdiSquare } from '@mdi/js';
 import { connect } from 'react-redux';
 import { Context as ProjectGroupContext } from '../../index';
 import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
@@ -32,6 +32,36 @@ const Container = styled.div`
 
 const ChartBox = styled.div`
   padding: 10px;
+`;
+
+const ChartDrawer = styled.div`
+  position: relative;
+  height: 200px;
+`;
+
+const ChartTitle = styled.span`
+  position: absolute;
+  left: ${126.5}px;
+  top: ${92.5}px;
+  transform: translate(-50%, -50%);
+  height: 90px;
+  width: 90px;
+  border-radius: 100%;
+  background-color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  text-transform: uppercase;
+`;
+
+const ProjectGroupName = styled.span`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
 `;
 
 const ChartLegendBox = styled.div`
@@ -117,13 +147,10 @@ function DepartmentInfo({ detailProjectGroup, memberProjectGroup, doDeleteProjec
       {error === null && (
         <LeftSideContainer
           leftAction={{
-            avatar: loading ? null : get(projectGroup, 'icon'),
-          }}
-          rightAction={{
-            iconPath: mdiClose,
+            iconPath: mdiChevronLeft,
             onClick: () => history.push('/projects')
           }}
-          title={loading ? '...' : get(projectGroup, 'name', '')}
+          title='Chi tiết nhóm công việc'
           loading={{
             bool: loading,
             component: () => <LoadingBox />
@@ -132,18 +159,10 @@ function DepartmentInfo({ detailProjectGroup, memberProjectGroup, doDeleteProjec
           <Container>
             <div>
               <ChartBox>
-                <div>
+                <ChartDrawer>
                   <Chart 
                     type='donut'
                     options={{
-                      title: {
-                        text: 'Hoạt động',
-                        align: 'center',
-                        offsetY: 110,
-                        style: {
-                          color:  '#31b586',
-                        },
-                      },
                       legend: {
                         show: false,
                       },
@@ -171,7 +190,13 @@ function DepartmentInfo({ detailProjectGroup, memberProjectGroup, doDeleteProjec
                     width={250}
                     height={250}
                   />
-                </div>
+                  <ChartTitle>
+                    Hoạt động
+                  </ChartTitle>
+                </ChartDrawer>
+                <ProjectGroupName>
+                  {loading ? '...' : get(projectGroup, 'name', '')}
+                </ProjectGroupName>
                 <ChartLegendBox>
                   <Icon path={mdiSquare} size={1} color={'#2E93fA'} />
                   <ColorTypo>Công việc đang chờ</ColorTypo>

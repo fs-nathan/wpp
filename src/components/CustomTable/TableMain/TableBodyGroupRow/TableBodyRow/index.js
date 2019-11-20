@@ -28,25 +28,26 @@ function TableBodyRow({ index, row, group }) {
   const { options, columns } = React.useContext(CustomTableContext);
   let inSearch = false;  
 
-  for (const key in row) {
-    if (
-      row.hasOwnProperty(key) &&
-      includes(row[key].toString().toLowerCase(), options.search.patern.toLowerCase())
-    ) inSearch = true;
-  }
+  if (get(options, 'search'))
+    for (const key in row) {
+      if (
+        row.hasOwnProperty(key) &&
+        includes(row[key].toString().toLowerCase(), options.search.patern.toLowerCase())
+      ) inSearch = true;
+    }
 
 
   if (!inSearch) return null;
   else return (
-    options.draggable.bool
+    get(options, 'draggable.bool')
     ? (
       <Draggable 
-        draggableId={row[options.row.id]}
+        draggableId={row[get(options, 'row.id')]}
         index={index}  
       >
         {(provided) => (
           <StyledTableBodyRow
-            onClick={evt => options.row.onClick(row, group)}
+            onClick={evt => get(options, 'row.onClick', () => null)(row, group)}
             innerRef={provided.innerRef}
             {...provided.draggableProps} 
           >
@@ -57,7 +58,7 @@ function TableBodyRow({ index, row, group }) {
             </StyledTableBodyCell>
             {columns.map((column, index) => (
               <StyledTableBodyCell key={index}>
-                {typeof(column.field) === 'function' ? column.field(row) : get(row, column.field, '')}
+                {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, column.field, '')}
               </StyledTableBodyCell>
             ))}
           </StyledTableBodyRow>
@@ -66,11 +67,11 @@ function TableBodyRow({ index, row, group }) {
     )
     : (
       <StyledTableBodyRow
-        onClick={evt => options.row.onClick(row, group)}
+        onClick={evt => get(options, 'row.onClick', () => null)(row, group)}
       >
         {columns.map((column, index) => (
           <StyledTableBodyCell key={index}>
-            {typeof(column.field) === 'function' ? column.field(row) : row[column.field]}
+            {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, column.field, '')}
           </StyledTableBodyCell>
         ))}
       </StyledTableBodyRow>

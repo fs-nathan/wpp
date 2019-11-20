@@ -18,6 +18,7 @@ import {
 } from '@mdi/js';
 import { CustomTableContext } from '../index';
 import SearchInput from '../../SearchInput';
+import { get } from 'lodash';
 
 const StyledButton = styled(Button)`
   && {
@@ -72,7 +73,7 @@ function HeaderButtonGroup() {
   function handleSearchClick(evt) {
     if (searchAnchor) {
       setSearchAnchor(null);
-      options.search.onChange('');
+      get(options, 'search.onChange', () => null)('');
     } else {
       setSearchAnchor(evt.currentTarget);
     }
@@ -99,65 +100,80 @@ function HeaderButtonGroup() {
         size='small'
         variant="text"
       >
-        <StyledButton onClick={handleSearchClick}>
-          <div>
-            <Icon path={Boolean(searchAnchor) ? mdiClose : mdiMagnify} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
-          </div>
-          <span>{Boolean(searchAnchor) ? 'Hủy' : 'Tìm kiếm'}</span>
-        </StyledButton>
-        {options.subActions.map((subAction, index) => (
-          <StyledButton key={index} onClick={subAction.onClick}>
+        {get(options, 'search') && (
+          <StyledButton onClick={handleSearchClick}>
             <div>
-              <Icon path={subAction.iconPath} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
+              <Icon path={Boolean(searchAnchor) ? mdiClose : mdiMagnify} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
             </div>
-            <span>{subAction.label}</span>
+            <span>{Boolean(searchAnchor) ? 'Hủy' : 'Tìm kiếm'}</span>
+          </StyledButton>
+        )}
+        {get(options, 'subActions', []).map((subAction, index) => (
+          <StyledButton key={index} onClick={get(subAction, 'onClick', () => null)}>
+            <div>
+              <Icon path={get(subAction, 'iconPath')} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
+            </div>
+            <span>{get(subAction, 'label', '')}</span>
           </StyledButton>
         ))}
-        <StyledButton onClick={options.expand.toggleExpand}>
-          <div>
-            <Icon path={options.expand.bool ? mdiFullscreenExit : mdiFullscreen} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
-          </div>
-          <span>{options.expand.bool ? 'Thu gọn' : 'Mở rộng'}</span>
-        </StyledButton>
-        <StyledButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleMoreOpen}>
-          <div>
-            <Icon path={mdiDotsVertical} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
-          </div>
-          <span>Thêm</span>
-        </StyledButton>
-      </ButtonGroup>
-      <StyledPopper 
-        open={Boolean(searchAnchor)}
-        anchorEl={searchAnchor}
-        transition
-        placement='left'
-      >
-        {({ TransitionProps }) => (
-          <Grow {...TransitionProps} timeout={100}>
-            <SearchBox>
-              <SearchInput 
-                placeholder='Nhập nội dung cần tìm'
-                value={options.search.patern}
-                onChange={evt => options.search.onChange(evt.target.value)}
-              />
-            </SearchBox>
-          </Grow>
+        {get(options, 'expand') && (
+          <StyledButton onClick={get(options, 'expand.toggleExpand', () => null)}>
+            <div>
+              <Icon path={get(options, 'expand.bool', false) ? mdiFullscreenExit : mdiFullscreen} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
+            </div>
+            <span>{get(options, 'expand.bool', false) ? 'Thu gọn' : 'Mở rộng'}</span>
+          </StyledButton>
         )}
-      </StyledPopper>
-      <Menu
-        id="simple-menu"
-        anchorEl={moreAnchor}
-        open={Boolean(moreAnchor)}
-        onClose={handleMoreClose}
-        transformOrigin={{
-          vertical: -30,
-          horizontal: 'right',
-        }}
-      >
-        {options.moreMenu.map((item, index) => (
-          <MenuItem key={index} onClick={handleMoreClick(item.onClick)}>{item.label}</MenuItem>
-        ))}
-      </Menu>
+        {get(options, 'moreMenu') && (
+          <StyledButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleMoreOpen}>
+            <div>
+              <Icon path={mdiDotsVertical} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
+            </div>
+            <span>Thêm</span>
+          </StyledButton>
+        )}
+      </ButtonGroup>
+      {get(options, 'search') && (
+        <StyledPopper 
+          open={Boolean(searchAnchor)}
+          anchorEl={searchAnchor}
+          transition
+          placement='left'
+        >
+          {({ TransitionProps }) => (
+            <Grow {...TransitionProps} timeout={100}>
+              <SearchBox>
+                <SearchInput 
+                  placeholder='Nhập nội dung cần tìm'
+                  value={get(options, 'search.patern', '')}
+                  onChange={evt => get(options, 'search.onChange', () => null)(evt.target.value)}
+                />
+              </SearchBox>
+            </Grow>
+          )}
+        </StyledPopper>
+      )}
+      {get(options, 'moreMenu') && (
+        <Menu
+          id="simple-menu"
+          anchorEl={moreAnchor}
+          open={Boolean(moreAnchor)}
+          onClose={handleMoreClose}
+          transformOrigin={{
+            vertical: -30,
+            horizontal: 'right',
+          }}
+        >
+          {get(options, 'moreMenu', []).map((item, index) => (
+            <MenuItem 
+              key={index} 
+              onClick={handleMoreClick(get(item, 'onClick', () => null))}
+            >
+              {get(item, 'label', '')}
+            </MenuItem>
+          ))}
+        </Menu>
+      )}
     </React.Fragment>
   )
 }
