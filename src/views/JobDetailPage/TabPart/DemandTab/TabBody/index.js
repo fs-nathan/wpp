@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiDotsHorizontal } from '@mdi/js';
-import { 
-  Avatar, IconButton, Menu, MenuItem, ButtonGroup,Collapse,
+import {
+  Avatar, IconButton, Menu, MenuItem, ButtonGroup, Collapse,
 } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
@@ -12,6 +12,7 @@ import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 import DemandModal from '../DemandModal'
 import { Scrollbars } from 'react-custom-scrollbars';
+import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -74,29 +75,35 @@ const CustomListItem = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   }
-
-
   return (
     <React.Fragment>
       <StyledListItem>
         <StyledTitleBox>
-          <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
+          <Avatar style={{ width: 25, height: 25 }} src={props.item.user_create_avatar} alt='avatar' />
           <div>
-            <Text variant='body1' bold>Nguyễn Văn A</Text>
+            <Text variant='body1' bold>{props.item.user_create_name}</Text>
             <ColorTypo variant='caption'>
-              <Badge color={props.isDemand ? 'orangelight' : 'bluelight'} label={props.isDemand ? 'Chỉ đạo' : 'Quyết định'} size='small' badge component='small' /> lúc 08:00 - 12/12/2019
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <Badge
+                  color={props.isDemand ? 'orangelight' : 'bluelight'}
+                  label={props.isDemand ? 'Chỉ đạo' : 'Quyết định'}
+                  size='small'
+                  badge
+                  component='small' >
+                </Badge>
+                <p style={{margin: '0 7px', fontSize: '0.75em', color: '#a6a6a6'}}>lúc {props.item.date_create}</p>
+              </div>
             </ColorTypo>
           </div>
-          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ButtonIcon size='small' onClick={handleClick} >
             <Icon path={mdiDotsHorizontal} size={1} />
           </ButtonIcon>
         </StyledTitleBox>
         <StyledContentBox>
-          <Text >Lorem ipsum dolor sit.</Text>
+          <Text >{props.item.content}</Text>
         </StyledContentBox>
       </StyledListItem>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -124,8 +131,9 @@ const StyledList = styled.ul`
   }
 `;
 
-const ListDemand = () => { 
+const ListDemand = (props) => {
   const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -133,22 +141,39 @@ const ListDemand = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
+  const handleOpenModalDelete = () => {
+    setOpenDelete(true);
+    setAnchorEl(null);
+  };
+  const handleCloseModalDelete = () => {
+    setOpenDelete(false);
+  };
+  const confirmDelete = () => {
+    // props.deleteRemindWByRemindId(props.item.id)
+  }
   return (
-    <React.Fragment>  
+    <React.Fragment>
       <SearchInput
         fullWidth
         placeholder="Nhập từ khóa"
       />
       <StyledList>
-        {Array.from({ length: 3, }).map((_, index) => {
+        {props.command.map((item, index) => {
           return (
-            <CustomListItem key={index} isDemand={index % 2 === 0} handleClickOpen={() => handleClickOpen()}/>
+            <CustomListItem key={index} isDemand={index % 2 === 0} handleClickOpen={() => handleClickOpen()} item={item} {...props} />
           )
-        })}    
+        })}
       </StyledList>
-      
+
       {/* modal chi dao quyet dinh */}
-      <DemandModal isOpen={open} handleClose={handleClose} handleOpen={handleClickOpen}/>
+      <DemandModal isOpen={open} handleClose={handleClose} handleOpen={handleClickOpen} />
+      <ModalDeleteConfirm
+        confirmDelete={confirmDelete}
+        isOpen={isOpenDelete}
+        handleCloseModalDelete={handleCloseModalDelete}
+        handleOpenModalDelete={handleOpenModalDelete}
+        {...props} />
     </React.Fragment>
   );
 }
@@ -157,8 +182,7 @@ const StyledButtonGroup = styled(ButtonGroup)`
   margin: 8px 0 20px 0;
 `;
 
-function TabBody() {
-
+function TabBody(props) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -167,34 +191,34 @@ function TabBody() {
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-    <Container>
-      <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
-        <ColorButton 
-          onClick={evt => handleChange(evt, 0)}
-        >
-          {value === 0 ? <ColorTypo bold>Tất cả (4)</ColorTypo> : <ColorTypo color='gray'>Tất cả (4)</ColorTypo>}
-        </ColorButton>
-        <ColorButton 
-          onClick={evt => handleChange(evt, 1)}
-        >
-          {value === 1 ? <ColorTypo bold>Chỉ đạo (2)</ColorTypo> : <ColorTypo color='gray'>Chỉ đạo (2)</ColorTypo>}
-        </ColorButton>
-        <ColorButton 
-          onClick={evt => handleChange(evt, 2)}
-        >
-          {value === 2 ? <ColorTypo bold>Quyết định (2)</ColorTypo> : <ColorTypo color='gray'>Quyết định (2)</ColorTypo>}
-        </ColorButton>
-      </StyledButtonGroup>
-      <Collapse in={value === 0} mountOnEnter unmountOnExit>
-        <ListDemand />
-      </Collapse>
-      <Collapse in={value === 1} mountOnEnter unmountOnExit>
-        {null}
-      </Collapse>
-      <Collapse in={value === 2} mountOnEnter unmountOnExit>
-        {null}
-      </Collapse>
-    </Container>
+      <Container>
+        <StyledButtonGroup fullWidth variant="text" >
+          <ColorButton
+            onClick={evt => handleChange(evt, 0)}
+          >
+            {value === 0 ? <ColorTypo bold>Tất cả (4)</ColorTypo> : <ColorTypo color='gray'>Tất cả (4)</ColorTypo>}
+          </ColorButton>
+          <ColorButton
+            onClick={evt => handleChange(evt, 1)}
+          >
+            {value === 1 ? <ColorTypo bold>Chỉ đạo (2)</ColorTypo> : <ColorTypo color='gray'>Chỉ đạo (2)</ColorTypo>}
+          </ColorButton>
+          <ColorButton
+            onClick={evt => handleChange(evt, 2)}
+          >
+            {value === 2 ? <ColorTypo bold>Quyết định (2)</ColorTypo> : <ColorTypo color='gray'>Quyết định (2)</ColorTypo>}
+          </ColorButton>
+        </StyledButtonGroup>
+        <Collapse in={value === 0} mountOnEnter unmountOnExit>
+          <ListDemand {...props} />
+        </Collapse>
+        <Collapse in={value === 1} mountOnEnter unmountOnExit>
+          {null}
+        </Collapse>
+        <Collapse in={value === 2} mountOnEnter unmountOnExit>
+          {null}
+        </Collapse>
+      </Container>
     </Body>
   )
 }

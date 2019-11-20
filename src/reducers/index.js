@@ -34,6 +34,7 @@ import documents from './documents';
 import taskOffer from './taskDetail/offer';
 import taskRemind from './taskDetail/remind'
 import subTask from './taskDetail/subTask';
+import taskCommand from './taskDetail/command';
 
 const rootReducer = combineReducers({
   authentications,
@@ -41,7 +42,8 @@ const rootReducer = combineReducers({
   taskDetail: combineReducers({
     taskOffer,
     taskRemind,
-    subTask
+    subTask,
+    taskCommand
   }),
   room: combineReducers({
     listRoom,

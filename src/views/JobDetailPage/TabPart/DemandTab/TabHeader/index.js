@@ -30,7 +30,7 @@ const ButtonIcon = styled(IconButton)`
 `
 
 
-function TabHeader({ setShow }) {
+function TabHeader({ props }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -41,7 +41,7 @@ function TabHeader({ setShow }) {
   };
   return (
     <Container>
-      <ButtonIcon onClick={() => setShow(0)}>
+      <ButtonIcon onClick={() => {props.setShow(0)}}>
         <Icon path={mdiChevronLeft } size={1}/>
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Chỉ đạo - Quyết định</ColorTypo>
@@ -49,7 +49,7 @@ function TabHeader({ setShow }) {
         <Icon path={mdiPlus} size={1}/>
       </ButtonIcon>
       {/* modal chi dao quyet dinh */}
-      <DemandModal isOpen={open} handleClose={handleClose} handleOpen={handleClickOpen}/>
+      <DemandModal isOpen={open} handleClose={handleClose} handleOpen={handleClickOpen} {...props} />
     </Container>
   );
 }

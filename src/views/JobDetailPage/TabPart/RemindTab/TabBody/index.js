@@ -108,8 +108,6 @@ const MemberMenuLists = (props) => {
     props.deleteRemindWByRemindId(props.item.id)
   }
 
-
-  console.log('props', props.item)
   return (
     <div >
       <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">

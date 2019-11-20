@@ -171,4 +171,32 @@ export const deleteOfferFail = (error) => ({
     type: types.DELETE_OFFER_FAIL,
     error: error,
 });
+//Command and Decision::
+export const getCommand = ({ task_id }) => ({
+    type: types.GET_COMMAND_REQUEST,
+    options: {task_id}
+});
 
+export const getCommandSuccess = (payload) => ({
+    type: types.GET_COMMAND_SUCCESS,
+    payload
+});
+
+export const getCommandFail = (error) => ({
+    type: types.GET_COMMAND_FAIL,
+    error: error
+});
+export const createCommand = (payload) => ({
+    type: types.CREATE_OFFER_REQUEST,
+    payload
+});
+
+export const createCommandSuccess = (payload) => ({
+    type: types.CREATE_COMMAND_SUCCESS,
+    payload
+});
+
+export const createCommandFail = (error) => ({
+    type: types.CREATE_OFFER_FAIL,
+    error: error,
+});

@@ -310,6 +310,56 @@ function* deleteOffer(action) {
   }
 }
 
+//Command
+async function doGetCommand({ task_id }) {
+  try {    
+    const config = {
+      url: 'task/get-command-decision?task_id=' + task_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getCommand(action) {
+  try {
+    const res = yield call(doGetCommand, action.options)
+    // console.log('đến đây', res)
+    yield put(actions.getCommandSuccess(res))
+  } catch (error) {
+    yield put(actions.getCommandFail(error))
+  }
+}
+
+async function doCreateCommand(payload) {
+  try {
+    const config = {
+      url: '/task/create-offer',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createCommand(action) {
+  try {
+    const res = yield call(doCreateCommand, action.options)
+    console.log("GOI API NE", res)
+    yield put(actions.createCommandSuccess(res))
+    yield put(actions.getCommand({ taskId: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.createCommandFail(error))
+  }
+}
 export {
   // Offer::
   getOffer,
@@ -325,5 +375,9 @@ export {
   getSubTask,
   postSubTask,
   updateSubTask,
-  deleteSubTask
+  deleteSubTask,
+
+  // Command and Decision::
+  getCommand,
+  createCommand
 }
