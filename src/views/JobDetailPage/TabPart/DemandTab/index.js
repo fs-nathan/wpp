@@ -28,12 +28,12 @@ const Header = styled(TabHeader)`
 `
 
 
-function DemandTab({ show, setShow }) {
+function DemandTab(props) {
   return (
-    <Slide in={show === 7} direction='left' mountOnEnter unmountOnExit>
+    <Slide in={props.show === 7} direction='left' mountOnEnter unmountOnExit>
       <Container>
-        <Header setShow={setShow} />
-        <TabBody />
+        <Header setShow={props.setShow} {...props} />
+        <TabBody {...props}/>
       </Container>
     </Slide>
   )

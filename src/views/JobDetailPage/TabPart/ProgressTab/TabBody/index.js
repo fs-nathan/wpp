@@ -10,7 +10,7 @@ import Icon from '@mdi/react'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 const Container = styled.div`
-  padding: 10px 0;
+  padding: 10px 0 50px 0;
 
   & > *:not(last-child) {
     margin-top: 30px;
@@ -196,7 +196,7 @@ function TabBody() {
       </StartEndDateBox>
       {/* progress */}
       <ProgressBar
-        width={400}
+        width={370}
         height={20}
         slidableZoneSize={40}
         backgroundColor="#edeff0"

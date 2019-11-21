@@ -94,15 +94,43 @@ function* deleteSubTask(action) {
   
   try {
     const res = yield call(doDeleteSubTask, action.options)
-    console.log("Api delete sub-task", res)
     yield put(actions.deleteSubTaskSuccess(res))
     yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error))
   }
 }
+// ===== complete sub task
+async function doCompleteSubTask(payload) {
+  try {
+    const config = {
+      url: 'task/complete-subtask',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
-// Remind::
+function* completeSubTask(action) {
+  try {
+    const res = yield call(doCompleteSubTask, action.options)
+    yield put(actions.completeSubTaskSuccess(res))
+    yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
+  } catch (error) {
+    yield put(actions.completeSubTaskFail(error))
+  }
+}
+
+
+
+
+
+
+// Remind::::::::::::::::::::::::::::::::::::::::::::::::
 async function doGetRemind({ taskId }) {
   try {
     const config = {
@@ -310,6 +338,56 @@ function* deleteOffer(action) {
   }
 }
 
+//Command
+async function doGetCommand({ task_id }) {
+  try {    
+    const config = {
+      url: 'task/get-command-decision?task_id=' + task_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getCommand(action) {
+  try {
+    const res = yield call(doGetCommand, action.options)
+    yield put(actions.getCommandSuccess(res))
+  } catch (error) {
+    yield put(actions.getCommandFail(error))
+  }
+}
+
+async function doCreateCommand(payload) {
+  try {
+    console.log('payload', payload)
+    const config = {
+      url: 'task/create-command-decision',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createCommand(action) {
+  try {
+    const res = yield call(doCreateCommand, action.payload)
+    yield put(actions.createCommandSuccess(res))
+    console.log('API:::', res)
+    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.createCommandFail(error))
+  }
+}
 export {
   // Offer::
   getOffer,
@@ -325,5 +403,11 @@ export {
   getSubTask,
   postSubTask,
   updateSubTask,
-  deleteSubTask
+  deleteSubTask,
+  completeSubTask,
+  
+  // Command and Decision::
+  getCommand,
+  createCommand
+  
 }

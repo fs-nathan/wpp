@@ -13,7 +13,7 @@ import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 const Container = styled.div`
-  padding: 0;
+  padding: 0 0 50px 0;
 `;
 
 const StyledList = styled(List)`
@@ -93,12 +93,18 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
-
+const StyledMenu = styled.div`
+  display: none;
+  ${AllSubtaskListItemContainer}:hover & {
+    display: inline;
+  }
+`
 
 
 function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
-
+  console.log('props sub task::', props);
+  
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -133,12 +139,11 @@ function AllSubtaskListItem(props) {
   }
 
   return (
-
     <Draggable
       draggableId={props.task.id}
       index={props.index}
     >
-      {(provided) => (
+      {(provided) => ( 
         <AllSubtaskListItemContainer
           innerRef={provided.innerRef}
           {...provided.draggableProps}
@@ -150,28 +155,32 @@ function AllSubtaskListItem(props) {
           </div>
           {
             !isHover
-              ? <Avatar style={{ width: 43.5, height: 43.5, }} src={avatar} alt='avatar' />
-              : <ButtonIcon>
+              ? <Avatar style={{ width: 43.5, height: 43.5, }} src={props.task.user_create_avatar} alt='avatar' />
+              : <ButtonIcon onClick={ () => {
+                props.completeSubTaskByTaskId(props.task.id)
+              }}>
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
               </ButtonIcon>
           }
           <ItemList>{props.task.name}</ItemList>
+          <StyledMenu>
           <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
             <Icon path={mdiDotsVertical} size={1} />
           </ButtonIcon>
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            transformOrigin={{
-              vertical: -30,
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleClickOpen} >Chỉnh sửa</MenuItem>
-            <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
-          </Menu>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              transformOrigin={{
+                vertical: -30,
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem onClick={handleClickOpen} >Chỉnh sửa</MenuItem>
+              <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
+            </Menu>
+          </StyledMenu>
           <SubtaskModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} task={props.task.id} name={props.task.name} {...props} />
           <ModalDeleteConfirm
             confirmDelete={confirmDelete}
@@ -195,8 +204,8 @@ function AllSubtaskList(props) {
 
   // const [data, setData] = React.useState(__data);
   const [data, setData] = React.useState(
-    props.subTasks.length
-      ? convertResponseDataToMotionData(props.subTasks)
+    props.uncompleteSubTasks.length
+      ? convertResponseDataToMotionData(props.uncompleteSubTasks)
       : __data
   )
 
@@ -226,8 +235,8 @@ function AllSubtaskList(props) {
 
   React.useEffect(() => {
     // Reset sub task when changing props
-    setData(convertResponseDataToMotionData(props.subTasks))
-  }, [props.subTasks])
+    setData(convertResponseDataToMotionData(props.uncompleteSubTasks))
+  }, [props.uncompleteSubTasks])
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -271,6 +280,8 @@ const Badge = styled(ColorChip)`
 `
 
 const FinishedSubtaskList = (props) => {
+  console.log('complete task:::', props);
+  
   const [data] = React.useState([1, 2, 3, 4]);
   // const [isHover, setIsHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -285,14 +296,14 @@ const FinishedSubtaskList = (props) => {
 
   return (
     <List>
-      {data.map((elem, index) => {
+      {props.completeSubTasks.map((item, index) => {
         return (
           <ListItem key={index} style={{ paddingLeft: 30 }}>
             <ListItemAvatar>
               <Avatar src={avatar} alt='avatar' />
             </ListItemAvatar>
             <ItemList
-              primary={`Xong việc ${elem}`}
+              primary={`Xong việc ${item.name}`}
               secondary={
                 <FinishedSubtaskListItemTextSecondary>
                   <Badge component='small' color='bluelight' badge size='small' label={'Hoàn thành'} />
@@ -390,7 +401,7 @@ function TabBody(props) {
         }
         <AllSubtaskList {...props} />
         <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Hoàn thành</TextTitle>
-        <FinishedSubtaskList />
+        <FinishedSubtaskList {...props}/>
       </Container>
     </Body>
   )

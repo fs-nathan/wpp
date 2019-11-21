@@ -16,6 +16,7 @@ import colorPal from '../../../../helpers/colorPalette';
 import AddMemberModal from './AddMemberModal';
 import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 
 
@@ -274,13 +275,42 @@ function CommonPriorityForm(props) {
     </PriorityFormControl>
   )
 }
-
+const StyleDialog = styled(Dialog)`
+  & > div:nth-child(3) > div{
+    overflow: hidden;
+  }
+`
 const ButtonImage = styled(Button)`
   transform: scaleX(-1);
   padding: 6px 0;
   min-width: 54px;
   border: 1px solid #abaaa9;
 `
+const ContentDialog = styled(DialogContent)`
+  border: none;
+  overflow: scroll;
+
+  ::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 5px
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #fff;
+  }
+  &&:hover {
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 10px; 
+    }
+  }
+`
+const DialogFooter = styled(DialogActions)`
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  z-index: 100;
+  border-top: 1px solid rgba(0, 0, 0, 0.12)
+` 
 
 function CreateJobModal(props) {
   const [open, setOpen] = React.useState(false);
@@ -304,7 +334,7 @@ function CreateJobModal(props) {
   return (
 
     <div>
-      <Dialog open={props.isOpen} fullWidth onClose={handleClose}>
+      <StyleDialog open={props.isOpen} fullWidth onClose={handleClose}>
         {props.isRight ?
           <TitleDialog onClose={handleClose}>
             Chỉnh sửa công việc
@@ -314,8 +344,8 @@ function CreateJobModal(props) {
             Tạo công việc
           </TitleDialog>
         }
-        <DialogContent dividers style={{ overflow: 'hidden', minHeight: 690, borderTop: 'none'}}>
-          <Typography component={'span'}>
+        <ContentDialog dividers >
+          <Typography component={'div'}>
             <TitleText component={'span'}>
               <InputTextJob
                 id="outlined-helperText"
@@ -392,8 +422,8 @@ function CreateJobModal(props) {
             <TypoText component={'div'}> Hình thức giao việc </TypoText>
             <CommonControlForm label1='Được giao' label2='Tự đề xuất' label3='Giao việc cho' />
           </Typography>
-        </DialogContent>
-        <DialogActions>
+        </ContentDialog>
+        <DialogFooter>
           {props.isRight ?
             <>
             <span></span>
@@ -414,8 +444,8 @@ function CreateJobModal(props) {
           </Button>
           </>
           }
-        </DialogActions>
-      </Dialog>
+        </DialogFooter>
+      </StyleDialog>
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>
   )

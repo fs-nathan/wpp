@@ -5,17 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
 
 const useStyles = makeStyles(theme => ({
   singleValue: {
@@ -37,6 +26,7 @@ function Option(props) {
       style={{
         fontWeight: props.isSelected ? 500 : 400,
         zIndex: 99999,
+        
       }}
       {...props.innerProps}
     >
@@ -54,25 +44,20 @@ function SingleValue(props) {
   );
 }
 
-
-
-
-
-
-
 const components = {
 
   Option,
   SingleValue,
 };
 
-export default function IntegrationReactSelect() {
+export default function IntegrationReactSelect(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [single, setSingle] = React.useState(null);
 
-  const handleChangeSingle = value => {
-    setSingle(value);
+  const handleChangeSingle = selectedItem => {
+    setSingle(selectedItem);
+    props.setOptions(selectedItem.value)
   };
 
   const selectStyles = {
@@ -84,6 +69,13 @@ export default function IntegrationReactSelect() {
       },
     }),
   };
+
+  React.useEffect(() => {
+    if(props.commandSelect) {
+      let foundItem = props.commandSelect.find(item => item.value === props.selectedIndex)
+      setSingle(foundItem)
+    }
+  }, [props.selectedIndex])
 
   return (
     <div className={classes.root}>
@@ -99,7 +91,7 @@ export default function IntegrationReactSelect() {
             },
           }}
           placeholder="Select..."
-          options={suggestions}
+          options={props.commandSelect}
           components={components}
           value={single}
           onChange={handleChangeSingle}

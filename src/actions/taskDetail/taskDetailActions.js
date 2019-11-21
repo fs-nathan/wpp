@@ -17,7 +17,7 @@ export const getSubTaskFail = (error) => ({
     type: types.GET_SUBTASK_FAIL,
     error: error,
 });
-// =======
+// ======= post
 export const postSubTask = (payload) => ({
     type: types.POST_SUBTASK_REQUEST,
     options: payload,
@@ -32,7 +32,7 @@ export const postSubTaskFail = (error) => ({
     type: types.POST_SUBTASK_FAIL,
     error: error,
 });
-// =====
+// ===== update
 export const updateSubTask = ({ sub_task_id, name}) => ({
     type: types.UPDATE_SUBTASK_REQUEST,
     options: {
@@ -50,7 +50,7 @@ export const updateSubTaskFail = (error) => ({
     type: types.UPDATE_SUBTASK_FAIL,
     error: error,
 });
-// =====
+// ===== delete
 export const deleteSubTask = ({sub_task_id}) => ({
     type: types.DELETE_SUBTASK_REQUEST,
     options: {
@@ -67,7 +67,23 @@ export const deleteSubTaskFail = (error) => ({
     type: types.DELETE_SUBTASK_FAIL,
     error: error,
 });
-// =====
+// ===== complete
+export const completeSubTask = ({sub_task_id}) => ({
+    type: types.POST_COMPLETE_SUBTASK_REQUEST,
+    options: {
+        sub_task_id
+    },
+});
+
+export const completeSubTaskSuccess = (payload) => ({
+    type: types.POST_COMPLETE_SUBTASK_SUCCESS,
+    payload
+});
+
+export const completeSubTaskFail = (error) => ({
+    type: types.POST_COMPLETE_SUBTASK_FAIL,
+    error: error,
+});
 
 //remind
 export const getRemind = ({ taskId }) => ({
@@ -171,4 +187,32 @@ export const deleteOfferFail = (error) => ({
     type: types.DELETE_OFFER_FAIL,
     error: error,
 });
+//Command and Decision::
+export const getCommand = ({ task_id }) => ({
+    type: types.GET_COMMAND_REQUEST,
+    options: {task_id}
+});
 
+export const getCommandSuccess = (payload) => ({
+    type: types.GET_COMMAND_SUCCESS,
+    payload
+});
+
+export const getCommandFail = (error) => ({
+    type: types.GET_COMMAND_FAIL,
+    error: error
+});
+export const createCommand = (payload) => ({
+    type: types.CREATE_COMMAND_REQUEST,
+    payload
+});
+
+export const createCommandSuccess = (payload) => ({
+    type: types.CREATE_COMMAND_SUCCESS,
+    payload
+});
+
+export const createCommandFail = (error) => ({
+    type: types.CREATE_OFFER_FAIL,
+    error: error,
+});
