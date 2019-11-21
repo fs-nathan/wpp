@@ -20,7 +20,7 @@ const Body = styled(Scrollbars)`
 `
 
 const Container = styled.div`
-  padding: 0 20px;
+  padding: 0 20px 50px 20px;
 `;
 
 const StyledListItem = styled.li`
@@ -83,7 +83,7 @@ const CustomListItem = (props) => {
           <div>
             <Text variant='body1' bold>{props.item.user_create_name}</Text>
             <ColorTypo variant='caption'>
-              <div style={{display: 'flex', alignItems: 'center'}}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Badge
                   color={props.isDemand ? 'orangelight' : 'bluelight'}
                   label={props.isDemand ? 'Chỉ đạo' : 'Quyết định'}
@@ -91,7 +91,7 @@ const CustomListItem = (props) => {
                   badge
                   component='small' >
                 </Badge>
-                <p style={{margin: '0 7px', fontSize: '0.75em', color: '#a6a6a6'}}>lúc {props.item.date_create}</p>
+                <p style={{ margin: '0 7px', fontSize: '0.75em', color: '#a6a6a6' }}>lúc {props.item.date_create}</p>
               </div>
             </ColorTypo>
           </div>
@@ -134,8 +134,12 @@ const StyledList = styled.ul`
 const ListDemand = (props) => {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClickOpen = () => {
+  const [isEditDemand, setEditDemand] = React.useState(true);
+  const [selectedContent, setSelectedContent] = React.useState("")
+  const [selectedType, setSelectedType] = React.useState(-1)
+  const handleClickOpen = item => {
+    setSelectedContent(item.content)
+    setSelectedType(item.type)
     setOpen(true);
   };
   const handleClose = () => {
@@ -161,13 +165,19 @@ const ListDemand = (props) => {
       <StyledList>
         {props.command.map((item, index) => {
           return (
-            <CustomListItem key={index} isDemand={index % 2 === 0} handleClickOpen={() => handleClickOpen()} item={item} {...props} />
+            <CustomListItem key={index} isDemand={item.type !== 0} handleClickOpen={() => handleClickOpen(item)} item={item} {...props} />
           )
         })}
       </StyledList>
 
       {/* modal chi dao quyet dinh */}
-      <DemandModal isOpen={open} handleClose={handleClose} handleOpen={handleClickOpen} />
+      <DemandModal
+        isOpen={open}
+        handleClose={handleClose}
+        handleOpen={handleClickOpen}
+        isEditDemand={isEditDemand}
+        item={{ content: selectedContent, type: selectedType }}
+      />
       <ModalDeleteConfirm
         confirmDelete={confirmDelete}
         isOpen={isOpenDelete}
