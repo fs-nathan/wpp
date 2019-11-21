@@ -337,6 +337,51 @@ function* deleteOffer(action) {
     yield put(actions.getOfferFail(error))
   }
 }
+// Media Image
+async function doGetImage({ taskId }) {
+  try {
+    const config = {
+      url: '/task/get-image?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getImage(action) {
+  try {
+    const res = yield call(doGetImage, action.options)
+    yield put(actions.getImageSuccess(res))
+  } catch (error) {
+    yield put(actions.getImageFail(error))
+  }
+}
+
+// Media File
+async function doGetFile({ taskId }) {
+  try {
+    const config = {
+      url: '/task/get-file?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getFile(action) {
+  try {
+    const res = yield call(doGetFile, action.options)
+    yield put(actions.getFileTabPartSuccess(res))
+  } catch (error) {
+    yield put(actions.getFileTabPartFail(error))
+  }
+}
 
 //Command
 async function doGetCommand({ task_id }) {
@@ -363,7 +408,6 @@ function* getCommand(action) {
 
 async function doCreateCommand(payload) {
   try {
-    console.log('payload', payload)
     const config = {
       url: 'task/create-command-decision',
       method: 'post',
@@ -380,7 +424,6 @@ function* createCommand(action) {
   try {
     const res = yield call(doCreateCommand, action.payload)
     yield put(actions.createCommandSuccess(res))
-    console.log('API:::', res)
     yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
 
     // CustomEventEmitter(DELETE_ROOM);
@@ -388,6 +431,35 @@ function* createCommand(action) {
     yield put(actions.createCommandFail(error))
   }
 }
+
+async function doUpdateCommand(payload) {
+  try {
+    console.log('payload', payload)
+    const config = {
+      url: 'task/update-command-decision',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updateCommand(action) {
+  try {
+    const res = yield call(doUpdateCommand, action.payload)
+    yield put(actions.updateCommandSuccess(res))
+    console.log('API:::', res)
+    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.updateCommandFail(error))
+  }
+}
+
 export {
   // Offer::
   getOffer,
@@ -405,9 +477,13 @@ export {
   updateSubTask,
   deleteSubTask,
   completeSubTask,
+
+  // Media Image File
+  getImage,
+  getFile,
   
   // Command and Decision::
   getCommand,
-  createCommand
-  
+  createCommand,
+  updateCommand
 }

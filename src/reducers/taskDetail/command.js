@@ -1,5 +1,8 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
+import { 
+    filterCommandItem, filterDecisionItem 
+} from '../../helpers/jobDetail/arrayHelper'
 
 // Initial state for store
 const initialState = {
@@ -21,7 +24,9 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                command: action.payload.commands
+                command: action.payload.commands,
+                decisionItems: filterDecisionItem(action.payload.commands),
+                commandItems: filterCommandItem(action.payload.commands),
             };
         case types.GET_COMMAND_FAIL:
             return {
@@ -49,7 +54,42 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
-
+        case types.UPDATE_COMMAND_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.UPDATE_COMMAND_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.UPDATE_COMMAND_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.DELETE_SUBTASK_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.DELETE_SUBTASK_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.DELETE_SUBTASK_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
         default:
             return state;
     }

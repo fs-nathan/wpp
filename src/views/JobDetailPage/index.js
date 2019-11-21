@@ -18,10 +18,10 @@ const Container = styled.div`
 function JobDetailPage(props) {
 
   useEffect(() => {
-    props.getSubTaskByTaskId("5da183cfc46d8515e03fa9e8")
-    props.getRemindByTaskId("5da1821ad219830d90402fd8")
-    props.getOfferByTaskId("5da18ce8aa75001b8060eb12")
-    props.getCommandByTaskId("5da1821ad219830d90402fd8")
+    props.getSubTaskByTaskId(props.taskId)
+    props.getRemindByTaskId(props.taskId)
+    props.getOfferByTaskId(props.taskId)
+    props.getCommandByTaskId(props.taskId)
   }, [])
 
   return (
@@ -40,7 +40,12 @@ const mapStateToProps = state => {
     remind: state.taskDetail.taskRemind.remind,
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
-    command: state.taskDetail.taskCommand.command
+    image: state.taskDetail.media.image,
+    file: state.taskDetail.media.file,
+    command: state.taskDetail.taskCommand.command,
+    commandItems: state.taskDetail.taskCommand.commandItems,
+    decisionItems: state.taskDetail.taskCommand.decisionItems,
+    taskId: state.taskDetail.commonTaskDetail.activeTaskId
   }
 }
 
@@ -49,9 +54,9 @@ const mapDispatchToProps = dispatch => {
     // sub-task
     getSubTaskByTaskId: taskId => dispatch(taskDetailAction.getSubTask({ taskId })),
     postSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.postSubTask({ task_id: taskId, name })),
-    updateSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: taskId, name})),
-    deleteSubTaskByTaskId: taskId => dispatch(taskDetailAction.deleteSubTask({sub_task_id: taskId})),
-    completeSubTaskByTaskId: taskId => dispatch(taskDetailAction.completeSubTask({sub_task_id: taskId})),
+    updateSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: taskId, name })),
+    deleteSubTaskByTaskId: taskId => dispatch(taskDetailAction.deleteSubTask({ sub_task_id: taskId })),
+    completeSubTaskByTaskId: taskId => dispatch(taskDetailAction.completeSubTask({ sub_task_id: taskId })),
     // remind
     getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({ taskId })),
     // createRemindWithTimeDetail: () => dispatch(taskDetailAction.createRemindWithTime()),
@@ -67,7 +72,7 @@ const mapDispatchToProps = dispatch => {
     // command 
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
-    
+    updateCommandByTaskId: (id, content, type) => { dispatch(taskDetailAction.updateCommand({ command_id: id, content, type })) },
   };
 };
 

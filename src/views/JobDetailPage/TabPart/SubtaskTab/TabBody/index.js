@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiDragVertical, mdiDotsVertical, mdiSend } from '@mdi/js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { List, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton, Menu, MenuItem, InputBase } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton, Menu, MenuItem, InputBase, ListItemSecondaryAction } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import SearchInput from '../../../../../components/SearchInput';
@@ -103,8 +103,7 @@ const StyledMenu = styled.div`
 
 function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
-  console.log('props sub task::', props);
-  
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -143,7 +142,7 @@ function AllSubtaskListItem(props) {
       draggableId={props.task.id}
       index={props.index}
     >
-      {(provided) => ( 
+      {(provided) => (
         <AllSubtaskListItemContainer
           innerRef={provided.innerRef}
           {...provided.draggableProps}
@@ -156,7 +155,7 @@ function AllSubtaskListItem(props) {
           {
             !isHover
               ? <Avatar style={{ width: 43.5, height: 43.5, }} src={props.task.user_create_avatar} alt='avatar' />
-              : <ButtonIcon onClick={ () => {
+              : <ButtonIcon onClick={() => {
                 props.completeSubTaskByTaskId(props.task.id)
               }}>
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
@@ -164,9 +163,9 @@ function AllSubtaskListItem(props) {
           }
           <ItemList>{props.task.name}</ItemList>
           <StyledMenu>
-          <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
-            <Icon path={mdiDotsVertical} size={1} />
-          </ButtonIcon>
+            <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
+              <Icon path={mdiDotsVertical} size={1} />
+            </ButtonIcon>
             <Menu
               anchorEl={anchorEl}
               keepMounted
@@ -279,9 +278,21 @@ const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
 
+const CustomMenu = styled(Menu)`
+  & > .MuiPaper-root {
+    box-shadow: 0px 0px 22px -7px #f5f5f5!important;
+    & > ul {
+      padding : 0
+      & > li {
+        padding : 10px;
+      }
+    }
+  }
+`
+
 const FinishedSubtaskList = (props) => {
   console.log('complete task:::', props);
-  
+
   const [data] = React.useState([1, 2, 3, 4]);
   // const [isHover, setIsHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -293,29 +304,41 @@ const FinishedSubtaskList = (props) => {
   function handleClose() {
     setAnchorEl(null);
   }
+  // bien modal delete
+  const [isOpenDel, setOpenDel] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState("")
 
+  const handleOpenModalDelete = id => {
+    setSelectedId(id)
+    setOpenDel(true)
+    setAnchorEl(null)
+  };
+  const handleCloseModalDelete = () => {
+    setOpenDel(false);
+  };
+  const confirmDelete = (id) => {
+    props.deleteSubTaskByTaskId(id)
+  }
   return (
     <List>
+
       {props.completeSubTasks.map((item, index) => {
         return (
           <ListItem key={index} style={{ paddingLeft: 30 }}>
-            <ListItemAvatar>
-              <Avatar src={avatar} alt='avatar' />
-            </ListItemAvatar>
+            <Avatar src={item.user_complete_avatar} alt='avatar' />
             <ItemList
-              primary={`Xong việc ${item.name}`}
+              primary={`${item.name}`}
               secondary={
                 <FinishedSubtaskListItemTextSecondary>
                   <Badge component='small' color='bluelight' badge size='small' label={'Hoàn thành'} />
-                  lúc 19:00 - 09/09/2019
+                  lúc {item.time_complete}
                 </FinishedSubtaskListItemTextSecondary>
               }
             />
-            <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+            <ButtonIcon onClick={handleClick} aria-haspopup="true">
               <Icon path={mdiDotsVertical} size={1} />
             </ButtonIcon>
-            <Menu
-              id="simple-menu"
+            <CustomMenu
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
@@ -325,11 +348,20 @@ const FinishedSubtaskList = (props) => {
                 horizontal: 'right',
               }}
             >
-              <MenuItem onClick={handleClose}>Xóa</MenuItem>
-            </Menu>
+              <MenuItem onClick={() => handleOpenModalDelete(item.id)}>Xóa</MenuItem>
+            </CustomMenu>
+
           </ListItem>
         );
       })}
+
+      <ModalDeleteConfirm
+        confirmDelete={confirmDelete(selectedId)}
+        isOpen={isOpenDel}
+        handleCloseModalDelete={handleCloseModalDelete}
+        handleOpenModalDelete={handleOpenModalDelete}
+        {...props}
+      />
     </List>
   );
 }
@@ -401,7 +433,7 @@ function TabBody(props) {
         }
         <AllSubtaskList {...props} />
         <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Hoàn thành</TextTitle>
-        <FinishedSubtaskList {...props}/>
+        <FinishedSubtaskList {...props} />
       </Container>
     </Body>
   )

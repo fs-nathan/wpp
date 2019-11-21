@@ -33,7 +33,7 @@ export const postSubTaskFail = (error) => ({
     error: error,
 });
 // ===== update
-export const updateSubTask = ({ sub_task_id, name}) => ({
+export const updateSubTask = ({ sub_task_id, name }) => ({
     type: types.UPDATE_SUBTASK_REQUEST,
     options: {
         sub_task_id,
@@ -51,7 +51,7 @@ export const updateSubTaskFail = (error) => ({
     error: error,
 });
 // ===== delete
-export const deleteSubTask = ({sub_task_id}) => ({
+export const deleteSubTask = ({ sub_task_id }) => ({
     type: types.DELETE_SUBTASK_REQUEST,
     options: {
         sub_task_id
@@ -68,7 +68,7 @@ export const deleteSubTaskFail = (error) => ({
     error: error,
 });
 // ===== complete
-export const completeSubTask = ({sub_task_id}) => ({
+export const completeSubTask = ({ sub_task_id }) => ({
     type: types.POST_COMPLETE_SUBTASK_REQUEST,
     options: {
         sub_task_id
@@ -121,7 +121,7 @@ export const deleteRemindSuccess = (remind_id) => ({
 export const deleteRemindFail = (error) => ({
     type: types.DELETE_REMIND_FAIL,
     error: error
-}); 
+});
 //  offer
 export const getOffer = ({ taskId }) => ({
     type: types.GET_OFFER_REQUEST,
@@ -190,7 +190,7 @@ export const deleteOfferFail = (error) => ({
 //Command and Decision::
 export const getCommand = ({ task_id }) => ({
     type: types.GET_COMMAND_REQUEST,
-    options: {task_id}
+    options: { task_id }
 });
 
 export const getCommandSuccess = (payload) => ({
@@ -212,7 +212,56 @@ export const createCommandSuccess = (payload) => ({
     payload
 });
 
+// Media : Image
+export const getImage = ({ taskId }) => ({
+    type: types.GET_IMAGE_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getImageSuccess = (payload) => ({
+    type: types.GET_IMAGE_TABPART_SUCCESS,
+    payload
+});
+
+export const getImageFail = (error) => ({
+    type: types.GET_IMAGE_TABPART_FAIL,
+    error: error,
+});
+// : File
+export const getFileTabPart = ({ taskId }) => ({
+    type: types.GET_FILE_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getFileTabPartSuccess = (payload) => ({
+    type: types.GET_FILE_TABPART_SUCCESS,
+    payload
+});
+
+export const getFileTabPartFail = (error) => ({
+    type: types.GET_FILE_TABPART_FAIL,
+    error: error,
+});
 export const createCommandFail = (error) => ({
     type: types.CREATE_OFFER_FAIL,
+    error: error,
+});
+
+export const updateCommand = (payload) => ({
+    type: types.UPDATE_COMMAND_REQUEST,
+    payload
+});
+
+export const updateCommandSuccess = (payload) => ({
+    type: types.UPDATE_COMMAND_SUCCESS,
+    payload
+});
+
+export const updateCommandFail = (error) => ({
+    type: types.UPDATE_COMMAND_FAIL,
     error: error,
 });

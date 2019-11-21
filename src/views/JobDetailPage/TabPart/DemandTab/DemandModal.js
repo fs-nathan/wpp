@@ -83,17 +83,17 @@ const commandSelect = [
 ]
 
 const DemandModal = (props) => {
-  console.log('demand::::', props.item);
 
-  const [content, setContent] = React.useState("")
-  const [typeId, setTypeID] = React.useState(-1)
+  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "",content: "", type: -1 })
 
   React.useEffect(() => {
-    setContent(props.item.content)
-    setTypeID(props.item.type)
+    setTempSelectedItem(props.item)
   }, [props.item])
 
-  
+  const setParams = (nameParam, value) => {
+    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
+  }
+
   return (
     <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
       <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
@@ -101,7 +101,11 @@ const DemandModal = (props) => {
         </DialogTitle>
       <DialogContent dividers>
         <TexTitle >Chọn loại</TexTitle>
-        <OutlinedInputSelect selectedIndex={typeId} setOptions={typeId => setTypeID(typeId)} commandSelect={commandSelect} />
+        <OutlinedInputSelect
+          selectedIndex={tempSelectedItem.type}
+          setOptions={typeId => setParams("type", typeId)}
+          commandSelect={commandSelect}
+        />
         {/* <Text 
                 component="span"
                 id="outlined-full-width"
@@ -123,8 +127,8 @@ const DemandModal = (props) => {
           margin="normal"
           placeholder="Nhập nội dung"
           variant="outlined"
-          value={content}
-          onChange={e => setContent(e.target.value)}
+          value={tempSelectedItem.content}
+          onChange={e => setParams("content", e.target.value)}
         />
       </DialogContent>
       <DialogActions>
@@ -133,8 +137,8 @@ const DemandModal = (props) => {
             autoFocus
             onClick={() => {
               props.handleClose()
-              props.confirmCreateCommand(content, typeId)
-              setContent('')
+              props.confirmUpdateCommand(tempSelectedItem)
+              setParams("content", '')
             }}
             color="primary">
             Chỉnh sửa
@@ -144,8 +148,8 @@ const DemandModal = (props) => {
             autoFocus
             onClick={() => {
               props.handleClose()
-              props.confirmCreateCommand(content, typeId)
-              setContent('')
+              props.confirmCreateCommand(tempSelectedItem)
+              setParams("content", '')
             }}
             color="primary">
             Tạo mới
