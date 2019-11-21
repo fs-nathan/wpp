@@ -216,3 +216,18 @@ export const createCommandFail = (error) => ({
     type: types.CREATE_OFFER_FAIL,
     error: error,
 });
+
+export const updateCommand = (payload) => ({
+    type: types.UPDATE_COMMAND_REQUEST,
+    payload
+});
+
+export const updateCommandSuccess = (payload) => ({
+    type: types.UPDATE_COMMAND_SUCCESS,
+    payload
+});
+
+export const updateCommandFail = (error) => ({
+    type: types.UPDATE_COMMAND_FAIL,
+    error: error,
+});

@@ -75,6 +75,7 @@ const CustomListItem = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   }
+
   return (
     <React.Fragment>
       <StyledListItem>
@@ -113,10 +114,8 @@ const CustomListItem = (props) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={() => {
-          props.handleClickOpen()
-        }}>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+        <MenuItem onClick={() => { props.handleClickOpen() }}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={props.handleOpenModalDelete}>Xóa</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -132,15 +131,13 @@ const StyledList = styled.ul`
 `;
 
 const ListDemand = (props) => {
-  const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [isEditDemand, setEditDemand] = React.useState(true);
-  const [selectedContent, setSelectedContent] = React.useState("")
-  const [selectedType, setSelectedType] = React.useState(-1)
-  const handleClickOpen = item => {
-    setSelectedContent(item.content)
-    setSelectedType(item.type)
-    setOpen(true);
+  const [open, setOpen] = React.useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [isEditDemand, setEditDemand] = React.useState(true)
+  const [selectedItem, setSelectedItem] = React.useState({ content: "", type: -1 })
+  const handleClickEditItem = item => {
+    setSelectedItem(item)
+    setOpen(true)
   };
   const handleClose = () => {
     setOpen(false);
@@ -156,6 +153,10 @@ const ListDemand = (props) => {
   const confirmDelete = () => {
     // props.deleteRemindWByRemindId(props.item.id)
   }
+  const confirmUpdateCommand = ({ id, content, type }) => {
+    props.updateCommandByTaskId(id, content, type)
+  }
+
   return (
     <React.Fragment>
       <SearchInput
@@ -163,9 +164,16 @@ const ListDemand = (props) => {
         placeholder="Nhập từ khóa"
       />
       <StyledList>
-        {props.command.map((item, index) => {
+        {props.activeArr.map((item, index) => {
           return (
-            <CustomListItem key={index} isDemand={item.type !== 0} handleClickOpen={() => handleClickOpen(item)} item={item} {...props} />
+            <CustomListItem
+              key={index}
+              isDemand={item.type !== 0}
+              handleClickOpen={() => handleClickEditItem(item)}
+              handleOpenModalDelete={() => handleOpenModalDelete(item)}
+              item={item}
+              {...props}
+            />
           )
         })}
       </StyledList>
@@ -174,9 +182,10 @@ const ListDemand = (props) => {
       <DemandModal
         isOpen={open}
         handleClose={handleClose}
-        handleOpen={handleClickOpen}
+        // handleOpen={handleClickOpen}
         isEditDemand={isEditDemand}
-        item={{ content: selectedContent, type: selectedType }}
+        item={selectedItem}
+        confirmUpdateCommand={confirmUpdateCommand}
       />
       <ModalDeleteConfirm
         confirmDelete={confirmDelete}
@@ -206,27 +215,33 @@ function TabBody(props) {
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
           >
-            {value === 0 ? <ColorTypo bold>Tất cả (4)</ColorTypo> : <ColorTypo color='gray'>Tất cả (4)</ColorTypo>}
+            {value === 0
+              ? <ColorTypo bold>Tất cả ({props.command.length})</ColorTypo>
+              : <ColorTypo color='gray'>Tất cả ({props.command.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 1)}
           >
-            {value === 1 ? <ColorTypo bold>Chỉ đạo (2)</ColorTypo> : <ColorTypo color='gray'>Chỉ đạo (2)</ColorTypo>}
+            {value === 1
+              ? <ColorTypo bold>Chỉ đạo ({props.commandItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>Chỉ đạo ({props.commandItems.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 2)}
           >
-            {value === 2 ? <ColorTypo bold>Quyết định (2)</ColorTypo> : <ColorTypo color='gray'>Quyết định (2)</ColorTypo>}
+            {value === 2
+              ? <ColorTypo bold>Quyết định ({props.decisionItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>Quyết định ({props.decisionItems.length})</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
-          <ListDemand {...props} />
+          <ListDemand {...props} activeArr={props.command}/>
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          {null}
+          <ListDemand {...props} activeArr={props.commandItems}/>
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          {null}
+          <ListDemand {...props} activeArr={props.decisionItems}/>
         </Collapse>
       </Container>
     </Body>
