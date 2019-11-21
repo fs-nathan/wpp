@@ -21,6 +21,8 @@ function JobDetailPage(props) {
     props.getSubTaskByTaskId("5da183cfc46d8515e03fa9e8")
     props.getRemindByTaskId("5da1821ad219830d90402fd8")
     props.getOfferByTaskId("5da18ce8aa75001b8060eb12")
+    // props.getImageByTaskId("")
+    // props.getFileByTaskId("")
   }, [])
   
   return (
@@ -39,6 +41,8 @@ const mapStateToProps = state => {
     remind: state.taskDetail.taskRemind.remind,
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
+    image: state.taskDetail.media.image,
+    file: state.taskDetail.media.file,
   }
 }
 

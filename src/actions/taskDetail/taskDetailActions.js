@@ -188,3 +188,37 @@ export const deleteOfferFail = (error) => ({
     error: error,
 });
 
+// Media : Image
+export const getImage = ({ taskId }) => ({
+    type: types.GET_IMAGE_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getImageSuccess = (payload) => ({
+    type: types.GET_IMAGE_TABPART_SUCCESS,
+    payload
+});
+
+export const getImageFail = (error) => ({
+    type: types.GET_IMAGE_TABPART_FAIL,
+    error: error,
+});
+// : File
+export const getFileTabPart = ({ taskId }) => ({
+    type: types.GET_FILE_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getFileTabPartSuccess = (payload) => ({
+    type: types.GET_FILE_TABPART_SUCCESS,
+    payload
+});
+
+export const getFileTabPartFail = (error) => ({
+    type: types.GET_FILE_TABPART_FAIL,
+    error: error,
+});
