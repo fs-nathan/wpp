@@ -35,6 +35,8 @@ import taskOffer from './taskDetail/offer';
 import taskRemind from './taskDetail/remind'
 import subTask from './taskDetail/subTask';
 import media from './taskDetail/media'
+import taskCommand from './taskDetail/command';
+import commonTaskDetail from './taskDetail/common';
 
 const rootReducer = combineReducers({
   authentications,
@@ -44,6 +46,8 @@ const rootReducer = combineReducers({
     taskRemind,
     subTask,
     media,
+    taskCommand,
+    commonTaskDetail
   }),
   room: combineReducers({
     listRoom,

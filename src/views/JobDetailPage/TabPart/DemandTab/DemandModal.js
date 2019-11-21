@@ -49,6 +49,7 @@ const Text = styled(TextField)`
   }
 `
 
+
 const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
@@ -76,8 +77,22 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
+const commandSelect = [
+  { label: 'Chỉ đạo', value: 1 },
+  { label: 'Quyết định', value: 0 }
+]
+
 const DemandModal = (props) => {
 
+  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "",content: "", type: -1 })
+
+  React.useEffect(() => {
+    setTempSelectedItem(props.item)
+  }, [props.item])
+
+  const setParams = (nameParam, value) => {
+    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
+  }
 
   return (
     <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
@@ -86,7 +101,11 @@ const DemandModal = (props) => {
         </DialogTitle>
       <DialogContent dividers>
         <TexTitle >Chọn loại</TexTitle>
-        <OutlinedInputSelect />
+        <OutlinedInputSelect
+          selectedIndex={tempSelectedItem.type}
+          setOptions={typeId => setParams("type", typeId)}
+          commandSelect={commandSelect}
+        />
         {/* <Text 
                 component="span"
                 id="outlined-full-width"
@@ -99,22 +118,43 @@ const DemandModal = (props) => {
                 }}
                 variant="outlined"
             /> */}
-        <Text 
+        <Text
           id="outlined-multiline-static"
           label="Nội dung"
           fullWidth
           multiline
           rows="7"
-          defaultValue=""
           margin="normal"
           placeholder="Nhập nội dung"
           variant="outlined"
+          value={tempSelectedItem.content}
+          onChange={e => setParams("content", e.target.value)}
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={props.handleClose} color="primary">
-          Tạo mới
+        {(props.isEditDemand) ?
+          <Button
+            autoFocus
+            onClick={() => {
+              props.handleClose()
+              props.confirmUpdateCommand(tempSelectedItem)
+              setParams("content", '')
+            }}
+            color="primary">
+            Chỉnh sửa
           </Button>
+          :
+          <Button
+            autoFocus
+            onClick={() => {
+              props.handleClose()
+              props.confirmCreateCommand(tempSelectedItem)
+              setParams("content", '')
+            }}
+            color="primary">
+            Tạo mới
+          </Button>
+        }
       </DialogActions>
     </Dialog>
 

@@ -120,7 +120,7 @@ const ApprovedBox = (props) => {
               <Button variant="outlined" size="small" >Từ chối</Button>
               <span />
             </StyledTitleBox>
-            <ApproveModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen}  />
+            <ApproveModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
           </ApprovedContainer>
         </React.Fragment>
       )}
@@ -288,7 +288,9 @@ function TabBody(props) {
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
           >
-            {value === 0 ? <ColorTypo bold>Tất cả (4)</ColorTypo> : <ColorTypo color='gray'>Tất cả (4)</ColorTypo>}
+            {value === 0 
+              ? <ColorTypo bold>Tất cả ({4})</ColorTypo>
+              : <ColorTypo color='gray'>Tất cả ({4})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 1)}

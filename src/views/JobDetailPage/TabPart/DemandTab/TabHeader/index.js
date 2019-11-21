@@ -1,8 +1,8 @@
 import React from 'react';
-import { IconButton} from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiChevronLeft  , mdiPlus } from '@mdi/js';
+import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import DemandModal from '../DemandModal'
 
@@ -30,8 +30,8 @@ const ButtonIcon = styled(IconButton)`
 `
 
 
-function TabHeader({ setShow }) {
-  const [open, setOpen] = React.useState(false);
+function TabHeader(props) {
+  const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,17 +39,29 @@ function TabHeader({ setShow }) {
   const handleClose = () => {
     setOpen(false);
   };
+  const confirmCreateCommand = ({content, typeId}) => {
+    props.createCommandByTaskId("5da1821ad219830d90402fd8", content, typeId)
+  }
   return (
     <Container>
-      <ButtonIcon onClick={() => setShow(0)}>
-        <Icon path={mdiChevronLeft } size={1}/>
+      <ButtonIcon
+        onClick={() => { props.setShow(0) }}
+      >
+        <Icon path={mdiChevronLeft} size={1} />
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Chỉ đạo - Quyết định</ColorTypo>
-      <ButtonIcon onClick={handleClose,handleClickOpen}>
-        <Icon path={mdiPlus} size={1}/>
+      <ButtonIcon onClick={handleClose, handleClickOpen}>
+        <Icon path={mdiPlus} size={1} />
       </ButtonIcon>
       {/* modal chi dao quyet dinh */}
-      <DemandModal isOpen={open} handleClose={handleClose} handleOpen={handleClickOpen}/>
+      <DemandModal
+        isOpen={open}
+        handleClose={handleClose}
+        handleOpen={handleClickOpen}
+        confirmCreateCommand={confirmCreateCommand}
+        item={{content: "", type: -1}}
+        {...props}
+      />
     </Container>
   );
 }

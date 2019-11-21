@@ -28,7 +28,7 @@ function TabPart(props) {
       <MediaTab show={show} setShow={setShow} />
       <LocationTab show={show} setShow={setShow} />
       <OfferTab show={show} setShow={setShow} {...props}/>
-      <DemandTab show={show} setShow={setShow} />
+      <DemandTab show={show} setShow={setShow} {...props}/>
       <MemberTab show={show} setShow={setShow} />
     </Container>
   )
