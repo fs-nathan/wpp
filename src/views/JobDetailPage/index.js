@@ -40,6 +40,8 @@ const mapStateToProps = state => {
     remind: state.taskDetail.taskRemind.remind,
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
+    image: state.taskDetail.media.image,
+    file: state.taskDetail.media.file,
     command: state.taskDetail.taskCommand.command,
     commandItems: state.taskDetail.taskCommand.commandItems,
     decisionItems: state.taskDetail.taskCommand.decisionItems,

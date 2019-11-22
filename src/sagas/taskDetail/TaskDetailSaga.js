@@ -337,6 +337,51 @@ function* deleteOffer(action) {
     yield put(actions.getOfferFail(error))
   }
 }
+// Media Image
+async function doGetImage({ taskId }) {
+  try {
+    const config = {
+      url: '/task/get-image?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getImage(action) {
+  try {
+    const res = yield call(doGetImage, action.options)
+    yield put(actions.getImageSuccess(res))
+  } catch (error) {
+    yield put(actions.getImageFail(error))
+  }
+}
+
+// Media File
+async function doGetFile({ taskId }) {
+  try {
+    const config = {
+      url: '/task/get-file?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getFile(action) {
+  try {
+    const res = yield call(doGetFile, action.options)
+    yield put(actions.getFileTabPartSuccess(res))
+  } catch (error) {
+    yield put(actions.getFileTabPartFail(error))
+  }
+}
 
 //Command
 async function doGetCommand({ task_id }) {
@@ -432,6 +477,10 @@ export {
   updateSubTask,
   deleteSubTask,
   completeSubTask,
+
+  // Media Image File
+  getImage,
+  getFile,
   
   // Command and Decision::
   getCommand,
