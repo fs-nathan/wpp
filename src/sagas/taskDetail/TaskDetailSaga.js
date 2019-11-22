@@ -382,6 +382,29 @@ function* getFile(action) {
     yield put(actions.getFileTabPartFail(error))
   }
 }
+// Media Link
+async function doGetLink({ taskId }) {
+  try {
+    const config = {
+      url: '/task/get-link?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getLink(action) {
+  try {
+    const res = yield call(doGetLink, action.options)
+    yield put(actions.getLinkTabPartSuccess(res))
+  } catch (error) {
+    yield put(actions.getLinkTabPartFail(error))
+  }
+}
+
 
 //Command
 async function doGetCommand({ task_id }) {
@@ -481,6 +504,7 @@ export {
   // Media Image File
   getImage,
   getFile,
+  getLink,
   
   // Command and Decision::
   getCommand,

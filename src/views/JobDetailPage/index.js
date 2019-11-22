@@ -25,6 +25,8 @@ function JobDetailPage(props) {
     props.getOfferByTaskId(props.taskId)
     props.getCommandByTaskId(props.taskId)
     props.getImageByTaskId(props.taskId)
+    props.getFileByTaskId(props.taskId)
+    props.getLinkByTaskId(props.taskId)
   }, [])
 
   return (
@@ -39,7 +41,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('image::::', state.taskDetail.media.image)
+  console.log('link::::', state.taskDetail.media.links)
   return {
     offer: state.taskDetail.taskOffer.offer,
     remind: state.taskDetail.taskRemind.remind,
@@ -47,6 +49,7 @@ const mapStateToProps = state => {
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
     image: state.taskDetail.media.image,
     file: state.taskDetail.media.file,
+    link: state.taskDetail.media.links,
     command: state.taskDetail.taskCommand.command,
     commandItems: state.taskDetail.taskCommand.commandItems,
     decisionItems: state.taskDetail.taskCommand.decisionItems,
@@ -81,6 +84,8 @@ const mapDispatchToProps = dispatch => {
 
     // Media Image File Link
     getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
+    getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
+    getLinkByTaskId: taskId => dispatch(taskDetailAction.getLinkTabPart({ taskId })),
   };
 };
 

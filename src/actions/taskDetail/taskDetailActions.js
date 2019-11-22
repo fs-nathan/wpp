@@ -246,6 +246,25 @@ export const getFileTabPartFail = (error) => ({
     type: types.GET_FILE_TABPART_FAIL,
     error: error,
 });
+// : Link
+export const getLinkTabPart = ({ taskId }) => ({
+    type: types.GET_LINK_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getLinkTabPartSuccess = (payload) => ({
+    type: types.GET_LINK_TABPART_SUCCESS,
+    payload
+});
+
+export const getLinkTabPartFail = (error) => ({
+    type: types.GET_LINK_TABPART_FAIL,
+    error: error,
+});
+
+
 export const createCommandFail = (error) => ({
     type: types.CREATE_OFFER_FAIL,
     error: error,
