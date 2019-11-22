@@ -22,6 +22,7 @@ function JobDetailPage(props) {
     props.getRemindByTaskId(props.taskId)
     props.getOfferByTaskId(props.taskId)
     props.getCommandByTaskId(props.taskId)
+    props.getImageByTaskId(props.taskId)
   }, [])
 
   return (
@@ -34,7 +35,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('commanddddd', state.taskDetail.taskCommand.command)
+  // console.log('image::::', state.taskDetail.media.image)
   return {
     offer: state.taskDetail.taskOffer.offer,
     remind: state.taskDetail.taskRemind.remind,
@@ -73,6 +74,9 @@ const mapDispatchToProps = dispatch => {
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
     updateCommandByTaskId: (id, content, type) => { dispatch(taskDetailAction.updateCommand({ command_id: id, content, type })) },
+
+    // Media Image File Link
+    getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({taskId})),
   };
 };
 

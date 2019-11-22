@@ -42,6 +42,7 @@ const ListItemTab = styled(ListItem)`
 `;
 
 const StyledList = styled(List)`
+margin-bottom: 20px;
   & > * {
     padding: 20px;
     & > div {
@@ -65,7 +66,6 @@ const ContentText = styled(ColorTypo)`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  
 `;
 const ButtonText = styled.button`
   background: none;

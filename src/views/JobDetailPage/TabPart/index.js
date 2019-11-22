@@ -25,7 +25,7 @@ function TabPart(props) {
       <ProgressTab show={show} setShow={setShow} />
       <SubtaskTab show={show} setShow={setShow} {...props} />
       <RemindTab show={show} setShow={setShow} {...props}/>
-      <MediaTab show={show} setShow={setShow} />
+      <MediaTab show={show} setShow={setShow} {...props}/>
       <LocationTab show={show} setShow={setShow} />
       <OfferTab show={show} setShow={setShow} {...props}/>
       <DemandTab show={show} setShow={setShow} {...props}/>
