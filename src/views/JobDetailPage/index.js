@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 
 function JobDetailPage(props) {
-
+  
   useEffect(() => {
     props.getSubTaskByTaskId(props.taskId)
     props.getRemindByTaskId(props.taskId)
