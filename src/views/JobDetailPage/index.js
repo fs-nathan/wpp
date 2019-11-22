@@ -6,6 +6,9 @@ import TabPart from './TabPart';
 import { connect } from 'react-redux';
 import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions'
 
+export const WrapperContext = React.createContext(null)
+const Wrapper = WrapperContext.Provider
+
 const Container = styled.div`
   height: 100%;
   display: grid;
@@ -16,7 +19,6 @@ const Container = styled.div`
 `;
 
 function JobDetailPage(props) {
-
   useEffect(() => {
     props.getSubTaskByTaskId(props.taskId)
     props.getRemindByTaskId(props.taskId)
@@ -26,11 +28,13 @@ function JobDetailPage(props) {
   }, [])
 
   return (
-    <Container>
-      <ListPart {...props} />
-      <ChatPart {...props} />
-      <TabPart  {...props} />
-    </Container>
+    <Wrapper value={{ ...props }}>
+      <Container>
+        <ListPart {...props} />
+        <ChatPart {...props} />
+        <TabPart {...props} />
+      </Container>
+    </Wrapper>
   )
 }
 
@@ -76,7 +80,7 @@ const mapDispatchToProps = dispatch => {
     updateCommandByTaskId: (id, content, type) => { dispatch(taskDetailAction.updateCommand({ command_id: id, content, type })) },
 
     // Media Image File Link
-    getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({taskId})),
+    getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
   };
 };
 

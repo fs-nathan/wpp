@@ -108,19 +108,19 @@ const MediaBox = (props) => {
     <GridList cellHeight={60} cols={5}>
       {props.image.images.map((image, key) => {
         return (
-          <>
+          <div>
             <GridListTile key={key} cols={5} style={{ height: 'auto' }}>
-              <SubHeader component='span'>{image.date_create}</SubHeader>
+              <SubHeader component='div'>{image.date_create}</SubHeader>
             </GridListTile>
             {image.images.map((item, idx) => {
               return (
                 <ImageMedia key={idx}>
-                  <Image src={avatar} alt='avatar' />
+                  <Image src={item.url} alt='avatar' />
                   <MenuListItem />
                 </ImageMedia>
               )
             })}
-          </>
+          </div>
         );
       })}
       {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>

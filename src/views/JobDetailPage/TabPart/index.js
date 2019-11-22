@@ -17,7 +17,7 @@ const Container = styled.div`
 
 function TabPart(props) {
 
-  const [show, setShow] = React.useState(0);
+  const [show, setShow] = React.useState(0)
 
   return (
     <Container>

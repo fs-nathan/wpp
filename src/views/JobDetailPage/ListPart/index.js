@@ -4,6 +4,7 @@ import ListHeader from './ListHeader';
 import ListBanner from './ListBanner';
 import ListBody from './ListBody';
 import ListProject from '../ListPart/ListProject'
+import { WrapperContext } from '../index'
 
 const Container = styled.div`
   grid-area: list;
@@ -31,15 +32,16 @@ const WrapTask = styled.div`
     "body";
 `
 function ListTask(props) {
+  const value = React.useContext(WrapperContext)
+  console.log("QUANNNNN", value.command)
   return (
-
     <WrapListTask {...props}>
       <WrapTask>
         <Header>
           <ListHeader {...props} />
           <ListBanner />
         </Header>
-      <ListBody />
+        <ListBody />
       </WrapTask>
 
     </WrapListTask>
