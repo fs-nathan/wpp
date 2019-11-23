@@ -26,12 +26,12 @@ const Header = styled(TabHeader)`
   background-color: #fff;
   z-index: 999;
 `
-function MediaTab({ show, setShow }) {
+function MediaTab(props) {
   return (
-    <Slide in={show === 4} direction='left' mountOnEnter unmountOnExit>
+    <Slide in={props.show === 4} direction='left' mountOnEnter unmountOnExit>
       <Container>
-        <Header setShow={setShow} />
-        <TabBody />
+        <Header setShow={props.setShow} />
+        <TabBody {...props}/>
       </Container>
     </Slide>
   )

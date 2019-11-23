@@ -125,7 +125,7 @@ function MessageParent(props) {
             </WrapMessage>
             <WrapFunctionBar className="wrap-function-message">
                 <FunctionButton>
-                    <Icon path={mdiShare} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
+                    <Icon path={mdiShare} size={1} color={'rgba(0, 0, 0, 0.54)'} />
                 </FunctionButton>
                 <FunctionButton>
                     <MaterialIcon.ThumbUp size="small" />

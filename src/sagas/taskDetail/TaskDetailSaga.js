@@ -43,7 +43,7 @@ function* postSubTask(action) {
   try {
     const res = yield call(doPostSubTask, action.options)
     yield put(actions.postSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
+    yield put(actions.getSubTask({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.postSubTaskFail(error))
   }
@@ -69,7 +69,7 @@ function* updateSubTask(action) {
   try {
     const res = yield call(doUpdateSubTask, action.options)
     yield put(actions.updateSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
+    yield put(actions.getSubTask({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.updateSubTaskFail(error))
   }
@@ -95,7 +95,7 @@ function* deleteSubTask(action) {
   try {
     const res = yield call(doDeleteSubTask, action.options)
     yield put(actions.deleteSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
+    yield put(actions.getSubTask({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error))
   }
@@ -119,7 +119,7 @@ function* completeSubTask(action) {
   try {
     const res = yield call(doCompleteSubTask, action.options)
     yield put(actions.completeSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
+    yield put(actions.getSubTask({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.completeSubTaskFail(error))
   }
@@ -382,6 +382,29 @@ function* getFile(action) {
     yield put(actions.getFileTabPartFail(error))
   }
 }
+// Media Link
+async function doGetLink({ taskId }) {
+  try {
+    const config = {
+      url: '/task/get-link?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getLink(action) {
+  try {
+    const res = yield call(doGetLink, action.options)
+    yield put(actions.getLinkTabPartSuccess(res))
+  } catch (error) {
+    yield put(actions.getLinkTabPartFail(error))
+  }
+}
+
 
 //Command
 async function doGetCommand({ task_id }) {
@@ -481,6 +504,7 @@ export {
   // Media Image File
   getImage,
   getFile,
+  getLink,
   
   // Command and Decision::
   getCommand,
