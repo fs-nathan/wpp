@@ -1,7 +1,8 @@
 import React from "react";
 import HomePage from '../views/HomePage';
-import ProjectPage from '../views/ProjectPage';
-import UserPage from '../views/UserPage';
+import ProjectGroupPage from '../views/ProjectGroupPage';
+import DepartmentPage from '../views/DepartmentPage';
+import MemberPage from '../views/MemberPage';
 import ReportPage from '../views/ReportPage';
 import DocumentPage from '../views/DocumentPage';
 import JobPage from '../views/JobPage';
@@ -17,11 +18,15 @@ const routes = [
   },
   {
     path: "/projects",
-    component: () => <ProjectPage />,
+    component: () => <ProjectGroupPage />,
   },
   {
     path: "/departments",
-    component: () => <UserPage />,
+    component: () => <DepartmentPage />,
+  },
+  {
+    path: "/members",
+    component: () => <MemberPage />,
   },
   {
     path: "/bao-cao",

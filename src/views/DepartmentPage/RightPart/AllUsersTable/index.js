@@ -7,7 +7,7 @@ import {
   mdiAccountPlus,
   mdiDotsVertical,
 } from '@mdi/js';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { listRoom } from '../../../../actions/room/listRoom';
 import { sortUser } from '../../../../actions/user/sortUser';
 import { listUserOfGroup } from '../../../../actions/user/listUserOfGroup';
@@ -136,7 +136,6 @@ function AllUsersTable({
   doBanUserFromGroup, 
 }) {
 
-  const location = useLocation();
   const history = useHistory();
 
   const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
@@ -192,7 +191,7 @@ function AllUsersTable({
             },
             row: {
               id: 'id',
-              onClick: (row) => history.push(`${location.pathname}/members/${get(row, 'id')}`),
+              onClick: (row) => history.push(`/members/${get(row, 'id')}`),
             },
             draggable: {
               bool: true,

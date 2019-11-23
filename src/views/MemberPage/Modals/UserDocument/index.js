@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import CustomModal from '../../../../components/CustomModal';
 import CustomAvatar from '../../../../components/CustomAvatar';
-import _ from 'lodash';
+import { get } from 'lodash';
 
 function UserDocument({ open, setOpen, files }) {
 
@@ -16,13 +16,13 @@ function UserDocument({ open, setOpen, files }) {
     >
       <List>
         {files.map(file => (
-          <ListItem button key={_.get(file, 'id', '')} component='a' href={_.get(file, 'url', '/')} target='_blank'>
+          <ListItem button key={get(file, 'id', '')} component='a' href={get(file, 'url', '/')} target='_blank'>
             <ListItemAvatar>
               <CustomAvatar alt='avatar' />
             </ListItemAvatar>
             <ListItemText
-              primary={_.get(file, 'name', '')}
-              secondary={`${_.get(file, 'size', 0)} bytes`}
+              primary={get(file, 'name', '')}
+              secondary={`${get(file, 'size', 0)} bytes`}
             />
           </ListItem>
         ))}

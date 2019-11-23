@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocation, useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { mdiChevronLeft } from '@mdi/js';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import SearchInput from '../../../../components/SearchInput';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import { StyledList, StyledListItem } from '../../../../components/CustomList';
-import { mdiChevronLeft } from '@mdi/js';
 import CustomListItem from './CustomListItem';
 import { listUserOfGroup } from '../../../../actions/user/listUserOfGroup';
 import { connect } from 'react-redux';
@@ -43,9 +43,7 @@ function UserList({ listUserOfGroup, sortUser, doSortUser, }) {
   const { loading: sortUserLoading, error: sortUserError } = sortUser;
   const loading = listUserOfGroupLoading || sortUserLoading;
   const error = listUserOfGroupError || sortUserError;
-  const location = useLocation();
   const history = useHistory();
-  const { userId } = useParams();
   const [searchPatern, setSearchPatern] = React.useState('');
 
   function onDragEnd(result) {
@@ -62,19 +60,19 @@ function UserList({ listUserOfGroup, sortUser, doSortUser, }) {
     });
   }
 
+  function handleLink(userId) {
+    history.push(`/members/${userId}`);
+  }
+
   return (
     <>
     {error !== null && <ErrorBox />}
     {error === null && (
       <LeftSideContainer
-        leftAction={{
-          iconPath: mdiChevronLeft,
-          onClick: () => history.push(`${location.pathname.replace(`/members/${userId}`, '')}`),
-        }}
         title='Danh sách thành viên'
         loading={{
           bool: loading,
-          components: () => <LoadingBox />
+          component: () => <LoadingBox />
         }}
       >
         <Banner>
@@ -103,7 +101,7 @@ function UserList({ listUserOfGroup, sortUser, doSortUser, }) {
                     {users.map((user, index) => {
                       if (get(user, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()))
                         return (
-                          <CustomListItem key={index} user={user} index={index} />  
+                          <CustomListItem key={index} user={user} index={index} handleLink={handleLink} />  
                         );
                       else 
                         return null;

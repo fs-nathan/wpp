@@ -15,12 +15,12 @@ import UpdateUserModal from '../../Modals/UpdateUser';
 import { connect } from 'react-redux';
 import { detailUser } from '../../../../actions/user/detailUser';
 import { uploadDocumentsUser } from '../../../../actions/user/uploadDocumentsUser';
-import _ from 'lodash';
+import { get } from 'lodash';
 import Icon from '@mdi/react';
 import {
   mdiFullscreenExit,
 } from '@mdi/js';
-import { Context as UserPageContext } from '../../index';
+import { Context as MemberPageContext } from '../../index';
 
 const Container = styled.div`
   min-height: 100%;
@@ -120,7 +120,7 @@ const SideList = styled(List)`
 
 function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expand, handleExpand }) {
 
-  const { setUserId } = React.useContext(UserPageContext);
+  const { setUserId } = React.useContext(MemberPageContext);
   const { t } = useTranslation();
   const [openDocumentsModal, setOpenDocumentsModal] = React.useState(false);
   const [openUpdateModal, setOpenUpdateModal] = React.useState(false);
@@ -145,10 +145,10 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
         <Container>
           <MainBox>
             <MainHeader>
-              <CustomAvatar style={{ width: 60, height: 60, }} src={_.get(user, 'avatar')} alt='avatar' />
+              <CustomAvatar style={{ width: 60, height: 60, }} src={get(user, 'avatar')} alt='avatar' />
               <div>
-                <ColorTypo color='green' bold variant='h6'>{_.get(user, 'name', '')}</ColorTypo>
-                <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {new Date(_.get(user, 'date_join', '')).toLocaleDateString()}</ColorTypo>
+                <ColorTypo color='green' bold variant='h6'>{get(user, 'name', '')}</ColorTypo>
+                <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {new Date(get(user, 'date_join', '')).toLocaleDateString()}</ColorTypo>
               </div>
               <PillButton 
                 size='medium'
@@ -160,23 +160,23 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
             <MainList>
               <StyledListItem>
                 <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.room_name')}:</ColorTypo>
-                <ColorTypo bold>{_.get(user, 'room_name', '')}</ColorTypo>
+                <ColorTypo bold>{get(user, 'room_name', '')}</ColorTypo>
               </StyledListItem>
               <StyledListItem>
                 <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.position_name')}:</ColorTypo>
-                <ColorTypo bold>{_.get(user, 'position_name', '')}</ColorTypo>
+                <ColorTypo bold>{get(user, 'position_name', '')}</ColorTypo>
               </StyledListItem>
               <StyledListItem>
                 <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.level_name')}:</ColorTypo>
-                <ColorTypo bold>{_.get(user, 'level_name', '')}</ColorTypo>
+                <ColorTypo bold>{get(user, 'level_name', '')}</ColorTypo>
               </StyledListItem>
               <StyledListItem>
                 <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.major_name')}:</ColorTypo>
-                <ColorTypo bold>{_.get(user, 'major_name', '')}</ColorTypo>
+                <ColorTypo bold>{get(user, 'major_name', '')}</ColorTypo>
               </StyledListItem>
               <StyledListItem>
                 <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.description')}:</ColorTypo>
-                <ColorTextField value={_.get(user, 'description', '')} />
+                <ColorTextField value={get(user, 'description', '')} />
               </StyledListItem>
             </MainList>
             <MainFooter>
@@ -218,7 +218,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
                     <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.name')}</ColorTypo>
                   }
                   secondary={
-                    <ColorTypo component='span' bold>{_.get(user, 'name', '')}</ColorTypo>
+                    <ColorTypo component='span' bold>{get(user, 'name', '')}</ColorTypo>
                   }
                 />
               </StyledListItem>
@@ -228,7 +228,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
                     <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.birthday')}</ColorTypo>
                   }
                   secondary={
-                    <ColorTypo component='span' bold>{new Date(_.get(user, 'birthday', '')).toLocaleDateString()}</ColorTypo>
+                    <ColorTypo component='span' bold>{new Date(get(user, 'birthday', '')).toLocaleDateString()}</ColorTypo>
                   }
                 />
               </StyledListItem>
@@ -238,7 +238,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
                     <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.gender')}</ColorTypo>
                   }
                   secondary={
-                    <ColorTypo component='span' bold>{_.get(user, 'gender_name', '')}</ColorTypo>
+                    <ColorTypo component='span' bold>{get(user, 'gender_name', '')}</ColorTypo>
                   }
                 />
               </StyledListItem>
@@ -248,7 +248,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
                     <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.email')}</ColorTypo>
                   }
                   secondary={
-                    <ColorTypo component='span' bold>{_.get(user, 'email', '')}</ColorTypo>
+                    <ColorTypo component='span' bold>{get(user, 'email', '')}</ColorTypo>
                   }
                 />
               </StyledListItem>
@@ -258,7 +258,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
                     <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.phone')}</ColorTypo>
                   }
                   secondary={
-                    <ColorTypo component='span' bold>{_.get(user, 'phone', '')}</ColorTypo>
+                    <ColorTypo component='span' bold>{get(user, 'phone', '')}</ColorTypo>
                   }
                 />
               </StyledListItem>
@@ -268,13 +268,13 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
                     <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.address')}</ColorTypo>
                   }
                   secondary={
-                    <ColorTypo component='span' bold>{_.get(user, 'address', '')}</ColorTypo>
+                    <ColorTypo component='span' bold>{get(user, 'address', '')}</ColorTypo>
                   }
                 />
               </StyledListItem>
             </SideList>
           </SideBox>
-          <UserDocumentModal open={openDocumentsModal} setOpen={setOpenDocumentsModal} files={_.get(user, 'documents', [])} />
+          <UserDocumentModal open={openDocumentsModal} setOpen={setOpenDocumentsModal} files={get(user, 'documents', [])} />
           <UpdateUserModal open={openUpdateModal} setOpen={setOpenUpdateModal} updatedUser={user} />
         </Container>
       )}

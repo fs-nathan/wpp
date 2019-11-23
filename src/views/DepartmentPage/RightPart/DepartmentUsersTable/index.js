@@ -7,7 +7,7 @@ import {
   mdiAccountPlus,
   mdiDotsVertical,
 } from '@mdi/js';
-import { useParams, useLocation, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { detailRoom } from '../../../../actions/room/detailRoom';
 import { getUserOfRoom } from '../../../../actions/room/getUserOfRoom';
 import { sortUser } from '../../../../actions/user/sortUser';
@@ -132,7 +132,6 @@ function DepartmentUsersTable({
 
   const { setDepartmentId } = React.useContext(UserPageContext);
   const { departmentId } = useParams();
-  const location = useLocation();
   const history = useHistory();
 
   const { data: { room }, loading: detailRoomLoading, error: detailRoomError } = detailRoom;
@@ -185,7 +184,7 @@ function DepartmentUsersTable({
             },
             row: {
               id: 'id',
-              onClick: (row) => history.push(`${location.pathname.replace(`/${departmentId}`, '')}/members/${get(row, 'id', '')}`),
+              onClick: (row) => history.push(`/members/${get(row, 'id', '')}`),
             },
             draggable: {
               bool: true,
