@@ -91,7 +91,7 @@ const ApprovedBox = (props) => {
                   <Badge component='small' color='bluelight' badge size='small' label={'Duyệt'} />
                 </ColorTypo>
               </div>
-              <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+              <ButtonIcon size='small' onClick={handleClick} >
                 <Icon path={mdiDotsHorizontal} size={1} />
               </ButtonIcon>
             </StyledTitleBox>
@@ -196,7 +196,7 @@ const CustomListItem = (props) => {
             <ColorTypo color='orange' variant='caption'>{user_can_handers.join(", ")}</ColorTypo> lúc {date_create}
             </ColorTypo>
           </div>
-          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ButtonIcon size='small' onClick={handleClick} >
             <Icon path={mdiDotsHorizontal} size={1} />
           </ButtonIcon>
         </StyledTitleBox>
@@ -275,6 +275,7 @@ function TabBody(props) {
     setValue(newValue);
   };
   const [open, setOpen] = React.useState(false);
+  const [isOffer] = React.useState(true);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -284,7 +285,7 @@ function TabBody(props) {
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
-        <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
+        <StyledButtonGroup fullWidth variant="text" >
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
           >
@@ -316,7 +317,7 @@ function TabBody(props) {
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
           {null}
         </Collapse>
-        <OfferModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
+        <OfferModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} isOffer={isOffer}/>
       </Container>
     </Body>
   )

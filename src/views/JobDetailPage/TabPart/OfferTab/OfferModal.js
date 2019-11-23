@@ -106,15 +106,14 @@ const OfferModal = (props) => {
   const [content, setContent] = React.useState("")
 
   const classes = useStyles();
-  return (<Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={props.handleClickClose} fullWidth>
-    <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
+  return (<Dialog open={props.isOpen} onClose={props.handleClickClose} fullWidth>
+    <DialogTitle onClose={props.handleClickClose}>
       Tạo đề xuất
         </DialogTitle>
     <DialogContent dividers>
       <TexTitle >Chọn người duyệt</TexTitle>
       <IntegrationReactSelect />
       <TextContent
-        id="outlined-multiline-static"
         label="Nội dung phê duyệt"
         fullWidth
         multiline
@@ -129,7 +128,6 @@ const OfferModal = (props) => {
       <input
         accept="image/*"
         className={classes.input}
-        id="outlined-button-file"
         multiple
         type="file"
       />
@@ -142,15 +140,26 @@ const OfferModal = (props) => {
 
     </DialogContent>
     <DialogActions>
-      <Button
-        color="primary"
-        onClick={() => {
-          props.handleClickClose()
-          if(content)
-            props.createOfferByTaskId("5da18ce8aa75001b8060eb12", content)
-        }}>
-        Hoàn Thành
+      {props.isOffer ?
+        <Button
+          color="primary"
+          onClick={() => {
+            props.handleClickClose()
+           
+          }}>
+          Chỉnh sửa 
+        </Button>
+        :
+        <Button
+          color="primary"
+          onClick={() => {
+            props.handleClickClose()
+            if (content)
+              props.createOfferByTaskId("5da18ce8aa75001b8060eb12", content)
+          }}>
+          Hoàn Thành
           </Button>
+      }
     </DialogActions>
   </Dialog>
   )
