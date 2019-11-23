@@ -54,7 +54,7 @@ function LeftBar() {
         <Icon path={mdiApps} size={1.5} color={"#fff"} />
         <span>Dự án</span>
       </NavLink>
-      <NavLink to="/cong-viec">  
+      <NavLink to="/tasks">  
         <Icon path={mdiBallotOutline} size={1.5} color={"#fff"} />
         <span>Công việc</span>
       </NavLink>

@@ -32,7 +32,7 @@ const routes = [
     component: () => <DocumentPage />,
   },
   {
-    path: "/cong-viec",
+    path: "/tasks",
     component: () => <JobPage />,
   },
   {
