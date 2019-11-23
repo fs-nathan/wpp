@@ -79,36 +79,51 @@ const MenuListItem = () => {
   }
 
   return (
-          <Div>  
-            <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" size={'small'} >
-              <Icon path={mdiDotsHorizontal} size={1} color={'#fff'} />
-            </ButtonIcon>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              transformOrigin={{
-                vertical: -31,
-                horizontal: -21,
-              }}
-            >
-              <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-              <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-              <MenuItem onClick={handleClose}>Xóa</MenuItem>
-            </Menu>
-          </Div>
+    <Div>
+      <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" size={'small'} >
+        <Icon path={mdiDotsHorizontal} size={1} color={'#fff'} />
+      </ButtonIcon>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        transformOrigin={{
+          vertical: -31,
+          horizontal: -21,
+        }}
+      >
+        <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
+        <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
+        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+      </Menu>
+    </Div>
   )
 }
 
-const MediaBox = ({isHover}) => {
-  // { isHover 
-
-  // }
+const MediaBox = (props) => {
+  // console.log('mediabox::', props);
   return (
     <GridList cellHeight={60} cols={5}>
-      <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
+      {props.image.images.map((image, key) => {
+        return (
+          <div>
+            <GridListTile key={key} cols={5} style={{ height: 'auto' }}>
+              <SubHeader component='div'>{image.date_create}</SubHeader>
+            </GridListTile>
+            {image.images.map((item, idx) => {
+              return (
+                <ImageMedia key={idx}>
+                  <Image src={item.url} alt='avatar' />
+                  <MenuListItem />
+                </ImageMedia>
+              )
+            })}
+          </div>
+        );
+      })}
+      {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
         <SubHeader component='span'>09/09/2019</SubHeader>
       </GridListTile>
       {Array.from({ length: 7 }).map((_, index) => {
@@ -129,16 +144,16 @@ const MediaBox = ({isHover}) => {
             <MenuListItem />
           </ImageMedia>
         );
-      })}
+      })} */}
     </GridList>
   );
 }
 
-const MediaContainer = () => {
+const MediaContainer = (props) => {
   return (
     <React.Fragment>
       <SearchInput fullWidth placeholder='Nhập tên media, ngày đăng, người đăng...' />
-      <MediaBox />
+      <MediaBox {...props} />
     </React.Fragment>
   );
 }
@@ -160,72 +175,75 @@ const FileBoxStyledListItem = styled(ListItem)`
   }
 `;
 
-const FileBox = () => {
+const FileBox = (props) => {
 
-  const CustomListItem = () => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+  // const CustomListItem = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleClick = (evt) => {
-      setAnchorEl(evt.currentTarget);
-    }
+  const handleClick = (evt) => {
+    setAnchorEl(evt.currentTarget);
+  }
 
-    const handleClose = () => {
-      setAnchorEl(null);
-    }
-
-    return (
-      <React.Fragment>
-        <FileBoxStyledListItem>
-          <img src={iconDoc} alt='avatar' />
-          <div>
-            <ColorTypo variant='body1'>Do an.Update1-13.8.19.docx</ColorTypo>
-            <ColorTypo variant='caption'>
-              <Button size='small'>
-                <Icon path={mdiDownload} size={1} />
-              </Button>
-              1.1 MB
-            </ColorTypo>
-          </div>
-          <div>
-            <ColorTypo variant='body1'>13/08/2019</ColorTypo>
-            <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-              <Icon path={mdiDotsHorizontal} size={1} />
-            </Button>
-          </div>
-        </FileBoxStyledListItem>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          transformOrigin={{
-            vertical: -30,
-            horizontal: 'right',
-          }}
-        >
-          <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-          <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-          <MenuItem onClick={handleClose}>Xóa</MenuItem>
-        </Menu>
-      </React.Fragment>
-    );
+  const handleClose = () => {
+    setAnchorEl(null);
   }
 
   return (
+    // <React.Fragment>
     <FileBoxStyledList>
-      <CustomListItem />
-      <CustomListItem />
-      <CustomListItem />
+
+      <FileBoxStyledListItem>
+        <img src={iconDoc} alt='avatar' />
+        <div>
+          <ColorTypo variant='body1'>Do an.Update1-13.8.19.docx</ColorTypo>
+          <ColorTypo variant='caption'>
+            <Button size='small'>
+              <Icon path={mdiDownload} size={1} />
+            </Button>
+            1.1 MB
+            </ColorTypo>
+        </div>
+        <div>
+          <ColorTypo variant='body1'>13/08/2019</ColorTypo>
+          <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+            <Icon path={mdiDotsHorizontal} size={1} />
+          </Button>
+        </div>
+      </FileBoxStyledListItem>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        transformOrigin={{
+          vertical: -30,
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
+        <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
+        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+      </Menu>
     </FileBoxStyledList>
+    // </React.Fragment>
   );
+  // }
+
+  // return (
+  //   <FileBoxStyledList>
+  //     <CustomListItem />
+  //     <CustomListItem />
+  //     <CustomListItem />
+  //   </FileBoxStyledList>
+  // );
 }
 
-const FileContainer = () => {
+const FileContainer = (props) => {
   return (
     <React.Fragment>
       <SearchInput fullWidth placeholder='Nhập từ khóa file' />
-      <FileBox />
+      <FileBox {...props} />
     </React.Fragment>
   );
 }
@@ -269,7 +287,7 @@ const LinkBox = () => {
       <React.Fragment>
         <ListItemLink >
           <Typography component='div'>
-            <Icon path={mdiLink} size={1} color={'green'}/>
+            <Icon path={mdiLink} size={1} color={'green'} />
           </Typography>
           <ListItemText>
             <a href='https://google.com.vn' target="_blank">https://google.com.vn</a>
@@ -301,7 +319,7 @@ const LinkBox = () => {
 
   return (
     <List subheader={<li />}>
-      <HeaderSubText component='p' style={{ padding: 0, margin: 0}}>09/09/2019</HeaderSubText>
+      <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>09/09/2019</HeaderSubText>
       <CustomListItem />
       <CustomListItem />
       <CustomListItem />
@@ -322,7 +340,7 @@ const StyledButtonGroup = styled(ButtonGroup)`
   margin: 8px 0 20px 0;
 `;
 
-function TabBody() {
+function TabBody(props) {
 
   const [value, setValue] = React.useState(0);
 
@@ -332,37 +350,37 @@ function TabBody() {
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-    <Container>
-      <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
-        <ColorButton
-          startIcon={<Icon path={mdiImage} size={1} color={value === 0 ? colorPal['default'][0] : colorPal['gray'][0]} />}
-          onClick={evt => handleChange(evt, 0)}
-        >
-          {value === 0 ? <ColorTypo bold>Media</ColorTypo> : <ColorTypo color='gray'>Media</ColorTypo>}
-        </ColorButton>
-        <ColorButton
-          startIcon={<Icon path={mdiFile} size={1} color={value === 1 ? colorPal['default'][0] : colorPal['gray'][0]} />}
-          onClick={evt => handleChange(evt, 1)}
-        >
-          {value === 1 ? <ColorTypo bold>File</ColorTypo> : <ColorTypo color='gray'>File</ColorTypo>}
-        </ColorButton>
-        <ColorButton
-          startIcon={<Icon path={mdiLink} size={1} color={value === 2 ? colorPal['default'][0] : colorPal['gray'][0]} />}
-          onClick={evt => handleChange(evt, 2)}
-        >
-          {value === 2 ? <ColorTypo bold>Link</ColorTypo> : <ColorTypo color='gray'>Link</ColorTypo>}
-        </ColorButton>
-      </StyledButtonGroup>
-      <Collapse in={value === 0} mountOnEnter unmountOnExit>
-        <MediaContainer />
-      </Collapse>
-      <Collapse in={value === 1} mountOnEnter unmountOnExit>
-        <FileContainer />
-      </Collapse>
-      <Collapse in={value === 2} mountOnEnter unmountOnExit>
-        <LinkContainer />
-      </Collapse>
-    </Container>
+      <Container>
+        <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
+          <ColorButton
+            startIcon={<Icon path={mdiImage} size={1} color={value === 0 ? colorPal['default'][0] : colorPal['gray'][0]} />}
+            onClick={evt => handleChange(evt, 0)}
+          >
+            {value === 0 ? <ColorTypo bold>Media</ColorTypo> : <ColorTypo color='gray'>Media</ColorTypo>}
+          </ColorButton>
+          <ColorButton
+            startIcon={<Icon path={mdiFile} size={1} color={value === 1 ? colorPal['default'][0] : colorPal['gray'][0]} />}
+            onClick={evt => handleChange(evt, 1)}
+          >
+            {value === 1 ? <ColorTypo bold>File</ColorTypo> : <ColorTypo color='gray'>File</ColorTypo>}
+          </ColorButton>
+          <ColorButton
+            startIcon={<Icon path={mdiLink} size={1} color={value === 2 ? colorPal['default'][0] : colorPal['gray'][0]} />}
+            onClick={evt => handleChange(evt, 2)}
+          >
+            {value === 2 ? <ColorTypo bold>Link</ColorTypo> : <ColorTypo color='gray'>Link</ColorTypo>}
+          </ColorButton>
+        </StyledButtonGroup>
+        <Collapse in={value === 0} mountOnEnter unmountOnExit>
+          <MediaContainer {...props} />
+        </Collapse>
+        <Collapse in={value === 1} mountOnEnter unmountOnExit>
+          <FileContainer {...props} />
+        </Collapse>
+        <Collapse in={value === 2} mountOnEnter unmountOnExit>
+          <LinkContainer />
+        </Collapse>
+      </Container>
     </Body>
   )
 }

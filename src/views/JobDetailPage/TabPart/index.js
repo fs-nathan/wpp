@@ -17,7 +17,7 @@ const Container = styled.div`
 
 function TabPart(props) {
 
-  const [show, setShow] = React.useState(0);
+  const [show, setShow] = React.useState(0)
 
   return (
     <Container>
@@ -25,7 +25,7 @@ function TabPart(props) {
       <ProgressTab show={show} setShow={setShow} />
       <SubtaskTab show={show} setShow={setShow} {...props} />
       <RemindTab show={show} setShow={setShow} {...props}/>
-      <MediaTab show={show} setShow={setShow} />
+      <MediaTab show={show} setShow={setShow} {...props}/>
       <LocationTab show={show} setShow={setShow} />
       <OfferTab show={show} setShow={setShow} {...props}/>
       <DemandTab show={show} setShow={setShow} {...props}/>

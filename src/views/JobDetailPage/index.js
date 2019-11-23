@@ -6,6 +6,9 @@ import TabPart from './TabPart';
 import { connect } from 'react-redux';
 import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions'
 
+export const WrapperContext = React.createContext(null)
+const Wrapper = WrapperContext.Provider
+
 const Container = styled.div`
   height: 100%;
   display: grid;
@@ -16,25 +19,27 @@ const Container = styled.div`
 `;
 
 function JobDetailPage(props) {
-
   useEffect(() => {
     props.getSubTaskByTaskId(props.taskId)
     props.getRemindByTaskId(props.taskId)
     props.getOfferByTaskId(props.taskId)
     props.getCommandByTaskId(props.taskId)
+    props.getImageByTaskId(props.taskId)
   }, [])
 
   return (
-    <Container>
-      <ListPart {...props} />
-      <ChatPart {...props} />
-      <TabPart  {...props} />
-    </Container>
+    <Wrapper value={{ ...props }}>
+      <Container>
+        <ListPart {...props} />
+        <ChatPart {...props} />
+        <TabPart {...props} />
+      </Container>
+    </Wrapper>
   )
 }
 
 const mapStateToProps = state => {
-  // console.log('commanddddd', state.taskDetail.taskCommand.command)
+  // console.log('image::::', state.taskDetail.media.image)
   return {
     offer: state.taskDetail.taskOffer.offer,
     remind: state.taskDetail.taskRemind.remind,
@@ -73,6 +78,9 @@ const mapDispatchToProps = dispatch => {
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
     updateCommandByTaskId: (id, content, type) => { dispatch(taskDetailAction.updateCommand({ command_id: id, content, type })) },
+
+    // Media Image File Link
+    getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
   };
 };
 
