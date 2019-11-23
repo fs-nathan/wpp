@@ -11,6 +11,10 @@ const Container = styled.div`
   & > * {
     margin-right: 10px;
     margin-bottom: 5px;
+    padding: 0 5px;
+    & > span {
+      font-size: 12px;
+    }
   }
   border-bottom: 1px solid rgba(0, 0, 0, .1);
 `;

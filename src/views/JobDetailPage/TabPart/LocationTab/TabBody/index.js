@@ -1,19 +1,44 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiDotsHorizontal } from '@mdi/js';
+import { mdiDotsHorizontal, mdiMapMarker  } from '@mdi/js';
 import { 
   List, ListItem, ListItemAvatar, ListItemText, 
-  Avatar, IconButton, Menu, MenuItem, ButtonGroup,
+  IconButton, Menu, MenuItem, ButtonGroup,
   ListSubheader, ListItemIcon, Collapse,
 } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
-import avatar from '../../../../../assets/avatar.jpg';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const Container = styled.div`
-  padding: 10px 20px;
+  padding: 10px 20px 50px 20px;
+`;
+const ItemAvatar = styled(ListItemAvatar)`
+  & > div {
+    background: #d6d6d6;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
 `;
 
 const CustomListItem = () => {
@@ -30,9 +55,11 @@ const CustomListItem = () => {
   return (
     <React.Fragment>
       <ListItem>
-        <ListItemAvatar>
-          <Avatar src={avatar} alt='avatar' />
-        </ListItemAvatar>
+        <ItemAvatar>
+          <div>
+            <Icon path={mdiMapMarker } alt='map' size={1.1} color={'ff9d00'}/>
+          </div>
+        </ItemAvatar>
         <ListItemText 
           primary={'ABC đã chia sẻ vị trí'}
           secondary={
@@ -44,9 +71,9 @@ const CustomListItem = () => {
           }
         />
         <ListItemIcon>
-          <IconButton size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
             <Icon path={mdiDotsHorizontal} size={1} />
-          </IconButton>
+          </ButtonIcon>
         </ListItemIcon>
       </ListItem>
       <Menu
@@ -68,6 +95,18 @@ const CustomListItem = () => {
   );
 }
 
+const WrapList = styled(List)`
+  & > div {
+    padding: 0
+  }
+  & > li {
+    padding: 5px 0;
+    & > *:last-child {
+      min-width: auto !important;
+    }
+  }
+`
+
 const LocationShareBox = () => {
   return (
     <React.Fragment>
@@ -75,12 +114,12 @@ const LocationShareBox = () => {
         placeholder="Nhập từ khóa"
         fullWidth
       />
-      <List subheader={<li />}>
+      <WrapList subheader={<li />}>
         <ListSubheader component='div'>09/09/2019</ListSubheader>
         <CustomListItem/>
         <CustomListItem/>
         <CustomListItem/>
-      </List>
+      </WrapList>
     </React.Fragment>
   );
 }
@@ -98,6 +137,7 @@ function TabBody() {
   };
 
   return (
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
     <Container>
       <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
         <ColorButton 
@@ -118,6 +158,7 @@ function TabBody() {
         {null}
       </Collapse>
     </Container>
+    </Body>
   )
 }
 

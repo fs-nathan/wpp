@@ -47,6 +47,7 @@ function Option(props) {
       component="div"
       style={{
         fontWeight: props.isSelected ? 500 : 400,
+        zIndex: 99999,
       }}
       {...props.innerProps}
     >

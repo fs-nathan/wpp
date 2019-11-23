@@ -11,6 +11,7 @@ import {
   mdiAccountGroup,
   mdiDotsHorizontal
 } from "@mdi/js";
+import * as routes from '../../constants/routes'
 
 const Container = styled.div`
   grid-area: left;
@@ -58,15 +59,15 @@ function LeftBar() {
         <Icon path={mdiBallotOutline} size={1.5} color={"#fff"} />
         <span>Công việc</span>
       </NavLink>
-      <NavLink to="/bao-cao">  
+      <NavLink to={routes.report}>  
         <Icon path={mdiEqualizer} size={1.5} color={"#fff"} />
         <span>Báo cáo</span>
       </NavLink>
-      <NavLink to="/tai-lieu">  
+      <NavLink to={routes.document}>  
         <Icon path={mdiFolderMultipleOutline} size={1.5} color={"#fff"} />
         <span>Tài liệu</span>
       </NavLink>
-      <NavLink to="/departments">  
+      <NavLink to="/departments">   
         <Icon path={mdiAccountGroup} size={1.5} color={"#fff"} />
         <span>Thành viên</span>
       </NavLink>

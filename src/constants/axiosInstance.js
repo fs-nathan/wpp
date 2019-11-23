@@ -17,7 +17,8 @@ apiService.interceptors.request.use(
     const group_active = localStorage.getItem("group-active");
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     config.headers["group-active"] = group_active;
-    return config;
+    config.headers["task_id"] = "5da1821ad219830d90402fd8" // Fixed task id in header (it should be pass from saga)
+    return config
   } 
 )
 
@@ -31,7 +32,7 @@ apiService.interceptors.response.use(
       apiService
         .post("login", {
           email: "ducpminh668@gmail.com",
-          password: "12345678",
+          password: "12345678", 
         })
         .then(response => {
           localStorage.setItem("token", response.data.accessToken);

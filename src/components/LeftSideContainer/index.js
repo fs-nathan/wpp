@@ -42,10 +42,6 @@ const Title = styled.p`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  & > div:first-child {
-    padding-right: 12px;
-    padding-bottom: 12px;
-  }
 `;
 
 const StyledIconButton = styled(IconButton)`

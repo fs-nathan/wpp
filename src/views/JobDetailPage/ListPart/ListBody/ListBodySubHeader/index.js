@@ -6,15 +6,15 @@ import ColorTypo from '../../../../../components/ColorTypo';
 const StyledSubHeader = styled(ListSubheader)`
   padding: 0;
   display: flex;
-  align-items: center;
-  
+  align-items: center;  
+  margin-top: 10px;
 `;
 
 function ListBodySubHeader({ subPrimary, subSecondary }) {
   return (
     <StyledSubHeader disableSticky>
-      <ColorTypo variant='h6' bold style={{color: '#828282', paddingLeft: '15px' }}>{subPrimary}</ColorTypo>
-      <ColorTypo variant='caption' style={{ fontSize: '1.25rem' , fontWeight: 400, color: '#828282' }}>{subSecondary}</ColorTypo>
+      <ColorTypo variant='h6' bold style={{color: '#828282', paddingLeft: '15px', fontSize: '14px' }}>{subPrimary}</ColorTypo>
+      <ColorTypo variant='caption' style={{ fontSize: '12px' , fontWeight: 400, color: '#828282', marginLeft: '10px' }}>{subSecondary}</ColorTypo>
     </StyledSubHeader>
   )
 }

@@ -1,4 +1,4 @@
-import { takeLatest } from 'redux-saga/effects';
+import { takeLatest, takeLeading } from 'redux-saga/effects';
 import { LOGIN, LOGIN_CHECK_STATE } from '../constants/actions/authentications';
 import { login, loginCheckState } from './authentications';
 import { LIST_ROOM } from '../constants/actions/room/listRoom';
@@ -101,6 +101,8 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../constants/actions/project/re
 import { removeProjectRoleFromMember } from './project/removeProjectRoleFromMember';
 import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/updateGroupPermissionMember';
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
+import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
+import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
 
 function* rootSaga() {
   yield takeLatest(LOGIN, login);
@@ -155,6 +157,30 @@ function* rootSaga() {
   yield takeLatest(ADD_PROJECT_ROLE_TO_MEMBER, addProjectRoleToMember);
   yield takeLatest(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
   yield takeLatest(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
+
+  //Offer::
+  yield takeLeading(taskDetailType.GET_OFFER_REQUEST, taskDetailSaga.getOffer);
+  yield takeLeading(taskDetailType.CREATE_OFFER_REQUEST, taskDetailSaga.createOffer);
+  yield takeLeading(taskDetailType.UPDATE_OFFER_REQUEST, taskDetailSaga.updateOffer);
+  yield takeLeading(taskDetailType.DELETE_OFFER_REQUEST, taskDetailSaga.deleteOffer);
+
+  //Subtask::
+  yield takeLeading(taskDetailType.GET_SUBTASK_REQUEST, taskDetailSaga.getSubTask);
+  yield takeLeading(taskDetailType.POST_SUBTASK_REQUEST, taskDetailSaga.postSubTask);
+  yield takeLeading(taskDetailType.UPDATE_SUBTASK_REQUEST, taskDetailSaga.updateSubTask);
+  yield takeLeading(taskDetailType.DELETE_SUBTASK_REQUEST, taskDetailSaga.deleteSubTask);
+  yield takeLeading(taskDetailType.POST_COMPLETE_SUBTASK_REQUEST, taskDetailSaga.completeSubTask);
+  //Remind::
+  yield takeLeading(taskDetailType.GET_REMIND_REQUEST, taskDetailSaga.getRemind);
+  yield takeLeading(taskDetailType.DELETE_REMIND_REQUEST, taskDetailSaga.deleteRemind);
+
+  // Media Image File
+  yield takeLeading(taskDetailType.GET_IMAGE_TABPART_REQUEST, taskDetailSaga.getImage);
+  yield takeLeading(taskDetailType.GET_FILE_TABPART_REQUEST, taskDetailSaga.getFile)
+  //Command and Decsion::
+  yield takeLeading(taskDetailType.GET_COMMAND_REQUEST, taskDetailSaga.getCommand);
+  yield takeLeading(taskDetailType.CREATE_COMMAND_REQUEST, taskDetailSaga.createCommand);
+  yield takeLeading(taskDetailType.UPDATE_COMMAND_REQUEST, taskDetailSaga.updateCommand);
 };
 
 export default rootSaga;

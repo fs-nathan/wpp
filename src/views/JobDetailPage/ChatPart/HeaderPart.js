@@ -6,7 +6,8 @@ import {
     IconButton, Typography, Avatar, Grid,
     RadioGroup, Radio, FormControlLabel, FormControl
 } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search';
+import Icon from '@mdi/react';
+import { mdiMagnify } from '@mdi/js';
 import avatarType from '../../../constants/avatarType'
 import fakeAvatar from '../../../assets/avatar.jpg'
 
@@ -21,15 +22,15 @@ const useStyles = makeStyles({
         paddingBottom: "0 !important",
     },
     smallAvatar: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
     },
 })
 
 const Container = styled.div`
-    margin: 5px 0;
     display: flex;
     align-items: center;
+    height: 85px;
 `
 
 const WrapAvatars = styled.div`
@@ -42,7 +43,8 @@ const WrapRoomDescription = styled.div`
 `
 
 const ProjectText = styled(Typography)`
-
+    font-size: 24px;
+    font-weight: 500;
 `
 
 // const WrapNotification = styled.div`
@@ -66,6 +68,16 @@ const TabLabel = styled(FormControlLabel)`
   & > span:first-child { display: none; }
 `;
 
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+`
 
 // const NotifyText = styled.div`
 //     color: ${colors['black'][0]};
@@ -175,8 +187,8 @@ function renderAvatars(props) {
 function renderRoomDescription(props) {
     return (
         <WrapRoomDescription>
-            <ProjectText variant="h4">
-                Thảo Luận
+            <ProjectText >
+                Thảo Iuận
             </ProjectText>
             <TabForm tabs={tabs}/>
         </WrapRoomDescription>
@@ -186,9 +198,9 @@ function renderRoomDescription(props) {
 function renderFunctionBar(props) {
     return (
         <>
-            <IconButton>
-                <SearchIcon/>
-            </IconButton>
+            <ButtonIcon>
+                <Icon path={mdiMagnify} size={1.2}/>
+            </ButtonIcon>
         </>
     )
 }

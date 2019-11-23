@@ -9,6 +9,7 @@ import JobPage from '../views/JobPage';
 import JobDetailPage from '../views/JobDetailPage';
 
 import TestPage from '../__test__';
+import * as routePath from '../constants/routes'
 
 const routes = [
   {
@@ -29,11 +30,11 @@ const routes = [
     component: () => <MemberPage />,
   },
   {
-    path: "/bao-cao",
+    path: routePath.report,
     component: () => <ReportPage />,
   },
   {
-    path: "/tai-lieu",
+    path: routePath.document,
     component: () => <DocumentPage />,
   },
   {
@@ -41,11 +42,11 @@ const routes = [
     component: () => <JobPage />,
   },
   {
-    path: "/chi-tiet-cong-viec",
+    path: routePath.jobDetail,
     component: () => <JobDetailPage />,
   },
   {
-    path: "/__test__",
+    path: routePath.test,
     component: () => <TestPage />,
   },
   {

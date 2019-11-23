@@ -1,21 +1,19 @@
-import React from 'react';
+import React, { userState } from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiDragVertical, mdiDotsVertical, mdiSend } from '@mdi/js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { List, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton, Menu, MenuItem, Dialog, withStyles, Typography, Button, TextField, InputBase } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
+import { List, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton, Menu, MenuItem, InputBase, ListItemSecondaryAction } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import SearchInput from '../../../../../components/SearchInput';
 import colorPal from '../../../../../helpers/colorPalette';
 import avatar from '../../../../../assets/avatar.jpg';
-
+import SubtaskModal from '../SubtaskModal'
+import { Scrollbars } from 'react-custom-scrollbars'
+import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 const Container = styled.div`
-  padding: 0;
+  padding: 0 0 50px 0;
 `;
 
 const StyledList = styled(List)`
@@ -24,15 +22,28 @@ const StyledList = styled(List)`
 const TextTitle = styled(ColorTypo)`
   font-size: 16px;
   color: ${colorPal['gray'][0]};
-  margin-left: 30px
+  margin-left: 30pxreact-beautiful-dnd
 `
 const Search = styled(SearchInput)`
 
   
 `
 
+function convertResponseDataToMotionData(responseData) {
+  let motionData = {
+    data: {},
+    columns: { 'column-1': { id: 'column-1' } },
+    columnOrder: ['column-1'],
+  }
+  for (const item of responseData) {
+    motionData.data[item.id] = item
+  }
+  motionData.columns['column-1'].dataIdArr = responseData.map(item => item.id)
+  return motionData
+}
+
 const __data = {
-  tasks: {
+  data: {
     'task-1': {
       id: 'task-1',
       content: 1,
@@ -53,7 +64,7 @@ const __data = {
   columns: {
     'column-1': {
       id: 'column-1',
-      tasksId: ['task-1', 'task-2', 'task-3', 'task-4'],
+      dataIdArr: ['task-1', 'task-2', 'task-3', 'task-4'],
     }
   },
   columnOrder: ['column-1'],
@@ -72,63 +83,31 @@ const AllSubtaskListItemContainer = styled(ListItem)`
   padding: 8px 0;
 `;
 
-const TexTitle = styled(Typography)`
-  font-size: 14px;
-  color: ${colorPal['gray'][0]}
-  margin-bottom: 30px;
+const ButtonIcon = styled(IconButton)`
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
 `
-const TextInput = styled(TextField)`
-  font-size: 14px;
-  margin-bottom: 20px
+const StyledMenu = styled.div`
+  display: none;
+  ${AllSubtaskListItemContainer}:hover & {
+    display: inline;
+  }
 `
 
-// các bien chinh sua cong viec con
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
 
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions);
-
-// end modal chinh sua cong viec con
-function AllSubtaskListItem({ task, index }) {
+function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
+    setAnchorEl(null);
   };
   const handleClickClose = () => {
     setOpen(false);
@@ -144,11 +123,24 @@ function AllSubtaskListItem({ task, index }) {
   function handleClose() {
     setAnchorEl(null);
   }
+  // bien modal delete
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
+
+  const handleOpenModalDelete = () => {
+    setOpenDelete(true);
+    setAnchorEl(null);
+  };
+  const handleCloseModalDelete = () => {
+    setOpenDelete(false);
+  };
+  const confirmDelete = () => {
+    props.deleteSubTaskByTaskId(props.task.id)
+  }
 
   return (
     <Draggable
-      draggableId={task.id}
-      index={index}
+      draggableId={props.task.id}
+      index={props.index}
     >
       {(provided) => (
         <AllSubtaskListItemContainer
@@ -158,59 +150,63 @@ function AllSubtaskListItem({ task, index }) {
           onMouseLeave={() => setIsHover(false)}
         >
           <div {...provided.dragHandleProps}>
-            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
+            <Icon path={mdiDragVertical} size={1} />
           </div>
           {
             !isHover
-              ? <Avatar style={{ width: 43.5, height: 43.5, }} src={avatar} alt='avatar' />
-              : <IconButton>
+              ? <Avatar style={{ width: 43.5, height: 43.5, }} src={props.task.user_create_avatar} alt='avatar' />
+              : <ButtonIcon onClick={() => {
+                props.completeSubTaskByTaskId(props.task.id)
+              }}>
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
-              </IconButton>
+              </ButtonIcon>
           }
-          <ItemList>Thiết kế {task.content}</ItemList>
-          <IconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-            <Icon path={mdiDotsVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
-          </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            transformOrigin={{
-              vertical: -30,
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleClickClose, handleClickOpen}>Chỉnh sửa</MenuItem>
-            <MenuItem onClick={handleClose}>Xóa</MenuItem>
-          </Menu>
-          {/* Modal chinh sua cong viec con */}
-          <Dialog aria-labelledby="customized-dialog-title" open={open} fullWidth>
-            <DialogTitle id="customized-dialog-title" onClose={handleClickClose}>
-              Chỉnh sửa công việc con
-            </DialogTitle>
-            <DialogContent dividers>
-              <TexTitle >Nội dung công việc </TexTitle>
-              <TextInput
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClickClose} color="primary">
-                Hoàn Thành
-              </Button>
-            </DialogActions>
-          </Dialog>
+          <ItemList>{props.task.name}</ItemList>
+          <StyledMenu>
+            <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
+              <Icon path={mdiDotsVertical} size={1} />
+            </ButtonIcon>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              transformOrigin={{
+                vertical: -30,
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem onClick={handleClickOpen} >Chỉnh sửa</MenuItem>
+              <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
+            </Menu>
+          </StyledMenu>
+          <SubtaskModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} task={props.task.id} name={props.task.name} {...props} />
+          <ModalDeleteConfirm
+            confirmDelete={confirmDelete}
+            isOpen={isOpenDelete}
+            handleCloseModalDelete={handleCloseModalDelete}
+            handleOpenModalDelete={handleOpenModalDelete}
+            // task={props.task.id}
+            {...props}
+          />
         </AllSubtaskListItemContainer>
       )}
     </Draggable>
   )
 }
 
-function AllSubtaskList() {
 
-  const [data, setData] = React.useState(__data);
+
+function AllSubtaskList(props) {
+
+  // console.log('data props', props);
+
+  // const [data, setData] = React.useState(__data);
+  const [data, setData] = React.useState(
+    props.uncompleteSubTasks.length
+      ? convertResponseDataToMotionData(props.uncompleteSubTasks)
+      : __data
+  )
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -220,12 +216,12 @@ function AllSubtaskList() {
       destination.index === source.index
     ) return;
     const column = data.columns[source.droppableId];
-    const newTasksId = Array.from(column.tasksId);
+    const newTasksId = Array.from(column.dataIdArr);
     newTasksId.splice(source.index, 1);
     newTasksId.splice(destination.index, 0, draggableId);
     const newColumn = {
       ...column,
-      tasksId: newTasksId,
+      dataIdArr: newTasksId,
     };
     setData({
       ...data,
@@ -236,11 +232,16 @@ function AllSubtaskList() {
     });
   }
 
+  React.useEffect(() => {
+    // Reset sub task when changing props
+    setData(convertResponseDataToMotionData(props.uncompleteSubTasks))
+  }, [props.uncompleteSubTasks])
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {data.columnOrder.map((columnId, index) => {
         const column = data.columns[columnId];
-        const tasks = column.tasksId.map(taskId => data.tasks[taskId]);
+        const tasks = column.dataIdArr.map(taskId => data.data[taskId]);
         return (
           <Droppable droppableId={column.id} key={index}>
             {provided => (
@@ -249,7 +250,7 @@ function AllSubtaskList() {
                 {...provided.droppableProps}
               >
                 {tasks.map((task, index) => (
-                  <AllSubtaskListItem key={task.id} task={task} index={index} />
+                  <AllSubtaskListItem key={task.id} task={task} index={index} {...props} />
                 ))}
                 {provided.placeholder}
               </StyledList>
@@ -277,30 +278,90 @@ const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
 
-const FinishedSubtaskList = () => {
+const CustomMenu = styled(Menu)`
+  & > .MuiPaper-root {
+    box-shadow: 0px 0px 22px -7px #f5f5f5!important;
+    & > ul {
+      padding : 0
+      & > li {
+        padding : 10px;
+      }
+    }
+  }
+`
+
+const FinishedSubtaskList = (props) => {
+  console.log('complete task:::', props);
+
   const [data] = React.useState([1, 2, 3, 4]);
+  // const [isHover, setIsHover] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
+  function handleClick(evt) {
+    setAnchorEl(evt.currentTarget)
+  }
 
+  function handleClose() {
+    setAnchorEl(null);
+  }
+  // bien modal delete
+  const [isOpenDel, setOpenDel] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState("")
+
+  const handleOpenModalDelete = id => {
+    setSelectedId(id)
+    setOpenDel(true)
+    setAnchorEl(null)
+  };
+  const handleCloseModalDelete = () => {
+    setOpenDel(false);
+  };
+  const confirmDelete = (id) => {
+    props.deleteSubTaskByTaskId(id)
+  }
   return (
     <List>
-      {data.map((elem, index) => {
+
+      {props.completeSubTasks.map((item, index) => {
         return (
           <ListItem key={index} style={{ paddingLeft: 30 }}>
-            <ListItemAvatar>
-              <Avatar src={avatar} alt='avatar' />
-            </ListItemAvatar>
+            <Avatar src={item.user_complete_avatar} alt='avatar' />
             <ItemList
-              primary={`Xong việc ${elem}`}
+              primary={`${item.name}`}
               secondary={
                 <FinishedSubtaskListItemTextSecondary>
                   <Badge component='small' color='bluelight' badge size='small' label={'Hoàn thành'} />
-                  lúc 19:00 - 09/09/2019
+                  lúc {item.time_complete}
                 </FinishedSubtaskListItemTextSecondary>
               }
             />
+            <ButtonIcon onClick={handleClick} aria-haspopup="true">
+              <Icon path={mdiDotsVertical} size={1} />
+            </ButtonIcon>
+            <CustomMenu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              transformOrigin={{
+                vertical: -30,
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem onClick={() => handleOpenModalDelete(item.id)}>Xóa</MenuItem>
+            </CustomMenu>
+
           </ListItem>
         );
       })}
+
+      <ModalDeleteConfirm
+        confirmDelete={confirmDelete(selectedId)}
+        isOpen={isOpenDel}
+        handleCloseModalDelete={handleCloseModalDelete}
+        handleOpenModalDelete={handleOpenModalDelete}
+        {...props}
+      />
     </List>
   );
 }
@@ -310,40 +371,71 @@ const NewWork = styled.div`
   justify-content: space-between;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-top: 1px solid rgba(0, 0, 0, .1);
   align-item: center;
+  margin-bottom: 12px;
 
 `
 const InputText = styled(InputBase)`
   padding-left: 30px;
   font-size: 16px;
   align-item: center;
+  width: 100%;
 `
 const Div = styled.div`
   margin: 10px 20px;
 `
+const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+  
+`;
 
 function TabBody(props) {
+  // const [data, setData] = React.useState({ name: "" })
+  const [name, setName] = React.useState("")
+
+  const setStateSubTask = (e) => {
+    // let newData = JSON.parse(JSON.stringify(data))
+    // newData.name = e.target.value/
+    // setData(newData)
+    setName(e.target.value)
+  }
+
+  const createSubTask = (taskId, name) => {
+    props.postSubTaskByTaskId(taskId, name)
+    setName("")
+  }
+
   return (
-    <Container>
-      {props.isClicked ?
-        <NewWork>
-          <InputText
-            inputProps={{ 'aria-label': 'naked' }}
-            placeholder={'Nhập tên công việc...'}
-          />
-          <IconButton style={{ paddingBottom: 9}}>
-            <Icon path={mdiSend} size={1} color={'gray'} />
-          </IconButton>
-        </NewWork>
-        :
-        <Div>
-          <Search placeholder={'Nhập từ khóa'} />
-        </Div>
-      }
-      <AllSubtaskList />
-      <TextTitle uppercase bold>Hoàn thành</TextTitle>
-      <FinishedSubtaskList />
-    </Container>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+      <Container>
+        {props.isClicked ?
+          <NewWork>
+            <InputText
+              inputProps={{ 'aria-label': 'naked' }}
+              placeholder={'Nhập tên công việc...'}
+              onChange={setStateSubTask}
+              value={name}
+            />
+            <ButtonIcon
+              style={{ paddingBottom: 9, marginRight: 14 }}
+              onClick={() => {
+                createSubTask("5da1821ad219830d90402fd8", name)
+              }}>
+              <Icon path={mdiSend} size={1} color={'gray'} />
+            </ButtonIcon>
+          </NewWork>
+          :
+          <Div>
+            <Search placeholder={'Nhập từ khóa'} />
+          </Div>
+        }
+        <AllSubtaskList {...props} />
+        <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Hoàn thành</TextTitle>
+        <FinishedSubtaskList {...props} />
+      </Container>
+    </Body>
   )
 }
 

@@ -10,10 +10,7 @@ import TableBodyRow from './TableBodyGroupRow/TableBodyRow';
 import { get } from 'lodash';
 
 const Container = styled(Scrollbars)`
-  & > div:first-child {
-    padding-right: 12px;
-    padding-bottom: 12px;
-  }
+  height: 100%;
 `;
 
 function TableMain() {

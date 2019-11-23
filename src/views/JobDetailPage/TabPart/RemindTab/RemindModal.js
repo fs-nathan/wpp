@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Typography, Dialog, Button, TextField, withStyles, InputAdornment } from '@material-ui/core';
+import { IconButton, Typography, Dialog, Button, TextField, withStyles, InputAdornment, FilledInput } from '@material-ui/core';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import ColorChip from '../../../../components/ColorChip';
 import TimeField from 'react-simple-timefield';
-
+import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
 const titles = [
   {
     value: 'Nhắc hẹn theo thời gian',
@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 
 const TitleText = styled(Typography)`
     font-size: 15px;
-    margin: 20px 0
+    margin: 0 0 15px 0;
   `
 
 const TexTitle = styled(Typography)`
@@ -75,7 +75,7 @@ const HelperText = styled(TextField)`
   `
 const DivTitle = styled.div`
     display: flex;
-    margin: 30px 0 10px 0;
+    margin: 15px 0 0 0;
   `
 
 const Div = styled.div`
@@ -88,7 +88,7 @@ const Text = styled(TextField)`
       margin-bottom: 20px;
       & > input {
         font-size: 16px;
-        margin-bottom: 100px;
+        margin-bottom: 30px;
       }
     }
   `
@@ -98,7 +98,7 @@ const BadgeItem = styled(ColorChip)`
     margin: 5px 6px 5px 0;
   `
 
-const InputOutline = styled(OutlinedInput)`
+const InputOutline = styled(FilledInput)`
     width: 420px;
   `
 const TextRemind = styled(Typography)`
@@ -118,6 +118,19 @@ const DivTime = styled.span`
     height: 100% !important;
     margin-top: 8px;
   `
+const SelectInput = styled.div`
+    margin-top: 8px;
+    width: 160px;
+    & > div > div > div  {
+        padding : 7px 0;
+    }
+`
+const ContentText = styled(TextField)`
+    & > label {
+      font-size: 14px;
+      z-index: 0
+    }
+`
 
 const styles = theme => ({
   root: {
@@ -183,33 +196,17 @@ function RemindModal(props) {
     setData({ ...data, [att]: event.target.value });
   };
   return (
-    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} >
+    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={() => props.handleClickClose()} fullWidth>
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
         Nhắc hẹn
       </DialogTitle>
-      <DialogContent dividers>
-        <TitleText component="span">Loại nhắc hẹn</TitleText>
-        <HelperText component="span"
-          select
-          value={data.title}
-          onChange={(e) => handleChange(e, 'title')}
-          SelectProps={{
-            native: true
-          }}
-          variant="outlined"
-          fullWidth
-          helperText="Bạn có lịch hẹn, ghi chú, sự kiện...quan trọng ? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhở bạn khi đến hẹn."
-        >
-          {titles && titles.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </HelperText>
+      <DialogContent dividers style={{ overflow: 'hidden'}}>
+        <TitleText component="div">Loại nhắc hẹn</TitleText>
+        <OutlinedInputSelect />
         {/* Middle JSX */}
         {data.title === 'Nhắc hẹn theo thời gian' ?
-          <Typography component="span">
-            <DivTitle component="span">
+          <Typography component="div">
+            <DivTitle component="div">
               <TexTitle component="span">Ngày nhắc</TexTitle>
               <TexTitle component="span">Giờ nhắc</TexTitle>
               <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
@@ -224,38 +221,18 @@ function RemindModal(props) {
               <DivTime>
                 <InputTime value={time} onChange={handleTime} />
               </DivTime>
-              <TextField component="span"
-                select
-                className={classes.textField}
-                value={data.remindCycle}
-                onChange={handleChange}
-                SelectProps={{
-                  native: true,
-                  MenuProps: {
-                    className: classes.menu,
-                  },
-                }}
-                margin="normal"
-                variant="outlined"
-              >
-                {badges.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              <SelectInput >
+                <OutlinedInputSelect/>
+              </SelectInput>
             </Div>
           </Typography>
           :
           <div>
-            <TexTitle component="div">Mốc tiến độ cần nhắc</TexTitle>
-            <InputOutline
-              id="outlined-adornment-weight"
-              // value={values.weight}
-              // onChange={handleChange('weight')}
+            <TexTitle component="div"></TexTitle>
+            <InputOutline             
+              label="Mốc tiến độ cần nhắc"
+              variant="outlined"
               endAdornment={<InputAdornment position="end">%</InputAdornment>}
-              aria-describedby="outlined-weight-helper-text"
-              labelWidth={0}
             />
             <Button variant="contained" style={{ marginLeft: 10 }}>Thêm</Button>
             <Typography component={'div'}>
@@ -266,15 +243,28 @@ function RemindModal(props) {
           </div>
         }
         {/* ------- */}
-        <TitleText component="div">Nội dung</TitleText>
+        {/* <TitleText component="div">Nội dung</TitleText>
         <Text component="span"
           placeholder="Nhập nội dung nhắc hẹn"
           fullWidth
+          multiline rows="4"
           InputLabelProps={{
             shrink: true,
           }}
           value={data.content}
           variant="outlined"
+        /> */}
+        <ContentText
+          id="outlined-multiline-static"
+          label="Nội dung"
+          fullWidth
+          multiline
+          rows="7"
+          defaultValue=""
+          margin="normal"
+          placeholder="Nhập nội dung nhắc hẹn"
+          variant="outlined"
+          styled={{ zIndex: 1 }}
         />
       </DialogContent>
       <DialogActions>
