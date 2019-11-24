@@ -101,6 +101,8 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../constants/actions/project/re
 import { removeProjectRoleFromMember } from './project/removeProjectRoleFromMember';
 import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/updateGroupPermissionMember';
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
+import { LIST_TASK } from '../constants/actions/task/listTask';
+import { listTask } from './task/listTask';
 import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
 import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
 
@@ -157,6 +159,7 @@ function* rootSaga() {
   yield takeLatest(ADD_PROJECT_ROLE_TO_MEMBER, addProjectRoleToMember);
   yield takeLatest(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
   yield takeLatest(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
+  yield takeLatest(LIST_TASK, listTask);
 
   //Offer::
   yield takeLeading(taskDetailType.GET_OFFER_REQUEST, taskDetailSaga.getOffer);

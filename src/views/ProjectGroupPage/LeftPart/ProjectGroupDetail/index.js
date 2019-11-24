@@ -106,7 +106,7 @@ const StyledColorTypo = styled(ColorTypo)`
   margin-top: 8px;
 `;
 
-function DepartmentInfo({ detailProjectGroup, memberProjectGroup, doDeleteProjectGroup }) {
+function ProjectGroupDetail({ detailProjectGroup, memberProjectGroup, doDeleteProjectGroup }) {
   
   const { setProjectGroupId } = React.useContext(ProjectGroupContext);
   const { projectGroupId } = useParams();
@@ -135,7 +135,7 @@ function DepartmentInfo({ detailProjectGroup, memberProjectGroup, doDeleteProjec
     };
   }, [history, projectGroupId]);
 
-  function handleDeleteDepartment(projectGroupId) {
+  function handleDeleteProjectGroup(projectGroupId) {
     doDeleteProjectGroup({ 
       projectGroupId: projectGroupId,
     });
@@ -246,7 +246,7 @@ function DepartmentInfo({ detailProjectGroup, memberProjectGroup, doDeleteProjec
             open={alert}
             setOpen={setAlert}
             content='Bạn chắc chắn muốn xóa?'
-            onConfirm={() => handleDeleteDepartment(projectGroupId)}
+            onConfirm={() => handleDeleteProjectGroup(projectGroupId)}
           />
         </LeftSideContainer>
       )}
@@ -273,4 +273,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DepartmentInfo);
+)(ProjectGroupDetail);

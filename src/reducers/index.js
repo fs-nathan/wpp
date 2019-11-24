@@ -50,6 +50,7 @@ import updateStateJoinTask, { initialState as updateStateJoinTaskInitialState } 
 import addProjectRoleToMember, { initialState as addProjectRoleToMemberInitialState } from './project/addProjectRoleToMember';
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from './project/removeProjectRoleFromMember';
 import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from './project/updateGroupPermissionMember';
+import listTask, { initialState as listTaskInitialState} from './task/listTask';
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from './documents';
@@ -139,6 +140,9 @@ const rootReducer = combineReducers({
     removeProjectRoleFromMember,
     updateGroupPermissionMember,
   }),
+  task: combineReducers({
+    listTask,
+  }),
 });
 
 export const DEFAULT_STATE = {
@@ -210,7 +214,10 @@ export const DEFAULT_STATE = {
     addProjectRoleToMember: addProjectRoleToMemberInitialState,
     removeProjectRoleFromMember: removeProjectRoleFromMemberInitialState,
     updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
-  }
+  },
+  task: {
+    listTask: listTaskInitialState,
+  },
 };
 
 export default rootReducer;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { get, sortBy, reverse, filter as filterArr } from 'lodash';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { 
   IconButton, Menu, MenuItem, Popover,
   List, ListItem, ListItemText, ListSubheader,
@@ -299,6 +299,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
 
   const { setProjectGroupId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
+  const history = useHistory();
 
   const { data: { projects: _projects }, loading: listProjectLoading, error: listProjectError } = listProject;
   const { data: { projectGroup }, loading: detailProjectGroupLoading, error: detailProjectGroupError } = detailProjectGroup;
@@ -500,6 +501,10 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
               loading: {
                 bool: loading,
                 component: () => <LoadingBox />,
+              },
+              row: {
+                id: 'id',
+                onClick: (row) => history.push(`/project/${get(row, 'id', '')}`),
               },
             }}
             columns={[{

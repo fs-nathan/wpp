@@ -1,6 +1,7 @@
 import React from "react";
 import HomePage from '../views/HomePage';
 import ProjectGroupPage from '../views/ProjectGroupPage';
+import ProjectPage from '../views/ProjectPage';
 import DepartmentPage from '../views/DepartmentPage';
 import MemberPage from '../views/MemberPage';
 import ReportPage from '../views/ReportPage';
@@ -20,6 +21,10 @@ const routes = [
   {
     path: "/projects",
     component: () => <ProjectGroupPage />,
+  },
+  {
+    path: "/project",
+    component: () => <ProjectPage />,
   },
   {
     path: "/departments",
