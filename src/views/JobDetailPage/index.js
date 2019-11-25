@@ -82,7 +82,7 @@ const mapDispatchToProps = dispatch => {
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
     createOfferByTaskId: (createId, content) => { dispatch(taskDetailAction.createOffer({ createId, content })) },
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
-    updateOfferByOfferId: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
+    updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
     // command 
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },

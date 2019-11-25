@@ -13,6 +13,7 @@ import IntegrationReactSelect from '../Tag/index'
 import colorPal from '../../../../helpers/colorPalette';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 const TexTitle = styled(Typography)`
   font-size: 15px;
   margin: 15px 0;
@@ -101,58 +102,83 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 // end modal
 
+
+
 const OfferModal = (props) => {
 
-  const [content, setContent] = React.useState("")
+  const [tempSelectedItem, setTempSelectedItem] = React.useState({ offer_id: "", content: "" })
 
-  const classes = useStyles();
-  return (<Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={props.handleClickClose} fullWidth>
-    <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
-      Tạo đề xuất
+  React.useEffect(() => {
+    setTempSelectedItem(props.item)
+  }, [props.item])
+
+  
+
+  const setParams = (nameParam, value) => {
+    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
+  }
+  const classes = useStyles()
+  return (
+    <Dialog open={props.isOpen} onClose={props.handleClickClose} fullWidth>
+      <DialogTitle onClose={props.handleClickClose}>
+        Tạo đề xuất
         </DialogTitle>
-    <DialogContent dividers>
-      <TexTitle >Chọn người duyệt</TexTitle>
-      <IntegrationReactSelect />
-      <TextContent
-        id="outlined-multiline-static"
-        label="Nội dung phê duyệt"
-        fullWidth
-        multiline
-        rows="7"
-        margin="normal"
-        placeholder="Nhập nội dung"
-        variant="outlined"
-        style={{ marginTop: 20 }}
-        value={content}
-        onChange={e => setContent(e.target.value)}
-      />
-      <input
-        accept="image/*"
-        className={classes.input}
-        id="outlined-button-file"
-        multiple
-        type="file"
-      />
-      <ButtonFile htmlFor="outlined-button-file">
-        <Button variant="outlined" component="span" fullWidth className={classes.button}>
-          <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
-          Đính kèm tài liệu
+      <DialogContent dividers>
+        <TexTitle >Chọn người duyệt</TexTitle>
+        <IntegrationReactSelect />
+        <TextContent
+          label="Nội dung phê duyệt"
+          fullWidth
+          multiline
+          rows="7"
+          margin="normal"
+          placeholder="Nhập nội dung"
+          variant="outlined"
+          style={{ marginTop: 20 }}
+          value={tempSelectedItem? tempSelectedItem.content : ""}
+          onChange={e => setParams("content", e.target.value)}
+        />
+        <input
+          accept="image/*"
+          className={classes.input}
+          multiple
+          type="file"
+        />
+        <ButtonFile htmlFor="outlined-button-file">
+          <Button variant="outlined" component="span" fullWidth className={classes.button}>
+            <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
+            Đính kèm tài liệu
                 </Button>
-      </ButtonFile>
+        </ButtonFile>
 
-    </DialogContent>
-    <DialogActions>
-      <Button
-        color="primary"
-        onClick={() => {
-          props.handleClickClose()
-          if(content)
-            props.createOfferByTaskId("5da18ce8aa75001b8060eb12", content)
-        }}>
-        Hoàn Thành
+      </DialogContent>
+      <DialogActions>
+        {props.isOffer ?
+          <Button
+            color="primary"
+            onClick={() => {
+              props.handleClickClose()
+              if (tempSelectedItem.content){
+                props.updateOfferById(tempSelectedItem.offer_id, tempSelectedItem.content)
+              }
+              setParams("content", '')
+            }}>
+            Chỉnh sửa
+        </Button>
+          :
+          <Button
+            color="primary"
+            onClick={() => {
+              props.handleClickClose()
+              if (tempSelectedItem.content)
+                props.createOfferByTaskId("5da1821ad219830d90402fd8", tempSelectedItem.content)
+              setParams("content", '')
+            }}>
+            Hoàn Thành
           </Button>
-    </DialogActions>
-  </Dialog>
+        }
+      </DialogActions>
+    </Dialog>
   )
 }
 

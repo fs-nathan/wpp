@@ -206,7 +206,6 @@ function* getRemind(action) {
 // }
 // ==== delete
 async function doDeleteRemind({ remind_id }) {
-  console.log('remind', remind_id)
   try {
     const config = {
       url: 'task/delete-remind',
@@ -276,7 +275,7 @@ function* createOffer(action) {
     const res = yield call(doCreateOffer, action.options)
     console.log("GOI API NE", res)
     yield put(actions.createOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da18ce8aa75001b8060eb12" }))
+    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
@@ -287,7 +286,7 @@ function* createOffer(action) {
 async function doUpdateOffer(payload) {
   try {
     const config = {
-      url: '/task/create-offer',
+      url: '/task/update-offer',
       method: 'post',
       data: payload
     }
@@ -301,8 +300,8 @@ async function doUpdateOffer(payload) {
 function* updateOffer(action) {
   try {
     const res = yield call(doUpdateOffer, action.payload)
-    yield put(actions.updateOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da18ce8aa75001b8060eb12" }))
+    // yield put(actions.updateOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
@@ -313,11 +312,9 @@ function* updateOffer(action) {
 async function doDeleteOffer(offer_id) {
   try {
     const config = {
-      url: '/task/delete-offer/',
+      url: '/task/delete-offer',
       method: 'post',
-      data: {
-        offer_id
-      }
+      data: offer_id
     }
     const result = await apiService(config);
     return result.data;
@@ -329,8 +326,9 @@ async function doDeleteOffer(offer_id) {
 function* deleteOffer(action) {
   try {
     const res = yield call(doDeleteOffer, action.payload)
-    yield put(actions.deleteOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da18ce8aa75001b8060eb12" }))
+    console.log('deleteOffer', res)
+    yield put(actions.deleteOfferSuccess(res))    
+    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {

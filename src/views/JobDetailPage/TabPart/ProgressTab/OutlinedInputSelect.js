@@ -91,7 +91,7 @@ export default function IntegrationReactSelect(props) {
             },
           }}
           placeholder="Select..."
-          options={props.commandSelect}
+          options={props.selector}
           components={components}
           value={single}
           onChange={handleChangeSingle}

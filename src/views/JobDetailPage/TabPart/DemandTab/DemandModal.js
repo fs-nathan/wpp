@@ -77,7 +77,7 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
-const commandSelect = [
+const selector = [
   { label: 'Chỉ đạo', value: 1 },
   { label: 'Quyết định', value: 0 }
 ]
@@ -95,8 +95,8 @@ const DemandModal = (props) => {
   }
 
   return (
-    <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
-      <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
+    <Dialog onClose={props.handleClose} open={props.isOpen} fullWidth>
+      <DialogTitle onClose={props.handleClose}>
         Chỉ đạo, quyết định
         </DialogTitle>
       <DialogContent dividers>
@@ -104,7 +104,7 @@ const DemandModal = (props) => {
         <OutlinedInputSelect
           selectedIndex={tempSelectedItem.type}
           setOptions={typeId => setParams("type", typeId)}
-          commandSelect={commandSelect}
+          selector={selector}
         />
         {/* <Text 
                 component="span"
@@ -119,7 +119,6 @@ const DemandModal = (props) => {
                 variant="outlined"
             /> */}
         <Text
-          id="outlined-multiline-static"
           label="Nội dung"
           fullWidth
           multiline
