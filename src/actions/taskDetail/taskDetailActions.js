@@ -173,9 +173,9 @@ export const updateOfferFail = (error) => ({
     error: error,
 });
 
-export const deleteOffer = ({ offer_id }) => ({
+export const deleteOffer = payload => ({
     type: types.DELETE_OFFER_REQUEST,
-    payload: offer_id
+    payload
 });
 
 export const deleteOfferSuccess = (offer_id) => ({

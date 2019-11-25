@@ -41,7 +41,6 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  console.log('link::::', state.taskDetail.media.links)
   return {
     offer: state.taskDetail.taskOffer.offer,
     remind: state.taskDetail.taskRemind.remind,

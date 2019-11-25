@@ -12,7 +12,8 @@ import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 import OfferModal from '../OfferModal';
 import ApproveModal from '../ApproveModal'
-import { Scrollbars } from 'react-custom-scrollbars'
+import { Scrollbars } from 'react-custom-scrollbars';
+import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 
 
 const Container = styled.div`
@@ -180,7 +181,7 @@ const CustomListItem = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   }
-
+  
   return (
     <React.Fragment>
       <StyledListItem>
@@ -220,7 +221,8 @@ const CustomListItem = (props) => {
           setAnchorEl(null)
         }}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={() => {
-          props.deleteOfferByTaskId(props.offer.id)
+          console.log("Z", props.offer)
+          props.handleOpenModalDelete(props.offer)
           setAnchorEl(null)
         }}>Xóa</MenuItem>
       </Menu>
@@ -240,6 +242,7 @@ const StyledList = styled.ul`
 `;
 
 const ListOffer = (props) => {
+  
   return (
     <React.Fragment>
       <SearchInput
@@ -253,7 +256,11 @@ const ListOffer = (props) => {
             <CustomListItem
               {...props}
               key={item.id} offer={item}
-              handleClickOpen={() => props.handleClickOpen()}
+
+              handleClickOpen={() => {
+                props.handleClickEditItem(item)
+                props.handleOpenModalDelete(item)
+              }}
               handleClickClose={() => props.handleClickClose()} />
           )
         })}
@@ -269,7 +276,8 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function TabBody(props) {
-
+  
+  
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -282,6 +290,25 @@ function TabBody(props) {
   const handleClickClose = () => {
     setOpen(false);
   };
+  const [selectedItem, setSelectedItem] = React.useState({ offer_id: "", content: "" })
+  const handleClickEditItem = item => {
+    setSelectedItem({...item, offer_id: item.id})
+    setOpen(true)
+  };
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
+  const confirmDelete = () => {
+    props.deleteOfferByTaskId(selectedItem.offer_id)
+  }
+  const handleOpenModalDelete = item => {
+    setSelectedItem({...item, offer_id: item.id})
+    setOpenDelete(true);
+    setAnchorEl(null);
+  };
+  const handleCloseModalDelete = () => {
+    setOpenDelete(false);
+  };
+  
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
@@ -289,7 +316,7 @@ function TabBody(props) {
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
           >
-            {value === 0 
+            {value === 0
               ? <ColorTypo bold>Tất cả ({4})</ColorTypo>
               : <ColorTypo color='gray'>Tất cả ({4})</ColorTypo>}
           </ColorButton>
@@ -308,6 +335,8 @@ function TabBody(props) {
           <ListOffer
             handleClickClose={() => handleClickClose()}
             handleClickOpen={() => handleClickOpen()}
+            handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
+            handleClickEditItem={(data) => handleClickEditItem(data)}
             {...props}
           />
         </Collapse>
@@ -317,7 +346,20 @@ function TabBody(props) {
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
           {null}
         </Collapse>
-        <OfferModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} isOffer={isOffer}/>
+        <OfferModal
+          {...props}
+          isOpen={open}
+          handleClickClose={handleClickClose}
+          handleClickOpen={handleClickOpen}
+          isOffer={isOffer}
+          item={selectedItem}
+        />
+        <ModalDeleteConfirm
+        confirmDelete={confirmDelete}
+        isOpen={isOpenDelete}
+        handleCloseModalDelete={handleCloseModalDelete}
+        item={selectedItem}
+        {...props} />
       </Container>
     </Body>
   )
