@@ -42,6 +42,7 @@ const Title = styled.p`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
+  magrin: 8px 0;
 `;
 
 const StyledIconButton = styled(IconButton)`

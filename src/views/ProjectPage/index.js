@@ -6,6 +6,10 @@ import { detailProject } from '../../actions/project/detailProject';
 import { listTask } from '../../actions/task/listTask';
 import ProjectDetail from './LeftPart/ProjectDetail';
 import AllTaskTable from './RightPart/AllTaskTable';
+import { 
+  CustomEventListener, CustomEventDispose,
+  UPDATE_PROJECT,
+} from '../../constants/events';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -35,6 +39,16 @@ function ProjectPage({
   React.useEffect(() => {
     if (projectId) {
       doDetailProject({ projectId });
+      
+      const reloadDetailProject = () => {
+        doDetailProject({ projectId }, true);
+      }
+      
+      CustomEventListener(UPDATE_PROJECT, reloadDetailProject);
+      
+      return () => {
+        CustomEventDispose(UPDATE_PROJECT, reloadDetailProject);
+      }
     }
   }, [projectId, doDetailProject]);
 

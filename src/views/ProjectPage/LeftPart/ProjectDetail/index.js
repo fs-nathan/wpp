@@ -7,6 +7,7 @@ import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
 import ProgressBar from '../../../../components/ProgressBar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
+import ColorButton from '../../../../components/ColorButton';
 import Icon from '@mdi/react';
 import { mdiSquare } from '@mdi/js';
 import { connect } from 'react-redux';
@@ -14,6 +15,10 @@ import { Context as ProjectContext } from '../../index';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
+import EditProjectModal from '../../../ProjectGroupPage/Modals/EditProject';
+import AlertModal from '../../../../components/AlertModal';
+import { CustomEventListener, CustomEventDispose, DELETE_PROJECT } from '../../../../constants/events.js';
+import { deleteProject } from '../../../../actions/project/deleteProject';
 
 const Container = styled.div`
   padding: 0 16px;
@@ -83,11 +88,30 @@ const DateBox = styled.div`
   justify-content: space-between;
   align-items: center;
   & > div {
+    display: flex;
+    flex-direction: column;
     &:first-child {
       text-align: left;
     }
     &:last-child {
       text-align: right;
+    }
+  }
+`;
+
+const ActionBox = styled.div`
+  margin-top: 16px;
+  padding: 8px 0 16px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  & > * {
+    text-transform: none;
+    justify-content: flex-start;
+    & > span:last-child {
+      display: none;
+    }
+    background-color: #fff;
+    &:hover {
+      background-color: #fff;
     }
   }
 `;
@@ -98,7 +122,7 @@ function displayDate(date) {
   ) {
     return (
       <>
-        <span>{date.getHours()}:{date.getMinutes}</span>
+        <span>{date.getHours() < 10 ? `0${date.getHours()}`: date.getHours()}:{date.getMinutes() < 10 ? `0${date.getMinutes()}`: date.getMinutes()}</span>
         <span>{date.toLocaleDateString()}</span>
       </>
     );
@@ -107,17 +131,38 @@ function displayDate(date) {
   }
 }
 
-function ProjectDetail({ detailProject }) {
+function ProjectDetail({ detailProject, doDeleteProject, }) {
   
   const { setProjectId } = React.useContext(ProjectContext);
   const { projectId } = useParams();
+  const history = useHistory();
   const { data: { project }, error: detailProjectError, loading: detailProjectLoading } = detailProject;
   const loading = detailProjectLoading;
   const error = detailProjectError;
+  const [openEditProject, setOpenEditProject] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
     
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
+  
+  React.useEffect(() => {
+    const historyPushHandler = () => {
+      history.push('/projects');
+    };
+
+    CustomEventListener(DELETE_PROJECT, historyPushHandler);
+    
+    return () => {
+      CustomEventDispose(DELETE_PROJECT, historyPushHandler);
+    };
+  }, [history, projectId]);
+
+  function handleDeleteProject(projectId) {
+    doDeleteProject({ 
+      projectId,
+    });
+  }
   
   return (
     <React.Fragment>
@@ -214,7 +259,18 @@ function ProjectDetail({ detailProject }) {
               </SubHeader>
               <AvatarCircleList users={get(project, 'members', [])} total={20} display={12}/>
             </div>
+            <ActionBox>
+              <ColorButton onClick={() => setOpenEditProject(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
+              <ColorButton onClick={() => setAlert(true)} variant='text' variantColor='red' size='small' fullWidth>Xóa dự án</ColorButton>
+            </ActionBox>
           </Container>
+          <EditProjectModal curProject={project} open={openEditProject} setOpen={setOpenEditProject} />
+          <AlertModal
+            open={alert}
+            setOpen={setAlert}
+            content='Bạn chắc chắn muốn xóa?'
+            onConfirm={() => handleDeleteProject(projectId)}
+          />
         </LeftSideContainer>
       )}
     </React.Fragment>
@@ -229,6 +285,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    doDeleteProject: ({ projectId }) => dispatch(deleteProject({ projectId }))
   };
 };
 
