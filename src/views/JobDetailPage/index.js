@@ -27,6 +27,7 @@ function JobDetailPage(props) {
     props.getImageByTaskId(props.taskId)
     props.getFileByTaskId(props.taskId)
     props.getLinkByTaskId(props.taskId)
+    props.getLocationByTaskId(props.taskId)
   }, [])
 
   return (
@@ -41,10 +42,12 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  console.log('link::::', state.taskDetail.media.links)
+  // console.log('link::::', state.taskDetail.media.links)
   return {
     offer: state.taskDetail.taskOffer.offer,
     remind: state.taskDetail.taskRemind.remind,
+    remindTimeItems: state.taskDetail.taskRemind.remindTimeItems,
+    remindScheduleItems: state.taskDetail.taskRemind.remindScheduleItems,
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
     image: state.taskDetail.media.image,
@@ -53,7 +56,8 @@ const mapStateToProps = state => {
     command: state.taskDetail.taskCommand.command,
     commandItems: state.taskDetail.taskCommand.commandItems,
     decisionItems: state.taskDetail.taskCommand.decisionItems,
-    taskId: state.taskDetail.commonTaskDetail.activeTaskId
+    taskId: state.taskDetail.commonTaskDetail.activeTaskId,
+    location: state.taskDetail.location.locations,
   }
 }
 
@@ -86,6 +90,8 @@ const mapDispatchToProps = dispatch => {
     getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
     getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
     getLinkByTaskId: taskId => dispatch(taskDetailAction.getLinkTabPart({ taskId })),
+    // Location
+    getLocationByTaskId: taskId => dispatch(taskDetailAction.getLocationTabPart({ taskId })),
   };
 };
 

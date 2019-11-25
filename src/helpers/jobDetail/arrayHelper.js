@@ -12,3 +12,12 @@ const CM_DC_TYPE = {
 }
 export const filterCommandItem = arr => arr.filter(item => item.type === CM_DC_TYPE.COMMAND)
 export const filterDecisionItem = arr => arr.filter(item => item.type === CM_DC_TYPE.DECISION)
+
+
+const REMIND_TYPE = {
+    TIME: 0,
+    SCHEDULE: 1,
+}
+
+export const filterRemindTime = arr => arr.filter(item => item.type === REMIND_TYPE.TIME)
+export const filterRemindSchedule = arr => arr.filter(item => item.type === REMIND_TYPE.SCHEDULE)

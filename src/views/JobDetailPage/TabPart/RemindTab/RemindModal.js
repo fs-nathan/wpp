@@ -10,7 +10,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import ColorChip from '../../../../components/ColorChip';
 import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
-const titles = [
+const selector = [
   {
     value: 'Nhắc hẹn theo thời gian',
     label: 'Nhắc hẹn theo thời gian',
@@ -202,7 +202,9 @@ function RemindModal(props) {
       </DialogTitle>
       <DialogContent dividers style={{ overflow: 'hidden'}}>
         <TitleText component="div">Loại nhắc hẹn</TitleText>
-        <OutlinedInputSelect />
+        <OutlinedInputSelect 
+          selector={selector}
+        />
         {/* Middle JSX */}
         {data.title === 'Nhắc hẹn theo thời gian' ?
           <Typography component="div">

@@ -10,7 +10,7 @@ import ColorChip from '../../../../../components/ColorChip';
 import SearchInput from '../../../../../components/SearchInput';
 import avatar from '../../../../../assets/avatar.jpg';
 import colorPal from '../../../../../helpers/colorPalette';
-import RemindModal from '../RemindModal'; 
+import RemindModal from '../RemindModal';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 
@@ -155,7 +155,7 @@ const RemindList = (props) => {
   const handleClickClose = () => {
     _setOpen(false)
   };
-  
+
   return (
     <StyledList>
       {props.remind.map((item, idx) => {
@@ -164,7 +164,7 @@ const RemindList = (props) => {
             <Content>
               <StyledTitleBox>
                 <Avatar style={{ width: 25, height: 25 }} src={item.user_create_avatar} alt='avatar' />
-                {/* <ColorTypo variant='body1'>{elem.title}</ColorTypo> */}
+                <ColorTypo variant='body1'>Nhắc hẹn vào lúc {item.time_remind} ngày {item.date_remind}</ColorTypo>
                 {/* {elem && elem.badge.map((item, key) => (
                   <Badge key={key} color='orangelight' size='small' badge label={item + ""} />))
                 } */}

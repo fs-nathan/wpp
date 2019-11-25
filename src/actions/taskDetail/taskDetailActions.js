@@ -263,6 +263,25 @@ export const getLinkTabPartFail = (error) => ({
     type: types.GET_LINK_TABPART_FAIL,
     error: error,
 });
+// Location
+export const getLocationTabPart = ({ taskId }) => ({
+    type: types.GET_LOCATION_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getLocationTabPartSuccess = (payload) => ({
+    type: types.GET_LOCATION_TABPART_SUCCESS,
+    payload
+});
+
+export const getLocationTabPartFail = (error) => ({
+    type: types.GET_LOCATION_TABPART_FAIL,
+    error: error,
+});
+
+
 
 
 export const createCommandFail = (error) => ({
