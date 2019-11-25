@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Typography, Dialog, Button, TextField, withStyles, InputAdornment, FilledInput } from '@material-ui/core';
+import { IconButton, Typography, Dialog, Button, TextField, withStyles, InputAdornment, FilledInput, FormControl } from '@material-ui/core';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -12,19 +12,19 @@ import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
 const selector = [
   {
-    value: 'Nhắc hẹn theo thời gian',
+    value: 0,
     label: 'Nhắc hẹn theo thời gian',
   },
   {
-    value: 'Nhắc hẹn theo tiến độ thực tế',
+    value: 1,
     label: 'Nhắc hẹn theo tiến độ thực tế',
   },
   {
-    value: 'Nhắc hẹn theo tiến độ kế hoạch',
+    value: 2,
     label: 'Nhắc hẹn theo tiến độ kế hoạch',
   },
   {
-    value: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế',
+    value: 3,
     label: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế',
   },
 ];
@@ -65,13 +65,12 @@ const TitleText = styled(Typography)`
 const TexTitle = styled(Typography)`
     font-size: 15px;
     width: 204px;
-    padding: 15px 0;
+    padding: 15px 0 8px 0;
   `
-const HelperText = styled(TextField)`
-    & > *:last-child {
+const HelperText = styled(Typography)`
+      color: #a3a3a3
       font-size: 12px;
       margin: 8px 0 0;
-    }
   `
 const DivTitle = styled.div`
     display: flex;
@@ -98,9 +97,6 @@ const BadgeItem = styled(ColorChip)`
     margin: 5px 6px 5px 0;
   `
 
-const InputOutline = styled(FilledInput)`
-    width: 420px;
-  `
 const TextRemind = styled(Typography)`
     font-size: 15px;
     display: flex;
@@ -129,6 +125,16 @@ const ContentText = styled(TextField)`
     & > label {
       font-size: 14px;
       z-index: 0
+    }
+`
+const InputSelect = styled(OutlinedInputSelect)`
+    & > *:first-child > div > div {
+      padding: 12px;
+    }
+`
+const InputProgress = styled(OutlinedInput)`
+    & > input {
+      padding: 0 0 0 14px;
     }
 `
 
@@ -200,14 +206,18 @@ function RemindModal(props) {
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
         Nhắc hẹn
       </DialogTitle>
-      <DialogContent dividers style={{ overflow: 'hidden'}}>
+      <DialogContent dividers style={{ overflow: 'hidden' }}>
         <TitleText component="div">Loại nhắc hẹn</TitleText>
-        <OutlinedInputSelect 
-          selector={selector}
+        <InputSelect
+          commandSelect={selector}
+          // selectedIndex={tempSelectedItem.type}
+          // setOptions={typeId => setParams("type", typeId)}
+          setOptions={typeId => { }}
         />
         {/* Middle JSX */}
         {data.title === 'Nhắc hẹn theo thời gian' ?
           <Typography component="div">
+            <HelperText>Bạn có lịch hẹn, ghi chú, sự kiện... quan trọng ? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhở bạn khi đến hẹn</HelperText>
             <DivTitle component="div">
               <TexTitle component="span">Ngày nhắc</TexTitle>
               <TexTitle component="span">Giờ nhắc</TexTitle>
@@ -224,19 +234,24 @@ function RemindModal(props) {
                 <InputTime value={time} onChange={handleTime} />
               </DivTime>
               <SelectInput >
-                <OutlinedInputSelect/>
+                <OutlinedInputSelect
+                  commandSelect={badges}
+                  setOptions={typeId => { }}
+                />
               </SelectInput>
             </Div>
           </Typography>
           :
           <div>
-            <TexTitle component="div"></TexTitle>
-            <InputOutline             
-              label="Mốc tiến độ cần nhắc"
-              variant="outlined"
-              endAdornment={<InputAdornment position="end">%</InputAdornment>}
-            />
-            <Button variant="contained" style={{ marginLeft: 10 }}>Thêm</Button>
+            <HelperText>Khi tiến độ công việc được xác định (tự động) dựa trên thời gian hiện tại (thời gian thực) lớn hơn hoặc bằng mốc đã chọn, hệ thống sẽ nhắc nhở bạn</HelperText>
+            <TexTitle component="div">Mốc tiến độ cần nhắc</TexTitle>
+            <div style={{ display: 'flex' }}>
+              <InputProgress
+                fullWidth
+                endAdornment={<InputAdornment position="end">%</InputAdornment>}
+              />
+              <Button variant="contained" style={{ marginLeft: 20, width: 90, boxShadow: 'none' }}>Thêm</Button>
+            </div>
             <Typography component={'div'}>
               {data && data.badge && data.badge.map((item, key) => (
                 <BadgeItem key={key} color={'orangelight'} label={item} size='small' badge component='small' />
@@ -245,17 +260,6 @@ function RemindModal(props) {
           </div>
         }
         {/* ------- */}
-        {/* <TitleText component="div">Nội dung</TitleText>
-        <Text component="span"
-          placeholder="Nhập nội dung nhắc hẹn"
-          fullWidth
-          multiline rows="4"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={data.content}
-          variant="outlined"
-        /> */}
         <ContentText
           id="outlined-multiline-static"
           label="Nội dung"

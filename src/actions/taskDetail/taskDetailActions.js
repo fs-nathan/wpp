@@ -212,6 +212,26 @@ export const createCommandSuccess = (payload) => ({
     payload
 });
 
+export const createCommandFail = (error) => ({
+    type: types.CREATE_OFFER_FAIL,
+    error: error,
+});
+
+
+export const updateCommand = (payload) => ({
+    type: types.UPDATE_COMMAND_REQUEST,
+    payload
+});
+
+export const updateCommandSuccess = (payload) => ({
+    type: types.UPDATE_COMMAND_SUCCESS,
+    payload
+});
+
+export const updateCommandFail = (error) => ({
+    type: types.UPDATE_COMMAND_FAIL,
+    error: error,
+});
 // Media : Image
 export const getImage = ({ taskId }) => ({
     type: types.GET_IMAGE_TABPART_REQUEST,
@@ -281,25 +301,20 @@ export const getLocationTabPartFail = (error) => ({
     error: error,
 });
 
-
-
-
-export const createCommandFail = (error) => ({
-    type: types.CREATE_OFFER_FAIL,
-    error: error,
+// Task Detail - TabPart - Cot phai
+export const getTaskDetailTabPart = ({ taskId }) => ({
+    type: types.GET_TASK_DETAIL_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
 });
 
-export const updateCommand = (payload) => ({
-    type: types.UPDATE_COMMAND_REQUEST,
+export const getTaskDetailTabPartSuccess = (payload) => ({
+    type: types.GET_TASK_DETAIL_TABPART_SUCCESS,
     payload
 });
 
-export const updateCommandSuccess = (payload) => ({
-    type: types.UPDATE_COMMAND_SUCCESS,
-    payload
-});
-
-export const updateCommandFail = (error) => ({
-    type: types.UPDATE_COMMAND_FAIL,
+export const getTaskDetailTabPartFail = (error) => ({
+    type: types.GET_TASK_DETAIL_TABPART_FAIL,
     error: error,
 });

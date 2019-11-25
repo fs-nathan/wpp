@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
   singleValue: {
-    fontSize: 16,
+    fontSize: 14,
   },
   root: {
     flexGrow: 1,
@@ -91,7 +91,7 @@ export default function IntegrationReactSelect(props) {
             },
           }}
           placeholder="Select..."
-          options={props.selector}
+          options={props.commandSelect}
           components={components}
           value={single}
           onChange={handleChangeSingle}

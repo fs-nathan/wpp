@@ -141,20 +141,44 @@ const MemberMenuLists = (props) => {
   )
 }
 
+const selector = [
+  {
+    value: 0,
+    label: 'Nhắc hẹn theo thời gian',
+  },
+  {
+    value: 1,
+    label: 'Nhắc hẹn theo tiến độ thực tế',
+  },
+  {
+    value: 2,
+    label: 'Nhắc hẹn theo tiến độ kế hoạch',
+  },
+  {
+    value: 3,
+    label: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế',
+  },
+];
+
 const RemindList = (props) => {
   const [open, _setOpen] = React.useState(false);
   const [elemState, _setElem] = React.useState({})
 
   const [data] = React.useState(__data);
+
   // Toogle popup array contains status of each popup
   const handleClickOpen = (item) => {
     _setOpen(true)
     _setElem(item)
-
   };
+
   const handleClickClose = () => {
     _setOpen(false)
   };
+
+  const getRemindTextByType = (typeId, time) => {
+    return typeId ? selector[typeId].label : "Nhắc hẹn vào lúc " + time
+  }
 
   return (
     <StyledList>
@@ -164,10 +188,12 @@ const RemindList = (props) => {
             <Content>
               <StyledTitleBox>
                 <Avatar style={{ width: 25, height: 25 }} src={item.user_create_avatar} alt='avatar' />
-                <ColorTypo variant='body1'>Nhắc hẹn vào lúc {item.time_remind} ngày {item.date_remind}</ColorTypo>
-                {/* {elem && elem.badge.map((item, key) => (
+                <ColorTypo variant='body1'>
+                  {getRemindTextByType(item.type, item.date_remind + " " + item.time_remind)}
+                </ColorTypo>
+                {item.duration && item.duration.map((item, key) => (
                   <Badge key={key} color='orangelight' size='small' badge label={item + ""} />))
-                } */}
+                }
               </StyledTitleBox>
 
               <MemberMenuLists idx={idx} handleClickOpen={() => handleClickOpen(item)} item={item} {...props} />

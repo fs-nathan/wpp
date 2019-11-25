@@ -427,6 +427,29 @@ function* getLocation(action) {
   }
 }
 
+// Task Detail - TabPart - Cot phai
+async function doGetTaskDetail({ taskId }) {
+  try {
+    const config = {
+      url: '/task/detail?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getTaskDetail(action) {
+  try {
+    const res = yield call(doGetTaskDetail, action.options)
+    yield put(actions.getTaskDetailTabPartSuccess(res))
+  } catch (error) {
+    yield put(actions.getTaskDetailTabPartFail(error))
+  }
+}
+
 //Command
 async function doGetCommand({ task_id }) {
   try {    
@@ -524,7 +547,8 @@ export {
   getLink,
   // Location
   getLocation,
-  
+  // Task Detail - TabPart- Cot phai
+  getTaskDetail,
   // Command and Decision::
   getCommand,
   createCommand,
