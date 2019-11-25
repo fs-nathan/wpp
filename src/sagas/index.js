@@ -162,11 +162,17 @@ function* rootSaga() {
 
   // Media Image File
   yield takeLeading(taskDetailType.GET_IMAGE_TABPART_REQUEST, taskDetailSaga.getImage);
-  yield takeLeading(taskDetailType.GET_FILE_TABPART_REQUEST, taskDetailSaga.getFile)
+  yield takeLeading(taskDetailType.GET_FILE_TABPART_REQUEST, taskDetailSaga.getFile);
+  yield takeLeading(taskDetailType.GET_LINK_TABPART_REQUEST, taskDetailSaga.getLink);
+  // Location
+  yield takeLeading(taskDetailType.GET_LOCATION_TABPART_REQUEST, taskDetailSaga.getLocation);
+  // Task Detail - TabPart - cot phai
+  yield takeLeading(taskDetailType.GET_TASK_DETAIL_TABPART_REQUEST, taskDetailSaga.getTaskDetail);
   //Command and Decsion::
   yield takeLeading(taskDetailType.GET_COMMAND_REQUEST, taskDetailSaga.getCommand);
   yield takeLeading(taskDetailType.CREATE_COMMAND_REQUEST, taskDetailSaga.createCommand);
   yield takeLeading(taskDetailType.UPDATE_COMMAND_REQUEST, taskDetailSaga.updateCommand);
+  
 };
 
 export default rootSaga;

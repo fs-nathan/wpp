@@ -25,6 +25,10 @@ function JobDetailPage(props) {
     props.getOfferByTaskId(props.taskId)
     props.getCommandByTaskId(props.taskId)
     props.getImageByTaskId(props.taskId)
+    props.getFileByTaskId(props.taskId)
+    props.getLinkByTaskId(props.taskId)
+    props.getLocationByTaskId(props.taskId)
+    props.getTaskDetailByTaskId(props.taskId)
   }, [])
 
   return (
@@ -39,18 +43,23 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('image::::', state.taskDetail.media.image)
+  // console.log('taskDetail::::', state.taskDetail.detailTask.taskDetails)
   return {
     offer: state.taskDetail.taskOffer.offer,
     remind: state.taskDetail.taskRemind.remind,
+    remindTimeItems: state.taskDetail.taskRemind.remindTimeItems,
+    remindScheduleItems: state.taskDetail.taskRemind.remindScheduleItems,
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
     image: state.taskDetail.media.image,
     file: state.taskDetail.media.file,
+    link: state.taskDetail.media.links,
     command: state.taskDetail.taskCommand.command,
     commandItems: state.taskDetail.taskCommand.commandItems,
     decisionItems: state.taskDetail.taskCommand.decisionItems,
-    taskId: state.taskDetail.commonTaskDetail.activeTaskId
+    taskId: state.taskDetail.commonTaskDetail.activeTaskId,
+    location: state.taskDetail.location.locations,
+    detailTask: state.taskDetail.detailTask.taskDetails
   }
 }
 
@@ -73,7 +82,7 @@ const mapDispatchToProps = dispatch => {
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
     createOfferByTaskId: (createId, content) => { dispatch(taskDetailAction.createOffer({ createId, content })) },
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
-    updateOfferByOfferId: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
+    updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
     // command 
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
@@ -81,6 +90,12 @@ const mapDispatchToProps = dispatch => {
 
     // Media Image File Link
     getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
+    getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
+    getLinkByTaskId: taskId => dispatch(taskDetailAction.getLinkTabPart({ taskId })),
+    // Location
+    getLocationByTaskId: taskId => dispatch(taskDetailAction.getLocationTabPart({ taskId })),
+    // Task Detail - cot phai
+    getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
   };
 };
 
