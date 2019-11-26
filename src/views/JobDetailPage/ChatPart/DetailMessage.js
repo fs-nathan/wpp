@@ -3,7 +3,11 @@ import { Avatar, Typography, ListItemText, ListItem, CardMedia, Button } from '@
 import styled from 'styled-components';
 import avatar from '../../../assets/avatar.jpg'
 import colorPal from '../../../helpers/colorPalette'
-import { mdiClockOutline, mdiArrowRightBold, mdiAlarm, mdiFileTree, mdiDownload, mdiLinkVariant, mdiLinkOff, mdiMapMarker, mdiEmailSend, mdiBullhorn } from '@mdi/js';
+import { 
+    mdiClockOutline, mdiArrowRightBold, mdiAlarm, 
+    mdiFileTree, mdiDownload, mdiLinkVariant, 
+    mdiLinkOff, mdiMapMarker, mdiEmailSend 
+} from '@mdi/js';
 import Icon from '@mdi/react';
 import ImageChatTest from '../../../assets/imageChatTest.jpg'
 import NoImage from '../../../assets/no-img.png'
@@ -560,7 +564,12 @@ const ShareLink = () => {
                         style={{ margin: 0 }}
                         primary={
                             <Typography component='div'>
-                                <a href='https://vtask.net/' target="_blank">https://vtask.net/</a>
+                                <a 
+                                    href='https://vtask.net/' 
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                        https://vtask.net/
+                                </a>
                             </Typography>
                         }
                     />

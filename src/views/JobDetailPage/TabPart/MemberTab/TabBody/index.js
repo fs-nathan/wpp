@@ -152,7 +152,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           horizontal: 'right',
         }}
       >
-        <MenuItemCheck onClick={handleClose, handleClickOpen}>Chi tiết</MenuItemCheck>
+        <MenuItemCheck onClick={() => {handleClose();handleClickOpen()}}>Chi tiết</MenuItemCheck>
         <MenuItemCheck onClick={handleClose}>Xóa</MenuItemCheck>
       </Menu>
       {/* modal members */}

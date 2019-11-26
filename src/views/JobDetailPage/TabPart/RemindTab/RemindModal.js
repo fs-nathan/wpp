@@ -1,5 +1,8 @@
 import React from 'react';
-import { IconButton, Typography, Dialog, Button, TextField, withStyles, InputAdornment, FilledInput, FormControl } from '@material-ui/core';
+import { 
+  IconButton, Typography, Dialog, Button, 
+  TextField, withStyles, InputAdornment 
+} from '@material-ui/core';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -86,15 +89,15 @@ const Div = styled.div`
     justify-content: space-between;
     align-items: center;
   `
-const Text = styled(TextField)`
-    & > *:first-child {
-      margin-bottom: 20px;
-      & > input {
-        font-size: 16px;
-        margin-bottom: 30px;
-      }
-    }
-  `
+// const Text = styled(TextField)`
+//     & > *:first-child {
+//       margin-bottom: 20px;
+//       & > input {
+//         font-size: 16px;
+//         margin-bottom: 30px;
+//       }
+//     }
+//   `
 const BadgeItem = styled(ColorChip)`
     font-weight: 600;
     border-radius: 3px;

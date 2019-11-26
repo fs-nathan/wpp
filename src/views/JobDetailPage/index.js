@@ -31,6 +31,7 @@ function JobDetailPage(props) {
     props.getTaskDetailByTaskId(props.taskId)
     props.getMemberByTaskId(props.taskId)
     props.getMemberNotAssignedByTaskId(props.taskId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

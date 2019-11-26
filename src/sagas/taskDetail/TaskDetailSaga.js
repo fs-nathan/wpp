@@ -298,7 +298,7 @@ async function doUpdateOffer(payload) {
 
 function* updateOffer(action) {
   try {
-    const res = yield call(doUpdateOffer, action.payload)
+    yield call(doUpdateOffer, action.payload)
     // yield put(actions.updateOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 

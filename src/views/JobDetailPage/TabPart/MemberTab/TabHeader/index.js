@@ -5,7 +5,7 @@ import Icon from '@mdi/react';
 import { mdiChevronLeft  , mdiSettings } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import AddMemberModal from '../../../ListPart/ListHeader/AddMemberModal'
-import { WrapperContext } from '../../..';
+// import { WrapperContext } from '../../..';
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const ButtonIcon = styled(IconButton)`
 
 function TabHeader({ setShow }) {
   const [openAddModal, setOpenAddModal] = React.useState(false);
-  const valueContext = React.useContext(WrapperContext);
+  // const valueContext = React.useContext(WrapperContext);
   return (
     <Container>
       <ButtonIcon onClick={() => setShow(0)}>
