@@ -297,8 +297,8 @@ function TableMember(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.listMemberJobState.map(addData => (
-                        <TableRow key={addData.name}>
+                    {props.listMemberJobState.map((addData, idx) => (
+                        <TableRow key={idx}>
                             <MemberTable>{addData.avatarMember}</MemberTable>
                             <MemberTable component="th" scope="row">
                                 {addData.name}

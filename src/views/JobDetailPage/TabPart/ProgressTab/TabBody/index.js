@@ -207,7 +207,7 @@ function TabBody() {
         onDragStop={progress => console.log(`Stopped dragging: ${progress}%`)}
         roundedCorners
       >
-        <Progress progresscolor={"123"} height={20} color="green" progress={progress}>
+        <Progress height={20} color="green" progress={progress}>
             <Dot>
               <Typography> { !progress ? '0%' : `${progress}%` } </Typography>
             </Dot>
