@@ -29,6 +29,8 @@ function JobDetailPage(props) {
     props.getLinkByTaskId(props.taskId)
     props.getLocationByTaskId(props.taskId)
     props.getTaskDetailByTaskId(props.taskId)
+    props.getMemberByTaskId(props.taskId)
+    props.getMemberNotAssignedByTaskId(props.taskId)
   }, [])
 
   return (
@@ -43,7 +45,6 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('taskDetail::::', state.taskDetail.detailTask.taskDetails)
   return {
     offer: state.taskDetail.taskOffer.offer,
     pendingItems: state.taskDetail.taskOffer.pendingItems,
@@ -61,7 +62,9 @@ const mapStateToProps = state => {
     decisionItems: state.taskDetail.taskCommand.decisionItems,
     taskId: state.taskDetail.commonTaskDetail.activeTaskId,
     location: state.taskDetail.location.locations,
-    detailTask: state.taskDetail.detailTask.taskDetails
+    detailTask: state.taskDetail.detailTask.taskDetails,
+    member: state.taskDetail.taskMember.member,
+    memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned
   }
 }
 
@@ -97,7 +100,10 @@ const mapDispatchToProps = dispatch => {
     // Location
     getLocationByTaskId: taskId => dispatch(taskDetailAction.getLocationTabPart({ taskId })),
     // Task Detail - cot phai
-    getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
+    getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId })),
+    // Member
+    getMemberByTaskId: task_id => dispatch(taskDetailAction.getMember({ task_id })),
+    getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
   };
 };
 
