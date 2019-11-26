@@ -1,14 +1,14 @@
-import React, { userState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiDragVertical, mdiDotsVertical, mdiSend } from '@mdi/js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { List, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton, Menu, MenuItem, InputBase, ListItemSecondaryAction } from '@material-ui/core';
+import { List, ListItem, ListItemText, Avatar, IconButton, Menu, MenuItem, InputBase } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import SearchInput from '../../../../../components/SearchInput';
 import colorPal from '../../../../../helpers/colorPalette';
-import avatar from '../../../../../assets/avatar.jpg';
+// import avatar from '../../../../../assets/avatar.jpg';
 import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
@@ -291,9 +291,9 @@ const CustomMenu = styled(Menu)`
 `
 
 const FinishedSubtaskList = (props) => {
-  console.log('complete task:::', props);
+  // console.log('complete task:::', props);
 
-  const [data] = React.useState([1, 2, 3, 4]);
+  // const [data] = React.useState([1, 2, 3, 4]);
   // const [isHover, setIsHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 

@@ -158,10 +158,10 @@ function MemberDetail(props) {
 
 function MemberPriority(props) {
     const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
-    const [open, setOpen] = React.useState(false);
-    const handleClose = () => {
-        setOpen(false);
-    };
+    // const [open, setOpen] = React.useState(false);
+    // const handleClose = () => {
+    //     setOpen(false);
+    // };
 
     if (props.master) {
         return (
@@ -175,7 +175,7 @@ function MemberPriority(props) {
                 size="small"
                 label={props.label}
                 onClick={() => {
-                    handleClose()
+                    // handleClose()
                     setOpenPriorityModal(true)
                 }}
                 icon={<ArrowDropDownIcon />}
@@ -187,10 +187,10 @@ function MemberPriority(props) {
 
 function MemberRole(props) {
     const [openRoleModal, setOpenRoleModal] = React.useState(false);
-    const [open, setOpen] = React.useState(false);
-    const handleClose = () => {
-        setOpen(false);
-    };
+    // const [open, setOpen] = React.useState(false);
+    // const handleClose = () => {
+    //     setOpen(false);
+    // };
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <div>
@@ -206,7 +206,7 @@ function MemberRole(props) {
             <IconButton style={{ float: 'right' }}
                 size='small'
                 onClick={() => {
-                    handleClose()
+                    // handleClose()
                     setOpenRoleModal(true)
                 }}
             >

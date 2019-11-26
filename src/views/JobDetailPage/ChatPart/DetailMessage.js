@@ -78,7 +78,7 @@ const getSubColorRole = (role, authorityList) => {
             break;
     }
     return (
-        <Typography component='div' style={{ color: color }}>{role}-{authorityList}</Typography>
+        <Typography component='span' style={{ color: color }}>{`${role} - ${authorityList}`}</Typography>
     )
 }
 
@@ -447,22 +447,22 @@ const ImageChatMess = styled(Typography)`
 const ImageChat = (props) => {
     const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
-  const handleClose = () => {
-    setOpen(false);
-  }
+    const handleClose = () => {
+        setOpen(false);
+    }
     return (
         <ImageChatMess component='div'>
             <CardMedia
                 component="img"
                 height="auto"
                 image={ImageChatTest}
-                onClick= {() => handleClickOpen()}
+                onClick={() => handleClickOpen()}
             />
-            <ModalImage isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen}/>
+            <ModalImage isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
         </ImageChatMess>
     )
 }
@@ -849,7 +849,7 @@ export default function DetailMessage(props) {
             <RemindMessage />
             {members.map((element, index) => {
                 return (
-                    <Typography component='div'>
+                    <Typography key={index} component='div'>
                         <StyledFrameMess component='div'>
 
                             <TitleMessage key={element.id} {...element} />
@@ -890,7 +890,7 @@ export default function DetailMessage(props) {
                                 <Remind />
                             }
                             {(element.id === 13) &&
-                                <ImageChat {...props}/>
+                                <ImageChat {...props} />
                             }
                             {(element.id === 14) &&
                                 <NoImageChat />

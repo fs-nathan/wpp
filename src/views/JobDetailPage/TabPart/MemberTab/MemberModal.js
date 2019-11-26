@@ -213,7 +213,7 @@ const MemberModal = (props) => {
                         />
                         <ButtonFile htmlFor="contained-button-file">
                             <Button variant="contained" component="span" fullWidth className={classes.button}>
-                                <img src={imgDoc} style={{ width: 20, height: 20, marginRight: 10 }} />
+                                <img alt="vtask" src={imgDoc} style={{ width: 20, height: 20, marginRight: 10 }} />
                                 Xem file hồ sơ
                             </Button>
                         </ButtonFile>
