@@ -89,7 +89,7 @@ const ListItemTabPart = styled(ListItem)`
   flex-direction: column;
   align-items: start;
 `
-function DropdownButton({ values }) {
+function DropdownButton({ values, value, priority }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState(0);
@@ -104,6 +104,13 @@ function DropdownButton({ values }) {
 
   function handleSelect(index) {
     setSelected(index);
+    if (priority === true) {
+      console.log('index::::::::::', index)
+      console.log('values::::::::::', values)
+      console.log('value in select function::::', value)
+      console.log('taskId::::', value.taskId)
+      value.updateTaskPriority(value.taskId, index)
+    }
     handleClose();
   }
 
@@ -201,16 +208,16 @@ function Content({ value }) {
 
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
-  // console.log('value:::::', value.detailTask.description);
+  console.log('value:::', value);
   let content = ""
-  if(value){
-    if(value.detailTask){
-      if(value.detailTask.description){
+  if (value) {
+    if (value.detailTask) {
+      if (value.detailTask.description) {
         content = value.detailTask.description
       }
     }
   }
-  
+
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <StyledList>
@@ -238,9 +245,9 @@ function TabBody(props) {
               Đang tạm dừng
         </ColorButton>
             :
-            <DropdownButton size='small' values={['Đang làm', 'Đang chờ', 'Hoàn thành']} />
+            <DropdownButton size='small' values={['Đang làm', 'Đang chờ', 'Hoàn thành']} value={value} />
           }
-          <DropdownButton size='small' values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']} />
+          <DropdownButton size='small' values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']} value={value} priority={true} />
           <ColorButton size='small' variant='contained' variantColor='red'
             style={{
               marginBottom: '10px',

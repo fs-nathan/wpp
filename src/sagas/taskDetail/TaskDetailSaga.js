@@ -51,7 +51,7 @@ function* postSubTask(action) {
 //=== update
 async function doUpdateSubTask(payload) {
   console.log('payload', payload);
-  
+
   try {
     const config = {
       url: `task/update-subtask?sub_task_id=${payload.taskId}&name=${payload.name}`,
@@ -76,12 +76,12 @@ function* updateSubTask(action) {
 }
 // ==== delete
 async function doDeleteSubTask({ sub_task_id }) {
-  
+
   try {
     const config = {
-      url: 'task/delete-subtask?sub_task_id='+ sub_task_id,
+      url: 'task/delete-subtask?sub_task_id=' + sub_task_id,
       method: 'post',
-      data: { sub_task_id}
+      data: { sub_task_id }
     }
     const result = await apiService(config);
     return result.data;
@@ -91,7 +91,7 @@ async function doDeleteSubTask({ sub_task_id }) {
 }
 
 function* deleteSubTask(action) {
-  
+
   try {
     const res = yield call(doDeleteSubTask, action.options)
     yield put(actions.deleteSubTaskSuccess(res))
@@ -180,7 +180,7 @@ function* getRemind(action) {
 // //=== update
 // async function doUpdateSubTask(payload) {
 //   console.log('payload', payload);
-  
+
 //   try {
 //     const config = {
 //       url: `task/update-subtask?sub_task_id=${payload.taskId}&name=${payload.name}`,
@@ -210,7 +210,7 @@ async function doDeleteRemind({ remind_id }) {
     const config = {
       url: 'task/delete-remind',
       method: 'post',
-      data: {remind_id}
+      data: { remind_id }
     }
     const result = await apiService(config);
     return result.data;
@@ -327,7 +327,7 @@ function* deleteOffer(action) {
   try {
     const res = yield call(doDeleteOffer, action.payload)
     console.log('deleteOffer', res)
-    yield put(actions.deleteOfferSuccess(res))    
+    yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 
     // CustomEventEmitter(DELETE_ROOM);
@@ -450,7 +450,7 @@ function* getTaskDetail(action) {
 
 //Command
 async function doGetCommand({ task_id }) {
-  try {    
+  try {
     const config = {
       url: 'task/get-command-decision?task_id=' + task_id,
       method: 'get'
@@ -521,13 +521,39 @@ function* updateCommand(action) {
   }
 }
 
+async function doUpdatePriority(payload) {
+  try {
+    const config = {
+      url: '/task/update-priority',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updatePriority(action) {
+  try {
+    const res = yield call(doUpdatePriority, action.payload)
+    yield put(actions.updatePrioritySuccess(res))
+    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.updatePriorityFail(error))
+  }
+}
+
 export {
   // Offer::
   getOffer,
   createOffer,
   deleteOffer,
   updateOffer,
-  
+
   // Remind::
   getRemind,
   deleteRemind,
@@ -550,5 +576,7 @@ export {
   // Command and Decision::
   getCommand,
   createCommand,
-  updateCommand
+  updateCommand,
+  // Update Priority
+  updatePriority
 }

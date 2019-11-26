@@ -318,3 +318,17 @@ export const getTaskDetailTabPartFail = (error) => ({
     type: types.GET_TASK_DETAIL_TABPART_FAIL,
     error: error,
 });
+
+// Update Priority
+export const updatePriority = payload => ({
+    type: types.UPDATE_TASK_PRIORITY_REQUEST,
+    payload
+})
+export const updatePrioritySuccess = payload => ({
+    type: types.UPDATE_TASK_PRIORITY_SUCCESS,
+    payload
+})
+export const updatePriorityFail = error => ({
+    type: types.UPDATE_TASK_PRIORITY_FAIL,
+    error: error
+})

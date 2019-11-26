@@ -95,7 +95,9 @@ const mapDispatchToProps = dispatch => {
     // Location
     getLocationByTaskId: taskId => dispatch(taskDetailAction.getLocationTabPart({ taskId })),
     // Task Detail - cot phai
-    getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
+    getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId })),
+    // update Priority
+    updateTaskPriority: (task_id, priority) => dispatch(taskDetailAction.updatePriority({ task_id, priority }))
   };
 };
 
