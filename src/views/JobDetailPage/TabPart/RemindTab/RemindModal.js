@@ -10,6 +10,10 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import ColorChip from '../../../../components/ColorChip';
 import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
+import {
+  DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT
+} from '../../../../helpers/jobDetail/stringHelper'
+
 const selector = [
   {
     value: 0,
@@ -178,29 +182,33 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
-function RemindModal(props) {
-  // bien input time
-  const [time, setTime] = React.useState('')
+const DEFAULT_DATA = {
+  id: "",
+  type: 0,
+  content: "",
+  date_remind: DEFAULT_DATE_TEXT,
+  time_remind: DEFAULT_TIME_TEXT,
+}
 
-  const handleTime = () => {
-    setTime(time);
-  }
+function RemindModal(props) {
+  const classes = useStyles()
   // bien menu item
-  const classes = useStyles();
-  const dataDefault = {
-    title: 'Nhắc hẹn theo thời gian',
-    date: '',
-    time: '',
-    badge: [],
-    content: ''
-  }
-  const [data, setData] = React.useState(dataDefault)
+  const [data, setData] = React.useState(DEFAULT_DATA)
+
+  // Life cycle
   React.useEffect(() => {
-    if (props.data) setData(props.data)
-  })
-  const handleChange = (event, att) => {
-    setData({ ...data, [att]: event.target.value });
-  };
+    if (props.data) {
+      let tempData = props.data
+      if (!tempData.date_remind) tempData.date_remind = DEFAULT_DATE_TEXT
+      if (!tempData.time_remind) tempData.time_remind = DEFAULT_TIME_TEXT
+      setData(tempData)
+    }
+  }, [props.data])
+
+  const handleChangeData = (attName, value) => {
+    setData(prevState => ({ ...prevState, [attName]: value }))
+  }
+  
   return (
     <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={() => props.handleClickClose()} fullWidth>
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
@@ -210,12 +218,11 @@ function RemindModal(props) {
         <TitleText component="div">Loại nhắc hẹn</TitleText>
         <InputSelect
           commandSelect={selector}
-          // selectedIndex={tempSelectedItem.type}
-          // setOptions={typeId => setParams("type", typeId)}
-          setOptions={typeId => { }}
+          selectedIndex={data.type}
+          setOptions={typeId => { handleChangeData("type", typeId); }}
         />
         {/* Middle JSX */}
-        {data.title === 'Nhắc hẹn theo thời gian' ?
+        {data.type === 0 ?
           <Typography component="div">
             <HelperText>Bạn có lịch hẹn, ghi chú, sự kiện... quan trọng ? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhở bạn khi đến hẹn</HelperText>
             <DivTitle component="div">
@@ -224,14 +231,20 @@ function RemindModal(props) {
               <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
             </DivTitle>
             <Div>
-              <TextField component="span"
+              <TextField
+                component="span"
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
-                type={'date'}
+                type="date"
+                value={data.date_remind}
+                onChange={e => handleChangeData("date_remind", e.target.value)}
               />
               <DivTime>
-                <InputTime value={time} onChange={handleTime} />
+                <InputTime
+                  value={data.time_remind}
+                  onChange={e => handleChangeData("time_remind", e.target.value)}
+                />
               </DivTime>
               <SelectInput >
                 <OutlinedInputSelect
@@ -266,7 +279,7 @@ function RemindModal(props) {
           fullWidth
           multiline
           rows="7"
-          defaultValue=""
+          value={data.content}
           margin="normal"
           placeholder="Nhập nội dung nhắc hẹn"
           variant="outlined"

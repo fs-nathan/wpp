@@ -170,7 +170,7 @@ const CustomListItem = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
-    content, dataHander, date_create, status,
+    content, dataHander, date_create,
     user_create_avatar, user_create_name, user_can_handers
   } = props.offer
 
@@ -295,7 +295,7 @@ function TabBody(props) {
     setSelectedItem({...item, offer_id: item.id})
     setOpen(true)
   };
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  // const [anchorEl, setAnchorEl] = React.useState(null)
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const confirmDelete = () => {
     props.deleteOfferByTaskId(selectedItem.offer_id)
@@ -303,7 +303,7 @@ function TabBody(props) {
   const handleOpenModalDelete = item => {
     setSelectedItem({...item, offer_id: item.id})
     setOpenDelete(true);
-    setAnchorEl(null);
+    // setAnchorEl(null);
   };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
