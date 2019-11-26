@@ -12,3 +12,11 @@ const CM_DC_TYPE = {
 }
 export const filterCommandItem = arr => arr.filter(item => item.type === CM_DC_TYPE.COMMAND)
 export const filterDecisionItem = arr => arr.filter(item => item.type === CM_DC_TYPE.DECISION)
+
+const OFFER_STATUS = {
+    PENDING: 0,
+    APPROVED: 1,
+}
+
+export const filterPendingItem = arr => arr.filter(item => item.type === OFFER_STATUS.PENDING)
+export const filterApprovedItem = arr => arr.filter(item => item.type === OFFER_STATUS.APPROVED)

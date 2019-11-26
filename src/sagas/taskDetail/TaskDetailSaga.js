@@ -326,7 +326,6 @@ async function doDeleteOffer(offer_id) {
 function* deleteOffer(action) {
   try {
     const res = yield call(doDeleteOffer, action.payload)
-    console.log('deleteOffer', res)
     yield put(actions.deleteOfferSuccess(res))    
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 

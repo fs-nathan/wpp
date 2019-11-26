@@ -221,7 +221,6 @@ const CustomListItem = (props) => {
           setAnchorEl(null)
         }}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={() => {
-          console.log("Z", props.offer)
           props.handleOpenModalDelete(props.offer)
           setAnchorEl(null)
         }}>Xóa</MenuItem>
@@ -259,6 +258,8 @@ const ListOffer = (props) => {
 
               handleClickOpen={() => {
                 props.handleClickEditItem(item)
+              }}
+              handleOpenModalDelete={() => {
                 props.handleOpenModalDelete(item)
               }}
               handleClickClose={() => props.handleClickClose()} />
@@ -317,18 +318,22 @@ function TabBody(props) {
             onClick={evt => handleChange(evt, 0)}
           >
             {value === 0
-              ? <ColorTypo bold>Tất cả ({4})</ColorTypo>
-              : <ColorTypo color='gray'>Tất cả ({4})</ColorTypo>}
+              ? <ColorTypo bold>Tất cả ({props.offer.length})</ColorTypo>
+              : <ColorTypo color='gray'>Tất cả ({props.offer.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 1)}
           >
-            {value === 1 ? <ColorTypo bold>Đã duyệt (2)</ColorTypo> : <ColorTypo color='gray'>Đã duyệt (2)</ColorTypo>}
+            {value === 1 
+            ? <ColorTypo bold>Đã duyệt ({props.approvedItems.length})</ColorTypo> 
+            : <ColorTypo color='gray'>Đã duyệt ({props.approvedItems.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 2)}
           >
-            {value === 2 ? <ColorTypo bold>Chờ duyệt (2)</ColorTypo> : <ColorTypo color='gray'>Chờ duyệt (2)</ColorTypo>}
+            {value === 2 
+            ? <ColorTypo bold>Chờ duyệt ({props.approvedItems.length})</ColorTypo> 
+            : <ColorTypo color='gray'>Chờ duyệt ({props.approvedItems.length})</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
