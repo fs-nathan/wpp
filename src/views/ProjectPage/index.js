@@ -64,6 +64,14 @@ function ProjectPage({
     setExpand(expand);
   }
 
+  const [subSlide, setSubSlide] = React.useState(false);
+  const [SubSlideComp, setSubSlideComp] = React.useState(null);
+
+  function handleSubSlide(subSlide, comp = null) {
+    setSubSlide(subSlide);
+    setSubSlideComp(comp);
+  }
+
   return (
     <Provider value={{
       setProjectId,
@@ -75,9 +83,18 @@ function ProjectPage({
             <LeftDiv expand={expand}>
               <Route path={`${url}/:projectId`} 
                 render={props => 
-                  <ProjectDetail 
-                    {...props} 
-                  />
+                  <>
+                  {subSlide && 
+                    <SubSlideComp
+                      handleSubSlide={handleSubSlide}
+                    />
+                  }
+                  {!subSlide && 
+                    <ProjectDetail 
+                      {...props}
+                    />
+                  }
+                  </>
                 } 
                 exact 
               />
@@ -93,7 +110,8 @@ function ProjectPage({
                   <AllTaskTable 
                     {...props}
                     expand={expand}
-                    handleExpand={handleExpand}  
+                    handleExpand={handleExpand}
+                    handleSubSlide={handleSubSlide}  
                   />
                 } 
                 exact 

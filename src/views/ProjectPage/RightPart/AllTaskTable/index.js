@@ -23,7 +23,9 @@ import CustomBadge from '../../../../components/CustomBadge';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
-import AlertModal from '../../../../components/AlertModal';
+import TaskGroupSlide from '../../LeftPart/TaskGroupSlide';
+import ProjectMemberSlide from '../../LeftPart/ProjectMemberSlide';
+
 
 const Container = styled.div`
   grid-area: table;
@@ -134,7 +136,11 @@ function displayDate(time, date) {
   }
 }
 
-function AllTaskTable({ expand, handleExpand, listTask, detailProject, }) {
+function AllTaskTable({ 
+  expand, handleExpand, 
+  handleSubSlide,
+  listTask, detailProject, 
+}) {
 
   const { setProjectId } = React.useContext(ProjectPageContext);
   const { projectId } = useParams();
@@ -161,11 +167,11 @@ function AllTaskTable({ expand, handleExpand, listTask, detailProject, }) {
               subActions: [{
                 label: 'Thành viên', 
                 iconPath: mdiAccountCircle,
-                onClick: (evt) => null,
+                onClick: (evt) => handleSubSlide(true, ProjectMemberSlide),
               }, {
                 label: 'Nhóm việc',
                 iconPath: mdiScatterPlot,
-                onClick: (evt) => null,
+                onClick: (evt) => handleSubSlide(true, TaskGroupSlide),
               }, {
                 label: 'Tải xuống',
                 iconPath: mdiDownload,
