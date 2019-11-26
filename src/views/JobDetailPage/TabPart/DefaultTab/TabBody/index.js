@@ -14,6 +14,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import {
   isLongerContent, getCollapseText
 } from '../../../../../helpers/jobDetail/stringHelper'
+import { WrapperContext } from '../../../index'
 
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
@@ -162,11 +163,9 @@ function DropdownButton({ values }) {
 
 function Content({ value }) {
   const [isOpen, setOpen] = React.useState(false)
-
   const handlePressViewButton = () => {
     setOpen(!isOpen)
   }
-
   return (
     <ListItemTabPart>
       {
@@ -199,14 +198,19 @@ function Content({ value }) {
   )
 }
 
-const FAKE_DESCRIPTION = "\
-  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure, aliquam.\
-  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure, aliquam.\
-  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure, aliquam.\
-  "
 
 function TabBody(props) {
-
+  const value = React.useContext(WrapperContext)
+  // console.log('value:::::', value.detailTask.description);
+  let content = ""
+  if(value){
+    if(value.detailTask){
+      if(value.detailTask.description){
+        content = value.detailTask.description
+      }
+    }
+  }
+  
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <StyledList>
@@ -216,12 +220,12 @@ function TabBody(props) {
               Tên công việc
            </ColorTypo>
             <ContentText component='span'>
-              <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure, aliquam.</span>
+              <span>{value.detailTask.name}</span>
               <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} />
             </ContentText>
           </ListItemText>
         </ListItem>
-        <Content value={FAKE_DESCRIPTION} />
+        <Content value={content} />
         <ListItemButtonGroup>
           {props.isPause ?
             <ColorButton size='small' variant='outlined'

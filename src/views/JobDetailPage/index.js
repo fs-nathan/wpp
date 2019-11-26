@@ -27,6 +27,8 @@ function JobDetailPage(props) {
     props.getImageByTaskId(props.taskId)
     props.getFileByTaskId(props.taskId)
     props.getLinkByTaskId(props.taskId)
+    props.getLocationByTaskId(props.taskId)
+    props.getTaskDetailByTaskId(props.taskId)
   }, [])
 
   return (
@@ -41,11 +43,14 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
+  // console.log('taskDetail::::', state.taskDetail.detailTask.taskDetails)
   return {
     offer: state.taskDetail.taskOffer.offer,
     pendingItems: state.taskDetail.taskOffer.pendingItems,
     approvedItems: state.taskDetail.taskOffer.approvedItems,
     remind: state.taskDetail.taskRemind.remind,
+    remindTimeItems: state.taskDetail.taskRemind.remindTimeItems,
+    remindScheduleItems: state.taskDetail.taskRemind.remindScheduleItems,
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
     image: state.taskDetail.media.image,
@@ -54,7 +59,9 @@ const mapStateToProps = state => {
     command: state.taskDetail.taskCommand.command,
     commandItems: state.taskDetail.taskCommand.commandItems,
     decisionItems: state.taskDetail.taskCommand.decisionItems,
-    taskId: state.taskDetail.commonTaskDetail.activeTaskId
+    taskId: state.taskDetail.commonTaskDetail.activeTaskId,
+    location: state.taskDetail.location.locations,
+    detailTask: state.taskDetail.detailTask.taskDetails
   }
 }
 
@@ -87,6 +94,10 @@ const mapDispatchToProps = dispatch => {
     getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
     getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
     getLinkByTaskId: taskId => dispatch(taskDetailAction.getLinkTabPart({ taskId })),
+    // Location
+    getLocationByTaskId: taskId => dispatch(taskDetailAction.getLocationTabPart({ taskId })),
+    // Task Detail - cot phai
+    getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
   };
 };
 

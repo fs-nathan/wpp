@@ -401,7 +401,51 @@ function* getLink(action) {
     yield put(actions.getLinkTabPartFail(error))
   }
 }
+// Location
+async function doGetLocation({ taskId }) {
+  try {
+    const config = {
+      url: '/task/get-location?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
+function* getLocation(action) {
+  try {
+    const res = yield call(doGetLocation, action.options)
+    yield put(actions.getLocationTabPartSuccess(res))
+  } catch (error) {
+    yield put(actions.getLocationTabPartFail(error))
+  }
+}
+
+// Task Detail - TabPart - Cot phai
+async function doGetTaskDetail({ taskId }) {
+  try {
+    const config = {
+      url: '/task/detail?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getTaskDetail(action) {
+  try {
+    const res = yield call(doGetTaskDetail, action.options)
+    yield put(actions.getTaskDetailTabPartSuccess(res))
+  } catch (error) {
+    yield put(actions.getTaskDetailTabPartFail(error))
+  }
+}
 
 //Command
 async function doGetCommand({ task_id }) {
@@ -445,8 +489,6 @@ function* createCommand(action) {
     const res = yield call(doCreateCommand, action.payload)
     yield put(actions.createCommandSuccess(res))
     yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
-
-    // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.createCommandFail(error))
   }
@@ -473,8 +515,6 @@ function* updateCommand(action) {
     yield put(actions.updateCommandSuccess(res))
     console.log('API:::', res)
     yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
-
-    // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }
@@ -502,7 +542,10 @@ export {
   getImage,
   getFile,
   getLink,
-  
+  // Location
+  getLocation,
+  // Task Detail - TabPart- Cot phai
+  getTaskDetail,
   // Command and Decision::
   getCommand,
   createCommand,

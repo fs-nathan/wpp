@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
   singleValue: {
-    fontSize: 16,
+    fontSize: 14,
   },
   root: {
     flexGrow: 1,
