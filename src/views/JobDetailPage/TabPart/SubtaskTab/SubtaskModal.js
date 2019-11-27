@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import {IconButton, Dialog, withStyles, Typography, Button, TextField } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import colorPal from '../../../../helpers/colorPalette';
+// import colorPal from '../../../../helpers/colorPalette';
 
 // const TexTitle = styled(Typography)`
 //   font-size: 14px;

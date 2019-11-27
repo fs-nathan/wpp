@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
-import avatar from '../../../../../assets/avatar.jpg';
+// import avatar from '../../../../../assets/avatar.jpg';
 // import EditWorkModal from '../EditWorkModal'
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal'
 import { WrapperContext } from '../../../index'
@@ -46,7 +46,7 @@ const StyledIconButton = styled(IconButton)`
 
 
 function TabHeader(props) {
-  const [isRight, setIsRight] = React.useState(true);
+  // const [isRight, setIsRight] = React.useState(true);
   // 
   // const [open, setOpen] = React.useState(false);
   // const handleClickOpen = () => {
@@ -56,15 +56,6 @@ function TabHeader(props) {
   //   setOpen(false);
   // };
   // 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  }
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
@@ -81,7 +72,7 @@ function TabHeader(props) {
   }
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const value = React.useContext(WrapperContext)
-  let avatar1, name1, roles1, date_time1
+  let avatar1, name1, roles1
   if (value) {
     let detailTask = value.detailTask
     if (detailTask) {
@@ -138,7 +129,7 @@ function TabHeader(props) {
           setAnchorEl(null)
         }}>Xóa</MenuItem>
       </Menu>
-      <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={isRight} />
+      <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={true} />
     </Container>
   );
 }

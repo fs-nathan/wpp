@@ -75,7 +75,7 @@ export default function IntegrationReactSelect(props) {
       let foundItem = props.commandSelect.find(item => item.value === props.selectedIndex)
       setSingle(foundItem)
     }
-  }, [props.selectedIndex])
+  }, [props.commandSelect, props.selectedIndex])
 
   return (
     <div className={classes.root}>
@@ -91,7 +91,7 @@ export default function IntegrationReactSelect(props) {
             },
           }}
           placeholder="Select..."
-          options={props.selector}
+          options={props.commandSelect}
           components={components}
           value={single}
           onChange={handleChangeSingle}

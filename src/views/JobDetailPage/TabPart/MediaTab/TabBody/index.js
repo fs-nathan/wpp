@@ -311,7 +311,12 @@ const LinkBox = (props) => {
                     <Icon path={mdiLink} size={1.4} color={'green'} />
                   </Typography>
                   <ListItemText>
-                    <a href={item.url} target="_blank">{item.url}</a>
+                    <a 
+                      href={item.url} 
+                      target="_blank"
+                      rel="noopener noreferrer">
+                        {item.url}
+                      </a>
                   </ListItemText>
                   <ListItemIcon>
                     <Button onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">

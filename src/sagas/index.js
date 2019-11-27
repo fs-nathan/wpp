@@ -128,6 +128,11 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.CREATE_COMMAND_REQUEST, taskDetailSaga.createCommand);
   yield takeLeading(taskDetailType.UPDATE_COMMAND_REQUEST, taskDetailSaga.updateCommand);
   yield takeLeading(taskDetailType.UPDATE_TASK_PRIORITY_REQUEST, taskDetailSaga.updatePriority)
+ 
+  
+  //Member::
+  yield takeLeading(taskDetailType.GET_MEMBER_REQUEST, taskDetailSaga.getMember);
+  yield takeLeading(taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST, taskDetailSaga.getMemberNotAssigned);
 };
 
 export default rootSaga;

@@ -273,7 +273,6 @@ async function doCreateOffer({ createId, content }) {
 function* createOffer(action) {
   try {
     const res = yield call(doCreateOffer, action.options)
-    console.log("GOI API NE", res)
     yield put(actions.createOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 
@@ -299,7 +298,7 @@ async function doUpdateOffer(payload) {
 
 function* updateOffer(action) {
   try {
-    const res = yield call(doUpdateOffer, action.payload)
+    yield call(doUpdateOffer, action.payload)
     // yield put(actions.updateOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 
@@ -326,8 +325,7 @@ async function doDeleteOffer(offer_id) {
 function* deleteOffer(action) {
   try {
     const res = yield call(doDeleteOffer, action.payload)
-    console.log('deleteOffer', res)
-    yield put(actions.deleteOfferSuccess(res))
+    yield put(actions.deleteOfferSuccess(res))    
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
 
     // CustomEventEmitter(DELETE_ROOM);
@@ -514,7 +512,6 @@ function* updateCommand(action) {
   try {
     const res = yield call(doUpdateCommand, action.payload)
     yield put(actions.updateCommandSuccess(res))
-    console.log('API:::', res)
     yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
@@ -534,6 +531,18 @@ async function doUpdatePriority(payload) {
     throw error;
   }
 }
+async function doGetMember({ task_id }) {
+  try {
+    const config = {
+      url: 'task/get-member?task_id=' + task_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 function* updatePriority(action) {
   try {
@@ -544,6 +553,35 @@ function* updatePriority(action) {
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.updatePriorityFail(error))
+  }}
+function* getMember(action) {  
+  try {
+    const res = yield call(doGetMember, action.payload)
+    yield put(actions.getMemberSuccess(res))
+  } catch (error) {
+    yield put(actions.getMemberFail(error))
+  }
+}
+
+async function doGetMemberNotAssigned({ task_id }) {
+  try {
+    const config = {
+      url: 'task/get-member-not-assigned?task_id=' + task_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getMemberNotAssigned(action) {
+  try {
+    const res = yield call(doGetMemberNotAssigned, action.payload)
+    yield put(actions.getMemberNotAssignedSuccess(res))
+  } catch (error) {
+    yield put(actions.getMemberNotAssignedFail(error))
   }
 }
 
@@ -578,5 +616,9 @@ export {
   createCommand,
   updateCommand,
   // Update Priority
-  updatePriority
+  updatePriority,
+
+  // Member - Tabpart
+  getMember,
+  getMemberNotAssigned
 }

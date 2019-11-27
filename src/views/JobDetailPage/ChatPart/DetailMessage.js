@@ -3,7 +3,11 @@ import { Avatar, Typography, ListItemText, ListItem, CardMedia, Button } from '@
 import styled from 'styled-components';
 import avatar from '../../../assets/avatar.jpg'
 import colorPal from '../../../helpers/colorPalette'
-import { mdiClockOutline, mdiArrowRightBold, mdiAlarm, mdiFileTree, mdiDownload, mdiLinkVariant, mdiLinkOff, mdiMapMarker, mdiEmailSend, mdiBullhorn } from '@mdi/js';
+import { 
+    mdiClockOutline, mdiArrowRightBold, mdiAlarm, 
+    mdiFileTree, mdiDownload, mdiLinkVariant, 
+    mdiLinkOff, mdiMapMarker, mdiEmailSend 
+} from '@mdi/js';
 import Icon from '@mdi/react';
 import ImageChatTest from '../../../assets/imageChatTest.jpg'
 import NoImage from '../../../assets/no-img.png'
@@ -78,7 +82,7 @@ const getSubColorRole = (role, authorityList) => {
             break;
     }
     return (
-        <Typography component='div' style={{ color: color }}>{role}-{authorityList}</Typography>
+        <Typography component='span' style={{ color: color }}>{`${role} - ${authorityList}`}</Typography>
     )
 }
 
@@ -447,22 +451,22 @@ const ImageChatMess = styled(Typography)`
 const ImageChat = (props) => {
     const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
-  const handleClose = () => {
-    setOpen(false);
-  }
+    const handleClose = () => {
+        setOpen(false);
+    }
     return (
         <ImageChatMess component='div'>
             <CardMedia
                 component="img"
                 height="auto"
                 image={ImageChatTest}
-                onClick= {() => handleClickOpen()}
+                onClick={() => handleClickOpen()}
             />
-            <ModalImage isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen}/>
+            <ModalImage isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
         </ImageChatMess>
     )
 }
@@ -560,7 +564,12 @@ const ShareLink = () => {
                         style={{ margin: 0 }}
                         primary={
                             <Typography component='div'>
-                                <a href='https://vtask.net/' target="_blank">https://vtask.net/</a>
+                                <a 
+                                    href='https://vtask.net/' 
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                        https://vtask.net/
+                                </a>
                             </Typography>
                         }
                     />
@@ -849,7 +858,7 @@ export default function DetailMessage(props) {
             <RemindMessage />
             {members.map((element, index) => {
                 return (
-                    <Typography component='div'>
+                    <Typography key={index} component='div'>
                         <StyledFrameMess component='div'>
 
                             <TitleMessage key={element.id} {...element} />
@@ -890,7 +899,7 @@ export default function DetailMessage(props) {
                                 <Remind />
                             }
                             {(element.id === 13) &&
-                                <ImageChat {...props}/>
+                                <ImageChat {...props} />
                             }
                             {(element.id === 14) &&
                                 <NoImageChat />

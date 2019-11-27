@@ -29,6 +29,9 @@ function JobDetailPage(props) {
     props.getLinkByTaskId(props.taskId)
     props.getLocationByTaskId(props.taskId)
     props.getTaskDetailByTaskId(props.taskId)
+    props.getMemberByTaskId(props.taskId)
+    props.getMemberNotAssignedByTaskId(props.taskId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -43,9 +46,10 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('taskDetail::::', state.taskDetail.detailTask.taskDetails)
   return {
     offer: state.taskDetail.taskOffer.offer,
+    pendingItems: state.taskDetail.taskOffer.pendingItems,
+    approvedItems: state.taskDetail.taskOffer.approvedItems,
     remind: state.taskDetail.taskRemind.remind,
     remindTimeItems: state.taskDetail.taskRemind.remindTimeItems,
     remindScheduleItems: state.taskDetail.taskRemind.remindScheduleItems,
@@ -59,7 +63,9 @@ const mapStateToProps = state => {
     decisionItems: state.taskDetail.taskCommand.decisionItems,
     taskId: state.taskDetail.commonTaskDetail.activeTaskId,
     location: state.taskDetail.location.locations,
-    detailTask: state.taskDetail.detailTask.taskDetails
+    detailTask: state.taskDetail.detailTask.taskDetails,
+    member: state.taskDetail.taskMember.member,
+    memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned
   }
 }
 
@@ -97,7 +103,10 @@ const mapDispatchToProps = dispatch => {
     // Task Detail - cot phai
     getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId })),
     // update Priority
-    updateTaskPriority: (task_id, priority) => dispatch(taskDetailAction.updatePriority({ task_id, priority }))
+    updateTaskPriority: (task_id, priority) => dispatch(taskDetailAction.updatePriority({ task_id, priority })),
+    // Member
+    getMemberByTaskId: task_id => dispatch(taskDetailAction.getMember({ task_id })),
+    getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
   };
 };
 
