@@ -6,7 +6,7 @@ import {
 
 // Initial state for store
 const initialState = {
-    command: [],
+    command: [], commandItems: [], decisionItems: [],
     isFetching: false,
     dataFetched: false,
     error: false,

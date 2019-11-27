@@ -102,12 +102,65 @@ export const getRemindFail = (error) => ({
     type: types.GET_REMIND_FAIL,
     error: error
 });
-
-export const createRemindWithDuration = () => ({
-    type: types.POST_REMIND_REQUEST,
+// post remind with time detail
+export const postRemindWithTimeDetail = (payload) => ({
+    type: types.POST_REMIND_TIME_DETAIL_REQUEST,
+    options: payload,
+});
+export const postRemindWithTimeDetailSuccess = (payload) => ({
+    type: types.POST_REMIND_TIME_DETAIL_SUCCESS,
+    payload
 });
 
+export const postRemindWithTimeDetailFail = (error) => ({
+    type: types.POST_REMIND_TIME_DETAIL_FAIL,
+    error: error,
+});
+// post remind duration
+export const postRemindDuration = (payload) => ({
+    type: types.POST_REMIND_DURATION_REQUEST,
+    options: payload,
+});
+export const postRemindDurationSuccess = (payload) => ({
+    type: types.POST_REMIND_DURATION_SUCCESS,
+    payload
+});
 
+export const postRemindDurationFail = (error) => ({
+    type: types.POST_REMIND_DURATION_FAIL,
+    error: error,
+});
+// update with time duration
+export const updateRemindWithTimeDetail = (payload) => ({
+    type: types.UPDATE_REMIND_TIME_DETAIL_REQUEST,
+    options: payload,
+});
+
+export const updateRemindWithTimeDetailSuccess = (payload) => ({
+    type: types.UPDATE_REMIND_TIME_DETAIL_SUCCESS,
+    payload
+});
+
+export const updateRemindWithTimeDetailFail = (error) => ({
+    type: types.UPDATE_REMIND_TIME_DETAIL_FAIL,
+    error: error,
+});
+// update remind duration
+export const updateRemindWithDuration = (payload) => ({
+    type: types.UPDATE_REMIND_DURATION_REQUEST,
+    options: payload,
+});
+
+export const updateRemindWithDurationSuccess = (payload) => ({
+    type: types.UPDATE_REMIND_DURATION_SUCCESS,
+    payload
+});
+
+export const updateRemindWithDurationFail = (error) => ({
+    type: types.UPDATE_REMIND_DURATION_FAIL,
+    error: error,
+});
+// ======= delete remind
 export const deleteRemind = (remind_id) => ({
     type: types.DELETE_REMIND_REQUEST,
     payload: remind_id

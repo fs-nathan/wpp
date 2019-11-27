@@ -47,23 +47,28 @@ function JobDetailPage(props) {
 
 const mapStateToProps = state => {
   return {
-    offer: state.taskDetail.taskOffer.offer,
+    offer: state.taskDetail.taskOffer.offer.reverse(),
+
     pendingItems: state.taskDetail.taskOffer.pendingItems,
     approvedItems: state.taskDetail.taskOffer.approvedItems,
-    remind: state.taskDetail.taskRemind.remind,
-    remindTimeItems: state.taskDetail.taskRemind.remindTimeItems,
-    remindScheduleItems: state.taskDetail.taskRemind.remindScheduleItems,
+    
+    remind: state.taskDetail.taskRemind.remind.reverse(),
+
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
+
     image: state.taskDetail.media.image,
     file: state.taskDetail.media.file,
     link: state.taskDetail.media.links,
-    command: state.taskDetail.taskCommand.command,
-    commandItems: state.taskDetail.taskCommand.commandItems,
-    decisionItems: state.taskDetail.taskCommand.decisionItems,
+
+    command: state.taskDetail.taskCommand.command.reverse(),
+    commandItems: state.taskDetail.taskCommand.commandItems.reverse(),
+    decisionItems: state.taskDetail.taskCommand.decisionItems.reverse(),
+
     taskId: state.taskDetail.commonTaskDetail.activeTaskId,
     location: state.taskDetail.location.locations,
     detailTask: state.taskDetail.detailTask.taskDetails,
+
     member: state.taskDetail.taskMember.member,
     memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned
   }
@@ -79,10 +84,10 @@ const mapDispatchToProps = dispatch => {
     completeSubTaskByTaskId: taskId => dispatch(taskDetailAction.completeSubTask({ sub_task_id: taskId })),
     // remind
     getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({ taskId })),
-    // createRemindWithTimeDetail: () => dispatch(taskDetailAction.createRemindWithTime()),
-    // createRemindWithDurationDetail: () => dispatch(taskDetailAction.createRemindWithDuration()),
-    // updateRemindWithTimeDetail: () => dispatch(taskDetailAction.updateRemindWithTime()),
-    // updateRemindWithDurationDetail: () => dispatch(taskDetailAction.updateRemindWithDuration()),
+    createRemindWithTimeDetail: (data) => dispatch(taskDetailAction.postRemindWithTimeDetail(data)),
+    createRemindWithDurationDetail: (data) => dispatch(taskDetailAction.postRemindDuration(data)),
+    updateRemindWithTimeDetail: (data) => dispatch(taskDetailAction.updateRemindWithTimeDetail(data)),
+    updateRemindWithDurationDetail: (data) => dispatch(taskDetailAction.updateRemindWithDuration(data)),
     deleteRemindWByRemindId: remindId => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId })),
     // offer
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
