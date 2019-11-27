@@ -51,9 +51,8 @@ const mapStateToProps = state => {
 
     pendingItems: state.taskDetail.taskOffer.pendingItems,
     approvedItems: state.taskDetail.taskOffer.approvedItems,
-    remind: state.taskDetail.taskRemind.remind,
-    remindTimeItems: state.taskDetail.taskRemind.remindTimeItems,
-    remindScheduleItems: state.taskDetail.taskRemind.remindScheduleItems,
+    
+    remind: state.taskDetail.taskRemind.remind.reverse(),
 
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
