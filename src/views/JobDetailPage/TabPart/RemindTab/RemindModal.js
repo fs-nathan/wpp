@@ -1,7 +1,7 @@
 import React from 'react';
-import { 
-  IconButton, Typography, Dialog, Button, 
-  TextField, withStyles, InputAdornment 
+import {
+  IconButton, Typography, Dialog, Button,
+  TextField, withStyles, InputAdornment
 } from '@material-ui/core';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
@@ -14,8 +14,9 @@ import ColorChip from '../../../../components/ColorChip';
 import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
 import {
-  DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT
+  DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, REMIND_TIME_TYPE
 } from '../../../../helpers/jobDetail/stringHelper'
+import { WrapperContext } from '../../index'
 
 const selector = [
   {
@@ -187,16 +188,19 @@ const DialogActions = withStyles(theme => ({
 
 const DEFAULT_DATA = {
   id: "",
-  type: 0,
+  type: REMIND_TIME_TYPE,
   content: "",
   date_remind: DEFAULT_DATE_TEXT,
   time_remind: DEFAULT_TIME_TEXT,
 }
 
+
 function RemindModal(props) {
+  const valueRemind = React.useContext(WrapperContext)
   const classes = useStyles()
   // bien menu item
   const [data, setData] = React.useState(DEFAULT_DATA)
+  const [isCreateModal] = React.useState(props.isCreate)
 
   // Life cycle
   React.useEffect(() => {
@@ -211,7 +215,32 @@ function RemindModal(props) {
   const handleChangeData = (attName, value) => {
     setData(prevState => ({ ...prevState, [attName]: value }))
   }
-  
+
+  // const createRemind = (data) => {
+  //   console.log(data);
+
+  //   valueRemind.createRemindWithTimeDetail(data)
+  // }
+
+  const handlePressConfirm = () => {
+    // TODO: validate
+
+    if (isCreateModal) {
+      // Case 1: Call create remind with time
+      if (data.type === REMIND_TIME_TYPE) {valueRemind.createRemindWithTimeDetail({taskId : "5da1821ad219830d90402fd8", data})}
+      // Case 2: Call create remind with progress
+      else { console.log("GOI API so 2") }
+    } else {
+      // Case 3: Call update remind with time
+      if (data.type === REMIND_TIME_TYPE) { console.log("GOI API so 3") }
+      // Case 4: Call update remind with progress
+      else { console.log("GOI API so 4") }
+    }
+      
+    // Close modal
+    props.handleClickClose()
+  }
+
   return (
     <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={() => props.handleClickClose()} fullWidth>
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
@@ -223,9 +252,10 @@ function RemindModal(props) {
           commandSelect={selector}
           selectedIndex={data.type}
           setOptions={typeId => { handleChangeData("type", typeId); }}
+          isDisabled={!isCreateModal}
         />
         {/* Middle JSX */}
-        {data.type === 0 ?
+        {data.type === REMIND_TIME_TYPE ?
           <Typography component="div">
             <HelperText>Bạn có lịch hẹn, ghi chú, sự kiện... quan trọng ? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhở bạn khi đến hẹn</HelperText>
             <DivTitle component="div">
@@ -287,10 +317,11 @@ function RemindModal(props) {
           placeholder="Nhập nội dung nhắc hẹn"
           variant="outlined"
           styled={{ zIndex: 1 }}
+          onChange={e => handleChangeData("content", e.target.value)}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => props.handleClickClose()} color="primary">
+        <Button onClick={handlePressConfirm} color="primary">
           Tạo nhắc hẹn
         </Button>
       </DialogActions>

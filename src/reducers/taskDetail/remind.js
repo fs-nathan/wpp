@@ -1,6 +1,5 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
-import { filterRemindTime, filterRemindSchedule } from '../../helpers/jobDetail/arrayHelper'
 // Initial state for store
 const initialState = {
     remind: [],
@@ -21,9 +20,7 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                remind: action.payload.reminds,
-                remindTimeItems: filterRemindTime(action.payload.reminds),
-                remindScheduleItems: filterRemindSchedule(action.payload.reminds)
+                remind: action.payload.reminds
             };
         case types.GET_REMIND_FAIL:
             return {
@@ -32,26 +29,82 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
-        case types.POST_REMIND_REQUEST:
+        case types.POST_REMIND_TIME_DETAIL_REQUEST:
             return {
                 ...state,
                 isFetching: true
             }
-        case types.POST_REMIND_SUCCESS:
+        case types.POST_REMIND_TIME_DETAIL_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
             };
 
-        case types.POST_REMIND_FAIL:
+        case types.POST_REMIND_TIME_DETAIL_FAIL:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: false,
                 error: true,
             }
+        case types.POST_REMIND_DURATION_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.POST_REMIND_DURATION_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+            };
 
+        case types.POST_REMIND_DURATION_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.UPDATE_REMIND_TIME_DETAIL_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.UPDATE_REMIND_TIME_DETAIL_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+            };
+
+        case types.UPDATE_REMIND_TIME_DETAIL_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.UPDATE_REMIND_DURATION_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.UPDATE_REMIND_DURATION_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+            };
+
+        case types.UPDATE_REMIND_DURATION_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
         default:
             return state;
     }

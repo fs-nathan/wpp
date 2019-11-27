@@ -104,7 +104,7 @@ const DemandModal = (props) => {
         <OutlinedInputSelect
           selectedIndex={tempSelectedItem.type}
           setOptions={typeId => setParams("type", typeId)}
-          selector={selector}
+          commandSelect={selector}
         />
         {/* <Text 
                 component="span"

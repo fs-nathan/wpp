@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import MenuItem from '@material-ui/core/MenuItem';
 
-
 const useStyles = makeStyles(theme => ({
   singleValue: {
     fontSize: 14,
@@ -95,6 +94,7 @@ export default function IntegrationReactSelect(props) {
           components={components}
           value={single}
           onChange={handleChangeSingle}
+          isDisabled={props.isDisabled}
         />
       </NoSsr>
     </div>

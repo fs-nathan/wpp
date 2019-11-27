@@ -113,6 +113,10 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.POST_COMPLETE_SUBTASK_REQUEST, taskDetailSaga.completeSubTask);
   //Remind::
   yield takeLeading(taskDetailType.GET_REMIND_REQUEST, taskDetailSaga.getRemind);
+  yield takeLeading(taskDetailType.POST_REMIND_TIME_DETAIL_REQUEST, taskDetailSaga.postRemindWithTimeDetail);
+  yield takeLeading(taskDetailType.POST_REMIND_DURATION_REQUEST, taskDetailSaga.postRemindDuration);
+  yield takeLeading(taskDetailType.UPDATE_REMIND_TIME_DETAIL_REQUEST, taskDetailSaga.updateRemindWithTimeDetail);
+  yield takeLeading(taskDetailType.UPDATE_REMIND_DURATION_REQUEST, taskDetailSaga.updateRemindWithDuration);
   yield takeLeading(taskDetailType.DELETE_REMIND_REQUEST, taskDetailSaga.deleteRemind);
 
   // Media Image File
