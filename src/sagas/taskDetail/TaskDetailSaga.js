@@ -471,6 +471,7 @@ function* getCommand(action) {
 
 async function doCreateCommand(payload) {
   try {
+    console.log('payload', payload)
     const config = {
       url: 'task/create-command-decision',
       method: 'post',

@@ -56,7 +56,7 @@ const DialogTitle = withStyles(styles)(props => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+        <IconButton className={classes.closeButton} onClick={onClose}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -93,7 +93,7 @@ const DemandModal = (props) => {
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
-
+  console.log('setTempSelectedItem', setTempSelectedItem.type)
   return (
     <Dialog onClose={props.handleClose} open={props.isOpen} fullWidth>
       <DialogTitle onClose={props.handleClose}>
@@ -104,7 +104,7 @@ const DemandModal = (props) => {
         <OutlinedInputSelect
           selectedIndex={tempSelectedItem.type}
           setOptions={typeId => setParams("type", typeId)}
-          selector={selector}
+          commandSelect={selector}
         />
         {/* <Text 
                 component="span"

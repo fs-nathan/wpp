@@ -105,8 +105,8 @@ const MediaBox = (props) => {
     <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
       {props.image.images.map((image, key) => {
         return (
-          <>
-            <GridListTile key={key} cols={5} style={{ height: '100%' }}>
+          <div key={key}>
+            <GridListTile  cols={5} style={{ height: '100%' }}>
               <SubHeader component='div'>{image.date_create}</SubHeader>
             </GridListTile>
             <WrapImage>
@@ -122,7 +122,7 @@ const MediaBox = (props) => {
                 )
               })}
             </WrapImage>
-          </>
+          </div>
         );
       })}
       {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>

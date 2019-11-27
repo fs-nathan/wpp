@@ -77,6 +77,7 @@ export default function IntegrationReactSelect(props) {
     }
   }, [props.commandSelect, props.selectedIndex])
 
+  console.log('props.commandSelect', props.commandSelect)
   return (
     <div className={classes.root}>
       <NoSsr>
