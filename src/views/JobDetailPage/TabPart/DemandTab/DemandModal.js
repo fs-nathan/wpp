@@ -56,7 +56,7 @@ const DialogTitle = withStyles(styles)(props => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+        <IconButton className={classes.closeButton} onClick={onClose}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -84,14 +84,14 @@ const selector = [
 
 const DemandModal = (props) => {
 
-  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "",content: "", type: -1 })
+  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "", content: "", type: -1 })
 
   React.useEffect(() => {
     setTempSelectedItem(props.item)
   }, [props.item])
 
   const setParams = (nameParam, value) => {
-    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
+    setTempSelectedItem({ ...tempSelectedItem, [nameParam]: value })
   }
 
   return (

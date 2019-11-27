@@ -42,7 +42,7 @@ const Text = styled(ColorTypo)`
   padding-left: 3px;
   display: inline;
 `
-const StyledDiv = styled.div`
+const StyledDiv = styled.span`
   display: flex;
   margin-bottom: 7px;
 `
@@ -82,7 +82,7 @@ const getBadgeProjectRole = (projectRole) => {
       break;
   }
   return (
-    <BadgeAdmin color={color} variant='caption' component='div'>{projectRole}</BadgeAdmin>
+    <BadgeAdmin color={color} variant='caption' component='span'>{projectRole}</BadgeAdmin>
   )
 }
 
@@ -112,11 +112,11 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
         <ListItemAvatar>
           <Avatar src={avatar} alt='avatar' style={{ width: 50, height: 50 }} />
         </ListItemAvatar>
-        <ListItemText component="div"
+        <ListItemText
           primary={
             <React.Fragment>
               <StyledDiv>
-                <TextName bold>{name}</TextName>
+                <TextName component="span" bold>{name}</TextName>
                 {
                   role &&
                   <Text component="span">{role}</Text>
@@ -126,7 +126,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           }
           secondary={
             <React.Fragment>
-              <StyledDiv component="span">
+              <StyledDiv>
                 {getBadgeProjectRole(projectRole)}
                 {
                   authorityList.map((authority, index) =>

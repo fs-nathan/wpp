@@ -47,21 +47,29 @@ function JobDetailPage(props) {
 
 const mapStateToProps = state => {
   return {
-    offer: state.taskDetail.taskOffer.offer,
+    offer: state.taskDetail.taskOffer.offer.reverse(),
+
     pendingItems: state.taskDetail.taskOffer.pendingItems,
     approvedItems: state.taskDetail.taskOffer.approvedItems,
     remind: state.taskDetail.taskRemind.remind,
+    remindTimeItems: state.taskDetail.taskRemind.remindTimeItems,
+    remindScheduleItems: state.taskDetail.taskRemind.remindScheduleItems,
+
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
+
     image: state.taskDetail.media.image,
     file: state.taskDetail.media.file,
     link: state.taskDetail.media.links,
-    command: state.taskDetail.taskCommand.command,
-    commandItems: state.taskDetail.taskCommand.commandItems,
-    decisionItems: state.taskDetail.taskCommand.decisionItems,
+
+    command: state.taskDetail.taskCommand.command.reverse(),
+    commandItems: state.taskDetail.taskCommand.commandItems.reverse(),
+    decisionItems: state.taskDetail.taskCommand.decisionItems.reverse(),
+
     taskId: state.taskDetail.commonTaskDetail.activeTaskId,
     location: state.taskDetail.location.locations,
     detailTask: state.taskDetail.detailTask.taskDetails,
+
     member: state.taskDetail.taskMember.member,
     memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned
   }

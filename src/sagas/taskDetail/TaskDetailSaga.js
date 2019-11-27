@@ -520,6 +520,7 @@ function* getCommand(action) {
 
 async function doCreateCommand(payload) {
   try {
+    console.log('payload', payload)
     const config = {
       url: 'task/create-command-decision',
       method: 'post',
@@ -561,7 +562,7 @@ function* updateCommand(action) {
   try {
     const res = yield call(doUpdateCommand, action.payload)
     yield put(actions.updateCommandSuccess(res))
-    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    // yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }

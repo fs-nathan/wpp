@@ -194,7 +194,6 @@ function TabBody() {
           <ColorTypo>10/06/2019</ColorTypo>
         </EndDateBox>
       </StartEndDateBox>
-      {/* progress */}
       <ProgressBar
         width={370}
         height={20}

@@ -39,8 +39,8 @@ function TabHeader(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const confirmCreateCommand = ({content, typeId}) => {
-    props.createCommandByTaskId("5da1821ad219830d90402fd8", content, typeId)
+  const confirmCreateCommand = ({content, type}) => {
+    props.createCommandByTaskId("5da1821ad219830d90402fd8", content, type)
   }
   return (
     <Container>

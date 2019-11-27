@@ -55,7 +55,7 @@ export default function IntegrationReactSelect(props) {
   const [single, setSingle] = React.useState(null);
 
   const handleChangeSingle = selectedItem => {
-    setSingle(selectedItem);
+    setSingle(selectedItem)
     props.setOptions(selectedItem.value)
   };
 
@@ -76,6 +76,7 @@ export default function IntegrationReactSelect(props) {
     }
   }, [props.commandSelect, props.selectedIndex])
 
+  console.log('props.commandSelect', props.commandSelect)
   return (
     <div className={classes.root}>
       <NoSsr>
