@@ -33,6 +33,7 @@ function ProjectMemberSlide({ handleSubSlide, listTask, }) {
   const error = listTaskError;
 
   const [taskGroups, setTaskGroups] = React.useState([]);
+  const [searchPatern, setSearchPatern] = React.useState('');
 
   React.useEffect(() => {
     setProjectId(projectId);
@@ -40,12 +41,10 @@ function ProjectMemberSlide({ handleSubSlide, listTask, }) {
 
   React.useEffect(() => {
     setTaskGroups(filter(tasks, (task) => get(task, 'id') === 'default' || get(task, 'name', '').toLowerCase().includes(searchPatern.toLowerCase())));
-  }, [tasks])
-
-  const [searchPatern, setSearchPatern] = React.useState('');
+  }, [tasks, searchPatern]);
 
   function onDragEnd(result) {
-    const { source, destination, draggableId } = result;
+    const { source, destination } = result;
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&
@@ -61,7 +60,7 @@ function ProjectMemberSlide({ handleSubSlide, listTask, }) {
           title='Nhóm công việc'
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => handleSubSlide(false, null),
+            onClick: () => handleSubSlide(0),
           }}
           rightAction={{
             iconPath: mdiPlus,

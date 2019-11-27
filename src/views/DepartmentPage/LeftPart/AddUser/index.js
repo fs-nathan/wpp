@@ -217,7 +217,7 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
       title={t("views.user_page.left_part.add_user.title")}
       rightAction={{
         iconPath: mdiClose,
-        onClick: () => handleSubSlide(false),
+        onClick: () => handleSubSlide(0),
       }}
     >
       <StyledBox>

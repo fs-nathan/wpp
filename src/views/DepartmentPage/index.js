@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { listRoom } from '../../actions/room/listRoom';
@@ -28,21 +28,6 @@ import DepartmentUsersTable from './RightPart/DepartmentUsersTable';
 export const Context = React.createContext();
 const { Provider } = Context;
 
-const Container = styled(({ expand, ...rest }) => <div {...rest} />)`
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: ${props => props.expand ? 'auto' : 'minmax(300px, 1fr) minmax(800px, 3fr)'};
-`;
-
-const LeftDiv = styled(({ expand, ...rest }) => <div {...rest} />)`
-  display: ${props => props.expand ? 'none' : 'inherit'};
-`;
-
-const RightDiv = styled.div`
-  border-left: 1px solid rgba(0, 0, 0, .1);
-`;
-
 function UserPage({
   doListRoom,
   doDetailRoom,
@@ -53,7 +38,6 @@ function UserPage({
   doListUserRole,
   doListIcon,
   doListUserOfGroup,
-  doDetailUser,
 }) {
 
   React.useEffect(() => {
@@ -211,80 +195,74 @@ function UserPage({
       CustomEventDispose(PRIVATE_MEMBER, reloadListUserOfGroup);
     }
   }, [doListUserOfGroup]);
-  
-  const [expand, setExpand] = React.useState(false);
-  const [subSlide, setSubSlide] = React.useState(false);
-
-  function handleExpand(expand) {
-    setExpand(expand);
-  }
-
-  function handleSubSlide(subSlide) {
-    setSubSlide(subSlide);
-  }
 
   return (
     <Provider value={{
       setDepartmentId,
     }}>
-      <Container expand={expand}>
-        <Route 
-          path='/departments'
-          render={({ match: { url, } }) => (
-            <LeftDiv expand={expand}>
-              <Route path={`${url}/`} 
-                render={props => 
-                  <DepartmentList 
-                    {...props} 
-                    subSlide={subSlide} 
-                    handleSubSlide={handleSubSlide} 
-                    subSlideComp={AddUser} 
-                  />
-                } 
-                exact />
-              <Route path={`${url}/:departmentId`} 
-                render={props => 
-                  <DepartmentInfo 
-                    {...props} 
-                    subSlide={subSlide} 
-                    handleSubSlide={handleSubSlide} 
-                    subSlideComp={AddUser} 
-                  />
-                } 
-                exact />
-            </LeftDiv>
-          )}
-        />
-        <Route 
-          path='/departments'
-          render={({ match: { url, } }) => (
-            <RightDiv>
-              <Route path={`${url}/`} 
-                render={props => 
-                  <AllUsersTable 
-                    {...props} 
-                    expand={expand}
-                    handleExpand={handleExpand} 
-                    handleSubSlide={handleSubSlide}
-                  />
-                } 
-                exact 
-              />
-              <Route path={`${url}/:departmentId`} 
-                render={props => 
-                  <DepartmentUsersTable 
-                    {...props} 
-                    expand={expand}
-                    handleExpand={handleExpand} 
-                    handleSubSlide={handleSubSlide}
-                  />
-                }
-                exact 
-              />
-            </RightDiv>
-          )}
-        />
-      </Container>
+      <Route
+        path='/departments'
+        render={({ match: { url }, }) => (
+          <>
+            <Route
+              path={`${url}`}
+              exact
+              render={props => (
+                <TwoColumnsLayout 
+                  leftRenders={[
+                    () => 
+                      <DepartmentList 
+                        {...props}
+                      />,
+                    ({ handleSubSlide }) => 
+                      <AddUser 
+                        {...props} 
+                        handleSubSlide={handleSubSlide} 
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand, handleSubSlide }) => 
+                      <AllUsersTable 
+                        {...props} 
+                        expand={expand}
+                        handleExpand={handleExpand} 
+                        handleSubSlide={handleSubSlide}
+                      />
+                  }
+                />
+              )}
+            />
+            <Route
+              path={`${url}/:departmentId`}
+              exact
+              render={props => (
+                <TwoColumnsLayout 
+                  leftRenders={[
+                    () => 
+                      <DepartmentInfo 
+                        {...props}
+                      />,
+                    ({ handleSubSlide }) => 
+                      <AddUser 
+                        {...props} 
+                        handleSubSlide={handleSubSlide} 
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand, handleSubSlide }) => 
+                      <DepartmentUsersTable 
+                        {...props} 
+                        expand={expand}
+                        handleExpand={handleExpand} 
+                        handleSubSlide={handleSubSlide}
+                      />
+                  }
+                />
+              )}
+            />
+          </>
+        )}
+      />
     </Provider>
   )
 }

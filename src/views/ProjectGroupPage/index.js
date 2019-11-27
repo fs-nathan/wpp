@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
@@ -19,21 +19,6 @@ import ProjectGroupTable from './RightPart/AllProjectTable';
 
 export const Context = React.createContext();
 const { Provider } = Context;
-
-const Container = styled(({ expand, ...rest }) => <div {...rest} />)`
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: ${props => props.expand ? 'auto' : 'minmax(300px, 1fr) minmax(800px, 3fr)'};
-`;
-
-const LeftDiv = styled(({ expand, ...rest }) => <div {...rest} />)`
-  display: ${props => props.expand ? 'none' : 'inherit'};
-`;
-
-const RightDiv = styled.div`
-  border-left: 1px solid rgba(0, 0, 0, .1);
-`;
 
 function ProjectGroupPage({
   doListIcon,
@@ -141,64 +126,60 @@ function ProjectGroupPage({
     }
   }, [projectGroupId, doListProject]);
 
-  const [expand, setExpand] = React.useState(false);
-  
-  function handleExpand(expand) {
-    setExpand(expand);
-  }
-
   return (
     <Provider value={{
       setProjectGroupId,
     }}>
-      <Container expand={expand}>
-        <Route 
-          path='/projects'
-          render={({ match: { url, } }) => (
-            <LeftDiv expand={expand}>
-              <Route path={`${url}/`} 
-                render={props => 
-                  <ProjectGroupList {...props} />
-                } 
-                exact 
-              />
-              <Route path={`${url}/:projectGroupId`} 
-                render={props => 
-                  <ProjectGroupDetail {...props} />
-                } 
-                exact 
-              />
-            </LeftDiv>
-          )}
-        />
-        <Route 
-          path='/projects'
-          render={({ match: { url, } }) => (
-            <RightDiv>
-              <Route path={`${url}/`} 
-                render={props => 
-                  <ProjectGroupTable 
-                    {...props}
-                    expand={expand}
-                    handleExpand={handleExpand} 
-                  />
-                } 
-                exact 
-              />
-              <Route path={`${url}/:projectGroupId`} 
-                render={props => 
-                  <ProjectGroupTable 
-                    {...props}
-                    expand={expand}
-                    handleExpand={handleExpand} 
-                  />
-                } 
-                exact 
-              />
-            </RightDiv>
-          )}
-        />
-      </Container>
+      <Route
+        path='/projects'
+        render={({ match: { url } }) => (
+          <>
+            <Route 
+              path={`${url}`}
+              exact
+              render={props => (
+                <TwoColumnsLayout 
+                  leftRenders={[
+                    () => 
+                      <ProjectGroupList 
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) => 
+                      <ProjectGroupTable 
+                        {...props} 
+                        expand={expand}
+                        handleExpand={handleExpand}
+                      />
+                  }
+                />
+              )}
+            />
+            <Route 
+              path={`${url}/:projectGroupId`}
+              render={props => (
+                <TwoColumnsLayout 
+                  leftRenders={[
+                    () => 
+                      <ProjectGroupDetail 
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) => 
+                      <ProjectGroupTable 
+                        {...props} 
+                        expand={expand}
+                        handleExpand={handleExpand}
+                      />
+                  }
+                />
+              )}
+            />
+          </>
+        )}
+      />
     </Provider>
   )
 }

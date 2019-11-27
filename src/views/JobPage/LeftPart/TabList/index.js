@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { mdiPlus } from '@mdi/js';
 import { Link } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { 

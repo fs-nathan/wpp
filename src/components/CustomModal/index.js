@@ -14,9 +14,9 @@ import ColorTypo from '../ColorTypo';
 import colorPal from '../../helpers/colorPalette';
 import PropTypes from 'prop-types';
 
-const StyledScrollbars = styled(Scrollbars)`
+const StyledScrollbars = styled(({ height, ...props }) => <Scrollbars {...props} />)`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  min-height: 400px;
+  min-height: ${props => props.height === 'tall' ? '500px' : '400px'};
 `;
 
 const StyledDialogContent = styled(DialogContent)`
@@ -43,13 +43,29 @@ const StyledDialogActions = styled(DialogActions)`
   padding: 15px 24px;
 `;
 
-const ActionsAcceptButton = styled(ButtonBase)`
+const ActionsAcceptButton = styled(({ disabled, ...props }) => <ButtonBase disabled={disabled} {...props} />)`
   padding: 8px 16px;
   background-color: ${colorPal['green'][1]};
   &:hover {
     background-color: ${lighten(colorPal['green'][0], 0.9)};
   }
-  color: ${colorPal['green'][0]};
+  color: ${props => props.disabled ? `${lighten(colorPal['green'][0], 0.5)}` : `${colorPal['green'][0]}`};
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  & > span:last-child {
+    display: none;
+  }
+`;
+
+const ActionsCancleButton = styled(ButtonBase)`
+  padding: 8px 16px;
+  background-color: ${colorPal['gray'][1]};
+  &:hover {
+    background-color: ${lighten(colorPal['gray'][0], 0.9)};
+  }
+  color: ${colorPal['gray'][0]};
   font-weight: 500;
   font-size: 16px;
   text-transform: uppercase;
@@ -70,7 +86,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function CustomModal({ title, children, onConfirm = () => null, onCancle = () => null, open, setOpen, fullWidth = false }) {
+function CustomModal({ title, children, canConfirm = true, onConfirm = () => null, onCancle = () => null, open, setOpen, fullWidth = false, height = 'normal' }) {
 
   function handleCancle() {
     setOpen(false);
@@ -100,13 +116,17 @@ function CustomModal({ title, children, onConfirm = () => null, onCancle = () =>
       <StyledScrollbars
         autoHide
         autoHideTimeout={500}
+        height={height}
       >
         <StyledDialogContent>
           {children}
         </StyledDialogContent>
       </StyledScrollbars>
       <StyledDialogActions>
-        <ActionsAcceptButton onClick={() => handleConfirm()}>
+        <ActionsCancleButton onClick={() => handleCancle()}>
+          Hủy
+        </ActionsCancleButton>
+        <ActionsAcceptButton disabled={!canConfirm} onClick={() => handleConfirm()}>
           Hoàn thành
         </ActionsAcceptButton>
       </StyledDialogActions>

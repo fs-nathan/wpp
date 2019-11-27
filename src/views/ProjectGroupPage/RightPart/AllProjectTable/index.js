@@ -178,6 +178,10 @@ const TimeListItem = styled(({ selected, ...rest }) => (<ListItem {...rest} />))
   border-left: 3px solid ${props => props.selected ? '#05b50c' : '#fff'};
 `;
 
+const SettingContainer = styled.div`
+  margin-right: 16px;
+`;
+
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 0:   
@@ -254,7 +258,7 @@ const SettingButton = ({ onEditProject, onHideProject, onDeleteProject }) => {
   }
 
   return (
-    <div onClick={evt => evt.stopPropagation()}>
+    <SettingContainer onClick={evt => evt.stopPropagation()}>
       <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} size='small'>
         <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
       </IconButton>
@@ -291,7 +295,7 @@ const SettingButton = ({ onEditProject, onHideProject, onDeleteProject }) => {
           onDeleteProject();
         }}
       />
-    </div>
+    </SettingContainer>
   );
 }
 

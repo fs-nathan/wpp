@@ -1,33 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { detailProject } from '../../actions/project/detailProject';
 import { listTask } from '../../actions/task/listTask';
 import ProjectDetail from './LeftPart/ProjectDetail';
+import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
+import TaskGroupSlide from './LeftPart/TaskGroupSlide';
 import AllTaskTable from './RightPart/AllTaskTable';
 import { 
   CustomEventListener, CustomEventDispose,
   UPDATE_PROJECT,
 } from '../../constants/events';
+import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
 export const Context = React.createContext();
 const { Provider } = Context;
-
-const Container = styled(({ expand, ...rest }) => <div {...rest} />)`
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: ${props => props.expand ? 'auto' : 'minmax(300px, 1fr) minmax(800px, 3fr)'};
-`;
-
-const LeftDiv = styled(({ expand, ...rest }) => <div {...rest} />)`
-  display: ${props => props.expand ? 'none' : 'inherit'};
-`;
-
-const RightDiv = styled.div`
-  border-left: 1px solid rgba(0, 0, 0, .1);
-`;
 
 function ProjectPage({
   doDetailProject,
@@ -58,68 +45,39 @@ function ProjectPage({
     }
   }, [projectId, doListTask]);
 
-  const [expand, setExpand] = React.useState(false);
-  
-  function handleExpand(expand) {
-    setExpand(expand);
-  }
-
-  const [subSlide, setSubSlide] = React.useState(false);
-  const [SubSlideComp, setSubSlideComp] = React.useState(null);
-
-  function handleSubSlide(subSlide, comp = null) {
-    setSubSlide(subSlide);
-    setSubSlideComp(comp);
-  }
-
   return (
     <Provider value={{
       setProjectId,
     }}>
-      <Container expand={expand}>
-        <Route 
-          path='/project'
-          render={({ match: { url, } }) => (
-            <LeftDiv expand={expand}>
-              <Route path={`${url}/:projectId`} 
-                render={props => 
-                  <>
-                  {subSlide && 
-                    <SubSlideComp
-                      handleSubSlide={handleSubSlide}
-                    />
+      <Route 
+        path='/project'
+        render={({ match: { url, } }) => (
+          <>
+            <Route 
+              path={`${url}/:projectId`}
+              exact
+              render={props => (
+                <TwoColumnsLayout 
+                  leftRenders={[
+                    () => <ProjectDetail {...props} />,
+                    ({ handleSubSlide }) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide} />,
+                    ({ handleSubSlide }) => <TaskGroupSlide {...props} handleSubSlide={handleSubSlide} />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand, handleSubSlide, }) => 
+                      <AllTaskTable 
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                        handleSubSlide={handleSubSlide}  
+                      /> 
                   }
-                  {!subSlide && 
-                    <ProjectDetail 
-                      {...props}
-                    />
-                  }
-                  </>
-                } 
-                exact 
-              />
-            </LeftDiv>
-          )}
-        />
-        <Route 
-          path='/project'
-          render={({ match: { url, } }) => (
-            <RightDiv>
-              <Route path={`${url}/:projectId`} 
-                render={props => 
-                  <AllTaskTable 
-                    {...props}
-                    expand={expand}
-                    handleExpand={handleExpand}
-                    handleSubSlide={handleSubSlide}  
-                  />
-                } 
-                exact 
-              />
-            </RightDiv>
-          )}
-        />
-      </Container>
+                />
+              )}  
+            />
+          </>
+        )}
+      />
     </Provider>
   )
 }

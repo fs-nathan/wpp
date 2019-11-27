@@ -23,21 +23,18 @@ const Container = styled.div`
   grid-template-columns: 2fr 3fr;
   grid-template-areas:
     "left right";
-  margin-top: -20px;
-  & > div {
-    padding: 0 16px;
-  }
+  margin-top: -10px;
 `;
 
 const LeftSide = styled.div`
   grid-area: left;
-  height: 350px;
+  height: 480px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const RightSide = styled.div`
   grid-area: right;
-  height: 350px;
+  height: 480px;
 `;
 
 const StyledTypo = styled(ColorTypo)`
@@ -166,6 +163,7 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
         open={open}
         setOpen={setOpen}
         onConfirm={() => handleCopyProject()}
+        height='tall'
       >
         <Container>
           <LeftSide>

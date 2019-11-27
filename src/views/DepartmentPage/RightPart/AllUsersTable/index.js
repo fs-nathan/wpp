@@ -43,6 +43,10 @@ const NameSpan = styled.span`
   font-weight: 500;
 `;
 
+const SettingContainer = styled.div`
+  margin-right: 16px;
+`;
+
 const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -81,7 +85,7 @@ const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFrom
   }
 
   return (
-    <div onClick={evt => evt.stopPropagation()}>
+    <SettingContainer onClick={evt => evt.stopPropagation()}>
       <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} size='small'>
         <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
       </IconButton>
@@ -107,7 +111,7 @@ const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFrom
         content='Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?'
         onConfirm={() => handleLeaveGroup(user)}
       />
-    </div>
+    </SettingContainer>
   );
 }
 
@@ -160,7 +164,7 @@ function AllUsersTable({
             subActions: [{
               label: 'Thêm thành viên',
               iconPath: mdiAccountPlus,
-              onClick: () => handleSubSlide(true),
+              onClick: () => handleSubSlide(1),
             }],
             mainAction: {
               label: '+ Thêm tài khoản',

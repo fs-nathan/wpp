@@ -3,9 +3,6 @@ import styled from 'styled-components';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { 
-  IconButton, Menu, MenuItem
-} from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
   mdiDownload,
@@ -23,9 +20,6 @@ import CustomBadge from '../../../../components/CustomBadge';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
-import TaskGroupSlide from '../../LeftPart/TaskGroupSlide';
-import ProjectMemberSlide from '../../LeftPart/ProjectMemberSlide';
-
 
 const Container = styled.div`
   grid-area: table;
@@ -167,11 +161,11 @@ function AllTaskTable({
               subActions: [{
                 label: 'Thành viên', 
                 iconPath: mdiAccountCircle,
-                onClick: (evt) => handleSubSlide(true, ProjectMemberSlide),
+                onClick: (evt) => handleSubSlide(1),
               }, {
                 label: 'Nhóm việc',
                 iconPath: mdiScatterPlot,
-                onClick: (evt) => handleSubSlide(true, TaskGroupSlide),
+                onClick: (evt) => handleSubSlide(2),
               }, {
                 label: 'Tải xuống',
                 iconPath: mdiDownload,
