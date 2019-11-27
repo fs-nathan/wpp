@@ -1,5 +1,9 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
+import {
+    filterPendingItem, filterApprovedItem
+} from '../../helpers/jobDetail/arrayHelper'
+
 
 // Initial state for store
 const initialState = {
@@ -21,7 +25,9 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                offer: action.payload.offers
+                offer: action.payload.offers,
+                pendingItems: filterPendingItem(action.payload.offers),
+                approvedItems: filterApprovedItem(action.payload.offers),
             };
         case types.GET_OFFER_FAIL:
             return {

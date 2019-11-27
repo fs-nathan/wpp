@@ -176,7 +176,7 @@ const Body = styled(Scrollbars)`
 
 
 function TabBody() {
-  const [progress, setStateProgress] = React.useState('')
+  const [progress, setStateProgress] = React.useState(0)
 
   const handleProgress = (progress) => {
     setStateProgress(progress)
@@ -207,9 +207,9 @@ function TabBody() {
         onDragStop={progress => console.log(`Stopped dragging: ${progress}%`)}
         roundedCorners
       >
-        <Progress color="green" progress={progress}>
+        <Progress height={20} color="green" progress={progress}>
             <Dot>
-              <Typography> { (progress === '') ? '0%' : `${progress}%` } </Typography>
+              <Typography> { !progress ? '0%' : `${progress}%` } </Typography>
             </Dot>
             <TextProgressToday component='div'>
               <div />

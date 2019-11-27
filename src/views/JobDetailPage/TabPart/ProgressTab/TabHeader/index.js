@@ -28,11 +28,11 @@ const ButtonIcon = styled(IconButton)`
 `
 
 function TabHeader({ setShow }) {
-  const [time, setTime] = React.useState('')
+  // const [time, setTime] = React.useState('')
 
-  const handleTime = () => {
-    setTime(time);
-  }
+  // const handleTime = () => {
+  //   setTime(time);
+  // }
   // bien cua modal cong viec con
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
@@ -47,7 +47,7 @@ function TabHeader({ setShow }) {
         <Icon path={mdiChevronLeft } size={1} />
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Tiến độ công việc</ColorTypo>
-      <ButtonIcon onClick={handleClickClose, handleClickOpen}>
+      <ButtonIcon onClick={handleClickOpen}>
         <Icon path={mdiSettings} size={1} />
       </ButtonIcon>
       {/* modal tao moi cong viec con */}

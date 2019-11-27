@@ -60,7 +60,8 @@ import media from './taskDetail/media'
 import taskCommand from './taskDetail/command';
 import commonTaskDetail from './taskDetail/common';
 import location from './taskDetail/location'
-import detailTask from './taskDetail/taskDetail'
+import detailTask from './taskDetail/taskDetail';
+import taskMember from './taskDetail/member';
 const rootReducer = combineReducers({
   authentications,
   documents,
@@ -72,7 +73,8 @@ const rootReducer = combineReducers({
     taskCommand,
     commonTaskDetail,
     location,
-    detailTask
+    detailTask,
+    taskMember
   }),
   room: combineReducers({
     listRoom,

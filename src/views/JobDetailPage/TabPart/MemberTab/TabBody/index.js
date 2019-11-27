@@ -82,7 +82,7 @@ const getBadgeProjectRole = (projectRole) => {
       break;
   }
   return (
-    <BadgeAdmin color={color} variant='caption'>{projectRole}</BadgeAdmin>
+    <BadgeAdmin color={color} variant='caption' component='div'>{projectRole}</BadgeAdmin>
   )
 }
 
@@ -112,7 +112,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
         <ListItemAvatar>
           <Avatar src={avatar} alt='avatar' style={{ width: 50, height: 50 }} />
         </ListItemAvatar>
-        <ListItemText
+        <ListItemText component="div"
           primary={
             <React.Fragment>
               <StyledDiv>
@@ -126,11 +126,17 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           }
           secondary={
             <React.Fragment>
-              <StyledDiv>
+              <StyledDiv component="span">
                 {getBadgeProjectRole(projectRole)}
                 {
                   authorityList.map((authority, index) =>
-                    <BadgeItem key={index} color={'light-green'} label={authority} size='small' badge component='small' />
+                    <BadgeItem 
+                    key={index} 
+                    color={'light-green'} 
+                    label={authority} 
+                    size='small' 
+                    badge 
+                    component='span' />
                   )
                 }
               </StyledDiv>
@@ -152,7 +158,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           horizontal: 'right',
         }}
       >
-        <MenuItemCheck onClick={handleClose, handleClickOpen}>Chi tiết</MenuItemCheck>
+        <MenuItemCheck onClick={() => {handleClose();handleClickOpen()}}>Chi tiết</MenuItemCheck>
         <MenuItemCheck onClick={handleClose}>Xóa</MenuItemCheck>
       </Menu>
       {/* modal members */}

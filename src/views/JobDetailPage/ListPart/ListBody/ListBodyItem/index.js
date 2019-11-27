@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItem, ListItemAvatar, ListItemText, Avatar } from '@material-ui/core';
+import { ListItemAvatar, ListItemText, Avatar } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiPin } from '@mdi/js';
@@ -66,26 +66,27 @@ const BadgeItem = styled(ColorChip)`
 function JobName(props) {
   return (
     <NameContainer variant='space-between'>
-      <ColorTypo bold style={{ fontSize: 17,  textOverflow: 'ellipsis', width: '200px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.title}</ColorTypo>
+      <ColorTypo bold style={{ fontSize: 17, textOverflow: 'ellipsis', width: '200px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.title}</ColorTypo>
       <Chip label={props.notification} size='small' style={{ fontSize: '14px', fontWeight: 500 }} />
     </NameContainer>
   )
 }
 function JobContent(props) {
-  const [colorStatus, setColorStatus] = React.useState(null)
-  
+  // const [colorStatus, setColorStatus] = React.useState(null)
+
   React.useEffect(() => {
     switch (props.label) {
       case 'Quá hạn':
-        setColorStatus('grey')
+        // setColorStatus('grey')
         break;
       case 'Đang chờ':
-          setColorStatus('orangelight')
-          break;
+        // setColorStatus('orangelight')
+        break;
       default:
+        // console.log(colorStatus)
         break;
     }
-  })
+  }, [props.label])
   return (
     <ContentContainer>
       <div>
@@ -93,9 +94,9 @@ function JobContent(props) {
           <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20 }} />
           <ColorTypo color='#7a869a' style={{ fontSize: '13px', textOverflow: 'ellipsis', width: '160px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.description}</ColorTypo>
         </div>
-        <div style={{color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '13px'}}>{props.time}</div>
+        <div style={{ color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '13px' }}>{props.time}</div>
       </div>
-      <div style={{display: 'flex'}}>
+      <div style={{ display: 'flex' }}>
         <BadgeItem color='redlight' badge label={props.label} size='small' />
         <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} />
       </div>

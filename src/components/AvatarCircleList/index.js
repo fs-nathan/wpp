@@ -32,7 +32,7 @@ const Container = styled.div`
       width: 20px;
       height: 20pxl
       border-radius: 100%;
-    }
+    } 
   }
 `;
 

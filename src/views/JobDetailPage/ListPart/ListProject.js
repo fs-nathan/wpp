@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slide, IconButton, ListSubheader, List } from '@material-ui/core';
+import { IconButton, ListSubheader, List } from '@material-ui/core';
 import { mdiClose , mdiDrag, mdiMenuUp } from '@mdi/js';
 import Icon from '@mdi/react';
 import styled from 'styled-components';

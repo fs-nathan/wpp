@@ -1,16 +1,16 @@
 import React from 'react';
-import { IconButton, Dialog, Button, TextField, withStyles, Typography, InputAdornment } from '@material-ui/core';
+import { IconButton, Dialog, Button, TextField, withStyles, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiClose, mdiPlus, mdiCloudDownloadOutline } from '@mdi/js';
-import ColorTypo from '../../../../components/ColorTypo';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import { mdiCloudDownloadOutline } from '@mdi/js';
+// import ColorTypo from '../../../../components/ColorTypo';
+// import OutlinedInput from '@material-ui/core/OutlinedInput';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IntegrationReactSelect from '../Tag/index'
-import colorPal from '../../../../helpers/colorPalette';
+// import colorPal from '../../../../helpers/colorPalette';
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -18,20 +18,20 @@ const TexTitle = styled(Typography)`
   font-size: 15px;
   margin: 15px 0;
 `
-const Text = styled(TextField)`
-  & > *:first-child {
-    margin-bottom: 20px;
-    & > input {
-      font-size: 16px;
-      margin-bottom: 100px;
-    }
-  }
-`
+// const Text = styled(TextField)`
+//   & > *:first-child {
+//     margin-bottom: 20px;
+//     & > input {
+//       font-size: 16px;
+//       margin-bottom: 100px;
+//     }
+//   }
+// `
 
-const TitleText = styled(Typography)`
-  font-size: 15px;
-  margin: 15px 0;
-`
+// const TitleText = styled(Typography)`
+//   font-size: 15px;
+//   margin: 15px 0;
+// `
 const ButtonFile = styled.label`
       & > span {
         margin: 20px 0 0 0;

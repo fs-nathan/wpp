@@ -156,7 +156,7 @@ const ModalImage = (props) => {
                 <IconButton>
                     <Icon path={mdiChevronLeftCircle} size={5} />
                 </IconButton>
-                <img src={ImageTest} />
+                <img alt="vtask" src={ImageTest} />
                 <IconButton>
                     <Icon path={mdiChevronRightCircle} size={5} />
                 </IconButton>

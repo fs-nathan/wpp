@@ -50,7 +50,7 @@ function TabHeader(props) {
         <Icon path={mdiChevronLeft} size={1} />
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Chỉ đạo - Quyết định</ColorTypo>
-      <ButtonIcon onClick={handleClose, handleClickOpen}>
+      <ButtonIcon onClick={handleClickOpen}>
         <Icon path={mdiPlus} size={1} />
       </ButtonIcon>
       {/* modal chi dao quyet dinh */}
