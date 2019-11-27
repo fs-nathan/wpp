@@ -441,8 +441,8 @@ function AddMemberModal(props) {
                 <DialogTitle onClose={handleClose}>
                     Thành viên công việc
         </DialogTitle>
-                <DialogContent dividers style={{ padding: 0  }}>
-                    <GridArea component={'div'} style={{ borderBottom: 'none'}} >
+                <DialogContent dividers style={{ padding: 0 }}>
+                    <GridArea component={'div'} style={{ borderBottom: 'none' }} >
                         <BorderGrid component={'div'}>
                             <FlexMemberProject component={'span'}>
                                 <MemberProject component={'div'}>Thành viên dự án</MemberProject>
@@ -461,7 +461,7 @@ function AddMemberModal(props) {
                             <FlexJobMember component="div">
                                 <MemberProject component={'div'}>Thành viên công việc</MemberProject>
                             </FlexJobMember>
-                            <TableMember listMemberJobState={listMemberJobState} style={{ boxShadow: 'none'}}/>
+                            <TableMember listMemberJobState={listMemberJobState} style={{ boxShadow: 'none' }} />
                         </Typography>
                     </GridArea>
                 </DialogContent>

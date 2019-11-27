@@ -105,10 +105,6 @@ function DropdownButton({ values, value, priority }) {
   function handleSelect(index) {
     setSelected(index);
     if (priority === true) {
-      console.log('index::::::::::', index)
-      console.log('values::::::::::', values)
-      console.log('value in select function::::', value)
-      console.log('taskId::::', value.taskId)
       value.updateTaskPriority(value.taskId, index)
     }
     handleClose();
@@ -208,7 +204,6 @@ function Content({ value }) {
 
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
-  console.log('value:::', value);
   let content = ""
   if (value) {
     if (value.detailTask) {
