@@ -84,16 +84,16 @@ const selector = [
 
 const DemandModal = (props) => {
 
-  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "",content: "", type: -1 })
+  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "", content: "", type: -1 })
 
   React.useEffect(() => {
     setTempSelectedItem(props.item)
   }, [props.item])
 
   const setParams = (nameParam, value) => {
-    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
+    setTempSelectedItem({ ...tempSelectedItem, [nameParam]: value })
   }
-  console.log('setTempSelectedItem', setTempSelectedItem.type)
+
   return (
     <Dialog onClose={props.handleClose} open={props.isOpen} fullWidth>
       <DialogTitle onClose={props.handleClose}>
