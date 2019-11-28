@@ -9,7 +9,7 @@ import ProgressBar from '../../../../components/ProgressBar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import ColorButton from '../../../../components/ColorButton';
 import Icon from '@mdi/react';
-import { mdiSquare } from '@mdi/js';
+import { mdiSquare, mdiChevronLeft, } from '@mdi/js';
 import { connect } from 'react-redux';
 import { Context as ProjectContext } from '../../index';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -170,6 +170,10 @@ function ProjectDetail({ detailProject, doDeleteProject, }) {
       {error === null && (
         <LeftSideContainer
           title='Thông tin dự án'
+          leftAction={{
+            iconPath: mdiChevronLeft,
+            onClick: () => history.push('/projects')
+          }}
           loading={{
             bool: loading,
             component: () => <LoadingBox />

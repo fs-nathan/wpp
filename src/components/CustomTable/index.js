@@ -42,20 +42,16 @@ const LeftHeader = styled.div`
   & > div:first-child {
     display: flex;
     align-items: center;
-    color: #05b50c;
-    & > span {
-      font-size: 24px;
-      margin-right: 10px;
-    }
+    color: #444;
     & > p {
       margin: 0;
-      font-size: 18px;
+      font-size: 21px;
+      line-height: 26px;
       font-weight: 600;
-      text-transform: uppercase;
+      text-transform: unset;
     }
   }
   & > span:last-child {
-    margin-left: 30px;
     font-size: 11px;
   }
 `;
@@ -89,7 +85,6 @@ function CustomTable() {
       <Header>
         <LeftHeader>
           <div>
-            <span>&#9733;</span>
             <p>{typeof(get(options, 'title')) === 'function' ? options.title() : get(options, 'title', '')}</p>
           </div>
           {get(options, 'subTitle') ? <span>{typeof(get(options, 'subTitle')) === 'function' ? options.subTitle() : get(options, 'subTitle', '')}</span> : null}

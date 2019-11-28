@@ -156,7 +156,7 @@ function AllTaskTable({
         <React.Fragment>
           <CustomTable
             options={{
-              title: `${loading ? '...' : projectId ? get(project, 'name', '') : ''}`,
+              title: 'Danh sách công việc',
               subTitle: '',
               subActions: [{
                 label: 'Thành viên', 

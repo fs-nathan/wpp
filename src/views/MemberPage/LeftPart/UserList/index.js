@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import SearchInput from '../../../../components/SearchInput';
+import { mdiChevronLeft } from '@mdi/js';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import { StyledList, StyledListItem } from '../../../../components/CustomList';
 import CustomListItem from './CustomListItem';
@@ -69,6 +70,10 @@ function UserList({ listUserOfGroup, sortUser, doSortUser, }) {
     {error === null && (
       <LeftSideContainer
         title='Danh sách thành viên'
+        leftAction={{
+          iconPath: mdiChevronLeft,
+          onClick: () => history.push('/departments')
+        }}
         loading={{
           bool: loading,
           component: () => <LoadingBox />

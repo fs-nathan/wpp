@@ -14,7 +14,7 @@ const StyledTableHeadRow = styled(TableRow)`
   height: 42px;
 `;
 
-const StyledTableHeadCell = styled(TableCell)`
+const StyledTableHeadCell = styled(({ center, ...rest }) => <TableCell {...rest} />)`
   padding: 8px;
   & > div {
     width: 100%;
@@ -24,9 +24,7 @@ const StyledTableHeadCell = styled(TableCell)`
     font-size: 14px;
     display: flex;
     align-items: center;
-    & > *:last-child {
-      margin-left: 5px;
-    }
+    justify-content: ${props => props.center ? 'center' : 'start'}
   }
 `;
 
@@ -42,7 +40,7 @@ function TableHeaderRow() {
         </StyledTableHeadCell>
       )}
       {columns.map((column, index) => (
-        <StyledTableHeadCell key={index}>
+        <StyledTableHeadCell key={index} center={get(column, 'center', false)}>
           <div>
             {typeof(get(column, 'label')) === 'function' ? column.label() : get(column, 'label', '')}
             {get(column, 'sort') 

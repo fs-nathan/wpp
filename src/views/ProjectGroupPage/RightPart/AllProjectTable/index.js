@@ -462,7 +462,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
         <React.Fragment>
           <CustomTable
             options={{
-              title: `${loading ? '...' : projectGroupId ? get(projectGroup, 'name', 'Tất cả') : 'Tất cả'}`,
+              title: `Danh sách dự án`,
               subTitle: '',
               subActions: [{
                 label: filterTitle[filter],
@@ -510,6 +510,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
             columns={[{
               label: () => <Icon path={mdiShieldAccount} size={1} color={'rgb(102, 102, 102)'}/>,
               field: (row) => <CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' />,
+              center: true,
             }, {
               label: 'Dự án',
               field: 'name',
@@ -558,6 +559,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
                               } 
                               display={3} 
                             />,
+              center: true,
             }, {
               label: '',
               field: row => <SettingButton 

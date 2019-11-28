@@ -24,6 +24,7 @@ const StyledButton = styled(Button)`
   && {
     padding: 4px;
     border-radius: 0;
+    color: #666;
   }
   &&:not(:last-child) {
     border-right: none;
@@ -48,7 +49,7 @@ const StyledButton = styled(Button)`
     }
     & > span {
       margin-top: 5px;
-      font-size: 12px;
+      font-size: 11px;
     }
   }
   && > span:last-child {
