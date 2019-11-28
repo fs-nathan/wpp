@@ -10,6 +10,7 @@ import { createRoom } from '../../../../actions/room/createRoom';
 import { updateRoom } from '../../../../actions/room/updateRoom';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
+import { useRequiredString } from '../../../../hooks';
 
 const LogoBox = styled.div`
   display: flex;
@@ -28,8 +29,8 @@ const LogoBox = styled.div`
 
 function CreateDepartment({ updateDepartment = null, open, setOpen, doCreateRoom, doUpdateRoom }) {
 
-  const [name, setName] = React.useState(get(updateDepartment, 'name', ''));
-  const [description, setDescription] = React.useState(get(updateDepartment, 'description', ''));
+  const [name, setName, errorName] = useRequiredString(get(updateDepartment, 'name', ''), 150);
+  const [description, setDescription, errorDescription] = useRequiredString(get(updateDepartment, 'description', ''), 500);
   const __icon = get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png');
   const [icon, setIcon] = React.useState({
     url_full: __icon,
@@ -66,6 +67,7 @@ function CreateDepartment({ updateDepartment = null, open, setOpen, doCreateRoom
         open={open}
         setOpen={setOpen}
         onConfirm={() => handleCreateDepartment()}
+        canConfirm={!errorName && !errorDescription}
       >
         <TextField
           value={name}
@@ -76,7 +78,7 @@ function CreateDepartment({ updateDepartment = null, open, setOpen, doCreateRoom
           fullWidth
           helperText={
             <ColorTypo variant='caption' color='red'>
-              Tối đa 150 ký tự
+              {get(errorName, 'message', '')}
             </ColorTypo>
           }
         />
@@ -91,7 +93,7 @@ function CreateDepartment({ updateDepartment = null, open, setOpen, doCreateRoom
           rowsMax='4'
           helperText={
             <ColorTypo variant='caption' color='red'>
-              Tối đa 150 ký tự
+              {get(errorDescription, 'message', '')}
             </ColorTypo>
           }
         />

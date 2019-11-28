@@ -317,7 +317,7 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
 
-  const [filter, setFilter] = React.useState(0);
+  const [filter, setFilter] = React.useState(1);
   const [time, setTime] = React.useState(0);
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);

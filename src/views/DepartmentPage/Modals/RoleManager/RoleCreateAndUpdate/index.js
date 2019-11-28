@@ -7,22 +7,23 @@ import CustomModal from '../../../../../components/CustomModal';
 import { createUserRole } from '../../../../../actions/userRole/createUserRole';
 import { updateUserRole } from '../../../../../actions/userRole/updateUserRole';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import { get } from 'lodash';
+import { useRequiredString } from '../../../../../hooks';
 
 function RoleCreateAndUpdate({ open, setOpen, updatedUserRole = null, doCreateUserRole, doUpdateUserRole }) {
 
-  const [name, setName] = React.useState(_.get(updatedUserRole, 'name', ''));
-  const [description, setDescription] = React.useState(_.get(updatedUserRole, 'description', ''));
+  const [name, setName, errorName] = useRequiredString(get(updatedUserRole, 'name', ''), 100);
+  const [description, setDescription, errorDescription] = useRequiredString(get(updatedUserRole, 'description', ''), 100);
 
   React.useEffect(() => {
-    setName(_.get(updatedUserRole, 'name', ''));
-    setDescription(_.get(updatedUserRole, 'description', ''));
+    setName(get(updatedUserRole, 'name', ''));
+    setDescription(get(updatedUserRole, 'description', ''));
   }, [updatedUserRole]);
 
   function handleSubmit() {
     if (updatedUserRole) {
       doUpdateUserRole({
-        userRoleId: _.get(updatedUserRole, 'id'),
+        userRoleId: get(updatedUserRole, 'id'),
         name,
         description,
       })
@@ -40,6 +41,7 @@ function RoleCreateAndUpdate({ open, setOpen, updatedUserRole = null, doCreateUs
       open={open}
       setOpen={setOpen}
       title={updatedUserRole ? 'Chỉnh sửa vai trò' : 'Tạo vai trò'}
+      canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleSubmit()}
       onCancle={() => setOpen(0)}
     >
@@ -52,7 +54,7 @@ function RoleCreateAndUpdate({ open, setOpen, updatedUserRole = null, doCreateUs
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
-            Tối đa 100 ký tự
+            {get(errorName, 'message', '')}
           </ColorTypo>
         }
       />
@@ -65,7 +67,7 @@ function RoleCreateAndUpdate({ open, setOpen, updatedUserRole = null, doCreateUs
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
-            Tối đa 100 ký tự
+            {get(errorDescription, 'message', '')}
           </ColorTypo>
         }
       />

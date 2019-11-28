@@ -8,11 +8,12 @@ import { createPosition } from '../../../../../actions/position/createPosition';
 import { updatePosition } from '../../../../../actions/position/updatePosition';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
+import { useRequiredString } from '../../../../../hooks';
 
 function TitleManager({ open, setOpen, updatedPosition = null, doCreatePosition, doUpdatePosition }) {
 
-  const [name, setName] = React.useState(get(updatedPosition, 'name', ''));
-  const [description, setDescription] = React.useState(get(updatedPosition, 'description', ''));
+  const [name, setName, errorName] = useRequiredString(get(updatedPosition, 'name', ''), 150);
+  const [description, setDescription, errorDescription] = useRequiredString(get(updatedPosition, 'description', ''), 350);
 
   React.useEffect(() => {
     setName(get(updatedPosition, 'name', ''));
@@ -40,6 +41,7 @@ function TitleManager({ open, setOpen, updatedPosition = null, doCreatePosition,
       open={open}
       setOpen={setOpen}
       title={updatedPosition ? 'Chỉnh sửa chức danh' : 'Tạo chức danh'}
+      canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleSubmit()}
       onCancle={() => setOpen(0)}
     >
@@ -52,7 +54,7 @@ function TitleManager({ open, setOpen, updatedPosition = null, doCreatePosition,
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
-            Tối đa 150 ký tự
+            {get(errorName, 'message', '')}
           </ColorTypo>
         }
       />
@@ -67,7 +69,7 @@ function TitleManager({ open, setOpen, updatedPosition = null, doCreatePosition,
         rowsMax='4'
         helperText={
           <ColorTypo variant='caption' color='red'>
-            Tối đa 350 ký tự
+            {get(errorDescription, 'message', '')}
           </ColorTypo>
         }
       />

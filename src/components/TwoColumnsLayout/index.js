@@ -31,8 +31,6 @@ function TwoColumnsLayout({
     setSubSlide(subSlide);
   }
 
-  console.log('XXX');
-
   return (
     <Container expand={expand}>
       {!expand && (

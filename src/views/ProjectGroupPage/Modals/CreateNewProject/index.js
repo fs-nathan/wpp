@@ -7,6 +7,7 @@ import ColorTypo from '../../../../components/ColorTypo';
 import { createProject } from '../../../../actions/project/createProject';
 import { connect } from 'react-redux';
 import { get, find } from 'lodash';
+import { useRequiredString } from '../../../../hooks';
 
 const StyledFormControl = styled(FormControl)`
   min-width: 300px;
@@ -26,8 +27,8 @@ const CustomTextField = styled(TextField)`
 function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, }) {
 
   const { data: { projectGroups } } = listProjectGroup;
-  const [name, setName] = React.useState('');
-  const [description, setDescription] = React.useState('');
+  const [name, setName, errorName] = useRequiredString('', 200);
+  const [description, setDescription, errorDescription] = useRequiredString('', 500);
   const [projectGroup, setProjectGroup] = React.useState(projectGroups[0]);
   const [priority, setPriority] = React.useState(0);
   const [currency] = React.useState(0);
@@ -53,6 +54,7 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
         title={`Tạo mới dự án`}
         open={open}
         setOpen={setOpen}
+        canConfirm={!errorName && !errorDescription}
         onConfirm={() => handleCreateNewProject()}
       >
         <StyledFormControl fullWidth>
@@ -82,7 +84,7 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
           fullWidth
           helperText={
             <ColorTypo variant='caption' color='red'>
-              Tối đa 200 ký tự
+              {get(errorName, 'message', '')}
             </ColorTypo>
           }
         />
@@ -97,7 +99,7 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
           rowsMax='6'
           helperText={
             <ColorTypo variant='caption' color='red'>
-              Tối đa 500 ký tự
+              {get(errorDescription, 'message', '')}
             </ColorTypo>
           }
         />

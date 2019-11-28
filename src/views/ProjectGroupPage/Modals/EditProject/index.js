@@ -7,6 +7,7 @@ import ColorTypo from '../../../../components/ColorTypo';
 import { updateProject } from '../../../../actions/project/updateProject';
 import { connect } from 'react-redux';
 import { get, find } from 'lodash';
+import { useRequiredString } from '../../../../hooks';
 
 const StyledFormControl = styled(FormControl)`
   min-width: 300px;
@@ -20,8 +21,8 @@ const StyledFormControl = styled(FormControl)`
 function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpdateProject, }) {
 
   const { data: { projectGroups } } = listProjectGroup;
-  const [name, setName] = React.useState(get(curProject, 'name', ''));
-  const [description, setDescription] = React.useState(get(curProject, 'description', ''));
+  const [name, setName, errorName] = useRequiredString(get(curProject, 'name', ''), 200);
+  const [description, setDescription, errorDescription] = useRequiredString(get(curProject, 'description', ''), 200);
   const [projectGroup, setProjectGroup] = React.useState(find(projectGroups, { id: get(curProject, 'project_group_id') }) || projectGroups[0]);
   const [priority, setPriority] = React.useState(get(curProject, 'priority_code', 0));
   const [currency, setCurrency] = React.useState(get(curProject, 'currency', 0));
@@ -55,6 +56,7 @@ function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpd
         title={`Chỉnh sửa dự án`}
         open={open}
         setOpen={setOpen}
+        canConfirm={!errorName && !errorDescription}
         onConfirm={() => handleEditProject()}
       >
         <TextField
@@ -66,7 +68,7 @@ function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpd
           fullWidth
           helperText={
             <ColorTypo variant='caption' color='red'>
-              Tối đa 200 ký tự
+              {get(errorName, 'message', '')}
             </ColorTypo>
           }
         />
@@ -81,7 +83,7 @@ function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpd
           rowsMax='6'
           helperText={
             <ColorTypo variant='caption' color='red'>
-              Tối đa 500 ký tự
+              {get(errorDescription, 'message', '')}
             </ColorTypo>
           }
         />

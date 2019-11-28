@@ -11,7 +11,8 @@ import LoadingBox from '../../../../components/LoadingBox';
 import { createProjectGroup } from '../../../../actions/projectGroup/createProjectGroup';
 import { editProjectGroup } from '../../../../actions/projectGroup/editProjectGroup';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import { get } from 'lodash';
+import { useRequiredString } from '../../../../hooks';
 
 const LogoBox = styled.div`
   display: flex;
@@ -30,9 +31,9 @@ const LogoBox = styled.div`
 
 function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createProjectGroup, doCreateProjectGroup, editProjectGroup, doEditProjectGroup }) {
 
-  const [name, setName] = React.useState(_.get(updateProjectGroup, 'name', ''));
-  const [description, setDescription] = React.useState(_.get(updateProjectGroup, 'description', ''));
-  const __icon = _.get(updateProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png');
+  const [name, setName, errorName] = useRequiredString(get(updateProjectGroup, 'name', ''), 150);
+  const [description, setDescription, errorDescription] = useRequiredString(get(updateProjectGroup, 'description', ''), 300);
+  const __icon = get(updateProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png');
   const [icon, setIcon] = React.useState({
     url_full: __icon,
     url_sort: __icon.replace('https://storage.googleapis.com', ''),
@@ -55,7 +56,7 @@ function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createPr
       }); 
     } else {
       doEditProjectGroup({
-        projectGroupId: _.get(updateProjectGroup, 'id'),
+        projectGroupId: get(updateProjectGroup, 'id'),
         name,
         description,
         icon: icon.url_sort,
@@ -70,6 +71,7 @@ function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createPr
         title={`${updateProjectGroup ? 'Cập nhật' : 'Tạo'} nhóm dự án`}
         open={open}
         setOpen={setOpen}
+        canConfirm={!errorName && !errorDescription}
         onConfirm={() => handleCreateProjectGroup()}
       >
         {loading && <LoadingBox />}
@@ -85,7 +87,7 @@ function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createPr
               fullWidth
               helperText={
                 <ColorTypo variant='caption' color='red'>
-                  Tối đa 150 ký tự
+                  {get(errorName, 'message', '')}
                 </ColorTypo>
               }
             />
@@ -100,7 +102,7 @@ function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createPr
               rowsMax='4'
               helperText={
                 <ColorTypo variant='caption' color='red'>
-                  Tối đa 150 ký tự
+                  {get(errorDescription, 'message', '')}
                 </ColorTypo>
               }
             />
