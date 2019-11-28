@@ -319,7 +319,6 @@ export const getTaskDetailTabPartFail = (error) => ({
     error: error,
 });
 
-<<<<<<< HEAD
 // Update Priority
 export const updatePriority = payload => ({
     type: types.UPDATE_TASK_PRIORITY_REQUEST,
@@ -333,7 +332,6 @@ export const updatePriorityFail = error => ({
     type: types.UPDATE_TASK_PRIORITY_FAIL,
     error: error
 })
-=======
 //Member - Tabpart - cot phai
 export const getMember = (payload) => ({
     type: types.GET_MEMBER_REQUEST,
@@ -364,4 +362,3 @@ export const getMemberNotAssignedFail = (error) => ({
     type: types.GET_MEMBER_NOT_ASSIGNED_FAIL,
     error: error,
 });
->>>>>>> origin/dev_quan
