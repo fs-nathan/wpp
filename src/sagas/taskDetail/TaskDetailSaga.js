@@ -201,7 +201,7 @@ function* postRemindDuration(action) {
   try {
     const res = yield call(doPostRemindDuration, action.options)
     yield put(actions.postRemindDurationSuccess(res))
-    yield put(actions.getRemind({ taskId: "5da183cfc46d8515e03fa9e8" }))
+    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.postRemindDurationFail(error))
   }
@@ -228,7 +228,7 @@ function* updateRemindWithTimeDetail(action) {
     const res = yield call(doUpdateRemindWithTimeDetail, action.options)
     // console.log("Api update sub-task", res)
     yield put(actions.updateRemindWithTimeDetailSuccess(res))
-    yield put(actions.getRemind({ taskId: "5da183cfc46d8515e03fa9e8" }))
+    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.updateRemindWithTimeDetailFail(error))
   }
@@ -255,7 +255,7 @@ function* updateRemindWithDuration(action) {
     const res = yield call(doUpdateRemindWithDuration, action.options)
     // console.log("Api update sub-task", res)
     yield put(actions.updateRemindWithDurationSuccess(res))
-    yield put(actions.getRemind({ taskId: "5da183cfc46d8515e03fa9e8" }))
+    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.updateRemindWithDurationFail(error))
   }
