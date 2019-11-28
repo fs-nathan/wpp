@@ -176,17 +176,30 @@ function MemberPriority(props) {
 }
 
 function MemberRole(props) {
-    const [openRoleModal, setOpenRoleModal] = React.useState(false);
+    const [openRoleModal, setOpenRoleModal] = React.useState(false)
+    console.log("QQQQ", props)
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <div>
                 <div>
-                    <ColorChip color='grey' badge label={props.role1} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-                    <ColorChip color='grey' badge label={props.role2} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+                    {
+                        props.roles[0] &&
+                        <ColorChip color='grey' badge label={props.roles[0].name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+                    }
+                    {
+                        props.roles[1] &&
+                        <ColorChip color='grey' badge label={props.roles[1].name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+                    }
                 </div>
                 <div>
-                    <ColorChip color='grey' badge label={props.role3} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-                    <ColorChip color='grey' badge label={props.role4} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+                    {
+                        props.roles[2] &&
+                        <ColorChip color='grey' badge label={props.roles[2].name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+                    }
+                    {
+                        props.roles[3] &&
+                        <ColorChip color='grey' badge label={props.roles[3].name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+                    }
                 </div>
             </div>
             <IconButton style={{ float: 'right' }}
@@ -285,12 +298,7 @@ function AddMemberModal(props) {
                 permission: item.master
                     ? <MemberPriority label={item.permission} master />
                     : <MemberPriority label={item.permission} />,
-                roles: <MemberRole
-                //     role1={item.role[0] && item.role[0]}
-                //     role2={item.role[1] && item.role[1]}
-                //     role3={item.role[2] && item.role[2]}
-                //     role4={item.role[3] && item.role[3]} 
-                />
+                roles: <MemberRole roles={item.roles || []} />
             }
         })
         setListMemberJob(arrayMember)
@@ -318,7 +326,7 @@ function AddMemberModal(props) {
     //     }
     //     )])
     // }
-    
+
     return (
         <div>
             <Dialog maxWidth="xl" onClose={handleClose} open={props.isOpen}>
