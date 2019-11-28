@@ -367,16 +367,12 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
       default:
         break;
     }
-    setProjects(projects);
-  }, [_projects, filter]);
-
-  React.useEffect(() => {
     if (sortField) {
-      let newProjects = sortBy(projects, [o => get(o, sortField)]);
-      if (sortType === -1) reverse(newProjects);
-      setProjects(newProjects);
+      projects = sortBy(projects, [o => get(o, sortField)]);
+      if (sortType === -1) reverse(projects);
     }
-  }, [sortField, sortType, projects]);
+    setProjects(projects);
+  }, [_projects, filter, sortField, sortType,]);
 
   React.useEffect(() => {
     switch (time) {

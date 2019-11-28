@@ -43,17 +43,11 @@ function AvatarCircle({ user }) {
 
 function AvatarCircleList({ display, users = [] }) {
 
-  const [usersArr, setUsersArr] = React.useState(users);
-
-  React.useEffect(() => {
-    setUsersArr(users);
-  }, [users]);
-
   return (
     <Container>
-      {usersArr.length > 0 && (
+      {users.length > 0 && (
         <React.Fragment>
-          {usersArr.slice(0, display).map((user, index) => {
+          {users.slice(0, display).map((user, index) => {
             return (
               <Tooltip 
                 key={index}
@@ -67,14 +61,14 @@ function AvatarCircleList({ display, users = [] }) {
               </Tooltip>
             )
           })}
-          {display < usersArr.length && (  
+          {display < users.length && (  
             <div>
-              <div>{usersArr.length-display}+</div>
+              <div>{users.length-display}+</div>
             </div>
           )}
         </React.Fragment>
       )}
-      {usersArr.length === 0 && (
+      {users.length === 0 && (
         <ColorTypo color='gray' variant='caption'>
           Không có dữ liệu
         </ColorTypo>

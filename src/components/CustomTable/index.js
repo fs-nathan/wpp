@@ -38,6 +38,7 @@ const Header = styled.div`
 `;
 
 const LeftHeader = styled.div`
+  max-width: 250px;
   & > div:first-child {
     display: flex;
     align-items: center;
