@@ -14,7 +14,8 @@ import ColorChip from '../../../../components/ColorChip';
 import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
 import {
-  DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, REMIND_TIME_TYPE
+  DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, REMIND_TIME_TYPE,
+  REMIND_SCHEDULE_TYPE, REMINDER_PROGRESS, isValidDuration
 } from '../../../../helpers/jobDetail/stringHelper'
 import { WrapperContext } from '../../index'
 
@@ -26,32 +27,33 @@ const selector = [
   {
     value: 1,
     label: 'Nhắc hẹn theo tiến độ thực tế',
-  },
-  {
-    value: 2,
-    label: 'Nhắc hẹn theo tiến độ kế hoạch',
-  },
-  {
-    value: 3,
-    label: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế',
-  },
+  }
+  // ,
+  // {
+  //   value: 2,
+  //   label: 'Nhắc hẹn theo tiến độ kế hoạch',
+  // },
+  // {
+  //   value: 3,
+  //   label: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế',
+  // },
 ];
 
 const badges = [
   {
-    value: 'Nhắc 1 lần',
+    value: 0,
     label: 'Nhắc 1 lần',
   },
   {
-    value: 'Theo ngày',
+    value: 1,
     label: 'Theo ngày',
   },
   {
-    value: 'Theo tuần',
+    value: 2,
     label: 'Theo tuần',
   },
   {
-    value: 'Theo tháng',
+    value: 3,
     label: 'Theo tháng',
   },
 ]
@@ -192,22 +194,42 @@ const DEFAULT_DATA = {
   content: "",
   date_remind: DEFAULT_DATE_TEXT,
   time_remind: DEFAULT_TIME_TEXT,
+  type_remind: REMIND_SCHEDULE_TYPE,
+  duration: [],
 }
+// const DATA_REMIND_DURATION = {
+//   id: "",
+//   type: REMIND_TIME_TYPE,
+//   content: "",
+//   duration: REMINDER_PROGRESS,
+// }
 
 
 function RemindModal(props) {
+  const KEYCODE_ENTER = 13
   const valueRemind = React.useContext(WrapperContext)
   const classes = useStyles()
   // bien menu item
   const [data, setData] = React.useState(DEFAULT_DATA)
+  // const [dataDuration, setDataDuration] = React.useState(DATA_REMIND_DURATION)
   const [isCreateModal] = React.useState(props.isCreate)
 
   // Life cycle
+  // React.useEffect(() => {
+  //   if (props.dataDuration) {
+  //     let templateData = props.dataDuration
+  //     if (!templateData.duration) templateData.duration = REMINDER_PROGRESS
+  //     setDataDuration(templateData)
+  //   }
+  // }, [props.dataDuration])
+
   React.useEffect(() => {
     if (props.data) {
       let tempData = props.data
       if (!tempData.date_remind) tempData.date_remind = DEFAULT_DATE_TEXT
       if (!tempData.time_remind) tempData.time_remind = DEFAULT_TIME_TEXT
+      if (!tempData.type_remind) tempData.type_remind = REMIND_SCHEDULE_TYPE
+      if (!tempData.duration) tempData.duration = []
       setData(tempData)
     }
   }, [props.data])
@@ -224,25 +246,86 @@ function RemindModal(props) {
 
   const handlePressConfirm = () => {
     // TODO: validate
-
+    const dataUpdateRemind = {
+      remind_id: data.id,
+      type: data.type,
+      content: data.content,
+      date_remind: data.date_remind + " " + data.time_remind,
+      type_remind: data.type_remind
+    }
+    console.log("data:::::", data);
+    const dataCreateRemindDuration = {
+      task_id: "5da1821ad219830d90402fd8",
+      content: data.content,
+      duration: data.duration
+    }
+    const dataUpdateRemindDuration = {
+      remind_id: data.id,
+      content: data.content,
+      duration: data.duration
+    }
     if (isCreateModal) {
       // Case 1: Call create remind with time
-      if (data.type === REMIND_TIME_TYPE) {valueRemind.createRemindWithTimeDetail({taskId : "5da1821ad219830d90402fd8", data})}
+      if (data.type === REMIND_TIME_TYPE) { valueRemind.createRemindWithTimeDetail({ taskId: "5da1821ad219830d90402fd8", data }) }
       // Case 2: Call create remind with progress
-      else { console.log("GOI API so 2") }
+      else { valueRemind.createRemindWithDurationDetail(dataCreateRemindDuration) }
     } else {
       // Case 3: Call update remind with time
-      if (data.type === REMIND_TIME_TYPE) { console.log("GOI API so 3") }
+      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail(dataUpdateRemind) }
       // Case 4: Call update remind with progress
-      else { console.log("GOI API so 4") }
+      else { valueRemind.updateRemindWithDurationDetail(dataUpdateRemindDuration) }
     }
-      
+
+    // Close modal
+    props.handleClickClose()
+  }
+  const [value, setValue] = React.useState('')
+
+
+  const handleChangeDuration = value => {
+    if (isValidDuration(value) || value === "")
+      setValue(value)
+  }
+
+  const handlePressKeyInDurationInput = keyCode => {
+    // Check key that user press
+    if (keyCode === KEYCODE_ENTER) {
+      // Call add duration function
+      addDuration()
+      // Reset input field
+      setValue("")
+    }
+  }
+
+  const addDuration = () => {
+    if (isValidDuration(value)) {
+      // Add new duration and sort array
+      let sortedArr = data.duration.concat(parseInt(value)).sort()
+      // Remove duplicate element
+      sortedArr = Array.from(new Set(sortedArr))
+      // Set new duration
+      handleChangeData("duration", sortedArr)
+      // Reset input field
+      setValue("")
+    }
+  }
+
+  // Remove duration by it's index
+  const removeAnDuration = durationIdx => {
+    let newDuration = data.duration
+    newDuration.splice(durationIdx, 1)
+    handleChangeData("duration", newDuration)
+  }
+
+  const handleCloseModal = () => {
+    // Reset data
+    setData(DEFAULT_DATA)
     // Close modal
     props.handleClickClose()
   }
 
   return (
-    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={() => props.handleClickClose()} fullWidth>
+    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={handleCloseModal} fullWidth>
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
         Nhắc hẹn
       </DialogTitle>
@@ -282,7 +365,8 @@ function RemindModal(props) {
               <SelectInput >
                 <OutlinedInputSelect
                   commandSelect={badges}
-                  setOptions={typeId => { }}
+                  selectedIndex={data.type_remind}
+                  setOptions={typeId => { handleChangeData("type_remind", typeId); }}
                 />
               </SelectInput>
             </Div>
@@ -295,12 +379,19 @@ function RemindModal(props) {
               <InputProgress
                 fullWidth
                 endAdornment={<InputAdornment position="end">%</InputAdornment>}
+                value={value}
+                type="number" min={0} max={100}
+                onChange={e => handleChangeDuration(e.target.value)}
+                onKeyDown={e => handlePressKeyInDurationInput(e.keyCode)}
               />
-              <Button variant="contained" style={{ marginLeft: 20, width: 90, boxShadow: 'none' }}>Thêm</Button>
+              <Button onClick={addDuration}
+                variant="contained"
+                style={{ marginLeft: 20, width: 90, boxShadow: 'none' }}
+              >Thêm</Button>
             </div>
             <Typography component={'div'}>
-              {data && data.badge && data.badge.map((item, key) => (
-                <BadgeItem key={key} color={'orangelight'} label={item} size='small' badge component='small' />
+              {data.duration.map((item, key) => (
+                <BadgeItem onClick={() => removeAnDuration(key)} key={key} color={'orangelight'} label={item} size='small' badge component='small' />
               ))}
             </Typography>
           </div>
@@ -321,9 +412,15 @@ function RemindModal(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handlePressConfirm} color="primary">
-          Tạo nhắc hẹn
+        {props.isRemind ?
+          <Button onClick={handlePressConfirm} color="primary">
+            Chỉnh sửa nhắc hẹn
         </Button>
+          :
+          <Button onClick={handlePressConfirm} color="primary">
+            Tạo nhắc hẹn
+        </Button>
+        }
       </DialogActions>
     </Dialog>
   )

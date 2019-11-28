@@ -20,7 +20,7 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                remind: action.payload.reminds
+                remind: action.payload.reminds.reverse()
             };
         case types.GET_REMIND_FAIL:
             return {

@@ -15,19 +15,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 import { convertDateToText } from '../../../../../helpers/jobDetail/stringHelper';
 
-// const __data = [
-//   { badge: 'Hằng ngày', content: 'Liên hệ chăm sóc khách hàng', title: 'Nhắc hẹn vào lúc 08:30 ngày 12/12/2012' },
-//   { badge: 'Đạt 55%', content: 'Liên hệ bộ phận đặt vật liệu đầu vào', title: 'Nhắc hẹn theo tiến độ thực tế' },
-//   { badge: 'Đạt 70%', content: 'Bộ phận marketing phải chăm sóc lại khách hàng', title: 'Nhắc hẹn theo tiến độ kế hoạch' },
-//   { badge: 'Trên 10%', content: 'Báo TGĐ để thịt', title: 'Tiến độ thực tế chậm so với kế hoạch' },
-// ];
-
-// let mockDataEle = [
-//   { badge: ['Hằng ngày'], content: 'Liên hệ chăm sóc khách hàng', title: 'Nhắc hẹn theo thời gian', date: '12/12/2012', time: '08:30' },
-//   { badge: ['Đạt 55%'], content: 'Liên hệ bộ phận đặt vật liệu đầu vào', title: 'Nhắc hẹn theo tiến độ thực tế' },
-//   { badge: ['Đạt 70%'], content: 'Bộ phận marketing phải chăm sóc lại khách hàng', title: 'Nhắc hẹn theo tiến độ kế hoạch' },
-//   { badge: ['Trên 10%'], content: 'Báo TGĐ để thịt', title: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế' },
-// ];
 
 const StyledList = styled.ul`
   margin-top: 20px;
@@ -150,18 +137,38 @@ const selector = [
   {
     value: 1,
     label: 'Nhắc hẹn theo tiến độ thực tế',
+  }
+  // ,
+  // {
+  //   value: 2,
+  //   label: 'Nhắc hẹn theo tiến độ kế hoạch',
+  // },
+  // {
+  //   value: 3,
+  //   label: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế',
+  // },
+];
+const badges = [
+  {
+    value: 0,
+    label: 'Nhắc 1 lần',
+  },
+  {
+    value: 1,
+    label: 'Theo ngày',
   },
   {
     value: 2,
-    label: 'Nhắc hẹn theo tiến độ kế hoạch',
+    label: 'Theo tuần',
   },
   {
     value: 3,
-    label: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế',
+    label: 'Theo tháng',
   },
-];
+]
 
 const RemindList = (props) => {
+  const [isRemind] = React.useState(true)
   const [open, _setOpen] = React.useState(false);
   const [elemState, _setElem] = React.useState(null)
 
@@ -180,23 +187,28 @@ const RemindList = (props) => {
   const getRemindTextByType = (typeId, date, time) => {
     return typeId ? selector[typeId].label : "Nhắc hẹn vào ngày " + convertDateToText(date) + " lúc " + time
   }
-  const getRemindProgressByType = (typeId, duration) => {
+  const getRemindProgressByType = (typeId, duration, typeRemind) => {
 
     return (
       ((typeId === 0) ? (
-        <Badge color='orangelight' size='small' badge label={"Hàng ngày"} />
+        (typeRemind ?
+          <Badge color='orangelight' size='small' badge label={badges[typeRemind].label} />
+          :
+          <Badge color='orangelight' size='small' badge label={"Nhắc 1 lần"} />
+        )
       )
-        : (typeId === 1 || typeId === 2) ?
+        :
+        (typeId === 1) ?
           (duration.map((item, key) => (
             <Badge key={key} color='orangelight' size='small' badge label={"Đạt " + item + "%"} />
           )))
-          : (typeId === 3) ? (
-            (duration.map((item, key) => (
-              <Badge key={key} color='orangelight' size='small' badge label={"Trên " + item + "%"} />
-            )))
-          )
-            :
-            null
+          // : (typeId === 3) ? (
+          //   (duration.map((item, key) => (
+          //     <Badge key={key} color='orangelight' size='small' badge label={"Trên " + item + "%"} />
+          //   )))
+          // )
+          :
+          null
       )
     )
   }
@@ -214,7 +226,7 @@ const RemindList = (props) => {
                 {/* {item.duration && item.duration.map((item, key) => (
                   <Badge key={key} color='orangelight' size='small' badge label={item + ""} />))
                 } */}
-                {getRemindProgressByType(item.type, item.duration)}
+                {getRemindProgressByType(item.type, item.duration, item.type_remind)}
               </StyledTitleBox>
 
               <MemberMenuLists idx={idx} handleClickOpen={() => handleClickOpen(item)} item={item} {...props} />
@@ -227,7 +239,7 @@ const RemindList = (props) => {
           </StyledListItem>
         );
       })}
-      <RemindModal isOpen={open} handleClickClose={() => handleClickClose()} data={elemState} />
+      <RemindModal isOpen={open} handleClickClose={() => handleClickClose()} data={elemState} isRemind={isRemind} />
     </StyledList>
   );
 }
