@@ -152,58 +152,114 @@ function* getRemind(action) {
     yield put(actions.getRemindFail(error))
   }
 }
-// //====== post
-// async function doPostRemind(payload) {
-//   try {
-//     const config = {
-//       url: 'task/create-remind',
-//       method: 'post',
-//       data: payload
-//     }
-//     const result = await apiService(config);
-//     return result.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+//====== post with time detail
+async function doPostRemindWithTimeDetail(payload) {
+  const payloadRemind = {
+    content: payload.data.content,
+    date_remind: payload.data.date_remind + " " + payload.data.time_remind,
+    type_remind: payload.data.type,
+    task_id: payload.taskId
+  }
 
-// function* postSubTask(action) {
-//   try {
-//     const res = yield call(doPostSubTask, action.options)
-//     // console.log("Api post sub-task", res)
-//     yield put(actions.postSubTaskSuccess(res))
-//     yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
-//   } catch (error) {
-//     yield put(actions.postSubTaskFail(error))
-//   }
-// }
-// //=== update
-// async function doUpdateSubTask(payload) {
-//   console.log('payload', payload);
+  try {
+    const config = {
+      url: 'task/create-remind/time-detail',
+      method: 'post',
+      data: payloadRemind
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
-//   try {
-//     const config = {
-//       url: `task/update-subtask?sub_task_id=${payload.taskId}&name=${payload.name}`,
-//       method: 'post',
-//       data: payload
-//     }
-//     const result = await apiService(config);
-//     return result.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+function* postRemindWithTimeDetail(action) {
+  try {
+    yield call(doPostRemindWithTimeDetail, action.options)
+    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
+  } catch (error) {
+    yield put(actions.postRemindWithTimeDetailFail(error))
+  }
+}
+// ==== post duration
+async function doPostRemindDuration(payload) {
+  try {
+    const config = {
+      url: 'task/create-remind/duration',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
-// function* updateSubTask(action) {
-//   try {
-//     const res = yield call(doUpdateSubTask, action.options)
-//     // console.log("Api update sub-task", res)
-//     yield put(actions.updateSubTaskSuccess(res))
-//     yield put(actions.getSubTask({ taskId: "5da183cfc46d8515e03fa9e8" }))
-//   } catch (error) {
-//     yield put(actions.updateSubTaskFail(error))
-//   }
-// }
+function* postRemindDuration(action) {
+  try {
+    const res = yield call(doPostRemindDuration, action.options)
+    yield put(actions.postRemindDurationSuccess(res))
+    yield put(actions.getRemind({ taskId: "5da183cfc46d8515e03fa9e8" }))
+  } catch (error) {
+    yield put(actions.postRemindDurationFail(error))
+  }
+}
+// //=== update with time detail
+async function doUpdateRemindWithTimeDetail(payload) {
+  console.log('payload', payload);
+
+  try {
+    const config = {
+      url: `task/update-remind/time-detail`,
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updateRemindWithTimeDetail(action) {
+  try {
+    const res = yield call(doUpdateRemindWithTimeDetail, action.options)
+    // console.log("Api update sub-task", res)
+    yield put(actions.updateRemindWithTimeDetailSuccess(res))
+    yield put(actions.getRemind({ taskId: "5da183cfc46d8515e03fa9e8" }))
+  } catch (error) {
+    yield put(actions.updateRemindWithTimeDetailFail(error))
+  }
+}
+// //=== update with duration
+async function doUpdateRemindWithDuration(payload) {
+  console.log('payload', payload);
+
+  try {
+    const config = {
+      url: `task/update-remind/duration`,
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updateRemindWithDuration(action) {
+  try {
+    const res = yield call(doUpdateRemindWithDuration, action.options)
+    // console.log("Api update sub-task", res)
+    yield put(actions.updateRemindWithDurationSuccess(res))
+    yield put(actions.getRemind({ taskId: "5da183cfc46d8515e03fa9e8" }))
+  } catch (error) {
+    yield put(actions.updateRemindWithDurationFail(error))
+  }
+}
 // ==== delete
 async function doDeleteRemind({ remind_id }) {
   try {
@@ -247,7 +303,6 @@ function* getOffer(action) {
   try {
     const res = yield call(doGetOffer, action.options)
     yield put(actions.getOfferSuccess(res))
-    // CustomEventEmitter(DELETE_ROOM);gi
   } catch (error) {
     yield put(actions.getOfferFail(error))
   }
@@ -275,8 +330,6 @@ function* createOffer(action) {
     const res = yield call(doCreateOffer, action.options)
     yield put(actions.createOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
-
-    // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.createOfferFail(error))
   }
@@ -301,8 +354,6 @@ function* updateOffer(action) {
     yield call(doUpdateOffer, action.payload)
     // yield put(actions.updateOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
-
-    // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.updateOfferFail(error))
   }
@@ -325,10 +376,8 @@ async function doDeleteOffer(offer_id) {
 function* deleteOffer(action) {
   try {
     const res = yield call(doDeleteOffer, action.payload)
-    yield put(actions.deleteOfferSuccess(res))    
+    yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
-
-    // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.getOfferFail(error))
   }
@@ -471,6 +520,7 @@ function* getCommand(action) {
 
 async function doCreateCommand(payload) {
   try {
+    console.log('payload', payload)
     const config = {
       url: 'task/create-command-decision',
       method: 'post',
@@ -512,7 +562,7 @@ function* updateCommand(action) {
   try {
     const res = yield call(doUpdateCommand, action.payload)
     yield put(actions.updateCommandSuccess(res))
-    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    // yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }
@@ -554,7 +604,7 @@ function* updatePriority(action) {
   } catch (error) {
     yield put(actions.updatePriorityFail(error))
   }}
-function* getMember(action) {  
+function* getMember(action) {
   try {
     const res = yield call(doGetMember, action.payload)
     yield put(actions.getMemberSuccess(res))
@@ -594,6 +644,10 @@ export {
 
   // Remind::
   getRemind,
+  postRemindWithTimeDetail,
+  postRemindDuration,
+  updateRemindWithTimeDetail,
+  updateRemindWithDuration,
   deleteRemind,
 
   // Sub-Task::

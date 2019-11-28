@@ -72,24 +72,24 @@ function TabHeader(props) {
   }
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const value = React.useContext(WrapperContext)
-  let avatar1, name1, roles1
+  let avatar, name, roles
   if (value) {
     let detailTask = value.detailTask
     if (detailTask) {
       let user_create = detailTask.user_create
       if (user_create) {
-        avatar1 = user_create.avatar
-        name1 = user_create.name
-        roles1 = user_create.roles
+        avatar = user_create.avatar
+        name = user_create.name
+        roles = user_create.roles
       }
     }
   }
   return (
     <Container>
-      <Avatar style={{ width: 60, height: 60 }} src={avatar1} alt='avatar' />
+      <Avatar style={{ width: 60, height: 60 }} src={avatar} alt='avatar' />
       <TagsContainer>
-        <ColorTypo bold >{name1}</ColorTypo>
-        <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13 }}>{roles1}</ColorTypo>
+        <ColorTypo bold >{name}</ColorTypo>
+        <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13 }}>{roles}</ColorTypo>
         <br />
         <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao ngày {value.detailTask.date_create}</ColorTypo>
       </TagsContainer>

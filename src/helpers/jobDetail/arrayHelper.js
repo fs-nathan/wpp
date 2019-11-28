@@ -21,10 +21,3 @@ const OFFER_STATUS = {
 export const filterPendingItem = arr => arr.filter(item => item.type === OFFER_STATUS.PENDING)
 export const filterApprovedItem = arr => arr.filter(item => item.type === OFFER_STATUS.APPROVED)
 
-const REMIND_TYPE = {
-    TIME: 0,
-    SCHEDULE: 1,
-}
-
-export const filterRemindTime = arr => arr.filter(item => item.type === REMIND_TYPE.TIME)
-export const filterRemindSchedule = arr => arr.filter(item => item.type === REMIND_TYPE.SCHEDULE)
