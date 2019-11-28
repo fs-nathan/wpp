@@ -17,7 +17,8 @@ import ColorChip from '../../../../components/ColorChip';
 import Icon from '@mdi/react';
 import { mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
 import RoleMemberModal from './RoleMemberModal';
-import PriorityMemberModal from './PriorityMemberModal'
+import PriorityMemberModal from './PriorityMemberModal';
+import { WrapperContext } from '../..';
 
 const StyledListItem = styled(ListItem)`
   display: flex;
@@ -127,10 +128,6 @@ const ChipPriority = styled(Chip)`
     justify-content: space-between;
 `
 function ProjectMember(props) {
-    let handleClick = () => {
-
-    }
-
     return (
         <StyledListItem>
             <Avatar src={avatar} alt='avatar' />
@@ -141,7 +138,6 @@ function ProjectMember(props) {
             </div>
             <Chip bold="true"
                 label="Thêm"
-                onClick={handleClick}
             />
         </StyledListItem>
     )
@@ -158,11 +154,6 @@ function MemberDetail(props) {
 
 function MemberPriority(props) {
     const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
-    // const [open, setOpen] = React.useState(false);
-    // const handleClose = () => {
-    //     setOpen(false);
-    // };
-
     if (props.master) {
         return (
             <div style={{ color: '#fd7e14', padding: '0 30px' }}>{props.label}</div>
@@ -175,7 +166,6 @@ function MemberPriority(props) {
                 size="small"
                 label={props.label}
                 onClick={() => {
-                    // handleClose()
                     setOpenPriorityModal(true)
                 }}
                 icon={<ArrowDropDownIcon />}
@@ -187,10 +177,6 @@ function MemberPriority(props) {
 
 function MemberRole(props) {
     const [openRoleModal, setOpenRoleModal] = React.useState(false);
-    // const [open, setOpen] = React.useState(false);
-    // const handleClose = () => {
-    //     setOpen(false);
-    // };
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <div>
@@ -217,10 +203,6 @@ function MemberRole(props) {
     )
 }
 
-// function createData(avatarMember, name, permission, role) {
-//     return { avatarMember, name, permission, role };
-// }
-
 function TableMember(props) {
     const classes = useStyles();
 
@@ -231,58 +213,6 @@ function TableMember(props) {
     const handleCloseEliminate = () => {
         setAnchorEl(null);
     }
-
-    // let avatarMember = <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />
-
-    // const AddData = [
-    //     createData(avatarMember, <MemberDetail name='Nguyễn Hữu Thành' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' master />, <MemberRole role1='Giao việc' role2='Giám sát' role3='Phê duyệt' role4='Thực hiện'/>),
-    //     createData(avatarMember, <MemberDetail name='Nguyễn Bá Hùng' email='huuthanh@gmail.com' />, <MemberPriority label='Admin' />, <MemberRole role1='Giám sát' role2='Phê duyệt'/>),
-    //     createData(avatarMember, <MemberDetail name='Phạm Thanh Ngọc' email='huuthanh@gmail.com' />, <MemberPriority label='Quản lý' />, <MemberRole />),
-    //     createData(avatarMember, <MemberDetail name='VietApp' email='huuthanh@gmail.com' />, <MemberPriority label='Thành viên' />, <MemberRole />)
-    // ];
-    // const listMemberJob = [
-    //     {
-    //         name: 'Nguyễn Hữu Thành',
-    //         email: 'huuthanh@gmail.com',
-    //         permission: 'Admin',
-    //         master: true,
-    //         role: ['Giao việc', 'Giám sát', 'Phê duyệt', 'Thực hiện']
-    //     },
-    //     {
-    //         name: 'Nguyễn Bá Hùng',
-    //         email: 'huuthanh@gmail.com',
-    //         permission: 'Giám sát',
-    //         master: false,
-    //         role: ['Giám sát', 'Phê duyệt']
-    //     },
-    //     {
-    //         name: 'Phạm Thanh Ngọc',
-    //         email: 'huuthanh@gmail.com',
-    //         permission: 'Quản lý',
-    //         master: false,
-    //         role: []
-    //     },
-    //     {
-    //         name: 'VietApp',
-    //         email: 'huuthanh@gmail.com',
-    //         permission: 'Thành viên',
-    //         master: false,
-    //         role: []
-    //     }
-    // ]
-    // const [listMemberJobState, setListMemberJob] = React.useState(listMemberJob.map((item) => {
-    //     return {
-    //         avatarMember,
-    //         name: <MemberDetail name={item.name} email={item.email} />,
-    //         permission: item.master ? <MemberPriority label={item.permission} master /> : <MemberPriority label={item.permission} />,
-    //         role: <MemberRole
-    //             role1={item.role[0] && item.role[0]}
-    //             role2={item.role[1] && item.role[1]}
-    //             role3={item.role[2] && item.role[2]}
-    //             role4={item.role[3] && item.role[3]} />
-    //     }
-    // }))
-
 
     return (
         <Paper className={classes.root}>
@@ -304,7 +234,7 @@ function TableMember(props) {
                                 {addData.name}
                             </MemberTable>
                             <MemberTable>{addData.permission}</MemberTable>
-                            <MemberTable>{addData.role}</MemberTable>
+                            <MemberTable>{addData.roles}</MemberTable>
                             <MemberTable>
                                 <IconButton size='small' onClick={handleClickEliminate} >
                                     <Icon path={mdiDotsVertical} size={1} />
@@ -332,117 +262,71 @@ function TableMember(props) {
 }
 
 function AddMemberModal(props) {
-    const listMemberProject = [
-        {
-            name: 'Khắc Điệp',
-            email: 'dieptk95@gmail.com',
-            permission: 'Thành viên',
-            master: false,
-            role: ['Giám đốc dự án']
-        },
-        {
-            name: 'Nguyễn Mai Anh',
-            email: 'maianhdigital@gmail.com',
-            permission: 'Thành viên',
-            master: false,
-            role: ['Chuyên viên']
-        }
-    ]
+    const valueContext = React.useContext(WrapperContext);
 
-    const listMemberJob = [
-        {
-            name: 'Nguyễn Hữu Thành',
-            email: 'huuthanh@gmail.com',
-            permission: 'Admin',
-            master: true,
-            role: ['Giao việc', 'Giám sát', 'Phê duyệt', 'Thực hiện']
-        },
-        {
-            name: 'Nguyễn Bá Hùng',
-            email: 'huuthanh@gmail.com',
-            permission: 'Giám sát',
-            master: false,
-            role: ['Giám sát', 'Phê duyệt']
-        },
-        {
-            name: 'Phạm Thanh Ngọc',
-            email: 'huuthanh@gmail.com',
-            permission: 'Quản lý',
-            master: false,
-            role: []
-        },
-        {
-            name: 'VietApp',
-            email: 'huuthanh@gmail.com',
-            permission: 'Thành viên',
-            master: false,
-            role: []
-        }
-    ]
+    const [listMemberProjectState, setListMemberProject] = React.useState([])
+    React.useEffect(() => {
 
-    const [listMemberProjectState, setListMemberProject] = React.useState(
-        listMemberProject.map((item, key) => {
-            return (<ProjectMember key={key} name={item.name} email={item.email} label={item.permission} />)
+        let arrayMemberNotAssigned = valueContext.memberNotAssigned.map((item, key) => {
+            return (
+                <ProjectMember key={key} name={item.name} email={item.email} label={item.permission} />
+            )
         })
-    )
+        setListMemberProject(arrayMemberNotAssigned)
+    }, [valueContext.memberNotAssigned])
 
     let avatarMember = <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />
-    const [listMemberJobState, setListMemberJob] = React.useState(listMemberJob.map((item) => {
-        return {
-            avatarMember,
-            name: <MemberDetail name={item.name} email={item.email} />,
-            permission: item.master ? <MemberPriority label={item.permission} master /> : <MemberPriority label={item.permission} />,
-            role: <MemberRole
-                role1={item.role[0] && item.role[0]}
-                role2={item.role[1] && item.role[1]}
-                role3={item.role[2] && item.role[2]}
-                role4={item.role[3] && item.role[3]} />
-        }
-    }))
+    const [listMemberJobState, setListMemberJob] = React.useState([])
+    React.useEffect(() => {
+        let arrayMember = valueContext.member.map((item) => {
+            return {
+                avatarMember,
+                name: <MemberDetail name={item.name} email={item.email} />,
+                permission: item.master
+                    ? <MemberPriority label={item.permission} master />
+                    : <MemberPriority label={item.permission} />,
+                roles: <MemberRole
+                //     role1={item.role[0] && item.role[0]}
+                //     role2={item.role[1] && item.role[1]}
+                //     role3={item.role[2] && item.role[2]}
+                //     role4={item.role[3] && item.role[3]} 
+                />
+            }
+        })
+        setListMemberJob(arrayMember)
+    }, [valueContext.member])
 
     const handleClose = () => {
         props.setOpen(false);
-        setListMemberProject(listMemberProject.map((item, key) => {
-            return (<ProjectMember key={key} name={item.name} email={item.email} label={item.permission} />)
-        }))
-        setListMemberJob(listMemberJob.map((item) => {
-            return {
-                avatarMember,
-                name: <MemberDetail name={item.name} email={item.email} />,
-                permission: item.master ? <MemberPriority label={item.permission} master /> : <MemberPriority label={item.permission} />,
-                role: <MemberRole
-                    role1={item.role[0] && item.role[0]}
-                    role2={item.role[1] && item.role[1]}
-                    role3={item.role[2] && item.role[2]}
-                    role4={item.role[3] && item.role[3]} />
-            }
-        }))
     };
 
-    const handleAddAll = () => {
-        setListMemberProject([])
-        setListMemberJob([...listMemberJobState, ...listMemberProject.map((item) => {
-            return {
-                avatarMember,
-                name: <MemberDetail name={item.name} email={item.email} />,
-                permission: item.master ? <MemberPriority label={item.permission} master /> : <MemberPriority label={item.permission} />,
-                role: <MemberRole
-                    role1={item.role[0] && item.role[0]}
-                    role2={item.role[1] && item.role[1]}
-                    role3={item.role[2] && item.role[2]}
-                    role4={item.role[3] && item.role[3]} />
-            }
-        }
-        )])
-    }
+    // const handleAddAll = () => {
+    //     setListMemberProject([])
+    //     setListMemberJob([...listMemberJobState, ...listMemberProject.map((item) => {
+    //         return {
+    //             avatarMember,
+    //             name: <MemberDetail name={item.name} email={item.email} />,
+    //             permission: item.master
+    //                 ? <MemberPriority label={item.permission} master />
+    //                 : <MemberPriority label={item.permission} />,
+    //             role: <MemberRole
+    //                 role1={item.role[0] && item.role[0]}
+    //                 role2={item.role[1] && item.role[1]}
+    //                 role3={item.role[2] && item.role[2]}
+    //                 role4={item.role[3] && item.role[3]} />
+    //         }
+    //     }
+    //     )])
+    // }
+    
     return (
         <div>
             <Dialog maxWidth="xl" onClose={handleClose} open={props.isOpen}>
                 <DialogTitle onClose={handleClose}>
                     Thành viên công việc
         </DialogTitle>
-                <DialogContent dividers style={{ padding: 0  }}>
-                    <GridArea component={'div'} style={{ borderBottom: 'none'}} >
+                <DialogContent dividers style={{ padding: 0 }}>
+                    <GridArea component={'div'} style={{ borderBottom: 'none' }} >
                         <BorderGrid component={'div'}>
                             <FlexMemberProject component={'span'}>
                                 <MemberProject component={'div'}>Thành viên dự án</MemberProject>
@@ -451,7 +335,9 @@ function AddMemberModal(props) {
                                 <div style={{ margin: '10px 10px 0 10px' }}>
                                     <SearchInput placeholder='Tìm thành viên' />
                                 </div>
-                                <ButtonAddAll onClick={handleAddAll}>
+                                <ButtonAddAll
+                                // onClick={handleAddAll}
+                                >
                                     + Thêm tất cả
                         </ButtonAddAll>
                                 {listMemberProjectState}
@@ -461,7 +347,7 @@ function AddMemberModal(props) {
                             <FlexJobMember component="div">
                                 <MemberProject component={'div'}>Thành viên công việc</MemberProject>
                             </FlexJobMember>
-                            <TableMember listMemberJobState={listMemberJobState} style={{ boxShadow: 'none'}}/>
+                            <TableMember listMemberJobState={listMemberJobState} style={{ boxShadow: 'none' }} />
                         </Typography>
                     </GridArea>
                 </DialogContent>
