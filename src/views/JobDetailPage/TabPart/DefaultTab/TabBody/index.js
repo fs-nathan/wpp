@@ -239,7 +239,8 @@ function TabBody(props) {
       lctCnt: total_location + ' vị trí',
       offerCnt: total_offer + ' đề xuất', acceptOfferCnt: total_offer_approved + ' duyệt',
       commandCnt: total_command + ' nội dung',
-      members
+      members,
+      priority_code
     })
   }, [value.detailTask])
 
