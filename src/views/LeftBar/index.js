@@ -1,81 +1,48 @@
 import React from 'react';
-import styled from 'styled-components';
-import Icon from "@mdi/react";
-import { Link } from "react-router-dom";
-import {
-  mdiFolderMultipleOutline,
-  mdiViewDashboard,
-  mdiApps,
-  mdiBallotOutline,
-  mdiEqualizer,
-  mdiAccountGroup,
-  mdiDotsHorizontal
-} from "@mdi/js";
-import * as routes from '../../constants/routes'
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Routes } from '../../constants/routes';
+import * as icons from '../../assets';
+import './LeftBar.scss';
 
-const Container = styled.div`
-  grid-area: left;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(45deg,#33505e,#4caf50);
-  & > *:first-child {
-    margin-top: 10px;
-  }
-  & > *:last-child {
-    margin-top: auto;
-  }
-`;
-
-const NavLink = styled(Link)`
-  padding: 10px 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  text-decoration: none;
-  &:hover {
-    background-color: rgba(0, 0, 0, .12);
-  }
-  & > *:not(:first-child) {
-    margin-top: 3px;
-  }
-`;
-
-function LeftBar() {
+function LeftBar({ colors }) {
+  const bgColor = colors.find(item => item.selected === true);
   return (
-    <Container>
-      <NavLink to="/">  
-        <Icon path={mdiViewDashboard} size={1.5} color={"#fff"} />
+    <div className="left-bar-container" style={{ background: bgColor.value }}>
+      <Link to={Routes.HOME} className="menu-item">
+        <img src={icons.ic_home} alt="" className="LeftNavIcon" />
         <span>Trang chủ</span>
-      </NavLink>
-      <NavLink to="/projects">  
-        <Icon path={mdiApps} size={1.5} color={"#fff"} />
+      </Link>
+      <Link to={Routes.PROJECTS} className="menu-item">
+        <img src={icons.ic_project} alt="" className="LeftNavIcon" />
         <span>Dự án</span>
-      </NavLink>
-      <NavLink to="/tasks">  
-        <Icon path={mdiBallotOutline} size={1.5} color={"#fff"} />
+      </Link>
+      <Link to={Routes.TASKS} className="menu-item">
+        <img src={icons.ic_task} alt="" className="LeftNavIcon" />
         <span>Công việc</span>
-      </NavLink>
-      <NavLink to={routes.report}>  
-        <Icon path={mdiEqualizer} size={1.5} color={"#fff"} />
+      </Link>
+      <Link to={Routes.REPORT} className="menu-item">
+        <img src={icons.ic_report} alt="" className="LeftNavIcon" />
         <span>Báo cáo</span>
-      </NavLink>
-      <NavLink to={routes.document}>  
-        <Icon path={mdiFolderMultipleOutline} size={1.5} color={"#fff"} />
+      </Link>
+      <Link to={Routes.DOCUMENT} className="menu-item">
+        <img src={icons.ic_file} alt="" className="LeftNavIcon" />
         <span>Tài liệu</span>
-      </NavLink>
-      <NavLink to="/departments">   
-        <Icon path={mdiAccountGroup} size={1.5} color={"#fff"} />
+      </Link>
+      <Link to={Routes.DEPARTMENTS} className="menu-item">
+        <img src={icons.ic_user} alt="" className="LeftNavIcon" />
         <span>Thành viên</span>
-      </NavLink>
-      <NavLink to="/">  
-        <Icon path={mdiDotsHorizontal} size={1.5} color={"#fff"} />
-      </NavLink>
-    </Container>
-  )
+      </Link>
+      <Link to={Routes.HOME} className="menu-item">
+        <img src={icons.ic_setting} alt="" className="LeftNavIcon" />
+      </Link>
+    </div>
+  );
 }
 
-export default LeftBar;
+export default connect(
+  state => ({
+    colors: state.setting.colors
+  }),
+  {}
+)(LeftBar);

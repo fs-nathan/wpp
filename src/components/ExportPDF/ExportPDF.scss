@@ -1,0 +1,60 @@
+.print-content {
+  font-family: 'Arial sans-serif';
+  padding: 25px;
+  .print-head {
+    display: flex;
+    margin-bottom: 30px;
+    .head-left-right {
+      flex: '0 0 50%';
+      .title-head-left-right {
+        font-size: 24px;
+        font-weight: bold;
+        color: #7b7a7a;
+        padding: 20px 0 10px;
+      }
+      .infor-address-tel {
+        color: #7b7a7a;
+        padding: 3px 0;
+      }
+      .infor-email {
+        color: #7b7a7a;
+      }
+      .infor-right {
+        text-align: right;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 24px;
+        padding-bottom: 10px;
+      }
+      .infor-right-oder {
+        text-align: right;
+        padding: 3px 0;
+        font-size: 18px;
+      }
+      .status-oder {
+        text-align: right;
+        margin-top: 28px;
+        .text-status-oder {
+          background: #f50016;
+          padding: 10px 15px;
+          color: #fff;
+          -webkit-print-color-adjust: exact !important;
+        }
+      }
+    }
+  }
+  .print-body {
+    .total-group {
+      display: flex;
+      padding-top: 20px;
+      margin-top: 20px;
+      border-top: 2px solid #000;
+      .item-total-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

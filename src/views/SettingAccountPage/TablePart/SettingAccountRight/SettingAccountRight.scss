@@ -1,0 +1,188 @@
+.SettingAccountPage {
+  .SettingAccountHeader {
+    border-bottom: 1px solid #ededed;
+  }
+  .message-title {
+    display: flex;
+  }
+  .right-header-account {
+    margin-right: 20px;
+  }
+
+  .search input {
+    border-radius: 20px;
+    padding-left: 30px;
+    position: relative;
+    height: 35px;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-position: 9px;
+    width: 300px;
+    background-color: #fafafa;
+    border: solid 1px #fafafa;
+  }
+}
+.setting-info {
+  // padding-top: 60px;
+  .header-setting-info {
+    padding: 16px 21px 16px 35px;
+    border-bottom: 1px solid #ededed;
+    align-items: center;
+    display: flex;
+    .text-header-setting-info {
+      color: #01b374;
+      font-size: 22px;
+      padding-left: 20px;
+    }
+  }
+  .content-setting-info {
+    padding: 30px 200px 0 60px;
+    display: flex;
+    .avatar-content-setting-info {
+      padding-right: 60px;
+      .block-change-avatar {
+        text-align: center;
+        padding-top: 20px;
+        .text-change-avatar {
+          font-size: 18px;
+          color: #4b41b1;
+        }
+      }
+    }
+    .info-content-setting-info {
+      width: 60%;
+      .item-info {
+        // display: flex;
+        // justify-content: space-between;
+        border-bottom: 1px solid #ededed;
+        padding: 10px 0;
+        .title-item-info {
+          font-size: 14px;
+        }
+        .value-item-info {
+          text-align: right;
+          .MuiInputBase-input {
+            text-align: right;
+          }
+          .type-account {
+            background-color: rgb(250, 226, 11);
+            height: 20px;
+          }
+        }
+        .email {
+          color: #01b374;
+        }
+      }
+      .btn-edit-info {
+        display: flex;
+        padding-top: 30px;
+        border-top: 6px solid #ededed;
+        .btn-action {
+          margin: 0 auto;
+          min-width: 150px;
+          border-radius: 30px;
+          text-transform: uppercase;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+.notification-container {
+  padding: 10px;
+  .notification-group {
+    margin: 20px;
+    .table-notification {
+      margin: 20px;
+      .MuiTableCell-root {
+        font-size: 14px;
+      }
+      .action-btn {
+        padding: 0.25rem;
+        border-radius: 2px;
+        font-weight: 600;
+        min-width: 65px;
+        font-size: 11px;
+        text-align: center;
+        &.danger {
+          background: rgb(250, 195, 191);
+          color: #ec1000;
+        }
+        &.success {
+          background: rgb(209, 238, 221);
+          color: #48bb78;
+        }
+      }
+    }
+    .title-list {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+}
+.change-password {
+  padding: 30px 0 0px 40px;
+  width: 35%;
+  .item-change-password {
+    .style-input-text {
+      .MuiInputLabel-formControl {
+        font-size: 16px;
+        color: #000;
+      }
+    }
+  }
+  .text-notification {
+    padding: 15px 0 50px 0;
+    .text-noti {
+      font-size: 14px;
+    }
+    .title {
+      color: red;
+    }
+  }
+  .block-action {
+    display: flex;
+    .btn-action {
+      margin: 0 auto;
+      min-width: 150px;
+      border-radius: 30px;
+      text-transform: uppercase;
+      font-size: 16px;
+    }
+  }
+}
+.work-plus-detail {
+  padding: 30px 0 0px 40px;
+  .header-work-plus-detail {
+    .text-header {
+      font-size: 22px;
+      font-weight: 500;
+    }
+  }
+  .status-date-work-plus-detail {
+    padding: 15px 0 35px 0;
+    .status-text {
+      padding: 0 10px;
+      background-color: #ff00009e;
+      margin-right: 15px;
+      color: #fff;
+      font-size: 14px;
+    }
+    .date-text {
+      font-size: 14px;
+    }
+    .devider {
+      padding: 0px 1px;
+      margin: 0 5px;
+      background-color: #ededed;
+    }
+    .view-text {
+      font-size: 14px;
+    }
+  }
+  .content-work-plus-detail {
+    .des-text {
+      font-size: 14px;
+    }
+  }
+}

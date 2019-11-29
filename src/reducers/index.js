@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import authentications, { initialState as authenticationsInitialState } from './authentications';
+import system, { initialState as systemInitialState } from './system/system';
+import setting, { initialState as settingInitialState } from './setting/setting';
 import listRoom, { initialState as listRoomInitialState } from './room/listRoom';
 import detailRoom, { initialState as detailRoomInitialState } from './room/detailRoom';
 import getUserOfRoom, { initialState as getUserOfRoomInitialState } from './room/getUserOfRoom';
@@ -7,7 +9,7 @@ import listUserOfGroup, { initialState as listUserOfGroupInitialState } from './
 import sortUser, { initialState as sortUserInitialState } from './user/sortUser';
 import listIcon, { initialState as listIconInitialState } from './icon/listIcon';
 import createRoom, { initialState as createRoomInitialState } from './room/createRoom';
-import deleteRoom, { initialState as deleteRoomInitialState } from './room/deleteRoom'; 
+import deleteRoom, { initialState as deleteRoomInitialState } from './room/deleteRoom';
 import updateRoom, { initialState as updateRoomInitialState } from './room/updateRoom';
 import sortRoom, { initialState as sortRoomInitialState } from './room/sortRoom';
 import detailUser, { initialState as detailUserInitialState } from './user/detailUser';
@@ -57,14 +59,16 @@ import listTask, { initialState as listTaskInitialState} from './task/listTask';
 // import taskOffer from './taskDetail/offer'
 import documents from './documents';
 import taskOffer from './taskDetail/offer';
-import taskRemind from './taskDetail/remind'
+import taskRemind from './taskDetail/remind';
 import subTask from './taskDetail/subTask';
-import media from './taskDetail/media'
+import media from './taskDetail/media';
 import taskCommand from './taskDetail/command';
 import commonTaskDetail from './taskDetail/common';
 
 const rootReducer = combineReducers({
   authentications,
+  system,
+  setting,
   documents,
   taskDetail: combineReducers({
     taskOffer,
@@ -81,7 +85,7 @@ const rootReducer = combineReducers({
     createRoom,
     deleteRoom,
     updateRoom,
-    sortRoom,
+    sortRoom
   }),
   user: combineReducers({
     listUserOfGroup,
@@ -93,30 +97,30 @@ const rootReducer = combineReducers({
     privateMember,
     searchUser,
     inviteUserJoinGroup,
-    banUserFromGroup,
+    banUserFromGroup
   }),
   icon: combineReducers({
     listIcon,
     createIcon,
-    deleteIcon,
+    deleteIcon
   }),
   position: combineReducers({
     listPosition,
     createPosition,
     updatePosition,
-    deletePosition,
+    deletePosition
   }),
   level: combineReducers({
-    listLevel,
+    listLevel
   }),
   major: combineReducers({
-    listMajor,
+    listMajor
   }),
   userRole: combineReducers({
     listUserRole,
     createUserRole,
     updateUserRole,
-    deleteUserRole,
+    deleteUserRole
   }),
   projectGroup: combineReducers({
     createProjectGroup,
@@ -125,7 +129,7 @@ const rootReducer = combineReducers({
     deleteProjectGroup,
     sortProjectGroup,
     detailProjectGroup,
-    memberProjectGroup,
+    memberProjectGroup
   }),
   project: combineReducers({
     createProject,
@@ -142,15 +146,17 @@ const rootReducer = combineReducers({
     removeProjectRoleFromMember,
     updateGroupPermissionMember,
     sortProject,
-    copyProject,
+    copyProject
   }),
   task: combineReducers({
-    listTask,
-  }),
+    listTask
+  })
 });
 
 export const DEFAULT_STATE = {
   authentications: authenticationsInitialState,
+  system: systemInitialState,
+  setting: settingInitialState,
   room: {
     listRoom: listRoomInitialState,
     detailRoom: detailRoomInitialState,
@@ -158,7 +164,7 @@ export const DEFAULT_STATE = {
     createRoom: createRoomInitialState,
     deleteRoom: deleteRoomInitialState,
     updateRoom: updateRoomInitialState,
-    sortRoom: sortRoomInitialState,
+    sortRoom: sortRoomInitialState
   },
   user: {
     listUserOfGroup: listUserOfGroupInitialState,
@@ -170,30 +176,30 @@ export const DEFAULT_STATE = {
     privateMember: privateMemberInitialState,
     searchUser: searchUserInitialState,
     inviteUserJoinGroup: inviteUserJoinGroupInitialState,
-    banUserFromGroup: banUserFromGroupInitialState,
+    banUserFromGroup: banUserFromGroupInitialState
   },
   icon: {
     listIcon: listIconInitialState,
     createIcon: createIconInitialState,
-    deleteIcon: deleteIconInitialState,
+    deleteIcon: deleteIconInitialState
   },
   position: {
     listPosition: listPositionInitialState,
     createPosition: createPositionInitialState,
     updatePosition: updatePositionInitialState,
-    deletePosition: deletePositionInitialState,
+    deletePosition: deletePositionInitialState
   },
   level: {
-    listLevel: listLevelInitialState,
+    listLevel: listLevelInitialState
   },
   major: {
-    listMajor: listMajorInitialState,
+    listMajor: listMajorInitialState
   },
   userRole: {
     listUserRole: listUserRoleInitialState,
     createUserRole: createUserRoleInitialState,
     updateUserRole: updateUserRoleInitialState,
-    deleteUserRole: deleteUserRoleInitialState,
+    deleteUserRole: deleteUserRoleInitialState
   },
   projectGroup: {
     createProjectGroup: createProjectGroupInitialState,
@@ -202,7 +208,7 @@ export const DEFAULT_STATE = {
     deleteProjectGroup: deleteProjectGroupInitialState,
     sortProjectGroup: sortProjectGroupInitialState,
     detailProjectGroup: detailProjectGroupInitialState,
-    memberProjectGroup: memberProjectGroupInitialState,
+    memberProjectGroup: memberProjectGroupInitialState
   },
   project: {
     createProject: createProjectInitialState,
@@ -219,11 +225,11 @@ export const DEFAULT_STATE = {
     removeProjectRoleFromMember: removeProjectRoleFromMemberInitialState,
     updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
     sortProject: sortProjectInitialState,
-    copyProject: copyProjectInitialState,
+    copyProject: copyProjectInitialState
   },
   task: {
-    listTask: listTaskInitialState,
-  },
+    listTask: listTaskInitialState
+  }
 };
 
 export default rootReducer;

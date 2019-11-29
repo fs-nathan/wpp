@@ -1,0 +1,32 @@
+.header-setting-container {
+  grid-area: table;
+  overflow: auto;
+  .header-setting {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    .star-icon {
+      font-size: 24px;
+      margin-right: 10px;
+      color: #05b50c;
+    }
+  }
+}
+.left-setting-container {
+  grid-area: list;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  .header-left {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    p {
+      font-size: 15px;
+    }
+  }
+}
