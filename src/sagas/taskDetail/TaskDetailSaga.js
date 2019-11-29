@@ -581,6 +581,20 @@ async function doUpdatePriority(payload) {
     throw error;
   }
 }
+
+
+function* updatePriority(action) {
+  try {
+    const res = yield call(doUpdatePriority, action.payload)
+    yield put(actions.updatePrioritySuccess(res))
+    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.updatePriorityFail(error))
+  }
+}
+
 async function doGetMember({ task_id }) {
   try {
     const config = {
@@ -593,17 +607,6 @@ async function doGetMember({ task_id }) {
     throw error;
   }
 }
-
-function* updatePriority(action) {
-  try {
-    const res = yield call(doUpdatePriority, action.payload)
-    yield put(actions.updatePrioritySuccess(res))
-    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
-
-    // CustomEventEmitter(DELETE_ROOM);
-  } catch (error) {
-    yield put(actions.updatePriorityFail(error))
-  }}
 function* getMember(action) {
   try {
     const res = yield call(doGetMember, action.payload)

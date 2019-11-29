@@ -89,10 +89,13 @@ const ListItemTabPart = styled(ListItem)`
   flex-direction: column;
   align-items: start;
 `
-function DropdownButton({ values, value, priority }) {
+function DropdownButton({ values, handleChangeItem, selectedIndex }) {
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [selected, setSelected] = React.useState(0)
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selected, setSelected] = React.useState(0);
+  React.useEffect(() => {
+    if (values[selectedIndex]) setSelected(selectedIndex)
+  }, [selectedIndex])
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget)
@@ -103,12 +106,11 @@ function DropdownButton({ values, value, priority }) {
   }
 
   function handleSelect(index) {
-    setSelected(index);
-    if (priority === true) {
-      value.updateTaskPriority(value.taskId, index)
-    }
-    handleClose();
+    setSelected(index)
+    handleChangeItem(index)
+    handleClose()
   }
+
 
   if (values.length === 0) return (
     <ColorButton variantColor='teal' size='small' aria-controls="simple-menu" aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
@@ -205,11 +207,11 @@ function Content({ value }) {
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
   let content = ""
-  if(value){
-    if(value.detailTask){
-        // subtask = value.detailTask.total_subtask
-        // subtaskComplete = value.detailTask.total_subtask_complete
-      if(value.detailTask.description){
+  if (value) {
+    if (value.detailTask) {
+      // subtask = value.detailTask.total_subtask
+      // subtaskComplete = value.detailTask.total_subtask_complete
+      if (value.detailTask.description) {
         content = value.detailTask.description
       }
     }
@@ -242,9 +244,18 @@ function TabBody(props) {
               Đang tạm dừng
         </ColorButton>
             :
-            <DropdownButton size='small' values={['Đang làm', 'Đang chờ', 'Hoàn thành']} value={value} />
+            <DropdownButton
+              size='small' selectedIndex={0}
+              values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
+              handleChangeItem={() => { }}
+            />
           }
-          <DropdownButton size='small' values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']} value={value} priority={true} />
+          <DropdownButton
+            size='small'
+            values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
+            selectedIndex={value.detailTask.priority_code}
+            handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
+          />
           <ColorButton size='small' variant='contained' variantColor='red'
             style={{
               marginBottom: '10px',
@@ -262,34 +273,34 @@ function TabBody(props) {
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(2)}>
           <ColorTypo>Công việc con</ColorTypo>
-          <BadgeItem badge size='small' color='bluelight' label={value.detailTask.total_subtask_complete + "/" + value.detailTask.total_subtask  + " hoàn thành"} />
+          <BadgeItem badge size='small' color='bluelight' label={value.detailTask.total_subtask_complete + "/" + value.detailTask.total_subtask + " hoàn thành"} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
           <ColorTypo>Nhắc hẹn</ColorTypo>
-          <BadgeItem badge size='small' color='redlight' label={ value.detailTask.total_remind +' nhắc hẹn'} />
+          <BadgeItem badge size='small' color='redlight' label={value.detailTask.total_remind + ' nhắc hẹn'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(4)}>
           <ColorTypo>Tài liệu</ColorTypo>
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_file + ' file'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_img +' ảnh'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_link + ' link'} />
+          <BadgeItem badge size='small' color='purplelight' label={value.detailTask.total_file + ' file'} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='purplelight' label={value.detailTask.total_img + ' ảnh'} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='purplelight' label={value.detailTask.total_link + ' link'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(5)}>
           <ColorTypo>Chia sẻ vị trí</ColorTypo>
-          <BadgeItem badge size='small' color='indigolight' label={ value.detailTask.total_location + ' vị trí'} />
+          <BadgeItem badge size='small' color='indigolight' label={value.detailTask.total_location + ' vị trí'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(6)}>
           <ColorTypo>Đề xuất, duyệt</ColorTypo>
-          <BadgeItem badge size='small' color='orangelight' label={ value.detailTask.total_offer + ' đề xuất'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='orangelight' label={ value.detailTask.total_offer_approved + ' duyệt'} />
+          <BadgeItem badge size='small' color='orangelight' label={value.detailTask.total_offer + ' đề xuất'} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='orangelight' label={value.detailTask.total_offer_approved + ' duyệt'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(7)}>
           <ColorTypo>Chỉ đạo, quyết định</ColorTypo>
-          <BadgeItem badge size='small' color='bluelight' label={ value.detailTask.total_command + ' nội dung'} />
+          <BadgeItem badge size='small' color='bluelight' label={value.detailTask.total_command + ' nội dung'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
           <ColorTypo>Thành viên</ColorTypo>
-          <AvatarCircleList total={20} display={6} /> 
+          <AvatarCircleList total={20} display={6} />
         </ListItemTab>
       </StyledList>
     </Body >
