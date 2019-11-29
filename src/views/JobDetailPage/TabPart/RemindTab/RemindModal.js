@@ -15,7 +15,7 @@ import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
 import {
   DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, REMIND_TIME_TYPE,
-  REMIND_SCHEDULE_TYPE, REMINDER_PROGRESS, isValidDuration
+  REMIND_SCHEDULE_TYPE, isValidDuration
 } from '../../../../helpers/jobDetail/stringHelper'
 import { WrapperContext } from '../../index'
 
@@ -253,7 +253,6 @@ function RemindModal(props) {
       date_remind: data.date_remind + " " + data.time_remind,
       type_remind: data.type_remind
     }
-    console.log("data:::::", data);
     const dataCreateRemindDuration = {
       task_id: "5da1821ad219830d90402fd8",
       content: data.content,

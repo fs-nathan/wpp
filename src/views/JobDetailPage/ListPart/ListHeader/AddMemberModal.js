@@ -277,11 +277,10 @@ function TableMember(props) {
 
 function AddMemberModal(props) {
     const valueContext = React.useContext(WrapperContext);
-    console.log('value', valueContext)
-
     const [listMemberProjectState, setListMemberProject] = React.useState([])
-    React.useEffect(() => {
+    const [listMemberJobState, setListMemberJob] = React.useState([])
 
+    React.useEffect(() => {
         let arrayMemberNotAssigned = valueContext.memberNotAssigned.map((item, key) => {
             return (
                 <ProjectMember key={key} name={item.name} email={item.email} label={item.permission} />
@@ -290,12 +289,10 @@ function AddMemberModal(props) {
         setListMemberProject(arrayMemberNotAssigned)
     }, [valueContext.memberNotAssigned])
 
-    let avatarMember = <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />
-    const [listMemberJobState, setListMemberJob] = React.useState([])
     React.useEffect(() => {
         let arrayMember = valueContext.member.map((item) => {
             return {
-                avatarMember,
+                avatarMember: <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />,
                 name: <MemberDetail name={item.name} email={item.email} />,
                 permission: item.master
                     ? <MemberPriority label={item.permission} master />

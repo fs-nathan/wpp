@@ -106,7 +106,7 @@ const MediaBox = (props) => {
       {props.image.images.map((image, key) => {
         return (
           <div key={key}>
-            <GridListTile  cols={5} style={{ height: '100%' }}>
+            <GridListTile cols={5} style={{ height: '100%' }}>
               <SubHeader component='div'>{image.date_create}</SubHeader>
             </GridListTile>
             <WrapImage>
@@ -215,7 +215,9 @@ const FileBox = (props) => {
             <div>
               <ColorTypo variant='body1'>{item.date_create}</ColorTypo>
               <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                <Icon path={mdiDotsHorizontal} size={1} ><a href={item.url} /></Icon>
+                <a href={item.url}>
+                  <Icon path={mdiDotsHorizontal} size={1} ></Icon>
+                </a>
               </Button>
             </div>
             <Menu
@@ -287,7 +289,7 @@ const Body = styled(Scrollbars)`
 `;
 const LinkBox = (props) => {
   // console.log("link::",);
-  
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -311,12 +313,12 @@ const LinkBox = (props) => {
                     <Icon path={mdiLink} size={1.4} color={'green'} />
                   </Typography>
                   <ListItemText>
-                    <a 
-                      href={item.url} 
+                    <a
+                      href={item.url}
                       target="_blank"
                       rel="noopener noreferrer">
-                        {item.url}
-                      </a>
+                      {item.url}
+                    </a>
                   </ListItemText>
                   <ListItemIcon>
                     <Button onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">

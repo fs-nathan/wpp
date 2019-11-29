@@ -93,7 +93,7 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
 
   React.useEffect(() => {
     if (values[selectedIndex]) setSelected(selectedIndex)
-  }, [selectedIndex])
+  }, [selectedIndex, values])
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget)
