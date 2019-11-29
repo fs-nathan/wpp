@@ -210,12 +210,12 @@ function TabBody() {
             <Dot>
               <Typography> { !progress ? '0%' : `${progress}%` } </Typography>
             </Dot>
-            <TextProgressToday component='div'>
+            {/* <TextProgressToday component='div'>
               <div />
               <div />
               <p >Hôm nay</p>
               <span>70%</span>
-            </TextProgressToday>
+            </TextProgressToday> */}
         </Progress>
 
       </ProgressBar>

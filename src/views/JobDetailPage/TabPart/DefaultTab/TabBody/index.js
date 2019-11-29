@@ -89,10 +89,13 @@ const ListItemTabPart = styled(ListItem)`
   flex-direction: column;
   align-items: start;
 `
-function DropdownButton({ values }) {
+function DropdownButton({ values, handleChangeItem, selectedIndex }) {
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [selected, setSelected] = React.useState(0)
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selected, setSelected] = React.useState(0);
+  React.useEffect(() => {
+    if (values[selectedIndex]) setSelected(selectedIndex)
+  }, [selectedIndex])
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget)
@@ -103,9 +106,11 @@ function DropdownButton({ values }) {
   }
 
   function handleSelect(index) {
-    setSelected(index);
-    handleClose();
+    setSelected(index)
+    handleChangeItem(index)
+    handleClose()
   }
+
 
   if (values.length === 0) return (
     <ColorButton variantColor='teal' size='small' aria-controls="simple-menu" aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
@@ -206,7 +211,8 @@ const DEFAULT_TASK_STATISTIC = {
   lctCnt: "Đang tải",
   offerCnt: "Đang tải",
   commandCnt: "Đang tải",
-  members: []
+  members: [],
+  priority_code: 0,
 }
 
 
@@ -222,7 +228,7 @@ function TabBody(props) {
     if(!value.detailTask) return
     const {
       total_subtask_complete, total_subtask, total_location,
-      total_remind, total_file, total_img, total_link,
+      total_remind, total_file, total_img, total_link, priority_code,
       total_offer, total_offer_approved, total_command, members
     } = value.detailTask
     setTaskStatistic({
@@ -265,9 +271,18 @@ function TabBody(props) {
               Đang tạm dừng
         </ColorButton>
             :
-            <DropdownButton size='small' values={['Đang làm', 'Đang chờ', 'Hoàn thành']} />
+            <DropdownButton
+              size='small' selectedIndex={0}
+              values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
+              handleChangeItem={() => { }}
+            />
           }
-          <DropdownButton size='small' values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']} />
+          <DropdownButton
+            size='small'
+            values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
+            selectedIndex={priority_code}
+            handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
+          />
           <ColorButton size='small' variant='contained' variantColor='red'
             style={{
               marginBottom: '10px',

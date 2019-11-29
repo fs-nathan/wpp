@@ -10,6 +10,8 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) {
+    console.log("action in reducer:::::", action);
+    
     switch (action.type) {
         case types.GET_TASK_DETAIL_TABPART_REQUEST:
             return {
@@ -29,6 +31,24 @@ export default function reducer(state = initialState, action) {
                 isFetching: false,
                 dataFetched: false,
                 error: true,
+            }
+        case types.UPDATE_TASK_PRIORITY_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+            }
+        case types.UPDATE_TASK_PRIORITY_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.UPDATE_TASK_PRIORITY_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true
             }
         default:
             return state;

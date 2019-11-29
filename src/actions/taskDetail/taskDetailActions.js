@@ -404,6 +404,19 @@ export const getTaskDetailTabPartFail = (error) => ({
     error: error,
 });
 
+// Update Priority
+export const updatePriority = payload => ({
+    type: types.UPDATE_TASK_PRIORITY_REQUEST,
+    payload
+})
+export const updatePrioritySuccess = payload => ({
+    type: types.UPDATE_TASK_PRIORITY_SUCCESS,
+    payload
+})
+export const updatePriorityFail = error => ({
+    type: types.UPDATE_TASK_PRIORITY_FAIL,
+    error: error
+})
 //Member - Tabpart - cot phai
 export const getMember = (payload) => ({
     type: types.GET_MEMBER_REQUEST,

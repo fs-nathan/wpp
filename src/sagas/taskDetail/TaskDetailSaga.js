@@ -619,6 +619,33 @@ function* updateCommand(action) {
   }
 }
 
+async function doUpdatePriority(payload) {
+  try {
+    const config = {
+      url: '/task/update-priority',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+function* updatePriority(action) {
+  try {
+    const res = yield call(doUpdatePriority, action.payload)
+    yield put(actions.updatePrioritySuccess(res))
+    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.updatePriorityFail(error))
+  }
+}
+
 async function doGetMember({ task_id }) {
   try {
     const config = {
@@ -631,7 +658,6 @@ async function doGetMember({ task_id }) {
     throw error;
   }
 }
-
 function* getMember(action) {
   try {
     const res = yield call(doGetMember, action.payload)
@@ -699,6 +725,8 @@ export {
   getCommand,
   createCommand,
   updateCommand,
+  // Update Priority
+  updatePriority,
 
   // Member - Tabpart
   getMember,
