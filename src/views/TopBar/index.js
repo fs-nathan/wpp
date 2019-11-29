@@ -72,23 +72,27 @@ const AccBox = styled.div`
 
 const TopBar = props => {
   const [visibleSearchModal, setVisibleSearch] = useState(false);
+  const [marginLeftModal, setMarginLeftModal] = useState(280);
+  const [marginTopModal, setMarginTopModal] = useState(10);
 
   const openSearchModal = () => {
-    // const inputSearchElm = document.getElementById("inputSearch");
-    // const topNavElm = document.getElementById("topNavId");
+    // Handle position of search modal
+    const searchInputWrapperElm = document.getElementById('searchInputWrapper');
+    const topNavElm = document.getElementById('topNavId');
 
-    // if (inputSearchElm) {
-    //   // marginLeft, marginTop of TopNav element
-    //   const mlTopNav = window.getComputedStyle(topNavElm).marginLeft || 0;
-    //   const mtTopNav = window.getComputedStyle(topNavElm).marginTop || 0;
-    //   const posLeft = inputSearchElm.offsetLeft + parseInt(mlTopNav);
-    //   const posTop = inputSearchElm.offsetTop + parseInt(mtTopNav);
-    //   this.setState({ marginLeftModal: posLeft, marginTopModal: posTop });
-    // }
+    if (searchInputWrapperElm) {
+      // marginLeft, marginTop of TopNav element
+      const mlTopNav = window.getComputedStyle(topNavElm).marginLeft || 0;
+      const mtTopNav = window.getComputedStyle(topNavElm).marginTop || 0;
+      const posLeft = searchInputWrapperElm.offsetLeft + parseInt(mlTopNav);
+      const posTop = searchInputWrapperElm.offsetTop + parseInt(mtTopNav);
+      setMarginLeftModal(posLeft);
+      setMarginTopModal(posTop);
+    }
     setVisibleSearch(true);
   };
   return (
-    <Container>
+    <Container id="topNavId">
       <LeftPart>
         <InfoBox>
           <div>
@@ -100,16 +104,18 @@ const TopBar = props => {
             <Icon path={mdiChevronDown} size={1} />
           </div>
         </InfoBox>
-        <StyledSearchInput
-          onClick={openSearchModal}
-          placeholder="Tìm nhanh công việc"
-        />
+        <span id="searchInputWrapper">
+          <StyledSearchInput
+            onClick={openSearchModal}
+            placeholder="Tìm nhanh công việc"
+          />
+        </span>
         {visibleSearchModal && (
           <SearchModal
             open={visibleSearchModal}
             setOpen={val => setVisibleSearch(val || false)}
-            // marginLeft={marginLeftModal}
-            // marginTop={marginTopModal}
+            marginLeft={marginLeftModal}
+            marginTop={marginTopModal}
           />
         )}
       </LeftPart>

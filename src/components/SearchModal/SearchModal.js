@@ -50,17 +50,16 @@ class SearchModal extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      const inputSearchElm = document.getElementById('searchTextId');
-      if (inputSearchElm) {
-        inputSearchElm.focus();
-      }
-    }, 0);
+      const searchModal = document.querySelector('.search-modal');
+      const dialogContainer = searchModal.querySelector('.MuiDialog-container');
+      dialogContainer.style.display = 'block';
 
-    // const modalDialog = document.getElementsByClassName("modal-dialog")[0];
-    // modalDialog.style.marginTop = `${this.props.marginTop}px`;
-    // modalDialog.style.marginLeft = `${this.props.marginLeft}px`;
-    // modalDialog.style.marginRight = `${this.props.marginLeft}px`;
-    // modalDialog.style.maxWidth = "initial";
+      const dialogContent = searchModal.querySelector('.MuiPaper-root');
+      dialogContent.style.marginTop = `${this.props.marginTop}px`;
+      dialogContent.style.marginLeft = `${this.props.marginLeft}px`;
+      dialogContent.style.marginRight = `${this.props.marginLeft}px`;
+      dialogContent.style.maxWidth = 'initial';
+    }, 0);
   }
 
   render() {
@@ -77,6 +76,7 @@ class SearchModal extends Component {
             <InputBase
               id="searchTextId"
               className="search-box"
+              autoFocus
               startAdornment={
                 <InputAdornment position="start">
                   <Icon path={mdiMagnify} size={1.3} color="#8e8e8e" />
