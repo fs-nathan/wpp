@@ -148,7 +148,6 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
         </ButtonIcon>
       </StyledListItem>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}

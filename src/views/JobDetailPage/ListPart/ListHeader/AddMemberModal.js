@@ -136,8 +136,10 @@ function ProjectMember(props) {
                 <ColorTypo>{props.email}</ColorTypo>
                 <ColorTypo color="orange">{props.label}</ColorTypo>
             </div>
-            <Chip bold="true"
+            <Chip
+                bold="true"
                 label="Thêm"
+                onClick={props.valueContext.createMemberToTask}
             />
         </StyledListItem>
     )
@@ -177,7 +179,6 @@ function MemberPriority(props) {
 
 function MemberRole(props) {
     const [openRoleModal, setOpenRoleModal] = React.useState(false)
-    console.log("QQQQ", props)
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <div>
@@ -276,6 +277,7 @@ function TableMember(props) {
 
 function AddMemberModal(props) {
     const valueContext = React.useContext(WrapperContext);
+    console.log('value', valueContext)
 
     const [listMemberProjectState, setListMemberProject] = React.useState([])
     React.useEffect(() => {

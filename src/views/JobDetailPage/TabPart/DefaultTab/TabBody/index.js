@@ -11,9 +11,7 @@ import ColorButton from '../../../../../components/ColorButton';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import colorPal from '../../../../../helpers/colorPalette';
-import {
-  isLongerContent, getCollapseText
-} from '../../../../../helpers/jobDetail/stringHelper'
+import {isLongerContent, getCollapseText} from '../../../../../helpers/jobDetail/stringHelper'
 import { WrapperContext } from '../../../index'
 
 const ListItemButtonGroup = styled(ListItem)`
@@ -113,7 +111,7 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
 
 
   if (values.length === 0) return (
-    <ColorButton variantColor='teal' size='small' aria-controls="simple-menu" aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
+    <ColorButton variantColor='teal' size='small' aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
     // endIcon={
     //   <Icon path={mdiArrowRightBoldCircle} size={0.7} color={colorPal['greenlight'][1]} />
     // }
@@ -121,7 +119,7 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
   );
   else return (
     <React.Fragment>
-      <ColorButton variantColor='teal' size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
+      <ColorButton variantColor='teal' size='small' onClick={handleClick} aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
       // endIcon={
       //   <Icon path={mdiArrowRightBoldCircle} size={0.7} color={colorPal['greenlight'][1]} />
       // }
@@ -129,7 +127,6 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
         {values[selected]}
       </ColorButton>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -196,7 +193,10 @@ function Content({ value }) {
               }
 
             />
-            {isOpen ? <ButtonText onClick={handlePressViewButton}>Thu gọn</ButtonText> : <ButtonText onClick={handlePressViewButton}>Xem thêm</ButtonText>}
+            {isOpen
+              ? <ButtonText onClick={handlePressViewButton}>Thu gọn</ButtonText>
+              : <ButtonText onClick={handlePressViewButton}>Xem thêm</ButtonText>
+            }
           </>
       }
     </ListItemTabPart>

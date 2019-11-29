@@ -114,6 +114,8 @@ const mapDispatchToProps = dispatch => {
     // Member
     getMemberByTaskId: task_id => dispatch(taskDetailAction.getMember({ task_id })),
     getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
+    createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
+    deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
   };
 };
 
