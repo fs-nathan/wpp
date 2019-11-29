@@ -225,7 +225,7 @@ function TabBody(props) {
   }
 
   React.useEffect(() => {
-    if(!value.detailTask) return
+    if (!value.detailTask) return
     const {
       total_subtask_complete, total_subtask, total_location,
       total_remind, total_file, total_img, total_link, priority_code,
@@ -280,7 +280,7 @@ function TabBody(props) {
           <DropdownButton
             size='small'
             values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
-            selectedIndex={priority_code}
+            selectedIndex={taskStatistic.priority_code}
             handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
           />
           <ColorButton size='small' variant='contained' variantColor='red'
