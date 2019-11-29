@@ -204,7 +204,7 @@ const FileBox = (props) => {
           <FileBoxStyledListItem key={idx}>
             <img src={iconDoc} alt='avatar' />
             <div>
-              <FileName>{item.url}</FileName  >
+              <FileName>{item.name}</FileName  >
               <ColorTypo variant='caption'>
                 <Button size='small'>
                   <Icon path={mdiDownload} size={1} />
@@ -215,7 +215,7 @@ const FileBox = (props) => {
             <div>
               <ColorTypo variant='body1'>{item.date_create}</ColorTypo>
               <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                <Icon path={mdiDotsHorizontal} size={1} />
+                <Icon path={mdiDotsHorizontal} size={1} ><a href={item.url} /></Icon>
               </Button>
             </div>
             <Menu

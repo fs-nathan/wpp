@@ -91,7 +91,9 @@ function TabHeader(props) {
         <ColorTypo bold >{name}</ColorTypo>
         <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13 }}>{roles}</ColorTypo>
         <br />
-        <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao ngày {value.detailTask.date_create}</ColorTypo>
+        {value.detailTask &&
+          <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao ngày {value.detailTask.date_create}</ColorTypo>
+        }
       </TagsContainer>
       <StyledIconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />

@@ -3,7 +3,7 @@ import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 
 // Initial state for store
 const initialState = {
-    taskDetails: [],
+    taskDetails: null,
     isFetching: false,
     dataFetched: false,
     error: false,

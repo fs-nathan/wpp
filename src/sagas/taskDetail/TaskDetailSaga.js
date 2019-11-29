@@ -382,6 +382,57 @@ function* deleteOffer(action) {
     yield put(actions.getOfferFail(error))
   }
 }
+
+async function doUploadDocumentToOffer(payload) {
+  try {
+    const config = {
+      url: 'task/upload-document-to-offer',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* uploadDocumentToOffer(action) {
+  console.log("upload file :::::", action.payload);
+  
+  try {
+    const res = yield call(doUploadDocumentToOffer, action.payload)
+    yield put(actions.uploadDocumentToOfferSuccess(res))
+  } catch (error) {
+    yield put(actions.uploadDocumentToOfferFail(error))
+  }
+}
+
+async function doDeleteDocumentToOffer(payload) {
+  try {
+    const config = {
+      url: 'task/delete-document-from-offer',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* deleteDocumentToOffer(action) {
+  try {
+    const res = yield call(doDeleteDocumentToOffer, action.payload)
+    yield put(actions.deleteDocumentToOfferSuccess(res))
+  } catch (error) {
+    yield put(actions.deleteDocumentToOfferFail(error))
+  }
+}
+
+
+
 // Media Image
 async function doGetImage({ taskId }) {
   try {
@@ -618,6 +669,8 @@ export {
   createOffer,
   deleteOffer,
   updateOffer,
+  uploadDocumentToOffer,
+  deleteDocumentToOffer,
 
   // Remind::
   getRemind,
