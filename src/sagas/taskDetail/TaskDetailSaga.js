@@ -612,6 +612,52 @@ function* getMemberNotAssigned(action) {
   }
 }
 
+async function doCreateMember(payload) {
+  try {
+    const config = {
+      url: 'task/add-member',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createMember(action) {
+  try {
+    const res = yield call(doCreateMember, action.payload)
+    yield put(actions.createMemberSuccess(res))
+  } catch (error) {
+    yield put(actions.createMemberFail(error))
+  }
+}
+
+async function doDeleteMember(payload) {
+  try {
+    const config = {
+      url: 'task/remove-member',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* deleteMember(action) {
+  try {
+    const res = yield call(doDeleteMember, action.payload)
+    yield put(actions.deleteMemberSuccess(res))
+  } catch (error) {
+    yield put(actions.deleteMemberFail(error))
+  }
+}
+
 export {
   // Offer::
   getOffer,
@@ -649,5 +695,7 @@ export {
 
   // Member - Tabpart
   getMember,
-  getMemberNotAssigned
+  getMemberNotAssigned,
+  createMember,
+  deleteMember,
 }

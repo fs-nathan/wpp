@@ -11,9 +11,7 @@ import ColorButton from '../../../../../components/ColorButton';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import colorPal from '../../../../../helpers/colorPalette';
-import {
-  isLongerContent, getCollapseText
-} from '../../../../../helpers/jobDetail/stringHelper'
+import {isLongerContent, getCollapseText} from '../../../../../helpers/jobDetail/stringHelper'
 import { WrapperContext } from '../../../index'
 
 const ListItemButtonGroup = styled(ListItem)`
@@ -108,7 +106,7 @@ function DropdownButton({ values }) {
   }
 
   if (values.length === 0) return (
-    <ColorButton variantColor='teal' size='small' aria-controls="simple-menu" aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
+    <ColorButton variantColor='teal' size='small' aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
     // endIcon={
     //   <Icon path={mdiArrowRightBoldCircle} size={0.7} color={colorPal['greenlight'][1]} />
     // }
@@ -116,7 +114,7 @@ function DropdownButton({ values }) {
   );
   else return (
     <React.Fragment>
-      <ColorButton variantColor='teal' size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
+      <ColorButton variantColor='teal' size='small' onClick={handleClick} aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
       // endIcon={
       //   <Icon path={mdiArrowRightBoldCircle} size={0.7} color={colorPal['greenlight'][1]} />
       // }
@@ -124,7 +122,6 @@ function DropdownButton({ values }) {
         {values[selected]}
       </ColorButton>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -191,7 +188,10 @@ function Content({ value }) {
               }
 
             />
-            {isOpen ? <ButtonText onClick={handlePressViewButton}>Thu gọn</ButtonText> : <ButtonText onClick={handlePressViewButton}>Xem thêm</ButtonText>}
+            {isOpen
+              ? <ButtonText onClick={handlePressViewButton}>Thu gọn</ButtonText>
+              : <ButtonText onClick={handlePressViewButton}>Xem thêm</ButtonText>
+            }
           </>
       }
     </ListItemTabPart>
@@ -201,18 +201,17 @@ function Content({ value }) {
 
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
-  // console.log('value:::::', value.detailTask.description);
   let content = ""
-  if(value){
-    if(value.detailTask){
-        // subtask = value.detailTask.total_subtask
-        // subtaskComplete = value.detailTask.total_subtask_complete
-      if(value.detailTask.description){
+  if (value) {
+    if (value.detailTask) {
+      // subtask = value.detailTask.total_subtask
+      // subtaskComplete = value.detailTask.total_subtask_complete
+      if (value.detailTask.description) {
         content = value.detailTask.description
       }
     }
   }
-  
+
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <StyledList>
@@ -260,34 +259,34 @@ function TabBody(props) {
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(2)}>
           <ColorTypo>Công việc con</ColorTypo>
-          <BadgeItem badge size='small' color='bluelight' label={value.detailTask.total_subtask_complete + "/" + value.detailTask.total_subtask  + " hoàn thành"} />
+          <BadgeItem badge size='small' color='bluelight' label={value.detailTask.total_subtask_complete + "/" + value.detailTask.total_subtask + " hoàn thành"} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
           <ColorTypo>Nhắc hẹn</ColorTypo>
-          <BadgeItem badge size='small' color='redlight' label={ value.detailTask.total_remind +' nhắc hẹn'} />
+          <BadgeItem badge size='small' color='redlight' label={value.detailTask.total_remind + ' nhắc hẹn'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(4)}>
           <ColorTypo>Tài liệu</ColorTypo>
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_file + ' file'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_img +' ảnh'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_link + ' link'} />
+          <BadgeItem badge size='small' color='purplelight' label={value.detailTask.total_file + ' file'} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='purplelight' label={value.detailTask.total_img + ' ảnh'} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='purplelight' label={value.detailTask.total_link + ' link'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(5)}>
           <ColorTypo>Chia sẻ vị trí</ColorTypo>
-          <BadgeItem badge size='small' color='indigolight' label={ value.detailTask.total_location + ' vị trí'} />
+          <BadgeItem badge size='small' color='indigolight' label={value.detailTask.total_location + ' vị trí'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(6)}>
           <ColorTypo>Đề xuất, duyệt</ColorTypo>
-          <BadgeItem badge size='small' color='orangelight' label={ value.detailTask.total_offer + ' đề xuất'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='orangelight' label={ value.detailTask.total_offer_approved + ' duyệt'} />
+          <BadgeItem badge size='small' color='orangelight' label={value.detailTask.total_offer + ' đề xuất'} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='orangelight' label={value.detailTask.total_offer_approved + ' duyệt'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(7)}>
           <ColorTypo>Chỉ đạo, quyết định</ColorTypo>
-          <BadgeItem badge size='small' color='bluelight' label={ value.detailTask.total_command + ' nội dung'} />
+          <BadgeItem badge size='small' color='bluelight' label={value.detailTask.total_command + ' nội dung'} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
           <ColorTypo>Thành viên</ColorTypo>
-          <AvatarCircleList total={20} display={6} /> 
+          <AvatarCircleList total={20} display={6} />
         </ListItemTab>
       </StyledList>
     </Body >

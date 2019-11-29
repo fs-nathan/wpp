@@ -402,3 +402,33 @@ export const getMemberNotAssignedFail = (error) => ({
     type: types.GET_MEMBER_NOT_ASSIGNED_FAIL,
     error: error,
 });
+
+export const createMember = (payload) => ({
+    type: types.POST_MEMBER_REQUEST,
+    payload
+});
+
+export const createMemberSuccess = (payload) => ({
+    type: types.POST_MEMBER_SUCCESS,
+    payload
+});
+
+export const createMemberFail = (error) => ({
+    type: types.POST_MEMBER_FAIL,
+    error: error,
+});
+
+export const deleteMember = (payload) => ({
+    type: types.DELETE_MEMBER_REQUEST,
+    payload
+});
+
+export const deleteMemberSuccess = (payload) => ({
+    type: types.DELETE_MEMBER_SUCCESS,
+    payload
+});
+
+export const deleteMemberFail = (error) => ({
+    type: types.DELETE_MEMBER_FAIL,
+    error: error,
+});

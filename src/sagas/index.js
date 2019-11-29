@@ -136,6 +136,8 @@ function* rootSaga() {
   //Member::
   yield takeLeading(taskDetailType.GET_MEMBER_REQUEST, taskDetailSaga.getMember);
   yield takeLeading(taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST, taskDetailSaga.getMemberNotAssigned);
+  yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
+  yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
 };
 
 export default rootSaga;
