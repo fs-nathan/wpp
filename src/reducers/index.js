@@ -38,6 +38,8 @@ import sortProjectGroup, { initialState as sortProjectGroupInitialState } from '
 import detailProjectGroup, { initialState as detailProjectGroupInitialState } from './projectGroup/detailProjectGroup';
 import memberProjectGroup, { initialState as memberProjectGroupInitialState } from './projectGroup/memberProjectGroup';
 import createProject, { initialState as createProjectInitialState } from './project/createProject';
+import sortProject, { initialState as sortProjectInitialState } from './project/sortProject';
+import copyProject, { initialState as copyProjectInitialState } from './project/copyProject';
 import addMemberProject, { initialState as addMemberProjectInitialState } from './project/addMemberProject';
 import deleteProject, { initialState as deleteProjectInitialState } from './project/deleteProject';
 import listProject, { initialState as listProjectInitialState } from './project/listProject';
@@ -139,6 +141,8 @@ const rootReducer = combineReducers({
     addProjectRoleToMember,
     removeProjectRoleFromMember,
     updateGroupPermissionMember,
+    sortProject,
+    copyProject,
   }),
   task: combineReducers({
     listTask,
@@ -214,6 +218,8 @@ export const DEFAULT_STATE = {
     addProjectRoleToMember: addProjectRoleToMemberInitialState,
     removeProjectRoleFromMember: removeProjectRoleFromMemberInitialState,
     updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
+    sortProject: sortProjectInitialState,
+    copyProject: copyProjectInitialState,
   },
   task: {
     listTask: listTaskInitialState,

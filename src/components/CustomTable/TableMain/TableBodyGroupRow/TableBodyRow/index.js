@@ -32,10 +32,10 @@ function TableBodyRow({ index, row, group }) {
     for (const key in row) {
       if (
         row.hasOwnProperty(key) &&
-        includes(row[key].toString().toLowerCase(), options.search.patern.toLowerCase())
+        get(row, key, '') &&
+        includes(get(row, key, '').toString().toLowerCase(), get(options, 'search.patern', '').toLowerCase())
       ) inSearch = true;
     }
-
 
   if (!inSearch) return null;
   else return (
@@ -58,7 +58,7 @@ function TableBodyRow({ index, row, group }) {
             </StyledTableBodyCell>
             {columns.map((column, index) => (
               <StyledTableBodyCell key={index}>
-                {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, column.field, '')}
+                {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, get(column, 'field', ''), '')}
               </StyledTableBodyCell>
             ))}
           </StyledTableBodyRow>
@@ -71,7 +71,7 @@ function TableBodyRow({ index, row, group }) {
       >
         {columns.map((column, index) => (
           <StyledTableBodyCell key={index}>
-            {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, column.field, '')}
+            {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, get(column, 'field', ''), '')}
           </StyledTableBodyCell>
         ))}
       </StyledTableBodyRow>

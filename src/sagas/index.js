@@ -77,6 +77,10 @@ import { MEMBER_PROJECT_GROUP } from '../constants/actions/projectGroup/memberPr
 import { memberProjectGroup } from './projectGroup/memberProjectGroup';
 import { CREATE_PROJECT } from '../constants/actions/project/createProject';
 import { createProject } from './project/createProject';
+import { COPY_PROJECT } from '../constants/actions/project/copyProject';
+import { copyProject } from './project/copyProject';
+import { SORT_PROJECT } from '../constants/actions/project/sortProject';
+import { sortProject } from './project/sortProject';
 import { UPDATE_PROJECT } from '../constants/actions/project/updateProject';
 import { updateProject } from './project/updateProject';
 import { DELETE_PROJECT } from '../constants/actions/project/deleteProject';
@@ -147,6 +151,8 @@ function* rootSaga() {
   yield takeLatest(DETAIL_PROJECT_GROUP, detailProjectGroup);
   yield takeLatest(MEMBER_PROJECT_GROUP, memberProjectGroup);
   yield takeLatest(CREATE_PROJECT, createProject);
+  yield takeLatest(COPY_PROJECT, copyProject);
+  yield takeLatest(SORT_PROJECT, sortProject);
   yield takeLatest(UPDATE_PROJECT, updateProject);
   yield takeLatest(DELETE_PROJECT, deleteProject);
   yield takeLatest(LIST_PROJECT, listProject);

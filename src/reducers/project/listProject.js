@@ -3,10 +3,11 @@ import {
   LIST_PROJECT_SUCCESS,
   LIST_PROJECT_FAIL,
 } from '../../constants/actions/project/listProject';
-import { get, findIndex, remove } from 'lodash';
+import { get, findIndex, remove, slice, concat } from 'lodash';
 import { UPDATE_PROJECT } from '../../constants/actions/project/updateProject';
 import { DELETE_PROJECT } from '../../constants/actions/project/deleteProject';
 import { HIDE_PROJECT } from '../../constants/actions/project/hideProject';
+import { SORT_PROJECT } from '../../constants/actions/project/sortProject';
 
 export const initialState = {
   data: {
@@ -19,6 +20,7 @@ export const initialState = {
 function reducer(state = initialState, action) {
   let projects = [];
   let index = -1;
+  let removed = null;
   switch (action.type) {
     case LIST_PROJECT:
       return {
@@ -70,6 +72,17 @@ function reducer(state = initialState, action) {
         ...projects[index],
         visibility: false,
       };
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects,
+        },
+      };
+    case SORT_PROJECT:
+      projects = [...state.data.projects];
+      removed = remove(projects, { id: get(action.options, 'projectId') });
+      projects = [...slice(projects, 0, action.options.sortIndex), ...removed, ...slice(projects, action.options.sortIndex)];
       return {
         ...state,
         data: {

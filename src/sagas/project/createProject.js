@@ -25,8 +25,8 @@ async function doCreateProject({ name, description, projectGroupId, priority, cu
 
 function* createProject(action) {
   try {
-    const { project_id: projectId } = yield call(doCreateProject, action.options);
-    yield put(createProjectSuccess({ projectId }));
+    const { project } = yield call(doCreateProject, action.options);
+    yield put(createProjectSuccess({ project }));
     CustomEventEmitter(CREATE_PROJECT);
   } catch (error) {
     yield put(createProjectFail(error));

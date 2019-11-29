@@ -11,7 +11,7 @@ import {
   CustomEventListener, CustomEventDispose, 
   CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
   CREATE_ICON, DELETE_ICON,
-  CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT, HIDE_PROJECT,
+  CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT, HIDE_PROJECT, SORT_PROJECT, COPY_PROJECT,
 } from '../../constants/events';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
@@ -117,12 +117,16 @@ function ProjectGroupPage({
     CustomEventListener(UPDATE_PROJECT, reloadListProject);
     CustomEventListener(DELETE_PROJECT, reloadListProject);
     CustomEventListener(HIDE_PROJECT, reloadListProject);
+    CustomEventListener(SORT_PROJECT, reloadListProject);
+    CustomEventListener(COPY_PROJECT, reloadListProject);
 
     return () => {
       CustomEventDispose(CREATE_PROJECT, reloadListProject);
       CustomEventDispose(UPDATE_PROJECT, reloadListProject);
       CustomEventDispose(DELETE_PROJECT, reloadListProject);
       CustomEventDispose(HIDE_PROJECT, reloadListProject);
+      CustomEventDispose(SORT_PROJECT, reloadListProject);
+      CustomEventDispose(COPY_PROJECT, reloadListProject);
     }
   }, [projectGroupId, doListProject]);
 

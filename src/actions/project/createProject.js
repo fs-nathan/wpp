@@ -15,10 +15,10 @@ export const createProject = ({ name, description, projectGroupId, priority, cur
   },
 });
 
-export const createProjectSuccess = ({ projectId }) => ({
+export const createProjectSuccess = ({ project }) => ({
   type: CREATE_PROJECT_SUCCESS,
   data: {
-    projectId,
+    project,
   },
 });
 

@@ -3,19 +3,21 @@ import styled from 'styled-components';
 import { 
   TextField, FormControl, FormControlLabel, 
   Radio, RadioGroup, FormLabel, OutlinedInput,
-  ListItemText, ListSubheader,
+  ListItemText, ListSubheader, Typography,
+  FormHelperText,
 } from '@material-ui/core';
 import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
 import SearchInput from '../../../../components/SearchInput';
-import { createProject } from '../../../../actions/project/createProject';
+import { copyProject } from '../../../../actions/project/copyProject';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { StyledList, StyledListItem, Primary } from '../../../../components/CustomList';
 import { get, map, filter } from 'lodash';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
-import { mdiChevronDown, mdiChevronUp } from '@mdi/js';
+import { mdiChevronDown, mdiChevronUp, mdiCheckCircle, } from '@mdi/js';
+import { useRequiredString, useRequiredDate } from '../../../../hooks';
 
 const Container = styled.div`
   display: grid;
@@ -30,21 +32,27 @@ const LeftSide = styled.div`
   grid-area: left;
   height: 480px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
 `;
 
 const RightSide = styled.div`
   grid-area: right;
   height: 480px;
+  padding: 5px 10px;
 `;
 
-const StyledTypo = styled(ColorTypo)`
+const Header = styled(ColorTypo)`
   padding: 16px 8px 8px 8px;
   margin-bottom: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
+const StyledTypo = styled(Typography)`
+  padding: 0 8px;
+  font-size: 14px;
+`;
+
 const StyledFormControl = styled(FormControl)`
-  padding: 5px 10px;
   & > legend {
     margin-bottom: 8px;
   }
@@ -87,7 +95,26 @@ const StyledListSubheader = styled(ListSubheader)`
   }
 `;
 
-function ProjectGroupList({ projectGroup }) {
+const CustomListItem = styled(StyledListItem)`
+  padding: 10px 0;
+`;
+
+const StyledPrimary = styled(({ isSelected, ...rest }) => <Primary {...rest} />)`
+  display: flex;
+  align-items: center;
+  & > * {
+    &:first-child {
+      fill: ${props => props.isSelected ? '#05b50c' : 'rgba(0, 0, 0, 0)'};
+    }
+    &:last-child {
+      color: ${props => props.isSelected ? '#05b50c' : '#444'};
+      font-size: 14px;
+      margin-left: 8px;
+    }
+  }
+`;
+
+function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject }) {
 
   const [expand, setExpand] = React.useState(true);
 
@@ -105,30 +132,34 @@ function ProjectGroupList({ projectGroup }) {
       }
     >
       {expand && get(projectGroup, 'projects', []).map(project => (
-        <StyledListItem key={get(project, 'id')}>
+        <CustomListItem key={get(project, 'id')} onClick={() => setSelectedProject(project)}>
           <ListItemText 
             primary={
-              <Primary>{get(project, 'name', '')}</Primary>  
+              <StyledPrimary isSelected={get(selectedProject, 'id') === get(project, 'id')}>
+                <Icon path={mdiCheckCircle} size={1} /> 
+                <span>{get(project, 'name', '')}</span>
+              </StyledPrimary>  
             }
           />
-        </StyledListItem>
+        </CustomListItem>
       ))}
     </StyledList>
   );
 }
 
-function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
+function CopyProject({ open, setOpen, listProjectGroup, listProject, doCopyProject }) {
 
   const { data: { projectGroups } } = listProjectGroup;
   const { data: { projects }} = listProject;
 
-  const [name, setName] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [memSetting, setMemSetting] = React.useState(0);
+  const [name, setName, errorName] = useRequiredString('', 200);
+  const [description, setDescription, errorDescription] = useRequiredString('', 500);
+  const [isCopyMember, setIsCopyMember] = React.useState(false);
   const [searchPatern, setSearchPatern] = React.useState('');
-  const [startDate, setStartDate] = React.useState(moment().toDate());
+  const [startDate, setStartDate, errorDate] = useRequiredDate(moment().toDate());
 
   const [customProjects, setCustomProjects] = React.useState([]);
+  const [selectedProject, setSelectedProject] = React.useState(null);
 
   React.useEffect(() => {
     let newProjects = map(projectGroups, (projectGroup) => {
@@ -152,8 +183,17 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
   }, [projectGroups, projects, searchPatern]);
 
   function handleCopyProject() { 
+    doCopyProject({
+      projectId: get(selectedProject, 'id'),
+      name,
+      description,
+      startDate: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
+      isCopyMember,
+    })
     setOpen(false);
   }
+
+  React.useEffect(() => { console.log(startDate) }, [startDate]);
 
   return (
     <React.Fragment>
@@ -162,6 +202,7 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
         fullWidth={true}
         open={open}
         setOpen={setOpen}
+        canConfirm={!errorName && !errorDescription && !errorDate && selectedProject}
         onConfirm={() => handleCopyProject()}
         height='tall'
       >
@@ -171,7 +212,7 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
               autoHide
               autoHideTimeout={500}
             >
-              <StyledTypo color='gray' uppercase bold>Chọn dự án sao chép</StyledTypo>
+              <Header color='gray' uppercase bold>Chọn dự án sao chép</Header>
               <SearchInput 
                 fullWidth 
                 placeholder='Tìm dự án'
@@ -183,6 +224,8 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
                   <ProjectGroupList
                     projectGroup={projectGroup}
                     key={get(projectGroup, 'id')} 
+                    selectedProject={selectedProject}
+                    setSelectedProject={setSelectedProject}
                   />
                 ))}
               </ListContainer>
@@ -193,7 +236,9 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
               autoHide
               autoHideTimeout={500}
             >
-              <StyledTypo color='gray' uppercase bold>Thông tin dự án</StyledTypo>
+              <Header color='gray' uppercase bold>Dự án được sao chép</Header>
+              <StyledTypo>{get(selectedProject, 'name', 'Hãy chọn dự án để sao chép')}</StyledTypo>
+              <Header color='gray' uppercase bold>Thông tin dự án</Header>
               <FormContainer>
                 <TextField
                   value={name}
@@ -204,7 +249,7 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
                   fullWidth
                   helperText={
                     <ColorTypo variant='caption' color='red'>
-                      Tối đa 200 ký tự
+                      {get(errorName, 'message', '')}
                     </ColorTypo>
                   }
                 />
@@ -219,15 +264,15 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
                   rowsMax='6'
                   helperText={
                     <ColorTypo variant='caption' color='red'>
-                      Tối đa 500 ký tự
+                      {get(errorDescription, 'message', '')}
                     </ColorTypo>
                   }
                 />
                 <StyledFormControl component="div" fullWidth>
                   <StyledFormLabel component="legend">Cài đặt thành viên</StyledFormLabel>
-                  <RadioGroup aria-label="member-setting" name="member-setting" value={memSetting} onChange={evt => setMemSetting(parseInt(evt.target.value))}>
-                    <FormControlLabel value={0} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
-                    <FormControlLabel value={1} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
+                  <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
+                    <FormControlLabel value={true} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
+                    <FormControlLabel value={false} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
                   </RadioGroup>
                 </StyledFormControl>
                 <StyledFormControl component="div" fullWidth>
@@ -238,6 +283,7 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, }) {
                     value={moment(startDate).format('YYYY-MM-DD')}
                     onChange={evt => setStartDate(moment(evt.target.value).toDate())}
                   />
+                  <FormHelperText error filled variant='filled'>{get(errorDate, 'message', '')}</FormHelperText>
                 </StyledFormControl>
               </FormContainer>
             </StyledScrollbars>
@@ -257,7 +303,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doCreateProject: ({ name, description, projectGroupId, priority, currency }) => dispatch(createProject({ name, description, projectGroupId, priority, currency })),
+    doCopyProject: ({ projectId, name, description, startDate, isCopyMember }) => dispatch(copyProject({ projectId, name, description, startDate, isCopyMember })),
   }
 };
 

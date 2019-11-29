@@ -1,33 +1,30 @@
 import {
-  CREATE_PROJECT,
-  CREATE_PROJECT_SUCCESS,
-  CREATE_PROJECT_FAIL,
-} from '../../constants/actions/project/createProject';
+  COPY_PROJECT,
+  COPY_PROJECT_SUCCESS,
+  COPY_PROJECT_FAIL,
+} from '../../constants/actions/project/copyProject';
 
 export const initialState = {
-  data: {
-    project: null,  
-  },
+  data: null,
   error: null,
   loading: false,
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case CREATE_PROJECT:
+    case COPY_PROJECT:
       return {
         ...state,
         error: null,
         loading: true,
       };
-    case CREATE_PROJECT_SUCCESS: 
+    case COPY_PROJECT_SUCCESS: 
       return {
         ...state, 
-        data: action.data,
         error: null,
         loading: false,
       };
-    case CREATE_PROJECT_FAIL:
+    case COPY_PROJECT_FAIL:
       return {
         ...state,
         error: action.error,

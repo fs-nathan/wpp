@@ -32,6 +32,7 @@ import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
 import AlertModal from '../../../../components/AlertModal';
 import { listProject } from '../../../../actions/project/listProject';
+import { sortProject } from '../../../../actions/project/sortProject';
 import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
 import { deleteProject } from '../../../../actions/project/deleteProject';
 import { hideProject } from '../../../../actions/project/hideProject';
@@ -299,14 +300,21 @@ const SettingButton = ({ onEditProject, onHideProject, onDeleteProject }) => {
   );
 }
 
-function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup, doDeleteProject, doHideProject }) {
+function AllProjectTable({ 
+  expand, handleExpand, 
+  listProject, 
+  detailProjectGroup, 
+  doDeleteProject, 
+  doHideProject,
+  doSortProject,
+}) {
 
   const { setProjectGroupId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
   const history = useHistory();
 
   const { data: { projects: _projects }, loading: listProjectLoading, error: listProjectError } = listProject;
-  const { data: { projectGroup }, loading: detailProjectGroupLoading, error: detailProjectGroupError } = detailProjectGroup;
+  const { loading: detailProjectGroupLoading, error: detailProjectGroupError } = detailProjectGroup;
 
   const loading = listProjectLoading || detailProjectGroupLoading;
   const error = listProjectError || detailProjectGroupError;
@@ -496,7 +504,19 @@ function AllProjectTable({ expand, handleExpand, listProject, detailProjectGroup
                 bool: false,
               },
               draggable: {
-                bool: false,
+                bool: true,
+                onDragEnd: result => {
+                  const { source, destination, draggableId } = result;
+                  if (!destination) return;
+                  if (
+                    destination.droppableId === source.droppableId &&
+                    destination.index === source.index
+                  ) return;
+                  doSortProject({
+                    projectId: draggableId,
+                    sortIndex: destination.index,
+                  });
+                }, 
               },
               loading: {
                 bool: loading,
@@ -706,6 +726,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
+    doSortProject: ({ projectId, sortIndex }) => dispatch(sortProject({ projectId, sortIndex })),
     doDeleteProject: ({ projectId }) => dispatch(deleteProject({ projectId })),
     doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
     doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),

@@ -1,33 +1,30 @@
 import {
-  CREATE_PROJECT,
-  CREATE_PROJECT_SUCCESS,
-  CREATE_PROJECT_FAIL,
-} from '../../constants/actions/project/createProject';
+  SORT_PROJECT,
+  SORT_PROJECT_SUCCESS,
+  SORT_PROJECT_FAIL,
+} from '../../constants/actions/project/sortProject';
 
 export const initialState = {
-  data: {
-    project: null,  
-  },
+  data: null,
   error: null,
   loading: false,
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case CREATE_PROJECT:
+    case SORT_PROJECT:
       return {
         ...state,
         error: null,
         loading: true,
       };
-    case CREATE_PROJECT_SUCCESS: 
+    case SORT_PROJECT_SUCCESS: 
       return {
         ...state, 
-        data: action.data,
         error: null,
         loading: false,
       };
-    case CREATE_PROJECT_FAIL:
+    case SORT_PROJECT_FAIL:
       return {
         ...state,
         error: action.error,
