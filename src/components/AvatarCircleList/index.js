@@ -78,8 +78,8 @@ function AvatarCircleList({ display, users = [] }) {
 }
 
 AvatarCircleList.propTypes = {
-  display: PropTypes.number.isRequired,
-  users: PropTypes.array.isRequired,
+  display: PropTypes.number,
+  users: PropTypes.array,
 }
 
 export default AvatarCircleList;

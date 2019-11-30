@@ -79,9 +79,7 @@ function TitleManager({ open, setOpen, listPosition, doDeletePosition }) {
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox />}
         {!loading && error === null && (
-          <StyledTable
-            fullWidth
-          >
+          <StyledTable>
             <StyledTableHead>
               <TableRow>
                 <StyledTableCell>Tên chức danh</StyledTableCell>
