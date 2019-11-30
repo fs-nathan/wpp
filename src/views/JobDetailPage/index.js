@@ -94,6 +94,8 @@ const mapDispatchToProps = dispatch => {
     createOfferByTaskId: (createId, content) => { dispatch(taskDetailAction.createOffer({ createId, content })) },
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
     updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
+    uploadDocumentToOfferById: (data) => dispatch(taskDetailAction.uploadDocumentToOffer(data)),
+    deleteDocumentToOfferById: (data) => dispatch(taskDetailAction.deleteDocumentToOffer(data)),
     // command 
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
@@ -107,9 +109,13 @@ const mapDispatchToProps = dispatch => {
     getLocationByTaskId: taskId => dispatch(taskDetailAction.getLocationTabPart({ taskId })),
     // Task Detail - cot phai
     getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId })),
+    // update Priority
+    updateTaskPriority: (task_id, priority) => dispatch(taskDetailAction.updatePriority({ task_id, priority })),
     // Member
     getMemberByTaskId: task_id => dispatch(taskDetailAction.getMember({ task_id })),
     getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
+    createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
+    deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
   };
 };
 

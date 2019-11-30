@@ -382,6 +382,57 @@ function* deleteOffer(action) {
     yield put(actions.getOfferFail(error))
   }
 }
+
+async function doUploadDocumentToOffer(payload) {
+  try {
+    const config = {
+      url: 'task/upload-document-to-offer',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* uploadDocumentToOffer(action) {
+  console.log("upload file :::::", action.payload);
+  
+  try {
+    const res = yield call(doUploadDocumentToOffer, action.payload)
+    yield put(actions.uploadDocumentToOfferSuccess(res))
+  } catch (error) {
+    yield put(actions.uploadDocumentToOfferFail(error))
+  }
+}
+
+async function doDeleteDocumentToOffer(payload) {
+  try {
+    const config = {
+      url: 'task/delete-document-from-offer',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* deleteDocumentToOffer(action) {
+  try {
+    const res = yield call(doDeleteDocumentToOffer, action.payload)
+    yield put(actions.deleteDocumentToOfferSuccess(res))
+  } catch (error) {
+    yield put(actions.deleteDocumentToOfferFail(error))
+  }
+}
+
+
+
 // Media Image
 async function doGetImage({ taskId }) {
   try {
@@ -568,6 +619,33 @@ function* updateCommand(action) {
   }
 }
 
+async function doUpdatePriority(payload) {
+  try {
+    const config = {
+      url: '/task/update-priority',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+function* updatePriority(action) {
+  try {
+    const res = yield call(doUpdatePriority, action.payload)
+    yield put(actions.updatePrioritySuccess(res))
+    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.updatePriorityFail(error))
+  }
+}
+
 async function doGetMember({ task_id }) {
   try {
     const config = {
@@ -580,7 +658,6 @@ async function doGetMember({ task_id }) {
     throw error;
   }
 }
-
 function* getMember(action) {
   try {
     const res = yield call(doGetMember, action.payload)
@@ -612,12 +689,60 @@ function* getMemberNotAssigned(action) {
   }
 }
 
+async function doCreateMember(payload) {
+  try {
+    const config = {
+      url: 'task/add-member',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createMember(action) {
+  try {
+    const res = yield call(doCreateMember, action.payload)
+    yield put(actions.createMemberSuccess(res))
+  } catch (error) {
+    yield put(actions.createMemberFail(error))
+  }
+}
+
+async function doDeleteMember(payload) {
+  try {
+    const config = {
+      url: 'task/remove-member',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* deleteMember(action) {
+  try {
+    const res = yield call(doDeleteMember, action.payload)
+    yield put(actions.deleteMemberSuccess(res))
+  } catch (error) {
+    yield put(actions.deleteMemberFail(error))
+  }
+}
+
 export {
   // Offer::
   getOffer,
   createOffer,
   deleteOffer,
   updateOffer,
+  uploadDocumentToOffer,
+  deleteDocumentToOffer,
 
   // Remind::
   getRemind,
@@ -646,8 +771,12 @@ export {
   getCommand,
   createCommand,
   updateCommand,
+  // Update Priority
+  updatePriority,
 
   // Member - Tabpart
   getMember,
-  getMemberNotAssigned
+  getMemberNotAssigned,
+  createMember,
+  deleteMember,
 }

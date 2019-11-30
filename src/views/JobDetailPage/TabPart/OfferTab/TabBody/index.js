@@ -102,7 +102,6 @@ const ApprovedBox = (props) => {
             </StyledContentBox>
           </ApprovedContainer>
           <Menu
-            id="simple-menu"
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}

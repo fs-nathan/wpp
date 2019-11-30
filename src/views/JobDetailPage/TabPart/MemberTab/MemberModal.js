@@ -149,8 +149,8 @@ const DialogActions = withStyles(theme => ({
 const MemberModal = (props) => {
     const classes = useStyles();
     return (
-        <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers} aria-labelledby="customized-dialog-title" open={props.isOpen} >
-            <DialogTitle id="customized-dialog-title" onClose={props.handleCloseMembers}>
+        <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers}  open={props.isOpen} >
+            <DialogTitle onClose={props.handleCloseMembers}>
                 Thông tin chi tiết thành viên
             </DialogTitle>
             <DialogContent dividers>
