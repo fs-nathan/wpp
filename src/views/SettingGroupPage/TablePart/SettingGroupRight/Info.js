@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Button, TextField, Divider } from '@material-ui/core';
-import ImageCropper from './ImageCropper/ImageCropper';
+import ImageCropper from '../../../../components/ImageCropper/ImageCropper';
 import * as images from '../../../../assets';
 import './SettingGroupRight.scss';
 
+const CROP_TYPE = {
+  LOGO: 'LOGO',
+  COVER: 'COVER'
+};
 class Info extends Component {
   state = {
     showInputFile: true,
@@ -39,9 +43,9 @@ class Info extends Component {
   handleCropImage = (image, type) => {
     console.log(image);
     console.log(type);
-    if (type === 'logo') {
+    if (type === CROP_TYPE.LOGO) {
       this.setState({ logoGroup: image });
-    } else if ((type = 'cover')) {
+    } else if ((type = CROP_TYPE.COVER)) {
       this.setState({ coverGroup: image });
     }
   };
@@ -207,11 +211,13 @@ class Info extends Component {
             <div className="heading-title">
               <span>Logo nhóm (120x120px)</span>
               <Button
+                className="crop-image-btn"
                 color="primary"
                 component="label"
                 htmlFor="raised-button-file"
+                disableTouchRipple
                 onClick={() => {
-                  this.setState({ cropType: 'logo' });
+                  this.setState({ cropType: CROP_TYPE.LOGO });
                 }}
               >
                 Đổi ảnh logo
@@ -226,11 +232,13 @@ class Info extends Component {
             <div className="heading-title">
               <span>Ảnh cover nhóm (1200x400px)</span>
               <Button
+                className="crop-image-btn"
                 color="primary"
                 component="label"
                 htmlFor="raised-button-file"
+                disableTouchRipple
                 onClick={() => {
-                  this.setState({ cropType: 'cover' });
+                  this.setState({ cropType: CROP_TYPE.COVER });
                 }}
               >
                 Đổi ảnh cover
@@ -241,13 +249,15 @@ class Info extends Component {
               <img alt="" src={coverGroup} className="img-cover" />
             </div>
           </div>
-          <ImageCropper
-            open={visibleCropModal}
-            setOpen={val => this.setState({ visibleCropModal: val })}
-            cropType={cropType}
-            image={fileUpload}
-            uploadImage={this.handleCropImage}
-          />
+          {visibleCropModal && (
+            <ImageCropper
+              open={visibleCropModal}
+              setOpen={val => this.setState({ visibleCropModal: val })}
+              cropType={cropType}
+              image={fileUpload}
+              uploadImage={this.handleCropImage}
+            />
+          )}
         </div>
       </div>
     );

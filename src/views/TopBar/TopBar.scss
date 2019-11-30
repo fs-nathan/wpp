@@ -1,5 +1,30 @@
+#topNavId {
+  #searchInputWrapper {
+    margin-right: auto;
+  }
+}
+
 .cursor-pointer {
   cursor: pointer;
+}
+.support-icon {
+  color: rgba(0, 0, 0, 0.54);
+  &:hover {
+    color: #444;
+    background-color: transparent;
+    .normal-icon {
+      display: none;
+    }
+    .active-icon {
+      display: flex;
+    }
+  }
+  .normal-icon {
+    display: flex;
+  }
+  .active-icon {
+    display: none;
+  }
 }
 .topnav-icon {
   width: 18px;
@@ -7,4 +32,9 @@
 }
 .message-icon {
   margin-top: 2px;
+}
+.top-icon {
+  &:hover {
+    background-color: transparent;
+  }
 }

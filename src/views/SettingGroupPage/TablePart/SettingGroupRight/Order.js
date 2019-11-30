@@ -121,13 +121,9 @@ const Order = props => {
             <StyledTableCell align="center">{row.price}</StyledTableCell>
             <StyledTableCell align="center">
               {row.activeDateNo > 0 ? (
-                <Button color="success" className="action-btn extend">
-                  Gia hạn
-                </Button>
+                <Button className="action-btn extend">Gia hạn</Button>
               ) : (
-                <Button color="danger" className="action-btn delete">
-                  Xóa
-                </Button>
+                <Button className="action-btn delete">Xóa</Button>
               )}
             </StyledTableCell>
           </StyledTableRow>

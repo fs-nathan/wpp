@@ -9,8 +9,9 @@ import { SETTING_GROUP } from '../../../../constants/constants';
 
 const StyledButton = styled(Button)`
   && {
-    padding: 4px;
+    padding: 0 4px;
     border-radius: 0;
+    color: rgba(0, 0, 0, 0.54);
   }
   &&:not(:last-child) {
     border-right: none;
@@ -20,6 +21,7 @@ const StyledButton = styled(Button)`
     & path {
       fill: #05b50c !important;
     }
+
     color: #05b50c;
   }
   && > span:first-child {
@@ -35,7 +37,7 @@ const StyledButton = styled(Button)`
     }
     & > span {
       margin-top: 5px;
-      font-size: 12px;
+      font-size: 11px;
     }
   }
   && > span:last-child {
@@ -51,7 +53,7 @@ const HeaderButtonGroup = props => {
         {isActived(SETTING_GROUP.ORDER) && (
           <StyledButton disableRipple>
             <div>
-              <Icon path={mdiMagnify} size={1} />
+              <Icon path={mdiMagnify} size={1} color={'rgba(0, 0, 0, 0.54)'} />
             </div>
             <span>Tìm kiếm</span>
           </StyledButton>
@@ -64,7 +66,7 @@ const HeaderButtonGroup = props => {
             onClick={() => props.history.push(Routes.SETTING_GROUP_ORDER)}
           >
             <div>
-              <Icon path={mdiCart} size={1} />
+              <Icon path={mdiCart} size={1} color={'rgba(0, 0, 0, 0.54)'} />
             </div>
             <span>Đơn hàng</span>
           </StyledButton>
@@ -76,7 +78,7 @@ const HeaderButtonGroup = props => {
             onClick={() => props.history.push(Routes.SETTING_GROUP_ORDER)}
           >
             <div>
-              <Icon path={mdiClose} size={1} />
+              <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
             </div>
             <span>Đóng</span>
           </StyledButton>

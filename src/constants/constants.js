@@ -16,6 +16,12 @@ export const SETTING_GROUP = {
   CREATE_ORDER: 'create-order',
   PAYMENT: 'payment'
 };
+export const MESSAGE = {
+  ALL: 'message-all',
+  NEW: 'message-new',
+  NOTICE_ALL: 'notice-all',
+  NOTICE_NEW: 'notice-new'
+};
 export const DRAWER_TYPE = {
   SUPPORT: 'SUPPORT',
   MESSAGE: 'MESSAGE',

@@ -25,4 +25,5 @@ export { default as ic_user } from './user.png';
 export { default as ic_user_select } from './user_select.png';
 export { default as ic_setting } from './setting.png';
 export { default as ic_logo_default } from './logo_default.png';
+export { default as ic_menu_more } from './ic_menu_more.png';
 export { default as logo_wrokplus } from './logo-wrokplus.png';

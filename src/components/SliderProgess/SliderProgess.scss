@@ -1,12 +1,12 @@
 .silder-custom {
-  padding: 0 20px;
+  padding: 0 20px 0 0;
   .PrivateValueLabel-label-242 {
     color: white;
   }
   &.MuiSlider-root {
     color: #2dc63a;
     height: 8px;
-    width: calc(100% - 60px);
+    width: calc(100% - 20px);
   }
   .MuiSlider-thumb {
     height: 24px;

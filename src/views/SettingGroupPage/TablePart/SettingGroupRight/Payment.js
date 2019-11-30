@@ -1,13 +1,12 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { TextField, Button, Divider } from '@material-ui/core';
 import * as icons from '../../../../assets';
 import './SettingGroupRight.scss';
 
 const Payment = () => {
   return (
     <div className="payment-container">
-      <div className="col-sm-7 has-border-right payment-left">
+      <div className="payment-left">
         <h2>Thông tin xuất hóa đơn</h2>
         <p>
           Là thông tin xuất hóa đơn của khách hàng để WorkPlus xuất hóa đơn Giá
@@ -84,13 +83,13 @@ const Payment = () => {
           className="style-input-text"
         />
         <div className="edit-action">
-          <Button variant="secondary" className="btn-edit">
+          <Button variant="contained" className="btn-edit">
             Chỉnh sửa
           </Button>
         </div>
       </div>
-      <div className="divider-vertical" />
-      <div className="col-sm-5 m-0 p-0 payment-right">
+      <Divider orientation="vertical" className="divider-vertical" />
+      <div className="payment-right">
         <div className="payment-right-top">
           <h2>Thông tin thanh toán</h2>
           <p>
