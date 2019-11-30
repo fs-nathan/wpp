@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
 import { ListItemText } from '@material-ui/core';
@@ -9,7 +9,6 @@ import CustomAvatar from '../../../../../components/CustomAvatar';
 import { get } from 'lodash';
 
 function CustomListItem({ projectGroup, index }) {
-  const location = useLocation();
   const [isHover, setIsHover] = React.useState(false);
 
   return (
@@ -20,7 +19,7 @@ function CustomListItem({ projectGroup, index }) {
       {(provided) => (
         <StyledListItem 
           component={Link}
-          to={`${location.pathname}/${get(projectGroup, 'id', '')}`}
+          to={`/projects/${get(projectGroup, 'id', '')}`}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}

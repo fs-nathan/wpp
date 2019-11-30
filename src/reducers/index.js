@@ -45,6 +45,7 @@ import copyProject, { initialState as copyProjectInitialState } from './project/
 import addMemberProject, { initialState as addMemberProjectInitialState } from './project/addMemberProject';
 import deleteProject, { initialState as deleteProjectInitialState } from './project/deleteProject';
 import listProject, { initialState as listProjectInitialState } from './project/listProject';
+import listDeletedProject, { initialState as listDeletedProjectInitialState } from './project/listDeletedProject';
 import detailProject, { initialState as detailProjectInitialState } from './project/detailProject';
 import hideProject, { initialState as hideProjectInitialState } from './project/hideProject';
 import memberProject, { initialState as memberProjectInitialState } from './project/memberProject';
@@ -141,6 +142,7 @@ const rootReducer = combineReducers({
     updateProject,
     deleteProject,
     listProject,
+    listDeletedProject,
     detailProject,
     hideProject,
     memberProject,
@@ -220,6 +222,7 @@ export const DEFAULT_STATE = {
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
     listProject: listProjectInitialState,
+    listDeletedProject: listDeletedProjectInitialState,
     detailProject: detailProjectInitialState,
     hideProject: hideProjectInitialState,
     memberProject: memberProjectInitialState,
@@ -233,7 +236,7 @@ export const DEFAULT_STATE = {
     copyProject: copyProjectInitialState
   },
   task: {
-    listTask: listTaskInitialState
+    listTask: listTaskInitialState,
   }
 };
 

@@ -1,5 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import { listProjectSuccess, listProjectFail } from '../../actions/project/listProject';
+import { listDeletedProjectSuccess, listDeletedProjectFail } from '../../actions/project/listDeletedProject';
 import { apiService } from '../../constants/axiosInstance';
 
 async function doListProject({ groupProject, type, status }) {
@@ -29,6 +30,16 @@ function* listProject(action) {
   }
 }
 
+function* listDeletedProject(action) {
+  try {
+    const { projects } = yield call(doListProject, action.options);
+    yield put(listDeletedProjectSuccess({ projects }));
+  } catch (error) {
+    yield put(listDeletedProjectFail(error));
+  }
+}
+
 export {
   listProject,
+  listDeletedProject,
 }

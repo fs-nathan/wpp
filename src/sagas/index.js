@@ -86,7 +86,8 @@ import { updateProject } from './project/updateProject';
 import { DELETE_PROJECT } from '../constants/actions/project/deleteProject';
 import { deleteProject } from './project/deleteProject';
 import { LIST_PROJECT } from '../constants/actions/project/listProject';
-import { listProject } from './project/listProject';
+import { LIST_DELETED_PROJECT } from '../constants/actions/project/listDeletedProject';
+import { listProject, listDeletedProject } from './project/listProject';
 import { DETAIL_PROJECT } from '../constants/actions/project/detailProject';
 import { detailProject } from './project/detailProject';
 import { HIDE_PROJECT } from '../constants/actions/project/hideProject';
@@ -156,6 +157,7 @@ function* rootSaga() {
   yield takeLatest(UPDATE_PROJECT, updateProject);
   yield takeLatest(DELETE_PROJECT, deleteProject);
   yield takeLatest(LIST_PROJECT, listProject);
+  yield takeLatest(LIST_DELETED_PROJECT, listDeletedProject);
   yield takeLatest(DETAIL_PROJECT, detailProject);
   yield takeLatest(HIDE_PROJECT, hideProject);
   yield takeLatest(MEMBER_PROJECT, memberProject);

@@ -39,7 +39,7 @@ function TableBodyRow({ index, row, group }) {
 
   if (!inSearch) return null;
   else return (
-    get(options, 'draggable.bool')
+    get(options, 'draggable.bool', false)
     ? (
       <Draggable 
         draggableId={row[get(options, 'row.id')]}

@@ -498,7 +498,7 @@ function AllProjectTable({
                 onClick: () => null,
               }, {
                 label: 'Thùng rác',
-                onClick: () => null,
+                onClick: () => history.push(`/projects/deleted`),
               }],
               grouped: {
                 bool: false,
