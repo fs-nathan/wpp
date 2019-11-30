@@ -1,9 +1,27 @@
-export const project = '/project'           // Du an
-export const member = '/member'             // Thanh vien
-export const report = '/report'             // Bao cao
-export const document = '/document'         // Tai lieu
-export const task = '/task'                 // Cong viec
-export const jobDetail = '/list-task-detail'      // Chi tiet cong viec
-export const information = '/information'   // Thong tin
-export const user = '/user'                 // Nguoi dung
-export const test = '/__test__'
+export const Routes = {
+  HOME: '/',
+  PROJECTS: '/projects',
+  PROJECT: '/project',
+  DEPARTMENTS: '/departments',
+  MEMBERS: '/members',
+  REPORT: '/report',
+  DOCUMENT: '/document',
+  TASKS: '/tasks',
+  JOB_DETAIL: '/list-task-detail',
+  TEST: '/__test__',
+  REGISTER: '/register',
+  LOGIN: '/login',
+  FORGOT_PASSWORD: '/forgot-password',
+  CONFIRM_REGISTRATION: '/confirm-registration',
+  MESSAGE: '/message',
+  SETTING_ACCOUNT: '/setting-account/:type',
+  SETTING_ACCOUNT_INFO: '/setting-account/info',
+  SETTING_ACCOUNT_PASSWORD: '/setting-account/change-password',
+  SETTING_ACCOUNT_TICKET: '/setting-account/ticket',
+  SETTING_ACCOUNT_NOTIFI: '/setting-account/notification-wrokplus',
+  SETTING_GROUP: '/setting-group/:type',
+  SETTING_GROUP_INFO: '/setting-group/info',
+  SETTING_GROUP_SETTING: '/setting-group/setting',
+  SETTING_GROUP_ORDER: '/setting-group/order',
+  SETTING_GROUP_PAYMENT: '/setting-group/payment'
+};
