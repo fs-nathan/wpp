@@ -80,14 +80,8 @@ const TableRowItem = styled(TableRow)`
 
 const ProgressBar = styled(MultiSlider)`
   border-radius: 5px !important;
-  margin-bottom: 100px !important;
   & > *:first-child {
     border-radius: 5px;
-    background-repeat: repeat!important;
-    background-size: 1rem 1rem!important;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-    background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)!important;
     & > span {
       border: 1px solid #AAA;
       background-color: #a5a0a0;
@@ -147,33 +141,6 @@ const Body = styled(Scrollbars)`
   
 `;
 
-// const ProgressBarActive = (props) => {
-//   const [progress, setStateProgress] = React.useState(10)
-
-//   const handleProgress = () => {
-//     setStateProgress(progress)
-//   }
-//   return (
-//     <MultiSlider
-//         width={300}
-//         height={20}
-//         slidableZoneSize={40}
-//         backgroundColor="#edeff0"
-//         equalColor="green"
-//         style={{ marginBottom: 40 }}
-//         onSlide={handleProgress}
-//         onDragStart={progress => console.log(`Started dragging: ${progress}%`)}
-//         onDragStop={progress => console.log(`Stopped dragging: ${progress}%`)}
-//         roundedCorners
-//     >
-//         <Progress color="green" progress={progress}>
-//           <Dot color="grey" />
-//         </Progress>
-
-//     </MultiSlider>
-//   )
-// }
-
 
 function TabBody() {
   const [progress, setStateProgress] = React.useState(0)
@@ -196,8 +163,8 @@ function TabBody() {
       </StartEndDateBox>
       <ProgressBar
         width={370}
-        height={20}
-        slidableZoneSize={40}
+        height={14}
+        slidableZoneSize={20}
         backgroundColor="#edeff0"
         equalColor="#3ac5aa"
         style={{ margin: 'auto' }}
@@ -206,7 +173,7 @@ function TabBody() {
         onDragStop={progress => console.log(`Stopped dragging: ${progress}%`)}
         roundedCorners
       >
-        <Progress height={20} color="green" progress={progress}>
+        <Progress height={10} color="green" progress={progress}>
             <Dot>
               <Typography> { !progress ? '0%' : `${progress}%` } </Typography>
             </Dot>
@@ -217,7 +184,7 @@ function TabBody() {
               <span>70%</span>
             </TextProgressToday> */}
         </Progress>
-
+        
       </ProgressBar>
       <LegendBox>
         <Icon path={mdiCircle} size={1} color={'rgb(49, 181, 134)'} />
