@@ -5,15 +5,15 @@ import moment from 'moment';
 export function useRequiredString(initial = '', maxLength = 100) {
   const [string, setString] = React.useState(initial);
   const [error, setError] = React.useState(null);
-  const schema = Joi.string().max(maxLength).required().messages({
-    'string.empty': 'Không được để trống',
-    'string.max': 'Tối đa {#limit} ký tự',
-  });
   
   React.useEffect(() => {
+    const schema = Joi.string().max(maxLength).required().messages({
+      'string.empty': 'Không được để trống',
+      'string.max': 'Tối đa {#limit} ký tự',
+    });
     const { error } = schema.validate(string);
     setError(error);
-  }, [string]);
+  }, [string, maxLength]);
 
   return [string, setString, error];
 }

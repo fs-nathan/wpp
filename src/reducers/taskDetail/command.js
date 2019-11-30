@@ -1,12 +1,12 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 import { 
-    filterCommandItem, filterDecisionItem 
+    filterCommandItem, filterDecisionItem, 
 } from '../../helpers/jobDetail/arrayHelper'
 
 // Initial state for store
 const initialState = {
-    command: [],
+    command: [], commandItems: [], decisionItems: [],
     isFetching: false,
     dataFetched: false,
     error: false,

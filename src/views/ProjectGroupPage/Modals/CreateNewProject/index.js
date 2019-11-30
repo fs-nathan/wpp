@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TextField, FormControl } from '@material-ui/core';
+import { 
+  TextField, FormControl, Radio,
+  FormLabel, RadioGroup, FormControlLabel, 
+} from '@material-ui/core';
 import CustomModal from '../../../../components/CustomModal';
 import CustomSelect from '../../../../components/CustomSelect';
 import ColorTypo from '../../../../components/ColorTypo';
@@ -21,6 +24,13 @@ const StyledFormControl = styled(FormControl)`
 const CustomTextField = styled(TextField)`
   & > label {
     z-index: 0;
+  }
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  font-size: 14px;
+  && {
+    color: #a5a0a0;
   }
 `;
 
@@ -104,22 +114,34 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
           }
         />
         <StyledFormControl fullWidth>
-          <label htmlFor='room-select'>
+          <StyledFormLabel component="legend" htmlFor='room-select'>
             Mức độ ưu tiên
-          </label>
-          <CustomSelect
-            options={
-              ['Thấp', 'Trung bình', 'Cao'].map((priority, index) => ({
-                  value: index,
-                  label: priority,
-                })
-              )}
-            value={{
-              value: priority,
-              label: ['Thấp', 'Trung bình', 'Cao'][priority],
-            }}
-            onChange={({ value }) => setPriority(value)}
-          />
+          </StyledFormLabel>
+          <RadioGroup
+            aria-label='priority'
+            name='priority'
+            value={priority}
+            onChange={evt => setPriority(parseInt(evt.target.value))}
+          >
+            <FormControlLabel
+              value={0}
+              control={<Radio color="primary" />}
+              label="Thấp"
+              labelPlacement="end"
+            />
+            <FormControlLabel
+              value={1}
+              control={<Radio color="primary" />}
+              label="Trung bình"
+              labelPlacement="end"
+            />
+            <FormControlLabel
+              value={2}
+              control={<Radio color="primary" />}
+              label="Cao"
+              labelPlacement="end"
+            />
+          </RadioGroup>
         </StyledFormControl>
       </CustomModal>
     </React.Fragment>

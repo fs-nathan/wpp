@@ -22,6 +22,13 @@ const StyledFormControl = styled(FormControl)`
   }
 `;
 
+const StyledFormLabel = styled(FormLabel)`
+  font-size: 14px;
+  && {
+    color: #a5a0a0;
+  }
+`;
+
 function ProjectSetting({ open, setOpen, }) {
 
   const [progress, setProgress] = React.useState(0);
@@ -36,8 +43,8 @@ function ProjectSetting({ open, setOpen, }) {
         onConfirm={() => null}
       >
         <StyledFormControl component='fieldset'>
-          <FormLabel component='legend'>Tiến độ dự án</FormLabel>
-          <FormLabel component='legend'>Thiết lập cách nhập tiến độ mặc định khi tạo công việc mới của dự án</FormLabel>
+          <StyledFormLabel component='legend'>Tiến độ dự án</StyledFormLabel>
+          <StyledFormLabel component='legend'>Thiết lập cách nhập tiến độ mặc định khi tạo công việc mới của dự án</StyledFormLabel>
           <RadioGroup aria-label='progress' name='progress' value={progress} onChange={evt => setProgress(parseInt(evt.target.value))}>
             <FormControlLabel value={0} control={<Radio color={'primary'}/>} label={<React.Fragment>Ngày và giờ (nhập đầy đủ ngày và giờ) <small>(mặc định)</small></React.Fragment>} />
             <FormControlLabel value={1} control={<Radio color={'primary'}/>} label='Chỉ nhập ngày (không nhập giờ bắt đầu và kết thúc)' />
@@ -45,7 +52,7 @@ function ProjectSetting({ open, setOpen, }) {
           </RadioGroup>
         </StyledFormControl>
         <StyledFormControl component='fieldset'>
-          <FormLabel component='legend'>Sao chép dự án</FormLabel>
+          <StyledFormLabel component='legend'>Sao chép dự án</StyledFormLabel>
           <RadioGroup aria-label='progress' name='progress' value={copy} onChange={evt => setCopy(parseInt(evt.target.value))}>
             <FormControlLabel value={0} control={<Radio color={'primary'}/>} label={<React.Fragment>Không được sao chép <small>(mặc định)</small></React.Fragment>} />
             <FormControlLabel value={1} control={<Radio color={'primary'}/>} label='Được sao chép' />

@@ -41,7 +41,7 @@ function TabHeader(props) {
         <Icon path={mdiChevronLeft } size={1} />
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Đề xuất - Phê duyệt</ColorTypo>
-      <ButtonIcon onClick={handleClickClose, handleClickOpen} >
+      <ButtonIcon onClick={handleClickOpen} >
         <Icon path={mdiPlus} size={1} />
       </ButtonIcon>
       <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} {...props} />

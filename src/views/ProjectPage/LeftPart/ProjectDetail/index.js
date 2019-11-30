@@ -2,12 +2,14 @@ import React from 'react';
 import { get } from 'lodash';
 import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
-import Chart from 'react-apexcharts';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
 import ProgressBar from '../../../../components/ProgressBar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import ColorButton from '../../../../components/ColorButton';
+import { 
+  ChartBox, ChartDrawer, ChartLegendBox, ChartTitle, CustomChart, 
+} from '../../../../components/CustomDonutChart';
 import Icon from '@mdi/react';
 import { mdiSquare, mdiChevronLeft, } from '@mdi/js';
 import { connect } from 'react-redux';
@@ -28,31 +30,6 @@ const Container = styled.div`
   grid-template-columns: auto; 
 `;
 
-const ChartBox = styled.div`
-  padding: 10px;
-`;
-
-const ChartDrawer = styled.div`
-  position: relative;
-  height: 200px;
-`;
-
-const ChartTitle = styled.span`
-  position: absolute;
-  left: ${126.5}px;
-  top: ${92.5}px;
-  transform: translate(-50%, -50%);
-  height: 90px;
-  width: 90px;
-  border-radius: 100%;
-  background-color: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  text-transform: uppercase;
-`;
-
 const ProjectName = styled.span`
   width: 100%;
   display: flex;
@@ -60,18 +37,6 @@ const ProjectName = styled.span`
   align-items: center;
   font-size: 14px;
   font-weight: 500;
-`;
-
-const ChartLegendBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  & > *:first-child {
-    margin-right: 10px;
-  }
-  & > *:last-child {
-    margin-left: auto;
-  }
 `;
 
 const SubHeader = styled.div`
@@ -183,7 +148,7 @@ function ProjectDetail({ detailProject, doDeleteProject, }) {
             <div>
               <ChartBox>
                 <ChartDrawer>
-                  <Chart 
+                  <CustomChart 
                     type='donut'
                     options={{
                       legend: {

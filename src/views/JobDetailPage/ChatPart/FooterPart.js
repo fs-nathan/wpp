@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core'
 import { mdiAlarmPlus, mdiFileTree, mdiPaperclip, mdiImage, mdiEmoticon, mdiAt } from '@mdi/js';
 import Icon from '@mdi/react'
-import * as MaterialIcon from '@material-ui/icons'
+// import * as MaterialIcon from '@material-ui/icons'
 import colors from '../../../helpers/colorPalette'
 import IconLike from '../../../assets/like.svg'
 
@@ -37,15 +37,15 @@ const ChatInput = styled.input`
     }
 `
 
-const LikeIcon = styled(MaterialIcon.ThumbUp)`
-    color: ${colors['green'][0]};
-`
+// const LikeIcon = styled(MaterialIcon.ThumbUp)`
+//     color: ${colors['green'][0]};
+// `
 
-const LikeButton = styled(IconButton)`
-    &:hover {
-        background-color: transparent;
-    }
-`
+// const LikeButton = styled(IconButton)`
+//     &:hover {
+//         background-color: transparent;
+//     }
+// `
 
 const ButtonIcon = styled(IconButton)`
   margin-left: auto;
@@ -84,7 +84,7 @@ function renderFunctionBar(props) {
             </div>
             <div>
                 <ButtonIcon>
-                    <img src={IconLike} style={{ width: 25, height: 25}} />
+                    <img src={IconLike} alt="vtask_like_icon" style={{ width: 25, height: 25}} />
                 </ButtonIcon>
             </div>
         </WrapFunctionBar>

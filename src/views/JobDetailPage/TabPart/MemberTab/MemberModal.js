@@ -149,8 +149,8 @@ const DialogActions = withStyles(theme => ({
 const MemberModal = (props) => {
     const classes = useStyles();
     return (
-        <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers} aria-labelledby="customized-dialog-title" open={props.isOpen} >
-            <DialogTitle id="customized-dialog-title" onClose={props.handleCloseMembers}>
+        <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers}  open={props.isOpen} >
+            <DialogTitle onClose={props.handleCloseMembers}>
                 Thông tin chi tiết thành viên
             </DialogTitle>
             <DialogContent dividers>
@@ -213,7 +213,7 @@ const MemberModal = (props) => {
                         />
                         <ButtonFile htmlFor="contained-button-file">
                             <Button variant="contained" component="span" fullWidth className={classes.button}>
-                                <img src={imgDoc} style={{ width: 20, height: 20, marginRight: 10 }} />
+                                <img alt="vtask" src={imgDoc} style={{ width: 20, height: 20, marginRight: 10 }} />
                                 Xem file hồ sơ
                             </Button>
                         </ButtonFile>

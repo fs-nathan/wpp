@@ -18,7 +18,7 @@ function TitleManager({ open, setOpen, updatedPosition = null, doCreatePosition,
   React.useEffect(() => {
     setName(get(updatedPosition, 'name', ''));
     setDescription(get(updatedPosition, 'description', ''));
-  }, [updatedPosition]);
+  }, [updatedPosition, setName, setDescription]);
 
   function handleSubmit() {
     if (updatedPosition) {
