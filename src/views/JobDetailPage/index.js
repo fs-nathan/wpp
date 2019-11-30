@@ -25,6 +25,13 @@ function JobDetailPage(props) {
     props.getOfferByTaskId(props.taskId)
     props.getCommandByTaskId(props.taskId)
     props.getImageByTaskId(props.taskId)
+    props.getFileByTaskId(props.taskId)
+    props.getLinkByTaskId(props.taskId)
+    props.getLocationByTaskId(props.taskId)
+    props.getTaskDetailByTaskId(props.taskId)
+    props.getMemberByTaskId(props.taskId)
+    props.getMemberNotAssignedByTaskId(props.taskId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -39,18 +46,31 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('image::::', state.taskDetail.media.image)
   return {
-    offer: state.taskDetail.taskOffer.offer,
+    offer: state.taskDetail.taskOffer.offer.reverse(),
+
+    pendingItems: state.taskDetail.taskOffer.pendingItems,
+    approvedItems: state.taskDetail.taskOffer.approvedItems,
+    
     remind: state.taskDetail.taskRemind.remind,
+
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
+
     image: state.taskDetail.media.image,
     file: state.taskDetail.media.file,
-    command: state.taskDetail.taskCommand.command,
-    commandItems: state.taskDetail.taskCommand.commandItems,
-    decisionItems: state.taskDetail.taskCommand.decisionItems,
-    taskId: state.taskDetail.commonTaskDetail.activeTaskId
+    link: state.taskDetail.media.links,
+
+    command: state.taskDetail.taskCommand.command.reverse(),
+    commandItems: state.taskDetail.taskCommand.commandItems.reverse(),
+    decisionItems: state.taskDetail.taskCommand.decisionItems.reverse(),
+
+    taskId: state.taskDetail.commonTaskDetail.activeTaskId,
+    location: state.taskDetail.location.locations,
+    detailTask: state.taskDetail.detailTask.taskDetails,
+
+    member: state.taskDetail.taskMember.member,
+    memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned
   }
 }
 
@@ -64,16 +84,18 @@ const mapDispatchToProps = dispatch => {
     completeSubTaskByTaskId: taskId => dispatch(taskDetailAction.completeSubTask({ sub_task_id: taskId })),
     // remind
     getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({ taskId })),
-    // createRemindWithTimeDetail: () => dispatch(taskDetailAction.createRemindWithTime()),
-    // createRemindWithDurationDetail: () => dispatch(taskDetailAction.createRemindWithDuration()),
-    // updateRemindWithTimeDetail: () => dispatch(taskDetailAction.updateRemindWithTime()),
-    // updateRemindWithDurationDetail: () => dispatch(taskDetailAction.updateRemindWithDuration()),
+    createRemindWithTimeDetail: (data) => dispatch(taskDetailAction.postRemindWithTimeDetail(data)),
+    createRemindWithDurationDetail: (data) => dispatch(taskDetailAction.postRemindDuration(data)),
+    updateRemindWithTimeDetail: (data) => dispatch(taskDetailAction.updateRemindWithTimeDetail(data)),
+    updateRemindWithDurationDetail: (data) => dispatch(taskDetailAction.updateRemindWithDuration(data)),
     deleteRemindWByRemindId: remindId => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId })),
     // offer
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
     createOfferByTaskId: (createId, content) => { dispatch(taskDetailAction.createOffer({ createId, content })) },
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
-    updateOfferByOfferId: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
+    updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
+    uploadDocumentToOfferById: (data) => dispatch(taskDetailAction.uploadDocumentToOffer(data)),
+    deleteDocumentToOfferById: (data) => dispatch(taskDetailAction.deleteDocumentToOffer(data)),
     // command 
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
@@ -81,6 +103,19 @@ const mapDispatchToProps = dispatch => {
 
     // Media Image File Link
     getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
+    getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
+    getLinkByTaskId: taskId => dispatch(taskDetailAction.getLinkTabPart({ taskId })),
+    // Location
+    getLocationByTaskId: taskId => dispatch(taskDetailAction.getLocationTabPart({ taskId })),
+    // Task Detail - cot phai
+    getTaskDetailByTaskId: taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId })),
+    // update Priority
+    updateTaskPriority: (task_id, priority) => dispatch(taskDetailAction.updatePriority({ task_id, priority })),
+    // Member
+    getMemberByTaskId: task_id => dispatch(taskDetailAction.getMember({ task_id })),
+    getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
+    createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
+    deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
   };
 };
 

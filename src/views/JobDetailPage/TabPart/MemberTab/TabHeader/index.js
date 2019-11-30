@@ -2,7 +2,7 @@ import React from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiChevronLeft  , mdiSettings } from '@mdi/js';
+import { mdiChevronLeft, mdiSettings } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import AddMemberModal from '../../../ListPart/ListHeader/AddMemberModal'
 
@@ -35,14 +35,14 @@ function TabHeader({ setShow }) {
   return (
     <Container>
       <ButtonIcon onClick={() => setShow(0)}>
-        <Icon path={mdiChevronLeft  } size={1}/>
+        <Icon path={mdiChevronLeft} size={1} />
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}> Thành viên</ColorTypo>
-      <ButtonIcon>
-        <Icon path={mdiSettings} size={1} onClick={() => setOpenAddModal(true)}/>
+      <ButtonIcon onClick={() => setOpenAddModal(true)}>
+        <Icon path={mdiSettings} size={1} />
       </ButtonIcon>
       {/* modal */}
-      <AddMemberModal  isOpen={openAddModal} setOpen={setOpenAddModal}/>
+      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </Container>
   );
 }

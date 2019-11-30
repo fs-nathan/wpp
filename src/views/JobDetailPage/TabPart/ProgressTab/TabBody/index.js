@@ -102,36 +102,36 @@ const ProgressBar = styled(MultiSlider)`
     }
   }
 `
-const TextProgressToday = styled(Typography)`
-  z-index: 1;
-  width: 55px;
-  position: absolute;
-  top: 0;
-  left: 300px
-  & > div:nth-child(1) {
-    height: 20px;
-    width: 20px;
-    background-color: orange;
-    border-radius: 50%;
-    margin-left: 13px;
-    margin-bottom: 5px;
-  }
-  & > div:nth-child(2) {
-    height: 29px;
-    width: 0px;
-    border-left: 1px solid;
-    margin-left: 22px;
-  }
-  & > p:nth-child(3) {
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-  & > span:nth-child(4) {
-    margin: 14px;
-    color: red;
-  }
+// const TextProgressToday = styled(Typography)`
+//   z-index: 1;
+//   width: 55px;
+//   position: absolute;
+//   top: 0;
+//   left: 300px
+//   & > div:nth-child(1) {
+//     height: 20px;
+//     width: 20px;
+//     background-color: orange;
+//     border-radius: 50%;
+//     margin-left: 13px;
+//     margin-bottom: 5px;
+//   }
+//   & > div:nth-child(2) {
+//     height: 29px;
+//     width: 0px;
+//     border-left: 1px solid;
+//     margin-left: 22px;
+//   }
+//   & > p:nth-child(3) {
+//     margin-top: 5px;
+//     margin-bottom: 5px;
+//   }
+//   & > span:nth-child(4) {
+//     margin: 14px;
+//     color: red;
+//   }
   
-`
+// `
 const LegendBox = styled.div`
   margin: 10px 20px;
   display: flex;
@@ -176,7 +176,7 @@ const Body = styled(Scrollbars)`
 
 
 function TabBody() {
-  const [progress, setStateProgress] = React.useState('')
+  const [progress, setStateProgress] = React.useState(0)
 
   const handleProgress = (progress) => {
     setStateProgress(progress)
@@ -194,7 +194,6 @@ function TabBody() {
           <ColorTypo>10/06/2019</ColorTypo>
         </EndDateBox>
       </StartEndDateBox>
-      {/* progress */}
       <ProgressBar
         width={370}
         height={20}
@@ -207,16 +206,16 @@ function TabBody() {
         onDragStop={progress => console.log(`Stopped dragging: ${progress}%`)}
         roundedCorners
       >
-        <Progress color="green" progress={progress}>
+        <Progress height={20} color="green" progress={progress}>
             <Dot>
-              <Typography> { (progress === '') ? '0%' : `${progress}%` } </Typography>
+              <Typography> { !progress ? '0%' : `${progress}%` } </Typography>
             </Dot>
-            <TextProgressToday component='div'>
+            {/* <TextProgressToday component='div'>
               <div />
               <div />
               <p >Hôm nay</p>
               <span>70%</span>
-            </TextProgressToday>
+            </TextProgressToday> */}
         </Progress>
 
       </ProgressBar>

@@ -1,8 +1,11 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
+
+
 // Initial state for store
 const initialState = {
-    remind: [],
+    member: [],
+    memberNotAssigned: [],
     isFetching: false,
     dataFetched: false,
     error: false,
@@ -10,95 +13,76 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
-        case types.GET_REMIND_REQUEST:
+        case types.GET_MEMBER_REQUEST:
             return {
                 ...state,
                 isFetching: true
             }
-        case types.GET_REMIND_SUCCESS:
+        case types.GET_MEMBER_SUCCESS:
+
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                remind: action.payload.reminds.reverse()
+                member: action.payload.members,
             };
-        case types.GET_REMIND_FAIL:
+        case types.GET_MEMBER_FAIL:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: false,
                 error: true,
             }
-        case types.POST_REMIND_TIME_DETAIL_REQUEST:
+        case types.GET_MEMBER_NOT_ASSIGNED_REQUEST:
             return {
                 ...state,
                 isFetching: true
             }
-        case types.POST_REMIND_TIME_DETAIL_SUCCESS:
+        case types.GET_MEMBER_NOT_ASSIGNED_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
+                memberNotAssigned: action.payload.members,
             };
-
-        case types.POST_REMIND_TIME_DETAIL_FAIL:
+        case types.GET_MEMBER_NOT_ASSIGNED_FAIL:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: false,
                 error: true,
             }
-        case types.POST_REMIND_DURATION_REQUEST:
+        case types.POST_MEMBER_REQUEST:
             return {
                 ...state,
                 isFetching: true
             }
-        case types.POST_REMIND_DURATION_SUCCESS:
+        case types.POST_MEMBER_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
             };
 
-        case types.POST_REMIND_DURATION_FAIL:
+        case types.POST_MEMBER_FAIL:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: false,
                 error: true,
             }
-        case types.UPDATE_REMIND_TIME_DETAIL_REQUEST:
+        case types.DELETE_MEMBER_REQUEST:
             return {
                 ...state,
                 isFetching: true
             }
-        case types.UPDATE_REMIND_TIME_DETAIL_SUCCESS:
+        case types.DELETE_MEMBER_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
-                dataFetched: true,
-            };
-
-        case types.UPDATE_REMIND_TIME_DETAIL_FAIL:
-            return {
-                ...state,
-                isFetching: false,
-                dataFetched: false,
-                error: true,
+                dataFetched: true
             }
-        case types.UPDATE_REMIND_DURATION_REQUEST:
-            return {
-                ...state,
-                isFetching: true
-            }
-        case types.UPDATE_REMIND_DURATION_SUCCESS:
-            return {
-                ...state,
-                isFetching: false,
-                dataFetched: true,
-            };
-
-        case types.UPDATE_REMIND_DURATION_FAIL:
+        case types.DELETE_MEMBER_FAIL:
             return {
                 ...state,
                 isFetching: false,

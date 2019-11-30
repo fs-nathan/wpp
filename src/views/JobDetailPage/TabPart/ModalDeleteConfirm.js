@@ -13,12 +13,10 @@ export default function ModalDeleteConfirm(props) {
       <Dialog
         open={props.isOpen}
         onClose={props.handleCloseModalDelete}
-        // aria-labelledby="alert-dialog-title"
-        // aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Thông báo hệ thống"}</DialogTitle>
+        <DialogTitle>{"Thông báo hệ thống"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText >
             Bạn có chắc muốn xoá không?
           </DialogContentText>
         </DialogContent>

@@ -42,7 +42,7 @@ const Text = styled(ColorTypo)`
   padding-left: 3px;
   display: inline;
 `
-const StyledDiv = styled.div`
+const StyledDiv = styled.span`
   display: flex;
   margin-bottom: 7px;
 `
@@ -82,7 +82,7 @@ const getBadgeProjectRole = (projectRole) => {
       break;
   }
   return (
-    <BadgeAdmin color={color} variant='caption'>{projectRole}</BadgeAdmin>
+    <BadgeAdmin color={color} variant='caption' component='span'>{projectRole}</BadgeAdmin>
   )
 }
 
@@ -116,7 +116,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           primary={
             <React.Fragment>
               <StyledDiv>
-                <TextName bold>{name}</TextName>
+                <TextName component="span" bold>{name}</TextName>
                 {
                   role &&
                   <Text component="span">{role}</Text>
@@ -130,7 +130,13 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
                 {getBadgeProjectRole(projectRole)}
                 {
                   authorityList.map((authority, index) =>
-                    <BadgeItem key={index} color={'light-green'} label={authority} size='small' badge component='small' />
+                    <BadgeItem 
+                    key={index} 
+                    color={'light-green'} 
+                    label={authority} 
+                    size='small' 
+                    badge 
+                    component='span' />
                   )
                 }
               </StyledDiv>
@@ -142,7 +148,6 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
         </ButtonIcon>
       </StyledListItem>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -152,7 +157,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           horizontal: 'right',
         }}
       >
-        <MenuItemCheck onClick={handleClose, handleClickOpen}>Chi tiết</MenuItemCheck>
+        <MenuItemCheck onClick={() => {handleClose();handleClickOpen()}}>Chi tiết</MenuItemCheck>
         <MenuItemCheck onClick={handleClose}>Xóa</MenuItemCheck>
       </Menu>
       {/* modal members */}

@@ -39,8 +39,8 @@ function TabHeader(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const confirmCreateCommand = ({content, typeId}) => {
-    props.createCommandByTaskId("5da1821ad219830d90402fd8", content, typeId)
+  const confirmCreateCommand = ({content, type}) => {
+    props.createCommandByTaskId("5da1821ad219830d90402fd8", content, type)
   }
   return (
     <Container>
@@ -50,7 +50,7 @@ function TabHeader(props) {
         <Icon path={mdiChevronLeft} size={1} />
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Chỉ đạo - Quyết định</ColorTypo>
-      <ButtonIcon onClick={handleClose, handleClickOpen}>
+      <ButtonIcon onClick={handleClickOpen}>
         <Icon path={mdiPlus} size={1} />
       </ButtonIcon>
       {/* modal chi dao quyet dinh */}

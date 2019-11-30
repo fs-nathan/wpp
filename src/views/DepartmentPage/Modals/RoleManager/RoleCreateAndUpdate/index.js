@@ -18,7 +18,7 @@ function RoleCreateAndUpdate({ open, setOpen, updatedUserRole = null, doCreateUs
   React.useEffect(() => {
     setName(get(updatedUserRole, 'name', ''));
     setDescription(get(updatedUserRole, 'description', ''));
-  }, [updatedUserRole]);
+  }, [updatedUserRole, setName, setDescription]);
 
   function handleSubmit() {
     if (updatedUserRole) {
