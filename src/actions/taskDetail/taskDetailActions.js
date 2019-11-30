@@ -102,12 +102,65 @@ export const getRemindFail = (error) => ({
     type: types.GET_REMIND_FAIL,
     error: error
 });
-
-export const createRemindWithDuration = () => ({
-    type: types.POST_REMIND_REQUEST,
+// post remind with time detail
+export const postRemindWithTimeDetail = (payload) => ({
+    type: types.POST_REMIND_TIME_DETAIL_REQUEST,
+    options: payload,
+});
+export const postRemindWithTimeDetailSuccess = (payload) => ({
+    type: types.POST_REMIND_TIME_DETAIL_SUCCESS,
+    payload
 });
 
+export const postRemindWithTimeDetailFail = (error) => ({
+    type: types.POST_REMIND_TIME_DETAIL_FAIL,
+    error: error,
+});
+// post remind duration
+export const postRemindDuration = (payload) => ({
+    type: types.POST_REMIND_DURATION_REQUEST,
+    options: payload,
+});
+export const postRemindDurationSuccess = (payload) => ({
+    type: types.POST_REMIND_DURATION_SUCCESS,
+    payload
+});
 
+export const postRemindDurationFail = (error) => ({
+    type: types.POST_REMIND_DURATION_FAIL,
+    error: error,
+});
+// update with time duration
+export const updateRemindWithTimeDetail = (payload) => ({
+    type: types.UPDATE_REMIND_TIME_DETAIL_REQUEST,
+    options: payload,
+});
+
+export const updateRemindWithTimeDetailSuccess = (payload) => ({
+    type: types.UPDATE_REMIND_TIME_DETAIL_SUCCESS,
+    payload
+});
+
+export const updateRemindWithTimeDetailFail = (error) => ({
+    type: types.UPDATE_REMIND_TIME_DETAIL_FAIL,
+    error: error,
+});
+// update remind duration
+export const updateRemindWithDuration = (payload) => ({
+    type: types.UPDATE_REMIND_DURATION_REQUEST,
+    options: payload,
+});
+
+export const updateRemindWithDurationSuccess = (payload) => ({
+    type: types.UPDATE_REMIND_DURATION_SUCCESS,
+    payload
+});
+
+export const updateRemindWithDurationFail = (error) => ({
+    type: types.UPDATE_REMIND_DURATION_FAIL,
+    error: error,
+});
+// ======= delete remind
 export const deleteRemind = (remind_id) => ({
     type: types.DELETE_REMIND_REQUEST,
     payload: remind_id
@@ -173,9 +226,9 @@ export const updateOfferFail = (error) => ({
     error: error,
 });
 
-export const deleteOffer = ({ offer_id }) => ({
+export const deleteOffer = payload => ({
     type: types.DELETE_OFFER_REQUEST,
-    payload: offer_id
+    payload
 });
 
 export const deleteOfferSuccess = (offer_id) => ({
@@ -187,6 +240,38 @@ export const deleteOfferFail = (error) => ({
     type: types.DELETE_OFFER_FAIL,
     error: error,
 });
+// ==== upload document to offer
+export const uploadDocumentToOffer = (payload) => ({
+    type: types.UPLOAD_DOCUMENT_TO_OFFER_REQUEST,
+    payload
+});
+
+export const uploadDocumentToOfferSuccess = (payload) => ({
+    type: types.UPLOAD_DOCUMENT_TO_OFFER_SUCCESS,
+    payload
+});
+
+export const uploadDocumentToOfferFail = (error) => ({
+    type: types.UPLOAD_DOCUMENT_TO_OFFER_FAIL,
+    error: error,
+});
+// === delete document to offer
+export const deleteDocumentToOffer = payload => ({
+    type: types.DELETE_DOCUMENT_TO_OFFER_REQUEST,
+    payload
+});
+
+export const deleteDocumentToOfferSuccess = (payload) => ({
+    type: types.DELETE_DOCUMENT_TO_OFFER_SUCCESS,
+    payload
+});
+
+export const deleteDocumentToOfferFail = (error) => ({
+    type: types.DELETE_DOCUMENT_TO_OFFER_FAIL,
+    error: error,
+});
+
+
 //Command and Decision::
 export const getCommand = ({ task_id }) => ({
     type: types.GET_COMMAND_REQUEST,
@@ -212,6 +297,26 @@ export const createCommandSuccess = (payload) => ({
     payload
 });
 
+export const createCommandFail = (error) => ({
+    type: types.CREATE_OFFER_FAIL,
+    error: error,
+});
+
+
+export const updateCommand = (payload) => ({
+    type: types.UPDATE_COMMAND_REQUEST,
+    payload
+});
+
+export const updateCommandSuccess = (payload) => ({
+    type: types.UPDATE_COMMAND_SUCCESS,
+    payload
+});
+
+export const updateCommandFail = (error) => ({
+    type: types.UPDATE_COMMAND_FAIL,
+    error: error,
+});
 // Media : Image
 export const getImage = ({ taskId }) => ({
     type: types.GET_IMAGE_TABPART_REQUEST,
@@ -246,22 +351,129 @@ export const getFileTabPartFail = (error) => ({
     type: types.GET_FILE_TABPART_FAIL,
     error: error,
 });
-export const createCommandFail = (error) => ({
-    type: types.CREATE_OFFER_FAIL,
+// : Link
+export const getLinkTabPart = ({ taskId }) => ({
+    type: types.GET_LINK_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getLinkTabPartSuccess = (payload) => ({
+    type: types.GET_LINK_TABPART_SUCCESS,
+    payload
+});
+
+export const getLinkTabPartFail = (error) => ({
+    type: types.GET_LINK_TABPART_FAIL,
+    error: error,
+});
+// Location
+export const getLocationTabPart = ({ taskId }) => ({
+    type: types.GET_LOCATION_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getLocationTabPartSuccess = (payload) => ({
+    type: types.GET_LOCATION_TABPART_SUCCESS,
+    payload
+});
+
+export const getLocationTabPartFail = (error) => ({
+    type: types.GET_LOCATION_TABPART_FAIL,
     error: error,
 });
 
-export const updateCommand = (payload) => ({
-    type: types.UPDATE_COMMAND_REQUEST,
+// Task Detail - TabPart - Cot phai
+export const getTaskDetailTabPart = ({ taskId }) => ({
+    type: types.GET_TASK_DETAIL_TABPART_REQUEST,
+    options: {
+        taskId,
+    },
+});
+
+export const getTaskDetailTabPartSuccess = (payload) => ({
+    type: types.GET_TASK_DETAIL_TABPART_SUCCESS,
     payload
 });
 
-export const updateCommandSuccess = (payload) => ({
-    type: types.UPDATE_COMMAND_SUCCESS,
+export const getTaskDetailTabPartFail = (error) => ({
+    type: types.GET_TASK_DETAIL_TABPART_FAIL,
+    error: error,
+});
+
+// Update Priority
+export const updatePriority = payload => ({
+    type: types.UPDATE_TASK_PRIORITY_REQUEST,
+    payload
+})
+export const updatePrioritySuccess = payload => ({
+    type: types.UPDATE_TASK_PRIORITY_SUCCESS,
+    payload
+})
+export const updatePriorityFail = error => ({
+    type: types.UPDATE_TASK_PRIORITY_FAIL,
+    error: error
+})
+//Member - Tabpart - cot phai
+export const getMember = (payload) => ({
+    type: types.GET_MEMBER_REQUEST,
     payload
 });
 
-export const updateCommandFail = (error) => ({
-    type: types.UPDATE_COMMAND_FAIL,
+export const getMemberSuccess = (payload) => ({
+    type: types.GET_MEMBER_SUCCESS,
+    payload
+});
+
+export const getMemberFail = (error) => ({
+    type: types.GET_MEMBER_FAIL,
+    error: error,
+});
+
+export const getMemberNotAssigned = (payload) => ({
+    type: types.GET_MEMBER_NOT_ASSIGNED_REQUEST,
+    payload
+});
+
+export const getMemberNotAssignedSuccess = (payload) => ({
+    type: types.GET_MEMBER_NOT_ASSIGNED_SUCCESS,
+    payload
+});
+
+export const getMemberNotAssignedFail = (error) => ({
+    type: types.GET_MEMBER_NOT_ASSIGNED_FAIL,
+    error: error,
+});
+
+export const createMember = (payload) => ({
+    type: types.POST_MEMBER_REQUEST,
+    payload
+});
+
+export const createMemberSuccess = (payload) => ({
+    type: types.POST_MEMBER_SUCCESS,
+    payload
+});
+
+export const createMemberFail = (error) => ({
+    type: types.POST_MEMBER_FAIL,
+    error: error,
+});
+
+export const deleteMember = (payload) => ({
+    type: types.DELETE_MEMBER_REQUEST,
+    payload
+});
+
+export const deleteMemberSuccess = (payload) => ({
+    type: types.DELETE_MEMBER_SUCCESS,
+    payload
+});
+
+export const deleteMemberFail = (error) => ({
+    type: types.DELETE_MEMBER_FAIL,
     error: error,
 });

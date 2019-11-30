@@ -45,7 +45,7 @@ function TabHeader({ setShow }) {
         <Icon path={mdiPlus} size={1} />
       </ButtonIcon>
       {/* modal tao moi cong viec con */}
-      <RemindModal isOpen={isOpen} handleClickClose={handleClickClose} />
+      <RemindModal isOpen={isOpen} handleClickClose={handleClickClose} isCreate />
     </Container>
   );
 }

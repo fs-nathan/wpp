@@ -36,7 +36,7 @@ function ListBody() {
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
     <StyledList>      
         <ListBodySubHeader subPrimary='Thiết kế giao diện' subSecondary='(2 việc)' />
-        {detailProject.map(detail => <ListBodyItem {...detail} />)}
+        {detailProject.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
         <ListBodySubHeader subPrimary='Mặc định' subSecondary='(0 việc)' />      
     </StyledList>
     </Body>

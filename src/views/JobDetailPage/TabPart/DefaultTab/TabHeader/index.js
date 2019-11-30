@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
-import avatar from '../../../../../assets/avatar.jpg';
+// import avatar from '../../../../../assets/avatar.jpg';
 // import EditWorkModal from '../EditWorkModal'
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal'
+import { WrapperContext } from '../../../index'
 const Container = styled.div`
   padding: 0 20px;
   display: flex;
@@ -45,7 +46,7 @@ const StyledIconButton = styled(IconButton)`
 
 
 function TabHeader(props) {
-  const [isRight, setIsRight] = React.useState(true);
+  // const [isRight, setIsRight] = React.useState(true);
   // 
   // const [open, setOpen] = React.useState(false);
   // const handleClickOpen = () => {
@@ -55,15 +56,6 @@ function TabHeader(props) {
   //   setOpen(false);
   // };
   // 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  }
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
@@ -79,14 +71,29 @@ function TabHeader(props) {
     setIsPause(!pause)
   }
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
+  const value = React.useContext(WrapperContext)
+  let avatar, name, roles
+  if (value) {
+    let detailTask = value.detailTask
+    if (detailTask) {
+      let user_create = detailTask.user_create
+      if (user_create) {
+        avatar = user_create.avatar
+        name = user_create.name
+        roles = user_create.roles
+      }
+    }
+  }
   return (
     <Container>
       <Avatar style={{ width: 60, height: 60 }} src={avatar} alt='avatar' />
       <TagsContainer>
-        <ColorTypo bold >Nguyễn Hữu Thành</ColorTypo>
-        <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13 }}>Giám đốc - Phụ trách</ColorTypo>
+        <ColorTypo bold >{name}</ColorTypo>
+        <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13 }}>{roles}</ColorTypo>
         <br />
-        <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao lúc 08:00 ngày 12/12/2012</ColorTypo>
+        {value.detailTask &&
+          <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao ngày {value.detailTask.date_create}</ColorTypo>
+        }
       </TagsContainer>
       <StyledIconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
@@ -120,11 +127,11 @@ function TabHeader(props) {
           }}>Hủy tạm dừng</MenuItem>
         }
         <MenuItem onClick={() => {
-        handleCloseMenu()
-        setAnchorEl(null)
+          handleCloseMenu()
+          setAnchorEl(null)
         }}>Xóa</MenuItem>
       </Menu>
-      <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={isRight} />
+      <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={true} />
     </Container>
   );
 }

@@ -5,10 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import MenuItem from '@material-ui/core/MenuItem';
 
-
 const useStyles = makeStyles(theme => ({
   singleValue: {
-    fontSize: 16,
+    fontSize: 14,
   },
   root: {
     flexGrow: 1,
@@ -56,7 +55,7 @@ export default function IntegrationReactSelect(props) {
   const [single, setSingle] = React.useState(null);
 
   const handleChangeSingle = selectedItem => {
-    setSingle(selectedItem);
+    setSingle(selectedItem)
     props.setOptions(selectedItem.value)
   };
 
@@ -75,8 +74,9 @@ export default function IntegrationReactSelect(props) {
       let foundItem = props.commandSelect.find(item => item.value === props.selectedIndex)
       setSingle(foundItem)
     }
-  }, [props.selectedIndex])
+  }, [props.commandSelect, props.selectedIndex])
 
+  // console.log('props.commandSelect', props.commandSelect)
   return (
     <div className={classes.root}>
       <NoSsr>
@@ -95,6 +95,7 @@ export default function IntegrationReactSelect(props) {
           components={components}
           value={single}
           onChange={handleChangeSingle}
+          isDisabled={props.isDisabled}
         />
       </NoSsr>
     </div>

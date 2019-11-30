@@ -28,20 +28,20 @@ const TexTitle = styled(Typography)`
   margin-left: 0;
 `
 
-const TitleText = styled(Typography)`
-  font-size: 15px;
-  margin: 20px 0
-`
+// const TitleText = styled(Typography)`
+//   font-size: 15px;
+//   margin: 20px 0
+// `
 
-const HelperText = styled(TextField)`
-  & > *:last-child {
-    font-size: 12px;
-    margin: 8px 0 0;
-    & > select {
-      font-size: 14px;
-    }
-  }
-`
+// const HelperText = styled(TextField)`
+//   & > *:last-child {
+//     font-size: 12px;
+//     margin: 8px 0 0;
+//     & > select {
+//       font-size: 14px;
+//     }
+//   }
+// `
 const Text = styled(TextField)`
   & > label {
       font-size: 14px;
@@ -56,7 +56,7 @@ const DialogTitle = withStyles(styles)(props => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+        <IconButton className={classes.closeButton} onClick={onClose}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -77,26 +77,26 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
-const commandSelect = [
+const selector = [
   { label: 'Chỉ đạo', value: 1 },
   { label: 'Quyết định', value: 0 }
 ]
 
 const DemandModal = (props) => {
 
-  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "",content: "", type: -1 })
+  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "", content: "", type: -1 })
 
   React.useEffect(() => {
     setTempSelectedItem(props.item)
   }, [props.item])
 
   const setParams = (nameParam, value) => {
-    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
+    setTempSelectedItem({ ...tempSelectedItem, [nameParam]: value })
   }
 
   return (
-    <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
-      <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
+    <Dialog onClose={props.handleClose} open={props.isOpen} fullWidth>
+      <DialogTitle onClose={props.handleClose}>
         Chỉ đạo, quyết định
         </DialogTitle>
       <DialogContent dividers>
@@ -104,7 +104,7 @@ const DemandModal = (props) => {
         <OutlinedInputSelect
           selectedIndex={tempSelectedItem.type}
           setOptions={typeId => setParams("type", typeId)}
-          commandSelect={commandSelect}
+          commandSelect={selector}
         />
         {/* <Text 
                 component="span"
@@ -119,7 +119,6 @@ const DemandModal = (props) => {
                 variant="outlined"
             /> */}
         <Text
-          id="outlined-multiline-static"
           label="Nội dung"
           fullWidth
           multiline

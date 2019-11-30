@@ -1,5 +1,9 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
+import {
+    filterPendingItem, filterApprovedItem
+} from '../../helpers/jobDetail/arrayHelper'
+
 
 // Initial state for store
 const initialState = {
@@ -21,7 +25,9 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                offer: action.payload.offers
+                offer: action.payload.offers,
+                pendingItems: filterPendingItem(action.payload.offers),
+                approvedItems: filterApprovedItem(action.payload.offers),
             };
         case types.GET_OFFER_FAIL:
             return {
@@ -49,7 +55,78 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
-
+        case types.UPDATE_OFFER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.UPDATE_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.UPDATE_OFFER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.DELETE_OFFER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.DELETE_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.DELETE_OFFER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.UPLOAD_DOCUMENT_TO_OFFER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.UPLOAD_DOCUMENT_TO_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.UPLOAD_DOCUMENT_TO_OFFER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.DELETE_DOCUMENT_TO_OFFER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.DELETE_DOCUMENT_TO_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.DELETE_DOCUMENT_TO_OFFER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
         default:
             return state;
     }

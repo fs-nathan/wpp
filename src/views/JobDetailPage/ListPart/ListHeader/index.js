@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Typography, TextField } from '@material-ui/core';
+import { IconButton, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { mdiPlus,mdiChevronDown } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -32,15 +32,15 @@ const HeaderText = styled(Typography)`
   overflow: hidden;
   text-overflow: ellipsis;
 `
-const InputTextJob = styled(TextField)`
-    & > label {
-        font-size: 14px
-    }
-    & > *:last-child {
-        color: red;
-        margin-left: 10px
-    }
-`
+// const InputTextJob = styled(TextField)`
+//     & > label {
+//         font-size: 14px
+//     }
+//     & > *:last-child {
+//         color: red;
+//         margin-left: 10px
+//     }
+// `
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -74,10 +74,10 @@ function ListHeaderSelect({ setShow }) {
 }
 
 function ListHeader(props) {
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  }
+  // const [open, setOpen] = React.useState(false);
+  // const handleClose = () => {
+  //   setOpen(false);
+  // }
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
 
   return (
@@ -92,7 +92,7 @@ function ListHeader(props) {
               padding: "7px"
             }}
             onClick={() => {
-            handleClose()
+            // handleClose()
             setOpenCreateJobModal(true)
           }} >
             <Icon path={mdiPlus} size={1.2}/>

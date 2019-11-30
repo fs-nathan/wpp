@@ -1,9 +1,13 @@
 import React from 'react';
-import { Select, IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, Input, TextField } from '@material-ui/core';
+import { 
+  IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, 
+  // Input, Select, 
+  TextField 
+} from '@material-ui/core';
 import styled from 'styled-components';
 import {  mdiHelpCircle ,mdiAccountPlusOutline} from '@mdi/js';
 import Icon from '@mdi/react';
-import SearchInput from '../../../../components/SearchInput';
+// import SearchInput from '../../../../components/SearchInput';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -11,26 +15,26 @@ import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import addMemberIcon from '../../../../assets/addMemberIcon.png';
+// import addMemberIcon from '../../../../assets/addMemberIcon.png';
 import colorPal from '../../../../helpers/colorPalette';
 import AddMemberModal from './AddMemberModal';
 import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect'
-import { Scrollbars } from 'react-custom-scrollbars'
+// import { Scrollbars } from 'react-custom-scrollbars'
 
 
 
-const Header = styled.div`
-  padding: 0 15px;
-  height: 85px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  & > * {
-    display: flex; 
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-  }
-`;
+// const Header = styled.div`
+//   padding: 0 15px;
+//   height: 85px;
+//   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+//   & > * {
+//     display: flex; 
+//     align-items: center;
+//     justify-content: space-between;
+//     cursor: pointer;
+//   }
+// `;
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -76,24 +80,24 @@ const OutlineInput = styled(OutlinedInput)`
 }
 `
 
-const HeaderBottomBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+// const HeaderBottomBox = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// `;
 
-const CustomSelect = styled(Select)`
-  width: 100%;
-  & > div:focus {
-    background-color: #fff !important;
-  }
-  &::before, &:hover::before, &:focus::before {    
-    border-bottom: none !important;
-  }
-  &::after, &:hover::after, &:focus::after {
-    border-bottom: none !important;
-  }
-`;
+// const CustomSelect = styled(Select)`
+//   width: 100%;
+//   & > div:focus {
+//     background-color: #fff !important;
+//   }
+//   &::before, &:hover::before, &:focus::before {    
+//     border-bottom: none !important;
+//   }
+//   &::after, &:hover::after, &:focus::after {
+//     border-bottom: none !important;
+//   }
+// `;
 
 const BeginEndTime = styled(Typography)`
   width: 50px;
@@ -313,17 +317,16 @@ const DialogFooter = styled(DialogActions)`
 ` 
 
 function CreateJobModal(props) {
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
     props.setOpen(false);
   }
 
-  const [state, setState] = React.useState('');
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [time, setTime] = React.useState('')
 
@@ -437,7 +440,7 @@ function CreateJobModal(props) {
               handleClose()
               setOpenAddModal(true)
             }} >
-              <Icon path={mdiAccountPlusOutline } alt='addMemberIcon' size={1} color={'#abaaa9'} />
+              <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />
             </ButtonImage>
             <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
               TẠO VIỆC

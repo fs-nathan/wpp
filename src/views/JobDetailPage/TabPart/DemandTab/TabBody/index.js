@@ -9,7 +9,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
-import avatar from '../../../../../assets/avatar.jpg';
+// import avatar from '../../../../../assets/avatar.jpg';
 import DemandModal from '../DemandModal'
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
@@ -132,8 +132,8 @@ const StyledList = styled.ul`
 
 const ListDemand = (props) => {
   const [open, setOpen] = React.useState(false)
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const [isEditDemand, setEditDemand] = React.useState(true)
+  // const [anchorEl, setAnchorEl] = React.useState(null)
+  const [isEditDemand] = React.useState(true)
   const [selectedItem, setSelectedItem] = React.useState({ content: "", type: -1 })
   const handleClickEditItem = item => {
     setSelectedItem(item)
@@ -145,12 +145,13 @@ const ListDemand = (props) => {
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const handleOpenModalDelete = () => {
     setOpenDelete(true);
-    setAnchorEl(null);
+    // setAnchorEl(null);
   };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
+    console.log("DELETEEEEE")
     // props.deleteRemindWByRemindId(props.item.id)
   }
   const confirmUpdateCommand = ({ id, content, type }) => {
