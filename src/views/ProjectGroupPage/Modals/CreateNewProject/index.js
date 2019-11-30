@@ -27,6 +27,13 @@ const CustomTextField = styled(TextField)`
   }
 `;
 
+const StyledFormLabel = styled(FormLabel)`
+  font-size: 14px;
+  && {
+    color: #a5a0a0;
+  }
+`;
+
 function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, }) {
 
   const { data: { projectGroups } } = listProjectGroup;
@@ -107,9 +114,9 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
           }
         />
         <StyledFormControl fullWidth>
-          <FormLabel component="legend" htmlFor='room-select'>
+          <StyledFormLabel component="legend" htmlFor='room-select'>
             Mức độ ưu tiên
-          </FormLabel>
+          </StyledFormLabel>
           <RadioGroup
             aria-label='priority'
             name='priority'
