@@ -14,41 +14,17 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { StyledList, StyledListItem, Primary } from '../../../../components/CustomList';
 import { get, map, filter } from 'lodash';
-import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
 import { mdiChevronDown, mdiChevronUp, mdiCheckCircle, } from '@mdi/js';
 import { useRequiredString, useRequiredDate } from '../../../../hooks';
 
-const Container = styled.div`
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 2fr 3fr;
-  grid-template-areas:
-    "left right";
-  margin-top: -10px;
-`;
-
-const LeftSide = styled.div`
-  grid-area: left;
-  height: 480px;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 5px 10px;
-`;
-
-const RightSide = styled.div`
-  grid-area: right;
-  height: 480px;
-  padding: 5px 10px;
-`;
-
 const Header = styled(ColorTypo)`
-  padding: 16px 8px 8px 8px;
+  padding: 0 8px;
   margin-bottom: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const StyledTypo = styled(Typography)`
-  padding: 0 8px;
   font-size: 14px;
 `;
 
@@ -60,20 +36,13 @@ const StyledFormControl = styled(FormControl)`
 
 const StyledFormLabel = styled(FormLabel)`
   font-size: 14px;
+  && {
+    color: #a5a0a0;
+  }
 `;
 
 const ListContainer = styled.div`
   margin-top: 8px;
-`;
-
-const FormContainer = styled.div`
-  width: 80%;
-`;
-
-const StyledScrollbars = styled(Scrollbars)`
-  & > div:last-child {
-    z-index: 999;
-  }
 `;
 
 const StyledListSubheader = styled(ListSubheader)`
@@ -205,91 +174,81 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, doCopyProje
         canConfirm={!errorName && !errorDescription && !errorDate && selectedProject}
         onConfirm={() => handleCopyProject()}
         height='tall'
-      >
-        <Container>
-          <LeftSide>
-            <StyledScrollbars
-              autoHide
-              autoHideTimeout={500}
-            >
-              <Header color='gray' uppercase bold>Chọn dự án sao chép</Header>
-              <SearchInput 
-                fullWidth 
-                placeholder='Tìm dự án'
-                value={searchPatern}
-                onChange={evt => setSearchPatern(evt.target.value)}
-              />  
-              <ListContainer>
-                {customProjects.map(projectGroup => (
-                  <ProjectGroupList
-                    projectGroup={projectGroup}
-                    key={get(projectGroup, 'id')} 
-                    selectedProject={selectedProject}
-                    setSelectedProject={setSelectedProject}
-                  />
-                ))}
-              </ListContainer>
-            </StyledScrollbars>
-          </LeftSide>
-          <RightSide>
-            <StyledScrollbars
-              autoHide
-              autoHideTimeout={500}
-            >
-              <Header color='gray' uppercase bold>Dự án được sao chép</Header>
-              <StyledTypo>{get(selectedProject, 'name', 'Hãy chọn dự án để sao chép')}</StyledTypo>
-              <Header color='gray' uppercase bold>Thông tin dự án</Header>
-              <FormContainer>
-                <TextField
-                  value={name}
-                  onChange={evt => setName(evt.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                  label='Tên dự án mới'
-                  fullWidth
-                  helperText={
-                    <ColorTypo variant='caption' color='red'>
-                      {get(errorName, 'message', '')}
-                    </ColorTypo>
-                  }
+        columns={2}
+        left={
+          <>
+            <Header color='gray' uppercase bold>Chọn dự án sao chép</Header>
+            <SearchInput 
+              fullWidth 
+              placeholder='Tìm dự án'
+              value={searchPatern}
+              onChange={evt => setSearchPatern(evt.target.value)}
+            />  
+            <ListContainer>
+              {customProjects.map(projectGroup => (
+                <ProjectGroupList
+                  projectGroup={projectGroup}
+                  key={get(projectGroup, 'id')} 
+                  selectedProject={selectedProject}
+                  setSelectedProject={setSelectedProject}
                 />
-                <TextField
-                  value={description}
-                  onChange={evt => setDescription(evt.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                  label='Mô tả dự án mới'
-                  fullWidth
-                  multiline
-                  rowsMax='6'
-                  helperText={
-                    <ColorTypo variant='caption' color='red'>
-                      {get(errorDescription, 'message', '')}
-                    </ColorTypo>
-                  }
-                />
-                <StyledFormControl component="div" fullWidth>
-                  <StyledFormLabel component="legend">Cài đặt thành viên</StyledFormLabel>
-                  <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
-                    <FormControlLabel value={true} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
-                    <FormControlLabel value={false} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
-                  </RadioGroup>
-                </StyledFormControl>
-                <StyledFormControl component="div" fullWidth>
-                  <StyledFormLabel component="legend">Chọn ngày bắt đầu tiến độ</StyledFormLabel>
-                  <OutlinedInput 
-                    variant='outlined'
-                    type='date'
-                    value={moment(startDate).format('YYYY-MM-DD')}
-                    onChange={evt => setStartDate(moment(evt.target.value).toDate())}
-                  />
-                  <FormHelperText error filled variant='filled'>{get(errorDate, 'message', '')}</FormHelperText>
-                </StyledFormControl>
-              </FormContainer>
-            </StyledScrollbars>
-          </RightSide>
-        </Container>
-      </CustomModal>
+              ))}
+            </ListContainer>
+          </>
+        }
+        right={
+          <>
+            <Header color='gray' uppercase bold>Dự án được sao chép</Header>
+            <StyledTypo>{get(selectedProject, 'name', 'Hãy chọn dự án để sao chép')}</StyledTypo>
+            <Header color='gray' uppercase bold>Thông tin dự án</Header>
+            <TextField
+              value={name}
+              onChange={evt => setName(evt.target.value)}
+              margin="normal"
+              variant="outlined"
+              label='Tên dự án mới'
+              fullWidth
+              helperText={
+                <ColorTypo variant='caption' color='red'>
+                  {get(errorName, 'message', '')}
+                </ColorTypo>
+              }
+            />
+            <TextField
+              value={description}
+              onChange={evt => setDescription(evt.target.value)}
+              margin="normal"
+              variant="outlined"
+              label='Mô tả dự án mới'
+              fullWidth
+              multiline
+              rowsMax='6'
+              helperText={
+                <ColorTypo variant='caption' color='red'>
+                  {get(errorDescription, 'message', '')}
+                </ColorTypo>
+              }
+            />
+            <StyledFormControl component="div" fullWidth>
+              <StyledFormLabel component="legend">Cài đặt thành viên</StyledFormLabel>
+              <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
+                <FormControlLabel value={true} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
+                <FormControlLabel value={false} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
+              </RadioGroup>
+            </StyledFormControl>
+            <StyledFormControl component="div">
+              <StyledFormLabel component="legend">Chọn ngày bắt đầu tiến độ</StyledFormLabel>
+              <OutlinedInput 
+                variant='outlined'
+                type='date'
+                value={moment(startDate).format('YYYY-MM-DD')}
+                onChange={evt => setStartDate(moment(evt.target.value).toDate())}
+              />
+              <FormHelperText error filled variant='filled'>{get(errorDate, 'message', '')}</FormHelperText>
+            </StyledFormControl>
+          </>
+        }
+      />
     </React.Fragment>
   )
 }

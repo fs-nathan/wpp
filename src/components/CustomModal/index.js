@@ -17,6 +17,9 @@ import PropTypes from 'prop-types';
 const StyledScrollbars = styled(({ height, ...props }) => <Scrollbars {...props} />)`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   min-height: ${props => props.height === 'tall' ? '500px' : '400px'};
+  & > div:nth-child(3) {
+    z-index: 999;
+  }
 `;
 
 const StyledDialogContent = styled(DialogContent)`
@@ -82,11 +85,61 @@ const StyledDialog = styled(Dialog)`
   }
 `;
 
+const TwoColumnsContainer = styled.div`
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 2fr 3fr;
+  & > * {
+    &:first-child {
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+`;
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function CustomModal({ title, children, canConfirm = true, onConfirm = () => null, onCancle = () => null, open, setOpen, fullWidth = false, height = 'normal' }) {
+function OneColumn({ height, children, }) {
+  return (
+    <StyledScrollbars
+      autoHide
+      autoHideTimeout={500}
+      height={height}
+    >
+      <StyledDialogContent>
+        {children}
+      </StyledDialogContent>
+    </StyledScrollbars>
+  );
+}
+
+function TwoColumns({ height, left, right }) {
+  return (
+    <TwoColumnsContainer>
+      <StyledScrollbars
+        autoHide
+        autoHideTimeout={500}
+        height={height}
+      >
+        <StyledDialogContent>
+          {left}
+        </StyledDialogContent>
+      </StyledScrollbars>
+      <StyledScrollbars
+        autoHide
+        autoHideTimeout={500}
+        height={height}
+      >
+        <StyledDialogContent>
+          {right}
+        </StyledDialogContent>
+      </StyledScrollbars>
+    </TwoColumnsContainer>
+  );
+}
+
+function CustomModal({ title, columns = 1, children = null, left = null, right = null, canConfirm = true, onConfirm = () => null, onCancle = () => null, open, setOpen, fullWidth = false, height = 'normal' }) {
 
   function handleCancle() {
     setOpen(false);
@@ -113,15 +166,12 @@ function CustomModal({ title, children, canConfirm = true, onConfirm = () => nul
           <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
         </IconButton>
       </StyledDialogTitle>
-      <StyledScrollbars
-        autoHide
-        autoHideTimeout={500}
-        height={height}
-      >
-        <StyledDialogContent>
-          {children}
-        </StyledDialogContent>
-      </StyledScrollbars>
+      {columns === 1 && (
+        <OneColumn height={height} children={children} />
+      )}
+      {columns === 2 && (
+        <TwoColumns height={height} left={left} right={right} />
+      )}
       <StyledDialogActions>
         <ActionsCancleButton onClick={() => handleCancle()}>
           Hủy
@@ -136,7 +186,10 @@ function CustomModal({ title, children, canConfirm = true, onConfirm = () => nul
 
 CustomModal.propTypes = {
   title: PropTypes.string.isRequired, 
-  children: PropTypes.node, 
+  columns: PropTypes.number,
+  children: PropTypes.node,
+  left: PropTypes.node,
+  right: PropTypes.node, 
   onConfirm: PropTypes.func, 
   onCancle: PropTypes.func, 
   open: PropTypes.bool.isRequired, 
