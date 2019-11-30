@@ -91,6 +91,42 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
+        case types.UPLOAD_DOCUMENT_TO_OFFER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.UPLOAD_DOCUMENT_TO_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.UPLOAD_DOCUMENT_TO_OFFER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.DELETE_DOCUMENT_TO_OFFER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.DELETE_DOCUMENT_TO_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.DELETE_DOCUMENT_TO_OFFER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
         default:
             return state;
     }

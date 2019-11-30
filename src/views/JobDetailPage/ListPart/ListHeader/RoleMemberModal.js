@@ -91,6 +91,9 @@ function RoleMemberModal(props) {
 
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
+    console.log("name::::::", name)
+    console.log("[name]::::::", [name])
+    console.log("state::::::", state)
   };
 
   const { role1, role2, role3, role4 } = state;
@@ -99,6 +102,9 @@ function RoleMemberModal(props) {
     props.setOpen(false);
   };
 
+  const addRoleForMember = () => {
+    console.log("state khi add role ::::::", state)
+  }
   return (
     <div>
       <Dialog maxWidth="sm" fullWidth onClose={handleClose} open={props.isOpen}>
@@ -107,7 +113,7 @@ function RoleMemberModal(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Input
-            style={{fontStyle: 'italic'}}
+            style={{ fontStyle: 'italic' }}
             fullWidth
             placeholder='Nhập vai trò...'
             endAdornment={<InputAdornment position="end"><AddButton variant="contained">Thêm</AddButton></InputAdornment>}
@@ -115,7 +121,7 @@ function RoleMemberModal(props) {
           <FormControl component="fieldset" className={classes.formControl}>
             <FormGroup>
               <CheckboxText
-                
+
                 control={<Checkbox color="primary" checked={role1} onChange={handleChange('nameRole1')} value="Giao việc" />}
                 label="Giao việc"
               />
@@ -124,7 +130,7 @@ function RoleMemberModal(props) {
                 control={<Checkbox color="primary" checked={role2} onChange={handleChange('nameRole2')} value="Giám sát" />}
                 label="Giám sát"
               />
-              <CheckboxText 
+              <CheckboxText
                 color="primary"
                 control={<Checkbox color="primary" checked={role3} onChange={handleChange('nameRole3')} value="Phê duyệt" />}
                 label="Phê duyệt"
@@ -138,7 +144,10 @@ function RoleMemberModal(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
+          <Button autoFocus onClick={() => 
+            // handleClose,
+            addRoleForMember()
+            } style={{ color: '#898989' }}>
             HOÀN THÀNH
           </Button>
         </DialogActions>

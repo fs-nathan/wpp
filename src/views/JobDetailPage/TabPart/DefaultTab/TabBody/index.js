@@ -11,9 +11,7 @@ import ColorButton from '../../../../../components/ColorButton';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import colorPal from '../../../../../helpers/colorPalette';
-import {
-  isLongerContent, getCollapseText
-} from '../../../../../helpers/jobDetail/stringHelper'
+import {isLongerContent, getCollapseText} from '../../../../../helpers/jobDetail/stringHelper'
 import { WrapperContext } from '../../../index'
 
 const ListItemButtonGroup = styled(ListItem)`
@@ -89,10 +87,13 @@ const ListItemTabPart = styled(ListItem)`
   flex-direction: column;
   align-items: start;
 `
-function DropdownButton({ values }) {
+function DropdownButton({ values, handleChangeItem, selectedIndex }) {
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [selected, setSelected] = React.useState(0)
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selected, setSelected] = React.useState(0);
+  React.useEffect(() => {
+    if (values[selectedIndex]) setSelected(selectedIndex)
+  }, [selectedIndex, values])
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget)
@@ -103,12 +104,14 @@ function DropdownButton({ values }) {
   }
 
   function handleSelect(index) {
-    setSelected(index);
-    handleClose();
+    setSelected(index)
+    handleChangeItem(index)
+    handleClose()
   }
 
+
   if (values.length === 0) return (
-    <ColorButton variantColor='teal' size='small' aria-controls="simple-menu" aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
+    <ColorButton variantColor='teal' size='small' aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
     // endIcon={
     //   <Icon path={mdiArrowRightBoldCircle} size={0.7} color={colorPal['greenlight'][1]} />
     // }
@@ -116,7 +119,7 @@ function DropdownButton({ values }) {
   );
   else return (
     <React.Fragment>
-      <ColorButton variantColor='teal' size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
+      <ColorButton variantColor='teal' size='small' onClick={handleClick} aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
       // endIcon={
       //   <Icon path={mdiArrowRightBoldCircle} size={0.7} color={colorPal['greenlight'][1]} />
       // }
@@ -124,7 +127,6 @@ function DropdownButton({ values }) {
         {values[selected]}
       </ColorButton>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -191,28 +193,58 @@ function Content({ value }) {
               }
 
             />
-            {isOpen ? <ButtonText onClick={handlePressViewButton}>Thu gọn</ButtonText> : <ButtonText onClick={handlePressViewButton}>Xem thêm</ButtonText>}
+            {isOpen
+              ? <ButtonText onClick={handlePressViewButton}>Thu gọn</ButtonText>
+              : <ButtonText onClick={handlePressViewButton}>Xem thêm</ButtonText>
+            }
           </>
       }
     </ListItemTabPart>
   )
 }
 
+const DEFAULT_TASK_STATISTIC = {
+  progressCnt: "Đang tải",
+  subTaskCnt: "Đang tải",
+  remindCnt: "Đang tải",
+  docCnt: "Đang tải",
+  lctCnt: "Đang tải",
+  offerCnt: "Đang tải",
+  commandCnt: "Đang tải",
+  members: [],
+  priority_code: 0,
+}
+
 
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
-  // console.log('value:::::', value.detailTask.description);
+  const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
   let content = ""
-  if(value){
-    if(value.detailTask){
-        // subtask = value.detailTask.total_subtask
-        // subtaskComplete = value.detailTask.total_subtask_complete
-      if(value.detailTask.description){
-        content = value.detailTask.description
-      }
-    }
+  if (value && value.detailTask) {
+    content = value.detailTask.description || ""
   }
-  
+
+  React.useEffect(() => {
+    if (!value.detailTask) return
+    const {
+      total_subtask_complete, total_subtask, total_location,
+      total_remind, total_file, total_img, total_link, priority_code,
+      total_offer, total_offer_approved, total_command, members
+    } = value.detailTask
+    setTaskStatistic({
+      progressCnt: "... ngày",
+      subTaskCnt: total_subtask_complete + '/' + total_subtask + ' hoàn thành',
+      remindCnt: total_remind + ' nhắc hẹn',
+      fileCnt: total_file + ' file', imgCnt: total_img + ' ảnh', linkCnt: total_link + ' link',
+      lctCnt: total_location + ' vị trí',
+      offerCnt: total_offer + ' đề xuất', acceptOfferCnt: total_offer_approved + ' duyệt',
+      commandCnt: total_command + ' nội dung',
+      members,
+      priority_code
+    })
+  }, [value.detailTask])
+
+
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <StyledList>
@@ -222,7 +254,7 @@ function TabBody(props) {
               Tên công việc
            </ColorTypo>
             <ContentText component='span'>
-              <span>{value.detailTask.name}</span>
+              {value.detailTask && <span>{value.detailTask.name}</span>}
               <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} />
             </ContentText>
           </ListItemText>
@@ -240,9 +272,18 @@ function TabBody(props) {
               Đang tạm dừng
         </ColorButton>
             :
-            <DropdownButton size='small' values={['Đang làm', 'Đang chờ', 'Hoàn thành']} />
+            <DropdownButton
+              size='small' selectedIndex={0}
+              values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
+              handleChangeItem={() => { }}
+            />
           }
-          <DropdownButton size='small' values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']} />
+          <DropdownButton
+            size='small'
+            values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
+            selectedIndex={taskStatistic.priority_code}
+            handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
+          />
           <ColorButton size='small' variant='contained' variantColor='red'
             style={{
               marginBottom: '10px',
@@ -253,41 +294,41 @@ function TabBody(props) {
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
           <ColorTypo>Tiến độ</ColorTypo>
-          <BadgeItem badge size='small' color='orangelight' label={'16 ngày'} style={{ marginRight: 10 }} />
+          <BadgeItem badge size='small' color='orangelight' label={taskStatistic.progressCnt} style={{ marginRight: 10 }} />
           <SimpleSmallProgressBarWrapper>
             <SimpleSmallProgressBar percentDone={28} percentTarget={70} color={colorPal['teal'][0]} targetColor={colorPal['orange'][0]} />
           </SimpleSmallProgressBarWrapper>
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(2)}>
           <ColorTypo>Công việc con</ColorTypo>
-          <BadgeItem badge size='small' color='bluelight' label={value.detailTask.total_subtask_complete + "/" + value.detailTask.total_subtask  + " hoàn thành"} />
+          <BadgeItem badge size='small' color='bluelight' label={taskStatistic.subTaskCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
           <ColorTypo>Nhắc hẹn</ColorTypo>
-          <BadgeItem badge size='small' color='redlight' label={ value.detailTask.total_remind +' nhắc hẹn'} />
+          <BadgeItem badge size='small' color='redlight' label={taskStatistic.remindCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(4)}>
           <ColorTypo>Tài liệu</ColorTypo>
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_file + ' file'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_img +' ảnh'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='purplelight' label={ value.detailTask.total_link + ' link'} />
+          <BadgeItem badge size='small' color='purplelight' label={taskStatistic.fileCnt} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='purplelight' label={taskStatistic.imgCnt} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='purplelight' label={taskStatistic.linkCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(5)}>
           <ColorTypo>Chia sẻ vị trí</ColorTypo>
-          <BadgeItem badge size='small' color='indigolight' label={ value.detailTask.total_location + ' vị trí'} />
+          <BadgeItem badge size='small' color='indigolight' label={taskStatistic.lctCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(6)}>
           <ColorTypo>Đề xuất, duyệt</ColorTypo>
-          <BadgeItem badge size='small' color='orangelight' label={ value.detailTask.total_offer + ' đề xuất'} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='orangelight' label={ value.detailTask.total_offer_approved + ' duyệt'} />
+          <BadgeItem badge size='small' color='orangelight' label={taskStatistic.offerCnt} style={{ marginRight: 5 }} />
+          <BadgeItem badge size='small' color='orangelight' label={taskStatistic.acceptOfferCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(7)}>
           <ColorTypo>Chỉ đạo, quyết định</ColorTypo>
-          <BadgeItem badge size='small' color='bluelight' label={ value.detailTask.total_command + ' nội dung'} />
+          <BadgeItem badge size='small' color='bluelight' label={taskStatistic.commandCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
           <ColorTypo>Thành viên</ColorTypo>
-          <AvatarCircleList total={20} display={6} /> 
+          <AvatarCircleList total={taskStatistic.members.length} display={6} />
         </ListItemTab>
       </StyledList>
     </Body >
