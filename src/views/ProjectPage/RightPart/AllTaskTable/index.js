@@ -140,7 +140,7 @@ function AllTaskTable({
   const { projectId } = useParams();
 
   const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
-  const { data: { project }, loading: detailProjectLoading, error: detailProjectError } = detailProject;
+  const { loading: detailProjectLoading, error: detailProjectError } = detailProject;
 
   const loading = listTaskLoading || detailProjectLoading;
   const error = listTaskError || detailProjectError;

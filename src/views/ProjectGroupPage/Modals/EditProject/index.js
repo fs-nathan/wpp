@@ -32,7 +32,7 @@ function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpd
     setDescription(get(curProject, 'description', ''));
     setPriority(get(curProject, 'priority_code', 0));
     setCurrency(get(curProject, 'currency', 0));
-  }, [curProject]);
+  }, [curProject, setName, setDescription]);
 
   React.useEffect(() => {
     setProjectGroup(find(projectGroups, { id: get(curProject, 'project_group_id') }) || projectGroups[0]);

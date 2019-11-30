@@ -13,7 +13,7 @@ export function useRequiredString(initial = '', maxLength = 100) {
   React.useEffect(() => {
     const { error } = schema.validate(string);
     setError(error);
-  }, [string]);
+  }, [string, schema]);
 
   return [string, setString, error];
 }

@@ -29,14 +29,6 @@ const Container = styled.div`
         font-size: 10px;
       }
     }
-<<<<<<< HEAD
-=======
-    & > img {
-      width: 20px;
-      height: 20pxl
-      border-radius: 100%;
-    } 
->>>>>>> develop
   }
 `;
 

@@ -6,9 +6,9 @@ import * as icons from '../../assets';
 import './LeftBar.scss';
 
 function LeftBar({ colors }) {
-  const bgColor = colors.find(item => item.selected === true);
+  //const bgColor = colors.find(item => item.selected === true);
   return (
-    <div className="left-bar-container" style={{ background: bgColor.value }}>
+    <div className="left-bar-container" /*style={{ background: bgColor.value }}*/>
       <Link to={Routes.HOME} className="menu-item">
         <img src={icons.ic_home} alt="" className="LeftNavIcon" />
         <span>Trang chủ</span>

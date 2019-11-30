@@ -3,14 +3,11 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import {
   mdiClockOutline,
-  mdiFileDocumentBox,
   mdiFileDocumentBoxOutline,
   mdiFolderOpenOutline,
   mdiFileMoveOutline,
   mdiFileUndoOutline,
-  mdiBriefcaseAccount,
   mdiGoogleDrive,
-  mdiTrashCan,
   mdiTrashCanOutline
 } from '@mdi/js';
 import ColorTypo from '../../../components/ColorTypo';

@@ -15,7 +15,7 @@ export const copyProject = ({ projectId, name, description, startDate, isCopyMem
   },
 });
 
-export const copyProjectSuccess = ({}) => ({
+export const copyProjectSuccess = () => ({
   type: COPY_PROJECT_SUCCESS,
   data: {
   },

@@ -12,7 +12,7 @@ export const sortProject = ({ projectId, sortIndex }) => ({
   },
 });
 
-export const sortProjectSuccess = ({}) => ({
+export const sortProjectSuccess = () => ({
   type: SORT_PROJECT_SUCCESS,
   data: {
   },
