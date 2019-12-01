@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiUpload } from '@mdi/js';
 import { withRouter } from 'react-router-dom';
-import { ListItemIcon, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles';
 import ColorTypo from '../../../components/ColorTypo';
 import colorPal from '../../../helpers/colorPalette';
 import HeaderButtonGroup from './HeaderButtonGroup';
 import TableMain from './TableMain';
 import { Routes } from '../../../constants/routes';
+import RecentContent from './ContentDocumentPage/RecentContent'
 
 const RightHeader = styled.div`
   margin-left: auto;
@@ -50,7 +51,7 @@ const TablePart = props => {
   const getContentDocument = () => {
     switch (pathname) {
       case Routes.DOCUMENT_RECENT:
-        return <TableMain {...props} />;
+        return <RecentContent {...props} />;
       case Routes.DOCUMENT_PROJECT:
         return <TableMain {...props} />;
       case Routes.DOCUMENT_SHARE:
@@ -71,20 +72,11 @@ const TablePart = props => {
   return (
     <div className="header-setting-container">
       <div className="header-setting">
-        <ListItemIcon style={{ minWidth: 40 }}>
-          <span className="star-icon">&#9733;</span>
-        </ListItemIcon>
-        <ColorTypo
-          color="green"
-          uppercase
-          style={{ fontWeight: 'bold', fontSize: '1.5rem' }}
-        >
-          {/* &#9733;  */}
+        <ColorTypo className="header-title">
           {getHeaderText(pathname)}
         </ColorTypo>
         <RightHeader>
           <HeaderButtonGroup />
-
           <StyledButton
             size="small"
             onClick={() =>
@@ -101,32 +93,6 @@ const TablePart = props => {
       </div>
       <div className="setting-right-content">{getContentDocument()}</div>
     </div>
-    // <Container>
-    //   <Header>
-    //     <ListItemIcon style={{minWidth: 40}}>
-    //       <Icon path={activeTab.icon} size={1.5} />
-    //     </ListItemIcon>
-    //     <ColorTypo color='green' uppercase
-    //       style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-    //       {/* &#9733;  */}
-    //       {activeTab.name}
-    //     </ColorTypo>
-    //     <RightHeader>
-    //       <HeaderButtonGroup />
-    //       <ColorButton
-    //         size='small'
-    //         variantColor='blue'
-    //         variant='contained'
-    //         startIcon={
-    //           <Icon path={mdiUpload} size={1} color={'#fff'} />
-    //         }
-    //       >
-    //         Tải lên
-    //       </ColorButton>
-    //     </RightHeader>
-    //   </Header>
-    //   <TableMain {...props}/>
-    // </Container>
   );
 };
 

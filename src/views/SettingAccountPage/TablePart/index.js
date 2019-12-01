@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
 import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
-// import ColorButton from "../../../components/ColorButton";
-import { ListItemIcon } from '@material-ui/core';
 import SettingInfo from '../TablePart/SettingAccountRight/SettingInfo';
 import ChangePassword from '../TablePart/SettingAccountRight/ChangePassword';
 import TicketManager from '../TablePart/SettingAccountRight/TicketManager';
@@ -66,17 +64,7 @@ const TablePart = props => {
   return (
     <div className="header-setting-container">
       <div className="header-setting">
-        <ListItemIcon style={{ minWidth: 40 }}>
-          <span className="star-icon">&#9733;</span>
-        </ListItemIcon>
-        <ColorTypo
-          color="green"
-          uppercase
-          style={{ fontWeight: 'bold', fontSize: '1.5rem' }}
-        >
-          {/* &#9733;  */}
-          {getHeader()}
-        </ColorTypo>
+        <ColorTypo className="header-title">{getHeader()}</ColorTypo>
         {isNotiDetail && (
           <RightHeader>
             <HeaderButtonGroup />

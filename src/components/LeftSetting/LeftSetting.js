@@ -8,17 +8,7 @@ import { StyledList, StyledListItem, Primary, Secondary } from '../CustomList';
 import LeftSideContainer from '../LeftSideContainer';
 
 const LeftSetting = props => {
-  console.log('test', props.location.pathname);
   const { pathname } = props.location;
-  // const getTabButtonStyle = tabId => {
-  //   const { type } = props.match.params;
-  //   return {
-  //     transition: '1s',
-  //     margin: '10px 0',
-  //     backgroundColor:
-  //       type.indexOf(tabId) !== -1 ? 'rgba(0, 0, 0, 0.1)' : 'transparent'
-  //   };
-  // };
 
   return (
     <LeftSideContainer
