@@ -2,12 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-
 import { Routes } from '../../constants/routes';
 import * as icons from '../../assets';
 import './LeftBar.scss';
 
-function LeftBar({ colors, history }) {
+const isDocument = type => {
+  switch (type) {
+    case Routes.DOCUMENT_RECENT:
+    case Routes.DOCUMENT_PROJECT:
+    case Routes.DOCUMENT_SHARE:
+    case Routes.DOCUMENT_SHARE_ME:
+    case Routes.DOCUMENT_ME:
+    case Routes.DOCUMENT_GOOGLE_DRIVE:
+    case Routes.DOCUMENT_TRASH:
+      return true;
+    default:
+      return false;
+  }
+};
+const LeftBar = ({ colors, history }) => {
   const pathname = history.location.pathname;
   const bgColor = colors.find(item => item.selected === true);
   return (
@@ -52,11 +65,9 @@ function LeftBar({ colors, history }) {
         />
         <span>Báo cáo</span>
       </Link>
-      <Link to={Routes.DOCUMENT} className="menu-item">
+      <Link to={Routes.DOCUMENT_RECENT} className="menu-item">
         <img
-          src={
-            pathname === Routes.DOCUMENT ? icons.ic_file_select : icons.ic_file
-          }
+          src={isDocument(pathname) ? icons.ic_file_select : icons.ic_file}
           alt=""
           className="LeftNavIcon"
         />
@@ -83,7 +94,7 @@ function LeftBar({ colors, history }) {
       </Link>
     </div>
   );
-}
+};
 
 export default connect(
   state => ({

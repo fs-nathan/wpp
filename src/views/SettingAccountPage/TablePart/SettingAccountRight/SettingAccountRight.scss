@@ -159,7 +159,7 @@
   }
 }
 .work-plus-detail {
-  padding: 30px 0 0px 40px;
+  padding: 30px 0 0px 20px;
   .header-work-plus-detail {
     .text-header {
       font-size: 22px;
@@ -169,7 +169,8 @@
   .status-date-work-plus-detail {
     padding: 15px 0 35px 0;
     .status-text {
-      padding: 0 10px;
+      padding: 0 40px;
+      border-radius: 5px;
       background-color: #ff00009e;
       margin-right: 15px;
       color: #fff;
@@ -189,7 +190,7 @@
   }
   .content-work-plus-detail {
     .des-text {
-      font-size: 14px;
+      font-size: 17px;
     }
   }
 }

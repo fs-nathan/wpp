@@ -1,14 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 import { ButtonGroup, Button } from '@material-ui/core';
 import Icon from '@mdi/react';
-import { mdiMagnify, mdiDownload, mdiTrashCan } from '@mdi/js';
+import { mdiClose } from '@mdi/js';
+import { Routes } from '../../../../constants/routes';
 
 const StyledButton = styled(Button)`
   && {
     padding: 0 4px;
     border-radius: 0;
     color: rgba(0, 0, 0, 0.54);
+  }
+  &&:hover {
+    background-color: transparent;
   }
   &&:not(:last-child) {
     border-right: none;
@@ -31,31 +36,20 @@ const StyledButton = styled(Button)`
   }
 `;
 
-function HeaderButtonGroup() {
+const HeaderButtonGroup = props => {
   return (
     <React.Fragment>
       <ButtonGroup size="small" variant="text">
-        <StyledButton disableRipple>
-          <div>
-            <Icon path={mdiDownload} size={1} color={'rgba(0, 0, 0, 0.54)'} />
-          </div>
-          <span>Tải xuống</span>
-        </StyledButton>
-        <StyledButton disableRipple>
-          <div>
-            <Icon path={mdiTrashCan} size={1} color={'rgba(0, 0, 0, 0.54)'} />
-          </div>
-          <span>Xóa</span>
-        </StyledButton>
-        <StyledButton disableRipple>
-          <div>
-            <Icon path={mdiMagnify} size={1} color={'rgba(0, 0, 0, 0.54)'} />
-          </div>
-          <span>Tìm kiếm</span>
+        <StyledButton
+          disableRipple
+          disableTouchRipple
+          onClick={() => props.history.push(Routes.SETTING_ACCOUNT_NOTIFI)}
+        >
+          <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
         </StyledButton>
       </ButtonGroup>
     </React.Fragment>
   );
-}
+};
 
-export default HeaderButtonGroup;
+export default withRouter(HeaderButtonGroup);

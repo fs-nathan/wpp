@@ -68,8 +68,8 @@ class NotificationWorkPlus extends Component {
                         pathname: Routes.SETTING_ACCOUNT_NOTIFI,
                         search: `?${row.id}`
                       });
-                      // );
                     }}
+                    className="cursor-pointer"
                   >
                     <TableCell component="th" scope="row">
                       {row.date}

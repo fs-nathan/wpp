@@ -63,11 +63,8 @@ const TablePart = props => {
       case SETTING_GROUP.SETTING:
         return <SetUp />;
       case SETTING_GROUP.ORDER: {
-        if (isOder) {
-          return <Order />;
-        } else if (isCreateOder) {
-          return <CreateOrder />;
-        }
+        if (isOder) return <Order />;
+        else if (isCreateOder) return <CreateOrder />;
         return <OrderDetail />;
       }
       case SETTING_GROUP.PAYMENT:

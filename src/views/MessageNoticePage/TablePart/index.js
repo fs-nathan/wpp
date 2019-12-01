@@ -1,8 +1,6 @@
 import React from 'react';
 // import { mdiUpload } from "@mdi/js";
 import { withRouter } from 'react-router-dom';
-
-import { isEmpty } from '../../../helpers/utils/isEmpty';
 import ColorTypo from '../../../components/ColorTypo';
 // import HeaderButtonGroup from "./HeaderButtonGroup";
 // import ColorButton from "../../../components/ColorButton";
@@ -19,7 +17,6 @@ import { MESSAGE } from '../../../constants/constants';
 const TablePart = props => {
   const getContentSettingAccount = () => {
     const type = props.match.params.type;
-    const search = props.location.search;
     switch (type) {
       case MESSAGE.ALL:
         return <MessageRight />;
@@ -35,7 +32,6 @@ const TablePart = props => {
   };
   const getHeader = () => {
     const type = props.match.params.type;
-    const search = props.location.search;
     switch (type) {
       case MESSAGE.ALL:
         return 'Tất cả tin nhắn';

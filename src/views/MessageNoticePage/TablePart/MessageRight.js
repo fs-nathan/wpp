@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
-import Icon from '@mdi/react';
-import { mdiStar } from '@mdi/js';
+import React from 'react';
 import '../Message.scss';
 import MessageRightItem from './MessageRightItem';
 
