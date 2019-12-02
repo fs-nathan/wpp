@@ -425,11 +425,19 @@ async function doUploadDocumentToOffer(payload) {
 }
 
 function* uploadDocumentToOffer(action) {
+<<<<<<< HEAD
   console.log("upload file :::::", action.payload);
 
+=======
+>>>>>>> origin/dev_quan
   try {
-    const res = yield call(doUploadDocumentToOffer, action.payload)
+    const res = yield call(doUploadDocumentToOffer, action.payload.data)
+    console.log('Response upload ::::', res)
+    // Success upload -> Call function to append all new file to component
+    action.payload.successCallBack(res.documents)
+    
     yield put(actions.uploadDocumentToOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.uploadDocumentToOfferFail(error))
   }
@@ -451,8 +459,10 @@ async function doDeleteDocumentToOffer(payload) {
 
 function* deleteDocumentToOffer(action) {
   try {
-    const res = yield call(doDeleteDocumentToOffer, action.payload)
+    const res = yield call(doDeleteDocumentToOffer, action.payload.data)
+    action.payload.removeCallBack(res)
     yield put(actions.deleteDocumentToOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.deleteDocumentToOfferFail(error))
   }

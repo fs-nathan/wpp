@@ -46,6 +46,12 @@ const styles = theme => ({
     root: {
         margin: 0,
         padding: theme.spacing(2),
+        background: '#f5f8fc'
+    },
+    title: {
+        textTransform: 'uppercase',
+        fontSize: 14,
+        fontWeight: 400,
     },
     closeButton: {
         position: 'absolute',
@@ -59,7 +65,7 @@ const DialogTitle = withStyles(styles)(props => {
     const { children, classes, onClose, ...other } = props;
     return (
         <MuiDialogTitle disableTypography className={classes.root} {...other}>
-            <Typography variant="h6">{children}</Typography>
+            <Typography className={classes.title} variant="h6">{children}</Typography>
             {onClose ? (
                 <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
                     <CloseIcon />
@@ -78,7 +84,7 @@ const DialogContent = withStyles(theme => ({
 const DialogActions = withStyles(theme => ({
     root: {
         margin: 0,
-        padding: theme.spacing(1),
+        padding: '15px 24px',
     },
 }))(MuiDialogActions);
 
@@ -127,6 +133,19 @@ const ChipPriority = styled(Chip)`
     padding: 0 10px;
     justify-content: space-between;
 `
+const CustomMenu = styled(Menu)`
+  & > .MuiPaper-root {
+    box-shadow: none;
+    border: 1px solid rgba(0,0,0,.1);
+    & > ul {
+      padding : 0;
+      & > li {
+        padding : 10px;
+      }
+    }
+  }
+`
+
 function ProjectMember(props) {
     return (
         <StyledListItem>
@@ -253,19 +272,19 @@ function TableMember(props) {
                                 <IconButton size='small' onClick={handleClickEliminate} >
                                     <Icon path={mdiDotsVertical} size={1} />
                                 </IconButton>
-                                <Menu
+                                <CustomMenu
                                     id="simple-menu"
                                     anchorEl={anchorEl}
                                     keepMounted
                                     open={Boolean(anchorEl)}
                                     onClose={handleCloseEliminate}
                                     transformOrigin={{
-                                        vertical: -30,
+                                        vertical: -10,
                                         horizontal: 'right',
                                     }}
                                 >
                                     <MenuItem onClick={handleCloseEliminate}>Loại trừ</MenuItem>
-                                </Menu>
+                                </CustomMenu>
                             </MemberTable>
                         </TableRow>
                     ))}
@@ -329,9 +348,7 @@ function AddMemberModal(props) {
     return (
         <div>
             <Dialog maxWidth="xl" onClose={handleClose} open={props.isOpen}>
-                <DialogTitle onClose={handleClose}>
-                    Thành viên công việc
-        </DialogTitle>
+                <DialogTitle onClose={handleClose}> Thành viên công việc </DialogTitle>
                 <DialogContent dividers style={{ padding: 0 }}>
                     <GridArea component={'div'} style={{ borderBottom: 'none' }} >
                         <BorderGrid component={'div'}>
@@ -359,7 +376,7 @@ function AddMemberModal(props) {
                     </GridArea>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
+                    <Button autoFocus onClick={handleClose} color="primary">
                         Cập nhật
           </Button>
                 </DialogActions>

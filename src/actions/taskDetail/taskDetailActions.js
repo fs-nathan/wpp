@@ -241,9 +241,9 @@ export const deleteOfferFail = (error) => ({
     error: error,
 });
 // ==== upload document to offer
-export const uploadDocumentToOffer = (payload) => ({
+export const uploadDocumentToOffer = (data, cb) => ({
     type: types.UPLOAD_DOCUMENT_TO_OFFER_REQUEST,
-    payload
+    payload: { data, successCallBack: cb }
 });
 
 export const uploadDocumentToOfferSuccess = (payload) => ({
@@ -256,9 +256,9 @@ export const uploadDocumentToOfferFail = (error) => ({
     error: error,
 });
 // === delete document to offer
-export const deleteDocumentToOffer = payload => ({
+export const deleteDocumentToOffer = (data, cb) => ({
     type: types.DELETE_DOCUMENT_TO_OFFER_REQUEST,
-    payload
+    payload: {data, removeCallBack: cb}
 });
 
 export const deleteDocumentToOfferSuccess = (payload) => ({

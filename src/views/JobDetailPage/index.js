@@ -94,8 +94,8 @@ const mapDispatchToProps = dispatch => {
     createOfferByTaskId: (createId, content) => { dispatch(taskDetailAction.createOffer({ createId, content })) },
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
     updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
-    uploadDocumentToOfferById: (data) => dispatch(taskDetailAction.uploadDocumentToOffer(data)),
-    deleteDocumentToOfferById: (data) => dispatch(taskDetailAction.deleteDocumentToOffer(data)),
+    uploadDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb)),
+    deleteDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb)),
     // command 
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
