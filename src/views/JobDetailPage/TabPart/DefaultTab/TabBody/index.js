@@ -229,10 +229,11 @@ function TabBody(props) {
     const {
       total_subtask_complete, total_subtask, total_location,
       total_remind, total_file, total_img, total_link, priority_code,
-      total_offer, total_offer_approved, total_command, members
+      total_offer, total_offer_approved, total_command, members,
+      duration_value, duration_unit
     } = value.detailTask
     setTaskStatistic({
-      progressCnt: "... ngày",
+      progressCnt: duration_value + " " + duration_unit,
       subTaskCnt: total_subtask_complete + '/' + total_subtask + ' hoàn thành',
       remindCnt: total_remind + ' nhắc hẹn',
       fileCnt: total_file + ' file', imgCnt: total_img + ' ảnh', linkCnt: total_link + ' link',
