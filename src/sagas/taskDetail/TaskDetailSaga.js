@@ -425,11 +425,6 @@ async function doUploadDocumentToOffer(payload) {
 }
 
 function* uploadDocumentToOffer(action) {
-<<<<<<< HEAD
-  console.log("upload file :::::", action.payload);
-
-=======
->>>>>>> origin/dev_quan
   try {
     const res = yield call(doUploadDocumentToOffer, action.payload.data)
     console.log('Response upload ::::', res)
