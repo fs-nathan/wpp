@@ -44,6 +44,12 @@ const styles = theme => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
+    background: '#f5f8fc'
+  },
+  title: {
+      textTransform: 'uppercase',
+      fontSize: 14,
+      fontWeight: 400,
   },
   closeButton: {
     position: 'absolute',
@@ -57,7 +63,7 @@ const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+      <Typography className={classes.title} variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
           <CloseIcon />

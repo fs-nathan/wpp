@@ -14,7 +14,7 @@ import OfferModal from '../OfferModal';
 import ApproveModal from '../ApproveModal'
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-
+import { DEFAULT_OFFER_ITEM } from '../../../../../helpers/jobDetail/arrayHelper'
 
 const Container = styled.div`
   padding: 10px 20px 50px 20px;
@@ -163,8 +163,12 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
-
-
+const StyledMenuOffer = styled.div`
+  opacity: 0 ;
+  ${StyledListItem}:hover & {
+    opacity: 1;
+  }
+`
 const CustomListItem = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -180,7 +184,7 @@ const CustomListItem = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   }
-  
+
   return (
     <React.Fragment>
       <StyledListItem>
@@ -196,9 +200,12 @@ const CustomListItem = (props) => {
             <ColorTypo color='orange' variant='caption'>{user_can_handers.join(", ")}</ColorTypo> lúc {date_create}
             </ColorTypo>
           </div>
-          <ButtonIcon size='small' onClick={handleClick} >
-            <Icon path={mdiDotsHorizontal} size={1} />
-          </ButtonIcon>
+          <StyledMenuOffer>
+            <ButtonIcon size='small' onClick={handleClick} >
+              <Icon path={mdiDotsHorizontal} size={1} />
+            </ButtonIcon>
+
+          </StyledMenuOffer>
         </StyledTitleBox>
         <StyledContentBox>
           <StyleContent>{content}</StyleContent>
@@ -240,7 +247,7 @@ const StyledList = styled.ul`
 `;
 
 const ListOffer = (props) => {
-  
+
   return (
     <React.Fragment>
       <SearchInput
@@ -276,8 +283,8 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function TabBody(props) {
-  
-  
+
+
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -290,9 +297,9 @@ function TabBody(props) {
   const handleClickClose = () => {
     setOpen(false);
   };
-  const [selectedItem, setSelectedItem] = React.useState({ offer_id: "", content: "" })
+  const [selectedItem, setSelectedItem] = React.useState(DEFAULT_OFFER_ITEM)
   const handleClickEditItem = item => {
-    setSelectedItem({...item, offer_id: item.id})
+    setSelectedItem({ ...item, offer_id: item.id })
     setOpen(true)
   };
   // const [anchorEl, setAnchorEl] = React.useState(null)
@@ -301,14 +308,14 @@ function TabBody(props) {
     props.deleteOfferByTaskId(selectedItem.offer_id)
   }
   const handleOpenModalDelete = item => {
-    setSelectedItem({...item, offer_id: item.id})
+    setSelectedItem({ ...item, offer_id: item.id })
     setOpenDelete(true);
     // setAnchorEl(null);
   };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
-  
+
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
@@ -323,16 +330,16 @@ function TabBody(props) {
           <ColorButton
             onClick={evt => handleChange(evt, 1)}
           >
-            {value === 1 
-            ? <ColorTypo bold>Đã duyệt ({props.approvedItems.length})</ColorTypo> 
-            : <ColorTypo color='gray'>Đã duyệt ({props.approvedItems.length})</ColorTypo>}
+            {value === 1
+              ? <ColorTypo bold>Đã duyệt ({props.approvedItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>Đã duyệt ({props.approvedItems.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 2)}
           >
-            {value === 2 
-            ? <ColorTypo bold>Chờ duyệt ({props.approvedItems.length})</ColorTypo> 
-            : <ColorTypo color='gray'>Chờ duyệt ({props.approvedItems.length})</ColorTypo>}
+            {value === 2
+              ? <ColorTypo bold>Chờ duyệt ({props.approvedItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>Chờ duyệt ({props.approvedItems.length})</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
@@ -359,11 +366,11 @@ function TabBody(props) {
           item={selectedItem}
         />
         <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDelete}
-        handleCloseModalDelete={handleCloseModalDelete}
-        item={selectedItem}
-        {...props} />
+          confirmDelete={confirmDelete}
+          isOpen={isOpenDelete}
+          handleCloseModalDelete={handleCloseModalDelete}
+          item={selectedItem}
+          {...props} />
       </Container>
     </Body>
   )
