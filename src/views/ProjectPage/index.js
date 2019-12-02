@@ -11,6 +11,7 @@ import AllTaskTable from './RightPart/AllTaskTable';
 import { 
   CustomEventListener, CustomEventDispose,
   UPDATE_PROJECT,
+  CREATE_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
 } from '../../constants/events';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
@@ -45,12 +46,44 @@ function ProjectPage({
     if (projectId) {
       doListTask({ projectId });
     }
+
+    const reloadListTask = () => {
+      doListTask({ projectId }, true);
+    }
+
+    CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
+    CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
+    CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
+    CustomEventListener(SORT_GROUP_TASK, reloadListTask);
+
+    return () => {
+      CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
+    }
   }, [projectId, doListTask]);
 
 
   React.useEffect(() => {
     if (projectId) {
       doListGroupTask({ projectId });
+    }
+
+    const reloadListGroupTask = () => {
+      doListGroupTask({ projectId }, true);
+    }
+
+    CustomEventListener(CREATE_GROUP_TASK, reloadListGroupTask);
+    CustomEventListener(UPDATE_GROUP_TASK, reloadListGroupTask);
+    CustomEventListener(DELETE_GROUP_TASK, reloadListGroupTask);
+    CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
+
+    return () => {
+      CustomEventDispose(CREATE_GROUP_TASK, reloadListGroupTask);
+      CustomEventDispose(UPDATE_GROUP_TASK, reloadListGroupTask);
+      CustomEventDispose(DELETE_GROUP_TASK, reloadListGroupTask);
+      CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
     }
   }, [projectId, doListGroupTask]);
 

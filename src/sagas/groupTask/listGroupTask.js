@@ -20,7 +20,7 @@ async function doListGroupTask({ projectId }) {
 
 function* listGroupTask(action) {
   try {
-    const { groupTasks } = yield call(doListGroupTask, action.options);
+    const { group_tasks: groupTasks } = yield call(doListGroupTask, action.options);
     yield put(listGroupTaskSuccess({ groupTasks }));
   } catch (error) {
     yield put(listGroupTaskFail(error));

@@ -49,7 +49,7 @@ function reducer(state = initialState, action) {
 				loading: false,
       };
     case CREATE_GROUP_TASK_SUCCESS:
-      groupTasks = concat([...state.data.groupTasks], action.data.groupTasks);
+      groupTasks = concat(action.data.groupTask, [...state.data.groupTasks], );
       return {
         ...state,
         data: {

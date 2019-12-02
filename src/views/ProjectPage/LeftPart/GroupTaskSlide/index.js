@@ -14,7 +14,9 @@ import CustomListItem from './CustomListItem';
 import { ListItemText } from '@material-ui/core';
 import { filter, get, } from 'lodash';
 import SearchInput from '../../../../components/SearchInput';
-
+import { sortGroupTask } from '../../../../actions/groupTask/sortGroupTask';
+import CreateGroupTask from '../../Modals/CreateGroupTask';
+ 
 const Banner = styled.div`
   padding: 15px;
 `;
@@ -23,7 +25,7 @@ const StyledPrimary = styled(Primary)`
   font-weight: 500;
 `;
 
-function GroupTaskSlide({ handleSubSlide, listGroupTask, }) {
+function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, }) {
   
   const { setProjectId } = React.useContext(ProjectContext);
   const { projectId } = useParams();
@@ -32,6 +34,8 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, }) {
 
   const [taskGroups, setTaskGroups] = React.useState([]);
   const [searchPatern, setSearchPatern] = React.useState('');
+
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     setProjectId(projectId);
@@ -47,12 +51,16 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, }) {
   }, [groupTasks, searchPatern]);
 
   function onDragEnd(result) {
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) return;
+    doSortGroupTask({
+      groupTaskId: draggableId,
+      sortIndex: destination.index,
+    });
   }
   
   return (
@@ -67,7 +75,7 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, }) {
           }}
           rightAction={{
             iconPath: mdiPlus,
-            onClick: () => null,
+            onClick: () => setOpen(true),
           }}
           loading={{
             bool: loading,
@@ -133,6 +141,7 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, }) {
               )}
             </Droppable>
           </DragDropContext>
+          <CreateGroupTask open={open} setOpen={setOpen} />
         </LeftSideContainer>
       )}
     </React.Fragment>
@@ -147,6 +156,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    doSortGroupTask: ({ groupTaskId, sortIndex }) => dispatch(sortGroupTask({ groupTaskId, sortIndex })),
   };
 };
 

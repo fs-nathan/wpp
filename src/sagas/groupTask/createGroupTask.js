@@ -23,7 +23,7 @@ async function doCreateGroupTask({ projectId, name, description }) {
 
 function* createGroupTask(action) {
   try {
-    const { groupTask } = yield call(doCreateGroupTask, action.options);
+    const { group_task: groupTask } = yield call(doCreateGroupTask, action.options);
     yield put(createGroupTaskSuccess({ groupTask }));
     CustomEventEmitter(CREATE_GROUP_TASK);
   } catch (error) {

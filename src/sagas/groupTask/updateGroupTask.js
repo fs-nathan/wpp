@@ -23,7 +23,7 @@ async function doUpdateGroupTask({ groupTaskId, name, description }) {
 
 function* updateGroupTask(action) {
   try {
-    const { groupTask } = yield call(doUpdateGroupTask, action.options);
+    const { group_task: groupTask } = yield call(doUpdateGroupTask, action.options);
     yield put(updateGroupTaskSuccess({ groupTask }));
     CustomEventEmitter(UPDATE_GROUP_TASK);
   } catch (error) {
