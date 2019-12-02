@@ -317,6 +317,22 @@ export const updateCommandFail = (error) => ({
     type: types.UPDATE_COMMAND_FAIL,
     error: error,
 });
+
+export const deleteCommand = (payload) => ({
+    type: types.DELETE_COMMAND_REQUEST,
+    payload
+});
+
+export const deleteCommandSuccess = (payload) => ({
+    type: types.DELETE_COMMAND_SUCCESS,
+    payload
+});
+
+export const deleteCommandFail = (error) => ({
+    type: types.DELETE_COMMAND_FAIL,
+    error: error,
+});
+
 // Media : Image
 export const getImage = ({ taskId }) => ({
     type: types.GET_IMAGE_TABPART_REQUEST,
@@ -475,5 +491,51 @@ export const deleteMemberSuccess = (payload) => ({
 
 export const deleteMemberFail = (error) => ({
     type: types.DELETE_MEMBER_FAIL,
+    error: error,
+});
+
+// Member Role
+export const createRole = (payload) => ({
+    type: types.POST_ROLE_REQUEST,
+    payload
+});
+
+export const createRoleSuccess = (payload) => ({
+    type: types.POST_ROLE_SUCCESS,
+    payload
+});
+
+export const createRoleFail = (error) => ({
+    type: types.POST_ROLE_FAIL,
+    error: error,
+});
+
+export const updateRole = (payload) => ({
+    type: types.UPDATE_ROLE_REQUEST,
+    payload
+});
+
+export const updateRoleSuccess = (payload) => ({
+    type: types.UPDATE_ROLE_SUCCESS,
+    payload
+});
+
+export const updateRoleFail = (error) => ({
+    type: types.UPDATE_ROLE_FAIL,
+    error: error,
+});
+
+export const deleteRole = (payload) => ({
+    type: types.DELETE_ROLE_REQUEST,
+    payload
+});
+
+export const deleteRoleSuccess = (payload) => ({
+    type: types.DELETE_ROLE_SUCCESS,
+    payload
+});
+
+export const deleteRoleFail = (error) => ({
+    type: types.DELETE_ROLE_FAIL,
     error: error,
 });

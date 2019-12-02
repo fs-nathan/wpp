@@ -100,7 +100,7 @@ const mapDispatchToProps = dispatch => {
     getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
     createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
     updateCommandByTaskId: (id, content, type) => { dispatch(taskDetailAction.updateCommand({ command_id: id, content, type })) },
-
+    deleteCommandByCommandId: command_id => dispatch(taskDetailAction.deleteCommand({ command_id })),
     // Media Image File Link
     getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
     getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
@@ -116,6 +116,10 @@ const mapDispatchToProps = dispatch => {
     getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
     createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
+    // Member Role
+    createRoleTask: (name) => dispatch(taskDetailAction.createRole({name})),
+    updateRoleTask: (role_task_id, name) => dispatch(taskDetailAction.updateRole({ role_task_id, name })),
+    deleteRoleTask: (role_task_id) => dispatch(taskDetailAction.deleteRole({ role_task_id })),
   };
 };
 

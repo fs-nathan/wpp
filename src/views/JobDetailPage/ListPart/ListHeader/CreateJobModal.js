@@ -228,7 +228,6 @@ const TitleDialog = styled(DialogTitle)`
 
 function CommonControlForm(props) {
   const [value, setValue] = React.useState(props.label1);
-  console.log(value)
   return (
     <FormControl component="fieldset">
       <RadioGroup aria-label="position" name="position" value={value}
@@ -258,7 +257,6 @@ function CommonControlForm(props) {
 
 function CommonPriorityForm(props) {
   const [value, setValue] = React.useState(priority)
-  console.log(value)
   return (
     <PriorityFormControl component="fieldset">
       <PriorityRadioGroup

@@ -99,6 +99,9 @@ function* rootSaga() {
   yield takeLeading(CREATE_ICON, createIcon);
   yield takeLeading(DELETE_ICON, deleteIcon);
 
+  // Priority
+  yield takeLeading(taskDetailType.UPDATE_TASK_PRIORITY_REQUEST, taskDetailSaga.updatePriority)
+
   //Offer::
   yield takeLeading(taskDetailType.GET_OFFER_REQUEST, taskDetailSaga.getOffer);
   yield takeLeading(taskDetailType.CREATE_OFFER_REQUEST, taskDetailSaga.createOffer);
@@ -132,14 +135,17 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.GET_COMMAND_REQUEST, taskDetailSaga.getCommand);
   yield takeLeading(taskDetailType.CREATE_COMMAND_REQUEST, taskDetailSaga.createCommand);
   yield takeLeading(taskDetailType.UPDATE_COMMAND_REQUEST, taskDetailSaga.updateCommand);
-  yield takeLeading(taskDetailType.UPDATE_TASK_PRIORITY_REQUEST, taskDetailSaga.updatePriority)
- 
+  yield takeLeading(taskDetailType.DELETE_COMMAND_REQUEST, taskDetailSaga.deleteCommand);
   
   //Member::
   yield takeLeading(taskDetailType.GET_MEMBER_REQUEST, taskDetailSaga.getMember);
   yield takeLeading(taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST, taskDetailSaga.getMemberNotAssigned);
   yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
   yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
+  // Member Role::
+  yield takeLeading(taskDetailType.POST_ROLE_REQUEST, taskDetailSaga.createRole);
+  yield takeLeading(taskDetailType.UPDATE_ROLE_REQUEST, taskDetailSaga.updateRole);
+  yield takeLeading(taskDetailType.DELETE_ROLE_REQUEST, taskDetailSaga.deleteRole);
 };
 
 export default rootSaga;

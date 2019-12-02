@@ -2,6 +2,33 @@ import { call, put } from 'redux-saga/effects';
 import * as actions from '../../actions/taskDetail/taskDetailActions';
 import { apiService } from '../../constants/axiosInstance';
 
+// Priority
+async function doUpdatePriority(payload) {
+  try {
+    const config = {
+      url: '/task/update-priority',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updatePriority(action) {
+  try {
+    const res = yield call(doUpdatePriority, action.payload)
+    yield put(actions.updatePrioritySuccess(res))
+    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.updatePriorityFail(error))
+  }
+}
+
 // Sub-task::
 async function doGetSubTask({ taskId }) {
   try {
@@ -399,7 +426,7 @@ async function doUploadDocumentToOffer(payload) {
 
 function* uploadDocumentToOffer(action) {
   console.log("upload file :::::", action.payload);
-  
+
   try {
     const res = yield call(doUploadDocumentToOffer, action.payload)
     yield put(actions.uploadDocumentToOfferSuccess(res))
@@ -619,11 +646,11 @@ function* updateCommand(action) {
   }
 }
 
-async function doUpdatePriority(payload) {
+async function doDeleteCommand(payload) {
   try {
     const config = {
-      url: '/task/update-priority',
-      method: 'put',
+      url: 'task/delete-command-decision',
+      method: 'post',
       data: payload
     }
     const result = await apiService(config);
@@ -633,19 +660,17 @@ async function doUpdatePriority(payload) {
   }
 }
 
-
-function* updatePriority(action) {
+function* deleteCommand(action) {
   try {
-    const res = yield call(doUpdatePriority, action.payload)
-    yield put(actions.updatePrioritySuccess(res))
-    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
-
-    // CustomEventEmitter(DELETE_ROOM);
+    const res = yield call(doDeleteCommand, action.payload)
+    yield put(actions.deleteCommandSuccess(res))
+    // yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
-    yield put(actions.updatePriorityFail(error))
+    yield put(actions.deleteCommandFail(error))
   }
 }
 
+// Member
 async function doGetMember({ task_id }) {
   try {
     const config = {
@@ -735,7 +760,81 @@ function* deleteMember(action) {
   }
 }
 
+// Member Role
+
+async function doCreateRole(payload) {
+  try {
+    const config = {
+      url: 'role-task/create-role-task',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createRole(action) {
+  try {
+    const res = yield call(doCreateRole, action.payload)
+    yield put(actions.createRoleSuccess(res))
+  } catch (error) {
+    yield put(actions.createRoleFail(error))
+  }
+}
+
+async function doUpdateRole(payload) {
+  try {
+    const config = {
+      url: 'role-task/update-role-task',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updateRole(action) {
+  try {
+    const res = yield call(doUpdateRole, action.payload)
+    yield put(actions.updateRoleSuccess(res))
+  } catch (error) {
+    yield put(actions.updateRoleFail(error))
+  }
+}
+
+async function doDeleteRole(payload) {
+  try {
+    const config = {
+      url: 'role-task/delete-role-task',
+      method: 'delete',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* deleteRole(action) {
+  try {
+    const res = yield call(doDeleteRole, action.payload)
+    yield put(actions.deleteRoleSuccess(res))
+  } catch (error) {
+    yield put(actions.deleteRoleFail(error))
+  }
+}
+
 export {
+  // Update Priority
+  updatePriority,
+
   // Offer::
   getOffer,
   createOffer,
@@ -771,12 +870,16 @@ export {
   getCommand,
   createCommand,
   updateCommand,
-  // Update Priority
-  updatePriority,
+  deleteCommand,
 
   // Member - Tabpart
   getMember,
   getMemberNotAssigned,
   createMember,
   deleteMember,
+
+  // Member Role - Tabpart
+  createRole,
+  updateRole,
+  deleteRole
 }
