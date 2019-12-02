@@ -40,7 +40,7 @@ class OrderDetail extends Component {
             <ReactToPrint
               trigger={() => (
                 <Button
-                  variant="outline-secondary"
+                  variant="outlined"
                   className="download-btn"
                   onClick={this.demoMode}
                 >

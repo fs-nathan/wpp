@@ -15,13 +15,13 @@ class MainAccount extends Component {
             <a href="/" className="link-item">
               Trang chủ
             </a>
-            <a href="/dieu-khoan" className="link-item">
+            <a href="/term" className="link-item">
               Điều khoản
             </a>
-            <a href="/tai-lieu" className="link-item">
+            <a href="/document" className="link-item">
               Tài liệu
             </a>
-            <a href="/lien-he" className="link-item">
+            <a href="/contact" className="link-item">
               Liên hệ
             </a>
           </div>

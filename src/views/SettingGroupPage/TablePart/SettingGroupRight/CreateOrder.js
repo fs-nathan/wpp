@@ -37,20 +37,29 @@ const marks = {
   }
 };
 const CreateOrder = props => {
+  const [isCheckedManagerWork, setIsCheckedManagerWork] = React.useState(false);
+  const [isCheckedBuyData, setIsCheckedBuyData] = React.useState(false);
+  const handleChangeCheck = (type, value) => {
+    if (type === 'work') {
+      setIsCheckedManagerWork(value);
+    } else {
+      setIsCheckedBuyData(value);
+    }
+  };
   return (
     <div className="order-detail-container create-order">
       <div className="has-border-right detail-left">
         <ExportPDF />
         <Button
-          className="btn btn-success mr-3 create-order-btn"
+          className="create-order-btn"
           onClick={() => {}}
-          variant="primary"
+          variant="contained"
         >
           Tạo đơn hàng
         </Button>
       </div>
       <div className="divider-vertical" />
-      <div className="">
+      <div className="content-create-order">
         <div className="UserInfo_right_header d-flex justify-content-center align-items-center">
           <h1>THIẾT LẬP ĐƠN HÀNG</h1>
         </div>
@@ -59,39 +68,61 @@ const CreateOrder = props => {
           <FormControlLabel
             className="cb-item"
             control={
-              <Checkbox color="default" checked={true} className="cb-success" />
+              <Checkbox
+                onChange={event =>
+                  handleChangeCheck('work', event.target.checked)
+                }
+                color="default"
+                checked={isCheckedManagerWork}
+                className="cb-success"
+              />
             }
             label="Nền tảng quản lý công việc WorkPlus"
           />
           <FormControlLabel
             className="cb-item"
             control={
-              <Checkbox checked={true} color="default" className="cb-success" />
+              <Checkbox
+                onChange={event =>
+                  handleChangeCheck('data', event.target.checked)
+                }
+                checked={isCheckedBuyData}
+                color="default"
+                className="cb-success"
+              />
             }
             label="Dung lượng lưu trữ (mua thêm)"
           />
           <p className="title-item">Bước 2: Thiết lập thông số</p>
-          <p className="sub-title-item">Chọn số lượng tài khoản:</p>
-          <SliderProgess item={marks.accountNum} defaultValue={100} />
-          <p>số tài khoản sử dụng (từ 5 - 1000)</p>
-          <p>Trên 1000 user vui lòng liên hệ để được hỗ trợ</p>
-          <p>
-            Đơn giá phụ thuộc vào số lượng user bạn đăng ký (
-            <a href="/">Xem bảng giá</a>)
-          </p>
-          <p className="sub-title-item">Thời gian sử dụng/thanh toán</p>
-          <SliderProgess item={marks.time} defaultValue={12} />
-          <p>Thanh toán 12-18 tháng: Tặng thêm 01 tháng sử dụng</p>
-          <p>Thanh toán 18-30 tháng: Tặng thêm 02 tháng sử dụng</p>
-          <p>Thanh toán 30-36 tháng: Tặng thêm 03 tháng sử dụng</p>
-          <div className="border create-order-border" />
-          <p className="sub-title-item">Dung lượng lưu trữ (mua thêm)</p>
-          <SliderProgess item={marks.storage} defaultValue={1000} />
-          <p className="sub-title-item">
-            Thời gian lưu trữ (mua thêm)/thanh toán
-          </p>
-          <SliderProgess item={marks.time} defaultValue={12} />
-          <div className="border create-order-border" />
+          {isCheckedManagerWork && (
+            <React.Fragment>
+              <p className="sub-title-item">Chọn số lượng tài khoản:</p>
+              <SliderProgess item={marks.accountNum} defaultValue={100} />
+              <p>số tài khoản sử dụng (từ 5 - 1000)</p>
+              <p>Trên 1000 user vui lòng liên hệ để được hỗ trợ</p>
+              <p>
+                Đơn giá phụ thuộc vào số lượng user bạn đăng ký (
+                <a href="/">Xem bảng giá</a>)
+              </p>
+              <p className="sub-title-item">Thời gian sử dụng/thanh toán</p>
+              <SliderProgess item={marks.time} defaultValue={12} />
+              <p>Thanh toán 12-18 tháng: Tặng thêm 01 tháng sử dụng</p>
+              <p>Thanh toán 18-30 tháng: Tặng thêm 02 tháng sử dụng</p>
+              <p>Thanh toán 30-36 tháng: Tặng thêm 03 tháng sử dụng</p>
+              <div className="border create-order-border" />
+            </React.Fragment>
+          )}
+          {isCheckedBuyData && (
+            <React.Fragment>
+              <p className="sub-title-item">Dung lượng lưu trữ (mua thêm)</p>
+              <SliderProgess item={marks.storage} defaultValue={1000} />
+              <p className="sub-title-item">
+                Thời gian lưu trữ (mua thêm)/thanh toán
+              </p>
+              <SliderProgess item={marks.time} defaultValue={12} />
+              <div className="border create-order-border" />
+            </React.Fragment>
+          )}
           <p className="sub-title-item">Mã khuyến mại</p>
           <p className="error-text">
             Bạn chỉ được áp dụng duy nhất 01 mã khuyến mại cho một đơn hàng tại

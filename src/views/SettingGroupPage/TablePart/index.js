@@ -5,7 +5,7 @@ import colorPal from '../../../helpers/colorPalette';
 import { darken } from '@material-ui/core/styles';
 import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
-import { ListItemIcon, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { SETTING_GROUP } from '../../../constants/constants';
 import Info from '../TablePart/SettingGroupRight/Info';
 import SetUp from '../TablePart/SettingGroupRight/SetUp';
@@ -63,11 +63,8 @@ const TablePart = props => {
       case SETTING_GROUP.SETTING:
         return <SetUp />;
       case SETTING_GROUP.ORDER: {
-        if (isOder) {
-          return <Order />;
-        } else if (isCreateOder) {
-          return <CreateOrder />;
-        }
+        if (isOder) return <Order />;
+        else if (isCreateOder) return <CreateOrder />;
         return <OrderDetail />;
       }
       case SETTING_GROUP.PAYMENT:
@@ -88,15 +85,7 @@ const TablePart = props => {
   return (
     <div className="header-setting-container">
       <div className="header-setting">
-        <ListItemIcon style={{ minWidth: 40 }}>
-          <span className="star-icon">&#9733;</span>
-        </ListItemIcon>
-        <ColorTypo
-          color="green"
-          uppercase
-          style={{ fontWeight: 'bold', fontSize: '1.5rem' }}
-        >
-          {/* &#9733;  */}
+        <ColorTypo className="header-title">
           {getHeaderText(props.match.params.type, props.location.search)}
         </ColorTypo>
         <RightHeader>

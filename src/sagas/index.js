@@ -106,6 +106,16 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../constants/actions/project/re
 import { removeProjectRoleFromMember } from './project/removeProjectRoleFromMember';
 import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/updateGroupPermissionMember';
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
+import { LIST_GROUP_TASK } from '../constants/actions/groupTask/listGroupTask';
+import { listGroupTask } from './groupTask/listGroupTask';
+import { CREATE_GROUP_TASK } from '../constants/actions/groupTask/createGroupTask';
+import { createGroupTask } from './groupTask/createGroupTask';
+import { UPDATE_GROUP_TASK } from '../constants/actions/groupTask/updateGroupTask ';
+import { updateGroupTask } from './groupTask/updateGroupTask';
+import { DELETE_GROUP_TASK } from '../constants/actions/groupTask/deleteGroupTask';
+import { deleteGroupTask } from './groupTask/deleteGroupTask';
+import { SORT_GROUP_TASK } from '../constants/actions/groupTask/sortGroupTask';
+import { sortGroupTask } from './groupTask/sortGroupTask';
 import { LIST_TASK } from '../constants/actions/task/listTask';
 import { listTask } from './task/listTask';
 import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
@@ -167,6 +177,11 @@ function* rootSaga() {
   yield takeLatest(ADD_PROJECT_ROLE_TO_MEMBER, addProjectRoleToMember);
   yield takeLatest(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
   yield takeLatest(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
+  yield takeLatest(LIST_GROUP_TASK, listGroupTask);
+  yield takeLatest(CREATE_GROUP_TASK, createGroupTask);
+  yield takeLatest(UPDATE_GROUP_TASK, updateGroupTask);
+  yield takeLatest(DELETE_GROUP_TASK, deleteGroupTask);
+  yield takeLatest(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(LIST_TASK, listTask);
 
   //Offer::

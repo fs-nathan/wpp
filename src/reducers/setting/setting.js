@@ -6,7 +6,7 @@ export const initialState = {
   settingGroupType: SETTING_GROUP.INFO,
   notificationSelected: {},
   colors: [
-    { value: '#01b374', selected: false },
+    { value: '#01b374', selected: true },
     { value: '#f35700', selected: false },
     { value: '#c62db9', selected: false },
     { value: '#2db7c6', selected: false },
@@ -15,7 +15,7 @@ export const initialState = {
     { value: '#5a5a5a', selected: false },
     { value: '#4b41b1', selected: false },
     { value: '#009cf3', selected: false },
-    { value: '#2dc63a', selected: true },
+    { value: '#2dc63a', selected: false },
     { value: '#c63c2d', selected: false },
     { value: '#f37c00', selected: false },
     { value: '#2dbbc6', selected: false },

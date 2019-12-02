@@ -23,14 +23,12 @@ const StyledPrimary = styled(Primary)`
   font-weight: 500;
 `;
 
-function ProjectMemberSlide({ handleSubSlide, listTask, }) {
+function GroupTaskSlide({ handleSubSlide, listGroupTask, }) {
   
   const { setProjectId } = React.useContext(ProjectContext);
   const { projectId } = useParams();
 
-  const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
-  const loading = listTaskLoading;
-  const error = listTaskError;
+  const { data: { groupTasks }, loading, error } = listGroupTask;
 
   const [taskGroups, setTaskGroups] = React.useState([]);
   const [searchPatern, setSearchPatern] = React.useState('');
@@ -40,8 +38,13 @@ function ProjectMemberSlide({ handleSubSlide, listTask, }) {
   }, [setProjectId, projectId]);
 
   React.useEffect(() => {
-    setTaskGroups(filter(tasks, (task) => get(task, 'id') === 'default' || get(task, 'name', '').toLowerCase().includes(searchPatern.toLowerCase())));
-  }, [tasks, searchPatern]);
+    setTaskGroups(
+      filter(
+        groupTasks, 
+        groupTask => get(groupTask, 'name', '').toLowerCase().includes(searchPatern.toLowerCase())
+      )
+    );
+  }, [groupTasks, searchPatern]);
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -138,7 +141,7 @@ function ProjectMemberSlide({ handleSubSlide, listTask, }) {
 
 const mapStateToProps = state => {
   return {
-    listTask: state.task.listTask,
+    listGroupTask: state.groupTask.listGroupTask,
   };
 };
 
@@ -150,4 +153,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ProjectMemberSlide);
+)(GroupTaskSlide);

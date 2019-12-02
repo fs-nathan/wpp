@@ -4,11 +4,7 @@ import { connect } from 'react-redux';
 import Chip from '../../components/ColorChip';
 import SearchInput from '../../components/SearchInput';
 import Icon from '@mdi/react';
-import {
-  mdiChevronDown,
-  mdiHelpCircleOutline,
-  mdiSettingsOutline
-} from '@mdi/js';
+import { mdiMenuDown, mdiHelpCircleOutline } from '@mdi/js';
 import { IconButton, Avatar } from '@material-ui/core';
 import avatar from '../../assets/avatar.jpg';
 import * as icons from '../../assets';
@@ -18,29 +14,30 @@ import SearchModal from '../../components/SearchModal/SearchModal';
 import './TopBar.scss';
 
 const Container = styled.div`
-  padding: 0 1rem;
-  grid-area: top;
-  display: flex;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
+  grid-template-areas: 'list table';
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  & > *:last-child {
-    margin-left: auto;
-  }
   z-index: 999;
 `;
 
 const LeftPart = styled.div`
   display: flex;
-  & > div:first-child {
-    margin-right: 20px;
-  }
+  padding: 0 1rem;
 `;
 
 const InfoBox = styled.div`
+  overflow: hidden;
+  cursor: pointer;
   & > div {
     display: flex;
     align-items: center;
     & > *:first-child {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
       margin-right: 0.75rem;
     }
   }
@@ -56,6 +53,8 @@ const StyledSearchInput = styled(SearchInput)`
 
 const RightPart = styled.div`
   display: flex;
+  padding-right: 1rem;
+  align-items: center;
   & > *:not(:last-child) {
     margin-right: 5px;
   }
@@ -63,6 +62,8 @@ const RightPart = styled.div`
 
 const AccBox = styled.div`
   margin-left: 20px;
+  min-width: 200px;
+  justify-content: flex-end;
   display: flex;
   align-items: center;
   & > *:not(:first-child) {
@@ -91,37 +92,43 @@ const TopBar = props => {
     }
     setVisibleSearch(true);
   };
+  const handleAccount = () => {
+    props.actionVisibleDrawerMessage({
+      type: DRAWER_TYPE.GROUP_ACCOUNT,
+      anchor: 'top'
+    });
+  };
   return (
     <Container id="topNavId">
       <LeftPart>
-        <InfoBox>
+        <InfoBox onClick={handleAccount}>
           <div>
             <div>HungThanhXD</div>
             <Chip badge color="orange" label="Pro" />
           </div>
           <div>
             <GreenText>huuthanhxd@gmail.com</GreenText>
-            <Icon path={mdiChevronDown} size={1} />
+            <Icon path={mdiMenuDown} size={1} color="rgba(0, 0, 0, 0.54)" />
           </div>
         </InfoBox>
+      </LeftPart>
+      <RightPart>
         <span id="searchInputWrapper">
           <StyledSearchInput
             onClick={openSearchModal}
             placeholder="Tìm nhanh công việc"
           />
+          {visibleSearchModal && (
+            <SearchModal
+              open={visibleSearchModal}
+              setOpen={val => setVisibleSearch(val || false)}
+              marginLeft={marginLeftModal}
+              marginTop={marginTopModal}
+            />
+          )}
         </span>
-        {visibleSearchModal && (
-          <SearchModal
-            open={visibleSearchModal}
-            setOpen={val => setVisibleSearch(val || false)}
-            marginLeft={marginLeftModal}
-            marginTop={marginTopModal}
-          />
-        )}
-      </LeftPart>
-      <RightPart>
         <IconButton
-          className="cursor-pointer"
+          className="cursor-pointer support-icon"
           onClick={() =>
             props.actionVisibleDrawerMessage({
               type: DRAWER_TYPE.SUPPORT,
@@ -129,11 +136,22 @@ const TopBar = props => {
             })
           }
         >
-          <Icon path={mdiHelpCircleOutline} size={1} />
+          <Icon
+            path={mdiHelpCircleOutline}
+            size={0.8}
+            color="rgba(0, 0, 0, 0.54)"
+            className="normal-icon"
+          />
+          <Icon
+            path={mdiHelpCircleOutline}
+            size={0.8}
+            color="#444"
+            className="active-icon"
+          />
           &nbsp;Trợ giúp
         </IconButton>
         <IconButton
-          className="cursor-pointer"
+          className="cursor-pointer top-icon"
           onClick={() =>
             props.actionVisibleDrawerMessage({
               type: DRAWER_TYPE.MESSAGE,
@@ -152,7 +170,7 @@ const TopBar = props => {
           />
         </IconButton>
         <IconButton
-          className="cursor-pointer"
+          className="cursor-pointer top-icon"
           onClick={() =>
             props.actionVisibleDrawerMessage({
               type: DRAWER_TYPE.NOTIFICATION,
@@ -173,16 +191,17 @@ const TopBar = props => {
         <AccBox>
           <Avatar style={{ height: 30, width: 30 }} src={avatar} alt="Avatar" />
           <p>Nguyễn Hữu Thành</p>
-          <Icon
-            className="cursor-pointer"
-            path={mdiSettingsOutline}
-            size={1}
+          &nbsp;
+          <img
             onClick={() =>
               props.actionVisibleDrawerMessage({
                 type: DRAWER_TYPE.SETTING,
                 anchor: 'right'
               })
             }
+            src={icons.ic_menu_more}
+            alt=""
+            className="topnav-icon"
           />
         </AccBox>
       </RightPart>

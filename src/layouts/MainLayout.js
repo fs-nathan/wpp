@@ -81,7 +81,7 @@ const ContentBox = styled.div`
   }
 `;
 
-function MainLayout({ doLogin, doLoginCheckState, location }) {
+function MainLayout({ doLogin, doLoginCheckState, location, colors }) {
   const isViewFullPage = route => {
     return (
       route === Routes.REGISTER ||
@@ -113,13 +113,14 @@ function MainLayout({ doLogin, doLoginCheckState, location }) {
     return <Switch>{result}</Switch>;
   }
 
+  const bgColor = colors.find(item => item.selected === true);
   return (
     <Container
       className={isViewFullPage(location.pathname) ? 'view-full-page' : ''}
     >
       {!isViewFullPage(location.pathname) && (
         <React.Fragment>
-          <LogoBox to="/">
+          <LogoBox to="/" style={{ background: bgColor.value }}>
             <img src={logo} alt="vtask-logo-menu" />
           </LogoBox>
           <LeftBar />
@@ -144,4 +145,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(withRouter(MainLayoutWrapper));
+export default connect(
+  state => ({
+    colors: state.setting.colors
+  }),
+  mapDispatchToProps
+)(withRouter(MainLayoutWrapper));

@@ -8,14 +8,14 @@ export const StyledList = styled(List)`
 export const StyledListItem = styled(ListItem)`
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 10px 1rem;
   background-color: #fff;
   & > *:not(:first-child) {
     margin-left: 12px;
   }
   &:hover {
     cursor: pointer;
-    background-color: #F2F5FA;
+    background-color: #f2f5fa;
   }
   &:focus {
     background-color: #e6f0ff;

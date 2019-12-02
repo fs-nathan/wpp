@@ -1,21 +1,19 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 // import Icon from "@mdi/react";
 // import { mdiStar } from "@mdi/js";
+import { SETTING_ACCOUNT } from '../../../constants/constant';
+import ChangePassword from './ChangePassword';
+import NotificationWorkPlus from './NotificationWorkPlus';
+import SettingInfo from './SettingInfo';
+import TicketManager from './TicketManager';
+import HeaderAccount from './HeaderAccount';
+import NotificationWorkPlusDetail from './NotificationWorkPlusDetail';
+import './SettingAccountRight.scss';
 
-import { SETTING_ACCOUNT } from "../../../constants/constant";
-
-import ChangePassword from "./ChangePassword";
-import NotificationWorkPlus from "./NotificationWorkPlus";
-import SettingInfo from "./SettingInfo";
-import TicketManager from "./TicketManager";
-import HeaderAccount from "./HeaderAccount";
-import NotificationWorkPlusDetail from "./NotificationWorkPlusDetail";
-
-import "./SettingAccountRight.scss";
-class SettingAccountRight extends Component {
+const SettingAccountRight = props => {
   getContentSettingAccountRight = () => {
-    switch (this.props.settingAccountType) {
+    switch (props.settingAccountType) {
       case SETTING_ACCOUNT.INFO:
         return <SettingInfo />;
       case SETTING_ACCOUNT.CHANGE_PASSWORD:
@@ -30,15 +28,14 @@ class SettingAccountRight extends Component {
         return null;
     }
   };
-  render() {
-    return (
-      <div className="SettingAccountPage">
-        <HeaderAccount />
-        {this.getContentSettingAccountRight()}
-      </div>
-    );
-  }
-}
+
+  return (
+    <div className="SettingAccountPage">
+      <HeaderAccount />
+      {getContentSettingAccountRight()}
+    </div>
+  );
+};
 
 export default connect(
   state => ({

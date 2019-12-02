@@ -1,6 +1,12 @@
 export const TOKEN = 'token';
 export const REFRESH_TOKEN = 'refreshToken';
-
+export const DRAWER_TYPE = {
+  SUPPORT: 'SUPPORT',
+  MESSAGE: 'MESSAGE',
+  NOTIFICATION: 'NOTIFICATION',
+  GROUP_ACCOUNT: 'GROUP_ACCOUNT',
+  SETTING: 'SETTING'
+};
 export const SETTING_ACCOUNT = {
   INFO: 'info',
   CHANGE_PASSWORD: 'change-password',
@@ -16,10 +22,18 @@ export const SETTING_GROUP = {
   CREATE_ORDER: 'create-order',
   PAYMENT: 'payment'
 };
-export const DRAWER_TYPE = {
-  SUPPORT: 'SUPPORT',
-  MESSAGE: 'MESSAGE',
-  NOTIFICATION: 'NOTIFICATION',
-  GROUP_ACCOUNT: 'GROUP_ACCOUNT',
-  SETTING: 'SETTING'
+export const MESSAGE = {
+  ALL: 'message-all',
+  NEW: 'message-new',
+  NOTICE_ALL: 'notice-all',
+  NOTICE_NEW: 'notice-new'
+};
+export const DOCUMENT = {
+  RECENT: 'recent',
+  PROJECT: 'project',
+  SHARE: 'share',
+  SHARE_ME: 'share-me',
+  ME: 'me',
+  GOOGLE_DRIVE: 'google-drive',
+  TRASH: 'trash'
 };

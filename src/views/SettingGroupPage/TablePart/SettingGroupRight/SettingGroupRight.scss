@@ -18,37 +18,40 @@
     line-height: 1;
     border-radius: 2px;
     &.extend {
-      background: rgb(209, 238, 221);
-      border-color: #48bb78;
-      min-width: 95px;
-      color: #48bb78;
-      &:focus {
+      background: #02c432;
+      border-color: #02c432;
+      width: 95px;
+      height: 38px;
+      color: #fff;
+      &:hover {
         box-shadow: none;
-        background-color: #01b374;
-        border-color: #01b374;
+        background: #11ae37;
+        border-color: #11ae37;
       }
     }
     &.delete {
-      background-color: rgb(250, 195, 191);
-      border-color: #c63c2d;
-      min-width: 60px;
-      color: #ec1000;
-      &:focus {
+      background-color: #fb3b00;
+      border-color: #fb3b00;
+      width: 95px;
+      height: 38px;
+      color: #fff;
+      &:hover {
         box-shadow: none;
-        background-color: #c63c2d;
-        border-color: #c63c2d;
+        background: #b83810;
+        border-color: #b83810;
       }
     }
   }
   .order-detail-container {
     display: flex;
     .detail-left {
-      padding: 30px;
+      padding: 20px 0;
       min-height: calc(100vh - 120px);
-      width: 60%;
+      width: 65%;
     }
     .other-info-order-detail {
-      padding: 30px;
+      padding: 30px 25px;
+      width: calc(35% - 50px);
     }
     .header-detail-right {
       border-bottom: 1px solid #ededed;
@@ -59,7 +62,7 @@
       margin: 0;
     }
     .detail-right-bottom {
-      padding: 20px;
+      padding: 20px 25px;
       .title-item {
         color: #5a5a5a;
         font-weight: bold;
@@ -88,8 +91,9 @@
       }
       .download-btn {
         margin: 40px 0 0 0;
-        width: calc(100% - 40px);
+        width: 100%;
         padding: 7px 0;
+        color: #2dc63a;
       }
     }
 
@@ -107,7 +111,7 @@
         color: #fff;
       }
       .detail-right-bottom {
-        padding: 0 20px 20px 20px;
+        padding: 0 25px 20px 25px;
         .title-item {
           text-transform: none;
           margin: 20px 0 20px 0;
@@ -165,7 +169,7 @@
   .payment-container {
     display: flex;
     .payment-left {
-      min-height: calc(100vh - 120px);
+      width: 65%;
       padding: 30px;
       overflow: auto;
       margin-right: -1px;
@@ -195,6 +199,7 @@
       }
     }
     .payment-right {
+      width: 35%;
       .payment-right-top {
         padding: 20px;
         border-bottom: 1px solid #ededed;
@@ -226,7 +231,7 @@
 
 // Style for group info page
 .setting-group-info {
-  padding: 20px 30px;
+  padding: 10px 20px;
   display: flex;
   .divider {
     margin: 5px 0;
@@ -270,6 +275,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .crop-image-btn {
+        &:hover {
+          background-color: transparent;
+        }
+      }
     }
   }
   .input-file {
@@ -300,24 +310,17 @@
 
 // Style for setup page
 .setup-info {
-  padding: 0 30px;
+  padding: 0 20px;
   display: flex;
   .setup-info-left {
-    margin-top: 30px;
+    margin-top: 20px;
     width: 50%;
-    padding-right: 30px;
+    padding-right: 20px;
     .setup-content {
       margin-top: 20px;
-      .cb-item {
-        min-width: 150px;
-        .cb-success {
-          &.Mui-checked {
-            color: #43a047;
-          }
-          &.Mui-disabled {
-            color: rgba(0, 0, 0, 0.26);
-          }
-        }
+      .setup-menu-list {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
       }
     }
     .setting-bg-left-menu {
@@ -337,9 +340,9 @@
   }
   .setup-info-right {
     width: 50%;
-    margin-top: 30px;
-    padding-left: 30px;
-    padding-right: 30px;
+    margin-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
     .plugin-content {
       margin-top: 20px;
       .drag-drop-wrapper {
@@ -356,8 +359,15 @@
 }
 .divider-vertical {
   width: 1px;
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 126px);
   background: #ced4da;
+}
+.content-create-order {
+  padding: 26px 0;
+  width: 35%;
+  .UserInfo_right_header {
+    padding-left: 25px;
+  }
 }
 // style for drag - drop list in the setup page
 .drag-item {

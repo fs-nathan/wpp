@@ -14,6 +14,7 @@ import LoginPage from '../views/AccountPage/LoginPage';
 import RegisterPage from '../views/AccountPage/RegisterPage';
 import ForgotPassword from '../views/AccountPage/ForgotPassword';
 import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
+import MessageNoticePage from '../views/MessageNoticePage';
 
 import TestPage from '../__test__';
 import { Routes } from '../constants/routes';
@@ -34,7 +35,11 @@ const routes = [
   { path: Routes.LOGIN, component: () => <LoginPage /> },
   { path: Routes.REGISTER, component: () => <RegisterPage /> },
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
-  { path: Routes.CONFIRM_REGISTRATION, component: () => <ConfirmRegistration /> },
+  {
+    path: Routes.CONFIRM_REGISTRATION,
+    component: () => <ConfirmRegistration />
+  },
+  { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
   { path: '', exact: false, component: () => null }
 ];
 

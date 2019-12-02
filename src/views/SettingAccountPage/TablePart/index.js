@@ -1,31 +1,40 @@
 import React from 'react';
-// import { mdiUpload } from "@mdi/js";
+import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
 import { isEmpty } from '../../../helpers/utils/isEmpty';
 import ColorTypo from '../../../components/ColorTypo';
-// import HeaderButtonGroup from "./HeaderButtonGroup";
-// import ColorButton from "../../../components/ColorButton";
-import { ListItemIcon } from '@material-ui/core';
+import HeaderButtonGroup from './HeaderButtonGroup';
 import SettingInfo from '../TablePart/SettingAccountRight/SettingInfo';
 import ChangePassword from '../TablePart/SettingAccountRight/ChangePassword';
 import TicketManager from '../TablePart/SettingAccountRight/TicketManager';
 import NotificationWorkPlus from '../TablePart/SettingAccountRight/NotificationWorkPlus';
 import NotificationWorkPlusDetail from '../TablePart/SettingAccountRight/NotificationWorkPlusDetail';
 import '../SettingAccount.scss';
+import { SETTING_ACCOUNT } from '../../../constants/constants';
+
+const RightHeader = styled.div`
+  margin-left: auto;
+  & > *:last-child {
+    margin-left: 20px;
+  }
+`;
 
 const TablePart = props => {
+  const type = props.match.params.type;
+  const search = props.location.search;
+  const isNotiDetail =
+    type === SETTING_ACCOUNT.NOTIFICATION_WORKPLUS && !isEmpty(search);
+
   const getContentSettingAccount = () => {
-    const type = props.match.params.type;
-    const search = props.location.search;
     switch (type) {
-      case 'info':
+      case SETTING_ACCOUNT.INFO:
         return <SettingInfo />;
-      case 'change-password':
+      case SETTING_ACCOUNT.CHANGE_PASSWORD:
         return <ChangePassword />;
-      case 'ticket':
+      case SETTING_ACCOUNT.TICKET_MANAGER:
         return <TicketManager />;
-      case 'notification-wrokplus': {
+      case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS: {
         if (isEmpty(search)) {
           return <NotificationWorkPlus />;
         }
@@ -39,13 +48,13 @@ const TablePart = props => {
     const type = props.match.params.type;
     const search = props.location.search;
     switch (type) {
-      case 'info':
+      case SETTING_ACCOUNT.INFO:
         return 'Thông tin nhóm';
-      case 'change-password':
+      case SETTING_ACCOUNT.CHANGE_PASSWORD:
         return 'Đổi mật khẩu';
-      case 'notification-wrokplus':
+      case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS:
         if (isEmpty(search)) {
-          return 'thông báo của WorkPlus';
+          return 'Thông báo của WorkPlus';
         }
         return 'Chi tiết thông báo';
       default:
@@ -55,34 +64,12 @@ const TablePart = props => {
   return (
     <div className="header-setting-container">
       <div className="header-setting">
-        <ListItemIcon style={{ minWidth: 40 }}>
-          <span className="star-icon">&#9733;</span>
-        </ListItemIcon>
-        <ColorTypo
-          color="green"
-          uppercase
-          style={{ fontWeight: 'bold', fontSize: '1.5rem' }}
-        >
-          {/* &#9733;  */}
-          {getHeader()}
-        </ColorTypo>
-        {/* <RightHeader>
-          <HeaderButtonGroup />
-          <ColorButton
-            size="small"
-            variantColor="blue"
-            variant="contained"
-            startIcon={<Icon path={mdiUpload} size={1} color={"#fff"} />}
-          >
-            Tải lên
-          </ColorButton>
-          <StyledButton
-            size="small"
-            // onClick={() => this.handleClick(SETTING_GROUP.CREATE_ORDER)}
-          >
-            + TẠO ĐƠN HÀNG
-          </StyledButton>
-        </RightHeader> */}
+        <ColorTypo className="header-title">{getHeader()}</ColorTypo>
+        {isNotiDetail && (
+          <RightHeader>
+            <HeaderButtonGroup />
+          </RightHeader>
+        )}
       </div>
       {getContentSettingAccount()}
     </div>

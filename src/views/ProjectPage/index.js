@@ -3,9 +3,10 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { detailProject } from '../../actions/project/detailProject';
 import { listTask } from '../../actions/task/listTask';
+import { listGroupTask } from '../../actions/groupTask/listGroupTask';
 import ProjectDetail from './LeftPart/ProjectDetail';
 import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
-import TaskGroupSlide from './LeftPart/TaskGroupSlide';
+import GroupTaskSlide from './LeftPart/GroupTaskSlide';
 import AllTaskTable from './RightPart/AllTaskTable';
 import { 
   CustomEventListener, CustomEventDispose,
@@ -19,6 +20,7 @@ const { Provider } = Context;
 function ProjectPage({
   doDetailProject,
   doListTask,
+  doListGroupTask,
 }) {
 
   const [projectId, setProjectId] = React.useState();
@@ -45,6 +47,13 @@ function ProjectPage({
     }
   }, [projectId, doListTask]);
 
+
+  React.useEffect(() => {
+    if (projectId) {
+      doListGroupTask({ projectId });
+    }
+  }, [projectId, doListGroupTask]);
+
   return (
     <Provider value={{
       setProjectId,
@@ -61,7 +70,7 @@ function ProjectPage({
                   leftRenders={[
                     () => <ProjectDetail {...props} />,
                     ({ handleSubSlide }) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide} />,
-                    ({ handleSubSlide }) => <TaskGroupSlide {...props} handleSubSlide={handleSubSlide} />,
+                    ({ handleSubSlide }) => <GroupTaskSlide {...props} handleSubSlide={handleSubSlide} />,
                   ]}
                   rightRender={
                     ({ expand, handleExpand, handleSubSlide, }) => 
@@ -86,6 +95,7 @@ const mapDispatchToProps = dispatch => {
   return {
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doListTask: ({ projectId }, quite) => dispatch(listTask({ projectId }, quite)),
+    doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
   }
 };
 

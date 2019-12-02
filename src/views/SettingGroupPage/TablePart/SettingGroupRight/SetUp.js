@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  FormGroup,
+  Divider,
   FormControlLabel,
   Checkbox,
   IconButton,
@@ -84,86 +84,81 @@ function SetUp(props) {
           Thiết lập hiển thị chức năng trên menu trái
         </div>
         <div className="setup-content">
-          <FormGroup row className="d-flex justify-content-between">
+          <div className="setup-menu-list">
             <FormControlLabel
               disabled
               checked
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox ccolor="primary" />}
               label="Trang chủ"
             />
             <FormControlLabel
               disabled
               checked
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Dự án"
             />
             <FormControlLabel
               disabled
               checked
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Công việc"
             />
-          </FormGroup>
-          <FormGroup row className="d-flex justify-content-between">
             <FormControlLabel
               disabled
               checked
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Báo cáo"
             />
             <FormControlLabel
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Ngân sách"
             />
             <FormControlLabel
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Đề xuất"
             />
-          </FormGroup>
-          <FormGroup row className="d-flex justify-content-between">
             <FormControlLabel
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Quy trình"
             />
             <FormControlLabel
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Văn thư"
             />
             <FormControlLabel
               disabled
               checked
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Tài liệu"
             />
-          </FormGroup>
-          <FormGroup row className="d-flex justify-content-between">
             <FormControlLabel
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Lịch, nhắc hẹn"
             />
             <FormControlLabel
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Vị trí"
             />
             <FormControlLabel
               disabled
               checked
               className="cb-item"
-              control={<Checkbox color="default" className="cb-success" />}
+              control={<Checkbox color="primary" />}
               label="Thành viên"
             />
-          </FormGroup>
+          </div>
+
           <div className="setting-bg-left-menu">
             <span className="lb-text">Chọn màu sắc menu trái</span>
             <span
@@ -178,7 +173,7 @@ function SetUp(props) {
           </div>
         </div>
       </div>
-      <div className="divider-vertical"></div>
+      <Divider orientation="vertical" className="divider-vertical"/>
       <div className="setup-info-right">
         <div className="title">Thiết lập plugin trang chủ</div>
         <div className="sub-title">

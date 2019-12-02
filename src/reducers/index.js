@@ -55,6 +55,11 @@ import updateStateJoinTask, { initialState as updateStateJoinTaskInitialState } 
 import addProjectRoleToMember, { initialState as addProjectRoleToMemberInitialState } from './project/addProjectRoleToMember';
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from './project/removeProjectRoleFromMember';
 import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from './project/updateGroupPermissionMember';
+import listGroupTask, { initialState as listGroupTaskInitialState} from './groupTask/listGroupTask';
+import createGroupTask, { initialState as createGroupTaskInitialState} from './groupTask/createGroupTask';
+import deleteGroupTask, { initialState as deleteGroupTaskInitialState} from './groupTask/deleteGroupTask';
+import updateGroupTask, { initialState as updateGroupTaskInitialState} from './groupTask/updateGroupTask';
+import sortGroupTask, { initialState as sortGroupTaskInitialState} from './groupTask/sortGroupTask';
 import listTask, { initialState as listTaskInitialState} from './task/listTask';
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
@@ -155,9 +160,16 @@ const rootReducer = combineReducers({
     sortProject,
     copyProject
   }),
+  groupTask: combineReducers({
+    listGroupTask,
+    createGroupTask,
+    deleteGroupTask,
+    updateGroupTask,
+    sortGroupTask,
+  }),
   task: combineReducers({
     listTask
-  })
+  }),
 });
 
 export const DEFAULT_STATE = {
@@ -234,6 +246,13 @@ export const DEFAULT_STATE = {
     updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
     sortProject: sortProjectInitialState,
     copyProject: copyProjectInitialState
+  },
+  groupTask: {
+    listGroupTask: listGroupTaskInitialState,
+    updateGroupTask: updateGroupTaskInitialState,
+    createGroupTask: createGroupTaskInitialState,
+    deleteGroupTask: deleteGroupTaskInitialState,
+    sortGroupTask: sortGroupTaskInitialState,
   },
   task: {
     listTask: listTaskInitialState,

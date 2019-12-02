@@ -9,6 +9,7 @@ const TableStyled1 = styled.table`
   margin-bottom: 30px;
   width: 100%;
   table-layout: fixed;
+  border-spacing: 0;
 `;
 
 const ThStyled1 = styled.th`
@@ -28,6 +29,7 @@ const TdStyled1 = styled.td`
 const TableStyled2 = styled.table`
   display: table;
   width: 100%;
+  border-spacing: 0;
 `;
 
 const ThStyled2 = styled.th`
@@ -54,7 +56,7 @@ const TdStyled3 = styled.td`
 class ExportPDF extends Component {
   render() {
     return (
-      <div class="order-content">
+      <div className="order-content">
         <form>
           <div id="printContent">
             <div className="print-content">
@@ -133,7 +135,7 @@ class ExportPDF extends Component {
                     <tr style={{ background: '#f2f2f2' }}>
                       <TdStyled2>1</TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div style={{ fontweight: 'bold' }}>
                             Gói sản phẩm: 10 USER
                           </div>
@@ -151,7 +153,7 @@ class ExportPDF extends Component {
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div>Đăng ký gói sản phầm 10-USER</div>
                           <div>Số lượng USER: 10</div>
                           <div>Dung lượng lưu trữ: 10 GB</div>
@@ -166,7 +168,7 @@ class ExportPDF extends Component {
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div>Thời gian cộng thêm từ đơn hàng cũ</div>
                         </div>
                       </TdStyled3>
@@ -178,7 +180,7 @@ class ExportPDF extends Component {
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div>
                             Tặng thời gian sử dụng do kỳ thanh toán: <br /> 12
                             tháng
@@ -193,7 +195,7 @@ class ExportPDF extends Component {
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div>Mã khuyến mại: WPKM-3MO</div>
                         </div>
                       </TdStyled3>
@@ -205,7 +207,7 @@ class ExportPDF extends Component {
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div>Đăng ký gói sản phầm CS-10</div>
                           <div>Số lượng USER: 10</div>
                           <div>Dung lượng lưu trữ: 10 GB</div>
@@ -220,7 +222,7 @@ class ExportPDF extends Component {
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div>Thời gian cộng thêm từ đơn hàng cũ</div>
                         </div>
                       </TdStyled3>
@@ -232,7 +234,7 @@ class ExportPDF extends Component {
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div>
                             Tặng thời gian sử dụng do kỳ thanh toán: <br /> 12
                             tháng
@@ -247,7 +249,7 @@ class ExportPDF extends Component {
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
-                        <div class="">
+                        <div className="">
                           <div>Mã khuyến mại: WPKM-3MO</div>
                         </div>
                       </TdStyled3>

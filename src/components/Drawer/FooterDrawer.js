@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { actionVisibleDrawerMessage } from '../../actions/system/system';
 import { Routes } from '../../constants/routes';
+import { DRAWER_TYPE } from '../../constants/constants';
 import './Drawer.scss';
 
 const FooterDrawer = props => {
@@ -15,7 +16,14 @@ const FooterDrawer = props => {
   // const { actionVisibleDrawerMessage, typeDrawer } = this.props;
   return (
     <div className="footer-drawer">
-      <Link to={Routes.MESSAGE} onClick={closeDrawer}>
+      <Link
+        to={
+          props.typeDrawer === DRAWER_TYPE.MESSAGE
+            ? Routes.MESSAGE_ALL
+            : Routes.NOTICE_ALL
+        }
+        onClick={closeDrawer}
+      >
         Xem tất cả
       </Link>
       <Link to={Routes.HOME} onClick={closeDrawer} className="link-home">

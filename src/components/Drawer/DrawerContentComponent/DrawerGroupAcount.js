@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { mdiPlus } from '@mdi/js';
 import Button from '@material-ui/core/Button';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import { actionVisibleDrawerMessage } from '../../../actions/system/system';
 
@@ -60,46 +61,48 @@ class DrawerGroupAcount extends Component {
               })
             }
           >
-            <Icon path={mdiClose} size={1.4} />
+            <Icon path={mdiClose} size={1} color="rgba(0, 0, 0, 0.54)" />
           </span>
         </div>
         <div className="join-group-new">
-          <span className="btn-close">
-            <Icon path={mdiPlus} size={2} />
+          <span className="btn-close add-header-btn">
+            <Icon path={mdiPlus} size={1.2} color="rgba(0, 0, 0, 0.54)" />
           </span>
           <span className="text-join-group-new">Tham gia nhóm mới</span>
         </div>
         <div className="content-group-account">
-          <div className="item-group">
-            <div className="title-item-group">
-              <span className="text-item-group">NHÓM CỦA TÔI</span>
+          <Scrollbars autoHide autoHideTimeout={500}>
+            <div className="item-group">
+              <div className="title-item-group">
+                <span className="text-item-group">NHÓM CỦA TÔI</span>
+              </div>
+              {listMyGroup.map((group, idx) => (
+                <ItemGroupAcount item={group} key={idx} />
+              ))}
             </div>
-            {listMyGroup.map((group, idx) => (
-              <ItemGroupAcount item={group} key={idx} />
-            ))}
-          </div>
-          <div className="item-group">
-            <div className="title-item-group">
-              <span className="text-item-group">NHÓM ĐÃ THAM GIA</span>
+            <div className="item-group">
+              <div className="title-item-group">
+                <span className="text-item-group">NHÓM ĐÃ THAM GIA</span>
+              </div>
+              {listGroupJoined.map((group, idx) => (
+                <ItemGroupAcount item={group} key={idx} />
+              ))}
             </div>
-            {listGroupJoined.map((group, idx) => (
-              <ItemGroupAcount item={group} key={idx} />
-            ))}
-          </div>
-          <div className="item-group">
-            <div className="title-item-group">
-              <span className="text-item-group">NHÓM DEMO</span>
+            <div className="item-group">
+              <div className="title-item-group">
+                <span className="text-item-group">NHÓM DEMO</span>
+              </div>
+              <div className="title-item-notifi">
+                <span className="text-title-item-notifi">
+                  Tham gia nhóm Demo Workplus để khám phá các tính năng của phần
+                  mềm
+                </span>
+              </div>
+              {listGroupDemo.map((group, idx) => (
+                <ItemGroupAcount item={group} key={idx} />
+              ))}
             </div>
-            <div className="title-item-notifi">
-              <span className="text-title-item-notifi">
-                Tham gia nhóm Demo Workplus để khám phá các tính năng của phần
-                mềm
-              </span>
-            </div>
-            {listGroupDemo.map((group, idx) => (
-              <ItemGroupAcount item={group} key={idx} />
-            ))}
-          </div>
+          </Scrollbars>
         </div>
         <div className="footer-join-group-new">
           <div className="list-invative">
