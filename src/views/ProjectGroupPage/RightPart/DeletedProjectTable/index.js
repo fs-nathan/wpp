@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { get, sortBy, reverse } from 'lodash';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
   mdiShieldAccount,
+  mdiArrowLeft,
 } from '@mdi/js';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -26,7 +28,7 @@ function DeletedProjectTable({
   listDeletedProject,
 }) {
 
-  //const history = useHistory();
+  const history = useHistory();
   const { data: { projects: _projects }, loading, error } = listDeletedProject;
 
   const [projects, setProjects] = React.useState(_projects);
@@ -60,6 +62,11 @@ function DeletedProjectTable({
             options={{
               title: `Thùng rác`,
               subTitle: '',
+              subActions: [{
+                label: 'Quay lại',
+                iconPath: mdiArrowLeft,
+                onClick: (evt) => history.push('/projects'),
+              }],
               expand: {
                 bool: expand,
                 toggleExpand: () => handleExpand(!expand),

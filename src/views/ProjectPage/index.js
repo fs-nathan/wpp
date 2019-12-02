@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { detailProject } from '../../actions/project/detailProject';
+import { memberProject } from '../../actions/project/memberProject';
 import { listTask } from '../../actions/task/listTask';
 import { listGroupTask } from '../../actions/groupTask/listGroupTask';
 import ProjectDetail from './LeftPart/ProjectDetail';
@@ -20,6 +21,7 @@ const { Provider } = Context;
 
 function ProjectPage({
   doDetailProject,
+  doMemberProject,
   doListTask,
   doListGroupTask,
 }) {
@@ -41,6 +43,22 @@ function ProjectPage({
       }
     }
   }, [projectId, doDetailProject]);
+
+  React.useEffect(() => {
+    if (projectId) {
+      doMemberProject({ projectId });
+      
+      const reloadMemberProject = () => {
+        doMemberProject({ projectId }, true);
+      }
+      
+      CustomEventListener(UPDATE_PROJECT, reloadMemberProject);
+      
+      return () => {
+        CustomEventDispose(UPDATE_PROJECT, reloadMemberProject);
+      }
+    }
+  }, [projectId, doMemberProject]);
 
   React.useEffect(() => {
     if (projectId) {
@@ -127,6 +145,7 @@ function ProjectPage({
 const mapDispatchToProps = dispatch => {
   return {
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
+    doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
     doListTask: ({ projectId }, quite) => dispatch(listTask({ projectId }, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
   }

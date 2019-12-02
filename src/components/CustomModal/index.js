@@ -139,7 +139,16 @@ function TwoColumns({ height, left, right }) {
   );
 }
 
-function CustomModal({ title, columns = 1, children = null, left = null, right = null, canConfirm = true, onConfirm = () => null, onCancle = () => null, open, setOpen, fullWidth = false, height = 'normal' }) {
+function CustomModal({ 
+  title, 
+  columns = 1, 
+  children = null, left = null, right = null, 
+  canConfirm = true, 
+  onConfirm = () => null, onCancle = () => null, 
+  open, setOpen, 
+  maxWidth='md', fullWidth = false, 
+  height = 'normal', 
+}) {
 
   function handleCancle() {
     setOpen(false);
@@ -153,7 +162,7 @@ function CustomModal({ title, columns = 1, children = null, left = null, right =
 
   return (
     <StyledDialog
-      maxWidth='md'
+      maxWidth={maxWidth}
       fullWidth={fullWidth}
       open={open}
       TransitionComponent={Transition}

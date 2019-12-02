@@ -162,8 +162,6 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, doCopyProje
     setOpen(false);
   }
 
-  React.useEffect(() => { console.log(startDate) }, [startDate]);
-
   return (
     <React.Fragment>
       <CustomModal
