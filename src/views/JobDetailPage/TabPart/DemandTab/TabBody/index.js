@@ -63,7 +63,12 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
-
+const StyledMenuDemand = styled.div`
+  opacity: 0 ;
+  ${StyledListItem}:hover & {
+    opacity: 1;
+  }
+`
 const CustomListItem = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -96,9 +101,11 @@ const CustomListItem = (props) => {
               </div>
             </ColorTypo>
           </div>
-          <ButtonIcon size='small' onClick={handleClick} >
-            <Icon path={mdiDotsHorizontal} size={1} />
-          </ButtonIcon>
+          <StyledMenuDemand>
+            <ButtonIcon size='small' onClick={handleClick} >
+              <Icon path={mdiDotsHorizontal} size={1} />
+            </ButtonIcon>
+          </StyledMenuDemand>
         </StyledTitleBox>
         <StyledContentBox>
           <Text >{props.item.content}</Text>
@@ -236,13 +243,13 @@ function TabBody(props) {
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.command}/>
+          <ListDemand {...props} activeArr={props.command} />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.commandItems}/>
+          <ListDemand {...props} activeArr={props.commandItems} />
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.decisionItems}/>
+          <ListDemand {...props} activeArr={props.decisionItems} />
         </Collapse>
       </Container>
     </Body>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-  IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup, 
+import {
+  IconButton, Typography, Dialog, Button, withStyles, Radio, RadioGroup,
   // Input, Select, 
-  TextField 
+  TextField
 } from '@material-ui/core';
 import styled from 'styled-components';
-import {  mdiHelpCircle ,mdiAccountPlusOutline} from '@mdi/js';
+import { mdiHelpCircle, mdiAccountPlusOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 // import SearchInput from '../../../../components/SearchInput';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -69,7 +69,6 @@ const TitleText = styled(Typography)`
   & > *:last-child {
     color: #fa0000;
     font-size: 14px;
-    font-style: italic;
   }
 `
 
@@ -148,6 +147,11 @@ const styles = theme => ({
     margin: 0,
     padding: theme.spacing(2),
   },
+  title: {
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
+  },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
@@ -161,7 +165,7 @@ const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+      <Typography className={classes.title} variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
           <CloseIcon />
@@ -181,8 +185,7 @@ const DialogActions = withStyles(theme => ({
   root: {
     margin: 0,
     justifyContent: 'space-between',
-    padding: theme.spacing(1),
-
+    padding: "15px 24px",
   },
 }))(MuiDialogActions);
 
@@ -222,8 +225,10 @@ const TitleDialog = styled(DialogTitle)`
     position: sticky;
     top: 0;
     z-index: 999;
-    background: white;
+    background: #f5f8fc;
     border-bottom: 1px solid #0000001f;
+    text-transform: uppercase;
+    font-weight: 400
 `
 
 function CommonControlForm(props) {
@@ -314,7 +319,7 @@ const DialogFooter = styled(DialogActions)`
   background: #fff;
   z-index: 100;
   border-top: 1px solid rgba(0, 0, 0, 0.12)
-` 
+`
 
 function CreateJobModal(props) {
   // const [open, setOpen] = React.useState(false);
@@ -353,7 +358,7 @@ function CreateJobModal(props) {
               <InputTextJob
                 id="outlined-helperText"
                 label="Tên công việc"
-                helperText="(Tối đa 100 kí tự)"
+                helperText="Không được để trống"
                 margin="normal"
                 variant="outlined"
                 fullWidth
@@ -393,7 +398,7 @@ function CreateJobModal(props) {
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
           <Typography component={'div'} style={{ marginBottom: '20px' }}>
             <TitleText component={'div'}>
-              <Typography component={'div'} style={{ marginBottom: 10}}> Nhóm mặc định </Typography>
+              <Typography component={'div'} style={{ marginBottom: 10 }}> Nhóm mặc định </Typography>
               <Typography component={'div'}></Typography>
             </TitleText>
             <TextInputSelect />
@@ -403,11 +408,11 @@ function CreateJobModal(props) {
               <InputTextJob
                 id="outlined-helperText"
                 label="Mô tả công việc"
-                helperText="(Tối đa 500 kí tự)"
+                helperText="Không được để trống"
                 margin="normal"
                 fullWidth
                 variant="outlined"
-                
+
               />
               {/* <Typography component={'div'}> Mô tả công việc </Typography>
               <Typography component={'div'}>(Tối đa 500 kí tự)</Typography> */}
@@ -429,23 +434,23 @@ function CreateJobModal(props) {
         <DialogFooter>
           {props.isRight ?
             <>
-            <span></span>
-            <Button onClick={handleClose} color="primary">
-              Hoàn Thành
+              <span></span>
+              <Button onClick={handleClose} color="primary">
+                Hoàn Thành
             </Button>
             </>
             :
             <>
-            <ButtonImage onClick={() => {
-              handleClose()
-              setOpenAddModal(true)
-            }} >
-              <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />
-            </ButtonImage>
-            <Button autoFocus onClick={handleClose} style={{ color: '#898989' }}>
-              TẠO VIỆC
+              <ButtonImage onClick={() => {
+                handleClose()
+                setOpenAddModal(true)
+              }} >
+                <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />
+              </ButtonImage>
+              <Button autoFocus onClick={handleClose} color="primary">
+                TẠO VIỆC
           </Button>
-          </>
+            </>
           }
         </DialogFooter>
       </StyleDialog>
