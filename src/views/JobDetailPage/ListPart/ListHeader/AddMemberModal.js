@@ -273,7 +273,6 @@ function TableMember(props) {
                                     <Icon path={mdiDotsVertical} size={1} />
                                 </IconButton>
                                 <CustomMenu
-                                    id="simple-menu"
                                     anchorEl={anchorEl}
                                     keepMounted
                                     open={Boolean(anchorEl)}

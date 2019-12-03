@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -8,14 +8,11 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import { Input, InputAdornment } from '@material-ui/core';
+import { Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/core';
 import styled from 'styled-components';
-// import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
+import AddRoleModal from './AddRoleModal';
+
 
 
 const styles = theme => ({
@@ -25,9 +22,9 @@ const styles = theme => ({
     background: '#f5f8fc'
   },
   title: {
-      textTransform: 'uppercase',
-      fontSize: 14,
-      fontWeight: 400,
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
   },
   closeButton: {
     position: 'absolute',
@@ -37,26 +34,38 @@ const styles = theme => ({
   },
 });
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
-  formControl: {
-    margin: theme.spacing(3),
-  },
-}));
-
-const AddButton = styled(Button)`
-  margin-bottom: 15px;
-  padding: 3px;
-  background: #19bb9b;
-  color: #ace5da;
-  text-transform: none;
+const RoleTable = styled(TableCell)`
+padding: 15px 15px;
 `
-const CheckboxText = styled(FormControlLabel)`
+const AddRoleButton = styled(Button)`
+    border: 1px solid;
+    background: #0362fc;
+    color: #fff ;
+    text-transform: inherit;
+    padding: 3px 12px;
+   &:hover {
+     background: #125fdb;
+   }
+  `
+const HandleButton = styled.div`
+    display: flex;  
+    justify-content: flex-end;
   & > *:last-child {
-    font-weight: 500;
-  }
+    background: #e63737;
+    margin-left: 12px;
+    color: #fff;
+}
+`
+
+const UpdateDeleteButton = styled(Button)`
+   justify-content: center;
+   border: 1px solid #222222;
+   background: #fff;
+   color: #000000;
+   text-transform: inherit;
+   padding: 0;
+   font-weight: 400; 
+   min-width: 42px;
 `
 
 const DialogTitle = withStyles(styles)(props => {
@@ -87,30 +96,24 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 function RoleMemberModal(props) {
-  const classes = useStyles();
-  const [state, setState] = React.useState({
-    nameRole1: false,
-    nameRole2: false,
-    nameRole3: false,
-    nameRole4: false,
-  });
 
-  const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked });
-    console.log("name::::::", name)
-    console.log("[name]::::::", [name])
-    console.log("state::::::", state)
-  };
+  const rows = [
+    createData('Nhà đầu tư 2', 'asdassdd'),
+    createData('Giám đốc dự án Cần Thơ ', 'Điều hành toàn bộ dự án cần thơ'),
+    createData('Theo dõi khách hàng', 'Kiểm tra khách hàng và theo dõi khách hàng mọi lúc mọi nơi bất cứ đâu'),
+    createData('Giám sát dự án', 'Giám sát toàn bộ dự án, kể cả lãnh đạo'),
+  ];
 
-  const { role1, role2, role3, role4 } = state;
+  function createData(role, description) {
+    return { role, description };
+  }
 
   const handleClose = () => {
     props.setOpen(false);
   };
 
-  const addRoleForMember = () => {
-    console.log("state khi add role ::::::", state)
-  }
+  const [openAddRoleModal, setOpenAddRoleModal] = React.useState(false)
+
   return (
     <div>
       <Dialog maxWidth="sm" fullWidth onClose={handleClose} open={props.isOpen}>
@@ -118,46 +121,59 @@ function RoleMemberModal(props) {
           Vai trò thành viên
         </DialogTitle>
         <DialogContent dividers>
-          <Input
-            style={{ fontStyle: 'italic' }}
-            fullWidth
-            placeholder='Nhập vai trò...'
-            endAdornment={<InputAdornment position="end"><AddButton variant="contained">Thêm</AddButton></InputAdornment>}
-          />
-          <FormControl component="fieldset" className={classes.formControl}>
-            <FormGroup>
-              <CheckboxText
+          <Table>
+            <TableHead style={{ backgroundColor: '#eee' }}>
+              <TableRow>
+                <RoleTable style={{ width: '9%', textAlign: 'center' }}>Chọn</RoleTable>
+                <RoleTable style={{ width: '30%' }}>Tên vai trò</RoleTable>
+                <RoleTable style={{ width: '30%' }}>Mô tả</RoleTable>
+                <RoleTable align="right">
+                  <AddRoleButton
+                    onClick={() => {
+                      // handleClose()
+                      setOpenAddRoleModal(true)
+                    }}
+                  >+ Thêm mới
+                  </AddRoleButton>
+                </RoleTable>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map(row => (
 
-                control={<Checkbox color="primary" checked={role1} onChange={handleChange('nameRole1')} value="Giao việc" />}
-                label="Giao việc"
-              />
-              <CheckboxText
-                color="primary"
-                control={<Checkbox color="primary" checked={role2} onChange={handleChange('nameRole2')} value="Giám sát" />}
-                label="Giám sát"
-              />
-              <CheckboxText
-                color="primary"
-                control={<Checkbox color="primary" checked={role3} onChange={handleChange('nameRole3')} value="Phê duyệt" />}
-                label="Phê duyệt"
-              />
-              <CheckboxText
-                color="primary"
-                control={<Checkbox color="primary" checked={role4} onChange={handleChange('nameRole4')} value="Thực hiện" />}
-                label="Thực hiện"
-              />
-            </FormGroup>
-          </FormControl>
+                <TableRow
+                  key={row.role}
+                >
+                  <TableCell component="th" scope="row">
+                    <Checkbox />
+                  </TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }} >{row.role}</TableCell>
+                  <TableCell>{row.description}</TableCell>
+                  <TableCell>
+                    <HandleButton>
+                      <UpdateDeleteButton>Sửa</UpdateDeleteButton>
+                      <UpdateDeleteButton>Xoá</UpdateDeleteButton>
+                    </HandleButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={() => 
-            // handleClose,
-            addRoleForMember()
-            } color='primary'>
+          <Button autoFocus onClick={() =>
+            handleClose()
+          } color='secondary'>
+            HUỶ
+          </Button>
+          <Button autoFocus onClick={() =>
+            handleClose()
+          } color='primary'>
             HOÀN THÀNH
           </Button>
         </DialogActions>
       </Dialog>
+      <AddRoleModal isOpen={openAddRoleModal} setOpen={setOpenAddRoleModal} />
     </div>
   );
 }

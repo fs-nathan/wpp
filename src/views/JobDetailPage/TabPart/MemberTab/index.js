@@ -29,7 +29,6 @@ const Header = styled(TabHeader)`
 `
 function MemberTab({ show, setShow }) {
   const value = React.useContext(WrapperContext)
-  console.log('hello', value)
 
   return (
     <Slide in={show === 8} direction='left' mountOnEnter unmountOnExit>

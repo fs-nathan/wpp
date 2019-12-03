@@ -9,9 +9,7 @@ const initialState = {
     error: false,
 };
 
-export default function reducer(state = initialState, action) {
-    console.log("action in reducer:::::", action);
-    
+export default function reducer(state = initialState, action) {    
     switch (action.type) {
         case types.GET_TASK_DETAIL_TABPART_REQUEST:
             return {
