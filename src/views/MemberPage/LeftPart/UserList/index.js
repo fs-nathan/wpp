@@ -72,7 +72,8 @@ function UserList({ listUserOfGroup, sortUser, doSortUser, }) {
         title='Danh sách thành viên'
         leftAction={{
           iconPath: mdiChevronLeft,
-          onClick: () => history.push('/departments')
+          onClick: () => history.push('/departments'),
+          tooltip: 'Quay lại',
         }}
         loading={{
           bool: loading,

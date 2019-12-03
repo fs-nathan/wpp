@@ -218,6 +218,7 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
       rightAction={{
         iconPath: mdiClose,
         onClick: () => handleSubSlide(0),
+        tooltip: 'Đóng',
       }}
     >
       <StyledBox>

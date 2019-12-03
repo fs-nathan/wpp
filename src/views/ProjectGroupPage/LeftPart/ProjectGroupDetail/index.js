@@ -113,7 +113,8 @@ function ProjectGroupDetail({ detailProjectGroup, memberProjectGroup, doDeletePr
         <LeftSideContainer
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push('/projects')
+            onClick: () => history.push('/projects'),
+            tooltip: 'Quay lại',
           }}
           title='Chi tiết nhóm dự án'
           loading={{

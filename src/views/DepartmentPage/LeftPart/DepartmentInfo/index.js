@@ -122,7 +122,8 @@ function NormalDepartment({ detailRoom, doDeleteRoom }) {
         <LeftSideContainer
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push('/departments')
+            onClick: () => history.push('/departments'),
+            tooltip: 'Quay lại',
           }}
           title={t('views.user_page.left_part.department_info.modal_title')}
           loading={{

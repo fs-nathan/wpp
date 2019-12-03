@@ -183,6 +183,12 @@ const SettingContainer = styled.div`
   margin-right: 16px;
 `;
 
+const MiddleDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 0:   
@@ -529,7 +535,7 @@ function AllProjectTable({
             }}
             columns={[{
               label: () => <Icon path={mdiShieldAccount} size={1} color={'rgb(102, 102, 102)'}/>,
-              field: (row) => <CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' />,
+              field: (row) => <MiddleDiv><CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' /></MiddleDiv>,
               center: true,
             }, {
               label: 'Dự án',
@@ -569,16 +575,18 @@ function AllProjectTable({
               sort: (evt) => handleSortColumn('priority_code'),
             }, {
               label: () => <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'}/>,
-              field: row => <AvatarCircleList 
-                              users={
-                                get(row, 'members', [])
-                                .map(member => ({
-                                  name: get(member, 'name'),
-                                  avatar: get(member, 'avatar'),
-                                }))
-                              } 
-                              display={3} 
-                            />,
+              field: row => <MiddleDiv>
+                              <AvatarCircleList 
+                                users={
+                                  get(row, 'members', [])
+                                  .map(member => ({
+                                    name: get(member, 'name'),
+                                    avatar: get(member, 'avatar'),
+                                  }))
+                                } 
+                                display={3} 
+                              />
+                            </MiddleDiv>,
               center: true,
             }, {
               label: '',

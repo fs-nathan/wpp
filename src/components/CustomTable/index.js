@@ -62,6 +62,8 @@ const RightHeader = styled.div`
 `;
 
 const StyledButton = styled(Button)`
+  padding: 8px 12px;
+  margin-top: 8px;
   background-color: ${colorPal['orange'][0]};
   color: #fff;
   &:hover {

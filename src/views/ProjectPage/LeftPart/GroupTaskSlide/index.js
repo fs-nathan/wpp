@@ -72,10 +72,12 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, }) {
           leftAction={{
             iconPath: mdiChevronLeft,
             onClick: () => handleSubSlide(0),
+            tooltip: 'Quay lại',
           }}
           rightAction={{
             iconPath: mdiPlus,
             onClick: () => setOpen(true),
+            tooltip: 'Thêm nhóm công việc',
           }}
           loading={{
             bool: loading,

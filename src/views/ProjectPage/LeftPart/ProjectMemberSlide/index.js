@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Icon from '@mdi/react';
-import { mdiAccountGroup, mdiChevronLeft, mdiDragVertical } from '@mdi/js';
+import { mdiChevronLeft, mdiDragVertical, mdiPlus } from '@mdi/js';
 import { connect } from 'react-redux';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -15,6 +15,7 @@ import { ListItemText } from '@material-ui/core';
 import { filter, get, } from 'lodash';
 import SearchInput from '../../../../components/SearchInput';
 import { Context as ProjectContext } from '../../index';
+import MembersSettingModal from '../../Modals/MembersSetting';
 
 const Banner = styled.div`
   padding: 15px;
@@ -24,7 +25,7 @@ const StyledPrimary = styled(Primary)`
   font-weight: 500;
 `;
 
-function TaskGroupSlide({ handleSubSlide, memberProject, }) {
+function ProjectMemberSlide({ handleSubSlide, memberProject, }) {
   
   const { setProjectId } = React.useContext(ProjectContext);
   const { projectId } = useParams();
@@ -32,6 +33,8 @@ function TaskGroupSlide({ handleSubSlide, memberProject, }) {
 
   const { data: { membersAdded, }, error, loading } = memberProject;
   const [members, setMembers] = React.useState([]);
+
+  const [open, setOpen] = React.useState(false);
   
   React.useEffect(() => {
     setProjectId(projectId);
@@ -64,10 +67,12 @@ function TaskGroupSlide({ handleSubSlide, memberProject, }) {
           leftAction={{
             iconPath: mdiChevronLeft,
             onClick: () => handleSubSlide(0),
+            tooltip: 'Quay lại',
           }}
           rightAction={{
-            iconPath: mdiAccountGroup,
+            iconPath: mdiPlus,
             onClick: () => null,
+            tooltip: 'Thêm thành viên dự án',
           }}
           loading={{
             bool: loading,
@@ -116,6 +121,7 @@ function TaskGroupSlide({ handleSubSlide, memberProject, }) {
               )}
             </Droppable>
           </DragDropContext>
+          <MembersSettingModal open={open} setOpen={setOpen} />
         </LeftSideContainer>
       )}
     </React.Fragment>
@@ -136,4 +142,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TaskGroupSlide);
+)(ProjectMemberSlide);

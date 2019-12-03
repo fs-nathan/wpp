@@ -61,6 +61,7 @@ function DepartmentList({ listRoom, doSortRoom, }) {
           rightAction={{
             iconPath: mdiPlus,
             onClick: () => setOpenModal(true),
+            tooltip: 'Thêm bộ phận',
           }}
           loading={{
             bool: loading,
