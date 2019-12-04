@@ -508,8 +508,6 @@ export const deleteMemberFail = (error) => ({
     type: types.DELETE_MEMBER_FAIL,
     error: error,
 });
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 // Member Role
 export const createRole = (payload) => ({
@@ -556,7 +554,7 @@ export const deleteRoleFail = (error) => ({
     type: types.DELETE_ROLE_FAIL,
     error: error,
 });
-=======
+
 //Tien do - time
  export const getTrackingTime=(payload)=>({
      type: types.GET_TRACKING_TIME_REQUEST,
@@ -570,8 +568,6 @@ export const deleteRoleFail = (error) => ({
      type:types.GET_TRACKING_TIME_FAIl,
      error:error
  })
->>>>>>> origin/dev_huy
-=======
 
 // GET LIST GROUP TASK
 export const getListGroupTask = (payload) => ({
@@ -635,4 +631,4 @@ export const getListTaskDetailFail = (error) => ({
     type: types.GET_LIST_TASK_DETAIL_FAIL,
     error: error,
 });
->>>>>>> origin/dev_quan
+

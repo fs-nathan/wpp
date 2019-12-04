@@ -9,16 +9,9 @@ const initialState = {
     error: false,
 };
 
-<<<<<<< HEAD
-export default function reducer(state = initialState, action) {    
-=======
+
 export default function reducer(state = initialState, action) {
-<<<<<<< HEAD
-    // console.log("action in reducer:::::", action);
-=======
->>>>>>> origin/dev_quan
-    
->>>>>>> origin/dev_huy
+
     switch (action.type) {
         case types.GET_TASK_DETAIL_TABPART_REQUEST:
             return {

@@ -237,9 +237,6 @@ const DEFAULT_ASSIGN = assignList[0].value
 const DEFAULT_ASSIGN_ID = assignList[0].id
 
 function CommonControlForm(props) {
-<<<<<<< HEAD
-  const [value, setValue] = React.useState(props.label1);
-=======
   const [value, setValue] = React.useState(props.assign);
   const handleChangeFormAssign = itemValue => {
     console.log('itemValue::::', itemValue);
@@ -248,7 +245,6 @@ function CommonControlForm(props) {
     let clickedItem = props.labels.find(item => item.value === itemValue)
     props.handleChangeAssign(clickedItem)
   }
->>>>>>> origin/dev_quan
   return (
     <FormControl component="fieldset">
       <RadioGroup aria-label="position" name="position" value={value}
@@ -276,9 +272,6 @@ const DEFAULT_PRIORITY = priorityList[0].value
 const DEFAULT_PRIORITY_ID = priorityList[0].id
 
 function CommonPriorityForm(props) {
-<<<<<<< HEAD
-  const [value, setValue] = React.useState(priority)
-=======
   const [value, setValue] = React.useState(props.priority)
 
   const handleChangePriority = itemValue => {
@@ -291,7 +284,6 @@ function CommonPriorityForm(props) {
     props.handleChangeLabel(clickedItem)
   }
 
->>>>>>> origin/dev_quan
   return (
     <PriorityFormControl component="fieldset">
       <PriorityRadioGroup

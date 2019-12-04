@@ -152,11 +152,6 @@ function* completeSubTask(action) {
   }
 }
 
-
-
-
-
-
 // Remind::::::::::::::::::::::::::::::::::::::::::::::::
 async function doGetRemind({ taskId }) {
   try {
@@ -788,19 +783,12 @@ function* deleteMember(action) {
     yield put(actions.deleteMemberFail(error))
   }
 }
-<<<<<<< HEAD
-//time
-async function doGetTrackingTime( taskId ) {
-  try {
-    const config = {
-      url: 'task/get-tracking-time?task_id=' + taskId,
-=======
+
 // Get list task detail
 async function doGetListTaskDetail({ project_id }) {
   try {
     const config = {
       url: 'task/list-task-detail?project_id=' + project_id,
->>>>>>> origin/dev_quan
       method: 'get'
     }
     const result = await apiService(config);
@@ -809,7 +797,28 @@ async function doGetListTaskDetail({ project_id }) {
     throw error;
   }
 }
-<<<<<<< HEAD
+function* getListTaskDetail(action) {
+  try {
+    const res = yield call(doGetListTaskDetail, action.payload)
+    yield put(actions.getListTaskDetailSuccess(res))
+  } catch (error) {
+    yield put(actions.getListTaskDetailFail(error))
+  }
+}
+//time
+async function doGetTrackingTime( taskId ) {
+  try {
+    const config = {
+      url: 'task/get-tracking-time?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 function* getTrackingTime(action){
   try {
     const res=yield call(doGetTrackingTime,action.payload)
@@ -888,14 +897,6 @@ function* deleteRole(action) {
     yield put(actions.deleteRoleSuccess(res))
   } catch (error) {
     yield put(actions.deleteRoleFail(error))
-=======
-function* getListTaskDetail(action) {
-  try {
-    const res = yield call(doGetListTaskDetail, action.payload)
-    yield put(actions.getListTaskDetailSuccess(res))
-  } catch (error) {
-    yield put(actions.getListTaskDetailFail(error))
->>>>>>> origin/dev_quan
   }
 }
 
@@ -991,23 +992,18 @@ export {
   getMemberNotAssigned,
   createMember,
   deleteMember,
-<<<<<<< HEAD
-<<<<<<< HEAD
 
   // Member Role - Tabpart
   createRole,
   updateRole,
-  deleteRole
-=======
+  deleteRole,
+
   //time
   getTrackingTime,
->>>>>>> origin/dev_huy
-=======
+
   // List task detail
   getListTaskDetail,
   createTask,
   // List Group Task
   getListGroupTask,
-
->>>>>>> origin/dev_quan
 }
