@@ -8,7 +8,8 @@ import avatar from '../../../../../assets/avatar.jpg';
 import { mdiCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import { Scrollbars } from 'react-custom-scrollbars'
-
+import { WrapperContext } from '../../../index'
+import { log } from 'util';
 const Container = styled.div`
   padding: 10px 0 50px 0;
 
@@ -258,12 +259,35 @@ const ContentProgress = styled.div`
 
 
 function TabBody() {
-  // const [progress, setStateProgress] = React.useState(0)
 
-  // const handleProgress = (progress) => {
-  //   setStateProgress(progress)
-  // }
   const [dataProgress, setDataProgress] = React.useState(0)
+  const value = React.useContext(WrapperContext)
+  let listTime
+  console.log("time......", value.listTime)
+  if (value.listTime.trackings) {
+    listTime = value.listTime.trackings.map((item, key) => {
+      console.log("listTime.......",listTime)
+      
+      return (
+        <TableRowItem key={key}>
+          <CellAvatar>
+            <Avatar style={{ width: 30, height: 30 }} src={item.user_create_avatar} alt='avatar' />
+          </CellAvatar>
+          <TableCell>
+            Lần {key + 1}
+            <RedTableCell>{item.time_create}</RedTableCell>
+          </TableCell>
+          <BlueTableCell>
+            Bắt đầu: {item.new_start}
+            <br />
+            Kết thúc: {item.new_end}
+          </BlueTableCell>
+        </TableRowItem>
+      )
+    })
+  }
+
+
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -281,9 +305,9 @@ function TabBody() {
         {/* progress bar */}
         <WrapperProgressBar>
           <div>
-              <ContentProgress value={dataProgress}>
-                <div>{dataProgress}</div>
-              </ContentProgress>
+            <ContentProgress value={dataProgress}>
+              <div>{dataProgress}</div>
+            </ContentProgress>
           </div>
           <div>
             <InputProgressBar
@@ -310,44 +334,7 @@ function TabBody() {
             </TableRowItem>
           </TableHead>
           <TableBody>
-            <TableRowItem>
-              <CellAvatar>
-                <Avatar style={{ width: 30, height: 30 }} src={avatar} alt='avatar' />
-              </CellAvatar>
-              <TableCell>
-                Lần 1
-              <RedTableCell>18:30 - 29/09/2019</RedTableCell>
-              </TableCell>
-              <BlueTableCell>
-                Bắt đầu: 08:30 - 09/09/2019
-              <br />
-                Kết thúc: 18:30 - 29/09/2019
-            </BlueTableCell>
-            </TableRowItem>
-            <TableRowItem>
-              <CellAvatar>
-                <Avatar style={{ width: 30, height: 30 }} src={avatar} alt='avatar' />
-              </CellAvatar>
-              <TableCell>
-                Lần 2
-              <RedTableCell>18:30 - 29/09/2019</RedTableCell>
-              </TableCell>
-              <BlueTableCell>
-                Bắt đầu: 08:30 - 09/09/2019
-            </BlueTableCell>
-            </TableRowItem>
-            <TableRowItem>
-              <CellAvatar>
-                <Avatar style={{ width: 30, height: 30 }} src={avatar} alt='avatar' />
-              </CellAvatar>
-              <TableCell>
-                Lần 3
-              <RedTableCell>18:30 - 29/09/2019</RedTableCell>
-              </TableCell>
-              <BlueTableCell>
-                Kết thúc: 18:30 - 29/09/2019
-            </BlueTableCell>
-            </TableRowItem>
+            {listTime}
           </TableBody>
         </TableHistory>
       </Container>

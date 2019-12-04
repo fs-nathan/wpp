@@ -375,7 +375,10 @@ async function doDeleteOffer(offer_id) {
 
 function* deleteOffer(action) {
   try {
+    
     const res = yield call(doDeleteOffer, action.payload)
+
+    
     yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
@@ -739,6 +742,28 @@ function* deleteMember(action) {
     yield put(actions.deleteMemberFail(error))
   }
 }
+//time
+async function doGetTrackingTime( taskId ) {
+  try {
+    const config = {
+      url: 'task/get-tracking-time?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getTrackingTime(action){
+  try {
+    const res=yield call(doGetTrackingTime,action.payload)
+    
+    yield put (actions.getTrackingTimeSuccess(res))
+  } catch (error) {
+    yield put (actions.getTrackingTimeFail(error))
+  }
+}
 
 export {
   // Offer::
@@ -784,4 +809,6 @@ export {
   getMemberNotAssigned,
   createMember,
   deleteMember,
+  //time
+  getTrackingTime,
 }

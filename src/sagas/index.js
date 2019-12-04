@@ -140,6 +140,8 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST, taskDetailSaga.getMemberNotAssigned);
   yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
   yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
+  //Time
+  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime)
 };
 
 export default rootSaga;

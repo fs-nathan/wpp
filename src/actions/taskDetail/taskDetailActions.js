@@ -477,3 +477,16 @@ export const deleteMemberFail = (error) => ({
     type: types.DELETE_MEMBER_FAIL,
     error: error,
 });
+//Tien do - time
+ export const getTrackingTime=(payload)=>({
+     type: types.GET_TRACKING_TIME_REQUEST,
+     payload
+ });
+ export const getTrackingTimeSuccess=(payload)=>({
+     type:types.GET_TRACKING_TIME_SUCCESS,
+     payload
+ });
+ export const getTrackingTimeFail=(error)=>({
+     type:types.GET_TRACKING_TIME_FAIl,
+     error:error
+ })

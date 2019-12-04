@@ -257,6 +257,8 @@ const ListOffer = (props) => {
       <StyledList>
 
         {props.offer.map((item) => {
+          // console.log("item..............",item);
+          
           return (
             <CustomListItem
               {...props}
@@ -268,6 +270,8 @@ const ListOffer = (props) => {
               handleOpenModalDelete={() => {
                 props.handleOpenModalDelete(item)
               }}
+            
+
               handleClickClose={() => props.handleClickClose()} />
           )
         })}
@@ -302,19 +306,24 @@ function TabBody(props) {
     setSelectedItem({ ...item, offer_id: item.id })
     setOpen(true)
   };
+  
   // const [anchorEl, setAnchorEl] = React.useState(null)
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const confirmDelete = () => {
+  
     props.deleteOfferByTaskId(selectedItem.offer_id)
   }
   const handleOpenModalDelete = item => {
     setSelectedItem({ ...item, offer_id: item.id })
+    
     setOpenDelete(true);
     // setAnchorEl(null);
   };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
+ 
+  
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -324,7 +333,7 @@ function TabBody(props) {
             onClick={evt => handleChange(evt, 0)}
           >
             {value === 0
-              ? <ColorTypo bold>Tất cả ({props.offer.length})</ColorTypo>
+              ? <ColorTypo bold>Tất cả({props.offer.length})</ColorTypo>
               : <ColorTypo color='gray'>Tất cả ({props.offer.length})</ColorTypo>}
           </ColorButton>
           <ColorButton

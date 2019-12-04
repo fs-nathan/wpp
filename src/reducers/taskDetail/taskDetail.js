@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) {
-    console.log("action in reducer:::::", action);
+    // console.log("action in reducer:::::", action);
     
     switch (action.type) {
         case types.GET_TASK_DETAIL_TABPART_REQUEST:

@@ -31,12 +31,16 @@ function JobDetailPage(props) {
     props.getTaskDetailByTaskId(props.taskId)
     props.getMemberByTaskId(props.taskId)
     props.getMemberNotAssignedByTaskId(props.taskId)
+    props.getTrackingTime(props.taskId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
+    
     <Wrapper value={{ ...props }}>
+      
       <Container>
+        
         <ListPart {...props} />
         <ChatPart {...props} />
         <TabPart {...props} />
@@ -46,6 +50,8 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
+  
+  
   return {
     offer: state.taskDetail.taskOffer.offer.reverse(),
 
@@ -70,7 +76,9 @@ const mapStateToProps = state => {
     detailTask: state.taskDetail.detailTask.taskDetails,
 
     member: state.taskDetail.taskMember.member,
-    memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned
+    memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
+
+    listTime: state.taskDetail.trackingTime.listTime,
   }
 }
 
@@ -116,6 +124,8 @@ const mapDispatchToProps = dispatch => {
     getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
     createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
+    //time
+    getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
   };
 };
 
