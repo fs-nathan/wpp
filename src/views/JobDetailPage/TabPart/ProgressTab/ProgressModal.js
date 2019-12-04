@@ -8,6 +8,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from './OutlinedInputSelect'
+import {WrapperContext} from '../../index';
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -104,6 +105,9 @@ const ProgressModal = (props) => {
   const handleTime = () => {
     setTime(time);
   }
+  const value=React.useContext(WrapperContext)
+  console.log("value",value);
+  
     return (
         <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} >
         <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
