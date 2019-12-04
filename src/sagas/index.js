@@ -144,6 +144,7 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
   yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Member Role::
   yield takeLeading(taskDetailType.POST_ROLE_REQUEST, taskDetailSaga.createRole);
   yield takeLeading(taskDetailType.UPDATE_ROLE_REQUEST, taskDetailSaga.updateRole);
@@ -152,6 +153,13 @@ function* rootSaga() {
   //Time
   yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime)
 >>>>>>> origin/dev_huy
+=======
+  // List Task Detail
+  yield takeLeading(taskDetailType.GET_LIST_TASK_DETAIL_REQUEST, taskDetailSaga.getListTaskDetail);
+  yield takeLeading(taskDetailType.POST_TASK_REQUEST, taskDetailSaga.createTask);
+  // List Group Task 
+  yield takeLeading(taskDetailType.GET_LIST_GROUP_TASK_REQUEST, taskDetailSaga.getListGroupTask);
+>>>>>>> origin/dev_quan
 };
 
 export default rootSaga;

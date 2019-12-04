@@ -4,13 +4,16 @@ import { List } from '@material-ui/core';
 import ListBodySubHeader from './ListBodySubHeader';
 import ListBodyItem from './ListBodyItem';
 import { Scrollbars } from 'react-custom-scrollbars';
-
+import { WrapperContext } from '../../index'
 const StyledList = styled(List)`
-  padding: 10px 0 150px 0; 
+
     & > li {
       &:not(:last-child) {
         margin-bottom: 10px;
     }
+  }
+  &:last-child {
+    padding: 10px 0 130px 0;
   }
 `;
 const Body = styled(Scrollbars)`
@@ -19,28 +22,38 @@ const Body = styled(Scrollbars)`
 `;
 
 
-const detailProject = [
-  { progress: 36, title: 'Phân tích ứng dụng ...', description: 'Đã thêm thành viên', status: 'Quá hạn', notification: 2, time: '34 phút' },
-  { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-  { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-  { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-  { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-  { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-  { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' }
+// const detailProject = [
+//   { progress: 36, title: 'Phân tích ứng dụng ...', description: 'Đã thêm thành viên', status: 'Quá hạn', notification: 2, time: '34 phút' },
+//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
+//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
+//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
+//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
+//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
+//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' }
 
-]
+// ]
 
 function ListBody() {
+  const value = React.useContext(WrapperContext)
+  let data = []
+  let listTaskDetail = value.listTaskDetail
+  if (listTaskDetail) {
+    data = listTaskDetail.tasks
+  }
+
   return (
-    
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-    <StyledList>      
-        <ListBodySubHeader subPrimary='Thiết kế giao diện' subSecondary='(2 việc)' />
-        {detailProject.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
-        <ListBodySubHeader subPrimary='Mặc định' subSecondary='(0 việc)' />      
-    </StyledList>
+      {data.map((item, key) => {
+        return (
+          <StyledList key={key}>
+            <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
+            {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
+          </StyledList>
+        )
+      })}
+
     </Body>
-    
+
   )
 }
 

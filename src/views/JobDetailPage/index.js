@@ -20,6 +20,7 @@ const Container = styled.div`
 
 function JobDetailPage(props) {
   useEffect(() => {
+    props.getListGroupTaskByProjectId(props.projectId)
     props.getSubTaskByTaskId(props.taskId)
     props.getRemindByTaskId(props.taskId)
     props.getOfferByTaskId(props.taskId)
@@ -32,6 +33,7 @@ function JobDetailPage(props) {
     props.getMemberByTaskId(props.taskId)
     props.getMemberNotAssignedByTaskId(props.taskId)
     props.getTrackingTime(props.taskId)
+    props.getListTaskDetailByProjectId(props.projectId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -50,35 +52,44 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  
+  // console.log('state project id::::', state.taskDetail.listGroupTask.listGroupTask);
   
   return {
+    // offer
     offer: state.taskDetail.taskOffer.offer.reverse(),
 
     pendingItems: state.taskDetail.taskOffer.pendingItems,
     approvedItems: state.taskDetail.taskOffer.approvedItems,
-    
+    // remind
     remind: state.taskDetail.taskRemind.remind,
-
+    // subtask
     uncompleteSubTasks: state.taskDetail.subTask.uncompleteSubTasks,
     completeSubTasks: state.taskDetail.subTask.completeSubTasks,
-
+    // media
     image: state.taskDetail.media.image,
     file: state.taskDetail.media.file,
     link: state.taskDetail.media.links,
-
+    // command
     command: state.taskDetail.taskCommand.command.reverse(),
     commandItems: state.taskDetail.taskCommand.commandItems.reverse(),
     decisionItems: state.taskDetail.taskCommand.decisionItems.reverse(),
-
+    // fake ID
     taskId: state.taskDetail.commonTaskDetail.activeTaskId,
+    projectId: state.taskDetail.commonTaskDetail.activeProjectId,
+    // location
     location: state.taskDetail.location.locations,
+    // task Detail
     detailTask: state.taskDetail.detailTask.taskDetails,
-
+    listTaskDetail: state.taskDetail.listDetailTask.listTaskDetail,
+    // list group task
+    listGroupTask: state.taskDetail.listGroupTask.listGroupTask,
+    // member 
     member: state.taskDetail.taskMember.member,
     memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
 
     listTime: state.taskDetail.trackingTime.listTime,
+
+
   }
 }
 
@@ -131,6 +142,11 @@ const mapDispatchToProps = dispatch => {
     deleteRoleTask: (role_task_id) => dispatch(taskDetailAction.deleteRole({ role_task_id })),
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
+    // List Task Detail
+    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
+    //  List Group Task
+    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId})),
+
   };
 };
 

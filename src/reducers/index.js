@@ -40,7 +40,12 @@ import commonTaskDetail from './taskDetail/common';
 import location from './taskDetail/location'
 import detailTask from './taskDetail/taskDetail';
 import taskMember from './taskDetail/member';
+<<<<<<< HEAD
 import trackingTime from './taskDetail/time';
+=======
+import listDetailTask from './taskDetail/listTaskDetail'
+import listGroupTask from './taskDetail/listGroupTask'
+>>>>>>> origin/dev_quan
 const rootReducer = combineReducers({
   authentications,
   documents,
@@ -54,8 +59,13 @@ const rootReducer = combineReducers({
     location,
     detailTask,
     taskMember,
+<<<<<<< HEAD
     trackingTime,
 
+=======
+    listDetailTask,
+    listGroupTask,
+>>>>>>> origin/dev_quan
   }),
   room: combineReducers({
     listRoom,
