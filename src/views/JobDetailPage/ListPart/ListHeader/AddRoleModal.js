@@ -65,49 +65,82 @@ function AddRoleModal(props) {
         props.setOpen(false);
     };
 
-
     return (
         <Dialog
             open={props.isOpen}
             maxWidth="sm" fullWidth
             onClose={handleClose}
         >
-            <DialogTitle onClose={handleClose} bold >
-                Tạo vai trò
-        </DialogTitle>
-            <DialogContent dividers>
-                <TextField
-                    // value={'hello'}
-                    // onChange={evt => setName(evt.target.value)}
-                    margin="normal"
-                    variant="outlined"
-                    label='Tên vai trò'
-                    fullWidth
-                    helperText={
-                        <ColorTypo variant='caption' color='red'>
-                            Không được để trống
+            {props.isEditRole === true ?
+                <DialogTitle onClose={handleClose}>
+                    Tạo vai trò
+            </DialogTitle>
+                :
+                <DialogTitle onClose={handleClose}>
+                    Chỉnh sửa vai trò
+            </DialogTitle>
+            }
+
+            {props.isEditRole === true ?
+                <DialogContent dividers>
+                    <TextField
+                        // value={'hello'}
+                        margin="normal"
+                        variant="outlined"
+                        label='Tên vai trò'
+                        fullWidth
+                        helperText={
+                            <ColorTypo variant='caption' color='red'>
+                                Không được để trống
                         </ColorTypo>
-                    }
-                />
-                <TextField
-                    // value={'description'}
-                    // onChange={evt => setDescription(evt.target.value)}
-                    margin="normal"
-                    variant="outlined"
-                    label='Mô tả vai trò'
-                    fullWidth
-                    helperText={
-                        <ColorTypo variant='caption' color='red'>
-                            Không được để trống
+                        }
+                    />
+                    <TextField
+                        // value={'description'}
+                        margin="normal"
+                        variant="outlined"
+                        label='Mô tả vai trò'
+                        fullWidth
+                        helperText={
+                            <ColorTypo variant='caption' color='red'>
+                                Không được để trống
                         </ColorTypo>
-                    }
-                />
-            </DialogContent>
+                        }
+                    />
+                </DialogContent>
+                :
+                <DialogContent dividers>
+                    <TextField
+                        value={'hello'}
+                        margin="normal"
+                        variant="outlined"
+                        label='Tên vai trò'
+                        fullWidth
+                        helperText={
+                            <ColorTypo variant='caption' color='red'>
+                                Không được để trống
+                        </ColorTypo>
+                        }
+                    />
+                    <TextField
+                        value={'description'}
+                        margin="normal"
+                        variant="outlined"
+                        label='Mô tả vai trò'
+                        fullWidth
+                        helperText={
+                            <ColorTypo variant='caption' color='red'>
+                                Không được để trống
+                        </ColorTypo>
+                        }
+                    />
+                </DialogContent>
+            }
             <DialogActions>
                 <Button autoFocus color='secondary'
-                onClick={() =>
-                    handleClose()
-                } >
+                    onClick={() =>
+                        handleClose()
+                    } >
                     HUỶ
           </Button>
                 <Button autoFocus color='primary'

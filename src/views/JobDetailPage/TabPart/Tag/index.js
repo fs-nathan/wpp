@@ -6,19 +6,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
-
-const suggestions = [
-  { label: 'Nguyễn Văn A' },
-  { label: 'Nguyễn Văn B' },
-  { label: 'Nguyễn Văn C' },
-  { label: 'Nguyễn Văn D' },
-  { label: 'Nguyễn Văn E' },
-  { label: 'Nguyễn Văn F' },
-  { label: 'Nguyễn Văn A' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
+import { getIndividualHandleUsers } from '../../../../helpers/jobDetail/arrayHelper';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -72,22 +60,35 @@ function MultiValue(props) {
   );
 }
 
-
-
-
 const components = {
   MultiValue,
   Option,
 };
 
-export default function IntegrationReactSelect() {
+const DEFAULT_HANDLE_USERS = []
+
+export default function IntegrationReactSelect(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [multi, setMulti] = React.useState(null);
+  const [handleUsers, setHandleUsers] = React.useState(DEFAULT_HANDLE_USERS)
 
+  let listHandleUsers = getIndividualHandleUsers(props.member).map((item, key) =>
+    ({ label: item.name, value: item.id })
+  )
 
   const handleChangeMulti = value => {
-    setMulti(value);
+    let userIdArr = []
+    // User append 1 item
+    if (value) {
+      setHandleUsers(value)
+      userIdArr = value.map(item => item.value)
+    } 
+    // User remove or unselect item
+    else {
+      setHandleUsers(DEFAULT_HANDLE_USERS)
+    }
+    // Pass id array to parent
+    props.handleChooseUser(userIdArr)
   };
 
   const selectStyles = {
@@ -107,9 +108,9 @@ export default function IntegrationReactSelect() {
           classes={classes}
           styles={selectStyles}
           placeholder={'Chọn người duyệt...'}
-          options={suggestions}
+          options={listHandleUsers}
           components={components}
-          value={multi}
+          value={handleUsers}
           onChange={handleChangeMulti}
           isMulti
         />

@@ -139,7 +139,6 @@ const StyledList = styled.ul`
 
 const ListDemand = (props) => {
   const [open, setOpen] = React.useState(false)
-  // const [anchorEl, setAnchorEl] = React.useState(null)
   const [isEditDemand] = React.useState(true)
   const [selectedItem, setSelectedItem] = React.useState({ content: "", type: -1 })
   const handleClickEditItem = item => {

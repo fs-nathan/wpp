@@ -178,6 +178,7 @@ const OfferModal = (props) => {
     // Call api
     valueOffer.deleteDocumentToOfferById(payload, removeFileCallBack)
   }
+ 
 
   return (
     <Dialog open={props.isOpen} onClose={props.handleClickClose} fullWidth>
@@ -192,7 +193,7 @@ const OfferModal = (props) => {
       }
       <DialogContent dividers>
         <TexTitle >Chọn người duyệt</TexTitle>
-        <IntegrationReactSelect />
+        <IntegrationReactSelect {...props} handleChooseUser={listUser => console.log(listUser)}/>
         <TextContent
           label="Nội dung phê duyệt"
           fullWidth

@@ -109,6 +109,7 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.DELETE_OFFER_REQUEST, taskDetailSaga.deleteOffer);
   yield takeLeading(taskDetailType.UPLOAD_DOCUMENT_TO_OFFER_REQUEST, taskDetailSaga.uploadDocumentToOffer);
   yield takeLeading(taskDetailType.DELETE_DOCUMENT_TO_OFFER_REQUEST, taskDetailSaga.deleteDocumentToOffer);
+  yield takeLeading(taskDetailType.HANDLE_OFFER_REQUEST, taskDetailSaga.handleOffer);
   //Subtask::
   yield takeLeading(taskDetailType.GET_SUBTASK_REQUEST, taskDetailSaga.getSubTask);
   yield takeLeading(taskDetailType.POST_SUBTASK_REQUEST, taskDetailSaga.postSubTask);

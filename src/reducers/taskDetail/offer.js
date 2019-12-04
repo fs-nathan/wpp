@@ -127,6 +127,24 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
+        case types.HANDLE_OFFER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.HANDLE_OFFER_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.HANDLE_OFFER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
         default:
             return state;
     }

@@ -22,3 +22,6 @@ export const filterPendingItem = arr => arr.filter(item => item.type === OFFER_S
 export const filterApprovedItem = arr => arr.filter(item => item.type === OFFER_STATUS.APPROVED)
 
 export const DEFAULT_OFFER_ITEM = { offer_id: "", content: "", files: [] }
+
+// Remove duplicate user (by their id)
+export const getIndividualHandleUsers = arr => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])

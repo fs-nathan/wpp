@@ -267,8 +267,23 @@ export const deleteDocumentToOfferSuccess = (payload) => ({
 });
 
 export const deleteDocumentToOfferFail = (error) => ({
-    type: types.DELETE_DOCUMENT_TO_OFFER_FAIL,
+    type: types.HANDLE_OFFER_REQUEST,
     error: error,
+});
+// === handle offer
+export const handleOffer = (payload) => ({
+    type: types.HANDLE_OFFER_REQUEST,
+    payload
+});
+
+export const handleOfferSuccess = (payload) => ({
+    type: types.HANDLE_OFFER_SUCCESS,
+    payload
+});
+
+export const handleOfferFail = (error) => ({
+    type: types.HANDLE_OFFER_FAIL,
+    error: error
 });
 
 

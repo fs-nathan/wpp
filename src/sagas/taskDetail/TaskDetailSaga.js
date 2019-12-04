@@ -406,7 +406,7 @@ function* deleteOffer(action) {
     yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
-    yield put(actions.getOfferFail(error))
+    yield put(actions.deleteOfferFail(error))
   }
 }
 
@@ -463,7 +463,29 @@ function* deleteDocumentToOffer(action) {
   }
 }
 
+async function doHandleOffer(data) {
+  try {
+    const config = {
+      url: 'task/hander-offer',
+      method: 'post',
+      data
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
+function* handleOffer(action) {
+  try {
+    const res = yield call(doHandleOffer, action.payload)
+    yield put(actions.handleOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
+  } catch (error) {
+    yield put(actions.handleOfferFail(error))
+  }
+}
 
 // Media Image
 async function doGetImage({ taskId }) {
@@ -847,6 +869,7 @@ export {
   updateOffer,
   uploadDocumentToOffer,
   deleteDocumentToOffer,
+  handleOffer,
 
   // Remind::
   getRemind,

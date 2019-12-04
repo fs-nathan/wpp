@@ -12,6 +12,7 @@ import { Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/c
 import styled from 'styled-components';
 import Checkbox from '@material-ui/core/Checkbox';
 import AddRoleModal from './AddRoleModal';
+import ModalDeleteConfirm from '../../TabPart/ModalDeleteConfirm';
 
 
 
@@ -113,6 +114,19 @@ function RoleMemberModal(props) {
   };
 
   const [openAddRoleModal, setOpenAddRoleModal] = React.useState(false)
+  const [isEditRole, setIsEditRole] = React.useState(false)
+  const [selectedItem, setSelectedItem] = React.useState({ content: ""})
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
+  const handleOpenModalDelete = () => {
+    setOpenDelete(true);
+    // setSelectedItem({...item, command_id: item.id})
+  };
+  const handleCloseModalDelete = () => {
+    setOpenDelete(false);
+  };
+  const confirmDelete = () => {
+    props.deleteCommandByCommandId(selectedItem.id)
+  }
 
   return (
     <div>
@@ -132,6 +146,7 @@ function RoleMemberModal(props) {
                     onClick={() => {
                       // handleClose()
                       setOpenAddRoleModal(true)
+                      setIsEditRole(true)
                     }}
                   >+ Thêm mới
                   </AddRoleButton>
@@ -151,8 +166,14 @@ function RoleMemberModal(props) {
                   <TableCell>{row.description}</TableCell>
                   <TableCell>
                     <HandleButton>
-                      <UpdateDeleteButton>Sửa</UpdateDeleteButton>
-                      <UpdateDeleteButton>Xoá</UpdateDeleteButton>
+                      <UpdateDeleteButton
+                        onClick={() => {
+                          setOpenAddRoleModal(true)
+                          setIsEditRole(false)
+                        }}>Sửa</UpdateDeleteButton>
+                      <UpdateDeleteButton
+                      onClick={handleOpenModalDelete}
+                      >Xoá</UpdateDeleteButton>
                     </HandleButton>
                   </TableCell>
                 </TableRow>
@@ -173,7 +194,18 @@ function RoleMemberModal(props) {
           </Button>
         </DialogActions>
       </Dialog>
-      <AddRoleModal isOpen={openAddRoleModal} setOpen={setOpenAddRoleModal} />
+      <AddRoleModal
+        {...props}
+        isOpen={openAddRoleModal}
+        setOpen={setOpenAddRoleModal}
+        isEditRole={isEditRole}
+      />
+      <ModalDeleteConfirm
+        confirmDelete={confirmDelete}
+        isOpen={isOpenDelete}
+        handleCloseModalDelete={handleCloseModalDelete}
+        item={selectedItem}
+      ></ModalDeleteConfirm>
     </div>
   );
 }
