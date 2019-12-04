@@ -140,6 +140,11 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST, taskDetailSaga.getMemberNotAssigned);
   yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
   yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
+  // List Task Detail
+  yield takeLeading(taskDetailType.GET_LIST_TASK_DETAIL_REQUEST, taskDetailSaga.getListTaskDetail);
+  yield takeLeading(taskDetailType.POST_TASK_REQUEST, taskDetailSaga.createTask);
+  // List Group Task 
+  yield takeLeading(taskDetailType.GET_LIST_GROUP_TASK_REQUEST, taskDetailSaga.getListGroupTask);
 };
 
 export default rootSaga;

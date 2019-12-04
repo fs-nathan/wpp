@@ -477,3 +477,66 @@ export const deleteMemberFail = (error) => ({
     type: types.DELETE_MEMBER_FAIL,
     error: error,
 });
+
+// GET LIST GROUP TASK
+export const getListGroupTask = (payload) => ({
+    type: types.GET_LIST_GROUP_TASK_REQUEST,
+    payload
+});
+
+export const getListGroupTaskSuccess = (payload) => ({
+    type: types.GET_LIST_GROUP_TASK_SUCCESS,
+    payload
+});
+
+export const getListGroupTaskFail = (error) => ({
+    type: types.GET_LIST_GROUP_TASK_FAIL,
+    error: error,
+});
+
+// Create Task
+export const createTask = (payload) => ({
+    type: types.POST_TASK_REQUEST,
+    payload
+});
+
+export const createTaskSuccess = (payload) => ({
+    type: types.POST_TASK_SUCCESS,
+    payload
+});
+
+export const createTaskFail = (error) => ({
+    type: types.POST_TASK_FAIL,
+    error: error,
+});
+// Create Group Task
+export const createGroupTask = (payload) => ({
+    type: types.POST_GROUP_TASK_REQUEST,
+    payload
+});
+
+export const createGroupTaskSuccess = (payload) => ({
+    type: types.POST_GROUP_TASK_SUCCESS,
+    payload
+});
+
+export const createGroupTaskFail = (error) => ({
+    type: types.POST_GROUP_TASK_FAIL,
+    error: error,
+});
+
+// Get List Task Detail
+export const getListTaskDetail = (payload) => ({
+    type: types.GET_LIST_TASK_DETAIL_REQUEST,
+    payload
+});
+
+export const getListTaskDetailSuccess = (payload) => ({
+    type: types.GET_LIST_TASK_DETAIL_SUCCESS,
+    payload
+});
+
+export const getListTaskDetailFail = (error) => ({
+    type: types.GET_LIST_TASK_DETAIL_FAIL,
+    error: error,
+});

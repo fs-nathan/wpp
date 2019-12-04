@@ -40,6 +40,8 @@ import commonTaskDetail from './taskDetail/common';
 import location from './taskDetail/location'
 import detailTask from './taskDetail/taskDetail';
 import taskMember from './taskDetail/member';
+import listDetailTask from './taskDetail/listTaskDetail'
+import listGroupTask from './taskDetail/listGroupTask'
 const rootReducer = combineReducers({
   authentications,
   documents,
@@ -52,7 +54,9 @@ const rootReducer = combineReducers({
     commonTaskDetail,
     location,
     detailTask,
-    taskMember
+    taskMember,
+    listDetailTask,
+    listGroupTask,
   }),
   room: combineReducers({
     listRoom,

@@ -601,7 +601,6 @@ function* createCommand(action) {
 
 async function doUpdateCommand(payload) {
   try {
-    console.log('payload', payload)
     const config = {
       url: 'task/update-command-decision',
       method: 'post',
@@ -739,7 +738,73 @@ function* deleteMember(action) {
     yield put(actions.deleteMemberFail(error))
   }
 }
+// Get list task detail
+async function doGetListTaskDetail({ project_id }) {
+  try {
+    const config = {
+      url: 'task/list-task-detail?project_id=' + project_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getListTaskDetail(action) {
+  try {
+    const res = yield call(doGetListTaskDetail, action.payload)
+    yield put(actions.getListTaskDetailSuccess(res))
+  } catch (error) {
+    yield put(actions.getListTaskDetailFail(error))
+  }
+}
 
+async function doCreateTask(payload) {
+  try {
+    const config = {
+      url: 'task/create',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createTask(action) {
+  try {
+    const res = yield call(doCreateTask, action.payload)
+    yield put(actions.createTaskSuccess(res))
+    yield put(actions.getListTaskDetail('5de5c4b9f9e332da9ebd6b3c'))
+  } catch (error) {
+    yield put(actions.createTaskFail(error))
+  }
+}
+
+// Get list ground task
+async function doGetListGroupTask({ project_id }) {
+  try {
+    const config = {
+      url: 'group-task/list?project_id=' + project_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getListGroupTask(action) {
+  try {
+    const res = yield call(doGetListGroupTask, action.payload)
+    yield put(actions.getListGroupTaskSuccess(res))
+  } catch (error) {
+    yield put(actions.getListGroupTaskFail(error))
+  }
+}
 export {
   // Offer::
   getOffer,
@@ -784,4 +849,10 @@ export {
   getMemberNotAssigned,
   createMember,
   deleteMember,
+  // List task detail
+  getListTaskDetail,
+  createTask,
+  // List Group Task
+  getListGroupTask,
+
 }
