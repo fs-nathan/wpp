@@ -7,7 +7,7 @@ import SimpleDonutChart from '../../../../../components/SimpleDonutChart';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
-import avatar from '../../../../../assets/avatar.jpg';
+// import avatar from '../../../../../assets/avatar.jpg';
 
 const Container = styled.a`
     padding: 10px 8px 10px 0;
@@ -73,14 +73,20 @@ function JobName(props) {
 }
 function JobContent(props) {
   // const [colorStatus, setColorStatus] = React.useState(null)
-
+  const [status, setStatus] = React.useState('')
   React.useEffect(() => {
     switch (props.label) {
-      case 'Quá hạn':
-        // setColorStatus('grey')
-        break;
-      case 'Đang chờ':
+      case 0:
         // setColorStatus('orangelight')
+        setStatus('đang làm')
+        break;
+      case 1:
+        // setColorStatus('orangelight')
+        setStatus('đang chờ')
+        break;
+      case 2:
+        // setColorStatus('grey')
+        setStatus('quá hạn')
         break;
       default:
         // console.log(colorStatus)
@@ -91,13 +97,13 @@ function JobContent(props) {
     <ContentContainer>
       <div>
         <div>
-          <Avatar src={avatar} alt='avatar' style={{ width: 20, height: 20 }} />
-          <ColorTypo color='#7a869a' style={{ fontSize: '13px', textOverflow: 'ellipsis', width: '160px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.description}</ColorTypo>
+          <Avatar src={props.avatar} alt='avatar' style={{ width: 20, height: 20 }} />
+          <ColorTypo color='#7a869a' style={{ fontSize: '13px', textOverflow: 'ellipsis', width: '160px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.content}</ColorTypo>
         </div>
         <div style={{ color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '13px' }}>{props.time}</div>
       </div>
       <div style={{ display: 'flex' }}>
-        <BadgeItem color='redlight' badge label={props.label} size='small' />
+        <BadgeItem color='redlight' badge label={status} size='small' />
         <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} />
       </div>
     </ContentContainer>
@@ -105,10 +111,16 @@ function JobContent(props) {
 }
 
 function JobUnit(props) {
+  // let avatar, content
+  // const chat = props.chat
+  // if (chat) {
+  //   avatar = chat.user_create_avatar,
+  //   content = chat.content
+  // }
   return (
     <ListItemText disableTypography>
-      <JobName title={props.title} notification={props.notification} />
-      <JobContent description={props.description} label={props.status} time={props.time} />
+      <JobName title={props.name} notification={props.number_new_chat} />
+      <JobContent description={"Sử dụng phần mềm để thiết lập"} label={props.status} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content}/>
     </ListItemText>
   )
 }
@@ -119,7 +131,7 @@ function ListBodyItem(props) {
   return (
     <Container>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
-        <SimpleDonutChart percentDone={props.progress} />
+        <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...props} />
     </Container>

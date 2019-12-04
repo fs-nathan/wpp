@@ -41,7 +41,7 @@ function ListTask(props) {
           <ListHeader {...props} />
           <ListBanner />
         </Header>
-        <ListBody />
+        <ListBody/>
       </WrapTask>
 
     </WrapListTask>

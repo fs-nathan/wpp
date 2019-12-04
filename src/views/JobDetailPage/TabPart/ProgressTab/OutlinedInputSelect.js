@@ -23,7 +23,7 @@ function Option(props) {
       selected={props.isFocused}
       component="div"
       style={{
-        fontWeight: props.isSelected ? 500 : 400,
+        fontWeight: props.isSelected ? 400 : 400,
         zIndex: 99999,
         
       }}
@@ -55,6 +55,8 @@ export default function IntegrationReactSelect(props) {
   const [single, setSingle] = React.useState(null);
 
   const handleChangeSingle = selectedItem => {
+    console.log('selectItem:::', selectedItem);
+    
     setSingle(selectedItem)
     props.setOptions(selectedItem.value)
   };
@@ -90,7 +92,7 @@ export default function IntegrationReactSelect(props) {
               shrink: true,
             },
           }}
-          placeholder="Select..."
+          placeholder={props.placeholder ? props.placeholder : "Select..." }
           options={props.commandSelect}
           components={components}
           value={single}

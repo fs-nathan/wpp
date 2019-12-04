@@ -72,6 +72,7 @@ function TabHeader(props) {
   }
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const value = React.useContext(WrapperContext)
+
   let avatar, name, roles
   if (value) {
     let detailTask = value.detailTask
@@ -131,7 +132,7 @@ function TabHeader(props) {
           setAnchorEl(null)
         }}>Xóa</MenuItem>
       </Menu>
-      <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={true} />
+      <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={true} data={value.detailTask}/>
     </Container>
   );
 }

@@ -21,7 +21,7 @@ import AddMemberModal from './AddMemberModal';
 import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect'
 // import { Scrollbars } from 'react-custom-scrollbars'
-
+import { WrapperContext } from '../../index'
 
 
 // const Header = styled.div`
@@ -138,9 +138,6 @@ const SpecialControlLabel = styled(FormControlLabel)`
   & > span:first-child { display: none; }
 `;
 
-// Define variable using in form
-let priorityList = ['Thấp', 'Trung bình', 'Cao']
-let priority = priorityList[0]
 
 const styles = theme => ({
   root: {
@@ -231,52 +228,75 @@ const TitleDialog = styled(DialogTitle)`
     font-weight: 400
 `
 
+let assignList = [
+  { id: 0, value: 'Được giao' },
+  { id: 1, value: 'Tự đề xuất' },
+  { id: 2, value: 'Giao việc cho' },
+]
+const DEFAULT_ASSIGN = assignList[0].value
+const DEFAULT_ASSIGN_ID = assignList[0].id
+
 function CommonControlForm(props) {
-  const [value, setValue] = React.useState(props.label1);
-  console.log(value)
+  const [value, setValue] = React.useState(props.assign);
+  const handleChangeFormAssign = itemValue => {
+    console.log('itemValue::::', itemValue);
+    
+    setValue(itemValue)
+    let clickedItem = props.labels.find(item => item.value === itemValue)
+    props.handleChangeAssign(clickedItem)
+  }
   return (
     <FormControl component="fieldset">
       <RadioGroup aria-label="position" name="position" value={value}
-        onChange={event => setValue(event.target.value)} row>
-        <FormControlLabel
-          value={props.label1}
-          control={<Radio color="primary" />}
-          label={props.label1}
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          value={props.label2}
-          control={<Radio color="primary" />}
-          label={props.label2}
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          value={props.label3}
-          control={<Radio color="primary" />}
-          label={props.label3}
-          labelPlacement="end"
-        />
+        onChange={event => handleChangeFormAssign(event.target.value)} row>
+        {props.labels && props.labels.map((item, key) =>
+          <FormControlLabel
+            key={key}
+            value={item.value}
+            control={<Radio color="primary" />}
+            label={item.value}
+            labelPlacement="end"
+          />
+        )}
       </RadioGroup>
     </FormControl>
   )
 }
+// Define variable using in form
+let priorityList = [
+  { id: 2, value: 'Thấp' },
+  { id: 1, value: 'Trung bình' },
+  { id: 0, value: 'Cao' },
+]
+const DEFAULT_PRIORITY = priorityList[0].value
+const DEFAULT_PRIORITY_ID = priorityList[0].id
 
 function CommonPriorityForm(props) {
-  const [value, setValue] = React.useState(priority)
-  console.log(value)
+  const [value, setValue] = React.useState(props.priority)
+
+  const handleChangePriority = itemValue => {
+    console.log('itemValue::::', itemValue);
+    
+    // Set state to change style in component
+    setValue(itemValue)
+    // Pass clicked item to parent
+    let clickedItem = props.labels.find(item => item.value === itemValue)
+    props.handleChangeLabel(clickedItem)
+  }
+
   return (
     <PriorityFormControl component="fieldset">
       <PriorityRadioGroup
         aria-label="position" name="position" value={value}
-        onChange={event => setValue(event.target.value)} row>
+        onChange={event => handleChangePriority(event.target.value)} row>
         {
-          props.labels.map((label, idx) =>
+          props.labels.map((item, idx) =>
             <SpecialControlLabel
               key={idx}
-              value={label}
+              value={item.value}
               control={<Radio />}
-              label={label}
-              checked={value === label}
+              label={item.value}
+              checked={value === item.value}
             />
           )
         }
@@ -320,6 +340,20 @@ const DialogFooter = styled(DialogActions)`
   z-index: 100;
   border-top: 1px solid rgba(0, 0, 0, 0.12)
 `
+const DEFAULT_DATA = {
+  name: '',
+  description: '',
+  start_time: '',
+  start_date: '',
+  end_time: '',
+  end_date: '',
+  type_assign: DEFAULT_ASSIGN_ID,
+  priority: DEFAULT_PRIORITY_ID,
+  group_task: '',
+  priorityLabel: DEFAULT_PRIORITY,
+  assignValue: DEFAULT_ASSIGN,
+}
+
 
 function CreateJobModal(props) {
   // const [open, setOpen] = React.useState(false);
@@ -328,19 +362,52 @@ function CreateJobModal(props) {
   //   setOpen(true);
   // };
 
-  const handleClose = () => {
-    props.setOpen(false);
+  const value = React.useContext(WrapperContext)
+  const [openAddModal, setOpenAddModal] = React.useState(false)
+
+  let listGroupTask = value.listTaskDetail
+  let listTask = []
+  if (listGroupTask) {
+    listTask = listGroupTask.tasks.map((item) =>
+      ({ label: item.name, value: item.id })
+    )
   }
 
-  const [openAddModal, setOpenAddModal] = React.useState(false);
-  const [time, setTime] = React.useState('')
+  const [data, setDataMember] = React.useState(DEFAULT_DATA)
 
-  const handleTime = () => {
-    setTime(time);
+  React.useEffect(() => {
+    if (props.data) {
+      let tempData = props.data
+      if (!tempData.name) tempData.name = ''
+      if (!tempData.description) tempData.description = ''
+      if (!tempData.start_date) tempData.start_date = ''
+      if (!tempData.start_time) tempData.start_time = ''
+      if (!tempData.end_date) tempData.end_date = ''
+      if (!tempData.end_time) tempData.end_time = ''
+      if (!tempData.group_task) tempData.group_task = ''
+      // if (!tempData.type_assign) tempData.type_assign = ''
+      let priority = priorityList.find(item => item.id === tempData.priority_code)
+      tempData.priorityLabel = priority ? priority.value : DEFAULT_PRIORITY
+      let assign = assignList.find(item => item.id === tempData.type_assign)
+      tempData.assignLabel = assign ? assign.value : DEFAULT_ASSIGN
+      setDataMember(tempData)
+    }
+  }, [props.data])
+
+  const handleChangeData = (attName, value) => {
+    setDataMember(prevState => ({ ...prevState, [attName]: value }))
+  }
+
+  const handleClose = () => {
+    props.setOpen(false)
+  }
+
+  const handlePressConfirm = () => {
+    console.log("DATA ........ ", data)
+    handleClose()
   }
 
   return (
-
     <div>
       <StyleDialog open={props.isOpen} fullWidth onClose={handleClose}>
         {props.isRight ?
@@ -362,6 +429,8 @@ function CreateJobModal(props) {
                 margin="normal"
                 variant="outlined"
                 fullWidth
+                value={data.name}
+                onChange={e => handleChangeData("name", e.target.value)}
               />
               {/* <Typography component={'span'}>Tên công việc</Typography>
               <Typography component={'span'}>(tối đa 100 ký tự)</Typography> */}
@@ -382,26 +451,40 @@ function CreateJobModal(props) {
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
             <DivTime>
-              <InputTime value={time} onChange={handleTime} />
+              <InputTime
+                value={data.start_time}
+                onChange={e => handleChangeData("start_time", e.target.value)}
+              />
             </DivTime>
             <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput type={'date'} />
+            <OutlineInput
+              type={'date'}
+              value={data.start_date}
+              onChange={e => handleChangeData("start_date", e.target.value)}
+            />
           </StartEndDay>
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
             <DivTime>
-              <InputTime value={time} onChange={handleTime} />
+              <InputTime
+                value={data.end_time}
+                onChange={e => handleChangeData("end_time", e.target.value)}
+              />
             </DivTime>
             <StartEndDate component={'div'}>Ngày</StartEndDate>
-            <OutlineInput type={'date'} />
+            <OutlineInput
+              type={'date'}
+              value={data.end_date}
+              onChange={e => handleChangeData("end_date", e.target.value)}
+            />
           </StartEndDay>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
           <Typography component={'div'} style={{ marginBottom: '20px' }}>
-            <TitleText component={'div'}>
-              <Typography component={'div'} style={{ marginBottom: 10 }}> Nhóm mặc định </Typography>
-              <Typography component={'div'}></Typography>
-            </TitleText>
-            <TextInputSelect />
+            <TextInputSelect
+              commandSelect={listTask}
+              setOptions={typeId => { handleChangeData("group_task", typeId); }}
+              placeholder={'Nhóm mặc định'}
+            />
           </Typography>
           <Typography component={'div'}>
             <TitleText component={'div'}>
@@ -412,7 +495,8 @@ function CreateJobModal(props) {
                 margin="normal"
                 fullWidth
                 variant="outlined"
-
+                value={data.description}
+                onChange={e => handleChangeData("description", e.target.value)}
               />
               {/* <Typography component={'div'}> Mô tả công việc </Typography>
               <Typography component={'div'}>(Tối đa 500 kí tự)</Typography> */}
@@ -424,11 +508,19 @@ function CreateJobModal(props) {
           </Typography>
           <Typography component={'span'}>
             <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
-            <CommonPriorityForm labels={priorityList} />
+            <CommonPriorityForm
+              labels={priorityList}
+              priority={data.priorityLabel}
+              handleChangeLabel={priorityItem => handleChangeData("priority", priorityItem.id)}
+            />
           </Typography >
           <Typography component={'span'}>
             <TypoText component={'div'}> Hình thức giao việc </TypoText>
-            <CommonControlForm label1='Được giao' label2='Tự đề xuất' label3='Giao việc cho' />
+            <CommonControlForm
+              labels={assignList}
+              assign={data.assignValue}
+              handleChangeAssign={assignItem => handleChangeData('type_assign', assignItem.id)}
+            />
           </Typography>
         </ContentDialog>
         <DialogFooter>
@@ -447,7 +539,7 @@ function CreateJobModal(props) {
               }} >
                 <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />
               </ButtonImage>
-              <Button autoFocus onClick={handleClose} color="primary">
+              <Button autoFocus onClick={handlePressConfirm} color="primary">
                 TẠO VIỆC
           </Button>
             </>

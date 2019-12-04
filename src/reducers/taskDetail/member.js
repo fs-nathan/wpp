@@ -63,7 +63,6 @@ export default function reducer(state = initialState, action) {
                 isFetching: false,
                 dataFetched: true,
             };
-
         case types.POST_MEMBER_FAIL:
             return {
                 ...state,
@@ -83,6 +82,61 @@ export default function reducer(state = initialState, action) {
                 dataFetched: true
             }
         case types.DELETE_MEMBER_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        //Member role
+        case types.POST_ROLE_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.POST_ROLE_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+            };
+        case types.POST_ROLE_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.UPDATE_ROLE_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.UPDATE_ROLE_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+            };
+        case types.UPDATE_ROLE_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
+        case types.DELETE_ROLE_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.DELETE_ROLE_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+            };
+        case types.DELETE_ROLE_FAIL:
             return {
                 ...state,
                 isFetching: false,
