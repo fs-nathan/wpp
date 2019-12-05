@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { OutlinedInput } from '@material-ui/core';
@@ -37,8 +37,12 @@ const marks = {
   }
 };
 const CreateOrder = props => {
-  const [isCheckedManagerWork, setIsCheckedManagerWork] = React.useState(false);
-  const [isCheckedBuyData, setIsCheckedBuyData] = React.useState(false);
+  const [isCheckedManagerWork, setIsCheckedManagerWork] = useState(false);
+  const [isCheckedBuyData, setIsCheckedBuyData] = useState(false);
+  const [numAcc, SetnumAcc] = useState(5);
+  const [dateUse, SetdateUse] = useState(12);
+  const [dataBuy, SetdataBuy] = useState(1000);
+  const [dateSave, SetdateSave] = useState(6);
   const handleChangeCheck = (type, value) => {
     if (type === 'work') {
       setIsCheckedManagerWork(value);
@@ -46,10 +50,31 @@ const CreateOrder = props => {
       setIsCheckedBuyData(value);
     }
   };
+  const handleChangeSilder = (type, value) => {
+    switch (type) {
+      case 'numAcc':
+        SetnumAcc(value);
+        break;
+      case 'dateUse':
+        SetdateUse(value);
+        break;
+      case 'dataBuy':
+        SetdataBuy(value);
+        break;
+      default:
+        SetdateSave(value);
+    }
+  };
   return (
     <div className="order-detail-container create-order">
       <div className="has-border-right detail-left">
-        <ExportPDF />
+        <ExportPDF
+          numAcc={numAcc}
+          dateUse={dateUse}
+          dataBuy={dataBuy}
+          dateSave={dateSave}
+          isCreate={true}
+        />
         <Button
           className="create-order-btn"
           onClick={() => {}}
@@ -61,7 +86,7 @@ const CreateOrder = props => {
       <div className="divider-vertical" />
       <div className="content-create-order">
         <div className="UserInfo_right_header d-flex justify-content-center align-items-center">
-          <h1>THIẾT LẬP ĐƠN HÀNG</h1>
+          <p className="order-title">THIẾT LẬP ĐƠN HÀNG</p>
         </div>
         <div className="detail-right-bottom">
           <p className="title-item">Bước 1: Chọn dịch vụ muốn mua</p>
@@ -97,7 +122,15 @@ const CreateOrder = props => {
           {isCheckedManagerWork && (
             <React.Fragment>
               <p className="sub-title-item">Chọn số lượng tài khoản:</p>
-              <SliderProgess item={marks.accountNum} defaultValue={100} />
+              <SliderProgess
+                item={marks.accountNum}
+                value={numAcc}
+                defaultValue={5}
+                step={5}
+                handleChangeSilder={(event, value) =>
+                  handleChangeSilder('numAcc', value)
+                }
+              />
               <p>số tài khoản sử dụng (từ 5 - 1000)</p>
               <p>Trên 1000 user vui lòng liên hệ để được hỗ trợ</p>
               <p>
@@ -105,7 +138,14 @@ const CreateOrder = props => {
                 <a href="/">Xem bảng giá</a>)
               </p>
               <p className="sub-title-item">Thời gian sử dụng/thanh toán</p>
-              <SliderProgess item={marks.time} defaultValue={12} />
+              <SliderProgess
+                item={marks.time}
+                value={dateUse}
+                defaultValue={12}
+                handleChangeSilder={(event, value) =>
+                  handleChangeSilder('dateUse', value)
+                }
+              />
               <p>Thanh toán 12-18 tháng: Tặng thêm 01 tháng sử dụng</p>
               <p>Thanh toán 18-30 tháng: Tặng thêm 02 tháng sử dụng</p>
               <p>Thanh toán 30-36 tháng: Tặng thêm 03 tháng sử dụng</p>
@@ -115,11 +155,27 @@ const CreateOrder = props => {
           {isCheckedBuyData && (
             <React.Fragment>
               <p className="sub-title-item">Dung lượng lưu trữ (mua thêm)</p>
-              <SliderProgess item={marks.storage} defaultValue={1000} />
+              <SliderProgess
+                item={marks.storage}
+                value={dataBuy}
+                defaultValue={1000}
+                step={100}
+                handleChangeSilder={(event, value) =>
+                  handleChangeSilder('dataBuy', value)
+                }
+              />
               <p className="sub-title-item">
                 Thời gian lưu trữ (mua thêm)/thanh toán
               </p>
-              <SliderProgess item={marks.time} defaultValue={12} />
+              <SliderProgess
+                item={marks.time}
+                value={dateSave}
+                defaultValue={6}
+                step={6}
+                handleChangeSilder={(event, value) =>
+                  handleChangeSilder('dateSave', value)
+                }
+              />
               <div className="border create-order-border" />
             </React.Fragment>
           )}

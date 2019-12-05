@@ -1,0 +1,51 @@
+.header-document {
+  .header-left-content {
+    .title {
+      font-size: 21px;
+      line-height: 26px;
+      font-weight: 600;
+      text-transform: unset;
+    }
+    .header-wrapper {
+      display: flex;
+      .header-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+      }
+    }
+    .title-wrapper {
+      .sub-title {
+        color: #dc3545;
+        line-height: 1.5;
+        font-weight: 500;
+      }
+    }
+  }
+}
+.dialog-content {
+  .create-order-title .MuiFormLabel-root {
+    font-size: 16px;
+  }
+}
+.move-content {
+  padding: 0;
+  .my-document {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 16px;
+    .right-my-document {
+      color: #fd7e14;
+    }
+    .left-my-document {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      .name-document {
+        padding-left: 10px;
+      }
+    }
+  }
+}

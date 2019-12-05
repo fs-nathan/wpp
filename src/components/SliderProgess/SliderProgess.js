@@ -14,9 +14,10 @@ const SliderProgess = props => {
         aria-label="pretto slider"
         className="silder-custom"
         defaultValue={props.defaultValue}
-        // step={props.step}
+        step={props.step || 1}
         min={props.item.min}
         max={props.item.max}
+        onChange={props.handleChangeSilder}
         // marks={props.item.mark}
       />
       <p className="mark-label">

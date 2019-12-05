@@ -35,7 +35,7 @@
     "react-scripts": "3.2.0",
     "react-select": "^3.0.8",
     "react-simple-timefield": "^3.0.0",
-    "react-to-print": "^2.5.0",
+    "react-to-pdf": "^0.0.8",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
     "styled-components": "^4.4.0"

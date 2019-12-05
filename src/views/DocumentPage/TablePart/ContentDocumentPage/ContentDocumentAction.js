@@ -1,36 +1,66 @@
 import { apiService } from '../../../../constants/axiosInstance';
 
-export const getDocumentRecently = () => { 
+export const getDocumentRecently = () => {
   const config = {
     url: '/documents/recently',
-    method: 'get',
-  }
+    method: 'get'
+  };
   return apiService(config);
-}
+};
 
-export const getProjectStatic = () => { 
+export const getProjectStatic = params => {
   const config = {
     url: '/documents/project-static',
     method: 'get',
-  }
+    params
+  };
   return apiService(config);
-}
+};
 
-export const getDocumentProjectStatic = (projectId) => { 
+export const getDocumentProjectStatic = projectId => {
   const config = {
-    url: '/documents/project-static',
+    url: '/documents/project',
     method: 'get',
     params: {
-      project_id: projectId
+      // project_id: projectId,
+      project_id: '5d9974fcfb176e0d44ffe08b'
     }
-  }
+  };
   return apiService(config);
-}
+};
 
-export const getDocumentShareFromMe = () => { 
+export const getDocumentShareFromMe = () => {
   const config = {
-    url: '/documents/project-static',
-    method: 'get',
-  }
+    url: '/documents/share-from-me',
+    method: 'get'
+  };
   return apiService(config);
-}
+};
+
+// handle action for MyDocument page
+export const actionFetchMyDocument = (params = {}) => {
+  const config = {
+    url: '/documents/my-document',
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};
+
+// handle action for Trash page
+export const actionFetchTrash = (params = {}) => {
+  const config = {
+    url: '/documents/trash',
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};
+
+export const actionFetchListFolder = () => {
+  const config = {
+    url: '/documents/get-list-folder',
+    method: 'get'
+  };
+  return apiService(config);
+};

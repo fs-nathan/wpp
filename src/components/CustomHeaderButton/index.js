@@ -55,7 +55,7 @@ const CustomHeaderButton = props => {
                 key={index}
               >
                 <div>
-                  <Icon path={el.icon} size={1} color={'rgba(0, 0, 0, 0.54)'} />
+                  <Icon path={el.icon} size={1} color="rgba(0, 0, 0, 0.54)" />
                 </div>
                 <span>{el.text}</span>
               </StyledButton>

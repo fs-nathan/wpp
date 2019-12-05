@@ -31,7 +31,7 @@ const LeftBar = ({ colors, history }) => {
           alt=""
           className="LeftNavIcon"
         />
-        <span>Trang chủ</span>
+        <span className="titleTab">Trang chủ</span>
       </Link>
       <Link to={Routes.PROJECTS} className="menu-item">
         <img
@@ -43,7 +43,7 @@ const LeftBar = ({ colors, history }) => {
           alt=""
           className="LeftNavIcon"
         />
-        <span>Dự án</span>
+        <span className="titleTab">Dự án</span>
       </Link>
       <Link to={Routes.TASKS} className="menu-item">
         <img
@@ -51,7 +51,7 @@ const LeftBar = ({ colors, history }) => {
           alt=""
           className="LeftNavIcon"
         />
-        <span>Công việc</span>
+        <span className="titleTab">Công việc</span>
       </Link>
       <Link to={Routes.REPORT} className="menu-item">
         <img
@@ -63,7 +63,7 @@ const LeftBar = ({ colors, history }) => {
           alt=""
           className="LeftNavIcon"
         />
-        <span>Báo cáo</span>
+        <span className="titleTab">Báo cáo</span>
       </Link>
       <Link to={Routes.DOCUMENT_RECENT} className="menu-item">
         <img
@@ -71,7 +71,7 @@ const LeftBar = ({ colors, history }) => {
           alt=""
           className="LeftNavIcon"
         />
-        <span>Tài liệu</span>
+        <span className="titleTab">Tài liệu</span>
       </Link>
       <Link to={Routes.DEPARTMENTS} className="menu-item">
         <img
@@ -83,7 +83,7 @@ const LeftBar = ({ colors, history }) => {
           alt=""
           className="LeftNavIcon"
         />
-        <span>Thành viên</span>
+        <span className="titleTab">Thành viên</span>
       </Link>
       <Link to={Routes.HOME} className="menu-item">
         <img

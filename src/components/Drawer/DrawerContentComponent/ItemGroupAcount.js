@@ -24,7 +24,7 @@ class ItemGroupAcount extends Component {
           <div className="name-item-group-account">
             <span className="text-name-item-group-account">{item.name}</span>
             {item.status === 'Chờ duyệt' ? (
-              <span>{item.status}</span>
+              <span className="account-status-text">{item.status}</span>
             ) : (
               <Chip
                 size="small"
@@ -41,12 +41,7 @@ class ItemGroupAcount extends Component {
           <div className="phone-item-group-account">
             <span className="text-value-email-phone">{item.phone}</span>
             {item.status !== 'Free' && (
-              <Button
-                className={`btn-action ${
-                  item.status === 'Pro' ? 'colorBlue' : 'colorRed'
-                }`}
-                variant="text"
-              >
+              <Button className="btn-action" variant="text">
                 {item.status === 'Pro' ? 'Rời nhóm' : 'Hủy'}
               </Button>
             )}

@@ -16,14 +16,14 @@ const ThStyled1 = styled.th`
   -webkit-print-color-adjust: exact !important;
   background: #e2efda;
   text-align: center;
-  padding: 10px 0;
+  padding: 10px;
 `;
 
 const TdStyled1 = styled.td`
   border-bottom: 2px solid #000;
   color: #f50016;
   text-align: center;
-  padding: 10px 0;
+  padding: 10px;
 `;
 
 const TableStyled2 = styled.table`
@@ -37,24 +37,54 @@ const ThStyled2 = styled.th`
   -webkit-print-color-adjust: exact !important;
   background: #e2efda;
   text-align: center;
-  padding: 10px 0;
+  padding: 10px;
 `;
 
 const TdStyled2 = styled.td`
-  border-bottom: 1px dashed #000;
+  border-bottom: 1px solid #ddd;
   text-align: center;
   padding: 15px 0;
   font-weight: bold;
 `;
 
 const TdStyled3 = styled.td`
-  border-bottom: 1px dashed #000;
+  border-bottom: 1px solid #ddd;
   text-align: left;
   padding: 15px 20px;
 `;
-
+const TdStyled4 = styled.td`
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  padding: 15px 0;
+`;
 class ExportPDF extends Component {
+  getDateGift = dateUse => {
+    if (dateUse >= 12 && dateUse < 18) {
+      return 1;
+    } else if (dateUse >= 18 && dateUse < 30) {
+      return 2;
+    } else if (dateUse >= 30 && dateUse <= 36) {
+      return 3;
+    } else if (dateUse < 12) {
+      return 0;
+    }
+  };
+  showPrice = price => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   render() {
+    const { numAcc, dateUse, dataBuy, dateSave, isCreate } = this.props;
+    const pricePacketUser = 50000; //a
+    const moneyPacketUser = pricePacketUser * numAcc * dateUse; //d, f
+    const dateGift = this.getDateGift(dateUse);
+    const totalDataUse = dateUse + dateGift + 4; //e
+    ///////////////////////
+    const pricePacketData = 3000; //a
+    const moneyPacketData = pricePacketData * dataBuy * dateSave; //d, f
+    const totalDateData = dateSave + 1; //e
+    //////
+    const totalPriceBeforVAT = moneyPacketUser + moneyPacketData;
+    const totalPriceVAT = totalPriceBeforVAT * 0.1;
     return (
       <div className="order-content">
         <form>
@@ -63,7 +93,11 @@ class ExportPDF extends Component {
               <div className="print-head">
                 <div className="head-left-right">
                   <div>
-                    <img src={images.logo_wrokplus} alt="" />{' '}
+                    <img
+                      src={images.logo_wrokplus}
+                      alt=""
+                      className="logo-container"
+                    />
                   </div>
                   <div className="title-head-left-right">
                     Phúc An Technology and Tradding
@@ -110,7 +144,9 @@ class ExportPDF extends Component {
                         <p>CS 100</p>
                       </TdStyled1>
                       <TdStyled1>Tiền mặt</TdStyled1>
-                      <TdStyled1>10.000.000</TdStyled1>
+                      <TdStyled1>
+                        {this.showPrice(totalPriceBeforVAT + totalPriceVAT)}
+                      </TdStyled1>
                     </tr>
                   </tbody>
                 </TableStyled1>
@@ -136,34 +172,38 @@ class ExportPDF extends Component {
                       <TdStyled2>1</TdStyled2>
                       <TdStyled3>
                         <div className="">
-                          <div style={{ fontweight: 'bold' }}>
-                            Gói sản phẩm: 10 USER
+                          <div style={{ fontWeight: 'bold' }}>
+                            Gói sản phẩm: {isCreate ? numAcc : 10} USER
                           </div>
                           <div style={{ color: '#1f9de0' }}>
-                            Thời gian sử dụng: 12 tháng <br />
+                            Thời gian sử dụng: {totalDataUse} tháng <br />
                             (Kể từ ngày thanh toán)
                           </div>
                         </div>
                       </TdStyled3>
                       <TdStyled2></TdStyled2>
                       <TdStyled2></TdStyled2>
-                      <TdStyled2>12</TdStyled2>
-                      <TdStyled2>3.000.000</TdStyled2>
+                      <TdStyled2>{totalDataUse}</TdStyled2>
+                      <TdStyled2>{this.showPrice(moneyPacketUser)}</TdStyled2>
                     </tr>
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
                         <div className="">
-                          <div>Đăng ký gói sản phầm 10-USER</div>
-                          <div>Số lượng USER: 10</div>
+                          <div>
+                            Đăng ký gói sản phầm {isCreate ? numAcc : 10}-USER
+                          </div>
+                          <div>Số lượng USER: {isCreate ? numAcc : 10}</div>
                           <div>Dung lượng lưu trữ: 10 GB</div>
-                          <div>Thời gian sử dụng: 6 tháng</div>
+                          <div>
+                            Thời gian sử dụng: {isCreate ? dateUse : 10} tháng
+                          </div>
                         </div>
                       </TdStyled3>
-                      <TdStyled2>50000</TdStyled2>
-                      <TdStyled2>10</TdStyled2>
-                      <TdStyled2>6</TdStyled2>
-                      <TdStyled2>3.000.000</TdStyled2>
+                      <TdStyled4>{this.showPrice(pricePacketUser)}</TdStyled4>
+                      <TdStyled4>{isCreate ? numAcc : 10}</TdStyled4>
+                      <TdStyled4>{isCreate ? dateUse : 10}</TdStyled4>
+                      <TdStyled4>{this.showPrice(moneyPacketUser)}</TdStyled4>
                     </tr>
                     <tr>
                       <TdStyled2></TdStyled2>
@@ -172,10 +212,10 @@ class ExportPDF extends Component {
                           <div>Thời gian cộng thêm từ đơn hàng cũ</div>
                         </div>
                       </TdStyled3>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>1</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>1</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
                     </tr>
                     <tr>
                       <TdStyled2></TdStyled2>
@@ -187,10 +227,10 @@ class ExportPDF extends Component {
                           </div>
                         </div>
                       </TdStyled3>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>2</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>{dateGift}</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
                     </tr>
                     <tr>
                       <TdStyled2></TdStyled2>
@@ -199,25 +239,49 @@ class ExportPDF extends Component {
                           <div>Mã khuyến mại: WPKM-3MO</div>
                         </div>
                       </TdStyled3>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>3</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>3</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
+                    </tr>
+                    <tr style={{ background: '#f2f2f2' }}>
+                      <TdStyled2>2</TdStyled2>
+                      <TdStyled3>
+                        <div className="">
+                          <div style={{ fontWeight: 'bold' }}>
+                            Gói sản phầm: CS-{isCreate ? dataBuy : 10}
+                          </div>
+                          <div style={{ color: '#1f9de0' }}>
+                            Thời gian {isCreate ? dateSave : 10} tháng
+                          </div>
+                          <div style={{ color: '#1f9de0' }}>
+                            (Kể từ ngày thanh toán)
+                          </div>
+                        </div>
+                      </TdStyled3>
+                      <TdStyled2></TdStyled2>
+                      <TdStyled2></TdStyled2>
+                      <TdStyled2>{totalDateData}</TdStyled2>
+                      <TdStyled2>{this.showPrice(moneyPacketData)}}</TdStyled2>
                     </tr>
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
                         <div className="">
-                          <div>Đăng ký gói sản phầm CS-10</div>
-                          <div>Số lượng USER: 10</div>
-                          <div>Dung lượng lưu trữ: 10 GB</div>
-                          <div>Thời gian sử dụng: 6 tháng</div>
+                          <div>
+                            Đăng ký gói mở rộng: Cloud Storage (CS-
+                            {isCreate ? dataBuy : 10})
+                          </div>
+                          <div>
+                            Mua thêm dung lượng lưu trữ:{' '}
+                            {isCreate ? dataBuy : 10}GB
+                          </div>
                         </div>
                       </TdStyled3>
-                      <TdStyled2>50000</TdStyled2>
-                      <TdStyled2>10</TdStyled2>
-                      <TdStyled2>6</TdStyled2>
-                      <TdStyled2>3.000.000</TdStyled2>
+                      <TdStyled4>{this.showPrice(pricePacketData)}</TdStyled4>
+                      <TdStyled4>{isCreate ? dataBuy : 10}</TdStyled4>
+                      <TdStyled4>{isCreate ? dateSave : 10}</TdStyled4>
+                      <TdStyled4>{this.showPrice(moneyPacketData)}</TdStyled4>
                     </tr>
                     <tr>
                       <TdStyled2></TdStyled2>
@@ -226,37 +290,22 @@ class ExportPDF extends Component {
                           <div>Thời gian cộng thêm từ đơn hàng cũ</div>
                         </div>
                       </TdStyled3>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>1</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>0</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
                     </tr>
                     <tr>
                       <TdStyled2></TdStyled2>
                       <TdStyled3>
                         <div className="">
-                          <div>
-                            Tặng thời gian sử dụng do kỳ thanh toán: <br /> 12
-                            tháng
-                          </div>
+                          <div>Mã khuyến mại: CSKM-1MO</div>
                         </div>
                       </TdStyled3>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>2</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
-                    </tr>
-                    <tr>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div>Mã khuyến mại: WPKM-3MO</div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
-                      <TdStyled2>3</TdStyled2>
-                      <TdStyled2>-</TdStyled2>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
+                      <TdStyled4>1</TdStyled4>
+                      <TdStyled4>-</TdStyled4>
                     </tr>
                   </tbody>
                 </TableStyled2>
@@ -267,20 +316,20 @@ class ExportPDF extends Component {
                       <span style={{ width: '40%', textAlign: 'right' }}>
                         Tổng giá trị trước thuế (I+II)
                       </span>
-                      <span>5.700.000</span>
+                      <span>{this.showPrice(totalPriceBeforVAT)}</span>
                     </div>
                     <div className="item-total-group">
                       <span style={{ width: '40%', textAlign: 'right' }}>
                         Thuế VAT (10%)
                       </span>
-                      <span>570.000</span>
+                      <span>{this.showPrice(totalPriceVAT)}</span>
                     </div>
                     <div className="item-total-group">
                       <span style={{ width: '40%', textAlign: 'right' }}>
                         Giá trị đơn hàng
                       </span>
                       <span style={{ fontWeight: 'bold', color: '#f50016' }}>
-                        6.270.000
+                        {this.showPrice(totalPriceBeforVAT + totalPriceVAT)}
                       </span>
                     </div>
                   </div>

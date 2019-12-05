@@ -3,8 +3,7 @@ import {
   mdiCart,
   mdiCreditCardOutline,
   mdiAccountMultiple,
-  mdiSettings,
-  mdiPlus
+  mdiSettings
 } from '@mdi/js';
 import { Routes } from '../../../constants/routes';
 import LeftSetting from '../../../components/LeftSetting/LeftSetting';
@@ -32,9 +31,7 @@ const listMenu = [
   }
 ];
 const ListPart = () => {
-  return (
-    <LeftSetting title="Cài đặt nhóm" listMenu={listMenu} iconTitle={mdiPlus} />
-  );
+  return <LeftSetting title="Cài đặt nhóm" listMenu={listMenu} />;
 };
 
 export default ListPart;

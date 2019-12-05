@@ -2,32 +2,31 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { mdiMagnify, mdiCart, mdiClose } from '@mdi/js';
 import { Routes } from '../../../../constants/routes';
-import { SETTING_GROUP } from '../../../../constants/constants';
 import CustomHeaderButton from '../../../../components/CustomHeaderButton';
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 
 const HeaderButtonGroup = props => {
-  const isActived = value => props.match.params.type === value;
+  const isTabOrder = props.match.params.type === 'order';
+  const isOder = isEmpty(props.location.search);
+  const isCreateOder = props.location.search.split('=').length === 1;
   const listAction = [
     {
       text: 'Tìm kiếm',
       icon: mdiMagnify,
       action: () => {},
-      isShow: isActived(SETTING_GROUP.ORDER)
+      isShow: isTabOrder && isOder
     },
     {
       text: 'Đơn hàng',
       icon: mdiCart,
       action: () => props.history.push(Routes.SETTING_GROUP_ORDER),
-      isShow:
-        isActived(SETTING_GROUP.ORDER) ||
-        isActived(SETTING_GROUP.CREATE_ORDER) ||
-        isActived(SETTING_GROUP.PAYMENT)
+      isShow: isTabOrder && (isOder || isCreateOder)
     },
     {
-      text: 'Đóng',
+      text: null,
       icon: mdiClose,
       action: () => props.history.push(Routes.SETTING_GROUP_ORDER),
-      isShow: isActived(SETTING_GROUP.ORDER_DETAIL)
+      isShow: isTabOrder && !(isOder || isCreateOder)
     }
   ];
   return <CustomHeaderButton listAction={listAction} />;

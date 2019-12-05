@@ -66,7 +66,7 @@ class DrawerGroupAcount extends Component {
         </div>
         <div className="join-group-new">
           <span className="btn-close add-header-btn">
-            <Icon path={mdiPlus} size={1.2} color="rgba(0, 0, 0, 0.54)" />
+            <Icon path={mdiPlus} size={1.2} color="#007bec" />
           </span>
           <span className="text-join-group-new">Tham gia nhóm mới</span>
         </div>

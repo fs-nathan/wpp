@@ -12,7 +12,7 @@ export const Routes = {
   DOCUMENT_SHARE_ME: '/document/share-me',
   DOCUMENT_ME: '/document/me',
   DOCUMENT_GOOGLE_DRIVE: '/document/google-drive',
-  DOCUMENT_TRASH: '/document/type',
+  DOCUMENT_TRASH: '/document/trash',
   TASKS: '/tasks',
   JOB_DETAIL: '/list-task-detail',
   TEST: '/__test__',
