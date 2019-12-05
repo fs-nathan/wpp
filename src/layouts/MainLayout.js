@@ -135,7 +135,7 @@ function MainLayout({ doLogin, doLoginCheckState, location, colors }) {
           <LeftBar />
           <TopBar />
           <DrawerComponent />
-          {/* <NoticeModal /> */}
+          <NoticeModal />
         </React.Fragment>
       )}
       <ContentBox>{configRoute(routes)}</ContentBox>
