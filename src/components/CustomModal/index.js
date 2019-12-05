@@ -14,9 +14,9 @@ import ColorTypo from '../ColorTypo';
 import colorPal from '../../helpers/colorPalette';
 import PropTypes from 'prop-types';
 
-const StyledScrollbars = styled(({ height, ...props }) => <Scrollbars {...props} />)`
+const StyledScrollbars = styled(Scrollbars)`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  min-height: ${props => props.height === 'tall' ? '500px' : '400px'};
+  min-height: 450px;
   & > div:nth-child(3) {
     z-index: 999;
   }
@@ -100,12 +100,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function OneColumn({ height, children, }) {
+function OneColumn({ children, }) {
   return (
     <StyledScrollbars
       autoHide
       autoHideTimeout={500}
-      height={height}
     >
       <StyledDialogContent>
         {children}
@@ -114,13 +113,12 @@ function OneColumn({ height, children, }) {
   );
 }
 
-function TwoColumns({ height, left, right }) {
+function TwoColumns({ left, right }) {
   return (
     <TwoColumnsContainer>
       <StyledScrollbars
         autoHide
         autoHideTimeout={500}
-        height={height}
       >
         <StyledDialogContent>
           {left}
@@ -129,7 +127,6 @@ function TwoColumns({ height, left, right }) {
       <StyledScrollbars
         autoHide
         autoHideTimeout={500}
-        height={height}
       >
         <StyledDialogContent>
           {right}
@@ -139,7 +136,15 @@ function TwoColumns({ height, left, right }) {
   );
 }
 
-function CustomModal({ title, columns = 1, children = null, left = null, right = null, canConfirm = true, onConfirm = () => null, onCancle = () => null, open, setOpen, fullWidth = false, height = 'normal' }) {
+function CustomModal({ 
+  title, 
+  columns = 1, 
+  children = null, left = null, right = null, 
+  canConfirm = true, 
+  onConfirm = () => null, onCancle = () => null, 
+  open, setOpen, 
+  maxWidth='md', fullWidth = false,
+}) {
 
   function handleCancle() {
     setOpen(false);
@@ -153,7 +158,7 @@ function CustomModal({ title, columns = 1, children = null, left = null, right =
 
   return (
     <StyledDialog
-      maxWidth='md'
+      maxWidth={maxWidth}
       fullWidth={fullWidth}
       open={open}
       TransitionComponent={Transition}
@@ -167,10 +172,10 @@ function CustomModal({ title, columns = 1, children = null, left = null, right =
         </IconButton>
       </StyledDialogTitle>
       {columns === 1 && (
-        <OneColumn height={height} children={children} />
+        <OneColumn children={children} />
       )}
       {columns === 2 && (
-        <TwoColumns height={height} left={left} right={right} />
+        <TwoColumns left={left} right={right} />
       )}
       <StyledDialogActions>
         <ActionsCancleButton onClick={() => handleCancle()}>

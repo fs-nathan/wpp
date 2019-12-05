@@ -9,6 +9,7 @@ import CustomSelect from '../../../../components/CustomSelect';
 import ErrorBox from '../../../../components/ErrorBox';
 import LoadingBox from '../../../../components/LoadingBox';
 import CustomModal from '../../../../components/CustomModal';
+import { useRequiredString } from '../../../../hooks';
 import { listRoom } from '../../../../actions/room/listRoom';
 import { listPosition } from '../../../../actions/position/listPosition';
 import { listMajor } from '../../../../actions/major/listMajor';
@@ -59,14 +60,14 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
   const [position, setPosition] = React.useState(find(positions, { id: get(updatedUser, 'position_id', '') }));
   const [major, setMajor] = React.useState(find(majors, { id: get(updatedUser, 'major_id', '') }));
   const [level, setLevel] = React.useState(find(levels, { id: get(updatedUser, 'level_id', '') }));
-  const [description, setDescription] = React.useState(get(updatedUser, 'description', ''));
+  const [description, setDescription, errorDescription] = useRequiredString(get(updatedUser, 'description', ''), 500);
   
   const loading = listRoomLoading || listPositionLoading || listMajorLoading || listLevelLoading;
   const error = listRoomError || listPositionError || listMajorError || listLevelError;
 
   React.useEffect(() => {
     setDescription(get(updatedUser, 'description', ''));
-  }, [updatedUser]);
+  }, [updatedUser, setDescription]);
 
   React.useEffect(() => {
     setRoom(find(rooms, { id: get(updatedUser, 'room_id', '') }));
@@ -102,6 +103,7 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
         open={open}
         setOpen={setOpen}
         title={get(updatedUser, 'name', '')}
+        canConfirm={!errorDescription}
         onConfirm={() => handleUpdateUser()}
       >
         {loading && <LoadingBox />}
@@ -191,7 +193,11 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
                 multiline
                 rowsMax={4}
                 fullWidth
-                helperText={<ColorTypo component='span' color='red'>{t("views.user_page.modals.update_user.description_helper", { max_count: 500 })}</ColorTypo>}
+                helperText={
+                  <ColorTypo component='span' color='red'>
+                    {get(errorDescription, 'message', '')}
+                  </ColorTypo>
+                }
               />
             </StyledFormControl>
           </React.Fragment>

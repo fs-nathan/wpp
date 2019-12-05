@@ -14,7 +14,9 @@ import CustomListItem from './CustomListItem';
 import { ListItemText } from '@material-ui/core';
 import { filter, get, } from 'lodash';
 import SearchInput from '../../../../components/SearchInput';
-
+import { sortGroupTask } from '../../../../actions/groupTask/sortGroupTask';
+import CreateGroupTask from '../../Modals/CreateGroupTask';
+ 
 const Banner = styled.div`
   padding: 15px;
 `;
@@ -23,33 +25,42 @@ const StyledPrimary = styled(Primary)`
   font-weight: 500;
 `;
 
-function ProjectMemberSlide({ handleSubSlide, listTask, }) {
+function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, }) {
   
   const { setProjectId } = React.useContext(ProjectContext);
   const { projectId } = useParams();
 
-  const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
-  const loading = listTaskLoading;
-  const error = listTaskError;
+  const { data: { groupTasks }, loading, error } = listGroupTask;
 
   const [taskGroups, setTaskGroups] = React.useState([]);
   const [searchPatern, setSearchPatern] = React.useState('');
+
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
 
   React.useEffect(() => {
-    setTaskGroups(filter(tasks, (task) => get(task, 'id') === 'default' || get(task, 'name', '').toLowerCase().includes(searchPatern.toLowerCase())));
-  }, [tasks, searchPatern]);
+    setTaskGroups(
+      filter(
+        groupTasks, 
+        groupTask => get(groupTask, 'name', '').toLowerCase().includes(searchPatern.toLowerCase())
+      )
+    );
+  }, [groupTasks, searchPatern]);
 
   function onDragEnd(result) {
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) return;
+    doSortGroupTask({
+      groupTaskId: draggableId,
+      sortIndex: destination.index,
+    });
   }
   
   return (
@@ -61,10 +72,12 @@ function ProjectMemberSlide({ handleSubSlide, listTask, }) {
           leftAction={{
             iconPath: mdiChevronLeft,
             onClick: () => handleSubSlide(0),
+            tooltip: 'Quay lại',
           }}
           rightAction={{
             iconPath: mdiPlus,
-            onClick: () => null,
+            onClick: () => setOpen(true),
+            tooltip: 'Thêm nhóm công việc',
           }}
           loading={{
             bool: loading,
@@ -130,6 +143,7 @@ function ProjectMemberSlide({ handleSubSlide, listTask, }) {
               )}
             </Droppable>
           </DragDropContext>
+          <CreateGroupTask open={open} setOpen={setOpen} />
         </LeftSideContainer>
       )}
     </React.Fragment>
@@ -138,16 +152,17 @@ function ProjectMemberSlide({ handleSubSlide, listTask, }) {
 
 const mapStateToProps = state => {
   return {
-    listTask: state.task.listTask,
+    listGroupTask: state.groupTask.listGroupTask,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    doSortGroupTask: ({ groupTaskId, sortIndex }) => dispatch(sortGroupTask({ groupTaskId, sortIndex })),
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ProjectMemberSlide);
+)(GroupTaskSlide);

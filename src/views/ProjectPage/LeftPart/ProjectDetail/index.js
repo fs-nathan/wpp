@@ -137,7 +137,8 @@ function ProjectDetail({ detailProject, doDeleteProject, }) {
           title='Thông tin dự án'
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push('/projects')
+            onClick: () => history.push('/projects'),
+            tooltip: 'Quay lại',
           }}
           loading={{
             bool: loading,

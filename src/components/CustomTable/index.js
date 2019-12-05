@@ -5,8 +5,6 @@ import TableMain from './TableMain';
 import { Button } from '@material-ui/core';
 import colorPal from '../../helpers/colorPalette';
 import { darken } from '@material-ui/core/styles';
-import Icon from '@mdi/react';
-import { mdiCoin, mdiCalendar } from '@mdi/js';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
@@ -60,12 +58,12 @@ const RightHeader = styled.div`
   margin-left: auto;
   & > *:last-child {
     margin-left: 16px;
-    padding: 8px 12px;
-    margin-top: 8px;
   }
 `;
 
 const StyledButton = styled(Button)`
+  padding: 8px 12px;
+  margin-top: 8px;
   background-color: ${colorPal['orange'][0]};
   color: #fff;
   &:hover {
@@ -122,12 +120,6 @@ function CustomTableWrapper({ options, columns, data }) {
   const [expand, setExpand] = React.useState(false);
 
   const defaultOptions = {
-    title: 'Title',
-    subTitle: 'SubTitle',
-    mainAction: {
-      label: '+ Action',
-      onClick: () => console.log('main action clicked')
-    },
     search: {
       patern: searchPatern,
       onChange: str => setSearchPatern(str)
@@ -135,50 +127,6 @@ function CustomTableWrapper({ options, columns, data }) {
     expand: {
       bool: expand,
       toggleExpand: () => setExpand(expand => !expand)
-    },
-    subActions: [
-      {
-        label: 'Sub Action 1',
-        icon: () => <Icon path={mdiCoin} size={1} />,
-        onClick: () => console.log('sub action 1 clicked')
-      },
-      {
-        label: 'Sub Action 2',
-        icon: () => <Icon path={mdiCalendar} size={1} />,
-        onClick: () => console.log('sub action 2 clicked')
-      }
-    ],
-    moreMenu: [
-      {
-        label: 'Menu Item 1',
-        onClick: () => console.log('menu item 1 clicked')
-      },
-      {
-        label: 'Menu Item 2',
-        onClick: () => console.log('menu item 2 clicked')
-      },
-      {
-        label: 'Menu Item 3',
-        onClick: () => console.log('menu item 3 clicked')
-      }
-    ],
-    grouped: {
-      bool: true,
-      id: 'id',
-      label: 'group',
-      item: 'items'
-    },
-    row: {
-      id: 'id',
-      onClick: (row, group) => console.log(group, row)
-    },
-    draggable: {
-      bool: true,
-      onDragEnd: () => null
-    },
-    loading: {
-      bool: false,
-      component: () => null
     }
   };
 

@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
+import { Tooltip } from '@material-ui/core';
 import { mdiBorderNoneVariant } from '@mdi/js';
 import { IconButton } from '@material-ui/core';
 import CustomAvatar from '../CustomAvatar';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 
 const Container = styled.div`
   height: 100%;
@@ -79,17 +81,23 @@ function LeftSideContainer({
 }) {
 
   const parseAction = (action) => (
-    action.avatar ? (
-      <CustomAvatar src={action.avatar} alt='avatar' />
+    get(action, 'avatar') ? (
+      <CustomAvatar src={get(action, 'avatar')} alt='avatar' />
     ) 
-    : typeof(action.onClick) === 'function' ? (
-      <StyledIconButton size='small' onClick={action.onClick}>
-        <Icon path={action.iconPath} size={1} color='rgba(0, 0, 0, 0.54)' />
+    : typeof(get(action, 'onClick') === 'function') ? (
+      <StyledIconButton size='small' onClick={get(action, 'onClick')}>
+        <Tooltip
+          title={get(action, 'tooltip', '')}
+        >
+          <div>
+            <Icon path={get(action, 'iconPath')} size={1} color='rgba(0, 0, 0, 0.54)' />
+          </div>
+        </Tooltip>
       </StyledIconButton>
     ) : (
       <IconWrapper>
-        {action.iconPath ? (
-          <Icon path={action.iconPath} size={1} color='rgba(0, 0, 0, 0.54)' />
+        {get(action, 'iconPath') ? (
+          <Icon path={get(action, 'iconPath')} size={1} color='rgba(0, 0, 0, 0.54)' />
         ) : (
           <Icon path={mdiBorderNoneVariant} size={1} color='rgba(0, 0, 0, 0)' />
         )}

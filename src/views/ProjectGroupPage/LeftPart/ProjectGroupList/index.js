@@ -61,6 +61,7 @@ function ProjectList({ listProjectGroup, doSortProjectGroup, }) {
           rightAction={{
             iconPath: mdiPlus,
             onClick: () => setOpenModal(true),
+            tooltip: 'Thêm nhóm dự án',
           }}
           loading={{
             bool: loading,

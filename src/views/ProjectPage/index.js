@@ -2,14 +2,17 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { detailProject } from '../../actions/project/detailProject';
+import { memberProject } from '../../actions/project/memberProject';
 import { listTask } from '../../actions/task/listTask';
+import { listGroupTask } from '../../actions/groupTask/listGroupTask';
 import ProjectDetail from './LeftPart/ProjectDetail';
 import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
-import TaskGroupSlide from './LeftPart/TaskGroupSlide';
+import GroupTaskSlide from './LeftPart/GroupTaskSlide';
 import AllTaskTable from './RightPart/AllTaskTable';
 import { 
   CustomEventListener, CustomEventDispose,
   UPDATE_PROJECT,
+  CREATE_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
 } from '../../constants/events';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
@@ -18,7 +21,9 @@ const { Provider } = Context;
 
 function ProjectPage({
   doDetailProject,
+  doMemberProject,
   doListTask,
+  doListGroupTask,
 }) {
 
   const [projectId, setProjectId] = React.useState();
@@ -41,9 +46,64 @@ function ProjectPage({
 
   React.useEffect(() => {
     if (projectId) {
+      doMemberProject({ projectId });
+      
+      const reloadMemberProject = () => {
+        doMemberProject({ projectId }, true);
+      }
+      
+      CustomEventListener(UPDATE_PROJECT, reloadMemberProject);
+      
+      return () => {
+        CustomEventDispose(UPDATE_PROJECT, reloadMemberProject);
+      }
+    }
+  }, [projectId, doMemberProject]);
+
+  React.useEffect(() => {
+    if (projectId) {
       doListTask({ projectId });
     }
+
+    const reloadListTask = () => {
+      doListTask({ projectId }, true);
+    }
+
+    CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
+    CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
+    CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
+    CustomEventListener(SORT_GROUP_TASK, reloadListTask);
+
+    return () => {
+      CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
+    }
   }, [projectId, doListTask]);
+
+
+  React.useEffect(() => {
+    if (projectId) {
+      doListGroupTask({ projectId });
+    }
+
+    const reloadListGroupTask = () => {
+      doListGroupTask({ projectId }, true);
+    }
+
+    CustomEventListener(CREATE_GROUP_TASK, reloadListGroupTask);
+    CustomEventListener(UPDATE_GROUP_TASK, reloadListGroupTask);
+    CustomEventListener(DELETE_GROUP_TASK, reloadListGroupTask);
+    CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
+
+    return () => {
+      CustomEventDispose(CREATE_GROUP_TASK, reloadListGroupTask);
+      CustomEventDispose(UPDATE_GROUP_TASK, reloadListGroupTask);
+      CustomEventDispose(DELETE_GROUP_TASK, reloadListGroupTask);
+      CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
+    }
+  }, [projectId, doListGroupTask]);
 
   return (
     <Provider value={{
@@ -61,7 +121,7 @@ function ProjectPage({
                   leftRenders={[
                     () => <ProjectDetail {...props} />,
                     ({ handleSubSlide }) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide} />,
-                    ({ handleSubSlide }) => <TaskGroupSlide {...props} handleSubSlide={handleSubSlide} />,
+                    ({ handleSubSlide }) => <GroupTaskSlide {...props} handleSubSlide={handleSubSlide} />,
                   ]}
                   rightRender={
                     ({ expand, handleExpand, handleSubSlide, }) => 
@@ -85,7 +145,9 @@ function ProjectPage({
 const mapDispatchToProps = dispatch => {
   return {
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
+    doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
     doListTask: ({ projectId }, quite) => dispatch(listTask({ projectId }, quite)),
+    doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
   }
 };
 

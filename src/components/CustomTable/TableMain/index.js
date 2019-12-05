@@ -22,14 +22,14 @@ function TableMain() {
       autoHide
       autoHideTimeout={500}
     >
-      {get(options, 'loading.bool') && get(options, 'loading.component')()}
-      {!get(options, 'loading.bool') && (
+      {get(options, 'loading.bool', false) && get(options, 'loading.component')()}
+      {!get(options, 'loading.bool', false) && (
         <Table>
           <TableHead>
             <TableHeaderRow />
           </TableHead>
           <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)}>
-            {get(options, 'grouped.bool')
+            {get(options, 'grouped.bool', false)
               ? (
               data.map((group, index) => (
                 <TableBodyGroupRow group={group} key={index} />

@@ -1,12 +1,13 @@
 import React from 'react';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
 import { detailProjectGroup } from '../../actions/projectGroup/detailProjectGroup';
 import { memberProjectGroup } from '../../actions/projectGroup/memberProjectGroup';
 import { listIcon } from '../../actions/icon/listIcon';
 import { listProject } from '../../actions/project/listProject';
+import { listDeletedProject } from '../../actions/project/listDeletedProject';
 import { 
   CustomEventListener, CustomEventDispose, 
   CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
@@ -15,7 +16,8 @@ import {
 } from '../../constants/events';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
-import ProjectGroupTable from './RightPart/AllProjectTable';
+import AllProjectTable from './RightPart/AllProjectTable';
+import DeletedProjectTable from './RightPart/DeletedProjectTable';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -26,6 +28,7 @@ function ProjectGroupPage({
   doDetailProjectGroup,
   doMemberProjectGroup,
   doListProject,
+  doListDeletedProject,
 }) {
 
   React.useEffect(() => {
@@ -71,6 +74,7 @@ function ProjectGroupPage({
   const [projectGroupId, setProjectGroupId] = React.useState();
 
   React.useEffect(() => {
+    if (projectGroupId === 'deleted') return;
     if (projectGroupId) {
       doDetailProjectGroup({ projectGroupId });
 
@@ -87,6 +91,7 @@ function ProjectGroupPage({
   }, [projectGroupId, doDetailProjectGroup]);
 
   React.useEffect(() => {
+    if (projectGroupId === 'deleted') return;
     if (projectGroupId) {
       doMemberProjectGroup({ projectGroupId });
 
@@ -103,6 +108,7 @@ function ProjectGroupPage({
   }, [projectGroupId, doMemberProjectGroup]);
 
   React.useEffect(() => {
+    if (projectGroupId === 'deleted') return;
     doListProject({
       groupProject: projectGroupId,
     });
@@ -130,6 +136,20 @@ function ProjectGroupPage({
     }
   }, [projectGroupId, doListProject]);
 
+  React.useEffect(() => {
+    doListDeletedProject({});
+
+    const reloadListDeletedProject = () => {
+      doListDeletedProject({}, true);
+    }
+
+    CustomEventListener(DELETE_PROJECT, reloadListDeletedProject);
+
+    return () => {
+      CustomEventDispose(DELETE_PROJECT, reloadListDeletedProject);
+    }
+  }, [doListDeletedProject]);
+
   return (
     <Provider value={{
       setProjectGroupId,
@@ -137,7 +157,7 @@ function ProjectGroupPage({
       <Route
         path='/projects'
         render={({ match: { url } }) => (
-          <>
+          <Switch>
             <Route 
               path={`${url}`}
               exact
@@ -151,7 +171,29 @@ function ProjectGroupPage({
                   ]}
                   rightRender={
                     ({ expand, handleExpand }) => 
-                      <ProjectGroupTable 
+                      <AllProjectTable 
+                        {...props} 
+                        expand={expand}
+                        handleExpand={handleExpand}
+                      />
+                  }
+                />
+              )}
+            />
+            <Route 
+              path={`${url}/deleted`}
+              exact
+              render={props => (
+                <TwoColumnsLayout 
+                  leftRenders={[
+                    () => 
+                      <ProjectGroupList 
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) => 
+                      <DeletedProjectTable 
                         {...props} 
                         expand={expand}
                         handleExpand={handleExpand}
@@ -172,7 +214,7 @@ function ProjectGroupPage({
                   ]}
                   rightRender={
                     ({ expand, handleExpand }) => 
-                      <ProjectGroupTable 
+                      <AllProjectTable 
                         {...props} 
                         expand={expand}
                         handleExpand={handleExpand}
@@ -181,7 +223,7 @@ function ProjectGroupPage({
                 />
               )}
             />
-          </>
+          </Switch>
         )}
       />
     </Provider>
@@ -195,6 +237,7 @@ const mapDispatchToProps = dispatch => {
     doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),
     doMemberProjectGroup: ({ projectGroupId }, quite) => dispatch(memberProjectGroup({ projectGroupId }, quite)),
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
+    doListDeletedProject: (options, quite) => dispatch(listDeletedProject(options, quite)),
   }
 };
 

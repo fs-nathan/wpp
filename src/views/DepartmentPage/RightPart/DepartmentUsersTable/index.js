@@ -155,7 +155,7 @@ function DepartmentUsersTable({
       {error === null && (
         <CustomTable
           options={{
-            title: `${ departmentId === 'default' ? 'Mặc định' : get(room, 'name', '') }`,
+            title: 'Danh sách nhân sự',
             subTitle: `${ departmentId === 'default' ? '' : `Đã có ${get(room, 'number_member', 0)} thành viên`}`,
             subActions: [{
               label: 'Thêm thành viên',
