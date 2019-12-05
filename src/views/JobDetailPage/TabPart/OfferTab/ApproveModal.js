@@ -9,7 +9,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import colorPal from '../../../../helpers/colorPalette';
 import CloseIcon from '@material-ui/icons/Close';
-import { WrapperContext } from '../..';
 
 
 const TexTitle = styled(Typography)`
@@ -45,9 +44,9 @@ const styles = theme => ({
     background: '#f5f8fc'
   },
   title: {
-      textTransform: 'uppercase',
-      fontSize: 14,
-      fontWeight: 400,
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
   },
   closeButton: {
     position: 'absolute',
@@ -86,11 +85,19 @@ const DialogActions = withStyles(theme => ({
 
 
 const ApproveModal = (props) => {
-  const valueContext = React.useContext(WrapperContext)
+  const DEFAULT_VALUE = {
+    offer_id: props.offer.id,
+    content: "Đồng ý phê duyệt",
+    status: 1
+  }
+  const [tempSelectedItem, setTempSelectedItem] = React.useState(DEFAULT_VALUE)
+  const setParams = (nameParam, value) => {
+      setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
+    }
   return (
     // {/* modal phe duyet */}
-    <Dialog onClose={props.handleClickClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>
-      <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
+    <Dialog onClose={props.handleClickClose} open={props.isOpen} fullWidth>
+      <DialogTitle onClose={props.handleClickClose}>
         Phê duyệt đề xuất
       </DialogTitle>
       <DialogContent dividers>
@@ -112,15 +119,15 @@ const ApproveModal = (props) => {
             variant="outlined"
           /> */}
         <TextField
-          id="outlined-multiline-static"
           label="Nội dung phê duyệt"
           fullWidth
           multiline
           rows="7"
-          defaultValue="Đồng ý phê duyệt"
+          value={tempSelectedItem.content}
           margin="normal"
           placeholder="Nhập nội dung"
           variant="outlined"
+          onChange={e => setParams("content", e.target.value)}
         />
 
       </DialogContent>
@@ -130,7 +137,7 @@ const ApproveModal = (props) => {
           color="primary"
           onClick={() => {
             props.handleClickClose()
-            valueContext.handleOfferById()
+            props.handleOfferById(tempSelectedItem)
           }}
         >
           Phê duyệt

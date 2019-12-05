@@ -122,8 +122,6 @@ const DialogActions = withStyles(theme => ({
 // end modal
 
 const OfferFile = ({ file, handleDeleteFile }) => {
-  // const valueOffer = React.useContext(WrapperContext)
-
   return (
     <FileBoxStyledListItem>
       <FileName>{file.name}</FileName>
