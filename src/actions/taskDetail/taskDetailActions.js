@@ -489,4 +489,16 @@ export const deleteMemberFail = (error) => ({
  export const getTrackingTimeFail=(error)=>({
      type:types.GET_TRACKING_TIME_FAIl,
      error:error
+ });
+ export const updateTimeDuration=(payload)=>({
+     type: types.UPDATE_TIME_DURATION_REQUEST,
+     payload
+ });
+ export const updateTimeDurationSuccess=(payload)=>({
+     type: types.UPDATE_TIME_DURATION_SUCCESS,
+     payload
+ });
+ export const updateTimeDurationFail=(error)=>({
+     type:types.UPDATE_TIME_DURATION_FAIL,
+     error:error
  })

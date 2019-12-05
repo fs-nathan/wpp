@@ -375,10 +375,10 @@ async function doDeleteOffer(offer_id) {
 
 function* deleteOffer(action) {
   try {
-    
+
     const res = yield call(doDeleteOffer, action.payload)
 
-    
+
     yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
@@ -406,7 +406,7 @@ function* uploadDocumentToOffer(action) {
     console.log('Response upload ::::', res)
     // Success upload -> Call function to append all new file to component
     action.payload.successCallBack(res.documents)
-    
+
     yield put(actions.uploadDocumentToOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
@@ -743,7 +743,7 @@ function* deleteMember(action) {
   }
 }
 //time
-async function doGetTrackingTime( taskId ) {
+async function doGetTrackingTime(taskId) {
   try {
     const config = {
       url: 'task/get-tracking-time?task_id=' + taskId,
@@ -755,13 +755,38 @@ async function doGetTrackingTime( taskId ) {
     throw error;
   }
 }
-function* getTrackingTime(action){
+function* getTrackingTime(action) {
   try {
-    const res=yield call(doGetTrackingTime,action.payload)
-    
-    yield put (actions.getTrackingTimeSuccess(res))
+    const res = yield call(doGetTrackingTime, action.payload)
+
+    yield put(actions.getTrackingTimeSuccess(res))
   } catch (error) {
-    yield put (actions.getTrackingTimeFail(error))
+    yield put(actions.getTrackingTimeFail(error))
+  }
+}
+
+async function doUpdateTimeDuration(payload) {
+  try {
+    const config = {
+      url: 'task/update-time-duration',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* updateTimeDuration(action) {
+  try {
+
+    const res = yield call(doUpdateTimeDuration, action.payload)
+    yield put(actions.updateTimeDurationSuccess(res))
+    yield put (actions.getTrackingTime(action.payload.task_id))
+
+  } catch (error) {
+    yield put(actions.updateTimeDurationFail)
   }
 }
 
@@ -811,4 +836,5 @@ export {
   deleteMember,
   //time
   getTrackingTime,
+  updateTimeDuration,
 }

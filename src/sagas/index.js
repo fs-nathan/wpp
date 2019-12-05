@@ -141,7 +141,8 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
   yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
   //Time
-  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime)
+  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime);
+  yield takeLeading(taskDetailType.UPDATE_TIME_DURATION_REQUEST,taskDetailSaga.updateTimeDuration)
 };
 
 export default rootSaga;

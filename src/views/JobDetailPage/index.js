@@ -126,6 +126,7 @@ const mapDispatchToProps = dispatch => {
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
+    updateTimeDuration: dataTime =>dispatch(taskDetailAction.updateTimeDuration(dataTime))
   };
 };
 
