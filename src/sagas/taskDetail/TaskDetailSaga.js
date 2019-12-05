@@ -77,8 +77,6 @@ function* postSubTask(action) {
 }
 //=== update
 async function doUpdateSubTask(payload) {
-  console.log('payload', payload);
-
   try {
     const config = {
       url: `task/update-subtask?sub_task_id=${payload.taskId}&name=${payload.name}`,
@@ -230,8 +228,6 @@ function* postRemindDuration(action) {
 }
 // //=== update with time detail
 async function doUpdateRemindWithTimeDetail(payload) {
-  console.log('payload', payload);
-
   try {
     const config = {
       url: `task/update-remind/time-detail`,
@@ -248,7 +244,6 @@ async function doUpdateRemindWithTimeDetail(payload) {
 function* updateRemindWithTimeDetail(action) {
   try {
     const res = yield call(doUpdateRemindWithTimeDetail, action.options)
-    // console.log("Api update sub-task", res)
     yield put(actions.updateRemindWithTimeDetailSuccess(res))
     yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
@@ -257,8 +252,6 @@ function* updateRemindWithTimeDetail(action) {
 }
 // //=== update with duration
 async function doUpdateRemindWithDuration(payload) {
-  console.log('payload', payload);
-
   try {
     const config = {
       url: `task/update-remind/duration`,
@@ -275,7 +268,6 @@ async function doUpdateRemindWithDuration(payload) {
 function* updateRemindWithDuration(action) {
   try {
     const res = yield call(doUpdateRemindWithDuration, action.options)
-    // console.log("Api update sub-task", res)
     yield put(actions.updateRemindWithDurationSuccess(res))
     yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
@@ -300,7 +292,6 @@ async function doDeleteRemind({ remind_id }) {
 function* deleteRemind(action) {
   try {
     const res = yield call(doDeleteRemind, action.payload)
-    console.log("Api delete", res)
     yield put(actions.deleteRemindSuccess(res))
     yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
@@ -330,15 +321,12 @@ function* getOffer(action) {
   }
 }
 
-async function doCreateOffer({ createId, content }) {
+async function doCreateOffer(payload) {
   try {
     const config = {
       url: '/task/create-offer',
       method: 'post',
-      data: {
-        task_id: createId,
-        content
-      }
+      data: payload
     }
     const result = await apiService(config);
     return result.data;
@@ -347,9 +335,9 @@ async function doCreateOffer({ createId, content }) {
   }
 }
 
-function* createOffer(action) {
+function* createOffer(action) {  
   try {
-    const res = yield call(doCreateOffer, action.options)
+    const res = yield call(doCreateOffer, action.payload)    
     yield put(actions.createOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
@@ -425,7 +413,6 @@ async function doUploadDocumentToOffer(payload) {
 function* uploadDocumentToOffer(action) {
   try {
     const res = yield call(doUploadDocumentToOffer, action.payload.data)
-    console.log('Response upload ::::', res)
     // Success upload -> Call function to append all new file to component
     action.payload.successCallBack(res.documents)
     
@@ -623,7 +610,6 @@ function* getCommand(action) {
 
 async function doCreateCommand(payload) {
   try {
-    console.log('payload', payload)
     const config = {
       url: 'task/create-command-decision',
       method: 'post',

@@ -193,12 +193,9 @@ export const getOfferFail = (error) => ({
     error: error,
 });
 
-export const createOffer = ({ createId, content }) => ({
+export const createOffer = (payload) => ({
     type: types.CREATE_OFFER_REQUEST,
-    options: {
-        createId,
-        content
-    },
+    payload
 });
 
 export const createOfferSuccess = (payload) => ({
@@ -258,7 +255,7 @@ export const uploadDocumentToOfferFail = (error) => ({
 // === delete document to offer
 export const deleteDocumentToOffer = (data, cb) => ({
     type: types.DELETE_DOCUMENT_TO_OFFER_REQUEST,
-    payload: {data, removeCallBack: cb}
+    payload: { data, removeCallBack: cb }
 });
 
 export const deleteDocumentToOfferSuccess = (payload) => ({
@@ -556,18 +553,18 @@ export const deleteRoleFail = (error) => ({
 });
 
 //Tien do - time
- export const getTrackingTime=(payload)=>({
-     type: types.GET_TRACKING_TIME_REQUEST,
-     payload
- });
- export const getTrackingTimeSuccess=(payload)=>({
-     type:types.GET_TRACKING_TIME_SUCCESS,
-     payload
- });
- export const getTrackingTimeFail=(error)=>({
-     type:types.GET_TRACKING_TIME_FAIl,
-     error:error
- })
+export const getTrackingTime = (payload) => ({
+    type: types.GET_TRACKING_TIME_REQUEST,
+    payload
+});
+export const getTrackingTimeSuccess = (payload) => ({
+    type: types.GET_TRACKING_TIME_SUCCESS,
+    payload
+});
+export const getTrackingTimeFail = (error) => ({
+    type: types.GET_TRACKING_TIME_FAIl,
+    error: error
+})
 
 // GET LIST GROUP TASK
 export const getListGroupTask = (payload) => ({
