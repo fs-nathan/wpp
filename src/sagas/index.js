@@ -150,7 +150,8 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.DELETE_ROLE_REQUEST, taskDetailSaga.deleteRole);
 
   //Time
-  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime)
+  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime);
+  yield takeLeading(taskDetailType.UPDATE_TIME_DURATION_REQUEST,taskDetailSaga.updateTimeDuration);
   
   // List Task Detail
   yield takeLeading(taskDetailType.GET_LIST_TASK_DETAIL_REQUEST, taskDetailSaga.getListTaskDetail);

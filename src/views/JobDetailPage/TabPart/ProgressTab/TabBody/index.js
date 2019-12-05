@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { Avatar, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import colorPal from '../../../../../helpers/colorPalette';
-import avatar from '../../../../../assets/avatar.jpg';
+
 // import MultiSlider, { Progress, Dot } from 'react-multi-bar-slider';
 import { mdiCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { WrapperContext } from '../../../index'
-import { log } from 'util';
+
 const Container = styled.div`
   padding: 10px 0 50px 0;
 

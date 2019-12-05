@@ -9,6 +9,8 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import colorPal from '../../../../helpers/colorPalette';
 import CloseIcon from '@material-ui/icons/Close';
+import { WrapperContext } from '../..';
+
 
 
 const TexTitle = styled(Typography)`
@@ -92,8 +94,9 @@ const ApproveModal = (props) => {
   }
   const [tempSelectedItem, setTempSelectedItem] = React.useState(DEFAULT_VALUE)
   const setParams = (nameParam, value) => {
-      setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
-    }
+    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
+  }
+
   return (
     // {/* modal phe duyet */}
     <Dialog onClose={props.handleClickClose} open={props.isOpen} fullWidth>

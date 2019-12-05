@@ -143,8 +143,9 @@ const mapDispatchToProps = dispatch => {
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
     // List Task Detail
-    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
     createJobByProjectId: (data) => dispatch(taskDetailAction.createTask(data)),
+    updateTimeDuration: dataTime =>dispatch(taskDetailAction.updateTimeDuration(dataTime)),
+    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
     //  List Group Task
     getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId})),
 

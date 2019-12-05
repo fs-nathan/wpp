@@ -15,7 +15,6 @@ import ApproveModal from '../ApproveModal'
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import { DEFAULT_OFFER_ITEM } from '../../../../../helpers/jobDetail/arrayHelper'
-import { WrapperContext } from '../../..';
 
 const Container = styled.div`
   padding: 10px 20px 50px 20px;
@@ -61,7 +60,6 @@ const Badge = styled(ColorChip)`
 `
 
 const ApprovedBox = (props) => {
-
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -77,15 +75,17 @@ const ApprovedBox = (props) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClickClose = () => {
     setOpen(false);
   };
+
   const DENIED_VALUE = {
     offer_id: props.offer.id,
     content: "Từ chối phê duyệt",
     status: 2
   }
-  console.log(props.offer.status)
+
   return (
     <React.Fragment>
       {props.approved && (

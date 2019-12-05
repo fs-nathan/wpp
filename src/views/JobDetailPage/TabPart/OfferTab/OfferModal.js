@@ -176,6 +176,7 @@ const OfferModal = (props) => {
     // Call api
     valueOffer.deleteDocumentToOfferById(payload, removeFileCallBack)
   }
+ 
 
   const handleUploadFileAdd = files => {
     setParams("files", [...tempSelectedItem.files, ...files])
