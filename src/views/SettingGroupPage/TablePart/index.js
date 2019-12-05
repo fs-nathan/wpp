@@ -19,7 +19,9 @@ import { isEmpty } from '../../../helpers/utils/isEmpty';
 const RightHeader = styled.div`
   margin-left: auto;
   & > *:last-child {
-    margin-left: 20px;
+    margin-left: 16px;
+    padding: 8px 12px;
+    margin-top: 8px;
   }
 `;
 

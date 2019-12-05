@@ -240,20 +240,22 @@
     display: flex;
     cursor: pointer;
     .text-join-group-new {
-      padding-left: 25px;
-      font-size: 17px;
-      color: blue;
+      padding-left: 0;
+      font-size: 16px;
+      color: #007bec;
     }
   }
   .content-group-account {
     overflow-y: auto;
-    height: calc(100% - 294px);
+    height: calc(100% - 278px);
     padding-top: 10px;
     .item-group {
       .title-item-group {
         padding: 18px 20px;
         .text-item-group {
-          font-size: 17px;
+          font-size: 13px;
+          font-weight: bold;
+          color: #969696;
         }
       }
       .title-item-notifi {
@@ -288,7 +290,7 @@
             justify-content: space-between;
             display: flex;
             .text-name-item-group-account {
-              font-size: 17px;
+              font-size: 16px;
               color: #000;
             }
             .status-item-group-account {
@@ -296,6 +298,9 @@
               &.pro-color {
                 background-color: rgb(250, 226, 11);
               }
+            }
+            .account-status-text {
+              margin-top: 3px;
             }
           }
           .acc-item-group-account {
@@ -309,12 +314,16 @@
             position: absolute;
             right: 0;
             bottom: 0;
-            padding: 0 0px;
-            &.colorBlue {
-              color: #0076f3;
-            }
-            &.colorRed {
-              color: #c62d60;
+            padding: 0 3px;
+            font-size: 11px !important;
+            font-weight: normal;
+            text-transform: none;
+            border: 1px solid;
+            border-radius: 2px;
+            color: #c1c1c1;
+            &:hover {
+              color: #777;
+              background: #fff;
             }
           }
         }
@@ -339,6 +348,7 @@
         background-color: #2dc63a;
         color: #fff;
         padding: 8px 30px;
+        box-shadow: none;
       }
       .btn-close {
         padding: 8px 30px;

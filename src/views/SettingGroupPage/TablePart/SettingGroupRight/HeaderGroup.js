@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import Icon from "@mdi/react";
-import { mdiStar, mdiMagnify, mdiCart, mdiClose } from "@mdi/js";
-import { Link } from "react-router-dom";
-import { SETTING_GROUP } from "../../../constants/constant";
-import "./SettingGroupRight.scss";
-import { actionSettingGroup } from "../../../actions/setting";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Icon from '@mdi/react';
+import { mdiStar, mdiMagnify, mdiCart, mdiClose } from '@mdi/js';
+import { Link } from 'react-router-dom';
+import { SETTING_GROUP } from '../../../constants/constant';
+import './SettingGroupRight.scss';
+import { actionSettingGroup } from '../../../actions/setting';
 
 const getTitleHeader = groupType => {
   switch (groupType) {
     case SETTING_GROUP.INFO:
-      return "Thông tin nhóm";
+      return 'Thông tin nhóm';
     case SETTING_GROUP.SET_UP:
-      return "Cài đặt";
+      return 'Cài đặt';
     case SETTING_GROUP.ORDER:
-      return "Đơn hàng";
+      return 'Đơn hàng';
     case SETTING_GROUP.ORDER_DETAIL:
-      return "Chi tiết đơn hàng";
+      return 'Chi tiết đơn hàng';
     case SETTING_GROUP.PAYMENT:
-      return "Thanh toán";
+      return 'Thanh toán';
     default:
-      return "Tạo đơn hàng";
+      return 'Tạo đơn hàng';
   }
 };
 class HeaderGroup extends Component {

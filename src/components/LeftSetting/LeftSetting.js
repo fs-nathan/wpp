@@ -25,22 +25,11 @@ const LeftSetting = props => {
             key={index}
             className={`${pathname === item.url ? 'item-actived' : ''}`}
           >
-            {/* <div>
-                <Icon
-                  path={mdiDragVertical}
-                  size={1}
-                  color={'rgba(0, 0, 0, 0)'}
-                />
-              </div> */}
-            {/* <CustomAvatar
-                      style={{ height: 50, width: 50 }}
-                      alt="avatar"
-                    /> */}
             <Icon
               className="left-setting-icon"
               path={item.icon}
-              size={1.8}
-              color="rgba(0, 0, 0, 0.54)"
+              size={1.4}
+              color={item.color || 'rgba(0, 0, 0, 0.54)'}
             />
             <ListItemText
               primary={

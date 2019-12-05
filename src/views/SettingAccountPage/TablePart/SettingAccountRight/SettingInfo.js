@@ -96,6 +96,7 @@ class SettingInfo extends Component {
             >
               Đổi ảnh cá nhân
             </Button>
+            <p className="avatar-note-text">(Kích thước: 120x120 px)</p>
           </div>
           <div className="info-content-setting-info ">
             <div className="item-info row">

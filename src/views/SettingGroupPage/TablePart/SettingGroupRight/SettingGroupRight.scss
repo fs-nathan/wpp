@@ -42,16 +42,21 @@
       }
     }
   }
+  .avatar-order {
+    width: 25px;
+    height: 25px;
+    margin: 0 auto;
+  }
   .order-detail-container {
     display: flex;
     .detail-left {
-      padding: 20px 0;
+      padding: 25px;
       min-height: calc(100vh - 120px);
-      width: 65%;
+      width: 60%;
     }
     .other-info-order-detail {
-      padding: 30px 25px;
-      width: calc(35% - 50px);
+      padding: 25px;
+      width: calc(40% - 50px);
     }
     .header-detail-right {
       border-bottom: 1px solid #ededed;
@@ -62,7 +67,7 @@
       margin: 0;
     }
     .detail-right-bottom {
-      padding: 20px 25px;
+      // padding: 20px 25px;
       .title-item {
         color: #5a5a5a;
         font-weight: bold;
@@ -99,16 +104,17 @@
 
     &.create-order {
       .create-order-btn {
-        padding: 0 40px;
-        font-size: 16px;
+        padding: 20px 40px;
         text-transform: uppercase;
-        width: 100%;
-        height: 46px;
-        line-height: 46px;
+        width: 300px;
         margin-top: 40px;
         background-color: #2dc63a;
         border-color: #2dc63a;
         color: #fff;
+        box-shadow: none;
+        margin-bottom: 100px;
+        margin-left: 50%;
+        transform: translateX(-50%);
       }
       .detail-right-bottom {
         padding: 0 25px 20px 25px;
@@ -152,6 +158,8 @@
         }
         .input-voucher {
           width: 280px;
+          height: 46px;
+          line-height: 46px;
           .MuiOutlinedInput-input {
             width: 100%;
           }
@@ -162,6 +170,7 @@
           text-transform: uppercase;
           height: 46px;
           line-height: 46px;
+          margin-left: 20px;
         }
       }
     }
@@ -169,8 +178,8 @@
   .payment-container {
     display: flex;
     .payment-left {
-      width: 65%;
-      padding: 30px;
+      width: 60%;
+      padding: 20px;
       overflow: auto;
       margin-right: -1px;
       .MuiInputLabel-animated {
@@ -199,7 +208,7 @@
       }
     }
     .payment-right {
-      width: 35%;
+      width: 40%;
       .payment-right-top {
         padding: 20px;
         border-bottom: 1px solid #ededed;
@@ -359,15 +368,21 @@
 }
 .divider-vertical {
   width: 1px;
-  min-height: calc(100vh - 126px);
+  min-height: calc(100vh - 105px);
   background: #ced4da;
 }
 .content-create-order {
-  padding: 26px 0;
-  width: 35%;
+  padding: 25px 0 30px;
+  width: 40%;
   .UserInfo_right_header {
     padding-left: 25px;
   }
+}
+.order-title {
+  font-size: 16px;
+  color: #000;
+  font-weight: 600;
+  margin: 0;
 }
 // style for drag - drop list in the setup page
 .drag-item {

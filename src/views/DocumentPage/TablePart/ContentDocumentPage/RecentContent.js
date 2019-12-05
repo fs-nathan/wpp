@@ -1,26 +1,143 @@
-import React, { useEffect } from 'react';
-import { Table, TableHead } from '@material-ui/core';
-// import TableBodyRow from '../TableMain/TableBodyRow';
-import TableHeaderRow from '../TableMain/TableHeaderRow';
+import React, { useEffect, useState, Fragment } from 'react';
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableSortLabel,
+  TablePagination
+} from '@material-ui/core';
 
-// import { getDocumentRecently } from './ContentDocumentAction';
-
-import { RECENT_TAB } from '../../../../constants/documentTab';
+// import { getDocumentShareFromMe } from './ContentDocumentAction';
+import { FileType } from '../../../../components/FileType';
+import {
+  StyledTableHeadRow,
+  StyledTableHeadCell,
+  StyledTableBodyCell,
+  StyledTableBodyRow,
+  FullAvatar,
+  WrapAvatar,
+  selectItem,
+  selectAll,
+  GreenCheckbox
+} from '../DocumentComponent/TableCommon';
 import './ContentDocumentPage.scss';
-
+import ColorTypo from '../../../../components/ColorTypo';
 const RecentContent = () => {
+  const [data] = useState([
+    {
+      id: 'task-1',
+      content: 20,
+      name: 'Dự án thiết kế website Phúc An',
+      type: 'folder',
+      location: 'Văn Thư',
+      size: '10.3 Kb',
+      date: '02/02/2019',
+      userCreate: 'Cao Văn Hưng'
+    }
+  ]);
+  const [page] = React.useState(0);
+  const [rowsPerPage] = React.useState(10);
+  const [selected, setSelected] = React.useState([]);
   useEffect(() => {
     fetDataRecentDocument();
   }, []);
   const fetDataRecentDocument = async () => {
-    // const {data} = await getDocumentRecently()
+    // const { data } = await getDocumentShareFromMe();
   };
+  const handleSelectAllClick = e => {
+    setSelected(selectAll(e, data));
+  };
+  const isSelected = id => selected.indexOf(id) !== -1;
+  const handleSelectItem = id => {
+    setSelected(selectItem(selected, id));
+  };
+  const handleChangePage = () => {};
   return (
-    <Table>
-      <TableHead>
-        <TableHeaderRow activeTabId={RECENT_TAB.id} />
-      </TableHead>
-    </Table>
+    <Fragment>
+      <Table>
+        <TableHead>
+          <StyledTableHeadRow>
+            <StyledTableHeadCell>
+              <GreenCheckbox
+                onChange={handleSelectAllClick}
+                checked={selected.length === data.length}
+                indeterminate={
+                  selected.length > 0 && selected.length < data.length
+                }
+              />
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="center" width="5%">
+              Loại
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="left" width="30%">
+              <TableSortLabel
+                active={true}
+                // direction={order}
+                // onClick={createSortHandler(headCell.id)}
+              >
+                Tên tài liệu
+              </TableSortLabel>
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="left" width="20%">
+              Nơi lưu trữ
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="center" width="15%">
+              Ngày tạo
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="center" width="15%">
+              Người tạo
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="center" width="15%">
+              Kích thước
+            </StyledTableHeadCell>
+          </StyledTableHeadRow>
+        </TableHead>
+        <TableBody>
+          {data.map(file => {
+            const isItemSelected = isSelected(file.id);
+            return (
+              <StyledTableBodyRow key={file.id}>
+                <StyledTableBodyCell>
+                  <GreenCheckbox
+                    checked={isItemSelected}
+                    onChange={e => handleSelectItem(file.id)}
+                  />
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="center" width="5%">
+                  <WrapAvatar>
+                    <FullAvatar src={FileType(file.type)} />
+                  </WrapAvatar>
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="left" width="30%">
+                  <ColorTypo color="black">{file.name}</ColorTypo>
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="left" width="20%">
+                  <ColorTypo color="black">{file.location}</ColorTypo>
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="center" width="15%">
+                  <ColorTypo color="black">{file.date}</ColorTypo>
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="center" width="15%">
+                  <ColorTypo color="black">{file.userCreate}</ColorTypo>
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="center" width="15%">
+                  <ColorTypo color="black">{file.size}</ColorTypo>
+                </StyledTableBodyCell>
+              </StyledTableBodyRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={1}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        // onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Fragment>
   );
 };
 

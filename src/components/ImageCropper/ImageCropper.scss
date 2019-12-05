@@ -1,0 +1,31 @@
+.zoom-slider {
+  display: flex;
+  width: 250px;
+  padding-top: 10px;
+  align-items: center;
+  .zoom-out-ic {
+    margin-right: 15px;
+  }
+  .zoom-in-ic {
+    margin-left: 15px;
+  }
+  .MuiSlider-root {
+    height: 8px;
+    .MuiSlider-rail {
+      height: 8px;
+      border-radius: 4px;
+    }
+    .MuiSlider-track {
+      height: 8px;
+      border-radius: 4px;
+    }
+    .MuiSlider-thumb {
+      width: 20px;
+      border: 2px solid;
+      height: 20px;
+      margin-top: -6px;
+      margin-left: -12px;
+      background-color: #fff;
+    }
+  }
+}

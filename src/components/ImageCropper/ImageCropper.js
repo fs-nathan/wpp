@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CustomModal from '../CustomModal';
 import ColorTypo from '../ColorTypo';
 import Cropper from 'react-cropper';
+import { Slider } from '@material-ui/core';
+import Icon from '@mdi/react';
+import { mdiMinusCircleOutline, mdiPlusCircleOutline } from '@mdi/js';
 import 'cropperjs/dist/cropper.css';
 import styled from 'styled-components';
+import './ImageCropper.scss';
 
 const Container = styled.div`
   display: flex;
@@ -35,8 +39,10 @@ const CROP_TYPE = {
 };
 
 function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
-  const cropper = React.useRef(null);
-  const [src, setSrc] = React.useState();
+  const cropper = useRef(null);
+  const [src, setSrc] = useState();
+  const [updateOption, setUpdateOption] = useState(true);
+  const [sliderValue, setSliderValue] = React.useState(0);
 
   React.useEffect(() => {
     if (image === null) return;
@@ -46,18 +52,14 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
   }, [image]);
 
   useEffect(() => {
-    if (cropper && cropper.current && cropper.current.cropper) {
+    if (updateOption && cropper && cropper.current && cropper.current.cropper) {
       if (cropType === CROP_TYPE.LOGO) {
         cropper.current.cropper.options.data = {
-          x: 0,
-          y: 0,
           width: 120,
           height: 120
         };
       } else {
         cropper.current.cropper.options.data = {
-          x: 0,
-          y: 0,
           width: 1200,
           height: 400
         };
@@ -75,6 +77,19 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
     callback(cropper.current.getCroppedCanvas().toDataURL(), cropType);
   }
 
+  const handleChangeZoom = (event, newValue) => {
+    if (sliderValue === newValue) return;
+    if (sliderValue > newValue) {
+      cropper.current.cropper.zoom(-(sliderValue - newValue) / 100);
+    } else {
+      cropper.current.cropper.zoom((newValue - sliderValue) / 100);
+    }
+    setSliderValue(newValue);
+    if (updateOption) {
+      setUpdateOption(false);
+    }
+  };
+
   return (
     <CustomModal
       open={open}
@@ -85,20 +100,45 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
       <Container>
         <Cropper
           style={{ height: 230, width: '100%' }}
-          aspectRatio={cropType === CROP_TYPE.LOGO ? 1 : NaN}
+          aspectRatio={cropType === CROP_TYPE.LOGO ? 1 / 1 : 3 / 1}
           preview=".img-preview"
-          zoomable={false}
+          zoomable={true}
           guides={false}
           responsive={false}
           // viewMode={3}
-          movable={false}
+          movable={true}
           cropBoxResizable={false}
           dragMode="move"
+          zoomOnWheel={false}
           // minCropBoxWidth={120}
           // minCropBoxHeight={120}
           src={src}
           ref={cropper}
         />
+        {cropper && (
+          <div className="zoom-slider">
+            <Icon
+              className="zoom-ic zoom-out-ic"
+              path={mdiMinusCircleOutline}
+              size={1.8}
+              color={'#777'}
+            />
+            <Slider
+              max={100}
+              min={0}
+              step={5}
+              value={sliderValue}
+              onChange={handleChangeZoom}
+              aria-labelledby="continuous-slider"
+            />
+            <Icon
+              className="zoom-ic zoom-in-ic"
+              path={mdiPlusCircleOutline}
+              size={1.8}
+              color={'#777'}
+            />
+          </div>
+        )}
         <PreviewBox>
           <ColorTypo uppercase color={'gray'}>
             Xem trước

@@ -81,6 +81,15 @@ const ContentBox = styled.div`
   }
 `;
 
+const Image = styled.img`
+  height: 40px !important;
+  width: 40px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 2px;
+  margin-top: 10px;
+`;
+
 function MainLayout({ doLogin, doLoginCheckState, location, colors }) {
   const isViewFullPage = route => {
     return (
@@ -121,7 +130,7 @@ function MainLayout({ doLogin, doLoginCheckState, location, colors }) {
       {!isViewFullPage(location.pathname) && (
         <React.Fragment>
           <LogoBox to="/" style={{ background: bgColor.value }}>
-            <img src={logo} alt="vtask-logo-menu" />
+            <Image src={logo} alt="vtask-logo-menu" />
           </LogoBox>
           <LeftBar />
           <TopBar />

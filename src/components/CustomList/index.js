@@ -2,7 +2,7 @@ import { List, ListItem } from '@material-ui/core';
 import styled from 'styled-components';
 
 export const StyledList = styled(List)`
-  padding: 5px 0;
+  padding: 0;
 `;
 
 export const StyledListItem = styled(ListItem)`
