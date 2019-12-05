@@ -9,7 +9,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import colorPal from '../../../../helpers/colorPalette';
 import CloseIcon from '@material-ui/icons/Close';
-import { WrapperContext } from '../..';
+// import { WrapperContext } from '../..';
 
 
 
