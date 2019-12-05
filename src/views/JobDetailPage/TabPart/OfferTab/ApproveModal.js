@@ -87,7 +87,6 @@ const DialogActions = withStyles(theme => ({
 
 const ApproveModal = (props) => {
   const valueContext = React.useContext(WrapperContext)
-  console.log(valueContext)
   return (
     // {/* modal phe duyet */}
     <Dialog onClose={props.handleClickClose} aria-labelledby="customized-dialog-title" open={props.isOpen} fullWidth>

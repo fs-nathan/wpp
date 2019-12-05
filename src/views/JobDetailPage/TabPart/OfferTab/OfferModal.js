@@ -147,7 +147,7 @@ const OfferModal = (props) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
 
-  const handleUploadFile = files => {
+  const handleUploadFileUpdate = files => {
     console.log("files:", files);
 
     // For update
@@ -178,7 +178,27 @@ const OfferModal = (props) => {
     // Call api
     valueOffer.deleteDocumentToOfferById(payload, removeFileCallBack)
   }
- 
+
+  const handleUploadFileAdd = files => {
+    setParams("files", [...tempSelectedItem.files, ...files])
+  }
+
+  const handleCreateOffer = () => {
+    let dataCreateOfferFormData = new FormData()
+    dataCreateOfferFormData.append('task_id', props.taskId)
+    // add content to offer
+    dataCreateOfferFormData.append('content', tempSelectedItem.content)
+    // add each user to formdata
+    for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
+      dataCreateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
+    }
+    // add each file to formdata  
+    for (let i = 0; i < tempSelectedItem.files.length; i++) {
+      dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
+    }
+    props.createOfferByTaskId(dataCreateOfferFormData)
+    setParams("files", [])
+  }
 
   return (
     <Dialog open={props.isOpen} onClose={props.handleClickClose} fullWidth>
@@ -193,7 +213,7 @@ const OfferModal = (props) => {
       }
       <DialogContent dividers>
         <TexTitle >Chọn người duyệt</TexTitle>
-        <IntegrationReactSelect {...props} handleChooseUser={listUser => console.log(listUser)}/>
+        <IntegrationReactSelect {...props} handleChooseUser={listUser => setParams("user_hander", listUser)} />
         <TextContent
           label="Nội dung phê duyệt"
           fullWidth
@@ -212,7 +232,7 @@ const OfferModal = (props) => {
           id="outlined-button-file"
           multiple
           type="file"
-          onChange={e => handleUploadFile(e.target.files)}
+          onChange={e => props.isOffer ? handleUploadFileUpdate(e.target.files) : handleUploadFileAdd(e.target.files)}
         />
         <ButtonFile htmlFor="outlined-button-file">
           <Button variant="outlined" component="span" fullWidth className={classes.button}>
@@ -243,7 +263,7 @@ const OfferModal = (props) => {
             onClick={() => {
               props.handleClickClose()
               if (tempSelectedItem.content)
-                props.createOfferByTaskId("5da1821ad219830d90402fd8", tempSelectedItem.content)
+                handleCreateOffer()
               setParams("content", '')
             }}>
             Hoàn Thành
