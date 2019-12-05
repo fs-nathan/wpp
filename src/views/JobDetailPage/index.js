@@ -38,11 +38,11 @@ function JobDetailPage(props) {
   }, [])
 
   return (
-    
+
     <Wrapper value={{ ...props }}>
-      
+
       <Container>
-        
+
         <ListPart {...props} />
         <ChatPart {...props} />
         <TabPart {...props} />
@@ -53,7 +53,7 @@ function JobDetailPage(props) {
 
 const mapStateToProps = state => {
   // console.log('state project id::::', state.taskDetail.listGroupTask.listGroupTask);
-  
+
   return {
     // offer
     offer: state.taskDetail.taskOffer.offer.reverse(),
@@ -137,16 +137,19 @@ const mapDispatchToProps = dispatch => {
     createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
     // Member Role
-    createRoleTask: (name) => dispatch(taskDetailAction.createRole({name})),
+    createRoleTask: (name) => dispatch(taskDetailAction.createRole({ name })),
     updateRoleTask: (role_task_id, name) => dispatch(taskDetailAction.updateRole({ role_task_id, name })),
     deleteRoleTask: (role_task_id) => dispatch(taskDetailAction.deleteRole({ role_task_id })),
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
-    updateTimeDuration: dataTime =>dispatch(taskDetailAction.updateTimeDuration(dataTime)),
+    updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
     // List Task Detail
-    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
+    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId })),
     //  List Group Task
-    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId})),
+    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
+    //edit name and description task
+    updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data))
+    ,
 
   };
 };

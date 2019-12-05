@@ -240,7 +240,7 @@ function CommonControlForm(props) {
   const [value, setValue] = React.useState(props.assign);
   const handleChangeFormAssign = itemValue => {
     console.log('itemValue::::', itemValue);
-    
+
     setValue(itemValue)
     let clickedItem = props.labels.find(item => item.value === itemValue)
     props.handleChangeAssign(clickedItem)
@@ -276,7 +276,7 @@ function CommonPriorityForm(props) {
 
   const handleChangePriority = itemValue => {
     console.log('itemValue::::', itemValue);
-    
+
     // Set state to change style in component
     setValue(itemValue)
     // Pass clicked item to parent
@@ -402,9 +402,29 @@ function CreateJobModal(props) {
     props.setOpen(false)
   }
 
+
   const handlePressConfirm = () => {
-    console.log("DATA ........ ", data)
+    console.log("DATA ........ ", data.name)
     handleClose()
+  }
+
+ 
+ 
+  const updateData = () =>{
+    const dataNameDescription = {
+      task_id: value.taskId,
+      name: data.name,
+      description: data.description,
+    }
+    const dataTimeDuration={
+      task_id: value.taskId,
+      start_time:data.start_time,
+      start_date:data.start_date,
+      end_time:data.end_time,
+      end_date:data.end_date
+    }
+    value.updateNameDescriptionTask({dataNameDescription,dataTimeDuration})
+    props.setOpen(false)
   }
 
   return (
@@ -527,7 +547,7 @@ function CreateJobModal(props) {
           {props.isRight ?
             <>
               <span></span>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={()=>{updateData()}} color="primary">
                 Hoàn Thành
             </Button>
             </>

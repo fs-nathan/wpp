@@ -158,6 +158,8 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.POST_TASK_REQUEST, taskDetailSaga.createTask);
   // List Group Task 
   yield takeLeading(taskDetailType.GET_LIST_GROUP_TASK_REQUEST, taskDetailSaga.getListGroupTask);
+   //edit name and description task
+   yield takeLeading(taskDetailType.UPDATE_NAME_DESCRIPTION_TASK_REQUEST,taskDetailSaga.updateNameDescriptionTask);
 };
 
 export default rootSaga;

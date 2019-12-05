@@ -641,6 +641,20 @@ export const getListTaskDetailSuccess = (payload) => ({
 
 export const getListTaskDetailFail = (error) => ({
     type: types.GET_LIST_TASK_DETAIL_FAIL,
-    error: error,
+    error: error
 });
+//edit name and description task
+export const updateNameDescriptionTask =(payload)=>({
+    type:types.UPDATE_NAME_DESCRIPTION_TASK_REQUEST,
+    payload
+});
+export const updateNameDescriptionTaskSuccess=(payload)=>({
+    type:types.UPDATE_NAME_DESCRIPTION_TASK_SUCCESS,
+    payload
+});
+export const updateNameDescriptionTaskFail=(error)=>({
+    type:types.UPDATE_NAME_DESCRIPTION_TASK_FAIL,
+    error:error
+})
+
 

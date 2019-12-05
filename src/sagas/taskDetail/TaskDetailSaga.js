@@ -577,6 +577,7 @@ function* getLocation(action) {
 
 // Task Detail - TabPart - Cot phai
 async function doGetTaskDetail({ taskId }) {
+
   try {
     const config = {
       url: '/task/detail?task_id=' + taskId,
@@ -843,10 +844,9 @@ async function doUpdateTimeDuration(payload) {
 }
 function* updateTimeDuration(action) {
   try {
-
     const res = yield call(doUpdateTimeDuration, action.payload)
     yield put(actions.updateTimeDurationSuccess(res))
-    yield put (actions.getTrackingTime(action.payload.task_id))
+    yield put(actions.getTrackingTime(action.payload.task_id))
 
   } catch (error) {
     yield put(actions.updateTimeDurationFail)
@@ -969,6 +969,35 @@ function* getListGroupTask(action) {
     yield put(actions.getListGroupTaskFail(error))
   }
 }
+//edit name and description task
+
+async function doUpdateNameDescriptionTask(payload) {
+  try {
+    const config = {
+      url: 'task/update-name-description',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updateNameDescriptionTask(action) {
+  try {
+    const res = yield call(doUpdateNameDescriptionTask, action.payload.dataNameDescription)
+    const taskId = action.payload.dataNameDescription.task_id
+    yield put(actions.updateNameDescriptionTaskSuccess(res))
+    yield put(actions.getTaskDetailTabPart({ taskId }))
+    const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
+    yield put(actions.updateTimeDurationSuccess(resTime))
+    yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
+  } catch (error) {
+    yield put(actions.updateNameDescriptionTaskFail(error))
+  }
+}
 export {
   // Update Priority
   updatePriority,
@@ -1031,4 +1060,6 @@ export {
   createTask,
   // List Group Task
   getListGroupTask,
+  //edit name and description task
+  updateNameDescriptionTask,
 }
