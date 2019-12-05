@@ -21,6 +21,7 @@ const StyledTableBodyRow = styled(TableRow)`
 const StyledTableBodyCell = styled(TableCell)`
   padding: 8px;
   font-size: 14px;
+  max-width: 300px;
 `;
 
 function TableBodyRow({ index, row, group }) {

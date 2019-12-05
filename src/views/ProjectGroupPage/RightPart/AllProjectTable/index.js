@@ -231,6 +231,11 @@ function decodeStateName(stateName) {
         color: 'red',
         name: 'Quá hạn',
       });
+    case 'hidden':
+      return ({
+        color: '#20194d',
+        name: 'Ẩn',
+      })
     default:
       return ({
         color: 'orange',
@@ -250,7 +255,7 @@ function displayDateRange(from, to) {
   }
 }
 
-const SettingButton = ({ onEditProject, onHideProject, onDeleteProject }) => {
+const SettingButton = ({ visibility, onEditProject, onHideProject, onDeleteProject }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [setting, setSetting] = React.useState(false);
@@ -287,8 +292,8 @@ const SettingButton = ({ onEditProject, onHideProject, onDeleteProject }) => {
         }}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={evt => { 
           handleClose(evt); 
-          onHideProject(); 
-        }}>Ẩn</MenuItem>
+          visibility && onHideProject(); 
+        }}>{visibility ? 'Ẩn' : 'Bỏ ẩn'}</MenuItem>
         <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
       </Menu>
       <ProjectSettingModal open={setting} setOpen={setSetting}/>
@@ -367,24 +372,27 @@ function AllProjectTable({
         projects = filterArr(projects, { 'visibility': false });
         break;
       case 3: 
-        projects = filterArr(projects, { 'state_name': 'waiting' });
+        projects = filterArr(projects, { 'visibility': true, 'state_name': 'waiting' });
         break;
       case 4: 
-        projects = filterArr(projects, { 'state_name': 'doing' });
+        projects = filterArr(projects, { 'visibility': true, 'state_name': 'doing' });
         break;
       case 5: 
-        projects = filterArr(projects, { 'state_name': 'finished' });
+        projects = filterArr(projects, { 'visibility': true, 'state_name': 'finished' });
         break;
       case 6: 
-        projects = filterArr(projects, { 'state_name': 'expired' });
+        projects = filterArr(projects, { 'visibility': true, 'state_name': 'expired' });
         break;
       default:
         break;
     }
-    if (sortField) {
-      projects = sortBy(projects, [o => get(o, sortField)]);
-      if (sortType === -1) reverse(projects);
+    if (sortField === 'state_name') {
+      projects = sortBy(projects, [o => get(o, 'visibility'), o => get(o, sortField)]);
     }
+    else {
+      projects = sortBy(projects, [o => get(o, sortField)]);
+    }
+    if (sortType === -1) reverse(projects);
     setProjects(projects);
   }, [_projects, filter, sortField, sortType,]);
 
@@ -543,13 +551,15 @@ function AllProjectTable({
               sort: (evt) => handleSortColumn('name'),
             }, {
               label: 'Trạng thái',
-              field: (row) => <StateBox stateName={decodeStateName(get(row, 'state_name', '')).color}>
+              field: (row) => <StateBox stateName={decodeStateName(!get(row, 'visibility', true) ? 'hidden' : get(row, 'state_name', '')).color}>
                                 <div>
-                                  <span>&#11044;</span><span>{decodeStateName(get(row, 'state_name', '')).name}</span>
+                                  <span>&#11044;</span><span>{decodeStateName(!get(row, 'visibility', true) ? 'hidden' : get(row, 'state_name', '')).name}</span>
                                 </div>
-                                <small>
-                                  {get(row, 'state_name', '') === 'expired' ? get(row, 'day_expired', 0) : get(row, 'day_implement', 0)} ngày
-                                </small>
+                                {get(row, 'visibility', true) && (
+                                  <small>
+                                    {get(row, 'state_name', '') === 'expired' ? get(row, 'day_expired', 0) : get(row, 'day_implement', 0)} ngày
+                                  </small>
+                                )}
                               </StateBox>,
               sort: (evt) => handleSortColumn('state_name'),
             }, {
@@ -595,6 +605,7 @@ function AllProjectTable({
                                 setEdittingProject(row);
                                 setOpenEditProject(true);
                               }}
+                              visibility={get(row, 'visibility', true)}
                               onHideProject={() => handleHideProject(get(row, 'id'))}
                               onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
                             />,

@@ -34,9 +34,9 @@ function ColorTextField({ color, uppercase, bold, value, ...rest }) {
   return (
     <div>
       <ColorTextDiv color={color} uppercase={uppercase} bold={bold} {...rest}> 
-        {value.length < 100 ? value : expand ? value : value.substr(0, 95) + '...' }
+        {value.length < 150 ? value : expand ? value : value.substr(0, 145) + '...' }
       </ColorTextDiv>
-      {value.length >= 100 && (
+      {value.length >= 150 && (
         <Expand onClick={evt => setExpand(prev => !prev)}>
           {expand ? 'Thu gọn' : 'Xem thêm'}
         </Expand>

@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
-import { Tooltip } from '@material-ui/core';
 import { mdiBorderNoneVariant } from '@mdi/js';
 import { IconButton } from '@material-ui/core';
 import CustomAvatar from '../CustomAvatar';
@@ -45,6 +44,10 @@ const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
   magrin: 8px 0;
+  && > div:first-child {
+    margin-right: -5px !important;
+    scrollbar-width: none;
+  }
 `;
 
 const StyledIconButton = styled(IconButton)`
@@ -86,13 +89,17 @@ function LeftSideContainer({
     ) 
     : typeof(get(action, 'onClick') === 'function') ? (
       <StyledIconButton size='small' onClick={get(action, 'onClick')}>
-        <Tooltip
+        <abbr
           title={get(action, 'tooltip', '')}
         >
           <div>
-            <Icon path={get(action, 'iconPath')} size={1} color='rgba(0, 0, 0, 0.54)' />
+            {get(action, 'iconPath') ? (
+              <Icon path={get(action, 'iconPath')} size={1} color='rgba(0, 0, 0, 0.54)' />
+            ) : (
+              <Icon path={mdiBorderNoneVariant} size={1} color='rgba(0, 0, 0, 0)' />
+            )}
           </div>
-        </Tooltip>
+        </abbr>
       </StyledIconButton>
     ) : (
       <IconWrapper>

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { get } from 'lodash';
 import ColorTypo from '../ColorTypo';
 import CustomAvatar from '../CustomAvatar';
-import { Tooltip } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 const Container = styled.div`
@@ -49,7 +48,7 @@ function AvatarCircleList({ display, users = [] }) {
         <React.Fragment>
           {users.slice(0, display).map((user, index) => {
             return (
-              <Tooltip 
+              <abbr 
                 key={index}
                 title={get(user, 'name', '')}
               >
@@ -58,7 +57,7 @@ function AvatarCircleList({ display, users = [] }) {
                     user={user}
                   />
                 </div>
-              </Tooltip>
+              </abbr>
             )
           })}
           {display < users.length && (  

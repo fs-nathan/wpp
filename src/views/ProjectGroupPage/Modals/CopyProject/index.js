@@ -95,7 +95,9 @@ function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject })
         <StyledListSubheader component="div" id={`list-subheader-${get(projectGroup, 'id')}`} 
           onClick={evt => setExpand(prev => !prev)}
         >
-          {get(projectGroup, 'projects', []).length > 0 && <Icon path={expand ? mdiChevronDown : mdiChevronUp} size={1} />}
+          {get(projectGroup, 'projects', []).length > 0 
+          ? <Icon path={expand ? mdiChevronDown : mdiChevronUp} size={1} />
+          : <Icon path={mdiChevronUp} size={1} color={'rgba(0, 0, 0, 0)'} />}
           <ColorTypo>{get(projectGroup, 'name', '')}</ColorTypo>
         </StyledListSubheader>
       }
