@@ -2,6 +2,33 @@ import { call, put } from 'redux-saga/effects';
 import * as actions from '../../actions/taskDetail/taskDetailActions';
 import { apiService } from '../../constants/axiosInstance';
 
+// Priority
+async function doUpdatePriority(payload) {
+  try {
+    const config = {
+      url: '/task/update-priority',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updatePriority(action) {
+  try {
+    const res = yield call(doUpdatePriority, action.payload)
+    yield put(actions.updatePrioritySuccess(res))
+    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
+
+    // CustomEventEmitter(DELETE_ROOM);
+  } catch (error) {
+    yield put(actions.updatePriorityFail(error))
+  }
+}
+
 // Sub-task::
 async function doGetSubTask({ taskId }) {
   try {
@@ -124,11 +151,6 @@ function* completeSubTask(action) {
     yield put(actions.completeSubTaskFail(error))
   }
 }
-
-
-
-
-
 
 // Remind::::::::::::::::::::::::::::::::::::::::::::::::
 async function doGetRemind({ taskId }) {
@@ -382,7 +404,7 @@ function* deleteOffer(action) {
     yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
-    yield put(actions.getOfferFail(error))
+    yield put(actions.deleteOfferFail(error))
   }
 }
 
@@ -439,7 +461,29 @@ function* deleteDocumentToOffer(action) {
   }
 }
 
+async function doHandleOffer(data) {
+  try {
+    const config = {
+      url: 'task/hander-offer',
+      method: 'post',
+      data
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
+function* handleOffer(action) {
+  try {
+    const res = yield call(doHandleOffer, action.payload)
+    yield put(actions.handleOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
+  } catch (error) {
+    yield put(actions.handleOfferFail(error))
+  }
+}
 
 // Media Image
 async function doGetImage({ taskId }) {
@@ -604,7 +648,6 @@ function* createCommand(action) {
 
 async function doUpdateCommand(payload) {
   try {
-    console.log('payload', payload)
     const config = {
       url: 'task/update-command-decision',
       method: 'post',
@@ -627,11 +670,11 @@ function* updateCommand(action) {
   }
 }
 
-async function doUpdatePriority(payload) {
+async function doDeleteCommand(payload) {
   try {
     const config = {
-      url: '/task/update-priority',
-      method: 'put',
+      url: 'task/delete-command-decision',
+      method: 'post',
       data: payload
     }
     const result = await apiService(config);
@@ -641,19 +684,17 @@ async function doUpdatePriority(payload) {
   }
 }
 
-
-function* updatePriority(action) {
+function* deleteCommand(action) {
   try {
-    const res = yield call(doUpdatePriority, action.payload)
-    yield put(actions.updatePrioritySuccess(res))
-    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
-
-    // CustomEventEmitter(DELETE_ROOM);
+    const res = yield call(doDeleteCommand, action.payload)
+    yield put(actions.deleteCommandSuccess(res))
+    // yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
-    yield put(actions.updatePriorityFail(error))
+    yield put(actions.deleteCommandFail(error))
   }
 }
 
+// Member
 async function doGetMember({ task_id }) {
   try {
     const config = {
@@ -742,6 +783,28 @@ function* deleteMember(action) {
     yield put(actions.deleteMemberFail(error))
   }
 }
+
+// Get list task detail
+async function doGetListTaskDetail({ project_id }) {
+  try {
+    const config = {
+      url: 'task/list-task-detail?project_id=' + project_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getListTaskDetail(action) {
+  try {
+    const res = yield call(doGetListTaskDetail, action.payload)
+    yield put(actions.getListTaskDetailSuccess(res))
+  } catch (error) {
+    yield put(actions.getListTaskDetailFail(error))
+  }
+}
 //time
 async function doGetTrackingTime(taskId) {
   try {
@@ -790,7 +853,126 @@ function* updateTimeDuration(action) {
   }
 }
 
+// Member Role
+
+async function doCreateRole(payload) {
+  try {
+    const config = {
+      url: 'role-task/create-role-task',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createRole(action) {
+  try {
+    const res = yield call(doCreateRole, action.payload)
+    yield put(actions.createRoleSuccess(res))
+  } catch (error) {
+    yield put(actions.createRoleFail(error))
+  }
+}
+
+async function doUpdateRole(payload) {
+  try {
+    const config = {
+      url: 'role-task/update-role-task',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updateRole(action) {
+  try {
+    const res = yield call(doUpdateRole, action.payload)
+    yield put(actions.updateRoleSuccess(res))
+  } catch (error) {
+    yield put(actions.updateRoleFail(error))
+  }
+}
+
+async function doDeleteRole(payload) {
+  try {
+    const config = {
+      url: 'role-task/delete-role-task',
+      method: 'delete',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* deleteRole(action) {
+  try {
+    const res = yield call(doDeleteRole, action.payload)
+    yield put(actions.deleteRoleSuccess(res))
+  } catch (error) {
+    yield put(actions.deleteRoleFail(error))
+  }
+}
+
+async function doCreateTask(payload) {
+  try {
+    const config = {
+      url: 'task/create',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createTask(action) {
+  try {
+    const res = yield call(doCreateTask, action.payload)
+    yield put(actions.createTaskSuccess(res))
+    yield put(actions.getListTaskDetail('5de5c4b9f9e332da9ebd6b3c'))
+  } catch (error) {
+    yield put(actions.createTaskFail(error))
+  }
+}
+
+// Get list ground task
+async function doGetListGroupTask({ project_id }) {
+  try {
+    const config = {
+      url: 'group-task/list?project_id=' + project_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getListGroupTask(action) {
+  try {
+    const res = yield call(doGetListGroupTask, action.payload)
+    yield put(actions.getListGroupTaskSuccess(res))
+  } catch (error) {
+    yield put(actions.getListGroupTaskFail(error))
+  }
+}
 export {
+  // Update Priority
+  updatePriority,
+
   // Offer::
   getOffer,
   createOffer,
@@ -798,6 +980,7 @@ export {
   updateOffer,
   uploadDocumentToOffer,
   deleteDocumentToOffer,
+  handleOffer,
 
   // Remind::
   getRemind,
@@ -826,15 +1009,26 @@ export {
   getCommand,
   createCommand,
   updateCommand,
-  // Update Priority
-  updatePriority,
+  deleteCommand,
 
   // Member - Tabpart
   getMember,
   getMemberNotAssigned,
   createMember,
   deleteMember,
+
+  // Member Role - Tabpart
+  createRole,
+  updateRole,
+  deleteRole,
+
   //time
   getTrackingTime,
   updateTimeDuration,
+
+  // List task detail
+  getListTaskDetail,
+  createTask,
+  // List Group Task
+  getListGroupTask,
 }

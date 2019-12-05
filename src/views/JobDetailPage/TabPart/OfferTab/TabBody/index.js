@@ -60,6 +60,8 @@ const Badge = styled(ColorChip)`
 `
 
 const ApprovedBox = (props) => {
+  
+  
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -78,6 +80,7 @@ const ApprovedBox = (props) => {
   const handleClickClose = () => {
     setOpen(false);
   };
+
 
   return (
     <React.Fragment>
@@ -306,8 +309,6 @@ function TabBody(props) {
     setSelectedItem({ ...item, offer_id: item.id })
     setOpen(true)
   };
-  
-  // const [anchorEl, setAnchorEl] = React.useState(null)
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const confirmDelete = () => {
   
@@ -317,7 +318,6 @@ function TabBody(props) {
     setSelectedItem({ ...item, offer_id: item.id })
     
     setOpenDelete(true);
-    // setAnchorEl(null);
   };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);

@@ -212,6 +212,8 @@ const DEFAULT_DATA = {
 
 
 function RemindModal(props) {
+  console.log('props remind:::', props);
+  
   const KEYCODE_ENTER = 13
   const valueRemind = React.useContext(WrapperContext)
   const classes = useStyles()

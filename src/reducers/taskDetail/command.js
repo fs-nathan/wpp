@@ -72,18 +72,18 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
-        case types.DELETE_SUBTASK_REQUEST:
+        case types.DELETE_COMMAND_REQUEST:
             return {
                 ...state,
                 isFetching: true
             }
-        case types.DELETE_SUBTASK_SUCCESS:
+        case types.DELETE_COMMAND_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: true
             }
-        case types.DELETE_SUBTASK_FAIL:
+        case types.DELETE_COMMAND_FAIL:
             return {
                 ...state,
                 isFetching: false,

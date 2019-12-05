@@ -267,8 +267,23 @@ export const deleteDocumentToOfferSuccess = (payload) => ({
 });
 
 export const deleteDocumentToOfferFail = (error) => ({
-    type: types.DELETE_DOCUMENT_TO_OFFER_FAIL,
+    type: types.HANDLE_OFFER_REQUEST,
     error: error,
+});
+// === handle offer
+export const handleOffer = (payload) => ({
+    type: types.HANDLE_OFFER_REQUEST,
+    payload
+});
+
+export const handleOfferSuccess = (payload) => ({
+    type: types.HANDLE_OFFER_SUCCESS,
+    payload
+});
+
+export const handleOfferFail = (error) => ({
+    type: types.HANDLE_OFFER_FAIL,
+    error: error
 });
 
 
@@ -317,6 +332,22 @@ export const updateCommandFail = (error) => ({
     type: types.UPDATE_COMMAND_FAIL,
     error: error,
 });
+
+export const deleteCommand = (payload) => ({
+    type: types.DELETE_COMMAND_REQUEST,
+    payload
+});
+
+export const deleteCommandSuccess = (payload) => ({
+    type: types.DELETE_COMMAND_SUCCESS,
+    payload
+});
+
+export const deleteCommandFail = (error) => ({
+    type: types.DELETE_COMMAND_FAIL,
+    error: error,
+});
+
 // Media : Image
 export const getImage = ({ taskId }) => ({
     type: types.GET_IMAGE_TABPART_REQUEST,
@@ -477,6 +508,53 @@ export const deleteMemberFail = (error) => ({
     type: types.DELETE_MEMBER_FAIL,
     error: error,
 });
+
+// Member Role
+export const createRole = (payload) => ({
+    type: types.POST_ROLE_REQUEST,
+    payload
+});
+
+export const createRoleSuccess = (payload) => ({
+    type: types.POST_ROLE_SUCCESS,
+    payload
+});
+
+export const createRoleFail = (error) => ({
+    type: types.POST_ROLE_FAIL,
+    error: error,
+});
+
+export const updateRole = (payload) => ({
+    type: types.UPDATE_ROLE_REQUEST,
+    payload
+});
+
+export const updateRoleSuccess = (payload) => ({
+    type: types.UPDATE_ROLE_SUCCESS,
+    payload
+});
+
+export const updateRoleFail = (error) => ({
+    type: types.UPDATE_ROLE_FAIL,
+    error: error,
+});
+
+export const deleteRole = (payload) => ({
+    type: types.DELETE_ROLE_REQUEST,
+    payload
+});
+
+export const deleteRoleSuccess = (payload) => ({
+    type: types.DELETE_ROLE_SUCCESS,
+    payload
+});
+
+export const deleteRoleFail = (error) => ({
+    type: types.DELETE_ROLE_FAIL,
+    error: error,
+});
+
 //Tien do - time
  export const getTrackingTime=(payload)=>({
      type: types.GET_TRACKING_TIME_REQUEST,
@@ -502,3 +580,67 @@ export const deleteMemberFail = (error) => ({
      type:types.UPDATE_TIME_DURATION_FAIL,
      error:error
  })
+
+// GET LIST GROUP TASK
+export const getListGroupTask = (payload) => ({
+    type: types.GET_LIST_GROUP_TASK_REQUEST,
+    payload
+});
+
+export const getListGroupTaskSuccess = (payload) => ({
+    type: types.GET_LIST_GROUP_TASK_SUCCESS,
+    payload
+});
+
+export const getListGroupTaskFail = (error) => ({
+    type: types.GET_LIST_GROUP_TASK_FAIL,
+    error: error,
+});
+
+// Create Task
+export const createTask = (payload) => ({
+    type: types.POST_TASK_REQUEST,
+    payload
+});
+
+export const createTaskSuccess = (payload) => ({
+    type: types.POST_TASK_SUCCESS,
+    payload
+});
+
+export const createTaskFail = (error) => ({
+    type: types.POST_TASK_FAIL,
+    error: error,
+});
+// Create Group Task
+export const createGroupTask = (payload) => ({
+    type: types.POST_GROUP_TASK_REQUEST,
+    payload
+});
+
+export const createGroupTaskSuccess = (payload) => ({
+    type: types.POST_GROUP_TASK_SUCCESS,
+    payload
+});
+
+export const createGroupTaskFail = (error) => ({
+    type: types.POST_GROUP_TASK_FAIL,
+    error: error,
+});
+
+// Get List Task Detail
+export const getListTaskDetail = (payload) => ({
+    type: types.GET_LIST_TASK_DETAIL_REQUEST,
+    payload
+});
+
+export const getListTaskDetailSuccess = (payload) => ({
+    type: types.GET_LIST_TASK_DETAIL_SUCCESS,
+    payload
+});
+
+export const getListTaskDetailFail = (error) => ({
+    type: types.GET_LIST_TASK_DETAIL_FAIL,
+    error: error,
+});
+
