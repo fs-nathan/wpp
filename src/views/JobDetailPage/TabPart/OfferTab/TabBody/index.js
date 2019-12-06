@@ -9,7 +9,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
-import avatar from '../../../../../assets/avatar.jpg';
+// import avatar from '../../../../../assets/avatar.jpg';
 import OfferModal from '../OfferModal';
 import ApproveModal from '../ApproveModal'
 import { Scrollbars } from 'react-custom-scrollbars';

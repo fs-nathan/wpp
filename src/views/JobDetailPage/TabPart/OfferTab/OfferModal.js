@@ -184,9 +184,9 @@ const OfferModal = (props) => {
 
   const handleCreateOffer = () => {
     let dataCreateOfferFormData = new FormData()
-    dataCreateOfferFormData.append('task_id', props.taskId)
-    // add content to offer
+    // add content and task id to form data
     dataCreateOfferFormData.append('content', tempSelectedItem.content)
+    dataCreateOfferFormData.append('task_id', props.taskId)
     // add each user to formdata
     for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
       dataCreateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
@@ -198,14 +198,15 @@ const OfferModal = (props) => {
     props.createOfferByTaskId(dataCreateOfferFormData)
     setParams("files", [])
   }
-  const handleUpdateOffer = () => {
-    let dataUpdateOfferFormData = new FormData()
-    dataUpdateOfferFormData.append('offer_id', tempSelectedItem.offer_id)
-    // add each user to formdata
-    for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
-      dataUpdateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
-    }
-  }
+
+  // const handleUpdateOffer = () => {
+  //   let dataUpdateOfferFormData = new FormData()
+  //   dataUpdateOfferFormData.append('offer_id', tempSelectedItem.offer_id)
+  //   // add each user to formdata
+  //   for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
+  //     dataUpdateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
+  //   }
+  // }
 
   return (
     <Dialog open={props.isOpen} onClose={props.handleClickClose} fullWidth>
