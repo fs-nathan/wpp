@@ -206,10 +206,6 @@ const InputTextJob = styled(TextField)`
         font-size: 14px;
         z-index: 0
     }
-    & > *:last-child {
-        color: red;
-        margin-left: 10px
-    }
 `
 
 const TextInputSelect = styled(InputSelect)`
