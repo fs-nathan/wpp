@@ -110,7 +110,7 @@ const mapDispatchToProps = dispatch => {
     deleteRemindWByRemindId: remindId => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId })),
     // offer
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
-    createOfferByTaskId: (createId, content) => { dispatch(taskDetailAction.createOffer({ createId, content })) },
+    createOfferByTaskId: (data) => dispatch(taskDetailAction.createOffer( data )) ,
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
     updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
     uploadDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb)),
@@ -143,6 +143,8 @@ const mapDispatchToProps = dispatch => {
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
     // List Task Detail
+    createJobByProjectId: (data) => dispatch(taskDetailAction.createTask(data)),
+    updateTimeDuration: dataTime =>dispatch(taskDetailAction.updateTimeDuration(dataTime)),
     getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
     //  List Group Task
     getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId})),

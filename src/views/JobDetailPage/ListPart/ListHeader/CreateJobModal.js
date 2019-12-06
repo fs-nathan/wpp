@@ -401,10 +401,16 @@ function CreateJobModal(props) {
   const handleClose = () => {
     props.setOpen(false)
   }
-
+  
+  // const dataCreateJob = {
+  //   group_task: data.group_task,
+  //   name: data.name,
+  //   type_assgin: data.type_assgin
+  // }
   const handlePressConfirm = () => {
     console.log("DATA ........ ", data)
     handleClose()
+    value.createJobByProjectId({projectId: value.projectId, data})
   }
 
   return (

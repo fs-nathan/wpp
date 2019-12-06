@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { Avatar, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import colorPal from '../../../../../helpers/colorPalette';
-import avatar from '../../../../../assets/avatar.jpg';
+
 // import MultiSlider, { Progress, Dot } from 'react-multi-bar-slider';
 import { mdiCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { WrapperContext } from '../../../index'
-import { log } from 'util';
+
 const Container = styled.div`
   padding: 10px 0 50px 0;
 
@@ -208,7 +208,9 @@ const WrapperProgressBar = styled.div`
   }
 `
 const ContentProgress = styled.div`
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #2dc63a;
   border-radius: 50% 50% 50% 0;
   width: 35px;
@@ -216,7 +218,6 @@ const ContentProgress = styled.div`
   transform: rotate(-45deg);
   margin-left: calc(${props => props.value}% - 17.5px);
   & > div {
-    padding: 10px;
     color: #fff;
     transform: rotate(45deg);
   }
@@ -266,8 +267,8 @@ function TabBody() {
   console.log("time......", value.listTime)
   if (value.listTime.trackings) {
     listTime = value.listTime.trackings.map((item, key) => {
-      console.log("listTime.......",listTime)
-      
+      console.log("listTime.......", listTime)
+
       return (
         <TableRowItem key={key}>
           <CellAvatar>

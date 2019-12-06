@@ -60,8 +60,6 @@ const Badge = styled(ColorChip)`
 `
 
 const ApprovedBox = (props) => {
-  
-  
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -77,10 +75,16 @@ const ApprovedBox = (props) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClickClose = () => {
     setOpen(false);
   };
 
+  const DENIED_VALUE = {
+    offer_id: props.offer.id,
+    content: "Từ chối phê duyệt",
+    status: 2
+  }
 
   return (
     <React.Fragment>
@@ -120,7 +124,11 @@ const ApprovedBox = (props) => {
           <ApprovedContainer>
             <StyledTitleBox>
               <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
-              <Button variant="outlined" size="small" >Từ chối</Button>
+              <Button variant="outlined" size="small"
+                onClick={() => {
+                  props.handleOfferById(DENIED_VALUE)
+                }}
+              >Từ chối</Button>
               <span />
             </StyledTitleBox>
             <ApproveModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
@@ -213,7 +221,7 @@ const CustomListItem = (props) => {
         <StyledContentBox>
           <StyleContent>{content}</StyleContent>
         </StyledContentBox>
-        <ApprovedBox approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
+        <ApprovedBox {...props} approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
       </StyledListItem>
       <Menu
         anchorEl={anchorEl}
@@ -260,8 +268,6 @@ const ListOffer = (props) => {
       <StyledList>
 
         {props.offer.map((item) => {
-          // console.log("item..............",item);
-          
           return (
             <CustomListItem
               {...props}
@@ -273,7 +279,7 @@ const ListOffer = (props) => {
               handleOpenModalDelete={() => {
                 props.handleOpenModalDelete(item)
               }}
-            
+
 
               handleClickClose={() => props.handleClickClose()} />
           )
@@ -311,19 +317,19 @@ function TabBody(props) {
   };
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const confirmDelete = () => {
-  
+
     props.deleteOfferByTaskId(selectedItem.offer_id)
   }
   const handleOpenModalDelete = item => {
     setSelectedItem({ ...item, offer_id: item.id })
-    
+
     setOpenDelete(true);
   };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
- 
-  
+
+
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>

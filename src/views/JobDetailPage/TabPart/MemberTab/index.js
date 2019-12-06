@@ -3,7 +3,7 @@ import { Slide } from '@material-ui/core';
 import TabHeader from './TabHeader';
 import TabBody from './TabBody';
 import styled from 'styled-components'
-import { WrapperContext } from '../..';
+// import { WrapperContext } from '../..';
 
 const Container = styled.div`
   height: 100%;
@@ -28,7 +28,7 @@ const Header = styled(TabHeader)`
   z-index: 999;
 `
 function MemberTab({ show, setShow }) {
-  const value = React.useContext(WrapperContext)
+  // const value = React.useContext(WrapperContext)
 
   return (
     <Slide in={show === 8} direction='left' mountOnEnter unmountOnExit>
