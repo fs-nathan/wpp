@@ -414,13 +414,19 @@ function CreateJobModal(props) {
     end_date: data.end_date,
     end_time: data.end_time
   }
+
   const validate = () => !!data.name
 
   const handlePressConfirm = () => {
     if(validate()) {
+      // Call api
       value.createJobByProjectId(dataCreateJob)
+      // Clear temporary data
+      setDataMember(DEFAULT_DATA)
+      // Close modal
       handleClose()
     } else {
+      // Alert user
       alert("Bạn cần nhập tên công việc")
     }
   }
