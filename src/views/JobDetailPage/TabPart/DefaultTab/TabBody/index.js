@@ -11,7 +11,8 @@ import ColorButton from '../../../../../components/ColorButton';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import colorPal from '../../../../../helpers/colorPalette';
-import {isLongerContent, getCollapseText} from '../../../../../helpers/jobDetail/stringHelper'
+import { isLongerContent, getCollapseText } from '../../../../../helpers/jobDetail/stringHelper'
+import Tooltip from '@material-ui/core/Tooltip';
 import { WrapperContext } from '../../../index'
 
 const ListItemButtonGroup = styled(ListItem)`
@@ -215,6 +216,20 @@ const DEFAULT_TASK_STATISTIC = {
   priority_code: 0,
 }
 
+const modalStatus = () => {
+  return (
+    <div>
+      <div>
+        <Icon path={mdiCheckCircle} />
+        <p>Trạng thái:</p>
+        <p></p>
+      </div>
+      <p>
+        Hãy cập nhập tiến độ hoàn thành để thay đổi trạng thái công việc
+    </p>
+    </div>
+  )
+}
 
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
@@ -273,11 +288,13 @@ function TabBody(props) {
               Đang tạm dừng
         </ColorButton>
             :
-            <DropdownButton
-              size='small' selectedIndex={0}
-              values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
-              handleChangeItem={() => { }}
-            />
+            <Tooltip title={modalStatus()}>
+              <DropdownButton
+                size='small' selectedIndex={0}
+                values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
+                handleChangeItem={() => { }}
+              />
+            </Tooltip>
           }
           <DropdownButton
             size='small'
