@@ -85,16 +85,15 @@ const ApprovedBox = (props) => {
     content: "Từ chối phê duyệt",
     status: 2
   }
-
   return (
     <React.Fragment>
       {props.approved && (
         <React.Fragment>
           <ApprovedContainer>
             <StyledTitleBox>
-              <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
+              <Avatar style={{ width: 25, height: 25 }} src={props.offer.dataHander.user_hander_avatar} alt='avatar' />
               <div>
-                <StyleContent variant='body1' bold>Trần Văn B</StyleContent>
+                <StyleContent variant='body1' bold>{props.offer.dataHander.user_hander_name}</StyleContent>
                 <ColorTypo variant='caption'>
                   <Badge component='small' color='bluelight' badge size='small' label={'Duyệt'} />
                 </ColorTypo>
@@ -104,8 +103,8 @@ const ApprovedBox = (props) => {
               </ButtonIcon>
             </StyledTitleBox>
             <StyledContentBox>
-              <ColorTypo variant='caption'>18:00 - 12/12/2019</ColorTypo>
-              <StyleContent >Lorem ipsum dolor sit.</StyleContent>
+              <ColorTypo variant='caption'>{props.offer.dataHander.date_hander}</ColorTypo>
+              <StyleContent >{props.offer.dataHander.content_hander}</StyleContent>
             </StyledContentBox>
           </ApprovedContainer>
           <Menu
@@ -271,8 +270,8 @@ const ListOffer = (props) => {
           return (
             <CustomListItem
               {...props}
-              key={item.id} offer={item}
-
+              key={item.id} 
+              offer={item}
               handleClickOpen={() => {
                 props.handleClickEditItem(item)
               }}
@@ -328,8 +327,7 @@ function TabBody(props) {
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
-
-
+  console.log("123", props)
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -353,8 +351,8 @@ function TabBody(props) {
             onClick={evt => handleChange(evt, 2)}
           >
             {value === 2
-              ? <ColorTypo bold>Chờ duyệt ({props.approvedItems.length})</ColorTypo>
-              : <ColorTypo color='gray'>Chờ duyệt ({props.approvedItems.length})</ColorTypo>}
+              ? <ColorTypo bold>Chờ duyệt ({props.pendingItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>Chờ duyệt ({props.pendingItems.length})</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
@@ -364,13 +362,28 @@ function TabBody(props) {
             handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
             handleClickEditItem={(data) => handleClickEditItem(data)}
             {...props}
+            offer={props.offer}
           />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          {null}
+          <ListOffer
+            handleClickClose={() => handleClickClose()}
+            handleClickOpen={() => handleClickOpen()}
+            handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
+            handleClickEditItem={(data) => handleClickEditItem(data)}
+            {...props}
+            offer={props.approvedItems}
+          />
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          {null}
+          <ListOffer
+            handleClickClose={() => handleClickClose()}
+            handleClickOpen={() => handleClickOpen()}
+            handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
+            handleClickEditItem={(data) => handleClickEditItem(data)}
+            {...props}
+            offer={props.pendingItems}
+          />
         </Collapse>
         <OfferModal
           {...props}

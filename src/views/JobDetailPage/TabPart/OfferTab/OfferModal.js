@@ -146,14 +146,14 @@ const OfferModal = (props) => {
   }
 
   const handleUploadFileUpdate = files => {
-    console.log("files:", files);
+    // console.log("files:", files);
 
     // For update
     if (!files.length) return
     let payload = new FormData()
     // Add offer id to form data
     payload.append("offer_id", tempSelectedItem.offer_id)
-    console.log('tempSelectItem::::', tempSelectedItem.offer_id);
+    // console.log('tempSelectItem::::', tempSelectedItem.offer_id);
 
     // Add each file to form data
     for (let i = 0; i < files.length; i++) {
@@ -176,7 +176,7 @@ const OfferModal = (props) => {
     // Call api
     valueOffer.deleteDocumentToOfferById(payload, removeFileCallBack)
   }
- 
+
 
   const handleUploadFileAdd = files => {
     setParams("files", [...tempSelectedItem.files, ...files])
@@ -197,6 +197,14 @@ const OfferModal = (props) => {
     }
     props.createOfferByTaskId(dataCreateOfferFormData)
     setParams("files", [])
+  }
+  const handleUpdateOffer = () => {
+    let dataUpdateOfferFormData = new FormData()
+    dataUpdateOfferFormData.append('offer_id', tempSelectedItem.offer_id)
+    // add each user to formdata
+    for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
+      dataUpdateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
+    }
   }
 
   return (

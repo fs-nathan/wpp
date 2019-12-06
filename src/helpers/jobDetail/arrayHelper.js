@@ -18,8 +18,8 @@ const OFFER_STATUS = {
     APPROVED: 1,
 }
 
-export const filterPendingItem = arr => arr.filter(item => item.type === OFFER_STATUS.PENDING)
-export const filterApprovedItem = arr => arr.filter(item => item.type === OFFER_STATUS.APPROVED)
+export const filterPendingItem = arr => arr.filter(item => item.status === OFFER_STATUS.PENDING)
+export const filterApprovedItem = arr => arr.filter(item => item.status === OFFER_STATUS.APPROVED)
 
 export const DEFAULT_OFFER_ITEM = { offer_id: "", content: "", user_hander: [], files: [] }
 

@@ -151,7 +151,7 @@ const ListDemand = (props) => {
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const handleOpenModalDelete = item => {
     setOpenDelete(true);
-    setSelectedItem({...item, command_id: item.id})
+    setSelectedItem({ ...item, command_id: item.id })
     // setAnchorEl(null);
   };
   const handleCloseModalDelete = () => {
@@ -210,32 +210,28 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function TabBody(props) {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const [value, setValue] = React.useState(0)
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         <StyledButtonGroup fullWidth variant="text" >
           <ColorButton
-            onClick={evt => handleChange(evt, 0)}
+            onClick={() => setValue(0)}
           >
             {value === 0
               ? <ColorTypo bold>Tất cả ({props.command.length})</ColorTypo>
               : <ColorTypo color='gray'>Tất cả ({props.command.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
-            onClick={evt => handleChange(evt, 1)}
+            onClick={() => setValue(1)}
           >
             {value === 1
               ? <ColorTypo bold>Chỉ đạo ({props.commandItems.length})</ColorTypo>
               : <ColorTypo color='gray'>Chỉ đạo ({props.commandItems.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
-            onClick={evt => handleChange(evt, 2)}
+            onClick={() => setValue(2)}
           >
             {value === 2
               ? <ColorTypo bold>Quyết định ({props.decisionItems.length})</ColorTypo>
@@ -243,9 +239,7 @@ function TabBody(props) {
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
-          <ListDemand 
-          {...props} 
-          activeArr={props.command} 
+          <ListDemand  {...props} activeArr={props.command}
           />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>

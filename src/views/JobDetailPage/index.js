@@ -56,7 +56,7 @@ const mapStateToProps = state => {
   
   return {
     // offer
-    offer: state.taskDetail.taskOffer.offer.reverse(),
+    offer: state.taskDetail.taskOffer.offer,
 
     pendingItems: state.taskDetail.taskOffer.pendingItems,
     approvedItems: state.taskDetail.taskOffer.approvedItems,
@@ -70,9 +70,9 @@ const mapStateToProps = state => {
     file: state.taskDetail.media.file,
     link: state.taskDetail.media.links,
     // command
-    command: state.taskDetail.taskCommand.command.reverse(),
-    commandItems: state.taskDetail.taskCommand.commandItems.reverse(),
-    decisionItems: state.taskDetail.taskCommand.decisionItems.reverse(),
+    command: state.taskDetail.taskCommand.command,
+    commandItems: state.taskDetail.taskCommand.commandItems,
+    decisionItems: state.taskDetail.taskCommand.decisionItems,
     // fake ID
     taskId: state.taskDetail.commonTaskDetail.activeTaskId,
     projectId: state.taskDetail.commonTaskDetail.activeProjectId,
@@ -112,7 +112,7 @@ const mapDispatchToProps = dispatch => {
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
     createOfferByTaskId: (data) => dispatch(taskDetailAction.createOffer( data )) ,
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
-    updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
+    updateOfferById: (data) => dispatch(taskDetailAction.updateOffer(data)),
     uploadDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb)),
     deleteDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb)),
     handleOfferById: (data) => dispatch(taskDetailAction.handleOffer(data)),

@@ -650,7 +650,7 @@ function* updateCommand(action) {
   try {
     const res = yield call(doUpdateCommand, action.payload)
     yield put(actions.updateCommandSuccess(res))
-    // yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }
@@ -674,7 +674,7 @@ function* deleteCommand(action) {
   try {
     const res = yield call(doDeleteCommand, action.payload)
     yield put(actions.deleteCommandSuccess(res))
-    // yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.deleteCommandFail(error))
   }
