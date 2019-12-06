@@ -55,8 +55,6 @@ export default function IntegrationReactSelect(props) {
   const [single, setSingle] = React.useState(null);
 
   const handleChangeSingle = selectedItem => {
-    console.log('selectItem:::', selectedItem);
-    
     setSingle(selectedItem)
     props.setOptions(selectedItem.value)
   };
@@ -74,7 +72,7 @@ export default function IntegrationReactSelect(props) {
   React.useEffect(() => {
     if(props.commandSelect) {
       let foundItem = props.commandSelect.find(item => item.value === props.selectedIndex)
-      setSingle(foundItem)
+      if(foundItem) setSingle(foundItem)
     }
   }, [props.commandSelect, props.selectedIndex])
 

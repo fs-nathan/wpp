@@ -15,10 +15,10 @@ import AvatarCircleList from '../../../components/AvatarCircleList'
 import DetailMessage from './DetailMessage'
 
 const Container = styled.div`
+
 `
 
 const WrapChat = styled.div`
-    
 `
 
 const WrapMessageRow = styled.div`
