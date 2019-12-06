@@ -152,6 +152,7 @@ function* rootSaga() {
   //Time
   yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime);
   yield takeLeading(taskDetailType.UPDATE_TIME_DURATION_REQUEST,taskDetailSaga.updateTimeDuration);
+  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime)
   
   // List Task Detail
   yield takeLeading(taskDetailType.GET_LIST_TASK_DETAIL_REQUEST, taskDetailSaga.getListTaskDetail);

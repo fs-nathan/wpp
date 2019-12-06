@@ -962,6 +962,8 @@ async function doGetListGroupTask({ project_id }) {
   }
 }
 function* getListGroupTask(action) {
+
+
   try {
     const res = yield call(doGetListGroupTask, action.payload)
     yield put(actions.getListGroupTaskSuccess(res))
@@ -975,6 +977,8 @@ async function doUpdateNameDescriptionTask(payload) {
   try {
     const config = {
       url: 'task/update-name-description',
+
+
       method: 'put',
       data: payload
     }
@@ -984,6 +988,7 @@ async function doUpdateNameDescriptionTask(payload) {
     throw error;
   }
 }
+
 
 function* updateNameDescriptionTask(action) {
   try {
@@ -998,6 +1003,11 @@ function* updateNameDescriptionTask(action) {
     yield put(actions.updateNameDescriptionTaskFail(error))
   }
 }
+
+
+
+
+
 export {
   // Update Priority
   updatePriority,

@@ -54,6 +54,7 @@ function JobDetailPage(props) {
 const mapStateToProps = state => {
   // console.log('state project id::::', state.taskDetail.listGroupTask.listGroupTask);
 
+  
   return {
     // offer
     offer: state.taskDetail.taskOffer.offer.reverse(),
@@ -138,6 +139,7 @@ const mapDispatchToProps = dispatch => {
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
     // Member Role
     createRoleTask: (name) => dispatch(taskDetailAction.createRole({ name })),
+    createRoleTask: (name) => dispatch(taskDetailAction.createRole({name})),
     updateRoleTask: (role_task_id, name) => dispatch(taskDetailAction.updateRole({ role_task_id, name })),
     deleteRoleTask: (role_task_id) => dispatch(taskDetailAction.deleteRole({ role_task_id })),
     //time
@@ -150,6 +152,10 @@ const mapDispatchToProps = dispatch => {
     //edit name and description task
     updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data))
     ,
+    // List Task Detail
+    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
+    //  List Group Task
+    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId})),
 
   };
 };
