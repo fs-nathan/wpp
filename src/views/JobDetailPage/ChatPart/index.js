@@ -18,8 +18,13 @@ const WrapHeader = styled.div`
 const WrapBody = styled.div`
   background-color: #f8f8f8;
   height: calc(100% - 230px);
-  overflow-x: hidden;
   padding: 10px;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #f8f8f8 #f8f8f8;
+  &:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+  }
 `;
 
 const WrapFooter = styled.div`

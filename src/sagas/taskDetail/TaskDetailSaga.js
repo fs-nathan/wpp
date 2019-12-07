@@ -335,9 +335,9 @@ async function doCreateOffer(payload) {
   }
 }
 
-function* createOffer(action) {  
+function* createOffer(action) {
   try {
-    const res = yield call(doCreateOffer, action.payload)    
+    const res = yield call(doCreateOffer, action.payload)
     yield put(actions.createOfferSuccess(res))
     yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
   } catch (error) {
@@ -650,7 +650,7 @@ function* updateCommand(action) {
   try {
     const res = yield call(doUpdateCommand, action.payload)
     yield put(actions.updateCommandSuccess(res))
-    // yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }
@@ -674,7 +674,7 @@ function* deleteCommand(action) {
   try {
     const res = yield call(doDeleteCommand, action.payload)
     yield put(actions.deleteCommandSuccess(res))
-    // yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
   } catch (error) {
     yield put(actions.deleteCommandFail(error))
   }
@@ -832,7 +832,7 @@ function* updateTimeDuration(action) {
 
     const res = yield call(doUpdateTimeDuration, action.payload)
     yield put(actions.updateTimeDurationSuccess(res))
-    yield put (actions.getTrackingTime(action.payload.task_id))
+    yield put(actions.getTrackingTime(action.payload.task_id))
 
   } catch (error) {
     yield put(actions.updateTimeDurationFail)
@@ -911,6 +911,7 @@ function* deleteRole(action) {
 }
 
 async function doCreateTask(payload) {
+
   try {
     const config = {
       url: 'task/create',
@@ -928,7 +929,7 @@ function* createTask(action) {
   try {
     const res = yield call(doCreateTask, action.payload)
     yield put(actions.createTaskSuccess(res))
-    yield put(actions.getListTaskDetail('5de5c4b9f9e332da9ebd6b3c'))
+    yield put(actions.getListTaskDetail({ project_id: '5de5c4b9f9e332da9ebd6b3c' }))
   } catch (error) {
     yield put(actions.createTaskFail(error))
   }

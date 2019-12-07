@@ -22,6 +22,9 @@ import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect'
 // import { Scrollbars } from 'react-custom-scrollbars'
 import { WrapperContext } from '../../index'
+import {
+  DEFAULT_DATE_TEXT, DEFAULT_END_TIME_TEXT, DEFAULT_START_TIME_TEXT, EMPTY_STRING, DEFAULT_GROUP_TASK_VALUE
+} from '../../../../helpers/jobDetail/stringHelper';
 
 
 // const Header = styled.div`
@@ -203,10 +206,6 @@ const InputTextJob = styled(TextField)`
         font-size: 14px;
         z-index: 0
     }
-    & > *:last-child {
-        color: red;
-        margin-left: 10px
-    }
 `
 
 const TextInputSelect = styled(InputSelect)`
@@ -240,7 +239,7 @@ function CommonControlForm(props) {
   const [value, setValue] = React.useState(props.assign);
   const handleChangeFormAssign = itemValue => {
     console.log('itemValue::::', itemValue);
-    
+
     setValue(itemValue)
     let clickedItem = props.labels.find(item => item.value === itemValue)
     props.handleChangeAssign(clickedItem)
@@ -276,7 +275,7 @@ function CommonPriorityForm(props) {
 
   const handleChangePriority = itemValue => {
     console.log('itemValue::::', itemValue);
-    
+
     // Set state to change style in component
     setValue(itemValue)
     // Pass clicked item to parent
@@ -341,39 +340,41 @@ const DialogFooter = styled(DialogActions)`
   border-top: 1px solid rgba(0, 0, 0, 0.12)
 `
 const DEFAULT_DATA = {
-  name: '',
-  description: '',
-  start_time: '',
-  start_date: '',
-  end_time: '',
-  end_date: '',
+  name: EMPTY_STRING,
+  description: EMPTY_STRING,
+  start_time: DEFAULT_START_TIME_TEXT,
+  start_date: DEFAULT_DATE_TEXT,
+  end_time: DEFAULT_END_TIME_TEXT,
+  end_date: DEFAULT_DATE_TEXT,
   type_assign: DEFAULT_ASSIGN_ID,
   priority: DEFAULT_PRIORITY_ID,
-  group_task: '',
+  group_task: EMPTY_STRING,
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN,
 }
 
-
 function CreateJobModal(props) {
-  // const [open, setOpen] = React.useState(false);
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
 
   const value = React.useContext(WrapperContext)
-  const [openAddModal, setOpenAddModal] = React.useState(false)
-
-  let listGroupTask = value.listTaskDetail
-  let listTask = []
-  if (listGroupTask) {
-    listTask = listGroupTask.tasks.map((item) =>
-      ({ label: item.name, value: item.id })
-    )
-  }
-
   const [data, setDataMember] = React.useState(DEFAULT_DATA)
+  const [openAddModal, setOpenAddModal] = React.useState(false)
+  const [listGroupTask, setListGroupTask] = React.useState([])
+  const [groupTaskValue, setGroupTaskValue] = React.useState(null)
+
+  React.useEffect(() => {
+    if (value.listTaskDetail) {
+      // Map task to input
+      let listTask = value.listTaskDetail.tasks.map((item) => ({
+        label: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : "Chưa phân loại",
+        value: item.id
+      }))
+      setListGroupTask(listTask)
+
+      // Set default group for input
+      let item = value.listTaskDetail.tasks.find(item => item.id === DEFAULT_GROUP_TASK_VALUE)
+      if (item) setGroupTaskValue(DEFAULT_GROUP_TASK_VALUE)
+    }
+  }, [value.listTaskDetail])
 
   React.useEffect(() => {
     if (props.data) {
@@ -401,22 +402,40 @@ function CreateJobModal(props) {
   const handleClose = () => {
     props.setOpen(false)
   }
-  
-  // const dataCreateJob = {
-  //   group_task: data.group_task,
-  //   name: data.name,
-  //   type_assgin: data.type_assgin
-  // }
+
+  const dataCreateJob = {
+    group_task: data.group_task,
+    name: data.name,
+    description: data.description,
+    type_assign: data.type_assign,
+    priority: data.priority,
+    start_date: data.start_date,
+    start_time: data.start_time,
+    end_date: data.end_date,
+    end_time: data.end_time
+  }
+
+  const validate = () => !!data.name
+
   const handlePressConfirm = () => {
-    console.log("DATA ........ ", data)
-    handleClose()
-    value.createJobByProjectId({projectId: value.projectId, data})
+    if(validate()) {
+      // Call api
+      value.createJobByProjectId(dataCreateJob)
+      // Clear temporary data
+      setDataMember(DEFAULT_DATA)
+      // Close modal
+      handleClose()
+    } else {
+      // Alert user
+      alert("Bạn cần nhập tên công việc")
+    }
   }
 
   return (
     <div>
       <StyleDialog open={props.isOpen} fullWidth onClose={handleClose}>
-        {props.isRight ?
+        {props.isRight
+          ?
           <TitleDialog onClose={handleClose}>
             Chỉnh sửa công việc
           </TitleDialog>
@@ -481,14 +500,16 @@ function CreateJobModal(props) {
             <OutlineInput
               type={'date'}
               value={data.end_date}
+              inputProps={{ min: data.start_date }}
               onChange={e => handleChangeData("end_date", e.target.value)}
             />
           </StartEndDay>
           <TypoText component={'div'}> Chọn nhóm việc </TypoText>
           <Typography component={'div'} style={{ marginBottom: '20px' }}>
             <TextInputSelect
-              commandSelect={listTask}
-              setOptions={typeId => { handleChangeData("group_task", typeId); }}
+              commandSelect={listGroupTask}
+              selectedIndex={groupTaskValue}
+              setOptions={typeId => handleChangeData("group_task", typeId)}
               placeholder={'Nhóm mặc định'}
             />
           </Typography>
@@ -497,7 +518,7 @@ function CreateJobModal(props) {
               <InputTextJob
                 id="outlined-helperText"
                 label="Mô tả công việc"
-                helperText="Không được để trống"
+                // helperText=""
                 margin="normal"
                 fullWidth
                 variant="outlined"
