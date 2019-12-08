@@ -8,7 +8,7 @@ export const StyledList = styled(List)`
 export const StyledListItem = styled(ListItem)`
   display: flex;
   align-items: center;
-  padding: 10px 1rem;
+  padding: 10px;
   background-color: #fff;
   & > *:not(:first-child) {
     margin-left: 12px;

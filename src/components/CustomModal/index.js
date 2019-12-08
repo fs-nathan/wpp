@@ -85,10 +85,10 @@ const StyledDialog = styled(Dialog)`
   }
 `;
 
-const TwoColumnsContainer = styled.div`
+const TwoColumnsContainer = styled(({ maxWidth, ...rest }) => <div {...rest} />)`
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 2fr 3fr;
+  grid-template-columns: ${props => props.maxWidth === 'lg' ? '1fr 2fr' : '2fr 3fr'};
   & > * {
     &:first-child {
       border-right: 1px solid rgba(0, 0, 0, 0.1);
@@ -113,9 +113,9 @@ function OneColumn({ children, }) {
   );
 }
 
-function TwoColumns({ left, right }) {
+function TwoColumns({ maxWidth, left, right }) {
   return (
-    <TwoColumnsContainer>
+    <TwoColumnsContainer maxWidth={maxWidth}>
       <StyledScrollbars
         autoHide
         autoHideTimeout={500}
@@ -175,7 +175,7 @@ function CustomModal({
         <OneColumn children={children} />
       )}
       {columns === 2 && (
-        <TwoColumns left={left} right={right} />
+        <TwoColumns maxWidth={maxWidth} left={left} right={right} />
       )}
       <StyledDialogActions>
         <ActionsCancleButton onClick={() => handleCancle()}>

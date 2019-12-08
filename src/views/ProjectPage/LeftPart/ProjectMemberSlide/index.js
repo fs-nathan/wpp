@@ -71,7 +71,7 @@ function ProjectMemberSlide({ handleSubSlide, memberProject, }) {
           }}
           rightAction={{
             iconPath: mdiPlus,
-            onClick: () => null,
+            onClick: () => setOpen(true),
             tooltip: 'Thêm thành viên dự án',
           }}
           loading={{

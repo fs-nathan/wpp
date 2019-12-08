@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Chart from 'react-apexcharts';
 
 export const ChartBox = styled.div`
-  padding: 10px;
+  padding: 10px 0;
   margin-top: 20px;
 `;
 
@@ -23,7 +23,8 @@ export const ChartTitle = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 11px;
+  font-weight: 500;
   text-transform: uppercase;
 `;
 
