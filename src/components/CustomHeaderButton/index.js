@@ -1,65 +1,69 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
 import { ButtonGroup, Button } from '@material-ui/core';
+import { mdiMagnify, mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-
-const StyledButton = styled(Button)`
-  && {
-    padding: 0 4px;
-    border-radius: 0;
-    color: rgba(0, 0, 0, 0.54);
-  }
-  &&:not(:last-child) {
-    border-right: none;
-  }
-  &&:hover {
-    background-color: #fff;
-    & path {
-      fill: #05b50c !important;
-    }
-    color: #05b50c;
-  }
-  &.Mui-disabled {
-    opacity: 0.5;
-  }
-  && > span:first-child {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0 5px;
-    & > div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    & > span {
-      margin-top: 5px;
-      font-size: 11px;
-    }
-  }
-`;
+import SearchInput from '../SearchInput';
+import './HeaderButton.scss';
 
 const CustomHeaderButton = props => {
+  const [isSearch, setSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleChangeSearch = e => {
+    setSearchValue(e.target.value);
+  };
   return (
     <React.Fragment>
       <ButtonGroup size="small" variant="text">
+        <div className={`search-container ${isSearch ? 'show-input' : ''}`}>
+          <SearchInput
+            placeholder="Nhập nội dung cần tìm"
+            value={searchValue}
+            onChange={handleChangeSearch}
+          />
+        </div>
+
         {props.listAction.map((el, index) => {
           if (el.isShow) {
-            return (
-              <StyledButton
-                disableRipple
-                disableTouchRipple
-                disabled={el.disabled}
-                onClick={el.action}
-                key={index}
-              >
-                <div>
-                  <Icon path={el.icon} size={1} color="rgba(0, 0, 0, 0.54)" />
-                </div>
-                <span>{el.text}</span>
-              </StyledButton>
-            );
+            if (el.type === 'search') {
+              return (
+                <Button
+                  disableRipple
+                  disableTouchRipple
+                  disabled={el.disabled}
+                  key={index}
+                  onClick={() => setSearch(!isSearch)}
+                  className="header-button-custom"
+                >
+                  <div>
+                    <Icon
+                      path={isSearch ? mdiClose : mdiMagnify}
+                      size={1}
+                      color="rgba(0, 0, 0, 0.54)"
+                    />
+                  </div>
+                  <span>{isSearch ? 'Hủy' : 'Tìm kiếm'}</span>
+                </Button>
+              );
+            } else {
+              return (
+                <Button
+                  disableRipple
+                  disableTouchRipple
+                  disabled={el.disabled}
+                  onClick={() => {
+                    if (el.action) el.action();
+                  }}
+                  key={index}
+                  className="header-button-custom"
+                >
+                  <div>
+                    <Icon path={el.icon} size={1} color="rgba(0, 0, 0, 0.54)" />
+                  </div>
+                  <span>{el.text}</span>
+                </Button>
+              );
+            }
           }
           return null;
         })}

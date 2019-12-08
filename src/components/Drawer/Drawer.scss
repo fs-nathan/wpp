@@ -228,7 +228,7 @@
     .btn-close {
       position: absolute;
       right: 30px;
-      bottom: -6px;
+      bottom: -2px;
       color: #999;
       cursor: pointer;
     }
@@ -239,6 +239,34 @@
     align-items: center;
     display: flex;
     cursor: pointer;
+    &.join-group-search {
+      flex-direction: column;
+      align-items: flex-start;
+      .search-group-title {
+        font-size: 15px;
+      }
+      .search-group-container {
+        display: flex;
+        width: 100%;
+        .search-group-box {
+          width: 100%;
+          padding: 5px 10px;
+          margin-right: 20px;
+          background-color: #f6f6f6;
+          border-radius: 999px;
+          height: 38px;
+          font-size: 15px;
+        }
+        .filter-action {
+          padding: 0 20px;
+          background-color: #f6f6f6;
+          border-radius: 20px;
+          height: 38px;
+          line-height: 38px;
+          font-size: 15px;
+        }
+      }
+    }
     .text-join-group-new {
       padding-left: 0;
       font-size: 16px;
@@ -247,8 +275,10 @@
   }
   .content-group-account {
     overflow-y: auto;
-    height: calc(100% - 278px);
-    padding-top: 10px;
+    height: calc(100% - 268px);
+    &.join-group-container {
+      height: calc(100% - 194px);
+    }
     .item-group {
       .title-item-group {
         padding: 18px 20px;

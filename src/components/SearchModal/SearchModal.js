@@ -76,6 +76,7 @@ class SearchModal extends Component {
             <InputBase
               id="searchTextId"
               className="search-box"
+              placeholder="Nhập tên công việc..."
               autoFocus
               startAdornment={
                 <InputAdornment position="start">

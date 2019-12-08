@@ -2,7 +2,9 @@ import {
   CHANGE_TAB,
   FILTER_DOCUMENTS,
   SET_ALL_DATA_DOCUMENTS,
-} from '../../constants/actions/documents'
+  SELECT_DOCUMENT_ITEM,
+  RESET_LIST_SELECT_DOCUMENT
+} from '../../constants/actions/documents';
 
 export const changeTab = tabId => ({
   type: CHANGE_TAB,
@@ -17,4 +19,12 @@ export const filterDocs = filteredDocs => ({
 export const setAllDataDocuments = data => ({
   type: SET_ALL_DATA_DOCUMENTS,
   payload: data
-})
+});
+
+export const selectDocumentItem = listDocumentSelected => ({
+  type: SELECT_DOCUMENT_ITEM,
+  payload: listDocumentSelected
+});
+export const resetListSelectDocument = () => ({
+  type: RESET_LIST_SELECT_DOCUMENT
+});

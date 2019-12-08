@@ -2,12 +2,13 @@
   background-color: rgba(0, 0, 0, 0.35);
   .MuiDialogActions-root {
     flex-direction: column;
+    padding: 30px;
   }
 }
 .notice-header {
   display: flex;
   .notice-logo {
-    width: 240px;
+    width: 210px;
     margin: 0 auto;
     margin-top: -40px;
     margin-bottom: -40px;
@@ -30,9 +31,12 @@
   justify-content: center;
 }
 .notice-text {
-  font-size: 14px;
+  font-size: 17px;
   text-align: center;
   margin: 0;
+  &.header-text {
+    font-weight: 500;
+  }
 }
 .notice-btn-container .notice-btn {
   color: #01b374;
@@ -41,6 +45,9 @@
   text-transform: uppercase;
   padding: 16px 48px;
   font-size: 19px;
+  .MuiButton-label {
+    font-size: 19px;
+  }
   &:hover {
     color: white;
     background: #01b374;
@@ -61,7 +68,7 @@
   width: 28px;
 }
 .notice-text-info {
-  font-size: 12px;
+  font-size: 15px;
   color: #5a5a5a;
   opacity: 0.65;
   margin: 0;

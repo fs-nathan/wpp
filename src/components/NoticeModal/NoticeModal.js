@@ -66,7 +66,7 @@ const NoticeModal = props => {
             Thông báo đơn hàng hết hạn!
           </h2>
         )}
-        <p className="notice-text">Xin chào Nguyễn Hữu Thành!</p>
+        <p className="notice-text header-text">Xin chào Nguyễn Hữu Thành!</p>
         {type === 'intro' ? (
           <p className="notice-text">
             Bạn đã đăng nhập thành công hệ thống quản trị doanh nghiệp trực

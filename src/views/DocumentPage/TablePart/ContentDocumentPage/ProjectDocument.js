@@ -1,32 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import {
   Table,
   TableHead,
   TableBody,
-  TableSortLabel,
+  IconButton,
   TablePagination,
   TableRow
 } from '@material-ui/core';
-import { mdiAccountPlusOutline } from '@mdi/js';
+import Icon from '@mdi/react';
+import { mdiAccountPlusOutline, mdiSwapVertical } from '@mdi/js';
 import { withRouter } from 'react-router-dom';
 
 import { Routes } from '../../../../constants/routes';
-import folderIcon from '../../../../assets/folder.png';
-
 import ColorTypo from '../../../../components/ColorTypo';
 import { getProjectStatic } from './ContentDocumentAction';
+import {
+  selectDocumentItem,
+  resetListSelectDocument
+} from '../../../../actions/documents';
+import { openDocumentDetail } from '../../../../actions/system/system';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import './ContentDocumentPage.scss';
 import {
-  StyledTableHeadRow,
   StyledTableHeadCell,
   StyledTableBodyCell,
   FullAvatar,
-  WrapAvatar,
   selectItem,
   selectAll,
   GreenCheckbox
 } from '../DocumentComponent/TableCommon';
+import { FileType } from '../../../../components/FileType';
 
 const ProjectDocument = props => {
   const [data, setData] = useState([]);
@@ -37,6 +41,12 @@ const ProjectDocument = props => {
   useEffect(() => {
     fetDataRecentDocument();
   }, []);
+  useEffect(() => {
+    return () => {
+      props.resetListSelectDocument();
+    };
+    // eslint-disable-next-line
+  }, []);
   const fetDataRecentDocument = async () => {
     const { data } = await getProjectStatic({
       pageSize: 10,
@@ -46,9 +56,11 @@ const ProjectDocument = props => {
   };
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, data));
+    props.selectDocumentItem(selectAll(e, data));
   };
   const handleSelectItem = id => {
     setSelected(selectItem(selected, id));
+    props.selectDocumentItem(selectItem(selected, id));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
   const moreAction = [
@@ -65,11 +77,19 @@ const ProjectDocument = props => {
     });
   };
   const handleChangePage = () => {};
+  const openDetail = item => {
+    const isDetail =
+      item.type === 'word' || item.type === 'pdf' || item.type === 'excel';
+    if (isDetail) {
+      props.openDocumentDetail(item);
+    }
+    props.openDocumentDetail(item); // test
+  };
   return (
     <React.Fragment>
       <Table>
         <TableHead>
-          <StyledTableHeadRow>
+          <TableRow className="table-header-row">
             <StyledTableHeadCell>
               <GreenCheckbox
                 onChange={handleSelectAllClick}
@@ -83,19 +103,18 @@ const ProjectDocument = props => {
               Loại
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="65%">
-              <TableSortLabel
-                active={true}
-                // direction={order}
-                // onClick={createSortHandler(headCell.id)}
-              >
+              <div>
                 Tên
-              </TableSortLabel>
+                <IconButton size="small">
+                  <Icon path={mdiSwapVertical} size={1} color="#8d8d8d" />
+                </IconButton>
+              </div>
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
               Sổ tài liệu
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
-          </StyledTableHeadRow>
+          </TableRow>
         </TableHead>
         <TableBody>
           {data.map(project => {
@@ -105,25 +124,35 @@ const ProjectDocument = props => {
                 hover={true}
                 onClick={event => handleClick(event, project)}
                 key={project.id}
+                className="table-body-row"
               >
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
                     onChange={e => handleSelectItem(project.id)}
+                    onClick={e => e.stopPropagation()}
                   />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="5%">
-                  <WrapAvatar>
-                    <FullAvatar src={folderIcon} />
-                  </WrapAvatar>
+                <StyledTableBodyCell
+                  align="center"
+                  width="5%"
+                  className="cursor-pointer"
+                  onClick={() => openDetail(project)}
+                >
+                  <FullAvatar src={FileType('folder')} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="60%">
+                <StyledTableBodyCell
+                  align="left"
+                  width="60%"
+                  className="cursor-pointer"
+                  onClick={() => openDetail(project)}
+                >
                   <ColorTypo color="black">{project.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{project.number_document}</ColorTypo>
                 </StyledTableBodyCell>
-                <MoreAction actionList={moreAction} item={project}/>
+                <MoreAction actionList={moreAction} item={project} />
               </TableRow>
             );
           })}
@@ -142,4 +171,13 @@ const ProjectDocument = props => {
   );
 };
 
-export default withRouter(ProjectDocument);
+export default connect(
+  state => ({
+    selectedDocument: state.documents.selectedDocument
+  }),
+  {
+    selectDocumentItem,
+    resetListSelectDocument,
+    openDocumentDetail
+  }
+)(withRouter(ProjectDocument));

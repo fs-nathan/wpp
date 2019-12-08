@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-
+import { Scrollbars } from 'react-custom-scrollbars';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
 import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
@@ -73,7 +73,11 @@ const TablePart = props => {
           </RightHeader>
         )}
       </div>
-      {getContentSettingAccount()}
+      <div className="setting-right-content">
+        <Scrollbars autoHide autoHideTimeout={500}>
+          {getContentSettingAccount()}
+        </Scrollbars>
+      </div>
     </div>
   );
 };

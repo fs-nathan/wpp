@@ -13,7 +13,7 @@ const HeaderButtonGroup = props => {
     {
       text: 'Tìm kiếm',
       icon: mdiMagnify,
-      action: () => {},
+      type: 'search',
       isShow: isTabOrder && isOder
     },
     {

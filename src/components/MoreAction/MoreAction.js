@@ -2,18 +2,12 @@ import React, { useState } from 'react';
 import Icon from '@mdi/react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import { TableCell, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import ShareDocumentModal from '../../views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal';
 import MoveDocumentModal from '../../views/DocumentPage/TablePart/DocumentComponent/MoveDocumentModal';
 import ChangeDocumentModal from '../../views/DocumentPage/TablePart/DocumentComponent/ChangeDocumentModal';
-
-const StyledTableBodyCell = styled(TableCell)`
-  padding: 11px;
-  &:nth-child(4) > * {
-    justify-content: flex-start;
-  }
-`;
+import { StyledTableBodyCell } from '../../views/DocumentPage/TablePart/DocumentComponent/TableCommon';
 const StyledMenuItem = styled(MenuItem)`
   border-bottom: ${props => (props.border ? '1px solid #ddd' : 'none')};
 `;
@@ -39,7 +33,7 @@ const MoreAction = props => {
 
   return (
     <React.Fragment>
-      <StyledTableBodyCell>
+      <StyledTableBodyCell className="more-action">
         <IconButton
           size="small"
           aria-controls="simple-menu"

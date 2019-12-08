@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 // import * as icons from "../../../assets";
 import './SettingGroupRight.scss';
 import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
+import OrderInit from '../../../../components/ExportPDF/OrderInit';
 import SliderProgess from '../../../../components/SliderProgess/SliderProgess';
 
 const marks = {
@@ -39,15 +40,29 @@ const marks = {
 const CreateOrder = props => {
   const [isCheckedManagerWork, setIsCheckedManagerWork] = useState(false);
   const [isCheckedBuyData, setIsCheckedBuyData] = useState(false);
-  const [numAcc, SetnumAcc] = useState(5);
-  const [dateUse, SetdateUse] = useState(12);
-  const [dataBuy, SetdataBuy] = useState(1000);
-  const [dateSave, SetdateSave] = useState(6);
+  const [numAcc, SetnumAcc] = useState(0);
+  const [dateUse, SetdateUse] = useState(0);
+  const [dataBuy, SetdataBuy] = useState(0);
+  const [dateSave, SetdateSave] = useState(0);
   const handleChangeCheck = (type, value) => {
     if (type === 'work') {
       setIsCheckedManagerWork(value);
+      if (value) {
+        SetnumAcc(5);
+        SetdateUse(12);
+      } else {
+        SetnumAcc(0);
+        SetdateUse(0);
+      }
     } else {
       setIsCheckedBuyData(value);
+      if (value) {
+        SetdataBuy(1000);
+        SetdateSave(3);
+      } else {
+        SetdataBuy(0);
+        SetdateSave(0);
+      }
     }
   };
   const handleChangeSilder = (type, value) => {
@@ -68,20 +83,18 @@ const CreateOrder = props => {
   return (
     <div className="order-detail-container create-order">
       <div className="has-border-right detail-left">
+      {
+        (isCheckedManagerWork || isCheckedBuyData) ?
         <ExportPDF
           numAcc={numAcc}
           dateUse={dateUse}
           dataBuy={dataBuy}
           dateSave={dateSave}
           isCreate={true}
-        />
-        <Button
-          className="create-order-btn"
-          onClick={() => {}}
-          variant="contained"
-        >
-          Tạo đơn hàng
-        </Button>
+          isCheckedManagerWork={isCheckedManagerWork}
+          isCheckedBuyData={isCheckedBuyData}
+        /> : <OrderInit />
+      }
       </div>
       <div className="divider-vertical" />
       <div className="content-create-order">
@@ -170,8 +183,8 @@ const CreateOrder = props => {
               <SliderProgess
                 item={marks.time}
                 value={dateSave}
-                defaultValue={6}
-                step={6}
+                defaultValue={3}
+                step={3}
                 handleChangeSilder={(event, value) =>
                   handleChangeSilder('dateSave', value)
                 }
@@ -204,6 +217,13 @@ const CreateOrder = props => {
               Nhập
             </Button>
           </div>
+          <Button
+            className="create-order-btn"
+            onClick={() => {}}
+            variant="contained"
+          >
+            Tạo đơn hàng
+          </Button>
         </div>
       </div>
     </div>

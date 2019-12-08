@@ -1,7 +1,7 @@
 import * as file from '../../assets/fileType';
 
 export const FileType = mimeType => {
-  switch (mimeType) {
+  switch (mimeType.toLowerCase()) {
     case 'aac':
     case 'ai':
     case 'asp':
@@ -46,6 +46,7 @@ export const FileType = mimeType => {
     case 'xlsx':
     case 'xml':
     case 'zip':
+    case 'folder':
       return file[mimeType];
     default:
       return file.def;

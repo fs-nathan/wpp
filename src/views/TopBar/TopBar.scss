@@ -3,7 +3,18 @@
     margin-right: auto;
   }
 }
-
+.text-group-top-bar {
+  font-weight: 500;
+  font-size: 14px;
+}
+.style-status {
+  padding: 2px 5px;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.text-name-acc {
+  font-weight: 500;
+}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -29,6 +40,10 @@
 .topnav-icon {
   width: 18px;
   cursor: pointer;
+  
+}
+.drawer-icon {
+  margin-left: 20px !important;
 }
 .message-icon {
   margin-top: 2px;

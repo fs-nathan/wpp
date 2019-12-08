@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Table,
+  TableRow,
   TableHead,
   TableBody,
   TableSortLabel,
@@ -13,14 +14,11 @@ import { actionFetchMyDocument } from './ContentDocumentAction';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import './ContentDocumentPage.scss';
 import {
-  StyledTableHeadRow,
   StyledTableHeadCell,
   StyledTableBodyCell,
-  StyledTableBodyRow,
-  FullAvatar,
-  getIconByType,
-  WrapAvatar
+  FullAvatar
 } from '../DocumentComponent/TableCommon';
+import { FileType } from '../../../../components/FileType';
 
 const LoginGoogleDriver = props => {
   return (
@@ -85,7 +83,7 @@ const GoogleDriver = () => {
       {isLogged && (
         <Table>
           <TableHead>
-            <StyledTableHeadRow>
+            <TableRow className="table-header-row">
               <StyledTableHeadCell align="center" width="5%">
                 Loại
               </StyledTableHeadCell>
@@ -105,16 +103,14 @@ const GoogleDriver = () => {
                 Kích cỡ tệp
               </StyledTableHeadCell>
               <StyledTableHeadCell align="center" width="5%" />
-            </StyledTableHeadRow>
+            </TableRow>
           </TableHead>
           <TableBody>
             {listData.map(item => {
               return (
-                <StyledTableBodyRow key={item.id}>
+                <TableRow className="table-body-row" key={item.id}>
                   <StyledTableBodyCell align="center" width="5%">
-                    <WrapAvatar>
-                      <FullAvatar src={getIconByType(item.type)} />
-                    </WrapAvatar>
+                    <FullAvatar src={FileType(item.type)} />
                   </StyledTableBodyCell>
                   <StyledTableBodyCell align="left">
                     <ColorTypo color="black">{item.name}</ColorTypo>
@@ -126,9 +122,9 @@ const GoogleDriver = () => {
                     <ColorTypo color="black">{item.size || '-'}</ColorTypo>
                   </StyledTableBodyCell>
                   {item.type !== 'folder' && (
-                    <MoreAction actionList={moreAction} item={item}/>
+                    <MoreAction actionList={moreAction} item={item} />
                   )}
-                </StyledTableBodyRow>
+                </TableRow>
               );
             })}
           </TableBody>

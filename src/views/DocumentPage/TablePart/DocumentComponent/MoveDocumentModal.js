@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Table, TableHead, TableBody } from '@material-ui/core';
+import { Table, TableRow, TableHead, TableBody } from '@material-ui/core';
 
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import {
   DialogContent,
-  StyledTableHeadRow,
   StyledTableHeadCell,
   StyledTableBodyCell,
-  StyledTableBodyRow,
-  FullAvatar,
-  WrapAvatar
+  FullAvatar
 } from './TableCommon';
 import ColorTypo from '../../../../components/ColorTypo';
 import { FileType } from '../../../../components/FileType';
@@ -63,7 +60,7 @@ const MoveDocumentModal = props => {
         <div className="table-list-folder">
           <Table>
             <TableHead>
-              <StyledTableHeadRow>
+              <TableRow className="table-header-row">
                 <StyledTableHeadCell
                   align="center"
                   width="5%"
@@ -80,16 +77,14 @@ const MoveDocumentModal = props => {
                 <StyledTableHeadCell align="left" width="15%">
                   Kích cỡ tệp
                 </StyledTableHeadCell>
-              </StyledTableHeadRow>
+              </TableRow>
             </TableHead>
             <TableBody>
               {listData.map(folder => {
                 return (
-                  <StyledTableBodyRow key={folder.id}>
+                  <TableRow className="table-body-row" key={folder.id}>
                     <StyledTableBodyCell align="center" width="5%">
-                      <WrapAvatar>
-                        <FullAvatar src={FileType('folder')} />
-                      </WrapAvatar>
+                    <FullAvatar src={FileType('folder')} />
                     </StyledTableBodyCell>
                     <StyledTableBodyCell align="left" width="40%">
                       <ColorTypo color="black">{folder.name}</ColorTypo>
@@ -105,7 +100,7 @@ const MoveDocumentModal = props => {
                     <StyledTableBodyCell align="left" width="15%">
                       <ColorTypo color="black">-</ColorTypo>
                     </StyledTableBodyCell>
-                  </StyledTableBodyRow>
+                  </TableRow>
                 );
               })}
             </TableBody>

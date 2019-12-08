@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import Icon from '@mdi/react';
 import styled from 'styled-components';
+import { Scrollbars } from 'react-custom-scrollbars';
 import {
   mdiUpload,
   mdiPlus,
   mdiFileUploadOutline,
   mdiFolderPlusOutline,
-  mdiFolderUploadOutline,
   mdiChevronRight
 } from '@mdi/js';
-import { Menu, MenuItem, Breadcrumbs, TextField } from '@material-ui/core';
+import {
+  Menu,
+  MenuItem,
+  Breadcrumbs,
+  TextField,
+  Link
+} from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
@@ -37,11 +43,7 @@ const StyledMenuItem = styled(MenuItem)`
 `;
 
 const HeaderTitle = props => {
-  return (
-    <ColorTypo className="title" color="green">
-      {props.title || ''}
-    </ColorTypo>
-  );
+  return <ColorTypo className="title">{props.title || ''}</ColorTypo>;
 };
 
 const getHeaderContent = (type, search) => {
@@ -52,7 +54,24 @@ const getHeaderContent = (type, search) => {
       if (isEmpty(search)) {
         return <HeaderTitle title="Tài liệu dự án" />;
       }
-      return <HeaderTitle title="Tài liệu dự án / Dự án sản xuất phần mềm" />;
+      return (
+        <div className="header-wrapper">
+          <img className="header-icon" src={folderIcon} alt="" />
+          <div className="title-wrapper">
+            <HeaderTitle title="Tài liệu dự án" />
+            <Breadcrumbs
+              className="bread-crumb"
+              aria-label="breadcrumb"
+              separator={
+                <Icon path={mdiChevronRight} size={1} color={'#777'} />
+              }
+            >
+              <span>Tài liệu dự án</span>
+              <span>Dự án sản xuất phần mềm</span>
+            </Breadcrumbs>
+          </div>
+        </div>
+      );
     }
     case Routes.DOCUMENT_SHARE:
       return <HeaderTitle title="Đã chia sẻ" />;
@@ -71,8 +90,12 @@ const getHeaderContent = (type, search) => {
                 <Icon path={mdiChevronRight} size={1} color={'#777'} />
               }
             >
-              <span>Home</span>
-              <span>Phúc an MVP</span>
+              <Link color="inherit" href="/">
+                Home
+              </Link>
+              <Link color="inherit" href="/">
+                Phúc an MVP
+              </Link>
             </Breadcrumbs>
           </div>
         </div>
@@ -115,9 +138,9 @@ const TablePart = props => {
         return <ProjectDocumentDetail {...props} />;
       }
       case Routes.DOCUMENT_SHARE:
-        return <DocumentShare {...props} />;
-      case Routes.DOCUMENT_SHARE_ME:
         return <DocumentShareFromMe {...props} />;
+      case Routes.DOCUMENT_SHARE_ME:
+        return <DocumentShare {...props} />;
       case Routes.DOCUMENT_ME:
         return <MyDocument {...props} />;
       case Routes.DOCUMENT_GOOGLE_DRIVE:
@@ -134,8 +157,7 @@ const TablePart = props => {
       icon: mdiFolderPlusOutline,
       action: () => setCreateFolder(true)
     },
-    { text: 'Tải tệp lên', icon: mdiFileUploadOutline, action: () => {} },
-    { text: 'Tải thư mục lên', icon: mdiFolderUploadOutline, action: () => {} }
+    { text: 'Tải tệp lên', icon: mdiFileUploadOutline, action: () => {} }
   ];
   return (
     <div className="header-setting-container header-document">
@@ -153,7 +175,7 @@ const TablePart = props => {
               onClick={handleClick}
             >
               <Icon path={mdiPlus} size={1} color="#fff" />
-              MỚI
+              THÊM MỚI
             </StyledButton>
           ) : (
             pathname !== Routes.DOCUMENT_GOOGLE_DRIVE &&
@@ -198,7 +220,11 @@ const TablePart = props => {
           </Menu>
         </RightHeader>
       </div>
-      <div className="setting-right-content">{getContentDocument()}</div>
+      <div className="setting-right-content">
+        <Scrollbars autoHide autoHideTimeout={500}>
+          {getContentDocument()}
+        </Scrollbars>
+      </div>
       {isCreateFolder && (
         <ModalCommon
           title="Tạo thư mục"

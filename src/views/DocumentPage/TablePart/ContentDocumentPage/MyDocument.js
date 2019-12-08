@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import {
-  Avatar,
   Table,
+  TableRow,
   TableHead,
   TableBody,
-  TableSortLabel
+  IconButton
 } from '@material-ui/core';
+import Icon from '@mdi/react';
+import { mdiSwapVertical } from '@mdi/js';
 import { useTranslation } from 'react-i18next';
 import {
   mdiAccountPlusOutline,
@@ -16,23 +19,26 @@ import {
 } from '@mdi/js';
 import ColorTypo from '../../../../components/ColorTypo';
 import { actionFetchMyDocument } from './ContentDocumentAction';
+import { openDocumentDetail } from '../../../../actions/system/system';
+import {
+  selectDocumentItem,
+  resetListSelectDocument
+} from '../../../../actions/documents';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import AlertModal from '../../../../components/AlertModal';
 import './ContentDocumentPage.scss';
 import {
-  StyledTableHeadRow,
   StyledTableHeadCell,
   StyledTableBodyCell,
-  StyledTableBodyRow,
   FullAvatar,
-  getIconByType,
-  WrapAvatar,
+  CustomAvatar,
   selectItem,
   selectAll,
   GreenCheckbox
 } from '../DocumentComponent/TableCommon';
+import { FileType } from '../../../../components/FileType';
 
-const MyDocument = () => {
+const MyDocument = props => {
   const [listData, setListData] = useState([]);
   const [alert, setAlert] = useState(false);
   // const [page, setPage] = React.useState(0);
@@ -42,6 +48,12 @@ const MyDocument = () => {
 
   useEffect(() => {
     fetchMyDocument();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      props.resetListSelectDocument();
+    }; // eslint-disable-next-line
   }, []);
 
   const fetchMyDocument = async () => {
@@ -62,10 +74,12 @@ const MyDocument = () => {
   };
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, listData));
+    props.selectDocumentItem(selectAll(e, listData));
   };
 
   const handleSelectItem = id => {
     setSelected(selectItem(selected, id));
+    props.selectDocumentItem(selectItem(selected, id));
   };
 
   const isSelected = id => selected.indexOf(id) !== -1;
@@ -78,42 +92,30 @@ const MyDocument = () => {
     { icon: mdiTrashCanOutline, text: 'Xóa', action: () => setAlert(true) }
   ];
 
-  const getIconAvatar = (url, idx = 0) => {
-    return (
-      <Avatar
-        key={idx}
-        src={url}
-        alt="avatar"
-        style={{ width: 35, height: 35, margin: 'auto' }}
-      />
-    );
-  };
-
   return (
     <React.Fragment>
       <Table>
         <TableHead>
-          <StyledTableHeadRow>
+          <TableRow className="table-header-row">
             <StyledTableHeadCell>
-              {listData.length > 0 && (
-                <GreenCheckbox
-                  onChange={handleSelectAllClick}
-                  checked={selected.length === listData.length}
-                  indeterminate={
-                    selected.length > 0 && selected.length < listData.length
-                  }
-                />
-              )}
+              <GreenCheckbox
+                onChange={handleSelectAllClick}
+                checked={
+                  listData.length > 0 && selected.length === listData.length
+                }
+                indeterminate={
+                  selected.length > 0 && selected.length < listData.length
+                }
+              />
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
             <StyledTableHeadCell align="left" width="30%">
-              <TableSortLabel
-                active={true}
-                // direction={order}
-                // onClick={createSortHandler(headCell.id)}
-              >
+              <div>
                 Tên
-              </TableSortLabel>
+                <IconButton size="small">
+                  <Icon path={mdiSwapVertical} size={1.2} color="#8d8d8d" />
+                </IconButton>
+              </div>
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
               Chủ sở hữu
@@ -128,13 +130,13 @@ const MyDocument = () => {
               Kích cỡ tệp
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
-          </StyledTableHeadRow>
+          </TableRow>
         </TableHead>
         <TableBody>
           {listData.map(item => {
             const isItemSelected = isSelected(item.id);
             return (
-              <StyledTableBodyRow key={item.id}>
+              <TableRow className="table-body-row" key={item.id}>
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -142,34 +144,25 @@ const MyDocument = () => {
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="5%">
-                  <WrapAvatar>
-                    <FullAvatar src={getIconByType(item.type)} />
-                  </WrapAvatar>
+                  <FullAvatar src={FileType(item.type)} />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="30%">
                   <ColorTypo color="black">{item.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
-                  {(item.owner &&
-                    item.owner.avatar &&
-                    getIconAvatar(
-                      `https://storage.googleapis.com${item.owner.avatar}`
-                    )) ||
-                    ''}
+                  {item.owner && item.owner.avatar && (
+                    <CustomAvatar src={item.owner.avatar} />
+                  )}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
-                  {(item.shared_member &&
+                  {item.shared_member &&
                     item.shared_member.length > 0 &&
-                    item.shared_member.map((shareMember, idx) => {
-                      if (shareMember.avatar) {
-                        return getIconAvatar(
-                          `https://storage.googleapis.com${shareMember.avatar}`,
-                          idx
-                        );
-                      }
-                      return '';
-                    })) ||
-                    ''}
+                    item.shared_member.map(
+                      (shareMember, idx) =>
+                        shareMember.avatar && (
+                          <CustomAvatar src={shareMember.avatar} key={idx} />
+                        )
+                    )}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
                   <ColorTypo color="black">{item.updated_at || ''}</ColorTypo>
@@ -182,7 +175,7 @@ const MyDocument = () => {
                 ) : (
                   <StyledTableBodyCell align="center" width="5%" />
                 )}
-              </StyledTableBodyRow>
+              </TableRow>
             );
           })}
         </TableBody>
@@ -197,4 +190,13 @@ const MyDocument = () => {
   );
 };
 
-export default MyDocument;
+export default connect(
+  state => ({
+    selectedDocument: state.documents.selectedDocument
+  }),
+  {
+    selectDocumentItem,
+    resetListSelectDocument,
+    openDocumentDetail
+  }
+)(MyDocument);

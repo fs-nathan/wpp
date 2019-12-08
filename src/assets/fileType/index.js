@@ -43,3 +43,4 @@ export { default as xls } from './xls.png';
 export { default as xlsx } from './xlsx.png';
 export { default as xml } from './xml.png';
 export { default as zip } from './zip.png';
+export { default as folder } from './folder.png';

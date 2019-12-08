@@ -1,6 +1,8 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import { connect } from 'react-redux';
 import {
   Table,
+  TableRow,
   TableHead,
   TableBody,
   TablePagination
@@ -13,16 +15,17 @@ import {
 } from '@mdi/js';
 
 // import { getDocumentShareFromMe } from './ContentDocumentAction';
+import {
+  selectDocumentItem,
+  resetListSelectDocument
+} from '../../../../actions/documents';
 import AlertModal from '../../../../components/AlertModal';
 import { FileType } from '../../../../components/FileType';
 
 import {
-  StyledTableHeadRow,
   StyledTableHeadCell,
   StyledTableBodyCell,
-  StyledTableBodyRow,
   FullAvatar,
-  WrapAvatar,
   selectItem,
   selectAll,
   GreenCheckbox
@@ -33,10 +36,10 @@ import MoreAction from '../../../../components/MoreAction/MoreAction';
 
 import './ContentDocumentPage.scss';
 
-const DocumentShareFromMe = () => {
+const DocumentShareFromMe = props => {
   const [data] = useState([
     {
-      id: 'task-1',
+      id: '1111',
       content: 20,
       name: 'Dự án thiết kế website Phúc An',
       type: 'folder',
@@ -56,15 +59,23 @@ const DocumentShareFromMe = () => {
   useEffect(() => {
     fetDataRecentDocument();
   }, []);
+  useEffect(() => {
+    return () => {
+      props.resetListSelectDocument();
+    };
+    // eslint-disable-next-line
+  }, []);
   const fetDataRecentDocument = async () => {
     // const { data } = await getDocumentShareFromMe();
   };
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, data));
+    props.selectDocumentItem(selectAll(e, data));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
   const handleSelectItem = id => {
     setSelected(selectItem(selected, id));
+    props.selectDocumentItem(selectItem(selected, id));
   };
   const moreAction = [
     { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
@@ -76,7 +87,7 @@ const DocumentShareFromMe = () => {
     <Fragment>
       <Table>
         <TableHead>
-          <StyledTableHeadRow>
+          <TableRow className="table-header-row">
             <StyledTableHeadCell>
               <GreenCheckbox
                 onChange={handleSelectAllClick}
@@ -105,13 +116,13 @@ const DocumentShareFromMe = () => {
               Kích thước
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
-          </StyledTableHeadRow>
+          </TableRow>
         </TableHead>
         <TableBody>
           {data.map(file => {
             const isItemSelected = isSelected(file.id);
             return (
-              <StyledTableBodyRow key={file.id}>
+              <TableRow className="table-body-row" key={file.id}>
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -119,9 +130,7 @@ const DocumentShareFromMe = () => {
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="5%">
-                  <WrapAvatar>
-                    <FullAvatar src={FileType(file.type)} />
-                  </WrapAvatar>
+                  <FullAvatar src={FileType(file.type)} />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="30%">
                   <ColorTypo color="black">{file.name}</ColorTypo>
@@ -139,7 +148,7 @@ const DocumentShareFromMe = () => {
                   <ColorTypo color="black">{file.size}</ColorTypo>
                 </StyledTableBodyCell>
                 <MoreAction actionList={moreAction} item={file} />
-              </StyledTableBodyRow>
+              </TableRow>
             );
           })}
         </TableBody>
@@ -163,4 +172,12 @@ const DocumentShareFromMe = () => {
   );
 };
 
-export default DocumentShareFromMe;
+export default connect(
+  state => ({
+    selectedDocument: state.documents.selectedDocument
+  }),
+  {
+    selectDocumentItem,
+    resetListSelectDocument
+  }
+)(DocumentShareFromMe);

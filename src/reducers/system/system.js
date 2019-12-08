@@ -3,7 +3,9 @@ import * as actionTypes from '../../constants/actions/system/system';
 export const initialState = {
   typeDrawer: '',
   anchorDrawer: 'right',
-  visibleNoticeModal: true
+  visibleNoticeModal: true,
+  isDocumentDetail: false,
+  documentFile: null
 };
 
 const system = (state = initialState, action) => {
@@ -16,6 +18,12 @@ const system = (state = initialState, action) => {
       };
     case actionTypes.CHANGE_NOTICE_MODAL:
       return { ...state, visibleNoticeModal: action.payload };
+    case actionTypes.CHANGE_DOCUMENT_DETAIL:
+      return {
+        ...state,
+        isDocumentDetail: action.payload.isOpen,
+        documentFile: action.payload.item
+      };
     default:
       return state;
   }

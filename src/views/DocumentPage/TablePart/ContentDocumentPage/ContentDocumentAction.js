@@ -22,8 +22,7 @@ export const getDocumentProjectStatic = projectId => {
     url: '/documents/project',
     method: 'get',
     params: {
-      // project_id: projectId,
-      project_id: '5d9974fcfb176e0d44ffe08b'
+      project_id: projectId
     }
   };
   return apiService(config);

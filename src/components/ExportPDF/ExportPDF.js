@@ -73,15 +73,25 @@ class ExportPDF extends Component {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
   render() {
-    const { numAcc, dateUse, dataBuy, dateSave, isCreate } = this.props;
+    const {
+      numAcc,
+      dateUse,
+      dataBuy,
+      dateSave,
+      isCreate,
+      isCheckedManagerWork,
+      isCheckedBuyData
+    } = this.props;
     const pricePacketUser = 50000; //a
     const moneyPacketUser = pricePacketUser * numAcc * dateUse; //d, f
     const dateGift = this.getDateGift(dateUse);
-    const totalDataUse = dateUse + dateGift + 4; //e
+    const datePlusOderBefor = isCheckedManagerWork ? 1 : 0;
+    const date3MO = isCheckedManagerWork ? 3 : 0;
+    const totalDataUse = dateUse + dateGift + datePlusOderBefor + date3MO; //e
     ///////////////////////
     const pricePacketData = 3000; //a
     const moneyPacketData = pricePacketData * dataBuy * dateSave; //d, f
-    const totalDateData = dateSave + 1; //e
+    const totalDateData = dateSave; //e
     //////
     const totalPriceBeforVAT = moneyPacketUser + moneyPacketData;
     const totalPriceVAT = totalPriceBeforVAT * 0.1;
@@ -117,7 +127,8 @@ class ExportPDF extends Component {
                   <div className="infor-right-oder">Mã đơn hàng: KH-FREE</div>
                   <div className="infor-right-oder">Ngày tạo: 20/11/2019</div>
                   <div className="infor-right-oder">
-                    Tổng giá trị đơn hàng: 6.270.000 VND
+                    Tổng giá trị đơn hàng:{' '}
+                    {this.showPrice(totalPriceBeforVAT + totalPriceVAT)} VND
                   </div>
                   <div className="status-oder">
                     <span className="text-status-oder">CHƯA THANH TOÁN</span>
@@ -125,7 +136,7 @@ class ExportPDF extends Component {
                 </div>
               </div>
               <div className="print-body">
-                <TableStyled1>
+              <TableStyled1>
                   <thead>
                     <tr>
                       <ThStyled1>Mã đơn hàng</ThStyled1>
@@ -140,8 +151,14 @@ class ExportPDF extends Component {
                       <TdStyled1>KH-FREE</TdStyled1>
                       <TdStyled1>2019/09/09</TdStyled1>
                       <TdStyled1>
-                        <p>10 USER</p>
-                        <p>CS 100</p>
+                        {
+                          isCheckedManagerWork &&
+                          <p>{isCreate ? numAcc : 10} USER</p>
+                        }
+                        {
+                          isCheckedBuyData &&
+                          <p>CS {isCreate ? dataBuy : 10}</p>
+                        }
                       </TdStyled1>
                       <TdStyled1>Tiền mặt</TdStyled1>
                       <TdStyled1>
@@ -150,6 +167,7 @@ class ExportPDF extends Component {
                     </tr>
                   </tbody>
                 </TableStyled1>
+              
                 <TableStyled2>
                   <thead>
                     <tr>
@@ -167,8 +185,12 @@ class ExportPDF extends Component {
                       </ThStyled2>
                     </tr>
                   </thead>
+                  
                   <tbody>
-                    <tr style={{ background: '#f2f2f2' }}>
+                  {
+                    isCheckedManagerWork && 
+                    <React.Fragment>
+                       <tr style={{ background: '#f2f2f2' }}>
                       <TdStyled2>1</TdStyled2>
                       <TdStyled3>
                         <div className="">
@@ -214,7 +236,7 @@ class ExportPDF extends Component {
                       </TdStyled3>
                       <TdStyled4>-</TdStyled4>
                       <TdStyled4>-</TdStyled4>
-                      <TdStyled4>1</TdStyled4>
+                      <TdStyled4>{datePlusOderBefor}</TdStyled4>
                       <TdStyled4>-</TdStyled4>
                     </tr>
                     <tr>
@@ -241,74 +263,70 @@ class ExportPDF extends Component {
                       </TdStyled3>
                       <TdStyled4>-</TdStyled4>
                       <TdStyled4>-</TdStyled4>
-                      <TdStyled4>3</TdStyled4>
+                      <TdStyled4>{date3MO}</TdStyled4>
                       <TdStyled4>-</TdStyled4>
                     </tr>
-                    <tr style={{ background: '#f2f2f2' }}>
-                      <TdStyled2>2</TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div style={{ fontWeight: 'bold' }}>
-                            Gói sản phầm: CS-{isCreate ? dataBuy : 10}
+                    </React.Fragment>
+                  }
+                  {
+                    isCheckedBuyData &&
+                    <React.Fragment>
+                      <tr style={{ background: '#f2f2f2' }}>
+                        <TdStyled2>2</TdStyled2>
+                        <TdStyled3>
+                          <div className="">
+                            <div style={{ fontWeight: 'bold' }}>
+                              Gói sản phầm: CS-{isCreate ? dataBuy : 10}
+                            </div>
+                            <div style={{ color: '#1f9de0' }}>
+                              Thời gian {isCreate ? dateSave : 10} tháng
+                            </div>
+                            <div style={{ color: '#1f9de0' }}>
+                              (Kể từ ngày thanh toán)
+                            </div>
                           </div>
-                          <div style={{ color: '#1f9de0' }}>
-                            Thời gian {isCreate ? dateSave : 10} tháng
+                        </TdStyled3>
+                        <TdStyled2></TdStyled2>
+                        <TdStyled2></TdStyled2>
+                        <TdStyled2>{totalDateData}</TdStyled2>
+                        <TdStyled2>{this.showPrice(moneyPacketData)}</TdStyled2>
+                      </tr>
+                      <tr>
+                        <TdStyled2></TdStyled2>
+                        <TdStyled3>
+                          <div className="">
+                            <div>
+                              Đăng ký gói mở rộng: Cloud Storage (CS-
+                              {isCreate ? dataBuy : 10})
+                            </div>
+                            <div>
+                              Mua thêm dung lượng lưu trữ:{' '}
+                              {isCreate ? dataBuy : 10}GB
+                            </div>
                           </div>
-                          <div style={{ color: '#1f9de0' }}>
-                            (Kể từ ngày thanh toán)
+                        </TdStyled3>
+                        <TdStyled4>{this.showPrice(pricePacketData)}</TdStyled4>
+                        <TdStyled4>{isCreate ? dataBuy : 10}</TdStyled4>
+                        <TdStyled4>{isCreate ? dateSave : 10}</TdStyled4>
+                        <TdStyled4>{this.showPrice(moneyPacketData)}</TdStyled4>
+                      </tr>
+                      <tr>
+                        <TdStyled2></TdStyled2>
+                        <TdStyled3>
+                          <div className="">
+                            <div>Thời gian cộng thêm từ đơn hàng cũ</div>
                           </div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled2>{totalDateData}</TdStyled2>
-                      <TdStyled2>{this.showPrice(moneyPacketData)}}</TdStyled2>
-                    </tr>
-                    <tr>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div>
-                            Đăng ký gói mở rộng: Cloud Storage (CS-
-                            {isCreate ? dataBuy : 10})
-                          </div>
-                          <div>
-                            Mua thêm dung lượng lưu trữ:{' '}
-                            {isCreate ? dataBuy : 10}GB
-                          </div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled4>{this.showPrice(pricePacketData)}</TdStyled4>
-                      <TdStyled4>{isCreate ? dataBuy : 10}</TdStyled4>
-                      <TdStyled4>{isCreate ? dateSave : 10}</TdStyled4>
-                      <TdStyled4>{this.showPrice(moneyPacketData)}</TdStyled4>
-                    </tr>
-                    <tr>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div>Thời gian cộng thêm từ đơn hàng cũ</div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>0</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                    </tr>
-                    <tr>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div>Mã khuyến mại: CSKM-1MO</div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>1</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                    </tr>
+                        </TdStyled3>
+                        <TdStyled4>-</TdStyled4>
+                        <TdStyled4>-</TdStyled4>
+                        <TdStyled4>0</TdStyled4>
+                        <TdStyled4>-</TdStyled4>
+                      </tr>
+                    </React.Fragment>
+                  }
                   </tbody>
                 </TableStyled2>
+              
                 <div className="total-group">
                   <div style={{ width: '50%' }}></div>
                   <div style={{ width: '50%' }}>

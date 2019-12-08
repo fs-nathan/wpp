@@ -1,0 +1,14 @@
+.document-detail-container {
+  display: flex;
+  .view-file-wrapper {
+    width: 70%;
+    .google-view-file {
+      width: 100%;
+      height: calc(100vh - 71px);
+    }
+  }
+
+  .comment-wrapper {
+    width: 30px;
+  }
+}

@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  TableRow,
   TableCell,
   Avatar,
-  List,
   Button,
   withStyles,
   Checkbox
@@ -12,19 +10,11 @@ import {
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import { darken } from '@material-ui/core/styles';
 import colorPal from '../../../../helpers/colorPalette';
-import { FileType } from '../../../../components/FileType';
+import '../DocumentPage.scss';
 
-export const StyledList = styled(List)`
-  padding: 5px 0;
-`;
-export const RightHeader = styled.div`
-  margin-left: auto;
-  & > *:last-child {
-    margin-left: 16px;
-    padding: 8px 12px;
-    margin-top: 8px;
-  }
-`;
+export const RightHeader = props => (
+  <div className="right-header">{props.children}</div>
+);
 export const StyledButton = styled(Button)`
   background-color: ${colorPal['orange'][0]};
   color: #fff;
@@ -32,63 +22,37 @@ export const StyledButton = styled(Button)`
     background-color: ${darken(colorPal['orange'][0], 0.1)};
   }
 `;
-export const StyledTableHeadRow = styled(TableRow)`
-  background-color: rgba(0, 0, 0, 0);
-`;
-export const StyledTableHeadCell = styled(({ children, ...rest }) => (
-  <TableCell {...rest} onClick={() => console.log('LALLA')}>
-    <div>{children}</div>
+export const StyledTableHeadCell = props => (
+  <TableCell
+    {...props.rest}
+    width={props.width}
+    align={props.align || 'center'}
+    onClick={() => {}}
+    className="table-head-cell"
+  >
+    {props.children}
   </TableCell>
-))`
-  color: gray;
-  padding: 11px;
-  width: ${props => props.width || null};
-  & > div {
-    font-size: 1.2rem;
-    display: inline-flex;
-  }
-  & > div > svg {
-    margin-left: 4px;
-  }
-  &:not(:first-child):hover {
-    color: black;
-    font-weight: bold;
-  }
-  &:nth-child(4) > div {
-    justify-content: start;
-  }
-  &:last-child {
-    padding: 16px;
-  }
-`;
-export const StyledTableBodyRow = styled(TableRow)`
-  background-color: #fff;
-`;
-export const StyledTableBodyCell = styled(TableCell)`
-  padding: 11px;
-  width: ${props => props.width || null};
-  & > * {
-  }
-  &:nth-child(4) > * {
-    justify-content: flex-start;
-  }
-`;
-export const WrapAvatar = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-export const FullAvatar = styled(props => (
-  <Avatar
-    src={props.src}
-    alt="avatar"
-    style={{ borderRadius: 'unset', width: 35, height: 35 }}
-  />
-))``;
+);
+export const StyledTableBodyCell = props => (
+  <TableCell 
+  {...props} 
+  align={props.align || 'center'}
+  className={`table-body-cell ${props.className}`}
+  >
+    {props.children}
+  </TableCell>
+);
+export const FullAvatar = props => (
+  <div className="avatar-wrapper">
+    <Avatar {...props} alt="avatar" className="avatar-image" />
+  </div>
+);
+export const CustomAvatar = props => (
+  <Avatar alt="avatar" className="custom-avatar-image" {...props} />
+);
 export const DialogContent = withStyles(theme => ({
   root: { padding: theme.spacing(2) }
 }))(MuiDialogContent);
-
-export const getIconByType = type => FileType(type);
 
 export const selectItem = (selected, id) => {
   const selectedIndex = selected.indexOf(id);
@@ -116,7 +80,7 @@ export const selectAll = (e, data) => {
 };
 export const GreenCheckbox = withStyles({
   root: {
-    // color: '#06c30e',
+    color: '#d9d9d9'
     // '&$checked': {
     //   color: '#06c30e'
     // }

@@ -11,6 +11,7 @@ import LeftBar from '../views/LeftBar';
 import TopBar from '../views/TopBar';
 import DrawerComponent from '../components/Drawer/Drawer';
 import NoticeModal from '../components/NoticeModal/NoticeModal';
+import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
 
 const Container = styled.div`
   height: 100vh;
@@ -136,6 +137,7 @@ function MainLayout({ doLogin, doLoginCheckState, location, colors }) {
           <TopBar />
           <DrawerComponent />
           <NoticeModal />
+          <DocumentDetail />
         </React.Fragment>
       )}
       <ContentBox>{configRoute(routes)}</ContentBox>
