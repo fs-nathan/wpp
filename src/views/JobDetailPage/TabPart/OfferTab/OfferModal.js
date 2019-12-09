@@ -14,7 +14,7 @@ import IntegrationReactSelect from '../Tag/index'
 import { makeStyles } from '@material-ui/core/styles';
 import ColorTypo from '../../../../components/ColorTypo'
 import { WrapperContext } from '../../index'
-
+import { DEFAULT_OFFER_ITEM } from '../../../../helpers/jobDetail/arrayHelper'
 const TexTitle = styled(Typography)`
   font-size: 15px;
   margin: 15px 0;
@@ -59,7 +59,7 @@ const FileBoxStyledListItem = styled.div`
   border-bottom: 1px solid #b5b5b5;
 `
 const FileName = styled.span`
-  width: 480px;
+  width: 440px;
   word-break: break-word;
   margin-right: 30px
 `
@@ -69,6 +69,12 @@ const styles = theme => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
+    background: '#f5f8fc'
+  },
+  title: {
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
   },
   closeButton: {
     position: 'absolute',
@@ -91,7 +97,7 @@ const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+      <Typography className={classes.title} variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
           <CloseIcon />
@@ -110,16 +116,24 @@ const DialogContent = withStyles(theme => ({
 const DialogActions = withStyles(theme => ({
   root: {
     margin: 0,
-    padding: theme.spacing(1),
+    padding: '15px 24px',
   },
 }))(MuiDialogActions);
 // end modal
 
-
+const OfferFile = ({ file, handleDeleteFile }) => {
+  return (
+    <FileBoxStyledListItem>
+      <FileName>{file.name}</FileName>
+      <ColorTypo variant='caption' style={{ marginRight: 20, width: 67 }}>{file.size}</ColorTypo>
+      <Icon onClick={() => handleDeleteFile(file.id)} path={mdiClose} size={0.5} style={{ cursor: "pointer" }} />
+    </FileBoxStyledListItem>
+  )
+}
 
 const OfferModal = (props) => {
   const valueOffer = React.useContext(WrapperContext)
-  const [tempSelectedItem, setTempSelectedItem] = React.useState({ offer_id: "", content: "" })
+  const [tempSelectedItem, setTempSelectedItem] = React.useState(DEFAULT_OFFER_ITEM)
   const classes = useStyles()
 
   React.useEffect(() => {
@@ -131,33 +145,74 @@ const OfferModal = (props) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
 
-  const handleUploadFile = files => {
+  const handleUploadFileUpdate = files => {
+    console.log("files:", files);
+
     // For update
     if (!files.length) return
     let payload = new FormData()
     // Add offer id to form data
     payload.append("offer_id", tempSelectedItem.offer_id)
+    console.log('tempSelectItem::::', tempSelectedItem.offer_id);
+
     // Add each file to form data
-    for (let i = 0; i < files.length; i++){
+    for (let i = 0; i < files.length; i++) {
       payload.append("file", files[i], files[i].name)
     }
+    // Build a callback that allow saga append new file to state array
+    let appendFileCallBack = responseFiles => {
+      setParams("files", [...tempSelectedItem.files, ...responseFiles])
+    }
     // Call api
-    // let appendFileCallBack = responseFiles => {
-    //   setParams("files", )
-    // }
-    valueOffer.uploadDocumentToOfferById(payload)
-    console.log(payload);
-    
+    valueOffer.uploadDocumentToOfferById(payload, appendFileCallBack)
+  }
+
+  const handleDeleteFile = fileId => {
+    let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
+    // Build a callback that allow saga remove file in state array
+    let removeFileCallBack = () => {
+      setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
+    }
+    // Call api
+    valueOffer.deleteDocumentToOfferById(payload, removeFileCallBack)
+  }
+ 
+
+  const handleUploadFileAdd = files => {
+    setParams("files", [...tempSelectedItem.files, ...files])
+  }
+
+  const handleCreateOffer = () => {
+    let dataCreateOfferFormData = new FormData()
+    dataCreateOfferFormData.append('task_id', props.taskId)
+    // add content to offer
+    dataCreateOfferFormData.append('content', tempSelectedItem.content)
+    // add each user to formdata
+    for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
+      dataCreateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
+    }
+    // add each file to formdata  
+    for (let i = 0; i < tempSelectedItem.files.length; i++) {
+      dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
+    }
+    props.createOfferByTaskId(dataCreateOfferFormData)
+    setParams("files", [])
   }
 
   return (
     <Dialog open={props.isOpen} onClose={props.handleClickClose} fullWidth>
-      <DialogTitle onClose={props.handleClickClose}>
-        Tạo đề xuất
+      {props.isOffer ?
+        <DialogTitle onClose={props.handleClickClose}>
+          Chỉnh sửa đề xuất
         </DialogTitle>
+        :
+        <DialogTitle onClose={props.handleClickClose}>
+          Tạo đề xuất
+        </DialogTitle>
+      }
       <DialogContent dividers>
         <TexTitle >Chọn người duyệt</TexTitle>
-        <IntegrationReactSelect />
+        <IntegrationReactSelect {...props} handleChooseUser={listUser => setParams("user_hander", listUser)} />
         <TextContent
           label="Nội dung phê duyệt"
           fullWidth
@@ -176,7 +231,7 @@ const OfferModal = (props) => {
           id="outlined-button-file"
           multiple
           type="file"
-          onChange={e => handleUploadFile(e.target.files)}
+          onChange={e => props.isOffer ? handleUploadFileUpdate(e.target.files) : handleUploadFileAdd(e.target.files)}
         />
         <ButtonFile htmlFor="outlined-button-file">
           <Button variant="outlined" component="span" fullWidth className={classes.button}>
@@ -184,11 +239,9 @@ const OfferModal = (props) => {
             Đính kèm tài liệu
                 </Button>
         </ButtonFile>
-        <FileBoxStyledListItem >
-          <FileName>AAA.docx</FileName  >
-          <ColorTypo variant='caption' style={{ marginRight: 20 }}> 18Kb </ColorTypo>
-          <Icon path={mdiClose} size={0.5} style={{ cursor: "pointer" }} />
-        </FileBoxStyledListItem>
+        {
+          tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+        }
       </DialogContent>
       <DialogActions>
         {props.isOffer ?
@@ -209,7 +262,7 @@ const OfferModal = (props) => {
             onClick={() => {
               props.handleClickClose()
               if (tempSelectedItem.content)
-                props.createOfferByTaskId("5da1821ad219830d90402fd8", tempSelectedItem.content)
+                handleCreateOffer()
               setParams("content", '')
             }}>
             Hoàn Thành

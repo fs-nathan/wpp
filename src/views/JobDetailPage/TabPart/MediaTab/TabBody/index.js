@@ -61,10 +61,15 @@ const Button = styled(IconButton)`
     }
   }
 `
+const MediaImage = styled.div`
+  width: auto !important;
+  height: auto !important;
+`
 const WrapImage = styled.div`
   display: flex;
   flex-wrap: wrap;
 `
+
 const MenuListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -105,8 +110,8 @@ const MediaBox = (props) => {
     <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
       {props.image.images.map((image, key) => {
         return (
-          <div key={key}>
-            <GridListTile cols={5} style={{ height: '100%' }}>
+          <MediaImage key={key}>
+            <GridListTile cols={5}>
               <SubHeader component='div'>{image.date_create}</SubHeader>
             </GridListTile>
             <WrapImage>
@@ -122,7 +127,7 @@ const MediaBox = (props) => {
                 )
               })}
             </WrapImage>
-          </div>
+          </MediaImage>
         );
       })}
       {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
@@ -180,6 +185,12 @@ const FileName = styled.div`
   width: 300px;
   word-break: break-word;
 `
+const StyledMenuFile = styled.div`
+  opacity: 0 ;
+  ${FileBoxStyledListItem}:hover & {
+    opacity: 1;
+  }
+`
 
 const FileBox = (props) => {
   console.log('props.file:::', props);
@@ -207,18 +218,21 @@ const FileBox = (props) => {
               <FileName>{item.name}</FileName  >
               <ColorTypo variant='caption'>
                 <Button size='small'>
-                  <Icon path={mdiDownload} size={1} />
+                  <a href={item.url}>
+                    <Icon path={mdiDownload} size={1} />
+                  </a>
                 </Button>
                 {item.size}
               </ColorTypo>
             </div>
             <div>
               <ColorTypo variant='body1'>{item.date_create}</ColorTypo>
-              <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                <a href={item.url}>
+              <StyledMenuFile>
+
+                <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
                   <Icon path={mdiDotsHorizontal} size={1} ></Icon>
-                </a>
-              </Button>
+                </Button>
+              </StyledMenuFile>
             </div>
             <Menu
               id="simple-menu"
@@ -264,10 +278,6 @@ const FileContainer = (props) => {
 const ListItemLink = styled(ListItem)`
   padding-left: 0;
   & > *:first-child {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    background: #e4e3e3;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -287,6 +297,13 @@ const Body = styled(Scrollbars)`
   height: 100%;
   
 `;
+const StyledListItemLink = styled.div``
+const StyledMenuLink = styled.div`
+  opacity: 0 ;
+  ${StyledListItemLink}:hover & {
+    opacity: 1;
+  }
+`
 const LinkBox = (props) => {
   // console.log("link::",);
 
@@ -304,7 +321,7 @@ const LinkBox = (props) => {
     <List subheader={<li />}>
       {props.link.map((item, idx) => {
         return (
-          <div key={idx}>
+          <StyledListItemLink key={idx}>
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
             {item.links.map((item, idx) => {
               return (
@@ -320,11 +337,13 @@ const LinkBox = (props) => {
                       {item.url}
                     </a>
                   </ListItemText>
-                  <ListItemIcon>
-                    <Button onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                      <Icon path={mdiDotsHorizontal} size={1} />
-                    </Button>
-                  </ListItemIcon>
+                  <StyledMenuLink>
+                    <ListItemIcon>
+                      <Button onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+                        <Icon path={mdiDotsHorizontal} size={1} />
+                      </Button>
+                    </ListItemIcon>
+                  </StyledMenuLink>
                   <Menu
                     id="simple-menu"
                     anchorEl={anchorEl}
@@ -343,7 +362,7 @@ const LinkBox = (props) => {
                 </ListItemLink>
               )
             })}
-          </div>
+          </StyledListItemLink>
         )
       })}
     </List>

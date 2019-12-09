@@ -49,7 +49,13 @@ const StyledCommonLocation = styled.div`
   align-items: center;
   width: 100%;
 `
-
+const StyledListItemLocation = styled.div``
+const StyledMenuLocation = styled.div`
+  opacity: 0 ;
+  ${StyledListItemLocation}:hover & {
+    opacity: 1;
+  }
+`
 const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -65,7 +71,7 @@ const CustomListItem = () => {
     <ListItem>
       {value.location.locations.map((location, idx) => {
         return (
-          <div key={idx} style={{ width: "100%"}}>
+          <StyledListItemLocation key={idx} style={{ width: "100%" }}>
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{location.date_create}</HeaderSubText>
             {location.locations.map((item, key) => {
               return (
@@ -79,17 +85,19 @@ const CustomListItem = () => {
                     primary={item.user_share}
                     secondary={
                       <span>
-                    <ColorTypo variant='caption' color='blue'>Lúc {item.time_create} - {item.date_create}</ColorTypo>
+                        <ColorTypo variant='caption' color='blue'>Lúc {item.time_create} - {item.date_create}</ColorTypo>
                         <br />
-                    <ColorTypo variant='caption'>{item.address}</ColorTypo>
+                        <ColorTypo variant='caption'>{item.address}</ColorTypo>
                       </span>
                     }
                   />
-                  <ListItemIcon style={{ display: 'contents'}}>
-                    <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                      <Icon path={mdiDotsHorizontal} size={1} />
-                    </ButtonIcon>
-                  </ListItemIcon>
+                  <StyledMenuLocation>
+                    <ListItemIcon style={{ display: 'contents' }}>
+                      <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+                        <Icon path={mdiDotsHorizontal} size={1} />
+                      </ButtonIcon>
+                    </ListItemIcon>
+                  </StyledMenuLocation>
                   <Menu
                     id="simple-menu"
                     anchorEl={anchorEl}
@@ -108,7 +116,7 @@ const CustomListItem = () => {
                 </StyledCommonLocation>
               )
             })}
-          </div>
+          </StyledListItemLocation>
         )
       })}
     </ListItem>

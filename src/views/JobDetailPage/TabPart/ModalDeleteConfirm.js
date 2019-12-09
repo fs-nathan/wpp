@@ -27,8 +27,9 @@ export default function ModalDeleteConfirm(props) {
           <Button
             color="primary" autoFocus
             onClick={() => {
-              props.handleCloseModalDelete()
               props.confirmDelete()
+              props.handleCloseModalDelete()
+              
             }} > Xóa </Button>
         </DialogActions>
       </Dialog>
