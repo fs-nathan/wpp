@@ -840,11 +840,34 @@ function* updateTimeDuration(action) {
 }
 
 // Member Role
+async function doGetRole(payload) {
+  try {
+    const config = {
+      url: '/list-user-role',
+      method: 'get',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getRole(action) {
+  try {
+    const res = yield call(doGetRole, action.payload)
+    yield put(actions.getRoleSuccess(res))
+  } catch (error) {
+    yield put(actions.getRoleFail(error))
+  }
+}
+
 
 async function doCreateRole(payload) {
   try {
     const config = {
-      url: 'role-task/create-role-task',
+      url: '/create-user-role',
       method: 'post',
       data: payload
     }
@@ -867,7 +890,7 @@ function* createRole(action) {
 async function doUpdateRole(payload) {
   try {
     const config = {
-      url: 'role-task/update-role-task',
+      url: '/update-user-role',
       method: 'put',
       data: payload
     }
@@ -890,7 +913,7 @@ function* updateRole(action) {
 async function doDeleteRole(payload) {
   try {
     const config = {
-      url: 'role-task/delete-role-task',
+      url: '/delete-user-role',
       method: 'delete',
       data: payload
     }
@@ -1043,6 +1066,7 @@ export {
   deleteMember,
 
   // Member Role - Tabpart
+  getRole,
   createRole,
   updateRole,
   deleteRole,
