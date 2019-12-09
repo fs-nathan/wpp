@@ -69,17 +69,20 @@ function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 0:   
       return ({
-        color: '#4a96ba',
+        color: '#4caf50',
+        background: '#4caf5042',
         name: 'Thấp',
       });
     case 1: 
       return ({
-        color: '#c49c56',
+        color: '#ff9800',
+        background: '#ff980038',
         name: 'Trung bình',
       });
     case 2: 
       return ({
-        color: '#d63340',
+        color: '#fe0707',
+        background: '#ff050524',
         name: 'Cao',
       });
     default:
@@ -218,7 +221,10 @@ function AllTaskTable({
               field: 'name',
             }, {
               label: 'Ưu tiên',
-              field: (row) => <StyledBadge color={decodePriorityCode(get(row, 'priority_code', 0)).color}>
+              field: (row) => <StyledBadge 
+                                color={decodePriorityCode(get(row, 'priority_code', 0)).color}
+                                background={decodePriorityCode(get(row, 'priority_code', 0)).background}
+                              >
                                 {decodePriorityCode(get(row, 'priority_code', 0)).name}  
                               </StyledBadge>,
             }, {

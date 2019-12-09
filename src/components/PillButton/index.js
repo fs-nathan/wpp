@@ -5,7 +5,7 @@ import { darken } from '@material-ui/core/styles';
 import colorPal from '../../helpers/colorPalette';
 import PropTypes from 'prop-types';
 
-const PillButton = styled(({background, text, size = 'medium', ...rest}) => <ButtonBase {...rest} />)`
+const PillButton = styled(({background, text, hoverBackground, hoverText, size = 'medium', ...rest}) => <ButtonBase {...rest} />)`
   & > span:last-child {
     display: none;
   }
@@ -15,7 +15,7 @@ const PillButton = styled(({background, text, size = 'medium', ...rest}) => <But
   font-weight: 500;
   ${props => props.size === 'small' && css`
     padding: 4px 6px;
-    font-size: 10px;
+    font-size: 8px;
   `}
   ${props => props.size === 'medium' && css`
     padding: 8px 14px;
@@ -28,7 +28,16 @@ const PillButton = styled(({background, text, size = 'medium', ...rest}) => <But
   background-color: ${props => props.background ? props.background : colorPal['gray'][0]};
   color: ${props => props.text ? props.text : colorPal['gray'][1]};
   &:hover { 
-    background-color: ${props => props.background ? darken(props.background, 0.1) : darken(colorPal['gray'][0], 0.1)};
+    color: ${props => props.hoverText 
+      ? props.hoverText 
+      : props.text 
+        ? props.text 
+        : colorPal['gray'][1]};
+    background-color: ${props => props.hoverBackground 
+      ? props.hoverBackground
+      : props.background 
+        ? darken(props.background, 0.1) 
+        : darken(colorPal['gray'][0], 0.1)};
   }
 `;
 

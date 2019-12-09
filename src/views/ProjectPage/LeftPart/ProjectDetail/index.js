@@ -81,6 +81,36 @@ const ActionBox = styled.div`
   }
 `;
 
+function decodeStateName(stateName) {
+  switch (stateName) {
+    case 'waiting': 
+      return ({
+        color: 'orange',
+        name: 'Đang chờ',
+      });
+    case 'doing': 
+      return ({
+        color: 'green',
+        name: 'Đang làm',
+      });
+    case 'expired': 
+      return ({
+        color: 'red',
+        name: 'Quá hạn',
+      });
+    case 'hidden':
+      return ({
+        color: '#20194d',
+        name: 'Đang ẩn',
+      })
+    default:
+      return ({
+        color: 'orange',
+        name: 'Đang chờ',
+      });
+  }
+}
+
 function displayDate(date) {
   if (
     (date instanceof Date && !isNaN(date))
@@ -165,42 +195,44 @@ function ProjectDetail({ detailProject, doDeleteProject, }) {
                         'Công việc đang làm', 
                         'Công việc quá hạn',
                         'Công việc hoàn thành',
+                        'Công việc dừng',
                       ],
-                      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
+                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
                     }}
                     series={[
                       get(project, 'task_waiting', 0),
                       get(project, 'task_doing', 0),
                       get(project, 'task_expired', 0),
                       get(project, 'task_complete', 0),
+                      get(project, 'task_stop', 0),
                     ]}
                     width={250}
                     height={250}
                   />
                   <ChartTitle>
-                    Hoạt động
+                    {decodeStateName(get(project, 'visibility', true) === false ? 'hidden' : get(project, 'state_name')).name}
                   </ChartTitle>
                 </ChartDrawer>
                 <ProjectName>
                   {loading ? '...' : get(project, 'name', '')}
                 </ProjectName>
                 <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#2E93fA'} />
+                  <Icon path={mdiSquare} size={1} color={'#ff9800'} />
                   <ColorTypo>Công việc đang chờ</ColorTypo>
                   <ColorTypo>{get(project, 'task_waiting', 0)}</ColorTypo>
                 </ChartLegendBox>
                 <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#66DA26'} />
+                  <Icon path={mdiSquare} size={1} color={'#03a9f4'} />
                   <ColorTypo>Công việc đang làm</ColorTypo>
                   <ColorTypo>{get(project, 'task_doing', 0)}</ColorTypo>
                 </ChartLegendBox>
                 <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#546E7A'} />
+                  <Icon path={mdiSquare} size={1} color={'#f44336'} />
                   <ColorTypo>Công việc quá hạn</ColorTypo>
                   <ColorTypo>{get(project, 'task_expired', 0)}</ColorTypo>
                 </ChartLegendBox>
                 <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#E91E63'} />
+                  <Icon path={mdiSquare} size={1} color={'#03c30b'} />
                   <ColorTypo>Công việc hoàn thành</ColorTypo>
                   <ColorTypo>{get(project, 'task_complete', 0)}</ColorTypo>
                 </ChartLegendBox>

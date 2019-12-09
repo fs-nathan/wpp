@@ -1,25 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import { 
-  ListItemText, ListSubheader, IconButton,
+  ListItemText, ListSubheader, Button,
   TableCell, Table, TableHead, TableBody, TableRow,
+  Menu, MenuItem, IconButton,
 } from '@material-ui/core';
+import Icon from '@mdi/react';
+import {
+  mdiDotsVertical,
+  mdiCheckCircle,
+} from '@mdi/js';
 import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
 import SearchInput from '../../../../components/SearchInput';
+import AlertModal from '../../../../components/AlertModal';
 import { connect } from 'react-redux';
 import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
-import { get, map, filter, find, remove, } from 'lodash';
-import Icon from '@mdi/react';
-import { 
-  mdiChevronDown, mdiChevronUp, mdiCheckCircle,
-  mdiAccountMultipleCheck, mdiAccountMultipleRemove, mdiAccountMultiplePlus,
-} from '@mdi/js';
+import { get, map, filter } from 'lodash';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import colorPal from '../../../../helpers/colorPalette';
+import { addMemberProject } from '../../../../actions/project/addMemberToProject';
+import { removeMemberProject } from '../../../../actions/project/removeMemberFromProject';
+import { updateStateJoinTask } from '../../../../actions/project/updateStateJoinTask';
 
 const Header = styled(ColorTypo)`
-  padding: 0 8px;
   margin-bottom: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
@@ -33,17 +38,9 @@ const StyledListSubheader = styled(ListSubheader)`
   display: flex;
   align-items: center;
   padding: 5px 0;
-  &:hover {
-    cursor: pointer;
-  }
-  & > *:first-child {
-    fill: rgba(0, 0, 0, 0.54);
-  }
-  & > *:last-child {
+  & > * {
     color: rgba(0, 0, 0, 0.54);  
     font-size: 14px;
-    font-weight: 500;
-    margin-left: 8px;
   }
 `;
 
@@ -54,11 +51,7 @@ const CustomListItem = styled(StyledListItem)`
 const Banner = styled.div`
   display: flex;
   align-items: center;
-  & > * {
-    &:not(:last-child) {
-      margin-right: 8px;
-    }
-  }
+  justify-content: space-between;
 `;
 
 const StyledTableHead = styled(TableHead)` 
@@ -86,64 +79,169 @@ const MiddleTableCell = styled(TableCell)`
   text-align: center;
 `;
 
-function UserFreeRoomList({ room, selectedMembers, onSelectMember, }) {
+const AddButton = styled(Button)`
+  color: #222;
+  transition: none;
+  & > span {
+    font-size: 12px;
+    &:last-child {
+      display: none;
+    }
+  }
+  &:hover {
+    color: #fff;
+    background-color: #03c30b;
+    border-color: #03c30b; 
+  }
+`;
 
-  const [expand, setExpand] = React.useState(true);
+const CustomMenuItem = styled(({ selected, refs, ...rest }) => (<MenuItem {...rest} />))`
+  display: flex;
+  align-items: center;
+  color: ${props => props.selected ? '#05b50c' : '#222'};
+  & > svg {
+    fill: ${props => props.selected ? '#05b50c' : '#888'};
+    margin-right: 10px;
+  }
+  &:nth-child(3) {  
+    border-bottom: 1px solid #f4f4f4;
+  }
+`;
+
+function getJoinStatusName(statusCode) {
+  switch (statusCode) {
+    case 0:
+      return 'Tham gia việc khi được chọn';
+    case 1:
+      return 'Tham gia tất cả việc';
+    default:
+      return '';
+  }
+}
+
+function UserFreeRoomList({ room, onAddMember, }) {
+
+  if (get(room, 'users', []).length > 0)
+    return (
+      <StyledList
+        component="nav"
+        aria-labelledby={`list-subheader-${get(room, 'id')}`}
+        subheader={
+          <StyledListSubheader component="div" id={`list-subheader-${get(room, 'id')}`}>
+            <ColorTypo uppercase bold>{get(room, 'name', '')}</ColorTypo>
+          </StyledListSubheader>
+        }
+      >
+        {get(room, 'users', []).map(user => (
+          <CustomListItem 
+            key={get(user, 'id')}
+            onClick={evt => onAddMember(user)}
+          >
+            <CustomAvatar style={{ width: 40, height: 40, }} src={get(user, 'avatar', '')} alt='avatar' />
+            <ListItemText 
+              primary={
+                <Primary>
+                  {get(user, 'name', '')}
+                </Primary>  
+              }
+              secondary={
+                <Secondary>
+                  {get(user, 'email', '')}
+                </Secondary>
+              }
+            />
+            <AddButton
+              size='small'
+              variant='outlined'
+            >
+              Thêm
+            </AddButton>
+          </CustomListItem>
+        ))}
+      </StyledList>
+    );
+  else return null;
+}
+
+const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, }) => {
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [alert, setAlert] = React.useState(false);
+
+  function handleClick(evt) {
+    setAnchorEl(evt.currentTarget);
+  }
+
+  function handleClose(evt) {
+    setAnchorEl(null);
+  }
 
   return (
-    <StyledList
-      component="nav"
-      aria-labelledby={`list-subheader-${get(room, 'id')}`}
-      subheader={
-        <StyledListSubheader component="div" id={`list-subheader-${get(room, 'id')}`} 
-          onClick={evt => setExpand(prev => !prev)}
+    <div onClick={evt => evt.stopPropagation()}>
+      <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} size='small'>
+        <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        transformOrigin={{
+          vertical: -30,
+          horizontal: 'right',
+        }}
+      >
+        <CustomMenuItem 
+          selected={get(member, 'join_task_status_code') === 1} 
+          onClick={evt => {
+            handleClose();
+            onChangeStateJoinTask(member, 1);
+          }}
         >
-          {get(room, 'users', []).length > 0 
-          ? <Icon path={expand ? mdiChevronDown : mdiChevronUp} size={1} />
-          : <Icon path={mdiChevronUp} size={1} color={'rgba(0, 0, 0, 0)'} />}
-          <ColorTypo>{get(room, 'name', '')}</ColorTypo>
-        </StyledListSubheader>
-      }
-    >
-      {expand && get(room, 'users', []).map(user => (
-        <CustomListItem 
-          key={get(user, 'id')}
-          onClick={evt => onSelectMember(user)}
+          <Icon path={mdiCheckCircle} size={0.7} /> Tham gia tất cả việc
+        </CustomMenuItem>
+        <CustomMenuItem 
+          selected={get(member, 'join_task_status_code') === 0}
+          onClick={evt => {
+            handleClose();
+            onChangeStateJoinTask(member, 0);
+          }}
         >
-          <Icon 
-            path={mdiCheckCircle} 
-            size={1} 
-            color={find(selectedMembers, { id: get(user, 'id'), })
-            ? '#05b50c'
-            : 'rgba(0, 0, 0, 0)'}  
-          /> 
-          <CustomAvatar style={{ width: 40, height: 40, }} src={get(user, 'avatar', '')} alt='avatar' />
-          <ListItemText 
-            primary={
-              <Primary>
-                {get(user, 'name', '')}
-              </Primary>  
-            }
-            secondary={
-              <Secondary>
-                {get(user, 'email', '')}
-              </Secondary>
-            }
-          />
-        </CustomListItem>
-      ))}
-    </StyledList>
+          <Icon path={mdiCheckCircle} size={0.7} /> Tham gia việc khi được chọn
+        </CustomMenuItem>
+        <MenuItem onClick={evt => setAlert(true)}>
+          Loại trừ
+        </MenuItem>
+      </Menu>
+      <AlertModal 
+        open={alert}
+        setOpen={setAlert}
+        content='Bạn chắc chắn muốn loại trừ thành viên?'
+        onCancle={handleClose}
+        onConfirm={() => {
+          handleClose();
+          onRemoveMember(member);
+        }}
+      />
+    </div>
   );
 }
 
-function MemberSetting({ open, setOpen, memberProject, }) {
+function MemberSetting({ 
+  open, setOpen, 
+  memberProject, 
+  doAddMemberProject, doRemoveMemberProject, 
+  doUpdateStateJoinTask,
+}) {
+
+  const { projectId } = useParams();
 
   const { data: { membersAdded, membersFree, } } = memberProject;
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
   const [members, setMembers] = React.useState([]);
-  const [selectedMembers, setSelectedMembers] = React.useState([]);
 
   React.useEffect(() => {
     let members = map(membersFree, (room) => {
@@ -164,15 +262,27 @@ function MemberSetting({ open, setOpen, memberProject, }) {
     setMembers(members);
   }, [membersFree, searchPatern]);
 
-  function handleSelectMember(member) {
-    setSelectedMembers(selectedMembers => {
-      let newSelectedMembers = [...selectedMembers];
-      if (find(selectedMembers, { id: get(member, 'id'), })) {
-        remove(newSelectedMembers, { id: get(member, 'id'), });
-      } else {
-        newSelectedMembers.push(member);
-      }
-      return newSelectedMembers;
+  function handleAddMember(member) {
+    doAddMemberProject({
+      projectId,
+      memberId: get(member, 'id'),
+      groupPermission: 0,
+      roles: [],
+    });
+  }
+
+  function handleRemoveMember(member) {
+    doRemoveMemberProject({
+      projectId,
+      memberId: get(member, 'id'),
+    });
+  }
+
+  function handleUpdateStateJoinTask(member, state) {
+    doUpdateStateJoinTask({
+      projectId,
+      memberId: get(member, 'id'),
+      state,
     });
   }
 
@@ -197,41 +307,13 @@ function MemberSetting({ open, setOpen, memberProject, }) {
                 value={searchPatern}
                 onChange={evt => setSearchPatern(evt.target.value)}
               />
-              <abbr title='Chọn tất cả'>
-                <IconButton onClick={
-                  evt => setSelectedMembers(selectedMembers => {
-                    let newSelectedMembers = [];
-                    members.forEach(room => {
-                      get(room, 'users', []).forEach(user => {
-                        newSelectedMembers.push(user);
-                      });
-                    });
-                    return newSelectedMembers;
-                  })
-                }>
-                  <Icon path={mdiAccountMultipleCheck} size={1}/>
-                </IconButton>
-              </abbr>
-              <abbr title='Bỏ chọn tất cả'>
-                <IconButton onClick={
-                  evt => setSelectedMembers([])
-                }>
-                  <Icon path={mdiAccountMultipleRemove} size={1}/>
-                </IconButton>
-              </abbr>
-              <abbr title='Thêm các thành viên được chọn'>
-                <IconButton>
-                  <Icon path={mdiAccountMultiplePlus} size={1}/>
-                </IconButton>
-              </abbr>
             </Banner>  
             <ListContainer>
               {members.map(room => (
                 <UserFreeRoomList
                   room={room}
                   key={get(room, 'id')}
-                  selectedMembers={selectedMembers}
-                  onSelectMember={handleSelectMember}
+                  onAddMember={handleAddMember}
                 />
               ))}
             </ListContainer>
@@ -264,8 +346,14 @@ function MemberSetting({ open, setOpen, memberProject, }) {
                   </UserTableCell>
                   <MiddleTableCell>{get(member, 'group_permission_name', '')}</MiddleTableCell>
                   <MiddleTableCell>{get(member, 'roles', '')}</MiddleTableCell>
-                  <MiddleTableCell>{get(member, 'join_task_status_code', '')}</MiddleTableCell>
-                  <MiddleTableCell></MiddleTableCell>
+                  <MiddleTableCell>{getJoinStatusName(get(member, 'join_task_status_code', ''))}</MiddleTableCell>
+                  <MiddleTableCell>
+                    <SettingButton 
+                      member={member} 
+                      onRemoveMember={handleRemoveMember} 
+                      onChangeStateJoinTask={handleUpdateStateJoinTask}  
+                    />
+                  </MiddleTableCell>
                 </TableRow>
               ))}
             </StyledTableBody>
@@ -284,7 +372,11 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {}
+  return {
+    doAddMemberProject: ({ projectId, memberId, groupPermission, roles, }) => dispatch(addMemberProject({ projectId, memberId, groupPermission, roles, })),
+    doRemoveMemberProject: ({ projectId, memberId, }) => dispatch(removeMemberProject({ projectId, memberId, })),
+    doUpdateStateJoinTask: ({ projectId, memberId, state, }) => dispatch(updateStateJoinTask({ projectId, memberId, state, })),
+  }
 };
 
 export default connect(
