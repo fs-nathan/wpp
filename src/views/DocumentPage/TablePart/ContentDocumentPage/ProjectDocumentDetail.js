@@ -1,69 +1,84 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import { connect } from 'react-redux';
 import {
   Table,
+  TableRow,
+  Avatar,
   TableHead,
   TableBody,
-  TableSortLabel,
+  IconButton,
   TablePagination
 } from '@material-ui/core';
-
-// import { getDocumentShareFromMe } from './ContentDocumentAction';
+import Icon from '@mdi/react';
+import { withRouter } from 'react-router-dom';
+import { mdiSwapVertical } from '@mdi/js';
+import { getDocumentProjectStatic } from './ContentDocumentAction';
+import {
+  selectDocumentItem,
+  resetListSelectDocument
+} from '../../../../actions/documents';
 import { FileType } from '../../../../components/FileType';
 import {
-  StyledTableHeadRow,
   StyledTableHeadCell,
   StyledTableBodyCell,
-  StyledTableBodyRow,
   FullAvatar,
-  WrapAvatar,
   selectItem,
   selectAll,
   GreenCheckbox
 } from '../DocumentComponent/TableCommon';
 import './ContentDocumentPage.scss';
 import ColorTypo from '../../../../components/ColorTypo';
-const ProjectDocumentDetail = () => {
-  const [data] = useState([
-    {
-      id: 'task-1',
-      content: 20,
-      name: 'Dự án thiết kế website Phúc An',
-      type: 'folder',
-      location: 'Văn Thư',
-      size: '10.3 Kb',
-      date: '02/02/2019',
-      userCreate: 'Cao Văn Hưng',
-      work: 'Thiết kế giao diện'
-    }
-  ]);
+const ProjectDocumentDetail = props => {
+  const [listData, setListData] = useState([]);
   const [page] = React.useState(0);
   const [rowsPerPage] = React.useState(10);
   const [selected, setSelected] = React.useState([]);
   useEffect(() => {
-    fetDataRecentDocument();
+    const search = props.location.search.split('projectId=').pop();
+    fetDataRecentDocument(search);
+    // eslint-disable-next-line
   }, []);
-  const fetDataRecentDocument = async () => {
-    // const { data } = await getDocumentShareFromMe();
+  useEffect(() => {
+    return () => {
+      props.resetListSelectDocument();
+    };
+    // eslint-disable-next-line
+  }, []);
+  const fetDataRecentDocument = async projectId => {
+    const { data } = await getDocumentProjectStatic(projectId);
+    setListData(data.documents);
   };
   const handleSelectAllClick = e => {
-    setSelected(selectAll(e, data));
+    setSelected(selectAll(e, listData));
+    props.selectDocumentItem(selectAll(e, listData));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
   const handleSelectItem = id => {
     setSelected(selectItem(selected, id));
+    props.selectDocumentItem(selectItem(selected, id));
   };
   const handleChangePage = () => {};
+  const getIconAvatar = (url, idx = 0) => {
+    return (
+      <Avatar
+        key={idx}
+        src={url}
+        alt="avatar"
+        style={{ width: 35, height: 35, margin: 'auto' }}
+      />
+    );
+  };
   return (
     <Fragment>
       <Table>
         <TableHead>
-          <StyledTableHeadRow>
+          <TableRow className="table-header-row">
             <StyledTableHeadCell>
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === data.length}
+                checked={selected.length === listData.length}
                 indeterminate={
-                  selected.length > 0 && selected.length < data.length
+                  selected.length > 0 && selected.length < listData.length
                 }
               />
             </StyledTableHeadCell>
@@ -72,13 +87,12 @@ const ProjectDocumentDetail = () => {
               width="5%"
             ></StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="25%">
-              <TableSortLabel
-                active={true}
-                // direction={order}
-                // onClick={createSortHandler(headCell.id)}
-              >
+              <div>
                 Tên
-              </TableSortLabel>
+                <IconButton size="small">
+                  <Icon path={mdiSwapVertical} size={1.2} color="#8d8d8d" />
+                </IconButton>
+              </div>
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="30%">
               Công việc
@@ -92,13 +106,13 @@ const ProjectDocumentDetail = () => {
             <StyledTableHeadCell align="center" width="10%">
               Kích thước
             </StyledTableHeadCell>
-          </StyledTableHeadRow>
+          </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(file => {
+          {listData.map(file => {
             const isItemSelected = isSelected(file.id);
             return (
-              <StyledTableBodyRow key={file.id}>
+              <TableRow className="table-body-row" key={file.id}>
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -106,26 +120,28 @@ const ProjectDocumentDetail = () => {
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="5%">
-                  <WrapAvatar>
-                    <FullAvatar src={FileType(file.type)} />
-                  </WrapAvatar>
+                  <FullAvatar src={FileType(file.type)} />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="25%">
                   <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="30%">
-                  <ColorTypo color="black">{file.work}</ColorTypo>
+                  <ColorTypo color="black">{file.task_name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="15%">
-                  <ColorTypo color="black">{file.userCreate}</ColorTypo>
+                  {(file.user_create_avatar &&
+                    getIconAvatar(
+                      `https://storage.googleapis.com${file.user_create_avatar}`
+                    )) ||
+                    ''}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="15%">
-                  <ColorTypo color="black">{file.date}</ColorTypo>
+                  <ColorTypo color="black">{file.date_create}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.size}</ColorTypo>
                 </StyledTableBodyCell>
-              </StyledTableBodyRow>
+              </TableRow>
             );
           })}
         </TableBody>
@@ -143,4 +159,12 @@ const ProjectDocumentDetail = () => {
   );
 };
 
-export default ProjectDocumentDetail;
+export default connect(
+  state => ({
+    selectedDocument: state.documents.selectedDocument
+  }),
+  {
+    selectDocumentItem,
+    resetListSelectDocument
+  }
+)(withRouter(ProjectDocumentDetail));

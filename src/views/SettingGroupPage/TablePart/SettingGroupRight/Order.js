@@ -1,5 +1,4 @@
 import React, { useState, Fragment } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
@@ -16,22 +15,6 @@ import * as image from '../../../../assets';
 import { Routes } from '../../../../constants/routes';
 // import { actionSettingGroup } from "../../../actions/setting";
 import AlertModal from '../../../../components/AlertModal';
-
-const StyledTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: 'rgb(237, 237, 237)',
-    fontWeight: 500,
-    fontSize: 12
-  },
-  body: { fontSize: 12, padding: 10 }
-}))(TableCell);
-const StyledTableRow = withStyles(theme => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default
-    }
-  }
-}))(TableRow);
 
 const data = [
   {
@@ -75,26 +58,54 @@ const Order = props => {
       <Table aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>No</StyledTableCell>
-            <StyledTableCell align="center">Người tạo</StyledTableCell>
-            <StyledTableCell align="center">Ngày tạo</StyledTableCell>
-            <StyledTableCell align="center">Mã đơn hàng</StyledTableCell>
-            <StyledTableCell align="center">Gói sản phẩm</StyledTableCell>
-            <StyledTableCell align="center">Tài khoản kết nối</StyledTableCell>
-            <StyledTableCell align="center">Dung lượng lưu trữ</StyledTableCell>
-            <StyledTableCell align="center">Thời gian sử dụng</StyledTableCell>
-            <StyledTableCell align="center">Ngày kích hoạt</StyledTableCell>
-            <StyledTableCell align="center">Ngày hết hạn</StyledTableCell>
-            <StyledTableCell align="center">Thời gian còn lại</StyledTableCell>
-            <StyledTableCell align="center">Trạng thái</StyledTableCell>
-            <StyledTableCell align="center">Hóa đơn</StyledTableCell>
-            <StyledTableCell align="center">Giá trị (VND)</StyledTableCell>
-            <StyledTableCell align="center">Hoạt động</StyledTableCell>
+            <TableCell className="table-cell-item head">No</TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Người tạo
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Ngày tạo
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Mã đơn hàng
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Gói sản phẩm
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Tài khoản kết nối
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Dung lượng lưu trữ
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Thời gian sử dụng
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Ngày kích hoạt
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Ngày hết hạn
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Thời gian còn lại
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Trạng thái
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Hóa đơn
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Giá trị (VND)
+            </TableCell>
+            <TableCell className="table-cell-item head" align="center">
+              Hoạt động
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row, index) => (
-            <StyledTableRow
+            <TableRow
               key={index}
               onClick={() =>
                 props.history.push({
@@ -102,37 +113,59 @@ const Order = props => {
                   search: `?oderId=${row.id}`
                 })
               }
-              className="cus-row"
+              className="table-row-item cursor-pointer"
             >
-              <StyledTableCell component="th" scope="row">
+              <TableCell
+                className="table-cell-item body"
+                component="th"
+                scope="row"
+              >
                 {index + 1}
-              </StyledTableCell>
-              <StyledTableCell align="center">
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
                 <Avatar
                   alt="Remy Sharp"
                   src={image.avatar_user}
                   className="avatar-order"
                 />
-              </StyledTableCell>
-              <StyledTableCell align="center">
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
                 {row.createdDate}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.orderCode}</StyledTableCell>
-              <StyledTableCell align="center">{row.pack}</StyledTableCell>
-              <StyledTableCell align="center">
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.orderCode}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.pack}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
                 {row.accountConnect}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.storage}</StyledTableCell>
-              <StyledTableCell align="center">{row.expire}</StyledTableCell>
-              <StyledTableCell align="center">{row.activeDate}</StyledTableCell>
-              <StyledTableCell align="center">{row.expireDate}</StyledTableCell>
-              <StyledTableCell align="center">
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.storage}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.expire}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.activeDate}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.expireDate}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
                 {row.activeDateNo}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.status}</StyledTableCell>
-              <StyledTableCell align="center">{row.invoice}</StyledTableCell>
-              <StyledTableCell align="center">{row.price}</StyledTableCell>
-              <StyledTableCell align="center">
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.status}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.invoice}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
+                {row.price}
+              </TableCell>
+              <TableCell className="table-cell-item body" align="center">
                 {row.activeDateNo > 0 ? (
                   <Button className="action-btn extend">Gia hạn</Button>
                 ) : (
@@ -146,8 +179,8 @@ const Order = props => {
                     Xóa
                   </Button>
                 )}
-              </StyledTableCell>
-            </StyledTableRow>
+              </TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

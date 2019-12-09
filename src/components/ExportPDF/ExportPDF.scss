@@ -61,3 +61,21 @@
     }
   }
 }
+.oder-init-container {
+  padding-top: 55px;
+  text-align: center;
+  .title-oder-init {
+    font-size: 18px;
+    color: #01b374;
+    font-weight: 500;
+  }
+  .step-content {
+    padding: 50px 0;
+    .step-oder-init {
+      padding: 10px 0;
+      .text-step {
+        font-size: 14px;
+      }
+    }
+  }
+}

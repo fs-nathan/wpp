@@ -10,9 +10,9 @@ import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
 const ref = React.createRef();
 const OrderDetail = () => {
   const options = {
-    // orientation: 'portrait',
-    // unit: 'pt',
-    // format: '[2480 , 3508 ]'
+    orientation: 'p',
+    unit: 'px',
+    format: [640, 890]
   };
   return (
     <div className="order-detail-container">
@@ -41,7 +41,13 @@ const OrderDetail = () => {
           <p>Đã thanh toán</p>
           <p className="title-item">Hóa đơn</p>
           <p>Đã xuất hóa đơn</p>
-          <Pdf targetRef={ref} filename="Đơn hàng.pdf" options={options}>
+          <Pdf
+            targetRef={ref}
+            filename="Đơn hàng.pdf"
+            options={options}
+            x={0.5}
+            y={0.5}
+          >
             {({ toPdf }) => (
               <Button
                 variant="outlined"

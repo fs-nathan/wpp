@@ -13,10 +13,12 @@
 }
 .setting-right-content {
   overflow: auto;
+  height: calc(100vh - 125px);
   .action-btn {
     width: 66px;
     line-height: 1;
     border-radius: 2px;
+    margin-right: 5px;
     &.extend {
       background: #02c432;
       border-color: #02c432;
@@ -106,15 +108,13 @@
       .create-order-btn {
         padding: 20px 40px;
         text-transform: uppercase;
-        width: 300px;
+        width: 100%;
         margin-top: 40px;
         background-color: #2dc63a;
         border-color: #2dc63a;
         color: #fff;
         box-shadow: none;
         margin-bottom: 100px;
-        margin-left: 50%;
-        transform: translateX(-50%);
       }
       .detail-right-bottom {
         padding: 0 25px 20px 25px;
@@ -368,7 +368,7 @@
 }
 .divider-vertical {
   width: 1px;
-  min-height: calc(100vh - 105px);
+  min-height: calc(100vh - 125px);
   background: #ced4da;
 }
 .content-create-order {
@@ -441,6 +441,21 @@
     }
   }
 }
-.cus-row {
-  cursor: pointer;
+.table-row-item {
+  background-color: white;
+  &:hover {
+    background-color: rgba(190, 190, 190, 0.07);
+  }
+}
+.table-cell-item {
+  &.head {
+    background-color: rgb(237, 237, 237);
+    font-weight: 500;
+    font-size: 12px;
+  }
+  &.body {
+    font-size: 12px;
+    padding: 10px;
+    border-bottom: 1px solid rgb(238, 238, 238);
+  }
 }

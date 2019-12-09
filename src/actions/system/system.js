@@ -18,4 +18,11 @@ export const closeNoticeModal = () => {
     payload: false
   };
 };
-
+export const openDocumentDetail = file => ({
+  type: actionTypes.CHANGE_DOCUMENT_DETAIL,
+  payload: { isOpen: true, item: file }
+});
+export const closeDocumentDetail = () => ({
+  type: actionTypes.CHANGE_DOCUMENT_DETAIL,
+  payload: { isOpen: false, item: null }
+});

@@ -40,10 +40,16 @@ class ItemGroupAcount extends Component {
           </div>
           <div className="phone-item-group-account">
             <span className="text-value-email-phone">{item.phone}</span>
-            {item.status !== 'Free' && (
+            {item.join ? (
               <Button className="btn-action" variant="text">
-                {item.status === 'Pro' ? 'Rời nhóm' : 'Hủy'}
+                Tham gia
               </Button>
+            ) : (
+              item.status !== 'Free' && (
+                <Button className="btn-action" variant="text">
+                  {item.status === 'Pro' ? 'Rời nhóm' : 'Hủy'}
+                </Button>
+              )
             )}
           </div>
         </div>

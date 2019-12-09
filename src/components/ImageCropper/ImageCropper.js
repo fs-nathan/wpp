@@ -42,7 +42,7 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
   const cropper = useRef(null);
   const [src, setSrc] = useState();
   const [updateOption, setUpdateOption] = useState(true);
-  const [sliderValue, setSliderValue] = React.useState(0);
+  const [sliderValue, setSliderValue] = useState(50);
 
   React.useEffect(() => {
     if (image === null) return;

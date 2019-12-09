@@ -1,4 +1,5 @@
 import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import colorPal from '../../../helpers/colorPalette';
@@ -107,7 +108,11 @@ const TablePart = props => {
           )}
         </RightHeader>
       </div>
-      <div className="setting-right-content">{getContentSettingAccount()}</div>
+      <div className="setting-right-content">
+        <Scrollbars autoHide autoHideTimeout={500}>
+          {getContentSettingAccount()}
+        </Scrollbars>
+      </div>
     </div>
   );
 };

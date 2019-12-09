@@ -1,11 +1,9 @@
-import React, { Component } from "react";
+import React from 'react';
 
-import "./SettingAccountRight.scss";
+import './SettingAccountRight.scss';
 
-class TicketManager extends Component {
-  render() {
-    return <div className="setting-info">TicketManager</div>;
-  }
-}
+const TicketManager = () => {
+  return <div className="setting-info">TicketManager</div>;
+};
 
 export default TicketManager;

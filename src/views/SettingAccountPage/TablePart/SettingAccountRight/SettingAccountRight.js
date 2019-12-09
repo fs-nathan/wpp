@@ -12,7 +12,7 @@ import NotificationWorkPlusDetail from './NotificationWorkPlusDetail';
 import './SettingAccountRight.scss';
 
 const SettingAccountRight = props => {
-  getContentSettingAccountRight = () => {
+  const getContentSettingAccountRight = () => {
     switch (props.settingAccountType) {
       case SETTING_ACCOUNT.INFO:
         return <SettingInfo />;

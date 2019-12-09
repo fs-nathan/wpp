@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
@@ -51,44 +51,42 @@ const data = [
     ]
   }
 ];
-class NotificationWorkPlus extends Component {
-  render() {
-    return (
-      <div className="notification-container">
-        {data.map((el, index) => (
-          <div className="notification-group" key={index}>
-            <li className="title-list">{el.title}</li>
-            <Table aria-label="simple table" className="table-notification">
-              <TableBody>
-                {el.content.map((row, idx) => (
-                  <TableRow
-                    key={idx}
-                    onClick={() => {
-                      this.props.history.push({
-                        pathname: Routes.SETTING_ACCOUNT_NOTIFI,
-                        search: `?${row.id}`
-                      });
-                    }}
-                    className="cursor-pointer"
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.date}
-                    </TableCell>
-                    <TableCell align="left">{row.description}</TableCell>
-                    <TableCell align="right">
-                      <div className={`action-btn ${row.type}`}>
-                        {row.btnText}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        ))}
-      </div>
-    );
-  }
-}
+const NotificationWorkPlus = props => {
+  return (
+    <div className="notification-container">
+      {data.map((el, index) => (
+        <div className="notification-group" key={index}>
+          <li className="title-list">{el.title}</li>
+          <Table aria-label="simple table" className="table-notification">
+            <TableBody>
+              {el.content.map((row, idx) => (
+                <TableRow
+                  key={idx}
+                  onClick={() => {
+                    props.history.push({
+                      pathname: Routes.SETTING_ACCOUNT_NOTIFI,
+                      search: `?${row.id}`
+                    });
+                  }}
+                  className="cursor-pointer"
+                >
+                  <TableCell component="th" scope="row">
+                    {row.date}
+                  </TableCell>
+                  <TableCell align="left">{row.description}</TableCell>
+                  <TableCell align="right">
+                    <div className={`action-btn ${row.type}`}>
+                      {row.btnText}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default connect(state => ({}), {})(withRouter(NotificationWorkPlus));

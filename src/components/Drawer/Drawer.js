@@ -9,6 +9,7 @@ import DrawerMessage from './DrawerContentComponent/DrawerMessage';
 import DrawerNotification from './DrawerContentComponent/DrawerNotification';
 import DrawerGroupAcount from './DrawerContentComponent/DrawerGroupAcount';
 import DrawerSetting from './DrawerContentComponent/DrawerSetting';
+import DrawerNewGroup from './DrawerContentComponent/DrawerNewGroup';
 import './Drawer.scss';
 
 const generateContent = typeDrawer => {
@@ -23,6 +24,8 @@ const generateContent = typeDrawer => {
       return <DrawerGroupAcount />;
     case DRAWER_TYPE.SETTING:
       return <DrawerSetting />;
+    case DRAWER_TYPE.JOIN_NEW_GROUP:
+      return <DrawerNewGroup />;
     default:
       return '';
   }

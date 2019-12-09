@@ -44,7 +44,7 @@ const InfoBox = styled.div`
 `;
 
 const GreenText = styled.div`
-  color: #31b586;
+  color: #908a8a;
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -103,8 +103,8 @@ const TopBar = props => {
       <LeftPart>
         <InfoBox onClick={handleAccount}>
           <div>
-            <div>HungThanhXD</div>
-            <Chip badge color="orange" label="Pro" />
+            <div className="text-group-top-bar">HungThanhXD</div>
+            <Chip badge color="orange" label="Pro" className="style-status"/>
           </div>
           <div>
             <GreenText>huuthanhxd@gmail.com</GreenText>
@@ -189,8 +189,8 @@ const TopBar = props => {
           />
         </IconButton>
         <AccBox>
-          <Avatar style={{ height: 30, width: 30 }} src={avatar} alt="Avatar" />
-          <p>Nguyễn Hữu Thành</p>
+          <Avatar style={{ height: 25, width: 25 }} src={avatar} alt="Avatar" />
+          <p className="text-name-acc">Nguyễn Hữu Thành</p>
           &nbsp;
           <img
             onClick={() =>
@@ -201,7 +201,7 @@ const TopBar = props => {
             }
             src={icons.ic_menu_more}
             alt=""
-            className="topnav-icon"
+            className="topnav-icon drawer-icon"
           />
         </AccBox>
       </RightPart>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiStar } from '@mdi/js';

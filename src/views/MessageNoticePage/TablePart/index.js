@@ -1,5 +1,5 @@
 import React from 'react';
-// import { mdiUpload } from "@mdi/js";
+import { Scrollbars } from 'react-custom-scrollbars';
 import { withRouter } from 'react-router-dom';
 import ColorTypo from '../../../components/ColorTypo';
 import '../Message.scss';
@@ -42,7 +42,11 @@ const TablePart = props => {
       <div className="header-setting">
         <ColorTypo className="header-title">{getHeader()}</ColorTypo>
       </div>
-      {getContentSettingAccount()}
+      <div className="setting-right-content">
+        <Scrollbars autoHide autoHideTimeout={500}>
+          {getContentSettingAccount()}
+        </Scrollbars>
+      </div>
     </div>
   );
 };
