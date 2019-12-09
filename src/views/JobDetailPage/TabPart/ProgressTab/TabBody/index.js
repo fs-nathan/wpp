@@ -208,7 +208,9 @@ const WrapperProgressBar = styled.div`
   }
 `
 const ContentProgress = styled.div`
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #2dc63a;
   border-radius: 50% 50% 50% 0;
   width: 35px;
@@ -216,7 +218,6 @@ const ContentProgress = styled.div`
   transform: rotate(-45deg);
   margin-left: calc(${props => props.value}% - 17.5px);
   & > div {
-    padding: 10px;
     color: #fff;
     transform: rotate(45deg);
   }
@@ -266,8 +267,8 @@ function TabBody() {
   console.log("time......", value.listTime)
   if (value.listTime.trackings) {
     listTime = value.listTime.trackings.map((item, key) => {
-      console.log("listTime.......",listTime)
-      
+      console.log("listTime.......", listTime)
+
       return (
         <TableRowItem key={key}>
           <CellAvatar>

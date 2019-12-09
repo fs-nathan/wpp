@@ -54,10 +54,10 @@ function JobDetailPage(props) {
 const mapStateToProps = state => {
   // console.log('state project id::::', state.taskDetail.listGroupTask.listGroupTask);
 
-  
+
   return {
     // offer
-    offer: state.taskDetail.taskOffer.offer.reverse(),
+    offer: state.taskDetail.taskOffer.offer,
 
     pendingItems: state.taskDetail.taskOffer.pendingItems,
     approvedItems: state.taskDetail.taskOffer.approvedItems,
@@ -71,9 +71,9 @@ const mapStateToProps = state => {
     file: state.taskDetail.media.file,
     link: state.taskDetail.media.links,
     // command
-    command: state.taskDetail.taskCommand.command.reverse(),
-    commandItems: state.taskDetail.taskCommand.commandItems.reverse(),
-    decisionItems: state.taskDetail.taskCommand.decisionItems.reverse(),
+    command: state.taskDetail.taskCommand.command,
+    commandItems: state.taskDetail.taskCommand.commandItems,
+    decisionItems: state.taskDetail.taskCommand.decisionItems,
     // fake ID
     taskId: state.taskDetail.commonTaskDetail.activeTaskId,
     projectId: state.taskDetail.commonTaskDetail.activeProjectId,
@@ -111,9 +111,9 @@ const mapDispatchToProps = dispatch => {
     deleteRemindWByRemindId: remindId => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId })),
     // offer
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
-    createOfferByTaskId: (createId, content) => { dispatch(taskDetailAction.createOffer({ createId, content })) },
+    createOfferByTaskId: (data) => dispatch(taskDetailAction.createOffer(data)),
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
-    updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
+    updateOfferById: (data) => dispatch(taskDetailAction.updateOffer(data)),
     uploadDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb)),
     deleteDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb)),
     handleOfferById: (data) => dispatch(taskDetailAction.handleOffer(data)),
@@ -139,7 +139,6 @@ const mapDispatchToProps = dispatch => {
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
     // Member Role
     createRoleTask: (name) => dispatch(taskDetailAction.createRole({ name })),
-    createRoleTask: (name) => dispatch(taskDetailAction.createRole({name})),
     updateRoleTask: (role_task_id, name) => dispatch(taskDetailAction.updateRole({ role_task_id, name })),
     deleteRoleTask: (role_task_id) => dispatch(taskDetailAction.deleteRole({ role_task_id })),
     //time
@@ -147,15 +146,17 @@ const mapDispatchToProps = dispatch => {
     updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
     // List Task Detail
     getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId })),
+    createJobByProjectId: (data) => dispatch(taskDetailAction.createTask(data)),
     //  List Group Task
     getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
     //edit name and description task
     updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data))
     ,
-    // List Task Detail
-    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
-    //  List Group Task
-    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId})),
+
+
+
+
+
 
   };
 };

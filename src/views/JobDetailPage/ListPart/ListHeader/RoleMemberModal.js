@@ -115,7 +115,7 @@ function RoleMemberModal(props) {
 
   const [openAddRoleModal, setOpenAddRoleModal] = React.useState(false)
   const [isEditRole, setIsEditRole] = React.useState(false)
-  const [selectedItem, setSelectedItem] = React.useState({ content: ""})
+  // const [selectedItem, setSelectedItem] = React.useState({ content: "" })
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const handleOpenModalDelete = () => {
     setOpenDelete(true);
@@ -125,7 +125,7 @@ function RoleMemberModal(props) {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteCommandByCommandId(selectedItem.id)
+    // props.deleteCommandByCommandId(selectedItem.id)
   }
 
   return (
@@ -172,7 +172,7 @@ function RoleMemberModal(props) {
                           setIsEditRole(false)
                         }}>Sửa</UpdateDeleteButton>
                       <UpdateDeleteButton
-                      onClick={handleOpenModalDelete}
+                        onClick={handleOpenModalDelete}
                       >Xoá</UpdateDeleteButton>
                     </HandleButton>
                   </TableCell>
@@ -204,7 +204,7 @@ function RoleMemberModal(props) {
         confirmDelete={confirmDelete}
         isOpen={isOpenDelete}
         handleCloseModalDelete={handleCloseModalDelete}
-        item={selectedItem}
+        // item={selectedItem}
       ></ModalDeleteConfirm>
     </div>
   );

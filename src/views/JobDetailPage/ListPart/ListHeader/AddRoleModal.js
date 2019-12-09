@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 function AddRoleModal(props) {
     const styles = theme => ({

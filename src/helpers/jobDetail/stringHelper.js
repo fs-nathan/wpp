@@ -5,8 +5,13 @@ export const getCollapseText = str => isLongerContent(str) ? str.substring(0, DE
 export const REMIND_TIME_TYPE = 0
 export const REMIND_SCHEDULE_TYPE = 0
 export const REMINDER_PROGRESS = []
-export const DEFAULT_DATE_TEXT = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
+export const EMPTY_STRING = ''
+export const DEFAULT_DATE_TEXT = 
+    `${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, "0")}-${(new Date().getDate()).toString().padStart(2, "0")}`
 export const DEFAULT_TIME_TEXT = `00:00`
+export const DEFAULT_START_TIME_TEXT = '08:00'
+export const DEFAULT_END_TIME_TEXT = '17:00'
+export const DEFAULT_GROUP_TASK_VALUE = "default"
 
 export const convertDateToText = date => {
     try {

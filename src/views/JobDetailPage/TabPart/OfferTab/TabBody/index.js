@@ -9,7 +9,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
-import avatar from '../../../../../assets/avatar.jpg';
+// import avatar from '../../../../../assets/avatar.jpg';
 import OfferModal from '../OfferModal';
 import ApproveModal from '../ApproveModal'
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -60,8 +60,6 @@ const Badge = styled(ColorChip)`
 `
 
 const ApprovedBox = (props) => {
-  
-  
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -77,20 +75,25 @@ const ApprovedBox = (props) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClickClose = () => {
     setOpen(false);
   };
 
-
+  const DENIED_VALUE = {
+    offer_id: props.offer.id,
+    content: "Từ chối phê duyệt",
+    status: 2
+  }
   return (
     <React.Fragment>
       {props.approved && (
         <React.Fragment>
           <ApprovedContainer>
             <StyledTitleBox>
-              <Avatar style={{ width: 25, height: 25 }} src={avatar} alt='avatar' />
+              <Avatar style={{ width: 25, height: 25 }} src={props.offer.dataHander.user_hander_avatar} alt='avatar' />
               <div>
-                <StyleContent variant='body1' bold>Trần Văn B</StyleContent>
+                <StyleContent variant='body1' bold>{props.offer.dataHander.user_hander_name}</StyleContent>
                 <ColorTypo variant='caption'>
                   <Badge component='small' color='bluelight' badge size='small' label={'Duyệt'} />
                 </ColorTypo>
@@ -100,8 +103,8 @@ const ApprovedBox = (props) => {
               </ButtonIcon>
             </StyledTitleBox>
             <StyledContentBox>
-              <ColorTypo variant='caption'>18:00 - 12/12/2019</ColorTypo>
-              <StyleContent >Lorem ipsum dolor sit.</StyleContent>
+              <ColorTypo variant='caption'>{props.offer.dataHander.date_hander}</ColorTypo>
+              <StyleContent >{props.offer.dataHander.content_hander}</StyleContent>
             </StyledContentBox>
           </ApprovedContainer>
           <Menu
@@ -120,7 +123,11 @@ const ApprovedBox = (props) => {
           <ApprovedContainer>
             <StyledTitleBox>
               <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
-              <Button variant="outlined" size="small" >Từ chối</Button>
+              <Button variant="outlined" size="small"
+                onClick={() => {
+                  props.handleOfferById(DENIED_VALUE)
+                }}
+              >Từ chối</Button>
               <span />
             </StyledTitleBox>
             <ApproveModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
@@ -213,7 +220,7 @@ const CustomListItem = (props) => {
         <StyledContentBox>
           <StyleContent>{content}</StyleContent>
         </StyledContentBox>
-        <ApprovedBox approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
+        <ApprovedBox {...props} approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
       </StyledListItem>
       <Menu
         anchorEl={anchorEl}
@@ -260,20 +267,18 @@ const ListOffer = (props) => {
       <StyledList>
 
         {props.offer.map((item) => {
-          // console.log("item..............",item);
-          
           return (
             <CustomListItem
               {...props}
-              key={item.id} offer={item}
-
+              key={item.id} 
+              offer={item}
               handleClickOpen={() => {
                 props.handleClickEditItem(item)
               }}
               handleOpenModalDelete={() => {
                 props.handleOpenModalDelete(item)
               }}
-            
+
 
               handleClickClose={() => props.handleClickClose()} />
           )
@@ -311,19 +316,18 @@ function TabBody(props) {
   };
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const confirmDelete = () => {
-  
+
     props.deleteOfferByTaskId(selectedItem.offer_id)
   }
   const handleOpenModalDelete = item => {
     setSelectedItem({ ...item, offer_id: item.id })
-    
+
     setOpenDelete(true);
   };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
- 
-  
+  console.log("123", props)
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -347,8 +351,8 @@ function TabBody(props) {
             onClick={evt => handleChange(evt, 2)}
           >
             {value === 2
-              ? <ColorTypo bold>Chờ duyệt ({props.approvedItems.length})</ColorTypo>
-              : <ColorTypo color='gray'>Chờ duyệt ({props.approvedItems.length})</ColorTypo>}
+              ? <ColorTypo bold>Chờ duyệt ({props.pendingItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>Chờ duyệt ({props.pendingItems.length})</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
@@ -358,13 +362,28 @@ function TabBody(props) {
             handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
             handleClickEditItem={(data) => handleClickEditItem(data)}
             {...props}
+            offer={props.offer}
           />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          {null}
+          <ListOffer
+            handleClickClose={() => handleClickClose()}
+            handleClickOpen={() => handleClickOpen()}
+            handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
+            handleClickEditItem={(data) => handleClickEditItem(data)}
+            {...props}
+            offer={props.approvedItems}
+          />
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          {null}
+          <ListOffer
+            handleClickClose={() => handleClickClose()}
+            handleClickOpen={() => handleClickOpen()}
+            handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
+            handleClickEditItem={(data) => handleClickEditItem(data)}
+            {...props}
+            offer={props.pendingItems}
+          />
         </Collapse>
         <OfferModal
           {...props}
