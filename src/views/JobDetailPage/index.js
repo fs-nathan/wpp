@@ -137,9 +137,10 @@ const mapDispatchToProps = dispatch => {
     createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
     // Member Role
-    createRoleTask: (name) => dispatch(taskDetailAction.createRole({name})),
-    updateRoleTask: (role_task_id, name) => dispatch(taskDetailAction.updateRole({ role_task_id, name })),
-    deleteRoleTask: (role_task_id) => dispatch(taskDetailAction.deleteRole({ role_task_id })),
+    getRoleTask: () => dispatch(taskDetailAction.getRole()),
+    createRoleTask: (data) => dispatch(taskDetailAction.createRole({name})),
+    updateRoleTask: (data) => dispatch(taskDetailAction.updateRole({ role_task_id, name })),
+    deleteRoleTask: (user_role_id) => dispatch(taskDetailAction.deleteRole({ user_role_id })),
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
     // List Task Detail

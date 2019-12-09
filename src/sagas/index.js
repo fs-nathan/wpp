@@ -145,6 +145,7 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
 
   // Member Role::
+  yield takeLeading(taskDetailType.GET_ROLE_REQUEST, taskDetailSaga.getRole);
   yield takeLeading(taskDetailType.POST_ROLE_REQUEST, taskDetailSaga.createRole);
   yield takeLeading(taskDetailType.UPDATE_ROLE_REQUEST, taskDetailSaga.updateRole);
   yield takeLeading(taskDetailType.DELETE_ROLE_REQUEST, taskDetailSaga.deleteRole);

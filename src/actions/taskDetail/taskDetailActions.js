@@ -507,6 +507,21 @@ export const deleteMemberFail = (error) => ({
 });
 
 // Member Role
+export const getRole = (payload) => ({
+    type: types.GET_ROLE_REQUEST,
+    payload
+});
+
+export const getRoleSuccess = (payload) => ({
+    type: types.GET_ROLE_SUCCESS,
+    payload
+});
+
+export const getRoleFail = (error) => ({
+    type: types.GET_ROLE_FAIL,
+    error: error,
+});
+
 export const createRole = (payload) => ({
     type: types.POST_ROLE_REQUEST,
     payload
