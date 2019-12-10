@@ -1057,19 +1057,6 @@ async function doGetListProject(payload) {
   }
 }
 
-async function doUpdateNameDescriptionTask() {
-  try {
-    // const config = {
-    //   url: 'project-group/list',
-    //   method: 'get'
-    // }
-    // const result = await apiService(config);
-    // return result.data;
-    return null;
-  } catch (error) {
-    throw error;
-  }
-}
 
 function* getProjectGroup() {
   try {
@@ -1089,6 +1076,19 @@ function* getProjectGroup() {
     // yield put(actions.getListProject())
   } catch (error) {
     yield put(actions.getProjectGroupFail(error))
+  }
+}
+async function doUpdateNameDescriptionTask() {
+  try {
+    // const config = {
+    //   url: 'project-group/list',
+    //   method: 'get'
+    // }
+    // const result = await apiService(config);
+    // return result.data;
+    return null;
+  } catch (error) {
+    throw error;
   }
 }
 

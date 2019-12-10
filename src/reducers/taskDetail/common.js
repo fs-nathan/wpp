@@ -3,7 +3,7 @@ import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 const initialState = {
     activeTaskId: "5da1821ad219830d90402fd8",
     activeProjectId: "5de5c4b9f9e332da9ebd6b3c",
-    projectGroups: [],
+    projectGroups: null,
 }
 
 export default function reducer(state = initialState, action) {

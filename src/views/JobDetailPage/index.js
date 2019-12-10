@@ -53,7 +53,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('state project id::::', state.taskDetail.listGroupTask.listGroupTask);
+  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectGroups);
 
 
   return {
@@ -90,6 +90,8 @@ const mapStateToProps = state => {
     memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
 
     listTime: state.taskDetail.trackingTime.listTime,
+    // project group
+    projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
   }
 }
 
