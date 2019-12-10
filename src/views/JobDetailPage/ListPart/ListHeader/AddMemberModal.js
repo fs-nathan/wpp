@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import { ListItem, Avatar, Chip, Table, TableBody, TableHead, TableRow, Paper, TableCell, Menu, MenuItem, IconButton } from '@material-ui/core';
+import { ListItem, Avatar, Chip, Table, TableBody, TableHead, TableRow, Paper, TableCell, Menu, MenuItem, IconButton, Hidden } from '@material-ui/core';
 import avatar from '../../../../assets/avatar.jpg';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorChip from '../../../../components/ColorChip';
@@ -19,6 +19,7 @@ import { mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
 import RoleMemberModal from './RoleMemberModal';
 import PriorityMemberModal from './PriorityMemberModal';
 import { WrapperContext } from '../..';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const StyledListItem = styled(ListItem)`
   display: flex;
@@ -112,8 +113,9 @@ const FlexMemberProject = styled(Typography)`
 
 const MemberProject = styled(Typography)`
     margin-bottom: 5px;
-    color: #817f8d;
-    font-size: 18px;
+    color: #686868;
+    font-size: 16px;
+    text-transform: uppercase;
 `
 const FlexJobMember = styled(Typography)`
     display: flex;
@@ -123,16 +125,27 @@ const FlexJobMember = styled(Typography)`
     padding-left: 25px;
 `
 
-const MemberTable = styled(TableCell)`
-    padding: 5px 0 5px 10px;
+const AddButton = styled(Button)`
+    border: 1px solid #e2e2e2;
+    padding: 0 5px;
+    color: gray;
+    font-weight: 400;
+    border-radius: 2px;
+    &&:hover {
+        color: #fff;
+        background: #10c401;
+    }
 `
-const ChipPriority = styled(Chip)`
-    display: flex;
-    flex-direction: row-reverse;
-    width: 110px;
-    padding: 0 10px;
-    justify-content: space-between;
+
+const PriorityButton = styled(Button)`
+    border: 1px solid #e2e2e2;
+    padding: 0 5px;
+    text-transform: capitalize;
+    color: gray;
+    font-weight: 400;
+    border-radius: 2px;
 `
+
 const CustomMenu = styled(Menu)`
   & > .MuiPaper-root {
     box-shadow: none;
@@ -145,7 +158,25 @@ const CustomMenu = styled(Menu)`
     }
   }
 `
+const TableScroll = styled.div`
+  overflow-y: scroll;
 
+  ::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 5px;
+    
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border: none;
+  }
+  &&:hover {
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 10px; 
+    }
+  }
+`
 function ProjectMember(props) {
     return (
         <StyledListItem>
@@ -155,11 +186,12 @@ function ProjectMember(props) {
                 <ColorTypo>{props.email}</ColorTypo>
                 <ColorTypo color="orange">{props.label}</ColorTypo>
             </div>
-            <Chip
+            {/* <Chip
                 bold="true"
                 label="Thêm"
                 onClick={props.valueContext.createMemberToTask}
-            />
+            /> */}
+            <AddButton onClick={props.valueContext.createMemberToTask}>Thêm</AddButton>
         </StyledListItem>
     )
 }
@@ -175,22 +207,19 @@ function MemberDetail(props) {
 
 function MemberPriority(props) {
     const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
-    if (props.master) {
-        return (
-            <div style={{ color: '#fd7e14', padding: '0 30px' }}>{props.label}</div>
-        )
-    }
+    // if (props.master) {
+    //     return (
+    //         <div style={{ color: '#fd7e14', padding: '0 30px' }}>{props.label}</div>
+    //     )
+    // }
 
     return (
         <div>
-            <ChipPriority
-                size="small"
-                label={props.label}
+            <PriorityButton
                 onClick={() => {
                     setOpenPriorityModal(true)
                 }}
-                icon={<ArrowDropDownIcon />}
-            />
+            >Admin<ArrowDropDownIcon /></PriorityButton>
             <PriorityMemberModal isOpen={openPriorityModal} setOpen={setOpenPriorityModal} />
         </div>
     )
@@ -247,48 +276,56 @@ function TableMember(props) {
         setAnchorEl(null);
     }
 
+    const Body = styled(Scrollbars)`
+  grid-area: body;
+  height: 100%;
+`;
     return (
         <Paper className={classes.root}>
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow style={{ background: '#f7f7f7' }}>
-                        <MemberTable style={{ width: '9%' }}></MemberTable>
-                        <MemberTable style={{ width: '30%' }}>Thành viên</MemberTable>
-                        <MemberTable style={{ width: '20%', paddingLeft: 30 }}>Nhóm quyền</MemberTable>
-                        <MemberTable style={{ width: '32%' }}>Vai trò</MemberTable>
-                        <MemberTable></MemberTable>
+                        <TableCell style={{ width: '9%' }}></TableCell>
+                        <TableCell style={{ width: '40%' }}>Thành viên</TableCell>
+                        <TableCell style={{ width: '20%' }}>Nhóm quyền</TableCell>
+                        <TableCell style={{ width: '32%' }}>Vai trò</TableCell>
+                        <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    {props.listMemberJobState.map((addData, idx) => (
-                        <TableRow key={idx}>
-                            <MemberTable>{addData.avatarMember}</MemberTable>
-                            <MemberTable component="th" scope="row">
-                                {addData.name}
-                            </MemberTable>
-                            <MemberTable>{addData.permission}</MemberTable>
-                            <MemberTable>{addData.roles}</MemberTable>
-                            <MemberTable>
-                                <IconButton size='small' onClick={handleClickEliminate} >
-                                    <Icon path={mdiDotsVertical} size={1} />
-                                </IconButton>
-                                <CustomMenu
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleCloseEliminate}
-                                    transformOrigin={{
-                                        vertical: -10,
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <MenuItem onClick={handleCloseEliminate}>Loại trừ</MenuItem>
-                                </CustomMenu>
-                            </MemberTable>
-                        </TableRow>
-                    ))}
-                </TableBody>
+
             </Table>
+            <TableScroll>
+                <Table className={classes.table}>
+                    <TableBody>
+                        {props.listMemberJobState.map((addData, idx) => (
+                            <TableRow key={idx}>
+                                <TableCell style={{ width: '9%' }}>{addData.avatarMember}</TableCell>
+                                <TableCell style={{ width: '40%' }}>{addData.name}</TableCell>
+                                <TableCell style={{ width: '20%' }}>{addData.permission}</TableCell>
+                                <TableCell style={{ width: '32%' }}>{addData.roles}</TableCell>
+                                <TableCell >
+                                    <IconButton size='small' onClick={handleClickEliminate} >
+                                        <Icon path={mdiDotsVertical} size={1} />
+                                    </IconButton>
+                                    <CustomMenu
+                                        anchorEl={anchorEl}
+                                        keepMounted
+                                        open={Boolean(anchorEl)}
+                                        onClose={handleCloseEliminate}
+                                        transformOrigin={{
+                                            vertical: -10,
+                                            horizontal: 'right',
+                                        }}
+                                    >
+                                        <MenuItem onClick={handleCloseEliminate}>Loại trừ</MenuItem>
+                                    </CustomMenu>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableScroll>
+
         </Paper>
     )
 }
@@ -312,9 +349,7 @@ function AddMemberModal(props) {
             return {
                 avatarMember: <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />,
                 name: <MemberDetail name={item.name} email={item.email} />,
-                permission: item.master
-                    ? <MemberPriority label={item.permission} master />
-                    : <MemberPriority label={item.permission} />,
+                permission: <MemberPriority label={item.permission} />,
                 roles: <MemberRole roles={item.roles || []} />
             }
         })
@@ -348,11 +383,11 @@ function AddMemberModal(props) {
         <div>
             <Dialog maxWidth="xl" onClose={handleClose} open={props.isOpen}>
                 <DialogTitle onClose={handleClose}> Thành viên công việc </DialogTitle>
-                <DialogContent dividers style={{ padding: 0 }}>
+                <DialogContent dividers style={{ padding: 0, overflow: 'hidden' }}>
                     <GridArea component={'div'} style={{ borderBottom: 'none' }} >
                         <BorderGrid component={'div'}>
                             <FlexMemberProject component={'span'}>
-                                <MemberProject component={'div'}>Thành viên dự án</MemberProject>
+                                <MemberProject component={'div'} >Thành viên dự án</MemberProject>
                             </FlexMemberProject>
                             <Typography component="span">
                                 <div style={{ margin: '10px 10px 0 10px' }}>

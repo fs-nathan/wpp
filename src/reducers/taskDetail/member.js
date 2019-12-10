@@ -6,6 +6,7 @@ import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 const initialState = {
     member: [],
     memberNotAssigned: [],
+    user_roles: [],
     isFetching: false,
     dataFetched: false,
     error: false,
@@ -19,7 +20,6 @@ export default function reducer(state = initialState, action) {
                 isFetching: true
             }
         case types.GET_MEMBER_SUCCESS:
-
             return {
                 ...state,
                 isFetching: false,
@@ -89,6 +89,25 @@ export default function reducer(state = initialState, action) {
                 error: true,
             }
         //Member role
+        case types.GET_ROLE_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.GET_ROLE_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+                user_roles: action.payload.user_roles,
+            };
+        case types.GET_ROLE_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
+            }
         case types.POST_ROLE_REQUEST:
             return {
                 ...state,

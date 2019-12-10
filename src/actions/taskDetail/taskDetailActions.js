@@ -503,10 +503,54 @@ export const deleteMemberSuccess = (payload) => ({
 
 export const deleteMemberFail = (error) => ({
     type: types.DELETE_MEMBER_FAIL,
+    error: error
+});
+// Member Permission
+export const getPermission = (payload) => ({
+    type: types.GET_PERMISSION_REQUEST,
+    payload
+});
+
+export const getPermissionSuccess = (payload) => ({
+    type: types.GET_PERMISSION_SUCCESS,
+    payload
+});
+
+export const getPermissionFail = (error) => ({
+    type: types.GET_PERMISSION_FAIL,
+    error: error
+});
+
+export const updatePermission = (payload) => ({
+    type: types.UPDATE_PERMISSION_REQUEST,
+    payload
+});
+
+export const updatePermissionSuccess = (payload) => ({
+    type: types.UPDATE_PERMISSION_SUCCESS,
+    payload
+});
+
+export const updatePermissionFail = (error) => ({
+    type: types.UPDATE_PERMISSION_FAIL,
+    error: error
+});
+// Member Role
+export const getRole = (payload) => ({
+    type: types.GET_ROLE_REQUEST,
+    payload
+});
+
+export const getRoleSuccess = (payload) => ({
+    type: types.GET_ROLE_SUCCESS,
+    payload
+});
+
+export const getRoleFail = (error) => ({
+    type: types.GET_ROLE_FAIL,
     error: error,
 });
 
-// Member Role
 export const createRole = (payload) => ({
     type: types.POST_ROLE_REQUEST,
     payload
@@ -638,8 +682,18 @@ export const getListTaskDetailSuccess = (payload) => ({
 
 export const getListTaskDetailFail = (error) => ({
     type: types.GET_LIST_TASK_DETAIL_FAIL,
-    error: error,
+    error: error
 });
+//edit name and description task
+export const updateNameDescriptionTask = (payload) => ({
+    type: types.UPDATE_NAME_DESCRIPTION_TASK_REQUEST,
+    payload
+});
+export const updateNameDescriptionTaskSuccess = (payload) => ({
+    type: types.UPDATE_NAME_DESCRIPTION_TASK_SUCCESS,
+    payload
+});
+
 // Get project group- listpart
 export const getProjectGroup = (payload) => ({
     type: types.GET_PROJECT_GROUP_LISTPART_REQUEST,
@@ -650,6 +704,10 @@ export const getProjectGroupSuccess = (payload) => ({
     type: types.GET_PROJECT_GROUP_LISTPART_SUCCESS,
     payload
 });
+export const updateNameDescriptionTaskFail = (error) => ({
+    type: types.UPDATE_NAME_DESCRIPTION_TASK_FAIL,
+    error: error
+})
 
 export const getProjectGroupFail = (error) => ({
     type: types.GET_PROJECT_GROUP_LISTPART_FAIL,
