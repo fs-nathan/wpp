@@ -158,6 +158,9 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.POST_TASK_REQUEST, taskDetailSaga.createTask);
   // List Group Task 
   yield takeLeading(taskDetailType.GET_LIST_GROUP_TASK_REQUEST, taskDetailSaga.getListGroupTask);
+  // get project group 
+  yield takeLeading(taskDetailType.GET_PROJECT_GROUP_LISTPART_REQUEST, taskDetailSaga.getProjectGroup);
+
 };
 
 export default rootSaga;

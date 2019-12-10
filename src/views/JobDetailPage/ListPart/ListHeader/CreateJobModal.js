@@ -353,6 +353,12 @@ const DEFAULT_DATA = {
   assignValue: DEFAULT_ASSIGN,
 }
 
+let optionsList = [
+  { id: 0, value: 'Ngày và giờ (mặc định)' },
+  { id: 1, value: 'Chỉ nhập ngày' },
+  { id: 2, value: 'Không yêu cầu' },
+]
+
 function CreateJobModal(props) {
 
   const value = React.useContext(WrapperContext)
@@ -472,7 +478,7 @@ function CreateJobModal(props) {
               Đặt mặc định <Icon path={mdiHelpCircle} size={1} />
             </DefaultFlex>
           </ProgressWork>
-          <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
+          <CommonControlForm labels={optionsList} />
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
             <DivTime>

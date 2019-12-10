@@ -34,6 +34,7 @@ function JobDetailPage(props) {
     props.getMemberNotAssignedByTaskId(props.taskId)
     props.getTrackingTime(props.taskId)
     props.getListTaskDetailByProjectId(props.projectId)
+    props.getProjectGroup()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -148,6 +149,8 @@ const mapDispatchToProps = dispatch => {
     getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
     //  List Group Task
     getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId})),
+    // get project group
+    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
 
   };
 };

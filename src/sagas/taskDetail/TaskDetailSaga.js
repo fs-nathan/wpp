@@ -956,6 +956,53 @@ function* getListGroupTask(action) {
     yield put(actions.getListGroupTaskFail(error))
   }
 }
+// Get project group - listpart
+async function doGetProjectGroup() {
+  try {
+    const config = {
+      url: 'project-group/list',
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+async function doGetListProject(payload) {
+  try {
+    const config = {
+      url: 'project/list',
+      method: 'get',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getProjectGroup() {
+  try {
+    const response = yield call(doGetProjectGroup)
+    let projectGroups = response.project_groups
+    for (let i = 0; i < projectGroups.length; i++) {
+      let payload = {
+        group_project: projectGroups[i].id,
+        type: "active",
+        status: 0
+      }
+      const tempResponse = yield call(doGetListProject, payload)
+      projectGroups.projects = tempResponse.projects
+    }
+
+    yield put(actions.getProjectGroupSuccess(projectGroups))
+    // yield put(actions.getListProject())
+  } catch (error) {
+    yield put(actions.getProjectGroupFail(error))
+  }
+}
 export {
   // Update Priority
   updatePriority,
@@ -1018,4 +1065,5 @@ export {
   createTask,
   // List Group Task
   getListGroupTask,
+  getProjectGroup
 }
