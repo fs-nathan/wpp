@@ -35,6 +35,7 @@ function JobDetailPage(props) {
     props.getTrackingTime(props.taskId)
     props.getListTaskDetailByProjectId(props.projectId)
     props.getProjectGroup()
+    props.getRoleTask()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -54,6 +55,7 @@ function JobDetailPage(props) {
 
 const mapStateToProps = state => {
   // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectGroups);
+
 
 
   return {
@@ -88,6 +90,7 @@ const mapStateToProps = state => {
     // member 
     member: state.taskDetail.taskMember.member,
     memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
+    userRoles: state.taskDetail.taskMember.user_roles,
 
     listTime: state.taskDetail.trackingTime.listTime,
     // project group
@@ -142,10 +145,11 @@ const mapDispatchToProps = dispatch => {
     getGroupPermission: () => dispatch(taskDetailAction.getPermission()),
     updateGroupPermission: (data) => dispatch(taskDetailAction.updatePermission(data)),
     // Member Role
-    getRoleTask: () => dispatch(taskDetailAction.getRole()),
-    createRoleTask: (data) => dispatch(taskDetailAction.createRole(data)),
-    updateRoleTask: (data) => dispatch(taskDetailAction.updateRole(data)),
+    createRoleTask: (name, description) => dispatch(taskDetailAction.createRole({ name, description })),
+    updateRoleTask: (user_role_id, name, description) => dispatch(taskDetailAction.updateRole({ user_role_id, name, description })),
     deleteRoleTask: (user_role_id) => dispatch(taskDetailAction.deleteRole({ user_role_id })),
+    getRoleTask: () => dispatch(taskDetailAction.getRole()),
+
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
     updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
