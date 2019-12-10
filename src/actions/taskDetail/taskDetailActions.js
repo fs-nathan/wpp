@@ -503,9 +503,38 @@ export const deleteMemberSuccess = (payload) => ({
 
 export const deleteMemberFail = (error) => ({
     type: types.DELETE_MEMBER_FAIL,
-    error: error,
+    error: error
+});
+// Member Permission
+export const getPermission = (payload) => ({
+    type: types.GET_PERMISSION_REQUEST,
+    payload
 });
 
+export const getPermissionSuccess = (payload) => ({
+    type: types.GET_PERMISSION_SUCCESS,
+    payload
+});
+
+export const getPermissionFail = (error) => ({
+    type: types.GET_PERMISSION_FAIL,
+    error: error
+});
+
+export const updatePermission = (payload) => ({
+    type: types.UPDATE_PERMISSION_REQUEST,
+    payload
+});
+
+export const updatePermissionSuccess = (payload) => ({
+    type: types.UPDATE_PERMISSION_SUCCESS,
+    payload
+});
+
+export const updatePermissionFail = (error) => ({
+    type: types.UPDATE_PERMISSION_FAIL,
+    error: error
+});
 // Member Role
 export const getRole = (payload) => ({
     type: types.GET_ROLE_REQUEST,

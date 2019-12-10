@@ -143,7 +143,10 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST, taskDetailSaga.getMemberNotAssigned);
   yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
   yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
-
+  
+  // Member Permission::
+  yield takeLeading(taskDetailType.GET_PERMISSION_REQUEST, taskDetailSaga.getPermission);
+  yield takeLeading(taskDetailType.UPDATE_PERMISSION_REQUEST, taskDetailSaga.updatePermission);
   // Member Role::
   yield takeLeading(taskDetailType.GET_ROLE_REQUEST, taskDetailSaga.getRole);
   yield takeLeading(taskDetailType.POST_ROLE_REQUEST, taskDetailSaga.createRole);

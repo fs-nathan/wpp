@@ -59,13 +59,14 @@ const Projects = (props) => {
   padding: 12px 0;
   font-weight: 500;
   border-bottom: 1px solid #0000001a;
+  cursor: pointer;
   & > *:first-child {
     border-top: 1px solid #0000001a;
   }
   `
 
   return (
-    <ProjectsDetail>{props.title}</ProjectsDetail>
+    <ProjectsDetail  onClick={() => {console.log('hello')}}>{props.title}</ProjectsDetail>
   )
 }
 

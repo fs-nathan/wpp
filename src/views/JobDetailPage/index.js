@@ -89,8 +89,6 @@ const mapStateToProps = state => {
     memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
 
     listTime: state.taskDetail.trackingTime.listTime,
-
-
   }
 }
 
@@ -137,17 +135,14 @@ const mapDispatchToProps = dispatch => {
     getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
     createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
+    // Member Priority
+    getGroupPermission: () => dispatch(taskDetailAction.getPermission()),
+    updateGroupPermission: (data) => dispatch(taskDetailAction.updatePermission(data)),
     // Member Role
-<<<<<<< HEAD
-    createRoleTask: (name) => dispatch(taskDetailAction.createRole({ name })),
-    updateRoleTask: (role_task_id, name) => dispatch(taskDetailAction.updateRole({ role_task_id, name })),
-    deleteRoleTask: (role_task_id) => dispatch(taskDetailAction.deleteRole({ role_task_id })),
-=======
     getRoleTask: () => dispatch(taskDetailAction.getRole()),
     createRoleTask: (data) => dispatch(taskDetailAction.createRole(data)),
     updateRoleTask: (data) => dispatch(taskDetailAction.updateRole(data)),
     deleteRoleTask: (user_role_id) => dispatch(taskDetailAction.deleteRole({ user_role_id })),
->>>>>>> origin/dev_minh
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
     updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
@@ -158,13 +153,6 @@ const mapDispatchToProps = dispatch => {
     getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
     //edit name and description task
     updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data))
-    ,
-
-
-
-
-
-
   };
 };
 

@@ -113,8 +113,9 @@ const FlexMemberProject = styled(Typography)`
 
 const MemberProject = styled(Typography)`
     margin-bottom: 5px;
-    color: #817f8d;
-    font-size: 18px;
+    color: #686868;
+    font-size: 16px;
+    text-transform: uppercase;
 `
 const FlexJobMember = styled(Typography)`
     display: flex;
@@ -124,7 +125,19 @@ const FlexJobMember = styled(Typography)`
     padding-left: 25px;
 `
 
-const PriorityButton =styled(Button)`
+const AddButton = styled(Button)`
+    border: 1px solid #e2e2e2;
+    padding: 0 5px;
+    color: gray;
+    font-weight: 400;
+    border-radius: 2px;
+    &&:hover {
+        color: #fff;
+        background: #10c401;
+    }
+`
+
+const PriorityButton = styled(Button)`
     border: 1px solid #e2e2e2;
     padding: 0 5px;
     text-transform: capitalize;
@@ -173,11 +186,12 @@ function ProjectMember(props) {
                 <ColorTypo>{props.email}</ColorTypo>
                 <ColorTypo color="orange">{props.label}</ColorTypo>
             </div>
-            <Chip
+            {/* <Chip
                 bold="true"
                 label="Thêm"
                 onClick={props.valueContext.createMemberToTask}
-            />
+            /> */}
+            <AddButton onClick={props.valueContext.createMemberToTask}>Thêm</AddButton>
         </StyledListItem>
     )
 }
@@ -373,7 +387,7 @@ function AddMemberModal(props) {
                     <GridArea component={'div'} style={{ borderBottom: 'none' }} >
                         <BorderGrid component={'div'}>
                             <FlexMemberProject component={'span'}>
-                                <MemberProject component={'div'}>Thành viên dự án</MemberProject>
+                                <MemberProject component={'div'} >Thành viên dự án</MemberProject>
                             </FlexMemberProject>
                             <Typography component="span">
                                 <div style={{ margin: '10px 10px 0 10px' }}>

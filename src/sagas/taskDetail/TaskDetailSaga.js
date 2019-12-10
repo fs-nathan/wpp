@@ -771,55 +771,12 @@ function* deleteMember(action) {
   }
 }
 
-// Get list task detail
-async function doGetListTaskDetail({ project_id }) {
+// Member Permission
+async function doGetPermission(payload) {
   try {
     const config = {
-      url: 'task/list-task-detail?project_id=' + project_id,
-      method: 'get'
-    }
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
-function* getListTaskDetail(action) {
-  try {
-    const res = yield call(doGetListTaskDetail, action.payload)
-    yield put(actions.getListTaskDetailSuccess(res))
-  } catch (error) {
-    yield put(actions.getListTaskDetailFail(error))
-  }
-}
-//time
-async function doGetTrackingTime(taskId) {
-  try {
-    const config = {
-      url: 'task/get-tracking-time?task_id=' + taskId,
-      method: 'get'
-    }
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
-function* getTrackingTime(action) {
-  try {
-    const res = yield call(doGetTrackingTime, action.payload)
-
-    yield put(actions.getTrackingTimeSuccess(res))
-  } catch (error) {
-    yield put(actions.getTrackingTimeFail(error))
-  }
-}
-
-async function doUpdateTimeDuration(payload) {
-  try {
-    const config = {
-      url: 'task/update-time-duration',
-      method: 'put',
+      url: '/task/get-group-permission',
+      method: 'get',
       data: payload
     }
     const result = await apiService(config);
@@ -828,14 +785,36 @@ async function doUpdateTimeDuration(payload) {
     throw error;
   }
 }
-function* updateTimeDuration(action) {
-  try {
-    const res = yield call(doUpdateTimeDuration, action.payload)
-    yield put(actions.updateTimeDurationSuccess(res))
-    yield put(actions.getTrackingTime(action.payload.task_id))
 
+function* getPermission(action) {
+  try {
+    const res = yield call(doGetPermission, action.payload)
+    yield put(actions.getPermissionSuccess(res))
   } catch (error) {
-    yield put(actions.updateTimeDurationFail)
+    yield put(actions.getPermissionFail(error))
+  }
+}
+
+async function doUpdatePermission(payload) {
+  try {
+    const config = {
+      url: '/task/update-group-permission-member',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updatePermission(action) {
+  try {
+    const res = yield call(doUpdatePermission, action.payload)
+    yield put(actions.updatePermissionSuccess(res))
+  } catch (error) {
+    yield put(actions.updatePermissionFail(error))
   }
 }
 
@@ -932,6 +911,76 @@ function* deleteRole(action) {
     yield put(actions.deleteRoleFail(error))
   }
 }
+// Get list task detail
+async function doGetListTaskDetail({ project_id }) {
+  try {
+    const config = {
+      url: 'task/list-task-detail?project_id=' + project_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getListTaskDetail(action) {
+  try {
+    const res = yield call(doGetListTaskDetail, action.payload)
+    yield put(actions.getListTaskDetailSuccess(res))
+  } catch (error) {
+    yield put(actions.getListTaskDetailFail(error))
+  }
+}
+//time
+async function doGetTrackingTime(taskId) {
+  try {
+    const config = {
+      url: 'task/get-tracking-time?task_id=' + taskId,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getTrackingTime(action) {
+  try {
+    const res = yield call(doGetTrackingTime, action.payload)
+
+    yield put(actions.getTrackingTimeSuccess(res))
+  } catch (error) {
+    yield put(actions.getTrackingTimeFail(error))
+  }
+}
+
+async function doUpdateTimeDuration(payload) {
+  try {
+    const config = {
+      url: 'task/update-time-duration',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* updateTimeDuration(action) {
+  try {
+    const res = yield call(doUpdateTimeDuration, action.payload)
+    yield put(actions.updateTimeDurationSuccess(res))
+    yield put(actions.getTrackingTime(action.payload.task_id))
+
+  } catch (error) {
+    yield put(actions.updateTimeDurationFail)
+  }
+}
+
+
 
 async function doCreateTask(payload) {
   try {
@@ -1064,6 +1113,10 @@ export {
   getMemberNotAssigned,
   createMember,
   deleteMember,
+
+  // Member Permission - Tabpart
+  getPermission,
+  updatePermission,
 
   // Member Role - Tabpart
   getRole,
