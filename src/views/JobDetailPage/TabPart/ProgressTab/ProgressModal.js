@@ -141,10 +141,6 @@ const ProgressModal = (props) => {
         Điều chỉnh tiến độ
         </DialogTitle>
       <DialogContent dividers style={{ overflowY: 'hidden' }}>
-        <Div>
-          <TexTitle >Phạm vi điều chỉnh </TexTitle>
-          <InputSelect />
-        </Div>
         <StartEndDay component={'span'}>
           <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
           <DivTime>
