@@ -856,7 +856,7 @@ async function doGetRole(payload) {
 
 function* getRole(action) {
   try {
-    const res = yield call(doGetRole, action.payload)
+    const res = yield call(doGetRole, action.payload)  
     yield put(actions.getRoleSuccess(res))
   } catch (error) {
     yield put(actions.getRoleFail(error))
@@ -882,6 +882,7 @@ function* createRole(action) {
   try {
     const res = yield call(doCreateRole, action.payload)
     yield put(actions.createRoleSuccess(res))
+    yield put(actions.getRole())
   } catch (error) {
     yield put(actions.createRoleFail(error))
   }
@@ -905,6 +906,7 @@ function* updateRole(action) {
   try {
     const res = yield call(doUpdateRole, action.payload)
     yield put(actions.updateRoleSuccess(res))
+    yield put(actions.getRole())
   } catch (error) {
     yield put(actions.updateRoleFail(error))
   }
@@ -928,6 +930,7 @@ function* deleteRole(action) {
   try {
     const res = yield call(doDeleteRole, action.payload)
     yield put(actions.deleteRoleSuccess(res))
+    yield put (actions.getRole())
   } catch (error) {
     yield put(actions.deleteRoleFail(error))
   }
