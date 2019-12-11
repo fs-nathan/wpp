@@ -58,7 +58,12 @@ const StyleContent = styled(ColorTypo)`
 const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
-
+const StyledMenuApprove = styled.div`
+  opacity: 0 ;
+  ${ApprovedContainer}:hover & {
+    opacity: 1;
+  }
+`
 const ApprovedBox = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -98,9 +103,11 @@ const ApprovedBox = (props) => {
                   <Badge component='small' color='bluelight' badge size='small' label={'Duyệt'} />
                 </ColorTypo>
               </div>
-              <ButtonIcon size='small' onClick={handleClick} >
-                <Icon path={mdiDotsHorizontal} size={1} />
-              </ButtonIcon>
+              <StyledMenuApprove>
+                <ButtonIcon size='small' onClick={handleClick} >
+                  <Icon path={mdiDotsHorizontal} size={1} />
+                </ButtonIcon>
+              </StyledMenuApprove>
             </StyledTitleBox>
             <StyledContentBox>
               <ColorTypo variant='caption'>{props.offer.dataHander.date_hander}</ColorTypo>
@@ -220,8 +227,8 @@ const CustomListItem = (props) => {
         <StyledContentBox>
           <StyleContent>{content}</StyleContent>
         </StyledContentBox>
-        <ApprovedBox {...props} approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
       </StyledListItem>
+        <ApprovedBox {...props} approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
       <Menu
         anchorEl={anchorEl}
         keepMounted
@@ -270,7 +277,7 @@ const ListOffer = (props) => {
           return (
             <CustomListItem
               {...props}
-              key={item.id} 
+              key={item.id}
               offer={item}
               handleClickOpen={() => {
                 props.handleClickEditItem(item)

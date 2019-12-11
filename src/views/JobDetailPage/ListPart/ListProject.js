@@ -65,10 +65,13 @@ cursor: pointer;
 `
 
 const Projects = (props) => {
-  console.log('props proejcts::::', props);
+  console.log("projects:::::", props);
   
   return (
-    <ProjectsDetail onClick={() => { console.log('Click item ' + props.project.id) }}>{props.title}</ProjectsDetail>
+    <ProjectsDetail onClick={() => { 
+      // console.log('Click item ' + props.project.id)
+      props.setShow(false)
+    }}>{props.title}</ProjectsDetail>
   )
 }
 
@@ -110,7 +113,8 @@ const ButtonIcon = styled(IconButton)`
 `
 
 function ListProjectHeader({ setShow }) {
-
+  // console.log("setShow::::", setShow);
+  
   const closeListProject = () => {
     setShow(false)
   }
@@ -143,8 +147,7 @@ function ListProjectBody({ subPrimary }) {
 
 function ListProject(props) {
   const value = React.useContext(WrapperContext)
-  console.log('projectGroup::::', value);
-  
+  // console.log("props setShow", props)
   return (
     <Container {...props}>
       <ListProjectHeader {...props} />
@@ -160,7 +163,7 @@ function ListProject(props) {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   {
-                    group.projects.map((project, projectIdx) => <Projects project={project} key={projectIdx} title={project.name} />)
+                    group.projects.map((project, projectIdx) => <Projects project={project} key={projectIdx} title={project.name} {...props}/>)
                   }
                 </ExpansionPanelDetails>
               </ExpansionProject>
