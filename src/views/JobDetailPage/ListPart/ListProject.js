@@ -8,6 +8,7 @@ import ColorTypo from '../../../components/ColorTypo';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import { WrapperContext } from '../index'
 
 const Container = styled.div`
   padding: 0 15px;
@@ -53,17 +54,17 @@ const ExpansionPanelDetails = styled(MuiExpansionPanelDetails)`
   flex-direction: column;
   padding: 10px 0;
 `
+const ProjectsDetail = styled.div`
+padding: 12px 0;
+font-weight: 500;
+border-bottom: 1px solid #0000001a;
+cursor: pointer;
+& > *:first-child {
+  border-top: 1px solid #0000001a;
+}
+`
 
 const Projects = (props) => {
-  const ProjectsDetail = styled.div`
-  padding: 12px 0;
-  font-weight: 500;
-  border-bottom: 1px solid #0000001a;
-  cursor: pointer;
-  & > *:first-child {
-    border-top: 1px solid #0000001a;
-  }
-  `
 
   return (
     <ProjectsDetail  onClick={() => {console.log('hello')}}>{props.title}</ProjectsDetail>
@@ -153,7 +154,17 @@ let fakeData = [
 ]
 
 function ListProject(props) {
-
+  const value = React.useContext(WrapperContext)
+  // let data = []
+  // if (value && value.projectGroup) {
+  //   data = value.projectGroup
+  // }
+  let data = []
+  if ( value && value.projectGroup) {
+    data = value.projectGroup
+  }
+  console.log('data::::::', data);
+  
   return (
     <Container {...props}>
       <ListProjectHeader {...props} />

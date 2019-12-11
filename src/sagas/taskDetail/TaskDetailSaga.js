@@ -1032,15 +1032,25 @@ function* getListGroupTask(action) {
     yield put(actions.getListGroupTaskFail(error))
   }
 }
-//edit name and description task
-
-async function doUpdateNameDescriptionTask(payload) {
+// Get project group - listpart
+async function doGetProjectGroup() {
   try {
     const config = {
-      url: 'task/update-name-description',
+      url: 'project-group/list',
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
-
-      method: 'put',
+async function doGetListProject(payload) {
+  try {
+    const config = {
+      url: 'project/list',
+      method: 'get',
       data: payload
     }
     const result = await apiService(config);
@@ -1050,6 +1060,40 @@ async function doUpdateNameDescriptionTask(payload) {
   }
 }
 
+
+function* getProjectGroup() {
+  try {
+    const response = yield call(doGetProjectGroup)
+    let projectGroups = response.project_groups
+    for (let i = 0; i < projectGroups.length; i++) {
+      let payload = {
+        group_project: projectGroups[i].id,
+        type: "active",
+        status: 0
+      }
+      const tempResponse = yield call(doGetListProject, payload)
+      projectGroups.projects = tempResponse.projects
+    }
+
+    yield put(actions.getProjectGroupSuccess(projectGroups))
+    // yield put(actions.getListProject())
+  } catch (error) {
+    yield put(actions.getProjectGroupFail(error))
+  }
+}
+async function doUpdateNameDescriptionTask() {
+  try {
+    // const config = {
+    //   url: 'project-group/list',
+    //   method: 'get'
+    // }
+    // const result = await apiService(config);
+    // return result.data;
+    return null;
+  } catch (error) {
+    throw error;
+  }
+}
 
 function* updateNameDescriptionTask(action) {
   try {
@@ -1136,6 +1180,8 @@ export {
   createTask,
   // List Group Task
   getListGroupTask,
+  getProjectGroup,
   //edit name and description task
   updateNameDescriptionTask,
+
 }

@@ -68,7 +68,6 @@ const ButtonIcon = styled(IconButton)`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  
 `;
 
 const getBadgeProjectRole = (projectRole) => {
@@ -105,6 +104,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
   };
   const handleClickOpen = () => {
     setOpen(true);
+    setAnchorEl(null);
   };
   const StyledMenuMember = styled.div`
   opacity: 0 ;
@@ -155,7 +155,10 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           </ButtonIcon>
         </StyledMenuMember>
       </StyledListItem>
+      {/* modal members */}
+      <MemberModal isOpen={open} handleCloseMembers={handleCloseMembers} handleOpen={handleClickOpen} />
       <Menu
+        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -165,11 +168,9 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           horizontal: 'right',
         }}
       >
-        <MenuItemCheck onClick={() => { handleClose(); handleClickOpen() }}>Chi tiết</MenuItemCheck>
+        <MenuItemCheck onClick={() => { handleClickOpen() }}>Chi tiết</MenuItemCheck>
         <MenuItemCheck onClick={handleClose}>Xóa</MenuItemCheck>
       </Menu>
-      {/* modal members */}
-      <MemberModal isOpen={open} handleCloseMembers={handleCloseMembers} handleOpen={handleClickOpen} />
     </React.Fragment>
   );
 }

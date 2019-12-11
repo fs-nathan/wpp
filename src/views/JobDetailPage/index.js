@@ -34,6 +34,7 @@ function JobDetailPage(props) {
     props.getMemberNotAssignedByTaskId(props.taskId)
     props.getTrackingTime(props.taskId)
     props.getListTaskDetailByProjectId(props.projectId)
+    props.getProjectGroup()
     props.getRoleTask()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -53,7 +54,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('state project id::::', state.taskDetail.listGroupTask.listGroupTask);
+  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectGroups);
 
 
 
@@ -92,6 +93,8 @@ const mapStateToProps = state => {
     userRoles: state.taskDetail.taskMember.user_roles,
 
     listTime: state.taskDetail.trackingTime.listTime,
+    // project group
+    projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
   }
 }
 
@@ -142,9 +145,9 @@ const mapDispatchToProps = dispatch => {
     getGroupPermission: () => dispatch(taskDetailAction.getPermission()),
     updateGroupPermission: (data) => dispatch(taskDetailAction.updatePermission(data)),
     // Member Role
-    createRoleTask: (name,description) => dispatch(taskDetailAction.createRole({ name,description})),
-    updateRoleTask: (user_role_id, name,description) => dispatch(taskDetailAction.updateRole({ user_role_id, name,description })),
-    deleteRoleTask: (user_role_id) =>dispatch(taskDetailAction.deleteRole({ user_role_id })),
+    createRoleTask: (name, description) => dispatch(taskDetailAction.createRole({ name, description })),
+    updateRoleTask: (user_role_id, name, description) => dispatch(taskDetailAction.updateRole({ user_role_id, name, description })),
+    deleteRoleTask: (user_role_id) => dispatch(taskDetailAction.deleteRole({ user_role_id })),
     getRoleTask: () => dispatch(taskDetailAction.getRole()),
 
     //time
@@ -156,7 +159,9 @@ const mapDispatchToProps = dispatch => {
     //  List Group Task
     getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
     //edit name and description task
-    updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data))
+    updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data)),
+    // get project group
+    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup())
   };
 };
 

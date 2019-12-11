@@ -685,16 +685,46 @@ export const getListTaskDetailFail = (error) => ({
     error: error
 });
 //edit name and description task
-export const updateNameDescriptionTask =(payload)=>({
-    type:types.UPDATE_NAME_DESCRIPTION_TASK_REQUEST,
+export const updateNameDescriptionTask = (payload) => ({
+    type: types.UPDATE_NAME_DESCRIPTION_TASK_REQUEST,
     payload
 });
-export const updateNameDescriptionTaskSuccess=(payload)=>({
-    type:types.UPDATE_NAME_DESCRIPTION_TASK_SUCCESS,
+export const updateNameDescriptionTaskSuccess = (payload) => ({
+    type: types.UPDATE_NAME_DESCRIPTION_TASK_SUCCESS,
     payload
 });
-export const updateNameDescriptionTaskFail=(error)=>({
-    type:types.UPDATE_NAME_DESCRIPTION_TASK_FAIL,
-    error:error
+
+// Get project group- listpart
+export const getProjectGroup = (payload) => ({
+    type: types.GET_PROJECT_GROUP_LISTPART_REQUEST,
+    payload
+});
+
+export const getProjectGroupSuccess = (payload) => ({
+    type: types.GET_PROJECT_GROUP_LISTPART_SUCCESS,
+    payload
+});
+export const updateNameDescriptionTaskFail = (error) => ({
+    type: types.UPDATE_NAME_DESCRIPTION_TASK_FAIL,
+    error: error
 })
 
+export const getProjectGroupFail = (error) => ({
+    type: types.GET_PROJECT_GROUP_LISTPART_FAIL,
+    error: error,
+});
+// Get project list - list part
+export const getListProject = (payload) => ({
+    type: types.GET_LIST_PROJECT_LISTPART_REQUEST,
+    payload
+});
+
+export const getListProjectSuccess = (payload) => ({
+    type: types.GET_LIST_PROJECT_LISTPART_SUCCESS,
+    payload
+});
+
+export const getListProjectFail = (error) => ({
+    type: types.GET_LIST_PROJECT_LISTPART_FAIL,
+    error: error,
+});

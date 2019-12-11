@@ -315,7 +315,7 @@ function TabBody() {
           </div>
         </WrapperProgressBar>
         <LegendBox>
-          <Icon path={mdiCircle} size={1} color={'rgb(49, 181, 134)'} />
+          <Icon path={mdiCircle} size={1} color={'#2dc63a'} />
           <ColorTypo>Hoàn thành thực tế</ColorTypo>
         </LegendBox>
         <LegendBox>
