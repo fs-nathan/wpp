@@ -728,3 +728,18 @@ export const getListProjectFail = (error) => ({
     type: types.GET_LIST_PROJECT_LISTPART_FAIL,
     error: error,
 });
+// Get project detail
+export const getProjectDetail = (payload) => ({
+    type: types.GET_PROJECT_DETAIL_REQUEST,
+    payload
+});
+
+export const getProjectDetailSuccess = (payload) => ({
+    type: types.GET_PROJECT_DETAIL_SUCCESS,
+    payload
+});
+
+export const getProjectDetailFail = (error) => ({
+    type: types.GET_PROJECT_DETAIL_FAIL,
+    error: error,
+});

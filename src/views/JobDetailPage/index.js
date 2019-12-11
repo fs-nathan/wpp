@@ -52,10 +52,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectGroups);
-
-
-
+  console.log('state project group::::', state.taskDetail.commonTaskDetail.projectDetail);
   return {
     // offer
     offer: state.taskDetail.taskOffer.offer,
@@ -93,6 +90,8 @@ const mapStateToProps = state => {
     listTime: state.taskDetail.trackingTime.listTime,
     // project group
     projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
+    // project detail
+    projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
   }
 }
 
@@ -159,7 +158,8 @@ const mapDispatchToProps = dispatch => {
     //edit name and description task
     updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data)),
     // get project group
-    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup())
+    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
+    getDetailProject: (project_id) => dispatch(taskDetailAction.getProjectDetail(project_id)),
   };
 };
 

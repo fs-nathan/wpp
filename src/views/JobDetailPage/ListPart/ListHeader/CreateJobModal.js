@@ -497,7 +497,7 @@ function CreateJobModal(props) {
               Đặt mặc định <Icon path={mdiHelpCircle} size={1} />
             </DefaultFlex>
           </ProgressWork>
-          <CommonControlForm labels={optionsList} />
+          {/* <CommonControlForm labels={optionsList} /> */}
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
             <DivTime>
