@@ -154,7 +154,7 @@ function AllSubtaskListItem(props) {
           </StyledMenu>
           {
             !isHover
-              ? <Avatar src={props.task.user_create_avatar} alt='avatar' />
+              ? <Avatar src={props.task.user_create_avatar} alt='avatar' style={{marginRight: '6px'}} />
               : <ButtonIcon onClick={() => {
                 props.completeSubTaskByTaskId(props.task.id)
               }}>

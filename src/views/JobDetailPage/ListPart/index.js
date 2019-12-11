@@ -43,7 +43,6 @@ function ListTask(props) {
         </Header>
         <ListBody/>
       </WrapTask>
-
     </WrapListTask>
 
   )

@@ -65,9 +65,12 @@ cursor: pointer;
 `
 
 const Projects = (props) => {
+  // console.log("projects:::::", props);
+  const value = React.useContext(WrapperContext)
   return (
     <ProjectsDetail onClick={() => { 
       // console.log('Click item ' + props.project.id)
+      value.getDetailProject(props.project.id)
       props.setShow(false)
     }}>{props.title}</ProjectsDetail>
   )

@@ -26,3 +26,19 @@ export const DEFAULT_OFFER_ITEM = { offer_id: "", content: "", user_hander: [], 
 // Remove duplicate user (by their id)
 export const getIndividualHandleUsers = 
     arr => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])
+
+const LIST_PROJECT_STATUS = {
+    ALLMEMBER: 0,
+    PENDING: 1,
+    INPROGRESS: 2,
+    DONE: 3,
+    OVERDUE: 4,
+    STOPPED: 5
+}
+
+export const filterAllProjectMember = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.ALLMEMBER)
+export const filterPendingProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.PENDING)
+export const filterInProgressProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.INPROGRESS)
+export const filterDoneProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.DONE)
+export const filterOverdueProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.OVERDUE)
+export const filterStoppedProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.STOPPED)

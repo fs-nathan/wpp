@@ -86,10 +86,15 @@ function JobContent(props) {
         break;
       case 2:
         // setColorStatus('grey')
+        setStatus('hoàn thành')
+        break;
+      case 3:
+        // setColorStatus('grey')
         setStatus('quá hạn')
         break;
       default:
         // console.log(colorStatus)
+        setStatus('')
         break;
     }
   }, [props.label])
@@ -120,7 +125,7 @@ function JobUnit(props) {
   return (
     <ListItemText disableTypography>
       <JobName title={props.name} notification={props.number_new_chat} />
-      <JobContent description={"Sử dụng phần mềm để thiết lập"} label={props.status} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content}/>
+      <JobContent description={"Sử dụng phần mềm để thiết lập"} label={props.status} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} />
     </ListItemText>
   )
 }

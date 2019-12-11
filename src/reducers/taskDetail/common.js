@@ -4,6 +4,7 @@ const initialState = {
     activeTaskId: "5da1821ad219830d90402fd8",
     activeProjectId: "5de5c4b9f9e332da9ebd6b3c",
     projectGroups: [],
+    projectDetail: [],
 }
 
 export default function reducer(state = initialState, action) {
@@ -14,6 +15,8 @@ export default function reducer(state = initialState, action) {
             return { ...state, activeProjectId: action.payload }
         case types.GET_PROJECT_GROUP_LISTPART_SUCCESS:
             return { ...state, projectGroups: action.payload }
+        case types.GET_PROJECT_DETAIL_SUCCESS:
+            return { ...state, projectDetail: action.payload.project}
         default:
             return state
     }

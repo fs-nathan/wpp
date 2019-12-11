@@ -177,6 +177,16 @@ const TableScroll = styled.div`
     }
   }
 `
+
+const StyledMenu = styled(TableCell)`
+  & >  *:first-child {
+      opacity: 0 ;
+  }
+  ${TableRow}:hover & {
+    opacity: 1;
+  }
+`
+
 function ProjectMember(props) {
     return (
         <StyledListItem>

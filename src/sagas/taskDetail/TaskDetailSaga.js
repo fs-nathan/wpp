@@ -1090,7 +1090,7 @@ async function doUpdateNameDescriptionTask() {
     // const result = await apiService(config);
     // return result.data;
     return null;
-  } catch (error) {
+  } catch(error) {
     throw error;
   }
 }
@@ -1109,7 +1109,28 @@ function* updateNameDescriptionTask(action) {
   }
 }
 
+// Get Project Detail
+async function doGetProjectDetail(project_id) {
+  try {
+    const config = {
+      url: 'project/detail?project_id=' + project_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getProjectDetail(action) {
 
+  try {
+    const res = yield call(doGetProjectDetail, action.payload)
+    yield put(actions.getProjectDetailSuccess(res))
+  } catch (error) {
+    yield put(actions.getProjectDetailFail(error))
+  }
+}
 
 
 
@@ -1183,5 +1204,6 @@ export {
   getProjectGroup,
   //edit name and description task
   updateNameDescriptionTask,
-
+  // get project detail
+  getProjectDetail,
 }
