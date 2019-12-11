@@ -182,27 +182,37 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.CREATE_COMMAND_REQUEST, taskDetailSaga.createCommand);
   yield takeLeading(taskDetailType.UPDATE_COMMAND_REQUEST, taskDetailSaga.updateCommand);
   yield takeLeading(taskDetailType.DELETE_COMMAND_REQUEST, taskDetailSaga.deleteCommand);
-  
+
   //Member::
   yield takeLeading(taskDetailType.GET_MEMBER_REQUEST, taskDetailSaga.getMember);
   yield takeLeading(taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST, taskDetailSaga.getMemberNotAssigned);
   yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
   yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
 
+  // Member Permission::
+  yield takeLeading(taskDetailType.GET_PERMISSION_REQUEST, taskDetailSaga.getPermission);
+  yield takeLeading(taskDetailType.UPDATE_PERMISSION_REQUEST, taskDetailSaga.updatePermission);
   // Member Role::
+  yield takeLeading(taskDetailType.GET_ROLE_REQUEST, taskDetailSaga.getRole);
   yield takeLeading(taskDetailType.POST_ROLE_REQUEST, taskDetailSaga.createRole);
   yield takeLeading(taskDetailType.UPDATE_ROLE_REQUEST, taskDetailSaga.updateRole);
   yield takeLeading(taskDetailType.DELETE_ROLE_REQUEST, taskDetailSaga.deleteRole);
 
   //Time
-  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST,taskDetailSaga.getTrackingTime);
-  yield takeLeading(taskDetailType.UPDATE_TIME_DURATION_REQUEST,taskDetailSaga.updateTimeDuration);
-  
+  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST, taskDetailSaga.getTrackingTime);
+  yield takeLeading(taskDetailType.UPDATE_TIME_DURATION_REQUEST, taskDetailSaga.updateTimeDuration);
+  yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST, taskDetailSaga.getTrackingTime)
+
   // List Task Detail
   yield takeLeading(taskDetailType.GET_LIST_TASK_DETAIL_REQUEST, taskDetailSaga.getListTaskDetail);
   yield takeLeading(taskDetailType.POST_TASK_REQUEST, taskDetailSaga.createTask);
   // List Group Task 
   yield takeLeading(taskDetailType.GET_LIST_GROUP_TASK_REQUEST, taskDetailSaga.getListGroupTask);
+  // get project group 
+  yield takeLeading(taskDetailType.GET_PROJECT_GROUP_LISTPART_REQUEST, taskDetailSaga.getProjectGroup);
+
+  //edit name and description task
+  yield takeLeading(taskDetailType.UPDATE_NAME_DESCRIPTION_TASK_REQUEST, taskDetailSaga.updateNameDescriptionTask);
 };
 
 export default rootSaga;

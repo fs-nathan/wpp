@@ -239,7 +239,6 @@ function CommonControlForm(props) {
   const [value, setValue] = React.useState(props.assign);
   const handleChangeFormAssign = itemValue => {
     console.log('itemValue::::', itemValue);
-
     setValue(itemValue)
     let clickedItem = props.labels.find(item => item.value === itemValue)
     props.handleChangeAssign(clickedItem)
@@ -275,6 +274,7 @@ function CommonPriorityForm(props) {
 
   const handleChangePriority = itemValue => {
     console.log('itemValue::::', itemValue);
+
 
     // Set state to change style in component
     setValue(itemValue)
@@ -353,6 +353,12 @@ const DEFAULT_DATA = {
   assignValue: DEFAULT_ASSIGN,
 }
 
+let optionsList = [
+  { id: 0, value: 'Ngày và giờ (mặc định)' },
+  { id: 1, value: 'Chỉ nhập ngày' },
+  { id: 2, value: 'Không yêu cầu' },
+]
+
 function CreateJobModal(props) {
 
   const value = React.useContext(WrapperContext)
@@ -360,6 +366,25 @@ function CreateJobModal(props) {
   const [openAddModal, setOpenAddModal] = React.useState(false)
   const [listGroupTask, setListGroupTask] = React.useState([])
   const [groupTaskValue, setGroupTaskValue] = React.useState(null)
+
+  const updateData = () => {
+    const dataNameDescription = {
+      task_id: value.taskId,
+      name: data.name,
+      description: data.description,
+    }
+    const dataTimeDuration = {
+      task_id: value.taskId,
+      start_time: data.start_time,
+      start_date: data.start_date,
+      end_time: data.end_time,
+      end_date: data.end_date
+    }
+    value.updateNameDescriptionTask({ dataNameDescription, dataTimeDuration })
+    props.setOpen(false)
+  }
+
+
 
   React.useEffect(() => {
     if (value.listTaskDetail) {
@@ -472,7 +497,7 @@ function CreateJobModal(props) {
               Đặt mặc định <Icon path={mdiHelpCircle} size={1} />
             </DefaultFlex>
           </ProgressWork>
-          <CommonControlForm label1='Ngày và giờ (mặc định)' label2='Chỉ nhập ngày' label3='Không yêu cầu' />
+          <CommonControlForm labels={optionsList} />
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
             <DivTime>
@@ -554,7 +579,7 @@ function CreateJobModal(props) {
           {props.isRight ?
             <>
               <span></span>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={() => { updateData() }} color="primary">
                 Hoàn Thành
             </Button>
             </>

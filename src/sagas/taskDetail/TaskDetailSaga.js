@@ -564,6 +564,7 @@ function* getLocation(action) {
 
 // Task Detail - TabPart - Cot phai
 async function doGetTaskDetail({ taskId }) {
+
   try {
     const config = {
       url: '/task/detail?task_id=' + taskId,
@@ -770,6 +771,149 @@ function* deleteMember(action) {
   }
 }
 
+// Member Permission
+async function doGetPermission(payload) {
+  try {
+    const config = {
+      url: '/task/get-group-permission',
+      method: 'get',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getPermission(action) {
+  try {
+    const res = yield call(doGetPermission, action.payload)
+    yield put(actions.getPermissionSuccess(res))
+  } catch (error) {
+    yield put(actions.getPermissionFail(error))
+  }
+}
+
+async function doUpdatePermission(payload) {
+  try {
+    const config = {
+      url: '/task/update-group-permission-member',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updatePermission(action) {
+  try {
+    const res = yield call(doUpdatePermission, action.payload)
+    yield put(actions.updatePermissionSuccess(res))
+  } catch (error) {
+    yield put(actions.updatePermissionFail(error))
+  }
+}
+
+// Member Role
+async function doGetRole(payload) {
+  try {
+    const config = {
+      url: '/list-user-role',
+      method: 'get',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getRole(action) {
+  try {
+    const res = yield call(doGetRole, action.payload)  
+    yield put(actions.getRoleSuccess(res))
+  } catch (error) {
+    yield put(actions.getRoleFail(error))
+  }
+}
+
+
+async function doCreateRole(payload) {
+  try {
+    const config = {
+      url: '/create-user-role',
+      method: 'post',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* createRole(action) {
+  try {
+    const res = yield call(doCreateRole, action.payload)
+    yield put(actions.createRoleSuccess(res))
+    yield put(actions.getRole())
+  } catch (error) {
+    yield put(actions.createRoleFail(error))
+  }
+}
+
+async function doUpdateRole(payload) {
+  try {
+    const config = {
+      url: '/update-user-role',
+      method: 'put',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updateRole(action) {
+  try {
+    const res = yield call(doUpdateRole, action.payload)
+    yield put(actions.updateRoleSuccess(res))
+    yield put(actions.getRole())
+  } catch (error) {
+    yield put(actions.updateRoleFail(error))
+  }
+}
+
+async function doDeleteRole(payload) {
+  try {
+    const config = {
+      url: '/delete-user-role',
+      method: 'delete',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* deleteRole(action) {
+  try {
+    const res = yield call(doDeleteRole, action.payload)
+    yield put(actions.deleteRoleSuccess(res))
+    yield put (actions.getRole())
+  } catch (error) {
+    yield put(actions.deleteRoleFail(error))
+  }
+}
 // Get list task detail
 async function doGetListTaskDetail({ project_id }) {
   try {
@@ -783,6 +927,7 @@ async function doGetListTaskDetail({ project_id }) {
     throw error;
   }
 }
+
 function* getListTaskDetail(action) {
   try {
     const res = yield call(doGetListTaskDetail, action.payload)
@@ -829,7 +974,6 @@ async function doUpdateTimeDuration(payload) {
 }
 function* updateTimeDuration(action) {
   try {
-
     const res = yield call(doUpdateTimeDuration, action.payload)
     yield put(actions.updateTimeDurationSuccess(res))
     yield put(actions.getTrackingTime(action.payload.task_id))
@@ -839,79 +983,9 @@ function* updateTimeDuration(action) {
   }
 }
 
-// Member Role
 
-async function doCreateRole(payload) {
-  try {
-    const config = {
-      url: 'role-task/create-role-task',
-      method: 'post',
-      data: payload
-    }
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-function* createRole(action) {
-  try {
-    const res = yield call(doCreateRole, action.payload)
-    yield put(actions.createRoleSuccess(res))
-  } catch (error) {
-    yield put(actions.createRoleFail(error))
-  }
-}
-
-async function doUpdateRole(payload) {
-  try {
-    const config = {
-      url: 'role-task/update-role-task',
-      method: 'put',
-      data: payload
-    }
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-function* updateRole(action) {
-  try {
-    const res = yield call(doUpdateRole, action.payload)
-    yield put(actions.updateRoleSuccess(res))
-  } catch (error) {
-    yield put(actions.updateRoleFail(error))
-  }
-}
-
-async function doDeleteRole(payload) {
-  try {
-    const config = {
-      url: 'role-task/delete-role-task',
-      method: 'delete',
-      data: payload
-    }
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-function* deleteRole(action) {
-  try {
-    const res = yield call(doDeleteRole, action.payload)
-    yield put(actions.deleteRoleSuccess(res))
-  } catch (error) {
-    yield put(actions.deleteRoleFail(error))
-  }
-}
 
 async function doCreateTask(payload) {
-
   try {
     const config = {
       url: 'task/create',
@@ -929,7 +1003,7 @@ function* createTask(action) {
   try {
     const res = yield call(doCreateTask, action.payload)
     yield put(actions.createTaskSuccess(res))
-    yield put(actions.getListTaskDetail({ project_id: '5de5c4b9f9e332da9ebd6b3c' }))
+    yield put(actions.getListTaskDetail('5de5c4b9f9e332da9ebd6b3c'))
   } catch (error) {
     yield put(actions.createTaskFail(error))
   }
@@ -949,6 +1023,8 @@ async function doGetListGroupTask({ project_id }) {
   }
 }
 function* getListGroupTask(action) {
+
+
   try {
     const res = yield call(doGetListGroupTask, action.payload)
     yield put(actions.getListGroupTaskSuccess(res))
@@ -956,6 +1032,87 @@ function* getListGroupTask(action) {
     yield put(actions.getListGroupTaskFail(error))
   }
 }
+// Get project group - listpart
+async function doGetProjectGroup() {
+  try {
+    const config = {
+      url: 'project-group/list',
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function doGetListProject(payload) {
+  try {
+    const config = {
+      url: 'project/list',
+      method: 'get',
+      data: payload
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+function* getProjectGroup() {
+  try {
+    const response = yield call(doGetProjectGroup)
+    let projectGroups = response.project_groups
+    for (let i = 0; i < projectGroups.length; i++) {
+      let payload = {
+        group_project: projectGroups[i].id,
+        type: "active",
+        status: 0
+      }
+      const tempResponse = yield call(doGetListProject, payload)
+      projectGroups[i].projects = tempResponse.projects
+    }
+
+    yield put(actions.getProjectGroupSuccess(projectGroups))
+    // yield put(actions.getListProject())
+  } catch (error) {
+    yield put(actions.getProjectGroupFail(error))
+  }
+}
+async function doUpdateNameDescriptionTask() {
+  try {
+    // const config = {
+    //   url: 'project-group/list',
+    //   method: 'get'
+    // }
+    // const result = await apiService(config);
+    // return result.data;
+    return null;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* updateNameDescriptionTask(action) {
+  try {
+    const res = yield call(doUpdateNameDescriptionTask, action.payload.dataNameDescription)
+    const taskId = action.payload.dataNameDescription.task_id
+    yield put(actions.updateNameDescriptionTaskSuccess(res))
+    yield put(actions.getTaskDetailTabPart({ taskId }))
+    const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
+    yield put(actions.updateTimeDurationSuccess(resTime))
+    yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
+  } catch (error) {
+    yield put(actions.updateNameDescriptionTaskFail(error))
+  }
+}
+
+
+
+
+
 export {
   // Update Priority
   updatePriority,
@@ -1004,7 +1161,12 @@ export {
   createMember,
   deleteMember,
 
+  // Member Permission - Tabpart
+  getPermission,
+  updatePermission,
+
   // Member Role - Tabpart
+  getRole,
   createRole,
   updateRole,
   deleteRole,
@@ -1018,4 +1180,8 @@ export {
   createTask,
   // List Group Task
   getListGroupTask,
+  getProjectGroup,
+  //edit name and description task
+  updateNameDescriptionTask,
+
 }
