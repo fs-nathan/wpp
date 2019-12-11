@@ -8,7 +8,7 @@ import ColorTypo from '../../../components/ColorTypo';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import { WrapperContext } from '../index'
+import { WrapperContext } from '../index';
 
 const Container = styled.div`
   padding: 0 15px;
@@ -148,6 +148,7 @@ function ListProject(props) {
   return (
     <Container {...props}>
       <ListProjectHeader {...props} />
+      
       {
         value.projectGroup.map(group => {
           return (

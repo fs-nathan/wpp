@@ -264,12 +264,8 @@ function TabBody() {
   const value = React.useContext(WrapperContext)
   console.log('detailtask', value.detailTask)
   let listTime
-<<<<<<< HEAD
-  if (value.listTime.trackings) {
-=======
 
   if (value.listTime && value.listTime.trackings) {
->>>>>>> origin/NghiemTien
     listTime = value.listTime.trackings.map((item, key) => {
       return (
         <TableRowItem key={key}>
@@ -291,7 +287,7 @@ function TabBody() {
   }
   function convertDate(convert_day){
     return convert_day.split('-').reverse().join('-');
-
+  }
   let handleChangeProgress = progressValue => {
     setDataProgress(progressValue)
   }
