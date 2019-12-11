@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton, ListSubheader, List } from '@material-ui/core';
-import { mdiClose , mdiDrag, mdiMenuUp } from '@mdi/js';
+import { mdiClose, mdiDrag, mdiMenuUp } from '@mdi/js';
 import Icon from '@mdi/react';
 import styled from 'styled-components';
 import SearchInput from '../../../components/SearchInput';
@@ -65,9 +65,10 @@ cursor: pointer;
 `
 
 const Projects = (props) => {
-
+  console.log('props proejcts::::', props);
+  
   return (
-    <ProjectsDetail  onClick={() => {console.log('hello')}}>{props.title}</ProjectsDetail>
+    <ProjectsDetail onClick={() => { console.log('Click item ' + props.project.id) }}>{props.title}</ProjectsDetail>
   )
 }
 
@@ -117,7 +118,7 @@ function ListProjectHeader({ setShow }) {
   return (
     <div style={{ marginBottom: 17 }}>
       <Header>
-        <Icon path={mdiDrag} size={1} color={'#000000'}/>
+        <Icon path={mdiDrag} size={1} color={'#000000'} />
         <div>DANH SÁCH DỰ ÁN</div>
         <ButtonIcon
           onClick={closeListProject}
@@ -140,47 +141,26 @@ function ListProjectBody({ subPrimary }) {
   )
 }
 
-let fakeData = [
-  {
-    id: 1, name: 'Phòng quản lý dự án',
-    projects: ['Dự án đầu tư khu đô thị Nam Từ Liêm', 'Dự án đầu tư khu đô thị Nam Từ Liêm', 'Dự án đầu tư khu đô thị Nam Từ Liêm'],
-    open: true,
-  },
-  {
-    id: 2, name: 'Phòng tổ chức hành chính',
-    projects: ['Dự án đầu tư khu đô thị Nam Từ Liêm', 'Dự án đầu tư khu đô thị Nam Từ Liêm', 'Dự án đầu tư khu đô thị Nam Từ Liêm'],
-    open: true
-  }
-]
-
 function ListProject(props) {
   const value = React.useContext(WrapperContext)
-  // let data = []
-  // if (value && value.projectGroup) {
-  //   data = value.projectGroup
-  // }
-  let data = []
-  if ( value && value.projectGroup) {
-    data = value.projectGroup
-  }
-  console.log('data::::::', data);
+  console.log('projectGroup::::', value);
   
   return (
     <Container {...props}>
       <ListProjectHeader {...props} />
       {
-        fakeData.map(room => {
+        value.projectGroup.map(group => {
           return (
-            <div key={room.id}>
+            <div key={group.id}>
               <ExpansionProject defaultExpanded>
                 <ExpansionPanelSummary
                   expandIcon={<Icon path={mdiMenuUp} size={1} />}
                   id="panel1bh-header">
-                  <ListProjectBody subPrimary={room.name.toUpperCase()} />
+                  <ListProjectBody subPrimary={group.name.toUpperCase()} />
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   {
-                    room.projects.map((project, projectIdx) => <Projects key={projectIdx} title={project} />)
+                    group.projects.map((project, projectIdx) => <Projects project={project} key={projectIdx} title={project.name} />)
                   }
                 </ExpansionPanelDetails>
               </ExpansionProject>

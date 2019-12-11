@@ -42,9 +42,7 @@ function JobDetailPage(props) {
   return (
 
     <Wrapper value={{ ...props }}>
-
       <Container>
-
         <ListPart {...props} />
         <ChatPart {...props} />
         <TabPart {...props} />

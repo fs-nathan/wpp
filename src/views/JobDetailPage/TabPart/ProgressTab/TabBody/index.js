@@ -264,11 +264,9 @@ function TabBody() {
   const [dataProgress, setDataProgress] = React.useState(0)
   const value = React.useContext(WrapperContext)
   let listTime
-  console.log("time......", value.listTime)
-  if (value.listTime.trackings) {
-    listTime = value.listTime.trackings.map((item, key) => {
-      console.log("listTime.......", listTime)
 
+  if (value.listTime && value.listTime.trackings) {
+    listTime = value.listTime.trackings.map((item, key) => {
       return (
         <TableRowItem key={key}>
           <CellAvatar>
@@ -288,7 +286,9 @@ function TabBody() {
     })
   }
 
-
+  let handleChangeProgress = progressValue => {
+    setDataProgress(progressValue)
+  }
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -313,7 +313,7 @@ function TabBody() {
           <div>
             <InputProgressBar
               type="range" min="1" max="100"
-              value={dataProgress} onChange={e => setDataProgress(e.target.value)} />
+              value={dataProgress} onChange={e => handleChangeProgress(e.target.value)} />
           </div>
         </WrapperProgressBar>
         <LegendBox>

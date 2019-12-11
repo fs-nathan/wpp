@@ -1072,7 +1072,7 @@ function* getProjectGroup() {
         status: 0
       }
       const tempResponse = yield call(doGetListProject, payload)
-      projectGroups.projects = tempResponse.projects
+      projectGroups[i].projects = tempResponse.projects
     }
 
     yield put(actions.getProjectGroupSuccess(projectGroups))
