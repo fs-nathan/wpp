@@ -65,8 +65,6 @@ cursor: pointer;
 `
 
 const Projects = (props) => {
-  console.log('props proejcts::::', props);
-  
   return (
     <ProjectsDetail onClick={() => { console.log('Click item ' + props.project.id) }}>{props.title}</ProjectsDetail>
   )
@@ -143,8 +141,6 @@ function ListProjectBody({ subPrimary }) {
 
 function ListProject(props) {
   const value = React.useContext(WrapperContext)
-  console.log('projectGroup::::', value);
-  
   return (
     <Container {...props}>
       <ListProjectHeader {...props} />

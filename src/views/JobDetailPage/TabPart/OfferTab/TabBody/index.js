@@ -327,7 +327,6 @@ function TabBody(props) {
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
-  console.log("123", props)
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
