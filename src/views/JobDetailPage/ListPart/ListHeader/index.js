@@ -8,7 +8,7 @@ import CreateJobModal from './CreateJobModal';
 import { WrapperContext } from '../../index'
 
 const Header = styled.div`
-  padding: 0 15px;
+  padding: 0 3px 0 15px;
   height: 77px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > * {

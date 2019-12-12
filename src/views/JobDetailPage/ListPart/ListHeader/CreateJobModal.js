@@ -206,6 +206,9 @@ const InputTextJob = styled(TextField)`
         font-size: 14px;
         z-index: 0
     }
+    & > p {
+      color: red;
+    }
 `
 
 const TextInputSelect = styled(InputSelect)`
@@ -238,7 +241,7 @@ const DEFAULT_ASSIGN_ID = assignList[0].id
 function CommonControlForm(props) {
   const [value, setValue] = React.useState(props.assign);
   const handleChangeFormAssign = itemValue => {
-    console.log('itemValue::::', itemValue);
+    // console.log('itemValue::::', itemValue);
     setValue(itemValue)
     let clickedItem = props.labels.find(item => item.value === itemValue)
     props.handleChangeAssign(clickedItem)
@@ -273,8 +276,6 @@ function CommonPriorityForm(props) {
   const [value, setValue] = React.useState(props.priority)
 
   const handleChangePriority = itemValue => {
-    console.log('itemValue::::', itemValue);
-
 
     // Set state to change style in component
     setValue(itemValue)
@@ -353,11 +354,11 @@ const DEFAULT_DATA = {
   assignValue: DEFAULT_ASSIGN,
 }
 
-let optionsList = [
-  { id: 0, value: 'Ngày và giờ (mặc định)' },
-  { id: 1, value: 'Chỉ nhập ngày' },
-  { id: 2, value: 'Không yêu cầu' },
-]
+// let optionsList = [
+//   { id: 0, value: 'Ngày và giờ (mặc định)' },
+//   { id: 1, value: 'Chỉ nhập ngày' },
+//   { id: 2, value: 'Không yêu cầu' },
+// ]
 
 function CreateJobModal(props) {
 
@@ -445,7 +446,7 @@ function CreateJobModal(props) {
   const handlePressConfirm = () => {
     if(validate()) {
       // Call api
-      value.createJobByProjectId(dataCreateJob)
+      value.createJobByProjectId({ data: dataCreateJob, projectId: value.projectId })
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
       // Close modal

@@ -82,6 +82,7 @@ const Projects = (props) => {
     <ProjectsDetail onClick={() => {
       // console.log('Click item ' + props.project.id)
       value.getDetailProject(props.project.id)
+      value.chooseProject(props.project)
       props.setShow(false)
     }}>{props.title}</ProjectsDetail>
   )

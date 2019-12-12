@@ -743,3 +743,13 @@ export const getProjectDetailFail = (error) => ({
     type: types.GET_PROJECT_DETAIL_FAIL,
     error: error,
 });
+
+export const chooseProject = payload => ({
+    type: types.CHOOSE_PROJECT,
+    payload
+});
+
+export const chooseTask = payload => ({
+    type: types.CHOOSE_TASK,
+    payload
+});

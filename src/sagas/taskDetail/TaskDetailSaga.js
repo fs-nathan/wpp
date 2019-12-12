@@ -1001,9 +1001,9 @@ async function doCreateTask(payload) {
 
 function* createTask(action) {
   try {
-    const res = yield call(doCreateTask, action.payload)
+    const res = yield call(doCreateTask, action.payload.data)
     yield put(actions.createTaskSuccess(res))
-    yield put(actions.getListTaskDetail('5de5c4b9f9e332da9ebd6b3c'))
+    yield put(actions.getListTaskDetail({ project_id: action.payload.projectId }))
   } catch (error) {
     yield put(actions.createTaskFail(error))
   }
@@ -1065,6 +1065,7 @@ function* getProjectGroup() {
   try {
     const response = yield call(doGetProjectGroup)
     let projectGroups = response.project_groups
+    let projectId = ""
     for (let i = 0; i < projectGroups.length; i++) {
       let payload = {
         group_project: projectGroups[i].id,
@@ -1073,9 +1074,11 @@ function* getProjectGroup() {
       }
       const tempResponse = yield call(doGetListProject, payload)
       projectGroups[i].projects = tempResponse.projects
+      // set active project id to call other API
+      if(i === 0) projectId = projectGroups[i].id
     }
 
-    yield put(actions.getProjectGroupSuccess(projectGroups))
+    yield put(actions.getProjectGroupSuccess({ projectGroups, projectId }))
     // yield put(actions.getListProject())
   } catch (error) {
     yield put(actions.getProjectGroupFail(error))
@@ -1111,6 +1114,8 @@ function* updateNameDescriptionTask(action) {
 
 // Get Project Detail
 async function doGetProjectDetail(project_id) {
+  
+  console.log("PPPP", project_id)
   try {
     const config = {
       url: 'project/detail?project_id=' + project_id,
@@ -1123,7 +1128,6 @@ async function doGetProjectDetail(project_id) {
   }
 }
 function* getProjectDetail(action) {
-
   try {
     const res = yield call(doGetProjectDetail, action.payload)
     yield put(actions.getProjectDetailSuccess(res))

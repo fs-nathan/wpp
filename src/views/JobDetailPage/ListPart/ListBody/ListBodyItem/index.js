@@ -8,6 +8,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
 // import avatar from '../../../../../assets/avatar.jpg';
+// import { WrapperContext } from '../../../index'
 
 const Container = styled.a`
     padding: 10px 8px 10px 0;
@@ -133,8 +134,11 @@ function JobUnit(props) {
 
 
 function ListBodyItem(props) {
+  // console.log("props", props);
+  // const value = React.useContext(WrapperContext);
+
   return (
-    <Container>
+    <Container onClick={() => console.log("id list task:::::", props.id)}>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>
