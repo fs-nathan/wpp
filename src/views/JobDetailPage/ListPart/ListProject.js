@@ -178,7 +178,6 @@ const WrapperBody = styled(Scrollbars)`
 `;
 function ListProject(props) {
   const value = React.useContext(WrapperContext)
-  // console.log("props setShow", props)
   return (
     <Container {...props}>
       <WrapperHeader {...props} />

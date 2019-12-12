@@ -258,11 +258,11 @@ const ContentProgress = styled.div`
 // }
 
 
-
 function TabBody() {
 
   const [dataProgress, setDataProgress] = React.useState(0)
   const value = React.useContext(WrapperContext)
+  console.log('detailtask', value.detailTask)
   let listTime
 
   if (value.listTime && value.listTime.trackings) {
@@ -285,7 +285,9 @@ function TabBody() {
       )
     })
   }
-
+  function convertDate(convert_day){
+    return convert_day.split('-').reverse().join('-');
+  }
   let handleChangeProgress = progressValue => {
     setDataProgress(progressValue)
   }
@@ -295,12 +297,12 @@ function TabBody() {
       <Container>
         <StartEndDateBox>
           <StartDateBox>
-            <ColorTypo>08:30</ColorTypo>
-            <ColorTypo>10/06/2019</ColorTypo>
+            <ColorTypo>{value.detailTask.start_time}</ColorTypo>
+            <ColorTypo>{convertDate(value.detailTask.start_date)}</ColorTypo>
           </StartDateBox>
           <EndDateBox>
-            <ColorTypo>08:30</ColorTypo>
-            <ColorTypo>10/06/2019</ColorTypo>
+            <ColorTypo>{value.detailTask.end_time}</ColorTypo>
+            <ColorTypo>{convertDate(value.detailTask.end_date)}</ColorTypo>
           </EndDateBox>
         </StartEndDateBox>
         {/* progress bar */}
