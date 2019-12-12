@@ -177,14 +177,15 @@ const TableScroll = styled.div`
     }
   }
 `
-
+const StyledTableRow = styled(TableRow)`
+    &:hover {
+        & > *:last-child {
+            opacity: 1;
+        }
+    }
+`
 const StyledMenu = styled(TableCell)`
-  & >  *:first-child {
       opacity: 0 ;
-  }
-  ${TableRow}:hover & {
-    opacity: 1;
-  }
 `
 
 function ProjectMember(props) {
@@ -308,12 +309,12 @@ function TableMember(props) {
                 <Table className={classes.table}>
                     <TableBody>
                         {props.listMemberJobState.map((addData, idx) => (
-                            <TableRow key={idx}>
+                            <StyledTableRow key={idx}>
                                 <TableCell style={{ width: '9%' }}>{addData.avatarMember}</TableCell>
                                 <TableCell style={{ width: '40%' }}>{addData.name}</TableCell>
                                 <TableCell style={{ width: '20%' }}>{addData.permission}</TableCell>
                                 <TableCell style={{ width: '32%' }}>{addData.roles}</TableCell>
-                                <TableCell >
+                                <StyledMenu >
                                     <IconButton size='small' onClick={handleClickEliminate} >
                                         <Icon path={mdiDotsVertical} size={1} />
                                     </IconButton>
@@ -329,8 +330,8 @@ function TableMember(props) {
                                     >
                                         <MenuItem onClick={handleCloseEliminate}>Loại trừ</MenuItem>
                                     </CustomMenu>
-                                </TableCell>
-                            </TableRow>
+                                </StyledMenu>
+                            </StyledTableRow>
                         ))}
                     </TableBody>
                 </Table>

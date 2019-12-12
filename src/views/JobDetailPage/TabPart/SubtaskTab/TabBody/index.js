@@ -84,6 +84,7 @@ const AllSubtaskListItemContainer = styled(ListItem)`
 `;
 
 const ButtonIcon = styled(IconButton)`
+  padding: 0.79rem !important;
   &:hover {
     background: none;
   }
@@ -154,8 +155,9 @@ function AllSubtaskListItem(props) {
           </StyledMenu>
           {
             !isHover
-              ? <Avatar src={props.task.user_create_avatar} alt='avatar' style={{marginRight: '6px'}} />
-              : <ButtonIcon onClick={() => {
+              ? <Avatar src={props.task.user_create_avatar} alt='avatar' />
+              : 
+              <ButtonIcon onClick={() => {
                 props.completeSubTaskByTaskId(props.task.id)
               }}>
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
@@ -272,6 +274,9 @@ const FinishedSubtaskListItemTextSecondary = styled.span`
 const ItemList = styled(ListItemText)`
   & > span {
     font-size: 16px;
+    width: 300px;
+    display: flex;
+    flex-wrap: nowrap;
   }
 `
 const Badge = styled(ColorChip)`

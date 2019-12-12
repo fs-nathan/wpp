@@ -52,7 +52,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  console.log('state project group::::', state.taskDetail.commonTaskDetail.projectDetail);
+  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectDetail);
   return {
     // offer
     offer: state.taskDetail.taskOffer.offer,
