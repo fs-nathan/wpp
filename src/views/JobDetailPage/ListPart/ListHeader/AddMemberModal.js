@@ -124,7 +124,7 @@ const FlexJobMember = styled(Typography)`
     padding-left: 25px;
 `
 
-const PriorityButton =styled(Button)`
+const PriorityButton = styled(Button)`
     border: 1px solid #e2e2e2;
     padding: 0 5px;
     text-transform: capitalize;
@@ -210,43 +210,73 @@ function MemberPriority(props) {
         </div>
     )
 }
+// function Test(roles) {
+//     console.log("data....", roles);
 
-function MemberRole(props) {
+//     return (
+//         <div>
+//             <div>
+//                 {
+//                     roles[0] &&
+//                     <ColorChip color='grey' badge label={roles[0]} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+//                 }
+//                 {
+//                     roles[1] &&
+//                     <ColorChip color='grey' badge label={roles[1]} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+//                 }
+//             </div>
+//             <div>
+//                 {
+//                     roles[2] &&
+//                     <ColorChip color='grey' badge label={roles[2]} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+//                 }
+//                 {
+//                     roles[3] &&
+//                     <ColorChip color='grey' badge label={roles[3]} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+//                 }
+//             </div>
+//         </div >
+//     )
+// }
+let listData = []
+function MemberRole() {
+
+
     const [openRoleModal, setOpenRoleModal] = React.useState(false)
+    console.log("listData...", listData);
+    if (listData) {
+        listData.map((item, key) => {
+            return (
+                <div key={key}>
+                    {
+                        item &&
+                        <ColorChip color='grey' badge label={item} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+                    }
+                </div>
+            )
+        })
+    }
+
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div>
-                <div>
-                    {
-                        props.roles[0] &&
-                        <ColorChip color='grey' badge label={props.roles[0].name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-                    }
-                    {
-                        props.roles[1] &&
-                        <ColorChip color='grey' badge label={props.roles[1].name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-                    }
-                </div>
-                <div>
-                    {
-                        props.roles[2] &&
-                        <ColorChip color='grey' badge label={props.roles[2].name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-                    }
-                    {
-                        props.roles[3] &&
-                        <ColorChip color='grey' badge label={props.roles[3].name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-                    }
-                </div>
-            </div>
+            {listData}
             <IconButton style={{ float: 'right' }}
                 size='small'
                 onClick={() => {
                     // handleClose()
+
                     setOpenRoleModal(true)
                 }}
             >
+
                 <Icon path={mdiPlusCircleOutline} size={1} style={{ fill: '#b0b0b0' }} />
             </IconButton>
-            <RoleMemberModal isOpen={openRoleModal} setOpen={setOpenRoleModal} />
+            <RoleMemberModal
+
+                isOpen={openRoleModal}
+                setOpen={setOpenRoleModal}
+                setListData={data => { listData = data }}
+            />
         </div>
     )
 }
@@ -266,6 +296,8 @@ function TableMember(props) {
   grid-area: body;
   height: 100%;
 `;
+    console.log("demo.........", props.listMemberJobState);
+
     return (
         <Paper className={classes.root}>
             <Table className={classes.table}>
@@ -335,7 +367,7 @@ function AddMemberModal(props) {
             return {
                 avatarMember: <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />,
                 name: <MemberDetail name={item.name} email={item.email} />,
-                permission: <MemberPriority label={item.permission} />,
+                permission: <MemberPriority />,
                 roles: <MemberRole roles={item.roles || []} />
             }
         })
