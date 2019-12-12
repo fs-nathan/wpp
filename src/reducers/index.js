@@ -48,6 +48,7 @@ import listProject, { initialState as listProjectInitialState } from './project/
 import listDeletedProject, { initialState as listDeletedProjectInitialState } from './project/listDeletedProject';
 import detailProject, { initialState as detailProjectInitialState } from './project/detailProject';
 import hideProject, { initialState as hideProjectInitialState } from './project/hideProject';
+import showProject, { initialState as showProjectInitialState } from './project/showProject';
 import memberProject, { initialState as memberProjectInitialState } from './project/memberProject';
 import updateProject, { initialState as updateProjectInitialState } from './project/updateProject';
 import removeMemberProject, { initialState as removeMemberProjectInitialState } from './project/removeMemberProject';
@@ -55,7 +56,7 @@ import updateStateJoinTask, { initialState as updateStateJoinTaskInitialState } 
 import addProjectRoleToMember, { initialState as addProjectRoleToMemberInitialState } from './project/addProjectRoleToMember';
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from './project/removeProjectRoleFromMember';
 import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from './project/updateGroupPermissionMember';
-import listGroupTask, { initialState as listGroupTaskInitialState} from './groupTask/listGroupTask';
+import listGroupTask1, { initialState as listGroupTaskInitialState} from './groupTask/listGroupTask';
 import createGroupTask, { initialState as createGroupTaskInitialState} from './groupTask/createGroupTask';
 import deleteGroupTask, { initialState as deleteGroupTaskInitialState} from './groupTask/deleteGroupTask';
 import updateGroupTask, { initialState as updateGroupTaskInitialState} from './groupTask/updateGroupTask';
@@ -73,6 +74,9 @@ import commonTaskDetail from './taskDetail/common';
 import location from './taskDetail/location'
 import detailTask from './taskDetail/taskDetail';
 import taskMember from './taskDetail/member';
+import trackingTime from './taskDetail/time';
+import listDetailTask from './taskDetail/listTaskDetail'
+import listGroupTask from './taskDetail/listGroupTask'
 const rootReducer = combineReducers({
   authentications,
   system,
@@ -87,7 +91,10 @@ const rootReducer = combineReducers({
     commonTaskDetail,
     location,
     detailTask,
-    taskMember
+    taskMember,
+    trackingTime,
+    listDetailTask,
+    listGroupTask,
   }),
   room: combineReducers({
     listRoom,
@@ -150,6 +157,7 @@ const rootReducer = combineReducers({
     listDeletedProject,
     detailProject,
     hideProject,
+    showProject,
     memberProject,
     addMemberProject,
     removeMemberProject,
@@ -161,7 +169,7 @@ const rootReducer = combineReducers({
     copyProject
   }),
   groupTask: combineReducers({
-    listGroupTask,
+    listGroupTask: listGroupTask1,
     createGroupTask,
     deleteGroupTask,
     updateGroupTask,
@@ -237,6 +245,7 @@ export const DEFAULT_STATE = {
     listDeletedProject: listDeletedProjectInitialState,
     detailProject: detailProjectInitialState,
     hideProject: hideProjectInitialState,
+    showProject: showProjectInitialState,
     memberProject: memberProjectInitialState,
     addMemberProject: addMemberProjectInitialState,
     removeMemberProject: removeMemberProjectInitialState,

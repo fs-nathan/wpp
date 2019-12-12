@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, withStyles, Typography, Dialog, Button} from '@material-ui/core';
+import { IconButton, withStyles, Typography, Dialog, Button } from '@material-ui/core';
 import styled from 'styled-components';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import CloseIcon from '@material-ui/icons/Close';
@@ -8,6 +8,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from './OutlinedInputSelect'
+import { WrapperContext } from '../../index';
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -53,85 +54,125 @@ const InputSelect = styled(OutlinedInputSelect)`
 `
 
 const styles = theme => ({
-    root: {
-      margin: 0,
-      padding: theme.spacing(2),
-    },
-    closeButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.grey[500],
-    },
-  });
-  
-  const DialogTitle = withStyles(styles)(props => {
-    const { children, classes, onClose, ...other } = props;
-    return (
-      <MuiDialogTitle disableTypography className={classes.root} {...other}>
-        <Typography variant="h6">{children}</Typography>
-        {onClose ? (
-          <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </MuiDialogTitle>
-    );
-  });
-  
-  const DialogContent = withStyles(theme => ({
-    root: {
-      padding: theme.spacing(2),
-    },
-  }))(MuiDialogContent);
-  
-  const DialogActions = withStyles(theme => ({
-    root: {
-      margin: 0,
-      padding: theme.spacing(1),
-    },
-  }))(MuiDialogActions);
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+    background: '#f5f8fc'
+  },
+  title: {
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const DialogTitle = withStyles(styles)(props => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography className={classes.title} variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles(theme => ({
+  root: {
+    margin: 0,
+    padding: '15px 24px',
+  },
+}))(MuiDialogActions);
 
 const ProgressModal = (props) => {
-    const [time, setTime] = React.useState('')
+  const value = React.useContext(WrapperContext)
+  const [startTime, setStartTime] = React.useState()
+  const [endTime, setEndTime] = React.useState()
+  const [startDay, setStartDay] = React.useState()
+  const [endDay, setEndDay] = React.useState()
 
-  const handleTime = () => {
-    setTime(time);
+  const handleStartTime = (startTime) => {
+    setStartTime(startTime)
   }
-    return (
-        <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} >
-        <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
-          Điều chỉnh tiến độ
+  const handleEndTime = (endTime) => {
+    setEndTime(endTime)
+  }
+  const handleStartDay = (startDay) => {
+    setStartDay(startDay)
+  }
+  const handleEndDay = (endDay) => {
+    setEndDay(endDay)
+  }
+
+
+  const setDataTimeDuration = () => {
+    const data = {
+      task_id: value.taskId,
+      start_date: startDay,
+      start_time: startTime,
+      end_date: endDay,
+      end_time: endTime
+    }
+    console.log("data", data);
+    value.updateTimeDuration(data)
+  }
+
+
+
+
+  return (
+    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} >
+      <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
+        Điều chỉnh tiến độ
         </DialogTitle>
-        <DialogContent dividers style={{  overflowY: 'hidden'}}>
-          <Div>
-            <TexTitle >Phạm vi điều chỉnh </TexTitle>
-            <InputSelect />
-          </Div>
-          <StartEndDay component={'span'}>
-            <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
-            <DivTime>
-              <InputTime value={time} onChange={handleTime} />
-            </DivTime>
-            <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput type={'date'}/>
-          </StartEndDay>
-          <StartEndDay component={'span'}>
-            <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
-            <DivTime>
-              <InputTime value={time} onChange={handleTime} />
-            </DivTime>
-            <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput type={'date'}/>
-          </StartEndDay>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={props.handleClickClose} color="primary">
-            Hoàn Thành
+      <DialogContent dividers style={{ overflowY: 'hidden' }}>
+        <Div>
+          <TexTitle >Phạm vi điều chỉnh </TexTitle>
+          <InputSelect />
+        </Div>
+        <StartEndDay component={'span'}>
+          <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
+          <DivTime>
+            <InputTime value={startTime} onChange={(e) => handleStartTime(e.target.value)} />
+          </DivTime>
+          <StartEndDate component={'span'}>Ngày</StartEndDate>
+          <OutlineInput type={'date'} value={startDay} onChange={(e) => handleStartDay(e.target.value)} />
+        </StartEndDay>
+        <StartEndDay component={'span'}>
+          <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
+          <DivTime>
+            <InputTime value={endTime} onChange={(e) => handleEndTime(e.target.value)} />
+          </DivTime>
+          <StartEndDate component={'span'}>Ngày</StartEndDate>
+          <OutlineInput type={'date'} value={endDay} onChange={(e) => handleEndDay(e.target.value)} />
+        </StartEndDay>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => {
+
+          setDataTimeDuration()
+          props.handleClickClose()
+        }} color="primary">
+          Hoàn Thành
               </Button>
-        </DialogActions>
-      </Dialog>
-    )
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 export default ProgressModal;

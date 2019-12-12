@@ -106,6 +106,12 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const StyledMenuMember = styled.div`
+  opacity: 0 ;
+  ${StyledListItem}:hover & {
+    opacity: 1;
+  }
+`
   return (
     <React.Fragment>
       <StyledListItem>
@@ -130,22 +136,24 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
                 {getBadgeProjectRole(projectRole)}
                 {
                   authorityList.map((authority, index) =>
-                    <BadgeItem 
-                    key={index} 
-                    color={'light-green'} 
-                    label={authority} 
-                    size='small' 
-                    badge 
-                    component='span' />
+                    <BadgeItem
+                      key={index}
+                      color={'light-green'}
+                      label={authority}
+                      size='small'
+                      badge
+                      component='span' />
                   )
                 }
               </StyledDiv>
             </React.Fragment>
           }
         />
-        <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-          <Icon path={mdiDotsVertical} size={1} />
-        </ButtonIcon>
+        <StyledMenuMember>
+          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+            <Icon path={mdiDotsVertical} size={1} />
+          </ButtonIcon>
+        </StyledMenuMember>
       </StyledListItem>
       <Menu
         anchorEl={anchorEl}
@@ -157,7 +165,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
           horizontal: 'right',
         }}
       >
-        <MenuItemCheck onClick={() => {handleClose();handleClickOpen()}}>Chi tiết</MenuItemCheck>
+        <MenuItemCheck onClick={() => { handleClose(); handleClickOpen() }}>Chi tiết</MenuItemCheck>
         <MenuItemCheck onClick={handleClose}>Xóa</MenuItemCheck>
       </Menu>
       {/* modal members */}
@@ -183,10 +191,10 @@ const MemberList = () => {
 function TabBody() {
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-    <Container>
-      <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
-      <MemberList />
-    </Container>
+      <Container>
+        <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
+        <MemberList />
+      </Container>
     </Body>
   )
 }

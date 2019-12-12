@@ -36,6 +36,7 @@ import { sortProject } from '../../../../actions/project/sortProject';
 import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
 import { deleteProject } from '../../../../actions/project/deleteProject';
 import { hideProject } from '../../../../actions/project/hideProject';
+import { showProject } from '../../../../actions/project/showProject';
 
 const Container = styled.div`
   grid-area: table;
@@ -193,17 +194,20 @@ function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 0:   
       return ({
-        color: '#4a96ba',
+        color: '#4caf50',
+        background: '#4caf5042',
         name: 'Thấp',
       });
     case 1: 
       return ({
-        color: '#c49c56',
+        color: '#ff9800',
+        background: '#ff980038',
         name: 'Trung bình',
       });
     case 2: 
       return ({
-        color: '#d63340',
+        color: '#fe0707',
+        background: '#ff050524',
         name: 'Cao',
       });
     default:
@@ -234,7 +238,7 @@ function decodeStateName(stateName) {
     case 'hidden':
       return ({
         color: '#20194d',
-        name: 'Ẩn',
+        name: 'Đang ẩn',
       })
     default:
       return ({
@@ -255,7 +259,7 @@ function displayDateRange(from, to) {
   }
 }
 
-const SettingButton = ({ visibility, onEditProject, onHideProject, onDeleteProject }) => {
+const SettingButton = ({ visibility, onEditProject, onHideProject, onShowProject, onDeleteProject }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [setting, setSetting] = React.useState(false);
@@ -292,7 +296,7 @@ const SettingButton = ({ visibility, onEditProject, onHideProject, onDeleteProje
         }}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={evt => { 
           handleClose(evt); 
-          visibility && onHideProject(); 
+          visibility ? onHideProject() : onShowProject(); 
         }}>{visibility ? 'Ẩn' : 'Bỏ ẩn'}</MenuItem>
         <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
       </Menu>
@@ -316,7 +320,7 @@ function AllProjectTable({
   listProject, 
   detailProjectGroup, 
   doDeleteProject, 
-  doHideProject,
+  doHideProject, doShowProject,
   doSortProject,
 }) {
 
@@ -387,7 +391,7 @@ function AllProjectTable({
         break;
     }
     if (sortField === 'state_name') {
-      projects = sortBy(projects, [o => get(o, 'visibility'), o => get(o, sortField)]);
+      projects = sortBy(projects, [o => get(o, 'visibility', true), o => get(o, sortField)]);
     }
     else {
       projects = sortBy(projects, [o => get(o, sortField)]);
@@ -473,6 +477,10 @@ function AllProjectTable({
     doHideProject({ projectId });
   }
 
+  function handleShowProject(projectId) {
+    doShowProject({ projectId });
+  }
+
   function handleDeleteProject(projectId) {
     doDeleteProject({ projectId });
   }
@@ -551,9 +559,9 @@ function AllProjectTable({
               sort: (evt) => handleSortColumn('name'),
             }, {
               label: 'Trạng thái',
-              field: (row) => <StateBox stateName={decodeStateName(!get(row, 'visibility', true) ? 'hidden' : get(row, 'state_name', '')).color}>
+              field: (row) => <StateBox stateName={decodeStateName(get(row, 'visibility', true) === false ? 'hidden' : get(row, 'state_name', '')).color}>
                                 <div>
-                                  <span>&#11044;</span><span>{decodeStateName(!get(row, 'visibility', true) ? 'hidden' : get(row, 'state_name', '')).name}</span>
+                                  <span>&#11044;</span><span>{decodeStateName(get(row, 'visibility', true) === false ? 'hidden' : get(row, 'state_name', '')).name}</span>
                                 </div>
                                 {get(row, 'visibility', true) && (
                                   <small>
@@ -579,7 +587,10 @@ function AllProjectTable({
               sort: (evt) => handleSortColumn('duration'),
             }, {
               label: 'Ưu tiên',
-              field: (row) => <StyledBadge color={decodePriorityCode(get(row, 'priority_code', 0)).color}>
+              field: (row) => <StyledBadge 
+                                color={decodePriorityCode(get(row, 'priority_code', 0)).color}
+                                background={decodePriorityCode(get(row, 'priority_code', 0)).background}
+                              >
                                 {decodePriorityCode(get(row, 'priority_code', 0)).name}  
                               </StyledBadge>,
               sort: (evt) => handleSortColumn('priority_code'),
@@ -607,6 +618,7 @@ function AllProjectTable({
                               }}
                               visibility={get(row, 'visibility', true)}
                               onHideProject={() => handleHideProject(get(row, 'id'))}
+                              onShowProject={() => handleShowProject(get(row, 'id'))}
                               onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
                             />,
             }]}
@@ -748,6 +760,7 @@ const mapDispatchToProps = dispatch => {
     doSortProject: ({ projectId, sortIndex }) => dispatch(sortProject({ projectId, sortIndex })),
     doDeleteProject: ({ projectId }) => dispatch(deleteProject({ projectId })),
     doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
+    doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
     doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),
   }
 }

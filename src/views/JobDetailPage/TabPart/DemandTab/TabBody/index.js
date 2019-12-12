@@ -63,7 +63,12 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
-
+const StyledMenuDemand = styled.div`
+  opacity: 0 ;
+  ${StyledListItem}:hover & {
+    opacity: 1;
+  }
+`
 const CustomListItem = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -96,9 +101,11 @@ const CustomListItem = (props) => {
               </div>
             </ColorTypo>
           </div>
-          <ButtonIcon size='small' onClick={handleClick} >
-            <Icon path={mdiDotsHorizontal} size={1} />
-          </ButtonIcon>
+          <StyledMenuDemand>
+            <ButtonIcon size='small' onClick={handleClick} >
+              <Icon path={mdiDotsHorizontal} size={1} />
+            </ButtonIcon>
+          </StyledMenuDemand>
         </StyledTitleBox>
         <StyledContentBox>
           <Text >{props.item.content}</Text>
@@ -132,7 +139,6 @@ const StyledList = styled.ul`
 
 const ListDemand = (props) => {
   const [open, setOpen] = React.useState(false)
-  // const [anchorEl, setAnchorEl] = React.useState(null)
   const [isEditDemand] = React.useState(true)
   const [selectedItem, setSelectedItem] = React.useState({ content: "", type: -1 })
   const handleClickEditItem = item => {
@@ -143,16 +149,16 @@ const ListDemand = (props) => {
     setOpen(false);
   };
   const [isOpenDelete, setOpenDelete] = React.useState(false);
-  const handleOpenModalDelete = () => {
+  const handleOpenModalDelete = item => {
     setOpenDelete(true);
+    setSelectedItem({...item, command_id: item.id})
     // setAnchorEl(null);
   };
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    console.log("DELETEEEEE")
-    // props.deleteRemindWByRemindId(props.item.id)
+    props.deleteCommandByCommandId(selectedItem.id)
   }
   const confirmUpdateCommand = ({ id, content, type }) => {
     props.updateCommandByTaskId(id, content, type)
@@ -168,6 +174,7 @@ const ListDemand = (props) => {
         {props.activeArr.map((item, index) => {
           return (
             <CustomListItem
+              activeArr={item}
               key={index}
               isDemand={item.type !== 0}
               handleClickOpen={() => handleClickEditItem(item)}
@@ -236,13 +243,16 @@ function TabBody(props) {
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.command}/>
+          <ListDemand 
+          {...props} 
+          activeArr={props.command} 
+          />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.commandItems}/>
+          <ListDemand {...props} activeArr={props.commandItems} />
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.decisionItems}/>
+          <ListDemand {...props} activeArr={props.decisionItems} />
         </Collapse>
       </Container>
     </Body>

@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { lighten } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-const CustomBadge = styled(({color, ...rest}) => <div {...rest} />)`
+const CustomBadge = styled(({color, backgroundColor = null, ...rest}) => <div {...rest} />)`
   padding: 0.25rem 0.5rem;
-  background: ${props => lighten(props.color, 0.75)};
+  background: ${props => props.backgroundColor ? props.backgroundColor : lighten(props.color, 0.75)};
   color: ${props => props.color};
   border-radius: 2px;
   font-weight: 600;

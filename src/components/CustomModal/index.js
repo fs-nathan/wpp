@@ -88,7 +88,7 @@ const StyledDialog = styled(Dialog)`
 const TwoColumnsContainer = styled(({ maxWidth, ...rest }) => <div {...rest} />)`
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: ${props => props.maxWidth === 'lg' ? '1fr 2fr' : '2fr 3fr'};
+  grid-template-columns: ${props => props.maxWidth === 'lg' ? '5fr 12fr' : '2fr 3fr'};
   & > * {
     &:first-child {
       border-right: 1px solid rgba(0, 0, 0, 0.1);

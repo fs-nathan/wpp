@@ -7,6 +7,7 @@ import { get, findIndex, remove, slice } from 'lodash';
 import { UPDATE_PROJECT } from '../../constants/actions/project/updateProject';
 import { DELETE_PROJECT } from '../../constants/actions/project/deleteProject';
 import { HIDE_PROJECT } from '../../constants/actions/project/hideProject';
+import { SHOW_PROJECT } from '../../constants/actions/project/showProject';
 import { SORT_PROJECT } from '../../constants/actions/project/sortProject';
 
 export const initialState = {
@@ -71,6 +72,20 @@ function reducer(state = initialState, action) {
       projects[index] = {
         ...projects[index],
         visibility: false,
+      };
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects,
+        },
+      };
+    case SHOW_PROJECT: 
+      projects = [...state.data.projects];
+      index = findIndex(projects, { id: get(action.options, 'projectId') });
+      projects[index] = {
+        ...projects[index],
+        visibility: true,
       };
       return {
         ...state,

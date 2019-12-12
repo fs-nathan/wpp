@@ -15,11 +15,10 @@ import moment from 'moment';
 import { StyledList, StyledListItem, Primary } from '../../../../components/CustomList';
 import { get, map, filter } from 'lodash';
 import Icon from '@mdi/react';
-import { mdiChevronDown, mdiChevronUp, mdiCheckCircle, } from '@mdi/js';
+import { mdiCheckCircle, } from '@mdi/js';
 import { useRequiredString, useRequiredDate } from '../../../../hooks';
 
 const Header = styled(ColorTypo)`
-  padding: 0 8px;
   margin-bottom: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
@@ -53,14 +52,9 @@ const StyledListSubheader = styled(ListSubheader)`
   &:hover {
     cursor: pointer;
   }
-  & > *:first-child {
-    fill: rgba(0, 0, 0, 0.54);
-  }
-  & > *:last-child {
-    color: rgba(0, 0, 0, 0.54);  
+  & > * { 
+    color: rgba(0, 0, 0, 0.54);
     font-size: 14px;
-    font-weight: 500;
-    margin-left: 8px;
   }
 `;
 
@@ -85,37 +79,33 @@ const StyledPrimary = styled(({ isSelected, ...rest }) => <Primary {...rest} />)
 
 function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject }) {
 
-  const [expand, setExpand] = React.useState(true);
-
-  return (
-    <StyledList
-      component="nav"
-      aria-labelledby={`list-subheader-${get(projectGroup, 'id')}`}
-      subheader={
-        <StyledListSubheader component="div" id={`list-subheader-${get(projectGroup, 'id')}`} 
-          onClick={evt => setExpand(prev => !prev)}
-        >
-          {get(projectGroup, 'projects', []).length > 0 
-          ? <Icon path={expand ? mdiChevronDown : mdiChevronUp} size={1} />
-          : <Icon path={mdiChevronUp} size={1} color={'rgba(0, 0, 0, 0)'} />}
-          <ColorTypo>{get(projectGroup, 'name', '')}</ColorTypo>
-        </StyledListSubheader>
-      }
-    >
-      {expand && get(projectGroup, 'projects', []).map(project => (
-        <CustomListItem key={get(project, 'id')} onClick={() => setSelectedProject(project)}>
-          <ListItemText 
-            primary={
-              <StyledPrimary isSelected={get(selectedProject, 'id') === get(project, 'id')}>
-                <Icon path={mdiCheckCircle} size={1} /> 
-                <span>{get(project, 'name', '')}</span>
-              </StyledPrimary>  
-            }
-          />
-        </CustomListItem>
-      ))}
-    </StyledList>
-  );
+  if (get(projectGroup, 'projects', []).length > 0) 
+    return (
+      <StyledList
+        component="nav"
+        aria-labelledby={`list-subheader-${get(projectGroup, 'id')}`}
+        subheader={
+          <StyledListSubheader component="div" id={`list-subheader-${get(projectGroup, 'id')}`} 
+          >
+            <ColorTypo bold uppercase>{get(projectGroup, 'name', '')}</ColorTypo>
+          </StyledListSubheader>
+        }
+      >
+        {get(projectGroup, 'projects', []).map(project => (
+          <CustomListItem key={get(project, 'id')} onClick={() => setSelectedProject(project)}>
+            <ListItemText 
+              primary={
+                <StyledPrimary isSelected={get(selectedProject, 'id') === get(project, 'id')}>
+                  <Icon path={mdiCheckCircle} size={1} /> 
+                  <span>{get(project, 'name', '')}</span>
+                </StyledPrimary>  
+              }
+            />
+          </CustomListItem>
+        ))}
+      </StyledList>
+    );
+  else return null;
 }
 
 function CopyProject({ open, setOpen, listProjectGroup, listProject, doCopyProject }) {

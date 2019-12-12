@@ -73,6 +73,12 @@ const Body = styled(Scrollbars)`
   height: 100%;
   
 `;
+const StyledMenu = styled.div`
+  opacity: 0 ;
+  ${StyledListItem}:hover & {
+    opacity: 1;
+  }
+`
 const MemberMenuLists = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -97,7 +103,7 @@ const MemberMenuLists = (props) => {
   }
 
   return (
-    <div >
+    <StyledMenu >
       <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
       </ButtonIcon>
@@ -125,7 +131,7 @@ const MemberMenuLists = (props) => {
         handleOpenModalDelete={handleOpenModalDelete}
         // task={props.task.id} 
         {...props} />
-    </div>
+    </StyledMenu>
   )
 }
 

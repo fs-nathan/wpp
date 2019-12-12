@@ -25,4 +25,4 @@ yarn.lock
 
 # firebase
 .firebaserc
-/.firebase/
+.firebase/
