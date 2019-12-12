@@ -8,7 +8,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
 // import avatar from '../../../../../assets/avatar.jpg';
-import { WrapperContext } from '../../../index'
+// import { WrapperContext } from '../../../index'
 
 const Container = styled.a`
     padding: 10px 8px 10px 0;

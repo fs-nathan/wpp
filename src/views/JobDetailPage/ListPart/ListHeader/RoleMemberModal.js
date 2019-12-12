@@ -96,15 +96,15 @@ const DialogActions = withStyles(theme => ({
     padding: '15px 24px',
   },
 }))(MuiDialogActions);
-
+let array = []
 function RoleMemberModal(props) {
 
-  const rows = [
-    createData('Nhà đầu tư 2', 'asdassdd'),
-    createData('Giám đốc dự án Cần Thơ ', 'Điều hành toàn bộ dự án cần thơ'),
-    createData('Theo dõi khách hàng', 'Kiểm tra khách hàng và theo dõi khách hàng mọi lúc mọi nơi bất cứ đâu'),
-    createData('Giám sát dự án', 'Giám sát toàn bộ dự án, kể cả lãnh đạo'),
-  ];
+  // const rows = [
+  //   createData('Nhà đầu tư 2', 'asdassdd'),
+  //   createData('Giám đốc dự án Cần Thơ ', 'Điều hành toàn bộ dự án cần thơ'),
+  //   createData('Theo dõi khách hàng', 'Kiểm tra khách hàng và theo dõi khách hàng mọi lúc mọi nơi bất cứ đâu'),
+  //   createData('Giám sát dự án', 'Giám sát toàn bộ dự án, kể cả lãnh đạo'),
+  // ];
 
   function createData(role, description) {
     return { role, description };
@@ -140,8 +140,27 @@ function RoleMemberModal(props) {
   const [valueNameEdit, setValueNameEdit] = React.useState('')
   const [valueDesEdit, setValueDesEdit] = React.useState('')
   const [valueIdEdit, setValueIdEdit] = React.useState('')
-
-
+  // const [check, setCheck] = React.useState(true)
+  function setData(data,check) {
+    if(check===false){
+    for (var i = 0; i < array.length+1; i++) {
+      if (array[i] === data) {
+        array.splice(i, 1)
+      }
+    }}
+    else{
+      array.push(data)
+    }
+    console.log("arrrrr",array);
+  }
+  
+  function test(array) {
+    props.setListData(array)
+  }
+  const setArray = () => {
+    array = []
+  }
+  
 
 
   let list
@@ -153,7 +172,11 @@ function RoleMemberModal(props) {
           key={key}
         >
           <TableCell component="th" scope="row">
-            <Checkbox />
+            <Checkbox 
+            onChange={(e) => {
+              setData(item.name,e.target.checked)
+            }}
+            />
           </TableCell>
           <TableCell style={{ fontWeight: 'bold' }} >{item.name}</TableCell>
           <TableCell>{item.description}</TableCell>
@@ -179,7 +202,8 @@ function RoleMemberModal(props) {
 
   return (
     <div>
-      <Dialog maxWidth="sm" fullWidth onClose={handleClose} open={props.isOpen}>
+      <Dialog maxWidth="sm" fullWidth onClose={
+        handleClose} open={props.isOpen}>
         <DialogTitle onClose={handleClose}>
           Vai trò thành viên
         </DialogTitle>
@@ -210,14 +234,19 @@ function RoleMemberModal(props) {
           </Table>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={() =>
+          <Button autoFocus onClick={() => {
+            setArray()
             handleClose()
+          }
           } color='secondary'>
             HUỶ
           </Button>
-          <Button autoFocus onClick={() =>
+          <Button autoFocus onClick={() => {
+            test(array)
+            setArray()
             handleClose()
-          } color='primary'>
+
+          }} color='primary'>
             HOÀN THÀNH
           </Button>
         </DialogActions>
