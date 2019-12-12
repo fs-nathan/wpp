@@ -180,9 +180,10 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
+const WrapperCommon = styled.div``
 const StyledMenuOffer = styled.div`
   opacity: 0 ;
-  ${StyledListItem}:hover & {
+  ${WrapperCommon}:hover & {
     opacity: 1;
   }
 `
@@ -205,30 +206,31 @@ const CustomListItem = (props) => {
   return (
     <React.Fragment>
       <StyledListItem>
-        <StyledTitleBox>
-          <Avatar style={{ width: 25, height: 25 }} src={user_create_avatar} alt='avatar' />
-          <div>
-            <StyleContent variant='body1' bold>{user_create_name}</StyleContent>
-            <ColorTypo variant='caption'>
-              <Badge component='small' size='small' badge color='orangelight' label={'Đề xuất'} />
-              &nbsp;
-              với
-              &nbsp;
+        <WrapperCommon>
+          <StyledTitleBox>
+            <Avatar style={{ width: 25, height: 25 }} src={user_create_avatar} alt='avatar' />
+            <div>
+              <StyleContent variant='body1' bold>{user_create_name}</StyleContent>
+              <ColorTypo variant='caption'>
+                <Badge component='small' size='small' badge color='orangelight' label={'Đề xuất'} />
+                &nbsp;
+                với
+                &nbsp;
             <ColorTypo color='orange' variant='caption'>{user_can_handers.join(", ")}</ColorTypo> lúc {date_create}
-            </ColorTypo>
-          </div>
-          <StyledMenuOffer>
-            <ButtonIcon size='small' onClick={handleClick} >
-              <Icon path={mdiDotsHorizontal} size={1} />
-            </ButtonIcon>
-
-          </StyledMenuOffer>
-        </StyledTitleBox>
-        <StyledContentBox>
-          <StyleContent>{content}</StyleContent>
-        </StyledContentBox>
-      </StyledListItem>
+              </ColorTypo>
+            </div>
+            <StyledMenuOffer>
+              <ButtonIcon size='small' onClick={handleClick} >
+                <Icon path={mdiDotsHorizontal} size={1} />
+              </ButtonIcon>
+            </StyledMenuOffer>
+          </StyledTitleBox>
+          <StyledContentBox>
+            <StyleContent>{content}</StyleContent>
+          </StyledContentBox>
+        </WrapperCommon>
         <ApprovedBox {...props} approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
+      </StyledListItem>
       <Menu
         anchorEl={anchorEl}
         keepMounted

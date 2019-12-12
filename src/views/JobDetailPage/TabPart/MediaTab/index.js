@@ -5,6 +5,7 @@ import TabBody from './TabBody';
 import styled from 'styled-components'
 
 const Container = styled.div`
+  transition: unset !important;
   height: 100%;
   display: grid;
   grid-template-rows: 85px calc(100vh - 70px - 50px);
@@ -28,7 +29,7 @@ const Header = styled(TabHeader)`
 `
 function MediaTab(props) {
   return (
-    <Slide in={props.show === 4} direction='left' mountOnEnter unmountOnExit>
+    <Slide in={props.show === 4}  mountOnEnter unmountOnExit>
       <Container>
         <Header setShow={props.setShow} />
         <TabBody {...props}/>

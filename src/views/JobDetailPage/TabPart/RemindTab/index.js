@@ -4,6 +4,7 @@ import TabHeader from './TabHeader';
 import TabBody from './TabBody';
 import styled from 'styled-components'
 const Container = styled.div`
+  transition: unset !important;
   height: 100%;
   display: grid;
   grid-template-rows: 85px calc(100vh - 70px - 50px);
@@ -27,7 +28,7 @@ const Header = styled(TabHeader)`
 `
 function RemindTab(props) {
   return (
-    <Slide in={props.show === 3} direction='left' mountOnEnter unmountOnExit>
+    <Slide in={props.show === 3} mountOnEnter unmountOnExit>
       <Container style={{ height: '100%'}}>
         <Header setShow={props.setShow} />
         <TabBody {...props}/>
