@@ -34,10 +34,10 @@ export const StyledTableHeadCell = props => (
   </TableCell>
 );
 export const StyledTableBodyCell = props => (
-  <TableCell 
-  {...props} 
-  align={props.align || 'center'}
-  className={`table-body-cell ${props.className}`}
+  <TableCell
+    {...props}
+    align={props.align || 'center'}
+    className={`table-body-cell ${props.className}`}
   >
     {props.children}
   </TableCell>
@@ -74,6 +74,36 @@ export const selectItem = (selected, id) => {
 export const selectAll = (e, data) => {
   if (e.target.checked) {
     const newSelecteds = data.map(n => n.id);
+    return newSelecteds;
+  }
+  return [];
+};
+export const selectItemRedux = (selected, item) => {
+  let selectedIndex = -1;
+  selected.forEach((element, index) => {
+    if (element.id === item.id) {
+      selectedIndex = index;
+      return;
+    }
+  });
+  let newSelected = [];
+  if (selectedIndex === -1) {
+    newSelected = newSelected.concat(selected, item);
+  } else if (selectedIndex === 0) {
+    newSelected = newSelected.concat(selected.slice(1));
+  } else if (selectedIndex === selected.length - 1) {
+    newSelected = newSelected.concat(selected.slice(0, -1));
+  } else if (selectedIndex > 0) {
+    newSelected = newSelected.concat(
+      selected.slice(0, selectedIndex),
+      selected.slice(selectedIndex + 1)
+    );
+  }
+  return newSelected;
+};
+export const selectAllRedux = (e, data) => {
+  if (e.target.checked) {
+    const newSelecteds = data;
     return newSelecteds;
   }
   return [];

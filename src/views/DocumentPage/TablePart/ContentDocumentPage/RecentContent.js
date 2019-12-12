@@ -25,16 +25,20 @@ import {
   FullAvatar,
   selectItem,
   selectAll,
-  GreenCheckbox
+  GreenCheckbox,
+  selectAllRedux,
+  selectItemRedux
 } from '../DocumentComponent/TableCommon';
 import './ContentDocumentPage.scss';
 import ColorTypo from '../../../../components/ColorTypo';
+import LoadingBox from '../../../../components/LoadingBox';
 
 const RecentContent = props => {
   const [listData, setListData] = useState([]);
   const [page] = React.useState(0);
   const [rowsPerPage] = React.useState(10);
   const [selected, setSelected] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
   useEffect(() => {
     fetDataRecentDocument();
   }, []);
@@ -44,17 +48,19 @@ const RecentContent = props => {
     }; // eslint-disable-next-line
   }, []);
   const fetDataRecentDocument = async () => {
+    setIsLoading(true);
     const { data } = await getDocumentRecently();
     setListData(data.files);
+    setIsLoading(false);
   };
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, listData));
-    props.selectDocumentItem(selectAll(e, listData));
+    props.selectDocumentItem(selectAllRedux(e, listData));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
-  const handleSelectItem = id => {
-    setSelected(selectItem(selected, id));
-    props.selectDocumentItem(selectItem(selected, id));
+  const handleSelectItem = item => {
+    setSelected(selectItem(selected, item.id));
+    props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
   const handleChangePage = () => {};
   const getIconAvatar = (url, idx = 0) => {
@@ -75,6 +81,9 @@ const RecentContent = props => {
     }
     props.openDocumentDetail(item); // test
   };
+  if (isLoading) {
+    return <LoadingBox />;
+  }
   return (
     <Fragment>
       <Table>
@@ -122,7 +131,7 @@ const RecentContent = props => {
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
-                    onChange={e => handleSelectItem(file.id)}
+                    onChange={e => handleSelectItem(file)}
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell

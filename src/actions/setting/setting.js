@@ -25,3 +25,10 @@ export const actionChangeBGMenu = colors => {
     payload: colors
   };
 };
+
+export const actionChangeBreadCrumbs = breadCrumbs => {
+  return {
+    type: actionTypes.CHANGE_DOCUMENT_BREAD_CRUMBS,
+    payload: breadCrumbs
+  };
+};

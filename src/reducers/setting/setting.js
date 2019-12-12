@@ -1,11 +1,10 @@
 import * as actionTypes from '../../constants/actions/setting/setting';
 import { SETTING_ACCOUNT, SETTING_GROUP } from '../../constants/constants';
 
-export const initialState = {
-  settingAccountType: SETTING_ACCOUNT.INFO,
-  settingGroupType: SETTING_GROUP.INFO,
-  notificationSelected: {},
-  colors: [
+const THEME_COLOR_KEY = 'wp-theme-colors';
+let theme_colors = [];
+if (!localStorage.getItem(THEME_COLOR_KEY)) {
+  theme_colors = [
     { value: '#01b374', selected: true },
     { value: '#f35700', selected: false },
     { value: '#c62db9', selected: false },
@@ -20,7 +19,16 @@ export const initialState = {
     { value: '#f37c00', selected: false },
     { value: '#2dbbc6', selected: false },
     { value: '#8f44c8', selected: false }
-  ]
+  ];
+  localStorage.setItem(THEME_COLOR_KEY, JSON.stringify(theme_colors));
+}
+
+export const initialState = {
+  settingAccountType: SETTING_ACCOUNT.INFO,
+  settingGroupType: SETTING_GROUP.INFO,
+  notificationSelected: {},
+  colors: JSON.parse(localStorage.getItem(THEME_COLOR_KEY)) || theme_colors,
+  breadCrumbs: []
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -31,8 +39,12 @@ const settingReducer = (state = initialState, action) => {
       return { ...state, settingGroupType: action.payload };
     case actionTypes.SELECTED_NOTIFICATION:
       return { ...state, notificationSelected: action.payload };
-    case actionTypes.CHANGE_BACKGROUND_MENU:
+    case actionTypes.CHANGE_BACKGROUND_MENU: {
+      localStorage.setItem(THEME_COLOR_KEY, JSON.stringify(action.payload));
       return { ...state, colors: action.payload };
+    }
+    case actionTypes.CHANGE_DOCUMENT_BREAD_CRUMBS:
+      return { ...state, breadCrumbs: action.payload };
     default:
       return state;
   }

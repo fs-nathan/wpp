@@ -28,15 +28,19 @@ import {
   FullAvatar,
   selectItem,
   selectAll,
-  GreenCheckbox
+  GreenCheckbox,
+  selectAllRedux,
+  selectItemRedux
 } from '../DocumentComponent/TableCommon';
 import { FileType } from '../../../../components/FileType';
+import LoadingBox from '../../../../components/LoadingBox';
 
 const ProjectDocument = props => {
   const [data, setData] = useState([]);
   const [page] = useState(0);
   const [rowsPerPage] = useState(10);
   const [selected, setSelected] = useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     fetDataRecentDocument();
@@ -48,19 +52,21 @@ const ProjectDocument = props => {
     // eslint-disable-next-line
   }, []);
   const fetDataRecentDocument = async () => {
+    setIsLoading(true);
     const { data } = await getProjectStatic({
       pageSize: 10,
       pageNum: 0
     });
     setData(data.projects);
+    setIsLoading(false);
   };
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, data));
-    props.selectDocumentItem(selectAll(e, data));
+    props.selectDocumentItem(selectAllRedux(e, data));
   };
-  const handleSelectItem = id => {
-    setSelected(selectItem(selected, id));
-    props.selectDocumentItem(selectItem(selected, id));
+  const handleSelectItem = item => {
+    setSelected(selectItem(selected, item.id));
+    props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
   const moreAction = [
@@ -70,21 +76,22 @@ const ProjectDocument = props => {
       type: 'share'
     }
   ];
-  const handleClick = (event, project) => {
-    props.history.push({
-      pathname: Routes.DOCUMENT_PROJECT,
-      search: `?projectId=${project.id}`
-    });
-  };
   const handleChangePage = () => {};
   const openDetail = item => {
     const isDetail =
       item.type === 'word' || item.type === 'pdf' || item.type === 'excel';
     if (isDetail) {
       props.openDocumentDetail(item);
+    } else {
+      props.history.push({
+        pathname: Routes.DOCUMENT_PROJECT,
+        search: `?projectId=${item.id}`
+      });
     }
-    props.openDocumentDetail(item); // test
   };
+  if (isLoading) {
+    return <LoadingBox />;
+  }
   return (
     <React.Fragment>
       <Table>
@@ -122,14 +129,13 @@ const ProjectDocument = props => {
             return (
               <TableRow
                 hover={true}
-                onClick={event => handleClick(event, project)}
                 key={project.id}
                 className="table-body-row"
               >
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
-                    onChange={e => handleSelectItem(project.id)}
+                    onChange={e => handleSelectItem(project)}
                     onClick={e => e.stopPropagation()}
                   />
                 </StyledTableBodyCell>

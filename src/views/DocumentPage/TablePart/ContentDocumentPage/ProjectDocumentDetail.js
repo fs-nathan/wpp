@@ -24,15 +24,20 @@ import {
   FullAvatar,
   selectItem,
   selectAll,
-  GreenCheckbox
+  GreenCheckbox,
+  selectAllRedux,
+  selectItemRedux
 } from '../DocumentComponent/TableCommon';
 import './ContentDocumentPage.scss';
 import ColorTypo from '../../../../components/ColorTypo';
+import LoadingBox from '../../../../components/LoadingBox';
+
 const ProjectDocumentDetail = props => {
   const [listData, setListData] = useState([]);
   const [page] = React.useState(0);
   const [rowsPerPage] = React.useState(10);
   const [selected, setSelected] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
   useEffect(() => {
     const search = props.location.search.split('projectId=').pop();
     fetDataRecentDocument(search);
@@ -45,17 +50,19 @@ const ProjectDocumentDetail = props => {
     // eslint-disable-next-line
   }, []);
   const fetDataRecentDocument = async projectId => {
+    setIsLoading(true);
     const { data } = await getDocumentProjectStatic(projectId);
     setListData(data.documents);
+    setIsLoading(false);
   };
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, listData));
-    props.selectDocumentItem(selectAll(e, listData));
+    props.selectDocumentItem(selectAllRedux(e, listData));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
-  const handleSelectItem = id => {
-    setSelected(selectItem(selected, id));
-    props.selectDocumentItem(selectItem(selected, id));
+  const handleSelectItem = item => {
+    setSelected(selectItem(selected, item.id));
+    props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
   const handleChangePage = () => {};
   const getIconAvatar = (url, idx = 0) => {
@@ -68,6 +75,9 @@ const ProjectDocumentDetail = props => {
       />
     );
   };
+  if (isLoading) {
+    return <LoadingBox />;
+  }
   return (
     <Fragment>
       <Table>
@@ -116,7 +126,7 @@ const ProjectDocumentDetail = props => {
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
-                    onChange={e => handleSelectItem(file.id)}
+                    onChange={e => handleSelectItem(file)}
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="5%">

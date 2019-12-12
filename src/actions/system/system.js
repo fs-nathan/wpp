@@ -26,3 +26,19 @@ export const closeDocumentDetail = () => ({
   type: actionTypes.CHANGE_DOCUMENT_DETAIL,
   payload: { isOpen: false, item: null }
 });
+
+export const canViewFile = fileType => {
+  if (!fileType) return false;
+  const type = fileType.toLowerCase();
+  return (
+    type === 'doc' ||
+    type === 'docx' ||
+    type === 'xls' ||
+    type === 'xlsx' ||
+    type === 'pdf' ||
+    type === 'jpg' ||
+    type === 'jpeg' ||
+    type === 'png' ||
+    type === 'gif'
+  );
+};

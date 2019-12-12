@@ -10,7 +10,6 @@ import {
 import Icon from '@mdi/react';
 import { mdiAccountPlusOutline, mdiShieldAccount } from '@mdi/js';
 import ColorTypo from '../../../../components/ColorTypo';
-import { actionFetchMyDocument } from './ContentDocumentAction';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import './ContentDocumentPage.scss';
 import {
@@ -19,6 +18,7 @@ import {
   FullAvatar
 } from '../DocumentComponent/TableCommon';
 import { FileType } from '../../../../components/FileType';
+import LoadingBox from '../../../../components/LoadingBox';
 
 const LoginGoogleDriver = props => {
   return (
@@ -43,7 +43,7 @@ const LoginGoogleDriver = props => {
 const GoogleDriver = () => {
   const [listData, setListData] = useState([]);
   const [isLogged, setLogged] = useState(false);
-
+  const [isLoading, setIsLoading] = React.useState(false);
   useEffect(() => {
     if (isLogged) {
       fetchMyDocument();
@@ -58,25 +58,22 @@ const GoogleDriver = () => {
 
   const fetchMyDocument = async () => {
     try {
-      const { data } = await actionFetchMyDocument();
+      setIsLoading(true);
       let tranformData = [];
-      if (data.folders && data.folders.length > 0) {
-        tranformData = data.folders.map(item => ({ ...item, type: 'folder' }));
-      }
-      if (data.documents && data.documents.length > 0) {
-        tranformData = tranformData.concat(data.documents);
-      }
-      console.log(tranformData);
       setListData(tranformData);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
   const moreAction = [
     { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' }
   ];
-
+  if (isLoading) {
+    return <LoadingBox />;
+  }
   return (
     <React.Fragment>
       {!isLogged && <LoginGoogleDriver onLogin={handleLoginGoogle} />}

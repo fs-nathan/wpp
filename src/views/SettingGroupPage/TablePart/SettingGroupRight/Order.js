@@ -119,6 +119,7 @@ const Order = props => {
                 className="table-cell-item body"
                 component="th"
                 scope="row"
+                align="center"
               >
                 {index + 1}
               </TableCell>
@@ -165,7 +166,10 @@ const Order = props => {
               <TableCell className="table-cell-item body" align="center">
                 {row.price}
               </TableCell>
-              <TableCell className="table-cell-item body" align="center">
+              <TableCell
+                className="table-cell-item body last-item"
+                align="center"
+              >
                 {row.activeDateNo > 0 ? (
                   <Button className="action-btn extend">Gia hạn</Button>
                 ) : (

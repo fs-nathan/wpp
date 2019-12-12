@@ -136,7 +136,7 @@ class ExportPDF extends Component {
                 </div>
               </div>
               <div className="print-body">
-              <TableStyled1>
+                <TableStyled1>
                   <thead>
                     <tr>
                       <ThStyled1>Mã đơn hàng</ThStyled1>
@@ -151,14 +151,12 @@ class ExportPDF extends Component {
                       <TdStyled1>KH-FREE</TdStyled1>
                       <TdStyled1>2019/09/09</TdStyled1>
                       <TdStyled1>
-                        {
-                          isCheckedManagerWork &&
+                        {isCheckedManagerWork && (
                           <p>{isCreate ? numAcc : 10} USER</p>
-                        }
-                        {
-                          isCheckedBuyData &&
+                        )}
+                        {isCheckedBuyData && (
                           <p>CS {isCreate ? dataBuy : 10}</p>
-                        }
+                        )}
                       </TdStyled1>
                       <TdStyled1>Tiền mặt</TdStyled1>
                       <TdStyled1>
@@ -167,7 +165,7 @@ class ExportPDF extends Component {
                     </tr>
                   </tbody>
                 </TableStyled1>
-              
+
                 <TableStyled2>
                   <thead>
                     <tr>
@@ -185,148 +183,160 @@ class ExportPDF extends Component {
                       </ThStyled2>
                     </tr>
                   </thead>
-                  
+
                   <tbody>
-                  {
-                    isCheckedManagerWork && 
-                    <React.Fragment>
-                       <tr style={{ background: '#f2f2f2' }}>
-                      <TdStyled2>1</TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div style={{ fontWeight: 'bold' }}>
-                            Gói sản phẩm: {isCreate ? numAcc : 10} USER
-                          </div>
-                          <div style={{ color: '#1f9de0' }}>
-                            Thời gian sử dụng: {totalDataUse} tháng <br />
-                            (Kể từ ngày thanh toán)
-                          </div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled2>{totalDataUse}</TdStyled2>
-                      <TdStyled2>{this.showPrice(moneyPacketUser)}</TdStyled2>
-                    </tr>
-                    <tr>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div>
-                            Đăng ký gói sản phầm {isCreate ? numAcc : 10}-USER
-                          </div>
-                          <div>Số lượng USER: {isCreate ? numAcc : 10}</div>
-                          <div>Dung lượng lưu trữ: 10 GB</div>
-                          <div>
-                            Thời gian sử dụng: {isCreate ? dateUse : 10} tháng
-                          </div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled4>{this.showPrice(pricePacketUser)}</TdStyled4>
-                      <TdStyled4>{isCreate ? numAcc : 10}</TdStyled4>
-                      <TdStyled4>{isCreate ? dateUse : 10}</TdStyled4>
-                      <TdStyled4>{this.showPrice(moneyPacketUser)}</TdStyled4>
-                    </tr>
-                    <tr>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div>Thời gian cộng thêm từ đơn hàng cũ</div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>{datePlusOderBefor}</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                    </tr>
-                    <tr>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div>
-                            Tặng thời gian sử dụng do kỳ thanh toán: <br /> 12
-                            tháng
-                          </div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>{dateGift}</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                    </tr>
-                    <tr>
-                      <TdStyled2></TdStyled2>
-                      <TdStyled3>
-                        <div className="">
-                          <div>Mã khuyến mại: WPKM-3MO</div>
-                        </div>
-                      </TdStyled3>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                      <TdStyled4>{date3MO}</TdStyled4>
-                      <TdStyled4>-</TdStyled4>
-                    </tr>
-                    </React.Fragment>
-                  }
-                  {
-                    isCheckedBuyData &&
-                    <React.Fragment>
-                      <tr style={{ background: '#f2f2f2' }}>
-                        <TdStyled2>2</TdStyled2>
-                        <TdStyled3>
-                          <div className="">
-                            <div style={{ fontWeight: 'bold' }}>
-                              Gói sản phầm: CS-{isCreate ? dataBuy : 10}
+                    {isCheckedManagerWork && (
+                      <React.Fragment>
+                        <tr style={{ background: '#f2f2f2' }}>
+                          <TdStyled2>1</TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div style={{ fontWeight: 'bold' }}>
+                                Gói sản phẩm: {isCreate ? numAcc : 10} USER
+                              </div>
+                              <div style={{ color: '#1f9de0' }}>
+                                Thời gian sử dụng: {totalDataUse} tháng <br />
+                                (Kể từ ngày thanh toán)
+                              </div>
                             </div>
-                            <div style={{ color: '#1f9de0' }}>
-                              Thời gian {isCreate ? dateSave : 10} tháng
+                          </TdStyled3>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled2>{totalDataUse}</TdStyled2>
+                          <TdStyled2>
+                            {this.showPrice(moneyPacketUser)}
+                          </TdStyled2>
+                        </tr>
+                        <tr>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div>
+                                Đăng ký gói sản phầm {isCreate ? numAcc : 10}
+                                -USER
+                              </div>
+                              <div>Số lượng USER: {isCreate ? numAcc : 10}</div>
+                              <div>Dung lượng lưu trữ: 10 GB</div>
+                              <div>
+                                Thời gian sử dụng: {isCreate ? dateUse : 10}{' '}
+                                tháng
+                              </div>
                             </div>
-                            <div style={{ color: '#1f9de0' }}>
-                              (Kể từ ngày thanh toán)
+                          </TdStyled3>
+                          <TdStyled4>
+                            {this.showPrice(pricePacketUser)}
+                          </TdStyled4>
+                          <TdStyled4>{isCreate ? numAcc : 10}</TdStyled4>
+                          <TdStyled4>{isCreate ? dateUse : 10}</TdStyled4>
+                          <TdStyled4>
+                            {this.showPrice(moneyPacketUser)}
+                          </TdStyled4>
+                        </tr>
+                        <tr>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div>Thời gian cộng thêm từ đơn hàng cũ</div>
                             </div>
-                          </div>
-                        </TdStyled3>
-                        <TdStyled2></TdStyled2>
-                        <TdStyled2></TdStyled2>
-                        <TdStyled2>{totalDateData}</TdStyled2>
-                        <TdStyled2>{this.showPrice(moneyPacketData)}</TdStyled2>
-                      </tr>
-                      <tr>
-                        <TdStyled2></TdStyled2>
-                        <TdStyled3>
-                          <div className="">
-                            <div>
-                              Đăng ký gói mở rộng: Cloud Storage (CS-
-                              {isCreate ? dataBuy : 10})
+                          </TdStyled3>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>{datePlusOderBefor}</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                        </tr>
+                        <tr>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div>
+                                Tặng thời gian sử dụng do kỳ thanh toán: <br />{' '}
+                                12 tháng
+                              </div>
                             </div>
-                            <div>
-                              Mua thêm dung lượng lưu trữ:{' '}
-                              {isCreate ? dataBuy : 10}GB
+                          </TdStyled3>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>{dateGift}</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                        </tr>
+                        <tr>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div>Mã khuyến mại: WPKM-3MO</div>
                             </div>
-                          </div>
-                        </TdStyled3>
-                        <TdStyled4>{this.showPrice(pricePacketData)}</TdStyled4>
-                        <TdStyled4>{isCreate ? dataBuy : 10}</TdStyled4>
-                        <TdStyled4>{isCreate ? dateSave : 10}</TdStyled4>
-                        <TdStyled4>{this.showPrice(moneyPacketData)}</TdStyled4>
-                      </tr>
-                      <tr>
-                        <TdStyled2></TdStyled2>
-                        <TdStyled3>
-                          <div className="">
-                            <div>Thời gian cộng thêm từ đơn hàng cũ</div>
-                          </div>
-                        </TdStyled3>
-                        <TdStyled4>-</TdStyled4>
-                        <TdStyled4>-</TdStyled4>
-                        <TdStyled4>0</TdStyled4>
-                        <TdStyled4>-</TdStyled4>
-                      </tr>
-                    </React.Fragment>
-                  }
+                          </TdStyled3>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>{date3MO}</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                        </tr>
+                      </React.Fragment>
+                    )}
+                    {isCheckedBuyData && (
+                      <React.Fragment>
+                        <tr style={{ background: '#f2f2f2' }}>
+                          <TdStyled2>{isCheckedManagerWork ? 2 : 1}</TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div style={{ fontWeight: 'bold' }}>
+                                Gói sản phầm: CS-{isCreate ? dataBuy : 10}
+                              </div>
+                              <div style={{ color: '#1f9de0' }}>
+                                Thời gian {isCreate ? dateSave : 10} tháng
+                              </div>
+                              <div style={{ color: '#1f9de0' }}>
+                                (Kể từ ngày thanh toán)
+                              </div>
+                            </div>
+                          </TdStyled3>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled2>{totalDateData}</TdStyled2>
+                          <TdStyled2>
+                            {this.showPrice(moneyPacketData)}
+                          </TdStyled2>
+                        </tr>
+                        <tr>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div>
+                                Đăng ký gói mở rộng: Cloud Storage (CS-
+                                {isCreate ? dataBuy : 10})
+                              </div>
+                              <div>
+                                Mua thêm dung lượng lưu trữ:{' '}
+                                {isCreate ? dataBuy : 10}GB
+                              </div>
+                            </div>
+                          </TdStyled3>
+                          <TdStyled4>
+                            {this.showPrice(pricePacketData)}
+                          </TdStyled4>
+                          <TdStyled4>{isCreate ? dataBuy : 10}</TdStyled4>
+                          <TdStyled4>{isCreate ? dateSave : 10}</TdStyled4>
+                          <TdStyled4>
+                            {this.showPrice(moneyPacketData)}
+                          </TdStyled4>
+                        </tr>
+                        <tr>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div>Thời gian cộng thêm từ đơn hàng cũ</div>
+                            </div>
+                          </TdStyled3>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>0</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                        </tr>
+                      </React.Fragment>
+                    )}
                   </tbody>
                 </TableStyled2>
-              
+
                 <div className="total-group">
                   <div style={{ width: '50%' }}></div>
                   <div style={{ width: '50%' }}>

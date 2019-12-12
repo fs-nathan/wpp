@@ -4,13 +4,26 @@ import {
   FILTER_DOCUMENTS,
   SET_ALL_DATA_DOCUMENTS,
   SELECT_DOCUMENT_ITEM,
-  RESET_LIST_SELECT_DOCUMENT
+  RESET_LIST_SELECT_DOCUMENT,
+  LIST_COMMENT,
+  LIST_COMMENT_SUCCESS,
+  DOCUMENT_HIDE_LOADING,
+  LIST_TRASH,
+  LIST_TRASH_SUCCESS,
+  LIST_MY_DOCUMENT,
+  LIST_MY_DOCUMENT_SUCCESS,
+  LIST_DOCUMENT_OF_FOLDER,
+  LIST_DOCUMENT_OF_FOLDER_SUCCESS
 } from '../../constants/actions/documents';
 // Import all the tabs in document page
 import * as TABS from '../../constants/documentTab';
 
 // Initial state for store
 const initialState = {
+  isLoading: false,
+  listComment: [],
+  listTrash: [],
+  listMyDocument: [],
   activeTabId: TABS.RECENT_TAB.id,
   docs: {
     'task-1': {
@@ -83,6 +96,55 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         selectedDocument: []
+      };
+    case DOCUMENT_HIDE_LOADING:
+      return {
+        ...state,
+        isLoading: false
+      };
+    case LIST_COMMENT:
+      return {
+        ...state,
+        isLoading: !action.quite
+      };
+    case LIST_COMMENT_SUCCESS:
+      return {
+        ...state,
+        listComment: action.payload,
+        isLoading: false
+      };
+    case LIST_TRASH:
+      return {
+        ...state,
+        isLoading: !action.quite
+      };
+    case LIST_TRASH_SUCCESS:
+      return {
+        ...state,
+        listTrash: action.payload,
+        isLoading: false
+      };
+    case LIST_MY_DOCUMENT:
+      return {
+        ...state,
+        isLoading: !action.quite
+      };
+    case LIST_MY_DOCUMENT_SUCCESS:
+      return {
+        ...state,
+        listMyDocument: action.payload,
+        isLoading: false
+      };
+    case LIST_DOCUMENT_OF_FOLDER:
+      return {
+        ...state,
+        isLoading: !action.quite
+      };
+    case LIST_DOCUMENT_OF_FOLDER_SUCCESS:
+      return {
+        ...state,
+        listMyDocument: action.payload,
+        isLoading: false
       };
     default:
       return state;

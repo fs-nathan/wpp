@@ -28,11 +28,14 @@ import {
   FullAvatar,
   selectItem,
   selectAll,
-  GreenCheckbox
+  GreenCheckbox,
+  selectAllRedux,
+  selectItemRedux
 } from '../DocumentComponent/TableCommon';
 
 import ColorTypo from '../../../../components/ColorTypo';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
+import LoadingBox from '../../../../components/LoadingBox';
 
 import './ContentDocumentPage.scss';
 
@@ -54,6 +57,7 @@ const DocumentShareFromMe = props => {
   const [rowsPerPage] = useState(10);
   const [alert, setAlert] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -66,23 +70,33 @@ const DocumentShareFromMe = props => {
     // eslint-disable-next-line
   }, []);
   const fetDataRecentDocument = async () => {
+    setIsLoading(true);
     // const { data } = await getDocumentShareFromMe();
+    setIsLoading(false);
   };
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, data));
-    props.selectDocumentItem(selectAll(e, data));
+    props.selectDocumentItem(selectAllRedux(e, data));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
-  const handleSelectItem = id => {
-    setSelected(selectItem(selected, id));
-    props.selectDocumentItem(selectItem(selected, id));
+  const handleSelectItem = item => {
+    setSelected(selectItem(selected, item.id));
+    props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
   const moreAction = [
     { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
-    { icon: mdiDownloadOutline, text: 'Tải xuống', action: () => {} },
+    {
+      icon: mdiDownloadOutline,
+      text: 'Tải xuống',
+      type: 'download',
+      action: () => {}
+    },
     { icon: mdiTrashCanOutline, text: 'Xóa', action: () => setAlert(true) }
   ];
   const handleChangePage = () => {};
+  if (isLoading) {
+    return <LoadingBox />;
+  }
   return (
     <Fragment>
       <Table>
@@ -126,7 +140,7 @@ const DocumentShareFromMe = props => {
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
-                    onChange={e => handleSelectItem(file.id)}
+                    onChange={e => handleSelectItem(file)}
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="5%">

@@ -23,13 +23,122 @@
       }
       .bread-crumb {
         color: #212529;
+        .MuiBreadcrumbs-li {
+          .bread-crumb-item {
+            &:hover {
+              cursor: pointer;
+              text-decoration: underline;
+            }
+          }
+          &:last-child {
+            .bread-crumb-item {
+              &:hover {
+                cursor: default;
+                text-decoration: none;
+              }
+            }
+          }
+        }
       }
     }
   }
 }
 .dialog-content {
+  min-height: 100px;
+  // display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   .create-order-title .MuiFormLabel-root {
     font-size: 16px;
+  }
+  &.share-doc {
+    display: flex;
+    padding: 0;
+    align-items: unset;
+    .left-share-doc {
+      width: 40%;
+      padding: 16px 0;
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+      .header-share-doc {
+        margin: 0 16px;
+        height: 35px;
+        margin-bottom: 16px;
+        align-items: center;
+        display: flex;
+      }
+      .item-member {
+        justify-content: space-between;
+        padding: 10px 20px;
+        .left-item {
+          display: flex;
+          .info-left-item {
+            padding-left: 10px;
+            .name-member {
+              padding-bottom: 5px;
+              color: #48bb78;
+            }
+          }
+        }
+        .right-item {
+          .btn-share {
+            height: 25px;
+            text-transform: unset;
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+    .right-share-doc {
+      padding: 16px 0;
+      width: 60%;
+      .header-share-doc {
+        margin: 0 16px;
+        height: 35px;
+        margin-bottom: 16px;
+        align-items: center;
+        display: flex;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        .left-content {
+          width: 40%;
+        }
+        .right-content {
+          width: 60%;
+        }
+      }
+      .item-member {
+        justify-content: space-between;
+        padding: 10px 20px;
+        .left-content {
+          width: 40%;
+          display: flex;
+          .left-item {
+            display: flex;
+            .info-left-item {
+              padding-left: 10px;
+              .name-member {
+                padding-bottom: 5px;
+                color: #48bb78;
+              }
+            }
+          }
+        }
+        .right-content {
+          width: 60%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-left: 0;
+          .right-item {
+            .btn-share {
+              height: 25px;
+              text-transform: unset;
+              padding: 0 10px;
+            }
+          }
+        }
+      }
+    }
   }
 }
 .move-content {
@@ -85,6 +194,9 @@
   &:hover {
     background-color: rgba(190, 190, 190, 0.07);
   }
+  &.selected-row {
+    background-color: rgba(190, 190, 190, 0.15);
+  }
 }
 .table-body-cell {
   padding: 10px;
@@ -122,4 +234,14 @@
   width: 30px;
   margin: auto;
   height: auto;
+}
+.modal-cus {
+  background-color: rgb(245, 248, 252);
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }

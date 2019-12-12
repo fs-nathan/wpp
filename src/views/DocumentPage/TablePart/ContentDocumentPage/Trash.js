@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   Table,
@@ -10,10 +10,10 @@ import {
 import Icon from '@mdi/react';
 import { mdiSwapVertical } from '@mdi/js';
 import ColorTypo from '../../../../components/ColorTypo';
-import { actionFetchTrash } from './ContentDocumentAction';
 import {
   selectDocumentItem,
-  resetListSelectDocument
+  resetListSelectDocument,
+  actionFetchListTrash
 } from '../../../../actions/documents';
 import './ContentDocumentPage.scss';
 import {
@@ -23,18 +23,20 @@ import {
   CustomAvatar,
   selectItem,
   selectAll,
-  GreenCheckbox
+  GreenCheckbox,
+  selectAllRedux,
+  selectItemRedux
 } from '../DocumentComponent/TableCommon';
 import { FileType } from '../../../../components/FileType';
+import LoadingBox from '../../../../components/LoadingBox';
 
 const Trash = props => {
-  const [listData, setListData] = useState([]);
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [selected, setSelected] = React.useState([]);
+  const { isLoading, listTrash: listData } = props;
 
   useEffect(() => {
-    fetchTrash();
+    getListTrash();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -43,26 +45,24 @@ const Trash = props => {
     }; // eslint-disable-next-line
   }, []);
 
-  const fetchTrash = async () => {
-    try {
-      const { data } = await actionFetchTrash();
-      setListData(data.documents || []);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleSelectAllClick = e => {
-    setSelected(selectAll(e, listData));
-    props.selectDocumentItem(selectAll(e, listData));
+  const getListTrash = (params = {}) => {
+    props.actionFetchListTrash(params);
   };
 
-  const handleSelectItem = id => {
-    setSelected(selectItem(selected, id));
-    props.selectDocumentItem(selectItem(selected, id));
+  const handleSelectAllClick = e => {
+    setSelected(selectAll(e, listData));
+    props.selectDocumentItem(selectAllRedux(e, listData));
+  };
+
+  const handleSelectItem = item => {
+    setSelected(selectItem(selected, item.id));
+    props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
 
   const isSelected = id => selected.indexOf(id) !== -1;
-
+  if (isLoading) {
+    return <LoadingBox />;
+  }
   return (
     <React.Fragment>
       <Table>
@@ -105,7 +105,6 @@ const Trash = props => {
             <StyledTableHeadCell align="center" width="10%">
               Kích thước
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="5%" />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -116,7 +115,7 @@ const Trash = props => {
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
-                    onChange={e => handleSelectItem(item.id)}
+                    onChange={e => handleSelectItem(item)}
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="5%">
@@ -156,10 +155,13 @@ const Trash = props => {
 
 export default connect(
   state => ({
-    selectedDocument: state.documents.selectedDocument
+    selectedDocument: state.documents.selectedDocument,
+    isLoading: state.documents.isLoading,
+    listTrash: state.documents.listTrash
   }),
   {
     selectDocumentItem,
-    resetListSelectDocument
+    resetListSelectDocument,
+    actionFetchListTrash
   }
 )(Trash);

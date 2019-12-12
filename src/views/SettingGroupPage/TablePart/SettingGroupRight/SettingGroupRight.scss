@@ -117,7 +117,7 @@
         margin-bottom: 100px;
       }
       .detail-right-bottom {
-        padding: 0 25px 20px 25px;
+        padding: 0 35px 20px 25px;
         .title-item {
           text-transform: none;
           margin: 20px 0 20px 0;
@@ -455,7 +455,10 @@
   }
   &.body {
     font-size: 12px;
-    padding: 10px;
+    padding: 5px;
     border-bottom: 1px solid rgb(238, 238, 238);
+  }
+  &.last-item {
+    padding-right: 28px;
   }
 }

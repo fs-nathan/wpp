@@ -3,11 +3,11 @@ import { withStyles } from '@material-ui/core/styles';
 import '../DocumentPage.scss';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
+import ColorTypo from '../../../../components/ColorTypo';
+import { DialogTitle } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -21,11 +21,11 @@ const styles = theme => ({
     color: theme.palette.grey[500]
   }
 });
-const DialogTitle = withStyles(styles)(props => {
+const DialogTitleCus = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+    <DialogTitle disableTypography className={classes.root} {...other}>
+      <ColorTypo uppercase>{children}</ColorTypo>
       {onClose ? (
         <IconButton
           aria-label="close"
@@ -35,7 +35,7 @@ const DialogTitle = withStyles(styles)(props => {
           <CloseIcon />
         </IconButton>
       ) : null}
-    </MuiDialogTitle>
+    </DialogTitle>
   );
 });
 
@@ -56,9 +56,13 @@ const ModalCommon = props => {
       aria-labelledby="customized-dialog-title"
       open={true}
     >
-      <DialogTitle id="customized-dialog-title" onClose={props.onClose}>
+      <DialogTitleCus
+        id="customized-dialog-title"
+        onClose={props.onClose}
+        className="modal-cus"
+      >
         {props.title}
-      </DialogTitle>
+      </DialogTitleCus>
       {props.children}
       {props.footerAction && (
         <DialogActions>

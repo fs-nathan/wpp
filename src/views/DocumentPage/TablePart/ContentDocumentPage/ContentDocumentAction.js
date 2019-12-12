@@ -36,26 +36,6 @@ export const getDocumentShareFromMe = () => {
   return apiService(config);
 };
 
-// handle action for MyDocument page
-export const actionFetchMyDocument = (params = {}) => {
-  const config = {
-    url: '/documents/my-document',
-    method: 'get',
-    params
-  };
-  return apiService(config);
-};
-
-// handle action for Trash page
-export const actionFetchTrash = (params = {}) => {
-  const config = {
-    url: '/documents/trash',
-    method: 'get',
-    params
-  };
-  return apiService(config);
-};
-
 export const actionFetchListFolder = () => {
   const config = {
     url: '/documents/get-list-folder',

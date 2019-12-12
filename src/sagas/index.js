@@ -120,6 +120,13 @@ import { LIST_TASK } from '../constants/actions/task/listTask';
 import { listTask } from './task/listTask';
 import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
 import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
+import {
+  LIST_COMMENT,
+  LIST_TRASH,
+  LIST_MY_DOCUMENT,
+  LIST_DOCUMENT_OF_FOLDER
+} from '../constants/actions/documents';
+import { listComment, listTrash, listMyDocument, listDocumentOfFolder } from './documents';
 
 function* rootSaga() {
   yield takeLatest(LOGIN, login);
@@ -175,7 +182,10 @@ function* rootSaga() {
   yield takeLatest(REMOVE_MEMBER_PROJECT, removeMemberProject);
   yield takeLatest(UPDATE_STATE_JOIN_TASK, updateStateJoinTask);
   yield takeLatest(ADD_PROJECT_ROLE_TO_MEMBER, addProjectRoleToMember);
-  yield takeLatest(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
+  yield takeLatest(
+    REMOVE_PROJECT_ROLE_FROM_MEMBER,
+    removeProjectRoleFromMember
+  );
   yield takeLatest(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
   yield takeLatest(LIST_GROUP_TASK, listGroupTask);
   yield takeLatest(CREATE_GROUP_TASK, createGroupTask);
@@ -183,48 +193,138 @@ function* rootSaga() {
   yield takeLatest(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeLatest(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(LIST_TASK, listTask);
+  yield takeLatest(LIST_COMMENT, listComment);
+  yield takeLatest(LIST_TRASH, listTrash);
+  yield takeLatest(LIST_MY_DOCUMENT, listMyDocument);
+  yield takeLatest(LIST_DOCUMENT_OF_FOLDER, listDocumentOfFolder);
 
   //Offer::
   yield takeLeading(taskDetailType.GET_OFFER_REQUEST, taskDetailSaga.getOffer);
-  yield takeLeading(taskDetailType.CREATE_OFFER_REQUEST, taskDetailSaga.createOffer);
-  yield takeLeading(taskDetailType.UPDATE_OFFER_REQUEST, taskDetailSaga.updateOffer);
-  yield takeLeading(taskDetailType.DELETE_OFFER_REQUEST, taskDetailSaga.deleteOffer);
-  yield takeLeading(taskDetailType.UPLOAD_DOCUMENT_TO_OFFER_REQUEST, taskDetailSaga.uploadDocumentToOffer);
-  yield takeLeading(taskDetailType.DELETE_DOCUMENT_TO_OFFER_REQUEST, taskDetailSaga.deleteDocumentToOffer);
+  yield takeLeading(
+    taskDetailType.CREATE_OFFER_REQUEST,
+    taskDetailSaga.createOffer
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_OFFER_REQUEST,
+    taskDetailSaga.updateOffer
+  );
+  yield takeLeading(
+    taskDetailType.DELETE_OFFER_REQUEST,
+    taskDetailSaga.deleteOffer
+  );
+  yield takeLeading(
+    taskDetailType.UPLOAD_DOCUMENT_TO_OFFER_REQUEST,
+    taskDetailSaga.uploadDocumentToOffer
+  );
+  yield takeLeading(
+    taskDetailType.DELETE_DOCUMENT_TO_OFFER_REQUEST,
+    taskDetailSaga.deleteDocumentToOffer
+  );
   //Subtask::
-  yield takeLeading(taskDetailType.GET_SUBTASK_REQUEST, taskDetailSaga.getSubTask);
-  yield takeLeading(taskDetailType.POST_SUBTASK_REQUEST, taskDetailSaga.postSubTask);
-  yield takeLeading(taskDetailType.UPDATE_SUBTASK_REQUEST, taskDetailSaga.updateSubTask);
-  yield takeLeading(taskDetailType.DELETE_SUBTASK_REQUEST, taskDetailSaga.deleteSubTask);
-  yield takeLeading(taskDetailType.POST_COMPLETE_SUBTASK_REQUEST, taskDetailSaga.completeSubTask);
+  yield takeLeading(
+    taskDetailType.GET_SUBTASK_REQUEST,
+    taskDetailSaga.getSubTask
+  );
+  yield takeLeading(
+    taskDetailType.POST_SUBTASK_REQUEST,
+    taskDetailSaga.postSubTask
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_SUBTASK_REQUEST,
+    taskDetailSaga.updateSubTask
+  );
+  yield takeLeading(
+    taskDetailType.DELETE_SUBTASK_REQUEST,
+    taskDetailSaga.deleteSubTask
+  );
+  yield takeLeading(
+    taskDetailType.POST_COMPLETE_SUBTASK_REQUEST,
+    taskDetailSaga.completeSubTask
+  );
   //Remind::
-  yield takeLeading(taskDetailType.GET_REMIND_REQUEST, taskDetailSaga.getRemind);
-  yield takeLeading(taskDetailType.POST_REMIND_TIME_DETAIL_REQUEST, taskDetailSaga.postRemindWithTimeDetail);
-  yield takeLeading(taskDetailType.POST_REMIND_DURATION_REQUEST, taskDetailSaga.postRemindDuration);
-  yield takeLeading(taskDetailType.UPDATE_REMIND_TIME_DETAIL_REQUEST, taskDetailSaga.updateRemindWithTimeDetail);
-  yield takeLeading(taskDetailType.UPDATE_REMIND_DURATION_REQUEST, taskDetailSaga.updateRemindWithDuration);
-  yield takeLeading(taskDetailType.DELETE_REMIND_REQUEST, taskDetailSaga.deleteRemind);
+  yield takeLeading(
+    taskDetailType.GET_REMIND_REQUEST,
+    taskDetailSaga.getRemind
+  );
+  yield takeLeading(
+    taskDetailType.POST_REMIND_TIME_DETAIL_REQUEST,
+    taskDetailSaga.postRemindWithTimeDetail
+  );
+  yield takeLeading(
+    taskDetailType.POST_REMIND_DURATION_REQUEST,
+    taskDetailSaga.postRemindDuration
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_REMIND_TIME_DETAIL_REQUEST,
+    taskDetailSaga.updateRemindWithTimeDetail
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_REMIND_DURATION_REQUEST,
+    taskDetailSaga.updateRemindWithDuration
+  );
+  yield takeLeading(
+    taskDetailType.DELETE_REMIND_REQUEST,
+    taskDetailSaga.deleteRemind
+  );
 
   // Media Image File
-  yield takeLeading(taskDetailType.GET_IMAGE_TABPART_REQUEST, taskDetailSaga.getImage);
-  yield takeLeading(taskDetailType.GET_FILE_TABPART_REQUEST, taskDetailSaga.getFile);
-  yield takeLeading(taskDetailType.GET_LINK_TABPART_REQUEST, taskDetailSaga.getLink);
+  yield takeLeading(
+    taskDetailType.GET_IMAGE_TABPART_REQUEST,
+    taskDetailSaga.getImage
+  );
+  yield takeLeading(
+    taskDetailType.GET_FILE_TABPART_REQUEST,
+    taskDetailSaga.getFile
+  );
+  yield takeLeading(
+    taskDetailType.GET_LINK_TABPART_REQUEST,
+    taskDetailSaga.getLink
+  );
   // Location
-  yield takeLeading(taskDetailType.GET_LOCATION_TABPART_REQUEST, taskDetailSaga.getLocation);
+  yield takeLeading(
+    taskDetailType.GET_LOCATION_TABPART_REQUEST,
+    taskDetailSaga.getLocation
+  );
   // Task Detail - TabPart - cot phai
-  yield takeLeading(taskDetailType.GET_TASK_DETAIL_TABPART_REQUEST, taskDetailSaga.getTaskDetail);
+  yield takeLeading(
+    taskDetailType.GET_TASK_DETAIL_TABPART_REQUEST,
+    taskDetailSaga.getTaskDetail
+  );
   //Command and Decsion::
-  yield takeLeading(taskDetailType.GET_COMMAND_REQUEST, taskDetailSaga.getCommand);
-  yield takeLeading(taskDetailType.CREATE_COMMAND_REQUEST, taskDetailSaga.createCommand);
-  yield takeLeading(taskDetailType.UPDATE_COMMAND_REQUEST, taskDetailSaga.updateCommand);
-  yield takeLeading(taskDetailType.UPDATE_TASK_PRIORITY_REQUEST, taskDetailSaga.updatePriority)
- 
-  
+  yield takeLeading(
+    taskDetailType.GET_COMMAND_REQUEST,
+    taskDetailSaga.getCommand
+  );
+  yield takeLeading(
+    taskDetailType.CREATE_COMMAND_REQUEST,
+    taskDetailSaga.createCommand
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_COMMAND_REQUEST,
+    taskDetailSaga.updateCommand
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_TASK_PRIORITY_REQUEST,
+    taskDetailSaga.updatePriority
+  );
+
   //Member::
-  yield takeLeading(taskDetailType.GET_MEMBER_REQUEST, taskDetailSaga.getMember);
-  yield takeLeading(taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST, taskDetailSaga.getMemberNotAssigned);
-  yield takeLeading(taskDetailType.POST_MEMBER_REQUEST, taskDetailSaga.createMember);
-  yield takeLeading(taskDetailType.DELETE_MEMBER_REQUEST, taskDetailSaga.deleteMember);
-};
+  yield takeLeading(
+    taskDetailType.GET_MEMBER_REQUEST,
+    taskDetailSaga.getMember
+  );
+  yield takeLeading(
+    taskDetailType.GET_MEMBER_NOT_ASSIGNED_REQUEST,
+    taskDetailSaga.getMemberNotAssigned
+  );
+  yield takeLeading(
+    taskDetailType.POST_MEMBER_REQUEST,
+    taskDetailSaga.createMember
+  );
+  yield takeLeading(
+    taskDetailType.DELETE_MEMBER_REQUEST,
+    taskDetailSaga.deleteMember
+  );
+}
 
 export default rootSaga;

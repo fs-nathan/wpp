@@ -18,12 +18,17 @@ import {
   mdiTrashCanOutline
 } from '@mdi/js';
 import ColorTypo from '../../../../components/ColorTypo';
-import { actionFetchMyDocument } from './ContentDocumentAction';
-import { openDocumentDetail } from '../../../../actions/system/system';
+import {
+  openDocumentDetail,
+  canViewFile
+} from '../../../../actions/system/system';
 import {
   selectDocumentItem,
-  resetListSelectDocument
+  resetListSelectDocument,
+  actionFetchListMyDocument,
+  actionFetchDocumentOfFolder
 } from '../../../../actions/documents';
+import { actionChangeBreadCrumbs } from '../../../../actions/setting/setting';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import AlertModal from '../../../../components/AlertModal';
 import './ContentDocumentPage.scss';
@@ -34,52 +39,82 @@ import {
   CustomAvatar,
   selectItem,
   selectAll,
-  GreenCheckbox
+  GreenCheckbox,
+  selectAllRedux,
+  selectItemRedux
 } from '../DocumentComponent/TableCommon';
 import { FileType } from '../../../../components/FileType';
+import LoadingBox from '../../../../components/LoadingBox';
 
 const MyDocument = props => {
-  const [listData, setListData] = useState([]);
   const [alert, setAlert] = useState(false);
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [selected, setSelected] = React.useState([]);
+  const {
+    isLoading,
+    listMyDocument: listData,
+    breadCrumbs,
+    actionChangeBreadCrumbs
+  } = props;
   const { t } = useTranslation();
 
   useEffect(() => {
-    fetchMyDocument();
+    getListMyDocument();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
+      actionChangeBreadCrumbs([]);
     }; // eslint-disable-next-line
   }, []);
 
-  const fetchMyDocument = async () => {
-    try {
-      const { data } = await actionFetchMyDocument();
-      let tranformData = [];
-      if (data.folders && data.folders.length > 0) {
-        tranformData = data.folders.map(item => ({ ...item, type: 'folder' }));
-      }
-      if (data.documents && data.documents.length > 0) {
-        tranformData = tranformData.concat(data.documents);
-      }
-      console.log(tranformData);
-      setListData(tranformData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleSelectAllClick = e => {
-    setSelected(selectAll(e, listData));
-    props.selectDocumentItem(selectAll(e, listData));
+  const getListMyDocument = (params = {}, quite = false) => {
+    props.actionFetchListMyDocument(params, quite);
   };
 
-  const handleSelectItem = id => {
-    setSelected(selectItem(selected, id));
-    props.selectDocumentItem(selectItem(selected, id));
+  const handleClickItem = item => {
+    if (item.type === 'folder') {
+      props.actionFetchDocumentOfFolder({ folder_id: item.id }, true);
+
+      // handle bread crumbs
+      let newBreadCrumbs = [...breadCrumbs];
+      if (breadCrumbs.length === 0) {
+        newBreadCrumbs.push({
+          id: -1,
+          name: 'Home',
+          action: () => getListMyDocument({}, true)
+        });
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () =>
+            props.actionFetchDocumentOfFolder({ folder_id: item.id }, true)
+        });
+      } else {
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () =>
+            props.actionFetchDocumentOfFolder({ folder_id: item.id }, true)
+        });
+      }
+      actionChangeBreadCrumbs(newBreadCrumbs);
+    } else {
+      if (canViewFile(item.type)) {
+        props.openDocumentDetail(item);
+      }
+    }
+  };
+
+  const handleSelectAllClick = e => {
+    setSelected(selectAll(e, listData));
+    props.selectDocumentItem(selectAllRedux(e, listData));
+  };
+
+  const handleSelectItem = item => {
+    setSelected(selectItem(selected, item.id));
+    props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
 
   const isSelected = id => selected.indexOf(id) !== -1;
@@ -88,10 +123,17 @@ const MyDocument = props => {
     { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
     { icon: mdiFolderMove, text: 'Di chuyển tới', type: 'move' },
     { icon: mdiPencilOutline, text: 'Đổi tên', type: 'change' },
-    { icon: mdiDownloadOutline, text: 'Tải xuống', action: () => {} },
+    {
+      icon: mdiDownloadOutline,
+      text: 'Tải xuống',
+      type: 'download',
+      action: () => {}
+    },
     { icon: mdiTrashCanOutline, text: 'Xóa', action: () => setAlert(true) }
   ];
-
+  if (isLoading) {
+    return <LoadingBox />;
+  }
   return (
     <React.Fragment>
       <Table>
@@ -140,13 +182,31 @@ const MyDocument = props => {
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
-                    onChange={e => handleSelectItem(item.id)}
+                    onChange={e => handleSelectItem(item)}
                   />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="5%">
+                <StyledTableBodyCell
+                  align="center"
+                  width="5%"
+                  className={
+                    item.type === 'folder' || canViewFile(item.type)
+                      ? 'cursor-pointer'
+                      : ''
+                  }
+                  onClick={() => handleClickItem(item)}
+                >
                   <FullAvatar src={FileType(item.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="30%">
+                <StyledTableBodyCell
+                  align="left"
+                  width="30%"
+                  className={
+                    item.type === 'folder' || canViewFile(item.type)
+                      ? 'cursor-pointer'
+                      : ''
+                  }
+                  onClick={() => handleClickItem(item)}
+                >
                   <ColorTypo color="black">{item.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
@@ -171,7 +231,11 @@ const MyDocument = props => {
                   <ColorTypo color="black">{item.size || '-'}</ColorTypo>
                 </StyledTableBodyCell>
                 {item.type !== 'folder' ? (
-                  <MoreAction actionList={moreAction} item={item} />
+                  <MoreAction
+                    actionList={moreAction}
+                    item={item}
+                    handleFetData={() => getListMyDocument({}, true)}
+                  />
                 ) : (
                   <StyledTableBodyCell align="center" width="5%" />
                 )}
@@ -192,11 +256,17 @@ const MyDocument = props => {
 
 export default connect(
   state => ({
-    selectedDocument: state.documents.selectedDocument
+    selectedDocument: state.documents.selectedDocument,
+    isLoading: state.documents.isLoading,
+    listMyDocument: state.documents.listMyDocument,
+    breadCrumbs: state.setting.breadCrumbs
   }),
   {
     selectDocumentItem,
     resetListSelectDocument,
-    openDocumentDetail
+    openDocumentDetail,
+    actionFetchListMyDocument,
+    actionFetchDocumentOfFolder,
+    actionChangeBreadCrumbs
   }
 )(MyDocument);

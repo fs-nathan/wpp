@@ -64,10 +64,17 @@
 .oder-init-container {
   padding-top: 55px;
   text-align: center;
+  background-image: url('../../assets/LayerOder.png');
+  background-repeat: no-repeat;
+  height: 64%;
+  width: 100%;
+  background-position: center;
   .title-oder-init {
     font-size: 18px;
     color: #01b374;
     font-weight: 500;
+    display: inline-block;
+    max-width: 500px;
   }
   .step-content {
     padding: 50px 0;

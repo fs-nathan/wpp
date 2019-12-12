@@ -9,14 +9,9 @@ import {
   mdiFolderPlusOutline,
   mdiChevronRight
 } from '@mdi/js';
-import {
-  Menu,
-  MenuItem,
-  Breadcrumbs,
-  TextField,
-  Link
-} from '@material-ui/core';
+import { Menu, MenuItem, Breadcrumbs, TextField } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
 import { Routes } from '../../../constants/routes';
@@ -37,6 +32,8 @@ import { isEmpty } from '../../../helpers/utils/isEmpty';
 import folderIcon from '../../../assets/folder.png';
 import './DocumentPage.scss';
 import ModalCommon from './DocumentComponent/ModalCommon';
+import { actionCreateFolder } from '../../../actions/documents';
+import { actionChangeBreadCrumbs } from '../../../actions/setting/setting';
 
 const StyledMenuItem = styled(MenuItem)`
   border-bottom: ${props => (props.border ? '1px solid #ddd' : 'none')};
@@ -46,7 +43,7 @@ const HeaderTitle = props => {
   return <ColorTypo className="title">{props.title || ''}</ColorTypo>;
 };
 
-const getHeaderContent = (type, search) => {
+const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
   switch (type) {
     case Routes.DOCUMENT_RECENT:
       return <HeaderTitle title="Gần đây" />;
@@ -83,20 +80,42 @@ const getHeaderContent = (type, search) => {
           <img className="header-icon" src={folderIcon} alt="" />
           <div className="title-wrapper">
             <HeaderTitle title="Tài liệu của tôi" />
-            <Breadcrumbs
-              className="bread-crumb"
-              aria-label="breadcrumb"
-              separator={
-                <Icon path={mdiChevronRight} size={1} color={'#777'} />
-              }
-            >
-              <Link color="inherit" href="/">
-                Home
-              </Link>
-              <Link color="inherit" href="/">
-                Phúc an MVP
-              </Link>
-            </Breadcrumbs>
+            {breadCrumbs.length > 0 && (
+              <Breadcrumbs
+                className="bread-crumb"
+                aria-label="breadcrumb"
+                separator={
+                  <Icon path={mdiChevronRight} size={1} color={'#777'} />
+                }
+              >
+                {breadCrumbs.map((item, idx) => (
+                  <span
+                    className="bread-crumb-item"
+                    key={idx}
+                    onClick={() => {
+                      // do not anything if click ending item
+                      if (idx === breadCrumbs.length - 1) return false;
+
+                      // call action
+                      item.action();
+
+                      //update list bread crumbs
+                      if (onUpdateBreadCrumbs) {
+                        if (idx === 0) {
+                          onUpdateBreadCrumbs([]);
+                        } else {
+                          let newList = [...breadCrumbs];
+                          newList.length = idx + 1;
+                          onUpdateBreadCrumbs(newList);
+                        }
+                      }
+                    }}
+                  >
+                    {item.name || ''}
+                  </span>
+                ))}
+              </Breadcrumbs>
+            )}
           </div>
         </div>
       );
@@ -123,6 +142,9 @@ const TablePart = props => {
   const search = props.location.search;
   const [anchorEl, setAnchorEl] = useState(null);
   const [isCreateFolder, setCreateFolder] = useState(false);
+  const [nameFolder, setNameFolder] = useState('');
+  const [isFetDataMy, setIsFetDataMy] = useState(false);
+  const { breadCrumbs, actionChangeBreadCrumbs } = props;
 
   const handleClick = e => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -142,7 +164,7 @@ const TablePart = props => {
       case Routes.DOCUMENT_SHARE_ME:
         return <DocumentShare {...props} />;
       case Routes.DOCUMENT_ME:
-        return <MyDocument {...props} />;
+        return <MyDocument {...props} isFetDataMy={isFetDataMy} />;
       case Routes.DOCUMENT_GOOGLE_DRIVE:
         return <GoogleDriver {...props} />;
       case Routes.DOCUMENT_TRASH:
@@ -159,11 +181,29 @@ const TablePart = props => {
     },
     { text: 'Tải tệp lên', icon: mdiFileUploadOutline, action: () => {} }
   ];
+  const handleCreateFolder = async () => {
+    try {
+      await actionCreateFolder({
+        name: nameFolder
+      });
+      setIsFetDataMy(!isFetDataMy);
+      setCreateFolder(false);
+      setNameFolder('');
+    } catch (error) {
+      setCreateFolder(false);
+      setNameFolder('');
+    }
+  };
   return (
     <div className="header-setting-container header-document">
       <div className="header-setting">
         <div className="header-left-content">
-          {getHeaderContent(pathname, search)}
+          {getHeaderContent(
+            pathname,
+            search,
+            breadCrumbs,
+            actionChangeBreadCrumbs
+          )}
         </div>
         <RightHeader>
           <HeaderButtonGroup />
@@ -230,18 +270,27 @@ const TablePart = props => {
           title="Tạo thư mục"
           onClose={() => setCreateFolder(false)}
           footerAction={[
-            { name: 'Hủy', action: () => setCreateFolder(false) },
-            { name: 'Tạo mới', action: () => setCreateFolder(false) }
+            {
+              name: 'Hủy',
+              action: () => {
+                setCreateFolder(false);
+                setNameFolder('');
+              }
+            },
+            { name: 'Tạo mới', action: () => handleCreateFolder() }
           ]}
         >
           <DialogContent dividers className="dialog-content">
             <TextField
+              value={nameFolder}
               id="standard-full-width"
+              variant="outlined"
               label="Nhập tên thư mục mới"
               fullWidth
               margin="normal"
               InputLabelProps={{ shrink: true }}
               className="create-order-title"
+              onChange={event => setNameFolder(event.target.value)}
             />
           </DialogContent>
         </ModalCommon>
@@ -250,4 +299,9 @@ const TablePart = props => {
   );
 };
 
-export default withRouter(TablePart);
+export default connect(
+  state => ({
+    breadCrumbs: state.setting.breadCrumbs
+  }),
+  { actionChangeBreadCrumbs }
+)(withRouter(TablePart));

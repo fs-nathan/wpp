@@ -8,6 +8,11 @@ import ShareDocumentModal from '../../views/DocumentPage/TablePart/DocumentCompo
 import MoveDocumentModal from '../../views/DocumentPage/TablePart/DocumentComponent/MoveDocumentModal';
 import ChangeDocumentModal from '../../views/DocumentPage/TablePart/DocumentComponent/ChangeDocumentModal';
 import { StyledTableBodyCell } from '../../views/DocumentPage/TablePart/DocumentComponent/TableCommon';
+import {
+  actionRenameFile,
+  actionMoveFile,
+  actionDownloadDocument
+} from '../../actions/documents';
 const StyledMenuItem = styled(MenuItem)`
   border-bottom: ${props => (props.border ? '1px solid #ddd' : 'none')};
 `;
@@ -21,14 +26,42 @@ const MoreAction = props => {
     e.stopPropagation();
   };
   const handleClose = () => setAnchorEl(null);
+  const closeModal = () => setVisible(null);
   const handleShareDoc = () => {
     console.log('item selected', props.item);
   };
-  const handleChangeDoc = () => {
-    console.log('item selected', props.item);
+  const handleChangeDoc = async newName => {
+    try {
+      await actionRenameFile({
+        file_id: props.item.id,
+        name: newName
+      });
+      props.handleFetData();
+      closeModal();
+    } catch (error) {
+      closeModal();
+    }
   };
-  const handleMoveDoc = () => {
-    console.log('item selected', props.item);
+  const handleMoveDoc = async folderSelected => {
+    try {
+      await actionMoveFile({
+        file_id: props.item.id,
+        folder_id: folderSelected.id
+      });
+      props.handleFetData();
+      closeModal();
+    } catch (error) {
+      closeModal();
+    }
+  };
+  const handleDownloadFile = async () => {
+    console.log(props.item);
+    window.open(props.item.url, '_blank');
+    try {
+      await actionDownloadDocument(props.item.id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -59,9 +92,8 @@ const MoreAction = props => {
             key={idx}
             onClick={e => {
               handleClose();
-              if (el.type === 'share') setVisible('share');
-              if (el.type === 'move') setVisible('move');
-              if (el.type === 'change') setVisible('change');
+              if (el.type === 'download') handleDownloadFile();
+              else setVisible(el.type);
               if (el.action) el.action();
               e.stopPropagation();
             }}
@@ -76,21 +108,21 @@ const MoreAction = props => {
       </Menu>
       {visible === 'share' && (
         <ShareDocumentModal
-          onClose={() => setVisible(null)}
+          onClose={closeModal}
           onOk={handleShareDoc}
           item={props.item}
         />
       )}
       {visible === 'move' && (
         <MoveDocumentModal
-          onClose={() => setVisible(null)}
+          onClose={closeModal}
           onOk={handleMoveDoc}
           item={props.item}
         />
       )}
       {visible === 'change' && (
         <ChangeDocumentModal
-          onClose={() => setVisible(null)}
+          onClose={closeModal}
           onOk={handleChangeDoc}
           item={props.item}
         />

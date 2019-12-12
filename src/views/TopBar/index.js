@@ -103,8 +103,8 @@ const TopBar = props => {
       <LeftPart>
         <InfoBox onClick={handleAccount}>
           <div>
-            <div className="text-group-top-bar">HungThanhXD</div>
-            <Chip badge color="orange" label="Pro" className="style-status"/>
+            <div className="text-group-top-bar">Nhóm: HungThanhXD</div>
+            <Chip badge color="orange" label="Pro" className="style-status" />
           </div>
           <div>
             <GreenText>huuthanhxd@gmail.com</GreenText>

@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Table, TableRow, TableHead, TableBody } from '@material-ui/core';
+import {
+  Table,
+  TableRow,
+  TableHead,
+  TableBody,
+  Avatar
+} from '@material-ui/core';
 
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
@@ -16,10 +22,20 @@ import { actionFetchListFolder } from '../ContentDocumentPage/ContentDocumentAct
 
 const MoveDocumentModal = props => {
   const [listData, setListData] = useState([]);
+  const [folderSelected, setFolderSelected] = useState({});
   useEffect(() => {
     fetListFolder();
   }, []);
-
+  const getIconAvatar = (url, idx = 0) => {
+    return (
+      <Avatar
+        key={idx}
+        src={url}
+        alt="avatar"
+        style={{ width: 35, height: 35, margin: 'auto' }}
+      />
+    );
+  };
   const fetListFolder = async () => {
     try {
       const { data } = await actionFetchListFolder();
@@ -29,9 +45,12 @@ const MoveDocumentModal = props => {
     }
   };
   const handleMove = () => {
-    props.onOk();
+    props.onOk(folderSelected);
   };
   console.log(listData);
+  const handleSelectFolder = folder => {
+    setFolderSelected(folder);
+  };
   return (
     <ModalCommon
       title="Di chuyển tài liệu"
@@ -82,20 +101,25 @@ const MoveDocumentModal = props => {
             <TableBody>
               {listData.map(folder => {
                 return (
-                  <TableRow className="table-body-row" key={folder.id}>
+                  <TableRow
+                    className={`table-body-row ${
+                      folderSelected.id === folder.id ? 'selected-row' : ''
+                    }`}
+                    key={folder.id}
+                    onClick={() => handleSelectFolder(folder)}
+                  >
                     <StyledTableBodyCell align="center" width="5%">
-                    <FullAvatar src={FileType('folder')} />
+                      <FullAvatar src={FileType('folder')} />
                     </StyledTableBodyCell>
                     <StyledTableBodyCell align="left" width="40%">
                       <ColorTypo color="black">{folder.name}</ColorTypo>
                     </StyledTableBodyCell>
                     <StyledTableBodyCell align="center" width="20%">
-                      <ColorTypo color="black">{folder.owner.name}</ColorTypo>
+                      {(folder.owner && getIconAvatar(folder.owner.avatar)) ||
+                        ''}
                     </StyledTableBodyCell>
                     <StyledTableBodyCell align="center" width="20%">
-                      <ColorTypo color="black">
-                        {folder.shared_member[0].name}
-                      </ColorTypo>
+                      {folder.shared_member.map(el => getIconAvatar(el.avatar))}
                     </StyledTableBodyCell>
                     <StyledTableBodyCell align="left" width="15%">
                       <ColorTypo color="black">-</ColorTypo>
