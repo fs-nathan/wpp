@@ -276,8 +276,6 @@ function CommonPriorityForm(props) {
   const [value, setValue] = React.useState(props.priority)
 
   const handleChangePriority = itemValue => {
-    console.log('itemValue::::', itemValue);
-
 
     // Set state to change style in component
     setValue(itemValue)
@@ -448,7 +446,7 @@ function CreateJobModal(props) {
   const handlePressConfirm = () => {
     if(validate()) {
       // Call api
-      value.createJobByProjectId(dataCreateJob)
+      value.createJobByProjectId({ data: dataCreateJob, projectId: value.projectId })
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
       // Close modal

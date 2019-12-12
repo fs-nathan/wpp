@@ -33,7 +33,6 @@ const WrapTask = styled.div`
 `
 function ListTask(props) {
   // const value = React.useContext(WrapperContext)
-  // console.log("QUANNNNN", value.command)
   return (
     <WrapListTask {...props}>
       <WrapTask>
