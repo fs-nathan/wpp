@@ -80,7 +80,7 @@ const Projects = (props) => {
   const value = React.useContext(WrapperContext)
   return (
     <ProjectsDetail onClick={() => {
-      // console.log('Click item ' + props.project.id)
+      // console.log('Click item ' + props.project)
       value.getDetailProject(props.project.id)
       value.chooseProject(props.project)
       props.setShow(false)
