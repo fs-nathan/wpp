@@ -43,9 +43,9 @@ const StyledIconButton = styled(IconButton)`
   }
 `;
 
-function convertDate(convert_day){
-  return convert_day.split('-').reverse().join('-');
-}
+// function convertDate(convert_day){
+//   return convert_day.split('-').reverse().join('-');
+// }
 function TabHeader(props) {
   // const [isRight, setIsRight] = React.useState(true);
   // 
@@ -94,7 +94,7 @@ function TabHeader(props) {
         <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13 }}>{roles}</ColorTypo>
         <br />
         {value.detailTask &&
-          <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao ngày {convertDate(value.detailTask.date_create)}</ColorTypo>
+          <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao ngày {value.detailTask.date_create}</ColorTypo>
         }
       </TagsContainer>
       <StyledIconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
