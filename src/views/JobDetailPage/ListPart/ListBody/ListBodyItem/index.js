@@ -63,7 +63,11 @@ const BadgeItem = styled(ColorChip)`
   font-weight: 600;
   border-radius: 3px !important
 `
-
+const IconPin = styled(Icon)`
+  display: ${props => 
+    // console.log('isGhim:::::', props.isGhim)
+    props.isGhim === true ? 'block' : 'none'};
+`
 function JobName(props) {
   return (
     <NameContainer variant='space-between'>
@@ -79,11 +83,11 @@ function JobContent(props) {
     switch (props.label) {
       case 0:
         // setColorStatus('orangelight')
-        setStatus('đang làm')
+        setStatus('đang chờ')
         break;
       case 1:
         // setColorStatus('orangelight')
-        setStatus('đang chờ')
+        setStatus('đang làm')
         break;
       case 2:
         // setColorStatus('grey')
@@ -92,6 +96,10 @@ function JobContent(props) {
       case 3:
         // setColorStatus('grey')
         setStatus('quá hạn')
+        break;
+      case 4:
+        // setColorStatus('grey')
+        setStatus('tạm dừng')
         break;
       default:
         // console.log(colorStatus)
@@ -110,7 +118,7 @@ function JobContent(props) {
       </div>
       <div style={{ display: 'flex' }}>
         <BadgeItem color='redlight' badge label={status} size='small' />
-        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} />
+        <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props}/>  
       </div>
     </ContentContainer>
   )
@@ -123,10 +131,12 @@ function JobUnit(props) {
   //   avatar = chat.user_create_avatar,
   //   content = chat.content
   // }
+  // console.log('props:::::', props);
+  
   return (
     <ListItemText disableTypography>
       <JobName title={props.name} notification={props.number_new_chat} />
-      <JobContent description={"Sử dụng phần mềm để thiết lập"} label={props.status} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} />
+      <JobContent label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isGhim={props.isGhim} />
     </ListItemText>
   )
 }
