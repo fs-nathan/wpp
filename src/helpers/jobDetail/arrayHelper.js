@@ -28,17 +28,15 @@ export const getIndividualHandleUsers =
     arr => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])
 
 const LIST_PROJECT_STATUS = {
-    ALLMEMBER: 0,
-    PENDING: 1,
-    INPROGRESS: 2,
-    DONE: 3,
-    OVERDUE: 4,
-    STOPPED: 5
+    PENDING: 0,
+    DOING: 1,
+    DONE: 2,
+    EXPIRED: 3,
+    STOP: 4
 }
 
-export const filterAllProjectMember = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.ALLMEMBER)
 export const filterPendingProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.PENDING)
-export const filterInProgressProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.INPROGRESS)
+export const filterInProgressProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.DOING)
 export const filterDoneProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.DONE)
-export const filterOverdueProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.OVERDUE)
-export const filterStoppedProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.STOPPED)
+export const filterExpiredProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.EXPIRED)
+export const filterStoppedProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.STOP)
