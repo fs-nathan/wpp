@@ -65,7 +65,6 @@ const BadgeItem = styled(ColorChip)`
 `
 const IconPin = styled(Icon)`
   display: ${props => 
-    // console.log('isGhim:::::', props.isGhim)
     props.isGhim === true ? 'block' : 'none'};
 `
 function JobName(props) {
@@ -136,7 +135,7 @@ function JobUnit(props) {
   return (
     <ListItemText disableTypography>
       <JobName title={props.name} notification={props.number_new_chat} />
-      <JobContent label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isGhim={props.isGhim} />
+      <JobContent {...props} label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isGhim={props.isGhim} />
     </ListItemText>
   )
 }
@@ -144,7 +143,6 @@ function JobUnit(props) {
 
 
 function ListBodyItem(props) {
-  // console.log("props", props);
   // const value = React.useContext(WrapperContext);
 
   return (

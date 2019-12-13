@@ -54,7 +54,6 @@ const getFirstTaskId = payload => {
         taskId = payload.tasks[0].tasks[0].id
     } catch {
         taskId = ""
-        console.log("ERRROR")
     }
     return taskId
 }
