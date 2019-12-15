@@ -24,7 +24,7 @@ const StyledScrollbars = styled(Scrollbars)`
 
 const StyledDialogContent = styled(DialogContent)`
   & > *:not(:last-child) {
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
   & > input[type=file] {
     display: none;

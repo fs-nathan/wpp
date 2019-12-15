@@ -66,12 +66,12 @@ const StyledTableBody = styled(TableBody)`
 
 const UserTableCell = styled(TableCell)`
   & > span {
-    font-size: 14px;
-    color: ${colorPal['green'][0]};
+    font-size: 15px;
+    color: #111;
   }
   & > small {
-    font-size: 12px;
-    color: ${colorPal['gray'][0]};
+    font-size: 13px;
+    color: #333;
   }
 `;
 
@@ -108,6 +108,16 @@ const CustomMenuItem = styled(({ selected, refs, ...rest }) => (<MenuItem {...re
   }
 `;
 
+const StyledPrimary = styled(Primary)`
+  font-size: 15px;
+  color: #111;
+`;
+
+const StyledSecondary = styled(Secondary)`
+  font-size: 13px;
+  color: #333;
+`;
+
 function getJoinStatusName(statusCode) {
   switch (statusCode) {
     case 0:
@@ -140,14 +150,14 @@ function UserFreeRoomList({ room, onAddMember, }) {
             <CustomAvatar style={{ width: 40, height: 40, }} src={get(user, 'avatar', '')} alt='avatar' />
             <ListItemText 
               primary={
-                <Primary>
+                <StyledPrimary>
                   {get(user, 'name', '')}
-                </Primary>  
+                </StyledPrimary>  
               }
               secondary={
-                <Secondary>
+                <StyledSecondary>
                   {get(user, 'email', '')}
-                </Secondary>
+                </StyledSecondary>
               }
             />
             <AddButton

@@ -20,6 +20,7 @@ import CustomBadge from '../../../../components/CustomBadge';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
+import CreateNewTaskModal from '../../Modals/CreateNewTask';
 
 const Container = styled.div`
   grid-area: table;
@@ -95,17 +96,17 @@ function decodePriorityCode(priorityCode) {
 
 function decodeStateName(stateName) {
   switch (stateName) {
-    case 'waiting': 
+    case 'Waiting': 
       return ({
         color: 'orange',
         name: 'Đang chờ',
       });
-    case 'doing': 
+    case 'Doing': 
       return ({
         color: 'green',
         name: 'Đang làm',
       });
-    case 'expired': 
+    case 'Expired': 
       return ({
         color: 'red',
         name: 'Quá hạn',
@@ -148,6 +149,8 @@ function AllTaskTable({
   const loading = listTaskLoading || detailProjectLoading;
   const error = listTaskError || detailProjectError;
 
+  const [open, setOpen] = React.useState(false);
+
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
@@ -180,7 +183,7 @@ function AllTaskTable({
               }],
               mainAction: {
                 label: '+ Tạo công việc',
-                onClick: (evt) => null,  
+                onClick: (evt) => setOpen(true),  
               },
               expand: {
                 bool: expand,
@@ -216,6 +219,7 @@ function AllTaskTable({
             columns={[{
               label: () => <Icon path={mdiShieldAccount} size={1} color={'rgb(102, 102, 102)'}/>,
               field: (row) => <CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' />,
+              center: true,
             }, {
               label: 'Tên công việc',
               field: 'name',
@@ -227,6 +231,7 @@ function AllTaskTable({
                               >
                                 {decodePriorityCode(get(row, 'priority_code', 0)).name}  
                               </StyledBadge>,
+              center: true,
             }, {
               label: 'Tiến độ',
               field: (row) => `${get(row, 'duration', 0)} ngày`,
@@ -247,13 +252,10 @@ function AllTaskTable({
                               </ProgressBar>,
             }, {
               label: 'Trạng thái',
-              field: (row) => <StateBox stateName={decodeStateName(get(row, 'state_name', '')).color}>
+              field: (row) => <StateBox stateName={decodeStateName(get(row, 'status_name', '')).color}>
                                 <div>
-                                  <span>&#11044;</span><span>{decodeStateName(get(row, 'state_name', '')).name}</span>
+                                  <span>&#11044;</span><span>{decodeStateName(get(row, 'status_name', '')).name}</span>
                                 </div>
-                                <small>
-                                  {get(row, 'state_name', '') === 'expired' ? get(row, 'day_expired', 0) : get(row, 'day_implement', 0)} ngày
-                                </small>
                               </StateBox>,
             }, {
               label: () => <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'}/>,
@@ -267,9 +269,11 @@ function AllTaskTable({
                               } 
                               display={3} 
                             />,
+              center: true,
             }]}
             data={tasks}
           />
+          <CreateNewTaskModal open={open} setOpen={setOpen}/>
         </React.Fragment>
       )}
     </Container>

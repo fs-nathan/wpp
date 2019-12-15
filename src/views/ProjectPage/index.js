@@ -15,6 +15,7 @@ import {
   CREATE_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
   ADD_MEMBER_PROJECT, REMOVE_MEMBER_PROJECT,
   UPDATE_STATE_JOIN_TASK,
+  CREATE_TASK,
 } from '../../constants/events';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
@@ -87,12 +88,14 @@ function ProjectPage({
     CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
     CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
     CustomEventListener(SORT_GROUP_TASK, reloadListTask);
+    CustomEventListener(CREATE_TASK, reloadListTask);
 
     return () => {
       CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
       CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
       CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
       CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
+      CustomEventDispose(CREATE_TASK, reloadListTask);
     }
   }, [projectId, doListTask]);
 
