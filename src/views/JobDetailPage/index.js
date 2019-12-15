@@ -34,15 +34,15 @@ function JobDetailPage(props) {
     props.getMemberNotAssignedByTaskId(props.taskId)
     props.getTrackingTime(props.taskId)
     props.getListTaskDetailByProjectId(props.projectId)
+    props.getProjectGroup()
+    props.getRoleTask()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    
+
     <Wrapper value={{ ...props }}>
-      
       <Container>
-        
         <ListPart {...props} />
         <ChatPart {...props} />
         <TabPart {...props} />
@@ -52,11 +52,13 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('state project id::::', state.taskDetail.listGroupTask.listGroupTask);
-  
+  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectGroups);
+
+
+
   return {
     // offer
-    offer: state.taskDetail.taskOffer.offer.reverse(),
+    offer: state.taskDetail.taskOffer.offer,
 
     pendingItems: state.taskDetail.taskOffer.pendingItems,
     approvedItems: state.taskDetail.taskOffer.approvedItems,
@@ -70,9 +72,9 @@ const mapStateToProps = state => {
     file: state.taskDetail.media.file,
     link: state.taskDetail.media.links,
     // command
-    command: state.taskDetail.taskCommand.command.reverse(),
-    commandItems: state.taskDetail.taskCommand.commandItems.reverse(),
-    decisionItems: state.taskDetail.taskCommand.decisionItems.reverse(),
+    command: state.taskDetail.taskCommand.command,
+    commandItems: state.taskDetail.taskCommand.commandItems,
+    decisionItems: state.taskDetail.taskCommand.decisionItems,
     // fake ID
     taskId: state.taskDetail.commonTaskDetail.activeTaskId,
     projectId: state.taskDetail.commonTaskDetail.activeProjectId,
@@ -86,10 +88,11 @@ const mapStateToProps = state => {
     // member 
     member: state.taskDetail.taskMember.member,
     memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
+    userRoles: state.taskDetail.taskMember.user_roles,
 
     listTime: state.taskDetail.trackingTime.listTime,
-
-
+    // project group
+    projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
   }
 }
 
@@ -110,9 +113,9 @@ const mapDispatchToProps = dispatch => {
     deleteRemindWByRemindId: remindId => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId })),
     // offer
     getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
-    createOfferByTaskId: (data) => dispatch(taskDetailAction.createOffer( data )) ,
+    createOfferByTaskId: (data) => dispatch(taskDetailAction.createOffer(data)),
     deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
-    updateOfferById: (updateId, content) => dispatch(taskDetailAction.updateOffer({ offer_id: updateId, content })),
+    updateOfferById: (data) => dispatch(taskDetailAction.updateOffer(data)),
     uploadDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb)),
     deleteDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb)),
     handleOfferById: (data) => dispatch(taskDetailAction.handleOffer(data)),
@@ -136,19 +139,27 @@ const mapDispatchToProps = dispatch => {
     getMemberNotAssignedByTaskId: task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id })),
     createMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.createMember({ task_id, member_id })),
     deleteMemberToTask: (task_id, member_id) => dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
+    // Member Priority
+    getGroupPermission: () => dispatch(taskDetailAction.getPermission()),
+    updateGroupPermission: (data) => dispatch(taskDetailAction.updatePermission(data)),
     // Member Role
-    createRoleTask: (name) => dispatch(taskDetailAction.createRole({name})),
-    updateRoleTask: (role_task_id, name) => dispatch(taskDetailAction.updateRole({ role_task_id, name })),
-    deleteRoleTask: (role_task_id) => dispatch(taskDetailAction.deleteRole({ role_task_id })),
+    createRoleTask: (name, description) => dispatch(taskDetailAction.createRole({ name, description })),
+    updateRoleTask: (user_role_id, name, description) => dispatch(taskDetailAction.updateRole({ user_role_id, name, description })),
+    deleteRoleTask: (user_role_id) => dispatch(taskDetailAction.deleteRole({ user_role_id })),
+    getRoleTask: () => dispatch(taskDetailAction.getRole()),
+
     //time
     getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
+    updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
     // List Task Detail
+    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId })),
     createJobByProjectId: (data) => dispatch(taskDetailAction.createTask(data)),
-    updateTimeDuration: dataTime =>dispatch(taskDetailAction.updateTimeDuration(dataTime)),
-    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId})),
     //  List Group Task
-    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId})),
-
+    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
+    //edit name and description task
+    updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data)),
+    // get project group
+    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup())
   };
 };
 
