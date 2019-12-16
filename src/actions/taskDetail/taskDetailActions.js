@@ -758,3 +758,9 @@ export const filterTaskByType = payload => ({
     type: types.FILTER_TASK_BY_TYPE,
     payload
 });
+
+// Search Task
+export const searchTask = payload => ({
+    type: types.SEACRCH_TASK,
+    payload
+});

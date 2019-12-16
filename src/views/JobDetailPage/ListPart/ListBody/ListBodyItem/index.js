@@ -67,7 +67,7 @@ const IconPin = styled(Icon)`
   display: ${props => props.isghim === "true" ? 'block' : 'none'};
 `
 const ChipMes = styled(Chip)`
-display: ${props => props.notification === "true" ? 'none': 'block'};
+display: ${props => props.notification === "true" ? 'block' : 'none'};
 `
 function JobName(props) {
   return (
