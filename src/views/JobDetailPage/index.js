@@ -174,7 +174,6 @@ const mapDispatchToProps = dispatch => {
     chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task)),
     filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
     searchTask: (data) => {
-      console.log("dataSearch::::", data);
        dispatch(taskDetailAction.searchTask(data))},
   };
 };

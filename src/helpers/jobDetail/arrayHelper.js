@@ -32,3 +32,9 @@ export const filterTaskByType = (groups, idx) => {
         ? groups
         : groups.map(item => ({...item, tasks: item.tasks.filter(task => task.status_code == idx-1 ) }))
 }
+
+export const searchTaskByTaskName = (groups, keyword) => {
+    return keyword
+        ? groups.map(item => ({...item, tasks: item.tasks.filter(task => task.name.match(keyword) ) }))
+        : groups
+}

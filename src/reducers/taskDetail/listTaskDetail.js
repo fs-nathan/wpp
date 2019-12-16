@@ -1,6 +1,6 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
-import { filterTaskByType } from '../../helpers/jobDetail/arrayHelper';
+import { filterTaskByType, searchTaskByTaskName } from '../../helpers/jobDetail/arrayHelper';
 
 // Initial state for store
 const initialState = {
@@ -9,7 +9,6 @@ const initialState = {
     dataFetched: false,
     error: false,
     defaultListTaskDetail: [],
-    textSearch: '',
 };
 
 export default function reducer(state = initialState, action) {
@@ -60,9 +59,10 @@ export default function reducer(state = initialState, action) {
                 error: true,
             }
         case types.SEACRCH_TASK:
+            console.log("á", action.payload)
             return {
                 ...state,
-                textSearch: action.payload
+                listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }
             }
         default:
             return state;

@@ -84,7 +84,7 @@ function ListHeader(props) {
   const [isSearch, setIsSearch] = React.useState()
   const searchListTask = (e) => {
     setIsSearch(e.target.value)
-    value.searchTask(isSearch)
+    value.searchTask(e.target.value)
   }
   // console.log("isSearch::::", isSearch);
   
@@ -97,7 +97,7 @@ function ListHeader(props) {
             placeholder='Tìm công việc trong dự án...' 
             style={{ height: 'auto' }} 
             value={isSearch}
-            onChange={searchListTask}
+            onChange={e => searchListTask(e)}
             />
           <ButtonIcon
             style={{
