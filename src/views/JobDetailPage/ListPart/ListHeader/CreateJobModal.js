@@ -447,6 +447,8 @@ function CreateJobModal(props) {
     if(validate()) {
       // Call api
       value.createJobByProjectId({ data: dataCreateJob, projectId: value.projectId })
+      console.log("data",  dataCreateJob);
+      
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
       // Close modal
@@ -536,7 +538,7 @@ function CreateJobModal(props) {
               commandSelect={listGroupTask}
               selectedIndex={groupTaskValue}
               setOptions={typeId => handleChangeData("group_task", typeId)}
-              placeholder={'Nhóm mặc định'}
+              // placeholder={'Nhóm mặc định'}
             />
           </Typography>
           <Typography component={'div'}>

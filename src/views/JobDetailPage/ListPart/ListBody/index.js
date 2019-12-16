@@ -45,15 +45,15 @@ function ListBody() {
   let listTaskDetail = value.listTaskDetail
   if (listTaskDetail) {
     data = listTaskDetail.tasks
-    console.log('value', data)
+    // console.log('value', data)
   }
-  const LIST_PROJECT_STATUS = {
-    PENDING: 0,
-    DOING: 1,
-    DONE: 2,
-    EXPIRED: 3,
-    STOP: 4
-}
+//   const LIST_PROJECT_STATUS = {
+//     PENDING: 0,
+//     DOING: 1,
+//     DONE: 2,
+//     EXPIRED: 3,
+//     STOP: 4
+// }
 
 // let dataPending = []
 // const filterPendingProject = arr => arr.filter(item => item.status_code === LIST_PROJECT_STATUS.PENDING)
