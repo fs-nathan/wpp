@@ -8,6 +8,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
 // import avatar from '../../../../../assets/avatar.jpg';
+import { WrapperContext } from '../../../index'
 
 const Container = styled.a`
     padding: 10px 8px 10px 0;
@@ -62,12 +63,23 @@ const BadgeItem = styled(ColorChip)`
   font-weight: 600;
   border-radius: 3px !important
 `
-
+const IconPin = styled(Icon)`
+  display: ${props => props.isghim === "true" ? 'block' : 'none'};
+`
+const ChipMes = styled(Chip)`
+display: ${props => props.notification === "true" ? 'block' : 'none'};
+`
 function JobName(props) {
   return (
     <NameContainer variant='space-between'>
       <ColorTypo bold style={{ fontSize: 17, textOverflow: 'ellipsis', width: '200px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.title}</ColorTypo>
-      <Chip label={props.notification} size='small' style={{ fontSize: '14px', fontWeight: 500 }} />
+      <ChipMes 
+        // label={props.notification} 
+        size='small' 
+        style={{ fontSize: '14px', fontWeight: 500 }}
+        {...props}
+        notification={props.notification.toString()}
+        />
     </NameContainer>
   )
 }
@@ -78,18 +90,27 @@ function JobContent(props) {
     switch (props.label) {
       case 0:
         // setColorStatus('orangelight')
-        setStatus('đang làm')
+        setStatus('đang chờ')
         break;
       case 1:
         // setColorStatus('orangelight')
-        setStatus('đang chờ')
+        setStatus('đang làm')
         break;
       case 2:
         // setColorStatus('grey')
+        setStatus('hoàn thành')
+        break;
+      case 3:
+        // setColorStatus('grey')
         setStatus('quá hạn')
+        break;
+      case 4:
+        // setColorStatus('grey')
+        setStatus('tạm dừng')
         break;
       default:
         // console.log(colorStatus)
+        setStatus('')
         break;
     }
   }, [props.label])
@@ -104,7 +125,7 @@ function JobContent(props) {
       </div>
       <div style={{ display: 'flex' }}>
         <BadgeItem color='redlight' badge label={status} size='small' />
-        <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} />
+        <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props} isghim={props.isghim.toString()}/>  
       </div>
     </ContentContainer>
   )
@@ -117,10 +138,12 @@ function JobUnit(props) {
   //   avatar = chat.user_create_avatar,
   //   content = chat.content
   // }
+  // console.log('props:::::', props);
+  
   return (
     <ListItemText disableTypography>
-      <JobName title={props.name} notification={props.number_new_chat} />
-      <JobContent description={"Sử dụng phần mềm để thiết lập"} label={props.status} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content}/>
+      <JobName title={props.name} notification={props.new_chat} />
+      <JobContent label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isghim={props.isGhim} />
     </ListItemText>
   )
 }
@@ -128,8 +151,14 @@ function JobUnit(props) {
 
 
 function ListBodyItem(props) {
+  // console.log("props", props);
+  const value = React.useContext(WrapperContext);
+
   return (
-    <Container>
+    <Container onClick={() => 
+      // console.log("id list task:::::", props.id)
+      value.chooseTask(props.id)
+    }>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>

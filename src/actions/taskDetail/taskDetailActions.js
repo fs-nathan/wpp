@@ -728,3 +728,39 @@ export const getListProjectFail = (error) => ({
     type: types.GET_LIST_PROJECT_LISTPART_FAIL,
     error: error,
 });
+// Get project detail
+export const getProjectDetail = (payload) => ({
+    type: types.GET_PROJECT_DETAIL_REQUEST,
+    payload
+});
+
+export const getProjectDetailSuccess = (payload) => ({
+    type: types.GET_PROJECT_DETAIL_SUCCESS,
+    payload
+});
+
+export const getProjectDetailFail = (error) => ({
+    type: types.GET_PROJECT_DETAIL_FAIL,
+    error: error,
+});
+
+export const chooseProject = payload => ({
+    type: types.CHOOSE_PROJECT,
+    payload
+});
+
+export const chooseTask = payload => ({
+    type: types.CHOOSE_TASK,
+    payload
+});
+
+export const filterTaskByType = payload => ({
+    type: types.FILTER_TASK_BY_TYPE,
+    payload
+});
+
+// Search Task
+export const searchTask = payload => ({
+    type: types.SEACRCH_TASK,
+    payload
+});

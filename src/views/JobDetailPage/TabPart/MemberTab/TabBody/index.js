@@ -65,6 +65,13 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
+const StyledMenuMember = styled.div`
+  opacity: 0 ;
+  ${StyledListItem}:hover & {
+    opacity: 1;
+  }
+`
+
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
@@ -106,12 +113,6 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
     setOpen(true);
     setAnchorEl(null);
   };
-  const StyledMenuMember = styled.div`
-  opacity: 0 ;
-  ${StyledListItem}:hover & {
-    opacity: 1;
-  }
-`
   return (
     <React.Fragment>
       <StyledListItem>

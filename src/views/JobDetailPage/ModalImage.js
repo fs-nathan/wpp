@@ -20,7 +20,7 @@ const GroupTitle = styled(MuiDialogTitle)`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #474747;
+    background-color: #000;
     align-items: center;
     padding: 5px 15px;
 `
@@ -128,7 +128,8 @@ const StyledDialog = styled(Dialog)`
     }
 `
 const ContentDialog = styled(DialogContent)`
-    background: transparent;
+    overflow: hidden;
+    background: #161616c9;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -138,7 +139,16 @@ const ContentDialog = styled(DialogContent)`
         opacity: 1;
     }
 `
-
+const ButtonImage = styled(IconButton)`
+    padding: 0;
+    & > span > svg {
+        width: 6.5rem !important;
+        height: 6.5rem !important;
+        &:hover {
+            fill: #ccc;
+          }
+    }
+`
 
 const ModalImage = (props) => {
     const theme = useTheme();
@@ -153,13 +163,13 @@ const ModalImage = (props) => {
             <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
             </DialogTitle>
             <ContentDialog dividers>
-                <IconButton>
+                <ButtonImage>
                     <Icon path={mdiChevronLeftCircle} size={5} />
-                </IconButton>
+                </ButtonImage>
                 <img alt="vtask" src={ImageTest} />
-                <IconButton>
+                <ButtonImage>
                     <Icon path={mdiChevronRightCircle} size={5} />
-                </IconButton>
+                </ButtonImage>
             </ContentDialog>
             <DialogActions>
 

@@ -285,9 +285,9 @@ function TabBody() {
       )
     })
   }
-  function convertDate(convert_day){
-    return convert_day.split('-').reverse().join('-');
-  }
+  // function convertDate(convert_day){
+  //   return convert_day.split('-').reverse().join('-');
+  // }
   let handleChangeProgress = progressValue => {
     setDataProgress(progressValue)
   }
@@ -298,11 +298,11 @@ function TabBody() {
         <StartEndDateBox>
           <StartDateBox>
             <ColorTypo>{value.detailTask.start_time}</ColorTypo>
-            <ColorTypo>{convertDate(value.detailTask.start_date)}</ColorTypo>
+            <ColorTypo>{value.detailTask.start_date}</ColorTypo>
           </StartDateBox>
           <EndDateBox>
             <ColorTypo>{value.detailTask.end_time}</ColorTypo>
-            <ColorTypo>{convertDate(value.detailTask.end_date)}</ColorTypo>
+            <ColorTypo>{value.detailTask.end_date}</ColorTypo>
           </EndDateBox>
         </StartEndDateBox>
         {/* progress bar */}

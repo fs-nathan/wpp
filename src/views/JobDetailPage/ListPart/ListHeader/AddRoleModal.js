@@ -63,18 +63,17 @@ const DialogActions = withStyles(theme => ({
 function AddRoleModal(props) {
     const [name, setName] = React.useState("")
     const [description, setDescription] = React.useState("")
-
     const handleClose = () => {
         props.setOpen(false)
     }
 
     const handleSubmit = () => {
-        // Call compatible API with 
+        // Call compatible API depends on modal 
         if (props.isEditRole) {
-            props.editData(props.valueId, name, description)
+            props.addData(name, description)
             handleClose()
         } else {
-            props.addData(name, description)
+            props.editData(props.valueId, name, description)
             handleClose()
         }
     }

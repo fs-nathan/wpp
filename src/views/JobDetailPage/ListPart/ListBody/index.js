@@ -35,17 +35,35 @@ const Body = styled(Scrollbars)`
 
 function ListBody() {
   const value = React.useContext(WrapperContext)
+  // console.log('hello', value.listTaskDetail )
   let data = []
+ 
+  // let dataDoing = []
+  // let dataDone = []
+  // let dataExpired = []
+  // let dataStop = []
   let listTaskDetail = value.listTaskDetail
   if (listTaskDetail) {
     data = listTaskDetail.tasks
+    console.log('value', data)
   }
+  const LIST_PROJECT_STATUS = {
+    PENDING: 0,
+    DOING: 1,
+    DONE: 2,
+    EXPIRED: 3,
+    STOP: 4
+}
+
+// let dataPending = []
+// const filterPendingProject = arr => arr.filter(item => item.status_code === LIST_PROJECT_STATUS.PENDING)
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       {data.map((item, key) => {
+        
         return (
-          <StyledList key={key}>
+          <StyledList key={key} >
             <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
             {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
           </StyledList>

@@ -20,7 +20,18 @@ const Container = styled.div`
 
 function JobDetailPage(props) {
   useEffect(() => {
+    props.getProjectGroup()
+    // props.getDetailProject(props.projectId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
+  const getDataByProjectId = () => {
+    props.getRoleTask()
     props.getListGroupTaskByProjectId(props.projectId)
+    props.getListTaskDetailByProjectId(props.projectId)
+  }
+
+  const getDataByTaskId = () => {
     props.getSubTaskByTaskId(props.taskId)
     props.getRemindByTaskId(props.taskId)
     props.getOfferByTaskId(props.taskId)
@@ -33,11 +44,10 @@ function JobDetailPage(props) {
     props.getMemberByTaskId(props.taskId)
     props.getMemberNotAssignedByTaskId(props.taskId)
     props.getTrackingTime(props.taskId)
-    props.getListTaskDetailByProjectId(props.projectId)
-    props.getProjectGroup()
-    props.getRoleTask()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }
+
+  useEffect(getDataByTaskId, [props.taskId])
+  useEffect(getDataByProjectId, [props.projectId])
 
   return (
 
@@ -52,10 +62,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectGroups);
-
-
-
+  // console.log('state project group::::', state.taskDetail.commonTaskDetail.activeProjectId);
   return {
     // offer
     offer: state.taskDetail.taskOffer.offer,
@@ -93,6 +100,8 @@ const mapStateToProps = state => {
     listTime: state.taskDetail.trackingTime.listTime,
     // project group
     projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
+    // project detail
+    projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
   }
 }
 
@@ -159,7 +168,13 @@ const mapDispatchToProps = dispatch => {
     //edit name and description task
     updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data)),
     // get project group
-    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup())
+    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
+    getDetailProject: (project_id) => dispatch(taskDetailAction.getProjectDetail(project_id)),
+    chooseProject: (project) => dispatch(taskDetailAction.chooseProject(project)),
+    chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task)),
+    filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
+    searchTask: (data) => {
+       dispatch(taskDetailAction.searchTask(data))},
   };
 };
 
