@@ -3,8 +3,6 @@ import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 const initialState = {
     activeProjectId: "",
     activeTaskId: "",
-    // activeProjectId: "5de5c4b9f9e332da9ebd6b3c",
-    // activeTaskId: "5da1821ad219830d90402fd8",
     projectGroups: [],
     projectDetail: {},
 }

@@ -8,7 +8,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
 // import avatar from '../../../../../assets/avatar.jpg';
-// import { WrapperContext } from '../../../index'
+import { WrapperContext } from '../../../index'
 
 const Container = styled.a`
     padding: 10px 8px 10px 0;
@@ -64,14 +64,22 @@ const BadgeItem = styled(ColorChip)`
   border-radius: 3px !important
 `
 const IconPin = styled(Icon)`
-  display: ${props => 
-    props.isGhim === true ? 'block' : 'none'};
+  display: ${props => props.isghim === "true" ? 'block' : 'none'};
+`
+const ChipMes = styled(Chip)`
+display: ${props => props.notification === "true" ? 'none': 'block'};
 `
 function JobName(props) {
   return (
     <NameContainer variant='space-between'>
       <ColorTypo bold style={{ fontSize: 17, textOverflow: 'ellipsis', width: '200px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.title}</ColorTypo>
-      <Chip label={props.notification} size='small' style={{ fontSize: '14px', fontWeight: 500 }} />
+      <ChipMes 
+        // label={props.notification} 
+        size='small' 
+        style={{ fontSize: '14px', fontWeight: 500 }}
+        {...props}
+        notification={props.notification.toString()}
+        />
     </NameContainer>
   )
 }
@@ -117,7 +125,7 @@ function JobContent(props) {
       </div>
       <div style={{ display: 'flex' }}>
         <BadgeItem color='redlight' badge label={status} size='small' />
-        <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props}/>  
+        <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props} isghim={props.isghim.toString()}/>  
       </div>
     </ContentContainer>
   )
@@ -134,8 +142,8 @@ function JobUnit(props) {
   
   return (
     <ListItemText disableTypography>
-      <JobName title={props.name} notification={props.number_new_chat} />
-      <JobContent {...props} label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isGhim={props.isGhim} />
+      <JobName title={props.name} notification={props.new_chat} />
+      <JobContent label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isghim={props.isGhim} />
     </ListItemText>
   )
 }
@@ -143,10 +151,14 @@ function JobUnit(props) {
 
 
 function ListBodyItem(props) {
-  // const value = React.useContext(WrapperContext);
+  // console.log("props", props);
+  const value = React.useContext(WrapperContext);
 
   return (
-    <Container onClick={() => console.log("id list task:::::", props.id)}>
+    <Container onClick={() => 
+      // console.log("id list task:::::", props.id)
+      value.chooseTask(props.id)
+    }>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>

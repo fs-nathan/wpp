@@ -835,7 +835,7 @@ async function doGetRole(payload) {
 
 function* getRole(action) {
   try {
-    const res = yield call(doGetRole, action.payload)  
+    const res = yield call(doGetRole, action.payload)
     yield put(actions.getRoleSuccess(res))
   } catch (error) {
     yield put(actions.getRoleFail(error))
@@ -909,7 +909,7 @@ function* deleteRole(action) {
   try {
     const res = yield call(doDeleteRole, action.payload)
     yield put(actions.deleteRoleSuccess(res))
-    yield put (actions.getRole())
+    yield put(actions.getRole())
   } catch (error) {
     yield put(actions.deleteRoleFail(error))
   }
@@ -1060,11 +1060,21 @@ async function doGetListProject(payload) {
   }
 }
 
+const getFirstProjectId = firstProjectGroup => {
+  let projectId = ""
+  try {
+    projectId = firstProjectGroup.projects[0].id
+  } catch {
+    projectId = ""
+  }
+  return projectId
+}
 
 function* getProjectGroup() {
   try {
     const response = yield call(doGetProjectGroup)
     let projectGroups = response.project_groups
+
     let projectId = ""
     for (let i = 0; i < projectGroups.length; i++) {
       let payload = {
@@ -1075,7 +1085,7 @@ function* getProjectGroup() {
       const tempResponse = yield call(doGetListProject, payload)
       projectGroups[i].projects = tempResponse.projects
       // set active project id to call other API
-      if(i === 0) projectId = projectGroups[i].id
+      if (i === 0) projectId = getFirstProjectId(projectGroups[i])
     }
 
     yield put(actions.getProjectGroupSuccess({ projectGroups, projectId }))
@@ -1093,7 +1103,7 @@ async function doUpdateNameDescriptionTask() {
     // const result = await apiService(config);
     // return result.data;
     return null;
-  } catch(error) {
+  } catch (error) {
     throw error;
   }
 }
@@ -1114,8 +1124,8 @@ function* updateNameDescriptionTask(action) {
 
 // Get Project Detail
 async function doGetProjectDetail(project_id) {
-  
-  // console.log("PPPP", project_id)
+
+  console.log("PPPP", project_id)
   try {
     const config = {
       url: 'project/detail?project_id=' + project_id,

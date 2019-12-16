@@ -101,6 +101,7 @@ const DialogActions = withStyles(theme => ({
 
 const ProgressModal = (props) => {
   const value = React.useContext(WrapperContext)
+  console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState()
   const [endTime, setEndTime] = React.useState()
   const [startDay, setStartDay] = React.useState()

@@ -753,3 +753,8 @@ export const chooseTask = payload => ({
     type: types.CHOOSE_TASK,
     payload
 });
+
+export const filterTaskByType = payload => ({
+    type: types.FILTER_TASK_BY_TYPE,
+    payload
+});

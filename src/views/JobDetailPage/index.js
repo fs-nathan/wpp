@@ -21,11 +21,12 @@ const Container = styled.div`
 function JobDetailPage(props) {
   useEffect(() => {
     props.getProjectGroup()
-    props.getRoleTask()
+    // props.getDetailProject(props.projectId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  
   const getDataByProjectId = () => {
+    props.getRoleTask()
     props.getListGroupTaskByProjectId(props.projectId)
     props.getListTaskDetailByProjectId(props.projectId)
   }
@@ -61,7 +62,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectDetail);
+  console.log('state project group::::', state.taskDetail.commonTaskDetail.activeProjectId);
   return {
     // offer
     offer: state.taskDetail.taskOffer.offer,
@@ -170,7 +171,8 @@ const mapDispatchToProps = dispatch => {
     getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
     getDetailProject: (project_id) => dispatch(taskDetailAction.getProjectDetail(project_id)),
     chooseProject: (project) => dispatch(taskDetailAction.chooseProject(project)),
-    chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task))
+    chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task)),
+    filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id))
   };
 };
 
