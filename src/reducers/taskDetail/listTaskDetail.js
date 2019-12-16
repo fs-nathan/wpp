@@ -59,7 +59,6 @@ export default function reducer(state = initialState, action) {
                 error: true,
             }
         case types.SEACRCH_TASK:
-            console.log("á", action.payload)
             return {
                 ...state,
                 listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }
