@@ -37,15 +37,15 @@ function ListBody() {
   const value = React.useContext(WrapperContext)
   // console.log('hello', value.listTaskDetail )
   let data = []
-  let dataPending = []
-  let dataDoing = []
-  let dataDone = []
-  let dataExpired = []
-  let dataStop = []
+ 
+  // let dataDoing = []
+  // let dataDone = []
+  // let dataExpired = []
+  // let dataStop = []
   let listTaskDetail = value.listTaskDetail
   if (listTaskDetail) {
     data = listTaskDetail.tasks
-    // console.log('value', value.listTaskDetail)
+    console.log('value', data)
   }
   const LIST_PROJECT_STATUS = {
     PENDING: 0,
@@ -53,30 +53,22 @@ function ListBody() {
     DONE: 2,
     EXPIRED: 3,
     STOP: 4
-  }
+}
+
+// let dataPending = []
+// const filterPendingProject = arr => arr.filter(item => item.status_code === LIST_PROJECT_STATUS.PENDING)
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <Collapse mountOnEnter unmountOnExit>
-        {data.map((item, key) => {
-          return (
-            <StyledList key={key} >
-              <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
-              {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
-            </StyledList>
-          )
-        })}
-      </Collapse>
-      <Collapse in={value === 0} mountOnEnter unmountOnExit>
-        {dataPending.map((item, key) => {
-          return (
-            <StyledList key={key} >
-              <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
-              {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
-            </StyledList>
-          )
-        })}
-      </Collapse>
+      {data.map((item, key) => {
+        
+        return (
+          <StyledList key={key} >
+            <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
+            {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
+          </StyledList>
+        )
+      })}
 
     </Body>
 
