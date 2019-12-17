@@ -24,7 +24,7 @@ const Header = styled.div`
 `;
 const WrapTask = styled.div`
   height: 100%;
-  display: grid;
+  
   grid-template-rows: 165px calc(100vh - 70px - 50px);
   grid-template-columns: 1fr;
   grid-template-areas: 

@@ -433,7 +433,6 @@ function TabBody(props) {
     props.postSubTaskByTaskId(taskId, name)
     setName("")
   }
-
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
@@ -448,7 +447,7 @@ function TabBody(props) {
             <ButtonIcon
               style={{ paddingBottom: 9, marginRight: 14 }}
               onClick={() => {
-                createSubTask("5da1821ad219830d90402fd8", name)
+                createSubTask(props.taskId, name)
               }}>
               <Icon path={mdiSend} size={1} color={'gray'} />
             </ButtonIcon>

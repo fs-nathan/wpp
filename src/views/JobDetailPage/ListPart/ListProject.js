@@ -182,7 +182,9 @@ function ListProject(props) {
   return (
     <Container {...props}>
       <WrapperHeader {...props} />
-      <WrapperBody autoHide autoHideTimeout={500} autoHideDuration={200}>
+      <WrapperBody 
+      autoHide autoHideTimeout={500} autoHideDuration={200}
+      >
         {
           value.projectGroup.map(group => {
             return (

@@ -28,6 +28,7 @@ function JobDetailPage(props) {
   const getDataByProjectId = () => {
     props.getRoleTask()
     props.getListGroupTaskByProjectId(props.projectId)
+    if(props.projectId !== "")
     props.getListTaskDetailByProjectId(props.projectId)
   }
 

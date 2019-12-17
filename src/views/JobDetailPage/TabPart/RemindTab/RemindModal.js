@@ -212,10 +212,9 @@ const DEFAULT_DATA = {
 
 
 function RemindModal(props) {
-  console.log('props remind:::', props);
-  
   const KEYCODE_ENTER = 13
   const valueRemind = React.useContext(WrapperContext)
+  console.log('valueRemind', valueRemind.taskId)
   const classes = useStyles()
   // bien menu item
   const [data, setData] = React.useState(DEFAULT_DATA)
@@ -262,7 +261,7 @@ function RemindModal(props) {
       type_remind: data.type_remind
     }
     const dataCreateRemindDuration = {
-      task_id: "5da1821ad219830d90402fd8",
+      task_id: valueRemind.taskId,
       content: data.content,
       duration: data.duration
     }
@@ -273,7 +272,7 @@ function RemindModal(props) {
     }
     if (isCreateModal) {
       // Case 1: Call create remind with time
-      if (data.type === REMIND_TIME_TYPE) { valueRemind.createRemindWithTimeDetail({ taskId: "5da1821ad219830d90402fd8", data }) }
+      if (data.type === REMIND_TIME_TYPE) { valueRemind.createRemindWithTimeDetail({ taskId: valueRemind.taskId, data }) }
       // Case 2: Call create remind with progress
       else { valueRemind.createRemindWithDurationDetail(dataCreateRemindDuration) }
     } else {

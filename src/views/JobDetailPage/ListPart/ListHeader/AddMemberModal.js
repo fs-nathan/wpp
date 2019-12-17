@@ -188,6 +188,8 @@ const StyledMenu = styled(TableCell)`
 `
 
 function ProjectMember(props) {
+    const valueMember = React.useContext(WrapperContext)
+    console.log('hello', valueMember)
     return (
         <StyledListItem>
             <Avatar src={avatar} alt='avatar' />
@@ -201,8 +203,8 @@ function ProjectMember(props) {
                 label="Thêm"
                 onClick={props.valueContext.createMemberToTask}
             /> */}
-            <AddButton onClick={props.valueContext.createMemberToTask}>Thêm</AddButton>
-        </StyledListItem>
+            <AddButton onClick= {() => valueMember.createMemberToTask()}>Thêm</AddButton>
+        </StyledListItem> 
     )
 }
 
@@ -267,7 +269,7 @@ function MemberRole() {
 
 
     const [openRoleModal, setOpenRoleModal] = React.useState(false)
-    console.log("listData...", listData);
+    // console.log("listData...", listData);
     if (listData) {
         listData.map((item, key) => {
             return (
@@ -320,7 +322,7 @@ function TableMember(props) {
 //   grid-area: body;
 //   height: 100%;
 // `;
-    console.log("demo.........", props.listMemberJobState);
+    // console.log("demo.........", props.listMemberJobState);
 
     return (
         <Paper className={classes.root}>
@@ -376,7 +378,6 @@ function AddMemberModal(props) {
     const valueContext = React.useContext(WrapperContext);
     const [listMemberProjectState, setListMemberProject] = React.useState([])
     const [listMemberJobState, setListMemberJob] = React.useState([])
-
     React.useEffect(() => {
         let arrayMemberNotAssigned = valueContext.memberNotAssigned.map((item, key) => {
             return (
