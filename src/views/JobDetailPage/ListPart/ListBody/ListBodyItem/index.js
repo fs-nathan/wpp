@@ -143,7 +143,7 @@ function JobUnit(props) {
   return (
     <ListItemText disableTypography>
       <JobName title={props.name} notification={props.new_chat} />
-      <JobContent label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isghim={props.isGhim} />
+      <JobContent label={props.status_code} time={props.updated_time} avatar={props.chat.user_create_avatar} content={props.chat.content} isghim={props.is_ghim} />
     </ListItemText>
   )
 }

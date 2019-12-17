@@ -349,7 +349,7 @@ const DEFAULT_DATA = {
   end_date: DEFAULT_DATE_TEXT,
   type_assign: DEFAULT_ASSIGN_ID,
   priority: DEFAULT_PRIORITY_ID,
-  group_task: EMPTY_STRING,
+  group_task: DEFAULT_GROUP_TASK_VALUE,
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN,
 }
@@ -447,7 +447,7 @@ function CreateJobModal(props) {
     if(validate()) {
       // Call api
       value.createJobByProjectId({ data: dataCreateJob, projectId: value.projectId })
-      console.log("data",  dataCreateJob);
+      console.log("data",  dataCreateJob)
       
       // Clear temporary data
       setDataMember(DEFAULT_DATA)

@@ -200,13 +200,13 @@ const ModalImage = (props) => {
             </ContentDialog>
             <DialogActions>
                 {/* footer image */}
-                <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
-                    {data.images.map((image, key) => {
+                {/* <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
+                    {/* {data.images.map((image, key) => { 
                         return (
-                            <MediaImage key={key}>
+                            <MediaImage>
                                 {/* <GridListTile cols={5}>
                                     <SubHeader component='div'>{image.date_create}</SubHeader>
-                                </GridListTile> */}
+                                </GridListTile>
                                 <WrapImage>
                                     {image.images.map((item, idx) => {
                                         return (
@@ -218,8 +218,8 @@ const ModalImage = (props) => {
                                 </WrapImage>
                             </MediaImage>
                         );
-                    })}
-                </GridList>
+                    })} 
+                </GridList> */}
                 {/* end footer image */}
             </DialogActions>
         </StyledDialog>
