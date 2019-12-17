@@ -13,12 +13,11 @@ import { WrapperContext } from '../index'
 
 const Container = styled.div`
   display: ${props => props.show ? 'block' : 'none'};
-  height: 100%;
-  display: grid;
+  height: calc(82vh);
   & > *:first-child {
     padding: 0 15px;
   }
-  grid-template-rows: 107px calc(100vh - 70px - 50px);
+  grid-template-rows: 107px calc(83vh - 8px);
   grid-template-columns: 1fr;
   grid-template-areas: 
     "header"
@@ -174,7 +173,7 @@ const WrapperBody = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
   & > div > *:last-child {
-    margin-bottom: 50px;
+    margin-bottom: 15px;
   }
 `;
 function ListProject(props) {
