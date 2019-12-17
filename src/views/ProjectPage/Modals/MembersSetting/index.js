@@ -10,6 +10,7 @@ import Icon from '@mdi/react';
 import {
   mdiDotsVertical,
   mdiCheckCircle,
+  mdiAccountMinus,
 } from '@mdi/js';
 import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
@@ -38,6 +39,7 @@ const StyledListSubheader = styled(ListSubheader)`
   display: flex;
   align-items: center;
   padding: 5px 0;
+  margin: 0 16px;
   & > * {
     color: rgba(0, 0, 0, 0.54);  
     font-size: 14px;
@@ -45,7 +47,7 @@ const StyledListSubheader = styled(ListSubheader)`
 `;
 
 const CustomListItem = styled(StyledListItem)`
-  padding: 10px 0;
+  padding: 10px 16px;
 `;
 
 const Banner = styled.div`
@@ -116,6 +118,29 @@ const StyledPrimary = styled(Primary)`
 const StyledSecondary = styled(Secondary)`
   font-size: 13px;
   color: #333;
+`;
+
+const LeftContainer = styled.div`
+  & > * {
+    &:nth-child(1) {
+      font-size: 14px;
+      text-align: center;
+      padding: 12px;
+    }
+    &:nth-child(2) {
+      width: 90%;
+      margin: 8px auto;
+    }
+  }
+`;
+
+const RightContainer = styled.div`
+  & > * {
+    &:nth-child(1) {
+      font-size: 14px;
+      padding: 12px;
+    }
+  }
 `;
 
 function getJoinStatusName(statusCode) {
@@ -220,9 +245,11 @@ const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, }) => {
         >
           <Icon path={mdiCheckCircle} size={0.7} /> Tham gia việc khi được chọn
         </CustomMenuItem>
-        <MenuItem onClick={evt => setAlert(true)}>
-          Loại trừ
-        </MenuItem>
+        <CustomMenuItem
+          onClick={evt => setAlert(true)}
+        >
+          <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
+        </CustomMenuItem>
       </Menu>
       <AlertModal 
         open={alert}
@@ -308,8 +335,8 @@ function MemberSetting({
         height='tall'
         columns={2}
         left={
-          <>
-            <Header color='gray' uppercase bold>Thành viên sẵn sàng tham gia</Header>
+          <LeftContainer>
+            <Header uppercase bold>Danh sách thành viên</Header>
             <Banner>
               <SearchInput 
                 fullWidth 
@@ -327,48 +354,48 @@ function MemberSetting({
                 />
               ))}
             </ListContainer>
-          </>
+          </LeftContainer>
         }
         right={
-          <>
-            <Header color='gray' uppercase bold>Thành viên đã tham gia</Header>
+          <RightContainer>
+            <Header  uppercase bold>Thành viên dự án</Header>
             <Table>
-            <StyledTableHead>
-              <TableRow>
-                <MiddleTableCell></MiddleTableCell>
-                <TableCell>Thành viên</TableCell>
-                <MiddleTableCell>Nhóm quyền</MiddleTableCell>
-                <MiddleTableCell>Vai trò</MiddleTableCell>
-                <MiddleTableCell>Trạng thái</MiddleTableCell>
-                <MiddleTableCell></MiddleTableCell>
-              </TableRow>
-            </StyledTableHead>
-            <StyledTableBody>
-              {membersAdded.map(member => (
-                <TableRow key={get(member, 'id')}>
-                  <MiddleTableCell>
-                    <CustomAvatar src={get(member, 'avatar')} alt='avatar' />
-                  </MiddleTableCell>
-                  <UserTableCell>
-                    <span>{get(member, 'name', '')}</span>
-                    <br />
-                    <small>{get(member, 'email', '')}</small>  
-                  </UserTableCell>
-                  <MiddleTableCell>{get(member, 'group_permission_name', '')}</MiddleTableCell>
-                  <MiddleTableCell>{get(member, 'roles', '')}</MiddleTableCell>
-                  <MiddleTableCell>{getJoinStatusName(get(member, 'join_task_status_code', ''))}</MiddleTableCell>
-                  <MiddleTableCell>
-                    <SettingButton 
-                      member={member} 
-                      onRemoveMember={handleRemoveMember} 
-                      onChangeStateJoinTask={handleUpdateStateJoinTask}  
-                    />
-                  </MiddleTableCell>
+              <StyledTableHead>
+                <TableRow>
+                  <MiddleTableCell></MiddleTableCell>
+                  <TableCell>Thành viên</TableCell>
+                  <MiddleTableCell>Nhóm quyền</MiddleTableCell>
+                  <MiddleTableCell>Vai trò</MiddleTableCell>
+                  <MiddleTableCell>Trạng thái</MiddleTableCell>
+                  <MiddleTableCell></MiddleTableCell>
                 </TableRow>
-              ))}
-            </StyledTableBody>
-          </Table>
-          </>
+              </StyledTableHead>
+              <StyledTableBody>
+                {membersAdded.map(member => (
+                  <TableRow key={get(member, 'id')}>
+                    <MiddleTableCell>
+                      <CustomAvatar src={get(member, 'avatar')} alt='avatar' />
+                    </MiddleTableCell>
+                    <UserTableCell>
+                      <span>{get(member, 'name', '')}</span>
+                      <br />
+                      <small>{get(member, 'email', '')}</small>  
+                    </UserTableCell>
+                    <MiddleTableCell>{get(member, 'group_permission_name', '')}</MiddleTableCell>
+                    <MiddleTableCell>{get(member, 'roles', '')}</MiddleTableCell>
+                    <MiddleTableCell>{getJoinStatusName(get(member, 'join_task_status_code', ''))}</MiddleTableCell>
+                    <MiddleTableCell>
+                      <SettingButton 
+                        member={member} 
+                        onRemoveMember={handleRemoveMember} 
+                        onChangeStateJoinTask={handleUpdateStateJoinTask}  
+                      />
+                    </MiddleTableCell>
+                  </TableRow>
+                ))}
+              </StyledTableBody>
+            </Table>
+          </RightContainer>
         }
       />
     </React.Fragment>

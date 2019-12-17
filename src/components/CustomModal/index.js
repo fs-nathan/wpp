@@ -120,17 +120,17 @@ function TwoColumns({ maxWidth, left, right }) {
         autoHide
         autoHideTimeout={500}
       >
-        <StyledDialogContent>
+        <div>
           {left}
-        </StyledDialogContent>
+        </div>
       </StyledScrollbars>
       <StyledScrollbars
         autoHide
         autoHideTimeout={500}
       >
-        <StyledDialogContent>
+        <div>
           {right}
-        </StyledDialogContent>
+        </div>
       </StyledScrollbars>
     </TwoColumnsContainer>
   );

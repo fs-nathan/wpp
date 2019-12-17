@@ -110,7 +110,12 @@ function HeaderButtonGroup() {
           </StyledButton>
         )}
         {get(options, 'subActions', []).map((subAction, index) => (
-          <StyledButton key={index} onClick={get(subAction, 'onClick', () => null)}>
+          <StyledButton key={index} onClick={evt => {
+            get(subAction, 'onClick', () => null)(evt);
+            get(subAction, 'noExpand', false) 
+              && get(options, 'expand.bool', false) 
+              && get(options, 'expand.toggleExpand', () => null)();
+          }}>
             <div>
               <Icon path={get(subAction, 'iconPath')} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
             </div>

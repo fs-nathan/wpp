@@ -168,10 +168,12 @@ function AllTaskTable({
                 label: 'Thành viên', 
                 iconPath: mdiAccountCircle,
                 onClick: (evt) => handleSubSlide(1),
+                noExpand: true,
               }, {
                 label: 'Nhóm việc',
                 iconPath: mdiScatterPlot,
                 onClick: (evt) => handleSubSlide(2),
+                noExpand: true,
               }, {
                 label: 'Tải xuống',
                 iconPath: mdiDownload,
