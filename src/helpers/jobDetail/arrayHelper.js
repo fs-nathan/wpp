@@ -35,7 +35,7 @@ export const filterTaskByType = (groups, idx) => {
 
 export const searchTaskByTaskName = (groups, keyword) => {
     return keyword
-        ? groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.name.match(keyword)) }))
+        ? groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase())) }))
         : groups
 }
 

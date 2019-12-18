@@ -1125,7 +1125,7 @@ function* updateNameDescriptionTask(action) {
 // Get Project Detail
 async function doGetProjectDetail(project_id) {
 
-  console.log("PPPP", project_id)
+  // console.log("PPPP", project_id)
   try {
     const config = {
       url: 'project/detail?project_id=' + project_id,

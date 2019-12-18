@@ -589,7 +589,7 @@ function CreateJobModal(props) {
             :
             <>
               <ButtonImage onClick={() => {
-                handleClose()
+                // handleClose()
                 setOpenAddModal(true)
               }} >
                 <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />
