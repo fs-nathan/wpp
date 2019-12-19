@@ -8,10 +8,9 @@ import TableHeaderRow from './TableHeaderRow';
 import TableBodyGroupRow from './TableBodyGroupRow';
 import TableBodyRow from './TableBodyGroupRow/TableBodyRow'; 
 import { get } from 'lodash';
+import './style.scss';
 
-const Container = styled(Scrollbars)`
-  height: 100%;
-`;
+const Container = ({ className = '', ...rest }) => <Scrollbars className={`comp_CustomTable_TableMain___container ${className}`} {...rest} />;
 
 function TableMain() {
 

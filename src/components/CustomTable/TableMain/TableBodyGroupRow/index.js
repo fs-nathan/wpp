@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { TableRow, TableCell, TableBody, Button } from '@material-ui/core';
 import { Droppable } from 'react-beautiful-dnd';
 import Icon from '@mdi/react';
@@ -10,35 +9,11 @@ import {
 import TableBodyRow from './TableBodyRow';
 import { CustomTableContext } from '../../index';
 import { get } from 'lodash';
+import './style.scss';
 
-const StyledTableBodyRow = styled(TableRow)`
-  background-color: #f2f2f263;
-  color: rgb(68, 72, 94);
-  font-weight: 600;
-  border-bottom: 1px solid rgb(241, 241, 241);
-  padding: 8px;
-`;
-
-const StyledTableBodyCell = styled(TableCell)`
-  padding: 0;
-  font-size: 12px;
-`;
-
-const CustomButton = styled(Button)`
-  justify-content: flex-start;
-  border-radius: 0;
-  padding: 8px 16px;
-  & > span {
-    font-weight: bold;
-    color: rgb(68, 72, 94);
-    & > span {
-      margin-left: auto;
-    }
-    &:last-child {
-      display: none;
-    }
-  }
-`;
+const StyledTableBodyRow = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyGroup___row ${className}`} {...rest} />;
+const StyledTableBodyCell = ({ className = '', ...rest }) => <TableCell className={`comp_CustomTable_TableBodyGroup___cell ${className}`} {...rest} />;
+const CustomButton = ({ className = '', ...rest }) => <Button className={`comp_CustomTable_TableBodyGroup___button ${className}`} {...rest} />;
 
 function TableBodyGroupRow({ group }) {
 
