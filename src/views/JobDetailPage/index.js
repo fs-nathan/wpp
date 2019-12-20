@@ -20,11 +20,12 @@ const Wrapper = WrapperContext.Provider
 // `;
 
 function JobDetailPage(props) {
-    useEffect(() => {
-        props.getProjectGroup()
-        // props.getDetailProject(props.projectId)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+  useEffect(() => {
+    // props.getProjectGroup()
+    props.getProjectListBasic()
+    // props.getDetailProject(props.projectId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
     const getDataByProjectId = () => {
         props.getRoleTask()
@@ -64,10 +65,10 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-    // console.log('state project group::::', state.taskDetail.commonTaskDetail.activeProjectId);
-    return {
-        // offer
-        offer: state.taskDetail.taskOffer.offer,
+  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectListBasic);
+  return {
+    // offer
+    offer: state.taskDetail.taskOffer.offer,
 
         pendingItems: state.taskDetail.taskOffer.pendingItems,
         approvedItems: state.taskDetail.taskOffer.approvedItems,
@@ -99,12 +100,14 @@ const mapStateToProps = state => {
         memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
         userRoles: state.taskDetail.taskMember.user_roles,
 
-        listTime: state.taskDetail.trackingTime.listTime,
-        // project group
-        projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
-        // project detail
-        projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
-    }
+    listTime: state.taskDetail.trackingTime.listTime,
+    // project group
+    projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
+    // project detail
+    projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
+    // project list basic
+    projectListBasic: state.taskDetail.commonTaskDetail.projectListBasic,
+  }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -159,26 +162,25 @@ const mapDispatchToProps = dispatch => {
         deleteRoleTask: (user_role_id) => dispatch(taskDetailAction.deleteRole({ user_role_id })),
         getRoleTask: () => dispatch(taskDetailAction.getRole()),
 
-        //time
-        getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
-        updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
-        // List Task Detail
-        getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId })),
-        createJobByProjectId: (data) => dispatch(taskDetailAction.createTask(data)),
-        //  List Group Task
-        getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
-        //edit name and description task
-        updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data)),
-        // get project group
-        getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
-        getDetailProject: (project_id) => dispatch(taskDetailAction.getProjectDetail(project_id)),
-        chooseProject: (project) => dispatch(taskDetailAction.chooseProject(project)),
-        chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task)),
-        filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
-        searchTask: (data) => {
-            dispatch(taskDetailAction.searchTask(data))
-        },
-    };
+    //time
+    getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
+    updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
+    // List Task Detail
+    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId })),
+    createJobByProjectId: (data) => dispatch(taskDetailAction.createTask(data)),
+    //  List Group Task
+    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
+    //edit name and description task
+    updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data)),
+    // get project group
+    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
+    getDetailProject: (project_id) => dispatch(taskDetailAction.getProjectDetail(project_id)),
+    chooseProject: (project) => dispatch(taskDetailAction.chooseProject(project)),
+    chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task)),
+    filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
+    searchTask: (data) => { dispatch(taskDetailAction.searchTask(data))},
+    getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
+  };
 };
 
 export default connect(

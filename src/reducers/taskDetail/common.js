@@ -5,6 +5,7 @@ const initialState = {
     activeTaskId: "",
     projectGroups: [],
     projectDetail: {},
+    projectListBasic: null,
 }
 
 export default function reducer(state = initialState, action) {
@@ -24,6 +25,13 @@ export default function reducer(state = initialState, action) {
             return { 
                 ...state, 
                 projectDetail: action.payload.project
+            }
+        case types.GET_PROJECT_LIST_BASIC_SUCCESS:
+            return {
+                ...state,
+                projectListBasic: action.payload.projectGroups,
+                activeProjectId: action.payload.projectId,
+                projectDetail: getFirstProjectDetail(action.payload.projectGroups)
             }
         case types.GET_LIST_TASK_DETAIL_SUCCESS:
             return {

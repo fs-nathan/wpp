@@ -167,7 +167,8 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.GET_PROJECT_GROUP_LISTPART_REQUEST, taskDetailSaga.getProjectGroup);
   // get project detail
   yield takeLeading(taskDetailType.GET_PROJECT_DETAIL_REQUEST, taskDetailSaga.getProjectDetail);
-
+  // get project list basic 
+  yield takeLeading(taskDetailType.GET_PROJECT_LIST_BASIC_REQUEST, taskDetailSaga.getProjectListBasic);
   //edit name and description task
   yield takeLeading(taskDetailType.UPDATE_NAME_DESCRIPTION_TASK_REQUEST, taskDetailSaga.updateNameDescriptionTask);
 };

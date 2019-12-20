@@ -694,6 +694,10 @@ export const updateNameDescriptionTaskSuccess = (payload) => ({
     payload
 });
 
+export const updateNameDescriptionTaskFail = (error) => ({
+    type: types.UPDATE_NAME_DESCRIPTION_TASK_FAIL,
+    error: error
+})
 // Get project group- listpart
 export const getProjectGroup = (payload) => ({
     type: types.GET_PROJECT_GROUP_LISTPART_REQUEST,
@@ -704,10 +708,6 @@ export const getProjectGroupSuccess = (payload) => ({
     type: types.GET_PROJECT_GROUP_LISTPART_SUCCESS,
     payload
 });
-export const updateNameDescriptionTaskFail = (error) => ({
-    type: types.UPDATE_NAME_DESCRIPTION_TASK_FAIL,
-    error: error
-})
 
 export const getProjectGroupFail = (error) => ({
     type: types.GET_PROJECT_GROUP_LISTPART_FAIL,
@@ -743,6 +743,22 @@ export const getProjectDetailFail = (error) => ({
     type: types.GET_PROJECT_DETAIL_FAIL,
     error: error,
 });
+// Project List Basic - Listpart
+export const getProjectListBasic = (payload) => ({
+    type: types.GET_PROJECT_LIST_BASIC_REQUEST,
+    payload
+});
+
+export const getProjectListBasicSuccess = (payload) => ({
+    type: types.GET_PROJECT_LIST_BASIC_SUCCESS,
+    payload
+});
+
+export const getProjectListBasicFail = (error) => ({
+    type: types.GET_PROJECT_LIST_BASIC_FAIL,
+    error: error,
+});
+// 
 
 export const chooseProject = payload => ({
     type: types.CHOOSE_PROJECT,

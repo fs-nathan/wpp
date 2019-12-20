@@ -339,8 +339,8 @@ const FinishedSubtaskList = (props) => {
   const confirmDelete = () => {
     // props.deleteSubTaskByTaskId(props.task)
     // console.log('taskId::::', props);
-
   }
+
   return (
     <ul style={{ padding: 0 }}>
 
