@@ -150,28 +150,28 @@ const ButtonImage = styled(IconButton)`
           }
     }
 `
-const MediaImage = styled.div`
-  width: auto !important;
-  height: auto !important;
-`
-const WrapImage = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`
-const ImageMedia = styled(GridListTile)`
-  margin-right: 7px;
-`
-const Image = styled.img`
-  height: 80px;
-  width: 80px;
-  margin: 0;
-  padding: 0;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.7
-  }
-`
+// const MediaImage = styled.div`
+//   width: auto !important;
+//   height: auto !important;
+// `
+// const WrapImage = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+// `
+// const ImageMedia = styled(GridListTile)`
+//   margin-right: 7px;
+// `
+// const Image = styled.img`
+//   height: 80px;
+//   width: 80px;
+//   margin: 0;
+//   padding: 0;
+//   border-radius: 5px;
+//   cursor: pointer;
+//   &:hover {
+//     opacity: 0.7
+//   }
+// `
 const ModalImage = (props) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));

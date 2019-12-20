@@ -7,69 +7,95 @@ import {
     IconButton, Typography, Avatar
 } from '@material-ui/core'
 import Icon from '@mdi/react';
-import { mdiShare } from '@mdi/js';
+import { mdiShare, mdiDivingSnorkel } from '@mdi/js';
 import * as MaterialIcon from '@material-ui/icons'
 // import colors from '../../../helpers/colorPalette'
 import fakeAvatar from '../../../assets/avatar.jpg'
 import AvatarCircleList from '../../../components/AvatarCircleList'
 import DetailMessage from './DetailMessage'
 
-const Container = styled.div`
 
-`
+// const Container = styled.div`
 
-const WrapChat = styled.div`
-`
+// `
 
-const WrapMessageRow = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: ${props => props.isUser ? 'row-reverse' : 'row'};
-    align-items: center;
-    &:hover > .wrap-function-message {
-        display: block;
-    }
-    margin-bottom: 10px;
-`
+// const WrapChat = styled.div`
+// `
 
-const WrapMessage = styled.div`
-    background-color: ${props => props.isUser ? '#dbfff3' : '#fff'};
-    min-height: 30px;
-    padding: 5px 10px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    margin-left: 5px;
-`
+// const WrapMessageRow = styled.div`
+//     width: 100%;
+//     display: flex;
+//     flex-direction: ${props => props.isUser ? 'row-reverse' : 'row'};
+//     align-items: center;
+//     &:hover > .wrap-function-message {
+//         display: block;
+//     }
+//     margin-bottom: 10px;
+// `
 
-const WrapFunctionBar = styled.div`
-    margin-right: 5px;
-    display: none;
-`
+// const WrapMessage = styled.div`
+//     background-color: ${props => props.isUser ? '#dbfff3' : '#fff'};
+//     min-height: 30px;
+//     padding: 5px 10px;
+//     border-radius: 4px;
+//     display: flex;
+//     align-items: center;
+//     margin-left: 5px;
+// `
+
+// const WrapFunctionBar = styled.div`
+//     margin-right: 5px;
+//     display: none;
+// `
+
+// const WrapCommonRow = styled.div`
+//     display: flex;
+//     justify-content:center;
+//     align-items: center;
+//     margin-bottom: 10px;
+// `
+
+// const WrapProjectMessage = styled.div`
+//     background-color: white;
+//     border-radius: 4px;
+//     padding: 20px;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     box-shadow: 0px 0px 6px 2px rgba(0,0,0,.3);
+// `
+// const Line = styled.div`
+//     border: 1px solid #e6e7e8;
+//     position: absolute;
+//     top: 50%;
+//     width: 100%;
+//     transform: translateY(-50%);
+// `
+
+// const WrapTime = styled.div`
+//     position: relative;
+//     margin-bottom: 10px;
+//     height: 20px;
+// `
+
+// const Time = styled.div`
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//     z-index: 1;
+//     background-color: #d7d7d8;
+//     color: #f5f5f5;
+//     border-radius: 10px;
+//     padding: 8px;
+// `
 
 const FunctionButton = styled(IconButton)`
     max-height: 40px;
     &:hover {
         //background-color: transparent;
     }
-`
-
-const WrapCommonRow = styled.div`
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    margin-bottom: 10px;
-`
-
-const WrapProjectMessage = styled.div`
-    background-color: white;
-    border-radius: 4px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 0px 6px 2px rgba(0,0,0,.3);
 `
 
 const MemberText = styled(Typography)`
@@ -86,44 +112,19 @@ const ProjectText = styled(Typography)`
     font-weight: bold;
 `
 
-const WrapTime = styled.div`
-    position: relative;
-    margin-bottom: 10px;
-    height: 20px;
-`
-
-const Time = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    background-color: #d7d7d8;
-    color: #f5f5f5;
-    border-radius: 10px;
-    padding: 8px;
-`
-
-const Line = styled.div`
-    border: 1px solid #e6e7e8;
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    transform: translateY(-50%);
-`
-
 function MessageParent(props) {
     const {
         isUser, content
     } = props
     return (
-        <WrapMessageRow isUser={isUser}>
+        <div isUser={isUser} className="wrap-message-row" >
+            {/* {isUser ? className="wmr-row-reverse" : className="wmr-row"} */}
             {!isUser && <Avatar src={fakeAvatar} />}
 
-            <WrapMessage isUser={isUser}>
+            <div className="wrap-message" isUser={isUser}>
                 {content}
-            </WrapMessage>
-            <WrapFunctionBar className="wrap-function-message">
+            </div>
+            <div className="wrap-function-bar">
                 <FunctionButton>
                     <Icon path={mdiShare} size={1} color={'rgba(0, 0, 0, 0.54)'} />
                 </FunctionButton>
@@ -136,33 +137,33 @@ function MessageParent(props) {
                 <FunctionButton>
                     <MaterialIcon.MoreVert size="small" />
                 </FunctionButton>
-            </WrapFunctionBar>
-        </WrapMessageRow>
+            </div>
+        </div>
     )
 }
 
 function NotifyText(props) {
     return (
-        <WrapCommonRow>
+        <div className="wrap-common-row">
             <MemberText>{"Nguyễn Hữu Thành"}</MemberText>
             <SubText>&nbsp;{"đã tạo công việc mới"}</SubText>
-        </WrapCommonRow>
+        </div>
     )
 }
 
 function TimeText(props) {
     return (
-        <WrapTime>
-            <Line />
-            <Time>09:03 hôm nay</Time>
-        </WrapTime>
+        <div className="wrap-time">
+            <div className="line" />
+            <div className="time">09:03 hôm nay</div>
+        </div>
     )
 }
 
 function ProjectDetailMessage(props) {
     return (
-        <WrapCommonRow>
-            <WrapProjectMessage>
+        <div className="wrap-common-row">
+            <div className="wrap-project-message">
                 <ProjectText>
                     Xây dựng phương án kinh doanh cho công ty
                 </ProjectText>
@@ -176,8 +177,8 @@ function ProjectDetailMessage(props) {
                     Mức độ ưu tiên: Trung bình
                 </SubText>
                 <AvatarCircleList total={18} display={4} />
-            </WrapProjectMessage>
-        </WrapCommonRow>
+            </div>
+        </div>
     )
 }
 
@@ -194,8 +195,8 @@ export default function BodyPart(props) {
     }, [chatRef])
 
     return (
-        <Container>
-            <WrapChat ref={ref => chatRef = ref}>
+        <div>
+            <div ref={ref => chatRef = ref}>
                 <TimeText />
                 <NotifyText />
                 <ProjectDetailMessage />
@@ -203,7 +204,7 @@ export default function BodyPart(props) {
                 <MessageParent content="Ae triển khai công việc nhé !!!" />
                 <DetailMessage />
                 <div style={{ height: 800 }}></div>
-            </WrapChat>
-        </Container>
+            </div>
+        </div>
     )
 }

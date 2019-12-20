@@ -39,9 +39,9 @@ const members = [
 ]
 
 
-const Container = styled.div`
-    margin: 20px 0;
-`
+// const Container = styled.div`
+//     margin: 20px 0;
+// `
 const StyledFrameMess = styled(Typography)`
     height: auto;
     padding: 11px 15px 10px 17px;
@@ -55,10 +55,10 @@ const StyledFrameMess = styled(Typography)`
 // const StyledSubText = styled(Typography)`
 //     color: 
 // `
-const Content = styled.div`
-    display: flex;
-    margin-bottom: 14px;
-`
+// const Content = styled.div`
+//     display: flex;
+//     margin-bottom: 14px;
+// `
 const StyledTextContentMess = styled(Typography)`
     font-weight: inherit;
     font-size: 16px;
@@ -88,7 +88,7 @@ const getSubColorRole = (role, authorityList) => {
 
 const TitleMessage = ({ name, role, authorityList }) => {
     return (
-        <Content>
+        <div className="content-message">
             <ListItemText
                 style={{ margin: 0 }}
                 primary={
@@ -103,7 +103,7 @@ const TitleMessage = ({ name, role, authorityList }) => {
                 }
             />
             <Typography component='div' style={{ color: 'gray' }}>09:30</Typography>
-        </Content>
+        </div>
     )
 }
 
@@ -745,12 +745,12 @@ const ReplyImg = () => {
     )
 }
 
-const WrapCommonRow = styled.span`
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    margin-bottom: 10px;
-`
+// const WrapCommonRow = styled.span`
+//     display: flex;
+//     justify-content:center;
+//     align-items: center;
+//     margin-bottom: 10px;
+// `
 const WrapProjectMessage = styled.div`
     background-color: white;
     border-radius: 20px;
@@ -827,8 +827,8 @@ const WrapProjectMessage = styled.div`
 
 function RemindMessage(props) {
     return (
-        <WrapCommonRow>
-            <WrapProjectMessage>
+        <div className="wrap-common-row">
+            <div className="wrap-project-remind-message">
                 <Typography component='div'>
                     <span>Nhắc hẹn</span>
                 </Typography>
@@ -846,15 +846,15 @@ function RemindMessage(props) {
                         </Typography>
                     </Typography>
                 </Button>
-            </WrapProjectMessage>
-        </WrapCommonRow>
+            </div>
+        </div>
     )
 }
 
 export default function DetailMessage(props) {
     //const [data] = React.useState(members);
     return (
-        <Container>
+        <div className="container-detailmessage">
             <RemindMessage />
             {members.map((element, index) => {
                 return (
@@ -926,6 +926,6 @@ export default function DetailMessage(props) {
                     </Typography>
                 )
             })}
-        </Container>
+        </div>
     )
 }
