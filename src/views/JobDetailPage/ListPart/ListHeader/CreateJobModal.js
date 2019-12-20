@@ -392,7 +392,7 @@ function CreateJobModal(props) {
       // Map task to input
       let listTask = value.listTaskDetail.tasks.map((item) => ({
         label: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : "Chưa phân loại",
-        value: item.id
+        value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : "default"
       }))
       setListGroupTask(listTask)
 
@@ -430,6 +430,7 @@ function CreateJobModal(props) {
   }
 
   const dataCreateJob = {
+    project_id: value.projectId,
     group_task: data.group_task,
     name: data.name,
     description: data.description,

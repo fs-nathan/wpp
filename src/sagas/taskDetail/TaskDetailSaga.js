@@ -1001,7 +1001,9 @@ async function doCreateTask(payload) {
 
 function* createTask(action) {
   try {
-    const res = yield call(doCreateTask, action.payload.data)
+    console.log("action.payload:::::", action.payload.data);
+    const res = yield call(doCreateTask, action.payload)
+    console.log("response::::::", res)
     yield put(actions.createTaskSuccess(res))
     yield put(actions.getListTaskDetail({ project_id: action.payload.projectId }))
   } catch (error) {
@@ -1094,6 +1096,40 @@ function* getProjectGroup() {
     yield put(actions.getProjectGroupFail(error))
   }
 }
+// Get Group Project list basic
+async function doGetProjectListBasic() {
+  try {
+    const config = {
+      url: 'project/list-basic',
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getProjectListBasic() {
+  try {
+    const response = yield call(doGetProjectListBasic)
+    let projectGroups = response.projects
+    
+    let projectId = ""
+    for (let i = 0; i < projectGroups.length; i++) {
+      // projectGroups[i].projects = tempResponse.projects
+      // set active project id to call other API
+      if (i === 0) projectId = getFirstProjectId(projectGroups[i])
+    }
+
+    yield put(actions.getProjectListBasicSuccess({projectGroups, projectId}))
+  } catch (error) {
+    yield put(actions.getProjectListBasicFail(error))
+  }
+}
+
+
+// update name and description
 async function doUpdateNameDescriptionTask() {
   try {
     // const config = {
@@ -1220,4 +1256,6 @@ export {
   updateNameDescriptionTask,
   // get project detail
   getProjectDetail,
+  // get project list basic
+  getProjectListBasic,
 }

@@ -178,12 +178,16 @@ const WrapperBody = styled(Scrollbars)`
 `;
 function ListProject(props) {
   const value = React.useContext(WrapperContext)
+  let data = []
+  if ( value && value.projectListBasic) {
+    data = value.projectListBasic
+  }
   return (
     <Container {...props}>
       <WrapperHeader {...props} />
       <WrapperBody autoHide autoHideTimeout={500} autoHideDuration={200}>
         {
-          value.projectGroup.map(group => {
+          data.map(group => {
             return (
               <div key={group.id}>
                 <ExpansionProject defaultExpanded>
