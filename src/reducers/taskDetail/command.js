@@ -24,9 +24,9 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                command: action.payload.commands,
-                decisionItems: filterDecisionItem(action.payload.commands),
-                commandItems: filterCommandItem(action.payload.commands),
+                command: action.payload.commands.reverse(),
+                decisionItems: filterDecisionItem(action.payload.commands.reverse()),
+                commandItems: filterCommandItem(action.payload.commands.reverse()),
             };
         case types.GET_COMMAND_FAIL:
             return {

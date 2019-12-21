@@ -7,7 +7,7 @@ import {
 
 // Initial state for store
 const initialState = {
-    offer: [],
+    offer: [], pendingItems : [], approvedItems : [],
     isFetching: false,
     dataFetched: false,
     error: false,
@@ -25,9 +25,9 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                offer: action.payload.offers,
-                pendingItems: filterPendingItem(action.payload.offers),
-                approvedItems: filterApprovedItem(action.payload.offers),
+                offer: action.payload.offers.reverse(),
+                pendingItems: filterPendingItem(action.payload.offers.reverse()),
+                approvedItems: filterApprovedItem(action.payload.offers.reverse()),
             };
         case types.GET_OFFER_FAIL:
             return {

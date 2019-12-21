@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { TableCell, TableRow, IconButton, } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
@@ -8,25 +7,16 @@ import {
 } from '@mdi/js';
 import { CustomTableContext } from '../../index';
 import { get } from 'lodash';
+import './style.scss';
 
-const StyledTableHeadRow = styled(TableRow)`
-  background-color: #f4f4f4;
-  height: 42px;
-`;
-
-const StyledTableHeadCell = styled(({ center, ...rest }) => <TableCell {...rest} />)`
-  padding: 8px;
-  & > div {
-    width: 100%;
-    height: 100%;
-    font-weight: bold;
-    color: rgb(102, 102, 102);
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: ${props => props.center ? 'center' : 'start'}
-  }
-`;
+const StyledTableHeadRow = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableHeaderRow___row ${className}`} {...rest} />;
+const StyledTableHeadCell = ({ center, className = '', ...rest }) => 
+  <TableCell 
+    className={`${center 
+      ? 'comp_CustomTable_TableHeaderRow___cell'
+      : 'comp_CustomTable_TableHeaderRow___cell-center'} ${className}`} 
+    {...rest} 
+  />;
 
 function TableHeaderRow() {
 

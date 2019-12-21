@@ -4,97 +4,34 @@ import {
   Fade, Dialog, DialogTitle, DialogContent, 
   DialogActions, IconButton, ButtonBase,
 } from '@material-ui/core';
-import { 
-  lighten,
-} from '@material-ui/core/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js'; 
 import ColorTypo from '../ColorTypo';
-import colorPal from '../../helpers/colorPalette';
 import PropTypes from 'prop-types';
+import './style.scss';
 
-const StyledScrollbars = styled(({ minheight, ...props })=><Scrollbars {...props} />)`
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  min-height: ${props => (props.minheight || '450px')};
-  & > div:nth-child(3) {
-    z-index: 999;
-  }
-`;
+const StyledScrollbars = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar ${className}`} {...props} />;
 
-const StyledDialogContent = styled(DialogContent)`
-  & > *:not(:last-child) {
-    margin-bottom: 8px;
-  }
-  & > input[type=file] {
-    display: none;
-  }
-`;
+const StyledDialogContent = ({ className = '', ...props }) => <DialogContent className={`comp_CustomModal___dialog-content ${className}`} {...props} />;
 
-const StyledDialogTitle = styled(DialogTitle)`
-  background-color: #f5f8fc;
-  padding: 6px 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > h2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
+const StyledDialogTitle = ({ className = '', ...props }) => <DialogTitle className={`comp_CustomModal___dialog-title ${className}`} {...props} />;
 
-const StyledDialogActions = styled(DialogActions)`
-  padding: 15px 24px;
-`;
+const StyledDialogActions = ({ className = '', ...props }) => <DialogActions className={`comp_CustomModal___dialog-actions ${className}`} {...props} />;
 
-const ActionsAcceptButton = styled(({ disabled, ...props }) => <ButtonBase disabled={disabled} {...props} />)`
-  padding: 8px 16px;
-  background-color: ${colorPal['green'][1]};
-  &:hover {
-    background-color: ${lighten(colorPal['green'][0], 0.9)};
-  }
-  color: ${props => props.disabled ? `${lighten(colorPal['green'][0], 0.5)}` : `${colorPal['green'][0]}`};
-  font-weight: 500;
-  font-size: 16px;
-  text-transform: uppercase;
-  border-radius: 5px;
-  & > span:last-child {
-    display: none;
-  }
-`;
+const ActionsAcceptButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___accept-button ${className}`} {...props} />;
 
-const ActionsCancleButton = styled(ButtonBase)`
-  padding: 8px 16px;
-  background-color: ${colorPal['gray'][1]};
-  &:hover {
-    background-color: ${lighten(colorPal['gray'][0], 0.9)};
-  }
-  color: ${colorPal['gray'][0]};
-  font-weight: 500;
-  font-size: 16px;
-  text-transform: uppercase;
-  border-radius: 5px;
-  & > span:last-child {
-    display: none;
-  }
-`;
+const ActionsCancleButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___cancle-button ${className}`} {...props} />;
 
-const StyledDialog = styled(Dialog)`
-  & > div:nth-child(3) > div {
-    overflow: hidden;
-    min-width: 600px;
-  }
-`;
+const StyledDialog = ({ className = '', ...props }) => <Dialog className={`comp_CustomModal___dialog ${className}`} {...props} />;
 
-const TwoColumnsContainer = styled(({ maxWidth, ...rest }) => <div {...rest} />)`
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: ${props => props.maxWidth === 'lg' ? '5fr 12fr' : '2fr 3fr'};
-  & > * {
-    &:first-child {
-      border-right: 1px solid rgba(0, 0, 0, 0.1);
-    }
-  }
-`;
+const TwoColumnsContainer = ({ maxWidth, className = '', ...rest }) => 
+  <div 
+    className={`${maxWidth === 'lg' 
+      ? 'comp_CustomModal___two-columns-container-w-lg'
+      : 'comp_CustomModal___two-columns-container-w-md'} ${className}`} 
+    {...rest} 
+  />;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
@@ -121,17 +58,17 @@ function TwoColumns({ maxWidth, left, right }) {
         autoHide
         autoHideTimeout={500}
       >
-        <StyledDialogContent>
+        <div>
           {left}
-        </StyledDialogContent>
+        </div>
       </StyledScrollbars>
       <StyledScrollbars
         autoHide
         autoHideTimeout={500}
       >
-        <StyledDialogContent>
+        <div>
           {right}
-        </StyledDialogContent>
+        </div>
       </StyledScrollbars>
     </TwoColumnsContainer>
   );

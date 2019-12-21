@@ -258,17 +258,15 @@ const ContentProgress = styled.div`
 // }
 
 
-
 function TabBody() {
 
   const [dataProgress, setDataProgress] = React.useState(0)
   const value = React.useContext(WrapperContext)
+  console.log('detailtask', value.detailTask)
   let listTime
-  console.log("time......", value.listTime)
-  if (value.listTime.trackings) {
-    listTime = value.listTime.trackings.map((item, key) => {
-      console.log("listTime.......", listTime)
 
+  if (value.listTime && value.listTime.trackings) {
+    listTime = value.listTime.trackings.map((item, key) => {
       return (
         <TableRowItem key={key}>
           <CellAvatar>
@@ -287,20 +285,24 @@ function TabBody() {
       )
     })
   }
-
-
+  function convertDate(convert_day){
+    return convert_day.split('-').reverse().join('-');
+  }
+  let handleChangeProgress = progressValue => {
+    setDataProgress(progressValue)
+  }
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         <StartEndDateBox>
           <StartDateBox>
-            <ColorTypo>08:30</ColorTypo>
-            <ColorTypo>10/06/2019</ColorTypo>
+            <ColorTypo>{value.detailTask.start_time}</ColorTypo>
+            <ColorTypo>{convertDate(value.detailTask.start_date)}</ColorTypo>
           </StartDateBox>
           <EndDateBox>
-            <ColorTypo>08:30</ColorTypo>
-            <ColorTypo>10/06/2019</ColorTypo>
+            <ColorTypo>{value.detailTask.end_time}</ColorTypo>
+            <ColorTypo>{convertDate(value.detailTask.end_date)}</ColorTypo>
           </EndDateBox>
         </StartEndDateBox>
         {/* progress bar */}
@@ -313,11 +315,11 @@ function TabBody() {
           <div>
             <InputProgressBar
               type="range" min="1" max="100"
-              value={dataProgress} onChange={e => setDataProgress(e.target.value)} />
+              value={dataProgress} onChange={e => handleChangeProgress(e.target.value)} />
           </div>
         </WrapperProgressBar>
         <LegendBox>
-          <Icon path={mdiCircle} size={1} color={'rgb(49, 181, 134)'} />
+          <Icon path={mdiCircle} size={1} color={'#2dc63a'} />
           <ColorTypo>Hoàn thành thực tế</ColorTypo>
         </LegendBox>
         <LegendBox>

@@ -1,47 +1,13 @@
-import styled from 'styled-components';
+import React from 'react';
 import Chart from 'react-apexcharts';
+import './style.scss';
 
-export const ChartBox = styled.div`
-  padding: 10px 0;
-  margin-top: 20px;
-`;
+export const ChartBox = ({ className = '', ...props }) => <div className={`comp_CustomDonutChart___chart-box ${className}`} {...props} />;
 
-export const ChartDrawer = styled.div`
-  position: relative;
-  height: 200px;
-`;
+export const ChartDrawer = ({ className = '', ...props }) => <div className={`comp_CustomDonutChart___chart-drawer ${className}`} {...props} />;
 
-export const ChartTitle = styled.span`
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  transform: translate(-50%, -50%);
-  height: 90px;
-  width: 90px;
-  border-radius: 100%;
-  background-color: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-`;
+export const ChartTitle = ({ className = '', ...props }) => <span className={`comp_CustomDonutChart___chart-title ${className}`} {...props} />;
 
-export const ChartLegendBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  & > *:first-child {
-    margin-right: 10px;
-  }
-  & > *:last-child {
-    margin-left: auto;
-  }
-`;
+export const ChartLegendBox = ({ className = '', ...props }) => <div className={`comp_CustomDonutChart___chart-legend-box ${className}`} {...props} />;
 
-export const CustomChart = styled(Chart)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+export const CustomChart = ({ className = '', ...props }) => <Chart className={`comp_CustomDonutChart___chart ${className}`} {...props} />;

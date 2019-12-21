@@ -62,6 +62,7 @@ import deleteGroupTask, { initialState as deleteGroupTaskInitialState} from './g
 import updateGroupTask, { initialState as updateGroupTaskInitialState} from './groupTask/updateGroupTask';
 import sortGroupTask, { initialState as sortGroupTaskInitialState} from './groupTask/sortGroupTask';
 import listTask, { initialState as listTaskInitialState} from './task/listTask';
+import createTask, { initialState as createTaskInitialState} from './task/createTask';
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from './documents';
@@ -176,7 +177,8 @@ const rootReducer = combineReducers({
     sortGroupTask,
   }),
   task: combineReducers({
-    listTask
+    listTask,
+    createTask,
   }),
 });
 
@@ -265,6 +267,7 @@ export const DEFAULT_STATE = {
   },
   task: {
     listTask: listTaskInitialState,
+    createTask: createTaskInitialState,
   }
 };
 

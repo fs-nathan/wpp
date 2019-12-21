@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiCheckCircle, mdiCheckboxBlankCircleOutline, mdiPin } from '@mdi/js';
+import { mdiCheckCircle, mdiCheckboxBlankCircleOutline, mdiPin, mdiClockAlert } from '@mdi/js';
 import { List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
@@ -11,15 +12,15 @@ import ColorButton from '../../../../../components/ColorButton';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import colorPal from '../../../../../helpers/colorPalette';
-import {isLongerContent, getCollapseText} from '../../../../../helpers/jobDetail/stringHelper'
+import { isLongerContent, getCollapseText } from '../../../../../helpers/jobDetail/stringHelper'
+import Tooltip from '@material-ui/core/Tooltip';
 import { WrapperContext } from '../../../index'
 
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
-  & > * {
+  & > * > *:first-child {
     text-transform: none;
-    margin-right: 5px;
-    margin-bottom: 3px;
+    }
   }
 `;
 
@@ -90,6 +91,7 @@ const ListItemTabPart = styled(ListItem)`
 function DropdownButton({ values, handleChangeItem, selectedIndex }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [selected, setSelected] = React.useState(0)
+  const [hideTooltip, setHideTooltip] = React.useState(false)
 
   React.useEffect(() => {
     if (values[selectedIndex]) setSelected(selectedIndex)
@@ -97,10 +99,12 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget)
+    setHideTooltip(true)
   }
 
   function handleClose() {
-    setAnchorEl(null);
+    setAnchorEl(null)
+    setHideTooltip(false)
   }
 
   function handleSelect(index) {
@@ -108,6 +112,7 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
     handleChangeItem(index)
     handleClose()
   }
+  // console.log('values::::', values);
 
 
   if (values.length === 0) return (
@@ -119,13 +124,18 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
   );
   else return (
     <React.Fragment>
-      <ColorButton variantColor='teal' size='small' onClick={handleClick} aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
-      // endIcon={
-      //   <Icon path={mdiArrowRightBoldCircle} size={0.7} color={colorPal['greenlight'][1]} />
-      // }
-      >
-        {values[selected]}
-      </ColorButton>
+      <HtmlTooltip
+        disableFocusListener={hideTooltip}
+        title={<ModalStatus values={values[selected]} />}
+        placement="top-start">
+        <WrapperButton>
+          <ColorButton
+            variantColor='teal' size='small' onClick={handleClick}
+            aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}>
+            {values[selected]}
+          </ColorButton>
+        </WrapperButton>
+      </HtmlTooltip>
       <Menu
         anchorEl={anchorEl}
         keepMounted
@@ -215,6 +225,97 @@ const DEFAULT_TASK_STATISTIC = {
   priority_code: 0,
 }
 
+const HtmlTooltip = withStyles(theme => ({
+  tooltip: {
+    backgroundColor: '#fff',
+    maxWidth: 210,
+    height: 110,
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
+const StyledContextStatus = styled.div`
+  & > *:first-child {
+    display: flex;
+    align-items: center;
+    & > p:nth-child(2) {
+      color: #000;
+      margin-left: 8px;
+      margin-right: 5px;
+    }
+    & > p:nth-child(3) {
+      color: #0ce8b5;
+      font-size: 13px;
+    }
+  }
+  & > *:last-child {
+    color: #969696;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.8;
+    margin: 3px 5px 0 0;
+  }
+`
+const WrapperButton = styled.div`
+`
+
+const ModalStatus = (status) => {
+  // console.log('status:::::::', status.values);
+  // console.log('status:::::::', status);
+
+  // const [value, setValue] = React.useState('')
+  let value = '', color, icon
+  // console.log('value:::::::', value)
+  switch (status.values) {
+    case "Đang làm":
+      value = "Đang làm";
+      break;
+    case "Đang chờ":
+      value = "Đang chờ";
+      break;
+    case "Hoàn thành":
+      value = "Hoàn thành";
+      break;
+    case "Ưu tiên cao":
+      value = "Ưu tiên cao";
+      break;
+    case "Ưu tiên trung bình":
+      value = "Ưu tiên trung bình";
+      break;
+    case "Ưu tiên thấp":
+      value = "Ưu tiên thấp";
+      break;
+    case "Đang tạm dừng":
+      value = "Đang tạm dừng";
+      color = '#dc3545';
+      icon = mdiClockAlert;
+      break;
+    default:
+      value = "Đang tải"
+  }
+  return (
+    <React.Fragment>
+      <StyledContextStatus>
+        <div>
+          <Icon path={icon ? icon : mdiCheckCircle} size={1} color={icon ? '#dc3545' :'#03b000'} />
+          <p>Trạng thái:</p>
+          <p style={{ color: color }}>{value}</p>
+        </div>
+        <p>
+          {(value === "Đang làm" || value === "Đang chờ" || value === "Hoàn thành")
+          ?
+          'Hãy cập nhập tiến độ hoàn thành để thay đổi trạng thái công việc'
+          : 
+          (value === "Ưu tiên cao" || value === "Ưu tiên trung bình" || value === "Ưu tiên thấp")
+          ?
+          'Mức độ ưu tiên phản ánh tính chất khẩn cấp công việc'
+          :
+          'Admin đã tạm dừng công việc, vào cài đặt công việc để thay đổi trạng thái'
+        }
+      </p>
+      </StyledContextStatus>
+    </React.Fragment>
+  )
+}
 
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
@@ -223,7 +324,6 @@ function TabBody(props) {
   if (value && value.detailTask) {
     content = value.detailTask.description || ""
   }
-
   React.useEffect(() => {
     if (!value.detailTask) return
     const {
@@ -262,16 +362,21 @@ function TabBody(props) {
         </ListItem>
         <Content value={content} />
         <ListItemButtonGroup>
-          {props.isPause ?
-            <ColorButton size='small' variant='outlined'
-              style={{
-                marginBottom: '10px',
-                marginRight: '15px',
-                color: '#dc3545',
-                borderColor: '#dc3545',
-              }}>
-              Đang tạm dừng
-        </ColorButton>
+          {props.isPause
+            ?
+            <HtmlTooltip title={<ModalStatus values="Đang tạm dừng" />} placement="top-start">
+              <WrapperButton>
+                <ColorButton size='small' variant='outlined'
+                  style={{
+                    marginBottom: '10px',
+                    marginRight: '15px',
+                    color: '#dc3545',
+                    borderColor: '#dc3545',
+                  }}>
+                  Đang tạm dừng
+                </ColorButton>
+              </WrapperButton>
+            </HtmlTooltip>
             :
             <DropdownButton
               size='small' selectedIndex={0}
@@ -279,6 +384,7 @@ function TabBody(props) {
               handleChangeItem={() => { }}
             />
           }
+
           <DropdownButton
             size='small'
             values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
@@ -291,7 +397,7 @@ function TabBody(props) {
               boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1)'
             }}>
             Đã quá hạn
-        </ColorButton>
+          </ColorButton>
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
           <ColorTypo>Tiến độ</ColorTypo>

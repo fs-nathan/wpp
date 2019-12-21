@@ -1,0 +1,16 @@
+.comp_ColorTextField___text {
+  width: 100%;
+  font-size: 15px;
+  text-align: justify;
+  padding: 10px 10px 10px 0;
+};
+
+.comp_ColorTextField___expand-text {
+  width: 100%;
+  margin-top: 8px;
+  text-align: center;
+  color: #007bff;
+  &:hover {
+      cursor: pointer;
+  }  
+};

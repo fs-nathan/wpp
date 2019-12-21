@@ -1,33 +1,11 @@
+import React from 'react';
 import { List, ListItem } from '@material-ui/core';
-import styled from 'styled-components';
+import './style.scss';
 
-export const StyledList = styled(List)`
-  padding: 0;
-`;
+export const StyledList = ({ className = '', ...props }) => <List className={`comp_CustomList___list ${className}`} {...props} />;
 
-export const StyledListItem = styled(ListItem)`
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background-color: #fff;
-  & > *:not(:first-child) {
-    margin-left: 12px;
-  }
-  &:hover {
-    cursor: pointer;
-    background-color: #f2f5fa;
-  }
-  &:focus {
-    background-color: #e6f0ff;
-  }
-`;
+export const StyledListItem = ({ className = '', ...props }) => <ListItem className={`comp_CustomList___list-item ${className}`} {...props} />;
 
-export const Primary = styled.span`
-  color: #000;
-  font-size: 17px;
-`;
+export const Primary = ({ className = '', ...props }) => <span className={`comp_CustomList___primary ${className}`} {...props} />;
 
-export const Secondary = styled.small`
-  color: #05b50c;
-  font-size: 14px;
-`;
+export const Secondary = ({ className = '', ...props }) => <small className={`comp_CustomList___secondary ${className}`} {...props} />;

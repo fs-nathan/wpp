@@ -1,35 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import { get } from 'lodash';
 import ColorTypo from '../ColorTypo';
 import CustomAvatar from '../CustomAvatar';
 import PropTypes from 'prop-types';
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  & > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-    z-index: 1;
-    margin-left: -2px;
-    border-radius: 100%;
-    background-color: #fff;
-    &:not(:first-child) {
-      box-shadow: -4px -1px #f8f9fa;
-    }
-    &:last-child {
-      background-color: #31b586;
-      color: #fff;
-      & > div {
-        font-size: 10px;
-      }
-    }
-  }
-`;
+import './style.scss';
 
 function AvatarCircle({ user }) {
   return (
@@ -40,10 +14,10 @@ function AvatarCircle({ user }) {
   );
 }
 
-function AvatarCircleList({ display, users = [] }) {
+function AvatarCircleList({ display, users = [], className = '', }) {
 
   return (
-    <Container>
+    <div className={`comp_AvatarCircleList___container ${className}`}>
       {users.length > 0 && (
         <React.Fragment>
           {users.slice(0, display).map((user, index) => {
@@ -72,7 +46,7 @@ function AvatarCircleList({ display, users = [] }) {
           Không có dữ liệu
         </ColorTypo>
       )}
-    </Container>
+    </div>
   )
 }
 

@@ -161,6 +161,7 @@ function DepartmentUsersTable({
               label: 'Thêm thành viên',
               iconPath: mdiAccountPlus,
               onClick: () => handleSubSlide(1),
+              noExpand: true,
             }],
             mainAction: {
               label: '+ Thêm tài khoản',

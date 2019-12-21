@@ -1,0 +1,25 @@
+.comp_AvatarCircleList___container {
+  display: flex;
+  align-items: center;
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+    margin-left: -2px;
+    border-radius: 100%;
+    background-color: #fff;
+    &:not(:first-child) {
+      box-shadow: -4px -1px #f8f9fa;
+    }
+    &:last-child {
+      background-color: #31b586;
+      color: #fff;
+      & > div {
+        font-size: 10px;
+      }
+    }
+  }
+};

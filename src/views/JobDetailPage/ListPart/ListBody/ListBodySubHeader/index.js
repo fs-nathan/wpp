@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { ListSubheader } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
-// import { WrapperContext } from '../../../index'
 const StyledSubHeader = styled(ListSubheader)`
   padding: 0;
   display: flex;
