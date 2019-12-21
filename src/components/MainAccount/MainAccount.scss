@@ -1,11 +1,11 @@
 .MainAccount {
   display: flex;
   .left-content {
+    height: 100vh;
     width: 65%;
     background: linear-gradient(45deg, #33505e 0%, #4caf50 100%);
     .bg-login {
       max-width: 100%;
-      height: calc(100vh - 10px);
       min-height: 500px;
       max-height: 100vh;
     }
@@ -13,15 +13,21 @@
   .right-content {
     width: 35%;
     min-height: 100vh;
-    position: relative;
+
+    .inner-right-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
+      padding-right: 17px;
+    }
+
     .main-account-container {
       width: 100%;
-      padding: 0 0 95px;
+      padding-bottom: 20px;
     }
     .bottom-content {
-      position: absolute;
-      bottom: 0;
-      height: 80px;
+      height: 60px;
       width: 100%;
       border-top: 1px solid #d7d7d7;
       display: flex;

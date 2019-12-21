@@ -116,6 +116,7 @@ const TopBar = props => {
         <span id="searchInputWrapper">
           <StyledSearchInput
             onClick={openSearchModal}
+            readOnly
             placeholder="Tìm nhanh công việc"
           />
           {visibleSearchModal && (

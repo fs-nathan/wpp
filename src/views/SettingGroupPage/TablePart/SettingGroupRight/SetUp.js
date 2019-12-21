@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  Divider,
   FormControlLabel,
   Checkbox,
   IconButton,
@@ -173,7 +172,7 @@ function SetUp(props) {
           </div>
         </div>
       </div>
-      <Divider orientation="vertical" className="divider-vertical"/>
+      {/* <Divider orientation="vertical" className="divider-vertical" /> */}
       <div className="setup-info-right">
         <div className="title">Thiết lập plugin trang chủ</div>
         <div className="sub-title">

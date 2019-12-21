@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Icon } from '@mdi/react';
-import { mdiLockOutline } from '@mdi/js';
+import { mdiLockOutline, mdiCheckCircle } from '@mdi/js';
 import {
   TextField,
   FormControl,
@@ -9,54 +9,102 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
-  Link
+  Link,
+  Divider
 } from '@material-ui/core';
-// import { actionCompleteRegister } from "../../actions/account";
+import { Routes } from '../../constants/routes';
+import { actionCompleteRegister, actionCheckCode } from '../../actions/account';
 import MainAccount from '../../components/MainAccount/MainAccount';
 import * as images from '../../assets';
 import './AccountPage.scss';
 
 function ConfirmRegistration() {
+  const [checkedCode, setCheckedCode] = useState(false);
+  const [emailRegistered, setEmailRegistered] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
   const handleCompleteRegistration = useCallback(async e => {
     e.preventDefault();
     console.log('handleCompleteRegistration');
     const { elements } = e.target;
     const data = {
-      fullname: elements.fullname.value,
-      phoneNumber: elements.phoneNumber.value,
-      title: elements.title.value,
+      code: elements.code.value,
+      name: elements.fullname.value,
+      phone: elements.phoneNumber.value,
       company: elements.company.value,
       address: elements.address.value,
-      password: elements.password.value,
-      confirmPassword: elements.confirmPassword.value
+      password: elements.password.value
     };
     console.log(data);
-    // try {
-    //   await actionCompleteRegister(data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      await actionCompleteRegister(data);
+      window.location.href = Routes.LOGIN;
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
+
+  const handleCheckCode = async event => {
+    const code = event.target.value;
+    if (!code) return;
+    try {
+      const { data } = await actionCheckCode(code);
+      setCheckedCode(true);
+      setEmailRegistered(data.email || '');
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      setErrorMsg(error.message || '');
+    }
+  };
+
+  const handleChangeCode = () => {
+    setErrorMsg('');
+    setCheckedCode(false);
+  };
 
   return (
     <MainAccount>
       <div className="AccountPage ConfirmRegistrationPage">
         <div className="header-content">
-          <img
-            className="logo-workplus"
-            alt=""
-            src={images.logo_workplus_wrap}
-          />
-          <div className="divider"></div>
+          <div className="logo-wrapper">
+            <img
+              className="logo-workplus"
+              alt=""
+              src={images.logo_workplus_wrap}
+            />
+          </div>
+          <Divider className="divider"></Divider>
         </div>
         <div className="complete-registration-content">
           <form className="form-content" onSubmit={handleCompleteRegistration}>
             <div className="heading">
-              <div className="lb-text">Hoàn thành đăng ký tài khoản</div>
-              <div className="lb-text registered-email">
-                huuthanhxd@gmail.com
-              </div>
+              <div className="lb-title">Hoàn thành đăng ký</div>
             </div>
+            <FormControl
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              className="custom-input"
+            >
+              <div className="lb-input">Nhập mã xác thực *</div>
+              <OutlinedInput
+                id="code"
+                required
+                onBlur={handleCheckCode}
+                onChange={handleChangeCode}
+                placeholder="Verification code"
+              />
+              <div className="confirm-code-info">
+                {checkedCode && (
+                  <span className="confirm-success">
+                    <Icon path={mdiCheckCircle} size={0.8} color="#48bb78" />
+                    <span className="email-registered">{emailRegistered}</span>
+                  </span>
+                )}
+                {errorMsg && <span className="err-msg">{errorMsg}</span>}
+              </div>
+            </FormControl>
             <FormControl
               fullWidth
               margin="normal"
@@ -83,30 +131,6 @@ function ConfirmRegistration() {
                 placeholder="Your phone number"
               />
             </FormControl>
-            <div className="custom-select">
-              <div className="lb-input">Chức danh *</div>
-              <TextField
-                id="title"
-                select
-                fullWidth
-                required
-                SelectProps={{
-                  native: true,
-                  MenuProps: {
-                    className: 'menu'
-                  }
-                }}
-                variant="outlined"
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  -- Chọn vị trí --
-                </option>
-                <option value="1">Kỹ sư</option>
-                <option value="2">Chuyên viên</option>
-                <option value="3">Kế toán</option>
-              </TextField>
-            </div>
             <FormControl
               fullWidth
               margin="normal"
@@ -139,9 +163,9 @@ function ConfirmRegistration() {
                 <option value="" disabled>
                   -- Chọn Tỉnh/Thành phố --
                 </option>
-                <option value="1">Hà Nội</option>
-                <option value="2">TP Hồ Chí Minh</option>
-                <option value="3">Hải Phòng</option>
+                <option value="Hà Nội">Hà Nội</option>
+                <option value="TP Hồ Chí Minh">TP Hồ Chí Minh</option>
+                <option value="Tỉnh/Thành khác">Tỉnh/Thành khác</option>
               </TextField>
             </div>
             <div className="group-password">
@@ -156,10 +180,13 @@ function ConfirmRegistration() {
                   id="password"
                   required
                   type="password"
-                  maxLength="20"
-                  minLength="8"
                   autoComplete="new-password"
                   placeholder="Mật khẩu"
+                  size="small"
+                  inputProps={{
+                    maxLength: 20,
+                    minLength: 8
+                  }}
                   startAdornment={
                     <InputAdornment position="start">
                       <Icon
@@ -182,10 +209,12 @@ function ConfirmRegistration() {
                   id="confirmPassword"
                   required
                   type="password"
-                  maxLength="20"
-                  minLength="8"
                   autoComplete="new-password"
                   placeholder="Nhập lại mật khẩu"
+                  inputProps={{
+                    maxLength: 20,
+                    minLength: 8
+                  }}
                   startAdornment={
                     <InputAdornment position="start">
                       <Icon
@@ -217,6 +246,7 @@ function ConfirmRegistration() {
               variant="contained"
               color="primary"
               type="submit"
+              disabled={!checkedCode}
               className="btn-action green-color"
             >
               Hoàn thành đăng ký

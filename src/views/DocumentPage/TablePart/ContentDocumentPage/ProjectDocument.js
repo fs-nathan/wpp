@@ -5,22 +5,29 @@ import {
   TableHead,
   TableBody,
   IconButton,
-  TablePagination,
+  // TablePagination,
   TableRow
 } from '@material-ui/core';
+import { get, sortBy, reverse } from 'lodash';
 import Icon from '@mdi/react';
-import { mdiAccountPlusOutline, mdiSwapVertical } from '@mdi/js';
+import {
+  mdiAccountPlusOutline,
+  mdiSwapVertical,
+  mdiContentCopy
+} from '@mdi/js';
 import { withRouter } from 'react-router-dom';
 
 import { Routes } from '../../../../constants/routes';
 import ColorTypo from '../../../../components/ColorTypo';
-import { getProjectStatic } from './ContentDocumentAction';
 import {
   selectDocumentItem,
-  resetListSelectDocument
+  resetListSelectDocument,
+  actionFetchListProject,
+  actionSortListProject
 } from '../../../../actions/documents';
 import { openDocumentDetail } from '../../../../actions/system/system';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
 import {
   StyledTableHeadCell,
@@ -36,14 +43,15 @@ import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
 
 const ProjectDocument = props => {
-  const [data, setData] = useState([]);
-  const [page] = useState(0);
-  const [rowsPerPage] = useState(10);
+  const { isLoading } = props;
+  const [listData, setListData] = useState([]);
   const [selected, setSelected] = useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [sortField, setSortField] = React.useState(null);
+  const [sortType, setSortType] = React.useState(1);
 
   useEffect(() => {
-    fetDataRecentDocument();
+    fetDataProjectDocument();
+    // eslint-disable-next-line
   }, []);
   useEffect(() => {
     return () => {
@@ -51,18 +59,50 @@ const ProjectDocument = props => {
     };
     // eslint-disable-next-line
   }, []);
-  const fetDataRecentDocument = async () => {
-    setIsLoading(true);
-    const { data } = await getProjectStatic({
-      pageSize: 10,
-      pageNum: 0
-    });
-    setData(data.projects);
-    setIsLoading(false);
+  useEffect(() => {
+    setListData(props.listProject);
+    // eslint-disable-next-line
+  }, [props.listProject]);
+  useEffect(() => {
+    if (isEmpty(props.selectedDocument)) setSelected([]);
+    // eslint-disable-next-line
+  }, [props.selectedDocument]);
+  useEffect(() => {
+    let projects = [];
+    projects = sortBy(listData, [o => get(o, sortField)]);
+    if (sortType === -1) reverse(projects);
+    props.actionSortListProject(projects);
+    // eslint-disable-next-line
+  }, [sortField, sortType]);
+
+  useEffect(() => {
+    const pathname = props.history.location.pathname;
+    const isProjectDocument = isEmpty(props.location.search);
+    if (pathname === Routes.DOCUMENT_PROJECT && isProjectDocument) {
+      const dataUpdate = handleSearchData(props.searchText, props.listProject);
+      setListData(dataUpdate);
+    }
+    // eslint-disable-next-line
+  }, [props.searchText]);
+  const handleSearchData = (valueSearch, listData) => {
+    let listResult = [];
+    if (!isEmpty(valueSearch)) {
+      listResult = listData.filter(
+        el => el.name.toLowerCase().indexOf(valueSearch.toLowerCase()) !== -1
+      );
+    } else {
+      listResult = listData;
+    }
+
+    return listResult;
   };
+  const fetDataProjectDocument = (params = {}, quite = false) => {
+    props.actionFetchListProject(params, quite);
+  };
+
   const handleSelectAllClick = e => {
-    setSelected(selectAll(e, data));
-    props.selectDocumentItem(selectAllRedux(e, data));
+    setSelected(selectAll(e, listData));
+    props.selectDocumentItem(selectAllRedux(e, listData));
   };
   const handleSelectItem = item => {
     setSelected(selectItem(selected, item.id));
@@ -70,19 +110,16 @@ const ProjectDocument = props => {
   };
   const isSelected = id => selected.indexOf(id) !== -1;
   const moreAction = [
-    {
-      icon: mdiAccountPlusOutline,
-      text: 'Chia sẻ',
-      type: 'share'
-    }
+    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
+    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' }
   ];
-  const handleChangePage = () => {};
   const openDetail = item => {
     const isDetail =
       item.type === 'word' || item.type === 'pdf' || item.type === 'excel';
     if (isDetail) {
       props.openDocumentDetail(item);
     } else {
+      props.actionSortListProject([]);
       props.history.push({
         pathname: Routes.DOCUMENT_PROJECT,
         search: `?projectId=${item.id}`
@@ -92,6 +129,14 @@ const ProjectDocument = props => {
   if (isLoading) {
     return <LoadingBox />;
   }
+  const hanldeSort = field => {
+    if (field !== sortField) {
+      setSortField(field);
+      setSortType(1);
+    } else {
+      setSortType(prev => prev * -1);
+    }
+  };
   return (
     <React.Fragment>
       <Table>
@@ -100,9 +145,9 @@ const ProjectDocument = props => {
             <StyledTableHeadCell>
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === data.length}
+                checked={selected.length === listData.length}
                 indeterminate={
-                  selected.length > 0 && selected.length < data.length
+                  selected.length > 0 && selected.length < listData.length
                 }
               />
             </StyledTableHeadCell>
@@ -110,10 +155,13 @@ const ProjectDocument = props => {
               Loại
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="65%">
-              <div>
+              <div
+                className="cursor-pointer"
+                onClick={() => hanldeSort('name')}
+              >
                 Tên
                 <IconButton size="small">
-                  <Icon path={mdiSwapVertical} size={1} color="#8d8d8d" />
+                  <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
               </div>
             </StyledTableHeadCell>
@@ -124,14 +172,10 @@ const ProjectDocument = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(project => {
+          {listData.map((project, index) => {
             const isItemSelected = isSelected(project.id);
             return (
-              <TableRow
-                hover={true}
-                key={project.id}
-                className="table-body-row"
-              >
+              <TableRow hover={true} key={index} className="table-body-row">
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -164,26 +208,21 @@ const ProjectDocument = props => {
           })}
         </TableBody>
       </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={28}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        // onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
     </React.Fragment>
   );
 };
 
 export default connect(
   state => ({
-    selectedDocument: state.documents.selectedDocument
+    selectedDocument: state.documents.selectedDocument,
+    listProject: state.documents.listProject,
+    searchText: state.documents.searchText
   }),
   {
     selectDocumentItem,
     resetListSelectDocument,
-    openDocumentDetail
+    openDocumentDetail,
+    actionFetchListProject,
+    actionSortListProject
   }
 )(withRouter(ProjectDocument));

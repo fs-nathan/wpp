@@ -12,8 +12,18 @@ import {
   LIST_TRASH_SUCCESS,
   LIST_MY_DOCUMENT,
   LIST_MY_DOCUMENT_SUCCESS,
-  LIST_DOCUMENT_OF_FOLDER,
-  LIST_DOCUMENT_OF_FOLDER_SUCCESS
+  ACTION_SELECTED_FOLDER,
+  LIST_RECENT,
+  LIST_RECENT_SUCCESS,
+  LIST_PROJECT_DOCUMENT,
+  LIST_PROJECT_DOCUMENT_SUCCESS,
+  LIST_PROJECT_DOCUMENT_OF_FOLDER,
+  LIST_PROJECT_DOCUMENT_OF_FOLDER_SUCCESS,
+  LIST_DOCUMENT_FROM_ME,
+  LIST_DOCUMENT_FROM_ME_SUCCESS,
+  CHANGE_SEARCH_TEXT,
+  LIST_DOCUMENT_SHARE,
+  LIST_DOCUMENT_SHARE_SUCCESS
 } from '../../constants/actions/documents';
 // Import all the tabs in document page
 import * as TABS from '../../constants/documentTab';
@@ -21,7 +31,11 @@ import * as TABS from '../../constants/documentTab';
 // Initial state for store
 const initialState = {
   isLoading: false,
+  listRecent: [],
+  listProject: [],
   listComment: [],
+  listDocumentFromMe: [],
+  listDocumentShareToMe: [],
   listTrash: [],
   listMyDocument: [],
   activeTabId: TABS.RECENT_TAB.id,
@@ -70,7 +84,9 @@ const initialState = {
     }
   },
   columnOrder: ['column-1'],
-  selectedDocument: []
+  selectedDocument: [],
+  currentFolder: {},
+  searchText: ''
 };
 
 export default function reducer(state = initialState, action) {
@@ -135,16 +151,70 @@ export default function reducer(state = initialState, action) {
         listMyDocument: action.payload,
         isLoading: false
       };
-    case LIST_DOCUMENT_OF_FOLDER:
+    case ACTION_SELECTED_FOLDER:
+      return {
+        ...state,
+        currentFolder: action.payload
+      };
+    case LIST_RECENT:
       return {
         ...state,
         isLoading: !action.quite
       };
-    case LIST_DOCUMENT_OF_FOLDER_SUCCESS:
+    case LIST_RECENT_SUCCESS:
       return {
         ...state,
-        listMyDocument: action.payload,
+        listRecent: action.payload,
         isLoading: false
+      };
+    case LIST_PROJECT_DOCUMENT:
+      return {
+        ...state,
+        isLoading: !action.quite
+      };
+    case LIST_PROJECT_DOCUMENT_SUCCESS:
+      return {
+        ...state,
+        listProject: action.payload,
+        isLoading: false
+      };
+    case LIST_PROJECT_DOCUMENT_OF_FOLDER:
+      return {
+        ...state,
+        isLoading: !action.quite
+      };
+    case LIST_PROJECT_DOCUMENT_OF_FOLDER_SUCCESS:
+      return {
+        ...state,
+        listProject: action.payload,
+        isLoading: false
+      };
+    case LIST_DOCUMENT_FROM_ME:
+      return {
+        ...state,
+        isLoading: !action.quite
+      };
+    case LIST_DOCUMENT_FROM_ME_SUCCESS:
+      return {
+        ...state,
+        listDocumentFromMe: action.payload,
+        isLoading: false
+      };
+    case LIST_DOCUMENT_SHARE:
+      return {
+        ...state,
+        isLoading: !action.quite
+      };
+    case LIST_DOCUMENT_SHARE_SUCCESS:
+      return {
+        ...state,
+        listDocumentShareToMe: action.payload,
+        isLoading: false
+      };
+    case CHANGE_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: action.payload
       };
     default:
       return state;

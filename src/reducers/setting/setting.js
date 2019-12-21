@@ -24,15 +24,20 @@ if (!localStorage.getItem(THEME_COLOR_KEY)) {
 }
 
 export const initialState = {
+  isLoading: false,
   settingAccountType: SETTING_ACCOUNT.INFO,
   settingGroupType: SETTING_GROUP.INFO,
   notificationSelected: {},
   colors: JSON.parse(localStorage.getItem(THEME_COLOR_KEY)) || theme_colors,
-  breadCrumbs: []
+  orders: [],
+  bill: {},
+  groupDetail: {}
 };
 
 const settingReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.CHANGE_LOADING:
+      return { ...state, isLoading: action.payload };
     case actionTypes.CHANGE_SETTING_ACCOUNT:
       return { ...state, settingAccountType: action.payload };
     case actionTypes.CHANGE_SETTING_GROUP:
@@ -43,8 +48,16 @@ const settingReducer = (state = initialState, action) => {
       localStorage.setItem(THEME_COLOR_KEY, JSON.stringify(action.payload));
       return { ...state, colors: action.payload };
     }
-    case actionTypes.CHANGE_DOCUMENT_BREAD_CRUMBS:
-      return { ...state, breadCrumbs: action.payload };
+    case actionTypes.FETCH_ORDER_LIST:
+      return { ...state, orders: action.payload };
+    case actionTypes.FETCH_BILL:
+      return { ...state, bill: action.payload };
+    case actionTypes.SETTING_HIDE_LOADING:
+      return { ...state, isLoading: false };
+    case actionTypes.FETCH_GROUP_DETAIL:
+      return { ...state, isLoading: !action.quite };
+    case actionTypes.FETCH_GROUP_DETAIL_SUCCESS:
+      return { ...state, groupDetail: action.payload, isLoading: false };
     default:
       return state;
   }

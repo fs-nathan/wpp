@@ -7,12 +7,16 @@ import { mdiDotsVertical, mdiChevronRight, mdiPlus } from '@mdi/js';
 import { connect } from 'react-redux';
 import {
   actionFetchListComment,
-  actionCreateComment
+  actionCreateComment,
+  actionDeleteAllComment,
+  actionLockComment,
+  actionUnLockComment
 } from '../../../actions/documents';
 import ColorButton from '../../ColorButton';
 import LoadingBox from '../../LoadingBox';
 import CommentItem from './CommentItem';
 import * as images from '../../../assets';
+import { isEmpty } from '../../../helpers/utils/isEmpty';
 import '../DocumentDetail.scss';
 import AlertModal from '../../AlertModal';
 
@@ -33,7 +37,8 @@ const Comment = ({
   fileInfo,
   listComment,
   isLoading,
-  doListComment
+  doListComment,
+  onRefreshData
 }) => {
   const { t } = useTranslation();
   const [addComment, setAddComment] = useState(false);
@@ -42,6 +47,12 @@ const Comment = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [alert, setAlert] = useState(false);
   const openMoreMenu = Boolean(anchorEl);
+
+  useEffect(() => {
+    if (fileInfo.id) {
+      setBlockComment(!fileInfo.can_discuss);
+    }
+  }, [fileInfo]);
 
   const getListComment = (fileInfo, quite) => {
     if (fileInfo.id) {
@@ -78,6 +89,32 @@ const Comment = ({
       console.log(error);
     }
   };
+
+  const handleDeleteAllMyComment = async () => {
+    if (!fileInfo.id) return;
+    try {
+      await actionDeleteAllComment(fileInfo.id);
+      getListComment(fileInfo, true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLockUnlockComment = async () => {
+    if (!fileInfo.id) return;
+    try {
+      if (!blockComment) {
+        await actionLockComment(fileInfo.id);
+        if(onRefreshData) onRefreshData();
+        setBlockComment(true);
+      } else {
+        await actionUnLockComment(fileInfo.id);
+        if(onRefreshData) onRefreshData();
+        setBlockComment(false);
+      }
+    } catch (error) {}
+  };
+
   return (
     <div className="comment-container">
       <div className="header-box-comment">
@@ -116,14 +153,16 @@ const Comment = ({
               >
                 Xóa tất cả thảo luận của tôi
               </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setBlockComment(!blockComment);
-                  handleCloseMenu();
-                }}
-              >
-                {blockComment ? 'Cho phép thảo luận' : 'Khóa thảo luận'}
-              </MenuItem>
+              {fileInfo.can_modify && (
+                <MenuItem
+                  onClick={() => {
+                    handleCloseMenu();
+                    handleLockUnlockComment();
+                  }}
+                >
+                  {blockComment ? 'Cho phép thảo luận' : 'Khóa thảo luận'}
+                </MenuItem>
+              )}
             </Menu>
           </div>
           <div className="btn-action btn-collapse">
@@ -138,7 +177,7 @@ const Comment = ({
         </div>
       </div>
       <div className="body-box-comment">
-        {blockComment && (
+        {!isEmpty(fileInfo) && blockComment && (
           <NoComment
             className="dis-comment"
             imageUrl={images.dis_comment}
@@ -146,7 +185,7 @@ const Comment = ({
             subTitle="Rất tiếc! chủ sỡ hữu tài liệu đã khóa chức năng thảo luận."
           />
         )}
-        {!blockComment && (
+        {!isEmpty(fileInfo) && !blockComment && (
           <Scrollbars autoHide autoHideTimeout={500}>
             <div className="add-comment-content">
               {!addComment && (
@@ -164,7 +203,7 @@ const Comment = ({
                   <InputBase
                     multiline
                     fullWidth
-                    rowsMax="4"
+                    rowsMax="7"
                     value={commentText}
                     onChange={handleOnChange}
                     placeholder="Nhập thảo luận..."
@@ -206,7 +245,7 @@ const Comment = ({
               content={t(
                 'views.user_page.left_part.department_info.alert_content'
               )}
-              onConfirm={() => console.log('ok')}
+              onConfirm={handleDeleteAllMyComment}
             />
           </Scrollbars>
         )}

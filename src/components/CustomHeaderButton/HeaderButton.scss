@@ -39,7 +39,14 @@
   border-right: none !important;
   opacity: 0;
   transition: opacity 0.5s linear;
+  display: inline-block;
   &.show-input {
     opacity: 1;
   }
+}
+.right-header-button {
+  padding: 8px 12px;
+  margin-top: 8px;
+  background-color: #fd7e14;
+  color: #fff;
 }

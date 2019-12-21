@@ -10,7 +10,6 @@ import ChangeDocumentModal from '../../views/DocumentPage/TablePart/DocumentComp
 import { StyledTableBodyCell } from '../../views/DocumentPage/TablePart/DocumentComponent/TableCommon';
 import {
   actionRenameFile,
-  actionMoveFile,
   actionDownloadDocument
 } from '../../actions/documents';
 const StyledMenuItem = styled(MenuItem)`
@@ -42,28 +41,20 @@ const MoreAction = props => {
       closeModal();
     }
   };
-  const handleMoveDoc = async folderSelected => {
-    try {
-      await actionMoveFile({
-        file_id: props.item.id,
-        folder_id: folderSelected.id
-      });
-      props.handleFetData();
-      closeModal();
-    } catch (error) {
-      closeModal();
-    }
+  const handleMoveDoc = () => {
+    props.handleFetData();
   };
+
   const handleDownloadFile = async () => {
-    console.log(props.item);
-    window.open(props.item.url, '_blank');
     try {
-      await actionDownloadDocument(props.item.id);
+      await actionDownloadDocument(props.item.url);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handleCopy = () => {
+    navigator.clipboard.writeText(props.item.url || '');
+  };
   return (
     <React.Fragment>
       <StyledTableBodyCell className="more-action">
@@ -93,12 +84,13 @@ const MoreAction = props => {
             onClick={e => {
               handleClose();
               if (el.type === 'download') handleDownloadFile();
+              else if (el.type === 'copy') handleCopy();
               else setVisible(el.type);
-              if (el.action) el.action();
+              if (el.action) el.action(props.item);
               e.stopPropagation();
             }}
             border={
-              idx % 2 === 0 && idx < props.actionList.length - 1 ? 'true' : null
+              idx % 2 === 1 && idx < props.actionList.length - 1 ? 'true' : null
             }
           >
             <Icon path={el.icon} size={1} color="rgba(0, 0, 0, 0.54)" />

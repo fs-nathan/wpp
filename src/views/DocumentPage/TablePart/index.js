@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Icon from '@mdi/react';
-import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import {
   mdiUpload,
@@ -32,12 +31,12 @@ import { isEmpty } from '../../../helpers/utils/isEmpty';
 import folderIcon from '../../../assets/folder.png';
 import './DocumentPage.scss';
 import ModalCommon from './DocumentComponent/ModalCommon';
-import { actionCreateFolder } from '../../../actions/documents';
-import { actionChangeBreadCrumbs } from '../../../actions/setting/setting';
-
-const StyledMenuItem = styled(MenuItem)`
-  border-bottom: ${props => (props.border ? '1px solid #ddd' : 'none')};
-`;
+import {
+  actionCreateFolder,
+  actionFetchListMyDocument
+} from '../../../actions/documents';
+import UploadModal from '../../../components/UploadModal';
+import { actionChangeBreadCrumbs } from '../../../actions/system/system';
 
 const HeaderTitle = props => {
   return <ColorTypo className="title">{props.title || ''}</ColorTypo>;
@@ -143,7 +142,9 @@ const TablePart = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isCreateFolder, setCreateFolder] = useState(false);
   const [nameFolder, setNameFolder] = useState('');
-  const [isFetDataMy, setIsFetDataMy] = useState(false);
+  const [showInputFile, setShowInputFile] = useState(true);
+  const [visibleUploadModal, setVisibleUploadModal] = useState(false);
+  const [fileUpload, setFileUpload] = useState(null);
   const { breadCrumbs, actionChangeBreadCrumbs } = props;
 
   const handleClick = e => setAnchorEl(e.currentTarget);
@@ -164,7 +165,7 @@ const TablePart = props => {
       case Routes.DOCUMENT_SHARE_ME:
         return <DocumentShare {...props} />;
       case Routes.DOCUMENT_ME:
-        return <MyDocument {...props} isFetDataMy={isFetDataMy} />;
+        return <MyDocument {...props} />;
       case Routes.DOCUMENT_GOOGLE_DRIVE:
         return <GoogleDriver {...props} />;
       case Routes.DOCUMENT_TRASH:
@@ -179,14 +180,20 @@ const TablePart = props => {
       icon: mdiFolderPlusOutline,
       action: () => setCreateFolder(true)
     },
-    { text: 'Tải tệp lên', icon: mdiFileUploadOutline, action: () => {} }
+    {
+      text: 'Tải tệp lên',
+      icon: mdiFileUploadOutline,
+      action: () => {
+        document.getElementById('raised-button-file').click();
+      }
+    }
   ];
   const handleCreateFolder = async () => {
     try {
       await actionCreateFolder({
         name: nameFolder
       });
-      setIsFetDataMy(!isFetDataMy);
+      props.actionFetchListMyDocument();
       setCreateFolder(false);
       setNameFolder('');
     } catch (error) {
@@ -194,6 +201,21 @@ const TablePart = props => {
       setNameFolder('');
     }
   };
+
+  const handleUploadFile = e => {
+    const { files } = e.target;
+    if (files) {
+      setFileUpload(files);
+      setVisibleUploadModal(true);
+    }
+
+    // reset input file
+    setShowInputFile(false);
+    setTimeout(() => {
+      setShowInputFile(true);
+    }, 0);
+  };
+
   return (
     <div className="header-setting-container header-document">
       <div className="header-setting">
@@ -213,6 +235,7 @@ const TablePart = props => {
               aria-controls="simple-menu"
               aria-haspopup="true"
               onClick={handleClick}
+              className="btn-top-action "
             >
               <Icon path={mdiPlus} size={1} color="#fff" />
               THÊM MỚI
@@ -223,16 +246,23 @@ const TablePart = props => {
               <StyledButton
                 size="small"
                 onClick={() =>
-                  props.history.push({
-                    pathname: Routes.SETTING_GROUP_ORDER,
-                    search: `?createOder`
-                  })
+                  document.getElementById('raised-button-file').click()
                 }
+                className="btn-top-action right-header-button"
               >
                 <Icon path={mdiUpload} size={1} color="#fff" />
                 TẢI LÊN
               </StyledButton>
             )
+          )}
+          {showInputFile && (
+            <input
+              className="input-file"
+              id="raised-button-file"
+              type="file"
+              multiple="multiple"
+              onChange={handleUploadFile}
+            />
           )}
           <Menu
             id="simple-menu"
@@ -240,22 +270,24 @@ const TablePart = props => {
             keepMounted
             open={Boolean(anchorEl)}
             onClose={handleClose}
-            transformOrigin={{ vertical: -50 }}
+            transformOrigin={{ vertical: -50, horizontal: 0 }}
           >
             {listAction.map((el, idx) => (
-              <StyledMenuItem
+              <MenuItem
                 key={idx}
                 onClick={() => {
                   handleClose();
                   el.action(el);
                 }}
-                border={
-                  idx % 2 === 0 && idx < listAction.length - 1 ? 'true' : null
-                }
+                className={`${
+                  idx % 2 === 0 && idx < listAction.length - 1
+                    ? 'border-item'
+                    : ''
+                }`}
               >
                 <Icon path={el.icon} size={1} color="rgba(0, 0, 0, 0.54)" />
                 &nbsp;&nbsp;&nbsp;{el.text}
-              </StyledMenuItem>
+              </MenuItem>
             ))}
           </Menu>
         </RightHeader>
@@ -295,13 +327,21 @@ const TablePart = props => {
           </DialogContent>
         </ModalCommon>
       )}
+      {visibleUploadModal && (
+        <UploadModal
+          title="Tải tài liệu lên"
+          open={visibleUploadModal}
+          setOpen={val => setVisibleUploadModal(val)}
+          fileUpload={fileUpload}
+        />
+      )}
     </div>
   );
 };
 
 export default connect(
   state => ({
-    breadCrumbs: state.setting.breadCrumbs
+    breadCrumbs: state.system.breadCrumbs
   }),
-  { actionChangeBreadCrumbs }
+  { actionChangeBreadCrumbs, actionFetchListMyDocument }
 )(withRouter(TablePart));

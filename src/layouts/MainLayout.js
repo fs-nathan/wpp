@@ -1,17 +1,19 @@
-import React from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Routes } from '../constants/routes';
-import { login, loginCheckState } from '../actions/authentications';
+import { TOKEN } from '../constants/constants';
 import routes from '../routes';
-import logo from '../assets/logo.png';
+import { avatar_default_120 } from '../assets';
 import LeftBar from '../views/LeftBar';
 import TopBar from '../views/TopBar';
 import DrawerComponent from '../components/Drawer/Drawer';
 import NoticeModal from '../components/NoticeModal/NoticeModal';
+import GroupModal from '../components/NoticeModal/GroupModal';
 import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
+import { actionFetchGroupDetail } from '../actions/setting/setting';
 
 const Container = styled.div`
   height: 100vh;
@@ -27,7 +29,7 @@ const Container = styled.div`
   }
 `;
 
-const LogoBox = styled(Link)`
+const LogoBox = styled.div`
   grid-area: logo;
   display: flex;
   justify-content: center;
@@ -91,7 +93,23 @@ const Image = styled.img`
   margin-top: 10px;
 `;
 
-function MainLayout({ doLogin, doLoginCheckState, location, colors }) {
+function MainLayout({
+  location,
+  colors,
+  history,
+  actionFetchGroupDetail,
+  groupDetail,
+  isDocumentDetail
+}) {
+  const [visibleGroupModal, setVisibleGroupModal] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
+      actionFetchGroupDetail(true);
+    }
+    // eslint-disable-next-line
+  }, []);
+
   const isViewFullPage = route => {
     return (
       route === Routes.REGISTER ||
@@ -100,13 +118,6 @@ function MainLayout({ doLogin, doLoginCheckState, location, colors }) {
       route === Routes.FORGOT_PASSWORD
     );
   };
-
-  React.useEffect(() => {
-    doLogin({
-      email: 'ducpminh668@gmail.com',
-      password: '12345678'
-    });
-  }, [doLogin]);
 
   function configRoute(routes) {
     if (routes.length === 0) return;
@@ -123,21 +134,38 @@ function MainLayout({ doLogin, doLoginCheckState, location, colors }) {
     return <Switch>{result}</Switch>;
   }
 
+  if (!localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
+    history.push(Routes.LOGIN);
+  }
+
   const bgColor = colors.find(item => item.selected === true);
+
   return (
     <Container
       className={isViewFullPage(location.pathname) ? 'view-full-page' : ''}
     >
       {!isViewFullPage(location.pathname) && (
         <React.Fragment>
-          <LogoBox to="/" style={{ background: bgColor.value }}>
-            <Image src={logo} alt="vtask-logo-menu" />
+          <LogoBox
+            onClick={() => setVisibleGroupModal(true)}
+            style={{ background: bgColor.value }}
+          >
+            <Image
+              src={groupDetail.logo || avatar_default_120}
+              alt="vtask-logo-menu"
+            />
           </LogoBox>
           <LeftBar />
           <TopBar />
           <DrawerComponent />
           <NoticeModal />
-          <DocumentDetail />
+          {isDocumentDetail && <DocumentDetail />}
+          {visibleGroupModal && (
+            <GroupModal
+              visibleGroupModal={visibleGroupModal}
+              onClose={() => setVisibleGroupModal(false)}
+            />
+          )}
         </React.Fragment>
       )}
       <ContentBox>{configRoute(routes)}</ContentBox>
@@ -149,16 +177,11 @@ function MainLayoutWrapper({ ...rest }) {
   return <MainLayout {...rest} />;
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    doLogin: ({ email, password }) => dispatch(login({ email, password })),
-    doLoginCheckState: () => dispatch(loginCheckState())
-  };
-};
-
 export default connect(
   state => ({
-    colors: state.setting.colors
+    colors: state.setting.colors,
+    groupDetail: state.setting.groupDetail,
+    isDocumentDetail: state.system.isDocumentDetail
   }),
-  mapDispatchToProps
+  { actionFetchGroupDetail }
 )(withRouter(MainLayoutWrapper));

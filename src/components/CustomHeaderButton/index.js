@@ -1,28 +1,27 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { ButtonGroup, Button } from '@material-ui/core';
 import { mdiMagnify, mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import SearchInput from '../SearchInput';
 import './HeaderButton.scss';
-
+import { actionChangeSearchText } from '../../actions/documents';
 const CustomHeaderButton = props => {
   const [isSearch, setSearch] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
 
-  const handleChangeSearch = e => {
-    setSearchValue(e.target.value);
+  const handleChangeSearch = ({ target: { value } }) => {
+    props.actionChangeSearchText(value);
   };
   return (
     <React.Fragment>
+      <div className={`search-container ${isSearch ? 'show-input' : ''}`}>
+        <SearchInput
+          placeholder="Nhập nội dung cần tìm"
+          onChange={handleChangeSearch}
+        />
+      </div>
       <ButtonGroup size="small" variant="text">
-        <div className={`search-container ${isSearch ? 'show-input' : ''}`}>
-          <SearchInput
-            placeholder="Nhập nội dung cần tìm"
-            value={searchValue}
-            onChange={handleChangeSearch}
-          />
-        </div>
-
         {props.listAction.map((el, index) => {
           if (el.isShow) {
             if (el.type === 'search') {
@@ -72,4 +71,6 @@ const CustomHeaderButton = props => {
   );
 };
 
-export default CustomHeaderButton;
+export default connect(state => ({}), {
+  actionChangeSearchText
+})(withRouter(CustomHeaderButton));

@@ -1,7 +1,7 @@
 /*Common Style for Account page */
 .AccountPage {
   max-width: 400px;
-  padding: 0 20px;
+  padding: 0 30px;
   margin: 0 auto;
   .logo-content {
     text-align: center;
@@ -18,6 +18,8 @@
     .MuiInputBase-input {
       padding-top: 14px;
       padding-bottom: 14px;
+      font-size: 16px;
+      color: #111;
     }
     .input-affix-wrapper {
       .icon-prefix {
@@ -29,6 +31,7 @@
     .custom-select {
       .lb-input {
         margin-bottom: 7px;
+        font-size: 14px;
       }
     }
     .custom-select {
@@ -47,6 +50,9 @@
       }
       &.green-color {
         color: #fff;
+        &[disabled] {
+          color: rgba(0, 0, 0, 0.26);
+        }
       }
     }
 
@@ -89,6 +95,15 @@
     .description {
       line-height: 1.5;
     }
+    .btn-confirm-register {
+      width: 100%;
+      margin-top: 15px;
+      height: 45px;
+      text-transform: inherit;
+      color: #fff;
+      background: #dc3545;
+      margin-bottom: 5px;
+    }
     .btn-link {
       font-weight: 500;
     }
@@ -113,26 +128,39 @@
 /*Style for CompleteRegistration page */
 .ConfirmRegistrationPage {
   max-width: initial !important;
+  padding: 0;
   .header-content {
-    .logo-workplus {
-      height: 40px;
-      margin-left: 35px;
-      margin-top: 10px;
+    .logo-wrapper {
+      max-width: 500px;
+      padding: 0 30px;
+      margin: 0 auto;
+      .logo-workplus {
+        height: 40px;
+        margin-top: 10px;
+      }
     }
   }
   .complete-registration-content {
-    padding: 0 5px;
+    padding: 0 30px;
     max-width: 500px;
     margin: 0 auto;
     .form-content {
       .heading {
-        text-align: center;
-        margin: 10px 0 30px;
-        .lb-text {
-          font-size: 14px;
-        }
-        .registered-email {
+        margin: 10px 0 20px;
+        .lb-title {
           font-size: 22px;
+          font-weight: 500;
+        }
+      }
+      .confirm-code-info {
+        font-size: 12px;
+        .confirm-success {
+          margin-top: 5px;
+          display: flex;
+          align-items: center;
+          .email-registered {
+            margin-left: 5px;
+          }
         }
       }
       .group-password {
@@ -143,8 +171,21 @@
         }
       }
       .des-password {
-        margin-bottom: 50px;
+        margin-bottom: 35px;
+      }
+      .err-msg {
+        color: #dc3545;
+        margin-top: 5px;
+        display: inline-block;
       }
     }
+  }
+}
+
+.ForgotPasswordPage {
+  .err-msg {
+    color: #dc3545;
+    margin-top: 5px;
+    display: inline-block;
   }
 }

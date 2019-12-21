@@ -1,75 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
 import { Avatar } from '@material-ui/core';
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import { DialogContent } from './TableCommon';
 import { StyledList, StyledListItem } from '../../../../components/CustomList';
 import SearchInput from '../../../../components/SearchInput';
-const listMember = [
-  {
-    id: 0,
-    name: 'Cao Văn Hưng',
-    email: 'hungcv@gmai.com',
-    icon: '/static/media/avatar.a16a011e.jpg'
-  },
-  {
-    id: 1,
-    name: 'Hồ Trọng Văn',
-    email: 'vanht@gmai.com',
-    icon: '/static/media/avatar.a16a011e.jpg'
-  },
-  {
-    id: 2,
-    name: 'Trần Quốc Huy',
-    email: 'huytq@gmai.com',
-    icon: '/static/media/avatar.a16a011e.jpg'
-  },
-  {
-    id: 3,
-    name: 'Cao Văn Hưng',
-    email: 'hungcv@gmai.com',
-    icon: '/static/media/avatar.a16a011e.jpg'
-  },
-  {
-    id: 4,
-    name: 'Hồ Trọng Văn',
-    email: 'vanht@gmai.com',
-    icon: '/static/media/avatar.a16a011e.jpg'
-  }
-];
-const listMemberShared = [
-  {
-    id: 0,
-    name: 'Cao Văn Hưng',
-    email: 'hungcv@gmai.com',
-    icon: '/static/media/avatar.a16a011e.jpg',
-    date: '12/12/2019'
-  },
-  {
-    id: 1,
-    name: 'Hồ Trọng Văn',
-    email: 'vanht@gmai.com',
-    icon: '/static/media/avatar.a16a011e.jpg',
-    date: '12/12/2019'
-  },
-  {
-    id: 2,
-    name: 'Trần Quốc Huy',
-    email: 'huytq@gmai.com',
-    icon: '/static/media/avatar.a16a011e.jpg',
-    date: '12/12/2019'
-  }
-];
+import {
+  actionGetMemberCanShare,
+  actionGetMemberShared
+} from '../../../../actions/documents/index';
 const ShareDocumentModal = props => {
   const { pathname } = props.location;
   const [searchValue, setSearchValue] = useState('');
+  const [listMember, setListMember] = useState([]);
+  const [listMemberShared, setListMemberShared] = useState([]);
   const handleShare = () => {
     props.onOk();
   };
   const handleChangeSearch = e => {
     setSearchValue(e.target.value);
+  };
+  useEffect(() => {
+    fetDataForShare();
+    // eslint-disable-next-line
+  }, []);
+  const fetDataForShare = async () => {
+    const [data1, data2] = await Promise.all([
+      actionGetMemberCanShare({
+        file_id: props.item.id
+      }),
+      actionGetMemberShared({
+        file_id: props.item.id
+      })
+    ]);
+    setListMember(data1.data.members);
+    setListMemberShared(data2.data.members);
   };
   return (
     <ModalCommon
@@ -80,6 +47,9 @@ const ShareDocumentModal = props => {
     >
       <DialogContent dividers className="dialog-content share-doc">
         <div className="left-share-doc">
+          <div className="title-left-share">
+            <span className="text-title-left-share">Danh sách thành viên</span>
+          </div>
           <div className="header-share-doc">
             <SearchInput
               placeholder="Nhập nội dung cần tìm"
@@ -93,36 +63,39 @@ const ShareDocumentModal = props => {
               <StyledListItem
                 key={item.id}
                 className={`item-member ${
-                  pathname === item.id ? 'item-actived' : ''
+                  pathname === item.member_id ? 'item-actived' : ''
                 }`}
               >
                 <div className="left-item">
                   <Avatar
-                    src={item.icon}
+                    src={`https://storage.googleapis.com${item.member_avatar}`}
                     alt="avatar"
                     style={{ width: 35, height: 35, margin: 'auto' }}
                   />
                   <div className="info-left-item">
-                    <div className="name-member">{item.name}</div>
-                    <div>{item.email}</div>
+                    <div className="name-member">{item.member_name}</div>
+                    <div>{item.member_name}</div>
                   </div>
                 </div>
                 <div className="right-item">
-                  <Fab variant="extended" className="btn-share">
-                    Chia sẻ
-                  </Fab>
+                  <Button variant="outlined">Chia sẻ</Button>
                 </div>
               </StyledListItem>
             ))}
           </StyledList>
         </div>
         <div className="right-share-doc">
+          <div className="title-left-share">
+            <span className="text-title-left-share">
+              Thành viên được chia sẻ
+            </span>
+          </div>
           <div className="header-share-doc">
             <div className="left-content">
-              <span>Thành Viên</span>
+              <span className="text-title">Thành Viên</span>
             </div>
             <div className="right-content">
-              <span>Ngày chia sẻ</span>
+              <span className="text-title">Ngày chia sẻ</span>
             </div>
           </div>
           <StyledList>
@@ -151,9 +124,7 @@ const ShareDocumentModal = props => {
                     <span>{item.date}</span>
                   </div>
                   <div className="right-item">
-                    <Fab variant="extended" className="btn-share">
-                      Hủy
-                    </Fab>
+                    <Button variant="outlined">Hủy</Button>
                   </div>
                 </div>
               </StyledListItem>

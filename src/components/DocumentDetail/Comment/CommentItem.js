@@ -67,19 +67,21 @@ const CommentItem = ({ comment, onRefreshList }) => {
                 {`Thêm lúc ${comment.time_create} ngày ${comment.date_create}`}
               </div>
             </div>
-            <IconButton
-              className="btn-more"
-              size="small"
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              <Icon
-                path={mdiDotsVertical}
-                size={1}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </IconButton>
+            {comment.can_modify && (
+              <IconButton
+                className="btn-more"
+                size="small"
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                <Icon
+                  path={mdiDotsVertical}
+                  size={1}
+                  color="rgba(0, 0, 0, 0.54)"
+                />
+              </IconButton>
+            )}
           </div>
           <div className="body-item">{comment.content || ''}</div>
         </div>
@@ -119,6 +121,7 @@ const CommentItem = ({ comment, onRefreshList }) => {
         onConfirm={handleDeleteComment}
       />
       <CustomModal
+        minheight="200px"
         open={visibleEditModal}
         setOpen={() => setVisibleEditModal(false)}
         title="Chỉnh sửa thảo luận"
@@ -128,7 +131,7 @@ const CommentItem = ({ comment, onRefreshList }) => {
           multiline
           fullWidth
           autoFocus
-          rowsMax="4"
+          rows={7}
           variant="outlined"
           value={newContent}
           onChange={e => {

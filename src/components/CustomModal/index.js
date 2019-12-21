@@ -14,9 +14,9 @@ import ColorTypo from '../ColorTypo';
 import colorPal from '../../helpers/colorPalette';
 import PropTypes from 'prop-types';
 
-const StyledScrollbars = styled(Scrollbars)`
+const StyledScrollbars = styled(({ minheight, ...props })=><Scrollbars {...props} />)`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  min-height: 450px;
+  min-height: ${props => (props.minheight || '450px')};
   & > div:nth-child(3) {
     z-index: 999;
   }
@@ -100,11 +100,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function OneColumn({ children, }) {
+function OneColumn({ minheight, children, }) {
   return (
     <StyledScrollbars
       autoHide
       autoHideTimeout={500}
+      minheight={minheight}
     >
       <StyledDialogContent>
         {children}
@@ -144,6 +145,7 @@ function CustomModal({
   onConfirm = () => null, onCancle = () => null, 
   open, setOpen, 
   maxWidth='md', fullWidth = false,
+  minheight='450px',
 }) {
 
   function handleCancle() {
@@ -172,7 +174,7 @@ function CustomModal({
         </IconButton>
       </StyledDialogTitle>
       {columns === 1 && (
-        <OneColumn children={children} />
+        <OneColumn minheight={minheight} children={children} />
       )}
       {columns === 2 && (
         <TwoColumns maxWidth={maxWidth} left={left} right={right} />
@@ -199,6 +201,7 @@ CustomModal.propTypes = {
   onCancle: PropTypes.func, 
   open: PropTypes.bool.isRequired, 
   setOpen: PropTypes.func.isRequired,
+  minheight:PropTypes.string
 };
 
 export default CustomModal;

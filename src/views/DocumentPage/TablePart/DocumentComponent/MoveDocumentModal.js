@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   Table,
   TableRow,
@@ -8,6 +9,11 @@ import {
   Avatar
 } from '@material-ui/core';
 
+import {
+  actionMoveFile,
+  actionMoveFolder,
+  resetListSelectDocument
+} from '../../../../actions/documents';
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import {
@@ -18,13 +24,19 @@ import {
 } from './TableCommon';
 import ColorTypo from '../../../../components/ColorTypo';
 import { FileType } from '../../../../components/FileType';
-import { actionFetchListFolder } from '../ContentDocumentPage/ContentDocumentAction';
-
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
+import {
+  actionFetchListFolderMoveFile,
+  actionFetchListFolderMoveFolder
+} from '../ContentDocumentPage/ContentDocumentAction';
+let isFetFile = true;
+let listFileIdSelect = [];
+let listFolderIdSelect = [];
 const MoveDocumentModal = props => {
   const [listData, setListData] = useState([]);
   const [folderSelected, setFolderSelected] = useState({});
   useEffect(() => {
-    fetListFolder();
+    fetListFolder(); // eslint-disable-next-line
   }, []);
   const getIconAvatar = (url, idx = 0) => {
     return (
@@ -38,16 +50,65 @@ const MoveDocumentModal = props => {
   };
   const fetListFolder = async () => {
     try {
-      const { data } = await actionFetchListFolder();
-      setListData(data.folders || []);
+      const { selectedDocument } = props;
+      if (props.type === 'header') {
+        selectedDocument.forEach(el => {
+          if (el.type === 'folder') {
+            isFetFile = false;
+            listFolderIdSelect.push(el.id);
+          } else {
+            listFileIdSelect.push(el.id);
+          }
+        });
+      } else {
+        listFileIdSelect.push(props.item.id);
+      }
+      if (isFetFile) {
+        const { data } = await actionFetchListFolderMoveFile();
+        setListData(data.folders || []);
+      } else {
+        const params = {
+          folder_id: listFolderIdSelect[0]
+        };
+        const { data } = await actionFetchListFolderMoveFolder(params);
+        setListData(data.folders || []);
+      }
     } catch (error) {
       console.log(error);
     }
   };
-  const handleMove = () => {
-    props.onOk(folderSelected);
+  const handleMove = async () => {
+    try {
+      if (isFetFile) {
+        await actionMoveFile({
+          file_id: listFileIdSelect,
+          folder_id: folderSelected.id
+        });
+      } else {
+        let listAction = [];
+        if (!isEmpty(listFileIdSelect))
+          listAction.push(
+            actionMoveFile({
+              file_id: listFileIdSelect,
+              folder_id: folderSelected.id
+            })
+          );
+        if (!isEmpty(listFolderIdSelect))
+          listAction.push(
+            actionMoveFolder({
+              folder_id: listFolderIdSelect,
+              folder_move_to_id: folderSelected.id
+            })
+          );
+        await Promise.all(listAction);
+      }
+      props.resetListSelectDocument();
+      props.onOk();
+      props.onClose();
+    } catch (error) {
+      props.onClose();
+    }
   };
-  console.log(listData);
   const handleSelectFolder = folder => {
     setFolderSelected(folder);
   };
@@ -61,16 +122,20 @@ const MoveDocumentModal = props => {
       <DialogContent dividers className="dialog-content move-content">
         <div className="my-document">
           <div className="left-my-document">
-            <div>
-              <img
-                src={FileType(props.item.type)}
-                style={{ width: 24, height: 24 }}
-                alt="icon-type"
-              />
-            </div>
-            <div className="name-document">
-              <span>{props.item.name}</span>
-            </div>
+            {props.type !== 'header' && (
+              <React.Fragment>
+                <div>
+                  <img
+                    src={FileType(props.item.type)}
+                    style={{ width: 24, height: 24 }}
+                    alt="icon-type"
+                  />
+                </div>
+                <div className="name-document">
+                  <span>{props.item.name}</span>
+                </div>
+              </React.Fragment>
+            )}
           </div>
           <div className="right-my-document">
             <span>Chọn thư mục bạn muốn di chuyển đến</span>
@@ -135,4 +200,11 @@ const MoveDocumentModal = props => {
   );
 };
 
-export default withRouter(MoveDocumentModal);
+export default connect(
+  state => ({
+    selectedDocument: state.documents.selectedDocument
+  }),
+  {
+    resetListSelectDocument
+  }
+)(withRouter(MoveDocumentModal));

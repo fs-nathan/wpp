@@ -9,11 +9,13 @@ import {
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiSwapVertical } from '@mdi/js';
+import { get, sortBy, reverse } from 'lodash';
 import ColorTypo from '../../../../components/ColorTypo';
 import {
   selectDocumentItem,
   resetListSelectDocument,
-  actionFetchListTrash
+  actionFetchListTrash,
+  actionSortListTrash
 } from '../../../../actions/documents';
 import './ContentDocumentPage.scss';
 import {
@@ -29,11 +31,13 @@ import {
 } from '../DocumentComponent/TableCommon';
 import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
+import './ContentDocumentPage.scss';
 
 const Trash = props => {
   const [selected, setSelected] = React.useState([]);
   const { isLoading, listTrash: listData } = props;
-
+  const [sortField, setSortField] = React.useState(null);
+  const [sortType, setSortType] = React.useState(1);
   useEffect(() => {
     getListTrash();
     // eslint-disable-next-line
@@ -44,6 +48,23 @@ const Trash = props => {
       props.resetListSelectDocument();
     }; // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    let listDataTemp = [];
+    listDataTemp = sortBy(listData, [o => get(o, sortField)]);
+    if (sortType === -1) reverse(listDataTemp);
+    props.actionSortListTrash(listDataTemp);
+    // eslint-disable-next-line
+  }, [sortField, sortType]);
+
+  const hanldeSort = field => {
+    if (field !== sortField) {
+      setSortField(field);
+      setSortType(1);
+    } else {
+      setSortType(prev => prev * -1);
+    }
+  };
 
   const getListTrash = (params = {}) => {
     props.actionFetchListTrash(params);
@@ -65,7 +86,7 @@ const Trash = props => {
   }
   return (
     <React.Fragment>
-      <Table>
+      <Table className="doc-table-content">
         <TableHead>
           <TableRow className="table-header-row">
             <StyledTableHeadCell>
@@ -83,10 +104,13 @@ const Trash = props => {
               Loại
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="20%">
-              <div>
+              <div
+                className="cursor-pointer"
+                onClick={() => hanldeSort('name')}
+              >
                 Tên tài liệu
                 <IconButton size="small">
-                  <Icon path={mdiSwapVertical} size={1.2} color="#8d8d8d" />
+                  <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
               </div>
             </StyledTableHeadCell>
@@ -102,7 +126,11 @@ const Trash = props => {
             <StyledTableHeadCell align="center" width="20%">
               Xóa vĩnh viễn
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="10%">
+            <StyledTableHeadCell
+              align="center"
+              width="10%"
+              className="last-cell"
+            >
               Kích thước
             </StyledTableHeadCell>
           </TableRow>
@@ -141,7 +169,11 @@ const Trash = props => {
                     {item.day_storage > 0 ? `${item.day_storage} ngày` : ''}
                   </ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="10%">
+                <StyledTableBodyCell
+                  align="center"
+                  width="10%"
+                  className="last-cell"
+                >
                   <ColorTypo color="black">{item.size || '-'}</ColorTypo>
                 </StyledTableBodyCell>
               </TableRow>
@@ -162,6 +194,7 @@ export default connect(
   {
     selectDocumentItem,
     resetListSelectDocument,
-    actionFetchListTrash
+    actionFetchListTrash,
+    actionSortListTrash
   }
 )(Trash);

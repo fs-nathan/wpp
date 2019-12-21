@@ -1,5 +1,7 @@
 export const TOKEN = 'token';
 export const REFRESH_TOKEN = 'refreshToken';
+export const GROUP_ACTIVE = 'group-active';
+
 export const DRAWER_TYPE = {
   SUPPORT: 'SUPPORT',
   MESSAGE: 'MESSAGE',
