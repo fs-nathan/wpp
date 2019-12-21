@@ -32,15 +32,15 @@ const ButtonIcon = styled(IconButton)`
 
 function TabHeader(props) {
   const [open, setOpen] = React.useState(false)
-
+  console.log('props nè', props )
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const confirmCreateCommand = ({content, type}) => {
-    props.createCommandByTaskId("5da1821ad219830d90402fd8", content, type)
+  const confirmCreateCommand = ({ content, type}) => {
+    props.createCommandByTaskId( props.taskId, content, type)
   }
   return (
     <Container>

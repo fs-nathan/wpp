@@ -158,10 +158,10 @@ const ListDemand = (props) => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteCommandByCommandId(selectedItem.id)
+    props.deleteCommandByCommandId({commandId: selectedItem.id, taskId: props.taskId})
   }
   const confirmUpdateCommand = ({ id, content, type }) => {
-    props.updateCommandByTaskId(id, content, type)
+    props.updateCommandByTaskId({id, content, type, taskId: props.taskId})
   }
 
   return (

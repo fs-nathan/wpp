@@ -164,7 +164,7 @@ const OfferModal = (props) => {
       setParams("files", [...tempSelectedItem.files, ...responseFiles])
     }
     // Call api
-    valueOffer.uploadDocumentToOfferById(payload, appendFileCallBack)
+    valueOffer.uploadDocumentToOfferById({payload, appendFileCallBack, taskId: valueOffer.taskId})
   }
 
   const handleDeleteFile = fileId => {
@@ -174,7 +174,7 @@ const OfferModal = (props) => {
       setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
     }
     // Call api
-    valueOffer.deleteDocumentToOfferById(payload, removeFileCallBack)
+    valueOffer.deleteDocumentToOfferById({payload, removeFileCallBack, taskId: valueOffer.taskId})
   }
 
 
@@ -195,7 +195,7 @@ const OfferModal = (props) => {
     for (let i = 0; i < tempSelectedItem.files.length; i++) {
       dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
     }
-    props.createOfferByTaskId(dataCreateOfferFormData)
+    props.createOfferByTaskId({dataCreateOfferFormData, taskId: props.taskId})
     setParams("files", [])
   }
 
@@ -259,7 +259,7 @@ const OfferModal = (props) => {
             onClick={() => {
               props.handleClickClose()
               if (tempSelectedItem.content) {
-                props.updateOfferById(tempSelectedItem.offer_id, tempSelectedItem.content)
+                props.updateOfferById({offerId: tempSelectedItem.offer_id, content:tempSelectedItem.content, taskId: valueOffer.taskId})
               }
               setParams("content", '')
             }}>

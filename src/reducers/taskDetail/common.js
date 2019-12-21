@@ -14,13 +14,13 @@ export default function reducer(state = initialState, action) {
             return { ...state, activeTaskId: action.payload }
         case types.CHOOSE_PROJECT:
             return { ...state, activeProjectId: action.payload.id }
-        case types.GET_PROJECT_GROUP_LISTPART_SUCCESS:
-            return { 
-                ...state, 
-                projectGroups: action.payload.projectGroups, 
-                activeProjectId: action.payload.projectId,
-                projectDetail: getFirstProjectDetail(action.payload.projectGroups),
-            }
+        // case types.GET_PROJECT_GROUP_LISTPART_SUCCESS:
+        //     return { 
+        //         ...state, 
+        //         projectGroups: action.payload.projectGroups, 
+        //         activeProjectId: action.payload.projectId,
+        //         projectDetail: getFirstProjectDetail(action.payload.projectGroups),
+        //     }
         case types.GET_PROJECT_DETAIL_SUCCESS:
             return { 
                 ...state, 
@@ -46,7 +46,7 @@ export default function reducer(state = initialState, action) {
 const getFirstProjectDetail = projectGroups => {
     let projectDetail
     try {
-        projectDetail = projectGroups[0].projects[0] || {}
+        projectDetail = projectGroups.find(project => project.projects.length).projects[0] || {}
     } catch {
         projectDetail = {}
     }

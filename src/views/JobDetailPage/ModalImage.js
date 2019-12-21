@@ -119,8 +119,7 @@ const DialogContent = withStyles(theme => ({
 
 const DialogActions = withStyles(theme => ({
     root: {
-        margin: 0,
-        padding: theme.spacing(1),
+        margin: 0
     },
 }))(MuiDialogActions);
 const StyledDialog = styled(Dialog)`
@@ -150,17 +149,17 @@ const ButtonImage = styled(IconButton)`
           }
     }
 `
-const MediaImage = styled.div`
-  width: auto !important;
-  height: auto !important;
-`
-const WrapImage = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`
-const ImageMedia = styled(GridListTile)`
-  margin-right: 7px;
-`
+// const MediaImage = styled.div`
+//   width: auto !important;
+//   height: auto !important;
+// `
+// const WrapImage = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+// `
+// const ImageMedia = styled(GridListTile)`
+//   margin-right: 7px;
+// `
 const Image = styled.img`
   height: 80px;
   width: 80px;
@@ -221,8 +220,19 @@ const ModalImage = (props) => {
                     })} 
                 </GridList> */}
                 {/* end footer image */}
-            </DialogActions>
-        </StyledDialog>
+                {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
+                    <SubHeader component='span'>09/09/2019</SubHeader>
+                </GridListTile> */}
+                    {Array.from({ length: 7 }).map((_, index) => {
+                        return (
+                            <GridListTile key={`1-${index}`
+                            }>
+                                <Image src={avatar} alt='avatar' />
+                            </GridListTile>
+                        );
+                    })}
+            </DialogActions >
+        </StyledDialog >
     )
 }
 

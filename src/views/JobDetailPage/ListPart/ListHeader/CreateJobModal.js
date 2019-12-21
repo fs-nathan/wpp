@@ -392,7 +392,7 @@ function CreateJobModal(props) {
       // Map task to input
       let listTask = value.listTaskDetail.tasks.map((item) => ({
         label: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : "Chưa phân loại",
-        value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : "default"
+        value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ""
       }))
       setListGroupTask(listTask)
 
@@ -448,7 +448,7 @@ function CreateJobModal(props) {
     if(validate()) {
       // Call api
       value.createJobByProjectId({ data: dataCreateJob, projectId: value.projectId })
-      console.log("data",  dataCreateJob)
+      // console.log("data",  dataCreateJob)
       
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
@@ -590,7 +590,7 @@ function CreateJobModal(props) {
             :
             <>
               <ButtonImage onClick={() => {
-                handleClose()
+                // handleClose()
                 setOpenAddModal(true)
               }} >
                 <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />
