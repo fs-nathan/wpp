@@ -38,7 +38,11 @@ export const searchTaskByTaskName = (groups, keyword) => {
         ? groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase())) }))
         : groups
 }
-
+export const searchProjectByProjectName = (groups, keyword) => {
+    return keyword
+        ? groups.map(item => ({ ...item, projects: item.projects.filter(project => project.name.toLowerCase().match(keyword.toLowerCase())) }))
+        : groups
+}
 // let test=[]
 // let list = Arr.map(item=>{
 //   item.images.map(testhh=>{

@@ -214,4 +214,6 @@ export const CHOOSE_PROJECT = "CHOOSE_PROJECT"
 export const CHOOSE_TASK = "CHOOSE_TASK"
 export const FILTER_TASK_BY_TYPE = "FILTER_TASK_BY_TYPE"
 //  Search task 
-export const SEACRCH_TASK = "SEACRCH_TASK"
+export const SEARCH_TASK = "SEARCH_TASK"
+// Search project
+export const SEARCH_PROJECT = "SEARCH_PROJECT"

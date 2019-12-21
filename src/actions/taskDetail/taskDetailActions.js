@@ -783,6 +783,11 @@ export const filterTaskByType = payload => ({
 
 // Search Task
 export const searchTask = payload => ({
-    type: types.SEACRCH_TASK,
+    type: types.SEARCH_TASK,
     payload
 });
+// Search Project
+export const searchProject = payload => ({
+    type: types.SEARCH_PROJECT,
+    payload
+})

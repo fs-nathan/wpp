@@ -126,11 +126,15 @@ const ButtonIcon = styled(IconButton)`
 
 function ListProjectHeader({ setShow }) {
   // console.log("setShow::::", setShow);
-
+  const value = React.useContext(WrapperContext)
   const closeListProject = () => {
     setShow(false)
   }
-
+  const [isSearch, setIsSearch] = React.useState()
+  const searchListProject = (e) => {
+    setIsSearch(e.target.value)
+    value.searchProject(e.target.value)
+  }
   return (
     <div style={{ marginBottom: 17 }}>
       <Header>
@@ -142,7 +146,11 @@ function ListProjectHeader({ setShow }) {
           <Icon path={mdiClose} size={1} />
         </ButtonIcon>
       </Header>
-      <SearchInput placeholder='Tìm dự án' />
+      <SearchInput 
+        placeholder='Tìm dự án'
+        value={isSearch}
+        onChange={(e) => searchListProject(e)}
+      />
     </div>
   )
 }
@@ -180,7 +188,7 @@ function ListProject(props) {
   const value = React.useContext(WrapperContext)
   let data = []
   if ( value && value.projectListBasic) {
-    data = value.projectListBasic
+    data = value.projectListBasic.projectGroups
   }
   return (
     <Container {...props}>

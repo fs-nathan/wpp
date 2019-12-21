@@ -23,7 +23,6 @@ function JobDetailPage(props) {
     useEffect(() => {
         // props.getProjectGroup()
         props.getProjectListBasic()
-        console.log("log thuw")
         // props.getDetailProject(props.projectId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -181,6 +180,7 @@ const mapDispatchToProps = dispatch => {
         chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task)),
         filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
         searchTask: (data) => { dispatch(taskDetailAction.searchTask(data)) },
+        searchProject: (data) => dispatch(taskDetailAction.searchProject(data)),
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
     };
 };
