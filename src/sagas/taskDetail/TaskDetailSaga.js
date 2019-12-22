@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import * as actions from '../../actions/taskDetail/taskDetailActions';
 import { apiService } from '../../constants/axiosInstance';
+import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -1072,16 +1073,6 @@ function* getListGroupTask(action) {
 //   }
 // }
 
-const getFirstProjectId = firstProjectGroup => {
-  let projectId = ""
-  try {
-    projectId = firstProjectGroup.projects[0].id
-  } catch {
-    projectId = ""
-  }
-  return projectId
-}
-
 // function* getProjectGroup() {
 //   try {
 //     const response = yield call(doGetProjectGroup)
@@ -1125,12 +1116,10 @@ function* getProjectListBasic() {
     let projectGroups = response.projects
     
     let projectId = ""
-    for (let i = 0; i < projectGroups.length; i++) {
-      // projectGroups[i].projects = tempResponse.projects
-      // set active project id to call other API
-      if (i === 0) projectId = getFirstProjectId(projectGroups[i])
-    }
-
+    // set active project id to call other API
+    let projectDetail = getFirstProjectDetail(projectGroups)
+    if(projectDetail.id) projectId = projectDetail.id
+    
     yield put(actions.getProjectListBasicSuccess({projectGroups, projectId}))
   } catch (error) {
     yield put(actions.getProjectListBasicFail(error))
@@ -1140,7 +1129,7 @@ function* getProjectListBasic() {
 
 // update name and description
 async function doUpdateNameDescriptionTask() {
-  try {
+  // try {
     // const config = {
     //   url: 'project-group/list',
     //   method: 'get'
@@ -1148,9 +1137,9 @@ async function doUpdateNameDescriptionTask() {
     // const result = await apiService(config);
     // return result.data;
     return null;
-  } catch (error) {
-    throw error;
-  }
+  // } catch (error) {
+  //   throw error;
+  // }
 }
 
 function* updateNameDescriptionTask(action) {

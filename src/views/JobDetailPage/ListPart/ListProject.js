@@ -130,10 +130,8 @@ function ListProjectHeader({ setShow }) {
   const closeListProject = () => {
     setShow(false)
   }
-  const [isSearch, setIsSearch] = React.useState()
-  const searchListProject = (e) => {
-    setIsSearch(e.target.value)
-    value.searchProject(e.target.value)
+  const searchListProject = keyword => {
+    value.searchProject(keyword)
   }
   return (
     <div style={{ marginBottom: 17 }}>
@@ -148,8 +146,7 @@ function ListProjectHeader({ setShow }) {
       </Header>
       <SearchInput 
         placeholder='Tìm dự án'
-        value={isSearch}
-        onChange={(e) => searchListProject(e)}
+        onChange={(e) => searchListProject(e.target.value)}
       />
     </div>
   )

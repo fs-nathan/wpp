@@ -1,5 +1,9 @@
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
-import { searchProjectByProjectName } from '../../helpers/jobDetail/arrayHelper'
+import { 
+    searchProjectByProjectName,
+    getFirstProjectDetail,
+    getFirstTaskId 
+} from '../../helpers/jobDetail/arrayHelper'
 const initialState = {
     activeProjectId: "",
     activeTaskId: "",
@@ -51,23 +55,3 @@ export default function reducer(state = initialState, action) {
     }
 }
 
-const getFirstProjectDetail = projectGroups => {
-    let projectDetail
-    try {
-        projectDetail = projectGroups.find(project => project.projects.length).projects[0] || {}
-    } catch {
-        projectDetail = {}
-    }
-    return projectDetail
-    
-}
-
-const getFirstTaskId = payload => {
-    let taskId
-    try {
-        taskId = payload.tasks[0].tasks[0].id
-    } catch {
-        taskId = ""
-    }
-    return taskId
-}
