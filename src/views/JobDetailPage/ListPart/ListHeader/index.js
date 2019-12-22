@@ -76,19 +76,11 @@ function ListHeaderSelect({ setShow }) {
 }
 
 function ListHeader(props) {
-  // const [open, setOpen] = React.useState(false);
-  // const handleClose = () => {
-  //   setOpen(false);
-  // }
   const value = React.useContext(WrapperContext)
-  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
-  const [isSearch, setIsSearch] = React.useState()
+  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false)
   const searchListTask = (e) => {
-    setIsSearch(e.target.value)
     value.searchTask(e.target.value)
   }
-  // console.log("isSearch::::", isSearch);
-  
   return (
     <div >
       <Header>
@@ -96,8 +88,7 @@ function ListHeader(props) {
         <HeaderBottomBox>
           <SearchInput 
             placeholder='Tìm công việc trong dự án...' 
-            style={{ height: 'auto' }} 
-            value={isSearch}
+            style={{ height: 'auto' }}
             onChange={e => searchListTask(e)}
             />
           <ButtonIcon
@@ -106,7 +97,6 @@ function ListHeader(props) {
               padding: "7px"
             }}
             onClick={() => {
-              // handleClose()
               setOpenCreateJobModal(true)
             }} >
             <Icon path={mdiPlus} size={1.2} />

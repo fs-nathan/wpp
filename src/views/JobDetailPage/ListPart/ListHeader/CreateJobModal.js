@@ -131,8 +131,11 @@ const PriorityRadioGroup = styled(RadioGroup)`
 
 const SpecialControlLabel = styled(FormControlLabel)`
   background-color: ${props => props.checked
-    ? colorPal['#ffd3b4'][0]
-    : colorPal['grey'][0]};
+    ? colorPal['#07bd0b'][0]
+    : "#f0f0f0"};
+  color: ${props => props.checked
+    ? "white"
+    : "black"};
   width: 27%;
   border-radius: 30px;
   margin: 0;
@@ -349,7 +352,7 @@ const DEFAULT_DATA = {
   end_date: DEFAULT_DATE_TEXT,
   type_assign: DEFAULT_ASSIGN_ID,
   priority: DEFAULT_PRIORITY_ID,
-  group_task: EMPTY_STRING,
+  group_task: DEFAULT_GROUP_TASK_VALUE,
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN,
 }
@@ -392,7 +395,7 @@ function CreateJobModal(props) {
       // Map task to input
       let listTask = value.listTaskDetail.tasks.map((item) => ({
         label: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : "Chưa phân loại",
-        value: item.id
+        value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ""
       }))
       setListGroupTask(listTask)
 
@@ -430,6 +433,7 @@ function CreateJobModal(props) {
   }
 
   const dataCreateJob = {
+    project_id: value.projectId,
     group_task: data.group_task,
     name: data.name,
     description: data.description,
@@ -445,8 +449,13 @@ function CreateJobModal(props) {
 
   const handlePressConfirm = () => {
     if(validate()) {
+      // Remove group task in object if user unselect group task
+      let data = dataCreateJob
+      if(!dataCreateJob.group_task) delete data.group_task
       // Call api
-      value.createJobByProjectId({ data: dataCreateJob, projectId: value.projectId })
+      value.createJobByProjectId({ data, projectId: value.projectId })
+      // console.log("data",  dataCreateJob)
+      
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
       // Close modal
@@ -536,7 +545,7 @@ function CreateJobModal(props) {
               commandSelect={listGroupTask}
               selectedIndex={groupTaskValue}
               setOptions={typeId => handleChangeData("group_task", typeId)}
-              placeholder={'Nhóm mặc định'}
+              // placeholder={'Nhóm mặc định'}
             />
           </Typography>
           <Typography component={'div'}>
@@ -587,7 +596,7 @@ function CreateJobModal(props) {
             :
             <>
               <ButtonImage onClick={() => {
-                handleClose()
+                // handleClose()
                 setOpenAddModal(true)
               }} >
                 <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />

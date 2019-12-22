@@ -74,9 +74,9 @@ function JobName(props) {
     <NameContainer variant='space-between'>
       <ColorTypo bold style={{ fontSize: 17, textOverflow: 'ellipsis', width: '200px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.title}</ColorTypo>
       <ChipMes 
-        // label={props.notification} 
+        label={'N'}
         size='small' 
-        style={{ fontSize: '14px', fontWeight: 500 }}
+        style={{ fontSize: '13px', fontWeight: 500, display: 'flex' }}
         {...props}
         notification={props.notification.toString()}
         />
@@ -85,35 +85,35 @@ function JobName(props) {
 }
 function JobContent(props) {
   // const [colorStatus, setColorStatus] = React.useState(null)
-  const [status, setStatus] = React.useState('')
-  React.useEffect(() => {
-    switch (props.label) {
-      case 0:
-        // setColorStatus('orangelight')
-        setStatus('đang chờ')
-        break;
-      case 1:
-        // setColorStatus('orangelight')
-        setStatus('đang làm')
-        break;
-      case 2:
-        // setColorStatus('grey')
-        setStatus('hoàn thành')
-        break;
-      case 3:
-        // setColorStatus('grey')
-        setStatus('quá hạn')
-        break;
-      case 4:
-        // setColorStatus('grey')
-        setStatus('tạm dừng')
-        break;
-      default:
-        // console.log(colorStatus)
-        setStatus('')
-        break;
-    }
-  }, [props.label])
+  // const [status, setStatus] = React.useState('')
+  // React.useEffect(() => {
+  //   switch (props.label) {
+  //     case 0:
+  //       setColorStatus('orangelight')
+  //       setStatus('đang chờ')
+  //       break;
+  //     case 1:
+  //       setColorStatus('orangelight')
+  //       setStatus('đang làm')
+  //       break;
+  //     case 2:
+  //       setColorStatus('grey')
+  //       setStatus('hoàn thành')
+  //       break;
+  //     case 3:
+  //       setColorStatus('grey')
+  //       setStatus('quá hạn')
+  //       break;
+  //     case 4:
+  //       setColorStatus('grey')
+  //       setStatus('tạm dừng')
+  //       break;
+  //     default:
+  //       console.log(colorStatus)
+  //       setStatus('')
+  //       break;
+  //   }
+  // }, [props.label])
   return (
     <ContentContainer>
       <div>
@@ -124,7 +124,7 @@ function JobContent(props) {
         <div style={{ color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '13px' }}>{props.time}</div>
       </div>
       <div style={{ display: 'flex' }}>
-        <BadgeItem color='redlight' badge label={status} size='small' />
+        <BadgeItem color='redlight' badge label={props.label} size='small' />
         <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props} isghim={props.isghim.toString()}/>  
       </div>
     </ContentContainer>
@@ -143,7 +143,7 @@ function JobUnit(props) {
   return (
     <ListItemText disableTypography>
       <JobName title={props.name} notification={props.new_chat} />
-      <JobContent label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isghim={props.isGhim} />
+      <JobContent label={props.status_name} time={props.updated_time} avatar={props.chat.user_create_avatar} content={props.chat.content} isghim={props.is_ghim} />
     </ListItemText>
   )
 }

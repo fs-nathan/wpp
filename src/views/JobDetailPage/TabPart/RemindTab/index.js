@@ -7,7 +7,7 @@ const Container = styled.div`
   transition: unset !important;
   height: 100%;
   display: grid;
-  grid-template-rows: 85px calc(100vh - 70px - 50px);
+  grid-template-rows: 85px calc(85vh);
   grid-template-columns: 1fr;
   grid-template-areas: 
     "header"

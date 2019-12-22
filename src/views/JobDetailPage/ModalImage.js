@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, IconButton, Dialog, withStyles, Typography, ListItemText, ListItem } from '@material-ui/core';
+import { Avatar, IconButton, Dialog, withStyles, Typography, ListItemText, ListItem, GridListTile } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -11,6 +11,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { mdiDownload, mdiShare, mdiInformation, mdiChevronLeftCircle, mdiChevronRightCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import ImageTest from '../../assets/imageChatTest.jpg'
+// import { WrapperContext } from './index'
 const styles = theme => ({
     closeButton: {
         color: theme.palette.grey[500],
@@ -118,8 +119,7 @@ const DialogContent = withStyles(theme => ({
 
 const DialogActions = withStyles(theme => ({
     root: {
-        margin: 0,
-        padding: theme.spacing(1),
+        margin: 0
     },
 }))(MuiDialogActions);
 const StyledDialog = styled(Dialog)`
@@ -149,10 +149,36 @@ const ButtonImage = styled(IconButton)`
           }
     }
 `
-
+// const MediaImage = styled.div`
+//   width: auto !important;
+//   height: auto !important;
+// `
+// const WrapImage = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+// `
+// const ImageMedia = styled(GridListTile)`
+//   margin-right: 7px;
+// `
+const Image = styled.img`
+  height: 80px;
+  width: 80px;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7
+  }
+`
 const ModalImage = (props) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
+    // const value = React.useContext(WrapperContext);
+    // let data = []
+    // if (value && value.image) {
+    //     data = value.image
+    // }
     return (
         // {/* Modal chinh sua cong viec con */}
         <StyledDialog
@@ -172,9 +198,41 @@ const ModalImage = (props) => {
                 </ButtonImage>
             </ContentDialog>
             <DialogActions>
-
-            </DialogActions>
-        </StyledDialog>
+                {/* footer image */}
+                {/* <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
+                    {/* {data.images.map((image, key) => { 
+                        return (
+                            <MediaImage>
+                                {/* <GridListTile cols={5}>
+                                    <SubHeader component='div'>{image.date_create}</SubHeader>
+                                </GridListTile>
+                                <WrapImage>
+                                    {image.images.map((item, idx) => {
+                                        return (
+                                            <ImageMedia key={idx}>
+                                                <Image src={item.url} alt='avatar' />
+                                            </ImageMedia>
+                                        )
+                                    })}
+                                </WrapImage>
+                            </MediaImage>
+                        );
+                    })} 
+                </GridList> */}
+                {/* end footer image */}
+                {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
+                    <SubHeader component='span'>09/09/2019</SubHeader>
+                </GridListTile> */}
+                    {Array.from({ length: 7 }).map((_, index) => {
+                        return (
+                            <GridListTile key={`1-${index}`
+                            }>
+                                <Image src={avatar} alt='avatar' />
+                            </GridListTile>
+                        );
+                    })}
+            </DialogActions >
+        </StyledDialog >
     )
 }
 

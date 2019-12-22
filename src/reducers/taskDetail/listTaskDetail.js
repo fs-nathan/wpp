@@ -12,7 +12,7 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) {
-    console.log("reducer text search:::", action.payload);
+    // console.log("reducer text search:::", action.payload);
     
     switch (action.type) {
         case types.GET_LIST_TASK_DETAIL_REQUEST:
@@ -58,8 +58,7 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
-        case types.SEACRCH_TASK:
-            console.log("á", action.payload)
+        case types.SEARCH_TASK:
             return {
                 ...state,
                 listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }
