@@ -77,10 +77,8 @@ function ListHeaderSelect({ setShow }) {
 
 function ListHeader(props) {
   const value = React.useContext(WrapperContext)
-  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
-  const [isSearch, setIsSearch] = React.useState("")
+  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false)
   const searchListTask = (e) => {
-    setIsSearch(e.target.value)
     value.searchTask(e.target.value)
   }
   return (
@@ -90,8 +88,7 @@ function ListHeader(props) {
         <HeaderBottomBox>
           <SearchInput 
             placeholder='Tìm công việc trong dự án...' 
-            style={{ height: 'auto' }} 
-            value={isSearch}
+            style={{ height: 'auto' }}
             onChange={e => searchListTask(e)}
             />
           <ButtonIcon

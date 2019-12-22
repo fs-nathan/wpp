@@ -30,7 +30,7 @@ export const getIndividualHandleUsers =
 export const filterTaskByType = (groups, idx) => {
     return idx === 0
         ? groups
-        : groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.status_code === idx - 1) }))
+        : groups.map(item => ({ ...item, tasks: item.tasks.filter(task => Number(task.status_code) === idx - 1) }))
 }
 
 export const searchTaskByTaskName = (groups, keyword) => {
@@ -40,12 +40,26 @@ export const searchTaskByTaskName = (groups, keyword) => {
 }
 export const searchProjectByProjectName = (groups, keyword) => {
     return keyword
-        ? groups.map(item => ({ ...item, projects: item.projects.filter(project => project.name.toLowerCase().match(keyword.toLowerCase())) }))
+        ? groups
+            .filter(group => group.projects.length)
+            .map(item => ({ ...item, projects: item.projects.filter(project => project.name.toLowerCase().match(keyword.toLowerCase())) }))
         : groups
 }
-// let test=[]
-// let list = Arr.map(item=>{
-//   item.images.map(testhh=>{
-//     test.push(testhh)
-//   })
-// })
+export const getFirstProjectDetail = projectGroups => {
+    let projectDetail
+    try {
+        projectDetail = projectGroups.find(project => project.projects.length).projects[0] || {}
+    } catch {
+        projectDetail = {}
+    }
+    return projectDetail
+}
+export const getFirstTaskId = payload => {
+    let taskId
+    try {
+        taskId = payload.tasks[0].tasks[0].id
+    } catch {
+        taskId = ""
+    }
+    return taskId
+}
