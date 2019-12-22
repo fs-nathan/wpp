@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, IconButton, Dialog, withStyles, Typography, ListItemText, ListItem, GridList, GridListTile } from '@material-ui/core';
+import { Avatar, IconButton, Dialog, withStyles, Typography, ListItemText, ListItem, GridListTile } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -11,7 +11,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { mdiDownload, mdiShare, mdiInformation, mdiChevronLeftCircle, mdiChevronRightCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import ImageTest from '../../assets/imageChatTest.jpg'
-import { WrapperContext } from './index'
+// import { WrapperContext } from './index'
 const styles = theme => ({
     closeButton: {
         color: theme.palette.grey[500],
@@ -174,11 +174,11 @@ const Image = styled.img`
 const ModalImage = (props) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
-    const value = React.useContext(WrapperContext);
-    let data = []
-    if (value && value.image) {
-        data = value.image
-    }
+    // const value = React.useContext(WrapperContext);
+    // let data = []
+    // if (value && value.image) {
+    //     data = value.image
+    // }
     return (
         // {/* Modal chinh sua cong viec con */}
         <StyledDialog

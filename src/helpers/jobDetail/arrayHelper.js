@@ -30,7 +30,7 @@ export const getIndividualHandleUsers =
 export const filterTaskByType = (groups, idx) => {
     return idx === 0
         ? groups
-        : groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.status_code == idx - 1) }))
+        : groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.status_code === idx - 1) }))
 }
 
 export const searchTaskByTaskName = (groups, keyword) => {

@@ -130,7 +130,7 @@ function ListProjectHeader({ setShow }) {
   const closeListProject = () => {
     setShow(false)
   }
-  const [isSearch, setIsSearch] = React.useState()
+  const [isSearch, setIsSearch] = React.useState("")
   const searchListProject = (e) => {
     setIsSearch(e.target.value)
     value.searchProject(e.target.value)

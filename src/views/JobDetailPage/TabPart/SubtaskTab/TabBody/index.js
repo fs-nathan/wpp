@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiDragVertical, mdiDotsVertical, mdiSend } from '@mdi/js';
@@ -12,7 +12,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
-import { WrapperContext } from '../../../index'
+// import { WrapperContext } from '../../../index'  
 const Container = styled.div`
   padding: 0 0 50px 0;
 `;
@@ -105,7 +105,7 @@ const StyledMenu = styled.div`
 
 function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
-  const value = React.useContext(WrapperContext)
+  // const value = React.useContext(WrapperContext)
   // useEffect(() => 
   //   value.getSubTaskByTaskId(value.taskId)
   //   console.log("Bấm có load lúc ra khoongg?????")

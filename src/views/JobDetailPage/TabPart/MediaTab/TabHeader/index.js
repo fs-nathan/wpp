@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiChevronLeft   } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
-
+import { WrapperContext } from '../../../index'
 const Container = styled.div`
 
   display: flex;
@@ -26,6 +26,12 @@ const ButtonIcon = styled(IconButton)`
 `
 
 function TabHeader({ setShow }) {
+  const value = React.useContext(WrapperContext)
+  useEffect(() => {
+    value.getImageByTaskId(value.taskId)
+    value.getFileByTaskId(value.taskId)
+    value.getLinkByTaskId(value.taskId)
+  })
   return (
     <Container>
       <ButtonIcon onClick={() => setShow(0)}>

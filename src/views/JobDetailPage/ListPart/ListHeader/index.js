@@ -78,7 +78,7 @@ function ListHeaderSelect({ setShow }) {
 function ListHeader(props) {
   const value = React.useContext(WrapperContext)
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
-  const [isSearch, setIsSearch] = React.useState()
+  const [isSearch, setIsSearch] = React.useState("")
   const searchListTask = (e) => {
     setIsSearch(e.target.value)
     value.searchTask(e.target.value)

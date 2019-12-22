@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import DemandModal from '../DemandModal'
-
-
-
+import { WrapperContext } from '../../../index'
 const Container = styled.div`
 
   display: flex;
@@ -31,8 +29,12 @@ const ButtonIcon = styled(IconButton)`
 
 
 function TabHeader(props) {
+  const value = React.useContext(WrapperContext)
+  useEffect(() => {
+    value.getCommandByTaskId(value.taskId)
+  })
   const [open, setOpen] = React.useState(false)
-  console.log('props nè', props )
+  // console.log('props nè', props )
   const handleClickOpen = () => {
     setOpen(true);
   };

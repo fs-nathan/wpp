@@ -1139,15 +1139,16 @@ function* getProjectListBasic() {
 
 
 // update name and description
-async function doUpdateNameDescriptionTask() {
+async function doUpdateNameDescriptionTask(payload) {
   try {
-    // const config = {
-    //   url: 'project-group/list',
-    //   method: 'get'
-    // }
-    // const result = await apiService(config);
-    // return result.data;
-    return null;
+    const config = {
+      url: 'task/update-name-description',
+      method: 'put',
+      data: payload,
+    }
+    const result = await apiService(config);
+    return result.data;
+    // return null;
   } catch (error) {
     throw error;
   }
