@@ -58,7 +58,7 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
-        case types.SEACRCH_TASK:
+        case types.SEARCH_TASK:
             return {
                 ...state,
                 listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }

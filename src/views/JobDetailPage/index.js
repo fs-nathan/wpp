@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import ListPart from './ListPart';
 import ChatPart from './ChatPart';
 import TabPart from './TabPart';
@@ -20,12 +20,13 @@ const Wrapper = WrapperContext.Provider
 // `;
 
 function JobDetailPage(props) {
-  useEffect(() => {
-    // props.getProjectGroup()
-    props.getProjectListBasic()
-    // props.getDetailProject(props.projectId)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    useEffect(() => {
+        // props.getProjectGroup()
+        props.getProjectListBasic()
+        // props.getDetailProject(props.projectId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
 
     const getDataByProjectId = () => {
         props.getRoleTask()
@@ -35,18 +36,18 @@ function JobDetailPage(props) {
     }
 
     const getDataByTaskId = () => {
-        props.getSubTaskByTaskId(props.taskId)
-        props.getRemindByTaskId(props.taskId)
-        props.getOfferByTaskId(props.taskId)
-        props.getCommandByTaskId(props.taskId)
-        props.getImageByTaskId(props.taskId)
-        props.getFileByTaskId(props.taskId)
-        props.getLinkByTaskId(props.taskId)
-        props.getLocationByTaskId(props.taskId)
+        // props.getSubTaskByTaskId(props.taskId)
+        // props.getRemindByTaskId(props.taskId)
+        // props.getOfferByTaskId(props.taskId)
+        // props.getCommandByTaskId(props.taskId)
+        // props.getImageByTaskId(props.taskId)
+        // props.getFileByTaskId(props.taskId)
+        // props.getLinkByTaskId(props.taskId)
+        // props.getLocationByTaskId(props.taskId)
         props.getTaskDetailByTaskId(props.taskId)
         props.getMemberByTaskId(props.taskId)
         props.getMemberNotAssignedByTaskId(props.taskId)
-        props.getTrackingTime(props.taskId)
+        // props.getTrackingTime(props.taskId)
     }
 
     useEffect(getDataByTaskId, [props.taskId])
@@ -65,10 +66,10 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-  // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectListBasic);
-  return {
-    // offer
-    offer: state.taskDetail.taskOffer.offer,
+    // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectListBasic);
+    return {
+        // offer
+        offer: state.taskDetail.taskOffer.offer,
 
         pendingItems: state.taskDetail.taskOffer.pendingItems,
         approvedItems: state.taskDetail.taskOffer.approvedItems,
@@ -100,14 +101,14 @@ const mapStateToProps = state => {
         memberNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
         userRoles: state.taskDetail.taskMember.user_roles,
 
-    listTime: state.taskDetail.trackingTime.listTime,
-    // project group
-    projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
-    // project detail
-    projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
-    // project list basic
-    projectListBasic: state.taskDetail.commonTaskDetail.projectListBasic,
-  }
+        listTime: state.taskDetail.trackingTime.listTime,
+        // project group
+        projectGroup: state.taskDetail.commonTaskDetail.projectGroups,
+        // project detail
+        projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
+        // project list basic
+        projectListBasic: state.taskDetail.commonTaskDetail.projectListBasic,
+    }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -115,29 +116,29 @@ const mapDispatchToProps = dispatch => {
         // sub-task
         getSubTaskByTaskId: taskId => dispatch(taskDetailAction.getSubTask({ taskId })),
         postSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.postSubTask({ task_id: taskId, name })),
-        updateSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: taskId, name })),
-        deleteSubTaskByTaskId: taskId => dispatch(taskDetailAction.deleteSubTask({ sub_task_id: taskId })),
-        completeSubTaskByTaskId: taskId => dispatch(taskDetailAction.completeSubTask({ sub_task_id: taskId })),
+        updateSubTaskByTaskId: (subTaskId, name, taskId) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: subTaskId, name, taskId })),
+        deleteSubTaskByTaskId: (subTaskId, taskId) => dispatch(taskDetailAction.deleteSubTask({ sub_task_id: subTaskId, taskId: taskId })),
+        completeSubTaskByTaskId: (subTaskId, taskId) => dispatch(taskDetailAction.completeSubTask({ sub_task_id: subTaskId, taskId: taskId })),
         // remind
         getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({ taskId })),
         createRemindWithTimeDetail: (data) => dispatch(taskDetailAction.postRemindWithTimeDetail(data)),
         createRemindWithDurationDetail: (data) => dispatch(taskDetailAction.postRemindDuration(data)),
-        updateRemindWithTimeDetail: (data) => dispatch(taskDetailAction.updateRemindWithTimeDetail(data)),
-        updateRemindWithDurationDetail: (data) => dispatch(taskDetailAction.updateRemindWithDuration(data)),
-        deleteRemindWByRemindId: remindId => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId })),
+        updateRemindWithTimeDetail: ({data, taskId}) => dispatch(taskDetailAction.updateRemindWithTimeDetail({data, taskId})),
+        updateRemindWithDurationDetail: ({data, taskId}) => dispatch(taskDetailAction.updateRemindWithDuration({data, taskId})),
+        deleteRemindWByRemindId: (remindId, taskId) => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId, taskId: taskId })),
         // offer
         getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
-        createOfferByTaskId: (data) => dispatch(taskDetailAction.createOffer(data)),
-        deleteOfferByTaskId: deleteId => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId })),
-        updateOfferById: (data) => dispatch(taskDetailAction.updateOffer(data)),
-        uploadDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb)),
-        deleteDocumentToOfferById: (data, cb) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb)),
-        handleOfferById: (data) => dispatch(taskDetailAction.handleOffer(data)),
+        createOfferByTaskId: ({data, taskId}) => dispatch(taskDetailAction.createOffer({data, taskId})),
+        deleteOfferByTaskId: (deleteId, taskId) => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId, taskId: taskId })),
+        updateOfferById: ({offerId, content, taskId}) => dispatch(taskDetailAction.updateOffer({offerId, content, taskId})),
+        uploadDocumentToOfferById: (data, cb, taskId) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb, taskId)),
+        deleteDocumentToOfferById: (data, cb, taskId) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb, taskId)),
+        handleOfferById: (data, taskId) => dispatch(taskDetailAction.handleOffer(data, taskId)),
         // command 
         getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
         createCommandByTaskId: (task_id, content, type) => { dispatch(taskDetailAction.createCommand({ task_id, content, type })) },
-        updateCommandByTaskId: (id, content, type) => { dispatch(taskDetailAction.updateCommand({ command_id: id, content, type })) },
-        deleteCommandByCommandId: command_id => dispatch(taskDetailAction.deleteCommand({ command_id })),
+        updateCommandByTaskId: (id, content, type, taskId) => { dispatch(taskDetailAction.updateCommand({ command_id: id, content, type, taskId })) },
+        deleteCommandByCommandId: (command_id, taskId) => dispatch(taskDetailAction.deleteCommand({ command_id, taskId })),
         // Media Image File Link
         getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
         getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
@@ -162,25 +163,26 @@ const mapDispatchToProps = dispatch => {
         deleteRoleTask: (user_role_id) => dispatch(taskDetailAction.deleteRole({ user_role_id })),
         getRoleTask: () => dispatch(taskDetailAction.getRole()),
 
-    //time
-    getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
-    updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
-    // List Task Detail
-    getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId })),
-    createJobByProjectId: (data) => dispatch(taskDetailAction.createTask(data)),
-    //  List Group Task
-    getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
-    //edit name and description task
-    updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data)),
-    // get project group
-    getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
-    getDetailProject: (project_id) => dispatch(taskDetailAction.getProjectDetail(project_id)),
-    chooseProject: (project) => dispatch(taskDetailAction.chooseProject(project)),
-    chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task)),
-    filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
-    searchTask: (data) => { dispatch(taskDetailAction.searchTask(data))},
-    getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
-  };
+        //time
+        getTrackingTime: task_id => dispatch(taskDetailAction.getTrackingTime(task_id)),
+        updateTimeDuration: dataTime => dispatch(taskDetailAction.updateTimeDuration(dataTime)),
+        // List Task Detail
+        getListTaskDetailByProjectId: projectId => dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId })),
+        createJobByProjectId: (data) => dispatch(taskDetailAction.createTask(data)),
+        //  List Group Task
+        getListGroupTaskByProjectId: projectId => dispatch(taskDetailAction.getListGroupTask({ project_id: projectId })),
+        //edit name and description task
+        updateNameDescriptionTask: data => dispatch(taskDetailAction.updateNameDescriptionTask(data)),
+        // get project group
+        // getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
+        getDetailProject: (project_id) => dispatch(taskDetailAction.getProjectDetail(project_id)),
+        chooseProject: (project) => dispatch(taskDetailAction.chooseProject(project)),
+        chooseTask: (task) => dispatch(taskDetailAction.chooseTask(task)),
+        filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
+        searchTask: (data) => { dispatch(taskDetailAction.searchTask(data)) },
+        searchProject: (data) => dispatch(taskDetailAction.searchProject(data)),
+        getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
+    };
 };
 
 export default connect(

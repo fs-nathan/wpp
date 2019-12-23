@@ -131,8 +131,11 @@ const PriorityRadioGroup = styled(RadioGroup)`
 
 const SpecialControlLabel = styled(FormControlLabel)`
   background-color: ${props => props.checked
-    ? colorPal['#ffd3b4'][0]
-    : colorPal['grey'][0]};
+    ? colorPal['#07bd0b'][0]
+    : "#f0f0f0"};
+  color: ${props => props.checked
+    ? "white"
+    : "black"};
   width: 27%;
   border-radius: 30px;
   margin: 0;
@@ -392,7 +395,7 @@ function CreateJobModal(props) {
       // Map task to input
       let listTask = value.listTaskDetail.tasks.map((item) => ({
         label: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : "Chưa phân loại",
-        value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : "default"
+        value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ""
       }))
       setListGroupTask(listTask)
 
@@ -446,9 +449,12 @@ function CreateJobModal(props) {
 
   const handlePressConfirm = () => {
     if(validate()) {
+      // Remove group task in object if user unselect group task
+      let data = dataCreateJob
+      if(!dataCreateJob.group_task) delete data.group_task
       // Call api
-      value.createJobByProjectId({ data: dataCreateJob, projectId: value.projectId })
-      console.log("data",  dataCreateJob)
+      value.createJobByProjectId({ data, projectId: value.projectId })
+      // console.log("data",  dataCreateJob)
       
       // Clear temporary data
       setDataMember(DEFAULT_DATA)

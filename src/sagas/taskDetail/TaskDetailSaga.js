@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import * as actions from '../../actions/taskDetail/taskDetailActions';
 import { apiService } from '../../constants/axiosInstance';
+import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -21,7 +22,7 @@ function* updatePriority(action) {
   try {
     const res = yield call(doUpdatePriority, action.payload)
     yield put(actions.updatePrioritySuccess(res))
-    yield put(actions.getTaskDetailTabPart({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getTaskDetailTabPart(action.payload.task_id))
 
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
@@ -70,7 +71,7 @@ function* postSubTask(action) {
   try {
     const res = yield call(doPostSubTask, action.options)
     yield put(actions.postSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getSubTask(action.options.task_id))
   } catch (error) {
     yield put(actions.postSubTaskFail(error))
   }
@@ -79,7 +80,7 @@ function* postSubTask(action) {
 async function doUpdateSubTask(payload) {
   try {
     const config = {
-      url: `task/update-subtask?sub_task_id=${payload.taskId}&name=${payload.name}`,
+      url: `task/update-subtask?sub_task_id=${payload.sub_task_id}&name=${payload.name}`,
       method: 'post',
       data: payload
     }
@@ -91,10 +92,14 @@ async function doUpdateSubTask(payload) {
 }
 
 function* updateSubTask(action) {
+  const data = {
+    sub_task_id : action.options.sub_task_id,
+    name : action.options.name
+  }
   try {
-    const res = yield call(doUpdateSubTask, action.options)
+    const res = yield call(doUpdateSubTask, data)
     yield put(actions.updateSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getSubTask(action.options.taskId))
   } catch (error) {
     yield put(actions.updateSubTaskFail(error))
   }
@@ -118,9 +123,9 @@ async function doDeleteSubTask({ sub_task_id }) {
 function* deleteSubTask(action) {
 
   try {
-    const res = yield call(doDeleteSubTask, action.options)
+    const res = yield call(doDeleteSubTask, action.options.sub_task_id)
     yield put(actions.deleteSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getSubTask(action.options.taskId))
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error))
   }
@@ -142,9 +147,9 @@ async function doCompleteSubTask(payload) {
 
 function* completeSubTask(action) {
   try {
-    const res = yield call(doCompleteSubTask, action.options)
+    const res = yield call(doCompleteSubTask, action.options.sub_task_id)
     yield put(actions.completeSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getSubTask(action.payload.taskId))
   } catch (error) {
     yield put(actions.completeSubTaskFail(error))
   }
@@ -197,7 +202,7 @@ async function doPostRemindWithTimeDetail(payload) {
 function* postRemindWithTimeDetail(action) {
   try {
     yield call(doPostRemindWithTimeDetail, action.options)
-    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getRemind(action.options.taskId))
   } catch (error) {
     yield put(actions.postRemindWithTimeDetailFail(error))
   }
@@ -221,7 +226,7 @@ function* postRemindDuration(action) {
   try {
     const res = yield call(doPostRemindDuration, action.options)
     yield put(actions.postRemindDurationSuccess(res))
-    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getRemind(action.options.task_id))
   } catch (error) {
     yield put(actions.postRemindDurationFail(error))
   }
@@ -243,9 +248,9 @@ async function doUpdateRemindWithTimeDetail(payload) {
 
 function* updateRemindWithTimeDetail(action) {
   try {
-    const res = yield call(doUpdateRemindWithTimeDetail, action.options)
+    const res = yield call(doUpdateRemindWithTimeDetail, action.options.data)
     yield put(actions.updateRemindWithTimeDetailSuccess(res))
-    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getRemind(action.options.taskId))
   } catch (error) {
     yield put(actions.updateRemindWithTimeDetailFail(error))
   }
@@ -267,9 +272,9 @@ async function doUpdateRemindWithDuration(payload) {
 
 function* updateRemindWithDuration(action) {
   try {
-    const res = yield call(doUpdateRemindWithDuration, action.options)
+    const res = yield call(doUpdateRemindWithDuration, action.options.data)
     yield put(actions.updateRemindWithDurationSuccess(res))
-    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getRemind(action.options.taskId))
   } catch (error) {
     yield put(actions.updateRemindWithDurationFail(error))
   }
@@ -291,9 +296,9 @@ async function doDeleteRemind({ remind_id }) {
 
 function* deleteRemind(action) {
   try {
-    const res = yield call(doDeleteRemind, action.payload)
+    const res = yield call(doDeleteRemind, action.payload.remind_id)
     yield put(actions.deleteRemindSuccess(res))
-    yield put(actions.getRemind({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getRemind(action.payload.taskId))
   } catch (error) {
     yield put(actions.deleteRemindFail(error))
   }
@@ -337,9 +342,9 @@ async function doCreateOffer(payload) {
 
 function* createOffer(action) {
   try {
-    const res = yield call(doCreateOffer, action.payload)
+    const res = yield call(doCreateOffer, action.payload.data)
     yield put(actions.createOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {
     yield put(actions.createOfferFail(error))
   }
@@ -360,10 +365,14 @@ async function doUpdateOffer(payload) {
 }
 
 function* updateOffer(action) {
+  const data = {
+    offer_id: action.payload.offerId,
+    content: action.payload.content
+  }
   try {
-    yield call(doUpdateOffer, action.payload)
+    yield call(doUpdateOffer, data)
     // yield put(actions.updateOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {
     yield put(actions.updateOfferFail(error))
   }
@@ -385,12 +394,9 @@ async function doDeleteOffer(offer_id) {
 
 function* deleteOffer(action) {
   try {
-
-    const res = yield call(doDeleteOffer, action.payload)
-
-
+    const res = yield call(doDeleteOffer, action.payload.offer_id)
     yield put(actions.deleteOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {
     yield put(actions.deleteOfferFail(error))
   }
@@ -417,7 +423,7 @@ function* uploadDocumentToOffer(action) {
     action.payload.successCallBack(res.documents)
 
     yield put(actions.uploadDocumentToOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {
     yield put(actions.uploadDocumentToOfferFail(error))
   }
@@ -442,7 +448,7 @@ function* deleteDocumentToOffer(action) {
     const res = yield call(doDeleteDocumentToOffer, action.payload.data)
     action.payload.removeCallBack(res)
     yield put(actions.deleteDocumentToOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {
     yield put(actions.deleteDocumentToOfferFail(error))
   }
@@ -464,9 +470,9 @@ async function doHandleOffer(data) {
 
 function* handleOffer(action) {
   try {
-    const res = yield call(doHandleOffer, action.payload)
+    const res = yield call(doHandleOffer, action.payload.data)
     yield put(actions.handleOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {
     yield put(actions.handleOfferFail(error))
   }
@@ -627,7 +633,7 @@ function* createCommand(action) {
   try {
     const res = yield call(doCreateCommand, action.payload)
     yield put(actions.createCommandSuccess(res))
-    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getCommand(action.payload.task_id))
   } catch (error) {
     yield put(actions.createCommandFail(error))
   }
@@ -648,10 +654,15 @@ async function doUpdateCommand(payload) {
 }
 
 function* updateCommand(action) {
+  const data = {
+    command_id: action.payload.command_id,
+    content: action.payload.content,
+    type: action.payload.type
+  }
   try {
-    const res = yield call(doUpdateCommand, action.payload)
+    const res = yield call(doUpdateCommand, data)
     yield put(actions.updateCommandSuccess(res))
-    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getCommand(action.payload.taskId))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }
@@ -673,9 +684,9 @@ async function doDeleteCommand(payload) {
 
 function* deleteCommand(action) {
   try {
-    const res = yield call(doDeleteCommand, action.payload)
+    const res = yield call(doDeleteCommand, action.payload.command_id)
     yield put(actions.deleteCommandSuccess(res))
-    yield put(actions.getCommand({ task_id: "5da1821ad219830d90402fd8" }))
+    yield put(actions.getCommand(action.payload.taskId))
   } catch (error) {
     yield put(actions.deleteCommandFail(error))
   }
@@ -1035,67 +1046,56 @@ function* getListGroupTask(action) {
   }
 }
 // Get project group - listpart
-async function doGetProjectGroup() {
-  try {
-    const config = {
-      url: 'project-group/list',
-      method: 'get'
-    }
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
+// async function doGetProjectGroup() {
+//   try {
+//     const config = {
+//       url: 'project-group/list',
+//       method: 'get'
+//     }
+//     const result = await apiService(config);
+//     return result.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
-async function doGetListProject(payload) {
-  try {
-    const config = {
-      url: 'project/list',
-      method: 'get',
-      data: payload
-    }
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
+// async function doGetListProject(payload) {
+//   try {
+//     const config = {
+//       url: 'project/list',
+//       method: 'get',
+//       data: payload
+//     }
+//     const result = await apiService(config);
+//     return result.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
-const getFirstProjectId = firstProjectGroup => {
-  let projectId = ""
-  try {
-    projectId = firstProjectGroup.projects[0].id
-  } catch {
-    projectId = ""
-  }
-  return projectId
-}
+// function* getProjectGroup() {
+//   try {
+//     const response = yield call(doGetProjectGroup)
+//     let projectGroups = response.project_groups
 
-function* getProjectGroup() {
-  try {
-    const response = yield call(doGetProjectGroup)
-    let projectGroups = response.project_groups
-
-    let projectId = ""
-    for (let i = 0; i < projectGroups.length; i++) {
-      let payload = {
-        group_project: projectGroups[i].id,
-        type: "active",
-        status: 0
-      }
-      const tempResponse = yield call(doGetListProject, payload)
-      projectGroups[i].projects = tempResponse.projects
+//     let projectId = ""
+//     for (let i = 0; i < projectGroups.length; i++) {
+//       let payload = {
+//         group_project: projectGroups[i].id,
+//         type: "active",
+//         status: 0
+//       }
+//       const tempResponse = yield call(doGetListProject, payload)
+//       projectGroups[i].projects = tempResponse.projects
       // set active project id to call other API
-      if (i === 0) projectId = getFirstProjectId(projectGroups[i])
-    }
+//       if (i === 0) projectId = getFirstProjectId(projectGroups[i])
+//     }
 
-    yield put(actions.getProjectGroupSuccess({ projectGroups, projectId }))
-    // yield put(actions.getListProject())
-  } catch (error) {
-    yield put(actions.getProjectGroupFail(error))
-  }
-}
+//     yield put(actions.getProjectGroupSuccess({ projectGroups, projectId }))
+//   } catch (error) {
+//     yield put(actions.getProjectGroupFail(error))
+//   }
+// }
 // Get Group Project list basic
 async function doGetProjectListBasic() {
   try {
@@ -1116,12 +1116,10 @@ function* getProjectListBasic() {
     let projectGroups = response.projects
     
     let projectId = ""
-    for (let i = 0; i < projectGroups.length; i++) {
-      // projectGroups[i].projects = tempResponse.projects
-      // set active project id to call other API
-      if (i === 0) projectId = getFirstProjectId(projectGroups[i])
-    }
-
+    // set active project id to call other API
+    let projectDetail = getFirstProjectDetail(projectGroups)
+    if(projectDetail.id) projectId = projectDetail.id
+    
     yield put(actions.getProjectListBasicSuccess({projectGroups, projectId}))
   } catch (error) {
     yield put(actions.getProjectListBasicFail(error))
@@ -1130,15 +1128,16 @@ function* getProjectListBasic() {
 
 
 // update name and description
-async function doUpdateNameDescriptionTask() {
+async function doUpdateNameDescriptionTask(payload) {
   try {
-    // const config = {
-    //   url: 'project-group/list',
-    //   method: 'get'
-    // }
-    // const result = await apiService(config);
-    // return result.data;
-    return null;
+    const config = {
+      url: 'task/update-name-description',
+      method: 'put',
+      data: payload,
+    }
+    const result = await apiService(config);
+    return result.data;
+    // return null;
   } catch (error) {
     throw error;
   }
@@ -1251,7 +1250,7 @@ export {
   createTask,
   // List Group Task
   getListGroupTask,
-  getProjectGroup,
+  // getProjectGroup,
   //edit name and description task
   updateNameDescriptionTask,
   // get project detail

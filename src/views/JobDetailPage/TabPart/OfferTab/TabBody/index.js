@@ -132,7 +132,7 @@ const ApprovedBox = (props) => {
               <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
               <Button variant="outlined" size="small"
                 onClick={() => {
-                  props.handleOfferById(DENIED_VALUE)
+                  props.handleOfferById({data: DENIED_VALUE, taskId: props.taskId})
                 }}
               >Từ chối</Button>
               <span />
@@ -326,7 +326,7 @@ function TabBody(props) {
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const confirmDelete = () => {
 
-    props.deleteOfferByTaskId(selectedItem.offer_id)
+    props.deleteOfferByTaskId({offerId: selectedItem.offer_id, taskId: props.taskId})
   }
   const handleOpenModalDelete = item => {
     setSelectedItem({ ...item, offer_id: item.id })

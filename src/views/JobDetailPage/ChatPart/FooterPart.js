@@ -6,7 +6,7 @@ import {
 import { mdiAlarmPlus, mdiFileTree, mdiPaperclip, mdiImage, mdiEmoticon, mdiAt } from '@mdi/js';
 import Icon from '@mdi/react'
 // import * as MaterialIcon from '@material-ui/icons'
-import colors from '../../../helpers/colorPalette'
+// import colors from '../../../helpers/colorPalette'
 import IconLike from '../../../assets/like.svg'
 
 // const WrapFunctionBar = styled.div`

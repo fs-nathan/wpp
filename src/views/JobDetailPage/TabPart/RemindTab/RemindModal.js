@@ -277,9 +277,9 @@ function RemindModal(props) {
       else { valueRemind.createRemindWithDurationDetail(dataCreateRemindDuration) }
     } else {
       // Case 3: Call update remind with time
-      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail(dataUpdateRemind) }
+      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail({dataUpdateRemind, taskId: valueRemind.taskId}) }
       // Case 4: Call update remind with progress
-      else { valueRemind.updateRemindWithDurationDetail(dataUpdateRemindDuration) }
+      else { valueRemind.updateRemindWithDurationDetail({dataUpdateRemindDuration, taskId : valueRemind.taskId}) }
     }
 
     // Close modal

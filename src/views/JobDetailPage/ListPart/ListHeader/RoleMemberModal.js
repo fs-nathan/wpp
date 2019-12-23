@@ -106,9 +106,9 @@ function RoleMemberModal(props) {
   //   createData('Giám sát dự án', 'Giám sát toàn bộ dự án, kể cả lãnh đạo'),
   // ];
 
-  function createData(role, description) {
-    return { role, description };
-  }
+  // function createData(role, description) {
+  //   return { role, description };
+  // }
 
   const handleClose = () => {
     props.setOpen(false);

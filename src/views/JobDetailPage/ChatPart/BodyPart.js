@@ -7,7 +7,9 @@ import {
     IconButton, Typography, Avatar
 } from '@material-ui/core'
 import Icon from '@mdi/react';
-import { mdiShare, mdiDivingSnorkel } from '@mdi/js';
+import { mdiShare, 
+    // mdiDivingSnorkel 
+} from '@mdi/js';
 import * as MaterialIcon from '@material-ui/icons'
 // import colors from '../../../helpers/colorPalette'
 import fakeAvatar from '../../../assets/avatar.jpg'
