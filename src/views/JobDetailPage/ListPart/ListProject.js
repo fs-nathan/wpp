@@ -188,7 +188,7 @@ function ListProject(props) {
     data = value.projectListBasic.projectGroups
   }
   return (
-    <Container {...props}>
+    <div {...props} className={"lp-container " + (props.show ? "lp-container-block" : "lp-container-none")  } >
       <WrapperHeader {...props} />
       <WrapperBody 
       autoHide autoHideTimeout={500} autoHideDuration={200}
@@ -214,7 +214,7 @@ function ListProject(props) {
           })
         }
       </WrapperBody>
-    </Container>
+    </div>
   )
 }
 

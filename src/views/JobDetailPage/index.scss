@@ -12,7 +12,6 @@
     height: 85px;    
 }
 
-
 /* Header Part */
 .wrap-avatars {
     width: 64px;
@@ -26,7 +25,6 @@
 .wrap-message-row {
     width: 100%;
     display: flex;
-    /* flex-direction: ${props => props.isUser ? 'row-reverse' : 'row'}; */
     align-items: center;
     margin-bottom: 10px;
     &:hover > .wrap-function-bar {
@@ -41,7 +39,6 @@
 }
 
 .wrap-message {
-    /* background-color: ${props => props.isUser ? '#dbfff3' : '#fff'}; */
     min-height: 30px;
     padding: 5px 10px;
     border-radius: 4px;
@@ -50,7 +47,15 @@
     margin-left: 5px;
 }
 
-.wrap-function-bar {
+.wm-bg-color-blue {
+    background-color: #dbfff3 ;
+}
+
+.wm-bg-color-white {
+    background-color: #fff;
+}
+
+.wrap-function-bar-bp {
     margin-right: 5px;
     display: none;
 }
@@ -97,7 +102,7 @@
 }
 
 // Footer - Chat Part 
-    .wrap-function.bar {
+    .wrap-function-bar-fp {
         height: 50px;
         padding: 0 10px;
         display: flex;
@@ -122,8 +127,6 @@
             }
         }
     }
-        
-    
 
 /* DetailMessage - Chat Part */
 .container-detailmessage {
@@ -200,9 +203,198 @@
                 }
             }
         }
-        .content-message {
+    }
+    .content-message {
         display: flex;
         margin-bottom: 14px;
         }
+}
+
+// index.js - Chat Part
+.container-chatpart {
+    border-right: 1px solid rgba(0, 0, 0, .1);
+    height: calc(100vh - 56px);
+    .wrap-header {
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        padding: 0 10px;
+        height: 85px;
+    }
+    .wrap-body {
+        background-color: #f8f8f8;
+        height: calc(100% - 230px);
+        padding: 10px;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: #f8f8f8 #f8f8f8;
+        &:hover {
+          scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+        }
+    }
+    .wrap-footer {
+        border-top: 1px solid rgba(0, 0, 0, .1);
+        height: 100px;
+    }
+}
+// ListPart
+
+// ListProject - ListPart
+.lp-container {
+    height: calc(82vh);
+    & > *:first-child {
+        padding: 0 15px;
+        }
+    grid-template-rows: 107px calc(83vh - 8px);
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "header"
+        "body";
+}
+
+.lp-container-block {
+    display: block;
+}
+
+.lp-container-none {
+    display: none;
+}
+
+// index.js - ListPart
+.container-lp {
+    grid-area: list;
+    border-right: 1px solid rgba(0, 0, 0, .2);
+    .wrap-list-task {
+        height: calc(76vh);
+        grid-template-rows: 165px calc(76vh);
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+          "header"
+          "body";
+        .wlt-header {
+            grid-area: header;
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            top: 0px;
+            background-color: #fff;
+            z-index: 999;
+        }
+    }
+    .wlt-block {
+        display: block;
+    }
+    .wlt-none {
+        display: none;
+    }
+}
+// index.js - ListBanner
+.container-list-banner {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    
+    & > * {
+      margin-right: 10px;
+      margin-bottom: 5px;
+      padding: 0 5px;
+      & > span {
+        font-size: 12px;
+      }
+    }
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+// index.js - ListBodyItem - ListBody
+.container-lbd {
+    padding: 10px 8px 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 0;
+    &:hover{
+      background-color: #F2F5FA;
+    }
+    &:active {
+      background-color: #e6f0ff;
+    }
+}
+.name-container-lbd {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & >*:last-child {
+      margin-right: 15px;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      color: white;
+      background-color: red;
+    }
+}
+.container-content-lbd {
+    & > *:not(:first-child) {
+        margin-top: 5px;
+    }
+    & > *:first-child {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & > *:first-child {
+          display: flex;
+          & > *:first-child {
+            margin-right: 10px;
+          }
+        }
+    }
+}
+
+// index.js - ListHeader
+.list-header {
+    padding: 0 3px 0 15px;
+    height: 77px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    & > * {
+        display: flex; 
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+    }
+    .header-bottom-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+// AddMemberModal - ListHeader
+.table-scroll {
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+        width: 7px;
+        border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #fff;
+        border: none;
+    }
+    &:hover {
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px; 
+        }
+    }
+}
+
+// RoleMemberModal - ListHeader
+.handle-button {
+    display: flex;  
+    justify-content: flex-end;
+    & > *:last-child {
+        background: #e63737;
+        margin-left: 12px;
+        color: #fff;
     }
 }

@@ -119,17 +119,14 @@ function MessageParent(props) {
         isUser, content
     } = props
     return (
-        <div isUser={isUser}
-        className={"wrap-message-row " + isUser ? "wmr-row-reverse" : "wmr-row" }
+        <div className={"wrap-message-row " + (isUser ? "wmr-row-reverse" : "wmr-row") }
         // className={isUser ? "wrap-message-row wmr-row-reverse" : "wrap-message-row wmr-row"} 
-        >
-            
+        >            
             {!isUser && <Avatar src={fakeAvatar} />}
-
-            <div className="wrap-message" isUser={isUser}>
+            <div className= {"wrap-message " + (isUser ? "wm-bg-color-blue" : "wm-bg-color-white") }>
                 {content}
             </div>
-            <div className="wrap-function-bar">
+            <div className="wrap-function-bar-bp">
                 <FunctionButton>
                     <Icon path={mdiShare} size={1} color={'rgba(0, 0, 0, 0.54)'} />
                 </FunctionButton>

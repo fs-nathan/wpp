@@ -64,6 +64,9 @@ const StyledTextContentMess = styled(Typography)`
     font-size: 16px;
     color: #222;
 `
+const ContentMessageColor = styled(Typography)`
+    color: gray;
+`
 
 const getSubColorRole = (role, authorityList) => {
     let color = ""
@@ -92,9 +95,9 @@ const TitleMessage = ({ name, role, authorityList }) => {
             <ListItemText
                 style={{ margin: 0 }}
                 primary={
-                    <Typography component='div' style={{ color: 'gray' }}>
+                    <ContentMessageColor component='div' >
                         {name}
-                    </Typography>
+                    </ContentMessageColor>
                 }
                 secondary={
                     <React.Fragment>
@@ -102,7 +105,7 @@ const TitleMessage = ({ name, role, authorityList }) => {
                     </React.Fragment>
                 }
             />
-            <Typography component='div' style={{ color: 'gray' }}>09:30</Typography>
+            <ContentMessageColor component='div' >09:30</ContentMessageColor>
         </div>
     )
 }
