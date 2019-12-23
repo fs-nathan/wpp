@@ -117,8 +117,11 @@ function MessageParent(props) {
         isUser, content
     } = props
     return (
-        <div isUser={isUser} className="wrap-message-row" >
-            {/* {isUser ? className="wmr-row-reverse" : className="wmr-row"} */}
+        <div isUser={isUser}
+        className={"wrap-message-row " + isUser ? "wmr-row-reverse" : "wmr-row" }
+        // className={isUser ? "wrap-message-row wmr-row-reverse" : "wrap-message-row wmr-row"} 
+        >
+            
             {!isUser && <Avatar src={fakeAvatar} />}
 
             <div className="wrap-message" isUser={isUser}>
