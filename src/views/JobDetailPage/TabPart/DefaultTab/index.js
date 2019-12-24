@@ -2,17 +2,18 @@ import React from 'react';
 import { Slide } from '@material-ui/core';
 import TabHeader from './TabHeader';
 import TabBody from './TabBody';
-import styled from 'styled-components'
-const Container = styled.div`
-  transition: unset !important;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 85px calc(85vh);
-  grid-template-columns: 1fr;
-  grid-template-areas: 
-    "header"
-    "body";
-`
+import styled from 'styled-components';
+
+// const Container = styled.div`
+//   transition: unset !important;
+//   height: 100%;
+//   display: grid;
+//   grid-template-rows: 85px calc(85vh);
+//   grid-template-columns: 1fr;
+//   grid-template-areas: 
+//     "header"
+//     "body";
+// `
 const Header = styled(TabHeader)`
   grid-area: header;
   padding: 15px;
@@ -33,12 +34,12 @@ function DefaultTab({ show, setShow }) {
   const handleClick = () => { setIsPause(!isPause) }
   return (
     <Slide in={show === 0}  mountOnEnter unmountOnExit>
-      <Container>
+      <div className="container-dt">
         <Header onClickPause={() => {
           handleClick()
         }} />
         <TabBody setShow={setShow} isPause={isPause} />
-      </Container>
+      </div>
     </Slide>
   )
 }
