@@ -85,7 +85,7 @@ const SubtaskModal = (props) => {
         <DialogActions>
           <Button onClick={() => {
             props.handleClickClose()
-            props.updateSubTaskByTaskId(props.task.id, name)
+            props.updateSubTaskByTaskId(props.task.id, name, props.taskId)
             }} color="primary">
             Hoàn Thành
           </Button>

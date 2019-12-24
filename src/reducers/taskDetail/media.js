@@ -16,7 +16,7 @@ let fakeLink = [
 
 // Initial state for store
 const initialState = {
-    image: [],
+    image: null,
     file: [],
     isFetching: false,
     dataFetched: false,
