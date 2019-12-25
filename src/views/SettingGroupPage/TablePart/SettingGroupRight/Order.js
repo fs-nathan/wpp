@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
@@ -11,51 +11,54 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
 import './SettingGroupRight.scss';
-import * as image from '../../../../assets';
 import { Routes } from '../../../../constants/routes';
-// import { actionSettingGroup } from "../../../actions/setting";
+import LoadingBox from '../../../../components/LoadingBox';
+import {
+  actionGetOrder,
+  orderService,
+  orderDeleteService,
+  extentOrderService,
+  actionChangeLoading
+} from '../../../../actions/setting/setting';
 import AlertModal from '../../../../components/AlertModal';
 
-const data = [
-  {
-    creater: '',
-    createdDate: '01/09/2019',
-    orderCode: '30-CeZ8',
-    pack: '10-USER',
-    accountConnect: 10,
-    storage: '10GB',
-    expire: '180 ngày',
-    activeDate: '22/09/2019',
-    expireDate: '22/03/2020',
-    activeDateNo: 65,
-    status: 'Hoạt động',
-    invoice: 'Đã xuất',
-    price: '3.000.000',
-    id: '001'
-  },
-  {
-    creater: '',
-    createdDate: '01/09/2019',
-    orderCode: '30-CeZ8',
-    pack: '10-USER',
-    accountConnect: 10,
-    storage: '10GB',
-    expire: '180 ngày',
-    activeDate: '22/09/2019',
-    expireDate: '22/03/2020',
-    activeDateNo: 0,
-    status: 'Kết thúc',
-    invoice: 'Đã xuất',
-    price: '3.000.000',
-    id: '002'
-  }
-];
 const Order = props => {
   const [alert, setAlert] = useState(false);
+  const [alertExtend, setExtend] = useState(false);
+  const [order_id, setOrderId] = useState(null);
   const { t } = useTranslation();
+  const handleFetchData = async () => {
+    try {
+      props.actionChangeLoading(true);
+      const { data } = await orderService();
+      props.actionGetOrder(data.orders);
+      props.actionChangeLoading(false);
+    } catch (err) {
+      props.actionChangeLoading(false);
+    }
+  };
+  useEffect(() => {
+    handleFetchData(); // eslint-disable-next-line
+  }, []);
+  const handleDeleteOrder = async () => {
+    try {
+      await orderDeleteService({ order_id });
+      handleFetchData();
+    } catch (err) {}
+  };
+  const handleExtendOrder = async () => {
+    try {
+      await extentOrderService({ order_id });
+      handleFetchData();
+    } catch (err) {}
+  };
+  if (props.isLoading) return <LoadingBox />;
+  // const showPrice = price => {
+  //   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  // };
   return (
     <Fragment>
-      <Table aria-label="customized table">
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell className="table-cell-item head">No</TableCell>
@@ -104,87 +107,103 @@ const Order = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
-            <TableRow
-              key={index}
-              onClick={() =>
-                props.history.push({
-                  pathname: Routes.SETTING_GROUP_ORDER,
-                  search: `?oderId=${row.id}`
-                })
-              }
-              className="table-row-item cursor-pointer"
-            >
-              <TableCell
-                className="table-cell-item body"
-                component="th"
-                scope="row"
-                align="center"
+          {props.orders.reverse().map((row, idx) => (
+            <Fragment key={idx}>
+              <TableRow
+                onClick={() =>
+                  props.history.push({
+                    pathname: Routes.SETTING_GROUP_ORDER,
+                    search: `?order_id=${row.id}`
+                  })
+                }
+                className="table-body-row"
               >
-                {index + 1}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                <Avatar
-                  alt="Remy Sharp"
-                  src={image.avatar_user}
-                  className="avatar-order"
-                />
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.createdDate}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.orderCode}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.pack}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.accountConnect}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.storage}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.expire}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.activeDate}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.expireDate}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.activeDateNo}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.status}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.invoice}
-              </TableCell>
-              <TableCell className="table-cell-item body" align="center">
-                {row.price}
-              </TableCell>
-              <TableCell
-                className="table-cell-item body last-item"
-                align="center"
-              >
-                {row.activeDateNo > 0 ? (
-                  <Button className="action-btn extend">Gia hạn</Button>
-                ) : (
-                  <Button
-                    className="action-btn delete"
-                    onClick={e => {
-                      e.stopPropagation();
-                      setAlert(true);
-                    }}
-                  >
-                    Xóa
-                  </Button>
-                )}
-              </TableCell>
-            </TableRow>
+                <TableCell rowSpan={row.packets.length + 1} className="cus-cel">
+                  {idx + 1}
+                </TableCell>
+                <TableCell rowSpan={row.packets.length + 1}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={row.user_create.avatar}
+                    className="avatar-order"
+                  />
+                </TableCell>
+                <TableCell rowSpan={row.packets.length + 1} className="cus-cel">
+                  {row.created_at}
+                </TableCell>
+                <TableCell
+                  rowSpan={row.packets.length + 1}
+                  className="cus-cel code-oder"
+                >
+                  {row.code}
+                </TableCell>
+              </TableRow>
+              {row.packets.map((el, index) => (
+                <TableRow key={index} className="table-body-row">
+                  <TableCell className="table-cell-item body" align="center">
+                    {el.name}
+                  </TableCell>
+                  <TableCell className="table-cell-item body" align="center">
+                    {el.number_user}
+                  </TableCell>
+                  <TableCell className="table-cell-item body" align="center">
+                    {el.size}
+                  </TableCell>
+                  <TableCell className="table-cell-item body" align="center">
+                    {el.day_use ? `${el.day_use} Ngày` : ''}
+                  </TableCell>
+                  <TableCell className="table-cell-item body" align="center">
+                    {row.active_at}
+                  </TableCell>
+                  <TableCell className="table-cell-item body" align="center">
+                    {el.expire_at}
+                  </TableCell>
+                  <TableCell className="table-cell-item body" align="center">
+                    {el.day_remain ? `${el.day_remain} Ngày` : ''}
+                  </TableCell>
+                  <TableCell className="table-cell-item body" align="center">
+                    {el.status_name}
+                  </TableCell>
+                  {index === 0 ? (
+                    <TableCell rowSpan={row.packets.length + 1} align="center">
+                      {row.vat}
+                    </TableCell>
+                  ) : null}
+                  {index === 0 ? (
+                    <TableCell rowSpan={row.packets.length + 1} align="center">
+                      {row.price}
+                    </TableCell>
+                  ) : null}
+                  {index === 0 ? (
+                    <TableCell rowSpan={row.packets.length + 1} align="center">
+                      {el.activeDateNo ? (
+                        <Button
+                          className="action-btn extend"
+                          onClick={e => {
+                            e.stopPropagation();
+                            setOrderId(row.id);
+                            setExtend(true);
+                          }}
+                        >
+                          Gia hạn
+                        </Button>
+                      ) : (
+                        <Button
+                          className="action-btn delete"
+                          onClick={e => {
+                            e.stopPropagation();
+                            setOrderId(row.id);
+                            setAlert(true);
+                          }}
+                        >
+                          Xóa
+                        </Button>
+                      )}
+                    </TableCell>
+                  ) : null}
+                </TableRow>
+              ))}
+            </Fragment>
           ))}
         </TableBody>
       </Table>
@@ -192,7 +211,13 @@ const Order = props => {
         open={alert}
         setOpen={setAlert}
         content={t('views.user_page.left_part.department_info.alert_content')}
-        onConfirm={() => console.log('ok')}
+        onConfirm={handleDeleteOrder}
+      />
+      <AlertModal
+        open={alertExtend}
+        setOpen={setExtend}
+        content={'Bạn muốn gia hạn đơn hàng?'}
+        onConfirm={handleExtendOrder}
       />
     </Fragment>
   );
@@ -200,10 +225,12 @@ const Order = props => {
 
 export default connect(
   state => ({
-    // settingGroupType: state.settingReducer.settingGroupType,
+    orders: state.setting.orders,
+    isLoading: state.setting.isLoading,
     settingGroupType: null
   }),
   {
-    // actionSettingGroup
+    actionChangeLoading,
+    actionGetOrder
   }
 )(withRouter(Order));

@@ -34,7 +34,7 @@ function reducer(state = initialState, action) {
     case LOGIN_FAIL:
       return {
         ...state,
-        error: null,
+        error: action.error,
         loading: false,
       };
     default:

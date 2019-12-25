@@ -131,8 +131,11 @@ const PriorityRadioGroup = styled(RadioGroup)`
 
 const SpecialControlLabel = styled(FormControlLabel)`
   background-color: ${props => props.checked
-    ? colorPal['#ffd3b4'][0]
-    : colorPal['grey'][0]};
+    ? colorPal['#07bd0b'][0]
+    : "#f0f0f0"};
+  color: ${props => props.checked
+    ? "white"
+    : "black"};
   width: 27%;
   border-radius: 30px;
   margin: 0;
@@ -206,6 +209,9 @@ const InputTextJob = styled(TextField)`
         font-size: 14px;
         z-index: 0
     }
+    & > p {
+      color: red;
+    }
 `
 
 const TextInputSelect = styled(InputSelect)`
@@ -238,7 +244,7 @@ const DEFAULT_ASSIGN_ID = assignList[0].id
 function CommonControlForm(props) {
   const [value, setValue] = React.useState(props.assign);
   const handleChangeFormAssign = itemValue => {
-    console.log('itemValue::::', itemValue);
+    // console.log('itemValue::::', itemValue);
     setValue(itemValue)
     let clickedItem = props.labels.find(item => item.value === itemValue)
     props.handleChangeAssign(clickedItem)
@@ -262,9 +268,9 @@ function CommonControlForm(props) {
 }
 // Define variable using in form
 let priorityList = [
-  { id: 2, value: 'Thấp' },
+  { id: 0, value: 'Thấp' },
   { id: 1, value: 'Trung bình' },
-  { id: 0, value: 'Cao' },
+  { id: 2, value: 'Cao' },
 ]
 const DEFAULT_PRIORITY = priorityList[0].value
 const DEFAULT_PRIORITY_ID = priorityList[0].id
@@ -273,8 +279,6 @@ function CommonPriorityForm(props) {
   const [value, setValue] = React.useState(props.priority)
 
   const handleChangePriority = itemValue => {
-    console.log('itemValue::::', itemValue);
-
 
     // Set state to change style in component
     setValue(itemValue)
@@ -348,16 +352,16 @@ const DEFAULT_DATA = {
   end_date: DEFAULT_DATE_TEXT,
   type_assign: DEFAULT_ASSIGN_ID,
   priority: DEFAULT_PRIORITY_ID,
-  group_task: EMPTY_STRING,
+  group_task: DEFAULT_GROUP_TASK_VALUE,
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN,
 }
 
-let optionsList = [
-  { id: 0, value: 'Ngày và giờ (mặc định)' },
-  { id: 1, value: 'Chỉ nhập ngày' },
-  { id: 2, value: 'Không yêu cầu' },
-]
+// let optionsList = [
+//   { id: 0, value: 'Ngày và giờ (mặc định)' },
+//   { id: 1, value: 'Chỉ nhập ngày' },
+//   { id: 2, value: 'Không yêu cầu' },
+// ]
 
 function CreateJobModal(props) {
 
@@ -391,7 +395,7 @@ function CreateJobModal(props) {
       // Map task to input
       let listTask = value.listTaskDetail.tasks.map((item) => ({
         label: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : "Chưa phân loại",
-        value: item.id
+        value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ""
       }))
       setListGroupTask(listTask)
 
@@ -429,6 +433,7 @@ function CreateJobModal(props) {
   }
 
   const dataCreateJob = {
+    project_id: value.projectId,
     group_task: data.group_task,
     name: data.name,
     description: data.description,
@@ -444,8 +449,13 @@ function CreateJobModal(props) {
 
   const handlePressConfirm = () => {
     if(validate()) {
+      // Remove group task in object if user unselect group task
+      let data = dataCreateJob
+      if(!dataCreateJob.group_task) delete data.group_task
       // Call api
-      value.createJobByProjectId(dataCreateJob)
+      value.createJobByProjectId({ data, projectId: value.projectId })
+      // console.log("data",  dataCreateJob)
+      
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
       // Close modal
@@ -497,7 +507,7 @@ function CreateJobModal(props) {
               Đặt mặc định <Icon path={mdiHelpCircle} size={1} />
             </DefaultFlex>
           </ProgressWork>
-          <CommonControlForm labels={optionsList} />
+          {/* <CommonControlForm labels={optionsList} /> */}
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
             <DivTime>
@@ -535,7 +545,7 @@ function CreateJobModal(props) {
               commandSelect={listGroupTask}
               selectedIndex={groupTaskValue}
               setOptions={typeId => handleChangeData("group_task", typeId)}
-              placeholder={'Nhóm mặc định'}
+              // placeholder={'Nhóm mặc định'}
             />
           </Typography>
           <Typography component={'div'}>
@@ -586,7 +596,7 @@ function CreateJobModal(props) {
             :
             <>
               <ButtonImage onClick={() => {
-                handleClose()
+                // handleClose()
                 setOpenAddModal(true)
               }} >
                 <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { mdiSwapVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { connect } from 'react-redux';
@@ -8,14 +8,14 @@ import {
   TableRow,
   TableHead,
   TableBody,
-  IconButton,
-  TablePagination
+  IconButton
 } from '@material-ui/core';
-
-import { getDocumentRecently } from './ContentDocumentAction';
+import { get, sortBy, reverse } from 'lodash';
 import {
   selectDocumentItem,
-  resetListSelectDocument
+  resetListSelectDocument,
+  actionFetchListRecent,
+  actionSortListRecent
 } from '../../../../actions/documents';
 import { openDocumentDetail } from '../../../../actions/system/system';
 import { FileType } from '../../../../components/FileType';
@@ -32,27 +32,45 @@ import {
 import './ContentDocumentPage.scss';
 import ColorTypo from '../../../../components/ColorTypo';
 import LoadingBox from '../../../../components/LoadingBox';
-
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 const RecentContent = props => {
-  const [listData, setListData] = useState([]);
-  const [page] = React.useState(0);
-  const [rowsPerPage] = React.useState(10);
+  const { isLoading, listRecent: listData } = props;
   const [selected, setSelected] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [sortField, setSortField] = React.useState(null);
+  const [sortType, setSortType] = React.useState(1);
   useEffect(() => {
     fetDataRecentDocument();
+    // eslint-disable-next-line
   }, []);
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
     }; // eslint-disable-next-line
   }, []);
-  const fetDataRecentDocument = async () => {
-    setIsLoading(true);
-    const { data } = await getDocumentRecently();
-    setListData(data.files);
-    setIsLoading(false);
+  useEffect(() => {
+    let projects = [];
+    projects = sortBy(listData, [o => get(o, sortField)]);
+    if (sortType === -1) reverse(projects);
+    props.actionSortListRecent(projects);
+    // eslint-disable-next-line
+  }, [sortField, sortType]);
+  useEffect(() => {
+    if (isEmpty(props.selectedDocument)) setSelected([]);
+    // eslint-disable-next-line
+  }, [props.selectedDocument]);
+  const hanldeSort = field => {
+    if (field !== sortField) {
+      setSortField(field);
+      setSortType(1);
+    } else {
+      setSortType(prev => prev * -1);
+    }
   };
+
+  const fetDataRecentDocument = (params = {}, quite = false) => {
+    props.actionFetchListRecent(params, quite);
+  };
+
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, listData));
     props.selectDocumentItem(selectAllRedux(e, listData));
@@ -62,7 +80,6 @@ const RecentContent = props => {
     setSelected(selectItem(selected, item.id));
     props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
-  const handleChangePage = () => {};
   const getIconAvatar = (url, idx = 0) => {
     return (
       <Avatar
@@ -102,10 +119,13 @@ const RecentContent = props => {
               Loại
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="30%">
-              <div>
+              <div
+                className="cursor-pointer"
+                onClick={() => hanldeSort('name')}
+              >
                 Tên tài liệu
                 <IconButton size="small">
-                  <Icon path={mdiSwapVertical} size={1.2} color="#8d8d8d" />
+                  <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
               </div>
             </StyledTableHeadCell>
@@ -124,10 +144,10 @@ const RecentContent = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {listData.map(file => {
+          {listData.map((file, index) => {
             const isItemSelected = isSelected(file.id);
             return (
-              <TableRow className="table-body-row" key={file.id}>
+              <TableRow className="table-body-row" key={index}>
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -171,26 +191,21 @@ const RecentContent = props => {
           })}
         </TableBody>
       </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={1}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        // onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
     </Fragment>
   );
 };
 
 export default connect(
   state => ({
-    selectedDocument: state.documents.selectedDocument
+    selectedDocument: state.documents.selectedDocument,
+    isLoading: state.documents.isLoading,
+    listRecent: state.documents.listRecent
   }),
   {
     selectDocumentItem,
     resetListSelectDocument,
-    openDocumentDetail
+    openDocumentDetail,
+    actionFetchListRecent,
+    actionSortListRecent
   }
 )(RecentContent);

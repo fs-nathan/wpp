@@ -29,3 +29,5 @@ export { default as ic_menu_more } from './ic_menu_more.png';
 export { default as logo_wrokplus } from './logo-wrokplus.png';
 export { default as no_comment } from './no_comment.png';
 export { default as dis_comment } from './dis_comment.png';
+export { default as avatar_default_120 } from './avatar_default_120.png';
+export { default as cover_default } from './cover_default.png';

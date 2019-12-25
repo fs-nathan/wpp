@@ -19,51 +19,16 @@ import {
 import { CustomTableContext } from '../index';
 import SearchInput from '../../SearchInput';
 import { get } from 'lodash';
+import './style.scss';
 
-const StyledButton = styled(Button)`
-  && {
-    padding: 4px;
-    border-radius: 0;
-    color: #666;
-  }
-  &&:not(:last-child) {
-    border-right: none;
-  }
-  &&:hover {
-    background-color: #fff;
-    & path {
-      fill: #05b50c !important;
-    }
-    color: #05b50c;
-  }
-  && > span:first-child {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0 5px;
-    & > div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    & > span {
-      margin-top: 5px;
-      font-size: 11px;
-    }
-  }
-  && > span:last-child {
-    display: none;
-  }
-`;
+const StyledButton = ({ className = '', ...rest }) => 
+  <Button className={`comp_CustomTable_HeaderButtonGroup___button ${className}`} {...rest} />;
 
-const StyledPopper = styled(Popper)`
-  z-index: 20;
-`;
+const StyledPopper = ({ className = '', ...rest }) => 
+  <Popper className={`comp_CustomTable_HeaderButtonGroup___popper ${className}`} {...rest} />;
 
-const SearchBox = styled.div`
-  margin-right: 8px;
-`;
+const SearchBox = ({ className = '', ...rest }) => 
+  <div className={`comp_CustomTable_HeaderButtonGroup___search-box ${className}`} {...rest} />;
 
 function HeaderButtonGroup() {
 
@@ -110,7 +75,12 @@ function HeaderButtonGroup() {
           </StyledButton>
         )}
         {get(options, 'subActions', []).map((subAction, index) => (
-          <StyledButton key={index} onClick={get(subAction, 'onClick', () => null)}>
+          <StyledButton key={index} onClick={evt => {
+            get(subAction, 'onClick', () => null)(evt);
+            get(subAction, 'noExpand', false) 
+              && get(options, 'expand.bool', false) 
+              && get(options, 'expand.toggleExpand', () => null)();
+          }}>
             <div>
               <Icon path={get(subAction, 'iconPath')} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
             </div>

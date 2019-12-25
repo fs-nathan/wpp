@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import * as images from '../../assets';
 import './ExportPDF.scss';
+import { isEmpty } from '../../helpers/utils/isEmpty';
 
 const TableStyled1 = styled.table`
   display: table;
@@ -80,18 +81,45 @@ class ExportPDF extends Component {
       dateSave,
       isCreate,
       isCheckedManagerWork,
-      isCheckedBuyData
+      isCheckedBuyData,
+      orderItem
     } = this.props;
     const pricePacketUser = 50000; //a
-    const moneyPacketUser = pricePacketUser * numAcc * dateUse; //d, f
-    const dateGift = this.getDateGift(dateUse);
-    const datePlusOderBefor = isCheckedManagerWork ? 1 : 0;
+    const moneyPacketUser = isCreate
+      ? pricePacketUser * numAcc * dateUse
+      : !isEmpty(orderItem.packet_user)
+      ? orderItem.packet_user.buy_info.price
+      : 0; //d, f
+    const dateGift = isCreate
+      ? this.getDateGift(dateUse)
+      : !isEmpty(orderItem.packet_user)
+      ? orderItem.packet_user.day_from_payment_cycle / 30
+      : 0;
+    const datePlusOderBefor = isCreate
+      ? isCheckedManagerWork
+        ? 1
+        : 0
+      : !isEmpty(orderItem.packet_user)
+      ? orderItem.packet_user.day_from_old_order / 30
+      : 0;
     const date3MO = isCheckedManagerWork ? 3 : 0;
-    const totalDataUse = dateUse + dateGift + datePlusOderBefor + date3MO; //e
+    const totalDataUse = isCreate
+      ? dateUse + dateGift + datePlusOderBefor + date3MO
+      : !isEmpty(orderItem.packet_user)
+      ? orderItem.packet_user.day_use / 30
+      : 0; //e
     ///////////////////////
     const pricePacketData = 3000; //a
-    const moneyPacketData = pricePacketData * dataBuy * dateSave; //d, f
-    const totalDateData = dateSave; //e
+    const moneyPacketData = isCreate
+      ? pricePacketData * dataBuy * dateSave
+      : !isEmpty(orderItem.packet_storage)
+      ? orderItem.packet_storage.buy_info.price
+      : 0; //d, f
+    const totalDateData = isCreate
+      ? dateSave
+      : !isEmpty(orderItem.packet_storage)
+      ? orderItem.packet_storage.day_use / 30
+      : 0; //e
     //////
     const totalPriceBeforVAT = moneyPacketUser + moneyPacketData;
     const totalPriceVAT = totalPriceBeforVAT * 0.1;
@@ -124,14 +152,23 @@ class ExportPDF extends Component {
                 </div>
                 <div className="head-left-right">
                   <div className="infor-right">Thông tin đơn hàng workplus</div>
-                  <div className="infor-right-oder">Mã đơn hàng: KH-FREE</div>
-                  <div className="infor-right-oder">Ngày tạo: 20/11/2019</div>
                   <div className="infor-right-oder">
-                    Tổng giá trị đơn hàng:{' '}
-                    {this.showPrice(totalPriceBeforVAT + totalPriceVAT)} VND
+                    Mã đơn hàng: {isCreate ? 'KH-FREE' : orderItem.code}
+                  </div>
+                  <div className="infor-right-oder">
+                    Ngày tạo: {isCreate ? '20/11/2019' : orderItem.create_at}
+                  </div>
+                  <div className="infor-right-oder">
+                    Tổng giá trị đơn hàng:&nbsp;
+                    {isCreate
+                      ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
+                      : this.showPrice(orderItem.price || 0)}
+                    VND
                   </div>
                   <div className="status-oder">
-                    <span className="text-status-oder">CHƯA THANH TOÁN</span>
+                    <span className="text-status-oder">
+                      {isCreate ? 'CHƯA THANH TOÁN' : orderItem.status_payment}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -148,19 +185,40 @@ class ExportPDF extends Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <TdStyled1>KH-FREE</TdStyled1>
-                      <TdStyled1>2019/09/09</TdStyled1>
                       <TdStyled1>
-                        {isCheckedManagerWork && (
-                          <p>{isCreate ? numAcc : 10} USER</p>
-                        )}
-                        {isCheckedBuyData && (
-                          <p>CS {isCreate ? dataBuy : 10}</p>
-                        )}
+                        {isCreate ? 'KH-FREE' : orderItem.code}
+                      </TdStyled1>
+                      <TdStyled1>
+                        {isCreate ? '2019/09/09' : orderItem.create_at}
+                      </TdStyled1>
+                      <TdStyled1>
+                        <React.Fragment>
+                          {(isCheckedManagerWork || !isEmpty(orderItem)) && (
+                            <p>
+                              {isCreate
+                                ? numAcc
+                                : orderItem.packet_user.buy_info
+                                    .number_user}{' '}
+                              USER
+                            </p>
+                          )}
+                          {(isCheckedBuyData || !isEmpty(orderItem)) && (
+                            <p>
+                              CS{' '}
+                              {isCreate
+                                ? dataBuy
+                                : orderItem.packet_storage.name
+                                    .split('-')
+                                    .pop()}
+                            </p>
+                          )}
+                        </React.Fragment>
                       </TdStyled1>
                       <TdStyled1>Tiền mặt</TdStyled1>
                       <TdStyled1>
-                        {this.showPrice(totalPriceBeforVAT + totalPriceVAT)}
+                        {isCreate
+                          ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
+                          : this.showPrice(orderItem.price || 0)}{' '}
                       </TdStyled1>
                     </tr>
                   </tbody>
@@ -185,14 +243,20 @@ class ExportPDF extends Component {
                   </thead>
 
                   <tbody>
-                    {isCheckedManagerWork && (
+                    {(isCheckedManagerWork ||
+                      !isEmpty(orderItem.packet_user)) && (
                       <React.Fragment>
                         <tr style={{ background: '#f2f2f2' }}>
                           <TdStyled2>1</TdStyled2>
                           <TdStyled3>
                             <div className="">
                               <div style={{ fontWeight: 'bold' }}>
-                                Gói sản phẩm: {isCreate ? numAcc : 10} USER
+                                Gói sản phẩm:{' '}
+                                {isCreate
+                                  ? numAcc
+                                  : orderItem.packet_user.buy_info
+                                      .number_user}{' '}
+                                USER
                               </div>
                               <div style={{ color: '#1f9de0' }}>
                                 Thời gian sử dụng: {totalDataUse} tháng <br />
@@ -212,13 +276,25 @@ class ExportPDF extends Component {
                           <TdStyled3>
                             <div className="">
                               <div>
-                                Đăng ký gói sản phầm {isCreate ? numAcc : 10}
+                                Đăng ký gói sản phầm{' '}
+                                {isCreate
+                                  ? numAcc
+                                  : orderItem.packet_user.buy_info.number_user}
                                 -USER
                               </div>
-                              <div>Số lượng USER: {isCreate ? numAcc : 10}</div>
+                              <div>
+                                Số lượng USER:{' '}
+                                {isCreate
+                                  ? numAcc
+                                  : orderItem.packet_user.buy_info.number_user}
+                              </div>
                               <div>Dung lượng lưu trữ: 10 GB</div>
                               <div>
-                                Thời gian sử dụng: {isCreate ? dateUse : 10}{' '}
+                                Thời gian sử dụng:{' '}
+                                {isCreate
+                                  ? dateUse
+                                  : orderItem.packet_user.buy_info.day /
+                                    30}{' '}
                                 tháng
                               </div>
                             </div>
@@ -226,8 +302,16 @@ class ExportPDF extends Component {
                           <TdStyled4>
                             {this.showPrice(pricePacketUser)}
                           </TdStyled4>
-                          <TdStyled4>{isCreate ? numAcc : 10}</TdStyled4>
-                          <TdStyled4>{isCreate ? dateUse : 10}</TdStyled4>
+                          <TdStyled4>
+                            {isCreate
+                              ? numAcc
+                              : orderItem.packet_user.buy_info.number_user}
+                          </TdStyled4>
+                          <TdStyled4>
+                            {isCreate
+                              ? dateUse
+                              : orderItem.packet_user.buy_info.day / 30}
+                          </TdStyled4>
                           <TdStyled4>
                             {this.showPrice(moneyPacketUser)}
                           </TdStyled4>
@@ -273,17 +357,27 @@ class ExportPDF extends Component {
                         </tr>
                       </React.Fragment>
                     )}
-                    {isCheckedBuyData && (
+                    {(isCheckedBuyData || !isEmpty(orderItem)) && (
                       <React.Fragment>
                         <tr style={{ background: '#f2f2f2' }}>
                           <TdStyled2>{isCheckedManagerWork ? 2 : 1}</TdStyled2>
                           <TdStyled3>
                             <div className="">
                               <div style={{ fontWeight: 'bold' }}>
-                                Gói sản phầm: CS-{isCreate ? dataBuy : 10}
+                                Gói sản phầm: CS-
+                                {isCreate
+                                  ? dataBuy
+                                  : orderItem.packet_storage.name
+                                      .split('-')
+                                      .pop()}
                               </div>
                               <div style={{ color: '#1f9de0' }}>
-                                Thời gian {isCreate ? dateSave : 10} tháng
+                                Thời gian{' '}
+                                {isCreate
+                                  ? dateSave
+                                  : orderItem.packet_storage.buy_info.day /
+                                    30}{' '}
+                                tháng
                               </div>
                               <div style={{ color: '#1f9de0' }}>
                                 (Kể từ ngày thanh toán)
@@ -303,19 +397,37 @@ class ExportPDF extends Component {
                             <div className="">
                               <div>
                                 Đăng ký gói mở rộng: Cloud Storage (CS-
-                                {isCreate ? dataBuy : 10})
+                                {isCreate
+                                  ? dataBuy
+                                  : orderItem.packet_storage.name
+                                      .split('-')
+                                      .pop()}
+                                )
                               </div>
                               <div>
                                 Mua thêm dung lượng lưu trữ:{' '}
-                                {isCreate ? dataBuy : 10}GB
+                                {isCreate
+                                  ? dataBuy
+                                  : orderItem.packet_storage.name
+                                      .split('-')
+                                      .pop()}
+                                GB
                               </div>
                             </div>
                           </TdStyled3>
                           <TdStyled4>
                             {this.showPrice(pricePacketData)}
                           </TdStyled4>
-                          <TdStyled4>{isCreate ? dataBuy : 10}</TdStyled4>
-                          <TdStyled4>{isCreate ? dateSave : 10}</TdStyled4>
+                          <TdStyled4>
+                            {isCreate
+                              ? dataBuy
+                              : orderItem.packet_storage.name.split('-').pop()}
+                          </TdStyled4>
+                          <TdStyled4>
+                            {isCreate
+                              ? dateSave
+                              : orderItem.packet_storage.buy_info.day / 30}
+                          </TdStyled4>
                           <TdStyled4>
                             {this.showPrice(moneyPacketData)}
                           </TdStyled4>
@@ -329,7 +441,12 @@ class ExportPDF extends Component {
                           </TdStyled3>
                           <TdStyled4>-</TdStyled4>
                           <TdStyled4>-</TdStyled4>
-                          <TdStyled4>0</TdStyled4>
+                          <TdStyled4>
+                            {isCreate
+                              ? 0
+                              : orderItem.packet_storage.day_from_old_order /
+                                30}
+                          </TdStyled4>
                           <TdStyled4>-</TdStyled4>
                         </tr>
                       </React.Fragment>

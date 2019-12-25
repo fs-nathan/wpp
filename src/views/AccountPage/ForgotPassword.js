@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
 import { mdiAccountOutline } from '@mdi/js';
 import {
@@ -15,13 +15,19 @@ import './AccountPage.scss';
 import { Routes } from '../../constants/routes';
 
 const ForgotPasswordPage = props => {
+  const [errorMsg, setErrorMsg] = useState('');
   const handleForgotPassword = async e => {
     e.preventDefault();
     try {
       await actionForgotPassword(e.target.elements.email.value);
     } catch (error) {
-      console.log(error);
+      console.log(error && error.message);
+      setErrorMsg(error.message);
     }
+  };
+
+  const handleOnchange = () => {
+    setErrorMsg('');
   };
 
   return (
@@ -43,6 +49,7 @@ const ForgotPasswordPage = props => {
               required
               type="email"
               placeholder="Email"
+              onChange={handleOnchange}
               startAdornment={
                 <InputAdornment position="start">
                   <Icon
@@ -53,6 +60,7 @@ const ForgotPasswordPage = props => {
                 </InputAdornment>
               }
             />
+            {errorMsg && <span className="err-msg">{errorMsg}</span>}
           </FormControl>
           <div className="helper-text">
             Sau khi click đổi mật khẩu, vui lòng kiểm tra email (inbox hoặc

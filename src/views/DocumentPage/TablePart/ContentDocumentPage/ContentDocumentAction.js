@@ -36,10 +36,20 @@ export const getDocumentShareFromMe = () => {
   return apiService(config);
 };
 
-export const actionFetchListFolder = () => {
+export const actionFetchListFolderMoveFile = params => {
   const config = {
     url: '/documents/get-list-folder',
-    method: 'get'
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};
+
+export const actionFetchListFolderMoveFolder = params => {
+  const config = {
+    url: '/documents/get-list-folder-to-move',
+    method: 'get',
+    params
   };
   return apiService(config);
 };

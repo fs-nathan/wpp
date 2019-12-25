@@ -1,22 +1,16 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { connect } from 'react-redux';
-import {
-  Table,
-  TableRow,
-  TableHead,
-  TableBody,
-  TablePagination
-} from '@material-ui/core';
-import { useTranslation } from 'react-i18next';
+import { Table, TableRow, TableHead, TableBody } from '@material-ui/core';
+// import { useTranslation } from 'react-i18next';
 import {
   mdiAccountPlusOutline,
   mdiDownloadOutline,
-  mdiTrashCanOutline
+  mdiContentCopy
 } from '@mdi/js';
-// import { getDocumentShareFromMe } from './ContentDocumentAction';
 import {
   selectDocumentItem,
-  resetListSelectDocument
+  resetListSelectDocument,
+  actionFetchListDocumentShare
 } from '../../../../actions/documents';
 import {
   StyledTableHeadCell,
@@ -28,51 +22,36 @@ import {
   selectAllRedux,
   selectItemRedux
 } from '../DocumentComponent/TableCommon';
-import AlertModal from '../../../../components/AlertModal';
 import ColorTypo from '../../../../components/ColorTypo';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
-
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
 
 const DocumentShare = props => {
-  const [data] = useState([
-    {
-      id: 'task-1',
-      content: 20,
-      name: 'Dự án thiết kế website Phúc An',
-      type: 'folder',
-      location: 'Văn Thư',
-      size: '10.3 Kb',
-      date: '02/02/2019',
-      userShare: 'Tra Quoc Huy',
-      userCreate: 'Cao Văn Hưng'
-    }
-  ]);
-  const [page] = useState(0);
-  const [rowsPerPage] = useState(10);
-  const [alert, setAlert] = useState(false);
+  const { isLoading, listDocumentShareToMe: listData } = props;
   const [selected, setSelected] = useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   useEffect(() => {
-    fetDataRecentDocument();
+    fetDataDocumentShareToMe(); // eslint-disable-next-line
   }, []);
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
     }; // eslint-disable-next-line
   }, []);
-  const fetDataRecentDocument = async () => {
-    setIsLoading(true);
-    // const { data } = await getDocumentShareFromMe();
-    setIsLoading(false);
+  useEffect(() => {
+    if (isEmpty(props.selectedDocument)) setSelected([]);
+    // eslint-disable-next-line
+  }, [props.selectedDocument]);
+  const fetDataDocumentShareToMe = (params = {}, quite = false) => {
+    props.actionFetchListDocumentShare(params, quite);
   };
   const handleSelectAllClick = e => {
-    setSelected(selectAll(e, data));
-    props.selectDocumentItem(selectAllRedux(e, data));
+    setSelected(selectAll(e, listData));
+    props.selectDocumentItem(selectAllRedux(e, listData));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
   const handleSelectItem = item => {
@@ -81,15 +60,14 @@ const DocumentShare = props => {
   };
   const moreAction = [
     { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
+    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' },
     {
       icon: mdiDownloadOutline,
       text: 'Tải xuống',
       type: 'download',
       action: () => {}
-    },
-    { icon: mdiTrashCanOutline, text: 'Xóa', action: () => setAlert(true) }
+    }
   ];
-  const handleChangePage = () => {};
   if (isLoading) {
     return <LoadingBox />;
   }
@@ -101,9 +79,9 @@ const DocumentShare = props => {
             <StyledTableHeadCell>
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === data.length}
+                checked={selected.length === listData.length}
                 indeterminate={
-                  selected.length > 0 && selected.length < data.length
+                  selected.length > 0 && selected.length < listData.length
                 }
               />
             </StyledTableHeadCell>
@@ -129,7 +107,7 @@ const DocumentShare = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(file => {
+          {listData.map(file => {
             const isItemSelected = isSelected(file.id);
             return (
               <TableRow className="table-body-row" key={file.id}>
@@ -163,31 +141,18 @@ const DocumentShare = props => {
           })}
         </TableBody>
       </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={1}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        // onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-      <AlertModal
-        open={alert}
-        setOpen={setAlert}
-        content={t('views.user_page.left_part.department_info.alert_content')}
-        onConfirm={() => console.log('ok')}
-      />
     </Fragment>
   );
 };
 
 export default connect(
   state => ({
-    selectedDocument: state.documents.selectedDocument
+    selectedDocument: state.documents.selectedDocument,
+    listDocumentShareToMe: state.documents.listDocumentShareToMe
   }),
   {
     selectDocumentItem,
-    resetListSelectDocument
+    resetListSelectDocument,
+    actionFetchListDocumentShare
   }
 )(DocumentShare);

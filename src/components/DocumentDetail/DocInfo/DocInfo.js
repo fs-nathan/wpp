@@ -1,48 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiDotsVertical, mdiChevronRight } from '@mdi/js';
 import { connect } from 'react-redux';
-import { actionFetchListComment } from '../../../actions/documents';
-import LoadingBox from '../../LoadingBox';
 import ColorTypo from '../../ColorTypo';
 import '../DocumentDetail.scss';
 import AlertModal from '../../AlertModal';
 import EditDocumentInfoModal from '../../../views/DocumentPage/TablePart/DocumentComponent/EditDocumentInfoModal';
 
-const DocInfo = ({ closeComment, fileInfo, isLoading, doListComment }) => {
+const DocInfo = ({ closeComment, fileInfo }) => {
   const { t } = useTranslation();
-  const [blockComment] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [alert, setAlert] = useState(false);
   const [visible, setVisible] = useState(false);
   const openMoreMenu = Boolean(anchorEl);
 
-  const getListComment = (fileInfo, quite) => {
-    if (fileInfo.id) {
-      doListComment(fileInfo.id, quite);
-    }
-  };
-
-  useEffect(() => {
-    if (!blockComment) {
-      getListComment(fileInfo);
-    }
-    // eslint-disable-next-line
-  }, [fileInfo, blockComment]);
-
   const handleClickMoreAction = e => setAnchorEl(e.currentTarget);
   const handleCloseMenu = () => setAnchorEl(null);
   const handleUpdate = () => setVisible(false);
   const listInfo = [
-    { name: 'Ngày phát hành', value: '20/12/2019' },
+    { name: 'Ngày phát hành', value: fileInfo.updated_at || null },
     { name: 'Phiên bản', value: 'Chính thức' },
-    { name: 'Người soạn', value: 'Nguyễn Văn An' },
+    {
+      name: 'Người soạn',
+      value: fileInfo.user_create ? fileInfo.user_create.name : null
+    },
     { name: 'Ký phê duyệt', value: 'Trần Quang' },
     { name: 'Nơi lưu trữ', value: 'Phòng TCHC, tủ 01' }
   ];
+
   return (
     <div className="comment-container">
       <div className="header-box-comment">
@@ -104,7 +92,6 @@ const DocInfo = ({ closeComment, fileInfo, isLoading, doListComment }) => {
       </div>
       <div className="body-box-comment">
         <Scrollbars autoHide autoHideTimeout={500}>
-          {isLoading && <LoadingBox />}
           <div className="comment-item info-item">
             <div className="content-item">
               <div className="header-item">
@@ -123,7 +110,7 @@ const DocInfo = ({ closeComment, fileInfo, isLoading, doListComment }) => {
             <div className="comment-item" key={idx}>
               <div className="content-item info-content">
                 <div className="header-item">
-                  <div className="sub-title full-width">{el.name}</div>
+                  <div className="sub-title full-width">{el.name || ''}</div>
                   <div className="info-item-right full-width">
                     <ColorTypo bold>{el.value}</ColorTypo>
                   </div>
@@ -150,17 +137,10 @@ const DocInfo = ({ closeComment, fileInfo, isLoading, doListComment }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    doListComment: (fileId, quite) =>
-      dispatch(actionFetchListComment(fileId, quite))
-  };
-};
-
 export default connect(
   state => ({
     isLoading: state.documents.isLoading,
     listComment: state.documents.listComment
   }),
-  mapDispatchToProps
+  {}
 )(DocInfo);

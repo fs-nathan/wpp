@@ -5,32 +5,18 @@ import { IconButton, Avatar } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiDownloadOutline, mdiChevronRight, mdiChevronLeft } from '@mdi/js';
 import { connect } from 'react-redux';
-import { actionFetchListComment } from '../../../actions/documents';
-import LoadingBox from '../../LoadingBox';
-import DownloadItem from './DownloadItem';
+// import DownloadItem from './DownloadItem';
 import '../DocumentDetail.scss';
 import AlertModal from '../../AlertModal';
 
-const Download = ({
-  closeComment,
-  fileInfo,
-  listComment,
-  isLoading,
-  doListComment
-}) => {
+const Download = ({ closeComment, fileInfo, listComment }) => {
   const { t } = useTranslation();
-  const [blockComment] = useState(false);
   const [alert, setAlert] = useState(false);
   const [isAvatarView, setAvatarView] = useState(false);
   const [avatarTotal, setAvatarTotal] = useState(
     (window.innerWidth * 0.25 - 50 - ((window.innerWidth * 0.25 - 50) % 25)) /
       25
   );
-  const getListComment = (fileInfo, quite) => {
-    if (fileInfo.id) {
-      doListComment(fileInfo.id, quite);
-    }
-  };
   const onResize = () => {
     const totalWidth = window.innerWidth * 0.25 - 50;
     setAvatarTotal((totalWidth - (totalWidth % 25)) / 25);
@@ -43,12 +29,6 @@ const Download = ({
       window.removeEventListener('resize', onResize);
     };
   }, []);
-  useEffect(() => {
-    if (!blockComment) {
-      getListComment(fileInfo);
-    }
-    // eslint-disable-next-line
-  }, [fileInfo, blockComment]);
   const handleDownload = () => {
     var link = document.createElement('a');
     link.download = fileInfo.name;
@@ -110,7 +90,6 @@ const Download = ({
               <div className="lb-add">Tải về máy</div>
             </div>
           </div>
-          {isLoading && <LoadingBox />}
           <div className="comment-item info-item">
             <div className="content-item">
               <div className="header-item">
@@ -118,10 +97,10 @@ const Download = ({
                   <div className="sub-title">Số lượt xem</div>
                   <div className="sub-title">
                     <span>
-                      <b>112 lượt xem</b>
+                      <b>{fileInfo.number_of_view} lượt xem</b>
                     </span>
                     &nbsp;
-                    <span>(dung lượng xem 122MB)</span>
+                    <span>(dung lượng xem {fileInfo.size || ''})</span>
                   </div>
                   <div className="avatar-list">
                     {avatarList.map((el, idx) => {
@@ -140,7 +119,7 @@ const Download = ({
                     })}
                     {avatarList.length > avatarTotal && !isAvatarView && (
                       <Avatar>{`+${avatarList.length -
-                        avatarTotal -
+                        avatarTotal +
                         2}`}</Avatar>
                     )}
                     {avatarList.length > avatarTotal && (
@@ -171,16 +150,17 @@ const Download = ({
                   <div className="sub-title">Số lượt download</div>
                   <div className="sub-title">
                     <span>
-                      <b>45 lượt tải</b>
+                      <b>{fileInfo.number_of_download || ''} lượt tải</b>
                     </span>
                     &nbsp;
-                    <span>{`(dung lượng tải xuống ${fileInfo.size})`}</span>
+                    <span>{`(dung lượng tải xuống ${fileInfo.size ||
+                      ''})`}</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          {!isLoading && listComment.length > 0 ? (
+          {/* {listComment.length > 0 ? (
             <div className="comment-list-wrapper">
               {listComment.map((item, idx) => (
                 <DownloadItem
@@ -190,7 +170,7 @@ const Download = ({
                 />
               ))}
             </div>
-          ) : null}
+          ) : null} */}
           <AlertModal
             open={alert}
             setOpen={setAlert}
@@ -205,17 +185,9 @@ const Download = ({
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    doListComment: (fileId, quite) =>
-      dispatch(actionFetchListComment(fileId, quite))
-  };
-};
-
 export default connect(
   state => ({
-    isLoading: state.documents.isLoading,
-    listComment: state.documents.listComment
+    isLoading: state.documents.isLoading
   }),
-  mapDispatchToProps
+  {}
 )(Download);

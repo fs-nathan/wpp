@@ -3,8 +3,12 @@ import {
   DOCUMENT_HIDE_LOADING,
   LIST_COMMENT_SUCCESS,
   LIST_TRASH_SUCCESS,
+  LIST_RECENT_SUCCESS,
   LIST_MY_DOCUMENT_SUCCESS,
-  LIST_DOCUMENT_OF_FOLDER_SUCCESS
+  LIST_PROJECT_DOCUMENT_SUCCESS,
+  LIST_PROJECT_DOCUMENT_OF_FOLDER_SUCCESS,
+  LIST_DOCUMENT_FROM_ME_SUCCESS,
+  LIST_DOCUMENT_SHARE_SUCCESS
 } from '../../constants/actions/documents';
 import { apiService } from '../../constants/axiosInstance';
 
@@ -56,6 +60,130 @@ function* listTrash(action) {
   }
 }
 
+async function doListRecent({ params }) {
+  try {
+    const config = {
+      url: '/documents/recently',
+      method: 'get',
+      params
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* listRecent(action) {
+  try {
+    const { files } = yield call(doListRecent, action.options);
+    yield put({ type: LIST_RECENT_SUCCESS, payload: files || [] });
+  } catch (error) {
+    yield put({ type: DOCUMENT_HIDE_LOADING });
+  }
+}
+
+async function doListProject({ params }) {
+  try {
+    const config = {
+      url: '/documents/project-static',
+      method: 'get',
+      params
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* listProjectDocument(action) {
+  try {
+    const { projects } = yield call(doListProject, action.options);
+    yield put({ type: LIST_PROJECT_DOCUMENT_SUCCESS, payload: projects || [] });
+  } catch (error) {
+    yield put({ type: DOCUMENT_HIDE_LOADING });
+  }
+}
+
+async function doListProjectOfFolder({ params }) {
+  try {
+    const config = {
+      url: '/documents/project',
+      method: 'get',
+      params
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* listProjectDocumentOfFolder(action) {
+  try {
+    const { documents } = yield call(doListProjectOfFolder, action.options);
+    yield put({
+      type: LIST_PROJECT_DOCUMENT_OF_FOLDER_SUCCESS,
+      payload: documents || []
+    });
+  } catch (error) {
+    yield put({ type: DOCUMENT_HIDE_LOADING });
+  }
+}
+
+async function doListDocumentShareFromMe({ params }) {
+  try {
+    const config = {
+      url: '/documents/share-from-me',
+      method: 'get',
+      params
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* listDocumentShareFromMe(action) {
+  try {
+    const { documents } = yield call(doListDocumentShareFromMe, action.options);
+    yield put({
+      type: LIST_DOCUMENT_FROM_ME_SUCCESS,
+      payload: documents || []
+    });
+  } catch (error) {
+    yield put({ type: DOCUMENT_HIDE_LOADING });
+  }
+}
+
+async function doListDocumentShare({ params }) {
+  try {
+    const config = {
+      url: '/documents/share-to-me',
+      method: 'get',
+      params
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* listDocumentShare(action) {
+  try {
+    const { documents } = yield call(doListDocumentShare, action.options);
+    yield put({
+      type: LIST_DOCUMENT_SHARE_SUCCESS,
+      payload: documents || []
+    });
+  } catch (error) {
+    yield put({ type: DOCUMENT_HIDE_LOADING });
+  }
+}
+
 async function doListMyDocument({ params }) {
   try {
     const config = {
@@ -86,31 +214,13 @@ function* listMyDocument(action) {
   }
 }
 
-async function doDocumentOfFolder({ params }) {
-  try {
-    const config = {
-      url: '/documents/document-folder',
-      method: 'get',
-      params
-    };
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-function* listDocumentOfFolder(action) {
-  try {
-    const { documents } = yield call(doDocumentOfFolder, action.options);
-
-    yield put({
-      type: LIST_DOCUMENT_OF_FOLDER_SUCCESS,
-      payload: documents || []
-    });
-  } catch (error) {
-    yield put({ type: DOCUMENT_HIDE_LOADING });
-  }
-}
-
-export { listComment, listTrash, listMyDocument, listDocumentOfFolder };
+export {
+  listComment,
+  listTrash,
+  listMyDocument,
+  listRecent,
+  listProjectDocument,
+  listProjectDocumentOfFolder,
+  listDocumentShareFromMe,
+  listDocumentShare
+};

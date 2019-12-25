@@ -74,7 +74,7 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
     if (typeof cropper.current.getCroppedCanvas() === 'undefined') {
       return;
     }
-    callback(cropper.current.getCroppedCanvas().toDataURL(), cropType);
+    cropper.current.getCroppedCanvas().toBlob(blob => callback(blob, cropType));
   }
 
   const handleChangeZoom = (event, newValue) => {

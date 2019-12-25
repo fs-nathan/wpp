@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DateFnsUtils from '@date-io/date-fns';
 import { withRouter } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
-// import { KeyboardDatePicker } from '@material-ui/pickers';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import { DialogContent } from './TableCommon';
 
 const currencies = [
-  { value: 'USD', label: '$' },
-  { value: 'EUR', label: '€' },
-  { value: 'BTC', label: '฿' },
-  { value: 'JPY', label: '¥' }
+  { value: 'USD', label: 'Chưa phát hành' },
+  { value: 'EUR', label: 'Đang phát hành' },
+  { value: 'BTC', label: 'Đã phát hành' }
 ];
 
 const EditDocumentInfoModal = props => {
-  // const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  // const handleDateChange = date => {
-  //   setSelectedDate(date);
-  // };
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
   const handleUpdate = () => {
     props.onOk();
   };
@@ -31,7 +34,7 @@ const EditDocumentInfoModal = props => {
       <DialogContent dividers className="dialog-content">
         <TextField
           // value={value}
-          variant="outlined"
+          // variant="outlined"
           id="standard-full-width"
           label="Miêu tả tài liệu"
           fullWidth
@@ -42,7 +45,7 @@ const EditDocumentInfoModal = props => {
         />
         <TextField
           // value={value}
-          variant="outlined"
+          // variant="outlined"
           id="standard-full-width"
           label="Ngày phát hành"
           fullWidth
@@ -51,20 +54,27 @@ const EditDocumentInfoModal = props => {
           className="create-order-title"
           // onChange={event => handleChangeText(event.target.value)}
         />
-        {/* <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          id="date-picker-inline"
-          label="Ngày phát hành"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{ 'aria-label': 'change date' }}
-          fullWidth
-          margin="normal"
-          InputLabelProps={{ shrink: true }}
-          className="create-order-title"
-        /> */}
+        <p>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="Ngày phát hành"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              className="create-order-title"
+            />
+          </MuiPickersUtilsProvider>
+        </p>
+
         <TextField
           id="outlined-select-currency-native"
           select
@@ -74,7 +84,7 @@ const EditDocumentInfoModal = props => {
           fullWidth
           SelectProps={{ native: true }}
           placeholder="Chọn phiên bản"
-          variant="outlined"
+          // variant="outlined"
           InputLabelProps={{ shrink: true }}
           className="create-order-title"
         >
@@ -86,7 +96,7 @@ const EditDocumentInfoModal = props => {
         </TextField>
         <TextField
           // value={value}
-          variant="outlined"
+          // variant="outlined"
           id="standard-full-width"
           label="Người soạn tài liệu"
           fullWidth
@@ -97,7 +107,7 @@ const EditDocumentInfoModal = props => {
         />
         <TextField
           // value={value}
-          variant="outlined"
+          // variant="outlined"
           id="standard-full-width"
           label="Người ký duyệt"
           fullWidth
@@ -108,7 +118,7 @@ const EditDocumentInfoModal = props => {
         />
         <TextField
           // value={value}
-          variant="outlined"
+          // variant="outlined"
           id="standard-full-width"
           label="Nơi lưu trữ"
           fullWidth

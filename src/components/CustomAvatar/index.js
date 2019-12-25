@@ -5,7 +5,7 @@ import defaultImg from '../../assets/default.png';
 import Img from 'react-image';
 import { CustomEventListener, CustomEventDispose, DELETE_ICON } from '../../constants/events';
 
-function CustomAvatar({ src, alt, srcSet, sizes, ...rest }) {
+function CustomAvatar({ src, alt, srcSet, sizes, className, ...rest }) {
 
   const [imgSrc, setImgSrc] = React.useState({src});
 
@@ -26,7 +26,7 @@ function CustomAvatar({ src, alt, srcSet, sizes, ...rest }) {
   }, [src]);
 
   return (
-    <div className='MuiAvatar-root' 
+    <div className={`MuiAvatar-root ${className}`} 
       {...rest}
     >
       <Img 

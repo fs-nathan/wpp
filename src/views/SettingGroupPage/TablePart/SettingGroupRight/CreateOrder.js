@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withRouter } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { OutlinedInput } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-// import { mdiFilePdf } from "@mdi/js";
-// import Icon from "@mdi/react";
-// import * as icons from "../../../assets";
+import { Routes } from '../../../../constants/routes';
+import { orderCreateService } from '../../../../actions/setting/setting';
+import SnackbarComponent from '../../../../components/Snackbars';
 import './SettingGroupRight.scss';
 import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
 import OrderInit from '../../../../components/ExportPDF/OrderInit';
@@ -44,6 +45,8 @@ const CreateOrder = props => {
   const [dateUse, SetdateUse] = useState(0);
   const [dataBuy, SetdataBuy] = useState(0);
   const [dateSave, SetdateSave] = useState(0);
+  const [openToast, setOpenToast] = useState(false);
+  const [mesToast, setMesToast] = useState('');
   const handleChangeCheck = (type, value) => {
     if (type === 'work') {
       setIsCheckedManagerWork(value);
@@ -80,23 +83,58 @@ const CreateOrder = props => {
         SetdateSave(value);
     }
   };
+  const handleCreateOder = async () => {
+    try {
+      let dataBody = {};
+      if (isCheckedManagerWork) {
+        dataBody = {
+          ...dataBody,
+          packet_user: 1,
+          number_user: numAcc,
+          time_use: dateUse
+        };
+      }
+      if (isCheckedBuyData) {
+        dataBody = {
+          ...dataBody,
+          packet_storage: 1,
+          storage_size: dataBuy,
+          storage_time_use: dateSave
+        };
+      }
+      const { data } = await orderCreateService(dataBody);
+      props.history.push({
+        pathname: Routes.SETTING_GROUP_ORDER,
+        search: `?order_id=${data.order_id}`
+      });
+      setOpenToast(true);
+      setMesToast('Tạo đơn hàng thành công!');
+      setTimeout(() => {
+        setOpenToast(false);
+      }, 2000);
+    } catch (error) {}
+  };
+  const handleCloseToast = () => {
+    setOpenToast(false);
+  };
   return (
     <div className="order-detail-container create-order">
       <div className="has-border-right detail-left">
-      {
-        (isCheckedManagerWork || isCheckedBuyData) ?
-        <ExportPDF
-          numAcc={numAcc}
-          dateUse={dateUse}
-          dataBuy={dataBuy}
-          dateSave={dateSave}
-          isCreate={true}
-          isCheckedManagerWork={isCheckedManagerWork}
-          isCheckedBuyData={isCheckedBuyData}
-        /> : <OrderInit />
-      }
+        {isCheckedManagerWork || isCheckedBuyData ? (
+          <ExportPDF
+            numAcc={numAcc}
+            dateUse={dateUse}
+            dataBuy={dataBuy}
+            dateSave={dateSave}
+            isCreate={true}
+            isCheckedManagerWork={isCheckedManagerWork}
+            isCheckedBuyData={isCheckedBuyData}
+          />
+        ) : (
+          <OrderInit />
+        )}
       </div>
-      <div className="divider-vertical" />
+      {/* <div className="divider-vertical" /> */}
       <div className="content-create-order">
         <div className="UserInfo_right_header d-flex justify-content-center align-items-center">
           <p className="order-title">THIẾT LẬP ĐƠN HÀNG</p>
@@ -219,15 +257,24 @@ const CreateOrder = props => {
           </div>
           <Button
             className="create-order-btn"
-            onClick={() => {}}
+            onClick={handleCreateOder}
             variant="contained"
+            disabled={!(isCheckedManagerWork || isCheckedBuyData)}
           >
             Tạo đơn hàng
           </Button>
         </div>
       </div>
+      <SnackbarComponent
+        open={openToast}
+        handleClose={handleCloseToast}
+        vertical="top"
+        horizontal="center"
+        variant="success"
+        message={mesToast}
+      />
     </div>
   );
 };
 
-export default CreateOrder;
+export default withRouter(CreateOrder);

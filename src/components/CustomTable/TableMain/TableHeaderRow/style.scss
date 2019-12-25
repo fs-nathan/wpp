@@ -1,0 +1,32 @@
+.comp_CustomTable_TableHeaderRow___row {
+  background-color: #f4f4f4;
+  height: 42px;
+};
+
+@mixin comp_CustomTable_TableHeaderRow___cell {
+  padding: 8px;
+  & > div {
+    width: 100%;
+    height: 100%;
+    font-weight: bold;
+    color: rgb(102, 102, 102);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+};
+
+.comp_CustomTable_TableHeaderRow___cell {
+  & {
+    @include comp_CustomTable_TableHeaderRow___cell;
+    & > div {
+      justify-content: start;
+    };
+  };
+  &-center {
+    @include comp_CustomTable_TableHeaderRow___cell;
+    & > div {
+      justify-content: center;
+    };
+  };
+};

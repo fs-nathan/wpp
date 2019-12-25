@@ -23,6 +23,9 @@ const LeftSetting = props => {
             to={item.url}
             component={Link}
             key={index}
+            onClick={() => {
+              if (item.action) item.action();
+            }}
             className={`${pathname === item.url ? 'item-actived' : ''}`}
           >
             <Icon

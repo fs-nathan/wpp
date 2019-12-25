@@ -4,10 +4,17 @@ import moment from 'moment';
 import { get, sortBy, reverse, filter as filterArr } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { 
-  IconButton, Menu, MenuItem, Popover,
-  List, ListItem, ListItemText, ListSubheader,
-  Button, OutlinedInput,
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  Popover,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+  Button,
+  OutlinedInput
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
@@ -17,7 +24,7 @@ import {
   mdiAccount,
   mdiDotsVertical,
   mdiCheckCircle,
-  mdiShieldAccount,
+  mdiShieldAccount
 } from '@mdi/js';
 import { Context as ProjectPageContext } from '../../index';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
@@ -50,7 +57,7 @@ const StyledBadge = styled(CustomBadge)`
   max-width: 70px;
 `;
 
-const StateBox = styled(({stateName, ...rest}) => <div {...rest} />)`
+const StateBox = styled(({ stateName, ...rest }) => <div {...rest} />)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -82,15 +89,19 @@ const DurationBox = styled.div`
   }
 `;
 
-const CustomMenuItem = styled(({ selected, refs, ...rest }) => (<MenuItem {...rest} />))`
+const CustomMenuItem = styled(({ selected, refs, ...rest }) => (
+  <MenuItem {...rest} />
+))`
   display: flex;
   align-items: center;
-  color: ${props => props.selected ? '#05b50c' : '#222'};
+  color: ${props => (props.selected ? '#05b50c' : '#222')};
   & > svg {
-    fill: ${props => props.selected ? '#05b50c' : '#888'};
+    fill: ${props => (props.selected ? '#05b50c' : '#888')};
     margin-right: 10px;
   }
-  &:nth-child(2), &:nth-child(4), &:nth-child(8) {  
+  &:nth-child(2),
+  &:nth-child(4),
+  &:nth-child(8) {
     border-top: 1px solid #f4f4f4;
   }
 `;
@@ -105,8 +116,7 @@ const TimeBox = styled.div`
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: 200px 400px;
-  grid-template-areas:
-    "side main";
+  grid-template-areas: 'side main';
 `;
 
 const SideBar = styled.div`
@@ -121,7 +131,7 @@ const MainBar = styled.div`
 const SubHeader = styled.div`
   padding: 15px;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.54);
   font-weight: 500;
   font-size: 14px;
@@ -151,7 +161,7 @@ const DateWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 90%;
-  & > div {  
+  & > div {
     display: flex;
     flex-direction: column;
     & > span {
@@ -176,8 +186,8 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const TimeListItem = styled(({ selected, ...rest }) => (<ListItem {...rest} />))`
-  border-left: 3px solid ${props => props.selected ? '#05b50c' : '#fff'};
+const TimeListItem = styled(({ selected, ...rest }) => <ListItem {...rest} />)`
+  border-left: 3px solid ${props => (props.selected ? '#05b50c' : '#fff')};
 `;
 
 const SettingContainer = styled.div`
@@ -192,66 +202,67 @@ const MiddleDiv = styled.div`
 
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
-    case 0:   
-      return ({
+    case 0:
+      return {
         color: '#4caf50',
         background: '#4caf5042',
-        name: 'Thấp',
-      });
-    case 1: 
-      return ({
+        name: 'Thấp'
+      };
+    case 1:
+      return {
         color: '#ff9800',
         background: '#ff980038',
-        name: 'Trung bình',
-      });
-    case 2: 
-      return ({
+        name: 'Trung bình'
+      };
+    case 2:
+      return {
         color: '#fe0707',
         background: '#ff050524',
-        name: 'Cao',
-      });
+        name: 'Cao'
+      };
     default:
-      return ({
+      return {
         color: '#53d7fc',
-        name: 'Thấp',
-      });
+        name: 'Thấp'
+      };
   }
 }
 
 function decodeStateName(stateName) {
   switch (stateName) {
-    case 'waiting': 
-      return ({
+    case 'waiting':
+      return {
         color: 'orange',
-        name: 'Đang chờ',
-      });
-    case 'doing': 
-      return ({
+        name: 'Đang chờ'
+      };
+    case 'doing':
+      return {
         color: 'green',
-        name: 'Đang làm',
-      });
-    case 'expired': 
-      return ({
+        name: 'Đang làm'
+      };
+    case 'expired':
+      return {
         color: 'red',
-        name: 'Quá hạn',
-      });
+        name: 'Quá hạn'
+      };
     case 'hidden':
-      return ({
+      return {
         color: '#20194d',
-        name: 'Đang ẩn',
-      })
+        name: 'Đang ẩn'
+      };
     default:
-      return ({
+      return {
         color: 'orange',
-        name: 'Đang chờ',
-      });
+        name: 'Đang chờ'
+      };
   }
 }
 
 function displayDateRange(from, to) {
   if (
-    (from instanceof Date && !isNaN(from)) && 
-    (to instanceof Date && !isNaN(to))
+    from instanceof Date &&
+    !isNaN(from) &&
+    to instanceof Date && !isNaN(to)
   ) {
     return `${from.toLocaleDateString()} - ${to.toLocaleDateString()}`;
   } else {
@@ -259,8 +270,13 @@ function displayDateRange(from, to) {
   }
 }
 
-const SettingButton = ({ visibility, onEditProject, onHideProject, onShowProject, onDeleteProject }) => {
-
+const SettingButton = ({
+  visibility,
+  onEditProject,
+  onHideProject,
+  onShowProject,
+  onDeleteProject
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [setting, setSetting] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
@@ -275,8 +291,13 @@ const SettingButton = ({ visibility, onEditProject, onHideProject, onShowProject
 
   return (
     <SettingContainer onClick={evt => evt.stopPropagation()}>
-      <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} size='small'>
-        <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
+      <IconButton
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+        size="small"
+      >
+        <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
       </IconButton>
       <Menu
         id="simple-menu"
@@ -286,25 +307,33 @@ const SettingButton = ({ visibility, onEditProject, onHideProject, onShowProject
         onClose={handleClose}
         transformOrigin={{
           vertical: -30,
-          horizontal: 'right',
+          horizontal: 'right'
         }}
       >
         <MenuItem onClick={evt => setSetting(true)}>Cài đặt</MenuItem>
-        <MenuItem onClick={evt => {
-          handleClose(evt);
-          onEditProject(evt);
-        }}>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={evt => { 
-          handleClose(evt); 
-          visibility ? onHideProject() : onShowProject(); 
-        }}>{visibility ? 'Ẩn' : 'Bỏ ẩn'}</MenuItem>
+        <MenuItem
+          onClick={evt => {
+            handleClose(evt);
+            onEditProject(evt);
+          }}
+        >
+          Chỉnh sửa
+        </MenuItem>
+        <MenuItem
+          onClick={evt => {
+            handleClose(evt);
+            visibility ? onHideProject() : onShowProject();
+          }}
+        >
+          {visibility ? 'Ẩn' : 'Bỏ ẩn'}
+        </MenuItem>
         <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
       </Menu>
-      <ProjectSettingModal open={setting} setOpen={setSetting}/>
-      <AlertModal 
+      <ProjectSettingModal open={setting} setOpen={setSetting} />
+      <AlertModal
         open={alert}
         setOpen={setAlert}
-        content='Bạn chắc chắn muốn xóa dự án?'
+        content="Bạn chắc chắn muốn xóa dự án?"
         onCancle={handleClose}
         onConfirm={() => {
           handleClose();
@@ -313,23 +342,31 @@ const SettingButton = ({ visibility, onEditProject, onHideProject, onShowProject
       />
     </SettingContainer>
   );
-}
+};
 
-function AllProjectTable({ 
-  expand, handleExpand, 
-  listProject, 
-  detailProjectGroup, 
-  doDeleteProject, 
-  doHideProject, doShowProject,
-  doSortProject,
+function AllProjectTable({
+  expand,
+  handleExpand,
+  listProject,
+  detailProjectGroup,
+  doDeleteProject,
+  doHideProject,
+  doShowProject,
+  doSortProject
 }) {
-
   const { setProjectGroupId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
   const history = useHistory();
 
-  const { data: { projects: _projects }, loading: listProjectLoading, error: listProjectError } = listProject;
-  const { loading: detailProjectGroupLoading, error: detailProjectGroupError } = detailProjectGroup;
+  const {
+    data: { projects: _projects },
+    loading: listProjectLoading,
+    error: listProjectError
+  } = listProject;
+  const {
+    loading: detailProjectGroupLoading,
+    error: detailProjectGroupError
+  } = detailProjectGroup;
 
   const loading = listProjectLoading || detailProjectGroupLoading;
   const error = listProjectError || detailProjectGroupError;
@@ -361,75 +398,147 @@ function AllProjectTable({
     'Hoàn thành',
     'Quá hạn',
     'Bạn tạo',
-    'Bạn tham gia',
+    'Bạn tham gia'
   ];
 
   React.useEffect(() => {
     let projects = _projects;
     switch (filter) {
-      case 0: 
+      case 0:
         break;
       case 1:
-        projects = filterArr(projects, { 'visibility': true });
+        projects = filterArr(projects, { visibility: true });
         break;
-      case 2: 
-        projects = filterArr(projects, { 'visibility': false });
+      case 2:
+        projects = filterArr(projects, { visibility: false });
         break;
-      case 3: 
-        projects = filterArr(projects, { 'visibility': true, 'state_name': 'waiting' });
+      case 3:
+        projects = filterArr(projects, {
+          visibility: true,
+          state_name: 'waiting'
+        });
         break;
-      case 4: 
-        projects = filterArr(projects, { 'visibility': true, 'state_name': 'doing' });
+      case 4:
+        projects = filterArr(projects, {
+          visibility: true,
+          state_name: 'doing'
+        });
         break;
-      case 5: 
-        projects = filterArr(projects, { 'visibility': true, 'state_name': 'finished' });
+      case 5:
+        projects = filterArr(projects, {
+          visibility: true,
+          state_name: 'finished'
+        });
         break;
-      case 6: 
-        projects = filterArr(projects, { 'visibility': true, 'state_name': 'expired' });
+      case 6:
+        projects = filterArr(projects, {
+          visibility: true,
+          state_name: 'expired'
+        });
         break;
       default:
         break;
     }
     if (sortField === 'state_name') {
-      projects = sortBy(projects, [o => get(o, 'visibility', true), o => get(o, sortField)]);
-    }
-    else {
+      projects = sortBy(projects, [
+        o => get(o, 'visibility', true),
+        o => get(o, sortField)
+      ]);
+    } else {
       projects = sortBy(projects, [o => get(o, sortField)]);
     }
-    if (sortType === -1) reverse(projects);
+    if (sortType === -1) {
+      reverse(projects);
+    }
     setProjects(projects);
-  }, [_projects, filter, sortField, sortType,]);
+  }, [_projects, filter, sortField, sortType]);
 
   React.useEffect(() => {
     switch (time) {
       case 0: {
-        setStartDate(moment().startOf('year').toDate());
-        setEndDate(moment().endOf('year').toDate());
+        setStartDate(
+          moment()
+            .startOf('year')
+            .toDate()
+        );
+        setEndDate(
+          moment()
+            .endOf('year')
+            .toDate()
+        );
         setTimeTitle(`Năm ${moment().year()}`);
         return;
       }
       case 1: {
-        setStartDate(moment().startOf('month').toDate());
-        setEndDate(moment().endOf('month').toDate());
+        setStartDate(
+          moment()
+            .startOf('month')
+            .toDate()
+        );
+        setEndDate(
+          moment()
+            .endOf('month')
+            .toDate()
+        );
         setTimeTitle(`Tháng ${moment().month() + 1}, năm ${moment().year()}`);
         return;
       }
       case 2: {
-        setStartDate(moment().subtract(1, 'M').startOf('month').toDate());
-        setEndDate(moment().subtract(1, 'M').endOf('month').toDate());
-        setTimeTitle(`Tháng ${moment().subtract(1, 'M').month() + 1}, năm ${moment().subtract(1, 'M').year()}`);
+        setStartDate(
+          moment()
+            .subtract(1, 'M')
+            .startOf('month')
+            .toDate()
+        );
+        setEndDate(
+          moment()
+            .subtract(1, 'M')
+            .endOf('month')
+            .toDate()
+        );
+        setTimeTitle(
+          `Tháng ${moment()
+            .subtract(1, 'M')
+            .month() + 1}, năm ${moment()
+            .subtract(1, 'M')
+            .year()}`
+        );
         return;
       }
       case 3: {
-        setStartDate(moment().startOf('isoWeek').toDate());
-        setEndDate(moment().endOf('isoWeek').toDate());
+        setStartDate(
+          moment()
+            .startOf('isoWeek')
+            .toDate()
+        );
+        setEndDate(
+          moment()
+            .endOf('isoWeek')
+            .toDate()
+        );
         setTimeTitle(`Tuần ${moment().isoWeek()}, năm ${moment().year()}`);
         return;
       }
       case 4: {
-        setStartDate(moment().subtract(1, 'w').startOf('isoWeek').toDate());
-        setEndDate(moment().subtract(1, 'w').endOf('isoWeek').toDate());
-        setTimeTitle(`Tuần ${moment().subtract(1, 'w').isoWeek()}, năm ${moment().subtract(1, 'w').year()}`);
+        setStartDate(
+          moment()
+            .subtract(1, 'w')
+            .startOf('isoWeek')
+            .toDate()
+        );
+        setEndDate(
+          moment()
+            .subtract(1, 'w')
+            .endOf('isoWeek')
+            .toDate()
+        );
+        setTimeTitle(
+          `Tuần ${moment()
+            .subtract(1, 'w')
+            .isoWeek()}, năm ${moment()
+            .subtract(1, 'w')
+            .year()}`
+        );
         return;
       }
       case 5: {
@@ -442,7 +551,7 @@ function AllProjectTable({
         setTimeTitle(`Tùy chọn`);
         return;
       }
-      default: 
+      default:
         return;
     }
   }, [time]);
@@ -457,7 +566,7 @@ function AllProjectTable({
         setFilter(filter);
       }
       setFilterAnchor(null);
-    }
+    };
   }
 
   function handleDownloadClose() {
@@ -469,7 +578,7 @@ function AllProjectTable({
       setSortField(field);
       setSortType(1);
     } else {
-      setSortType(prev => prev * -1);
+      setSortType(-1);
     }
   }
 
@@ -494,36 +603,43 @@ function AllProjectTable({
             options={{
               title: `Danh sách dự án`,
               subTitle: '',
-              subActions: [{
-                label: filterTitle[filter],
-                iconPath: mdiFilterOutline,
-                onClick: (evt) => setFilterAnchor(evt.currentTarget),
-              }, {
-                label: 'Tải xuống',
-                iconPath: mdiDownload,
-                onClick: (evt) => setDownloadAnchor(evt.currentTarget),
-              }, {
-                label: 'Năm 2019',
-                iconPath: mdiCalendar,
-                onClick: (evt) => setTimeAnchor(evt.currentTarget),
-              }],
+              subActions: [
+                {
+                  label: filterTitle[filter],
+                  iconPath: mdiFilterOutline,
+                  onClick: evt => setFilterAnchor(evt.currentTarget)
+                },
+                {
+                  label: 'Tải xuống',
+                  iconPath: mdiDownload,
+                  onClick: evt => setDownloadAnchor(evt.currentTarget)
+                },
+                {
+                  label: 'Năm 2019',
+                  iconPath: mdiCalendar,
+                  onClick: evt => setTimeAnchor(evt.currentTarget)
+                }
+              ],
               mainAction: {
                 label: '+ Tạo dự án',
-                onClick: (evt) => setOpenCreateProject(true),  
+                onClick: evt => setOpenCreateProject(true)
               },
               expand: {
                 bool: expand,
-                toggleExpand: () => handleExpand(!expand),
+                toggleExpand: () => handleExpand(!expand)
               },
-              moreMenu: [{
-                label: 'Cài đặt bảng',
-                onClick: () => null,
-              }, {
-                label: 'Thùng rác',
-                onClick: () => history.push(`/projects/deleted`),
-              }],
+              moreMenu: [
+                {
+                  label: 'Cài đặt bảng',
+                  onClick: () => null
+                },
+                {
+                  label: 'Thùng rác',
+                  onClick: () => history.push(`/projects/deleted`)
+                }
+              ],
               grouped: {
-                bool: false,
+                bool: false
               },
               draggable: {
                 bool: true,
@@ -533,95 +649,164 @@ function AllProjectTable({
                   if (
                     destination.droppableId === source.droppableId &&
                     destination.index === source.index
-                  ) return;
+                  )
+                    return;
                   doSortProject({
                     projectId: draggableId,
-                    sortIndex: destination.index,
+                    sortIndex: destination.index
                   });
-                }, 
+                }
               },
               loading: {
                 bool: loading,
-                component: () => <LoadingBox />,
+                component: () => <LoadingBox />
               },
               row: {
                 id: 'id',
-                onClick: (row) => history.push(`/project/${get(row, 'id', '')}`),
-              },
+                onClick: row => history.push(`/project/${get(row, 'id', '')}`)
+              }
             }}
-            columns={[{
-              label: () => <Icon path={mdiShieldAccount} size={1} color={'rgb(102, 102, 102)'}/>,
-              field: (row) => <MiddleDiv><CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' /></MiddleDiv>,
-              center: true,
-            }, {
-              label: 'Dự án',
-              field: 'name',
-              sort: (evt) => handleSortColumn('name'),
-            }, {
-              label: 'Trạng thái',
-              field: (row) => <StateBox stateName={decodeStateName(get(row, 'visibility', true) === false ? 'hidden' : get(row, 'state_name', '')).color}>
-                                <div>
-                                  <span>&#11044;</span><span>{decodeStateName(get(row, 'visibility', true) === false ? 'hidden' : get(row, 'state_name', '')).name}</span>
-                                </div>
-                                {get(row, 'visibility', true) && (
-                                  <small>
-                                    {get(row, 'state_name', '') === 'expired' ? get(row, 'day_expired', 0) : get(row, 'day_implement', 0)} ngày
-                                  </small>
-                                )}
-                              </StateBox>,
-              sort: (evt) => handleSortColumn('state_name'),
-            }, {
-              label: 'Hoàn thành',
-              field: (row) => <ProgressBar>
-                                <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />
-                              </ProgressBar>,
-              sort: (evt) => handleSortColumn('complete'),
-            }, {
-              label: 'Tiến độ',
-              field: (row) => <DurationBox>
-                                <span>{get(row, 'duration', 0)} ngày</span>
-                                <small>
-                                  {displayDateRange(new Date(get(row, 'date_start')), new Date(get(row, 'date_end')))}
-                                </small>
-                              </DurationBox>,
-              sort: (evt) => handleSortColumn('duration'),
-            }, {
-              label: 'Ưu tiên',
-              field: (row) => <StyledBadge 
-                                color={decodePriorityCode(get(row, 'priority_code', 0)).color}
-                                background={decodePriorityCode(get(row, 'priority_code', 0)).background}
-                              >
-                                {decodePriorityCode(get(row, 'priority_code', 0)).name}  
-                              </StyledBadge>,
-              sort: (evt) => handleSortColumn('priority_code'),
-            }, {
-              label: () => <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'}/>,
-              field: row => <MiddleDiv>
-                              <AvatarCircleList 
-                                users={
-                                  get(row, 'members', [])
-                                  .map(member => ({
-                                    name: get(member, 'name'),
-                                    avatar: get(member, 'avatar'),
-                                  }))
-                                } 
-                                display={3} 
-                              />
-                            </MiddleDiv>,
-              center: true,
-            }, {
-              label: '',
-              field: row => <SettingButton 
-                              onEditProject={evt => {
-                                setEdittingProject(row);
-                                setOpenEditProject(true);
-                              }}
-                              visibility={get(row, 'visibility', true)}
-                              onHideProject={() => handleHideProject(get(row, 'id'))}
-                              onShowProject={() => handleShowProject(get(row, 'id'))}
-                              onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
-                            />,
-            }]}
+            columns={[
+              {
+                label: () => (
+                  <Icon
+                    path={mdiShieldAccount}
+                    size={1}
+                    color={'rgb(102, 102, 102)'}
+                  />
+                ),
+                field: row => (
+                  <MiddleDiv>
+                    <CustomAvatar
+                      src={get(row, 'user_create.avatar')}
+                      alt="user create avatar"
+                    />
+                  </MiddleDiv>
+                ),
+                center: true
+              },
+              {
+                label: 'Dự án',
+                field: 'name',
+                sort: evt => handleSortColumn('name')
+              },
+              {
+                label: 'Trạng thái',
+                field: row => (
+                  <StateBox
+                    stateName={
+                      decodeStateName(
+                        get(row, 'visibility', true) === false
+                          ? 'hidden'
+                          : get(row, 'state_name', '')
+                      ).color
+                    }
+                  >
+                    <div>
+                      <span>&#11044;</span>
+                      <span>
+                        {
+                          decodeStateName(
+                            get(row, 'visibility', true) === false
+                              ? 'hidden'
+                              : get(row, 'state_name', '')
+                          ).name
+                        }
+                      </span>
+                    </div>
+                    {get(row, 'visibility', true) && (
+                      <small>
+                        {get(row, 'state_name', '') === 'expired'
+                          ? get(row, 'day_expired', 0)
+                          : get(row, 'day_implement', 0)}{' '}
+                        ngày
+                      </small>
+                    )}
+                  </StateBox>
+                ),
+                sort: evt => handleSortColumn('state_name')
+              },
+              {
+                label: 'Hoàn thành',
+                field: row => (
+                  <ProgressBar>
+                    <SimpleSmallProgressBar
+                      percentDone={get(row, 'complete', 0)}
+                      color={'#3edcdb'}
+                    />
+                  </ProgressBar>
+                ),
+                sort: evt => handleSortColumn('complete')
+              },
+              {
+                label: 'Tiến độ',
+                field: row => (
+                  <DurationBox>
+                    <span>{get(row, 'duration', 0)} ngày</span>
+                    <small>
+                      {displayDateRange(
+                        new Date(get(row, 'date_start')),
+                        new Date(get(row, 'date_end'))
+                      )}
+                    </small>
+                  </DurationBox>
+                ),
+                sort: evt => handleSortColumn('duration')
+              },
+              {
+                label: 'Ưu tiên',
+                field: row => (
+                  <StyledBadge
+                    color={
+                      decodePriorityCode(get(row, 'priority_code', 0)).color
+                    }
+                    background={
+                      decodePriorityCode(get(row, 'priority_code', 0))
+                        .background
+                    }
+                  >
+                    {decodePriorityCode(get(row, 'priority_code', 0)).name}
+                  </StyledBadge>
+                ),
+                sort: evt => handleSortColumn('priority_code')
+              },
+              {
+                label: () => (
+                  <Icon
+                    path={mdiAccount}
+                    size={1}
+                    color={'rgb(102, 102, 102)'}
+                  />
+                ),
+                field: row => (
+                  <MiddleDiv>
+                    <AvatarCircleList
+                      users={get(row, 'members', []).map(member => ({
+                        name: get(member, 'name'),
+                        avatar: get(member, 'avatar')
+                      }))}
+                      display={3}
+                    />
+                  </MiddleDiv>
+                ),
+                center: true
+              },
+              {
+                label: '',
+                field: row => (
+                  <SettingButton
+                    onEditProject={evt => {
+                      setEdittingProject(row);
+                      setOpenEditProject(true);
+                    }}
+                    visibility={get(row, 'visibility', true)}
+                    onHideProject={() => handleHideProject(get(row, 'id'))}
+                    onShowProject={() => handleShowProject(get(row, 'id'))}
+                    onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
+                  />
+                )
+              }
+            ]}
             data={projects}
           />
           <Menu
@@ -631,14 +816,14 @@ function AllProjectTable({
             onClose={handleFilterClose()}
             transformOrigin={{
               vertical: -30,
-              horizontal: 'right',
+              horizontal: 'right'
             }}
           >
             {filterTitle.map((title, index) => (
-              <CustomMenuItem 
+              <CustomMenuItem
                 key={index}
-                onClick={handleFilterClose(index)} 
-                selected={filter === index} 
+                onClick={handleFilterClose(index)}
+                selected={filter === index}
               >
                 <Icon path={mdiCheckCircle} size={0.7} /> {title}
               </CustomMenuItem>
@@ -651,7 +836,7 @@ function AllProjectTable({
             onClose={handleDownloadClose}
             transformOrigin={{
               vertical: -30,
-              horizontal: 'right',
+              horizontal: 'right'
             }}
           >
             <List
@@ -673,7 +858,7 @@ function AllProjectTable({
             onClose={evt => setTimeAnchor(null)}
             transformOrigin={{
               vertical: -30,
-              horizontal: 'right',
+              horizontal: 'right'
             }}
           >
             <TimeBox>
@@ -685,52 +870,92 @@ function AllProjectTable({
                     </StyledListSubheader>
                   }
                 >
-                  <TimeListItem button onClick={evt => setTime(0)} selected={time === 0}>
+                  <TimeListItem
+                    button
+                    onClick={evt => setTime(0)}
+                    selected={time === 0}
+                  >
                     <ListItemText primary={'Năm nay'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={evt => setTime(1)} selected={time === 1}>
+                  <TimeListItem
+                    button
+                    onClick={evt => setTime(1)}
+                    selected={time === 1}
+                  >
                     <ListItemText primary={'Tháng này'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={evt => setTime(2)} selected={time === 2}>
+                  <TimeListItem
+                    button
+                    onClick={evt => setTime(2)}
+                    selected={time === 2}
+                  >
                     <ListItemText primary={'Tháng trước'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={evt => setTime(3)} selected={time === 3}>
+                  <TimeListItem
+                    button
+                    onClick={evt => setTime(3)}
+                    selected={time === 3}
+                  >
                     <ListItemText primary={'Tuần này'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={evt => setTime(4)} selected={time === 4}>
+                  <TimeListItem
+                    button
+                    onClick={evt => setTime(4)}
+                    selected={time === 4}
+                  >
                     <ListItemText primary={'Tuần trước'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={evt => setTime(5)} selected={time === 5}>
+                  <TimeListItem
+                    button
+                    onClick={evt => setTime(5)}
+                    selected={time === 5}
+                  >
                     <ListItemText primary={'Mọi lúc'} />
                   </TimeListItem>
-                  <TimeListItem button onClick={evt => setTime(6)} selected={time === 6}>
+                  <TimeListItem
+                    button
+                    onClick={evt => setTime(6)}
+                    selected={time === 6}
+                  >
                     <ListItemText primary={'Tùy chọn'} />
                   </TimeListItem>
                 </List>
               </SideBar>
               <MainBar>
                 <SubHeader>Thời gian được chọn</SubHeader>
-                <Content>  
+                <Content>
                   <YearBox>{timeTitle}</YearBox>
                   <DateWrapper>
                     <div>
                       <span>Từ ngày</span>
-                      <OutlinedInput 
+                      <OutlinedInput
                         disabled={time !== 6}
-                        variant='outlined'
+                        variant="outlined"
                         type={time === 5 ? 'text' : 'date'}
-                        value={time === 5 ? 'All' : moment(startDate).format('YYYY-MM-DD')}
-                        onChange={evt => setStartDate(moment(evt.target.value).toDate())}
+                        value={
+                          time === 5
+                            ? 'All'
+                            : moment(startDate).format('YYYY-MM-DD')
+                        }
+                        onChange={evt =>
+                          setStartDate(moment(evt.target.value).toDate())
+                        }
                       />
                     </div>
                     <div>
                       <span>Đến ngày</span>
-                      <OutlinedInput 
+                      <OutlinedInput
                         disabled={time !== 6}
-                        variant='outlined'
+                        variant="outlined"
                         type={time === 5 ? 'text' : 'date'}
-                        value={time === 5 ? 'All' : moment(endDate).format('YYYY-MM-DD')}
-                        onChange={evt => setEndDate(moment(evt.target.value).toDate())}
+                        value={
+                          time === 5
+                            ? 'All'
+                            : moment(endDate).format('YYYY-MM-DD')
+                        }
+                        onChange={evt =>
+                          setEndDate(moment(evt.target.value).toDate())
+                        }
                       />
                     </div>
                   </DateWrapper>
@@ -739,33 +964,39 @@ function AllProjectTable({
               </MainBar>
             </TimeBox>
           </Popover>
-          <CreateProjectModal open={openCreateProject} setOpen={setOpenCreateProject} />
-          <EditProjectModal curProject={edittingProject} open={openEditProject} setOpen={setOpenEditProject} />
+          <CreateProjectModal
+            open={openCreateProject}
+            setOpen={setOpenCreateProject}
+          />
+          <EditProjectModal
+            curProject={edittingProject}
+            open={openEditProject}
+            setOpen={setOpenEditProject}
+          />
         </React.Fragment>
       )}
     </Container>
-  )
+  );
 }
 
 const mapStateToProps = state => {
   return {
     listProject: state.project.listProject,
-    detailProjectGroup: state.projectGroup.detailProjectGroup,
-  }
-}
+    detailProjectGroup: state.projectGroup.detailProjectGroup
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
-    doSortProject: ({ projectId, sortIndex }) => dispatch(sortProject({ projectId, sortIndex })),
+    doSortProject: ({ projectId, sortIndex }) =>
+      dispatch(sortProject({ projectId, sortIndex })),
     doDeleteProject: ({ projectId }) => dispatch(deleteProject({ projectId })),
     doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
     doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
-    doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),
-  }
-}
+    doDetailProjectGroup: ({ projectGroupId }, quite) =>
+      dispatch(detailProjectGroup({ projectGroupId }, quite))
+  };
+};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AllProjectTable);
+export default connect(mapStateToProps, mapDispatchToProps)(AllProjectTable);

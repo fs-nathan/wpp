@@ -28,7 +28,7 @@ export const StyledTableHeadCell = props => (
     width={props.width}
     align={props.align || 'center'}
     onClick={() => {}}
-    className="table-head-cell"
+    className={`table-head-cell ${props.className}`}
   >
     {props.children}
   </TableCell>

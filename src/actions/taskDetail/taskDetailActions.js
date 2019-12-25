@@ -33,11 +33,12 @@ export const postSubTaskFail = (error) => ({
     error: error,
 });
 // ===== update
-export const updateSubTask = ({ sub_task_id, name }) => ({
+export const updateSubTask = ({ sub_task_id, name, taskId }) => ({
     type: types.UPDATE_SUBTASK_REQUEST,
     options: {
         sub_task_id,
-        name
+        name,
+        taskId
     },
 });
 
@@ -51,10 +52,11 @@ export const updateSubTaskFail = (error) => ({
     error: error,
 });
 // ===== delete
-export const deleteSubTask = ({ sub_task_id }) => ({
+export const deleteSubTask = ({ sub_task_id, taskId }) => ({
     type: types.DELETE_SUBTASK_REQUEST,
     options: {
-        sub_task_id
+        sub_task_id,
+        taskId
     },
 });
 
@@ -68,10 +70,11 @@ export const deleteSubTaskFail = (error) => ({
     error: error,
 });
 // ===== complete
-export const completeSubTask = ({ sub_task_id }) => ({
+export const completeSubTask = ({ sub_task_id, taskId }) => ({
     type: types.POST_COMPLETE_SUBTASK_REQUEST,
     options: {
-        sub_task_id
+        sub_task_id,
+        taskId
     },
 });
 
@@ -161,9 +164,12 @@ export const updateRemindWithDurationFail = (error) => ({
     error: error,
 });
 // ======= delete remind
-export const deleteRemind = (remind_id) => ({
+export const deleteRemind = ({remind_id, taskId}) => ({
     type: types.DELETE_REMIND_REQUEST,
-    payload: remind_id
+    payload: {
+        remind_id,
+        taskId
+    }
 });
 
 export const deleteRemindSuccess = (remind_id) => ({
@@ -228,9 +234,9 @@ export const deleteOffer = payload => ({
     payload
 });
 
-export const deleteOfferSuccess = (offer_id) => ({
+export const deleteOfferSuccess = (payload) => ({
     type: types.DELETE_OFFER_SUCCESS,
-    payload: offer_id
+    payload
 });
 
 export const deleteOfferFail = (error) => ({
@@ -238,9 +244,9 @@ export const deleteOfferFail = (error) => ({
     error: error,
 });
 // ==== upload document to offer
-export const uploadDocumentToOffer = (data, cb) => ({
+export const uploadDocumentToOffer = (data, cb, taskId) => ({
     type: types.UPLOAD_DOCUMENT_TO_OFFER_REQUEST,
-    payload: { data, successCallBack: cb }
+    payload: { data, successCallBack: cb, taskId }
 });
 
 export const uploadDocumentToOfferSuccess = (payload) => ({
@@ -253,9 +259,9 @@ export const uploadDocumentToOfferFail = (error) => ({
     error: error,
 });
 // === delete document to offer
-export const deleteDocumentToOffer = (data, cb) => ({
+export const deleteDocumentToOffer = (data, cb, taskId) => ({
     type: types.DELETE_DOCUMENT_TO_OFFER_REQUEST,
-    payload: { data, removeCallBack: cb }
+    payload: { data, removeCallBack: cb, taskId }
 });
 
 export const deleteDocumentToOfferSuccess = (payload) => ({
@@ -694,37 +700,94 @@ export const updateNameDescriptionTaskSuccess = (payload) => ({
     payload
 });
 
-// Get project group- listpart
-export const getProjectGroup = (payload) => ({
-    type: types.GET_PROJECT_GROUP_LISTPART_REQUEST,
-    payload
-});
-
-export const getProjectGroupSuccess = (payload) => ({
-    type: types.GET_PROJECT_GROUP_LISTPART_SUCCESS,
-    payload
-});
 export const updateNameDescriptionTaskFail = (error) => ({
     type: types.UPDATE_NAME_DESCRIPTION_TASK_FAIL,
     error: error
 })
+// Get project group- listpart
+// export const getProjectGroup = (payload) => ({
+//     type: types.GET_PROJECT_GROUP_LISTPART_REQUEST,
+//     payload
+// });
 
-export const getProjectGroupFail = (error) => ({
-    type: types.GET_PROJECT_GROUP_LISTPART_FAIL,
-    error: error,
-});
+// export const getProjectGroupSuccess = (payload) => ({
+//     type: types.GET_PROJECT_GROUP_LISTPART_SUCCESS,
+//     payload
+// });
+
+// export const getProjectGroupFail = (error) => ({
+//     type: types.GET_PROJECT_GROUP_LISTPART_FAIL,
+//     error: error,
+// });
 // Get project list - list part
-export const getListProject = (payload) => ({
-    type: types.GET_LIST_PROJECT_LISTPART_REQUEST,
+// export const getListProject = (payload) => ({
+//     type: types.GET_LIST_PROJECT_LISTPART_REQUEST,
+//     payload
+// });
+
+// export const getListProjectSuccess = (payload) => ({
+//     type: types.GET_LIST_PROJECT_LISTPART_SUCCESS,
+//     payload
+// });
+
+// export const getListProjectFail = (error) => ({
+//     type: types.GET_LIST_PROJECT_LISTPART_FAIL,
+//     error: error,
+// });
+// Get project detail
+export const getProjectDetail = (payload) => ({
+    type: types.GET_PROJECT_DETAIL_REQUEST,
     payload
 });
 
-export const getListProjectSuccess = (payload) => ({
-    type: types.GET_LIST_PROJECT_LISTPART_SUCCESS,
+export const getProjectDetailSuccess = (payload) => ({
+    type: types.GET_PROJECT_DETAIL_SUCCESS,
     payload
 });
 
-export const getListProjectFail = (error) => ({
-    type: types.GET_LIST_PROJECT_LISTPART_FAIL,
+export const getProjectDetailFail = (error) => ({
+    type: types.GET_PROJECT_DETAIL_FAIL,
     error: error,
 });
+// Project List Basic - Listpart
+export const getProjectListBasic = (payload) => ({
+    type: types.GET_PROJECT_LIST_BASIC_REQUEST,
+    payload
+});
+
+export const getProjectListBasicSuccess = (payload) => ({
+    type: types.GET_PROJECT_LIST_BASIC_SUCCESS,
+    payload
+});
+
+export const getProjectListBasicFail = (error) => ({
+    type: types.GET_PROJECT_LIST_BASIC_FAIL,
+    error: error,
+});
+// 
+
+export const chooseProject = payload => ({
+    type: types.CHOOSE_PROJECT,
+    payload
+});
+
+export const chooseTask = payload => ({
+    type: types.CHOOSE_TASK,
+    payload
+});
+
+export const filterTaskByType = payload => ({
+    type: types.FILTER_TASK_BY_TYPE,
+    payload
+});
+
+// Search Task
+export const searchTask = payload => ({
+    type: types.SEARCH_TASK,
+    payload
+});
+// Search Project
+export const searchProject = payload => ({
+    type: types.SEARCH_PROJECT,
+    payload
+})

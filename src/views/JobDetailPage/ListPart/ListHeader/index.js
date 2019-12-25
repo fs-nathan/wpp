@@ -1,14 +1,14 @@
 import React from 'react';
 import { IconButton, Typography } from '@material-ui/core';
 import styled from 'styled-components';
-import { mdiPlus,mdiChevronDown } from '@mdi/js';
+import { mdiPlus, mdiChevronDown } from '@mdi/js';
 import Icon from '@mdi/react';
 import SearchInput from '../../../../components/SearchInput';
 import CreateJobModal from './CreateJobModal';
-
+import { WrapperContext } from '../../index'
 
 const Header = styled.div`
-  padding: 0 15px;
+  padding: 0 3px 0 15px;
   height: 77px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > * {
@@ -26,6 +26,7 @@ const HeaderBottomBox = styled.div`
 `;
 
 const HeaderText = styled(Typography)`
+  width: 315px;
   font-weight: 500;
   font-size: 15px;
   white-space: nowrap;
@@ -53,13 +54,14 @@ const ButtonIcon = styled(IconButton)`
 `
 
 function ListHeaderSelect({ setShow }) {
+  const value = React.useContext(WrapperContext)
   const openListProject = () => {
     setShow(true)
   }
-
+  const data = value.projectDetail
   return (
-    <div onClick={openListProject} style={{ marginTop: 8}}>
-      <HeaderText component={'div'} >Phát triển ứng dụng Mytour Việt Nam...</HeaderText>
+    <div onClick={openListProject} style={{ marginTop: 8 }}>
+      <HeaderText component={'div'} >{data.name}</HeaderText>
       <ButtonIcon
 
         style={{
@@ -67,35 +69,37 @@ function ListHeaderSelect({ setShow }) {
           padding: "7px"
         }}
       >
-        <Icon path={mdiChevronDown} size={1.2}/>
+        <Icon path={mdiChevronDown} size={1.2} />
       </ButtonIcon>
     </div>
   )
 }
 
 function ListHeader(props) {
-  // const [open, setOpen] = React.useState(false);
-  // const handleClose = () => {
-  //   setOpen(false);
-  // }
-  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
-
+  const value = React.useContext(WrapperContext)
+  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false)
+  const searchListTask = (e) => {
+    value.searchTask(e.target.value)
+  }
   return (
-      <div >
+    <div >
       <Header>
         <ListHeaderSelect {...props} />
         <HeaderBottomBox>
-          <SearchInput placeholder='Tìm công việc trong dự án...' style={{ height: 'auto'}}/>
+          <SearchInput 
+            placeholder='Tìm công việc trong dự án...' 
+            style={{ height: 'auto' }}
+            onChange={e => searchListTask(e)}
+            />
           <ButtonIcon
             style={{
               marginLeft: "10px",
               padding: "7px"
             }}
             onClick={() => {
-            // handleClose()
-            setOpenCreateJobModal(true)
-          }} >
-            <Icon path={mdiPlus} size={1.2}/>
+              setOpenCreateJobModal(true)
+            }} >
+            <Icon path={mdiPlus} size={1.2} />
           </ButtonIcon>
         </HeaderBottomBox>
       </Header>

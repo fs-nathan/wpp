@@ -4,22 +4,21 @@ import {
   Table,
   TableRow,
   TableHead,
-  TableBody,
-  TablePagination
+  TableBody
+  // TablePagination
 } from '@material-ui/core';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import {
   mdiAccountPlusOutline,
   mdiDownloadOutline,
-  mdiTrashCanOutline
+  mdiContentCopy
 } from '@mdi/js';
 
-// import { getDocumentShareFromMe } from './ContentDocumentAction';
 import {
   selectDocumentItem,
-  resetListSelectDocument
+  resetListSelectDocument,
+  actionFetchListDocumentFromMe
 } from '../../../../actions/documents';
-import AlertModal from '../../../../components/AlertModal';
 import { FileType } from '../../../../components/FileType';
 
 import {
@@ -36,32 +35,17 @@ import {
 import ColorTypo from '../../../../components/ColorTypo';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import LoadingBox from '../../../../components/LoadingBox';
-
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
 
 const DocumentShareFromMe = props => {
-  const [data] = useState([
-    {
-      id: '1111',
-      content: 20,
-      name: 'Dự án thiết kế website Phúc An',
-      type: 'folder',
-      location: 'Văn Thư',
-      size: '10.3 Kb',
-      date: '02/02/2019',
-      userShare: 'Tra Quoc Huy',
-      userCreate: 'Cao Văn Hưng'
-    }
-  ]);
-  const [page] = useState(0);
-  const [rowsPerPage] = useState(10);
-  const [alert, setAlert] = useState(false);
+  const { isLoading, listDocumentFromMe: listData } = props;
   const [selected, setSelected] = useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   useEffect(() => {
-    fetDataRecentDocument();
+    fetDataDocumentShareFromMe();
+    // eslint-disable-next-line
   }, []);
   useEffect(() => {
     return () => {
@@ -69,14 +53,16 @@ const DocumentShareFromMe = props => {
     };
     // eslint-disable-next-line
   }, []);
-  const fetDataRecentDocument = async () => {
-    setIsLoading(true);
-    // const { data } = await getDocumentShareFromMe();
-    setIsLoading(false);
+  useEffect(() => {
+    if (isEmpty(props.selectedDocument)) setSelected([]);
+    // eslint-disable-next-line
+  }, [props.selectedDocument]);
+  const fetDataDocumentShareFromMe = (params = {}, quite = false) => {
+    props.actionFetchListDocumentFromMe(params, quite);
   };
   const handleSelectAllClick = e => {
-    setSelected(selectAll(e, data));
-    props.selectDocumentItem(selectAllRedux(e, data));
+    setSelected(selectAll(e, listData));
+    props.selectDocumentItem(selectAllRedux(e, listData));
   };
   const isSelected = id => selected.indexOf(id) !== -1;
   const handleSelectItem = item => {
@@ -85,15 +71,14 @@ const DocumentShareFromMe = props => {
   };
   const moreAction = [
     { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
+    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' },
     {
       icon: mdiDownloadOutline,
       text: 'Tải xuống',
       type: 'download',
       action: () => {}
-    },
-    { icon: mdiTrashCanOutline, text: 'Xóa', action: () => setAlert(true) }
+    }
   ];
-  const handleChangePage = () => {};
   if (isLoading) {
     return <LoadingBox />;
   }
@@ -105,9 +90,9 @@ const DocumentShareFromMe = props => {
             <StyledTableHeadCell>
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === data.length}
+                checked={selected.length === listData.length}
                 indeterminate={
-                  selected.length > 0 && selected.length < data.length
+                  selected.length > 0 && selected.length < listData.length
                 }
               />
             </StyledTableHeadCell>
@@ -133,7 +118,7 @@ const DocumentShareFromMe = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(file => {
+          {listData.map(file => {
             const isItemSelected = isSelected(file.id);
             return (
               <TableRow className="table-body-row" key={file.id}>
@@ -167,31 +152,18 @@ const DocumentShareFromMe = props => {
           })}
         </TableBody>
       </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={1}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        // onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-      <AlertModal
-        open={alert}
-        setOpen={setAlert}
-        content={t('views.user_page.left_part.department_info.alert_content')}
-        onConfirm={() => console.log('ok')}
-      />
     </Fragment>
   );
 };
 
 export default connect(
   state => ({
-    selectedDocument: state.documents.selectedDocument
+    selectedDocument: state.documents.selectedDocument,
+    listDocumentFromMe: state.documents.listDocumentFromMe
   }),
   {
     selectDocumentItem,
-    resetListSelectDocument
+    resetListSelectDocument,
+    actionFetchListDocumentFromMe
   }
 )(DocumentShareFromMe);

@@ -11,6 +11,7 @@ import {
   Link,
   Divider
 } from '@material-ui/core';
+import { Routes } from '../../constants/routes';
 import { actionRegister } from '../../actions/account';
 import MainAccount from '../../components/MainAccount/MainAccount';
 import * as images from '../../assets';
@@ -27,8 +28,6 @@ class RegisterPage extends Component {
       this.setState({ isRegistered: true });
     } catch (error) {
       console.log(error);
-      // TODO: will be removed when integrate API
-      this.setState({ isRegistered: true });
     }
   };
 
@@ -80,7 +79,7 @@ class RegisterPage extends Component {
               </form>
               <div className="bottom-des">
                 Bạn đã có tài khoản?
-                <Link href="/login" className="btn-link">
+                <Link href={Routes.LOGIN} className="btn-link">
                   Đăng nhập
                 </Link>
               </div>
@@ -96,19 +95,28 @@ class RegisterPage extends Component {
           )}
           {isRegistered && (
             <div className="register-success">
-              <Divider className="divider"/>
+              <Divider className="divider" />
               <p className="title">Cảm ơn bạn đã đăng ký sử dụng Workplus!</p>
               <p className="description">
-                Một email kích hoạt đăng ký đã gửi tới email của bạn. Vui lòng
-                kiểm tra hộp thư đến (hoặc hòm thư Spam) để hoàn tất đăng ký.
+                Một mã xác thực đã được gửi tới email của bạn. Vui lòng kiểm tra
+                hộp thư đến (hoặc hòm thư Spam) để hoàn tất đăng ký.
               </p>
               <p>
                 Liên hệ <strong>09.1800.6181</strong> để được hỗ trợ!
               </p>
-              <Divider className="divider"/>
+              <Divider className="divider" />
+              <Button
+                variant="contained"
+                className="btn-confirm-register"
+                onClick={() => {
+                  window.location.href = Routes.CONFIRM_REGISTRATION;
+                }}
+              >
+                Xác thực tài khoản
+              </Button>
               <div className="bottom-des">
                 Quay lại trang
-                <Link href="/login" className="btn-link">
+                <Link href={Routes.LOGIN} className="btn-link">
                   Đăng nhập
                 </Link>
               </div>

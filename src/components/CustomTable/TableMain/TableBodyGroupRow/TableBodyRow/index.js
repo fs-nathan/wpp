@@ -7,22 +7,10 @@ import { includes } from 'lodash';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
 import { get } from 'lodash';
+import './style.scss';
 
-const StyledTableBodyRow = styled(TableRow)`
-  background-color: #fff;
-  border-bottom: 1px solid rgb(239, 239, 239);
-  text-decoration: none;
-  &:hover {
-    cursor: pointer;
-    background-color: #f2f5fa;
-  }
-`;
-
-const StyledTableBodyCell = styled(TableCell)`
-  padding: 8px;
-  font-size: 14px;
-  max-width: 300px;
-`;
+const StyledTableBodyRow = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyRow___row ${className}`} {...rest} />;
+const StyledTableBodyCell = ({ className = '', ...rest }) => <TableCell className={`comp_CustomTable_TableBodyRow___cell ${className}`} {...rest} />;
 
 function TableBodyRow({ index, row, group }) {
 

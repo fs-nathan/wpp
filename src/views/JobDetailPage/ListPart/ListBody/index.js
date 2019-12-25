@@ -13,7 +13,7 @@ const StyledList = styled(List)`
     }
   }
   &:last-child {
-    padding: 10px 0 130px 0;
+    margin: 10px 0 20px 0;
   }
 `;
 const Body = styled(Scrollbars)`
@@ -21,21 +21,10 @@ const Body = styled(Scrollbars)`
   height: 100%;
 `;
 
-
-// const detailProject = [
-//   { progress: 36, title: 'Phân tích ứng dụng ...', description: 'Đã thêm thành viên', status: 'Quá hạn', notification: 2, time: '34 phút' },
-//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' },
-//   { progress: 90, title: 'Thiết kế giao diện', description: 'Sử dụng phần mềm để thiết lập', status: 'Đang chờ', notification: 1, time: '34 phút' }
-
-// ]
-
 function ListBody() {
   const value = React.useContext(WrapperContext)
   let data = []
+
   let listTaskDetail = value.listTaskDetail
   if (listTaskDetail) {
     data = listTaskDetail.tasks
@@ -44,8 +33,9 @@ function ListBody() {
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       {data.map((item, key) => {
+        
         return (
-          <StyledList key={key}>
+          <StyledList key={key} >
             <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
             {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
           </StyledList>

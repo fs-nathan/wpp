@@ -81,7 +81,9 @@ const NoticeModal = props => {
             </p>
           </p>
         )}
-        <p className="notice-text">Bạn hãy lựa chọn</p>
+        <p className="notice-text">
+          Bạn hãy lựa chọn nhóm PRO hoặc DEMO để sử dụng đầy đủ tính năng.
+        </p>
         {type === 'intro' ? (
           <div className="notice-btn-container">
             <Button
@@ -89,7 +91,7 @@ const NoticeModal = props => {
               className="notice-btn"
               onClick={demoMode}
             >
-              Trải nghiệm demo
+              Chọn nhóm tài khoản
             </Button>
             <Button
               variant="outlined"

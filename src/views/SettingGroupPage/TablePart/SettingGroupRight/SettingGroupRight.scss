@@ -15,15 +15,14 @@
   overflow: auto;
   height: calc(100vh - 125px);
   .action-btn {
-    width: 66px;
+    width: 80px;
+    height: 30px;
     line-height: 1;
     border-radius: 2px;
     margin-right: 5px;
     &.extend {
       background: #02c432;
       border-color: #02c432;
-      width: 95px;
-      height: 38px;
       color: #fff;
       &:hover {
         box-shadow: none;
@@ -34,8 +33,6 @@
     &.delete {
       background-color: #fb3b00;
       border-color: #fb3b00;
-      width: 95px;
-      height: 38px;
       color: #fff;
       &:hover {
         box-shadow: none;
@@ -53,7 +50,8 @@
     display: flex;
     .detail-left {
       padding: 25px;
-      min-height: calc(100vh - 120px);
+      border-right: 1px solid #ededed;
+      min-height: calc(100vh - 175px);
       width: 60%;
     }
     .other-info-order-detail {
@@ -171,6 +169,7 @@
           height: 46px;
           line-height: 46px;
           margin-left: 20px;
+          box-shadow: none;
         }
       }
     }
@@ -181,7 +180,9 @@
       width: 60%;
       padding: 20px;
       overflow: auto;
-      margin-right: -1px;
+      // margin-right: -1px;
+      border-right: 1px solid #ededed;
+      min-height: calc(100vh - 165px);
       .MuiInputLabel-animated {
         font-size: 16px;
       }
@@ -204,6 +205,9 @@
           &:focus {
             box-shadow: none;
           }
+        }
+        .btn-cancel {
+          margin-left: 25px;
         }
       }
     }
@@ -236,11 +240,22 @@
       }
     }
   }
+
+  .MuiFormControl-fullWidth {
+    .MuiInputBase-input {
+      font-size: 15px;
+      color: #111;
+    }
+    .MuiInput-underline.Mui-disabled:before {
+      border-bottom-style: solid;
+      border-color: #eaeaea;
+    }
+  }
 }
 
 // Style for group info page
 .setting-group-info {
-  padding: 10px 20px;
+  padding: 20px 30px 20px 20px;
   display: flex;
   .divider {
     margin: 5px 0;
@@ -255,6 +270,9 @@
         font-style: italic;
       }
       .input-item {
+        &:first-child {
+          margin-top: 0;
+        }
         .MuiInputLabel-shrink {
           transform: translate(0, 1.5px) scale(1);
         }
@@ -274,6 +292,9 @@
           height: 40px;
           font-weight: 500;
         }
+        .btn-cancel {
+          margin-left: 25px;
+        }
       }
     }
   }
@@ -284,9 +305,21 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .crop-image-btn {
-        &:hover {
-          background-color: transparent;
+      .action-update-img {
+        display: flex;
+        align-items: center;
+        .MuiDivider-vertical {
+          height: 18px;
+          margin: 0 3px;
+        }
+        .crop-image-btn {
+          text-transform: none;
+          color: #2196f3;
+          font-size: 13px;
+          font-weight: normal;
+          &:hover {
+            background-color: transparent;
+          }
         }
       }
     }
@@ -299,19 +332,15 @@
       text-align: center;
       margin-top: 20px;
       margin-bottom: 40px;
+      min-height: 120px;
       .img-logo {
         width: 120px;
         height: 120px;
       }
       .img-cover {
         max-width: 600px;
+        width: auto;
         height: 200px;
-      }
-    }
-
-    &.setting-cover {
-      .image-content {
-        background-color: #f0f8ff;
       }
     }
   }
@@ -322,9 +351,11 @@
   padding: 0 20px;
   display: flex;
   .setup-info-left {
-    margin-top: 20px;
+    padding-top: 20px;
     width: 50%;
     padding-right: 20px;
+    border-right: 1px solid #ededed;
+    min-height: calc(100vh - 145px);
     .setup-content {
       margin-top: 20px;
       .setup-menu-list {
@@ -349,7 +380,7 @@
   }
   .setup-info-right {
     width: 50%;
-    margin-top: 20px;
+    padding-top: 20px;
     padding-left: 20px;
     padding-right: 20px;
     .plugin-content {
@@ -451,14 +482,34 @@
   &.head {
     background-color: rgb(237, 237, 237);
     font-weight: 500;
-    font-size: 12px;
+    font-size: 13px;
+    color: #666;
   }
   &.body {
-    font-size: 12px;
-    padding: 5px;
+    font-size: 14px;
+    padding: 10px 5px;
     border-bottom: 1px solid rgb(238, 238, 238);
   }
   &.last-item {
     padding-right: 28px;
   }
+}
+.cus-cel {
+  font-size: 14px;
+}
+.code-oder {
+  text-transform: uppercase;
+  color: #2196f3;
+  font-weight: 500;
+  cursor: pointer;
+}
+.table-body-row {
+  &:hover {
+    cursor: pointer;
+    background-color: transparent;
+  }
+}
+.MuiTableCell-root {
+  font-size: 14px;
+  padding: 5px 10px;
 }

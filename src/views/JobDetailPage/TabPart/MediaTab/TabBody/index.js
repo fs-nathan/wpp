@@ -118,40 +118,16 @@ const MediaBox = (props) => {
 
               {image.images.map((item, idx) => {
                 return (
-
                   <ImageMedia key={idx}>
                     <Image src={item.url} alt='avatar' />
                     <MenuListItem />
                   </ImageMedia>
-
                 )
               })}
             </WrapImage>
           </MediaImage>
         );
       })}
-      {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
-        <SubHeader component='span'>09/09/2019</SubHeader>
-      </GridListTile>
-      {Array.from({ length: 7 }).map((_, index) => {
-        return (
-          <ImageMedia key={`1-${index}`}>
-            <Image src={avatar} alt='avatar' />   
-            <MenuListItem />
-          </ImageMedia>
-        );
-      })}
-      <GridListTile key='header-2' cols={5} style={{ height: 'auto' }}>
-        <SubHeader component='span'>08/09/2019</SubHeader>
-      </GridListTile>
-      {Array.from({ length: 3 }).map((_, index) => {
-        return (
-          <ImageMedia key={`2-${index}`}>
-            <Image src={avatar} alt='avatar' />
-            <MenuListItem />
-          </ImageMedia>
-        );
-      })} */}
     </GridList>
   );
 }
@@ -193,8 +169,6 @@ const StyledMenuFile = styled.div`
 `
 
 const FileBox = (props) => {
-  console.log('props.file:::', props);
-
   // const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 

@@ -70,7 +70,7 @@ class HeaderGroup extends Component {
               </li>
             </ul>
             <button
-              className="btn btn-warning mr-3"
+              className="btn btn-warning mr-3 right-header-button"
               onClick={() => this.handleClick(SETTING_GROUP.CREATE_ORDER)}
             >
               + TẠO ĐƠN HÀNG

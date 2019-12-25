@@ -1,0 +1,15 @@
+.comp_CustomTable_TableBodyRow___row {
+  background-color: #fff;
+  border-bottom: 1px solid rgb(239, 239, 239);
+  text-decoration: none;
+  &:hover {
+    cursor: pointer;
+    background-color: #f2f5fa;
+  }    
+};
+
+.comp_CustomTable_TableBodyRow___cell {
+  padding: 8px;
+  font-size: 14px;
+  max-width: 300px;
+};

@@ -99,7 +99,7 @@ const MemberMenuLists = (props) => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteRemindWByRemindId(props.item.id)
+    props.deleteRemindWByRemindId({remindId:props.item.id, taskId: props.taskId})
   }
 
   return (

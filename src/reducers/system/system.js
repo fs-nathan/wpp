@@ -5,7 +5,8 @@ export const initialState = {
   anchorDrawer: 'right',
   visibleNoticeModal: true,
   isDocumentDetail: false,
-  documentFile: null
+  documentFile: null,
+  breadCrumbs: []
 };
 
 const system = (state = initialState, action) => {
@@ -24,6 +25,8 @@ const system = (state = initialState, action) => {
         isDocumentDetail: action.payload.isOpen,
         documentFile: action.payload.item
       };
+    case actionTypes.CHANGE_DOCUMENT_BREAD_CRUMBS:
+      return { ...state, breadCrumbs: action.payload };
     default:
       return state;
   }

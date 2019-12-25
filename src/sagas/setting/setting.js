@@ -1,27 +1,30 @@
-// // import { call, put } from 'redux-saga/effects';
-// import * as actionTypes from '../../constants/actions/system/system';
+import { call, put } from 'redux-saga/effects';
+import * as actionTypes from '../../constants/actions/setting/setting';
+import { apiService } from '../../constants/axiosInstance';
 
-// const actionVisibleDrawerMessage = option => ({
-//   type: actionTypes.CHANGE_DRAWER,
-//   payload: option
-// });
-// const openNoticeModal = () => ({
-//   type: actionTypes.CHANGE_NOTICE_MODAL,
-//   payload: true
-// });
-// const closeNoticeModal = () => ({
-//   type: actionTypes.CHANGE_NOTICE_MODAL,
-//   payload: false
-// });
+async function doGetGroupDetail() {
+  try {
+    const config = {
+      url: '/get-group-detail',
+      method: 'get'
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
-// const actionToggleSearchModal = (isVisible = false) => ({
-//   type: actionTypes.TOGGLE_SEARCH_MODAL,
-//   payload: isVisible
-// });
+function* getGroupDetail() {
+  try {
+    const { profile } = yield call(doGetGroupDetail);
+    yield put({
+      type: actionTypes.FETCH_GROUP_DETAIL_SUCCESS,
+      payload: profile || {}
+    });
+  } catch (error) {
+    yield put({ type: actionTypes.SETTING_HIDE_LOADING });
+  }
+}
 
-// export {
-//   actionVisibleDrawerMessage,
-//   openNoticeModal,
-//   closeNoticeModal,
-//   actionToggleSearchModal
-// };
+export { getGroupDetail };

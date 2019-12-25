@@ -76,7 +76,7 @@ const NotificationWorkPlus = props => {
                   <TableCell align="left">{row.description}</TableCell>
                   <TableCell align="right">
                     <div className={`action-btn ${row.type}`}>
-                      {row.btnText}
+                      <span>{row.btnText}</span>
                     </div>
                   </TableCell>
                 </TableRow>

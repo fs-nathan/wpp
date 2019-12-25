@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ColorChip from '../../../../components/ColorChip';
+import { WrapperContext } from '../../index'
 
 const Container = styled.div`
   padding: 10px 15px;
@@ -21,16 +22,23 @@ const Container = styled.div`
 
 const jobTypes = [
   'Tất cả',
-  'Đang chờ',
-  'Đang làm',
-  'Hoàn thành',
-  'Quá hạn',
-  'Tạm dừng',
-];
+  'Đang chờ',   // Waiting
+  'Đang làm',   // Doing
+  'Hoàn thành', // Complete
+  'Quá hạn',    // Expired
+  'Tạm dừng',   // Stop
+]
 
 function ListBanner() {
   
-  const [selected, setSelected] = React.useState(0);
+  const value = React.useContext(WrapperContext)
+  const [selected, setSelected] = React.useState(0)
+
+
+  const handleChangeFilterType = (typeIdx) => {
+    value.filterTaskByType(typeIdx)
+    setSelected(typeIdx) 
+  }
 
   return (
     <Container>
@@ -38,7 +46,7 @@ function ListBanner() {
         <ColorChip 
           key={index} 
           label={jobType} 
-          onClick={() => setSelected(index)}
+          onClick={() => handleChangeFilterType(index)}
           color={selected === index ? 'light-blue' : 'white'}
           size='small'
         />

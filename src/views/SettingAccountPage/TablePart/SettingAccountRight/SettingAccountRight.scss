@@ -106,6 +106,7 @@
       margin: 20px;
       .MuiTableCell-root {
         font-size: 14px;
+        padding: 5px 10px;
       }
       .action-btn {
         padding: 0.25rem;
@@ -114,6 +115,9 @@
         min-width: 65px;
         font-size: 11px;
         text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         &.danger {
           background: rgb(250, 195, 191);
           color: #ec1000;
@@ -197,4 +201,7 @@
       font-size: 17px;
     }
   }
+}
+.cus-toast {
+  background-color: #43a047;
 }
