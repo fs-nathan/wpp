@@ -73,8 +73,9 @@ const CustomRadio = styled(({ checked = false, ...rest }) => <span {...rest} />)
 function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
 
   const { projectId } = useParams();
-  const { data: { groupTasks }, } = listGroupTask;
+  const { data: { groupTasks: _groupTasks }, } = listGroupTask;
 
+  const [groupTasks, setGroupTasks] = React.useState([]);
   const [groupTask, setGroupTask] = React.useState(null);
   const [name, setName, errorName] = useRequiredString('', 100);
   const [progressType, setProgressType] = React.useState(0); 
@@ -85,22 +86,26 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
   const [endDate, setEndDate] = React.useState(moment().toDate());
   const [priority, setPriority] = React.useState(0);
   const [jobHandle, setJobHandle] = React.useState(0);
-  
+
   React.useEffect(() => {
-    if (groupTasks.length > 0) {
-      setGroupTask(groupTasks[0]);
-    }
-  }, [groupTasks]);
+    setGroupTasks([{ id: '__default__', name: 'Chưa phân loại' }, ..._groupTasks]);
+    setGroupTask({ id: '__default__', name: 'Chưa phân loại' });
+  }, [_groupTasks]);
 
   function handleCreateTask() {
     let options = {
       name,
       projectId,
-      groupTask: get(groupTask, 'id'),
       description,
       priority,
       typeAssign: jobHandle,
     };
+    if (get(groupTask, 'id') !== '__default__') {
+      options = {
+        ...options,
+        groupTask: get(groupTask, 'id'),
+      }
+    }
     if (progressType < 2) {
       options = {
         ...options,
