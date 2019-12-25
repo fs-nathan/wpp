@@ -64,7 +64,7 @@ const CustomRadio = styled(({ checked = false, ...rest }) => <span {...rest} />)
   border-radius: 999px;
   text-align: center;
   padding: 8px;
-  background-color: ${props => props.checked ? '#ffd3b4' : 'rgba(224, 224, 224, 1)'};
+  background-color: ${props => props.checked ? '#48bb78' : 'rgba(224, 224, 224, 1)'};
   &:hover {
     cursor: pointer;
   }
@@ -72,6 +72,7 @@ const CustomRadio = styled(({ checked = false, ...rest }) => <span {...rest} />)
 
 function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
 
+  const { projectId } = useParams();
   const { data: { groupTasks }, } = listGroupTask;
 
   const [groupTask, setGroupTask] = React.useState(null);
@@ -94,6 +95,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
   function handleCreateTask() {
     let options = {
       name,
+      projectId,
       groupTask: get(groupTask, 'id'),
       description,
       priority,
@@ -102,8 +104,8 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
     if (progressType < 2) {
       options = {
         ...options,
-        startDate,
-        endDate,
+        startDate: moment(startDate).format('YYYY-MM-DD'),
+        endDate: moment(endDate).format('YYYY-MM-DD'),
       }
     }
     if (progressType < 1) {
@@ -154,6 +156,21 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
               {get(errorName, 'message', '')}
             </ColorTypo>
           }
+        />
+        <CustomTextField
+          value={description}
+          onChange={evt => setDescription(evt.target.value)}
+          margin="normal"
+          variant="outlined"
+          label='Mô tả công việc'
+          fullWidth
+          multiline
+          rowsMax='4'
+          helperText={
+            <ColorTypo variant='caption' color='red'>
+              {get(errorDescription, 'message', '')}
+            </ColorTypo>
+          } 
         />
         <FormControl component="fieldset" fullWidth>
           <StyledFormLabel component="legend">Tiến độ công việc</StyledFormLabel>
@@ -213,21 +230,6 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
           </TimeBox>
           </>
         )}
-        <CustomTextField
-          value={description}
-          onChange={evt => setDescription(evt.target.value)}
-          margin="normal"
-          variant="outlined"
-          label='Mô tả nhóm công việc'
-          fullWidth
-          multiline
-          rowsMax='4'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorDescription, 'message', '')}
-            </ColorTypo>
-          } 
-        />
         <FormControl component="fieldset" fullWidth>
           <StyledFormLabel component="legend">Mức độ ưu tiên</StyledFormLabel>
           <CustomRadioGroup>
@@ -261,7 +263,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doCreateTask: ({ name, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) => dispatch(createTask({ name, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, })),
+    doCreateTask: ({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) => dispatch(createTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, })),
   }
 };
 

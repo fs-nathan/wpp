@@ -3,13 +3,14 @@ import { createTaskSuccess, createTaskFail } from '../../actions/task/createTask
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, CREATE_TASK } from '../../constants/events';
 
-async function doCreateTask({ name, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) {
+async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) {
   try {
     const config = {
       url: '/task/create',
       method: 'post',
       data: {
         name,
+        project_id: projectId,
         group_task: groupTask,
         type_assign: typeAssign,
         priority: priority,

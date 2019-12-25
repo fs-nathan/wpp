@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 
 const StyledScrollbars = styled(Scrollbars)`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  min-height: 450px;
+  min-height: calc(100vh - 64px - 64px);
   & > div:nth-child(3) {
     z-index: 999;
   }

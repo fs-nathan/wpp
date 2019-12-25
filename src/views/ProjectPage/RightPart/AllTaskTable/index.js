@@ -120,6 +120,7 @@ function decodeStateName(stateName) {
 }
 
 function displayDate(time, date) {
+  console.log(time, date)
   if (
     (date instanceof Date && !isNaN(date))
   ) {
@@ -238,12 +239,12 @@ function AllTaskTable({
             }, {
               label: 'Bắt đầu',
               field: (row) => <DateBox>
-                                {displayDate(new Date(get(row, 'start_time')), new Date(get(row, 'start_date')))}
+                                {displayDate(get(row, 'start_time'), new Date(get(row, 'start_date')))}
                               </DateBox>,
             }, {
               label: 'Kết thúc',
               field: (row) => <DateBox>
-                                {displayDate(new Date(get(row, 'end_time')), new Date(get(row, 'end_date')))}
+                                {displayDate(get(row, 'end_time'), new Date(get(row, 'end_date')))}
                               </DateBox>,
             }, {
               label: 'Hoàn thành',
