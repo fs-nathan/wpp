@@ -136,11 +136,16 @@ const WrapList = styled(List)`
 `
 
 const LocationShareBox = () => {
+  const value = React.useContext(WrapperContext)
+  const searchLocationTabPart = (e) => {
+    value.searchLocation(e.target.value)
+  }
   return (
     <React.Fragment>
       <SearchInput
         placeholder="Nhập từ khóa"
         fullWidth
+        onChange={e => searchLocationTabPart(e)}
       />
       <WrapList subheader={<li />}>
         <CustomListItem />

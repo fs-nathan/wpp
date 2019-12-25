@@ -1,12 +1,13 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
-
+import { searchArrayTabpart } from '../../helpers/jobDetail/arrayHelper'
 // Initial state for store
 const initialState = {
     locations: [],
     isFetching: false,
     dataFetched: false,
     error: false,
+    detailLocation: [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -21,7 +22,8 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                locations: action.payload
+                locations: action.payload,
+                detailLocation: action.payload.locations,
             };
         case types.GET_LOCATION_TABPART_FAIL:
             return {
@@ -29,6 +31,11 @@ export default function reducer(state = initialState, action) {
                 isFetching: false,
                 dataFetched: false,
                 error: true,
+            }
+        case types.SEARCH_LOCATION_TABPART:
+            return {
+                ...state,
+                locations: searchArrayTabpart(state.detailLocation, action.payload, "address"),
             }
         default:
             return state;

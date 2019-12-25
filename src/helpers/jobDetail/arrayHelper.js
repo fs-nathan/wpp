@@ -45,6 +45,13 @@ export const searchProjectByProjectName = (groups, keyword) => {
             .map(item => ({ ...item, projects: item.projects.filter(project => project.name.toLowerCase().match(keyword.toLowerCase())) }))
         : groups
 }
+
+export const searchArrayTabpart = (groups, keyword, field) => {
+    return keyword
+        ? groups.filter(item => item[field].toString().toLowerCase().match(keyword.toLowerCase()))
+        : groups
+}
+
 export const getFirstProjectDetail = projectGroups => {
     let projectDetail
     try {

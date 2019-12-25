@@ -791,3 +791,16 @@ export const searchProject = payload => ({
     type: types.SEARCH_PROJECT,
     payload
 })
+// Search TabPart
+export const searchSubTask = payload => ({
+    type: types.SEARCH_SUBTASK_TABPART,
+    payload
+})
+export const searchRemind = payload => ({
+    type: types.SEARCH_REMIND_TABPART,
+    payload
+})
+export const searchLocation = payload => ({
+    type: types.SEARCH_LOCATION_TABPART,
+    payload
+})

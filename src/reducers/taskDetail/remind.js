@@ -1,11 +1,13 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
+import { searchArrayTabpart } from '../../helpers/jobDetail/arrayHelper'
 // Initial state for store
 const initialState = {
     remind: [],
     isFetching: false,
     dataFetched: false,
     error: false,
+    detailRemind: [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -20,8 +22,14 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                remind: action.payload.reminds.reverse()
+                remind: action.payload.reminds.reverse(),
+                detailRemind: action.payload.reminds.reverse()
             };
+        case types.SEARCH_REMIND_TABPART:
+            return {
+                ...state,
+                remind: searchArrayTabpart(state.detailRemind, action.payload, "content"),
+            }
         case types.GET_REMIND_FAIL:
             return {
                 ...state,
@@ -34,6 +42,7 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: true
             }
+        
         case types.POST_REMIND_TIME_DETAIL_SUCCESS:
             return {
                 ...state,

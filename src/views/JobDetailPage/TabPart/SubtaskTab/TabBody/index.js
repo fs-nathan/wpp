@@ -438,6 +438,9 @@ function TabBody(props) {
     props.postSubTaskByTaskId(taskId, name)
     setName("")
   }
+  const searchSubTaskTabPart = (e) => {
+    props.searchSubTask(e.target.value)
+  }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
@@ -459,7 +462,10 @@ function TabBody(props) {
           </NewWork>
           :
           <Div>
-            <Search placeholder={'Nhập từ khóa'} />
+            <Search 
+              placeholder={'Nhập từ khóa'}
+              onChange={e => searchSubTaskTabPart(e)}
+            />
           </Div>
         }
         <AllSubtaskList {...props} />

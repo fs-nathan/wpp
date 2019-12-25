@@ -181,6 +181,9 @@ const mapDispatchToProps = dispatch => {
         filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
         searchTask: (data) => { dispatch(taskDetailAction.searchTask(data)) },
         searchProject: (data) => dispatch(taskDetailAction.searchProject(data)),
+        searchSubTask: (data) => dispatch(taskDetailAction.searchSubTask(data)),
+        searchRemind: (data) => dispatch(taskDetailAction.searchRemind(data)),
+        searchLocation: (data) => dispatch(taskDetailAction.searchLocation(data)),
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
     };
 };
