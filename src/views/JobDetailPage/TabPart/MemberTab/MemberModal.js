@@ -20,9 +20,9 @@ const staff = {
     birthday: '20/10/1978', gender: 'Nam', email: 'thuy@gmail.com', phonenumber: '0918006181', address: 'Nhà A, Phố B, Quận Hai Bà Trưng, Thành Phố Hà Nộis'
 }
 
-const Div = styled.div`
-  display: flex;
-`
+// const Div = styled.div`
+//   display: flex;
+// `
 
 const StyledEmploy = styled(Typography)`
   width: 700px;
@@ -77,25 +77,38 @@ const ContentDescription = styled(Typography)`
   color: ${colorPal['black'][0]}
 `
 
-const ButtonFile = styled.label`
-      & > span {
-        margin: 20px 0 0 0;
-        & > span {
-          display: flex;
-          align-items: center;
-          justify-content: start;
-          padding: 3px 10px;
-          font-size: 16px;
-          font-weight: 500;
-        }
-      }
+// const ButtonFile = styled.label`
+//       & > span {
+//         margin: 20px 0 0 0;
+//         & > span {
+//           display: flex;
+//           align-items: center;
+//           justify-content: start;
+//           padding: 3px 10px;
+//           font-size: 16px;
+//           font-weight: 500;
+//         }
+//       }
+// `
+
+const WrapperMember = styled(Typography)`
+    padding-top: 20px;
+    padding-left: 20px;
 `
+const MemberDetail = styled(Typography)`
+     margin-bottom: 25px;
+`
+
 const TitleText = styled(Typography)`
   font-weight: 400;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.54);
   margin-bottom: 10px;
 `
+const StyledAvatar = styled(Avatar)`
+        width: 50px;
+        height: 50px;
+    `
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -154,21 +167,22 @@ const DialogActions = withStyles(theme => ({
 
 const MemberModal = (props) => {
     const classes = useStyles();
+    
     return (
         <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers}  open={props.isOpen} >
             <DialogTitle onClose={props.handleCloseMembers}>
                 Thông tin chi tiết thành viên
             </DialogTitle>
             <DialogContent dividers>
-                <Div>
+                <div className="wrapper-member-modal">
                     <StyledEmploy component={'div'}>
-                        <Div style={{ paddingBottom: 40 }}>
-                            <Avatar style={{ width: 50, height: 50 }} src={avatar} alt='avatar' />
-                            <div style={{ paddingLeft: 20 }}>
+                        <div className="member-general-info">
+                            <StyledAvatar src={avatar} alt='avatar' />
+                            <div className="general-info">
                                 <NameStaff bold uppercase >{staff.name}</NameStaff>
                                 <ColorTypo color='gray'  >Ngày tham gia: {staff.datejoined}</ColorTypo>
                             </div>
-                        </Div>
+                        </div>
                         <TextInput
                             value={staff.department}
                             InputProps={{
@@ -217,44 +231,44 @@ const MemberModal = (props) => {
                             multiple
                             type="file"
                         />
-                        <ButtonFile htmlFor="contained-button-file">
+                        <label className="button-file" htmlFor="contained-button-file">
                             <Button variant="contained" component="span" fullWidth className={classes.button}>
-                                <img alt="vtask" src={imgDoc} style={{ width: 20, height: 20, marginRight: 10 }} />
+                                <img className="member-image"alt="vtask" src={imgDoc} />
                                 Xem file hồ sơ
                             </Button>
-                        </ButtonFile>
+                        </label>
                     </StyledEmploy>
-
+                                    
                     <StyledStaff component={'div'}>
                         <TextItem > Thông tin cá nhân</TextItem>
-                        <Typography component="div" style={{ paddingTop: 20, paddingLeft: 20 }}>
-                            <Typography component='div' style={{ marginBottom: 25 }}>
+                        <WrapperMember component="div" >
+                            <MemberDetail component='div'>
                                 <TitleText >Họ và tên đầy đủ:</TitleText>
                                 <ContentDescription>{staff.name}</ContentDescription>
-                            </Typography>
-                            <Typography component='div' style={{ marginBottom: 25 }}>
+                            </MemberDetail>
+                            <MemberDetail component='div'>
                                 <TitleText >Ngày sinh:</TitleText>
                                 <ContentDescription>{staff.birthday}</ContentDescription>
-                            </Typography>
-                            <Typography component='div' style={{ marginBottom: 25 }}>
+                            </MemberDetail>
+                            <MemberDetail component='div'>
                                 <TitleText >Giới tính:</TitleText>
                                 <ContentDescription>{staff.gender}</ContentDescription>
-                            </Typography>
-                            <Typography component='div' style={{ marginBottom: 25 }}>
+                            </MemberDetail>
+                            <MemberDetail component='div'>
                                 <TitleText >Email:</TitleText>
                                 <ContentDescription>{staff.email}</ContentDescription>
-                            </Typography>
-                            <Typography component='div' style={{ marginBottom: 25 }}>
+                            </MemberDetail>
+                            <MemberDetail component='div'>
                                 <TitleText >Điện thoại:</TitleText>
                                 <ContentDescription>{staff.phonenumber}</ContentDescription>
-                            </Typography>
-                            <Typography component='div' style={{ marginBottom: 25 }}>
+                            </MemberDetail>
+                            <MemberDetail component='div'>
                                 <TitleText >Địa chỉ:</TitleText>
                                 <ContentDescription>{staff.address}</ContentDescription>
-                            </Typography>
-                        </Typography>
+                            </MemberDetail>
+                        </WrapperMember>
                     </StyledStaff>
-                </Div>
+                </div>
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={props.handleCloseMembers} color="primary">

@@ -4,16 +4,16 @@ import TabHeader from './TabHeader';
 import TabBody from './TabBody';
 import styled from 'styled-components'
 
-const Container = styled.div`
-  transition: unset !important;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 85px calc(85vh);
-  grid-template-columns: 1fr;
-  grid-template-areas: 
-    "header"
-    "body";
-`
+// const Container = styled.div`
+//   transition: unset !important;
+//   height: 100%;
+//   display: grid;
+//   grid-template-rows: 85px calc(85vh);
+//   grid-template-columns: 1fr;
+//   grid-template-areas: 
+//     "header"
+//     "body";
+// `
 const Header = styled(TabHeader)`
   grid-area: header;
   padding: 15px;
@@ -31,10 +31,10 @@ const Header = styled(TabHeader)`
 function LocationTab({ show, setShow }) {
   return (
     <Slide in={show === 5} mountOnEnter unmountOnExit>
-      <Container>
+      <div className="container-tabpart">
         <Header setShow={setShow} />
         <TabBody />
-      </Container>
+      </div>
     </Slide>
   )
 }

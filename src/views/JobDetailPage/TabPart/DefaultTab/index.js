@@ -34,7 +34,7 @@ function DefaultTab({ show, setShow }) {
   const handleClick = () => { setIsPause(!isPause) }
   return (
     <Slide in={show === 0}  mountOnEnter unmountOnExit>
-      <div className="container-dt">
+      <div className="container-tabpart">
         <Header onClickPause={() => {
           handleClick()
         }} />

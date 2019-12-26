@@ -5,17 +5,16 @@ import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import DemandModal from '../DemandModal'
-import { WrapperContext } from '../../../index'
-const Container = styled.div`
+import { WrapperContext } from '../../../index';
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
-  height: 85px;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-
-`;
+// const Container = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   background-color: #fff;
+//   height: 85px;
+//   border-bottom: 1px solid rgba(0, 0, 0, .1);
+// `;
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -45,7 +44,7 @@ function TabHeader(props) {
     props.createCommandByTaskId( props.taskId, content, type)
   }
   return (
-    <Container>
+    <div className="container-normal-tabheader">
       <ButtonIcon
         onClick={() => { props.setShow(0) }}
       >
@@ -64,7 +63,7 @@ function TabHeader(props) {
         item={{content: "", type: -1}}
         {...props}
       />
-    </Container>
+    </div>
   );
 }
 
