@@ -54,10 +54,10 @@ function ListBody() {
     EXPIRED: 3,
     STOP: 4
   }
-
+   console.log("data....",data);
+   
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <Collapse mountOnEnter unmountOnExit>
         {data.map((item, key) => {
           return (
             <StyledList key={key} >
@@ -66,17 +66,7 @@ function ListBody() {
             </StyledList>
           )
         })}
-      </Collapse>
-      <Collapse in={value === 0} mountOnEnter unmountOnExit>
-        {dataPending.map((item, key) => {
-          return (
-            <StyledList key={key} >
-              <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
-              {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
-            </StyledList>
-          )
-        })}
-      </Collapse>
+     
 
     </Body>
 

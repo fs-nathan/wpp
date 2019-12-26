@@ -10,7 +10,9 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) {
-
+     
+     
+    
     switch (action.type) {
         case types.GET_LIST_TASK_DETAIL_REQUEST:
             return {

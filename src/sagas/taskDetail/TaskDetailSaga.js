@@ -931,6 +931,8 @@ async function doGetListTaskDetail({ project_id }) {
 function* getListTaskDetail(action) {
   try {
     const res = yield call(doGetListTaskDetail, action.payload)
+ 
+    
     yield put(actions.getListTaskDetailSuccess(res))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error))
@@ -1114,8 +1116,6 @@ function* updateNameDescriptionTask(action) {
 
 // Get Project Detail
 async function doGetProjectDetail(project_id) {
-  
-  console.log("PPPP", project_id)
   try {
     const config = {
       url: 'project/detail?project_id=' + project_id,
@@ -1130,6 +1130,8 @@ async function doGetProjectDetail(project_id) {
 function* getProjectDetail(action) {
   try {
     const res = yield call(doGetProjectDetail, action.payload)
+
+
     yield put(actions.getProjectDetailSuccess(res))
   } catch (error) {
     yield put(actions.getProjectDetailFail(error))

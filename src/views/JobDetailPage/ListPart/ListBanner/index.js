@@ -31,7 +31,8 @@ const jobTypes = [
 function ListBanner() {
   
   const [selected, setSelected] = React.useState(0);
-
+  console.log("selected....",selected);
+  
   return (
     <Container>
       {jobTypes.map((jobType, index) => (
