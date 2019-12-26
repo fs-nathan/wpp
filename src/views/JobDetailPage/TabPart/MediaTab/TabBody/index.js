@@ -105,10 +105,9 @@ const MenuListItem = () => {
 }
 
 const MediaBox = (props) => {
-  // console.log('mediabox::', props);
   return (
     <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
-      {props.image.images.map((image, key) => {
+      {props.image.images && props.image.images.map((image, key) => {
         return (
           <MediaImage key={key}>
             <GridListTile cols={5}>
@@ -133,9 +132,16 @@ const MediaBox = (props) => {
 }
 
 const MediaContainer = (props) => {
+  const searchImagesTabPart = (e) => {
+    props.searchImages(e.target.value)
+  }
   return (
     <React.Fragment>
-      <SearchInput fullWidth placeholder='Nhập tên media, ngày đăng, người đăng...' />
+      <SearchInput 
+        fullWidth
+        placeholder='Nhập tên media, ngày đăng, người đăng...'
+        onChange={e => searchImagesTabPart(e)}
+      />
       <MediaBox {...props} />
     </React.Fragment>
   );
@@ -169,7 +175,6 @@ const StyledMenuFile = styled.div`
 `
 
 const FileBox = (props) => {
-  // const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -181,7 +186,6 @@ const FileBox = (props) => {
   }
 
   return (
-    // <React.Fragment>
     <FileBoxStyledList>
       {props.file.files.map((item, idx) => {
         return (
@@ -227,23 +231,20 @@ const FileBox = (props) => {
         )
       })}
     </FileBoxStyledList>
-    // </React.Fragment>
   );
-  // }
-
-  // return (
-  //   <FileBoxStyledList>
-  //     <CustomListItem />
-  //     <CustomListItem />
-  //     <CustomListItem />
-  //   </FileBoxStyledList>
-  // );
 }
 
 const FileContainer = (props) => {
+  const searchFileTabPart = (e) => {
+    props.searchFile(e.target.value)
+  }
   return (
     <React.Fragment>
-      <SearchInput fullWidth placeholder='Nhập từ khóa file' />
+      <SearchInput 
+        fullWidth 
+        placeholder='Nhập từ khóa file'
+        onChange={e => searchFileTabPart(e)}
+      />
       <FileBox {...props} />
     </React.Fragment>
   );
@@ -342,20 +343,19 @@ const LinkBox = (props) => {
     </List>
   );
 
-  // return (
-  //   <List subheader={<li />}>
-  //     <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>09/09/2019</HeaderSubText>
-  //     <CustomListItem />
-  //     <CustomListItem />
-  //     <CustomListItem />
-  //   </List>
-  // );
 }
 
 const LinkContainer = (props) => {
+  const searchLinkTabPart = (e) => {
+    props.searchLink(e.target.value)
+  }
   return (
     <React.Fragment>
-      <SearchInput fullWidth placeholder='Nhập từ khóa link' />
+      <SearchInput 
+        fullWidth 
+        placeholder='Nhập từ khóa link'
+        onChange={e => searchLinkTabPart(e)}
+      />
       <LinkBox {...props} />
     </React.Fragment>
   );

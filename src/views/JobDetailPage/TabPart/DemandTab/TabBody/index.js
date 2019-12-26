@@ -163,12 +163,15 @@ const ListDemand = (props) => {
   const confirmUpdateCommand = ({ id, content, type }) => {
     props.updateCommandByTaskId({id, content, type, taskId: props.taskId})
   }
-
+  const searchDemandTabPart = (e) => {
+    props.searchDemand(e.target.value)
+  }
   return (
     <React.Fragment>
       <SearchInput
         fullWidth
-        placeholder="Nhập từ khóa"
+        placeholder="Nhập từ khóa..."
+        onChange={e => searchDemandTabPart(e)}
       />
       <StyledList>
         {props.activeArr.map((item, index) => {

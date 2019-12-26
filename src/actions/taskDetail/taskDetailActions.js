@@ -804,3 +804,19 @@ export const searchLocation = payload => ({
     type: types.SEARCH_LOCATION_TABPART,
     payload
 })
+export const searchImage = payload => ({
+    type: types.SEARCH_IMAGES_TABPART,
+    payload
+})
+export const searchFile = payload => ({
+    type: types.SEARCH_FILE_TABPART,
+    payload
+})
+export const searchLink = payload => ({
+    type: types.SEARCH_LINK_TABPART,
+    payload
+})
+export const searchDemand = payload => ({
+    type: types.SEARCH_DEMAND_TABPART,
+    payload
+})

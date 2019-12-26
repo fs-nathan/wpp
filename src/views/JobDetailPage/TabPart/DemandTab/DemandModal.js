@@ -112,18 +112,6 @@ const DemandModal = (props) => {
           setOptions={typeId => setParams("type", typeId)}
           commandSelect={selector}
         />
-        {/* <Text 
-                component="span"
-                id="outlined-full-width"
-                placeholder="Nhập nội dung nhắc hẹn"
-                fullWidth
-                margin="normal"
-                multiline rows="4"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-            /> */}
         <Text
           label="Nội dung"
           fullWidth

@@ -342,7 +342,11 @@ async function doCreateOffer(payload) {
 
 function* createOffer(action) {
   try {
+    console.log("offer::::", action.payload.data);
+    
     const res = yield call(doCreateOffer, action.payload.data)
+    console.log("res", res);
+    
     yield put(actions.createOfferSuccess(res))
     yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {
@@ -1012,9 +1016,7 @@ async function doCreateTask(payload) {
 
 function* createTask(action) {
   try {
-    console.log("action.payload:::::", action.payload.data);
-    const res = yield call(doCreateTask, action.payload)
-    console.log("response::::::", res)
+    const res = yield call(doCreateTask, action.payload.data)
     yield put(actions.createTaskSuccess(res))
     yield put(actions.getListTaskDetail({ project_id: action.payload.projectId }))
   } catch (error) {

@@ -1,6 +1,6 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
-import { searchArrayTabpart } from '../../helpers/jobDetail/arrayHelper'
+import { searchAttributesArray } from '../../helpers/jobDetail/arrayHelper'
 // Initial state for store
 const initialState = {
     locations: [],
@@ -35,7 +35,7 @@ export default function reducer(state = initialState, action) {
         case types.SEARCH_LOCATION_TABPART:
             return {
                 ...state,
-                locations: searchArrayTabpart(state.detailLocation, action.payload, "address"),
+                locations: {locations: searchAttributesArray(state.detailLocation, action.payload, "user_share", "locations")},
             }
         default:
             return state;

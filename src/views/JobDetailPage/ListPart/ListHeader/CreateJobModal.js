@@ -502,7 +502,6 @@ function CreateJobModal(props) {
               commandSelect={listGroupTask}
               selectedIndex={groupTaskValue}
               setOptions={typeId => handleChangeData("group_task", typeId)}
-              placeholder={'Nhóm mặc định'}
             />
           </Typography>
           <Typography component={'div'} style={{ marginBottom: 10 }}>
