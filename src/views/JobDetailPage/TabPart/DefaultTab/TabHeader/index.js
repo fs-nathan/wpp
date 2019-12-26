@@ -7,29 +7,35 @@ import ColorTypo from '../../../../../components/ColorTypo';
 // import avatar from '../../../../../assets/avatar.jpg';
 // import EditWorkModal from '../EditWorkModal'
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal'
-import { WrapperContext } from '../../../index'
-const Container = styled.div`
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 85px;
-  position: sticky;
-  top: 0;
-`;
+import { WrapperContext } from '../../../index';
 
-const TagsContainer = styled.div`
-  margin-left: 10px;
-  & > p {
-    font-size: 16px;
-  }
-  & > span:nth-child(1) {
-    color: #007bff;
-    text-transform: unset;
-    font-size: 13px;
-  }
-`;
+// const Container = styled.div`
+//   padding: 0 20px;
+//   display: flex;
+//   align-items: center;
+//   background-color: #fff;
+//   border-bottom: 1px solid rgba(0, 0, 0, .1);
+//   height: 85px;
+//   position: sticky;
+//   top: 0;
+// `;
+
+const AvatarHeader = styled(Avatar)`
+  width: 60px;
+  height: 60px;
+`
+
+// const TagsContainer = styled.div`
+//   margin-left: 10px;
+//   & > p {
+//     font-size: 16px;
+//   }
+//   & > span:nth-child(1) {
+//     color: #007bff;
+//     text-transform: unset;
+//     font-size: 13px;
+//   }
+// `;
 
 const StyledIconButton = styled(IconButton)`
   margin-left: auto;
@@ -87,16 +93,16 @@ function TabHeader(props) {
     }
   }
   return (
-    <Container>
-      <Avatar style={{ width: 60, height: 60 }} src={avatar} alt='avatar' />
-      <TagsContainer>
+    <div className="container-dt-tabheader">
+      <AvatarHeader src={avatar} alt='avatar' />
+      <div className="tags-container">
         <ColorTypo bold >{name}</ColorTypo>
         <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13 }}>{roles}</ColorTypo>
         <br />
         {value.detailTask &&
           <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao ngày {value.detailTask.date_create}</ColorTypo>
         }
-      </TagsContainer>
+      </div>
       <StyledIconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
       </StyledIconButton>
@@ -134,7 +140,7 @@ function TabHeader(props) {
         }}>Xóa</MenuItem>
       </Menu>
       <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={true} data={value.detailTask}/>
-    </Container>
+    </div>
   );
 }
 
