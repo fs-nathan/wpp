@@ -1,7 +1,7 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 import { 
-    filterCommandItem, filterDecisionItem, 
+    filterCommandItem, filterDecisionItem, searchArrayTabpart
 } from '../../helpers/jobDetail/arrayHelper'
 
 // Initial state for store

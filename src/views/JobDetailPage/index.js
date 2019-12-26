@@ -36,18 +36,18 @@ function JobDetailPage(props) {
     }
 
     const getDataByTaskId = () => {
-        props.getSubTaskByTaskId(props.taskId)
-        props.getRemindByTaskId(props.taskId)
-        props.getOfferByTaskId(props.taskId)
-        props.getCommandByTaskId(props.taskId)
-        props.getImageByTaskId(props.taskId)
-        props.getFileByTaskId(props.taskId)
-        props.getLinkByTaskId(props.taskId)
-        props.getLocationByTaskId(props.taskId)
+        // props.getSubTaskByTaskId(props.taskId)
+        // props.getRemindByTaskId(props.taskId)
+        // props.getOfferByTaskId(props.taskId)
+        // props.getCommandByTaskId(props.taskId)
+        // props.getImageByTaskId(props.taskId)
+        // props.getFileByTaskId(props.taskId)
+        // props.getLinkByTaskId(props.taskId)
+        // props.getLocationByTaskId(props.taskId)
         props.getTaskDetailByTaskId(props.taskId)
         props.getMemberByTaskId(props.taskId)
         props.getMemberNotAssignedByTaskId(props.taskId)
-        props.getTrackingTime(props.taskId)
+        // props.getTrackingTime(props.taskId)
     }
 
     useEffect(getDataByTaskId, [props.taskId])
@@ -181,6 +181,13 @@ const mapDispatchToProps = dispatch => {
         filterTaskByType: (id) => dispatch(taskDetailAction.filterTaskByType(id)),
         searchTask: (data) => { dispatch(taskDetailAction.searchTask(data)) },
         searchProject: (data) => dispatch(taskDetailAction.searchProject(data)),
+        searchSubTask: (data) => dispatch(taskDetailAction.searchSubTask(data)),
+        searchRemind: (data) => dispatch(taskDetailAction.searchRemind(data)),
+        searchLocation: (data) => dispatch(taskDetailAction.searchLocation(data)),
+        searchImages: (data) => dispatch(taskDetailAction.searchImage(data)),
+        searchFile: (data) => dispatch(taskDetailAction.searchFile(data)),
+        searchLink: (data) => dispatch(taskDetailAction.searchLink(data)),
+        searchDemand: (data) => dispatch(taskDetailAction.searchDemand(data)),
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
     };
 };

@@ -342,7 +342,11 @@ async function doCreateOffer(payload) {
 
 function* createOffer(action) {
   try {
+    console.log("offer::::", action.payload.data);
+    
     const res = yield call(doCreateOffer, action.payload.data)
+    console.log("res", res);
+    
     yield put(actions.createOfferSuccess(res))
     yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {
@@ -1012,9 +1016,7 @@ async function doCreateTask(payload) {
 
 function* createTask(action) {
   try {
-    console.log("action.payload:::::", action.payload.data);
-    const res = yield call(doCreateTask, action.payload)
-    console.log("response::::::", res)
+    const res = yield call(doCreateTask, action.payload.data)
     yield put(actions.createTaskSuccess(res))
     yield put(actions.getListTaskDetail({ project_id: action.payload.projectId }))
   } catch (error) {
@@ -1128,18 +1130,19 @@ function* getProjectListBasic() {
 
 
 // update name and description
-async function doUpdateNameDescriptionTask() {
-  // try {
-    // const config = {
-    //   url: 'project-group/list',
-    //   method: 'get'
-    // }
-    // const result = await apiService(config);
-    // return result.data;
-    return null;
-  // } catch (error) {
-  //   throw error;
-  // }
+async function doUpdateNameDescriptionTask(payload) {
+  try {
+    const config = {
+      url: 'task/update-name-description',
+      method: 'put',
+      data: payload,
+    }
+    const result = await apiService(config);
+    return result.data;
+    // return null;
+  } catch (error) {
+    throw error;
+  }
 }
 
 function* updateNameDescriptionTask(action) {

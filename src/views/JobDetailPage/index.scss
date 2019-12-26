@@ -6,14 +6,13 @@
     grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(200px, 29%);
     grid-template-areas: "list chat tab";
 }
+
+/* Header Part */
 .container-header {
     display: flex;
     align-items: center;
     height: 85px;    
 }
-
-
-/* Header Part */
 .wrap-avatars {
     width: 64px;
 }
@@ -26,7 +25,6 @@
 .wrap-message-row {
     width: 100%;
     display: flex;
-    /* flex-direction: ${props => props.isUser ? 'row-reverse' : 'row'}; */
     align-items: center;
     margin-bottom: 10px;
     &:hover > .wrap-function-bar {
@@ -41,7 +39,6 @@
 }
 
 .wrap-message {
-    /* background-color: ${props => props.isUser ? '#dbfff3' : '#fff'}; */
     min-height: 30px;
     padding: 5px 10px;
     border-radius: 4px;
@@ -50,7 +47,15 @@
     margin-left: 5px;
 }
 
-.wrap-function-bar {
+.wm-bg-color-blue {
+    background-color: #dbfff3 ;
+}
+
+.wm-bg-color-white {
+    background-color: #fff;
+}
+
+.wrap-function-bar-bp {
     margin-right: 5px;
     display: none;
 }
@@ -97,7 +102,7 @@
 }
 
 // Footer - Chat Part 
-    .wrap-function.bar {
+    .wrap-function-bar-fp {
         height: 50px;
         padding: 0 10px;
         display: flex;
@@ -122,8 +127,6 @@
             }
         }
     }
-        
-    
 
 /* DetailMessage - Chat Part */
 .container-detailmessage {
@@ -200,9 +203,416 @@
                 }
             }
         }
-        .content-message {
+    }
+    .content-message {
         display: flex;
         margin-bottom: 14px;
         }
+}
+
+// index.js - Chat Part
+.container-chatpart {
+    border-right: 1px solid rgba(0, 0, 0, .1);
+    height: calc(100vh - 56px);
+    .wrap-header {
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        padding: 0 10px;
+        height: 85px;
+    }
+    .wrap-body {
+        background-color: #f8f8f8;
+        height: calc(100% - 230px);
+        padding: 10px;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: #f8f8f8 #f8f8f8;
+        &:hover {
+          scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+        }
+    }
+    .wrap-footer {
+        border-top: 1px solid rgba(0, 0, 0, .1);
+        height: 100px;
     }
 }
+// ListPart
+
+// ListProject - ListPart
+.lp-container {
+    height: calc(82vh);
+    & > *:first-child {
+        padding: 0 15px;
+        }
+    grid-template-rows: 107px calc(83vh - 8px);
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "header"
+        "body";
+}
+
+.lp-container-block {
+    display: block;
+}
+
+.lp-container-none {
+    display: none;
+}
+
+// index.js - ListPart
+.container-lp {
+    grid-area: list;
+    border-right: 1px solid rgba(0, 0, 0, .2);
+    .wrap-list-task {
+        height: calc(76vh);
+        grid-template-rows: 165px calc(76vh);
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+          "header"
+          "body";
+        .wlt-header {
+            grid-area: header;
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            top: 0px;
+            background-color: #fff;
+            z-index: 999;
+        }
+    }
+    .wlt-block {
+        display: block;
+    }
+    .wlt-none {
+        display: none;
+    }
+}
+// index.js - ListBanner
+.container-list-banner {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    
+    & > * {
+      margin-right: 10px;
+      margin-bottom: 5px;
+      padding: 0 5px;
+      & > span {
+        font-size: 12px;
+      }
+    }
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+// index.js - ListBodyItem - ListBody
+.container-lbd {
+    padding: 10px 8px 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 0;
+    &:hover{
+      background-color: #F2F5FA;
+    }
+    &:active {
+      background-color: #e6f0ff;
+    }
+}
+.name-container-lbd {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & >*:last-child {
+      margin-right: 15px;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      color: white;
+      background-color: red;
+    }
+}
+.container-content-lbd {
+    & > *:not(:first-child) {
+        margin-top: 5px;
+    }
+    & > *:first-child {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & > *:first-child {
+          display: flex;
+          & > *:first-child {
+            margin-right: 10px;
+          }
+        }
+    }
+}
+
+// index.js - ListHeader
+.list-header {
+    padding: 0 3px 0 15px;
+    height: 77px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    & > * {
+        display: flex; 
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+    }
+    .header-bottom-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+// AddMemberModal - ListHeader
+.table-scroll {
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+        width: 7px;
+        border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #fff;
+        border: none;
+    }
+    &:hover {
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px; 
+        }
+    }
+}
+
+// RoleMemberModal - ListHeader
+.handle-button {
+    display: flex;  
+    justify-content: flex-end;
+    & > *:last-child {
+        background: #e63737;
+        margin-left: 12px;
+        color: #fff;
+    }
+}
+//
+.container-tabpart {
+    transition: unset !important;
+    transform: none !important;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 85px calc(85vh);
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "header"
+        "body";
+    .container-normal-tabheader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #fff;
+        height: 85px;
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+    }
+}
+
+// index.js - TabHeader - Default Tab
+    .container-dt-tabheader {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        height: 85px;
+        position: sticky;
+        top: 0;
+        .tags-container {
+            margin-left: 10px;
+            & > p {
+                font-size: 16px;
+            }
+            & > span:nth-child(1) {
+                color: #007bff;
+                text-transform: unset;
+                font-size: 13px;
+            }
+        }
+// index.js - TabBody - Default Tab
+    .button-text {
+        background: none;
+        border: none;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 0;
+        color: #a6a6a6;
+        cursor: pointer;
+        padding-top: 10px;
+        &:focus {
+            outline: none;
+        }
+        &:active {
+            outline: none;
+        }
+    }
+    .simple-progress-bar-wrapper {
+        width: 150px;
+    }
+    .styled-context-status {
+        & > *:first-child {
+            display: flex;
+            align-items: center;
+            & > p:nth-child(2) {
+              color: #000;
+              margin-left: 8px;
+              margin-right: 5px;
+            }
+            & > p:nth-child(3) {
+              color: #0ce8b5;
+              font-size: 13px;
+            }
+          }
+          & > *:last-child {
+            color: #969696;
+            font-weight: 300;
+            font-size: 12px;
+            line-height: 1.8;
+            margin: 3px 5px 0 0;
+          }
+    }     
+}
+
+// TabHeader - Demand Tab
+.container-dmt-tabbody {
+    padding: 0 20px 50px 20px;
+    .styled-list-item {
+        display: flex;
+        flex-direction: column;
+        .styled-title-box {
+            display: flex;
+            align-items: center;
+            & > *:not(:first-child) {
+                margin-left: 5px;
+                }
+            & > *:last-child {
+             margin-left: auto;
+            }
+            .styled-menu-demand {
+                opacity: 0;
+            }
+        }
+        .styled-content-box {
+            margin-left: 20px;
+            margin-top: 5px;
+            padding: 8px 10px;
+            font-weight: 500;
+        }
+        &:hover .styled-menu-demand {
+            opacity: 1;
+        }
+    }
+}
+
+// TabBody - Location Tab
+.container-location-tabbody {
+    padding: 10px 20px 50px 20px;
+    .styled-list-item-location {
+        width: 100%;
+        .styled-common-location {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            .styled-menu-location {
+                opacity: 0;
+            }
+        }
+        &:hover .styled-menu-location {
+            opacity: 1;
+        }
+    }
+}
+
+// TabBody - Media Tab
+.container-media-tabbody {
+    padding: 20px;
+    .media-image {
+        width: auto !important;
+        height: auto !important;
+        .wrap-image {
+            display: flex;
+            flex-wrap: wrap;
+            .image-media-box {
+                height: 80px;
+                width: 80px;
+                margin: 0;
+                padding: 0;
+                border-radius: 5px;
+                cursor: pointer;
+                &:hover {
+                    opacity: 0.7
+                }
+            }
+        } 
+    }
+    .file-name {
+        width: 300px;
+        word-break: break-word;
+        .styled-menu-file {
+            opacity: 0 ;
+        }
+    }
+    .styled-list-item-link {
+        .styled-menu-link {
+            opacity: 0;
+        }
+        &:hover .styled-menu-link {
+            opacity: 1;
+        }
+    }  
+}
+
+// TabBody - MemberTab
+.container-member-tabbody {
+    padding: 10px 20px 50px 20px;
+    .wrapper-span {
+        display: flex;
+        margin-bottom: 7px;
+    }
+    .styled-menu-member {
+        opacity: 0 ;
+    }
+}
+// MemberModal - MemberTab
+.wrapper-member-modal {
+    display: flex;
+    .member-general-info {
+        padding-bottom: 40px;
+        display: flex;
+        .general-info {
+            padding-left: 20px;
+        }
+    }
+    .button-file {
+        & > span {
+            margin: 20px 0 0 0;
+            & > span {
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                padding: 3px 10px;
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+            .member-image {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+    }
+}
+
+
+

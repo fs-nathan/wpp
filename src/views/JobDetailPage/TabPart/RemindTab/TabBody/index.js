@@ -251,10 +251,17 @@ const RemindList = (props) => {
 }
 
 function TabBody(props) {
+  const searchRemindTabPart = (e) => {
+    props.searchRemind(e.target.value)
+  }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
-        <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
+        <SearchInput 
+          placeholder={'Nhập từ khóa'} 
+          fullWidth
+          onChange={e => searchRemindTabPart(e)}
+        />
         <RemindList {...props} />
       </Container>
     </Body>

@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiChevronLeft , mdiPlus, } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import OfferModal from '../OfferModal'
-
-
+import { WrapperContext } from '../../../index'
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -28,6 +27,10 @@ const ButtonIcon = styled(IconButton)`
 `
 
 function TabHeader(props) {
+  const value = React.useContext(WrapperContext)
+  useEffect(() => {
+    value.getOfferByTaskId(value.taskId)
+  })
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);

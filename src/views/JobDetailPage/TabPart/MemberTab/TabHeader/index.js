@@ -33,7 +33,7 @@ const ButtonIcon = styled(IconButton)`
 function TabHeader({ setShow }) {
   const [openAddModal, setOpenAddModal] = React.useState(false);
   return (
-    <Container>
+    <div className="container-normal-tabheader">
       <ButtonIcon onClick={() => setShow(0)}>
         <Icon path={mdiChevronLeft} size={1} />
       </ButtonIcon>
@@ -43,7 +43,7 @@ function TabHeader({ setShow }) {
       </ButtonIcon>
       {/* modal */}
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
-    </Container>
+    </div>
   );
 }
 

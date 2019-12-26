@@ -195,7 +195,7 @@ const OfferModal = (props) => {
     for (let i = 0; i < tempSelectedItem.files.length; i++) {
       dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
     }
-    props.createOfferByTaskId({dataCreateOfferFormData, taskId: props.taskId})
+    props.createOfferByTaskId({data: dataCreateOfferFormData, taskId: props.taskId})
     setParams("files", [])
   }
 

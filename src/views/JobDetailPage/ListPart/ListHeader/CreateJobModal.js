@@ -5,7 +5,7 @@ import {
   TextField
 } from '@material-ui/core';
 import styled from 'styled-components';
-import { mdiHelpCircle, mdiAccountPlusOutline } from '@mdi/js';
+import { mdiAccountPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 // import SearchInput from '../../../../components/SearchInput';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -14,11 +14,11 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+// import OutlinedInput from '@material-ui/core/OutlinedInput';
 // import addMemberIcon from '../../../../assets/addMemberIcon.png';
 import colorPal from '../../../../helpers/colorPalette';
 import AddMemberModal from './AddMemberModal';
-import TimeField from 'react-simple-timefield';
+// import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect'
 // import { Scrollbars } from 'react-custom-scrollbars'
 import { WrapperContext } from '../../index'
@@ -46,9 +46,9 @@ const StartEndDay = styled(Typography)`
   margin-top: 15px;
 `
 
-const StartEndDate = styled(Typography)`
-  margin: 0 15px;
-`
+// const StartEndDate = styled(Typography)`
+//   margin: 0 15px;
+// `
 
 const Typotitle = styled(Typography)`
   font-size: 16px;
@@ -75,12 +75,12 @@ const TitleText = styled(Typography)`
   }
 `
 
-const OutlineInput = styled(OutlinedInput)`
-& > input {
-  padding: 10px 5px;
-  margin-left: 10px;
-}
-`
+// const OutlineInput = styled(OutlinedInput)`
+// & > input {
+//   padding: 10px 5px;
+//   margin-left: 10px;
+// }
+// `
 
 // const HeaderBottomBox = styled.div`
 //   display: flex;
@@ -110,15 +110,15 @@ const TypoText = styled(Typography)`
   color: #505050;
   margin: 20px 0 15px 0;
 `
-const InputTime = styled(TimeField)`
-  width: 146px !important;
-  padding: 10px 5px 10px 13px;
-  border: 0;
-  border-radius: 4px;
+const InputDateTime = styled(TextField)`
+  width: 186px;
+  margin-right: 48px;
+  & > div:nth-child(2) > input {
+    padding: 14px;
+  }
 `
 const DivTime = styled.div`
-  border: 1px solid #cfcfcf;
-  border-radius: 4px;
+  
 `
 
 const PriorityFormControl = styled(FormControl)`
@@ -221,7 +221,9 @@ const TextInputSelect = styled(InputSelect)`
         }
     }
 `
-
+const Descripe = styled(Typography)`
+    margin-top: 15px;
+`
 const TitleDialog = styled(DialogTitle)`
     display: flex;
     position: sticky;
@@ -313,15 +315,29 @@ const StyleDialog = styled(Dialog)`
   }
 `
 const ButtonImage = styled(Button)`
-  transform: scaleX(-1);
   padding: 6px 0;
   min-width: 54px;
-  border: 1px solid #abaaa9;
+  &:hover {
+    background: none;
+  }
+  & > span:nth-child(1) {
+    & > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+    & > span {
+      color: #878a88;
+      &:hover {
+        color: #03b000;
+      }
+    }
+  }
 `
 const ContentDialog = styled(DialogContent)`
   border: none;
   overflow: scroll;
-
+  padding-top: 0;
   ::-webkit-scrollbar {
     width: 7px;
     border-radius: 5px
@@ -448,14 +464,14 @@ function CreateJobModal(props) {
   const validate = () => !!data.name
 
   const handlePressConfirm = () => {
-    if(validate()) {
+    if (validate()) {
       // Remove group task in object if user unselect group task
       let data = dataCreateJob
-      if(!dataCreateJob.group_task) delete data.group_task
+      if (!dataCreateJob.group_task) delete data.group_task
       // Call api
       value.createJobByProjectId({ data, projectId: value.projectId })
       // console.log("data",  dataCreateJob)
-      
+
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
       // Close modal
@@ -480,7 +496,15 @@ function CreateJobModal(props) {
           </TitleDialog>
         }
         <ContentDialog dividers >
-          <Typography component={'div'}>
+          <TypoText component={'div'}> Chọn nhóm công việc </TypoText>
+          <Typography component={'div'} style={{ marginBottom: '20px' }}>
+            <TextInputSelect
+              commandSelect={listGroupTask}
+              selectedIndex={groupTaskValue}
+              setOptions={typeId => handleChangeData("group_task", typeId)}
+            />
+          </Typography>
+          <Typography component={'div'} style={{ marginBottom: 10 }}>
             <TitleText component={'span'}>
               <InputTextJob
                 id="outlined-helperText"
@@ -492,63 +516,9 @@ function CreateJobModal(props) {
                 value={data.name}
                 onChange={e => handleChangeData("name", e.target.value)}
               />
-              {/* <Typography component={'span'}>Tên công việc</Typography>
-              <Typography component={'span'}>(tối đa 100 ký tự)</Typography> */}
             </TitleText>
-            {/* <Input
-              fullWidth
-            /> */}
           </Typography>
-          <ProgressWork component={'span'}>
-            <Typotitle component={'span'}>
-              Tiến độ công việc
-          </Typotitle>
-            <DefaultFlex component={'span'}>
-              Đặt mặc định <Icon path={mdiHelpCircle} size={1} />
-            </DefaultFlex>
-          </ProgressWork>
-          {/* <CommonControlForm labels={optionsList} /> */}
-          <StartEndDay component={'span'}>
-            <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
-            <DivTime>
-              <InputTime
-                value={data.start_time}
-                onChange={e => handleChangeData("start_time", e.target.value)}
-              />
-            </DivTime>
-            <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput
-              type={'date'}
-              value={data.start_date}
-              onChange={e => handleChangeData("start_date", e.target.value)}
-            />
-          </StartEndDay>
-          <StartEndDay component={'span'}>
-            <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
-            <DivTime>
-              <InputTime
-                value={data.end_time}
-                onChange={e => handleChangeData("end_time", e.target.value)}
-              />
-            </DivTime>
-            <StartEndDate component={'div'}>Ngày</StartEndDate>
-            <OutlineInput
-              type={'date'}
-              value={data.end_date}
-              inputProps={{ min: data.start_date }}
-              onChange={e => handleChangeData("end_date", e.target.value)}
-            />
-          </StartEndDay>
-          <TypoText component={'div'}> Chọn nhóm việc </TypoText>
-          <Typography component={'div'} style={{ marginBottom: '20px' }}>
-            <TextInputSelect
-              commandSelect={listGroupTask}
-              selectedIndex={groupTaskValue}
-              setOptions={typeId => handleChangeData("group_task", typeId)}
-              // placeholder={'Nhóm mặc định'}
-            />
-          </Typography>
-          <Typography component={'div'}>
+          <Descripe component={'div'}>
             <TitleText component={'div'}>
               <InputTextJob
                 id="outlined-helperText"
@@ -560,14 +530,79 @@ function CreateJobModal(props) {
                 value={data.description}
                 onChange={e => handleChangeData("description", e.target.value)}
               />
-              {/* <Typography component={'div'}> Mô tả công việc </Typography>
-              <Typography component={'div'}>(Tối đa 500 kí tự)</Typography> */}
             </TitleText>
-            {/* <Input
-              style={{ marginBottom: 10 }}
-              fullWidth
+          </Descripe>
+          <ProgressWork component={'span'}>
+            <Typotitle component={'span'}>
+              Tiến độ công việc
+          </Typotitle>
+            <DefaultFlex component={'span'}>
+              Cài đặt
+            </DefaultFlex>
+          </ProgressWork>
+          {/* <CommonControlForm labels={optionsList} /> */}
+          <StartEndDay component={'span'}>
+            <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
+            <DivTime>
+              <InputDateTime
+                type={'time'}
+                label="Thời gian"
+                variant="outlined"
+                value={data.start_time}
+                onChange={e => handleChangeData("start_time", e.target.value)}
+              />
+              {/* <InputTime
+                value={data.start_time}
+                onChange={e => handleChangeData("start_time", e.target.value)}
+              /> */}
+            </DivTime>
+            {/* <StartEndDate component={'span'}>Ngày</StartEndDate> */}
+            <InputDateTime
+              label="Ngày"
+              variant="outlined"
+              type={'date'}
+              value={data.start_date}
+              onChange={e => handleChangeData("start_date", e.target.value)}
+            />
+            {/* <OutlineInput
+              label="Ngày"
+              type={'date'}
+              value={data.start_date}
+              onChange={e => handleChangeData("start_date", e.target.value)}
             /> */}
-          </Typography>
+          </StartEndDay>
+          <StartEndDay component={'span'}>
+            <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
+            <DivTime>
+              <InputDateTime
+                type={'time'}
+                label="Thời gian"
+                variant="outlined"
+                value={data.end_time}
+                onChange={e => handleChangeData("end_time", e.target.value)}
+              />
+              {/* <InputTime
+                value={data.end_time}
+                onChange={e => handleChangeData("end_time", e.target.value)}
+              /> */}
+            </DivTime>
+            {/* <StartEndDate component={'div'}>Ngày</StartEndDate> */}
+            <InputDateTime
+              label="Ngày"
+              variant="outlined"
+              type={'date'}
+              value={data.end_date}
+              inputProps={{ min: data.start_date }}
+              onChange={e => handleChangeData("end_date", e.target.value)}
+            />
+            {/* <OutlineInput
+              label="Ngày"
+              type={'date'}
+              value={data.end_date}
+              inputProps={{ min: data.start_date }}
+              onChange={e => handleChangeData("end_date", e.target.value)}
+            /> */}
+          </StartEndDay>
           <Typography component={'span'}>
             <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
             <CommonPriorityForm
@@ -599,7 +634,7 @@ function CreateJobModal(props) {
                 // handleClose()
                 setOpenAddModal(true)
               }} >
-                <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />
+                <Icon path={mdiAccountPlus} alt='addMemberIcon' size={1} color={'#878a88'} /> &nbsp;&nbsp;<span>(0 thành viên)</span>
               </ButtonImage>
               <Button autoFocus onClick={handlePressConfirm} color="primary">
                 TẠO VIỆC

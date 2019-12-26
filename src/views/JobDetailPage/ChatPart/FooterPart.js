@@ -61,7 +61,7 @@ const ButtonIcon = styled(IconButton)`
 
 function renderFunctionBar(props) {
     return (
-        <div className="wrap-function-bar">
+        <div className="wrap-function-bar-fp">
             <div>
                 <ButtonIcon>
                     <Icon path={mdiAt} size={1.2} />

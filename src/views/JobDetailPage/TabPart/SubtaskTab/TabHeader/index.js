@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiChevronLeft , mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
-
-
+import { WrapperContext } from '../../../index'
 
 const Container = styled.div`
   display: flex;
@@ -37,6 +36,10 @@ const ButtonIcon = styled(IconButton)`
 
 function TabHeader(props) {
   // console.log('header props::', props)
+  const value = React.useContext(WrapperContext)
+  useEffect(() => {
+    value.getSubTaskByTaskId(value.taskId)
+  });
   const [isPlus, setOnPlus] = React.useState(true)
   const handleClick = () => {
     setOnPlus(!isPlus)

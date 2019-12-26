@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   transition: unset !important;
+  transform: none !important;
   height: 100%;
   display: grid;
   grid-template-rows: 85px calc(85vh);
@@ -31,10 +32,10 @@ const Header = styled(TabHeader)`
 function DemandTab(props) {
   return (
     <Slide in={props.show === 7}  mountOnEnter unmountOnExit>
-      <Container>
+      <div className="container-tabpart">
         <Header setShow={props.setShow} {...props} />
         <TabBody {...props}/>
-      </Container>
+      </div>
     </Slide>
   )
 }

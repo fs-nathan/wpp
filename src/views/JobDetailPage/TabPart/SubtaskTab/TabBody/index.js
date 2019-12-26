@@ -12,7 +12,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
-// import { WrapperContext } from '../../../index'
+// import { WrapperContext } from '../../../index'  
 const Container = styled.div`
   padding: 0 0 50px 0;
 `;
@@ -438,6 +438,9 @@ function TabBody(props) {
     props.postSubTaskByTaskId(taskId, name)
     setName("")
   }
+  const searchSubTaskTabPart = (e) => {
+    props.searchSubTask(e.target.value)
+  }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
@@ -459,7 +462,10 @@ function TabBody(props) {
           </NewWork>
           :
           <Div>
-            <Search placeholder={'Nhập từ khóa'} />
+            <Search 
+              placeholder={'Nhập từ khóa'}
+              onChange={e => searchSubTaskTabPart(e)}
+            />
           </Div>
         }
         <AllSubtaskList {...props} />
