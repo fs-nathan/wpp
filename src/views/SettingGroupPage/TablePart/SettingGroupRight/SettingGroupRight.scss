@@ -171,11 +171,28 @@
           margin-left: 20px;
           box-shadow: none;
         }
+        
+      }
+      .error-code {
+        color: red;
+        padding-top: 10px
+      }
+      .success-code {
+        color: #0076f3;
+        padding-top: 10px
       }
     }
   }
   .payment-container {
     display: flex;
+    .top-header {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .text-payment-header {
+      font-size: 15px;
+    }
     .payment-left {
       width: 60%;
       padding: 20px;
@@ -183,8 +200,10 @@
       // margin-right: -1px;
       border-right: 1px solid #ededed;
       min-height: calc(100vh - 165px);
+
       .MuiInputLabel-animated {
-        font-size: 16px;
+        font-size: 13px;
+        transform: translate(0, 1.5px) scale(1);
       }
       .MuiInput-underline:before {
         border-bottom: 1px solid #ededed;
@@ -237,6 +256,9 @@
       }
       .payment-right-bottom {
         padding: 20px;
+        .right-bottom-text {
+          line-height: 2;
+        }
       }
     }
   }

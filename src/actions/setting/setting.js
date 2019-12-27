@@ -113,3 +113,26 @@ export const updateBillService = data => {
     data
   });
 };
+
+export const checkPromotionCode = data => {
+  return apiService({
+    url: '/orders/check-promotion-code',
+    method: 'post',
+    data
+  });
+};
+
+export const getInfoBeforeCreateOrder = () => {
+  return apiService({
+    url: 'orders/get-info-before-create',
+    method: 'get'
+  });
+};
+
+export const getNumberDayFromOldOrder = params => {
+  return apiService({
+    url: 'orders/get-number-day-user-from-old-order',
+    method: 'get',
+    params
+  });
+};

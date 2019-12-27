@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import * as images from '../../assets';
 import './ExportPDF.scss';
@@ -82,9 +83,23 @@ class ExportPDF extends Component {
       isCreate,
       isCheckedManagerWork,
       isCheckedBuyData,
-      orderItem
+      orderItem,
+      dataBeforOder,
+      dayBonus,
+      bonusCode,
+      dataNumberOldOder
     } = this.props;
-    const pricePacketUser = 50000; //a
+
+    let pricePacketUser = 50000; //a
+    if (!isEmpty(dataBeforOder)) {
+      dataBeforOder.price_user_packet.forEach(element => {
+        if (element.min <= numAcc && numAcc <= element.max) {
+          pricePacketUser = element.value;
+          return;
+        }
+      });
+    }
+
     const moneyPacketUser = isCreate
       ? pricePacketUser * numAcc * dateUse
       : !isEmpty(orderItem.packet_user)
@@ -97,19 +112,41 @@ class ExportPDF extends Component {
       : 0;
     const datePlusOderBefor = isCreate
       ? isCheckedManagerWork
-        ? 1
+        ? dataNumberOldOder.packet_user
         : 0
       : !isEmpty(orderItem.packet_user)
       ? orderItem.packet_user.day_from_old_order / 30
       : 0;
-    const date3MO = isCheckedManagerWork ? 3 : 0;
+    const packetStorageBefor = isCreate
+      ? isCheckedBuyData
+        ? dataNumberOldOder.packet_storage
+        : 0
+      : !isEmpty(orderItem.packet_storage)
+      ? (orderItem.packet_storage.day_from_old_order / 30).toFixed(1)
+      : 0;
+    const date3MO = isCreate
+      ? isCheckedManagerWork
+        ? (dayBonus / 30).toFixed(1)
+        : 0
+      : !isEmpty(orderItem.packet_user)
+      ? (orderItem.packet_user.promotion_day / 30).toFixed(1)
+      : 0;
     const totalDataUse = isCreate
       ? dateUse + dateGift + datePlusOderBefor + date3MO
       : !isEmpty(orderItem.packet_user)
-      ? orderItem.packet_user.day_use / 30
+      ? (orderItem.packet_user.day_use / 30).toFixed(1)
       : 0; //e
     ///////////////////////
-    const pricePacketData = 3000; //a
+    let pricePacketData = 3000; //a
+    if (!isEmpty(dataBeforOder)) {
+      dataBeforOder.price_storage_packet.forEach(element => {
+        if (element.min <= dataBuy && dataBuy <= element.max) {
+          pricePacketData = element.value;
+          return;
+        }
+      });
+    }
+
     const moneyPacketData = isCreate
       ? pricePacketData * dataBuy * dateSave
       : !isEmpty(orderItem.packet_storage)
@@ -118,7 +155,7 @@ class ExportPDF extends Component {
     const totalDateData = isCreate
       ? dateSave
       : !isEmpty(orderItem.packet_storage)
-      ? orderItem.packet_storage.day_use / 30
+      ? (orderItem.packet_storage.day_use / 30).toFixed(1)
       : 0; //e
     //////
     const totalPriceBeforVAT = moneyPacketUser + moneyPacketData;
@@ -153,10 +190,14 @@ class ExportPDF extends Component {
                 <div className="head-left-right">
                   <div className="infor-right">Thông tin đơn hàng workplus</div>
                   <div className="infor-right-oder">
-                    Mã đơn hàng: {isCreate ? 'KH-FREE' : orderItem.code}
+                    Mã đơn hàng:{' '}
+                    {isCreate ? dataBeforOder.code : orderItem.code}
                   </div>
                   <div className="infor-right-oder">
-                    Ngày tạo: {isCreate ? '20/11/2019' : orderItem.create_at}
+                    Ngày tạo:{' '}
+                    {isCreate
+                      ? moment().format('DD/MM/YYYY')
+                      : orderItem.create_at}
                   </div>
                   <div className="infor-right-oder">
                     Tổng giá trị đơn hàng:&nbsp;
@@ -186,10 +227,12 @@ class ExportPDF extends Component {
                   <tbody>
                     <tr>
                       <TdStyled1>
-                        {isCreate ? 'KH-FREE' : orderItem.code}
+                        {isCreate ? dataBeforOder.code : orderItem.code}
                       </TdStyled1>
                       <TdStyled1>
-                        {isCreate ? '2019/09/09' : orderItem.create_at}
+                        {isCreate
+                          ? moment().format('DD/MM/YYYY')
+                          : orderItem.create_at}
                       </TdStyled1>
                       <TdStyled1>
                         <React.Fragment>
@@ -243,8 +286,7 @@ class ExportPDF extends Component {
                   </thead>
 
                   <tbody>
-                    {(isCheckedManagerWork ||
-                      !isEmpty(orderItem.packet_user)) && (
+                    {(isCheckedManagerWork || !isEmpty(orderItem)) && (
                       <React.Fragment>
                         <tr style={{ background: '#f2f2f2' }}>
                           <TdStyled2>1</TdStyled2>
@@ -300,7 +342,11 @@ class ExportPDF extends Component {
                             </div>
                           </TdStyled3>
                           <TdStyled4>
-                            {this.showPrice(pricePacketUser)}
+                            {this.showPrice(
+                              isCreate
+                                ? pricePacketUser
+                                : orderItem.packet_user.buy_info.unit_price
+                            )}
                           </TdStyled4>
                           <TdStyled4>
                             {isCreate
@@ -347,7 +393,12 @@ class ExportPDF extends Component {
                           <TdStyled2></TdStyled2>
                           <TdStyled3>
                             <div className="">
-                              <div>Mã khuyến mại: WPKM-3MO</div>
+                              <div>
+                                Mã khuyến mại:{' '}
+                                {isCreate
+                                  ? bonusCode
+                                  : orderItem.packet_user.promotion_code}
+                              </div>
                             </div>
                           </TdStyled3>
                           <TdStyled4>-</TdStyled4>
@@ -416,7 +467,11 @@ class ExportPDF extends Component {
                             </div>
                           </TdStyled3>
                           <TdStyled4>
-                            {this.showPrice(pricePacketData)}
+                            {this.showPrice(
+                              isCreate
+                                ? pricePacketData
+                                : orderItem.packet_storage.buy_info.unit_price
+                            )}
                           </TdStyled4>
                           <TdStyled4>
                             {isCreate
@@ -443,7 +498,7 @@ class ExportPDF extends Component {
                           <TdStyled4>-</TdStyled4>
                           <TdStyled4>
                             {isCreate
-                              ? 0
+                              ? packetStorageBefor
                               : orderItem.packet_storage.day_from_old_order /
                                 30}
                           </TdStyled4>
@@ -461,20 +516,30 @@ class ExportPDF extends Component {
                       <span style={{ width: '40%', textAlign: 'right' }}>
                         Tổng giá trị trước thuế (I+II)
                       </span>
-                      <span>{this.showPrice(totalPriceBeforVAT)}</span>
+                      <span>
+                        {isCreate
+                          ? this.showPrice(totalPriceBeforVAT)
+                          : orderItem.price_after_vat}
+                      </span>
                     </div>
                     <div className="item-total-group">
                       <span style={{ width: '40%', textAlign: 'right' }}>
                         Thuế VAT (10%)
                       </span>
-                      <span>{this.showPrice(totalPriceVAT)}</span>
+                      <span>
+                        {isCreate
+                          ? this.showPrice(totalPriceVAT)
+                          : orderItem.vat}
+                      </span>
                     </div>
                     <div className="item-total-group">
                       <span style={{ width: '40%', textAlign: 'right' }}>
                         Giá trị đơn hàng
                       </span>
                       <span style={{ fontWeight: 'bold', color: '#f50016' }}>
-                        {this.showPrice(totalPriceBeforVAT + totalPriceVAT)}
+                        {isCreate
+                          ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
+                          : orderItem.price}
                       </span>
                     </div>
                   </div>
@@ -484,20 +549,21 @@ class ExportPDF extends Component {
                     *** Lưu ý
                   </p>
                   <p style={{ marginBottom: 10 }}>
-                    Đơn hàng được tạo trực tuyến trên phần mềm quản lý công việc
-                    Workplus
+                    Đơn hàng được tạo trực tuyến trên hệ thống phần mềm quản lý
+                    công việc Workplus.vn
                   </p>
                   <p style={{ marginBottom: 10 }}>
-                    Đơn hàng được tạo trực tuyến trên phần mềm quản lý công việc
-                    Workplus
+                    Toàn bộ đơn hàng trên Workplus được thanh toán bằng chuyển
+                    khoản
                   </p>
                   <p style={{ marginBottom: 10 }}>
-                    Đơn hàng được tạo trực tuyến trên phần mềm quản lý công việc
-                    Workplus
+                    Khách hàng vui lòng xác nhận mọi thông tin trước khi thanh
+                    toán. Workplus không chịu trách nhiệm nếu thông tin thanh
+                    toán không phải do chúng tôi cung cấp.
                   </p>
                   <p style={{ marginBottom: 10 }}>
-                    Đơn hàng được tạo trực tuyến trên phần mềm quản lý công việc
-                    Workplus
+                    Mọi thắc mắc liên quan đến thanh toán đơn hàng vui lòng liên
+                    hệ: Hotline: 09.1800.6181 - Email: support@workplus.vn
                   </p>
                 </div>
               </div>

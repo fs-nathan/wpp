@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import {
   Button,
-  Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -16,32 +15,38 @@ import ColorTypo from '../ColorTypo';
 import './UploadModal.scss';
 
 const UploadModal = props => {
-  const { open, setOpen, title, fileUpload, currentFolder } = props;
+  const { open, setOpen, title, fileUpload = [], currentFolder } = props;
   const [percent, setPercent] = useState(0);
-  const [error, setError] = useState(false);
+  const [currentUpload, setCurrentUpload] = useState({});
+  const [totalSuccess, setTotalSuccess] = useState(0);
 
   const onUploading = percent => {
     setPercent(parseInt(percent));
   };
 
   useEffect(() => {
-    if (fileUpload) {
-      for (let i = 0; i < fileUpload.length; i++) {
-        async function onUploadFile() {
+    if (fileUpload.length > 0) {
+      let total = 0;
+      async function onUploadFile() {
+        for (let i = 0; i < fileUpload.length; i++) {
+          setCurrentUpload(fileUpload[i]);
           const formData = new FormData();
           formData.append('file', fileUpload[i]);
+          setPercent(0);
           if (!isEmpty(currentFolder)) {
             formData.append('folder_id', currentFolder.id);
           }
           try {
             await actionUploadFile(formData, onUploading);
+            setTotalSuccess(++total);
           } catch (error) {
-            setError(true);
             setPercent(0);
           }
         }
-        onUploadFile(fileUpload[i]);
+        if (props.onCompleted) props.onCompleted();
       }
+      onUploadFile();
+      // }
     }
     // eslint-disable-next-line
   }, [fileUpload]);
@@ -56,19 +61,14 @@ const UploadModal = props => {
   }, []);
 
   const handleClose = () => setOpen(false);
+  if (!open) return null;
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      disableBackdropClick
-      fullWidth
-      maxWidth="xs"
-      aria-labelledby="upload-dialog-title"
-      className="upload-modal"
-    >
+    <div className="upload-modal">
       <DialogTitle id="upload-dialog-title" className="upload-header">
         <ColorTypo className="header-title">
-          {title || 'Tải tệp tin lên'}
+          {`${title || 'Tải tệp tin lên'} (${totalSuccess}/${
+            fileUpload.length
+          } hoàn thành)`}
         </ColorTypo>
         <div className="right-action">
           <Button className="btn-cancel" onClick={handleClose}>
@@ -81,8 +81,8 @@ const UploadModal = props => {
       </DialogTitle>
       <DialogContent className="upload-content">
         <div className="upload-info">
-          <span className="file-name">{fileUpload[0].name}</span>
-          <span className="file-size">({formatBytes(fileUpload[0].size)})</span>
+          <span className="file-name">{currentUpload.name}</span>
+          <span className="file-size">({formatBytes(currentUpload.size)})</span>
         </div>
         <div className="progress-content">
           <LinearProgress
@@ -92,9 +92,8 @@ const UploadModal = props => {
           />
           <span className="percent-upload">{percent}%</span>
         </div>
-        {error && <div className="err-msg">Tải tài liệu lên thất bại!</div>}
       </DialogContent>
-    </Dialog>
+    </div>
   );
 };
 

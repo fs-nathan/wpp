@@ -26,9 +26,6 @@ const MoreAction = props => {
   };
   const handleClose = () => setAnchorEl(null);
   const closeModal = () => setVisible(null);
-  const handleShareDoc = () => {
-    console.log('item selected', props.item);
-  };
   const handleChangeDoc = async newName => {
     try {
       await actionRenameFile({
@@ -48,12 +45,11 @@ const MoreAction = props => {
   const handleDownloadFile = async () => {
     try {
       await actionDownloadDocument(props.item.url);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   const handleCopy = () => {
-    navigator.clipboard.writeText(props.item.url || '');
+    // webViewLink is for Google Drive
+    navigator.clipboard.writeText(props.item.url || props.item.webViewLink || '');
   };
   return (
     <React.Fragment>
@@ -85,7 +81,9 @@ const MoreAction = props => {
               handleClose();
               if (el.type === 'download') handleDownloadFile();
               else if (el.type === 'copy') handleCopy();
-              else setVisible(el.type);
+              else if (el.type === 'link') {
+                props.history.push(props.item.redirect_url);
+              } else setVisible(el.type);
               if (el.action) el.action(props.item);
               e.stopPropagation();
             }}
@@ -99,11 +97,7 @@ const MoreAction = props => {
         ))}
       </Menu>
       {visible === 'share' && (
-        <ShareDocumentModal
-          onClose={closeModal}
-          onOk={handleShareDoc}
-          item={props.item}
-        />
+        <ShareDocumentModal onClose={closeModal} item={props.item} />
       )}
       {visible === 'move' && (
         <MoveDocumentModal

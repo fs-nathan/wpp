@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import {
   Table,
@@ -11,7 +11,11 @@ import {
 import { get, sortBy, reverse } from 'lodash';
 import Icon from '@mdi/react';
 import { withRouter } from 'react-router-dom';
-import { mdiSwapVertical } from '@mdi/js';
+import {
+  mdiAccountPlusOutline,
+  mdiSwapVertical,
+  mdiContentCopy
+} from '@mdi/js';
 import {
   selectDocumentItem,
   resetListSelectDocument,
@@ -23,6 +27,7 @@ import {
   StyledTableHeadCell,
   StyledTableBodyCell,
   FullAvatar,
+  CustomAvatar,
   selectItem,
   selectAll,
   GreenCheckbox,
@@ -33,12 +38,18 @@ import './ContentDocumentPage.scss';
 import ColorTypo from '../../../../components/ColorTypo';
 import LoadingBox from '../../../../components/LoadingBox';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
+import MoreAction from '../../../../components/MoreAction/MoreAction';
+import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
+import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
 
 const ProjectDocumentDetail = props => {
-  const { isLoading, listProject: listData } = props;
-  const [selected, setSelected] = React.useState([]);
-  const [sortField, setSortField] = React.useState(null);
-  const [sortType, setSortType] = React.useState(1);
+  const { isLoading, listProject: listData, actionChangeBreadCrumbs } = props;
+  const [selected, setSelected] = useState([]);
+  const [sortField, setSortField] = useState(null);
+  const [sortType, setSortType] = useState(1);
+  const [visible, setVisible] = useState(false);
+  const [itemActive, setItemActive] = useState({});
+
   useEffect(() => {
     const search = props.location.search.split('projectId=').pop();
     fetDataProjectDocumentOfFolder({ project_id: search });
@@ -47,6 +58,7 @@ const ProjectDocumentDetail = props => {
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
+      actionChangeBreadCrumbs([]);
     };
     // eslint-disable-next-line
   }, []);
@@ -93,12 +105,16 @@ const ProjectDocumentDetail = props => {
       />
     );
   };
+  const moreAction = [
+    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
+    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' }
+  ];
   if (isLoading) {
     return <LoadingBox />;
   }
   return (
     <Fragment>
-      <Table>
+      <Table stickyHeader className="doc-table-content">
         <TableHead>
           <TableRow className="table-header-row">
             <StyledTableHeadCell>
@@ -114,7 +130,7 @@ const ProjectDocumentDetail = props => {
               align="center"
               width="5%"
             ></StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="25%">
+            <StyledTableHeadCell align="left" width="20%">
               <div
                 className="cursor-pointer"
                 onClick={() => hanldeSort('name')}
@@ -125,25 +141,35 @@ const ProjectDocumentDetail = props => {
                 </IconButton>
               </div>
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="30%">
+            <StyledTableHeadCell align="left" width="20%">
               Công việc
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="15%">
+            <StyledTableHeadCell align="center" width="15%">
+              Chia sẻ
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="left" width="10%">
               Chủ sở hữu
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="15%">
+            <StyledTableHeadCell align="center" width="10%">
               Sửa đổi lần cuối
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
               Kích thước
             </StyledTableHeadCell>
+            <StyledTableHeadCell
+              align="center"
+              width="5%"
+            ></StyledTableHeadCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {listData.map((file, index) => {
             const isItemSelected = isSelected(file.id);
             return (
-              <TableRow className="table-body-row" key={index}>
+              <TableRow
+                className={`table-body-row ${isItemSelected ? 'selected' : ''}`}
+                key={index}
+              >
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -153,30 +179,57 @@ const ProjectDocumentDetail = props => {
                 <StyledTableBodyCell align="center" width="5%">
                   <FullAvatar src={FileType(file.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="25%">
+                <StyledTableBodyCell align="left" width="20%">
                   <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="30%">
+                <StyledTableBodyCell align="left" width="20%">
                   <ColorTypo color="black">{file.task_name}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="15%">
+                <StyledTableBodyCell align="center" width="15%">
+                  {file.shared_member &&
+                    file.shared_member.length > 0 &&
+                    file.shared_member.map(
+                      (shareMember, idx) =>
+                        shareMember.avatar && (
+                          <CustomAvatar
+                            src={shareMember.avatar}
+                            key={idx}
+                            onClick={() => {
+                              setVisible(true);
+                              setItemActive(file);
+                            }}
+                          />
+                        )
+                    )}
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="left" width="10%">
                   {(file.user_create_avatar &&
                     getIconAvatar(
                       `https://storage.googleapis.com${file.user_create_avatar}`
                     )) ||
                     ''}
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="15%">
+                <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.date_create}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.size}</ColorTypo>
                 </StyledTableBodyCell>
+                <MoreAction actionList={moreAction} item={file} />
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
+      {visible && (
+        <ShareDocumentModal
+          onClose={() => {
+            setVisible(false);
+            setItemActive({});
+          }}
+          item={itemActive}
+        />
+      )}
     </Fragment>
   );
 };
@@ -190,6 +243,7 @@ export default connect(
     selectDocumentItem,
     actionSortListProject,
     resetListSelectDocument,
+    actionChangeBreadCrumbs,
     actionFetchListProjectOfFolder
   }
 )(withRouter(ProjectDocumentDetail));

@@ -79,11 +79,11 @@ class HeaderGroup extends Component {
         )}
         {settingGroupType === SETTING_GROUP.ORDER_DETAIL && (
           <span className="close-header">
-            Đóng&nbsp;
             <Icon
               path={mdiClose}
               size={1}
               onClick={() => this.handleClick(SETTING_GROUP.ORDER)}
+              title="Đóng"
             />
           </span>
         )}

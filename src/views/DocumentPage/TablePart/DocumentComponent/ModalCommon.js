@@ -72,6 +72,7 @@ const ModalCommon = props => {
               onClick={el.action}
               color={idx % 2 !== 0 || isPrimary ? 'primary' : ''}
               key={idx}
+              disabled={el.disabled}
             >
               {el.name}
             </Button>

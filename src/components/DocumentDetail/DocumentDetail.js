@@ -24,7 +24,8 @@ import {
 import {
   closeDocumentDetail,
   canViewFile,
-  isImageFile
+  isImageFile,
+  formatBytes
 } from '../../actions/system/system';
 import ColorTypo from '../ColorTypo';
 import Comment from './Comment/Comment';
@@ -34,20 +35,21 @@ import './DocumentDetail.scss';
 import AlertModal from '../AlertModal';
 import ShareDocumentModal from '../../views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal';
 import { getDocumentDetail, actionDeleteFile } from '../../actions/documents';
-import { file } from '../../assets/fileType';
+import { FileType } from '../FileType';
 
 const DocumentDetail = props => {
   const { t } = useTranslation();
+  const fileInfo = props.documentFile || {};
   const [anchorEl, setAnchorEl] = useState(null);
   const [alert, setAlert] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [type, setType] = useState('comment');
+  const [type, setType] = useState(
+    fileInfo.isGoogleDocument ? null : 'comment'
+  );
   const [fileDetail, setFileDetail] = useState({});
 
-  const fileInfo = props.documentFile || {};
-
   useEffect(() => {
-    handleFetchData();
+    if (!fileInfo.isGoogleDocument) handleFetchData();
     // eslint-disable-next-line
   }, [fileInfo]);
 
@@ -76,7 +78,10 @@ const DocumentDetail = props => {
       subtitle = subtitle + ' - ' + file.date_create;
     }
     if (file.size) {
-      subtitle = subtitle + ' - ' + file.size;
+      subtitle =
+        subtitle +
+        ' - ' +
+        (file.isGoogleDocument ? formatBytes(file.size) : file.size);
     }
     return subtitle;
   };
@@ -84,17 +89,9 @@ const DocumentDetail = props => {
   const handleDeleteFile = async () => {
     if (!fileDetail.id) return;
     try {
-      await actionDeleteFile({
-        file_id: [fileDetail.id]
-      });
+      await actionDeleteFile({ file_id: [fileDetail.id] });
       handleCloseDialog();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleShareDoc = () => {
-    setVisible(false);
+    } catch (error) {}
   };
 
   return (
@@ -107,61 +104,82 @@ const DocumentDetail = props => {
       <AppBar className="app-bar-document">
         <Toolbar className="header-dialog">
           <div className="document-info">
-            {fileDetail.user_create && fileDetail.user_create.avatar && (
-              <Avatar src={fileDetail.user_create.avatar} alt="avatar" />
-            )}
+            {!fileInfo.isGoogleDocument &&
+              fileDetail.user_create &&
+              fileDetail.user_create.avatar && (
+                <Avatar src={fileDetail.user_create.avatar} alt="avatar" />
+              )}
+            {fileInfo.isGoogleDocument &&
+              fileInfo.user_create &&
+              fileInfo.user_create.avatar && (
+                <Avatar src={fileInfo.user_create.avatar} alt="avatar" />
+              )}
             <div className="owner-info">
               <ColorTypo bold color="orange" className="file-name">
-                {fileDetail.name}
+                {fileInfo.isGoogleDocument ? fileInfo.name : fileDetail.name}
               </ColorTypo>
-              <div className="sub-title">{getSubtitle(fileDetail)}</div>
+              <div className="sub-title">
+                {getSubtitle(fileInfo.isGoogleDocument ? fileInfo : fileDetail)}
+              </div>
             </div>
           </div>
           <div className="document-actions">
-            <IconButton
-              color="inherit"
-              className="btn-action"
-              onClick={() => setType('comment')}
-            >
-              <Badge badgeContent={'N'} invisible={false} className="badge-new">
-                <Icon
-                  path={mdiMessageProcessingOutline}
-                  size={1}
-                  color="rgba(0, 0, 0, 0.54)"
-                />
-              </Badge>
-            </IconButton>
-            <IconButton
-              color="inherit"
-              className="btn-action"
-              onClick={() => setType('info')}
-            >
-              <Icon
-                path={mdiInformationOutline}
-                size={1}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </IconButton>
-            <IconButton
-              color="inherit"
-              className="btn-action"
-              onClick={() => setType('download')}
-            >
-              <Icon path={mdiDownload} size={1} color="rgba(0, 0, 0, 0.54)" />
-            </IconButton>
-            <IconButton
-              color="inherit"
-              className="btn-action"
-              aria-controls="more-action"
-              aria-haspopup="true"
-              onClick={handleOpenMoreAction}
-            >
-              <Icon
-                path={mdiDotsVertical}
-                size={1}
-                color="rgba(0, 0, 0, 0.54)"
-              />
-            </IconButton>
+            {!fileInfo.isGoogleDocument && (
+              <React.Fragment>
+                <IconButton
+                  color="inherit"
+                  className="btn-action"
+                  onClick={() => setType('comment')}
+                >
+                  <Badge
+                    badgeContent={'N'}
+                    invisible={false}
+                    className="badge-new"
+                  >
+                    <Icon
+                      path={mdiMessageProcessingOutline}
+                      size={1}
+                      color="rgba(0, 0, 0, 0.54)"
+                    />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  color="inherit"
+                  className="btn-action"
+                  onClick={() => setType('info')}
+                >
+                  <Icon
+                    path={mdiInformationOutline}
+                    size={1}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </IconButton>
+                <IconButton
+                  color="inherit"
+                  className="btn-action"
+                  onClick={() => setType('download')}
+                >
+                  <Icon
+                    path={mdiDownload}
+                    size={1}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </IconButton>
+                <IconButton
+                  color="inherit"
+                  className="btn-action"
+                  aria-controls="more-action"
+                  aria-haspopup="true"
+                  onClick={handleOpenMoreAction}
+                >
+                  <Icon
+                    path={mdiDotsVertical}
+                    size={1}
+                    color="rgba(0, 0, 0, 0.54)"
+                  />
+                </IconButton>
+              </React.Fragment>
+            )}
             <IconButton
               color="inherit"
               onClick={handleCloseDialog}
@@ -171,41 +189,43 @@ const DocumentDetail = props => {
               <Icon path={mdiClose} size={1} />
             </IconButton>
           </div>
-          <Menu
-            id="more-action"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMoreAction}
-            transformOrigin={{
-              vertical: -30,
-              horizontal: 'right'
-            }}
-          >
-            <MenuItem
-              onClick={() => {
-                handleCloseMoreAction();
-                setVisible(true);
+          {!fileInfo.isGoogleDocument && (
+            <Menu
+              id="more-action"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMoreAction}
+              transformOrigin={{
+                vertical: -30,
+                horizontal: 'right'
               }}
-              disabled={!fileDetail.can_modify}
             >
-              Chia sẻ
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleCloseMoreAction();
-                setAlert(true);
-              }}
-              disabled={!fileDetail.can_modify}
-            >
-              Xóa tài liệu
-            </MenuItem>
-          </Menu>
+              <MenuItem
+                onClick={() => {
+                  handleCloseMoreAction();
+                  setVisible(true);
+                }}
+                disabled={!fileDetail.can_modify}
+              >
+                Chia sẻ
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCloseMoreAction();
+                  setAlert(true);
+                }}
+                disabled={!fileDetail.can_modify}
+              >
+                Xóa tài liệu
+              </MenuItem>
+            </Menu>
+          )}
         </Toolbar>
       </AppBar>
       <div className={`document-detail-container ${!type ? 'full-page' : ''}`}>
         <div className="view-file-wrapper">
-          {canViewFile(fileInfo.type) && (
+          {canViewFile(fileInfo.type) && !fileInfo.isGoogleDocument && (
             <React.Fragment>
               {!isImageFile(fileInfo.type) && (
                 <iframe
@@ -222,11 +242,25 @@ const DocumentDetail = props => {
               )}
             </React.Fragment>
           )}
+          {canViewFile(fileInfo.type) && fileInfo.isGoogleDocument && (
+            <React.Fragment>
+              <iframe
+                className="google-view-file"
+                title="read-file"
+                src={fileInfo.url}
+                id="file_view"
+              />
+            </React.Fragment>
+          )}
           {!canViewFile(fileInfo.type) && (
             <div className="download-box-wrapper">
               <div className="download-box">
                 <div className="right-icon">
-                  <img src={file} alt="" className="icon-file" />
+                  <img
+                    src={FileType(fileInfo.type)}
+                    alt=""
+                    className="icon-file"
+                  />
                 </div>
                 <div className="box-content">
                   <div className="box-title">
@@ -241,7 +275,10 @@ const DocumentDetail = props => {
                         <Icon path={mdiDownload} size={1} color="#007bff" />
                       }
                       onClick={() => {
-                        if (fileInfo.url) {
+                        if (fileInfo.url && !fileInfo.isGoogleDocument) {
+                          window.open(fileInfo.url, '_blank');
+                        }
+                        if (fileInfo.webContentLink) {
                           window.open(fileInfo.url, '_blank');
                         }
                       }}
@@ -249,7 +286,13 @@ const DocumentDetail = props => {
                       Download
                     </Button>
                     {fileInfo.size && (
-                      <span className="file-size">({fileInfo.size})</span>
+                      <span className="file-size">
+                        (
+                        {fileInfo.isGoogleDocument
+                          ? formatBytes(fileInfo.size)
+                          : fileInfo.size}
+                        )
+                      </span>
                     )}
                   </div>
                 </div>
@@ -268,7 +311,11 @@ const DocumentDetail = props => {
         )}
         {type === 'info' && (
           <div className="right-wrapper">
-            <DocInfo fileInfo={fileDetail} closeComment={() => setType(null)} />
+            <DocInfo
+              fileInfo={fileDetail}
+              closeComment={() => setType(null)}
+              handleFetchData={handleFetchData}
+            />
           </div>
         )}
         {type === 'download' && (
@@ -289,7 +336,6 @@ const DocumentDetail = props => {
       {visible && (
         <ShareDocumentModal
           onClose={() => setVisible(false)}
-          onOk={handleShareDoc}
           item={props.item}
         />
       )}

@@ -32,8 +32,7 @@ const FooterListDrawer = props => {
             }`}
           >
             {el.icon && <Icon path={el.icon} size={1} color="#5a5a5a" />}
-            &nbsp;
-            {el.name}
+            <span className="name-text">{el.name}</span>
           </Link>
         </div>
       ))}

@@ -10,11 +10,7 @@ import {
 } from '@material-ui/core';
 import { get, sortBy, reverse } from 'lodash';
 import Icon from '@mdi/react';
-import {
-  mdiAccountPlusOutline,
-  mdiSwapVertical,
-  mdiContentCopy
-} from '@mdi/js';
+import { mdiSwapVertical, mdiFolderTextOutline } from '@mdi/js';
 import { withRouter } from 'react-router-dom';
 
 import { Routes } from '../../../../constants/routes';
@@ -39,15 +35,19 @@ import {
   selectAllRedux,
   selectItemRedux
 } from '../DocumentComponent/TableCommon';
+import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
 import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
+import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 
 const ProjectDocument = props => {
-  const { isLoading } = props;
+  const { isLoading, breadCrumbs, actionChangeBreadCrumbs } = props;
   const [listData, setListData] = useState([]);
   const [selected, setSelected] = useState([]);
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);
+  const [visible, setVisible] = useState(false);
+  const [itemActive, setItemActive] = useState({});
 
   useEffect(() => {
     fetDataProjectDocument();
@@ -110,8 +110,7 @@ const ProjectDocument = props => {
   };
   const isSelected = id => selected.indexOf(id) !== -1;
   const moreAction = [
-    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
-    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' }
+    { icon: mdiFolderTextOutline, text: 'Truy cập dự án', type: 'link' }
   ];
   const openDetail = item => {
     const isDetail =
@@ -124,6 +123,41 @@ const ProjectDocument = props => {
         pathname: Routes.DOCUMENT_PROJECT,
         search: `?projectId=${item.id}`
       });
+      // handle bread crumbs
+      let newBreadCrumbs = [...breadCrumbs];
+      if (breadCrumbs.length === 0) {
+        newBreadCrumbs.push({
+          id: -1,
+          name: 'Home',
+          action: () => {
+            props.history.push({
+              pathname: Routes.DOCUMENT_PROJECT
+            });
+          }
+        });
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.history.push({
+              pathname: Routes.DOCUMENT_PROJECT,
+              search: `?projectId=${item.id}`
+            });
+          }
+        });
+      } else {
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.history.push({
+              pathname: Routes.DOCUMENT_PROJECT,
+              search: `?projectId=${item.id}`
+            });
+          }
+        });
+      }
+      actionChangeBreadCrumbs(newBreadCrumbs);
     }
   };
   if (isLoading) {
@@ -139,10 +173,10 @@ const ProjectDocument = props => {
   };
   return (
     <React.Fragment>
-      <Table>
+      <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
-            <StyledTableHeadCell>
+            <StyledTableHeadCell align="center" width="5%">
               <GreenCheckbox
                 onChange={handleSelectAllClick}
                 checked={selected.length === listData.length}
@@ -154,7 +188,7 @@ const ProjectDocument = props => {
             <StyledTableHeadCell align="center" width="5%">
               Loại
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="65%">
+            <StyledTableHeadCell align="left" width="50%">
               <div
                 className="cursor-pointer"
                 onClick={() => hanldeSort('name')}
@@ -165,7 +199,7 @@ const ProjectDocument = props => {
                 </IconButton>
               </div>
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="20%">
+            <StyledTableHeadCell align="center" width="30%">
               Sổ tài liệu
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
@@ -175,8 +209,12 @@ const ProjectDocument = props => {
           {listData.map((project, index) => {
             const isItemSelected = isSelected(project.id);
             return (
-              <TableRow hover={true} key={index} className="table-body-row">
-                <StyledTableBodyCell>
+              <TableRow
+                hover={true}
+                key={index}
+                className={`table-body-row ${isItemSelected ? 'selected' : ''}`}
+              >
+                <StyledTableBodyCell align="center" width="5%">
                   <GreenCheckbox
                     checked={isItemSelected}
                     onChange={e => handleSelectItem(project)}
@@ -193,13 +231,13 @@ const ProjectDocument = props => {
                 </StyledTableBodyCell>
                 <StyledTableBodyCell
                   align="left"
-                  width="60%"
+                  width="50%"
                   className="cursor-pointer"
                   onClick={() => openDetail(project)}
                 >
                   <ColorTypo color="black">{project.name}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="10%">
+                <StyledTableBodyCell align="center" width="30%">
                   <ColorTypo color="black">{project.number_document}</ColorTypo>
                 </StyledTableBodyCell>
                 <MoreAction actionList={moreAction} item={project} />
@@ -208,6 +246,15 @@ const ProjectDocument = props => {
           })}
         </TableBody>
       </Table>
+      {visible && (
+        <ShareDocumentModal
+          onClose={() => {
+            setVisible(false);
+            setItemActive({});
+          }}
+          item={itemActive}
+        />
+      )}
     </React.Fragment>
   );
 };
@@ -216,6 +263,7 @@ export default connect(
   state => ({
     selectedDocument: state.documents.selectedDocument,
     listProject: state.documents.listProject,
+    breadCrumbs: state.system.breadCrumbs,
     searchText: state.documents.searchText
   }),
   {
@@ -223,6 +271,7 @@ export default connect(
     resetListSelectDocument,
     openDocumentDetail,
     actionFetchListProject,
+    actionChangeBreadCrumbs,
     actionSortListProject
   }
 )(withRouter(ProjectDocument));

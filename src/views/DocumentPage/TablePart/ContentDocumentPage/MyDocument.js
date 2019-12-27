@@ -48,19 +48,24 @@ import {
 import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
+import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 
 const MyDocument = props => {
   const [alert, setAlert] = useState(false);
   const [selected, setSelected] = React.useState([]);
   const {
     isLoading,
-    listMyDocument: listData,
     breadCrumbs,
-    actionChangeBreadCrumbs
+    actionChangeBreadCrumbs,
+    isFetching,
+    currentFolder
   } = props;
+  const [listData, setListData] = useState([]);
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);
   const [fileSelectAction, setFileSelectAction] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [itemActive, setItemActive] = useState({});
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -71,6 +76,7 @@ const MyDocument = props => {
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
+      props.actionSelectedFolder({});
       actionChangeBreadCrumbs([]);
     }; // eslint-disable-next-line
   }, []);
@@ -88,6 +94,30 @@ const MyDocument = props => {
     // eslint-disable-next-line
   }, [props.selectedDocument]);
 
+  useEffect(() => {
+    setListData(props.listMyDocument);
+    // eslint-disable-next-line
+  }, [props.listMyDocument]);
+
+  useEffect(() => {
+    const dataUpdate = handleSearchData(props.searchText, props.listMyDocument);
+    setListData(dataUpdate);
+    // eslint-disable-next-line
+  }, [props.searchText]);
+
+  const handleSearchData = (valueSearch, listData) => {
+    let listResult = [];
+    if (!isEmpty(valueSearch)) {
+      listResult = listData.filter(
+        el => el.name.toLowerCase().indexOf(valueSearch.toLowerCase()) !== -1
+      );
+    } else {
+      listResult = listData;
+    }
+
+    return listResult;
+  };
+
   const hanldeSort = field => {
     if (field !== sortField) {
       setSortField(field);
@@ -102,6 +132,7 @@ const MyDocument = props => {
   };
 
   const handleClickItem = item => {
+    if (isFetching) return;
     if (item.type === 'folder') {
       props.actionFetchListMyDocument({ folder_id: item.id }, true);
       props.actionSelectedFolder(item);
@@ -111,20 +142,27 @@ const MyDocument = props => {
         newBreadCrumbs.push({
           id: -1,
           name: 'Home',
-          action: () => getListMyDocument({}, true)
+          action: () => {
+            props.actionSelectedFolder({});
+            getListMyDocument({}, true);
+          }
         });
         newBreadCrumbs.push({
           id: item.id,
           name: item.name,
-          action: () =>
-            props.actionFetchListMyDocument({ folder_id: item.id }, true)
+          action: () => {
+            props.actionSelectedFolder(item);
+            props.actionFetchListMyDocument({ folder_id: item.id }, true);
+          }
         });
       } else {
         newBreadCrumbs.push({
           id: item.id,
           name: item.name,
-          action: () =>
-            props.actionFetchListMyDocument({ folder_id: item.id }, true)
+          action: () => {
+            props.actionSelectedFolder(item);
+            props.actionFetchListMyDocument({ folder_id: item.id }, true);
+          }
         });
       }
       actionChangeBreadCrumbs(newBreadCrumbs);
@@ -165,10 +203,14 @@ const MyDocument = props => {
       }
     }
   ];
+  const moreActionFolder = moreAction.filter(
+    el => el.type !== 'download' && el.type !== 'copy'
+  );
   if (isLoading) {
     return <LoadingBox />;
   }
   const handleActionDeleteFile = async () => {
+    if (isFetching) return;
     try {
       if (fileSelectAction.type === 'folder') {
         await actionDeleteFolder({
@@ -179,13 +221,17 @@ const MyDocument = props => {
           file_id: [fileSelectAction.id]
         });
       }
-      getListMyDocument();
+      let params = {};
+      if (!isEmpty(currentFolder)) {
+        params.folder_id = currentFolder.id;
+      }
+      getListMyDocument(params);
       props.resetListSelectDocument();
     } catch (error) {}
   };
   return (
     <React.Fragment>
-      <Table>
+      <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
             <StyledTableHeadCell>
@@ -230,7 +276,10 @@ const MyDocument = props => {
           {listData.map(item => {
             const isItemSelected = isSelected(item.id);
             return (
-              <TableRow className="table-body-row" key={item.id}>
+              <TableRow
+                className={`table-body-row ${isItemSelected ? 'selected' : ''}`}
+                key={item.id}
+              >
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -264,7 +313,14 @@ const MyDocument = props => {
                     item.shared_member.map(
                       (shareMember, idx) =>
                         shareMember.avatar && (
-                          <CustomAvatar src={shareMember.avatar} key={idx} />
+                          <CustomAvatar
+                            src={shareMember.avatar}
+                            key={idx}
+                            onClick={() => {
+                              setVisible(true);
+                              setItemActive(item);
+                            }}
+                          />
                         )
                     )}
                 </StyledTableBodyCell>
@@ -278,10 +334,26 @@ const MyDocument = props => {
                   <MoreAction
                     actionList={moreAction}
                     item={item}
-                    handleFetData={() => getListMyDocument({}, true)}
+                    handleFetData={() => {
+                      let params = {};
+                      if (!isEmpty(currentFolder)) {
+                        params.folder_id = currentFolder.id;
+                      }
+                      getListMyDocument(params, true);
+                    }}
                   />
                 ) : (
-                  <StyledTableBodyCell align="center" width="5%" />
+                  <MoreAction
+                    actionList={moreActionFolder}
+                    item={item}
+                    handleFetData={() => {
+                      let params = {};
+                      if (!isEmpty(currentFolder)) {
+                        params.folder_id = currentFolder.id;
+                      }
+                      getListMyDocument(params, true);
+                    }}
+                  />
                 )}
               </TableRow>
             );
@@ -294,6 +366,15 @@ const MyDocument = props => {
         content={t('views.user_page.left_part.department_info.alert_content')}
         onConfirm={() => handleActionDeleteFile()}
       />
+      {visible && (
+        <ShareDocumentModal
+          onClose={() => {
+            setVisible(false);
+            setItemActive({});
+          }}
+          item={itemActive}
+        />
+      )}
     </React.Fragment>
   );
 };
@@ -303,7 +384,10 @@ export default connect(
     selectedDocument: state.documents.selectedDocument,
     isLoading: state.documents.isLoading,
     listMyDocument: state.documents.listMyDocument,
-    breadCrumbs: state.system.breadCrumbs
+    breadCrumbs: state.system.breadCrumbs,
+    searchText: state.documents.searchText,
+    isFetching: state.documents.isFetching,
+    currentFolder: state.documents.currentFolder
   }),
   {
     selectDocumentItem,

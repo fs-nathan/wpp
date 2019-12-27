@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { OutlinedInput } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { Routes } from '../../../../constants/routes';
-import { orderCreateService } from '../../../../actions/setting/setting';
+import {
+  orderCreateService,
+  checkPromotionCode,
+  getInfoBeforeCreateOrder,
+  getNumberDayFromOldOrder
+} from '../../../../actions/setting/setting';
 import SnackbarComponent from '../../../../components/Snackbars';
 import './SettingGroupRight.scss';
 import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
 import OrderInit from '../../../../components/ExportPDF/OrderInit';
 import SliderProgess from '../../../../components/SliderProgess/SliderProgess';
+import { async } from 'rxjs/internal/scheduler/async';
 
 const marks = {
   accountNum: {
@@ -38,6 +44,7 @@ const marks = {
     max: 36
   }
 };
+
 const CreateOrder = props => {
   const [isCheckedManagerWork, setIsCheckedManagerWork] = useState(false);
   const [isCheckedBuyData, setIsCheckedBuyData] = useState(false);
@@ -47,6 +54,29 @@ const CreateOrder = props => {
   const [dateSave, SetdateSave] = useState(0);
   const [openToast, setOpenToast] = useState(false);
   const [mesToast, setMesToast] = useState('');
+  const [inputPromotionCode, SetInputPromotionCode] = useState('');
+  const [isErrorCode, SetIsErrorCode] = useState(0);
+  const [dayBonus, SetDayBonus] = useState(0);
+  const [dataBeforOder, setDataBeforOder] = useState({});
+  const [bonusCode, setBonusCode] = useState('');
+  const [dataNumberOldOder, setDataNumberOldOder] = useState({});
+  useEffect(() => {
+    fetInfoBeforeCreateOrder();
+    fetNumberDayFromOldOrder();
+  }, []);
+
+  const fetInfoBeforeCreateOrder = async () => {
+    try {
+      const { data } = await getInfoBeforeCreateOrder();
+      setDataBeforOder(data);
+    } catch (error) {}
+  };
+  const fetNumberDayFromOldOrder = async () => {
+    try {
+      const { data } = await getNumberDayFromOldOrder();
+      setDataNumberOldOder(data.data);
+    } catch (error) {}
+  };
   const handleChangeCheck = (type, value) => {
     if (type === 'work') {
       setIsCheckedManagerWork(value);
@@ -85,7 +115,9 @@ const CreateOrder = props => {
   };
   const handleCreateOder = async () => {
     try {
-      let dataBody = {};
+      let dataBody = {
+        code: dataBeforOder.code
+      };
       if (isCheckedManagerWork) {
         dataBody = {
           ...dataBody,
@@ -100,6 +132,12 @@ const CreateOrder = props => {
           packet_storage: 1,
           storage_size: dataBuy,
           storage_time_use: dateSave
+        };
+      }
+      if (isErrorCode === 2) {
+        dataBody = {
+          ...dataBody,
+          bonus_code: bonusCode
         };
       }
       const { data } = await orderCreateService(dataBody);
@@ -117,6 +155,20 @@ const CreateOrder = props => {
   const handleCloseToast = () => {
     setOpenToast(false);
   };
+  const handleCheckPromotionCode = async () => {
+    try {
+      const { data } = await checkPromotionCode({ code: inputPromotionCode });
+      SetIsErrorCode(2);
+      setBonusCode(inputPromotionCode);
+      SetDayBonus(data.day_bonus);
+    } catch (error) {
+      SetIsErrorCode(1);
+      SetInputPromotionCode();
+    }
+  };
+  const handleChangePromotion = e => {
+    SetInputPromotionCode(e.target.value);
+  };
   return (
     <div className="order-detail-container create-order">
       <div className="has-border-right detail-left">
@@ -129,6 +181,10 @@ const CreateOrder = props => {
             isCreate={true}
             isCheckedManagerWork={isCheckedManagerWork}
             isCheckedBuyData={isCheckedBuyData}
+            dataBeforOder={dataBeforOder}
+            dayBonus={dayBonus}
+            bonusCode={bonusCode}
+            dataNumberOldOder={dataNumberOldOder}
           />
         ) : (
           <OrderInit />
@@ -246,15 +302,29 @@ const CreateOrder = props => {
               type="text"
               placeholder="Nhập mã khuyến mãi"
               className="input-voucher"
+              value={inputPromotionCode}
+              onChange={handleChangePromotion}
             />
             <Button
               variant="contained"
               color="secondary"
               className="btn btn-warning mr-3 input-btn"
+              onClick={handleCheckPromotionCode}
             >
               Nhập
             </Button>
+
+            {/* show message lỗi khi nhập sai mã khuyến mại */}
           </div>
+          {isErrorCode === 1 ? (
+            <div className="error-code">Mã không tồn tại</div>
+          ) : isErrorCode === 2 ? (
+            <div className="success-code">
+              Cộng thêm {dayBonus} ngày sử dụng
+            </div>
+          ) : (
+            ''
+          )}
           <Button
             className="create-order-btn"
             onClick={handleCreateOder}

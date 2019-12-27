@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, useState } from 'react';
 import { mdiSwapVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ import {
   TableBody,
   IconButton
 } from '@material-ui/core';
+import { mdiAccountPlusOutline, mdiContentCopy } from '@mdi/js';
 import { get, sortBy, reverse } from 'lodash';
 import {
   selectDocumentItem,
@@ -23,21 +24,29 @@ import {
   StyledTableHeadCell,
   StyledTableBodyCell,
   FullAvatar,
+  CustomAvatar,
   selectItem,
   selectAll,
   GreenCheckbox,
   selectAllRedux,
   selectItemRedux
 } from '../DocumentComponent/TableCommon';
+import MoreAction from '../../../../components/MoreAction/MoreAction';
 import './ContentDocumentPage.scss';
 import ColorTypo from '../../../../components/ColorTypo';
 import LoadingBox from '../../../../components/LoadingBox';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
+import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
+
 const RecentContent = props => {
-  const { isLoading, listRecent: listData } = props;
+  const { isLoading } = props;
+  const [listData, setListData] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);
+  const [visible, setVisible] = useState(false);
+  const [itemActive, setItemActive] = useState({});
+
   useEffect(() => {
     fetDataRecentDocument();
     // eslint-disable-next-line
@@ -65,6 +74,29 @@ const RecentContent = props => {
     } else {
       setSortType(prev => prev * -1);
     }
+  };
+
+  useEffect(() => {
+    setListData(props.listRecent);
+    // eslint-disable-next-line
+  }, [props.listRecent]);
+
+  useEffect(() => {
+    const dataUpdate = handleSearchData(props.searchText, props.listRecent);
+    setListData(dataUpdate);
+    // eslint-disable-next-line
+  }, [props.searchText]);
+
+  const handleSearchData = (valueSearch, listData) => {
+    let listResult = [];
+    if (!isEmpty(valueSearch)) {
+      listResult = listData.filter(
+        el => el.name.toLowerCase().indexOf(valueSearch.toLowerCase()) !== -1
+      );
+    } else {
+      listResult = listData;
+    }
+    return listResult;
   };
 
   const fetDataRecentDocument = (params = {}, quite = false) => {
@@ -101,9 +133,13 @@ const RecentContent = props => {
   if (isLoading) {
     return <LoadingBox />;
   }
+  const moreAction = [
+    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
+    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' }
+  ];
   return (
     <Fragment>
-      <Table>
+      <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
             <StyledTableHeadCell>
@@ -129,7 +165,10 @@ const RecentContent = props => {
                 </IconButton>
               </div>
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="20%">
+            <StyledTableHeadCell align="center" width="15%">
+              Chia sẻ
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="left" width="10%">
               Nơi lưu trữ
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="15%">
@@ -138,16 +177,20 @@ const RecentContent = props => {
             <StyledTableHeadCell align="center" width="15%">
               Người tạo
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="15%">
+            <StyledTableHeadCell align="center" width="10%">
               Kích thước
             </StyledTableHeadCell>
+            <StyledTableHeadCell align="center" width="5%" />
           </TableRow>
         </TableHead>
         <TableBody>
           {listData.map((file, index) => {
             const isItemSelected = isSelected(file.id);
             return (
-              <TableRow className="table-body-row" key={index}>
+              <TableRow
+                className={`table-body-row ${isItemSelected ? 'selected' : ''}`}
+                key={index}
+              >
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -170,7 +213,33 @@ const RecentContent = props => {
                 >
                   <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="20%">
+                <StyledTableBodyCell align="center" width="15%">
+                  {!isEmpty(file.users_shared) &&
+                    file.users_shared.length > 0 &&
+                    file.users_shared.map(
+                      (shareMember, idx) =>
+                        shareMember.avatar && (
+                          <CustomAvatar
+                            src={shareMember.avatar}
+                            key={idx}
+                            onClick={() => {
+                              setVisible(true);
+                              setItemActive(file);
+                            }}
+                          />
+                        )
+                    )}
+                  {/* {file.users_shared && (
+                    <CustomAvatar
+                      src={file.users_shared.avatar}
+                      onClick={() => {
+                        setVisible(true);
+                        setItemActive(file);
+                      }}
+                    />
+                  )} */}
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="left" width="10%">
                   <ColorTypo color="black">{file.task_name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="15%">
@@ -183,14 +252,32 @@ const RecentContent = props => {
                     )) ||
                     ''}
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="15%">
+                <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.size}</ColorTypo>
                 </StyledTableBodyCell>
+                {file.type !== 'folder' ? (
+                  <MoreAction
+                    actionList={moreAction}
+                    item={file}
+                    handleFetData={() => fetDataRecentDocument({}, true)}
+                  />
+                ) : (
+                  <StyledTableBodyCell align="center" width="5%" />
+                )}
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
+      {visible && (
+        <ShareDocumentModal
+          onClose={() => {
+            setVisible(false);
+            setItemActive({});
+          }}
+          item={itemActive}
+        />
+      )}
     </Fragment>
   );
 };
@@ -199,7 +286,8 @@ export default connect(
   state => ({
     selectedDocument: state.documents.selectedDocument,
     isLoading: state.documents.isLoading,
-    listRecent: state.documents.listRecent
+    listRecent: state.documents.listRecent,
+    searchText: state.documents.searchText
   }),
   {
     selectDocumentItem,

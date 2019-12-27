@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
@@ -12,15 +11,7 @@ import NotificationWorkPlus from '../TablePart/SettingAccountRight/NotificationW
 import NotificationWorkPlusDetail from '../TablePart/SettingAccountRight/NotificationWorkPlusDetail';
 import '../SettingAccount.scss';
 import { SETTING_ACCOUNT } from '../../../constants/constants';
-
-const RightHeader = styled.div`
-  margin-left: auto;
-  & > *:last-child {
-    margin-left: 16px;
-    padding: 8px 12px;
-    margin-top: 8px;
-  }
-`;
+import { RightHeader } from '../../DocumentPage/TablePart/DocumentComponent/TableCommon';
 
 const TablePart = props => {
   const type = props.match.params.type;

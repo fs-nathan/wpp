@@ -53,10 +53,10 @@ const Payment = props => {
   return (
     <div className="payment-container">
       <div className="payment-left">
-        <h2>Thông tin xuất hóa đơn</h2>
-        <p>
+        <p className="top-header">Thông tin xuất hóa đơn</p>
+        <p className="text-payment-header">
           Là thông tin xuất hóa đơn của khách hàng để WorkPlus xuất hóa đơn Giá
-          trị gia tăng theo quy đinh hiện hành.
+          trị gia tăng theo quy định hiện hành.
         </p>
         <form onSubmit={handleEditBill}>
           <TextField
@@ -151,7 +151,7 @@ const Payment = props => {
       {/* <Divider orientation="vertical" className="divider-vertical" /> */}
       <div className="payment-right">
         <div className="payment-right-top">
-          <h2>Thông tin thanh toán</h2>
+          <p className="top-header">Thông tin thanh toán</p>
           <p>
             Toàn bộ đơn hàng trên WorkPlus được thanh toán bằng chuyển khoản.
           </p>
@@ -192,7 +192,7 @@ const Payment = props => {
             Khách hàng vui lòng kiểm tra thông tin tài khoản trước khi thực hiện
             thanh toán
           </p>
-          <p>
+          <p className="right-bottom-text">
             Khách hàng thanh toán vào tài khoản công ty vui lòng thanh toán giá
             trị sau thuế (VAT) để tránh trường hợp hệ thống không kích hoạt.
           </p>

@@ -81,11 +81,13 @@
         }
       }
       .header-share-doc {
-        margin: 0 16px;
+        margin: 10px 16px 16px;
         height: 35px;
-        margin-bottom: 16px;
         align-items: center;
         display: flex;
+      }
+      .list-member {
+        height: 400px;
       }
       .item-member {
         justify-content: space-between;
@@ -143,6 +145,9 @@
           font-size: 14px;
         }
       }
+      .list-member {
+        height: 400px;
+      }
       .item-member {
         justify-content: space-between;
         padding: 10px 20px;
@@ -177,9 +182,39 @@
       }
     }
   }
+  &.redirect-modal {
+    display: flex;
+    flex-direction: column;
+    .redirect-text {
+      font-size: 16px;
+      text-align: center;
+      padding: 0 40px;
+      line-height: 24px;
+      margin-bottom: 24px;
+      b {
+        font-size: 16px;
+      }
+    }
+    .redirect-btn {
+      color: #01b374;
+      border-color: #01b374;
+      margin: 0 16px;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      font-size: 19px;
+      .MuiButton-label {
+        font-size: 19px;
+      }
+      &:hover {
+        color: white;
+        background: #01b374;
+      }
+    }
+  }
 }
 .move-content {
   padding: 0;
+  min-height: 400px;
   .my-document {
     display: flex;
     align-items: center;
@@ -195,6 +230,9 @@
       align-items: center;
       .name-document {
         padding-left: 10px;
+      }
+      .back-to-parent {
+        cursor: pointer;
       }
     }
   }
@@ -235,11 +273,28 @@
 }
 .table-body-row {
   background-color: #fff;
-  &:hover {
-    background-color: rgba(190, 190, 190, 0.07);
+  &.selected {
+    background-color: #f2f5fa;
+    &:hover {
+      background-color: #f2f5fa;
+    }
+  }
+  &.move-row {
+    &:hover {
+      background-color: #f2f5fa;
+    }
   }
   &.selected-row {
-    background-color: rgba(190, 190, 190, 0.15);
+    background: #01b374;
+    .table-body-cell p {
+      color: white;
+    }
+    &:hover {
+      background: #01b374;
+      .table-body-cell p {
+        color: white;
+      }
+    }
   }
 }
 .table-body-cell {

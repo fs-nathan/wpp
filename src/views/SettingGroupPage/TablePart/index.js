@@ -1,12 +1,8 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import colorPal from '../../../helpers/colorPalette';
-import { darken } from '@material-ui/core/styles';
 import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
-import { Button } from '@material-ui/core';
 import { SETTING_GROUP } from '../../../constants/constants';
 import Info from '../TablePart/SettingGroupRight/Info';
 import SetUp from '../TablePart/SettingGroupRight/SetUp';
@@ -16,23 +12,11 @@ import Payment from '../TablePart/SettingGroupRight/Payment';
 import CreateOrder from '../TablePart/SettingGroupRight/CreateOrder';
 import { Routes } from '../../../constants/routes';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
+import {
+  RightHeader,
+  StyledButton
+} from '../../DocumentPage/TablePart/DocumentComponent/TableCommon';
 
-const RightHeader = styled.div`
-  margin-left: auto;
-  & > *:last-child {
-    margin-left: 16px;
-    padding: 8px 12px;
-    margin-top: 8px;
-  }
-`;
-
-const StyledButton = styled(Button)`
-  background-color: ${colorPal['orange'][0]};
-  color: #fff;
-  &:hover {
-    background-color: ${darken(colorPal['orange'][0], 0.1)};
-  }
-`;
 const getHeaderText = (type, search) => {
   const isOder = isEmpty(search);
   const isCreateOder = search.split('=').length === 1;

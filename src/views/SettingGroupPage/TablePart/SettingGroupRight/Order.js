@@ -21,7 +21,9 @@ import {
   actionChangeLoading
 } from '../../../../actions/setting/setting';
 import AlertModal from '../../../../components/AlertModal';
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 
+let dataSave = [];
 const Order = props => {
   const [alert, setAlert] = useState(false);
   const [alertExtend, setExtend] = useState(false);
@@ -31,12 +33,36 @@ const Order = props => {
     try {
       props.actionChangeLoading(true);
       const { data } = await orderService();
+      dataSave = [...data.orders];
       props.actionGetOrder(data.orders);
       props.actionChangeLoading(false);
     } catch (err) {
       props.actionChangeLoading(false);
     }
   };
+  const handleSearchData = () => {
+    const { searchText } = props;
+    let listResult = [];
+    if (!isEmpty(searchText)) {
+      listResult = dataSave.filter(
+        el =>
+          (!isEmpty(el.code) &&
+            el.code.toLowerCase().indexOf(searchText.toLowerCase()) !== -1) ||
+          (!isEmpty(el.active_at) &&
+            el.active_at.toLowerCase().indexOf(searchText.toLowerCase()) !==
+              -1) ||
+          (!isEmpty(el.expire_at) &&
+            el.expire_at.toLowerCase().indexOf(searchText.toLowerCase()) !== -1)
+      );
+    } else {
+      listResult = [...dataSave];
+    }
+    props.actionGetOrder(listResult);
+  };
+  useEffect(() => {
+    handleSearchData();
+    // eslint-disable-next-line
+  }, [props.searchText]);
   useEffect(() => {
     handleFetchData(); // eslint-disable-next-line
   }, []);
@@ -166,7 +192,7 @@ const Order = props => {
                   </TableCell>
                   {index === 0 ? (
                     <TableCell rowSpan={row.packets.length + 1} align="center">
-                      {row.vat}
+                      {row.bill_status}
                     </TableCell>
                   ) : null}
                   {index === 0 ? (
@@ -227,6 +253,7 @@ export default connect(
   state => ({
     orders: state.setting.orders,
     isLoading: state.setting.isLoading,
+    searchText: state.documents.searchText,
     settingGroupType: null
   }),
   {

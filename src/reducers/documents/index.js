@@ -23,7 +23,10 @@ import {
   LIST_DOCUMENT_FROM_ME_SUCCESS,
   CHANGE_SEARCH_TEXT,
   LIST_DOCUMENT_SHARE,
-  LIST_DOCUMENT_SHARE_SUCCESS
+  LIST_DOCUMENT_SHARE_SUCCESS,
+  TOGGLE_BUTTON_SIGNOUT_GOOGLE,
+  LIST_GOOGLE_DOCUMENT,
+  LIST_GOOGLE_DOCUMENT_SUCCESS
 } from '../../constants/actions/documents';
 // Import all the tabs in document page
 import * as TABS from '../../constants/documentTab';
@@ -38,6 +41,7 @@ const initialState = {
   listDocumentShareToMe: [],
   listTrash: [],
   listMyDocument: [],
+  listGoogleDocument: [],
   activeTabId: TABS.RECENT_TAB.id,
   docs: {
     'task-1': {
@@ -86,7 +90,9 @@ const initialState = {
   columnOrder: ['column-1'],
   selectedDocument: [],
   currentFolder: {},
-  searchText: ''
+  searchText: '',
+  isShowBtnSignoutGoogle: false,
+  isFetching: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -100,6 +106,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         activeTabId: action.payload
+      };
+    case TOGGLE_BUTTON_SIGNOUT_GOOGLE:
+      return {
+        ...state,
+        isShowBtnSignoutGoogle: action.payload
       };
     case SET_ALL_DATA_DOCUMENTS:
       return action.payload;
@@ -116,6 +127,7 @@ export default function reducer(state = initialState, action) {
     case DOCUMENT_HIDE_LOADING:
       return {
         ...state,
+        isFetching: false,
         isLoading: false
       };
     case LIST_COMMENT:
@@ -132,23 +144,27 @@ export default function reducer(state = initialState, action) {
     case LIST_TRASH:
       return {
         ...state,
+        isFetching: true,
         isLoading: !action.quite
       };
     case LIST_TRASH_SUCCESS:
       return {
         ...state,
         listTrash: action.payload,
+        isFetching: false,
         isLoading: false
       };
     case LIST_MY_DOCUMENT:
       return {
         ...state,
+        isFetching: true,
         isLoading: !action.quite
       };
     case LIST_MY_DOCUMENT_SUCCESS:
       return {
         ...state,
         listMyDocument: action.payload,
+        isFetching: false,
         isLoading: false
       };
     case ACTION_SELECTED_FOLDER:
@@ -215,6 +231,19 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         searchText: action.payload
+      };
+    case LIST_GOOGLE_DOCUMENT:
+      return {
+        ...state,
+        isFetching: true,
+        isLoading: !action.quite
+      };
+    case LIST_GOOGLE_DOCUMENT_SUCCESS:
+      return {
+        ...state,
+        listGoogleDocument: action.payload,
+        isFetching: false,
+        isLoading: false
       };
     default:
       return state;

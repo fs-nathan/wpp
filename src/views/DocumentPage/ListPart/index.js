@@ -10,7 +10,11 @@ import {
 } from '@mdi/js';
 import { connect } from 'react-redux';
 import { actionChangeBreadCrumbs } from '../../../actions/system/system';
-import { actionFetchListMyDocument } from '../../../actions/documents';
+import {
+  actionFetchListMyDocument,
+  actionSelectedFolder,
+  actionFetchListGoogleDocument
+} from '../../../actions/documents';
 import { Routes } from '../../../constants/routes';
 import LeftSetting from '../../../components/LeftSetting/LeftSetting';
 
@@ -49,6 +53,7 @@ const ListPart = props => {
         if (props.breadCrumbs.length > 0) {
           props.actionFetchListMyDocument({}, true);
           props.actionChangeBreadCrumbs([]);
+          props.actionSelectedFolder({});
         }
       }
     },
@@ -56,7 +61,14 @@ const ListPart = props => {
       title: 'Google Drive',
       url: Routes.DOCUMENT_GOOGLE_DRIVE,
       icon: mdiGoogleDrive,
-      color: '#2196f3'
+      color: '#2196f3',
+      action: () => {
+        if (props.breadCrumbs.length > 0) {
+          props.actionFetchListGoogleDocument({}, true);
+          props.actionChangeBreadCrumbs([]);
+          props.actionSelectedFolder({});
+        }
+      }
     },
     {
       title: 'Thùng rác',
@@ -72,5 +84,10 @@ export default connect(
   state => ({
     breadCrumbs: state.system.breadCrumbs
   }),
-  { actionChangeBreadCrumbs, actionFetchListMyDocument }
+  {
+    actionChangeBreadCrumbs,
+    actionFetchListMyDocument,
+    actionSelectedFolder,
+    actionFetchListGoogleDocument
+  }
 )(ListPart);

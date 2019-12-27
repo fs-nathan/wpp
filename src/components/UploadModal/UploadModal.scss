@@ -1,6 +1,13 @@
 .upload-modal {
+  position: fixed;
+  bottom: 10px;
+  right: 24px;
+  width: 460px;
+  box-shadow: 0px 0px 9px 0px #5e5e5e;
+  background: #fff;
+  z-index: 1500;
   .upload-header {
-    background-color: #007bff;
+    background-color: #01b374;
     padding: 6px 24px;
     & > h2 {
       display: flex;
@@ -17,7 +24,7 @@
     }
   }
   .upload-content {
-    min-height: 120px;
+    min-height: 80px;
     .upload-info {
       color: #007bff;
       padding: 10px 0;

@@ -6,10 +6,13 @@ import {
   mdiDownload,
   mdiTrashCan,
   mdiRepeatOff,
-  mdiArrowDecision
+  mdiArrowDecision,
+  mdiLogout,
+  mdiRefresh
 } from '@mdi/js';
 import { useTranslation } from 'react-i18next';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
+import { actionSignoutGoogleDrive } from '../ContentDocumentPage/googleDriveApi';
 import CustomHeaderButton from '../../../../components/CustomHeaderButton';
 import { Routes } from '../../../../constants/routes';
 import AlertModal from '../../../../components/AlertModal';
@@ -25,13 +28,20 @@ import {
   actionFetchListRecent,
   actionFetchListProject,
   actionFetchListDocumentShare,
-  actionFetchListDocumentFromMe
+  actionFetchListDocumentFromMe,
+  toggleSingoutGoogle,
+  actionFetchListGoogleDocument
 } from '../../../../actions/documents';
 import MoveDocumentModal from '../DocumentComponent/MoveDocumentModal';
 
 const HeaderButtonGroup = props => {
   const { pathname } = props.location;
-  const { selectedDocument } = props;
+  const {
+    selectedDocument,
+    isShowBtnSignoutGoogle,
+    isFetching,
+    currentFolder
+  } = props;
   const [alert, setAlert] = useState(false);
   const [move, setMove] = useState(false);
   const { t } = useTranslation();
@@ -47,7 +57,7 @@ const HeaderButtonGroup = props => {
   };
 
   const handleDeleteFile = async () => {
-    if (isEmpty(selectedDocument)) return;
+    if (isEmpty(selectedDocument) || isFetching) return;
     let listFileId = [];
     let listFolderId = [];
     let listAction = [];
@@ -74,7 +84,11 @@ const HeaderButtonGroup = props => {
           listAction.push(actionDeleteFolder({ folder_id: listFolderId[0] }));
         await Promise.all(listAction);
         if (pathname === Routes.DOCUMENT_ME) {
-          props.actionFetchListMyDocument({}, true);
+          let params = {};
+          if (!isEmpty(currentFolder)) {
+            params.folder_id = currentFolder.id;
+          }
+          props.actionFetchListMyDocument(params, true);
         }
       }
       props.resetListSelectDocument();
@@ -100,16 +114,15 @@ const HeaderButtonGroup = props => {
   };
   const closeModal = () => setMove(false);
   const handleMoveDoc = () => {
-    if (pathname === Routes.DOCUMENT_RECENT) {
-      props.actionFetchListRecent({}, true);
-    } else if (pathname === Routes.DOCUMENT_PROJECT) {
-      props.actionFetchListProject({}, true);
-    } else if (pathname === Routes.DOCUMENT_SHARE) {
-      props.actionFetchListDocumentShare({}, true);
-    } else if (pathname === Routes.DOCUMENT_SHARE_ME) {
-      props.actionFetchListDocumentFromMe({}, true);
-    } else if (pathname === Routes.DOCUMENT_ME) {
+    const { breadCrumbs } = props;
+    if (isFetching) return;
+    if (isEmpty(breadCrumbs)) {
       props.actionFetchListMyDocument({}, true);
+    } else {
+      props.actionFetchListMyDocument(
+        { folder_id: breadCrumbs[breadCrumbs.length - 1].id },
+        true
+      );
     }
   };
   const listAction = [
@@ -129,6 +142,31 @@ const HeaderButtonGroup = props => {
         pathname === Routes.DOCUMENT_SHARE_ME
     },
     {
+      text: 'Cập nhật',
+      icon: mdiRefresh,
+      action: () => {
+        if (isFetching) return;
+        let params = {};
+        if (!isEmpty(currentFolder)) {
+          params.folderId = currentFolder.id;
+        }
+        props.actionFetchListGoogleDocument(params, true);
+      },
+      isShow:
+        pathname === Routes.DOCUMENT_GOOGLE_DRIVE && isShowBtnSignoutGoogle
+    },
+    {
+      text: 'Đăng xuất',
+      icon: mdiLogout,
+      action: () => {
+        actionSignoutGoogleDrive(() => {
+          props.toggleSingoutGoogle(false);
+        });
+      },
+      isShow:
+        pathname === Routes.DOCUMENT_GOOGLE_DRIVE && isShowBtnSignoutGoogle
+    },
+    {
       text: 'Tải xuống',
       icon: mdiDownload,
       action: handleDownloadFile,
@@ -143,9 +181,7 @@ const HeaderButtonGroup = props => {
       icon: mdiArrowDecision,
       action: () => setMove(true),
       disabled: isEmpty(selectedDocument),
-      isShow:
-        pathname !== Routes.DOCUMENT_TRASH &&
-        pathname !== Routes.DOCUMENT_GOOGLE_DRIVE
+      isShow: pathname === Routes.DOCUMENT_ME
     },
     {
       text: pathname === Routes.DOCUMENT_TRASH ? 'Xóa vĩnh viễn' : 'Xóa',
@@ -178,7 +214,11 @@ const HeaderButtonGroup = props => {
 
 export default connect(
   state => ({
-    selectedDocument: state.documents.selectedDocument
+    selectedDocument: state.documents.selectedDocument,
+    isShowBtnSignoutGoogle: state.documents.isShowBtnSignoutGoogle,
+    isFetching: state.documents.isFetching,
+    currentFolder: state.documents.currentFolder,
+    breadCrumbs: state.system.breadCrumbs
   }),
   {
     actionFetchListTrash,
@@ -187,6 +227,8 @@ export default connect(
     actionFetchListRecent,
     actionFetchListProject,
     actionFetchListDocumentShare,
-    actionFetchListDocumentFromMe
+    actionFetchListDocumentFromMe,
+    toggleSingoutGoogle,
+    actionFetchListGoogleDocument
   }
 )(withRouter(HeaderButtonGroup));

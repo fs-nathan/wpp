@@ -8,7 +8,8 @@ import {
   LIST_PROJECT_DOCUMENT_SUCCESS,
   LIST_PROJECT_DOCUMENT_OF_FOLDER_SUCCESS,
   LIST_DOCUMENT_FROM_ME_SUCCESS,
-  LIST_DOCUMENT_SHARE_SUCCESS
+  LIST_DOCUMENT_SHARE_SUCCESS,
+  LIST_GOOGLE_DOCUMENT_SUCCESS
 } from '../../constants/actions/documents';
 import { apiService } from '../../constants/axiosInstance';
 
@@ -53,8 +54,15 @@ async function doListTrash({ params }) {
 
 function* listTrash(action) {
   try {
-    const { documents } = yield call(doListTrash, action.options);
-    yield put({ type: LIST_TRASH_SUCCESS, payload: documents || [] });
+    const { folders, files } = yield call(doListTrash, action.options);
+    let tranformData = [];
+    if (folders.length > 0) {
+      tranformData = folders.map(item => ({ ...item, type: 'folder' }));
+    }
+    if (files.length > 0) {
+      tranformData = tranformData.concat(files);
+    }
+    yield put({ type: LIST_TRASH_SUCCESS, payload: tranformData || [] });
   } catch (error) {
     yield put({ type: DOCUMENT_HIDE_LOADING });
   }
@@ -214,6 +222,47 @@ function* listMyDocument(action) {
   }
 }
 
+var pageToken = null;
+function doListGoogleDocument({ params }) {
+  try {
+    if (
+      window.gapi &&
+      window.gapi.client &&
+      window.gapi.client.drive &&
+      window.gapi.client.drive.files
+    ) {
+      return window.gapi.client.drive.files.list({
+        // q: `"${params.folderId || 'root'}" in parents and trashed = false or sharedWithMe`,
+        q: `"${params.folderId || 'root'}" in parents and trashed = false`,
+        spaces: 'drive',
+        orderBy: 'folder',
+        pageSize: 1000,
+        fields:
+          'nextPageToken, files(id, name, fileExtension, mimeType, owners, createdTime, modifiedTime, size, webViewLink, iconLink, webContentLink)',
+        // pageToken: pageToken,
+        ...params
+      });
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* listGoogleDocument(action) {
+  try {
+    const { result } = yield call(doListGoogleDocument, action.options);
+    pageToken = result.nextPageToken;
+    console.log(pageToken);
+
+    yield put({
+      type: LIST_GOOGLE_DOCUMENT_SUCCESS,
+      payload: result.files || []
+    });
+  } catch (error) {
+    yield put({ type: DOCUMENT_HIDE_LOADING });
+  }
+}
+
 export {
   listComment,
   listTrash,
@@ -222,5 +271,6 @@ export {
   listProjectDocument,
   listProjectDocumentOfFolder,
   listDocumentShareFromMe,
-  listDocumentShare
+  listDocumentShare,
+  listGoogleDocument
 };

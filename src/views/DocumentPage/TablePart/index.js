@@ -23,7 +23,7 @@ import {
   StyledButton,
   DialogContent
 } from './DocumentComponent/TableCommon';
-import GoogleDriver from './ContentDocumentPage/GoogleDriver';
+import GoogleDrive from './ContentDocumentPage/GoogleDrive';
 import Trash from './ContentDocumentPage/Trash';
 import DocumentShareFromMe from './ContentDocumentPage/DocumentShareFromMe';
 import DocumentShare from './ContentDocumentPage/DocumentShare';
@@ -31,6 +31,7 @@ import { isEmpty } from '../../../helpers/utils/isEmpty';
 import folderIcon from '../../../assets/folder.png';
 import './DocumentPage.scss';
 import ModalCommon from './DocumentComponent/ModalCommon';
+import RedirectModal from './DocumentComponent/RedirectModal';
 import {
   actionCreateFolder,
   actionFetchListMyDocument
@@ -42,31 +43,67 @@ const HeaderTitle = props => {
   return <ColorTypo className="title">{props.title || ''}</ColorTypo>;
 };
 
+const HeaderBreadCrumbs = ({
+  breadCrumbs = [],
+  onUpdateBreadCrumbs,
+  isShowIcon = true,
+  title = 'Title'
+}) => {
+  return (
+    <div className="header-wrapper">
+      {isShowIcon && <img className="header-icon" src={folderIcon} alt="" />}
+      <div className="title-wrapper">
+        <HeaderTitle title={title} />
+        {breadCrumbs.length > 0 && (
+          <Breadcrumbs
+            className="bread-crumb"
+            aria-label="breadcrumb"
+            separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />}
+          >
+            {breadCrumbs.map((item, idx) => (
+              <span
+                className="bread-crumb-item"
+                key={idx}
+                onClick={() => {
+                  // do not anything if click ending item
+                  if (idx === breadCrumbs.length - 1) return false;
+
+                  // call action
+                  item.action();
+
+                  //update list bread crumbs
+                  if (onUpdateBreadCrumbs) {
+                    if (idx === 0) {
+                      onUpdateBreadCrumbs([]);
+                    } else {
+                      let newList = [...breadCrumbs];
+                      newList.length = idx + 1;
+                      onUpdateBreadCrumbs(newList);
+                    }
+                  }
+                }}
+              >
+                {item.name || ''}
+              </span>
+            ))}
+          </Breadcrumbs>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
   switch (type) {
     case Routes.DOCUMENT_RECENT:
       return <HeaderTitle title="Gần đây" />;
     case Routes.DOCUMENT_PROJECT: {
-      if (isEmpty(search)) {
-        return <HeaderTitle title="Tài liệu dự án" />;
-      }
       return (
-        <div className="header-wrapper">
-          <img className="header-icon" src={folderIcon} alt="" />
-          <div className="title-wrapper">
-            <HeaderTitle title="Tài liệu dự án" />
-            <Breadcrumbs
-              className="bread-crumb"
-              aria-label="breadcrumb"
-              separator={
-                <Icon path={mdiChevronRight} size={1} color={'#777'} />
-              }
-            >
-              <span>Tài liệu dự án</span>
-              <span>Dự án sản xuất phần mềm</span>
-            </Breadcrumbs>
-          </div>
-        </div>
+        <HeaderBreadCrumbs
+          title="Tài liệu dự án"
+          breadCrumbs={breadCrumbs}
+          onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+        />
       );
     }
     case Routes.DOCUMENT_SHARE:
@@ -75,51 +112,21 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
       return <HeaderTitle title="Được chia sẻ với tôi" />;
     case Routes.DOCUMENT_ME:
       return (
-        <div className="header-wrapper">
-          <img className="header-icon" src={folderIcon} alt="" />
-          <div className="title-wrapper">
-            <HeaderTitle title="Tài liệu của tôi" />
-            {breadCrumbs.length > 0 && (
-              <Breadcrumbs
-                className="bread-crumb"
-                aria-label="breadcrumb"
-                separator={
-                  <Icon path={mdiChevronRight} size={1} color={'#777'} />
-                }
-              >
-                {breadCrumbs.map((item, idx) => (
-                  <span
-                    className="bread-crumb-item"
-                    key={idx}
-                    onClick={() => {
-                      // do not anything if click ending item
-                      if (idx === breadCrumbs.length - 1) return false;
-
-                      // call action
-                      item.action();
-
-                      //update list bread crumbs
-                      if (onUpdateBreadCrumbs) {
-                        if (idx === 0) {
-                          onUpdateBreadCrumbs([]);
-                        } else {
-                          let newList = [...breadCrumbs];
-                          newList.length = idx + 1;
-                          onUpdateBreadCrumbs(newList);
-                        }
-                      }
-                    }}
-                  >
-                    {item.name || ''}
-                  </span>
-                ))}
-              </Breadcrumbs>
-            )}
-          </div>
-        </div>
+        <HeaderBreadCrumbs
+          title="Tài liệu của tôi"
+          breadCrumbs={breadCrumbs}
+          onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+        />
       );
     case Routes.DOCUMENT_GOOGLE_DRIVE:
-      return <HeaderTitle title="Google Drive" />;
+      return (
+        <HeaderBreadCrumbs
+          title="Google Drive"
+          breadCrumbs={breadCrumbs}
+          onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+          isShowIcon={false}
+        />
+      );
     case Routes.DOCUMENT_TRASH:
       return (
         <div className="header-wrapper">
@@ -136,6 +143,7 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
       return null;
   }
 };
+
 const TablePart = props => {
   const pathname = props.history.location.pathname;
   const search = props.location.search;
@@ -145,7 +153,8 @@ const TablePart = props => {
   const [showInputFile, setShowInputFile] = useState(true);
   const [visibleUploadModal, setVisibleUploadModal] = useState(false);
   const [fileUpload, setFileUpload] = useState(null);
-  const { breadCrumbs, actionChangeBreadCrumbs } = props;
+  const [isRedirect, setRedirect] = useState(false);
+  const { breadCrumbs, actionChangeBreadCrumbs, currentFolder } = props;
 
   const handleClick = e => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -167,7 +176,7 @@ const TablePart = props => {
       case Routes.DOCUMENT_ME:
         return <MyDocument {...props} />;
       case Routes.DOCUMENT_GOOGLE_DRIVE:
-        return <GoogleDriver {...props} />;
+        return <GoogleDrive {...props} />;
       case Routes.DOCUMENT_TRASH:
         return <Trash {...props} />;
       default:
@@ -191,9 +200,18 @@ const TablePart = props => {
   const handleCreateFolder = async () => {
     try {
       await actionCreateFolder({
-        name: nameFolder
+        name: nameFolder,
+        parent_id: props.currentFolder.id
       });
-      props.actionFetchListMyDocument();
+      console.log(breadCrumbs);
+      if (isEmpty(breadCrumbs)) {
+        props.actionFetchListMyDocument({}, true);
+      } else {
+        props.actionFetchListMyDocument(
+          { folder_id: breadCrumbs[breadCrumbs.length - 1].id },
+          true
+        );
+      }
       setCreateFolder(false);
       setNameFolder('');
     } catch (error) {
@@ -235,7 +253,7 @@ const TablePart = props => {
               aria-controls="simple-menu"
               aria-haspopup="true"
               onClick={handleClick}
-              className="btn-top-action "
+              className="btn-top-action right-header-button"
             >
               <Icon path={mdiPlus} size={1} color="#fff" />
               THÊM MỚI
@@ -245,9 +263,13 @@ const TablePart = props => {
             pathname !== Routes.DOCUMENT_TRASH && (
               <StyledButton
                 size="small"
-                onClick={() =>
-                  document.getElementById('raised-button-file').click()
-                }
+                onClick={() => {
+                  if (pathname === Routes.DOCUMENT_ME) {
+                    document.getElementById('raised-button-file').click();
+                  } else {
+                    setRedirect(true);
+                  }
+                }}
                 className="btn-top-action right-header-button"
               >
                 <Icon path={mdiUpload} size={1} color="#fff" />
@@ -333,15 +355,24 @@ const TablePart = props => {
           open={visibleUploadModal}
           setOpen={val => setVisibleUploadModal(val)}
           fileUpload={fileUpload}
+          onCompleted={() => {
+            let params = {};
+            if (!isEmpty(currentFolder)) {
+              params.folder_id = currentFolder.id;
+            }
+            props.actionFetchListMyDocument(params, true);
+          }}
         />
       )}
+      {isRedirect && <RedirectModal onClose={() => setRedirect(false)} />}
     </div>
   );
 };
 
 export default connect(
   state => ({
-    breadCrumbs: state.system.breadCrumbs
+    breadCrumbs: state.system.breadCrumbs,
+    currentFolder: state.documents.currentFolder
   }),
   { actionChangeBreadCrumbs, actionFetchListMyDocument }
 )(withRouter(TablePart));
