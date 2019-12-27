@@ -683,7 +683,7 @@ function AllProjectTable({
                     />
                   </MiddleDiv>
                 ),
-                center: true
+                centered: true
               },
               {
                 label: 'Dự án',
@@ -789,7 +789,7 @@ function AllProjectTable({
                     />
                   </MiddleDiv>
                 ),
-                center: true
+                centered: true
               },
               {
                 label: '',

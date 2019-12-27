@@ -12,7 +12,13 @@ const Container = styled.div`
 `;
 
 const WrapListTask = styled.div`
-  display: ${props => props.show ? 'block' : 'none'};
+  display: ${props => props.show === true ? 'block' : 'none'};
+  height: calc(76vh);
+  grid-template-rows: 165px calc(76vh);
+  grid-template-columns: 1fr;
+  grid-template-areas: 
+    "header"
+    "body";
 `
 const Header = styled.div`
   grid-area: header;
@@ -22,28 +28,15 @@ const Header = styled.div`
   background-color: #fff;
   z-index: 999;
 `;
-const WrapTask = styled.div`
-  height: 100%;
-  display: grid;
-  grid-template-rows: 165px calc(100vh - 70px - 50px);
-  grid-template-columns: 1fr;
-  grid-template-areas: 
-    "header"
-    "body";
-`
 function ListTask(props) {
   // const value = React.useContext(WrapperContext)
-  // console.log("QUANNNNN", value.command)
   return (
     <WrapListTask {...props}>
-      <WrapTask>
         <Header>
           <ListHeader {...props} />
           <ListBanner />
         </Header>
         <ListBody/>
-      </WrapTask>
-
     </WrapListTask>
 
   )

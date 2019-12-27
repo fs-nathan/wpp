@@ -64,7 +64,7 @@ const CustomRadio = styled(({ checked = false, ...rest }) => <span {...rest} />)
   border-radius: 999px;
   text-align: center;
   padding: 8px;
-  background-color: ${props => props.checked ? '#ffd3b4' : 'rgba(224, 224, 224, 1)'};
+  background-color: ${props => props.checked ? '#48bb78' : 'rgba(224, 224, 224, 1)'};
   &:hover {
     cursor: pointer;
   }
@@ -72,8 +72,10 @@ const CustomRadio = styled(({ checked = false, ...rest }) => <span {...rest} />)
 
 function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
 
-  const { data: { groupTasks }, } = listGroupTask;
+  const { projectId } = useParams();
+  const { data: { groupTasks: _groupTasks }, } = listGroupTask;
 
+  const [groupTasks, setGroupTasks] = React.useState([]);
   const [groupTask, setGroupTask] = React.useState(null);
   const [name, setName, errorName] = useRequiredString('', 100);
   const [progressType, setProgressType] = React.useState(0); 
@@ -84,26 +86,31 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
   const [endDate, setEndDate] = React.useState(moment().toDate());
   const [priority, setPriority] = React.useState(0);
   const [jobHandle, setJobHandle] = React.useState(0);
-  
+
   React.useEffect(() => {
-    if (groupTasks.length > 0) {
-      setGroupTask(groupTasks[0]);
-    }
-  }, [groupTasks]);
+    setGroupTasks([{ id: '__default__', name: 'Chưa phân loại' }, ..._groupTasks]);
+    setGroupTask({ id: '__default__', name: 'Chưa phân loại' });
+  }, [_groupTasks]);
 
   function handleCreateTask() {
     let options = {
       name,
-      groupTask: get(groupTask, 'id'),
+      projectId,
       description,
       priority,
       typeAssign: jobHandle,
     };
+    if (get(groupTask, 'id') !== '__default__') {
+      options = {
+        ...options,
+        groupTask: get(groupTask, 'id'),
+      }
+    }
     if (progressType < 2) {
       options = {
         ...options,
-        startDate,
-        endDate,
+        startDate: moment(startDate).format('YYYY-MM-DD'),
+        endDate: moment(endDate).format('YYYY-MM-DD'),
       }
     }
     if (progressType < 1) {
@@ -154,6 +161,21 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
               {get(errorName, 'message', '')}
             </ColorTypo>
           }
+        />
+        <CustomTextField
+          value={description}
+          onChange={evt => setDescription(evt.target.value)}
+          margin="normal"
+          variant="outlined"
+          label='Mô tả công việc'
+          fullWidth
+          multiline
+          rowsMax='4'
+          helperText={
+            <ColorTypo variant='caption' color='red'>
+              {get(errorDescription, 'message', '')}
+            </ColorTypo>
+          } 
         />
         <FormControl component="fieldset" fullWidth>
           <StyledFormLabel component="legend">Tiến độ công việc</StyledFormLabel>
@@ -213,21 +235,6 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
           </TimeBox>
           </>
         )}
-        <CustomTextField
-          value={description}
-          onChange={evt => setDescription(evt.target.value)}
-          margin="normal"
-          variant="outlined"
-          label='Mô tả nhóm công việc'
-          fullWidth
-          multiline
-          rowsMax='4'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorDescription, 'message', '')}
-            </ColorTypo>
-          } 
-        />
         <FormControl component="fieldset" fullWidth>
           <StyledFormLabel component="legend">Mức độ ưu tiên</StyledFormLabel>
           <CustomRadioGroup>
@@ -261,7 +268,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doCreateTask: ({ name, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) => dispatch(createTask({ name, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, })),
+    doCreateTask: ({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) => dispatch(createTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, })),
   }
 };
 

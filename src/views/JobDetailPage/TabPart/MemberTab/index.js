@@ -6,9 +6,10 @@ import styled from 'styled-components'
 // import { WrapperContext } from '../..';
 
 const Container = styled.div`
+  transition: unset !important;
   height: 100%;
   display: grid;
-  grid-template-rows: 85px calc(100vh - 70px - 50px);
+  grid-template-rows: 85px calc(85vh);
   grid-template-columns: 1fr;
   grid-template-areas: 
     "header"
@@ -31,7 +32,7 @@ function MemberTab({ show, setShow }) {
   // const value = React.useContext(WrapperContext)
 
   return (
-    <Slide in={show === 8} direction='left' mountOnEnter unmountOnExit>
+    <Slide in={show === 8}  mountOnEnter unmountOnExit>
       <Container>
         <Header setShow={setShow} />
         <TabBody />

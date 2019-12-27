@@ -1,19 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
+import './style.scss';
 
-const Container = styled(({ expand, ...rest }) => <div {...rest} />)`
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: ${props => props.expand ? 'auto' : 'minmax(300px, 1fr) minmax(800px, 3fr)'};
-`;
+const Container = ({ className = '', expand, ...rest }) => 
+  <div className={`${expand 
+    ? 'comp_TwoColumnsLayout___container-expanded' 
+    : 'comp_TwoColumnsLayout___container-normal'} 
+    ${className}`} 
+  {...rest} />;
 
-const LeftDiv = styled.div`
-`;
+const LeftDiv = ({ ...rest }) => <div {...rest}/>;
 
-const RightDiv = styled.div`
-  border-left: 1px solid rgba(0, 0, 0, .1);
-`;
+const RightDiv = ({ className = '', ...rest }) => <div className={`comp_TwoColumnsLayout___right ${className}`} {...rest}/>;
 
 function TwoColumnsLayout({
   leftRenders = [() => <div />],

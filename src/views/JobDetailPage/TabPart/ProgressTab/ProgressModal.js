@@ -7,7 +7,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import TimeField from 'react-simple-timefield';
-import OutlinedInputSelect from './OutlinedInputSelect'
+// import OutlinedInputSelect from './OutlinedInputSelect'
 import { WrapperContext } from '../../index';
 
 const StartEndDay = styled(Typography)`
@@ -29,16 +29,16 @@ const BeginEndTime = styled(Typography)`
   width: 50px;
   margin-right: 20px;
 `
-const TexTitle = styled(Typography)`
-  font-size: 15px;
-  margin-right: 10px;
-`
+// const TexTitle = styled(Typography)`
+//   font-size: 15px;
+//   margin-right: 10px;
+// `
 
-const Div = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
+// const Div = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+// `
 const InputTime = styled(TimeField)`
   width: 146px !important;
   padding: 10px 5px 10px 13px;
@@ -49,9 +49,9 @@ const DivTime = styled.div`
   border: 1px solid #cfcfcf;
   border-radius: 4px;
 `
-const InputSelect = styled(OutlinedInputSelect)`
-  width: 331px;
-`
+// const InputSelect = styled(OutlinedInputSelect)`
+//   width: 331px;
+// `
 
 const styles = theme => ({
   root: {
@@ -101,6 +101,7 @@ const DialogActions = withStyles(theme => ({
 
 const ProgressModal = (props) => {
   const value = React.useContext(WrapperContext)
+  console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState()
   const [endTime, setEndTime] = React.useState()
   const [startDay, setStartDay] = React.useState()

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, IconButton, Dialog, withStyles, Typography, ListItemText, ListItem } from '@material-ui/core';
+import { Avatar, IconButton, Dialog, withStyles, Typography, ListItemText, ListItem, GridListTile } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -11,6 +11,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { mdiDownload, mdiShare, mdiInformation, mdiChevronLeftCircle, mdiChevronRightCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import ImageTest from '../../assets/imageChatTest.jpg'
+// import { WrapperContext } from './index'
 const styles = theme => ({
     closeButton: {
         color: theme.palette.grey[500],
@@ -20,7 +21,7 @@ const GroupTitle = styled(MuiDialogTitle)`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #474747;
+    background-color: #000;
     align-items: center;
     padding: 5px 15px;
 `
@@ -118,8 +119,7 @@ const DialogContent = withStyles(theme => ({
 
 const DialogActions = withStyles(theme => ({
     root: {
-        margin: 0,
-        padding: theme.spacing(1),
+        margin: 0
     },
 }))(MuiDialogActions);
 const StyledDialog = styled(Dialog)`
@@ -128,7 +128,8 @@ const StyledDialog = styled(Dialog)`
     }
 `
 const ContentDialog = styled(DialogContent)`
-    background: transparent;
+    overflow: hidden;
+    background: #161616c9;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -138,11 +139,46 @@ const ContentDialog = styled(DialogContent)`
         opacity: 1;
     }
 `
-
-
+const ButtonImage = styled(IconButton)`
+    padding: 0;
+    & > span > svg {
+        width: 6.5rem !important;
+        height: 6.5rem !important;
+        &:hover {
+            fill: #ccc;
+          }
+    }
+`
+// const MediaImage = styled.div`
+//   width: auto !important;
+//   height: auto !important;
+// `
+// const WrapImage = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+// `
+// const ImageMedia = styled(GridListTile)`
+//   margin-right: 7px;
+// `
+const Image = styled.img`
+  height: 80px;
+  width: 80px;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7
+  }
+`
 const ModalImage = (props) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
+    // const value = React.useContext(WrapperContext);
+    // let data = []
+    // if (value && value.image) {
+    //     data = value.image
+    // }
     return (
         // {/* Modal chinh sua cong viec con */}
         <StyledDialog
@@ -153,18 +189,50 @@ const ModalImage = (props) => {
             <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
             </DialogTitle>
             <ContentDialog dividers>
-                <IconButton>
+                <ButtonImage>
                     <Icon path={mdiChevronLeftCircle} size={5} />
-                </IconButton>
+                </ButtonImage>
                 <img alt="vtask" src={ImageTest} />
-                <IconButton>
+                <ButtonImage>
                     <Icon path={mdiChevronRightCircle} size={5} />
-                </IconButton>
+                </ButtonImage>
             </ContentDialog>
             <DialogActions>
-
-            </DialogActions>
-        </StyledDialog>
+                {/* footer image */}
+                {/* <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
+                    {/* {data.images.map((image, key) => { 
+                        return (
+                            <MediaImage>
+                                {/* <GridListTile cols={5}>
+                                    <SubHeader component='div'>{image.date_create}</SubHeader>
+                                </GridListTile>
+                                <WrapImage>
+                                    {image.images.map((item, idx) => {
+                                        return (
+                                            <ImageMedia key={idx}>
+                                                <Image src={item.url} alt='avatar' />
+                                            </ImageMedia>
+                                        )
+                                    })}
+                                </WrapImage>
+                            </MediaImage>
+                        );
+                    })} 
+                </GridList> */}
+                {/* end footer image */}
+                {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
+                    <SubHeader component='span'>09/09/2019</SubHeader>
+                </GridListTile> */}
+                    {Array.from({ length: 7 }).map((_, index) => {
+                        return (
+                            <GridListTile key={`1-${index}`
+                            }>
+                                <Image src={avatar} alt='avatar' />
+                            </GridListTile>
+                        );
+                    })}
+            </DialogActions >
+        </StyledDialog >
     )
 }
 

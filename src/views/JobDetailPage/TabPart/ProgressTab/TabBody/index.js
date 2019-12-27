@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Avatar, Table, TableHead, TableBody, TableRow, TableCell, Slider } from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import colorPal from '../../../../../helpers/colorPalette';
-
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 // import MultiSlider, { Progress, Dot } from 'react-multi-bar-slider';
 import { mdiCircle } from '@mdi/js';
 import Icon from '@mdi/react'
@@ -14,7 +14,8 @@ const Container = styled.div`
   padding: 10px 0 50px 0;
 
   & > *:not(last-child) {
-    padding-top: 15px;
+    padding-top: 40px;
+    margin: 0 auto;
   }
   & > hr {
     border-color: rgba(0, 0, 0, .1);
@@ -148,78 +149,120 @@ const Body = styled(Scrollbars)`
   
 `;
 
-const InputProgressBar = styled.input`
-  background-color: ;
-  && {
-    -webkit-appearance: none;
-    -moz-apperance: none;
-    border-radius: 6px;
-    height: 11px;
-    width: 400px;
-    margin: auto;
-    background-image: -webkit-gradient(linear,
-        left top, 
-        right top, 
-        color-stop(${props => props.value}%, #2dc63a),
-        color-stop(${props => props.value}%, #b0eab5));
-    background-image: -moz-linear-gradient(left center,
-        #2dc63a 0%, #2dc63a ${props => props.value}%,
-        #b0eab5 ${props => props.value}%, #b0eab5 100%);
-  }
-  ::-moz-range-track {
-    border: none;
-    background: none;
-    outline: none;
-  }
-  :focus {
-    outline: none;
-    border: none;
-  }
-  ::-webkit-slider-thumb {
-    -webkit-appearance: none !important;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: #fff;
-    border: 2px solid #2dc63a;
-    cursor: pointer;
-  }
-  ::-moz-range-thumb {
-    -moz-appearance: none !important;
-    background-color: #2dc63a;
-    border: none;
-    height: 13px;
-    width: 13px;
-    border-radius: 50%;
-    &&:hover {
-      opacity: 1;
-    }
-`
+// const InputProgressBar = styled.input`
+//   background-color: ;
+//   && {
+//     -webkit-appearance: none;
+//     -moz-apperance: none;
+//     border-radius: 6px;
+//     height: 11px;
+//     width: 400px;
+//     margin: auto;
+//     background-image: -webkit-gradient(linear,
+//         left top, 
+//         right top, 
+//         color-stop(${props => props.value}%, #2dc63a),
+//         color-stop(${props => props.value}%, #b0eab5));
+//     background-image: -moz-linear-gradient(left center,
+//         #2dc63a 0%, #2dc63a ${props => props.value}%,
+//         #b0eab5 ${props => props.value}%, #b0eab5 100%);
+//   }
+//   ::-moz-range-track {
+//     border: none;
+//     background: none;
+//     outline: none;
+//   }
+//   :focus {
+//     outline: none;
+//     border: none;
+//   }
+//   ::-webkit-slider-thumb {
+//     -webkit-appearance: none !important;
+//     height: 20px;
+//     width: 20px;
+//     border-radius: 50%;
+//     background: #fff;
+//     border: 2px solid #2dc63a;
+//     cursor: pointer;
+//   }
+//   ::-moz-range-thumb {
+//     -moz-appearance: none !important;
+//     background-color: #2dc63a;
+//     border: none;
+//     height: 13px;
+//     width: 13px;
+//     border-radius: 50%;
+//     &&:hover {
+//       opacity: 1;
+//     }
+// `
+// const WrapperProgressBar = styled.div`
+//   margin: auto;
+//   & > div:nth-child(1) {
+//     width: 400px;
+//     margin: auto;
+//     padding-bottom: 14px;
+//   }
+//   & > div:nth-child(2) {
+//     width: 400px;
+//     margin: auto;
+//   }
+// `
+// const ContentProgress = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background-color: #2dc63a;
+//   border-radius: 50% 50% 50% 0;
+//   width: 35px;
+//   height: 35px;
+//   transform: rotate(-45deg);
+//   margin-left: calc(${props => props.value}% - 17.5px);
+//   & > div {
+//     color: #fff;
+//     transform: rotate(45deg);
+//   }
+// `
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: 300 + theme.spacing(3) * 2,
+  },
+  margin: {
+    height: theme.spacing(3),
+  },
+}));
+const PrettoSlider = withStyles({
+  root: {
+    color: '#2dc63a',
+    height: 8,
+  },
+  thumb: {
+    height: 24,
+    width: 24,
+    backgroundColor: '#fff',
+    border: '2px solid currentColor',
+    marginTop: -8,
+    marginLeft: -12,
+    '&:focus,&:hover,&$active': {
+      boxShadow: 'inherit',
+    },
+  },
+  active: {},
+  valueLabel: {
+    left: 'calc(-50% + 4px)',
+  },
+  track: {
+    height: 8,
+    borderRadius: 4,
+  },
+  rail: {
+    height: 8,
+    borderRadius: 4,
+  },
+})(Slider);
 const WrapperProgressBar = styled.div`
-  margin: auto;
-  & > div:nth-child(1) {
-    width: 400px;
-    margin: auto;
-    padding-bottom: 14px;
-  }
-  & > div:nth-child(2) {
-    width: 400px;
-    margin: auto;
-  }
-`
-const ContentProgress = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #2dc63a;
-  border-radius: 50% 50% 50% 0;
-  width: 35px;
-  height: 35px;
-  transform: rotate(-45deg);
-  margin-left: calc(${props => props.value}% - 17.5px);
-  & > div {
+  & > *:first-child > span:nth-child(4) > span > span > span {
     color: #fff;
-    transform: rotate(45deg);
   }
 `
 // const ProgressBarActive = (props) => {
@@ -259,10 +302,10 @@ const ContentProgress = styled.div`
 
 
 function TabBody() {
-
-  const [dataProgress, setDataProgress] = React.useState(0)
+  const classes = useStyles();
+  // const [dataProgress, setDataProgress] = React.useState(0)
   const value = React.useContext(WrapperContext)
-  console.log('detailtask', value.detailTask)
+  // console.log('detailtask', value.detailTask)
   let listTime
 
   if (value.listTime && value.listTime.trackings) {
@@ -285,28 +328,25 @@ function TabBody() {
       )
     })
   }
-  function convertDate(convert_day){
-    return convert_day.split('-').reverse().join('-');
-  }
-  let handleChangeProgress = progressValue => {
-    setDataProgress(progressValue)
-  }
-
+  // function convertDate(convert_day){
+  //   return convert_day.split('-').reverse().join('-');
+  // }
+  
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         <StartEndDateBox>
           <StartDateBox>
-            <ColorTypo>{value.detailTask.start_time}</ColorTypo>
-            <ColorTypo>{convertDate(value.detailTask.start_date)}</ColorTypo>
+            <ColorTypo>{"value.detailTask.start_time"}</ColorTypo>
+            <ColorTypo>{"value.detailTask.start_date"}</ColorTypo>
           </StartDateBox>
           <EndDateBox>
-            <ColorTypo>{value.detailTask.end_time}</ColorTypo>
-            <ColorTypo>{convertDate(value.detailTask.end_date)}</ColorTypo>
+            <ColorTypo>{"value.detailTask.end_time"}</ColorTypo>
+            <ColorTypo>{"value.detailTask.end_date"}</ColorTypo>
           </EndDateBox>
         </StartEndDateBox>
         {/* progress bar */}
-        <WrapperProgressBar>
+        {/* <WrapperProgressBar>
           <div>
             <ContentProgress value={dataProgress}>
               <div>{dataProgress}</div>
@@ -317,6 +357,14 @@ function TabBody() {
               type="range" min="1" max="100"
               value={dataProgress} onChange={e => handleChangeProgress(e.target.value)} />
           </div>
+        </WrapperProgressBar> */}
+        <WrapperProgressBar className={classes.root}>
+          <PrettoSlider 
+          valueLabelDisplay="on" 
+          aria-label="pretto slider" 
+          defaultValue={0}
+          onChangeCommitted={(e, val) => console.log("GOI API voi value la: ", val)}
+          />
         </WrapperProgressBar>
         <LegendBox>
           <Icon path={mdiCircle} size={1} color={'#2dc63a'} />

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
   mdiDownload,
@@ -142,6 +142,7 @@ function AllTaskTable({
 
   const { setProjectId } = React.useContext(ProjectPageContext);
   const { projectId } = useParams();
+  const history = useHistory();
 
   const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
   const { loading: detailProjectLoading, error: detailProjectError } = detailProject;
@@ -207,7 +208,7 @@ function AllTaskTable({
               grouped: {
                 bool: true,
                 id: 'id',
-                label: 'name',
+                label: (group) => get(group, 'id') === 'default' ? 'Chưa phân loại' : get(group, 'name'),
                 item: 'tasks',
               },
               draggable: {
@@ -217,11 +218,15 @@ function AllTaskTable({
                 bool: loading,
                 component: () => <LoadingBox />,
               },
+              row: {
+                id: 'id',
+                onClick: (row) => history.push(`/list-task-detail/`),
+              },
             }}
             columns={[{
               label: () => <Icon path={mdiShieldAccount} size={1} color={'rgb(102, 102, 102)'}/>,
               field: (row) => <CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' />,
-              center: true,
+              centered: true,
             }, {
               label: 'Tên công việc',
               field: 'name',
@@ -233,19 +238,19 @@ function AllTaskTable({
                               >
                                 {decodePriorityCode(get(row, 'priority_code', 0)).name}  
                               </StyledBadge>,
-              center: true,
+              centered: true
             }, {
               label: 'Tiến độ',
               field: (row) => `${get(row, 'duration', 0)} ngày`,
             }, {
               label: 'Bắt đầu',
               field: (row) => <DateBox>
-                                {displayDate(new Date(get(row, 'start_time')), new Date(get(row, 'start_date')))}
+                                {displayDate(get(row, 'start_time'), new Date(get(row, 'start_date')))}
                               </DateBox>,
             }, {
               label: 'Kết thúc',
               field: (row) => <DateBox>
-                                {displayDate(new Date(get(row, 'end_time')), new Date(get(row, 'end_date')))}
+                                {displayDate(get(row, 'end_time'), new Date(get(row, 'end_date')))}
                               </DateBox>,
             }, {
               label: 'Hoàn thành',
@@ -271,7 +276,7 @@ function AllTaskTable({
                               } 
                               display={3} 
                             />,
-              center: true,
+              centered: true
             }]}
             data={tasks}
           />
