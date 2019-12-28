@@ -73,19 +73,21 @@ const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTar
     z-index: 10;
   }
   & > span:nth-child(5) {
-    border: 1px solid red;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid red;
     position: absolute;
     top: -10px;
-    height: 5px;
     left: ${props => props.percentDone || 0}%;
     transform: translateX(-50%);
     z-index: 10;
   }
   & > span:nth-child(6) {
-    border: 1px solid red;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid red;
     position: absolute;
     top: 15px;
-    height: 5px;
     left: ${props => props.percentTarget || 0}%;
     transform: translateX(-50%);
     z-index: 10;

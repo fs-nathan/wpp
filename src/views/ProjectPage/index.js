@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
 import { detailProject } from '../../actions/project/detailProject';
 import { memberProject } from '../../actions/project/memberProject';
 import { listTask } from '../../actions/task/listTask';
@@ -11,7 +12,8 @@ import GroupTaskSlide from './LeftPart/GroupTaskSlide';
 import AllTaskTable from './RightPart/AllTaskTable';
 import { 
   CustomEventListener, CustomEventDispose,
-  UPDATE_PROJECT,
+  CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
+  CREATE_PROJECT, DELETE_PROJECT, UPDATE_PROJECT,
   CREATE_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
   ADD_MEMBER_PROJECT, REMOVE_MEMBER_PROJECT,
   UPDATE_STATE_JOIN_TASK,
@@ -23,11 +25,36 @@ export const Context = React.createContext();
 const { Provider } = Context;
 
 function ProjectPage({
+  doListProjectGroup,
   doDetailProject,
   doMemberProject,
   doListTask,
   doListGroupTask,
 }) {
+
+  React.useEffect(() => {
+    doListProjectGroup();
+
+    const reloadListProjectGroup = () => {
+      doListProjectGroup(true);
+    }
+
+    CustomEventListener(CREATE_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(DELETE_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(CREATE_PROJECT, reloadListProjectGroup);
+    CustomEventListener(DELETE_PROJECT, reloadListProjectGroup);
+
+    return () => {
+      CustomEventDispose(CREATE_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(DELETE_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(CREATE_PROJECT, reloadListProjectGroup);
+      CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
+    }
+  }, [doListProjectGroup]);
 
   const [projectId, setProjectId] = React.useState();
 
@@ -161,6 +188,7 @@ function ProjectPage({
 
 const mapDispatchToProps = dispatch => {
   return {
+    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
     doListTask: ({ projectId }, quite) => dispatch(listTask({ projectId }, quite)),

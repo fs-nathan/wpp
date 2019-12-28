@@ -119,6 +119,13 @@ function IntegrationReactSelect({ options = [], placeholder = '', isMulti = fals
           value={selected}
           onChange={handleChangeValue}
           isMulti={isMulti}
+          theme={theme => ({
+            ...theme,
+            colors: {
+              ...theme.colors,
+              primary: '#48bb78',
+            },
+          })}
         />
       </NoSsr>
     </div>

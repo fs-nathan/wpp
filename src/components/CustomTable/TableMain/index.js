@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Table, TableHead, TableBody } from '@material-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';

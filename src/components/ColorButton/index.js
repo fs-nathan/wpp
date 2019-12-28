@@ -6,7 +6,7 @@ import colorPal from '../../helpers/colorPalette';
 import PropTypes from 'prop-types';
 import './style.scss';
 
-const _ColorButton = styled(({ variantColor, variant = 'text', ...rest }) => 
+const XColorButton = styled(({ variantColor, variant = 'text', ...rest }) => 
   <Button variant={variant} {...rest} />
 )`
   ${props => props.variant === 'contained' && css`
@@ -29,7 +29,7 @@ const _ColorButton = styled(({ variantColor, variant = 'text', ...rest }) =>
 `;
 
 const ColorButton = ({ className = '', ...props }) => (
-  <_ColorButton className={`comp_ColorButton___button ${className}`} {...props} />
+  <XColorButton className={`comp_ColorButton___button ${className}`} {...props} />
 );
 
 ColorButton.propTypes = {

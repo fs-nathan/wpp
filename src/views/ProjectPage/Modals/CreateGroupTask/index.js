@@ -66,7 +66,7 @@ const ButtonCase = styled.div`
 function CreateGroupTask({ open, setOpen, }) {
 
   const [createNew, setCreateNew] = React.useState(false);
-  const [copy, setCopy] = React.useState(false);
+  // const [copy, setCopy] = React.useState(false);
 
   return (
     <>
@@ -78,7 +78,7 @@ function CreateGroupTask({ open, setOpen, }) {
       <Container>
         <ButtonCase onClick={evt => {
           setCreateNew(true);
-          setCopy(false);
+          // setCopy(false);
           setOpen(false);
         }}>
           <div>
@@ -91,7 +91,7 @@ function CreateGroupTask({ open, setOpen, }) {
         </ButtonCase>
         <ButtonCase onClick={evt => {
           setCreateNew(false);
-          setCopy(true);
+          // setCopy(true);
           setOpen(false);
         }}>
           <div>

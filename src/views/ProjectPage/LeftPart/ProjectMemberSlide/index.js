@@ -50,7 +50,7 @@ function ProjectMemberSlide({ handleSubSlide, memberProject, }) {
   }, [membersAdded, searchPatern]);
 
   function onDragEnd(result) {
-    const { source, destination, draggableId } = result;
+    const { source, destination } = result;
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&

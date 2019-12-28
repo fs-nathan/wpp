@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { 
-  FormControl, TextField 
-} from '@material-ui/core';
+import { FormControl, TextField } from '@material-ui/core';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomSelect from '../../../../components/CustomSelect';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -24,27 +22,6 @@ const StyledFormControl = styled(FormControl)`
   & > * {
     margin-bottom: 10px;
     font-size: 12px;
-  }
-`;
-
-const StyledTextField = styled(TextField)`
-  && > div {
-    &::before {
-      border-bottom: none !important;
-    }
-    &::after {
-      border-bottom: none !important;
-    }
-    padding: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    &:hover {
-      border: 1px solid rgba(0, 0, 0, 0.2);
-    }
-    &:focus-within {
-      padding: 7px;
-      border: 2px solid #2684ff;
-    }
   }
 `;
 
@@ -182,24 +159,22 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
                 onChange={({ value: majorId }) => setMajor(find(majors, { id: majorId }))}
               />
             </StyledFormControl>
-            <StyledFormControl fullWidth>
-              <label htmlFor='description'>
-                {t("views.user_page.modals.update_user.description")}
-              </label>
-              <StyledTextField 
-                id='description'
-                value={description}
-                onChange={evt => setDescription(evt.target.value)}
-                multiline
-                rowsMax={4}
-                fullWidth
-                helperText={
-                  <ColorTypo component='span' color='red'>
-                    {get(errorDescription, 'message', '')}
-                  </ColorTypo>
-                }
-              />
-            </StyledFormControl>
+            <TextField 
+              id='description'
+              value={description}
+              onChange={evt => setDescription(evt.target.value)}
+              multiline
+              margin="normal"
+              variant="outlined"
+              rowsMax={4}
+              label='Mô tả công việc'
+              fullWidth
+              helperText={
+                <ColorTypo component='span' color='red'>
+                  {get(errorDescription, 'message', '')}
+                </ColorTypo>
+              }
+            />
           </React.Fragment>
         )}
       </CustomModal>

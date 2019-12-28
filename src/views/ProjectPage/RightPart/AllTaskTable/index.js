@@ -236,7 +236,7 @@ function AllTaskTable({
                                 color={decodePriorityCode(get(row, 'priority_code', 0)).color}
                                 background={decodePriorityCode(get(row, 'priority_code', 0)).background}
                               >
-                                {decodePriorityCode(get(row, 'priority_code', 0)).name}  
+                                {get(row, 'priority_name', '')}  
                               </StyledBadge>,
               centered: true
             }, {

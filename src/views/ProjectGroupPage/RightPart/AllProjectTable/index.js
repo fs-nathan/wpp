@@ -765,7 +765,7 @@ function AllProjectTable({
                         .background
                     }
                   >
-                    {decodePriorityCode(get(row, 'priority_code', 0)).name}
+                    {get(row, 'priority_name', '')}
                   </StyledBadge>
                 ),
                 sort: evt => handleSortColumn('priority_code')

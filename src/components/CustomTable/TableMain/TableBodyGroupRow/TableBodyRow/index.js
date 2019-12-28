@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 import { TableCell, TableRow } from '@material-ui/core';
 import { CustomTableContext } from '../../../index';
