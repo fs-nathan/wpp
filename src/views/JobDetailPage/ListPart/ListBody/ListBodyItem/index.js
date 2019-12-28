@@ -155,15 +155,14 @@ function ListBodyItem(props) {
   const value = React.useContext(WrapperContext);
 
   return (
-    <a className="container-lbd" onClick={() => 
-      // console.log("id list task:::::", props.id)
+    <div className="container-lbd"  onClick={() => 
       value.chooseTask(props.id)
     }>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...props} />
-    </a>
+    </div>
   )
 }
 

@@ -440,6 +440,7 @@
                 font-size: 13px;
             }
         }
+    }
 // index.js - TabBody - Default Tab
     .button-text {
         background: none;
@@ -482,7 +483,7 @@
             margin: 3px 5px 0 0;
           }
     }     
-}
+
 
 // TabHeader - Demand Tab
 .container-dmt-tabbody {
@@ -600,7 +601,7 @@
             & > span {
                 display: flex;
                 align-items: center;
-                justify-content: start;
+                justify-content: flex-start;
                 padding: 3px 10px;
                 font-size: 16px;
                 font-weight: 500;

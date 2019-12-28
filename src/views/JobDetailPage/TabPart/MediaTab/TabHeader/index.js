@@ -31,7 +31,8 @@ function TabHeader({ setShow }) {
     value.getImageByTaskId(value.taskId)
     value.getFileByTaskId(value.taskId)
     value.getLinkByTaskId(value.taskId)
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
   return (
     <div className="container-normal-tabheader">
       <ButtonIcon onClick={() => setShow(0)}>

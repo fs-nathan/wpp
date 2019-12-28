@@ -220,9 +220,13 @@ const DEFAULT_TASK_STATISTIC = {
   docCnt: "Đang tải",
   lctCnt: "Đang tải",
   offerCnt: "Đang tải",
+  acceptOfferCnt: "Đang tải",
   commandCnt: "Đang tải",
   members: [],
   priority_code: 0,
+  fileCnt: "Đang tải",
+  imgCnt: "Đang tải",
+  linkCnt: "Đang tải"
 }
 
 const HtmlTooltip = withStyles(theme => ({
@@ -259,12 +263,8 @@ const HtmlTooltip = withStyles(theme => ({
 // `
 
 const ModalStatus = (status) => {
-  // console.log('status:::::::', status.values);
-  // console.log('status:::::::', status);
 
-  // const [value, setValue] = React.useState('')
   let value = '', color, icon
-  // console.log('value:::::::', value)
   switch (status.values) {
     case "Đang làm":
       value = "Đang làm";
@@ -316,7 +316,17 @@ const ModalStatus = (status) => {
     </React.Fragment>
   )
 }
-
+// const MemberTask = (obj) => {
+//   const [value, setValue] = React.useState('')
+//   if (obj.members.length <= 6) {
+//     setValue(false)
+//   } else {
+//     setValue(true)
+//   }
+//   return (
+//     <AvatarCircleList total={10} display={6} />
+//   )
+// }
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
@@ -436,6 +446,7 @@ function TabBody(props) {
         <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
           <ColorTypo>Thành viên</ColorTypo>
           <AvatarCircleList total={taskStatistic.members.length} display={6} />
+          {/* {MemberTask(taskStatistic)} */}
         </ListItemTab>
       </StyledList>
     </Body >
