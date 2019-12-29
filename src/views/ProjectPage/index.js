@@ -17,7 +17,10 @@ import {
   CREATE_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
   ADD_MEMBER_PROJECT, REMOVE_MEMBER_PROJECT,
   UPDATE_STATE_JOIN_TASK,
+  ASSIGN_MEMBER_TO_ALL_TASK,
   CREATE_TASK,
+  SHOW_PROJECT,
+  HIDE_PROJECT,
 } from '../../constants/events';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
@@ -67,15 +70,21 @@ function ProjectPage({
       }
       
       CustomEventListener(UPDATE_PROJECT, reloadDetailProject);
+      CustomEventListener(SHOW_PROJECT, reloadDetailProject);
+      CustomEventListener(HIDE_PROJECT, reloadDetailProject);
       CustomEventListener(ADD_MEMBER_PROJECT, reloadDetailProject);
       CustomEventListener(REMOVE_MEMBER_PROJECT, reloadDetailProject);
       CustomEventListener(UPDATE_STATE_JOIN_TASK, reloadDetailProject);
+      CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
       
       return () => {
         CustomEventDispose(UPDATE_PROJECT, reloadDetailProject);
+        CustomEventDispose(SHOW_PROJECT, reloadDetailProject);
+        CustomEventDispose(HIDE_PROJECT, reloadDetailProject);
         CustomEventDispose(ADD_MEMBER_PROJECT, reloadDetailProject);
         CustomEventDispose(REMOVE_MEMBER_PROJECT, reloadDetailProject);
         CustomEventDispose(UPDATE_STATE_JOIN_TASK, reloadDetailProject);
+        CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
       }
     }
   }, [projectId, doDetailProject]);
@@ -89,15 +98,21 @@ function ProjectPage({
       }
       
       CustomEventListener(UPDATE_PROJECT, reloadMemberProject);
+      CustomEventListener(SHOW_PROJECT, reloadMemberProject);
+      CustomEventListener(HIDE_PROJECT, reloadMemberProject);
       CustomEventListener(ADD_MEMBER_PROJECT, reloadMemberProject);
       CustomEventListener(REMOVE_MEMBER_PROJECT, reloadMemberProject);
       CustomEventListener(UPDATE_STATE_JOIN_TASK, reloadMemberProject);
+      CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
       
       return () => {
         CustomEventDispose(UPDATE_PROJECT, reloadMemberProject);
+        CustomEventDispose(SHOW_PROJECT, reloadMemberProject);
+        CustomEventDispose(HIDE_PROJECT, reloadMemberProject);
         CustomEventDispose(ADD_MEMBER_PROJECT, reloadMemberProject);
         CustomEventDispose(REMOVE_MEMBER_PROJECT, reloadMemberProject);
         CustomEventDispose(UPDATE_STATE_JOIN_TASK, reloadMemberProject);
+        CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
       }
     }
   }, [projectId, doMemberProject]);

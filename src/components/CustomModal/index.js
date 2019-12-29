@@ -148,8 +148,14 @@ CustomModal.propTypes = {
   title: PropTypes.string.isRequired, 
   columns: PropTypes.number,
   children: PropTypes.node,
-  left: PropTypes.node,
-  right: PropTypes.node, 
+  left: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    content: PropTypes.func.isRequired,
+  }),
+  right: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    content: PropTypes.func.isRequired,
+  }), 
   onConfirm: PropTypes.func, 
   onCancle: PropTypes.func, 
   open: PropTypes.bool.isRequired, 

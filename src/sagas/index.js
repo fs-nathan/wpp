@@ -108,6 +108,8 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../constants/actions/project/re
 import { removeProjectRoleFromMember } from './project/removeProjectRoleFromMember';
 import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/updateGroupPermissionMember';
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
+import { ASSIGN_MEMBER_TO_ALL_TASK } from '../constants/actions/project/assignMemberToAllTask';
+import { assignMemberToAllTask } from './project/assignMemberToAllTask';
 import { LIST_GROUP_TASK } from '../constants/actions/groupTask/listGroupTask';
 import { listGroupTask } from './groupTask/listGroupTask';
 import { CREATE_GROUP_TASK } from '../constants/actions/groupTask/createGroupTask';
@@ -207,6 +209,7 @@ function* rootSaga() {
     removeProjectRoleFromMember
   );
   yield takeEvery(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
+  yield takeEvery(ASSIGN_MEMBER_TO_ALL_TASK, assignMemberToAllTask);
   yield takeLatest(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);

@@ -21,6 +21,8 @@ import CustomAvatar from '../../../../components/CustomAvatar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
 import CreateNewTaskModal from '../../Modals/CreateNewTask';
+import { hideProject } from '../../../../actions/project/hideProject';
+import { showProject } from '../../../../actions/project/showProject';
 
 const Container = styled.div`
   grid-area: table;
@@ -137,7 +139,8 @@ function displayDate(time, date) {
 function AllTaskTable({ 
   expand, handleExpand, 
   handleSubSlide,
-  listTask, detailProject, 
+  listTask, detailProject,
+  doShowProject, doHideProject,
 }) {
 
   const { setProjectId } = React.useContext(ProjectPageContext);
@@ -145,7 +148,7 @@ function AllTaskTable({
   const history = useHistory();
 
   const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
-  const { loading: detailProjectLoading, error: detailProjectError } = detailProject;
+  const { data: { project }, loading: detailProjectLoading, error: detailProjectError } = detailProject;
 
   const loading = listTaskLoading || detailProjectLoading;
   const error = listTaskError || detailProjectError;
@@ -155,6 +158,11 @@ function AllTaskTable({
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
+
+  function handleShowHideProject(show = true) {
+    if (show) doHideProject({ projectId, })
+    else doShowProject({ projectId, })
+  }
 
   return (
     <Container>
@@ -196,14 +204,8 @@ function AllTaskTable({
                 label: 'Cài đặt bảng',
                 onClick: () => null,
               }, {
-                label: 'Sửa dự án',
-                onClick: () => null,
-              }, {
-                label: 'Ẩn dự án',
-                onClick: () => null,
-              }, {
-                label: 'Xóa dự án',
-                onClick: () => null,
+                label: `${get(project, 'visibility') ? 'Ẩn dự án' : 'Bỏ ẩn dự án'}`,
+                onClick: () => handleShowHideProject(get(project, 'visibility')),
               }],
               grouped: {
                 bool: true,
@@ -296,8 +298,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-  }
-}
+    doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
+    doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
+  };
+};
 
 export default connect(
   mapStateToProps,

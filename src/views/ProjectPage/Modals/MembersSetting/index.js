@@ -24,6 +24,7 @@ import CustomAvatar from '../../../../components/CustomAvatar';
 import { addMemberProject } from '../../../../actions/project/addMemberToProject';
 import { removeMemberProject } from '../../../../actions/project/removeMemberFromProject';
 import { updateStateJoinTask } from '../../../../actions/project/updateStateJoinTask';
+import { assignMemberToAllTask } from '../../../../actions/project/assignMemberToAllTask';
 
 const ListContainer = styled.div`
   margin-top: 8px;
@@ -189,7 +190,7 @@ function UserFreeRoomList({ room, onAddMember, }) {
   else return null;
 }
 
-const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, }) => {
+const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, onAssignMemberToAllTask }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
@@ -237,7 +238,10 @@ const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, }) => {
           <Icon path={mdiCheckCircle} size={0.7} /> Tham gia việc khi được chọn
         </CustomMenuItem>
         <CustomMenuItem
-          onClick={evt => null}
+          onClick={evt => {
+            handleClose();
+            onAssignMemberToAllTask(member);
+          }}
         >
           <Icon path={mdiAccountConvert} size={0.7} /> Gán vào công việc được tạo
         </CustomMenuItem>
@@ -266,6 +270,7 @@ function MemberSetting({
   memberProject, 
   doAddMemberProject, doRemoveMemberProject, 
   doUpdateStateJoinTask,
+  doAssignMemberToAllTask,
 }) {
 
   const { projectId } = useParams();
@@ -316,6 +321,13 @@ function MemberSetting({
       projectId,
       memberId: get(member, 'id'),
       state,
+    });
+  }
+
+  function handleAssignMemberToAllTask(member) {
+    doAssignMemberToAllTask({
+      projectId,
+      memberId: get(member, 'id'),
     });
   }
 
@@ -387,6 +399,7 @@ function MemberSetting({
                           member={member} 
                           onRemoveMember={handleRemoveMember} 
                           onChangeStateJoinTask={handleUpdateStateJoinTask}  
+                          onAssignMemberToAllTask={handleAssignMemberToAllTask}
                         />
                       </MiddleTableCell>
                     </TableRow>
@@ -411,6 +424,7 @@ const mapDispatchToProps = dispatch => {
     doAddMemberProject: ({ projectId, memberId, groupPermission, roles, }) => dispatch(addMemberProject({ projectId, memberId, groupPermission, roles, })),
     doRemoveMemberProject: ({ projectId, memberId, }) => dispatch(removeMemberProject({ projectId, memberId, })),
     doUpdateStateJoinTask: ({ projectId, memberId, state, }) => dispatch(updateStateJoinTask({ projectId, memberId, state, })),
+    doAssignMemberToAllTask: ({ projectId, memberId, }) => dispatch(assignMemberToAllTask({ projectId, memberId })),
   }
 };
 

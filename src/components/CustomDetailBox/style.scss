@@ -1,0 +1,34 @@
+.comp_CustomDetailBox___container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr max-content;
+  grid-template-columns: auto;   
+};
+
+@mixin comp_CustomDetailBox___sub-container {
+  &:not(:first-child) {
+    border-top: 1px solid rgba(0, 0, 0, .1);
+  };
+  padding: 0 16px;  
+};
+
+.comp_CustomDetailBox___sub-container {
+  @include comp_CustomDetailBox___sub-container;
+}
+
+.comp_CustomDetailBox___action-box {
+  @include comp_CustomDetailBox___sub-container;
+  margin-top: 16px;
+  padding-bottom: 24px;
+  & > * {
+    text-transform: none;
+    justify-content: flex-start;
+    & > span:last-child {
+      display: none;
+    };
+    background-color: #fff;
+    &:hover {
+      background-color: #fff;
+    };
+  };
+}

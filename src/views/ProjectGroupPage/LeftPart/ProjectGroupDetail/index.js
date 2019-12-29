@@ -9,6 +9,7 @@ import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
 import ColorButton from '../../../../components/ColorButton';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
+import { Container, SubContainer, ActionBox, } from '../../../../components/CustomDetailBox';
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiSquare } from '@mdi/js';
 import { connect } from 'react-redux';
@@ -24,13 +25,6 @@ import { CustomEventListener, CustomEventDispose, DELETE_PROJECT_GROUP } from '.
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
 import MembersDetail from '../../Modals/MembersDetail';
 
-const Container = styled.div`
-  padding: 0 16px;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 1fr max-content;
-  grid-template-columns: auto; 
-`;
 
 const ProjectGroupName = styled.span`
   width: 100%;
@@ -42,28 +36,10 @@ const ProjectGroupName = styled.span`
 `;
 
 const SubHeader = styled.div`
-  border-top: 1px solid rgba(0, 0, 0, .1);
   padding: 8px 0;
   margin: 8px 0
   display: flex;
   align-items: center;
-`;
-
-const ActionBox = styled.div`
-  margin-top: 16px;
-  padding: 8px 0 16px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  & > * {
-    text-transform: none;
-    justify-content: flex-start;
-    & > span:last-child {
-      display: none;
-    }
-    background-color: #fff;
-    &:hover {
-      background-color: #fff;
-    }
-  }
 `;
 
 const StyledColorTypo = styled(ColorTypo)`
@@ -124,82 +100,88 @@ function ProjectGroupDetail({ detailProjectGroup, memberProjectGroup, doDeletePr
         >
           <Container>
             <div>
-              <ChartBox>
-                <ChartDrawer>
-                  <CustomChart 
-                    type='donut'
-                    options={{
-                      legend: {
-                        show: false,
-                      },
-                      plotOptions: {
-                        pie: {
-                          expandOnClick: false,
+              <SubContainer>
+                <ChartBox>
+                  <ChartDrawer>
+                    <CustomChart 
+                      type='donut'
+                      options={{
+                        legend: {
+                          show: false,
                         },
-                      },
-                      labels: [
-                        'Công việc đang chờ', 
-                        'Công việc đang làm', 
-                        'Công việc quá hạn',
-                        'Công việc hoàn thành',
-                        'Công việc dừng',
-                      ],
-                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
-                    }}
-                    series={[
-                      get(projectGroup, 'task_waiting', 0),
-                      get(projectGroup, 'task_doing', 0),
-                      get(projectGroup, 'task_expired', 0),
-                      get(projectGroup, 'task_complete', 0),
-                      get(projectGroup, 'task_stop', 0),
-                    ]}
-                    width={250}
-                    height={250}
-                  />
-                  <ChartTitle>
-                    Hoạt động
-                  </ChartTitle>
-                </ChartDrawer>
-                <ProjectGroupName>
-                  {loading ? '...' : get(projectGroup, 'name', '')}
-                </ProjectGroupName>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#ff9800'} />
-                  <ColorTypo>Công việc đang chờ</ColorTypo>
-                  <ColorTypo>{get(projectGroup, 'task_waiting', 0)}</ColorTypo>
-                </ChartLegendBox>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#03a9f4'} />
-                  <ColorTypo>Công việc đang làm</ColorTypo>
-                  <ColorTypo>{get(projectGroup, 'task_doing', 0)}</ColorTypo>
-                </ChartLegendBox>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#f44336'} />
-                  <ColorTypo>Công việc quá hạn</ColorTypo>
-                  <ColorTypo>{get(projectGroup, 'task_expired', 0)}</ColorTypo>
-                </ChartLegendBox>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#03c30b'} />
-                  <ColorTypo>Công việc hoàn thành</ColorTypo>
-                  <ColorTypo>{get(projectGroup, 'task_complete', 0)}</ColorTypo>
-                </ChartLegendBox>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#black'} />
-                  <ColorTypo>Công việc dừng</ColorTypo>
-                  <ColorTypo>{get(projectGroup, 'task_stop', 0)}</ColorTypo>
-                </ChartLegendBox>
-              </ChartBox>
-              <SubHeader>
-                <ColorTypo color='gray' uppercase>Mô tả</ColorTypo>
-              </SubHeader>
-              <ColorTextField 
-                value={get(projectGroup, 'description', '')}
-              />
-              <SubHeader>
-                <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
-              </SubHeader>
-              <AvatarCircleList users={members} total={20} display={12}/>
-              <StyledColorTypo color='blue' onClick={() => setOpenMemberModal(true)}>Xem chi tiết thành viên</StyledColorTypo>
+                        plotOptions: {
+                          pie: {
+                            expandOnClick: false,
+                          },
+                        },
+                        labels: [
+                          'Công việc đang chờ', 
+                          'Công việc đang làm', 
+                          'Công việc quá hạn',
+                          'Công việc hoàn thành',
+                          'Công việc dừng',
+                        ],
+                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
+                      }}
+                      series={[
+                        get(projectGroup, 'task_waiting', 0),
+                        get(projectGroup, 'task_doing', 0),
+                        get(projectGroup, 'task_expired', 0),
+                        get(projectGroup, 'task_complete', 0),
+                        get(projectGroup, 'task_stop', 0),
+                      ]}
+                      width={250}
+                      height={250}
+                    />
+                    <ChartTitle>
+                      Hoạt động
+                    </ChartTitle>
+                  </ChartDrawer>
+                  <ProjectGroupName>
+                    {loading ? '...' : get(projectGroup, 'name', '')}
+                  </ProjectGroupName>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#ff9800'} />
+                    <ColorTypo>Công việc đang chờ</ColorTypo>
+                    <ColorTypo>{get(projectGroup, 'task_waiting', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#03a9f4'} />
+                    <ColorTypo>Công việc đang làm</ColorTypo>
+                    <ColorTypo>{get(projectGroup, 'task_doing', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#f44336'} />
+                    <ColorTypo>Công việc quá hạn</ColorTypo>
+                    <ColorTypo>{get(projectGroup, 'task_expired', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#03c30b'} />
+                    <ColorTypo>Công việc hoàn thành</ColorTypo>
+                    <ColorTypo>{get(projectGroup, 'task_complete', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#black'} />
+                    <ColorTypo>Công việc dừng</ColorTypo>
+                    <ColorTypo>{get(projectGroup, 'task_stop', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                </ChartBox>
+              </SubContainer>
+              <SubContainer>
+                <SubHeader>
+                  <ColorTypo color='gray' uppercase>Mô tả</ColorTypo>
+                </SubHeader>
+                <ColorTextField 
+                  value={get(projectGroup, 'description', '')}
+                />
+              </SubContainer>
+              <SubContainer>
+                <SubHeader>
+                  <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
+                </SubHeader>
+                <AvatarCircleList users={members} total={20} display={12}/>
+                <StyledColorTypo color='blue' onClick={() => setOpenMemberModal(true)}>Xem chi tiết thành viên</StyledColorTypo>
+              </SubContainer>
             </div>
             <ActionBox>
               <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
