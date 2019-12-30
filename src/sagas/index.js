@@ -124,6 +124,8 @@ import { LIST_TASK } from '../constants/actions/task/listTask';
 import { listTask } from './task/listTask';
 import { CREATE_TASK } from '../constants/actions/task/createTask';
 import { createTask } from './task/createTask';
+import { DELETE_TASK } from '../constants/actions/task/deleteTask';
+import { deleteTask } from './task/deleteTask';
 import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
 import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
 import {
@@ -217,6 +219,9 @@ function* rootSaga() {
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(LIST_TASK, listTask);
   yield takeEvery(CREATE_TASK, createTask);
+  yield takeEvery(DELETE_TASK, deleteTask);
+
+
   yield takeLatest(LIST_COMMENT, listComment);
   yield takeLatest(LIST_TRASH, listTrash);
   yield takeLatest(LIST_MY_DOCUMENT, listMyDocument);

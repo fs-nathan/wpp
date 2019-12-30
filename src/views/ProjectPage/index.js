@@ -18,9 +18,8 @@ import {
   ADD_MEMBER_PROJECT, REMOVE_MEMBER_PROJECT,
   UPDATE_STATE_JOIN_TASK,
   ASSIGN_MEMBER_TO_ALL_TASK,
-  CREATE_TASK,
-  SHOW_PROJECT,
-  HIDE_PROJECT,
+  CREATE_TASK, DELETE_TASK,
+  SHOW_PROJECT, HIDE_PROJECT,
 } from '../../constants/events';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
@@ -131,6 +130,7 @@ function ProjectPage({
     CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
     CustomEventListener(SORT_GROUP_TASK, reloadListTask);
     CustomEventListener(CREATE_TASK, reloadListTask);
+    CustomEventListener(DELETE_TASK, reloadListTask);
 
     return () => {
       CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
@@ -138,6 +138,7 @@ function ProjectPage({
       CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
       CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
       CustomEventDispose(CREATE_TASK, reloadListTask);
+      CustomEventDispose(DELETE_TASK, reloadListTask);
     }
   }, [projectId, doListTask]);
 

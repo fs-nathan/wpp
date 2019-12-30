@@ -5,24 +5,30 @@ import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
+  IconButton,
+  Menu,
+  MenuItem,
+} from '@material-ui/core';
+import {
   mdiDownload,
   mdiScatterPlot,
   mdiCalendar,
   mdiAccount,
   mdiAccountCircle,
-  mdiShieldAccount,
+  mdiDotsVertical,
 } from '@mdi/js';
 import { Context as ProjectPageContext } from '../../index';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import CustomTable from '../../../../components/CustomTable';
 import CustomBadge from '../../../../components/CustomBadge';
-import CustomAvatar from '../../../../components/CustomAvatar';
+import AlertModal from '../../../../components/AlertModal';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
 import CreateNewTaskModal from '../../Modals/CreateNewTask';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
+import { deleteTask } from '../../../../actions/task/deleteTask';
 
 const Container = styled.div`
   grid-area: table;
@@ -66,6 +72,10 @@ const DateBox = styled.div`
     margin-top: 4px;
     font-size: 12px;
   }
+`;
+
+const SettingContainer = styled.div`
+  margin-right: 16px;
 `;
 
 function decodePriorityCode(priorityCode) {
@@ -136,11 +146,64 @@ function displayDate(time, date) {
   }
 }
 
+const SettingButton = ({
+  task,
+  onDeleteTask,
+}) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [alert, setAlert] = React.useState(false);
+
+  function handleClick(evt) {
+    setAnchorEl(evt.currentTarget);
+  }
+
+  function handleClose(evt) {
+    setAnchorEl(null);
+  }
+
+  return (
+    <SettingContainer onClick={evt => evt.stopPropagation()}>
+      <IconButton
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+        size="small"
+      >
+        <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        transformOrigin={{
+          vertical: -30,
+          horizontal: 'right'
+        }}
+      >
+        <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
+      </Menu>
+      <AlertModal
+        open={alert}
+        setOpen={setAlert}
+        content="Bạn chắc chắn muốn xóa công việc?"
+        onCancle={handleClose}
+        onConfirm={() => {
+          handleClose();
+          onDeleteTask(task);
+        }}
+      />
+    </SettingContainer>
+  );
+};
+
 function AllTaskTable({ 
   expand, handleExpand, 
   handleSubSlide,
   listTask, detailProject,
   doShowProject, doHideProject,
+  doDeleteTask,
 }) {
 
   const { setProjectId } = React.useContext(ProjectPageContext);
@@ -162,6 +225,12 @@ function AllTaskTable({
   function handleShowHideProject(show = true) {
     if (show) doHideProject({ projectId, })
     else doShowProject({ projectId, })
+  }
+
+  function handleDeleteTask(task) {
+    doDeleteTask({
+      taskId: get(task, 'id'),
+    });
   }
 
   return (
@@ -226,10 +295,6 @@ function AllTaskTable({
               },
             }}
             columns={[{
-              label: () => <Icon path={mdiShieldAccount} size={1} color={'rgb(102, 102, 102)'}/>,
-              field: (row) => <CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' />,
-              centered: true,
-            }, {
               label: 'Tên công việc',
               field: 'name',
             }, {
@@ -279,6 +344,14 @@ function AllTaskTable({
                               display={3} 
                             />,
               centered: true
+            }, {
+              label: '',
+              field: row => (
+                <SettingButton
+                  task={row}
+                  onDeleteTask={handleDeleteTask}
+                />
+              )
             }]}
             data={tasks}
           />
@@ -300,6 +373,7 @@ const mapDispatchToProps = dispatch => {
   return {
     doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
     doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
+    doDeleteTask: ({ taskId }) => dispatch(deleteTask({ taskId })),
   };
 };
 
