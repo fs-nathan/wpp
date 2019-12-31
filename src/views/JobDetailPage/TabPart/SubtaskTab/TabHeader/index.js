@@ -39,7 +39,8 @@ function TabHeader(props) {
   const value = React.useContext(WrapperContext)
   useEffect(() => {
     value.getSubTaskByTaskId(value.taskId)
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
   const [isPlus, setOnPlus] = React.useState(true)
   const handleClick = () => {
     setOnPlus(!isPlus)

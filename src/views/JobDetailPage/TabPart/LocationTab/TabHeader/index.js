@@ -28,7 +28,8 @@ function TabHeader({ setShow }) {
   const value = React.useContext(WrapperContext)
   useEffect(() => {
     value.getLocationByTaskId(value.taskId)
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
   return (
     <div className="container-normal-tabheader">
       <ButtonIcon onClick={() => setShow(0)}>

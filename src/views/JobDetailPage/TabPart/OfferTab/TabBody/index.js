@@ -266,12 +266,15 @@ const StyledList = styled.ul`
 `;
 
 const ListOffer = (props) => {
-
+  const searchOfferTabPart = (e) => {
+    props.searchOffer(e.target.value)
+  }
   return (
     <React.Fragment>
       <SearchInput
         fullWidth
         placeholder="Nhập từ khóa"
+        onChange={e => searchOfferTabPart(e)}
       />
       <StyledList>
 

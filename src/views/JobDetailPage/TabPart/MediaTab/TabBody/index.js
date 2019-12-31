@@ -138,7 +138,7 @@ const MediaContainer = (props) => {
     <React.Fragment>
       <SearchInput 
         fullWidth
-        placeholder='Nhập tên media, ngày đăng, người đăng...'
+        placeholder='Nhập ngày đăng...'
         onChange={e => searchImagesTabPart(e)}
       />
       <MediaBox {...props} />
@@ -189,7 +189,7 @@ const FileBox = (props) => {
 
   return (
     <FileBoxStyledList>
-      {props.file.files.map((item, idx) => {
+      {props.file.files && props.file.files.map((item, idx) => {
         return (
 
           <FileBoxStyledListItem key={idx}>
@@ -296,7 +296,7 @@ const LinkBox = (props) => {
 
   return (
     <List subheader={<li />}>
-      {props.link.map((item, idx) => {
+      {props.link.links && props.link.links.map((item, idx) => {
         return (
           <div className="styled-list-item-link" key={idx}>
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>

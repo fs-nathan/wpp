@@ -29,7 +29,8 @@ function TabHeader({ setShow }) {
   const value = React.useContext(WrapperContext)
   useEffect(() => {
     value.getRemindByTaskId(value.taskId)
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
   // bien cua modal cong viec con
   const [isOpen, setOpen] = React.useState(false);
   const handleClickOpen = () => {

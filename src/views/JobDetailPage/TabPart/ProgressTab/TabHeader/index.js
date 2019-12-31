@@ -37,7 +37,8 @@ function TabHeader({ setShow }) {
   const value = React.useContext(WrapperContext)
   useEffect(() => {
     value.getTrackingTime(value.taskId)
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);

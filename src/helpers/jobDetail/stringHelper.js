@@ -31,3 +31,7 @@ export const isValidDuration = durationText => {
         return false
     }
 }
+
+export const isExpiredDate = date => {
+    return new Date(date) - new Date() > 0
+}

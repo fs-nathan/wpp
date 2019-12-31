@@ -507,7 +507,6 @@ function CreateJobModal(props) {
           <Typography component={'div'} style={{ marginBottom: 10 }}>
             <TitleText component={'span'}>
               <InputTextJob
-                id="outlined-helperText"
                 label="Tên công việc"
                 helperText="Không được để trống"
                 margin="normal"
@@ -521,7 +520,6 @@ function CreateJobModal(props) {
           <Descripe component={'div'}>
             <TitleText component={'div'}>
               <InputTextJob
-                id="outlined-helperText"
                 label="Mô tả công việc"
                 // helperText=""
                 margin="normal"

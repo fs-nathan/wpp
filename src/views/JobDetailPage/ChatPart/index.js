@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import HeaderPart from './HeaderPart'
 import BodyPart from './BodyPart'
 import FooterPart from './FooterPart'
