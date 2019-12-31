@@ -137,11 +137,13 @@ const ContentDialog = styled(DialogContent)`
     & > div:nth-child(2) {
         height: 750px;
         width: 1100px;
+        background-repeat: no-repeat;
+        background-size: cover;
         & > img {
             opacity: 1;
             width: 100%;
             height: 100%;
-    }
+        }
     }
 `
 const ButtonImage = styled(IconButton)`

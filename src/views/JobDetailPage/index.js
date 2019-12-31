@@ -6,6 +6,7 @@ import TabPart from './TabPart';
 import { connect } from 'react-redux';
 import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions'
 import '../JobDetailPage/index.scss'
+import Intro from './introduce'
 
 export const WrapperContext = React.createContext(null)
 const Wrapper = WrapperContext.Provider
@@ -14,9 +15,9 @@ const Wrapper = WrapperContext.Provider
 //   height: 100%;
 //   display: grid;
 //   grid-template-rows: auto;
-//   grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(200px, 29%);
+//   grid-template-columns: minmax(200px, 27%) minmax(400px, 73%);
 //   grid-template-areas: 
-//     "list chat tab";
+//     "list intro";
 // `;
 
 function JobDetailPage(props) {
@@ -56,10 +57,16 @@ function JobDetailPage(props) {
     return (
 
         <Wrapper value={{ ...props }}>
-            <div className="container" >
+            <div className={(props.taskId ? "container" : "container-job-introduce")} >
                 <ListPart {...props} />
-                <ChatPart {...props} />
-                <TabPart {...props} />
+                {(props.taskId) ?
+                    <>
+                        <ChatPart {...props} />
+                        <TabPart {...props} />
+                    </>
+                    :
+                    <Intro />
+                }
             </div>
         </Wrapper>
     )
@@ -123,14 +130,14 @@ const mapDispatchToProps = dispatch => {
         getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({ taskId })),
         createRemindWithTimeDetail: (data) => dispatch(taskDetailAction.postRemindWithTimeDetail(data)),
         createRemindWithDurationDetail: (data) => dispatch(taskDetailAction.postRemindDuration(data)),
-        updateRemindWithTimeDetail: ({data, taskId}) => dispatch(taskDetailAction.updateRemindWithTimeDetail({data, taskId})),
-        updateRemindWithDurationDetail: ({data, taskId}) => dispatch(taskDetailAction.updateRemindWithDuration({data, taskId})),
+        updateRemindWithTimeDetail: ({ data, taskId }) => dispatch(taskDetailAction.updateRemindWithTimeDetail({ data, taskId })),
+        updateRemindWithDurationDetail: ({ data, taskId }) => dispatch(taskDetailAction.updateRemindWithDuration({ data, taskId })),
         deleteRemindWByRemindId: (remindId, taskId) => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId, taskId: taskId })),
         // offer
         getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
-        createOfferByTaskId: ({data, taskId}) => dispatch(taskDetailAction.createOffer({data, taskId})),
+        createOfferByTaskId: ({ data, taskId }) => dispatch(taskDetailAction.createOffer({ data, taskId })),
         deleteOfferByTaskId: (deleteId, taskId) => dispatch(taskDetailAction.deleteOffer({ offer_id: deleteId, taskId: taskId })),
-        updateOfferById: ({offerId, content, taskId}) => dispatch(taskDetailAction.updateOffer({offerId, content, taskId})),
+        updateOfferById: ({ offerId, content, taskId }) => dispatch(taskDetailAction.updateOffer({ offerId, content, taskId })),
         uploadDocumentToOfferById: (data, cb, taskId) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb, taskId)),
         deleteDocumentToOfferById: (data, cb, taskId) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb, taskId)),
         handleOfferById: (data, taskId) => dispatch(taskDetailAction.handleOffer(data, taskId)),
