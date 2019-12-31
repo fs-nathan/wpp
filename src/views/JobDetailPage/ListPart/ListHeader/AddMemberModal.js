@@ -379,7 +379,7 @@ function AddMemberModal(props) {
     const [listMemberProjectState, setListMemberProject] = React.useState([])
     const [listMemberJobState, setListMemberJob] = React.useState([])
     React.useEffect(() => {
-        let arrayMemberNotAssigned = valueContext.memberNotAssigned.map((item, key) => {
+        let arrayMemberNotAssigned = valueContext.memberNotAssigned && valueContext.memberNotAssigned.map((item, key) => {
             return (
                 <ProjectMember key={key} name={item.name} email={item.email} label={item.permission} />
             )
@@ -388,7 +388,7 @@ function AddMemberModal(props) {
     }, [valueContext.memberNotAssigned])
 
     React.useEffect(() => {
-        let arrayMember = valueContext.member.map((item) => {
+        let arrayMember = valueContext.member && valueContext.member.map((item) => {
             return {
                 avatarMember: <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />,
                 name: <MemberDetail name={item.name} email={item.email} />,

@@ -1,10 +1,11 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
-
+import { searchArrayTabpart } from '../../helpers/jobDetail/arrayHelper'
 
 // Initial state for store
 const initialState = {
     member: [],
+    defaultMember: [],
     memberNotAssigned: [],
     user_roles: [],
     isFetching: false,
@@ -25,6 +26,7 @@ export default function reducer(state = initialState, action) {
                 isFetching: false,
                 dataFetched: true,
                 member: action.payload.members,
+                defaultMember: action.payload.members,
             };
         case types.GET_MEMBER_FAIL:
             return {
@@ -161,6 +163,11 @@ export default function reducer(state = initialState, action) {
                 isFetching: false,
                 dataFetched: false,
                 error: true,
+            }
+        case types.SEARCH_MEMBER_TABPART:
+            return {
+                ...state,
+                member: searchArrayTabpart(state.defaultMember, action.payload, "name")
             }
         default:
             return state;

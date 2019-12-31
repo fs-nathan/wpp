@@ -193,8 +193,7 @@ function ListProject(props) {
       <WrapperBody 
       autoHide autoHideTimeout={500} autoHideDuration={200}
       >
-        {
-          data.map(group => {
+        { data && data.map(group => {
             return (
               <div key={group.id}>
                 <ExpansionProject defaultExpanded>

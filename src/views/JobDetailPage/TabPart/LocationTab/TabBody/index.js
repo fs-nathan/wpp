@@ -69,9 +69,10 @@ const CustomListItem = () => {
     setAnchorEl(null);
   }
   const value = React.useContext(WrapperContext)
+  let locationArr = value.location
   return (
     <ListItem>
-      {value.location.locations.map((location, idx) => {
+      {Array.isArray(locationArr) && locationArr.map((location, idx) => {
         return (
           <div className="styled-list-item-location" key={idx}>
             <HeaderSubText component='p'>{location.date_create}</HeaderSubText>

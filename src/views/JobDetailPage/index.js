@@ -188,6 +188,8 @@ const mapDispatchToProps = dispatch => {
         searchFile: (data) => dispatch(taskDetailAction.searchFile(data)),
         searchLink: (data) => dispatch(taskDetailAction.searchLink(data)),
         searchDemand: (data) => dispatch(taskDetailAction.searchDemand(data)),
+        searchOffer: (data) => dispatch(taskDetailAction.searchOffer(data)),
+        searchMember: (data) => dispatch(taskDetailAction.searchMember(data)),
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
     };
 };

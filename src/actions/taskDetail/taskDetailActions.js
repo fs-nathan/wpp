@@ -820,3 +820,11 @@ export const searchDemand = payload => ({
     type: types.SEARCH_DEMAND_TABPART,
     payload
 })
+export const searchOffer = payload => ({
+    type: types.SEARCH_OFFER_TABPART,
+    payload
+})
+export const searchMember = payload => ({
+    type: types.SEARCH_MEMBER_TABPART,
+    payload
+})

@@ -135,6 +135,7 @@ const WrapperProgressBar = styled.div`
 function TabBody() {
   const classes = useStyles();
   const value = React.useContext(WrapperContext)
+
   let listTime
 
   if (value.listTime && value.listTime.trackings) {
@@ -162,12 +163,12 @@ function TabBody() {
       <Container>
         <StartEndDateBox>
           <StartDateBox>
-            <ColorTypo>{value.detailTask.start_time}</ColorTypo>
-            <ColorTypo>{value.detailTask.start_date}</ColorTypo>
+            <ColorTypo>{value.detailTask && value.detailTask.start_time}</ColorTypo>
+            <ColorTypo>{value.detailTask && value.detailTask.start_date}</ColorTypo>
           </StartDateBox>
           <EndDateBox>
-            <ColorTypo>{value.detailTask.end_time}</ColorTypo>
-            <ColorTypo>{value.detailTask.end_date}</ColorTypo>
+            <ColorTypo>{value.detailTask && value.detailTask.end_time}</ColorTypo>
+            <ColorTypo>{value.detailTask && value.detailTask.end_date}</ColorTypo>
           </EndDateBox>
         </StartEndDateBox>
         {/* progress bar */}
