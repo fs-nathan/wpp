@@ -22,9 +22,11 @@ function ConfirmRegistration() {
   const [checkedCode, setCheckedCode] = useState(false);
   const [emailRegistered, setEmailRegistered] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [pwdNotMatch, setPwdNotMatch] = useState(false);
 
   const handleCompleteRegistration = useCallback(async e => {
     e.preventDefault();
+    if (pwdNotMatch) return;
     console.log('handleCompleteRegistration');
     const { elements } = e.target;
     const data = {
@@ -41,7 +43,7 @@ function ConfirmRegistration() {
       window.location.href = Routes.LOGIN;
     } catch (error) {
       console.log(error);
-    }
+    } // eslint-disable-next-line
   }, []);
 
   const handleCheckCode = async event => {
@@ -61,6 +63,16 @@ function ConfirmRegistration() {
   const handleChangeCode = () => {
     setErrorMsg('');
     setCheckedCode(false);
+  };
+
+  const handleCheckPwd = () => {
+    let pwd = document.getElementById('password').value;
+    let confirmPwd = document.getElementById('confirmPassword').value;
+    if (pwd && confirmPwd && pwd !== confirmPwd) {
+      setPwdNotMatch(true);
+    } else {
+      setPwdNotMatch(false);
+    }
   };
 
   return (
@@ -183,6 +195,7 @@ function ConfirmRegistration() {
                   autoComplete="new-password"
                   placeholder="Mật khẩu"
                   size="small"
+                  onBlur={handleCheckPwd}
                   inputProps={{
                     maxLength: 20,
                     minLength: 8
@@ -211,6 +224,7 @@ function ConfirmRegistration() {
                   type="password"
                   autoComplete="new-password"
                   placeholder="Nhập lại mật khẩu"
+                  onBlur={handleCheckPwd}
                   inputProps={{
                     maxLength: 20,
                     minLength: 8
@@ -227,6 +241,11 @@ function ConfirmRegistration() {
                 />
               </FormControl>
             </div>
+            {pwdNotMatch && (
+              <span className="err-msg err-check-pwd">
+                Hai mật khẩu mà bạn nhập không giống nhau!
+              </span>
+            )}
             <div className="des-password">
               Mật khẩu đăng nhập phải có ít nhất 8 ký tự, nhiều nhất 20 ký tự
             </div>

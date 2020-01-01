@@ -171,15 +171,14 @@
           margin-left: 20px;
           box-shadow: none;
         }
-        
       }
       .error-code {
         color: red;
-        padding-top: 10px
+        padding-top: 10px;
       }
       .success-code {
         color: #0076f3;
-        padding-top: 10px
+        padding-top: 10px;
       }
     }
   }
@@ -200,7 +199,10 @@
       // margin-right: -1px;
       border-right: 1px solid #ededed;
       min-height: calc(100vh - 165px);
-
+      &.notification-content {
+        border-right: none;
+        width: 100%;
+      }
       .MuiInputLabel-animated {
         font-size: 13px;
         transform: translate(0, 1.5px) scale(1);
@@ -274,7 +276,9 @@
     }
   }
 }
-
+.boild-text {
+  font-weight: 600;
+}
 // Style for group info page
 .setting-group-info {
   padding: 20px 30px 20px 20px;
@@ -345,6 +349,20 @@
         }
       }
     }
+    .setting-bg-left-menu {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      .pick-color {
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+        border-radius: 50%;
+        background: #01b374;
+        display: inline-block;
+        cursor: pointer;
+      }
+    }
   }
   .input-file {
     display: none;
@@ -383,20 +401,6 @@
       .setup-menu-list {
         display: grid;
         grid-template-columns: repeat(3, auto);
-      }
-    }
-    .setting-bg-left-menu {
-      margin-top: 15px;
-      display: flex;
-      align-items: center;
-      .pick-color {
-        width: 20px;
-        height: 20px;
-        margin-left: 10px;
-        border-radius: 50%;
-        background: #01b374;
-        display: inline-block;
-        cursor: pointer;
       }
     }
   }
@@ -473,23 +477,29 @@
 
 // Style for pick color modal
 .pick-color-modal {
-  &.list-color {
-    display: grid;
-    grid-template-columns: repeat(7, auto);
-    .item-outer {
-      padding: 10px;
-      border-radius: 50%;
-      margin: 10px auto;
-      display: inline-block;
-      border-width: 1px;
-      border-style: solid;
+  .comp_CustomModal___scrollbar {
+    min-height: 220px;
+  }
 
-      .item-color {
-        display: block;
-        cursor: pointer;
-        width: 35px;
-        height: 35px;
+  .pick-color-content {
+    &.list-color {
+      display: grid;
+      grid-template-columns: repeat(7, auto);
+      .item-outer {
+        padding: 10px;
         border-radius: 50%;
+        margin: 10px auto;
+        display: inline-block;
+        border-width: 1px;
+        border-style: solid;
+
+        .item-color {
+          display: block;
+          cursor: pointer;
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+        }
       }
     }
   }
@@ -534,4 +544,7 @@
 .MuiTableCell-root {
   font-size: 14px;
   padding: 5px 10px;
+}
+.radio-container {
+  margin-left: 24px;
 }

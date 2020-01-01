@@ -32,8 +32,7 @@ const NoticeModal = props => {
   const upgradeAccount = () => {
     closeNoticeModal();
     props.history.push({
-      pathname: Routes.SETTING_GROUP_ORDER,
-      search: `?createOder`
+      pathname: Routes.SETTING_GROUP_CREATE_ORDER
     });
   };
   const joinGroup = () => {

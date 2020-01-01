@@ -21,12 +21,9 @@ const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
   const handleClickMoreAction = e => setAnchorEl(e.currentTarget);
   const handleCloseMenu = () => setAnchorEl(null);
   const listInfo = [
-    { name: 'Ngày phát hành', value: fileInfo.created_at || null },
+    { name: 'Ngày phát hành', value: fileInfo.date_released || null },
     { name: 'Phiên bản', value: fileInfo.version || null },
-    {
-      name: 'Người soạn',
-      value: fileInfo.user_create ? fileInfo.user_create.name : null
-    },
+    { name: 'Người soạn', value: fileInfo.author || null },
     { name: 'Ký phê duyệt', value: fileInfo.user_approved || '' },
     { name: 'Nơi lưu trữ', value: fileInfo.storage_address || '' }
   ];

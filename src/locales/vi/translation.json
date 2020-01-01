@@ -53,7 +53,7 @@
             "role_manager_menu_item": "Quản lý vai trò",
             "logo_manager_menu_item": "Quản lý biểu tượng",
             "table_settings_menu_item": "Cài đặt bảng"
-          }, 
+          },
           "table_main": {
             "no_data_label": "Không có dữ liệu",
             "table_header_row": {
@@ -102,5 +102,8 @@
         }
       }
     }
-  }
+  },
+  "IDS_WP_SETTING_DATE_FORMAT": "Cài đặt định dạng ngày tháng",
+  "IDS_WP_VIETNAMESE": "Tiếng Việt",
+  "IDS_WP_ENGLISH": "Tiếng Anh"
 }

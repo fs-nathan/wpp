@@ -11,7 +11,7 @@ import {
   IconButton
 } from '@material-ui/core';
 import { mdiAccountPlusOutline, mdiContentCopy } from '@mdi/js';
-import { get, sortBy, reverse } from 'lodash';
+import { reverse } from 'lodash';
 import {
   selectDocumentItem,
   resetListSelectDocument,
@@ -58,7 +58,8 @@ const RecentContent = props => {
   }, []);
   useEffect(() => {
     let projects = [];
-    projects = sortBy(listData, [o => get(o, sortField)]);
+    // projects = sortBy(listData, [o => get(o, sortField)]);
+    projects = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(projects);
     props.actionSortListRecent(projects);
     // eslint-disable-next-line
@@ -145,7 +146,9 @@ const RecentContent = props => {
             <StyledTableHeadCell>
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === listData.length}
+                checked={
+                  listData.length > 0 && selected.length === listData.length
+                }
                 indeterminate={
                   selected.length > 0 && selected.length < listData.length
                 }

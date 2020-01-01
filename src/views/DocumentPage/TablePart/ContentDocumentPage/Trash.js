@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiSwapVertical } from '@mdi/js';
-import { get, sortBy, reverse } from 'lodash';
+import { reverse } from 'lodash';
 import ColorTypo from '../../../../components/ColorTypo';
 import {
   selectDocumentItem,
@@ -53,7 +53,8 @@ const Trash = props => {
 
   useEffect(() => {
     let listDataTemp = [];
-    listDataTemp = sortBy(listData, [o => get(o, sortField)]);
+    // listDataTemp = sortBy(listData, [o => get(o, sortField)]);
+    listDataTemp = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(listDataTemp);
     props.actionSortListTrash(listDataTemp);
     // eslint-disable-next-line
@@ -69,7 +70,7 @@ const Trash = props => {
     setListData(dataUpdate);
     // eslint-disable-next-line
   }, [props.searchText]);
-  
+
   const handleSearchData = (valueSearch, listData) => {
     let listResult = [];
     if (!isEmpty(valueSearch)) {

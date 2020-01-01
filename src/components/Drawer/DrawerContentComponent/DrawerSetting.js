@@ -1,74 +1,88 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import { mdiAccount, mdiAccountSupervisorCircle, mdiLogout } from '@mdi/js';
+import { withRouter } from 'react-router-dom';
+import { mdiLogout, mdiSettings } from '@mdi/js';
+import avatar from '../../../assets/avatar.jpg';
 import { actionVisibleDrawerMessage } from '../../../actions/system/system';
 import HeaderDrawer from '../HeaderDrawer';
 import '../Drawer.scss';
 import FooterListDrawer from '../FooterListDrawer';
 import { Routes } from '../../../constants/routes';
+import {
+  getProfileService,
+  actionGetProfile
+} from '../../../actions/system/system';
+import { isEmpty } from '../../../helpers/utils/isEmpty';
 
-const listSetting = [
-  { name: 'Tên tài khoản', value: 'huuthanhxd@gmail.com', read: true },
-  { name: 'Mã tài khoản', value: 'ID-1008', read: false },
-  { name: 'Gói tài khoản', value: 'FREE', read: false },
-  { name: 'Mã đơn hàng', value: '//', read: false },
-  { name: 'Tài khoản kết nối', value: '0/0 User', read: false },
-  { name: 'Dung lượng lưu trữ', value: '0/0 GB', read: false },
-  { name: 'Thời gian sử dụng', value: '0 Ngày', read: false },
-  { name: 'Ngày hết hạn', value: '//', read: false }
-];
-class DrawerSetting extends Component {
-  upgradeNow = () => {
-    console.log('upgrade now');
+const DrawerSetting = props => {
+  const handleFetchProfile = async () => {
+    try {
+      const { data } = await getProfileService();
+      if (data.data) props.actionGetProfile(data.data);
+    } catch (err) {}
   };
-  render() {
-    // const { actionVisibleDrawerMessage, typeDrawer } = this.props;
-    const actionList = [
-      {
-        name: 'Cài đặt tài khoản',
-        icon: mdiAccount,
-        url: Routes.SETTING_ACCOUNT_INFO
-      },
-      {
-        name: 'Cài đặt nhóm',
-        icon: mdiAccountSupervisorCircle,
-        url: Routes.SETTING_GROUP_INFO
-      },
-      { name: 'Đăng xuất', icon: mdiLogout, url: Routes.LOGIN }
-    ];
-    return (
-      <div className="drawer-content-container">
-        <HeaderDrawer title="Thông tin tài khoản" />
+  useEffect(() => {
+    handleFetchProfile(); // eslint-disable-next-line
+  }, []);
+
+  const actionList = [
+    {
+      name: 'Tài khoản',
+      icon: mdiSettings,
+      url: Routes.SETTING_ACCOUNT_INFO
+    },
+    { name: 'Đăng xuất', icon: mdiLogout, url: Routes.LOGIN }
+  ];
+  const handleClick = isFree => {
+    if (isFree) {
+      props.history.push({
+        pathname: Routes.SETTING_GROUP_CREATE_ORDER
+      });
+    } else {
+      props.history.push({
+        pathname: Routes.SETTING_GROUP_ORDER,
+        search: `?order_id=${props.profile.order_id}`
+      });
+    }
+    props.actionVisibleDrawerMessage({
+      type: '',
+      anchor: props.anchorDrawer
+    });
+  };
+  const isFree = !isEmpty(props.profile) && props.profile.type === 'Free';
+
+  return (
+    <div className="drawer-content-container">
+      <HeaderDrawer title={null} />
+      {!isEmpty(props.profile) && (
         <div className="content-drawer">
-          {listSetting.map((item, index) => (
-            <div className="item-message setting-item" key={index}>
-              <div className="name-setting-message">
-                <p className="text-setting-message">{item.name}</p>
-                <span className="setting-value-message">{item.value}</span>
-              </div>
-            </div>
-          ))}
-          <Button
-            variant="outlined"
-            className="upgrade-btn"
-            onClick={this.upgradeNow}
+          <img alt="" src={avatar} className="profile-avatar" />
+          {/* <img alt="" src={props.profile.avatar || avatar} /> */}
+          <div className="account-status text-center">{props.profile.type}</div>
+          <p className="account-name text-center">{props.profile.name}</p>
+          <p className="text-center">{props.profile.email}</p>
+          <p
+            className="link-text text-center"
+            onClick={() => handleClick(isFree)}
           >
-            Nâng cấp ngay
-          </Button>
+            {isFree ? 'Nâng cấp tài khoản' : 'Xem đơn hàng'}
+          </p>
         </div>
-        <FooterListDrawer actionList={actionList} />
-      </div>
-    );
-  }
-}
+      )}
+
+      <FooterListDrawer actionList={actionList} />
+    </div>
+  );
+};
 
 export default connect(
   state => ({
     typeDrawer: state.system.typeDrawer,
+    profile: state.system.profile,
     anchorDrawer: state.system.anchorDrawer
   }),
   {
-    actionVisibleDrawerMessage
+    actionVisibleDrawerMessage,
+    actionGetProfile
   }
-)(DrawerSetting);
+)(withRouter(DrawerSetting));

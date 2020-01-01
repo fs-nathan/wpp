@@ -9,6 +9,8 @@ import SetUp from '../TablePart/SettingGroupRight/SetUp';
 import Order from '../TablePart/SettingGroupRight/Order';
 import OrderDetail from '../TablePart/SettingGroupRight/OrderDetail';
 import Payment from '../TablePart/SettingGroupRight/Payment';
+import TimeAndLanguage from '../TablePart/SettingGroupRight/TimeAndLanguage';
+import Notification from '../TablePart/SettingGroupRight/Notification';
 import CreateOrder from '../TablePart/SettingGroupRight/CreateOrder';
 import { Routes } from '../../../constants/routes';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
@@ -22,9 +24,12 @@ const getHeaderText = (type, search) => {
   const isCreateOder = search.split('=').length === 1;
   switch (type) {
     case SETTING_GROUP.INFO:
-      return 'Thông tin nhóm';
+      return 'Thiết lập nhóm';
     case SETTING_GROUP.SETTING:
-      return 'Cài đặt';
+    case SETTING_GROUP.LANGUAGE:
+      return 'Cài đặt phần mềm';
+    case SETTING_GROUP.NOTIFICATION:
+      return 'Cài đặt nhận thông báo';
     case SETTING_GROUP.ORDER: {
       if (isOder) {
         return 'Đơn hàng';
@@ -42,7 +47,6 @@ const getHeaderText = (type, search) => {
 const TablePart = props => {
   const type = props.match.params.type;
   const isOder = isEmpty(props.location.search);
-  const isCreateOder = props.location.search.split('=').length === 1;
   const getContentSettingAccount = () => {
     switch (type) {
       case SETTING_GROUP.INFO:
@@ -51,9 +55,14 @@ const TablePart = props => {
         return <SetUp />;
       case SETTING_GROUP.ORDER: {
         if (isOder) return <Order />;
-        else if (isCreateOder) return <CreateOrder />;
         return <OrderDetail />;
       }
+      case SETTING_GROUP.CREATE_ORDER:
+        return <CreateOrder />;
+      case SETTING_GROUP.LANGUAGE:
+        return <TimeAndLanguage />;
+      case SETTING_GROUP.NOTIFICATION:
+        return <Notification />;
       case SETTING_GROUP.PAYMENT:
         return <Payment />;
       default:
@@ -61,13 +70,9 @@ const TablePart = props => {
     }
   };
   const checkShowBtnCreateOder = () => {
-    if (
-      type === SETTING_GROUP.PAYMENT ||
-      (type === SETTING_GROUP.ORDER && (isOder || isCreateOder))
-    ) {
-      return true;
-    }
-    return false;
+    return (
+      type === SETTING_GROUP.PAYMENT || (type === SETTING_GROUP.ORDER && isOder)
+    );
   };
   return (
     <div className="header-setting-container">
@@ -76,14 +81,18 @@ const TablePart = props => {
           {getHeaderText(props.match.params.type, props.location.search)}
         </ColorTypo>
         <RightHeader>
-          <HeaderButtonGroup />
+          <div
+            className={`${checkShowBtnCreateOder() ? '' : 'none-create-order'}`}
+          >
+            <HeaderButtonGroup />
+          </div>
+
           {checkShowBtnCreateOder() && (
             <StyledButton
               size="small"
               onClick={() =>
                 props.history.push({
-                  pathname: Routes.SETTING_GROUP_ORDER,
-                  search: `?createOder`
+                  pathname: Routes.SETTING_GROUP_CREATE_ORDER
                 })
               }
             >

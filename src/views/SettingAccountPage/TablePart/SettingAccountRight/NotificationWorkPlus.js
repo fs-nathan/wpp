@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-
+// import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import { Routes } from '../../../../constants/routes';
 
 import './SettingAccountRight.scss';
+import {
+  getNotificationService,
+  actionGetNotification
+} from '../../../../actions/account';
+
 const data = [
   {
     title: 'Tháng 12/2019',
@@ -52,6 +57,16 @@ const data = [
   }
 ];
 const NotificationWorkPlus = props => {
+  const handleFetchData = async () => {
+    try {
+      const { data } = await getNotificationService();
+      if (data.data) props.actionGetNotification(data.notifications);
+    } catch (err) {}
+  };
+  useEffect(() => {
+    handleFetchData(); // eslint-disable-next-line
+  }, []);
+  console.log('notification', props.notification);
   return (
     <div className="notification-container">
       {data.map((el, index) => (
@@ -89,4 +104,9 @@ const NotificationWorkPlus = props => {
   );
 };
 
-export default connect(state => ({}), {})(withRouter(NotificationWorkPlus));
+export default connect(
+  state => ({
+    notification: state.system.notification
+  }),
+  { actionGetNotification }
+)(withRouter(NotificationWorkPlus));

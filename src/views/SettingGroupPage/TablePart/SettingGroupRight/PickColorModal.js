@@ -26,9 +26,10 @@ function PickColorModal(props) {
       open={open}
       setOpen={setOpen}
       title="THIẾT LẬP MÀU"
+      className="pick-color-modal"
       onConfirm={handleOnChangeBG}
     >
-      <div className="pick-color-modal list-color">
+      <div className="pick-color-content list-color">
         {colors.map((item, idx) => (
           <div
             className="item-outer"

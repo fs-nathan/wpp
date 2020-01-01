@@ -56,6 +56,10 @@ const MoveDocumentModal = props => {
         listFileIdSelect.push(props.item.id);
       }
     }
+    return () => {
+      listFileIdSelect = [];
+      listFolderIdSelect = [];
+    };
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -168,6 +172,16 @@ const MoveDocumentModal = props => {
   const handleBackParent = () => {
     const tempData = [...listFolderBr];
     tempData.splice(-1, 1);
+    if (isEmpty(tempData)) {
+      setListData([
+        {
+          name: 'Tài liệu của tôi',
+          id: 'root',
+          sub_folder: true
+        }
+      ]);
+    }
+
     setListFolderBr(tempData);
     setFolderSelected({});
   };
@@ -253,7 +267,11 @@ const MoveDocumentModal = props => {
                     }`}
                     title="Click để chọn mục này"
                     key={folder.id}
-                    onClick={() => handleSelectFolder(folder)}
+                    onClick={() =>
+                      handleSelectFolder(
+                        folderSelected.id === folder.id ? {} : folder
+                      )
+                    }
                   >
                     <StyledTableBodyCell align="center" width="5%">
                       <FullAvatar src={FileType('folder')} />

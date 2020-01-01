@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Icon from '@mdi/react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import {
@@ -6,9 +6,16 @@ import {
   mdiPlus,
   mdiFileUploadOutline,
   mdiFolderPlusOutline,
-  mdiChevronRight
+  mdiChevronRight,
+  mdiCloudUploadOutline
 } from '@mdi/js';
-import { Menu, MenuItem, Breadcrumbs, TextField } from '@material-ui/core';
+import {
+  Menu,
+  MenuItem,
+  Breadcrumbs,
+  TextField,
+  CircularProgress
+} from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ColorTypo from '../../../components/ColorTypo';
@@ -28,7 +35,6 @@ import Trash from './ContentDocumentPage/Trash';
 import DocumentShareFromMe from './ContentDocumentPage/DocumentShareFromMe';
 import DocumentShare from './ContentDocumentPage/DocumentShare';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
-import folderIcon from '../../../assets/folder.png';
 import './DocumentPage.scss';
 import ModalCommon from './DocumentComponent/ModalCommon';
 import RedirectModal from './DocumentComponent/RedirectModal';
@@ -38,6 +44,16 @@ import {
 } from '../../../actions/documents';
 import UploadModal from '../../../components/UploadModal';
 import { actionChangeBreadCrumbs } from '../../../actions/system/system';
+import {
+  mdiClockOutline,
+  mdiFileDocumentBoxOutline,
+  mdiFolderOpenOutline,
+  mdiFileMoveOutline,
+  mdiFileUndoOutline,
+  mdiGoogleDrive,
+  mdiTrashCanOutline
+} from '@mdi/js';
+import { useDropzone } from 'react-dropzone';
 
 const HeaderTitle = props => {
   return <ColorTypo className="title">{props.title || ''}</ColorTypo>;
@@ -46,39 +62,79 @@ const HeaderTitle = props => {
 const HeaderBreadCrumbs = ({
   breadCrumbs = [],
   onUpdateBreadCrumbs,
-  isShowIcon = true,
-  title = 'Title'
+  title = 'Title',
+  srcImg,
+  colorIcon = 'rgba(0, 0, 0, 0.54)'
 }) => {
+  const [currentBreadCrumbs, setCurrentBeadCrumbs] = useState([]);
+
+  useEffect(() => {
+    if (breadCrumbs.length > 3) {
+      let len = breadCrumbs.length;
+      let breadTemp = [
+        { ...breadCrumbs[len - 3] },
+        { ...breadCrumbs[len - 2] },
+        { ...breadCrumbs[len - 1] }
+      ];
+
+      breadTemp[0].title = breadTemp[0].name;
+      breadTemp[0].name = '...';
+      setCurrentBeadCrumbs([...breadTemp]);
+    } else {
+      setCurrentBeadCrumbs(breadCrumbs);
+    }
+  }, [breadCrumbs]);
+
   return (
     <div className="header-wrapper">
-      {isShowIcon && <img className="header-icon" src={folderIcon} alt="" />}
+      {srcImg && (
+        <Icon
+          className="header-icon"
+          path={srcImg}
+          size={1.3}
+          color={colorIcon}
+        />
+      )}
       <div className="title-wrapper">
         <HeaderTitle title={title} />
-        {breadCrumbs.length > 0 && (
+        {currentBreadCrumbs.length > 0 && (
           <Breadcrumbs
             className="bread-crumb"
             aria-label="breadcrumb"
             separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />}
           >
-            {breadCrumbs.map((item, idx) => (
+            {currentBreadCrumbs.map((item, idx) => (
               <span
                 className="bread-crumb-item"
                 key={idx}
+                title={item.title || ''}
                 onClick={() => {
                   // do not anything if click ending item
-                  if (idx === breadCrumbs.length - 1) return false;
+                  if (idx === currentBreadCrumbs.length - 1) return false;
 
                   // call action
                   item.action();
 
                   //update list bread crumbs
                   if (onUpdateBreadCrumbs) {
-                    if (idx === 0) {
-                      onUpdateBreadCrumbs([]);
+                    if (currentBreadCrumbs.length === breadCrumbs.length) {
+                      if (idx === 0) {
+                        onUpdateBreadCrumbs([]);
+                      } else {
+                        let newList = [...breadCrumbs];
+                        newList.length = idx + 1;
+                        onUpdateBreadCrumbs(newList);
+                      }
                     } else {
-                      let newList = [...breadCrumbs];
-                      newList.length = idx + 1;
-                      onUpdateBreadCrumbs(newList);
+                      if (idx === 0) {
+                        let newList = [...breadCrumbs];
+                        newList.length = breadCrumbs.length - 2;
+                        onUpdateBreadCrumbs(newList);
+                      } else if (idx === 1) {
+                        let newList = [...breadCrumbs];
+                        newList.length = breadCrumbs.length - 1;
+                        onUpdateBreadCrumbs(newList);
+                      }
                     }
                   }
                 }}
@@ -96,26 +152,66 @@ const HeaderBreadCrumbs = ({
 const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
   switch (type) {
     case Routes.DOCUMENT_RECENT:
-      return <HeaderTitle title="Gần đây" />;
+      return (
+        <div className="header-wrapper">
+          <Icon
+            className="header-icon"
+            path={mdiClockOutline}
+            size={1.3}
+            color={'#ffc107'}
+          />
+          <div className="title-wrapper">
+            <HeaderTitle title="Gần đây" />
+          </div>
+        </div>
+      );
     case Routes.DOCUMENT_PROJECT: {
       return (
         <HeaderBreadCrumbs
           title="Tài liệu dự án"
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+          srcImg={mdiFileDocumentBoxOutline}
+          colorIcon={'#4caf50'}
         />
       );
     }
     case Routes.DOCUMENT_SHARE:
-      return <HeaderTitle title="Đã chia sẻ" />;
+      return (
+        <div className="header-wrapper">
+          <Icon
+            className="header-icon"
+            path={mdiFileMoveOutline}
+            size={1.3}
+            color={'#f44336'}
+          />
+          <div className="title-wrapper">
+            <HeaderTitle title="Đã chia sẻ" />
+          </div>
+        </div>
+      );
     case Routes.DOCUMENT_SHARE_ME:
-      return <HeaderTitle title="Được chia sẻ với tôi" />;
+      return (
+        <div className="header-wrapper">
+          <Icon
+            className="header-icon"
+            path={mdiFileUndoOutline}
+            size={1.3}
+            color={'#607d8b'}
+          />
+          <div className="title-wrapper">
+            <HeaderTitle title="Được chia sẻ với tôi" />
+          </div>
+        </div>
+      );
     case Routes.DOCUMENT_ME:
       return (
         <HeaderBreadCrumbs
           title="Tài liệu của tôi"
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+          srcImg={mdiFolderOpenOutline}
+          colorIcon={'#ff9800'}
         />
       );
     case Routes.DOCUMENT_GOOGLE_DRIVE:
@@ -124,13 +220,19 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
           title="Google Drive"
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
-          isShowIcon={false}
+          colorIcon={'#2196f3'}
+          srcImg={mdiGoogleDrive}
         />
       );
     case Routes.DOCUMENT_TRASH:
       return (
         <div className="header-wrapper">
-          <img className="header-icon" src={folderIcon} alt="" />
+          <Icon
+            className="header-icon"
+            path={mdiTrashCanOutline}
+            size={1.3}
+            color={'#777'}
+          />
           <div className="title-wrapper">
             <HeaderTitle title="Thùng rác" />
             <span className="sub-title">
@@ -154,7 +256,23 @@ const TablePart = props => {
   const [visibleUploadModal, setVisibleUploadModal] = useState(false);
   const [fileUpload, setFileUpload] = useState(null);
   const [isRedirect, setRedirect] = useState(false);
-  const { breadCrumbs, actionChangeBreadCrumbs, currentFolder } = props;
+  const {
+    breadCrumbs,
+    actionChangeBreadCrumbs,
+    currentFolder,
+    isFetching: showLoadingTable
+  } = props;
+
+  const onDrop = useCallback(acceptedFiles => {
+    if (acceptedFiles) {
+      setFileUpload(acceptedFiles);
+      setVisibleUploadModal(true);
+    }
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop
+  });
 
   const handleClick = e => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -253,7 +371,7 @@ const TablePart = props => {
               aria-controls="simple-menu"
               aria-haspopup="true"
               onClick={handleClick}
-              className="btn-top-action right-header-button"
+              className="right-header-button"
             >
               <Icon path={mdiPlus} size={1} color="#fff" />
               THÊM MỚI
@@ -270,7 +388,7 @@ const TablePart = props => {
                     setRedirect(true);
                   }
                 }}
-                className="btn-top-action right-header-button"
+                className="right-header-button"
               >
                 <Icon path={mdiUpload} size={1} color="#fff" />
                 TẢI LÊN
@@ -315,9 +433,43 @@ const TablePart = props => {
         </RightHeader>
       </div>
       <div className="setting-right-content">
-        <Scrollbars autoHide autoHideTimeout={500}>
-          {getContentDocument()}
-        </Scrollbars>
+        {showLoadingTable && (
+          <div className="loading-table">
+            <div className="mark-back"></div>
+            <CircularProgress className="progress-turn" />
+          </div>
+        )}
+        {pathname === Routes.DOCUMENT_ME && (
+          <div
+            {...getRootProps({
+              onClick: event => event.stopPropagation()
+            })}
+            className={'drag-over-overlay'}
+          >
+            <input {...getInputProps()} />
+            {isDragActive && (
+              <div className="drop-area">
+                <div>
+                  <Icon
+                    className="drop-ic-clould"
+                    path={mdiCloudUploadOutline}
+                    size={5}
+                    color={'#c3c3c3'}
+                  />
+                  <div className="des-drop">Kéo thả tài liệu vào đây</div>
+                </div>
+              </div>
+            )}
+            <Scrollbars autoHide autoHideTimeout={500}>
+              <MyDocument {...props} />
+            </Scrollbars>
+          </div>
+        )}
+        {pathname !== Routes.DOCUMENT_ME && (
+          <Scrollbars autoHide autoHideTimeout={500}>
+            {getContentDocument()}
+          </Scrollbars>
+        )}
       </div>
       {isCreateFolder && (
         <ModalCommon
@@ -372,7 +524,8 @@ const TablePart = props => {
 export default connect(
   state => ({
     breadCrumbs: state.system.breadCrumbs,
-    currentFolder: state.documents.currentFolder
+    currentFolder: state.documents.currentFolder,
+    isFetching: state.documents.isFetching
   }),
   { actionChangeBreadCrumbs, actionFetchListMyDocument }
 )(withRouter(TablePart));

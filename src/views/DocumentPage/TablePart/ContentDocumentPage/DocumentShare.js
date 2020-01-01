@@ -111,7 +111,9 @@ const DocumentShare = props => {
             <StyledTableHeadCell align="center" width="3%">
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === listData.length}
+                checked={
+                  listData.length > 0 && selected.length === listData.length
+                }
                 indeterminate={
                   selected.length > 0 && selected.length < listData.length
                 }
@@ -120,9 +122,7 @@ const DocumentShare = props => {
             <StyledTableHeadCell align="center" width="5%">
               Loại
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left">
-              Tên tài liệu
-            </StyledTableHeadCell>
+            <StyledTableHeadCell align="left">Tên tài liệu</StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
               Chia sẻ
             </StyledTableHeadCell>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import { withRouter } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
@@ -12,10 +12,15 @@ import { DialogContent } from './TableCommon';
 import { updateDocumentInfo } from '../../../../actions/documents';
 
 const EditDocumentInfoModal = props => {
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(props.item.date_released || new Date())
+  );
+  const formInfo = useRef(null);
+
   const handleUpdate = async e => {
     // e.preventDefault();
     try {
-      const { elements } = e.target;
+      const { elements } = formInfo.current;
       const result = {
         file_id: props.item.id,
         description: elements.description.value,
@@ -29,8 +34,15 @@ const EditDocumentInfoModal = props => {
       await updateDocumentInfo(result);
       props.getData();
       props.onClose();
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
+
   return (
     <ModalCommon
       title="Thông tin tài liệu"
@@ -38,10 +50,10 @@ const EditDocumentInfoModal = props => {
       footerAction={[{ name: 'Cập nhật', action: handleUpdate }]}
     >
       <DialogContent dividers className="dialog-content">
-        <form onSubmit={handleUpdate}>
+        <form ref={formInfo}>
           <TextField
             id="description"
-            label="Miêu tả tài liệu"
+            label="Mô tả tài liệu"
             fullWidth
             margin="normal"
             multiline
@@ -56,14 +68,14 @@ const EditDocumentInfoModal = props => {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
+              autoOk
               variant="inline"
-              format="MM/dd/yyyy"
+              format="dd/MM/yyyy"
               margin="normal"
               id="date_released"
               label="Ngày phát hành"
-              // value={selectedDate}
-              defaultValue={props.item.date_released || null}
-              // onChange={handleDateChange}
+              value={selectedDate}
+              onChange={handleDateChange}
               KeyboardButtonProps={{ 'aria-label': 'change date' }}
               fullWidth
               InputLabelProps={{ shrink: true }}

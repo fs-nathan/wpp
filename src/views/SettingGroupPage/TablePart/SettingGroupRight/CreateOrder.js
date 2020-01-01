@@ -16,7 +16,6 @@ import './SettingGroupRight.scss';
 import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
 import OrderInit from '../../../../components/ExportPDF/OrderInit';
 import SliderProgess from '../../../../components/SliderProgess/SliderProgess';
-import { async } from 'rxjs/internal/scheduler/async';
 
 const marks = {
   accountNum: {
@@ -331,7 +330,7 @@ const CreateOrder = props => {
             variant="contained"
             disabled={!(isCheckedManagerWork || isCheckedBuyData)}
           >
-            Tạo đơn hàng
+            Hoàn thành đơn hàng
           </Button>
         </div>
       </div>

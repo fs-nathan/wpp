@@ -7,7 +7,7 @@ import {
   TableBody,
   IconButton
 } from '@material-ui/core';
-import { get, sortBy, reverse } from 'lodash';
+import { reverse } from 'lodash';
 import Icon from '@mdi/react';
 import { mdiSwapVertical } from '@mdi/js';
 import { useTranslation } from 'react-i18next';
@@ -83,7 +83,8 @@ const MyDocument = props => {
 
   useEffect(() => {
     let listDataTemp = [];
-    listDataTemp = sortBy(listData, [o => get(o, sortField)]);
+    // listDataTemp = sortBy(listData, [o => get(o, sortField)]);
+    listDataTemp = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(listDataTemp);
     props.actionSortListDocument(listDataTemp);
     // eslint-disable-next-line
@@ -304,7 +305,10 @@ const MyDocument = props => {
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   {item.owner && item.owner.avatar && (
-                    <CustomAvatar src={item.owner.avatar} />
+                    <CustomAvatar
+                      src={item.owner.avatar}
+                      title={item.owner.name || ''}
+                    />
                   )}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
@@ -316,6 +320,7 @@ const MyDocument = props => {
                           <CustomAvatar
                             src={shareMember.avatar}
                             key={idx}
+                            title={shareMember.name || ''}
                             onClick={() => {
                               setVisible(true);
                               setItemActive(item);

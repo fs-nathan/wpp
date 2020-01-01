@@ -1,4 +1,60 @@
 .header-document {
+  .setting-right-content {
+    position: relative;
+    .drag-over-overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: transparent;
+      &:focus {
+        outline: none;
+      }
+      .drop-area {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border: dashed #c3c3c3 3px;
+        border-radius: 18px;
+        .des-drop {
+          font-size: 16px;
+          text-transform: uppercase;
+          color: #c3c3c3;
+        }
+      }
+    }
+    .loading-table {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      .mark-back {
+        position: absolute;
+        background: #fff;
+        height: 100%;
+        width: 100%;
+        z-index: 999;
+        opacity: 0.5;
+      }
+      .progress-turn {
+        position: absolute;
+        z-index: 1000;
+        left: calc(50% - 27px);
+        top: 75px;
+      }
+    }
+  }
   .border-item {
     border-bottom: 1px solid #ddd;
   }
@@ -46,9 +102,9 @@
     }
   }
 
-  .right-header {
-    .btn-top-action {
-      margin-left: 16px;
+  .table-body-row {
+    &:hover {
+      background-color: #f2f5fa !important;
     }
   }
 }
@@ -313,10 +369,13 @@
 }
 .right-header {
   margin-left: auto;
+  display: flex;
   & > *:last-child {
-    margin-left: 16px;
     padding: 8px 12px;
-    margin-top: 8px;
+    margin: 4px 0 4px 16px;
+  }
+  .none-create-order {
+    margin-right: -15px;
   }
 }
 .avatar-wrapper {
@@ -332,7 +391,7 @@
 .custom-avatar-image {
   width: 30px;
   margin: auto;
-  height: auto;
+  height: 30px;
 }
 .modal-cus {
   background-color: rgb(245, 248, 252);

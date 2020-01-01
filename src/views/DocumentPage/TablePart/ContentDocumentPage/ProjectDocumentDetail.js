@@ -8,7 +8,7 @@ import {
   TableBody,
   IconButton
 } from '@material-ui/core';
-import { get, sortBy, reverse } from 'lodash';
+import { reverse } from 'lodash';
 import Icon from '@mdi/react';
 import { withRouter } from 'react-router-dom';
 import {
@@ -68,7 +68,8 @@ const ProjectDocumentDetail = props => {
   }, [props.selectedDocument]);
   useEffect(() => {
     let projects = [];
-    projects = sortBy(listData, [o => get(o, sortField)]);
+    // projects = sortBy(listData, [o => get(o, sortField)]);
+    projects = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(projects);
     props.actionSortListProject(projects);
     // eslint-disable-next-line
@@ -120,7 +121,9 @@ const ProjectDocumentDetail = props => {
             <StyledTableHeadCell>
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === listData.length}
+                checked={
+                  listData.length > 0 && selected.length === listData.length
+                }
                 indeterminate={
                   selected.length > 0 && selected.length < listData.length
                 }

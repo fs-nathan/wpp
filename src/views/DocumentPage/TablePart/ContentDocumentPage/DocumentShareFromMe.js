@@ -119,10 +119,12 @@ const DocumentShareFromMe = props => {
       <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
-            <StyledTableHeadCell>
+            <StyledTableHeadCell width="3%">
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === listData.length}
+                checked={
+                  listData.length > 0 && selected.length === listData.length
+                }
                 indeterminate={
                   selected.length > 0 && selected.length < listData.length
                 }
@@ -131,17 +133,12 @@ const DocumentShareFromMe = props => {
             <StyledTableHeadCell align="center" width="5%">
               Loại
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="25%">
-              Tên tài liệu
-            </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="15%">
+            <StyledTableHeadCell align="left">Tên tài liệu</StyledTableHeadCell>
+            <StyledTableHeadCell align="center" width="20%">
               Chia sẻ
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
               Ngày chia sẻ
-            </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="10%">
-              Người được chia sẻ
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="15%">
               Chủ sở hữu
@@ -157,7 +154,7 @@ const DocumentShareFromMe = props => {
             const isItemSelected = isSelected(file.id);
             return (
               <TableRow className="table-body-row" key={file.id}>
-                <StyledTableBodyCell>
+                <StyledTableBodyCell width="3%">
                   <GreenCheckbox
                     checked={isItemSelected}
                     onChange={e => handleSelectItem(file)}
@@ -166,10 +163,10 @@ const DocumentShareFromMe = props => {
                 <StyledTableBodyCell align="center" width="5%">
                   <FullAvatar src={FileType(file.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="25%">
+                <StyledTableBodyCell align="left">
                   <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="15%">
+                <StyledTableBodyCell align="center" width="20%">
                   {!isEmpty(file.users_shared) &&
                     file.users_shared.map(
                       (shareMember, idx) =>
@@ -196,9 +193,6 @@ const DocumentShareFromMe = props => {
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.date}</ColorTypo>
-                </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="10%">
-                  <ColorTypo color="black">{file.userShare}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="15%">
                   <ColorTypo color="black">{file.userCreate}</ColorTypo>

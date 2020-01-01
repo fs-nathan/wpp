@@ -52,4 +52,25 @@
       color: red;
     }
   }
+  .error-content {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    .ic-alert {
+      margin-right: 25px;
+      margin-left: 13px;
+    }
+    .error-msg {
+      font-weight: 500;
+      max-width: 228px;
+      font-size: 16px;
+      line-height: normal;
+      span {
+        font-weight: 400;
+      }
+      .err-name {
+        display: inline-block;
+      }
+    }
+  }
 }

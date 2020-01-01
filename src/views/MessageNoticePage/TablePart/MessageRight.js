@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import '../Message.scss';
 import MessageRightItem from './MessageRightItem';
+import {
+  getNotificationService,
+  actionGetNotification
+} from '../../../actions/account';
 
 const listMessage = [
   {
@@ -22,7 +27,17 @@ const listMessage = [
     read: true
   }
 ];
-const MessageRight = () => {
+const MessageRight = props => {
+  const handleFetchData = async () => {
+    try {
+      const { data } = await getNotificationService();
+      if (data.data) props.actionGetNotification(data.data);
+    } catch (err) {}
+  };
+  useEffect(() => {
+    handleFetchData(); // eslint-disable-next-line
+  }, []);
+  console.log('notification', props.notification);
   return (
     <div className="MessagePage">
       <div className="content-message">
@@ -34,4 +49,9 @@ const MessageRight = () => {
   );
 };
 
-export default MessageRight;
+export default connect(
+  state => ({
+    notification: state.system.notification
+  }),
+  { actionGetNotification }
+)(MessageRight);

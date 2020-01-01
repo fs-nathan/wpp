@@ -6,7 +6,6 @@ import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
 import SettingInfo from '../TablePart/SettingAccountRight/SettingInfo';
 import ChangePassword from '../TablePart/SettingAccountRight/ChangePassword';
-import TicketManager from '../TablePart/SettingAccountRight/TicketManager';
 import NotificationWorkPlus from '../TablePart/SettingAccountRight/NotificationWorkPlus';
 import NotificationWorkPlusDetail from '../TablePart/SettingAccountRight/NotificationWorkPlusDetail';
 import '../SettingAccount.scss';
@@ -25,8 +24,6 @@ const TablePart = props => {
         return <SettingInfo />;
       case SETTING_ACCOUNT.CHANGE_PASSWORD:
         return <ChangePassword />;
-      case SETTING_ACCOUNT.TICKET_MANAGER:
-        return <TicketManager />;
       case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS: {
         if (isEmpty(search)) {
           return <NotificationWorkPlus />;

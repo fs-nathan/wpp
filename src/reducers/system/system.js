@@ -6,7 +6,9 @@ export const initialState = {
   visibleNoticeModal: true,
   isDocumentDetail: false,
   documentFile: null,
-  breadCrumbs: []
+  breadCrumbs: [],
+  profile: {},
+  notification: []
 };
 
 const system = (state = initialState, action) => {
@@ -27,6 +29,10 @@ const system = (state = initialState, action) => {
       };
     case actionTypes.CHANGE_DOCUMENT_BREAD_CRUMBS:
       return { ...state, breadCrumbs: action.payload };
+    case actionTypes.GET_PROFILE:
+      return { ...state, profile: action.payload };
+    case actionTypes.GET_NOTIFICATION:
+      return { ...state, notification: action.payload };
     default:
       return state;
   }

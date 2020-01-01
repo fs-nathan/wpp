@@ -85,12 +85,8 @@ const LeftBar = ({ colors, history }) => {
         />
         <span className="titleTab">Thành viên</span>
       </Link>
-      <Link to={Routes.HOME} className="menu-item">
-        <img
-          src={pathname === Routes.HOME ? icons.ic_setting : icons.ic_setting}
-          alt=""
-          className="LeftNavIcon"
-        />
+      <Link to={Routes.SETTING_GROUP_INFO} className="menu-item">
+        <img src={icons.ic_setting} alt="" className="LeftNavIcon" />
       </Link>
     </div>
   );
