@@ -11,7 +11,7 @@ import { CustomTableContext } from '../../index';
 import { get } from 'lodash';
 import './style.scss';
 
-const StyledTableBodyRow = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyGroup___row ${className}`} {...rest} />;
+const StyledTableBodyRowGroup = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyGroup___row ${className}`} {...rest} />;
 const StyledTableBodyCell = ({ className = '', ...rest }) => <TableCell className={`${className}`} {...rest} />;
 const CustomButton = ({ className = '', ...rest }) => <Button className={`comp_CustomTable_TableBodyGroup___button ${className}`} {...rest} />;
 
@@ -29,7 +29,7 @@ function TableBodyGroupRow({ group }) {
           innerRef={provided.innerRef}
           {...provided.droppableProps}
         >
-          <StyledTableBodyRow>
+          <StyledTableBodyRowGroup>
             <StyledTableBodyCell colSpan={get(columns, 'length', 0) + 1}>
               <CustomButton 
                 fullWidth 
@@ -44,7 +44,7 @@ function TableBodyGroupRow({ group }) {
                 {typeof(get(options, 'grouped.label')) === 'function' ? options.grouped.label(group) : group[get(options, 'grouped.label')]}
               </CustomButton>
             </StyledTableBodyCell>
-          </StyledTableBodyRow>
+          </StyledTableBodyRowGroup>
           {(open || snapshot.isDraggingOver) && group[get(options, 'grouped.item')].map((row, index) => (
             <TableBodyRow key={index} index={index} row={row} group={group} />
           ))}

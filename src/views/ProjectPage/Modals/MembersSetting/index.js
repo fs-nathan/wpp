@@ -11,6 +11,7 @@ import {
   mdiDotsVertical,
   mdiCheckCircle,
   mdiAccountMinus,
+  mdiAccountConvert,
 } from '@mdi/js';
 import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
@@ -20,15 +21,10 @@ import { connect } from 'react-redux';
 import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
 import { get, map, filter } from 'lodash';
 import CustomAvatar from '../../../../components/CustomAvatar';
-import colorPal from '../../../../helpers/colorPalette';
 import { addMemberProject } from '../../../../actions/project/addMemberToProject';
 import { removeMemberProject } from '../../../../actions/project/removeMemberFromProject';
 import { updateStateJoinTask } from '../../../../actions/project/updateStateJoinTask';
-
-const Header = styled(ColorTypo)`
-  margin-bottom: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-`;
+import { assignMemberToAllTask } from '../../../../actions/project/assignMemberToAllTask';
 
 const ListContainer = styled.div`
   margin-top: 8px;
@@ -83,6 +79,7 @@ const MiddleTableCell = styled(TableCell)`
 
 const AddButton = styled(Button)`
   color: #222;
+  background-color: #fff;
   transition: none;
   & > span {
     font-size: 12px;
@@ -105,7 +102,7 @@ const CustomMenuItem = styled(({ selected, refs, ...rest }) => (<MenuItem {...re
     fill: ${props => props.selected ? '#05b50c' : '#888'};
     margin-right: 10px;
   }
-  &:nth-child(3) {  
+  &:nth-child(2), &:nth-child(3) {  
     border-bottom: 1px solid #f4f4f4;
   }
 `;
@@ -123,11 +120,6 @@ const StyledSecondary = styled(Secondary)`
 const LeftContainer = styled.div`
   & > * {
     &:nth-child(1) {
-      font-size: 14px;
-      text-align: center;
-      padding: 12px;
-    }
-    &:nth-child(2) {
       width: 90%;
       margin: 8px auto;
     }
@@ -198,7 +190,7 @@ function UserFreeRoomList({ room, onAddMember, }) {
   else return null;
 }
 
-const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, }) => {
+const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, onAssignMemberToAllTask }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
@@ -246,6 +238,14 @@ const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, }) => {
           <Icon path={mdiCheckCircle} size={0.7} /> Tham gia việc khi được chọn
         </CustomMenuItem>
         <CustomMenuItem
+          onClick={evt => {
+            handleClose();
+            onAssignMemberToAllTask(member);
+          }}
+        >
+          <Icon path={mdiAccountConvert} size={0.7} /> Gán vào công việc được tạo
+        </CustomMenuItem>
+        <CustomMenuItem
           onClick={evt => setAlert(true)}
         >
           <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
@@ -270,6 +270,7 @@ function MemberSetting({
   memberProject, 
   doAddMemberProject, doRemoveMemberProject, 
   doUpdateStateJoinTask,
+  doAssignMemberToAllTask,
 }) {
 
   const { projectId } = useParams();
@@ -323,6 +324,13 @@ function MemberSetting({
     });
   }
 
+  function handleAssignMemberToAllTask(member) {
+    doAssignMemberToAllTask({
+      projectId,
+      memberId: get(member, 'id'),
+    });
+  }
+
   return (
     <React.Fragment>
       <CustomModal
@@ -334,69 +342,72 @@ function MemberSetting({
         onConfirm={() => null}
         height='tall'
         columns={2}
-        left={
-          <LeftContainer>
-            <Header uppercase bold>Danh sách thành viên</Header>
-            <Banner>
-              <SearchInput 
-                fullWidth 
-                placeholder='Tìm thành viên'
-                value={searchPatern}
-                onChange={evt => setSearchPatern(evt.target.value)}
-              />
-            </Banner>  
-            <ListContainer>
-              {members.map(room => (
-                <UserFreeRoomList
-                  room={room}
-                  key={get(room, 'id')}
-                  onAddMember={handleAddMember}
+        left={{
+          title: 'Danh sách thành viên',
+          content: () => 
+            <LeftContainer>
+              <Banner>
+                <SearchInput 
+                  fullWidth 
+                  placeholder='Tìm thành viên'
+                  value={searchPatern}
+                  onChange={evt => setSearchPatern(evt.target.value)}
                 />
-              ))}
-            </ListContainer>
-          </LeftContainer>
-        }
-        right={
-          <RightContainer>
-            <Header  uppercase bold>Thành viên dự án</Header>
-            <Table>
-              <StyledTableHead>
-                <TableRow>
-                  <MiddleTableCell></MiddleTableCell>
-                  <TableCell>Thành viên</TableCell>
-                  <MiddleTableCell>Nhóm quyền</MiddleTableCell>
-                  <MiddleTableCell>Vai trò</MiddleTableCell>
-                  <MiddleTableCell>Trạng thái</MiddleTableCell>
-                  <MiddleTableCell></MiddleTableCell>
-                </TableRow>
-              </StyledTableHead>
-              <StyledTableBody>
-                {membersAdded.map(member => (
-                  <TableRow key={get(member, 'id')}>
-                    <MiddleTableCell>
-                      <CustomAvatar src={get(member, 'avatar')} alt='avatar' />
-                    </MiddleTableCell>
-                    <UserTableCell>
-                      <span>{get(member, 'name', '')}</span>
-                      <br />
-                      <small>{get(member, 'email', '')}</small>  
-                    </UserTableCell>
-                    <MiddleTableCell>{get(member, 'group_permission_name', '')}</MiddleTableCell>
-                    <MiddleTableCell>{get(member, 'roles', '')}</MiddleTableCell>
-                    <MiddleTableCell>{getJoinStatusName(get(member, 'join_task_status_code', ''))}</MiddleTableCell>
-                    <MiddleTableCell>
-                      <SettingButton 
-                        member={member} 
-                        onRemoveMember={handleRemoveMember} 
-                        onChangeStateJoinTask={handleUpdateStateJoinTask}  
-                      />
-                    </MiddleTableCell>
-                  </TableRow>
+              </Banner>  
+              <ListContainer>
+                {members.map(room => (
+                  <UserFreeRoomList
+                    room={room}
+                    key={get(room, 'id')}
+                    onAddMember={handleAddMember}
+                  />
                 ))}
-              </StyledTableBody>
-            </Table>
-          </RightContainer>
-        }
+              </ListContainer>
+            </LeftContainer>,
+        }}
+        right={{
+          title: 'Thành viên dự án',
+          content: () => 
+            <RightContainer>
+              <Table>
+                <StyledTableHead>
+                  <TableRow>
+                    <MiddleTableCell></MiddleTableCell>
+                    <TableCell>Thành viên</TableCell>
+                    <MiddleTableCell>Nhóm quyền</MiddleTableCell>
+                    <MiddleTableCell>Vai trò</MiddleTableCell>
+                    <MiddleTableCell>Trạng thái</MiddleTableCell>
+                    <MiddleTableCell></MiddleTableCell>
+                  </TableRow>
+                </StyledTableHead>
+                <StyledTableBody>
+                  {membersAdded.map(member => (
+                    <TableRow key={get(member, 'id')}>
+                      <MiddleTableCell>
+                        <CustomAvatar src={get(member, 'avatar')} alt='avatar' />
+                      </MiddleTableCell>
+                      <UserTableCell>
+                        <span>{get(member, 'name', '')}</span>
+                        <br />
+                        <small>{get(member, 'email', '')}</small>  
+                      </UserTableCell>
+                      <MiddleTableCell>{get(member, 'group_permission_name', '')}</MiddleTableCell>
+                      <MiddleTableCell>{get(member, 'roles', '')}</MiddleTableCell>
+                      <MiddleTableCell>{getJoinStatusName(get(member, 'join_task_status_code', ''))}</MiddleTableCell>
+                      <MiddleTableCell>
+                        <SettingButton 
+                          member={member} 
+                          onRemoveMember={handleRemoveMember} 
+                          onChangeStateJoinTask={handleUpdateStateJoinTask}  
+                          onAssignMemberToAllTask={handleAssignMemberToAllTask}
+                        />
+                      </MiddleTableCell>
+                    </TableRow>
+                  ))}
+                </StyledTableBody>
+              </Table>
+            </RightContainer>,
+        }}
       />
     </React.Fragment>
   )
@@ -413,6 +424,7 @@ const mapDispatchToProps = dispatch => {
     doAddMemberProject: ({ projectId, memberId, groupPermission, roles, }) => dispatch(addMemberProject({ projectId, memberId, groupPermission, roles, })),
     doRemoveMemberProject: ({ projectId, memberId, }) => dispatch(removeMemberProject({ projectId, memberId, })),
     doUpdateStateJoinTask: ({ projectId, memberId, state, }) => dispatch(updateStateJoinTask({ projectId, memberId, state, })),
+    doAssignMemberToAllTask: ({ projectId, memberId, }) => dispatch(assignMemberToAllTask({ projectId, memberId })),
   }
 };
 

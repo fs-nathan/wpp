@@ -13,7 +13,12 @@ import { connect } from 'react-redux';
 import { get, find } from 'lodash';
 import { useRequiredString } from '../../../../hooks';
 import moment from 'moment';
-import TimeField from 'react-simple-timefield';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDateTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 const CustomTextField = styled(TextField)`
   & > label {
@@ -31,19 +36,10 @@ const StyledFormLabel = styled(FormLabel)`
 
 const TimeBox = styled.div`
   margin-bottom: 16px;
+  width: 100%;
   display: flex;
+  justify-content: space-around;
   align-items: center;
-  & > * {
-    &:not(:first-child) {
-      margin-left: 16px;
-      width: 30%;
-    }
-    &:first-child {
-      width: 10%;
-      font-size: 14px;
-      color: #a5a0a0;
-    }
-  }
 `;
 
 const StyledRadioGroup = styled(RadioGroup)`
@@ -80,8 +76,6 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
   const [name, setName, errorName] = useRequiredString('', 100);
   const [progressType, setProgressType] = React.useState(0); 
   const [description, setDescription, errorDescription] = useRequiredString('', 200);
-  const [startTime, setStartTime] = React.useState('00:00');
-  const [endTime, setEndTime] = React.useState('00:00');
   const [startDate, setStartDate] = React.useState(moment().toDate());
   const [endDate, setEndDate] = React.useState(moment().toDate());
   const [priority, setPriority] = React.useState(0);
@@ -116,8 +110,8 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
     if (progressType < 1) {
       options = {
         ...options,
-        startTime,
-        endTime,
+        startTime: moment(startDate).format('HH:mm'),
+        endTime: moment(endDate).format('HH:mm'),
       }
     }
     doCreateTask(options);
@@ -185,56 +179,58 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
             <FormControlLabel value={2} control={<Radio color="primary" />} label="Không yêu cầu" />
           </StyledRadioGroup>
         </FormControl>
-        {progressType < 2 && (
-          <>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <TimeBox>
-            <span>Bắt đầu</span>
-            {progressType < 1 && (
-              <TimeField 
-              value={startTime}
-              onChange={(evt, time) => setStartTime(time)}
-              input={
-                <TextField
-                  label='Thời gian' 
-                  type='text'
-                  variant='outlined'
-                />
-              }
+          {progressType === 0 && (
+            <>
+              <KeyboardDateTimePicker 
+                variant="inline"
+                ampm={false}
+                label="Thời gian bắt đầu"
+                value={startDate}
+                onChange={setStartDate}
+                format="dd/MM/yyyy, HH:mm"
+                maxDate={endDate}
+                maxDateMessage='Phải trước thời gian kết thúc'
               />
-            )}
-            <TextField 
-              label='Ngày'
-              type='date'
-              variant='outlined'
-              value={moment(startDate).format('YYYY-MM-DD')}
-              onChange={evt => setStartDate(moment(evt.target.value).toDate())}
-            />
-          </TimeBox>
-          <TimeBox>
-            <span>Kết thúc</span>
-            {progressType < 1 && (
-              <TimeField 
-                value={endTime}
-                onChange={(evt, time) => setEndTime(time)}
-                input={
-                  <TextField
-                    label='Thời gian' 
-                    type='text'
-                    variant='outlined'
-                  />
-                }
+              <KeyboardDateTimePicker 
+                variant="inline"
+                ampm={false}
+                label="Thời gian kết thúc"
+                value={endDate}
+                onChange={setEndDate}
+                format="dd/MM/yyyy, HH:mm"
+                minDate={startDate}
+                minDateMessage='Phải sau thời gian bắt đầu'
               />
-            )}
-            <TextField 
-              label='Ngày'
-              type='date'
-              variant='outlined'
-              value={moment(endDate).format('YYYY-MM-DD')}
-              onChange={evt => setEndDate(moment(evt.target.value).toDate())}
-            />
+            </>
+          )}
+          {progressType === 1 && (
+            <>
+              <KeyboardDatePicker 
+                variant="inline"
+                ampm={false}
+                label="Ngày bắt đầu"
+                value={startDate}
+                onChange={setStartDate}
+                format="dd/MM/yyyy"
+                maxDate={endDate}
+                maxDateMessage='Phải trước ngày kết thúc'
+              />
+              <KeyboardDatePicker 
+                variant="inline"
+                ampm={false}
+                label="Ngày kết thúc"
+                value={endDate}
+                onChange={setEndDate}
+                format="dd/MM/yyyy"
+                minDate={startDate}
+                minDateMessage='Phải sau ngày bắt đầu'
+              />
+            </>
+          )}
           </TimeBox>
-          </>
-        )}
+        </MuiPickersUtilsProvider>
         <FormControl component="fieldset" fullWidth>
           <StyledFormLabel component="legend">Mức độ ưu tiên</StyledFormLabel>
           <CustomRadioGroup>

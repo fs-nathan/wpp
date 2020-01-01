@@ -8,9 +8,12 @@ import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js'; 
 import ColorTypo from '../ColorTypo';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import './style.scss';
 
-const StyledScrollbars = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar ${className}`} {...props} />;
+const StyledScrollbars = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar-main ${className}`} {...props} />;
+
+const StyledScrollbarsSide = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar-side ${className}`} {...props} />;
 
 const StyledDialogContent = ({ className = '', ...props }) => <DialogContent className={`comp_CustomModal___dialog-content ${className}`} {...props} />;
 
@@ -32,6 +35,10 @@ const TwoColumnsContainer = ({ maxWidth, className = '', ...rest }) =>
     {...rest} 
   />;
 
+const LeftHeader = ({ className = '', ...props }) => <ColorTypo bold uppercase className={`comp_CustomModal___header-left ${className}`} {...props} />;
+
+const RightHeader = ({ className = '', ...props }) => <ColorTypo bold uppercase className={`comp_CustomModal___header-right ${className}`} {...props} />;
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
@@ -52,22 +59,32 @@ function OneColumn({ children, }) {
 function TwoColumns({ maxWidth, left, right }) {
   return (
     <TwoColumnsContainer maxWidth={maxWidth}>
-      <StyledScrollbars
-        autoHide
-        autoHideTimeout={500}
-      >
-        <div>
-          {left}
-        </div>
-      </StyledScrollbars>
-      <StyledScrollbars
-        autoHide
-        autoHideTimeout={500}
-      >
-        <div>
-          {right}
-        </div>
-      </StyledScrollbars>
+      <div>
+        <LeftHeader>
+          {get(left, 'title', '')}
+        </LeftHeader>
+        <StyledScrollbarsSide
+          autoHide
+          autoHideTimeout={500}
+        >
+          <div>
+            {get(left, 'content', () => '')()}
+          </div>
+        </StyledScrollbarsSide>
+      </div>
+      <div>
+        <RightHeader>
+          {get(right, 'title', '')}
+        </RightHeader>
+        <StyledScrollbarsSide
+          autoHide
+          autoHideTimeout={500}
+        >
+          <div>
+            {get(right, 'content', () => '')()}
+          </div>
+        </StyledScrollbarsSide>
+      </div>
     </TwoColumnsContainer>
   );
 }
@@ -131,8 +148,14 @@ CustomModal.propTypes = {
   title: PropTypes.string.isRequired, 
   columns: PropTypes.number,
   children: PropTypes.node,
-  left: PropTypes.node,
-  right: PropTypes.node, 
+  left: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    content: PropTypes.func.isRequired,
+  }),
+  right: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    content: PropTypes.func.isRequired,
+  }), 
   onConfirm: PropTypes.func, 
   onCancle: PropTypes.func, 
   open: PropTypes.bool.isRequired, 

@@ -36,7 +36,8 @@ const StyledFormLabel = styled(FormLabel)`
 
 function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, }) {
 
-  const { data: { projectGroups } } = listProjectGroup;
+  const { data: { projectGroups: _projectGroups } } = listProjectGroup;
+  const [projectGroups, setProjectGroups] = React.useState([]);
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription, errorDescription] = useRequiredString('', 500);
   const [projectGroup, setProjectGroup] = React.useState(projectGroups[0]);
@@ -44,17 +45,24 @@ function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, })
   const [currency] = React.useState(0);
 
   React.useEffect(() => {
-    setProjectGroup(projectGroups[0]);
-  }, [projectGroups]);
+    setProjectGroups([{ id: '__default__', name: 'Chưa phân loại' }, ..._projectGroups]);
+    setProjectGroup({ id: '__default__', name: 'Chưa phân loại' });
+  }, [_projectGroups]);
 
   function handleCreateNewProject() {
-    doCreateProject({
+    let options = {
       name,
       description,
-      projectGroupId: get(projectGroup, 'id'),
       priority,
       currency,
-    }); 
+    };
+    if (get(projectGroup, 'id') !== '__default__') {
+      options ={
+        ...options,
+      projectGroupId: get(projectGroup, 'id'),
+      }
+    }
+    doCreateProject(options); 
     setOpen(false);
   }
 

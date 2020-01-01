@@ -191,7 +191,7 @@ function AllUsersTable({
             grouped: {
               bool: true,
               id: 'id',
-              label: 'name',
+              label: (group) => get(group, 'id') === 'Default' ? 'Mặc định' : get(group, 'name'),
               item: 'users',
             },
             row: {

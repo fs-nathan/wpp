@@ -36,10 +36,11 @@ const StyledFormLabel = styled(FormLabel)`
 
 function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpdateProject, }) {
 
-  const { data: { projectGroups } } = listProjectGroup;
+  const { data: { projectGroups: _projectGroups } } = listProjectGroup;
+  const [projectGroups, setProjectGroups] = React.useState([]);
   const [name, setName, errorName] = useRequiredString(get(curProject, 'name', ''), 200);
   const [description, setDescription, errorDescription] = useRequiredString(get(curProject, 'description', ''), 200);
-  const [projectGroup, setProjectGroup] = React.useState(find(projectGroups, { id: get(curProject, 'project_group_id') }) || projectGroups[0]);
+  const [projectGroup, setProjectGroup] = React.useState(null);
   const [priority, setPriority] = React.useState(get(curProject, 'priority_code', 0));
   const [currency, setCurrency] = React.useState(get(curProject, 'currency', 0));
 
@@ -51,18 +52,25 @@ function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpd
   }, [curProject, setName, setDescription]);
 
   React.useEffect(() => {
-    setProjectGroup(find(projectGroups, { id: get(curProject, 'project_group_id') }) || projectGroups[0]);
-  }, [curProject, projectGroups])
+    setProjectGroups([{ id: '__default__', name: 'Chưa phân loại' }, ..._projectGroups]);
+    setProjectGroup(find(_projectGroups, { id: get(curProject, 'project_group_id') }) || { id: '__default__', name: 'Chưa phân loại' });
+  }, [curProject, _projectGroups])
 
   function handleEditProject() {
-    doUpdateProject({
+    let options = {
       projectId: get(curProject, 'id'),
       name,
       description,
-      projectGroupId: get(projectGroup, 'id'),
       priority,
       currency,
-    }); 
+    };
+    if (get(projectGroup, 'id') !== '__default__') {
+      options = {
+        ...options,
+        projectGroupId: get(projectGroup, 'id'),
+      }
+    }
+    doUpdateProject(options); 
     setOpen(false);
   }
 

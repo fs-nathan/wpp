@@ -102,7 +102,7 @@ function DepartmentList({ listRoom, doSortRoom, }) {
                       }
                     />
                   </StyledListItem>
-                  {rooms.map((room, index) => (
+                  {rooms.filter(room => get(room, 'id') !== 'default').map((room, index) => (
                     <CustomListItem key={get(room, 'id')} room={room} index={index} />  
                   ))}
                   {provided.placeholder}
@@ -120,7 +120,7 @@ function DepartmentList({ listRoom, doSortRoom, }) {
                       }
                       secondary={
                         <Secondary>
-                          {rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
+                          {rooms.filter(room => get(room, 'id') === 'default').reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
                         </Secondary>
                       }
                     />

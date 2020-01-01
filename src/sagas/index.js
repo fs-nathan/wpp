@@ -108,6 +108,8 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../constants/actions/project/re
 import { removeProjectRoleFromMember } from './project/removeProjectRoleFromMember';
 import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/updateGroupPermissionMember';
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
+import { ASSIGN_MEMBER_TO_ALL_TASK } from '../constants/actions/project/assignMemberToAllTask';
+import { assignMemberToAllTask } from './project/assignMemberToAllTask';
 import { LIST_GROUP_TASK } from '../constants/actions/groupTask/listGroupTask';
 import { listGroupTask } from './groupTask/listGroupTask';
 import { CREATE_GROUP_TASK } from '../constants/actions/groupTask/createGroupTask';
@@ -122,6 +124,8 @@ import { LIST_TASK } from '../constants/actions/task/listTask';
 import { listTask } from './task/listTask';
 import { CREATE_TASK } from '../constants/actions/task/createTask';
 import { createTask } from './task/createTask';
+import { DELETE_TASK } from '../constants/actions/task/deleteTask';
+import { deleteTask } from './task/deleteTask';
 import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
 import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
 import {
@@ -209,6 +213,7 @@ function* rootSaga() {
     removeProjectRoleFromMember
   );
   yield takeEvery(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
+  yield takeEvery(ASSIGN_MEMBER_TO_ALL_TASK, assignMemberToAllTask);
   yield takeLatest(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);
@@ -216,6 +221,9 @@ function* rootSaga() {
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(LIST_TASK, listTask);
   yield takeEvery(CREATE_TASK, createTask);
+  yield takeEvery(DELETE_TASK, deleteTask);
+
+
   yield takeLatest(LIST_COMMENT, listComment);
   yield takeLatest(LIST_TRASH, listTrash);
   yield takeLatest(LIST_MY_DOCUMENT, listMyDocument);

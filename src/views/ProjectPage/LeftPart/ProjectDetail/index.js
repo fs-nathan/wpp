@@ -7,6 +7,7 @@ import ColorTextField from '../../../../components/ColorTextField';
 import ProgressBar from '../../../../components/ProgressBar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import ColorButton from '../../../../components/ColorButton';
+import { Container, SubContainer, ActionBox, } from '../../../../components/CustomDetailBox';
 import { 
   ChartBox, ChartDrawer, ChartLegendBox, ChartTitle, CustomChart, 
 } from '../../../../components/CustomDonutChart';
@@ -22,14 +23,6 @@ import AlertModal from '../../../../components/AlertModal';
 import { CustomEventListener, CustomEventDispose, DELETE_PROJECT } from '../../../../constants/events.js';
 import { deleteProject } from '../../../../actions/project/deleteProject';
 
-const Container = styled.div`
-  padding: 0 16px;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 1fr max-content;
-  grid-template-columns: auto; 
-`;
-
 const ProjectName = styled.span`
   width: 100%;
   display: flex;
@@ -40,7 +33,6 @@ const ProjectName = styled.span`
 `;
 
 const SubHeader = styled.div`
-  border-top: 1px solid rgba(0, 0, 0, .1);
   padding: 8px 0;
   margin: 8px 0
   display: flex;
@@ -60,23 +52,6 @@ const DateBox = styled.div`
     }
     &:last-child {
       text-align: right;
-    }
-  }
-`;
-
-const ActionBox = styled.div`
-  margin-top: 16px;
-  padding: 8px 0 16px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  & > * {
-    text-transform: none;
-    justify-content: flex-start;
-    & > span:last-child {
-      display: none;
-    }
-    background-color: #fff;
-    &:hover {
-      background-color: #fff;
     }
   }
 `;
@@ -177,89 +152,97 @@ function ProjectDetail({ detailProject, doDeleteProject, }) {
         >
           <Container>
             <div>
-              <ChartBox>
-                <ChartDrawer>
-                  <CustomChart 
-                    type='donut'
-                    options={{
-                      legend: {
-                        show: false,
-                      },
-                      plotOptions: {
-                        pie: {
-                          expandOnClick: false,
+              <SubContainer>
+                <ChartBox>
+                  <ChartDrawer>
+                    <CustomChart 
+                      type='donut'
+                      options={{
+                        legend: {
+                          show: false,
                         },
-                      },
-                      labels: [
-                        'Công việc đang chờ', 
-                        'Công việc đang làm', 
-                        'Công việc quá hạn',
-                        'Công việc hoàn thành',
-                        'Công việc dừng',
-                      ],
-                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
-                    }}
-                    series={[
-                      get(project, 'task_waiting', 0),
-                      get(project, 'task_doing', 0),
-                      get(project, 'task_expired', 0),
-                      get(project, 'task_complete', 0),
-                      get(project, 'task_stop', 0),
-                    ]}
-                    width={250}
-                    height={250}
-                  />
-                  <ChartTitle>
-                    {decodeStateName(get(project, 'visibility', true) === false ? 'hidden' : get(project, 'state_name')).name}
-                  </ChartTitle>
-                </ChartDrawer>
-                <ProjectName>
-                  {loading ? '...' : get(project, 'name', '')}
-                </ProjectName>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#ff9800'} />
-                  <ColorTypo>Công việc đang chờ</ColorTypo>
-                  <ColorTypo>{get(project, 'task_waiting', 0)}</ColorTypo>
-                </ChartLegendBox>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#03a9f4'} />
-                  <ColorTypo>Công việc đang làm</ColorTypo>
-                  <ColorTypo>{get(project, 'task_doing', 0)}</ColorTypo>
-                </ChartLegendBox>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#f44336'} />
-                  <ColorTypo>Công việc quá hạn</ColorTypo>
-                  <ColorTypo>{get(project, 'task_expired', 0)}</ColorTypo>
-                </ChartLegendBox>
-                <ChartLegendBox>
-                  <Icon path={mdiSquare} size={1} color={'#03c30b'} />
-                  <ColorTypo>Công việc hoàn thành</ColorTypo>
-                  <ColorTypo>{get(project, 'task_complete', 0)}</ColorTypo>
-                </ChartLegendBox>
-              </ChartBox>
-              <SubHeader>
-                <ColorTypo color='gray' uppercase>Tiến độ dự án</ColorTypo>
-              </SubHeader>
-              <DateBox>
-                <div>{displayDate(new Date(get(project, 'date_start')))}</div>
-                <div>{displayDate(new Date(get(project, 'date_end')))}</div>
-              </DateBox>
-              <ProgressBar 
-                percentDone={get(project, 'complete', 0)}
-                percentTarget={get(project, 'duration', 0)} 
-                colorDone={'#31b586'} 
-                colorTarget={'#fd7e14'}
-              />
-              <SubHeader>
-                <ColorTypo color='gray' uppercase>Mô tả dự án</ColorTypo>
-              </SubHeader>
-              <ColorTextField 
-                value={get(project, 'description', '')}
-              />
-              <SubHeader>
-                <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
-              </SubHeader>
-              <AvatarCircleList users={get(project, 'members', [])} total={20} display={12}/>
+                        plotOptions: {
+                          pie: {
+                            expandOnClick: false,
+                          },
+                        },
+                        labels: [
+                          'Công việc đang chờ', 
+                          'Công việc đang làm', 
+                          'Công việc quá hạn',
+                          'Công việc hoàn thành',
+                          'Công việc dừng',
+                        ],
+                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
+                      }}
+                      series={[
+                        get(project, 'task_waiting', 0),
+                        get(project, 'task_doing', 0),
+                        get(project, 'task_expired', 0),
+                        get(project, 'task_complete', 0),
+                        get(project, 'task_stop', 0),
+                      ]}
+                      width={250}
+                      height={250}
+                    />
+                    <ChartTitle>
+                      {decodeStateName(get(project, 'visibility', true) === false ? 'hidden' : get(project, 'state_name')).name}
+                    </ChartTitle>
+                  </ChartDrawer>
+                  <ProjectName>
+                    {loading ? '...' : get(project, 'name', '')}
+                  </ProjectName>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#ff9800'} />
+                    <ColorTypo>Công việc đang chờ</ColorTypo>
+                    <ColorTypo>{get(project, 'task_waiting', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#03a9f4'} />
+                    <ColorTypo>Công việc đang làm</ColorTypo>
+                    <ColorTypo>{get(project, 'task_doing', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#f44336'} />
+                    <ColorTypo>Công việc quá hạn</ColorTypo>
+                    <ColorTypo>{get(project, 'task_expired', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                  <ChartLegendBox>
+                    <Icon path={mdiSquare} size={1} color={'#03c30b'} />
+                    <ColorTypo>Công việc hoàn thành</ColorTypo>
+                    <ColorTypo>{get(project, 'task_complete', 0)}</ColorTypo>
+                  </ChartLegendBox>
+                </ChartBox>
+              </SubContainer>
+              <SubContainer>
+                <SubHeader>
+                  <ColorTypo color='gray' uppercase>Tiến độ dự án</ColorTypo>
+                </SubHeader>
+                <DateBox>
+                  <div>{displayDate(new Date(get(project, 'date_start')))}</div>
+                  <div>{displayDate(new Date(get(project, 'date_end')))}</div>
+                </DateBox>
+                <ProgressBar 
+                  percentDone={get(project, 'complete', 0)}
+                  percentTarget={get(project, 'duration', 0)} 
+                  colorDone={'#31b586'} 
+                  colorTarget={'#fd7e14'}
+                />
+              </SubContainer>
+              <SubContainer>
+                <SubHeader>
+                  <ColorTypo color='gray' uppercase>Mô tả dự án</ColorTypo>
+                </SubHeader>
+                <ColorTextField 
+                  value={get(project, 'description', '')}
+                />
+              </SubContainer>
+              <SubContainer>
+                <SubHeader>
+                  <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
+                </SubHeader>
+                <AvatarCircleList users={get(project, 'members', [])} total={20} display={12}/>
+              </SubContainer>
             </div>
             <ActionBox>
               <ColorButton onClick={() => setOpenEditProject(true)} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>

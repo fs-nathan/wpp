@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
 import { detailProject } from '../../actions/project/detailProject';
 import { memberProject } from '../../actions/project/memberProject';
 import { listTask } from '../../actions/task/listTask';
@@ -11,11 +12,14 @@ import GroupTaskSlide from './LeftPart/GroupTaskSlide';
 import AllTaskTable from './RightPart/AllTaskTable';
 import { 
   CustomEventListener, CustomEventDispose,
-  UPDATE_PROJECT,
+  CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
+  CREATE_PROJECT, DELETE_PROJECT, UPDATE_PROJECT,
   CREATE_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
   ADD_MEMBER_PROJECT, REMOVE_MEMBER_PROJECT,
   UPDATE_STATE_JOIN_TASK,
-  CREATE_TASK,
+  ASSIGN_MEMBER_TO_ALL_TASK,
+  CREATE_TASK, DELETE_TASK,
+  SHOW_PROJECT, HIDE_PROJECT,
 } from '../../constants/events';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
@@ -23,11 +27,36 @@ export const Context = React.createContext();
 const { Provider } = Context;
 
 function ProjectPage({
+  doListProjectGroup,
   doDetailProject,
   doMemberProject,
   doListTask,
   doListGroupTask,
 }) {
+
+  React.useEffect(() => {
+    doListProjectGroup();
+
+    const reloadListProjectGroup = () => {
+      doListProjectGroup(true);
+    }
+
+    CustomEventListener(CREATE_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(DELETE_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(CREATE_PROJECT, reloadListProjectGroup);
+    CustomEventListener(DELETE_PROJECT, reloadListProjectGroup);
+
+    return () => {
+      CustomEventDispose(CREATE_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(DELETE_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(CREATE_PROJECT, reloadListProjectGroup);
+      CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
+    }
+  }, [doListProjectGroup]);
 
   const [projectId, setProjectId] = React.useState();
 
@@ -40,15 +69,21 @@ function ProjectPage({
       }
       
       CustomEventListener(UPDATE_PROJECT, reloadDetailProject);
+      CustomEventListener(SHOW_PROJECT, reloadDetailProject);
+      CustomEventListener(HIDE_PROJECT, reloadDetailProject);
       CustomEventListener(ADD_MEMBER_PROJECT, reloadDetailProject);
       CustomEventListener(REMOVE_MEMBER_PROJECT, reloadDetailProject);
       CustomEventListener(UPDATE_STATE_JOIN_TASK, reloadDetailProject);
+      CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
       
       return () => {
         CustomEventDispose(UPDATE_PROJECT, reloadDetailProject);
+        CustomEventDispose(SHOW_PROJECT, reloadDetailProject);
+        CustomEventDispose(HIDE_PROJECT, reloadDetailProject);
         CustomEventDispose(ADD_MEMBER_PROJECT, reloadDetailProject);
         CustomEventDispose(REMOVE_MEMBER_PROJECT, reloadDetailProject);
         CustomEventDispose(UPDATE_STATE_JOIN_TASK, reloadDetailProject);
+        CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
       }
     }
   }, [projectId, doDetailProject]);
@@ -62,15 +97,21 @@ function ProjectPage({
       }
       
       CustomEventListener(UPDATE_PROJECT, reloadMemberProject);
+      CustomEventListener(SHOW_PROJECT, reloadMemberProject);
+      CustomEventListener(HIDE_PROJECT, reloadMemberProject);
       CustomEventListener(ADD_MEMBER_PROJECT, reloadMemberProject);
       CustomEventListener(REMOVE_MEMBER_PROJECT, reloadMemberProject);
       CustomEventListener(UPDATE_STATE_JOIN_TASK, reloadMemberProject);
+      CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
       
       return () => {
         CustomEventDispose(UPDATE_PROJECT, reloadMemberProject);
+        CustomEventDispose(SHOW_PROJECT, reloadMemberProject);
+        CustomEventDispose(HIDE_PROJECT, reloadMemberProject);
         CustomEventDispose(ADD_MEMBER_PROJECT, reloadMemberProject);
         CustomEventDispose(REMOVE_MEMBER_PROJECT, reloadMemberProject);
         CustomEventDispose(UPDATE_STATE_JOIN_TASK, reloadMemberProject);
+        CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
       }
     }
   }, [projectId, doMemberProject]);
@@ -89,6 +130,7 @@ function ProjectPage({
     CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
     CustomEventListener(SORT_GROUP_TASK, reloadListTask);
     CustomEventListener(CREATE_TASK, reloadListTask);
+    CustomEventListener(DELETE_TASK, reloadListTask);
 
     return () => {
       CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
@@ -96,6 +138,7 @@ function ProjectPage({
       CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
       CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
       CustomEventDispose(CREATE_TASK, reloadListTask);
+      CustomEventDispose(DELETE_TASK, reloadListTask);
     }
   }, [projectId, doListTask]);
 
@@ -161,6 +204,7 @@ function ProjectPage({
 
 const mapDispatchToProps = dispatch => {
   return {
+    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
     doListTask: ({ projectId }, quite) => dispatch(listTask({ projectId }, quite)),

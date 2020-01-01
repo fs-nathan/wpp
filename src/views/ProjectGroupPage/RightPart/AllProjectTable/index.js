@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { get, sortBy, reverse, filter as filterArr } from 'lodash';
+import { get, sortBy, reverse, filter as filterArr, find } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import {
   IconButton,
   Menu,
@@ -14,7 +19,7 @@ import {
   ListItemText,
   ListSubheader,
   Button,
-  OutlinedInput
+  TextField,
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
@@ -24,7 +29,6 @@ import {
   mdiAccount,
   mdiDotsVertical,
   mdiCheckCircle,
-  mdiShieldAccount
 } from '@mdi/js';
 import { Context as ProjectPageContext } from '../../index';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
@@ -115,7 +119,7 @@ const StyledListSubheader = styled(ListSubheader)`
 const TimeBox = styled.div`
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 200px 400px;
+  grid-template-columns: 200px 550px;
   grid-template-areas: 'side main';
 `;
 
@@ -347,7 +351,7 @@ const SettingButton = ({
 function AllProjectTable({
   expand,
   handleExpand,
-  listProject,
+  listProject, listProjectGroup,
   detailProjectGroup,
   doDeleteProject,
   doHideProject,
@@ -363,13 +367,20 @@ function AllProjectTable({
     loading: listProjectLoading,
     error: listProjectError
   } = listProject;
+
+  const {
+    data: { projectGroups },
+    loading: listProjectGroupLoading,
+    error: listProjectGroupError,
+  } = listProjectGroup;
+
   const {
     loading: detailProjectGroupLoading,
     error: detailProjectGroupError
   } = detailProjectGroup;
 
-  const loading = listProjectLoading || detailProjectGroupLoading;
-  const error = listProjectError || detailProjectGroupError;
+  const loading = listProjectLoading || detailProjectGroupLoading || listProjectGroupLoading;
+  const error = listProjectError || detailProjectGroupError || listProjectGroupError;
 
   const [openCreateProject, setOpenCreateProject] = React.useState(false);
 
@@ -402,7 +413,13 @@ function AllProjectTable({
   ];
 
   React.useEffect(() => {
-    let projects = _projects;
+    let projects = _projects.map(project => {
+      let projectGroupIcon = get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon');
+      return {
+        ...project,
+        icon: projectGroupIcon,
+      }
+    });
     switch (filter) {
       case 0:
         break;
@@ -451,7 +468,7 @@ function AllProjectTable({
       reverse(projects);
     }
     setProjects(projects);
-  }, [_projects, filter, sortField, sortType]);
+  }, [_projects, filter, sortField, sortType, projectGroups]);
 
   React.useEffect(() => {
     switch (time) {
@@ -668,18 +685,12 @@ function AllProjectTable({
             }}
             columns={[
               {
-                label: () => (
-                  <Icon
-                    path={mdiShieldAccount}
-                    size={1}
-                    color={'rgb(102, 102, 102)'}
-                  />
-                ),
+                label: () => null,
                 field: row => (
                   <MiddleDiv>
                     <CustomAvatar
-                      src={get(row, 'user_create.avatar')}
-                      alt="user create avatar"
+                      src={get(row, 'icon')}
+                      alt="project group icon"
                     />
                   </MiddleDiv>
                 ),
@@ -765,7 +776,7 @@ function AllProjectTable({
                         .background
                     }
                   >
-                    {decodePriorityCode(get(row, 'priority_code', 0)).name}
+                    {get(row, 'priority_name', '')}
                   </StyledBadge>
                 ),
                 sort: evt => handleSortColumn('priority_code')
@@ -925,40 +936,47 @@ function AllProjectTable({
                 <SubHeader>Thời gian được chọn</SubHeader>
                 <Content>
                   <YearBox>{timeTitle}</YearBox>
-                  <DateWrapper>
-                    <div>
-                      <span>Từ ngày</span>
-                      <OutlinedInput
-                        disabled={time !== 6}
-                        variant="outlined"
-                        type={time === 5 ? 'text' : 'date'}
-                        value={
-                          time === 5
-                            ? 'All'
-                            : moment(startDate).format('YYYY-MM-DD')
-                        }
-                        onChange={evt =>
-                          setStartDate(moment(evt.target.value).toDate())
-                        }
-                      />
-                    </div>
-                    <div>
-                      <span>Đến ngày</span>
-                      <OutlinedInput
-                        disabled={time !== 6}
-                        variant="outlined"
-                        type={time === 5 ? 'text' : 'date'}
-                        value={
-                          time === 5
-                            ? 'All'
-                            : moment(endDate).format('YYYY-MM-DD')
-                        }
-                        onChange={evt =>
-                          setEndDate(moment(evt.target.value).toDate())
-                        }
-                      />
-                    </div>
-                  </DateWrapper>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DateWrapper>
+                      {time === 5 ? (
+                        <>
+                          <TextField
+                            disabled
+                            value={'Toàn bộ'}
+                          />
+                          <TextField
+                            disabled
+                            value={'Toàn bộ'}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <KeyboardDatePicker
+                            disabled={time !== 6}
+                            variant="inline"
+                            ampm={false}
+                            label="Ngày bắt đầu"
+                            value={startDate}
+                            onChange={setStartDate}
+                            format="dd/MM/yyyy"
+                            maxDate={endDate}
+                            maxDateMessage='Phải trước ngày kết thúc'
+                          />
+                          <KeyboardDatePicker 
+                            disabled={time !== 6}
+                            variant="inline"
+                            ampm={false}
+                            label="Ngày kết thúc"
+                            value={endDate}
+                            onChange={setEndDate}
+                            format="dd/MM/yyyy"
+                            minDate={startDate}
+                            minDateMessage='Phải sau ngày bắt đầu'
+                          />
+                        </>
+                      )}
+                    </DateWrapper>
+                  </MuiPickersUtilsProvider>
                   <StyledButton fullWidth>Áp dụng</StyledButton>
                 </Content>
               </MainBar>
@@ -982,6 +1000,7 @@ function AllProjectTable({
 const mapStateToProps = state => {
   return {
     listProject: state.project.listProject,
+    listProjectGroup: state.projectGroup.listProjectGroup,
     detailProjectGroup: state.projectGroup.detailProjectGroup
   };
 };

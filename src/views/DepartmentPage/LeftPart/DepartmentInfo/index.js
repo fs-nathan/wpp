@@ -7,6 +7,7 @@ import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
 import ColorButton from '../../../../components/ColorButton';
 import CustomAvatar from '../../../../components/CustomAvatar';
+import { Container, SubContainer, ActionBox, } from '../../../../components/CustomDetailBox';
 import { mdiChevronLeft } from '@mdi/js';
 import { connect } from 'react-redux';
 import { detailRoom } from '../../../../actions/room/detailRoom';
@@ -18,14 +19,6 @@ import AlertModal from '../../../../components/AlertModal';
 import { CustomEventListener, CustomEventDispose, DELETE_ROOM } from '../../../../constants/events.js';
 import CreateDepartment from '../../Modals/CreateDepartment';
 import { Context as UserPageContext } from '../../index';
-
-const Container = styled.div`
-  padding: 0 16px;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 1fr max-content;
-  grid-template-columns: auto; 
-`;
 
 const LogoBox = styled.div`
   padding: 15px;
@@ -39,23 +32,6 @@ const LogoBox = styled.div`
 
 const IntroBox = styled.div`
   flex-grow: 1;
-`;
-
-const ActionBox = styled.div`
-  margin-top: 8px;
-  padding: 8px 0 16px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  & > * {
-    text-transform: none;
-    justify-content: flex-start;
-    & > span:last-child {
-      display: none;
-    }
-    background-color: #fff;
-    &:hover {
-      background-color: #fff;
-    }
-  }
 `;
 
 function DefaultDepartment() {
@@ -133,23 +109,25 @@ function NormalDepartment({ detailRoom, doDeleteRoom }) {
         > 
           <Container>
             <div>
-              <LogoBox>
-                <CustomAvatar style={{ width: 60, height: 60 }} src={get(room, 'icon')} alt='avatar' />
-                <ColorTypo uppercase bold color='green' variant='h6'>
-                  {get(room, 'name', '')}
+              <SubContainer>
+                <LogoBox>
+                  <CustomAvatar style={{ width: 60, height: 60 }} src={get(room, 'icon')} alt='avatar' />
+                  <ColorTypo uppercase bold color='green' variant='h6'>
+                    {get(room, 'name', '')}
+                  </ColorTypo>
+                  <ColorTypo>
+                    {t('views.user_page.left_part.department_info.member_count', { member_count: get(room, 'number_member', 0) })}
+                  </ColorTypo>
+                </LogoBox>
+                <ColorTypo uppercase bold color='gray'>
+                  {t('views.user_page.left_part.department_info.intro')}
                 </ColorTypo>
-                <ColorTypo>
-                  {t('views.user_page.left_part.department_info.member_count', { member_count: get(room, 'number_member', 0) })}
-                </ColorTypo>
-              </LogoBox>
-              <ColorTypo uppercase bold color='gray'>
-                {t('views.user_page.left_part.department_info.intro')}
-              </ColorTypo>
-              <IntroBox>
-                <ColorTextField
-                  value={get(room, 'description', '')}  
-                />
-              </IntroBox>
+                <IntroBox>
+                  <ColorTextField
+                    value={get(room, 'description', '')}  
+                  />
+                </IntroBox>
+              </SubContainer>
             </div>
             <ActionBox>
               <ColorButton onClick={() => setOpenUpdateModal(true)} variant='text' size='small' fullWidth>

@@ -56,6 +56,7 @@ import updateStateJoinTask, { initialState as updateStateJoinTaskInitialState } 
 import addProjectRoleToMember, { initialState as addProjectRoleToMemberInitialState } from './project/addProjectRoleToMember';
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from './project/removeProjectRoleFromMember';
 import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from './project/updateGroupPermissionMember';
+import assignMemberToAllTask, { initialState as assignMemberToAllTaskInitialState } from './project/assignMemberToAllTask';
 import listGroupTask1, { initialState as listGroupTaskInitialState} from './groupTask/listGroupTask';
 import createGroupTask, { initialState as createGroupTaskInitialState} from './groupTask/createGroupTask';
 import deleteGroupTask, { initialState as deleteGroupTaskInitialState} from './groupTask/deleteGroupTask';
@@ -63,6 +64,7 @@ import updateGroupTask, { initialState as updateGroupTaskInitialState} from './g
 import sortGroupTask, { initialState as sortGroupTaskInitialState} from './groupTask/sortGroupTask';
 import listTask, { initialState as listTaskInitialState} from './task/listTask';
 import createTask, { initialState as createTaskInitialState} from './task/createTask';
+import deleteTask, { initialState as deleteTaskInitialState} from './task/deleteTask';
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from './documents';
@@ -166,6 +168,7 @@ const rootReducer = combineReducers({
     addProjectRoleToMember,
     removeProjectRoleFromMember,
     updateGroupPermissionMember,
+    assignMemberToAllTask,
     sortProject,
     copyProject
   }),
@@ -179,6 +182,7 @@ const rootReducer = combineReducers({
   task: combineReducers({
     listTask,
     createTask,
+    deleteTask,
   }),
 });
 
@@ -255,6 +259,7 @@ export const DEFAULT_STATE = {
     addProjectRoleToMember: addProjectRoleToMemberInitialState,
     removeProjectRoleFromMember: removeProjectRoleFromMemberInitialState,
     updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
+    assignMemberToAllTask: assignMemberToAllTaskInitialState,
     sortProject: sortProjectInitialState,
     copyProject: copyProjectInitialState
   },
@@ -268,6 +273,7 @@ export const DEFAULT_STATE = {
   task: {
     listTask: listTaskInitialState,
     createTask: createTaskInitialState,
+    deleteTask: deleteTaskInitialState,
   }
 };
 

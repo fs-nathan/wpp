@@ -1,10 +1,22 @@
-.comp_CustomModal___scrollbar {
+@mixin comp_CustomModal___scrollbar {
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  min-height: calc(90vh - 64px - 64px - 56.5px);
+  min-height: calc(100vh - 64px - 64px - 56.5px);
   & > div:nth-child(3) {
     z-index: 999;
   }
 };
+
+.comp_CustomModal___scrollbar {
+  &-main {
+    @include comp_CustomModal___scrollbar;
+    min-height: calc(100vh - 64px - 64px - 56.5px);
+  }
+  &-side {
+    @include comp_CustomModal___scrollbar;
+    height: calc(100% - 46px) !important; 
+    min-height: calc(100vh - 64px - 64px - 56.5px - 46px);
+  }
+}
 
 .comp_CustomModal___dialog-content {
   & > *:not(:last-child) {
@@ -89,3 +101,21 @@
     grid-template-columns: 5fr 12fr;
   }
 };
+
+@mixin comp_CustomModal___header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  text-align: center;
+  padding: 12px;
+};
+
+.comp_CustomModal___header {
+  &-left {
+    @include comp_CustomModal___header;
+    text-align: center;
+  };
+  &-right {
+    @include comp_CustomModal___header;
+    text-align: start;
+  }
+}
