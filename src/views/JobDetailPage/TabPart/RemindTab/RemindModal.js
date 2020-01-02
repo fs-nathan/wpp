@@ -18,7 +18,13 @@ import {
   REMIND_SCHEDULE_TYPE, isValidDuration
 } from '../../../../helpers/jobDetail/stringHelper'
 import { WrapperContext } from '../../index'
-
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
+import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
 const selector = [
   {
     value: 0,
@@ -115,6 +121,15 @@ const TextRemind = styled(Typography)`
 const InputDateTime = styled(TextField)`
     width: 146px !important;
   `
+const InputDate = styled(KeyboardDatePicker)`
+  & > div:nth-child(2) {
+    width: 146px;
+    padding-right: 5px;
+    & > div > button {
+      padding: 5px;
+    }
+  } 
+`
 const DivTime = styled.span`
     
   `
@@ -236,6 +251,7 @@ function RemindModal(props) {
   }, [props.data])
 
   const handleChangeData = (attName, value) => {
+    console.log('valueRemind:::', value)
     setData(prevState => ({ ...prevState, [attName]: value }))
   }
 
@@ -347,22 +363,27 @@ function RemindModal(props) {
               <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
             </DivTitle>
             <Div>
-              <InputDateTime
+              {/* <InputDateTime
                 label="Ngày"
                 variant="outlined"
                 type={'date'}
                 value={data.date_remind}
                 onChange={e => handleChangeData("date_remind", e.target.value)}
-              />
-              {/* <TextField
-                component="span"
-                className={classes.textField}
-                margin="normal"
-                variant="outlined"
-                type="date"
-                value={data.date_remind}
-                onChange={e => handleChangeData("date_remind", e.target.value)}
               /> */}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <InputDate
+                  disableToolbar
+                  variant="inline"
+                  inputVariant="outlined"
+                  format="dd/MM/yyyy"
+                  label="Ngày"
+                  value={data.date_remind}
+                  onChange={e => handleChangeData("date_remind", convertDate(e))}
+                  KeyboardButtonProps={{
+                    "aria-label": "date change"
+                  }}
+                />
+              </MuiPickersUtilsProvider>
               <DivTime>
                 <InputDateTime
                   type={'time'}
@@ -371,10 +392,6 @@ function RemindModal(props) {
                   value={data.time_remind}
                   onChange={e => handleChangeData("time_remind", e.target.value)}
                 />
-                {/* <InputTime
-                  value={data.time_remind}
-                  onChange={e => handleChangeData("time_remind", e.target.value)}
-                /> */}
               </DivTime>
               <SelectInput >
                 <OutlinedInputSelect

@@ -25,8 +25,13 @@ import { WrapperContext } from '../../index'
 import {
   DEFAULT_DATE_TEXT, DEFAULT_END_TIME_TEXT, DEFAULT_START_TIME_TEXT, EMPTY_STRING, DEFAULT_GROUP_TASK_VALUE
 } from '../../../../helpers/jobDetail/stringHelper';
-
-
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
+import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
 // const Header = styled.div`
 //   padding: 0 15px;
 //   height: 85px;
@@ -110,13 +115,27 @@ const TypoText = styled(Typography)`
   color: #505050;
   margin: 20px 0 15px 0;
 `
-const InputDateTime = styled(TextField)`
+const InputTime = styled(TextField)`
   width: 186px;
   margin-right: 48px;
   & > div:nth-child(2) > input {
     padding: 14px;
   }
 `
+const InputDate = styled(KeyboardDatePicker)`
+
+  & > div:nth-child(2) {
+    width: 185px;
+    padding-right: 5px;
+    & > input {
+      padding: 14px;
+    }
+    & > div > button {
+      padding: 5px;
+    }
+  } 
+`
+
 const DivTime = styled.div`
   
 `
@@ -441,6 +460,7 @@ function CreateJobModal(props) {
   }, [props.data])
 
   const handleChangeData = (attName, value) => {
+    console.log("value::::", value)
     setDataMember(prevState => ({ ...prevState, [attName]: value }))
   }
 
@@ -542,64 +562,61 @@ function CreateJobModal(props) {
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
             <DivTime>
-              <InputDateTime
+              <InputTime
                 type={'time'}
                 label="Thời gian"
                 variant="outlined"
                 value={data.start_time}
                 onChange={e => handleChangeData("start_time", e.target.value)}
               />
-              {/* <InputTime
-                value={data.start_time}
-                onChange={e => handleChangeData("start_time", e.target.value)}
-              /> */}
+         
             </DivTime>
-            {/* <StartEndDate component={'span'}>Ngày</StartEndDate> */}
-            <InputDateTime
-              label="Ngày"
-              variant="outlined"
-              type={'date'}
-              value={data.start_date}
-              onChange={e => handleChangeData("start_date", e.target.value)}
-            />
-            {/* <OutlineInput
-              label="Ngày"
-              type={'date'}
-              value={data.start_date}
-              onChange={e => handleChangeData("start_date", e.target.value)}
-            /> */}
+          
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <InputDate
+                disableToolbar
+                variant="inline"
+                inputVariant="outlined"
+                format="dd/MM/yyyy"
+                label="Ngày"
+                value={data.start_date}
+                onChange={e => handleChangeData("start_date", convertDate(e))}
+                KeyboardButtonProps={{
+                  "aria-label": "change date"
+                }}
+              />
+            </MuiPickersUtilsProvider>
+      
           </StartEndDay>
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
             <DivTime>
-              <InputDateTime
+              <InputTime
                 type={'time'}
                 label="Thời gian"
                 variant="outlined"
                 value={data.end_time}
                 onChange={e => handleChangeData("end_time", e.target.value)}
               />
-              {/* <InputTime
-                value={data.end_time}
-                onChange={e => handleChangeData("end_time", e.target.value)}
-              /> */}
+            
             </DivTime>
-            {/* <StartEndDate component={'div'}>Ngày</StartEndDate> */}
-            <InputDateTime
-              label="Ngày"
-              variant="outlined"
-              type={'date'}
-              value={data.end_date}
-              inputProps={{ min: data.start_date }}
-              onChange={e => handleChangeData("end_date", e.target.value)}
-            />
-            {/* <OutlineInput
-              label="Ngày"
-              type={'date'}
-              value={data.end_date}
-              inputProps={{ min: data.start_date }}
-              onChange={e => handleChangeData("end_date", e.target.value)}
-            /> */}
+         
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <InputDate
+                disableToolbar
+                variant="inline"
+                inputVariant="outlined"
+                format="dd/MM/yyyy"
+                label="Ngày"
+                value={data.end_date}
+                minDate={ data.start_date}
+                onChange={e => handleChangeData("end_date", convertDate(e))}
+                KeyboardButtonProps={{
+                  "aria-label": "date change"
+                }}
+              />
+            </MuiPickersUtilsProvider>
+       
           </StartEndDay>
           <Typography component={'span'}>
             <TypoText component={'div'}>Mức độ ưu tiên</TypoText>

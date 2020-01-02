@@ -57,13 +57,13 @@ function JobDetailPage(props) {
     return (
 
         <Wrapper value={{ ...props }}>
-            <div className={(props.taskId ? "container" : "container-job-introduce")} >
+            <div className={(props.taskId ?  "container" : "container-job-introduce")} >
                 <ListPart {...props} />
                 {(props.taskId) ?
-                    <>
-                        <ChatPart {...props} />
-                        <TabPart {...props} />
-                    </>
+                        <>
+                            <ChatPart {...props} />
+                            <TabPart {...props} />
+                        </>
                     :
                     <Intro />
                 }
