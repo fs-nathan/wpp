@@ -78,8 +78,8 @@ function MainLayout({ doLogin, doLoginCheckState }) {
 
   React.useEffect(() => {
     doLogin({
-      email: "ducpminh668@gmail.com",
-      password: "12345678",
+      email: "hoanvv.tb@gmail.com",
+      password: "Vuvanhoan05",
     });
   }, [doLogin]);
   
