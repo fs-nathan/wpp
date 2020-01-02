@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { updateGroupTaskSuccess, updateGroupTaskFail } from '../../actions/groupTask/updateGroupTask';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPDATE_GROUP_TASK } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doUpdateGroupTask({ groupTaskId, name, description }) {
   try {
@@ -26,8 +28,10 @@ function* updateGroupTask(action) {
     const { group_task: groupTask } = yield call(doUpdateGroupTask, action.options);
     yield put(updateGroupTaskSuccess({ groupTask }));
     CustomEventEmitter(UPDATE_GROUP_TASK);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(updateGroupTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

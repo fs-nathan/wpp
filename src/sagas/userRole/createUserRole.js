@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { createUserRoleSuccess, createUserRoleFail } from '../../actions/userRole/createUserRole';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, CREATE_USER_ROLE } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doCreatePosition({ name, description }) {
   try {
@@ -25,8 +27,10 @@ function* createUserRole(action) {
     const { user_role: userRole } = yield call(doCreatePosition, action.options);
     yield put(createUserRoleSuccess({ userRole }));
     CustomEventEmitter(CREATE_USER_ROLE);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createUserRoleFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

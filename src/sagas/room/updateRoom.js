@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { updateRoomSuccess, updateRoomFail } from '../../actions/room/updateRoom';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPDATE_ROOM } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doUpdateRoom({ roomId, name, icon, description, members }) {
   try {
@@ -28,8 +30,10 @@ function* updateRoom(action) {
     const { room } = yield call(doUpdateRoom, action.options);
     yield put(updateRoomSuccess({ room }));
     CustomEventEmitter(UPDATE_ROOM);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(updateRoomFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
