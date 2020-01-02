@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import ColorTypo from '../../../../components/ColorTypo';
 import PillButton from '../../../../components/PillButton';
 import SearchInput from '../../../../components/SearchInput';
@@ -17,32 +16,9 @@ import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import colorPal from '../../../../helpers/colorPalette';
 import { CustomEventListener, CustomEventDispose, INVITE_USER_JOIN_GROUP } from '../../../../constants/events';
+import './style.scss';
 
-const StyledBox = styled.div`  
-  padding: 5px 0;
-  & > *:first-child {
-    padding: 15px;
-  }
-  &:first-child > div {
-    padding: 0 15px;
-  }
-  & li {
-    padding: 5px 15px;
-  }
-  display: flex;
-  flex-direction: column;
-  & > *:not(:last-child) {
-    margin-bottom: 5px;
-  }
-  & > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  &:not(:last-child) {
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-  }
-`;
+const StyledBox = ({ className = '', ...props }) => <div className={`view_Department_AddUser___container ${className}`} {...props} />;
 
 function DesiringUserList({ users, handleInviteUser, isSearched }) {
 
@@ -94,15 +70,7 @@ function DesiringUserList({ users, handleInviteUser, isSearched }) {
   );
 }
 
-const StyledSecondary = styled.span`
-  & > span {
-    margin-top: 8px;
-    display: flex;
-    & > :not(:first-child) {
-      margin-left: 8px;
-    }
-  }
-`;
+const StyledSecondary = ({ className = '', ...props }) => <span className={`view_Department_AddUser___style-secondary ${className}`} {...props} />;
 
 function RequestingUserList() {
 
@@ -186,9 +154,8 @@ function RequestingUserList() {
   );
 }
 
-const StyledSearchInput = styled(SearchInput)`
-  width: 70%;
-`;
+const StyledSearchInput = ({ className = '', ...props }) => 
+  <SearchInput className={`view_Department_AddUser___search-input ${className}`} {...props} />;
 
 function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInviteUserJoinGroup, handleSubSlide }) {
 

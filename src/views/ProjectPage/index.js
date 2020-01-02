@@ -6,6 +6,7 @@ import { detailProject } from '../../actions/project/detailProject';
 import { memberProject } from '../../actions/project/memberProject';
 import { listTask } from '../../actions/task/listTask';
 import { listGroupTask } from '../../actions/groupTask/listGroupTask';
+import { getAllGroupTask } from '../../actions/groupTask/getAllGroupTask';
 import ProjectDetail from './LeftPart/ProjectDetail';
 import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
 import GroupTaskSlide from './LeftPart/GroupTaskSlide';
@@ -31,7 +32,7 @@ function ProjectPage({
   doDetailProject,
   doMemberProject,
   doListTask,
-  doListGroupTask,
+  doListGroupTask, doGetAllGroupTask,
 }) {
 
   React.useEffect(() => {
@@ -142,7 +143,6 @@ function ProjectPage({
     }
   }, [projectId, doListTask]);
 
-
   React.useEffect(() => {
     if (projectId) {
       doListGroupTask({ projectId });
@@ -164,6 +164,27 @@ function ProjectPage({
       CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
     }
   }, [projectId, doListGroupTask]);
+
+  React.useEffect(() => {
+    
+    doGetAllGroupTask();
+
+    const reloadGetAllGroupTask = () => {
+      doGetAllGroupTask(true);
+    }
+
+    CustomEventListener(CREATE_GROUP_TASK, reloadGetAllGroupTask);
+    CustomEventListener(UPDATE_GROUP_TASK, reloadGetAllGroupTask);
+    CustomEventListener(DELETE_GROUP_TASK, reloadGetAllGroupTask);
+    CustomEventListener(SORT_GROUP_TASK, reloadGetAllGroupTask);
+
+    return () => {
+      CustomEventDispose(CREATE_GROUP_TASK, reloadGetAllGroupTask);
+      CustomEventDispose(UPDATE_GROUP_TASK, reloadGetAllGroupTask);
+      CustomEventDispose(DELETE_GROUP_TASK, reloadGetAllGroupTask);
+      CustomEventDispose(SORT_GROUP_TASK, reloadGetAllGroupTask);
+    }
+  }, [doGetAllGroupTask]);
 
   return (
     <Provider value={{
@@ -209,6 +230,7 @@ const mapDispatchToProps = dispatch => {
     doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
     doListTask: ({ projectId }, quite) => dispatch(listTask({ projectId }, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
+    doGetAllGroupTask: (quite) => dispatch(getAllGroupTask(quite)),
   }
 };
 

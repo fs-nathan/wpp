@@ -120,6 +120,8 @@ import { DELETE_GROUP_TASK } from '../constants/actions/groupTask/deleteGroupTas
 import { deleteGroupTask } from './groupTask/deleteGroupTask';
 import { SORT_GROUP_TASK } from '../constants/actions/groupTask/sortGroupTask';
 import { sortGroupTask } from './groupTask/sortGroupTask';
+import { GET_ALL_GROUP_TASK } from '../constants/actions/groupTask/getAllGroupTask';
+import { getAllGroupTask } from './groupTask/getAllGroupTask';
 import { LIST_TASK } from '../constants/actions/task/listTask';
 import { listTask } from './task/listTask';
 import { CREATE_TASK } from '../constants/actions/task/createTask';
@@ -152,6 +154,9 @@ import { FETCH_GROUP_DETAIL } from '../constants/actions/setting/setting';
 import { getGroupDetail } from './setting/setting';
 
 function* rootSaga() {
+
+  // Hoang - begin
+
   yield takeEvery(LOGIN, login);
   yield takeEvery(LOGIN_CHECK_STATE, loginCheckState);
   yield takeLatest(LIST_ROOM, listRoom);
@@ -217,10 +222,12 @@ function* rootSaga() {
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
+  yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
   yield takeLatest(LIST_TASK, listTask);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
 
+  // Hoang - end
 
   yield takeLatest(LIST_COMMENT, listComment);
   yield takeLatest(LIST_TRASH, listTrash);

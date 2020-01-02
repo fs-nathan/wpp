@@ -953,6 +953,7 @@ function AllProjectTable({
                         <>
                           <KeyboardDatePicker
                             disabled={time !== 6}
+                            inputVariant="outlined"
                             variant="inline"
                             ampm={false}
                             label="Ngày bắt đầu"
@@ -964,6 +965,7 @@ function AllProjectTable({
                           />
                           <KeyboardDatePicker 
                             disabled={time !== 6}
+                            inputVariant="outlined"
                             variant="inline"
                             ampm={false}
                             label="Ngày kết thúc"

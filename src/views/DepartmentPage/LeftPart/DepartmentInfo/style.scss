@@ -1,0 +1,13 @@
+.view_Department_Info___logo-box {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > *:not(:last-child) {
+    margin-bottom: 5px;
+  }
+}
+
+.view_Department_Info___intro-box {
+  flex-grow: 1;
+}
