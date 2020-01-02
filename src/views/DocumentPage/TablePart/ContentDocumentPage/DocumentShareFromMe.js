@@ -25,6 +25,7 @@ import {
   StyledTableHeadCell,
   StyledTableBodyCell,
   FullAvatar,
+  CustomAvatar,
   selectItem,
   selectAll,
   GreenCheckbox,
@@ -37,10 +38,14 @@ import MoreAction from '../../../../components/MoreAction/MoreAction';
 import LoadingBox from '../../../../components/LoadingBox';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
+import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 
 const DocumentShareFromMe = props => {
-  const { isLoading, listDocumentFromMe: listData } = props;
+  const { isLoading } = props;
   const [selected, setSelected] = useState([]);
+  const [listData, setListData] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [itemActive, setItemActive] = useState({});
   // const { t } = useTranslation();
 
   useEffect(() => {
@@ -57,6 +62,33 @@ const DocumentShareFromMe = props => {
     if (isEmpty(props.selectedDocument)) setSelected([]);
     // eslint-disable-next-line
   }, [props.selectedDocument]);
+
+  useEffect(() => {
+    setListData(props.listDocumentFromMe);
+    // eslint-disable-next-line
+  }, [props.listDocumentFromMe]);
+
+  useEffect(() => {
+    const dataUpdate = handleSearchData(
+      props.searchText,
+      props.listDocumentFromMe
+    );
+    setListData(dataUpdate);
+    // eslint-disable-next-line
+  }, [props.searchText]);
+
+  const handleSearchData = (valueSearch, listData) => {
+    let listResult = [];
+    if (!isEmpty(valueSearch)) {
+      listResult = listData.filter(
+        el => el.name.toLowerCase().indexOf(valueSearch.toLowerCase()) !== -1
+      );
+    } else {
+      listResult = listData;
+    }
+    return listResult;
+  };
+
   const fetDataDocumentShareFromMe = (params = {}, quite = false) => {
     props.actionFetchListDocumentFromMe(params, quite);
   };
@@ -84,13 +116,15 @@ const DocumentShareFromMe = props => {
   }
   return (
     <Fragment>
-      <Table>
+      <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
-            <StyledTableHeadCell>
+            <StyledTableHeadCell width="3%">
               <GreenCheckbox
                 onChange={handleSelectAllClick}
-                checked={selected.length === listData.length}
+                checked={
+                  listData.length > 0 && selected.length === listData.length
+                }
                 indeterminate={
                   selected.length > 0 && selected.length < listData.length
                 }
@@ -99,16 +133,14 @@ const DocumentShareFromMe = props => {
             <StyledTableHeadCell align="center" width="5%">
               Loại
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="30%">
-              Tên tài liệu
+            <StyledTableHeadCell align="left">Tên tài liệu</StyledTableHeadCell>
+            <StyledTableHeadCell align="center" width="20%">
+              Chia sẻ
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
               Ngày chia sẻ
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="20%">
-              Người được chia sẻ
-            </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="20%">
+            <StyledTableHeadCell align="left" width="15%">
               Chủ sở hữu
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
@@ -122,7 +154,7 @@ const DocumentShareFromMe = props => {
             const isItemSelected = isSelected(file.id);
             return (
               <TableRow className="table-body-row" key={file.id}>
-                <StyledTableBodyCell>
+                <StyledTableBodyCell width="3%">
                   <GreenCheckbox
                     checked={isItemSelected}
                     onChange={e => handleSelectItem(file)}
@@ -131,16 +163,38 @@ const DocumentShareFromMe = props => {
                 <StyledTableBodyCell align="center" width="5%">
                   <FullAvatar src={FileType(file.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="30%">
+                <StyledTableBodyCell align="left">
                   <ColorTypo color="black">{file.name}</ColorTypo>
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="center" width="20%">
+                  {!isEmpty(file.users_shared) &&
+                    file.users_shared.map(
+                      (shareMember, idx) =>
+                        shareMember.avatar && (
+                          <CustomAvatar
+                            src={shareMember.avatar}
+                            key={idx}
+                            onClick={() => {
+                              setVisible(true);
+                              setItemActive(file);
+                            }}
+                          />
+                        )
+                    )}
+                  {/* {file.users_shared && (
+                    <CustomAvatar
+                      src={file.users_shared.avatar}
+                      onClick={() => {
+                        setVisible(true);
+                        setItemActive(file);
+                      }}
+                    />
+                  )} */}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.date}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="20%">
-                  <ColorTypo color="black">{file.userShare}</ColorTypo>
-                </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="20%">
+                <StyledTableBodyCell align="left" width="15%">
                   <ColorTypo color="black">{file.userCreate}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
@@ -152,6 +206,15 @@ const DocumentShareFromMe = props => {
           })}
         </TableBody>
       </Table>
+      {visible && (
+        <ShareDocumentModal
+          onClose={() => {
+            setVisible(false);
+            setItemActive({});
+          }}
+          item={itemActive}
+        />
+      )}
     </Fragment>
   );
 };
@@ -159,7 +222,8 @@ const DocumentShareFromMe = props => {
 export default connect(
   state => ({
     selectedDocument: state.documents.selectedDocument,
-    listDocumentFromMe: state.documents.listDocumentFromMe
+    listDocumentFromMe: state.documents.listDocumentFromMe,
+    searchText: state.documents.searchText
   }),
   {
     selectDocumentItem,

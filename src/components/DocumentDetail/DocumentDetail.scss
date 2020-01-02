@@ -13,16 +13,22 @@
       height: calc(100vh - 67px);
     }
     .img-wrapper {
-      height: 100%;
+      height: calc(100vh - 64px);
       display: flex;
       align-items: center;
       justify-content: center;
-      .img-file {
-        max-width: 100%;
-        max-height: 100%;
+      background: #777;
+      overflow: hidden;
+      .img-inner {
+        text-align: center;
+        .img-file {
+          // max-width: 85%;
+          max-height: 85%;
+          cursor: zoom-in;
+        }
       }
     }
-    .download-box-wrapper{
+    .download-box-wrapper {
       background-color: rgba(0, 0, 0, 0.42);
       display: flex;
       align-items: center;
@@ -54,7 +60,7 @@
           margin-bottom: 15px;
           color: #111;
         }
-        .file-name{
+        .file-name {
           font-size: 15px;
           color: #fd7e14;
           margin-bottom: 7px;
@@ -63,7 +69,7 @@
           overflow: hidden;
           white-space: nowrap;
         }
-        .btn-download{
+        .btn-download {
           text-transform: none;
           color: #111;
           padding-left: 0;
@@ -86,14 +92,13 @@
   .app-bar-document {
     position: relative;
     background: #fff;
-    padding: 0 15px !important;
     box-shadow: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
   .header-dialog {
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
+    grid-template-columns: minmax(800px, 3fr) minmax(300px, 1fr);
     grid-template-areas: 'list table';
     align-items: center;
     padding: 0;
@@ -101,6 +106,7 @@
     .document-info {
       display: flex;
       align-items: flex-start;
+      padding-left: 15px;
       .owner-info {
         margin-left: 10px;
         .file-name {
@@ -115,6 +121,7 @@
     }
     .document-actions {
       margin-left: auto;
+      padding-right: 15px;
       .btn-action {
         margin-right: 20px;
         width: 43px;
@@ -231,6 +238,12 @@
         }
       }
     }
+  }
+}
+
+.edit-comment-modal {
+  .comp_CustomModal___scrollbar {
+    min-height: 200px;
   }
 }
 

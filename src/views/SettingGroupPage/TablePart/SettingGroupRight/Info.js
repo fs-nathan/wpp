@@ -16,6 +16,7 @@ import * as images from '../../../../assets';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import SnackbarComponent from '../../../../components/Snackbars';
 import LoadingContent from '../../../../components/LoadingContent';
+import PickColorModal from './PickColorModal';
 import './SettingGroupRight.scss';
 
 const CROP_TYPE = {
@@ -36,6 +37,9 @@ const Info = props => {
   const [coverGroup, setCoverGroup] = useState(null);
   const [cropType, setCropType] = useState(null);
   const [updatingImg, setUpdatingImg] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const { colors } = props;
+  const bgColor = colors.find(item => item.selected === true);
 
   useEffect(() => {
     props.actionFetchGroupDetail(true);
@@ -74,9 +78,7 @@ const Info = props => {
         setOpenToast(false);
       }, 2000);
       setEditMode(false);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleCropImage = async (image, type) => {
@@ -90,7 +92,6 @@ const Info = props => {
         props.actionFetchGroupDetail(true);
         setUpdatingImg(false);
       } catch (error) {
-        console.log(error);
         setUpdatingImg(false);
       }
     } else if ((type = CROP_TYPE.COVER)) {
@@ -100,7 +101,6 @@ const Info = props => {
         props.actionFetchGroupDetail(true);
         setUpdatingImg(false);
       } catch (error) {
-        console.log(error);
         setUpdatingImg(false);
       }
     }
@@ -187,7 +187,6 @@ const Info = props => {
         }
       }
     } catch (error) {
-      console.log(error);
       setUpdatingImg(false);
     }
   };
@@ -233,9 +232,7 @@ const Info = props => {
               multiline
               rows="2"
               rowsMax="4"
-              InputLabelProps={{
-                shrink: true
-              }}
+              InputLabelProps={{ shrink: true }}
               inputProps={{
                 maxLength: 300,
                 required: true,
@@ -256,12 +253,8 @@ const Info = props => {
               }
               fullWidth
               margin="normal"
-              InputLabelProps={{
-                shrink: true
-              }}
-              inputProps={{
-                maxLength: 160
-              }}
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ maxLength: 160 }}
               disabled={!editMode}
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'sologan')}
@@ -429,6 +422,18 @@ const Info = props => {
             </div>
           </div>
         </LoadingContent>
+        <div className="setting-bg-left-menu">
+          <span className="lb-text">Chọn màu sắc menu trái</span>
+          <span
+            className="pick-color"
+            style={{ background: bgColor.value }}
+            onClick={() => setVisibleModal(true)}
+          ></span>
+          <PickColorModal
+            open={visibleModal}
+            setOpen={val => setVisibleModal(val || false)}
+          />
+        </div>
         {visibleCropModal && (
           <ImageCropper
             open={visibleCropModal}
@@ -454,7 +459,8 @@ const Info = props => {
 export default connect(
   state => ({
     isLoading: state.setting.isLoading,
-    groupDetail: state.setting.groupDetail
+    groupDetail: state.setting.groupDetail,
+    colors: state.setting.colors
   }),
   { actionFetchGroupDetail }
 )(Info);

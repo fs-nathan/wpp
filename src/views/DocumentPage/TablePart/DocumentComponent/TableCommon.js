@@ -37,7 +37,7 @@ export const StyledTableBodyCell = props => (
   <TableCell
     {...props}
     align={props.align || 'center'}
-    className={`table-body-cell ${props.className}`}
+    className={`table-body-cell ${props.className || ''}`}
   >
     {props.children}
   </TableCell>
@@ -48,7 +48,12 @@ export const FullAvatar = props => (
   </div>
 );
 export const CustomAvatar = props => (
-  <Avatar alt="avatar" className="custom-avatar-image" {...props} />
+  <Avatar
+    alt="avatar"
+    title={props.title || ''}
+    className="custom-avatar-image"
+    {...props}
+  />
 );
 export const DialogContent = withStyles(theme => ({
   root: { padding: theme.spacing(2) }

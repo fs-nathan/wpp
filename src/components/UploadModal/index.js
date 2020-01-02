@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import {
   Button,
-  Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -9,39 +8,85 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Icon from '@mdi/react';
-import { mdiClose } from '@mdi/js';
+import { mdiClose, mdiAlert } from '@mdi/js';
 import { actionUploadFile } from '../../actions/documents';
 import { isEmpty } from '../../helpers/utils/isEmpty';
 import ColorTypo from '../ColorTypo';
 import './UploadModal.scss';
 
 const UploadModal = props => {
-  const { open, setOpen, title, fileUpload, currentFolder } = props;
+  const { open, setOpen, title, fileUpload = [], currentFolder } = props;
   const [percent, setPercent] = useState(0);
-  const [error, setError] = useState(false);
+  const [currentUpload, setCurrentUpload] = useState({});
+  const [totalSuccess, setTotalSuccess] = useState(0);
+  const [errorSize, setErrorSize] = useState(false);
+  const [errorName, setErrorName] = useState(false);
+  const [errorMaxFile, setErrorMaxFile] = useState(false);
 
   const onUploading = percent => {
     setPercent(parseInt(percent));
   };
 
+  const checkFilesSize = (files = []) => {
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].size / 1024 / 1024 > 50) return false;
+    }
+    return true;
+  };
+
+  const checkValidFilesName = (files = []) => {
+    for (let i = 0; i < files.length; i++) {
+      let fileName = files[i].name || '';
+      if (
+        fileName.indexOf('@') > -1 ||
+        fileName.indexOf('#') > -1 ||
+        fileName.indexOf('$') > -1 ||
+        fileName.indexOf('&') > -1 ||
+        fileName.indexOf('*') > -1 ||
+        fileName.indexOf('?') > -1 ||
+        fileName.indexOf('%') > -1 ||
+        fileName.indexOf('!') > -1
+      )
+        return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
-    if (fileUpload) {
-      for (let i = 0; i < fileUpload.length; i++) {
-        async function onUploadFile() {
+    if (fileUpload.length > 0) {
+      if (fileUpload.length > 20) {
+        setErrorMaxFile(true);
+        return;
+      }
+      if (!checkFilesSize(fileUpload)) {
+        setErrorSize(true);
+        return;
+      }
+      if (!checkValidFilesName(fileUpload)) {
+        setErrorName(true);
+        return;
+      }
+      let total = 0;
+      async function onUploadFile() {
+        for (let i = 0; i < fileUpload.length; i++) {
+          setCurrentUpload(fileUpload[i]);
           const formData = new FormData();
           formData.append('file', fileUpload[i]);
+          setPercent(0);
           if (!isEmpty(currentFolder)) {
             formData.append('folder_id', currentFolder.id);
           }
           try {
             await actionUploadFile(formData, onUploading);
+            setTotalSuccess(++total);
           } catch (error) {
-            setError(true);
             setPercent(0);
           }
         }
-        onUploadFile(fileUpload[i]);
+        if (props.onCompleted) props.onCompleted();
       }
+      onUploadFile();
+      // }
     }
     // eslint-disable-next-line
   }, [fileUpload]);
@@ -56,19 +101,14 @@ const UploadModal = props => {
   }, []);
 
   const handleClose = () => setOpen(false);
+  if (!open) return null;
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      disableBackdropClick
-      fullWidth
-      maxWidth="xs"
-      aria-labelledby="upload-dialog-title"
-      className="upload-modal"
-    >
+    <div className="upload-modal">
       <DialogTitle id="upload-dialog-title" className="upload-header">
         <ColorTypo className="header-title">
-          {title || 'Tải tệp tin lên'}
+          {`${title || 'Tải tệp tin lên'} (${totalSuccess}/${
+            fileUpload.length
+          } hoàn thành)`}
         </ColorTypo>
         <div className="right-action">
           <Button className="btn-cancel" onClick={handleClose}>
@@ -80,21 +120,53 @@ const UploadModal = props => {
         </div>
       </DialogTitle>
       <DialogContent className="upload-content">
-        <div className="upload-info">
-          <span className="file-name">{fileUpload[0].name}</span>
-          <span className="file-size">({formatBytes(fileUpload[0].size)})</span>
-        </div>
-        <div className="progress-content">
-          <LinearProgress
-            className="progress-bar"
-            variant="determinate"
-            value={percent}
-          />
-          <span className="percent-upload">{percent}%</span>
-        </div>
-        {error && <div className="err-msg">Tải tài liệu lên thất bại!</div>}
+        {(errorSize || errorName || errorMaxFile) && (
+          <div className="error-content">
+            <Icon
+              className="ic-alert"
+              path={mdiAlert}
+              size={2.5}
+              color={'red'}
+            />
+            {errorSize && (
+              <div className="error-msg">
+                Dung lượng tài liệu tải lên vượt mức quá cho phép
+                <span>(50mb/file)</span>
+              </div>
+            )}
+            {errorName && (
+              <div className="error-msg">
+                Tên file chứa ký tự đặc biệt
+                <span className="err-name">({'@, #, $, &, *, ?, %, !'})</span>
+              </div>
+            )}
+            {errorMaxFile && (
+              <div className="error-msg">
+                Số lượng file tải lên không được vượt quá 20.
+              </div>
+            )}
+          </div>
+        )}
+        {!errorSize && !errorName && !errorMaxFile && (
+          <React.Fragment>
+            <div className="upload-info">
+              <span className="file-name">{currentUpload.name}</span>
+              <span className="file-size">
+                ({formatBytes(currentUpload.size)})
+              </span>
+            </div>
+            <div className="progress-content">
+              <LinearProgress
+                className="progress-bar"
+                variant="determinate"
+                value={percent}
+              />
+              <span className="percent-upload">{percent}%</span>
+            </div>
+          </React.Fragment>
+        )}
       </DialogContent>
-    </Dialog>
+    </div>
   );
 };
 

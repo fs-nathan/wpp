@@ -12,15 +12,12 @@ const HeaderDrawer = props => {
   const { actionVisibleDrawerMessage, title, subHeader, anchorDrawer } = props;
   return (
     <React.Fragment>
-      <div className="header-drawer">
+      <div className={`header-drawer ${title ? '' : 'none-border'}`}>
         <span className="text-header">{title}</span>
         <span
           className="btn-close"
           onClick={() =>
-            actionVisibleDrawerMessage({
-              type: '',
-              anchor: anchorDrawer
-            })
+            actionVisibleDrawerMessage({ type: '', anchor: anchorDrawer })
           }
         >
           <Icon path={mdiClose} size={1.2} />

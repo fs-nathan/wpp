@@ -1,3 +1,4 @@
+import { apiService } from '../../constants/axiosInstance';
 import * as actionTypes from '../../constants/actions/system/system';
 
 export const actionVisibleDrawerMessage = option => {
@@ -92,4 +93,26 @@ export const convertUrlToBlob = (
   };
 
   img.src = fileUrl;
+};
+
+export const formatBytes = (bytes, decimals = 2) => {
+  if (!bytes) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
+export const getProfileService = () => {
+  const config = {
+    url: '/get-profile',
+    method: 'get'
+  };
+  return apiService(config);
+};
+export const actionGetProfile = data => {
+  return {
+    type: actionTypes.GET_PROFILE,
+    payload: data
+  };
 };

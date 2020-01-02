@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiSwapVertical } from '@mdi/js';
-import { get, sortBy, reverse } from 'lodash';
+import { reverse } from 'lodash';
 import ColorTypo from '../../../../components/ColorTypo';
 import {
   selectDocumentItem,
@@ -31,13 +31,15 @@ import {
 } from '../DocumentComponent/TableCommon';
 import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
 
 const Trash = props => {
   const [selected, setSelected] = React.useState([]);
-  const { isLoading, listTrash: listData } = props;
+  const { isLoading } = props;
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);
+  const [listData, setListData] = React.useState([]);
   useEffect(() => {
     getListTrash();
     // eslint-disable-next-line
@@ -51,11 +53,35 @@ const Trash = props => {
 
   useEffect(() => {
     let listDataTemp = [];
-    listDataTemp = sortBy(listData, [o => get(o, sortField)]);
+    // listDataTemp = sortBy(listData, [o => get(o, sortField)]);
+    listDataTemp = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(listDataTemp);
     props.actionSortListTrash(listDataTemp);
     // eslint-disable-next-line
   }, [sortField, sortType]);
+
+  useEffect(() => {
+    setListData(props.listTrash);
+    // eslint-disable-next-line
+  }, [props.listTrash]);
+
+  useEffect(() => {
+    const dataUpdate = handleSearchData(props.searchText, props.listTrash);
+    setListData(dataUpdate);
+    // eslint-disable-next-line
+  }, [props.searchText]);
+
+  const handleSearchData = (valueSearch, listData) => {
+    let listResult = [];
+    if (!isEmpty(valueSearch)) {
+      listResult = listData.filter(
+        el => el.name.toLowerCase().indexOf(valueSearch.toLowerCase()) !== -1
+      );
+    } else {
+      listResult = listData;
+    }
+    return listResult;
+  };
 
   const hanldeSort = field => {
     if (field !== sortField) {
@@ -86,7 +112,7 @@ const Trash = props => {
   }
   return (
     <React.Fragment>
-      <Table className="doc-table-content">
+      <Table className="doc-table-content" stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
             <StyledTableHeadCell>
@@ -139,7 +165,10 @@ const Trash = props => {
           {listData.map(item => {
             const isItemSelected = isSelected(item.id);
             return (
-              <TableRow className="table-body-row" key={item.id}>
+              <TableRow
+                className={`table-body-row ${isItemSelected ? 'selected' : ''}`}
+                key={item.id}
+              >
                 <StyledTableBodyCell>
                   <GreenCheckbox
                     checked={isItemSelected}
@@ -153,16 +182,17 @@ const Trash = props => {
                   <ColorTypo color="black">{item.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
-                  {item.user_create_avatar && (
-                    <CustomAvatar src={item.user_create_avatar} />
+                  {item.user_create && item.user_create.avatar && (
+                    <CustomAvatar src={item.user_create.avatar} />
                   )}
                 </StyledTableBodyCell>
-                <StyledTableBodyCell
-                  align="center"
-                  width="15%"
-                ></StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="15%">
-                  <ColorTypo color="black">{item.deleted_date}</ColorTypo>
+                  {item.user_delete && item.user_delete.avatar && (
+                    <CustomAvatar src={item.user_delete.avatar} />
+                  )}
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="center" width="15%">
+                  <ColorTypo color="black">{item.deleted_at}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
                   <ColorTypo color="red">
@@ -189,7 +219,8 @@ export default connect(
   state => ({
     selectedDocument: state.documents.selectedDocument,
     isLoading: state.documents.isLoading,
-    listTrash: state.documents.listTrash
+    listTrash: state.documents.listTrash,
+    searchText: state.documents.searchText
   }),
   {
     selectDocumentItem,

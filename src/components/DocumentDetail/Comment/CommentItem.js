@@ -121,10 +121,10 @@ const CommentItem = ({ comment, onRefreshList }) => {
         onConfirm={handleDeleteComment}
       />
       <CustomModal
-        minheight="200px"
         open={visibleEditModal}
         setOpen={() => setVisibleEditModal(false)}
         title="Chỉnh sửa thảo luận"
+        className="edit-comment-modal"
         onConfirm={handleUpdateComment}
       >
         <TextField

@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
@@ -7,20 +6,11 @@ import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
 import SettingInfo from '../TablePart/SettingAccountRight/SettingInfo';
 import ChangePassword from '../TablePart/SettingAccountRight/ChangePassword';
-import TicketManager from '../TablePart/SettingAccountRight/TicketManager';
 import NotificationWorkPlus from '../TablePart/SettingAccountRight/NotificationWorkPlus';
 import NotificationWorkPlusDetail from '../TablePart/SettingAccountRight/NotificationWorkPlusDetail';
 import '../SettingAccount.scss';
 import { SETTING_ACCOUNT } from '../../../constants/constants';
-
-const RightHeader = styled.div`
-  margin-left: auto;
-  & > *:last-child {
-    margin-left: 16px;
-    padding: 8px 12px;
-    margin-top: 8px;
-  }
-`;
+import { RightHeader } from '../../DocumentPage/TablePart/DocumentComponent/TableCommon';
 
 const TablePart = props => {
   const type = props.match.params.type;
@@ -34,8 +24,6 @@ const TablePart = props => {
         return <SettingInfo />;
       case SETTING_ACCOUNT.CHANGE_PASSWORD:
         return <ChangePassword />;
-      case SETTING_ACCOUNT.TICKET_MANAGER:
-        return <TicketManager />;
       case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS: {
         if (isEmpty(search)) {
           return <NotificationWorkPlus />;

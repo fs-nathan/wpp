@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Chip from '../../components/ColorChip';
@@ -12,6 +12,10 @@ import { actionVisibleDrawerMessage } from '../../actions/system/system';
 import { DRAWER_TYPE } from '../../constants/constants';
 import SearchModal from '../../components/SearchModal/SearchModal';
 import './TopBar.scss';
+import {
+  getProfileService,
+  actionGetProfile
+} from '../../actions/system/system';
 
 const Container = styled.div`
   display: grid;
@@ -76,6 +80,15 @@ const TopBar = props => {
   const [marginLeftModal, setMarginLeftModal] = useState(280);
   const [marginTopModal, setMarginTopModal] = useState(10);
 
+  const handleFetchProfile = async () => {
+    try {
+      const { data } = await getProfileService();
+      if (data.data) props.actionGetProfile(data.data);
+    } catch (err) {}
+  };
+  useEffect(() => {
+    handleFetchProfile(); // eslint-disable-next-line
+  }, []);
   const openSearchModal = () => {
     // Handle position of search modal
     const searchInputWrapperElm = document.getElementById('searchInputWrapper');
@@ -107,7 +120,7 @@ const TopBar = props => {
             <Chip badge color="orange" label="Pro" className="style-status" />
           </div>
           <div>
-            <GreenText>huuthanhxd@gmail.com</GreenText>
+            <GreenText>{props.profile.name || ''}</GreenText>
             <Icon path={mdiMenuDown} size={1} color="rgba(0, 0, 0, 0.54)" />
           </div>
         </InfoBox>
@@ -190,8 +203,12 @@ const TopBar = props => {
           />
         </IconButton>
         <AccBox>
-          <Avatar style={{ height: 25, width: 25 }} src={avatar} alt="Avatar" />
-          <p className="text-name-acc">Nguyễn Hữu Thành</p>
+          <Avatar
+            style={{ height: 25, width: 25 }}
+            src={props.profile.avatar || avatar}
+            alt="Avatar"
+          />
+          <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
           <img
             onClick={() =>
@@ -212,7 +229,8 @@ const TopBar = props => {
 
 export default connect(
   state => ({
-    typeDrawer: state.system.typeDrawer
+    typeDrawer: state.system.typeDrawer,
+    profile: state.system.profile
   }),
-  { actionVisibleDrawerMessage }
+  { actionVisibleDrawerMessage, actionGetProfile }
 )(TopBar);

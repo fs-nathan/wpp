@@ -138,7 +138,8 @@ import {
   LIST_PROJECT_DOCUMENT,
   LIST_PROJECT_DOCUMENT_OF_FOLDER,
   LIST_DOCUMENT_FROM_ME,
-  LIST_DOCUMENT_SHARE
+  LIST_DOCUMENT_SHARE,
+  LIST_GOOGLE_DOCUMENT
 } from '../constants/actions/documents';
 import {
   listComment,
@@ -148,7 +149,8 @@ import {
   listProjectDocument,
   listProjectDocumentOfFolder,
   listDocumentShareFromMe,
-  listDocumentShare
+  listDocumentShare,
+  listGoogleDocument
 } from './documents';
 import { FETCH_GROUP_DETAIL } from '../constants/actions/setting/setting';
 import { getGroupDetail } from './setting/setting';
@@ -241,6 +243,7 @@ function* rootSaga() {
   );
   yield takeLatest(LIST_DOCUMENT_FROM_ME, listDocumentShareFromMe);
   yield takeLatest(LIST_DOCUMENT_SHARE, listDocumentShare);
+  yield takeLatest(LIST_GOOGLE_DOCUMENT, listGoogleDocument);
 
   // Priority
   yield takeLeading(

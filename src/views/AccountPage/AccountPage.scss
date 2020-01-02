@@ -108,6 +108,10 @@
       font-weight: 500;
     }
   }
+  .error-msg {
+    color: #dc3545;
+    margin-top: 5px;
+  }
 }
 
 /*Style for Login page */
@@ -177,6 +181,9 @@
         color: #dc3545;
         margin-top: 5px;
         display: inline-block;
+        &.err-check-pwd {
+          margin-bottom: 5px;
+        }
       }
     }
   }

@@ -1,6 +1,7 @@
 import * as file from '../../assets/fileType';
 
 export const FileType = mimeType => {
+  if (!mimeType) return file.file;
   switch (mimeType.toLowerCase()) {
     case 'doc':
     case 'docx':
@@ -62,6 +63,7 @@ export const FileType = mimeType => {
     case 'wma9':
       return file.audio;
     case 'folder':
+    case 'application/vnd.google-apps.folder':
       return file.folder;
     default:
       return file.file;

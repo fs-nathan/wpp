@@ -6,7 +6,6 @@ import { SETTING_ACCOUNT } from '../../../constants/constant';
 import ChangePassword from './ChangePassword';
 import NotificationWorkPlus from './NotificationWorkPlus';
 import SettingInfo from './SettingInfo';
-import TicketManager from './TicketManager';
 import HeaderAccount from './HeaderAccount';
 import NotificationWorkPlusDetail from './NotificationWorkPlusDetail';
 import './SettingAccountRight.scss';
@@ -18,8 +17,6 @@ const SettingAccountRight = props => {
         return <SettingInfo />;
       case SETTING_ACCOUNT.CHANGE_PASSWORD:
         return <ChangePassword />;
-      case SETTING_ACCOUNT.TICKET_MANAGER:
-        return <TicketManager />;
       case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS:
         return <NotificationWorkPlus />;
       case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS_DETAIL:

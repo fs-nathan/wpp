@@ -19,7 +19,9 @@ import {
   LIST_DOCUMENT_FROM_ME_SUCCESS,
   CHANGE_SEARCH_TEXT,
   LIST_DOCUMENT_SHARE,
-  LIST_DOCUMENT_SHARE_SUCCESS
+  LIST_DOCUMENT_SHARE_SUCCESS,
+  TOGGLE_BUTTON_SIGNOUT_GOOGLE,
+  LIST_GOOGLE_DOCUMENT
 } from '../../constants/actions/documents';
 import { apiService } from '../../constants/axiosInstance';
 
@@ -44,6 +46,11 @@ export const selectDocumentItem = listDocumentSelected => ({
 });
 export const resetListSelectDocument = () => ({
   type: RESET_LIST_SELECT_DOCUMENT
+});
+
+export const toggleSingoutGoogle = (isShow = false) => ({
+  type: TOGGLE_BUTTON_SIGNOUT_GOOGLE,
+  payload: isShow
 });
 
 // handle for header table action
@@ -234,6 +241,15 @@ export const actionSortListDocument = newData => ({
   payload: newData
 });
 
+// Handle for Google drive page
+export const actionFetchListGoogleDocument = (params = {}, quite = false) => ({
+  type: LIST_GOOGLE_DOCUMENT,
+  quite,
+  options: {
+    params
+  }
+});
+
 // Handle for trash page
 export const actionFetchListTrash = (params = {}, quite = false) => ({
   type: LIST_TRASH,
@@ -267,6 +283,15 @@ export const actionMoveFile = (data = {}) => {
 export const actionMoveFolder = (data = {}) => {
   const config = {
     url: '/documents/move-folder',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+};
+
+export const actionMoveFolderToRoot = (data = {}) => {
+  const config = {
+    url: '/documents/move-folder-to-root',
     method: 'post',
     data
   };
@@ -327,34 +352,108 @@ export const actionDeleteFolder = data => {
   };
   return apiService(config);
 };
-export const actionGetMemberCanShare = params => {
+// Handle share File and Folder
+export const actionGetMemberCanShare = (params, fileType) => {
+  let url = '/documents/get-member-not-share-of-file';
+  if (fileType === 'folder') {
+    url = '/documents/get-member-not-share-of-folder';
+  }
   const config = {
-    url: '/documents/get-member-not-share-of-file',
+    url,
     method: 'get',
     params
   };
   return apiService(config);
 };
-export const actionGetMemberShared = params => {
+
+export const actionGetMemberShared = (params, fileType) => {
+  let url = '/documents/get-member-shared-of-file';
+  if (fileType === 'folder') {
+    url = '/documents/get-member-shared-of-folder';
+  }
   const config = {
-    url: '/documents/get-member-shared-of-file',
+    url,
     method: 'get',
     params
   };
   return apiService(config);
 };
-export const actionShareFile = data => {
+
+export const actionShareFile = (data, fileType) => {
+  let url = '/documents/share-file';
+  if (fileType === 'folder') {
+    url = '/documents/share-folder';
+  }
   const config = {
-    url: '/documents/share-file',
+    url,
     method: 'post',
     data
   };
   return apiService(config);
 };
-export const actionShareFolder = data => {
+
+export const actionCancelShareFile = (data, fileType) => {
+  let url = '/documents/cancel-share-file';
+  if (fileType === 'folder') {
+    url = '/documents/cancel-share-folder';
+  }
   const config = {
-    url: '/documents/share-folder',
+    url,
     method: 'post',
+    data
+  };
+  return apiService(config);
+};
+
+// Handle share google file
+export const getMemberShareGoogleFile = params => {
+  const config = {
+    url: '/documents/google-driver/get-member-not-share-of-file',
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};
+
+export const getMemberSharedGoogleFile = params => {
+  const config = {
+    url: '/documents/google-driver/get-member-shared-of-file',
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};
+
+export const actionShareGoogleFile = data => {
+  const config = {
+    url: '/documents/google-driver/share-file-google-driver',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+};
+
+export const actionCancelShareGoogleFile = data => {
+  const config = {
+    url: '/documents/google-driver/cancel-share-file',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+};
+
+export const updateDocumentInfo = data => {
+  const config = {
+    url: '/documents/update-infomation-file',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+};
+export const deleteDocumentInfo = data => {
+  const config = {
+    url: '/documents/delete-infomation-file',
+    method: 'delete',
     data
   };
   return apiService(config);

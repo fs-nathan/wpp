@@ -9,8 +9,9 @@ import ColorTypo from '../../ColorTypo';
 import '../DocumentDetail.scss';
 import AlertModal from '../../AlertModal';
 import EditDocumentInfoModal from '../../../views/DocumentPage/TablePart/DocumentComponent/EditDocumentInfoModal';
+import { deleteDocumentInfo } from '../../../actions/documents';
 
-const DocInfo = ({ closeComment, fileInfo }) => {
+const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [alert, setAlert] = useState(false);
@@ -19,18 +20,19 @@ const DocInfo = ({ closeComment, fileInfo }) => {
 
   const handleClickMoreAction = e => setAnchorEl(e.currentTarget);
   const handleCloseMenu = () => setAnchorEl(null);
-  const handleUpdate = () => setVisible(false);
   const listInfo = [
-    { name: 'Ngày phát hành', value: fileInfo.updated_at || null },
-    { name: 'Phiên bản', value: 'Chính thức' },
-    {
-      name: 'Người soạn',
-      value: fileInfo.user_create ? fileInfo.user_create.name : null
-    },
-    { name: 'Ký phê duyệt', value: 'Trần Quang' },
-    { name: 'Nơi lưu trữ', value: 'Phòng TCHC, tủ 01' }
+    { name: 'Ngày phát hành', value: fileInfo.date_released || null },
+    { name: 'Phiên bản', value: fileInfo.version || null },
+    { name: 'Người soạn', value: fileInfo.author || null },
+    { name: 'Ký phê duyệt', value: fileInfo.user_approved || '' },
+    { name: 'Nơi lưu trữ', value: fileInfo.storage_address || '' }
   ];
-
+  const handleDeleteInfo = async () => {
+    try {
+      await deleteDocumentInfo({ file_id: fileInfo.id });
+      handleFetchData();
+    } catch (err) {}
+  };
   return (
     <div className="comment-container">
       <div className="header-box-comment">
@@ -102,7 +104,7 @@ const DocInfo = ({ closeComment, fileInfo }) => {
             <div className="content-item ">
               <div className="header-item">
                 <div className="sub-title">Mô tả tài liệu</div>
-                <ColorTypo bold>{fileInfo.task_name || ''}</ColorTypo>
+                <ColorTypo bold>{fileInfo.description || ''}</ColorTypo>
               </div>
             </div>
           </div>
@@ -124,12 +126,12 @@ const DocInfo = ({ closeComment, fileInfo }) => {
         open={alert}
         setOpen={setAlert}
         content={t('views.user_page.left_part.department_info.alert_content')}
-        onConfirm={() => console.log('ok')}
+        onConfirm={handleDeleteInfo}
       />
       {visible && (
         <EditDocumentInfoModal
           onClose={() => setVisible(null)}
-          onOk={handleUpdate}
+          getData={handleFetchData}
           item={fileInfo}
         />
       )}

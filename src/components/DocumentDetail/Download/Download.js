@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 // import DownloadItem from './DownloadItem';
 import '../DocumentDetail.scss';
 import AlertModal from '../../AlertModal';
+import { isEmpty } from '../../../helpers/utils/isEmpty';
 
 const Download = ({ closeComment, fileInfo, listComment }) => {
   const { t } = useTranslation();
@@ -36,32 +37,7 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
     link.target = '_blank';
     link.click();
   };
-  const avatarList = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'Y',
-    'M',
-    'N',
-    'K',
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'Y',
-    'M',
-    'N',
-    'K'
-  ];
+
   return (
     <div className="comment-container">
       <div className="header-box-comment">
@@ -102,43 +78,46 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
                     &nbsp;
                     <span>(dung lượng xem {fileInfo.size || ''})</span>
                   </div>
-                  <div className="avatar-list">
-                    {avatarList.map((el, idx) => {
-                      if (
-                        avatarList.length <= avatarTotal ||
-                        idx < avatarTotal - 2 ||
-                        isAvatarView
-                      ) {
-                        return (
-                          <span key={idx}>
-                            <Avatar>{el}</Avatar>
-                          </span>
-                        );
-                      }
-                      return null;
-                    })}
-                    {avatarList.length > avatarTotal && !isAvatarView && (
-                      <Avatar>{`+${avatarList.length -
-                        avatarTotal +
-                        2}`}</Avatar>
-                    )}
-                    {avatarList.length > avatarTotal && (
-                      <div className="btn-action btn-collapse action-avatar-list">
-                        <IconButton
-                          size="small"
-                          onClick={() => setAvatarView(!isAvatarView)}
-                        >
-                          <Icon
-                            path={
-                              isAvatarView ? mdiChevronLeft : mdiChevronRight
-                            }
-                            size={1}
-                            color="rgba(0, 0, 0, 0.54)"
-                          />
-                        </IconButton>
-                      </div>
-                    )}
-                  </div>
+                  {!isEmpty(fileInfo.user_views) && (
+                    <div className="avatar-list">
+                      {fileInfo.user_views.map((el, idx) => {
+                        if (
+                          fileInfo.user_views.length <= avatarTotal ||
+                          idx < avatarTotal - 2 ||
+                          isAvatarView
+                        ) {
+                          return (
+                            <span key={idx}>
+                              <Avatar src={el.avatar} alt="avatar" />
+                            </span>
+                          );
+                        }
+                        return null;
+                      })}
+                      {fileInfo.user_views.length > avatarTotal &&
+                        !isAvatarView && (
+                          <Avatar>{`+${fileInfo.user_views.length -
+                            avatarTotal +
+                            2}`}</Avatar>
+                        )}
+                      {fileInfo.user_views.length > avatarTotal && (
+                        <div className="btn-action btn-collapse action-avatar-list">
+                          <IconButton
+                            size="small"
+                            onClick={() => setAvatarView(!isAvatarView)}
+                          >
+                            <Icon
+                              path={
+                                isAvatarView ? mdiChevronLeft : mdiChevronRight
+                              }
+                              size={1}
+                              color="rgba(0, 0, 0, 0.54)"
+                            />
+                          </IconButton>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -150,12 +129,52 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
                   <div className="sub-title">Số lượt download</div>
                   <div className="sub-title">
                     <span>
-                      <b>{fileInfo.number_of_download || ''} lượt tải</b>
+                      <b>{fileInfo.number_of_download || 0} lượt tải</b>
                     </span>
                     &nbsp;
                     <span>{`(dung lượng tải xuống ${fileInfo.size ||
                       ''})`}</span>
                   </div>
+                  {!isEmpty(fileInfo.user_downloads) && (
+                    <div className="avatar-list">
+                      {fileInfo.user_downloads.map((el, idx) => {
+                        if (
+                          fileInfo.user_downloads.length <= avatarTotal ||
+                          idx < avatarTotal - 2 ||
+                          isAvatarView
+                        ) {
+                          return (
+                            <span key={idx}>
+                              <Avatar src={el.avatar} alt="avatar" />
+                            </span>
+                          );
+                        }
+                        return null;
+                      })}
+                      {fileInfo.user_downloads.length > avatarTotal &&
+                        !isAvatarView && (
+                          <Avatar>{`+${fileInfo.user_downloads.length -
+                            avatarTotal +
+                            2}`}</Avatar>
+                        )}
+                      {fileInfo.user_downloads.length > avatarTotal && (
+                        <div className="btn-action btn-collapse action-avatar-list">
+                          <IconButton
+                            size="small"
+                            onClick={() => setAvatarView(!isAvatarView)}
+                          >
+                            <Icon
+                              path={
+                                isAvatarView ? mdiChevronLeft : mdiChevronRight
+                              }
+                              size={1}
+                              color="rgba(0, 0, 0, 0.54)"
+                            />
+                          </IconButton>
+                        </div>
+                      )}
+                    </div>
+                  )}{' '}
                 </div>
               </div>
             </div>

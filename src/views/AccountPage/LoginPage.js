@@ -84,7 +84,6 @@ const LoginPage = props => {
                 id="email"
                 required
                 type="text"
-                defaultValue="ducpminh668@gmail.com"
                 placeholder="Email hoặc Số điện thoại"
                 startAdornment={
                   <InputAdornment position="start">
@@ -107,7 +106,6 @@ const LoginPage = props => {
                 id="password"
                 required
                 type="password"
-                defaultValue="12345678"
                 placeholder="Mật khẩu"
                 startAdornment={
                   <InputAdornment position="start">

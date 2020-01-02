@@ -43,12 +43,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function OneColumn({ minheight, children, }) {
+function OneColumn({ children, }) {
   return (
     <StyledScrollbars
       autoHide
       autoHideTimeout={500}
-      minheight={minheight}
     >
       <StyledDialogContent>
         {children}
@@ -98,7 +97,7 @@ function CustomModal({
   onConfirm = () => null, onCancle = () => null, 
   open, setOpen, 
   maxWidth='md', fullWidth = false,
-  minheight='450px',
+  className = ''
 }) {
 
   function handleCancle() {
@@ -119,6 +118,7 @@ function CustomModal({
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
+      className={className}
     >
       <StyledDialogTitle id="alert-dialog-slide-title">
         <ColorTypo uppercase>{title}</ColorTypo>
@@ -127,7 +127,7 @@ function CustomModal({
         </IconButton>
       </StyledDialogTitle>
       {columns === 1 && (
-        <OneColumn minheight={minheight} children={children} />
+        <OneColumn children={children} />
       )}
       {columns === 2 && (
         <TwoColumns maxWidth={maxWidth} left={left} right={right} />
@@ -159,8 +159,7 @@ CustomModal.propTypes = {
   onConfirm: PropTypes.func, 
   onCancle: PropTypes.func, 
   open: PropTypes.bool.isRequired, 
-  setOpen: PropTypes.func.isRequired,
-  minheight:PropTypes.string
+  setOpen: PropTypes.func.isRequired
 };
 
 export default CustomModal;

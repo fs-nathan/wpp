@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { actionVisibleDrawerMessage } from '../../../actions/system/system';
@@ -32,22 +32,20 @@ const listNotification = [
     read: true
   }
 ];
-class DrawerNotification extends Component {
-  render() {
-    // const { actionVisibleDrawerMessage, typeDrawer } = this.props;
-    return (
-      <div className="drawer-content-container">
-        <HeaderDrawer title="Thông báo" subHeader />
-        <div className="content-drawer">
-          {listNotification.map((message, index) => (
-            <ItemMessageNotification item={message} key={index} />
-          ))}
-        </div>
-        <FooterDrawer />
+const DrawerNotification = props => {
+  // const { actionVisibleDrawerMessage, typeDrawer } = props;
+  return (
+    <div className="drawer-content-container">
+      <HeaderDrawer title="Thông báo" subHeader />
+      <div className="content-drawer">
+        {listNotification.map((message, index) => (
+          <ItemMessageNotification item={message} key={index} />
+        ))}
       </div>
-    );
-  }
-}
+      <FooterDrawer />
+    </div>
+  );
+};
 
 export default connect(
   state => ({

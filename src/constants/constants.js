@@ -13,7 +13,6 @@ export const DRAWER_TYPE = {
 export const SETTING_ACCOUNT = {
   INFO: 'info',
   CHANGE_PASSWORD: 'change-password',
-  TICKET_MANAGER: 'ticket',
   NOTIFICATION_WORKPLUS: 'notification-workplus',
   NOTIFICATION_WORKPLUS_DETAIL: 'notification-workplus-detail'
 };
@@ -23,7 +22,9 @@ export const SETTING_GROUP = {
   ORDER: 'order',
   ORDER_DETAIL: 'order-detail',
   CREATE_ORDER: 'create-order',
-  PAYMENT: 'payment'
+  PAYMENT: 'payment',
+  LANGUAGE: 'language',
+  NOTIFICATION: 'notification'
 };
 export const MESSAGE = {
   ALL: 'message-all',

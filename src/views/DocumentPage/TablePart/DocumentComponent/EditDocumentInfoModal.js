@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import { withRouter } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
@@ -9,22 +9,40 @@ import {
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import { DialogContent } from './TableCommon';
-
-const currencies = [
-  { value: 'USD', label: 'Chưa phát hành' },
-  { value: 'EUR', label: 'Đang phát hành' },
-  { value: 'BTC', label: 'Đã phát hành' }
-];
+import { updateDocumentInfo } from '../../../../actions/documents';
 
 const EditDocumentInfoModal = props => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(props.item.date_released || new Date())
+  );
+  const formInfo = useRef(null);
+
+  const handleUpdate = async e => {
+    // e.preventDefault();
+    try {
+      const { elements } = formInfo.current;
+      const result = {
+        file_id: props.item.id,
+        description: elements.description.value,
+        date_released: elements.date_released.value,
+        version: elements.version.value,
+        author: elements.author.value,
+        user_approved: elements.user_approved.value,
+        storage_address: elements.storage_address.value
+      };
+      console.log('result', result);
+      await updateDocumentInfo(result);
+      props.getData();
+      props.onClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleDateChange = date => {
     setSelectedDate(date);
   };
-  const handleUpdate = () => {
-    props.onOk();
-  };
+
   return (
     <ModalCommon
       title="Thông tin tài liệu"
@@ -32,101 +50,75 @@ const EditDocumentInfoModal = props => {
       footerAction={[{ name: 'Cập nhật', action: handleUpdate }]}
     >
       <DialogContent dividers className="dialog-content">
-        <TextField
-          // value={value}
-          // variant="outlined"
-          id="standard-full-width"
-          label="Miêu tả tài liệu"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{ shrink: true }}
-          className="create-order-title"
-          // onChange={event => handleChangeText(event.target.value)}
-        />
-        <TextField
-          // value={value}
-          // variant="outlined"
-          id="standard-full-width"
-          label="Ngày phát hành"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{ shrink: true }}
-          className="create-order-title"
-          // onChange={event => handleChangeText(event.target.value)}
-        />
-        <p>
+        <form ref={formInfo}>
+          <TextField
+            id="description"
+            label="Mô tả tài liệu"
+            fullWidth
+            margin="normal"
+            multiline
+            rows="2"
+            rowsMax="4"
+            defaultValue={props.item.description}
+            InputLabelProps={{ shrink: true }}
+            // inputProps={{ maxLength: 300 }}
+            className="create-order-title"
+          />
+
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
+              autoOk
               variant="inline"
-              format="MM/dd/yyyy"
+              format="dd/MM/yyyy"
               margin="normal"
-              id="date-picker-inline"
+              id="date_released"
               label="Ngày phát hành"
               value={selectedDate}
               onChange={handleDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date'
-              }}
+              KeyboardButtonProps={{ 'aria-label': 'change date' }}
               fullWidth
               InputLabelProps={{ shrink: true }}
               className="create-order-title"
             />
           </MuiPickersUtilsProvider>
-        </p>
-
-        <TextField
-          id="outlined-select-currency-native"
-          select
-          label="Phiên bản"
-          // value={currency}
-          // onChange={handleChange}
-          fullWidth
-          SelectProps={{ native: true }}
-          placeholder="Chọn phiên bản"
-          // variant="outlined"
-          InputLabelProps={{ shrink: true }}
-          className="create-order-title"
-        >
-          {currencies.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField>
-        <TextField
-          // value={value}
-          // variant="outlined"
-          id="standard-full-width"
-          label="Người soạn tài liệu"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{ shrink: true }}
-          className="create-order-title"
-          // onChange={event => handleChangeText(event.target.value)}
-        />
-        <TextField
-          // value={value}
-          // variant="outlined"
-          id="standard-full-width"
-          label="Người ký duyệt"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{ shrink: true }}
-          className="create-order-title"
-          // onChange={event => handleChangeText(event.target.value)}
-        />
-        <TextField
-          // value={value}
-          // variant="outlined"
-          id="standard-full-width"
-          label="Nơi lưu trữ"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{ shrink: true }}
-          className="create-order-title"
-          // onChange={event => handleChangeText(event.target.value)}
-        />
+          <TextField
+            id="version"
+            label="Phiên bản"
+            fullWidth
+            margin="normal"
+            defaultValue={props.item.version}
+            InputLabelProps={{ shrink: true }}
+            className="create-order-title"
+          />
+          <TextField
+            id="author"
+            label="Người soạn tài liệu"
+            fullWidth
+            margin="normal"
+            defaultValue={props.item.author}
+            InputLabelProps={{ shrink: true }}
+            className="create-order-title"
+          />
+          <TextField
+            id="user_approved"
+            label="Người ký duyệt"
+            fullWidth
+            margin="normal"
+            defaultValue={props.item.user_approved}
+            InputLabelProps={{ shrink: true }}
+            className="create-order-title"
+          />
+          <TextField
+            id="storage_address"
+            label="Nơi lưu trữ"
+            fullWidth
+            margin="normal"
+            defaultValue={props.item.storage_address}
+            InputLabelProps={{ shrink: true }}
+            className="create-order-title"
+          />
+        </form>
       </DialogContent>
     </ModalCommon>
   );
