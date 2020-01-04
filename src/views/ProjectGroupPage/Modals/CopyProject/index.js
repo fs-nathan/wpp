@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { 
   TextField, FormControl, FormControlLabel, 
   Radio, RadioGroup, FormLabel, OutlinedInput,
@@ -17,88 +16,69 @@ import { get, map, filter } from 'lodash';
 import Icon from '@mdi/react';
 import { mdiCheckCircle, } from '@mdi/js';
 import { useRequiredString, useRequiredDate } from '../../../../hooks';
+import './style.scss';
 
-const Header = styled(ColorTypo)`
-  margin-bottom: 8px;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-`;
+const Header = ({ className = '', ...props }) =>
+  <ColorTypo 
+    className={`view_ProjecrGroup_Copy_Project_Modal___header ${className}`}
+    {...props}
+  />;
 
-const StyledTypo = styled(Typography)`
-  font-size: 14px;
-`;
+const StyledTypo = ({ className = '', ...props }) =>
+  <Typography 
+    className={`view_ProjecrGroup_Copy_Project_Modal___typography ${className}`}
+    {...props}
+  />;
 
-const StyledFormControl = styled(FormControl)`
-  & > legend {
-    margin-bottom: 8px;
-  }
-`;
+const StyledFormControl = ({ className = '', ...props }) =>
+  <FormControl 
+    className={`view_ProjecrGroup_Copy_Project_Modal___form-control ${className}`}
+    {...props}
+  />;
 
-const StyledFormLabel = styled(FormLabel)`
-  font-size: 14px;
-  && {
-    color: #a5a0a0;
-  }
-`;
+const StyledFormLabel = ({ className = '', ...props }) =>
+  <FormLabel 
+    className={`view_ProjecrGroup_Copy_Project_Modal___form-label ${className}`}
+    {...props}
+  />;
 
-const ListContainer = styled.div`
-  margin-top: 8px;
-`;
+const ListContainer = ({ className = '', ...props }) =>
+  <div 
+    className={`view_ProjecrGroup_Copy_Project_Modal___list-container ${className}`}
+    {...props}
+  />;
 
-const StyledListSubheader = styled(ListSubheader)`
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 5px 0;
-  margin: 0 16px;
-  &:hover {
-    cursor: pointer;
-  }
-  & > * { 
-    color: rgba(0, 0, 0, 0.54);
-    font-size: 14px;
-  }
-`;
+const StyledListSubheader = ({ className = '', ...props }) =>
+  <ListSubheader 
+    className={`view_ProjecrGroup_Copy_Project_Modal___list-subheader ${className}`}
+    {...props}
+  />;
 
-const CustomListItem = styled(StyledListItem)`
-  padding: 10px 16px;
-`;
+const CustomListItem = ({ className = '', ...props }) =>
+  <StyledListItem 
+    className={`view_ProjecrGroup_Copy_Project_Modal___list-item ${className}`}
+    {...props}
+  />;
 
-const StyledPrimary = styled(({ isSelected, ...rest }) => <Primary {...rest} />)`
-  display: flex;
-  align-items: center;
-  & > * {
-    &:first-child {
-      fill: ${props => props.isSelected ? '#05b50c' : 'rgba(0, 0, 0, 0)'};
-    }
-    &:last-child {
-      color: ${props => props.isSelected ? '#05b50c' : '#444'};
-      font-size: 14px;
-      margin-left: 8px;
-    }
-  }
-`;
+const StyledPrimary = ({ className = '', isSelected, ...props }) =>
+  <Primary 
+    className={`${isSelected 
+      ? 'view_ProjecrGroup_Copy_Project_Modal___primary-selected' 
+      : 'view_ProjecrGroup_Copy_Project_Modal___primary'} ${className}`}
+    {...props}
+  />;
 
-const LeftContainer = styled.div`
-  & > * {
-    &:nth-child(1) {
-      width: 90%;
-      margin: 8px auto;
-    }
-  }
-`;
+const LeftContainer = ({ className = '', ...props }) =>
+  <div 
+    className={`view_ProjecrGroup_Copy_Project_Modal___left-container ${className}`}
+    {...props}
+  />;
 
-const RightContainer = styled.div`
-  & > * {
-    &:nth-child(1), &:nth-child(3) {
-      font-size: 14px;
-      padding: 12px;
-    }
-    &:nth-child(2), &:nth-child(4) {
-      padding: 0 12px;
-    }
-  }
-`;
+const RightContainer = ({ className = '', ...props }) =>
+  <div 
+    className={`view_ProjecrGroup_Copy_Project_Modal___right-container ${className}`}
+    {...props}
+  />;
 
 function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject }) {
 

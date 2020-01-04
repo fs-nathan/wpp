@@ -1,0 +1,22 @@
+.view_Member_UserList___banner {
+  padding: 15px;
+};
+
+.view_Member_UserList___list {
+  & {
+    padding: 0;
+  }
+  & > li:hover {
+    background: rgba(0, 0, 0, 0);
+  }
+  &:nth-child(2) {
+    padding: 8px 0;
+  }
+};
+
+.view_Member_UserList___room-name {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #9c9c9c;
+  padding: 15px;
+};

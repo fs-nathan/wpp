@@ -1,14 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { StyledListItem, Primary, Secondary } from '../../../../../components/CustomList';
 import CustomAvatar from '../../../../../components/CustomAvatar';
 import { ListItemText } from '@material-ui/core';
 import { get } from 'lodash';
+import './style.scss';
 
-const CustomStyledListItem = styled(StyledListItem)`
-  padding: 15px;
-`;
+const CustomStyledListItem = ({ className = '', ...props }) => 
+  <StyledListItem 
+    className={`view_Member_UserListItem___list-item ${className}`}
+    {...props}
+  />;
 
 function CustomListItem({ user, handleLink, }) {
 

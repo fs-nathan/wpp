@@ -1,0 +1,19 @@
+.comp_UsersTableComponents___container {
+  grid-area: right;
+  min-height: 100%;
+};
+
+.comp_UsersTableComponents___sub-title {
+  font-size: 13px;
+  & > span {
+    color: blue;
+  }
+};
+
+.comp_UsersTableComponents___name {
+  font-weight: 500;
+};
+
+.comp_UsersTableComponents___setting-container {
+  margin-right: 16px;
+};

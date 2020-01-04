@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { IconButton, Menu, MenuItem,  } from '@material-ui/core';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import Icon from '@mdi/react';
@@ -20,32 +19,15 @@ import ErrorBox from '../../../../components/ErrorBox';
 import CustomTable from '../../../../components/CustomTable';
 import CustomBadge from '../../../../components/CustomBadge';
 import AlertModal from '../../../../components/AlertModal';
+import {
+  Container, SubTitle, NameSpan, SettingContainer,
+} from '../../../../components/UsersTableComponents';
 import { get } from 'lodash';
 import TitleManagerModal from '../../Modals/TitleManager';
 import RoleManagerModal from '../../Modals/RoleManager';
 import LogoManagerModal from '../../Modals/LogoManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import PermissionSettingsModal from '../../Modals/PermissionSettings';
-
-const Container = styled.div`
-  grid-area: right;
-  min-height: 100%;
-`;
-
-const SubTitle = styled.span`
-  font-size: 13px;
-  & > span {
-    color: blue;
-  }
-`;
-
-const NameSpan = styled.span`
-  font-weight: 500;
-`;
-
-const SettingContainer = styled.div`
-  margin-right: 16px;
-`;
 
 const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
 

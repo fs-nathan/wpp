@@ -1,79 +1,123 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { 
-  mdiDragVertical, mdiAccountDetails, 
-  mdiAlarm, mdiAlarmOff, mdiTimerSand,
-  mdiAccountArrowLeft, mdiAccountArrowRight, mdiAccountSearch,
-  mdiRocket, mdiHeartPulse, mdiCoffee,  
+  mdiAccountSettingsOutline, mdiClockOutline, 
+  mdiAccountArrowLeft, mdiAccountArrowRight,
+  mdiAccountCheck, mdiHeartBox,  
+  mdiCircleSlice3,
 } from '@mdi/js';
 import { ListItemText } from '@material-ui/core';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
-import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
+import { StyledList, StyledListItem } from '../../../../components/CustomList';
 import { map, get } from 'lodash';
 import { connect } from 'react-redux';
+import './style.scss';
 
-const StyledPrimary = styled(Primary)`
-  font-weight: 500;
-`;
+const LabelListItem = ({ className = '', ...props }) => 
+  <StyledListItem 
+    className={`view_Job_Tablist___label-list-item ${className}`} 
+    {...props}  
+  />;
 
-const CustomStyledList = styled(StyledList)`
-  & > * {
-    &:nth-child(1), &:nth-child(4), &:nth-child(7) {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-  }
-`;
+const LabelPrimary = ({ className = '', ...props }) =>
+  <span 
+    className={`view_Job_Tablist___label-primary ${className}`} 
+    {...props} 
+  />;
 
-const CustomIcon = styled(Icon)`
-  border-radius: 100%;
-  padding: 8px;
-  background: #eee;
-`;
+const TaskPrimary = ({ className = '', ...props }) =>
+  <div 
+    className={`view_Job_Tablist___task-primary ${className}`} 
+    {...props} 
+  />;
 
 const tabs = [{
-  name: 'Công việc của bạn',
-  task_count: 0,
-  iconPath: mdiAccountDetails,
+  group: 'Gần đây',
+  tasks: [{
+    name: 'Công việc của bạn',
+    task_count: 0,
+    iconPath: mdiClockOutline,
+    iconColor: '#ffb400',
+  }],
 }, {
-  name: 'Đến hạn',
-  task_count: 0,
-  iconPath: mdiAlarm,
+  group: 'Trạng thái',
+  tasks: [{
+    name: 'Công việc đến hạn',
+    task_count: 0,
+    iconPath: mdiCircleSlice3,
+    iconColor: '#ffa900',
+  }, {
+    name: 'Công việc quá hạn',
+    task_count: 0,
+    iconPath: mdiCircleSlice3,
+    iconColor: '#ff0000',
+  }, {
+    name: 'Công việc đang chờ',
+    task_count: 0,
+    iconPath: mdiCircleSlice3,
+    iconColor: '#a5a5a5',
+  }, {
+    name: 'Công việc hoàn thành',
+    task_count: 0,
+    iconPath: mdiCircleSlice3,
+    iconColor: '#0cd716',
+  }],
 }, {
-  name: 'Quá hạn',
-  task_count: 0,
-  iconPath: mdiAlarmOff,
+  group: 'Nhiệm vụ',
+  tasks: [{
+    name: 'Giao việc',
+    task_count: 0,
+    iconPath: mdiAccountArrowRight,
+    iconColor: '#ff0000',
+  }, {
+    name: 'Công việc được giao',
+    task_count: 0,
+    iconPath: mdiAccountArrowLeft,
+    iconColor: '#1691f2',
+  }, {
+    name: 'Công việc tự đề xuất',
+    task_count: 0,
+    iconPath: mdiAccountCheck,
+    iconColor: '#9c00ff',
+  }],
 }, {
-  name: 'Đang chờ',
-  task_count: 0,
-  iconPath: mdiTimerSand,
+  group: 'Ưu tiên',
+  tasks: [{
+    name: 'Ưu tiên cao',
+    task_count: 0,
+    iconPath: mdiHeartBox,
+    iconColor: '#ff0000',
+  }, {
+    name: 'Ưu tiên trung bình',
+    task_count: 0,
+    iconPath: mdiHeartBox,
+    iconColor: '#ffa900',
+  }, {
+    name: 'Ưu tiên thấp',
+    task_count: 0,
+    iconPath: mdiHeartBox,
+    iconColor: '#0cd716',
+  }],
 }, {
-  name: 'Được giao',
-  task_count: 0,
-  iconPath: mdiAccountArrowLeft,
-}, {
-  name: 'Tôi đề xuất',
-  task_count: 0,
-  iconPath: mdiAccountArrowRight,
-}, {
-  name: 'Tôi giám sát',
-  task_count: 0,
-  iconPath: mdiAccountSearch,
-}, {
-  name: 'Ưu tiên cao',
-  task_count: 0,
-  iconPath: mdiRocket,
-}, {
-  name: 'Ưu tiên trung bình',
-  task_count: 0,
-  iconPath: mdiHeartPulse,
-}, {
-  name: 'Ưu tiên thấp',
-  task_count: 0,
-  iconPath: mdiCoffee,
+  group: 'Vai trò',
+  tasks: [{
+    name: 'Giám sát',
+    task_count: 0,
+    iconPath: mdiAccountSettingsOutline,
+    iconColor: '#a5a5a5',
+  }, {
+    name: 'Quản lý',
+    task_count: 0,
+    iconPath: mdiAccountSettingsOutline,
+    iconColor: '#a5a5a5',
+  }, {
+    name: 'Thực hiện',
+    task_count: 0,
+    iconPath: mdiAccountSettingsOutline,
+    iconColor: '#a5a5a5',
+  }],
 }];
 
 function ProjectList() {
@@ -92,27 +136,36 @@ function ProjectList() {
             component: () => <LoadingBox />,
           }}
         >
-          <CustomStyledList>
+          <StyledList>
             {map(tabs, (tab, index) => (
-              <StyledListItem
-                to='#'
-                component={Link}
-              >
-                <div>
-                  <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
-                </div>
-                <CustomIcon path={get(tab, 'iconPath')} size={1.5} color={'rgba(0, 0, 0, 0.54)'} />
-                <ListItemText 
-                  primary={
-                    <StyledPrimary>{get(tab, 'name', '')}</StyledPrimary>  
-                  }
-                  secondary={
-                    <Secondary>{get(tab, 'task_count', 0)} việc</Secondary>
-                  }
-                /> 
-              </StyledListItem>
+              <>
+                <LabelListItem
+                  key={index}
+                >
+                  <ListItemText 
+                    primary={
+                      <LabelPrimary>{get(tab, 'group', '')}</LabelPrimary>  
+                    }
+                  /> 
+                </LabelListItem>
+                {map(get(tab, 'tasks', []), (task, _index) => (
+                  <StyledListItem
+                    key={`${index}-${_index}`}
+                  >
+                    <ListItemText 
+                      primary={
+                        <TaskPrimary>
+                          <Icon path={get(task, 'iconPath')} size={1} color={get(task, 'iconColor')} />
+                          <span>{get(task, 'name', '')}</span>
+                          <small>({get(task, 'task_count', 0)})</small>
+                        </TaskPrimary>  
+                      }
+                    /> 
+                  </StyledListItem>
+                ))}
+              </>
             ))}
-          </CustomStyledList>
+          </StyledList>
         </LeftSideContainer>
       )}
     </>

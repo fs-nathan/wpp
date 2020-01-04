@@ -1,0 +1,92 @@
+.view_Member_UserInfo___container {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: minmax(450px, 3fr) minmax(350px, 2fr);
+  grid-template-areas: 
+    "main side";
+};
+
+.view_Member_UserInfo___main-box {
+  grid-area: main;
+  padding: 16px;
+  border-right: 1px solid rgba(0, 0, 0, .1);
+};
+
+.view_Member_UserInfo___main-header {
+  display: flex;
+  align-items: center;
+  & > *:not(:first-child) {
+    margin-left: 16px;
+  }
+  & > *:last-child {
+    margin-left: auto;
+  }
+};
+
+.view_Member_UserInfo___main-list {
+  margin-top: 16px;
+};
+
+.view_Member_UserInfo___list-item {
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  &:last-child {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    & > *:last-child {
+      margin-top: 8px;
+    }
+  }
+};
+
+.view_Member_UserInfo___main-footer {
+  margin-top: 16px;
+  & > input[type='file'] {
+    display: none;
+  }
+  & > label:last-child {
+    margin-top: 8px;
+    & > span {
+      text-transform: none;
+    }
+  }
+};
+
+.view_Member_UserInfo___button {
+  display: flex;
+  align-items: center;
+  background-color: #eee;
+  padding-left: 32px;
+  & > span:first-child {
+    justify-content: flex-start;
+    & > *:first-child{
+      margin-right: 8px;
+    }
+  }
+};
+
+.view_Member_UserInfo___side-box {
+  grid-area: side;
+};
+
+.view_Member_UserInfo___side-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 6rem;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+};
+
+.view_Member_UserInfo___side-list {
+  padding: 16px;
+  & > * {
+    padding: 0px;
+    border-bottom: none;
+  }
+};
