@@ -4,8 +4,9 @@ import {
   LIST_USER_ROLE_FAIL,
 } from '../../constants/actions/userRole/listUserRole';
 
-export const listUserRole = () => ({
+export const listUserRole = (quite = false) => ({
   type: LIST_USER_ROLE,
+  quite,
 });
 
 export const listUserRoleSuccess = ({ userRoles }) => ({

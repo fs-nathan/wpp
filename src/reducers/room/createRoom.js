@@ -6,7 +6,7 @@ import {
 
 export const initialState = {
   data: {
-    roomId: null,  
+    room: null,  
   },
   error: null,
   loading: false,

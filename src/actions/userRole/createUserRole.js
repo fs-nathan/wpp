@@ -12,10 +12,10 @@ export const createUserRole = ({ name, description }) => ({
   }
 });
 
-export const createUserRoleSuccess = ({ userRoleId }) => ({
+export const createUserRoleSuccess = ({ userRole }) => ({
   type: CREATE_USER_ROLE_SUCCESS,
   data: {
-    userRoleId,
+    userRole,
   },
 });
 

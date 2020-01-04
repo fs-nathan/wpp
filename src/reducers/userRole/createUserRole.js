@@ -6,7 +6,7 @@ import {
 
 export const initialState = {
   data: {
-    userRoleId: null,  
+    userRole: null,  
   },
   error: null,
   loading: false,

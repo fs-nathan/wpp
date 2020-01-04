@@ -1,23 +1,38 @@
 import React from 'react';
-import styled from 'styled-components';
-import ListPart from './ListPart';
-import TablePart from './TablePart';
+import { Route } from 'react-router-dom';
+import TabList from './LeftPart/TabList';
+import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
-const Container = styled.div`
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
-  grid-template-areas: 
-    "list table";
-`;
+export const Context = React.createContext();
+const { Provider } = Context;
 
 function JobPage() {
+
   return (
-    <Container>
-      <ListPart />
-      <TablePart />
-    </Container>
+    <Provider value={{
+    }}>
+      <Route 
+        path='/tasks'
+        render={({ match: { url, } }) => (
+          <>
+            <Route 
+              path={`${url}`}
+              exact
+              render={props => (
+                <TwoColumnsLayout 
+                  leftRenders={[
+                    () => <TabList {...props} />,
+                  ]}
+                  rightRender={
+                    () => null
+                  }
+                />
+              )}
+            />
+          </>
+        )}
+      />
+    </Provider>
   )
 }
 

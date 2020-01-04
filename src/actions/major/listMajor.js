@@ -4,8 +4,9 @@ import {
   LIST_MAJOR_FAIL,
 } from '../../constants/actions/major/listMajor';
 
-export const listMajor = () => ({
+export const listMajor = (quite = false) => ({
   type: LIST_MAJOR,
+  quite,
 });
 
 export const listMajorSuccess = ({ majors }) => ({

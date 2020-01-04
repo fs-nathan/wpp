@@ -5,7 +5,9 @@ import {
 } from '../../constants/actions/userRole/updateUserRole';
 
 export const initialState = {
-  data: {},
+  data: {
+    userRole: null
+  },
   error: null,
   loading: false,
 };
@@ -21,7 +23,7 @@ function reducer(state = initialState, action) {
     case UPDATE_USER_ROLE_SUCCESS: 
       return {
         ...state, 
-        data: {},
+        data: action.data,
         error: null,
         loading: false,
       };

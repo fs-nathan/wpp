@@ -342,11 +342,7 @@ async function doCreateOffer(payload) {
 
 function* createOffer(action) {
   try {
-    console.log("offer::::", action.payload.data);
-    
     const res = yield call(doCreateOffer, action.payload.data)
-    console.log("res", res);
-    
     yield put(actions.createOfferSuccess(res))
     yield put(actions.getOffer(action.payload.taskId))
   } catch (error) {

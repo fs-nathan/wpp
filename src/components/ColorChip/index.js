@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { Chip } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles';
 import colorPal from '../../helpers/colorPalette';
+import PropTypes from 'prop-types';
 
 const StyledChip = styled(({ color, badge, size, onClick, ...rest }) => <Chip size={size} onClick={onClick} {...rest} />)`
   background-color: ${props => props.color ? colorPal[props.color][0] : colorPal['default'][0]};
@@ -22,5 +23,12 @@ const StyledChip = styled(({ color, badge, size, onClick, ...rest }) => <Chip si
     }
   `}
 `;
+
+StyledChip.propTypes = {
+  color: PropTypes.string,
+  badge: PropTypes.bool,
+  size: PropTypes.string,
+  onClick: PropTypes.func,
+}
 
 export default StyledChip;

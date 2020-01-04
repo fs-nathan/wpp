@@ -1,12 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { login, loginCheckState } from '../actions/authentications';
+import { withRouter } from 'react-router';
+import { Routes } from '../constants/routes';
+import { TOKEN } from '../constants/constants';
 import routes from '../routes';
-import logo from '../assets/logo.png';
+import { avatar_default_120 } from '../assets';
 import LeftBar from '../views/LeftBar';
 import TopBar from '../views/TopBar';
+import DrawerComponent from '../components/Drawer/Drawer';
+import NoticeModal from '../components/NoticeModal/NoticeModal';
+import GroupModal from '../components/NoticeModal/GroupModal';
+import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
+import { actionFetchGroupDetail } from '../actions/setting/setting';
 
 const Container = styled.div`
   height: 100vh;
@@ -15,11 +22,14 @@ const Container = styled.div`
   grid-template-rows: 55px 1fr;
   grid-template-columns: 80px minmax(0, 1fr);
   grid-template-areas:
-    "logo top"
-    "left main";
+    'logo top'
+    'left main';
+  &.view-full-page {
+    display: initial;
+  }
 `;
 
-const LogoBox = styled(Link)`
+const LogoBox = styled.div`
   grid-area: logo;
   display: flex;
   justify-content: center;
@@ -34,14 +44,14 @@ const LogoBox = styled(Link)`
 const ContentBox = styled.div`
   grid-area: main;
   overflow: hidden;
-  &::-webkit-scrollbar-track{
+  &::-webkit-scrollbar-track {
     background-color: unset !important;
   }
-  &::-webkit-scrollbar{
+  &::-webkit-scrollbar {
     width: 10px;
     background-color: unset !important;
   }
-  &::-webkit-scrollbar-thumb{
+  &::-webkit-scrollbar-thumb {
     border-radius: 5px;
     cursor: pointer !important;
     min-height: 50px !important;
@@ -49,18 +59,18 @@ const ContentBox = styled.div`
       background-color: #4a4a4a54;
     }
   }
-  &:hover::-webkit-scrollbar-thumb{
+  &:hover::-webkit-scrollbar-thumb {
     background-color: #88888854;
   }
   && * {
-    &::-webkit-scrollbar-track{
+    &::-webkit-scrollbar-track {
       background-color: unset !important;
     }
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
       width: 5px;
       background-color: unset !important;
     }
-    &::-webkit-scrollbar-thumb{
+    &::-webkit-scrollbar-thumb {
       border-radius: 5px;
       cursor: pointer !important;
       min-height: 50px !important;
@@ -68,14 +78,48 @@ const ContentBox = styled.div`
         background-color: #4a4a4a54;
       }
     }
-    &:hover::-webkit-scrollbar-thumb{
+    &:hover::-webkit-scrollbar-thumb {
       background-color: #88888854;
     }
-  } 
+  }
 `;
 
-function MainLayout({ doLogin, doLoginCheckState }) {
+const Image = styled.img`
+  height: 40px !important;
+  width: 40px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 2px;
+  margin-top: 10px;
+`;
 
+function MainLayout({
+  location,
+  colors,
+  history,
+  actionFetchGroupDetail,
+  groupDetail,
+  isDocumentDetail
+}) {
+  const [visibleGroupModal, setVisibleGroupModal] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
+      actionFetchGroupDetail(true);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  const isViewFullPage = route => {
+    return (
+      route === Routes.REGISTER ||
+      route === Routes.LOGIN ||
+      route === Routes.CONFIRM_REGISTRATION ||
+      route === Routes.FORGOT_PASSWORD
+    );
+  };
+
+<<<<<<< HEAD
   React.useEffect(() => {
     doLogin({
       email: "huuthanhxd@gmail.com",
@@ -83,6 +127,8 @@ function MainLayout({ doLogin, doLoginCheckState }) {
     });
   }, [doLogin]);
   
+=======
+>>>>>>> origin/ManhHoang
   function configRoute(routes) {
     if (routes.length === 0) return;
     const result = routes.map((route, index) => {
@@ -94,43 +140,58 @@ function MainLayout({ doLogin, doLoginCheckState }) {
           component={route.component}
         />
       );
-    })
+    });
     return <Switch>{result}</Switch>;
   }
-  
-  return (
-    <Container>
-      <LogoBox to="/">
-        <img
-          src={logo}
-          alt="vtask-logo-menu"
-        />
-      </LogoBox>
-      <LeftBar />
-      <TopBar />
-      <ContentBox>
-        {configRoute(routes)}
-      </ContentBox>
-    </Container>
-  )
-}
 
-function MainLayoutWrapper({ ...rest }) {
+  if (!localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
+    history.push(Routes.LOGIN);
+  }
+
+  const bgColor = colors.find(item => item.selected === true);
+
   return (
-    <Router>
-      <MainLayout {...rest} />
-    </Router>
+    <Container
+      className={isViewFullPage(location.pathname) ? 'view-full-page' : ''}
+    >
+      {!isViewFullPage(location.pathname) && (
+        <React.Fragment>
+          <LogoBox
+            onClick={() => setVisibleGroupModal(true)}
+            style={{ background: bgColor.value }}
+          >
+            <Image
+              src={groupDetail.logo || avatar_default_120}
+              alt="vtask-logo-menu"
+            />
+          </LogoBox>
+          <LeftBar />
+          <TopBar />
+          <DrawerComponent />
+          <NoticeModal />
+          {isDocumentDetail && <DocumentDetail />}
+          {visibleGroupModal && (
+            <GroupModal
+              visibleGroupModal={visibleGroupModal}
+              onClose={() => setVisibleGroupModal(false)}
+            />
+          )}
+        </React.Fragment>
+      )}
+      <ContentBox>{configRoute(routes)}</ContentBox>
+    </Container>
   );
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    doLogin: ({ email, password }) => dispatch(login({ email, password })),
-    doLoginCheckState: () => dispatch(loginCheckState()),
-  };
-};
+function MainLayoutWrapper({ ...rest }) {
+  return <MainLayout {...rest} />;
+}
 
 export default connect(
-  null, 
-  mapDispatchToProps,
-)(MainLayoutWrapper);
+  state => ({
+    colors: state.setting.colors,
+    groupDetail: state.setting.groupDetail,
+    isDocumentDetail: state.system.isDocumentDetail
+  }),
+  { actionFetchGroupDetail }
+)(withRouter(MainLayoutWrapper));

@@ -21,6 +21,7 @@ function reducer(state = initialState, action) {
     case SORT_ROOM_SUCCESS: 
       return {
         ...state,
+        data: action.data,
         error: null,
         loading: false,
       };

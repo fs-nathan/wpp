@@ -1,0 +1,67 @@
+.MainAccount {
+  display: flex;
+  .left-content {
+    height: 100vh;
+    width: 65%;
+    background: linear-gradient(45deg, #33505e 0%, #4caf50 100%);
+    .bg-login {
+      max-width: 100%;
+      min-height: 500px;
+      max-height: 100vh;
+    }
+  }
+  .right-content {
+    width: 35%;
+    min-height: 100vh;
+
+    .inner-right-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
+      padding-right: 17px;
+    }
+
+    .main-account-container {
+      width: 100%;
+      padding-bottom: 20px;
+    }
+    .bottom-content {
+      height: 60px;
+      width: 100%;
+      border-top: 1px solid #d7d7d7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .link-item {
+        margin: 0 10px;
+        color: #8e8e8e;
+        font-weight: 500;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .MainAccount {
+    .left-content {
+      width: 60%;
+    }
+    .right-content {
+      width: 40%;
+    }
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .MainAccount {
+    .left-content {
+      width: 0;
+      display: none;
+    }
+    .right-content {
+      width: 100%;
+    }
+  }
+}

@@ -1,25 +1,28 @@
 import React from "react";
-import styled from "styled-components";
-import NewsPart from './NewsPart';
-import JobsPart from './JobsPart';
-import RemindPart from './RemindPart';
-
-const Container = styled.div`
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: minmax(360px, 4fr) repeat(2, minmax(270px, 3fr));
-  grid-template-areas:
-    "news jobs remind";
-`;
+import { Route } from 'react-router-dom';
+import './style.scss';
 
 function HomePage() {
   return (
-    <Container>
-      <NewsPart />
-      <JobsPart />
-      <RemindPart />
-    </Container>
+    <Route 
+      path='/'
+      render={({ match: { url, } }) => (
+        <>
+          <Route 
+            path={`${url}`}
+            exact
+            render={props => (
+              <div className='views_HomePage___container'>
+                <div style={{ gridArea: 'left'}}>Left</div>
+                <div style={{ gridArea: 'logo'}}>Logo</div>
+                <div style={{ gridArea: 'middle'}}>Middle</div>
+                <div style={{ gridArea: 'right'}}>Right</div>
+              </div>
+            )}  
+          />
+        </>
+      )}
+    />
   );
 }
 

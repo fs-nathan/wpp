@@ -1,10 +1,9 @@
 import React from 'react';
-import CustomTable from './components/CustomTable';
 
 function __test__() {
   return (
-    <CustomTable />
+    <div />
   )
 }
 
-export default __test__
+export default __test__;

@@ -1,0 +1,88 @@
+.print-content {
+  font-family: 'Arial sans-serif';
+  .print-head {
+    display: flex;
+    margin-bottom: 30px;
+    .head-left-right {
+      flex: '0 0 50%';
+      width: 50%;
+      .logo-container {
+        width: 125px;
+      }
+      .title-head-left-right {
+        font-size: 16px;
+        font-weight: bold;
+        color: #7b7a7a;
+        padding: 20px 0 10px;
+      }
+      .infor-address-tel {
+        color: #7b7a7a;
+        padding: 3px 0;
+      }
+      .infor-email {
+        color: #7b7a7a;
+      }
+      .infor-right {
+        text-align: right;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 16px;
+        padding-bottom: 10px;
+      }
+      .infor-right-oder {
+        text-align: right;
+        padding: 3px 0;
+        font-size: 14px;
+      }
+      .status-oder {
+        text-align: right;
+        margin-top: 28px;
+        .text-status-oder {
+          background: #f50016;
+          padding: 10px 15px;
+          color: #fff;
+          -webkit-print-color-adjust: exact !important;
+        }
+      }
+    }
+  }
+  .print-body {
+    .total-group {
+      display: flex;
+      padding-top: 20px;
+      margin-top: 20px;
+      border-top: 2px solid #000;
+      .item-total-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+.oder-init-container {
+  padding-top: 55px;
+  text-align: center;
+  background-image: url('../../assets/LayerOder.png');
+  background-repeat: no-repeat;
+  height: 64%;
+  width: 100%;
+  background-position: center;
+  .title-oder-init {
+    font-size: 18px;
+    color: #01b374;
+    font-weight: 500;
+    display: inline-block;
+    max-width: 500px;
+  }
+  .step-content {
+    padding: 50px 0;
+    .step-oder-init {
+      padding: 10px 0;
+      .text-step {
+        font-size: 14px;
+      }
+    }
+  }
+}

@@ -1,53 +1,58 @@
 import React from 'react';
-import styled from 'styled-components';
-import avatar from '../../assets/avatar.jpg';
+import { get } from 'lodash';
+import ColorTypo from '../ColorTypo';
+import CustomAvatar from '../CustomAvatar';
+import PropTypes from 'prop-types';
+import './style.scss';
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-    margin-left: -2px;
-    border-radius: 100%;
-    background-color: #fff;
-    &:not(:first-child) {
-      box-shadow: -4px -1px #f8f9fa;
-    }
-    &:last-child {
-      background-color: #31b586;
-      color: #fff;
-      & > div {
-        font-size: 10px;
-      }
-    }
-    & > img {
-      width: 20px;
-      height: 20pxl
-      border-radius: 100%;
-    } 
-  }
-`;
-
-function AvatarCircleList({ total, display }) {
+function AvatarCircle({ user }) {
   return (
-    <Container>
-      {Array.from({ length: display }).map((_, index) => {
-        return (
-          <div key={index}>
-            <img src={avatar} alt='avatar' />
-          </div>
-        );
-      })}
-      <div>
-        <div>{total-display}+</div>
-      </div>
-    </Container>
+    <CustomAvatar
+      style={{ width: 20, height: 20, }} 
+      src={get(user, 'avatar')} alt='avatar'
+    />
+  );
+}
+
+function AvatarCircleList({ display, users = [], className = '', }) {
+
+  return (
+    <div className={`comp_AvatarCircleList___container ${className}`}>
+      {users.length > 0 && (
+        <React.Fragment>
+          {users.slice(0, display).map((user, index) => {
+            return (
+              <abbr 
+                key={index}
+                title={get(user, 'name', '')}
+              >
+                <div>  
+                  <AvatarCircle 
+                    user={user}
+                  />
+                </div>
+              </abbr>
+            )
+          })}
+          {display < users.length && (  
+            <div>
+              <div>{users.length-display}+</div>
+            </div>
+          )}
+        </React.Fragment>
+      )}
+      {users.length === 0 && (
+        <ColorTypo color='gray' variant='caption'>
+          Không có dữ liệu
+        </ColorTypo>
+      )}
+    </div>
   )
+}
+
+AvatarCircleList.propTypes = {
+  display: PropTypes.number,
+  users: PropTypes.array,
 }
 
 export default AvatarCircleList;

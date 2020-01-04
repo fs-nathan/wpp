@@ -5,7 +5,9 @@ import {
 } from '../../constants/actions/position/updatePosition';
 
 export const initialState = {
-  data: {},
+  data: {
+    position: null,
+  },
   error: null,
   loading: false,
 };
@@ -21,7 +23,7 @@ function reducer(state = initialState, action) {
     case UPDATE_POSITION_SUCCESS: 
       return {
         ...state, 
-        data: {},
+        data: action.data,
         error: null,
         loading: false,
       };

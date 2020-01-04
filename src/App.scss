@@ -1,0 +1,7 @@
+.page-container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
+  grid-template-areas: 'list table';
+}

@@ -4,8 +4,9 @@ import {
   GET_USER_OF_ROOM_FAIL,
 } from '../../constants/actions/room/getUserOfRoom';
 
-export const getUserOfRoom = ({ roomId }) => ({
+export const getUserOfRoom = ({ roomId }, quite = false) => ({
   type: GET_USER_OF_ROOM,
+  quite,
   options: {
     roomId,
   },

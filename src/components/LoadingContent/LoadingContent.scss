@@ -1,0 +1,17 @@
+.loading-content-container {
+  position: relative;
+  .mark-back {
+    position: absolute;
+    background: #fff;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    opacity: 0.5;
+  }
+  .progress-turn {
+    position: absolute;
+    z-index: 1000;
+    left: calc(50% - 27px);
+    top: 35px;
+  }
+}

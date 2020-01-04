@@ -16,7 +16,7 @@ import { searchAttributesArray, searchArrayTabpart} from '../../helpers/jobDetai
 
 // Initial state for store
 const initialState = {
-    image: [],
+    image: null,
     file: [],
     isFetching: false,
     dataFetched: false,
