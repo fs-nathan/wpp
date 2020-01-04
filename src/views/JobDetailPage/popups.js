@@ -19,7 +19,7 @@ const variantIcon = {
   info: InfoIcon,
 };
 
-const useStyles1 = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   success: {
     backgroundColor: green[600],
   },
@@ -46,7 +46,7 @@ const useStyles1 = makeStyles(theme => ({
 }));
 
 function MySnackbarContentWrapper(props) {
-  const classes = useStyles1();
+  const classes = useStyles();
   const { className, message, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
@@ -69,14 +69,8 @@ function MySnackbarContentWrapper(props) {
     />
   );
 }
-const useStyles2 = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-}));
-
-export default function CustomizedSnackbars() {
-  const classes = useStyles2();
+// popup success
+export function PopupSuccess() {
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
@@ -84,25 +78,22 @@ export default function CustomizedSnackbars() {
   };
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
+    if (reason === 'clickaway') {  return; }
     setOpen(false);
   };
 
   return (
     <div>
-      <Button variant="outlined" className={classes.margin} onClick={handleClick}>
+      <Button variant="outlined" onClick={handleClick}>
         Open success snackbar
       </Button>
       <Snackbar
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'top',
+          horizontal: 'center',
         }}
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={2500}
         onClose={handleClose}
       >
         <MySnackbarContentWrapper
@@ -111,26 +102,118 @@ export default function CustomizedSnackbars() {
           message="This is a success message!"
         />
       </Snackbar>
-      <MySnackbarContentWrapper
-        variant="error"
-        className={classes.margin}
-        message="This is an error message!"
-      />
-      <MySnackbarContentWrapper
-        variant="warning"
-        className={classes.margin}
-        message="This is a warning message!"
-      />
+    </div>
+  );
+}
+// popup error
+export function PopupError() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {  return; }
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClick}>
+        Open success snackbar
+      </Button>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        open={open}
+        autoHideDuration={2500}
+        onClose={handleClose}
+      >
+        <MySnackbarContentWrapper
+          onClose={handleClose}
+          variant="error"
+          message="This is a success message!"
+        />
+      </Snackbar>
+    </div>
+  );
+}
+// popup warning
+export function PopupWarning() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {  return; }
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClick}>
+        Open success snackbar
+      </Button>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        open={open}
+        autoHideDuration={2500}
+        onClose={handleClose}
+      >
+        <MySnackbarContentWrapper
+          onClose={handleClose}
+          variant="warning"
+          message="This is a success message!"
+        />
+      </Snackbar>
       <MySnackbarContentWrapper
         variant="info"
-        className={classes.margin}
         message="This is an information message!"
       />
-      <MySnackbarContentWrapper
-        variant="success"
-        className={classes.margin}
-        message="This is a success message!"
-      />
+    </div>
+  );
+}
+// popup warning
+export function PopupInfo() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {  return; }
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleClick}>
+        Open success snackbar
+      </Button>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        open={open}
+        autoHideDuration={2500}
+        onClose={handleClose}
+      >
+        <MySnackbarContentWrapper
+          onClose={handleClose}
+          variant="info"
+          message="This is a success message!"
+        />
+      </Snackbar> 
     </div>
   );
 }

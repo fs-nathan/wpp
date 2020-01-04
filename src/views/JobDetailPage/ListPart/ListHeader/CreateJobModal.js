@@ -253,6 +253,37 @@ const TitleDialog = styled(DialogTitle)`
     text-transform: uppercase;
     font-weight: 400
 `
+// 
+let optionsList = [
+  { id: 0, value: 'Ngày và giờ (mặc định)' },
+  { id: 1, value: 'Chỉ nhập ngày' },
+  { id: 2, value: 'Không yêu cầu' },
+]
+function CommonProgressForm(props) {
+  const [value, setValue] = React.useState("Ngày và giờ (mặc định)");
+  const handleChangeFormAssign = itemValue => {
+    // console.log('itemValue::::', itemValue);
+    setValue(itemValue)
+    // let clickedItem = props.labels.find(item => item.value === itemValue)
+    // props.handleChangeAssign(clickedItem)
+  }
+  return (
+    <FormControl component="fieldset">
+      <RadioGroup aria-label="position" name="position" value={value}
+        onChange={event => handleChangeFormAssign(event.target.value)} row>
+        {props.labels && props.labels.map((item, key) =>
+          <FormControlLabel
+            key={key}
+            value={item.value}
+            control={<Radio color="primary" />}
+            label={item.value}
+            labelPlacement="end"
+          />
+        )}
+      </RadioGroup>
+    </FormControl>
+  )
+}
 
 let assignList = [
   { id: 0, value: 'Được giao' },
@@ -391,12 +422,6 @@ const DEFAULT_DATA = {
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN,
 }
-
-// let optionsList = [
-//   { id: 0, value: 'Ngày và giờ (mặc định)' },
-//   { id: 1, value: 'Chỉ nhập ngày' },
-//   { id: 2, value: 'Không yêu cầu' },
-// ]
 
 function CreateJobModal(props) {
 
@@ -558,7 +583,7 @@ function CreateJobModal(props) {
               Cài đặt
             </DefaultFlex>
           </ProgressWork>
-          {/* <CommonControlForm labels={optionsList} /> */}
+          <CommonProgressForm labels={optionsList} />
           <StartEndDay component={'span'}>
             <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
             <DivTime>
