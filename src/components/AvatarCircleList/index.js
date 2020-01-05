@@ -41,11 +41,7 @@ function AvatarCircleList({ display, users = [], className = '', }) {
           )}
         </React.Fragment>
       )}
-      {users.length === 0 && (
-        <ColorTypo color='gray' variant='caption'>
-          Không có dữ liệu
-        </ColorTypo>
-      )}
+      {users.length === 0 && (null)}
     </div>
   )
 }

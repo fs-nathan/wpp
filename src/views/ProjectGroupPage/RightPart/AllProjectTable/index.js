@@ -57,24 +57,23 @@ const ProgressBar = styled.div`
   max-width: 100px;
 `;
 
-const StyledBadge = styled(CustomBadge)`
-  max-width: 70px;
-`;
-
 const StateBox = styled(({ stateName, ...rest }) => <div {...rest} />)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   & > div > span {
-    font-size: 14px;
     color: ${props => props.stateName};
     &:first-child {
       margin-right: 6px;
+      font-size: 11px;
+    }
+    &:not(:first-child) {
+      font-size: 13px;
     }
   }
   & > small {
     margin-top: 4px;
-    font-size: 12px;
+    font-size: 13px;
     margin-left: 20px;
   }
 `;
@@ -84,12 +83,12 @@ const DurationBox = styled.div`
   flex-direction: column;
   justify-content: space-between;
   & > span {
-    font-size: 14px;
+    font-size: 13px;
     color: red;
   }
   & > small {
     margin-top: 4px;
-    font-size: 12px;
+    font-size: 13px;
   }
 `;
 
@@ -689,17 +688,24 @@ function AllProjectTable({
                 field: row => (
                   <MiddleDiv>
                     <CustomAvatar
+                      style={{
+                        width: 35,
+                        height: 35,
+                      }}
                       src={get(row, 'icon')}
                       alt="project group icon"
                     />
                   </MiddleDiv>
                 ),
-                centered: true
+                align: 'left',
+                width: '5%',
               },
               {
                 label: 'Dự án',
                 field: 'name',
-                sort: evt => handleSortColumn('name')
+                sort: evt => handleSortColumn('name'),
+                align: 'left',
+                width: '39%',
               },
               {
                 label: 'Trạng thái',
@@ -735,7 +741,9 @@ function AllProjectTable({
                     )}
                   </StateBox>
                 ),
-                sort: evt => handleSortColumn('state_name')
+                sort: evt => handleSortColumn('state_name'),
+                align: 'left',
+                width: '10%',
               },
               {
                 label: 'Hoàn thành',
@@ -747,7 +755,9 @@ function AllProjectTable({
                     />
                   </ProgressBar>
                 ),
-                sort: evt => handleSortColumn('complete')
+                sort: evt => handleSortColumn('complete'),
+                align: 'left',
+                width: '10%',
               },
               {
                 label: 'Tiến độ',
@@ -762,12 +772,14 @@ function AllProjectTable({
                     </small>
                   </DurationBox>
                 ),
-                sort: evt => handleSortColumn('duration')
+                sort: evt => handleSortColumn('duration'),
+                align: 'left',
+                width: '10%',
               },
               {
                 label: 'Ưu tiên',
                 field: row => (
-                  <StyledBadge
+                  <CustomBadge
                     color={
                       decodePriorityCode(get(row, 'priority_code', 0)).color
                     }
@@ -777,9 +789,11 @@ function AllProjectTable({
                     }
                   >
                     {get(row, 'priority_name', '')}
-                  </StyledBadge>
+                  </CustomBadge>
                 ),
-                sort: evt => handleSortColumn('priority_code')
+                sort: evt => handleSortColumn('priority_code'),
+                align: 'left',
+                width: '10%',
               },
               {
                 label: () => (
@@ -800,7 +814,8 @@ function AllProjectTable({
                     />
                   </MiddleDiv>
                 ),
-                centered: true
+                align: 'center',
+                width: '10%',
               },
               {
                 label: '',
@@ -815,7 +830,9 @@ function AllProjectTable({
                     onShowProject={() => handleShowProject(get(row, 'id'))}
                     onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
                   />
-                )
+                ),
+                align: 'center',
+                width: '5%',
               }
             ]}
             data={projects}
@@ -952,6 +969,7 @@ function AllProjectTable({
                       ) : (
                         <>
                           <KeyboardDatePicker
+                            disableToolbar
                             disabled={time !== 6}
                             inputVariant="outlined"
                             variant="inline"
@@ -964,6 +982,7 @@ function AllProjectTable({
                             maxDateMessage='Phải trước ngày kết thúc'
                           />
                           <KeyboardDatePicker 
+                            disableToolbar
                             disabled={time !== 6}
                             inputVariant="outlined"
                             variant="inline"

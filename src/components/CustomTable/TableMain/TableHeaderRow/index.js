@@ -10,11 +10,11 @@ import { get } from 'lodash';
 import './style.scss';
 
 const StyledTableHeadRow = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableHeaderRow___row ${className}`} {...rest} />;
-const StyledTableHeadCell = ({ center, className = '', ...rest }) => 
+const StyledTableHeadCell = ({ draggable, className = '', ...rest }) => 
   <TableCell 
-    className={`${center 
-      ? 'comp_CustomTable_TableHeaderRow___cell'
-      : 'comp_CustomTable_TableHeaderRow___cell-center'} ${className}`} 
+    className={`${draggable
+      ? 'comp_CustomTable_TableHeaderRow___cell-draggable' 
+      : 'comp_CustomTable_TableHeaderRow___cell'} ${className}`} 
     {...rest} 
   />;
 
@@ -25,12 +25,23 @@ function TableHeaderRow() {
   return (
     <StyledTableHeadRow>
       {options.draggable.bool && (
-        <StyledTableHeadCell>
-          <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
+        <StyledTableHeadCell 
+          width='1%'
+          align={'right'}
+          draggable={get(options, 'draggable.bool', false)}
+        >
+          <div>
+            <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
+          </div>
         </StyledTableHeadCell>
       )}
       {columns.map((column, index) => (
-        <StyledTableHeadCell key={index} center={get(column, 'center', false)}>
+        <StyledTableHeadCell 
+          width={get(column, 'width', `${(100 - (options.draggable.bool ? 5 : 0)) / columns.length}%`)} 
+          key={index} 
+          align={get(column, 'align', 'left')}
+          draggable={get(options, 'draggable.bool', false)}
+        >
           <div>
             {typeof(get(column, 'label')) === 'function' ? column.label() : get(column, 'label', '')}
             {get(column, 'sort') 

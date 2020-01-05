@@ -1,32 +1,43 @@
 .comp_CustomTable_TableHeaderRow___row {
-  background-color: #f4f4f4;
+  background-color: #fafafa;
   height: 42px;
-};
-
-@mixin comp_CustomTable_TableHeaderRow___cell {
-  padding: 8px;
-  & > div {
-    width: 100%;
-    height: 100%;
-    font-weight: bold;
-    color: rgb(102, 102, 102);
-    font-size: 14px;
-    display: flex;
-    align-items: center;
+  color: #666;
+  font-size: 13px;
+  & > .MuiTableCell-root {
+    font-size: 13px;
   }
 };
 
+@mixin comp_CustomTable_TableHeaderRow___cell {
+  & > div {
+    width: 100%;
+    height: 100%;
+    font-weight: 500;
+    color: #666;
+    font-size: 13px;
+  }
+}
+
 .comp_CustomTable_TableHeaderRow___cell {
+  &-draggable {
+    @include comp_CustomTable_TableHeaderRow___cell;
+    &:nth-child(1) {
+      padding: 10px 3px 10px 13px;
+    }
+    &:nth-child(2) {
+      padding: 10px 10px 10px 3px;
+    }
+    &:nth-child(n+3) {
+      padding: 10px;
+    }
+  }
   & {
     @include comp_CustomTable_TableHeaderRow___cell;
-    & > div {
-      justify-content: start;
-    };
-  };
-  &-center {
-    @include comp_CustomTable_TableHeaderRow___cell;
-    & > div {
-      justify-content: center;
-    };
-  };
+    &:nth-child(1) {
+      padding: 10px 3px 10px 20px;
+    }
+    &:nth-child(n+2) {
+      padding: 10px;
+    }
+  }
 };

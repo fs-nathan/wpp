@@ -1,7 +1,15 @@
 .view_ProjecrGroup_Copy_Project_Modal___header {
-  margin-bottom: 8px;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  &:first-child {
+    margin-top: 8px;
+  }
+  &:not(:first-child) {
+    margin-top: 30px;
+  }
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  text-transform: uppercase;
 };
 
 .view_ProjecrGroup_Copy_Project_Modal___typography {  
@@ -11,13 +19,6 @@
 .view_ProjecrGroup_Copy_Project_Modal___form-control {  
   & > legend {
     margin-bottom: 8px;
-  }
-};
-
-.view_ProjecrGroup_Copy_Project_Modal___form-label {  
-  font-size: 14px;
-  & {
-    color: #a5a0a0;
   }
 };
 
@@ -35,8 +36,10 @@
     cursor: pointer;
   }
   & > * { 
-    color: rgba(0, 0, 0, 0.54);
+    color: #333;
     font-size: 14px;
+    margin-top: 20px;
+    font-weight: 500;
   }
 };
 
@@ -60,7 +63,7 @@
     @include view_ProjecrGroup_Copy_Project_Modal___primary;
     & > * {
       &:first-child {
-        fill: rgba(0, 0, 0, 0);
+        fill: #a5a5a5;
       }
       &:last-child {
         color: #444;
@@ -91,13 +94,8 @@
 
 
 .view_ProjecrGroup_Copy_Project_Modal___right-container {  
-  & > * {
-    &:nth-child(1), &:nth-child(3) {
-      font-size: 14px;
-      padding: 12px;
-    }
-    &:nth-child(2), &:nth-child(4) {
-      padding: 0 12px;
-    }
+  padding: 0 30px 0 12px;
+  & > *:nth-child(3) {
+    margin-bottom: 0;
   }
 };

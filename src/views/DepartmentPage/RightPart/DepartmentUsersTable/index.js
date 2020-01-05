@@ -203,31 +203,49 @@ function DepartmentUsersTable({
           }}
           columns={[{
             label: '',
-            field: (row) => <CustomAvatar src={get(row, 'avatar')} alt='avatar' />,
+            field: (row) => <CustomAvatar style={{ width: 35, height: 35 }} src={get(row, 'avatar')} alt='avatar' />,
+            align: 'left', 
+            width: '5%',
           }, {
             label: 'Họ và tên',
             field: (row) => <NameSpan>{get(row, 'name', '')}</NameSpan>,
+            align: 'left',
+            width: '14%',
           }, {
             label: 'Chức danh',
             field: 'position',
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Ngày sinh',
             field: (row) =>(new Date(get(row, 'birthday', 0))).toLocaleDateString(),
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Giới tính',
             field: 'gender',
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Email',
             field: 'email',
+            align: 'left',
+            width: '15%',
           }, {
             label: 'Điện thoại',
             field: 'phone',
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Vai trò',
             field: 'role',
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Trạng thái',
             field: (row) => <StateBadge user={row} />,
+            align: 'center',
+            width: '10%',
           }, {
             label: '',
             field: (row) => <PermissionButton 
@@ -236,6 +254,8 @@ function DepartmentUsersTable({
                               doPrivateMember={doPrivateMember}
                               doBanUserFromGroup={doBanUserFromGroup}
                             />,
+            align: 'center',
+            width: '5%',
           }]}
           data={users}
         />
