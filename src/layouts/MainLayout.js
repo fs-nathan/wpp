@@ -119,16 +119,6 @@ function MainLayout({
     );
   };
 
-<<<<<<< HEAD
-  React.useEffect(() => {
-    doLogin({
-      email: "huuthanhxd@gmail.com",
-      password: "12345678",
-    });
-  }, [doLogin]);
-  
-=======
->>>>>>> origin/ManhHoang
   function configRoute(routes) {
     if (routes.length === 0) return;
     const result = routes.map((route, index) => {

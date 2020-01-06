@@ -69,9 +69,10 @@ async function doPostSubTask(payload) {
 
 function* postSubTask(action) {
   try {
+    // console.log("action payload id::", action.options.task_id);
     const res = yield call(doPostSubTask, action.options)
     yield put(actions.postSubTaskSuccess(res))
-    yield put(actions.getSubTask(action.options.task_id))
+    yield put(actions.getSubTask({ taskId: action.options.task_id}))
   } catch (error) {
     yield put(actions.postSubTaskFail(error))
   }
@@ -147,9 +148,9 @@ async function doCompleteSubTask(payload) {
 
 function* completeSubTask(action) {
   try {
-    const res = yield call(doCompleteSubTask, action.options.sub_task_id)
+    const res = yield call(doCompleteSubTask, {sub_task_id: action.options.sub_task_id})
     yield put(actions.completeSubTaskSuccess(res))
-    yield put(actions.getSubTask(action.payload.taskId))
+    yield put(actions.getSubTask({taskId: action.options.taskId}))
   } catch (error) {
     yield put(actions.completeSubTaskFail(error))
   }
@@ -202,7 +203,7 @@ async function doPostRemindWithTimeDetail(payload) {
 function* postRemindWithTimeDetail(action) {
   try {
     yield call(doPostRemindWithTimeDetail, action.options)
-    yield put(actions.getRemind(action.options.taskId))
+    yield put(actions.getRemind({ taskId: action.options.taskId}))
   } catch (error) {
     yield put(actions.postRemindWithTimeDetailFail(error))
   }
@@ -226,7 +227,7 @@ function* postRemindDuration(action) {
   try {
     const res = yield call(doPostRemindDuration, action.options)
     yield put(actions.postRemindDurationSuccess(res))
-    yield put(actions.getRemind(action.options.task_id))
+    yield put(actions.getRemind({ taskId: action.options.task_id}))
   } catch (error) {
     yield put(actions.postRemindDurationFail(error))
   }
@@ -250,7 +251,7 @@ function* updateRemindWithTimeDetail(action) {
   try {
     const res = yield call(doUpdateRemindWithTimeDetail, action.options.data)
     yield put(actions.updateRemindWithTimeDetailSuccess(res))
-    yield put(actions.getRemind(action.options.taskId))
+    yield put(actions.getRemind({taskId: action.options.taskId}))
   } catch (error) {
     yield put(actions.updateRemindWithTimeDetailFail(error))
   }
@@ -274,18 +275,18 @@ function* updateRemindWithDuration(action) {
   try {
     const res = yield call(doUpdateRemindWithDuration, action.options.data)
     yield put(actions.updateRemindWithDurationSuccess(res))
-    yield put(actions.getRemind(action.options.taskId))
+    yield put(actions.getRemind({ taskId: action.options.taskId}))
   } catch (error) {
     yield put(actions.updateRemindWithDurationFail(error))
   }
 }
 // ==== delete
-async function doDeleteRemind({ remind_id }) {
+async function doDeleteRemind(payload) {
   try {
     const config = {
       url: 'task/delete-remind',
       method: 'post',
-      data: { remind_id }
+      data: payload
     }
     const result = await apiService(config);
     return result.data;
@@ -296,9 +297,9 @@ async function doDeleteRemind({ remind_id }) {
 
 function* deleteRemind(action) {
   try {
-    const res = yield call(doDeleteRemind, action.payload.remind_id)
+    const res = yield call(doDeleteRemind, {remind_id: action.payload.remind_id})
     yield put(actions.deleteRemindSuccess(res))
-    yield put(actions.getRemind(action.payload.taskId))
+    yield put(actions.getRemind({taskId: action.payload.taskId}))
   } catch (error) {
     yield put(actions.deleteRemindFail(error))
   }
@@ -344,7 +345,7 @@ function* createOffer(action) {
   try {
     const res = yield call(doCreateOffer, action.payload.data)
     yield put(actions.createOfferSuccess(res))
-    yield put(actions.getOffer(action.payload.taskId))
+    yield put(actions.getOffer({taskId: action.payload.taskId}))
   } catch (error) {
     yield put(actions.createOfferFail(error))
   }
@@ -372,18 +373,18 @@ function* updateOffer(action) {
   try {
     yield call(doUpdateOffer, data)
     // yield put(actions.updateOfferSuccess(res))
-    yield put(actions.getOffer(action.payload.taskId))
+    yield put(actions.getOffer({taskId: action.payload.taskId}))
   } catch (error) {
     yield put(actions.updateOfferFail(error))
   }
 }
 
-async function doDeleteOffer(offer_id) {
+async function doDeleteOffer(payload) {
   try {
     const config = {
       url: '/task/delete-offer',
       method: 'post',
-      data: offer_id
+      data: payload
     }
     const result = await apiService(config);
     return result.data;
@@ -394,9 +395,10 @@ async function doDeleteOffer(offer_id) {
 
 function* deleteOffer(action) {
   try {
-    const res = yield call(doDeleteOffer, action.payload.offer_id)
+    // console.log("offer_id:::::::", action.payload);
+    const res = yield call(doDeleteOffer, {offer_id: action.payload.offer_id})
     yield put(actions.deleteOfferSuccess(res))
-    yield put(actions.getOffer(action.payload.taskId))
+    yield put(actions.getOffer({ taskId :action.payload.taskId}))
   } catch (error) {
     yield put(actions.deleteOfferFail(error))
   }
@@ -472,7 +474,7 @@ function* handleOffer(action) {
   try {
     const res = yield call(doHandleOffer, action.payload.data)
     yield put(actions.handleOfferSuccess(res))
-    yield put(actions.getOffer(action.payload.taskId))
+    yield put(actions.getOffer({ taskId: action.payload.taskId}))
   } catch (error) {
     yield put(actions.handleOfferFail(error))
   }
@@ -570,7 +572,6 @@ function* getLocation(action) {
 
 // Task Detail - TabPart - Cot phai
 async function doGetTaskDetail({ taskId }) {
-
   try {
     const config = {
       url: '/task/detail?task_id=' + taskId,
@@ -593,7 +594,7 @@ function* getTaskDetail(action) {
 }
 
 //Command
-async function doGetCommand({ task_id }) {
+async function doGetCommand({task_id}) {
   try {
     const config = {
       url: 'task/get-command-decision?task_id=' + task_id,
@@ -633,7 +634,7 @@ function* createCommand(action) {
   try {
     const res = yield call(doCreateCommand, action.payload)
     yield put(actions.createCommandSuccess(res))
-    yield put(actions.getCommand(action.payload.task_id))
+    yield put(actions.getCommand({task_id: action.payload.task_id}))
   } catch (error) {
     yield put(actions.createCommandFail(error))
   }
@@ -662,7 +663,7 @@ function* updateCommand(action) {
   try {
     const res = yield call(doUpdateCommand, data)
     yield put(actions.updateCommandSuccess(res))
-    yield put(actions.getCommand(action.payload.taskId))
+    yield put(actions.getCommand({task_id: action.payload.taskId}))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }
@@ -684,9 +685,9 @@ async function doDeleteCommand(payload) {
 
 function* deleteCommand(action) {
   try {
-    const res = yield call(doDeleteCommand, action.payload.command_id)
+    const res = yield call(doDeleteCommand, {command_id: action.payload.command_id})
     yield put(actions.deleteCommandSuccess(res))
-    yield put(actions.getCommand(action.payload.taskId))
+    yield put(actions.getCommand({task_id: action.payload.task_id}))
   } catch (error) {
     yield put(actions.deleteCommandFail(error))
   }

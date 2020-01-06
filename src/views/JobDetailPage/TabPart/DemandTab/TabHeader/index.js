@@ -42,7 +42,7 @@ function TabHeader(props) {
     setOpen(false);
   };
   const confirmCreateCommand = ({ content, type}) => {
-    props.createCommandByTaskId( props.taskId, content, type)
+    props.createCommandByTaskId({ task_id: props.taskId, content: content, type: type})
   }
   return (
     <div className="container-normal-tabheader">

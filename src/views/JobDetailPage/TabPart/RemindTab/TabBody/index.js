@@ -191,7 +191,7 @@ const RemindList = (props) => {
   };
 
   const getRemindTextByType = (typeId, date, time) => {
-    return typeId ? selector[typeId].label : "Nhắc hẹn vào ngày " + convertDateToText(date) + " lúc " + time
+    return typeId ? selector[typeId].label : "Nhắc hẹn vào ngày " + date + " lúc " + time
   }
   const getRemindProgressByType = (typeId, duration, typeRemind) => {
 

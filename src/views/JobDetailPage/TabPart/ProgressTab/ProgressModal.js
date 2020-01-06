@@ -6,11 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-<<<<<<< HEAD
 // import TimeField from 'react-simple-timefield';
-=======
-import TimeField from 'react-simple-timefield';
->>>>>>> origin/ManhHoang
 // import OutlinedInputSelect from './OutlinedInputSelect'
 import { WrapperContext } from '../../index';
 import {
@@ -47,21 +43,11 @@ const BeginEndTime = styled(Typography)`
 //   flex-direction: row;
 //   align-items: center;
 // `
-<<<<<<< HEAD
-=======
-const InputTime = styled(TimeField)`
-  width: 146px !important;
-  padding: 10px 5px 10px 13px;
-  border: 0;
-  border-radius: 4px;
-`
->>>>>>> origin/ManhHoang
 const DivTime = styled.div`
 `
 // const InputSelect = styled(OutlinedInputSelect)`
 //   width: 331px;
 // `
-<<<<<<< HEAD
 const InputDateTime = styled(TextField)`
   width: 186px;
   margin-right: 25px;
@@ -70,8 +56,6 @@ const InputDateTime = styled(TextField)`
   }
 `
 const InputDate = styled(KeyboardDatePicker)`
-=======
->>>>>>> origin/ManhHoang
 
   & > div:nth-child(2) {
     width: 186px;
@@ -132,19 +116,11 @@ const DialogActions = withStyles(theme => ({
 
 const ProgressModal = (props) => {
   const value = React.useContext(WrapperContext)
-<<<<<<< HEAD
   // console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState(DEFAULT_START_TIME_TEXT)
   const [endTime, setEndTime] = React.useState(DEFAULT_END_TIME_TEXT)
   const [startDay, setStartDay] = React.useState(DEFAULT_DATE_TEXT)
   const [endDay, setEndDay] = React.useState(DEFAULT_DATE_TEXT)
-=======
-  console.log("value time:::::", value);
-  const [startTime, setStartTime] = React.useState()
-  const [endTime, setEndTime] = React.useState()
-  const [startDay, setStartDay] = React.useState()
-  const [endDay, setEndDay] = React.useState()
->>>>>>> origin/ManhHoang
 
   const handleStartTime = (startTime) => {
     setStartTime(startTime)

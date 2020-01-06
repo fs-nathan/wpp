@@ -16,13 +16,13 @@ import { searchAttributesArray, searchArrayTabpart} from '../../helpers/jobDetai
 
 // Initial state for store
 const initialState = {
-    image: null,
+    image: [],
     file: [],
     isFetching: false,
     dataFetched: false,
     error: false,
     links: [],
-    detailImage: null,
+    detailImage: [],
     detailFile: [],
     detailLink: [],
 };

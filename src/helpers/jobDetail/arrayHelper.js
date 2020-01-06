@@ -48,7 +48,7 @@ export const searchProjectByProjectName = (groups, keyword) => {
 
 export const searchArrayTabpart = (array, keyword, field) => {
     return keyword
-        ? array.filter(item => item[field].toString().toLowerCase().match(keyword.toLowerCase()))
+        ? array.filter(item => item[field].toLowerCase().match(keyword.toLowerCase()))
         : array
 }
 export const searchAttributesArray = (array, keyword, field, object) => {

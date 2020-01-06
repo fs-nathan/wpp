@@ -251,7 +251,7 @@ function RemindModal(props) {
   }, [props.data])
 
   const handleChangeData = (attName, value) => {
-    console.log('valueRemind:::', value)
+    // console.log('valueRemind:::', value)
     setData(prevState => ({ ...prevState, [attName]: value }))
   }
 
@@ -287,16 +287,16 @@ function RemindModal(props) {
       else { valueRemind.createRemindWithDurationDetail(dataCreateRemindDuration) }
     } else {
       // Case 3: Call update remind with time
-      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail({ dataUpdateRemind, taskId: valueRemind.taskId }) }
+      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail({ data: dataUpdateRemind, taskId: valueRemind.taskId }) }
       // Case 4: Call update remind with progress
-      else { valueRemind.updateRemindWithDurationDetail({ dataUpdateRemindDuration, taskId: valueRemind.taskId }) }
+      else { valueRemind.updateRemindWithDurationDetail({  data: dataUpdateRemindDuration, taskId: valueRemind.taskId }) }
     }
 
     // Close modal
     props.handleClickClose()
   }
   const [value, setValue] = React.useState('')
-
+// console.log("daataaA::::", data)
 
   const handleChangeDuration = value => {
     if (isValidDuration(value) || value === "")
@@ -422,14 +422,13 @@ function RemindModal(props) {
             </div>
             <Typography component={'div'}>
               {data.duration.map((item, key) => (
-                <BadgeItem onClick={() => removeAnDuration(key)} key={key} color={'orangelight'} label={item} size='small' badge component='small' />
+                <BadgeItem onClick={() => removeAnDuration(key)} key={key} color={'orangelight'} label={item + ' %'} size='small' badge component='small' />
               ))}
             </Typography>
           </div>
         }
         {/* ------- */}
         <ContentText
-          id="outlined-multiline-static"
           label="Nội dung"
           fullWidth
           multiline

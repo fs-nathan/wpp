@@ -137,7 +137,7 @@ const ApproveModal = (props) => {
           color="primary"
           onClick={() => {
             props.handleClickClose()
-            props.handleOfferById(tempSelectedItem)
+            props.handleOfferById({data: tempSelectedItem, taskId: props.taskId})
           }}
         >
           Phê duyệt

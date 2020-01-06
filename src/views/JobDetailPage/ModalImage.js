@@ -146,40 +146,9 @@ const ContentDialog = styled(DialogContent)`
         }
     }
 `
-const ButtonImage = styled(IconButton)`
-    padding: 0;
-    & > span > svg {
-        width: 6.5rem !important;
-        height: 6.5rem !important;
-        &:hover {
-            fill: #ccc;
-          }
-    }
-`
-// const MediaImage = styled.div`
-//   width: auto !important;
-//   height: auto !important;
-// `
-// const WrapImage = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-// `
-// const ImageMedia = styled(GridListTile)`
-//   margin-right: 7px;
-// `
+
 const WrapperImage = styled(GridListTile)`
     height: 80px
-`
-const Image = styled.img`
-  height: 80px;
-  width: 80px;
-  margin: 0;
-  padding: 0;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.7
-  }
 `
 const FooterDialog = styled(DialogActions)`
     padding : 0;
