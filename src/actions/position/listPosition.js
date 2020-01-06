@@ -4,8 +4,9 @@ import {
   LIST_POSITION_FAIL,
 } from '../../constants/actions/position/listPosition';
 
-export const listPosition = () => ({
+export const listPosition = (quite = false) => ({
   type: LIST_POSITION,
+  quite,
 });
 
 export const listPositionSuccess = ({ positions }) => ({

@@ -32,7 +32,7 @@ export default function reducer(state = initialState, action) {
                 uncompleteSubTasks: filterUncompleteSubTask(action.payload.sub_tasks),
                 completeSubTasks: filterCompleteSubTask(action.payload.sub_tasks),
                 detailComplete: filterCompleteSubTask(action.payload.sub_tasks),
-                detailUnComplete: filterCompleteSubTask(action.payload.sub_tasks),
+                detailUnComplete: filterUncompleteSubTask(action.payload.sub_tasks),
             };
         case types.SEARCH_SUBTASK_TABPART:
             return {

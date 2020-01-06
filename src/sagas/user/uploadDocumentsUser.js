@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { uploadDocumentsUserSuccess, uploadDocumentsUserFail } from '../../actions/user/uploadDocumentsUser';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPLOAD_DOCUMENTS_USER } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doUploadDocumentsUser({ userId, file }) {
   try {
@@ -25,8 +27,10 @@ function* uploadDocumentsUser(action) {
     const { documents } = yield call(doUploadDocumentsUser, action.options);
     yield put(uploadDocumentsUserSuccess({ documents }));
     CustomEventEmitter(UPLOAD_DOCUMENTS_USER);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(uploadDocumentsUserFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

@@ -21,7 +21,7 @@ export default function ModalDeleteConfirm(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleCloseModalDelete} color="primary">
+          <Button onClick={props.handleCloseModalDelete} color="#222">
             Hủy
           </Button>
           <Button
@@ -29,7 +29,6 @@ export default function ModalDeleteConfirm(props) {
             onClick={() => {
               props.confirmDelete()
               props.handleCloseModalDelete()
-              
             }} > Xóa </Button>
         </DialogActions>
       </Dialog>

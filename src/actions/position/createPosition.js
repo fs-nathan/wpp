@@ -12,10 +12,10 @@ export const createPosition = ({ name, description }) => ({
   }
 });
 
-export const createPositionSuccess = ({ positionId }) => ({
+export const createPositionSuccess = ({ position }) => ({
   type: CREATE_POSITION_SUCCESS,
   data: {
-    positionId,
+    position,
   },
 });
 

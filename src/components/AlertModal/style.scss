@@ -1,0 +1,67 @@
+
+.comp_AlertModal___dialog-content {
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);    
+};
+
+.comp_AlertModal___dialog-title {
+  background-color: #f5f8fc;
+  padding: 6px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  & > h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+};
+
+.comp_AlertModal___dialog-actions {
+  padding: 15px 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  & > *:not(:first-child) {
+    margin-left: 8px;
+  }
+};
+
+.comp_AlertModal___accept-button {
+  padding: 8px 16px;
+  background-color: #fff;
+  &:hover {
+    background-color: #eee;
+  };
+  color: #05b50c;
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  & > span:last-child {
+    display: none;
+  }
+};
+
+.comp_AlertModal___cancle-button {
+  padding: 8px 16px;
+  background-color: #fff;
+  &:hover {
+    background-color: #eee;
+  }
+  color: #222;
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  & > span:last-child {
+    display: none;
+  }
+};
+
+.comp_AlertModal___dialog{
+  & > div:nth-child(3) > div {
+    min-width: 300px;
+  }
+};

@@ -5,7 +5,9 @@ import {
 } from '../../constants/actions/room/deleteRoom';
 
 export const initialState = {
-  data: {},
+  data: {
+    roomId: null,
+  },
   error: null,
   loading: false,
 };
@@ -21,7 +23,7 @@ function reducer(state = initialState, action) {
     case DELETE_ROOM_SUCCESS: 
       return {
         ...state, 
-        data: {},
+        data: action.data,
         error: null,
         loading: false,
       };
@@ -29,7 +31,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         error: action.error,
-        loading: false,
+        loadling: false,
       };
     default:
       return state;

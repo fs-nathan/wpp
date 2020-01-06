@@ -1,0 +1,550 @@
+.SettingGroupPage {
+  .SettingGroupHeader {
+    border-bottom: 1px solid #ededed;
+  }
+  .close-header {
+    margin-right: 20px;
+    font-size: 13px;
+    color: #0076f3;
+  }
+  .message-title {
+    display: flex;
+  }
+}
+.setting-right-content {
+  overflow: auto;
+  height: calc(100vh - 125px);
+  .action-btn {
+    width: 80px;
+    height: 30px;
+    line-height: 1;
+    border-radius: 2px;
+    margin-right: 5px;
+    &.extend {
+      background: #02c432;
+      border-color: #02c432;
+      color: #fff;
+      &:hover {
+        box-shadow: none;
+        background: #11ae37;
+        border-color: #11ae37;
+      }
+    }
+    &.delete {
+      background-color: #fb3b00;
+      border-color: #fb3b00;
+      color: #fff;
+      &:hover {
+        box-shadow: none;
+        background: #b83810;
+        border-color: #b83810;
+      }
+    }
+  }
+  .avatar-order {
+    width: 25px;
+    height: 25px;
+    margin: 0 auto;
+  }
+  .order-detail-container {
+    display: flex;
+    .detail-left {
+      padding: 25px;
+      border-right: 1px solid #ededed;
+      min-height: calc(100vh - 175px);
+      width: 60%;
+    }
+    .other-info-order-detail {
+      padding: 25px;
+      width: calc(40% - 50px);
+    }
+    .header-detail-right {
+      border-bottom: 1px solid #ededed;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 20px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .detail-right-bottom {
+      // padding: 20px 25px;
+      .title-item {
+        color: #5a5a5a;
+        font-weight: bold;
+        opacity: 0.85;
+        text-transform: uppercase;
+        margin: 30px 0 5px 0;
+      }
+      .red-text {
+        color: red;
+      }
+      .creator-item {
+        display: flex;
+        margin: 20px 0;
+        img {
+          width: 48px;
+          height: 48px;
+          margin: 0 10px;
+          border-radius: 50%;
+        }
+        .creator-info {
+          width: 100%;
+          p {
+            margin: 0;
+          }
+        }
+      }
+      .download-btn {
+        margin: 40px 0 0 0;
+        width: 100%;
+        padding: 7px 0;
+        color: #2dc63a;
+      }
+    }
+
+    &.create-order {
+      .create-order-btn {
+        padding: 20px 40px;
+        text-transform: uppercase;
+        width: 100%;
+        margin-top: 40px;
+        background-color: #2dc63a;
+        border-color: #2dc63a;
+        color: #fff;
+        box-shadow: none;
+        margin-bottom: 100px;
+      }
+      .detail-right-bottom {
+        padding: 0 35px 20px 25px;
+        .title-item {
+          text-transform: none;
+          margin: 20px 0 20px 0;
+          font-size: 16px;
+          opacity: 1;
+        }
+        .sub-title-item {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .cb-item {
+          width: 100%;
+          margin-bottom: -5px;
+          .cb-success {
+            color: #2dc63a;
+          }
+        }
+        .create-order-border {
+          margin-bottom: 20px;
+        }
+        .error-text {
+          color: red;
+        }
+      }
+      .create-order-action {
+        display: flex;
+        justify-content: space-between;
+        .evoucher-input {
+          border: solid 1px #ededed;
+          margin-right: 30px;
+          font-size: 16px;
+          padding: 10px 20px;
+          height: 46px;
+          line-height: 46px;
+        }
+        .btn-warning {
+          color: #fff;
+        }
+        .input-voucher {
+          width: 280px;
+          height: 46px;
+          line-height: 46px;
+          .MuiOutlinedInput-input {
+            width: 100%;
+          }
+        }
+        .input-btn {
+          padding: 0 40px;
+          font-size: 16px;
+          text-transform: uppercase;
+          height: 46px;
+          line-height: 46px;
+          margin-left: 20px;
+          box-shadow: none;
+        }
+      }
+      .error-code {
+        color: red;
+        padding-top: 10px;
+      }
+      .success-code {
+        color: #0076f3;
+        padding-top: 10px;
+      }
+    }
+  }
+  .payment-container {
+    display: flex;
+    .top-header {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .text-payment-header {
+      font-size: 15px;
+    }
+    .payment-left {
+      width: 60%;
+      padding: 20px;
+      overflow: auto;
+      // margin-right: -1px;
+      border-right: 1px solid #ededed;
+      min-height: calc(100vh - 165px);
+      &.notification-content {
+        border-right: none;
+        width: 100%;
+      }
+      .MuiInputLabel-animated {
+        font-size: 13px;
+        transform: translate(0, 1.5px) scale(1);
+      }
+      .MuiInput-underline:before {
+        border-bottom: 1px solid #ededed;
+      }
+      .edit-action {
+        display: flex;
+        justify-content: center;
+        .btn-edit {
+          background-color: #ededed;
+          border-color: #ededed;
+          text-transform: uppercase;
+          border-radius: 30px;
+          padding: 10px 40px;
+          color: #5a5a5a;
+          font-weight: 500;
+          font-size: 15px;
+          margin-top: 30px;
+          &:focus {
+            box-shadow: none;
+          }
+        }
+        .btn-cancel {
+          margin-left: 25px;
+        }
+      }
+    }
+    .payment-right {
+      width: 40%;
+      .payment-right-top {
+        padding: 20px;
+        border-bottom: 1px solid #ededed;
+        .payment-title {
+          color: #5a5a5a;
+          font-weight: bold;
+          opacity: 0.85;
+        }
+        .payment-account {
+          display: flex;
+          margin: 20px 0;
+          img {
+            width: 48px;
+            height: 48px;
+            margin: 0 10px;
+          }
+          .payment-info p {
+            color: #f37c00;
+            margin: 0;
+          }
+        }
+      }
+      .payment-right-bottom {
+        padding: 20px;
+        .right-bottom-text {
+          line-height: 2;
+        }
+      }
+    }
+  }
+
+  .MuiFormControl-fullWidth {
+    .MuiInputBase-input {
+      font-size: 15px;
+      color: #111;
+    }
+    .MuiInput-underline.Mui-disabled:before {
+      border-bottom-style: solid;
+      border-color: #eaeaea;
+    }
+  }
+}
+.boild-text {
+  font-weight: 600;
+}
+// Style for group info page
+.setting-group-info {
+  padding: 20px 30px 20px 20px;
+  display: flex;
+  .divider {
+    margin: 5px 0;
+  }
+  .group-info-left {
+    width: 50%;
+    padding-right: 40px;
+    .form-group-info {
+      .lb-secondary {
+        margin-left: 3px;
+        color: #bbbbbb;
+        font-style: italic;
+      }
+      .input-item {
+        &:first-child {
+          margin-top: 0;
+        }
+        .MuiInputLabel-shrink {
+          transform: translate(0, 1.5px) scale(1);
+        }
+        &.input-area {
+          textarea {
+            line-height: 20px;
+          }
+        }
+      }
+      .block-action {
+        text-align: center;
+        margin-top: 20px;
+        .btn-action {
+          min-width: 150px;
+          text-transform: uppercase;
+          border-radius: 20px;
+          height: 40px;
+          font-weight: 500;
+        }
+        .btn-cancel {
+          margin-left: 25px;
+        }
+      }
+    }
+  }
+  .group-info-right {
+    width: 50%;
+    padding-left: 40px;
+    .heading-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .action-update-img {
+        display: flex;
+        align-items: center;
+        .MuiDivider-vertical {
+          height: 18px;
+          margin: 0 3px;
+        }
+        .crop-image-btn {
+          text-transform: none;
+          color: #2196f3;
+          font-size: 13px;
+          font-weight: normal;
+          &:hover {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+    .setting-bg-left-menu {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      .pick-color {
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+        border-radius: 50%;
+        background: #01b374;
+        display: inline-block;
+        cursor: pointer;
+      }
+    }
+  }
+  .input-file {
+    display: none;
+  }
+  .setting-image-group {
+    .image-content {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 40px;
+      min-height: 120px;
+      .img-logo {
+        width: 120px;
+        height: 120px;
+      }
+      .img-cover {
+        max-width: 600px;
+        width: auto;
+        height: 200px;
+      }
+    }
+  }
+}
+
+// Style for setup page
+.setup-info {
+  padding: 0 20px;
+  display: flex;
+  .setup-info-left {
+    padding-top: 20px;
+    width: 50%;
+    padding-right: 20px;
+    border-right: 1px solid #ededed;
+    min-height: calc(100vh - 145px);
+    .setup-content {
+      margin-top: 20px;
+      .setup-menu-list {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+      }
+    }
+  }
+  .setup-info-right {
+    width: 50%;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    .plugin-content {
+      margin-top: 20px;
+      .drag-drop-wrapper {
+        padding: 0;
+        margin: 0;
+      }
+    }
+  }
+  .title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+}
+.divider-vertical {
+  width: 1px;
+  min-height: calc(100vh - 125px);
+  background: #ced4da;
+}
+.content-create-order {
+  padding: 25px 0 30px;
+  width: 40%;
+  .UserInfo_right_header {
+    padding-left: 25px;
+  }
+}
+.order-title {
+  font-size: 16px;
+  color: #000;
+  font-weight: 600;
+  margin: 0;
+}
+// style for drag - drop list in the setup page
+.drag-item {
+  border: 1px solid #ced4da;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  list-style: none;
+  z-index: inherit !important;
+  outline: none;
+
+  .item-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .drag-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .action-item {
+    display: flex;
+    align-items: center;
+    .status-plugin {
+      margin-right: 10px;
+      color: #dc3545;
+      &.is-active {
+        color: #48bb78;
+      }
+    }
+  }
+}
+
+// Style for pick color modal
+.pick-color-modal {
+  .comp_CustomModal___scrollbar {
+    min-height: 220px;
+  }
+
+  .pick-color-content {
+    &.list-color {
+      display: grid;
+      grid-template-columns: repeat(7, auto);
+      .item-outer {
+        padding: 10px;
+        border-radius: 50%;
+        margin: 10px auto;
+        display: inline-block;
+        border-width: 1px;
+        border-style: solid;
+
+        .item-color {
+          display: block;
+          cursor: pointer;
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}
+.table-row-item {
+  background-color: white;
+  &:hover {
+    background-color: rgba(190, 190, 190, 0.07);
+  }
+}
+.table-cell-item {
+  &.head {
+    background-color: rgb(237, 237, 237);
+    font-weight: 500;
+    font-size: 13px;
+    color: #666;
+  }
+  &.body {
+    font-size: 14px;
+    padding: 10px 5px;
+    border-bottom: 1px solid rgb(238, 238, 238);
+  }
+  &.last-item {
+    padding-right: 28px;
+  }
+}
+.cus-cel {
+  font-size: 14px;
+}
+.code-oder {
+  text-transform: uppercase;
+  color: #2196f3;
+  font-weight: 500;
+  cursor: pointer;
+}
+.table-body-row {
+  &:hover {
+    cursor: pointer;
+    background-color: transparent;
+  }
+}
+.MuiTableCell-root {
+  font-size: 14px;
+  padding: 5px 10px;
+}
+.radio-container {
+  margin-left: 24px;
+}

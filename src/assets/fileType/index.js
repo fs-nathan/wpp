@@ -1,0 +1,11 @@
+export { default as audio } from './audio.png';
+export { default as excel } from './excel.png';
+export { default as file } from './file.png';
+export { default as folder } from './folder.png';
+export { default as image } from './image.png';
+export { default as pdf } from './pdf.png';
+export { default as pp } from './pp.png';
+export { default as txt } from './txt.png';
+export { default as video } from './video.png';
+export { default as word } from './word.png';
+export { default as zip } from './zip.png';

@@ -38,11 +38,13 @@ function TabHeader({ setShow }) {
         <Icon path={mdiChevronLeft} size={1} />
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}> Thành viên</ColorTypo>
+      <div>
       <ButtonIcon onClick={() => setOpenAddModal(true)}>
         <Icon path={mdiSettings} size={1} />
       </ButtonIcon>
       {/* modal */}
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
+      </div>
     </div>
   );
 }

@@ -1,69 +1,104 @@
 import React from 'react';
-import styled from 'styled-components';
 import { 
   Fade, Dialog, DialogTitle, DialogContent, 
   DialogActions, IconButton, ButtonBase,
 } from '@material-ui/core';
-import { 
-  lighten,
-} from '@material-ui/core/styles';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js'; 
 import ColorTypo from '../ColorTypo';
-import colorPal from '../../helpers/colorPalette';
+import PropTypes from 'prop-types';
+import { get } from 'lodash';
+import './style.scss';
 
-const StyledDialogContent = styled(DialogContent)`
-  & > *:not(:last-child) {
-    margin-bottom: 8px;
-  }
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > input[type=file] {
-    display: none;
-  }
-`;
+const StyledScrollbars = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar-main ${className}`} {...props} />;
 
-const StyledDialogTitle = styled(DialogTitle)`
-  background-color: #f5f8fc;
-  padding: 6px 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > h2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
+const StyledScrollbarsSide = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar-side ${className}`} {...props} />;
 
-const StyledDialogActions = styled(DialogActions)`
-  padding: 15px 24px;
-`;
+const StyledDialogContent = ({ className = '', ...props }) => <DialogContent className={`comp_CustomModal___dialog-content ${className}`} {...props} />;
 
-const ActionsAcceptButton = styled(ButtonBase)`
-  padding: 8px 16px;
-  background-color: ${colorPal['green'][1]};
-  &:hover {
-    background-color: ${lighten(colorPal['green'][0], 0.9)};
-  }
-  color: ${colorPal['green'][0]};
-  font-weight: 500;
-  font-size: 16px;
-  text-transform: uppercase;
-  border-radius: 5px;
-  & > span:last-child {
-    display: none;
-  }
-`;
+const StyledDialogTitle = ({ className = '', ...props }) => <DialogTitle className={`comp_CustomModal___dialog-title ${className}`} {...props} />;
 
-const StyledDialog = styled(Dialog)`
-  & > div:nth-child(3) > div {
-    min-width: 500px;
-  }
-`;
+const StyledDialogActions = ({ className = '', ...props }) => <DialogActions className={`comp_CustomModal___dialog-actions ${className}`} {...props} />;
+
+const ActionsAcceptButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___accept-button ${className}`} {...props} />;
+
+const ActionsCancleButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___cancle-button ${className}`} {...props} />;
+
+const StyledDialog = ({ className = '', ...props }) => <Dialog className={`comp_CustomModal___dialog ${className}`} {...props} />;
+
+const TwoColumnsContainer = ({ maxWidth, className = '', ...rest }) => 
+  <div 
+    className={`${maxWidth === 'lg' 
+      ? 'comp_CustomModal___two-columns-container-w-lg'
+      : 'comp_CustomModal___two-columns-container-w-md'} ${className}`} 
+    {...rest} 
+  />;
+
+const LeftHeader = ({ className = '', ...props }) => <ColorTypo bold uppercase className={`comp_CustomModal___header-left ${className}`} {...props} />;
+
+const RightHeader = ({ className = '', ...props }) => <ColorTypo bold uppercase className={`comp_CustomModal___header-right ${className}`} {...props} />;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function CustomModal({ title, children, onConfirm = () => null, onCancle = () => null, open, setOpen }) {
+function OneColumn({ children, }) {
+  return (
+    <StyledScrollbars
+      autoHide
+      autoHideTimeout={500}
+    >
+      <StyledDialogContent>
+        {children}
+      </StyledDialogContent>
+    </StyledScrollbars>
+  );
+}
+
+function TwoColumns({ maxWidth, left, right }) {
+  return (
+    <TwoColumnsContainer maxWidth={maxWidth}>
+      <div>
+        <LeftHeader>
+          {get(left, 'title', '')}
+        </LeftHeader>
+        <StyledScrollbarsSide
+          autoHide
+          autoHideTimeout={500}
+        >
+          <div>
+            {get(left, 'content', () => '')()}
+          </div>
+        </StyledScrollbarsSide>
+      </div>
+      <div>
+        <RightHeader>
+          {get(right, 'title', '')}
+        </RightHeader>
+        <StyledScrollbarsSide
+          autoHide
+          autoHideTimeout={500}
+        >
+          <div>
+            {get(right, 'content', () => '')()}
+          </div>
+        </StyledScrollbarsSide>
+      </div>
+    </TwoColumnsContainer>
+  );
+}
+
+function CustomModal({ 
+  title, 
+  columns = 1, 
+  children = null, left = null, right = null, 
+  canConfirm = true, 
+  onConfirm = () => null, onCancle = () => null, 
+  open, setOpen, 
+  maxWidth='md', fullWidth = false,
+  className = ''
+}) {
 
   function handleCancle() {
     setOpen(false);
@@ -77,11 +112,13 @@ function CustomModal({ title, children, onConfirm = () => null, onCancle = () =>
 
   return (
     <StyledDialog
-      maxWidth='sm'
+      maxWidth={maxWidth}
+      fullWidth={fullWidth}
       open={open}
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
+      className={className}
     >
       <StyledDialogTitle id="alert-dialog-slide-title">
         <ColorTypo uppercase>{title}</ColorTypo>
@@ -89,16 +126,40 @@ function CustomModal({ title, children, onConfirm = () => null, onCancle = () =>
           <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
         </IconButton>
       </StyledDialogTitle>
-      <StyledDialogContent>
-        {children}
-      </StyledDialogContent>
+      {columns === 1 && (
+        <OneColumn children={children} />
+      )}
+      {columns === 2 && (
+        <TwoColumns maxWidth={maxWidth} left={left} right={right} />
+      )}
       <StyledDialogActions>
-        <ActionsAcceptButton onClick={() => handleConfirm()}>
+        <ActionsCancleButton onClick={() => handleCancle()}>
+          Hủy
+        </ActionsCancleButton>
+        <ActionsAcceptButton disabled={!canConfirm} onClick={() => handleConfirm()}>
           Hoàn thành
         </ActionsAcceptButton>
       </StyledDialogActions>
     </StyledDialog>
   )
 }
+
+CustomModal.propTypes = {
+  title: PropTypes.string.isRequired, 
+  columns: PropTypes.number,
+  children: PropTypes.node,
+  left: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    content: PropTypes.func.isRequired,
+  }),
+  right: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    content: PropTypes.func.isRequired,
+  }), 
+  onConfirm: PropTypes.func, 
+  onCancle: PropTypes.func, 
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired
+};
 
 export default CustomModal;

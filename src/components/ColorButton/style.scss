@@ -1,0 +1,6 @@
+.comp_ColorButton___button {
+  box-shadow: none;
+  & > span:last-child {
+    display: none;
+  }
+};

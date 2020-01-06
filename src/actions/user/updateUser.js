@@ -12,7 +12,7 @@ export const updateUser = ({ userId, roomId, positionId, levelId, majorId, descr
     positionId,
     levelId,
     majorId,
-    description
+    description,
   },
 });
 

@@ -1,6 +1,8 @@
 import { call, put } from 'redux-saga/effects';
 import { listPositionSuccess, listPositionFail } from '../../actions/position/listPosition';
 import { apiService } from '../../constants/axiosInstance';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doListPosition() {
   try {
@@ -21,6 +23,7 @@ function* listPosition() {
     yield put(listPositionSuccess({ positions }));
   } catch (error) {
     yield put(listPositionFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 
