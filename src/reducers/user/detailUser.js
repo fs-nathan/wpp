@@ -3,10 +3,8 @@ import {
   DETAIL_USER_SUCCESS,
   DETAIL_USER_FAIL,
 } from '../../constants/actions/user/detailUser';
-import { UPDATE_USER } from '../../constants/actions/user/updateUser';
 import { PUBLIC_MEMBER } from '../../constants/actions/user/publicMember';
 import { PRIVATE_MEMBER } from '../../constants/actions/user/privateMember';
-import { get } from 'lodash';
 
 export const initialState = {
   data: {  
@@ -37,20 +35,6 @@ function reducer(state = initialState, action) {
         ...state,
         error: action.error,
         loading: false,
-      };
-    case UPDATE_USER: 
-      user = state.data.user;
-      if (get(user, 'id') === get(action.options, 'userId')) {
-        user = {
-          ...user,
-          ...action.options,
-        };
-      }
-      return {
-        ...state,
-        data: {
-          user,
-        },
       };
     case PUBLIC_MEMBER:
       user = {

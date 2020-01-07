@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import authentications, { initialState as authenticationsInitialState } from './authentications';
+import system, { initialState as systemInitialState } from './system/system';
+import setting, { initialState as settingInitialState } from './setting/setting';
 import listRoom, { initialState as listRoomInitialState } from './room/listRoom';
 import detailRoom, { initialState as detailRoomInitialState } from './room/detailRoom';
 import getUserOfRoom, { initialState as getUserOfRoomInitialState } from './room/getUserOfRoom';
@@ -7,7 +9,7 @@ import listUserOfGroup, { initialState as listUserOfGroupInitialState } from './
 import sortUser, { initialState as sortUserInitialState } from './user/sortUser';
 import listIcon, { initialState as listIconInitialState } from './icon/listIcon';
 import createRoom, { initialState as createRoomInitialState } from './room/createRoom';
-import deleteRoom, { initialState as deleteRoomInitialState } from './room/deleteRoom'; 
+import deleteRoom, { initialState as deleteRoomInitialState } from './room/deleteRoom';
 import updateRoom, { initialState as updateRoomInitialState } from './room/updateRoom';
 import sortRoom, { initialState as sortRoomInitialState } from './room/sortRoom';
 import detailUser, { initialState as detailUserInitialState } from './user/detailUser';
@@ -38,11 +40,15 @@ import sortProjectGroup, { initialState as sortProjectGroupInitialState } from '
 import detailProjectGroup, { initialState as detailProjectGroupInitialState } from './projectGroup/detailProjectGroup';
 import memberProjectGroup, { initialState as memberProjectGroupInitialState } from './projectGroup/memberProjectGroup';
 import createProject, { initialState as createProjectInitialState } from './project/createProject';
+import sortProject, { initialState as sortProjectInitialState } from './project/sortProject';
+import copyProject, { initialState as copyProjectInitialState } from './project/copyProject';
 import addMemberProject, { initialState as addMemberProjectInitialState } from './project/addMemberProject';
 import deleteProject, { initialState as deleteProjectInitialState } from './project/deleteProject';
 import listProject, { initialState as listProjectInitialState } from './project/listProject';
+import listDeletedProject, { initialState as listDeletedProjectInitialState } from './project/listDeletedProject';
 import detailProject, { initialState as detailProjectInitialState } from './project/detailProject';
 import hideProject, { initialState as hideProjectInitialState } from './project/hideProject';
+import showProject, { initialState as showProjectInitialState } from './project/showProject';
 import memberProject, { initialState as memberProjectInitialState } from './project/memberProject';
 import updateProject, { initialState as updateProjectInitialState } from './project/updateProject';
 import removeMemberProject, { initialState as removeMemberProjectInitialState } from './project/removeMemberProject';
@@ -50,13 +56,23 @@ import updateStateJoinTask, { initialState as updateStateJoinTaskInitialState } 
 import addProjectRoleToMember, { initialState as addProjectRoleToMemberInitialState } from './project/addProjectRoleToMember';
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from './project/removeProjectRoleFromMember';
 import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from './project/updateGroupPermissionMember';
+import assignMemberToAllTask, { initialState as assignMemberToAllTaskInitialState } from './project/assignMemberToAllTask';
+import listGroupTask1, { initialState as listGroupTaskInitialState} from './groupTask/listGroupTask';
+import createGroupTask, { initialState as createGroupTaskInitialState} from './groupTask/createGroupTask';
+import deleteGroupTask, { initialState as deleteGroupTaskInitialState} from './groupTask/deleteGroupTask';
+import updateGroupTask, { initialState as updateGroupTaskInitialState} from './groupTask/updateGroupTask';
+import sortGroupTask, { initialState as sortGroupTaskInitialState} from './groupTask/sortGroupTask';
+import getAllGroupTask, { initialState as getAllGroupTaskInitialState} from './groupTask/getAllGroupTask';
+import listTask, { initialState as listTaskInitialState} from './task/listTask';
+import createTask, { initialState as createTaskInitialState} from './task/createTask';
+import deleteTask, { initialState as deleteTaskInitialState} from './task/deleteTask';
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from './documents';
 import taskOffer from './taskDetail/offer';
-import taskRemind from './taskDetail/remind'
+import taskRemind from './taskDetail/remind';
 import subTask from './taskDetail/subTask';
-import media from './taskDetail/media'
+import media from './taskDetail/media';
 import taskCommand from './taskDetail/command';
 import commonTaskDetail from './taskDetail/common';
 import location from './taskDetail/location'
@@ -67,6 +83,8 @@ import listDetailTask from './taskDetail/listTaskDetail'
 import listGroupTask from './taskDetail/listGroupTask'
 const rootReducer = combineReducers({
   authentications,
+  system,
+  setting,
   documents,
   taskDetail: combineReducers({
     taskOffer,
@@ -89,7 +107,7 @@ const rootReducer = combineReducers({
     createRoom,
     deleteRoom,
     updateRoom,
-    sortRoom,
+    sortRoom
   }),
   user: combineReducers({
     listUserOfGroup,
@@ -101,30 +119,30 @@ const rootReducer = combineReducers({
     privateMember,
     searchUser,
     inviteUserJoinGroup,
-    banUserFromGroup,
+    banUserFromGroup
   }),
   icon: combineReducers({
     listIcon,
     createIcon,
-    deleteIcon,
+    deleteIcon
   }),
   position: combineReducers({
     listPosition,
     createPosition,
     updatePosition,
-    deletePosition,
+    deletePosition
   }),
   level: combineReducers({
-    listLevel,
+    listLevel
   }),
   major: combineReducers({
-    listMajor,
+    listMajor
   }),
   userRole: combineReducers({
     listUserRole,
     createUserRole,
     updateUserRole,
-    deleteUserRole,
+    deleteUserRole
   }),
   projectGroup: combineReducers({
     createProjectGroup,
@@ -133,15 +151,17 @@ const rootReducer = combineReducers({
     deleteProjectGroup,
     sortProjectGroup,
     detailProjectGroup,
-    memberProjectGroup,
+    memberProjectGroup
   }),
   project: combineReducers({
     createProject,
     updateProject,
     deleteProject,
     listProject,
+    listDeletedProject,
     detailProject,
     hideProject,
+    showProject,
     memberProject,
     addMemberProject,
     removeMemberProject,
@@ -149,11 +169,29 @@ const rootReducer = combineReducers({
     addProjectRoleToMember,
     removeProjectRoleFromMember,
     updateGroupPermissionMember,
+    assignMemberToAllTask,
+    sortProject,
+    copyProject
+  }),
+  groupTask: combineReducers({
+    listGroupTask: listGroupTask1,
+    createGroupTask,
+    deleteGroupTask,
+    updateGroupTask,
+    sortGroupTask,
+    getAllGroupTask,
+  }),
+  task: combineReducers({
+    listTask,
+    createTask,
+    deleteTask,
   }),
 });
 
 export const DEFAULT_STATE = {
   authentications: authenticationsInitialState,
+  system: systemInitialState,
+  setting: settingInitialState,
   room: {
     listRoom: listRoomInitialState,
     detailRoom: detailRoomInitialState,
@@ -161,7 +199,7 @@ export const DEFAULT_STATE = {
     createRoom: createRoomInitialState,
     deleteRoom: deleteRoomInitialState,
     updateRoom: updateRoomInitialState,
-    sortRoom: sortRoomInitialState,
+    sortRoom: sortRoomInitialState
   },
   user: {
     listUserOfGroup: listUserOfGroupInitialState,
@@ -173,30 +211,30 @@ export const DEFAULT_STATE = {
     privateMember: privateMemberInitialState,
     searchUser: searchUserInitialState,
     inviteUserJoinGroup: inviteUserJoinGroupInitialState,
-    banUserFromGroup: banUserFromGroupInitialState,
+    banUserFromGroup: banUserFromGroupInitialState
   },
   icon: {
     listIcon: listIconInitialState,
     createIcon: createIconInitialState,
-    deleteIcon: deleteIconInitialState,
+    deleteIcon: deleteIconInitialState
   },
   position: {
     listPosition: listPositionInitialState,
     createPosition: createPositionInitialState,
     updatePosition: updatePositionInitialState,
-    deletePosition: deletePositionInitialState,
+    deletePosition: deletePositionInitialState
   },
   level: {
-    listLevel: listLevelInitialState,
+    listLevel: listLevelInitialState
   },
   major: {
-    listMajor: listMajorInitialState,
+    listMajor: listMajorInitialState
   },
   userRole: {
     listUserRole: listUserRoleInitialState,
     createUserRole: createUserRoleInitialState,
     updateUserRole: updateUserRoleInitialState,
-    deleteUserRole: deleteUserRoleInitialState,
+    deleteUserRole: deleteUserRoleInitialState
   },
   projectGroup: {
     createProjectGroup: createProjectGroupInitialState,
@@ -205,15 +243,17 @@ export const DEFAULT_STATE = {
     deleteProjectGroup: deleteProjectGroupInitialState,
     sortProjectGroup: sortProjectGroupInitialState,
     detailProjectGroup: detailProjectGroupInitialState,
-    memberProjectGroup: memberProjectGroupInitialState,
+    memberProjectGroup: memberProjectGroupInitialState
   },
   project: {
     createProject: createProjectInitialState,
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
     listProject: listProjectInitialState,
+    listDeletedProject: listDeletedProjectInitialState,
     detailProject: detailProjectInitialState,
     hideProject: hideProjectInitialState,
+    showProject: showProjectInitialState,
     memberProject: memberProjectInitialState,
     addMemberProject: addMemberProjectInitialState,
     removeMemberProject: removeMemberProjectInitialState,
@@ -221,6 +261,22 @@ export const DEFAULT_STATE = {
     addProjectRoleToMember: addProjectRoleToMemberInitialState,
     removeProjectRoleFromMember: removeProjectRoleFromMemberInitialState,
     updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
+    assignMemberToAllTask: assignMemberToAllTaskInitialState,
+    sortProject: sortProjectInitialState,
+    copyProject: copyProjectInitialState
+  },
+  groupTask: {
+    listGroupTask: listGroupTaskInitialState,
+    updateGroupTask: updateGroupTaskInitialState,
+    createGroupTask: createGroupTaskInitialState,
+    deleteGroupTask: deleteGroupTaskInitialState,
+    sortGroupTask: sortGroupTaskInitialState,
+    getAllGroupTask: getAllGroupTaskInitialState,
+  },
+  task: {
+    listTask: listTaskInitialState,
+    createTask: createTaskInitialState,
+    deleteTask: deleteTaskInitialState,
   }
 };
 

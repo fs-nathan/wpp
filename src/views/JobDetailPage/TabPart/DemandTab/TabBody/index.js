@@ -121,8 +121,14 @@ const CustomListItem = (props) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={() => { props.handleClickOpen() }}>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={props.handleOpenModalDelete}>Xóa</MenuItem>
+        <MenuItem onClick={() => {
+          props.handleClickOpen()
+          setAnchorEl(null)
+        }}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={() => {
+          props.handleOpenModalDelete()
+          setAnchorEl(null)
+        }}>Xóa</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -158,10 +164,10 @@ const ListDemand = (props) => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteCommandByCommandId({commandId: selectedItem.id, taskId: props.taskId})
+    props.deleteCommandByCommandId({ command_id: selectedItem.id, task_id: props.taskId })
   }
   const confirmUpdateCommand = ({ id, content, type }) => {
-    props.updateCommandByTaskId({id, content, type, taskId: props.taskId})
+    props.updateCommandByTaskId({ id, content, type, taskId: props.taskId })
   }
   const searchDemandTabPart = (e) => {
     props.searchDemand(e.target.value)

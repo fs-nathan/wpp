@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { deleteIconSuccess, deleteIconFail } from '../../actions/icon/deleteIcon';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, DELETE_ICON } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doCreateIcon({ iconId }) {
   try {
@@ -24,8 +26,10 @@ function* deleteIcon(action) {
     yield call(doCreateIcon, action.options);
     yield put(deleteIconSuccess());
     CustomEventEmitter(DELETE_ICON);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(deleteIconFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

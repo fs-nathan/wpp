@@ -1,0 +1,9 @@
+.views_HomePage___container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 200px 1fr;
+  grid-template-columns: 250px minmax(750px, 3fr) minmax(300px, 2fr);
+  grid-template-areas: 
+    "left logo logo"
+    "left middle right";
+}

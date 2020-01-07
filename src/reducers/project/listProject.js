@@ -3,6 +3,12 @@ import {
   LIST_PROJECT_SUCCESS,
   LIST_PROJECT_FAIL,
 } from '../../constants/actions/project/listProject';
+import { get, findIndex, remove, slice } from 'lodash';
+import { UPDATE_PROJECT } from '../../constants/actions/project/updateProject';
+import { DELETE_PROJECT } from '../../constants/actions/project/deleteProject';
+import { HIDE_PROJECT } from '../../constants/actions/project/hideProject';
+import { SHOW_PROJECT } from '../../constants/actions/project/showProject';
+import { SORT_PROJECT } from '../../constants/actions/project/sortProject';
 
 export const initialState = {
   data: {
@@ -13,12 +19,15 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
+  let projects = [];
+  let index = -1;
+  let removed = null;
   switch (action.type) {
     case LIST_PROJECT:
       return {
         ...state,
         error: null,
-        loading: true,
+        loading: action.quite ? false : true,
       };
     case LIST_PROJECT_SUCCESS: 
       return {
@@ -32,6 +41,69 @@ function reducer(state = initialState, action) {
         ...state,
         error: action.error,
         loading: false,
+      };
+    case UPDATE_PROJECT:
+      projects = [...state.data.projects];
+      index = findIndex(projects, { id: get(action.options, 'projectId') });
+      projects[index] = {
+        ...projects[index],
+        ...action.options,
+      }
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects,
+        },
+      };
+    case DELETE_PROJECT: 
+      projects = [...state.data.projects];
+      remove(projects, { id: get(action.options, 'projectId') });
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects,
+        },
+      };
+    case HIDE_PROJECT: 
+      projects = [...state.data.projects];
+      index = findIndex(projects, { id: get(action.options, 'projectId') });
+      projects[index] = {
+        ...projects[index],
+        visibility: false,
+      };
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects,
+        },
+      };
+    case SHOW_PROJECT: 
+      projects = [...state.data.projects];
+      index = findIndex(projects, { id: get(action.options, 'projectId') });
+      projects[index] = {
+        ...projects[index],
+        visibility: true,
+      };
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects,
+        },
+      };
+    case SORT_PROJECT:
+      projects = [...state.data.projects];
+      removed = remove(projects, { id: get(action.options, 'projectId') });
+      projects = [...slice(projects, 0, action.options.sortIndex), ...removed, ...slice(projects, action.options.sortIndex)];
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects,
+        },
       };
     default:
       return state;

@@ -1,51 +1,41 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 import { TableCell, TableRow } from '@material-ui/core';
 import { CustomTableContext } from '../../../index';
 import { includes } from 'lodash';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
+import { get } from 'lodash';
+import './style.scss';
 
-const StyledTableBodyRow = styled(TableRow)`
-  background-color: #fff;
-  border-bottom: 1px solid rgb(239, 239, 239);
-  text-decoration: none;
-  &:hover {
-    cursor: pointer;
-    background-color: #f2f5fa;
-  }
-`;
-
-const StyledTableBodyCell = styled(TableCell)`
-  padding: 8px;
-  font-size: 14px;
-`;
+const StyledTableBodyRow = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyRow___row ${className}`} {...rest} />;
+const StyledTableBodyCell = ({ className = '', ...rest }) => <TableCell className={`comp_CustomTable_TableBodyRow___cell ${className}`} {...rest} />;
 
 function TableBodyRow({ index, row, group }) {
 
   const { options, columns } = React.useContext(CustomTableContext);
   let inSearch = false;  
 
-  for (const key in row) {
-    if (
-      row.hasOwnProperty(key) &&
-      includes(row[key].toString().toLowerCase(), options.search.patern.toLowerCase())
-    ) inSearch = true;
-  }
-
+  if (get(options, 'search'))
+    for (const key in row) {
+      if (
+        row.hasOwnProperty(key) &&
+        get(row, key, '') &&
+        includes(get(row, key, '').toString().toLowerCase(), get(options, 'search.patern', '').toLowerCase())
+      ) inSearch = true;
+    }
 
   if (!inSearch) return null;
   else return (
-    options.draggable.bool
+    get(options, 'draggable.bool', false)
     ? (
       <Draggable 
-        draggableId={row[options.row.id]}
+        draggableId={row[get(options, 'row.id')]}
         index={index}  
       >
         {(provided) => (
           <StyledTableBodyRow
-            onClick={evt => options.row.onClick(row, group)}
+            onClick={evt => get(options, 'row.onClick', () => null)(row, group)}
             innerRef={provided.innerRef}
             {...provided.draggableProps} 
           >
@@ -56,7 +46,7 @@ function TableBodyRow({ index, row, group }) {
             </StyledTableBodyCell>
             {columns.map((column, index) => (
               <StyledTableBodyCell key={index}>
-                {typeof(column.field) === 'function' ? column.field(row) : row[column.field]}
+                {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, get(column, 'field', ''), '')}
               </StyledTableBodyCell>
             ))}
           </StyledTableBodyRow>
@@ -65,11 +55,11 @@ function TableBodyRow({ index, row, group }) {
     )
     : (
       <StyledTableBodyRow
-        onClick={evt => options.row.onClick(row, group)}
+        onClick={evt => get(options, 'row.onClick', () => null)(row, group)}
       >
         {columns.map((column, index) => (
           <StyledTableBodyCell key={index}>
-            {column.renderField !== null ? column.renderField(row) : row[column.field]}
+            {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, get(column, 'field', ''), '')}
           </StyledTableBodyCell>
         ))}
       </StyledTableBodyRow>

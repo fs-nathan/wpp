@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { sortUserSuccess, sortUserFail } from '../../actions/user/sortUser';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, SORT_USER } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doSortUser({ userId, sortIndex, roomId }) {
   try {
@@ -26,8 +28,10 @@ function* sortUser(action) {
     yield call(doSortUser, action.options);
     yield put(sortUserSuccess());
     CustomEventEmitter(SORT_USER);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(sortUserFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

@@ -4,17 +4,19 @@ import {
   MEMBER_PROJECT_SUCCESS,
 } from '../../constants/actions/project/memberProject';
 
-export const memberProject = ({ projectId }) => ({
+export const memberProject = ({ projectId }, quite = false) => ({
   type: MEMBER_PROJECT,
+  quite,
   options: {
     projectId,
   },
 });
 
-export const memberProjectSuccess = ({ members }) => ({
+export const memberProjectSuccess = ({ membersAdded, membersFree }) => ({
   type: MEMBER_PROJECT_SUCCESS,
   data: {
-    members,
+    membersAdded,
+    membersFree,
   }
 });
 

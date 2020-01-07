@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { TableRow, TableCell, TableBody, Button } from '@material-ui/core';
 import { Droppable } from 'react-beautiful-dnd';
 import Icon from '@mdi/react';
@@ -9,35 +8,12 @@ import {
 } from '@mdi/js';
 import TableBodyRow from './TableBodyRow';
 import { CustomTableContext } from '../../index';
+import { get } from 'lodash';
+import './style.scss';
 
-const StyledTableBodyRow = styled(TableRow)`
-  background-color: #f2f2f263;
-  color: rgb(68, 72, 94);
-  font-weight: 600;
-  border-bottom: 1px solid rgb(241, 241, 241);
-  padding: 8px;
-`;
-
-const StyledTableBodyCell = styled(TableCell)`
-  padding: 0;
-  font-size: 12px;
-`;
-
-const CustomButton = styled(Button)`
-  justify-content: flex-start;
-  border-radius: 0;
-  padding: 8px 16px;
-  & > span {
-    font-weight: bold;
-    color: rgb(68, 72, 94);
-    & > span {
-      margin-left: auto;
-    }
-    &:last-child {
-      display: none;
-    }
-  }
-`;
+const StyledTableBodyRowGroup = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyGroup___row ${className}`} {...rest} />;
+const StyledTableBodyCell = ({ className = '', ...rest }) => <TableCell className={`${className}`} {...rest} />;
+const CustomButton = ({ className = '', ...rest }) => <Button className={`comp_CustomTable_TableBodyGroup___button ${className}`} {...rest} />;
 
 function TableBodyGroupRow({ group }) {
 
@@ -46,15 +22,15 @@ function TableBodyGroupRow({ group }) {
 
   return (
     <Droppable
-      droppableId={group[options.grouped.id]}
+      droppableId={group[get(options, 'grouped.id')]}
     >
       {(provided, snapshot) => (
         <TableBody
           innerRef={provided.innerRef}
           {...provided.droppableProps}
         >
-          <StyledTableBodyRow>
-            <StyledTableBodyCell colSpan={columns.length + 1}>
+          <StyledTableBodyRowGroup>
+            <StyledTableBodyCell colSpan={get(columns, 'length', 0) + 1}>
               <CustomButton 
                 fullWidth 
                 size='small'
@@ -65,11 +41,11 @@ function TableBodyGroupRow({ group }) {
                   : <Icon path={mdiChevronUp} size={1} color='#8d8d8d' />
                 }  
               >
-                {typeof(options.grouped.label) === 'function' ? options.grouped.label(group) : group[options.grouped.label]}
+                {typeof(get(options, 'grouped.label')) === 'function' ? options.grouped.label(group) : group[get(options, 'grouped.label')]}
               </CustomButton>
             </StyledTableBodyCell>
-          </StyledTableBodyRow>
-          {(open || snapshot.isDraggingOver) && group[options.grouped.item].map((row, index) => (
+          </StyledTableBodyRowGroup>
+          {(open || snapshot.isDraggingOver) && group[get(options, 'grouped.item')].map((row, index) => (
             <TableBodyRow key={index} index={index} row={row} group={group} />
           ))}
           {provided.placeholder}  

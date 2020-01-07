@@ -1,6 +1,30 @@
 {
   "views": {
     "user_page": {
+      "left_part": {
+        "add_user": {
+          "no_accounts": "Không tìm thấy tài khoản",
+          "invited": "Đã mời",
+          "invite": "Mời",
+          "accept_request": "Duyệt",
+          "deny_request": "Từ chối",
+          "time": "{{minute}} phút",
+          "title": "Thêm thành viên",
+          "invite_member": "Mời thành viên tham gia nhóm",
+          "find_member": "Tìm kiếm thành viên",
+          "find_member_button": "Lọc",
+          "request_member_title": "Thành viên yêu cầu tham gia nhóm"
+        },
+        "department_info": {
+          "modal_title": "Chi tiết bộ phận",
+          "default": "Mặc định",
+          "member_count": "Số nhân sự: {{count}} thành viên",
+          "intro": "Giới thiệu",
+          "update": "Chỉnh sửa",
+          "delete": "Xóa bộ phận",
+          "alert_content": "Bạn chắc chắn muốn xóa?"
+        }
+      },
       "modals": {
         "search_modal": {
           "search_title": "Tìm kiếm",
@@ -29,7 +53,7 @@
             "role_manager_menu_item": "Quản lý vai trò",
             "logo_manager_menu_item": "Quản lý biểu tượng",
             "table_settings_menu_item": "Cài đặt bảng"
-          }, 
+          },
           "table_main": {
             "no_data_label": "Không có dữ liệu",
             "table_header_row": {
@@ -78,5 +102,8 @@
         }
       }
     }
-  }
+  },
+  "IDS_WP_SETTING_DATE_FORMAT": "Cài đặt định dạng ngày tháng",
+  "IDS_WP_VIETNAMESE": "Tiếng Việt",
+  "IDS_WP_ENGLISH": "Tiếng Anh"
 }

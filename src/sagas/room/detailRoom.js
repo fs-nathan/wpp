@@ -1,6 +1,8 @@
 import { call, put } from 'redux-saga/effects';
 import { detailRoomSuccess, detailRoomFail } from '../../actions/room/detailRoom';
 import { apiService } from '../../constants/axiosInstance';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doDetailRoom({ roomId }) {
   try {
@@ -24,6 +26,7 @@ function* detailRoom(action) {
     yield put(detailRoomSuccess({ room }));
   } catch (error) {
     yield put(detailRoomFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 

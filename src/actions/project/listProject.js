@@ -4,8 +4,9 @@ import {
   LIST_PROJECT_SUCCESS,
 } from '../../constants/actions/project/listProject';
 
-export const listProject = ({ groupProject, type, status }) => ({
+export const listProject = ({ groupProject, type, status }, quite = false) => ({
   type: LIST_PROJECT,
+  quite,
   options: {
     groupProject,
     type,

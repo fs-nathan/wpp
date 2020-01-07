@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { createPositionSuccess, createPositionFail } from '../../actions/position/createPosition';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, CREATE_POSITION } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doCreatePosition({ name, description }) {
   try {
@@ -25,8 +27,10 @@ function* createPosition(action) {
     const { position } = yield call(doCreatePosition, action.options);
     yield put(createPositionSuccess({ position }));
     CustomEventEmitter(CREATE_POSITION);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createPositionFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

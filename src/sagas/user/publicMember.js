@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { publicMemberSuccess, publicMemberFail } from '../../actions/user/publicMember';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, PUBLIC_MEMBER } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doPublicMember({ userId }) {
   try {
@@ -24,8 +26,10 @@ function* publicMember(action) {
     yield call(doPublicMember, action.options);
     yield put(publicMemberSuccess());
     CustomEventEmitter(PUBLIC_MEMBER);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(publicMemberFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

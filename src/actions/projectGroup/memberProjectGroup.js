@@ -4,8 +4,9 @@ import {
   MEMBER_PROJECT_GROUP_SUCCESS,
 } from '../../constants/actions/projectGroup/memberProjectGroup';
 
-export const memberProjectGroup = ({ projectGroupId }) => ({
+export const memberProjectGroup = ({ projectGroupId }, quite = false) => ({
   type: MEMBER_PROJECT_GROUP,
+  quite,
   options: {
     projectGroupId,
   }

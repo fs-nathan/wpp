@@ -22,7 +22,7 @@ const initialState = {
     dataFetched: false,
     error: false,
     links: [],
-    detailImage: null,
+    detailImage: [],
     detailFile: [],
     detailLink: [],
 };

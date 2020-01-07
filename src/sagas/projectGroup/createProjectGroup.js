@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { createProjectGroupSuccess, createProjectGroupFail } from '../../actions/projectGroup/createProjectGroup';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, CREATE_PROJECT_GROUP } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doCreateProjectGroup({ name, icon, description }) {
   try {
@@ -26,8 +28,10 @@ function* createProjectGroup(action) {
     const { project_group_id: projectGroupId } = yield call(doCreateProjectGroup, action.options);
     yield put(createProjectGroupSuccess({ projectGroupId }));
     CustomEventEmitter(CREATE_PROJECT_GROUP);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createProjectGroupFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

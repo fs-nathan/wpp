@@ -1,0 +1,20 @@
+.left-setting-icon {
+  padding: 8px;
+}
+.title-setting-item {
+  font-weight: 500;
+  &.none-icon {
+    margin-left: 32px;
+  }
+}
+.sub-setting-item {
+  margin-left: 56px;
+  font-size: 14px;
+}
+.item-actived {
+  cursor: pointer;
+  background-color: #e6f0ff !important;
+}
+.none-action {
+  pointer-events: none;
+}

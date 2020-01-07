@@ -58,22 +58,36 @@ const StyleContent = styled(ColorTypo)`
 const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
-const StyledMenuApprove = styled.div`
-  opacity: 0 ;
-  ${ApprovedContainer}:hover & {
-    opacity: 1;
+// const StyledMenuApprove = styled.div`
+//   opacity: 0 ;
+//   ${ApprovedContainer}:hover & {
+//     opacity: 1;
+//   }
+// `
+const BadgeOffer = (status) => {
+  let label, color ;
+  if (status === 1) {
+    label = "Duyệt"
+    color = "bluelight"
+  } else {
+    label = "Từ chối"
+    color = "redlight"
   }
-`
+  return (
+    <Badge component='small' color={color} badge size='small' label={label} />
+  ) 
+}
+
 const ApprovedBox = (props) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (evt) => {
-    setAnchorEl(evt.currentTarget);
-  }
+  // const handleClick = (evt) => {
+  //   setAnchorEl(evt.currentTarget);
+  // }
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  }
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // }
   // bien của modal phe duyet
   const [open, setOpen] = React.useState(false);
 
@@ -90,6 +104,8 @@ const ApprovedBox = (props) => {
     content: "Từ chối phê duyệt",
     status: 2
   }
+  // console.log("props offer status::::", props.offer)
+  
   return (
     <React.Fragment>
       {props.approved && (
@@ -100,21 +116,23 @@ const ApprovedBox = (props) => {
               <div>
                 <StyleContent variant='body1' bold>{props.offer.dataHander.user_hander_name}</StyleContent>
                 <ColorTypo variant='caption'>
-                  <Badge component='small' color='bluelight' badge size='small' label={'Duyệt'} />
+                  {/* <Badge component='small' color='bluelight' badge size='small' label={label} /> */}
+                  {BadgeOffer(props.offer.status)}
                 </ColorTypo>
               </div>
-              <StyledMenuApprove>
+              {/* <StyledMenuApprove>
                 <ButtonIcon size='small' onClick={handleClick} >
                   <Icon path={mdiDotsHorizontal} size={1} />
                 </ButtonIcon>
-              </StyledMenuApprove>
+              </StyledMenuApprove> */}
+              <div></div>
             </StyledTitleBox>
             <StyledContentBox>
               <ColorTypo variant='caption'>{props.offer.dataHander.date_hander}</ColorTypo>
               <StyleContent >{props.offer.dataHander.content_hander}</StyleContent>
             </StyledContentBox>
           </ApprovedContainer>
-          <Menu
+          {/* <Menu
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
@@ -122,7 +140,7 @@ const ApprovedBox = (props) => {
           >
             <MenuItem onClick={() => props.handleClickOpen()}>Chỉnh sửa</MenuItem>
             <MenuItem onClick={handleClose}>Xóa</MenuItem>
-          </Menu>
+          </Menu> */}
         </React.Fragment>
       )}
       {!props.approved && (
@@ -188,7 +206,7 @@ const StyledMenuOffer = styled.div`
   }
 `
 const CustomListItem = (props) => {
-
+  // console.log("props delete::::", props)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
     content, dataHander, date_create,
@@ -322,6 +340,7 @@ function TabBody(props) {
     setOpen(false);
   };
   const [selectedItem, setSelectedItem] = React.useState(DEFAULT_OFFER_ITEM)
+  // console.log("selectItem::::", selectedItem.offer_id)
   const handleClickEditItem = item => {
     setSelectedItem({ ...item, offer_id: item.id })
     setOpen(true)
@@ -329,7 +348,7 @@ function TabBody(props) {
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const confirmDelete = () => {
 
-    props.deleteOfferByTaskId({offerId: selectedItem.offer_id, taskId: props.taskId})
+    props.deleteOfferByTaskId({offer_id: selectedItem.offer_id, taskId: props.taskId})
   }
   const handleOpenModalDelete = item => {
     setSelectedItem({ ...item, offer_id: item.id })

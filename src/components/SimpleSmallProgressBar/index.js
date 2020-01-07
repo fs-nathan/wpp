@@ -6,7 +6,7 @@ const Container = styled(({ color, ...rest }) => <div {...rest} />)`
   align-items: center;
   & > span {
     color: ${props => props.color};
-    font-size: 12px;
+    font-size: 14px;
     margin-left: 5px;
   }
 `;
@@ -16,7 +16,7 @@ const BackBar = styled.div`
   width: 100%;
   height: 8px
   border-radius: 999px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
 `;
 
 const FrontBar = styled(({ percentDone, color, ...rest }) => <div {...rest} />)`

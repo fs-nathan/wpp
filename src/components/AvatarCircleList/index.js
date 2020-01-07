@@ -1,69 +1,44 @@
 import React from 'react';
-import styled from 'styled-components';
 import { get } from 'lodash';
 import ColorTypo from '../ColorTypo';
-import { Tooltip } from '@material-ui/core';
+import CustomAvatar from '../CustomAvatar';
 import PropTypes from 'prop-types';
+import './style.scss';
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-    margin-left: -2px;
-    border-radius: 100%;
-    background-color: #fff;
-    &:not(:first-child) {
-      box-shadow: -4px -1px #f8f9fa;
-    }
-    &:last-child {
-      background-color: #31b586;
-      color: #fff;
-      & > div {
-        font-size: 10px;
-      }
-    }
-    & > img {
-      width: 20px;
-      height: 20pxl
-      border-radius: 100%;
-    } 
-  }
-`;
-
-function AvatarCircle({ user, ...props }) {
+function AvatarCircle({ user }) {
   return (
-    <div {...props}>
-      <img src={get(user, 'avatar')} alt='avatar' />
-    </div>
+    <CustomAvatar
+      style={{ width: 20, height: 20, }} 
+      src={get(user, 'avatar')} alt='avatar'
+    />
   );
 }
 
-function AvatarCircleList({ display, users = [] }) {
+function AvatarCircleList({ display, users = [], className = '', }) {
+
   return (
-    <Container>
+    <div className={`comp_AvatarCircleList___container ${className}`}>
       {users.length > 0 && (
         <React.Fragment>
-          {users.slice(display).map((user, index) => {
+          {users.slice(0, display).map((user, index) => {
             return (
-              <Tooltip 
+              <abbr 
                 key={index}
                 title={get(user, 'name', '')}
               >
-                <AvatarCircle 
-                  user={user}
-                />
-              </Tooltip>
+                <div>  
+                  <AvatarCircle 
+                    user={user}
+                  />
+                </div>
+              </abbr>
             )
           })}
-          <div>
-            <div>{users.length-display}+</div>
-          </div>
+          {display < users.length && (  
+            <div>
+              <div>{users.length-display}+</div>
+            </div>
+          )}
         </React.Fragment>
       )}
       {users.length === 0 && (
@@ -71,13 +46,13 @@ function AvatarCircleList({ display, users = [] }) {
           Không có dữ liệu
         </ColorTypo>
       )}
-    </Container>
+    </div>
   )
 }
 
 AvatarCircleList.propTypes = {
-  display: PropTypes.number.isRequired,
-  users: PropTypes.array.isRequired,
+  display: PropTypes.number,
+  users: PropTypes.array,
 }
 
 export default AvatarCircleList;

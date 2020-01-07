@@ -4,8 +4,7 @@ import {
   LIST_ICON_FAIL,
 } from '../../constants/actions/icon/listIcon';
 import { DELETE_ICON } from '../../constants/actions/icon/deleteIcon';
-import { remove, get, concat, } from 'lodash';
-import { CREATE_ICON_SUCCESS } from '../../constants/actions/icon/createIcon';
+import { remove, get, } from 'lodash';
 
 export const initialState = {
   data: {
