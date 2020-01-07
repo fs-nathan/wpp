@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    &:hover > .wrap-function-bar {
+    &:hover > .wrap-function-bar-bp {
         display: block;
     }
 }
@@ -581,6 +581,19 @@
     }  
 }
 
+// TabHeader - MemberTab
+.container-member-tabheader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    background-color: #fff;
+    height: 85px;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    & > *:last-child {
+        display: none;
+    }
+}
+
 // TabBody - MemberTab
 .container-member-tabbody {
     padding: 10px 20px 50px 20px;
@@ -620,6 +633,74 @@
             margin-right: 10px;
         }
     }
+}
+// OfferModal - Offer Tab
+.button-offer-modal {
+    & > span {
+        margin: 20px 0 0 0;
+        & > span {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          padding: 3px 10px;
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+}
+.file-box-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    border-bottom: 1px solid #b5b5b5;
+    .file-name {
+        width: 440px;
+        word-break: break-word;
+        margin-right: 30px
+    }
+}
+
+// TabBody - Offer Tab
+.container-offer-tabbody {
+    padding: 10px 20px 50px 20px;
+    .styled-list-item {
+        display: flex;
+        flex-direction: column;
+        .approved-container {
+            margin-left: 30px;
+            margin-top: 10px;
+            .styled-menu-approve {
+                opacity: 0;
+            }
+            &:hover .styled-menu-approve {
+                opacity: 1;
+            }
+        }
+    }
+}
+.styled-title-box {
+    display: flex;
+    align-items: center;
+    & > *:not(:first-child) {
+        margin-left: 5px;
+    }
+    & > *:last-child {
+         margin-left: auto;
+    }
+    .styled-menu-offer {
+        opacity: 0;
+    }
+}
+.wrapper-list-item:hover .styled-menu-offer {
+    opacity: 1;
+}
+.styled-content-box {
+    margin-left: 30px;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-weight: bold;
 }
 // Introduce
 .container-intro {

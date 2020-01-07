@@ -16,14 +16,14 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import { DEFAULT_OFFER_ITEM } from '../../../../../helpers/jobDetail/arrayHelper'
 
-const Container = styled.div`
-  padding: 10px 20px 50px 20px;
-`;
+// const Container = styled.div`
+//   padding: 10px 20px 50px 20px;
+// `;
 
-const ApprovedContainer = styled.div`
-  margin-left: 30px;
-  margin-top: 10px;
-`;
+// const ApprovedContainer = styled.div`
+//   margin-left: 30px;
+//   margin-top: 10px;
+// `;
 
 // const StyledButton = styled(({ color, ...rest }) => <Button {...rest} />)`
 //   font-size: 11px;
@@ -57,6 +57,10 @@ const StyleContent = styled(ColorTypo)`
 `
 const Badge = styled(ColorChip)`
   border-radius: 3px !important;
+`
+const UserHanderAvatar = styled(Avatar)`
+  width: 25px;
+  height: 25px;
 `
 // const StyledMenuApprove = styled.div`
 //   opacity: 0 ;
@@ -104,15 +108,14 @@ const ApprovedBox = (props) => {
     content: "Từ chối phê duyệt",
     status: 2
   }
-  // console.log("props offer status::::", props.offer)
-  
+ 
   return (
     <React.Fragment>
       {props.approved && (
         <React.Fragment>
-          <ApprovedContainer>
-            <StyledTitleBox>
-              <Avatar style={{ width: 25, height: 25 }} src={props.offer.dataHander.user_hander_avatar} alt='avatar' />
+          <div className="approved-container">
+            <div className="styled-title-box">
+              <UserHanderAvatar src={props.offer.dataHander.user_hander_avatar} alt='avatar' />
               <div>
                 <StyleContent variant='body1' bold>{props.offer.dataHander.user_hander_name}</StyleContent>
                 <ColorTypo variant='caption'>
@@ -120,18 +123,17 @@ const ApprovedBox = (props) => {
                   {BadgeOffer(props.offer.status)}
                 </ColorTypo>
               </div>
-              {/* <StyledMenuApprove>
+              {/* <div className="styled-menu-approve">
                 <ButtonIcon size='small' onClick={handleClick} >
                   <Icon path={mdiDotsHorizontal} size={1} />
                 </ButtonIcon>
-              </StyledMenuApprove> */}
-              <div></div>
-            </StyledTitleBox>
-            <StyledContentBox>
+              </div> */}
+            </div>
+            <div className="styled-content-box">
               <ColorTypo variant='caption'>{props.offer.dataHander.date_hander}</ColorTypo>
               <StyleContent >{props.offer.dataHander.content_hander}</StyleContent>
-            </StyledContentBox>
-          </ApprovedContainer>
+            </div>
+          </div>
           {/* <Menu
             anchorEl={anchorEl}
             keepMounted
@@ -140,13 +142,13 @@ const ApprovedBox = (props) => {
           >
             <MenuItem onClick={() => props.handleClickOpen()}>Chỉnh sửa</MenuItem>
             <MenuItem onClick={handleClose}>Xóa</MenuItem>
-          </Menu> */}
+          </Menu>  */}
         </React.Fragment>
       )}
       {!props.approved && (
         <React.Fragment>
-          <ApprovedContainer>
-            <StyledTitleBox>
+          <div className="approved-container">
+            <div className="styled-title-box">
               <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
               <Button variant="outlined" size="small"
                 onClick={() => {
@@ -154,39 +156,39 @@ const ApprovedBox = (props) => {
                 }}
               >Từ chối</Button>
               <span />
-            </StyledTitleBox>
+            </div>
             <ApproveModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
-          </ApprovedContainer>
+          </div>
         </React.Fragment>
       )}
     </React.Fragment>
   );
 }
 
-const StyledListItem = styled.li`
-  display: flex;
-  flex-direction: column;
-`;
+// const StyledListItem = styled.li`
+//   display: flex;
+//   flex-direction: column;
+// `;
 
-const StyledTitleBox = styled.div`
-  display: flex;
-  align-items: center;
-  & > *:not(:first-child) {
-    margin-left: 5px;
-  }
-  & > *:last-child   {
-    margin-left: auto;
-  }
-`;
+// const StyledTitleBox = styled.div`
+//   display: flex;
+//   align-items: center;
+//   & > *:not(:first-child) {
+//     margin-left: 5px;
+//   }
+//   & > *:last-child   {
+//     margin-left: auto;
+//   }
+// `;
 
-const StyledContentBox = styled.div`
-  margin-left: 30px;
-  margin-top: 10px;
-  background-color: #f9f9f9;
-  padding: 8px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-`;
+// const StyledContentBox = styled.div`
+//   margin-left: 30px;
+//   margin-top: 10px;
+//   background-color: #f9f9f9;
+//   padding: 8px 10px;
+//   border-radius: 5px;
+//   font-weight: bold;
+// `;
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -198,13 +200,13 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
-const WrapperCommon = styled.div``
-const StyledMenuOffer = styled.div`
-  opacity: 0 ;
-  ${WrapperCommon}:hover & {
-    opacity: 1;
-  }
-`
+// const WrapperCommon = styled.div``
+// const StyledMenuOffer = styled.div`
+//   opacity: 0 ;
+//   ${WrapperCommon}:hover & {
+//     opacity: 1;
+//   }
+// `
 const CustomListItem = (props) => {
   // console.log("props delete::::", props)
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -223,10 +225,10 @@ const CustomListItem = (props) => {
 
   return (
     <React.Fragment>
-      <StyledListItem>
-        <WrapperCommon>
-          <StyledTitleBox>
-            <Avatar style={{ width: 25, height: 25 }} src={user_create_avatar} alt='avatar' />
+      <li className="styled-list-item">
+        <div className="wrapper-list-item">
+          <div className="styled-title-box">
+            <UserHanderAvatar src={user_create_avatar} alt='avatar' />
             <div>
               <StyleContent variant='body1' bold>{user_create_name}</StyleContent>
               <ColorTypo variant='caption'>
@@ -237,18 +239,18 @@ const CustomListItem = (props) => {
             <ColorTypo color='orange' variant='caption'>{user_can_handers.join(", ")}</ColorTypo> lúc {date_create}
               </ColorTypo>
             </div>
-            <StyledMenuOffer>
+            <div className="styled-menu-offer">
               <ButtonIcon size='small' onClick={handleClick} >
                 <Icon path={mdiDotsHorizontal} size={1} />
               </ButtonIcon>
-            </StyledMenuOffer>
-          </StyledTitleBox>
-          <StyledContentBox>
+            </div>
+          </div>
+          <div className="styled-content-box">
             <StyleContent>{content}</StyleContent>
-          </StyledContentBox>
-        </WrapperCommon>
+          </div>
+        </div>
         <ApprovedBox {...props} approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
-      </StyledListItem>
+      </li>
       <Menu
         anchorEl={anchorEl}
         keepMounted
@@ -361,7 +363,7 @@ function TabBody(props) {
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <Container>
+      <div className="container-offer-tabbody">
         <StyledButtonGroup fullWidth variant="text" >
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
@@ -429,7 +431,7 @@ function TabBody(props) {
           handleCloseModalDelete={handleCloseModalDelete}
           item={selectedItem}
           {...props} />
-      </Container>
+      </div>
     </Body>
   )
 }

@@ -33,36 +33,45 @@ const TexTitle = styled(Typography)`
 //   font-size: 15px;
 //   margin: 15px 0;
 // `
-const ButtonFile = styled.label`
-      & > span {
-        margin: 20px 0 0 0;
-        & > span {
-          display: flex;
-          align-items: center;
-          justify-content: start;
-          padding: 3px 10px;
-          font-size: 14px;
-          font-weight: 500;
-        }
-      }
-`
+// const ButtonFile = styled.label`
+//       & > span {
+//         margin: 20px 0 0 0;
+//         & > span {
+//           display: flex;
+//           align-items: center;
+//           justify-content: start;
+//           padding: 3px 10px;
+//           font-size: 14px;
+//           font-weight: 500;
+//         }
+//       }
+// `
 const TextContent = styled(TextField)`
   & > label {
       font-size: 14px;
       z-index: 0
   }
 `
-const FileBoxStyledListItem = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  border-bottom: 1px solid #b5b5b5;
+
+const FileSize = styled(ColorTypo)`
+  margin-right: 20px;
+  width: 67px;
 `
-const FileName = styled.span`
-  width: 440px;
-  word-break: break-word;
-  margin-right: 30px
+const FileId = styled(Icon)`
+ cursor: pointer;
 `
+
+// const FileBoxStyledListItem = styled.div`
+//   display: flex;
+//   align-items: center;
+//   margin-top: 10px;
+//   border-bottom: 1px solid #b5b5b5;
+// `
+// const FileName = styled.span`
+//   width: 440px;
+//   word-break: break-word;
+//   margin-right: 30px
+// `
 
 // bien cua modal
 const styles = theme => ({
@@ -123,11 +132,11 @@ const DialogActions = withStyles(theme => ({
 
 const OfferFile = ({ file, handleDeleteFile }) => {
   return (
-    <FileBoxStyledListItem>
-      <FileName>{file.name}</FileName>
-      <ColorTypo variant='caption' style={{ marginRight: 20, width: 67 }}>{file.size}</ColorTypo>
-      <Icon onClick={() => handleDeleteFile(file.id)} path={mdiClose} size={0.5} style={{ cursor: "pointer" }} />
-    </FileBoxStyledListItem>
+    <div className="file-box-wrapper">
+      <span className="file-name">{file.name}</span>
+      <FileSize variant='caption'>{file.size}</FileSize>
+      <FileId onClick={() => handleDeleteFile(file.id)} path={mdiClose} size={0.5} />
+    </div>
   )
 }
 
@@ -242,12 +251,12 @@ const OfferModal = (props) => {
           type="file"
           onChange={e => props.isOffer ? handleUploadFileUpdate(e.target.files) : handleUploadFileAdd(e.target.files)}
         />
-        <ButtonFile htmlFor="outlined-button-file">
+        <label className="button-offer-modal" htmlFor="outlined-button-file">
           <Button variant="outlined" component="span" fullWidth className={classes.button}>
             <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
             Đính kèm tài liệu
                 </Button>
-        </ButtonFile>
+        </label>
         {
           tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
         }

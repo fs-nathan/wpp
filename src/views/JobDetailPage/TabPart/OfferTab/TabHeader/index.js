@@ -6,15 +6,15 @@ import { mdiChevronLeft , mdiPlus, } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import OfferModal from '../OfferModal'
 import { WrapperContext } from '../../../index'
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
-  height: 85px;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+// const Container = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   background-color: #fff;
+//   height: 85px;
+//   border-bottom: 1px solid rgba(0, 0, 0, .1);
 
-`;
+// `;
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -40,7 +40,7 @@ function TabHeader(props) {
     setOpen(false);
   };
   return (
-    <Container>
+    <div className="container-normal-tabheader">
       <ButtonIcon onClick={() => { props.setShow(0) }}>
         <Icon path={mdiChevronLeft } size={1} />
       </ButtonIcon>
@@ -49,7 +49,7 @@ function TabHeader(props) {
         <Icon path={mdiPlus} size={1} />
       </ButtonIcon>
       <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} {...props} />
-    </Container>
+    </div>
   );
 }
 

@@ -6,17 +6,17 @@ import { mdiChevronLeft, mdiSettings } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import AddMemberModal from '../../../ListPart/ListHeader/AddMemberModal'
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between; 
-  background-color: #fff;
-  height: 85px;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > *:last-child {
-    display: none;
-  }
-`;
+// const Container = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between; 
+//   background-color: #fff;
+//   height: 85px;
+//   border-bottom: 1px solid rgba(0, 0, 0, .1);
+//   & > *:last-child {
+//     display: none;
+//   }
+// `;
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -33,7 +33,7 @@ const ButtonIcon = styled(IconButton)`
 function TabHeader({ setShow }) {
   const [openAddModal, setOpenAddModal] = React.useState(false);
   return (
-    <div className="container-normal-tabheader">
+    <div className="container-member-tabheader">
       <ButtonIcon onClick={() => setShow(0)}>
         <Icon path={mdiChevronLeft} size={1} />
       </ButtonIcon>

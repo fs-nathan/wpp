@@ -42,13 +42,13 @@ function ListTask(props) {
   )
 }
 
-function ListPart() {
+function ListPart(props) {
   const [showListProject, setShow] = React.useState(false)
 
   return (
     <div className="container-lp">
       <ListTask show={!showListProject} setShow={setShow} />
-      <ListProject show={showListProject} setShow={setShow} />
+      <ListProject show={showListProject} setShow={setShow} history={props.history}/>
     </div>
   )
 }

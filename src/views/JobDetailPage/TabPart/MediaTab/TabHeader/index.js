@@ -36,7 +36,7 @@ function TabHeader({ setShow }) {
   return (
     <div className="container-normal-tabheader">
       <ButtonIcon onClick={() => setShow(0)}>
-        <Icon path={mdiChevronLeft  } size={1}/>
+        <Icon path={mdiChevronLeft} size={1}/>
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Tài liệu</ColorTypo>
       <span style={{ width: 30}}></span>
