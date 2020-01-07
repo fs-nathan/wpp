@@ -10,7 +10,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { WrapperContext } from '../index'
-
+import { Redirect } from 'react-router-dom'
 const Container = styled.div`
   display: ${props => props.show ? 'block' : 'none'};
   height: calc(82vh);
@@ -78,10 +78,13 @@ const Projects = (props) => {
   // console.log("projects:::::", props);
   const value = React.useContext(WrapperContext)
   return (
+    // redirect ? <Redirect to='/target' /> :
     <ProjectsDetail onClick={() => {
       // console.log('Click item ' + props.project)
-      value.getDetailProject(props.project.id)
-      value.chooseProject(props.project)
+      
+      props.history.push(`/list-task-detail/` + props.project.id)
+      // value.getDetailProject(props.project.id)
+      // value.chooseProject(props.project)
       props.setShow(false)
     }}>{props.title}</ProjectsDetail>
   )

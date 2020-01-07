@@ -23,10 +23,22 @@ const Wrapper = WrapperContext.Provider
 function JobDetailPage(props) {
     useEffect(() => {
         // props.getProjectGroup()
+
         props.getProjectListBasic()
+
         // props.getDetailProject(props.projectId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        if (props.history.location.pathname.substring(18).length > 0) {
+            props.getDetailProject(props.history.location.pathname.substring(18))
+            props.chooseProject({ id: props.history.location.pathname.substring(18) })
+        } else {
+            props.getProjectListBasic()
+        }
+        console.log('history:::', props.history.location.pathname)
+    }, [props.history.location.pathname])
 
 
     const getDataByProjectId = () => {
@@ -57,13 +69,13 @@ function JobDetailPage(props) {
     return (
 
         <Wrapper value={{ ...props }}>
-            <div className={(props.taskId ?  "container" : "container-job-introduce")} >
+            <div className={(props.taskId ? "container" : "container-job-introduce")} >
                 <ListPart {...props} />
                 {(props.taskId) ?
-                        <>
-                            <ChatPart {...props} />
-                            <TabPart {...props} />
-                        </>
+                    <>
+                        <ChatPart {...props} />
+                        <TabPart {...props} />
+                    </>
                     :
                     <Intro />
                 }
@@ -124,28 +136,28 @@ const mapDispatchToProps = dispatch => {
         getSubTaskByTaskId: taskId => dispatch(taskDetailAction.getSubTask({ taskId })),
         postSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.postSubTask({ task_id: taskId, name })),
         updateSubTaskByTaskId: (subTaskId, name, taskId) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: subTaskId, name, taskId })),
-        deleteSubTaskByTaskId: ({subTaskId, taskId}) => dispatch(taskDetailAction.deleteSubTask({ sub_task_id: subTaskId, taskId: taskId })),
-        completeSubTaskByTaskId: ({subTaskId, taskId}) => dispatch(taskDetailAction.completeSubTask({ sub_task_id: subTaskId, taskId: taskId })),
+        deleteSubTaskByTaskId: ({ subTaskId, taskId }) => dispatch(taskDetailAction.deleteSubTask({ sub_task_id: subTaskId, taskId: taskId })),
+        completeSubTaskByTaskId: ({ subTaskId, taskId }) => dispatch(taskDetailAction.completeSubTask({ sub_task_id: subTaskId, taskId: taskId })),
         // remind
         getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({ taskId })),
         createRemindWithTimeDetail: (data) => dispatch(taskDetailAction.postRemindWithTimeDetail(data)),
         createRemindWithDurationDetail: (data) => dispatch(taskDetailAction.postRemindDuration(data)),
         updateRemindWithTimeDetail: ({ data, taskId }) => dispatch(taskDetailAction.updateRemindWithTimeDetail({ data, taskId })),
         updateRemindWithDurationDetail: ({ data, taskId }) => dispatch(taskDetailAction.updateRemindWithDuration({ data, taskId })),
-        deleteRemindWByRemindId: ({remindId, taskId}) => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId, taskId: taskId })),
+        deleteRemindWByRemindId: ({ remindId, taskId }) => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId, taskId: taskId })),
         // offer
         getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
         createOfferByTaskId: ({ data, taskId }) => dispatch(taskDetailAction.createOffer({ data, taskId })),
-        deleteOfferByTaskId: ({offer_id, taskId}) => dispatch(taskDetailAction.deleteOffer({ offer_id, taskId })),
+        deleteOfferByTaskId: ({ offer_id, taskId }) => dispatch(taskDetailAction.deleteOffer({ offer_id, taskId })),
         updateOfferById: ({ offerId, content, taskId }) => dispatch(taskDetailAction.updateOffer({ offerId, content, taskId })),
         uploadDocumentToOfferById: (data, cb, taskId) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb, taskId)),
         deleteDocumentToOfferById: (data, cb, taskId) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb, taskId)),
-        handleOfferById: ({data, taskId}) => dispatch(taskDetailAction.handleOffer({data, taskId})),
+        handleOfferById: ({ data, taskId }) => dispatch(taskDetailAction.handleOffer({ data, taskId })),
         // command 
         getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
-        createCommandByTaskId: ({task_id, content, type}) => dispatch(taskDetailAction.createCommand({ task_id, content, type })),
-        updateCommandByTaskId: ({id, content, type, taskId}) => dispatch(taskDetailAction.updateCommand({ command_id: id, content, type, taskId })),
-        deleteCommandByCommandId: ({command_id, task_id}) => dispatch(taskDetailAction.deleteCommand({ command_id, task_id })),
+        createCommandByTaskId: ({ task_id, content, type }) => dispatch(taskDetailAction.createCommand({ task_id, content, type })),
+        updateCommandByTaskId: ({ id, content, type, taskId }) => dispatch(taskDetailAction.updateCommand({ command_id: id, content, type, taskId })),
+        deleteCommandByCommandId: ({ command_id, task_id }) => dispatch(taskDetailAction.deleteCommand({ command_id, task_id })),
         // Media Image File Link
         getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
         getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
