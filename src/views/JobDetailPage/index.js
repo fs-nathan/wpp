@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions'
 import '../JobDetailPage/index.scss'
 import Intro from './introduce'
+import { closeNoticeModal } from '../../actions/system/system';
 
 export const WrapperContext = React.createContext(null)
 const Wrapper = WrapperContext.Provider
@@ -22,6 +23,7 @@ const Wrapper = WrapperContext.Provider
 
 function JobDetailPage(props) {
     useEffect(() => {
+        props.closeNoticeModal()
         // props.getProjectGroup()
 
         props.getProjectListBasic()
@@ -210,6 +212,8 @@ const mapDispatchToProps = dispatch => {
         searchOffer: (data) => dispatch(taskDetailAction.searchOffer(data)),
         searchMember: (data) => dispatch(taskDetailAction.searchMember(data)),
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
+
+        closeNoticeModal: () => dispatch(closeNoticeModal())
     };
 };
 
