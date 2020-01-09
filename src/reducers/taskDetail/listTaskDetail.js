@@ -9,6 +9,7 @@ const initialState = {
     dataFetched: false,
     error: false,
     defaultListTaskDetail: [],
+    staticTask: [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -62,6 +63,26 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }
+            }
+        case types.STATIC_TASK_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case types.STATIC_TASK_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+                error: false,
+                staticTask: action.payload,
+            }
+        case types.STATIC_TASK_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true,
             }
         default:
             return state;

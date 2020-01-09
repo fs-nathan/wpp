@@ -828,3 +828,17 @@ export const searchMember = payload => ({
     type: types.SEARCH_MEMBER_TABPART,
     payload
 })
+
+// Static Task
+export const getStaticTask = payload => ({
+    type: types.STATIC_TASK_REQUEST,
+    payload
+})
+export const getStaticTaskSuccess = payload => ({
+    type: types.STATIC_TASK_SUCCESS,
+    payload
+})
+export const getStaticTaskFail = payload => ({
+    type: types.STATIC_TASK_FAIL,
+    payload
+})

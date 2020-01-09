@@ -1180,7 +1180,29 @@ function* getProjectDetail(action) {
   }
 }
 
+// static task
+async function doGetStaticTask(project_id) {
 
+  // console.log("PPPP", project_id)
+  try {
+    const config = {
+      url: '/task/static?project_id=' + project_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getStaticTask(action) {
+  try {
+    const res =yield call(doGetStaticTask, action.payload)
+    yield put(actions.getStaticTaskSuccess(res))
+  } catch (error) {
+    yield put(actions.getStaticTaskFail(error))
+  }
+}
 
 export {
   // Update Priority
@@ -1256,4 +1278,6 @@ export {
   getProjectDetail,
   // get project list basic
   getProjectListBasic,
+  // static task
+  getStaticTask,
 }

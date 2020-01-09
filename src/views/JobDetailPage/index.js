@@ -46,6 +46,7 @@ function JobDetailPage(props) {
         props.getListGroupTaskByProjectId(props.projectId)
         if (props.projectId !== "")
             props.getListTaskDetailByProjectId(props.projectId)
+            props.getStaticTask(props.projectId)
     }
 
     const getDataByTaskId = () => {
@@ -85,11 +86,10 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-    // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectListBasic);
+    // console.log('state static task::::', state.taskDetail.listDetailTask.staticTask);
     return {
         // offer
         offer: state.taskDetail.taskOffer.offer,
-
         pendingItems: state.taskDetail.taskOffer.pendingItems,
         approvedItems: state.taskDetail.taskOffer.approvedItems,
         // remind
@@ -127,6 +127,8 @@ const mapStateToProps = state => {
         projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
         // project list basic
         projectListBasic: state.taskDetail.commonTaskDetail.projectListBasic,
+        // static task
+        staticTask: state.taskDetail.listDetailTask.staticTask,
     }
 }
 
@@ -210,6 +212,7 @@ const mapDispatchToProps = dispatch => {
         searchOffer: (data) => dispatch(taskDetailAction.searchOffer(data)),
         searchMember: (data) => dispatch(taskDetailAction.searchMember(data)),
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
+        getStaticTask: (data) => dispatch(taskDetailAction.getStaticTask(data)),
     };
 };
 

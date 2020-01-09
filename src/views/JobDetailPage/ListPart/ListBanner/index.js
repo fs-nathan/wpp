@@ -20,26 +20,38 @@ import { WrapperContext } from '../../index'
 //   border-bottom: 1px solid rgba(0, 0, 0, .1);
 // `;
 
-const jobTypes = [
-  'Tất cả',
-  'Đang chờ',   // Waiting
-  'Đang làm',   // Doing
-  'Hoàn thành', // Complete
-  'Quá hạn',    // Expired
-  'Tạm dừng',   // Stop
-]
+
 
 function ListBanner() {
   
   const value = React.useContext(WrapperContext)
   const [selected, setSelected] = React.useState(0)
 
-
   const handleChangeFilterType = (typeIdx) => {
     value.filterTaskByType(typeIdx)
     setSelected(typeIdx) 
   }
 
+  let data = []
+  if( value && value.staticTask && value.staticTask.static) {
+    data = value.staticTask.static
+  }
+  // const staticTask = [
+  //   'Tất cả' + ' (' + `${data.task_of_me}` + ')',
+  //   `${data.task_waiting}`,
+  //   `${data.task_doing}`,
+  //   `${data.task_complete}`,
+  //   `${data.task_stop}`,
+  //   `${data.task_expired}`,
+  // ]
+  const jobTypes = [
+    'Tất cả' + ' (' + `${data.task_of_me}` + ')',
+    'Đang chờ' + ' (' + `${data.task_waiting}` + ')',   // Waiting
+    'Đang làm' + ' (' + `${data.task_doing}` + ')',   // Doing
+    'Hoàn thành' + ' (' + `${data.task_complete}` + ')', // Complete
+    'Quá hạn' + ' (' + `${data.task_expired}` + ')',    // Expired
+    'Tạm dừng' + ' (' + `${data.task_stop}` + ')',   // Stop
+  ]
   return (
     <div className="container-list-banner">
       {jobTypes.map((jobType, index) => (
