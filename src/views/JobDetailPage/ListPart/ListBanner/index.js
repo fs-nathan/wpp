@@ -1,24 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import ColorChip from '../../../../components/ColorChip';
 import { WrapperContext } from '../../index'
 
-const Container = styled.div`
-  padding: 10px 15px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+// const Container = styled.div`
+//   padding: 10px 15px;
+//   display: flex;
+//   align-items: center;
+//   flex-wrap: wrap;
   
-  & > * {
-    margin-right: 10px;
-    margin-bottom: 5px;
-    padding: 0 5px;
-    & > span {
-      font-size: 12px;
-    }
-  }
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-`;
+//   & > * {
+//     margin-right: 10px;
+//     margin-bottom: 5px;
+//     padding: 0 5px;
+//     & > span {
+//       font-size: 12px;
+//     }
+//   }
+//   border-bottom: 1px solid rgba(0, 0, 0, .1);
+// `;
 
 const jobTypes = [
   'Tất cả',
@@ -41,7 +41,7 @@ function ListBanner() {
   }
 
   return (
-    <Container>
+    <div className="container-list-banner">
       {jobTypes.map((jobType, index) => (
         <ColorChip 
           key={index} 
@@ -51,7 +51,7 @@ function ListBanner() {
           size='small'
         />
       ))} 
-    </Container>
+    </div>
   );
 }
 

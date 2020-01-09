@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import SearchInput from '../../../../components/SearchInput';
@@ -13,29 +12,25 @@ import ErrorBox from '../../../../components/ErrorBox';
 import LoadingBox from '../../../../components/LoadingBox';
 import { sortUser } from '../../../../actions/user/sortUser';
 import { get } from 'lodash';
+import './style.scss';
 
-const Banner = styled.div`
-  padding: 15px;
-`;
+const Banner = ({ className = '', ...props }) =>
+  <div 
+    className={`view_Member_UserList___banner ${className}`}
+    {...props}
+  />;
 
-const CustomStyledList = styled(StyledList)`
-  && {
-    padding: 0;
-  }
-  && > li:hover {
-    background: rgba(0, 0, 0, 0);
-  }
-  &&:nth-child(2) {
-    padding: 8px 0;
-  }
-`;
+const CustomStyledList = ({ className = '', ...props }) =>
+  <StyledList 
+    className={`view_Member_UserList___list ${className}`}
+    {...props}
+  />;
 
-const RoomNameSpan = styled.span`
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #9c9c9c;
-  padding: 15px;
-`;
+const RoomNameSpan = ({ className = '', ...props }) =>
+  <span 
+    className={`view_Member_UserList___room-name ${className}`}
+    {...props}
+  />;
 
 function UserList({ listUserOfGroup, sortUser, doSortUser, }) {
   

@@ -87,22 +87,39 @@ function DeletedProjectTable({
               },
             }}
             columns={[{
-              label: () => <Icon path={mdiShieldAccount} size={1} color={'rgb(102, 102, 102)'}/>,
-              field: (row) => <CenterCell><CustomAvatar src={get(row, 'user_create.avatar')} alt='user create avatar' /></CenterCell>,
-              center: true,
+              label: () => null,
+              field: (row) => 
+                <CustomAvatar 
+                  style={{
+                    width: 35,
+                    height: 35,
+                  }}  
+                  src={get(row, 'user_create.avatar')} 
+                  alt='user create avatar' 
+                />,
+              align: 'center',
+              width: '5%',
             }, {
               label: 'Dự án',
               field: 'name',
               sort: (evt) => handleSortColumn('name'),
+              align: 'center',
+              width: '50%',
             }, {
               label: 'Người xóa',
               field: (row) => null,
+              align: 'center',
+              width: '15%',
             }, {
               label: 'Ngày xóa',
               field: (row) => null,
+              align: 'center',
+              width: '15%',
             }, {
               label: '',
               field: (row) => null,
+              align: 'center',
+              width: '5%',
             }]}
             data={projects}
           />

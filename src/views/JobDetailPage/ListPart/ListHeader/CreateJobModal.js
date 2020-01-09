@@ -5,7 +5,7 @@ import {
   TextField
 } from '@material-ui/core';
 import styled from 'styled-components';
-import { mdiHelpCircle, mdiAccountPlusOutline } from '@mdi/js';
+import { mdiAccountPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 // import SearchInput from '../../../../components/SearchInput';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -14,19 +14,24 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+// import OutlinedInput from '@material-ui/core/OutlinedInput';
 // import addMemberIcon from '../../../../assets/addMemberIcon.png';
 import colorPal from '../../../../helpers/colorPalette';
 import AddMemberModal from './AddMemberModal';
-import TimeField from 'react-simple-timefield';
+// import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect'
 // import { Scrollbars } from 'react-custom-scrollbars'
 import { WrapperContext } from '../../index'
 import {
   DEFAULT_DATE_TEXT, DEFAULT_END_TIME_TEXT, DEFAULT_START_TIME_TEXT, EMPTY_STRING, DEFAULT_GROUP_TASK_VALUE
 } from '../../../../helpers/jobDetail/stringHelper';
-
-
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
+import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
 // const Header = styled.div`
 //   padding: 0 15px;
 //   height: 85px;
@@ -46,9 +51,9 @@ const StartEndDay = styled(Typography)`
   margin-top: 15px;
 `
 
-const StartEndDate = styled(Typography)`
-  margin: 0 15px;
-`
+// const StartEndDate = styled(Typography)`
+//   margin: 0 15px;
+// `
 
 const Typotitle = styled(Typography)`
   font-size: 16px;
@@ -75,12 +80,12 @@ const TitleText = styled(Typography)`
   }
 `
 
-const OutlineInput = styled(OutlinedInput)`
-& > input {
-  padding: 10px 5px;
-  margin-left: 10px;
-}
-`
+// const OutlineInput = styled(OutlinedInput)`
+// & > input {
+//   padding: 10px 5px;
+//   margin-left: 10px;
+// }
+// `
 
 // const HeaderBottomBox = styled.div`
 //   display: flex;
@@ -110,15 +115,29 @@ const TypoText = styled(Typography)`
   color: #505050;
   margin: 20px 0 15px 0;
 `
-const InputTime = styled(TimeField)`
-  width: 146px !important;
-  padding: 10px 5px 10px 13px;
-  border: 0;
-  border-radius: 4px;
+const InputTime = styled(TextField)`
+  width: 186px;
+  margin-right: 48px;
+  & > div:nth-child(2) > input {
+    padding: 14px;
+  }
 `
+const InputDate = styled(KeyboardDatePicker)`
+
+  & > div:nth-child(2) {
+    width: 185px;
+    padding-right: 5px;
+    & > input {
+      padding: 14px;
+    }
+    & > div > button {
+      padding: 5px;
+    }
+  } 
+`
+
 const DivTime = styled.div`
-  border: 1px solid #cfcfcf;
-  border-radius: 4px;
+  
 `
 
 const PriorityFormControl = styled(FormControl)`
@@ -221,7 +240,9 @@ const TextInputSelect = styled(InputSelect)`
         }
     }
 `
-
+const Descripe = styled(Typography)`
+    margin-top: 15px;
+`
 const TitleDialog = styled(DialogTitle)`
     display: flex;
     position: sticky;
@@ -232,6 +253,37 @@ const TitleDialog = styled(DialogTitle)`
     text-transform: uppercase;
     font-weight: 400
 `
+// 
+let optionsList = [
+  { id: 0, value: 'Ngày và giờ (mặc định)' },
+  { id: 1, value: 'Chỉ nhập ngày' },
+  { id: 2, value: 'Không yêu cầu' },
+]
+function CommonProgressForm(props) {
+  const [value, setValue] = React.useState("Ngày và giờ (mặc định)");
+  const handleChangeFormAssign = itemValue => {
+    // console.log('itemValue::::', itemValue);
+    setValue(itemValue)
+    // let clickedItem = props.labels.find(item => item.value === itemValue)
+    // props.handleChangeAssign(clickedItem)
+  }
+  return (
+    <FormControl component="fieldset">
+      <RadioGroup aria-label="position" name="position" value={value}
+        onChange={event => handleChangeFormAssign(event.target.value)} row>
+        {props.labels && props.labels.map((item, key) =>
+          <FormControlLabel
+            key={key}
+            value={item.value}
+            control={<Radio color="primary" />}
+            label={item.value}
+            labelPlacement="end"
+          />
+        )}
+      </RadioGroup>
+    </FormControl>
+  )
+}
 
 let assignList = [
   { id: 0, value: 'Được giao' },
@@ -313,15 +365,29 @@ const StyleDialog = styled(Dialog)`
   }
 `
 const ButtonImage = styled(Button)`
-  transform: scaleX(-1);
   padding: 6px 0;
   min-width: 54px;
-  border: 1px solid #abaaa9;
+  &:hover {
+    background: none;
+  }
+  & > span:nth-child(1) {
+    & > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+    & > span {
+      color: #878a88;
+      &:hover {
+        color: #03b000;
+      }
+    }
+  }
 `
 const ContentDialog = styled(DialogContent)`
   border: none;
   overflow: scroll;
-
+  padding-top: 0;
   ::-webkit-scrollbar {
     width: 7px;
     border-radius: 5px
@@ -356,12 +422,6 @@ const DEFAULT_DATA = {
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN,
 }
-
-// let optionsList = [
-//   { id: 0, value: 'Ngày và giờ (mặc định)' },
-//   { id: 1, value: 'Chỉ nhập ngày' },
-//   { id: 2, value: 'Không yêu cầu' },
-// ]
 
 function CreateJobModal(props) {
 
@@ -425,6 +485,7 @@ function CreateJobModal(props) {
   }, [props.data])
 
   const handleChangeData = (attName, value) => {
+    console.log("value::::", value)
     setDataMember(prevState => ({ ...prevState, [attName]: value }))
   }
 
@@ -448,14 +509,14 @@ function CreateJobModal(props) {
   const validate = () => !!data.name
 
   const handlePressConfirm = () => {
-    if(validate()) {
+    if (validate()) {
       // Remove group task in object if user unselect group task
       let data = dataCreateJob
-      if(!dataCreateJob.group_task) delete data.group_task
+      if (!dataCreateJob.group_task) delete data.group_task
       // Call api
       value.createJobByProjectId({ data, projectId: value.projectId })
       // console.log("data",  dataCreateJob)
-      
+
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
       // Close modal
@@ -480,10 +541,17 @@ function CreateJobModal(props) {
           </TitleDialog>
         }
         <ContentDialog dividers >
-          <Typography component={'div'}>
+          <TypoText component={'div'}> Chọn nhóm công việc </TypoText>
+          <Typography component={'div'} style={{ marginBottom: '20px' }}>
+            <TextInputSelect
+              commandSelect={listGroupTask}
+              selectedIndex={groupTaskValue}
+              setOptions={typeId => handleChangeData("group_task", typeId)}
+            />
+          </Typography>
+          <Typography component={'div'} style={{ marginBottom: 10 }}>
             <TitleText component={'span'}>
               <InputTextJob
-                id="outlined-helperText"
                 label="Tên công việc"
                 helperText="Không được để trống"
                 margin="normal"
@@ -492,66 +560,11 @@ function CreateJobModal(props) {
                 value={data.name}
                 onChange={e => handleChangeData("name", e.target.value)}
               />
-              {/* <Typography component={'span'}>Tên công việc</Typography>
-              <Typography component={'span'}>(tối đa 100 ký tự)</Typography> */}
             </TitleText>
-            {/* <Input
-              fullWidth
-            /> */}
           </Typography>
-          <ProgressWork component={'span'}>
-            <Typotitle component={'span'}>
-              Tiến độ công việc
-          </Typotitle>
-            <DefaultFlex component={'span'}>
-              Đặt mặc định <Icon path={mdiHelpCircle} size={1} />
-            </DefaultFlex>
-          </ProgressWork>
-          {/* <CommonControlForm labels={optionsList} /> */}
-          <StartEndDay component={'span'}>
-            <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
-            <DivTime>
-              <InputTime
-                value={data.start_time}
-                onChange={e => handleChangeData("start_time", e.target.value)}
-              />
-            </DivTime>
-            <StartEndDate component={'span'}>Ngày</StartEndDate>
-            <OutlineInput
-              type={'date'}
-              value={data.start_date}
-              onChange={e => handleChangeData("start_date", e.target.value)}
-            />
-          </StartEndDay>
-          <StartEndDay component={'span'}>
-            <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
-            <DivTime>
-              <InputTime
-                value={data.end_time}
-                onChange={e => handleChangeData("end_time", e.target.value)}
-              />
-            </DivTime>
-            <StartEndDate component={'div'}>Ngày</StartEndDate>
-            <OutlineInput
-              type={'date'}
-              value={data.end_date}
-              inputProps={{ min: data.start_date }}
-              onChange={e => handleChangeData("end_date", e.target.value)}
-            />
-          </StartEndDay>
-          <TypoText component={'div'}> Chọn nhóm việc </TypoText>
-          <Typography component={'div'} style={{ marginBottom: '20px' }}>
-            <TextInputSelect
-              commandSelect={listGroupTask}
-              selectedIndex={groupTaskValue}
-              setOptions={typeId => handleChangeData("group_task", typeId)}
-              // placeholder={'Nhóm mặc định'}
-            />
-          </Typography>
-          <Typography component={'div'}>
+          <Descripe component={'div'}>
             <TitleText component={'div'}>
               <InputTextJob
-                id="outlined-helperText"
                 label="Mô tả công việc"
                 // helperText=""
                 margin="normal"
@@ -560,14 +573,76 @@ function CreateJobModal(props) {
                 value={data.description}
                 onChange={e => handleChangeData("description", e.target.value)}
               />
-              {/* <Typography component={'div'}> Mô tả công việc </Typography>
-              <Typography component={'div'}>(Tối đa 500 kí tự)</Typography> */}
             </TitleText>
-            {/* <Input
-              style={{ marginBottom: 10 }}
-              fullWidth
-            /> */}
-          </Typography>
+          </Descripe>
+          <ProgressWork component={'span'}>
+            <Typotitle component={'span'}>
+              Tiến độ công việc
+          </Typotitle>
+            <DefaultFlex component={'span'}>
+              Cài đặt
+            </DefaultFlex>
+          </ProgressWork>
+          <CommonProgressForm labels={optionsList} />
+          <StartEndDay component={'span'}>
+            <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
+            <DivTime>
+              <InputTime
+                type={'time'}
+                label="Thời gian"
+                variant="outlined"
+                value={data.start_time}
+                onChange={e => handleChangeData("start_time", e.target.value)}
+              />
+         
+            </DivTime>
+          
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <InputDate
+                disableToolbar
+                variant="inline"
+                inputVariant="outlined"
+                format="dd/MM/yyyy"
+                label="Ngày"
+                value={data.start_date}
+                onChange={e => handleChangeData("start_date", convertDate(e))}
+                KeyboardButtonProps={{
+                  "aria-label": "change date"
+                }}
+              />
+            </MuiPickersUtilsProvider>
+      
+          </StartEndDay>
+          <StartEndDay component={'span'}>
+            <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
+            <DivTime>
+              <InputTime
+                type={'time'}
+                label="Thời gian"
+                variant="outlined"
+                value={data.end_time}
+                onChange={e => handleChangeData("end_time", e.target.value)}
+              />
+            
+            </DivTime>
+         
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <InputDate
+                disableToolbar
+                variant="inline"
+                inputVariant="outlined"
+                format="dd/MM/yyyy"
+                label="Ngày"
+                value={data.end_date}
+                minDate={ data.start_date}
+                onChange={e => handleChangeData("end_date", convertDate(e))}
+                KeyboardButtonProps={{
+                  "aria-label": "date change"
+                }}
+              />
+            </MuiPickersUtilsProvider>
+       
+          </StartEndDay>
           <Typography component={'span'}>
             <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
             <CommonPriorityForm
@@ -599,7 +674,7 @@ function CreateJobModal(props) {
                 // handleClose()
                 setOpenAddModal(true)
               }} >
-                <Icon path={mdiAccountPlusOutline} alt='addMemberIcon' size={1} color={'#abaaa9'} />
+                <Icon path={mdiAccountPlus} alt='addMemberIcon' size={1} color={'#878a88'} /> &nbsp;&nbsp;<span>(0 thành viên)</span>
               </ButtonImage>
               <Button autoFocus onClick={handlePressConfirm} color="primary">
                 TẠO VIỆC

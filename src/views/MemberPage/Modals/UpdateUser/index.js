@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { FormControl, TextField } from '@material-ui/core';
 import ColorTypo from '../../../../components/ColorTypo';
@@ -15,15 +14,13 @@ import { listLevel } from '../../../../actions/level/listLevel';
 import { updateUser } from '../../../../actions/user/updateUser';
 import { connect } from 'react-redux';
 import { get, find } from 'lodash';
+import './style.scss';
 
-const StyledFormControl = styled(FormControl)`
-  min-width: 300px;
-  max-width: 100%;
-  & > * {
-    margin-bottom: 10px;
-    font-size: 12px;
-  }
-`;
+const StyledFormControl = ({ className = '', ...props }) => 
+  <FormControl
+    className={`view_Member_UpdateUser_Modal___form-control ${className}`}
+    {...props}
+  />;
 
 function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMajor, listLevel, doUpdateUser }) {
 

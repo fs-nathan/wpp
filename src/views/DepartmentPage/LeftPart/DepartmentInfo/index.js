@@ -1,7 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
@@ -27,20 +26,11 @@ import {
 } from '../../../../constants/events.js';
 import CreateDepartment from '../../Modals/CreateDepartment';
 import { Context as UserPageContext } from '../../index';
+import './style.scss';
 
-const LogoBox = styled.div`
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  & > *:not(:last-child) {
-    margin-bottom: 5px;
-  }
-`;
+const LogoBox = ({ className = '', ...props }) => <div className={`view_Department_Info___logo-box ${className}`} {...props} />;
 
-const IntroBox = styled.div`
-  flex-grow: 1;
-`;
+const IntroBox = ({ className = '', ...props }) => <div className={`view_Department_Info___intro-box ${className}`} {...props} />;
 
 function DefaultDepartment() {
   const history = useHistory();

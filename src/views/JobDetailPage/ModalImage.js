@@ -23,7 +23,7 @@ const GroupTitle = styled(MuiDialogTitle)`
     justify-content: space-between;
     background-color: #000;
     align-items: center;
-    padding: 5px 15px;
+    padding: 10px 15px;
 `
 const TitleImg = styled(Typography)`
     & > li {
@@ -133,10 +133,44 @@ const ContentDialog = styled(DialogContent)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    & > img {
-        max-height: 700px;
-        max-width: 1300px;
-        opacity: 1;
+    padding: 7px 0 0 0;
+    & > div:nth-child(2) {
+        height: 750px;
+        width: 1100px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        & > img {
+            opacity: 1;
+            width: 100%;
+            height: 100%;
+        }
+    }
+`
+
+const WrapperImage = styled(GridListTile)`
+    height: 80px
+`
+const FooterDialog = styled(DialogActions)`
+    padding : 0;
+    background: #161616c9;
+    display: flex;
+    justify-content: center;
+    padding: 5px 0 5px 0;
+    & > div {
+        display: flex;
+        background: #00000091;
+        padding: 3px;
+        border-radius: 2px;
+        width: 1200px;
+        z-index: 999;
+        overflow-x: scroll;
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        & > * {
+            list-style-type: none;
+            margin: 2px 3px;
+        }
     }
 `
 const ButtonImage = styled(IconButton)`
@@ -188,16 +222,18 @@ const ModalImage = (props) => {
         >
             <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
             </DialogTitle>
-            <ContentDialog dividers>
+            <ContentDialog>
                 <ButtonImage>
                     <Icon path={mdiChevronLeftCircle} size={5} />
                 </ButtonImage>
-                <img alt="vtask" src={ImageTest} />
+                <div>
+                    <img alt="vtask" src={ImageTest} />
+                </div>
                 <ButtonImage>
                     <Icon path={mdiChevronRightCircle} size={5} />
                 </ButtonImage>
             </ContentDialog>
-            <DialogActions>
+            <FooterDialog>
                 {/* footer image */}
                 {/* <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
                     {/* {data.images.map((image, key) => { 
@@ -220,18 +256,17 @@ const ModalImage = (props) => {
                     })} 
                 </GridList> */}
                 {/* end footer image */}
-                {/* <GridListTile key='header-1' cols={5} style={{ height: 'auto' }}>
-                    <SubHeader component='span'>09/09/2019</SubHeader>
-                </GridListTile> */}
-                    {Array.from({ length: 7 }).map((_, index) => {
+                <div>
+                    {Array.from({ length: 17 }).map((_, index) => {
                         return (
-                            <GridListTile key={`1-${index}`
+                            <WrapperImage key={`1-${index}`
                             }>
                                 <Image src={avatar} alt='avatar' />
-                            </GridListTile>
+                            </WrapperImage>
                         );
                     })}
-            </DialogActions >
+                </div>
+            </FooterDialog >
         </StyledDialog >
     )
 }

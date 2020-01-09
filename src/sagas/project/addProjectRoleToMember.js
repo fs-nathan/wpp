@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { addProjectRoleToMemberSuccess, addProjectRoleToMemberFail } from '../../actions/project/addProjectRoleToMember';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, ADD_PROJECT_ROLE_TO_MEMBER } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doAddProjectRoleToMember({ projectId, memberId, roleId, }) {
   try {
@@ -26,8 +28,10 @@ function* addProjectRoleToMember(action) {
     yield call(doAddProjectRoleToMember, action.options);
     yield put(addProjectRoleToMemberSuccess());
     CustomEventEmitter(ADD_PROJECT_ROLE_TO_MEMBER);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(addProjectRoleToMemberFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

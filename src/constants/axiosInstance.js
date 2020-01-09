@@ -30,29 +30,22 @@ apiService.interceptors.response.use(
     return res;
   },
   function(error) {
-    if (
-      error.response &&
-      (error.response.status === 403 || error.response.status === 401)
-    ) {
-      localStorage.removeItem(TOKEN);
-      localStorage.removeItem(REFRESH_TOKEN);
-      localStorage.removeItem(GROUP_ACTIVE);
-      window.location.href = Routes.LOGIN;
-      // apiService
-      //   .post("login", {
-      //     email: "ducpminh668@gmail.com",
-      //     password: "12345678",
-      //   })
-      //   .then(response => {
-      //     localStorage.setItem("token", response.data.accessToken);
-      //     localStorage.setItem("refreshToken", response.data.refreshToken);
-      //     localStorage.setItem("group-active", response.data.group_active);
-      //     apiService.defaults.headers.common[
-      //       "Authorization"
-      //     ] = `Bearer ${response.data.accessToken}`;
-      //     apiService.defaults.headers.common["group-active"] =
-      //       response.data.group_active;
-      //   });
+    if (error.response.status === 403) {
+      apiService
+        .post("login", {
+          email: "huuthanhxd@gmail.com",
+          password: "12345678", 
+        })
+        .then(response => {
+          localStorage.setItem("token", response.data.accessToken);
+          localStorage.setItem("refreshToken", response.data.refreshToken);
+          localStorage.setItem("group-active", response.data.group_active);
+          apiService.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${response.data.accessToken}`;
+          apiService.defaults.headers.common["group-active"] =
+            response.data.group_active;
+        });
       return error.response;
     }
     return Promise.reject(error);

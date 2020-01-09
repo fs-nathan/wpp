@@ -15,7 +15,7 @@ import { useRequiredString } from '../../../../hooks';
 import moment from 'moment';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDateTimePicker,
+  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -37,9 +37,17 @@ const StyledFormLabel = styled(FormLabel)`
 const TimeBox = styled.div`
   margin-bottom: 16px;
   width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  & > div {
+    &:not(:first-child) {
+      margin-top: 8px;
+    }
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  & > p > span {
+    color: #dc3545;
+  }
 `;
 
 const StyledRadioGroup = styled(RadioGroup)`
@@ -78,6 +86,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
   const [description, setDescription, errorDescription] = useRequiredString('', 200);
   const [startDate, setStartDate] = React.useState(moment().toDate());
   const [endDate, setEndDate] = React.useState(moment().toDate());
+  const [errorDate, setErrorDate] = React.useState(null);
   const [priority, setPriority] = React.useState(0);
   const [jobHandle, setJobHandle] = React.useState(0);
 
@@ -85,6 +94,19 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
     setGroupTasks([{ id: '__default__', name: 'Chưa phân loại' }, ..._groupTasks]);
     setGroupTask({ id: '__default__', name: 'Chưa phân loại' });
   }, [_groupTasks]);
+
+  React.useEffect(() => {
+    if (moment(startDate).isAfter(moment(endDate))) {
+      setErrorDate(new Error('Tiến độ không hợp lệ'));
+    } else {
+      setErrorDate(null);
+    }
+  }, [startDate, endDate]);
+
+  React.useEffect(() => { 
+    setStartDate(moment().toDate());
+    setEndDate(moment().toDate());
+  }, [progressType]);
 
   function handleCreateTask() {
     let options = {
@@ -124,7 +146,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
         title={`Tạo mới công việc`}
         open={open}
         setOpen={setOpen}
-        canConfirm={!errorName && !errorDescription && groupTask}
+        canConfirm={!errorName && !errorDescription && !errorDate && groupTask}
         onConfirm={() => handleCreateTask()}
       >
         <FormControl component="fieldset" fullWidth>
@@ -183,51 +205,86 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
           <TimeBox>
           {progressType === 0 && (
             <>
-              <KeyboardDateTimePicker 
+            <div>
+              <KeyboardTimePicker 
+                disableToolbar
+                inputVariant="outlined"
                 variant="inline"
                 ampm={false}
                 label="Thời gian bắt đầu"
                 value={startDate}
                 onChange={setStartDate}
-                format="dd/MM/yyyy, HH:mm"
-                maxDate={endDate}
-                maxDateMessage='Phải trước thời gian kết thúc'
+                format="HH:mm"
               />
-              <KeyboardDateTimePicker 
-                variant="inline"
-                ampm={false}
-                label="Thời gian kết thúc"
-                value={endDate}
-                onChange={setEndDate}
-                format="dd/MM/yyyy, HH:mm"
-                minDate={startDate}
-                minDateMessage='Phải sau thời gian bắt đầu'
-              />
-            </>
-          )}
-          {progressType === 1 && (
-            <>
               <KeyboardDatePicker 
+                disableToolbar
+                inputVariant="outlined"
                 variant="inline"
                 ampm={false}
                 label="Ngày bắt đầu"
                 value={startDate}
                 onChange={setStartDate}
                 format="dd/MM/yyyy"
-                maxDate={endDate}
-                maxDateMessage='Phải trước ngày kết thúc'
+              />
+            </div>
+            <div>
+              <KeyboardTimePicker 
+                disableToolbar
+                inputVariant="outlined"
+                variant="inline"
+                ampm={false}
+                label="Thời gian kết thúc"
+                value={endDate}
+                onChange={setEndDate}
+                format="HH:mm"
               />
               <KeyboardDatePicker 
+                disableToolbar
+                inputVariant="outlined"
                 variant="inline"
                 ampm={false}
                 label="Ngày kết thúc"
                 value={endDate}
                 onChange={setEndDate}
                 format="dd/MM/yyyy"
-                minDate={startDate}
-                minDateMessage='Phải sau ngày bắt đầu'
               />
+            </div>
             </>
+          )}
+          {progressType === 1 && (
+            <>
+            <div>
+              <KeyboardDatePicker 
+                disableToolbar
+                inputVariant="outlined"
+                variant="inline"
+                ampm={false}
+                label="Ngày bắt đầu"
+                value={startDate}
+                onChange={setStartDate}
+                format="dd/MM/yyyy"
+              />
+            </div>
+            <div>
+              <KeyboardDatePicker 
+                disableToolbar
+                inputVariant="outlined"
+                variant="inline"
+                ampm={false}
+                label="Ngày kết thúc"
+                value={endDate}
+                onChange={setEndDate}
+                format="dd/MM/yyyy"
+              />
+            </div>
+            </>
+          )}
+          {errorDate && (
+            <p className={'MuiFormHelperText-root MuiFormHelperText-contained'}>
+              <span className={'MuiTypography-root MuiTypography-caption'}>
+                {get(errorDate, 'message', '')}
+              </span>
+            </p>
           )}
           </TimeBox>
         </MuiPickersUtilsProvider>

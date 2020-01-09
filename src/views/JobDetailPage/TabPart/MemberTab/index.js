@@ -5,16 +5,16 @@ import TabBody from './TabBody';
 import styled from 'styled-components'
 // import { WrapperContext } from '../..';
 
-const Container = styled.div`
-  transition: unset !important;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 85px calc(85vh);
-  grid-template-columns: 1fr;
-  grid-template-areas: 
-    "header"
-    "body";
-`
+// const Container = styled.div`
+//   transition: unset !important;
+//   height: 100%;
+//   display: grid;
+//   grid-template-rows: 85px calc(85vh);
+//   grid-template-columns: 1fr;
+//   grid-template-areas: 
+//     "header"
+//     "body";
+// `
 const Header = styled(TabHeader)`
   grid-area: header;
   padding: 15px;
@@ -33,10 +33,10 @@ function MemberTab({ show, setShow }) {
 
   return (
     <Slide in={show === 8}  mountOnEnter unmountOnExit>
-      <Container>
+      <div className="container-tabpart">
         <Header setShow={setShow} />
         <TabBody />
-      </Container>
+      </div>
     </Slide>
   )
 }

@@ -19,32 +19,32 @@ const Body = styled(Scrollbars)`
   height: 100%;
 `
 
-const Container = styled.div`
-  padding: 0 20px 50px 20px;
-`;
+// const Container = styled.div`
+//   padding: 0 20px 50px 20px;
+// `;
 
-const StyledListItem = styled.li`
-  display: flex;
-  flex-direction: column;
-`;
+// const StyledListItem = styled.li`
+//   display: flex;
+//   flex-direction: column;
+// `;
 
-const StyledTitleBox = styled.div`
-  display: flex;
-  align-items: center;
-  & > *:not(:first-child) {
-    margin-left: 5px;
-  }
-  & > *:last-child   {
-    margin-left: auto;
-  }
-`;
+// const StyledTitleBox = styled.div`
+//   display: flex;
+//   align-items: center;
+//   & > *:not(:first-child) {
+//     margin-left: 5px;
+//   }
+//   & > *:last-child   {
+//     margin-left: auto;
+//   }
+// `;
 
-const StyledContentBox = styled.div`
-  margin-left: 20px;
-  margin-top: 5px;
-  padding: 8px 10px;
-  font-weight: 500;
-`;
+// const StyledContentBox = styled.div`
+//   margin-left: 20px;
+//   margin-top: 5px;
+//   padding: 8px 10px;
+//   font-weight: 500;
+// `;
 
 const Text = styled(ColorTypo)`
   font-size: 15px;
@@ -63,12 +63,12 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
-const StyledMenuDemand = styled.div`
-  opacity: 0 ;
-  ${StyledListItem}:hover & {
-    opacity: 1;
-  }
-`
+// const StyledMenuDemand = styled.div`
+//   opacity: 0 ;
+//   ${StyledListItem}:hover & {
+//     opacity: 1;
+//   }
+// `
 const CustomListItem = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -83,8 +83,8 @@ const CustomListItem = (props) => {
 
   return (
     <React.Fragment>
-      <StyledListItem>
-        <StyledTitleBox>
+      <li className="styled-list-item">
+        <div className="styled-title-box">
           <Avatar style={{ width: 25, height: 25 }} src={props.item.user_create_avatar} alt='avatar' />
           <div>
             <Text variant='body1' bold>{props.item.user_create_name}</Text>
@@ -101,16 +101,16 @@ const CustomListItem = (props) => {
               </div>
             </ColorTypo>
           </div>
-          <StyledMenuDemand>
+          <div className="styled-menu-demand">
             <ButtonIcon size='small' onClick={handleClick} >
               <Icon path={mdiDotsHorizontal} size={1} />
             </ButtonIcon>
-          </StyledMenuDemand>
-        </StyledTitleBox>
-        <StyledContentBox>
+          </div>
+        </div>
+        <div className="styled-content-box">
           <Text >{props.item.content}</Text>
-        </StyledContentBox>
-      </StyledListItem>
+        </div>
+      </li>
       <Menu
         anchorEl={anchorEl}
         keepMounted
@@ -121,8 +121,14 @@ const CustomListItem = (props) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={() => { props.handleClickOpen() }}>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={props.handleOpenModalDelete}>Xóa</MenuItem>
+        <MenuItem onClick={() => {
+          props.handleClickOpen()
+          setAnchorEl(null)
+        }}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={() => {
+          props.handleOpenModalDelete()
+          setAnchorEl(null)
+        }}>Xóa</MenuItem>
       </Menu>
     </React.Fragment>
   );
@@ -158,17 +164,20 @@ const ListDemand = (props) => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteCommandByCommandId({commandId: selectedItem.id, taskId: props.taskId})
+    props.deleteCommandByCommandId({ command_id: selectedItem.id, task_id: props.taskId })
   }
   const confirmUpdateCommand = ({ id, content, type }) => {
-    props.updateCommandByTaskId({id, content, type, taskId: props.taskId})
+    props.updateCommandByTaskId({ id, content, type, taskId: props.taskId })
   }
-
+  const searchDemandTabPart = (e) => {
+    props.searchDemand(e.target.value)
+  }
   return (
     <React.Fragment>
       <SearchInput
         fullWidth
-        placeholder="Nhập từ khóa"
+        placeholder="Nhập từ khóa..."
+        onChange={e => searchDemandTabPart(e)}
       />
       <StyledList>
         {props.activeArr.map((item, index) => {
@@ -214,7 +223,7 @@ function TabBody(props) {
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <Container>
+      <div className="container-dmt-tabbody">
         <StyledButtonGroup fullWidth variant="text" >
           <ColorButton
             onClick={() => setValue(0)}
@@ -248,7 +257,7 @@ function TabBody(props) {
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
           <ListDemand {...props} activeArr={props.decisionItems} />
         </Collapse>
-      </Container>
+      </div>
     </Body>
   )
 }

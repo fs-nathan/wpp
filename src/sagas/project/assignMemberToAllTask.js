@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { assignMemberToAllTaskSuccess, assignMemberToAllTaskFail } from '../../actions/project/assignMemberToAllTask';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, ASSIGN_MEMBER_TO_ALL_TASK } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doAssignMemberToAllTask({ projectId, memberId }) {
   try {
@@ -25,8 +27,10 @@ function* assignMemberToAllTask(action) {
     yield call(doAssignMemberToAllTask, action.options);
     yield put(assignMemberToAllTaskSuccess());
     CustomEventEmitter(ASSIGN_MEMBER_TO_ALL_TASK);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(assignMemberToAllTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));    
   }
 }
 

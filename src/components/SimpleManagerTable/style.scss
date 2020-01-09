@@ -1,0 +1,35 @@
+.comp_SimpleManagerTable___table-head {
+  background-color: #eee; 
+  & * {
+    text-transform: none;
+  }
+};
+
+.comp_SimpleManagerTable___table-body {
+  & > *:last-child {
+    border-bottom: none;
+  }
+};
+
+.comp_SimpleManagerTable___table-cell-chip {
+  & > div {
+    display: flex;
+    align-items: center;
+    & > *:last-child {
+      margin-left: 8px;
+    }
+  }
+};
+
+.comp_SimpleManagerTable___table-cell {
+  font-weight: 500;
+  &:first-child {
+    min-width: 200px;
+  }
+};
+
+.comp_SimpleManagerTable___table {
+  & * {
+    font-size: 14px;
+  }
+};

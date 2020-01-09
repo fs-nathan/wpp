@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import { 
   TextField, FormControl, FormControlLabel, 
-  Radio, RadioGroup, FormLabel, OutlinedInput,
+  Radio, RadioGroup,
   ListItemText, ListSubheader, Typography,
   FormHelperText,
 } from '@material-ui/core';
@@ -15,90 +14,70 @@ import moment from 'moment';
 import { StyledList, StyledListItem, Primary } from '../../../../components/CustomList';
 import { get, map, filter } from 'lodash';
 import Icon from '@mdi/react';
-import { mdiCheckCircle, } from '@mdi/js';
+import { mdiCheckboxMarkedCircle, mdiCheckboxBlankCircleOutline } from '@mdi/js';
 import { useRequiredString, useRequiredDate } from '../../../../hooks';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import './style.scss';
 
-const Header = styled(ColorTypo)`
-  margin-bottom: 8px;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-`;
+const Header = ({ className = '', ...props }) =>
+  <ColorTypo 
+    className={`view_ProjecrGroup_Copy_Project_Modal___header ${className}`}
+    {...props}
+  />;
 
-const StyledTypo = styled(Typography)`
-  font-size: 14px;
-`;
+const StyledTypo = ({ className = '', ...props }) =>
+  <Typography 
+    className={`view_ProjecrGroup_Copy_Project_Modal___typography ${className}`}
+    {...props}
+  />;
 
-const StyledFormControl = styled(FormControl)`
-  & > legend {
-    margin-bottom: 8px;
-  }
-`;
+const StyledFormControl = ({ className = '', ...props }) =>
+  <FormControl 
+    className={`view_ProjecrGroup_Copy_Project_Modal___form-control ${className}`}
+    {...props}
+  />;
 
-const StyledFormLabel = styled(FormLabel)`
-  font-size: 14px;
-  && {
-    color: #a5a0a0;
-  }
-`;
+const ListContainer = ({ className = '', ...props }) =>
+  <div 
+    className={`view_ProjecrGroup_Copy_Project_Modal___list-container ${className}`}
+    {...props}
+  />;
 
-const ListContainer = styled.div`
-  margin-top: 8px;
-`;
+const StyledListSubheader = ({ className = '', ...props }) =>
+  <ListSubheader 
+    className={`view_ProjecrGroup_Copy_Project_Modal___list-subheader ${className}`}
+    {...props}
+  />;
 
-const StyledListSubheader = styled(ListSubheader)`
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 5px 0;
-  margin: 0 16px;
-  &:hover {
-    cursor: pointer;
-  }
-  & > * { 
-    color: rgba(0, 0, 0, 0.54);
-    font-size: 14px;
-  }
-`;
+const CustomListItem = ({ className = '', ...props }) =>
+  <StyledListItem 
+    className={`view_ProjecrGroup_Copy_Project_Modal___list-item ${className}`}
+    {...props}
+  />;
 
-const CustomListItem = styled(StyledListItem)`
-  padding: 10px 16px;
-`;
+const StyledPrimary = ({ className = '', isSelected, ...props }) =>
+  <Primary 
+    className={`${isSelected 
+      ? 'view_ProjecrGroup_Copy_Project_Modal___primary-selected' 
+      : 'view_ProjecrGroup_Copy_Project_Modal___primary'} ${className}`}
+    {...props}
+  />;
 
-const StyledPrimary = styled(({ isSelected, ...rest }) => <Primary {...rest} />)`
-  display: flex;
-  align-items: center;
-  & > * {
-    &:first-child {
-      fill: ${props => props.isSelected ? '#05b50c' : 'rgba(0, 0, 0, 0)'};
-    }
-    &:last-child {
-      color: ${props => props.isSelected ? '#05b50c' : '#444'};
-      font-size: 14px;
-      margin-left: 8px;
-    }
-  }
-`;
+const LeftContainer = ({ className = '', ...props }) =>
+  <div 
+    className={`view_ProjecrGroup_Copy_Project_Modal___left-container ${className}`}
+    {...props}
+  />;
 
-const LeftContainer = styled.div`
-  & > * {
-    &:nth-child(1) {
-      width: 90%;
-      margin: 8px auto;
-    }
-  }
-`;
-
-const RightContainer = styled.div`
-  & > * {
-    &:nth-child(1), &:nth-child(3) {
-      font-size: 14px;
-      padding: 12px;
-    }
-    &:nth-child(2), &:nth-child(4) {
-      padding: 0 12px;
-    }
-  }
-`;
+const RightContainer = ({ className = '', ...props }) =>
+  <div 
+    className={`view_ProjecrGroup_Copy_Project_Modal___right-container ${className}`}
+    {...props}
+  />;
 
 function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject }) {
 
@@ -115,11 +94,20 @@ function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject })
         }
       >
         {get(projectGroup, 'projects', []).map(project => (
-          <CustomListItem key={get(project, 'id')} onClick={() => setSelectedProject(project)}>
+          <CustomListItem 
+            key={get(project, 'id')} 
+            onClick={() => setSelectedProject(project)}
+            disableSticky
+          >
             <ListItemText 
               primary={
                 <StyledPrimary isSelected={get(selectedProject, 'id') === get(project, 'id')}>
-                  <Icon path={mdiCheckCircle} size={1} /> 
+                  <Icon 
+                    path={get(selectedProject, 'id') === get(project, 'id') 
+                      ? mdiCheckboxMarkedCircle 
+                      : mdiCheckboxBlankCircleOutline} 
+                    size={1} 
+                  /> 
                   <span>{get(project, 'name', '')}</span>
                 </StyledPrimary>  
               }
@@ -211,58 +199,62 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, doCopyProje
             </LeftContainer>,
         }}
         right={{
-          title: 'Dự án được sao chép',
+          title: 'Thông tin dự án mới',
           content: () =>
             <RightContainer>
+              <Header uppercase bold>Dự án được sao chép</Header>
               <StyledTypo>{get(selectedProject, 'name', 'Hãy chọn dự án để sao chép')}</StyledTypo>
               <Header uppercase bold>Thông tin dự án</Header>
-              <div>
-                <TextField
-                  value={name}
-                  onChange={evt => setName(evt.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                  label='Tên dự án mới'
-                  fullWidth
-                  helperText={
-                    <ColorTypo variant='caption' color='red'>
-                      {get(errorName, 'message', '')}
-                    </ColorTypo>
-                  }
-                />
-                <TextField
-                  value={description}
-                  onChange={evt => setDescription(evt.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                  label='Mô tả dự án mới'
-                  fullWidth
-                  multiline
-                  rowsMax='6'
-                  helperText={
-                    <ColorTypo variant='caption' color='red'>
-                      {get(errorDescription, 'message', '')}
-                    </ColorTypo>
-                  }
-                />
-                <StyledFormControl component="div" fullWidth>
-                  <StyledFormLabel component="legend">Cài đặt thành viên</StyledFormLabel>
-                  <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
-                    <FormControlLabel value={true} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
-                    <FormControlLabel value={false} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
-                  </RadioGroup>
-                </StyledFormControl>
-                <StyledFormControl component="div">
-                  <StyledFormLabel component="legend">Chọn ngày bắt đầu tiến độ</StyledFormLabel>
-                  <OutlinedInput 
-                    variant='outlined'
-                    type='date'
-                    value={moment(startDate).format('YYYY-MM-DD')}
-                    onChange={evt => setStartDate(moment(evt.target.value).toDate())}
+              <TextField
+                value={name}
+                onChange={evt => setName(evt.target.value)}
+                margin="normal"
+                variant="outlined"
+                label='Tên dự án mới'
+                fullWidth
+                helperText={
+                  <ColorTypo variant='caption' color='red'>
+                    {get(errorName, 'message', '')}
+                  </ColorTypo>
+                }
+              />
+              <TextField
+                value={description}
+                onChange={evt => setDescription(evt.target.value)}
+                margin="normal"
+                variant="outlined"
+                label='Mô tả dự án mới'
+                fullWidth
+                multiline
+                rowsMax='6'
+                helperText={
+                  <ColorTypo variant='caption' color='red'>
+                    {get(errorDescription, 'message', '')}
+                  </ColorTypo>
+                }
+              />
+              <Header uppercase bold>Cài đặt thành viên</Header>
+              <StyledFormControl component="div" fullWidth>
+                <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
+                  <FormControlLabel value={true} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
+                  <FormControlLabel value={false} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
+                </RadioGroup>
+              </StyledFormControl>
+              <Header uppercase bold>Chọn ngày bắt đầu tiến độ</Header>
+              <StyledFormControl component="div">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker 
+                    disableToolbar
+                    inputVariant="outlined"
+                    variant="inline"
+                    ampm={false}
+                    value={startDate}
+                    onChange={setStartDate}
+                    format="dd/MM/yyyy"
                   />
-                  <FormHelperText error filled variant='filled'>{get(errorDate, 'message', '')}</FormHelperText>
-                </StyledFormControl>
-              </div>
+                </MuiPickersUtilsProvider>
+                <FormHelperText error filled variant='filled'>{get(errorDate, 'message', '')}</FormHelperText>
+              </StyledFormControl>
             </RightContainer>,
         }}
       />

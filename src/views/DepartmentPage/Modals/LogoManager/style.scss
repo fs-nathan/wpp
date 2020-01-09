@@ -1,0 +1,41 @@
+.view_Department_Logo_Modal___logo-list {
+  display: grid;
+  grid-template-rows: 70px;
+  grid-template-columns: repeat(8, 70px);
+  & > * {
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+  }
+};
+
+@mixin view_Department_Logo_Modal___logo-box {
+  & > button {
+    text-transform: none;
+    &:first-child {
+      padding: 5px;
+      border-radius: 100%;
+    }
+    &:last-child > span {
+      font-size: 11px;
+    }
+  }
+}
+
+.view_Department_Logo_Modal___logo-box {
+  & {
+    @include view_Department_Logo_Modal___logo-box;
+    & > button:first-child {
+      border: 1px solid rgba(0, 0, 0, 0);
+    }
+  }
+  &-selected {
+    @include view_Department_Logo_Modal___logo-box;
+    & > button:first-child {
+      border: 1px solid #05b50c;
+    }
+  }
+};

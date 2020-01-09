@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { 
   Avatar, ButtonBase,
 } from '@material-ui/core';
@@ -10,46 +9,33 @@ import ColorTypo from '../../../../components/ColorTypo';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import AlertModal from '../../../../components/AlertModal';
-import colorPal from '../../../../helpers/colorPalette';
 import { connect } from 'react-redux';
 import { listIcon } from '../../../../actions/icon/listIcon';
 import { createIcon } from '../../../../actions/icon/createIcon';
 import { deleteIcon } from '../../../../actions/icon/deleteIcon';
 import { get } from 'lodash';
+import './style.scss';
 
-const LogoList = styled(({ cols, ...rest }) => <div {...rest} />)`
-  display: grid;
-  grid-template-rows: 70px;
-  grid-template-columns: ${props => props.cols ? `repeat(${props.cols}, 70px)` : 'auto'};
-  & > * {
-    justify-self: center;
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-  }
-`;
+const LogoList = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Department_Logo_Modal___logo-list ${className}`}
+    {...props}
+  />;
 
-const LogoBox = styled(({ isSelected, ...rest }) => <div {...rest} />)`
-  & > button {
-    text-transform: none;
-    &:first-child {
-      padding: 5px;
-      border-radius: 100%;
-      border: 1px solid ${props => props.isSelected ? colorPal['green'][0] : 'rgba(0, 0, 0, 0)'};
-    }
-    &:last-child > span {
-      font-size: 11px;
-    }
-  }
-`;
+const LogoBox = ({ className = '', isSelected, ...props }) => 
+  <div 
+    className={`${isSelected 
+      ? 'view_Department_Logo_Modal___logo-box-selected'
+      : 'view_Department_Logo_Modal___logo-box'
+      } ${className}`}
+    {...props}
+  />;
 
-function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreateIcon, deleteIcon, doDeleteIcon, onSelectIcon = (icon_url) => null }) {
+function LogoManager({ open, setOpen, listIcon, createIcon, doCreateIcon, deleteIcon, doDeleteIcon, onSelectIcon = (icon_url) => null }) {
 
   const { data: { icons, defaults }, error: listIconError, loading: listIconLoading } = listIcon;
   const { error: deleteIconError, loading: deleteIconLoading } = deleteIcon;
-  const { error: createIconError, loading: createIconLoading } = createIcon;
+  const { loading: createIconLoading } = createIcon;
   const error = listIconError || deleteIconError;
   const [selectedIcon, setSelectedIcon] = React.useState({
     id: get(defaults[0], 'id'),
@@ -154,8 +140,7 @@ function LogoManager({ open, setOpen, listIcon, doListIcon, createIcon, doCreate
             )}
             {!createIconLoading && (
               <ColorButton variant='text' variantColor='green' size='small' component='label' htmlFor='raised-button-file'>
-                {createIconError !== null && 'Xảy ra lỗi, hãy thử lại'}
-                {createIconError === null && `+ Tải biểu tượng`}
+                + Tải biểu tượng
               </ColorButton>
             )}
             <AlertModal 

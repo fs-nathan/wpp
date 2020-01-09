@@ -157,25 +157,25 @@ const CustomMenu = styled(Menu)`
     }
   }
 `
-const TableScroll = styled.div`
-  overflow-y: scroll;
+// const TableScroll = styled.div`
+//   overflow-y: scroll;
 
-  ::-webkit-scrollbar {
-    width: 7px;
-    border-radius: 5px;
+//   ::-webkit-scrollbar {
+//     width: 7px;
+//     border-radius: 5px;
     
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: #fff;
-    border: none;
-  }
-  &&:hover {
-    ::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 10px; 
-    }
-  }
-`
+//   }
+//   ::-webkit-scrollbar-thumb {
+//     background-color: #fff;
+//     border: none;
+//   }
+//   &&:hover {
+//     ::-webkit-scrollbar-thumb {
+//       background-color: rgba(0, 0, 0, 0.2);
+//       border-radius: 10px; 
+//     }
+//   }
+// `
 const StyledTableRow = styled(TableRow)`
     &:hover {
         & > *:last-child {
@@ -189,7 +189,7 @@ const StyledMenu = styled(TableCell)`
 
 function ProjectMember(props) {
     const valueMember = React.useContext(WrapperContext)
-    console.log('hello', valueMember)
+    // console.log('hello', valueMember)
     return (
         <StyledListItem>
             <Avatar src={avatar} alt='avatar' />
@@ -338,7 +338,7 @@ function TableMember(props) {
                 </TableHead>
 
             </Table>
-            <TableScroll>
+            <div className="table-scroll">
                 <Table className={classes.table}>
                     <TableBody>
                         {props.listMemberJobState.map((addData, idx) => (
@@ -368,7 +368,7 @@ function TableMember(props) {
                         ))}
                     </TableBody>
                 </Table>
-            </TableScroll>
+            </div>
 
         </Paper>
     )
@@ -379,7 +379,7 @@ function AddMemberModal(props) {
     const [listMemberProjectState, setListMemberProject] = React.useState([])
     const [listMemberJobState, setListMemberJob] = React.useState([])
     React.useEffect(() => {
-        let arrayMemberNotAssigned = valueContext.memberNotAssigned.map((item, key) => {
+        let arrayMemberNotAssigned = valueContext.memberNotAssigned && valueContext.memberNotAssigned.map((item, key) => {
             return (
                 <ProjectMember key={key} name={item.name} email={item.email} label={item.permission} />
             )
@@ -388,7 +388,7 @@ function AddMemberModal(props) {
     }, [valueContext.memberNotAssigned])
 
     React.useEffect(() => {
-        let arrayMember = valueContext.member.map((item) => {
+        let arrayMember = valueContext.member && valueContext.member.map((item) => {
             return {
                 avatarMember: <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />,
                 name: <MemberDetail name={item.name} email={item.email} />,

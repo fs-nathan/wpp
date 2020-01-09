@@ -1,56 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-import { 
-  TableCell, Table, TableHead, TableBody, TableRow,
-} from '@material-ui/core';
-import ColorButton from '../../../../components/ColorButton';
+import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 import CustomModal from '../../../../components/CustomModal';
-import PillButton from '../../../../components/PillButton';
 import AlertModal from '../../../../components/AlertModal';
-import colorPal from '../../../../helpers/colorPalette';
 import RoleCreateAndUpdateModal from './RoleCreateAndUpdate';
 import { listUserRole } from '../../../../actions/userRole/listUserRole';
 import { deleteUserRole } from '../../../../actions/userRole/deleteUserRole';
 import { connect } from 'react-redux'; 
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
-import _ from 'lodash';
-
-const StyledTableHead = styled(TableHead)` 
-  background-color: #eee; 
-  & * {
-    text-transform: none;
-  }
-`;
-
-const StyledTableBody = styled(TableBody)`
-  && > *:last-child {
-    border-bottom: none;
-  }
-`;
-
-const TableCellChipsWrapper = styled(TableCell)`
-  & > div {
-    display: flex;
-    align-items: center;
-    & > *:last-child {
-      margin-left: 8px;
-    }
-  }
-`;
-
-const StyledTableCell = styled(TableCell)`
-  font-weight: 500;
-  &:first-child {
-    min-width: 200px;
-  }
-`;
-
-const StyledTable = styled(Table)`
-  & * {
-    font-size: 14px;
-  }
-`;
+import { get } from 'lodash';
 
 function RoleManager({ open, setOpen, listUserRole, doDeleteUserRole }) {
 
@@ -67,7 +25,7 @@ function RoleManager({ open, setOpen, listUserRole, doDeleteUserRole }) {
 
   function handleDeleteUserRole(userRole) {
     doDeleteUserRole({
-      userRoleId: _.get(userRole, 'id'),
+      userRoleId: get(userRole, 'id'),
     });
   }
 
@@ -81,52 +39,15 @@ function RoleManager({ open, setOpen, listUserRole, doDeleteUserRole }) {
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox />}
         {!loading && error === null && (
-          <StyledTable>
-            <StyledTableHead>
-              <TableRow>
-                <StyledTableCell>Tên vai trò</StyledTableCell>
-                <StyledTableCell>Mô tả</StyledTableCell>
-                <TableCell>
-                  <ColorButton variantColor='orange' size='small' variant='contained'
-                    onClick={() => handleSelectedUserRole(null)}
-                  >
-                    + Thêm mới
-                  </ColorButton>
-                </TableCell>
-              </TableRow>
-            </StyledTableHead>
-            <StyledTableBody>
-              {userRoles.map(userRole => (
-                <TableRow key={_.get(userRole, 'id')}>
-                  <StyledTableCell>{_.get(userRole, 'name', '')}</StyledTableCell>
-                  <TableCell>{_.get(userRole, 'description', '')}</TableCell>
-                  <TableCellChipsWrapper>
-                    <div>
-                      <PillButton 
-                        onClick={() => handleSelectedUserRole(userRole)}
-                        background={'#eeeeee'}
-                        text={'#222222'}
-                        size='large'
-                      >
-                        Sửa
-                      </PillButton>
-                      <PillButton 
-                        onClick={() => {
-                          setDelUserRole(userRole)
-                          setAlert(true)
-                        }}
-                        background={'#eeeeee'}
-                        text={colorPal['red'][0]}
-                        size='large' 
-                      >
-                        Xóa
-                      </PillButton>
-                    </div>
-                  </TableCellChipsWrapper>
-                </TableRow>
-              ))}
-            </StyledTableBody>
-          </StyledTable>
+          <SimpleManagerTable 
+            data={userRoles}
+            handleAdd={() => handleSelectedUserRole(null)}
+            handleEdit={userRole => handleSelectedUserRole(userRole)}
+            handleDelete={userRole => {
+              setDelUserRole(userRole)
+              setAlert(true)
+            }}
+          />
         )}
       </CustomModal>
       <RoleCreateAndUpdateModal updatedUserRole={updatedUserRole} open={openCAU !== 0} setOpen={setOpenCAU} />

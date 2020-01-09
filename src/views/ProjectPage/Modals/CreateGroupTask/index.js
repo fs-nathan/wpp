@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiNotePlusOutline, mdiContentCopy } from '@mdi/js';
 import CustomModal from '../../../../components/CustomModal';
 import CreateNewGroupTask from '../CreateNewGroupTask';
+import CopyGroupTask from '../CopyGroupTask';
 
 const Container = styled.div`
   width: 100%;
@@ -66,7 +67,7 @@ const ButtonCase = styled.div`
 function CreateGroupTask({ open, setOpen, }) {
 
   const [createNew, setCreateNew] = React.useState(false);
-  // const [copy, setCopy] = React.useState(false);
+  const [copy, setCopy] = React.useState(false);
 
   return (
     <>
@@ -78,7 +79,7 @@ function CreateGroupTask({ open, setOpen, }) {
       <Container>
         <ButtonCase onClick={evt => {
           setCreateNew(true);
-          // setCopy(false);
+          setCopy(false);
           setOpen(false);
         }}>
           <div>
@@ -91,7 +92,7 @@ function CreateGroupTask({ open, setOpen, }) {
         </ButtonCase>
         <ButtonCase onClick={evt => {
           setCreateNew(false);
-          // setCopy(true);
+          setCopy(true);
           setOpen(false);
         }}>
           <div>
@@ -105,6 +106,7 @@ function CreateGroupTask({ open, setOpen, }) {
       </Container>
     </CustomModal>
     <CreateNewGroupTask open={createNew} setOpen={setCreateNew} />
+    <CopyGroupTask open={copy} setOpen={setCopy} />
     </>
   )
 }

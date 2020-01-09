@@ -2,7 +2,8 @@
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 import {
     filterCompleteSubTask,
-    filterUncompleteSubTask
+    filterUncompleteSubTask,
+    searchArrayTabpart,
 } from '../../helpers/jobDetail/arrayHelper'
 
 // Initial state for store
@@ -12,6 +13,8 @@ const initialState = {
     isFetching: false,
     dataFetched: false,
     error: false,
+    detailComplete: [],
+    detailUnComplete: [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -28,7 +31,15 @@ export default function reducer(state = initialState, action) {
                 dataFetched: true,
                 uncompleteSubTasks: filterUncompleteSubTask(action.payload.sub_tasks),
                 completeSubTasks: filterCompleteSubTask(action.payload.sub_tasks),
+                detailComplete: filterCompleteSubTask(action.payload.sub_tasks),
+                detailUnComplete: filterUncompleteSubTask(action.payload.sub_tasks),
             };
+        case types.SEARCH_SUBTASK_TABPART:
+            return {
+                ...state,
+                completeSubTasks:  searchArrayTabpart(state.detailComplete, action.payload, "name"),
+                uncompleteSubTasks: searchArrayTabpart(state.detailUnComplete, action.payload, "name"),
+            }
         case types.GET_SUBTASK_FAIL:
             return {
                 ...state,

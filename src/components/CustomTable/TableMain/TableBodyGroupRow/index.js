@@ -3,8 +3,8 @@ import { TableRow, TableCell, TableBody, Button } from '@material-ui/core';
 import { Droppable } from 'react-beautiful-dnd';
 import Icon from '@mdi/react';
 import {
-  mdiChevronUp,
-  mdiChevronDown,
+  mdiMenuUp,
+  mdiMenuDown,
 } from '@mdi/js';
 import TableBodyRow from './TableBodyRow';
 import { CustomTableContext } from '../../index';
@@ -35,13 +35,13 @@ function TableBodyGroupRow({ group }) {
                 fullWidth 
                 size='small'
                 onClick={() => setOpen(open => !open)}
-                endIcon={
-                  (open || snapshot.isDraggingOver) 
-                  ? <Icon path={mdiChevronDown} size={1} color='#8d8d8d' /> 
-                  : <Icon path={mdiChevronUp} size={1} color='#8d8d8d' />
-                }  
               >
-                {typeof(get(options, 'grouped.label')) === 'function' ? options.grouped.label(group) : group[get(options, 'grouped.label')]}
+                {typeof(get(options, 'grouped.label')) === 'function' 
+                  ? options.grouped.label(group) 
+                  : group[get(options, 'grouped.label')]}
+                {(open || snapshot.isDraggingOver) 
+                  ? <Icon path={mdiMenuDown} size={1} color='#44485e' /> 
+                  : <Icon path={mdiMenuUp} size={1} color='#44485e' />}
               </CustomButton>
             </StyledTableBodyCell>
           </StyledTableBodyRowGroup>

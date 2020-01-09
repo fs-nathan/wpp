@@ -1,6 +1,8 @@
 import { call, put } from 'redux-saga/effects';
 import { listGroupTaskSuccess, listGroupTaskFail } from '../../actions/groupTask/listGroupTask';
 import { apiService } from '../../constants/axiosInstance';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doListGroupTask({ projectId }) {
   try {
@@ -24,6 +26,7 @@ function* listGroupTask(action) {
     yield put(listGroupTaskSuccess({ groupTasks }));
   } catch (error) {
     yield put(listGroupTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 

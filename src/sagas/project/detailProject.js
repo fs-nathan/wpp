@@ -1,6 +1,8 @@
 import { call, put } from 'redux-saga/effects';
 import { detailProjectSuccess, detailProjectFail } from '../../actions/project/detailProject';
 import { apiService } from '../../constants/axiosInstance';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doDetailProject({ projectId }) {
   try {
@@ -24,6 +26,7 @@ function* detailProject(action) {
     yield put(detailProjectSuccess({ project }));
   } catch (error) {
     yield put(detailProjectFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 

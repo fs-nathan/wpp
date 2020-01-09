@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { deletePositionSuccess, deletePositionFail } from '../../actions/position/deletePosition';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, DELETE_POSITION } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doDeletePosition({ positionId }) {
   try {
@@ -24,8 +26,10 @@ function* deletePosition(action) {
     yield call(doDeletePosition, action.options);
     yield put(deletePositionSuccess());
     CustomEventEmitter(DELETE_POSITION);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(deletePositionFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

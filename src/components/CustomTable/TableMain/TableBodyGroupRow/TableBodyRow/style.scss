@@ -1,15 +1,37 @@
 .comp_CustomTable_TableBodyRow___row {
-  background-color: #fff;
-  border-bottom: 1px solid rgb(239, 239, 239);
-  text-decoration: none;
-  &:hover {
-    cursor: pointer;
-    background-color: #f2f5fa;
-  }    
+  background-color: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+  & > .MuiTableCell-root {
+    font-size: 13px;
+  };
 };
 
+@mixin comp_CustomTable_TableBodyRow___cell {
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+  word-break: break-all;
+}
+
 .comp_CustomTable_TableBodyRow___cell {
-  padding: 8px;
-  font-size: 14px;
-  max-width: 250px;
+  &-draggable {
+    @include comp_CustomTable_TableBodyRow___cell;
+    &:nth-child(1) {
+      padding: 10px 3px 10px 13px;
+    }
+    &:nth-child(2) {
+      padding: 10px 10px 10px 3px;
+    }
+    &:nth-child(n+3) {
+      padding: 10px;
+    }
+  }
+  & {
+    @include comp_CustomTable_TableBodyRow___cell;
+    &:nth-child(1) {
+      padding: 10px 3px 10px 20px;
+    }
+    &:nth-child(n+2) {
+      padding: 10px;
+    }
+  }
 };

@@ -1,6 +1,8 @@
 import { call, put } from 'redux-saga/effects';
-import { searchUserSuccess, searchUserFail } from '../../actions/user/searchUser';
+import { searchUserSuccess, searchUserFail } from '../../actions/groupUser/searchUser';
 import { apiService } from '../../constants/axiosInstance';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doSearchUser({ info }) {
   try {
@@ -20,10 +22,11 @@ async function doSearchUser({ info }) {
 
 function* searchUser(action) {
   try {
-    const { data } = yield call(doSearchUser, action.options);
-    yield put(searchUserSuccess({ data }));
+    const { member } = yield call(doSearchUser, action.options);
+    yield put(searchUserSuccess({ member }));
   } catch (error) {
     yield put(searchUserFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 

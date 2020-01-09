@@ -27,9 +27,13 @@ import updateUserRole, { initialState as updateUserRoleInitialState } from './us
 import deleteUserRole, { initialState as deleteUserRoleInitialState } from './userRole/deleteUserRole';
 import publicMember, { initialState as publicMemberInitialState } from './user/publicMember';
 import privateMember, { initialState as privateMemberInitialState } from './user/privateMember';
-import searchUser, { initialState as searchUserInitialState } from './user/searchUser';
-import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } from './user/inviteUserJoinGroup';
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from './user/banUserFromGroup';
+import searchUser, { initialState as searchUserInitialState } from './groupUser/searchUser';
+import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } from './groupUser/inviteUserJoinGroup';
+import resendInvitationUserJoinGroup, { initialState as resendInvitationUserJoinGroupInitialState } from './groupUser/resendInvitationUserJoinGroup';
+import getRequirementJoinGroup, { initialState as getRequirementJoinGroupInitialState } from './groupUser/getRequirementJoinGroup';
+import acceptRequirementJoinGroup, { initialState as acceptRequirementJoinGroupInitialState } from './groupUser/acceptRequirementJoinGroup';
+import rejectRequirementJoinGroup, { initialState as rejectRequirementJoinGroupInitialState } from './groupUser/rejectRequirementJoinGroup';
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
 import createProjectGroup, { initialState as createProjectGroupInitialState } from './projectGroup/createProjectGroup';
@@ -62,6 +66,7 @@ import createGroupTask, { initialState as createGroupTaskInitialState} from './g
 import deleteGroupTask, { initialState as deleteGroupTaskInitialState} from './groupTask/deleteGroupTask';
 import updateGroupTask, { initialState as updateGroupTaskInitialState} from './groupTask/updateGroupTask';
 import sortGroupTask, { initialState as sortGroupTaskInitialState} from './groupTask/sortGroupTask';
+import getAllGroupTask, { initialState as getAllGroupTaskInitialState} from './groupTask/getAllGroupTask';
 import listTask, { initialState as listTaskInitialState} from './task/listTask';
 import createTask, { initialState as createTaskInitialState} from './task/createTask';
 import deleteTask, { initialState as deleteTaskInitialState} from './task/deleteTask';
@@ -116,8 +121,6 @@ const rootReducer = combineReducers({
     updateUser,
     publicMember,
     privateMember,
-    searchUser,
-    inviteUserJoinGroup,
     banUserFromGroup
   }),
   icon: combineReducers({
@@ -178,11 +181,20 @@ const rootReducer = combineReducers({
     deleteGroupTask,
     updateGroupTask,
     sortGroupTask,
+    getAllGroupTask,
   }),
   task: combineReducers({
     listTask,
     createTask,
     deleteTask,
+  }),
+  groupUser: combineReducers({
+    searchUser,
+    inviteUserJoinGroup,
+    resendInvitationUserJoinGroup,
+    getRequirementJoinGroup,
+    acceptRequirementJoinGroup,
+    rejectRequirementJoinGroup,
   }),
 });
 
@@ -207,8 +219,6 @@ export const DEFAULT_STATE = {
     updateUser: updateUserInitialState,
     publicMember: publicMemberInitialState,
     privateMember: privateMemberInitialState,
-    searchUser: searchUserInitialState,
-    inviteUserJoinGroup: inviteUserJoinGroupInitialState,
     banUserFromGroup: banUserFromGroupInitialState
   },
   icon: {
@@ -269,11 +279,20 @@ export const DEFAULT_STATE = {
     createGroupTask: createGroupTaskInitialState,
     deleteGroupTask: deleteGroupTaskInitialState,
     sortGroupTask: sortGroupTaskInitialState,
+    getAllGroupTask: getAllGroupTaskInitialState,
   },
   task: {
     listTask: listTaskInitialState,
     createTask: createTaskInitialState,
     deleteTask: deleteTaskInitialState,
+  },
+  groupUser: {
+    searchUser: searchUserInitialState,
+    inviteUserJoinGroup: inviteUserJoinGroupInitialState,
+    resendInvitationUserJoinGroup: resendInvitationUserJoinGroupInitialState,
+    getRequirementJoinGroup: getRequirementJoinGroupInitialState,
+    acceptRequirementJoinGroup: acceptRequirementJoinGroupInitialState,
+    rejectRequirementJoinGroup: rejectRequirementJoinGroupInitialState,
   }
 };
 

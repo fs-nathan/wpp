@@ -51,12 +51,20 @@ import { PUBLIC_MEMBER } from '../constants/actions/user/publicMember';
 import { publicMember } from './user/publicMember';
 import { PRIVATE_MEMBER } from '../constants/actions/user/privateMember';
 import { privateMember } from './user/privateMember';
-import { SEARCH_USER } from '../constants/actions/user/searchUser';
-import { searchUser } from './user/searchUser';
-import { INVITE_USER_JOIN_GROUP } from '../constants/actions/user/inviteUserJoinGroup';
-import { inviteUserJoinGroup } from './user/inviteUserJoinGroup';
 import { BAN_USER_FROM_GROUP } from '../constants/actions/user/banUserFromGroup';
 import { banUserFromGroup } from './user/banUserFromGroup';
+import { SEARCH_USER } from '../constants/actions/groupUser/searchUser';
+import { searchUser } from './groupUser/searchUser';
+import { INVITE_USER_JOIN_GROUP } from '../constants/actions/groupUser/inviteUserJoinGroup';
+import { inviteUserJoinGroup } from './groupUser/inviteUserJoinGroup';
+import { RESEND_INVITATION_USER_JOIN_GROUP } from '../constants/actions/groupUser/resendInvitationUserJoinGroup';
+import { resendInvitationUserJoinGroup } from './groupUser/resendInvitationUserJoinGroup';
+import { GET_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/getRequirementJoinGroup';
+import { getRequirementJoinGroup } from './groupUser/getRequirementUserJoinGroup';
+import { ACCEPT_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/acceptRequirementJoinGroup';
+import { acceptRequirementJoinGroup } from './groupUser/acceptRequirementUserJoinGroup';
+import { REJECT_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/rejectRequirementJoinGroup';
+import { rejectRequirementJoinGroup } from './groupUser/rejectRequirementUserJoinGroup';
 import { CREATE_ICON } from '../constants/actions/icon/createIcon';
 import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
@@ -120,6 +128,8 @@ import { DELETE_GROUP_TASK } from '../constants/actions/groupTask/deleteGroupTas
 import { deleteGroupTask } from './groupTask/deleteGroupTask';
 import { SORT_GROUP_TASK } from '../constants/actions/groupTask/sortGroupTask';
 import { sortGroupTask } from './groupTask/sortGroupTask';
+import { GET_ALL_GROUP_TASK } from '../constants/actions/groupTask/getAllGroupTask';
+import { getAllGroupTask } from './groupTask/getAllGroupTask';
 import { LIST_TASK } from '../constants/actions/task/listTask';
 import { listTask } from './task/listTask';
 import { CREATE_TASK } from '../constants/actions/task/createTask';
@@ -154,6 +164,9 @@ import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP } from '../constants/actions
 import { getGroupDetail, getListColor } from './setting/setting';
 
 function* rootSaga() {
+
+  // Hoang - begin
+
   yield takeEvery(LOGIN, login);
   yield takeEvery(LOGIN_CHECK_STATE, loginCheckState);
   yield takeLatest(LIST_ROOM, listRoom);
@@ -183,6 +196,10 @@ function* rootSaga() {
   yield takeEvery(PRIVATE_MEMBER, privateMember);
   yield takeEvery(SEARCH_USER, searchUser);
   yield takeEvery(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
+  yield takeEvery(RESEND_INVITATION_USER_JOIN_GROUP, resendInvitationUserJoinGroup);
+  yield takeEvery(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
+  yield takeEvery(ACCEPT_REQUIREMENT_JOIN_GROUP, acceptRequirementJoinGroup);
+  yield takeEvery(REJECT_REQUIREMENT_JOIN_GROUP, rejectRequirementJoinGroup);
   yield takeEvery(BAN_USER_FROM_GROUP, banUserFromGroup);
   yield takeEvery(CREATE_ICON, createIcon);
   yield takeEvery(DELETE_ICON, deleteIcon);
@@ -219,10 +236,12 @@ function* rootSaga() {
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
+  yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
   yield takeLatest(LIST_TASK, listTask);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
 
+  // Hoang - end
 
   yield takeLatest(LIST_COMMENT, listComment);
   yield takeLatest(LIST_TRASH, listTrash);

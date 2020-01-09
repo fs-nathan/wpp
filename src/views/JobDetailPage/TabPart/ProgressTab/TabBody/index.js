@@ -4,14 +4,13 @@ import { Avatar, Table, TableHead, TableBody, TableRow, TableCell, Slider } from
 import ColorTypo from '../../../../../components/ColorTypo';
 import colorPal from '../../../../../helpers/colorPalette';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-// import MultiSlider, { Progress, Dot } from 'react-multi-bar-slider';
 import { mdiCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { WrapperContext } from '../../../index'
 
 const Container = styled.div`
-  padding: 10px 0 50px 0;
+  padding: 10px 0 50px 20px;
 
   & > *:not(last-child) {
     padding-top: 40px;
@@ -36,7 +35,6 @@ const StartEndDateBox = styled.div`
 
 const StartDateBox = styled.div`
   text-align: left;
-  margin-left: 20px;
 `;
 
 const EndDateBox = styled.div`
@@ -63,9 +61,6 @@ const TypoTitle = styled(ColorTypo)`
   color: ${colorPal['gray'][0]};
   margin-left: 20px;
 `
-// const Progress  = styled(ProgressBar)`
-//   margin: 0 20px 85px 20px;
-// `
 const TableHistory = styled(Table)`
   margin-left: 20px;
   & > *:first-child {
@@ -80,60 +75,6 @@ const TableRowItem = styled(TableRow)`
   }
 `
 
-// const ProgressBar = styled(MultiSlider)`
-//   border-radius: 5px !important;
-//   margin-bottom: 100px !important;
-//   & > *:first-child {
-//     border-radius: 5px;
-//     background-repeat: repeat!important;
-//     background-size: 1rem 1rem!important;
-//     border-bottom-right-radius: 0;
-//     border-top-right-radius: 0;
-//     background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)!important;
-//     & > span {
-//       border: 1px solid #AAA;
-//       background-color: #a5a0a0;
-//       border-radius: 1px;
-//       width: 3px;
-//       & > p {
-//         position: absolute;
-//         top: -30px;
-//         color: red;
-//         left: -7px;
-//       }
-//     }
-//   }
-// `
-// const TextProgressToday = styled(Typography)`
-//   z-index: 1;
-//   width: 55px;
-//   position: absolute;
-//   top: 0;
-//   left: 300px
-//   & > div:nth-child(1) {
-//     height: 20px;
-//     width: 20px;
-//     background-color: orange;
-//     border-radius: 50%;
-//     margin-left: 13px;
-//     margin-bottom: 5px;
-//   }
-//   & > div:nth-child(2) {
-//     height: 29px;
-//     width: 0px;
-//     border-left: 1px solid;
-//     margin-left: 22px;
-//   }
-//   & > p:nth-child(3) {
-//     margin-top: 5px;
-//     margin-bottom: 5px;
-//   }
-//   & > span:nth-child(4) {
-//     margin: 14px;
-//     color: red;
-//   }
-
-// `
 const LegendBox = styled.div`
   margin: 10px 20px;
   display: flex;
@@ -148,81 +89,6 @@ const Body = styled(Scrollbars)`
   height: 100%;
   
 `;
-
-// const InputProgressBar = styled.input`
-//   background-color: ;
-//   && {
-//     -webkit-appearance: none;
-//     -moz-apperance: none;
-//     border-radius: 6px;
-//     height: 11px;
-//     width: 400px;
-//     margin: auto;
-//     background-image: -webkit-gradient(linear,
-//         left top, 
-//         right top, 
-//         color-stop(${props => props.value}%, #2dc63a),
-//         color-stop(${props => props.value}%, #b0eab5));
-//     background-image: -moz-linear-gradient(left center,
-//         #2dc63a 0%, #2dc63a ${props => props.value}%,
-//         #b0eab5 ${props => props.value}%, #b0eab5 100%);
-//   }
-//   ::-moz-range-track {
-//     border: none;
-//     background: none;
-//     outline: none;
-//   }
-//   :focus {
-//     outline: none;
-//     border: none;
-//   }
-//   ::-webkit-slider-thumb {
-//     -webkit-appearance: none !important;
-//     height: 20px;
-//     width: 20px;
-//     border-radius: 50%;
-//     background: #fff;
-//     border: 2px solid #2dc63a;
-//     cursor: pointer;
-//   }
-//   ::-moz-range-thumb {
-//     -moz-appearance: none !important;
-//     background-color: #2dc63a;
-//     border: none;
-//     height: 13px;
-//     width: 13px;
-//     border-radius: 50%;
-//     &&:hover {
-//       opacity: 1;
-//     }
-// `
-// const WrapperProgressBar = styled.div`
-//   margin: auto;
-//   & > div:nth-child(1) {
-//     width: 400px;
-//     margin: auto;
-//     padding-bottom: 14px;
-//   }
-//   & > div:nth-child(2) {
-//     width: 400px;
-//     margin: auto;
-//   }
-// `
-// const ContentProgress = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   background-color: #2dc63a;
-//   border-radius: 50% 50% 50% 0;
-//   width: 35px;
-//   height: 35px;
-//   transform: rotate(-45deg);
-//   margin-left: calc(${props => props.value}% - 17.5px);
-//   & > div {
-//     color: #fff;
-//     transform: rotate(45deg);
-//   }
-// `
 const useStyles = makeStyles(theme => ({
   root: {
     width: 300 + theme.spacing(3) * 2,
@@ -265,47 +131,11 @@ const WrapperProgressBar = styled.div`
     color: #fff;
   }
 `
-// const ProgressBarActive = (props) => {
-//   const [progress, setStateProgress] = React.useState(10)
-
-//   const handleProgress = () => {
-//     setStateProgress(progress)
-//   }
-//   return (
-//  <ProgressBar
-//         width={370}
-//         height={20}
-//         slidableZoneSize={40}
-//         backgroundColor="#edeff0"
-//         equalColor="#3ac5aa"
-//         style={{ margin: 'auto' }}
-//         onSlide={handleProgress}
-//         onDragStart={progress => console.log(`Started dragging: ${progress}%`)}
-//         onDragStop={progress => console.log(`Stopped dragging: ${progress}%`)}
-//         roundedCorners
-//       >
-//         <Progress height={20} color="green" progress={progress}>
-//             <Dot>
-//               <Typography> { !progress ? '0%' : `${progress}%` } </Typography>
-//             </Dot>
-//             <TextProgressToday component='div'>
-//               <div />
-//               <div />
-//               <p >Hôm nay</p>
-//               <span>70%</span>
-//             </TextProgressToday>
-//         </Progress>
-
-//       </ProgressBar> 
-//   )
-// }
-
 
 function TabBody() {
   const classes = useStyles();
-  // const [dataProgress, setDataProgress] = React.useState(0)
   const value = React.useContext(WrapperContext)
-  // console.log('detailtask', value.detailTask)
+
   let listTime
 
   if (value.listTime && value.listTime.trackings) {
@@ -328,36 +158,21 @@ function TabBody() {
       )
     })
   }
-  // function convertDate(convert_day){
-  //   return convert_day.split('-').reverse().join('-');
-  // }
-  
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         <StartEndDateBox>
           <StartDateBox>
-            <ColorTypo>{"value.detailTask.start_time"}</ColorTypo>
-            <ColorTypo>{"value.detailTask.start_date"}</ColorTypo>
+            <ColorTypo>{value.detailTask && value.detailTask.start_time}</ColorTypo>
+            <ColorTypo>{value.detailTask && value.detailTask.start_date}</ColorTypo>
           </StartDateBox>
           <EndDateBox>
-            <ColorTypo>{"value.detailTask.end_time"}</ColorTypo>
-            <ColorTypo>{"value.detailTask.end_date"}</ColorTypo>
+            <ColorTypo>{value.detailTask && value.detailTask.end_time}</ColorTypo>
+            <ColorTypo>{value.detailTask && value.detailTask.end_date}</ColorTypo>
           </EndDateBox>
         </StartEndDateBox>
         {/* progress bar */}
-        {/* <WrapperProgressBar>
-          <div>
-            <ContentProgress value={dataProgress}>
-              <div>{dataProgress}</div>
-            </ContentProgress>
-          </div>
-          <div>
-            <InputProgressBar
-              type="range" min="1" max="100"
-              value={dataProgress} onChange={e => handleChangeProgress(e.target.value)} />
-          </div>
-        </WrapperProgressBar> */}
+      
         <WrapperProgressBar className={classes.root}>
           <PrettoSlider 
           valueLabelDisplay="on" 

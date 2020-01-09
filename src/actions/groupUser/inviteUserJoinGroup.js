@@ -2,7 +2,7 @@ import {
   INVITE_USER_JOIN_GROUP,
   INVITE_USER_JOIN_GROUP_FAIL,
   INVITE_USER_JOIN_GROUP_SUCCESS,
-} from '../../constants/actions/user/inviteUserJoinGroup';
+} from '../../constants/actions/groupUser/inviteUserJoinGroup';
 
 export const inviteUserJoinGroup = ({ userId }) => ({
   type: INVITE_USER_JOIN_GROUP,

@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { get, filter } from 'lodash';
 import { mdiPlus } from '@mdi/js';
@@ -18,14 +17,19 @@ import CustomListItem from './CustomListItem';
 import { connect } from 'react-redux';
 import { listProjectGroup } from '../../../../actions/projectGroup/listProjectGroup';
 import { sortProjectGroup } from '../../../../actions/projectGroup/sortProjectGroup';
+import './style.scss';
 
-const Banner = styled.div`
-  padding: 15px;
-`;
+const Banner = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_List___banner ${className}`}
+    {...props}
+  />;
 
-const StyledPrimary = styled(Primary)`
-  font-weight: 500;
-`;
+const StyledPrimary = ({ className = '', ...props }) => 
+  <Primary 
+    className={`view_ProjectGroup_List___primary ${className}`}
+    {...props}
+  />;
 
 function ProjectList({ listProjectGroup, doSortProjectGroup, }) {
 

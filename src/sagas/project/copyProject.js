@@ -2,6 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import { copyProjectSuccess, copyProjectFail } from '../../actions/project/copyProject';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, COPY_PROJECT } from '../../constants/events';
+import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
+import { get } from 'lodash';
 
 async function doCopyProject({ projectId, name, description, startDate, isCopyMember }) {
   try {
@@ -28,8 +30,10 @@ function* copyProject(action) {
     yield call(doCopyProject, action.options);
     yield put(copyProjectSuccess({}));
     CustomEventEmitter(COPY_PROJECT);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(copyProjectFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

@@ -1,19 +1,20 @@
 .comp_CustomTable_TableBodyGroup___row {
-  background-color: #f2f2f263;
+  background-color: #fafafa;
   color: rgb(68, 72, 94);
   font-weight: 600;
   border-bottom: 1px solid rgb(241, 241, 241);
-  padding: 8px;
+  padding: 0;
   & > td {
-    padding: 0;
+    padding: 8px 20px;
     font-size: 12px;  
   }
 };
 
 .comp_CustomTable_TableBodyGroup___button {
   justify-content: flex-start;
+  background-color: #fafafa;
   border-radius: 0;
-  padding: 8px 16px;
+  padding: 0;
   & > span {
     font-weight: bold;
     color: rgb(68, 72, 94);
@@ -24,4 +25,7 @@
       display: none;
     }
   }  
+  &:hover {
+    background-color: #fafafa;
+  }
 };
