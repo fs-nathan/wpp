@@ -2,7 +2,7 @@ import {
   SEARCH_USER,
   SEARCH_USER_SUCCESS,
   SEARCH_USER_FAIL,
-} from '../../constants/actions/user/searchUser';
+} from '../../constants/actions/groupUser/searchUser';
 
 export const initialState = {
   data: {  

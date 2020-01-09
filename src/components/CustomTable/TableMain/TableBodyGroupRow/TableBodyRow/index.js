@@ -42,7 +42,6 @@ function TableBodyRow({ index, row, group }) {
       >
         {(provided) => (
           <StyledTableBodyRow
-            onClick={evt => get(options, 'row.onClick', () => null)(row, group)}
             innerRef={provided.innerRef}
             {...provided.draggableProps} 
           >
@@ -68,9 +67,7 @@ function TableBodyRow({ index, row, group }) {
       </Draggable>
     )
     : (
-      <StyledTableBodyRow
-        onClick={evt => get(options, 'row.onClick', () => null)(row, group)}
-      >
+      <StyledTableBodyRow>
         {columns.map((column, index) => (
           <StyledTableBodyCell 
             key={index}

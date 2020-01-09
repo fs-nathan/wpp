@@ -41,6 +41,7 @@ import CustomBadge from '../../../../components/CustomBadge';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
+import { Container, SettingContainer, LinkSpan, StateBox, DateBox } from '../../../../components/TableComponents';
 import AlertModal from '../../../../components/AlertModal';
 import { listProject } from '../../../../actions/project/listProject';
 import { sortProject } from '../../../../actions/project/sortProject';
@@ -48,49 +49,6 @@ import { detailProjectGroup } from '../../../../actions/projectGroup/detailProje
 import { deleteProject } from '../../../../actions/project/deleteProject';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
-
-const Container = styled.div`
-  grid-area: table;
-`;
-
-const ProgressBar = styled.div`
-  max-width: 100px;
-`;
-
-const StateBox = styled(({ stateName, ...rest }) => <div {...rest} />)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  & > div > span {
-    color: ${props => props.stateName};
-    &:first-child {
-      margin-right: 6px;
-      font-size: 11px;
-    }
-    &:not(:first-child) {
-      font-size: 13px;
-    }
-  }
-  & > small {
-    margin-top: 4px;
-    font-size: 13px;
-    margin-left: 20px;
-  }
-`;
-
-const DurationBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  & > span {
-    font-size: 13px;
-    color: red;
-  }
-  & > small {
-    margin-top: 4px;
-    font-size: 13px;
-  }
-`;
 
 const CustomMenuItem = styled(({ selected, refs, ...rest }) => (
   <MenuItem {...rest} />
@@ -193,10 +151,6 @@ const TimeListItem = styled(({ selected, ...rest }) => <ListItem {...rest} />)`
   border-left: 3px solid ${props => (props.selected ? '#05b50c' : '#fff')};
 `;
 
-const SettingContainer = styled.div`
-  margin-right: 16px;
-`;
-
 const MiddleDiv = styled.div`
   display: flex;
   justify-content: center;
@@ -231,45 +185,15 @@ function decodePriorityCode(priorityCode) {
   }
 }
 
-function decodeStateName(stateName) {
-  switch (stateName) {
-    case 'waiting':
-      return {
-        color: 'orange',
-        name: 'Đang chờ'
-      };
-    case 'doing':
-      return {
-        color: 'green',
-        name: 'Đang làm'
-      };
-    case 'expired':
-      return {
-        color: 'red',
-        name: 'Quá hạn'
-      };
-    case 'hidden':
-      return {
-        color: '#20194d',
-        name: 'Đang ẩn'
-      };
-    default:
-      return {
-        color: 'orange',
-        name: 'Đang chờ'
-      };
-  }
-}
-
 function displayDateRange(from, to) {
   if (
-    from instanceof Date &&
-    !isNaN(from) &&
+    from instanceof Date && !isNaN(from) 
+    &&
     to instanceof Date && !isNaN(to)
   ) {
     return `${from.toLocaleDateString()} - ${to.toLocaleDateString()}`;
   } else {
-    return 'Không xác định';
+    return '';
   }
 }
 
@@ -679,7 +603,6 @@ function AllProjectTable({
               },
               row: {
                 id: 'id',
-                onClick: row => history.push(`/project/${get(row, 'id', '')}`)
               }
             }}
             columns={[
@@ -702,33 +625,27 @@ function AllProjectTable({
               },
               {
                 label: 'Dự án',
-                field: 'name',
+                field: (row) => <LinkSpan onClick={evt => history.push(`/project/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
                 sort: evt => handleSortColumn('name'),
                 align: 'left',
-                width: '39%',
+                width: '34%',
               },
               {
                 label: 'Trạng thái',
                 field: row => (
                   <StateBox
                     stateName={
-                      decodeStateName(
-                        get(row, 'visibility', true) === false
-                          ? 'hidden'
-                          : get(row, 'state_name', '')
-                      ).color
+                      get(row, 'visibility', true) === false
+                        ? 'Hidden'
+                        : get(row, 'state_name', '')
                     }
                   >
                     <div>
                       <span>&#11044;</span>
                       <span>
-                        {
-                          decodeStateName(
-                            get(row, 'visibility', true) === false
-                              ? 'hidden'
-                              : get(row, 'state_name', '')
-                          ).name
-                        }
+                        {get(row, 'visibility', true) === false
+                          ? 'Hidden'
+                          : get(row, 'state_name', '')}
                       </span>
                     </div>
                     {get(row, 'visibility', true) && (
@@ -748,12 +665,10 @@ function AllProjectTable({
               {
                 label: 'Hoàn thành',
                 field: row => (
-                  <ProgressBar>
-                    <SimpleSmallProgressBar
-                      percentDone={get(row, 'complete', 0)}
-                      color={'#3edcdb'}
-                    />
-                  </ProgressBar>
+                  <SimpleSmallProgressBar
+                    percentDone={get(row, 'complete', 0)}
+                    color={'#3edcdb'}
+                  />
                 ),
                 sort: evt => handleSortColumn('complete'),
                 align: 'left',
@@ -762,7 +677,7 @@ function AllProjectTable({
               {
                 label: 'Tiến độ',
                 field: row => (
-                  <DurationBox>
+                  <DateBox>
                     <span>{get(row, 'duration', 0)} ngày</span>
                     <small>
                       {displayDateRange(
@@ -770,11 +685,11 @@ function AllProjectTable({
                         new Date(get(row, 'date_end'))
                       )}
                     </small>
-                  </DurationBox>
+                  </DateBox>
                 ),
                 sort: evt => handleSortColumn('duration'),
                 align: 'left',
-                width: '10%',
+                width: '15%',
               },
               {
                 label: 'Ưu tiên',

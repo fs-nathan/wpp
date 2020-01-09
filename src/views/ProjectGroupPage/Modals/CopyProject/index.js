@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   TextField, FormControl, FormControlLabel, 
-  Radio, RadioGroup, FormLabel, OutlinedInput,
+  Radio, RadioGroup,
   ListItemText, ListSubheader, Typography,
   FormHelperText,
 } from '@material-ui/core';
@@ -94,11 +94,20 @@ function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject })
         }
       >
         {get(projectGroup, 'projects', []).map(project => (
-          <CustomListItem key={get(project, 'id')} onClick={() => setSelectedProject(project)}>
+          <CustomListItem 
+            key={get(project, 'id')} 
+            onClick={() => setSelectedProject(project)}
+            disableSticky
+          >
             <ListItemText 
               primary={
                 <StyledPrimary isSelected={get(selectedProject, 'id') === get(project, 'id')}>
-                  <Icon path={get(selectedProject, 'id') === get(project, 'id') ? mdiCheckboxMarkedCircle : mdiCheckboxBlankCircleOutline} size={1} /> 
+                  <Icon 
+                    path={get(selectedProject, 'id') === get(project, 'id') 
+                      ? mdiCheckboxMarkedCircle 
+                      : mdiCheckboxBlankCircleOutline} 
+                    size={1} 
+                  /> 
                   <span>{get(project, 'name', '')}</span>
                 </StyledPrimary>  
               }

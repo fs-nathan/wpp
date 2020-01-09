@@ -1,0 +1,83 @@
+.comp_TableComponents___container {
+  grid-area: right;
+  min-height: 100%;
+};
+
+.comp_TableComponents___sub-title {
+  font-size: 13px;
+  & > span {
+    color: blue;
+  }
+};
+
+.comp_TableComponents___link {
+  &:hover {
+    cursor: pointer;
+    color: #0089f6;
+  }
+};
+
+.comp_TableComponents___setting-container {
+  margin-right: 16px;
+};
+
+@mixin comp_TableComponents___state-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  & > div > span {
+    &:first-child {
+      margin-right: 6px;
+      font-size: 11px;
+    }
+    &:not(:first-child) {
+      font-size: 13px;
+    }
+  }
+  & > small {
+    margin-top: 4px;
+    font-size: 13px;
+    margin-left: 20px;
+  }
+};
+
+.comp_TableComponents___state-box {
+  &-waiting {
+    @include comp_TableComponents___state-box;
+    & > div > span {
+      color: orange;
+    }
+  }
+  &-doing {
+    @include comp_TableComponents___state-box;
+    & > div > span {
+      color: green;
+    }
+  }
+  &-expired {
+    @include comp_TableComponents___state-box;
+    & > div > span {
+      color: red;
+    }
+  }
+  &-hidden {
+    @include comp_TableComponents___state-box;
+    & > div > span {
+      color: #20194d;
+    }
+  }
+}
+
+.comp_TableComponents___date-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  & > span {
+    font-size: 13px;
+    color: red;
+  }
+  & > small {
+    margin-top: 4px;
+    font-size: 13px;
+  }
+}

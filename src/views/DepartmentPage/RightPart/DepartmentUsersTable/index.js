@@ -20,8 +20,8 @@ import CustomTable from '../../../../components/CustomTable';
 import CustomBadge from '../../../../components/CustomBadge';
 import AlertModal from '../../../../components/AlertModal';
 import {
-  Container, NameSpan, SettingContainer,
-} from '../../../../components/UsersTableComponents';
+  Container, LinkSpan, SettingContainer,
+} from '../../../../components/TableComponents';
 import { get } from 'lodash';
 import TitleManagerModal from '../../Modals/TitleManager';
 import RoleManagerModal from '../../Modals/RoleManager';
@@ -208,7 +208,7 @@ function DepartmentUsersTable({
             width: '5%',
           }, {
             label: 'Họ và tên',
-            field: (row) => <NameSpan>{get(row, 'name', '')}</NameSpan>,
+            field: (row) => <LinkSpan onClick={evt => history.push(`/members/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
             align: 'left',
             width: '14%',
           }, {

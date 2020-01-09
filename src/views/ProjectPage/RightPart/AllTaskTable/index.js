@@ -25,57 +25,11 @@ import CustomBadge from '../../../../components/CustomBadge';
 import AlertModal from '../../../../components/AlertModal';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
+import { Container, SettingContainer, LinkSpan, StateBox, DateBox } from '../../../../components/TableComponents';
 import CreateNewTaskModal from '../../Modals/CreateNewTask';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
 import { deleteTask } from '../../../../actions/task/deleteTask';
-
-const Container = styled.div`
-  grid-area: table;
-`;
-
-const ProgressBar = styled.div`
-  max-width: 100px;
-`;
-
-const StateBox = styled(({stateName, ...rest}) => <div {...rest} />)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  & > div > span {
-    color: ${props => props.stateName};
-    &:first-child {
-      margin-right: 6px;
-      font-size: 11px;
-    }
-    &:not(:first-child) {
-      font-size: 13px;
-    }
-  }
-  & > small {
-    margin-top: 4px;
-    font-size: 13px;
-    margin-left: 20px;
-  }
-`;
-
-const DateBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  & > span {
-    font-size: 13px;
-    color: red;
-  }
-  & > small {
-    margin-top: 4px;
-    font-size: 13px;
-  }
-`;
-
-const SettingContainer = styled.div`
-  margin-right: 16px;
-`;
 
 const SubTitle = styled.div`
   display: flex;
@@ -119,31 +73,6 @@ function decodePriorityCode(priorityCode) {
   }
 }
 
-function decodeStateName(stateName) {
-  switch (stateName) {
-    case 'Waiting': 
-      return ({
-        color: 'orange',
-        name: 'Đang chờ',
-      });
-    case 'Doing': 
-      return ({
-        color: 'green',
-        name: 'Đang làm',
-      });
-    case 'Expired': 
-      return ({
-        color: 'red',
-        name: 'Quá hạn',
-      });
-    default:
-      return ({
-        color: 'orange',
-        name: 'Đang chờ',
-      });
-  }
-}
-
 function displayDate(time, date) {
   if (
     (date instanceof Date && !isNaN(date))
@@ -155,7 +84,7 @@ function displayDate(time, date) {
       </>
     );
   } else {
-    return <span>Không xác định</span>;
+    return <span />;
   }
 }
 
@@ -310,12 +239,11 @@ function AllTaskTable({
               },
               row: {
                 id: 'id',
-                onClick: (row) => history.push(`/list-task-detail/`),
               },
             }}
             columns={[{
               label: 'Tên công việc',
-              field: 'name',
+              field: (row) => <LinkSpan onClick={evt => history.push(`/list-task-detail/`)}>{get(row, 'name', '')}</LinkSpan>,
               align: 'left',
               width: '25%',
             }, {
@@ -349,18 +277,21 @@ function AllTaskTable({
               width: '10%',
             }, {
               label: 'Hoàn thành',
-              field: (row) => <ProgressBar>
-                                <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />
-                              </ProgressBar>,
+              field: (row) => <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />,
               align: 'center',
               width: '10%',
             }, {
               label: 'Trạng thái',
-              field: (row) => <StateBox stateName={decodeStateName(get(row, 'status_name', '')).color}>
-                                <div>
-                                  <span>&#11044;</span><span>{decodeStateName(get(row, 'status_name', '')).name}</span>
-                                </div>
-                              </StateBox>,
+              field: (row) => <StateBox
+                  stateName={get(row, 'status_name', '')}
+                >
+                  <div>
+                    <span>&#11044;</span>
+                    <span>
+                      {get(row, 'status_name', '')}
+                    </span>
+                  </div>
+                </StateBox>,
               align: 'center',
               width: '10%',
             }, {

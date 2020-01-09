@@ -230,8 +230,8 @@ function DepartmentInfo({ searchUser, doSearchUser, inviteUserJoinGroup, doInvit
 
 const mapStateToProps = state => {
   return {
-    searchUser: state.user.searchUser,
-    inviteUserJoinGroup: state.user.inviteUserJoinGroup,
+    searchUser: state.groupUser.searchUser,
+    inviteUserJoinGroup: state.groupUser.inviteUserJoinGroup,
   }
 };
 

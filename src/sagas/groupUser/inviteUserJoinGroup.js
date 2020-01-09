@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects';
-import { inviteUserJoinGroupSuccess, inviteUserJoinGroupFail } from '../../actions/user/inviteUserJoinGroup';
+import { inviteUserJoinGroupSuccess, inviteUserJoinGroupFail } from '../../actions/groupUser/inviteUserJoinGroup';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, INVITE_USER_JOIN_GROUP } from '../../constants/events';
 import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';

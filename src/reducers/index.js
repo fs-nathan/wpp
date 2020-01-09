@@ -27,9 +27,9 @@ import updateUserRole, { initialState as updateUserRoleInitialState } from './us
 import deleteUserRole, { initialState as deleteUserRoleInitialState } from './userRole/deleteUserRole';
 import publicMember, { initialState as publicMemberInitialState } from './user/publicMember';
 import privateMember, { initialState as privateMemberInitialState } from './user/privateMember';
-import searchUser, { initialState as searchUserInitialState } from './user/searchUser';
-import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } from './user/inviteUserJoinGroup';
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from './user/banUserFromGroup';
+import searchUser, { initialState as searchUserInitialState } from './groupUser/searchUser';
+import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } from './groupUser/inviteUserJoinGroup';
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
 import createProjectGroup, { initialState as createProjectGroupInitialState } from './projectGroup/createProjectGroup';
@@ -117,8 +117,6 @@ const rootReducer = combineReducers({
     updateUser,
     publicMember,
     privateMember,
-    searchUser,
-    inviteUserJoinGroup,
     banUserFromGroup
   }),
   icon: combineReducers({
@@ -186,6 +184,10 @@ const rootReducer = combineReducers({
     createTask,
     deleteTask,
   }),
+  groupUser: combineReducers({
+    searchUser,
+    inviteUserJoinGroup,
+  }),
 });
 
 export const DEFAULT_STATE = {
@@ -209,8 +211,6 @@ export const DEFAULT_STATE = {
     updateUser: updateUserInitialState,
     publicMember: publicMemberInitialState,
     privateMember: privateMemberInitialState,
-    searchUser: searchUserInitialState,
-    inviteUserJoinGroup: inviteUserJoinGroupInitialState,
     banUserFromGroup: banUserFromGroupInitialState
   },
   icon: {
@@ -277,6 +277,10 @@ export const DEFAULT_STATE = {
     listTask: listTaskInitialState,
     createTask: createTaskInitialState,
     deleteTask: deleteTaskInitialState,
+  },
+  groupUser: {
+    searchUser: searchUserInitialState,
+    inviteUserJoinGroup: inviteUserJoinGroupInitialState,
   }
 };
 
