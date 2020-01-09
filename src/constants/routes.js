@@ -19,6 +19,7 @@ export const Routes = {
   REGISTER: '/register',
   LOGIN: '/login',
   FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password',
   CONFIRM_REGISTRATION: '/confirm-registration',
   MESSAGE_NOTICE: '/message/:type',
   MESSAGE_ALL: '/message/message-all',

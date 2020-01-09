@@ -270,6 +270,14 @@ export const actionRenameFile = data => {
   };
   return apiService(config);
 };
+export const actionRenameFolder = data => {
+  const config = {
+    url: '/documents/rename-folder',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+};
 
 export const actionMoveFile = (data = {}) => {
   const config = {
@@ -457,4 +465,25 @@ export const deleteDocumentInfo = data => {
     data
   };
   return apiService(config);
+};
+export const actionViewFile = file_id => {
+  return apiService({
+    url: '/documents/view-file',
+    method: 'post',
+    data: { file_id }
+  });
+};
+export const actionDownloadFile = async file => {
+  try {
+    const { data } = await apiService({
+      url: '/documents/download-file',
+      method: 'post',
+      data: { file_id: file.id }
+    });
+    let link = document.createElement('a');
+    link.download = file.name;
+    link.href = data.url;
+    link.target = '_blank';
+    link.click();
+  } catch (error) {}
 };

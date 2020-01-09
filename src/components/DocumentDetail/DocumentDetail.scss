@@ -22,8 +22,6 @@
       .img-inner {
         text-align: center;
         .img-file {
-          // max-width: 85%;
-          max-height: 85%;
           cursor: zoom-in;
         }
       }
@@ -46,8 +44,8 @@
           overflow: hidden;
         }
         .right-icon {
-          height: 100px;
-          width: 85px;
+          height: auto;
+          width: 105px;
           margin-right: 18px;
           .icon-file {
             height: 100%;
@@ -242,7 +240,7 @@
 }
 
 .edit-comment-modal {
-  .comp_CustomModal___scrollbar {
+  .comp_CustomModal___scrollbar-main {
     min-height: 200px;
   }
 }

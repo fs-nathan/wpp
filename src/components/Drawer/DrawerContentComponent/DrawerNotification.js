@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
+import { useTranslation } from 'react-i18next';
 import { actionVisibleDrawerMessage } from '../../../actions/system/system';
+import {
+  getListNotification,
+  getViewAllNotification,
+  getNumberNotificationNotViewer
+} from '../DrawerService';
 
 import HeaderDrawer from '../HeaderDrawer';
 import FooterDrawer from '../FooterDrawer';
@@ -9,40 +14,61 @@ import ItemMessageNotification from './ItemMessageNotification';
 
 import '../Drawer.scss';
 
-const listNotification = [
-  {
-    id: '0',
-    name:
-      'Mai Xuân Thuần đã thêm bạn vào dự án Chung cư cao tầng và dịch vụ thương mại ABC',
-    description: '4 giờ trước vào lúc 12:00 ngày 28/10/2019',
-    read: true
-  },
-  {
-    id: '1',
-    name:
-      'Mai Xuân Thuần đã thêm bạn vào dự án Chung cư cao tầng và dịch vụ thương mại ABC',
-    description: '4 giờ trước vào lúc 12:00 ngày 28/10/2019',
-    read: false
-  },
-  {
-    id: '2',
-    name:
-      'Mai Xuân Thuần đã thêm bạn vào dự án Chung cư cao tầng và dịch vụ thương mại ABC',
-    description: '4 giờ trước vào lúc 12:00 ngày 28/10/2019',
-    read: true
-  }
-];
 const DrawerNotification = props => {
-  // const { actionVisibleDrawerMessage, typeDrawer } = props;
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState('recent');
+  const [numberNotView, setNumberNotView] = useState(0);
+  const [listNotification, setListNotification] = useState([]);
+  useEffect(() => {
+    fetNotification({});
+    fetNumberNotificationNotViewer();
+  }, []);
+
+  const fetNotification = async params => {
+    try {
+      const { data } = await getListNotification(params);
+      setListNotification(data.notifications);
+    } catch (error) {}
+  };
+
+  const fetNumberNotificationNotViewer = async () => {
+    try {
+      const { data } = await getNumberNotificationNotViewer();
+      setNumberNotView(data.number_notification);
+    } catch (error) {}
+  };
+  const handleChangeTab = type => {
+    setActiveTab(type);
+    if (type === 'recent') {
+      fetNotification({});
+    } else {
+      fetNotification({
+        not_viewed: true
+      });
+    }
+  };
+  const handleViewAll = async () => {
+    try {
+      await getViewAllNotification();
+      fetNotification({});
+      fetNumberNotificationNotViewer();
+    } catch (error) {}
+  };
   return (
-    <div className="drawer-content-container">
-      <HeaderDrawer title="Thông báo" subHeader />
+    <div className="drawer-content">
+      <HeaderDrawer
+        title={t('IDS_WP_NOTICE')}
+        subHeader
+        activeTab={activeTab}
+        handleChangeTab={handleChangeTab}
+        numberNotView={numberNotView}
+      />
       <div className="content-drawer">
         {listNotification.map((message, index) => (
           <ItemMessageNotification item={message} key={index} />
         ))}
       </div>
-      <FooterDrawer />
+      <FooterDrawer handleViewAll={handleViewAll} />
     </div>
   );
 };

@@ -20,11 +20,10 @@ const LeftSetting = props => {
     >
       <StyledList>
         {props.listMenu.map((item, index) => (
-          <Fragment>
+          <Fragment key={index}>
             <StyledListItem
-              to={item.url}
+              to={item.url || ''}
               component={Link}
-              key={index}
               onClick={() => {
                 if (item.action) item.action();
               }}

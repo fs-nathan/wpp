@@ -66,7 +66,6 @@ const NotificationWorkPlus = props => {
   useEffect(() => {
     handleFetchData(); // eslint-disable-next-line
   }, []);
-  console.log('notification', props.notification);
   return (
     <div className="notification-container">
       {data.map((el, index) => (
@@ -85,14 +84,14 @@ const NotificationWorkPlus = props => {
                   }}
                   className="cursor-pointer"
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" width="15%">
                     {row.date}
                   </TableCell>
-                  <TableCell align="left">{row.description}</TableCell>
-                  <TableCell align="right">
-                    <div className={`action-btn ${row.type}`}>
+                  <TableCell align="left" width="75%">
+                    {row.description}&nbsp;&nbsp;
+                    <span className={`action-btn ${row.type}`}>
                       <span>{row.btnText}</span>
-                    </div>
+                    </span>
                   </TableCell>
                 </TableRow>
               ))}

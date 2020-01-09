@@ -103,7 +103,7 @@ const CommentItem = ({ comment, onRefreshList }) => {
             handleClose();
           }}
         >
-          Sửa
+          {t('IDS_WP_EDIT')}
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -111,13 +111,13 @@ const CommentItem = ({ comment, onRefreshList }) => {
             handleClose();
           }}
         >
-          Xóa
+          {t('IDS_WP_DELETE')}
         </MenuItem>
       </Menu>
       <AlertModal
         open={alert}
         setOpen={setAlert}
-        content={t('views.user_page.left_part.department_info.alert_content')}
+        content={t('IDS_WP_ALERT_CONTENT')}
         onConfirm={handleDeleteComment}
       />
       <CustomModal
@@ -137,7 +137,7 @@ const CommentItem = ({ comment, onRefreshList }) => {
           onChange={e => {
             setNewContent(e.target.value);
           }}
-          placeholder="Nhập thảo luận..."
+          placeholder={t('IDS_WP_INPUT_COMMENT')}
         />
       </CustomModal>
     </React.Fragment>

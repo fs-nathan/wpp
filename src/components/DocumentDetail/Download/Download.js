@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import '../DocumentDetail.scss';
 import AlertModal from '../../AlertModal';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
+import { actionDownloadFile } from '../../../actions/documents';
 
 const Download = ({ closeComment, fileInfo, listComment }) => {
   const { t } = useTranslation();
@@ -31,11 +32,7 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
     };
   }, []);
   const handleDownload = () => {
-    var link = document.createElement('a');
-    link.download = fileInfo.name;
-    link.href = fileInfo.url;
-    link.target = '_blank';
-    link.click();
+    actionDownloadFile(fileInfo);
   };
 
   return (
@@ -193,9 +190,7 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
           <AlertModal
             open={alert}
             setOpen={setAlert}
-            content={t(
-              'views.user_page.left_part.department_info.alert_content'
-            )}
+            content={t('IDS_WP_ALERT_CONTENT')}
             onConfirm={() => console.log('ok')}
           />
         </Scrollbars>

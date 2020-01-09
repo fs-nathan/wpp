@@ -9,7 +9,15 @@ import { actionVisibleDrawerMessage } from '../../actions/system/system';
 import './Drawer.scss';
 
 const HeaderDrawer = props => {
-  const { actionVisibleDrawerMessage, title, subHeader, anchorDrawer } = props;
+  const {
+    actionVisibleDrawerMessage,
+    title,
+    subHeader,
+    anchorDrawer,
+    activeTab,
+    handleChangeTab,
+    numberNotView
+  } = props;
   return (
     <React.Fragment>
       <div className={`header-drawer ${title ? '' : 'none-border'}`}>
@@ -20,18 +28,30 @@ const HeaderDrawer = props => {
             actionVisibleDrawerMessage({ type: '', anchor: anchorDrawer })
           }
         >
-          <Icon path={mdiClose} size={1.2} />
+          <Icon path={mdiClose} size={1.2} color="#ccc" />
         </span>
       </div>
       {subHeader && (
         <span className="tab-drawer">
-          <Button className="cus-btn" color="primary" variant="text">
+          <Button
+            className={`cus-btn ${activeTab === 'recent' ? 'active' : ''}`}
+            variant="text"
+            onClick={() => handleChangeTab('recent')}
+            disableTouchRipple
+          >
             Gần đây
           </Button>
-          <Button className="cus-btn btn-unread" variant="text">
+          <Button
+            className={`cus-btn btn-unread ${
+              activeTab === 'notView' ? 'active' : ''
+            }`}
+            variant="text"
+            disableTouchRipple
+            onClick={() => handleChangeTab('notView')}
+          >
             {title} chưa đọc
           </Button>
-          <span className="badges">5+</span>
+          {numberNotView > 0 && <span className="badges">{numberNotView}</span>}
         </span>
       )}
     </React.Fragment>

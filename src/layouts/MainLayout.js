@@ -9,11 +9,13 @@ import routes from '../routes';
 import { avatar_default_120 } from '../assets';
 import LeftBar from '../views/LeftBar';
 import TopBar from '../views/TopBar';
+import SnackbarComponent from '../components/Snackbars';
 import DrawerComponent from '../components/Drawer/Drawer';
 import NoticeModal from '../components/NoticeModal/NoticeModal';
 import GroupModal from '../components/NoticeModal/GroupModal';
 import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
-import { actionFetchGroupDetail } from '../actions/setting/setting';
+import { actionFetchGroupDetail, actionFetchListColor } from '../actions/setting/setting';
+import { actionToast } from '../actions/system/system';
 
 const Container = styled.div`
   height: 100vh;
@@ -97,15 +99,20 @@ function MainLayout({
   location,
   colors,
   history,
+  toast,
+  actionToast,
   actionFetchGroupDetail,
   groupDetail,
-  isDocumentDetail
+  isDocumentDetail,
+  actionFetchListColor
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
       actionFetchGroupDetail(true);
+      actionFetchListColor()
+
     }
     // eslint-disable-next-line
   }, []);
@@ -115,7 +122,8 @@ function MainLayout({
       route === Routes.REGISTER ||
       route === Routes.LOGIN ||
       route === Routes.CONFIRM_REGISTRATION ||
-      route === Routes.FORGOT_PASSWORD
+      route === Routes.FORGOT_PASSWORD ||
+      route === Routes.RESET_PASSWORD
     );
   };
 
@@ -139,7 +147,6 @@ function MainLayout({
   }
 
   const bgColor = colors.find(item => item.selected === true);
-
   return (
     <Container
       className={isViewFullPage(location.pathname) ? 'view-full-page' : ''}
@@ -148,7 +155,7 @@ function MainLayout({
         <React.Fragment>
           <LogoBox
             onClick={() => setVisibleGroupModal(true)}
-            style={{ background: bgColor.value }}
+            style={{ background: bgColor.color }}
           >
             <Image
               src={groupDetail.logo || avatar_default_120}
@@ -159,6 +166,16 @@ function MainLayout({
           <TopBar />
           <DrawerComponent />
           <NoticeModal />
+          {toast.type && (
+            <SnackbarComponent
+              open={true}
+              handleClose={() => actionToast(null, '')}
+              vertical="top"
+              horizontal="center"
+              variant={toast.type}
+              message={toast.message}
+            />
+          )}
           {isDocumentDetail && <DocumentDetail />}
           {visibleGroupModal && (
             <GroupModal
@@ -181,7 +198,8 @@ export default connect(
   state => ({
     colors: state.setting.colors,
     groupDetail: state.setting.groupDetail,
-    isDocumentDetail: state.system.isDocumentDetail
+    isDocumentDetail: state.system.isDocumentDetail,
+    toast: state.system.toast
   }),
-  { actionFetchGroupDetail }
+  { actionFetchGroupDetail, actionToast, actionFetchListColor }
 )(withRouter(MainLayoutWrapper));

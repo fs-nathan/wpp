@@ -11,12 +11,15 @@
     display: flex;
   }
 }
+.table-oder {
+  width: calc(100% - 10px);
+}
 .setting-right-content {
   overflow: auto;
   height: calc(100vh - 125px);
   .action-btn {
-    width: 80px;
-    height: 30px;
+    width: 60px;
+    height: 28px;
     line-height: 1;
     border-radius: 2px;
     margin-right: 5px;
@@ -34,6 +37,10 @@
       background-color: #fb3b00;
       border-color: #fb3b00;
       color: #fff;
+      &.disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
       &:hover {
         box-shadow: none;
         background: #b83810;
@@ -97,8 +104,9 @@
       .download-btn {
         margin: 40px 0 0 0;
         width: 100%;
-        padding: 7px 0;
-        color: #2dc63a;
+        padding: 25px 5px;
+        color: #222;
+        font-size: 17px;
       }
     }
 
@@ -378,9 +386,8 @@
         height: 120px;
       }
       .img-cover {
-        max-width: 600px;
-        width: auto;
-        height: 200px;
+        width: 100%;
+        height: auto;
       }
     }
   }
@@ -477,7 +484,7 @@
 
 // Style for pick color modal
 .pick-color-modal {
-  .comp_CustomModal___scrollbar {
+  .comp_CustomModal___scrollbar-main {
     min-height: 220px;
   }
 

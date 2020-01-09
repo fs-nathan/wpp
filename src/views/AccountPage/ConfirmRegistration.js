@@ -1,4 +1,7 @@
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiLockOutline, mdiCheckCircle } from '@mdi/js';
 import {
@@ -14,22 +17,32 @@ import {
 } from '@material-ui/core';
 import { Routes } from '../../constants/routes';
 import { actionCompleteRegister, actionCheckCode } from '../../actions/account';
+import { loginSuccess, loginFail } from '../../actions/authentications';
+import { actionToast } from '../../actions/system/system';
+import { apiService } from '../../constants/axiosInstance';
+import { openNoticeModal } from '../../actions/system/system';
+import { actionFetchGroupDetail } from '../../actions/setting/setting';
 import MainAccount from '../../components/MainAccount/MainAccount';
 import * as images from '../../assets';
 import './AccountPage.scss';
+import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from '../../constants/constants';
 
-function ConfirmRegistration() {
+const ConfirmRegistration = props => {
+  const { t } = useTranslation();
   const [checkedCode, setCheckedCode] = useState(false);
   const [emailRegistered, setEmailRegistered] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [pwdNotMatch, setPwdNotMatch] = useState(false);
 
+  const handleToast = (type, message) => {
+    props.actionToast(type, message);
+    setTimeout(() => props.actionToast(null, ''), 2000);
+  };
   const handleCompleteRegistration = useCallback(async e => {
     e.preventDefault();
     if (pwdNotMatch) return;
-    console.log('handleCompleteRegistration');
     const { elements } = e.target;
-    const data = {
+    const dataBody = {
       code: elements.code.value,
       name: elements.fullname.value,
       phone: elements.phoneNumber.value,
@@ -37,12 +50,22 @@ function ConfirmRegistration() {
       address: elements.address.value,
       password: elements.password.value
     };
-    console.log(data);
     try {
-      await actionCompleteRegister(data);
-      window.location.href = Routes.LOGIN;
+      const res = await actionCompleteRegister(dataBody);
+      localStorage.setItem(TOKEN, res.data.accessToken);
+      localStorage.setItem(REFRESH_TOKEN, res.data.refreshToken);
+      localStorage.setItem(GROUP_ACTIVE, res.data.group_active);
+      apiService.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${res.data.accessToken}`;
+      apiService.defaults.headers.common['group-active'] =
+        res.data.group_active;
+      props.actionFetchGroupDetail(true);
+      props.loginSuccess(res.data);
+      props.history.push(Routes.HOME);
+      props.openNoticeModal();
     } catch (error) {
-      console.log(error);
+      handleToast('error', error.message);
     } // eslint-disable-next-line
   }, []);
 
@@ -91,7 +114,7 @@ function ConfirmRegistration() {
         <div className="complete-registration-content">
           <form className="form-content" onSubmit={handleCompleteRegistration}>
             <div className="heading">
-              <div className="lb-title">Hoàn thành đăng ký</div>
+              <div className="lb-title">{t('IDS_WP_REGISTER_CONFIRM')}</div>
             </div>
             <FormControl
               fullWidth
@@ -99,13 +122,13 @@ function ConfirmRegistration() {
               variant="outlined"
               className="custom-input"
             >
-              <div className="lb-input">Nhập mã xác thực *</div>
+              <div className="lb-input">{t('IDS_WP_INPUT_VERIFY_CODE')} *</div>
               <OutlinedInput
                 id="code"
                 required
                 onBlur={handleCheckCode}
                 onChange={handleChangeCode}
-                placeholder="Verification code"
+                placeholder={t('IDS_WP_VERIFY_CODE')}
               />
               <div className="confirm-code-info">
                 {checkedCode && (
@@ -123,11 +146,11 @@ function ConfirmRegistration() {
               variant="outlined"
               className="custom-input"
             >
-              <div className="lb-input">Họ và tên *</div>
+              <div className="lb-input">{t('IDS_WP_FULL_NAME')} *</div>
               <OutlinedInput
                 id="fullname"
                 required
-                placeholder="Your full name"
+                placeholder={t('IDS_WP_YOUR_FULL_NAME')}
               />
             </FormControl>
             <FormControl
@@ -136,11 +159,11 @@ function ConfirmRegistration() {
               variant="outlined"
               className="custom-input"
             >
-              <div className="lb-input">Số điện thoại (di động) *</div>
+              <div className="lb-input">{t('IDS_WP_PHONE_NUMBER')} *</div>
               <OutlinedInput
                 id="phoneNumber"
                 required
-                placeholder="Your phone number"
+                placeholder={t('IDS_WP_YOUR_PHONE_NUMBER')}
               />
             </FormControl>
             <FormControl
@@ -149,15 +172,15 @@ function ConfirmRegistration() {
               variant="outlined"
               className="custom-input"
             >
-              <div className="lb-input">Tên công ty *</div>
+              <div className="lb-input">{t('IDS_WP_COMPANY_NAME')} *</div>
               <OutlinedInput
                 id="company"
                 required
-                placeholder="Your Company name"
+                placeholder={t('IDS_WP_YOUR_COMPANY_NAME')}
               />
             </FormControl>
             <div className="custom-select">
-              <div className="lb-input">Địa chỉ *</div>
+              <div className="lb-input">{t('IDS_WP_ADDRESS')} *</div>
               <TextField
                 id="address"
                 select
@@ -165,19 +188,21 @@ function ConfirmRegistration() {
                 fullWidth
                 SelectProps={{
                   native: true,
-                  MenuProps: {
-                    className: 'menu'
-                  }
+                  MenuProps: { className: 'menu' }
                 }}
                 variant="outlined"
                 defaultValue=""
               >
                 <option value="" disabled>
-                  -- Chọn Tỉnh/Thành phố --
+                  -- {t('IDS_WP_SELECT_CITY')} --
                 </option>
-                <option value="Hà Nội">Hà Nội</option>
-                <option value="TP Hồ Chí Minh">TP Hồ Chí Minh</option>
-                <option value="Tỉnh/Thành khác">Tỉnh/Thành khác</option>
+                <option value="Hà Nội">{t('IDS_WP_HA_NOI')}</option>
+                <option value="TP Hồ Chí Minh">
+                  {t('IDS_WP_HO_CHI_MINH_CITY')}
+                </option>
+                <option value="Tỉnh/Thành khác">
+                  {t('IDS_WP_OTHER_PROVINCE')}
+                </option>
               </TextField>
             </div>
             <div className="group-password">
@@ -187,19 +212,16 @@ function ConfirmRegistration() {
                 fullWidth
                 className="input-affix-wrapper custom-input item-pwd"
               >
-                <div className="lb-input">Mật khẩu đăng nhập *</div>
+                <div className="lb-input">{t('IDS_WP_LOGIN_PASSWORD')} *</div>
                 <OutlinedInput
                   id="password"
                   required
                   type="password"
                   autoComplete="new-password"
-                  placeholder="Mật khẩu"
+                  placeholder={t('IDS_WP_PASSWORD')}
                   size="small"
                   onBlur={handleCheckPwd}
-                  inputProps={{
-                    maxLength: 20,
-                    minLength: 8
-                  }}
+                  inputProps={{ maxLength: 20, minLength: 8 }}
                   startAdornment={
                     <InputAdornment position="start">
                       <Icon
@@ -217,13 +239,15 @@ function ConfirmRegistration() {
                 fullWidth
                 className="input-affix-wrapper custom-input"
               >
-                <div className="lb-input">Nhập lại mật khẩu *</div>
+                <div className="lb-input">
+                  {t('IDS_WP_RE_INPUT_PASSWORD')} *
+                </div>
                 <OutlinedInput
                   id="confirmPassword"
                   required
                   type="password"
                   autoComplete="new-password"
-                  placeholder="Nhập lại mật khẩu"
+                  placeholder={t('IDS_WP_RE_INPUT_PASSWORD')}
                   onBlur={handleCheckPwd}
                   inputProps={{
                     maxLength: 20,
@@ -243,21 +267,19 @@ function ConfirmRegistration() {
             </div>
             {pwdNotMatch && (
               <span className="err-msg err-check-pwd">
-                Hai mật khẩu mà bạn nhập không giống nhau!
+                {t('IDS_WP_PASSWORD_INCORRECT_ERROR')}
               </span>
             )}
-            <div className="des-password">
-              Mật khẩu đăng nhập phải có ít nhất 8 ký tự, nhiều nhất 20 ký tự
-            </div>
+            <div className="des-password">{t('IDS_WP_PASSWORD_VALID_DES')}</div>
             <FormControlLabel
               control={<Checkbox color="primary" required />}
               label={
                 <span>
-                  Tôi đồng ý
+                  {t('IDS_WP_I_AGREE')}
                   <Link href="/term" className="btn-link">
-                    Thỏa thuận sử dụng
+                    {t('IDS_WP_TERM_OF_USE')}
                   </Link>
-                  nền tảng Workplus.
+                  {t('IDS_WP_WORKPLUS_BASIS')}
                 </span>
               }
             />
@@ -268,13 +290,24 @@ function ConfirmRegistration() {
               disabled={!checkedCode}
               className="btn-action green-color"
             >
-              Hoàn thành đăng ký
+              {t('IDS_WP_REGISTER_CONFIRM')}
             </Button>
           </form>
         </div>
       </div>
     </MainAccount>
   );
-}
+};
 
-export default ConfirmRegistration;
+export default connect(
+  state => ({
+    // toast: state.system.toast
+  }),
+  {
+    actionToast,
+    loginSuccess,
+    loginFail,
+    openNoticeModal,
+    actionFetchGroupDetail
+  }
+)(withRouter(ConfirmRegistration));

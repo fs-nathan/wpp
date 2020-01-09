@@ -11,10 +11,13 @@ export const actionNotificationSelected = notification => ({
   payload: notification
 });
 
-export const actionChangeBGMenu = colors => ({
-  type: actionTypes.CHANGE_BACKGROUND_MENU,
-  payload: colors
-});
+export const actionUpdateColorGroup = color => {
+  return apiService({
+    url: '/update-color-group',
+    method: 'post',
+    data: { color }
+  });
+};
 export const actionChangeLoading = isLoading => ({
   type: actionTypes.CHANGE_LOADING,
   payload: isLoading
@@ -81,11 +84,11 @@ export const orderCreateService = data => {
     data
   });
 };
-export const orderDeleteService = params => {
+export const orderDeleteService = data => {
   return apiService({
     url: '/orders/delete',
     method: 'delete',
-    params
+    data
   });
 };
 export const extentOrderService = data => {
@@ -136,3 +139,7 @@ export const getNumberDayFromOldOrder = params => {
     params
   });
 };
+
+export const actionFetchListColor = () => ({
+  type: actionTypes.FETCH_LIST_COLOR_GROUP
+});

@@ -27,4 +27,28 @@ function* getGroupDetail() {
   }
 }
 
-export { getGroupDetail };
+async function doGetListColor() {
+  try {
+    const config = {
+      url: '/get-list-color-group',
+      method: 'get'
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getListColor() {
+  try {
+    const { colors } = yield call(doGetListColor);
+    console.log(colors)
+    yield put({
+      type: actionTypes.FETCH_LIST_COLOR_GROUP_SUCCESS,
+      payload: colors || [{ value: '#01b374', selected: true }]
+    });
+  } catch (error) {}
+}
+
+export { getGroupDetail, getListColor };

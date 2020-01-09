@@ -20,7 +20,10 @@ import {
   mdiContentCopy
 } from '@mdi/js';
 import ColorTypo from '../../../../components/ColorTypo';
-import { openDocumentDetail } from '../../../../actions/system/system';
+import {
+  openDocumentDetail,
+  actionChangeBreadCrumbs
+} from '../../../../actions/system/system';
 import {
   selectDocumentItem,
   resetListSelectDocument,
@@ -30,7 +33,6 @@ import {
   actionDeleteFolder,
   actionDeleteFile
 } from '../../../../actions/documents';
-import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import AlertModal from '../../../../components/AlertModal';
 import './ContentDocumentPage.scss';
@@ -368,7 +370,7 @@ const MyDocument = props => {
       <AlertModal
         open={alert}
         setOpen={setAlert}
-        content={t('views.user_page.left_part.department_info.alert_content')}
+        content={t('IDS_WP_ALERT_CONTENT')}
         onConfirm={() => handleActionDeleteFile()}
       />
       {visible && (

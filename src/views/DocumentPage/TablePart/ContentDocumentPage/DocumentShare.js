@@ -10,8 +10,10 @@ import {
 import {
   selectDocumentItem,
   resetListSelectDocument,
-  actionFetchListDocumentShare
+  actionFetchListDocumentShare,
+  actionSelectedFolder
 } from '../../../../actions/documents';
+import { actionChangeBreadCrumbs, openDocumentDetail } from '../../../../actions/system/system';
 import {
   StyledTableHeadCell,
   StyledTableBodyCell,
@@ -32,7 +34,12 @@ import './ContentDocumentPage.scss';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 
 const DocumentShare = props => {
-  const { isLoading } = props;
+  const {
+    isLoading,
+    breadCrumbs,
+    actionChangeBreadCrumbs,
+    isFetching
+  } = props;
   const [listData, setListData] = useState([]);
   const [selected, setSelected] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -45,6 +52,8 @@ const DocumentShare = props => {
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
+      props.actionSelectedFolder({});
+      actionChangeBreadCrumbs([]);
     }; // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -81,6 +90,47 @@ const DocumentShare = props => {
   const fetDataDocumentShareToMe = (params = {}, quite = false) => {
     props.actionFetchListDocumentShare(params, quite);
   };
+
+  const handleClickItem = item => {
+    if (isFetching) return;
+    if (item.type === 'folder') {
+      fetDataDocumentShareToMe({ folder_id: item.id }, true);
+      props.actionSelectedFolder(item);
+      // handle bread crumbs
+      let newBreadCrumbs = [...breadCrumbs];
+      if (breadCrumbs.length === 0) {
+        newBreadCrumbs.push({
+          id: -1,
+          name: 'Home',
+          action: () => {
+            props.actionSelectedFolder({});
+            fetDataDocumentShareToMe({}, true);
+          }
+        });
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.actionSelectedFolder(item);
+            fetDataDocumentShareToMe({ folder_id: item.id }, true);
+          }
+        });
+      } else {
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.actionSelectedFolder(item);
+            fetDataDocumentShareToMe({ folder_id: item.id }, true);
+          }
+        });
+      }
+      actionChangeBreadCrumbs(newBreadCrumbs);
+    } else {
+      props.openDocumentDetail(item);
+    }
+  };
+
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, listData));
     props.selectDocumentItem(selectAllRedux(e, listData));
@@ -152,11 +202,18 @@ const DocumentShare = props => {
                     onChange={e => handleSelectItem(file)}
                   />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="5%">
+                <StyledTableBodyCell
+                  align="center"
+                  width="5%"
+                  onClick={() => handleClickItem(file)}
+                >
                   <FullAvatar src={FileType(file.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left">
-                  <ColorTypo color="black">{file.name}</ColorTypo>
+                <StyledTableBodyCell
+                  align="left"
+                  onClick={() => handleClickItem(file)}
+                >
+                  <ColorTypo color="black">{file.name}hi</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
                   {!isEmpty(file.users_shared) &&
@@ -215,11 +272,17 @@ export default connect(
   state => ({
     selectedDocument: state.documents.selectedDocument,
     listDocumentShareToMe: state.documents.listDocumentShareToMe,
-    searchText: state.documents.searchText
+    searchText: state.documents.searchText,
+    isLoading: state.documents.isLoading,
+    breadCrumbs: state.system.breadCrumbs,
+    isFetching: state.documents.isFetching,
   }),
   {
     selectDocumentItem,
     resetListSelectDocument,
-    actionFetchListDocumentShare
+    actionFetchListDocumentShare,
+    openDocumentDetail,
+    actionChangeBreadCrumbs,
+    actionSelectedFolder
   }
 )(DocumentShare);

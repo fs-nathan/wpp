@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import Icon from '@mdi/react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
@@ -10,8 +11,11 @@ import ChangeDocumentModal from '../../views/DocumentPage/TablePart/DocumentComp
 import { StyledTableBodyCell } from '../../views/DocumentPage/TablePart/DocumentComponent/TableCommon';
 import {
   actionRenameFile,
-  actionDownloadDocument
+  actionRenameFolder,
+  actionDownloadFile
 } from '../../actions/documents';
+import { actionToast } from '../../actions/system/system';
+
 const StyledMenuItem = styled(MenuItem)`
   border-bottom: ${props => (props.border ? '1px solid #ddd' : 'none')};
 `;
@@ -20,6 +24,10 @@ const MoreAction = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [visible, setVisible] = useState(null);
 
+  const handleToast = (type, message) => {
+    props.actionToast(type, message);
+    setTimeout(() => props.actionToast(null, ''), 2000);
+  };
   const handleClick = e => {
     setAnchorEl(e.currentTarget);
     e.stopPropagation();
@@ -28,13 +36,17 @@ const MoreAction = props => {
   const closeModal = () => setVisible(null);
   const handleChangeDoc = async newName => {
     try {
-      await actionRenameFile({
-        file_id: props.item.id,
-        name: newName
-      });
+      if (props.item.type === 'folder') {
+        await actionRenameFolder({ folder_id: props.item.id, name: newName });
+        handleToast('success', 'Thay đổi tên folder thành công!');
+      } else {
+        await actionRenameFile({ file_id: props.item.id, name: newName });
+        handleToast('success', 'Thay đổi tên file thành công!');
+      }
       props.handleFetData();
       closeModal();
     } catch (error) {
+      handleToast('error', error.message);
       closeModal();
     }
   };
@@ -44,12 +56,14 @@ const MoreAction = props => {
 
   const handleDownloadFile = async () => {
     try {
-      await actionDownloadDocument(props.item.url);
+      await actionDownloadFile(props.item);
     } catch (error) {}
   };
   const handleCopy = () => {
     // webViewLink is for Google Drive
-    navigator.clipboard.writeText(props.item.url || props.item.webViewLink || '');
+    navigator.clipboard.writeText(
+      props.item.url || props.item.webViewLink || ''
+    );
   };
   return (
     <React.Fragment>
@@ -117,4 +131,9 @@ const MoreAction = props => {
   );
 };
 
-export default withRouter(MoreAction);
+export default connect(
+  state => ({
+    // toast: state.system.toast
+  }),
+  { actionToast }
+)(withRouter(MoreAction));

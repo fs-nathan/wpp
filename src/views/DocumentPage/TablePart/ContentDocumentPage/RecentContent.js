@@ -143,7 +143,7 @@ const RecentContent = props => {
       <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
-            <StyledTableHeadCell>
+            <StyledTableHeadCell width="3%">
               <GreenCheckbox
                 onChange={handleSelectAllClick}
                 checked={
@@ -157,7 +157,7 @@ const RecentContent = props => {
             <StyledTableHeadCell align="center" width="5%">
               Loại
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="30%">
+            <StyledTableHeadCell align="left">
               <div
                 className="cursor-pointer"
                 onClick={() => hanldeSort('name')}
@@ -171,13 +171,13 @@ const RecentContent = props => {
             <StyledTableHeadCell align="center" width="15%">
               Chia sẻ
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="10%">
+            <StyledTableHeadCell align="left" width="15%">
               Nơi lưu trữ
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="15%">
+            <StyledTableHeadCell align="center" width="10%">
               Ngày tạo
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="15%">
+            <StyledTableHeadCell align="center" width="10%">
               Người tạo
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
@@ -194,7 +194,7 @@ const RecentContent = props => {
                 className={`table-body-row ${isItemSelected ? 'selected' : ''}`}
                 key={index}
               >
-                <StyledTableBodyCell>
+                <StyledTableBodyCell width="3%">
                   <GreenCheckbox
                     checked={isItemSelected}
                     onChange={e => handleSelectItem(file)}
@@ -210,7 +210,6 @@ const RecentContent = props => {
                 </StyledTableBodyCell>
                 <StyledTableBodyCell
                   align="left"
-                  width="30%"
                   className="cursor-pointer"
                   onClick={() => openDetail(file)}
                 >
@@ -242,17 +241,23 @@ const RecentContent = props => {
                     />
                   )} */}
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="10%">
-                  <ColorTypo color="black">{file.task_name}</ColorTypo>
+                <StyledTableBodyCell align="left" width="15%">
+                  <ColorTypo
+                    color="black"
+                    className="two-line"
+                    title={file.storage_address || ''}
+                  >
+                    <a href={file.redirect_url} className="address-link">
+                      {file.storage_address}
+                    </a>
+                  </ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="15%">
+                <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.date_create}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="15%">
+                <StyledTableBodyCell align="center" width="10%">
                   {(file.user_create_avatar &&
-                    getIconAvatar(
-                      `https://storage.googleapis.com${file.user_create_avatar}`
-                    )) ||
+                    getIconAvatar(`${file.user_create_avatar}`)) ||
                     ''}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">

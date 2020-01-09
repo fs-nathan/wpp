@@ -21,7 +21,6 @@ import {
 
 const getHeaderText = (type, search) => {
   const isOder = isEmpty(search);
-  const isCreateOder = search.split('=').length === 1;
   switch (type) {
     case SETTING_GROUP.INFO:
       return 'Thiết lập nhóm';
@@ -31,15 +30,13 @@ const getHeaderText = (type, search) => {
     case SETTING_GROUP.NOTIFICATION:
       return 'Cài đặt nhận thông báo';
     case SETTING_GROUP.ORDER: {
-      if (isOder) {
-        return 'Đơn hàng';
-      } else if (isCreateOder) {
-        return 'Tạo đơn hàng';
-      }
+      if (isOder) return 'Đơn hàng';
       return 'Chi tiết đơn hàng';
     }
     case SETTING_GROUP.PAYMENT:
       return 'Thanh toán';
+    case SETTING_GROUP.CREATE_ORDER:
+      return 'Tạo đơn hàng';
     default:
       return null;
   }
@@ -74,6 +71,9 @@ const TablePart = props => {
       type === SETTING_GROUP.PAYMENT || (type === SETTING_GROUP.ORDER && isOder)
     );
   };
+  const checkShowBtnCancelOder = () => {
+    return type === SETTING_GROUP.CREATE_ORDER;
+  };
   return (
     <div className="header-setting-container">
       <div className="header-setting">
@@ -82,7 +82,7 @@ const TablePart = props => {
         </ColorTypo>
         <RightHeader>
           <div
-            className={`${checkShowBtnCreateOder() ? '' : 'none-create-order'}`}
+          // className={`${checkShowBtnCreateOder() ? '' : 'none-create-order'}`}
           >
             <HeaderButtonGroup />
           </div>
@@ -97,6 +97,18 @@ const TablePart = props => {
               }
             >
               + TẠO ĐƠN HÀNG
+            </StyledButton>
+          )}
+          {checkShowBtnCancelOder() && (
+            <StyledButton
+              size="small"
+              onClick={() =>
+                props.history.push({
+                  pathname: Routes.SETTING_GROUP_ORDER
+                })
+              }
+            >
+              HỦY
             </StyledButton>
           )}
         </RightHeader>

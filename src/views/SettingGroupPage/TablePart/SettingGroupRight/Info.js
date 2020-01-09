@@ -9,12 +9,14 @@ import {
 } from '../../../../actions/setting/setting';
 import {
   convertBase64ToBlob,
-  convertUrlToBlob
+  convertUrlToBlob,
+  getProfileService,
+  actionGetProfile,
+  actionToast
 } from '../../../../actions/system/system';
 import ImageCropper from '../../../../components/ImageCropper/ImageCropper';
 import * as images from '../../../../assets';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
-import SnackbarComponent from '../../../../components/Snackbars';
 import LoadingContent from '../../../../components/LoadingContent';
 import PickColorModal from './PickColorModal';
 import './SettingGroupRight.scss';
@@ -27,8 +29,6 @@ const Info = props => {
   const { isLoading, groupDetail } = props;
 
   const [editMode, setEditMode] = useState(false);
-  const [openToast, setOpenToast] = useState(false);
-  const [mesToast, setMesToast] = useState('');
   const [groupInfo, setGroupInfo] = useState({});
   const [showInputFile, setShowInputFile] = useState(true);
   const [visibleCropModal, setVisibleCropModal] = useState(false);
@@ -72,15 +72,18 @@ const Info = props => {
     };
     try {
       await actionUpdateGroupInfo(data);
-      setOpenToast(true);
-      setMesToast('Thay đổi thông tin nhóm thành công!');
-      setTimeout(() => {
-        setOpenToast(false);
-      }, 2000);
+      const res = await getProfileService();
+      if (res.data.data) props.actionGetProfile(res.data.data);
+      handleToast('success', 'Thay đổi thông tin nhóm thành công!');
       setEditMode(false);
-    } catch (error) {}
+    } catch (error) {
+      handleToast('error', error.message);
+    }
   };
-
+  const handleToast = (type, message) => {
+    props.actionToast(type, message);
+    setTimeout(() => props.actionToast(null, ''), 2000);
+  };
   const handleCropImage = async (image, type) => {
     let formData = new FormData();
     formData.append('image', image);
@@ -320,13 +323,17 @@ const Info = props => {
               value={groupInfo.email || 'info@workplus.vn'}
             />
             <div className="block-action">
-              <Button variant="contained" className="btn-action" type="submit">
+              <Button
+                variant="contained"
+                className="btn-action none-boxshadow"
+                type="submit"
+              >
                 {editMode ? 'Lưu' : ' Chỉnh sửa'}
               </Button>
               {editMode && (
                 <Button
                   variant="contained"
-                  className="btn-action btn-cancel"
+                  className="btn-action btn-cancel none-boxshadow"
                   onClick={() => {
                     props.actionFetchGroupDetail();
                     setEditMode(false);
@@ -426,7 +433,7 @@ const Info = props => {
           <span className="lb-text">Chọn màu sắc menu trái</span>
           <span
             className="pick-color"
-            style={{ background: bgColor.value }}
+            style={{ background: bgColor.color }}
             onClick={() => setVisibleModal(true)}
           ></span>
           <PickColorModal
@@ -444,14 +451,6 @@ const Info = props => {
           />
         )}
       </div>
-      <SnackbarComponent
-        open={openToast}
-        handleClose={() => setOpenToast(false)}
-        vertical="top"
-        horizontal="center"
-        variant="success"
-        message={mesToast}
-      />
     </div>
   );
 };
@@ -460,7 +459,8 @@ export default connect(
   state => ({
     isLoading: state.setting.isLoading,
     groupDetail: state.setting.groupDetail,
-    colors: state.setting.colors
+    colors: state.setting.colors,
+    toast: state.system.toast
   }),
-  { actionFetchGroupDetail }
+  { actionFetchGroupDetail, actionGetProfile, actionToast }
 )(Info);

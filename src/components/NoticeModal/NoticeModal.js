@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -17,6 +17,18 @@ import { Routes } from '../../constants/routes';
 
 const NoticeModal = props => {
   // const [type, setType] = useState('intro'); // intro or expire (check follow account status)
+  const bgColor = props.colors.find(item => item.selected === true);
+  const defaultColor = {
+    color: bgColor.color,
+    border: `1px solid ${bgColor.color}`
+  };
+  const hoverColor = {
+    backgroundColor: bgColor.color,
+    color: 'white',
+    border: `1px solid ${bgColor.color}`
+  };
+  const [typeHover, setHover] = useState(null);
+
   const type = 'intro';
   const closeNoticeModal = () => {
     props.closeNoticeModal();
@@ -57,11 +69,14 @@ const NoticeModal = props => {
           <img src={icons.logo} alt="logo" className="notice-logo" />
         </div>
         {type === 'intro' ? (
-          <h2 className="notice-header-text">
+          <h2 className="notice-header-text" style={{ color: bgColor.color }}>
             Nền tảng quản trị doanh nghiệp WorkPlus
           </h2>
         ) : (
-          <h2 className="notice-header-text expire-text">
+          <h2
+            className="notice-header-text expire-text"
+            style={{ color: bgColor.color }}
+          >
             Thông báo đơn hàng hết hạn!
           </h2>
         )}
@@ -89,6 +104,11 @@ const NoticeModal = props => {
               variant="outlined"
               className="notice-btn"
               onClick={demoMode}
+              style={
+                typeHover === 'join' ? { ...hoverColor } : { ...defaultColor }
+              }
+              onMouseEnter={() => setHover('join')}
+              onMouseLeave={() => setHover(null)}
             >
               Chọn nhóm tài khoản
             </Button>
@@ -96,6 +116,13 @@ const NoticeModal = props => {
               variant="outlined"
               className="notice-btn"
               onClick={upgradeAccount}
+              style={
+                typeHover === 'upgrade'
+                  ? { ...hoverColor }
+                  : { ...defaultColor }
+              }
+              onMouseEnter={() => setHover('upgrade')}
+              onMouseLeave={() => setHover(null)}
             >
               Nâng cấp tài khoản
             </Button>
@@ -142,6 +169,7 @@ const NoticeModal = props => {
 
 export default connect(
   state => ({
+    colors: state.setting.colors,
     visibleNoticeModal: state.system.visibleNoticeModal
   }),
   {

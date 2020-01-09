@@ -178,31 +178,23 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
     }
     case Routes.DOCUMENT_SHARE:
       return (
-        <div className="header-wrapper">
-          <Icon
-            className="header-icon"
-            path={mdiFileMoveOutline}
-            size={1.3}
-            color={'#f44336'}
-          />
-          <div className="title-wrapper">
-            <HeaderTitle title="Đã chia sẻ" />
-          </div>
-        </div>
+        <HeaderBreadCrumbs
+          title="Đã chia sẻ"
+          breadCrumbs={breadCrumbs}
+          onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+          srcImg={mdiFileMoveOutline}
+          colorIcon={'#f44336'}
+        />
       );
     case Routes.DOCUMENT_SHARE_ME:
       return (
-        <div className="header-wrapper">
-          <Icon
-            className="header-icon"
-            path={mdiFileUndoOutline}
-            size={1.3}
-            color={'#607d8b'}
-          />
-          <div className="title-wrapper">
-            <HeaderTitle title="Được chia sẻ với tôi" />
-          </div>
-        </div>
+        <HeaderBreadCrumbs
+          title="Được chia sẻ với tôi"
+          breadCrumbs={breadCrumbs}
+          onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+          srcImg={mdiFileUndoOutline}
+          colorIcon={'#607d8b'}
+        />
       );
     case Routes.DOCUMENT_ME:
       return (
@@ -474,15 +466,11 @@ const TablePart = props => {
       {isCreateFolder && (
         <ModalCommon
           title="Tạo thư mục"
-          onClose={() => setCreateFolder(false)}
+          onClose={() => {
+            setCreateFolder(false);
+            setNameFolder('');
+          }}
           footerAction={[
-            {
-              name: 'Hủy',
-              action: () => {
-                setCreateFolder(false);
-                setNameFolder('');
-              }
-            },
             { name: 'Tạo mới', action: () => handleCreateFolder() }
           ]}
         >

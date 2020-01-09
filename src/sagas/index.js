@@ -150,8 +150,8 @@ import {
   listDocumentShare,
   listGoogleDocument
 } from './documents';
-import { FETCH_GROUP_DETAIL } from '../constants/actions/setting/setting';
-import { getGroupDetail } from './setting/setting';
+import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP } from '../constants/actions/setting/setting';
+import { getGroupDetail, getListColor } from './setting/setting';
 
 function* rootSaga() {
   yield takeEvery(LOGIN, login);
@@ -237,6 +237,7 @@ function* rootSaga() {
   yield takeLatest(LIST_DOCUMENT_FROM_ME, listDocumentShareFromMe);
   yield takeLatest(LIST_DOCUMENT_SHARE, listDocumentShare);
   yield takeLatest(LIST_GOOGLE_DOCUMENT, listGoogleDocument);
+  yield takeLatest(FETCH_LIST_COLOR_GROUP, getListColor);
 
   // Priority
   yield takeLeading(

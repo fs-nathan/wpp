@@ -21,11 +21,11 @@ const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
   const handleClickMoreAction = e => setAnchorEl(e.currentTarget);
   const handleCloseMenu = () => setAnchorEl(null);
   const listInfo = [
-    { name: 'Ngày phát hành', value: fileInfo.date_released || null },
-    { name: 'Phiên bản', value: fileInfo.version || null },
-    { name: 'Người soạn', value: fileInfo.author || null },
-    { name: 'Ký phê duyệt', value: fileInfo.user_approved || '' },
-    { name: 'Nơi lưu trữ', value: fileInfo.storage_address || '' }
+    { name: t('IDS_WP_DATE_RELEASE'), value: fileInfo.date_released || null },
+    { name: t('IDS_WP_VERSION'), value: fileInfo.version || null },
+    { name: t('IDS_WP_AUTHOR'), value: fileInfo.author || null },
+    { name: t('IDS_WP_USER_APPROVED'), value: fileInfo.user_approved || '' },
+    { name: t('IDS_WP_STORAGE_ADDRESS'), value: fileInfo.storage_address || '' }
   ];
   const handleDeleteInfo = async () => {
     try {
@@ -36,7 +36,7 @@ const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
   return (
     <div className="comment-container">
       <div className="header-box-comment">
-        <div className="box-title">Thông tin tài liệu</div>
+        <div className="box-title">{t('IDS_WP_DOCUMENT_INFO')}</div>
         <div className="btn-actions-right">
           <div className="btn-action more-action">
             <IconButton
@@ -97,13 +97,13 @@ const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
           <div className="comment-item info-item">
             <div className="content-item">
               <div className="header-item">
-                <div className="sub-title">Tên tài liệu</div>
+                <div className="sub-title">{t('IDS_WP_DOCUMENT_NAME')}</div>
                 <ColorTypo bold>{fileInfo.name || ''}</ColorTypo>
               </div>
             </div>
             <div className="content-item ">
               <div className="header-item">
-                <div className="sub-title">Mô tả tài liệu</div>
+                <div className="sub-title">{t('IDS_WP_DOCUMENT_DES')}</div>
                 <ColorTypo bold>{fileInfo.description || ''}</ColorTypo>
               </div>
             </div>
@@ -125,7 +125,7 @@ const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
       <AlertModal
         open={alert}
         setOpen={setAlert}
-        content={t('views.user_page.left_part.department_info.alert_content')}
+        content={t('IDS_WP_ALERT_CONTENT')}
         onConfirm={handleDeleteInfo}
       />
       {visible && (

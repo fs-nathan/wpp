@@ -17,7 +17,6 @@ import CustomHeaderButton from '../../../../components/CustomHeaderButton';
 import { Routes } from '../../../../constants/routes';
 import AlertModal from '../../../../components/AlertModal';
 import {
-  actionDownloadDocument,
   actionDeleteFileTrash,
   actionDeleteFolderTrash,
   actionDeleteFolder,
@@ -30,7 +29,8 @@ import {
   actionFetchListDocumentShare,
   actionFetchListDocumentFromMe,
   toggleSingoutGoogle,
-  actionFetchListGoogleDocument
+  actionFetchListGoogleDocument,
+  actionDownloadFile
 } from '../../../../actions/documents';
 import MoveDocumentModal from '../DocumentComponent/MoveDocumentModal';
 
@@ -49,10 +49,12 @@ const HeaderButtonGroup = props => {
   const handleDownloadFile = async () => {
     if (isEmpty(selectedDocument)) return;
     try {
-      const selectedItem = selectedDocument[0] || {};
-      if (selectedItem.url) {
-        actionDownloadDocument(selectedItem.url);
-      }
+      let listAction = [];
+      selectedDocument.forEach(item => {
+        listAction.push(actionDownloadFile(item));
+      });
+      await Promise.all(listAction);
+      props.resetListSelectDocument();
     } catch (error) {}
   };
 
@@ -110,6 +112,17 @@ const HeaderButtonGroup = props => {
         }
       });
     }
+    return result;
+  };
+
+  const isDisableBtnDownload = () => {
+    let result = false;
+    selectedDocument.forEach(el => {
+      if (el.type === 'folder') {
+        result = true;
+        return;
+      }
+    });
     return result;
   };
   const closeModal = () => setMove(false);
@@ -170,10 +183,7 @@ const HeaderButtonGroup = props => {
       text: 'Tải xuống',
       icon: mdiDownload,
       action: handleDownloadFile,
-      disabled:
-        isEmpty(selectedDocument) ||
-        selectedDocument.length !== 1 ||
-        selectedDocument[0].type === 'folder',
+      disabled: isEmpty(selectedDocument) || isDisableBtnDownload(),
       isShow: pathname !== Routes.DOCUMENT_GOOGLE_DRIVE
     },
     {
@@ -198,7 +208,7 @@ const HeaderButtonGroup = props => {
       <AlertModal
         open={alert}
         setOpen={setAlert}
-        content={t('views.user_page.left_part.department_info.alert_content')}
+        content={t('IDS_WP_ALERT_CONTENT')}
         onConfirm={handleDeleteFile}
       />
       {move && (

@@ -37,10 +37,7 @@ const DrawerComponent = props => {
       anchor={anchorDrawer}
       open={!isEmpty(typeDrawer)}
       onClose={() =>
-        actionVisibleDrawerMessage({
-          type: '',
-          anchor: anchorDrawer
-        })
+        actionVisibleDrawerMessage({ type: '', anchor: anchorDrawer })
       }
       className={`Drawer-Compenent ${
         anchorDrawer === 'right' ? 'anchor-drawer-right' : 'anchor-drawer-top'

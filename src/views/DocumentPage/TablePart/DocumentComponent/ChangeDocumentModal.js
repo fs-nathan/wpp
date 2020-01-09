@@ -4,10 +4,11 @@ import { withRouter } from 'react-router-dom';
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import { DialogContent } from './TableCommon';
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 
 const ChangeDocumentModal = props => {
   const [value, setValue] = useState(props.item.name);
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     props.onOk(value);
   };
   const handleChangeText = value => {
@@ -17,7 +18,13 @@ const ChangeDocumentModal = props => {
     <ModalCommon
       title="Đổi tên tài liệu"
       onClose={props.onClose}
-      footerAction={[{ name: 'Cập nhật', action: handleUpdate }]}
+      footerAction={[
+        {
+          name: 'Cập nhật',
+          action: handleUpdate,
+          disabled: isEmpty(value.trim())
+        }
+      ]}
     >
       <DialogContent dividers className="dialog-content">
         <TextField
