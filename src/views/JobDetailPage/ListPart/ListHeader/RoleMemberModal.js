@@ -49,15 +49,15 @@ const AddRoleButton = styled(Button)`
      background: #125fdb;
    }
   `
-const HandleButton = styled.div`
-    display: flex;  
-    justify-content: flex-end;
-  & > *:last-child {
-    background: #e63737;
-    margin-left: 12px;
-    color: #fff;
-}
-`
+// const HandleButton = styled.div`
+//     display: flex;  
+//     justify-content: flex-end;
+//   & > *:last-child {
+//     background: #e63737;
+//     margin-left: 12px;
+//     color: #fff;
+// }
+// `
 
 const UpdateDeleteButton = styled(Button)`
    justify-content: center;
@@ -106,9 +106,9 @@ function RoleMemberModal(props) {
   //   createData('Giám sát dự án', 'Giám sát toàn bộ dự án, kể cả lãnh đạo'),
   // ];
 
-  function createData(role, description) {
-    return { role, description };
-  }
+  // function createData(role, description) {
+  //   return { role, description };
+  // }
 
   const handleClose = () => {
     props.setOpen(false);
@@ -181,7 +181,7 @@ function RoleMemberModal(props) {
           <TableCell style={{ fontWeight: 'bold' }} >{item.name}</TableCell>
           <TableCell>{item.description}</TableCell>
           <TableCell>
-            <HandleButton>
+            <div className="handle-button">
               <UpdateDeleteButton
                 onClick={() => {
                   setValueNameEdit(item.name)
@@ -193,7 +193,7 @@ function RoleMemberModal(props) {
               <UpdateDeleteButton
                 onClick={() => handleOpenModalDelete(item.id)}
               >Xoá</UpdateDeleteButton>
-            </HandleButton>
+            </div>
           </TableCell>
         </TableRow>
       )

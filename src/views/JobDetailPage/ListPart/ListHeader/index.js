@@ -7,23 +7,23 @@ import SearchInput from '../../../../components/SearchInput';
 import CreateJobModal from './CreateJobModal';
 import { WrapperContext } from '../../index'
 
-const Header = styled.div`
-  padding: 0 3px 0 15px;
-  height: 77px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  & > * {
-    display: flex; 
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-  }
-`;
+// const Header = styled.div`
+//   padding: 0 3px 0 15px;
+//   height: 77px;
+//   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+//   & > * {
+//     display: flex; 
+//     align-items: center;
+//     justify-content: space-between;
+//     cursor: pointer;
+//   }
+// `;
 
-const HeaderBottomBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+// const HeaderBottomBox = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// `;
 
 const HeaderText = styled(Typography)`
   width: 315px;
@@ -76,31 +76,33 @@ function ListHeaderSelect({ setShow }) {
 }
 
 function ListHeader(props) {
-  // const [open, setOpen] = React.useState(false);
-  // const handleClose = () => {
-  //   setOpen(false);
-  // }
-  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
-
+  const value = React.useContext(WrapperContext)
+  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false)
+  const searchListTask = (e) => {
+    value.searchTask(e.target.value)
+  }
   return (
     <div >
-      <Header>
+      <div className="list-header">
         <ListHeaderSelect {...props} />
-        <HeaderBottomBox>
-          <SearchInput placeholder='Tìm công việc trong dự án...' style={{ height: 'auto' }} />
+        <div className="header-bottom-box">
+          <SearchInput 
+            placeholder='Tìm công việc trong dự án...' 
+            style={{ height: 'auto' }}
+            onChange={e => searchListTask(e)}
+            />
           <ButtonIcon
             style={{
               marginLeft: "10px",
               padding: "7px"
             }}
             onClick={() => {
-              // handleClose()
               setOpenCreateJobModal(true)
             }} >
             <Icon path={mdiPlus} size={1.2} />
           </ButtonIcon>
-        </HeaderBottomBox>
-      </Header>
+        </div>
+      </div>
       <CreateJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} />
     </div>
   )

@@ -24,19 +24,49 @@ export const filterApprovedItem = arr => arr.filter(item => item.status === OFFE
 export const DEFAULT_OFFER_ITEM = { offer_id: "", content: "", user_hander: [], files: [] }
 
 // Remove duplicate user (by their id)
-export const getIndividualHandleUsers = 
+export const getIndividualHandleUsers =
     arr => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])
 
-const LIST_PROJECT_STATUS = {
-    PENDING: 0,
-    DOING: 1,
-    DONE: 2,
-    EXPIRED: 3,
-    STOP: 4
+export const filterTaskByType = (groups, idx) => {
+    return idx === 0
+        ? groups
+        : groups.map(item => ({ ...item, tasks: item.tasks.filter(task => Number(task.status_code) === idx - 1) }))
 }
 
-export const filterPendingProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.PENDING)
-export const filterInProgressProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.DOING)
-export const filterDoneProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.DONE)
-export const filterExpiredProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.EXPIRED)
-export const filterStoppedProject = arr => arr.filter(item => item.status === LIST_PROJECT_STATUS.STOP)
+export const searchTaskByTaskName = (groups, keyword) => {
+    return keyword
+        ? groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase())) }))
+        : groups
+}
+export const searchProjectByProjectName = (groups, keyword) => {
+    return keyword
+        ? groups
+            .filter(group => group.projects.length)
+            .map(item => ({ ...item, projects: item.projects.filter(project => project.name.toLowerCase().match(keyword.toLowerCase())) }))
+        : groups
+}
+
+export const searchArrayTabpart = (groups, keyword, field) => {
+    return keyword
+        ? groups.filter(item => item[field].toString().toLowerCase().match(keyword.toLowerCase()))
+        : groups
+}
+
+export const getFirstProjectDetail = projectGroups => {
+    let projectDetail
+    try {
+        projectDetail = projectGroups.find(project => project.projects.length).projects[0] || {}
+    } catch {
+        projectDetail = {}
+    }
+    return projectDetail
+}
+export const getFirstTaskId = payload => {
+    let taskId
+    try {
+        taskId = payload.tasks[0].tasks[0].id
+    } catch {
+        taskId = ""
+    }
+    return taskId
+}

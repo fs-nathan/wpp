@@ -13,12 +13,11 @@ import { WrapperContext } from '../index'
 
 const Container = styled.div`
   display: ${props => props.show ? 'block' : 'none'};
-  height: 100%;
-  display: grid;
+  height: calc(82vh);
   & > *:first-child {
     padding: 0 15px;
   }
-  grid-template-rows: 107px calc(100vh - 70px - 50px);
+  grid-template-rows: 107px calc(83vh - 8px);
   grid-template-columns: 1fr;
   grid-template-areas: 
     "header"
@@ -80,7 +79,7 @@ const Projects = (props) => {
   const value = React.useContext(WrapperContext)
   return (
     <ProjectsDetail onClick={() => {
-      // console.log('Click item ' + props.project.id)
+      // console.log('Click item ' + props.project)
       value.getDetailProject(props.project.id)
       value.chooseProject(props.project)
       props.setShow(false)
@@ -127,11 +126,13 @@ const ButtonIcon = styled(IconButton)`
 
 function ListProjectHeader({ setShow }) {
   // console.log("setShow::::", setShow);
-
+  const value = React.useContext(WrapperContext)
   const closeListProject = () => {
     setShow(false)
   }
-
+  const searchListProject = keyword => {
+    value.searchProject(keyword)
+  }
   return (
     <div style={{ marginBottom: 17 }}>
       <Header>
@@ -143,7 +144,10 @@ function ListProjectHeader({ setShow }) {
           <Icon path={mdiClose} size={1} />
         </ButtonIcon>
       </Header>
-      <SearchInput placeholder='Tìm dự án' />
+      <SearchInput 
+        placeholder='Tìm dự án'
+        onChange={(e) => searchListProject(e.target.value)}
+      />
     </div>
   )
 }
@@ -174,17 +178,23 @@ const WrapperBody = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
   & > div > *:last-child {
-    margin-bottom: 50px;
+    margin-bottom: 15px;
   }
 `;
 function ListProject(props) {
   const value = React.useContext(WrapperContext)
+  let data = []
+  if ( value && value.projectListBasic) {
+    data = value.projectListBasic.projectGroups
+  }
   return (
-    <Container {...props}>
+    <div {...props} className={"lp-container " + (props.show ? "lp-container-block" : "lp-container-none")  } >
       <WrapperHeader {...props} />
-      <WrapperBody autoHide autoHideTimeout={500} autoHideDuration={200}>
+      <WrapperBody 
+      autoHide autoHideTimeout={500} autoHideDuration={200}
+      >
         {
-          value.projectGroup.map(group => {
+          data.map(group => {
             return (
               <div key={group.id}>
                 <ExpansionProject defaultExpanded>
@@ -204,7 +214,7 @@ function ListProject(props) {
           })
         }
       </WrapperBody>
-    </Container>
+    </div>
   )
 }
 

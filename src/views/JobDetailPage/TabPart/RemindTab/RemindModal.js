@@ -8,10 +8,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import ColorChip from '../../../../components/ColorChip';
-import TimeField from 'react-simple-timefield';
+// import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
 import {
   DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, REMIND_TIME_TYPE,
@@ -57,15 +57,15 @@ const badges = [
     label: 'Theo tháng',
   },
 ]
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    width: 160,
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   container: {
+//     display: 'flex',
+//     flexWrap: 'wrap',
+//   },
+//   textField: {
+//     width: 160,
+//   },
+// }));
 
 const TitleText = styled(Typography)`
     font-size: 15px;
@@ -84,7 +84,7 @@ const HelperText = styled(Typography)`
   `
 const DivTitle = styled.div`
     display: flex;
-    margin: 15px 0 0 0;
+    margin: 15px 0;
   `
 
 const Div = styled.div`
@@ -112,20 +112,14 @@ const TextRemind = styled(Typography)`
     display: flex;
     align-items: center;
   `
-const InputTime = styled(TimeField)`
+const InputDateTime = styled(TextField)`
     width: 146px !important;
-    padding: 18px 5px 18px 13px;
-    border: 0;
-    border-radius: 4px;
   `
 const DivTime = styled.span`
-    border: 1px solid #cfcfcf;
-    border-radius: 4px;
-    height: 100% !important;
-    margin-top: 8px;
+    
   `
 const SelectInput = styled.div`
-    margin-top: 8px;
+    // margin-top: 8px;
     width: 160px;
     & > div > div > div  {
         padding : 7px 0;
@@ -155,9 +149,9 @@ const styles = theme => ({
     background: '#f5f8fc'
   },
   title: {
-      textTransform: 'uppercase',
-      fontSize: 14,
-      fontWeight: 400,
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
   },
   closeButton: {
     position: 'absolute',
@@ -212,11 +206,10 @@ const DEFAULT_DATA = {
 
 
 function RemindModal(props) {
-  console.log('props remind:::', props);
-  
   const KEYCODE_ENTER = 13
   const valueRemind = React.useContext(WrapperContext)
-  const classes = useStyles()
+  // console.log('valueRemind', valueRemind.taskId)
+  // const classes = useStyles()
   // bien menu item
   const [data, setData] = React.useState(DEFAULT_DATA)
   // const [dataDuration, setDataDuration] = React.useState(DATA_REMIND_DURATION)
@@ -262,7 +255,7 @@ function RemindModal(props) {
       type_remind: data.type_remind
     }
     const dataCreateRemindDuration = {
-      task_id: "5da1821ad219830d90402fd8",
+      task_id: valueRemind.taskId,
       content: data.content,
       duration: data.duration
     }
@@ -273,14 +266,14 @@ function RemindModal(props) {
     }
     if (isCreateModal) {
       // Case 1: Call create remind with time
-      if (data.type === REMIND_TIME_TYPE) { valueRemind.createRemindWithTimeDetail({ taskId: "5da1821ad219830d90402fd8", data }) }
+      if (data.type === REMIND_TIME_TYPE) { valueRemind.createRemindWithTimeDetail({ taskId: valueRemind.taskId, data }) }
       // Case 2: Call create remind with progress
       else { valueRemind.createRemindWithDurationDetail(dataCreateRemindDuration) }
     } else {
       // Case 3: Call update remind with time
-      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail(dataUpdateRemind) }
+      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail({ dataUpdateRemind, taskId: valueRemind.taskId }) }
       // Case 4: Call update remind with progress
-      else { valueRemind.updateRemindWithDurationDetail(dataUpdateRemindDuration) }
+      else { valueRemind.updateRemindWithDurationDetail({ dataUpdateRemindDuration, taskId: valueRemind.taskId }) }
     }
 
     // Close modal
@@ -354,7 +347,14 @@ function RemindModal(props) {
               <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
             </DivTitle>
             <Div>
-              <TextField
+              <InputDateTime
+                label="Ngày"
+                variant="outlined"
+                type={'date'}
+                value={data.date_remind}
+                onChange={e => handleChangeData("date_remind", e.target.value)}
+              />
+              {/* <TextField
                 component="span"
                 className={classes.textField}
                 margin="normal"
@@ -362,12 +362,19 @@ function RemindModal(props) {
                 type="date"
                 value={data.date_remind}
                 onChange={e => handleChangeData("date_remind", e.target.value)}
-              />
+              /> */}
               <DivTime>
-                <InputTime
+                <InputDateTime
+                  type={'time'}
+                  label="Thời gian"
+                  variant="outlined"
                   value={data.time_remind}
                   onChange={e => handleChangeData("time_remind", e.target.value)}
                 />
+                {/* <InputTime
+                  value={data.time_remind}
+                  onChange={e => handleChangeData("time_remind", e.target.value)}
+                /> */}
               </DivTime>
               <SelectInput >
                 <OutlinedInputSelect

@@ -8,106 +8,114 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
 // import avatar from '../../../../../assets/avatar.jpg';
-// import { WrapperContext } from '../../../index'
+import { WrapperContext } from '../../../index'
 
-const Container = styled.a`
-    padding: 10px 8px 10px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 0;
-    &:hover{
-      background-color: #F2F5FA;
-    }
-    &:active {
-      background-color: #e6f0ff;
-    }
-`;
+// const Container = styled.a`
+//     padding: 10px 8px 10px 0;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     background-color: transparent;
+//     border: none;
+//     cursor: pointer;
+//     margin-bottom: 0;
+//     &:hover{
+//       background-color: #F2F5FA;
+//     }
+//     &:active {
+//       background-color: #e6f0ff;
+//     }
+// `;
 
-const NameContainer = styled.div`
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  & >*:last-child {
-    margin-right: 15px;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    color: white;
-    background-color: red;
-  }
-`;
+// const NameContainer = styled.div`
+//   padding: 0;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   & >*:last-child {
+//     margin-right: 15px;
+//     border-radius: 50%;
+//     width: 16px;
+//     height: 16px;
+//     color: white;
+//     background-color: red;
+//   }
+// `;
 
-const ContentContainer = styled.div`
-  & > *:not(:first-child) {
-    margin-top: 5px;
-  }
-  & > *:first-child {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    & > *:first-child {
-      display: flex;
-      & > *:first-child {
-        margin-right: 10px;
-      }
-    }
-  }
-`;
+// const ContentContainer = styled.div`
+//   & > *:not(:first-child) {
+//     margin-top: 5px;
+//   }
+//   & > *:first-child {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     & > *:first-child {
+//       display: flex;
+//       & > *:first-child {
+//         margin-right: 10px;
+//       }
+//     }
+//   }
+// `;
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
   border-radius: 3px !important
 `
 const IconPin = styled(Icon)`
-  display: ${props => 
-    props.isGhim === true ? 'block' : 'none'};
+  display: ${props => props.isghim === "true" ? 'block' : 'none'};
+`
+const ChipMes = styled(Chip)`
+display: ${props => props.notification === "true" ? 'block' : 'none'};
 `
 function JobName(props) {
   return (
-    <NameContainer variant='space-between'>
+    <div className="name-container-lbd" variant='space-between'>
       <ColorTypo bold style={{ fontSize: 17, textOverflow: 'ellipsis', width: '200px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.title}</ColorTypo>
-      <Chip label={props.notification} size='small' style={{ fontSize: '14px', fontWeight: 500 }} />
-    </NameContainer>
+      <ChipMes 
+        label={'N'}
+        size='small' 
+        style={{ fontSize: '13px', fontWeight: 500, display: 'flex' }}
+        {...props}
+        notification={props.notification.toString()}
+        />
+    </div>
   )
 }
 function JobContent(props) {
   // const [colorStatus, setColorStatus] = React.useState(null)
-  const [status, setStatus] = React.useState('')
-  React.useEffect(() => {
-    switch (props.label) {
-      case 0:
-        // setColorStatus('orangelight')
-        setStatus('đang chờ')
-        break;
-      case 1:
-        // setColorStatus('orangelight')
-        setStatus('đang làm')
-        break;
-      case 2:
-        // setColorStatus('grey')
-        setStatus('hoàn thành')
-        break;
-      case 3:
-        // setColorStatus('grey')
-        setStatus('quá hạn')
-        break;
-      case 4:
-        // setColorStatus('grey')
-        setStatus('tạm dừng')
-        break;
-      default:
-        // console.log(colorStatus)
-        setStatus('')
-        break;
-    }
-  }, [props.label])
+  // const [status, setStatus] = React.useState('')
+  // React.useEffect(() => {
+  //   switch (props.label) {
+  //     case 0:
+  //       setColorStatus('orangelight')
+  //       setStatus('đang chờ')
+  //       break;
+  //     case 1:
+  //       setColorStatus('orangelight')
+  //       setStatus('đang làm')
+  //       break;
+  //     case 2:
+  //       setColorStatus('grey')
+  //       setStatus('hoàn thành')
+  //       break;
+  //     case 3:
+  //       setColorStatus('grey')
+  //       setStatus('quá hạn')
+  //       break;
+  //     case 4:
+  //       setColorStatus('grey')
+  //       setStatus('tạm dừng')
+  //       break;
+  //     default:
+  //       console.log(colorStatus)
+  //       setStatus('')
+  //       break;
+  //   }
+  // }, [props.label])
   return (
-    <ContentContainer>
+    <div className="container-content-lbd">
       <div>
         <div>
           <Avatar src={props.avatar} alt='avatar' style={{ width: 20, height: 20 }} />
@@ -116,10 +124,10 @@ function JobContent(props) {
         <div style={{ color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '13px' }}>{props.time}</div>
       </div>
       <div style={{ display: 'flex' }}>
-        <BadgeItem color='redlight' badge label={status} size='small' />
-        <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props}/>  
+        <BadgeItem color='redlight' badge label={props.label} size='small' />
+        <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props} isghim={props.isghim.toString()}/>  
       </div>
-    </ContentContainer>
+    </div>
   )
 }
 
@@ -134,8 +142,8 @@ function JobUnit(props) {
   
   return (
     <ListItemText disableTypography>
-      <JobName title={props.name} notification={props.number_new_chat} />
-      <JobContent {...props} label={props.status_code} time={"34 phút"} avatar={props.chat.avatar} content={props.chat.content} isGhim={props.isGhim} />
+      <JobName title={props.name} notification={props.new_chat} />
+      <JobContent label={props.status_name} time={props.updated_time} avatar={props.chat.user_create_avatar} content={props.chat.content} isghim={props.is_ghim} />
     </ListItemText>
   )
 }
@@ -143,15 +151,19 @@ function JobUnit(props) {
 
 
 function ListBodyItem(props) {
-  // const value = React.useContext(WrapperContext);
+  // console.log("props", props);
+  const value = React.useContext(WrapperContext);
 
   return (
-    <Container onClick={() => console.log("id list task:::::", props.id)}>
+    <a className="container-lbd" onClick={() => 
+      // console.log("id list task:::::", props.id)
+      value.chooseTask(props.id)
+    }>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...props} />
-    </Container>
+    </a>
   )
 }
 

@@ -6,36 +6,36 @@ import {
 import { mdiAlarmPlus, mdiFileTree, mdiPaperclip, mdiImage, mdiEmoticon, mdiAt } from '@mdi/js';
 import Icon from '@mdi/react'
 // import * as MaterialIcon from '@material-ui/icons'
-import colors from '../../../helpers/colorPalette'
+// import colors from '../../../helpers/colorPalette'
 import IconLike from '../../../assets/like.svg'
 
-const WrapFunctionBar = styled.div`
-    height: 50px;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
+// const WrapFunctionBar = styled.div`
+//     height: 50px;
+//     padding: 0 10px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+// `
 
-const WrapInputMessage = styled.div`
-    height: 60px;
-    padding: 0 10px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    transition: border-color 0.6s linear;
-    &:focus-within {
-        border-top: 1px solid ${colors['green'][0]};
-    }
-`
+// const WrapInputMessage = styled.div`
+//     height: 60px;
+//     padding: 0 10px;
+//     border-top: 1px solid rgba(0, 0, 0, 0.1);
+//     transition: border-color 0.6s linear;
+//     &:focus-within {
+//         border-top: 1px solid ${colors['green'][0]};
+//     }
+// `
 
-const ChatInput = styled.input`
-    border: none;
-    width: 100%;
-    height: 100%;
-    font-size: 15px;
-    &:focus {
-        outline: none;
-    }
-`
+// const ChatInput = styled.input`
+//     border: none;
+//     width: 100%;
+//     height: 100%;
+//     font-size: 15px;
+//     &:focus {
+//         outline: none;
+//     }
+// `
 
 // const LikeIcon = styled(MaterialIcon.ThumbUp)`
 //     color: ${colors['green'][0]};
@@ -61,7 +61,7 @@ const ButtonIcon = styled(IconButton)`
 
 function renderFunctionBar(props) {
     return (
-        <WrapFunctionBar>
+        <div className="wrap-function-bar-fp">
             <div>
                 <ButtonIcon>
                     <Icon path={mdiAt} size={1.2} />
@@ -87,15 +87,15 @@ function renderFunctionBar(props) {
                     <img src={IconLike} alt="vtask_like_icon" style={{ width: 25, height: 25}} />
                 </ButtonIcon>
             </div>
-        </WrapFunctionBar>
+        </div>
     )
 }
 
 function renderChatBar() {
     return (
-        <WrapInputMessage>
-            <ChatInput type="text" placeholder="Nhập @ gợi ý, nội dung thảo luận..." />
-        </WrapInputMessage>
+        <div className="wrap-input-message">
+            <input className="chat-input" type="text" placeholder="Nhập @ gợi ý, nội dung thảo luận..." />
+        </div>
     )
 }
 

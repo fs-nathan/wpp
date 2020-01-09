@@ -12,6 +12,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
+// import { WrapperContext } from '../../../index'  
 const Container = styled.div`
   padding: 0 0 50px 0;
 `;
@@ -104,7 +105,11 @@ const StyledMenu = styled.div`
 
 function AllSubtaskListItem(props) {
   // bien chinh sua cong viec con
-
+  // const value = React.useContext(WrapperContext)
+  // useEffect(() => 
+  //   value.getSubTaskByTaskId(value.taskId)
+  //   console.log("Bấm có load lúc ra khoongg?????")
+  // ,[value.taskId])
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -135,7 +140,7 @@ function AllSubtaskListItem(props) {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteSubTaskByTaskId(props.task.id)
+    props.deleteSubTaskByTaskId({subTaskId: props.task.id, taskId: props.taskId})
   }
 
   return (
@@ -158,7 +163,7 @@ function AllSubtaskListItem(props) {
               ? <Avatar src={props.task.user_create_avatar} alt='avatar' />
               : 
               <ButtonIcon onClick={() => {
-                props.completeSubTaskByTaskId(props.task.id)
+                props.completeSubTaskByTaskId({subTaskId: props.task.id, taskId: props.taskId})
               }}>
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
               </ButtonIcon>
@@ -339,8 +344,8 @@ const FinishedSubtaskList = (props) => {
   const confirmDelete = () => {
     // props.deleteSubTaskByTaskId(props.task)
     // console.log('taskId::::', props);
-
   }
+
   return (
     <ul style={{ padding: 0 }}>
 
@@ -433,7 +438,9 @@ function TabBody(props) {
     props.postSubTaskByTaskId(taskId, name)
     setName("")
   }
-
+  const searchSubTaskTabPart = (e) => {
+    props.searchSubTask(e.target.value)
+  }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
@@ -448,14 +455,17 @@ function TabBody(props) {
             <ButtonIcon
               style={{ paddingBottom: 9, marginRight: 14 }}
               onClick={() => {
-                createSubTask("5da1821ad219830d90402fd8", name)
+                createSubTask(props.taskId, name)
               }}>
               <Icon path={mdiSend} size={1} color={'gray'} />
             </ButtonIcon>
           </NewWork>
           :
           <Div>
-            <Search placeholder={'Nhập từ khóa'} />
+            <Search 
+              placeholder={'Nhập từ khóa'}
+              onChange={e => searchSubTaskTabPart(e)}
+            />
           </Div>
         }
         <AllSubtaskList {...props} />

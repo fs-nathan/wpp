@@ -39,9 +39,9 @@ const members = [
 ]
 
 
-const Container = styled.div`
-    margin: 20px 0;
-`
+// const Container = styled.div`
+//     margin: 20px 0;
+// `
 const StyledFrameMess = styled(Typography)`
     height: auto;
     padding: 11px 15px 10px 17px;
@@ -55,14 +55,17 @@ const StyledFrameMess = styled(Typography)`
 // const StyledSubText = styled(Typography)`
 //     color: 
 // `
-const Content = styled.div`
-    display: flex;
-    margin-bottom: 14px;
-`
+// const Content = styled.div`
+//     display: flex;
+//     margin-bottom: 14px;
+// `
 const StyledTextContentMess = styled(Typography)`
     font-weight: inherit;
     font-size: 16px;
     color: #222;
+`
+const ContentMessageColor = styled(Typography)`
+    color: gray;
 `
 
 const getSubColorRole = (role, authorityList) => {
@@ -88,13 +91,13 @@ const getSubColorRole = (role, authorityList) => {
 
 const TitleMessage = ({ name, role, authorityList }) => {
     return (
-        <Content>
+        <div className="content-message">
             <ListItemText
                 style={{ margin: 0 }}
                 primary={
-                    <Typography component='div' style={{ color: 'gray' }}>
+                    <ContentMessageColor component='div' >
                         {name}
-                    </Typography>
+                    </ContentMessageColor>
                 }
                 secondary={
                     <React.Fragment>
@@ -102,8 +105,8 @@ const TitleMessage = ({ name, role, authorityList }) => {
                     </React.Fragment>
                 }
             />
-            <Typography component='div' style={{ color: 'gray' }}>09:30</Typography>
-        </Content>
+            <ContentMessageColor component='div' >09:30</ContentMessageColor>
+        </div>
     )
 }
 
@@ -745,90 +748,90 @@ const ReplyImg = () => {
     )
 }
 
-const WrapCommonRow = styled.span`
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    margin-bottom: 10px;
-`
-const WrapProjectMessage = styled.div`
-    background-color: white;
-    border-radius: 20px;
-    width: 380px;
-    display: flex;
-    border-radius: 10px;
-    flex-direction: column;
-    & > div:nth-child(1) {
-        background: red;
-        text-align: center;
-        padding: 13px 0 25px 0;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        & > span {
-            text-align: center;
-            font-weight: 600;
-            background: red;
-            color: white;
-            font-size: 14px;
-            padding-bottom: 9px;
-            border-bottom: 2px solid white;
-        }
-    }
-    & > div:nth-child(2) {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        border-bottom: 1px solid #bfbfbf;
-        padding: 15px 0;
-        & > div:nth-child(1){
-            font-size: 16px;
-            font-weight: bold;
-        }
-        & > div:nth-child(2) {
-            font-size: 76px;
-            font-weight: bold;
-        }
-        & > div:nth-child(3) {
-            font-size: 19px;
-            font-weight: 500;
-            text-transform: uppercase;
-            margin: 0 10px;
-            text-align: center;
-        }
-        & > div:nth-child(4) {
-            font-size: 14px;
-            margin-top: 10px;
-            color: #a6a6a6;
-        }
-    }
-    & > button {
-        & > span > div{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        & > div {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
-            & > svg {
-                margin-right: 7px;
-            }
-            & > span {
-                color : #05bdfa;
-                font-size: 14px;
-                font-weight: 500;
-            }
-        }
-    }
-}
-`
+// const WrapCommonRow = styled.span`
+//     display: flex;
+//     justify-content:center;
+//     align-items: center;
+//     margin-bottom: 10px;
+// `
+// const WrapProjectMessage = styled.div`
+//     background-color: white;
+//     border-radius: 20px;
+//     width: 380px;
+//     display: flex;
+//     border-radius: 10px;
+//     flex-direction: column;
+//     & > div:nth-child(1) {
+//         background: red;
+//         text-align: center;
+//         padding: 13px 0 25px 0;
+//         border-top-left-radius: 10px;
+//         border-top-right-radius: 10px;
+//         & > span {
+//             text-align: center;
+//             font-weight: 600;
+//             background: red;
+//             color: white;
+//             font-size: 14px;
+//             padding-bottom: 9px;
+//             border-bottom: 2px solid white;
+//         }
+//     }
+//     & > div:nth-child(2) {
+//         display: flex;
+//         justify-content: center;
+//         flex-direction: column;
+//         align-items: center;
+//         border-bottom: 1px solid #bfbfbf;
+//         padding: 15px 0;
+//         & > div:nth-child(1){
+//             font-size: 16px;
+//             font-weight: bold;
+//         }
+//         & > div:nth-child(2) {
+//             font-size: 76px;
+//             font-weight: bold;
+//         }
+//         & > div:nth-child(3) {
+//             font-size: 19px;
+//             font-weight: 500;
+//             text-transform: uppercase;
+//             margin: 0 10px;
+//             text-align: center;
+//         }
+//         & > div:nth-child(4) {
+//             font-size: 14px;
+//             margin-top: 10px;
+//             color: #a6a6a6;
+//         }
+//     }
+//     & > button {
+//         & > span > div{
+//         display: flex;
+//         justify-content: center;
+//         flex-direction: column;
+//         align-items: center;
+//         & > div {
+//             display: flex;
+//             align-items: center;
+//             padding: 15px 0;
+//             & > svg {
+//                 margin-right: 7px;
+//             }
+//             & > span {
+//                 color : #05bdfa;
+//                 font-size: 14px;
+//                 font-weight: 500;
+//             }
+//         }
+//     }
+// }
+// `
 
 function RemindMessage(props) {
     return (
-        <WrapCommonRow>
-            <WrapProjectMessage>
+        <div className="wrap-common-row">
+            <div className="wrap-project-remind-message">
                 <Typography component='div'>
                     <span>Nhắc hẹn</span>
                 </Typography>
@@ -846,15 +849,15 @@ function RemindMessage(props) {
                         </Typography>
                     </Typography>
                 </Button>
-            </WrapProjectMessage>
-        </WrapCommonRow>
+            </div>
+        </div>
     )
 }
 
 export default function DetailMessage(props) {
     //const [data] = React.useState(members);
     return (
-        <Container>
+        <div className="container-detailmessage">
             <RemindMessage />
             {members.map((element, index) => {
                 return (
@@ -926,6 +929,6 @@ export default function DetailMessage(props) {
                     </Typography>
                 )
             })}
-        </Container>
+        </div>
     )
 }

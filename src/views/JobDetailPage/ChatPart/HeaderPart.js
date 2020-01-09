@@ -27,25 +27,20 @@ const useStyles = makeStyles({
     },
 })
 
-const Container = styled.div`
-    display: flex;
-    align-items: center;
-    height: 85px;
-`
+// const Container = styled.div`
+//     display: flex;
+//     align-items: center;
+//     height: 85px;
+// `
 
-const WrapAvatars = styled.div`
-    width: 64px;
-`
+// const WrapAvatars = styled.div`
+//     width: 64px;
+// `
 
-const WrapRoomDescription = styled.div`
-    flex: 1;
-    padding: 0 10px;
-`
-
-const ProjectText = styled(Typography)`
-    font-size: 24px;
-    font-weight: 500;
-`
+// const WrapRoomDescription = styled.div`
+//     flex: 1;
+//     padding: 0 10px;
+// `
 
 // const WrapNotification = styled.div`
 //     padding: 0 10px;
@@ -56,6 +51,10 @@ const ProjectText = styled(Typography)`
 //     background-color: white;
 //     width: 100%;
 // `
+const ProjectText = styled(Typography)`
+    font-size: 24px;
+    font-weight: 500;
+`
 
 const TabLabel = styled(FormControlLabel)`
   color: ${props => props.checked 
@@ -147,7 +146,7 @@ function renderAvatars(props) {
     } = props
 
     return (
-        <WrapAvatars>
+        <div className="wrap-avatars">
             <Grid
                 container spacing={1}
                 justify="center" alignItems="center">
@@ -180,18 +179,18 @@ function renderAvatars(props) {
 
                 </Grid>
             </Grid>
-        </WrapAvatars>
+        </div>
     )
 }
 
 function renderRoomDescription(props) {
     return (
-        <WrapRoomDescription>
+        <div className="wrap-room-description">
             <ProjectText >
                 Thảo Iuận
             </ProjectText>
             <TabForm tabs={tabs}/>
-        </WrapRoomDescription>
+        </div>
     )
 }
 
@@ -209,13 +208,13 @@ export default function HeaderPart(props) {
     const classes = useStyles()
 
     return (
-        <Container>
+        <div className="container-header">
             {renderAvatars({ styles: classes, images })}
             {renderRoomDescription(props)}
             {renderFunctionBar(props)}
             {/* <WrapNotification>
                 {renderNotify(props)}
             </WrapNotification> */}
-        </Container>
+        </div>
     )
 }
