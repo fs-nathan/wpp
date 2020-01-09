@@ -485,6 +485,7 @@
             background-color: #fd7e14;
             color: white;
             text-transform: uppercase;
+            margin-bottom: 5px;
           }
         }
         .account-status-text {
@@ -493,7 +494,10 @@
           color: white;
           padding: 2px 5px;
           border-radius: 16px;
-          height: 14px;
+          line-height: 16px;
+          height: 16px;
+          margin-bottom: 5px;
+          text-transform: uppercase;
         }
       }
       .acc-item-group-account {
