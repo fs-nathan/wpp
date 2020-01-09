@@ -57,7 +57,7 @@ const GroupModal = props => {
             <span className="block-name">{inforGroup.name}</span>
           </div>
           <div>
-            <span className="block-email">{inforGroup.email}</span>
+            <span className="block-email">{inforGroup.code}</span>
           </div>
         </div>
       </MuiDialogContent>

@@ -68,16 +68,18 @@ const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
                   handleCloseMenu();
                   setVisible(true);
                 }}
+                disabled={!fileInfo.can_modify}
               >
-                Chỉnh sửa
+                {t('IDS_WP_UPDATE')}
               </MenuItem>
               <MenuItem
                 onClick={() => {
                   handleCloseMenu();
                   setAlert(true);
                 }}
+                disabled={!fileInfo.can_modify}
               >
-                Xóa toàn bộ thông tin
+                {t('IDS_WP_DELETE_ALL_INFO')}
               </MenuItem>
             </Menu>
           </div>

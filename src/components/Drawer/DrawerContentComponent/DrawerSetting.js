@@ -44,7 +44,7 @@ const DrawerSetting = props => {
     } else {
       props.history.push({
         pathname: Routes.SETTING_GROUP_ORDER,
-        search: `?order_id=${props.profile.order_id}`
+        search: `?order_id=${props.profile.order_user_id}`
       });
     }
     props.actionVisibleDrawerMessage({
@@ -71,7 +71,16 @@ const DrawerSetting = props => {
             </div>
           </div>
 
-          <div className="account-status text-center">{props.profile.type}</div>
+          {props.profile.type === 'Free' ? (
+            <div className="account-status text-center">
+              {props.profile.type}
+            </div>
+          ) : (
+            <div className="account-status text-center pro-color">
+              {props.profile.type}
+            </div>
+          )}
+
           <p className="account-name text-center">{props.profile.name}</p>
           <p className="text-center">{props.profile.email}</p>
           <p

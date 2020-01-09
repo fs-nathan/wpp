@@ -198,6 +198,7 @@ const Info = props => {
     <div className="setting-group-info">
       <div className="group-info-left">
         <LoadingContent loading={isLoading || false}>
+          <p className="code-group-text">ID: {groupInfo.code}</p>
           <form className="form-group-info" onSubmit={handleUpdateGroup}>
             <TextField
               id="groupName"
@@ -209,9 +210,7 @@ const Info = props => {
               }
               fullWidth
               margin="normal"
-              InputLabelProps={{
-                shrink: true
-              }}
+              InputLabelProps={{ shrink: true }}
               inputProps={{
                 maxLength: 120,
                 required: true,

@@ -239,19 +239,21 @@ const Order = props => {
                           Gia hạn
                         </Button>
                       ) : (
-                        <Button
-                          className={`action-btn delete ${
-                            checkDisable(el.status_code) ? 'disabled' : ''
-                          }`}
-                          disabled={checkDisable(el.status_code)}
-                          onClick={e => {
-                            e.stopPropagation();
-                            setOrderId(row.id);
-                            setAlert(true);
-                          }}
-                        >
-                          Xóa
-                        </Button>
+                        !checkDisable(el.status_code) && (
+                          <Button
+                            className={`action-btn delete ${
+                              checkDisable(el.status_code) ? 'disabled' : ''
+                            }`}
+                            disabled={checkDisable(el.status_code)}
+                            onClick={e => {
+                              e.stopPropagation();
+                              setOrderId(row.id);
+                              setAlert(true);
+                            }}
+                          >
+                            Xóa
+                          </Button>
+                        )
                       )}
                     </TableCell>
                   ) : null}

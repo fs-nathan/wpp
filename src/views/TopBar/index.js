@@ -138,10 +138,12 @@ const TopBar = props => {
                 className={`style-status ${isFree ? 'free-status' : ''}`}
               />
             </div>
-            <div>
-              <GreenText>{props.profile.group_active.email || ''}</GreenText>
-              <Icon path={mdiMenuDown} size={1} color="rgba(0, 0, 0, 0.54)" />
-            </div>
+            {props.profile.group_active.code && (
+              <div>
+                <GreenText>{props.profile.group_active.code}</GreenText>
+                <Icon path={mdiMenuDown} size={1} color="rgba(0, 0, 0, 0.54)" />
+              </div>
+            )}
           </InfoBox>
         )}
       </LeftPart>
@@ -186,6 +188,7 @@ const TopBar = props => {
         </IconButton>
         <IconButton
           className="cursor-pointer top-icon"
+          title="Tin nhắn"
           onClick={() =>
             props.actionVisibleDrawerMessage({
               type: DRAWER_TYPE.MESSAGE,
@@ -205,6 +208,7 @@ const TopBar = props => {
         </IconButton>
         <IconButton
           className="cursor-pointer top-icon"
+          title="Thông báo"
           onClick={() =>
             props.actionVisibleDrawerMessage({
               type: DRAWER_TYPE.NOTIFICATION,
@@ -231,6 +235,7 @@ const TopBar = props => {
           <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
           <img
+            title="Tài khoản"
             onClick={() =>
               props.actionVisibleDrawerMessage({
                 type: DRAWER_TYPE.SETTING,

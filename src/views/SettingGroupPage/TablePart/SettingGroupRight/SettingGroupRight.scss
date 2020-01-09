@@ -297,6 +297,11 @@
   .group-info-left {
     width: 50%;
     padding-right: 40px;
+    .code-group-text {
+      color: #444;
+      font-weight: 600;
+      font-size: 22px;
+    }
     .form-group-info {
       .lb-secondary {
         margin-left: 3px;

@@ -33,8 +33,24 @@ const ResultSearchItem = props => (
       <img src={props.user_create_avatar} alt="" className="icon-avatar" />
     )}
     <div className="result-content">
-      <span className="result-title">{props.project}</span>
-      <div className="sub-description">{props.name}</div>
+      <span className="result-title">
+        <a
+          href={props.url_redirect_project}
+          className="address-link"
+          onClick={props.handleCloseModal}
+        >
+          {props.project}
+        </a>
+      </span>
+      <div className="sub-description">
+        <a
+          href={props.url_redirect_task}
+          className="address-link"
+          onClick={props.handleCloseModal}
+        >
+          {props.name}
+        </a>
+      </div>
     </div>
     <div className="work-status">{props.state_name}</div>
   </div>
@@ -129,7 +145,11 @@ const SearchModal = props => {
             </Fragment>
           ) : (
             resultList.map((item, idx) => (
-              <ResultSearchItem key={idx} {...item} />
+              <ResultSearchItem
+                key={idx}
+                {...item}
+                handleCloseModal={handleCloseModal}
+              />
             ))
           )}
         </DialogContent>

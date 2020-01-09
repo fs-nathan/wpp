@@ -144,6 +144,7 @@
   }
   .content-drawer {
     // height: calc(100vh - 254px);
+    max-height: calc(100% - 200px);
     overflow-y: auto;
     .item-message {
       display: flex;
@@ -260,11 +261,19 @@
     .account-status {
       background: #ccc;
       border-radius: 20px;
-      padding: 5px 10px;
+      padding: 2px 6px;
       color: white;
       display: inline-block;
+      text-transform: uppercase;
+      font-size: 11px;
       margin-left: 50%;
       transform: translateX(-50%);
+      background-color: #fd7e14;
+      height: auto;
+      &.pro-color {
+        background-color: #fd7e14;
+        color: white;
+      }
     }
     .account-name {
       font-size: 20px;
@@ -466,6 +475,12 @@
         }
         .status-item-group-account {
           height: 20px;
+          padding: 0 5px;
+          .MuiChip-labelSmall {
+            padding-left: 0;
+            padding-right: 0;
+            font-size: 11px;
+          }
           &.pro-color {
             background-color: #fd7e14;
             color: white;

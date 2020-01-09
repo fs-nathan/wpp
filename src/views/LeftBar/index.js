@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { actionVisibleDrawerMessage } from '../../actions/system/system';
 import { Routes } from '../../constants/routes';
+import { useTranslation } from 'react-i18next';
 import * as icons from '../../assets';
 import './LeftBar.scss';
 
@@ -27,6 +28,7 @@ const LeftBar = ({
   anchorDrawer,
   actionVisibleDrawerMessage
 }) => {
+  const { t } = useTranslation();
   const pathname = history.location.pathname;
   const bgColor = colors.find(item => item.selected === true);
   const onCloseDrawer = () => {
@@ -92,6 +94,7 @@ const LeftBar = ({
         to={Routes.SETTING_GROUP_INFO}
         onClick={onCloseDrawer}
         className="menu-item"
+        title={t('IDS_WP_MANAGE_GROUP')}
       >
         <img src={icons.ic_setting} alt="" className="LeftNavIcon" />
       </Link>

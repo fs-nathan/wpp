@@ -113,5 +113,8 @@
   "IDS_WP_RESEND": "Gửi lại",
   "IDS_WP_RESET_PWD_SUCCESS": "Tạo mật khẩu mới thành công!",
   "IDS_WP_CREATE_NEW_PWD": "Tạo mật khẩu mới",
-  "IDS_WP_DONE": "Hoàn thành"
+  "IDS_WP_DONE": "Hoàn thành",
+  "IDS_WP_MANAGE_GROUP": "Quản lý nhóm",
+  "IDS_WP_UPDATE": "Chỉnh sửa",
+  "IDS_WP_DELETE_ALL_INFO": "Xoá toàn bộ thông tin"
 }

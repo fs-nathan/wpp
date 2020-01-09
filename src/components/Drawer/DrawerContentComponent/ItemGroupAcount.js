@@ -120,13 +120,7 @@ const ItemGroupAcount = props => {
           )}
         </div>
         <div className="acc-item-group-account">
-          <span className="text-value-email-phone">
-            {props.type === 'group_me'
-              ? !isEmpty(props.profile)
-                ? props.profile.email
-                : ''
-              : item.email}
-          </span>
+          <span className="text-value-email-phone">{item.code}</span>
         </div>
       </Fragment>
     );
@@ -136,11 +130,11 @@ const ItemGroupAcount = props => {
         return (
           <div className="info-item-group-account">
             {commonEl}
-            <div className="phone-item-group-account">
-              <span className="text-value-email-phone">
-                {!isEmpty(props.profile) ? props.profile.phone : ''}
-              </span>
-            </div>
+            {/* <div className="phone-item-group-account">
+            <span className="text-value-email-phone">
+              {!isEmpty(props.profile) ? props.profile.phone : ''}
+            </span>
+          </div> */}
           </div>
         );
       case 'join':
@@ -148,7 +142,7 @@ const ItemGroupAcount = props => {
           <div className="info-item-group-account">
             {commonEl}
             <div className="phone-item-group-account">
-              <span className="text-value-email-phone">{item.phone}</span>
+              {/* <span className="text-value-email-phone">{item.phone}</span> */}
               <Button
                 className="btn-action"
                 variant="text"
@@ -169,7 +163,7 @@ const ItemGroupAcount = props => {
           <div className="info-item-group-account">
             {commonEl}
             <div className="phone-item-group-account">
-              <span className="text-value-email-phone">{item.phone}</span>
+              {/* <span className="text-value-email-phone">{item.phone}</span> */}
               <Button
                 className="btn-action"
                 variant="text"
@@ -241,7 +235,7 @@ const ItemGroupAcount = props => {
             </span>
           </div>
           <div className="acc-item-group-account">
-            <span className="text-value-email-phone">{item.email}</span>
+            <span className="text-value-email-phone">{item.code}</span>
           </div>
         </div>
         {newEl}
