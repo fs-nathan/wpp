@@ -8,17 +8,23 @@ import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import ColorChip from '../../../../components/ColorChip';
-import TimeField from 'react-simple-timefield';
+// import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
 import {
   DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, REMIND_TIME_TYPE,
   REMIND_SCHEDULE_TYPE, isValidDuration
 } from '../../../../helpers/jobDetail/stringHelper'
 import { WrapperContext } from '../../index'
-
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
+import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
 const selector = [
   {
     value: 0,
@@ -57,15 +63,15 @@ const badges = [
     label: 'Theo tháng',
   },
 ]
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    width: 160,
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   container: {
+//     display: 'flex',
+//     flexWrap: 'wrap',
+//   },
+//   textField: {
+//     width: 160,
+//   },
+// }));
 
 const TitleText = styled(Typography)`
     font-size: 15px;
@@ -84,7 +90,7 @@ const HelperText = styled(Typography)`
   `
 const DivTitle = styled.div`
     display: flex;
-    margin: 15px 0 0 0;
+    margin: 15px 0;
   `
 
 const Div = styled.div`
@@ -112,20 +118,23 @@ const TextRemind = styled(Typography)`
     display: flex;
     align-items: center;
   `
-const InputTime = styled(TimeField)`
+const InputDateTime = styled(TextField)`
     width: 146px !important;
-    padding: 18px 5px 18px 13px;
-    border: 0;
-    border-radius: 4px;
   `
+const InputDate = styled(KeyboardDatePicker)`
+  & > div:nth-child(2) {
+    width: 146px;
+    padding-right: 5px;
+    & > div > button {
+      padding: 5px;
+    }
+  } 
+`
 const DivTime = styled.span`
-    border: 1px solid #cfcfcf;
-    border-radius: 4px;
-    height: 100% !important;
-    margin-top: 8px;
+    
   `
 const SelectInput = styled.div`
-    margin-top: 8px;
+    // margin-top: 8px;
     width: 160px;
     & > div > div > div  {
         padding : 7px 0;
@@ -155,9 +164,9 @@ const styles = theme => ({
     background: '#f5f8fc'
   },
   title: {
-      textTransform: 'uppercase',
-      fontSize: 14,
-      fontWeight: 400,
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
   },
   closeButton: {
     position: 'absolute',
@@ -214,8 +223,8 @@ const DEFAULT_DATA = {
 function RemindModal(props) {
   const KEYCODE_ENTER = 13
   const valueRemind = React.useContext(WrapperContext)
-  console.log('valueRemind', valueRemind.taskId)
-  const classes = useStyles()
+  // console.log('valueRemind', valueRemind.taskId)
+  // const classes = useStyles()
   // bien menu item
   const [data, setData] = React.useState(DEFAULT_DATA)
   // const [dataDuration, setDataDuration] = React.useState(DATA_REMIND_DURATION)
@@ -242,6 +251,7 @@ function RemindModal(props) {
   }, [props.data])
 
   const handleChangeData = (attName, value) => {
+    // console.log('valueRemind:::', value)
     setData(prevState => ({ ...prevState, [attName]: value }))
   }
 
@@ -277,16 +287,16 @@ function RemindModal(props) {
       else { valueRemind.createRemindWithDurationDetail(dataCreateRemindDuration) }
     } else {
       // Case 3: Call update remind with time
-      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail({dataUpdateRemind, taskId: valueRemind.taskId}) }
+      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail({ data: dataUpdateRemind, taskId: valueRemind.taskId }) }
       // Case 4: Call update remind with progress
-      else { valueRemind.updateRemindWithDurationDetail({dataUpdateRemindDuration, taskId : valueRemind.taskId}) }
+      else { valueRemind.updateRemindWithDurationDetail({  data: dataUpdateRemindDuration, taskId: valueRemind.taskId }) }
     }
 
     // Close modal
     props.handleClickClose()
   }
   const [value, setValue] = React.useState('')
-
+// console.log("daataaA::::", data)
 
   const handleChangeDuration = value => {
     if (isValidDuration(value) || value === "")
@@ -353,17 +363,32 @@ function RemindModal(props) {
               <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
             </DivTitle>
             <Div>
-              <TextField
-                component="span"
-                className={classes.textField}
-                margin="normal"
+              {/* <InputDateTime
+                label="Ngày"
                 variant="outlined"
-                type="date"
+                type={'date'}
                 value={data.date_remind}
                 onChange={e => handleChangeData("date_remind", e.target.value)}
-              />
+              /> */}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <InputDate
+                  disableToolbar
+                  variant="inline"
+                  inputVariant="outlined"
+                  format="dd/MM/yyyy"
+                  label="Ngày"
+                  value={data.date_remind}
+                  onChange={e => handleChangeData("date_remind", convertDate(e))}
+                  KeyboardButtonProps={{
+                    "aria-label": "date change"
+                  }}
+                />
+              </MuiPickersUtilsProvider>
               <DivTime>
-                <InputTime
+                <InputDateTime
+                  type={'time'}
+                  label="Thời gian"
+                  variant="outlined"
                   value={data.time_remind}
                   onChange={e => handleChangeData("time_remind", e.target.value)}
                 />
@@ -397,14 +422,13 @@ function RemindModal(props) {
             </div>
             <Typography component={'div'}>
               {data.duration.map((item, key) => (
-                <BadgeItem onClick={() => removeAnDuration(key)} key={key} color={'orangelight'} label={item} size='small' badge component='small' />
+                <BadgeItem onClick={() => removeAnDuration(key)} key={key} color={'orangelight'} label={item + ' %'} size='small' badge component='small' />
               ))}
             </Typography>
           </div>
         }
         {/* ------- */}
         <ContentText
-          id="outlined-multiline-static"
           label="Nội dung"
           fullWidth
           multiline

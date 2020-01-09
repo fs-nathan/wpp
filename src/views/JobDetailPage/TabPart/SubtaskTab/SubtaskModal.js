@@ -65,7 +65,6 @@ const styles = theme => ({
   
 
 const SubtaskModal = (props) => {
-  
   const [name, setStateName] = React.useState(props.name)
     return (
         // {/* Modal chinh sua cong viec con */}

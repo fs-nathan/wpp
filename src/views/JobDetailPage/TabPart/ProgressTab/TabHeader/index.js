@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconButton} from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiChevronLeft , mdiSettings } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ProgressModal from '../ProgressModal'
-
+import { WrapperContext } from '../../../index'
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -34,6 +34,11 @@ function TabHeader({ setShow }) {
   //   setTime(time);
   // }
   // bien cua modal cong viec con
+  const value = React.useContext(WrapperContext)
+  useEffect(() => {
+    value.getTrackingTime(value.taskId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);

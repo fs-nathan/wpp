@@ -45,6 +45,19 @@ export const searchProjectByProjectName = (groups, keyword) => {
             .map(item => ({ ...item, projects: item.projects.filter(project => project.name.toLowerCase().match(keyword.toLowerCase())) }))
         : groups
 }
+
+export const searchArrayTabpart = (array, keyword, field) => {
+    return keyword
+        ? array.filter(item => item[field].toLowerCase().match(keyword.toLowerCase()))
+        : array
+}
+export const searchAttributesArray = (array, keyword, field, object) => {
+    return keyword
+        ? array
+            .filter(item => item[object].length)
+            .map(item => ({ ...item, [object]: item[object].filter(item => item[field].toLowerCase().match(keyword.toLowerCase())) }))
+        : array
+}
 export const getFirstProjectDetail = projectGroups => {
     let projectDetail
     try {

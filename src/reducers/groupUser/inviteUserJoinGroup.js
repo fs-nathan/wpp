@@ -20,7 +20,7 @@ function reducer(state = initialState, action) {
       };
     case INVITE_USER_JOIN_GROUP_SUCCESS: 
       return {
-        ...state, 
+        ...state,
         data: {},
         error: null,
         loading: false,

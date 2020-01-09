@@ -191,7 +191,7 @@ const RemindList = (props) => {
   };
 
   const getRemindTextByType = (typeId, date, time) => {
-    return typeId ? selector[typeId].label : "Nhắc hẹn vào ngày " + convertDateToText(date) + " lúc " + time
+    return typeId ? selector[typeId].label : "Nhắc hẹn vào ngày " + date + " lúc " + time
   }
   const getRemindProgressByType = (typeId, duration, typeRemind) => {
 
@@ -251,10 +251,17 @@ const RemindList = (props) => {
 }
 
 function TabBody(props) {
+  const searchRemindTabPart = (e) => {
+    props.searchRemind(e.target.value)
+  }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
-        <SearchInput placeholder={'Nhập từ khóa'} fullWidth />
+        <SearchInput 
+          placeholder={'Nhập từ khóa'} 
+          fullWidth
+          onChange={e => searchRemindTabPart(e)}
+        />
         <RemindList {...props} />
       </Container>
     </Body>

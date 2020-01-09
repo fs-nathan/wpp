@@ -1,13 +1,14 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 import {
-    filterPendingItem, filterApprovedItem
+    filterPendingItem, filterApprovedItem,searchArrayTabpart
 } from '../../helpers/jobDetail/arrayHelper'
 
 
 // Initial state for store
 const initialState = {
     offer: [], pendingItems : [], approvedItems : [],
+    defaultOffer: [], defaultPendingItems : [], defaultApprovedItems : [],
     isFetching: false,
     dataFetched: false,
     error: false,
@@ -28,6 +29,9 @@ export default function reducer(state = initialState, action) {
                 offer: action.payload.offers.reverse(),
                 pendingItems: filterPendingItem(action.payload.offers.reverse()),
                 approvedItems: filterApprovedItem(action.payload.offers.reverse()),
+                defaultOffer: action.payload.offers.reverse(),
+                defaultPendingItems: filterPendingItem(action.payload.offers.reverse()),
+                defaultApprovedItems: filterPendingItem(action.payload.offers.reverse()),
             };
         case types.GET_OFFER_FAIL:
             return {
@@ -144,6 +148,13 @@ export default function reducer(state = initialState, action) {
                 isFetching: false,
                 dataFetched: false,
                 error: true,
+            }
+        case types.SEARCH_OFFER_TABPART:
+            return {
+                ...state,
+                offer: searchArrayTabpart(state.defaultOffer, action.payload, "content"),
+                pendingItems: searchArrayTabpart(state.defaultPendingItems, action.payload, "content"),
+                approvedItems: searchArrayTabpart(state.defaultApprovedItems, action.payload, "content"),
             }
         default:
             return state;

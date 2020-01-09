@@ -51,9 +51,9 @@ margin-bottom: 6px;
   }
 `;
 
-const SimpleSmallProgressBarWrapper = styled.div`
-  width: 150px;
-`;
+// const SimpleSmallProgressBarWrapper = styled.div`
+//   width: 150px;
+// `;
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -67,22 +67,22 @@ const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
 `;
-const ButtonText = styled.button`
-  background: none;
-  border: none;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 0;
-  color: #a6a6a6;
-  cursor: pointer;
-  padding-top: 10px;
-  &:focus {
-    outline: none;
-  }
-  &:active {
-    outline: none;
-  }
-`
+// const ButtonText = styled.button`
+//   background: none;
+//   border: none;
+//   font-size: 14px;
+//   font-weight: 500;
+//   padding: 0;
+//   color: #a6a6a6;
+//   cursor: pointer;
+//   padding-top: 10px;
+//   &:focus {
+//     outline: none;
+//   }
+//   &:active {
+//     outline: none;
+//   }
+// `
 const ListItemTabPart = styled(ListItem)`
   display: flex;
   flex-direction: column;
@@ -128,13 +128,13 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
         disableFocusListener={hideTooltip}
         title={<ModalStatus values={values[selected]} />}
         placement="top-start">
-        <WrapperButton>
+        <div>
           <ColorButton
             variantColor='teal' size='small' onClick={handleClick}
             aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}>
             {values[selected]}
           </ColorButton>
-        </WrapperButton>
+        </div>
       </HtmlTooltip>
       <Menu
         anchorEl={anchorEl}
@@ -204,8 +204,8 @@ function Content({ value }) {
 
             />
             {isOpen
-              ? <ButtonText onClick={handlePressViewButton}>Thu gọn</ButtonText>
-              : <ButtonText onClick={handlePressViewButton}>Xem thêm</ButtonText>
+              ? <div className="button-text" onClick={handlePressViewButton}>Thu gọn</div>
+              : <div className="button-text" onClick={handlePressViewButton}>Xem thêm</div>
             }
           </>
       }
@@ -220,9 +220,13 @@ const DEFAULT_TASK_STATISTIC = {
   docCnt: "Đang tải",
   lctCnt: "Đang tải",
   offerCnt: "Đang tải",
+  acceptOfferCnt: "Đang tải",
   commandCnt: "Đang tải",
   members: [],
   priority_code: 0,
+  fileCnt: "Đang tải",
+  imgCnt: "Đang tải",
+  linkCnt: "Đang tải"
 }
 
 const HtmlTooltip = withStyles(theme => ({
@@ -233,38 +237,34 @@ const HtmlTooltip = withStyles(theme => ({
     border: '1px solid #dadde9',
   },
 }))(Tooltip);
-const StyledContextStatus = styled.div`
-  & > *:first-child {
-    display: flex;
-    align-items: center;
-    & > p:nth-child(2) {
-      color: #000;
-      margin-left: 8px;
-      margin-right: 5px;
-    }
-    & > p:nth-child(3) {
-      color: #0ce8b5;
-      font-size: 13px;
-    }
-  }
-  & > *:last-child {
-    color: #969696;
-    font-weight: 300;
-    font-size: 12px;
-    line-height: 1.8;
-    margin: 3px 5px 0 0;
-  }
-`
-const WrapperButton = styled.div`
-`
+// const StyledContextStatus = styled.div`
+//   & > *:first-child {
+//     display: flex;
+//     align-items: center;
+//     & > p:nth-child(2) {
+//       color: #000;
+//       margin-left: 8px;
+//       margin-right: 5px;
+//     }
+//     & > p:nth-child(3) {
+//       color: #0ce8b5;
+//       font-size: 13px;
+//     }
+//   }
+//   & > *:last-child {
+//     color: #969696;
+//     font-weight: 300;
+//     font-size: 12px;
+//     line-height: 1.8;
+//     margin: 3px 5px 0 0;
+//   }
+// `
+// const WrapperButton = styled.div`
+// `
 
 const ModalStatus = (status) => {
-  // console.log('status:::::::', status.values);
-  // console.log('status:::::::', status);
 
-  // const [value, setValue] = React.useState('')
   let value = '', color, icon
-  // console.log('value:::::::', value)
   switch (status.values) {
     case "Đang làm":
       value = "Đang làm";
@@ -294,7 +294,7 @@ const ModalStatus = (status) => {
   }
   return (
     <React.Fragment>
-      <StyledContextStatus>
+      <div className="styled-context-status">
         <div>
           <Icon path={icon ? icon : mdiCheckCircle} size={1} color={icon ? '#dc3545' :'#03b000'} />
           <p>Trạng thái:</p>
@@ -312,11 +312,21 @@ const ModalStatus = (status) => {
           'Admin đã tạm dừng công việc, vào cài đặt công việc để thay đổi trạng thái'
         }
       </p>
-      </StyledContextStatus>
+      </div>
     </React.Fragment>
   )
 }
-
+// const MemberTask = (obj) => {
+//   const [value, setValue] = React.useState('')
+//   if (obj.members.length <= 6) {
+//     setValue(false)
+//   } else {
+//     setValue(true)
+//   }
+//   return (
+//     <AvatarCircleList total={10} display={6} />
+//   )
+// }
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
@@ -365,7 +375,7 @@ function TabBody(props) {
           {props.isPause
             ?
             <HtmlTooltip title={<ModalStatus values="Đang tạm dừng" />} placement="top-start">
-              <WrapperButton>
+              <div>
                 <ColorButton size='small' variant='outlined'
                   style={{
                     marginBottom: '10px',
@@ -375,7 +385,7 @@ function TabBody(props) {
                   }}>
                   Đang tạm dừng
                 </ColorButton>
-              </WrapperButton>
+              </div>
             </HtmlTooltip>
             :
             <DropdownButton
@@ -402,9 +412,9 @@ function TabBody(props) {
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
           <ColorTypo>Tiến độ</ColorTypo>
           <BadgeItem badge size='small' color='orangelight' label={taskStatistic.progressCnt} style={{ marginRight: 10 }} />
-          <SimpleSmallProgressBarWrapper>
+          <div className="simple-progress-bar-wrapper">
             <SimpleSmallProgressBar percentDone={28} percentTarget={70} color={colorPal['teal'][0]} targetColor={colorPal['orange'][0]} />
-          </SimpleSmallProgressBarWrapper>
+          </div>
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(2)}>
           <ColorTypo>Công việc con</ColorTypo>
@@ -436,6 +446,7 @@ function TabBody(props) {
         <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
           <ColorTypo>Thành viên</ColorTypo>
           <AvatarCircleList total={taskStatistic.members.length} display={6} />
+          {/* {MemberTask(taskStatistic)} */}
         </ListItemTab>
       </StyledList>
     </Body >

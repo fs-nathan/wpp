@@ -7,23 +7,23 @@ import SearchInput from '../../../../components/SearchInput';
 import CreateJobModal from './CreateJobModal';
 import { WrapperContext } from '../../index'
 
-const Header = styled.div`
-  padding: 0 3px 0 15px;
-  height: 77px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  & > * {
-    display: flex; 
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-  }
-`;
+// const Header = styled.div`
+//   padding: 0 3px 0 15px;
+//   height: 77px;
+//   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+//   & > * {
+//     display: flex; 
+//     align-items: center;
+//     justify-content: space-between;
+//     cursor: pointer;
+//   }
+// `;
 
-const HeaderBottomBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+// const HeaderBottomBox = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// `;
 
 const HeaderText = styled(Typography)`
   width: 315px;
@@ -83,9 +83,9 @@ function ListHeader(props) {
   }
   return (
     <div >
-      <Header>
+      <div className="list-header">
         <ListHeaderSelect {...props} />
-        <HeaderBottomBox>
+        <div className="header-bottom-box">
           <SearchInput 
             placeholder='Tìm công việc trong dự án...' 
             style={{ height: 'auto' }}
@@ -101,8 +101,8 @@ function ListHeader(props) {
             }} >
             <Icon path={mdiPlus} size={1.2} />
           </ButtonIcon>
-        </HeaderBottomBox>
-      </Header>
+        </div>
+      </div>
       <CreateJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} />
     </div>
   )

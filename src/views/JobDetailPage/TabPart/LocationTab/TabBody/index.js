@@ -12,9 +12,9 @@ import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { WrapperContext } from '../../../index'
-const Container = styled.div`
-  padding: 10px 20px 50px 20px;
-`;
+// const Container = styled.div`
+//   padding: 10px 20px 50px 20px;
+// `;
 const ItemAvatar = styled(ListItemAvatar)`
   & > div {
     background: #d6d6d6;
@@ -43,19 +43,21 @@ const Body = styled(Scrollbars)`
 const HeaderSubText = styled(ListSubheader)`
   font-size: 13px;
   color: #6e6d6d;
+  padding: 0;
+  margin: 0;
 `
-const StyledCommonLocation = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`
-const StyledListItemLocation = styled.div``
-const StyledMenuLocation = styled.div`
-  opacity: 0 ;
-  ${StyledListItemLocation}:hover & {
-    opacity: 1;
-  }
-`
+// const StyledCommonLocation = styled.div`
+//   display: flex;
+//   align-items: center;
+//   width: 100%;
+// `
+// const StyledListItemLocation = styled.div``
+// const StyledMenuLocation = styled.div`
+//   opacity: 0 ;
+//   ${StyledListItemLocation}:hover & {
+//     opacity: 1;
+//   }
+// `
 const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -67,15 +69,16 @@ const CustomListItem = () => {
     setAnchorEl(null);
   }
   const value = React.useContext(WrapperContext)
+  let locationArr = value.location
   return (
     <ListItem>
-      {value.location.locations.map((location, idx) => {
+      {Array.isArray(locationArr) && locationArr.map((location, idx) => {
         return (
-          <StyledListItemLocation key={idx} style={{ width: "100%" }}>
-            <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{location.date_create}</HeaderSubText>
+          <div className="styled-list-item-location" key={idx}>
+            <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
             {location.locations.map((item, key) => {
               return (
-                <StyledCommonLocation key={key}>
+                <div className="styled-common-location" key={key}>
                   <ItemAvatar>
                     <div>
                       <Icon path={mdiMapMarker} alt='map' size={1.1} color={'ff9d00'} />
@@ -91,13 +94,13 @@ const CustomListItem = () => {
                       </span>
                     }
                   />
-                  <StyledMenuLocation>
+                  <div className="styled-menu-location">
                     <ListItemIcon style={{ display: 'contents' }}>
                       <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
                         <Icon path={mdiDotsHorizontal} size={1} />
                       </ButtonIcon>
                     </ListItemIcon>
-                  </StyledMenuLocation>
+                  </div>
                   <Menu
                     id="simple-menu"
                     anchorEl={anchorEl}
@@ -113,10 +116,10 @@ const CustomListItem = () => {
                     <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
                     <MenuItem onClick={handleClose}>Xóa</MenuItem>
                   </Menu>
-                </StyledCommonLocation>
+                </div>
               )
             })}
-          </StyledListItemLocation>
+          </div>
         )
       })}
     </ListItem>
@@ -136,11 +139,16 @@ const WrapList = styled(List)`
 `
 
 const LocationShareBox = () => {
+  const value = React.useContext(WrapperContext)
+  const searchLocationTabPart = (e) => {
+    value.searchLocation(e.target.value)
+  }
   return (
     <React.Fragment>
       <SearchInput
         placeholder="Nhập từ khóa"
         fullWidth
+        onChange={e => searchLocationTabPart(e)}
       />
       <WrapList subheader={<li />}>
         <CustomListItem />
@@ -157,13 +165,13 @@ function TabBody() {
 
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (evt, newValue) => {
     setValue(newValue);
   };
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <Container>
+      <div className="container-location-tabbody">
         <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
@@ -182,7 +190,7 @@ function TabBody() {
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
           {null}
         </Collapse>
-      </Container>
+      </div>
     </Body>
   )
 }

@@ -10,54 +10,54 @@ import Chip from '@material-ui/core/Chip';
 // import avatar from '../../../../../assets/avatar.jpg';
 import { WrapperContext } from '../../../index'
 
-const Container = styled.a`
-    padding: 10px 8px 10px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 0;
-    &:hover{
-      background-color: #F2F5FA;
-    }
-    &:active {
-      background-color: #e6f0ff;
-    }
-`;
+// const Container = styled.a`
+//     padding: 10px 8px 10px 0;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     background-color: transparent;
+//     border: none;
+//     cursor: pointer;
+//     margin-bottom: 0;
+//     &:hover{
+//       background-color: #F2F5FA;
+//     }
+//     &:active {
+//       background-color: #e6f0ff;
+//     }
+// `;
 
-const NameContainer = styled.div`
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  & >*:last-child {
-    margin-right: 15px;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    color: white;
-    background-color: red;
-  }
-`;
+// const NameContainer = styled.div`
+//   padding: 0;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   & >*:last-child {
+//     margin-right: 15px;
+//     border-radius: 50%;
+//     width: 16px;
+//     height: 16px;
+//     color: white;
+//     background-color: red;
+//   }
+// `;
 
-const ContentContainer = styled.div`
-  & > *:not(:first-child) {
-    margin-top: 5px;
-  }
-  & > *:first-child {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    & > *:first-child {
-      display: flex;
-      & > *:first-child {
-        margin-right: 10px;
-      }
-    }
-  }
-`;
+// const ContentContainer = styled.div`
+//   & > *:not(:first-child) {
+//     margin-top: 5px;
+//   }
+//   & > *:first-child {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     & > *:first-child {
+//       display: flex;
+//       & > *:first-child {
+//         margin-right: 10px;
+//       }
+//     }
+//   }
+// `;
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -71,7 +71,7 @@ display: ${props => props.notification === "true" ? 'block' : 'none'};
 `
 function JobName(props) {
   return (
-    <NameContainer variant='space-between'>
+    <div className="name-container-lbd" variant='space-between'>
       <ColorTypo bold style={{ fontSize: 17, textOverflow: 'ellipsis', width: '200px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.title}</ColorTypo>
       <ChipMes 
         label={'N'}
@@ -80,7 +80,7 @@ function JobName(props) {
         {...props}
         notification={props.notification.toString()}
         />
-    </NameContainer>
+    </div>
   )
 }
 function JobContent(props) {
@@ -115,7 +115,7 @@ function JobContent(props) {
   //   }
   // }, [props.label])
   return (
-    <ContentContainer>
+    <div className="container-content-lbd">
       <div>
         <div>
           <Avatar src={props.avatar} alt='avatar' style={{ width: 20, height: 20 }} />
@@ -127,7 +127,7 @@ function JobContent(props) {
         <BadgeItem color='redlight' badge label={props.label} size='small' />
         <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props} isghim={props.isghim.toString()}/>  
       </div>
-    </ContentContainer>
+    </div>
   )
 }
 
@@ -155,15 +155,14 @@ function ListBodyItem(props) {
   const value = React.useContext(WrapperContext);
 
   return (
-    <Container onClick={() => 
-      // console.log("id list task:::::", props.id)
+    <div className="container-lbd"  onClick={() => 
       value.chooseTask(props.id)
     }>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...props} />
-    </Container>
+    </div>
   )
 }
 

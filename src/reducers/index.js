@@ -30,6 +30,10 @@ import privateMember, { initialState as privateMemberInitialState } from './user
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from './user/banUserFromGroup';
 import searchUser, { initialState as searchUserInitialState } from './groupUser/searchUser';
 import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } from './groupUser/inviteUserJoinGroup';
+import resendInvitationUserJoinGroup, { initialState as resendInvitationUserJoinGroupInitialState } from './groupUser/resendInvitationUserJoinGroup';
+import getRequirementJoinGroup, { initialState as getRequirementJoinGroupInitialState } from './groupUser/getRequirementJoinGroup';
+import acceptRequirementJoinGroup, { initialState as acceptRequirementJoinGroupInitialState } from './groupUser/acceptRequirementJoinGroup';
+import rejectRequirementJoinGroup, { initialState as rejectRequirementJoinGroupInitialState } from './groupUser/rejectRequirementJoinGroup';
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
 import createProjectGroup, { initialState as createProjectGroupInitialState } from './projectGroup/createProjectGroup';
@@ -187,6 +191,10 @@ const rootReducer = combineReducers({
   groupUser: combineReducers({
     searchUser,
     inviteUserJoinGroup,
+    resendInvitationUserJoinGroup,
+    getRequirementJoinGroup,
+    acceptRequirementJoinGroup,
+    rejectRequirementJoinGroup,
   }),
 });
 
@@ -281,6 +289,10 @@ export const DEFAULT_STATE = {
   groupUser: {
     searchUser: searchUserInitialState,
     inviteUserJoinGroup: inviteUserJoinGroupInitialState,
+    resendInvitationUserJoinGroup: resendInvitationUserJoinGroupInitialState,
+    getRequirementJoinGroup: getRequirementJoinGroupInitialState,
+    acceptRequirementJoinGroup: acceptRequirementJoinGroupInitialState,
+    rejectRequirementJoinGroup: rejectRequirementJoinGroupInitialState,
   }
 };
 

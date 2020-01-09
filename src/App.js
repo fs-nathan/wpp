@@ -8,7 +8,6 @@ import { SnackbarProvider } from 'notistack';
 import CloseIcon from '@material-ui/icons/Close';
 import SnackbarHandler from './components/SnackbarHandler';
 import './App.scss';
-
 const defaultTheme = createMuiTheme({
   palette: {
     primary: {
@@ -25,7 +24,6 @@ const defaultTheme = createMuiTheme({
 });
 
 function App() {
-
   const notistackRef = React.createRef();
   const onClickDismiss = key => () => { 
     notistackRef.current.closeSnackbar(key);

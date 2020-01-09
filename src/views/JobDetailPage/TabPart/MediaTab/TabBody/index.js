@@ -17,9 +17,9 @@ import iconDoc from '../../../../../assets/doc.png';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 
-const Container = styled.div`
-  padding: 20px;
-`;
+// const Container = styled.div`
+//   padding: 20px;
+// `;
 
 const SubHeader = styled(ListSubheader)`
   padding: 0;
@@ -29,17 +29,17 @@ const ImageMedia = styled(GridListTile)`
   margin-right: 7px;
 `
 
-const Image = styled.img`
-  height: 80px;
-  width: 80px;
-  margin: 0;
-  padding: 0;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.7
-  }
-`
+// const Image = styled.img`
+//   height: 80px;
+//   width: 80px;
+//   margin: 0;
+//   padding: 0;
+//   border-radius: 5px;
+//   cursor: pointer;
+//   &:hover {
+//     opacity: 0.7
+//   }
+// `
 const ButtonIcon = styled(IconButton)`
   position: absolute;
   top: 0;
@@ -61,14 +61,14 @@ const Button = styled(IconButton)`
     }
   }
 `
-const MediaImage = styled.div`
-  width: auto !important;
-  height: auto !important;
-`
-const WrapImage = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`
+// const MediaImage = styled.div`
+//   width: auto !important;
+//   height: auto !important;
+// `
+// const WrapImage = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+// `
 
 const MenuListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -105,27 +105,25 @@ const MenuListItem = () => {
 }
 
 const MediaBox = (props) => {
-  // console.log('mediabox::', props);
   return (
     <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
-      {props.image.images.map((image, key) => {
+      {props.image.images && props.image.images.map((image, key) => {
         return (
-          <MediaImage key={key}>
+          <div className="media-image" key={key}>
             <GridListTile cols={5}>
               <SubHeader component='div'>{image.date_create}</SubHeader>
             </GridListTile>
-            <WrapImage>
-
+            <div className="wrap-image">
               {image.images.map((item, idx) => {
                 return (
                   <ImageMedia key={idx}>
-                    <Image src={item.url} alt='avatar' />
+                    <img src={item.url} alt='avatar' className="image-media-box" />
                     <MenuListItem />
                   </ImageMedia>
                 )
               })}
-            </WrapImage>
-          </MediaImage>
+            </div>
+          </div>
         );
       })}
     </GridList>
@@ -133,9 +131,16 @@ const MediaBox = (props) => {
 }
 
 const MediaContainer = (props) => {
+  const searchImagesTabPart = (e) => {
+    props.searchImages(e.target.value)
+  }
   return (
     <React.Fragment>
-      <SearchInput fullWidth placeholder='Nhập tên media, ngày đăng, người đăng...' />
+      <SearchInput 
+        fullWidth
+        placeholder='Nhập ngày đăng...'
+        onChange={e => searchImagesTabPart(e)}
+      />
       <MediaBox {...props} />
     </React.Fragment>
   );
@@ -156,20 +161,22 @@ const FileBoxStyledListItem = styled(ListItem)`
       text-align: end;
     }
   }
-`;
-const FileName = styled.div`
-  width: 300px;
-  word-break: break-word;
-`
-const StyledMenuFile = styled.div`
-  opacity: 0 ;
-  ${FileBoxStyledListItem}:hover & {
+  &:hover .styled-menu-file {
     opacity: 1;
   }
-`
+`;
+// const FileName = styled.div`
+//   width: 300px;
+//   word-break: break-word;
+// `
+// const StyledMenuFile = styled.div`
+//   opacity: 0 ;
+//   ${FileBoxStyledListItem}:hover & {
+//     opacity: 1;
+//   }
+// `
 
 const FileBox = (props) => {
-  // const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -181,15 +188,14 @@ const FileBox = (props) => {
   }
 
   return (
-    // <React.Fragment>
     <FileBoxStyledList>
-      {props.file.files.map((item, idx) => {
+      {props.file.files && props.file.files.map((item, idx) => {
         return (
 
           <FileBoxStyledListItem key={idx}>
             <img src={iconDoc} alt='avatar' />
             <div>
-              <FileName>{item.name}</FileName  >
+              <div className="file-name">{item.name}</div>
               <ColorTypo variant='caption'>
                 <Button size='small'>
                   <a href={item.url}>
@@ -201,12 +207,12 @@ const FileBox = (props) => {
             </div>
             <div>
               <ColorTypo variant='body1'>{item.date_create}</ColorTypo>
-              <StyledMenuFile>
+              <div className="styled-menu-file">
 
                 <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
                   <Icon path={mdiDotsHorizontal} size={1} ></Icon>
                 </Button>
-              </StyledMenuFile>
+              </div>
             </div>
             <Menu
               id="simple-menu"
@@ -227,23 +233,20 @@ const FileBox = (props) => {
         )
       })}
     </FileBoxStyledList>
-    // </React.Fragment>
   );
-  // }
-
-  // return (
-  //   <FileBoxStyledList>
-  //     <CustomListItem />
-  //     <CustomListItem />
-  //     <CustomListItem />
-  //   </FileBoxStyledList>
-  // );
 }
 
 const FileContainer = (props) => {
+  const searchFileTabPart = (e) => {
+    props.searchFile(e.target.value)
+  }
   return (
     <React.Fragment>
-      <SearchInput fullWidth placeholder='Nhập từ khóa file' />
+      <SearchInput 
+        fullWidth 
+        placeholder='Nhập từ khóa file'
+        onChange={e => searchFileTabPart(e)}
+      />
       <FileBox {...props} />
     </React.Fragment>
   );
@@ -271,13 +274,13 @@ const Body = styled(Scrollbars)`
   height: 100%;
   
 `;
-const StyledListItemLink = styled.div``
-const StyledMenuLink = styled.div`
-  opacity: 0 ;
-  ${StyledListItemLink}:hover & {
-    opacity: 1;
-  }
-`
+// const StyledListItemLink = styled.div``
+// const StyledMenuLink = styled.div`
+//   opacity: 0 ;
+//   ${StyledListItemLink}:hover & {
+//     opacity: 1;
+//   }
+// `
 const LinkBox = (props) => {
   // console.log("link::",);
 
@@ -293,9 +296,9 @@ const LinkBox = (props) => {
 
   return (
     <List subheader={<li />}>
-      {props.link.map((item, idx) => {
+      {props.link.links && props.link.links.map((item, idx) => {
         return (
-          <StyledListItemLink key={idx}>
+          <div className="styled-list-item-link" key={idx}>
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
             {item.links.map((item, idx) => {
               return (
@@ -311,13 +314,13 @@ const LinkBox = (props) => {
                       {item.url}
                     </a>
                   </ListItemText>
-                  <StyledMenuLink>
+                  <div className="styled-menu-link">
                     <ListItemIcon>
                       <Button onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
                         <Icon path={mdiDotsHorizontal} size={1} />
                       </Button>
                     </ListItemIcon>
-                  </StyledMenuLink>
+                  </div>
                   <Menu
                     id="simple-menu"
                     anchorEl={anchorEl}
@@ -336,26 +339,25 @@ const LinkBox = (props) => {
                 </ListItemLink>
               )
             })}
-          </StyledListItemLink>
+          </div>
         )
       })}
     </List>
   );
 
-  // return (
-  //   <List subheader={<li />}>
-  //     <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>09/09/2019</HeaderSubText>
-  //     <CustomListItem />
-  //     <CustomListItem />
-  //     <CustomListItem />
-  //   </List>
-  // );
 }
 
 const LinkContainer = (props) => {
+  const searchLinkTabPart = (e) => {
+    props.searchLink(e.target.value)
+  }
   return (
     <React.Fragment>
-      <SearchInput fullWidth placeholder='Nhập từ khóa link' />
+      <SearchInput 
+        fullWidth 
+        placeholder='Nhập từ khóa link'
+        onChange={e => searchLinkTabPart(e)}
+      />
       <LinkBox {...props} />
     </React.Fragment>
   );
@@ -375,7 +377,7 @@ function TabBody(props) {
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <Container>
+      <div className="container-media-tabbody">
         <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
           <ColorButton
             startIcon={<Icon path={mdiImage} size={1} color={value === 0 ? colorPal['default'][0] : colorPal['gray'][0]} />}
@@ -405,7 +407,7 @@ function TabBody(props) {
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
           <LinkContainer {...props} />
         </Collapse>
-      </Container>
+      </div>
     </Body>
   )
 }
