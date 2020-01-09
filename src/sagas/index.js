@@ -398,13 +398,10 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.GET_PROJECT_LIST_BASIC_REQUEST, taskDetailSaga.getProjectListBasic);
   //edit name and description task
   yield takeLeading(taskDetailType.UPDATE_NAME_DESCRIPTION_TASK_REQUEST, taskDetailSaga.updateNameDescriptionTask);
-<<<<<<< HEAD
   // static task
   yield takeLeading(taskDetailType.STATIC_TASK_REQUEST, taskDetailSaga.getStaticTask);
-=======
   //updateComplete
   yield takeLeading(taskDetailType.UPDATE_COMPLETE_REQUEST,taskDetailSaga.updateComplete);
->>>>>>> origin/dev_huy
 };
 
 export default rootSaga;

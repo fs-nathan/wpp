@@ -1200,10 +1200,12 @@ async function doUpdateComplete(payload){
 }
 function*updateComplete(action){
   try {
-    const res =yield call(doUpdateComplete,action.payload)
-    console.log("res huyrambo",res);
+    console.log("action.payload:::::::", action.payload);
+    
+    const res =yield call(doUpdateComplete,action.payload.data)
     
     yield put(actions.updateCompleteSuccess(res))
+    yield put(actions.getListTaskDetail({project_id: action.payload.projectId}))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }

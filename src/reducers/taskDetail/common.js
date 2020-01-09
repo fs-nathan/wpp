@@ -11,6 +11,7 @@ const initialState = {
     projectDetail: {},
     projectListBasic: null,
     defaultProjectBasic: [],
+    updateComplete: ''
 }
 
 export default function reducer(state = initialState, action) {
@@ -50,6 +51,12 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 projectListBasic: {projectGroups: searchProjectByProjectName(state.defaultProjectBasic, action.payload)}
             }
+        case types.UPDATE_COMPLETE_SUCCESS: {
+            return {
+                ...state,
+                updateComplete: action.payload
+            }
+        }
         default:
             return state
     }

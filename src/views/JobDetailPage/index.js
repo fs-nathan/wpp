@@ -37,10 +37,9 @@ function JobDetailPage(props) {
         } else {
             props.getProjectListBasic()
         }
-        console.log('history:::', props.history.location.pathname)
+        // console.log('history:::', props.history.location.pathname)
     }, [props.history.location.pathname])
-
-
+    
     const getDataByProjectId = () => {
         props.getRoleTask()
         props.getListGroupTaskByProjectId(props.projectId)
@@ -66,7 +65,6 @@ function JobDetailPage(props) {
 
     useEffect(getDataByTaskId, [props.taskId])
     useEffect(getDataByProjectId, [props.projectId])
-
     return (
 
         <Wrapper value={{ ...props }}>
@@ -86,7 +84,7 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-    // console.log('state static task::::', state.taskDetail.listDetailTask.staticTask);
+    // console.log('state time task::::', state.taskDetail.commonTaskDetail.updateComplete);
     return {
         // offer
         offer: state.taskDetail.taskOffer.offer,
@@ -129,6 +127,7 @@ const mapStateToProps = state => {
         projectListBasic: state.taskDetail.commonTaskDetail.projectListBasic,
         // static task
         staticTask: state.taskDetail.listDetailTask.staticTask,
+        updateComplete: state.taskDetail.commonTaskDetail.updateComplete,
     }
 }
 
@@ -214,10 +213,7 @@ const mapDispatchToProps = dispatch => {
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
         getStaticTask: (data) => dispatch(taskDetailAction.getStaticTask(data)),
         //updateComplete
-        updateComplete:(data)=>{
-            console.log("dataaaaa",data);
-            
-        dispatch(taskDetailAction.updateComplete(data))}
+        updateComplete:(data)=>{  dispatch(taskDetailAction.updateComplete(data))}
 
     };
 };

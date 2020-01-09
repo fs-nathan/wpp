@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import styled from 'styled-components';
 import ColorChip from '../../../../components/ColorChip';
 import { WrapperContext } from '../../index'
@@ -19,14 +19,21 @@ import { WrapperContext } from '../../index'
 //   }
 //   border-bottom: 1px solid rgba(0, 0, 0, .1);
 // `;
-
+//  const DEFAULT_VALUE = {
+//     task_me: 0,
+//     task_waiting: 0,   // Waiting
+//     task_doing: 0,   // Doing
+//     task_complete: 0, // Complete
+//     task_expired: 0,    // Expired
+//     task_stop: 0,   // Stop
+//  }
 
 
 function ListBanner() {
   
   const value = React.useContext(WrapperContext)
   const [selected, setSelected] = React.useState(0)
-
+  // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
   const handleChangeFilterType = (typeIdx) => {
     value.filterTaskByType(typeIdx)
     setSelected(typeIdx) 
@@ -36,21 +43,36 @@ function ListBanner() {
   if( value && value.staticTask && value.staticTask.static) {
     data = value.staticTask.static
   }
-  // const staticTask = [
-  //   'Tất cả' + ' (' + `${data.task_of_me}` + ')',
-  //   `${data.task_waiting}`,
-  //   `${data.task_doing}`,
-  //   `${data.task_complete}`,
-  //   `${data.task_stop}`,
-  //   `${data.task_expired}`,
-  // ]
+  // useEffect(() => {
+  //   if( !data ) {
+  //     // const {
+  //     //   task_of_me, task_waiting, task_doing, task_complete, task_expired, task_stop
+  //     // } = data
+  //     // setStaticTask({
+  //     //   task_me: data.task_of_me ,
+  //     //   task_waiting: data.task_waiting,
+  //     //   task_doing:  data.task_doing ,
+  //     //   task_complete: data.task_complete ,
+  //     //   task_expired: data.task_expired,
+  //     //   task_stop: data.task_stop
+  //     // })
+      const taskStatic = {
+        task_me: data.task_of_me ,
+        task_waiting: data.task_waiting,
+        task_doing:  data.task_doing ,
+        task_complete: data.task_complete ,
+        task_expired: data.task_expired,
+        task_stop: data.task_stop
+      }
+    // }
+  // }, [data])
   const jobTypes = [
-    'Tất cả' + ' (' + `${data.task_of_me}` + ')',
-    'Đang chờ' + ' (' + `${data.task_waiting}` + ')',   // Waiting
-    'Đang làm' + ' (' + `${data.task_doing}` + ')',   // Doing
-    'Hoàn thành' + ' (' + `${data.task_complete}` + ')', // Complete
-    'Quá hạn' + ' (' + `${data.task_expired}` + ')',    // Expired
-    'Tạm dừng' + ' (' + `${data.task_stop}` + ')',   // Stop
+    'Tất cả' + ' (' + (taskStatic.task_me ? taskStatic.task_me : 0) + ')',
+    'Đang chờ' + ' (' + (taskStatic.task_waiting ? taskStatic.task_waiting : 0) + ')',   // Waiting
+    'Đang làm' + ' (' + (taskStatic.task_doing ? taskStatic.task_doing : 0) + ')',   // Doing
+    'Hoàn thành' + ' (' + (taskStatic.task_complete ? taskStatic.task_complete : 0) + ')', // Complete
+    'Quá hạn' + ' (' + (taskStatic.task_expired ? taskStatic.task_expired : 0) + ')',    // Expired
+    'Tạm dừng' + ' (' + (taskStatic.task_stop ? taskStatic.task_stop : 0) + ')',   // Stop
   ]
   return (
     <div className="container-list-banner">
