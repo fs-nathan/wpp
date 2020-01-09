@@ -213,6 +213,12 @@ const mapDispatchToProps = dispatch => {
         searchMember: (data) => dispatch(taskDetailAction.searchMember(data)),
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
         getStaticTask: (data) => dispatch(taskDetailAction.getStaticTask(data)),
+        //updateComplete
+        updateComplete:(data)=>{
+            console.log("dataaaaa",data);
+            
+        dispatch(taskDetailAction.updateComplete(data))}
+
     };
 };
 

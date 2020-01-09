@@ -943,6 +943,8 @@ async function doGetListTaskDetail({ project_id }) {
 function* getListTaskDetail(action) {
   try {
     const res = yield call(doGetListTaskDetail, action.payload)
+ 
+    
     yield put(actions.getListTaskDetailSuccess(res))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error))
@@ -1174,9 +1176,36 @@ async function doGetProjectDetail(project_id) {
 function* getProjectDetail(action) {
   try {
     const res = yield call(doGetProjectDetail, action.payload)
+
+
     yield put(actions.getProjectDetailSuccess(res))
   } catch (error) {
     yield put(actions.getProjectDetailFail(error))
+  }
+}
+//updateComplete
+async function doUpdateComplete(payload){
+  try {
+    const config = {
+      url: 'task/update-complete',
+      method: 'put',
+      data: payload,
+    }
+    const result = await apiService(config);
+    return result.data;
+    // return null;
+  } catch (error) {
+    throw error;
+  }
+}
+function*updateComplete(action){
+  try {
+    const res =yield call(doUpdateComplete,action.payload)
+    console.log("res huyrambo",res);
+    
+    yield put(actions.updateCompleteSuccess(res))
+  } catch (error) {
+    yield put(actions.updateCommandFail(error))
   }
 }
 
@@ -1205,6 +1234,8 @@ function* getStaticTask(action) {
 }
 
 export {
+  //updateComplete
+  updateComplete,
   // Update Priority
   updatePriority,
 

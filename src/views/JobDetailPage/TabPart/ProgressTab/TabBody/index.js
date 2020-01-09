@@ -158,6 +158,14 @@ function TabBody() {
       )
     })
   }
+  // function convertDate(convert_day){
+  //   return convert_day.split('-').reverse().join('-');
+  // }
+  const updateComplete=(data)=>{
+    let task_id=value.taskId
+    let complete=parseFloat(data)
+    value.updateComplete({task_id,complete})
+  }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
@@ -178,7 +186,9 @@ function TabBody() {
           valueLabelDisplay="on" 
           aria-label="pretto slider" 
           defaultValue={0}
-          onChangeCommitted={(e, val) => console.log("GOI API voi value la: ", val)}
+          onChangeCommitted={(e, val) => {
+            updateComplete(val)
+            console.log("GOI API voi value la: ", val)}}
           />
         </WrapperProgressBar>
         <LegendBox>
