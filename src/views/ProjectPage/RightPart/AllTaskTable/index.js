@@ -35,11 +35,16 @@ const SubTitle = styled.div`
   display: flex;
   align-items: center;
   & > * {
+    &:hover {
+      cursor: pointer;
+    }
     &:not(:first-child) {
       margin-left: 8px;
+    }
+    &:not(:nth-child(2)) {
       color: #8b8b8b;
     }
-    &:first-child {
+    &:nth-child(2) {
       color: #2196F3;
     }
   }
@@ -185,8 +190,8 @@ function AllTaskTable({
               title: 'Danh sách công việc',
               subTitle: () => (
                 <SubTitle>
+                  <span onClick={evt => history.push(`/list-task-detail/${projectId}`)}>Chat</span>
                   <span>Table</span>
-                  <span>Chat</span>
                   <span>Grant</span>
                 </SubTitle>
               ),
@@ -243,7 +248,10 @@ function AllTaskTable({
             }}
             columns={[{
               label: 'Tên công việc',
-              field: (row) => <LinkSpan onClick={evt => history.push(`/list-task-detail/`)}>{get(row, 'name', '')}</LinkSpan>,
+              field: (row) => <LinkSpan 
+                onClick={evt => history.push(`/list-task-detail/${get(row, 'id')}`)}>
+                  {get(row, 'name', '')}
+                </LinkSpan>,
               align: 'left',
               width: '25%',
             }, {
@@ -260,7 +268,7 @@ function AllTaskTable({
               label: 'Tiến độ',
               field: (row) => `${get(row, 'duration', 0)} ngày`,
               align: 'center',
-              width: '10%',
+              width: '8%',
             }, {
               label: 'Bắt đầu',
               field: (row) => <DateBox>
@@ -279,7 +287,7 @@ function AllTaskTable({
               label: 'Hoàn thành',
               field: (row) => <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />,
               align: 'center',
-              width: '10%',
+              width: '15%',
             }, {
               label: 'Trạng thái',
               field: (row) => <StateBox
@@ -317,7 +325,7 @@ function AllTaskTable({
                 />
               ),
               align: 'center',
-              width: '5%',
+              width: '2%',
             }]}
             data={tasks}
           />

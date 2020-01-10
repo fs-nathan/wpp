@@ -44,6 +44,9 @@ const StyledListSubheader = styled(ListSubheader)`
 
 const CustomListItem = styled(StyledListItem)`
   padding: 10px 16px;
+  &:hover {
+    cursor: auto !important;
+  }
 `;
 
 const Banner = styled.div`
@@ -162,7 +165,6 @@ function UserFreeRoomList({ room, onAddMember, }) {
         {get(room, 'users', []).map(user => (
           <CustomListItem 
             key={get(user, 'id')}
-            onClick={evt => onAddMember(user)}
           >
             <CustomAvatar style={{ width: 40, height: 40, }} src={get(user, 'avatar', '')} alt='avatar' />
             <ListItemText 
@@ -180,6 +182,7 @@ function UserFreeRoomList({ room, onAddMember, }) {
             <AddButton
               size='small'
               variant='outlined'
+              onClick={evt => onAddMember(user)}
             >
               Thêm
             </AddButton>
@@ -339,7 +342,9 @@ function MemberSetting({
         maxWidth='lg'
         open={open}
         setOpen={setOpen}
+        confirmRender={null}
         onConfirm={() => null}
+        cancleRender={() => 'Thoát'}
         height='tall'
         columns={2}
         left={{

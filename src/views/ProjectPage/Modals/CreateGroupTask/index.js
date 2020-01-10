@@ -16,7 +16,12 @@ const Container = styled.div`
 `;
 
 const ButtonCase = styled.div`
-  margin-top: 32px;
+  &:first-child {
+    margin-top: 12px; 
+  }
+  &:not(:first-child) {
+    margin-top: 32px;
+  }
   width: 80%;
   height: 100px;
   display: flex;
@@ -75,6 +80,8 @@ function CreateGroupTask({ open, setOpen, }) {
       title='Tạo nhóm công việc'
       open={open}
       setOpen={setOpen}
+      confirmRender={null}
+      height='short'
     >
       <Container>
         <ButtonCase onClick={evt => {

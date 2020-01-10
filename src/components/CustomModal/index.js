@@ -12,9 +12,11 @@ import { get } from 'lodash';
 import { connect } from 'react-redux';
 import './style.scss';
 
-const StyledScrollbars = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar-main ${className}`} {...props} />;
+const StyledScrollbars = ({ className = '', height, ...props }) => 
+  <Scrollbars className={`comp_CustomModal___scrollbar-main-${height} ${className}`} {...props} />;
 
-const StyledScrollbarsSide = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar-side ${className}`} {...props} />;
+const StyledScrollbarsSide = ({ className = '', height, ...props }) => 
+  <Scrollbars className={`comp_CustomModal___scrollbar-side-${height} ${className}`} {...props} />;
 
 const StyledDialogContent = ({ className = '', ...props }) => <DialogContent className={`comp_CustomModal___dialog-content ${className}`} {...props} />;
 
@@ -49,11 +51,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function OneColumn({ children, }) {
+function OneColumn({ children, height, }) {
   return (
     <StyledScrollbars
       autoHide
       autoHideTimeout={500}
+      height={height}
     >
       <StyledDialogContent>
         {children}
@@ -62,7 +65,7 @@ function OneColumn({ children, }) {
   );
 }
 
-function TwoColumns({ maxWidth, left, right }) {
+function TwoColumns({ maxWidth, left, right, height, }) {
   return (
     <TwoColumnsContainer maxWidth={maxWidth}>
       <div>
@@ -72,6 +75,7 @@ function TwoColumns({ maxWidth, left, right }) {
         <StyledScrollbarsSide
           autoHide
           autoHideTimeout={500}
+          height={height}
         >
           <div>
             {get(left, 'content', () => '')()}
@@ -85,6 +89,7 @@ function TwoColumns({ maxWidth, left, right }) {
         <StyledScrollbarsSide
           autoHide
           autoHideTimeout={500}
+          height={height}
         >
           <div>
             {get(right, 'content', () => '')()}
@@ -100,9 +105,11 @@ function CustomModal({
   columns = 1, 
   children = null, left = null, right = null, 
   canConfirm = true, 
-  onConfirm = () => null, onCancle = () => null, 
+  confirmRender = () => 'Hoàn thành', onConfirm = () => null, 
+  cancleRender = () => 'Hủy', onCancle = () => null, 
   open, setOpen, 
   maxWidth='md', fullWidth = false,
+  height = 'medium',
   className = '',
   colors,
 }) {
@@ -136,18 +143,30 @@ function CustomModal({
         </IconButton>
       </StyledDialogTitle>
       {columns === 1 && (
-        <OneColumn children={children} />
+        <OneColumn 
+          children={children} 
+          height={height}
+        />
       )}
       {columns === 2 && (
-        <TwoColumns maxWidth={maxWidth} left={left} right={right} />
+        <TwoColumns 
+          maxWidth={maxWidth} 
+          left={left} 
+          right={right} 
+          height={height}
+      />
       )}
       <StyledDialogActions>
-        <ActionsCancleButton onClick={() => handleCancle()}>
-          Hủy
-        </ActionsCancleButton>
-        <ActionsAcceptButton style={{ color: bgColor.value }} disabled={!canConfirm} onClick={() => handleConfirm()}>
-          Hoàn thành
-        </ActionsAcceptButton>
+        {confirmRender !== null && (
+          <ActionsAcceptButton style={{ color: bgColor.value }} disabled={!canConfirm} onClick={() => handleConfirm()}>
+            {confirmRender()}
+          </ActionsAcceptButton>
+        )}
+        {cancleRender !== null && (
+          <ActionsCancleButton onClick={() => handleCancle()}>
+            {cancleRender()}
+          </ActionsCancleButton>
+        )}
       </StyledDialogActions>
     </StyledDialog>
   )
@@ -165,10 +184,13 @@ CustomModal.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.func.isRequired,
   }), 
+  confirmRender: PropTypes.func,
   onConfirm: PropTypes.func, 
+  cancleRender: PropTypes.func,
   onCancle: PropTypes.func, 
   open: PropTypes.bool.isRequired, 
-  setOpen: PropTypes.func.isRequired
+  setOpen: PropTypes.func.isRequired,
+  height: PropTypes.oneOf(['short', 'medium', 'tall']),
 };
 
 export default connect(state => ({

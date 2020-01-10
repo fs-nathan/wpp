@@ -21,11 +21,11 @@ const StyledTableBody = styled(TableBody)`
 const UserTableCell = styled(TableCell)`
   & > span {
     font-size: 14px;
-    color: ${colorPal['green'][0]};
+    color: #222;
   }
   & > small {
-    font-size: 12px;
-    color: ${colorPal['gray'][0]};
+    font-size: 13px;
+    color: #999;
   }
 `;
 
@@ -37,6 +37,8 @@ function MembersDetail({ open, setOpen, members, }) {
         open={open}
         setOpen={setOpen}
         title='Thành viên nhóm'
+        confirmRender={null}
+        cancleRender={() => 'Thoát'}
         onCancle={() => setOpen(false)}
       >
         <Table>
@@ -52,7 +54,7 @@ function MembersDetail({ open, setOpen, members, }) {
             {members.map(member => (
               <TableRow key={get(member, 'id')}>
                 <TableCell>
-                  <CustomAvatar src={get(member, 'avatar')} alt='avatar' />
+                  <CustomAvatar style={{ width: 35, height: 35, }} src={get(member, 'avatar')} alt='avatar' />
                 </TableCell>
                 <UserTableCell>
                   <span>{get(member, 'name', '')}</span>

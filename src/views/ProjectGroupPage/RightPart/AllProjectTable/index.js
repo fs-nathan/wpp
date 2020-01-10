@@ -76,7 +76,7 @@ const StyledListSubheader = styled(ListSubheader)`
 const TimeBox = styled.div`
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 200px 550px;
+  grid-template-columns: 200px 450px;
   grid-template-areas: 'side main';
 `;
 
@@ -123,12 +123,7 @@ const DateWrapper = styled.div`
   justify-content: space-between;
   width: 90%;
   & > div {
-    display: flex;
-    flex-direction: column;
-    & > span {
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
+    max-width: 170px;
   }
 `;
 
@@ -628,7 +623,7 @@ function AllProjectTable({
                 field: (row) => <LinkSpan onClick={evt => history.push(`/project/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
                 sort: evt => handleSortColumn('name'),
                 align: 'left',
-                width: '34%',
+                width: '29%',
               },
               {
                 label: 'Trạng thái',
@@ -672,7 +667,7 @@ function AllProjectTable({
                 ),
                 sort: evt => handleSortColumn('complete'),
                 align: 'left',
-                width: '10%',
+                width: '15%',
               },
               {
                 label: 'Tiến độ',
