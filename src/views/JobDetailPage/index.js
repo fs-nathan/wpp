@@ -23,22 +23,22 @@ const Wrapper = WrapperContext.Provider
 function JobDetailPage(props) {
     useEffect(() => {
         // props.getProjectGroup()
-
         props.getProjectListBasic()
-
         // props.getDetailProject(props.projectId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
-        if (props.history.location.pathname.substring(18).length > 0) {
-            props.getDetailProject(props.history.location.pathname.substring(18))
-            props.chooseProject({ id: props.history.location.pathname.substring(18) })
+        let id = props.history.location.pathname.substring(18)
+        if (id.length > 0) {
+            if(id !== props.projectId) {
+                props.getDetailProject(id)
+                props.chooseProject({ id })
+            }
         } else {
             props.getProjectListBasic()
         }
-        // console.log('history:::', props.history.location.pathname)
-    }, [props.history.location.pathname])
+    }, [props])
     
     const getDataByProjectId = () => {
         props.getRoleTask()
