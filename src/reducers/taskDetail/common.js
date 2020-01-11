@@ -37,8 +37,8 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 projectListBasic: action.payload,
-                activeProjectId: action.payload.projectId,
-                projectDetail: getFirstProjectDetail(action.payload.projectGroups),
+                activeProjectId: action.payload.projectId !== "" ? action.payload.projectId : getFirstProjectDetail(action.payload.projectGroups).id, 
+                projectDetail: action.payload.projectId === "" && getFirstProjectDetail(action.payload.projectGroups),
                 defaultProjectBasic: action.payload.projectGroups,
             }
         case types.GET_LIST_TASK_DETAIL_SUCCESS:

@@ -1111,15 +1111,15 @@ async function doGetProjectListBasic() {
   }
 }
 
-function* getProjectListBasic() {
+function* getProjectListBasic(action) {
   try {
     const response = yield call(doGetProjectListBasic)
     let projectGroups = response.projects
     
-    let projectId = ""
-    // set active project id to call other API
-    let projectDetail = getFirstProjectDetail(projectGroups)
-    if(projectDetail.id) projectId = projectDetail.id
+    const projectId = action.payload
+    // // set active project id to call other API
+    // let projectDetail = getFirstProjectDetail(projectGroups)
+    // if(projectDetail.id) projectId = projectDetail.id 
     
     yield put(actions.getProjectListBasicSuccess({projectGroups, projectId}))
   } catch (error) {

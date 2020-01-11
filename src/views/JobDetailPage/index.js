@@ -21,22 +21,24 @@ const Wrapper = WrapperContext.Provider
 // `;
 
 function JobDetailPage(props) {
+    // useEffect(() => {
+    //     // props.getProjectGroup()
+
+    //     props.getProjectListBasic()
+
+    //     // props.getDetailProject(props.projectId)
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [])
+
     useEffect(() => {
-        // props.getProjectGroup()
-
-        props.getProjectListBasic()
-
-        // props.getDetailProject(props.projectId)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
+        // console.log('HOANG:::', props.history.location.pathname)
+        let projectId = ""
         if (props.history.location.pathname.substring(18).length > 0) {
-            props.getDetailProject(props.history.location.pathname.substring(18))
-            props.chooseProject({ id: props.history.location.pathname.substring(18) })
-        } else {
-            props.getProjectListBasic()
+            projectId = props.history.location.pathname.substring(18)
+            props.getDetailProject(projectId)
+            props.chooseProject({ id: projectId })
         }
+        props.getProjectListBasic(projectId)
         // console.log('history:::', props.history.location.pathname)
     }, [props.history.location.pathname])
     
@@ -210,7 +212,7 @@ const mapDispatchToProps = dispatch => {
         searchDemand: (data) => dispatch(taskDetailAction.searchDemand(data)),
         searchOffer: (data) => dispatch(taskDetailAction.searchOffer(data)),
         searchMember: (data) => dispatch(taskDetailAction.searchMember(data)),
-        getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
+        getProjectListBasic: (projectId) => dispatch(taskDetailAction.getProjectListBasic(projectId)),
         getStaticTask: (data) => dispatch(taskDetailAction.getStaticTask(data)),
         //updateComplete
         updateComplete:(data)=>{  dispatch(taskDetailAction.updateComplete(data))}
