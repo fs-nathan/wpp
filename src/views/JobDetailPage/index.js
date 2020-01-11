@@ -23,17 +23,29 @@ const Wrapper = WrapperContext.Provider
 function JobDetailPage(props) {
     useEffect(() => {
         // props.getProjectGroup()
+
         props.getProjectListBasic()
+
         // props.getDetailProject(props.projectId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-
+    useEffect(() => {
+        if (props.history.location.pathname.substring(18).length > 0) {
+            props.getDetailProject(props.history.location.pathname.substring(18))
+            props.chooseProject({ id: props.history.location.pathname.substring(18) })
+        } else {
+            props.getProjectListBasic()
+        }
+        // console.log('history:::', props.history.location.pathname)
+    }, [props.history.location.pathname])
+    
     const getDataByProjectId = () => {
         props.getRoleTask()
         props.getListGroupTaskByProjectId(props.projectId)
         if (props.projectId !== "")
             props.getListTaskDetailByProjectId(props.projectId)
+            props.getStaticTask(props.projectId)
     }
 
     const getDataByTaskId = () => {
@@ -53,17 +65,16 @@ function JobDetailPage(props) {
 
     useEffect(getDataByTaskId, [props.taskId])
     useEffect(getDataByProjectId, [props.projectId])
-
     return (
 
         <Wrapper value={{ ...props }}>
-            <div className={(props.taskId ?  "container" : "container-job-introduce")} >
+            <div className={(props.taskId ? "container" : "container-job-introduce")} >
                 <ListPart {...props} />
                 {(props.taskId) ?
-                        <>
-                            <ChatPart {...props} />
-                            <TabPart {...props} />
-                        </>
+                    <>
+                        <ChatPart {...props} />
+                        <TabPart {...props} />
+                    </>
                     :
                     <Intro />
                 }
@@ -73,11 +84,10 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-    // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectListBasic);
+    // console.log('state time task::::', state.taskDetail.commonTaskDetail.updateComplete);
     return {
         // offer
         offer: state.taskDetail.taskOffer.offer,
-
         pendingItems: state.taskDetail.taskOffer.pendingItems,
         approvedItems: state.taskDetail.taskOffer.approvedItems,
         // remind
@@ -115,6 +125,9 @@ const mapStateToProps = state => {
         projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
         // project list basic
         projectListBasic: state.taskDetail.commonTaskDetail.projectListBasic,
+        // static task
+        staticTask: state.taskDetail.listDetailTask.staticTask,
+        updateComplete: state.taskDetail.commonTaskDetail.updateComplete,
     }
 }
 
@@ -124,28 +137,28 @@ const mapDispatchToProps = dispatch => {
         getSubTaskByTaskId: taskId => dispatch(taskDetailAction.getSubTask({ taskId })),
         postSubTaskByTaskId: (taskId, name) => dispatch(taskDetailAction.postSubTask({ task_id: taskId, name })),
         updateSubTaskByTaskId: (subTaskId, name, taskId) => dispatch(taskDetailAction.updateSubTask({ sub_task_id: subTaskId, name, taskId })),
-        deleteSubTaskByTaskId: ({subTaskId, taskId}) => dispatch(taskDetailAction.deleteSubTask({ sub_task_id: subTaskId, taskId: taskId })),
-        completeSubTaskByTaskId: ({subTaskId, taskId}) => dispatch(taskDetailAction.completeSubTask({ sub_task_id: subTaskId, taskId: taskId })),
+        deleteSubTaskByTaskId: ({ subTaskId, taskId }) => dispatch(taskDetailAction.deleteSubTask({ sub_task_id: subTaskId, taskId: taskId })),
+        completeSubTaskByTaskId: ({ subTaskId, taskId }) => dispatch(taskDetailAction.completeSubTask({ sub_task_id: subTaskId, taskId: taskId })),
         // remind
         getRemindByTaskId: taskId => dispatch(taskDetailAction.getRemind({ taskId })),
         createRemindWithTimeDetail: (data) => dispatch(taskDetailAction.postRemindWithTimeDetail(data)),
         createRemindWithDurationDetail: (data) => dispatch(taskDetailAction.postRemindDuration(data)),
         updateRemindWithTimeDetail: ({ data, taskId }) => dispatch(taskDetailAction.updateRemindWithTimeDetail({ data, taskId })),
         updateRemindWithDurationDetail: ({ data, taskId }) => dispatch(taskDetailAction.updateRemindWithDuration({ data, taskId })),
-        deleteRemindWByRemindId: ({remindId, taskId}) => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId, taskId: taskId })),
+        deleteRemindWByRemindId: ({ remindId, taskId }) => dispatch(taskDetailAction.deleteRemind({ remind_id: remindId, taskId: taskId })),
         // offer
         getOfferByTaskId: taskId => dispatch(taskDetailAction.getOffer({ taskId })),
         createOfferByTaskId: ({ data, taskId }) => dispatch(taskDetailAction.createOffer({ data, taskId })),
-        deleteOfferByTaskId: ({offer_id, taskId}) => dispatch(taskDetailAction.deleteOffer({ offer_id, taskId })),
+        deleteOfferByTaskId: ({ offer_id, taskId }) => dispatch(taskDetailAction.deleteOffer({ offer_id, taskId })),
         updateOfferById: ({ offerId, content, taskId }) => dispatch(taskDetailAction.updateOffer({ offerId, content, taskId })),
         uploadDocumentToOfferById: (data, cb, taskId) => dispatch(taskDetailAction.uploadDocumentToOffer(data, cb, taskId)),
         deleteDocumentToOfferById: (data, cb, taskId) => dispatch(taskDetailAction.deleteDocumentToOffer(data, cb, taskId)),
-        handleOfferById: ({data, taskId}) => dispatch(taskDetailAction.handleOffer({data, taskId})),
+        handleOfferById: ({ data, taskId }) => dispatch(taskDetailAction.handleOffer({ data, taskId })),
         // command 
         getCommandByTaskId: task_id => dispatch(taskDetailAction.getCommand({ task_id })),
-        createCommandByTaskId: ({task_id, content, type}) => dispatch(taskDetailAction.createCommand({ task_id, content, type })),
-        updateCommandByTaskId: ({id, content, type, taskId}) => dispatch(taskDetailAction.updateCommand({ command_id: id, content, type, taskId })),
-        deleteCommandByCommandId: ({command_id, task_id}) => dispatch(taskDetailAction.deleteCommand({ command_id, task_id })),
+        createCommandByTaskId: ({ task_id, content, type }) => dispatch(taskDetailAction.createCommand({ task_id, content, type })),
+        updateCommandByTaskId: ({ id, content, type, taskId }) => dispatch(taskDetailAction.updateCommand({ command_id: id, content, type, taskId })),
+        deleteCommandByCommandId: ({ command_id, task_id }) => dispatch(taskDetailAction.deleteCommand({ command_id, task_id })),
         // Media Image File Link
         getImageByTaskId: taskId => dispatch(taskDetailAction.getImage({ taskId })),
         getFileByTaskId: taskId => dispatch(taskDetailAction.getFileTabPart({ taskId })),
@@ -198,6 +211,10 @@ const mapDispatchToProps = dispatch => {
         searchOffer: (data) => dispatch(taskDetailAction.searchOffer(data)),
         searchMember: (data) => dispatch(taskDetailAction.searchMember(data)),
         getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
+        getStaticTask: (data) => dispatch(taskDetailAction.getStaticTask(data)),
+        //updateComplete
+        updateComplete:(data)=>{  dispatch(taskDetailAction.updateComplete(data))}
+
     };
 };
 

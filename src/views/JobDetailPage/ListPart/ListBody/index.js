@@ -30,17 +30,18 @@ function ListBody() {
     data = listTaskDetail.tasks
   }
 
+   
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      {data.map((item, key) => {
-        
-        return (
-          <StyledList key={key} >
-            <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
-            {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
-          </StyledList>
-        )
-      })}
+        {data.map((item, key) => {
+          return (
+            <StyledList key={key} >
+              <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
+              {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
+            </StyledList>
+          )
+        })}
+     
 
     </Body>
 
