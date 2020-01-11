@@ -78,7 +78,7 @@ const TitleText = styled(Typography)`
     margin: 0 0 15px 0;
   `
 
-const TexTitle = styled(Typography)`
+const TextTitle = styled(Typography)`
     font-size: 15px;
     width: 204px;
     padding: 15px 0 8px 0;
@@ -88,16 +88,16 @@ const HelperText = styled(Typography)`
       font-size: 12px;
       margin: 8px 0 0;
   `
-const DivTitle = styled.div`
-    display: flex;
-    margin: 15px 0;
-  `
+// const DivTitle = styled.div`
+//     display: flex;
+//     margin: 15px 0;
+//   `
 
-const Div = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  `
+// const Div = styled.div`
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//   `
 // const Text = styled(TextField)`
 //     & > *:first-child {
 //       margin-bottom: 20px;
@@ -130,16 +130,16 @@ const InputDate = styled(KeyboardDatePicker)`
     }
   } 
 `
-const DivTime = styled.span`
+// const DivTime = styled.span`
     
-  `
-const SelectInput = styled.div`
-    // margin-top: 8px;
-    width: 160px;
-    & > div > div > div  {
-        padding : 7px 0;
-    }
-`
+//   `
+// const SelectInput = styled.div`
+//     margin-top: 8px;
+//     width: 160px;
+//     & > div > div > div  {
+//         padding : 7px 0;
+//     }
+// `
 const ContentText = styled(TextField)`
     & > label {
       font-size: 14px;
@@ -156,7 +156,11 @@ const InputProgress = styled(OutlinedInput)`
       padding: 0 0 0 14px;
     }
 `
-
+const DurationButton = styled(Button)`
+  margin-left: 20px;
+  width: 90px;
+  box-shadow: none;
+`  
 const styles = theme => ({
   root: {
     margin: 0,
@@ -339,13 +343,14 @@ function RemindModal(props) {
     // Close modal
     props.handleClickClose()
   }
+  
 
   return (
     <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={handleCloseModal} fullWidth>
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
         Nhắc hẹn
       </DialogTitle>
-      <DialogContent dividers style={{ overflow: 'hidden' }}>
+      <DialogContent dividers style={{overflow: 'hidden'}}>
         <TitleText component="div">Loại nhắc hẹn</TitleText>
         <InputSelect
           commandSelect={selector}
@@ -357,12 +362,12 @@ function RemindModal(props) {
         {data.type === REMIND_TIME_TYPE ?
           <Typography component="div">
             <HelperText>Bạn có lịch hẹn, ghi chú, sự kiện... quan trọng ? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhở bạn khi đến hẹn</HelperText>
-            <DivTitle component="div">
-              <TexTitle component="span">Ngày nhắc</TexTitle>
-              <TexTitle component="span">Giờ nhắc</TexTitle>
+            <div className="remind-title">
+              <TextTitle component="span">Ngày nhắc</TextTitle>
+              <TextTitle component="span">Giờ nhắc</TextTitle>
               <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
-            </DivTitle>
-            <Div>
+            </div>
+            <div className="remind-body">
               {/* <InputDateTime
                 label="Ngày"
                 variant="outlined"
@@ -384,7 +389,7 @@ function RemindModal(props) {
                   }}
                 />
               </MuiPickersUtilsProvider>
-              <DivTime>
+              <span>
                 <InputDateTime
                   type={'time'}
                   label="Thời gian"
@@ -392,21 +397,21 @@ function RemindModal(props) {
                   value={data.time_remind}
                   onChange={e => handleChangeData("time_remind", e.target.value)}
                 />
-              </DivTime>
-              <SelectInput >
+              </span>
+              <div className="type-remind" >
                 <OutlinedInputSelect
                   commandSelect={badges}
                   selectedIndex={data.type_remind}
                   setOptions={typeId => { handleChangeData("type_remind", typeId); }}
                 />
-              </SelectInput>
-            </Div>
+              </div>
+            </div>
           </Typography>
           :
           <div>
             <HelperText>Khi tiến độ công việc được xác định (tự động) dựa trên thời gian hiện tại (thời gian thực) lớn hơn hoặc bằng mốc đã chọn, hệ thống sẽ nhắc nhở bạn</HelperText>
-            <TexTitle component="div">Mốc tiến độ cần nhắc</TexTitle>
-            <div style={{ display: 'flex' }}>
+            <TextTitle component="div">Mốc tiến độ cần nhắc</TextTitle>
+            <div className="wrapper-progress">
               <InputProgress
                 fullWidth
                 endAdornment={<InputAdornment position="end">%</InputAdornment>}
@@ -415,10 +420,9 @@ function RemindModal(props) {
                 onChange={e => handleChangeDuration(e.target.value)}
                 onKeyDown={e => handlePressKeyInDurationInput(e.keyCode)}
               />
-              <Button onClick={addDuration}
+              <DurationButton onClick={addDuration}
                 variant="contained"
-                style={{ marginLeft: 20, width: 90, boxShadow: 'none' }}
-              >Thêm</Button>
+              >Thêm</DurationButton>
             </div>
             <Typography component={'div'}>
               {data.duration.map((item, key) => (

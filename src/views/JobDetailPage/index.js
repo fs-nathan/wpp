@@ -21,26 +21,22 @@ const Wrapper = WrapperContext.Provider
 // `;
 
 function JobDetailPage(props) {
-    // useEffect(() => {
-    //     // props.getProjectGroup()
-
-    //     props.getProjectListBasic()
-
-    //     // props.getDetailProject(props.projectId)
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
+    useEffect(() => {
+        // props.getProjectGroup()
+        props.getProjectListBasic()
+        // props.getDetailProject(props.projectId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
-        // console.log('HOANG:::', props.history.location.pathname)
-        let projectId = ""
-        if (props.history.location.pathname.substring(18).length > 0) {
-            projectId = props.history.location.pathname.substring(18)
-            props.getDetailProject(projectId)
-            props.chooseProject({ id: projectId })
+        let id = props.history.location.pathname.substring(18)
+        if (id.length > 0) {
+            if(id !== props.projectId) {
+                props.getDetailProject(id)
+                props.chooseProject({ id })
+            }
         }
-        props.getProjectListBasic(projectId)
-        // console.log('history:::', props.history.location.pathname)
-    }, [props.history.location.pathname])
+    }, [props])
     
     const getDataByProjectId = () => {
         props.getRoleTask()

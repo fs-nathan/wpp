@@ -13,48 +13,48 @@ import SearchInput from '../../../../../components/SearchInput';
 import RemindModal from '../RemindModal';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
-import { convertDateToText } from '../../../../../helpers/jobDetail/stringHelper';
+// import { convertDateToText } from '../../../../../helpers/jobDetail/stringHelper';
 
 
-const StyledList = styled.ul`
-  margin-top: 20px;
-  padding-inline-start: 0 !important;
-  list-style-type: none;
-  & > li {
-    padding: 8px 0;
-  }
-`;
+// const StyledList = styled.ul`
+//   margin-top: 20px;
+//   padding-inline-start: 0 !important;
+//   list-style-type: none;
+//   & > li {
+//     padding: 8px 0;
+//   }
+// `;
 
-const StyledListItem = styled.li`
-  display: flex;
-  flex-direction: column;
-`;
+// const StyledListItem = styled.li`
+//   display: flex;
+//   flex-direction: column;
+// `;
 
-const StyledTitleBox = styled.div`
-  display: flex;
-  align-items: center;
-  & > *:not(:first-child) {
-    margin-left: 5px;
-  }
-`;
+// const StyledTitleBox = styled.div`
+//   display: flex;
+//   align-items: center;
+//   & > *:not(:first-child) {
+//     margin-left: 5px;
+//   }
+// `;
 
-const StyledContentBox = styled.div`
-  margin: 10px 0 30px 30px;
-  background-color: #f8f8f8;
-  padding: 13px 15px;
-  border-radius: 10px;
-  font-weight: bold;
-`;
+// const StyledContentBox = styled.div`
+//   margin: 10px 0 30px 30px;
+//   background-color: #f8f8f8;
+//   padding: 13px 15px;
+//   border-radius: 10px;
+//   font-weight: bold;
+// `;
 
-const Container = styled.div`
-  padding: 10px 20px;
-  height: 100%;
-`;
+// const Container = styled.div`
+//   padding: 10px 20px;
+//   height: 100%;
+// `;
 
-const Content = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
+// const Content = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+// `
 const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
@@ -68,17 +68,22 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
+const UserAvatar = styled(Avatar)`
+width: 25px;
+height: 25px;
+`
+
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
   
 `;
-const StyledMenu = styled.div`
-  opacity: 0 ;
-  ${StyledListItem}:hover & {
-    opacity: 1;
-  }
-`
+// const StyledMenu = styled.div`
+//   opacity: 0 ;
+//   ${StyledListItem}:hover & {
+//     opacity: 1;
+//   }
+// `
 const MemberMenuLists = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -103,7 +108,7 @@ const MemberMenuLists = (props) => {
   }
 
   return (
-    <StyledMenu >
+    <div className="styled-menu" >
       <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
       </ButtonIcon>
@@ -131,7 +136,7 @@ const MemberMenuLists = (props) => {
         handleOpenModalDelete={handleOpenModalDelete}
         // task={props.task.id} 
         {...props} />
-    </StyledMenu>
+    </div>
   )
 }
 
@@ -219,13 +224,13 @@ const RemindList = (props) => {
     )
   }
   return (
-    <StyledList>
+    <ul className="styled-list">
       {props.remind.map((item, idx) => {
         return (
-          <StyledListItem key={idx} {...props}>
-            <Content>
-              <StyledTitleBox>
-                <Avatar style={{ width: 25, height: 25 }} src={item.user_create_avatar} alt='avatar' />
+          <li className="styled-list-item" key={idx} {...props}>
+            <div className="content-list-item">
+              <div className="styled-title-box">
+                <UserAvatar src={item.user_create_avatar} alt='avatar' />
                 <ColorTypo variant='body1'>
                   {getRemindTextByType(item.type, item.date_remind, item.time_remind)}
                 </ColorTypo>
@@ -233,20 +238,20 @@ const RemindList = (props) => {
                   <Badge key={key} color='orangelight' size='small' badge label={item + ""} />))
                 } */}
                 {getRemindProgressByType(item.type, item.duration, item.type_remind)}
-              </StyledTitleBox>
+              </div>
 
               <MemberMenuLists idx={idx} handleClickOpen={() => handleClickOpen(item)} item={item} {...props} />
 
-            </Content>
-            <StyledContentBox>
+            </div>
+            <div className="styled-content-box">
               {item.content}
-            </StyledContentBox>
+            </div>
 
-          </StyledListItem>
+          </li>
         );
       })}
       <RemindModal isOpen={open} handleClickClose={() => handleClickClose()} data={elemState} isRemind={isRemind} />
-    </StyledList>
+    </ul>
   );
 }
 
@@ -256,14 +261,14 @@ function TabBody(props) {
   }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <Container>
+      <div className="container-tabbody-remind">
         <SearchInput 
           placeholder={'Nhập từ khóa'} 
           fullWidth
           onChange={e => searchRemindTabPart(e)}
         />
         <RemindList {...props} />
-      </Container>
+      </div>
     </Body>
   )
 }

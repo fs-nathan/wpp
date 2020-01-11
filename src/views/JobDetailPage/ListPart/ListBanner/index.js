@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 // import styled from 'styled-components';
 import ColorChip from '../../../../components/ColorChip';
 import { WrapperContext } from '../../index'
@@ -67,12 +67,12 @@ function ListBanner() {
     // }
   // }, [data])
   const jobTypes = [
-    'Tất cả' + ' (' + (taskStatic.task_me ? taskStatic.task_me : 0) + ')',
-    'Đang chờ' + ' (' + (taskStatic.task_waiting ? taskStatic.task_waiting : 0) + ')',   // Waiting
-    'Đang làm' + ' (' + (taskStatic.task_doing ? taskStatic.task_doing : 0) + ')',   // Doing
-    'Hoàn thành' + ' (' + (taskStatic.task_complete ? taskStatic.task_complete : 0) + ')', // Complete
-    'Quá hạn' + ' (' + (taskStatic.task_expired ? taskStatic.task_expired : 0) + ')',    // Expired
-    'Tạm dừng' + ' (' + (taskStatic.task_stop ? taskStatic.task_stop : 0) + ')',   // Stop
+    'Tất cả (' + (taskStatic.task_me ? taskStatic.task_me : 0) + ')',
+    'Đang chờ (' + (taskStatic.task_waiting ? taskStatic.task_waiting : 0) + ')',   // Waiting
+    'Đang làm (' + (taskStatic.task_doing ? taskStatic.task_doing : 0) + ')',   // Doing
+    'Hoàn thành (' + (taskStatic.task_complete ? taskStatic.task_complete : 0) + ')', // Complete
+    'Quá hạn (' + (taskStatic.task_expired ? taskStatic.task_expired : 0) + ')',    // Expired
+    'Tạm dừng (' + (taskStatic.task_stop ? taskStatic.task_stop : 0) + ')',   // Stop
   ]
   return (
     <div className="container-list-banner">

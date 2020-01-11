@@ -334,12 +334,7 @@ const ButtonDropdown = styled(DropdownButton)`
     props.show ? 'block' : 'none'
   }
 `
-const ButtonExpired = styled(ColorButton)`
-  display: ${props => 
-    // console.log("props expired:::::", props.show)
-    props.show ?  'none' : 'block'
-  }
-`
+
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
   // console.log("Props::::", value.detailTask)
@@ -419,14 +414,18 @@ function TabBody(props) {
             handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
             show={isExpiredDate(data.end_date)}
           />
-          <ButtonExpired size='small' variant='contained' variantColor='red'
-            show={isExpiredDate(data.end_date)}
-            style={{
-              marginBottom: '10px',
-              boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1)'
-            }}>
-            Đã quá hạn
-          </ButtonExpired>
+          {
+            isExpiredDate(data.end_date)
+            &&
+              <ColorButton 
+                size='small' variant='contained' variantColor='red'
+                style={{
+                  marginBottom: '10px',
+                  boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1)'
+                }}>
+                Đã quá hạn
+              </ColorButton>
+          }
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
           <ColorTypo>Tiến độ</ColorTypo>

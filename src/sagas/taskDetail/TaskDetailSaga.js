@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import * as actions from '../../actions/taskDetail/taskDetailActions';
 import { apiService } from '../../constants/axiosInstance';
-import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
+// import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -1115,8 +1115,8 @@ function* getProjectListBasic(action) {
   try {
     const response = yield call(doGetProjectListBasic)
     let projectGroups = response.projects
-    
-    const projectId = action.payload
+
+    const projectId = action.payload || ""
     // // set active project id to call other API
     // let projectDetail = getFirstProjectDetail(projectGroups)
     // if(projectDetail.id) projectId = projectDetail.id 

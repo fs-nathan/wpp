@@ -48,7 +48,6 @@ export const convertDateToJSFormat = date => {
 }
 
 export const isExpiredDate = date => {
-    // console.log("date:::::", convertDateToJSFormat(date))
     return new Date(convertDateToJSFormat(date)) - new Date() > 0
 
 }
