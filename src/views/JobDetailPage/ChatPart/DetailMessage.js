@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Typography, ListItemText, ListItem, CardMedia, Button } from '@material-ui/core';
+import { Avatar, Typography, ListItemText, ListItem, CardMedia } from '@material-ui/core';
 import styled from 'styled-components';
 import avatar from '../../../assets/avatar.jpg'
 import colorPal from '../../../helpers/colorPalette'
@@ -828,37 +828,10 @@ const ReplyImg = () => {
 // }
 // `
 
-function RemindMessage(props) {
-    return (
-        <div className="wrap-common-row">
-            <div className="wrap-project-remind-message">
-                <Typography component='div'>
-                    <span>Nhắc hẹn</span>
-                </Typography>
-                <Typography component='div'>
-                    <Typography component='div'>Tháng 9</Typography>
-                    <Typography component='div'>17</Typography>
-                    <Typography component='div' >Tiến độ thực tế chậm so với kế hoạch 20%</Typography>
-                    <Typography component='div'>Lúc 09:25 ngày 17/09/2019 - Nhắc 1 lần</Typography>
-                </Typography>
-                <Button>
-                    <Typography component='div'>
-                        <Typography component='div'>
-                            <Icon path={mdiAlarm} size={1.3} color={'#05bdfa'} />
-                            <Typography component='span'>Xem chi tiết</Typography>
-                        </Typography>
-                    </Typography>
-                </Button>
-            </div>
-        </div>
-    )
-}
-
 export default function DetailMessage(props) {
     //const [data] = React.useState(members);
     return (
         <div className="container-detailmessage">
-            <RemindMessage />
             {members.map((element, index) => {
                 return (
                     <Typography key={index} component='div'>
