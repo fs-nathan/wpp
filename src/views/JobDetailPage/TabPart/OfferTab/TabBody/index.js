@@ -114,7 +114,7 @@ const ApprovedBox = (props) => {
       {props.approved && (
         <React.Fragment>
           <div className="approved-container">
-            <div className="styled-title-box">
+            <div className="styled-title-box-ot">
               <UserHanderAvatar src={props.offer.dataHander.user_hander_avatar} alt='avatar' />
               <div>
                 <StyleContent variant='body1' bold>{props.offer.dataHander.user_hander_name}</StyleContent>
@@ -129,7 +129,7 @@ const ApprovedBox = (props) => {
                 </ButtonIcon>
               </div> */}
             </div>
-            <div className="styled-content-box">
+            <div className="styled-content-box-ot">
               <ColorTypo variant='caption'>{props.offer.dataHander.date_hander}</ColorTypo>
               <StyleContent >{props.offer.dataHander.content_hander}</StyleContent>
             </div>
@@ -148,7 +148,7 @@ const ApprovedBox = (props) => {
       {!props.approved && (
         <React.Fragment>
           <div className="approved-container">
-            <div className="styled-title-box">
+            <div className="styled-title-box-ot">
               <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
               <Button variant="outlined" size="small"
                 onClick={() => {
@@ -225,9 +225,9 @@ const CustomListItem = (props) => {
 
   return (
     <React.Fragment>
-      <li className="styled-list-item">
+      <li className="styled-list-item-ot">
         <div className="wrapper-list-item">
-          <div className="styled-title-box">
+          <div className="styled-title-box-ot">
             <UserHanderAvatar src={user_create_avatar} alt='avatar' />
             <div>
               <StyleContent variant='body1' bold>{user_create_name}</StyleContent>
@@ -245,7 +245,7 @@ const CustomListItem = (props) => {
               </ButtonIcon>
             </div>
           </div>
-          <div className="styled-content-box">
+          <div className="styled-content-box-ot">
             <StyleContent>{content}</StyleContent>
           </div>
         </div>

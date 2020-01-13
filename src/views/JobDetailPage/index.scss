@@ -510,7 +510,7 @@
     .styled-list-item {
         display: flex;
         flex-direction: column;
-        .styled-title-box {
+        .styled-title-box-dmt {
             display: flex;
             align-items: center;
             & > *:not(:first-child) {
@@ -519,11 +519,20 @@
             & > *:last-child {
              margin-left: auto;
             }
+            .wrapper-filter-dmt {
+                display: flex;
+                align-items: center;
+                .demand-create-time {
+                    margin: 0 7px;
+                    font-size: 0.75em;
+                    color: #a6a6a6;
+                }
+            }
             .styled-menu-demand {
                 opacity: 0;
             }
         }
-        .styled-content-box {
+        .styled-content-box-dmt {
             margin-left: 20px;
             margin-top: 5px;
             padding: 8px 10px;
@@ -675,7 +684,7 @@
 // TabBody - Offer Tab
 .container-offer-tabbody {
     padding: 10px 20px 50px 20px;
-    .styled-list-item {
+    .styled-list-item-ot {
         display: flex;
         flex-direction: column;
         .approved-container {
@@ -690,15 +699,15 @@
         }
     }
 }
-.styled-title-box {
+.styled-title-box-ot {
     display: flex;
     align-items: center;
     & > *:not(:first-child) {
         margin-left: 5px;
     }
-    & > *:last-child {
-         margin-left: auto;
-    }
+    // & > *:last-child {
+    //      margin-left: auto;
+    // }
     .styled-menu-offer {
         opacity: 0;
     }
@@ -706,7 +715,7 @@
 .wrapper-list-item:hover .styled-menu-offer {
     opacity: 1;
 }
-.styled-content-box {
+.styled-content-box-ot {
     margin-left: 30px;
     margin-top: 10px;
     background-color: #f9f9f9;
@@ -806,7 +815,7 @@
             .content-list-item {
                 display: flex;
                 justify-content: space-between;
-                .styled-title-box {
+                .styled-title-box-rt {
                     display: flex;
                     align-items: center;
                     & > *:not(:first-child) {
@@ -814,7 +823,7 @@
                     }
                 }
             }
-            .styled-content-box {
+            .styled-content-box-rt {
                 margin: 10px 0 30px 30px;
                 background-color: #f8f8f8;
                 padding: 13px 15px;
