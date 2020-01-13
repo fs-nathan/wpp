@@ -7,58 +7,60 @@ import {
     Typography
 } from '@material-ui/core'
 import AvatarCircleList from '../../../components/AvatarCircleList'
+import { CHAT_TYPE } from '../../../helpers/jobDetail/arrayHelper'
 import DetailMessage from './DetailMessage'
 import RemindMessage from './RemindMessage'
 import WrapMessage from './WrapMessage'
-import { CHAT_TYPE } from '../../../helpers/jobDetail/arrayHelper'
+import ContentMessage from './ContentMessage'
+import QuoteMessage from './QuoteMessage'
 
-const FAKE_DATA = [
-    {
-        id: 1,
-        type: 0,
-        new_task_name: "Công việc 1",
-        user_create_name: "Thành Nguyễn",
-        user_create_avatar: "https://storage.googleapis.com/storage_vtask_net/2020/1578061598195-filename",
-        user_create_roles: []
-    },
-    {
-        id: "5e0dec61e39b2bc4f9f0f4d5",
-        priority: 0,
-        priority_name: "Hight",
-        type: 19,
-        user_create_name: "Thành Nguyễn",
-        user_create_avatar: "https://storage.googleapis.com/storage_vtask_net/2020/1578061598195-filename",
-        user_create_roles: []
-    },
-    {
-        id: "5e0afa5534f1db1fe300d597",
-        content: "That is my design 2 files",
-        files: [
-            { 
-                id: "5e0afa5534f1db1fe300d595", 
-                url: "https://storage.googleapis.com/storage_vtask_net/2019/1577777746454-logo.png",
-                name: "logo.png", size: "6.16 KB", type: "png"
-            },
-            {
-                id: "5e0afa5534f1db1fe300d596",
-                url: "https://storage.googleapis.com/storage_vtask_net/2019/1577777748041-myw3schoolsimage.jpg",
-                name: "myw3schoolsimage.jpg", size: "4.27 KB", type: "jpg"
-            }
-        ],
-        type: 1,
-        user_create_name: "Thành Nguyễn",
-        user_create_avatar: "https://storage.googleapis.com/storage_vtask_net/2020/1578061598195-filename",
-        user_create_roles: []
-    },
-    {
-        id: "5e0af5a8d917501c24a6697c",
-        content: "CHao ca nha",
-        type: 0,
-        user_create_name: "Thành Nguyễn",
-        user_create_avatar: "https://storage.googleapis.com/storage_vtask_net/2020/1578061598195-filename",
-        user_create_roles: []
-    }    
-]
+// const FAKE_DATA = [
+//     {
+//         id: 1,
+//         type: 0,
+//         new_task_name: "Công việc 1",
+//         user_create_name: "Thành Nguyễn",
+//         user_create_avatar: "https://storage.googleapis.com/storage_vtask_net/2020/1578061598195-filename",
+//         user_create_roles: []
+//     },
+//     {
+//         id: "5e0dec61e39b2bc4f9f0f4d5",
+//         priority: 0,
+//         priority_name: "Hight",
+//         type: 19,
+//         user_create_name: "Thành Nguyễn",
+//         user_create_avatar: "https://storage.googleapis.com/storage_vtask_net/2020/1578061598195-filename",
+//         user_create_roles: []
+//     },
+//     {
+//         id: "5e0afa5534f1db1fe300d597",
+//         content: "That is my design 2 files",
+//         files: [
+//             { 
+//                 id: "5e0afa5534f1db1fe300d595", 
+//                 url: "https://storage.googleapis.com/storage_vtask_net/2019/1577777746454-logo.png",
+//                 name: "logo.png", size: "6.16 KB", type: "png"
+//             },
+//             {
+//                 id: "5e0afa5534f1db1fe300d596",
+//                 url: "https://storage.googleapis.com/storage_vtask_net/2019/1577777748041-myw3schoolsimage.jpg",
+//                 name: "myw3schoolsimage.jpg", size: "4.27 KB", type: "jpg"
+//             }
+//         ],
+//         type: 1,
+//         user_create_name: "Thành Nguyễn",
+//         user_create_avatar: "https://storage.googleapis.com/storage_vtask_net/2020/1578061598195-filename",
+//         user_create_roles: []
+//     },
+//     {
+//         id: "5e0af5a8d917501c24a6697c",
+//         content: "CHao ca nha",
+//         type: 0,
+//         user_create_name: "Thành Nguyễn",
+//         user_create_avatar: "https://storage.googleapis.com/storage_vtask_net/2020/1578061598195-filename",
+//         user_create_roles: []
+//     }    
+// ]
 
 // const Container = styled.div`
 
@@ -223,8 +225,8 @@ function ProjectDetailMessage(props) {
 function TextMessage (props) {
     return (
         <WrapMessage {...props}>
-            <p>12323</p>
-            <p>123123</p>
+            {props.quote && <QuoteMessage {...props.quote}/>}
+            <ContentMessage content={props.content}/>
         </WrapMessage>
     )
 }
@@ -239,6 +241,24 @@ function Message (props) {
             return (<div>Tin nhắn này bị lỗi hiển thị</div>)
     }
 }
+
+let FAKE_DATA = [
+    { type: 0 },
+    { type: 3, isUser: true, content: "Test" },
+    { 
+        type: 3,  content: "Xây dựng phương án quản lí dự án",
+        name: "Quan", role: "Trưởng phòng", projectRole: "Admin", authorityList: ["Thực hiện"] 
+    },
+    { 
+        type: 3, hideAvatar: true, content: "123456", 
+        role: "Trưởng phòng", projectRole: "Admin", authorityList: ["Thực hiện"] 
+    },
+    { 
+        type: 3, hideAvatar: true, content: "Ok em",
+        quote: { name: "Phong", content: "Xin phép sếp, em đến muộn 10 phút" },
+        role: "Trưởng phòng", projectRole: "Admin", authorityList: ["Thực hiện"] 
+    }
+]
 
 export default function BodyPart(props) {
 
@@ -258,13 +278,9 @@ export default function BodyPart(props) {
                 <TimeText />
                 <NotifyText />
                 <ProjectDetailMessage />
-                <Message type={0}/>
-                <Message type={3} isUser />
-                <Message type={3} name='Nguyễn Văn Hùng' role='Trưởng phòng' projectRole='Admin' authorityList={['Thực hiện']}/>
-                <Message 
-                    type={3} hideAvatar
-                    name='Nguyễn Văn Hùng' role='Trưởng phòng' projectRole='Admin' authorityList={['Thực hiện']} 
-                />
+                {
+                    FAKE_DATA.map(data => <Message {...data}/>)
+                }
                 {/* <MessageParent isUser content="Tạo project mới" /> */}
                 {/* <MessageParent content="Ae triển khai công việc nhé !!!" /> */}
                 <DetailMessage />

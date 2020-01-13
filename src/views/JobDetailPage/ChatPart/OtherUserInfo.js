@@ -31,7 +31,7 @@ export default function OtherUserInfo ({ name, role, authorityList }) {
   return (
       <div className="wrap-other-user-info">
           <ListItemText
-              style={{ margin: 0, minWidth: 200 }}
+              style={{ margin: 0, minWidth: 300 }}
               primary={
                   <ContentMessageColor component='div' >
                       {name}

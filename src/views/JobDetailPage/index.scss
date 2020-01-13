@@ -54,12 +54,15 @@
 
 .wrap-message {
     min-height: 30px;
-    padding: 5px 10px;
+    padding: 15px;
     border-radius: 4px;
     // display: flex;
     // align-items: center;
     // flex-direction: column;
     margin-left: 5px;
+    box-shadow: 0px 1px 0px 0px rgba(0,0,0,0.1);
+    border: 1px solid #ececec;
+    border-radius: 10px;
 }
 
 .wm-bg-color-blue {

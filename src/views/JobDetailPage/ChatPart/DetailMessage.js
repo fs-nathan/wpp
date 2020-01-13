@@ -838,11 +838,11 @@ export default function DetailMessage(props) {
                         <StyledFrameMess component='div'>
 
                             <TitleMessage key={element.id} {...element} />
-                            {(element.id === 2) &&
-                                <QuoteDetailMess {...element} />
-                            }
                             {element.content &&
                                 <ContentMessage {...element} />
+                            }
+                            {(element.id === 2) &&
+                                <QuoteDetailMess {...element} />
                             }
                             {(element.id === 3) &&
                                 <DeleteConversation />
