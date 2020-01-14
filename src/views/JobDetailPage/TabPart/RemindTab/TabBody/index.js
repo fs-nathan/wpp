@@ -229,7 +229,7 @@ const RemindList = (props) => {
         return (
           <li className="styled-list-item" key={idx} {...props}>
             <div className="content-list-item">
-              <div className="styled-title-box">
+              <div className="styled-title-box-rt">
                 <UserAvatar src={item.user_create_avatar} alt='avatar' />
                 <ColorTypo variant='body1'>
                   {getRemindTextByType(item.type, item.date_remind, item.time_remind)}
@@ -243,7 +243,7 @@ const RemindList = (props) => {
               <MemberMenuLists idx={idx} handleClickOpen={() => handleClickOpen(item)} item={item} {...props} />
 
             </div>
-            <div className="styled-content-box">
+            <div className="styled-content-box-rt">
               {item.content}
             </div>
 

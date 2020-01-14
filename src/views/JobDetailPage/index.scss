@@ -30,7 +30,7 @@
 
 /* MessageParent - BodyPart - ChatPart*/
 .wrap-message-row {
-    width: 100%;
+    // width: 100%;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -40,6 +40,13 @@
 }
 .wmr-row {
     flex-direction: row;
+    padding-left: 40px;
+    position: relative;
+    .MuiAvatar-root {
+        position: absolute;
+        top: 5px;
+        left: 0;
+    }
 }
 .wmr-row-reverse {
     flex-direction: row-reverse;
@@ -47,11 +54,15 @@
 
 .wrap-message {
     min-height: 30px;
-    padding: 5px 10px;
+    padding: 15px;
     border-radius: 4px;
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
+    // flex-direction: column;
     margin-left: 5px;
+    box-shadow: 0px 1px 0px 0px rgba(0,0,0,0.1);
+    border: 1px solid #ececec;
+    border-radius: 10px;
 }
 
 .wm-bg-color-blue {
@@ -136,85 +147,89 @@
     }
 
 /* DetailMessage - Chat Part */
-.container-detailmessage {
-    margin: 20px 0;
-    .wrap-project-remind-message {
-        background-color: white;
-        border-radius: 20px;
-        width: 380px;
-        display: flex;
-        border-radius: 10px;
-        flex-direction: column;
-        & > div:nth-child(1) {
-            background: red;
+.wrap-project-remind-message {
+    background-color: white;
+    border-radius: 20px;
+    width: 380px;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    & > div:nth-child(1) {
+        background: red;
+        text-align: center;
+        padding: 13px 0 25px 0;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        & > span {
             text-align: center;
-            padding: 13px 0 25px 0;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            & > span {
-                text-align: center;
-                font-weight: 600;
-                background: red;
-                color: white;
-                font-size: 14px;
-                padding-bottom: 9px;
-                border-bottom: 2px solid white;
-            }
+            font-weight: 600;
+            background: red;
+            color: white;
+            font-size: 14px;
+            padding-bottom: 9px;
+            border-bottom: 2px solid white;
+        }
+    }
+    & > div:nth-child(2) {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 1px solid #bfbfbf;
+        padding: 15px 0;
+        & > div:nth-child(1){
+            font-size: 16px;
+            font-weight: bold;
         }
         & > div:nth-child(2) {
+            font-size: 76px;
+            font-weight: bold;
+        }
+        & > div:nth-child(3) {
+            font-size: 19px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin: 0 10px;
+            text-align: center;
+        }
+        & > div:nth-child(4) {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #a6a6a6;
+        }
+    }
+    & > button {
+        & > span > div{
             display: flex;
             justify-content: center;
             flex-direction: column;
             align-items: center;
-            border-bottom: 1px solid #bfbfbf;
-            padding: 15px 0;
-            & > div:nth-child(1){
-                font-size: 16px;
-                font-weight: bold;
-            }
-            & > div:nth-child(2) {
-                font-size: 76px;
-                font-weight: bold;
-            }
-            & > div:nth-child(3) {
-                font-size: 19px;
-                font-weight: 500;
-                text-transform: uppercase;
-                margin: 0 10px;
-                text-align: center;
-            }
-            & > div:nth-child(4) {
-                font-size: 14px;
-                margin-top: 10px;
-                color: #a6a6a6;
-            }
-        }
-        & > button {
-            & > span > div{
+            & > div {
                 display: flex;
-                justify-content: center;
-                flex-direction: column;
                 align-items: center;
-                & > div {
-                    display: flex;
-                    align-items: center;
-                    padding: 15px 0;
-                    & > svg {
-                        margin-right: 7px;
-                    }
-                    & > span {
-                        color : #05bdfa;
-                        font-size: 14px;
-                        font-weight: 500;
-                    }
+                padding: 15px 0;
+                & > svg {
+                    margin-right: 7px;
+                }
+                & > span {
+                    color : #05bdfa;
+                    font-size: 14px;
+                    font-weight: 500;
                 }
             }
         }
     }
+}
+.container-detailmessage {
+    margin: 20px 0;
+    
     .content-message {
         display: flex;
         margin-bottom: 14px;
         }
+}
+.wrap-other-user-info {
+    display: flex;
 }
 
 // index.js - Chat Part
@@ -555,7 +570,7 @@
     .styled-list-item {
         display: flex;
         flex-direction: column;
-        .styled-title-box {
+        .styled-title-box-dmt {
             display: flex;
             align-items: center;
             & > *:not(:first-child) {
@@ -564,11 +579,20 @@
             & > *:last-child {
              margin-left: auto;
             }
+            .wrapper-filter-dmt {
+                display: flex;
+                align-items: center;
+                .demand-create-time {
+                    margin: 0 7px;
+                    font-size: 0.75em;
+                    color: #a6a6a6;
+                }
+            }
             .styled-menu-demand {
                 opacity: 0;
             }
         }
-        .styled-content-box {
+        .styled-content-box-dmt {
             margin-left: 20px;
             margin-top: 5px;
             padding: 8px 10px;
@@ -720,7 +744,7 @@
 // TabBody - Offer Tab
 .container-offer-tabbody {
     padding: 10px 20px 50px 20px;
-    .styled-list-item {
+    .styled-list-item-ot {
         display: flex;
         flex-direction: column;
         .approved-container {
@@ -735,15 +759,15 @@
         }
     }
 }
-.styled-title-box {
+.styled-title-box-ot {
     display: flex;
     align-items: center;
     & > *:not(:first-child) {
         margin-left: 5px;
     }
-    & > *:last-child {
-         margin-left: auto;
-    }
+    // & > *:last-child {
+    //      margin-left: auto;
+    // }
     .styled-menu-offer {
         opacity: 0;
     }
@@ -751,7 +775,7 @@
 .wrapper-list-item:hover .styled-menu-offer {
     opacity: 1;
 }
-.styled-content-box {
+.styled-content-box-ot {
     margin-left: 30px;
     margin-top: 10px;
     background-color: #f9f9f9;
@@ -851,7 +875,7 @@
             .content-list-item {
                 display: flex;
                 justify-content: space-between;
-                .styled-title-box {
+                .styled-title-box-rt {
                     display: flex;
                     align-items: center;
                     & > *:not(:first-child) {
@@ -859,7 +883,7 @@
                     }
                 }
             }
-            .styled-content-box {
+            .styled-content-box-rt {
                 margin: 10px 0 30px 30px;
                 background-color: #f8f8f8;
                 padding: 13px 15px;

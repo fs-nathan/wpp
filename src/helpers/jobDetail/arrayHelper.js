@@ -3,6 +3,17 @@ const TASK_STATUS = {
     COMPLETED: 1
 }
 
+export const CHAT_TYPE = {
+    REMIND_TASK: 0,
+    IMAGE: 1,
+    FILE: 2,
+    TEXT: 3
+}
+
+export const isNotifyText = chatType => {
+    return chatType !== CHAT_TYPE.REMIND_TASK
+}
+
 export const filterUncompleteSubTask = subTasks => subTasks.filter(task => task.status === TASK_STATUS.DEFAULT)
 export const filterCompleteSubTask = subTasks => subTasks.filter(task => task.status === TASK_STATUS.COMPLETED)
 
