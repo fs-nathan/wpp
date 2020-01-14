@@ -11,6 +11,7 @@ const initialState = {
     projectDetail: {},
     projectListBasic: null,
     defaultProjectBasic: [],
+    updateComplete: ''
 }
 
 export default function reducer(state = initialState, action) {
@@ -36,8 +37,8 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 projectListBasic: action.payload,
-                activeProjectId: action.payload.projectId,
-                projectDetail: getFirstProjectDetail(action.payload.projectGroups),
+                activeProjectId: action.payload.projectId !== "" ? action.payload.projectId : getFirstProjectDetail(action.payload.projectGroups).id, 
+                projectDetail: action.payload.projectId === "" && getFirstProjectDetail(action.payload.projectGroups),
                 defaultProjectBasic: action.payload.projectGroups,
             }
         case types.GET_LIST_TASK_DETAIL_SUCCESS:
@@ -50,6 +51,12 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 projectListBasic: {projectGroups: searchProjectByProjectName(state.defaultProjectBasic, action.payload)}
             }
+        case types.UPDATE_COMPLETE_SUCCESS: {
+            return {
+                ...state,
+                updateComplete: action.payload
+            }
+        }
         default:
             return state
     }

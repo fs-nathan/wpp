@@ -37,6 +37,17 @@ export const isValidDuration = durationText => {
     }
 }
 
+export const convertDateToJSFormat = date => {
+    try {
+        let dateArr = date.split("/")
+        return `${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`
+    } catch {
+        let today = new Date()
+        return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+    }
+}
+
 export const isExpiredDate = date => {
-    return new Date(date) - new Date() > 0
+    return new Date(convertDateToJSFormat(date)) - new Date() > 0
+
 }

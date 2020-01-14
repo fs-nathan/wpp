@@ -273,7 +273,7 @@ const MemberModal = (props) => {
             <DialogActions>
                 <Button autoFocus onClick={props.handleCloseMembers} color="primary">
                     Đóng
-          </Button>
+                </Button>
             </DialogActions>
         </Dialog>
     )

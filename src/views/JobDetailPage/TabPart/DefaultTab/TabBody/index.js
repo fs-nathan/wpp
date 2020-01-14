@@ -15,7 +15,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import { isLongerContent, getCollapseText } from '../../../../../helpers/jobDetail/stringHelper'
 import Tooltip from '@material-ui/core/Tooltip';
 import { WrapperContext } from '../../../index'
-
+import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper'
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
   & > * > *:first-child {
@@ -88,6 +88,7 @@ const ListItemTabPart = styled(ListItem)`
   flex-direction: column;
   align-items: start;
 `
+
 function DropdownButton({ values, handleChangeItem, selectedIndex }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [selected, setSelected] = React.useState(0)
@@ -327,12 +328,23 @@ const ModalStatus = (status) => {
 //     <AvatarCircleList total={10} display={6} />
 //   )
 // }
+const ButtonDropdown = styled(DropdownButton)`
+  display: ${props => 
+    props.show ? 'block' : 'none'
+  }
+`
+
 function TabBody(props) {
   const value = React.useContext(WrapperContext)
+  // console.log("Props::::", value.detailTask)
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
   let content = ""
+  let data = ""
+  // let dataComplete = ""
   if (value && value.detailTask) {
     content = value.detailTask.description || ""
+    data = value.detailTask
+    // dataComplete = value.listTaskDetail.tasks
   }
   React.useEffect(() => {
     if (!value.detailTask) return
@@ -354,6 +366,8 @@ function TabBody(props) {
       priority_code
     })
   }, [value.detailTask])
+  // console.log("data detail task:::::", value.detailTask)
+  // console.log("data List TASK:::::", value.listTaskDetail.tasks)
 
 
   return (
@@ -366,7 +380,7 @@ function TabBody(props) {
            </ColorTypo>
             <ContentText component='span'>
               {value.detailTask && <span>{value.detailTask.name}</span>}
-              <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} />
+              {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
             </ContentText>
           </ListItemText>
         </ListItem>
@@ -388,26 +402,33 @@ function TabBody(props) {
               </div>
             </HtmlTooltip>
             :
-            <DropdownButton
+            <ButtonDropdown
               size='small' selectedIndex={0}
               values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
               handleChangeItem={() => { }}
+              show={isExpiredDate(data.end_date)}
             />
           }
 
-          <DropdownButton
+          <ButtonDropdown
             size='small'
             values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
             selectedIndex={taskStatistic.priority_code}
             handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
+            show={isExpiredDate(data.end_date)}
           />
-          <ColorButton size='small' variant='contained' variantColor='red'
-            style={{
-              marginBottom: '10px',
-              boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1)'
-            }}>
-            Đã quá hạn
-          </ColorButton>
+          {
+            !isExpiredDate(data.end_date)
+            &&
+              <ColorButton 
+                size='small' variant='contained' variantColor='red'
+                style={{
+                  marginBottom: '10px',
+                  boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1)'
+                }}>
+                Đã quá hạn
+              </ColorButton>
+          }
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
           <ColorTypo>Tiến độ</ColorTypo>

@@ -15,9 +15,9 @@ const styles = theme => ({
     background: '#f5f8fc'
   },
   title: {
-      textTransform: 'uppercase',
-      fontSize: 14,
-      fontWeight: 400,
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
   },
   closeButton: {
     position: 'absolute',
@@ -125,6 +125,9 @@ const DemandModal = (props) => {
         />
       </DialogContent>
       <DialogActions>
+        <Button autoFocus onClick={props.handleClose} color='#222'>
+          Hủy
+        </Button>
         {(props.isEditDemand) ?
           <Button
             autoFocus

@@ -453,9 +453,12 @@ function AddMemberModal(props) {
                     </GridArea>
                 </DialogContent>
                 <DialogActions>
+                    <Button autoFocus onClick={handleClose} color="#222">
+                        Hủy
+                    </Button>
                     <Button autoFocus onClick={handleClose} color="primary">
                         Cập nhật
-          </Button>
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div >

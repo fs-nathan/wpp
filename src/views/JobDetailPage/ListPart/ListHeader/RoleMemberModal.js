@@ -151,7 +151,7 @@ function RoleMemberModal(props) {
     else{
       array.push(data)
     }
-    console.log("arrrrr",array);
+    // console.log("arrrrr",array);
   }
   
   function test(array) {
@@ -238,7 +238,7 @@ function RoleMemberModal(props) {
             setArray()
             handleClose()
           }
-          } color='secondary'>
+          } color='#222'>
             HUỶ
           </Button>
           <Button autoFocus onClick={() => {

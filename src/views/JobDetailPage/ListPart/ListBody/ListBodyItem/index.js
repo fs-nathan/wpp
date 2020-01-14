@@ -69,81 +69,71 @@ const IconPin = styled(Icon)`
 const ChipMes = styled(Chip)`
 display: ${props => props.notification === "true" ? 'block' : 'none'};
 `
+
+const badgeState = (label) => {
+  let color
+  switch (label) {
+    case "Waiting":
+      color = "orangelight"
+      break;
+    case "Doing":
+      color = "indigolight"
+      break;
+    case "Complete":
+      color = "light-green"
+      break;
+    case "Expired":
+      color = "redlight"
+      break;
+    case "Stop":
+      color = "redlight"
+      break;
+    default:
+      color = "redlight"
+  }
+
+  return (
+    <BadgeItem color={color} badge label={label} size='small' />
+  )
+}
 function JobName(props) {
   return (
     <div className="name-container-lbd" variant='space-between'>
-      <ColorTypo bold style={{ fontSize: 17, textOverflow: 'ellipsis', width: '200px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.title}</ColorTypo>
-      <ChipMes 
-        label={'N'}
-        size='small' 
-        style={{ fontSize: '13px', fontWeight: 500, display: 'flex' }}
-        {...props}
-        notification={props.notification.toString()}
-        />
+      <ColorTypo bold >{props.title}</ColorTypo>
+      <div>
+        <IconPin color={'#6e6e6e'} path={mdiPin} size={0.8} {...props} isghim={props.isghim.toString()} />
+        {badgeState(props.label)}
+      </div>
+
     </div>
   )
 }
 function JobContent(props) {
-  // const [colorStatus, setColorStatus] = React.useState(null)
-  // const [status, setStatus] = React.useState('')
-  // React.useEffect(() => {
-  //   switch (props.label) {
-  //     case 0:
-  //       setColorStatus('orangelight')
-  //       setStatus('đang chờ')
-  //       break;
-  //     case 1:
-  //       setColorStatus('orangelight')
-  //       setStatus('đang làm')
-  //       break;
-  //     case 2:
-  //       setColorStatus('grey')
-  //       setStatus('hoàn thành')
-  //       break;
-  //     case 3:
-  //       setColorStatus('grey')
-  //       setStatus('quá hạn')
-  //       break;
-  //     case 4:
-  //       setColorStatus('grey')
-  //       setStatus('tạm dừng')
-  //       break;
-  //     default:
-  //       console.log(colorStatus)
-  //       setStatus('')
-  //       break;
-  //   }
-  // }, [props.label])
   return (
     <div className="container-content-lbd">
-      <div>
         <div>
-          <Avatar src={props.avatar} alt='avatar' style={{ width: 20, height: 20 }} />
-          <ColorTypo color='#7a869a' style={{ fontSize: '13px', textOverflow: 'ellipsis', width: '160px', whiteSpace: 'nowrap', overflow: 'hidden' }}>{props.content}</ColorTypo>
+          <Avatar src={props.avatar} alt='avatar' />
+          <ColorTypo color='#7a869a' >{props.content}</ColorTypo>
         </div>
-        <div style={{ color: '#7a869a', padding: '5px', marginRight: '10px', fontSize: '13px' }}>{props.time}</div>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <BadgeItem color='redlight' badge label={props.label} size='small' />
-        <IconPin color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', marginLeft: '5px' }} path={mdiPin} size={0.8} {...props} isghim={props.isghim.toString()}/>  
-      </div>
+        <div>
+          <ChipMes
+            label={'N'}
+            size='small'
+            {...props}
+            notification={props.notification.toString()}
+          />
+          <div >{props.time}</div>
+        </div>
     </div>
   )
 }
 
 function JobUnit(props) {
-  // let avatar, content
-  // const chat = props.chat
-  // if (chat) {
-  //   avatar = chat.user_create_avatar,
-  //   content = chat.content
-  // }
-  // console.log('props:::::', props);
-  
+
   return (
     <ListItemText disableTypography>
-      <JobName title={props.name} notification={props.new_chat} />
-      <JobContent label={props.status_name} time={props.updated_time} avatar={props.chat.user_create_avatar} content={props.chat.content} isghim={props.is_ghim} />
+      <JobName title={props.name}  label={props.status_name} isghim={props.is_ghim}/>
+      <JobContent  time={props.updated_time} avatar={props.chat.user_create_avatar} content={props.chat.content} notification={props.new_chat}/>
     </ListItemText>
   )
 }
@@ -151,11 +141,10 @@ function JobUnit(props) {
 
 
 function ListBodyItem(props) {
-  // console.log("props", props);
   const value = React.useContext(WrapperContext);
 
   return (
-    <div className="container-lbd"  onClick={() => 
+    <div className="container-lbd" onClick={() =>
       value.chooseTask(props.id)
     }>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>

@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import * as actions from '../../actions/taskDetail/taskDetailActions';
 import { apiService } from '../../constants/axiosInstance';
-import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
+// import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -943,6 +943,8 @@ async function doGetListTaskDetail({ project_id }) {
 function* getListTaskDetail(action) {
   try {
     const res = yield call(doGetListTaskDetail, action.payload)
+ 
+    
     yield put(actions.getListTaskDetailSuccess(res))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error))
@@ -1109,15 +1111,15 @@ async function doGetProjectListBasic() {
   }
 }
 
-function* getProjectListBasic() {
+function* getProjectListBasic(action) {
   try {
     const response = yield call(doGetProjectListBasic)
     let projectGroups = response.projects
-    
-    let projectId = ""
-    // set active project id to call other API
-    let projectDetail = getFirstProjectDetail(projectGroups)
-    if(projectDetail.id) projectId = projectDetail.id
+
+    const projectId = action.payload || ""
+    // // set active project id to call other API
+    // let projectDetail = getFirstProjectDetail(projectGroups)
+    // if(projectDetail.id) projectId = projectDetail.id 
     
     yield put(actions.getProjectListBasicSuccess({projectGroups, projectId}))
   } catch (error) {
@@ -1174,15 +1176,68 @@ async function doGetProjectDetail(project_id) {
 function* getProjectDetail(action) {
   try {
     const res = yield call(doGetProjectDetail, action.payload)
+
+
     yield put(actions.getProjectDetailSuccess(res))
   } catch (error) {
     yield put(actions.getProjectDetailFail(error))
   }
 }
+//updateComplete
+async function doUpdateComplete(payload){
+  try {
+    const config = {
+      url: 'task/update-complete',
+      method: 'put',
+      data: payload,
+    }
+    const result = await apiService(config);
+    return result.data;
+    // return null;
+  } catch (error) {
+    throw error;
+  }
+}
+function*updateComplete(action){
+  try {
+    console.log("action.payload:::::::", action.payload);
+    
+    const res =yield call(doUpdateComplete,action.payload.data)
+    
+    yield put(actions.updateCompleteSuccess(res))
+    yield put(actions.getListTaskDetail({project_id: action.payload.projectId}))
+  } catch (error) {
+    yield put(actions.updateCommandFail(error))
+  }
+}
 
+// static task
+async function doGetStaticTask(project_id) {
 
+  // console.log("PPPP", project_id)
+  try {
+    const config = {
+      url: '/task/static?project_id=' + project_id,
+      method: 'get'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* getStaticTask(action) {
+  try {
+    const res =yield call(doGetStaticTask, action.payload)
+    yield put(actions.getStaticTaskSuccess(res))
+  } catch (error) {
+    yield put(actions.getStaticTaskFail(error))
+  }
+}
 
 export {
+  //updateComplete
+  updateComplete,
   // Update Priority
   updatePriority,
 
@@ -1256,4 +1311,6 @@ export {
   getProjectDetail,
   // get project list basic
   getProjectListBasic,
+  // static task
+  getStaticTask,
 }

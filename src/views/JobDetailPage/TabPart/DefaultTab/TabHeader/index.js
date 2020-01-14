@@ -121,6 +121,10 @@ function TabHeader(props) {
           setOpenCreateJobModal(true)
           setAnchorEl(null);
         }}>Chỉnh sửa</MenuItem>
+        <MenuItem onClick={() => {
+          setOpenCreateJobModal(true)
+          setAnchorEl(null);
+        }}>Ghim công việc</MenuItem>
         {pause ?
           <MenuItem onClick={() => {
             props.onClickPause()
@@ -134,6 +138,7 @@ function TabHeader(props) {
             setAnchorEl(null);
           }}>Hủy tạm dừng</MenuItem>
         }
+        
         <MenuItem onClick={() => {
           handleCloseMenu()
           setAnchorEl(null)
