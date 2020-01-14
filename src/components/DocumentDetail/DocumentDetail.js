@@ -37,7 +37,9 @@ import ShareDocumentModal from '../../views/DocumentPage/TablePart/DocumentCompo
 import {
   getDocumentDetail,
   actionDeleteFile,
-  actionFetchListMyDocument
+  actionFetchListMyDocument,
+  actionViewFile,
+  actionDownloadFile
 } from '../../actions/documents';
 import { FileType } from '../FileType';
 import { isEmpty } from '../../helpers/utils/isEmpty';
@@ -58,6 +60,16 @@ const DocumentDetail = props => {
     if (!fileInfo.isGoogleDocument) handleFetchData();
     // eslint-disable-next-line
   }, [fileInfo]);
+  useEffect(() => {
+    if (!isEmpty(fileInfo)) handleViewFile();
+    // eslint-disable-next-line
+  }, []);
+  const handleViewFile = async () => {
+    console.log('fileInfo', fileInfo);
+    try {
+      await actionViewFile(fileInfo.id);
+    } catch (error) {}
+  };
 
   const handleFetchData = async () => {
     try {
@@ -109,16 +121,16 @@ const DocumentDetail = props => {
     let currentTaget = evt.target;
     if (evt.deltaY > 0) {
       if (currentTaget.width < 100 || currentTaget.height < 100) return;
-      let newWidth = currentTaget.width - 20;
-      let newHeight = currentTaget.height - 20;
+      let newWidth = currentTaget.width - currentTaget.width * 0.1;
+      let newHeight = currentTaget.height - currentTaget.height * 0.1;
       evt.target.width = newWidth;
       evt.target.height = newHeight;
       evt.target.style.cursor = 'zoom-out';
       evt.target.style.maxWidth = 'initial';
       evt.target.style.maxHeight = 'initial';
     } else if (evt.deltaY < 0) {
-      let newWidth = currentTaget.width + 20;
-      let newHeight = currentTaget.height + 20;
+      let newWidth = currentTaget.width + currentTaget.width * 0.1;
+      let newHeight = currentTaget.height + currentTaget.height * 0.1;
       evt.target.width = newWidth;
       evt.target.height = newHeight;
       evt.target.style.cursor = 'zoom-in';
@@ -279,10 +291,16 @@ const DocumentDetail = props => {
                       onWheel={handleZoomImage}
                       onLoad={evt => {
                         const viewerElm = document.getElementById('viewerId');
-                        if (evt.target.height > viewerElm.offsetHeight) {
-                          evt.target.height = viewerElm.offsetHeight - 80;
-                          evt.target.maxWidth = 'auto';
+                        const vH = viewerElm.offsetHeight || 0;
+                        const vW = viewerElm.offsetWidth || 0;
+                        let elmH = evt.target.height || 0;
+                        let elmW = evt.target.width || 0;
+                        while (elmH >= vH || elmW >= vW) {
+                          elmH *= 0.9;
+                          elmW *= 0.9;
                         }
+                        evt.target.height = elmH;
+                        evt.target.width = elmW;
                       }}
                     />
                   </div>
@@ -338,10 +356,13 @@ const DocumentDetail = props => {
                       }
                       onClick={() => {
                         if (fileInfo.url && !fileInfo.isGoogleDocument) {
-                          window.open(fileInfo.url, '_blank');
+                          actionDownloadFile(fileDetail);
                         }
-                        if (fileInfo.webContentLink) {
-                          window.open(fileInfo.url, '_blank');
+                        if (
+                          fileInfo.webContentLink &&
+                          fileInfo.isGoogleDocument
+                        ) {
+                          window.open(fileInfo.webContentLink, '_blank');
                         }
                       }}
                     >
@@ -392,7 +413,7 @@ const DocumentDetail = props => {
       <AlertModal
         open={alert}
         setOpen={setAlert}
-        content={t('views.user_page.left_part.department_info.alert_content')}
+        content={t('viIDS_WP_ALERT_CONTENT')}
         onConfirm={handleDeleteFile}
       />
       {visible && (

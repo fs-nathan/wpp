@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
+import { useTranslation } from 'react-i18next';
 import { mdiAccountOutline } from '@mdi/js';
 import {
   FormControl,
@@ -15,13 +16,13 @@ import './AccountPage.scss';
 import { Routes } from '../../constants/routes';
 
 const ForgotPasswordPage = props => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState('');
   const handleForgotPassword = async e => {
     e.preventDefault();
     try {
       await actionForgotPassword(e.target.elements.email.value);
     } catch (error) {
-      console.log(error && error.message);
       setErrorMsg(error.message);
     }
   };
@@ -36,7 +37,7 @@ const ForgotPasswordPage = props => {
         <div className="logo-content">
           <img className="logo-workplus" alt="" src={images.logo} />
         </div>
-        <div className="heading-title">Quên mật khẩu</div>
+        <div className="heading-title">{t('IDS_WP_FORGOT_PASSWORD')}</div>
         <form className="form-content" onSubmit={handleForgotPassword}>
           <FormControl
             fullWidth
@@ -62,27 +63,24 @@ const ForgotPasswordPage = props => {
             />
             {errorMsg && <span className="err-msg">{errorMsg}</span>}
           </FormControl>
-          <div className="helper-text">
-            Sau khi click đổi mật khẩu, vui lòng kiểm tra email (inbox hoặc
-            spam) để nhận đường link tạo mật khẩu mới!
-          </div>
+          <div className="helper-text">{t('IDS_WP_FORGOT_PASSWORD_DES')}</div>
 
           <Button
             variant="contained"
             type="submit"
             className="btn-action red-color"
           >
-            Đổi mật khẩu
+            {t('IDS_WP_CHANGE_PASSWORD')}
           </Button>
         </form>
         <div className="bottom-des">
-          Hay bạn muốn
+          {t('IDS_WP_YOU_WANT')}
           <Link href={Routes.LOGIN} className="btn-link">
-            Đăng nhập
+            {t('IDS_WP_LOGIN')}
           </Link>
-          hoặc
+          {t('IDS_WP_OR')}
           <Link href={Routes.REGISTER} className="btn-link">
-            Đăng ký
+            {t('IDS_WP_SIGN_UP')}
           </Link>
         </div>
       </div>

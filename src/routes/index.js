@@ -13,6 +13,7 @@ import SettingGroupPage from '../views/SettingGroupPage';
 import LoginPage from '../views/AccountPage/LoginPage';
 import RegisterPage from '../views/AccountPage/RegisterPage';
 import ForgotPassword from '../views/AccountPage/ForgotPassword';
+import ResetPassword from '../views/AccountPage/ResetPassword';
 import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
 import MessageNoticePage from '../views/MessageNoticePage';
 
@@ -35,6 +36,7 @@ const routes = [
   { path: Routes.LOGIN, component: () => <LoginPage /> },
   { path: Routes.REGISTER, component: () => <RegisterPage /> },
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
+  { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
   {
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />

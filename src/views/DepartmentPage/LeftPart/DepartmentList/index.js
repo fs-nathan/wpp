@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import SearchInput from '../../../../components/SearchInput';
@@ -16,14 +15,19 @@ import CreateDepartmentModal from '../../Modals/CreateDepartment';
 import { connect } from 'react-redux';
 import { sortRoom } from '../../../../actions/room/sortRoom';
 import { filter, get } from 'lodash';
+import './style.scss';
 
-const Banner = styled.div`
-  padding: 15px;
-`;
+const Banner = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Department_List___banner ${className}`}
+    {...props}
+  />;
 
-const StyledPrimary = styled(Primary)`
-  font-weight: 500;
-`;
+const StyledPrimary = ({ className = '', ...props }) => 
+  <Primary 
+    className={`view_Department_List___primary ${className}`}
+    {...props}
+  />;
 
 function DepartmentList({ listRoom, doSortRoom, }) {
 

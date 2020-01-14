@@ -1,6 +1,5 @@
 import React from 'react';
 import { get } from 'lodash';
-import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 import { 
   ChartBox, ChartDrawer, ChartLegendBox, ChartTitle, CustomChart 
@@ -24,28 +23,25 @@ import AlertModal from '../../../../components/AlertModal';
 import { CustomEventListener, CustomEventDispose, DELETE_PROJECT_GROUP } from '../../../../constants/events.js';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
 import MembersDetail from '../../Modals/MembersDetail';
+import './style.scss';
 
+const ProjectGroupName = ({ className = '', ...props }) => 
+  <span 
+    className={`view_ProjectGroup_Detail___name ${className}`}
+    {...props}
+  />;
 
-const ProjectGroupName = styled.span`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 500;
-`;
+const SubHeader = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Detail___sub-header ${className}`}
+    {...props}
+  />;
 
-const SubHeader = styled.div`
-  padding: 8px 0;
-  margin: 8px 0
-  display: flex;
-  align-items: center;
-`;
-
-const StyledColorTypo = styled(ColorTypo)`
-  cursor: pointer;
-  margin-top: 8px;
-`;
+const StyledColorTypo = ({ className = '', ...props }) => 
+  <ColorTypo 
+    className={`view_ProjectGroup_Detail___typography ${className}`}
+    {...props}
+  />;
 
 function ProjectGroupDetail({ detailProjectGroup, memberProjectGroup, doDeleteProjectGroup }) {
   

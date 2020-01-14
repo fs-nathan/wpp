@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { TextField } from '@material-ui/core';
 import LogoManagerModal from '../../../DepartmentPage/Modals/LogoManager';
 import CustomModal from '../../../../components/CustomModal';
@@ -13,21 +12,13 @@ import { editProjectGroup } from '../../../../actions/projectGroup/editProjectGr
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 import { useRequiredString } from '../../../../hooks';
+import './style.scss';
 
-const LogoBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  & > div {
-    & > *:not(:last-child) {
-      margin-bottom: 8px;
-    }
-    & > button {
-      text-transform: none;
-    }
-  }
-`;
+const LogoBox = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Create_ProjectGroup___logo-box ${className}`}
+    {...props}
+  />;
 
 function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createProjectGroup, doCreateProjectGroup, editProjectGroup, doEditProjectGroup }) {
 

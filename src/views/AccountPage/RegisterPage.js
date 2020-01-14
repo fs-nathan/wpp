@@ -12,6 +12,7 @@ import {
   Divider
 } from '@material-ui/core';
 import { Routes } from '../../constants/routes';
+import { useTranslation } from 'react-i18next';
 import { actionRegister } from '../../actions/account';
 import MainAccount from '../../components/MainAccount/MainAccount';
 import * as images from '../../assets';
@@ -20,6 +21,7 @@ import './AccountPage.scss';
 const RegisterPage = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [errMsg, setErrMsg] = useState('');
+  const { t } = useTranslation();
 
   const handleRegister = async e => {
     e.preventDefault();
@@ -28,7 +30,7 @@ const RegisterPage = () => {
       setIsRegistered(true);
     } catch (error) {
       console.log(error);
-      setErrMsg(error.message || 'Lỗi server!');
+      setErrMsg(error.message || '');
     }
   };
 
@@ -42,7 +44,7 @@ const RegisterPage = () => {
         <div className="logo-content">
           <img className="logo-workplus" alt="" src={images.logo} />
         </div>
-        <div className="heading-title">Đăng ký</div>
+        <div className="heading-title">{t('IDS_WP_SIGN_UP')}</div>
         {!isRegistered && (
           <React.Fragment>
             <form className="form-content" onSubmit={handleRegister}>
@@ -56,7 +58,7 @@ const RegisterPage = () => {
                   id="email"
                   required
                   type="email"
-                  placeholder="Nhập Email đăng ký"
+                  placeholder={t('IDS_WP_ENTER_REGISTER_EMAIL')}
                   onChange={handleOnchange}
                   startAdornment={
                     <InputAdornment position="start">
@@ -72,28 +74,27 @@ const RegisterPage = () => {
               </FormControl>
               <FormControlLabel
                 control={<Checkbox color="primary" required />}
-                label="Tôi không phải robot"
+                label={t('IDS_WP_I_AM_NOT_ROBOT')}
               />
               <Button
                 variant="contained"
                 type="submit"
                 className="btn-action red-color"
               >
-                Đăng ký
+                {t('IDS_WP_SIGN_UP')}
               </Button>
             </form>
             <div className="bottom-des">
-              Bạn đã có tài khoản?
+              {t('IDS_WP_HAVE_ACCOUNT')}
               <Link href={Routes.LOGIN} className="btn-link">
-                Đăng nhập
+                {t('IDS_WP_LOGIN')}
               </Link>
             </div>
             <Divider className="divider" />
             <div className="notice-content">
-              <div className="lb-text title">Lưu ý:</div>
+              <div className="lb-text title">{t('IDS_WP_NOTE')}:</div>
               <div className="lb-text">
-                Email đăng ký phải đang hoạt động. Chúng tôi sẽ gửi email tới
-                email bạn đã đăng ký để xác thực.
+                {t('IDS_WP_REGISTER_EMAIL_DESCRIPTION')}
               </div>
             </div>
           </React.Fragment>
@@ -101,14 +102,15 @@ const RegisterPage = () => {
         {isRegistered && (
           <div className="register-success">
             <Divider className="divider" />
-            <p className="title">Cảm ơn bạn đã đăng ký sử dụng Workplus!</p>
+            <p className="title">{t('IDS_WP_THANK_YOU_USED_WORK_PLUS')}</p>
             <p className="description">
-              Một mã xác thực đã được gửi tới email của bạn. Vui lòng kiểm tra
-              hộp thư đến (hoặc hòm thư Spam) để hoàn tất đăng ký.
+              {t('IDS_WP_CONFIRM_CODE_DESCRIPTION')}
             </p>
-            <p>
-              Liên hệ <strong>09.1800.6181</strong> để được hỗ trợ!
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t('IDS_WP_CONTACT_TO_SUPPORT')
+              }}
+            ></p>
             <Divider className="divider" />
             <Button
               variant="contained"
@@ -117,12 +119,12 @@ const RegisterPage = () => {
                 window.location.href = Routes.CONFIRM_REGISTRATION;
               }}
             >
-              Xác thực tài khoản
+              {t('IDS_WP_CONFIRM_ACCOUNT')}
             </Button>
             <div className="bottom-des">
-              Quay lại trang
+              {t('IDS_WP_BACK_PAGE')}
               <Link href={Routes.LOGIN} className="btn-link">
-                Đăng nhập
+                {t('IDS_WP_LOGIN')}
               </Link>
             </div>
           </div>

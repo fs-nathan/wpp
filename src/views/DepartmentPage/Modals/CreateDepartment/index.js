@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { TextField } from '@material-ui/core';
 import LogoManagerModal from '../LogoManager';
 import CustomModal from '../../../../components/CustomModal';
@@ -11,21 +10,13 @@ import { updateRoom } from '../../../../actions/room/updateRoom';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 import { useRequiredString } from '../../../../hooks';
+import './style.scss';
 
-const LogoBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  & > div {
-    & > *:not(:last-child) {
-      margin-bottom: 8px;
-    }
-    & > button {
-      text-transform: none;
-    }
-  }
-`;
+const LogoBox = ({ className = '', ...props }) =>
+  <div 
+    className={`view_Department_Create_Modal___logo-box ${className}`}
+    {...props}
+  />;
 
 function CreateDepartment({ updateDepartment = null, open, setOpen, doCreateRoom, doUpdateRoom }) {
 

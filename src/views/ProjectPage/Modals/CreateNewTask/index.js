@@ -207,6 +207,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
             <>
             <div>
               <KeyboardTimePicker 
+                disableToolbar
                 inputVariant="outlined"
                 variant="inline"
                 ampm={false}
@@ -216,6 +217,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
                 format="HH:mm"
               />
               <KeyboardDatePicker 
+                disableToolbar
                 inputVariant="outlined"
                 variant="inline"
                 ampm={false}
@@ -227,6 +229,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
             </div>
             <div>
               <KeyboardTimePicker 
+                disableToolbar
                 inputVariant="outlined"
                 variant="inline"
                 ampm={false}
@@ -236,6 +239,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
                 format="HH:mm"
               />
               <KeyboardDatePicker 
+                disableToolbar
                 inputVariant="outlined"
                 variant="inline"
                 ampm={false}
@@ -251,6 +255,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
             <>
             <div>
               <KeyboardDatePicker 
+                disableToolbar
                 inputVariant="outlined"
                 variant="inline"
                 ampm={false}
@@ -262,6 +267,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
             </div>
             <div>
               <KeyboardDatePicker 
+                disableToolbar
                 inputVariant="outlined"
                 variant="inline"
                 ampm={false}

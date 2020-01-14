@@ -24,3 +24,12 @@
     padding-right: 25px;
   }
 }
+.address-link {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  &:hover {
+    color: rgb(0, 128, 255);
+  }
+}

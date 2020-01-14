@@ -1,30 +1,26 @@
 import React, { Component } from 'react';
 import { mdiAccountCircle } from '@mdi/js';
+import { connect } from 'react-redux';
 import Chip from '@material-ui/core/Chip';
 import DateFnsUtils from '@date-io/date-fns';
 import Icon from '@mdi/react';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
+import moment from 'moment';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
 
+import { actionUpdateProfile } from '../../../../actions/account';
+import {
+  getProfileService,
+  actionGetProfile
+} from '../../../../actions/system/system';
 import ImageCropper from '../../../../components/ImageCropper/ImageCropper';
 
 import './SettingAccountRight.scss';
 
-const temp = {
-  account: 'huuthanhxd@gmail.com',
-  name: 'Nguyễn Hữu Thành',
-  address: 'Định Công, Hoàng Mai, Hà Nội',
-  infoOther: 'Không có',
-  phone: '09818006181',
-  career: 'Kỹ sư',
-  certificate: 'Đại học',
-  sex: 'Nam',
-  birthday: '15/08/2019'
-};
 class SettingInfo extends Component {
   state = {
     mode: 'view',
@@ -32,16 +28,56 @@ class SettingInfo extends Component {
     fileUpload: null,
     avatar: null,
     showInputFile: true,
-    data: { ...temp },
-    selectedDate: new Date()
+    data: this.props.profile,
+    selectedDate: new Date(this.props.profile.birthday)
   };
-  handleChangeStatus = () => {
+  handleChangeStatus = async () => {
     if (this.state.mode === 'view') {
       this.setState({ mode: 'edit' });
     } else if (this.state.mode === 'edit') {
-      this.setState({ mode: 'view' });
+      this.handleChangeProfile();
     }
   };
+  handleChangeProfile = async type => {
+    try {
+      const file = new File([this.state.avatar], 'filename');
+        let formData = new FormData();
+        if (type === 'updateImage') {
+          formData.append('image', file);
+        }
+        formData.append('name', this.state.data.name);
+        formData.append('email', this.state.data.email);
+        formData.append('avatar', this.state.data.avatar);
+        formData.append('gender', this.state.data.gender);
+        formData.append('phone', this.state.data.phone);
+        formData.append(
+          'birthday',
+          moment(this.state.selectedDate).format('YYYY-MM-DD')
+        );
+        formData.append('address', this.state.data.address);
+        formData.append('certificate', this.state.data.certificate);
+        formData.append('description', this.state.data.description);
+        formData.append('job', this.state.data.job);
+        formData.append('order_user_id', this.state.data.order_user_id);
+        formData.append('order_storage_id', this.state.data.order_storage_id);
+        formData.append('type', this.state.data.type);
+        formData.append('gender_name', this.state.data.gender_name);
+
+        await actionUpdateProfile(formData);
+        const { data } = await getProfileService();
+        if (data.data) this.props.actionGetProfile(data.data);
+        this.setState({ mode: 'view' });
+    } catch(error) {
+      const { data } = await getProfileService();
+      if (data.data) this.props.actionGetProfile(data.data);
+      this.setState({ mode: 'view' });
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      data: nextProps.profile
+    })
+  }
   handleChangeData = (name, value) => {
     this.setState(prevState => ({
       data: {
@@ -62,7 +98,12 @@ class SettingInfo extends Component {
     }, 0);
   };
   handleCropImage = (image, type) => {
-    this.setState({ avatar: image });
+    this.setState(() => { 
+      return {
+        avatar: image 
+      }
+    }, () => this.handleChangeProfile('updateImage'));
+
   };
   handleDateChange = date => {
     this.setState({
@@ -83,10 +124,18 @@ class SettingInfo extends Component {
       <div className="setting-info">
         <div className="content-setting-info">
           <div className="avatar-content-setting-info">
-            {avatar ? (
-              <img alt="" src={avatar} className="img-avatar" />
+            {this.props.profile.avatar ? (
+              <img
+                alt=""
+                src={
+                  avatar
+                    ? URL.createObjectURL(avatar)
+                    : this.props.profile.avatar
+                }
+                className="img-avatar"
+              />
             ) : (
-              <Icon path={mdiAccountCircle} size={10} color="#ededed" />
+                <Icon path={mdiAccountCircle} size="120px" color="#ededed" />
             )}
             {showInputFile && (
               <input
@@ -113,15 +162,15 @@ class SettingInfo extends Component {
               <div className="title-item-info col-sm-3">Tài khoản</div>
               <InputBase
                 className="value-item-info email col-sm-9"
-                value={data.account}
+                value={data.email}
                 disabled={true}
-                onChange={e => this.handleChangeData('account', e.target.value)}
+                onChange={e => this.handleChangeData('email', e.target.value)}
               />
             </div>
             <div className="item-info row">
               <div className="title-item-info col-sm-3">Loại tài khoản</div>
               <div className="value-item-info col-sm-9">
-                <Chip size="small" label="Pro" className="type-account" />
+                <Chip size="small" label={data.type} className="type-account" />
               </div>
             </div>
             <div className="item-info row">
@@ -139,7 +188,7 @@ class SettingInfo extends Component {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disableToolbar
-                    format="dd/MM/yyyy"
+                    format="yyyy-MM-dd"
                     margin="normal"
                     id="date-picker-inline"
                     value={selectedDate}
@@ -159,16 +208,18 @@ class SettingInfo extends Component {
               <div className="title-item-info col-sm-3">Giới tính</div>
               <InputBase
                 className="value-item-info col-sm-9"
-                value={data.sex}
+                value={data.gender_name}
                 disabled={mode !== 'edit'}
-                onChange={e => this.handleChangeData('sex', e.target.value)}
+                onChange={e =>
+                  this.handleChangeData('gender_name', e.target.value)
+                }
               />
             </div>
             <div className="item-info row">
               <div className="title-item-info col-sm-3">Điện thoại</div>
               <InputBase
                 type="number"
-                className="value-item-info col-sm-9"
+                className="value-item-info col-sm-9 phone-infor"
                 value={data.phone}
                 disabled={mode !== 'edit'}
                 onChange={e => this.handleChangeData('phone', e.target.value)}
@@ -198,26 +249,26 @@ class SettingInfo extends Component {
               <div className="title-item-info col-sm-3">Ngành nghề</div>
               <InputBase
                 className="value-item-info col-sm-9"
-                value={data.career}
+                value={data.job}
                 disabled={mode !== 'edit'}
-                onChange={e => this.handleChangeData('career', e.target.value)}
+                onChange={e => this.handleChangeData('job', e.target.value)}
               />
             </div>
             <div className="item-info row">
               <div className="title-item-info col-sm-3">Thông tin khác</div>
               <InputBase
                 className="value-item-info col-sm-9"
-                value={data.infoOther}
+                value={data.description}
                 disabled={mode !== 'edit'}
                 onChange={e =>
-                  this.handleChangeData('infoOther', e.target.value)
+                  this.handleChangeData('description', e.target.value)
                 }
               />
             </div>
             <div className="btn-edit-info">
               <Button
                 variant="contained"
-                className="btn-action"
+                className="btn-action none-boxshadow"
                 onClick={this.handleChangeStatus}
               >
                 {mode === 'view' ? 'Cập nhập' : 'Lưu'}
@@ -225,9 +276,12 @@ class SettingInfo extends Component {
               {mode === 'edit' && (
                 <Button
                   variant="contained"
-                  className="btn-action cancel-btn"
+                  className="btn-action cancel-btn none-boxshadow"
                   onClick={() =>
-                    this.setState({ mode: 'view', data: { ...temp } })
+                    this.setState({
+                      mode: 'view',
+                      data: { ...this.props.profile }
+                    })
                   }
                 >
                   Hủy
@@ -250,4 +304,11 @@ class SettingInfo extends Component {
   }
 }
 
-export default SettingInfo;
+export default connect(
+  state => ({
+    profile: state.system.profile
+  }),
+  {
+    actionGetProfile
+  }
+)(SettingInfo);

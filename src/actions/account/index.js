@@ -23,6 +23,18 @@ export const actionForgotPassword = email => {
   return apiService(config);
 };
 
+export const actionResetPassword = (token, password) => {
+  const config = {
+    url: '/reset-password',
+    method: 'post',
+    data: {
+      token,
+      password
+    }
+  };
+  return apiService(config);
+};
+
 export const actionCompleteRegister = data => {
   const config = {
     url: '/complete-register',
@@ -77,6 +89,14 @@ export const getNotificationDetailService = notification_id => {
     url: '/notification-system/detail',
     method: 'get',
     params: { notification_id }
+  };
+  return apiService(config);
+};
+export const actionUpdateProfile = data => {
+  const config = {
+    url: '/update-profile',
+    method: 'post',
+    data
   };
   return apiService(config);
 };

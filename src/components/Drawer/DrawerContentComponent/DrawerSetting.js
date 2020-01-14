@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import { mdiLogout, mdiSettings } from '@mdi/js';
 import avatar from '../../../assets/avatar.jpg';
+import bg_avatar from '../../../assets/bg_head_poup_menu.png';
 import { actionVisibleDrawerMessage } from '../../../actions/system/system';
 import HeaderDrawer from '../HeaderDrawer';
 import '../Drawer.scss';
@@ -15,6 +17,7 @@ import {
 import { isEmpty } from '../../../helpers/utils/isEmpty';
 
 const DrawerSetting = props => {
+  const { t } = useTranslation();
   const handleFetchProfile = async () => {
     try {
       const { data } = await getProfileService();
@@ -27,11 +30,11 @@ const DrawerSetting = props => {
 
   const actionList = [
     {
-      name: 'Tài khoản',
+      name: t('IDS_WP_ACCOUNT'),
       icon: mdiSettings,
       url: Routes.SETTING_ACCOUNT_INFO
     },
-    { name: 'Đăng xuất', icon: mdiLogout, url: Routes.LOGIN }
+    { name: t('IDS_WP_LOGOUT'), icon: mdiLogout, url: Routes.LOGIN }
   ];
   const handleClick = isFree => {
     if (isFree) {
@@ -41,7 +44,7 @@ const DrawerSetting = props => {
     } else {
       props.history.push({
         pathname: Routes.SETTING_GROUP_ORDER,
-        search: `?order_id=${props.profile.order_id}`
+        search: `?order_id=${props.profile.order_user_id}`
       });
     }
     props.actionVisibleDrawerMessage({
@@ -52,20 +55,39 @@ const DrawerSetting = props => {
   const isFree = !isEmpty(props.profile) && props.profile.type === 'Free';
 
   return (
-    <div className="drawer-content-container">
+    <div className="drawer-content">
       <HeaderDrawer title={null} />
       {!isEmpty(props.profile) && (
         <div className="content-drawer">
-          <img alt="" src={avatar} className="profile-avatar" />
-          {/* <img alt="" src={props.profile.avatar || avatar} /> */}
-          <div className="account-status text-center">{props.profile.type}</div>
+          {/* <img alt="" src={avatar} className="profile-avatar" /> */}
+          <div className="avatar-block">
+            <img alt="" src={bg_avatar} className="background-avatar" />
+            <div className="image-avatar">
+              <img
+                alt=""
+                src={props.profile.avatar || avatar}
+                className="profile-avatar"
+              />
+            </div>
+          </div>
+
+          {props.profile.type === 'Free' ? (
+            <div className="account-status text-center">
+              {props.profile.type}
+            </div>
+          ) : (
+            <div className="account-status text-center pro-color">
+              {props.profile.type}
+            </div>
+          )}
+
           <p className="account-name text-center">{props.profile.name}</p>
           <p className="text-center">{props.profile.email}</p>
           <p
             className="link-text text-center"
             onClick={() => handleClick(isFree)}
           >
-            {isFree ? 'Nâng cấp tài khoản' : 'Xem đơn hàng'}
+            {isFree ? t('IDS_WP_UPGRADE_ORDER') : t('IDS_WP_VIEW_ORDER')}
           </p>
         </div>
       )}

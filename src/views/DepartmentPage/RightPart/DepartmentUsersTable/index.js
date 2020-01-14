@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { IconButton, Menu, MenuItem,  } from '@material-ui/core';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import Icon from '@mdi/react';
@@ -20,6 +19,9 @@ import ErrorBox from '../../../../components/ErrorBox';
 import CustomTable from '../../../../components/CustomTable';
 import CustomBadge from '../../../../components/CustomBadge';
 import AlertModal from '../../../../components/AlertModal';
+import {
+  Container, LinkSpan, SettingContainer,
+} from '../../../../components/TableComponents';
 import { get } from 'lodash';
 import TitleManagerModal from '../../Modals/TitleManager';
 import RoleManagerModal from '../../Modals/RoleManager';
@@ -27,19 +29,6 @@ import LogoManagerModal from '../../Modals/LogoManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import PermissionSettingsModal from '../../Modals/PermissionSettings';
 import { Context as UserPageContext } from '../../index';
-
-const Container = styled.div`
-  grid-area: right;
-  min-height: 100%;
-`;
-
-const NameSpan = styled.span`
-  font-weight: 500;
-`;
-
-const SettingContainer = styled.div`
-  margin-right: 16px;
-`;
 
 const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
 
@@ -214,31 +203,49 @@ function DepartmentUsersTable({
           }}
           columns={[{
             label: '',
-            field: (row) => <CustomAvatar src={get(row, 'avatar')} alt='avatar' />,
+            field: (row) => <CustomAvatar style={{ width: 35, height: 35 }} src={get(row, 'avatar')} alt='avatar' />,
+            align: 'left', 
+            width: '5%',
           }, {
             label: 'Họ và tên',
-            field: (row) => <NameSpan>{get(row, 'name', '')}</NameSpan>,
+            field: (row) => <LinkSpan onClick={evt => history.push(`/members/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
+            align: 'left',
+            width: '14%',
           }, {
             label: 'Chức danh',
             field: 'position',
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Ngày sinh',
             field: (row) =>(new Date(get(row, 'birthday', 0))).toLocaleDateString(),
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Giới tính',
             field: 'gender',
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Email',
             field: 'email',
+            align: 'left',
+            width: '15%',
           }, {
             label: 'Điện thoại',
             field: 'phone',
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Vai trò',
             field: 'role',
+            align: 'left',
+            width: '10%',
           }, {
             label: 'Trạng thái',
             field: (row) => <StateBadge user={row} />,
+            align: 'center',
+            width: '10%',
           }, {
             label: '',
             field: (row) => <PermissionButton 
@@ -247,6 +254,8 @@ function DepartmentUsersTable({
                               doPrivateMember={doPrivateMember}
                               doBanUserFromGroup={doBanUserFromGroup}
                             />,
+            align: 'center',
+            width: '5%',
           }]}
           data={users}
         />

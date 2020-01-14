@@ -162,7 +162,7 @@ function SetUp(props) {
             <span className="lb-text">Chọn màu sắc menu trái</span>
             <span
               className="pick-color"
-              style={{ background: bgColor.value }}
+              style={{ background: bgColor.color }}
               onClick={() => setVisibleModal(true)}
             ></span>
             <PickColorModal

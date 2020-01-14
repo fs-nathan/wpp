@@ -17,7 +17,8 @@ import {
 import {
   selectDocumentItem,
   resetListSelectDocument,
-  actionFetchListDocumentFromMe
+  actionFetchListDocumentFromMe,
+  actionSelectedFolder
 } from '../../../../actions/documents';
 import { FileType } from '../../../../components/FileType';
 
@@ -32,7 +33,10 @@ import {
   selectAllRedux,
   selectItemRedux
 } from '../DocumentComponent/TableCommon';
-
+import {
+  actionChangeBreadCrumbs,
+  openDocumentDetail
+} from '../../../../actions/system/system';
 import ColorTypo from '../../../../components/ColorTypo';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -41,7 +45,7 @@ import './ContentDocumentPage.scss';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 
 const DocumentShareFromMe = props => {
-  const { isLoading } = props;
+  const { isLoading, breadCrumbs, actionChangeBreadCrumbs, isFetching } = props;
   const [selected, setSelected] = useState([]);
   const [listData, setListData] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -55,6 +59,8 @@ const DocumentShareFromMe = props => {
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
+      props.actionSelectedFolder({});
+      actionChangeBreadCrumbs([]);
     };
     // eslint-disable-next-line
   }, []);
@@ -92,6 +98,47 @@ const DocumentShareFromMe = props => {
   const fetDataDocumentShareFromMe = (params = {}, quite = false) => {
     props.actionFetchListDocumentFromMe(params, quite);
   };
+
+  const handleClickItem = item => {
+    if (isFetching) return;
+    if (item.type === 'folder') {
+      fetDataDocumentShareFromMe({ folder_id: item.id }, true);
+      props.actionSelectedFolder(item);
+      // handle bread crumbs
+      let newBreadCrumbs = [...breadCrumbs];
+      if (breadCrumbs.length === 0) {
+        newBreadCrumbs.push({
+          id: -1,
+          name: 'Home',
+          action: () => {
+            props.actionSelectedFolder({});
+            fetDataDocumentShareFromMe({}, true);
+          }
+        });
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.actionSelectedFolder(item);
+            fetDataDocumentShareFromMe({ folder_id: item.id }, true);
+          }
+        });
+      } else {
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.actionSelectedFolder(item);
+            fetDataDocumentShareFromMe({ folder_id: item.id }, true);
+          }
+        });
+      }
+      actionChangeBreadCrumbs(newBreadCrumbs);
+    } else {
+      props.openDocumentDetail(item);
+    }
+  };
+
   const handleSelectAllClick = e => {
     setSelected(selectAll(e, listData));
     props.selectDocumentItem(selectAllRedux(e, listData));
@@ -160,10 +207,17 @@ const DocumentShareFromMe = props => {
                     onChange={e => handleSelectItem(file)}
                   />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="5%">
+                <StyledTableBodyCell
+                  align="center"
+                  width="5%"
+                  onClick={() => handleClickItem(file)}
+                >
                   <FullAvatar src={FileType(file.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left">
+                <StyledTableBodyCell
+                  align="left"
+                  onClick={() => handleClickItem(file)}
+                >
                   <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
@@ -223,11 +277,17 @@ export default connect(
   state => ({
     selectedDocument: state.documents.selectedDocument,
     listDocumentFromMe: state.documents.listDocumentFromMe,
-    searchText: state.documents.searchText
+    searchText: state.documents.searchText,
+    isLoading: state.documents.isLoading,
+    breadCrumbs: state.system.breadCrumbs,
+    isFetching: state.documents.isFetching
   }),
   {
     selectDocumentItem,
     resetListSelectDocument,
-    actionFetchListDocumentFromMe
+    actionFetchListDocumentFromMe,
+    openDocumentDetail,
+    actionChangeBreadCrumbs,
+    actionSelectedFolder
   }
 )(DocumentShareFromMe);

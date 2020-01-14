@@ -1,37 +1,31 @@
 import React from 'react';
-import styled from 'styled-components';
 import { 
   TableCell, Table, TableHead, 
   TableBody, TableRow, Radio, Checkbox,
 } from '@material-ui/core';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomModal from '../../../../components/CustomModal';
+import './style.scss';
 
-const StyledTableHead = styled(TableHead)` 
-  background-color: #eee; 
-  & * {
-    text-transform: none;
-  }
-`;
+const StyledTableHead = ({ className = '', ...props }) => 
+  <TableHead 
+    className={`view_Department_Permission_Modal___table-head ${className}`}
+    {...props}
+  />;
 
-const StyledTableBody = styled(TableBody)`
-`;
+const StyledTableBody = TableBody;
 
-const TableCellRadioWrapper = styled(TableCell)`
-  & > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-`;
+const TableCellRadioWrapper = ({ className = '', ...props }) => 
+  <TableCell
+    className={`view_Department_Permission_Modal___table-cell-radio ${className}`}
+    {...props}
+  />;
 
-const TableCellCheckboxWrapper = styled(TableCell)`
-  & > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
+const TableCellCheckboxWrapper = ({ className = '', ...props }) =>
+  <TableCell
+    className={`view_Department_Permission_Modal___table-cell-checkbox ${className}`}
+    {...props}
+  />;
 
 function PermissionSettings({ open, setOpen }) {
 

@@ -11,9 +11,14 @@ import {
   actionGetBill,
   updateBillService
 } from '../../../../actions/setting/setting';
+import { actionToast } from '../../../../actions/system/system';
 
 const Payment = props => {
   const [editMode, setEditMode] = useState(false);
+  const handleToast = (type, message) => {
+    props.actionToast(type, message);
+    setTimeout(() => props.actionToast(null, ''), 2000);
+  };
   const handleFetchData = async () => {
     try {
       props.actionChangeLoading(true);
@@ -46,8 +51,12 @@ const Payment = props => {
         email: elements.email.value
       };
       await updateBillService(result);
+      handleToast('success', 'Chỉnh sửa thông tin thành công!');
       handleFetchData();
-    } catch (err) {}
+      setEditMode(false);
+    } catch (error) {
+      handleToast('error', error.message);
+    }
   };
   if (props.isLoading) return <LoadingBox />;
   return (
@@ -130,13 +139,17 @@ const Payment = props => {
             className="style-input-text"
           />
           <div className="edit-action">
-            <Button variant="contained" className="btn-edit" type="submit">
+            <Button
+              variant="contained"
+              className="btn-edit none-boxshadow"
+              type="submit"
+            >
               {editMode ? 'Lưu' : ' Chỉnh sửa'}
             </Button>
             {editMode && (
               <Button
                 variant="contained"
-                className="btn-edit btn-cancel"
+                className="btn-edit btn-cancel none-boxshadow"
                 onClick={() => {
                   handleFetchData();
                   setEditMode(false);
@@ -209,6 +222,7 @@ export default connect(
   }),
   {
     actionGetBill,
-    actionChangeLoading
+    actionChangeLoading,
+    actionToast
   }
 )(withRouter(Payment));

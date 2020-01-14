@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -11,7 +12,7 @@ import {
   getInfoBeforeCreateOrder,
   getNumberDayFromOldOrder
 } from '../../../../actions/setting/setting';
-import SnackbarComponent from '../../../../components/Snackbars';
+import { actionToast } from '../../../../actions/system/system';
 import './SettingGroupRight.scss';
 import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
 import OrderInit from '../../../../components/ExportPDF/OrderInit';
@@ -51,8 +52,6 @@ const CreateOrder = props => {
   const [dateUse, SetdateUse] = useState(0);
   const [dataBuy, SetdataBuy] = useState(0);
   const [dateSave, SetdateSave] = useState(0);
-  const [openToast, setOpenToast] = useState(false);
-  const [mesToast, setMesToast] = useState('');
   const [inputPromotionCode, SetInputPromotionCode] = useState('');
   const [isErrorCode, SetIsErrorCode] = useState(0);
   const [dayBonus, SetDayBonus] = useState(0);
@@ -144,15 +143,14 @@ const CreateOrder = props => {
         pathname: Routes.SETTING_GROUP_ORDER,
         search: `?order_id=${data.order_id}`
       });
-      setOpenToast(true);
-      setMesToast('Tạo đơn hàng thành công!');
-      setTimeout(() => {
-        setOpenToast(false);
-      }, 2000);
-    } catch (error) {}
+      handleToast('success', 'Tạo đơn hàng thành công!');
+    } catch (error) {
+      handleToast('error', error.message);
+    }
   };
-  const handleCloseToast = () => {
-    setOpenToast(false);
+  const handleToast = (type, message) => {
+    props.actionToast(type, message);
+    setTimeout(() => props.actionToast(null, ''), 2000);
   };
   const handleCheckPromotionCode = async () => {
     try {
@@ -252,9 +250,9 @@ const CreateOrder = props => {
                   handleChangeSilder('dateUse', value)
                 }
               />
-              <p>Thanh toán 12-18 tháng: Tặng thêm 01 tháng sử dụng</p>
-              <p>Thanh toán 18-30 tháng: Tặng thêm 02 tháng sử dụng</p>
-              <p>Thanh toán 30-36 tháng: Tặng thêm 03 tháng sử dụng</p>
+              <p>Thanh toán đến 12 tháng: Tặng 01 tháng sử dụng</p>
+              <p>Thanh toán đến 24 tháng: Tặng 02 tháng sử dụng</p>
+              <p>Thanh toán đến 36 tháng: Tặng 03 tháng sử dụng</p>
               <div className="border create-order-border" />
             </React.Fragment>
           )}
@@ -334,16 +332,13 @@ const CreateOrder = props => {
           </Button>
         </div>
       </div>
-      <SnackbarComponent
-        open={openToast}
-        handleClose={handleCloseToast}
-        vertical="top"
-        horizontal="center"
-        variant="success"
-        message={mesToast}
-      />
     </div>
   );
 };
 
-export default withRouter(CreateOrder);
+export default connect(
+  state => ({
+    toast: state.system.toast
+  }),
+  { actionToast }
+)(withRouter(CreateOrder));

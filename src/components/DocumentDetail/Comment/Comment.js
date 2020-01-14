@@ -105,11 +105,11 @@ const Comment = ({
     try {
       if (!blockComment) {
         await actionLockComment(fileInfo.id);
-        if(onRefreshData) onRefreshData();
+        if (onRefreshData) onRefreshData();
         setBlockComment(true);
       } else {
         await actionUnLockComment(fileInfo.id);
-        if(onRefreshData) onRefreshData();
+        if (onRefreshData) onRefreshData();
         setBlockComment(false);
       }
     } catch (error) {}
@@ -118,7 +118,7 @@ const Comment = ({
   return (
     <div className="comment-container">
       <div className="header-box-comment">
-        <div className="box-title">Thảo luận</div>
+        <div className="box-title">{t('IDS_WP_DISCUSS')}</div>
         <div className="btn-actions-right">
           <div className="btn-action more-action">
             <IconButton
@@ -151,7 +151,7 @@ const Comment = ({
                   setAlert(true);
                 }}
               >
-                Xóa tất cả thảo luận của tôi
+                {t('IDS_WP_DELETE_ALL_DISCUSS')}
               </MenuItem>
               {fileInfo.can_modify && (
                 <MenuItem
@@ -160,7 +160,9 @@ const Comment = ({
                     handleLockUnlockComment();
                   }}
                 >
-                  {blockComment ? 'Cho phép thảo luận' : 'Khóa thảo luận'}
+                  {blockComment
+                    ? t('IDS_WP_ALLOW_DISCUSS')
+                    : t('IDS_WP_BLOCK_DISCUSS')}
                 </MenuItem>
               )}
             </Menu>
@@ -181,8 +183,8 @@ const Comment = ({
           <NoComment
             className="dis-comment"
             imageUrl={images.dis_comment}
-            title="Chức năng thảo luận đã bị khóa!"
-            subTitle="Rất tiếc! chủ sỡ hữu tài liệu đã khóa chức năng thảo luận."
+            title={t('IDS_WP_BLOCK_COMMENT_TITLE')}
+            subTitle={t('IDS_WP_BLOCK_COMMENT_DES')}
           />
         )}
         {!isEmpty(fileInfo) && !blockComment && (
@@ -195,7 +197,7 @@ const Comment = ({
                       <Icon path={mdiPlus} size={1} color="#007bff" />
                     </IconButton>
                   </div>
-                  <div className="lb-add">Thêm mới</div>
+                  <div className="lb-add">{t('IDS_WP_ADD')}</div>
                 </div>
               )}
               {addComment && (
@@ -206,7 +208,7 @@ const Comment = ({
                     rowsMax="7"
                     value={commentText}
                     onChange={handleOnChange}
-                    placeholder="Nhập thảo luận..."
+                    placeholder={t('IDS_WP_INPUT_COMMENT')}
                   />
                   <ColorButton
                     onClick={handleSendComment}
@@ -214,7 +216,7 @@ const Comment = ({
                     size="small"
                     className="btn-send"
                   >
-                    Gửi
+                    {t('IDS_WP_SEND')}
                   </ColorButton>
                 </div>
               )}
@@ -234,17 +236,15 @@ const Comment = ({
               !isLoading && (
                 <NoComment
                   imageUrl={images.no_comment}
-                  title="Chưa có thảo luận nào!"
-                  subTitle="Tài liệu chưa có thảo luận nào. Bạn có muốn thêm thảo luận cho tài liệu này?"
+                  title={t('IDS_WP_NO_COMMENT_TITLE')}
+                  subTitle={t('IDS_WP_NO_COMMENT_TITLE_DES')}
                 />
               )
             )}
             <AlertModal
               open={alert}
               setOpen={setAlert}
-              content={t(
-                'views.user_page.left_part.department_info.alert_content'
-              )}
+              content={t('IDS_WP_ALERT_CONTENT')}
               onConfirm={handleDeleteAllMyComment}
             />
           </Scrollbars>

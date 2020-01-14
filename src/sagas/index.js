@@ -51,12 +51,20 @@ import { PUBLIC_MEMBER } from '../constants/actions/user/publicMember';
 import { publicMember } from './user/publicMember';
 import { PRIVATE_MEMBER } from '../constants/actions/user/privateMember';
 import { privateMember } from './user/privateMember';
-import { SEARCH_USER } from '../constants/actions/user/searchUser';
-import { searchUser } from './user/searchUser';
-import { INVITE_USER_JOIN_GROUP } from '../constants/actions/user/inviteUserJoinGroup';
-import { inviteUserJoinGroup } from './user/inviteUserJoinGroup';
 import { BAN_USER_FROM_GROUP } from '../constants/actions/user/banUserFromGroup';
 import { banUserFromGroup } from './user/banUserFromGroup';
+import { SEARCH_USER } from '../constants/actions/groupUser/searchUser';
+import { searchUser } from './groupUser/searchUser';
+import { INVITE_USER_JOIN_GROUP } from '../constants/actions/groupUser/inviteUserJoinGroup';
+import { inviteUserJoinGroup } from './groupUser/inviteUserJoinGroup';
+import { RESEND_INVITATION_USER_JOIN_GROUP } from '../constants/actions/groupUser/resendInvitationUserJoinGroup';
+import { resendInvitationUserJoinGroup } from './groupUser/resendInvitationUserJoinGroup';
+import { GET_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/getRequirementJoinGroup';
+import { getRequirementJoinGroup } from './groupUser/getRequirementUserJoinGroup';
+import { ACCEPT_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/acceptRequirementJoinGroup';
+import { acceptRequirementJoinGroup } from './groupUser/acceptRequirementUserJoinGroup';
+import { REJECT_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/rejectRequirementJoinGroup';
+import { rejectRequirementJoinGroup } from './groupUser/rejectRequirementUserJoinGroup';
 import { CREATE_ICON } from '../constants/actions/icon/createIcon';
 import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
@@ -152,8 +160,8 @@ import {
   listDocumentShare,
   listGoogleDocument
 } from './documents';
-import { FETCH_GROUP_DETAIL } from '../constants/actions/setting/setting';
-import { getGroupDetail } from './setting/setting';
+import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP } from '../constants/actions/setting/setting';
+import { getGroupDetail, getListColor } from './setting/setting';
 
 function* rootSaga() {
 
@@ -188,6 +196,10 @@ function* rootSaga() {
   yield takeEvery(PRIVATE_MEMBER, privateMember);
   yield takeEvery(SEARCH_USER, searchUser);
   yield takeEvery(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
+  yield takeEvery(RESEND_INVITATION_USER_JOIN_GROUP, resendInvitationUserJoinGroup);
+  yield takeEvery(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
+  yield takeEvery(ACCEPT_REQUIREMENT_JOIN_GROUP, acceptRequirementJoinGroup);
+  yield takeEvery(REJECT_REQUIREMENT_JOIN_GROUP, rejectRequirementJoinGroup);
   yield takeEvery(BAN_USER_FROM_GROUP, banUserFromGroup);
   yield takeEvery(CREATE_ICON, createIcon);
   yield takeEvery(DELETE_ICON, deleteIcon);
@@ -244,6 +256,7 @@ function* rootSaga() {
   yield takeLatest(LIST_DOCUMENT_FROM_ME, listDocumentShareFromMe);
   yield takeLatest(LIST_DOCUMENT_SHARE, listDocumentShare);
   yield takeLatest(LIST_GOOGLE_DOCUMENT, listGoogleDocument);
+  yield takeLatest(FETCH_LIST_COLOR_GROUP, getListColor);
 
   // Priority
   yield takeLeading(

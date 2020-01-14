@@ -1,0 +1,22 @@
+.view_Department_Permission_Modal___table-head {
+  background-color: #eee; 
+  & * {
+    text-transform: none;
+  }
+};
+
+.view_Department_Permission_Modal___table-cell-radio {
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+};
+
+.view_Department_Permission_Modal___table-cell-checkbox {
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+};

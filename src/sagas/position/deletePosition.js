@@ -26,7 +26,7 @@ function* deletePosition(action) {
     yield call(doDeletePosition, action.options);
     yield put(deletePositionSuccess());
     CustomEventEmitter(DELETE_POSITION);
-    SnackbarEmitter(SNACKBAR_VARIANT, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(deletePositionFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));

@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { ListItem, List, ListItemText, IconButton } from '@material-ui/core';
@@ -21,102 +20,67 @@ import {
   mdiFullscreenExit,
 } from '@mdi/js';
 import { Context as MemberPageContext } from '../../index';
+import './style.scss';
 
-const Container = styled.div`
-  min-height: 100%;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: minmax(450px, 3fr) minmax(350px, 2fr);
-  grid-template-areas: 
-    "main side";
-`;
+const Container = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Member_UserInfo___container ${className}`}
+    {...props}
+  />;
 
-const MainBox = styled.div`
-  grid-area: main;
-  padding: 16px;
-  border-right: 1px solid rgba(0, 0, 0, .1);
-`;
+const MainBox = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Member_UserInfo___main-box ${className}`}
+    {...props}
+  />;
 
-const MainHeader = styled.div`
-  display: flex;
-  align-items: center;
-  & > *:not(:first-child) {
-    margin-left: 16px;
-  }
-  & > *:last-child {
-    margin-left: auto;
-  }
-`;
+const MainHeader = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Member_UserInfo___main-header ${className}`}
+    {...props}
+  />;
 
-const MainList = styled(List)`
-  margin-top: 16px;
-`;
+const MainList = ({ className = '', ...props }) => 
+  <List 
+    className={`view_Member_UserInfo___main-list ${className}`}
+    {...props}
+  />;
 
-const StyledListItem = styled(ListItem)`
-  padding: 8px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  &:last-child {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    & > *:last-child {
-      margin-top: 8px;
-    }
-  }
-`;
+const StyledListItem = ({ className = '', ...props }) => 
+  <ListItem 
+    className={`view_Member_UserInfo___list-item ${className}`}
+    {...props}
+  />;
 
-const MainFooter = styled.div`
-  margin-top: 16px;
-  & > input[type='file'] {
-    display: none;
-  }
-  & > label:last-child {
-    margin-top: 8px;
-    & > span {
-      text-transform: none;
-    }
-  }
-`;
+const MainFooter = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Member_UserInfo___main-footer ${className}`}
+    {...props}
+  />;
 
-const StyledButton = styled(ColorButton)`
-  display: flex;
-  align-items: center;
-  background-color: #eee;
-  padding-left: 32px;
-  & > span:first-child {
-    justify-content: flex-start;
-    & > *:first-child{
-      margin-right: 8px;
-    }
-  }
-`;
+const StyledButton = ({ className = '', ...props }) => 
+  <ColorButton 
+    className={`view_Member_UserInfo___button ${className}`}
+    {...props}
+  />;
 
-const SideBox = styled.div`
-  grid-area: side;
-`;
+const SideBox = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Member_UserInfo___side-box ${className}`}
+    {...props}
+  />;
 
-const SideHeader = styled(({ expand, ...rest }) => <div {...rest} />)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 6rem;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  & > *:last-child {
-    margin-left: ${props => props.expand ? '32px' : 0};
-  }
-`;
+const SideHeader = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Member_UserInfo___side-header ${className}`}
+    {...props}
+  />;
 
-const SideList = styled(List)`
-  padding: 16px;
-  & > * {
-    padding: 0px
-    border-bottom: none;
-  }
-`;
+const SideList = ({ className = '', ...props }) => 
+  <List 
+    className={`view_Member_UserInfo___side-list ${className}`}
+    {...props}
+  />;
 
 function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expand, handleExpand }) {
 
@@ -126,7 +90,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
   const [openUpdateModal, setOpenUpdateModal] = React.useState(false);
   const { userId } = useParams();
   const { data: { user }, error: detailUserError, loading: detailUserLoading } = detailUser;
-  const { error: uploadDocumentsUserError, loading: uploadDocumentsUserLoading } = uploadDocumentsUser;
+  const { loading: uploadDocumentsUserLoading } = uploadDocumentsUser;
 
   React.useEffect(() => {
     setUserId(userId);
@@ -196,8 +160,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
               )}
               {!uploadDocumentsUserLoading && (
                 <ColorButton variant='text' variantColor='blue' size='small' component='label' htmlFor='raised-button-file'>
-                  {uploadDocumentsUserError !== null && `${t('views.user_page.right_part.user_info.upload_documents_error')}`}
-                  {uploadDocumentsUserError === null && `+ ${t('views.user_page.right_part.user_info.upload_documents')}`}
+                  {`+ ${t('views.user_page.right_part.user_info.upload_documents')}`}
                 </ColorButton>
               )}
             </MainFooter>

@@ -24,19 +24,63 @@
       margin-left: 80px;
       width: calc(25% - 20px);
       height: 100%;
+      width: 100%;
     }
     .MuiPaper-elevation16 {
       box-shadow: 22px 8px 24px -10px rgba(0, 0, 0, 0.2);
     }
   }
-  .drawer-content-container {
+  .drawer-content {
     position: relative;
-    height: calc(100% - 55px);
+    height: calc(100% - 38px);
+    width: 420px;
     display: flex;
     flex-direction: column;
+    border-right: 1px solid #ededed;
+    &.new-group-drawer {
+      width: 100%;
+    }
+  }
+  .drawer-content-container {
+    position: relative;
+    height: calc(100% - 40px);
+    display: flex;
+    .drawer-content-left {
+      position: absolute;
+      height: 100%;
+      width: calc(25% - 20px);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #ededed;
+    }
+    .drawer-content-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: calc(75% + 20px);
+      position: absolute;
+      right: 0;
+      height: 100%;
+      .right-content-container {
+        p {
+          text-align: center;
+          font-size: 14px;
+        }
+        img {
+          margin-left: 50%;
+          transform: translateX(-50%);
+        }
+        .right-header-text {
+          font-weight: 600;
+          font-size: 19px;
+        }
+      }
+    }
   }
   .header-drawer {
-    padding: 25px;
+    padding: 0 25px;
+    height: 69px;
+    line-height: 70px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #ededed;
@@ -44,13 +88,15 @@
       border-bottom: none;
     }
     .text-header {
-      font-size: 17px;
-      text-transform: uppercase;
+      font-size: 14px;
+      // text-transform: uppercase;
       font-weight: 500;
     }
     .btn-close {
       cursor: pointer;
       color: #999;
+      display: flex;
+      align-items: center;
     }
   }
   .tab-drawer {
@@ -58,19 +104,37 @@
     border-bottom: 1px solid #ededed;
     .cus-btn {
       text-transform: initial;
+      padding: 0;
+      margin: 6px 8px;
+      &:hover {
+        background: #fff;
+      }
       .MuiButton-label {
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 13px;
+        font-weight: normal;
+        color: #9094c9;
+        // color: #1d2129;
+      }
+      &.active {
+        .MuiButton-label {
+          color: #1d2129;
+          font-weight: 500;
+        }
       }
     }
     .btn-unread {
-      padding-left: 25px;
+      margin-left: 25px;
+      .MuiButton-label {
+        color: #9094c9;
+        font-weight: normal;
+      }
     }
     .badges {
+      font-size: 12px;
+      background-color: red;
+      padding: 0 3px;
       color: #fff;
-      background-color: rgb(220, 0, 78);
       height: 20px;
-      padding: 0 6px;
       min-width: 20px;
       border-radius: 10px;
       box-sizing: border-box;
@@ -80,6 +144,7 @@
   }
   .content-drawer {
     // height: calc(100vh - 254px);
+    max-height: calc(100% - 200px);
     overflow-y: auto;
     .item-message {
       display: flex;
@@ -87,11 +152,14 @@
       border-bottom: 1px solid #ededed;
       cursor: pointer;
       align-items: center;
+      &:hover {
+        background-color: #f9f9f9;
+      }
       &.support-item {
         border: none;
         padding: 0 20px;
         &:hover {
-          background-color: #d4fff1;
+          background-color: #f8f8f8;
         }
         .name-support-message {
           justify-content: space-between;
@@ -147,33 +215,69 @@
         justify-content: space-between;
         display: flex;
         .text-name-message {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 500;
+          .header-item-text {
+            font-weight: normal;
+            margin: 0 0 5px 0;
+            .name-header-item-text {
+              font-weight: 500;
+              font-size: 14px;
+            }
+          }
         }
       }
+      .des-message {
+        color: #90949c;
+        font-size: 12px !important;
+        padding-top: 8px;
+      }
       &.un-read {
-        background-color: #d4fff1;
+        background-color: #f9f9f9;
       }
     }
-    .profile-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      margin-left: 50%;
-      transform: translateX(-50%);
-      margin-bottom: 20px;
+    .avatar-block {
+      position: relative;
+      margin-bottom: 90px;
+      .background-avatar {
+        width: 100%;
+      }
+      .image-avatar {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        left: 150px;
+        bottom: -40px;
+        .profile-avatar {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background: white;
+          border: 1px solid #ccc;
+        }
+      }
     }
+
     .account-status {
       background: #ccc;
       border-radius: 20px;
-      padding: 5px 10px;
+      padding: 2px 6px;
       color: white;
       display: inline-block;
+      text-transform: uppercase;
+      font-size: 11px;
       margin-left: 50%;
       transform: translateX(-50%);
+      background-color: #fd7e14;
+      height: auto;
+      &.pro-color {
+        background-color: #fd7e14;
+        color: white;
+      }
     }
     .account-name {
-      font-size: 18px;
+      font-size: 20px;
+      font-weight: 500;
     }
     .link-text {
       color: #009cf3;
@@ -188,14 +292,25 @@
     position: absolute;
     bottom: 0;
     width: calc(100% - 40px);
-    a:hover {
+    .footer-btn {
+      text-transform: none;
+      font-weight: normal;
+      cursor: pointer;
       text-decoration: none;
+      color: #385898;
+      &:hover {
+        background: transparent;
+      }
+      a:hover {
+        text-decoration: none;
+        font-size: 16px;
+      }
+      a {
+        text-decoration: none;
+        font-size: 16px;
+      }
     }
-    a {
-      color: #009cf3;
-      text-decoration: none;
-      font-size: 16px;
-    }
+
     .link-home {
       margin-right: 10px;
     }
@@ -222,11 +337,12 @@
         display: flex;
         line-height: 22px;
         &.support-text {
-          color: #0076f3;
+          color: #385898;
           font-weight: 500;
         }
         .name-text {
           margin-left: 15px;
+          font-weight: 500;
         }
       }
     }
@@ -250,6 +366,7 @@
   }
   .join-group-new {
     border: 1px solid #ededed;
+    border-right: none;
     padding: 15px 20px;
     align-items: center;
     display: flex;
@@ -290,113 +407,163 @@
   }
   .content-group-account {
     overflow-y: auto;
-    height: calc(100% - 268px);
+    height: calc(100% - 206px);
     &.join-group-container {
       height: calc(100% - 194px);
     }
-    .item-group {
-      .title-item-group {
-        padding: 18px 20px;
-        .text-item-group {
-          font-size: 13px;
-          font-weight: bold;
-          color: #969696;
-        }
+  }
+  .item-group {
+    .title-item-group {
+      padding: 18px 20px;
+      .text-item-group {
+        font-size: 13px;
+        font-weight: bold;
+        color: #969696;
       }
-      .title-item-notifi {
-        padding: 0 20px 10px;
-        .text-title-item-notifi {
-          color: #a5a5a5;
-          font-size: 14px;
-        }
+    }
+    .title-item-notifi {
+      padding: 0 20px 10px;
+      .text-title-item-notifi {
+        color: #a5a5a5;
+        font-size: 14px;
       }
-      .item-group-account {
+    }
+  }
+  .item-group-account {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    &:hover {
+      background-color: #f2f5fa;
+      cursor: pointer;
+    }
+    &.demo-group {
+      border-top: 1px solid #ededed;
+    }
+    .avatar-item-group-account {
+      .MuiAvatar-root {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    .info-item-group-account {
+      padding-left: 25px;
+      width: 100%;
+      position: relative;
+      &.invitation-item {
         display: flex;
-        align-items: center;
-        padding: 10px 20px;
-        &:hover {
-          background-color: #f2f5fa;
-          cursor: pointer;
-        }
-        .avatar-item-group-account {
-          .MuiAvatar-root {
-            width: 50px;
-            height: 50px;
-          }
-        }
-        .info-item-group-account {
-          padding-left: 25px;
+        .invitation-left {
           width: 100%;
-          position: relative;
-          .text-value-email-phone {
-            color: #a5a5a5;
+        }
+      }
+      .text-value-email-phone {
+        color: #a5a5a5;
+      }
+      .name-item-group-account {
+        justify-content: space-between;
+        display: flex;
+        .text-name-item-group-account {
+          font-size: 16px;
+          color: #000;
+          text-overflow: ellipsis;
+          &.requirement-header-text {
+            margin-right: -120px;
           }
-          .name-item-group-account {
-            justify-content: space-between;
-            display: flex;
-            .text-name-item-group-account {
-              font-size: 16px;
-              color: #000;
-            }
-            .status-item-group-account {
-              height: 20px;
-              &.pro-color {
-                background-color: rgb(250, 226, 11);
-              }
-            }
-            .account-status-text {
-              margin-top: 3px;
-            }
+          &.demo-footer-name {
+            margin-right: 64px;
           }
-          .acc-item-group-account {
-            padding: 5px 0;
+        }
+        .status-item-group-account {
+          height: 20px;
+          padding: 0 5px;
+          .MuiChip-labelSmall {
+            padding-left: 0;
+            padding-right: 0;
+            font-size: 11px;
           }
-          .phone-item-group-account {
-            justify-content: space-between;
-            display: flex;
+          &.pro-color {
+            background-color: #fd7e14;
+            color: white;
+            text-transform: uppercase;
+            margin-bottom: 5px;
           }
-          .btn-action {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            padding: 0 3px;
-            font-size: 11px !important;
-            font-weight: normal;
-            text-transform: none;
-            border: 1px solid;
-            border-radius: 2px;
-            color: #c1c1c1;
-            &:hover {
-              color: #777;
-              background: #fff;
-            }
-          }
+        }
+        .account-status-text {
+          margin-top: 3px;
+          background-color: #ccc;
+          color: white;
+          padding: 2px 5px;
+          border-radius: 16px;
+          line-height: 16px;
+          height: 16px;
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        }
+      }
+      .acc-item-group-account {
+        padding: 5px 0;
+      }
+      .phone-item-group-account {
+        justify-content: space-between;
+        display: flex;
+      }
+      .action-item-btn-group {
+        min-width: 120px;
+        display: flex;
+      }
+      .btn-action {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        padding: 0 3px;
+        font-size: 11px !important;
+        font-weight: normal;
+        text-transform: none;
+        border: 1px solid;
+        border-radius: 2px;
+        color: #c1c1c1;
+        height: 24px;
+        min-width: 55px;
+        &:hover {
+          color: #777;
+          background: #fff;
+        }
+        span {
+          font-size: 12px;
         }
       }
     }
   }
+  .btn-ok {
+    background-color: #2dc63a;
+    border: 1px solid #2dc63a;
+    color: #fff;
+    padding: 0 3px;
+    box-shadow: none;
+    border-radius: 0;
+    text-transform: initial;
+    height: 24px;
+    position: absolute;
+    min-width: 55px;
+    bottom: 0;
+    border-radius: 2px;
+    span {
+      font-size: 12px;
+    }
+  }
+  .btn-close {
+    padding: 0 3px;
+  }
   .footer-join-group-new {
-    padding: 15px 20px 30px 20px;
     border-top: 1px solid #ededed;
     position: absolute;
     bottom: 0;
-    .list-invative {
-      padding-bottom: 15px;
-      .text-list-invative {
-        font-size: 14px;
-      }
-    }
-    .action-join-group-new {
-      justify-content: space-between;
-      display: flex;
+    width: 100%;
+    max-height: 50%;
+    .demo-group {
       .btn-ok {
-        background-color: #2dc63a;
-        color: #fff;
-        padding: 8px 30px;
-        box-shadow: none;
-      }
-      .btn-close {
-        padding: 8px 30px;
+        right: 0;
+        top: 0;
       }
     }
   }
@@ -406,4 +573,7 @@
 }
 .text-center {
   text-align: center;
+}
+.red-text {
+  color: red;
 }

@@ -13,6 +13,7 @@ import {
   Link
 } from '@material-ui/core';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   actionlogin,
   loginSuccess,
@@ -31,6 +32,7 @@ import { actionFetchGroupDetail } from '../../actions/setting/setting';
 const LoginPage = props => {
   const [isLoginFail, setLoginFail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     localStorage.removeItem(TOKEN);
@@ -58,6 +60,7 @@ const LoginPage = props => {
       setIsLoading(false);
       props.loginSuccess(data);
       props.history.push(Routes.HOME);
+      props.openNoticeModal();
     } catch (error) {
       setLoginFail(true);
       setIsLoading(false);
@@ -71,7 +74,7 @@ const LoginPage = props => {
         <div className="logo-content">
           <img className="logo-workplus" alt="" src={images.logo} />
         </div>
-        <div className="heading-title">Đăng nhập</div>
+        <div className="heading-title">{t('IDS_WP_LOGIN')}</div>
         <LoadingContent loading={isLoading || false}>
           <form className="form-content" onSubmit={handleLogin}>
             <FormControl
@@ -84,7 +87,7 @@ const LoginPage = props => {
                 id="email"
                 required
                 type="text"
-                placeholder="Email hoặc Số điện thoại"
+                placeholder={t('IDS_WP_EMAIL_OR_PHONE_NUMBER')}
                 startAdornment={
                   <InputAdornment position="start">
                     <Icon
@@ -106,7 +109,7 @@ const LoginPage = props => {
                 id="password"
                 required
                 type="password"
-                placeholder="Mật khẩu"
+                placeholder={t('IDS_WP_PASSWORD')}
                 startAdornment={
                   <InputAdornment position="start">
                     <Icon
@@ -121,17 +124,21 @@ const LoginPage = props => {
             <FormGroup row className="checkbox-item">
               <FormControlLabel
                 control={<Checkbox color="primary" required />}
-                label="Tôi không phải robot"
+                label={t('IDS_WP_I_AM_NOT_ROBOT')}
               />
-              <Link href="/forgot-password">Quên mật khẩu?</Link>
+              <Link href="/forgot-password">
+                {t('IDS_WP_FORGOT_PASSWORD_QUESTION')}
+              </Link>
             </FormGroup>
 
             {isLoginFail && (
               <div className="error-msg">
                 <div className="lb-text-err">
-                  Tài khoản không tồn tại hoặc mật khẩu không đúng.
+                  {t('IDS_WP_ACCOUNT_OR_PASSWORD_INCORRECT')}
                 </div>
-                <div className="lb-text-err">Vui lòng nhập lại!</div>
+                <div className="lb-text-err">
+                  {t('IDS_WP_PLEASE_ENTER_AGAIN')}
+                </div>
               </div>
             )}
             <Button
@@ -139,14 +146,14 @@ const LoginPage = props => {
               type="submit"
               className="btn-action red-color"
             >
-              Đăng nhập
+              {t('IDS_WP_LOGIN')}
             </Button>
           </form>
         </LoadingContent>
         <div className="bottom-des">
-          Bạn chưa có tài khoản?
+          {t('IDS_WP_DONT_HAVE_ACCOUNT')}
           <Link href="/register" className="btn-link">
-            Đăng ký
+            {t('IDS_WP_SIGN_UP')}
           </Link>
         </div>
       </div>

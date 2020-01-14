@@ -8,7 +8,8 @@ export const initialState = {
   documentFile: null,
   breadCrumbs: [],
   profile: {},
-  notification: []
+  notification: [],
+  toast: { type: null, message: '' }
 };
 
 const system = (state = initialState, action) => {
@@ -33,6 +34,8 @@ const system = (state = initialState, action) => {
       return { ...state, profile: action.payload };
     case actionTypes.GET_NOTIFICATION:
       return { ...state, notification: action.payload };
+    case actionTypes.ACTION_TOAST:
+      return { ...state, toast: action.payload };
     default:
       return state;
   }

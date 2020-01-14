@@ -9,7 +9,14 @@ import { get } from 'lodash';
 import './style.scss';
 
 const StyledTableBodyRow = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyRow___row ${className}`} {...rest} />;
-const StyledTableBodyCell = ({ className = '', ...rest }) => <TableCell className={`comp_CustomTable_TableBodyRow___cell ${className}`} {...rest} />;
+const StyledTableBodyCell = ({ className = '', draggable, ...rest }) => 
+  <TableCell 
+    className={`${draggable
+        ? 'comp_CustomTable_TableBodyRow___cell-draggable' 
+        : 'comp_CustomTable_TableBodyRow___cell'
+      } ${className}`} 
+    {...rest} 
+  />;
 
 function TableBodyRow({ index, row, group }) {
 
@@ -35,17 +42,23 @@ function TableBodyRow({ index, row, group }) {
       >
         {(provided) => (
           <StyledTableBodyRow
-            onClick={evt => get(options, 'row.onClick', () => null)(row, group)}
             innerRef={provided.innerRef}
             {...provided.draggableProps} 
           >
-            <StyledTableBodyCell>
+            <StyledTableBodyCell
+              align={'right'}
+              draggable={true}
+            >
               <div {...provided.dragHandleProps}>
                 <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
               </div>
             </StyledTableBodyCell>
             {columns.map((column, index) => (
-              <StyledTableBodyCell key={index}>
+              <StyledTableBodyCell 
+                key={index}
+                align={get(column, 'align', 'left')}
+                draggable={true}
+              >
                 {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, get(column, 'field', ''), '')}
               </StyledTableBodyCell>
             ))}
@@ -54,11 +67,12 @@ function TableBodyRow({ index, row, group }) {
       </Draggable>
     )
     : (
-      <StyledTableBodyRow
-        onClick={evt => get(options, 'row.onClick', () => null)(row, group)}
-      >
+      <StyledTableBodyRow>
         {columns.map((column, index) => (
-          <StyledTableBodyCell key={index}>
+          <StyledTableBodyCell 
+            key={index}
+            align={get(column, 'align', 'left')}
+          >
             {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, get(column, 'field', ''), '')}
           </StyledTableBodyCell>
         ))}

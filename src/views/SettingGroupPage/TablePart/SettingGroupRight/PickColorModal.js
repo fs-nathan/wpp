@@ -1,23 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { actionChangeBGMenu } from '../../../../actions/setting/setting';
+import { useTranslation } from 'react-i18next';
+import {
+  actionUpdateColorGroup,
+  actionFetchListColor
+} from '../../../../actions/setting/setting';
+import { actionToast } from '../../../../actions/system/system';
 import CustomModal from '../../../../components/CustomModal';
 import './SettingGroupRight.scss';
 
 function PickColorModal(props) {
+  const { t } = useTranslation();
   const [colors, setColors] = useState(props.colors || []);
+
+  useEffect(() => {
+    setColors(props.colors);
+  }, [props.colors]);
 
   const handleSelectedColor = index => {
     const newList = colors.map((item, idx) => ({
-      value: item.value,
+      color: item.color,
       selected: idx === index
     }));
     setColors(newList);
   };
 
-  const handleOnChangeBG = () => {
-    props.actionChangeBGMenu(colors);
-    props.setOpen(false);
+  const handleOnChangeBG = async () => {
+    try {
+      const selectedColor = colors.find(item => item.selected === true);
+      await actionUpdateColorGroup(selectedColor.color);
+      props.actionFetchListColor();
+      props.setOpen(false);
+    } catch (error) {
+      props.actionToast('error', t('IDS_WP_ERROR_CHANGE_COLOR_GROUP'));
+      setTimeout(() => props.actionToast(null, ''), 3000);
+    }
   };
 
   const { open, setOpen } = props;
@@ -25,7 +42,7 @@ function PickColorModal(props) {
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title="THIẾT LẬP MÀU"
+      title={t('IDS_WP_SETUP_COLOR')}
       className="pick-color-modal"
       onConfirm={handleOnChangeBG}
     >
@@ -33,13 +50,13 @@ function PickColorModal(props) {
         {colors.map((item, idx) => (
           <div
             className="item-outer"
-            style={{ borderColor: item.selected ? item.value : '#FFF' }}
+            style={{ borderColor: item.selected ? item.color : '#FFF' }}
             key={idx}
           >
             <span
               className="item-color"
               onClick={() => handleSelectedColor(idx)}
-              style={{ background: item.value }}
+              style={{ background: item.color }}
             />
           </div>
         ))}
@@ -53,6 +70,7 @@ export default connect(
     colors: state.setting.colors
   }),
   {
-    actionChangeBGMenu
+    actionFetchListColor,
+    actionToast
   }
 )(PickColorModal);

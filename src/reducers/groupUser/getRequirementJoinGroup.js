@@ -1,12 +1,12 @@
 import {
-  SEARCH_USER,
-  SEARCH_USER_SUCCESS,
-  SEARCH_USER_FAIL,
-} from '../../constants/actions/user/searchUser';
+  GET_REQUIREMENT_JOIN_GROUP,
+  GET_REQUIREMENT_JOIN_GROUP_SUCCESS,
+  GET_REQUIREMENT_JOIN_GROUP_FAIL,
+} from '../../constants/actions/groupUser/getRequirementJoinGroup';
 
 export const initialState = {
-  data: {  
-    data: [],
+  data: {
+    requirements: [],
   },
   error: null,
   loading: false,
@@ -14,20 +14,20 @@ export const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case SEARCH_USER:
+    case GET_REQUIREMENT_JOIN_GROUP:
       return {
         ...state,
         error: null,
         loading: true,
       };
-    case SEARCH_USER_SUCCESS: 
+    case GET_REQUIREMENT_JOIN_GROUP_SUCCESS: 
       return {
-        ...state, 
+        ...state,
         data: action.data,
         error: null,
         loading: false,
       };
-    case SEARCH_USER_FAIL:
+    case GET_REQUIREMENT_JOIN_GROUP_FAIL:
       return {
         ...state,
         error: action.error,

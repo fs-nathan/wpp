@@ -55,8 +55,8 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
     if (updateOption && cropper && cropper.current && cropper.current.cropper) {
       if (cropType === CROP_TYPE.LOGO) {
         cropper.current.cropper.options.data = {
-          width: 120,
-          height: 120
+          width: 600,
+          height: 600
         };
       } else {
         cropper.current.cropper.options.data = {
@@ -74,7 +74,23 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
     if (typeof cropper.current.getCroppedCanvas() === 'undefined') {
       return;
     }
-    cropper.current.getCroppedCanvas().toBlob(blob => callback(blob, cropType));
+    if (cropType === CROP_TYPE.COVER) {
+      cropper.current
+        .getCroppedCanvas({
+          width: 1200,
+          height: 400,
+          imageSmoothingQuality: 'high'
+        })
+        .toBlob(blob => callback(blob, cropType));
+    } else {
+      cropper.current
+        .getCroppedCanvas({
+          width: 120,
+          height: 120,
+          imageSmoothingQuality: 'high'
+        })
+        .toBlob(blob => callback(blob, cropType));
+    }
   }
 
   const handleChangeZoom = (event, newValue) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ButtonGroup, Button } from '@material-ui/core';
@@ -7,12 +7,16 @@ import Icon from '@mdi/react';
 import SearchInput from '../SearchInput';
 import './HeaderButton.scss';
 import { actionChangeSearchText } from '../../actions/documents';
+
 const CustomHeaderButton = props => {
   const [isSearch, setSearch] = useState(false);
-
+  const { pathname } = props.location;
   const handleChangeSearch = ({ target: { value } }) => {
     props.actionChangeSearchText(value);
   };
+  useEffect(() => {
+    return () => setSearch(false);
+  }, [pathname]);
   return (
     <React.Fragment>
       <div className={`search-container ${isSearch ? 'show-input' : ''}`}>

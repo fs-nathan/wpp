@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import { actionChangePassword } from '../../../../actions/account';
-
-import SnackbarComponent from '../../../../components/Snackbars';
+import { actionToast } from '../../../../actions/system/system';
 import './SettingAccountRight.scss';
 
-const ChangePassword = () => {
-  const [openToast, setOpenToast] = useState(false);
-  const [mesToast, setMesToast] = useState('');
-
+const ChangePassword = props => {
   const handleChangePassword = async e => {
     e.preventDefault();
     try {
@@ -21,15 +19,14 @@ const ChangePassword = () => {
         re_password: elements.re_password.value
       };
       await actionChangePassword(result);
-      setOpenToast(true);
-      setMesToast('Thay đổi mật khẩu thành công!');
-      setTimeout(() => {
-        setOpenToast(false);
-      }, 2000);
-    } catch (error) {}
+      handleToast('success', 'Thay đổi mật khẩu thành công!');
+    } catch (error) {
+      handleToast('error', error.message);
+    }
   };
-  const handleCloseToast = () => {
-    setOpenToast(false);
+  const handleToast = (type, message) => {
+    props.actionToast(type, message);
+    setTimeout(() => props.actionToast(null, ''), 2000);
   };
   return (
     <div className="change-password">
@@ -77,21 +74,22 @@ const ChangePassword = () => {
           </span>
         </div>
         <div className="block-action">
-          <Button variant="contained" className="btn-action" type="submit">
+          <Button
+            variant="contained"
+            className="btn-action none-boxshadow"
+            type="submit"
+          >
             Cập nhập
           </Button>
         </div>
       </form>
-      <SnackbarComponent
-        open={openToast}
-        handleClose={handleCloseToast}
-        vertical="top"
-        horizontal="center"
-        variant="success"
-        message={mesToast}
-      />
     </div>
   );
 };
 
-export default ChangePassword;
+export default connect(
+  state => ({
+    toast: state.system.toast
+  }),
+  { actionToast }
+)(withRouter(ChangePassword));

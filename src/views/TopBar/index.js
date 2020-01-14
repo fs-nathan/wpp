@@ -16,6 +16,7 @@ import {
   getProfileService,
   actionGetProfile
 } from '../../actions/system/system';
+import { isEmpty } from '../../helpers/utils/isEmpty';
 
 const Container = styled.div`
   display: grid;
@@ -106,24 +107,45 @@ const TopBar = props => {
     setVisibleSearch(true);
   };
   const handleAccount = () => {
-    props.actionVisibleDrawerMessage({
-      type: DRAWER_TYPE.GROUP_ACCOUNT,
-      anchor: 'top'
-    });
+    if (props.typeDrawer === '') {
+      props.actionVisibleDrawerMessage({
+        type: DRAWER_TYPE.GROUP_ACCOUNT,
+        anchor: 'top'
+      });
+    } else {
+      props.actionVisibleDrawerMessage({
+        type: '',
+        anchor: props.anchorDrawer
+      });
+    }
   };
+  const isFree =
+    !isEmpty(props.profile.group_active) &&
+    props.profile.group_active.type === 'Free';
   return (
     <Container id="topNavId">
       <LeftPart>
-        <InfoBox onClick={handleAccount}>
-          <div>
-            <div className="text-group-top-bar">Nhóm: HungThanhXD</div>
-            <Chip badge color="orange" label="Pro" className="style-status" />
-          </div>
-          <div>
-            <GreenText>{props.profile.name || ''}</GreenText>
-            <Icon path={mdiMenuDown} size={1} color="rgba(0, 0, 0, 0.54)" />
-          </div>
-        </InfoBox>
+        {!isEmpty(props.profile.group_active) && (
+          <InfoBox onClick={handleAccount}>
+            <div>
+              <div className="text-group-top-bar">
+                Nhóm: {props.profile.group_active.name}
+              </div>
+              <Chip
+                badge
+                color="orange"
+                label={props.profile.group_active.type}
+                className={`style-status ${isFree ? 'free-status' : ''}`}
+              />
+            </div>
+            {props.profile.group_active.code && (
+              <div>
+                <GreenText>{props.profile.group_active.code}</GreenText>
+                <Icon path={mdiMenuDown} size={1} color="rgba(0, 0, 0, 0.54)" />
+              </div>
+            )}
+          </InfoBox>
+        )}
       </LeftPart>
       <RightPart>
         <span id="searchInputWrapper">
@@ -166,6 +188,7 @@ const TopBar = props => {
         </IconButton>
         <IconButton
           className="cursor-pointer top-icon"
+          title="Tin nhắn"
           onClick={() =>
             props.actionVisibleDrawerMessage({
               type: DRAWER_TYPE.MESSAGE,
@@ -185,6 +208,7 @@ const TopBar = props => {
         </IconButton>
         <IconButton
           className="cursor-pointer top-icon"
+          title="Thông báo"
           onClick={() =>
             props.actionVisibleDrawerMessage({
               type: DRAWER_TYPE.NOTIFICATION,
@@ -211,6 +235,7 @@ const TopBar = props => {
           <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
           <img
+            title="Tài khoản"
             onClick={() =>
               props.actionVisibleDrawerMessage({
                 type: DRAWER_TYPE.SETTING,
@@ -230,6 +255,7 @@ const TopBar = props => {
 export default connect(
   state => ({
     typeDrawer: state.system.typeDrawer,
+    anchorDrawer: state.system.anchorDrawer,
     profile: state.system.profile
   }),
   { actionVisibleDrawerMessage, actionGetProfile }

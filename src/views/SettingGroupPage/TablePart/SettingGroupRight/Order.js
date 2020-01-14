@@ -20,6 +20,7 @@ import {
   extentOrderService,
   actionChangeLoading
 } from '../../../../actions/setting/setting';
+import { actionToast } from '../../../../actions/system/system';
 import AlertModal from '../../../../components/AlertModal';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 
@@ -29,6 +30,7 @@ const Order = props => {
   const [alertExtend, setExtend] = useState(false);
   const [order_id, setOrderId] = useState(null);
   const { t } = useTranslation();
+
   const handleFetchData = async () => {
     try {
       props.actionChangeLoading(true);
@@ -66,25 +68,46 @@ const Order = props => {
   useEffect(() => {
     handleFetchData(); // eslint-disable-next-line
   }, []);
+
+  const handleToast = (type, message) => {
+    props.actionToast(type, message);
+    setTimeout(() => props.actionToast(null, ''), 2000);
+  };
   const handleDeleteOrder = async () => {
     try {
       await orderDeleteService({ order_id });
+      handleToast('success', 'Xóa đơn hàng thành công!');
       handleFetchData();
-    } catch (err) {}
+    } catch (error) {
+      handleToast('error', error.message);
+    }
   };
   const handleExtendOrder = async () => {
     try {
       await extentOrderService({ order_id });
+      handleToast('success', 'Gia hạn đơn hàng thành công!');
       handleFetchData();
-    } catch (err) {}
+    } catch (error) {
+      handleToast('error', error.message);
+    }
   };
   if (props.isLoading) return <LoadingBox />;
   // const showPrice = price => {
   //   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   // };
+  const getColorStatus = status => {
+    if (status === 0) return '#e37112';
+    if (status === 1) return '#13b045';
+    if (status === 2) return '#fb3b00';
+  };
+  const checkDisable = status => {
+    if (status === 0) return false;
+    if (status === 1) return true;
+    if (status === 2) return true;
+  };
   return (
     <Fragment>
-      <Table>
+      <Table className="table-oder">
         <TableHead>
           <TableRow>
             <TableCell className="table-cell-item head">No</TableCell>
@@ -188,7 +211,9 @@ const Order = props => {
                     {el.day_remain ? `${el.day_remain} Ngày` : ''}
                   </TableCell>
                   <TableCell className="table-cell-item body" align="center">
-                    {el.status_name}
+                    <span style={{ color: getColorStatus(el.status_code) }}>
+                      {el.status_name}
+                    </span>
                   </TableCell>
                   {index === 0 ? (
                     <TableCell rowSpan={row.packets.length + 1} align="center">
@@ -214,16 +239,21 @@ const Order = props => {
                           Gia hạn
                         </Button>
                       ) : (
-                        <Button
-                          className="action-btn delete"
-                          onClick={e => {
-                            e.stopPropagation();
-                            setOrderId(row.id);
-                            setAlert(true);
-                          }}
-                        >
-                          Xóa
-                        </Button>
+                        !checkDisable(el.status_code) && (
+                          <Button
+                            className={`action-btn delete ${
+                              checkDisable(el.status_code) ? 'disabled' : ''
+                            }`}
+                            disabled={checkDisable(el.status_code)}
+                            onClick={e => {
+                              e.stopPropagation();
+                              setOrderId(row.id);
+                              setAlert(true);
+                            }}
+                          >
+                            Xóa
+                          </Button>
+                        )
                       )}
                     </TableCell>
                   ) : null}
@@ -236,7 +266,7 @@ const Order = props => {
       <AlertModal
         open={alert}
         setOpen={setAlert}
-        content={t('views.user_page.left_part.department_info.alert_content')}
+        content={t('IDS_WP_ALERT_CONTENT')}
         onConfirm={handleDeleteOrder}
       />
       <AlertModal
@@ -258,6 +288,7 @@ export default connect(
   }),
   {
     actionChangeLoading,
-    actionGetOrder
+    actionGetOrder,
+    actionToast
   }
 )(withRouter(Order));

@@ -9,6 +9,7 @@ import { mdiClose } from '@mdi/js';
 import ColorTypo from '../ColorTypo';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import { connect } from 'react-redux';
 import './style.scss';
 
 const StyledScrollbars = ({ className = '', ...props }) => <Scrollbars className={`comp_CustomModal___scrollbar-main ${className}`} {...props} />;
@@ -21,7 +22,12 @@ const StyledDialogTitle = ({ className = '', ...props }) => <DialogTitle classNa
 
 const StyledDialogActions = ({ className = '', ...props }) => <DialogActions className={`comp_CustomModal___dialog-actions ${className}`} {...props} />;
 
-const ActionsAcceptButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___accept-button ${className}`} {...props} />;
+const ActionsAcceptButton = ({ className = '' , disabled, ...props }) => 
+  <ButtonBase 
+    disabled={disabled}
+    className={`${disabled ? 'comp_CustomModal___accept-button-disabled' : 'comp_CustomModal___accept-button'} ${className}`} 
+    {...props} 
+  />;
 
 const ActionsCancleButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___cancle-button ${className}`} {...props} />;
 
@@ -97,8 +103,11 @@ function CustomModal({
   onConfirm = () => null, onCancle = () => null, 
   open, setOpen, 
   maxWidth='md', fullWidth = false,
-  className = ''
+  className = '',
+  colors,
 }) {
+
+  const bgColor = colors.find(item => item.selected === true);
 
   function handleCancle() {
     setOpen(false);
@@ -136,7 +145,7 @@ function CustomModal({
         <ActionsCancleButton onClick={() => handleCancle()}>
           Hủy
         </ActionsCancleButton>
-        <ActionsAcceptButton disabled={!canConfirm} onClick={() => handleConfirm()}>
+        <ActionsAcceptButton style={{ color: bgColor.value }} disabled={!canConfirm} onClick={() => handleConfirm()}>
           Hoàn thành
         </ActionsAcceptButton>
       </StyledDialogActions>
@@ -162,4 +171,8 @@ CustomModal.propTypes = {
   setOpen: PropTypes.func.isRequired
 };
 
-export default CustomModal;
+export default connect(state => ({
+    colors: state.setting.colors
+  }),
+  {},
+)(CustomModal);

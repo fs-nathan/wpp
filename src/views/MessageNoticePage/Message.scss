@@ -7,18 +7,20 @@
   }
   .content-message {
     overflow-y: auto;
-    padding-top: 5px;
     .item-message {
       display: flex;
       padding: 12px 20px;
       border-bottom: 1px solid #ededed;
       cursor: pointer;
       align-items: center;
+      &:hover {
+        background-color: #f9f9f9;
+      }
       &.support-item {
         border: none;
         padding: 0 20px;
         &:hover {
-          background-color: #d4fff1;
+          background-color: #f8f8f8;
         }
         .name-support-message {
           justify-content: space-between;
@@ -56,12 +58,17 @@
         justify-content: space-between;
         display: flex;
         .text-name-message {
-          font-size: 16px;
+          font-size: 13px;
           font-weight: 500;
+          margin-bottom: 5px;
         }
       }
+      .des-message {
+        color: #90949c;
+        font-size: 12px;
+      }
       &.un-read {
-        background-color: #d4fff1;
+        background-color: #f9f9f9;
       }
     }
   }
@@ -89,11 +96,14 @@
       border-bottom: 1px solid #ededed;
       cursor: pointer;
       align-items: center;
+      &:hover {
+        background-color: #f9f9f9;
+      }
       &.support-item {
         border: none;
         padding: 0 20px;
         &:hover {
-          background-color: #d4fff1;
+          background-color: #f8f8f8;
         }
         .name-support-message {
           justify-content: space-between;
@@ -131,12 +141,13 @@
         justify-content: space-between;
         display: flex;
         .text-name-message {
-          font-size: 16px;
+          font-size: 13px;
           font-weight: 500;
+          margin-bottom: 5px;
         }
       }
       &.un-read {
-        background-color: #d4fff1;
+        background-color: #f9f9f9;
       }
     }
   }

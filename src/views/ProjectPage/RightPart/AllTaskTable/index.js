@@ -25,57 +25,24 @@ import CustomBadge from '../../../../components/CustomBadge';
 import AlertModal from '../../../../components/AlertModal';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
+import { Container, SettingContainer, LinkSpan, StateBox, DateBox } from '../../../../components/TableComponents';
 import CreateNewTaskModal from '../../Modals/CreateNewTask';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
 import { deleteTask } from '../../../../actions/task/deleteTask';
 
-const Container = styled.div`
-  grid-area: table;
-`;
-
-const ProgressBar = styled.div`
-  max-width: 100px;
-`;
-
-const StyledBadge = styled(CustomBadge)`
-  max-width: 70px;
-`;
-
-const StateBox = styled(({stateName, ...rest}) => <div {...rest} />)`
+const SubTitle = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  & > div > span {
-    font-size: 14px;
-    color: ${props => props.stateName};
+  align-items: center;
+  & > * {
+    &:not(:first-child) {
+      margin-left: 8px;
+      color: #8b8b8b;
+    }
     &:first-child {
-      margin-right: 6px;
+      color: #2196F3;
     }
   }
-  & > small {
-    margin-top: 4px;
-    font-size: 12px;
-    margin-left: 20px;
-  }
-`;
-
-const DateBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  & > span {
-    font-size: 14px;
-    color: red;
-  }
-  & > small {
-    margin-top: 4px;
-    font-size: 12px;
-  }
-`;
-
-const SettingContainer = styled.div`
-  margin-right: 16px;
 `;
 
 function decodePriorityCode(priorityCode) {
@@ -106,31 +73,6 @@ function decodePriorityCode(priorityCode) {
   }
 }
 
-function decodeStateName(stateName) {
-  switch (stateName) {
-    case 'Waiting': 
-      return ({
-        color: 'orange',
-        name: 'Đang chờ',
-      });
-    case 'Doing': 
-      return ({
-        color: 'green',
-        name: 'Đang làm',
-      });
-    case 'Expired': 
-      return ({
-        color: 'red',
-        name: 'Quá hạn',
-      });
-    default:
-      return ({
-        color: 'orange',
-        name: 'Đang chờ',
-      });
-  }
-}
-
 function displayDate(time, date) {
   if (
     (date instanceof Date && !isNaN(date))
@@ -142,7 +84,7 @@ function displayDate(time, date) {
       </>
     );
   } else {
-    return <span>Không xác định</span>;
+    return <span />;
   }
 }
 
@@ -241,7 +183,13 @@ function AllTaskTable({
           <CustomTable
             options={{
               title: 'Danh sách công việc',
-              subTitle: '',
+              subTitle: () => (
+                <SubTitle>
+                  <span>Table</span>
+                  <span>Chat</span>
+                  <span>Grant</span>
+                </SubTitle>
+              ),
               subActions: [{
                 label: 'Thành viên', 
                 iconPath: mdiAccountCircle,
@@ -291,46 +239,61 @@ function AllTaskTable({
               },
               row: {
                 id: 'id',
-                onClick: (row) => history.push(`/list-task-detail/`),
               },
             }}
             columns={[{
               label: 'Tên công việc',
-              field: 'name',
+              field: (row) => <LinkSpan onClick={evt => history.push(`/list-task-detail/`)}>{get(row, 'name', '')}</LinkSpan>,
+              align: 'left',
+              width: '25%',
             }, {
               label: 'Ưu tiên',
-              field: (row) => <StyledBadge 
+              field: (row) => <CustomBadge 
                                 color={decodePriorityCode(get(row, 'priority_code', 0)).color}
                                 background={decodePriorityCode(get(row, 'priority_code', 0)).background}
                               >
                                 {get(row, 'priority_name', '')}  
-                              </StyledBadge>,
-              centered: true
+                              </CustomBadge>,
+              align: 'center',
+              width: '10%',
             }, {
               label: 'Tiến độ',
               field: (row) => `${get(row, 'duration', 0)} ngày`,
+              align: 'center',
+              width: '10%',
             }, {
               label: 'Bắt đầu',
               field: (row) => <DateBox>
                                 {displayDate(get(row, 'start_time'), new Date(get(row, 'start_date')))}
                               </DateBox>,
+              align: 'left',
+              width: '10%',
             }, {
               label: 'Kết thúc',
               field: (row) => <DateBox>
                                 {displayDate(get(row, 'end_time'), new Date(get(row, 'end_date')))}
                               </DateBox>,
+              align: 'left',
+              width: '10%',
             }, {
               label: 'Hoàn thành',
-              field: (row) => <ProgressBar>
-                                <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />
-                              </ProgressBar>,
+              field: (row) => <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />,
+              align: 'center',
+              width: '10%',
             }, {
               label: 'Trạng thái',
-              field: (row) => <StateBox stateName={decodeStateName(get(row, 'status_name', '')).color}>
-                                <div>
-                                  <span>&#11044;</span><span>{decodeStateName(get(row, 'status_name', '')).name}</span>
-                                </div>
-                              </StateBox>,
+              field: (row) => <StateBox
+                  stateName={get(row, 'status_name', '')}
+                >
+                  <div>
+                    <span>&#11044;</span>
+                    <span>
+                      {get(row, 'status_name', '')}
+                    </span>
+                  </div>
+                </StateBox>,
+              align: 'center',
+              width: '10%',
             }, {
               label: () => <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'}/>,
               field: row => <AvatarCircleList 
@@ -343,7 +306,8 @@ function AllTaskTable({
                               } 
                               display={3} 
                             />,
-              centered: true
+              align: 'center',
+              width: '10%',
             }, {
               label: '',
               field: row => (
@@ -351,7 +315,9 @@ function AllTaskTable({
                   task={row}
                   onDeleteTask={handleDeleteTask}
                 />
-              )
+              ),
+              align: 'center',
+              width: '5%',
             }]}
             data={tasks}
           />

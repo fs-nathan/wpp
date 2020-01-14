@@ -2,19 +2,20 @@ import {
   SEARCH_USER,
   SEARCH_USER_FAIL,
   SEARCH_USER_SUCCESS,
-} from '../../constants/actions/user/searchUser';
+} from '../../constants/actions/groupUser/searchUser';
 
-export const searchUser = ({ info }) => ({
+export const searchUser = ({ info }, quite = false) => ({
   type: SEARCH_USER,
+  quite,
   options: {
     info,
   },
 });
 
-export const searchUserSuccess = ({ data }) => ({
+export const searchUserSuccess = ({ member }) => ({
   type: SEARCH_USER_SUCCESS,
   data: {
-    data,
+    member,
   },
 });
 

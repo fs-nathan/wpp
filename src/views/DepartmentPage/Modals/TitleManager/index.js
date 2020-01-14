@@ -1,11 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { 
-  TableCell, Table, TableHead, TableBody, TableRow,
-} from '@material-ui/core';
-import ColorButton from '../../../../components/ColorButton';
-import PillButton from '../../../../components/PillButton';
-import colorPal from '../../../../helpers/colorPalette';
+import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 import TitleCreateAndUpdateModal from './TitleCreateAndUpdate';
 import { listPosition } from '../../../../actions/position/listPosition';
 import { deletePosition } from '../../../../actions/position/deletePosition';
@@ -15,39 +9,6 @@ import ErrorBox from '../../../../components/ErrorBox';
 import CustomModal from '../../../../components/CustomModal';
 import AlertModal from '../../../../components/AlertModal';
 import { get } from 'lodash';
-
-const StyledTableHead = styled(TableHead)` 
-  background-color: #eee; 
-  & * {
-    text-transform: none;
-  }
-`;
-
-const StyledTableBody = styled(TableBody)`
-`;
-
-const TableCellChipsWrapper = styled(TableCell)`
-  & > div {
-    display: flex;
-    align-items: center;
-    & > *:last-child {
-      margin-left: 8px;
-    }
-  }
-`;
-
-const StyledTableCell = styled(TableCell)`
-  font-weight: 500;
-  &:first-child {
-    min-width: 200px;
-  }
-`;
-
-const StyledTable = styled(Table)`
-  & * {
-    font-size: 14px;
-  }
-`;
 
 function TitleManager({ open, setOpen, listPosition, doDeletePosition }) {
 
@@ -79,59 +40,22 @@ function TitleManager({ open, setOpen, listPosition, doDeletePosition }) {
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox />}
         {!loading && error === null && (
-          <StyledTable>
-            <StyledTableHead>
-              <TableRow>
-                <StyledTableCell>Tên chức danh</StyledTableCell>
-                <StyledTableCell>Mô tả</StyledTableCell>
-                <TableCell>
-                  <ColorButton variantColor='orange' size='small' variant='contained'
-                    onClick={() => handleSelectedPosition(null)}
-                  >
-                    + Thêm mới
-                  </ColorButton>
-                </TableCell>
-              </TableRow>
-            </StyledTableHead>
-            <StyledTableBody>
-              {positions.map(position => (
-                <TableRow key={get(position, 'id', '')}>
-                  <StyledTableCell>{get(position, 'name', '')}</StyledTableCell>
-                  <TableCell>{get(position, 'description', '')}</TableCell>
-                  <TableCellChipsWrapper>
-                    <div>
-                      <PillButton 
-                        onClick={() => handleSelectedPosition(position)}
-                        background={'#eeeeee'}
-                        text={'#222222'}
-                        size='large' 
-                      >
-                        Sửa
-                      </PillButton>
-                      <PillButton 
-                        onClick={() => {
-                          setDelPos(position)
-                          setAlert(true)
-                        }}
-                        background={'#eeeeee'}
-                        text={colorPal['red'][0]}
-                        size='large' 
-                      >
-                        Xóa
-                      </PillButton>
-                     </div>
-                  </TableCellChipsWrapper>
-                </TableRow>
-              ))}
-            </StyledTableBody>
-          </StyledTable>
+          <SimpleManagerTable 
+            data={positions}
+            handleAdd={() => handleSelectedPosition(null)}
+            handleEdit={position => handleSelectedPosition(position)}
+            handleDelete={position => {
+              setDelPos(position)
+              setAlert(true)
+            }}
+          />
         )}
       </CustomModal>
       <TitleCreateAndUpdateModal updatedPosition={updatedPosition} open={openCAU !== 0} setOpen={setOpenCAU} />
       <AlertModal 
         open={alert}
         setOpen={setAlert}
-        content='Bạn chắc chắn muốn xóa vị trí?'
+        content='Bạn chắc chắn muốn xóa chức danh?'
         onConfirm={() => handleDeletePosition(delPos)}
       />
     </React.Fragment>

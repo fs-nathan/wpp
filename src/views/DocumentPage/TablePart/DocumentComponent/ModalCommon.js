@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
 import '../DocumentPage.scss';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -47,7 +49,9 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 const ModalCommon = props => {
+  const { t } = useTranslation();
   const isPrimary = props.footerAction.length === 1;
+  const bgColor = props.colors.find(item => item.selected === true);
   return (
     <Dialog
       onClose={props.onClose}
@@ -66,11 +70,22 @@ const ModalCommon = props => {
       {props.children}
       {props.footerAction && (
         <DialogActions>
+          <Button
+            onClick={props.onClose}
+            disableRipple
+            className="common-btn-modal"
+          >
+            {t('IDS_WP_CANCEL')}
+          </Button>
           {props.footerAction.map((el, idx) => (
             <Button
               autoFocus
               onClick={el.action}
-              color={idx % 2 !== 0 || isPrimary ? 'primary' : ''}
+              // color={idx % 2 !== 0 || isPrimary ? 'primary' : ''}
+              className="common-btn-modal"
+              style={{
+                color: idx % 2 !== 0 || isPrimary ? bgColor.color : '#222'
+              }}
               key={idx}
               disabled={el.disabled}
             >
@@ -83,4 +98,9 @@ const ModalCommon = props => {
   );
 };
 
-export default ModalCommon;
+export default connect(
+  state => ({
+    colors: state.setting.colors
+  }),
+  {}
+)(ModalCommon);

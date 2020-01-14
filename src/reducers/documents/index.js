@@ -186,44 +186,52 @@ export default function reducer(state = initialState, action) {
     case LIST_PROJECT_DOCUMENT:
       return {
         ...state,
+        isFetching: true,
         isLoading: !action.quite
       };
     case LIST_PROJECT_DOCUMENT_SUCCESS:
       return {
         ...state,
+        isFetching: false,
         listProject: action.payload,
         isLoading: false
       };
     case LIST_PROJECT_DOCUMENT_OF_FOLDER:
       return {
         ...state,
+        isFetching: true,
         isLoading: !action.quite
       };
     case LIST_PROJECT_DOCUMENT_OF_FOLDER_SUCCESS:
       return {
         ...state,
+        isFetching: false,
         listProject: action.payload,
         isLoading: false
       };
     case LIST_DOCUMENT_FROM_ME:
       return {
         ...state,
+        isFetching: true,
         isLoading: !action.quite
       };
     case LIST_DOCUMENT_FROM_ME_SUCCESS:
       return {
         ...state,
+        isFetching: false,
         listDocumentFromMe: action.payload,
         isLoading: false
       };
     case LIST_DOCUMENT_SHARE:
       return {
         ...state,
+        isFetching: true,
         isLoading: !action.quite
       };
     case LIST_DOCUMENT_SHARE_SUCCESS:
       return {
         ...state,
+        isFetching: false,
         listDocumentShareToMe: action.payload,
         isLoading: false
       };

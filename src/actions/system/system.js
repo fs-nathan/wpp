@@ -31,8 +31,9 @@ export const closeDocumentDetail = () => ({
 export const canViewFile = fileType => {
   if (!fileType) return false;
   const type = fileType.toLowerCase();
+  // add new 3 format (jfif,mp3,mp4). Request by Mr. Thanh Nguyen
   const listExtensionFile =
-    'jpg,jpeg,png,gif,tiff,bmp,webm,txt,mpeg4,3gpp,mov,avi,mpegps,wmv,flv,txt,css,html,php,c,cpp,h,hpp,js,doc,docx,xls,xlsx,ppt,pptx,pdf,pages,ai,psd,dxf,svg,eps,ps,ttf,xps,zip,rar';
+    'jpg,jpeg,png,gif,tiff,bmp,webm,txt,mpeg4,3gpp,mov,avi,mpegps,wmv,flv,txt,css,html,php,c,cpp,h,hpp,js,doc,docx,xls,xlsx,ppt,pptx,pdf,pages,ai,psd,dxf,svg,eps,ps,ttf,xps,zip,rar,jfif,mp3,mp4';
   return listExtensionFile.split(',').indexOf(type) > -1;
 };
 
@@ -47,6 +48,13 @@ export const actionChangeBreadCrumbs = breadCrumbs => {
   return {
     type: actionTypes.CHANGE_DOCUMENT_BREAD_CRUMBS,
     payload: breadCrumbs
+  };
+};
+export const actionToast = (type, message) => {
+  // type: error or success or null (null is close toast)
+  return {
+    type: actionTypes.ACTION_TOAST,
+    payload: { type, message }
   };
 };
 
@@ -115,4 +123,32 @@ export const actionGetProfile = data => {
     type: actionTypes.GET_PROFILE,
     payload: data
   };
+};
+
+export const actionGetFormatDate = () => {
+  const config = {
+    url: '/users/get-list-format-date',
+    method: 'get'
+  };
+  return apiService(config);
+};
+
+export const actionSettingFormatDate = (date_format = 'DD/MM/YYYY') => {
+  const config = {
+    url: '/users/update-format-date',
+    method: 'post',
+    data: {
+      date_format
+    }
+  };
+  return apiService(config);
+};
+
+export const actionSearchTask = info => {
+  const config = {
+    url: '/task/search',
+    method: 'get',
+    params: { info }
+  };
+  return apiService(config);
 };

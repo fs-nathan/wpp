@@ -102,9 +102,14 @@ const UploadModal = props => {
 
   const handleClose = () => setOpen(false);
   if (!open) return null;
+  const bgColor = props.colors.find(item => item.selected === true);
   return (
     <div className="upload-modal">
-      <DialogTitle id="upload-dialog-title" className="upload-header">
+      <DialogTitle
+        id="upload-dialog-title"
+        className="upload-header"
+        style={{ background: bgColor.color }}
+      >
         <ColorTypo className="header-title">
           {`${title || 'Tải tệp tin lên'} (${totalSuccess}/${
             fileUpload.length
@@ -172,7 +177,8 @@ const UploadModal = props => {
 
 export default connect(
   state => ({
-    currentFolder: state.documents.currentFolder
+    currentFolder: state.documents.currentFolder,
+    colors: state.setting.colors
   }),
   {}
 )(UploadModal);

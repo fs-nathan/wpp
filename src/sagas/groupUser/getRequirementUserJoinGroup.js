@@ -1,17 +1,14 @@
 import { call, put } from 'redux-saga/effects';
-import { searchUserSuccess, searchUserFail } from '../../actions/user/searchUser';
+import { getRequirementJoinGroupSuccess, getRequirementJoinGroupFail } from '../../actions/groupUser/getRequirementJoinGroup';
 import { apiService } from '../../constants/axiosInstance';
 import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
 
-async function doSearchUser({ info }) {
+async function doGetRequirementJoinGroup() {
   try {
     const config = {
-      url: '/search-user',
+      url: '/get-requirement-join-group',
       method: 'get',
-      params: {
-        info
-      },
     }
     const result = await apiService(config);
     return result.data;
@@ -20,16 +17,16 @@ async function doSearchUser({ info }) {
   }
 }
 
-function* searchUser(action) {
+function* getRequirementJoinGroup(action) {
   try {
-    const { data } = yield call(doSearchUser, action.options);
-    yield put(searchUserSuccess({ data }));
+    const { requirements} = yield call(doGetRequirementJoinGroup, action.options);
+    yield put(getRequirementJoinGroupSuccess({ requirements }));
   } catch (error) {
-    yield put(searchUserFail(error));
+    yield put(getRequirementJoinGroupFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 
 export {
-  searchUser,
+  getRequirementJoinGroup,
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { mdiFileDocumentBoxOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { actionVisibleDrawerMessage } from '../../../actions/system/system';
@@ -18,14 +19,20 @@ const listMessage = [
   { name: 'Phân quyền thành viên', read: false }
 ];
 const DrawerSupport = props => {
+  const { t } = useTranslation();
   // const { actionVisibleDrawerMessage, typeDrawer } = props;
   const actionList = [
-    { name: 'Xem tất cả trợ giúp', classname: 'primary-color', url: '/' },
-    { name: 'Gửi phản hồi', classname: 'primary-color', url: '/' }
+    {
+      name: t('IDS_WP_VIEW_ALL_SUPPORT'),
+      classname: 'primary-color',
+      url: '/'
+    },
+    { name: t('IDS_WP_SEND_RESPONSE'), classname: 'primary-color', url: '/' }
   ];
+  const bgColor = props.colors.find(item => item.selected === true);
   return (
-    <div className="drawer-content-container">
-      <HeaderDrawer title="Trợ giúp" />
+    <div className="drawer-content">
+      <HeaderDrawer title={t('IDS_WP_SUPPORT')} />
       <div className="content-drawer">
         {listMessage.map((message, index) => (
           <div className="item-message support-item" key={index}>
@@ -33,7 +40,7 @@ const DrawerSupport = props => {
               <Icon
                 path={mdiFileDocumentBoxOutline}
                 size={1.2}
-                color="#2dc63a"
+                color={bgColor.color || ''}
               />
             </div>
             <div className="name-support-message">
@@ -49,7 +56,8 @@ const DrawerSupport = props => {
 
 export default connect(
   state => ({
-    typeDrawer: state.system.typeDrawer
+    typeDrawer: state.system.typeDrawer,
+    colors: state.setting.colors
   }),
   {
     actionVisibleDrawerMessage

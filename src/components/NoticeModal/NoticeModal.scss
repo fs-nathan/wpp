@@ -111,12 +111,13 @@
       padding: 30px 24px 60px;
       text-align: center;
       .block-name {
-        font-size: 26px;
+        font-size: 21px;
         font-weight: bold;
       }
       .block-email {
-        font-size: 22px;
-        color: #48bb78;
+        font-size: 17px;
+        color: #8e8e8e;
+        line-height: 35px;
       }
     }
   }
@@ -130,6 +131,7 @@
     .MuiButton-label {
       color: #007bff;
       text-transform: none;
+      padding: 6px 0;
     }
   }
 }

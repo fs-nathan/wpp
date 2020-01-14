@@ -23,6 +23,29 @@
     .MuiDialogContent-root {
       padding: 16px 0;
     }
+    .empty-content-container {
+      .image-contain {
+        display: flex;
+        justify-content: center;
+      }
+      p {
+        font-size: 14px;
+        opacity: 0.65;
+        text-align: center;
+      }
+      &.empty-result {
+        b {
+          font-size: 14px;
+        }
+        p {
+          text-align: left;
+          opacity: 1;
+        }
+        li {
+          margin: 5px 0;
+        }
+      }
+    }
   }
 
   .search-result-item {

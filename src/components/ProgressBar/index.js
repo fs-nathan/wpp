@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiCircle } from '@mdi/js';
+import moment from 'moment';
 import ColorTypo from '../ColorTypo';
 
 const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTarget, ...rest }) => 
@@ -12,7 +13,9 @@ const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTar
     </div>
     <span>{percentDone}%</span>
     <span>{percentTarget}%</span>
-    <span>Hôm nay</span>
+    <span>
+      <abbr title={moment().format('DD/MM/YYYY')}>Hôm nay</abbr>
+    </span>
     <span />
     <span />
   </div>
@@ -71,6 +74,9 @@ const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTar
     left: ${props => props.percentTarget || 0}%;
     transform: translateX(-50%);
     z-index: 10;
+    & > abbr {
+      text-decoration: none;
+    }
   }
   & > span:nth-child(5) {
     border-left: 5px solid transparent;

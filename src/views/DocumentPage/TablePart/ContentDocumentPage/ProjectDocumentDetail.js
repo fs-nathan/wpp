@@ -20,8 +20,10 @@ import {
   selectDocumentItem,
   resetListSelectDocument,
   actionFetchListProjectOfFolder,
-  actionSortListProject
+  actionSortListProject,
+  actionSelectedFolder
 } from '../../../../actions/documents';
+import { openDocumentDetail } from '../../../../actions/system/system';
 import { FileType } from '../../../../components/FileType';
 import {
   StyledTableHeadCell,
@@ -43,7 +45,8 @@ import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
 
 const ProjectDocumentDetail = props => {
-  const { isLoading, listProject: listData, actionChangeBreadCrumbs } = props;
+  const { isLoading, actionChangeBreadCrumbs, isFetching, breadCrumbs } = props;
+  const [listData, setListData] = useState([]);
   const [selected, setSelected] = useState([]);
   const [sortField, setSortField] = useState(null);
   const [sortType, setSortType] = useState(1);
@@ -51,29 +54,56 @@ const ProjectDocumentDetail = props => {
   const [itemActive, setItemActive] = useState({});
 
   useEffect(() => {
-    const search = props.location.search.split('projectId=').pop();
-    fetDataProjectDocumentOfFolder({ project_id: search });
+    fetchDataProjectDocumentOfFolder({});
     // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
+      props.actionSelectedFolder({});
       actionChangeBreadCrumbs([]);
     };
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    setListData(props.listProject);
+    // eslint-disable-next-line
+  }, [props.listProject]);
+
   useEffect(() => {
     if (isEmpty(props.selectedDocument)) setSelected([]);
     // eslint-disable-next-line
   }, [props.selectedDocument]);
+
   useEffect(() => {
     let projects = [];
-    // projects = sortBy(listData, [o => get(o, sortField)]);
     projects = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(projects);
     props.actionSortListProject(projects);
     // eslint-disable-next-line
   }, [sortField, sortType]);
+
+  useEffect(() => {
+    const dataUpdate = handleSearchData(props.searchText, props.listProject);
+    setListData(dataUpdate);
+    // eslint-disable-next-line
+  }, [props.searchText]);
+
+  const handleSearchData = (valueSearch, listData) => {
+    let listResult = [];
+    if (!isEmpty(valueSearch)) {
+      listResult = listData.filter(
+        el => el.name.toLowerCase().indexOf(valueSearch.toLowerCase()) !== -1
+      );
+    } else {
+      listResult = listData;
+    }
+
+    return listResult;
+  };
+
   const hanldeSort = field => {
     if (field !== sortField) {
       setSortField(field);
@@ -83,8 +113,58 @@ const ProjectDocumentDetail = props => {
     }
   };
 
-  const fetDataProjectDocumentOfFolder = (params = {}, quite = false) => {
-    props.actionFetchListProjectOfFolder(params, quite);
+  const fetchDataProjectDocumentOfFolder = (params = {}, quite = false) => {
+    const search = props.location.search.split('projectId=').pop();
+    props.actionFetchListProjectOfFolder(
+      { project_id: search, ...params },
+      quite
+    );
+  };
+
+  const handleClickItem = item => {
+    if (isFetching) return;
+    if (item.type === 'folder') {
+      props.actionFetchListMyDocument({ folder_id: item.id }, true);
+      props.actionSelectedFolder(item);
+      // handle bread crumbs
+      let newBreadCrumbs = [...breadCrumbs];
+      if (breadCrumbs.length === 0) {
+        newBreadCrumbs.push({
+          id: -1,
+          name: 'Home',
+          action: () => {
+            props.actionSelectedFolder({});
+            fetchDataProjectDocumentOfFolder({}, true);
+          }
+        });
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.actionSelectedFolder(item);
+            props.fetchDataProjectDocumentOfFolder(
+              { folder_id: item.id },
+              true
+            );
+          }
+        });
+      } else {
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.actionSelectedFolder(item);
+            props.fetchDataProjectDocumentOfFolder(
+              { folder_id: item.id },
+              true
+            );
+          }
+        });
+      }
+      actionChangeBreadCrumbs(newBreadCrumbs);
+    } else {
+      props.openDocumentDetail(item);
+    }
   };
 
   const handleSelectAllClick = e => {
@@ -179,14 +259,26 @@ const ProjectDocumentDetail = props => {
                     onChange={e => handleSelectItem(file)}
                   />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="5%">
+                <StyledTableBodyCell
+                  align="center"
+                  width="5%"
+                  onClick={() => handleClickItem(file)}
+                >
                   <FullAvatar src={FileType(file.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="20%">
+                <StyledTableBodyCell
+                  align="left"
+                  width="20%"
+                  onClick={() => handleClickItem(file)}
+                >
                   <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="20%">
-                  <ColorTypo color="black">{file.task_name}</ColorTypo>
+                  <ColorTypo color="black">
+                    <a href={file.redirect_url} className="address-link">
+                      {file.task_name}
+                    </a>
+                  </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="15%">
                   {file.shared_member &&
@@ -240,13 +332,18 @@ const ProjectDocumentDetail = props => {
 export default connect(
   state => ({
     selectedDocument: state.documents.selectedDocument,
-    listProject: state.documents.listProject
+    listProject: state.documents.listProject,
+    breadCrumbs: state.system.breadCrumbs,
+    isFetching: state.documents.isFetching,
+    searchText: state.documents.searchText
   }),
   {
     selectDocumentItem,
     actionSortListProject,
     resetListSelectDocument,
     actionChangeBreadCrumbs,
+    openDocumentDetail,
+    actionSelectedFolder,
     actionFetchListProjectOfFolder
   }
 )(withRouter(ProjectDocumentDetail));

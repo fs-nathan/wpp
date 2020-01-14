@@ -42,13 +42,12 @@
   padding: 15px 24px;
 };
 
-.comp_CustomModal___accept-button {
+@mixin comp_CustomModal___accept-button {
   padding: 8px 16px;
   background-color: #fff;
   &:hover {
     background-color: #eee;
   };
-  color: #05b50c;
   font-weight: 500;
   font-size: 16px;
   text-transform: uppercase;
@@ -56,6 +55,16 @@
   & > span:last-child {
     display: none;
   }
+}
+
+.comp_CustomModal___accept-button {
+  & {
+    @include comp_CustomModal___accept-button;
+  };
+  &-disabled {
+    @include comp_CustomModal___accept-button;
+    color: #ccc !important;
+  };
 };
 
 .comp_CustomModal___cancle-button {

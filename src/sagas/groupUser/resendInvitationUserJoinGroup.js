@@ -1,14 +1,14 @@
 import { call, put } from 'redux-saga/effects';
-import { inviteUserJoinGroupSuccess, inviteUserJoinGroupFail } from '../../actions/user/inviteUserJoinGroup';
+import { resendInvitationUserJoinGroupSuccess, resendInvitationUserJoinGroupFail } from '../../actions/groupUser/resendInvitationUserJoinGroup';
 import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, INVITE_USER_JOIN_GROUP } from '../../constants/events';
+import { CustomEventEmitter, RESEND_INVITATION_USER_JOIN_GROUP } from '../../constants/events';
 import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
 
-async function doInviteUserJoinGroup({ userId }) {
+async function doResendInvitationUserJoinGroup({ userId }) {
   try {
     const config = {
-      url: '/invite-user-join-group',
+      url: '/resend-invitation-user-join-group',
       method: 'post',
       data: {
         user_id: userId,
@@ -21,18 +21,18 @@ async function doInviteUserJoinGroup({ userId }) {
   }
 }
 
-function* inviteUserJoinGroup(action) {
+function* resendInvitationUserJoinGroup(action) {
   try {
-    yield call(doInviteUserJoinGroup, action.options);
-    yield put(inviteUserJoinGroupSuccess());
-    CustomEventEmitter(INVITE_USER_JOIN_GROUP);
+    yield call(doResendInvitationUserJoinGroup, action.options);
+    yield put(resendInvitationUserJoinGroupSuccess());
+    CustomEventEmitter(RESEND_INVITATION_USER_JOIN_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(inviteUserJoinGroupFail(error));
+    yield put(resendInvitationUserJoinGroupFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
 export {
-  inviteUserJoinGroup,
+  resendInvitationUserJoinGroup,
 }
