@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiCheckCircle, mdiCheckboxBlankCircleOutline, mdiPin, mdiClockAlert } from '@mdi/js';
+import { mdiCheckCircle, mdiCheckboxBlankCircleOutline, 
+  // mdiPin, 
+  mdiClockAlert } from '@mdi/js';
 import { List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { withStyles } from '@material-ui/core/styles';
