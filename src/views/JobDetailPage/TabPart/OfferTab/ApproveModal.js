@@ -132,6 +132,9 @@ const ApproveModal = (props) => {
 
       </DialogContent>
       <DialogActions>
+        <Button autoFocus onClick={props.handleClickClose} color='#222'>
+          Hủy
+        </Button>
         <Button
           autoFocus
           color="primary"

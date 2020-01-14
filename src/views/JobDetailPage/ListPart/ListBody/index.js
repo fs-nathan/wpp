@@ -19,6 +19,9 @@ const StyledList = styled(List)`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
+  & > div:nth-child(1) {
+    margin-right: -7px !important;
+  }
 `;
 
 function ListBody() {
@@ -32,7 +35,7 @@ function ListBody() {
 
    
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200} >
         {data.map((item, key) => {
           return (
             <StyledList key={key} >

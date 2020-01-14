@@ -330,7 +330,6 @@ const ModalStatus = (status) => {
 // }
 const ButtonDropdown = styled(DropdownButton)`
   display: ${props => 
-    // console.log("props state:::::", props.show)
     props.show ? 'block' : 'none'
   }
 `
@@ -341,9 +340,11 @@ function TabBody(props) {
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
   let content = ""
   let data = ""
+  // let dataComplete = ""
   if (value && value.detailTask) {
     content = value.detailTask.description || ""
     data = value.detailTask
+    // dataComplete = value.listTaskDetail.tasks
   }
   React.useEffect(() => {
     if (!value.detailTask) return
@@ -365,7 +366,9 @@ function TabBody(props) {
       priority_code
     })
   }, [value.detailTask])
-  // console.log("data:::::", data.end_date)
+  // console.log("data detail task:::::", value.detailTask)
+  // console.log("data List TASK:::::", value.listTaskDetail.tasks)
+
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -377,7 +380,7 @@ function TabBody(props) {
            </ColorTypo>
             <ContentText component='span'>
               {value.detailTask && <span>{value.detailTask.name}</span>}
-              <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} />
+              {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
             </ContentText>
           </ListItemText>
         </ListItem>
@@ -415,7 +418,7 @@ function TabBody(props) {
             show={isExpiredDate(data.end_date)}
           />
           {
-            isExpiredDate(data.end_date)
+            !isExpiredDate(data.end_date)
             &&
               <ColorButton 
                 size='small' variant='contained' variantColor='red'

@@ -82,6 +82,9 @@ const SubtaskModal = (props) => {
             />
         </DialogContent>
         <DialogActions>
+          <Button autoFocus onClick={props.handleClickClose} color='#222'>
+            Hủy
+          </Button>
           <Button onClick={() => {
             props.handleClickClose()
             props.updateSubTaskByTaskId(props.task.id, name, props.taskId)

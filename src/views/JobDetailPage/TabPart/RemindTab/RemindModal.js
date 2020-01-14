@@ -446,6 +446,9 @@ function RemindModal(props) {
         />
       </DialogContent>
       <DialogActions>
+        <Button autoFocus onClick={handleCloseModal} color='#222'>
+          Hủy
+        </Button>
         {props.isRemind ?
           <Button onClick={handlePressConfirm} color="primary">
             Chỉnh sửa nhắc hẹn

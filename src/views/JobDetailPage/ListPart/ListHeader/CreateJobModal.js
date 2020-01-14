@@ -664,9 +664,14 @@ function CreateJobModal(props) {
           {props.isRight ?
             <>
               <span></span>
+              <div>
+              <Button autoFocus onClick={handleClose} color="#222">
+                Hủy
+              </Button>
               <Button onClick={() => { updateData() }} color="primary">
                 Hoàn Thành
-            </Button>
+              </Button>
+              </div>
             </>
             :
             <>
@@ -678,7 +683,7 @@ function CreateJobModal(props) {
               </ButtonImage>
               <Button autoFocus onClick={handlePressConfirm} color="primary">
                 TẠO VIỆC
-          </Button>
+              </Button>
             </>
           }
         </DialogFooter>

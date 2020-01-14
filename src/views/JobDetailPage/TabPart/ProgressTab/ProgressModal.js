@@ -211,6 +211,9 @@ const ProgressModal = (props) => {
         </StartEndDay>
       </DialogContent>
       <DialogActions>
+        <Button autoFocus onClick={props.handleClickClose} color='#222'>
+          Hủy
+        </Button>
         <Button onClick={() => {
 
           setDataTimeDuration()

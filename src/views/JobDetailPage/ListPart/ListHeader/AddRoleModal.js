@@ -148,7 +148,7 @@ function AddRoleModal(props) {
                     </>
             }
             <DialogActions>
-                <Button autoFocus color='secondary' onClick={handleClose}>HUỶ</Button>
+                <Button autoFocus color='#222' onClick={handleClose}>HUỶ</Button>
                 <Button autoFocus color='primary' onClick={handleSubmit}>HOÀN THÀNH</Button>
             </DialogActions>
         </Dialog>
