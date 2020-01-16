@@ -1,0 +1,32 @@
+.view_Project_ProjectDetail___name {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+};
+
+.view_Project_ProjectDetail___subheader {
+  padding: 8px 0;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+};
+
+.view_Project_ProjectDetail___date-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    &:first-child {
+      text-align: left;
+    }
+    &:last-child {
+      text-align: right;
+    }
+  }
+};

@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import {
   ListItemText,
@@ -12,25 +11,21 @@ import { StyledList, StyledListItem, Primary } from '../../../../components/Cust
 import { get } from 'lodash';
 import Icon from '@mdi/react';
 import { mdiCheckCircle, } from '@mdi/js';
+import './style.scss';
 
-const CustomListItem = styled(StyledListItem)`
-  padding: 10px 16px;
-`;
+const CustomListItem = ({ className = '', ...props }) => 
+  <StyledListItem
+    className={`view_Project_CopyGroupTask_Modal___list-item ${className}`} 
+    {...props}
+  />;
 
-const StyledPrimary = styled(({ isSelected, ...rest }) => <Primary {...rest} />)`
-  display: flex;
-  align-items: center;
-  & > * {
-    &:first-child {
-      fill: ${props => props.isSelected ? '#05b50c' : 'rgba(0, 0, 0, 0)'};
-    }
-    &:last-child {
-      color: ${props => props.isSelected ? '#05b50c' : '#444'};
-      font-size: 14px;
-      margin-left: 8px;
-    }
-  }
-`;
+const StyledPrimary = ({ className = '', isSelected, ...props }) => 
+  <Primary 
+    className={`${isSelected 
+      ? 'view_Project_CopyGroupTask_Modal___primary-selected' 
+      : 'view_Project_CopyGroupTask_Modal___primary'} ${className}`} 
+    {...props} 
+  />;
 
 function CopyGroupTask({ open, setOpen, getAllGroupTask, doCreateGroupTask }) {
 

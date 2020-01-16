@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
@@ -30,25 +29,13 @@ import CreateNewTaskModal from '../../Modals/CreateNewTask';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
 import { deleteTask } from '../../../../actions/task/deleteTask';
+import './style.scss'
 
-const SubTitle = styled.div`
-  display: flex;
-  align-items: center;
-  & > * {
-    &:hover {
-      cursor: pointer;
-    }
-    &:not(:first-child) {
-      margin-left: 8px;
-    }
-    &:not(:nth-child(2)) {
-      color: #8b8b8b;
-    }
-    &:nth-child(2) {
-      color: #2196F3;
-    }
-  }
-`;
+const SubTitle = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_AllTaskTable___subtitle ${className}`}
+    {...props}
+  />;
 
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {

@@ -1,0 +1,17 @@
+.view_ProjectGroup_MemberDetailModal___table-head {
+  background-color: #eee; 
+  & * {
+    text-transform: none;
+  }
+};
+
+.view_ProjectGroup_MemberDetailModal___table-cell {
+  & > span {
+    font-size: 14px;
+    color: #222;
+  }
+  & > small {
+    font-size: 13px;
+    color: #999;
+  }
+};

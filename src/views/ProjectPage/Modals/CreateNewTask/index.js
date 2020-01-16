@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { 
   TextField, FormControl, FormControlLabel, RadioGroup, 
@@ -19,60 +18,45 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import './style.scss';
 
-const CustomTextField = styled(TextField)`
-  & > label {
-    z-index: 0;
-  }
-`;
+const CustomTextField = ({ className = '', ...props }) => 
+  <TextField 
+    className={`view_Project_CreateNewTask_Modal___text-field ${className}`}
+    {...props}
+  />;
 
-const StyledFormLabel = styled(FormLabel)`
-  font-size: 14px;
-  margin-bottom: 8px;
-  && {
-    color: #a5a0a0;
-  }
-`;
+const StyledFormLabel = ({ className = '', ...props }) => 
+  <FormLabel 
+    className={`view_Project_CreateNewTask_Modal___form-label ${className}`}
+    {...props}
+  />;
 
-const TimeBox = styled.div`
-  margin-bottom: 16px;
-  width: 100%;
-  & > div {
-    &:not(:first-child) {
-      margin-top: 8px;
-    }
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  & > p > span {
-    color: #dc3545;
-  }
-`;
+const TimeBox = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_CreateNewTask_Modal___time-box ${className}`}
+    {...props}
+  />;
 
-const StyledRadioGroup = styled(RadioGroup)`
-  flex-direction: row;
-`;
+const StyledRadioGroup = ({ className = '', ...props }) => 
+  <RadioGroup 
+    className={`view_Project_CreateNewTask_Modal___radio-group ${className}`}
+    {...props}
+  />;
 
-const CustomRadioGroup = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 8px;
-`;
+const CustomRadioGroup = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_CreateNewTask_Modal___custom-radio-group ${className}`}
+    {...props}
+  />;
 
-const CustomRadio = styled(({ checked = false, ...rest }) => <span {...rest} />)`
-  font-size: 14px;
-  width: 25%;
-  border-radius: 999px;
-  text-align: center;
-  padding: 8px;
-  background-color: ${props => props.checked ? '#48bb78' : 'rgba(224, 224, 224, 1)'};
-  &:hover {
-    cursor: pointer;
-  }
-`;
+const CustomRadio = ({ className = '', checked, ...props }) => 
+  <span 
+    className={`${checked 
+      ? 'view_Project_CreateNewTask_Modal___custom-radio-checked'
+      : 'view_Project_CreateNewTask_Modal___custom-radio'} ${className}`}
+    {...props}
+  />;
 
 function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
 

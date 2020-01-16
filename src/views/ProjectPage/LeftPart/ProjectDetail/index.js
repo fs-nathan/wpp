@@ -1,6 +1,5 @@
 import React from 'react';
 import { get } from 'lodash';
-import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
@@ -22,39 +21,25 @@ import EditProjectModal from '../../../ProjectGroupPage/Modals/EditProject';
 import AlertModal from '../../../../components/AlertModal';
 import { CustomEventListener, CustomEventDispose, DELETE_PROJECT } from '../../../../constants/events.js';
 import { deleteProject } from '../../../../actions/project/deleteProject';
+import './style.scss';
 
-const ProjectName = styled.span`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 500;
-`;
+const ProjectName = ({ className = '', ...props }) => 
+  <span 
+    className={`view_Project_ProjectDetail___name ${className}`}
+    {...props}
+  />
 
-const SubHeader = styled.div`
-  padding: 8px 0;
-  margin: 8px 0
-  display: flex;
-  align-items: center;
-`;
+const SubHeader = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_ProjectDetail___subheader ${className}`}
+    {...props}
+  />
 
-const DateBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  & > div {
-    display: flex;
-    flex-direction: column;
-    &:first-child {
-      text-align: left;
-    }
-    &:last-child {
-      text-align: right;
-    }
-  }
-`;
+const DateBox = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_ProjectDetail___date-box ${className}`}
+    {...props}
+  />
 
 function decodeStateName(stateName) {
   switch (stateName) {
@@ -97,7 +82,7 @@ function displayDate(date) {
       </>
     );
   } else {
-    return <span>Không xác định</span>;
+    return <span/>;
   }
 }
 

@@ -1,13 +1,11 @@
 .comp_CustomTable_TableBodyRow___row {
   background-color: #ffffff;
-  border-bottom: 1px solid #f0f0f0;
   & > .MuiTableCell-root {
     font-size: 13px;
   };
 };
 
 @mixin comp_CustomTable_TableBodyRow___cell {
-  border-bottom: 1px solid #f0f0f0;
   font-size: 13px;
   word-break: break-word;
 }

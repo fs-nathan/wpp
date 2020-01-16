@@ -157,15 +157,15 @@ function CustomModal({
       />
       )}
       <StyledDialogActions>
-        {confirmRender !== null && (
-          <ActionsAcceptButton style={{ color: bgColor.value }} disabled={!canConfirm} onClick={() => handleConfirm()}>
-            {confirmRender()}
-          </ActionsAcceptButton>
-        )}
         {cancleRender !== null && (
           <ActionsCancleButton onClick={() => handleCancle()}>
             {cancleRender()}
           </ActionsCancleButton>
+        )}
+        {confirmRender !== null && (
+          <ActionsAcceptButton style={{ color: bgColor.color }} disabled={!canConfirm} onClick={() => handleConfirm()}>
+            {confirmRender()}
+          </ActionsAcceptButton>
         )}
       </StyledDialogActions>
     </StyledDialog>

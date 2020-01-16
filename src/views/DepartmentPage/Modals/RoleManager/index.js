@@ -35,6 +35,8 @@ function RoleManager({ open, setOpen, listUserRole, doDeleteUserRole }) {
         open={open}
         setOpen={setOpen}
         title='Quản lý vai trò'
+        confirmRender={null}
+        cancleRender={() => 'Thoát'}
       >
         {loading && <LoadingBox />}
         {error !== null && <ErrorBox />}

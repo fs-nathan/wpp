@@ -1,0 +1,39 @@
+.view_ProjectGroup_ProjectSettingModal___form-control {
+  & > *:not(:first-child) {
+    margin-top: 8px;
+  }
+};
+
+.view_ProjectGroup_ProjectSettingModal___form-title {
+  font-size: 14px;
+  font-weight: 500;
+  & {
+    color: #444 !important;
+  }
+};
+
+.view_ProjectGroup_ProjectSettingModal___form-label {
+  font-size: 13px;
+  font-weight: normal;
+  & {
+    color: #666 !important;
+  }
+};
+
+.view_ProjectGroup_ProjectSettingModal___form-control-label {
+  margin-left: 30px;
+  & > span:last-child {
+    color: #666;
+    font-size: 13px;
+    & > small {
+      font-size: 13px;
+      color: #999;
+    }
+  }
+  & span.Mui-checked + span {
+    color: #111;
+    & > small {
+      color: #111;
+    }
+  }
+};

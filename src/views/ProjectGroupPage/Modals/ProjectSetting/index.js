@@ -2,46 +2,31 @@ import React from 'react';
 import styled from 'styled-components';
 import { FormControlLabel, RadioGroup, FormControl, FormLabel, Radio, } from '@material-ui/core';
 import CustomModal from '../../../../components/CustomModal';
+import './style.scss';
 
-const StyledFormControl = styled(FormControl)`
-  & > *:not(:first-child) {
-    margin-top: 8px;
-  }
-`;
+const StyledFormControl = ({ className = '', ...props }) =>
+  <FormControl 
+    className={`view_ProjectGroup_ProjectSettingModal___form-control ${className}`}
+    {...props}
+  />;
 
-const TitleFormLabel = styled(FormControl)`
-  font-size: 14px;
-  font-weight: 500;
-  && {
-    color: #444;
-  }
-`;
+const TitleFormLabel = ({ className = '', ...props }) =>
+  <FormControl 
+    className={`view_ProjectGroup_ProjectSettingModal___form-title ${className}`}
+    {...props}
+  />;
 
-const StyledFormLabel = styled(FormLabel)`
-  font-size: 13px;
-  font-weight: normal;
-  && {
-    color: #666;
-  }
-`;
+const StyledFormLabel = ({ className = '', ...props }) =>
+  <FormLabel
+    className={`view_ProjectGroup_ProjectSettingModal___form-label ${className}`}
+    {...props}
+  />;
 
-const CustomFormControlLabel = styled(FormControlLabel)`
-  margin-left: 30px;
-  & > span:last-child {
-    color: #666;
-    font-size: 13px;
-    & > small {
-      font-size: 13px;
-      color: #999;
-    }
-  }
-  & span.Mui-checked + span {
-    color: #111;
-    & > small {
-      color: #111;
-    }
-  }
-`;
+const CustomFormControlLabel = ({ className = '', ...props }) =>
+  <FormControlLabel
+    className={`view_ProjectGroup_ProjectSettingModal___form-control-label ${className}`}
+    {...props}
+  />;
 
 function ProjectSetting({ open, setOpen, }) {
 
