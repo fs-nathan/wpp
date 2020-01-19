@@ -854,3 +854,17 @@ export const updateCompleteFail = error => ({
     type: types.UPDATE_COMPLETE_FAIL,
     error: error
 })
+
+// Delete TASK
+export const deleteTask = payload => ({
+    type: types.DELETE_TASK_REQUEST,
+    payload
+})
+export const deleteTaskSuccess = payload => ({
+    type: types.DELETE_TASK_SUCCESS,
+    payload
+})
+export const deleteTaskFail = error => ({
+    type: types.DELETE_TASK_FAIL,
+    error: error
+})

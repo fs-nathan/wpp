@@ -211,8 +211,8 @@ const mapDispatchToProps = dispatch => {
         getProjectListBasic: (projectId) => dispatch(taskDetailAction.getProjectListBasic(projectId)),
         getStaticTask: (data) => dispatch(taskDetailAction.getStaticTask(data)),
         //updateComplete
-        updateComplete:(data)=>{  dispatch(taskDetailAction.updateComplete(data))}
-
+        updateComplete:(data)=>{  dispatch(taskDetailAction.updateComplete(data))},
+        deleteTask: (data) => { dispatch(taskDetailAction.deleteTask(data))},
     };
 };
 

@@ -1200,7 +1200,6 @@ async function doUpdateComplete(payload){
 }
 function*updateComplete(action){
   try {
-    console.log("action.payload:::::::", action.payload);
     
     const res =yield call(doUpdateComplete,action.payload.data)
     
@@ -1234,6 +1233,29 @@ function* getStaticTask(action) {
     yield put(actions.getStaticTaskFail(error))
   }
 }
+// delete task
+async function doDeleteTask(task_id) {
+
+  try {
+    const config = {
+      url: '/task/delete?task_id=' + task_id,
+      method: 'delete'
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+function* deleteTask(action) {
+  try {
+    const res =yield call(doDeleteTask, action.payload)
+    yield put(actions.deleteTaskSuccess(res))
+  } catch (error) {
+    yield put(actions.deleteTaskFail(error))
+  }
+}
+
 
 export {
   //updateComplete
@@ -1313,4 +1335,6 @@ export {
   getProjectListBasic,
   // static task
   getStaticTask,
+  // delete task
+  deleteTask
 }
