@@ -83,6 +83,8 @@ import { DETAIL_PROJECT_GROUP } from '../constants/actions/projectGroup/detailPr
 import { detailProjectGroup } from './projectGroup/detailProjectGroup';
 import { MEMBER_PROJECT_GROUP } from '../constants/actions/projectGroup/memberProjectGroup';
 import { memberProjectGroup } from './projectGroup/memberProjectGroup';
+import { DETAIL_DEFAULT_GROUP } from '../constants/actions/projectGroup/detailDefaultGroup';
+import { detailDefaultGroup } from './projectGroup/detailDefaultGroup';
 import { CREATE_PROJECT } from '../constants/actions/project/createProject';
 import { createProject } from './project/createProject';
 import { COPY_PROJECT } from '../constants/actions/project/copyProject';
@@ -118,6 +120,10 @@ import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/upd
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
 import { ASSIGN_MEMBER_TO_ALL_TASK } from '../constants/actions/project/assignMemberToAllTask';
 import { assignMemberToAllTask } from './project/assignMemberToAllTask';
+import { UPDATE_STATUS_COPY } from '../constants/actions/project/setting/updateStatusCopy';
+import { updateStatusCopy } from './project/setting/updateStatusCopy';
+import { UPDATE_STATUS_DATE } from '../constants/actions/project/setting/updateStatusDate';
+import { updateStatusDate } from './project/setting/updateStatusDate';
 import { LIST_GROUP_TASK } from '../constants/actions/groupTask/listGroupTask';
 import { listGroupTask } from './groupTask/listGroupTask';
 import { CREATE_GROUP_TASK } from '../constants/actions/groupTask/createGroupTask';
@@ -210,6 +216,7 @@ function* rootSaga() {
   yield takeEvery(SORT_PROJECT_GROUP, sortProjectGroup);
   yield takeLatest(DETAIL_PROJECT_GROUP, detailProjectGroup);
   yield takeLatest(MEMBER_PROJECT_GROUP, memberProjectGroup);
+  yield takeLatest(DETAIL_DEFAULT_GROUP, detailDefaultGroup);
   yield takeEvery(CREATE_PROJECT, createProject);
   yield takeEvery(COPY_PROJECT, copyProject);
   yield takeEvery(SORT_PROJECT, sortProject);
@@ -231,6 +238,8 @@ function* rootSaga() {
   );
   yield takeEvery(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
   yield takeEvery(ASSIGN_MEMBER_TO_ALL_TASK, assignMemberToAllTask);
+  yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
+  yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
   yield takeLatest(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);

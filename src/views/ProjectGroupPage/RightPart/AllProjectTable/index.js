@@ -244,6 +244,7 @@ function AllProjectTable({
   doShowProject,
   doSortProject,
   colors,
+  isDefault = false,
 }) {
   const { setProjectGroupId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
@@ -356,8 +357,13 @@ function AllProjectTable({
     if (sortType === -1) {
       reverse(projects);
     }
+    if (isDefault) {
+      projects = filterArr(projects, {
+        project_group_id: null,
+      });
+    }
     setProjects(projects);
-  }, [_projects, filter, sortField, sortType, projectGroups]);
+  }, [_projects, filter, sortField, sortType, projectGroups, isDefault]);
 
   React.useEffect(() => {
     switch (time) {
@@ -463,8 +469,8 @@ function AllProjectTable({
   }, [time]);
 
   React.useEffect(() => {
-    setProjectGroupId(projectGroupId);
-  }, [setProjectGroupId, projectGroupId]);
+    if (isDefault === false) setProjectGroupId(projectGroupId);
+  }, [setProjectGroupId, projectGroupId, isDefault]);
 
   function handleFilterClose(filter = null) {
     return evt => {
@@ -642,7 +648,7 @@ function AllProjectTable({
                 label: 'Tiến độ',
                 field: row => (
                   <DateBox>
-                    <span>{get(row, 'duration', 0)} ngày</span>
+                    <span>{get(row, 'duration') ? get(row, 'duration') + ' ngày' : ''}</span>
                     <small>
                       {displayDateRange(
                         new Date(get(row, 'date_start')),

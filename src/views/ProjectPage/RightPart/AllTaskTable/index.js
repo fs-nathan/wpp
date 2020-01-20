@@ -223,7 +223,15 @@ function AllTaskTable({
                 item: 'tasks',
               },
               draggable: {
-                bool: false,
+                bool: true,
+                onDragEnd: result => {
+                  const { source, destination, draggableId } = result;
+                  if (!destination) return;
+                  if (
+                    destination.droppableId === source.droppableId &&
+                    destination.index === source.index
+                  ) return;
+                }, 
               },
               loading: {
                 bool: loading,
