@@ -11,6 +11,7 @@ import { listMajor } from '../../actions/major/listMajor';
 import { listLevel } from '../../actions/level/listLevel';
 import { listIcon } from '../../actions/icon/listIcon';
 import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
+import { getRequirementJoinGroup } from '../../actions/groupUser/getRequirementJoinGroup';
 import {
   CustomEventListener, CustomEventDispose,
   SORT_ROOM, CREATE_ROOM, DELETE_ROOM, UPDATE_ROOM,
@@ -18,7 +19,7 @@ import {
   CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION,
   CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
   CREATE_ICON, DELETE_ICON,
-  ACCEPT_REQUIREMENT_USER_JOIN_GROUP,
+  ACCEPT_REQUIREMENT_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP,
 } from '../../constants/events';
 import DepartmentList from './LeftPart/DepartmentList';
 import DepartmentInfo from './LeftPart/DepartmentInfo';
@@ -39,6 +40,7 @@ function UserPage({
   doListUserRole,
   doListIcon,
   doListUserOfGroup,
+  doGetRequirementJoinGroup,
 }) {
 
   React.useEffect(() => {
@@ -199,6 +201,22 @@ function UserPage({
     }
   }, [doListUserOfGroup]);
 
+  React.useEffect(() => {
+    doGetRequirementJoinGroup();
+
+    const doGetRequirementJoinGroupHandler = () => {
+      doGetRequirementJoinGroup(true);
+    };
+
+    CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+    CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+
+    return () => {
+      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+    }
+  }, [doGetRequirementJoinGroup])
+
   return (
     <Provider value={{
       setDepartmentId,
@@ -281,6 +299,7 @@ const mapDispatchToProps = dispatch => {
     doListUserRole: (quite) => dispatch(listUserRole(quite)),
     doListIcon: (quite) => dispatch(listIcon(quite)),
     doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
+    doGetRequirementJoinGroup: (quite) => dispatch(getRequirementJoinGroup(quite)),
   };
 };
 

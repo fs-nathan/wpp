@@ -81,7 +81,7 @@ function HeaderButtonGroup() {
               && get(options, 'expand.toggleExpand', () => null)();
           }}>
             <div>
-              <Icon path={get(subAction, 'iconPath')} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
+              {get(subAction, 'iconPath') ? <Icon path={get(subAction, 'iconPath')} size={1} color={'rgba(0, 0, 0, 0.54)'}/> : get(subAction, 'icon', () => null)()}
             </div>
             <span>{get(subAction, 'label', '')}</span>
           </StyledButton>

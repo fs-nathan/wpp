@@ -58,6 +58,18 @@ const CustomRadio = ({ className = '', checked, ...props }) =>
     {...props}
   />;
 
+const DateWrapper = ({ className = '', progressType, ...props }) =>
+  <div
+    className={`view_Project_CreateNewTask_Modal___date-wrapper-${progressType} ${className}`}
+    {...props}
+  />
+
+const ProgressTitleSpan = ({ className = '', ...props }) => 
+  <span 
+    className={`view_Project_CreateNewTask_Modal___progress-title-span ${className}`}
+    {...props}
+  />;
+
 function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
 
   const { projectId } = useParams();
@@ -173,7 +185,10 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
           rowsMax='4'
         />
         <FormControl component="fieldset" fullWidth>
-          <StyledFormLabel component="legend">Tiến độ công việc</StyledFormLabel>
+          <ProgressTitleSpan>
+            <StyledFormLabel component="legend">Tiến độ công việc</StyledFormLabel>
+            <span>Cài đặt</span>
+          </ProgressTitleSpan>
           <StyledRadioGroup aria-label="x" name="x1" value={progressType} onChange={evt => setProgressType(parseInt(evt.target.value))}>
             <FormControlLabel value={0} control={<Radio color="primary" />} label="Ngày và giờ (mặc định)" />
             <FormControlLabel value={1} control={<Radio color="primary" />} label="Chỉ nhập ngày" />
@@ -182,89 +197,63 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
         </FormControl>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <TimeBox>
-          {progressType === 0 && (
-            <>
-            <div>
-              <KeyboardTimePicker 
-                disableToolbar
-                inputVariant="outlined"
-                variant="inline"
-                ampm={false}
-                label="Thời gian bắt đầu"
-                value={startDate}
-                onChange={setStartDate}
-                format="HH:mm"
-              />
-              <KeyboardDatePicker 
-                disableToolbar
-                inputVariant="outlined"
-                variant="inline"
-                ampm={false}
-                label="Ngày bắt đầu"
-                value={startDate}
-                onChange={setStartDate}
-                format="dd/MM/yyyy"
-              />
-            </div>
-            <div>
-              <KeyboardTimePicker 
-                disableToolbar
-                inputVariant="outlined"
-                variant="inline"
-                ampm={false}
-                label="Thời gian kết thúc"
-                value={endDate}
-                onChange={setEndDate}
-                format="HH:mm"
-              />
-              <KeyboardDatePicker 
-                disableToolbar
-                inputVariant="outlined"
-                variant="inline"
-                ampm={false}
-                label="Ngày kết thúc"
-                value={endDate}
-                onChange={setEndDate}
-                format="dd/MM/yyyy"
-              />
-            </div>
-            </>
-          )}
-          {progressType === 1 && (
-            <>
-            <div>
-              <KeyboardDatePicker 
-                disableToolbar
-                inputVariant="outlined"
-                variant="inline"
-                ampm={false}
-                label="Ngày bắt đầu"
-                value={startDate}
-                onChange={setStartDate}
-                format="dd/MM/yyyy"
-              />
-            </div>
-            <div>
-              <KeyboardDatePicker 
-                disableToolbar
-                inputVariant="outlined"
-                variant="inline"
-                ampm={false}
-                label="Ngày kết thúc"
-                value={endDate}
-                onChange={setEndDate}
-                format="dd/MM/yyyy"
-              />
-            </div>
-            </>
-          )}
-          {errorDate && (
-            <p className={'MuiFormHelperText-root MuiFormHelperText-contained'}>
-              <span className={'MuiTypography-root MuiTypography-caption'}>
-                {get(errorDate, 'message', '')}
-              </span>
-            </p>
-          )}
+            <DateWrapper progressType={progressType}>
+              {progressType < 2 ? <span>Ngày bắt đầu</span> : null}
+              {progressType < 1 ? (
+                <KeyboardTimePicker 
+                  disableToolbar
+                  inputVariant="outlined"
+                  variant="inline"
+                  ampm={false}
+                  value={startDate}
+                  onChange={setStartDate}
+                  format="HH:mm"
+                />
+              ) : null}
+              {progressType < 2 ? (
+                <KeyboardDatePicker 
+                  disableToolbar
+                  inputVariant="outlined"
+                  variant="inline"
+                  ampm={false}
+                  value={startDate}
+                  onChange={setStartDate}
+                  format="dd/MM/yyyy"
+                />
+              ) : null}
+            </DateWrapper>
+            <DateWrapper progressType={progressType}>
+              {progressType < 2 ? <span>Ngày kết thúc</span> : null}
+              {progressType < 1 ? (
+                <KeyboardTimePicker 
+                  disableToolbar
+                  inputVariant="outlined"
+                  variant="inline"
+                  ampm={false}
+                  value={endDate}
+                  onChange={setEndDate}
+                  format="HH:mm"
+                />
+              ) : null}
+              {progressType < 2 ? (
+                <KeyboardDatePicker 
+                  disableToolbar
+                  inputVariant="outlined"
+                  variant="inline"
+                  ampm={false}
+                  value={endDate}
+                  onChange={setEndDate}
+                  format="dd/MM/yyyy"
+                />
+              ) : null}
+            </DateWrapper>
+            {errorDate && (
+              <p className={'MuiFormHelperText-root MuiFormHelperText-contained'}>
+                <span className={'MuiTypography-root MuiTypography-caption'}>
+                  {get(errorDate, 'message', '')}
+                </span>
+              </p>
+            )}
           </TimeBox>
         </MuiPickersUtilsProvider>
         <FormControl component="fieldset" fullWidth>

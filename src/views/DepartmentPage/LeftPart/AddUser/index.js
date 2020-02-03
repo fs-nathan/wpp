@@ -215,22 +215,6 @@ function DepartmentInfo({
     }
   }, [doSearchUser, searchPatern]);
 
-  React.useEffect(() => {
-    doGetRequirementJoinGroup();
-
-    const doGetRequirementJoinGroupHandler = () => {
-      doGetRequirementJoinGroup(true);
-    };
-
-    CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-    CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-
-    return () => {
-      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-      CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-    }
-  }, [doGetRequirementJoinGroup])
-
   return (
     <LeftSideContainer
       title={t("views.user_page.left_part.add_user.title")}

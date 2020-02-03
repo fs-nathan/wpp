@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Menu, MenuItem,  } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Badge,  } from '@material-ui/core';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import Icon from '@mdi/react';
 import {
@@ -28,6 +28,13 @@ import RoleManagerModal from '../../Modals/RoleManager';
 import LogoManagerModal from '../../Modals/LogoManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import PermissionSettingsModal from '../../Modals/PermissionSettings';
+import './style.scss';
+
+const NewUserBadge = ({ className = '', ...props }) =>
+  <Badge
+    className={`view_Department_AllUserTalbe___user-badge ${className}`}
+    {...props}
+  />
 
 function displayDate(date) {
   if (
@@ -134,12 +141,14 @@ function AllUsersTable({
   expand, handleExpand, handleSubSlide,
   doPublicMember, doPrivateMember,
   doBanUserFromGroup, 
+  getRequirementJoinGroup,
 }) {
 
   const history = useHistory();
 
   const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
   const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
+  const { data: { requirements } } = getRequirementJoinGroup;
 
   const loading = listUserOfGroupLoading || listRoomLoading;
   const error = listUserOfGroupError || listRoomError;
@@ -159,7 +168,9 @@ function AllUsersTable({
               </SubTitle>,
             subActions: [{
               label: 'Thêm thành viên',
-              iconPath: mdiAccountPlus,
+              icon: () => requirements.length > 0 
+                ? <NewUserBadge badgeContent={'N'}><Icon path={mdiAccountPlus} size={1} /></NewUserBadge>
+                : <Icon path={mdiAccountPlus} size={1} />,
               onClick: () => handleSubSlide(1),
               noExpand: true,
             }],
@@ -289,6 +300,7 @@ const mapStateToProps = state => {
     listRoom: state.room.listRoom,
     listUserOfGroup: state.user.listUserOfGroup,
     sortUser: state.user.sortUser,
+    getRequirementJoinGroup: state.groupUser.getRequirementJoinGroup,
   }
 }
 
