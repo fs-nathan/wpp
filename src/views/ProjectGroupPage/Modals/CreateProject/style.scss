@@ -8,7 +8,12 @@
 }
 
 .view_ProjectGroup_Create_Project_Modal___button-case {
-  margin-top: 32px;
+  &:first-child {
+    margin-top: 12px; 
+  }
+  &:not(:first-child) {
+    margin-top: 32px;
+  }
   width: 80%;
   height: 100px;
   display: flex;

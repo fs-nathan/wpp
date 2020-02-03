@@ -18,6 +18,7 @@ import {
   CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION,
   CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
   CREATE_ICON, DELETE_ICON,
+  ACCEPT_REQUIREMENT_USER_JOIN_GROUP,
 } from '../../constants/events';
 import DepartmentList from './LeftPart/DepartmentList';
 import DepartmentInfo from './LeftPart/DepartmentInfo';
@@ -181,6 +182,7 @@ function UserPage({
     CustomEventListener(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
     CustomEventListener(PUBLIC_MEMBER, reloadListUserOfGroup);
     CustomEventListener(PRIVATE_MEMBER, reloadListUserOfGroup);
+    CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
 
     return () => {
       CustomEventDispose(CREATE_ROOM, reloadListUserOfGroup);
@@ -193,6 +195,7 @@ function UserPage({
       CustomEventDispose(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
       CustomEventDispose(PUBLIC_MEMBER, reloadListUserOfGroup);
       CustomEventDispose(PRIVATE_MEMBER, reloadListUserOfGroup);
+      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
     }
   }, [doListUserOfGroup]);
 

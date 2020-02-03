@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { 
   TextField, FormControl, Radio,
   FormLabel, RadioGroup, FormControlLabel, 
@@ -11,28 +10,25 @@ import { updateProject } from '../../../../actions/project/updateProject';
 import { connect } from 'react-redux';
 import { get, find } from 'lodash';
 import { useRequiredString } from '../../../../hooks';
+import './style.scss';
 
-const StyledFormControl = styled(FormControl)`
-  min-width: 300px;
-  max-width: 100%;
-  & > * {
-    margin-bottom: 10px;
-    font-size: 12px;
-  }
-`;
+const StyledFormControl = ({ className = '', ...props }) => 
+  <FormControl 
+    className={`view_ProjectGroup_EditProjectModal___form-control ${className}`}
+    {...props}
+  />;  
 
-const CustomTextField = styled(TextField)`
-  & > label {
-    z-index: 0;
-  }
-`;
+const CustomTextField = ({ className = '', ...props }) => 
+  <TextField 
+    className={`view_ProjectGroup_EditProjectModal___text-field ${className}`}
+    {...props}
+  />;
 
-const StyledFormLabel = styled(FormLabel)`
-  font-size: 14px;
-  && {
-    color: #a5a0a0;
-  }
-`;
+const StyledFormLabel = ({ className = '', ...props }) => 
+  <FormLabel 
+    className={`view_ProjectGroup_EditProjectModal___form-label ${className}`}
+    {...props}
+  />;
 
 function EditProject({ curProject = null, open, setOpen, listProjectGroup, doUpdateProject, }) {
 

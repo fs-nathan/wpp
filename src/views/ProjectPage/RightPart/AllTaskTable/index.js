@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
@@ -30,20 +29,14 @@ import CreateNewTaskModal from '../../Modals/CreateNewTask';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
 import { deleteTask } from '../../../../actions/task/deleteTask';
+import { sortTask } from '../../../../actions/task/sortTask';
+import './style.scss'
 
-const SubTitle = styled.div`
-  display: flex;
-  align-items: center;
-  & > * {
-    &:not(:first-child) {
-      margin-left: 8px;
-      color: #8b8b8b;
-    }
-    &:first-child {
-      color: #2196F3;
-    }
-  }
-`;
+const SubTitle = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_AllTaskTable___subtitle ${className}`}
+    {...props}
+  />;
 
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
@@ -146,6 +139,7 @@ function AllTaskTable({
   listTask, detailProject,
   doShowProject, doHideProject,
   doDeleteTask,
+  doSortTask,
 }) {
 
   const { setProjectId } = React.useContext(ProjectPageContext);
@@ -185,8 +179,8 @@ function AllTaskTable({
               title: 'Danh sách công việc',
               subTitle: () => (
                 <SubTitle>
+                  <span onClick={evt => history.push(`/list-task-detail/${projectId}`)}>Chat</span>
                   <span>Table</span>
-                  <span>Chat</span>
                   <span>Grant</span>
                 </SubTitle>
               ),
@@ -231,7 +225,21 @@ function AllTaskTable({
                 item: 'tasks',
               },
               draggable: {
-                bool: false,
+                bool: true,
+                onDragEnd: result => {
+                  const { source, destination, draggableId } = result;
+                  if (!destination) return;
+                  if (
+                    destination.droppableId === source.droppableId &&
+                    destination.index === source.index
+                  ) return;
+                  doSortTask({
+                    taskId: draggableId,
+                    projectId,
+                    groupTask: destination.droppableId,
+                    sortIndex: destination.index,
+                  });
+                }, 
               },
               loading: {
                 bool: loading,
@@ -243,24 +251,31 @@ function AllTaskTable({
             }}
             columns={[{
               label: 'Tên công việc',
-              field: (row) => <LinkSpan onClick={evt => history.push(`/list-task-detail/`)}>{get(row, 'name', '')}</LinkSpan>,
+              field: (row) => <LinkSpan 
+                onClick={evt => history.push(`/list-task-detail/${get(row, 'id')}`)}>
+                  {get(row, 'name', '')}
+                </LinkSpan>,
               align: 'left',
               width: '25%',
             }, {
-              label: 'Ưu tiên',
-              field: (row) => <CustomBadge 
-                                color={decodePriorityCode(get(row, 'priority_code', 0)).color}
-                                background={decodePriorityCode(get(row, 'priority_code', 0)).background}
-                              >
-                                {get(row, 'priority_name', '')}  
-                              </CustomBadge>,
+              label: 'Trạng thái',
+              field: (row) => <StateBox
+                  stateName={get(row, 'status_name', '')}
+                >
+                  <div>
+                    <span>&#11044;</span>
+                    <span>
+                      {get(row, 'status_name', '')}
+                    </span>
+                  </div>
+                </StateBox>,
               align: 'center',
               width: '10%',
             }, {
               label: 'Tiến độ',
               field: (row) => `${get(row, 'duration', 0)} ngày`,
               align: 'center',
-              width: '10%',
+              width: '8%',
             }, {
               label: 'Bắt đầu',
               field: (row) => <DateBox>
@@ -279,19 +294,15 @@ function AllTaskTable({
               label: 'Hoàn thành',
               field: (row) => <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />,
               align: 'center',
-              width: '10%',
+              width: '15%',
             }, {
-              label: 'Trạng thái',
-              field: (row) => <StateBox
-                  stateName={get(row, 'status_name', '')}
-                >
-                  <div>
-                    <span>&#11044;</span>
-                    <span>
-                      {get(row, 'status_name', '')}
-                    </span>
-                  </div>
-                </StateBox>,
+              label: 'Ưu tiên',
+              field: (row) => <CustomBadge 
+                                color={decodePriorityCode(get(row, 'priority_code', 0)).color}
+                                background={decodePriorityCode(get(row, 'priority_code', 0)).background}
+                              >
+                                {get(row, 'priority_name', '')}  
+                              </CustomBadge>,
               align: 'center',
               width: '10%',
             }, {
@@ -317,7 +328,7 @@ function AllTaskTable({
                 />
               ),
               align: 'center',
-              width: '5%',
+              width: '2%',
             }]}
             data={tasks}
           />
@@ -340,6 +351,7 @@ const mapDispatchToProps = dispatch => {
     doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
     doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
     doDeleteTask: ({ taskId }) => dispatch(deleteTask({ taskId })),
+    doSortTask: ({ taskId, projectId, groupTask, sortIndex }) => dispatch(sortTask({ taskId, projectId, groupTask, sortIndex })),
   };
 };
 

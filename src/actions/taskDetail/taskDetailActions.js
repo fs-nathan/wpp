@@ -164,7 +164,7 @@ export const updateRemindWithDurationFail = (error) => ({
     error: error,
 });
 // ======= delete remind
-export const deleteRemind = ({remind_id, taskId}) => ({
+export const deleteRemind = ({ remind_id, taskId }) => ({
     type: types.DELETE_REMIND_REQUEST,
     payload: {
         remind_id,
@@ -827,4 +827,44 @@ export const searchOffer = payload => ({
 export const searchMember = payload => ({
     type: types.SEARCH_MEMBER_TABPART,
     payload
+})
+
+// Static Task
+export const getStaticTask = payload => ({
+    type: types.STATIC_TASK_REQUEST,
+    payload
+})
+export const getStaticTaskSuccess = payload => ({
+    type: types.STATIC_TASK_SUCCESS,
+    payload
+})
+export const getStaticTaskFail = payload => ({
+    type: types.STATIC_TASK_FAIL,
+    payload
+})
+export const updateComplete = payload => ({
+    type: types.UPDATE_COMPLETE_REQUEST,
+    payload
+})
+export const updateCompleteSuccess = payload => ({
+    type: types.UPDATE_COMPLETE_SUCCESS,
+    payload
+})
+export const updateCompleteFail = error => ({
+    type: types.UPDATE_COMPLETE_FAIL,
+    error: error
+})
+
+// Delete TASK
+export const deleteTask = payload => ({
+    type: types.DELETE_TASK_REQUEST,
+    payload
+})
+export const deleteTaskSuccess = payload => ({
+    type: types.DELETE_TASK_SUCCESS,
+    payload
+})
+export const deleteTaskFail = error => ({
+    type: types.DELETE_TASK_FAIL,
+    error: error
 })

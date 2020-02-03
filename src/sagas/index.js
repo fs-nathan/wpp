@@ -83,6 +83,8 @@ import { DETAIL_PROJECT_GROUP } from '../constants/actions/projectGroup/detailPr
 import { detailProjectGroup } from './projectGroup/detailProjectGroup';
 import { MEMBER_PROJECT_GROUP } from '../constants/actions/projectGroup/memberProjectGroup';
 import { memberProjectGroup } from './projectGroup/memberProjectGroup';
+import { DETAIL_DEFAULT_GROUP } from '../constants/actions/projectGroup/detailDefaultGroup';
+import { detailDefaultGroup } from './projectGroup/detailDefaultGroup';
 import { CREATE_PROJECT } from '../constants/actions/project/createProject';
 import { createProject } from './project/createProject';
 import { COPY_PROJECT } from '../constants/actions/project/copyProject';
@@ -118,10 +120,18 @@ import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/upd
 import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
 import { ASSIGN_MEMBER_TO_ALL_TASK } from '../constants/actions/project/assignMemberToAllTask';
 import { assignMemberToAllTask } from './project/assignMemberToAllTask';
+import { DETAIL_STATUS } from '../constants/actions/project/setting/detailStatus';
+import { detailStatus } from './project/setting/detailStatus';
+import { UPDATE_STATUS_COPY } from '../constants/actions/project/setting/updateStatusCopy';
+import { updateStatusCopy } from './project/setting/updateStatusCopy';
+import { UPDATE_STATUS_DATE } from '../constants/actions/project/setting/updateStatusDate';
+import { updateStatusDate } from './project/setting/updateStatusDate';
 import { LIST_GROUP_TASK } from '../constants/actions/groupTask/listGroupTask';
 import { listGroupTask } from './groupTask/listGroupTask';
 import { CREATE_GROUP_TASK } from '../constants/actions/groupTask/createGroupTask';
 import { createGroupTask } from './groupTask/createGroupTask';
+import { COPY_GROUP_TASK } from '../constants/actions/groupTask/copyGroupTask';
+import { copyGroupTask } from './groupTask/copyGroupTask';
 import { UPDATE_GROUP_TASK } from '../constants/actions/groupTask/updateGroupTask ';
 import { updateGroupTask } from './groupTask/updateGroupTask';
 import { DELETE_GROUP_TASK } from '../constants/actions/groupTask/deleteGroupTask';
@@ -136,6 +146,8 @@ import { CREATE_TASK } from '../constants/actions/task/createTask';
 import { createTask } from './task/createTask';
 import { DELETE_TASK } from '../constants/actions/task/deleteTask';
 import { deleteTask } from './task/deleteTask';
+import { SORT_TASK } from '../constants/actions/task/sortTask';
+import { sortTask } from './task/sortTask';
 import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
 import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
 import {
@@ -210,6 +222,7 @@ function* rootSaga() {
   yield takeEvery(SORT_PROJECT_GROUP, sortProjectGroup);
   yield takeLatest(DETAIL_PROJECT_GROUP, detailProjectGroup);
   yield takeLatest(MEMBER_PROJECT_GROUP, memberProjectGroup);
+  yield takeLatest(DETAIL_DEFAULT_GROUP, detailDefaultGroup);
   yield takeEvery(CREATE_PROJECT, createProject);
   yield takeEvery(COPY_PROJECT, copyProject);
   yield takeEvery(SORT_PROJECT, sortProject);
@@ -231,8 +244,12 @@ function* rootSaga() {
   );
   yield takeEvery(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
   yield takeEvery(ASSIGN_MEMBER_TO_ALL_TASK, assignMemberToAllTask);
+  yield takeLatest(DETAIL_STATUS, detailStatus);
+  yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
+  yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
   yield takeLatest(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
+  yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
@@ -240,6 +257,7 @@ function* rootSaga() {
   yield takeLatest(LIST_TASK, listTask);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
+  yield takeEvery(SORT_TASK, sortTask);
 
   // Hoang - end
 
@@ -411,6 +429,10 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.GET_PROJECT_LIST_BASIC_REQUEST, taskDetailSaga.getProjectListBasic);
   //edit name and description task
   yield takeLeading(taskDetailType.UPDATE_NAME_DESCRIPTION_TASK_REQUEST, taskDetailSaga.updateNameDescriptionTask);
+  // static task
+  yield takeLeading(taskDetailType.STATIC_TASK_REQUEST, taskDetailSaga.getStaticTask);
+  //updateComplete
+  yield takeLeading(taskDetailType.UPDATE_COMPLETE_REQUEST,taskDetailSaga.updateComplete);
 };
 
 export default rootSaga;

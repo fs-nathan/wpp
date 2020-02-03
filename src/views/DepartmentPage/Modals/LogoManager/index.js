@@ -22,16 +22,22 @@ const LogoList = ({ className = '', ...props }) =>
     {...props}
   />;
 
-const LogoBox = ({ className = '', isSelected, ...props }) => 
+const LogoBox = ({ className = '', isSelect, ...props }) => 
   <div 
-    className={`${isSelected 
+    className={`${isSelect 
       ? 'view_Department_Logo_Modal___logo-box-selected'
       : 'view_Department_Logo_Modal___logo-box'
       } ${className}`}
     {...props}
   />;
 
-function LogoManager({ open, setOpen, listIcon, createIcon, doCreateIcon, deleteIcon, doDeleteIcon, onSelectIcon = (icon_url) => null }) {
+function LogoManager({ 
+  open, setOpen, 
+  listIcon, 
+  createIcon, doCreateIcon, 
+  deleteIcon, doDeleteIcon, 
+  isSelect = true, onSelectIcon = (icon_url) => null 
+}) {
 
   const { data: { icons, defaults }, error: listIconError, loading: listIconLoading } = listIcon;
   const { error: deleteIconError, loading: deleteIconLoading } = deleteIcon;
@@ -84,6 +90,8 @@ function LogoManager({ open, setOpen, listIcon, createIcon, doCreateIcon, delete
       setOpen={setOpen}
       title='Quản lý biểu tượng'
       onConfirm={() => selectIcon(selectedIcon)}
+      cancleRender={() => isSelect ? 'Hủy' : 'Thoát'}
+      confirmRender={isSelect ? () => 'Hoàn thành' : null}
     >
       {listIconLoading && <LoadingBox />}
         {error !== null && <ErrorBox />}
@@ -92,8 +100,8 @@ function LogoManager({ open, setOpen, listIcon, createIcon, doCreateIcon, delete
             <ColorTypo>Biểu tượng có sẵn</ColorTypo>
             <LogoList cols={8}>
               {defaults.map(icon => (
-                <LogoBox key={get(icon, 'url_icon')} isSelected={get(selectedIcon, 'url_sort', 'x') === get(icon, 'icon', 'y')}>
-                  <ButtonBase onClick={() => setSelectedIcon({
+                <LogoBox key={get(icon, 'url_icon')} isSelect={isSelect && (get(selectedIcon, 'url_sort', 'x') === get(icon, 'icon', 'y'))}>
+                  <ButtonBase onClick={() => isSelect && setSelectedIcon({
                     id: get(icon, 'id'),
                     url_sort: get(icon, 'icon'),
                     url_full: get(icon, 'url_icon'),
@@ -106,8 +114,8 @@ function LogoManager({ open, setOpen, listIcon, createIcon, doCreateIcon, delete
             <ColorTypo>Biểu tượng tải lên</ColorTypo>
             <LogoList cols={8}>
               {icons.map(icon => (
-                <LogoBox key={get(icon, 'id', '')} isSelected={get(selectedIcon, 'id', 'x') === get(icon, 'id', 'y')}>
-                  <ButtonBase onClick={() => setSelectedIcon(icon)}>
+                <LogoBox key={get(icon, 'id', '')} isSelect={isSelect && (get(selectedIcon, 'id', 'x') === get(icon, 'id', 'y'))}>
+                  <ButtonBase onClick={() => isSelect && setSelectedIcon(icon)}>
                     <Avatar src={get(icon, 'url_full')} alt='avatar' />
                   </ButtonBase>
                   <ColorButton fullWidth variant='text' size='small' variantColor='red'

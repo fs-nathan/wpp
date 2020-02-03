@@ -13,6 +13,8 @@ function UserDocument({ open, setOpen, files }) {
       open={open}
       setOpen={setOpen}
       title='File hồ sơ thành viên'
+      cancleRender={() => 'Thoát'}
+      confirmRender={null}
     >
       <List>
         {files.map(file => (

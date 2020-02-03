@@ -43,8 +43,8 @@ const BeginEndTime = styled(Typography)`
 //   flex-direction: row;
 //   align-items: center;
 // `
-const DivTime = styled.div`
-`
+// const DivTime = styled.div`
+// `
 // const InputSelect = styled(OutlinedInputSelect)`
 //   width: 331px;
 // `
@@ -158,7 +158,7 @@ const ProgressModal = (props) => {
       <DialogContent dividers style={{ overflowY: 'hidden' }}>
         <StartEndDay component={'span'}>
           <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
-          <DivTime>
+          <div>
             <InputDateTime
               type={'time'}
               label="Thời gian"
@@ -166,7 +166,7 @@ const ProgressModal = (props) => {
               value={startTime}
               onChange={(e) => handleStartTime(e.target.value)}
             />
-          </DivTime>
+          </div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
               disableToolbar
@@ -184,7 +184,7 @@ const ProgressModal = (props) => {
         </StartEndDay>
         <StartEndDay component={'span'}>
           <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
-          <DivTime>
+          <div>
             <InputDateTime
               type={'time'}
               label="Thời gian"
@@ -192,7 +192,7 @@ const ProgressModal = (props) => {
               value={endTime}
               onChange={(e) => handleEndTime(e.target.value)}
             />
-          </DivTime>
+          </div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
               disableToolbar
@@ -211,6 +211,9 @@ const ProgressModal = (props) => {
         </StartEndDay>
       </DialogContent>
       <DialogActions>
+        <Button autoFocus onClick={props.handleClickClose} color='#222'>
+          Hủy
+        </Button>
         <Button onClick={() => {
 
           setDataTimeDuration()

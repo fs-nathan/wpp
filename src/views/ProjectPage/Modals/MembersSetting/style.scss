@@ -1,0 +1,123 @@
+.view_Project_MemberSetting_Modal___list-container {
+  margin-top: 8px;  
+};
+
+.view_Project_MemberSetting_Modal___list-subheader {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  margin: 0 16px;
+  & > * {
+    color: rgba(0, 0, 0, 0.54);  
+    font-size: 14px;
+  }
+};
+
+.view_Project_MemberSetting_Modal___list-item {
+  padding: 10px 16px;
+  &:hover {
+    cursor: auto !important;
+  }
+};
+
+.view_Project_MemberSetting_Modal___banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+};
+
+.view_Project_MemberSetting_Modal___table-head {
+  background-color: #eee; 
+  & * {
+    text-transform: none;
+  }
+};
+
+.view_Project_MemberSetting_Modal___table-cell {
+  & > span {
+    font-size: 15px;
+    color: #111;
+  }
+  & > small {
+    font-size: 13px;
+    color: #333;
+  }
+};
+
+.view_Project_MemberSetting_Modal___middle-table-cell {
+  text-align: center;
+};
+
+.view_Project_MemberSetting_Modal___add-button {
+  color: #222;
+  background-color: #fff;
+  transition: none;
+  & > span {
+    font-size: 12px;
+    &:last-child {
+      display: none;
+    }
+  }
+  &:hover {
+    color: #fff;
+    background-color: #03c30b;
+    border-color: #03c30b; 
+  }
+};
+
+@mixin view_Project_MemberSetting_Modal___menu-item {
+  display: flex;
+  align-items: center;
+  & > svg {
+    margin-right: 10px;
+  }
+  &:nth-child(2), &:nth-child(3) {  
+    border-bottom: 1px solid #f4f4f4;
+  }
+};
+
+.view_Project_MemberSetting_Modal___menu-item {
+  & {
+    @include view_Project_MemberSetting_Modal___menu-item;
+    color: #222;
+    & > svg {
+      fill: #888;
+    }
+  }
+  &-selected {
+    @include view_Project_MemberSetting_Modal___menu-item;
+    color: #05b50c;
+    & > svg {
+      fill: #05b50c;
+    }
+  }
+};
+
+.view_Project_MemberSetting_Modal___primary {
+  font-size: 15px;
+  color: #111;
+};
+
+.view_Project_MemberSetting_Modal___secondary {
+  font-size: 13px;
+  color: #333;
+};
+
+.view_Project_MemberSetting_Modal___left-container {
+  & > * {
+    &:nth-child(1) {
+      width: 90%;
+      margin: 8px auto;
+    }
+  }
+};
+
+.view_Project_MemberSetting_Modal___right-container {
+  & > * {
+    &:nth-child(1) {
+      font-size: 14px;
+      padding: 12px;
+    }
+  }
+};

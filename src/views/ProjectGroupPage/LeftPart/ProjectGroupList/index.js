@@ -109,7 +109,7 @@ function ProjectList({ listProjectGroup, doSortProjectGroup, }) {
                   ))}
                   {provided.placeholder}
                   <StyledListItem
-                    to={`${location.pathname}`}
+                    to={`${location.pathname}/default`}
                     component={Link}
                   >
                     <div>

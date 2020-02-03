@@ -18,6 +18,12 @@ const StyledTableBodyCell = ({ className = '', draggable, ...rest }) =>
     {...rest} 
   />;
 
+const DragBox = ({ className = '', ...props }) =>
+  <div 
+    className={`comp_CustomTable_TableBodyRow___drag-box ${className}`}
+    {...props}
+  />
+
 function TableBodyRow({ index, row, group }) {
 
   const { options, columns } = React.useContext(CustomTableContext);
@@ -49,9 +55,9 @@ function TableBodyRow({ index, row, group }) {
               align={'right'}
               draggable={true}
             >
-              <div {...provided.dragHandleProps}>
+              <DragBox {...provided.dragHandleProps}>
                 <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
-              </div>
+              </DragBox>
             </StyledTableBodyCell>
             {columns.map((column, index) => (
               <StyledTableBodyCell 

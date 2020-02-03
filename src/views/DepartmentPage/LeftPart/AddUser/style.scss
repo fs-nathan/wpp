@@ -37,3 +37,31 @@
 .view_Department_AddUser___search-input {
   width: 70%;
 };
+
+.view_Department_AddUser___ok-btn {
+  background-color: #2dc63a;
+  border: 1px solid #2dc63a;
+  color:#fff;
+  padding: 0 3px;
+  box-shadow: none;
+  border-radius: 0;
+  text-transform: initial;
+  height: 24px;
+  min-width: 55px;
+  border-radius: 2px;
+};
+
+.view_Department_AddUser___cancle-btn {
+  padding: 0 3px;
+  font-weight: normal;
+  text-transform: none;
+  border: 1px solid;
+  border-radius: 2px;
+  color: #c1c1c1;
+  height: 24px;
+  min-width: 55px;
+  &:hover {
+    color: #777;
+    background: #fff;
+  }
+};

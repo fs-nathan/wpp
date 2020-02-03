@@ -4,17 +4,17 @@ import styled from 'styled-components';
 const Container = styled(({ color, ...rest }) => <div {...rest} />)`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   & > span {
     color: ${props => props.color};
-    font-size: 14px;
-    margin-left: 5px;
+    font-size: 13px;
   }
 `;
 
 const BackBar = styled.div`
   position: relative;
-  width: 100%;
-  height: 8px
+  width: 70%;
+  height: 8px;
   border-radius: 999px;
   background-color: rgba(0, 0, 0, 0.1);
 `;

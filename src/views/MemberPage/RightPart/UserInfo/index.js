@@ -82,6 +82,12 @@ const SideList = ({ className = '', ...props }) =>
     {...props}
   />;
 
+const NameSpan = ({ className = '', ...props }) => 
+  <span
+    className={`view_Member_UserInfo___name-span ${className}`}
+    {...props}
+  />
+
 function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expand, handleExpand }) {
 
   const { setUserId } = React.useContext(MemberPageContext);
@@ -111,8 +117,8 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
             <MainHeader>
               <CustomAvatar style={{ width: 60, height: 60, }} src={get(user, 'avatar')} alt='avatar' />
               <div>
-                <ColorTypo color='green' bold variant='h6'>{get(user, 'name', '')}</ColorTypo>
-                <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {new Date(get(user, 'date_join', '')).toLocaleDateString()}</ColorTypo>
+                <NameSpan>{get(user, 'name', '')}</NameSpan>
+                <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {get(user, 'date_join', '')}</ColorTypo>
               </div>
               <PillButton 
                 size='medium'

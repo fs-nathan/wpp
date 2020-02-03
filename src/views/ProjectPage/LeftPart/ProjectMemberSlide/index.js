@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Icon from '@mdi/react';
@@ -16,14 +15,19 @@ import { filter, get, } from 'lodash';
 import SearchInput from '../../../../components/SearchInput';
 import { Context as ProjectContext } from '../../index';
 import MembersSettingModal from '../../Modals/MembersSetting';
+import './style.scss';
 
-const Banner = styled.div`
-  padding: 15px;
-`;
+const Banner = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_ProjectMemberSlide___banner ${className}`}
+    {...props}
+  />;
 
-const StyledPrimary = styled(Primary)`
-  font-weight: 500;
-`;
+const StyledPrimary = ({ className = '', ...props }) => 
+  <Primary 
+    className={`view_Project_ProjectMemberSlide___primary ${className}`}
+    {...props}
+  />;
 
 function ProjectMemberSlide({ handleSubSlide, memberProject, }) {
   

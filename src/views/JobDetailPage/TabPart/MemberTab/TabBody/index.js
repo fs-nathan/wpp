@@ -79,12 +79,12 @@ const StyledAvatar = styled(Avatar)`
   width: 50px;
   height: 50px;
 `
-const StyledMenuMember = styled.div`
-  opacity: 0 ;
-  ${StyledListItem}:hover & {
-    opacity: 1;
-  }
-`
+// const StyledMenuMember = styled.div`
+//   opacity: 0 ;
+//   ${StyledListItem}:hover & {
+//     opacity: 1;
+//   }
+// `
 
 const Body = styled(Scrollbars)`
   grid-area: body;

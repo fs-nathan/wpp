@@ -1,45 +1,40 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import {
-  ListItemText,
+  ListItemText, Checkbox,
 } from '@material-ui/core';
 import CustomModal from '../../../../components/CustomModal';
 import SearchInput from '../../../../components/SearchInput';
-import { createGroupTask } from '../../../../actions/groupTask/createGroupTask';
+import { copyGroupTask } from '../../../../actions/groupTask/copyGroupTask';
 import { connect } from 'react-redux';
 import { StyledList, StyledListItem, Primary } from '../../../../components/CustomList';
-import { get } from 'lodash';
+import { get, find, remove } from 'lodash';
 import Icon from '@mdi/react';
 import { mdiCheckCircle, } from '@mdi/js';
+import './style.scss';
 
-const CustomListItem = styled(StyledListItem)`
-  padding: 10px 16px;
-`;
+const CustomListItem = ({ className = '', ...props }) => 
+  <StyledListItem
+    className={`view_Project_CopyGroupTask_Modal___list-item ${className}`} 
+    {...props}
+  />;
 
-const StyledPrimary = styled(({ isSelected, ...rest }) => <Primary {...rest} />)`
-  display: flex;
-  align-items: center;
-  & > * {
-    &:first-child {
-      fill: ${props => props.isSelected ? '#05b50c' : 'rgba(0, 0, 0, 0)'};
-    }
-    &:last-child {
-      color: ${props => props.isSelected ? '#05b50c' : '#444'};
-      font-size: 14px;
-      margin-left: 8px;
-    }
-  }
-`;
+const StyledPrimary = ({ className = '', isSelected, ...props }) => 
+  <Primary 
+    className={`${isSelected 
+      ? 'view_Project_CopyGroupTask_Modal___primary-selected' 
+      : 'view_Project_CopyGroupTask_Modal___primary'} ${className}`} 
+    {...props} 
+  />;
 
-function CopyGroupTask({ open, setOpen, getAllGroupTask, doCreateGroupTask }) {
+function CopyGroupTask({ open, setOpen, getAllGroupTask, doCopyGroupTask }) {
 
   const { projectId } = useParams();
   const { data: { groupTasks: _groupTasks } } = getAllGroupTask;
 
   const [groupTasks, setGroupTasks] = React.useState([]);
   const [searchPatern, setSearchPatern] = React.useState('');
-  const [selectedGroupTask, setSelectedGroupTask] = React.useState(null);
+  const [selectedGroupTasks, setSelectedGroupTasks] = React.useState([]);
 
   React.useEffect(() => {
     setGroupTasks(_groupTasks.filter(groupTask => 
@@ -48,10 +43,10 @@ function CopyGroupTask({ open, setOpen, getAllGroupTask, doCreateGroupTask }) {
   }, [_groupTasks, searchPatern]);
 
   function handleCopyGroupTask() {
-    doCreateGroupTask({
+    doCopyGroupTask({
+      groupTaskId: selectedGroupTasks.map(groupTask => get(groupTask, 'id')),
       projectId,
-      name: get(selectedGroupTask, 'name', ''),
-    }); 
+    })
     setOpen(false);
   }
 
@@ -61,7 +56,7 @@ function CopyGroupTask({ open, setOpen, getAllGroupTask, doCreateGroupTask }) {
         title={`Sao chép nhóm công việc`}
         open={open}
         setOpen={setOpen}
-        canConfirm={selectedGroupTask !== null}
+        canConfirm={selectedGroupTasks.length > 0}
         onConfirm={() => handleCopyGroupTask()}
       >
         <SearchInput 
@@ -74,11 +69,26 @@ function CopyGroupTask({ open, setOpen, getAllGroupTask, doCreateGroupTask }) {
           component="nav"
         >
           {groupTasks.map(groupTask => (
-            <CustomListItem key={get(groupTask, 'id')} onClick={() => setSelectedGroupTask(groupTask)}>
+            <CustomListItem 
+              key={get(groupTask, 'id')} 
+              onClick={() => setSelectedGroupTasks(prevSelectedGroupTasks => {
+                let selectedGroupTasks = [...prevSelectedGroupTasks];
+                if (find(selectedGroupTasks, { id: get(groupTask, 'id') })) {
+                  remove(selectedGroupTasks, { id: get(groupTask, 'id') });
+                } else {
+                  selectedGroupTasks = [...selectedGroupTasks, groupTask];
+                }
+                return selectedGroupTasks;
+              })}>
               <ListItemText 
                 primary={
-                  <StyledPrimary isSelected={get(selectedGroupTask, 'id') === get(groupTask, 'id')}>
-                    <Icon path={mdiCheckCircle} size={1} /> 
+                  <StyledPrimary 
+                    isSelected={find(selectedGroupTasks, { id: get(groupTask, 'id') })}
+                  >
+                    <Checkbox 
+                      color='primary' 
+                      checked={find(selectedGroupTasks, { id: get(groupTask, 'id') }) !== undefined}
+                    />
                     <span>{get(groupTask, 'name', '')}</span>
                   </StyledPrimary>  
                 }
@@ -99,7 +109,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doCreateGroupTask: ({ projectId, name, description }) => dispatch(createGroupTask({ projectId, name, description })),
+    doCopyGroupTask: ({ groupTaskId, projectId }) => dispatch(copyGroupTask({ groupTaskId, projectId })),
   }
 };
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import moment from 'moment';
 import { get, sortBy, reverse, filter as filterArr, find } from 'lodash';
 import { connect } from 'react-redux';
@@ -29,6 +28,7 @@ import {
   mdiAccount,
   mdiDotsVertical,
   mdiCheckCircle,
+  mdiClose,
 } from '@mdi/js';
 import { Context as ProjectPageContext } from '../../index';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
@@ -49,113 +49,76 @@ import { detailProjectGroup } from '../../../../actions/projectGroup/detailProje
 import { deleteProject } from '../../../../actions/project/deleteProject';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
+import './style.scss';
 
-const CustomMenuItem = styled(({ selected, refs, ...rest }) => (
-  <MenuItem {...rest} />
-))`
-  display: flex;
-  align-items: center;
-  color: ${props => (props.selected ? '#05b50c' : '#222')};
-  & > svg {
-    fill: ${props => (props.selected ? '#05b50c' : '#888')};
-    margin-right: 10px;
-  }
-  &:nth-child(2),
-  &:nth-child(4),
-  &:nth-child(8) {
-    border-top: 1px solid #f4f4f4;
-  }
-`;
+const CustomMenuItem = ({ className = '', selected, refs, ...props }) => 
+  <MenuItem 
+    className={`${selected 
+      ? 'view_ProjectGroup_Table_All___menu-item-selected'
+      : 'view_ProjectGroup_Table_All___menu-item'
+    } ${className}`}
+    {...props}
+  />;
 
-const StyledListSubheader = styled(ListSubheader)`
-  text-transform: uppercase;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-`;
+const StyledListSubheader = ({ className = '', ...props }) => 
+  <ListSubheader 
+    className={`view_ProjectGroup_Table_All___list-subheader ${className}`}
+    {...props}
+  />;
 
-const TimeBox = styled.div`
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 200px 550px;
-  grid-template-areas: 'side main';
-`;
+const TimeBox = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Table_All___time-box ${className}`}
+    {...props}
+  />;
 
-const SideBar = styled.div`
-  grid-area: side;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-`;
+const SideBar = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Table_All___side-bar ${className}`}
+    {...props}
+  />;
 
-const MainBar = styled.div`
-  grid-area: main;
-`;
+const MainBar = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Table_All___main-bar ${className}`}
+    {...props}
+  />;
 
-const SubHeader = styled.div`
-  padding: 15px;
-  text-transform: uppercase;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.54);
-  font-weight: 500;
-  font-size: 14px;
-  height: 18px;
-`;
+const SubHeader = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Table_All___subheader ${className}`}
+    {...props}
+  />;
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  height: 80%;
-`;
+const Content = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Table_All___content ${className}`}
+    {...props}
+  />;
 
-const YearBox = styled.div`
-  padding: 15px 0;
-  font-weight: 500;
-  font-size: 14px;
-  text-align: center;
-  background-color: #ddd;
-  width: 90%;
-`;
+const YearBox = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Table_All___year-box ${className}`}
+    {...props}
+  />;
 
-const DateWrapper = styled.div`
-  margin: 15px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 90%;
-  & > div {
-    display: flex;
-    flex-direction: column;
-    & > span {
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-  }
-`;
+const DateWrapper = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroup_Table_All___date-wrapper ${className}`}
+    {...props}
+  />;
 
-const StyledButton = styled(Button)`
-  && {
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin: 10px auto;
-    background-color: #05b50c;
-    color: #fff;
-    width: 90%;
-  }
-  &&:hover {
-    background-color: #05b50c;
-    color: #fff;
-  }
-`;
+const StyledButton = ({ className = '', ...props }) => 
+  <Button 
+    className={`view_ProjectGroup_Table_All___button ${className}`}
+    {...props}
+  />;
 
-const TimeListItem = styled(({ selected, ...rest }) => <ListItem {...rest} />)`
-  border-left: 3px solid ${props => (props.selected ? '#05b50c' : '#fff')};
-`;
-
-const MiddleDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const TimeListItem = ({ className = '', selected, ...props }) => 
+  <ListItem 
+    className={`${className}`}
+    {...props}
+  />;
 
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
@@ -200,12 +163,12 @@ function displayDateRange(from, to) {
 const SettingButton = ({
   visibility,
   onEditProject,
+  onSettingProject,
   onHideProject,
   onShowProject,
   onDeleteProject
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [setting, setSetting] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
 
   function handleClick(evt) {
@@ -237,7 +200,12 @@ const SettingButton = ({
           horizontal: 'right'
         }}
       >
-        <MenuItem onClick={evt => setSetting(true)}>Cài đặt</MenuItem>
+        <MenuItem onClick={evt => {
+          handleClose(evt);
+          onSettingProject();
+        }}>
+          Cài đặt
+        </MenuItem>
         <MenuItem
           onClick={evt => {
             handleClose(evt);
@@ -256,7 +224,6 @@ const SettingButton = ({
         </MenuItem>
         <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
       </Menu>
-      <ProjectSettingModal open={setting} setOpen={setSetting} />
       <AlertModal
         open={alert}
         setOpen={setAlert}
@@ -279,11 +246,15 @@ function AllProjectTable({
   doDeleteProject,
   doHideProject,
   doShowProject,
-  doSortProject
+  doSortProject,
+  colors,
+  isDefault = false,
 }) {
-  const { setProjectGroupId } = React.useContext(ProjectPageContext);
+  const { setProjectGroupId, setStatusProjectId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
   const history = useHistory();
+
+  const bgColor = colors.find(item => item.selected === true);
 
   const {
     data: { projects: _projects },
@@ -322,6 +293,7 @@ function AllProjectTable({
 
   const [edittingProject, setEdittingProject] = React.useState(null);
   const [openEditProject, setOpenEditProject] = React.useState(false);
+  const [setting, setSetting] = React.useState(false);
 
   const filterTitle = [
     'Tất cả',
@@ -355,25 +327,25 @@ function AllProjectTable({
       case 3:
         projects = filterArr(projects, {
           visibility: true,
-          state_name: 'waiting'
+          state_name: 'Waiting'
         });
         break;
       case 4:
         projects = filterArr(projects, {
           visibility: true,
-          state_name: 'doing'
+          state_name: 'Doing'
         });
         break;
       case 5:
         projects = filterArr(projects, {
           visibility: true,
-          state_name: 'finished'
+          state_name: 'Finished'
         });
         break;
       case 6:
         projects = filterArr(projects, {
           visibility: true,
-          state_name: 'expired'
+          state_name: 'Expired'
         });
         break;
       default:
@@ -390,8 +362,13 @@ function AllProjectTable({
     if (sortType === -1) {
       reverse(projects);
     }
+    if (isDefault) {
+      projects = filterArr(projects, {
+        project_group_id: null,
+      });
+    }
     setProjects(projects);
-  }, [_projects, filter, sortField, sortType, projectGroups]);
+  }, [_projects, filter, sortField, sortType, projectGroups, isDefault]);
 
   React.useEffect(() => {
     switch (time) {
@@ -497,8 +474,8 @@ function AllProjectTable({
   }, [time]);
 
   React.useEffect(() => {
-    setProjectGroupId(projectGroupId);
-  }, [setProjectGroupId, projectGroupId]);
+    if (isDefault === false) setProjectGroupId(projectGroupId);
+  }, [setProjectGroupId, projectGroupId, isDefault]);
 
   function handleFilterClose(filter = null) {
     return evt => {
@@ -518,7 +495,7 @@ function AllProjectTable({
       setSortField(field);
       setSortType(1);
     } else {
-      setSortType(-1);
+      setSortType(sortType => -sortType);
     }
   }
 
@@ -609,16 +586,14 @@ function AllProjectTable({
               {
                 label: () => null,
                 field: row => (
-                  <MiddleDiv>
-                    <CustomAvatar
-                      style={{
-                        width: 35,
-                        height: 35,
-                      }}
-                      src={get(row, 'icon')}
-                      alt="project group icon"
-                    />
-                  </MiddleDiv>
+                  <CustomAvatar
+                    style={{
+                      width: 35,
+                      height: 35,
+                    }}
+                    src={get(row, 'icon')}
+                    alt="project group icon"
+                  />
                 ),
                 align: 'left',
                 width: '5%',
@@ -628,7 +603,7 @@ function AllProjectTable({
                 field: (row) => <LinkSpan onClick={evt => history.push(`/project/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
                 sort: evt => handleSortColumn('name'),
                 align: 'left',
-                width: '34%',
+                width: '29%',
               },
               {
                 label: 'Trạng thái',
@@ -672,13 +647,13 @@ function AllProjectTable({
                 ),
                 sort: evt => handleSortColumn('complete'),
                 align: 'left',
-                width: '10%',
+                width: '15%',
               },
               {
                 label: 'Tiến độ',
                 field: row => (
                   <DateBox>
-                    <span>{get(row, 'duration', 0)} ngày</span>
+                    <span>{get(row, 'duration') ? get(row, 'duration') + ' ngày' : ''}</span>
                     <small>
                       {displayDateRange(
                         new Date(get(row, 'date_start')),
@@ -719,15 +694,13 @@ function AllProjectTable({
                   />
                 ),
                 field: row => (
-                  <MiddleDiv>
-                    <AvatarCircleList
-                      users={get(row, 'members', []).map(member => ({
-                        name: get(member, 'name'),
-                        avatar: get(member, 'avatar')
-                      }))}
-                      display={3}
-                    />
-                  </MiddleDiv>
+                  <AvatarCircleList
+                    users={get(row, 'members', []).map(member => ({
+                      name: get(member, 'name'),
+                      avatar: get(member, 'avatar')
+                    }))}
+                    display={3}
+                  />
                 ),
                 align: 'center',
                 width: '10%',
@@ -741,6 +714,10 @@ function AllProjectTable({
                       setOpenEditProject(true);
                     }}
                     visibility={get(row, 'visibility', true)}
+                    onSettingProject={() => {
+                      setStatusProjectId(get(row, 'id'));
+                      setSetting(true);
+                    }}
                     onHideProject={() => handleHideProject(get(row, 'id'))}
                     onShowProject={() => handleShowProject(get(row, 'id'))}
                     onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
@@ -816,56 +793,93 @@ function AllProjectTable({
                   <TimeListItem
                     button
                     onClick={evt => setTime(0)}
-                    selected={time === 0}
+                    style={time === 0 ? {
+                      borderLeft: `3px solid ${bgColor.color}`,
+                    } : {
+                      borderLeft: '3px solid #fff',
+                    }}
                   >
                     <ListItemText primary={'Năm nay'} />
                   </TimeListItem>
                   <TimeListItem
                     button
                     onClick={evt => setTime(1)}
-                    selected={time === 1}
+                    style={time === 1 ? {
+                      borderLeft: `3px solid ${bgColor.color}`,
+                    } : {
+                      borderLeft: '3px solid #fff',
+                    }}
                   >
                     <ListItemText primary={'Tháng này'} />
                   </TimeListItem>
                   <TimeListItem
                     button
                     onClick={evt => setTime(2)}
-                    selected={time === 2}
+                    style={time === 2 ? {
+                      borderLeft: `3px solid ${bgColor.color}`,
+                    } : {
+                      borderLeft: '3px solid #fff',
+                    }}
                   >
                     <ListItemText primary={'Tháng trước'} />
                   </TimeListItem>
                   <TimeListItem
                     button
                     onClick={evt => setTime(3)}
-                    selected={time === 3}
+                    style={time === 3 ? {
+                      borderLeft: `3px solid ${bgColor.color}`,
+                    } : {
+                      borderLeft: '3px solid #fff',
+                    }}
                   >
                     <ListItemText primary={'Tuần này'} />
                   </TimeListItem>
                   <TimeListItem
                     button
                     onClick={evt => setTime(4)}
-                    selected={time === 4}
+                    style={time === 4 ? {
+                      borderLeft: `3px solid ${bgColor.color}`,
+                    } : {
+                      borderLeft: '3px solid #fff',
+                    }}
                   >
                     <ListItemText primary={'Tuần trước'} />
                   </TimeListItem>
                   <TimeListItem
                     button
                     onClick={evt => setTime(5)}
-                    selected={time === 5}
+                    style={time === 5 ? {
+                      borderLeft: `3px solid ${bgColor.color}`,
+                    } : {
+                      borderLeft: '3px solid #fff',
+                    }}
                   >
                     <ListItemText primary={'Mọi lúc'} />
                   </TimeListItem>
                   <TimeListItem
                     button
                     onClick={evt => setTime(6)}
-                    selected={time === 6}
+                    style={time === 6 ? {
+                      borderLeft: `3px solid ${bgColor.color}`,
+                    } : {
+                      borderLeft: '3px solid #fff',
+                    }}
                   >
                     <ListItemText primary={'Tùy chọn'} />
                   </TimeListItem>
                 </List>
               </SideBar>
               <MainBar>
-                <SubHeader>Thời gian được chọn</SubHeader>
+                <SubHeader>
+                  <span>Thời gian được chọn</span>
+                  <IconButton>
+                    <Icon 
+                      path={mdiClose} 
+                      size={1} 
+                      onClick={evt => setTimeAnchor(null)}
+                    />
+                  </IconButton>
+                </SubHeader>
                 <Content>
                   <YearBox>{timeTitle}</YearBox>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -913,7 +927,12 @@ function AllProjectTable({
                       )}
                     </DateWrapper>
                   </MuiPickersUtilsProvider>
-                  <StyledButton fullWidth>Áp dụng</StyledButton>
+                  <StyledButton 
+                    style={{
+                      backgroundColor: bgColor.color,
+                    }}
+                    fullWidth
+                  >Áp dụng</StyledButton>
                 </Content>
               </MainBar>
             </TimeBox>
@@ -927,6 +946,10 @@ function AllProjectTable({
             open={openEditProject}
             setOpen={setOpenEditProject}
           />
+          <ProjectSettingModal 
+            open={setting} 
+            setOpen={setSetting} 
+          />
         </React.Fragment>
       )}
     </Container>
@@ -937,7 +960,8 @@ const mapStateToProps = state => {
   return {
     listProject: state.project.listProject,
     listProjectGroup: state.projectGroup.listProjectGroup,
-    detailProjectGroup: state.projectGroup.detailProjectGroup
+    detailProjectGroup: state.projectGroup.detailProjectGroup,
+    colors: state.setting.colors,
   };
 };
 

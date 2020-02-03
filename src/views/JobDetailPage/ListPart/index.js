@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import ListHeader from './ListHeader';
 import ListBanner from './ListBanner';
 import ListBody from './ListBody';
 import ListProject from '../ListPart/ListProject'
+// import styled from 'styled-components';
 // import { WrapperContext } from '../index'
 
 // const Container = styled.div`
@@ -31,7 +31,7 @@ import ListProject from '../ListPart/ListProject'
 function ListTask(props) {
   // const value = React.useContext(WrapperContext)
   return (
-    <div {...props} className={"wrap-list-task " + (props.show === true ? "wlt-block" : "wlt-none") }>
+    <div className={"wrap-list-task " + (props.show === true ? "wlt-block" : "wlt-none") }>
         <div className="wlt-header">
           <ListHeader {...props} />
           <ListBanner />

@@ -8,13 +8,44 @@
 
 .comp_CustomModal___scrollbar {
   &-main {
-    @include comp_CustomModal___scrollbar;
-    min-height: calc(100vh - 64px - 64px - 56.5px);
+    &-tall {
+      @include comp_CustomModal___scrollbar;
+      min-height: calc(100vh - 64px - 64px - 56.5px);
+    }
+    &-medium {
+      @include comp_CustomModal___scrollbar;
+      min-height: calc(85vh - 64px - 64px - 56.5px);
+    }
+    &-short {
+      @include comp_CustomModal___scrollbar;
+      min-height: calc(70vh - 64px - 64px - 56.5px);
+    }
+    &-mini {
+      @include comp_CustomModal___scrollbar;
+      min-height: calc(50vh - 64px - 64px - 56.5px);
+    }
   }
   &-side {
-    @include comp_CustomModal___scrollbar;
-    height: calc(100% - 46px) !important; 
-    min-height: calc(100vh - 64px - 64px - 56.5px - 46px);
+    &-tall {
+      @include comp_CustomModal___scrollbar;
+      height: calc(100% - 46px) !important; 
+      min-height: calc(100vh - 64px - 64px - 56.5px - 46px);
+    }
+    &-medium {
+      @include comp_CustomModal___scrollbar;
+      height: calc(100% - 46px) !important; 
+      min-height: calc(85vh - 64px - 64px - 56.5px - 46px);
+    }
+    &-short {
+      @include comp_CustomModal___scrollbar;
+      height: calc(100% - 46px) !important; 
+      min-height: calc(70vh - 64px - 64px - 56.5px - 46px);
+    }
+    &-mini {
+      @include comp_CustomModal___scrollbar;
+      height: calc(100% - 46px) !important; 
+      min-height: calc(50vh - 64px - 64px - 56.5px - 46px);
+    }
   }
 }
 
@@ -63,7 +94,7 @@
   };
   &-disabled {
     @include comp_CustomModal___accept-button;
-    color: #ccc !important;
+    color: #999 !important;
   };
 };
 

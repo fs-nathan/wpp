@@ -19,27 +19,54 @@ import { WrapperContext } from '../../index'
 //   }
 //   border-bottom: 1px solid rgba(0, 0, 0, .1);
 // `;
+//  const DEFAULT_VALUE = {
+//     task_me: 0,
+//     task_waiting: 0,   // Waiting
+//     task_doing: 0,   // Doing
+//     task_complete: 0, // Complete
+//     task_expired: 0,    // Expired
+//     task_stop: 0,   // Stop
+//  }
 
-const jobTypes = [
-  'Tất cả',
-  'Đang chờ',   // Waiting
-  'Đang làm',   // Doing
-  'Hoàn thành', // Complete
-  'Quá hạn',    // Expired
-  'Tạm dừng',   // Stop
-]
 
 function ListBanner() {
   
   const value = React.useContext(WrapperContext)
   const [selected, setSelected] = React.useState(0)
-
-
+  // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
   const handleChangeFilterType = (typeIdx) => {
     value.filterTaskByType(typeIdx)
     setSelected(typeIdx) 
   }
+  console.log({value})
 
+  let data = []
+  if (value && value.projectDetail && value.projectDetail) {
+    data = value.projectDetail
+  };
+  let task_of_me = 0;
+  if (value.listTaskDetail && value.listTaskDetail.tasks.length > 0) {
+    value.listTaskDetail.tasks.forEach((e, i) => {
+      task_of_me += e.tasks.length
+    });
+  }
+  
+  const taskStatic = {
+    task_me: task_of_me ,
+    task_waiting: data.task_waiting,
+    task_doing:  data.task_doing ,
+    task_complete: data.task_complete ,
+    task_expired: data.task_expired,
+    task_stop: data.task_stop
+  }
+  const jobTypes = [
+    'Tất cả (' + (taskStatic.task_me ? taskStatic.task_me : 0) + ')',
+    'Đang chờ (' + (taskStatic.task_waiting ? taskStatic.task_waiting : 0) + ')',   // Waiting
+    'Đang làm (' + (taskStatic.task_doing ? taskStatic.task_doing : 0) + ')',   // Doing
+    'Hoàn thành (' + (taskStatic.task_complete ? taskStatic.task_complete : 0) + ')', // Complete
+    'Quá hạn (' + (taskStatic.task_expired ? taskStatic.task_expired : 0) + ')',    // Expired
+    'Tạm dừng (' + (taskStatic.task_stop ? taskStatic.task_stop : 0) + ')',   // Stop
+  ]
   return (
     <div className="container-list-banner">
       {jobTypes.map((jobType, index) => (

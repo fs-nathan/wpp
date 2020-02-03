@@ -2,12 +2,13 @@ import React from 'react';
 import ColorTypo from '../../../../components/ColorTypo';
 import PillButton from '../../../../components/PillButton';
 import SearchInput from '../../../../components/SearchInput';
+import { ButtonBase } from '@material-ui/core';
 import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { ListItemAvatar, ListItemText } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import { connect } from 'react-redux';
-import { searchUser } from '../../../../actions/groupUser/searchUser';
+import { searchUser, searchUserReset } from '../../../../actions/groupUser/searchUser';
 import { inviteUserJoinGroup } from '../../../../actions/groupUser/inviteUserJoinGroup';
 import { resendInvitationUserJoinGroup } from '../../../../actions/groupUser/resendInvitationUserJoinGroup';
 import { getRequirementJoinGroup } from '../../../../actions/groupUser/getRequirementJoinGroup';
@@ -18,7 +19,6 @@ import { useTranslation } from 'react-i18next';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
-import colorPal from '../../../../helpers/colorPalette';
 import { 
   CustomEventListener, CustomEventDispose, 
   INVITE_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP,
@@ -28,10 +28,23 @@ import './style.scss';
 
 const StyledBox = ({ className = '', ...props }) => <div className={`view_Department_AddUser___container ${className}`} {...props} />;
 
+const OkButton = ({ className = '', ...props }) => 
+  <ButtonBase 
+    className={`view_Department_AddUser___ok-btn ${className}`}
+    {...props}
+  />
+
+const CancleButton = ({ className = '', ...props }) => 
+  <ButtonBase 
+    className={`view_Department_AddUser___cancle-btn ${className}`}
+    {...props}
+  />
+
 function DesiringUserList({ 
   user, 
   handleInviteUserJoinGroup, 
   handleResendInvitationUserJoinGroup,
+  loading, bgColor,
 }) {
 
   function onInviteUserJoinGroup(userId) {
@@ -46,7 +59,10 @@ function DesiringUserList({
     <>
     {user !== null && user !== undefined 
     ? (<StyledList>
-        <StyledListItem key={get(user, 'id')}>
+        <StyledListItem 
+          key={get(user, 'id')}
+          style={{ cursor: 'default' }}
+        >
           <ListItemAvatar>
             <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
           </ListItemAvatar>
@@ -58,25 +74,31 @@ function DesiringUserList({
               <StyledSecondary>
               <Secondary>{get(user, 'email', '')}</Secondary>
                 <span>
-                  <PillButton 
-                    size='medium'
+                  <OkButton 
+                    style={{
+                      backgroundColor: bgColor.color,
+                      borderColor: bgColor.color
+                    }}
+                    disabled={loading}
                     onClick={
                       () => 
                         get(user, 'status_code', 0) === 0 
                         ? onInviteUserJoinGroup(get(user, 'id'))
                         : onResendInvitationUserJoinGroup(get(user, 'id'))
                       }  
-                    background={'#eeeeee'}
-                    text={
-                      get(user, 'status_code', 0) === 0 
-                      ? colorPal['green'][0] 
-                      : '#222222'
-                    }
                   >
                     {get(user, 'status_code', 0) === 0 
                     ? 'Mời'
                     : 'Mời lại'}
-                  </PillButton>
+                  </OkButton>
+                  {get(user, 'status_code', 0) === 1 && (
+                    <CancleButton 
+                      disabled={loading}
+                      onClick={() => null} 
+                    >
+                      Hủy
+                    </CancleButton>
+                  )}
                 </span>
               </StyledSecondary>
             }
@@ -94,6 +116,7 @@ function RequestingUserList({
   users, 
   handleAcceptRequirementJoinGroup, 
   handleRejectRequirementJoinGroup,
+  loading, bgColor,
 }) {
 
   const { t } = useTranslation();
@@ -109,7 +132,10 @@ function RequestingUserList({
   return (
     <StyledList>
       {users.map(user => (
-        <StyledListItem>
+        <StyledListItem
+          key={get(user, 'id')}
+          style={{ cursor: 'default' }}
+        >
           <ListItemAvatar>
             <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
           </ListItemAvatar>
@@ -121,22 +147,22 @@ function RequestingUserList({
               <StyledSecondary>
                 <Secondary>{get(user, 'email')}</Secondary>
                 <span>
-                  <PillButton 
-                    size='medium'
+                  <OkButton 
+                    style={{
+                      backgroundColor: bgColor.color,
+                      borderColor: bgColor.color
+                    }}
+                    disabled={loading}
                     onClick={() => onAcceptRequirementJoinGroup(get(user, 'requirement_id'))} 
-                    background={'#eeeeee'}
-                    text={'#222222'}
                   >
                     {t("views.user_page.left_part.add_user.accept_request")}
-                  </PillButton>
-                  <PillButton 
-                    size='medium'
+                  </OkButton>
+                  <CancleButton 
+                    disabled={loading}
                     onClick={() => onRejectRequirementJoinGroup(get(user, 'requirement_id'))} 
-                    background={'#eeeeee'}
-                    text={colorPal['red'][0]}
                   >
                     {t("views.user_page.left_part.add_user.deny_request")}
-                  </PillButton>
+                  </CancleButton>
                 </span>
               </StyledSecondary>
             }
@@ -155,14 +181,23 @@ const StyledSearchInput = ({ className = '', ...props }) =>
 
 function DepartmentInfo({ 
   searchUser, doSearchUser, 
-  doInviteUserJoinGroup, doResendInvitationUserJoinGroup,
+  doSearchUserReset,
+  inviteUserJoinGroup, doInviteUserJoinGroup, 
+  resendInvitationUserJoinGroup, doResendInvitationUserJoinGroup,
   getRequirementJoinGroup, doGetRequirementJoinGroup,
-  doAcceptRequirementJoinGroup, doRejectRequirementJoinGroup,
-  handleSubSlide 
+  acceptRequirementJoinGroup, doAcceptRequirementJoinGroup, 
+  rejectRequirementJoinGroup, doRejectRequirementJoinGroup,
+  handleSubSlide,
+  colors,
 }) {
 
+  const bgColor = colors.find(item => item.selected === true);
   const { t } = useTranslation();
   const { data: { member }, loading: searchUserLoading, error: searchUserError } = searchUser;
+  const { loading: inviteUserJoinGroupLoading } = inviteUserJoinGroup;
+  const { loading: resendInvitationUserJoinGroupLoading } = resendInvitationUserJoinGroup;
+  const { loading: acceptRequirementJoinGroupLoading } = acceptRequirementJoinGroup;
+  const { loading: rejectRequirementJoinGroupLoading } = rejectRequirementJoinGroup;
   const [searchPatern, setSearchPatern] = React.useState('');
   const { data: { requirements }, loading: getRequirementJoinGroupLoading, error: getRequirementJoinGroupError } = getRequirementJoinGroup;
 
@@ -201,7 +236,10 @@ function DepartmentInfo({
       title={t("views.user_page.left_part.add_user.title")}
       rightAction={{
         iconPath: mdiClose,
-        onClick: () => handleSubSlide(0),
+        onClick: () => {
+          doSearchUserReset();
+          handleSubSlide(0);
+        },
         tooltip: 'Đóng',
       }}
     >
@@ -228,6 +266,8 @@ function DepartmentInfo({
         {searchUserError !== null && <ErrorBox size={16} />}
         {!searchUserLoading && searchUserError === null && (
           <DesiringUserList 
+            bgColor={bgColor}
+            loading={inviteUserJoinGroupLoading || resendInvitationUserJoinGroupLoading}
             user={member} 
             handleInviteUserJoinGroup={doInviteUserJoinGroup} 
             handleResendInvitationUserJoinGroup={doResendInvitationUserJoinGroup}
@@ -242,6 +282,8 @@ function DepartmentInfo({
         {getRequirementJoinGroupError !== null && <ErrorBox size={16} />}
         {!getRequirementJoinGroupLoading && getRequirementJoinGroupError === null && (
           <RequestingUserList 
+            bgColor={bgColor}
+            loading={acceptRequirementJoinGroupLoading || rejectRequirementJoinGroupLoading}
             users={requirements} 
             handleAcceptRequirementJoinGroup={doAcceptRequirementJoinGroup} 
             handleRejectRequirementJoinGroup={doRejectRequirementJoinGroup}
@@ -254,7 +296,12 @@ function DepartmentInfo({
 
 const mapStateToProps = state => {
   return {
+    colors: state.setting.colors,
     searchUser: state.groupUser.searchUser,
+    inviteUserJoinGroup: state.groupUser.inviteUserJoinGroup,
+    resendInvitationUserJoinGroup: state.groupUser.resendInvitationUserJoinGroup,
+    acceptRequirementJoinGroup: state.groupUser.acceptRequirementJoinGroup,
+    rejectRequirementJoinGroup: state.groupUser.rejectRequirementJoinGroup,
     getRequirementJoinGroup: state.groupUser.getRequirementJoinGroup,
   }
 };
@@ -262,6 +309,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doSearchUser: ({ info }, quite) => dispatch(searchUser({ info }, quite)),
+    doSearchUserReset: () => dispatch(searchUserReset()),
     doInviteUserJoinGroup: ({ userId }) => dispatch(inviteUserJoinGroup({ userId })),
     doResendInvitationUserJoinGroup: ({ userId }) => dispatch(resendInvitationUserJoinGroup({ userId })),
     doGetRequirementJoinGroup: (quite) => dispatch(getRequirementJoinGroup(quite)),

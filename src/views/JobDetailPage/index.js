@@ -25,29 +25,27 @@ function JobDetailPage(props) {
     useEffect(() => {
         props.closeNoticeModal()
         // props.getProjectGroup()
-
         props.getProjectListBasic()
-
         // props.getDetailProject(props.projectId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
-        if (props.history.location.pathname.substring(18).length > 0) {
-            props.getDetailProject(props.history.location.pathname.substring(18))
-            props.chooseProject({ id: props.history.location.pathname.substring(18) })
-        } else {
-            props.getProjectListBasic()
+        let id = props.history.location.pathname.substring(18)
+        if (id.length > 0) {
+            if(id !== props.projectId) {
+                props.getDetailProject(id)
+                props.chooseProject({ id })
+            }
         }
-        console.log('history:::', props.history.location.pathname)
-    }, [props.history.location.pathname])
-
-
+    }, [props])
+    
     const getDataByProjectId = () => {
         props.getRoleTask()
         props.getListGroupTaskByProjectId(props.projectId)
         if (props.projectId !== "")
             props.getListTaskDetailByProjectId(props.projectId)
+            props.getStaticTask(props.projectId)
     }
 
     const getDataByTaskId = () => {
@@ -67,7 +65,6 @@ function JobDetailPage(props) {
 
     useEffect(getDataByTaskId, [props.taskId])
     useEffect(getDataByProjectId, [props.projectId])
-
     return (
 
         <Wrapper value={{ ...props }}>
@@ -87,11 +84,10 @@ function JobDetailPage(props) {
 }
 
 const mapStateToProps = state => {
-    // console.log('state project group::::', state.taskDetail.commonTaskDetail.projectListBasic);
+    // console.log('state time task::::', state.taskDetail.commonTaskDetail.updateComplete);
     return {
         // offer
         offer: state.taskDetail.taskOffer.offer,
-
         pendingItems: state.taskDetail.taskOffer.pendingItems,
         approvedItems: state.taskDetail.taskOffer.approvedItems,
         // remind
@@ -129,6 +125,9 @@ const mapStateToProps = state => {
         projectDetail: state.taskDetail.commonTaskDetail.projectDetail,
         // project list basic
         projectListBasic: state.taskDetail.commonTaskDetail.projectListBasic,
+        // static task
+        staticTask: state.taskDetail.listDetailTask.staticTask,
+        updateComplete: state.taskDetail.commonTaskDetail.updateComplete,
     }
 }
 
@@ -211,9 +210,12 @@ const mapDispatchToProps = dispatch => {
         searchDemand: (data) => dispatch(taskDetailAction.searchDemand(data)),
         searchOffer: (data) => dispatch(taskDetailAction.searchOffer(data)),
         searchMember: (data) => dispatch(taskDetailAction.searchMember(data)),
-        getProjectListBasic: () => dispatch(taskDetailAction.getProjectListBasic()),
-
-        closeNoticeModal: () => dispatch(closeNoticeModal())
+        getProjectListBasic: (projectId) => dispatch(taskDetailAction.getProjectListBasic(projectId)),
+        getStaticTask: (data) => dispatch(taskDetailAction.getStaticTask(data)),
+        //updateComplete
+        updateComplete:(data)=>{  dispatch(taskDetailAction.updateComplete(data))},
+        closeNoticeModal: () => dispatch(closeNoticeModal()),
+        deleteTask: (data) => { dispatch(taskDetailAction.deleteTask(data))},
     };
 };
 

@@ -5,16 +5,20 @@ import { connect } from 'react-redux';
 import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
 import { detailProjectGroup } from '../../actions/projectGroup/detailProjectGroup';
 import { memberProjectGroup } from '../../actions/projectGroup/memberProjectGroup';
+import { detailDefaultGroup } from '../../actions/projectGroup/detailDefaultGroup';
 import { listIcon } from '../../actions/icon/listIcon';
 import { listProject } from '../../actions/project/listProject';
 import { listDeletedProject } from '../../actions/project/listDeletedProject';
+import { detailStatus } from '../../actions/project/setting/detailStatus';
 import { 
   CustomEventListener, CustomEventDispose, 
   CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
   CREATE_ICON, DELETE_ICON,
   CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT, HIDE_PROJECT, SHOW_PROJECT, SORT_PROJECT, COPY_PROJECT,
+  UPDATE_STATUS_COPY, UPDATE_STATUS_DATE,
 } from '../../constants/events';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
+import DefaultGroupDetail from './LeftPart/DefaultGroupDetail';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
 import AllProjectTable from './RightPart/AllProjectTable';
 import DeletedProjectTable from './RightPart/DeletedProjectTable';
@@ -29,6 +33,8 @@ function ProjectGroupPage({
   doMemberProjectGroup,
   doListProject,
   doListDeletedProject,
+  doDetailDefaultGroup,
+  doDetailStatus,
 }) {
 
   React.useEffect(() => {
@@ -89,6 +95,10 @@ function ProjectGroupPage({
       }
     }
   }, [projectGroupId, doDetailProjectGroup]);
+
+  React.useEffect(() => {
+    doDetailDefaultGroup();
+  }, [doDetailDefaultGroup]);
 
   React.useEffect(() => {
     if (projectGroupId === 'deleted') return;
@@ -152,9 +162,20 @@ function ProjectGroupPage({
     }
   }, [doListDeletedProject]);
 
+  const [statusProjectId, setStatusProjectId] = React.useState(null);
+
+  React.useEffect(() => {
+    if (statusProjectId !== null) {
+      doDetailStatus({
+        projectId: statusProjectId,
+      });
+    }
+  }, [statusProjectId, doDetailStatus]);
+
   return (
     <Provider value={{
       setProjectGroupId,
+      statusProjectId, setStatusProjectId,
     }}>
       <Route
         path='/projects'
@@ -205,6 +226,29 @@ function ProjectGroupPage({
               )}
             />
             <Route 
+              path={`${url}/default`}
+              exact
+              render={props => (
+                <TwoColumnsLayout 
+                  leftRenders={[
+                    () => 
+                      <DefaultGroupDetail 
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) => 
+                      <AllProjectTable 
+                        {...props} 
+                        expand={expand}
+                        handleExpand={handleExpand}
+                        isDefault={true}
+                      />
+                  }
+                />
+              )}
+            />
+            <Route 
               path={`${url}/:projectGroupId`}
               render={props => (
                 <TwoColumnsLayout 
@@ -240,6 +284,8 @@ const mapDispatchToProps = dispatch => {
     doMemberProjectGroup: ({ projectGroupId }, quite) => dispatch(memberProjectGroup({ projectGroupId }, quite)),
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
     doListDeletedProject: (options, quite) => dispatch(listDeletedProject(options, quite)),
+    doDetailDefaultGroup: (quite) => dispatch(detailDefaultGroup(quite)),
+    doDetailStatus: ({ projectId }, quite) => dispatch(detailStatus({ projectId }, quite)),
   }
 };
 

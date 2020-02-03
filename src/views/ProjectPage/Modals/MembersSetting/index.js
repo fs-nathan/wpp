@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { 
   ListItemText, ListSubheader, Button,
@@ -25,115 +24,89 @@ import { addMemberProject } from '../../../../actions/project/addMemberToProject
 import { removeMemberProject } from '../../../../actions/project/removeMemberFromProject';
 import { updateStateJoinTask } from '../../../../actions/project/updateStateJoinTask';
 import { assignMemberToAllTask } from '../../../../actions/project/assignMemberToAllTask';
+import './style.scss';
 
-const ListContainer = styled.div`
-  margin-top: 8px;
-`;
+const ListContainer = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_MemberSetting_Modal___list-container ${className}`}
+    {...props}
+  />;
 
-const StyledListSubheader = styled(ListSubheader)`
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 5px 0;
-  margin: 0 16px;
-  & > * {
-    color: rgba(0, 0, 0, 0.54);  
-    font-size: 14px;
-  }
-`;
+const StyledListSubheader = ({ className = '', ...props }) => 
+  <ListSubheader 
+    className={`view_Project_MemberSetting_Modal___list-subheader ${className}`}
+    {...props}
+  />;
 
-const CustomListItem = styled(StyledListItem)`
-  padding: 10px 16px;
-`;
+const CustomListItem = ({ className = '', ...props }) => 
+  <StyledListItem 
+    className={`view_Project_MemberSetting_Modal___list-item ${className}`}
+    {...props}
+  />;
 
-const Banner = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
+const Banner = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_MemberSetting_Modal___banner ${className}`}
+    {...props}
+  />;
 
-const StyledTableHead = styled(TableHead)` 
-  background-color: #eee; 
-  & * {
-    text-transform: none;
-  }
-`;
+const StyledTableHead = ({ className = '', ...props }) => 
+  <TableHead 
+    className={`view_Project_MemberSetting_Modal___table-head ${className}`}
+    {...props}
+  />;
 
-const StyledTableBody = styled(TableBody)`
-`;
+const StyledTableBody = TableBody;
 
-const UserTableCell = styled(TableCell)`
-  & > span {
-    font-size: 15px;
-    color: #111;
-  }
-  & > small {
-    font-size: 13px;
-    color: #333;
-  }
-`;
+const UserTableCell = ({ className = '', ...props }) => 
+  <TableCell 
+    className={`view_Project_MemberSetting_Modal___table-cell ${className}`}
+    {...props}
+  />;
 
-const MiddleTableCell = styled(TableCell)`
-  text-align: center;
-`;
+const MiddleTableCell = ({ className = '', ...props }) => 
+  <TableCell 
+    className={`view_Project_MemberSetting_Modal___middle-table-cell ${className}`}
+    {...props}
+  />;
 
-const AddButton = styled(Button)`
-  color: #222;
-  background-color: #fff;
-  transition: none;
-  & > span {
-    font-size: 12px;
-    &:last-child {
-      display: none;
-    }
-  }
-  &:hover {
-    color: #fff;
-    background-color: #03c30b;
-    border-color: #03c30b; 
-  }
-`;
+const AddButton = ({ className = '', ...props }) => 
+  <Button 
+    className={`view_Project_MemberSetting_Modal___add-button ${className}`}
+    {...props}
+  />;
 
-const CustomMenuItem = styled(({ selected, refs, ...rest }) => (<MenuItem {...rest} />))`
-  display: flex;
-  align-items: center;
-  color: ${props => props.selected ? '#05b50c' : '#222'};
-  & > svg {
-    fill: ${props => props.selected ? '#05b50c' : '#888'};
-    margin-right: 10px;
-  }
-  &:nth-child(2), &:nth-child(3) {  
-    border-bottom: 1px solid #f4f4f4;
-  }
-`;
+const CustomMenuItem = ({ className = '', selected, refs, ...props }) => 
+  <MenuItem 
+    className={`${selected 
+      ? 'view_Project_MemberSetting_Modal___menu-item-selected'
+      : 'view_Project_MemberSetting_Modal___menu-item'} ${className}`}
+    {...props}
+  />;
 
-const StyledPrimary = styled(Primary)`
-  font-size: 15px;
-  color: #111;
-`;
+const StyledPrimary = ({ className = '', ...props }) => 
+  <Primary 
+    className={`view_Project_MemberSetting_Modal___primary ${className}`}
+    {...props}
+  />;
 
-const StyledSecondary = styled(Secondary)`
-  font-size: 13px;
-  color: #333;
-`;
+const StyledSecondary = ({ className = '', ...props }) => 
+  <Secondary 
+    className={`view_Project_MemberSetting_Modal___secondary ${className}`}
+    {...props}
+  />;
 
-const LeftContainer = styled.div`
-  & > * {
-    &:nth-child(1) {
-      width: 90%;
-      margin: 8px auto;
-    }
-  }
-`;
+const LeftContainer = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_MemberSetting_Modal___left-container ${className}`}
+    {...props}
+  />;
 
-const RightContainer = styled.div`
-  & > * {
-    &:nth-child(1) {
-      font-size: 14px;
-      padding: 12px;
-    }
-  }
-`;
+const RightContainer = ({ className = '', ...props }) => 
+  <div 
+    className={`view_Project_MemberSetting_Modal___right-container ${className}`}
+    {...props}
+  />;
 
 function getJoinStatusName(statusCode) {
   switch (statusCode) {
@@ -162,7 +135,6 @@ function UserFreeRoomList({ room, onAddMember, }) {
         {get(room, 'users', []).map(user => (
           <CustomListItem 
             key={get(user, 'id')}
-            onClick={evt => onAddMember(user)}
           >
             <CustomAvatar style={{ width: 40, height: 40, }} src={get(user, 'avatar', '')} alt='avatar' />
             <ListItemText 
@@ -180,6 +152,7 @@ function UserFreeRoomList({ room, onAddMember, }) {
             <AddButton
               size='small'
               variant='outlined'
+              onClick={evt => onAddMember(user)}
             >
               Thêm
             </AddButton>
@@ -339,7 +312,9 @@ function MemberSetting({
         maxWidth='lg'
         open={open}
         setOpen={setOpen}
+        confirmRender={null}
         onConfirm={() => null}
+        cancleRender={() => 'Thoát'}
         height='tall'
         columns={2}
         left={{

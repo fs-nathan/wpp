@@ -2,6 +2,7 @@ import {
   SEARCH_USER,
   SEARCH_USER_SUCCESS,
   SEARCH_USER_FAIL,
+  SEARCH_USER_RESET,
 } from '../../constants/actions/groupUser/searchUser';
 
 export const initialState = {
@@ -33,6 +34,15 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case SEARCH_USER_RESET:
+      return {
+        ...state,
+        data: {  
+          member: null,
+        },
+        error: null,
+        loading: false,
+      }
     default:
       return state;
   }

@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { 
   TextField,
@@ -10,18 +9,19 @@ import { createGroupTask } from '../../../../actions/groupTask/createGroupTask';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 import { useRequiredString } from '../../../../hooks';
+import './style.scss';
 
-const CustomTextField = styled(TextField)`
-  & > label {
-    z-index: 0;
-  }
-`;
+const CustomTextField = ({ className = '', ...props }) =>
+  <TextField 
+    className={`view_Project_CreateNewGroupTask_Modal___text-field ${className}`}
+    {...props}
+  />;
 
 function CreateNewGroupTask({ open, setOpen, doCreateGroupTask, }) {
 
   const { projectId } = useParams();
   const [name, setName, errorName] = useRequiredString('', 100);
-  const [description, setDescription, errorDescription] = useRequiredString('', 200);
+  const [description, setDescription] = React.useState('');
 
   function handleCreateNewGroupTask() {
     doCreateGroupTask({
@@ -38,7 +38,7 @@ function CreateNewGroupTask({ open, setOpen, doCreateGroupTask, }) {
         title={`Tạo mới nhóm công việc`}
         open={open}
         setOpen={setOpen}
-        canConfirm={!errorName && !errorDescription}
+        canConfirm={!errorName}
         onConfirm={() => handleCreateNewGroupTask()}
       >
         <CustomTextField
@@ -63,11 +63,6 @@ function CreateNewGroupTask({ open, setOpen, doCreateGroupTask, }) {
           fullWidth
           multiline
           rowsMax='4'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorDescription, 'message', '')}
-            </ColorTypo>
-          }
         />
       </CustomModal>
     </React.Fragment>

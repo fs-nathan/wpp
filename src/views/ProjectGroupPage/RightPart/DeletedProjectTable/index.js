@@ -1,27 +1,21 @@
 import React from 'react';
-import styled from 'styled-components';
 import { get, sortBy, reverse } from 'lodash';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Icon from '@mdi/react';
 import {
-  mdiShieldAccount,
   mdiArrowLeft,
 } from '@mdi/js';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import CustomTable from '../../../../components/CustomTable';
 import CustomAvatar from '../../../../components/CustomAvatar';
+import './style.scss';
 
-const Container = styled.div`
-  grid-area: table;
-`;
-
-const CenterCell = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const Container = ({ className = '', ...props }) => 
+  <div 
+    className={`view_ProjectGroupPage_Table_Deleted___container ${className}`}
+    {...props}
+  />;
 
 function DeletedProjectTable({ 
   expand, handleExpand, 

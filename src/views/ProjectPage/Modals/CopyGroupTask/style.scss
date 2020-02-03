@@ -1,0 +1,33 @@
+.view_Project_CopyGroupTask_Modal___list-item {
+  padding: 10px 16px;
+};
+
+@mixin view_Project_CopyGroupTask_Modal___primary {
+  display: flex;
+  align-items: center;
+  & > * {
+    &:last-child {
+      font-size: 14px;
+      margin-left: 8px;
+    }
+  }
+}
+
+.view_Project_CopyGroupTask_Modal___primary {
+  & {
+    @include view_Project_CopyGroupTask_Modal___primary;
+    & > * {
+      &:last-child {
+        color: #444;
+      }
+    }
+  }
+  &-selected {
+    @include view_Project_CopyGroupTask_Modal___primary;
+    & > * {
+      &:last-child {
+        color: #05b50c;
+      }
+    }
+  }
+};

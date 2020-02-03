@@ -29,6 +29,8 @@ function CreateProjectGroup({ open, setOpen, }) {
       title='Tạo dự án'
       open={open}
       setOpen={setOpen}
+      confirmRender={null}
+      height='short'
     >
       <Container>
         <ButtonCase onClick={evt => {

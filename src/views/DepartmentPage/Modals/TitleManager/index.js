@@ -35,6 +35,8 @@ function TitleManager({ open, setOpen, listPosition, doDeletePosition }) {
         open={open}
         setOpen={setOpen}
         title='Quản lý chức danh'
+        confirmRender={null}
+        cancleRender={() => 'Thoát'}
         onCancle={() => setOpen(0)}
       >
         {loading && <LoadingBox />}

@@ -1,0 +1,112 @@
+@mixin view_ProjectGroup_Table_All___menu-item {
+  display: flex;
+  align-items: center;
+  & > svg {
+    margin-right: 10px;
+  }
+  &:nth-child(2),
+  &:nth-child(4),
+  &:nth-child(8) {
+    border-top: 1px solid #f4f4f4;
+  }
+}
+
+.view_ProjectGroup_Table_All___menu-item {
+  & {
+    @include view_ProjectGroup_Table_All___menu-item;
+    color: #222;
+    & > svg {
+      fill: #888;
+    }
+  };
+  &-selected {
+    @include view_ProjectGroup_Table_All___menu-item;
+    color: #05b50c;
+    & > svg {
+      fill: #05b50c;
+    }
+  };
+};
+
+.view_ProjectGroup_Table_All___list-subheader {
+  text-transform: uppercase;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+};
+
+.view_ProjectGroup_Table_All___time-box {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 200px 450px;
+  grid-template-areas: 'side main';
+};
+
+.view_ProjectGroup_Table_All___side-bar {
+  grid-area: side;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+};
+
+.view_ProjectGroup_Table_All___main-bar {
+  grid-area: main;
+};
+
+.view_ProjectGroup_Table_All___subheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  & > span {
+    padding: 15px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.54);
+    font-weight: 500;
+    font-size: 14px;
+    height: 18px;
+  }
+  & > button {
+    & svg {
+      fill: rgba(0, 0, 0, 0.54); 
+    }
+  }
+};
+
+.view_ProjectGroup_Table_All___content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 80%;
+};
+
+.view_ProjectGroup_Table_All___year-box {
+  padding: 15px 0;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  background-color: #ddd;
+  width: 90%;
+};
+
+.view_ProjectGroup_Table_All___date-wrapper {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  & > div {
+    max-width: 170px;
+  }
+};
+
+.view_ProjectGroup_Table_All___button {
+  & {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 10px auto;
+    color: #fff;
+    width: 90%;
+  }
+  &:hover {
+    color: #fff;
+  }
+};

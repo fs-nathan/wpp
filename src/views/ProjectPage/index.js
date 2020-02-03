@@ -15,11 +15,11 @@ import {
   CustomEventListener, CustomEventDispose,
   CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
   CREATE_PROJECT, DELETE_PROJECT, UPDATE_PROJECT,
-  CREATE_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
+  CREATE_GROUP_TASK, COPY_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
   ADD_MEMBER_PROJECT, REMOVE_MEMBER_PROJECT,
   UPDATE_STATE_JOIN_TASK,
   ASSIGN_MEMBER_TO_ALL_TASK,
-  CREATE_TASK, DELETE_TASK,
+  CREATE_TASK, DELETE_TASK, SORT_TASK,
   SHOW_PROJECT, HIDE_PROJECT,
 } from '../../constants/events';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
@@ -127,19 +127,23 @@ function ProjectPage({
     }
 
     CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
+    CustomEventListener(COPY_GROUP_TASK, reloadListTask);
     CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
     CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
     CustomEventListener(SORT_GROUP_TASK, reloadListTask);
     CustomEventListener(CREATE_TASK, reloadListTask);
     CustomEventListener(DELETE_TASK, reloadListTask);
+    CustomEventListener(SORT_TASK, reloadListTask);
 
     return () => {
       CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
       CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
       CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
       CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
       CustomEventDispose(CREATE_TASK, reloadListTask);
       CustomEventDispose(DELETE_TASK, reloadListTask);
+      CustomEventDispose(SORT_TASK, reloadListTask);
     }
   }, [projectId, doListTask]);
 
@@ -153,12 +157,14 @@ function ProjectPage({
     }
 
     CustomEventListener(CREATE_GROUP_TASK, reloadListGroupTask);
+    CustomEventListener(COPY_GROUP_TASK, reloadListGroupTask);
     CustomEventListener(UPDATE_GROUP_TASK, reloadListGroupTask);
     CustomEventListener(DELETE_GROUP_TASK, reloadListGroupTask);
     CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
 
     return () => {
       CustomEventDispose(CREATE_GROUP_TASK, reloadListGroupTask);
+      CustomEventDispose(COPY_GROUP_TASK, reloadListGroupTask);
       CustomEventDispose(UPDATE_GROUP_TASK, reloadListGroupTask);
       CustomEventDispose(DELETE_GROUP_TASK, reloadListGroupTask);
       CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
@@ -174,12 +180,14 @@ function ProjectPage({
     }
 
     CustomEventListener(CREATE_GROUP_TASK, reloadGetAllGroupTask);
+    CustomEventListener(COPY_GROUP_TASK, reloadGetAllGroupTask);
     CustomEventListener(UPDATE_GROUP_TASK, reloadGetAllGroupTask);
     CustomEventListener(DELETE_GROUP_TASK, reloadGetAllGroupTask);
     CustomEventListener(SORT_GROUP_TASK, reloadGetAllGroupTask);
 
     return () => {
       CustomEventDispose(CREATE_GROUP_TASK, reloadGetAllGroupTask);
+      CustomEventDispose(COPY_GROUP_TASK, reloadGetAllGroupTask);
       CustomEventDispose(UPDATE_GROUP_TASK, reloadGetAllGroupTask);
       CustomEventDispose(DELETE_GROUP_TASK, reloadGetAllGroupTask);
       CustomEventDispose(SORT_GROUP_TASK, reloadGetAllGroupTask);

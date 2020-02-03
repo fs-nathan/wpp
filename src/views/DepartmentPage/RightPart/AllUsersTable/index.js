@@ -278,7 +278,7 @@ function AllUsersTable({
       )}
       <TitleManagerModal open={moreModal === 1} setOpen={setMoreModal} />
       <RoleManagerModal open={moreModal === 2} setOpen={setMoreModal} />
-      <LogoManagerModal open={moreModal === 3} setOpen={setMoreModal} />
+      <LogoManagerModal open={moreModal === 3} setOpen={setMoreModal} isSelect={false} />
       <TableSettingsModal open={moreModal === 4} setOpen={setMoreModal} />
     </Container>
   )

@@ -1,0 +1,18 @@
+.view_Project_AllTaskTable___subtitle {
+  display: flex;
+  align-items: center;
+  & > * {
+    &:hover {
+      cursor: pointer;
+    }
+    &:not(:first-child) {
+      margin-left: 8px;
+    }
+    &:not(:nth-child(2)) {
+      color: #8b8b8b;
+    }
+    &:nth-child(2) {
+      color: #2196F3;
+    }
+  }
+};
