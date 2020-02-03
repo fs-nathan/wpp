@@ -62,10 +62,12 @@ import addProjectRoleToMember, { initialState as addProjectRoleToMemberInitialSt
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from './project/removeProjectRoleFromMember';
 import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from './project/updateGroupPermissionMember';
 import assignMemberToAllTask, { initialState as assignMemberToAllTaskInitialState } from './project/assignMemberToAllTask';
+import detailStatus, { initialState as detailStatusInitialState} from './project/setting/detailStatus';
 import updateStatusDate, { initialState as updateStatusDateInitialState} from './project/setting/updateStatusDate';
 import updateStatusCopy, { initialState as updateStatusCopyInitialState} from './project/setting/updateStatusCopy';
 import listGroupTask1, { initialState as listGroupTaskInitialState} from './groupTask/listGroupTask';
 import createGroupTask, { initialState as createGroupTaskInitialState} from './groupTask/createGroupTask';
+import copyGroupTask, { initialState as copyGroupTaskInitialState} from './groupTask/copyGroupTask';
 import deleteGroupTask, { initialState as deleteGroupTaskInitialState} from './groupTask/deleteGroupTask';
 import updateGroupTask, { initialState as updateGroupTaskInitialState} from './groupTask/updateGroupTask';
 import sortGroupTask, { initialState as sortGroupTaskInitialState} from './groupTask/sortGroupTask';
@@ -73,6 +75,7 @@ import getAllGroupTask, { initialState as getAllGroupTaskInitialState} from './g
 import listTask, { initialState as listTaskInitialState} from './task/listTask';
 import createTask, { initialState as createTaskInitialState} from './task/createTask';
 import deleteTask, { initialState as deleteTaskInitialState} from './task/deleteTask';
+import sortTask, { initialState as sortTaskInitialState} from './task/sortTask';
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from './documents';
@@ -180,6 +183,7 @@ const rootReducer = combineReducers({
     sortProject,
     copyProject,
     setting: combineReducers({
+      detailStatus,
       updateStatusDate,
       updateStatusCopy,
     }),
@@ -187,6 +191,7 @@ const rootReducer = combineReducers({
   groupTask: combineReducers({
     listGroupTask: listGroupTask1,
     createGroupTask,
+    copyGroupTask,
     deleteGroupTask,
     updateGroupTask,
     sortGroupTask,
@@ -196,6 +201,7 @@ const rootReducer = combineReducers({
     listTask,
     createTask,
     deleteTask,
+    sortTask,
   }),
   groupUser: combineReducers({
     searchUser,
@@ -283,6 +289,7 @@ export const DEFAULT_STATE = {
     sortProject: sortProjectInitialState,
     copyProject: copyProjectInitialState,
     setting: {
+      detailStatus: detailStatusInitialState,
       updateStatusDate: updateStatusDateInitialState,
       updateStatusCopy: updateStatusCopyInitialState,
     },
@@ -291,6 +298,7 @@ export const DEFAULT_STATE = {
     listGroupTask: listGroupTaskInitialState,
     updateGroupTask: updateGroupTaskInitialState,
     createGroupTask: createGroupTaskInitialState,
+    copyGroupTask: copyGroupTaskInitialState,
     deleteGroupTask: deleteGroupTaskInitialState,
     sortGroupTask: sortGroupTaskInitialState,
     getAllGroupTask: getAllGroupTaskInitialState,
@@ -299,6 +307,7 @@ export const DEFAULT_STATE = {
     listTask: listTaskInitialState,
     createTask: createTaskInitialState,
     deleteTask: deleteTaskInitialState,
+    sortTask: sortTaskInitialState,
   },
   groupUser: {
     searchUser: searchUserInitialState,

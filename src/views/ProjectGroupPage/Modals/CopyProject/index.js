@@ -134,7 +134,10 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, doCopyProje
   const [selectedProject, setSelectedProject] = React.useState(null);
 
   React.useEffect(() => {
-    let newProjects = map(projectGroups, (projectGroup) => {
+    let newProjects = map([...projectGroups, {
+      name: 'Mặc định',
+      id: null,
+    }], (projectGroup) => {
       const { name, id } = projectGroup;
       const ownedProjects = filter(projects, project => {
         if (

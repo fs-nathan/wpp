@@ -29,6 +29,7 @@ import CreateNewTaskModal from '../../Modals/CreateNewTask';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
 import { deleteTask } from '../../../../actions/task/deleteTask';
+import { sortTask } from '../../../../actions/task/sortTask';
 import './style.scss'
 
 const SubTitle = ({ className = '', ...props }) => 
@@ -138,6 +139,7 @@ function AllTaskTable({
   listTask, detailProject,
   doShowProject, doHideProject,
   doDeleteTask,
+  doSortTask,
 }) {
 
   const { setProjectId } = React.useContext(ProjectPageContext);
@@ -231,6 +233,12 @@ function AllTaskTable({
                     destination.droppableId === source.droppableId &&
                     destination.index === source.index
                   ) return;
+                  doSortTask({
+                    taskId: draggableId,
+                    projectId,
+                    groupTask: destination.droppableId,
+                    sortIndex: destination.index,
+                  });
                 }, 
               },
               loading: {
@@ -250,13 +258,17 @@ function AllTaskTable({
               align: 'left',
               width: '25%',
             }, {
-              label: 'Ưu tiên',
-              field: (row) => <CustomBadge 
-                                color={decodePriorityCode(get(row, 'priority_code', 0)).color}
-                                background={decodePriorityCode(get(row, 'priority_code', 0)).background}
-                              >
-                                {get(row, 'priority_name', '')}  
-                              </CustomBadge>,
+              label: 'Trạng thái',
+              field: (row) => <StateBox
+                  stateName={get(row, 'status_name', '')}
+                >
+                  <div>
+                    <span>&#11044;</span>
+                    <span>
+                      {get(row, 'status_name', '')}
+                    </span>
+                  </div>
+                </StateBox>,
               align: 'center',
               width: '10%',
             }, {
@@ -284,17 +296,13 @@ function AllTaskTable({
               align: 'center',
               width: '15%',
             }, {
-              label: 'Trạng thái',
-              field: (row) => <StateBox
-                  stateName={get(row, 'status_name', '')}
-                >
-                  <div>
-                    <span>&#11044;</span>
-                    <span>
-                      {get(row, 'status_name', '')}
-                    </span>
-                  </div>
-                </StateBox>,
+              label: 'Ưu tiên',
+              field: (row) => <CustomBadge 
+                                color={decodePriorityCode(get(row, 'priority_code', 0)).color}
+                                background={decodePriorityCode(get(row, 'priority_code', 0)).background}
+                              >
+                                {get(row, 'priority_name', '')}  
+                              </CustomBadge>,
               align: 'center',
               width: '10%',
             }, {
@@ -343,6 +351,7 @@ const mapDispatchToProps = dispatch => {
     doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
     doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
     doDeleteTask: ({ taskId }) => dispatch(deleteTask({ taskId })),
+    doSortTask: ({ taskId, projectId, groupTask, sortIndex }) => dispatch(sortTask({ taskId, projectId, groupTask, sortIndex })),
   };
 };
 

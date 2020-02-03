@@ -21,7 +21,7 @@ function CreateNewGroupTask({ open, setOpen, doCreateGroupTask, }) {
 
   const { projectId } = useParams();
   const [name, setName, errorName] = useRequiredString('', 100);
-  const [description, setDescription, errorDescription] = useRequiredString('', 200);
+  const [description, setDescription] = React.useState('');
 
   function handleCreateNewGroupTask() {
     doCreateGroupTask({
@@ -38,7 +38,7 @@ function CreateNewGroupTask({ open, setOpen, doCreateGroupTask, }) {
         title={`Tạo mới nhóm công việc`}
         open={open}
         setOpen={setOpen}
-        canConfirm={!errorName && !errorDescription}
+        canConfirm={!errorName}
         onConfirm={() => handleCreateNewGroupTask()}
       >
         <CustomTextField
@@ -63,11 +63,6 @@ function CreateNewGroupTask({ open, setOpen, doCreateGroupTask, }) {
           fullWidth
           multiline
           rowsMax='4'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorDescription, 'message', '')}
-            </ColorTypo>
-          }
         />
       </CustomModal>
     </React.Fragment>

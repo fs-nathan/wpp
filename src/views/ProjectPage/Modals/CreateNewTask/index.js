@@ -67,9 +67,9 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
   const [groupTask, setGroupTask] = React.useState(null);
   const [name, setName, errorName] = useRequiredString('', 100);
   const [progressType, setProgressType] = React.useState(0); 
-  const [description, setDescription, errorDescription] = useRequiredString('', 200);
-  const [startDate, setStartDate] = React.useState(moment().toDate());
-  const [endDate, setEndDate] = React.useState(moment().toDate());
+  const [description, setDescription] = React.useState('');
+  const [startDate, setStartDate] = React.useState(moment().set({ hours: 8, minutes: 0, seconds: 0 }).toDate());
+  const [endDate, setEndDate] = React.useState(moment().set({ hours: 17, minutes: 0, seconds: 0 }).toDate());
   const [errorDate, setErrorDate] = React.useState(null);
   const [priority, setPriority] = React.useState(0);
   const [jobHandle, setJobHandle] = React.useState(0);
@@ -88,8 +88,8 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
   }, [startDate, endDate]);
 
   React.useEffect(() => { 
-    setStartDate(moment().toDate());
-    setEndDate(moment().toDate());
+    setStartDate(moment().set({ hours: 8, minutes: 0, seconds: 0 }).toDate());
+    setEndDate(moment().set({ hours: 17, minutes: 0, seconds: 0 }).toDate());
   }, [progressType]);
 
   function handleCreateTask() {
@@ -130,7 +130,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
         title={`Tạo mới công việc`}
         open={open}
         setOpen={setOpen}
-        canConfirm={!errorName && !errorDescription && !errorDate && groupTask}
+        canConfirm={!errorName && !errorDate && groupTask}
         onConfirm={() => handleCreateTask()}
       >
         <FormControl component="fieldset" fullWidth>
@@ -171,11 +171,6 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
           fullWidth
           multiline
           rowsMax='4'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorDescription, 'message', '')}
-            </ColorTypo>
-          } 
         />
         <FormControl component="fieldset" fullWidth>
           <StyledFormLabel component="legend">Tiến độ công việc</StyledFormLabel>

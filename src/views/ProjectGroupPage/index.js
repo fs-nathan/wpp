@@ -9,11 +9,13 @@ import { detailDefaultGroup } from '../../actions/projectGroup/detailDefaultGrou
 import { listIcon } from '../../actions/icon/listIcon';
 import { listProject } from '../../actions/project/listProject';
 import { listDeletedProject } from '../../actions/project/listDeletedProject';
+import { detailStatus } from '../../actions/project/setting/detailStatus';
 import { 
   CustomEventListener, CustomEventDispose, 
   CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
   CREATE_ICON, DELETE_ICON,
   CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT, HIDE_PROJECT, SHOW_PROJECT, SORT_PROJECT, COPY_PROJECT,
+  UPDATE_STATUS_COPY, UPDATE_STATUS_DATE,
 } from '../../constants/events';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
 import DefaultGroupDetail from './LeftPart/DefaultGroupDetail';
@@ -32,6 +34,7 @@ function ProjectGroupPage({
   doListProject,
   doListDeletedProject,
   doDetailDefaultGroup,
+  doDetailStatus,
 }) {
 
   React.useEffect(() => {
@@ -159,9 +162,20 @@ function ProjectGroupPage({
     }
   }, [doListDeletedProject]);
 
+  const [statusProjectId, setStatusProjectId] = React.useState(null);
+
+  React.useEffect(() => {
+    if (statusProjectId !== null) {
+      doDetailStatus({
+        projectId: statusProjectId,
+      });
+    }
+  }, [statusProjectId, doDetailStatus]);
+
   return (
     <Provider value={{
       setProjectGroupId,
+      statusProjectId, setStatusProjectId,
     }}>
       <Route
         path='/projects'
@@ -271,6 +285,7 @@ const mapDispatchToProps = dispatch => {
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
     doListDeletedProject: (options, quite) => dispatch(listDeletedProject(options, quite)),
     doDetailDefaultGroup: (quite) => dispatch(detailDefaultGroup(quite)),
+    doDetailStatus: ({ projectId }, quite) => dispatch(detailStatus({ projectId }, quite)),
   }
 };
 

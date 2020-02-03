@@ -44,11 +44,11 @@ function CustomModal({ open, setOpen, content, onConfirm = () => null, onCancle 
         {content}
       </DialogContent>
       <DialogActions className='comp_AlertModal___dialog-actions'>
-        <ButtonBase className='comp_AlertModal___accept-button' onClick={() => handleConfirm()}>
-          Đồng ý
-        </ButtonBase>
         <ButtonBase className='comp_AlertModal___cancle-button' onClick={() => handleCancle()}>
           Hủy
+        </ButtonBase>
+        <ButtonBase className='comp_AlertModal___accept-button' onClick={() => handleConfirm()}>
+          Đồng ý
         </ButtonBase>
       </DialogActions>
     </Dialog>

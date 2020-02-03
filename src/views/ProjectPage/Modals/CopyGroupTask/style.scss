@@ -17,9 +17,6 @@
   & {
     @include view_Project_CopyGroupTask_Modal___primary;
     & > * {
-      &:first-child {
-        fill: rgba(0, 0, 0, 0);
-      }
       &:last-child {
         color: #444;
       }
@@ -28,9 +25,6 @@
   &-selected {
     @include view_Project_CopyGroupTask_Modal___primary;
     & > * {
-      &:first-child {
-        fill: #05b50c;
-      }
       &:last-child {
         color: #05b50c;
       }

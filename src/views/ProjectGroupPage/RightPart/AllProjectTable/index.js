@@ -163,12 +163,12 @@ function displayDateRange(from, to) {
 const SettingButton = ({
   visibility,
   onEditProject,
+  onSettingProject,
   onHideProject,
   onShowProject,
   onDeleteProject
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [setting, setSetting] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
 
   function handleClick(evt) {
@@ -200,7 +200,12 @@ const SettingButton = ({
           horizontal: 'right'
         }}
       >
-        <MenuItem onClick={evt => setSetting(true)}>Cài đặt</MenuItem>
+        <MenuItem onClick={evt => {
+          handleClose(evt);
+          onSettingProject();
+        }}>
+          Cài đặt
+        </MenuItem>
         <MenuItem
           onClick={evt => {
             handleClose(evt);
@@ -219,7 +224,6 @@ const SettingButton = ({
         </MenuItem>
         <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
       </Menu>
-      <ProjectSettingModal open={setting} setOpen={setSetting} />
       <AlertModal
         open={alert}
         setOpen={setAlert}
@@ -246,7 +250,7 @@ function AllProjectTable({
   colors,
   isDefault = false,
 }) {
-  const { setProjectGroupId } = React.useContext(ProjectPageContext);
+  const { setProjectGroupId, setStatusProjectId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
   const history = useHistory();
 
@@ -289,6 +293,7 @@ function AllProjectTable({
 
   const [edittingProject, setEdittingProject] = React.useState(null);
   const [openEditProject, setOpenEditProject] = React.useState(false);
+  const [setting, setSetting] = React.useState(false);
 
   const filterTitle = [
     'Tất cả',
@@ -709,6 +714,10 @@ function AllProjectTable({
                       setOpenEditProject(true);
                     }}
                     visibility={get(row, 'visibility', true)}
+                    onSettingProject={() => {
+                      setStatusProjectId(get(row, 'id'));
+                      setSetting(true);
+                    }}
                     onHideProject={() => handleHideProject(get(row, 'id'))}
                     onShowProject={() => handleShowProject(get(row, 'id'))}
                     onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
@@ -936,6 +945,10 @@ function AllProjectTable({
             curProject={edittingProject}
             open={openEditProject}
             setOpen={setOpenEditProject}
+          />
+          <ProjectSettingModal 
+            open={setting} 
+            setOpen={setSetting} 
           />
         </React.Fragment>
       )}
