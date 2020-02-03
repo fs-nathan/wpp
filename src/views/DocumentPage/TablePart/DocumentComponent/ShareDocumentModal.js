@@ -3,11 +3,14 @@ import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { Avatar } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { connect } from 'react-redux';
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import { DialogContent } from './TableCommon';
 import { StyledList, StyledListItem } from '../../../../components/CustomList';
 import SearchInput from '../../../../components/SearchInput';
+import { Routes } from '../../../../constants/routes';
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import {
   actionGetMemberCanShare,
   actionGetMemberShared,
@@ -16,7 +19,12 @@ import {
   getMemberShareGoogleFile,
   getMemberSharedGoogleFile,
   actionShareGoogleFile,
-  actionCancelShareGoogleFile
+  actionCancelShareGoogleFile,
+  actionFetchListRecent,
+  actionFetchListProjectOfFolder,
+  actionFetchListDocumentFromMe,
+  actionFetchListDocumentShare,
+  actionFetchListMyDocument
 } from '../../../../actions/documents/index';
 
 let originListMember = [];
@@ -52,7 +60,41 @@ const ShareDocumentModal = props => {
   };
 
   const handleShare = () => {
-    props.onClose();
+    const pathname = props.history.location.pathname;
+    const isProjectDocument = isEmpty(props.location.search);
+    switch (pathname) {
+      case Routes.DOCUMENT_RECENT:
+        props.actionFetchListRecent({}, false);
+        props.onClose();
+        return null;
+      case Routes.DOCUMENT_PROJECT:
+        if (!isProjectDocument) {
+          const search = props.location.search.split('projectId=').pop();
+          props.actionFetchListProjectOfFolder({ project_id: search }, false);
+          props.onClose();
+          return null;
+        }
+        break;
+      case Routes.DOCUMENT_SHARE:
+        props.actionFetchListDocumentFromMe({}, false);
+        props.onClose();
+        return null;
+
+      case Routes.DOCUMENT_SHARE_ME:
+        props.actionFetchListDocumentShare({}, false);
+        props.onClose();
+        return null;
+
+      case Routes.DOCUMENT_ME:
+        props.actionFetchListMyDocument({}, false);
+        props.onClose();
+        return null;
+
+      default: {
+        props.onClose();
+        return null;
+      }
+    }
   };
 
   const handleChangeSearch = e => {
@@ -149,8 +191,7 @@ const ShareDocumentModal = props => {
   return (
     <ModalCommon
       title="Chia sẻ tài liệu"
-      onClose={props.onClose}
-      footerAction={[{ name: 'Hoàn thành', action: handleShare }]}
+      footerAction={[{ name: 'Thoát', action: handleShare, type: 'cancel' }]}
       maxWidth="lg"
     >
       <DialogContent dividers className="dialog-content share-doc">
@@ -176,19 +217,22 @@ const ShareDocumentModal = props => {
                     }`}
                   >
                     <div className="left-item">
-                      <Avatar
-                        src={`https://storage.googleapis.com${item.member_avatar}`}
-                        alt="avatar"
-                        style={{ width: 35, height: 35, margin: 'auto' }}
-                      />
+                      {item.member_avatar && (
+                        <Avatar
+                          src={item.member_avatar}
+                          alt="avatar"
+                          style={{ width: 35, height: 35, margin: 'auto' }}
+                        />
+                      )}
                       <div className="info-left-item">
                         <div className="name-member">{item.member_name}</div>
-                        <div>{item.member_email}</div>
+                        <div className="email-member">{item.member_email}</div>
                       </div>
                     </div>
                     <div className="right-item">
                       <Button
                         variant="outlined"
+                        className="share-btn"
                         onClick={() => handleShareMember(item.member_id)}
                       >
                         Chia sẻ
@@ -233,7 +277,9 @@ const ShareDocumentModal = props => {
                         />
                         <div className="info-left-item">
                           <div className="name-member">{item.member_name}</div>
-                          <div>{item.member_email}</div>
+                          <div className="email-member">
+                            {item.member_email}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -244,6 +290,7 @@ const ShareDocumentModal = props => {
                       <div className="right-item">
                         <Button
                           variant="outlined"
+                          className="share-btn"
                           onClick={() =>
                             handleCancelShareMember(item.member_id)
                           }
@@ -263,4 +310,10 @@ const ShareDocumentModal = props => {
   );
 };
 
-export default withRouter(ShareDocumentModal);
+export default connect(state => ({}), {
+  actionFetchListRecent,
+  actionFetchListProjectOfFolder,
+  actionFetchListDocumentFromMe,
+  actionFetchListDocumentShare,
+  actionFetchListMyDocument
+})(withRouter(ShareDocumentModal));

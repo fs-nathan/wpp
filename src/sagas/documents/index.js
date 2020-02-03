@@ -54,15 +54,8 @@ async function doListTrash({ params }) {
 
 function* listTrash(action) {
   try {
-    const { folders, files } = yield call(doListTrash, action.options);
-    let tranformData = [];
-    if (folders.length > 0) {
-      tranformData = folders.map(item => ({ ...item, type: 'folder' }));
-    }
-    if (files.length > 0) {
-      tranformData = tranformData.concat(files);
-    }
-    yield put({ type: LIST_TRASH_SUCCESS, payload: tranformData || [] });
+    const { documents } = yield call(doListTrash, action.options);
+    yield put({ type: LIST_TRASH_SUCCESS, payload: documents || [] });
   } catch (error) {
     yield put({ type: DOCUMENT_HIDE_LOADING });
   }

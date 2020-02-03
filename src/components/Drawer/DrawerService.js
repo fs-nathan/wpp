@@ -44,8 +44,12 @@ export const leaveGroupService = group_id => {
 export const listGroupService = () => {
   return apiService({ url: '/get-list-group', method: 'get' });
 };
-export const findGroupService = info => {
-  return apiService({ url: '/find-group', method: 'get', params: { info } });
+export const findGroupService = group_code => {
+  return apiService({
+    url: '/find-group',
+    method: 'get',
+    params: { group_code }
+  });
 };
 export const requestJoinGroupService = group_id => {
   return apiService({
@@ -87,18 +91,44 @@ export const getListNotification = params => {
   return apiService(config);
 };
 
-export const getNumberNotificationNotViewer = () => {
-  const config = {
-    url: '/notifications/get-number-notification-not-viewed',
-    method: 'get'
-  };
-  return apiService(config);
-};
-
 export const getViewAllNotification = () => {
   const config = {
     url: '/notifications/view-all-notification',
     method: 'post'
+  };
+  return apiService(config);
+};
+
+export const actionViewNotification = data => {
+  const config = {
+    url: '/notifications/view-notification',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+};
+
+export const getListMessage = params => {
+  const config = {
+    url: '/chat/notifications',
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};
+export const getViewAllMessage = () => {
+  const config = {
+    url: '/chat/view-all-chat',
+    method: 'post'
+  };
+  return apiService(config);
+};
+
+export const actionViewMessage = data => {
+  const config = {
+    url: '/chat/view-chat',
+    method: 'post',
+    data
   };
   return apiService(config);
 };

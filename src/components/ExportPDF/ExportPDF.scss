@@ -42,6 +42,9 @@
           padding: 10px 15px;
           color: #fff;
           -webkit-print-color-adjust: exact !important;
+          &.paid-status {
+            background: rgb(45, 198, 58);
+          }
         }
       }
     }

@@ -48,7 +48,7 @@
   "IDS_WP_INPUT_COMMENT": "Nhập thảo luận...",
   "IDS_WP_ADD": "Thêm mới",
   "IDS_WP_BLOCK_COMMENT_TITLE": "Chức năng thảo luận đã bị khóa!",
-  "IDS_WP_BLOCK_COMMENT_DES": "Rất tiếc! chủ sỡ hữu tài liệu đã khóa chức năng thảo luận.",
+  "IDS_WP_BLOCK_COMMENT_DES": "Rất tiếc! chủ sở hữu tài liệu đã khóa chức năng thảo luận.",
   "IDS_WP_DISCUSS": "Thảo luận",
   "IDS_WP_DELETE_ALL_DISCUSS": "Xóa tất cả thảo luận của tôi",
   "IDS_WP_ALLOW_DISCUSS": "Cho phép thảo luận",
@@ -116,5 +116,10 @@
   "IDS_WP_DONE": "Hoàn thành",
   "IDS_WP_MANAGE_GROUP": "Quản lý nhóm",
   "IDS_WP_UPDATE": "Chỉnh sửa",
-  "IDS_WP_DELETE_ALL_INFO": "Xoá toàn bộ thông tin"
+  "IDS_WP_DELETE_ALL_INFO": "Xoá toàn bộ thông tin",
+  "IDS_WP_SHARE": "Chia sẻ",
+  "IDS_WP_DELETE_DOCUMENT": "Xóa tài liệu",
+  "IDS_WP_DOWNLOAD": "Tải về",
+  "IDS_WP_OPPS_NOT_PREVIEW_FILE": "Rất tiếc! Tài liệu không có bản xem trước trên Workplus.",
+  "IDS_WP_VIEW_ORIGIN_FILE": "Xem file gốc"
 }

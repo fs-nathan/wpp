@@ -441,7 +441,7 @@ const TablePart = props => {
             <input {...getInputProps()} />
             {isDragActive && (
               <div className="drop-area">
-                <div>
+                <div className="dashed-box">
                   <Icon
                     className="drop-ic-clould"
                     path={mdiCloudUploadOutline}

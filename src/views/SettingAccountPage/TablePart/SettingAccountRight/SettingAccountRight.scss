@@ -85,6 +85,7 @@
           width: 75%;
           .MuiFormControl-fullWidth {
             width: unset;
+            margin: 0;
           }
           .MuiInputBase-fullWidth {
             &::after {
@@ -103,7 +104,10 @@
           }
         }
         .email {
-          color: #01b374;
+          input {
+            color: #6d6d6d;
+            font-weight: bold;
+          }
         }
       }
       .btn-edit-info {
@@ -131,6 +135,13 @@
     margin: 20px 10px;
     .table-notification {
       margin: 20px;
+      .notification-row-item {
+        &:hover {
+          .MuiTableCell-root {
+            color: rgb(0, 118, 243);
+          }
+        }
+      }
       .MuiTableCell-root {
         font-size: 14px;
         padding: 10px;
@@ -146,11 +157,11 @@
         padding: 5px;
         align-items: center;
         justify-content: center;
-        &.danger {
+        &.Success {
           background: rgb(250, 195, 191);
           color: #ec1000;
         }
-        &.success {
+        &.Normal {
           background: rgb(209, 238, 221);
           color: #48bb78;
         }
@@ -159,6 +170,7 @@
     .title-list {
       font-size: 20px;
       font-weight: bold;
+      list-style-position: inside;
     }
   }
 }
@@ -172,7 +184,11 @@
         color: #000;
       }
       .MuiInputBase-root {
-        border-bottom: solid 1px rgba(0, 0, 0, 0.12);
+        border-bottom: solid 1px rgb(253, 253, 253);
+      }
+      .MuiInput-underline:before {
+        // border-bottom: 1px solid rgb(253, 253, 253);
+        border-bottom: 1px solid #ededed;
       }
     }
   }
@@ -209,12 +225,12 @@
   .status-date-work-plus-detail {
     padding: 15px 0 35px 0;
     .status-text {
-      padding: 0 40px;
-      border-radius: 5px;
+      padding: 2px 5px;
+      border-radius: 2px;
       background-color: #ff00009e;
       margin-right: 15px;
       color: #fff;
-      font-size: 14px;
+      font-size: 12px;
     }
     .date-text {
       font-size: 14px;
@@ -247,4 +263,10 @@
 }
 .phone-infor {
   right: -15px;
+}
+.bag-cus.none-view.notification-left-badge {
+  .MuiBadge-anchorOriginTopRightRectangle {
+    top: 0;
+    right: 12px;
+  }
 }

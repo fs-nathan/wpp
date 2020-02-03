@@ -4,16 +4,18 @@ import { useTranslation } from 'react-i18next';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { withRouter } from 'react-router-dom';
 import {
   actionToast,
-  actionVisibleDrawerMessage
+  actionVisibleDrawerMessage,
+  actionActiveGroup
 } from '../../../actions/system/system';
 import * as image from '../../../assets/index';
 import { Routes } from '../../../constants/routes';
 import '../Drawer.scss';
 import * as services from '../DrawerService';
-import { isEmpty } from '../../../helpers/utils/isEmpty';
+// import { isEmpty } from '../../../helpers/utils/isEmpty';
 
 const ItemGroupAcount = props => {
   const { t } = useTranslation();
@@ -96,7 +98,6 @@ const ItemGroupAcount = props => {
     }
   };
   const bgColor = props.colors.find(item => item.selected === true);
-  console.log('abc', props.type === 'requirements');
   const getContent = () => {
     const commonEl = (
       <Fragment>
@@ -120,7 +121,9 @@ const ItemGroupAcount = props => {
           )}
         </div>
         <div className="acc-item-group-account">
-          <span className="text-value-email-phone">{item.code}</span>
+          <span className="text-value-email-phone">
+            ID: {item.code || item.group_code}
+          </span>
         </div>
       </Fragment>
     );
@@ -128,7 +131,10 @@ const ItemGroupAcount = props => {
     switch (props.type) {
       case 'group_me':
         return (
-          <div className="info-item-group-account">
+          <div
+            className="info-item-group-account"
+            onClick={() => props.actionActiveGroup(item)}
+          >
             {commonEl}
             {/* <div className="phone-item-group-account">
             <span className="text-value-email-phone">
@@ -160,12 +166,15 @@ const ItemGroupAcount = props => {
         );
       case 'group_joins':
         return (
-          <div className="info-item-group-account">
+          <div
+            className="info-item-group-account"
+            onClick={() => props.actionActiveGroup(item)}
+          >
             {commonEl}
             <div className="phone-item-group-account">
               {/* <span className="text-value-email-phone">{item.phone}</span> */}
               <Button
-                className="btn-action"
+                className="btn-action leave-group-btn"
                 variant="text"
                 onClick={e => leaveGroup(e, item.id)}
               >
@@ -235,7 +244,7 @@ const ItemGroupAcount = props => {
             </span>
           </div>
           <div className="acc-item-group-account">
-            <span className="text-value-email-phone">{item.code}</span>
+            <span className="text-value-email-phone">ID: {item.code}</span>
           </div>
         </div>
         {newEl}
@@ -244,7 +253,9 @@ const ItemGroupAcount = props => {
   };
   return (
     <div
-      className="item-group-account"
+      className={`item-group-account ${
+        props.groupActive.code === item.code ? 'actived' : ''
+      }`}
       key={item.id}
       onClick={() => {
         history.push(Routes.HOME);
@@ -260,6 +271,9 @@ const ItemGroupAcount = props => {
           src={item.logo || image.avatar_user}
           className="avatar"
         />
+        {props.groupActive.code === item.code && (
+          <CheckCircleIcon className="check-icon" />
+        )}
       </div>
       {getContent()}
     </div>
@@ -271,7 +285,8 @@ export default connect(
     toast: state.system.toast,
     colors: state.setting.colors,
     anchorDrawer: state.system.anchorDrawer,
-    profile: state.system.profile
+    profile: state.system.profile,
+    groupActive: state.system.groupActive
   }),
-  { actionToast, actionVisibleDrawerMessage }
+  { actionToast, actionVisibleDrawerMessage, actionActiveGroup }
 )(withRouter(ItemGroupAcount));

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Icon from '@mdi/react';
 import { useTranslation } from 'react-i18next';
-import { mdiClose, mdiMagnify } from '@mdi/js';
+import { mdiClose, mdiMagnify, mdiChevronLeft } from '@mdi/js';
 import { InputAdornment, InputBase } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import * as services from '../DrawerService';
@@ -11,6 +11,7 @@ import {
   actionToast
 } from '../../../actions/system/system';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
+import { DRAWER_TYPE } from '../../../constants/constants';
 import ItemGroupAcount from './ItemGroupAcount';
 import '../Drawer.scss';
 import select_group_bg from '../../../assets/select_group_bg.png';
@@ -35,12 +36,18 @@ const DrawerNewGroup = props => {
   const handleClose = () => {
     props.actionVisibleDrawerMessage({ type: '', anchor: anchorDrawer });
   };
+  const handleBack = () => {
+    props.actionVisibleDrawerMessage({
+      type: DRAWER_TYPE.GROUP_ACCOUNT,
+      anchor: 'top'
+    });
+  };
   const handleSearch = async e => {
     const searchValue = document.getElementById('searchTextId').value;
     try {
       const res = await services.findGroupService(searchValue);
       if (!res.data.group) {
-        setEmptyMess('Không tìm thấy tài khoản!');
+        setEmptyMess(res.data.msg);
         setGroup({});
       } else {
         setEmptyMess(null);
@@ -56,6 +63,13 @@ const DrawerNewGroup = props => {
       <div className="drawer-content-left">
         <div className="drawer-content new-group-drawer">
           <div className="header-drawer-content-group-account">
+            <span className="btn-back" onClick={handleBack}>
+              <Icon
+                path={mdiChevronLeft}
+                size={1.2}
+                color="rgba(0, 0, 0, 0.54)"
+              />
+            </span>
             <span className="text-header">{t('IDS_WP_JOIN_NEW_GROUP')}</span>
             <span className="btn-close" onClick={handleClose}>
               <Icon path={mdiClose} size={1} color="rgba(0, 0, 0, 0.54)" />

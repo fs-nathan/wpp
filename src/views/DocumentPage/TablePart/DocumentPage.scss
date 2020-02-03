@@ -23,8 +23,22 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        border: dashed #c3c3c3 3px;
-        border-radius: 18px;
+        .dashed-box {
+          position: absolute;
+          top: 50px;
+          bottom: 50px;
+          left: 70px;
+          right: 70px;
+          z-index: 10;
+          background: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          border: dashed #c3c3c3 3px;
+          border-radius: 18px;
+          flex-direction: column;
+        }
         .des-drop {
           font-size: 16px;
           text-transform: uppercase;
@@ -108,15 +122,28 @@
     }
   }
   .two-line {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    height: 42px; // =fontSize*lineHeight*numberLine
+    // display: -webkit-box;
+    // -webkit-line-clamp: 2;
+    height: 42px;
     line-height: 42px;
-    text-overflow: ellipsis;
-    overflow: hidden;
     -webkit-box-orient: vertical;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+  }
+  .first-column {
+    padding-left: 20px !important;
+    .avatar-wrapper {
+      justify-content: left;
+    }
   }
 }
+// .modal-common-container {
+//   .MuiDialog-paperWidthLg {
+//     max-width: 1000px;
+//   }
+// }
 .dialog-content {
   min-height: 100px;
   // display: flex;
@@ -164,15 +191,23 @@
             padding-left: 10px;
             .name-member {
               padding-bottom: 5px;
-              color: #48bb78;
+              color: #222;
+              font-size: 15px;
+            }
+            .email-member {
+              color: #797979;
             }
           }
         }
         .right-item {
-          .btn-share {
+          .share-btn {
             height: 25px;
             text-transform: unset;
-            padding: 0 10px;
+            padding: 2px 8px;
+            border: 1px solid rgb(220, 220, 220);
+            font-weight: normal;
+            color: #444;
+            line-height: 20px;
           }
         }
       }
@@ -195,20 +230,22 @@
         height: 35px;
         align-items: center;
         display: flex;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        background-color: #f6f6f6;
+        // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        background-color: #f8f8f8;
         .left-content {
           width: 32%;
           text-align: center;
           .text-title {
-            font-weight: bold;
-            font-size: 14px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #444;
           }
         }
         .right-content {
           width: 68%;
-          font-weight: bold;
-          font-size: 14px;
+          font-weight: 600;
+          font-size: 13px;
+          color: #444;
         }
       }
       .list-member {
@@ -226,7 +263,11 @@
               padding-left: 45px;
               .name-member {
                 padding-bottom: 5px;
-                color: #48bb78;
+                color: #222;
+                font-size: 15px;
+              }
+              .email-member {
+                color: #797979;
               }
             }
           }
@@ -238,10 +279,14 @@
           align-items: center;
           margin-left: 0;
           .right-item {
-            .btn-share {
+            .share-btn {
               height: 25px;
               text-transform: unset;
-              padding: 0 10px;
+              padding: 2px 8px;
+              border: 1px solid rgb(220, 220, 220);
+              font-weight: normal;
+              color: #444;
+              line-height: 20px;
             }
           }
         }
@@ -400,9 +445,14 @@
 }
 
 .custom-avatar-image {
-  width: 30px;
-  margin: auto;
-  height: 30px;
+  width: 25px;
+  margin: 0 3px;
+  height: 25px;
+  display: inline-block;
+  &.ic-small {
+    width: 20px;
+    height: 20px;
+  }
 }
 .modal-cus {
   background-color: rgb(245, 248, 252);
@@ -429,5 +479,16 @@
   }
   &:hover {
     background-color: white;
+  }
+}
+.list-avatar-column {
+  margin: 0 auto;
+  max-width: 80px;
+  display: flex;
+  .more-avatar {
+    width: 20px;
+    height: 20px;
+    font-size: 13px;
+    margin: 0 3px;
   }
 }

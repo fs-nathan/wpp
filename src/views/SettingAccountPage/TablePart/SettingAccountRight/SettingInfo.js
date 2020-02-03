@@ -15,7 +15,8 @@ import {
 import { actionUpdateProfile } from '../../../../actions/account';
 import {
   getProfileService,
-  actionGetProfile
+  actionGetProfile,
+  actionGetFormatDate
 } from '../../../../actions/system/system';
 import ImageCropper from '../../../../components/ImageCropper/ImageCropper';
 
@@ -29,7 +30,27 @@ class SettingInfo extends Component {
     avatar: null,
     showInputFile: true,
     data: this.props.profile,
-    selectedDate: new Date(this.props.profile.birthday)
+    selectedDate: this.props.profile.birthday
+      ? new Date(this.props.profile.birthday)
+      : new Date(),
+    formatDate: 'dd/MM/yyyy'
+  };
+  componentDidMount() {
+    this.getFormatDate();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.profile !== this.props.profile && this.props.profile) {
+      this.setState({ selectedDate: new Date(this.props.profile.birthday) });
+    }
+  }
+  getFormatDate = async () => {
+    try {
+      const { data } = await actionGetFormatDate();
+      const listDate = data.data || [];
+      const formatDate = listDate.find(item => item.selected === true);
+      formatDate.replace(/DD/g, 'dd').replace(/YYYY/g, 'yyyyy');
+      this.setState({ formatDate: formatDate.date_format });
+    } catch (error) {}
   };
   handleChangeStatus = async () => {
     if (this.state.mode === 'view') {
@@ -41,42 +62,42 @@ class SettingInfo extends Component {
   handleChangeProfile = async type => {
     try {
       const file = new File([this.state.avatar], 'filename');
-        let formData = new FormData();
-        if (type === 'updateImage') {
-          formData.append('image', file);
-        }
-        formData.append('name', this.state.data.name);
-        formData.append('email', this.state.data.email);
-        formData.append('avatar', this.state.data.avatar);
-        formData.append('gender', this.state.data.gender);
-        formData.append('phone', this.state.data.phone);
-        formData.append(
-          'birthday',
-          moment(this.state.selectedDate).format('YYYY-MM-DD')
-        );
-        formData.append('address', this.state.data.address);
-        formData.append('certificate', this.state.data.certificate);
-        formData.append('description', this.state.data.description);
-        formData.append('job', this.state.data.job);
-        formData.append('order_user_id', this.state.data.order_user_id);
-        formData.append('order_storage_id', this.state.data.order_storage_id);
-        formData.append('type', this.state.data.type);
-        formData.append('gender_name', this.state.data.gender_name);
+      let formData = new FormData();
+      if (type === 'updateImage') {
+        formData.append('image', file);
+      }
+      formData.append('name', this.state.data.name);
+      formData.append('email', this.state.data.email);
+      formData.append('avatar', this.state.data.avatar);
+      formData.append('gender', this.state.data.gender);
+      formData.append('phone', this.state.data.phone);
+      formData.append(
+        'birthday',
+        moment(this.state.selectedDate).format('YYYY-MM-DD')
+      );
+      formData.append('address', this.state.data.address);
+      formData.append('certificate', this.state.data.certificate);
+      formData.append('description', this.state.data.description);
+      formData.append('job', this.state.data.job);
+      formData.append('order_user_id', this.state.data.order_user_id);
+      formData.append('order_storage_id', this.state.data.order_storage_id);
+      formData.append('type', this.state.data.type);
+      formData.append('gender_name', this.state.data.gender_name);
 
-        await actionUpdateProfile(formData);
-        const { data } = await getProfileService();
-        if (data.data) this.props.actionGetProfile(data.data);
-        this.setState({ mode: 'view' });
-    } catch(error) {
+      await actionUpdateProfile(formData);
+      const { data } = await getProfileService();
+      if (data.data) this.props.actionGetProfile(data.data);
+      this.setState({ mode: 'view' });
+    } catch (error) {
       const { data } = await getProfileService();
       if (data.data) this.props.actionGetProfile(data.data);
       this.setState({ mode: 'view' });
     }
-  }
+  };
   componentWillReceiveProps(nextProps) {
     this.setState({
       data: nextProps.profile
-    })
+    });
   }
   handleChangeData = (name, value) => {
     this.setState(prevState => ({
@@ -98,12 +119,14 @@ class SettingInfo extends Component {
     }, 0);
   };
   handleCropImage = (image, type) => {
-    this.setState(() => { 
-      return {
-        avatar: image 
-      }
-    }, () => this.handleChangeProfile('updateImage'));
-
+    this.setState(
+      () => {
+        return {
+          avatar: image
+        };
+      },
+      () => this.handleChangeProfile('updateImage')
+    );
   };
   handleDateChange = date => {
     this.setState({
@@ -118,8 +141,10 @@ class SettingInfo extends Component {
       fileUpload,
       showInputFile,
       avatar,
-      selectedDate
+      selectedDate,
+      formatDate
     } = this.state;
+    console.log('selectedDate', selectedDate);
     return (
       <div className="setting-info">
         <div className="content-setting-info">
@@ -135,7 +160,7 @@ class SettingInfo extends Component {
                 className="img-avatar"
               />
             ) : (
-                <Icon path={mdiAccountCircle} size="120px" color="#ededed" />
+              <Icon path={mdiAccountCircle} size="120px" color="#ededed" />
             )}
             {showInputFile && (
               <input
@@ -188,14 +213,12 @@ class SettingInfo extends Component {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disableToolbar
-                    format="yyyy-MM-dd"
+                    format={formatDate}
                     margin="normal"
                     id="date-picker-inline"
                     value={selectedDate}
                     onChange={this.handleDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date'
-                    }}
+                    KeyboardButtonProps={{ 'aria-label': 'change date' }}
                     fullWidth
                     InputLabelProps={{ shrink: true }}
                     className="value-date-info"

@@ -16,7 +16,6 @@ import { withRouter } from 'react-router-dom';
 import { Routes } from '../../../../constants/routes';
 import ColorTypo from '../../../../components/ColorTypo';
 import {
-  selectDocumentItem,
   resetListSelectDocument,
   actionFetchListProject,
   actionSortListProject
@@ -28,12 +27,8 @@ import './ContentDocumentPage.scss';
 import {
   StyledTableHeadCell,
   StyledTableBodyCell,
-  FullAvatar,
-  selectItem,
-  selectAll,
-  GreenCheckbox,
-  selectAllRedux,
-  selectItemRedux
+  FullAvatar
+  // GreenCheckbox
 } from '../DocumentComponent/TableCommon';
 import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
 import { FileType } from '../../../../components/FileType';
@@ -101,14 +96,6 @@ const ProjectDocument = props => {
     props.actionFetchListProject(params, quite);
   };
 
-  const handleSelectAllClick = e => {
-    setSelected(selectAll(e, listData));
-    props.selectDocumentItem(selectAllRedux(e, listData));
-  };
-  const handleSelectItem = item => {
-    setSelected(selectItem(selected, item.id));
-    props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
-  };
   const isSelected = id => selected.indexOf(id) !== -1;
   const moreAction = [
     { icon: mdiFolderTextOutline, text: 'Truy cập dự án', type: 'link' }
@@ -177,18 +164,11 @@ const ProjectDocument = props => {
       <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
-            <StyledTableHeadCell align="center" width="5%">
-              <GreenCheckbox
-                onChange={handleSelectAllClick}
-                checked={
-                  listData.length > 0 && selected.length === listData.length
-                }
-                indeterminate={
-                  selected.length > 0 && selected.length < listData.length
-                }
-              />
-            </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="5%">
+            <StyledTableHeadCell
+              align="left"
+              width="5%"
+              className="first-column"
+            >
               Loại
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="50%">
@@ -217,17 +197,10 @@ const ProjectDocument = props => {
                 key={index}
                 className={`table-body-row ${isItemSelected ? 'selected' : ''}`}
               >
-                <StyledTableBodyCell align="center" width="5%">
-                  <GreenCheckbox
-                    checked={isItemSelected}
-                    onChange={e => handleSelectItem(project)}
-                    onClick={e => e.stopPropagation()}
-                  />
-                </StyledTableBodyCell>
                 <StyledTableBodyCell
-                  align="center"
+                  align="left"
                   width="5%"
-                  className="cursor-pointer"
+                  className="cursor-pointer first-column"
                   onClick={() => openDetail(project)}
                 >
                   <FullAvatar src={FileType('folder')} />
@@ -270,7 +243,6 @@ export default connect(
     searchText: state.documents.searchText
   }),
   {
-    selectDocumentItem,
     resetListSelectDocument,
     openDocumentDetail,
     actionFetchListProject,

@@ -3,7 +3,6 @@ import { mdiSwapVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { connect } from 'react-redux';
 import {
-  Avatar,
   Table,
   TableRow,
   TableHead,
@@ -37,6 +36,7 @@ import ColorTypo from '../../../../components/ColorTypo';
 import LoadingBox from '../../../../components/LoadingBox';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
+import ShareColumnAvatar from '../DocumentComponent/ShareColumnAvatar';
 
 const RecentContent = props => {
   const { isLoading } = props;
@@ -113,16 +113,7 @@ const RecentContent = props => {
     setSelected(selectItem(selected, item.id));
     props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
-  const getIconAvatar = (url, idx = 0) => {
-    return (
-      <Avatar
-        key={idx}
-        src={url}
-        alt="avatar"
-        style={{ width: 35, height: 35, margin: 'auto' }}
-      />
-    );
-  };
+
   const openDetail = item => {
     const isDetail =
       item.type === 'word' || item.type === 'pdf' || item.type === 'excel';
@@ -168,9 +159,7 @@ const RecentContent = props => {
                 </IconButton>
               </div>
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="15%">
-              Chia sẻ
-            </StyledTableHeadCell>
+            <StyledTableHeadCell align="center">Chia sẻ</StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="15%">
               Nơi lưu trữ
             </StyledTableHeadCell>
@@ -215,31 +204,14 @@ const RecentContent = props => {
                 >
                   <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="15%">
-                  {!isEmpty(file.users_shared) &&
-                    file.users_shared.length > 0 &&
-                    file.users_shared.map(
-                      (shareMember, idx) =>
-                        shareMember.avatar && (
-                          <CustomAvatar
-                            src={shareMember.avatar}
-                            key={idx}
-                            onClick={() => {
-                              setVisible(true);
-                              setItemActive(file);
-                            }}
-                          />
-                        )
-                    )}
-                  {/* {file.users_shared && (
-                    <CustomAvatar
-                      src={file.users_shared.avatar}
-                      onClick={() => {
-                        setVisible(true);
-                        setItemActive(file);
-                      }}
-                    />
-                  )} */}
+                <StyledTableBodyCell align="center">
+                  <ShareColumnAvatar
+                    sharedList={[...file.users_shared]}
+                    handleClickAvatar={() => {
+                      setVisible(true);
+                      setItemActive(file);
+                    }}
+                  />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="15%">
                   <ColorTypo
@@ -256,9 +228,9 @@ const RecentContent = props => {
                   <ColorTypo color="black">{file.date_create}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
-                  {(file.user_create_avatar &&
-                    getIconAvatar(`${file.user_create_avatar}`)) ||
-                    ''}
+                  {file.user_create_avatar && (
+                    <CustomAvatar src={file.user_create_avatar} />
+                  )}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.size}</ColorTypo>

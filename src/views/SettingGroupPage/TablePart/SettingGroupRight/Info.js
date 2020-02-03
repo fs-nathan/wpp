@@ -12,6 +12,7 @@ import {
   convertUrlToBlob,
   getProfileService,
   actionGetProfile,
+  actionActiveGroup,
   actionToast
 } from '../../../../actions/system/system';
 import ImageCropper from '../../../../components/ImageCropper/ImageCropper';
@@ -73,7 +74,10 @@ const Info = props => {
     try {
       await actionUpdateGroupInfo(data);
       const res = await getProfileService();
-      if (res.data.data) props.actionGetProfile(res.data.data);
+      if (res.data.data) {
+        props.actionGetProfile(res.data.data);
+        props.actionActiveGroup(res.data.data.group_active);
+      }
       handleToast('success', 'Thay đổi thông tin nhóm thành công!');
       setEditMode(false);
     } catch (error) {
@@ -461,5 +465,5 @@ export default connect(
     colors: state.setting.colors,
     toast: state.system.toast
   }),
-  { actionFetchGroupDetail, actionGetProfile, actionToast }
+  { actionFetchGroupDetail, actionGetProfile, actionActiveGroup, actionToast }
 )(Info);

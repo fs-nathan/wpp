@@ -51,6 +51,7 @@ const LeftSetting = props => {
                 }
                 secondary={<Secondary>{item.subtile}</Secondary>}
               />
+              {item.rightIcon && item.rightIcon()}
             </StyledListItem>
             {item.sub &&
               item.sub.map((el, idx) => (

@@ -207,7 +207,7 @@ const GoogleDrive = props => {
   }
   return (
     <React.Fragment>
-      {(!isLogged || !props.isShowBtnSignoutGoogle) && (
+      {(!isLogged || !props.isShowBtnSignoutGoogle) && !isCheckingService && (
         <LoginGoogleDrive
           onLogin={() =>
             actionAuthGoogleDrive(() => {
@@ -220,7 +220,11 @@ const GoogleDrive = props => {
         <Table stickyHeader>
           <TableHead>
             <TableRow className="table-header-row">
-              <StyledTableHeadCell align="center" width="5%">
+              <StyledTableHeadCell
+                className="first-column"
+                align="left"
+                width="5%"
+              >
                 Loại
               </StyledTableHeadCell>
               <StyledTableHeadCell align="left">
@@ -251,13 +255,14 @@ const GoogleDrive = props => {
               return (
                 <TableRow className="table-body-row" key={item.id}>
                   <StyledTableBodyCell
-                    align="center"
+                    align="left"
                     width="5%"
-                    className={
-                      item.mimeType === 'application/vnd.google-apps.folder'
-                        ? 'cursor-pointer'
-                        : ''
-                    }
+                    className={`first-column 
+                      ${
+                        item.mimeType === 'application/vnd.google-apps.folder'
+                          ? 'cursor-pointer'
+                          : ''
+                      }`}
                     onClick={() => handleClickItem(item)}
                   >
                     <FullAvatar
