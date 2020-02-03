@@ -28,12 +28,16 @@ export const closeDocumentDetail = () => ({
   payload: { isOpen: false, item: null }
 });
 
+export const actionActiveGroup = data => ({
+  type: actionTypes.GROUP_ACTIVE,
+  payload: data
+});
+
 export const canViewFile = fileType => {
   if (!fileType) return false;
   const type = fileType.toLowerCase();
-  // add new 3 format (jfif,mp3,mp4). Request by Mr. Thanh Nguyen
   const listExtensionFile =
-    'jpg,jpeg,png,gif,tiff,bmp,webm,txt,mpeg4,3gpp,mov,avi,mpegps,wmv,flv,txt,css,html,php,c,cpp,h,hpp,js,doc,docx,xls,xlsx,ppt,pptx,pdf,pages,ai,psd,dxf,svg,eps,ps,ttf,xps,zip,rar,jfif,mp3,mp4';
+    'jpg,jpeg,png,gif,tiff,bmp,webm,txt,mpeg4,3gpp,mov,avi,mpegps,wmv,flv,txt,css,html,php,c,cpp,h,hpp,js,doc,docx,xls,xlsx,ppt,pptx,pdf,pages,ai,psd,dxf,svg,eps,ps,ttf,xps,zip,rar';
   return listExtensionFile.split(',').indexOf(type) > -1;
 };
 
@@ -149,6 +153,32 @@ export const actionSearchTask = info => {
     url: '/task/search',
     method: 'get',
     params: { info }
+  };
+  return apiService(config);
+};
+export const actionChangeNumNotificationNotView = numNotification => {
+  return {
+    type: actionTypes.CHANGE_NUM_NOTIFICATION_NOT_VIEW,
+    payload: numNotification
+  };
+};
+export const actionChangeNumMessageNotView = numMessage => {
+  return {
+    type: actionTypes.CHANGE_NUM_MESSAGE_NOT_VIEW,
+    payload: numMessage
+  };
+};
+export const getNumberNotificationNotViewer = () => {
+  const config = {
+    url: '/notifications/get-number-notification-not-viewed',
+    method: 'get'
+  };
+  return apiService(config);
+};
+export const getNumberMessageNotViewer = () => {
+  const config = {
+    url: '/chat/get-numner-chat-not-viewed',
+    method: 'get'
   };
   return apiService(config);
 };

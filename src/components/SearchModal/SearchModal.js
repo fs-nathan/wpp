@@ -27,6 +27,13 @@ import { actionSearchTask } from '../../actions/system/system';
 //   }
 // ];
 let searchValue = '';
+const getStateColor = status => {
+  if (status === 'Expired') return 'rgb(247, 67, 54)';
+  else if (status === 'Waiting') return 'rgb(255, 152, 0)';
+  else if (status === 'Implementing') return 'rgb(3, 169, 244)';
+  else if (status === 'Success') return 'rgb(3, 195, 11)';
+  else return 'rgb(3, 169, 244)';
+};
 const ResultSearchItem = props => (
   <div className="search-result-item">
     {props.user_create_avatar && (
@@ -52,7 +59,12 @@ const ResultSearchItem = props => (
         </a>
       </div>
     </div>
-    <div className="work-status">{props.state_name}</div>
+    <div
+      className="work-status"
+      style={{ color: getStateColor(props.state_name) }}
+    >
+      {props.state_name}
+    </div>
   </div>
 );
 

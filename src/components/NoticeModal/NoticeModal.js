@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -64,6 +66,16 @@ const NoticeModal = props => {
       open={props.visibleNoticeModal}
       disableBackdropClick
     >
+      <div className="header-icon-modal">
+        <IconButton
+          aria-label="close"
+          onClick={closeNoticeModal}
+          className="close-icon"
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
+
       <MuiDialogActions>
         <div className="notice-header">
           <img src={icons.logo} alt="logo" className="notice-logo" />
@@ -80,7 +92,9 @@ const NoticeModal = props => {
             Thông báo đơn hàng hết hạn!
           </h2>
         )}
-        <p className="notice-text header-text">Xin chào Nguyễn Hữu Thành!</p>
+        <p className="notice-text header-text">
+          Xin chào {props.profile.name}!
+        </p>
         {type === 'intro' ? (
           <p className="notice-text">
             Bạn đã đăng nhập thành công hệ thống quản trị doanh nghiệp trực
@@ -170,7 +184,8 @@ const NoticeModal = props => {
 export default connect(
   state => ({
     colors: state.setting.colors,
-    visibleNoticeModal: state.system.visibleNoticeModal
+    visibleNoticeModal: state.system.visibleNoticeModal,
+    profile: state.system.profile
   }),
   {
     openNoticeModal,

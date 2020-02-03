@@ -13,7 +13,10 @@ import {
   actionFetchListDocumentShare,
   actionSelectedFolder
 } from '../../../../actions/documents';
-import { actionChangeBreadCrumbs, openDocumentDetail } from '../../../../actions/system/system';
+import {
+  actionChangeBreadCrumbs,
+  openDocumentDetail
+} from '../../../../actions/system/system';
 import {
   StyledTableHeadCell,
   StyledTableBodyCell,
@@ -32,14 +35,10 @@ import LoadingBox from '../../../../components/LoadingBox';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
+import ShareColumnAvatar from '../DocumentComponent/ShareColumnAvatar';
 
 const DocumentShare = props => {
-  const {
-    isLoading,
-    breadCrumbs,
-    actionChangeBreadCrumbs,
-    isFetching
-  } = props;
+  const { isLoading, breadCrumbs, actionChangeBreadCrumbs, isFetching } = props;
   const [listData, setListData] = useState([]);
   const [selected, setSelected] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -179,7 +178,7 @@ const DocumentShare = props => {
             <StyledTableHeadCell align="center" width="10%">
               Ngày chia sẻ
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="15%">
+            <StyledTableHeadCell align="center" width="15%">
               Chủ sở hữu
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
@@ -213,38 +212,27 @@ const DocumentShare = props => {
                   align="left"
                   onClick={() => handleClickItem(file)}
                 >
-                  <ColorTypo color="black">{file.name}hi</ColorTypo>
+                  <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
-                  {!isEmpty(file.users_shared) &&
-                    file.users_shared.map(
-                      (shareMember, idx) =>
-                        shareMember.avatar && (
-                          <CustomAvatar
-                            src={shareMember.avatar}
-                            key={idx}
-                            onClick={() => {
-                              setVisible(true);
-                              setItemActive(file);
-                            }}
-                          />
-                        )
-                    )}
-                  {/* {file.users_shared && (
-                    <CustomAvatar
-                      src={file.users_shared.avatar}
-                      onClick={() => {
-                        setVisible(true);
-                        setItemActive(file);
-                      }}
-                    />
-                  )} */}
+                  <ShareColumnAvatar
+                    sharedList={[...file.users_shared]}
+                    handleClickAvatar={() => {
+                      setVisible(true);
+                      setItemActive(file);
+                    }}
+                  />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
-                  <ColorTypo color="black">{file.date}</ColorTypo>
+                  <ColorTypo color="black">{file.date_share}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="15%">
-                  <ColorTypo color="black">{file.userCreate}</ColorTypo>
+                <StyledTableBodyCell align="center" width="15%">
+                  <ColorTypo color="black">
+                    <CustomAvatar
+                      src={file.user_create_avatar}
+                      title="user create avatar"
+                    />
+                  </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.size}</ColorTypo>
@@ -275,7 +263,7 @@ export default connect(
     searchText: state.documents.searchText,
     isLoading: state.documents.isLoading,
     breadCrumbs: state.system.breadCrumbs,
-    isFetching: state.documents.isFetching,
+    isFetching: state.documents.isFetching
   }),
   {
     selectDocumentItem,

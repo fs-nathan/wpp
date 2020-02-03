@@ -43,6 +43,7 @@ import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
+import ShareColumnAvatar from '../DocumentComponent/ShareColumnAvatar';
 
 const ProjectDocumentDetail = props => {
   const { isLoading, actionChangeBreadCrumbs, isFetching, breadCrumbs } = props;
@@ -182,7 +183,7 @@ const ProjectDocumentDetail = props => {
         key={idx}
         src={url}
         alt="avatar"
-        style={{ width: 35, height: 35, margin: 'auto' }}
+        style={{ width: 25, height: 25, margin: 'auto' }}
       />
     );
   };
@@ -281,21 +282,13 @@ const ProjectDocumentDetail = props => {
                   </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="15%">
-                  {file.shared_member &&
-                    file.shared_member.length > 0 &&
-                    file.shared_member.map(
-                      (shareMember, idx) =>
-                        shareMember.avatar && (
-                          <CustomAvatar
-                            src={shareMember.avatar}
-                            key={idx}
-                            onClick={() => {
-                              setVisible(true);
-                              setItemActive(file);
-                            }}
-                          />
-                        )
-                    )}
+                  <ShareColumnAvatar
+                    sharedList={[...file.users_shared]}
+                    handleClickAvatar={() => {
+                      setVisible(true);
+                      setItemActive(file);
+                    }}
+                  />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="10%">
                   {(file.user_create_avatar &&

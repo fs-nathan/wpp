@@ -184,7 +184,9 @@ const HeaderButtonGroup = props => {
       icon: mdiDownload,
       action: handleDownloadFile,
       disabled: isEmpty(selectedDocument) || isDisableBtnDownload(),
-      isShow: pathname !== Routes.DOCUMENT_GOOGLE_DRIVE
+      isShow:
+        pathname !== Routes.DOCUMENT_GOOGLE_DRIVE &&
+        pathname !== Routes.DOCUMENT_PROJECT
     },
     {
       text: 'Di chuyển',

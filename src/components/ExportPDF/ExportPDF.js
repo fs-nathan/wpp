@@ -115,7 +115,7 @@ class ExportPDF extends Component {
         ? dataNumberOldOder.packet_user
         : 0
       : !isEmpty(orderItem.packet_user)
-      ? orderItem.packet_user.day_from_old_order / 30
+      ? (orderItem.packet_user.day_from_old_order / 30).toFixed(1)
       : 0;
     const packetStorageBefor = isCreate
       ? isCheckedBuyData
@@ -126,7 +126,7 @@ class ExportPDF extends Component {
       : 0;
     const date3MO = isCreate
       ? isCheckedManagerWork
-        ? dayBonus / 30
+        ? (dayBonus / 30).toFixed(1)
         : 0
       : !isEmpty(orderItem.packet_user)
       ? orderItem.packet_user.promotion_day === 0
@@ -134,7 +134,7 @@ class ExportPDF extends Component {
         : (orderItem.packet_user.promotion_day / 30).toFixed(1)
       : 0;
     const totalDataUse = isCreate
-      ? dateUse + dateGift + datePlusOderBefor + date3MO
+      ? dateUse + dateGift + datePlusOderBefor + parseFloat(date3MO)
       : !isEmpty(orderItem.packet_user)
       ? (orderItem.packet_user.day_use / 30).toFixed(1)
       : 0; //e
@@ -209,7 +209,11 @@ class ExportPDF extends Component {
                     VND
                   </div>
                   <div className="status-oder">
-                    <span className="text-status-oder">
+                    <span
+                      className={`text-status-oder ${
+                        orderItem.status_payment === 'Paid' ? 'paid-status' : ''
+                      }`}
+                    >
                       {isCreate ? 'CHƯA THANH TOÁN' : orderItem.status_payment}
                     </span>
                   </div>
@@ -332,7 +336,12 @@ class ExportPDF extends Component {
                                   ? numAcc
                                   : orderItem.packet_user.buy_info.number_user}
                               </div>
-                              <div>Dung lượng lưu trữ: 10 GB</div>
+                              <div>
+                                Dung lượng lưu trữ:{' '}
+                                {isCreate
+                                  ? `${numAcc} GB`
+                                  : orderItem.packet_user.buy_info.size}
+                              </div>
                               <div>
                                 Thời gian sử dụng:{' '}
                                 {isCreate
@@ -410,118 +419,115 @@ class ExportPDF extends Component {
                         </tr>
                       </React.Fragment>
                     )}
-                    {(isCheckedBuyData || !isEmpty(orderItem)) &&
-                      !isEmpty(orderItem.packet_storage) && (
-                        <React.Fragment>
-                          <tr style={{ background: '#f2f2f2' }}>
-                            <TdStyled2>
-                              {isCheckedManagerWork ? 2 : 1}
-                            </TdStyled2>
-                            <TdStyled3>
-                              <div className="">
-                                <div style={{ fontWeight: 'bold' }}>
-                                  Gói sản phầm: CS-
-                                  {isCreate
-                                    ? dataBuy
-                                    : orderItem.packet_storage.name
-                                        .split('-')
-                                        .pop()}
-                                </div>
-                                <div style={{ color: '#1f9de0' }}>
-                                  Thời gian{' '}
-                                  {isCreate
-                                    ? dateSave
-                                    : orderItem.packet_storage.buy_info.day /
-                                      30}{' '}
-                                  tháng
-                                </div>
-                                <div style={{ color: '#1f9de0' }}>
-                                  (Kể từ ngày thanh toán)
-                                </div>
+                    {(isCheckedBuyData ||
+                      (!isEmpty(orderItem) &&
+                        !isEmpty(orderItem.packet_storage))) && (
+                      <React.Fragment>
+                        <tr style={{ background: '#f2f2f2' }}>
+                          <TdStyled2>{isCheckedManagerWork ? 2 : 1}</TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div style={{ fontWeight: 'bold' }}>
+                                Gói sản phầm: CS-
+                                {isCreate
+                                  ? dataBuy
+                                  : orderItem.packet_storage.name
+                                      .split('-')
+                                      .pop()}
                               </div>
-                            </TdStyled3>
-                            <TdStyled2></TdStyled2>
-                            <TdStyled2></TdStyled2>
-                            <TdStyled2>{totalDateData}</TdStyled2>
-                            <TdStyled2>
-                              {this.showPrice(moneyPacketData)}
-                            </TdStyled2>
-                          </tr>
-                          <tr>
-                            <TdStyled2></TdStyled2>
-                            <TdStyled3>
-                              <div className="">
-                                <div>
-                                  Đăng ký gói mở rộng: Cloud Storage (CS-
-                                  {isCreate
-                                    ? dataBuy
-                                    : orderItem.packet_storage.name
-                                        .split('-')
-                                        .pop()}
-                                  )
-                                </div>
-                                <div>
-                                  Mua thêm dung lượng lưu trữ:{' '}
-                                  {isCreate
-                                    ? dataBuy
-                                    : orderItem.packet_storage.name
-                                        .split('-')
-                                        .pop()}
-                                  GB
-                                </div>
+                              <div style={{ color: '#1f9de0' }}>
+                                Thời gian{' '}
+                                {isCreate
+                                  ? dateSave
+                                  : orderItem.packet_storage.buy_info.day /
+                                    30}{' '}
+                                tháng
                               </div>
-                            </TdStyled3>
-                            <TdStyled4>
-                              {this.showPrice(
-                                isCreate
-                                  ? pricePacketData
-                                  : orderItem.packet_storage.buy_info
-                                      .unit_price || 0
-                              )}
-                            </TdStyled4>
-                            <TdStyled4>
-                              {isCreate
-                                ? dataBuy
-                                : orderItem.packet_storage.name
-                                    .split('-')
-                                    .pop()}
-                            </TdStyled4>
-                            <TdStyled4>
-                              {isCreate
-                                ? dateSave
-                                : orderItem.packet_storage.buy_info.day / 30}
-                            </TdStyled4>
-                            <TdStyled4>
-                              {this.showPrice(moneyPacketData)}
-                            </TdStyled4>
-                          </tr>
-                          <tr>
-                            <TdStyled2></TdStyled2>
-                            <TdStyled3>
-                              <div className="">
-                                <div>Thời gian cộng thêm từ đơn hàng cũ</div>
+                              <div style={{ color: '#1f9de0' }}>
+                                (Kể từ ngày thanh toán)
                               </div>
-                            </TdStyled3>
-                            <TdStyled4>-</TdStyled4>
-                            <TdStyled4>-</TdStyled4>
-                            <TdStyled4>
-                              {isCreate
-                                ? packetStorageBefor
-                                : orderItem.packet_storage.day_from_old_order /
-                                  30}
-                            </TdStyled4>
-                            <TdStyled4>-</TdStyled4>
-                          </tr>
-                        </React.Fragment>
-                      )}
+                            </div>
+                          </TdStyled3>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled2>{totalDateData}</TdStyled2>
+                          <TdStyled2>
+                            {this.showPrice(moneyPacketData)}
+                          </TdStyled2>
+                        </tr>
+                        <tr>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div>
+                                Đăng ký gói mở rộng: Cloud Storage (CS-
+                                {isCreate
+                                  ? dataBuy
+                                  : orderItem.packet_storage.name
+                                      .split('-')
+                                      .pop()}
+                                )
+                              </div>
+                              <div>
+                                Mua thêm dung lượng lưu trữ:{' '}
+                                {isCreate
+                                  ? dataBuy
+                                  : orderItem.packet_storage.name
+                                      .split('-')
+                                      .pop()}
+                                GB
+                              </div>
+                            </div>
+                          </TdStyled3>
+                          <TdStyled4>
+                            {this.showPrice(
+                              isCreate
+                                ? pricePacketData
+                                : orderItem.packet_storage.buy_info
+                                    .unit_price || 0
+                            )}
+                          </TdStyled4>
+                          <TdStyled4>
+                            {isCreate
+                              ? dataBuy
+                              : orderItem.packet_storage.name.split('-').pop()}
+                          </TdStyled4>
+                          <TdStyled4>
+                            {isCreate
+                              ? dateSave
+                              : orderItem.packet_storage.buy_info.day / 30}
+                          </TdStyled4>
+                          <TdStyled4>
+                            {this.showPrice(moneyPacketData)}
+                          </TdStyled4>
+                        </tr>
+                        <tr>
+                          <TdStyled2></TdStyled2>
+                          <TdStyled3>
+                            <div className="">
+                              <div>Thời gian cộng thêm từ đơn hàng cũ</div>
+                            </div>
+                          </TdStyled3>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                          <TdStyled4>
+                            {isCreate
+                              ? packetStorageBefor
+                              : orderItem.packet_storage.day_from_old_order /
+                                30}
+                          </TdStyled4>
+                          <TdStyled4>-</TdStyled4>
+                        </tr>
+                      </React.Fragment>
+                    )}
                   </tbody>
                 </TableStyled2>
 
                 <div className="total-group">
-                  <div style={{ width: '50%' }}></div>
-                  <div style={{ width: '50%' }}>
+                  <div style={{ width: '30%' }}></div>
+                  <div style={{ width: '70%' }}>
                     <div className="item-total-group">
-                      <span style={{ width: '40%', textAlign: 'right' }}>
+                      <span style={{ width: '70%', textAlign: 'right' }}>
                         Tổng giá trị trước thuế (I+II)
                       </span>
                       <span>
@@ -531,7 +537,7 @@ class ExportPDF extends Component {
                       </span>
                     </div>
                     <div className="item-total-group">
-                      <span style={{ width: '40%', textAlign: 'right' }}>
+                      <span style={{ width: '70%', textAlign: 'right' }}>
                         Thuế VAT (10%)
                       </span>
                       <span>
@@ -541,7 +547,7 @@ class ExportPDF extends Component {
                       </span>
                     </div>
                     <div className="item-total-group">
-                      <span style={{ width: '40%', textAlign: 'right' }}>
+                      <span style={{ width: '70%', textAlign: 'right' }}>
                         Giá trị đơn hàng
                       </span>
                       <span style={{ fontWeight: 'bold', color: '#f50016' }}>

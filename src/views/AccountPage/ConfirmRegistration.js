@@ -20,12 +20,20 @@ import { actionCompleteRegister, actionCheckCode } from '../../actions/account';
 import { loginSuccess, loginFail } from '../../actions/authentications';
 import { actionToast } from '../../actions/system/system';
 import { apiService } from '../../constants/axiosInstance';
-import { openNoticeModal } from '../../actions/system/system';
-import { actionFetchGroupDetail } from '../../actions/setting/setting';
+import {
+  openNoticeModal,
+  actionActiveGroup,
+  getProfileService
+} from '../../actions/system/system';
+import {
+  actionFetchGroupDetail,
+  actionFetchListColor
+} from '../../actions/setting/setting';
 import MainAccount from '../../components/MainAccount/MainAccount';
 import * as images from '../../assets';
 import './AccountPage.scss';
 import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from '../../constants/constants';
+import { isEmpty } from '../../helpers/utils/isEmpty';
 
 const ConfirmRegistration = props => {
   const { t } = useTranslation();
@@ -61,9 +69,17 @@ const ConfirmRegistration = props => {
       apiService.defaults.headers.common['group-active'] =
         res.data.group_active;
       props.actionFetchGroupDetail(true);
+      props.actionFetchListColor();
+
+      const { data } = await getProfileService();
+      if (!isEmpty(data.data)) {
+        props.actionActiveGroup(data.data.group_active);
+      }
+      if (data.data.type === 'Free') {
+        props.openNoticeModal();
+      }
       props.loginSuccess(res.data);
       props.history.push(Routes.HOME);
-      props.openNoticeModal();
     } catch (error) {
       handleToast('error', error.message);
     } // eslint-disable-next-line
@@ -308,6 +324,8 @@ export default connect(
     loginSuccess,
     loginFail,
     openNoticeModal,
+    actionActiveGroup,
+    actionFetchListColor,
     actionFetchGroupDetail
   }
 )(withRouter(ConfirmRegistration));

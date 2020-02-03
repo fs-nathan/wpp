@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
 import Chip from '../../components/ColorChip';
 import SearchInput from '../../components/SearchInput';
@@ -14,7 +15,13 @@ import SearchModal from '../../components/SearchModal/SearchModal';
 import './TopBar.scss';
 import {
   getProfileService,
-  actionGetProfile
+  actionGetProfile,
+  actionChangeNumNotificationNotView,
+  actionChangeNumMessageNotView,
+  getNumberNotificationNotViewer,
+  getNumberMessageNotViewer,
+  actionActiveGroup,
+  openNoticeModal
 } from '../../actions/system/system';
 import { isEmpty } from '../../helpers/utils/isEmpty';
 
@@ -84,12 +91,32 @@ const TopBar = props => {
   const handleFetchProfile = async () => {
     try {
       const { data } = await getProfileService();
-      if (data.data) props.actionGetProfile(data.data);
+      if (data.data) {
+        props.actionGetProfile(data.data);
+        props.actionActiveGroup(data.data.group_active);
+        if (data.data.type === 'Free') {
+          props.openNoticeModal();
+        }
+      }
     } catch (err) {}
   };
   useEffect(() => {
+    handleFetchNumNotificationNotView();
+    handleFetchNumMessageNotView();
     handleFetchProfile(); // eslint-disable-next-line
   }, []);
+  const handleFetchNumNotificationNotView = async () => {
+    try {
+      const { data } = await getNumberNotificationNotViewer();
+      props.actionChangeNumNotificationNotView(data.number_notification);
+    } catch (err) {}
+  };
+  const handleFetchNumMessageNotView = async () => {
+    try {
+      const { data } = await getNumberMessageNotViewer();
+      props.getNumberMessageNotViewer(data.number_chat);
+    } catch (err) {}
+  };
   const openSearchModal = () => {
     // Handle position of search modal
     const searchInputWrapperElm = document.getElementById('searchInputWrapper');
@@ -120,27 +147,28 @@ const TopBar = props => {
     }
   };
   const isFree =
-    !isEmpty(props.profile.group_active) &&
-    props.profile.group_active.type === 'Free';
+    !isEmpty(props.groupActive) &&
+    (props.groupActive.type === 'Free' ||
+      props.groupActive.type_group === 'Free');
   return (
     <Container id="topNavId">
       <LeftPart>
-        {!isEmpty(props.profile.group_active) && (
+        {!isEmpty(props.groupActive) && (
           <InfoBox onClick={handleAccount}>
             <div>
               <div className="text-group-top-bar">
-                Nhóm: {props.profile.group_active.name}
+                Nhóm: {props.groupActive.name}
               </div>
               <Chip
                 badge
                 color="orange"
-                label={props.profile.group_active.type}
+                label={props.groupActive.type || props.groupActive.type_group}
                 className={`style-status ${isFree ? 'free-status' : ''}`}
               />
             </div>
-            {props.profile.group_active.code && (
+            {props.groupActive.code && (
               <div>
-                <GreenText>{props.profile.group_active.code}</GreenText>
+                <GreenText>ID: {props.groupActive.code}</GreenText>
                 <Icon path={mdiMenuDown} size={1} color="rgba(0, 0, 0, 0.54)" />
               </div>
             )}
@@ -186,46 +214,62 @@ const TopBar = props => {
           />
           &nbsp;Trợ giúp
         </IconButton>
-        <IconButton
-          className="cursor-pointer top-icon"
-          title="Tin nhắn"
-          onClick={() =>
-            props.actionVisibleDrawerMessage({
-              type: DRAWER_TYPE.MESSAGE,
-              anchor: 'right'
-            })
-          }
+
+        <Badge
+          badgeContent={props.numberMessageNotView ? 'N' : 0}
+          color="error"
+          className={`bag-cus ${props.numberMessageNotView ? 'none-view' : ''}`}
         >
-          <img
-            src={
-              props.typeDrawer === DRAWER_TYPE.MESSAGE
-                ? icons.ic_message_select
-                : icons.ic_message
+          <IconButton
+            className="cursor-pointer top-icon"
+            title="Tin nhắn"
+            onClick={() =>
+              props.actionVisibleDrawerMessage({
+                type: DRAWER_TYPE.MESSAGE,
+                anchor: 'right'
+              })
             }
-            alt=""
-            className="topnav-icon message-icon"
-          />
-        </IconButton>
-        <IconButton
-          className="cursor-pointer top-icon"
-          title="Thông báo"
-          onClick={() =>
-            props.actionVisibleDrawerMessage({
-              type: DRAWER_TYPE.NOTIFICATION,
-              anchor: 'right'
-            })
-          }
+          >
+            <img
+              src={
+                props.typeDrawer === DRAWER_TYPE.MESSAGE
+                  ? icons.ic_message_select
+                  : icons.ic_message
+              }
+              alt=""
+              className="topnav-icon message-icon"
+            />
+          </IconButton>
+        </Badge>
+        <Badge
+          badgeContent={props.numberNotificationNotView ? 'N' : 0}
+          color="error"
+          className={`bag-cus ${
+            props.numberNotificationNotView ? 'none-view' : ''
+          }`}
         >
-          <img
-            src={
-              props.typeDrawer === DRAWER_TYPE.NOTIFICATION
-                ? icons.ic_noti_select
-                : icons.ic_noti
+          <IconButton
+            className="cursor-pointer top-icon"
+            title="Thông báo"
+            onClick={() =>
+              props.actionVisibleDrawerMessage({
+                type: DRAWER_TYPE.NOTIFICATION,
+                anchor: 'right'
+              })
             }
-            alt=""
-            className="topnav-icon"
-          />
-        </IconButton>
+          >
+            <img
+              src={
+                props.typeDrawer === DRAWER_TYPE.NOTIFICATION
+                  ? icons.ic_noti_select
+                  : icons.ic_noti
+              }
+              alt=""
+              className="topnav-icon"
+            />
+          </IconButton>
+        </Badge>
+
         <AccBox>
           <Avatar
             style={{ height: 25, width: 25 }}
@@ -256,7 +300,17 @@ export default connect(
   state => ({
     typeDrawer: state.system.typeDrawer,
     anchorDrawer: state.system.anchorDrawer,
-    profile: state.system.profile
+    profile: state.system.profile,
+    groupActive: state.system.groupActive,
+    numberNotificationNotView: state.system.numberNotificationNotView,
+    numberMessageNotView: state.system.numberMessageNotView
   }),
-  { actionVisibleDrawerMessage, actionGetProfile }
+  {
+    actionVisibleDrawerMessage,
+    actionGetProfile,
+    actionChangeNumNotificationNotView,
+    actionChangeNumMessageNotView,
+    actionActiveGroup,
+    openNoticeModal
+  }
 )(TopBar);

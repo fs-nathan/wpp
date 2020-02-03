@@ -43,7 +43,10 @@ async function doGetListColor() {
 function* getListColor() {
   try {
     const { colors } = yield call(doGetListColor);
-    console.log(colors)
+    const checkSelected = colors.find(item => item.selected === true);
+    if (!checkSelected && colors.length > 0) {
+      colors[0].selected = true;
+    }
     yield put({
       type: actionTypes.FETCH_LIST_COLOR_GROUP_SUCCESS,
       payload: colors || [{ value: '#01b374', selected: true }]

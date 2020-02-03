@@ -78,6 +78,13 @@ export const getNotificationService = () => {
   };
   return apiService(config);
 };
+export const getNotificationStatus = () => {
+  const config = {
+    url: '/notification-system/status-new-notification',
+    method: 'get'
+  };
+  return apiService(config);
+};
 export const actionGetNotification = data => {
   return {
     type: actionTypes.GET_NOTIFICATION,

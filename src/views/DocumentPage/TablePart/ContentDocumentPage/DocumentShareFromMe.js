@@ -7,13 +7,15 @@ import {
   TableBody
   // TablePagination
 } from '@material-ui/core';
+import Icon from '@mdi/react';
 // import { useTranslation } from 'react-i18next';
 import {
   mdiAccountPlusOutline,
   mdiDownloadOutline,
-  mdiContentCopy
+  mdiContentCopy,
+  mdiGoogleDrive
 } from '@mdi/js';
-
+import ShareColumnAvatar from '../DocumentComponent/ShareColumnAvatar';
 import {
   selectDocumentItem,
   resetListSelectDocument,
@@ -187,7 +189,7 @@ const DocumentShareFromMe = props => {
             <StyledTableHeadCell align="center" width="10%">
               Ngày chia sẻ
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="15%">
+            <StyledTableHeadCell align="center" width="15%">
               Chủ sở hữu
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
@@ -211,8 +213,19 @@ const DocumentShareFromMe = props => {
                   align="center"
                   width="5%"
                   onClick={() => handleClickItem(file)}
+                  className="position-relative"
                 >
                   <FullAvatar src={FileType(file.type)} />
+                  {file.document_type === 2 && (
+                    <div className="block-icon-share-drive">
+                      <Icon
+                        className="icon-share-drive"
+                        path={mdiGoogleDrive}
+                        size={1.4}
+                        color="#2196f3"
+                      />
+                    </div>
+                  )}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell
                   align="left"
@@ -221,35 +234,24 @@ const DocumentShareFromMe = props => {
                   <ColorTypo color="black">{file.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
-                  {!isEmpty(file.users_shared) &&
-                    file.users_shared.map(
-                      (shareMember, idx) =>
-                        shareMember.avatar && (
-                          <CustomAvatar
-                            src={shareMember.avatar}
-                            key={idx}
-                            onClick={() => {
-                              setVisible(true);
-                              setItemActive(file);
-                            }}
-                          />
-                        )
-                    )}
-                  {/* {file.users_shared && (
-                    <CustomAvatar
-                      src={file.users_shared.avatar}
-                      onClick={() => {
-                        setVisible(true);
-                        setItemActive(file);
-                      }}
-                    />
-                  )} */}
+                  <ShareColumnAvatar
+                    sharedList={[...file.users_shared]}
+                    handleClickAvatar={() => {
+                      setVisible(true);
+                      setItemActive(file);
+                    }}
+                  />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
-                  <ColorTypo color="black">{file.date}</ColorTypo>
+                  <ColorTypo color="black">{file.date_share}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="15%">
-                  <ColorTypo color="black">{file.userCreate}</ColorTypo>
+                <StyledTableBodyCell align="center" width="15%">
+                  <ColorTypo color="black">
+                    <CustomAvatar
+                      src={file.user_create_avatar}
+                      title="user create avatar"
+                    />
+                  </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.size}</ColorTypo>

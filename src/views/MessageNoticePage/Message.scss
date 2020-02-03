@@ -9,7 +9,7 @@
     overflow-y: auto;
     .item-message {
       display: flex;
-      padding: 12px 20px;
+      padding: 12px 27px 12px 20px;
       border-bottom: 1px solid #ededed;
       cursor: pointer;
       align-items: center;
@@ -38,17 +38,17 @@
         padding-right: 20px;
         position: relative;
         .badge-un-read {
-          background-color: rgb(220, 0, 78);
+          background-color: #ff0000;
           z-index: 1;
           position: absolute;
           line-height: 1;
-          height: 10px;
+          height: 12px;
           padding: 0;
-          min-width: 10px;
+          min-width: 12px;
           border-radius: 10px;
-          right: 18px;
-          bottom: 6px;
-          border: 1px solid #fff;
+          right: 13px;
+          bottom: 3px;
+          border: 2px solid #fff;
         }
       }
       .text-description {
@@ -121,17 +121,17 @@
         padding-right: 20px;
         position: relative;
         .badge-un-read {
-          background-color: rgb(220, 0, 78);
+          background-color: #ff0000;
           z-index: 1;
           position: absolute;
           line-height: 1;
-          height: 10px;
+          height: 12px;
           padding: 0;
-          min-width: 10px;
+          min-width: 12px;
           border-radius: 10px;
-          right: 18px;
-          bottom: 6px;
-          border: 1px solid #fff;
+          right: 13px;
+          bottom: 3px;
+          border: 2px solid #fff;
         }
       }
       .text-description {

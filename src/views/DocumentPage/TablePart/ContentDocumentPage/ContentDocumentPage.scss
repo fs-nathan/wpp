@@ -23,6 +23,10 @@
   .last-cell {
     padding-right: 25px;
   }
+  .file-name-document {
+    word-break: break-all;
+    word-break: break-word;
+  }
 }
 .address-link {
   color: rgba(0, 0, 0, 0.87);
@@ -32,4 +36,22 @@
   &:hover {
     color: rgb(0, 128, 255);
   }
+}
+.block-icon-share-drive {
+  position: absolute;
+  bottom: 8px;
+  right: 18px;
+  border-radius: 50%;
+  background-color: #fff;
+  width: 20px;
+  height: 18px;
+  display: flex;
+}
+.icon-share-drive {
+  width: 14px !important;
+  height: 14px !important ;
+  margin: auto;
+}
+.position-relative {
+  position: relative;
 }

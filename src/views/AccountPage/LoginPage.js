@@ -26,8 +26,15 @@ import LoadingContent from '../../components/LoadingContent';
 import * as images from '../../assets';
 import './AccountPage.scss';
 import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from '../../constants/constants';
-import { openNoticeModal } from '../../actions/system/system';
-import { actionFetchGroupDetail } from '../../actions/setting/setting';
+import {
+  openNoticeModal,
+  getProfileService,
+  actionActiveGroup
+} from '../../actions/system/system';
+import {
+  actionFetchGroupDetail,
+  actionFetchListColor
+} from '../../actions/setting/setting';
 
 const LoginPage = props => {
   const [isLoginFail, setLoginFail] = useState(false);
@@ -57,10 +64,15 @@ const LoginPage = props => {
       ] = `Bearer ${data.accessToken}`;
       apiService.defaults.headers.common['group-active'] = data.group_active;
       props.actionFetchGroupDetail(true);
+      props.actionFetchListColor();
       setIsLoading(false);
+      const res = await getProfileService();
+      props.actionActiveGroup(res.data.data.group_active);
+      if (res.data.data.type === 'Free') {
+        props.openNoticeModal();
+      }
       props.loginSuccess(data);
       props.history.push(Routes.HOME);
-      props.openNoticeModal();
     } catch (error) {
       setLoginFail(true);
       setIsLoading(false);
@@ -165,5 +177,7 @@ export default connect(null, {
   loginSuccess,
   loginFail,
   openNoticeModal,
-  actionFetchGroupDetail
+  actionFetchGroupDetail,
+  actionFetchListColor,
+  actionActiveGroup
 })(withRouter(LoginPage));

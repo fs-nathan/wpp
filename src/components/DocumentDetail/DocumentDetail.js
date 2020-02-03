@@ -46,7 +46,7 @@ import { isEmpty } from '../../helpers/utils/isEmpty';
 
 const DocumentDetail = props => {
   const { t } = useTranslation();
-  const { currentFolder } = props;
+  const { currentFolder, colors } = props;
   const fileInfo = props.documentFile || {};
   const [anchorEl, setAnchorEl] = useState(null);
   const [alert, setAlert] = useState(false);
@@ -55,6 +55,7 @@ const DocumentDetail = props => {
     fileInfo.isGoogleDocument ? null : 'comment'
   );
   const [fileDetail, setFileDetail] = useState({});
+  const bgColor = colors.find(item => item.selected === true);
 
   useEffect(() => {
     if (!fileInfo.isGoogleDocument) handleFetchData();
@@ -251,9 +252,8 @@ const DocumentDetail = props => {
                   handleCloseMoreAction();
                   setVisible(true);
                 }}
-                disabled={!fileDetail.can_modify}
               >
-                Chia sẻ
+                {t('IDS_WP_SHARE')}
               </MenuItem>
               <MenuItem
                 onClick={() => {
@@ -262,7 +262,7 @@ const DocumentDetail = props => {
                 }}
                 disabled={!fileDetail.can_modify}
               >
-                Xóa tài liệu
+                {t('IDS_WP_DELETE_DOCUMENT')}
               </MenuItem>
             </Menu>
           )}
@@ -344,9 +344,21 @@ const DocumentDetail = props => {
                 </div>
                 <div className="box-content">
                   <div className="box-title">
-                    Rất tiếc! Tài liệu không có bản xem trước.
+                    {t('IDS_WP_OPPS_NOT_PREVIEW_FILE')}
                   </div>
-                  <div className="file-name">{fileInfo.name || ''}</div>
+                  <div className="open-origin-file">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="btn-open-file"
+                      style={{ backgroundColor: bgColor.color }}
+                      onClick={() => {
+                        window.open(fileInfo.url, '_blank');
+                      }}
+                    >
+                      {t('IDS_WP_VIEW_ORIGIN_FILE')}
+                    </Button>
+                  </div>
                   <div>
                     <Button
                       size="small"
@@ -366,7 +378,7 @@ const DocumentDetail = props => {
                         }
                       }}
                     >
-                      Download
+                      {t('IDS_WP_DOWNLOAD')}
                     </Button>
                     {fileInfo.size && (
                       <span className="file-size">
@@ -428,6 +440,7 @@ const DocumentDetail = props => {
 
 export default connect(
   state => ({
+    colors: state.setting.colors,
     isDocumentDetail: state.system.isDocumentDetail,
     documentFile: state.system.documentFile,
     currentFolder: state.documents.currentFolder

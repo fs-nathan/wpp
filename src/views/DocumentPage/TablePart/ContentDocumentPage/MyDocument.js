@@ -51,6 +51,7 @@ import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
+import ShareColumnAvatar from '../DocumentComponent/ShareColumnAvatar';
 
 const MyDocument = props => {
   const [alert, setAlert] = useState(false);
@@ -314,22 +315,13 @@ const MyDocument = props => {
                   )}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
-                  {item.shared_member &&
-                    item.shared_member.length > 0 &&
-                    item.shared_member.map(
-                      (shareMember, idx) =>
-                        shareMember.avatar && (
-                          <CustomAvatar
-                            src={shareMember.avatar}
-                            key={idx}
-                            title={shareMember.name || ''}
-                            onClick={() => {
-                              setVisible(true);
-                              setItemActive(item);
-                            }}
-                          />
-                        )
-                    )}
+                  <ShareColumnAvatar
+                    sharedList={[...item.shared_member]}
+                    handleClickAvatar={() => {
+                      setVisible(true);
+                      setItemActive(item);
+                    }}
+                  />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
                   <ColorTypo color="black">{item.updated_at || ''}</ColorTypo>

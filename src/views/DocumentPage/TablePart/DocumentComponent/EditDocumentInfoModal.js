@@ -30,13 +30,10 @@ const EditDocumentInfoModal = props => {
         user_approved: elements.user_approved.value,
         storage_address: elements.storage_address.value
       };
-      console.log('result', result);
       await updateDocumentInfo(result);
       props.getData();
       props.onClose();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const handleDateChange = date => {
