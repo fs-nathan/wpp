@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiCheckCircle, mdiCheckboxBlankCircleOutline, 
+import {
+  mdiCheckCircle, mdiCheckboxBlankCircleOutline,
   // mdiPin, 
-  mdiClockAlert } from '@mdi/js';
+  mdiClockAlert
+} from '@mdi/js';
 import { List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { withStyles } from '@material-ui/core/styles';
@@ -299,22 +301,22 @@ const ModalStatus = (status) => {
     <React.Fragment>
       <div className="styled-context-status">
         <div>
-          <Icon path={icon ? icon : mdiCheckCircle} size={1} color={icon ? '#dc3545' :'#03b000'} />
+          <Icon path={icon ? icon : mdiCheckCircle} size={1} color={icon ? '#dc3545' : '#03b000'} />
           <p>Trạng thái:</p>
           <p style={{ color: color }}>{value}</p>
         </div>
         <p>
           {(value === "Đang làm" || value === "Đang chờ" || value === "Hoàn thành")
-          ?
-          'Hãy cập nhập tiến độ hoàn thành để thay đổi trạng thái công việc'
-          : 
-          (value === "Ưu tiên cao" || value === "Ưu tiên trung bình" || value === "Ưu tiên thấp")
-          ?
-          'Mức độ ưu tiên phản ánh tính chất khẩn cấp công việc'
-          :
-          'Admin đã tạm dừng công việc, vào cài đặt công việc để thay đổi trạng thái'
-        }
-      </p>
+            ?
+            'Hãy cập nhập tiến độ hoàn thành để thay đổi trạng thái công việc'
+            :
+            (value === "Ưu tiên cao" || value === "Ưu tiên trung bình" || value === "Ưu tiên thấp")
+              ?
+              'Mức độ ưu tiên phản ánh tính chất khẩn cấp công việc'
+              :
+              'Admin đã tạm dừng công việc, vào cài đặt công việc để thay đổi trạng thái'
+          }
+        </p>
       </div>
     </React.Fragment>
   )
@@ -331,7 +333,7 @@ const ModalStatus = (status) => {
 //   )
 // }
 const ButtonDropdown = styled(DropdownButton)`
-  display: ${props => 
+  display: ${props =>
     props.show ? 'block' : 'none'
   }
 `
@@ -388,7 +390,9 @@ function TabBody(props) {
         </ListItem>
         <Content value={content} />
         <ListItemButtonGroup>
-          {props.isPause
+          {isExpiredDate(data.end_date)
+            &&
+            props.isPause
             ?
             <HtmlTooltip title={<ModalStatus values="Đang tạm dừng" />} placement="top-start">
               <div>
@@ -404,31 +408,33 @@ function TabBody(props) {
               </div>
             </HtmlTooltip>
             :
+            <>
             <ButtonDropdown
               size='small' selectedIndex={0}
               values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
               handleChangeItem={() => { }}
               show={isExpiredDate(data.end_date)}
             />
+            <ButtonDropdown
+              size='small'
+              values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
+              selectedIndex={taskStatistic.priority_code}
+              handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
+              show={isExpiredDate(data.end_date)}
+            />
+            </>
           }
 
-          <ButtonDropdown
-            size='small'
-            values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
-            selectedIndex={taskStatistic.priority_code}
-            handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
-            show={isExpiredDate(data.end_date)}
-          />
           {
             !isExpiredDate(data.end_date)
             &&
-              <ColorButton 
-                size='small' variant='contained' variantColor='red'
-                style={{
-                  marginBottom: '10px',
-                  boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1)'
-                }}>
-                Đã quá hạn
+            <ColorButton
+              size='small' variant='contained' variantColor='red'
+              style={{
+                marginBottom: '10px',
+                boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1)'
+              }}>
+              Đã quá hạn
               </ColorButton>
           }
         </ListItemButtonGroup>

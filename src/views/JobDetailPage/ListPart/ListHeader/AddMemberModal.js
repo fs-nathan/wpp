@@ -441,7 +441,10 @@ function AddMemberModal(props) {
                                 >
                                     + Thêm tất cả
                         </ButtonAddAll>
+                        <div className="table-scroll-add-member">
                                 {listMemberProjectState}
+                        </div>
+                               
                             </Typography>
                         </BorderGrid>
                         <Typography component="div">

@@ -7,9 +7,9 @@ import SimpleDonutChart from '../../../../../components/SimpleDonutChart';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
-// import avatar from '../../../../../assets/avatar.jpg';
 import { WrapperContext } from '../../../index'
-
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
 // const Container = styled.a`
 //     padding: 10px 8px 10px 0;
 //     display: flex;
@@ -70,6 +70,17 @@ const ChipMes = styled(Chip)`
 display: ${props => props.notification === "true" ? 'block' : 'none'};
 `
 
+const LightTooltip = withStyles(theme => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: 11,
+    border: "1px solid #222",
+    borderRadius: 0,
+    marginLeft: '10px'
+  },
+}))(Tooltip);
+
 const badgeState = (label) => {
   let color
   switch (label) {
@@ -112,7 +123,9 @@ function JobContent(props) {
   return (
     <div className="container-content-lbd">
         <div>
-          <Avatar src={props.avatar} alt='avatar' />
+          <LightTooltip  title={props.name} placement="bottom-start">
+            <Avatar src={props.avatar} alt='avatar' />
+          </LightTooltip>
           <ColorTypo color='#7a869a' >{props.content}</ColorTypo>
         </div>
         <div>
@@ -133,7 +146,7 @@ function JobUnit(props) {
   return (
     <ListItemText disableTypography>
       <JobName title={props.name}  label={props.status_name} isghim={props.is_ghim}/>
-      <JobContent  time={props.updated_time} avatar={props.chat.user_create_avatar} content={props.chat.content} notification={props.new_chat}/>
+      <JobContent  time={props.updated_time} avatar={props.chat.user_create_avatar} content={props.chat.content} notification={props.new_chat} name={props.chat.user_create_name}/>
     </ListItemText>
   )
 }

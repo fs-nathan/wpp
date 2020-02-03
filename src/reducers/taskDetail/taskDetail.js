@@ -50,6 +50,24 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true
             }
+        case types.DELETE_TASK_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+            }
+        case types.DELETE_TASK_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true
+            }
+        case types.DELETE_TASK_FAIL:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: false,
+                error: true
+            }
         default:
             return state;
     }

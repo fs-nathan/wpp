@@ -214,8 +214,8 @@ const mapDispatchToProps = dispatch => {
         getStaticTask: (data) => dispatch(taskDetailAction.getStaticTask(data)),
         //updateComplete
         updateComplete:(data)=>{  dispatch(taskDetailAction.updateComplete(data))},
-        closeNoticeModal: () => dispatch(closeNoticeModal())
-
+        closeNoticeModal: () => dispatch(closeNoticeModal()),
+        deleteTask: (data) => { dispatch(taskDetailAction.deleteTask(data))},
     };
 };
 

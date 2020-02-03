@@ -8,7 +8,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 // import EditWorkModal from '../EditWorkModal'
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal'
 import { WrapperContext } from '../../../index';
-
+import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 // const Container = styled.div`
 //   padding: 0 20px;
 //   display: flex;
@@ -78,6 +78,7 @@ function TabHeader(props) {
     setIsPause(!pause)
   }
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
   const value = React.useContext(WrapperContext)
 
   let avatar, name, roles
@@ -92,6 +93,17 @@ function TabHeader(props) {
       }
     }
   }
+  const handleOpenModalDelete = () => {
+    setOpenDelete(true);
+    setAnchorEl(null);
+  };
+  const handleCloseModalDelete = () => {
+    setOpenDelete(false);
+  };
+  const confirmDelete = () => {
+    props.deleteTask(value.taskId)
+  }
+  // console.log("task id::::", value.taskId)
   return (
     <div className="container-dt-tabheader">
       <AvatarHeader src={avatar} alt='avatar' />
@@ -122,7 +134,6 @@ function TabHeader(props) {
           setAnchorEl(null);
         }}>Chỉnh sửa</MenuItem>
         <MenuItem onClick={() => {
-          setOpenCreateJobModal(true)
           setAnchorEl(null);
         }}>Ghim công việc</MenuItem>
         {pause ?
@@ -141,10 +152,16 @@ function TabHeader(props) {
         
         <MenuItem onClick={() => {
           handleCloseMenu()
-          setAnchorEl(null)
+          handleOpenModalDelete()
         }}>Xóa</MenuItem>
       </Menu>
       <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={true} data={value.detailTask}/>
+      <ModalDeleteConfirm  
+        confirmDelete={confirmDelete}
+        isOpen={isOpenDelete}
+        handleOpenModalDelete={handleOpenModalDelete}
+        handleCloseModalDelete={handleCloseModalDelete}
+      />
     </div>
   );
 }
