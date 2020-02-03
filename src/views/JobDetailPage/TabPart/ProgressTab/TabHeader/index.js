@@ -6,15 +6,15 @@ import { mdiChevronLeft , mdiSettings } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ProgressModal from '../ProgressModal'
 import { WrapperContext } from '../../../index'
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 85px;
-  overflow-y: hidden;
-`;
+// const Container = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   background-color: #fff;
+//   border-bottom: 1px solid rgba(0, 0, 0, .1);
+//   height: 85px;
+//   overflow-y: hidden;
+// `;
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -25,6 +25,10 @@ const ButtonIcon = styled(IconButton)`
       fill: #03b000;
     }
   }
+`
+
+const ProgressTitle = styled(ColorTypo)`
+  font-size: 17px;
 `
 
 function TabHeader({ setShow }) {
@@ -47,17 +51,17 @@ function TabHeader({ setShow }) {
     setOpen(false);
   };
   return (
-    <Container>
+    <div className="container-progress-tabheader">
       <ButtonIcon onClick={() => setShow(0)}>
         <Icon path={mdiChevronLeft } size={1} />
       </ButtonIcon>
-      <ColorTypo uppercase bold style={{ fontSize: 17 }}>Tiến độ công việc</ColorTypo>
+      <ProgressTitle uppercase bold>Tiến độ công việc</ProgressTitle>
       <ButtonIcon onClick={handleClickOpen}>
         <Icon path={mdiSettings} size={1} />
       </ButtonIcon>
       {/* modal tao moi cong viec con */}
       <ProgressModal isOpen={open} handleClickOpen={handleClickOpen} handleClickClose={handleClickClose} />
-    </Container>
+    </div>
   );
 }
 

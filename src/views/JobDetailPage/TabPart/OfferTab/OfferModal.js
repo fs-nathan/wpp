@@ -262,6 +262,9 @@ const OfferModal = (props) => {
         }
       </DialogContent>
       <DialogActions>
+        <Button autoFocus onClick={props.handleClickClose} color='#222'>
+          Hủy
+        </Button>
         {props.isOffer ?
           <Button
             color="primary"

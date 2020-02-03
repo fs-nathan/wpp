@@ -68,7 +68,7 @@ const DialogTitle = withStyles(styles)(props => {
     const { children, classes, onClose, ...other } = props;
     return (
         <MuiDialogTitle disableTypography className={classes.root} {...other}>
-            <Typography className={ classes.title} variant="h6">{children}</Typography>
+            <Typography className={classes.title} variant="h6">{children}</Typography>
             {onClose ? (
                 <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
                     <CloseIcon />
@@ -99,7 +99,7 @@ function createData(name, admin, manager, sups, member) {
 function CheckboxMarked() {
 
     return (
-        <div style={{ display:'flex', justifyContent: 'center', alignItems:'center', fill: '#d1d1d1' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', fill: '#d1d1d1' }}>
             <Icon path={mdiCheckboxMarked} size={1} />
         </div>
     )
@@ -172,6 +172,9 @@ function PriorityMemberModal(props) {
                 </Table>
             </DialogContent>
             <DialogActions>
+                <Button autoFocus onClick={handleClose} color='#222'>
+                    Hủy
+                </Button>
                 <Button autoFocus onClick={handleClose} color='primary'>
                     HOÀN THÀNH
                 </Button>

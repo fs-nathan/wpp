@@ -10,19 +10,19 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { WrapperContext } from '../index'
-import { Redirect } from 'react-router-dom'
-const Container = styled.div`
-  display: ${props => props.show ? 'block' : 'none'};
-  height: calc(82vh);
-  & > *:first-child {
-    padding: 0 15px;
-  }
-  grid-template-rows: 107px calc(83vh - 8px);
-  grid-template-columns: 1fr;
-  grid-template-areas: 
-    "header"
-    "body";
-`
+// import { Redirect } from 'react-router-dom'
+// const Container = styled.div`
+//   display: ${props => props.show ? 'block' : 'none'};
+//   height: calc(82vh);
+//   & > *:first-child {
+//     padding: 0 15px;
+//   }
+//   grid-template-rows: 107px calc(83vh - 8px);
+//   grid-template-columns: 1fr;
+//   grid-template-areas: 
+//     "header"
+//     "body";
+// `
 
 const Header = styled.div`
   display: flex;
@@ -76,7 +76,7 @@ const ProjectsDetail = styled.div`
 
 const Projects = (props) => {
   // console.log("projects:::::", props);
-  const value = React.useContext(WrapperContext)
+  // const value = React.useContext(WrapperContext)
   return (
     // redirect ? <Redirect to='/target' /> :
     <ProjectsDetail onClick={() => {
@@ -191,7 +191,7 @@ function ListProject(props) {
     data = value.projectListBasic.projectGroups
   }
   return (
-    <div {...props} className={"lp-container " + (props.show ? "lp-container-block" : "lp-container-none")  } >
+    <div className={"lp-container " + (props.show ? "lp-container-block" : "lp-container-none")  } >
       <WrapperHeader {...props} />
       <WrapperBody 
       autoHide autoHideTimeout={500} autoHideDuration={200}

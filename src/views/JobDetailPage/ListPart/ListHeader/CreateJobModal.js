@@ -31,7 +31,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from "@material-ui/pickers";
-import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
+import { convertDate, convertDateToJSFormat } from '../../../../helpers/jobDetail/stringHelper'
 // const Header = styled.div`
 //   padding: 0 15px;
 //   height: 85px;
@@ -262,7 +262,6 @@ let optionsList = [
 function CommonProgressForm(props) {
   const [value, setValue] = React.useState("Ngày và giờ (mặc định)");
   const handleChangeFormAssign = itemValue => {
-    // console.log('itemValue::::', itemValue);
     setValue(itemValue)
     // let clickedItem = props.labels.find(item => item.value === itemValue)
     // props.handleChangeAssign(clickedItem)
@@ -471,8 +470,10 @@ function CreateJobModal(props) {
       if (!tempData.name) tempData.name = ''
       if (!tempData.description) tempData.description = ''
       if (!tempData.start_date) tempData.start_date = ''
+      else tempData.start_date = convertDateToJSFormat(tempData.start_date)
       if (!tempData.start_time) tempData.start_time = ''
       if (!tempData.end_date) tempData.end_date = ''
+      else tempData.end_date = convertDateToJSFormat(tempData.end_date)
       if (!tempData.end_time) tempData.end_time = ''
       if (!tempData.group_task) tempData.group_task = ''
       // if (!tempData.type_assign) tempData.type_assign = ''
@@ -485,7 +486,6 @@ function CreateJobModal(props) {
   }, [props.data])
 
   const handleChangeData = (attName, value) => {
-    console.log("value::::", value)
     setDataMember(prevState => ({ ...prevState, [attName]: value }))
   }
 
@@ -515,7 +515,6 @@ function CreateJobModal(props) {
       if (!dataCreateJob.group_task) delete data.group_task
       // Call api
       value.createJobByProjectId({ data, projectId: value.projectId })
-      // console.log("data",  dataCreateJob)
 
       // Clear temporary data
       setDataMember(DEFAULT_DATA)
@@ -526,7 +525,7 @@ function CreateJobModal(props) {
       alert("Bạn cần nhập tên công việc")
     }
   }
-
+   
   return (
     <div>
       <StyleDialog open={props.isOpen} fullWidth onClose={handleClose}>
@@ -606,9 +605,6 @@ function CreateJobModal(props) {
                 label="Ngày"
                 value={data.start_date}
                 onChange={e => handleChangeData("start_date", convertDate(e))}
-                KeyboardButtonProps={{
-                  "aria-label": "change date"
-                }}
               />
             </MuiPickersUtilsProvider>
       
@@ -634,11 +630,8 @@ function CreateJobModal(props) {
                 format="dd/MM/yyyy"
                 label="Ngày"
                 value={data.end_date}
-                minDate={ data.start_date}
+                // minDate={data.start_date}
                 onChange={e => handleChangeData("end_date", convertDate(e))}
-                KeyboardButtonProps={{
-                  "aria-label": "date change"
-                }}
               />
             </MuiPickersUtilsProvider>
        
@@ -664,9 +657,14 @@ function CreateJobModal(props) {
           {props.isRight ?
             <>
               <span></span>
+              <div>
+              <Button autoFocus onClick={handleClose} >
+                Hủy
+              </Button>
               <Button onClick={() => { updateData() }} color="primary">
                 Hoàn Thành
-            </Button>
+              </Button>
+              </div>
             </>
             :
             <>
@@ -678,7 +676,7 @@ function CreateJobModal(props) {
               </ButtonImage>
               <Button autoFocus onClick={handlePressConfirm} color="primary">
                 TẠO VIỆC
-          </Button>
+              </Button>
             </>
           }
         </DialogFooter>

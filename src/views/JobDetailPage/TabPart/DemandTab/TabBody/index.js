@@ -63,6 +63,11 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
+const UserAvatar = styled(Avatar)`
+    width: 25px;
+    height: 25px;
+  `
+
 // const StyledMenuDemand = styled.div`
 //   opacity: 0 ;
 //   ${StyledListItem}:hover & {
@@ -81,15 +86,17 @@ const CustomListItem = (props) => {
     setAnchorEl(null);
   }
 
+
+
   return (
     <React.Fragment>
       <li className="styled-list-item">
-        <div className="styled-title-box">
-          <Avatar style={{ width: 25, height: 25 }} src={props.item.user_create_avatar} alt='avatar' />
+        <div className="styled-title-box-dmt">
+          <UserAvatar src={props.item.user_create_avatar} alt='avatar' />
           <div>
             <Text variant='body1' bold>{props.item.user_create_name}</Text>
             <ColorTypo variant='caption'>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div className="wrapper-filter-dmt">
                 <Badge
                   color={props.isDemand ? 'orangelight' : 'bluelight'}
                   label={props.isDemand ? 'Chỉ đạo' : 'Quyết định'}
@@ -97,7 +104,7 @@ const CustomListItem = (props) => {
                   badge
                   component='small' >
                 </Badge>
-                <p style={{ margin: '0 7px', fontSize: '0.75em', color: '#a6a6a6' }}>lúc {props.item.date_create}</p>
+                <p className="demand-create-time">lúc {props.item.date_create}</p>
               </div>
             </ColorTypo>
           </div>
@@ -107,7 +114,7 @@ const CustomListItem = (props) => {
             </ButtonIcon>
           </div>
         </div>
-        <div className="styled-content-box">
+        <div className="styled-content-box-dmt">
           <Text >{props.item.content}</Text>
         </div>
       </li>
