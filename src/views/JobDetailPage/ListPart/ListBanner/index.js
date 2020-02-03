@@ -38,34 +38,27 @@ function ListBanner() {
     value.filterTaskByType(typeIdx)
     setSelected(typeIdx) 
   }
+  console.log({value})
 
   let data = []
-  if( value && value.staticTask && value.staticTask.static) {
-    data = value.staticTask.static
+  if (value && value.projectDetail && value.projectDetail) {
+    data = value.projectDetail
+  };
+  let task_of_me = 0;
+  if (value.listTaskDetail && value.listTaskDetail.tasks.length > 0) {
+    value.listTaskDetail.tasks.forEach((e, i) => {
+      task_of_me += e.tasks.length
+    });
   }
-  // useEffect(() => {
-  //   if( !data ) {
-  //     // const {
-  //     //   task_of_me, task_waiting, task_doing, task_complete, task_expired, task_stop
-  //     // } = data
-  //     // setStaticTask({
-  //     //   task_me: data.task_of_me ,
-  //     //   task_waiting: data.task_waiting,
-  //     //   task_doing:  data.task_doing ,
-  //     //   task_complete: data.task_complete ,
-  //     //   task_expired: data.task_expired,
-  //     //   task_stop: data.task_stop
-  //     // })
-      const taskStatic = {
-        task_me: data.task_of_me ,
-        task_waiting: data.task_waiting,
-        task_doing:  data.task_doing ,
-        task_complete: data.task_complete ,
-        task_expired: data.task_expired,
-        task_stop: data.task_stop
-      }
-    // }
-  // }, [data])
+  
+  const taskStatic = {
+    task_me: task_of_me ,
+    task_waiting: data.task_waiting,
+    task_doing:  data.task_doing ,
+    task_complete: data.task_complete ,
+    task_expired: data.task_expired,
+    task_stop: data.task_stop
+  }
   const jobTypes = [
     'Tất cả (' + (taskStatic.task_me ? taskStatic.task_me : 0) + ')',
     'Đang chờ (' + (taskStatic.task_waiting ? taskStatic.task_waiting : 0) + ')',   // Waiting

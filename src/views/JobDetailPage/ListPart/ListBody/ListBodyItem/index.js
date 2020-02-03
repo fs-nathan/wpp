@@ -122,10 +122,8 @@ function JobName(props) {
 function JobContent(props) {
   return (
     <div className="container-content-lbd">
-        <div>
-          <LightTooltip  title={props.name} placement="bottom-start">
-            <Avatar src={props.avatar} alt='avatar' />
-          </LightTooltip>
+        <div title={props.name}>
+          <Avatar src={props.avatar} alt='avatar' />
           <ColorTypo color='#7a869a' >{props.content}</ColorTypo>
         </div>
         <div>
