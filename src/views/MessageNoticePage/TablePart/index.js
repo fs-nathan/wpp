@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import ColorTypo from '../../../components/ColorTypo';
 import '../Message.scss';
 import MessageRight from './MessageRight';
+import NotificationRight from './NotificationRight';
 import { MESSAGE } from '../../../constants/constants';
 
 const TablePart = props => {
@@ -11,13 +12,13 @@ const TablePart = props => {
     const type = props.match.params.type;
     switch (type) {
       case MESSAGE.ALL:
-        return <MessageRight />;
+        return <MessageRight isNotView={false}/>;
       case MESSAGE.NEW:
-        return <MessageRight />;
+        return <MessageRight isNotView={true}/>;
       case MESSAGE.NOTICE_ALL:
-        return <MessageRight />;
+        return <NotificationRight isNotView={false}/>;
       case MESSAGE.NOTICE_NEW:
-        return <MessageRight />;
+        return <NotificationRight isNotView={true}/>;
       default:
         return null;
     }

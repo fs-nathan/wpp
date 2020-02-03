@@ -9,6 +9,7 @@ import {
   Button,
   Link
 } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 import { actionForgotPassword } from '../../actions/account';
 import MainAccount from '../../components/MainAccount/MainAccount';
 import * as images from '../../assets';
@@ -22,6 +23,7 @@ const ForgotPasswordPage = props => {
     e.preventDefault();
     try {
       await actionForgotPassword(e.target.elements.email.value);
+      props.history.push(Routes.LOGIN)
     } catch (error) {
       setErrorMsg(error.message);
     }
@@ -88,4 +90,4 @@ const ForgotPasswordPage = props => {
   );
 };
 
-export default ForgotPasswordPage;
+export default withRouter(ForgotPasswordPage);

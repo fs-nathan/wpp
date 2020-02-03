@@ -12,11 +12,19 @@ import { connect } from 'react-redux';
 import './NoticeModal.scss';
 import { Routes } from '../../constants/routes';
 import * as images from '../../assets';
+import { actionVisibleDrawerMessage } from '../../actions/system/system';
+
 const GroupModal = props => {
   const { groupDetail: inforGroup } = props;
 
   const closeNoticeModal = () => {
     if (props.onClose) props.onClose();
+    if (props.typeDrawer) {
+      props.actionVisibleDrawerMessage({
+        type: '',
+        anchor: props.anchorDrawer
+      });
+    }
   };
 
   return (
@@ -57,7 +65,7 @@ const GroupModal = props => {
             <span className="block-name">{inforGroup.name}</span>
           </div>
           <div>
-            <span className="block-email">{inforGroup.code}</span>
+            <span className="block-email">ID: {inforGroup.code}</span>
           </div>
         </div>
       </MuiDialogContent>
@@ -78,7 +86,9 @@ const GroupModal = props => {
 export default connect(
   state => ({
     visibleNoticeModal: state.system.visibleNoticeModal,
+    typeDrawer: state.system.typeDrawer,
+    anchorDrawer: state.system.anchorDrawer,
     groupDetail: state.setting.groupDetail
   }),
-  {}
+  { actionVisibleDrawerMessage }
 )(withRouter(GroupModal));

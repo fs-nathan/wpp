@@ -1,7 +1,8 @@
 import axios from 'axios';
 import config from './apiConstant';
-import { Routes } from './routes';
-import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE, WP_LANGUAGE } from './constants';
+// import { Routes } from './routes';
+// import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE, WP_LANGUAGE } from './constants';
+import { WP_LANGUAGE } from './constants';
 
 const apiService = axios.create({
   baseURL: config.BASE_API,
@@ -32,18 +33,18 @@ apiService.interceptors.response.use(
   function(error) {
     if (error.response.status === 403) {
       apiService
-        .post("login", {
-          email: "huuthanhxd@gmail.com",
-          password: "12345678", 
+        .post('login', {
+          email: 'huuthanhxd@gmail.com',
+          password: '12345678'
         })
         .then(response => {
-          localStorage.setItem("token", response.data.accessToken);
-          localStorage.setItem("refreshToken", response.data.refreshToken);
-          localStorage.setItem("group-active", response.data.group_active);
+          localStorage.setItem('token', response.data.accessToken);
+          localStorage.setItem('refreshToken', response.data.refreshToken);
+          localStorage.setItem('group-active', response.data.group_active);
           apiService.defaults.headers.common[
-            "Authorization"
+            'Authorization'
           ] = `Bearer ${response.data.accessToken}`;
-          apiService.defaults.headers.common["group-active"] =
+          apiService.defaults.headers.common['group-active'] =
             response.data.group_active;
         });
       return error.response;

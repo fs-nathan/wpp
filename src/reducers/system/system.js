@@ -3,13 +3,16 @@ import * as actionTypes from '../../constants/actions/system/system';
 export const initialState = {
   typeDrawer: '',
   anchorDrawer: 'right',
-  visibleNoticeModal: true,
+  visibleNoticeModal: false,
   isDocumentDetail: false,
   documentFile: null,
   breadCrumbs: [],
   profile: {},
   notification: [],
-  toast: { type: null, message: '' }
+  toast: { type: null, message: '' },
+  numberNotificationNotView: 0,
+  numberMessageNotView: 0,
+  groupActive: {}
 };
 
 const system = (state = initialState, action) => {
@@ -22,6 +25,8 @@ const system = (state = initialState, action) => {
       };
     case actionTypes.CHANGE_NOTICE_MODAL:
       return { ...state, visibleNoticeModal: action.payload };
+    case actionTypes.GROUP_ACTIVE:
+      return { ...state, groupActive: action.payload };
     case actionTypes.CHANGE_DOCUMENT_DETAIL:
       return {
         ...state,
@@ -36,6 +41,10 @@ const system = (state = initialState, action) => {
       return { ...state, notification: action.payload };
     case actionTypes.ACTION_TOAST:
       return { ...state, toast: action.payload };
+    case actionTypes.CHANGE_NUM_NOTIFICATION_NOT_VIEW:
+      return { ...state, numberNotificationNotView: action.payload };
+    case actionTypes.CHANGE_NUM_MESSAGE_NOT_VIEW:
+      return { ...state, numberMessageNotView: action.payload };
     default:
       return state;
   }

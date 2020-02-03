@@ -68,12 +68,20 @@
         font-weight: 500;
         color: #414141;
         line-height: 22px;
+        a {
+          font-weight: 500;
+          color: #222;
+        }
         &:hover {
           color: #00b707;
         }
       }
       .sub-description {
         font-size: 13px;
+        a {
+          font-weight: normal;
+          color: #757575;
+        }
       }
     }
 

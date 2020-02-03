@@ -59,6 +59,7 @@ const ModalCommon = props => {
       maxWidth={props.maxWidth || 'sm'}
       aria-labelledby="customized-dialog-title"
       open={true}
+      className="modal-common-container"
     >
       <DialogTitleCus
         id="customized-dialog-title"
@@ -70,21 +71,26 @@ const ModalCommon = props => {
       {props.children}
       {props.footerAction && (
         <DialogActions>
-          <Button
-            onClick={props.onClose}
-            disableRipple
-            className="common-btn-modal"
-          >
-            {t('IDS_WP_CANCEL')}
-          </Button>
+          {props.onClose && (
+            <Button
+              onClick={props.onClose}
+              disableRipple
+              className="common-btn-modal"
+            >
+              {t('IDS_WP_CANCEL')}
+            </Button>
+          )}
+
           {props.footerAction.map((el, idx) => (
             <Button
               autoFocus
               onClick={el.action}
-              // color={idx % 2 !== 0 || isPrimary ? 'primary' : ''}
               className="common-btn-modal"
               style={{
-                color: idx % 2 !== 0 || isPrimary ? bgColor.color : '#222'
+                color:
+                  (idx % 2 !== 0 || isPrimary) && el.type !== 'cancel'
+                    ? bgColor.color
+                    : '#222'
               }}
               key={idx}
               disabled={el.disabled}

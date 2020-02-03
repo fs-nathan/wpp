@@ -1,20 +1,24 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
-import '../Message.scss';
+// import * as image from '../../../assets/index';
 
-const MessageRightItem = props => {
+import '../Drawer.scss';
+
+const ItemMessage = props => {
   const { item } = props;
+
   const getCreateToNow = () => {
     let sAgo = '';
 
     sAgo = item.time_label.replace(/&#x2F;/g, '/');
     return sAgo;
   };
+
   return (
     <div
       className={`item-message ${item.is_viewed ? '' : 'un-read'}`}
-      key={item.task_id}
+      key={item.id}
       onClick={props.handleViewNotification}
     >
       <div className="avatar-item-message">
@@ -25,17 +29,16 @@ const MessageRightItem = props => {
         />
         {!item.is_viewed && <span className="badge-un-read"></span>}
       </div>
-      <div className="text-description">
+      <div>
         <div className="name-message">
-          <span className="text-name-message">{item.task_name}</span>
-          <span>{getCreateToNow()}</span>
+          <span className="text-name-message">{item.content}</span>
         </div>
         <div className="des-message">
-          <span>{item.content}</span>
+          <span>{getCreateToNow()}</span>
         </div>
       </div>
     </div>
   );
 };
 
-export default MessageRightItem;
+export default ItemMessage;

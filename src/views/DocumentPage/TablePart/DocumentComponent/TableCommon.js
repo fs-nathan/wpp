@@ -51,7 +51,7 @@ export const CustomAvatar = props => (
   <Avatar
     alt="avatar"
     title={props.title || ''}
-    className="custom-avatar-image"
+    className={`custom-avatar-image ${(props.icsmall ? 'ic-small' : '')}`}
     {...props}
   />
 );

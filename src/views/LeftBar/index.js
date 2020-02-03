@@ -2,7 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import { actionVisibleDrawerMessage } from '../../actions/system/system';
+import {
+  actionVisibleDrawerMessage,
+  openNoticeModal
+} from '../../actions/system/system';
 import { Routes } from '../../constants/routes';
 import { useTranslation } from 'react-i18next';
 import * as icons from '../../assets';
@@ -26,7 +29,9 @@ const LeftBar = ({
   colors,
   history,
   anchorDrawer,
-  actionVisibleDrawerMessage
+  groupActive,
+  actionVisibleDrawerMessage,
+  openNoticeModal
 }) => {
   const { t } = useTranslation();
   const pathname = history.location.pathname;
@@ -77,14 +82,20 @@ const LeftBar = ({
       url: Routes.DEPARTMENTS
     }
   ];
+  const isFree = groupActive.type === 'Free';
   return (
     <div className="left-bar-container" style={{ background: bgColor.color }}>
       {meuList.map((el, idx) => (
         <Link
-          to={el.url}
+          to={isFree ? null : el.url}
           key={idx}
           className={`menu-item ${el.isSelected ? 'actived' : ''}`}
-          onClick={() => onCloseDrawer()}
+          onClick={() => {
+            if (isFree) {
+              openNoticeModal();
+            }
+            onCloseDrawer();
+          }}
         >
           <img src={el.icon} alt="" className="LeftNavIcon" />
           <span className="titleTab">{el.title}</span>
@@ -105,7 +116,8 @@ const LeftBar = ({
 export default connect(
   state => ({
     colors: state.setting.colors,
-    anchorDrawer: state.system.anchorDrawer
+    anchorDrawer: state.system.anchorDrawer,
+    groupActive: state.system.groupActive
   }),
-  { actionVisibleDrawerMessage }
+  { actionVisibleDrawerMessage, openNoticeModal }
 )(withRouter(LeftBar));

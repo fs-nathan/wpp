@@ -39,7 +39,7 @@ const TablePart = props => {
     const search = props.location.search;
     switch (type) {
       case SETTING_ACCOUNT.INFO:
-        return 'Thông tin nhóm';
+        return 'Thông tin tài khoản';
       case SETTING_ACCOUNT.CHANGE_PASSWORD:
         return 'Đổi mật khẩu';
       case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS:

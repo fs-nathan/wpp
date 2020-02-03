@@ -59,3 +59,19 @@
     background-color: transparent;
   }
 }
+.bag-cus {
+  .MuiBadge-anchorOriginTopRightRectangle {
+    top: 12px;
+    right: 12px;
+  }
+  &.none-view {
+    .MuiBadge-anchorOriginTopRightRectangle {
+      height: 20px;
+      width: 23px;
+      border: solid 2px white;
+      top: 15px;
+      right: 8px;
+      font-size: 10px;
+    }
+  }
+}

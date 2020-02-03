@@ -14,7 +14,10 @@ import DrawerComponent from '../components/Drawer/Drawer';
 import NoticeModal from '../components/NoticeModal/NoticeModal';
 import GroupModal from '../components/NoticeModal/GroupModal';
 import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
-import { actionFetchGroupDetail, actionFetchListColor } from '../actions/setting/setting';
+import {
+  actionFetchGroupDetail,
+  actionFetchListColor
+} from '../actions/setting/setting';
 import { actionToast } from '../actions/system/system';
 
 const Container = styled.div`
@@ -111,8 +114,7 @@ function MainLayout({
   useEffect(() => {
     if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
       actionFetchGroupDetail(true);
-      actionFetchListColor()
-
+      actionFetchListColor();
     }
     // eslint-disable-next-line
   }, []);

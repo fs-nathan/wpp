@@ -115,7 +115,7 @@ const Trash = props => {
       <Table className="doc-table-content" stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
-            <StyledTableHeadCell>
+            <StyledTableHeadCell width="3%">
               <GreenCheckbox
                 onChange={handleSelectAllClick}
                 checked={
@@ -129,9 +129,9 @@ const Trash = props => {
             <StyledTableHeadCell align="center" width="5%">
               Loại
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="20%">
+            <StyledTableHeadCell align="left">
               <div
-                className="cursor-pointer"
+                className="cursor-pointer file-name-document"
                 onClick={() => hanldeSort('name')}
               >
                 Tên tài liệu
@@ -143,18 +143,18 @@ const Trash = props => {
             <StyledTableHeadCell align="center" width="10%">
               Chủ sở hữu
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="15%">
+            <StyledTableHeadCell align="center" width="12%">
               Người xóa
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="15%">
+            <StyledTableHeadCell align="center" width="12%">
               Ngày xóa
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="20%">
+            <StyledTableHeadCell align="center" width="15%">
               Xóa vĩnh viễn
             </StyledTableHeadCell>
             <StyledTableHeadCell
               align="center"
-              width="10%"
+              width="12%"
               className="last-cell"
             >
               Kích thước
@@ -169,7 +169,7 @@ const Trash = props => {
                 className={`table-body-row ${isItemSelected ? 'selected' : ''}`}
                 key={item.id}
               >
-                <StyledTableBodyCell>
+                <StyledTableBodyCell width="3%">
                   <GreenCheckbox
                     checked={isItemSelected}
                     onChange={e => handleSelectItem(item)}
@@ -178,30 +178,32 @@ const Trash = props => {
                 <StyledTableBodyCell align="center" width="5%">
                   <FullAvatar src={FileType(item.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="20%">
-                  <ColorTypo color="black">{item.name}</ColorTypo>
+                <StyledTableBodyCell align="left">
+                  <ColorTypo color="black" className="file-name-document">
+                    {item.name}
+                  </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   {item.user_create && item.user_create.avatar && (
                     <CustomAvatar src={item.user_create.avatar} />
                   )}
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="15%">
+                <StyledTableBodyCell align="center" width="12%">
                   {item.user_delete && item.user_delete.avatar && (
                     <CustomAvatar src={item.user_delete.avatar} />
                   )}
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="15%">
+                <StyledTableBodyCell align="center" width="12%">
                   <ColorTypo color="black">{item.deleted_at}</ColorTypo>
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="20%">
+                <StyledTableBodyCell align="center" width="15%">
                   <ColorTypo color="red">
                     {item.day_storage > 0 ? `${item.day_storage} ngày` : ''}
                   </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell
                   align="center"
-                  width="10%"
+                  width="12%"
                   className="last-cell"
                 >
                   <ColorTypo color="black">{item.size || '-'}</ColorTypo>
