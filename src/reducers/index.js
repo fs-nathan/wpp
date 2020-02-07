@@ -76,6 +76,7 @@ import listTask, { initialState as listTaskInitialState} from './task/listTask';
 import createTask, { initialState as createTaskInitialState} from './task/createTask';
 import deleteTask, { initialState as deleteTaskInitialState} from './task/deleteTask';
 import sortTask, { initialState as sortTaskInitialState} from './task/sortTask';
+import inviteOtherPeopleCreateAccount, {initialState as inviteOtherPeopleCreateAccountInitialState} from './register/inviteOtherPeopleCreateAccount';
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from './documents';
@@ -211,6 +212,9 @@ const rootReducer = combineReducers({
     acceptRequirementJoinGroup,
     rejectRequirementJoinGroup,
   }),
+  register: combineReducers({
+    inviteOtherPeopleCreateAccount,
+  })
 });
 
 export const DEFAULT_STATE = {
@@ -316,6 +320,9 @@ export const DEFAULT_STATE = {
     getRequirementJoinGroup: getRequirementJoinGroupInitialState,
     acceptRequirementJoinGroup: acceptRequirementJoinGroupInitialState,
     rejectRequirementJoinGroup: rejectRequirementJoinGroupInitialState,
+  },
+  register: {
+    inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState,
   }
 };
 

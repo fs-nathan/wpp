@@ -28,6 +28,7 @@ import RoleManagerModal from '../../Modals/RoleManager';
 import LogoManagerModal from '../../Modals/LogoManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import PermissionSettingsModal from '../../Modals/PermissionSettings';
+import CreateAccountModal from '../../Modals/CreateAccount';
 import './style.scss';
 
 const NewUserBadge = ({ className = '', ...props }) =>
@@ -50,41 +51,14 @@ function displayDate(date) {
   }
 }
 
-const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFromGroup }) => {
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [alert, setAlert] = React.useState(false);
+const PermissionButton = ({ 
+  user,
+  setCurrentSettingUser, setCurrentSettingAnchorEl
+}) => {
 
   function handleClick(evt) {
-    setAnchorEl(evt.currentTarget);
-  }
-
-  function handleClose(openModal = false) {
-    return evt => {
-      setOpen(openModal);
-      setAnchorEl(null);
-    }
-  }
-
-  function changeState(user) {
-    if (get(user, 'state') === 0) {
-      doPublicMember({
-        userId: get(user, 'id'),
-      });
-    } else {
-      doPrivateMember({
-        userId: get(user, 'id'),
-      });
-    }
-    setAnchorEl(null);
-  }
-
-  function handleLeaveGroup(user) {
-    doBanUserFromGroup({
-      userId: get(user, 'id'),
-    });
-    setAnchorEl(null);
+    setCurrentSettingAnchorEl(evt.currentTarget);
+    setCurrentSettingUser(user);
   }
 
   return (
@@ -92,28 +66,6 @@ const PermissionButton = ({ user, doPrivateMember, doPublicMember, doBanUserFrom
       <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} size='small'>
         <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
       </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose()}
-        transformOrigin={{
-          vertical: -30,
-          horizontal: 'right',
-        }}
-      >
-        <MenuItem onClick={evt => changeState(user)}>Chuyển trạng thái</MenuItem>
-        <MenuItem onClick={handleClose(true)}>Phân quyền</MenuItem>
-        <MenuItem onClick={evt => setAlert(true)}>Rời nhóm</MenuItem>
-      </Menu>
-      <PermissionSettingsModal open={open} setOpen={setOpen} />
-      <AlertModal 
-        open={alert}
-        setOpen={setAlert}
-        content='Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?'
-        onConfirm={() => handleLeaveGroup(user)}
-      />
     </SettingContainer>
   );
 }
@@ -147,12 +99,45 @@ function AllUsersTable({
   const history = useHistory();
 
   const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
-  const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
+  const { data: { rooms: group, maxUser }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
   const { data: { requirements } } = getRequirementJoinGroup;
 
   const loading = listUserOfGroupLoading || listRoomLoading;
   const error = listUserOfGroupError || listRoomError;
   const [moreModal, setMoreModal] = React.useState(0);
+  const [createAccount, setCreateAccount] = React.useState(false);
+
+  const [currentSettingUser, setCurrentSettingUser] = React.useState(null);
+  const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
+  const [permisstionSettingModal, setPermisstionSettingModal] = React.useState(false);
+  const [alertModal, setAlertModal] = React.useState(false);
+
+  function handleClose(open = false) {
+    return evt => {
+      setPermisstionSettingModal(open);
+      setCurrentSettingAnchorEl(null);
+    }
+  }
+
+  function changeState(user) {
+    if (get(user, 'state') === 0) {
+      doPublicMember({
+        userId: get(user, 'id'),
+      });
+    } else {
+      doPrivateMember({
+        userId: get(user, 'id'),
+      });
+    }
+    setCurrentSettingAnchorEl(null);
+  }
+
+  function handleLeaveGroup(user) {
+    doBanUserFromGroup({
+      userId: get(user, 'id'),
+    });
+    setCurrentSettingAnchorEl(null);
+  }
 
   return (
     <Container>
@@ -163,8 +148,7 @@ function AllUsersTable({
             title: 'Danh sách nhân sự',
             subTitle: () => 
               <SubTitle>
-                Đã có {rooms.reduce((sum, room) => sum += get(room, 'number_member', 0), 0)} thành viên
-                <span> (Nâng cấp)</span>
+                Đã có {rooms.reduce((sum, room) => sum += get(room, 'number_member', 0), 0)}/{maxUser} thành viên
               </SubTitle>,
             subActions: [{
               label: 'Thêm thành viên',
@@ -176,7 +160,7 @@ function AllUsersTable({
             }],
             mainAction: {
               label: '+ Thêm tài khoản',
-              onClick: null,  
+              onClick: () => setCreateAccount(true),  
             },
             expand: {
               bool: expand,
@@ -274,12 +258,11 @@ function AllUsersTable({
             align: 'center',
             width: '10%',
           }, {
-            label: '',
+            label: (row) => <IconButton disabled><Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0)'}/></IconButton>,
             field: (row) => <PermissionButton 
                               user={row} 
-                              doPublicMember={doPublicMember}
-                              doPrivateMember={doPrivateMember}
-                              doBanUserFromGroup={doBanUserFromGroup}
+                              setCurrentSettingUser={setCurrentSettingUser}
+                              setCurrentSettingAnchorEl={setCurrentSettingAnchorEl}
                             />,
             align: 'center',
             width: '5%',
@@ -291,6 +274,30 @@ function AllUsersTable({
       <RoleManagerModal open={moreModal === 2} setOpen={setMoreModal} />
       <LogoManagerModal open={moreModal === 3} setOpen={setMoreModal} isSelect={false} />
       <TableSettingsModal open={moreModal === 4} setOpen={setMoreModal} />
+      <CreateAccountModal open={createAccount} setOpen={setCreateAccount} />
+      <Menu
+        id="simple-menu"
+        anchorEl={currentSettingAnchorEl}
+        keepMounted
+        open={Boolean(currentSettingAnchorEl)}
+        onClose={handleClose()}
+        transformOrigin={{
+          vertical: -30,
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={evt => changeState(currentSettingUser)}>Chuyển trạng thái</MenuItem>
+        <MenuItem onClick={handleClose(true)}>Phân quyền</MenuItem>
+        <MenuItem onClick={evt => setAlertModal(true)}>Rời nhóm</MenuItem>
+      </Menu>
+      <PermissionSettingsModal open={permisstionSettingModal} setOpen={setPermisstionSettingModal} />
+      <AlertModal 
+        open={alertModal}
+        setOpen={setAlertModal}
+        content='Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?'
+        onConfirm={() => handleLeaveGroup(currentSettingUser)}
+        onCancle={() => setCurrentSettingAnchorEl(null)}
+      />
     </Container>
   )
 }

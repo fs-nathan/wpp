@@ -67,33 +67,22 @@ function decodePriorityCode(priorityCode) {
 }
 
 function displayDate(time, date) {
-  if (
-    (date instanceof Date && !isNaN(date))
-  ) {
-    return (
-      <>
-        <span>{time}</span>
-        <span>{date.toLocaleDateString()}</span>
-      </>
-    );
-  } else {
-    return <span />;
-  }
+  return (
+    <>
+      <span>{time}</span>
+      <span>{date}</span>
+    </>
+  );
 }
 
 const SettingButton = ({
   task,
-  onDeleteTask,
+  setCurrentSettingTask, setCurrentSettingAnchorEl,
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [alert, setAlert] = React.useState(false);
 
   function handleClick(evt) {
-    setAnchorEl(evt.currentTarget);
-  }
-
-  function handleClose(evt) {
-    setAnchorEl(null);
+    setCurrentSettingAnchorEl(evt.currentTarget);
+    setCurrentSettingTask(task);
   }
 
   return (
@@ -106,29 +95,6 @@ const SettingButton = ({
       >
         <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
       </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        transformOrigin={{
-          vertical: -30,
-          horizontal: 'right'
-        }}
-      >
-        <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
-      </Menu>
-      <AlertModal
-        open={alert}
-        setOpen={setAlert}
-        content="Bạn chắc chắn muốn xóa công việc?"
-        onCancle={handleClose}
-        onConfirm={() => {
-          handleClose();
-          onDeleteTask(task);
-        }}
-      />
     </SettingContainer>
   );
 };
@@ -154,6 +120,11 @@ function AllTaskTable({
 
   const [open, setOpen] = React.useState(false);
 
+  const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
+  const [currentSettingTask, setCurrentSettingTask] = React.useState(null);
+  
+  const [alertModal, setAlertModal] = React.useState(false);
+
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
@@ -167,6 +138,10 @@ function AllTaskTable({
     doDeleteTask({
       taskId: get(task, 'id'),
     });
+  }
+
+  function handleCloseMenu() {
+    setCurrentSettingAnchorEl(null);
   }
 
   return (
@@ -279,14 +254,14 @@ function AllTaskTable({
             }, {
               label: 'Bắt đầu',
               field: (row) => <DateBox>
-                                {displayDate(get(row, 'start_time'), new Date(get(row, 'start_date')))}
+                                {displayDate(get(row, 'start_time'), get(row, 'start_date'))}
                               </DateBox>,
               align: 'left',
               width: '10%',
             }, {
               label: 'Kết thúc',
               field: (row) => <DateBox>
-                                {displayDate(get(row, 'end_time'), new Date(get(row, 'end_date')))}
+                                {displayDate(get(row, 'end_time'), get(row, 'end_date'))}
                               </DateBox>,
               align: 'left',
               width: '10%',
@@ -320,11 +295,12 @@ function AllTaskTable({
               align: 'center',
               width: '10%',
             }, {
-              label: '',
+              label: () => <IconButton size="small" disabled><Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0)" /></IconButton>,
               field: row => (
                 <SettingButton
                   task={row}
-                  onDeleteTask={handleDeleteTask}
+                  setCurrentSettingAnchorEl={setCurrentSettingAnchorEl}
+                  setCurrentSettingTask={setCurrentSettingTask}
                 />
               ),
               align: 'center',
@@ -333,6 +309,29 @@ function AllTaskTable({
             data={tasks}
           />
           <CreateNewTaskModal open={open} setOpen={setOpen}/>
+          <Menu
+            id="simple-menu"
+            anchorEl={currentSettingAnchorEl}
+            keepMounted
+            open={Boolean(currentSettingAnchorEl)}
+            onClose={handleCloseMenu}
+            transformOrigin={{
+              vertical: -30,
+              horizontal: 'right'
+            }}
+          >
+            <MenuItem onClick={evt => setAlertModal(true)}>Xóa</MenuItem>
+          </Menu>
+          <AlertModal
+            open={alertModal}
+            setOpen={setAlertModal}
+            content="Bạn chắc chắn muốn xóa công việc?"
+            onCancle={handleCloseMenu}
+            onConfirm={() => {
+              handleCloseMenu();
+              handleDeleteTask(currentSettingTask);
+            }}
+          />
         </React.Fragment>
       )}
     </Container>

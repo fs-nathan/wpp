@@ -9,10 +9,11 @@ export const listUserOfGroup = (quite = false) => ({
   quite,
 });
 
-export const listUserOfGroupSuccess = ({ rooms }) => ({
+export const listUserOfGroupSuccess = ({ rooms, maxUser }) => ({
   type: LIST_USER_OF_GROUP_SUCCESS,
   data: {
     rooms,
+    maxUser,
   },
 });
 

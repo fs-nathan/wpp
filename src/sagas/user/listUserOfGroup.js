@@ -19,8 +19,8 @@ async function doListUserOfGroup() {
 
 function* listUserOfGroup() {
   try {
-    const { users } = yield call(doListUserOfGroup);
-    yield put(listUserOfGroupSuccess({ rooms: users }));
+    const { users, max_user: maxUser } = yield call(doListUserOfGroup);
+    yield put(listUserOfGroupSuccess({ rooms: users, maxUser }));
   } catch (error) {
     yield put(listUserOfGroupFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));

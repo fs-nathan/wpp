@@ -148,6 +148,9 @@ import { DELETE_TASK } from '../constants/actions/task/deleteTask';
 import { deleteTask } from './task/deleteTask';
 import { SORT_TASK } from '../constants/actions/task/sortTask';
 import { sortTask } from './task/sortTask';
+import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from '../constants/actions/register/inviteOtherPeopleCreateAccount';
+import { inviteOtherPeopleCreateAccount } from './register/inviteOtherPeopleCreateAccount';
+// ==================================
 import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
 import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
 import {
@@ -258,6 +261,7 @@ function* rootSaga() {
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
+  yield takeEvery(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, inviteOtherPeopleCreateAccount);
 
   // Hoang - end
 

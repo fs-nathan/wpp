@@ -13,6 +13,7 @@ import { SORT_ROOM } from '../../constants/actions/room/sortRoom';
 export const initialState = {
   data: {
     rooms: [],  
+    maxUser: 0,
   },
   error: null,
   loading: false,
@@ -57,6 +58,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: { 
+          ...state.data,
           rooms,
         },
       };
@@ -78,6 +80,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: {
+          ...state.data,
           rooms,
         },
       };
@@ -99,6 +102,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: {
+          ...state.data,
           rooms,
         },
       };
@@ -125,6 +129,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: {
+          ...state.data,
           rooms,
         },
       };
@@ -135,6 +140,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: {
+          ...state.data,
           rooms,
         },
       };

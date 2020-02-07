@@ -184,7 +184,7 @@ function DepartmentInfo({
   doSearchUserReset,
   inviteUserJoinGroup, doInviteUserJoinGroup, 
   resendInvitationUserJoinGroup, doResendInvitationUserJoinGroup,
-  getRequirementJoinGroup, doGetRequirementJoinGroup,
+  getRequirementJoinGroup,
   acceptRequirementJoinGroup, doAcceptRequirementJoinGroup, 
   rejectRequirementJoinGroup, doRejectRequirementJoinGroup,
   handleSubSlide,
