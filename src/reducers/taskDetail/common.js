@@ -18,7 +18,10 @@ export default function reducer(state = initialState, action) {
     // console.log("reducer text search:::", action.payload);
     switch (action.type) {
         case types.CHOOSE_TASK:
-            return { ...state, activeTaskId: action.payload }
+            return { 
+                ...state, 
+                activeTaskId: action.payload 
+            }
         case types.CHOOSE_PROJECT:
             return { ...state, activeProjectId: action.payload.id }
         // case types.GET_PROJECT_GROUP_LISTPART_SUCCESS:
@@ -44,7 +47,7 @@ export default function reducer(state = initialState, action) {
         case types.GET_LIST_TASK_DETAIL_SUCCESS:
             return {
                 ...state,
-                activeTaskId: getFirstTaskId(action.payload)
+                // activeTaskId: getFirstTaskId(action.payload)
             }
         case types.SEARCH_PROJECT:
             return {

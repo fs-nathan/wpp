@@ -80,11 +80,12 @@ const Projects = (props) => {
   return (
     // redirect ? <Redirect to='/target' /> :
     <ProjectsDetail onClick={() => {
-      // console.log('Click item ' + props.project)
+      console.log('Click item ', props)
       
       props.history.push(`/list-task-detail/` + props.project.id)
-      // value.getDetailProject(props.project.id)
-      // value.chooseProject(props.project)
+      // props.value.getDetailProject(props.project.id)
+      // props.value.chooseProject(props.project)
+      props.value.chooseTask(null)
       props.setShow(false)
     }}>{props.title}</ProjectsDetail>
   )
@@ -190,6 +191,7 @@ function ListProject(props) {
   if ( value && value.projectListBasic) {
     data = value.projectListBasic.projectGroups
   }
+  // console.log({data})
   return (
     <div className={"lp-container " + (props.show ? "lp-container-block" : "lp-container-none")  } >
       <WrapperHeader {...props} />
@@ -207,7 +209,7 @@ function ListProject(props) {
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     {
-                      group.projects.map((project, projectIdx) => <Projects project={project} key={projectIdx} title={project.name} {...props} />)
+                      group.projects.map((project, projectIdx) => <Projects project={project} key={projectIdx} title={project.name} {...props} value={value}/>)
                     }
                   </ExpansionPanelDetails>
                 </ExpansionProject>
