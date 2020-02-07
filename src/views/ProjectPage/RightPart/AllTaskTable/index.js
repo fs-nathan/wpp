@@ -226,10 +226,9 @@ function AllTaskTable({
             }}
             columns={[{
               label: 'Tên công việc',
-              field: (row) => <LinkSpan 
-                onClick={evt => history.push(`/list-task-detail/${get(row, 'id')}`)}>
-                  {get(row, 'name', '')}
-                </LinkSpan>,
+              field: (row) => <LinkSpan onClick={evt => {
+                history.push(`/list-task-detail/${projectId}?task_id=${row.id}`);
+              }}>{get(row, 'name', '')}</LinkSpan>,
               align: 'left',
               width: '25%',
             }, {
