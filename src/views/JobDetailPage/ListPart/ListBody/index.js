@@ -30,7 +30,8 @@ function ListBody() {
 
   let listTaskDetail = value.listTaskDetail
   if (listTaskDetail) {
-    data = listTaskDetail.tasks
+    data = listTaskDetail.tasks;
+    console.log({data})
   }
 
    

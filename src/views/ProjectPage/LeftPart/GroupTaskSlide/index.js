@@ -134,7 +134,7 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, }) {
                     </div>
                     <ListItemText 
                       primary={
-                        <StyledPrimary>Mặc định</StyledPrimary>  
+                        <StyledPrimary>Chưa phân loại</StyledPrimary>  
                       }
                       secondary={
                         <Secondary>

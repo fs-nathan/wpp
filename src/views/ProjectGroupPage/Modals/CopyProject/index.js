@@ -162,7 +162,7 @@ function CopyProject({ open, setOpen, listProjectGroup, listProject, doCopyProje
       projectId: get(selectedProject, 'id'),
       name,
       description,
-      startDate: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
+      startDate: moment(startDate).format('YYYY-MM-DD'),
       isCopyMember,
     })
     setOpen(false);

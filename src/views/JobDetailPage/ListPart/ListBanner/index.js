@@ -38,7 +38,7 @@ function ListBanner() {
     value.filterTaskByType(typeIdx)
     setSelected(typeIdx) 
   }
-  console.log({value})
+  // console.log({value})
 
   let data = []
   if (value && value.projectDetail && value.projectDetail) {

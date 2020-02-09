@@ -39,6 +39,18 @@ import { UPDATE_POSITION } from '../constants/actions/position/updatePosition';
 import { updatePosition } from './position/updatePosition';
 import { DELETE_POSITION } from '../constants/actions/position/deletePosition';
 import { deletePosition } from './position/deletePosition';
+import { CREATE_MAJOR } from '../constants/actions/major/createMajor';
+import { createMajor } from './major/createMajor';
+import { UPDATE_MAJOR } from '../constants/actions/major/updateMajor';
+import { updateMajor } from './major/updateMajor';
+import { DELETE_MAJOR } from '../constants/actions/major/deleteMajor';
+import { deleteMajor } from './major/deleteMajor';
+import { CREATE_LEVEL } from '../constants/actions/level/createLevel';
+import { createLevel } from './level/createLevel';
+import { UPDATE_LEVEL } from '../constants/actions/level/updateLevel';
+import { updateLevel } from './level/updateLevel';
+import { DELETE_LEVEL } from '../constants/actions/level/deleteLevel';
+import { deleteLevel } from './level/deleteLevel';
 import { LIST_USER_ROLE } from '../constants/actions/userRole/listUserRole';
 import { listUserRole } from './userRole/listUserRole';
 import { CREATE_USER_ROLE } from '../constants/actions/userRole/createUserRole';
@@ -65,6 +77,8 @@ import { ACCEPT_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/ac
 import { acceptRequirementJoinGroup } from './groupUser/acceptRequirementUserJoinGroup';
 import { REJECT_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/rejectRequirementJoinGroup';
 import { rejectRequirementJoinGroup } from './groupUser/rejectRequirementUserJoinGroup';
+import { GET_LIST_GROUP } from '../constants/actions/groupUser/getListGroup';
+import { getListGroup } from './groupUser/getListGroup';
 import { CREATE_ICON } from '../constants/actions/icon/createIcon';
 import { createIcon } from './icon/createIcon';
 import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
@@ -148,6 +162,9 @@ import { DELETE_TASK } from '../constants/actions/task/deleteTask';
 import { deleteTask } from './task/deleteTask';
 import { SORT_TASK } from '../constants/actions/task/sortTask';
 import { sortTask } from './task/sortTask';
+import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from '../constants/actions/register/inviteOtherPeopleCreateAccount';
+import { inviteOtherPeopleCreateAccount } from './register/inviteOtherPeopleCreateAccount';
+// ==================================
 import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
 import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
 import {
@@ -204,18 +221,25 @@ function* rootSaga() {
   yield takeEvery(CREATE_POSITION, createPosition);
   yield takeEvery(UPDATE_POSITION, updatePosition);
   yield takeEvery(DELETE_POSITION, deletePosition);
+  yield takeEvery(CREATE_MAJOR, createMajor);
+  yield takeEvery(UPDATE_MAJOR, updateMajor);
+  yield takeEvery(DELETE_MAJOR, deleteMajor);
+  yield takeEvery(CREATE_LEVEL, createLevel);
+  yield takeEvery(UPDATE_LEVEL, updateLevel);
+  yield takeEvery(DELETE_LEVEL, deleteLevel);
   yield takeLatest(LIST_USER_ROLE, listUserRole);
   yield takeEvery(CREATE_USER_ROLE, createUserRole);
   yield takeEvery(UPDATE_USER_ROLE, updateUserRole);
   yield takeEvery(DELETE_USER_ROLE, deleteUserRole);
   yield takeEvery(PUBLIC_MEMBER, publicMember);
   yield takeEvery(PRIVATE_MEMBER, privateMember);
-  yield takeEvery(SEARCH_USER, searchUser);
+  yield takeLatest(SEARCH_USER, searchUser);
   yield takeEvery(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
   yield takeEvery(RESEND_INVITATION_USER_JOIN_GROUP, resendInvitationUserJoinGroup);
-  yield takeEvery(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
+  yield takeLatest(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
   yield takeEvery(ACCEPT_REQUIREMENT_JOIN_GROUP, acceptRequirementJoinGroup);
   yield takeEvery(REJECT_REQUIREMENT_JOIN_GROUP, rejectRequirementJoinGroup);
+  yield takeLatest(GET_LIST_GROUP, getListGroup);
   yield takeEvery(BAN_USER_FROM_GROUP, banUserFromGroup);
   yield takeEvery(CREATE_ICON, createIcon);
   yield takeEvery(DELETE_ICON, deleteIcon);
@@ -262,6 +286,7 @@ function* rootSaga() {
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
+  yield takeEvery(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, inviteOtherPeopleCreateAccount);
 
   // Hoang - end
 

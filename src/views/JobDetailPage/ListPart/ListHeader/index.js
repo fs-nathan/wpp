@@ -58,10 +58,10 @@ function ListHeaderSelect({ setShow }) {
   const openListProject = () => {
     setShow(true)
   }
-  const data = value.projectDetail
+  const data = value.projectDetail;
   return (
     <div onClick={openListProject} style={{ marginTop: 8 }}>
-      <HeaderText component={'div'} >{data.name}</HeaderText>
+      <HeaderText component={'div'} >{data?.name}</HeaderText>
       <ButtonIcon
 
         style={{

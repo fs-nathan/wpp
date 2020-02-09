@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import styled from 'styled-components';
 import ListPart from './ListPart';
 import ChatPart from './ChatPart';
@@ -22,7 +22,18 @@ const Wrapper = WrapperContext.Provider
 // `;
 
 function JobDetailPage(props) {
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var taskId = url.searchParams.get("task_id");
     useEffect(() => {
+        console.log({taskId})
+        if (taskId) {
+            props.chooseTask(taskId);
+        }
+    }, [taskId]);
+
+    useEffect(() => {
+        
         props.closeNoticeModal()
         // props.getProjectGroup()
         props.getProjectListBasic()
@@ -31,7 +42,8 @@ function JobDetailPage(props) {
     }, [])
 
     useEffect(() => {
-        let id = props.history.location.pathname.substring(18)
+        let id = props.history.location.pathname.substring(18);
+        console.log({id})
         if (id.length > 0) {
             if(id !== props.projectId) {
                 props.getDetailProject(id)
@@ -43,9 +55,10 @@ function JobDetailPage(props) {
     const getDataByProjectId = () => {
         props.getRoleTask()
         props.getListGroupTaskByProjectId(props.projectId)
-        if (props.projectId !== "")
+        if (props.projectId !== ""){
             props.getListTaskDetailByProjectId(props.projectId)
             props.getStaticTask(props.projectId)
+        }
     }
 
     const getDataByTaskId = () => {
@@ -57,14 +70,15 @@ function JobDetailPage(props) {
         // props.getFileByTaskId(props.taskId)
         // props.getLinkByTaskId(props.taskId)
         // props.getLocationByTaskId(props.taskId)
-        props.getTaskDetailByTaskId(props.taskId)
-        props.getMemberByTaskId(props.taskId)
-        props.getMemberNotAssignedByTaskId(props.taskId)
+        props.getTaskDetailByTaskId(taskId)
+        props.getMemberByTaskId(taskId)
+        props.getMemberNotAssignedByTaskId(taskId)
         // props.getTrackingTime(props.taskId)
     }
 
-    useEffect(getDataByTaskId, [props.taskId])
+    useEffect(getDataByTaskId, [])
     useEffect(getDataByProjectId, [props.projectId])
+    
     return (
 
         <Wrapper value={{ ...props }}>
@@ -81,6 +95,67 @@ function JobDetailPage(props) {
             </div>
         </Wrapper>
     )
+}
+class JobDetail extends React.Component{
+
+    componentDidMount() {
+        this.props.closeNoticeModal();
+        this.props.getProjectListBasic()
+        let id = this.props.history.location.pathname.substring(18);
+        if (id.length > 0) {
+            this.props.getDetailProject(id);
+            this.props.chooseProject({ id });
+            this.getDataByProjectId(id);
+
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            var taskId = url.searchParams.get("task_id");
+            if (taskId) {
+                this.getDataByTaskId(taskId)
+                this.props.chooseTask(taskId)
+            }
+        }
+    };
+
+    getDataByProjectId = (projectId) => {
+        this.props.getRoleTask()
+        this.props.getListGroupTaskByProjectId(projectId)
+        this.props.getListTaskDetailByProjectId(projectId) //get first task
+        this.props.getStaticTask(projectId)
+    }
+    getDataByTaskId = (taskId) => {
+        // props.getSubTaskByTaskId(props.taskId)
+        // props.getRemindByTaskId(props.taskId)
+        // props.getOfferByTaskId(props.taskId)
+        // props.getCommandByTaskId(props.taskId)
+        // props.getImageByTaskId(props.taskId)
+        // props.getFileByTaskId(props.taskId)
+        // props.getLinkByTaskId(props.taskId)
+        // props.getLocationByTaskId(props.taskId)
+        this.props.getTaskDetailByTaskId(taskId)
+        this.props.getMemberByTaskId(taskId)
+        this.props.getMemberNotAssignedByTaskId(taskId)
+        // props.getTrackingTime(props.taskId)
+    }
+    render() {
+        const {taskId} = this.props;
+        console.log(this.props)
+        return(
+            <Wrapper value={{ ...this.props }}>
+                <div className={(taskId ? "container" : "container-job-introduce")} >
+                    <ListPart {...this.props} />
+                    {(taskId) ?
+                        <>
+                            <ChatPart {...this.props} />
+                            <TabPart {...this.props} />
+                        </>
+                        :
+                        <Intro />
+                    }
+                </div>
+            </Wrapper>
+        )
+    }
 }
 
 const mapStateToProps = state => {

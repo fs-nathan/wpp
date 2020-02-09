@@ -5,3 +5,41 @@
 .view_Project_ProjectMemberSlide___primary {
   font-weight: 500;
 };
+
+.view_Project_ProjectMemberSlide___container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 65px 1fr 65px;
+  grid-template-columns: auto;
+  & > * {
+    &:nth-child(2) {
+      flex-grow: 1;
+    }
+    &:nth-child(3) {
+      margin-bottom: 24px;
+      width: 100%;
+      padding: 15px;
+      justify-content: flex-start;
+      & > span:first-child > * {
+        text-transform: none;
+        &:not(:first-child) {
+          margin-left: 15px;
+        }
+      }
+      & > span:last-child {
+        display: none;
+      }
+    }
+  }
+}
+
+.view_Project_ProjectMemberSlide___wrapper {
+  height: 100%;
+  & > div:first-child {
+    margin-right: -5px !important;
+    scrollbar-width: none;
+  }
+  & > div:last-child {
+    right: 7px !important;
+  }
+}

@@ -11,14 +11,18 @@ import { listMajor } from '../../actions/major/listMajor';
 import { listLevel } from '../../actions/level/listLevel';
 import { listIcon } from '../../actions/icon/listIcon';
 import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
+import { getRequirementJoinGroup } from '../../actions/groupUser/getRequirementJoinGroup';
+import { getListGroup } from '../../actions/groupUser/getListGroup';
 import {
   CustomEventListener, CustomEventDispose,
   SORT_ROOM, CREATE_ROOM, DELETE_ROOM, UPDATE_ROOM,
-  SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER, UPDATE_USER,
+  SORT_USER, INVITE_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER, UPDATE_USER,
   CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION,
+  CREATE_LEVEL, UPDATE_LEVEL, DELETE_LEVEL,
+  CREATE_MAJOR, UPDATE_MAJOR, DELETE_MAJOR,
   CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
   CREATE_ICON, DELETE_ICON,
-  ACCEPT_REQUIREMENT_USER_JOIN_GROUP,
+  ACCEPT_REQUIREMENT_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP,
 } from '../../constants/events';
 import DepartmentList from './LeftPart/DepartmentList';
 import DepartmentInfo from './LeftPart/DepartmentInfo';
@@ -39,6 +43,8 @@ function UserPage({
   doListUserRole,
   doListIcon,
   doListUserOfGroup,
+  doGetRequirementJoinGroup,
+  doGetListGroup,
 }) {
 
   React.useEffect(() => {
@@ -125,10 +131,38 @@ function UserPage({
 
   React.useEffect(() => {
     doListMajor();
+
+    const reloadListMajor = () => {
+      doListMajor(true);
+    };
+
+    CustomEventListener(CREATE_MAJOR, reloadListMajor);
+    CustomEventListener(UPDATE_MAJOR, reloadListMajor);
+    CustomEventListener(DELETE_MAJOR, reloadListMajor);
+
+    return () => {
+      CustomEventDispose(CREATE_MAJOR, reloadListMajor);
+      CustomEventDispose(UPDATE_MAJOR, reloadListMajor);
+      CustomEventDispose(DELETE_MAJOR, reloadListMajor);
+    }
   }, [doListMajor]);
 
   React.useEffect(() => {
     doListLevel();
+
+    const reloadListLevel = () => {
+      doListLevel(true);
+    };
+
+    CustomEventListener(CREATE_LEVEL, reloadListLevel);
+    CustomEventListener(UPDATE_LEVEL, reloadListLevel);
+    CustomEventListener(DELETE_LEVEL, reloadListLevel);
+
+    return () => {
+      CustomEventDispose(CREATE_LEVEL, reloadListLevel);
+      CustomEventDispose(UPDATE_LEVEL, reloadListLevel);
+      CustomEventDispose(DELETE_LEVEL, reloadListLevel);
+    }
   }, [doListLevel]);
 
   React.useEffect(() => {
@@ -198,6 +232,38 @@ function UserPage({
       CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
     }
   }, [doListUserOfGroup]);
+
+  React.useEffect(() => {
+    doGetRequirementJoinGroup();
+
+    const doGetRequirementJoinGroupHandler = () => {
+      doGetRequirementJoinGroup(true);
+    };
+
+    CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+    CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+
+    return () => {
+      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+    }
+  }, [doGetRequirementJoinGroup]);
+
+  React.useEffect(() => {
+    doGetListGroup();
+
+    const reloadGetListGroup = () => {
+      doGetListGroup(true);
+    };
+
+    CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetListGroup);
+    CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListGroup);
+
+    return () => {
+      CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetListGroup);
+      CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListGroup);
+    }
+  }, [doGetListGroup]);
 
   return (
     <Provider value={{
@@ -281,6 +347,8 @@ const mapDispatchToProps = dispatch => {
     doListUserRole: (quite) => dispatch(listUserRole(quite)),
     doListIcon: (quite) => dispatch(listIcon(quite)),
     doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
+    doGetRequirementJoinGroup: (quite) => dispatch(getRequirementJoinGroup(quite)),
+    doGetListGroup: (quite) => dispatch(getListGroup(quite)),
   };
 };
 

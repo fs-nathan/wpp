@@ -36,7 +36,7 @@ function AvatarCircleList({ display, users = [], className = '', }) {
           })}
           {display < users.length && (  
             <div>
-              <div>{users.length-display}+</div>
+              <div>+{users.length-display}</div>
             </div>
           )}
         </React.Fragment>

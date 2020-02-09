@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormControl, TextField } from '@material-ui/core';
+import { FormControl, OutlinedInput } from '@material-ui/core';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomSelect from '../../../../components/CustomSelect';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -156,22 +156,26 @@ function UpdateUser({ updatedUser, open, setOpen, listRoom, listPosition, listMa
                 onChange={({ value: majorId }) => setMajor(find(majors, { id: majorId }))}
               />
             </StyledFormControl>
-            <TextField 
-              id='description'
-              value={description}
-              onChange={evt => setDescription(evt.target.value)}
-              multiline
-              margin="normal"
-              variant="outlined"
-              rowsMax={4}
-              label='Mô tả công việc'
-              fullWidth
-              helperText={
-                <ColorTypo component='span' color='red'>
-                  {get(errorDescription, 'message', '')}
-                </ColorTypo>
-              }
-            />
+            <StyledFormControl fullWidth>
+              <label htmlFor='major-select'>
+                Mô tả công việc
+              </label>
+              <OutlinedInput 
+                id='description'
+                value={description}
+                onChange={evt => setDescription(evt.target.value)}
+                multiline
+                margin="normal"
+                variant="outlined"
+                rowsMax={4}
+                fullWidth
+                helperText={
+                  <ColorTypo component='span' color='red'>
+                    {get(errorDescription, 'message', '')}
+                  </ColorTypo>
+                }
+              />
+            </StyledFormControl>
           </React.Fragment>
         )}
       </CustomModal>

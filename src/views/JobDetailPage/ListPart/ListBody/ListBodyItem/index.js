@@ -153,11 +153,15 @@ function JobUnit(props) {
 
 function ListBodyItem(props) {
   const value = React.useContext(WrapperContext);
-
+  // console.log({value})
   return (
-    <div className="container-lbd" onClick={() =>
-      value.chooseTask(props.id)
-    }>
+    <div className="container-lbd" onClick={() =>{
+      value.chooseTask(props.id);
+      value.getTaskDetailByTaskId(props.id)
+      // value.getMemberByTaskId(props.id)
+      // value.getMemberNotAssignedByTaskId(props.id)
+      value.history.push({search: `?task_id=${props.id}`})
+    }}>
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>

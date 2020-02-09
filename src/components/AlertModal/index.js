@@ -1,5 +1,4 @@
 import React from 'react';
-import './style.scss';
 import { 
   Fade, Dialog, DialogTitle, DialogContent, 
   DialogActions, IconButton, ButtonBase,
@@ -8,12 +7,17 @@ import Icon from '@mdi/react';
 import PropTypes from 'prop-types';
 import { mdiClose } from '@mdi/js'; 
 import ColorTypo from '../ColorTypo';
+import { get } from 'lodash';
+import { connect } from 'react-redux';
+import './style.scss';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function CustomModal({ open, setOpen, content, onConfirm = () => null, onCancle = () => null, }) {
+function CustomModal({ open, setOpen, content, onConfirm = () => null, onCancle = () => null, colors }) {
+
+  const bgColor = colors.find(item => item.selected === true);
 
   function handleCancle() {
     setOpen(false);
@@ -47,7 +51,7 @@ function CustomModal({ open, setOpen, content, onConfirm = () => null, onCancle 
         <ButtonBase className='comp_AlertModal___cancle-button' onClick={() => handleCancle()}>
           Hủy
         </ButtonBase>
-        <ButtonBase className='comp_AlertModal___accept-button' onClick={() => handleConfirm()}>
+        <ButtonBase style={{ color: bgColor.color }} className='comp_AlertModal___accept-button' onClick={() => handleConfirm()}>
           Đồng ý
         </ButtonBase>
       </DialogActions>
@@ -63,4 +67,8 @@ CustomModal.propTypes = {
   onCancle: PropTypes.func,
 };
 
-export default CustomModal;
+export default connect(state => ({
+  colors: state.setting.colors
+}),
+{},
+)(CustomModal);

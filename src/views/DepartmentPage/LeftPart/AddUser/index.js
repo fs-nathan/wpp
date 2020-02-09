@@ -184,7 +184,7 @@ function DepartmentInfo({
   doSearchUserReset,
   inviteUserJoinGroup, doInviteUserJoinGroup, 
   resendInvitationUserJoinGroup, doResendInvitationUserJoinGroup,
-  getRequirementJoinGroup, doGetRequirementJoinGroup,
+  getRequirementJoinGroup,
   acceptRequirementJoinGroup, doAcceptRequirementJoinGroup, 
   rejectRequirementJoinGroup, doRejectRequirementJoinGroup,
   handleSubSlide,
@@ -214,22 +214,6 @@ function DepartmentInfo({
       CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
     }
   }, [doSearchUser, searchPatern]);
-
-  React.useEffect(() => {
-    doGetRequirementJoinGroup();
-
-    const doGetRequirementJoinGroupHandler = () => {
-      doGetRequirementJoinGroup(true);
-    };
-
-    CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-    CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-
-    return () => {
-      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-      CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-    }
-  }, [doGetRequirementJoinGroup])
 
   return (
     <LeftSideContainer

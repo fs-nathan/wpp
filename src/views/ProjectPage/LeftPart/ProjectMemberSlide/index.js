@@ -1,8 +1,9 @@
 import React from 'react';
+import { Button } from '@material-ui/core';
 import { useParams, Link } from 'react-router-dom';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Icon from '@mdi/react';
-import { mdiChevronLeft, mdiDragVertical, mdiPlus } from '@mdi/js';
+import { mdiChevronLeft, mdiDragVertical, mdiPlus, mdiAccount } from '@mdi/js';
 import { connect } from 'react-redux';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -15,7 +16,14 @@ import { filter, get, } from 'lodash';
 import SearchInput from '../../../../components/SearchInput';
 import { Context as ProjectContext } from '../../index';
 import MembersSettingModal from '../../Modals/MembersSetting';
+import { Scrollbars } from 'react-custom-scrollbars';
 import './style.scss';
+
+const Container = ({ className = '', ...props }) => 
+  <div
+    className={`view_Project_ProjectMemberSlide___container ${className}`}
+    {...props}
+  />
 
 const Banner = ({ className = '', ...props }) => 
   <div 
@@ -28,6 +36,9 @@ const StyledPrimary = ({ className = '', ...props }) =>
     className={`view_Project_ProjectMemberSlide___primary ${className}`}
     {...props}
   />;
+
+const Wrapper = ({ className = '', ...rest }) => (<Scrollbars className={`view_Project_ProjectMemberSlide___wrapper ${className}`} {...rest} />);
+
 
 function ProjectMemberSlide({ handleSubSlide, memberProject, }) {
   
@@ -83,48 +94,59 @@ function ProjectMemberSlide({ handleSubSlide, memberProject, }) {
             component: () => <LoadingBox />
           }}
         >
-          <Banner>
-            <SearchInput 
-              fullWidth 
-              placeholder='Tìm thành viên'
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
-            />  
-          </Banner>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={'member-list'}>
-              {provided => (
-                <StyledList
-                  innerRef={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <StyledListItem
-                    to={`#`}
-                    component={Link}
-                  >
-                    <div>
-                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
-                    </div>
-                    <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
-                    <ListItemText 
-                      primary={
-                        <StyledPrimary>Tất cả</StyledPrimary>  
-                      }
-                      secondary={
-                        <Secondary>
-                          {members.reduce((sum, member) => sum += get(member, 'tasks', []).length, 0)} việc
-                        </Secondary>
-                      }
-                    />
-                  </StyledListItem>
-                  {members.map((member, index) => (
-                    <CustomListItem key={get(member, 'id')} member={member} index={index} />  
-                  ))}
-                  {provided.placeholder}
-                </StyledList>
-              )}
-            </Droppable>
-          </DragDropContext>
+          <Container>
+            <Banner>
+              <SearchInput 
+                fullWidth 
+                placeholder='Tìm thành viên'
+                value={searchPatern}
+                onChange={evt => setSearchPatern(evt.target.value)}
+              />  
+            </Banner>
+            <Wrapper
+              autoHide
+              autoHideTimeout={500}
+            >
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId={'member-list'}>
+                  {provided => (
+                    <StyledList
+                      innerRef={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      <StyledListItem
+                        to={`#`}
+                        component={Link}
+                      >
+                        <div>
+                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
+                        </div>
+                        <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
+                        <ListItemText 
+                          primary={
+                            <StyledPrimary>Tất cả</StyledPrimary>  
+                          }
+                          secondary={
+                            <Secondary>
+                              {members.reduce((sum, member) => sum += get(member, 'tasks', []).length, 0)} việc
+                            </Secondary>
+                          }
+                        />
+                      </StyledListItem>
+                      {members.map((member, index) => (
+                        <CustomListItem key={get(member, 'id')} member={member} index={index} />  
+                      ))}
+                      {provided.placeholder}
+                    </StyledList>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            </Wrapper>
+            <Button onClick={evt => setOpen(true)}>
+              <Icon path={mdiAccount} size={1} />
+              <span>Cài đặt thành viên</span>
+            </Button>
+          </Container>
           <MembersSettingModal open={open} setOpen={setOpen} />
         </LeftSideContainer>
       )}

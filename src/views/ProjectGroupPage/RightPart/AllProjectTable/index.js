@@ -161,22 +161,13 @@ function displayDateRange(from, to) {
 }
 
 const SettingButton = ({
-  visibility,
-  onEditProject,
-  onSettingProject,
-  onHideProject,
-  onShowProject,
-  onDeleteProject
+  project,
+  setCurrentSettingProject, setCurrentSettingAnchorEl,
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [alert, setAlert] = React.useState(false);
 
   function handleClick(evt) {
-    setAnchorEl(evt.currentTarget);
-  }
-
-  function handleClose(evt) {
-    setAnchorEl(null);
+    setCurrentSettingAnchorEl(evt.currentTarget);
+    setCurrentSettingProject(project);
   }
 
   return (
@@ -189,51 +180,6 @@ const SettingButton = ({
       >
         <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
       </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        transformOrigin={{
-          vertical: -30,
-          horizontal: 'right'
-        }}
-      >
-        <MenuItem onClick={evt => {
-          handleClose(evt);
-          onSettingProject();
-        }}>
-          Cài đặt
-        </MenuItem>
-        <MenuItem
-          onClick={evt => {
-            handleClose(evt);
-            onEditProject(evt);
-          }}
-        >
-          Chỉnh sửa
-        </MenuItem>
-        <MenuItem
-          onClick={evt => {
-            handleClose(evt);
-            visibility ? onHideProject() : onShowProject();
-          }}
-        >
-          {visibility ? 'Ẩn' : 'Bỏ ẩn'}
-        </MenuItem>
-        <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
-      </Menu>
-      <AlertModal
-        open={alert}
-        setOpen={setAlert}
-        content="Bạn chắc chắn muốn xóa dự án?"
-        onCancle={handleClose}
-        onConfirm={() => {
-          handleClose();
-          onDeleteProject();
-        }}
-      />
     </SettingContainer>
   );
 };
@@ -250,7 +196,7 @@ function AllProjectTable({
   colors,
   isDefault = false,
 }) {
-  const { setProjectGroupId, setStatusProjectId } = React.useContext(ProjectPageContext);
+  const { setProjectGroupId, setStatusProjectId, setTimeRange } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
   const history = useHistory();
 
@@ -283,7 +229,7 @@ function AllProjectTable({
   const [timeAnchor, setTimeAnchor] = React.useState(null);
 
   const [filter, setFilter] = React.useState(1);
-  const [time, setTime] = React.useState(0);
+  const [time, setTime] = React.useState(5);
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);
   const [projects, setProjects] = React.useState(_projects);
@@ -292,8 +238,12 @@ function AllProjectTable({
   const [timeTitle, setTimeTitle] = React.useState(`Năm ${moment().year()}`);
 
   const [edittingProject, setEdittingProject] = React.useState(null);
+
+  const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
+  const [currentSettingProject, setCurrentSettingProject] = React.useState(null);
+  const [alertModal, setAlertModal] = React.useState(false);
   const [openEditProject, setOpenEditProject] = React.useState(false);
-  const [setting, setSetting] = React.useState(false);
+  const [settingModal, setSettingModal] = React.useState(false);
 
   const filterTitle = [
     'Tất cả',
@@ -459,8 +409,8 @@ function AllProjectTable({
         return;
       }
       case 5: {
-        setStartDate(moment().toDate());
-        setEndDate(moment().toDate());
+        setStartDate(undefined);
+        setEndDate(undefined);
         setTimeTitle(`Toàn bộ thời gian`);
         return;
       }
@@ -499,16 +449,30 @@ function AllProjectTable({
     }
   }
 
-  function handleHideProject(projectId) {
-    doHideProject({ projectId });
+  function handleCloseMenu() {
+    setCurrentSettingAnchorEl(null);
   }
 
-  function handleShowProject(projectId) {
-    doShowProject({ projectId });
+  function handleHideProject(project) {
+    doHideProject({ projectId: get(project, 'id') });
   }
 
-  function handleDeleteProject(projectId) {
-    doDeleteProject({ projectId });
+  function handleShowProject(project) {
+    doShowProject({ projectId: get(project, 'id') });
+  }
+
+  function handleDeleteProject(project) {
+    doDeleteProject({ projectId: get(project, 'id') });
+  }
+
+  function handleSettingProject(project) {
+    setStatusProjectId(get(project, 'id'));
+    setSettingModal(true);
+  }
+
+  function handleEditProject(project) {
+    setEdittingProject(project);
+    setOpenEditProject(true);
   }
 
   return (
@@ -647,24 +611,26 @@ function AllProjectTable({
                 ),
                 sort: evt => handleSortColumn('complete'),
                 align: 'left',
-                width: '15%',
+                width: '12%',
               },
               {
                 label: 'Tiến độ',
                 field: row => (
                   <DateBox>
-                    <span>{get(row, 'duration') ? get(row, 'duration') + ' ngày' : ''}</span>
-                    <small>
-                      {displayDateRange(
-                        new Date(get(row, 'date_start')),
-                        new Date(get(row, 'date_end'))
-                      )}
-                    </small>
+                    {get(row, 'duration') ? (
+                      <>
+                        <span>{get(row, 'duration') + ' ngày'}</span>
+                        <small>
+                          {get(row, 'date_start')} - {get(row, 'date_end')}
+                        </small>
+                      </>
+                    ) : null}
+                    
                   </DateBox>
                 ),
                 sort: evt => handleSortColumn('duration'),
                 align: 'left',
-                width: '15%',
+                width: '18%',
               },
               {
                 label: 'Ưu tiên',
@@ -709,18 +675,9 @@ function AllProjectTable({
                 label: '',
                 field: row => (
                   <SettingButton
-                    onEditProject={evt => {
-                      setEdittingProject(row);
-                      setOpenEditProject(true);
-                    }}
-                    visibility={get(row, 'visibility', true)}
-                    onSettingProject={() => {
-                      setStatusProjectId(get(row, 'id'));
-                      setSetting(true);
-                    }}
-                    onHideProject={() => handleHideProject(get(row, 'id'))}
-                    onShowProject={() => handleShowProject(get(row, 'id'))}
-                    onDeleteProject={() => handleDeleteProject(get(row, 'id'))}
+                    project={row}
+                    setCurrentSettingProject={setCurrentSettingProject}
+                    setCurrentSettingAnchorEl={setCurrentSettingAnchorEl}
                   />
                 ),
                 align: 'center',
@@ -932,6 +889,10 @@ function AllProjectTable({
                       backgroundColor: bgColor.color,
                     }}
                     fullWidth
+                    onClick={evt => setTimeRange({
+                      timeStart: startDate ? moment(startDate).format('YYYY-MM-DD') : undefined,
+                      timeEnd: endDate ? moment(endDate).format('YYYY-MM-DD') : undefined,
+                    })}
                   >Áp dụng</StyledButton>
                 </Content>
               </MainBar>
@@ -946,9 +907,56 @@ function AllProjectTable({
             open={openEditProject}
             setOpen={setOpenEditProject}
           />
+          <Menu
+            id="simple-menu"
+            anchorEl={currentSettingAnchorEl}
+            keepMounted
+            open={Boolean(currentSettingAnchorEl)}
+            onClose={handleCloseMenu}
+            transformOrigin={{
+              vertical: -30,
+              horizontal: 'right'
+            }}
+          >
+            <MenuItem onClick={evt => {
+              handleCloseMenu();
+              handleSettingProject(currentSettingProject);
+            }}>
+              Cài đặt
+            </MenuItem>
+            <MenuItem
+              onClick={evt => {
+                handleCloseMenu();
+                handleEditProject(currentSettingProject);
+              }}
+            >
+              Chỉnh sửa
+            </MenuItem>
+            <MenuItem
+              onClick={evt => {
+                handleCloseMenu();
+                get(currentSettingProject, 'visibility', false) 
+                  ? handleHideProject(currentSettingProject) 
+                  : handleShowProject(currentSettingProject);
+              }}
+            >
+              {get(currentSettingProject, 'visibility', false) ? 'Ẩn' : 'Bỏ ẩn'}
+            </MenuItem>
+            <MenuItem onClick={evt => setAlertModal(true)}>Xóa</MenuItem>
+          </Menu>
+          <AlertModal
+            open={alertModal}
+            setOpen={setAlertModal}
+            content="Bạn chắc chắn muốn xóa dự án?"
+            onCancle={handleCloseMenu}
+            onConfirm={() => {
+              handleCloseMenu();
+              handleDeleteProject(currentSettingProject);
+            }}
+          />
           <ProjectSettingModal 
-            open={setting} 
-            setOpen={setSetting} 
+            open={settingModal} 
+            setOpen={setSettingModal} 
           />
         </React.Fragment>
       )}

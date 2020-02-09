@@ -119,7 +119,7 @@ function getJoinStatusName(statusCode) {
   }
 }
 
-function UserFreeRoomList({ room, onAddMember, }) {
+function UserFreeRoomList({ room, onAddMember, loading }) {
 
   if (get(room, 'users', []).length > 0)
     return (
@@ -153,6 +153,7 @@ function UserFreeRoomList({ room, onAddMember, }) {
               size='small'
               variant='outlined'
               onClick={evt => onAddMember(user)}
+              disabled={loading}
             >
               Thêm
             </AddButton>
@@ -240,7 +241,7 @@ const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, onAssign
 
 function MemberSetting({ 
   open, setOpen, 
-  memberProject, 
+  memberProject, addMemberProject,
   doAddMemberProject, doRemoveMemberProject, 
   doUpdateStateJoinTask,
   doAssignMemberToAllTask,
@@ -249,6 +250,7 @@ function MemberSetting({
   const { projectId } = useParams();
 
   const { data: { membersAdded, membersFree, } } = memberProject;
+  const { loading: addMemberLoading } = addMemberProject;
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
@@ -335,6 +337,7 @@ function MemberSetting({
                     room={room}
                     key={get(room, 'id')}
                     onAddMember={handleAddMember}
+                    loading={addMemberLoading}
                   />
                 ))}
               </ListContainer>
@@ -391,6 +394,7 @@ function MemberSetting({
 const mapStateToProps = state => {
   return {
     memberProject: state.project.memberProject,
+    addMemberProject: state.project.addMemberProject,
   }
 }
 
