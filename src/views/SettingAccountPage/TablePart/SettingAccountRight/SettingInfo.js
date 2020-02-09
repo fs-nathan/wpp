@@ -16,7 +16,8 @@ import { actionUpdateProfile } from '../../../../actions/account';
 import {
   getProfileService,
   actionGetProfile,
-  actionGetFormatDate
+  actionGetFormatDate,
+  actionToast
 } from '../../../../actions/system/system';
 import ImageCropper from '../../../../components/ImageCropper/ImageCropper';
 
@@ -86,13 +87,19 @@ class SettingInfo extends Component {
 
       await actionUpdateProfile(formData);
       const { data } = await getProfileService();
+      this.handleToast('success', 'Cập nhật thành công!');
       if (data.data) this.props.actionGetProfile(data.data);
       this.setState({ mode: 'view' });
     } catch (error) {
+      this.handleToast('error', 'Cập nhật thất bại!');
       const { data } = await getProfileService();
       if (data.data) this.props.actionGetProfile(data.data);
       this.setState({ mode: 'view' });
     }
+  };
+  handleToast = (type, message) => {
+    this.props.actionToast(type, message);
+    setTimeout(() => this.props.actionToast(null, ''), 2000);
   };
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -129,9 +136,7 @@ class SettingInfo extends Component {
     );
   };
   handleDateChange = date => {
-    this.setState({
-      selectedDate: date
-    });
+    this.setState({ selectedDate: date });
   };
   render() {
     const {
@@ -144,7 +149,6 @@ class SettingInfo extends Component {
       selectedDate,
       formatDate
     } = this.state;
-    console.log('selectedDate', selectedDate);
     return (
       <div className="setting-info">
         <div className="content-setting-info">
@@ -332,6 +336,7 @@ export default connect(
     profile: state.system.profile
   }),
   {
-    actionGetProfile
+    actionGetProfile,
+    actionToast
   }
 )(SettingInfo);

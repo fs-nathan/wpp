@@ -5,6 +5,12 @@
   grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
   grid-template-areas: 'list table';
 }
-.MuiChip-label{
+.MuiChip-label {
   overflow: unset;
+}
+.MuiDialog-paperWidthLg {
+  max-width: 1000px;
+}
+.red-color {
+  color: #dc3545;
 }

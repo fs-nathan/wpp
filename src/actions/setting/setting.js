@@ -143,3 +143,7 @@ export const getNumberDayFromOldOrder = params => {
 export const actionFetchListColor = () => ({
   type: actionTypes.FETCH_LIST_COLOR_GROUP
 });
+
+export const actioGetSettingDate = () => ({
+  type: actionTypes.GET_SETTING_DATE
+});

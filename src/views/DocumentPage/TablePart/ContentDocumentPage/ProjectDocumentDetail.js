@@ -29,7 +29,6 @@ import {
   StyledTableHeadCell,
   StyledTableBodyCell,
   FullAvatar,
-  CustomAvatar,
   selectItem,
   selectAll,
   GreenCheckbox,
@@ -276,9 +275,14 @@ const ProjectDocumentDetail = props => {
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="left" width="20%">
                   <ColorTypo color="black">
-                    <a href={file.redirect_url} className="address-link">
+                    <span
+                      onClick={() =>
+                        props.history.push({ pathname: file.redirect_url })
+                      }
+                      className="address-link"
+                    >
                       {file.task_name}
-                    </a>
+                    </span>
                   </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="15%">

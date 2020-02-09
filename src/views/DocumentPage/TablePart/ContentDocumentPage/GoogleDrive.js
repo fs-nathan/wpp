@@ -14,7 +14,8 @@ import {
   mdiContentCopy,
   mdiShieldAccount,
   mdiSwapVertical,
-  mdiAccountPlusOutline
+  mdiAccountPlusOutline,
+  mdiDownloadOutline
 } from '@mdi/js';
 import ColorTypo from '../../../../components/ColorTypo';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
@@ -70,11 +71,13 @@ const GoogleDrive = props => {
     isFetching,
     breadCrumbs,
     currentFolder,
-    listGoogleDocument: listData
+    listGoogleDocument: listData,
+    settingDate
   } = props;
   const [isLogged, setLogged] = useState(false);
   const [isCheckingService, setCheckingService] = useState(true);
   const [sortType, setSortType] = useState('desc');
+  const [defaultDate, setDefaultDate] = useState('');
 
   useEffect(() => {
     return () => {
@@ -83,6 +86,12 @@ const GoogleDrive = props => {
     };
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    const formatDate = settingDate.find(item => item.selected === true);
+    setDefaultDate(formatDate.date_format);
+    // eslint-disable-next-line
+  }, [settingDate]);
 
   const updateSigninStatus = isSignedIn => {
     if (isSignedIn) {
@@ -183,7 +192,8 @@ const GoogleDrive = props => {
 
   const moreAction = [
     { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
-    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' }
+    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' },
+    { icon: mdiDownloadOutline, text: 'Tải xuống', type: 'download' }
   ];
 
   const hanldeSort = field => {
@@ -293,7 +303,9 @@ const GoogleDrive = props => {
                   <StyledTableBodyCell align="center" width="20%">
                     <ColorTypo color="black">
                       {item.modifiedTime
-                        ? moment(item.modifiedTime).format('YYYY-MM-DD')
+                        ? moment(item.modifiedTime).format(
+                            defaultDate || 'YYYY-MM-DD'
+                          )
                         : ''}
                     </ColorTypo>
                   </StyledTableBodyCell>
@@ -323,6 +335,7 @@ const GoogleDrive = props => {
 
 export default connect(
   state => ({
+    settingDate: state.setting.settingDate,
     isShowBtnSignoutGoogle: state.documents.isShowBtnSignoutGoogle,
     listGoogleDocument: state.documents.listGoogleDocument,
     isLoading: state.documents.isLoading,

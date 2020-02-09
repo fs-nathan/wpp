@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+import { isEqual } from 'lodash';
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import { DialogContent } from './TableCommon';
@@ -22,7 +23,7 @@ const ChangeDocumentModal = props => {
         {
           name: 'Cập nhật',
           action: handleUpdate,
-          disabled: isEmpty(value.trim())
+          disabled: isEmpty(value.trim()) || isEqual(value, props.item.name)
         }
       ]}
     >

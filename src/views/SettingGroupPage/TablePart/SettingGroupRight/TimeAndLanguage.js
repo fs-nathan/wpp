@@ -9,9 +9,9 @@ import { WP_LANGUAGE } from '../../../../constants/constants';
 import LoadingContent from '../../../../components/LoadingContent';
 import {
   actionToast,
-  actionGetFormatDate,
   actionSettingFormatDate
 } from '../../../../actions/system/system';
+import { actioGetSettingDate } from '../../../../actions/setting/setting';
 import './SettingGroupRight.scss';
 
 const TimeAndLanguage = props => {
@@ -20,37 +20,33 @@ const TimeAndLanguage = props => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getFormatDate();
+    const formatDate = props.settingDate.find(item => item.selected === true);
+    setDefaultDate(formatDate.date_format || 'DD/MM/YYYY');
     // eslint-disable-next-line
-  }, []);
-
-  const getFormatDate = async () => {
-    try {
-      setLoading(true);
-      const { data } = await actionGetFormatDate();
-      setLoading(false);
-      const listDate = data.data || [];
-      const formatDate = listDate.find(item => item.selected === true);
-      setDefaultDate(formatDate.date_format || 'DD/MM/YYYY');
-    } catch (error) {
-      setLoading(false);
-    }
+  }, [props.settingDate]);
+  
+  const handleToast = (type, message) => {
+    props.actionToast(type, message);
+    setTimeout(() => props.actionToast(null, ''), 2000);
   };
 
   const handleChangeLanguage = e => {
     i18n.changeLanguage(e.target.value);
     localStorage.setItem(WP_LANGUAGE, e.target.value || 'vi');
+    handleToast('success', t('IDS_WP_UPDATE_SUCCESS'));
   };
   const handleChangeDate = async e => {
     let value = e.target.value || '';
     try {
       setLoading(true);
       await actionSettingFormatDate(value);
+      handleToast('success', t('IDS_WP_UPDATE_SUCCESS'));
       setLoading(false);
       setDefaultDate(value);
+      props.actioGetSettingDate();
     } catch (error) {
       setLoading(false);
-      props.actionToast('error', t('IDS_WP_ERROR_CHANGE_FORMAT_DATE'));
+      handleToast('error', t('IDS_WP_ERROR_CHANGE_FORMAT_DATE'));
       setTimeout(() => props.actionToast(null, ''), 3000);
     }
   };
@@ -128,7 +124,7 @@ const TimeAndLanguage = props => {
 
 export default connect(
   state => ({
-    // state
+    settingDate: state.setting.settingDate
   }),
-  { actionToast }
+  { actionToast, actioGetSettingDate }
 )(TimeAndLanguage);

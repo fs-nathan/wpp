@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import Pdf from 'react-to-pdf';
+import kendo from '@progress/kendo-ui';
 import { mdiFilePdf } from '@mdi/js';
 import Icon from '@mdi/react';
 import './SettingGroupRight.scss';
@@ -15,9 +15,7 @@ import {
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import LoadingBox from '../../../../components/LoadingBox';
 
-const ref = React.createRef();
 const OrderDetail = props => {
-  const options = { orientation: 'p', unit: 'px', format: [640, 890] };
   const [orderItem, setOrder] = useState({});
   const handleFetchData = async () => {
     try {
@@ -34,12 +32,18 @@ const OrderDetail = props => {
   useEffect(() => {
     handleFetchData(); // eslint-disable-next-line
   }, []);
+
+  const handleExport = () => {
+    const fileName = `order-wp-kh${orderItem.code}.pdf`;
+    window.convertToPdf(kendo, fileName);
+  };
   if (props.isLoading) return <LoadingBox />;
   return (
     <div className="order-detail-container">
-      <div className="col-sm-7 has-border-right detail-left" ref={ref}>
+      <div className="col-sm-7 has-border-right detail-left">
         <ExportPDF orderItem={orderItem} isCreate={false} />
       </div>
+
       {/* <div className="divider-vertical" /> */}
       <div className="other-info-order-detail">
         <div className="UserInfo_right_header d-flex justify-content-center align-items-center">
@@ -72,24 +76,15 @@ const OrderDetail = props => {
             <p>{orderItem.status_payment}</p>
             <p className="title-item">Hóa đơn</p>
             <p>{orderItem.bill_status}</p>
-            <Pdf
-              targetRef={ref}
-              filename={`order-wp-kh${orderItem.code}.pdf`}
-              options={options}
-              x={0.5}
-              y={0.5}
+
+            <Button
+              variant="outlined"
+              className="download-btn"
+              onClick={handleExport}
             >
-              {({ toPdf }) => (
-                <Button
-                  variant="outlined"
-                  className="download-btn"
-                  onClick={toPdf}
-                >
-                  <Icon path={mdiFilePdf} size={1.2} color="#f37c00" />
-                  &nbsp; &nbsp;Tải đơn hàng về máy
-                </Button>
-              )}
-            </Pdf>
+              <Icon path={mdiFilePdf} size={1.2} color="#f37c00" />
+              &nbsp; &nbsp;Tải đơn hàng về máy
+            </Button>
           </div>
         )}
       </div>

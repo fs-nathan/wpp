@@ -1,4 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
+import { Scrollbars } from 'react-custom-scrollbars';
 import {
   InputAdornment,
   InputBase,
@@ -41,22 +43,26 @@ const ResultSearchItem = props => (
     )}
     <div className="result-content">
       <span className="result-title">
-        <a
-          href={props.url_redirect_project}
+        <p
           className="address-link"
-          onClick={props.handleCloseModal}
-        >
-          {props.project}
-        </a>
-      </span>
-      <div className="sub-description">
-        <a
-          href={props.url_redirect_task}
-          className="address-link"
-          onClick={props.handleCloseModal}
+          onClick={() => {
+            props.handleRedirect(props.url_redirect_task);
+            props.handleCloseModal();
+          }}
         >
           {props.name}
-        </a>
+        </p>
+      </span>
+      <div className="sub-description">
+        <p
+          className="address-link"
+          onClick={() => {
+            props.handleRedirect(props.url_redirect_project);
+            props.handleCloseModal();
+          }}
+        >
+          {props.project}
+        </p>
       </div>
     </div>
     <div
@@ -102,7 +108,9 @@ const SearchModal = props => {
       setResult(true);
     }
   };
-
+  const handleRedirect = url => {
+    props.history.push({ pathname: url });
+  };
   const { open } = props;
   return (
     <Dialog open={open} onClose={handleCloseModal} className="search-modal">
@@ -127,6 +135,7 @@ const SearchModal = props => {
             <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
           </IconButton>
         </div>
+
         <DialogContent dividers>
           {isEmpty(resultList) ? (
             <Fragment>
@@ -156,13 +165,20 @@ const SearchModal = props => {
               )}
             </Fragment>
           ) : (
-            resultList.map((item, idx) => (
-              <ResultSearchItem
-                key={idx}
-                {...item}
-                handleCloseModal={handleCloseModal}
-              />
-            ))
+            <div className="search-list-result">
+              <Scrollbars autoHide autoHideTimeout={500}>
+                <div className="result-item">
+                  {resultList.map((item, idx) => (
+                    <ResultSearchItem
+                      key={idx}
+                      {...item}
+                      handleRedirect={handleRedirect}
+                      handleCloseModal={handleCloseModal}
+                    />
+                  ))}
+                </div>
+              </Scrollbars>
+            </div>
           )}
         </DialogContent>
         {!isEmpty(resultList) && (
@@ -177,4 +193,4 @@ const SearchModal = props => {
   );
 };
 
-export default SearchModal;
+export default withRouter(SearchModal);

@@ -45,19 +45,19 @@ const ThStyled2 = styled.th`
 const TdStyled2 = styled.td`
   border-bottom: 1px solid #ddd;
   text-align: center;
-  padding: 15px 0;
+  padding: 15px 10px;
   font-weight: bold;
 `;
 
 const TdStyled3 = styled.td`
   border-bottom: 1px solid #ddd;
   text-align: left;
-  padding: 15px 20px;
+  padding: 15px 10px;
 `;
 const TdStyled4 = styled.td`
   border-bottom: 1px solid #ddd;
   text-align: center;
-  padding: 15px 0;
+  padding: 15px 10px;
 `;
 class ExportPDF extends Component {
   getDateGift = dateUse => {
@@ -163,7 +163,7 @@ class ExportPDF extends Component {
     const totalPriceBeforVAT = moneyPacketUser + moneyPacketData;
     const totalPriceVAT = totalPriceBeforVAT * 0.1;
     return (
-      <div className="order-content">
+      <div className="order-content k-pdf-export" id="printContent">
         <form>
           <div id="printContent">
             <div className="print-content">
@@ -211,7 +211,11 @@ class ExportPDF extends Component {
                   <div className="status-oder">
                     <span
                       className={`text-status-oder ${
-                        orderItem.status_payment === 'Paid' ? 'paid-status' : ''
+                        isCreate
+                          ? ''
+                          : orderItem.status_payment === 'Paid'
+                          ? 'paid-status'
+                          : ''
                       }`}
                     >
                       {isCreate ? 'CHƯA THANH TOÁN' : orderItem.status_payment}
@@ -276,16 +280,18 @@ class ExportPDF extends Component {
                 <TableStyled2>
                   <thead>
                     <tr>
-                      <ThStyled2 style={{ with: 40 }}>TT</ThStyled2>
-                      <ThStyled2 style={{ with: 50 }}>
+                      <ThStyled2 className="number-stt">TT</ThStyled2>
+                      <ThStyled2 className="detail-order">
                         Chi tiết dịch vụ
                       </ThStyled2>
-                      <ThStyled2 style={{ with: 100 }}>Đơn giá (VNĐ)</ThStyled2>
-                      <ThStyled2 style={{ with: 60 }}>Số lượng</ThStyled2>
-                      <ThStyled2 style={{ with: 100 }}>
+                      <ThStyled2 className="value-order">
+                        Đơn giá (VNĐ)
+                      </ThStyled2>
+                      <ThStyled2 className="value-order">Số lượng</ThStyled2>
+                      <ThStyled2 className="value-order">
                         Thời gian (Tháng)
                       </ThStyled2>
-                      <ThStyled2 style={{ with: 100 }}>
+                      <ThStyled2 className="value-order">
                         Thành tiền (VNĐ)
                       </ThStyled2>
                     </tr>
@@ -295,8 +301,8 @@ class ExportPDF extends Component {
                     {(isCheckedManagerWork || !isEmpty(orderItem)) && (
                       <React.Fragment>
                         <tr style={{ background: '#f2f2f2' }}>
-                          <TdStyled2>1</TdStyled2>
-                          <TdStyled3>
+                          <TdStyled2 className="number-stt">1</TdStyled2>
+                          <TdStyled3 className="detail-order">
                             <div className="">
                               <div style={{ fontWeight: 'bold' }}>
                                 Gói sản phẩm:{' '}
@@ -312,16 +318,18 @@ class ExportPDF extends Component {
                               </div>
                             </div>
                           </TdStyled3>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled2>{totalDataUse}</TdStyled2>
-                          <TdStyled2>
+                          <TdStyled2 className="value-order"></TdStyled2>
+                          <TdStyled2 className="value-order"></TdStyled2>
+                          <TdStyled2 className="value-order">
+                            {totalDataUse}
+                          </TdStyled2>
+                          <TdStyled2 className="value-order">
                             {this.showPrice(moneyPacketUser)}
                           </TdStyled2>
                         </tr>
                         <tr>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled3>
+                          <TdStyled2 className="number-stt"></TdStyled2>
+                          <TdStyled3 className="detail-order">
                             <div className="">
                               <div>
                                 Đăng ký gói sản phầm{' '}
@@ -374,8 +382,8 @@ class ExportPDF extends Component {
                           </TdStyled4>
                         </tr>
                         <tr>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled3>
+                          <TdStyled2 className="number-stt"></TdStyled2>
+                          <TdStyled3 className="detail-order">
                             <div className="">
                               <div>Thời gian cộng thêm từ đơn hàng cũ</div>
                             </div>
@@ -386,12 +394,12 @@ class ExportPDF extends Component {
                           <TdStyled4>-</TdStyled4>
                         </tr>
                         <tr>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled3>
+                          <TdStyled2 className="number-stt"></TdStyled2>
+                          <TdStyled3 className="detail-order">
                             <div className="">
                               <div>
-                                Tặng thời gian sử dụng do kỳ thanh toán: <br />{' '}
-                                12 tháng
+                                Tặng thời gian sử dụng do kỳ thanh toán: 12
+                                tháng
                               </div>
                             </div>
                           </TdStyled3>
@@ -401,8 +409,8 @@ class ExportPDF extends Component {
                           <TdStyled4>-</TdStyled4>
                         </tr>
                         <tr>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled3>
+                          <TdStyled2 className="number-stt"></TdStyled2>
+                          <TdStyled3 className="detail-order">
                             <div className="">
                               <div>
                                 Mã khuyến mại:{' '}
@@ -424,8 +432,10 @@ class ExportPDF extends Component {
                         !isEmpty(orderItem.packet_storage))) && (
                       <React.Fragment>
                         <tr style={{ background: '#f2f2f2' }}>
-                          <TdStyled2>{isCheckedManagerWork ? 2 : 1}</TdStyled2>
-                          <TdStyled3>
+                          <TdStyled2 className="number-stt">
+                            {isCheckedManagerWork ? 2 : 1}
+                          </TdStyled2>
+                          <TdStyled3 className="detail-order">
                             <div className="">
                               <div style={{ fontWeight: 'bold' }}>
                                 Gói sản phầm: CS-
@@ -457,7 +467,7 @@ class ExportPDF extends Component {
                         </tr>
                         <tr>
                           <TdStyled2></TdStyled2>
-                          <TdStyled3>
+                          <TdStyled3 className="detail-order">
                             <div className="">
                               <div>
                                 Đăng ký gói mở rộng: Cloud Storage (CS-
@@ -503,7 +513,7 @@ class ExportPDF extends Component {
                         </tr>
                         <tr>
                           <TdStyled2></TdStyled2>
-                          <TdStyled3>
+                          <TdStyled3 className="detail-order">
                             <div className="">
                               <div>Thời gian cộng thêm từ đơn hàng cũ</div>
                             </div>
@@ -560,7 +570,7 @@ class ExportPDF extends Component {
                 </div>
                 <div style={{ marginTop: 30 }}>
                   <p style={{ fontWeight: 'bold', marginBottom: 10 }}>
-                    *** Lưu ý
+                    GHI CHÚ:
                   </p>
                   <p style={{ marginBottom: 10 }}>
                     Đơn hàng được tạo trực tuyến trên hệ thống phần mềm quản lý
@@ -574,6 +584,10 @@ class ExportPDF extends Component {
                     Khách hàng vui lòng xác nhận mọi thông tin trước khi thanh
                     toán. Workplus không chịu trách nhiệm nếu thông tin thanh
                     toán không phải do chúng tôi cung cấp.
+                  </p>
+                  <p style={{ marginBottom: 10 }}>
+                    Các chương trình khuyến mại chỉ áp dụng trong từng thời điểm
+                    và không cam kết lâu dài.
                   </p>
                   <p style={{ marginBottom: 10 }}>
                     Mọi thắc mắc liên quan đến thanh toán đơn hàng vui lòng liên

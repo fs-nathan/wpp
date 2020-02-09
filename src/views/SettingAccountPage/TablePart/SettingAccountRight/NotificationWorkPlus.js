@@ -44,7 +44,7 @@ const NotificationWorkPlus = props => {
                       onClick={() => {
                         props.history.push({
                           pathname: Routes.SETTING_ACCOUNT_NOTIFI,
-                          search: `?${row.id}`
+                          search: `?id=${row.id}`
                         });
                       }}
                       className="notification-row-item cursor-pointer"

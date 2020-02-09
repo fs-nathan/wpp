@@ -47,6 +47,12 @@
       }
     }
   }
+  .search-list-result {
+    height: 400px;
+    .result-item {
+      padding-right: 10px;
+    }
+  }
 
   .search-result-item {
     margin-bottom: 15px;
@@ -68,9 +74,14 @@
         font-weight: 500;
         color: #414141;
         line-height: 22px;
-        a {
+        p {
           font-weight: 500;
           color: #222;
+          margin: 0;
+          cursor: pointer;
+          &:hover {
+            color: #2196f3;
+          }
         }
         &:hover {
           color: #00b707;
@@ -78,9 +89,14 @@
       }
       .sub-description {
         font-size: 13px;
-        a {
+        p {
           font-weight: normal;
           color: #757575;
+          margin: 0;
+          cursor: pointer;
+          &:hover {
+            color: #2196f3;
+          }
         }
       }
     }

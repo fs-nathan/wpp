@@ -173,15 +173,8 @@ const MoveDocumentModal = props => {
     const tempData = [...listFolderBr];
     tempData.splice(-1, 1);
     if (isEmpty(tempData)) {
-      setListData([
-        {
-          name: 'Tài liệu của tôi',
-          id: 'root',
-          sub_folder: true
-        }
-      ]);
+      setListData([{ name: 'Tài liệu của tôi', id: 'root', sub_folder: true }]);
     }
-
     setListFolderBr(tempData);
     setFolderSelected({});
   };

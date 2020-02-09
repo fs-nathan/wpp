@@ -182,3 +182,6 @@ export const getNumberMessageNotViewer = () => {
   };
   return apiService(config);
 };
+export const actionGetSupport = () => {
+  return apiService({ url: '/get-url-help', method: 'get' });
+};

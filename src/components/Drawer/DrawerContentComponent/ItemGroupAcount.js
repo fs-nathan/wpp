@@ -148,19 +148,24 @@ const ItemGroupAcount = props => {
           <div className="info-item-group-account">
             {commonEl}
             <div className="phone-item-group-account">
-              {/* <span className="text-value-email-phone">{item.phone}</span> */}
-              <Button
-                className="btn-action"
-                variant="text"
-                onClick={e => requestJoinGroup(e, item.id)}
-                style={{
-                  backgroundColor: bgColor.color,
-                  border: `1px solid ${bgColor.color}`,
-                  color: 'white'
-                }}
-              >
-                {t('IDS_WP_JOIN')}
-              </Button>
+              {item.status_code === 2 ? (
+                <Button className="btn-action joined-group-text" variant="text">
+                  {t('IDS_WP_JOINED')}
+                </Button>
+              ) : (
+                <Button
+                  className="btn-action"
+                  variant="text"
+                  onClick={e => requestJoinGroup(e, item.id)}
+                  style={{
+                    backgroundColor: bgColor.color,
+                    border: `1px solid ${bgColor.color}`,
+                    color: 'white'
+                  }}
+                >
+                  {t('IDS_WP_JOIN')}
+                </Button>
+              )}
             </div>
           </div>
         );
@@ -244,10 +249,10 @@ const ItemGroupAcount = props => {
             </span>
           </div>
           <div className="acc-item-group-account">
-            <span className="text-value-email-phone">ID: {item.code}</span>
+            <p className="text-value-email-phone">ID: {item.code}</p>
+            {newEl}
           </div>
         </div>
-        {newEl}
       </div>
     );
   };

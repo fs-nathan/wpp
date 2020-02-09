@@ -40,6 +40,31 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script src="%PUBLIC_URL%/lib/kendo.all.min.js"></script>
+    <script>
+      function convertToPdf(kendo, fileName) {
+        kendo.drawing
+          .drawDOM('#printContent', {
+            paperSize: 'A4',
+            margin: {
+              top: '1.7cm',
+              bottom: '1.7cm',
+              left: '2.5cm',
+              right: '2.5cm'
+            },
+            scale: 0.7
+          })
+          .then(function(group) {
+            kendo.drawing.pdf.saveAs(group, fileName);
+          });
+        kendo.pdf.defineFont({
+          'DejaVu Sans': '%PUBLIC_URL%/lib/DejaVuSans.ttf',
+          'DejaVu Sans|Bold': '%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf',
+          'DejaVu Sans|Bold|Italic': '%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf',
+          'DejaVu Sans|Italic': '%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf'
+        });
+      }
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

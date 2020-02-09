@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { Avatar } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { connect } from 'react-redux';
+import { remove, findIndex } from 'lodash';
 import '../DocumentPage.scss';
 import ModalCommon from './ModalCommon';
 import { DialogContent } from './TableCommon';
@@ -24,7 +25,12 @@ import {
   actionFetchListProjectOfFolder,
   actionFetchListDocumentFromMe,
   actionFetchListDocumentShare,
-  actionFetchListMyDocument
+  actionFetchListMyDocument,
+  actionSortListRecent,
+  actionSortListProject,
+  actionSortListDocumentFromMe,
+  actionSortListDocumentShare,
+  actionSortListDocument
 } from '../../../../actions/documents/index';
 
 let originListMember = [];
@@ -34,6 +40,7 @@ const ShareDocumentModal = props => {
   const [searchValue, setSearchValue] = useState('');
   const [listMember, setListMember] = useState([]);
   const [listMemberShared, setListMemberShared] = useState([]);
+  const [itemSelected, setItemSelected] = useState(props.item);
 
   useEffect(() => {
     return () => {
@@ -63,32 +70,56 @@ const ShareDocumentModal = props => {
     const pathname = props.history.location.pathname;
     const isProjectDocument = isEmpty(props.location.search);
     switch (pathname) {
-      case Routes.DOCUMENT_RECENT:
-        props.actionFetchListRecent({}, false);
+      case Routes.DOCUMENT_RECENT: {
+        const index = findIndex(props.listRecent, { id: itemSelected.id });
+        const dataTemp = [...props.listRecent];
+        dataTemp.splice(index, 1, itemSelected);
+        props.actionSortListRecent(dataTemp);
         props.onClose();
         return null;
+      }
       case Routes.DOCUMENT_PROJECT:
         if (!isProjectDocument) {
-          const search = props.location.search.split('projectId=').pop();
-          props.actionFetchListProjectOfFolder({ project_id: search }, false);
+          const index = findIndex(props.listProject, { id: itemSelected.id });
+          const dataTemp = [...props.listProject];
+          dataTemp.splice(index, 1, itemSelected);
+          props.actionSortListProject(dataTemp);
           props.onClose();
           return null;
         }
         break;
-      case Routes.DOCUMENT_SHARE:
-        props.actionFetchListDocumentFromMe({}, false);
+      case Routes.DOCUMENT_SHARE: {
+        const index = findIndex(props.listDocumentFromMe, {
+          id: itemSelected.id
+        });
+        const dataTemp = [...props.listDocumentFromMe];
+        dataTemp.splice(index, 1, itemSelected);
+        props.actionSortListDocumentFromMe(dataTemp);
         props.onClose();
         return null;
+      }
 
-      case Routes.DOCUMENT_SHARE_ME:
-        props.actionFetchListDocumentShare({}, false);
+      case Routes.DOCUMENT_SHARE_ME: {
+        const index = findIndex(props.listDocumentShareToMe, {
+          id: itemSelected.id
+        });
+        const dataTemp = [...props.listDocumentShareToMe];
+        dataTemp.splice(index, 1, itemSelected);
+        props.actionSortListDocumentShare(dataTemp);
         props.onClose();
         return null;
+      }
 
-      case Routes.DOCUMENT_ME:
-        props.actionFetchListMyDocument({}, false);
+      case Routes.DOCUMENT_ME: {
+        const index = findIndex(props.listMyDocument, {
+          id: itemSelected.id
+        });
+        const dataTemp = [...props.listMyDocument];
+        dataTemp.splice(index, 1, itemSelected);
+        props.actionSortListDocument(dataTemp);
         props.onClose();
         return null;
+      }
 
       default: {
         props.onClose();
@@ -138,7 +169,7 @@ const ShareDocumentModal = props => {
     } catch (error) {}
   };
 
-  const handleShareMember = async member_id => {
+  const handleShareMember = async (member_id, member_name, member_avatar) => {
     try {
       if (item.isGoogleDocument) {
         let data = {
@@ -147,26 +178,40 @@ const ShareDocumentModal = props => {
           icon: item.iconLink,
           size: item.size,
           url: item.webViewLink,
+          url_download: item.webContentLink || '',
           share_to: member_id,
           file_type: item.fileExtension
         };
         await actionShareGoogleFile(data);
       } else {
-        let data = {};
+        let dataDTO = {};
         if (item.type === 'folder') {
-          data.folder_id = item.id;
-          data.member = member_id;
+          dataDTO.folder_id = item.id;
+          dataDTO.member = member_id;
         } else {
-          data.file_id = item.id;
-          data.share_to = member_id;
+          dataDTO.file_id = item.id;
+          dataDTO.share_to = member_id;
         }
-        await actionShareFile(data, item.type);
+        const { data } = await actionShareFile(dataDTO, item.type);
+        if (data.state) {
+          let itemSelectedTemp = itemSelected;
+          itemSelectedTemp.users_shared.push({
+            name: member_name,
+            avatar: member_avatar,
+            id: member_id
+          });
+          setItemSelected(itemSelectedTemp);
+        }
       }
       fetDataForShare();
     } catch (error) {}
   };
 
-  const handleCancelShareMember = async member_id => {
+  const handleCancelShareMember = async (
+    member_id,
+    member_name,
+    member_avatar
+  ) => {
     try {
       if (item.isGoogleDocument) {
         await actionCancelShareGoogleFile({
@@ -174,15 +219,20 @@ const ShareDocumentModal = props => {
           member_id: member_id
         });
       } else {
-        let data = {};
+        let dataDTO = {};
         if (item.type === 'folder') {
-          data.folder_id = item.id;
-          data.member_id = member_id;
+          dataDTO.folder_id = item.id;
+          dataDTO.member_id = member_id;
         } else {
-          data.file_id = item.id;
-          data.member_id = member_id;
+          dataDTO.file_id = item.id;
+          dataDTO.member_id = member_id;
         }
-        await actionCancelShareFile(data, item.type);
+        const { data } = await actionCancelShareFile(dataDTO, item.type);
+        if (data.state) {
+          let itemSelectedTemp = itemSelected;
+          remove(itemSelectedTemp.users_shared, { id: member_id });
+          setItemSelected(itemSelectedTemp);
+        }
       }
       fetDataForShare();
     } catch (error) {}
@@ -191,8 +241,13 @@ const ShareDocumentModal = props => {
   return (
     <ModalCommon
       title="Chia sẻ tài liệu"
+      onClose={() => {
+        props.onClose();
+        handleShare();
+      }}
+      type="share"
       footerAction={[{ name: 'Thoát', action: handleShare, type: 'cancel' }]}
-      maxWidth="lg"
+      maxWidth="md"
     >
       <DialogContent dividers className="dialog-content share-doc">
         <div className="left-share-doc">
@@ -233,7 +288,13 @@ const ShareDocumentModal = props => {
                       <Button
                         variant="outlined"
                         className="share-btn"
-                        onClick={() => handleShareMember(item.member_id)}
+                        onClick={() =>
+                          handleShareMember(
+                            item.member_id,
+                            item.member_name,
+                            item.member_avatar
+                          )
+                        }
                       >
                         Chia sẻ
                       </Button>
@@ -285,18 +346,29 @@ const ShareDocumentModal = props => {
                     </div>
                     <div className="right-content">
                       <div>
+                        {item.is_owner ? (
+                          <span className="red-color">Chủ sở hữu</span>
+                        ) : (
+                          <span>{item.date_share}</span>
+                        )}
                         <span>{item.date_share}</span>
                       </div>
                       <div className="right-item">
-                        <Button
-                          variant="outlined"
-                          className="share-btn"
-                          onClick={() =>
-                            handleCancelShareMember(item.member_id)
-                          }
-                        >
-                          Hủy
-                        </Button>
+                        {!item.is_owner && (
+                          <Button
+                            variant="outlined"
+                            className="share-btn"
+                            onClick={() =>
+                              handleCancelShareMember(
+                                item.member_id,
+                                item.member_name,
+                                item.member_avatar
+                              )
+                            }
+                          >
+                            Hủy
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </StyledListItem>
@@ -310,10 +382,24 @@ const ShareDocumentModal = props => {
   );
 };
 
-export default connect(state => ({}), {
-  actionFetchListRecent,
-  actionFetchListProjectOfFolder,
-  actionFetchListDocumentFromMe,
-  actionFetchListDocumentShare,
-  actionFetchListMyDocument
-})(withRouter(ShareDocumentModal));
+export default connect(
+  state => ({
+    listRecent: state.documents.listRecent,
+    listProject: state.documents.listProject,
+    listDocumentFromMe: state.documents.listDocumentFromMe,
+    listDocumentShareToMe: state.documents.listDocumentShareToMe,
+    listMyDocument: state.documents.listMyDocument
+  }),
+  {
+    actionFetchListRecent,
+    actionFetchListProjectOfFolder,
+    actionFetchListDocumentFromMe,
+    actionFetchListDocumentShare,
+    actionFetchListMyDocument,
+    actionSortListRecent,
+    actionSortListProject,
+    actionSortListDocumentFromMe,
+    actionSortListDocumentShare,
+    actionSortListDocument
+  }
+)(withRouter(ShareDocumentModal));

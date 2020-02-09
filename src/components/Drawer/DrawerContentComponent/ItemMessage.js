@@ -1,6 +1,6 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
-
+import { withRouter } from 'react-router-dom';
 // import * as image from '../../../assets/index';
 
 import '../Drawer.scss';
@@ -8,18 +8,24 @@ import '../Drawer.scss';
 const ItemMessage = props => {
   const { item } = props;
 
-  const getCreateToNow = () => {
-    let sAgo = '';
+  // const getCreateToNow = () => {
+  //   let sAgo = '';
 
-    sAgo = item.time_label.replace(/&#x2F;/g, '/');
-    return sAgo;
+  //   sAgo = item.time_label.replace(/&#x2F;/g, '/');
+  //   return sAgo;
+  // };
+  const handleClick = () => {
+    if (props.handleViewNotification) props.handleViewNotification();
+    if (item.url_redirect) {
+      props.history.push({ pathname: item.url_redirect });
+    }
+    if (props.handleCloseDrawer) props.handleCloseDrawer();
   };
-
   return (
     <div
       className={`item-message ${item.is_viewed ? '' : 'un-read'}`}
       key={item.id}
-      onClick={props.handleViewNotification}
+      onClick={handleClick}
     >
       <div className="avatar-item-message">
         <Avatar
@@ -34,11 +40,11 @@ const ItemMessage = props => {
           <span className="text-name-message">{item.content}</span>
         </div>
         <div className="des-message">
-          <span>{getCreateToNow()}</span>
+          <span>{item.time_label}</span>
         </div>
       </div>
     </div>
   );
 };
 
-export default ItemMessage;
+export default withRouter(ItemMessage);

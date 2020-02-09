@@ -13,7 +13,10 @@ import { actionChangeBreadCrumbs } from '../../../actions/system/system';
 import {
   actionFetchListMyDocument,
   actionSelectedFolder,
-  actionFetchListGoogleDocument
+  actionFetchListGoogleDocument,
+  actionFetchListDocumentShare,
+  actionFetchListDocumentFromMe,
+  actionFetchListTrash
 } from '../../../actions/documents';
 import { Routes } from '../../../constants/routes';
 import LeftSetting from '../../../components/LeftSetting/LeftSetting';
@@ -36,13 +39,27 @@ const ListPart = props => {
       title: 'Đã chia sẻ',
       url: Routes.DOCUMENT_SHARE,
       icon: mdiFileMoveOutline,
-      color: '#f44336'
+      color: '#f44336',
+      action: () => {
+        if (props.breadCrumbs.length > 0) {
+          props.actionFetchListDocumentFromMe({}, true);
+          props.actionChangeBreadCrumbs([]);
+          props.actionSelectedFolder({});
+        }
+      }
     },
     {
       title: 'Được chia sẻ với tôi',
       url: Routes.DOCUMENT_SHARE_ME,
       icon: mdiFileUndoOutline,
-      color: '#607d8b'
+      color: '#607d8b',
+      action: () => {
+        if (props.breadCrumbs.length > 0) {
+          props.actionFetchListDocumentShare({}, true);
+          props.actionChangeBreadCrumbs([]);
+          props.actionSelectedFolder({});
+        }
+      }
     },
     {
       title: 'Tài liệu của tôi',
@@ -74,7 +91,14 @@ const ListPart = props => {
       title: 'Thùng rác',
       url: Routes.DOCUMENT_TRASH,
       icon: mdiTrashCanOutline,
-      color: '#777'
+      color: '#777',
+      action: () => {
+        if (props.breadCrumbs.length > 0) {
+          props.actionFetchListTrash({}, true);
+          props.actionChangeBreadCrumbs([]);
+          props.actionSelectedFolder({});
+        }
+      }
     }
   ];
   return <LeftSetting title="Quản lý tài liệu" listMenu={listMenu} />;
@@ -88,6 +112,9 @@ export default connect(
     actionChangeBreadCrumbs,
     actionFetchListMyDocument,
     actionSelectedFolder,
+    actionFetchListDocumentShare,
+    actionFetchListDocumentFromMe,
+    actionFetchListTrash,
     actionFetchListGoogleDocument
   }
 )(ListPart);

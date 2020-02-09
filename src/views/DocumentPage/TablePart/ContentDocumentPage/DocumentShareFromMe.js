@@ -137,7 +137,27 @@ const DocumentShareFromMe = props => {
       }
       actionChangeBreadCrumbs(newBreadCrumbs);
     } else {
-      props.openDocumentDetail(item);
+      if (item.document_type !== 2) {
+        props.openDocumentDetail(item);
+      } else {
+        // google drive file
+        let transformData = {
+          isGoogleDocument: true,
+          noConvertFileSize: true,
+          id: item.id,
+          name: item.name || '',
+          webViewLink: item.url,
+          webContentLink: item.url_download,
+          url: item.url.split('?')[0].replace('view', 'preview'),
+          type: item.type,
+          size: item.size,
+          user_create: {
+            name: item.user_create_name || '',
+            avatar: item.user_create_avatar || ''
+          }
+        };
+        props.openDocumentDetail(transformData);
+      }
     }
   };
 
@@ -150,19 +170,14 @@ const DocumentShareFromMe = props => {
     setSelected(selectItem(selected, item.id));
     props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
-  const moreAction = [
+  const moreActionFile = [
     { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
     { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' },
-    {
-      icon: mdiDownloadOutline,
-      text: 'Tải xuống',
-      type: 'download',
-      action: () => {}
-    }
+    { icon: mdiDownloadOutline, text: 'Tải xuống', type: 'download' }
   ];
-  if (isLoading) {
-    return <LoadingBox />;
-  }
+  const moreActionFolder = moreActionFile.filter(el => el.type !== 'download');
+
+  if (isLoading) return <LoadingBox />;
   return (
     <Fragment>
       <Table stickyHeader>
@@ -246,17 +261,20 @@ const DocumentShareFromMe = props => {
                   <ColorTypo color="black">{file.date_share}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="15%">
-                  <ColorTypo color="black">
-                    <CustomAvatar
-                      src={file.user_create_avatar}
-                      title="user create avatar"
-                    />
-                  </ColorTypo>
+                  <CustomAvatar
+                    src={file.user_create_avatar}
+                    title="user create avatar"
+                  />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   <ColorTypo color="black">{file.size}</ColorTypo>
                 </StyledTableBodyCell>
-                <MoreAction actionList={moreAction} item={file} />
+                <MoreAction
+                  actionList={
+                    file.type === 'folder' ? moreActionFolder : moreActionFile
+                  }
+                  item={file}
+                />
               </TableRow>
             );
           })}

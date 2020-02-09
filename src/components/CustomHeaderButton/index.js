@@ -14,16 +14,21 @@ const CustomHeaderButton = props => {
   const handleChangeSearch = ({ target: { value } }) => {
     props.actionChangeSearchText(value);
   };
+  const closeSearch = () => {
+    props.actionChangeSearchText(null);
+  };
   useEffect(() => {
     return () => setSearch(false);
   }, [pathname]);
   return (
     <React.Fragment>
       <div className={`search-container ${isSearch ? 'show-input' : ''}`}>
-        <SearchInput
-          placeholder="Nhập nội dung cần tìm"
-          onChange={handleChangeSearch}
-        />
+        {isSearch && (
+          <SearchInput
+            placeholder="Nhập nội dung cần tìm"
+            onChange={handleChangeSearch}
+          />
+        )}
       </div>
       <ButtonGroup size="small" variant="text">
         {props.listAction.map((el, index) => {
@@ -35,7 +40,10 @@ const CustomHeaderButton = props => {
                   disableTouchRipple
                   disabled={el.disabled}
                   key={index}
-                  onClick={() => setSearch(!isSearch)}
+                  onClick={() => {
+                    setSearch(!isSearch);
+                    if (isSearch) closeSearch();
+                  }}
                   className="header-button-custom"
                 >
                   <div>

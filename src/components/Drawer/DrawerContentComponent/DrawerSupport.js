@@ -1,26 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { mdiFileDocumentBoxOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionVisibleDrawerMessage } from '../../../actions/system/system';
+import {
+  actionVisibleDrawerMessage,
+  actionGetSupport
+} from '../../../actions/system/system';
 import HeaderDrawer from '../HeaderDrawer';
 import '../Drawer.scss';
 import FooterListDrawer from '../FooterListDrawer';
+// import { Routes } from '../../../constants/routes';
+import { withRouter } from 'react-router-dom';
+import { isEmpty } from '../../../helpers/utils/isEmpty';
+import LoadingBox from '../../LoadingBox';
 
-const listMessage = [
-  { name: 'Cài đặt tài khoản', read: true },
-  { name: 'Cài đặt nhóm làm việc', read: false },
-  { name: 'Thiết lập thông tin thanh toán', read: false },
-  { name: 'Đổi mật khẩu', read: false },
-  { name: 'Thay đổi ảnh cá nhân', read: false },
-  { name: 'Mời thành viên tham gia', read: false },
-  { name: 'Đuổi thành viên ra khỏi nhóm', read: false },
-  { name: 'Phân quyền thành viên', read: false }
-];
+// const listMessage = [
+//   { name: 'Cài đặt tài khoản', route: Routes.SETTING_ACCOUNT_INFO },
+//   { name: 'Cài đặt nhóm làm việc', route: Routes.SETTING_GROUP_INFO },
+//   {
+//     name: 'Thiết lập thông tin thanh toán',
+//     route: Routes.SETTING_GROUP_PAYMENT
+//   },
+//   { name: 'Đổi mật khẩu', route: Routes.SETTING_ACCOUNT_PASSWORD },
+//   { name: 'Thay đổi ảnh cá nhân', route: Routes.SETTING_ACCOUNT_INFO },
+//   { name: 'Mời thành viên tham gia', route: Routes.MEMBERS },
+//   { name: 'Đuổi thành viên ra khỏi nhóm', route: Routes.HOME },
+//   { name: 'Phân quyền thành viên', route: Routes.HOME }
+// ];
 const DrawerSupport = props => {
   const { t } = useTranslation();
-  // const { actionVisibleDrawerMessage, typeDrawer } = props;
+  const [listSupport, setListSupport] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchSupport({}); // eslint-disable-next-line
+  }, []);
+  const fetchSupport = async () => {
+    try {
+      setLoading(true);
+      const { data } = await actionGetSupport();
+      setListSupport(data.urls);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
   const actionList = [
     {
       name: t('IDS_WP_VIEW_ALL_SUPPORT'),
@@ -34,20 +59,32 @@ const DrawerSupport = props => {
     <div className="drawer-content">
       <HeaderDrawer title={t('IDS_WP_SUPPORT')} />
       <div className="content-drawer">
-        {listMessage.map((message, index) => (
-          <div className="item-message support-item" key={index}>
-            <div className="avatar-item-message">
-              <Icon
-                path={mdiFileDocumentBoxOutline}
-                size={1.2}
-                color={bgColor.color || ''}
-              />
+        {isLoading && <LoadingBox />}
+        {!isEmpty(listSupport) &&
+          listSupport.map((el, index) => (
+            <div
+              className="item-message support-item"
+              key={index}
+              onClick={() => {
+                props.history.push({ pathname: el.url });
+                props.actionVisibleDrawerMessage({
+                  type: '',
+                  anchor: props.anchorDrawer
+                });
+              }}
+            >
+              <div className="avatar-item-message">
+                <Icon
+                  path={mdiFileDocumentBoxOutline}
+                  size={1.2}
+                  color={bgColor.color || ''}
+                />
+              </div>
+              <div className="name-support-message">
+                <span className="text-support-message">{el.name}</span>
+              </div>
             </div>
-            <div className="name-support-message">
-              <span className="text-support-message">{message.name}</span>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
       <FooterListDrawer actionList={actionList} />
     </div>
@@ -57,9 +94,10 @@ const DrawerSupport = props => {
 export default connect(
   state => ({
     typeDrawer: state.system.typeDrawer,
+    anchorDrawer: state.system.anchorDrawer,
     colors: state.setting.colors
   }),
   {
     actionVisibleDrawerMessage
   }
-)(DrawerSupport);
+)(withRouter(DrawerSupport));

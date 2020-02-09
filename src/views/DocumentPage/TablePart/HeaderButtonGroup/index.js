@@ -5,7 +5,7 @@ import {
   mdiMagnify,
   mdiDownload,
   mdiTrashCan,
-  mdiRepeatOff,
+  // mdiRepeatOff,
   mdiArrowDecision,
   mdiLogout,
   mdiRefresh
@@ -78,12 +78,16 @@ const HeaderButtonGroup = props => {
         if (!isEmpty(listFolderId))
           listAction.push(actionDeleteFolderTrash({ folder_id: listFolderId }));
         await Promise.all(listAction);
-        props.actionFetchListTrash({}, true);
+        let params = {};
+        if (!isEmpty(currentFolder)) {
+          params.folder_id = currentFolder.id;
+        }
+        props.actionFetchListTrash(params, true);
       } else {
         if (!isEmpty(listFileId))
           listAction.push(actionDeleteFile({ file_id: listFileId }));
         if (!isEmpty(listFolderId))
-          listAction.push(actionDeleteFolder({ folder_id: listFolderId[0] }));
+          listAction.push(actionDeleteFolder({ folder_id: listFolderId }));
         await Promise.all(listAction);
         if (pathname === Routes.DOCUMENT_ME) {
           let params = {};
@@ -97,23 +101,23 @@ const HeaderButtonGroup = props => {
     } catch (error) {}
   };
 
-  const isDisableBtnDelete = () => {
-    let numFolder = 0;
-    let result = false;
-    if (isEmpty(selectedDocument)) return true;
-    if (pathname !== Routes.DOCUMENT_TRASH) {
-      selectedDocument.forEach(el => {
-        if (el.type === 'folder') {
-          numFolder += 1;
-        }
-        if (numFolder === 2) {
-          result = true;
-          return;
-        }
-      });
-    }
-    return result;
-  };
+  // const isDisableBtnDelete = () => {
+  //   let numFolder = 0;
+  //   let result = false;
+  //   if (isEmpty(selectedDocument)) return true;
+  //   if (pathname !== Routes.DOCUMENT_TRASH) {
+  //     selectedDocument.forEach(el => {
+  //       if (el.type === 'folder') {
+  //         numFolder += 1;
+  //       }
+  //       if (numFolder === 2) {
+  //         result = true;
+  //         return;
+  //       }
+  //     });
+  //   }
+  //   return result;
+  // };
 
   const isDisableBtnDownload = () => {
     let result = false;
@@ -145,15 +149,15 @@ const HeaderButtonGroup = props => {
       type: 'search',
       isShow: pathname !== Routes.DOCUMENT_GOOGLE_DRIVE
     },
-    {
-      text: 'Hủy chia sẻ',
-      icon: mdiRepeatOff,
-      action: () => {},
-      disabled: true,
-      isShow:
-        pathname === Routes.DOCUMENT_SHARE ||
-        pathname === Routes.DOCUMENT_SHARE_ME
-    },
+    // {
+    //   text: 'Hủy chia sẻ',
+    //   icon: mdiRepeatOff,
+    //   action: () => {},
+    //   disabled: true,
+    //   isShow:
+    //     pathname === Routes.DOCUMENT_SHARE ||
+    //     pathname === Routes.DOCUMENT_SHARE_ME
+    // },
     {
       text: 'Cập nhật',
       icon: mdiRefresh,
@@ -199,7 +203,7 @@ const HeaderButtonGroup = props => {
       text: pathname === Routes.DOCUMENT_TRASH ? 'Xóa vĩnh viễn' : 'Xóa',
       icon: mdiTrashCan,
       action: () => setAlert(true),
-      disabled: isDisableBtnDelete(),
+      disabled: isEmpty(selectedDocument),
       isShow:
         pathname === Routes.DOCUMENT_ME || pathname === Routes.DOCUMENT_TRASH
     }

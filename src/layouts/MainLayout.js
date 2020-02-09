@@ -16,7 +16,8 @@ import GroupModal from '../components/NoticeModal/GroupModal';
 import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
 import {
   actionFetchGroupDetail,
-  actionFetchListColor
+  actionFetchListColor,
+  actioGetSettingDate
 } from '../actions/setting/setting';
 import { actionToast } from '../actions/system/system';
 
@@ -107,7 +108,8 @@ function MainLayout({
   actionFetchGroupDetail,
   groupDetail,
   isDocumentDetail,
-  actionFetchListColor
+  actionFetchListColor,
+  actioGetSettingDate
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
 
@@ -115,6 +117,7 @@ function MainLayout({
     if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
       actionFetchGroupDetail(true);
       actionFetchListColor();
+      actioGetSettingDate()
     }
     // eslint-disable-next-line
   }, []);
@@ -203,5 +206,5 @@ export default connect(
     isDocumentDetail: state.system.isDocumentDetail,
     toast: state.system.toast
   }),
-  { actionFetchGroupDetail, actionToast, actionFetchListColor }
+  { actionFetchGroupDetail, actionToast, actionFetchListColor, actioGetSettingDate }
 )(withRouter(MainLayoutWrapper));

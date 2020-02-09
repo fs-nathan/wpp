@@ -52,7 +52,11 @@ const DocumentDetail = props => {
   const [alert, setAlert] = useState(false);
   const [visible, setVisible] = useState(false);
   const [type, setType] = useState(
-    fileInfo.isGoogleDocument ? null : 'comment'
+    fileInfo.isGoogleDocument ||
+      fileInfo.isTrashFile ||
+      fileInfo.document_type === 2
+      ? null
+      : 'comment'
   );
   const [fileDetail, setFileDetail] = useState({});
   const bgColor = colors.find(item => item.selected === true);
@@ -66,7 +70,6 @@ const DocumentDetail = props => {
     // eslint-disable-next-line
   }, []);
   const handleViewFile = async () => {
-    console.log('fileInfo', fileInfo);
     try {
       await actionViewFile(fileInfo.id);
     } catch (error) {}
@@ -100,7 +103,9 @@ const DocumentDetail = props => {
       subtitle =
         subtitle +
         ' - ' +
-        (file.isGoogleDocument ? formatBytes(file.size) : file.size);
+        (file.isGoogleDocument && !file.noConvertFileSize
+          ? formatBytes(file.size)
+          : file.size);
     }
     return subtitle;
   };
@@ -139,7 +144,6 @@ const DocumentDetail = props => {
       evt.target.style.maxHeight = 'initial';
     }
   };
-
   return (
     <Dialog
       fullScreen
@@ -170,40 +174,21 @@ const DocumentDetail = props => {
             </div>
           </div>
           <div className="document-actions">
-            {!fileInfo.isGoogleDocument && (
+            {(fileInfo.isTrashFile || fileInfo.isGoogleDocument) && (
               <React.Fragment>
                 <IconButton
                   color="inherit"
                   className="btn-action"
-                  onClick={() => setType('comment')}
-                >
-                  <Badge
-                    badgeContent={'N'}
-                    invisible={false}
-                    className="badge-new"
-                  >
-                    <Icon
-                      path={mdiMessageProcessingOutline}
-                      size={1}
-                      color="rgba(0, 0, 0, 0.54)"
-                    />
-                  </Badge>
-                </IconButton>
-                <IconButton
-                  color="inherit"
-                  className="btn-action"
-                  onClick={() => setType('info')}
-                >
-                  <Icon
-                    path={mdiInformationOutline}
-                    size={1}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </IconButton>
-                <IconButton
-                  color="inherit"
-                  className="btn-action"
-                  onClick={() => setType('download')}
+                  onClick={() => {
+                    if (fileInfo.isTrashFile) {
+                      actionDownloadFile(fileDetail);
+                    } else if (
+                      fileInfo.isGoogleDocument &&
+                      fileInfo.webContentLink
+                    ) {
+                      window.open(fileInfo.webContentLink, '_blank');
+                    }
+                  }}
                 >
                   <Icon
                     path={mdiDownload}
@@ -211,21 +196,71 @@ const DocumentDetail = props => {
                     color="rgba(0, 0, 0, 0.54)"
                   />
                 </IconButton>
-                <IconButton
-                  color="inherit"
-                  className="btn-action"
-                  aria-controls="more-action"
-                  aria-haspopup="true"
-                  onClick={handleOpenMoreAction}
-                >
-                  <Icon
-                    path={mdiDotsVertical}
-                    size={1}
-                    color="rgba(0, 0, 0, 0.54)"
-                  />
-                </IconButton>
               </React.Fragment>
             )}
+            {!fileInfo.isGoogleDocument &&
+              !fileInfo.isTrashFile &&
+              fileInfo.document_type !== 2 && (
+                <React.Fragment>
+                  <IconButton
+                    color="inherit"
+                    className="btn-action"
+                    onClick={() => setType('comment')}
+                  >
+                    {/* <Badge
+                      badgeContent={'N'}
+                      invisible={false}
+                      className="badge-new"
+                    >
+                      <Icon
+                        path={mdiMessageProcessingOutline}
+                        size={1}
+                        color="rgba(0, 0, 0, 0.54)"
+                      />
+                    </Badge> */}
+                    <Icon
+                      path={mdiMessageProcessingOutline}
+                      size={1}
+                      color="rgba(0, 0, 0, 0.54)"
+                    />
+                  </IconButton>
+                  <IconButton
+                    color="inherit"
+                    className="btn-action"
+                    onClick={() => setType('info')}
+                  >
+                    <Icon
+                      path={mdiInformationOutline}
+                      size={1}
+                      color="rgba(0, 0, 0, 0.54)"
+                    />
+                  </IconButton>
+                  <IconButton
+                    color="inherit"
+                    className="btn-action"
+                    onClick={() => setType('download')}
+                  >
+                    <Icon
+                      path={mdiDownload}
+                      size={1}
+                      color="rgba(0, 0, 0, 0.54)"
+                    />
+                  </IconButton>
+                  <IconButton
+                    color="inherit"
+                    className="btn-action"
+                    aria-controls="more-action"
+                    aria-haspopup="true"
+                    onClick={handleOpenMoreAction}
+                  >
+                    <Icon
+                      path={mdiDotsVertical}
+                      size={1}
+                      color="rgba(0, 0, 0, 0.54)"
+                    />
+                  </IconButton>
+                </React.Fragment>
+              )}
             <IconButton
               color="inherit"
               onClick={handleCloseDialog}
@@ -235,37 +270,39 @@ const DocumentDetail = props => {
               <Icon path={mdiClose} size={1} />
             </IconButton>
           </div>
-          {!fileInfo.isGoogleDocument && (
-            <Menu
-              id="more-action"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleCloseMoreAction}
-              transformOrigin={{
-                vertical: -30,
-                horizontal: 'right'
-              }}
-            >
-              <MenuItem
-                onClick={() => {
-                  handleCloseMoreAction();
-                  setVisible(true);
+          {!fileInfo.isGoogleDocument &&
+            !fileInfo.isTrashFile &&
+            fileInfo.document_type !== 2 && (
+              <Menu
+                id="more-action"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMoreAction}
+                transformOrigin={{
+                  vertical: -30,
+                  horizontal: 'right'
                 }}
               >
-                {t('IDS_WP_SHARE')}
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleCloseMoreAction();
-                  setAlert(true);
-                }}
-                disabled={!fileDetail.can_modify}
-              >
-                {t('IDS_WP_DELETE_DOCUMENT')}
-              </MenuItem>
-            </Menu>
-          )}
+                <MenuItem
+                  onClick={() => {
+                    handleCloseMoreAction();
+                    setVisible(true);
+                  }}
+                >
+                  {t('IDS_WP_SHARE')}
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleCloseMoreAction();
+                    setAlert(true);
+                  }}
+                  disabled={!fileDetail.can_modify}
+                >
+                  {t('IDS_WP_DELETE_DOCUMENT')}
+                </MenuItem>
+              </Menu>
+            )}
         </Toolbar>
       </AppBar>
       <div className={`document-detail-container ${!type ? 'full-page' : ''}`}>
@@ -383,7 +420,8 @@ const DocumentDetail = props => {
                     {fileInfo.size && (
                       <span className="file-size">
                         (
-                        {fileInfo.isGoogleDocument
+                        {fileInfo.isGoogleDocument &&
+                        !fileInfo.noConvertFileSize
                           ? formatBytes(fileInfo.size)
                           : fileInfo.size}
                         )
@@ -431,7 +469,7 @@ const DocumentDetail = props => {
       {visible && (
         <ShareDocumentModal
           onClose={() => setVisible(false)}
-          item={props.item}
+          item={fileInfo.isGoogleDocument ? fileInfo : fileDetail}
         />
       )}
     </Dialog>

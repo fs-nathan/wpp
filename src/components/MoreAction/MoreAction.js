@@ -15,6 +15,7 @@ import {
   actionDownloadFile
 } from '../../actions/documents';
 import { actionToast } from '../../actions/system/system';
+import { isEmpty } from '../../helpers/utils/isEmpty';
 
 const StyledMenuItem = styled(MenuItem)`
   border-bottom: ${props => (props.border ? '1px solid #ddd' : 'none')};
@@ -37,13 +38,25 @@ const MoreAction = props => {
   const handleChangeDoc = async newName => {
     try {
       if (props.item.type === 'folder') {
-        await actionRenameFolder({ folder_id: props.item.id, name: newName });
+        const { data } = await actionRenameFolder({
+          folder_id: props.item.id,
+          name: newName
+        });
         handleToast('success', 'Thay đổi tên folder thành công!');
+        if (data.state) {
+          props.handleUpdateDataLocal(props.item.id, data.new_name);
+        }
       } else {
-        await actionRenameFile({ file_id: props.item.id, name: newName });
+        const { data } = await actionRenameFile({
+          file_id: props.item.id,
+          name: newName
+        });
         handleToast('success', 'Thay đổi tên file thành công!');
+        if (data.state) {
+          props.handleUpdateDataLocal(props.item.id, data.new_name);
+        }
       }
-      props.handleFetData();
+      // props.handleFetData();
       closeModal();
     } catch (error) {
       handleToast('error', error.message);
@@ -54,10 +67,13 @@ const MoreAction = props => {
     props.handleFetData();
   };
 
-  const handleDownloadFile = async () => {
-    try {
-      await actionDownloadFile(props.item);
-    } catch (error) {}
+  const handleDownloadFile = () => {
+    if (props.item.document_type === 2 || props.item.isGoogleDocument) {
+      const urlDownload = props.item.url_download || props.item.webContentLink;
+      if (urlDownload) window.open(urlDownload, '_blank');
+    } else {
+      actionDownloadFile(props.item);
+    }
   };
   const handleCopy = () => {
     // webViewLink is for Google Drive
@@ -88,27 +104,30 @@ const MoreAction = props => {
           horizontal: 'right'
         }}
       >
-        {props.actionList.map((el, idx) => (
-          <StyledMenuItem
-            key={idx}
-            onClick={e => {
-              handleClose();
-              if (el.type === 'download') handleDownloadFile();
-              else if (el.type === 'copy') handleCopy();
-              else if (el.type === 'link') {
-                props.history.push(props.item.redirect_url);
-              } else setVisible(el.type);
-              if (el.action) el.action(props.item);
-              e.stopPropagation();
-            }}
-            border={
-              idx % 2 === 1 && idx < props.actionList.length - 1 ? 'true' : null
-            }
-          >
-            <Icon path={el.icon} size={1} color="rgba(0, 0, 0, 0.54)" />
-            &nbsp;&nbsp;&nbsp;{el.text}
-          </StyledMenuItem>
-        ))}
+        {!isEmpty(props.actionList) &&
+          props.actionList.map((el, idx) => (
+            <StyledMenuItem
+              key={idx}
+              onClick={e => {
+                handleClose();
+                if (el.type === 'download') handleDownloadFile();
+                else if (el.type === 'copy') handleCopy();
+                else if (el.type === 'link') {
+                  props.history.push(props.item.redirect_url);
+                } else setVisible(el.type);
+                if (el.action) el.action(props.item);
+                e.stopPropagation();
+              }}
+              border={
+                idx % 2 === 1 && idx < props.actionList.length - 1
+                  ? 'true'
+                  : null
+              }
+            >
+              <Icon path={el.icon} size={1} color="rgba(0, 0, 0, 0.54)" />
+              &nbsp;&nbsp;&nbsp;{el.text}
+            </StyledMenuItem>
+          ))}
       </Menu>
       {visible === 'share' && (
         <ShareDocumentModal onClose={closeModal} item={props.item} />

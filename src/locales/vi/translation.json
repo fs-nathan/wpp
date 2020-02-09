@@ -225,5 +225,9 @@
   "IDS_WP_DELETE_DOCUMENT": "Xóa tài liệu",
   "IDS_WP_DOWNLOAD": "Tải về",
   "IDS_WP_OPPS_NOT_PREVIEW_FILE": "Rất tiếc! Tài liệu không có bản xem trước trên Workplus.",
-  "IDS_WP_VIEW_ORIGIN_FILE": "Xem file gốc"
+  "IDS_WP_VIEW_ORIGIN_FILE": "Xem file gốc",
+  "IDS_WP_JOINED": "Đang tham gia",
+  "IDS_WP_UPDATE_SUCCESS": "Cập nhật thành công!",
+  "IDS_WP_UPDATE_ERROR": "Cập nhật thất bại!",
+  "IDS_WP_ID_NOT_FOUND": "ID nhóm không chính xác"
 }

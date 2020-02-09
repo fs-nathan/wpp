@@ -54,4 +54,31 @@ function* getListColor() {
   } catch (error) {}
 }
 
-export { getGroupDetail, getListColor };
+async function doGetSettingDate() {
+  try {
+    const config = {
+      url: '/users/get-list-format-date',
+      method: 'get'
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getSettingDate() {
+  try {
+    const { data } = yield call(doGetSettingDate);
+    const checkSelected = data.find(item => item.selected === true);
+    if (!checkSelected && data.length > 0) {
+      data[0].selected = true;
+    }
+    yield put({
+      type: actionTypes.GET_SETTING_DATE_SUCCESS,
+      payload: data || [{ date_format: 'DD/MM/YYYY', selected: true }]
+    });
+  } catch (error) {}
+}
+
+export { getGroupDetail, getListColor, getSettingDate };

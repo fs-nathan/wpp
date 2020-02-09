@@ -7,7 +7,7 @@ import {
   TableBody,
   IconButton
 } from '@material-ui/core';
-import { reverse } from 'lodash';
+import { reverse, findIndex } from 'lodash';
 import Icon from '@mdi/react';
 import { mdiSwapVertical } from '@mdi/js';
 import { useTranslation } from 'react-i18next';
@@ -132,7 +132,11 @@ const MyDocument = props => {
   };
 
   const getListMyDocument = (params = {}, quite = false) => {
-    props.actionFetchListMyDocument(params, quite);
+    let temp = {};
+    if (!isEmpty(currentFolder)) {
+      params.folder_id = currentFolder.id;
+    }
+    props.actionFetchListMyDocument({ ...temp, ...params }, quite);
   };
 
   const handleClickItem = item => {
@@ -192,12 +196,7 @@ const MyDocument = props => {
     { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' },
     { icon: mdiFolderMove, text: 'Di chuyển tới', type: 'move' },
     { icon: mdiPencilOutline, text: 'Đổi tên', type: 'change' },
-    {
-      icon: mdiDownloadOutline,
-      text: 'Tải xuống',
-      type: 'download',
-      action: () => {}
-    },
+    { icon: mdiDownloadOutline, text: 'Tải xuống', type: 'download' },
     {
       icon: mdiTrashCanOutline,
       text: 'Xóa',
@@ -225,13 +224,16 @@ const MyDocument = props => {
           file_id: [fileSelectAction.id]
         });
       }
-      let params = {};
-      if (!isEmpty(currentFolder)) {
-        params.folder_id = currentFolder.id;
-      }
-      getListMyDocument(params);
+      getListMyDocument();
       props.resetListSelectDocument();
     } catch (error) {}
+  };
+  const handleUpdateDataLocal = (itemId, newName) => {
+    const index = findIndex(listData, { id: itemId });
+    const dataTemp = [...listData];
+    const itemUpdate = { ...listData[index], name: newName };
+    dataTemp.splice(index, 1, itemUpdate);
+    setListData(dataTemp);
   };
   return (
     <React.Fragment>
@@ -316,7 +318,7 @@ const MyDocument = props => {
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="20%">
                   <ShareColumnAvatar
-                    sharedList={[...item.shared_member]}
+                    sharedList={[...item.users_shared]}
                     handleClickAvatar={() => {
                       setVisible(true);
                       setItemActive(item);
@@ -334,24 +336,18 @@ const MyDocument = props => {
                     actionList={moreAction}
                     item={item}
                     handleFetData={() => {
-                      let params = {};
-                      if (!isEmpty(currentFolder)) {
-                        params.folder_id = currentFolder.id;
-                      }
-                      getListMyDocument(params, true);
+                      getListMyDocument({}, true);
                     }}
+                    handleUpdateDataLocal={handleUpdateDataLocal}
                   />
                 ) : (
                   <MoreAction
                     actionList={moreActionFolder}
                     item={item}
                     handleFetData={() => {
-                      let params = {};
-                      if (!isEmpty(currentFolder)) {
-                        params.folder_id = currentFolder.id;
-                      }
-                      getListMyDocument(params, true);
+                      getListMyDocument({}, true);
                     }}
+                    handleUpdateDataLocal={handleUpdateDataLocal}
                   />
                 )}
               </TableRow>

@@ -15,8 +15,13 @@ import {
   selectDocumentItem,
   resetListSelectDocument,
   actionFetchListTrash,
+  actionSelectedFolder,
   actionSortListTrash
 } from '../../../../actions/documents';
+import {
+  openDocumentDetail,
+  actionChangeBreadCrumbs
+} from '../../../../actions/system/system';
 import './ContentDocumentPage.scss';
 import {
   StyledTableHeadCell,
@@ -36,7 +41,12 @@ import './ContentDocumentPage.scss';
 
 const Trash = props => {
   const [selected, setSelected] = React.useState([]);
-  const { isLoading } = props;
+  const {
+    isLoading,
+    breadCrumbs,
+    actionChangeBreadCrumbs,
+    isFetching
+  } = props;
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);
   const [listData, setListData] = React.useState([]);
@@ -48,6 +58,8 @@ const Trash = props => {
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
+      props.actionSelectedFolder({});
+      actionChangeBreadCrumbs([]);
     }; // eslint-disable-next-line
   }, []);
 
@@ -94,6 +106,46 @@ const Trash = props => {
 
   const getListTrash = (params = {}) => {
     props.actionFetchListTrash(params);
+  };
+
+  const handleClickItem = item => {
+    if (isFetching) return;
+    if (item.type === 'folder') {
+      props.actionFetchListTrash({ folder_id: item.id }, true);
+      props.actionSelectedFolder(item);
+      // handle bread crumbs
+      let newBreadCrumbs = [...breadCrumbs];
+      if (breadCrumbs.length === 0) {
+        newBreadCrumbs.push({
+          id: -1,
+          name: 'Home',
+          action: () => {
+            props.actionSelectedFolder({});
+            props.actionFetchListTrash({}, true);
+          }
+        });
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.actionSelectedFolder(item);
+            props.actionFetchListTrash({ folder_id: item.id }, true);
+          }
+        });
+      } else {
+        newBreadCrumbs.push({
+          id: item.id,
+          name: item.name,
+          action: () => {
+            props.actionSelectedFolder(item);
+            props.actionFetchListTrash({ folder_id: item.id }, true);
+          }
+        });
+      }
+      actionChangeBreadCrumbs(newBreadCrumbs);
+    } else {
+      props.openDocumentDetail({ ...item, isTrashFile: true });
+    }
   };
 
   const handleSelectAllClick = e => {
@@ -175,10 +227,17 @@ const Trash = props => {
                     onChange={e => handleSelectItem(item)}
                   />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="5%">
+                <StyledTableBodyCell
+                  align="center"
+                  width="5%"
+                  onClick={() => handleClickItem(item)}
+                >
                   <FullAvatar src={FileType(item.type)} />
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="left">
+                <StyledTableBodyCell
+                  align="left"
+                  onClick={() => handleClickItem(item)}
+                >
                   <ColorTypo color="black" className="file-name-document">
                     {item.name}
                   </ColorTypo>
@@ -221,6 +280,8 @@ export default connect(
   state => ({
     selectedDocument: state.documents.selectedDocument,
     isLoading: state.documents.isLoading,
+    isFetching: state.documents.isFetching,
+    breadCrumbs: state.system.breadCrumbs,
     listTrash: state.documents.listTrash,
     searchText: state.documents.searchText
   }),
@@ -228,6 +289,9 @@ export default connect(
     selectDocumentItem,
     resetListSelectDocument,
     actionFetchListTrash,
+    openDocumentDetail,
+    actionChangeBreadCrumbs,
+    actionSelectedFolder,
     actionSortListTrash
   }
 )(Trash);

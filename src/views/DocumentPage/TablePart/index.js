@@ -64,7 +64,8 @@ const HeaderBreadCrumbs = ({
   onUpdateBreadCrumbs,
   title = 'Title',
   srcImg,
-  colorIcon = 'rgba(0, 0, 0, 0.54)'
+  colorIcon = 'rgba(0, 0, 0, 0.54)',
+  isTrash = false
 }) => {
   const [currentBreadCrumbs, setCurrentBeadCrumbs] = useState([]);
 
@@ -144,6 +145,11 @@ const HeaderBreadCrumbs = ({
             ))}
           </Breadcrumbs>
         )}
+        {isTrash && currentBreadCrumbs.length === 0 && (
+          <span className="sub-title">
+            Thùng rác sẽ tự động xóa vĩnh viễn sau 30 ngày!
+          </span>
+        )}
       </div>
     </div>
   );
@@ -218,20 +224,14 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
       );
     case Routes.DOCUMENT_TRASH:
       return (
-        <div className="header-wrapper">
-          <Icon
-            className="header-icon"
-            path={mdiTrashCanOutline}
-            size={1.3}
-            color={'#777'}
-          />
-          <div className="title-wrapper">
-            <HeaderTitle title="Thùng rác" />
-            <span className="sub-title">
-              Thùng rác sẽ tự động xóa vĩnh viễn sau 30 ngày!
-            </span>
-          </div>
-        </div>
+        <HeaderBreadCrumbs
+          title="Thùng rác"
+          breadCrumbs={breadCrumbs}
+          onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+          srcImg={mdiTrashCanOutline}
+          colorIcon={'#777'}
+          isTrash
+        />
       );
     default:
       return null;
@@ -313,7 +313,6 @@ const TablePart = props => {
         name: nameFolder,
         parent_id: props.currentFolder.id
       });
-      console.log(breadCrumbs);
       if (isEmpty(breadCrumbs)) {
         props.actionFetchListMyDocument({}, true);
       } else {

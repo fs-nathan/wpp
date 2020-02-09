@@ -47,7 +47,8 @@ const DrawerNewGroup = props => {
     try {
       const res = await services.findGroupService(searchValue);
       if (!res.data.group) {
-        setEmptyMess(res.data.msg);
+        // setEmptyMess(res.data.msg);
+        setEmptyMess(t('IDS_WP_ID_NOT_FOUND'));
         setGroup({});
       } else {
         setEmptyMess(null);
@@ -112,7 +113,7 @@ const DrawerNewGroup = props => {
                     handleFetchData={handleFetchData}
                   />
                 ) : (
-                  emptyMess && <p className="red-text">{emptyMess}</p>
+                  emptyMess && <p className="red-text no-result">{emptyMess}</p>
                 )}
               </div>
               {/* nhóm requirements */}

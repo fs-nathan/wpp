@@ -71,7 +71,7 @@ const ModalCommon = props => {
       {props.children}
       {props.footerAction && (
         <DialogActions>
-          {props.onClose && (
+          {props.onClose && props.type !== 'share' && (
             <Button
               onClick={props.onClose}
               disableRipple
@@ -90,7 +90,8 @@ const ModalCommon = props => {
                 color:
                   (idx % 2 !== 0 || isPrimary) && el.type !== 'cancel'
                     ? bgColor.color
-                    : '#222'
+                    : '#222',
+                opacity: el.disabled ? 0.5 : 1
               }}
               key={idx}
               disabled={el.disabled}

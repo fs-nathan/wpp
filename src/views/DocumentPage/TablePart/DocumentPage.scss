@@ -104,6 +104,7 @@
             }
           }
           &:last-child {
+            color: #ccc;
             .bread-crumb-item {
               &:hover {
                 cursor: default;
@@ -160,7 +161,7 @@
     padding: 0;
     align-items: unset;
     .left-share-doc {
-      width: 40%;
+      width: 35%;
       padding: 16px 0;
       border-right: 1px solid rgba(0, 0, 0, 0.1);
       .title-left-share {
@@ -214,7 +215,7 @@
     }
     .right-share-doc {
       padding: 16px 0;
-      width: 60%;
+      width: 65%;
       .title-left-share {
         padding: 0 16px;
         height: 35px;
@@ -233,7 +234,7 @@
         // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         background-color: #f8f8f8;
         .left-content {
-          width: 32%;
+          width: 50%;
           text-align: center;
           .text-title {
             font-weight: 600;
@@ -242,7 +243,7 @@
           }
         }
         .right-content {
-          width: 68%;
+          width: 50%;
           font-weight: 600;
           font-size: 13px;
           color: #444;
@@ -255,12 +256,12 @@
         justify-content: space-between;
         padding: 10px 20px;
         .left-content {
-          width: 32%;
+          width: 50%;
           display: flex;
           .left-item {
             display: flex;
             .info-left-item {
-              padding-left: 45px;
+              padding-left: 10px;
               .name-member {
                 padding-bottom: 5px;
                 color: #222;
@@ -273,7 +274,7 @@
           }
         }
         .right-content {
-          width: 68%;
+          width: 50%;
           display: flex;
           justify-content: space-between;
           align-items: center;

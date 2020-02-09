@@ -17,11 +17,13 @@ import HeaderDrawer from '../HeaderDrawer';
 import FooterDrawer from '../FooterDrawer';
 import ItemMessage from './ItemMessage';
 import '../Drawer.scss';
+import LoadingBox from '../../LoadingBox';
 
 const DrawerMessage = props => {
   const { t } = useTranslation();
   // const { actionVisibleDrawerMessage, typeDrawer } = props;
   const [activeTab, setActiveTab] = useState('recent');
+  const [isLoading, setLoading] = useState(false);
   const [numberNotView, setNumberNotView] = useState(0);
   const [listMessage, setListMessage] = useState([]);
   useEffect(() => {
@@ -30,9 +32,13 @@ const DrawerMessage = props => {
   }, []);
   const fetMessage = async params => {
     try {
+      setLoading(true);
       const { data } = await getListMessage(params);
       setListMessage(data.data_chats);
-    } catch (error) {}
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const fetNumberMessageNotViewer = async () => {
@@ -68,6 +74,13 @@ const DrawerMessage = props => {
       fetNumberMessageNotViewer();
     }
   };
+  const handleCloseDrawer = () => {
+    props.actionVisibleDrawerMessage({
+      type: '',
+      anchor: props.anchorDrawer
+    });
+  };
+  // if (isLoading) return <LoadingBox />;
   return (
     <div className="drawer-content">
       <HeaderDrawer
@@ -78,15 +91,20 @@ const DrawerMessage = props => {
         numberNotView={numberNotView}
       />
       <div className="content-drawer">
-        <Scrollbars autoHide autoHideTimeout={500}>
-          {listMessage.map((message, index) => (
-            <ItemMessage
-              item={message}
-              key={index}
-              handleViewNotification={() => handleViewNotification(message)}
-            />
-          ))}
-        </Scrollbars>
+        {isLoading ? (
+          <LoadingBox />
+        ) : (
+          <Scrollbars autoHide autoHideTimeout={500}>
+            {listMessage.map((message, index) => (
+              <ItemMessage
+                item={message}
+                key={index}
+                handleViewNotification={() => handleViewNotification(message)}
+                handleCloseDrawer={handleCloseDrawer}
+              />
+            ))}
+          </Scrollbars>
+        )}
       </div>
       <FooterDrawer handleViewAll={handleViewAll} />
     </div>
@@ -95,7 +113,8 @@ const DrawerMessage = props => {
 
 export default connect(
   state => ({
-    typeDrawer: state.system.typeDrawer
+    typeDrawer: state.system.typeDrawer,
+    anchorDrawer: state.system.anchorDrawer
   }),
   {
     actionVisibleDrawerMessage,

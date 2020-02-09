@@ -16,7 +16,7 @@ import {
 import HeaderDrawer from '../HeaderDrawer';
 import FooterDrawer from '../FooterDrawer';
 import ItemNotification from './ItemNotification';
-
+import LoadingBox from '../../LoadingBox';
 import '../Drawer.scss';
 
 const DrawerNotification = props => {
@@ -24,6 +24,8 @@ const DrawerNotification = props => {
   const [activeTab, setActiveTab] = useState('recent');
   const [numberNotView, setNumberNotView] = useState(0);
   const [listNotification, setListNotification] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+
   useEffect(() => {
     fetNotification({});
     fetNumberNotificationNotViewer(); //eslint-disable-next-line
@@ -31,9 +33,13 @@ const DrawerNotification = props => {
 
   const fetNotification = async params => {
     try {
+      setLoading(true);
       const { data } = await getListNotification(params);
       setListNotification(data.notifications);
-    } catch (error) {}
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const fetNumberNotificationNotViewer = async () => {
@@ -69,6 +75,7 @@ const DrawerNotification = props => {
       fetNumberNotificationNotViewer();
     }
   };
+  // if (isLoading) return <LoadingBox />;
   return (
     <div className="drawer-content">
       <HeaderDrawer
@@ -78,17 +85,20 @@ const DrawerNotification = props => {
         handleChangeTab={handleChangeTab}
         numberNotView={numberNotView}
       />
-
       <div className="content-drawer">
-        <Scrollbars autoHide autoHideTimeout={500}>
-          {listNotification.map((message, index) => (
-            <ItemNotification
-              item={message}
-              key={index}
-              handleViewNotification={() => handleViewNotification(message)}
-            />
-          ))}
-        </Scrollbars>
+        {isLoading ? (
+          <LoadingBox />
+        ) : (
+          <Scrollbars autoHide autoHideTimeout={500}>
+            {listNotification.map((message, index) => (
+              <ItemNotification
+                item={message}
+                key={index}
+                handleViewNotification={() => handleViewNotification(message)}
+              />
+            ))}
+          </Scrollbars>
+        )}
       </div>
       <FooterDrawer handleViewAll={handleViewAll} />
     </div>

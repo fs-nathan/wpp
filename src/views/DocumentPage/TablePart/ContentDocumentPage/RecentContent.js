@@ -1,5 +1,6 @@
 import React, { useEffect, Fragment, useState } from 'react';
 import { mdiSwapVertical } from '@mdi/js';
+import { withRouter } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { connect } from 'react-redux';
 import {
@@ -15,9 +16,14 @@ import {
   selectDocumentItem,
   resetListSelectDocument,
   actionFetchListRecent,
-  actionSortListRecent
+  actionSortListRecent,
+  actionSelectedFolder,
+  actionFetchListMyDocument
 } from '../../../../actions/documents';
-import { openDocumentDetail } from '../../../../actions/system/system';
+import {
+  openDocumentDetail,
+  actionChangeBreadCrumbs
+} from '../../../../actions/system/system';
 import { FileType } from '../../../../components/FileType';
 import {
   StyledTableHeadCell,
@@ -39,7 +45,12 @@ import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 import ShareColumnAvatar from '../DocumentComponent/ShareColumnAvatar';
 
 const RecentContent = props => {
-  const { isLoading } = props;
+  const {
+    isLoading,
+    actionSelectedFolder,
+    actionFetchListMyDocument,
+    actionChangeBreadCrumbs
+  } = props;
   const [listData, setListData] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
   const [sortField, setSortField] = React.useState(null);
@@ -200,9 +211,16 @@ const RecentContent = props => {
                 <StyledTableBodyCell
                   align="left"
                   className="cursor-pointer"
+                  width="15%"
                   onClick={() => openDetail(file)}
                 >
-                  <ColorTypo color="black">{file.name}</ColorTypo>
+                  <ColorTypo
+                    color="black"
+                    className="two-line"
+                    title={file.name || ''}
+                  >
+                    {file.name}
+                  </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center">
                   <ShareColumnAvatar
@@ -219,9 +237,52 @@ const RecentContent = props => {
                     className="two-line"
                     title={file.storage_address || ''}
                   >
-                    <a href={file.redirect_url} className="address-link">
+                    <span
+                      onClick={() => {
+                        if (file.is_my_document_file) {
+                          if (file.folder_id) {
+                            actionSelectedFolder({
+                              id: file.folder_id,
+                              name: file.folder_name
+                            });
+
+                            let newBreadCrumbs = [
+                              {
+                                id: -1,
+                                name: 'Home',
+                                action: () => {
+                                  actionSelectedFolder({});
+                                  actionFetchListMyDocument({}, true);
+                                }
+                              },
+                              {
+                                id: file.folder_id,
+                                name: file.folder_name,
+                                action: () => {
+                                  actionSelectedFolder({
+                                    id: file.folder_id,
+                                    name: file.folder_name
+                                  });
+                                  actionFetchListMyDocument(
+                                    { folder_id: file.folder_id },
+                                    true
+                                  );
+                                }
+                              }
+                            ];
+                            
+                            actionChangeBreadCrumbs(newBreadCrumbs);
+                          }
+
+                          props.history.push({ pathname: file.redirect_url });
+                        } else {
+                          props.history.push({ pathname: file.redirect_url });
+                        }
+                      }}
+                      className="address-link"
+                    >
                       {file.storage_address}
-                    </a>
+                    </span>
                   </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
@@ -232,7 +293,11 @@ const RecentContent = props => {
                     <CustomAvatar src={file.user_create_avatar} />
                   )}
                 </StyledTableBodyCell>
-                <StyledTableBodyCell align="center" width="10%">
+                <StyledTableBodyCell
+                  align="center"
+                  width="10%"
+                  style={{ minWidth: 72 }}
+                >
                   <ColorTypo color="black">{file.size}</ColorTypo>
                 </StyledTableBodyCell>
                 {file.type !== 'folder' ? (
@@ -271,9 +336,12 @@ export default connect(
   }),
   {
     selectDocumentItem,
+    actionSelectedFolder,
+    actionFetchListMyDocument,
+    actionChangeBreadCrumbs,
     resetListSelectDocument,
     openDocumentDetail,
     actionFetchListRecent,
     actionSortListRecent
   }
-)(RecentContent);
+)(withRouter(RecentContent));
