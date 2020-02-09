@@ -196,7 +196,7 @@ function AllProjectTable({
   colors,
   isDefault = false,
 }) {
-  const { setProjectGroupId, setStatusProjectId } = React.useContext(ProjectPageContext);
+  const { setProjectGroupId, setStatusProjectId, setTimeRange } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
   const history = useHistory();
 
@@ -229,7 +229,7 @@ function AllProjectTable({
   const [timeAnchor, setTimeAnchor] = React.useState(null);
 
   const [filter, setFilter] = React.useState(1);
-  const [time, setTime] = React.useState(0);
+  const [time, setTime] = React.useState(5);
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);
   const [projects, setProjects] = React.useState(_projects);
@@ -409,8 +409,8 @@ function AllProjectTable({
         return;
       }
       case 5: {
-        setStartDate(moment().toDate());
-        setEndDate(moment().toDate());
+        setStartDate(undefined);
+        setEndDate(undefined);
         setTimeTitle(`Toàn bộ thời gian`);
         return;
       }
@@ -889,6 +889,10 @@ function AllProjectTable({
                       backgroundColor: bgColor.color,
                     }}
                     fullWidth
+                    onClick={evt => setTimeRange({
+                      timeStart: startDate ? moment(startDate).format('YYYY-MM-DD') : undefined,
+                      timeEnd: endDate ? moment(endDate).format('YYYY-MM-DD') : undefined,
+                    })}
                   >Áp dụng</StyledButton>
                 </Content>
               </MainBar>

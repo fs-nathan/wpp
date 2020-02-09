@@ -21,6 +21,12 @@ import updateUser, { initialState as updateUserInitialState } from './user/updat
 import createPosition, { initialState as createPositionInitialState } from './position/createPosition';
 import updatePosition, { initialState as updatePositionInitialState } from './position/updatePosition';
 import deletePosition, { initialState as deletePositionInitialState } from './position/deletePosition';
+import createLevel, { initialState as createLevelInitialState } from './level/createLevel';
+import updateLevel, { initialState as updateLevelInitialState } from './level/updateLevel';
+import deleteLevel, { initialState as deleteLevelInitialState } from './level/deleteLevel';
+import createMajor, { initialState as createMajorInitialState } from './major/createMajor';
+import updateMajor, { initialState as updateMajorInitialState } from './major/updateMajor';
+import deleteMajor, { initialState as deleteMajorInitialState } from './major/deleteMajor';
 import listUserRole, { initialState as listUserRoleInitialState } from './userRole/listUserRole';
 import createUserRole, { initialState as createUserRoleInitialState } from './userRole/createUserRole';
 import updateUserRole, { initialState as updateUserRoleInitialState } from './userRole/updateUserRole';
@@ -34,6 +40,7 @@ import resendInvitationUserJoinGroup, { initialState as resendInvitationUserJoin
 import getRequirementJoinGroup, { initialState as getRequirementJoinGroupInitialState } from './groupUser/getRequirementJoinGroup';
 import acceptRequirementJoinGroup, { initialState as acceptRequirementJoinGroupInitialState } from './groupUser/acceptRequirementJoinGroup';
 import rejectRequirementJoinGroup, { initialState as rejectRequirementJoinGroupInitialState } from './groupUser/rejectRequirementJoinGroup';
+import getListGroup, { initialState as getListGroupInitialState } from './groupUser/getListGroup';
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
 import createProjectGroup, { initialState as createProjectGroupInitialState } from './projectGroup/createProjectGroup';
@@ -143,10 +150,16 @@ const rootReducer = combineReducers({
     deletePosition
   }),
   level: combineReducers({
-    listLevel
+    listLevel,
+    createLevel,
+    updateLevel,
+    deleteLevel
   }),
   major: combineReducers({
-    listMajor
+    listMajor,
+    createMajor,
+    updateMajor,
+    deleteMajor
   }),
   userRole: combineReducers({
     listUserRole,
@@ -211,6 +224,7 @@ const rootReducer = combineReducers({
     getRequirementJoinGroup,
     acceptRequirementJoinGroup,
     rejectRequirementJoinGroup,
+    getListGroup,
   }),
   register: combineReducers({
     inviteOtherPeopleCreateAccount,
@@ -252,10 +266,16 @@ export const DEFAULT_STATE = {
     deletePosition: deletePositionInitialState
   },
   level: {
-    listLevel: listLevelInitialState
+    listLevel: listLevelInitialState,
+    createLevel: createLevelInitialState,
+    updateLevel: updateLevelInitialState,
+    deleteLevel: deleteLevelInitialState
   },
   major: {
-    listMajor: listMajorInitialState
+    listMajor: listMajorInitialState,
+    createMajor: createMajorInitialState,
+    updateMajor: updateMajorInitialState,
+    deleteMajor: deleteMajorInitialState
   },
   userRole: {
     listUserRole: listUserRoleInitialState,
@@ -320,6 +340,7 @@ export const DEFAULT_STATE = {
     getRequirementJoinGroup: getRequirementJoinGroupInitialState,
     acceptRequirementJoinGroup: acceptRequirementJoinGroupInitialState,
     rejectRequirementJoinGroup: rejectRequirementJoinGroupInitialState,
+    getListGroup: getListGroupInitialState,
   },
   register: {
     inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState,

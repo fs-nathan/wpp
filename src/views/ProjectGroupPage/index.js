@@ -22,6 +22,7 @@ import DefaultGroupDetail from './LeftPart/DefaultGroupDetail';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
 import AllProjectTable from './RightPart/AllProjectTable';
 import DeletedProjectTable from './RightPart/DeletedProjectTable';
+import { get } from 'lodash';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -117,10 +118,14 @@ function ProjectGroupPage({
     }
   }, [projectGroupId, doMemberProjectGroup]);
 
+  const [timeRange, setTimeRange] = React.useState({});
+
   React.useEffect(() => {
     if (projectGroupId === 'deleted') return;
     doListProject({
       groupProject: projectGroupId,
+      timeStart: get(timeRange, 'timeStart'),
+      timeEnd: get(timeRange, 'timeEnd'),
     });
 
     const reloadListProject = () => {
@@ -146,7 +151,7 @@ function ProjectGroupPage({
       CustomEventDispose(SORT_PROJECT, reloadListProject);
       CustomEventDispose(COPY_PROJECT, reloadListProject);
     }
-  }, [projectGroupId, doListProject]);
+  }, [projectGroupId, timeRange, doListProject]);
 
   React.useEffect(() => {
     doListDeletedProject({});
@@ -169,6 +174,20 @@ function ProjectGroupPage({
       doDetailStatus({
         projectId: statusProjectId,
       });
+
+      const reloadDetailStatus = () => {
+        doListDeletedProject({
+          projectId: statusProjectId,
+        }, true);
+      }
+  
+      CustomEventListener(UPDATE_STATUS_COPY, reloadDetailStatus);
+      CustomEventListener(UPDATE_STATUS_DATE, reloadDetailStatus);
+  
+      return () => {
+        CustomEventDispose(UPDATE_STATUS_COPY, reloadDetailStatus);
+        CustomEventDispose(UPDATE_STATUS_DATE, reloadDetailStatus);
+      }
     }
   }, [statusProjectId, doDetailStatus]);
 
@@ -176,6 +195,7 @@ function ProjectGroupPage({
     <Provider value={{
       setProjectGroupId,
       statusProjectId, setStatusProjectId,
+      setTimeRange,
     }}>
       <Route
         path='/projects'

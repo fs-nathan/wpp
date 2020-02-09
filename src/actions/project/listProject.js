@@ -4,13 +4,14 @@ import {
   LIST_PROJECT_SUCCESS,
 } from '../../constants/actions/project/listProject';
 
-export const listProject = ({ groupProject, type, status }, quite = false) => ({
+export const listProject = ({ groupProject, type, status, timeStart, timeEnd }, quite = false) => ({
   type: LIST_PROJECT,
   quite,
   options: {
     groupProject,
     type,
     status,
+    timeStart, timeEnd,
   },
 });
 

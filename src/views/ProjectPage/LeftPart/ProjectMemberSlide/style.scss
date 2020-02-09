@@ -8,8 +8,9 @@
 
 .view_Project_ProjectMemberSlide___container {
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 65px 1fr 65px;
+  grid-template-columns: auto;
   & > * {
     &:nth-child(2) {
       flex-grow: 1;
@@ -29,5 +30,16 @@
         display: none;
       }
     }
+  }
+}
+
+.view_Project_ProjectMemberSlide___wrapper {
+  height: 100%;
+  & > div:first-child {
+    margin-right: -5px !important;
+    scrollbar-width: none;
+  }
+  & > div:last-child {
+    right: 7px !important;
   }
 }

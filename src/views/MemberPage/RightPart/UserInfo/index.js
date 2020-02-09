@@ -197,7 +197,7 @@ function UserInfo({ detailUser, uploadDocumentsUser, doUploadDocumentsUser, expa
                     <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.birthday')}</ColorTypo>
                   }
                   secondary={
-                    <ColorTypo component='span' bold>{new Date(get(user, 'birthday', '')).toLocaleDateString()}</ColorTypo>
+                    <ColorTypo component='span' bold>{get(user, 'birthday', '')}</ColorTypo>
                   }
                 />
               </StyledListItem>

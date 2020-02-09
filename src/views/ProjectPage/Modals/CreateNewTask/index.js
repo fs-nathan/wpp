@@ -144,6 +144,7 @@ function CreateNewTask({ open, setOpen, listGroupTask, doCreateTask, }) {
         setOpen={setOpen}
         canConfirm={!errorName && !errorDate && groupTask}
         onConfirm={() => handleCreateTask()}
+        height='tall'
       >
         <FormControl component="fieldset" fullWidth>
           <StyledFormLabel component="legend">Nhóm công việc</StyledFormLabel>

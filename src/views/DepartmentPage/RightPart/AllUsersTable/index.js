@@ -25,6 +25,8 @@ import {
 import { get } from 'lodash';
 import TitleManagerModal from '../../Modals/TitleManager';
 import RoleManagerModal from '../../Modals/RoleManager';
+import LevelManagerModal from '../../Modals/LevelManager';
+import MajorManagerModal from '../../Modals/MajorManager';
 import LogoManagerModal from '../../Modals/LogoManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import PermissionSettingsModal from '../../Modals/PermissionSettings';
@@ -153,8 +155,8 @@ function AllUsersTable({
             subActions: [{
               label: 'Thêm thành viên',
               icon: () => requirements.length > 0 
-                ? <NewUserBadge badgeContent={'N'}><Icon path={mdiAccountPlus} size={1} /></NewUserBadge>
-                : <Icon path={mdiAccountPlus} size={1} />,
+                ? <NewUserBadge badgeContent={'N'}><Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} /></NewUserBadge>
+                : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
               onClick: () => handleSubSlide(1),
               noExpand: true,
             }],
@@ -173,11 +175,17 @@ function AllUsersTable({
               label: 'Quản lý vai trò',
               onClick: () => setMoreModal(2),
             }, {
-              label: 'Quản lý biểu tượng',
+              label: 'Quản lý trình độ',
               onClick: () => setMoreModal(3),
             }, {
-              label: 'Cài đặt bảng',
+              label: 'Quản lý chuyên ngành',
               onClick: () => setMoreModal(4),
+            }, {
+              label: 'Quản lý biểu tượng',
+              onClick: () => setMoreModal(5),
+            }, {
+              label: 'Cài đặt bảng',
+              onClick: () => setMoreModal(6),
             }],
             grouped: {
               bool: true,
@@ -272,8 +280,10 @@ function AllUsersTable({
       )}
       <TitleManagerModal open={moreModal === 1} setOpen={setMoreModal} />
       <RoleManagerModal open={moreModal === 2} setOpen={setMoreModal} />
-      <LogoManagerModal open={moreModal === 3} setOpen={setMoreModal} isSelect={false} />
-      <TableSettingsModal open={moreModal === 4} setOpen={setMoreModal} />
+      <LevelManagerModal open={moreModal === 3} setOpen={setMoreModal} />
+      <MajorManagerModal open={moreModal === 4} setOpen={setMoreModal} />
+      <LogoManagerModal open={moreModal === 5} setOpen={setMoreModal} isSelect={false} />
+      <TableSettingsModal open={moreModal === 6} setOpen={setMoreModal} />
       <CreateAccountModal open={createAccount} setOpen={setCreateAccount} />
       <Menu
         id="simple-menu"
