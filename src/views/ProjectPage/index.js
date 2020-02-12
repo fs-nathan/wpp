@@ -7,6 +7,7 @@ import { memberProject } from '../../actions/project/memberProject';
 import { listTask } from '../../actions/task/listTask';
 import { listGroupTask } from '../../actions/groupTask/listGroupTask';
 import { getAllGroupTask } from '../../actions/groupTask/getAllGroupTask';
+import { listUserRole } from '../../actions/userRole/listUserRole';
 import ProjectDetail from './LeftPart/ProjectDetail';
 import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
 import GroupTaskSlide from './LeftPart/GroupTaskSlide';
@@ -19,8 +20,10 @@ import {
   ADD_MEMBER_PROJECT, REMOVE_MEMBER_PROJECT,
   UPDATE_STATE_JOIN_TASK,
   ASSIGN_MEMBER_TO_ALL_TASK,
+  ADD_PROJECT_ROLE_TO_MEMBER, REMOVE_PROJECT_ROLE_FROM_MEMBER,
   CREATE_TASK, DELETE_TASK, SORT_TASK,
   SHOW_PROJECT, HIDE_PROJECT,
+  CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
 } from '../../constants/events';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
@@ -33,6 +36,7 @@ function ProjectPage({
   doMemberProject,
   doListTask,
   doListGroupTask, doGetAllGroupTask,
+  doListUserRole,
 }) {
 
   React.useEffect(() => {
@@ -104,6 +108,8 @@ function ProjectPage({
       CustomEventListener(REMOVE_MEMBER_PROJECT, reloadMemberProject);
       CustomEventListener(UPDATE_STATE_JOIN_TASK, reloadMemberProject);
       CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
+      CustomEventListener(ADD_PROJECT_ROLE_TO_MEMBER, reloadMemberProject);
+      CustomEventListener(REMOVE_PROJECT_ROLE_FROM_MEMBER, reloadMemberProject);
       
       return () => {
         CustomEventDispose(UPDATE_PROJECT, reloadMemberProject);
@@ -113,6 +119,8 @@ function ProjectPage({
         CustomEventDispose(REMOVE_MEMBER_PROJECT, reloadMemberProject);
         CustomEventDispose(UPDATE_STATE_JOIN_TASK, reloadMemberProject);
         CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
+        CustomEventDispose(ADD_PROJECT_ROLE_TO_MEMBER, reloadMemberProject);
+        CustomEventDispose(REMOVE_PROJECT_ROLE_FROM_MEMBER, reloadMemberProject);
       }
     }
   }, [projectId, doMemberProject]);
@@ -194,6 +202,24 @@ function ProjectPage({
     }
   }, [doGetAllGroupTask]);
 
+  React.useEffect(() => {
+    doListUserRole();
+
+    const reloadListUserRole = () => {
+      doListUserRole(true);
+    };
+
+    CustomEventListener(CREATE_USER_ROLE, reloadListUserRole);
+    CustomEventListener(UPDATE_USER_ROLE, reloadListUserRole);
+    CustomEventListener(DELETE_USER_ROLE, reloadListUserRole);
+
+    return () => {
+      CustomEventDispose(CREATE_USER_ROLE, reloadListUserRole);
+      CustomEventDispose(UPDATE_USER_ROLE, reloadListUserRole);
+      CustomEventDispose(DELETE_USER_ROLE, reloadListUserRole);
+    }
+  }, [doListUserRole]);
+
   return (
     <Provider value={{
       setProjectId,
@@ -239,6 +265,7 @@ const mapDispatchToProps = dispatch => {
     doListTask: ({ projectId }, quite) => dispatch(listTask({ projectId }, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doGetAllGroupTask: (quite) => dispatch(getAllGroupTask(quite)),
+    doListUserRole: (quite) => dispatch(listUserRole(quite)),
   }
 };
 
