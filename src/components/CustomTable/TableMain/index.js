@@ -1,6 +1,6 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Table, TableHead, TableBody } from '@material-ui/core';
+import { Table, TableHead, TableBody, TableFooter, TableRow } from '@material-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { CustomTableContext } from '../index';
 import TableHeaderRow from './TableHeaderRow';
@@ -22,7 +22,7 @@ function TableMain() {
     >
       {get(options, 'loading.bool', false) && get(options, 'loading.component')()}
       {!get(options, 'loading.bool', false) && (
-        <Table>
+        <Table stickyHeader>
           <TableHead>
             <TableHeaderRow />
           </TableHead>
@@ -51,6 +51,11 @@ function TableMain() {
                 </Droppable>
               )}
           </DragDropContext>
+          <TableFooter>
+            <TableRow style={{
+              height: '24px',
+            }}/>
+          </TableFooter>
         </Table>
       )}
     </Container>

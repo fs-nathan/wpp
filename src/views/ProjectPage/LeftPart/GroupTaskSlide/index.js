@@ -10,11 +10,14 @@ import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
 import CustomListItem from './CustomListItem';
-import { ListItemText } from '@material-ui/core';
+import { ListItemText, Menu, MenuItem } from '@material-ui/core';
 import { filter, get, } from 'lodash';
 import SearchInput from '../../../../components/SearchInput';
+import AlertModal from '../../../../components/AlertModal';
 import { sortGroupTask } from '../../../../actions/groupTask/sortGroupTask';
+import { deleteGroupTask } from '../../../../actions/groupTask/deleteGroupTask';
 import CreateGroupTask from '../../Modals/CreateGroupTask';
+import UpdateGroupTask from '../../Modals/UpdateGroupTask';
 import './style.scss';
  
 const Banner = ({ className = '', ...props }) => 
@@ -29,7 +32,7 @@ const StyledPrimary = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, }) {
+function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, doDeleteGroupTask, }) {
   
   const { setProjectId } = React.useContext(ProjectContext);
   const { projectId } = useParams();
@@ -40,6 +43,13 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, }) {
   const [searchPatern, setSearchPatern] = React.useState('');
 
   const [open, setOpen] = React.useState(false);
+
+  const [openUpdate, setOpenUpdate] = React.useState(false);
+  const [curGroupTask, setCurGroupTask] = React.useState(null);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [alertModal, setAlertModal] = React.useState(false);
 
   React.useEffect(() => {
     setProjectId(projectId);
@@ -122,7 +132,13 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, }) {
                     />
                   </StyledListItem>
                   {filter(taskGroups, taskGroup => get(taskGroup, 'id') !== 'default').map((taskGroup, index) => (
-                    <CustomListItem key={get(taskGroup, 'id')} taskGroup={taskGroup} index={index} />  
+                    <CustomListItem 
+                      key={get(taskGroup, 'id')} 
+                      taskGroup={taskGroup} 
+                      index={index} 
+                      setAnchorEl={setAnchorEl}
+                      setCurGroupTask={setCurGroupTask}
+                    />  
                   ))}
                   {provided.placeholder}
                   <StyledListItem
@@ -147,7 +163,37 @@ function GroupTaskSlide({ handleSubSlide, listGroupTask, doSortGroupTask, }) {
               )}
             </Droppable>
           </DragDropContext>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={evt => setAnchorEl(null)}
+            transformOrigin={{
+              vertical: -30,
+              horizontal: 'right'
+            }}
+          >
+            <MenuItem onClick={evt => {
+              setOpenUpdate(true);
+              setAnchorEl(null);
+            }}>Chỉnh sửa</MenuItem>
+            <MenuItem onClick={evt => {
+              setAlertModal(true);
+              setAnchorEl(null);
+            }}>Xóa</MenuItem>
+          </Menu>
+          <AlertModal
+            open={alertModal}
+            setOpen={setAlertModal}
+            content="Bạn chắc chắn muốn xóa nhóm công việc?"
+            onCancle={evt => setAlertModal(false)}
+            onConfirm={() => {
+              setAlertModal(false);
+              doDeleteGroupTask({ groupTaskId: get(curGroupTask, 'id') })
+            }}
+          />
           <CreateGroupTask open={open} setOpen={setOpen} />
+          <UpdateGroupTask curGroupTask={curGroupTask} open={openUpdate} setOpen={setOpenUpdate} />
         </LeftSideContainer>
       )}
     </React.Fragment>
@@ -163,6 +209,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doSortGroupTask: ({ groupTaskId, sortIndex }) => dispatch(sortGroupTask({ groupTaskId, sortIndex })),
+    doDeleteGroupTask: ({ groupTaskId }) => dispatch(deleteGroupTask({ groupTaskId })),
   };
 };
 
