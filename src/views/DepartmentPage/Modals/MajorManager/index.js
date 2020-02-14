@@ -1,79 +1,74 @@
 import React from 'react';
-import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 import MajorCreateAndUpdateModal from './MajorCreateAndUpdate';
-import { listMajor } from '../../../../actions/major/listMajor';
 import { deleteMajor } from '../../../../actions/major/deleteMajor';
 import { connect } from 'react-redux'; 
-import LoadingBox from '../../../../components/LoadingBox';
-import ErrorBox from '../../../../components/ErrorBox';
-import CustomModal from '../../../../components/CustomModal';
 import AlertModal from '../../../../components/AlertModal';
 import { get } from 'lodash';
+import MajorManagerPresenter from './presenters';
+import { majorsSelector } from './selectors';
 
-function MajorManager({ open, setOpen, listMajor, doDeleteMajor }) {
+function MajorManager({ 
+  open, setOpen, 
+  majors, 
+  doDeleteMajor 
+}) {
 
-  const [openCAU, setOpenCAU] = React.useState(0);
-  const { data: { majors }, loading, error } = listMajor;
-  const [updatedMajor, setUpdatedMajor] = React.useState(null);
-  const [alert, setAlert] = React.useState(false);
-  const [delMajor, setDelMajor] = React.useState();
+  const [openCAU, setOpenCAU] = React.useState(false);
+  const [CAUProps, setCAUProps] = React.useState({});
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [alertProps, setAlertProps] = React.useState({});
 
-  function handleSelectedMajor(selectedMajor) {
-    setUpdatedMajor(selectedMajor);
-    setOpenCAU(selectedMajor ? 1 : 2);
-  }
-
-  function handleDeleteMajor(major) {
-    doDeleteMajor({
-      majorId: get(major, 'id'),
-    });
+  function doOpenModal(type, props) {
+    switch (type) {
+      case 'CREATE': {
+        setOpenCAU(true);
+        setCAUProps({});
+        return;
+      }
+      case 'UPDATE': {
+        setOpenCAU(true);
+        setCAUProps(props);
+        return;
+      }
+      case 'ALERT': {
+        setOpenAlert(true);
+        setAlertProps(props);
+        return;
+      }
+      default: return;
+    }
   }
 
   return (
-    <React.Fragment>
-      <CustomModal
-        open={open}
-        setOpen={setOpen}
-        title='Quản lý chuyên ngành'
-        confirmRender={null}
-        cancleRender={() => 'Thoát'}
-        onCancle={() => setOpen(0)}
-      >
-        {loading && <LoadingBox />}
-        {error !== null && <ErrorBox />}
-        {!loading && error === null && (
-          <SimpleManagerTable 
-            data={majors}
-            handleAdd={() => handleSelectedMajor(null)}
-            handleEdit={major => handleSelectedMajor(major)}
-            handleDelete={major => {
-              setDelMajor(major)
-              setAlert(true)
-            }}
-          />
-        )}
-      </CustomModal>
-      <MajorCreateAndUpdateModal updatedMajor={updatedMajor} open={openCAU !== 0} setOpen={setOpenCAU} />
-      <AlertModal 
-        open={alert}
-        setOpen={setAlert}
-        content='Bạn chắc chắn muốn xóa chuyên ngành?'
-        onConfirm={() => handleDeleteMajor(delMajor)}
+    <>
+      <MajorManagerPresenter 
+        open={open} setOpen={setOpen} 
+        majors={majors} 
+        handleDeleteMajor={major => doDeleteMajor({ majorId: get(major, 'id') })}
+        handleOpenModal={doOpenModal}
       />
-    </React.Fragment>
+      <MajorCreateAndUpdateModal 
+        open={openCAU} 
+        setOpen={setOpenCAU} 
+        {...CAUProps}  
+      />
+      <AlertModal 
+        open={openAlert}
+        setOpen={setOpenAlert}
+        {...alertProps}
+      />
+    </>
   )
 }
 
 const mapStateToProps = state => {
   return {
-    listMajor: state.major.listMajor,
-    deleteMajor: state.major.deleteMajor,
+    majors: majorsSelector(state),
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListMajor: (quite) => dispatch(listMajor(quite)),
     doDeleteMajor: ({ majorId }) => dispatch(deleteMajor({ majorId })),
   }
 };

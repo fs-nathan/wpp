@@ -15,7 +15,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 }); 
 
-function CustomModal({ open, setOpen, content, onConfirm = () => null, onCancle = () => null, colors }) {
+function AlertModal({ 
+  open, setOpen, 
+  content, onConfirm = () => null, onCancle = () => null, 
+  colors 
+}) {
 
   const bgColor = colors.find(item => item.selected === true);
 
@@ -59,7 +63,7 @@ function CustomModal({ open, setOpen, content, onConfirm = () => null, onCancle 
   )
 }
 
-CustomModal.propTypes = {
+AlertModal.propTypes = {
   open: PropTypes.bool.isRequired, 
   setOpen: PropTypes.func.isRequired, 
   content: PropTypes.node.isRequired, 
@@ -71,4 +75,4 @@ export default connect(state => ({
   colors: state.setting.colors
 }),
 {},
-)(CustomModal);
+)(AlertModal);

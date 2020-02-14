@@ -1,78 +1,75 @@
 import React from 'react';
-import SimpleManagerTable from '../../../../components/SimpleManagerTable';
-import CustomModal from '../../../../components/CustomModal';
 import AlertModal from '../../../../components/AlertModal';
 import RoleCreateAndUpdateModal from './RoleCreateAndUpdate';
-import { listUserRole } from '../../../../actions/userRole/listUserRole';
 import { deleteUserRole } from '../../../../actions/userRole/deleteUserRole';
 import { connect } from 'react-redux'; 
-import LoadingBox from '../../../../components/LoadingBox';
-import ErrorBox from '../../../../components/ErrorBox';
 import { get } from 'lodash';
+import { userRolesSelector } from './selectors';
+import RoleManagerPresenter from './presenters';
 
-function RoleManager({ open, setOpen, listUserRole, doDeleteUserRole }) {
+function RoleManager({ open, setOpen, userRoles, doDeleteUserRole }) {
 
-  const { data: { userRoles }, loading, error } = listUserRole;
-  const [openCAU, setOpenCAU] = React.useState(0);
-  const [updatedUserRole, setUpdatedUserRole] = React.useState(null);
-  const [alert, setAlert] = React.useState(false);
-  const [delUserRole, setDelUserRole] = React.useState();
+  const [openCAU, setOpenCAU] = React.useState(false);
+  const [CAUProps, setCAUProps] = React.useState({});
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [alertProps, setAlertProps] = React.useState({});
 
-  function handleSelectedUserRole(selectedRole) {
-    setUpdatedUserRole(selectedRole);
-    setOpenCAU(selectedRole ? 1 : 2);
-  }
-
-  function handleDeleteUserRole(userRole) {
-    doDeleteUserRole({
-      userRoleId: get(userRole, 'id'),
-    });
+  function doOpenModal(type, props) {
+    switch (type) {
+      case 'CREATE': {
+        setOpenCAU(true);
+        setCAUProps({});
+        return;
+      }
+      case 'UPDATE': {
+        setOpenCAU(true);
+        setCAUProps(props);
+        return;
+      }
+      case 'ALERT': {
+        setOpenAlert(true);
+        setAlertProps(props);
+        return;
+      }
+      default: return;
+    }
   }
 
   return (
-    <React.Fragment>
-      <CustomModal
+    <>
+      <RoleManagerPresenter
         open={open}
         setOpen={setOpen}
-        title='Quản lý vai trò'
-        confirmRender={null}
-        cancleRender={() => 'Thoát'}
-      >
-        {loading && <LoadingBox />}
-        {error !== null && <ErrorBox />}
-        {!loading && error === null && (
-          <SimpleManagerTable 
-            data={userRoles}
-            handleAdd={() => handleSelectedUserRole(null)}
-            handleEdit={userRole => handleSelectedUserRole(userRole)}
-            handleDelete={userRole => {
-              setDelUserRole(userRole)
-              setAlert(true)
-            }}
-          />
-        )}
-      </CustomModal>
-      <RoleCreateAndUpdateModal updatedUserRole={updatedUserRole} open={openCAU !== 0} setOpen={setOpenCAU} />
-      <AlertModal 
-        open={alert}
-        setOpen={setAlert}
-        content='Bạn chắc chắn muốn xóa vai trò?'
-        onConfirm={() => handleDeleteUserRole(delUserRole)}
+        userRoles={userRoles} 
+        handleDeleteUserRole={userRole => 
+          doDeleteUserRole({
+            userRoleId: get(userRole, 'id'),
+          })
+        } 
+        handleOpenModal={doOpenModal}
       />
-    </React.Fragment>
+      <RoleCreateAndUpdateModal 
+        open={openCAU} 
+        setOpen={setOpenCAU} 
+        {...CAUProps}
+      />
+      <AlertModal 
+        open={openAlert}
+        setOpen={setOpenAlert}
+        {...alertProps}
+      />
+    </>
   )
 }
 
 const mapStateToProps = state => {
   return {
-    listUserRole: state.userRole.listUserRole,
-    deleteUserRole: state.userRole.deleteUserRole,
+    userRoles: userRolesSelector(state),
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListUserRole: (quite) => dispatch(listUserRole(quite)),
     doDeleteUserRole: ({ userRoleId }) => dispatch(deleteUserRole({ userRoleId })),
   }
 };

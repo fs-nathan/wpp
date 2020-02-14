@@ -1,43 +1,24 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import SearchInput from '../../../../components/SearchInput';
-import LoadingBox from '../../../../components/LoadingBox';
-import ErrorBox from '../../../../components/ErrorBox';
-import LeftSideContainer from '../../../../components/LeftSideContainer';
-import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
-import { ListItemText } from '@material-ui/core';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import Icon from '@mdi/react';
-import { mdiPlus, mdiDrag, mdiDragVertical } from '@mdi/js';
-import CustomListItem from './CustomListItem';
-import CreateDepartmentModal from '../../Modals/CreateDepartment';
 import { connect } from 'react-redux';
+import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
 import { sortRoom } from '../../../../actions/room/sortRoom';
 import { filter, get } from 'lodash';
-import './style.scss';
+import { roomsSelector } from './selectors';
+import DepartmentListPresenter from './presenters';
 
-const Banner = ({ className = '', ...props }) => 
-  <div 
-    className={`view_Department_List___banner ${className}`}
-    {...props}
-  />;
+function DepartmentList({ 
+  rooms, 
+  doSortRoom, 
+}) {
 
-const StyledPrimary = ({ className = '', ...props }) => 
-  <Primary 
-    className={`view_Department_List___primary ${className}`}
-    {...props}
-  />;
-
-function DepartmentList({ listRoom, doSortRoom, }) {
-
-  const [openModal, setOpenModal] = React.useState(false);
-  const location = useLocation(); 
-  const { data: { rooms: _rooms }, loading: listRoomLoading, error } = listRoom;
-  const loading = listRoomLoading;
   const [searchPatern, setSearchPatern] = React.useState('');
 
-  const rooms = filter(_rooms, room => get(room, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()));
+  const filteredRooms = filter(
+    rooms.rooms, 
+    room => get(room, 'name', '')
+      .toLowerCase()
+      .includes(searchPatern.toLowerCase())
+  );
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -52,97 +33,42 @@ function DepartmentList({ listRoom, doSortRoom, }) {
     })
   }
 
+  const [openCreateAndUpdateDepartmentModal, setOpenCreateAndUpdateDepartmentModal] = React.useState(false);
+
+  function doOpenModal(type) {
+    switch (type) {
+      case 'CREATE': {
+        setOpenCreateAndUpdateDepartmentModal(true);
+        return;
+      }
+      default: return;
+    }
+  }
+
   return (
-    <React.Fragment>
-      {error !== null && <ErrorBox />}
-      {error === null && (
-        <LeftSideContainer
-          title='Danh sách bộ phận'
-          leftAction={{
-            iconPath: mdiDrag,
-            onClick: null,
-          }}
-          rightAction={{
-            iconPath: mdiPlus,
-            onClick: () => setOpenModal(true),
-            tooltip: 'Thêm bộ phận',
-          }}
-          loading={{
-            bool: loading,
-            component: () => <LoadingBox />,
-          }}
-        >
-          <Banner>
-            <SearchInput 
-              fullWidth 
-              placeholder='Tìm bộ phận'
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
-            />  
-          </Banner>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId={'department-list'}>
-              {provided => (
-                <StyledList
-                  innerRef={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <StyledListItem
-                    to={`${location.pathname}`}
-                    component={Link}
-                  >
-                    <div>
-                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
-                    </div>
-                    <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                    <ListItemText 
-                      primary={
-                        <StyledPrimary>Tất cả</StyledPrimary>  
-                      }
-                      secondary={
-                        <Secondary>
-                          {rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
-                        </Secondary>
-                      }
-                    />
-                  </StyledListItem>
-                  {rooms.filter(room => get(room, 'id') !== 'default').map((room, index) => (
-                    <CustomListItem key={get(room, 'id')} room={room} index={index} />  
-                  ))}
-                  {provided.placeholder}
-                  <StyledListItem
-                    component={Link}
-                    to={`${location.pathname}/default`
-                  }>
-                    <div>
-                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
-                    </div>
-                    <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                    <ListItemText 
-                      primary={
-                        <StyledPrimary>Mặc định</StyledPrimary>  
-                      }
-                      secondary={
-                        <Secondary>
-                          {rooms.filter(room => get(room, 'id') === 'default').reduce((sum, room) => sum += get(room, 'number_member'), 0)} thành viên
-                        </Secondary>
-                      }
-                    />
-                  </StyledListItem>
-                </StyledList>
-              )}
-            </Droppable>
-          </DragDropContext>
-          <CreateDepartmentModal open={openModal} setOpen={setOpenModal} />
-        </LeftSideContainer>
-      )}
-    </React.Fragment>
+    <>
+      <DepartmentListPresenter
+        rooms={{
+          rooms: filteredRooms,
+          loading: rooms.loading,
+          error: rooms.error,
+        }}
+        searchPatern={searchPatern}
+        handleDragEnd={onDragEnd}
+        handleSearchPatern={evt => setSearchPatern(evt.target.value)}
+        handleOpenModal={doOpenModal}
+      />
+      <CreateAndUpdateDepartmentModal 
+        open={openCreateAndUpdateDepartmentModal}
+        setOpen={setOpenCreateAndUpdateDepartmentModal}
+      />
+    </>
   )
 }
 
 const mapStateToProps = state => {
   return {
-    listRoom: state.room.listRoom,
+    rooms: roomsSelector(state),
   };
 };
 

@@ -45,10 +45,11 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
   const [sliderValue, setSliderValue] = useState(50);
 
   React.useEffect(() => {
-    if (image === null) return;
-    const reader = new FileReader();
-    reader.onload = () => setSrc(reader.result);
-    reader.readAsDataURL(image);
+    if (image) {
+      const reader = new FileReader();
+      reader.onload = () => setSrc(reader.result);
+      reader.readAsDataURL(image);
+    }
   }, [image]);
 
   useEffect(() => {

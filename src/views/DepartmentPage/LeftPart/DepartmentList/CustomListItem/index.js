@@ -8,7 +8,10 @@ import CustomAvatar from '../../../../../components/CustomAvatar';
 import Icon from '@mdi/react';
 import { mdiDragVertical } from '@mdi/js';
 
-function CustomListItem({ room, index }) {
+function CustomListItem({ 
+  room, index 
+}) {
+
   const location = useLocation();
   const [isHover, setIsHover] = React.useState(false);
 
