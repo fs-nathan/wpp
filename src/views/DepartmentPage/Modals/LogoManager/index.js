@@ -44,7 +44,7 @@ function LogoManager({
         icons={icons} mutateIcon={mutateIcon} isSelect={isSelect} 
         handleCreateIcon={icon => doCreateIcon({ icon })}
         handleDeleteIcon={icon => doDeleteIcon({ iconId: get(icon, 'id') })}
-        handleSelectIcon={icon => doSelectIcon({ icon })}
+        handleSelectIcon={icon => doSelectIcon(icon)}
         handleOpenModal={doOpenModal}
       />
       <AlertModal 

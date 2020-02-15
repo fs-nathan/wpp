@@ -37,12 +37,12 @@ function CreateAndUpdateDepartment({
               roomId: get(updateDepartment, 'id'),
               name,
               description,
-              icon,
+              icon: icon.url_sort,
             })
             : doCreateRoom({
               name,
               description,
-              icon,
+              icon: icon.url_sort,
             })
         }
         handleOpenModal={doOpenModal}

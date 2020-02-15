@@ -176,7 +176,7 @@ function ProjectGroupPage({
       });
 
       const reloadDetailStatus = () => {
-        doListDeletedProject({
+        doDetailStatus({
           projectId: statusProjectId,
         }, true);
       }

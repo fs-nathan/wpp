@@ -46,10 +46,7 @@ function CreateAndUpdateDepartment({
         title={`${updateDepartment ? 'Cập nhật' : 'Tạo'} bộ phận`}
         open={open}
         setOpen={setOpen}
-        onConfirm={() => {
-          handleCreateOrUpdateRoom(name, description, icon.url_sort);
-          setOpen(false);
-        }}
+        onConfirm={() => handleCreateOrUpdateRoom(name, description, icon)}
         canConfirm={!errorName && !errorDescription}
       >
         <TextField
@@ -86,7 +83,7 @@ function CreateAndUpdateDepartment({
             <ColorButton 
               color='primary' 
               onClick={() => handleOpenModal('LOGO', {
-                doSelectIcon: iconUrl => setIcon(iconUrl),
+                doSelectIcon: icon => setIcon(icon),
               })}
             >+ Chọn biểu tượng</ColorButton>
           </div>

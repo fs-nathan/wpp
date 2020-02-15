@@ -8,6 +8,7 @@ export function useRequiredString(initial = '', maxLength = 100) {
   
   React.useEffect(() => {
     const schema = Joi.string().max(maxLength).required().messages({
+      'any.required': 'Không được để trống',
       'string.empty': 'Không được để trống',
       'string.max': 'Tối đa {#limit} ký tự',
     });
