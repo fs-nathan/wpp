@@ -11,11 +11,13 @@ export const deleteUserRole = ({ userRoleId }) => ({
   }
 });
 
-export const deleteUserRoleSuccess = () => ({
+export const deleteUserRoleSuccess = (options) => ({
   type: DELETE_USER_ROLE_SUCCESS,
+  options,
 });
 
-export const deleteUserRoleFail = (error) => ({
+export const deleteUserRoleFail = (error, options) => ({
   type: DELETE_USER_ROLE_FAIL,
-  error: error,
+  options,
+  error,
 });

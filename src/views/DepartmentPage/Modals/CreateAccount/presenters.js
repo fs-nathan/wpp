@@ -28,7 +28,7 @@ function CreateAccount({
       cancleRender={() => 'Hủy'}
     >
       <Container>
-        <Typography variant="h4">Mở đăng ký tài khoản</Typography>
+        <Typography variant="h4">Mời đăng ký tài khoản</Typography>
         <span>Nhập email bạn muốn mời đăng ký sử dụng phần mềm</span>
         <TextField
           InputProps={{

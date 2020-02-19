@@ -2,6 +2,7 @@ import {
   LIST_ROOM,
   LIST_ROOM_SUCCESS,
   LIST_ROOM_FAIL,
+  LIST_ROOM_RESET,
 } from '../../constants/actions/room/listRoom';
 
 export const listRoom = (quite = false) => ({
@@ -9,14 +10,20 @@ export const listRoom = (quite = false) => ({
   quite,
 });
 
-export const listRoomSuccess = ({ rooms }) => ({
+export const listRoomSuccess = ({ rooms }, options) => ({
   type: LIST_ROOM_SUCCESS,
+  options,
   data: {
     rooms,
   },
 });
 
-export const listRoomFail = (error) => ({
+export const listRoomFail = (error, options) => ({
   type: LIST_ROOM_FAIL,
-  error: error,
+  options,
+  error,
+});
+
+export const listRoomFail = () => ({
+  type: LIST_ROOM_RESET,
 });

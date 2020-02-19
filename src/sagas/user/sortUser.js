@@ -12,7 +12,7 @@ async function doSortUser({ userId, sortIndex, roomId }) {
       method: 'post',
       data: {
         user_id: userId,
-        room_id: roomId,
+        room_id: roomId === 'Default' ? undefined : roomId,
         sort_index: sortIndex,
       },
     }

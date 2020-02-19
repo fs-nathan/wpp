@@ -11,11 +11,13 @@ export const showProject = ({ projectId }) => ({
   },
 });
 
-export const showProjectSuccess = () => ({
+export const showProjectSuccess = (options) => ({
   type: SHOW_PROJECT_SUCCESS,
+  options,
 });
 
-export const showProjectFail = (error) => ({
+export const showProjectFail = (error, options) => ({
   type: SHOW_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
 });

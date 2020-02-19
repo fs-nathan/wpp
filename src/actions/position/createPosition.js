@@ -12,14 +12,16 @@ export const createPosition = ({ name, description }) => ({
   }
 });
 
-export const createPositionSuccess = ({ position }) => ({
+export const createPositionSuccess = ({ position }, options) => ({
   type: CREATE_POSITION_SUCCESS,
+  options,
   data: {
     position,
   },
 });
 
-export const createPositionFail = (error) => ({
+export const createPositionFail = (error, options) => ({
   type: CREATE_POSITION_FAIL,
-  error: error,
+  options,
+  error,
 });

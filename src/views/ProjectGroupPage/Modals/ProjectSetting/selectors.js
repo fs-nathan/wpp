@@ -13,7 +13,7 @@ export const statusSelector = createSelector(
     return {
       status,
       loading: copyLoading || dateLoading || detailLoading,
-      loading: copyError || dateError || detailError,
+      error: copyError || dateError || detailError,
     }
   }
 );

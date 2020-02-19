@@ -11,11 +11,13 @@ export const cancleInvitationJoinGroup = ({ invitationId }) => ({
   },
 });
 
-export const cancleInvitationJoinGroupSuccess = () => ({
+export const cancleInvitationJoinGroupSuccess = (options) => ({
   type: CANCLE_INVITATION_JOIN_GROUP_SUCCESS,
+  options,
 });
 
-export const cancleInvitationJoinGroupFail = (error) => ({
+export const cancleInvitationJoinGroupFail = (error, options) => ({
   type: CANCLE_INVITATION_JOIN_GROUP_FAIL,
-  error: error,
+  options,
+  error,
 });

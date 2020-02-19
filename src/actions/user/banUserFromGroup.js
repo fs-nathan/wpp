@@ -11,11 +11,13 @@ export const banUserFromGroup = ({ userId }) => ({
   },
 });
 
-export const banUserFromGroupSuccess = () => ({
+export const banUserFromGroupSuccess = (options) => ({
   type: BAN_USER_FROM_GROUP_SUCCESS,
+  options,
 });
 
-export const banUserFromGroupFail = (error) => ({
+export const banUserFromGroupFail = (error, options) => ({
   type: BAN_USER_FROM_GROUP_FAIL,
-  error: error,
+  options,
+  error,
 });

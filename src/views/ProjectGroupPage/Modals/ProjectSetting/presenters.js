@@ -34,10 +34,13 @@ function ProjectSetting({
   handleUpdateStatusCopy, handleUpdateStatusDate,
 }) {
 
-  const [progress, setProgress] = React.useState(parseInt(get(status.status, 'date', 0)));
-  const [copy, setCopy] = React.useState(get(status.status, 'copy', false) === true ? 1 : 0);
+  const [progress, setProgress] = React.useState(0);
+  const [copy, setCopy] = React.useState(0);
 
-  console.log(progress, status.status);
+  React.useEffect(() => {
+    setProgress(parseInt(get(status.status, 'date', 0)));
+    setCopy(get(status.status, 'copy', false) === true ? 1 : 0);
+  }, [status]);
 
   return (
     <React.Fragment>
@@ -48,7 +51,7 @@ function ProjectSetting({
         confirmRender={null}
         cancleRender={() => 'Thoát'}
       >
-        {status.error !== null && (
+        {status.error === null && (
           <>
             <StyledFormControl component='fieldset'>
               <TitleFormLabel component='legend'>Tiến độ dự án</TitleFormLabel>

@@ -11,11 +11,13 @@ export const deleteProject = ({ projectId }) => ({
   },
 });
 
-export const deleteProjectSuccess = () => ({
+export const deleteProjectSuccess = (options) => ({
   type: DELETE_PROJECT_SUCCESS,
+  options,
 });
 
-export const deleteProjectFail = (error) => ({
+export const deleteProjectFail = (error, options) => ({
   type: DELETE_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
 });

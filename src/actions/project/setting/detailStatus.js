@@ -2,6 +2,7 @@ import {
   DETAIL_STATUS,
   DETAIL_STATUS_FAIL,
   DETAIL_STATUS_SUCCESS,
+  DETAIL_STATUS_RESET,
 } from '../../../constants/actions/project/setting/detailStatus';
 
 export const detailStatus = ({ projectId }, quite = false) => ({
@@ -12,14 +13,20 @@ export const detailStatus = ({ projectId }, quite = false) => ({
   },
 });
 
-export const detailStatusSuccess = ({ status }) => ({
+export const detailStatusSuccess = ({ status }, options) => ({
   type: DETAIL_STATUS_SUCCESS,
+  options,
   data: {
     status,
   }
 });
 
-export const detailStatusFail = (error) => ({
+export const detailStatusFail = (error, options) => ({
   type: DETAIL_STATUS_FAIL,
-  error: error,
+  options,
+  error,
 });
+
+export const detailStatusReset = () => ({
+  type: DETAIL_STATUS_RESET,
+})

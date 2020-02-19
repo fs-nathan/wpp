@@ -13,14 +13,16 @@ export const createGroupTask = ({ projectId, name, description }) => ({
   }
 });
 
-export const createGroupTaskSuccess = ({ groupTask }) => ({
+export const createGroupTaskSuccess = ({ groupTask }, options) => ({
   type: CREATE_GROUP_TASK_SUCCESS,
+  options,
   data: {
     groupTask,
   },
 });
 
-export const createGroupTaskFail = (error) => ({
+export const createGroupTaskFail = (error, options) => ({
   type: CREATE_GROUP_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });

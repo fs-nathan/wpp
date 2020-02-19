@@ -28,7 +28,6 @@ function* detailStatus(action) {
       date: date_status,
     }
     yield put(detailStatusSuccess({ status }));
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.QUERY.SUCCESS);
   } catch (error) {
     yield put(detailStatusFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));

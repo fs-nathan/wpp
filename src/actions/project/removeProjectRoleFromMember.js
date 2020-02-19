@@ -13,11 +13,13 @@ export const removeProjectRoleFromMember = ({ projectId, memberId, roleId }) => 
   },
 });
 
-export const removeProjectRoleFromMemberSuccess = () => ({
+export const removeProjectRoleFromMemberSuccess = (options) => ({
   type: REMOVE_PROJECT_ROLE_FROM_MEMBER_SUCCESS,
+  options,
 });
 
-export const removeProjectRoleFromMemberFail = (error) => ({
+export const removeProjectRoleFromMemberFail = (error, options) => ({
   type: REMOVE_PROJECT_ROLE_FROM_MEMBER_FAIL,
-  error: error,
+  options,
+  error,
 });

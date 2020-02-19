@@ -16,11 +16,13 @@ export const updateProject = ({ projectId, name, description, projectGroupId, pr
   },
 });
 
-export const updateProjectSuccess = () => ({
+export const updateProjectSuccess = (options) => ({
   type: UPDATE_PROJECT_SUCCESS,
+  options,
 });
 
-export const updateProjectFail = (error) => ({
+export const updateProjectFail = (error, options) => ({
   type: UPDATE_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
 });

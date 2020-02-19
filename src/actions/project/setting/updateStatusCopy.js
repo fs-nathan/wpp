@@ -12,11 +12,13 @@ export const updateStatusCopy = ({ projectId, status }) => ({
   },
 });
 
-export const updateStatusCopySuccess = () => ({
+export const updateStatusCopySuccess = (options) => ({
   type: UPDATE_STATUS_COPY_SUCCESS,
+  options,
 });
 
 export const updateStatusCopyFail = (error) => ({
   type: UPDATE_STATUS_COPY_FAIL,
-  error: error,
+  options,
+  error,
 });

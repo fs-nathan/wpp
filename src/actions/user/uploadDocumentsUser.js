@@ -12,14 +12,16 @@ export const uploadDocumentsUser = ({ userId, file }) => ({
   },
 });
 
-export const uploadDocumentsUserSuccess = ({ documents }) => ({
+export const uploadDocumentsUserSuccess = ({ documents }, options) => ({
   type: UPLOAD_DOCUMENTS_USER_SUCCESS,
+  options,
   data: {
     documents,
   },
 });
 
-export const uploadDocumentsUserFail = (error) => ({
+export const uploadDocumentsUserFail = (error, options) => ({
   type: UPLOAD_DOCUMENTS_USER_FAIL,
-  error: error,
+  options,
+  error,
 });

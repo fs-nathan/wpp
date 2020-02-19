@@ -13,11 +13,13 @@ export const sortUser = ({ userId, roomId, sortIndex }) => ({
   },
 });
 
-export const sortUserSuccess = () => ({
+export const sortUserSuccess = (options) => ({
   type: SORT_USER_SUCCESS,
+  options,
 });
 
-export const sortUserFail = (error) => ({
+export const sortUserFail = (error, options) => ({
   type: SORT_USER_FAIL,
-  error: error,
+  options,
+  error,
 });

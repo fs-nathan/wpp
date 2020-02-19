@@ -25,17 +25,29 @@
   text-transform: uppercase;
 };
 
-.comp_CustomDonutChart___chart-legend-box {
+@mixin comp_CustomDonutChart___chart-legend-box {
   display: flex;
   align-items: center;
   margin-top: 10px;
-  & > *:first-child {
+  & > *:not(:last-child) {
     margin-right: 10px;
   }
   & > *:last-child {
     margin-left: auto;
   }
 };
+
+.comp_CustomDonutChart___chart-legend-box {
+  & {
+    @include comp_CustomDonutChart___chart-legend-box;
+  }
+  &-title {
+    @include comp_CustomDonutChart___chart-legend-box;
+    & > * {
+      font-weight: bold;
+    }
+  }
+}
 
 .comp_CustomDonutChart___chart {
   display: flex;

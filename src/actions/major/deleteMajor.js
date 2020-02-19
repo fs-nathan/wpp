@@ -11,11 +11,13 @@ export const deleteMajor = ({ majorId }) => ({
   }
 });
 
-export const deleteMajorSuccess = () => ({
+export const deleteMajorSuccess = (options) => ({
   type: DELETE_MAJOR_SUCCESS,
+  options,
 });
 
-export const deleteMajorFail = (error) => ({
+export const deleteMajorFail = (error, options) => ({
   type: DELETE_MAJOR_FAIL,
-  error: error,
+  options,
+  error,
 });

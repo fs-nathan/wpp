@@ -11,11 +11,13 @@ export const deleteRoom = ({ roomId }) => ({
   },
 });
 
-export const deleteRoomSuccess = () => ({
+export const deleteRoomSuccess = (options) => ({
   type: DELETE_ROOM_SUCCESS,
+  options,
 });
 
-export const deleteRoomFail = (error) => ({
+export const deleteRoomFail = (error, options) => ({
   type: DELETE_ROOM_FAIL,
-  error: error,
+  options,
+  error,
 });

@@ -12,7 +12,6 @@ function EditProject({
   doUpdateProject
 }) {
 
-
   const newGroups = {
     ...groups,
     groups: [{ id: '__default__', name: 'Chưa phân loại' }, ...groups.groups],

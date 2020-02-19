@@ -15,14 +15,16 @@ export const updateRoom = ({ roomId, name, icon, description, members }) => ({
   },
 });
 
-export const updateRoomSuccess = ({ room }) => ({
+export const updateRoomSuccess = ({ room }, options) => ({
   type: UPDATE_ROOM_SUCCESS,
+  options,
   data: {
     room,
   }
 });
 
-export const updateRoomFail = (error) => ({
+export const updateRoomFail = (error, options) => ({
   type: UPDATE_ROOM_FAIL,
-  error: error,
+  options,
+  error,
 });

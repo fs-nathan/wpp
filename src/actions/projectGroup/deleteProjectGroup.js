@@ -11,11 +11,13 @@ export const deleteProjectGroup = ({ projectGroupId }) => ({
   }
 });
 
-export const deleteProjectGroupSuccess = () => ({
+export const deleteProjectGroupSuccess = (options) => ({
   type: DELETE_PROJECT_GROUP_SUCCESS,
+  options,
 });
 
-export const deleteProjectGroupFail = (error) => ({
+export const deleteProjectGroupFail = (error, options) => ({
   type: DELETE_PROJECT_GROUP_FAIL,
-  error: error,
+  options,
+  error,
 });

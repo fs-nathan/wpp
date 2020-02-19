@@ -11,11 +11,13 @@ export const rejectRequirementJoinGroup = ({ requirementId }) => ({
   }
 });
 
-export const rejectRequirementJoinGroupSuccess = () => ({
+export const rejectRequirementJoinGroupSuccess = (options) => ({
   type: REJECT_REQUIREMENT_JOIN_GROUP_SUCCESS,
+  options,
 });
 
-export const rejectRequirementJoinGroupFail = (error) => ({
+export const rejectRequirementJoinGroupFail = (error, options) => ({
   type: REJECT_REQUIREMENT_JOIN_GROUP_FAIL,
-  error: error,
+  options,
+  error,
 });

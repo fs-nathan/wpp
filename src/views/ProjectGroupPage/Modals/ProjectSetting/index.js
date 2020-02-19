@@ -6,24 +6,28 @@ import { connect } from 'react-redux';
 import { Context as ProjectPageContext } from '../../index';
 import './style.scss';
 import { statusSelector } from './selectors';
+import { get } from 'lodash';
 import ProjectSettingPresenter from './presenters';
 
 function ProjectSetting({ 
+  curProject = null,
   open, setOpen,
   status,
   doUpdateStatusCopy, doUpdateStatusDate,
 }) {
 
-  const { statusProjectId: projectId } = React.useContext(ProjectPageContext);
+  const { setStatusProjectId } = React.useContext(ProjectPageContext);
 
-  console.log(status);
+  React.useEffect(() => {
+    if (curProject) setStatusProjectId(get(curProject, 'id'))
+  }, [setStatusProjectId, curProject]);
 
   return (
     <ProjectSettingPresenter 
       open={open} setOpen={setOpen}
       status={status}
-      handleUpdateStatusCopy={status => doUpdateStatusCopy({ projectId, status })}
-      handleUpdateStatusDate={status => doUpdateStatusDate({ projectId, status })}
+      handleUpdateStatusCopy={status => doUpdateStatusCopy({ projectId: get(curProject, 'id'), status })}
+      handleUpdateStatusDate={status => doUpdateStatusDate({ projectId: get(curProject, 'id'), status })}
     />
   )
 }

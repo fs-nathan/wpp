@@ -11,11 +11,13 @@ export const inviteUserJoinGroup = ({ userId }) => ({
   },
 });
 
-export const inviteUserJoinGroupSuccess = () => ({
+export const inviteUserJoinGroupSuccess = (options) => ({
   type: INVITE_USER_JOIN_GROUP_SUCCESS,
+  options,
 });
 
-export const inviteUserJoinGroupFail = (error) => ({
+export const inviteUserJoinGroupFail = (error, options) => ({
   type: INVITE_USER_JOIN_GROUP_FAIL,
-  error: error,
+  options,
+  error,
 });

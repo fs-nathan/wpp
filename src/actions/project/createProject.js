@@ -15,14 +15,16 @@ export const createProject = ({ name, description, projectGroupId, priority, cur
   },
 });
 
-export const createProjectSuccess = ({ project }) => ({
+export const createProjectSuccess = ({ project }, options) => ({
   type: CREATE_PROJECT_SUCCESS,
+  options,
   data: {
     project,
   },
 });
 
-export const createProjectFail = (error) => ({
+export const createProjectFail = (error, options) => ({
   type: CREATE_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
 });

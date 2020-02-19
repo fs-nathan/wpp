@@ -13,14 +13,16 @@ export const updateGroupTask = ({ groupTaskId, name, description }) => ({
   }
 });
 
-export const updateGroupTaskSuccess = ({ groupTask }) => ({
+export const updateGroupTaskSuccess = ({ groupTask }, options) => ({
   type: UPDATE_GROUP_TASK_SUCCESS,
+  options,
   data: {
     groupTask,
   },
 });
 
-export const updateGroupTaskFail = (error) => ({
+export const updateGroupTaskFail = (error, options) => ({
   type: UPDATE_GROUP_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });

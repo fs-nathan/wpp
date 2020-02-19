@@ -14,14 +14,16 @@ export const createRoom = ({ name, icon, description, members }) => ({
   },
 });
 
-export const createRoomSuccess = ({ room }) => ({
+export const createRoomSuccess = ({ room }, options) => ({
   type: CREATE_ROOM_SUCCESS,
+  options,
   data: {
     room,
   },
 });
 
-export const createRoomFail = (error) => ({
+export const createRoomFail = (error, options) => ({
   type: CREATE_ROOM_FAIL,
-  error: error,
+  options,
+  error,
 });

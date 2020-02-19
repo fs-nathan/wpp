@@ -16,11 +16,13 @@ export const updateUser = ({ userId, roomId, positionId, levelId, majorId, descr
   },
 });
 
-export const updateUserSuccess = () => ({
+export const updateUserSuccess = (options) => ({
   type: UPDATE_USER_SUCCESS,
+  options,
 });
 
-export const updateUserFail = (error) => ({
+export const updateUserFail = (error, options) => ({
   type: UPDATE_USER_FAIL,
-  error: error,
+  options,
+  error,
 });

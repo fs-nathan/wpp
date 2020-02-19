@@ -14,11 +14,13 @@ export const addMemberProject = ({ projectId, memberId, groupPermission, roles }
   },
 });
 
-export const addMemberProjectSuccess = () => ({
+export const addMemberProjectSuccess = (options) => ({
   type: ADD_MEMBER_PROJECT_SUCCESS,
+  options,
 });
 
-export const addMemberProjectFail = (error) => ({
+export const addMemberProjectFail = (error, options) => ({
   type: ADD_MEMBER_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
 });

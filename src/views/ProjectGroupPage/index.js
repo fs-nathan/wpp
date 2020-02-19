@@ -23,6 +23,7 @@ import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
 import AllProjectTable from './RightPart/AllProjectTable';
 import DeletedProjectTable from './RightPart/DeletedProjectTable';
 import { get } from 'lodash';
+import moment from 'moment';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -118,19 +119,24 @@ function ProjectGroupPage({
     }
   }, [projectGroupId, doMemberProjectGroup]);
 
-  const [timeRange, setTimeRange] = React.useState({});
+  const [timeRange, setTimeRange] = React.useState({
+    timeRange: moment().toDate(),
+    timeEnd: moment().toDate(),
+  });
 
   React.useEffect(() => {
     if (projectGroupId === 'deleted') return;
     doListProject({
       groupProject: projectGroupId,
-      timeStart: get(timeRange, 'timeStart'),
-      timeEnd: get(timeRange, 'timeEnd'),
+      timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
+      timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
     });
 
     const reloadListProject = () => {
       doListProject({
         groupProject: projectGroupId,
+        timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
+        timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
       }, true);
     }
 
@@ -194,7 +200,7 @@ function ProjectGroupPage({
   return (
     <Provider value={{
       setProjectGroupId,
-      statusProjectId, setStatusProjectId,
+      setStatusProjectId,
       setTimeRange,
     }}>
       <Route

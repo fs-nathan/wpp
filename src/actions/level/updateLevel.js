@@ -13,14 +13,16 @@ export const updateLevel = ({ levelId, name, description }) => ({
   }
 });
 
-export const updateLevelSuccess = ({ level }) => ({
+export const updateLevelSuccess = ({ level }, options) => ({
   type: UPDATE_LEVEL_SUCCESS,
+  options,
   data: {
     level,
   }
 });
 
-export const updateLevelFail = (error) => ({
+export const updateLevelFail = (error, options) => ({
   type: UPDATE_LEVEL_FAIL,
-  error: error,
+  options,
+  error,
 });

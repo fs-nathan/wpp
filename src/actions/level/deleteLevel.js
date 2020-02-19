@@ -11,11 +11,13 @@ export const deleteLevel = ({ levelId }) => ({
   }
 });
 
-export const deleteLevelSuccess = () => ({
+export const deleteLevelSuccess = (options) => ({
   type: DELETE_LEVEL_SUCCESS,
+  options,
 });
 
-export const deleteLevelFail = (error) => ({
+export const deleteLevelFail = (error, options) => ({
   type: DELETE_LEVEL_FAIL,
-  error: error,
+  options,
+  error,
 });

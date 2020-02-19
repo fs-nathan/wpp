@@ -2,6 +2,7 @@ import {
   LIST_DELETED_PROJECT,
   LIST_DELETED_PROJECT_FAIL,
   LIST_DELETED_PROJECT_SUCCESS,
+  LIST_DELETED_PROJECT_RESET,
 } from '../../constants/actions/project/listDeletedProject';
 
 export const listDeletedProject = ({ groupProject, status }, quite = false) => ({
@@ -14,14 +15,20 @@ export const listDeletedProject = ({ groupProject, status }, quite = false) => (
   },
 });
 
-export const listDeletedProjectSuccess = ({ projects }) => ({
+export const listDeletedProjectSuccess = ({ projects }, options) => ({
   type: LIST_DELETED_PROJECT_SUCCESS,
+  options,
   data: {
     projects,
   }
 });
 
-export const listDeletedProjectFail = (error) => ({
+export const listDeletedProjectFail = (error, options) => ({
   type: LIST_DELETED_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
+});
+
+export const listDeletedProjectReset = () => ({
+  type: LIST_DELETED_PROJECT_RESET,
 });

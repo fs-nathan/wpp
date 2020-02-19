@@ -12,14 +12,16 @@ export const createUserRole = ({ name, description }) => ({
   }
 });
 
-export const createUserRoleSuccess = ({ userRole }) => ({
+export const createUserRoleSuccess = ({ userRole }, options) => ({
   type: CREATE_USER_ROLE_SUCCESS,
+  options,
   data: {
     userRole,
   },
 });
 
-export const createUserRoleFail = (error) => ({
+export const createUserRoleFail = (error, options) => ({
   type: CREATE_USER_ROLE_FAIL,
-  error: error,
+  options,
+  error,
 });

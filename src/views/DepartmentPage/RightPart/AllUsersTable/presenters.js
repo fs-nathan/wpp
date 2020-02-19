@@ -1,6 +1,7 @@
 import React from 'react';
-import { IconButton, Menu, MenuItem, Badge,  } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Badge, Tooltip } from '@material-ui/core';
 import CustomAvatar from '../../../../components/CustomAvatar';
+import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
 import Icon from '@mdi/react';
 import {
   mdiAccountPlus,
@@ -16,6 +17,12 @@ import {
 } from '../../../../components/TableComponents';
 import { get } from 'lodash';
 import './style.scss';
+
+const TooltipBody = ({ className = '', state, ...props }) =>
+  <div 
+    className={`view_Department_AllUserTalbe___tooltip-${state === 0 ? 'private' : 'public'} ${className}`}
+    {...props}
+  />
 
 const NewUserBadge = ({ className = '', ...props }) =>
   <Badge
@@ -44,14 +51,44 @@ function StateBadge({ user }) {
   return (
     get(user, 'state', 0) === 0
     ? (
-      <CustomBadge color='#ec1000'>
-        Hạn chế
-      </CustomBadge>
+      <LightTooltip
+        placement='top'
+        title={
+          <TooltipBody state={0}>
+            <div>
+              <span>Trạng thái:</span>
+              <span>Hạn chế</span>
+            </div>
+            <small>Chỉ tương tác được với các thành viên có trạng thái Công khai khác</small>
+          </TooltipBody>
+        }
+      >
+        <TooltipWrapper>
+          <CustomBadge color='#ec1000'>
+            Hạn chế
+          </CustomBadge>
+        </TooltipWrapper>
+      </LightTooltip>
     )
     : (
-      <CustomBadge color='#48bb78'>
-        Công khai
-      </CustomBadge>
+      <LightTooltip
+        placement='top'
+        title={
+          <TooltipBody state={1}>
+            <div>
+              <span>Trạng thái:</span>
+              <span>Công khai</span>
+            </div>
+            <small>Tương tác được với tất cả các thành viên</small>
+          </TooltipBody>
+        }
+      >
+        <TooltipWrapper>
+          <CustomBadge color='#48bb78'>
+            Công khai
+          </CustomBadge>
+        </TooltipWrapper>
+      </LightTooltip>
     )
   );
 }
@@ -142,7 +179,11 @@ function AllUsersTable({
                   destination.droppableId === source.droppableId &&
                   destination.index === source.index
                 ) return;
-                handleSortUser(draggableId, destination.droppableId, destination.index);
+                handleSortUser(
+                  destination.droppableId,
+                  draggableId, 
+                  destination.index
+                );
               }, 
             },
             loading: {

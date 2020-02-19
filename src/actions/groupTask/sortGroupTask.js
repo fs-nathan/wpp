@@ -4,7 +4,7 @@ import {
   SORT_GROUP_TASK_FAIL,
 } from '../../constants/actions/groupTask/sortGroupTask';
 
-export const sortGroupTask = ({ groupTaskId, sortIndex, }) => ({
+export const sortGroupTask = ({ groupTaskId, sortIndex }) => ({
   type: SORT_GROUP_TASK,
   options: {
     groupTaskId, 
@@ -12,13 +12,13 @@ export const sortGroupTask = ({ groupTaskId, sortIndex, }) => ({
   }
 });
 
-export const sortGroupTaskSuccess = () => ({
+export const sortGroupTaskSuccess = (options) => ({
   type: SORT_GROUP_TASK_SUCCESS,
-  data: {
-  },
+  options,
 });
 
-export const sortGroupTaskFail = (error) => ({
+export const sortGroupTaskFail = (error, options) => ({
   type: SORT_GROUP_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });

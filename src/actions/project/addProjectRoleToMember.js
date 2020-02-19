@@ -13,11 +13,13 @@ export const addProjectRoleToMember = ({ projectId, memberId, roleId }) => ({
   },
 });
 
-export const addProjectRoleToMemberSuccess = () => ({
+export const addProjectRoleToMemberSuccess = (options) => ({
   type: ADD_PROJECT_ROLE_TO_MEMBER_SUCCESS,
+  options,
 });
 
-export const addProjectRoleToMemberFail = (error) => ({
+export const addProjectRoleToMemberFail = (error, options) => ({
   type: ADD_PROJECT_ROLE_TO_MEMBER_FAIL,
-  error: error,
+  options,
+  error,
 });

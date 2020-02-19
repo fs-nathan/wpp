@@ -1,8 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import { get, sortBy, reverse, filter as filterArr, find, remove, slice } from 'lodash';
-import { connect } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
+import { get, remove, slice } from 'lodash';
+import { useHistory } from 'react-router-dom';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -30,25 +29,17 @@ import {
   mdiCheckCircle,
   mdiClose,
 } from '@mdi/js';
-import { Context as ProjectPageContext } from '../../index';
-import ProjectSettingModal from '../../Modals/ProjectSetting';
-import CreateProjectModal from '../../Modals/CreateProject';
-import EditProjectModal from '../../Modals/EditProject';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import CustomTable from '../../../../components/CustomTable';
 import CustomBadge from '../../../../components/CustomBadge';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
-import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
+import ImprovedSmallProgressBar from '../../../../components/ImprovedSmallProgressBar';
+import { ChartInfoBox } from '../../../../components/CustomDonutChart';
+import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
 import { Container, SettingContainer, LinkSpan, StateBox, DateBox } from '../../../../components/TableComponents';
-import AlertModal from '../../../../components/AlertModal';
-import { listProject } from '../../../../actions/project/listProject';
-import { sortProject } from '../../../../actions/project/sortProject';
-import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
-import { deleteProject } from '../../../../actions/project/deleteProject';
-import { hideProject } from '../../../../actions/project/hideProject';
-import { showProject } from '../../../../actions/project/showProject';
+import { filters, times } from './constants';
 import './style.scss';
 
 const CustomMenuItem = ({ className = '', selected, refs, ...props }) => 
@@ -120,6 +111,12 @@ const TimeListItem = ({ className = '', selected, ...props }) =>
     {...props}
   />;
 
+const TooltipBody = ({ className = '', ...props }) => 
+  <Button 
+    className={`view_ProjectGroup_Table_All___tooltip ${className}`}
+    {...props}
+  />;
+
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 0:
@@ -150,20 +147,18 @@ function decodePriorityCode(priorityCode) {
 
 const SettingButton = ({
   project,
-  setCurrentSettingProject, setCurrentSettingAnchorEl,
+  setMenuAnchor, setCurProject,
 }) => {
-
-  function handleClick(evt) {
-    setCurrentSettingAnchorEl(evt.currentTarget);
-    setCurrentSettingProject(project);
-  }
 
   return (
     <SettingContainer onClick={evt => evt.stopPropagation()}>
       <IconButton
         aria-controls="simple-menu"
         aria-haspopup="true"
-        onClick={handleClick}
+        onClick={evt => {
+          setMenuAnchor(evt.currentTarget);
+          setCurProject(project);
+        }}
         size="small"
       >
         <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
@@ -173,300 +168,41 @@ const SettingButton = ({
 };
 
 function AllProjectTable({
-  expand,
-  handleExpand,
-  listProject, listProjectGroup,
-  detailProjectGroup,
-  doDeleteProject,
-  doHideProject,
-  doShowProject,
-  doSortProject,
-  colors,
-  isDefault = false,
+  expand, handleExpand,
+  projects, bgColor,
+  filterType, handleFilterType, 
+  timeType, handleTimeType,
+  handleSortType,
+  handleShowOrHideProject,
+  handleDeleteProject,
+  handleSortProject,
+  handleOpenModal,
+  handleTimeRange,
 }) {
-  const { setProjectGroupId, setStatusProjectId, setTimeRange } = React.useContext(ProjectPageContext);
-  const { projectGroupId } = useParams();
+
   const history = useHistory();
-
-  const bgColor = colors.find(item => item.selected === true);
-
-  const {
-    data: { projects: _projects },
-    loading: listProjectLoading,
-    error: listProjectError
-  } = listProject;
-
-  const {
-    data: { projectGroups },
-    loading: listProjectGroupLoading,
-    error: listProjectGroupError,
-  } = listProjectGroup;
-
-  const {
-    loading: detailProjectGroupLoading,
-    error: detailProjectGroupError
-  } = detailProjectGroup;
-
-  const loading = listProjectLoading || detailProjectGroupLoading || listProjectGroupLoading;
-  const error = listProjectError || detailProjectGroupError || listProjectGroupError;
-
-  const [openCreateProject, setOpenCreateProject] = React.useState(false);
 
   const [filterAnchor, setFilterAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
-
-  const [filter, setFilter] = React.useState(1);
-  const [time, setTime] = React.useState(5);
-  const [sortField, setSortField] = React.useState(null);
-  const [sortType, setSortType] = React.useState(1);
-  const [projects, setProjects] = React.useState(_projects);
+  const [timeOption, setTimeOption] = React.useState(0);
   const [startDate, setStartDate] = React.useState(moment().toDate());
   const [endDate, setEndDate] = React.useState(moment().toDate());
-  const [timeTitle, setTimeTitle] = React.useState(`Năm ${moment().year()}`);
 
-  const [edittingProject, setEdittingProject] = React.useState(null);
-
-  const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
-  const [currentSettingProject, setCurrentSettingProject] = React.useState(null);
-  const [alertModal, setAlertModal] = React.useState(false);
-  const [openEditProject, setOpenEditProject] = React.useState(false);
-  const [settingModal, setSettingModal] = React.useState(false);
-
-  const filterTitle = [
-    'Tất cả',
-    'Hoạt động',
-    'Ẩn',
-    'Đang chờ',
-    'Đang thực hiện',
-    'Hoàn thành',
-    'Quá hạn',
-    'Bạn tạo',
-    'Bạn tham gia'
-  ];
+  const [menuAnchor, setMenuAnchor] = React.useState(null); 
+  const [curProject, setCurProject] = React.useState(null);
 
   React.useEffect(() => {
-    let projects = _projects.map(project => {
-      let projectGroupIcon = get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon');
-      return {
-        ...project,
-        icon: projectGroupIcon,
-      }
-    });
-    switch (filter) {
-      case 0:
-        break;
-      case 1:
-        projects = filterArr(projects, { visibility: true });
-        break;
-      case 2:
-        projects = filterArr(projects, { visibility: false });
-        break;
-      case 3:
-        projects = filterArr(projects, {
-          visibility: true,
-          state_name: 'Waiting'
-        });
-        break;
-      case 4:
-        projects = filterArr(projects, {
-          visibility: true,
-          state_name: 'Doing'
-        });
-        break;
-      case 5:
-        projects = filterArr(projects, {
-          visibility: true,
-          state_name: 'Finished'
-        });
-        break;
-      case 6:
-        projects = filterArr(projects, {
-          visibility: true,
-          state_name: 'Expired'
-        });
-        break;
-      default:
-        break;
-    }
-    if (sortField === 'state_name') {
-      projects = sortBy(projects, [
-        o => get(o, 'visibility', true),
-        o => get(o, sortField)
-      ]);
-    } else {
-      projects = sortBy(projects, [o => get(o, sortField)]);
-    }
-    if (sortType === -1) {
-      reverse(projects);
-    }
-    if (isDefault) {
-      projects = filterArr(projects, {
-        project_group_id: null,
-      });
-    }
-    setProjects(projects);
-  }, [_projects, filter, sortField, sortType, projectGroups, isDefault]);
-
-  React.useEffect(() => {
-    switch (time) {
-      case 0: {
-        setStartDate(
-          moment()
-            .startOf('year')
-            .toDate()
-        );
-        setEndDate(
-          moment()
-            .endOf('year')
-            .toDate()
-        );
-        setTimeTitle(`Năm ${moment().year()}`);
-        return;
-      }
-      case 1: {
-        setStartDate(
-          moment()
-            .startOf('month')
-            .toDate()
-        );
-        setEndDate(
-          moment()
-            .endOf('month')
-            .toDate()
-        );
-        setTimeTitle(`Tháng ${moment().month() + 1}, năm ${moment().year()}`);
-        return;
-      }
-      case 2: {
-        setStartDate(
-          moment()
-            .subtract(1, 'M')
-            .startOf('month')
-            .toDate()
-        );
-        setEndDate(
-          moment()
-            .subtract(1, 'M')
-            .endOf('month')
-            .toDate()
-        );
-        setTimeTitle(
-          `Tháng ${moment()
-            .subtract(1, 'M')
-            .month() + 1}, năm ${moment()
-            .subtract(1, 'M')
-            .year()}`
-        );
-        return;
-      }
-      case 3: {
-        setStartDate(
-          moment()
-            .startOf('isoWeek')
-            .toDate()
-        );
-        setEndDate(
-          moment()
-            .endOf('isoWeek')
-            .toDate()
-        );
-        setTimeTitle(`Tuần ${moment().isoWeek()}, năm ${moment().year()}`);
-        return;
-      }
-      case 4: {
-        setStartDate(
-          moment()
-            .subtract(1, 'w')
-            .startOf('isoWeek')
-            .toDate()
-        );
-        setEndDate(
-          moment()
-            .subtract(1, 'w')
-            .endOf('isoWeek')
-            .toDate()
-        );
-        setTimeTitle(
-          `Tuần ${moment()
-            .subtract(1, 'w')
-            .isoWeek()}, năm ${moment()
-            .subtract(1, 'w')
-            .year()}`
-        );
-        return;
-      }
-      case 5: {
-        setStartDate(undefined);
-        setEndDate(undefined);
-        setTimeTitle(`Toàn bộ thời gian`);
-        return;
-      }
-      case 6: {
-        setTimeTitle(`Tùy chọn`);
-        return;
-      }
-      default:
-        return;
-    }
-  }, [time]);
-
-  React.useEffect(() => {
-    if (isDefault === false) setProjectGroupId(projectGroupId);
-  }, [setProjectGroupId, projectGroupId, isDefault]);
-
-  function handleFilterClose(filter = null) {
-    return evt => {
-      if (filter !== null) {
-        setFilter(filter);
-      }
-      setFilterAnchor(null);
-    };
-  }
-
-  function handleDownloadClose() {
-    setDownloadAnchor(null);
-  }
-
-  function handleSortColumn(field) {
-    if (field !== sortField) {
-      setSortField(field);
-      setSortType(1);
-    } else {
-      setSortType(sortType => -sortType);
-    }
-  }
-
-  function handleCloseMenu() {
-    setCurrentSettingAnchorEl(null);
-  }
-
-  function handleHideProject(project) {
-    doHideProject({ projectId: get(project, 'id') });
-  }
-
-  function handleShowProject(project) {
-    doShowProject({ projectId: get(project, 'id') });
-  }
-
-  function handleDeleteProject(project) {
-    doDeleteProject({ projectId: get(project, 'id') });
-  }
-
-  function handleSettingProject(project) {
-    setStatusProjectId(get(project, 'id'));
-    setSettingModal(true);
-  }
-
-  function handleEditProject(project) {
-    setEdittingProject(project);
-    setOpenEditProject(true);
-  }
+    setTimeOption(timeType);
+    const [start, end] = times[timeType].option();
+    setStartDate(start);
+    setEndDate(end);
+  }, [timeType]);
 
   return (
     <Container>
-      {error !== null && <ErrorBox />}
-      {error === null && (
+      {projects.error !== null && <ErrorBox />}
+      {projects.error === null && (
         <React.Fragment>
           <CustomTable
             options={{
@@ -474,7 +210,7 @@ function AllProjectTable({
               subTitle: '',
               subActions: [
                 {
-                  label: filterTitle[filter],
+                  label: filters[filterType].title,
                   iconPath: mdiFilterOutline,
                   onClick: evt => setFilterAnchor(evt.currentTarget)
                 },
@@ -484,14 +220,14 @@ function AllProjectTable({
                   onClick: evt => setDownloadAnchor(evt.currentTarget)
                 },
                 {
-                  label: 'Năm 2019',
+                  label: times[timeType].title,
                   iconPath: mdiCalendar,
                   onClick: evt => setTimeAnchor(evt.currentTarget)
                 }
               ],
               mainAction: {
                 label: '+ Tạo dự án',
-                onClick: evt => setOpenCreateProject(true)
+                onClick: evt => handleOpenModal('CREATE'),
               },
               expand: {
                 bool: expand,
@@ -520,17 +256,14 @@ function AllProjectTable({
                     destination.index === source.index
                   )
                     return;
-                  let sortData = [...projects];
+                  let sortData = [...projects.projects];
                   let removed = remove(sortData, { id: draggableId });
                   sortData = [...slice(sortData, 0, destination.index), ...removed, ...slice(sortData, destination.index)];
-                  doSortProject({
-                    sortData,
-                    groupId: isDefault ? 'default' : projectGroupId,
-                  });
+                  handleSortProject(sortData);
                 }
               },
               loading: {
-                bool: loading,
+                bool: projects.loading,
                 component: () => <LoadingBox />
               },
               row: {
@@ -556,9 +289,9 @@ function AllProjectTable({
               {
                 label: 'Dự án',
                 field: (row) => <LinkSpan onClick={evt => history.push(`/project/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
-                sort: evt => handleSortColumn('name'),
+                sort: evt => handleSortType('name'),
                 align: 'left',
-                width: '29%',
+                width: '24%',
               },
               {
                 label: 'Trạng thái',
@@ -588,21 +321,71 @@ function AllProjectTable({
                     )}
                   </StateBox>
                 ),
-                sort: evt => handleSortColumn('state_name'),
+                sort: evt => handleSortType('state_name'),
                 align: 'left',
                 width: '10%',
               },
               {
                 label: 'Hoàn thành',
                 field: row => (
-                  <SimpleSmallProgressBar
-                    percentDone={get(row, 'complete', 0)}
-                    color={'#3edcdb'}
-                  />
+                  <LightTooltip
+                    placement='top'
+                    title={
+                      <ChartInfoBox
+                        className='view_ProjectGroup_Table_All___tooltip'
+                        data={
+                          [{
+                            color: '#ff9800',
+                            title: 'Công việc đang chờ',
+                            value: get(row, 'statistic.waiting', 0),
+                          }, {
+                            color: '#03a9f4',
+                            title: 'Công việc đang làm',
+                            value: get(row, 'statistic.doing', 0),
+                          }, {
+                            color: '#f44336',
+                            title: 'Công việc quá hạn',
+                            value: get(row, 'statistic.expired', 0),
+                          }, {
+                            color: '#03c30b',
+                            title: 'Công việc hoàn thành',
+                            value: get(row, 'statistic.complete', 0),
+                          }, {
+                            color: '#000',
+                            title: 'Công việc dừng',
+                            value: get(row, 'statistic.stop', 0),
+                          }]
+                        }
+                      />
+                    }
+                  >
+                    <TooltipWrapper>
+                      <ImprovedSmallProgressBar
+                        data={[{
+                          color: '#ff9800',
+                          value: get(row, 'statistic.waiting', 0),
+                        }, {
+                          color: '#03a9f4',
+                          value: get(row, 'statistic.doing', 0),
+                        }, {
+                          color: '#f44336',
+                          value: get(row, 'statistic.expired', 0),
+                        }, {
+                          color: '#03c30b',
+                          value: get(row, 'statistic.complete', 0),
+                        }, {
+                          color: '#000',
+                          value: get(row, 'statistic.stop', 0),
+                        }]}
+                        color={'#05b50c'}
+                        percentDone={get(row, 'complete', 0)}
+                      />
+                    </TooltipWrapper>
+                  </LightTooltip>
                 ),
-                sort: evt => handleSortColumn('complete'),
+                sort: evt => handleSortType('complete'),
                 align: 'left',
-                width: '12%',
+                width: '17%',
               },
               {
                 label: 'Tiến độ',
@@ -619,7 +402,7 @@ function AllProjectTable({
                     
                   </DateBox>
                 ),
-                sort: evt => handleSortColumn('duration'),
+                sort: evt => handleSortType('duration'),
                 align: 'left',
                 width: '18%',
               },
@@ -638,7 +421,7 @@ function AllProjectTable({
                     {get(row, 'priority_name', '')}
                   </CustomBadge>
                 ),
-                sort: evt => handleSortColumn('priority_code'),
+                sort: evt => handleSortType('priority_code'),
                 align: 'left',
                 width: '10%',
               },
@@ -667,33 +450,36 @@ function AllProjectTable({
                 field: row => (
                   <SettingButton
                     project={row}
-                    setCurrentSettingProject={setCurrentSettingProject}
-                    setCurrentSettingAnchorEl={setCurrentSettingAnchorEl}
+                    setCurProject={setCurProject}
+                    setMenuAnchor={setMenuAnchor}
                   />
                 ),
                 align: 'center',
                 width: '5%',
               }
             ]}
-            data={projects}
+            data={projects.projects}
           />
           <Menu
             id="filter-menu"
             anchorEl={filterAnchor}
             open={Boolean(filterAnchor)}
-            onClose={handleFilterClose()}
+            onClose={evt => setFilterAnchor(null)}
             transformOrigin={{
               vertical: -30,
               horizontal: 'right'
             }}
           >
-            {filterTitle.map((title, index) => (
+            {filters.map((filter, index) => (
               <CustomMenuItem
                 key={index}
-                onClick={handleFilterClose(index)}
-                selected={filter === index}
+                onClick={evt => {
+                  handleFilterType(index)
+                  setFilterAnchor(null)
+                }}
+                selected={filterType === index}
               >
-                <Icon path={mdiCheckCircle} size={0.7} /> {title}
+                <Icon path={mdiCheckCircle} size={0.7} /> {filter.title}
               </CustomMenuItem>
             ))}
           </Menu>
@@ -701,7 +487,7 @@ function AllProjectTable({
             id="download-menu"
             anchorEl={downloadAnchor}
             open={Boolean(downloadAnchor)}
-            onClose={handleDownloadClose}
+            onClose={evt => setDownloadAnchor(null)}
             transformOrigin={{
               vertical: -30,
               horizontal: 'right'
@@ -714,7 +500,7 @@ function AllProjectTable({
                 </StyledListSubheader>
               }
             >
-              <ListItem button onClick={handleDownloadClose}>
+              <ListItem button onClick={evt => setDownloadAnchor(null)}>
                 <ListItemText primary={'Xuất ra file Excel .xls'} />
               </ListItem>
             </List>
@@ -734,87 +520,29 @@ function AllProjectTable({
                 <List
                   subheader={
                     <StyledListSubheader component="div">
-                      Tùy chỉnh
+                      Tùy chọn
                     </StyledListSubheader>
                   }
                 >
-                  <TimeListItem
-                    button
-                    onClick={evt => setTime(0)}
-                    style={time === 0 ? {
-                      borderLeft: `3px solid ${bgColor.color}`,
-                    } : {
-                      borderLeft: '3px solid #fff',
-                    }}
-                  >
-                    <ListItemText primary={'Năm nay'} />
-                  </TimeListItem>
-                  <TimeListItem
-                    button
-                    onClick={evt => setTime(1)}
-                    style={time === 1 ? {
-                      borderLeft: `3px solid ${bgColor.color}`,
-                    } : {
-                      borderLeft: '3px solid #fff',
-                    }}
-                  >
-                    <ListItemText primary={'Tháng này'} />
-                  </TimeListItem>
-                  <TimeListItem
-                    button
-                    onClick={evt => setTime(2)}
-                    style={time === 2 ? {
-                      borderLeft: `3px solid ${bgColor.color}`,
-                    } : {
-                      borderLeft: '3px solid #fff',
-                    }}
-                  >
-                    <ListItemText primary={'Tháng trước'} />
-                  </TimeListItem>
-                  <TimeListItem
-                    button
-                    onClick={evt => setTime(3)}
-                    style={time === 3 ? {
-                      borderLeft: `3px solid ${bgColor.color}`,
-                    } : {
-                      borderLeft: '3px solid #fff',
-                    }}
-                  >
-                    <ListItemText primary={'Tuần này'} />
-                  </TimeListItem>
-                  <TimeListItem
-                    button
-                    onClick={evt => setTime(4)}
-                    style={time === 4 ? {
-                      borderLeft: `3px solid ${bgColor.color}`,
-                    } : {
-                      borderLeft: '3px solid #fff',
-                    }}
-                  >
-                    <ListItemText primary={'Tuần trước'} />
-                  </TimeListItem>
-                  <TimeListItem
-                    button
-                    onClick={evt => setTime(5)}
-                    style={time === 5 ? {
-                      borderLeft: `3px solid ${bgColor.color}`,
-                    } : {
-                      borderLeft: '3px solid #fff',
-                    }}
-                  >
-                    <ListItemText primary={'Mọi lúc'} />
-                  </TimeListItem>
-                  <TimeListItem
-                    button
-                    onClick={evt => setTime(6)}
-                    style={time === 6 ? {
-                      borderLeft: `3px solid ${bgColor.color}`,
-                    } : {
-                      borderLeft: '3px solid #fff',
-                    }}
-                  >
-                    <ListItemText primary={'Tùy chọn'} />
-                  </TimeListItem>
+                  {times.map((time, index) => (
+                    <TimeListItem
+                      key={index}
+                      button
+                      onClick={evt => {
+                        setTimeOption(index);
+                        const [start, end] = times[index].option();
+                        setStartDate(start);
+                        setEndDate(end);
+                      }}
+                      style={timeOption === index ? {
+                        borderLeft: `3px solid ${bgColor.color}`,
+                      } : {
+                        borderLeft: '3px solid #fff',
+                      }}
+                    >
+                      <ListItemText primary={time.title} />
+                    </TimeListItem>
+                  ))}
                 </List>
               </SideBar>
               <MainBar>
@@ -829,10 +557,10 @@ function AllProjectTable({
                   </IconButton>
                 </SubHeader>
                 <Content>
-                  <YearBox>{timeTitle}</YearBox>
+                  <YearBox>{times[timeOption].description}</YearBox>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DateWrapper>
-                      {time === 5 ? (
+                      {timeOption === 5 ? (
                         <>
                           <TextField
                             disabled
@@ -847,7 +575,7 @@ function AllProjectTable({
                         <>
                           <KeyboardDatePicker
                             disableToolbar
-                            disabled={time !== 6}
+                            disabled={timeOption !== 6}
                             inputVariant="outlined"
                             variant="inline"
                             ampm={false}
@@ -860,7 +588,7 @@ function AllProjectTable({
                           />
                           <KeyboardDatePicker 
                             disableToolbar
-                            disabled={time !== 6}
+                            disabled={timeOption !== 6}
                             inputVariant="outlined"
                             variant="inline"
                             ampm={false}
@@ -880,101 +608,72 @@ function AllProjectTable({
                       backgroundColor: bgColor.color,
                     }}
                     fullWidth
-                    onClick={evt => setTimeRange({
-                      timeStart: startDate ? moment(startDate).format('YYYY-MM-DD') : undefined,
-                      timeEnd: endDate ? moment(endDate).format('YYYY-MM-DD') : undefined,
-                    })}
+                    onClick={evt => {
+                      handleTimeType(timeOption)
+                      handleTimeRange(
+                        startDate ? moment(startDate).toDate() : undefined, 
+                        endDate ? moment(endDate).toDate() : undefined
+                      )
+                      setTimeAnchor(null)
+                    }}
                   >Áp dụng</StyledButton>
                 </Content>
               </MainBar>
             </TimeBox>
           </Popover>
-          <CreateProjectModal
-            open={openCreateProject}
-            setOpen={setOpenCreateProject}
-          />
-          <EditProjectModal
-            curProject={edittingProject}
-            open={openEditProject}
-            setOpen={setOpenEditProject}
-          />
           <Menu
             id="simple-menu"
-            anchorEl={currentSettingAnchorEl}
+            anchorEl={menuAnchor}
             keepMounted
-            open={Boolean(currentSettingAnchorEl)}
-            onClose={handleCloseMenu}
+            open={Boolean(menuAnchor)}
+            onClose={evt => setMenuAnchor(null)}
             transformOrigin={{
               vertical: -30,
               horizontal: 'right'
             }}
           >
-            <MenuItem onClick={evt => {
-              handleCloseMenu();
-              handleSettingProject(currentSettingProject);
-            }}>
+            <MenuItem 
+              onClick={evt => {
+                setMenuAnchor(null);
+                handleOpenModal('SETTING', {
+                  curProject,
+                });
+              }}
+            >
               Cài đặt
             </MenuItem>
             <MenuItem
               onClick={evt => {
-                handleCloseMenu();
-                handleEditProject(currentSettingProject);
+                setMenuAnchor(null);
+                handleOpenModal('UPDATE', {
+                  curProject,
+                });
               }}
             >
               Chỉnh sửa
             </MenuItem>
             <MenuItem
               onClick={evt => {
-                handleCloseMenu();
-                get(currentSettingProject, 'visibility', false) 
-                  ? handleHideProject(currentSettingProject) 
-                  : handleShowProject(currentSettingProject);
+                setMenuAnchor(null);
+                handleShowOrHideProject(curProject);
               }}
             >
-              {get(currentSettingProject, 'visibility', false) ? 'Ẩn' : 'Bỏ ẩn'}
+              {get(curProject, 'visibility', false) ? 'Ẩn' : 'Bỏ ẩn'}
             </MenuItem>
-            <MenuItem onClick={evt => setAlertModal(true)}>Xóa</MenuItem>
+            <MenuItem 
+              onClick={evt => {
+                setMenuAnchor(null)
+                handleOpenModal('ALERT', {
+                  content: "Bạn chắc chắn muốn xóa dự án?",
+                  onConfirm: () => handleDeleteProject(curProject),
+                })
+              }}
+            >Xóa</MenuItem>
           </Menu>
-          <AlertModal
-            open={alertModal}
-            setOpen={setAlertModal}
-            content="Bạn chắc chắn muốn xóa dự án?"
-            onCancle={handleCloseMenu}
-            onConfirm={() => {
-              handleCloseMenu();
-              handleDeleteProject(currentSettingProject);
-            }}
-          />
-          <ProjectSettingModal 
-            open={settingModal} 
-            setOpen={setSettingModal} 
-          />
         </React.Fragment>
       )}
     </Container>
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    listProject: state.project.listProject,
-    listProjectGroup: state.projectGroup.listProjectGroup,
-    detailProjectGroup: state.projectGroup.detailProjectGroup,
-    colors: state.setting.colors,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    doListProject: (options, quite) => dispatch(listProject(options, quite)),
-    doSortProject: ({ sortData, groupId }) =>
-      dispatch(sortProject({ sortData, groupId })),
-    doDeleteProject: ({ projectId }) => dispatch(deleteProject({ projectId })),
-    doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
-    doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
-    doDetailProjectGroup: ({ projectGroupId }, quite) =>
-      dispatch(detailProjectGroup({ projectGroupId }, quite))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AllProjectTable);
+export default AllProjectTable;

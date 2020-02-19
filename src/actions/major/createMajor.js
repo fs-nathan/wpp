@@ -12,14 +12,16 @@ export const createMajor = ({ name, description }) => ({
   }
 });
 
-export const createMajorSuccess = ({ major }) => ({
+export const createMajorSuccess = ({ major }, options) => ({
   type: CREATE_MAJOR_SUCCESS,
+  options,
   data: {
     major,
   },
 });
 
-export const createMajorFail = (error) => ({
+export const createMajorFail = (error, options) => ({
   type: CREATE_MAJOR_FAIL,
-  error: error,
+  options,
+  error,
 });

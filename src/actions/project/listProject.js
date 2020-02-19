@@ -2,6 +2,7 @@ import {
   LIST_PROJECT,
   LIST_PROJECT_FAIL,
   LIST_PROJECT_SUCCESS,
+  LIST_PROJECT_RESET,
 } from '../../constants/actions/project/listProject';
 
 export const listProject = ({ groupProject, type, status, timeStart, timeEnd }, quite = false) => ({
@@ -15,14 +16,20 @@ export const listProject = ({ groupProject, type, status, timeStart, timeEnd }, 
   },
 });
 
-export const listProjectSuccess = ({ projects }) => ({
+export const listProjectSuccess = ({ projects }, options) => ({
   type: LIST_PROJECT_SUCCESS,
+  options,
   data: {
     projects,
   }
 });
 
-export const listProjectFail = (error) => ({
+export const listProjectFail = (error, options) => ({
   type: LIST_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
+});
+
+export const listProjectReset = () => ({
+  type: LIST_PROJECT_RESET,
 });

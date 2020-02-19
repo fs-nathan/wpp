@@ -14,11 +14,13 @@ export const sortTask = ({ taskId, projectId, groupTask, sortIndex }) => ({
   },
 });
 
-export const sortTaskSuccess = () => ({
+export const sortTaskSuccess = (options) => ({
   type: SORT_TASK_SUCCESS,
+  options,
 });
 
-export const sortTaskFail = (error) => ({
+export const sortTaskFail = (error, options) => ({
   type: SORT_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });
