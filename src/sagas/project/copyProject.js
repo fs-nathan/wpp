@@ -28,11 +28,11 @@ async function doCopyProject({ projectId, name, description, startDate, isCopyMe
 function* copyProject(action) {
   try {
     yield call(doCopyProject, action.options);
-    yield put(copyProjectSuccess({}));
+    yield put(copyProjectSuccess(action.options));
     CustomEventEmitter(COPY_PROJECT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(copyProjectFail(error));
+    yield put(copyProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

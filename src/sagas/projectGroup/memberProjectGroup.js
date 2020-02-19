@@ -23,9 +23,9 @@ async function doMemberProjectGroup({ projectGroupId }) {
 function* memberProjectGroup(action) {
   try {
     const { members } = yield call(doMemberProjectGroup, action.options);
-    yield put(memberProjectGroupSuccess({ members }));
+    yield put(memberProjectGroupSuccess({ members }, action.options));
   } catch (error) {
-    yield put(memberProjectGroupFail(error));
+    yield put(memberProjectGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

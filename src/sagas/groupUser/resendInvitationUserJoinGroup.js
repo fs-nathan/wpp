@@ -24,11 +24,11 @@ async function doResendInvitationUserJoinGroup({ userId }) {
 function* resendInvitationUserJoinGroup(action) {
   try {
     yield call(doResendInvitationUserJoinGroup, action.options);
-    yield put(resendInvitationUserJoinGroupSuccess());
+    yield put(resendInvitationUserJoinGroupSuccess(action.options));
     CustomEventEmitter(RESEND_INVITATION_USER_JOIN_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(resendInvitationUserJoinGroupFail(error));
+    yield put(resendInvitationUserJoinGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

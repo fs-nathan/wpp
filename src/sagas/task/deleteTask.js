@@ -24,11 +24,11 @@ async function doDeleteTask({ taskId }) {
 function* deleteTask(action) {
   try {
     yield call(doDeleteTask, action.options);
-    yield put(deleteTaskSuccess());
+    yield put(deleteTaskSuccess(action.options));
     CustomEventEmitter(DELETE_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteTaskFail(error));
+    yield put(deleteTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

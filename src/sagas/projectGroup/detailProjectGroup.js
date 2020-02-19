@@ -23,9 +23,9 @@ async function doDetailProjectGroup({ projectGroupId }) {
 function* detailProjectGroup(action) {
   try {
     const { project_group: projectGroup } = yield call(doDetailProjectGroup, action.options);
-    yield put(detailProjectGroupSuccess({ projectGroup }));
+    yield put(detailProjectGroupSuccess({ projectGroup }, action.options));
   } catch (error) {
-    yield put(detailProjectGroupFail(error));
+    yield put(detailProjectGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

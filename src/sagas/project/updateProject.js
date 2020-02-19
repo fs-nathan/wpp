@@ -29,11 +29,11 @@ async function doUpdateProject({ projectId, name, description, projectGroupId, p
 function* updateProject(action) {
   try {
     yield call(doUpdateProject, action.options);
-    yield put(updateProjectSuccess());
+    yield put(updateProjectSuccess(action.options));
     CustomEventEmitter(UPDATE_PROJECT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateProjectFail(error));
+    yield put(updateProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'messaage', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

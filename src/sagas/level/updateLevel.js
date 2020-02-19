@@ -26,11 +26,11 @@ async function doUpdateLevel({ levelId, name, description }) {
 function* updateLevel(action) {
   try {
     const { level } = yield call(doUpdateLevel, action.options);
-    yield put(updateLevelSuccess({ level }));
+    yield put(updateLevelSuccess({ level }, action.options));
     CustomEventEmitter(UPDATE_LEVEL);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateLevelFail(error));
+    yield put(updateLevelFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

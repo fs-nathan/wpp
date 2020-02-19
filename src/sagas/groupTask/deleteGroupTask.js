@@ -24,11 +24,11 @@ async function doDeleteGroupTask({ groupTaskId }) {
 function* deleteGroupTask(action) {
   try {
     yield call(doDeleteGroupTask, action.options);
-    yield put(deleteGroupTaskSuccess());
+    yield put(deleteGroupTaskSuccess(action.options));
     CustomEventEmitter(DELETE_GROUP_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteGroupTaskFail(error));
+    yield put(deleteGroupTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

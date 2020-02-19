@@ -20,9 +20,9 @@ async function doListPosition() {
 function* listUserRole() {
   try {
     const { user_roles: userRoles } = yield call(doListPosition);
-    yield put(listUserRoleSuccess({ userRoles }));
+    yield put(listUserRoleSuccess({ userRoles }, action.options));
   } catch (error) {
-    yield put(listUserRoleFail(error));
+    yield put(listUserRoleFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

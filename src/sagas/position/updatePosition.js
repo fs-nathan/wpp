@@ -26,11 +26,11 @@ async function doUpdatePosition({ positionId, name, description }) {
 function* updatePosition(action) {
   try {
     const { position } = yield call(doUpdatePosition, action.options);
-    yield put(updatePositionSuccess({ position }));
+    yield put(updatePositionSuccess({ position }, action.options));
     CustomEventEmitter(UPDATE_POSITION);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updatePositionFail(error));
+    yield put(updatePositionFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

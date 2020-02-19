@@ -23,9 +23,9 @@ async function doListTask({ projectId }) {
 function* listTask(action) {
   try {
     const { tasks } = yield call(doListTask, action.options);
-    yield put(listTaskSuccess({ tasks }));
+    yield put(listTaskSuccess({ tasks }, action.options));
   } catch (error) {
-    yield put(listTaskFail(error));
+    yield put(listTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

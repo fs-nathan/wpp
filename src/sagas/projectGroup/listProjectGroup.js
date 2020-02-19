@@ -20,9 +20,9 @@ async function doListProjectGroup() {
 function* listProjectGroup() {
   try {
     const { project_groups: projectGroups } = yield call(doListProjectGroup);
-    yield put(listProjectGroupSuccess({ projectGroups }));
+    yield put(listProjectGroupSuccess({ projectGroups }, action.options));
   } catch (error) {
-    yield put(listProjectGroupFail(error));
+    yield put(listProjectGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

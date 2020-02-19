@@ -28,11 +28,11 @@ async function doCreateProject({ name, description, projectGroupId, priority, cu
 function* createProject(action) {
   try {
     const { project } = yield call(doCreateProject, action.options);
-    yield put(createProjectSuccess({ project }));
+    yield put(createProjectSuccess({ project }, action.options));
     CustomEventEmitter(CREATE_PROJECT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createProjectFail(error));
+    yield put(createProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

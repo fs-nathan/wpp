@@ -24,11 +24,11 @@ async function doDeleteRoom({ roomId }) {
 function* deleteRoom(action) {
   try {
     yield call(doDeleteRoom, action.options);
-    yield put(deleteRoomSuccess());
+    yield put(deleteRoomSuccess(action.options));
     CustomEventEmitter(DELETE_ROOM);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteRoomFail(error));
+    yield put(deleteRoomFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

@@ -25,11 +25,11 @@ async function doSortProjectGroup({ projectGroupId, sortIndex }) {
 function* sortProjectGroup(action) {
   try {
     yield call(doSortProjectGroup, action.options);
-    yield put(sortProjectGroupSuccess());
+    yield put(sortProjectGroupSuccess(action.options));
     CustomEventEmitter(SORT_PROJECT_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(sortProjectGroupFail(error));
+    yield put(sortProjectGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

@@ -27,9 +27,9 @@ function* detailStatus(action) {
       copy: can_copy,
       date: date_status,
     }
-    yield put(detailStatusSuccess({ status }));
+    yield put(detailStatusSuccess({ status }, action.options));
   } catch (error) {
-    yield put(detailStatusFail(error));
+    yield put(detailStatusFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

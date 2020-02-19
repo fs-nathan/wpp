@@ -23,12 +23,12 @@ async function doAcceptRequirementJoinGroup({ requirementId }) {
 
 function* acceptRequirementJoinGroup(action) {
   try {
-    const { requirements} = yield call(doAcceptRequirementJoinGroup, action.options);
-    yield put(acceptRequirementJoinGroupSuccess({ requirements }));
+    yield call(doAcceptRequirementJoinGroup, action.options);
+    yield put(acceptRequirementJoinGroupSuccess(action.options));
     CustomEventEmitter(ACCEPT_REQUIREMENT_USER_JOIN_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(acceptRequirementJoinGroupFail(error));
+    yield put(acceptRequirementJoinGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

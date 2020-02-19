@@ -26,11 +26,11 @@ async function doAddProjectRoleToMember({ projectId, memberId, roleId, }) {
 function* addProjectRoleToMember(action) {
   try {
     yield call(doAddProjectRoleToMember, action.options);
-    yield put(addProjectRoleToMemberSuccess());
+    yield put(addProjectRoleToMemberSuccess(action.options));
     CustomEventEmitter(ADD_PROJECT_ROLE_TO_MEMBER);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(addProjectRoleToMemberFail(error));
+    yield put(addProjectRoleToMemberFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

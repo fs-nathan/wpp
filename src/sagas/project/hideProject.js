@@ -24,11 +24,11 @@ async function doHideProject({ projectId }) {
 function* hideProject(action) {
   try {
     yield call(doHideProject, action.options);
-    yield put(hideProjectSuccess());
+    yield put(hideProjectSuccess(action.options));
     CustomEventEmitter(HIDE_PROJECT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(hideProjectFail(error));
+    yield put(hideProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

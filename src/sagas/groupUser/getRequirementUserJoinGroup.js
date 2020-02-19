@@ -20,9 +20,9 @@ async function doGetRequirementJoinGroup() {
 function* getRequirementJoinGroup(action) {
   try {
     const { requirements} = yield call(doGetRequirementJoinGroup, action.options);
-    yield put(getRequirementJoinGroupSuccess({ requirements }));
+    yield put(getRequirementJoinGroupSuccess({ requirements }), action.options);
   } catch (error) {
-    yield put(getRequirementJoinGroupFail(error));
+    yield put(getRequirementJoinGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

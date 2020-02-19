@@ -24,11 +24,11 @@ async function doPublicMember({ userId }) {
 function* privateMember(action) {
   try {
     yield call(doPublicMember, action.options);
-    yield put(privateMemberSuccess());
+    yield put(privateMemberSuccess(action.options));
     CustomEventEmitter(PRIVATE_MEMBER);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(privateMemberFail(error));
+    yield put(privateMemberFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

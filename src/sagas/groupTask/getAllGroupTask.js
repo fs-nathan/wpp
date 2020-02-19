@@ -20,9 +20,9 @@ async function doGetAllGroupTask() {
 function* getAllGroupTask(action) {
   try {
     const { groups: groupTasks } = yield call(doGetAllGroupTask, action.options);
-    yield put(getAllGroupTaskSuccess({ groupTasks }));
+    yield put(getAllGroupTaskSuccess({ groupTasks }, action.options));
   } catch (error) {
-    yield put(getAllGroupTaskFail(error));
+    yield put(getAllGroupTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

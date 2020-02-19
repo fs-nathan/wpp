@@ -23,9 +23,9 @@ async function doDetailUser({ userId }) {
 function* detailUser(action) {
   try {
     const { user } = yield call(doDetailUser, action.options);
-    yield put(detailUserSuccess({ user }));
+    yield put(detailUserSuccess({ user }, action.options));
   } catch (error) {
-    yield put(detailUserFail(error));
+    yield put(detailUserFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

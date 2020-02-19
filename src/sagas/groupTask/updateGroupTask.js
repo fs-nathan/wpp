@@ -26,11 +26,11 @@ async function doUpdateGroupTask({ groupTaskId, name, description }) {
 function* updateGroupTask(action) {
   try {
     const { group_task: groupTask } = yield call(doUpdateGroupTask, action.options);
-    yield put(updateGroupTaskSuccess({ groupTask }));
+    yield put(updateGroupTaskSuccess({ groupTask }, action.options));
     CustomEventEmitter(UPDATE_GROUP_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateGroupTaskFail(error));
+    yield put(updateGroupTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

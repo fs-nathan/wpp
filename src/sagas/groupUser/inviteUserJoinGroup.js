@@ -24,11 +24,11 @@ async function doInviteUserJoinGroup({ userId }) {
 function* inviteUserJoinGroup(action) {
   try {
     yield call(doInviteUserJoinGroup, action.options);
-    yield put(inviteUserJoinGroupSuccess());
+    yield put(inviteUserJoinGroupSuccess(action.options));
     CustomEventEmitter(INVITE_USER_JOIN_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(inviteUserJoinGroupFail(error));
+    yield put(inviteUserJoinGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

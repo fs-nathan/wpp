@@ -25,11 +25,11 @@ async function doRemoveMemberProject({ projectId, memberId }) {
 function* removeMemberProject(action) {
   try {
     yield call(doRemoveMemberProject, action.options);
-    yield put(removeMemberProjectSuccess());
+    yield put(removeMemberProjectSuccess(action.options));
     CustomEventEmitter(REMOVE_MEMBER_PROJECT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(removeMemberProjectFail(error));
+    yield put(removeMemberProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

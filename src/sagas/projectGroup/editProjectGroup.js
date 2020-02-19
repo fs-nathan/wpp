@@ -27,11 +27,11 @@ async function doEditProjectGroup({ projectGroupId, name, icon, description }) {
 function* editProjectGroup(action) {
   try {
     yield call(doEditProjectGroup, action.options);
-    yield put(editProjectGroupSuccess());
+    yield put(editProjectGroupSuccess(action.options));
     CustomEventEmitter(EDIT_PROJECT_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(editProjectGroupFail(error));
+    yield put(editProjectGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

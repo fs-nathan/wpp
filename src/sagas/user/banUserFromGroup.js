@@ -24,11 +24,11 @@ async function doBanUserFromGroup({ userId }) {
 function* banUserFromGroup(action) {
   try {
     yield call(doBanUserFromGroup, action.options);
-    yield put(banUserFromGroupSuccess());
+    yield put(banUserFromGroupSuccess(action.options));
     CustomEventEmitter(BAN_USER_FROM_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(banUserFromGroupFail(error));
+    yield put(banUserFromGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

@@ -23,9 +23,9 @@ async function doGetUserOfRoom({ roomId }) {
 function* getUserOfRoom(action) {
   try {
     const { users } = yield call(doGetUserOfRoom, action.options);
-    yield put(getUserOfRoomSuccess({ users }));
+    yield put(getUserOfRoomSuccess({ users }, action.options));
   } catch (error) {
-    yield put(getUserOfRoomFail(error));
+    yield put(getUserOfRoomFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

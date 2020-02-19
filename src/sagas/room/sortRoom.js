@@ -25,11 +25,11 @@ async function doSortRoom({ roomId, sortIndex }) {
 function* sortRoom(action) {
   try {
     yield call(doSortRoom, action.options);
-    yield put(sortRoomSuccess());
+    yield put(sortRoomSuccess(action.options));
     CustomEventEmitter(SORT_ROOM);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(sortRoomFail(error));
+    yield put(sortRoomFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

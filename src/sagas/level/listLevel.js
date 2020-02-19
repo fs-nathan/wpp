@@ -20,9 +20,9 @@ async function doListLevel() {
 function* listLevel() {
   try {
     const { levels } = yield call(doListLevel);
-    yield put(listLevelSuccess({ levels }));
+    yield put(listLevelSuccess({ levels }, action.options));
   } catch (error) {
-    yield put(listLevelFail(error));
+    yield put(listLevelFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

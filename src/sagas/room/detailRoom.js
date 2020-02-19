@@ -23,9 +23,9 @@ async function doDetailRoom({ roomId }) {
 function* detailRoom(action) {
   try {
     const { room } = yield call(doDetailRoom, action.options);
-    yield put(detailRoomSuccess({ room }));
+    yield put(detailRoomSuccess({ room }, action.options));
   } catch (error) {
-    yield put(detailRoomFail(error));
+    yield put(detailRoomFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

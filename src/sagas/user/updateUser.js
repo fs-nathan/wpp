@@ -29,11 +29,11 @@ async function doUpdateUser({ userId, roomId, positionId, levelId, majorId, desc
 function* updateUser(action) {
   try {
     yield call(doUpdateUser, action.options);
-    yield put(updateUserSuccess());
+    yield put(updateUserSuccess(action.options));
     CustomEventEmitter(UPDATE_USER);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateUserFail(error));
+    yield put(updateUserFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

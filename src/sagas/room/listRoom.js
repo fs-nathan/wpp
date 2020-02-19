@@ -20,9 +20,9 @@ async function doListRoom() {
 function* listRoom() {
   try {
     const { rooms } = yield call(doListRoom);
-    yield put(listRoomSuccess({ rooms }));
+    yield put(listRoomSuccess({ rooms }, action.options));
   } catch (error) {
-    yield put(listRoomFail(error));
+    yield put(listRoomFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

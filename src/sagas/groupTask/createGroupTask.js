@@ -26,11 +26,11 @@ async function doCreateGroupTask({ projectId, name, description }) {
 function* createGroupTask(action) {
   try {
     const { group_task: groupTask } = yield call(doCreateGroupTask, action.options);
-    yield put(createGroupTaskSuccess({ groupTask }));
+    yield put(createGroupTaskSuccess({ groupTask }, action.options));
     CustomEventEmitter(CREATE_GROUP_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createGroupTaskFail(error));
+    yield put(createGroupTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

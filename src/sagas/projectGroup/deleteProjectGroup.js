@@ -24,11 +24,11 @@ async function doDeleteProjectGroup({ projectGroupId }) {
 function* deleteProjectGroup(action) {
   try {
     yield call(doDeleteProjectGroup, action.options);
-    yield put(deleteProjectGroupSuccess());
+    yield put(deleteProjectGroupSuccess(action.options));
     CustomEventEmitter(DELETE_PROJECT_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteProjectGroupFail(error));
+    yield put(deleteProjectGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

@@ -24,11 +24,11 @@ async function doDeleteMajor({ majorId }) {
 function* deleteMajor(action) {
   try {
     yield call(doDeleteMajor, action.options);
-    yield put(deleteMajorSuccess());
+    yield put(deleteMajorSuccess(action.options));
     CustomEventEmitter(DELETE_MAJOR);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteMajorFail(error));
+    yield put(deleteMajorFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

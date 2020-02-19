@@ -47,9 +47,9 @@ async function doListIcon() {
 function* listIcon() {
   try {
     const { icons, defaults } = yield call(doListIcon);
-    yield put(listIconSuccess({ icons, defaults }));
+    yield put(listIconSuccess({ icons, defaults }, action.options));
   } catch (error) {
-    yield put(listIconFail(error));
+    yield put(listIconFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

@@ -38,11 +38,11 @@ async function doSortProject({ sortData, groupId, }) {
 function* sortProject(action) {
   try {
     yield call(doSortProject, action.options);
-    yield put(sortProjectSuccess({}));
+    yield put(sortProjectSuccess(action.options));
     CustomEventEmitter(SORT_PROJECT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(sortProjectFail(error));
+    yield put(sortProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

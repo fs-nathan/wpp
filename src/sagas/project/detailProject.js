@@ -23,9 +23,9 @@ async function doDetailProject({ projectId }) {
 function* detailProject(action) {
   try {
     const { project } = yield call(doDetailProject, action.options);
-    yield put(detailProjectSuccess({ project }));
+    yield put(detailProjectSuccess({ project }, action.options));
   } catch (error) {
-    yield put(detailProjectFail(error));
+    yield put(detailProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
