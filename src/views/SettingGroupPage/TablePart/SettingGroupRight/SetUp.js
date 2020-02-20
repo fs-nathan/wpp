@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   FormControlLabel,
   Checkbox,
@@ -15,6 +16,7 @@ import PickColorModal from './PickColorModal';
 import './SettingGroupRight.scss';
 
 function MoreAction({ idx, onUpdate }) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = event => {
@@ -46,24 +48,26 @@ function MoreAction({ idx, onUpdate }) {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        transformOrigin={{
-          vertical: -30,
-          horizontal: 'right'
-        }}
+        transformOrigin={{ vertical: -30, horizontal: 'right' }}
       >
-        <MenuItem onClick={() => handleOnChangeStatus(1)}>Bật</MenuItem>
-        <MenuItem onClick={() => handleOnChangeStatus(0)}>Tắt</MenuItem>
+        <MenuItem onClick={() => handleOnChangeStatus(1)}>
+          {t('IDS_WP_ON')}
+        </MenuItem>
+        <MenuItem onClick={() => handleOnChangeStatus(0)}>
+          {t('IDS_WP_OFF')}
+        </MenuItem>
       </Menu>
     </div>
   );
 }
 
-function SetUp(props) {
+const SetUp = props => {
+  const { t } = useTranslation();
   const [items, setItems] = useState([
-    { name: 'Lịch tuần', status: 1 },
-    { name: 'Công việc đến hạn', status: 1 },
-    { name: 'Thành viên nổi bật', status: 1 },
-    { name: 'Tư vấn pháp luật', status: 0 }
+    { name: t('IDS_WP_CALENDAR_WEEK'), status: 1 },
+    { name: t('IDS_WP_DEADLINE_JOB'), status: 1 },
+    { name: t('IDS_WP_TOP_MEMBER'), status: 1 },
+    { name: t('IDS_WP_LAW_DES'), status: 0 }
   ]);
   const [visibleModal, setVisibleModal] = useState(false);
   const { colors } = props;
@@ -78,10 +82,8 @@ function SetUp(props) {
   return (
     <div className="setup-info">
       <div className="setup-info-left">
-        <div className="title">Cài đặt menu trái</div>
-        <div className="sub-title">
-          Thiết lập hiển thị chức năng trên menu trái
-        </div>
+        <div className="title">{t('IDS_WP_SETTING_MENU_LEFT')}</div>
+        <div className="sub-title">{t('IDS_WP_SETTING_SHOW_MENU_LEFT')}</div>
         <div className="setup-content">
           <div className="setup-menu-list">
             <FormControlLabel
@@ -89,77 +91,77 @@ function SetUp(props) {
               checked
               className="cb-item"
               control={<Checkbox ccolor="primary" />}
-              label="Trang chủ"
+              label={t('IDS_WP_HOME')}
             />
             <FormControlLabel
               disabled
               checked
               className="cb-item"
               control={<Checkbox color="primary" />}
-              label="Dự án"
+              label={t('IDS_WP_PROJECT')}
             />
             <FormControlLabel
               disabled
               checked
               className="cb-item"
               control={<Checkbox color="primary" />}
-              label="Công việc"
+              label={t('IDS_WP_JOB')}
             />
             <FormControlLabel
               disabled
               checked
               className="cb-item"
               control={<Checkbox color="primary" />}
-              label="Báo cáo"
+              label={t('IDS_WP_REPORT')}
             />
             <FormControlLabel
               className="cb-item"
               control={<Checkbox color="primary" />}
-              label="Ngân sách"
+              label={t('IDS_WP_BUDGET')}
             />
             <FormControlLabel
               className="cb-item"
               control={<Checkbox color="primary" />}
-              label="Đề xuất"
+              label={t('IDS_WP_SUGGEST')}
             />
             <FormControlLabel
               className="cb-item"
               control={<Checkbox color="primary" />}
-              label="Quy trình"
+              label={t('IDS_WP_PROCESS')}
             />
             <FormControlLabel
               className="cb-item"
               control={<Checkbox color="primary" />}
-              label="Văn thư"
-            />
-            <FormControlLabel
-              disabled
-              checked
-              className="cb-item"
-              control={<Checkbox color="primary" />}
-              label="Tài liệu"
-            />
-            <FormControlLabel
-              className="cb-item"
-              control={<Checkbox color="primary" />}
-              label="Lịch, nhắc hẹn"
-            />
-            <FormControlLabel
-              className="cb-item"
-              control={<Checkbox color="primary" />}
-              label="Vị trí"
+              label={t('IDS_WP_ARCHIVAL')}
             />
             <FormControlLabel
               disabled
               checked
               className="cb-item"
               control={<Checkbox color="primary" />}
-              label="Thành viên"
+              label={t('IDS_WP_DOCUMENT')}
+            />
+            <FormControlLabel
+              className="cb-item"
+              control={<Checkbox color="primary" />}
+              label={t('IDS_WP_CALENDAR_REMINDER')}
+            />
+            <FormControlLabel
+              className="cb-item"
+              control={<Checkbox color="primary" />}
+              label={t('IDS_WP_POSITION')}
+            />
+            <FormControlLabel
+              disabled
+              checked
+              className="cb-item"
+              control={<Checkbox color="primary" />}
+              label={t('IDS_WP_MEMBER')}
             />
           </div>
 
           <div className="setting-bg-left-menu">
-            <span className="lb-text">Chọn màu sắc menu trái</span>
+            <span className="lb-text">{t('IDS_WP_SELECT_MENU_LEFT')}</span>
             <span
               className="pick-color"
               style={{ background: bgColor.color }}
@@ -174,10 +176,8 @@ function SetUp(props) {
       </div>
       {/* <Divider orientation="vertical" className="divider-vertical" /> */}
       <div className="setup-info-right">
-        <div className="title">Thiết lập plugin trang chủ</div>
-        <div className="sub-title">
-          Sắp xếp, bật tắt các plugin trên trang chủ
-        </div>
+        <div className="title">{t('IDS_WP_SETTING_PLUGIN_HOME')}</div>
+        <div className="sub-title">{t('IDS_WP_ENABLE_DISABLE_PLUGIN')}</div>
         <div className="plugin-content">
           <List
             values={items}
@@ -209,9 +209,7 @@ function SetUp(props) {
                   <div className="drag-content">
                     <span
                       data-movable-handle
-                      style={{
-                        cursor: isDragged ? 'grabbing' : 'grab'
-                      }}
+                      style={{ cursor: isDragged ? 'grabbing' : 'grab' }}
                       tabIndex={-1}
                     >
                       <Icon path={mdiDragVertical} size={1} />
@@ -224,7 +222,7 @@ function SetUp(props) {
                         'status-plugin ' + (value.status ? 'is-active' : '')
                       }
                     >
-                      {value.status ? 'Bật' : 'Tắt'}
+                      {value.status ? t('IDS_WP_ON') : t('IDS_WP_OFF')}
                     </span>
                     <MoreAction idx={index} onUpdate={handleChangeStatus} />
                   </div>
@@ -236,7 +234,7 @@ function SetUp(props) {
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   state => ({

@@ -1,4 +1,5 @@
 import React, { useEffect, Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { mdiSwapVertical } from '@mdi/js';
 import { withRouter } from 'react-router-dom';
 import Icon from '@mdi/react';
@@ -51,6 +52,7 @@ const RecentContent = props => {
     actionFetchListMyDocument,
     actionChangeBreadCrumbs
   } = props;
+  const { t } = useTranslation();
   const [listData, setListData] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
   const [sortField, setSortField] = React.useState(null);
@@ -137,8 +139,8 @@ const RecentContent = props => {
     return <LoadingBox />;
   }
   const moreAction = [
-    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
-    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' }
+    { icon: mdiAccountPlusOutline, text: t('IDS_WP_SHARE'), type: 'share' },
+    { icon: mdiContentCopy, text: t('IDS_WP_COPY_LINK'), type: 'copy' }
   ];
   return (
     <Fragment>
@@ -157,14 +159,14 @@ const RecentContent = props => {
               />
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%">
-              Loại
+              {t('IDS_WP_TYPE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left">
               <div
                 className="cursor-pointer"
                 onClick={() => hanldeSort('name')}
               >
-                Tên tài liệu
+                {t('IDS_WP_DOCUMENT_NAME')}
                 <IconButton size="small">
                   <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
@@ -172,16 +174,16 @@ const RecentContent = props => {
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center">Chia sẻ</StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="15%">
-              Nơi lưu trữ
+              {t('IDS_WP_STORAGE_ADDRESS')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Ngày tạo
+              {t('IDS_WP_CREATE_DATE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Người tạo
+              {t('IDS_WP_CREATOR')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Kích thước
+              {t('IDS_WP_SIZE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
           </TableRow>
@@ -270,7 +272,7 @@ const RecentContent = props => {
                                 }
                               }
                             ];
-                            
+
                             actionChangeBreadCrumbs(newBreadCrumbs);
                           }
 

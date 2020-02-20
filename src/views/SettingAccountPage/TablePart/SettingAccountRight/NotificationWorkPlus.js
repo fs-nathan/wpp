@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
@@ -16,6 +17,7 @@ import {
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 
 const NotificationWorkPlus = props => {
+  const { t } = useTranslation();
   const handleFetchData = async () => {
     try {
       const { data } = await getNotificationService();
@@ -33,7 +35,7 @@ const NotificationWorkPlus = props => {
         props.notification.map((el, index) => (
           <div className="notification-group" key={index}>
             <li className="title-list" style={{ color: bgColor.color }}>
-              Tháng {el.time}
+              {t('IDS_WP_MONTH')} {el.time}
             </li>
             <Table aria-label="simple table" className="table-notification">
               <TableBody>

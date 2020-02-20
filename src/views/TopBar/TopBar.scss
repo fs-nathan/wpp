@@ -75,3 +75,54 @@
     }
   }
 }
+.acc-box {
+  margin-left: 20px;
+  min-width: 200px;
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+  & > *:not(:first-child) {
+    margin-left: 5px;
+  }
+}
+.right-part {
+  display: flex;
+  padding-right: 1rem;
+  align-items: center;
+  & > *:not(:last-child) {
+    margin-right: 5px;
+  }
+}
+.search-input {
+  width: 300px;
+}
+.green-text {
+  color: #908a8a;
+}
+.top-bar-container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
+  grid-template-areas: 'list table';
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+.left-part {
+  display: flex;
+  padding: 0 1rem;
+}
+.info-box {
+  overflow: hidden;
+  cursor: pointer;
+  & > div {
+    display: flex;
+    align-items: center;
+    & > *:first-child {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-right: 0.75rem;
+    }
+  }
+}

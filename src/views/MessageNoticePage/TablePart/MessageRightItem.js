@@ -24,11 +24,7 @@ const MessageRightItem = props => {
       onClick={handleClick}
     >
       <div className="avatar-item-message">
-        <Avatar
-          alt="Remy Sharp"
-          src={item.user_create_avatar}
-          className="avatar"
-        />
+        <Avatar alt="avatar" src={item.user_create_avatar} className="avatar" />
         {!item.is_viewed && <span className="badge-un-read"></span>}
       </div>
       <div className="text-description">

@@ -1,40 +1,39 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-// import {
-//   mdiCart,
-//   mdiCreditCardOutline,
-//   mdiAccountMultiple,
-//   mdiSettings
-// } from '@mdi/js';
 import { Routes } from '../../../constants/routes';
 import LeftSetting from '../../../components/LeftSetting/LeftSetting';
 
 const ListPart = props => {
+  const { t } = useTranslation();
   const listMenu = [
     {
-      title: 'Thiết lập nhóm',
+      title: t('IDS_WP_SETTING_GROUP'),
       url: Routes.SETTING_GROUP_INFO
       // icon: mdiAccountMultiple
     },
     {
-      title: 'Cài đặt phần mềm',
+      title: t('IDS_WP_SETUP_SOFTWARE'),
       // url: Routes.SETTING_GROUP_SETTING,
       sub: [
-        { name: 'Thời gian và ngôn ngữ', url: Routes.SETTING_GROUP_LANGUAGE },
-        { name: 'Cài đặt thông báo', url: Routes.SETTING_GROUP_NOTIFICATION }
+        { name: t('IDS_WP_TIME_LANGUAGE'), url: Routes.SETTING_GROUP_LANGUAGE },
+        {
+          name: t('IDS_WP_SETUP_NOTICE'),
+          url: Routes.SETTING_GROUP_NOTIFICATION
+        }
       ]
       // icon: mdiSettings
     },
     {
-      title: 'Quản lý đơn hàng',
+      title: t('IDS_WP_ORDER_MANAGE'),
       // url: Routes.SETTING_GROUP_ORDER,
       sub: [
         {
-          name: 'Tạo đơn hàng',
+          name: t('IDS_WP_CREATE_ORDER'),
           url: Routes.SETTING_GROUP_CREATE_ORDER
         },
-        { name: 'Danh sách đơn hàng', url: Routes.SETTING_GROUP_ORDER },
-        { name: 'Thông tin thanh toán', url: Routes.SETTING_GROUP_PAYMENT }
+        { name: t('IDS_WP_ORDER_LIST'), url: Routes.SETTING_GROUP_ORDER },
+        { name: t('IDS_WP_PAYMENT_INFO'), url: Routes.SETTING_GROUP_PAYMENT }
       ]
       // icon: mdiCart
     }
@@ -44,7 +43,7 @@ const ListPart = props => {
     //   icon: mdiCreditCardOutline
     // }
   ];
-  return <LeftSetting title="Quản lý nhóm" listMenu={listMenu} />;
+  return <LeftSetting title={t('IDS_WP_MANAGE_GROUP')} listMenu={listMenu} />;
 };
 
 export default withRouter(ListPart);

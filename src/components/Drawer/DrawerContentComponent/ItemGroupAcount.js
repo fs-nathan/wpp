@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import Icon from '@mdi/react';
+import { mdiContentCopy } from '@mdi/js';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
@@ -9,12 +11,15 @@ import { withRouter } from 'react-router-dom';
 import {
   actionToast,
   actionVisibleDrawerMessage,
-  actionActiveGroup
+  actionActiveGroup,
+  actionChangeActiveGroup
 } from '../../../actions/system/system';
+import { COLOR_ACTIVE } from '../../../constants/actions/system/system';
 import * as image from '../../../assets/index';
 import { Routes } from '../../../constants/routes';
 import '../Drawer.scss';
 import * as services from '../DrawerService';
+import { isEmpty } from '../../../helpers/utils/isEmpty';
 // import { isEmpty } from '../../../helpers/utils/isEmpty';
 
 const ItemGroupAcount = props => {
@@ -97,6 +102,28 @@ const ItemGroupAcount = props => {
       handleToast('error', error.message);
     }
   };
+  const handleActiveGroup = async item => {
+    if (
+      !isEmpty(props.profile.group_active) &&
+      props.profile.group_active.id === item.id
+    ) {
+      return;
+    } else {
+      try {
+        localStorage.setItem(COLOR_ACTIVE, item.color);
+        await actionChangeActiveGroup(item.id);
+        props.actionActiveGroup(item);
+        handleToast('success', t('IDS_WP_CHANGE_ACTIVE_GROUP_SUCCESS'));
+        window.location.reload(false);
+      } catch (error) {
+        handleToast('error', t('IDS_WP_CHANGE_ACTIVE_GROUP_FAIL'));
+      }
+    }
+  };
+  const handleCopyText = text => {
+    window.navigator.clipboard.writeText(text);
+    handleToast('success', `Đã copy ${text}`);
+  };
   const bgColor = props.colors.find(item => item.selected === true);
   const getContent = () => {
     const commonEl = (
@@ -122,7 +149,17 @@ const ItemGroupAcount = props => {
         </div>
         <div className="acc-item-group-account">
           <span className="text-value-email-phone">
-            ID: {item.code || item.group_code}
+            ID: {item.code || item.group_code}&nbsp;
+            <Icon
+              path={mdiContentCopy}
+              size={0.6}
+              color="#a5a5a5"
+              title={t('IDS_WP_COPY_TEXT_CLIPBOARD')}
+              onClick={e => {
+                handleCopyText(item.code || item.group_code);
+                e.stopPropagation();
+              }}
+            />
           </span>
         </div>
       </Fragment>
@@ -133,7 +170,7 @@ const ItemGroupAcount = props => {
         return (
           <div
             className="info-item-group-account"
-            onClick={() => props.actionActiveGroup(item)}
+            onClick={() => handleActiveGroup(item)}
           >
             {commonEl}
             {/* <div className="phone-item-group-account">
@@ -173,7 +210,7 @@ const ItemGroupAcount = props => {
         return (
           <div
             className="info-item-group-account"
-            onClick={() => props.actionActiveGroup(item)}
+            onClick={() => handleActiveGroup(item)}
           >
             {commonEl}
             <div className="phone-item-group-account">

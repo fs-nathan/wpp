@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
 import Chip from '../../components/ColorChip';
@@ -25,65 +25,8 @@ import {
 } from '../../actions/system/system';
 import { isEmpty } from '../../helpers/utils/isEmpty';
 
-const Container = styled.div`
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
-  grid-template-areas: 'list table';
-  align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  z-index: 999;
-`;
-
-const LeftPart = styled.div`
-  display: flex;
-  padding: 0 1rem;
-`;
-
-const InfoBox = styled.div`
-  overflow: hidden;
-  cursor: pointer;
-  & > div {
-    display: flex;
-    align-items: center;
-    & > *:first-child {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      margin-right: 0.75rem;
-    }
-  }
-`;
-
-const GreenText = styled.div`
-  color: #908a8a;
-`;
-
-const StyledSearchInput = styled(SearchInput)`
-  width: 300px;
-`;
-
-const RightPart = styled.div`
-  display: flex;
-  padding-right: 1rem;
-  align-items: center;
-  & > *:not(:last-child) {
-    margin-right: 5px;
-  }
-`;
-
-const AccBox = styled.div`
-  margin-left: 20px;
-  min-width: 200px;
-  justify-content: flex-end;
-  display: flex;
-  align-items: center;
-  & > *:not(:first-child) {
-    margin-left: 5px;
-  }
-`;
-
 const TopBar = props => {
+  const { t } = useTranslation();
   const [visibleSearchModal, setVisibleSearch] = useState(false);
   const [marginLeftModal, setMarginLeftModal] = useState(280);
   const [marginTopModal, setMarginTopModal] = useState(10);
@@ -94,7 +37,7 @@ const TopBar = props => {
       if (data.data) {
         props.actionGetProfile(data.data);
         props.actionActiveGroup(data.data.group_active);
-        if (data.data.type === 'Free') {
+        if (data.data.group_active && data.data.group_active.type === 'Free') {
           props.openNoticeModal();
         }
       }
@@ -151,13 +94,13 @@ const TopBar = props => {
     (props.groupActive.type === 'Free' ||
       props.groupActive.type_group === 'Free');
   return (
-    <Container id="topNavId">
-      <LeftPart>
+    <div id="topNavId" className="top-bar-container">
+      <div className="left-part">
         {!isEmpty(props.groupActive) && (
-          <InfoBox onClick={handleAccount}>
+          <div className="info-box" onClick={handleAccount}>
             <div>
               <div className="text-group-top-bar">
-                Nhóm: {props.groupActive.name}
+                {t('IDS_WP_GROUP')}: {props.groupActive.name}
               </div>
               <Chip
                 badge
@@ -168,19 +111,20 @@ const TopBar = props => {
             </div>
             {props.groupActive.code && (
               <div>
-                <GreenText>ID: {props.groupActive.code}</GreenText>
+                <div className="green-text">ID: {props.groupActive.code}</div>
                 <Icon path={mdiMenuDown} size={1} color="rgba(0, 0, 0, 0.54)" />
               </div>
             )}
-          </InfoBox>
+          </div>
         )}
-      </LeftPart>
-      <RightPart>
+      </div>
+      <div className="right-part">
         <span id="searchInputWrapper">
-          <StyledSearchInput
+          <SearchInput
+            className="search-input"
             onClick={openSearchModal}
             readOnly
-            placeholder="Tìm nhanh công việc"
+            placeholder={t('IDS_WP_FIND_JOB')}
           />
           {visibleSearchModal && (
             <SearchModal
@@ -212,7 +156,7 @@ const TopBar = props => {
             color="#444"
             className="active-icon"
           />
-          &nbsp;Trợ giúp
+          &nbsp;{t('IDS_WP_SUPPORT')}
         </IconButton>
 
         <Badge
@@ -250,7 +194,7 @@ const TopBar = props => {
         >
           <IconButton
             className="cursor-pointer top-icon"
-            title="Thông báo"
+            title={t('IDS_WP_NOTICE')}
             onClick={() =>
               props.actionVisibleDrawerMessage({
                 type: DRAWER_TYPE.NOTIFICATION,
@@ -270,7 +214,7 @@ const TopBar = props => {
           </IconButton>
         </Badge>
 
-        <AccBox>
+        <div className="acc-box">
           <Avatar
             style={{ height: 25, width: 25 }}
             src={props.profile.avatar || avatar}
@@ -290,9 +234,9 @@ const TopBar = props => {
             alt=""
             className="topnav-icon drawer-icon"
           />
-        </AccBox>
-      </RightPart>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -1,28 +1,35 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const OrderInit = () => {
-  
+  const { t } = useTranslation();
   return (
-    <div className = "oder-init-container">
-      <div >
-        <span className="title-oder-init">Hãy tạo đơn hàng và nâng cấp tài khoản PRO để sử dụng phần mềm trọn vẹn!</span>
+    <div className="oder-init-container">
+      <div>
+        <span className="title-oder-init">{t('IDS_WP_CREATE_ORDER_DES')}</span>
       </div>
       <div className="step-content">
         <div className="step-oder-init">
-          <span className="text-step">Bước 1: Thiếp lập đơn hàng</span>
+          <span className="text-step">{t('IDS_WP_CREATE_ORDER_STEP_1')}</span>
         </div>
         <div className="step-oder-init">
-          <span className="text-step">Bước 2: Tạo đơn đơn hàng</span>
+          <span className="text-step">{t('IDS_WP_CREATE_ORDER_STEP_2')}</span>
         </div>
         <div className="step-oder-init">
-          <span className="text-step">Bước 3: Thanh toán chuyển khoản</span>
+          <span className="text-step">{t('IDS_WP_CREATE_ORDER_STEP_3')}</span>
         </div>
       </div>
       <div className="fotter-oder-init">
-        <span>Mọi thắc mắc vui lòng liên hệ hotline <b>09.1800.6181</b> để được tư vấn và giải đáp</span>
+        <span>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: t('IDS_WP_CREATE_ORDER_SUPPORT')
+            }}
+          />
+        </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default OrderInit;

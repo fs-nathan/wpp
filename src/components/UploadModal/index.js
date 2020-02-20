@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   DialogContent,
@@ -15,6 +16,7 @@ import ColorTypo from '../ColorTypo';
 import './UploadModal.scss';
 
 const UploadModal = props => {
+  const { t } = useTranslation();
   const { open, setOpen, title, fileUpload = [], currentFolder } = props;
   const [percent, setPercent] = useState(0);
   const [currentUpload, setCurrentUpload] = useState({});
@@ -111,13 +113,13 @@ const UploadModal = props => {
         style={{ background: bgColor.color }}
       >
         <ColorTypo className="header-title">
-          {`${title || 'Tải tệp tin lên'} (${totalSuccess}/${
+          {`${title || t('IDS_WP_UPLOAD_FILE_UP')} (${totalSuccess}/${
             fileUpload.length
-          } hoàn thành)`}
+          } ${t('IDS_WP_SUCCESS')})`}
         </ColorTypo>
         <div className="right-action">
           <Button className="btn-cancel" onClick={handleClose}>
-            Hủy
+            {t('IDS_WP_CANCEL')}
           </Button>
           <IconButton onClick={handleClose}>
             <Icon path={mdiClose} size={1} color="#fff" />
@@ -135,19 +137,19 @@ const UploadModal = props => {
             />
             {errorSize && (
               <div className="error-msg">
-                Dung lượng tài liệu tải lên vượt mức quá cho phép
-                <span>(50mb/file)</span>
+                {t('IDS_WP_UPLOAD_OVER_LIMIT')}
+                <span>(50mb/{t('IDS_WP_FILE')})</span>
               </div>
             )}
             {errorName && (
               <div className="error-msg">
-                Tên file chứa ký tự đặc biệt
+                {t('IDS_WP_NAME_CONTAIN_SPECIAL_CHAR')}
                 <span className="err-name">({'@, #, $, &, *, ?, %, !'})</span>
               </div>
             )}
             {errorMaxFile && (
               <div className="error-msg">
-                Số lượng file tải lên không được vượt quá 20.
+                {t('IDS_WP_UPLOAD_OVER_LIMIT_DES')}
               </div>
             )}
           </div>

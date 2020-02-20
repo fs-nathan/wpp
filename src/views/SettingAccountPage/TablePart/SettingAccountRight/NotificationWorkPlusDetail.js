@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
@@ -9,7 +10,7 @@ import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import LoadingBox from '../../../../components/LoadingBox';
 
 const NotificationWorkPlusDetail = props => {
-  // const { notiItem } = props;
+  const { t } = useTranslation();
   const [notiItem, setNoti] = useState({});
   const handleFetchData = async () => {
     try {
@@ -37,7 +38,9 @@ const NotificationWorkPlusDetail = props => {
         <span className="status-text">{notiItem.type_name}</span>
         <span className="date-text">{notiItem.created_at}</span>
         <span className="devider"></span>
-        <span className="view-text">{notiItem.number_view} lượt xem</span>
+        <span className="view-text">
+          {notiItem.number_view} {t('IDS_WP_VIEW')}
+        </span>
       </div>
       <div className="content-work-plus-detail">
         <span className="des-text">{notiItem.content}</span>

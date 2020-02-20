@@ -144,7 +144,7 @@ const HeaderButtonGroup = props => {
   };
   const listAction = [
     {
-      text: 'Tìm kiếm',
+      text: t('IDS_WP_SEARCH'),
       icon: mdiMagnify,
       type: 'search',
       isShow: pathname !== Routes.DOCUMENT_GOOGLE_DRIVE
@@ -159,7 +159,7 @@ const HeaderButtonGroup = props => {
     //     pathname === Routes.DOCUMENT_SHARE_ME
     // },
     {
-      text: 'Cập nhật',
+      text: t('IDS_WP_UPDATE'),
       icon: mdiRefresh,
       action: () => {
         if (isFetching) return;
@@ -173,7 +173,7 @@ const HeaderButtonGroup = props => {
         pathname === Routes.DOCUMENT_GOOGLE_DRIVE && isShowBtnSignoutGoogle
     },
     {
-      text: 'Đăng xuất',
+      text: t('IDS_WP_LOGOUT'),
       icon: mdiLogout,
       action: () => {
         actionSignoutGoogleDrive(() => {
@@ -184,7 +184,7 @@ const HeaderButtonGroup = props => {
         pathname === Routes.DOCUMENT_GOOGLE_DRIVE && isShowBtnSignoutGoogle
     },
     {
-      text: 'Tải xuống',
+      text: t('IDS_WP_DOWNLOAD_DOWN'),
       icon: mdiDownload,
       action: handleDownloadFile,
       disabled: isEmpty(selectedDocument) || isDisableBtnDownload(),
@@ -193,14 +193,17 @@ const HeaderButtonGroup = props => {
         pathname !== Routes.DOCUMENT_PROJECT
     },
     {
-      text: 'Di chuyển',
+      text: t('IDS_WP_MOVE'),
       icon: mdiArrowDecision,
       action: () => setMove(true),
       disabled: isEmpty(selectedDocument),
       isShow: pathname === Routes.DOCUMENT_ME
     },
     {
-      text: pathname === Routes.DOCUMENT_TRASH ? 'Xóa vĩnh viễn' : 'Xóa',
+      text:
+        pathname === Routes.DOCUMENT_TRASH
+          ? t('IDS_WP_DELETE_PERMANENTLY')
+          : t('IDS_WP_DELETE'),
       icon: mdiTrashCan,
       action: () => setAlert(true),
       disabled: isEmpty(selectedDocument),

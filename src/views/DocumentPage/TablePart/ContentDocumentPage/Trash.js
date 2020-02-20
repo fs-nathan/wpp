@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
   Table,
@@ -40,13 +41,9 @@ import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
 
 const Trash = props => {
+  const { t } = useTranslation();
   const [selected, setSelected] = React.useState([]);
-  const {
-    isLoading,
-    breadCrumbs,
-    actionChangeBreadCrumbs,
-    isFetching
-  } = props;
+  const { isLoading, breadCrumbs, actionChangeBreadCrumbs, isFetching } = props;
   const [sortField, setSortField] = React.useState(null);
   const [sortType, setSortType] = React.useState(1);
   const [listData, setListData] = React.useState([]);
@@ -179,37 +176,37 @@ const Trash = props => {
               />
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%">
-              Loại
+              {t('IDS_WP_TYPE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left">
               <div
                 className="cursor-pointer file-name-document"
                 onClick={() => hanldeSort('name')}
               >
-                Tên tài liệu
+                {t('IDS_WP_DOCUMENT_NAME')}
                 <IconButton size="small">
                   <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
               </div>
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Chủ sở hữu
+              {t('IDS_WP_OWNER')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="12%">
-              Người xóa
+              {t('IDS_WP_DELETE_PEOPLE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="12%">
-              Ngày xóa
+              {t('IDS_WP_DELETE_DATE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="15%">
-              Xóa vĩnh viễn
+              {t('IDS_WP_DELETE_PERMANENTLY')}
             </StyledTableHeadCell>
             <StyledTableHeadCell
               align="center"
               width="12%"
               className="last-cell"
             >
-              Kích thước
+              {t('IDS_WP_SIZE')}
             </StyledTableHeadCell>
           </TableRow>
         </TableHead>

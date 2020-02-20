@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
@@ -9,6 +10,7 @@ import { actionVisibleDrawerMessage } from '../../actions/system/system';
 import './Drawer.scss';
 
 const HeaderDrawer = props => {
+  const { t } = useTranslation();
   const {
     actionVisibleDrawerMessage,
     title,
@@ -39,7 +41,7 @@ const HeaderDrawer = props => {
             onClick={() => handleChangeTab('recent')}
             disableTouchRipple
           >
-            Gần đây
+            {t('IDS_WP_RECENT')}
           </Button>
           <Button
             className={`cus-btn btn-unread ${
@@ -49,7 +51,7 @@ const HeaderDrawer = props => {
             disableTouchRipple
             onClick={() => handleChangeTab('notView')}
           >
-            {title} chưa đọc
+            {title} {t('IDS_WP_UNREAD')}
           </Button>
           {numberNotView > 0 && <span className="badges">{numberNotView}</span>}
         </span>

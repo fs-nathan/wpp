@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import queryString from 'query-string';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -16,6 +17,7 @@ import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import LoadingBox from '../../../../components/LoadingBox';
 
 const OrderDetail = props => {
+  const { t } = useTranslation();
   const [orderItem, setOrder] = useState({});
   const handleFetchData = async () => {
     try {
@@ -47,16 +49,18 @@ const OrderDetail = props => {
       {/* <div className="divider-vertical" /> */}
       <div className="other-info-order-detail">
         <div className="UserInfo_right_header d-flex justify-content-center align-items-center">
-          <p className="order-title">THÔNG TIN KHÁC</p>
+          <p className="order-title">{t('IDS_WP_OTHER_INFO')}</p>
         </div>
         {!isEmpty(orderItem) && (
           <div className="detail-right-bottom">
-            <p className="title-item">Người tạo</p>
+            <p className="title-item">{t('IDS_WP_CREATOR')}</p>
 
             <div className="creator-item">
               <div className="creator-info">
                 <h2>{orderItem.user_create.name}</h2>
-                <p>Tạo đơn hàng ngày {orderItem.create_at}</p>
+                <p>
+                  {t('IDS_WP_CREATE_ORDER_EVERY_DAY')} {orderItem.create_at}
+                </p>
               </div>
               <img
                 src={`https://storage.googleapis.com${orderItem.user_create.avatar}`}
@@ -64,17 +68,17 @@ const OrderDetail = props => {
               />
             </div>
 
-            <p className="title-item">Tình trạng</p>
+            <p className="title-item">{t('IDS_WP_STATUS')}</p>
             <p>{orderItem.packet_user.status_name}</p>
-            <p className="title-item">Ngày hết hạn</p>
+            <p className="title-item">{t('IDS_WP_EXPIRE_DATE')}</p>
             {new Date() > new Date(orderItem.packet_user.expire_at) ? (
               <p className="red-text">{orderItem.packet_user.expire_at}</p>
             ) : (
               <p>{orderItem.packet_user.expire_at}</p>
             )}
-            <p className="title-item">Thanh toán</p>
+            <p className="title-item">{t('IDS_WP_PAYMENT')}</p>
             <p>{orderItem.status_payment}</p>
-            <p className="title-item">Hóa đơn</p>
+            <p className="title-item">{t('IDS_WP_BILL')}</p>
             <p>{orderItem.bill_status}</p>
 
             <Button
@@ -83,7 +87,7 @@ const OrderDetail = props => {
               onClick={handleExport}
             >
               <Icon path={mdiFilePdf} size={1.2} color="#f37c00" />
-              &nbsp; &nbsp;Tải đơn hàng về máy
+              &nbsp; &nbsp;{t('IDS_WP_DOWNLOAD_BILL')}
             </Button>
           </div>
         )}

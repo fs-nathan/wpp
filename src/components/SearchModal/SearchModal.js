@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Scrollbars } from 'react-custom-scrollbars';
 import {
   InputAdornment,
@@ -16,18 +17,6 @@ import * as images from '../../assets';
 import { isEmpty } from '../../helpers/utils/isEmpty';
 import { actionSearchTask } from '../../actions/system/system';
 
-// const temp = [
-//   {
-//     id: '5e0dd975e39b2bc4f9f0f4d2',
-//     name: 'Gặp gỡ khách hàng, đàm phán ký kết hợp đồng thẩm tra chi tiết.',
-//     project: 'Hầm chui đường Lê Lai Quận 1',
-//     user_create_avatar:
-//       'https://storage.googleapis.com/storage_vtask_net/2020/1578217550516-filename',
-//     user_create_name: 'Thành Nguyễn',
-//     state_code: 0,
-//     state_name: 'Waiting'
-//   }
-// ];
 let searchValue = '';
 const getStateColor = status => {
   if (status === 'Expired') return 'rgb(247, 67, 54)';
@@ -75,6 +64,7 @@ const ResultSearchItem = props => (
 );
 
 const SearchModal = props => {
+  const { t } = useTranslation();
   const [resultList, setResultList] = useState([]);
   const [isEmptyResult, setResult] = useState(false);
   const handleCloseModal = () => {
@@ -119,7 +109,7 @@ const SearchModal = props => {
           <InputBase
             id="searchTextId"
             className="search-box"
-            placeholder="Nhập tên công việc và nhấn Enter để xem kết quả tìm kiếm"
+            placeholder={t('IDS_WP_INPUT_JOB_DES')}
             autoFocus
             // onChange={e => handleSearch(e.target.value)}
             onKeyDown={e => {
@@ -142,14 +132,14 @@ const SearchModal = props => {
               {isEmptyResult ? (
                 <div className="empty-content-container empty-result">
                   <p>
-                    Không tìm thấy "<b>{searchValue}</b>" trong danh sách công
-                    việc!
+                    {t('IDS_WP_NOT_FOUND')}&nbsp;"<b>{searchValue}</b>"&nbsp;
+                    {t('IDS_WP_IN_JOB_LIST')}
                   </p>
-                  <p>Đề xuất:</p>
+                  <p>{t('IDS_WP_SUGGEST')}:</p>
                   <ul>
-                    <li>Kiểm tra lại chính tả từ khóa đã nhập</li>
-                    <li>Hãy thử những từ khóa khác</li>
-                    <li>Hãy bớt từ khóa</li>
+                    <li>{t('IDS_WP_RECHECK_INPUT_TEXT')}</li>
+                    <li>{t('IDS_WP_TEST_WITH_OTHER_TEXT')}</li>
+                    <li>{t('IDS_WP_REMOVE_TEXT')}</li>
                   </ul>
                 </div>
               ) : (
@@ -160,7 +150,7 @@ const SearchModal = props => {
                     </div>
                   </div>
 
-                  <p>Nhập tên công việc để tìm kiếm nhanh!</p>
+                  <p>{t('IDS_WP_INPUT_JOB_FOR_SEARCH')}</p>
                 </div>
               )}
             </Fragment>
@@ -184,7 +174,8 @@ const SearchModal = props => {
         {!isEmpty(resultList) && (
           <DialogActions>
             <div className="num-search-result">
-              Có {resultList.length} kết quả tìm kiếm phù hợp
+              {t('IDS_WP_HAVE')}&nbsp;{resultList.length}&nbsp;
+              {t('IDS_WP_RESULT_SEARCH')}
             </div>
           </DialogActions>
         )}

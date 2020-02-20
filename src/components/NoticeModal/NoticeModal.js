@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,6 +19,7 @@ import { DRAWER_TYPE } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
 
 const NoticeModal = props => {
+  const { t } = useTranslation();
   // const [type, setType] = useState('intro'); // intro or expire (check follow account status)
   const bgColor = props.colors.find(item => item.selected === true);
   const defaultColor = {
@@ -82,24 +84,21 @@ const NoticeModal = props => {
         </div>
         {type === 'intro' ? (
           <h2 className="notice-header-text" style={{ color: bgColor.color }}>
-            Nền tảng quản trị doanh nghiệp WorkPlus
+            {t('IDS_WP_WORKPLUS_APPLICATION')}
           </h2>
         ) : (
           <h2
             className="notice-header-text expire-text"
             style={{ color: bgColor.color }}
           >
-            Thông báo đơn hàng hết hạn!
+            {t('IDS_WP_EXPIRE_ORDER_NOTICE')}
           </h2>
         )}
         <p className="notice-text header-text">
-          Xin chào {props.profile.name}!
+          {t('IDS_WP_WELCOME')} {props.profile.name}!
         </p>
         {type === 'intro' ? (
-          <p className="notice-text">
-            Bạn đã đăng nhập thành công hệ thống quản trị doanh nghiệp trực
-            tuyến Workplus với tài khoản miễn phí!
-          </p>
+          <p className="notice-text">{t('IDS_WP_LOGIN_SUCCESS_INTRO')}</p>
         ) : (
           <p className="notice-text">
             Nhóm làm việc TDGroup tạm thời bị khóa do đơn hàng đã hết thời hạn
@@ -109,9 +108,7 @@ const NoticeModal = props => {
             </p>
           </p>
         )}
-        <p className="notice-text">
-          Bạn hãy lựa chọn nhóm PRO hoặc DEMO để sử dụng đầy đủ tính năng.
-        </p>
+        <p className="notice-text">{t('IDS_WP_LOGIN_SUCCESS_INTRO_1')}</p>
         {type === 'intro' ? (
           <div className="notice-btn-container">
             <Button
@@ -124,7 +121,7 @@ const NoticeModal = props => {
               onMouseEnter={() => setHover('join')}
               onMouseLeave={() => setHover(null)}
             >
-              Chọn nhóm tài khoản
+              {t('IDS_WP_SELECT_GROUP_ACC')}
             </Button>
             <Button
               variant="outlined"
@@ -138,7 +135,7 @@ const NoticeModal = props => {
               onMouseEnter={() => setHover('upgrade')}
               onMouseLeave={() => setHover(null)}
             >
-              Nâng cấp tài khoản
+              {t('IDS_WP_UPGRADE_ACC')}
             </Button>
           </div>
         ) : (
@@ -148,32 +145,30 @@ const NoticeModal = props => {
               className="notice-btn"
               onClick={joinGroup}
             >
-              Tham gia nhóm khác
+              {t('IDS_WP_JOIN_OTHER_GROUP')}
             </Button>
             <Button
               variant="outlined"
               className="notice-btn"
               onClick={extendOrder}
             >
-              Gia hạn đơn hàng
+              {t('IDS_WP_EXTEND_ORDER')}
             </Button>
           </div>
         )}
 
-        <p className="notice-text-info">
-          Hoặc liên hệ tới trung tâm trợ giúp của Workplus để được hỗ trợ!
-        </p>
+        <p className="notice-text-info">{t('IDS_WP_CONTACT_WORKPLUS_ENTER')}</p>
         <p className="notice-text-info">
           Hotline: 09.1800.6181 - Email: support@workplus.vn
         </p>
         <div className="notice-icon-container">
           <span className="notice-icon">
             <img src={icons.ic_zalo} alt="" />
-            &nbsp; Zalo support
+            &nbsp; {t('IDS_WP_ZALO_SUPPORT')}
           </span>
           <span className="notice-icon">
             <img src={icons.ic_messeger} alt="" />
-            &nbsp; Facebook support
+            &nbsp; {t('IDS_WP_FACEBOOK_SUPPORT')}
           </span>
         </div>
       </MuiDialogActions>

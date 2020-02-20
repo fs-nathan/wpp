@@ -7,167 +7,119 @@ import SimpleDonutChart from '../../../../../components/SimpleDonutChart';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
-import { WrapperContext } from '../../../index'
-import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
-// const Container = styled.a`
-//     padding: 10px 8px 10px 0;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     background-color: transparent;
-//     border: none;
-//     cursor: pointer;
-//     margin-bottom: 0;
-//     &:hover{
-//       background-color: #F2F5FA;
-//     }
-//     &:active {
-//       background-color: #e6f0ff;
-//     }
-// `;
-
-// const NameContainer = styled.div`
-//   padding: 0;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   & >*:last-child {
-//     margin-right: 15px;
-//     border-radius: 50%;
-//     width: 16px;
-//     height: 16px;
-//     color: white;
-//     background-color: red;
-//   }
-// `;
-
-// const ContentContainer = styled.div`
-//   & > *:not(:first-child) {
-//     margin-top: 5px;
-//   }
-//   & > *:first-child {
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-//     & > *:first-child {
-//       display: flex;
-//       & > *:first-child {
-//         margin-right: 10px;
-//       }
-//     }
-//   }
-// `;
+import { WrapperContext } from '../../../index';
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
-  border-radius: 3px !important
-`
+  border-radius: 3px !important;
+`;
 const IconPin = styled(Icon)`
-  display: ${props => props.isghim === "true" ? 'block' : 'none'};
-`
+  display: ${props => (props.isghim === 'true' ? 'block' : 'none')};
+`;
 const ChipMes = styled(Chip)`
-display: ${props => props.notification === "true" ? 'block' : 'none'};
-`
+  display: ${props => (props.notification === 'true' ? 'block' : 'none')};
+`;
 
-const LightTooltip = withStyles(theme => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    fontSize: 11,
-    border: "1px solid #222",
-    borderRadius: 0,
-    marginLeft: '10px'
-  },
-}))(Tooltip);
-
-const badgeState = (label) => {
-  let color
+const badgeState = label => {
+  let color;
   switch (label) {
-    case "Waiting":
-      color = "orangelight"
+    case 'Waiting':
+      color = 'orangelight';
       break;
-    case "Doing":
-      color = "indigolight"
+    case 'Doing':
+      color = 'indigolight';
       break;
-    case "Complete":
-      color = "light-green"
+    case 'Complete':
+      color = 'light-green';
       break;
-    case "Expired":
-      color = "redlight"
+    case 'Expired':
+      color = 'redlight';
       break;
-    case "Stop":
-      color = "redlight"
+    case 'Stop':
+      color = 'redlight';
       break;
     default:
-      color = "redlight"
+      color = 'redlight';
   }
 
-  return (
-    <BadgeItem color={color} badge label={label} size='small' />
-  )
-}
+  return <BadgeItem color={color} badge label={label} size="small" />;
+};
 function JobName(props) {
   return (
-    <div className="name-container-lbd" variant='space-between'>
-      <ColorTypo bold >{props.title}</ColorTypo>
+    <div className="name-container-lbd" variant="space-between">
+      <ColorTypo bold>{props.title}</ColorTypo>
       <div>
-        <IconPin color={'#6e6e6e'} path={mdiPin} size={0.8} {...props} isghim={props.isghim.toString()} />
+        <IconPin
+          color={'#6e6e6e'}
+          path={mdiPin}
+          size={0.8}
+          {...props}
+          isghim={props.isghim.toString()}
+        />
         {badgeState(props.label)}
       </div>
-
     </div>
-  )
+  );
 }
 function JobContent(props) {
   return (
     <div className="container-content-lbd">
-        <div title={props.name}>
-          <Avatar src={props.avatar} alt='avatar' />
-          <ColorTypo color='#7a869a' >{props.content}</ColorTypo>
-        </div>
-        <div>
-          <ChipMes
-            label={'N'}
-            size='small'
-            {...props}
-            notification={props.notification.toString()}
-          />
-          <div >{props.time}</div>
-        </div>
+      <div title={props.name}>
+        <Avatar src={props.avatar} alt="avatar" />
+        <ColorTypo color="#7a869a">{props.content}</ColorTypo>
+      </div>
+      <div>
+        <ChipMes
+          label={'N'}
+          size="small"
+          {...props}
+          notification={props.notification.toString()}
+        />
+        <div>{props.time}</div>
+      </div>
     </div>
-  )
+  );
 }
 
 function JobUnit(props) {
-
   return (
     <ListItemText disableTypography>
-      <JobName title={props.name}  label={props.status_name} isghim={props.is_ghim}/>
-      <JobContent  time={props.updated_time} avatar={props.chat.user_create_avatar} content={props.chat.content} notification={props.new_chat} name={props.chat.user_create_name}/>
+      <JobName
+        title={props.name}
+        label={props.status_name}
+        isghim={props.is_ghim}
+      />
+      <JobContent
+        time={props.updated_time}
+        avatar={props.chat.user_create_avatar}
+        content={props.chat.content}
+        notification={props.new_chat}
+        name={props.chat.user_create_name}
+      />
     </ListItemText>
-  )
+  );
 }
-
-
 
 function ListBodyItem(props) {
   const value = React.useContext(WrapperContext);
   // console.log({value})
   return (
-    <div className="container-lbd" onClick={() =>{
-      value.chooseTask(props.id);
-      value.getTaskDetailByTaskId(props.id)
-      // value.getMemberByTaskId(props.id)
-      // value.getMemberNotAssignedByTaskId(props.id)
-      value.history.push({search: `?task_id=${props.id}`})
-    }}>
+    <div
+      className="container-lbd"
+      onClick={() => {
+        value.chooseTask(props.id);
+        value.getTaskDetailByTaskId(props.id);
+        // value.getMemberByTaskId(props.id)
+        // value.getMemberNotAssignedByTaskId(props.id)
+        value.history.push({ search: `?task_id=${props.id}` });
+      }}
+    >
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...props} />
     </div>
-  )
+  );
 }
 
 export default ListBodyItem;

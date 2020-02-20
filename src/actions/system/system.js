@@ -32,6 +32,13 @@ export const actionActiveGroup = data => ({
   type: actionTypes.GROUP_ACTIVE,
   payload: data
 });
+export const actionChangeActiveGroup = group_id => {
+  return apiService({
+    url: '/change-group-active',
+    method: 'post',
+    data: { group_id }
+  });
+};
 
 export const canViewFile = fileType => {
   if (!fileType) return false;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
@@ -8,13 +9,14 @@ import { DialogContent } from './TableCommon';
 import { Routes } from '../../../../constants/routes';
 
 const RedirectModal = props => {
+  const { t } = useTranslation();
   const bgColor = props.colors.find(item => item.selected === true);
   return (
     <ModalCommon title="Tải tài liệu" onClose={props.onClose} footerAction={[]}>
       <DialogContent dividers className="dialog-content redirect-modal">
         <p className="redirect-text">
-          Chọn một thư mục trong nhóm <b>Tài liệu của tôi</b> để lưu trữ trước
-          khi tải tài liệu lên
+          {t('IDS_WP_SELECT_A_DOCUMENT')} <b>{t('IDS_WP_MY_DOCUMENT')}</b>{' '}
+          {t('IDS_WP_FOR_SAVE_BEFORE')}
         </p>
         <Button
           variant="outlined"
@@ -29,7 +31,7 @@ const RedirectModal = props => {
             color: '#fff'
           }}
         >
-          Đi đến Tài liệu của tôi
+          {t('IDS_WP_GO_TO_MY_DOCUMENT')}
         </Button>
       </DialogContent>
     </ModalCommon>

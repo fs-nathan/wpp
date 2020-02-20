@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import { actionVisibleDrawerMessage } from '../../actions/system/system';
@@ -8,6 +9,7 @@ import { DRAWER_TYPE } from '../../constants/constants';
 import './Drawer.scss';
 
 const FooterDrawer = props => {
+  const { t } = useTranslation();
   const closeDrawer = () => {
     if (props.typeDrawer === DRAWER_TYPE.MESSAGE) {
       props.history.push({
@@ -33,7 +35,7 @@ const FooterDrawer = props => {
         disableTouchRipple
         onClick={closeDrawer}
       >
-        Xem tất cả
+        {t('IDS_WP_VIEW_ALL')}
       </Button>
       <Button
         className="footer-btn cus-btn"
@@ -42,7 +44,7 @@ const FooterDrawer = props => {
         disableTouchRipple
         onClick={props.handleViewAll}
       >
-        Đánh dấu tất cả đã đọc
+        {t('IDS_WP_VIEW_ALL_ACTION')}
       </Button>
     </div>
   );

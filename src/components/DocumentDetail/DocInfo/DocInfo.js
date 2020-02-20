@@ -70,7 +70,7 @@ const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
                 }}
                 disabled={!fileInfo.can_modify}
               >
-                {t('IDS_WP_UPDATE')}
+                {t('IDS_WP_EDIT_TEXT')}
               </MenuItem>
               <MenuItem
                 onClick={() => {

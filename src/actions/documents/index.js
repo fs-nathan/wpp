@@ -487,3 +487,36 @@ export const actionDownloadFile = async file => {
     link.click();
   } catch (error) {}
 };
+
+//-- handle for Document modal
+export const getListMyDocument = (params = {}) => {
+  return apiService({
+    url: '/documents/my-document',
+    method: 'get',
+    params
+  });
+};
+
+export const getDocumentSharedToMe = (params = {}) => {
+  return apiService({
+    url: '/documents/share-to-me',
+    method: 'get',
+    params
+  });
+};
+
+export const getListProject = (params = {}) => {
+  return apiService({
+    url: '/documents/project-static',
+    method: 'get',
+    params
+  });
+};
+
+export const getDocumentOfProject = (params = {}) => {
+  return apiService({
+    url: '/documents/project',
+    method: 'get',
+    params
+  });
+};

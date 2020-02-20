@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
   Table,
@@ -45,12 +46,12 @@ import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
 
 const LoginGoogleDrive = props => {
+  const { t } = useTranslation();
   return (
     <div className="google-driver-container">
       <Icon path={mdiShieldAccount} size={10} color={'#5695e9'} />
       <div className="description">
-        Chia sẻ file từ Google Driver của bạn với các thành viên một cách nhanh
-        chóng và an toàn.
+        {t('IDS_WP_SHARE_FILE_FROM_GOOGLE_DRIVE')}
       </div>
       <div className="btn-action">
         <Button
@@ -58,7 +59,7 @@ const LoginGoogleDrive = props => {
           className="btn-signin"
           onClick={props.onLogin}
         >
-          Đăng nhập
+          {t('IDS_WP_LOGIN')}
         </Button>
       </div>
     </div>
@@ -66,6 +67,7 @@ const LoginGoogleDrive = props => {
 };
 
 const GoogleDrive = props => {
+  const { t } = useTranslation();
   const {
     isLoading,
     isFetching,
@@ -235,27 +237,27 @@ const GoogleDrive = props => {
                 align="left"
                 width="5%"
               >
-                Loại
+                {t('IDS_WP_TYPE')}
               </StyledTableHeadCell>
               <StyledTableHeadCell align="left">
                 <div
                   className="cursor-pointer"
                   onClick={() => hanldeSort('name_natural')}
                 >
-                  Tên
+                  {t('IDS_WP_NAME')}
                   <IconButton size="small">
                     <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                   </IconButton>
                 </div>
               </StyledTableHeadCell>
               <StyledTableHeadCell align="center" width="10%">
-                Chủ sở hữu
+                {t('IDS_WP_OWNER')}
               </StyledTableHeadCell>
               <StyledTableHeadCell align="center" width="20%">
-                Sửa đổi lần cuối
+                {t('IDS_WP_LAST_EDIT')}
               </StyledTableHeadCell>
               <StyledTableHeadCell align="center" width="10%">
-                Kích cỡ tệp
+                {t('IDS_WP_FILE_SIZE')}
               </StyledTableHeadCell>
               <StyledTableHeadCell align="center" width="5%" />
             </TableRow>

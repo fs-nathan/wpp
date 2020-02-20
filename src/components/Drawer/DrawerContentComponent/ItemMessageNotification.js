@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Avatar from '@material-ui/core/Avatar';
 import moment from 'moment';
 
@@ -7,6 +8,7 @@ import moment from 'moment';
 import '../Drawer.scss';
 
 const ItemMessageNotification = props => {
+  const { t } = useTranslation();
   const { item } = props;
   const time = moment(item.data_notification.createt_at, 'YYYY-MM-DD HH:mm');
 
@@ -15,13 +17,13 @@ const ItemMessageNotification = props => {
     let numDayToNow = now.diff(time, 'days');
     let sAgo = '';
     if (numDayToNow === 0) {
-      sAgo = `${now.diff(time, 'hours')} giờ trước`;
+      sAgo = `${now.diff(time, 'hours')} ${t('IDS_WP_HOURS_AGO')}`;
     } else if (numDayToNow > 0 && numDayToNow <= 30) {
-      sAgo = `${numDayToNow} ngày trước`;
+      sAgo = `${numDayToNow} ${t('IDS_WP_DAY_AGO')}`;
     } else if (numDayToNow > 30 && numDayToNow <= 365) {
-      sAgo = `${numDayToNow / 30} tháng trước`;
+      sAgo = `${numDayToNow / 30} ${t('IDS_WP_MONTH_AGO')}`;
     } else {
-      sAgo = `${numDayToNow / 365} năm trước`;
+      sAgo = `${numDayToNow / 365} ${t('IDS_WP_YEAR_AGO')}`;
     }
     return sAgo;
   };
@@ -47,8 +49,8 @@ const ItemMessageNotification = props => {
         </div>
         <div className="des-message">
           <span>
-            {getCreateToNow()} vào lúc {time.format('HH:mm')} ngày{' '}
-            {time.format('DD/MM/YYYY')}
+            {getCreateToNow()} {t('IDS_WP_AT')} {time.format('HH:mm')}{' '}
+            {t('IDS_WP_DATE_UNIT')} {time.format('DD/MM/YYYY')}
           </span>
         </div>
       </div>
