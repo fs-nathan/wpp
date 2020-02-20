@@ -7,18 +7,13 @@ import { StyledListItem, Primary, Secondary } from '../../../../../components/Cu
 import Icon from '@mdi/react';
 import { mdiDragVertical, mdiDotsVertical } from '@mdi/js';
 
-function CustomListItem({ taskGroup, index }) {
+function CustomListItem({ taskGroup, index, setAnchorEl, setCurGroupTask }) {
+  
   const [isHover, setIsHover] = React.useState(false);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [alert, setAlert] = React.useState(false);
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget);
-  }
-
-  function handleClose(evt) {
-    setAnchorEl(null);
+    setCurGroupTask(taskGroup);
   }
 
   return (
@@ -55,20 +50,6 @@ function CustomListItem({ taskGroup, index }) {
           >
             <Icon path={mdiDotsVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.7)'} />
           </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            transformOrigin={{
-              vertical: -30,
-              horizontal: 'right'
-            }}
-          >
-            <MenuItem onClick={evt => setAlert(true)}>Chỉnh sửa</MenuItem>
-            <MenuItem onClick={evt => setAlert(true)}>Xóa</MenuItem>
-          </Menu>
         </StyledListItem>
       )}
     </Draggable>

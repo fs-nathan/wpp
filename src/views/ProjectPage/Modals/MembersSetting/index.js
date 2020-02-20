@@ -11,6 +11,7 @@ import {
   mdiCheckCircle,
   mdiAccountMinus,
   mdiAccountConvert,
+  mdiPlusCircleOutline,
 } from '@mdi/js';
 import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
@@ -24,6 +25,7 @@ import { addMemberProject } from '../../../../actions/project/addMemberToProject
 import { removeMemberProject } from '../../../../actions/project/removeMemberFromProject';
 import { updateStateJoinTask } from '../../../../actions/project/updateStateJoinTask';
 import { assignMemberToAllTask } from '../../../../actions/project/assignMemberToAllTask';
+import MemberRoleModal from './MemberRole';
 import './style.scss';
 
 const ListContainer = ({ className = '', ...props }) => 
@@ -239,6 +241,20 @@ const SettingButton = ({ member, onRemoveMember, onChangeStateJoinTask, onAssign
   );
 }
 
+function ProjectMemberRole({ member, setCurMemberRole }) {
+  
+  return (
+    <>
+      {get(member, 'roles', []).map((role, index) => (
+        <span key={index}>something</span>
+      ))}
+      <IconButton size='small' onClick={evt => setCurMemberRole(member)}>
+        <Icon path={mdiPlusCircleOutline} size={0.7} />
+      </IconButton>
+    </>
+  );
+}
+
 function MemberSetting({ 
   open, setOpen, 
   memberProject, addMemberProject,
@@ -255,6 +271,9 @@ function MemberSetting({
   const [searchPatern, setSearchPatern] = React.useState('');
 
   const [members, setMembers] = React.useState([]);
+
+  const [curMemberRoleId, setCurMemberRoleId] = React.useState(null);
+  const [openMemberRole, setOpenMemberRole] = React.useState(false);
 
   React.useEffect(() => {
     let members = map(membersFree, (room) => {
@@ -304,6 +323,11 @@ function MemberSetting({
       projectId,
       memberId: get(member, 'id'),
     });
+  }
+
+  function handleCurMemberRole(member) {
+    setCurMemberRoleId(get(member, 'id'));
+    setOpenMemberRole(true);
   }
 
   return (
@@ -370,7 +394,14 @@ function MemberSetting({
                         <small>{get(member, 'email', '')}</small>  
                       </UserTableCell>
                       <MiddleTableCell>{get(member, 'group_permission_name', '')}</MiddleTableCell>
-                      <MiddleTableCell>{get(member, 'roles', '')}</MiddleTableCell>
+                      <MiddleTableCell>
+                        {get(member, 'roles', []).map(role => (
+                          <span key={get(role, 'id')}>{get(role, 'name', '')}</span>
+                        ))}
+                        <IconButton size='small' onClick={evt => handleCurMemberRole(member)}>
+                          <Icon path={mdiPlusCircleOutline} size={0.7} />
+                        </IconButton>
+                      </MiddleTableCell>
                       <MiddleTableCell>{getJoinStatusName(get(member, 'join_task_status_code', ''))}</MiddleTableCell>
                       <MiddleTableCell>
                         <SettingButton 
@@ -384,6 +415,11 @@ function MemberSetting({
                   ))}
                 </StyledTableBody>
               </Table>
+              <MemberRoleModal 
+                open={openMemberRole}
+                setOpen={setOpenMemberRole}
+                curMemberId={curMemberRoleId}
+              />
             </RightContainer>,
         }}
       />

@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { get, sortBy, reverse, filter as filterArr, find } from 'lodash';
+import { get, sortBy, reverse, filter as filterArr, find, remove, slice } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import DateFnsUtils from '@date-io/date-fns';
@@ -145,18 +145,6 @@ function decodePriorityCode(priorityCode) {
         color: '#53d7fc',
         name: 'Thấp'
       };
-  }
-}
-
-function displayDateRange(from, to) {
-  if (
-    from instanceof Date && !isNaN(from) 
-    &&
-    to instanceof Date && !isNaN(to)
-  ) {
-    return `${from.toLocaleDateString()} - ${to.toLocaleDateString()}`;
-  } else {
-    return '';
   }
 }
 
@@ -532,9 +520,12 @@ function AllProjectTable({
                     destination.index === source.index
                   )
                     return;
+                  let sortData = [...projects];
+                  let removed = remove(sortData, { id: draggableId });
+                  sortData = [...slice(sortData, 0, destination.index), ...removed, ...slice(sortData, destination.index)];
                   doSortProject({
-                    projectId: draggableId,
-                    sortIndex: destination.index
+                    sortData,
+                    groupId: isDefault ? 'default' : projectGroupId,
                   });
                 }
               },
@@ -976,8 +967,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
-    doSortProject: ({ projectId, sortIndex }) =>
-      dispatch(sortProject({ projectId, sortIndex })),
+    doSortProject: ({ sortData, groupId }) =>
+      dispatch(sortProject({ sortData, groupId })),
     doDeleteProject: ({ projectId }) => dispatch(deleteProject({ projectId })),
     doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
     doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
