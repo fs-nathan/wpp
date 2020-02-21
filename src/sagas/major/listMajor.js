@@ -17,7 +17,7 @@ async function doListMajor() {
   }
 }
 
-function* listMajor() {
+function* listMajor(action) {
   try {
     const { majors } = yield call(doListMajor);
     yield put(listMajorSuccess({ majors }, action.options));

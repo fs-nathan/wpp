@@ -44,7 +44,7 @@ async function doListIcon() {
   }
 }
 
-function* listIcon() {
+function* listIcon(action) {
   try {
     const { icons, defaults } = yield call(doListIcon);
     yield put(listIconSuccess({ icons, defaults }, action.options));

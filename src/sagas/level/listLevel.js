@@ -17,7 +17,7 @@ async function doListLevel() {
   }
 }
 
-function* listLevel() {
+function* listLevel(action) {
   try {
     const { levels } = yield call(doListLevel);
     yield put(listLevelSuccess({ levels }, action.options));

@@ -5,7 +5,9 @@ import {
 } from '../../constants/actions/groupTask/copyGroupTask';
 
 export const initialState = {
-	data: null,
+	data: {
+		groupTasks: [],
+	},
 	error: null,
 	loading: false,
 };
@@ -21,6 +23,7 @@ function reducer(state = initialState, action) {
 		case COPY_GROUP_TASK_SUCCESS: 
 			return {
 				...state, 
+				data: action.data,
 				error: null,
 				loading: false,
 			};

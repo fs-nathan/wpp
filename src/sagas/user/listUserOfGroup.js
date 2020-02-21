@@ -17,7 +17,7 @@ async function doListUserOfGroup() {
   }
 }
 
-function* listUserOfGroup() {
+function* listUserOfGroup(action) {
   try {
     const { users, max_user: maxUser } = yield call(doListUserOfGroup);
     yield put(listUserOfGroupSuccess({ rooms: users, maxUser }, action.options));

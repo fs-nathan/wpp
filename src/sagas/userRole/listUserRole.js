@@ -17,7 +17,7 @@ async function doListPosition() {
   }
 }
 
-function* listUserRole() {
+function* listUserRole(action) {
   try {
     const { user_roles: userRoles } = yield call(doListPosition);
     yield put(listUserRoleSuccess({ userRoles }, action.options));

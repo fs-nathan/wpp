@@ -12,9 +12,12 @@ export const copyGroupTask = ({ groupTaskId, projectId }) => ({
   }
 });
 
-export const copyGroupTaskSuccess = (options) => ({
+export const copyGroupTaskSuccess = ({ groupTasks }, options) => ({
   type: COPY_GROUP_TASK_SUCCESS,
   options,
+  data: {
+    groupTasks,
+  }
 });
 
 export const copyGroupTaskFail = (error, options) => ({

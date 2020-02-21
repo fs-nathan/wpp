@@ -24,6 +24,6 @@ export const listRoomFail = (error, options) => ({
   error,
 });
 
-export const listRoomFail = () => ({
+export const listRoomReset = () => ({
   type: LIST_ROOM_RESET,
 });

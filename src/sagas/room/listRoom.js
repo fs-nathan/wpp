@@ -17,7 +17,7 @@ async function doListRoom() {
   }
 }
 
-function* listRoom() {
+function* listRoom(action) {
   try {
     const { rooms } = yield call(doListRoom);
     yield put(listRoomSuccess({ rooms }, action.options));

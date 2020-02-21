@@ -18,7 +18,7 @@ export const updateStateJoinTaskSuccess = (options) => ({
   options,
 });
 
-export const updateStateJoinTaskFail = (error) => ({
+export const updateStateJoinTaskFail = (error, options) => ({
   type: UPDATE_STATE_JOIN_TASK_FAIL,
   options,
   error,

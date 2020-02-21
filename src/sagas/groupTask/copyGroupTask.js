@@ -24,8 +24,8 @@ async function doCopyGroupTask({ groupTaskId, projectId }) {
 
 function* copyGroupTask(action) {
   try {
-    yield call(doCopyGroupTask, action.options);
-    yield put(copyGroupTaskSuccess(action.options));
+    const { group_tasks: groupTasks } = yield call(doCopyGroupTask, action.options);
+    yield put(copyGroupTaskSuccess({ groupTasks }, action.options));
     CustomEventEmitter(COPY_GROUP_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {

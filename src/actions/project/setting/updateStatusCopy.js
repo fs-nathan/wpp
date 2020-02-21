@@ -17,7 +17,7 @@ export const updateStatusCopySuccess = (options) => ({
   options,
 });
 
-export const updateStatusCopyFail = (error) => ({
+export const updateStatusCopyFail = (error, options) => ({
   type: UPDATE_STATUS_COPY_FAIL,
   options,
   error,

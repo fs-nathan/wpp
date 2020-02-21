@@ -17,7 +17,7 @@ async function doListPosition() {
   }
 }
 
-function* listPosition() {
+function* listPosition(action) {
   try {
     const { position: positions } = yield call(doListPosition);
     yield put(listPositionSuccess({ positions }, action.options));
