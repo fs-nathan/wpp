@@ -9,7 +9,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { WrapperContext } from '../index'
+import { WrapperContext } from '../index';
+import './ListPart.scss';
 // import { Redirect } from 'react-router-dom'
 // const Container = styled.div`
 //   display: ${props => props.show ? 'block' : 'none'};
@@ -19,7 +20,7 @@ import { WrapperContext } from '../index'
 //   }
 //   grid-template-rows: 107px calc(83vh - 8px);
 //   grid-template-columns: 1fr;
-//   grid-template-areas: 
+//   grid-template-areas:
 //     "header"
 //     "body";
 // `
@@ -43,15 +44,14 @@ const Header = styled.div`
     margin-left: 10px;
     padding: 7px;    
   }
-`
+`;
 const StyledBodyTitle = styled(ListSubheader)`
   padding: 0;
   display: flex;
   align-items: center;
-  
-`
+`;
 const StyledList = styled(List)`
-  padding: 10px 0; 
+  padding: 10px 0;
   & > li {
     &:not(:last-child) {
       margin-bottom: 10px;
@@ -62,7 +62,7 @@ const StyledList = styled(List)`
 const ExpansionPanelDetails = styled(MuiExpansionPanelDetails)`
   flex-direction: column;
   padding: 10px 0;
-`
+`;
 const ProjectsDetail = styled.div`
   margin: 12px 30px 12px 0;
   font-weight: 500;
@@ -72,24 +72,28 @@ const ProjectsDetail = styled.div`
   & > *:first-child {
     border-top: 1px solid #0000001a;
   }
-`
+`;
 
-const Projects = (props) => {
+const Projects = props => {
   // console.log("projects:::::", props);
   // const value = React.useContext(WrapperContext)
   return (
     // redirect ? <Redirect to='/target' /> :
-    <ProjectsDetail onClick={() => {
-      console.log('Click item ', props)
-      
-      props.history.push(`/list-task-detail/` + props.project.id)
-      // props.value.getDetailProject(props.project.id)
-      // props.value.chooseProject(props.project)
-      props.value.chooseTask(null)
-      props.setShow(false)
-    }}>{props.title}</ProjectsDetail>
-  )
-}
+    <ProjectsDetail
+      onClick={() => {
+        console.log('Click item ', props);
+
+        props.history.push(`/list-task-detail/` + props.project.id);
+        // props.value.getDetailProject(props.project.id)
+        // props.value.chooseProject(props.project)
+        props.value.chooseTask(null);
+        props.setShow(false);
+      }}
+    >
+      {props.title}
+    </ProjectsDetail>
+  );
+};
 
 const ExpansionProject = styled(ExpansionPanel)`
   box-shadow: none !important;
@@ -116,7 +120,7 @@ const ExpansionProject = styled(ExpansionPanel)`
       }
     }
   }
-`
+`;
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -126,58 +130,63 @@ const ButtonIcon = styled(IconButton)`
       fill: #03b000;
     }
   }
-`
+`;
 
 function ListProjectHeader({ setShow }) {
   // console.log("setShow::::", setShow);
-  const value = React.useContext(WrapperContext)
+  const value = React.useContext(WrapperContext);
   const closeListProject = () => {
-    setShow(false)
-  }
+    setShow(false);
+  };
   const searchListProject = keyword => {
-    value.searchProject(keyword)
-  }
+    value.searchProject(keyword);
+  };
   return (
     <div style={{ marginBottom: 17 }}>
       <Header>
-        <Icon path={mdiDrag} size={1} color={'#000000'} />
+        <Icon
+          path={mdiDrag}
+          size={1}
+          color={'#000000'}
+          className="job-detail-icon"
+        />
         <div>DANH SÁCH DỰ ÁN</div>
-        <ButtonIcon
-          onClick={closeListProject}
-        >
-          <Icon path={mdiClose} size={1} />
+        <ButtonIcon onClick={closeListProject}>
+          <Icon path={mdiClose} size={1} className="job-detail-icon" />
         </ButtonIcon>
       </Header>
-      <SearchInput 
-        placeholder='Tìm dự án'
-        onChange={(e) => searchListProject(e.target.value)}
+      <SearchInput
+        placeholder="Tìm dự án"
+        onChange={e => searchListProject(e.target.value)}
       />
     </div>
-  )
+  );
 }
 
 function ListProjectBody({ subPrimary }) {
   return (
     <StyledList>
       <StyledBodyTitle disableSticky>
-        <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>{subPrimary}</ColorTypo>
+        <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>
+          {subPrimary}
+        </ColorTypo>
       </StyledBodyTitle>
     </StyledList>
-  )
+  );
 }
 const WrapperHeader = styled(ListProjectHeader)`
   grid-area: header;
-  padding:  0 15px;
+  padding: 0 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0px;
   background-color: #fff;
   z-index: 999;
-`
+`;
 const WrapperBody = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
@@ -186,40 +195,50 @@ const WrapperBody = styled(Scrollbars)`
   }
 `;
 function ListProject(props) {
-  const value = React.useContext(WrapperContext)
-  let data = []
-  if ( value && value.projectListBasic) {
-    data = value.projectListBasic.projectGroups
+  const value = React.useContext(WrapperContext);
+  let data = [];
+  if (value && value.projectListBasic) {
+    data = value.projectListBasic.projectGroups;
   }
   // console.log({data})
   return (
-    <div className={"lp-container " + (props.show ? "lp-container-block" : "lp-container-none")  } >
+    <div
+      className={
+        'lp-container ' +
+        (props.show ? 'lp-container-block' : 'lp-container-none')
+      }
+    >
       <WrapperHeader {...props} />
-      <WrapperBody 
-      autoHide autoHideTimeout={500} autoHideDuration={200}
-      >
-        { data && data.map(group => {
+      <WrapperBody autoHide autoHideTimeout={500} autoHideDuration={200}>
+        {data &&
+          data.map(group => {
             return (
               <div key={group.id}>
                 <ExpansionProject defaultExpanded>
                   <ExpansionPanelSummary
                     expandIcon={<Icon path={mdiMenuUp} size={1} />}
-                    id="panel1bh-header">
+                    id="panel1bh-header"
+                  >
                     <ListProjectBody subPrimary={group.name.toUpperCase()} />
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
-                    {
-                      group.projects.map((project, projectIdx) => <Projects project={project} key={projectIdx} title={project.name} {...props} value={value}/>)
-                    }
+                    {group.projects.map((project, projectIdx) => (
+                      <Projects
+                        project={project}
+                        key={projectIdx}
+                        title={project.name}
+                        {...props}
+                        value={value}
+                      />
+                    ))}
                   </ExpansionPanelDetails>
                 </ExpansionProject>
               </div>
-            )
-          })
-        }
+            );
+          })}
       </WrapperBody>
     </div>
-  )
+  );
 }
 
 export default ListProject;

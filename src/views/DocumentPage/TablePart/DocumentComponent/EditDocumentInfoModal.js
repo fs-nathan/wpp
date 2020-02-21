@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DateFnsUtils from '@date-io/date-fns';
 import { withRouter } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
@@ -12,6 +13,7 @@ import { DialogContent } from './TableCommon';
 import { updateDocumentInfo } from '../../../../actions/documents';
 
 const EditDocumentInfoModal = props => {
+  const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState(
     new Date(props.item.date_released || new Date())
   );
@@ -42,15 +44,15 @@ const EditDocumentInfoModal = props => {
 
   return (
     <ModalCommon
-      title="Thông tin tài liệu"
+      title={t('IDS_WP_DOCUMENT_INFO')}
       onClose={props.onClose}
-      footerAction={[{ name: 'Cập nhật', action: handleUpdate }]}
+      footerAction={[{ name: t('IDS_WP_UPDATE'), action: handleUpdate }]}
     >
       <DialogContent dividers className="dialog-content">
         <form ref={formInfo}>
           <TextField
             id="description"
-            label="Mô tả tài liệu"
+            label={t('IDS_WP_DOCUMENT_DES')}
             fullWidth
             margin="normal"
             multiline
@@ -70,7 +72,7 @@ const EditDocumentInfoModal = props => {
               format="dd/MM/yyyy"
               margin="normal"
               id="date_released"
-              label="Ngày phát hành"
+              label={t('IDS_WP_DATE_RELEASE')}
               value={selectedDate}
               onChange={handleDateChange}
               KeyboardButtonProps={{ 'aria-label': 'change date' }}
@@ -81,7 +83,7 @@ const EditDocumentInfoModal = props => {
           </MuiPickersUtilsProvider>
           <TextField
             id="version"
-            label="Phiên bản"
+            label={t('IDS_WP_VERSION')}
             fullWidth
             margin="normal"
             defaultValue={props.item.version}
@@ -90,7 +92,7 @@ const EditDocumentInfoModal = props => {
           />
           <TextField
             id="author"
-            label="Người soạn tài liệu"
+            label={t('IDS_WP_DOCUMENT_AUTHOR')}
             fullWidth
             margin="normal"
             defaultValue={props.item.author}
@@ -99,7 +101,7 @@ const EditDocumentInfoModal = props => {
           />
           <TextField
             id="user_approved"
-            label="Người ký duyệt"
+            label={t('IDS_WP_USER_APPROVE')}
             fullWidth
             margin="normal"
             defaultValue={props.item.user_approved}
@@ -108,7 +110,7 @@ const EditDocumentInfoModal = props => {
           />
           <TextField
             id="storage_address"
-            label="Nơi lưu trữ"
+            label={t('IDS_WP_STORAGE_ADDRESS')}
             fullWidth
             margin="normal"
             defaultValue={props.item.storage_address}

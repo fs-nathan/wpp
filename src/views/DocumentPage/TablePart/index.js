@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Icon from '@mdi/react';
+import { useTranslation } from 'react-i18next';
 import { Scrollbars } from 'react-custom-scrollbars';
 import {
   mdiUpload,
@@ -67,6 +68,7 @@ const HeaderBreadCrumbs = ({
   colorIcon = 'rgba(0, 0, 0, 0.54)',
   isTrash = false
 }) => {
+  const { t } = useTranslation();
   const [currentBreadCrumbs, setCurrentBeadCrumbs] = useState([]);
 
   useEffect(() => {
@@ -146,16 +148,20 @@ const HeaderBreadCrumbs = ({
           </Breadcrumbs>
         )}
         {isTrash && currentBreadCrumbs.length === 0 && (
-          <span className="sub-title">
-            Thùng rác sẽ tự động xóa vĩnh viễn sau 30 ngày!
-          </span>
+          <span className="sub-title">{t('IDS_WP_TRASH_DES')}</span>
         )}
       </div>
     </div>
   );
 };
 
-const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
+const getHeaderContent = (
+  type,
+  search,
+  breadCrumbs,
+  onUpdateBreadCrumbs,
+  t
+) => {
   switch (type) {
     case Routes.DOCUMENT_RECENT:
       return (
@@ -167,14 +173,14 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
             color={'#ffc107'}
           />
           <div className="title-wrapper">
-            <HeaderTitle title="Gần đây" />
+            <HeaderTitle title={t('IDS_WP_RECENT')} />
           </div>
         </div>
       );
     case Routes.DOCUMENT_PROJECT: {
       return (
         <HeaderBreadCrumbs
-          title="Tài liệu dự án"
+          title={t('IDS_WP_PROJECT_DOCUMENT')}
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
           srcImg={mdiFileDocumentBoxOutline}
@@ -185,7 +191,7 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
     case Routes.DOCUMENT_SHARE:
       return (
         <HeaderBreadCrumbs
-          title="Đã chia sẻ"
+          title={t('IDS_WP_SHARED')}
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
           srcImg={mdiFileMoveOutline}
@@ -195,7 +201,7 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
     case Routes.DOCUMENT_SHARE_ME:
       return (
         <HeaderBreadCrumbs
-          title="Được chia sẻ với tôi"
+          title={t('IDS_WP_SHARE_WITH_ME')}
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
           srcImg={mdiFileUndoOutline}
@@ -205,7 +211,7 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
     case Routes.DOCUMENT_ME:
       return (
         <HeaderBreadCrumbs
-          title="Tài liệu của tôi"
+          title={t('IDS_WP_MY_DOCUMENT')}
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
           srcImg={mdiFolderOpenOutline}
@@ -215,7 +221,7 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
     case Routes.DOCUMENT_GOOGLE_DRIVE:
       return (
         <HeaderBreadCrumbs
-          title="Google Drive"
+          title={t('IDS_WP_GOOGLE_DRIVE')}
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
           colorIcon={'#2196f3'}
@@ -225,7 +231,7 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
     case Routes.DOCUMENT_TRASH:
       return (
         <HeaderBreadCrumbs
-          title="Thùng rác"
+          title={t('IDS_WP_TRASH')}
           breadCrumbs={breadCrumbs}
           onUpdateBreadCrumbs={onUpdateBreadCrumbs}
           srcImg={mdiTrashCanOutline}
@@ -239,6 +245,7 @@ const getHeaderContent = (type, search, breadCrumbs, onUpdateBreadCrumbs) => {
 };
 
 const TablePart = props => {
+  const { t } = useTranslation();
   const pathname = props.history.location.pathname;
   const search = props.location.search;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -295,12 +302,12 @@ const TablePart = props => {
   };
   const listAction = [
     {
-      text: 'Tạo thư mục',
+      text: t('IDS_WP_CREATE_FOLDER'),
       icon: mdiFolderPlusOutline,
       action: () => setCreateFolder(true)
     },
     {
-      text: 'Tải tệp lên',
+      text: t('IDS_WP_UPLOAD_FILE'),
       icon: mdiFileUploadOutline,
       action: () => {
         document.getElementById('raised-button-file').click();
@@ -351,7 +358,8 @@ const TablePart = props => {
             pathname,
             search,
             breadCrumbs,
-            actionChangeBreadCrumbs
+            actionChangeBreadCrumbs,
+            t
           )}
         </div>
         <RightHeader>
@@ -365,7 +373,7 @@ const TablePart = props => {
               className="right-header-button"
             >
               <Icon path={mdiPlus} size={1} color="#fff" />
-              THÊM MỚI
+              {t('IDS_WP_ADD_NEW')}
             </StyledButton>
           ) : (
             pathname !== Routes.DOCUMENT_GOOGLE_DRIVE &&
@@ -382,7 +390,7 @@ const TablePart = props => {
                 className="right-header-button"
               >
                 <Icon path={mdiUpload} size={1} color="#fff" />
-                TẢI LÊN
+                {t('IDS_WP_UPLOAD_UPPERCASE')}
               </StyledButton>
             )
           )}
@@ -447,7 +455,7 @@ const TablePart = props => {
                     size={5}
                     color={'#c3c3c3'}
                   />
-                  <div className="des-drop">Kéo thả tài liệu vào đây</div>
+                  <div className="des-drop">{t('IDS_WP_DRAG_FILE')}</div>
                 </div>
               </div>
             )}
@@ -464,13 +472,13 @@ const TablePart = props => {
       </div>
       {isCreateFolder && (
         <ModalCommon
-          title="Tạo thư mục"
+          title={t('IDS_WP_CREATE_FOLDER')}
           onClose={() => {
             setCreateFolder(false);
             setNameFolder('');
           }}
           footerAction={[
-            { name: 'Tạo mới', action: () => handleCreateFolder() }
+            { name: t('IDS_WP_CREATE_NEW'), action: () => handleCreateFolder() }
           ]}
         >
           <DialogContent dividers className="dialog-content">
@@ -478,7 +486,7 @@ const TablePart = props => {
               value={nameFolder}
               id="standard-full-width"
               variant="outlined"
-              label="Nhập tên thư mục mới"
+              label={t('IDS_WP_INPUT_NEW_FOLDER_NAME')}
               fullWidth
               margin="normal"
               InputLabelProps={{ shrink: true }}
@@ -490,7 +498,7 @@ const TablePart = props => {
       )}
       {visibleUploadModal && (
         <UploadModal
-          title="Tải tài liệu lên"
+          title={t('IDS_WP_UPLOAD_DOCUMENT')}
           open={visibleUploadModal}
           setOpen={val => setVisibleUploadModal(val)}
           fileUpload={fileUpload}

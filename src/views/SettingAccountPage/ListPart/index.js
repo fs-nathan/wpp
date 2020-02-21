@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 // import { mdiBell, mdiAccountCircle, mdiLock } from '@mdi/js';
 import Badge from '@material-ui/core/Badge';
 import { Routes } from '../../../constants/routes';
@@ -19,6 +20,7 @@ const GetNotificationTitle = isNotificationNew => {
   return null;
 };
 const ListPart = props => {
+  const { t } = useTranslation();
   const [isNotificationNew, setNew] = useState(false);
   const handleFetchData = async () => {
     try {
@@ -31,21 +33,24 @@ const ListPart = props => {
   }, []);
   const listMenu = [
     {
-      title: 'Tài khoản',
+      title: t('IDS_WP_ACCOUNT'),
       // icon: mdiAccountCircle,
       sub: [
-        { name: 'Thông tin tài khoản', url: Routes.SETTING_ACCOUNT_INFO },
-        { name: 'Đổi mật khẩu', url: Routes.SETTING_ACCOUNT_PASSWORD }
+        { name: t('IDS_WP_ACCOUNT_INFO'), url: Routes.SETTING_ACCOUNT_INFO },
+        {
+          name: t('IDS_WP_CHANGE_PASSWORD'),
+          url: Routes.SETTING_ACCOUNT_PASSWORD
+        }
       ]
     },
     {
-      title: 'Thông báo của WorkPlus',
+      title: t('IDS_WP_NOTICE_WORKPLUS'),
       url: Routes.SETTING_ACCOUNT_NOTIFI,
       // icon: mdiBell,
       rightIcon: () => GetNotificationTitle(isNotificationNew)
     }
   ];
-  return <LeftSetting title="Cài đặt tài khoản" listMenu={listMenu} />;
+  return <LeftSetting title={t('IDS_WP_SETUP_ACCOUNT')} listMenu={listMenu} />;
 };
 
 export default ListPart;

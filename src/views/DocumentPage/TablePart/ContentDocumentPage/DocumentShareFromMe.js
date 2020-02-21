@@ -8,7 +8,7 @@ import {
   // TablePagination
 } from '@material-ui/core';
 import Icon from '@mdi/react';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
   mdiAccountPlusOutline,
   mdiDownloadOutline,
@@ -52,7 +52,7 @@ const DocumentShareFromMe = props => {
   const [listData, setListData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [itemActive, setItemActive] = useState({});
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetDataDocumentShareFromMe();
@@ -171,9 +171,13 @@ const DocumentShareFromMe = props => {
     props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
   const moreActionFile = [
-    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
-    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' },
-    { icon: mdiDownloadOutline, text: 'Tải xuống', type: 'download' }
+    { icon: mdiAccountPlusOutline, text: t('IDS_WP_SHARE'), type: 'share' },
+    { icon: mdiContentCopy, text: t('IDS_WP_COPY_LINK'), type: 'copy' },
+    {
+      icon: mdiDownloadOutline,
+      text: t('IDS_WP_DOWNLOAD_DOWN'),
+      type: 'download'
+    }
   ];
   const moreActionFolder = moreActionFile.filter(el => el.type !== 'download');
 
@@ -195,20 +199,20 @@ const DocumentShareFromMe = props => {
               />
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%">
-              Loại
+              {t('IDS_WP_TYPE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left">Tên tài liệu</StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
-              Chia sẻ
+              {t('IDS_WP_SHARE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Ngày chia sẻ
+              {t('IDS_WP_DAY_SHARE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="15%">
-              Chủ sở hữu
+              {t('IDS_WP_OWNER')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Kích thước
+              {t('IDS_WP_SIZE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
           </TableRow>

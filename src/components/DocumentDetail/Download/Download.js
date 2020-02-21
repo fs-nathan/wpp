@@ -70,7 +70,7 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
                   <div className="sub-title">Số lượt xem</div>
                   <div className="sub-title">
                     <span>
-                      <b>{fileInfo.number_of_view} lượt xem</b>
+                      <b>{fileInfo.number_of_view + 1} lượt xem</b>
                     </span>
                     &nbsp;
                     <span>(dung lượng xem {fileInfo.size || ''})</span>

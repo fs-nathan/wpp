@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { TextField, Button } from '@material-ui/core';
 import * as icons from '../../../../assets';
@@ -14,6 +15,7 @@ import {
 import { actionToast } from '../../../../actions/system/system';
 
 const Payment = props => {
+  const { t } = useTranslation();
   const [editMode, setEditMode] = useState(false);
   const handleToast = (type, message) => {
     props.actionToast(type, message);
@@ -51,7 +53,7 @@ const Payment = props => {
         email: elements.email.value
       };
       await updateBillService(result);
-      handleToast('success', 'Chỉnh sửa thông tin thành công!');
+      handleToast('success', t('IDS_WP_EDIT_INFO_SUCCESS'));
       handleFetchData();
       setEditMode(false);
     } catch (error) {
@@ -62,15 +64,12 @@ const Payment = props => {
   return (
     <div className="payment-container">
       <div className="payment-left">
-        <p className="top-header">Thông tin xuất hóa đơn</p>
-        <p className="text-payment-header">
-          Là thông tin xuất hóa đơn của khách hàng để WorkPlus xuất hóa đơn Giá
-          trị gia tăng theo quy định hiện hành.
-        </p>
+        <p className="top-header">{t('IDS_WP_ORDER_INFO')}</p>
+        <p className="text-payment-header">{t('IDS_WP_ORDER_INFO_DES')}</p>
         <form onSubmit={handleEditBill}>
           <TextField
             id="company"
-            label="Tên công ty (ghi đúng tên trên đăng ký kinh doanh)"
+            label={t('IDS_WP_ORDER_COMPANY_NAME')}
             fullWidth
             margin="normal"
             defaultValue={props.bill.company}
@@ -80,7 +79,7 @@ const Payment = props => {
           />
           <TextField
             id="address_export"
-            label="Địa chỉ xuất hóa đơn (ghi đúng địa chỉ trên đăng ký kinh doanh)"
+            label={t('IDS_WP_ORDER_ADDRESS')}
             fullWidth
             margin="normal"
             defaultValue={props.bill.address_export}
@@ -90,7 +89,7 @@ const Payment = props => {
           />
           <TextField
             id="tax_code"
-            label="Mã số thuế"
+            label={t('IDS_WP_LAW_CODE')}
             fullWidth
             margin="normal"
             defaultValue={props.bill.tax_code}
@@ -100,7 +99,7 @@ const Payment = props => {
           />
           <TextField
             id="manager"
-            label="Người đại diện pháp luật (Ghi rõ họ tên và chức danh)"
+            label={t('IDS_WP_LAW_PEOPLE')}
             fullWidth
             margin="normal"
             defaultValue={props.bill.manager}
@@ -110,7 +109,7 @@ const Payment = props => {
           />
           <TextField
             id="address_import"
-            label="Địa chỉ nhận hóa đơn"
+            label={t('IDS_WP_ADDRESS_RECEIPT')}
             fullWidth
             margin="normal"
             defaultValue={props.bill.address_import}
@@ -120,7 +119,7 @@ const Payment = props => {
           />
           <TextField
             id="phone"
-            label="Số điện thoại liên hệ"
+            label={t('IDS_WP_PHONE_CONTACT')}
             fullWidth
             margin="normal"
             defaultValue={props.bill.phone}
@@ -130,7 +129,7 @@ const Payment = props => {
           />
           <TextField
             id="email"
-            label="Email (nhận hóa đơn điện tử)"
+            label={t('IDS_WP_EMAIL_ORDER')}
             fullWidth
             margin="normal"
             defaultValue={props.bill.email}
@@ -144,7 +143,7 @@ const Payment = props => {
               className="btn-edit none-boxshadow"
               type="submit"
             >
-              {editMode ? 'Lưu' : ' Chỉnh sửa'}
+              {editMode ? t('IDS_WP_SAVE') : t('IDS_WP_EDIT_TEXT')}
             </Button>
             {editMode && (
               <Button
@@ -155,7 +154,7 @@ const Payment = props => {
                   setEditMode(false);
                 }}
               >
-                Hủy
+                {t('IDS_WP_CANCEL')}
               </Button>
             )}
           </div>
@@ -164,51 +163,40 @@ const Payment = props => {
       {/* <Divider orientation="vertical" className="divider-vertical" /> */}
       <div className="payment-right">
         <div className="payment-right-top">
-          <p className="top-header">Thông tin thanh toán</p>
-          <p>
-            Toàn bộ đơn hàng trên WorkPlus được thanh toán bằng chuyển khoản.
-          </p>
-          <p>
-            Quý khách hàng vui lòng thanh toán chuyển khoản vào các tài khoản
-            sau:
-          </p>
-          <p className="payment-title">TÀI KHOẢN CÔNG TY</p>
+          <p className="top-header">{t('IDS_WP_PAYMENT_INFO')}</p>
+          <p>{t('IDS_WP_PAYMENT_INFO_DES_1')}</p>
+          <p>{t('IDS_WP_PAYMENT_INFO_DES_2')}:</p>
+          <p className="payment-title">{t('IDS_WP_ACCOUNT_COMPANY')}</p>
           <div className="payment-account">
             <img src={icons.ic_bidv} alt="" />
             <div className="payment-info">
-              <h2>BIDV CHI NHÁNH SỞ GIAO DỊCH 1, HÀ NỘI</h2>
-              <p>Chủ tài khoản: Công ty TNHH Công nghệ và thương mại Phúc An</p>
-              <p>Số tài khoản: 1001.00000.24275</p>
+              <h2>{t('IDS_WP_ACCOUNT_BIDV')}</h2>
+              <p>{t('IDS_WP_ACCOUNT_OWNER_COMPANY')}</p>
+              <p>{t('IDS_WP_ACCOUNT_NUMBER')}: 1001.00000.24275</p>
             </div>
           </div>
-          <p className="payment-title">TÀI KHOẢN CÁ NHÂN</p>
+          <p className="payment-title">{t('IDS_WP_ACCOUNT_PRIVATE')}</p>
           <div className="payment-account">
             <img src={icons.ic_vcb} alt="" />
             <div className="payment-info">
-              <h2>VIETCOMBANK CHI NHÁNH BA ĐÌNH, HÀ NỘI</h2>
-              <p>Chủ tài khoản: Nguyễn Hữu Thành</p>
-              <p>Số tài khoản: 0611001920071</p>
+              <h2>{t('IDS_WP_ACCOUNT_VCB')}</h2>
+              <p>{t('IDS_WP_ACCOUNT_OWNER')}</p>
+              <p>{t('IDS_WP_ACCOUNT_NUMBER')}: 0611001920071</p>
             </div>
           </div>
           <div className="payment-account">
             <img src={icons.ic_bidv} alt="" />
             <div className="payment-info">
-              <h2>BIDV CHI NHÁNH THANH XUÂN, HÀ NỘI</h2>
-              <p>Chủ tài khoản: Nguyễn Hữu Thành</p>
-              <p>Số tài khoản: 22210001288967</p>
+              <h2>{t('IDS_WP_BIDV_ADDRESS')}</h2>
+              <p>{t('IDS_WP_ACCOUNT_OWNER')}</p>
+              <p>{t('IDS_WP_ACCOUNT_NUMBER')}: 22210001288967</p>
             </div>
           </div>
         </div>
         <div className="payment-right-bottom">
-          <h2>LƯU Ý:</h2>
-          <p>
-            Khách hàng vui lòng kiểm tra thông tin tài khoản trước khi thực hiện
-            thanh toán
-          </p>
-          <p className="right-bottom-text">
-            Khách hàng thanh toán vào tài khoản công ty vui lòng thanh toán giá
-            trị sau thuế (VAT) để tránh trường hợp hệ thống không kích hoạt.
-          </p>
+          <h2>{t('IDS_WP_NOTE')}:</h2>
+          <p>{t('IDS_WP_NOTE_DES_1')}</p>
+          <p className="right-bottom-text">{t('IDS_WP_NOTE_DES_2')}</p>
         </div>
       </div>
     </div>

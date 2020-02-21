@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Icon from '@mdi/react';
 import { mdiStar } from '@mdi/js';
 import { SETTING_ACCOUNT } from '../../../constants/constant';
@@ -8,17 +9,18 @@ import { actionSettingGroup } from '../../../actions/setting';
 import SearchIcon from '../../../assets/search-ic.jpg';
 
 const getTitleHeader = groupType => {
+  const { t } = useTranslation();
   switch (groupType) {
     case SETTING_ACCOUNT.INFO:
-      return 'Thông tin tài khoản';
+      return t('IDS_WP_ACCOUNT_INFO');
     case SETTING_ACCOUNT.CHANGE_PASSWORD:
-      return 'Đổi mật khẩu';
+      return t('IDS_WP_CHANGE_PASSWORD');
     case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS:
-      return 'Thông báo WorkPlus';
+      return t('IDS_WP_NOTIFICATION_WORKPLUS');
     case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS_DETAIL:
-      return 'Chi tiết thông báo';
+      return t('IDS_WP_NOTICE_DETAIl');
     default:
-      return 'Quản lý Ticket';
+      return '';
   }
 };
 const HeaderAccount = props => {
@@ -40,7 +42,7 @@ const HeaderAccount = props => {
             className="form-control"
             id="inputSearch"
             onClick={openSearchModal}
-            placeholder="Tìm kiếm thông báo"
+            placeholder={t('IDS_WP_SEARCH_NOTICE')}
             style={{ backgroundImage: `url(${SearchIcon})` }}
           />
         </div>

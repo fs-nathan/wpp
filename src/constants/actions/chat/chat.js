@@ -1,0 +1,2 @@
+export const FETCH_LIST_CHAT = 'FETCH_LIST_CHAT';
+export const FETCH_MEMBER_CHAT = 'FETCH_MEMBER_CHAT';

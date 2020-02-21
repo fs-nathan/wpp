@@ -63,6 +63,82 @@
       }
     }
   }
+  .bottom-margin-10 {
+    margin-bottom: 10px;
+  }
+  .top-margin-30 {
+    margin-top: 30px;
+  }
+  .text-bold {
+    font-weight: bold;
+  }
+  .price-value {
+    font-weight: bold;
+    color: #f50016;
+  }
+  .order-value {
+    width: 70%;
+    text-align: right;
+  }
+  .width-30 {
+    width: 30%;
+  }
+  .width-70 {
+    width: 70%;
+  }
+  .text-color-1 {
+    color: #f2f2f2;
+  }
+  .text-color-2 {
+    color: #1f9de0;
+  }
+  .TableStyled1 {
+    display: table;
+    margin-bottom: 30px;
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 0;
+  }
+  .ThStyled1 {
+    -webkit-print-color-adjust: exact !important;
+    background: #e2efda;
+    text-align: center;
+    padding: 10px;
+  }
+  .TdStyled1 {
+    border-bottom: 2px solid #000;
+    color: #f50016;
+    text-align: center;
+    padding: 10px;
+  }
+  .TableStyled2 {
+    display: table;
+    width: 100%;
+    border-spacing: 0;
+  }
+  .ThStyled2 {
+    border-bottom: 2px solid #9e9e9e;
+    -webkit-print-color-adjust: exact !important;
+    background: #e2efda;
+    text-align: center;
+    padding: 10px;
+  }
+  .TdStyled2 {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    padding: 15px 10px;
+    font-weight: bold;
+  }
+  .TdStyled3 {
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    padding: 15px 10px;
+  }
+  .TdStyled4 {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    padding: 15px 10px;
+  }
 }
 .oder-init-container {
   padding-top: 55px;

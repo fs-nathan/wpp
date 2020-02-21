@@ -6,9 +6,9 @@ import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 // import avatar from '../../../../../assets/avatar.jpg';
 // import EditWorkModal from '../EditWorkModal'
-import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal'
+import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
 import { WrapperContext } from '../../../index';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm'
+import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 // const Container = styled.div`
 //   padding: 0 20px;
 //   display: flex;
@@ -23,7 +23,7 @@ import ModalDeleteConfirm from '../../ModalDeleteConfirm'
 const AvatarHeader = styled(Avatar)`
   width: 60px;
   height: 60px;
-`
+`;
 
 // const TagsContainer = styled.div`
 //   margin-left: 10px;
@@ -54,7 +54,7 @@ const StyledIconButton = styled(IconButton)`
 // }
 function TabHeader(props) {
   // const [isRight, setIsRight] = React.useState(true);
-  // 
+  //
   // const [open, setOpen] = React.useState(false);
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -62,34 +62,34 @@ function TabHeader(props) {
   // const handleClickClose = () => {
   //   setOpen(false);
   // };
-  // 
+  //
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
-    setAnchorEl(evt.currentTarget)
+    setAnchorEl(evt.currentTarget);
   }
 
   function handleCloseMenu() {
     setAnchorEl(null);
   }
   //  bien tam dung
-  const [pause, setIsPause] = React.useState(true)
+  const [pause, setIsPause] = React.useState(true);
   const handleClickPause = () => {
-    setIsPause(!pause)
-  }
+    setIsPause(!pause);
+  };
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenDelete, setOpenDelete] = React.useState(false);
-  const value = React.useContext(WrapperContext)
+  const value = React.useContext(WrapperContext);
 
-  let avatar, name, roles
+  let avatar, name, roles;
   if (value) {
-    let detailTask = value.detailTask
+    let detailTask = value.detailTask;
     if (detailTask) {
-      let user_create = detailTask.user_create
+      let user_create = detailTask.user_create;
       if (user_create) {
-        avatar = user_create.avatar
-        name = user_create.name
-        roles = user_create.roles
+        avatar = user_create.avatar;
+        name = user_create.name;
+        roles = user_create.roles;
       }
     }
   }
@@ -101,22 +101,33 @@ function TabHeader(props) {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteTask(value.taskId)
-  }
+    props.deleteTask(value.taskId);
+  };
   // console.log("task id::::", value.taskId)
   return (
     <div className="container-dt-tabheader">
-      <AvatarHeader src={avatar} alt='avatar' />
+      <AvatarHeader src={avatar} alt="avatar" />
       <div className="tags-container">
-        <ColorTypo bold >{name}</ColorTypo>
-        <ColorTypo color={'blue'} variant='caption' style={{ fontSize: 13 }}>{roles}</ColorTypo>
+        <ColorTypo bold>{name}</ColorTypo>
+        <ColorTypo color={'blue'} variant="caption" style={{ fontSize: 13 }}>
+          {roles}
+        </ColorTypo>
         <br />
-        {value.detailTask &&
-          <ColorTypo variant='caption' style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}>Đã được giao ngày {value.detailTask.date_create}</ColorTypo>
-        }
+        {value.detailTask && (
+          <ColorTypo
+            variant="caption"
+            style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
+          >
+            Đã được giao ngày {value.detailTask.date_create}
+          </ColorTypo>
+        )}
       </div>
-      <StyledIconButton onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-        <Icon path={mdiDotsVertical} size={1} />
+      <StyledIconButton
+        onClick={handleClick}
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+      >
+        <Icon path={mdiDotsVertical} size={1} className="job-detail-icon" />
       </StyledIconButton>
       <Menu
         id="simple-menu"
@@ -126,37 +137,62 @@ function TabHeader(props) {
         onClose={handleCloseMenu}
         transformOrigin={{
           vertical: -30,
-          horizontal: 'right',
+          horizontal: 'right'
         }}
       >
-        <MenuItem onClick={() => {
-          setOpenCreateJobModal(true)
-          setAnchorEl(null);
-        }}>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={() => {
-          setAnchorEl(null);
-        }}>Ghim công việc</MenuItem>
-        {pause ?
-          <MenuItem onClick={() => {
-            props.onClickPause()
-            handleClickPause()
+        <MenuItem
+          onClick={() => {
+            setOpenCreateJobModal(true);
             setAnchorEl(null);
-          }}>Tạm dừng</MenuItem>
-          :
-          <MenuItem onClick={() => {
-            props.onClickPause()
-            handleClickPause()
+          }}
+        >
+          Chỉnh sửa
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
             setAnchorEl(null);
-          }}>Hủy tạm dừng</MenuItem>
-        }
-        
-        <MenuItem onClick={() => {
-          handleCloseMenu()
-          handleOpenModalDelete()
-        }}>Xóa</MenuItem>
+          }}
+        >
+          Ghim công việc
+        </MenuItem>
+        {pause ? (
+          <MenuItem
+            onClick={() => {
+              props.onClickPause();
+              handleClickPause();
+              setAnchorEl(null);
+            }}
+          >
+            Tạm dừng
+          </MenuItem>
+        ) : (
+          <MenuItem
+            onClick={() => {
+              props.onClickPause();
+              handleClickPause();
+              setAnchorEl(null);
+            }}
+          >
+            Hủy tạm dừng
+          </MenuItem>
+        )}
+
+        <MenuItem
+          onClick={() => {
+            handleCloseMenu();
+            handleOpenModalDelete();
+          }}
+        >
+          Xóa
+        </MenuItem>
       </Menu>
-      <EditJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} isRight={true} data={value.detailTask}/>
-      <ModalDeleteConfirm  
+      <EditJobModal
+        isOpen={openCreateJobModal}
+        setOpen={setOpenCreateJobModal}
+        isRight={true}
+        data={value.detailTask}
+      />
+      <ModalDeleteConfirm
         confirmDelete={confirmDelete}
         isOpen={isOpenDelete}
         handleOpenModalDelete={handleOpenModalDelete}
@@ -166,4 +202,4 @@ function TabHeader(props) {
   );
 }
 
-export default TabHeader
+export default TabHeader;

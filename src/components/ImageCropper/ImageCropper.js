@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../CustomModal';
 import ColorTypo from '../ColorTypo';
 import Cropper from 'react-cropper';
@@ -6,39 +7,12 @@ import { Slider } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiMinusCircleOutline, mdiPlusCircleOutline } from '@mdi/js';
 import 'cropperjs/dist/cropper.css';
-import styled from 'styled-components';
 import './ImageCropper.scss';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const PreviewBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin-top: 16px;
-  width: 80%;
-  & > div {
-    overflow: hidden;
-    width: 100px;
-    height: 100px;
-    border: 1px solid #05b50c;
-  }
-  & > p {
-    font-size: 14px;
-    font-weight: 500;
-  }
-`;
-
-const CROP_TYPE = {
-  LOGO: 'LOGO',
-  COVER: 'COVER'
-};
+const CROP_TYPE = { LOGO: 'LOGO', COVER: 'COVER' };
 
 function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
+  const { t } = useTranslation();
   const cropper = useRef(null);
   const [src, setSrc] = useState();
   const [updateOption, setUpdateOption] = useState(true);
@@ -111,10 +85,10 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title="Cắt ảnh"
+      title={t('IDS_WP_CROP_IMAGE')}
       onConfirm={() => cropImage(uploadImage)}
     >
-      <Container>
+      <div className="crop-image-container">
         <Cropper
           style={{ height: 230, width: '100%' }}
           aspectRatio={cropType === CROP_TYPE.LOGO ? 1 / 1 : 3 / 1}
@@ -156,13 +130,13 @@ function ImageCropper({ open, setOpen, image, uploadImage, cropType }) {
             />
           </div>
         )}
-        <PreviewBox>
+        <div className="preview-box">
           <ColorTypo uppercase color={'gray'}>
-            Xem trước
+            {t('IDS_WP_PREVIEW')}
           </ColorTypo>
           <div className="img-preview" />
-        </PreviewBox>
-      </Container>
+        </div>
+      </div>
     </CustomModal>
   );
 }

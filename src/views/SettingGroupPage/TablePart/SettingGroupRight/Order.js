@@ -76,7 +76,7 @@ const Order = props => {
   const handleDeleteOrder = async () => {
     try {
       await orderDeleteService({ order_id });
-      handleToast('success', 'Xóa đơn hàng thành công!');
+      handleToast('success', t('IDS_WP_DELETE_ORDER_SUCCESS'));
       handleFetchData();
     } catch (error) {
       handleToast('error', error.message);
@@ -85,7 +85,7 @@ const Order = props => {
   const handleExtendOrder = async () => {
     try {
       await extentOrderService({ order_id });
-      handleToast('success', 'Gia hạn đơn hàng thành công!');
+      handleToast('success', t('IDS_WP_RENEWAL_ORDER_SUCCESS'));
       handleFetchData();
     } catch (error) {
       handleToast('error', error.message);
@@ -112,46 +112,46 @@ const Order = props => {
           <TableRow>
             <TableCell className="table-cell-item head">No</TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Người tạo
+              {t('IDS_WP_CREATOR')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Ngày tạo
+              {t('IDS_WP_CREATE_DATE')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Mã đơn hàng
+              {t('IDS_WP_ORDER_CODE')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Gói sản phẩm
+              {t('IDS_WP_PRODUCT_PACKAGE')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Tài khoản kết nối
+              {t('IDS_WP_ACCOUNT_CONNECT')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Dung lượng lưu trữ
+              {t('IDS_WP_STORAGE')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Thời gian sử dụng
+              {t('IDS_WP_USE_TIME')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Ngày kích hoạt
+              {t('IDS_WP_ACTIVED_DATE')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Ngày hết hạn
+              {t('IDS_WP_EXPIRE_DATE')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Thời gian còn lại
+              {t('IDS_WP_TIME_REMAINING')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Trạng thái
+              {t('IDS_WP_STATUS_CONDITION')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Hóa đơn
+              {t('IDS_WP_BILL')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Giá trị (VND)
+              {t('IDS_WP_VALUE_VND')}
             </TableCell>
             <TableCell className="table-cell-item head" align="center">
-              Hoạt động
+              {t('IDS_WP_ACTION')}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -199,7 +199,7 @@ const Order = props => {
                     {el.size}
                   </TableCell>
                   <TableCell className="table-cell-item body" align="center">
-                    {el.day_use ? `${el.day_use} Ngày` : ''}
+                    {el.day_use ? `${el.day_use} ${t('IDS_WP_DAY')}` : ''}
                   </TableCell>
                   <TableCell className="table-cell-item body" align="center">
                     {row.active_at}
@@ -208,7 +208,7 @@ const Order = props => {
                     {el.expire_at}
                   </TableCell>
                   <TableCell className="table-cell-item body" align="center">
-                    {el.day_remain ? `${el.day_remain} Ngày` : ''}
+                    {el.day_remain ? `${el.day_remain} ${t('IDS_WP_DAY')}` : ''}
                   </TableCell>
                   <TableCell className="table-cell-item body" align="center">
                     <span style={{ color: getColorStatus(el.status_code) }}>
@@ -236,7 +236,7 @@ const Order = props => {
                             setExtend(true);
                           }}
                         >
-                          Gia hạn
+                          {t('IDS_WP_RENEWAL')}
                         </Button>
                       ) : (
                         !checkDisable(el.status_code) && (
@@ -251,7 +251,7 @@ const Order = props => {
                               setAlert(true);
                             }}
                           >
-                            Xóa
+                            {t('IDS_WP_DELETE')}
                           </Button>
                         )
                       )}
@@ -272,7 +272,7 @@ const Order = props => {
       <AlertModal
         open={alertExtend}
         setOpen={setExtend}
-        content={'Bạn muốn gia hạn đơn hàng?'}
+        content={t('IDS_WP_RENEWAL_ORDER_CONFIRM')}
         onConfirm={handleExtendOrder}
       />
     </Fragment>
