@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { withRouter } from 'react-router-dom';
 import ColorTypo from '../../../components/ColorTypo';
@@ -8,6 +9,7 @@ import NotificationRight from './NotificationRight';
 import { MESSAGE } from '../../../constants/constants';
 
 const TablePart = props => {
+  const { t } = useTranslation();
   const [isLoadMore, setLoadMore] = useState(false);
   const getContentSettingAccount = isLoadMore => {
     const type = props.match.params.type;
@@ -28,13 +30,13 @@ const TablePart = props => {
     const type = props.match.params.type;
     switch (type) {
       case MESSAGE.ALL:
-        return 'Tất cả tin nhắn';
+        return t('IDS_WP_ALL_MESSAGE');
       case MESSAGE.NEW:
-        return 'Tin nhắn chưa đọc';
+        return t('IDS_WP_NEW_MESSAGE');
       case MESSAGE.NOTICE_ALL:
-        return 'Tất cả thông báo';
+        return t('IDS_WP_ALL_NOTICE');
       case MESSAGE.NOTICE_NEW:
-        return 'Thông báo chưa đọc';
+        return t('IDS_WP_NEW_NOTICE');
       default:
         return null;
     }

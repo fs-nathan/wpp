@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
@@ -13,6 +14,7 @@ import { SETTING_ACCOUNT } from '../../../constants/constants';
 import { RightHeader } from '../../DocumentPage/TablePart/DocumentComponent/TableCommon';
 
 const TablePart = props => {
+  const { t } = useTranslation();
   const type = props.match.params.type;
   const search = props.location.search;
   const isNotiDetail =
@@ -39,16 +41,16 @@ const TablePart = props => {
     const search = props.location.search;
     switch (type) {
       case SETTING_ACCOUNT.INFO:
-        return 'Thông tin tài khoản';
+        return t('IDS_WP_ACCOUNT_INFO');
       case SETTING_ACCOUNT.CHANGE_PASSWORD:
-        return 'Đổi mật khẩu';
+        return t('IDS_WP_ACCOUNT_INFO');
       case SETTING_ACCOUNT.NOTIFICATION_WORKPLUS:
         if (isEmpty(search)) {
-          return 'Thông báo của WorkPlus';
+          return t('IDS_WP_NOTICE_WORKPLUS');
         }
-        return 'Chi tiết thông báo';
+        return t('IDS_WP_NOTICE_DETAIl');
       default:
-        return 'Quản lý ticket';
+        return '';
     }
   };
   return (

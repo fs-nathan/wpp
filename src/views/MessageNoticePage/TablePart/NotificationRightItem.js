@@ -21,11 +21,7 @@ const NotificationRightItem = props => {
         key={item.data_notification.id}
       >
         <div className="avatar-item-message">
-          <Avatar
-            alt="Remy Sharp"
-            src={item.user_from.avatar}
-            className="avatar"
-          />
+          <Avatar alt="avatar" src={item.user_from.avatar} className="avatar" />
           {!item.isViewed && <span className="badge-un-read"></span>}
         </div>
         <div className="text-description">

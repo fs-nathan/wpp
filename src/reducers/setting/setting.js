@@ -1,12 +1,15 @@
 import * as actionTypes from '../../constants/actions/setting/setting';
 import { SETTING_ACCOUNT, SETTING_GROUP } from '../../constants/constants';
+import { COLOR_ACTIVE } from '../../constants/actions/system/system';
 
 export const initialState = {
   isLoading: false,
   settingAccountType: SETTING_ACCOUNT.INFO,
   settingGroupType: SETTING_GROUP.INFO,
   notificationSelected: {},
-  colors: [{ color: '#01b374', selected: true }],
+  colors: [
+    { color: localStorage.getItem(COLOR_ACTIVE) || '#01b374', selected: true }
+  ],
   settingDate: [{ date_format: 'DD/MM/YYYY', selected: true }],
   orders: [],
   bill: {},

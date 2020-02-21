@@ -26,6 +26,7 @@ const system = (state = initialState, action) => {
     case actionTypes.CHANGE_NOTICE_MODAL:
       return { ...state, visibleNoticeModal: action.payload };
     case actionTypes.GROUP_ACTIVE:
+      localStorage.setItem(actionTypes.COLOR_ACTIVE, action.payload.color);
       return { ...state, groupActive: action.payload };
     case actionTypes.CHANGE_DOCUMENT_DETAIL:
       return {

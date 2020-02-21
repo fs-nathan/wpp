@@ -51,7 +51,7 @@ export const CustomAvatar = props => (
   <Avatar
     alt="avatar"
     title={props.title || ''}
-    className={`custom-avatar-image ${(props.icsmall ? 'ic-small' : '')}`}
+    className={`custom-avatar-image ${props.icsmall ? 'ic-small' : ''}`}
     {...props}
   />
 );
@@ -114,11 +114,6 @@ export const selectAllRedux = (e, data) => {
   return [];
 };
 export const GreenCheckbox = withStyles({
-  root: {
-    color: '#d9d9d9'
-    // '&$checked': {
-    //   color: '#06c30e'
-    // }
-  },
+  root: { color: '#d9d9d9' },
   checked: {}
 })(props => <Checkbox color="primary" {...props} />);

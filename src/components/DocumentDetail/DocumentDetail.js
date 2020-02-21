@@ -8,7 +8,6 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Badge,
   Menu,
   Button,
   MenuItem
@@ -65,10 +64,7 @@ const DocumentDetail = props => {
     if (!fileInfo.isGoogleDocument) handleFetchData();
     // eslint-disable-next-line
   }, [fileInfo]);
-  useEffect(() => {
-    if (!isEmpty(fileInfo)) handleViewFile();
-    // eslint-disable-next-line
-  }, []);
+
   const handleViewFile = async () => {
     try {
       await actionViewFile(fileInfo.id);
@@ -78,6 +74,7 @@ const DocumentDetail = props => {
   const handleFetchData = async () => {
     try {
       const { data } = await getDocumentDetail({ file_id: fileInfo.id });
+      handleViewFile();
       setFileDetail(data.file);
     } catch (err) {}
   };
@@ -463,7 +460,7 @@ const DocumentDetail = props => {
       <AlertModal
         open={alert}
         setOpen={setAlert}
-        content={t('viIDS_WP_ALERT_CONTENT')}
+        content={t('IDS_WP_ALERT_CONTENT')}
         onConfirm={handleDeleteFile}
       />
       {visible && (

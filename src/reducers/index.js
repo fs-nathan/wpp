@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import authentications, { initialState as authenticationsInitialState } from './authentications';
 import system, { initialState as systemInitialState } from './system/system';
+import chat, { initialState as chatInitialState } from './chat/chat';
 import setting, { initialState as settingInitialState } from './setting/setting';
 import listRoom, { initialState as listRoomInitialState } from './room/listRoom';
 import detailRoom, { initialState as detailRoomInitialState } from './room/detailRoom';
@@ -102,6 +103,7 @@ import listGroupTask from './taskDetail/listGroupTask'
 
 const rootReducer = combineReducers({
   authentications,
+  chat,
   system,
   setting,
   documents,
@@ -233,6 +235,7 @@ const rootReducer = combineReducers({
 
 export const DEFAULT_STATE = {
   authentications: authenticationsInitialState,
+  chat: chatInitialState,
   system: systemInitialState,
   setting: settingInitialState,
   room: {

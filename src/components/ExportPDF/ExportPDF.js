@@ -1,64 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import moment from 'moment';
-
+import { withTranslation } from 'react-i18next';
 import * as images from '../../assets';
 import './ExportPDF.scss';
 import { isEmpty } from '../../helpers/utils/isEmpty';
 
-const TableStyled1 = styled.table`
-  display: table;
-  margin-bottom: 30px;
-  width: 100%;
-  table-layout: fixed;
-  border-spacing: 0;
-`;
-
-const ThStyled1 = styled.th`
-  -webkit-print-color-adjust: exact !important;
-  background: #e2efda;
-  text-align: center;
-  padding: 10px;
-`;
-
-const TdStyled1 = styled.td`
-  border-bottom: 2px solid #000;
-  color: #f50016;
-  text-align: center;
-  padding: 10px;
-`;
-
-const TableStyled2 = styled.table`
-  display: table;
-  width: 100%;
-  border-spacing: 0;
-`;
-
-const ThStyled2 = styled.th`
-  border-bottom: 2px solid #9e9e9e;
-  -webkit-print-color-adjust: exact !important;
-  background: #e2efda;
-  text-align: center;
-  padding: 10px;
-`;
-
-const TdStyled2 = styled.td`
-  border-bottom: 1px solid #ddd;
-  text-align: center;
-  padding: 15px 10px;
-  font-weight: bold;
-`;
-
-const TdStyled3 = styled.td`
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-  padding: 15px 10px;
-`;
-const TdStyled4 = styled.td`
-  border-bottom: 1px solid #ddd;
-  text-align: center;
-  padding: 15px 10px;
-`;
 class ExportPDF extends Component {
   getDateGift = dateUse => {
     if (dateUse >= 12 && dateUse < 24) {
@@ -87,7 +33,8 @@ class ExportPDF extends Component {
       dataBeforOder,
       dayBonus,
       bonusCode,
-      dataNumberOldOder
+      dataNumberOldOder,
+      t
     } = this.props;
 
     let pricePacketUser = 50000; //a
@@ -177,36 +124,38 @@ class ExportPDF extends Component {
                     />
                   </div>
                   <div className="title-head-left-right">
-                    Phúc An Technology and Tradding
+                    {t('IDS_WP_COMPANY_NAME_REAL')}
                   </div>
                   <div className="infor-address-tel">
-                    Add: No. 3/259, Dinh Cong Street, Hoang Mai District, Hanoi
+                    {t('IDS_WP_COMPANY_ADD_REAL')}
                   </div>
                   <div className="infor-address-tel">
-                    Tel: 024.6326.5870 - Hotline: 09.1800.6181
+                    {t('IDS_WP_COMPANY_PHONE_REAL')}
                   </div>
                   <div className="infor-email">
-                    Website: workplus.vn - Email: info@workplus.vn
+                    {t('IDS_WP_COMPANY_WEB_REAL')}
                   </div>
                 </div>
                 <div className="head-left-right">
-                  <div className="infor-right">Thông tin đơn hàng workplus</div>
+                  <div className="infor-right">
+                    {t('IDS_WP_ORDER_INFO_WORKPLUS')}
+                  </div>
                   <div className="infor-right-oder">
-                    Mã đơn hàng:{' '}
+                    {t('IDS_WP_ORDER_CODE')}:{' '}
                     {isCreate ? dataBeforOder.code : orderItem.code}
                   </div>
                   <div className="infor-right-oder">
-                    Ngày tạo:{' '}
+                    {t('IDS_WP_CREATE_DATE')}:{' '}
                     {isCreate
                       ? moment().format('DD/MM/YYYY')
                       : orderItem.create_at}
                   </div>
                   <div className="infor-right-oder">
-                    Tổng giá trị đơn hàng:&nbsp;
+                    {t('IDS_WP_VALUE_TOTAL_ORDER')}:&nbsp;
                     {isCreate
                       ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
                       : this.showPrice(orderItem.price || 0)}
-                    VND
+                    {t('IDS_WP_CURRENT_UNIT')}
                   </div>
                   <div className="status-oder">
                     <span
@@ -218,33 +167,37 @@ class ExportPDF extends Component {
                           : ''
                       }`}
                     >
-                      {isCreate ? 'CHƯA THANH TOÁN' : orderItem.status_payment}
+                      {isCreate
+                        ? t('IDS_WP_NOT_PAID')
+                        : orderItem.status_payment}
                     </span>
                   </div>
                 </div>
               </div>
               <div className="print-body">
-                <TableStyled1>
+                <table className="TableStyled1">
                   <thead>
                     <tr>
-                      <ThStyled1>Mã đơn hàng</ThStyled1>
-                      <ThStyled1>Ngày tạo</ThStyled1>
-                      <ThStyled1>Gói sản phẩm</ThStyled1>
-                      <ThStyled1>Thanh toán</ThStyled1>
-                      <ThStyled1>Thành tiền</ThStyled1>
+                      <th className="ThStyled1">{t('IDS_WP_ORDER_CODE')}</th>
+                      <th className="ThStyled1">{t('IDS_WP_CREATE_DATE')}</th>
+                      <th className="ThStyled1">
+                        {t('IDS_WP_PRODUCT_PACKAGE')}
+                      </th>
+                      <th className="ThStyled1">{t('IDS_WP_PAYMENT')}</th>
+                      <th className="ThStyled1">{t('IDS_WP_INTO_MONEY')}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <TdStyled1>
+                      <td className="TdStyled1">
                         {isCreate ? dataBeforOder.code : orderItem.code}
-                      </TdStyled1>
-                      <TdStyled1>
+                      </td>
+                      <td className="TdStyled1">
                         {isCreate
                           ? moment().format('DD/MM/YYYY')
                           : orderItem.create_at}
-                      </TdStyled1>
-                      <TdStyled1>
+                      </td>
+                      <td className="TdStyled1">
                         <React.Fragment>
                           {(isCheckedManagerWork || !isEmpty(orderItem)) && (
                             <p>
@@ -252,7 +205,7 @@ class ExportPDF extends Component {
                                 ? numAcc
                                 : orderItem.packet_user.buy_info
                                     .number_user}{' '}
-                              USER
+                              {t('IDS_WP_USER_UNIT')}
                             </p>
                           )}
                           {(isCheckedBuyData || !isEmpty(orderItem)) && (
@@ -266,164 +219,164 @@ class ExportPDF extends Component {
                             </p>
                           )}
                         </React.Fragment>
-                      </TdStyled1>
-                      <TdStyled1>Tiền mặt</TdStyled1>
-                      <TdStyled1>
+                      </td>
+                      <td className="TdStyled1">{t('IDS_WP_CASH')}</td>
+                      <td className="TdStyled1">
                         {isCreate
                           ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
                           : this.showPrice(orderItem.price || 0)}{' '}
-                      </TdStyled1>
+                      </td>
                     </tr>
                   </tbody>
-                </TableStyled1>
+                </table>
 
-                <TableStyled2>
+                <table className="TableStyled2">
                   <thead>
                     <tr>
-                      <ThStyled2 className="number-stt">TT</ThStyled2>
-                      <ThStyled2 className="detail-order">
-                        Chi tiết dịch vụ
-                      </ThStyled2>
-                      <ThStyled2 className="value-order">
-                        Đơn giá (VNĐ)
-                      </ThStyled2>
-                      <ThStyled2 className="value-order">Số lượng</ThStyled2>
-                      <ThStyled2 className="value-order">
-                        Thời gian (Tháng)
-                      </ThStyled2>
-                      <ThStyled2 className="value-order">
-                        Thành tiền (VNĐ)
-                      </ThStyled2>
+                      <th className="ThStyled2 number-stt">TT</th>
+                      <th className="ThStyled2 detail-order">
+                        {t('IDS_WP_SERVICE_DETAIL')}
+                      </th>
+                      <th className="ThStyled2 value-order">
+                        {t('IDS_WP_UNIT_PRICE')} ({t('IDS_WP_CURRENT_UNIT')})
+                      </th>
+                      <th className="ThStyled2 value-order">
+                        {t('IDS_WP_AMOUNT')}
+                      </th>
+                      <th className="ThStyled2 value-order">
+                        {t('IDS_WP_TIME')} ({t('IDS_WP_MONTH')})
+                      </th>
+                      <th className="ThStyled2 value-order">
+                        {t('IDS_WP_INTO_MONEY')} ({t('IDS_WP_CURRENT_UNIT')})
+                      </th>
                     </tr>
                   </thead>
 
                   <tbody>
                     {(isCheckedManagerWork || !isEmpty(orderItem)) && (
                       <React.Fragment>
-                        <tr style={{ background: '#f2f2f2' }}>
-                          <TdStyled2 className="number-stt">1</TdStyled2>
-                          <TdStyled3 className="detail-order">
+                        <tr className="text-color-1">
+                          <td className="TdStyled2 number-stt">1</td>
+                          <td className="TdStyled3 detail-order">
                             <div className="">
-                              <div style={{ fontWeight: 'bold' }}>
-                                Gói sản phẩm:{' '}
+                              <div className="text-bold">
+                                {t('IDS_WP_PRODUCT_PACKAGE')}:{' '}
                                 {isCreate
                                   ? numAcc
                                   : orderItem.packet_user.buy_info
                                       .number_user}{' '}
-                                USER
+                                {t('IDS_WP_USER_UNIT')}
                               </div>
-                              <div style={{ color: '#1f9de0' }}>
-                                Thời gian sử dụng: {totalDataUse} tháng <br />
-                                (Kể từ ngày thanh toán)
+                              <div className="text-color-2">
+                                {t('IDS_WP_USE_TIME')}: {totalDataUse}{' '}
+                                {t('IDS_WP_MONTH_UNIT')} <br />(
+                                {t('IDS_WP_FROM_PAID_DAY')})
                               </div>
                             </div>
-                          </TdStyled3>
-                          <TdStyled2 className="value-order"></TdStyled2>
-                          <TdStyled2 className="value-order"></TdStyled2>
-                          <TdStyled2 className="value-order">
+                          </td>
+                          <td className="TdStyled2 value-order"></td>
+                          <td className="TdStyled2 value-order"></td>
+                          <td className="TdStyled2 value-order">
                             {totalDataUse}
-                          </TdStyled2>
-                          <TdStyled2 className="value-order">
+                          </td>
+                          <td className="TdStyled2 value-order">
                             {this.showPrice(moneyPacketUser)}
-                          </TdStyled2>
+                          </td>
                         </tr>
                         <tr>
-                          <TdStyled2 className="number-stt"></TdStyled2>
-                          <TdStyled3 className="detail-order">
+                          <td className="TdStyled2 number-stt"></td>
+                          <td className="TdStyled3 detail-order">
                             <div className="">
                               <div>
-                                Đăng ký gói sản phầm{' '}
+                                {t('IDS_WP_REGISTER_PACKAGE')}{' '}
                                 {isCreate
                                   ? numAcc
                                   : orderItem.packet_user.buy_info.number_user}
-                                -USER
+                                - {t('IDS_WP_USER_UNIT')}
                               </div>
                               <div>
-                                Số lượng USER:{' '}
+                                {t('IDS_WP_AMOUNT')} {t('IDS_WP_USER_UNIT')}:{' '}
                                 {isCreate
                                   ? numAcc
                                   : orderItem.packet_user.buy_info.number_user}
                               </div>
                               <div>
-                                Dung lượng lưu trữ:{' '}
+                                {t('IDS_WP_STORAGE')}:{' '}
                                 {isCreate
                                   ? `${numAcc} GB`
                                   : orderItem.packet_user.buy_info.size}
                               </div>
                               <div>
-                                Thời gian sử dụng:{' '}
+                                {t('IDS_WP_USE_TIME')}:{' '}
                                 {isCreate
                                   ? dateUse
                                   : orderItem.packet_user.buy_info.day /
                                     30}{' '}
-                                tháng
+                                {t('IDS_WP_MONTH_UNIT')}
                               </div>
                             </div>
-                          </TdStyled3>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">
                             {this.showPrice(
                               isCreate
                                 ? pricePacketUser
                                 : orderItem.packet_user.buy_info.unit_price
                             )}
-                          </TdStyled4>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">
                             {isCreate
                               ? numAcc
                               : orderItem.packet_user.buy_info.number_user}
-                          </TdStyled4>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">
                             {isCreate
                               ? dateUse
                               : orderItem.packet_user.buy_info.day / 30}
-                          </TdStyled4>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">
                             {this.showPrice(moneyPacketUser)}
-                          </TdStyled4>
+                          </td>
                         </tr>
                         <tr>
-                          <TdStyled2 className="number-stt"></TdStyled2>
-                          <TdStyled3 className="detail-order">
+                          <td className="TdStyled2 number-stt"></td>
+                          <td className="TdStyled3 detail-order">
                             <div className="">
-                              <div>Thời gian cộng thêm từ đơn hàng cũ</div>
+                              <div>{t('IDS_WP_TIME_FROM_OLD_ORDER')}</div>
                             </div>
-                          </TdStyled3>
-                          <TdStyled4>-</TdStyled4>
-                          <TdStyled4>-</TdStyled4>
-                          <TdStyled4>{datePlusOderBefor}</TdStyled4>
-                          <TdStyled4>-</TdStyled4>
+                          </td>
+                          <td className="TdStyled4">-</td>
+                          <td className="TdStyled4">-</td>
+                          <td className="TdStyled4">{datePlusOderBefor}</td>
+                          <td className="TdStyled4">-</td>
                         </tr>
                         <tr>
-                          <TdStyled2 className="number-stt"></TdStyled2>
-                          <TdStyled3 className="detail-order">
+                          <td className="TdStyled2 number-stt"></td>
+                          <td className="detail-order">
+                            <div className="">
+                              <div>{t('IDS_WP_TIME_DONATE')}</div>
+                            </div>
+                          </td>
+                          <td className="TdStyled4">-</td>
+                          <td className="TdStyled4">-</td>
+                          <td className="TdStyled4">{dateGift}</td>
+                          <td className="TdStyled4">-</td>
+                        </tr>
+                        <tr>
+                          <td className="TdStyled2 number-stt"></td>
+                          <td className="TdStyled3 detail-order">
                             <div className="">
                               <div>
-                                Tặng thời gian sử dụng do kỳ thanh toán: 12
-                                tháng
-                              </div>
-                            </div>
-                          </TdStyled3>
-                          <TdStyled4>-</TdStyled4>
-                          <TdStyled4>-</TdStyled4>
-                          <TdStyled4>{dateGift}</TdStyled4>
-                          <TdStyled4>-</TdStyled4>
-                        </tr>
-                        <tr>
-                          <TdStyled2 className="number-stt"></TdStyled2>
-                          <TdStyled3 className="detail-order">
-                            <div className="">
-                              <div>
-                                Mã khuyến mại:{' '}
+                                {t('IDS_WP_PROMOTION_CODE')}:{' '}
                                 {isCreate
                                   ? bonusCode
                                   : orderItem.packet_user.promotion_code}
                               </div>
                             </div>
-                          </TdStyled3>
-                          <TdStyled4>-</TdStyled4>
-                          <TdStyled4>-</TdStyled4>
-                          <TdStyled4>{date3MO}</TdStyled4>
-                          <TdStyled4>-</TdStyled4>
+                          </td>
+                          <td className="TdStyled4">-</td>
+                          <td className="TdStyled4">-</td>
+                          <td className="TdStyled4">{date3MO}</td>
+                          <td className="TdStyled4">-</td>
                         </tr>
                       </React.Fragment>
                     )}
@@ -431,46 +384,51 @@ class ExportPDF extends Component {
                       (!isEmpty(orderItem) &&
                         !isEmpty(orderItem.packet_storage))) && (
                       <React.Fragment>
-                        <tr style={{ background: '#f2f2f2' }}>
-                          <TdStyled2 className="number-stt">
-                            {isCheckedManagerWork ? 2 : 1}
-                          </TdStyled2>
-                          <TdStyled3 className="detail-order">
+                        <tr className="text-color-1">
+                          <td className="TdStyled2 number-stt">
+                            {isCheckedManagerWork ||
+                            (!isEmpty(orderItem) &&
+                              !isEmpty(orderItem.packet_user))
+                              ? 2
+                              : 1}
+                          </td>
+                          <td className="TdStyled3 detail-order">
                             <div className="">
-                              <div style={{ fontWeight: 'bold' }}>
-                                Gói sản phầm: CS-
+                              <div className="text-bold">
+                                {t('IDS_WP_PACKAGE')}: CS-
                                 {isCreate
                                   ? dataBuy
                                   : orderItem.packet_storage.name
                                       .split('-')
                                       .pop()}
                               </div>
-                              <div style={{ color: '#1f9de0' }}>
-                                Thời gian{' '}
+                              <div className="text-color-2">
+                                {t('IDS_WP_TIME')}{' '}
                                 {isCreate
                                   ? dateSave
                                   : orderItem.packet_storage.buy_info.day /
                                     30}{' '}
-                                tháng
+                                {t('IDS_WP_MONTH_UNIT')}
                               </div>
-                              <div style={{ color: '#1f9de0' }}>
-                                (Kể từ ngày thanh toán)
+                              <div className="text-color-2">
+                                ({t('IDS_WP_FROM_PAID_DAY')})
                               </div>
                             </div>
-                          </TdStyled3>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled2>{totalDateData}</TdStyled2>
-                          <TdStyled2>
+                          </td>
+                          <td className="TdStyled2"></td>
+                          <td className="TdStyled2"></td>
+                          <td className="TdStyled2">{totalDateData}</td>
+                          <td className="TdStyled2">
                             {this.showPrice(moneyPacketData)}
-                          </TdStyled2>
+                          </td>
                         </tr>
                         <tr>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled3 className="detail-order">
+                          <td className="TdStyled2"></td>
+                          <td className="TdStyled3 detail-order">
                             <div className="">
                               <div>
-                                Đăng ký gói mở rộng: Cloud Storage (CS-
+                                {t('IDS_WP_REGISTER_PACKAGE_OPEN')}: Cloud
+                                Storage (CS-
                                 {isCreate
                                   ? dataBuy
                                   : orderItem.packet_storage.name
@@ -479,7 +437,7 @@ class ExportPDF extends Component {
                                 )
                               </div>
                               <div>
-                                Mua thêm dung lượng lưu trữ:{' '}
+                                {t('IDS_WP_BUY_STORAGE_OTHER')}:{' '}
                                 {isCreate
                                   ? dataBuy
                                   : orderItem.packet_storage.name
@@ -488,57 +446,59 @@ class ExportPDF extends Component {
                                 GB
                               </div>
                             </div>
-                          </TdStyled3>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">
                             {this.showPrice(
                               isCreate
                                 ? pricePacketData
                                 : orderItem.packet_storage.buy_info
                                     .unit_price || 0
                             )}
-                          </TdStyled4>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">
                             {isCreate
                               ? dataBuy
                               : orderItem.packet_storage.name.split('-').pop()}
-                          </TdStyled4>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">
                             {isCreate
                               ? dateSave
                               : orderItem.packet_storage.buy_info.day / 30}
-                          </TdStyled4>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">
                             {this.showPrice(moneyPacketData)}
-                          </TdStyled4>
+                          </td>
                         </tr>
                         <tr>
-                          <TdStyled2></TdStyled2>
-                          <TdStyled3 className="detail-order">
+                          <td className="TdStyled2"></td>
+                          <td className="TdStyled3 detail-order">
                             <div className="">
-                              <div>Thời gian cộng thêm từ đơn hàng cũ</div>
+                              <div>{t('IDS_WP_TIME_FROM_OLD_ORDER')}</div>
                             </div>
-                          </TdStyled3>
-                          <TdStyled4>-</TdStyled4>
-                          <TdStyled4>-</TdStyled4>
-                          <TdStyled4>
+                          </td>
+                          <td className="TdStyled4">-</td>
+                          <td className="TdStyled4">-</td>
+                          <td className="TdStyled4">
                             {isCreate
                               ? packetStorageBefor
-                              : orderItem.packet_storage.day_from_old_order /
-                                30}
-                          </TdStyled4>
-                          <TdStyled4>-</TdStyled4>
+                              : (
+                                  orderItem.packet_storage.day_from_old_order /
+                                  30
+                                ).toFixed(1)}
+                          </td>
+                          <td className="TdStyled4">-</td>
                         </tr>
                       </React.Fragment>
                     )}
                   </tbody>
-                </TableStyled2>
+                </table>
 
                 <div className="total-group">
-                  <div style={{ width: '30%' }}></div>
-                  <div style={{ width: '70%' }}>
+                  <div className="width-30"></div>
+                  <div className="width-70">
                     <div className="item-total-group">
-                      <span style={{ width: '70%', textAlign: 'right' }}>
-                        Tổng giá trị trước thuế (I+II)
+                      <span className="order-value">
+                        {t('IDS_WP_VALUE_BEFORE_TAX')} (I+II)
                       </span>
                       <span>
                         {isCreate
@@ -547,8 +507,8 @@ class ExportPDF extends Component {
                       </span>
                     </div>
                     <div className="item-total-group">
-                      <span style={{ width: '70%', textAlign: 'right' }}>
-                        Thuế VAT (10%)
+                      <span className="order-value">
+                        {t('IDS_WP_VAT_TAX')} (10%)
                       </span>
                       <span>
                         {isCreate
@@ -557,10 +517,10 @@ class ExportPDF extends Component {
                       </span>
                     </div>
                     <div className="item-total-group">
-                      <span style={{ width: '70%', textAlign: 'right' }}>
-                        Giá trị đơn hàng
+                      <span className="order-value">
+                        {t('IDS_WP_VALUE_ORDER')}
                       </span>
-                      <span style={{ fontWeight: 'bold', color: '#f50016' }}>
+                      <span className="price-value">
                         {isCreate
                           ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
                           : orderItem.price}
@@ -568,31 +528,15 @@ class ExportPDF extends Component {
                     </div>
                   </div>
                 </div>
-                <div style={{ marginTop: 30 }}>
-                  <p style={{ fontWeight: 'bold', marginBottom: 10 }}>
-                    GHI CHÚ:
+                <div className="top-margin-30">
+                  <p className="text-bold bottom-margin-10">
+                    {t('IDS_WP_ORDER_NOTE')}:
                   </p>
-                  <p style={{ marginBottom: 10 }}>
-                    Đơn hàng được tạo trực tuyến trên hệ thống phần mềm quản lý
-                    công việc Workplus.vn
-                  </p>
-                  <p style={{ marginBottom: 10 }}>
-                    Toàn bộ đơn hàng trên Workplus được thanh toán bằng chuyển
-                    khoản
-                  </p>
-                  <p style={{ marginBottom: 10 }}>
-                    Khách hàng vui lòng xác nhận mọi thông tin trước khi thanh
-                    toán. Workplus không chịu trách nhiệm nếu thông tin thanh
-                    toán không phải do chúng tôi cung cấp.
-                  </p>
-                  <p style={{ marginBottom: 10 }}>
-                    Các chương trình khuyến mại chỉ áp dụng trong từng thời điểm
-                    và không cam kết lâu dài.
-                  </p>
-                  <p style={{ marginBottom: 10 }}>
-                    Mọi thắc mắc liên quan đến thanh toán đơn hàng vui lòng liên
-                    hệ: Hotline: 09.1800.6181 - Email: support@workplus.vn
-                  </p>
+                  <p className="bottom-margin-10">{t('IDS_WP_ORDER_NOTE_1')}</p>
+                  <p className="bottom-margin-10">{t('IDS_WP_ORDER_NOTE_2')}</p>
+                  <p className="bottom-margin-10">{t('IDS_WP_ORDER_NOTE_3')}</p>
+                  <p className="bottom-margin-10">{t('IDS_WP_ORDER_NOTE_4')}</p>
+                  <p className="bottom-margin-10">{t('IDS_WP_ORDER_NOTE_5')}</p>
                 </div>
               </div>
             </div>
@@ -602,4 +546,4 @@ class ExportPDF extends Component {
     );
   }
 }
-export default ExportPDF;
+export default withTranslation()(ExportPDF);

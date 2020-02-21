@@ -75,7 +75,7 @@ const ConfirmRegistration = props => {
       if (!isEmpty(data.data)) {
         props.actionActiveGroup(data.data.group_active);
       }
-      if (data.data.type === 'Free') {
+      if (data.data.group_active && data.data.group_active.type === 'Free') {
         props.openNoticeModal();
       }
       props.loginSuccess(res.data);
@@ -265,10 +265,7 @@ const ConfirmRegistration = props => {
                   autoComplete="new-password"
                   placeholder={t('IDS_WP_RE_INPUT_PASSWORD')}
                   onBlur={handleCheckPwd}
-                  inputProps={{
-                    maxLength: 20,
-                    minLength: 8
-                  }}
+                  inputProps={{ maxLength: 20, minLength: 8 }}
                   startAdornment={
                     <InputAdornment position="start">
                       <Icon

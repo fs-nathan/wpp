@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -15,6 +16,7 @@ import * as images from '../../assets';
 import { actionVisibleDrawerMessage } from '../../actions/system/system';
 
 const GroupModal = props => {
+  const { t } = useTranslation();
   const { groupDetail: inforGroup } = props;
 
   const closeNoticeModal = () => {
@@ -40,7 +42,7 @@ const GroupModal = props => {
         id="customized-dialog-title"
         className="title-dialog"
       >
-        <Typography variant="h6">Thông tin nhóm</Typography>
+        <Typography variant="h6">{t('IDS_WP_GROUP_INFO')}</Typography>
         <IconButton aria-label="close" onClick={closeNoticeModal}>
           <CloseIcon />
         </IconButton>
@@ -76,7 +78,7 @@ const GroupModal = props => {
             closeNoticeModal();
           }}
         >
-          Chỉnh sửa thông tin nhóm
+          {t('IDS_WP_EDIT_GROUP_INFO')}
         </Button>
       </MuiDialogActions>
     </Dialog>

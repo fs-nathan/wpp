@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, Divider } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
+import Icon from '@mdi/react';
+import { mdiContentCopy } from '@mdi/js';
 import { connect } from 'react-redux';
 import {
   actionFetchGroupDetail,
@@ -22,11 +25,9 @@ import LoadingContent from '../../../../components/LoadingContent';
 import PickColorModal from './PickColorModal';
 import './SettingGroupRight.scss';
 
-const CROP_TYPE = {
-  LOGO: 'LOGO',
-  COVER: 'COVER'
-};
+const CROP_TYPE = { LOGO: 'LOGO', COVER: 'COVER' };
 const Info = props => {
+  const { t } = useTranslation();
   const { isLoading, groupDetail } = props;
 
   const [editMode, setEditMode] = useState(false);
@@ -78,7 +79,7 @@ const Info = props => {
         props.actionGetProfile(res.data.data);
         props.actionActiveGroup(res.data.data.group_active);
       }
-      handleToast('success', 'Thay đổi thông tin nhóm thành công!');
+      handleToast('success', t('IDS_WP_CHANGE_INFO_GROUP_SUCCESS'));
       setEditMode(false);
     } catch (error) {
       handleToast('error', error.message);
@@ -197,19 +198,37 @@ const Info = props => {
       setUpdatingImg(false);
     }
   };
-
+  const handleCopyText = text => {
+    window.navigator.clipboard.writeText(text);
+    handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${text}`);
+  };
   return (
     <div className="setting-group-info">
       <div className="group-info-left">
         <LoadingContent loading={isLoading || false}>
-          <p className="code-group-text">ID: {groupInfo.code}</p>
+          <p className="code-group-text">
+            ID: {groupInfo.code}&nbsp;
+            <Icon
+              path={mdiContentCopy}
+              size={1}
+              color="#a5a5a5"
+              className="cursor-pointer"
+              title={t('IDS_WP_COPY_TEXT_CLIPBOARD')}
+              onClick={e => {
+                handleCopyText(groupInfo.code);
+                e.stopPropagation();
+              }}
+            />
+          </p>
           <form className="form-group-info" onSubmit={handleUpdateGroup}>
             <TextField
               id="groupName"
               label={
                 <span>
-                  Tên nhóm
-                  <i className="lb-secondary">(tối đa 120 ký tự)</i>
+                  {t('IDS_WP_GROUP_NAME')}
+                  <i className="lb-secondary">
+                    ({t('IDS_WP_GROUP_NAME_LIMIT')})
+                  </i>
                 </span>
               }
               fullWidth
@@ -229,8 +248,10 @@ const Info = props => {
               id="groupDes"
               label={
                 <span>
-                  Mô tả nhóm
-                  <i className="lb-secondary">(tối đa 300 ký tự)</i>
+                  {t('IDS_WP_GROUP_DES')}
+                  <i className="lb-secondary">
+                    ({t('IDS_WP_GROUP_DES_LIMIT')})
+                  </i>
                 </span>
               }
               fullWidth
@@ -253,8 +274,10 @@ const Info = props => {
               id="slogan"
               label={
                 <span>
-                  Slogan nhóm
-                  <i className="lb-secondary">(tối đa 160 ký tự)</i>
+                  {t('IDS_WP_GROUP_SLOGAN')}
+                  <i className="lb-secondary">
+                    ({t('IDS_WP_GROUP_SLOGAN_LIMIT')})
+                  </i>
                 </span>
               }
               fullWidth
@@ -270,12 +293,10 @@ const Info = props => {
             />
             <TextField
               id="address"
-              label="Địa chỉ"
+              label={t('IDS_WP_ADDRESS')}
               fullWidth
               margin="normal"
-              InputLabelProps={{
-                shrink: true
-              }}
+              InputLabelProps={{ shrink: true }}
               disabled={!editMode}
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'address')}
@@ -288,9 +309,7 @@ const Info = props => {
               label="Website"
               fullWidth
               margin="normal"
-              InputLabelProps={{
-                shrink: true
-              }}
+              InputLabelProps={{ shrink: true }}
               disabled={!editMode}
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'website')}
@@ -298,12 +317,10 @@ const Info = props => {
             />
             <TextField
               id="phoneNumber"
-              label="Điện thoại"
+              label={t('IDS_WP_PHONE')}
               fullWidth
               margin="normal"
-              InputLabelProps={{
-                shrink: true
-              }}
+              InputLabelProps={{ shrink: true }}
               disabled={!editMode}
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'phone')}
@@ -314,12 +331,8 @@ const Info = props => {
               label="Email"
               fullWidth
               margin="normal"
-              InputLabelProps={{
-                shrink: true
-              }}
-              inputProps={{
-                type: 'email'
-              }}
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ type: 'email' }}
               disabled={!editMode}
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'email')}
@@ -331,7 +344,7 @@ const Info = props => {
                 className="btn-action none-boxshadow"
                 type="submit"
               >
-                {editMode ? 'Lưu' : ' Chỉnh sửa'}
+                {editMode ? t('IDS_WP_SAVE') : t('IDS_WP_EDIT_TEXT')}
               </Button>
               {editMode && (
                 <Button
@@ -342,7 +355,7 @@ const Info = props => {
                     setEditMode(false);
                   }}
                 >
-                  Hủy
+                  {t('IDS_WP_CANCEL')}
                 </Button>
               )}
             </div>

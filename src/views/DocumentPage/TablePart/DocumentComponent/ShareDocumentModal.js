@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { Avatar } from '@material-ui/core';
@@ -35,6 +36,7 @@ import {
 
 let originListMember = [];
 const ShareDocumentModal = props => {
+  const { t } = useTranslation();
   const { pathname } = props.location;
   const { item } = props;
   const [searchValue, setSearchValue] = useState('');
@@ -140,7 +142,7 @@ const ShareDocumentModal = props => {
 
   const fetDataForShare = async () => {
     try {
-      if (item.isGoogleDocument) {
+      if (item.isGoogleDocument || item.document_type === 2) {
         const [data1, data2] = await Promise.all([
           getMemberShareGoogleFile({ file_id: item.id }),
           getMemberSharedGoogleFile({ file_id: item.id })
@@ -240,23 +242,27 @@ const ShareDocumentModal = props => {
 
   return (
     <ModalCommon
-      title="Chia sẻ tài liệu"
+      title={t('IDS_WP_SHARE_DOCUMENT')}
       onClose={() => {
         props.onClose();
         handleShare();
       }}
       type="share"
-      footerAction={[{ name: 'Thoát', action: handleShare, type: 'cancel' }]}
+      footerAction={[
+        { name: t('IDS_WP_EXIT'), action: handleShare, type: 'cancel' }
+      ]}
       maxWidth="md"
     >
       <DialogContent dividers className="dialog-content share-doc">
         <div className="left-share-doc">
           <div className="title-left-share">
-            <span className="text-title-left-share">Danh sách thành viên</span>
+            <span className="text-title-left-share">
+              {t('IDS_WP_MEMBER_LIST')}
+            </span>
           </div>
           <div className="header-share-doc">
             <SearchInput
-              placeholder="Nhập nội dung cần tìm"
+              placeholder={t('IDS_WP_INPUT_SEARCH')}
               value={searchValue}
               onChange={handleChangeSearch}
             />
@@ -280,8 +286,12 @@ const ShareDocumentModal = props => {
                         />
                       )}
                       <div className="info-left-item">
-                        <div className="name-member">{item.member_name}</div>
-                        <div className="email-member">{item.member_email}</div>
+                        <div className="name-member" title={item.member_name}>
+                          {item.member_name}
+                        </div>
+                        <div className="email-member" title={item.member_email}>
+                          {item.member_email}
+                        </div>
                       </div>
                     </div>
                     <div className="right-item">
@@ -296,7 +306,7 @@ const ShareDocumentModal = props => {
                           )
                         }
                       >
-                        Chia sẻ
+                        {t('IDS_WP_SHARE')}
                       </Button>
                     </div>
                   </StyledListItem>
@@ -308,15 +318,15 @@ const ShareDocumentModal = props => {
         <div className="right-share-doc">
           <div className="title-left-share">
             <span className="text-title-left-share">
-              Thành viên được chia sẻ
+              {t('IDS_WP_MEMBER_SHARED')}
             </span>
           </div>
           <div className="header-share-doc">
             <div className="left-content">
-              <span className="text-title">Thành Viên</span>
+              <span className="text-title">{t('IDS_WP_MEMBER')}</span>
             </div>
             <div className="right-content">
-              <span className="text-title">Ngày chia sẻ</span>
+              <span className="text-title">{t('IDS_WP_DAY_SHARE')}</span>
             </div>
           </div>
           <div className="list-member">
@@ -347,11 +357,10 @@ const ShareDocumentModal = props => {
                     <div className="right-content">
                       <div>
                         {item.is_owner ? (
-                          <span className="red-color">Chủ sở hữu</span>
+                          <span className="red-color">{t('IDS_WP_OWNER')}</span>
                         ) : (
                           <span>{item.date_share}</span>
                         )}
-                        <span>{item.date_share}</span>
                       </div>
                       <div className="right-item">
                         {!item.is_owner && (
@@ -366,7 +375,7 @@ const ShareDocumentModal = props => {
                               )
                             }
                           >
-                            Hủy
+                            {t('IDS_WP_CANCEL')}
                           </Button>
                         )}
                       </div>

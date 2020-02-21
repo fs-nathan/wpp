@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Table, TableRow, TableHead, TableBody } from '@material-ui/core';
 import { mdiArrowLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -29,9 +30,10 @@ let isFetFile = true;
 let listFileIdSelect = [];
 let listFolderIdSelect = [];
 const MoveDocumentModal = props => {
+  const { t } = useTranslation();
   const [listData, setListData] = useState([
     {
-      name: 'Tài liệu của tôi',
+      name: t('IDS_WP_MY_DOCUMENT'),
       id: 'root',
       sub_folder: true
     }
@@ -173,18 +175,20 @@ const MoveDocumentModal = props => {
     const tempData = [...listFolderBr];
     tempData.splice(-1, 1);
     if (isEmpty(tempData)) {
-      setListData([{ name: 'Tài liệu của tôi', id: 'root', sub_folder: true }]);
+      setListData([
+        { name: t('IDS_WP_MY_DOCUMENT'), id: 'root', sub_folder: true }
+      ]);
     }
     setListFolderBr(tempData);
     setFolderSelected({});
   };
   return (
     <ModalCommon
-      title="Di chuyển tài liệu"
+      title={t('IDS_WP_MOVE_DOCUMENT')}
       onClose={props.onClose}
       footerAction={[
         {
-          name: `Di chuyển đến đây`,
+          name: t('IDS_WP_MOVE_FOR_NOW'),
           action: handleMove,
           disabled: isEmpty(folderSelected)
         }
@@ -215,7 +219,7 @@ const MoveDocumentModal = props => {
                     size={1}
                     color="rgba(0, 0, 0, 0.54)"
                     onClick={() => handleBackParent()}
-                    title="Ra ngoài"
+                    title={t('IDS_WP_OUT')}
                   />
                 </div>
                 <div className="name-document">
@@ -225,13 +229,13 @@ const MoveDocumentModal = props => {
             ) : (
               <React.Fragment>
                 <div className="name-document">
-                  <span>Tài liệu</span>
+                  <span>{t('IDS_WP_DOCUMENT')}</span>
                 </div>
               </React.Fragment>
             )}
           </div>
           <div className="right-my-document">
-            <span>Chọn thư mục bạn muốn di chuyển đến</span>
+            <span>{t('IDS_WP_SELECT_FOLDER_FOR_MOVE')}</span>
           </div>
         </div>
         <div className="table-list-folder">
@@ -243,7 +247,7 @@ const MoveDocumentModal = props => {
                   width="5%"
                 ></StyledTableHeadCell>
                 <StyledTableHeadCell align="left" width="40%">
-                  Tên
+                  {t('IDS_WP_NAME')}
                 </StyledTableHeadCell>
                 <StyledTableHeadCell
                   align="left"
@@ -258,7 +262,7 @@ const MoveDocumentModal = props => {
                     className={`table-body-row move-row ${
                       folderSelected.id === folder.id ? 'selected-row' : ''
                     }`}
-                    title="Click để chọn mục này"
+                    title={t('IDS_WP_CLICK_THIS_FOLDER')}
                     key={folder.id}
                     onClick={() =>
                       handleSelectFolder(
@@ -282,7 +286,7 @@ const MoveDocumentModal = props => {
                               ? '#fff'
                               : 'rgba(0, 0, 0, 0.54)'
                           }
-                          title="Vào thư mục con"
+                          title={t('IDS_WP_JOIN_CHILDREN_FOLDER')}
                           onClick={e => handleGetChild(e, folder)}
                         />
                       )}

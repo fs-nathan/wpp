@@ -53,7 +53,6 @@ const DrawerSetting = props => {
     });
   };
   const isFree = !isEmpty(props.profile) && props.profile.type === 'Free';
-  console.log('profile: ', props.profile);
   return (
     <div className="drawer-content">
       <HeaderDrawer title={null} />

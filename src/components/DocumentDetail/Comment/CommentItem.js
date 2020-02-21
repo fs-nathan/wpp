@@ -54,7 +54,16 @@ const CommentItem = ({ comment, onRefreshList }) => {
       console.log(error);
     }
   };
-
+  const detectUrlText = text => (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: text.replace(
+          /(https?:\/\/[^\s]+)/g,
+          "<a href='$1' target='_blank' >$1</a>"
+        )
+      }}
+    />
+  );
   return (
     <React.Fragment>
       <div className="comment-item">
@@ -83,7 +92,9 @@ const CommentItem = ({ comment, onRefreshList }) => {
               </IconButton>
             )}
           </div>
-          <div className="body-item">{comment.content || ''}</div>
+          <div className="body-item">
+            {detectUrlText(comment.content) || ''}
+          </div>
         </div>
       </div>
       <Menu

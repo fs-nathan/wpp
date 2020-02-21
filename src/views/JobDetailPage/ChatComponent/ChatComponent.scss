@@ -1,0 +1,21 @@
+.tag-modal {
+  background: transparent;
+  .MuiBackdrop-root {
+    background: transparent;
+  }
+  .MuiPaper-root {
+    border: solid 1px #ccc;
+    box-shadow: none;
+    border-radius: 6px;
+  }
+  .MuiDialogContent-root {
+    border: none;
+    padding: 16px;
+  }
+  .tag-content {
+  }
+  .tag-item {
+    display: flex;
+    line-height: 25px;
+  }
+}

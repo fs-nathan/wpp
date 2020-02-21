@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
   Table,
@@ -36,6 +37,7 @@ import LoadingBox from '../../../../components/LoadingBox';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 
 const ProjectDocument = props => {
+  const { t } = useTranslation();
   const { isLoading, breadCrumbs, actionChangeBreadCrumbs } = props;
   const [listData, setListData] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -98,7 +100,7 @@ const ProjectDocument = props => {
 
   const isSelected = id => selected.indexOf(id) !== -1;
   const moreAction = [
-    { icon: mdiFolderTextOutline, text: 'Truy cập dự án', type: 'link' }
+    { icon: mdiFolderTextOutline, text: t('IDS_WP_JOIN_PROJECT'), type: 'link' }
   ];
   const openDetail = item => {
     const isDetail =
@@ -169,21 +171,21 @@ const ProjectDocument = props => {
               width="5%"
               className="first-column"
             >
-              Loại
+              {t('IDS_WP_TYPE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="50%">
               <div
                 className="cursor-pointer"
                 onClick={() => hanldeSort('name')}
               >
-                Tên
+                {t('IDS_WP_NAME')}
                 <IconButton size="small">
                   <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
               </div>
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="30%">
-              Sổ tài liệu
+              {t('IDS_WP_DOCUMENT_NOTE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
           </TableRow>

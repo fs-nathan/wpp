@@ -68,7 +68,10 @@ const LoginPage = props => {
       setIsLoading(false);
       const res = await getProfileService();
       props.actionActiveGroup(res.data.data.group_active);
-      if (res.data.data.type === 'Free') {
+      if (
+        res.data.data.group_active &&
+        res.data.data.group_active.type === 'Free'
+      ) {
         props.openNoticeModal();
       }
       props.loginSuccess(data);

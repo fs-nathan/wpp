@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { mdiAccountCircle } from '@mdi/js';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Chip from '@material-ui/core/Chip';
 import DateFnsUtils from '@date-io/date-fns';
@@ -87,11 +88,11 @@ class SettingInfo extends Component {
 
       await actionUpdateProfile(formData);
       const { data } = await getProfileService();
-      this.handleToast('success', 'Cập nhật thành công!');
+      this.handleToast('success', this.props.t('IDS_WP_UPDATE_SUCCESS'));
       if (data.data) this.props.actionGetProfile(data.data);
       this.setState({ mode: 'view' });
     } catch (error) {
-      this.handleToast('error', 'Cập nhật thất bại!');
+      this.handleToast('error', this.props.t('IDS_WP_UPDATE_ERROR'));
       const { data } = await getProfileService();
       if (data.data) this.props.actionGetProfile(data.data);
       this.setState({ mode: 'view' });
@@ -149,6 +150,7 @@ class SettingInfo extends Component {
       selectedDate,
       formatDate
     } = this.state;
+    const { t } = this.props;
     return (
       <div className="setting-info">
         <div className="content-setting-info">
@@ -182,13 +184,15 @@ class SettingInfo extends Component {
               className="block-change-avatar"
               disableTouchRipple
             >
-              Đổi ảnh cá nhân
+              {t('IDS_WP_CHANGE_AVATAR')}
             </Button>
-            <p className="avatar-note-text">(Kích thước: 120x120 px)</p>
+            <p className="avatar-note-text">({t('IDS_WP_SIZE')}: 120x120 px)</p>
           </div>
           <div className="info-content-setting-info ">
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Tài khoản</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_ACCOUNT')}
+              </div>
               <InputBase
                 className="value-item-info email col-sm-9"
                 value={data.email}
@@ -197,13 +201,17 @@ class SettingInfo extends Component {
               />
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Loại tài khoản</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_ACCOUNT_TYPE')}
+              </div>
               <div className="value-item-info col-sm-9">
                 <Chip size="small" label={data.type} className="type-account" />
               </div>
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Họ và tên</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_FULL_NAME')}
+              </div>
               <InputBase
                 className="value-item-info col-sm-9"
                 value={data.name}
@@ -212,7 +220,9 @@ class SettingInfo extends Component {
               />
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Ngày sinh</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_BIRTHDAY')}
+              </div>
               <div className="value-item-info col-sm-9">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
@@ -232,7 +242,9 @@ class SettingInfo extends Component {
               </div>
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Giới tính</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_GENDER')}
+              </div>
               <InputBase
                 className="value-item-info col-sm-9"
                 value={data.gender_name}
@@ -243,7 +255,9 @@ class SettingInfo extends Component {
               />
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Điện thoại</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_PHONE')}
+              </div>
               <InputBase
                 type="number"
                 className="value-item-info col-sm-9 phone-infor"
@@ -253,7 +267,9 @@ class SettingInfo extends Component {
               />
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Địa chỉ</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_ADDRESS')}
+              </div>
               <InputBase
                 className="value-item-info col-sm-9"
                 value={data.address}
@@ -262,7 +278,9 @@ class SettingInfo extends Component {
               />
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Bằng cấp</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_CERTIFICATE')}
+              </div>
               <InputBase
                 className="value-item-info col-sm-9"
                 value={data.certificate}
@@ -273,7 +291,9 @@ class SettingInfo extends Component {
               />
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Ngành nghề</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_CAREER')}
+              </div>
               <InputBase
                 className="value-item-info col-sm-9"
                 value={data.job}
@@ -282,7 +302,9 @@ class SettingInfo extends Component {
               />
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">Thông tin khác</div>
+              <div className="title-item-info col-sm-3">
+                {t('IDS_WP_ORTHER_INFO_TEXT')}
+              </div>
               <InputBase
                 className="value-item-info col-sm-9"
                 value={data.description}
@@ -298,7 +320,7 @@ class SettingInfo extends Component {
                 className="btn-action none-boxshadow"
                 onClick={this.handleChangeStatus}
               >
-                {mode === 'view' ? 'Cập nhập' : 'Lưu'}
+                {mode === 'view' ? t('IDS_WP_UPDATE') : t('IDS_WP_SAVE')}
               </Button>
               {mode === 'edit' && (
                 <Button
@@ -311,7 +333,7 @@ class SettingInfo extends Component {
                     })
                   }
                 >
-                  Hủy
+                  {t('IDS_WP_CANCEL')}
                 </Button>
               )}
             </div>
@@ -339,4 +361,4 @@ export default connect(
     actionGetProfile,
     actionToast
   }
-)(SettingInfo);
+)(withTranslation()(SettingInfo));

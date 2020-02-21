@@ -1,39 +1,27 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import './SettingGroupRight.scss';
 import noti_setting from '../../../../assets/noti_setting.png';
 
-const Notification = props => {
+const Notification = () => {
+  const { t } = useTranslation();
   return (
     <div className="payment-container">
       <div className="payment-left notification-content">
-        <p className="top-header">Cài đặt nhận thông báo</p>
-        <p className="text-payment-header">
-          Bật/ Tắt nhận thông báo trên trình duyệt khi sử dụng phần mềm.
-        </p>
+        <p className="top-header">{t('IDS_WP_SETTING_NOTI')}</p>
+        <p className="text-payment-header">{t('IDS_WP_ON_OFF_NOTI')}</p>
         <img src={noti_setting} alt="" />
         <p className="text-payment-header boild-text">
-          Để Bật/ Tắt nhận thông báo trên trình duyệt, thực hiện các bước sau:
+          {t('IDS_WP_ON_OFF_NOTI_DES')}
         </p>
+        <p className="text-payment-header">{t('IDS_WP_ON_OFF_NOTI_STEP_1')}</p>
+        <p className="text-payment-header">{t('IDS_WP_ON_OFF_NOTI_STEP_2')}</p>
         <p className="text-payment-header">
-          Bước 1: Click chuột vào biểu tượng hình ổ khóa trên đường dẫn trình
-          duyệt.
-        </p>
-        <p className="text-payment-header">
-          Bước 2: Tại tab Thông báo lựa chọn mục Cho phép.
-        </p>
-        <p className="text-payment-header">
-          (Đối với trình duyệt sử dụng ngôn ngữ khác Tiếng Việt cũng tiến hành
-          tương tự)
+          {t('IDS_WP_ON_OFF_NOTI_STEP_2_DES')}
         </p>
       </div>
     </div>
   );
 };
 
-export default connect(
-  state => ({
-    // state
-  }),
-  {}
-)(Notification);
+export default Notification;

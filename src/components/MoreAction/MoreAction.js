@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Icon from '@mdi/react';
 import styled from 'styled-components';
@@ -24,7 +25,7 @@ const StyledMenuItem = styled(MenuItem)`
 const MoreAction = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [visible, setVisible] = useState(null);
-
+  const { t } = useTranslation();
   const handleToast = (type, message) => {
     props.actionToast(type, message);
     setTimeout(() => props.actionToast(null, ''), 2000);
@@ -42,7 +43,7 @@ const MoreAction = props => {
           folder_id: props.item.id,
           name: newName
         });
-        handleToast('success', 'Thay đổi tên folder thành công!');
+        handleToast('success', t('IDS_WP_RENAME_FOLDER_SUCCESS'));
         if (data.state) {
           props.handleUpdateDataLocal(props.item.id, data.new_name);
         }
@@ -51,7 +52,7 @@ const MoreAction = props => {
           file_id: props.item.id,
           name: newName
         });
-        handleToast('success', 'Thay đổi tên file thành công!');
+        handleToast('success', t('IDS_WP_RENAME_FILE_SUCCESS'));
         if (data.state) {
           props.handleUpdateDataLocal(props.item.id, data.new_name);
         }

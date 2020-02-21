@@ -1,4 +1,5 @@
 import React, { useEffect, Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
   Table,
@@ -45,6 +46,7 @@ import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
 import ShareColumnAvatar from '../DocumentComponent/ShareColumnAvatar';
 
 const ProjectDocumentDetail = props => {
+  const { t } = useTranslation();
   const { isLoading, actionChangeBreadCrumbs, isFetching, breadCrumbs } = props;
   const [listData, setListData] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -187,8 +189,8 @@ const ProjectDocumentDetail = props => {
     );
   };
   const moreAction = [
-    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
-    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' }
+    { icon: mdiAccountPlusOutline, text: t('IDS_WP_SHARE'), type: 'share' },
+    { icon: mdiContentCopy, text: t('IDS_WP_COPY_LINK'), type: 'copy' }
   ];
   if (isLoading) {
     return <LoadingBox />;
@@ -218,26 +220,26 @@ const ProjectDocumentDetail = props => {
                 className="cursor-pointer"
                 onClick={() => hanldeSort('name')}
               >
-                Tên
+                {t('IDS_WP_NAME')}
                 <IconButton size="small">
                   <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
               </div>
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="20%">
-              Công việc
+              {t('IDS_WP_JOB')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="15%">
-              Chia sẻ
+              {t('IDS_WP_SHARE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="10%">
-              Chủ sở hữu
+              {t('IDS_WP_OWNER')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Sửa đổi lần cuối
+              {t('IDS_WP_LAST_EDIT')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Kích thước
+              {t('IDS_WP_SIZE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell
               align="center"

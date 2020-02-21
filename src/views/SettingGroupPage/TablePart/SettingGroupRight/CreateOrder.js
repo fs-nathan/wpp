@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -18,34 +19,8 @@ import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
 import OrderInit from '../../../../components/ExportPDF/OrderInit';
 import SliderProgess from '../../../../components/SliderProgess/SliderProgess';
 
-const marks = {
-  accountNum: {
-    mark: [
-      { value: 5, label: '5 user' },
-      { value: 1000, label: '1000 user' }
-    ],
-    min: 5,
-    max: 1000
-  },
-  storage: {
-    mark: [
-      { value: 100, label: '100 GB' },
-      { value: 10000, label: '10.000 GB' }
-    ],
-    min: 100,
-    max: 10000
-  },
-  time: {
-    mark: [
-      { value: 1, label: '1 tháng' },
-      { value: 36, label: '36 tháng' }
-    ],
-    min: 1,
-    max: 36
-  }
-};
-
 const CreateOrder = props => {
+  const { t } = useTranslation();
   const [isCheckedManagerWork, setIsCheckedManagerWork] = useState(false);
   const [isCheckedBuyData, setIsCheckedBuyData] = useState(false);
   const [numAcc, SetnumAcc] = useState(0);
@@ -58,6 +33,32 @@ const CreateOrder = props => {
   const [dataBeforOder, setDataBeforOder] = useState({});
   const [bonusCode, setBonusCode] = useState('');
   const [dataNumberOldOder, setDataNumberOldOder] = useState({});
+  const marks = {
+    accountNum: {
+      mark: [
+        { value: 5, label: `5 ${t('IDS_WP_USER')}` },
+        { value: 1000, label: `1000 ${t('IDS_WP_USER')}` }
+      ],
+      min: 5,
+      max: 1000
+    },
+    storage: {
+      mark: [
+        { value: 100, label: '100 GB' },
+        { value: 10000, label: '10.000 GB' }
+      ],
+      min: 100,
+      max: 10000
+    },
+    time: {
+      mark: [
+        { value: 1, label: `1 ${t('IDS_WP_MONTH')}` },
+        { value: 36, label: `36 ${t('IDS_WP_MONTH')}` }
+      ],
+      min: 1,
+      max: 36
+    }
+  };
   useEffect(() => {
     fetInfoBeforeCreateOrder();
     fetNumberDayFromOldOrder();
@@ -143,7 +144,7 @@ const CreateOrder = props => {
         pathname: Routes.SETTING_GROUP_ORDER,
         search: `?order_id=${data.order_id}`
       });
-      handleToast('success', 'Tạo đơn hàng thành công!');
+      handleToast('success', t('IDS_WP_CREATE_ORDER_SUCCESS'));
     } catch (error) {
       handleToast('error', error.message);
     }
@@ -190,10 +191,10 @@ const CreateOrder = props => {
       {/* <div className="divider-vertical" /> */}
       <div className="content-create-order">
         <div className="UserInfo_right_header d-flex justify-content-center align-items-center">
-          <p className="order-title">THIẾT LẬP ĐƠN HÀNG</p>
+          <p className="order-title">{t('IDS_WP_SETUP_ORDER')}</p>
         </div>
         <div className="detail-right-bottom">
-          <p className="title-item">Bước 1: Chọn dịch vụ muốn mua</p>
+          <p className="title-item">{t('IDS_WP_SELECT_SERVICE_STEP_1')}</p>
           <FormControlLabel
             className="cb-item"
             control={
@@ -206,7 +207,7 @@ const CreateOrder = props => {
                 className="cb-success"
               />
             }
-            label="Nền tảng quản lý công việc WorkPlus"
+            label={t('IDS_WP_WORKPLUS_JOB_LABEL')}
           />
           <FormControlLabel
             className="cb-item"
@@ -220,12 +221,14 @@ const CreateOrder = props => {
                 className="cb-success"
               />
             }
-            label="Dung lượng lưu trữ (mua thêm)"
+            label={t('IDS_WP_STORAGE_BUY_LABEL')}
           />
-          <p className="title-item">Bước 2: Thiết lập thông số</p>
+          <p className="title-item">{t('IDS_WP_SETUP_CONFIG')}</p>
           {isCheckedManagerWork && (
             <React.Fragment>
-              <p className="sub-title-item">Chọn số lượng tài khoản:</p>
+              <p className="sub-title-item">
+                {t('IDS_WP_SELECT_ACCOUNT_NUMBER')}:
+              </p>
               <SliderProgess
                 item={marks.accountNum}
                 value={numAcc}
@@ -235,13 +238,13 @@ const CreateOrder = props => {
                   handleChangeSilder('numAcc', value)
                 }
               />
-              <p>số tài khoản sử dụng (từ 5 - 1000)</p>
-              <p>Trên 1000 user vui lòng liên hệ để được hỗ trợ</p>
+              <p>{t('IDS_WP_ACCOUNT_NUMBER_RANGE')}</p>
+              <p>{t('IDS_WP_ACCOUNT_NUMBER_RANGE_DES')}</p>
               <p>
-                Đơn giá phụ thuộc vào số lượng user bạn đăng ký (
-                <a href="/">Xem bảng giá</a>)
+                {t('IDS_WP_PRICE_DEPEND_USER')} (
+                <a href="/">{t('IDS_WP_VIEW_PRICE')}</a>)
               </p>
-              <p className="sub-title-item">Thời gian sử dụng/thanh toán</p>
+              <p className="sub-title-item">{t('IDS_WP_USED_TIME_PAYMENT')}</p>
               <SliderProgess
                 item={marks.time}
                 value={dateUse}
@@ -250,15 +253,15 @@ const CreateOrder = props => {
                   handleChangeSilder('dateUse', value)
                 }
               />
-              <p>Thanh toán đến 12 tháng: Tặng 01 tháng sử dụng</p>
-              <p>Thanh toán đến 24 tháng: Tặng 02 tháng sử dụng</p>
-              <p>Thanh toán đến 36 tháng: Tặng 03 tháng sử dụng</p>
+              <p>{t('IDS_WP_USED_TIME_PAYMENT_DES_1')}</p>
+              <p>{t('IDS_WP_USED_TIME_PAYMENT_DES_2')}</p>
+              <p>{t('IDS_WP_USED_TIME_PAYMENT_DES_3')}</p>
               <div className="border create-order-border" />
             </React.Fragment>
           )}
           {isCheckedBuyData && (
             <React.Fragment>
-              <p className="sub-title-item">Dung lượng lưu trữ (mua thêm)</p>
+              <p className="sub-title-item">{t('IDS_WP_STORAGE_BUY_LABEL')}</p>
               <SliderProgess
                 item={marks.storage}
                 value={dataBuy}
@@ -268,9 +271,7 @@ const CreateOrder = props => {
                   handleChangeSilder('dataBuy', value)
                 }
               />
-              <p className="sub-title-item">
-                Thời gian lưu trữ (mua thêm)/thanh toán
-              </p>
+              <p className="sub-title-item">{t('IDS_WP_BUY_TIME_PAYMENT')}</p>
               <SliderProgess
                 item={marks.time}
                 value={dateSave}
@@ -283,11 +284,8 @@ const CreateOrder = props => {
               <div className="border create-order-border" />
             </React.Fragment>
           )}
-          <p className="sub-title-item">Mã khuyến mại</p>
-          <p className="error-text">
-            Bạn chỉ được áp dụng duy nhất 01 mã khuyến mại cho một đơn hàng tại
-            một thời điểm
-          </p>
+          <p className="sub-title-item">{t('IDS_WP_PROMOTION_CODE')}</p>
+          <p className="error-text">{t('IDS_WP_PROMOTION_CODE_DES')}</p>
           <div className="create-order-action">
             {/* <Form.Control
                 type="text"
@@ -297,7 +295,7 @@ const CreateOrder = props => {
               /> */}
             <OutlinedInput
               type="text"
-              placeholder="Nhập mã khuyến mãi"
+              placeholder={t('IDS_WP_INPUT_PROMOTION_CODE')}
               className="input-voucher"
               value={inputPromotionCode}
               onChange={handleChangePromotion}
@@ -308,16 +306,15 @@ const CreateOrder = props => {
               className="btn btn-warning mr-3 input-btn"
               onClick={handleCheckPromotionCode}
             >
-              Nhập
+              {t('IDS_WP_INPUT')}
             </Button>
-
             {/* show message lỗi khi nhập sai mã khuyến mại */}
           </div>
           {isErrorCode === 1 ? (
-            <div className="error-code">Mã không tồn tại</div>
+            <div className="error-code">{t('IDS_WP_CODE_NOT_EXIST')}</div>
           ) : isErrorCode === 2 ? (
             <div className="success-code">
-              Cộng thêm {dayBonus} ngày sử dụng
+              {`${t('IDS_WP_PLUS')} ${dayBonus} ${t('IDS_WP_USED_DAY')}`}
             </div>
           ) : (
             ''
@@ -328,7 +325,7 @@ const CreateOrder = props => {
             variant="contained"
             disabled={!(isCheckedManagerWork || isCheckedBuyData)}
           >
-            Hoàn thành đơn hàng
+            {t('IDS_WP_FINISH_ORDER')}
           </Button>
         </div>
       </div>

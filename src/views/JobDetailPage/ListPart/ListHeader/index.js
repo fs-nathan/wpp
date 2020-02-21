@@ -5,14 +5,15 @@ import { mdiPlus, mdiChevronDown } from '@mdi/js';
 import Icon from '@mdi/react';
 import SearchInput from '../../../../components/SearchInput';
 import CreateJobModal from './CreateJobModal';
-import { WrapperContext } from '../../index'
+import { WrapperContext } from '../../index';
+import '../ListPart.scss';
 
 // const Header = styled.div`
 //   padding: 0 3px 0 15px;
 //   height: 77px;
 //   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 //   & > * {
-//     display: flex; 
+//     display: flex;
 //     align-items: center;
 //     justify-content: space-between;
 //     cursor: pointer;
@@ -32,7 +33,7 @@ const HeaderText = styled(Typography)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`
+`;
 // const InputTextJob = styled(TextField)`
 //     & > label {
 //         font-size: 14px
@@ -51,62 +52,56 @@ const ButtonIcon = styled(IconButton)`
       fill: #03b000;
     }
   }
-`
+`;
 
 function ListHeaderSelect({ setShow }) {
-  const value = React.useContext(WrapperContext)
+  const value = React.useContext(WrapperContext);
   const openListProject = () => {
-    setShow(true)
-  }
+    setShow(true);
+  };
   const data = value.projectDetail;
   return (
     <div onClick={openListProject} style={{ marginTop: 8 }}>
-      <HeaderText component={'div'} >{data?.name}</HeaderText>
-      <ButtonIcon
-
-        style={{
-          marginLeft: "10px",
-          padding: "7px"
-        }}
-      >
-        <Icon path={mdiChevronDown} size={1.2} />
+      <HeaderText component={'div'}>{data.name}</HeaderText>
+      <ButtonIcon className="dropdown-icon">
+        <Icon path={mdiChevronDown} size={1.2} className="job-detail-icon" />
       </ButtonIcon>
     </div>
-  )
+  );
 }
 
 function ListHeader(props) {
-  const value = React.useContext(WrapperContext)
-  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false)
-  const searchListTask = (e) => {
-    value.searchTask(e.target.value)
-  }
+  const value = React.useContext(WrapperContext);
+  const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
+  const searchListTask = e => {
+    value.searchTask(e.target.value);
+  };
   return (
-    <div >
+    <div>
       <div className="list-header">
         <ListHeaderSelect {...props} />
         <div className="header-bottom-box">
-          <SearchInput 
-            placeholder='Tìm công việc trong dự án...' 
+          <SearchInput
+            placeholder="Tìm công việc trong dự án..."
             style={{ height: 'auto' }}
             onChange={e => searchListTask(e)}
-            />
+          />
           <ButtonIcon
-            style={{
-              marginLeft: "10px",
-              padding: "7px"
-            }}
+            className="dropdown-icon"
             onClick={() => {
-              setOpenCreateJobModal(true)
-            }} >
-            <Icon path={mdiPlus} size={1.2} />
+              setOpenCreateJobModal(true);
+            }}
+          >
+            <Icon path={mdiPlus} size={1.2} className="job-detail-icon" />
           </ButtonIcon>
         </div>
       </div>
-      <CreateJobModal isOpen={openCreateJobModal} setOpen={setOpenCreateJobModal} />
+      <CreateJobModal
+        isOpen={openCreateJobModal}
+        setOpen={setOpenCreateJobModal}
+      />
     </div>
-  )
+  );
 }
-
 
 export default ListHeader;

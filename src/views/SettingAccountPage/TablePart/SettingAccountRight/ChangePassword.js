@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +10,7 @@ import { actionToast } from '../../../../actions/system/system';
 import './SettingAccountRight.scss';
 
 const ChangePassword = props => {
+  const { t } = useTranslation();
   const handleChangePassword = async e => {
     e.preventDefault();
     try {
@@ -19,7 +21,7 @@ const ChangePassword = props => {
         re_password: elements.re_password.value
       };
       await actionChangePassword(result);
-      handleToast('success', 'Thay đổi mật khẩu thành công!');
+      handleToast('success', t('IDS_WP_CHANGE_PASSWORD_SUCCESS'));
     } catch (error) {
       handleToast('error', error.message);
     }
@@ -35,7 +37,7 @@ const ChangePassword = props => {
           <TextField
             id="current_password"
             type="password"
-            label="Mật khẩu cũ"
+            label={t('IDS_WP_OLD_PASSWORD')}
             style={{ margin: 8 }}
             fullWidth
             margin="normal"
@@ -47,7 +49,7 @@ const ChangePassword = props => {
           <TextField
             id="new_password"
             type="password"
-            label="Mật khẩu mới"
+            label={t('IDS_WP_NEW_PASSWORD')}
             style={{ margin: 8 }}
             fullWidth
             margin="normal"
@@ -59,7 +61,7 @@ const ChangePassword = props => {
           <TextField
             id="re_password"
             type="password"
-            label="Nhập lại mật khẩu mới"
+            label={t('IDS_WP_RE_INPUT_NEW_PASSWORD')}
             style={{ margin: 8 }}
             fullWidth
             margin="normal"
@@ -68,9 +70,9 @@ const ChangePassword = props => {
           />
         </div>
         <div className="text-notification">
-          <span className="text-noti title">Chú ý:</span>
+          <span className="text-noti title">{t('IDS_WP_CAUTION')}:</span>
           <span className="text-noti">
-            &nbsp; Mật khẩu dài từ 8 đến 20 ký tự và không chứ dấu khoảng trắng
+            &nbsp; {t('IDS_WP_PASSWORD_VALIDATE_DES')}
           </span>
         </div>
         <div className="block-action">
@@ -79,7 +81,7 @@ const ChangePassword = props => {
             className="btn-action none-boxshadow"
             type="submit"
           >
-            Cập nhập
+            {t('IDS_WP_UPDATE')}
           </Button>
         </div>
       </form>

@@ -192,14 +192,18 @@ const MyDocument = props => {
   const isSelected = id => selected.indexOf(id) !== -1;
 
   const moreAction = [
-    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
-    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' },
-    { icon: mdiFolderMove, text: 'Di chuyển tới', type: 'move' },
-    { icon: mdiPencilOutline, text: 'Đổi tên', type: 'change' },
-    { icon: mdiDownloadOutline, text: 'Tải xuống', type: 'download' },
+    { icon: mdiAccountPlusOutline, text: t('IDS_WP_SHARE'), type: 'share' },
+    { icon: mdiContentCopy, text: t('IDS_WP_COPY_LINK'), type: 'copy' },
+    { icon: mdiFolderMove, text: t('IDS_WP_MOVE_TO'), type: 'move' },
+    { icon: mdiPencilOutline, text: t('IDS_WP_RENAME'), type: 'change' },
+    {
+      icon: mdiDownloadOutline,
+      text: t('IDS_WP_DOWNLOAD_DOWN'),
+      type: 'download'
+    },
     {
       icon: mdiTrashCanOutline,
-      text: 'Xóa',
+      text: t('IDS_WP_DELETE'),
       action: item => {
         setAlert(true);
         setFileSelectAction(item);
@@ -257,23 +261,23 @@ const MyDocument = props => {
                 className="cursor-pointer"
                 onClick={() => hanldeSort('name')}
               >
-                Tên
+                {t('IDS_WP_NAME')}
                 <IconButton size="small">
                   <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
               </div>
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Chủ sở hữu
+              {t('IDS_WP_OWNER')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
-              Chia sẻ
+              C{t('IDS_WP_SHARE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
-              Sửa đổi lần cuối
+              {t('IDS_WP_LAST_EDIT')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
-              Kích cỡ tệp
+              {t('IDS_WP_FILE_SIZE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
           </TableRow>
