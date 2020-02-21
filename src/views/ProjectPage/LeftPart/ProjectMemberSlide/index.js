@@ -33,7 +33,7 @@ function ProjectMemberSlide({
   function doOpenModal(type, props) {
     switch (type) {
       case 'MEMBER_SETTING': {
-        openMemberSetting(true);
+        setOpenMemberSetting(true);
         return;
       }
       default: return;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
+import { useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
 import ProgressBar from '../../../../components/ProgressBar';
@@ -68,6 +69,8 @@ function ProjectDetail({
   project, 
   handleDeleteProject, handleOpenModal,
 }) {
+
+  const history = useHistory();
   
   return (
     <>

@@ -69,7 +69,7 @@ function ProjectMemberSlide({
           }}
           rightAction={{
             iconPath: mdiPlus,
-            onClick: () => setOpen(true),
+            onClick: () => handleOpenModal('MEMBER_SETTING'),
             tooltip: 'Thêm thành viên dự án',
           }}
           loading={{
