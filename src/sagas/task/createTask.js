@@ -33,11 +33,11 @@ async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, 
 function* createTask(action) {
   try {
     const { task_id: taskId } = yield call(doCreateTask, action.options);
-    yield put(createTaskSuccess({ taskId }));
+    yield put(createTaskSuccess({ taskId }, action.options));
     CustomEventEmitter(CREATE_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createTaskFail(error));
+    yield put(createTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

@@ -13,14 +13,16 @@ export const updateUserRole = ({ userRoleId, name, description }) => ({
   }
 });
 
-export const updateUserRoleSuccess = ({ userRole }) => ({
+export const updateUserRoleSuccess = ({ userRole }, options) => ({
   type: UPDATE_USER_ROLE_SUCCESS,
+  options,
   data: {
     userRole,
   }
 });
 
-export const updateUserRoleFail = (error) => ({
+export const updateUserRoleFail = (error, options) => ({
   type: UPDATE_USER_ROLE_FAIL,
-  error: error,
+  options,
+  error,
 });

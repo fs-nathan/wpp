@@ -2,6 +2,7 @@ import {
   DETAIL_PROJECT,
   DETAIL_PROJECT_FAIL,
   DETAIL_PROJECT_SUCCESS,
+  DETAIL_PROJECT_RESET,
 } from '../../constants/actions/project/detailProject';
 
 export const detailProject = ({ projectId }, quite = false) => ({
@@ -12,14 +13,20 @@ export const detailProject = ({ projectId }, quite = false) => ({
   },
 });
 
-export const detailProjectSuccess = ({ project }) => ({
+export const detailProjectSuccess = ({ project }, options) => ({
   type: DETAIL_PROJECT_SUCCESS,
+  options,
   data: {
     project,
   }
 });
 
-export const detailProjectFail = (error) => ({
+export const detailProjectFail = (error, options) => ({
   type: DETAIL_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
+});
+
+export const detailProjectReset = () => ({
+  type: DETAIL_PROJECT_RESET,
 });

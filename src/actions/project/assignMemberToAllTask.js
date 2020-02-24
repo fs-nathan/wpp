@@ -12,11 +12,13 @@ export const assignMemberToAllTask = ({ projectId, memberId }) => ({
   },
 });
 
-export const assignMemberToAllTaskSuccess = () => ({
+export const assignMemberToAllTaskSuccess = (options) => ({
   type: ASSIGN_MEMBER_TO_ALL_TASK_SUCCESS,
+  options,
 });
 
-export const assignMemberToAllTaskFail = (error) => ({
+export const assignMemberToAllTaskFail = (error, options) => ({
   type: ASSIGN_MEMBER_TO_ALL_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });

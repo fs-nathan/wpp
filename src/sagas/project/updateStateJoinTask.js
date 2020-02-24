@@ -26,11 +26,11 @@ async function doUpdateStateJoinTask({ projectId, memberId, state, }) {
 function* updateStateJoinTask(action) {
   try {
     yield call(doUpdateStateJoinTask, action.options);
-    yield put(updateStateJoinTaskSuccess());
+    yield put(updateStateJoinTaskSuccess(action.options));
     CustomEventEmitter(UPDATE_STATE_JOIN_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateStateJoinTaskFail(error));
+    yield put(updateStateJoinTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

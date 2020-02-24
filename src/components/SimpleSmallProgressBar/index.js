@@ -13,7 +13,7 @@ const Container = styled(({ color, ...rest }) => <div {...rest} />)`
 
 const BackBar = styled.div`
   position: relative;
-  width: 70%;
+  width: 75%;
   height: 8px;
   border-radius: 999px;
   background-color: rgba(0, 0, 0, 0.1);

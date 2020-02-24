@@ -24,11 +24,11 @@ async function doDeleteLevel({ levelId }) {
 function* deleteLevel(action) {
   try {
     yield call(doDeleteLevel, action.options);
-    yield put(deleteLevelSuccess());
+    yield put(deleteLevelSuccess(action.options));
     CustomEventEmitter(DELETE_LEVEL);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteLevelFail(error));
+    yield put(deleteLevelFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

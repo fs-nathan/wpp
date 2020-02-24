@@ -27,11 +27,11 @@ async function doCreateRoom({ name, icon, description, members }) {
 function* createRoom(action) {
   try {
     const { room } = yield call(doCreateRoom, action.options);
-    yield put(createRoomSuccess({ room }));
+    yield put(createRoomSuccess({ room }, action.options));
     CustomEventEmitter(CREATE_ROOM);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createRoomFail(error));
+    yield put(createRoomFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

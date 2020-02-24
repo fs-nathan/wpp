@@ -2,6 +2,7 @@ import {
   MEMBER_PROJECT_GROUP,
   MEMBER_PROJECT_GROUP_FAIL,
   MEMBER_PROJECT_GROUP_SUCCESS,
+  MEMBER_PROJECT_GROUP_RESET,
 } from '../../constants/actions/projectGroup/memberProjectGroup';
 
 export const memberProjectGroup = ({ projectGroupId }, quite = false) => ({
@@ -12,14 +13,20 @@ export const memberProjectGroup = ({ projectGroupId }, quite = false) => ({
   }
 });
 
-export const memberProjectGroupSuccess = ({ members }) => ({
+export const memberProjectGroupSuccess = ({ members }, options) => ({
   type: MEMBER_PROJECT_GROUP_SUCCESS,
+  options,
   data: {
     members,
   },
 });
 
-export const memberProjectGroupFail = (error) => ({
+export const memberProjectGroupFail = (error, options) => ({
   type: MEMBER_PROJECT_GROUP_FAIL,
-  error: error,
+  options,
+  error,
+});
+
+export const memberProjectGroupReset = () => ({
+  type: MEMBER_PROJECT_GROUP_RESET,
 });

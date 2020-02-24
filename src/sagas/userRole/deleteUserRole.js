@@ -24,11 +24,11 @@ async function doDeletePosition({ userRoleId }) {
 function* deleteUserRole(action) {
   try {
     yield call(doDeletePosition, action.options);
-    yield put(deleteUserRoleSuccess());
+    yield put(deleteUserRoleSuccess(action.options));
     CustomEventEmitter(DELETE_USER_ROLE);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteUserRoleFail(error));
+    yield put(deleteUserRoleFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

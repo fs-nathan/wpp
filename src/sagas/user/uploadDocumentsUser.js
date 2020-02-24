@@ -25,11 +25,11 @@ async function doUploadDocumentsUser({ userId, file }) {
 function* uploadDocumentsUser(action) {
   try {
     const { documents } = yield call(doUploadDocumentsUser, action.options);
-    yield put(uploadDocumentsUserSuccess({ documents }));
+    yield put(uploadDocumentsUserSuccess({ documents }, action.options));
     CustomEventEmitter(UPLOAD_DOCUMENTS_USER);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(uploadDocumentsUserFail(error));
+    yield put(uploadDocumentsUserFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

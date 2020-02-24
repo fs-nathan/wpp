@@ -26,11 +26,11 @@ async function doRemoveProjectRoleFromMember({ projectId, memberId, roleId, }) {
 function* removeProjectRoleFromMember(action) {
   try {
     yield call(doRemoveProjectRoleFromMember, action.options);
-    yield put(removeProjectRoleFromMemberSuccess());
+    yield put(removeProjectRoleFromMemberSuccess(action.options));
     CustomEventEmitter(REMOVE_PROJECT_ROLE_FROM_MEMBER);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(removeProjectRoleFromMemberFail(error));
+    yield put(removeProjectRoleFromMemberFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

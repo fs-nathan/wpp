@@ -11,3 +11,44 @@
     transform: none;
   }
 }
+
+@mixin view_Department_AllUserTalbe___tooltip {
+  max-width: 110px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    & > * {
+      font-size: 11px;
+    }
+    & > *:first-child {
+      color: #888;
+    }
+  }
+  & > small {
+    text-align: justify;  
+    font-size: 11px;
+  }
+}
+
+.view_Department_AllUserTalbe___tooltip {
+  &-private {
+    @include view_Department_AllUserTalbe___tooltip;
+    & > div {
+      & > *:last-child {
+        color: #ec1000;
+      }
+    }
+  }
+  &-public {
+    @include view_Department_AllUserTalbe___tooltip;
+    & > div {
+      & > *:last-child {
+        color: #48bb78;
+      }
+    }
+  }
+}

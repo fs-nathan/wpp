@@ -2,6 +2,7 @@ import {
   LIST_POSITION,
   LIST_POSITION_SUCCESS,
   LIST_POSITION_FAIL,
+  LIST_POSITION_RESET,
 } from '../../constants/actions/position/listPosition';
 
 export const listPosition = (quite = false) => ({
@@ -9,14 +10,20 @@ export const listPosition = (quite = false) => ({
   quite,
 });
 
-export const listPositionSuccess = ({ positions }) => ({
+export const listPositionSuccess = ({ positions }, options) => ({
   type: LIST_POSITION_SUCCESS,
+  options,
   data: {
     positions,
   },
 });
 
-export const listPositionFail = (error) => ({
+export const listPositionFail = (error, options) => ({
   type: LIST_POSITION_FAIL,
-  error: error,
+  options,
+  error,
 });
+
+export const listPositionReset = () => ({
+  type: LIST_POSITION_RESET,
+})

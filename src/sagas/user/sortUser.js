@@ -12,7 +12,7 @@ async function doSortUser({ userId, sortIndex, roomId }) {
       method: 'post',
       data: {
         user_id: userId,
-        room_id: roomId,
+        room_id: roomId === 'Default' ? undefined : roomId,
         sort_index: sortIndex,
       },
     }
@@ -26,11 +26,11 @@ async function doSortUser({ userId, sortIndex, roomId }) {
 function* sortUser(action) {
   try {
     yield call(doSortUser, action.options);
-    yield put(sortUserSuccess());
+    yield put(sortUserSuccess(action.options));
     CustomEventEmitter(SORT_USER);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(sortUserFail(error));
+    yield put(sortUserFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

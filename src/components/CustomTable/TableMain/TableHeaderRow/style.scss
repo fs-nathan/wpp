@@ -23,22 +23,22 @@
   &-draggable {
     @include comp_CustomTable_TableHeaderRow___cell;
     &:nth-child(1) {
-      padding: 10px 3px 10px 13px;
+      padding: 0 3px 0 13px;
     }
     &:nth-child(2) {
-      padding: 10px 10px 10px 3px;
+      padding: 0 10px 0 3px;
     }
     &:nth-child(n+3) {
-      padding: 10px;
+      padding: 0 10px;
     }
   }
   & {
     @include comp_CustomTable_TableHeaderRow___cell;
     &:nth-child(1) {
-      padding: 10px 3px 10px 20px;
+      padding: 0 3px 0 20px;
     }
     &:nth-child(n+2) {
-      padding: 10px;
+      padding: 0 0px;
     }
   }
 };

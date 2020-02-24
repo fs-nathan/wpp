@@ -11,11 +11,13 @@ export const deletePosition = ({ positionId }) => ({
   }
 });
 
-export const deletePositionSuccess = () => ({
+export const deletePositionSuccess = (options) => ({
   type: DELETE_POSITION_SUCCESS,
+  options,
 });
 
-export const deletePositionFail = (error) => ({
+export const deletePositionFail = (error, options) => ({
   type: DELETE_POSITION_FAIL,
-  error: error,
+  options,
+  error,
 });

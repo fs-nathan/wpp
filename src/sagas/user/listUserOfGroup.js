@@ -17,12 +17,12 @@ async function doListUserOfGroup() {
   }
 }
 
-function* listUserOfGroup() {
+function* listUserOfGroup(action) {
   try {
     const { users, max_user: maxUser } = yield call(doListUserOfGroup);
-    yield put(listUserOfGroupSuccess({ rooms: users, maxUser }));
+    yield put(listUserOfGroupSuccess({ rooms: users, maxUser }, action.options));
   } catch (error) {
-    yield put(listUserOfGroupFail(error));
+    yield put(listUserOfGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

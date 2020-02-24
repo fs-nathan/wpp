@@ -24,11 +24,11 @@ async function doDeletePosition({ positionId }) {
 function* deletePosition(action) {
   try {
     yield call(doDeletePosition, action.options);
-    yield put(deletePositionSuccess());
+    yield put(deletePositionSuccess(action.options));
     CustomEventEmitter(DELETE_POSITION);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deletePositionFail(error));
+    yield put(deletePositionFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

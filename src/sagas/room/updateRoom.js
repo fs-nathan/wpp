@@ -28,11 +28,11 @@ async function doUpdateRoom({ roomId, name, icon, description, members }) {
 function* updateRoom(action) {
   try {
     const { room } = yield call(doUpdateRoom, action.options);
-    yield put(updateRoomSuccess({ room }));
+    yield put(updateRoomSuccess({ room }, action.options));
     CustomEventEmitter(UPDATE_ROOM);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateRoomFail(error));
+    yield put(updateRoomFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

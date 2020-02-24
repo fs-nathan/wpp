@@ -24,11 +24,11 @@ async function doCreateIcon({ icon }) {
 function* createIcon(action) {
   try {
     const { data_icon: dataIcon } = yield call(doCreateIcon, action.options);
-    yield put(createIconSuccess({ dataIcon }));
+    yield put(createIconSuccess({ dataIcon }, action.options));
     CustomEventEmitter(CREATE_ICON);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createIconFail(error));
+    yield put(createIconFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

@@ -13,14 +13,16 @@ export const createProjectGroup = ({ name, icon, description }) => ({
   },
 });
 
-export const createProjectGroupSuccess = ({ projectGroupId }) => ({
+export const createProjectGroupSuccess = ({ projectGroupId }, options) => ({
   type: CREATE_PROJECT_GROUP_SUCCESS,
+  options,
   data: {
     projectGroupId,
   },
 });
 
-export const createProjectGroupFail = (error) => ({
+export const createProjectGroupFail = (error, options) => ({
   type: CREATE_PROJECT_GROUP_FAIL,
-  error: error,
+  options,
+  error,
 });

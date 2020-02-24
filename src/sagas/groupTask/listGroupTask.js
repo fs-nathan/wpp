@@ -23,9 +23,9 @@ async function doListGroupTask({ projectId }) {
 function* listGroupTask(action) {
   try {
     const { group_tasks: groupTasks } = yield call(doListGroupTask, action.options);
-    yield put(listGroupTaskSuccess({ groupTasks }));
+    yield put(listGroupTaskSuccess({ groupTasks }, action.options));
   } catch (error) {
-    yield put(listGroupTaskFail(error));
+    yield put(listGroupTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

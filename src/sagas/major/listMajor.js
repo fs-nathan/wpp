@@ -17,12 +17,12 @@ async function doListMajor() {
   }
 }
 
-function* listMajor() {
+function* listMajor(action) {
   try {
     const { majors } = yield call(doListMajor);
-    yield put(listMajorSuccess({ majors }));
+    yield put(listMajorSuccess({ majors }, action.options));
   } catch (error) {
-    yield put(listMajorFail(error));
+    yield put(listMajorFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

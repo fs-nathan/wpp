@@ -15,13 +15,13 @@ export const copyProject = ({ projectId, name, description, startDate, isCopyMem
   },
 });
 
-export const copyProjectSuccess = () => ({
+export const copyProjectSuccess = (options) => ({
   type: COPY_PROJECT_SUCCESS,
-  data: {
-  },
+  options,
 });
 
-export const copyProjectFail = (error) => ({
+export const copyProjectFail = (error, options) => ({
   type: COPY_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
 });

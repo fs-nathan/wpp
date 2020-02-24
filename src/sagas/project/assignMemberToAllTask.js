@@ -25,11 +25,11 @@ async function doAssignMemberToAllTask({ projectId, memberId }) {
 function* assignMemberToAllTask(action) {
   try {
     yield call(doAssignMemberToAllTask, action.options);
-    yield put(assignMemberToAllTaskSuccess());
+    yield put(assignMemberToAllTaskSuccess(action.options));
     CustomEventEmitter(ASSIGN_MEMBER_TO_ALL_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(assignMemberToAllTaskFail(error));
+    yield put(assignMemberToAllTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));    
   }
 }

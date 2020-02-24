@@ -26,11 +26,11 @@ async function doUpdatePosition({ userRoleId, name, description }) {
 function* updateUserRole(action) {
   try {
     const { user_role: userRole } = yield call(doUpdatePosition, action.options);
-    yield put(updateUserRoleSuccess({ userRole }));
+    yield put(updateUserRoleSuccess({ userRole }, action.options));
     CustomEventEmitter(UPDATE_USER_ROLE);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.QUERY.SUCCESS);
   } catch (error) {
-    yield put(updateUserRoleFail(error));
+    yield put(updateUserRoleFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

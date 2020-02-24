@@ -11,11 +11,13 @@ export const hideProject = ({ projectId }) => ({
   },
 });
 
-export const hideProjectSuccess = () => ({
+export const hideProjectSuccess = (options) => ({
   type: HIDE_PROJECT_SUCCESS,
+  options
 });
 
-export const hideProjectFail = (error) => ({
+export const hideProjectFail = (error, options) => ({
   type: HIDE_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
 });

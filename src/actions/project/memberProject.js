@@ -2,6 +2,7 @@ import {
   MEMBER_PROJECT,
   MEMBER_PROJECT_FAIL,
   MEMBER_PROJECT_SUCCESS,
+  MEMBER_PROJECT_RESET,
 } from '../../constants/actions/project/memberProject';
 
 export const memberProject = ({ projectId }, quite = false) => ({
@@ -12,15 +13,21 @@ export const memberProject = ({ projectId }, quite = false) => ({
   },
 });
 
-export const memberProjectSuccess = ({ membersAdded, membersFree }) => ({
+export const memberProjectSuccess = ({ membersAdded, membersFree }, options) => ({
   type: MEMBER_PROJECT_SUCCESS,
+  options,
   data: {
     membersAdded,
     membersFree,
   }
 });
 
-export const memberProjectFail = (error) => ({
+export const memberProjectFail = (error, options) => ({
   type: MEMBER_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
+});
+
+export const memberProjectReset = () => ({
+  type: MEMBER_PROJECT_RESET,
 });

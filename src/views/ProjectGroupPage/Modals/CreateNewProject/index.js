@@ -1,160 +1,34 @@
 import React from 'react';
-import { 
-  TextField, FormControl, Radio,
-  FormLabel, RadioGroup, FormControlLabel, 
-} from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import CustomSelect from '../../../../components/CustomSelect';
-import ColorTypo from '../../../../components/ColorTypo';
 import { createProject } from '../../../../actions/project/createProject';
 import { connect } from 'react-redux';
-import { get, find } from 'lodash';
-import { useRequiredString } from '../../../../hooks';
-import './style.scss';
+import { groupsSelector } from './selectors';
+import CreateNewProjectPresenter from './presenters';
 
-const StyledFormControl = ({ className = '', ...props }) => 
-  <FormControl 
-    className={`view_ProjectGroup_CreateNew_Project_Modal___form-control ${className}`}
-    {...props}
-  />;
+function CreateNewProject({ 
+  open, setOpen, 
+  groups,
+  doCreateProject, 
+}) {
 
-const CustomTextField = ({ className = '', ...props }) => 
-  <TextField 
-    className={`view_ProjectGroup_CreateNew_Project_Modal___text-field ${className}`}
-    {...props}
-  />;
-
-const StyledFormLabel = ({ className = '', ...props }) => 
-  <FormLabel 
-    className={`view_ProjectGroup_CreateNew_Project_Modal___form-label ${className}`}
-    {...props}
-  />;
-
-function CreateNewProject({ open, setOpen, listProjectGroup, doCreateProject, }) {
-
-  const { data: { projectGroups: _projectGroups } } = listProjectGroup;
-  const [projectGroups, setProjectGroups] = React.useState([]);
-  const [name, setName, errorName] = useRequiredString('', 200);
-  const [description, setDescription, errorDescription] = useRequiredString('', 500);
-  const [projectGroup, setProjectGroup] = React.useState(projectGroups[0]);
-  const [priority, setPriority] = React.useState(0);
-  const [currency] = React.useState(0);
-
-  React.useEffect(() => {
-    setProjectGroups([{ id: '__default__', name: 'Chưa phân loại' }, ..._projectGroups]);
-    setProjectGroup({ id: '__default__', name: 'Chưa phân loại' });
-  }, [_projectGroups]);
-
-  function handleCreateNewProject() {
-    let options = {
-      name,
-      description,
-      priority,
-      currency,
-    };
-    if (get(projectGroup, 'id') !== '__default__') {
-      options ={
-        ...options,
-      projectGroupId: get(projectGroup, 'id'),
-      }
-    }
-    doCreateProject(options); 
-    setOpen(false);
-  }
+  const newGroups = {
+    ...groups,
+    groups: [{ id: '__default__', name: 'Chưa phân loại' }, ...groups.groups],
+  };
 
   return (
-    <React.Fragment>
-      <CustomModal
-        title={`Tạo mới dự án`}
-        open={open}
-        setOpen={setOpen}
-        canConfirm={!errorName && !errorDescription}
-        onConfirm={() => handleCreateNewProject()}
-      >
-        <StyledFormControl fullWidth>
-          <label htmlFor='room-select'>
-            Nhóm dự án
-          </label>
-          <CustomSelect
-            options={
-              projectGroups.map(projectGroup => ({
-                  value: get(projectGroup, 'id'),
-                  label: get(projectGroup, 'name', ''),
-                })
-              )}
-            value={{
-              value: get(projectGroup, 'id'),
-              label: get(projectGroup, 'name', ''),
-            }}
-            onChange={({ value: projectGroupId }) => setProjectGroup(find(projectGroups, { id: projectGroupId }))}
-          />
-        </StyledFormControl>
-        <CustomTextField
-          value={name}
-          onChange={evt => setName(evt.target.value)}
-          margin="normal"
-          variant="outlined"
-          label='Tên dự án'
-          fullWidth
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorName, 'message', '')}
-            </ColorTypo>
-          }
-        />
-        <CustomTextField
-          value={description}
-          onChange={evt => setDescription(evt.target.value)}
-          margin="normal"
-          variant="outlined"
-          label='Mô tả dự án'
-          fullWidth
-          multiline
-          rowsMax='6'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorDescription, 'message', '')}
-            </ColorTypo>
-          }
-        />
-        <StyledFormControl fullWidth>
-          <StyledFormLabel component="legend" htmlFor='room-select'>
-            Mức độ ưu tiên
-          </StyledFormLabel>
-          <RadioGroup
-            aria-label='priority'
-            name='priority'
-            value={priority}
-            onChange={evt => setPriority(parseInt(evt.target.value))}
-          >
-            <FormControlLabel
-              value={0}
-              control={<Radio color="primary" />}
-              label="Thấp"
-              labelPlacement="end"
-            />
-            <FormControlLabel
-              value={1}
-              control={<Radio color="primary" />}
-              label="Trung bình"
-              labelPlacement="end"
-            />
-            <FormControlLabel
-              value={2}
-              control={<Radio color="primary" />}
-              label="Cao"
-              labelPlacement="end"
-            />
-          </RadioGroup>
-        </StyledFormControl>
-      </CustomModal>
-    </React.Fragment>
+    <CreateNewProjectPresenter 
+      open={open} setOpen={setOpen} 
+      groups={newGroups}
+      handleCreateProject={({ name, description, projectGroupId, priority, currency }) => 
+        doCreateProject({ name, description, projectGroupId, priority, currency })
+      } 
+    />
   )
 }
 
 const mapStateToProps = state => {
   return {
-    listProjectGroup: state.projectGroup.listProjectGroup,
+    groups: groupsSelector(state),
   }
 }
 

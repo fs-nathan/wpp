@@ -11,11 +11,13 @@ export const publicMember = ({ userId }) => ({
   },
 });
 
-export const publicMemberSuccess = () => ({
+export const publicMemberSuccess = (options) => ({
   type: PUBLIC_MEMBER_SUCCESS,
+  options,
 });
 
-export const publicMemberFail = (error) => ({
+export const publicMemberFail = (error, options) => ({
   type: PUBLIC_MEMBER_FAIL,
-  error: error,
+  options,
+  error,
 });

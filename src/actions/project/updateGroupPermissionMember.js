@@ -13,11 +13,13 @@ export const updateGroupPermissionMember = ({ projectId, memberId, groupPermissi
   },
 });
 
-export const updateGroupPermissionMemberSuccess = () => ({
+export const updateGroupPermissionMemberSuccess = (options) => ({
   type: UPDATE_GROUP_PERMISSION_MEMBER_SUCCESS,
+  options,
 });
 
-export const updateGroupPermissionMemberFail = (error) => ({
+export const updateGroupPermissionMemberFail = (error, options) => ({
   type: UPDATE_GROUP_PERMISSION_MEMBER_FAIL,
-  error: error,
+  options,
+  error,
 });

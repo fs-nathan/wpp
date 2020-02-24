@@ -13,14 +13,16 @@ export const updateMajor = ({ majorId, name, description }) => ({
   }
 });
 
-export const updateMajorSuccess = ({ major }) => ({
+export const updateMajorSuccess = ({ major }, options) => ({
   type: UPDATE_MAJOR_SUCCESS,
+  options,
   data: {
     major,
   }
 });
 
-export const updateMajorFail = (error) => ({
+export const updateMajorFail = (error, options) => ({
   type: UPDATE_MAJOR_FAIL,
-  error: error,
+  options,
+  error,
 });

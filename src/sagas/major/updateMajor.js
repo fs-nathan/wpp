@@ -26,11 +26,11 @@ async function doUpdateMajor({ majorId, name, description }) {
 function* updateMajor(action) {
   try {
     const { major } = yield call(doUpdateMajor, action.options);
-    yield put(updateMajorSuccess({ major }));
+    yield put(updateMajorSuccess({ major }, action.options));
     CustomEventEmitter(UPDATE_MAJOR);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateMajorFail(error));
+    yield put(updateMajorFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

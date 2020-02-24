@@ -25,11 +25,11 @@ async function doUpdateStatusCopy({ projectId, status }) {
 function* updateStatusCopy(action) {
   try {
     yield call(doUpdateStatusCopy, action.options);
-    yield put(updateStatusCopySuccess());
+    yield put(updateStatusCopySuccess(action.options));
     CustomEventEmitter(UPDATE_STATUS_COPY);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateStatusCopyFail(error));
+    yield put(updateStatusCopyFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

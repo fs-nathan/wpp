@@ -11,11 +11,13 @@ export const deleteTask = ({ taskId }) => ({
   },
 });
 
-export const deleteTaskSuccess = () => ({
+export const deleteTaskSuccess = (options) => ({
   type: DELETE_TASK_SUCCESS,
+  options,
 });
 
-export const deleteTaskFail = (error) => ({
+export const deleteTaskFail = (error, options) => ({
   type: DELETE_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });

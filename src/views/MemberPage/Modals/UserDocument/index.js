@@ -6,7 +6,7 @@ import CustomModal from '../../../../components/CustomModal';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { get } from 'lodash';
 
-function UserDocument({ open, setOpen, files }) {
+function UserDocument({ open, setOpen, files = [] }) {
 
   return (
     <CustomModal

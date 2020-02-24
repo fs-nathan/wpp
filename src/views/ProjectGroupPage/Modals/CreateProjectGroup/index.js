@@ -1,123 +1,60 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
 import LogoManagerModal from '../../../DepartmentPage/Modals/LogoManager';
-import CustomModal from '../../../../components/CustomModal';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import ColorButton from '../../../../components/ColorButton';
-import ColorTypo from '../../../../components/ColorTypo';
-import ErrorBox from '../../../../components/ErrorBox';
-import LoadingBox from '../../../../components/LoadingBox';
 import { createProjectGroup } from '../../../../actions/projectGroup/createProjectGroup';
 import { editProjectGroup } from '../../../../actions/projectGroup/editProjectGroup';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
-import { useRequiredString } from '../../../../hooks';
-import './style.scss';
+import CreateProjectGroupPresenter from './presenters';
 
-const LogoBox = ({ className = '', ...props }) => 
-  <div 
-    className={`view_ProjectGroup_Create_ProjectGroup___logo-box ${className}`}
-    {...props}
-  />;
+function CreateProjectGroup({ 
+  updatedProjectGroup = null, 
+  open, setOpen, 
+  doCreateProjectGroup, doEditProjectGroup 
+}) {
 
-function CreateProjectGroup({ updateProjectGroup = null, open, setOpen, createProjectGroup, doCreateProjectGroup, editProjectGroup, doEditProjectGroup }) {
+  const [openLogo, setOpenLogo] = React.useState(false);
+  const [logoProps, setLogoProps] = React.useState({});
 
-  const [name, setName, errorName] = useRequiredString(get(updateProjectGroup, 'name', ''), 150);
-  const [description, setDescription, errorDescription] = useRequiredString(get(updateProjectGroup, 'description', ''), 300);
-  const __icon = get(updateProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png');
-  const [icon, setIcon] = React.useState({
-    url_full: __icon,
-    url_sort: __icon.replace('https://storage.googleapis.com', ''),
-  });
-  const [openLogoModal, setOpenLogoModal] = React.useState(false);
-
-  const loading = updateProjectGroup ? editProjectGroup.loading : createProjectGroup.loading;
-  const error = updateProjectGroup ? editProjectGroup.error : createProjectGroup.error;
-
-  function onSelectIcon(iconURL) {
-    setIcon(iconURL);
-  }
-
-  function handleCreateProjectGroup() {
-    if (updateProjectGroup === null) {
-      doCreateProjectGroup({
-        name,
-        description,
-        icon: icon.url_sort,
-      }); 
-    } else {
-      doEditProjectGroup({
-        projectGroupId: get(updateProjectGroup, 'id'),
-        name,
-        description,
-        icon: icon.url_sort,
-      });
+  function doOpenModal(type, props) {
+    switch (type) {
+      case 'LOGO': {
+        setOpenLogo(true);
+        setLogoProps(props);
+        return;
+      }
+      default: return;
     }
-    setOpen(false);
   }
 
   return (
-    <React.Fragment>
-      <CustomModal
-        title={`${updateProjectGroup ? 'Cập nhật' : 'Tạo'} nhóm dự án`}
-        open={open}
-        setOpen={setOpen}
-        canConfirm={!errorName && !errorDescription}
-        onConfirm={() => handleCreateProjectGroup()}
-      >
-        {loading && <LoadingBox />}
-        {error !== null && <ErrorBox />}
-        {!loading && error === null && (
-          <React.Fragment>
-            <TextField
-              value={name}
-              onChange={evt => setName(evt.target.value)}
-              margin="normal"
-              variant="outlined"
-              label='Tên nhóm dự án'
-              fullWidth
-              helperText={
-                <ColorTypo variant='caption' color='red'>
-                  {get(errorName, 'message', '')}
-                </ColorTypo>
-              }
-            />
-            <TextField
-              value={description}
-              onChange={evt => setDescription(evt.target.value)}
-              margin="normal"
-              variant="outlined"
-              label='Mô tả nhóm dự án'
-              fullWidth
-              multiline
-              rowsMax='4'
-              helperText={
-                <ColorTypo variant='caption' color='red'>
-                  {get(errorDescription, 'message', '')}
-                </ColorTypo>
-              }
-            />
-            <LogoBox>
-              <div>  
-                <ColorTypo>Biểu tượng nhóm</ColorTypo>
-                <ColorButton color='primary' onClick={() => setOpenLogoModal(true)}>+ Chọn biểu tượng</ColorButton>
-              </div>
-              <CustomAvatar src={icon.url_full} alt='avatar' />
-            </LogoBox>
-          </React.Fragment>
-        )}
-      </CustomModal>
-      <LogoManagerModal open={openLogoModal} setOpen={setOpenLogoModal} onSelectIcon={onSelectIcon} />
-    </React.Fragment>
+    <>
+      <CreateProjectGroupPresenter 
+        updatedProjectGroup={updatedProjectGroup}
+        open={open} setOpen={setOpen}
+        handleCreateOrEditProjectGroup={(name, description, icon) => 
+          updatedProjectGroup 
+          ? doEditProjectGroup({
+              projectGroupId: get(updatedProjectGroup, 'id'),
+              name,
+              description,
+              icon: icon.url_sort,
+            })
+          : doCreateProjectGroup({
+              name,
+              description,
+              icon: icon.url_sort,
+            })
+        }
+        handleOpenModal={doOpenModal} 
+      />
+      <LogoManagerModal 
+        open={openLogo} 
+        setOpen={setOpenLogo} 
+        {...logoProps}
+      />
+    </>
   )
 }
-
-const mapStateToProps = state => {
-  return {
-    createProjectGroup: state.projectGroup.createProjectGroup,
-    editProjectGroup: state.projectGroup.editProjectGroup,
-  }
-};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -127,6 +64,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(CreateProjectGroup);

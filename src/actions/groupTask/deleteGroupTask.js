@@ -11,13 +11,13 @@ export const deleteGroupTask = ({ groupTaskId }) => ({
   }
 });
 
-export const deleteGroupTaskSuccess = () => ({
+export const deleteGroupTaskSuccess = (options) => ({
   type: DELETE_GROUP_TASK_SUCCESS,
-  data: {
-  },
+  options,
 });
 
-export const deleteGroupTaskFail = (error) => ({
+export const deleteGroupTaskFail = (error, options) => ({
   type: DELETE_GROUP_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });

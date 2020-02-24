@@ -24,11 +24,11 @@ async function doCreateIcon({ iconId }) {
 function* deleteIcon(action) {
   try {
     yield call(doCreateIcon, action.options);
-    yield put(deleteIconSuccess());
+    yield put(deleteIconSuccess(action.options));
     CustomEventEmitter(DELETE_ICON);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteIconFail(error));
+    yield put(deleteIconFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

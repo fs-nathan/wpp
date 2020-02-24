@@ -25,11 +25,11 @@ async function doCreatePosition({ name, description }) {
 function* createUserRole(action) {
   try {
     const { user_role: userRole } = yield call(doCreatePosition, action.options);
-    yield put(createUserRoleSuccess({ userRole }));
+    yield put(createUserRoleSuccess({ userRole }, action.options));
     CustomEventEmitter(CREATE_USER_ROLE);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createUserRoleFail(error));
+    yield put(createUserRoleFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

@@ -11,11 +11,13 @@ export const resendInvitationUserJoinGroup = ({ userId }) => ({
   },
 });
 
-export const resendInvitationUserJoinGroupSuccess = () => ({
+export const resendInvitationUserJoinGroupSuccess = (options) => ({
   type: RESEND_INVITATION_USER_JOIN_GROUP_SUCCESS,
+  options,
 });
 
-export const resendInvitationUserJoinGroupFail = (error) => ({
+export const resendInvitationUserJoinGroupFail = (error, options) => ({
   type: RESEND_INVITATION_USER_JOIN_GROUP_FAIL,
-  error: error,
+  options,
+  error,
 });

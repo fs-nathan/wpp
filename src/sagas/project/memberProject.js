@@ -23,9 +23,9 @@ async function doMemberProject({ projectId }) {
 function* memberProject(action) {
   try {
     const { member_added: membersAdded, member_frees: membersFree } = yield call(doMemberProject, action.options);
-    yield put(memberProjectSuccess({ membersAdded, membersFree }));
+    yield put(memberProjectSuccess({ membersAdded, membersFree }, action.options));
   } catch (error) {
-    yield put(memberProjectFail(error));
+    yield put(memberProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

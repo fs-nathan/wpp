@@ -20,14 +20,16 @@ export const createTask = ({ name, projectId, groupTask, typeAssign, priority, d
   },
 });
 
-export const createTaskSuccess = ({ taskId }) => ({
+export const createTaskSuccess = ({ taskId }, options) => ({
   type: CREATE_TASK_SUCCESS,
+  options,
   data: {
     taskId,
   }
 });
 
-export const createTaskFail = (error) => ({
+export const createTaskFail = (error, options) => ({
   type: CREATE_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });

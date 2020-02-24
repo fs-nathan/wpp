@@ -23,9 +23,9 @@ async function doSearchUser({ info }) {
 function* searchUser(action) {
   try {
     const { member } = yield call(doSearchUser, action.options);
-    yield put(searchUserSuccess({ member }));
+    yield put(searchUserSuccess({ member }, action.options));
   } catch (error) {
-    yield put(searchUserFail(error));
+    yield put(searchUserFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

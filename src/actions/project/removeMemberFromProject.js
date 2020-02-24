@@ -12,11 +12,13 @@ export const removeMemberProject = ({ projectId, memberId }) => ({
   },
 });
 
-export const removeMemberProjectSuccess = () => ({
+export const removeMemberProjectSuccess = (options) => ({
   type: REMOVE_MEMBER_PROJECT_SUCCESS,
+  options,
 });
 
-export const removeMemberProjectFail = (error) => ({
+export const removeMemberProjectFail = (error, options) => ({
   type: REMOVE_MEMBER_PROJECT_FAIL,
-  error: error,
+  options,
+  error,
 });

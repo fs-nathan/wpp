@@ -12,11 +12,13 @@ export const updateStatusDate = ({ projectId, status }) => ({
   },
 });
 
-export const updateStatusDateSuccess = () => ({
+export const updateStatusDateSuccess = (options) => ({
   type: UPDATE_STATUS_DATE_SUCCESS,
+  options,
 });
 
-export const updateStatusDateFail = (error) => ({
+export const updateStatusDateFail = (error, options) => ({
   type: UPDATE_STATUS_DATE_FAIL,
-  error: error,
+  options,
+  error,
 });

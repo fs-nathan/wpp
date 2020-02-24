@@ -25,11 +25,11 @@ async function doSortGroupTask({ groupTaskId, sortIndex }) {
 function* sortGroupTask(action) {
   try {
     yield call(doSortGroupTask, action.options);
-    yield put(sortGroupTaskSuccess());
+    yield put(sortGroupTaskSuccess(action.options));
     CustomEventEmitter(SORT_GROUP_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(sortGroupTaskFail(error));
+    yield put(sortGroupTaskFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

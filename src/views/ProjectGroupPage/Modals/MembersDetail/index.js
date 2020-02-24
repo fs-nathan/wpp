@@ -19,7 +19,7 @@ const UserTableCell = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function MembersDetail({ open, setOpen, members, }) {
+function MembersDetail({ open, setOpen, members = [], }) {
 
   return (
     <React.Fragment>

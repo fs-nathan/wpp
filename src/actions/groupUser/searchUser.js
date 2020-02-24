@@ -13,16 +13,18 @@ export const searchUser = ({ info }, quite = false) => ({
   },
 });
 
-export const searchUserSuccess = ({ member }) => ({
+export const searchUserSuccess = ({ member }, options) => ({
   type: SEARCH_USER_SUCCESS,
+  options,
   data: {
     member,
   },
 });
 
-export const searchUserFail = (error) => ({
+export const searchUserFail = (error, options) => ({
   type: SEARCH_USER_FAIL,
-  error: error,
+  options,
+  error,
 });
 
 export const searchUserReset = () => ({

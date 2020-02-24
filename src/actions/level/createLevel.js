@@ -12,14 +12,16 @@ export const createLevel = ({ name, description }) => ({
   }
 });
 
-export const createLevelSuccess = ({ level }) => ({
+export const createLevelSuccess = ({ level }, options) => ({
   type: CREATE_LEVEL_SUCCESS,
+  options,
   data: {
     level,
   },
 });
 
-export const createLevelFail = (error) => ({
+export const createLevelFail = (error, options) => ({
   type: CREATE_LEVEL_FAIL,
-  error: error,
+  options,
+  error,
 });

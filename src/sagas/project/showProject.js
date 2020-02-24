@@ -24,11 +24,11 @@ async function doShowProject({ projectId }) {
 function* showProject(action) {
   try {
     yield call(doShowProject, action.options);
-    yield put(showProjectSuccess());
+    yield put(showProjectSuccess(action.options));
     CustomEventEmitter(SHOW_PROJECT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(showProjectFail(error));
+    yield put(showProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

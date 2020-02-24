@@ -12,11 +12,13 @@ export const sortProjectGroup = ({ projectGroupId, sortIndex }) => ({
   },
 });
 
-export const sortProjectGroupSuccess = () => ({
+export const sortProjectGroupSuccess = (options) => ({
   type: SORT_PROJECT_GROUP_SUCCESS,
+  options,
 });
 
-export const sortProjectGroupFail = (error) => ({
+export const sortProjectGroupFail = (error, options) => ({
   type: SORT_PROJECT_GROUP_FAIL,
-  error: error,
+  options,
+  error,
 });

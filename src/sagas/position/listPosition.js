@@ -17,12 +17,12 @@ async function doListPosition() {
   }
 }
 
-function* listPosition() {
+function* listPosition(action) {
   try {
     const { position: positions } = yield call(doListPosition);
-    yield put(listPositionSuccess({ positions }));
+    yield put(listPositionSuccess({ positions }, action.options));
   } catch (error) {
-    yield put(listPositionFail(error));
+    yield put(listPositionFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

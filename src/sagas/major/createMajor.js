@@ -25,11 +25,11 @@ async function doCreateMajor({ name, description }) {
 function* createMajor(action) {
   try {
     const { major } = yield call(doCreateMajor, action.options);
-    yield put(createMajorSuccess({ major }));
+    yield put(createMajorSuccess({ major }, action.options));
     CustomEventEmitter(CREATE_MAJOR);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createMajorFail(error));
+    yield put(createMajorFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

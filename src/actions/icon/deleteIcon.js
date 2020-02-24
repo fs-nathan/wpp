@@ -11,11 +11,13 @@ export const deleteIcon = ({ iconId }) => ({
   }
 });
 
-export const deleteIconSuccess = () => ({
+export const deleteIconSuccess = (options) => ({
   type: DELETE_ICON_SUCCESS,
+  options,
 });
 
-export const deleteIconFail = (error) => ({
+export const deleteIconFail = (error, options) => ({
   type: DELETE_ICON_FAIL,
-  error: error,
+  options,
+  error,
 });

@@ -8,6 +8,7 @@ export function useRequiredString(initial = '', maxLength = 100) {
   
   React.useEffect(() => {
     const schema = Joi.string().max(maxLength).required().messages({
+      'any.required': 'Không được để trống',
       'string.empty': 'Không được để trống',
       'string.max': 'Tối đa {#limit} ký tự',
     });
@@ -17,6 +18,21 @@ export function useRequiredString(initial = '', maxLength = 100) {
 
   return [string, setString, error];
 }
+
+export function useMaxlenString(initial = '', maxLength = 100) {
+  const [string, setString] = React.useState(initial);
+  const [error, setError] = React.useState(null);
+  
+  React.useEffect(() => {
+    const schema = Joi.string().allow('').max(maxLength).messages({
+      'string.max': 'Tối đa {#limit} ký tự',
+    });
+    const { error } = schema.validate(string);
+    setError(error);
+  }, [string, maxLength]);
+
+  return [string, setString, error];
+} 
 
 export function useRequiredDate(initial = moment().toDate()) {
   const [date, setDate] = React.useState(initial);

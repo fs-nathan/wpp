@@ -24,11 +24,11 @@ async function doDeleteProject({ projectId }) {
 function* deleteProject(action) {
   try {
     yield call(doDeleteProject, action.options);
-    yield put(deleteProjectSuccess());
+    yield put(deleteProjectSuccess(action.options));
     CustomEventEmitter(DELETE_PROJECT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteProjectFail(error));
+    yield put(deleteProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

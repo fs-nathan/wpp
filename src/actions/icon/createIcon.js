@@ -11,14 +11,16 @@ export const createIcon = ({ icon }) => ({
   }
 });
 
-export const createIconSuccess = ({ dataIcon }) => ({
+export const createIconSuccess = ({ dataIcon }, options) => ({
   type: CREATE_ICON_SUCCESS,
+  options,
   data: {
     dataIcon,
   },
 });
 
-export const createIconFail = (error) => ({
+export const createIconFail = (error, options) => ({
   type: CREATE_ICON_FAIL,
-  error: error,
+  options,
+  error,
 });

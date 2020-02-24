@@ -25,11 +25,11 @@ async function doCreateLevel({ name, description }) {
 function* createLevel(action) {
   try {
     const { level } = yield call(doCreateLevel, action.options);
-    yield put(createLevelSuccess({ level }));
+    yield put(createLevelSuccess({ level }, action.options));
     CustomEventEmitter(CREATE_LEVEL);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createLevelFail(error));
+    yield put(createLevelFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

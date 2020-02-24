@@ -25,11 +25,11 @@ async function doCreatePosition({ name, description }) {
 function* createPosition(action) {
   try {
     const { position } = yield call(doCreatePosition, action.options);
-    yield put(createPositionSuccess({ position }));
+    yield put(createPositionSuccess({ position }, action.options));
     CustomEventEmitter(CREATE_POSITION);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(createPositionFail(error));
+    yield put(createPositionFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

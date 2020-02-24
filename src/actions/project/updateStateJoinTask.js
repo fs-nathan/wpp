@@ -13,11 +13,13 @@ export const updateStateJoinTask = ({ projectId, memberId, state }) => ({
   },
 });
 
-export const updateStateJoinTaskSuccess = () => ({
+export const updateStateJoinTaskSuccess = (options) => ({
   type: UPDATE_STATE_JOIN_TASK_SUCCESS,
+  options,
 });
 
-export const updateStateJoinTaskFail = (error) => ({
+export const updateStateJoinTaskFail = (error, options) => ({
   type: UPDATE_STATE_JOIN_TASK_FAIL,
-  error: error,
+  options,
+  error,
 });

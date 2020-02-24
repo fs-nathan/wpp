@@ -20,9 +20,9 @@ async function doGetListGroup() {
 function* getListGroup(action) {
   try {
     const { invitations } = yield call(doGetListGroup, action.options);
-    yield put(getListGroupSuccess({ invitations }));
+    yield put(getListGroupSuccess({ invitations }, action.options));
   } catch (error) {
-    yield put(getListGroupFail(error));
+    yield put(getListGroupFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

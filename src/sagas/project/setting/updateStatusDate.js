@@ -25,11 +25,11 @@ async function doUpdateStatusDate({ projectId, status }) {
 function* updateStatusDate(action) {
   try {
     yield call(doUpdateStatusDate, action.options);
-    yield put(updateStatusDateSuccess());
+    yield put(updateStatusDateSuccess(action.options));
     CustomEventEmitter(UPDATE_STATUS_DATE);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(updateStatusDateFail(error));
+    yield put(updateStatusDateFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
