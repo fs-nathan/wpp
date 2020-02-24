@@ -271,7 +271,7 @@ const MyDocument = props => {
               {t('IDS_WP_OWNER')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
-              C{t('IDS_WP_SHARE')}
+              {t('IDS_WP_SHARE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
               {t('IDS_WP_LAST_EDIT')}

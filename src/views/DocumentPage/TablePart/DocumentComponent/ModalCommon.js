@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import '../DocumentPage.scss';
 import Button from '@material-ui/core/Button';
@@ -42,10 +43,7 @@ const DialogTitleCus = withStyles(styles)(props => {
 });
 
 const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1)
-  }
+  root: { margin: 0, padding: theme.spacing(1) }
 }))(MuiDialogActions);
 
 const ModalCommon = props => {
@@ -94,8 +92,11 @@ const ModalCommon = props => {
                 opacity: el.disabled ? 0.5 : 1
               }}
               key={idx}
-              disabled={el.disabled}
+              disabled={el.disabled || props.loading}
             >
+              {props.loading && (
+                <CircularProgress size={20} className="margin-circular" />
+              )}
               {el.name}
             </Button>
           ))}

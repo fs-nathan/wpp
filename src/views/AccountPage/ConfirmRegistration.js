@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Icon } from '@mdi/react';
 import { mdiLockOutline, mdiCheckCircle } from '@mdi/js';
 import {
@@ -41,6 +42,7 @@ const ConfirmRegistration = props => {
   const [emailRegistered, setEmailRegistered] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [pwdNotMatch, setPwdNotMatch] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleToast = (type, message) => {
     props.actionToast(type, message);
@@ -59,6 +61,7 @@ const ConfirmRegistration = props => {
       password: elements.password.value
     };
     try {
+      setLoading(true);
       const res = await actionCompleteRegister(dataBody);
       localStorage.setItem(TOKEN, res.data.accessToken);
       localStorage.setItem(REFRESH_TOKEN, res.data.refreshToken);
@@ -79,8 +82,10 @@ const ConfirmRegistration = props => {
         props.openNoticeModal();
       }
       props.loginSuccess(res.data);
+      setLoading(false);
       props.history.push(Routes.HOME);
     } catch (error) {
+      setLoading(false);
       handleToast('error', error.message);
     } // eslint-disable-next-line
   }, []);
@@ -300,9 +305,16 @@ const ConfirmRegistration = props => {
               variant="contained"
               color="primary"
               type="submit"
-              disabled={!checkedCode}
+              disabled={!checkedCode || loading}
               className="btn-action green-color"
             >
+              {loading && (
+                <CircularProgress
+                  size={20}
+                  className="margin-circular"
+                  color="white"
+                />
+              )}
               {t('IDS_WP_REGISTER_CONFIRM')}
             </Button>
           </form>

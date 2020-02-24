@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, Divider } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Icon from '@mdi/react';
 import { mdiContentCopy } from '@mdi/js';
 import { connect } from 'react-redux';
@@ -40,6 +41,7 @@ const Info = props => {
   const [cropType, setCropType] = useState(null);
   const [updatingImg, setUpdatingImg] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { colors } = props;
   const bgColor = colors.find(item => item.selected === true);
 
@@ -73,6 +75,7 @@ const Info = props => {
       group_website: e.target.email.website
     };
     try {
+      setLoading(true);
       await actionUpdateGroupInfo(data);
       const res = await getProfileService();
       if (res.data.data) {
@@ -81,8 +84,10 @@ const Info = props => {
       }
       handleToast('success', t('IDS_WP_CHANGE_INFO_GROUP_SUCCESS'));
       setEditMode(false);
+      setLoading(false);
     } catch (error) {
       handleToast('error', error.message);
+      setLoading(false);
     }
   };
   const handleToast = (type, message) => {
@@ -343,7 +348,11 @@ const Info = props => {
                 variant="contained"
                 className="btn-action none-boxshadow"
                 type="submit"
+                disabled={loading}
               >
+                {loading && (
+                  <CircularProgress size={20} className="margin-circular" />
+                )}
                 {editMode ? t('IDS_WP_SAVE') : t('IDS_WP_EDIT_TEXT')}
               </Button>
               {editMode && (
@@ -376,7 +385,7 @@ const Info = props => {
         <LoadingContent loading={updatingImg || false}>
           <div className="setting-image-group">
             <div className="heading-title">
-              <span>Logo nhóm (120x120px)</span>
+              <span>{t('IDS_WP_GROUP_LOGO')} (120x120px)</span>
               <span className="action-update-img">
                 <Button
                   className="crop-image-btn"
@@ -388,7 +397,7 @@ const Info = props => {
                     setCropType(CROP_TYPE.LOGO);
                   }}
                 >
-                  Đổi ảnh logo
+                  {t('IDS_WP_CHANGE_LOGO')}
                 </Button>
                 <Divider orientation="vertical" />
                 <Button
@@ -400,7 +409,7 @@ const Info = props => {
                     handleResetImage(CROP_TYPE.LOGO);
                   }}
                 >
-                  Sử dụng mặc định
+                  {t('IDS_WP_USE_DEFAULT')}
                 </Button>
               </span>
             </div>
@@ -411,7 +420,7 @@ const Info = props => {
           </div>
           <div className="setting-image-group setting-cover">
             <div className="heading-title">
-              <span>Ảnh cover nhóm (1200x400px)</span>
+              <span>{t('IDS_WP_COVER_IMAGE_GROUP')} (1200x400px)</span>
               <span className="action-update-img">
                 <Button
                   className="crop-image-btn"
@@ -423,7 +432,7 @@ const Info = props => {
                     setCropType(CROP_TYPE.COVER);
                   }}
                 >
-                  Đổi ảnh cover
+                  {t('IDS_WP_CHANGE_COVER_IMAGE')}
                 </Button>
                 <Divider orientation="vertical" />
                 <Button
@@ -435,7 +444,7 @@ const Info = props => {
                     handleResetImage(CROP_TYPE.COVER);
                   }}
                 >
-                  Sử dụng mặc định
+                  {t('IDS_WP_USE_DEFAULT')}
                 </Button>
               </span>
             </div>
@@ -446,7 +455,7 @@ const Info = props => {
           </div>
         </LoadingContent>
         <div className="setting-bg-left-menu">
-          <span className="lb-text">Chọn màu sắc menu trái</span>
+          <span className="lb-text">{t('IDS_WP_SELECT_COLOR')}</span>
           <span
             className="pick-color"
             style={{ background: bgColor.color }}

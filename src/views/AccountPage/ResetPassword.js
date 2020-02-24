@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
 import { useTranslation } from 'react-i18next';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { mdiLockOutline } from '@mdi/js';
 import { connect } from 'react-redux';
 import {
@@ -25,7 +26,7 @@ const ResetPassword = props => {
   const { t } = useTranslation();
   const [resetOk, setResetOk] = useState(false);
   const [pwdNotMatch, setPwdNotMatch] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const parseQueryString = query => {
     const vars = query.split('&');
     let query_string = {};
@@ -49,6 +50,7 @@ const ResetPassword = props => {
     e.preventDefault();
     if (pwdNotMatch) return;
     try {
+      setLoading(true);
       let token = '';
       if (props.location.search) {
         const query = props.location.search.substring(1);
@@ -57,7 +59,9 @@ const ResetPassword = props => {
       }
       await actionResetPassword(token, e.target.elements.password.value);
       setResetOk(true);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       if (error.message) {
         props.actionToast('error', error.message);
         setTimeout(() => props.actionToast(null, ''), 3000);
@@ -150,7 +154,15 @@ const ResetPassword = props => {
                 variant="contained"
                 type="submit"
                 className="btn-action red-color"
+                disabled={loading}
               >
+                {loading && (
+                  <CircularProgress
+                    size={20}
+                    className="margin-circular"
+                    color="white"
+                  />
+                )}
                 {t('IDS_WP_DONE')}
               </Button>
             </form>

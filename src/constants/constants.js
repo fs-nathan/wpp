@@ -1,7 +1,6 @@
 export const TOKEN = 'token';
 export const REFRESH_TOKEN = 'refreshToken';
 export const GROUP_ACTIVE = 'group-active';
-export const WP_LANGUAGE = 'wp-language';
 
 export const DRAWER_TYPE = {
   SUPPORT: 'SUPPORT',

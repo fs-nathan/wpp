@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from 'react-router-dom';
@@ -33,6 +34,7 @@ const CreateOrder = props => {
   const [dataBeforOder, setDataBeforOder] = useState({});
   const [bonusCode, setBonusCode] = useState('');
   const [dataNumberOldOder, setDataNumberOldOder] = useState({});
+  const [loading, setLoading] = useState(false);
   const marks = {
     accountNum: {
       mark: [
@@ -139,13 +141,16 @@ const CreateOrder = props => {
           bonus_code: bonusCode
         };
       }
+      setLoading(true);
       const { data } = await orderCreateService(dataBody);
       props.history.push({
         pathname: Routes.SETTING_GROUP_ORDER,
         search: `?order_id=${data.order_id}`
       });
+      setLoading(false);
       handleToast('success', t('IDS_WP_CREATE_ORDER_SUCCESS'));
     } catch (error) {
+      setLoading(false);
       handleToast('error', error.message);
     }
   };
@@ -323,8 +328,16 @@ const CreateOrder = props => {
             className="create-order-btn"
             onClick={handleCreateOder}
             variant="contained"
-            disabled={!(isCheckedManagerWork || isCheckedBuyData)}
+            disabled={!(isCheckedManagerWork || isCheckedBuyData) || loading}
           >
+            {loading && (
+              <CircularProgress
+                size={20}
+                className="margin-circular"
+                color="white"
+              />
+            )}
+
             {t('IDS_WP_FINISH_ORDER')}
           </Button>
         </div>

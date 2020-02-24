@@ -21,6 +21,7 @@ const ChangeDocumentModal = props => {
     <ModalCommon
       title={t('IDS_WP_CHANGE_DOCUMENT_NAME')}
       onClose={props.onClose}
+      loading={props.loading}
       footerAction={[
         {
           name: t('IDS_WP_UPDATE'),

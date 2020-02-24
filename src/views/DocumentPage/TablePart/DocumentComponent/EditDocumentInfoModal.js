@@ -17,11 +17,13 @@ const EditDocumentInfoModal = props => {
   const [selectedDate, setSelectedDate] = useState(
     new Date(props.item.date_released || new Date())
   );
+  const [loading, setLoading] = useState(false);
   const formInfo = useRef(null);
 
   const handleUpdate = async e => {
     // e.preventDefault();
     try {
+      setLoading(true);
       const { elements } = formInfo.current;
       const result = {
         file_id: props.item.id,
@@ -34,8 +36,11 @@ const EditDocumentInfoModal = props => {
       };
       await updateDocumentInfo(result);
       props.getData();
+      setLoading(false);
       props.onClose();
-    } catch (err) {}
+    } catch (err) {
+      setLoading(false);
+    }
   };
 
   const handleDateChange = date => {
@@ -46,6 +51,7 @@ const EditDocumentInfoModal = props => {
     <ModalCommon
       title={t('IDS_WP_DOCUMENT_INFO')}
       onClose={props.onClose}
+      loading={loading}
       footerAction={[{ name: t('IDS_WP_UPDATE'), action: handleUpdate }]}
     >
       <DialogContent dividers className="dialog-content">

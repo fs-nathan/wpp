@@ -96,19 +96,25 @@ const GoogleDrive = props => {
   }, [settingDate]);
 
   const updateSigninStatus = isSignedIn => {
+    // if login success
     if (isSignedIn) {
+      // show button Logout gg Drive
       props.toggleSingoutGoogle(true);
       setLogged(true);
+      // Get list file gg Drive
       props.actionFetchListGoogleDocument();
     } else {
       setLogged(false);
+      // Hide button Logout gg Drive
       props.toggleSingoutGoogle(false);
     }
   };
 
   useEffect(() => {
     const driveScript = document.getElementById('google-drive-script');
+    // check script google drive added or not to file index.html
     if (!driveScript) {
+      // add script and check login status
       initGoogleDrive(
         isChecking => {
           setCheckingService(isChecking);
@@ -122,6 +128,7 @@ const GoogleDrive = props => {
       );
     } else {
       setCheckingService(false);
+      // check login status
       updateSigninStatus(checkSignInStatus());
     }
     // eslint-disable-next-line

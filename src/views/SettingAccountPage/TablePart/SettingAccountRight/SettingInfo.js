@@ -7,6 +7,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Icon from '@mdi/react';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 import {
   MuiPickersUtilsProvider,
@@ -35,7 +36,8 @@ class SettingInfo extends Component {
     selectedDate: this.props.profile.birthday
       ? new Date(this.props.profile.birthday)
       : new Date(),
-    formatDate: 'dd/MM/yyyy'
+    formatDate: 'dd/MM/yyyy',
+    loading: false
   };
   componentDidMount() {
     this.getFormatDate();
@@ -63,6 +65,7 @@ class SettingInfo extends Component {
   };
   handleChangeProfile = async type => {
     try {
+      this.setState({ loading: true });
       const file = new File([this.state.avatar], 'filename');
       let formData = new FormData();
       if (type === 'updateImage') {
@@ -90,12 +93,12 @@ class SettingInfo extends Component {
       const { data } = await getProfileService();
       this.handleToast('success', this.props.t('IDS_WP_UPDATE_SUCCESS'));
       if (data.data) this.props.actionGetProfile(data.data);
-      this.setState({ mode: 'view' });
+      this.setState({ mode: 'view', loading: false });
     } catch (error) {
       this.handleToast('error', this.props.t('IDS_WP_UPDATE_ERROR'));
       const { data } = await getProfileService();
       if (data.data) this.props.actionGetProfile(data.data);
-      this.setState({ mode: 'view' });
+      this.setState({ mode: 'view', loading: false });
     }
   };
   handleToast = (type, message) => {
@@ -148,7 +151,8 @@ class SettingInfo extends Component {
       showInputFile,
       avatar,
       selectedDate,
-      formatDate
+      formatDate,
+      loading
     } = this.state;
     const { t } = this.props;
     return (
@@ -319,7 +323,11 @@ class SettingInfo extends Component {
                 variant="contained"
                 className="btn-action none-boxshadow"
                 onClick={this.handleChangeStatus}
+                disabled={loading}
               >
+                {loading && (
+                  <CircularProgress size={20} className="margin-circular" />
+                )}
                 {mode === 'view' ? t('IDS_WP_UPDATE') : t('IDS_WP_SAVE')}
               </Button>
               {mode === 'edit' && (

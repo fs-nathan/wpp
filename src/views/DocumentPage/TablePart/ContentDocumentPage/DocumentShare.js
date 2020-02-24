@@ -48,15 +48,17 @@ const DocumentShare = props => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    fetDataDocumentShareToMe(); // eslint-disable-next-line
-  }, []);
-  useEffect(() => {
+    fetDataDocumentShareToMe();
     return () => {
       props.resetListSelectDocument();
       props.actionSelectedFolder({});
       actionChangeBreadCrumbs([]);
     }; // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    fetDataDocumentShareToMe();
+    // eslint-disable-next-line
+  }, [props.currentFolder]);
   useEffect(() => {
     if (isEmpty(props.selectedDocument)) setSelected([]);
     // eslint-disable-next-line
@@ -89,13 +91,16 @@ const DocumentShare = props => {
   };
 
   const fetDataDocumentShareToMe = (params = {}, quite = false) => {
+    if (!isEmpty(props.currentFolder)) {
+      params.folder_id = props.currentFolder.id;
+    }
     props.actionFetchListDocumentShare(params, quite);
   };
 
   const handleClickItem = item => {
     if (isFetching) return;
     if (item.type === 'folder') {
-      fetDataDocumentShareToMe({ folder_id: item.id }, true);
+      // fetDataDocumentShareToMe({ folder_id: item.id }, true);
       props.actionSelectedFolder(item);
       // handle bread crumbs
       let newBreadCrumbs = [...breadCrumbs];
@@ -297,7 +302,8 @@ export default connect(
     searchText: state.documents.searchText,
     isLoading: state.documents.isLoading,
     breadCrumbs: state.system.breadCrumbs,
-    isFetching: state.documents.isFetching
+    isFetching: state.documents.isFetching,
+    currentFolder: state.documents.currentFolder
   }),
   {
     selectDocumentItem,

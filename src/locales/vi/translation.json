@@ -510,5 +510,11 @@
   "IDS_WP_ORDER_NOTE_2": "Toàn bộ đơn hàng trên Workplus được thanh toán bằng chuyển khoản",
   "IDS_WP_ORDER_NOTE_3": "Khách hàng vui lòng xác nhận mọi thông tin trước khi thanh toán. Workplus không chịu trách nhiệm nếu thông tin thanh toán không phải do chúng tôi cung cấp.",
   "IDS_WP_ORDER_NOTE_4": "Các chương trình khuyến mại chỉ áp dụng trong từng thời điểm và không cam kết lâu dài.",
-  "IDS_WP_ORDER_NOTE_5": " Mọi thắc mắc liên quan đến thanh toán đơn hàng vui lòng liên hệ: Hotline: 09.1800.6181 - Email: support@workplus.vn"
+  "IDS_WP_ORDER_NOTE_5": " Mọi thắc mắc liên quan đến thanh toán đơn hàng vui lòng liên hệ: Hotline: 09.1800.6181 - Email: support@workplus.vn",
+  "IDS_WP_GROUP_LOGO": "Logo nhóm",
+  "IDS_WP_CHANGE_LOGO": "Đổi ảnh logo",
+  "IDS_WP_USE_DEFAULT": "Sử dụng mặc định",
+  "IDS_WP_COVER_IMAGE_GROUP": "Ảnh cover nhóm",
+  "IDS_WP_CHANGE_COVER_IMAGE": "Đổi ảnh cover",
+  "IDS_WP_SELECT_COLOR": "Chọn màu sắc menu trái"
 }
