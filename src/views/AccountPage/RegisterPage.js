@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
 import { mdiAccountOutline } from '@mdi/js';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   FormControl,
   OutlinedInput,
@@ -21,15 +22,18 @@ import './AccountPage.scss';
 const RegisterPage = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [errMsg, setErrMsg] = useState('');
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
   const handleRegister = async e => {
     e.preventDefault();
     try {
+      setLoading(true);
       await actionRegister(e.target.elements.email.value);
       setIsRegistered(true);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      setLoading(false);
       setErrMsg(error.message || '');
     }
   };
@@ -80,7 +84,15 @@ const RegisterPage = () => {
                 variant="contained"
                 type="submit"
                 className="btn-action red-color"
+                disabled={loading}
               >
+                {loading && (
+                  <CircularProgress
+                    size={20}
+                    className="margin-circular"
+                    color="white"
+                  />
+                )}
                 {t('IDS_WP_SIGN_UP')}
               </Button>
             </form>

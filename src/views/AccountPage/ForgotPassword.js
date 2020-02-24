@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
 import { useTranslation } from 'react-i18next';
 import { mdiAccountOutline } from '@mdi/js';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   FormControl,
   OutlinedInput,
@@ -19,12 +20,16 @@ import { Routes } from '../../constants/routes';
 const ForgotPasswordPage = props => {
   const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState('');
   const handleForgotPassword = async e => {
     e.preventDefault();
     try {
+      setLoading(true);
       await actionForgotPassword(e.target.elements.email.value);
-      props.history.push(Routes.LOGIN)
+      setLoading(false);
+      props.history.push(Routes.LOGIN);
     } catch (error) {
+      setLoading(false);
       setErrorMsg(error.message);
     }
   };
@@ -71,7 +76,15 @@ const ForgotPasswordPage = props => {
             variant="contained"
             type="submit"
             className="btn-action red-color"
+            disabled={loading}
           >
+            {loading && (
+              <CircularProgress
+                size={20}
+                className="margin-circular"
+                color="white"
+              />
+            )}
             {t('IDS_WP_CHANGE_PASSWORD')}
           </Button>
         </form>

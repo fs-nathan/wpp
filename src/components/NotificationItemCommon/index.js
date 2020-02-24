@@ -5,10 +5,16 @@ import { isEmpty } from '../../helpers/utils/isEmpty';
 import {
   actionVisibleDrawerMessage,
   openDocumentDetail,
-  actionActiveGroup
+  actionActiveGroup,
+  actionChangeBreadCrumbs
 } from '../../actions/system/system';
-import { getDocumentDetail } from '../../actions/documents';
+import {
+  getDocumentDetail,
+  actionFetchListMyDocument,
+  actionSelectedFolder
+} from '../../actions/documents';
 import { DRAWER_TYPE } from '../../constants/constants';
+import { Routes } from '../../constants/routes';
 
 const NotificationItemCommon = props => {
   const { data_notification } = props.item;
@@ -36,6 +42,37 @@ const NotificationItemCommon = props => {
         console.log(
           'Redirect to url access folder share, data_notification.folder_id'
         );
+        props.actionSelectedFolder({
+          id: data_notification.folder_id,
+          name: data_notification.folder_name
+        });
+
+        let newBreadCrumbs = [
+          {
+            id: -1,
+            name: 'Home',
+            action: () => {
+              props.actionSelectedFolder({});
+              props.actionFetchListMyDocument({}, true);
+            }
+          },
+          {
+            id: data_notification.folder_id,
+            name: data_notification.folder_name,
+            action: () => {
+              props.actionSelectedFolder({
+                id: data_notification.folder_id,
+                name: data_notification.folder_name
+              });
+              props.actionFetchListMyDocument(
+                { folder_id: data_notification.folder_id },
+                true
+              );
+            }
+          }
+        ];
+        props.actionChangeBreadCrumbs(newBreadCrumbs);
+        props.history.push({ pathname: Routes.DOCUMENT_SHARE_ME });
         break;
       case 4:
       case 6:
@@ -91,6 +128,9 @@ export default connect(
   {
     actionVisibleDrawerMessage,
     openDocumentDetail,
-    actionActiveGroup
+    actionActiveGroup,
+    actionFetchListMyDocument,
+    actionChangeBreadCrumbs,
+    actionSelectedFolder
   }
 )(withRouter(NotificationItemCommon));

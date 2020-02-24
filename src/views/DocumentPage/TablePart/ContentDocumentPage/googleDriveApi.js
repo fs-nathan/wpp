@@ -6,6 +6,8 @@ const DISCOVERY_DOCS = [
 ];
 const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 
+
+// add script to file index.html and init service gg drive
 export const initGoogleDrive = (
   checkingService,
   successCallback,
@@ -42,6 +44,7 @@ export const initGoogleDrive = (
   });
 };
 
+// check status login
 export const checkSignInStatus = () => {
   if (window.gapi) {
     return window.gapi.auth2.getAuthInstance().isSignedIn.get();
@@ -50,6 +53,7 @@ export const checkSignInStatus = () => {
   }
 };
 
+// Open page to Sigin google account
 export const actionAuthGoogleDrive = (successCallback, failCallback) => {
   if (window.gapi) {
     window.gapi.auth2
@@ -66,6 +70,7 @@ export const actionAuthGoogleDrive = (successCallback, failCallback) => {
   }
 };
 
+// action logout google account
 export const actionSignoutGoogleDrive = (successCallback, failCallback) => {
   if (window.gapi) {
     window.gapi.auth2

@@ -31,6 +31,7 @@ let listFileIdSelect = [];
 let listFolderIdSelect = [];
 const MoveDocumentModal = props => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([
     {
       name: t('IDS_WP_MY_DOCUMENT'),
@@ -114,6 +115,7 @@ const MoveDocumentModal = props => {
   };
   const handleMove = async () => {
     try {
+      setLoading(true);
       if (props.type !== 'header') {
         if (props.item.type !== 'folder') {
           await actionMoveFile({
@@ -154,11 +156,13 @@ const MoveDocumentModal = props => {
       }
       props.resetListSelectDocument();
       props.onOk();
+      setLoading(false);
       props.onClose();
       isFetFile = true;
       listFileIdSelect = [];
       listFolderIdSelect = [];
     } catch (error) {
+      setLoading(false);
       props.onClose();
     }
   };
@@ -186,6 +190,7 @@ const MoveDocumentModal = props => {
     <ModalCommon
       title={t('IDS_WP_MOVE_DOCUMENT')}
       onClose={props.onClose}
+      loading={loading}
       footerAction={[
         {
           name: t('IDS_WP_MOVE_FOR_NOW'),

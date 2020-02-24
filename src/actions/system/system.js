@@ -155,6 +155,17 @@ export const actionSettingFormatDate = (date_format = 'DD/MM/YYYY') => {
   return apiService(config);
 };
 
+export const actionChangeLanguage = (language = 'vi') => {
+  const config = {
+    url: '/users/update-language',
+    method: 'post',
+    data: {
+      language
+    }
+  };
+  return apiService(config);
+};
+
 export const actionSearchTask = info => {
   const config = {
     url: '/task/search',

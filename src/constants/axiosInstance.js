@@ -1,8 +1,7 @@
 import axios from 'axios';
 import config from './apiConstant';
 // import { Routes } from './routes';
-// import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE, WP_LANGUAGE } from './constants';
-import { WP_LANGUAGE } from './constants';
+// import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from './constants';
 
 const apiService = axios.create({
   baseURL: config.BASE_API,
@@ -19,7 +18,6 @@ apiService.interceptors.request.use(function(config) {
   const group_active = localStorage.getItem('group-active');
   config.headers['Authorization'] = `Bearer ${accessToken}`;
   config.headers['group-active'] = group_active;
-  config.headers['language'] = localStorage.getItem(WP_LANGUAGE) || 'vi';
   config.headers['task_id'] = '5da1821ad219830d90402fd8'; // Fixed task id in header (it should be pass from saga)
   return config;
 });

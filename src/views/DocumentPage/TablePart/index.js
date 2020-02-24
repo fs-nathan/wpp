@@ -255,6 +255,7 @@ const TablePart = props => {
   const [visibleUploadModal, setVisibleUploadModal] = useState(false);
   const [fileUpload, setFileUpload] = useState(null);
   const [isRedirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     breadCrumbs,
     actionChangeBreadCrumbs,
@@ -316,6 +317,7 @@ const TablePart = props => {
   ];
   const handleCreateFolder = async () => {
     try {
+      setLoading(true);
       await actionCreateFolder({
         name: nameFolder,
         parent_id: props.currentFolder.id
@@ -329,9 +331,11 @@ const TablePart = props => {
         );
       }
       setCreateFolder(false);
+      setLoading(false);
       setNameFolder('');
     } catch (error) {
       setCreateFolder(false);
+      setLoading(false);
       setNameFolder('');
     }
   };
@@ -477,6 +481,7 @@ const TablePart = props => {
             setCreateFolder(false);
             setNameFolder('');
           }}
+          loading={loading}
           footerAction={[
             { name: t('IDS_WP_CREATE_NEW'), action: () => handleCreateFolder() }
           ]}

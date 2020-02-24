@@ -5,11 +5,11 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { WP_LANGUAGE } from '../../../../constants/constants';
 import LoadingContent from '../../../../components/LoadingContent';
 import {
   actionToast,
-  actionSettingFormatDate
+  actionSettingFormatDate,
+  actionChangeLanguage
 } from '../../../../actions/system/system';
 import { actioGetSettingDate } from '../../../../actions/setting/setting';
 import './SettingGroupRight.scss';
@@ -17,23 +17,40 @@ import './SettingGroupRight.scss';
 const TimeAndLanguage = props => {
   const { t, i18n } = useTranslation();
   const [defaultDate, setDefaultDate] = useState('');
+  const [defaultLang, setDefaultLang] = useState('vi');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let lang = props.profile.language;
+    if (lang) {
+      setDefaultLang(lang);
+    }
+    // eslint-disable-next-line
+  }, [props.profile.language]);
 
   useEffect(() => {
     const formatDate = props.settingDate.find(item => item.selected === true);
     setDefaultDate(formatDate.date_format || 'DD/MM/YYYY');
     // eslint-disable-next-line
   }, [props.settingDate]);
-  
+
   const handleToast = (type, message) => {
     props.actionToast(type, message);
     setTimeout(() => props.actionToast(null, ''), 2000);
   };
 
-  const handleChangeLanguage = e => {
-    i18n.changeLanguage(e.target.value);
-    localStorage.setItem(WP_LANGUAGE, e.target.value || 'vi');
-    handleToast('success', t('IDS_WP_UPDATE_SUCCESS'));
+  const handleChangeLanguage = async e => {
+    try {
+      setLoading(true);
+      const lang = e.target.value || 'vi';
+      await actionChangeLanguage(lang);
+      i18n.changeLanguage(lang);
+      setDefaultLang(lang);
+      handleToast('success', t('IDS_WP_UPDATE_SUCCESS'));
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
   const handleChangeDate = async e => {
     let value = e.target.value || '';
@@ -47,7 +64,6 @@ const TimeAndLanguage = props => {
     } catch (error) {
       setLoading(false);
       handleToast('error', t('IDS_WP_ERROR_CHANGE_FORMAT_DATE'));
-      setTimeout(() => props.actionToast(null, ''), 3000);
     }
   };
   return (
@@ -101,7 +117,7 @@ const TimeAndLanguage = props => {
             <RadioGroup
               aria-label="language"
               name="language"
-              defaultValue={localStorage.getItem(WP_LANGUAGE) || 'vi'}
+              value={defaultLang}
               onChange={handleChangeLanguage}
             >
               <FormControlLabel
@@ -124,7 +140,8 @@ const TimeAndLanguage = props => {
 
 export default connect(
   state => ({
-    settingDate: state.setting.settingDate
+    settingDate: state.setting.settingDate,
+    profile: state.system.profile
   }),
   { actionToast, actioGetSettingDate }
 )(TimeAndLanguage);

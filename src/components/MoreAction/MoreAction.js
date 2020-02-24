@@ -25,6 +25,7 @@ const StyledMenuItem = styled(MenuItem)`
 const MoreAction = props => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [visible, setVisible] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const handleToast = (type, message) => {
     props.actionToast(type, message);
@@ -38,6 +39,7 @@ const MoreAction = props => {
   const closeModal = () => setVisible(null);
   const handleChangeDoc = async newName => {
     try {
+      setLoading(true);
       if (props.item.type === 'folder') {
         const { data } = await actionRenameFolder({
           folder_id: props.item.id,
@@ -57,11 +59,13 @@ const MoreAction = props => {
           props.handleUpdateDataLocal(props.item.id, data.new_name);
         }
       }
+      setLoading(false);
       // props.handleFetData();
       closeModal();
     } catch (error) {
       handleToast('error', error.message);
       closeModal();
+      setLoading(false);
     }
   };
   const handleMoveDoc = () => {
@@ -145,6 +149,7 @@ const MoreAction = props => {
           onClose={closeModal}
           onOk={handleChangeDoc}
           item={props.item}
+          loading={loading}
         />
       )}
     </React.Fragment>

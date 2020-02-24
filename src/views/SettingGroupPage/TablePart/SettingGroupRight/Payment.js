@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
 import { TextField, Button } from '@material-ui/core';
 import * as icons from '../../../../assets';
@@ -16,6 +17,7 @@ import { actionToast } from '../../../../actions/system/system';
 
 const Payment = props => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const handleToast = (type, message) => {
     props.actionToast(type, message);
@@ -52,12 +54,15 @@ const Payment = props => {
         phone: elements.phone.value,
         email: elements.email.value
       };
+      setLoading(true);
       await updateBillService(result);
       handleToast('success', t('IDS_WP_EDIT_INFO_SUCCESS'));
       handleFetchData();
       setEditMode(false);
+      setLoading(false);
     } catch (error) {
       handleToast('error', error.message);
+      setLoading(false);
     }
   };
   if (props.isLoading) return <LoadingBox />;
@@ -142,7 +147,11 @@ const Payment = props => {
               variant="contained"
               className="btn-edit none-boxshadow"
               type="submit"
+              disabled={loading}
             >
+              {loading && (
+                <CircularProgress size={20} className="margin-circular" />
+              )}
               {editMode ? t('IDS_WP_SAVE') : t('IDS_WP_EDIT_TEXT')}
             </Button>
             {editMode && (
