@@ -99,6 +99,7 @@ const DrawerGroupAcount = props => {
                 {groupList.group_joins.map((group, idx) => (
                   <ItemGroupAcount
                     item={group}
+                    groupMe={groupList.group_me}
                     key={idx}
                     type="group_joins"
                     handleFetchData={handleFetchData}

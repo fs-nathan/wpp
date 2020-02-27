@@ -265,7 +265,7 @@ const DocumentShare = props => {
                 <StyledTableBodyCell align="center" width="15%">
                   <CustomAvatar
                     src={file.user_create_avatar}
-                    title="user create avatar"
+                    title={file.user_create_name}
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">

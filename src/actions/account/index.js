@@ -107,3 +107,11 @@ export const actionUpdateProfile = data => {
   };
   return apiService(config);
 };
+export const actionUpdateAvatar = data => {
+  const config = {
+    url: '/update-avatar',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+};

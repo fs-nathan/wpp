@@ -483,7 +483,11 @@ const TablePart = props => {
           }}
           loading={loading}
           footerAction={[
-            { name: t('IDS_WP_CREATE_NEW'), action: () => handleCreateFolder() }
+            {
+              name: t('IDS_WP_CREATE_NEW'),
+              action: () => handleCreateFolder(),
+              disabled: isEmpty(nameFolder.trim())
+            }
           ]}
         >
           <DialogContent dividers className="dialog-content">
