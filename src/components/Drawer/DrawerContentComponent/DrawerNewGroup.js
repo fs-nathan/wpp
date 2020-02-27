@@ -102,7 +102,9 @@ const DrawerNewGroup = props => {
               <div className="item-group">
                 {(!isEmpty(group) || emptyMess) && (
                   <div className="title-item-group">
-                    <span className="text-item-group">KẾT QUẢ LỌC ĐƯỢC</span>
+                    <span className="text-item-group">
+                      {t('IDS_WP_FILTER_RESULT')}
+                    </span>
                   </div>
                 )}
 
@@ -110,7 +112,10 @@ const DrawerNewGroup = props => {
                   <ItemGroupAcount
                     item={group}
                     type="join"
-                    handleFetchData={handleFetchData}
+                    handleFetchData={() => {
+                      handleFetchData();
+                      setGroup({});
+                    }}
                   />
                 ) : (
                   emptyMess && <p className="red-text no-result">{emptyMess}</p>

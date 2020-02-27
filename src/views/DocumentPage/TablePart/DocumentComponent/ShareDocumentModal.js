@@ -173,16 +173,20 @@ const ShareDocumentModal = props => {
 
   const handleShareMember = async (member_id, member_name, member_avatar) => {
     try {
-      if (item.isGoogleDocument) {
+      console.log('test', item);
+      if (item.isGoogleDocument || item.document_type === 2) {
         let data = {
           file_id: item.id,
           name: item.name,
           icon: item.iconLink,
-          size: item.size,
-          url: item.webViewLink,
-          url_download: item.webContentLink || '',
+          size: item.document_type === 2 ? item.size_number : item.size,
+          url: item.document_type === 2 ? item.url : item.webViewLink,
+          url_download:
+            item.document_type === 2
+              ? item.url_download
+              : item.webContentLink || '',
           share_to: member_id,
-          file_type: item.fileExtension
+          file_type: item.document_type === 2 ? item.type : item.fileExtension
         };
         await actionShareGoogleFile(data);
       } else {

@@ -44,6 +44,13 @@
   margin: 0;
   &.header-text {
     font-weight: 500;
+    margin-bottom: 10px;
+  }
+  &.sub-header-text {
+    line-height: 26px;
+    b {
+      font-size: 17px;
+    }
   }
 }
 .notice-btn-container .notice-btn {

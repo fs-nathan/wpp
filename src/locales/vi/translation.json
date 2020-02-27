@@ -442,11 +442,11 @@
   "IDS_WP_IN_JOB_LIST": "trong danh sách công việc!",
   "IDS_WP_GROUP_INFO": "Thông tin nhóm",
   "IDS_WP_EDIT_GROUP_INFO": "Chỉnh sửa thông tin nhóm",
-  "IDS_WP_WORKPLUS_APPLICATION": "Nền tảng quản trị doanh nghiệp WorkPlus",
+  "IDS_WP_WORKPLUS_APPLICATION": "Hệ thống quản trị doanh nghiệp số",
   "IDS_WP_EXPIRE_ORDER_NOTICE": "Thông báo đơn hàng hết hạn!",
   "IDS_WP_WELCOME": "Xin chào",
-  "IDS_WP_LOGIN_SUCCESS_INTRO": "Bạn đã đăng nhập thành công hệ thống quản trị doanh nghiệp trực tuyến Workplus với tài khoản miễn phí!",
-  "IDS_WP_LOGIN_SUCCESS_INTRO_1": "Bạn hãy lựa chọn nhóm PRO hoặc DEMO để sử dụng đầy đủ tính năng.",
+  "IDS_WP_LOGIN_SUCCESS_INTRO": "Chào mừng bạn đến với hệ thống quản trị doanh nghiệp trực tuyến",
+  "IDS_WP_LOGIN_SUCCESS_INTRO_1": "Nhóm tài khoản này chưa NÂNG CẤP hoặc đã HẾT HẠN.",
   "IDS_WP_SELECT_GROUP_ACC": "Chọn nhóm tài khoản",
   "IDS_WP_UPGRADE_ACC": "Nâng cấp tài khoản",
   "IDS_WP_JOIN_OTHER_GROUP": "Tham gia nhóm khác",
@@ -516,5 +516,8 @@
   "IDS_WP_USE_DEFAULT": "Sử dụng mặc định",
   "IDS_WP_COVER_IMAGE_GROUP": "Ảnh cover nhóm",
   "IDS_WP_CHANGE_COVER_IMAGE": "Đổi ảnh cover",
-  "IDS_WP_SELECT_COLOR": "Chọn màu sắc menu trái"
+  "IDS_WP_SELECT_COLOR": "Chọn màu sắc menu trái",
+  "IDS_WP_TM_CK": "TM/CK",
+  "IDS_WP_FILTER_RESULT": "KẾT QUẢ LỌC ĐƯỢC",
+  "IDS_WP_EXPIRED": "Hết hạn!"
 }

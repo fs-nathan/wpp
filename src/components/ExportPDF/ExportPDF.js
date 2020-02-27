@@ -220,7 +220,7 @@ class ExportPDF extends Component {
                           )}
                         </React.Fragment>
                       </td>
-                      <td className="TdStyled1">{t('IDS_WP_CASH')}</td>
+                      <td className="TdStyled1">{t('IDS_WP_TM_CK')}</td>
                       <td className="TdStyled1">
                         {isCreate
                           ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
@@ -351,7 +351,7 @@ class ExportPDF extends Component {
                         </tr>
                         <tr>
                           <td className="TdStyled2 number-stt"></td>
-                          <td className="detail-order">
+                          <td className="TdStyled3 detail-order">
                             <div className="">
                               <div>{t('IDS_WP_TIME_DONATE')}</div>
                             </div>
@@ -498,7 +498,7 @@ class ExportPDF extends Component {
                   <div className="width-70">
                     <div className="item-total-group">
                       <span className="order-value">
-                        {t('IDS_WP_VALUE_BEFORE_TAX')} (I+II)
+                        {t('IDS_WP_VALUE_BEFORE_TAX')} (1+2)
                       </span>
                       <span>
                         {isCreate

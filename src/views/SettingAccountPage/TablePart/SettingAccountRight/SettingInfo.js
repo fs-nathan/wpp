@@ -14,7 +14,10 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers';
 
-import { actionUpdateProfile } from '../../../../actions/account';
+import {
+  actionUpdateProfile,
+  actionUpdateAvatar
+} from '../../../../actions/account';
 import {
   getProfileService,
   actionGetProfile,
@@ -34,7 +37,10 @@ class SettingInfo extends Component {
     showInputFile: true,
     data: this.props.profile,
     selectedDate: this.props.profile.birthday
-      ? new Date(this.props.profile.birthday)
+      ? moment(
+          this.props.profile.birthday,
+          this.props.profile.format_date
+        ).toDate()
       : new Date(),
     formatDate: 'dd/MM/yyyy',
     loading: false
@@ -44,7 +50,12 @@ class SettingInfo extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.profile !== this.props.profile && this.props.profile) {
-      this.setState({ selectedDate: new Date(this.props.profile.birthday) });
+      this.setState({
+        selectedDate: moment(
+          this.props.profile.birthday,
+          this.props.profile.format_date
+        ).toDate()
+      });
     }
   }
   getFormatDate = async () => {
@@ -70,26 +81,43 @@ class SettingInfo extends Component {
       let formData = new FormData();
       if (type === 'updateImage') {
         formData.append('image', file);
+        await actionUpdateAvatar(formData);
+      } else {
+        const bodyData = {
+          name: this.state.data.name,
+          email: this.state.data.email,
+          gender: this.state.data.gender,
+          phone: this.state.data.phone,
+          birthday: moment(this.state.selectedDate).format('YYYY-MM-DD'),
+          address: this.state.data.address,
+          certificate: this.state.data.certificate,
+          description: this.state.data.description,
+          job: this.state.data.job,
+          order_user_id: this.state.data.order_user_id,
+          order_storage_id: this.state.data.order_storage_id,
+          type: this.state.data.type,
+          gender_name: this.state.data.gender_name
+        };
+        // formData.append('name', this.state.data.name);
+        // formData.append('email', this.state.data.email);
+        // formData.append('avatar', this.state.data.avatar);
+        // formData.append('gender', this.state.data.gender);
+        // formData.append('phone', this.state.data.phone);
+        // formData.append(
+        //   'birthday',
+        //   moment(this.state.selectedDate).format('YYYY-MM-DD')
+        // );
+        // formData.append('address', this.state.data.address);
+        // formData.append('certificate', this.state.data.certificate);
+        // formData.append('description', this.state.data.description);
+        // formData.append('job', this.state.data.job);
+        // formData.append('order_user_id', this.state.data.order_user_id);
+        // formData.append('order_storage_id', this.state.data.order_storage_id);
+        // formData.append('type', this.state.data.type);
+        // formData.append('gender_name', this.state.data.gender_name);
+        await actionUpdateProfile(bodyData);
       }
-      formData.append('name', this.state.data.name);
-      formData.append('email', this.state.data.email);
-      formData.append('avatar', this.state.data.avatar);
-      formData.append('gender', this.state.data.gender);
-      formData.append('phone', this.state.data.phone);
-      formData.append(
-        'birthday',
-        moment(this.state.selectedDate).format('YYYY-MM-DD')
-      );
-      formData.append('address', this.state.data.address);
-      formData.append('certificate', this.state.data.certificate);
-      formData.append('description', this.state.data.description);
-      formData.append('job', this.state.data.job);
-      formData.append('order_user_id', this.state.data.order_user_id);
-      formData.append('order_storage_id', this.state.data.order_storage_id);
-      formData.append('type', this.state.data.type);
-      formData.append('gender_name', this.state.data.gender_name);
 
-      await actionUpdateProfile(formData);
       const { data } = await getProfileService();
       this.handleToast('success', this.props.t('IDS_WP_UPDATE_SUCCESS'));
       if (data.data) this.props.actionGetProfile(data.data);
@@ -231,6 +259,7 @@ class SettingInfo extends Component {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     disableToolbar
+                    helperText={''}
                     format={formatDate}
                     margin="normal"
                     id="date-picker-inline"

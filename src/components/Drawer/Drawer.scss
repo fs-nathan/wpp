@@ -32,7 +32,8 @@
   }
   .drawer-content {
     position: relative;
-    height: calc(100% - 38px);
+    // height: calc(100% - 38px);
+    height: calc(100vh - 55px);
     width: 420px;
     display: flex;
     flex-direction: column;
@@ -452,6 +453,9 @@
     }
     &.demo-group {
       // border-top: 1px solid #ededed;
+    }
+    &.normal-pointer {
+      cursor: default;
     }
     .avatar-item-group-account {
       position: relative;

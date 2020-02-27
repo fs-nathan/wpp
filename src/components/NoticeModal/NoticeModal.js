@@ -17,6 +17,7 @@ import {
 // import { actionSettingGroup } from '../../../actions/setting';
 import { DRAWER_TYPE } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
+import { isEmpty } from '../../helpers/utils/isEmpty';
 
 const NoticeModal = props => {
   const { t } = useTranslation();
@@ -57,7 +58,6 @@ const NoticeModal = props => {
   const extendOrder = () => {
     closeNoticeModal();
   };
-
   return (
     <Dialog
       fullWidth={true}
@@ -98,7 +98,14 @@ const NoticeModal = props => {
           {t('IDS_WP_WELCOME')} {props.profile.name}!
         </p>
         {type === 'intro' ? (
-          <p className="notice-text">{t('IDS_WP_LOGIN_SUCCESS_INTRO')}</p>
+          <p className="notice-text sub-header-text">
+            {t('IDS_WP_LOGIN_SUCCESS_INTRO')}&nbsp;
+            <b>
+              {!isEmpty(props.profile.group_active)
+                ? props.profile.group_active.name
+                : ''}
+            </b>
+          </p>
         ) : (
           <p className="notice-text">
             Nhóm làm việc TDGroup tạm thời bị khóa do đơn hàng đã hết thời hạn
@@ -108,7 +115,9 @@ const NoticeModal = props => {
             </p>
           </p>
         )}
-        <p className="notice-text">{t('IDS_WP_LOGIN_SUCCESS_INTRO_1')}</p>
+        <p className="notice-text sub-header-text">
+          {t('IDS_WP_LOGIN_SUCCESS_INTRO_1')}
+        </p>
         {type === 'intro' ? (
           <div className="notice-btn-container">
             <Button

@@ -1,5 +1,7 @@
 import axios from 'axios';
 import config from './apiConstant';
+import store from '../configStore';
+import { openNoticeModal } from '../actions/system/system';
 // import { Routes } from './routes';
 // import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from './constants';
 
@@ -24,8 +26,17 @@ apiService.interceptors.request.use(function(config) {
 
 apiService.interceptors.response.use(
   function(res) {
-    if (res.data.state === false)
-      return Promise.reject(new Error(res.data.msg));
+    if (res.data.state === false) {
+      if (
+        res.data.error_code === 'ORDER_EXPIRED' ||
+        res.data.error_code === 'ACCOUNT_FREE'
+      ) {
+        store.dispatch(openNoticeModal());
+      } else {
+        return Promise.reject(new Error(res.data.msg));
+      }
+    }
+
     return res;
   },
   function(error) {

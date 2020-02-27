@@ -49,6 +49,11 @@ const ItemGroupAcount = props => {
     try {
       await services.leaveGroupService(group_id);
       if (props.handleFetchData) props.handleFetchData();
+      if (props.groupMe) {
+        await actionChangeActiveGroup(props.groupMe.id);
+        props.actionActiveGroup(props.groupMe);
+        window.location.reload(false);
+      }
       handleToast('success', t('IDS_WP_LEAVE_GROUP_SUCCESS'));
     } catch (error) {
       handleToast('error', error.message);
@@ -154,12 +159,17 @@ const ItemGroupAcount = props => {
               path={mdiContentCopy}
               size={0.6}
               color="#a5a5a5"
+              className="cursor-pointer"
               title={t('IDS_WP_COPY_TEXT_CLIPBOARD')}
               onClick={e => {
                 handleCopyText(item.code || item.group_code);
                 e.stopPropagation();
               }}
             />
+            &nbsp;
+            {item.is_expired && (
+              <span className="red-color">{t('IDS_WP_EXPIRED')}</span>
+            )}
           </span>
         </div>
       </Fragment>
@@ -286,7 +296,24 @@ const ItemGroupAcount = props => {
             </span>
           </div>
           <div className="acc-item-group-account">
-            <p className="text-value-email-phone">ID: {item.code}</p>
+            <p className="text-value-email-phone">
+              ID: {item.code}&nbsp;
+              <Icon
+                path={mdiContentCopy}
+                size={0.6}
+                color="#a5a5a5"
+                className="cursor-pointer"
+                title={t('IDS_WP_COPY_TEXT_CLIPBOARD')}
+                onClick={e => {
+                  handleCopyText(item.code || item.group_code);
+                  e.stopPropagation();
+                }}
+              />
+              &nbsp;
+              {item.is_expired && (
+                <span className="red-color">{t('IDS_WP_EXPIRED')}</span>
+              )}
+            </p>
             {newEl}
           </div>
         </div>
@@ -297,9 +324,14 @@ const ItemGroupAcount = props => {
     <div
       className={`item-group-account ${
         props.groupActive.code === item.code ? 'actived' : ''
+      } ${
+        props.type === 'join' || props.type === 'requirements'
+          ? 'normal-pointer'
+          : ''
       }`}
       key={item.id}
       onClick={() => {
+        if (props.type === 'join' || props.type === 'requirements') return;
         history.push(Routes.HOME);
         props.actionVisibleDrawerMessage({
           type: '',
