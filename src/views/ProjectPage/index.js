@@ -25,6 +25,8 @@ import {
   SHOW_PROJECT, HIDE_PROJECT,
   CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
 } from '../../constants/events';
+import { get } from 'lodash';
+import moment from 'moment';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 
 export const Context = React.createContext();
@@ -125,13 +127,25 @@ function ProjectPage({
     }
   }, [projectId, doMemberProject]);
 
+  const [timeRange, setTimeRange] = React.useState({});
+
+  console.log(timeRange);
+
   React.useEffect(() => {
     if (projectId) {
-      doListTask({ projectId });
+      doListTask({ 
+        projectId,
+        timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
+        timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
+      });
     }
 
     const reloadListTask = () => {
-      doListTask({ projectId }, true);
+      doListTask({ 
+        projectId,
+        timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
+        timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
+      }, true);
     }
 
     CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
@@ -153,7 +167,7 @@ function ProjectPage({
       CustomEventDispose(DELETE_TASK, reloadListTask);
       CustomEventDispose(SORT_TASK, reloadListTask);
     }
-  }, [projectId, doListTask]);
+  }, [projectId, doListTask, timeRange]);
 
   React.useEffect(() => {
     if (projectId) {
@@ -223,6 +237,7 @@ function ProjectPage({
   return (
     <Provider value={{
       setProjectId,
+      setTimeRange,
     }}>
       <Route 
         path='/project'
@@ -262,7 +277,7 @@ const mapDispatchToProps = dispatch => {
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
-    doListTask: ({ projectId }, quite) => dispatch(listTask({ projectId }, quite)),
+    doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doGetAllGroupTask: (quite) => dispatch(getAllGroupTask(quite)),
     doListUserRole: (quite) => dispatch(listUserRole(quite)),

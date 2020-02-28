@@ -2,7 +2,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { Link } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
-import { ListItemText, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { ListItemText, IconButton } from '@material-ui/core';
 import { StyledListItem, Primary, Secondary } from '../../../../../components/CustomList';
 import Icon from '@mdi/react';
 import { mdiDragVertical, mdiDotsVertical } from '@mdi/js';

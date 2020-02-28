@@ -5,11 +5,13 @@ import {
   LIST_TASK_RESET,
 } from '../../constants/actions/task/listTask';
 
-export const listTask = ({ projectId }, quite = false) => ({
+export const listTask = ({ projectId, timeStart, timeEnd }, quite = false) => ({
   type: LIST_TASK,
   quite,
   options: {
     projectId,
+    timeStart, 
+    timeEnd,
   },
 });
 

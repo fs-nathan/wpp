@@ -72,6 +72,9 @@ function ProjectGroupDetail({
                             expandOnClick: false,
                           },
                         },
+                        dataLabels: {
+                          enabled: false,
+                        },
                         labels: [
                           'Công việc đang chờ', 
                           'Công việc đang làm', 

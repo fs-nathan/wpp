@@ -1,6 +1,5 @@
 import React from 'react';
 import { get } from 'lodash';
-import ColorTypo from '../ColorTypo';
 import CustomAvatar from '../CustomAvatar';
 import PropTypes from 'prop-types';
 import './style.scss';

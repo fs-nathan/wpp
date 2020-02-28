@@ -7,7 +7,6 @@ import Icon from '@mdi/react';
 import PropTypes from 'prop-types';
 import { mdiClose } from '@mdi/js'; 
 import ColorTypo from '../ColorTypo';
-import { get } from 'lodash';
 import { connect } from 'react-redux';
 import './style.scss';
 

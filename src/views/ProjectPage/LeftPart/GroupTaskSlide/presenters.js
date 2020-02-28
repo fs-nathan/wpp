@@ -142,13 +142,19 @@ function GroupTaskSlide({
               horizontal: 'right'
             }}
           >
-            <MenuItem onClick={evt => handleOpenModal('UPDATE', {
-              curGroupTask,
-            })}>Chỉnh sửa</MenuItem>
-            <MenuItem onClick={evt => handleOpenModal('ALERT', {
-              content: "Bạn chắc chắn muốn xóa nhóm công việc?",
-              onConfirm: () => handleDeleteGroupTask(curGroupTask)
-            })}>Xóa</MenuItem>
+            <MenuItem onClick={evt => {
+              setAnchorEl(null)
+              handleOpenModal('UPDATE', {
+                curGroupTask,
+              });
+            }}>Chỉnh sửa</MenuItem>
+            <MenuItem onClick={evt => {
+              setAnchorEl(null);
+              handleOpenModal('ALERT', {
+                content: "Bạn chắc chắn muốn xóa nhóm công việc?",
+                onConfirm: () => handleDeleteGroupTask(curGroupTask)
+              });
+            }}>Xóa</MenuItem>
           </Menu>
         </LeftSideContainer>
       )}

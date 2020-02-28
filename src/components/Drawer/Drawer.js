@@ -10,6 +10,7 @@ import DrawerNotification from './DrawerContentComponent/DrawerNotification';
 import DrawerGroupAcount from './DrawerContentComponent/DrawerGroupAcount';
 import DrawerSetting from './DrawerContentComponent/DrawerSetting';
 import DrawerNewGroup from './DrawerContentComponent/DrawerNewGroup';
+import AddUser from '../../views/DepartmentPage/LeftPart/AddUser';
 import './Drawer.scss';
 
 const generateContent = typeDrawer => {
@@ -26,6 +27,8 @@ const generateContent = typeDrawer => {
       return <DrawerSetting />;
     case DRAWER_TYPE.JOIN_NEW_GROUP:
       return <DrawerNewGroup />;
+    case DRAWER_TYPE.ADD_USER:
+      return <AddUser />;
     default:
       return '';
   }
@@ -40,7 +43,11 @@ const DrawerComponent = props => {
         actionVisibleDrawerMessage({ type: '', anchor: anchorDrawer })
       }
       className={`Drawer-Compenent ${
-        anchorDrawer === 'right' ? 'anchor-drawer-right' : 'anchor-drawer-top'
+        anchorDrawer === 'left' 
+          ? 'anchor-drawer-left' 
+          : anchorDrawer === 'right' 
+            ? 'anchor-drawer-right' 
+            : 'anchor-drawer-top'
       }`}
     >
       {generateContent(typeDrawer)}

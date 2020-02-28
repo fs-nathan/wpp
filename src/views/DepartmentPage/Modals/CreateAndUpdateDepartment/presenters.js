@@ -38,7 +38,7 @@ function CreateAndUpdateDepartment({
           .replace('https://storage.googleapis.com', ''),
       });
     }
-  }, [updateDepartment]);
+  }, [updateDepartment, setName, setDescription]);
 
   return (
     <React.Fragment>

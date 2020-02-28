@@ -1,12 +1,7 @@
 import React from 'react';
-import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 import TitleCreateAndUpdateModal from './TitleCreateAndUpdate';
-import { listPosition } from '../../../../actions/position/listPosition';
 import { deletePosition } from '../../../../actions/position/deletePosition';
 import { connect } from 'react-redux'; 
-import LoadingBox from '../../../../components/LoadingBox';
-import ErrorBox from '../../../../components/ErrorBox';
-import CustomModal from '../../../../components/CustomModal';
 import AlertModal from '../../../../components/AlertModal';
 import { get } from 'lodash';
 import { positionsSelector } from './selectors';

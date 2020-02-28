@@ -35,7 +35,7 @@ function CreateProjectGroup({
       url_sort: get(updatedProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png')
         .replace('https://storage.googleapis.com', ''),
     });
-  }, [updatedProjectGroup]);
+  }, [updatedProjectGroup, setName, setDescription]);
 
   return (
     <CustomModal
