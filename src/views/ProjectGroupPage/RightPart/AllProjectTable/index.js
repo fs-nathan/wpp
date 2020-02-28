@@ -32,11 +32,12 @@ function AllProjectTable({
   const { projectGroupId } = useParams();
 
   React.useEffect(() => {
-    setProjectGroupId(projectGroupId);
-  }, [setProjectGroupId, projectGroupId])
+    if (isDefault) setProjectGroupId('default');
+    else setProjectGroupId(projectGroupId);
+  }, [setProjectGroupId, isDefault, projectGroupId])
 
   const [filterType, setFilterType] = React.useState(1);
-  const [timeType, setTimeType] = React.useState(0);
+  const [timeType, setTimeType] = React.useState(5);
   const [sortType, setSortType] = React.useState({});
 
   const [newProjects, setNewProjects] = React.useState(projects);
@@ -113,7 +114,9 @@ function AllProjectTable({
           : doShowProject({ projectId: get(project, 'id') })
         }
         handleDeleteProject={project => doDeleteProject({ projectId: get(project, 'id') })}
-        handleSortProject={sortData => doSortProject({ sortData, groupId: isDefault ? '__default__' : projectGroupId })}
+        handleSortProject={sortData => null
+          //doSortProject({ sortData, groupId: isDefault ? '__default__' : projectGroupId })
+        }
         handleOpenModal={doOpenModal}
         handleTimeRange={(start, end) => setTimeRange({
           timeStart: start,

@@ -3,6 +3,7 @@ import { sortUser } from '../../../../actions/user/sortUser';
 import { publicMember } from '../../../../actions/user/publicMember';
 import { privateMember } from '../../../../actions/user/privateMember';
 import { banUserFromGroup } from '../../../../actions/user/banUserFromGroup';
+import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
 import { connect } from 'react-redux';
 import AlertModal from '../../../../components/AlertModal';
 import { get } from 'lodash';
@@ -23,6 +24,7 @@ function DepartmentUsersTable({
   doSortUser,
   doPublicMember, doPrivateMember,
   doBanUserFromGroup, 
+  doActionVisibleDrawerMessage,
 }) {
 
   const [openTitle, setOpenTitle] = React.useState(false);
@@ -83,7 +85,7 @@ function DepartmentUsersTable({
     <>
       <DepartmentUsersTablePresenter 
         room={room} hasRequirement={hasRequirement}
-        expand={expand} handleExpand={handleExpand} handleSubSlide={handleSubSlide}
+        expand={expand} handleExpand={handleExpand}
         handleSortUser={(roomId, userId, sortIndex) => doSortUser({ roomId, userId, sortIndex })}
         handleChangeState={(user) => 
           get(user, 'state', 0) === 0
@@ -100,6 +102,7 @@ function DepartmentUsersTable({
           })
         }
         handleOpenModal={doOpenModal}
+        handleVisibleDrawerMessage={doActionVisibleDrawerMessage}
       />
       <TitleManagerModal open={openTitle} setOpen={setOpenTitle} />
       <RoleManagerModal open={openRole} setOpen={setOpenRole} />
@@ -131,6 +134,7 @@ const mapDispatchToProps = dispatch => {
     doPublicMember: ({ userId }) => dispatch(publicMember({ userId })),
     doPrivateMember: ({ userId }) => dispatch(privateMember({ userId })),
     doBanUserFromGroup: ({ userId }) => dispatch(banUserFromGroup({ userId })),
+    doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
   }
 }
 

@@ -2,21 +2,22 @@ import React from 'react';
 import ColorTypo from '../../../../components/ColorTypo';
 import PillButton from '../../../../components/PillButton';
 import SearchInput from '../../../../components/SearchInput';
+import { Scrollbars } from 'react-custom-scrollbars';
+import Icon from '@mdi/react';
 import { ButtonBase } from '@material-ui/core';
 import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
 import CustomAvatar from '../../../../components/CustomAvatar';
-import { ListItemAvatar, ListItemText } from '@material-ui/core';
+import { ListItemAvatar, ListItemText, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import { get } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
-import LeftSideContainer from '../../../../components/LeftSideContainer';
 import './style.scss';
 
 const StyledBox = ({ className = '', ...props }) => 
   <div 
-    className={`view_Department_AddUser___container ${className}`} 
+    className={`view_Department_AddUser___box ${className}`} 
     {...props} 
   />;
 
@@ -43,6 +44,19 @@ const StyledSearchInput = ({ className = '', ...props }) =>
     className={`view_Department_AddUser___search-input ${className}`} 
     {...props} 
   />;
+
+const Container = ({ className = '', ...rest }) => (<div className={`view_Department_AddUser___container ${className}`} {...rest} />);
+
+const Header = ({ className = '', ...rest }) => (<div className={`view_Department_AddUser___header ${className}`} {...rest} />);
+
+const Title = ({ className = '', ...rest }) => (<p className={`view_Department_AddUser___title ${className}`} {...rest} />);
+
+const Body = ({ className = '', ...rest }) => (<Scrollbars className={`view_Department_AddUser___body ${className}`} {...rest} />);
+
+const StyledIconButton = ({ className = '', ...rest }) => (<IconButton className={`view_Department_AddUser___icon-button ${className}`} {...rest} />);
+
+const IconWrapper = ({ className = '', ...rest }) => (<div className={`view_Department_AddUser___icon-wrapper ${className}`} {...rest} />);
+
 
 const DesiringUserList = ({ 
   user, loading, bgColor,
@@ -181,72 +195,85 @@ function AddUser({
   handleSearchUser, handleSearchUserReset,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
   handleAcceptRequirementJoinGroup, handleRejectRequirementJoinGroup,
-  handleSubSlide,
   searchPatern, handleSearchPatern,
+  anchorDrawer, handleVisibleDrawerMessage
 }) {
 
   const { t } = useTranslation();
 
   return (
-    <LeftSideContainer
-      title={t("views.user_page.left_part.add_user.title")}
-      rightAction={{
-        iconPath: mdiClose,
-        onClick: () => {
+    <Container>
+      <Header>
+        <IconWrapper>
+          <Icon path={mdiClose} size={1} color='rgba(0, 0, 0, 0)' />
+        </IconWrapper>
+        <Title>Thêm tài khoản</Title>
+        <StyledIconButton size='small' onClick={evt => {
           handleSearchUserReset();
-          handleSubSlide(0);
-        },
-        tooltip: 'Đóng',
-      }}
-    >
-      <StyledBox>
-        <ColorTypo bold>
-          {t("views.user_page.left_part.add_user.invite_member")}
-        </ColorTypo>
-        <div> 
-          <StyledSearchInput 
-            placeholder={t("views.user_page.left_part.add_user.find_member")}
-            value={searchPatern}
-            onChange={handleSearchPatern}
-          />
-          <PillButton 
-            size='large'
-            background={'#eee'}
-            text={'#333'}
-            onClick={() => searchPatern !== '' && handleSearchUser({ info: searchPatern })}  
+          handleVisibleDrawerMessage({ type: '', anchor: anchorDrawer});
+        }}>
+          <abbr
+            title={'Đóng'}
           >
-            {t("views.user_page.left_part.add_user.find_member_button")}
-          </PillButton>
-        </div>
-        {desireUser.loading && <LoadingBox />}
-        {desireUser.error !== null && <ErrorBox size={16} />}
-        {!desireUser.loading && desireUser.error === null && (
-          <DesiringUserList 
-            bgColor={bgColor}
-            loading={desireLoading}
-            user={desireUser.user} 
-            handleInviteUserJoinGroup={handleInviteUserJoinGroup} 
-            handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-          />
-        )}
-      </StyledBox>
-      <StyledBox>
-        <ColorTypo bold>
-          {t("views.user_page.left_part.add_user.request_member_title")}
-        </ColorTypo>
-        {requireUsers.loading && <LoadingBox />}
-        {requireUsers.error !== null && <ErrorBox size={16} />}
-        {!requireUsers.loading && requireUsers.error === null && (
-          <RequestingUserList 
-            bgColor={bgColor}
-            loading={requireLoading}
-            users={requireUsers.users} 
-            handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup} 
-            handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
-          />
-        )}
-      </StyledBox>
-    </LeftSideContainer>
+            <div>
+              <Icon path={mdiClose} size={1} color='rgba(0, 0, 0, 0.54)' />
+            </div>
+          </abbr>
+        </StyledIconButton>
+      </Header>
+      <Body
+        autoHide
+        autoHideTimeout={500}
+      >
+        <StyledBox>
+          <ColorTypo bold>
+            {t("views.user_page.left_part.add_user.invite_member")}
+          </ColorTypo>
+          <div> 
+            <StyledSearchInput 
+              placeholder={t("views.user_page.left_part.add_user.find_member")}
+              value={searchPatern}
+              onChange={handleSearchPatern}
+            />
+            <PillButton 
+              size='large'
+              background={'#eee'}
+              text={'#333'}
+              onClick={() => searchPatern !== '' && handleSearchUser({ info: searchPatern })}  
+            >
+              {t("views.user_page.left_part.add_user.find_member_button")}
+            </PillButton>
+          </div>
+          {desireUser.loading && <LoadingBox />}
+          {desireUser.error !== null && <ErrorBox size={16} />}
+          {!desireUser.loading && desireUser.error === null && (
+            <DesiringUserList 
+              bgColor={bgColor}
+              loading={desireLoading}
+              user={desireUser.user} 
+              handleInviteUserJoinGroup={handleInviteUserJoinGroup} 
+              handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+            />
+          )}
+        </StyledBox>
+        <StyledBox>
+          <ColorTypo bold>
+            {t("views.user_page.left_part.add_user.request_member_title")}
+          </ColorTypo>
+          {requireUsers.loading && <LoadingBox />}
+          {requireUsers.error !== null && <ErrorBox size={16} />}
+          {!requireUsers.loading && requireUsers.error === null && (
+            <RequestingUserList 
+              bgColor={bgColor}
+              loading={requireLoading}
+              users={requireUsers.users} 
+              handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup} 
+              handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
+            />
+          )}
+        </StyledBox>
+      </Body>
+    </Container>
   )
 }
 

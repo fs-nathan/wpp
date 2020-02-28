@@ -16,6 +16,7 @@ import {
 } from '../../../../components/TableComponents';
 import { get } from 'lodash';
 import { Context as UserPageContext } from '../../index';
+import { DRAWER_TYPE } from '../../../../constants/constants';
 import '../AllUsersTable/style.scss'
 
 const NewUserBadge = ({ className = '', ...props }) =>
@@ -59,11 +60,12 @@ function StateBadge({ user }) {
 
 function DepartmentUsersTable({ 
   room, hasRequirement,
-  expand, handleExpand, handleSubSlide,
+  expand, handleExpand,
   handleSortUser,
   handleChangeState,
   handleBanUserFromGroup,
   handleOpenModal, 
+  handleVisibleDrawerMessage,
 }) {
 
   const { setDepartmentId } = React.useContext(UserPageContext);
@@ -97,7 +99,10 @@ function DepartmentUsersTable({
                     <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
                   </NewUserBadge>
                 : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
-              onClick: () => handleSubSlide(1),
+              onClick: () => handleVisibleDrawerMessage({
+                type: DRAWER_TYPE.ADD_USER,
+                anchor: 'left'
+              }),
               noExpand: true,
             }],
             mainAction: {

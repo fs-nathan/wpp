@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ListItem, List, ListItemText } from '@material-ui/core';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import ColorTypo from '../../../../components/ColorTypo';
@@ -82,8 +81,6 @@ function UserInfo({
   handleUploadDocumentsUser, handleOpenModal,
 }) {
 
-  const { t } = useTranslation();
-
   return (
     <>
       {user.loading && <LoadingBox />}
@@ -95,7 +92,7 @@ function UserInfo({
               <CustomAvatar style={{ width: 60, height: 60, }} src={get(user.user, 'avatar')} alt='avatar' />
               <div>
                 <NameSpan>{get(user.user, 'name', '')}</NameSpan>
-                <ColorTypo>{t('views.user_page.right_part.user_info.date_join')}: {get(user.user, 'date_join', '')}</ColorTypo>
+                <ColorTypo>Ngày tham gia: {get(user.user, 'date_join', '')}</ColorTypo>
               </div>
               <PillButton 
                 size='medium'
@@ -103,28 +100,28 @@ function UserInfo({
                   updatedUser: user.user,
                 })}
               >
-                {t('views.user_page.right_part.user_info.modify_info')}
+                Chỉnh sửa
               </PillButton>
             </MainHeader>
             <MainList>
               <StyledListItem>
-                <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.room_name')}:</ColorTypo>
+                <ColorTypo color='gray'>Bộ phận:</ColorTypo>
                 <ColorTypo bold>{get(user.user, 'room_name', '')}</ColorTypo>
               </StyledListItem>
               <StyledListItem>
-                <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.position_name')}:</ColorTypo>
+                <ColorTypo color='gray'>Chức danh:</ColorTypo>
                 <ColorTypo bold>{get(user.user, 'position_name', '')}</ColorTypo>
               </StyledListItem>
               <StyledListItem>
-                <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.level_name')}:</ColorTypo>
+                <ColorTypo color='gray'>Trình độ:</ColorTypo>
                 <ColorTypo bold>{get(user.user, 'level_name', '')}</ColorTypo>
               </StyledListItem>
               <StyledListItem>
-                <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.major_name')}:</ColorTypo>
+                <ColorTypo color='gray'>Chuyên ngành:</ColorTypo>
                 <ColorTypo bold>{get(user.user, 'major_name', '')}</ColorTypo>
               </StyledListItem>
               <StyledListItem>
-                <ColorTypo color='gray'>{t('views.user_page.right_part.user_info.description')}:</ColorTypo>
+                <ColorTypo color='gray'>Mô tả công việc:</ColorTypo>
                 <ColorTextField value={get(user.user, 'description', '')} />
               </StyledListItem>
             </MainList>
@@ -133,7 +130,7 @@ function UserInfo({
                 files: get(user.user, 'documents', [])
               })}>
                 <CustomAvatar alt='avatar' />
-                <ColorTypo>{t('views.user_page.right_part.user_info.documents_view')}</ColorTypo>
+                <ColorTypo>Xem file hồ sơ</ColorTypo>
               </StyledButton>
               <input
                 id="raised-button-file"
@@ -146,20 +143,20 @@ function UserInfo({
                   </ColorButton>)
                 : (
                   <ColorButton variant='text' variantColor='blue' size='small' component='label' htmlFor='raised-button-file'>
-                    {`+ ${t('views.user_page.right_part.user_info.upload_documents')}`}
+                    {`+ Upload file hồ sơ`}
                   </ColorButton>)
               }
             </MainFooter>
           </MainBox>
           <SideBox>
             <SideHeader>
-              <ColorTypo bold uppercase>{t('views.user_page.right_part.user_info.infomation')}</ColorTypo>
+              <ColorTypo bold uppercase>Thông tin cá nhân</ColorTypo>
             </SideHeader>
             <SideList>
               <StyledListItem>
                 <ListItemText
                   primary={
-                    <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.name')}</ColorTypo>
+                    <ColorTypo component='span' color='gray'>Họ tên đầy đủ</ColorTypo>
                   }
                   secondary={
                     <ColorTypo component='span' bold>{get(user.user, 'name', '')}</ColorTypo>
@@ -169,7 +166,7 @@ function UserInfo({
               <StyledListItem>
                 <ListItemText
                   primary={
-                    <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.birthday')}</ColorTypo>
+                    <ColorTypo component='span' color='gray'>Ngày sinh</ColorTypo>
                   }
                   secondary={
                     <ColorTypo component='span' bold>{get(user.user, 'birthday', '')}</ColorTypo>
@@ -179,7 +176,7 @@ function UserInfo({
               <StyledListItem>
                 <ListItemText
                   primary={
-                    <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.gender')}</ColorTypo>
+                    <ColorTypo component='span' color='gray'>Giới tính</ColorTypo>
                   }
                   secondary={
                     <ColorTypo component='span' bold>{get(user.user, 'gender_name', '')}</ColorTypo>
@@ -189,7 +186,7 @@ function UserInfo({
               <StyledListItem>
                 <ListItemText
                   primary={
-                    <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.email')}</ColorTypo>
+                    <ColorTypo component='span' color='gray'>Email</ColorTypo>
                   }
                   secondary={
                     <ColorTypo component='span' bold>{get(user.user, 'email', '')}</ColorTypo>
@@ -199,7 +196,7 @@ function UserInfo({
               <StyledListItem>
                 <ListItemText
                   primary={
-                    <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.phone')}</ColorTypo>
+                    <ColorTypo component='span' color='gray'>Điện thoại</ColorTypo>
                   }
                   secondary={
                     <ColorTypo component='span' bold>{get(user.user, 'phone', '')}</ColorTypo>
@@ -209,7 +206,7 @@ function UserInfo({
               <StyledListItem>
                 <ListItemText
                   primary={
-                    <ColorTypo component='span' color='gray'>{t('views.user_page.right_part.user_info.address')}</ColorTypo>
+                    <ColorTypo component='span' color='gray'>Địa chỉ</ColorTypo>
                   }
                   secondary={
                     <ColorTypo component='span' bold>{get(user.user, 'address', '')}</ColorTypo>

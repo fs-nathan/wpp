@@ -11,6 +11,24 @@
       box-shadow: -18px 8px 24px -10px rgba(0, 0, 0, 0.2);
     }
   }
+  &.anchor-drawer-left {
+    top: 55px !important;
+    left: 80px !important;
+    .MuiBackdrop-root {
+      background-color: initial;
+      margin-top: 55px;
+      margin-left: 80px;
+    }
+    .MuiDrawer-paper {
+      transform: none !important;
+      margin-top: 55px;
+      margin-left: 80px;
+      width: 321.5px;
+    }
+    .MuiPaper-elevation16 {
+      box-shadow: 22px 8px 24px -10px rgba(0, 0, 0, 0.2);
+    }
+  }
   &.anchor-drawer-top {
     top: 55px !important;
     left: 80px !important;

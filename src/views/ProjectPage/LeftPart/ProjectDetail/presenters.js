@@ -6,12 +6,11 @@ import ColorTextField from '../../../../components/ColorTextField';
 import ProgressBar from '../../../../components/ProgressBar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import ColorButton from '../../../../components/ColorButton';
-import { Container, SubContainer, ActionBox, } from '../../../../components/CustomDetailBox';
+import { Container, SubContainer, ActionBox } from '../../../../components/CustomDetailBox';
 import { 
-  ChartBox, ChartDrawer, ChartLegendBox, ChartTitle, CustomChart, 
+  ChartBox, ChartDrawer, ChartInfoBox, ChartTitle, CustomChart, 
 } from '../../../../components/CustomDonutChart';
-import Icon from '@mdi/react';
-import { mdiSquare, mdiChevronLeft, } from '@mdi/js';
+import { mdiChevronLeft, } from '@mdi/js';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
@@ -132,28 +131,33 @@ function ProjectDetail({
                     </ChartTitle>
                   </ChartDrawer>
                   <ProjectName>
-                    {project.loading ? '...' : get(project, 'name', '')}
+                    {project.loading ? '...' : get(project.project, 'name', '')}
                   </ProjectName>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#ff9800'} />
-                    <ColorTypo>Công việc đang chờ</ColorTypo>
-                    <ColorTypo>{get(project.project, 'task_waiting', 0)}</ColorTypo>
-                  </ChartLegendBox>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#03a9f4'} />
-                    <ColorTypo>Công việc đang làm</ColorTypo>
-                    <ColorTypo>{get(project.project, 'task_doing', 0)}</ColorTypo>
-                  </ChartLegendBox>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#f44336'} />
-                    <ColorTypo>Công việc quá hạn</ColorTypo>
-                    <ColorTypo>{get(project.project, 'task_expired', 0)}</ColorTypo>
-                  </ChartLegendBox>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#03c30b'} />
-                    <ColorTypo>Công việc hoàn thành</ColorTypo>
-                    <ColorTypo>{get(project.project, 'task_complete', 0)}</ColorTypo>
-                  </ChartLegendBox>
+                  <ChartInfoBox
+                    data={
+                      [{
+                        color: '#ff9800',
+                        title: 'Công việc đang chờ',
+                        value: get(project.project, 'task_waiting', 0),
+                      }, {
+                        color: '#03a9f4',
+                        title: 'Công việc đang làm',
+                        value: get(project.project, 'task_doing', 0),
+                      }, {
+                        color: '#f44336',
+                        title: 'Công việc quá hạn',
+                        value: get(project.project, 'task_expired', 0),
+                      }, {
+                        color: '#03c30b',
+                        title: 'Công việc hoàn thành',
+                        value: get(project.project, 'task_complete', 0),
+                      }, {
+                        color: '#000',
+                        title: 'Công việc dừng',
+                        value: get(project.project, 'task_stop', 0),
+                      }]
+                    }
+                  />
                 </ChartBox>
               </SubContainer>
               <SubContainer>

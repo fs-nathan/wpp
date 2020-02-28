@@ -28,7 +28,7 @@ function DepartmentInfo({
 
   React.useEffect(() => {
     const historyPushHandler = () => {
-      doGoBack();
+      history.push('/departments');
     };
 
     CustomEventListener(DELETE_ROOM, historyPushHandler);
@@ -36,11 +36,8 @@ function DepartmentInfo({
     return () => {
       CustomEventDispose(DELETE_ROOM, historyPushHandler);
     };
-  }, [doGoBack]);
-
-  function doGoBack() {
-    history.push('/departments');
-  }
+    //eslint-disable-next-line
+  }, []);
 
   const [openAlertModal, setOpenAlertModal] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
@@ -49,16 +46,14 @@ function DepartmentInfo({
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'UPDATE': {
+      case 'UPDATE':
         setCreateAndUpdateDepartmentProps(props);
         setOpenCreateAndUpdateDepartmentModal(true);
         return;
-      };
-      case 'ALERT': {
+      case 'ALERT':
         setAlertProps(props);
         setOpenAlertModal(true);
         return;
-      };
       default: return;
     }
   }
@@ -68,7 +63,7 @@ function DepartmentInfo({
       {departmentId === 'default' 
         ? (
           <DefaultDepartment 
-            handleGoBack={doGoBack}
+            handleGoBack={evt => history.push('/departments')}
           />
         )
         : (
@@ -76,7 +71,7 @@ function DepartmentInfo({
             room={room}
             departmentId={departmentId}
             handleDeleteRoom={roomId => doDeleteRoom({ roomId })}
-            handleGoBack={doGoBack}
+            handleGoBack={() => history.push('/departments')}
             handleOpenModal={doOpenModal}
           />
         )}

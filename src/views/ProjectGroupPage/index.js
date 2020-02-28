@@ -82,7 +82,7 @@ function ProjectGroupPage({
   const [projectGroupId, setProjectGroupId] = React.useState();
 
   React.useEffect(() => {
-    if (projectGroupId === 'deleted') return;
+    if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
     if (projectGroupId) {
       doDetailProjectGroup({ projectGroupId });
 
@@ -103,7 +103,7 @@ function ProjectGroupPage({
   }, [doDetailDefaultGroup]);
 
   React.useEffect(() => {
-    if (projectGroupId === 'deleted') return;
+    if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
     if (projectGroupId) {
       doMemberProjectGroup({ projectGroupId });
 
@@ -119,10 +119,7 @@ function ProjectGroupPage({
     }
   }, [projectGroupId, doMemberProjectGroup]);
 
-  const [timeRange, setTimeRange] = React.useState({
-    timeRange: moment().toDate(),
-    timeEnd: moment().toDate(),
-  });
+  const [timeRange, setTimeRange] = React.useState({});
 
   React.useEffect(() => {
     if (projectGroupId === 'deleted') return;

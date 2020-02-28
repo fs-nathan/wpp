@@ -111,12 +111,6 @@ const TimeListItem = ({ className = '', selected, ...props }) =>
     {...props}
   />;
 
-const TooltipBody = ({ className = '', ...props }) => 
-  <Button 
-    className={`view_ProjectGroup_Table_All___tooltip ${className}`}
-    {...props}
-  />;
-
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 0:
@@ -384,7 +378,7 @@ function AllProjectTable({
                   </LightTooltip>
                 ),
                 sort: evt => handleSortType('complete'),
-                align: 'left',
+                align: 'center',
                 width: '17%',
               },
               {
@@ -422,7 +416,7 @@ function AllProjectTable({
                   </CustomBadge>
                 ),
                 sort: evt => handleSortType('priority_code'),
-                align: 'left',
+                align: 'center',
                 width: '10%',
               },
               {

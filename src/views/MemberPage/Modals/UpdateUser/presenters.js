@@ -39,6 +39,7 @@ function UpdateUser({
       setLevel(find(options.levels, { id: get(updatedUser, 'level_id') }));
       setDescription(get(updatedUser, 'description', ''));
     }
+    // eslint-disable-next-line
   }, [updatedUser]);
 
   return (

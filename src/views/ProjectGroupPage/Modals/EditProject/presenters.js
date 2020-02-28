@@ -49,7 +49,8 @@ function EditProject({
       setCurrency(get(curProject, 'currency', 0));
       setProjectGroup(find(groups.groups, { id: get(curProject, 'project_group_id') }) || groups.groups[0]);
     }
-  }, [curProject, setName, setDescription]);
+    // eslint-disable-next-line
+  }, [curProject]);
 
   return (
     <CustomModal

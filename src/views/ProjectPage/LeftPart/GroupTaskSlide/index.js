@@ -6,8 +6,7 @@ import { filter, get, } from 'lodash';
 import AlertModal from '../../../../components/AlertModal';
 import { sortGroupTask } from '../../../../actions/groupTask/sortGroupTask';
 import { deleteGroupTask } from '../../../../actions/groupTask/deleteGroupTask';
-import CreateGroupTask from '../../Modals/CreateGroupTask';
-import UpdateGroupTask from '../../Modals/UpdateGroupTask';
+import CreateNewGroupTask from '../../Modals/CreateNewGroupTask';
 import GroupTaskSlidePresenter from './presenters';
 import { groupTasksSelector } from './selectors';
 
@@ -34,8 +33,7 @@ function GroupTaskSlide({
     setProjectId(projectId);
   }, [setProjectId, projectId]);
 
-  const [openCreate, setOpenCreate] = React.useState(false);
-  const [openUpdate, setOpenUpdate] = React.useState(false);
+  const [openCreateOrUpdate, setOpenCreateOrUpdate] = React.useState(false);
   const [updateProps, setUpdateProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
@@ -43,11 +41,11 @@ function GroupTaskSlide({
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE': {
-        setOpenCreate(true);
+        setOpenCreateOrUpdate(true);
         return;
       }
       case 'UPDATE': {
-        setOpenUpdate(true);
+        setOpenCreateOrUpdate(true);
         setUpdateProps(props);
         return;
       }
@@ -79,14 +77,10 @@ function GroupTaskSlide({
         setOpen={setOpenAlert}
         {...alertProps}
       />
-      <CreateGroupTask 
-        open={openCreate} 
-        setOpen={setOpenCreate} 
-      />
-      <UpdateGroupTask 
-        open={openUpdate} 
-        setOpen={setOpenUpdate}
-        {...updateProps} 
+      <CreateNewGroupTask 
+        open={openCreateOrUpdate} 
+        setOpen={setOpenCreateOrUpdate} 
+        {...updateProps}
       />
     </>
   )

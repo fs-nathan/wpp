@@ -45,19 +45,31 @@
   &-waiting {
     @include comp_TableComponents___state-box;
     & > div > span {
-      color: orange;
+      color: #ff9800;
     }
   }
   &-doing {
     @include comp_TableComponents___state-box;
     & > div > span {
-      color: green;
+      color: #03a9f4;
     }
   }
   &-expired {
     @include comp_TableComponents___state-box;
     & > div > span {
-      color: red;
+      color: #f44336;
+    }
+  }
+  &-complete {
+    @include comp_TableComponents___state-box;
+    & > div > span {
+      color: #03c30b;
+    }
+  }
+  &-stop {
+    @include comp_TableComponents___state-box;
+    & > div > span {
+      color: #000;
     }
   }
   &-hidden {

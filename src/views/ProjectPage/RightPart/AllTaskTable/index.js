@@ -1,108 +1,21 @@
 import React from 'react';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
-import Icon from '@mdi/react';
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-} from '@material-ui/core';
-import {
-  mdiDownload,
-  mdiScatterPlot,
-  mdiCalendar,
-  mdiAccount,
-  mdiAccountCircle,
-  mdiDotsVertical,
-} from '@mdi/js';
+import { useParams } from 'react-router-dom';
 import { Context as ProjectPageContext } from '../../index';
-import LoadingBox from '../../../../components/LoadingBox';
-import ErrorBox from '../../../../components/ErrorBox';
-import CustomTable from '../../../../components/CustomTable';
-import CustomBadge from '../../../../components/CustomBadge';
 import AlertModal from '../../../../components/AlertModal';
-import AvatarCircleList from '../../../../components/AvatarCircleList';
-import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
-import { Container, SettingContainer, LinkSpan, StateBox, DateBox } from '../../../../components/TableComponents';
 import CreateNewTaskModal from '../../Modals/CreateNewTask';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
 import { deleteTask } from '../../../../actions/task/deleteTask';
 import { sortTask } from '../../../../actions/task/sortTask';
-import './style.scss'
-
-const SubTitle = ({ className = '', ...props }) => 
-  <div 
-    className={`view_Project_AllTaskTable___subtitle ${className}`}
-    {...props}
-  />;
-
-function decodePriorityCode(priorityCode) {
-  switch (priorityCode) {
-    case 0:   
-      return ({
-        color: '#4caf50',
-        background: '#4caf5042',
-        name: 'Thấp',
-      });
-    case 1: 
-      return ({
-        color: '#ff9800',
-        background: '#ff980038',
-        name: 'Trung bình',
-      });
-    case 2: 
-      return ({
-        color: '#fe0707',
-        background: '#ff050524',
-        name: 'Cao',
-      });
-    default:
-      return ({
-        color: '#53d7fc',
-        name: 'Thấp',
-      });
-  }
-}
-
-function displayDate(time, date) {
-  return (
-    <>
-      <span>{time}</span>
-      <span>{date}</span>
-    </>
-  );
-}
-
-const SettingButton = ({
-  task,
-  setCurrentSettingTask, setCurrentSettingAnchorEl,
-}) => {
-
-  function handleClick(evt) {
-    setCurrentSettingAnchorEl(evt.currentTarget);
-    setCurrentSettingTask(task);
-  }
-
-  return (
-    <SettingContainer onClick={evt => evt.stopPropagation()}>
-      <IconButton
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        size="small"
-      >
-        <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
-      </IconButton>
-    </SettingContainer>
-  );
-};
+import { tasksSelector, projectSelector } from './selectors';
+import AllTaskTablePresenter from './presenters';
 
 function AllTaskTable({ 
   expand, handleExpand, 
   handleSubSlide,
-  listTask, detailProject,
+  tasks, project,
   doShowProject, doHideProject,
   doDeleteTask,
   doSortTask,
@@ -110,237 +23,69 @@ function AllTaskTable({
 
   const { setProjectId } = React.useContext(ProjectPageContext);
   const { projectId } = useParams();
-  const history = useHistory();
-
-  const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
-  const { data: { project }, loading: detailProjectLoading, error: detailProjectError } = detailProject;
-
-  const loading = listTaskLoading || detailProjectLoading;
-  const error = listTaskError || detailProjectError;
-
-  const [open, setOpen] = React.useState(false);
-
-  const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
-  const [currentSettingTask, setCurrentSettingTask] = React.useState(null);
-  
-  const [alertModal, setAlertModal] = React.useState(false);
 
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
 
-  function handleShowHideProject(show = true) {
-    if (show) doHideProject({ projectId, })
-    else doShowProject({ projectId, })
-  }
+  const [openCreate, setOpenCreate] = React.useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [alertProps, setAlertProps] = React.useState({});
 
-  function handleDeleteTask(task) {
-    doDeleteTask({
-      taskId: get(task, 'id'),
-    });
-  }
-
-  function handleCloseMenu() {
-    setCurrentSettingAnchorEl(null);
+  function doOpenModal(type, props) {
+    switch (type) {
+      case 'CREATE': 
+        setOpenCreate(true);
+        return;
+      case 'ALERT':
+        setOpenAlert(true);
+        setAlertProps(props);
+        return;
+      default: return;
+    }
   }
 
   return (
-    <Container>
-      {error !== null && <ErrorBox />}
-      {error === null && (
-        <React.Fragment>
-          <CustomTable
-            options={{
-              title: 'Danh sách công việc',
-              subTitle: () => (
-                <SubTitle>
-                  <span onClick={evt => history.push(`/list-task-detail/${projectId}`)}>Chat</span>
-                  <span>Table</span>
-                  <span>Grant</span>
-                </SubTitle>
-              ),
-              subActions: [{
-                label: 'Thành viên', 
-                iconPath: mdiAccountCircle,
-                onClick: (evt) => handleSubSlide(1),
-                noExpand: true,
-              }, {
-                label: 'Nhóm việc',
-                iconPath: mdiScatterPlot,
-                onClick: (evt) => handleSubSlide(2),
-                noExpand: true,
-              }, {
-                label: 'Tải xuống',
-                iconPath: mdiDownload,
-                onClick: (evt) => null,
-              }, {
-                label: 'Năm 2019',
-                iconPath: mdiCalendar,
-                onClick: (evt) => null,
-              }],
-              mainAction: {
-                label: '+ Tạo công việc',
-                onClick: (evt) => setOpen(true),  
-              },
-              expand: {
-                bool: expand,
-                toggleExpand: () => handleExpand(!expand),
-              },
-              moreMenu: [{
-                label: 'Cài đặt bảng',
-                onClick: () => null,
-              }, {
-                label: `${get(project, 'visibility') ? 'Ẩn dự án' : 'Bỏ ẩn dự án'}`,
-                onClick: () => handleShowHideProject(get(project, 'visibility')),
-              }],
-              grouped: {
-                bool: true,
-                id: 'id',
-                label: (group) => get(group, 'id') === 'default' ? 'Chưa phân loại' : get(group, 'name'),
-                item: 'tasks',
-              },
-              draggable: {
-                bool: true,
-                onDragEnd: result => {
-                  const { source, destination, draggableId } = result;
-                  if (!destination) return;
-                  if (
-                    destination.droppableId === source.droppableId &&
-                    destination.index === source.index
-                  ) return;
-                  doSortTask({
-                    taskId: draggableId,
-                    projectId,
-                    groupTask: destination.droppableId,
-                    sortIndex: destination.index,
-                  });
-                }, 
-              },
-              loading: {
-                bool: loading,
-                component: () => <LoadingBox />,
-              },
-              row: {
-                id: 'id',
-              },
-            }}
-            columns={[{
-              label: 'Tên công việc',
-              field: (row) => <LinkSpan onClick={evt => {
-                history.push(`/list-task-detail/${projectId}?task_id=${row.id}`);
-              }}>{get(row, 'name', '')}</LinkSpan>,
-              align: 'left',
-              width: '25%',
-            }, {
-              label: 'Trạng thái',
-              field: (row) => <StateBox
-                  stateName={get(row, 'status_name', '')}
-                >
-                  <div>
-                    <span>&#11044;</span>
-                    <span>
-                      {get(row, 'status_name', '')}
-                    </span>
-                  </div>
-                </StateBox>,
-              align: 'center',
-              width: '10%',
-            }, {
-              label: 'Tiến độ',
-              field: (row) => `${get(row, 'duration', 0)} ngày`,
-              align: 'center',
-              width: '8%',
-            }, {
-              label: 'Bắt đầu',
-              field: (row) => <DateBox>
-                                {displayDate(get(row, 'start_time'), get(row, 'start_date'))}
-                              </DateBox>,
-              align: 'left',
-              width: '10%',
-            }, {
-              label: 'Kết thúc',
-              field: (row) => <DateBox>
-                                {displayDate(get(row, 'end_time'), get(row, 'end_date'))}
-                              </DateBox>,
-              align: 'left',
-              width: '10%',
-            }, {
-              label: 'Hoàn thành',
-              field: (row) => <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />,
-              align: 'center',
-              width: '15%',
-            }, {
-              label: 'Ưu tiên',
-              field: (row) => <CustomBadge 
-                                color={decodePriorityCode(get(row, 'priority_code', 0)).color}
-                                background={decodePriorityCode(get(row, 'priority_code', 0)).background}
-                              >
-                                {get(row, 'priority_name', '')}  
-                              </CustomBadge>,
-              align: 'center',
-              width: '10%',
-            }, {
-              label: () => <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'}/>,
-              field: row => <AvatarCircleList 
-                              users={
-                                get(row, 'members', [])
-                                .map(member => ({
-                                  name: get(member, 'name'),
-                                  avatar: get(member, 'avatar'),
-                                }))
-                              } 
-                              display={3} 
-                            />,
-              align: 'center',
-              width: '10%',
-            }, {
-              label: () => <IconButton size="small" disabled><Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0)" /></IconButton>,
-              field: row => (
-                <SettingButton
-                  task={row}
-                  setCurrentSettingAnchorEl={setCurrentSettingAnchorEl}
-                  setCurrentSettingTask={setCurrentSettingTask}
-                />
-              ),
-              align: 'center',
-              width: '2%',
-            }]}
-            data={tasks}
-          />
-          <CreateNewTaskModal open={open} setOpen={setOpen}/>
-          <Menu
-            id="simple-menu"
-            anchorEl={currentSettingAnchorEl}
-            keepMounted
-            open={Boolean(currentSettingAnchorEl)}
-            onClose={handleCloseMenu}
-            transformOrigin={{
-              vertical: -30,
-              horizontal: 'right'
-            }}
-          >
-            <MenuItem onClick={evt => setAlertModal(true)}>Xóa</MenuItem>
-          </Menu>
-          <AlertModal
-            open={alertModal}
-            setOpen={setAlertModal}
-            content="Bạn chắc chắn muốn xóa công việc?"
-            onCancle={handleCloseMenu}
-            onConfirm={() => {
-              handleCloseMenu();
-              handleDeleteTask(currentSettingTask);
-            }}
-          />
-        </React.Fragment>
-      )}
-    </Container>
+    <>
+      <AllTaskTablePresenter 
+        expand={expand} handleExpand={handleExpand} 
+        handleSubSlide={handleSubSlide}
+        tasks={tasks} project={project}
+        handleShowOrHideProject={project => 
+          get(project, 'visibility', false)
+          ? doHideProject({ projectId: get(project, 'id') })
+          : doShowProject({ projectId: get(project, 'id') })
+        }
+        handleDeleteTask={task => 
+          doDeleteTask({ taskId: get(task, 'id') })
+        }
+        handleSortTask={(taskId, groupTask, sortIndex) =>
+          doSortTask({
+            taskId,
+            projectId,
+            groupTask,
+            sortIndex,
+          })
+        }
+        handleOpenModal={doOpenModal}
+      />
+      <CreateNewTaskModal 
+        open={openCreate} 
+        setOpen={setOpenCreate}
+      />
+      <AlertModal
+        open={openAlert}
+        setOpen={setOpenAlert}
+        {...alertProps}
+      />
+    </>
   )
 }
 
 const mapStateToProps = state => {
   return {
-    listTask: state.task.listTask,
-    detailProject: state.project.detailProject,
+    tasks: tasksSelector(state),
+    project: projectSelector(state),
   }
 }
 

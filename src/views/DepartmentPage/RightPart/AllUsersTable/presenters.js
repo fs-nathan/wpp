@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Menu, MenuItem, Badge, Tooltip } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Badge } from '@material-ui/core';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
 import Icon from '@mdi/react';
@@ -16,6 +16,7 @@ import {
   Container, SubTitle, LinkSpan, SettingContainer,
 } from '../../../../components/TableComponents';
 import { get } from 'lodash';
+import { DRAWER_TYPE } from '../../../../constants/constants';
 import './style.scss';
 
 const TooltipBody = ({ className = '', state, ...props }) =>
@@ -95,11 +96,12 @@ function StateBadge({ user }) {
 
 function AllUsersTable({ 
   rooms, maxUser, hasRequirement,
-  expand, handleExpand, handleSubSlide,
+  expand, handleExpand,
   handleSortUser,
   handleChangeState,
   handleBanUserFromGroup,
   handleOpenModal, 
+  handleVisibleDrawerMessage,
 }) {
 
   const history = useHistory();
@@ -130,7 +132,12 @@ function AllUsersTable({
                     <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
                   </NewUserBadge>
                 : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
-              onClick: () => handleSubSlide(1),
+              onClick: () => {
+                handleVisibleDrawerMessage({
+                  type: DRAWER_TYPE.ADD_USER,
+                  anchor: 'left'
+                })
+              },
               noExpand: true,
             }],
             mainAction: {

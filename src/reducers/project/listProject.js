@@ -3,7 +3,7 @@ import {
   LIST_PROJECT_SUCCESS,
   LIST_PROJECT_FAIL,
 } from '../../constants/actions/project/listProject';
-import { get, findIndex, remove, find } from 'lodash';
+import { get, findIndex, remove } from 'lodash';
 import { UPDATE_PROJECT } from '../../constants/actions/project/updateProject';
 import { DELETE_PROJECT } from '../../constants/actions/project/deleteProject';
 import { HIDE_PROJECT } from '../../constants/actions/project/hideProject';

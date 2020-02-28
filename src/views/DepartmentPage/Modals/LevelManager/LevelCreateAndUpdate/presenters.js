@@ -21,7 +21,7 @@ function LevelCreateAndUpdate({
       setName(get(updatedLevel, 'name', ''));
       setDescription(get(updatedLevel, 'description', ''));
     }
-  }, [updatedLevel]);
+  }, [updatedLevel, setDescription, setName]);
 
   return (
     <CustomModal
