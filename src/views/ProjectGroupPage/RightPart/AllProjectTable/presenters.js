@@ -1,12 +1,7 @@
 import React from 'react';
-import moment from 'moment';
 import { get, remove, slice } from 'lodash';
+import { TimeRangePopover, times } from '../../../../components/CustomPopover';
 import { useHistory } from 'react-router-dom';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 import {
   IconButton,
   Menu,
@@ -16,8 +11,6 @@ import {
   ListItem,
   ListItemText,
   ListSubheader,
-  Button,
-  TextField,
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
@@ -27,7 +20,6 @@ import {
   mdiAccount,
   mdiDotsVertical,
   mdiCheckCircle,
-  mdiClose,
 } from '@mdi/js';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -39,7 +31,7 @@ import ImprovedSmallProgressBar from '../../../../components/ImprovedSmallProgre
 import { ChartInfoBox } from '../../../../components/CustomDonutChart';
 import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
 import { Container, SettingContainer, LinkSpan, StateBox, DateBox } from '../../../../components/TableComponents';
-import { filters, times } from './constants';
+import { filters } from './constants';
 import './style.scss';
 
 const CustomMenuItem = ({ className = '', selected, refs, ...props }) => 
@@ -54,60 +46,6 @@ const CustomMenuItem = ({ className = '', selected, refs, ...props }) =>
 const StyledListSubheader = ({ className = '', ...props }) => 
   <ListSubheader 
     className={`view_ProjectGroup_Table_All___list-subheader ${className}`}
-    {...props}
-  />;
-
-const TimeBox = ({ className = '', ...props }) => 
-  <div 
-    className={`view_ProjectGroup_Table_All___time-box ${className}`}
-    {...props}
-  />;
-
-const SideBar = ({ className = '', ...props }) => 
-  <div 
-    className={`view_ProjectGroup_Table_All___side-bar ${className}`}
-    {...props}
-  />;
-
-const MainBar = ({ className = '', ...props }) => 
-  <div 
-    className={`view_ProjectGroup_Table_All___main-bar ${className}`}
-    {...props}
-  />;
-
-const SubHeader = ({ className = '', ...props }) => 
-  <div 
-    className={`view_ProjectGroup_Table_All___subheader ${className}`}
-    {...props}
-  />;
-
-const Content = ({ className = '', ...props }) => 
-  <div 
-    className={`view_ProjectGroup_Table_All___content ${className}`}
-    {...props}
-  />;
-
-const YearBox = ({ className = '', ...props }) => 
-  <div 
-    className={`view_ProjectGroup_Table_All___year-box ${className}`}
-    {...props}
-  />;
-
-const DateWrapper = ({ className = '', ...props }) => 
-  <div 
-    className={`view_ProjectGroup_Table_All___date-wrapper ${className}`}
-    {...props}
-  />;
-
-const StyledButton = ({ className = '', ...props }) => 
-  <Button 
-    className={`view_ProjectGroup_Table_All___button ${className}`}
-    {...props}
-  />;
-
-const TimeListItem = ({ className = '', selected, ...props }) => 
-  <ListItem 
-    className={`${className}`}
     {...props}
   />;
 
@@ -163,7 +101,7 @@ const SettingButton = ({
 
 function AllProjectTable({
   expand, handleExpand,
-  projects, bgColor,
+  projects,
   filterType, handleFilterType, 
   timeType, handleTimeType,
   handleSortType,
@@ -172,6 +110,7 @@ function AllProjectTable({
   handleSortProject,
   handleOpenModal,
   handleTimeRange,
+  bgColor,
 }) {
 
   const history = useHistory();
@@ -179,19 +118,9 @@ function AllProjectTable({
   const [filterAnchor, setFilterAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
-  const [timeOption, setTimeOption] = React.useState(0);
-  const [startDate, setStartDate] = React.useState(moment().toDate());
-  const [endDate, setEndDate] = React.useState(moment().toDate());
 
   const [menuAnchor, setMenuAnchor] = React.useState(null); 
   const [curProject, setCurProject] = React.useState(null);
-
-  React.useEffect(() => {
-    setTimeOption(timeType);
-    const [start, end] = times[timeType].option();
-    setStartDate(start);
-    setEndDate(end);
-  }, [timeType]);
 
   return (
     <Container>
@@ -499,122 +428,16 @@ function AllProjectTable({
               </ListItem>
             </List>
           </Popover>
-          <Popover
-            id="time-menu"
+          <TimeRangePopover 
+            bgColor={bgColor}
             anchorEl={timeAnchor}
-            open={Boolean(timeAnchor)}
-            onClose={evt => setTimeAnchor(null)}
-            transformOrigin={{
-              vertical: -30,
-              horizontal: 'right'
+            setAnchorEl={setTimeAnchor}
+            timeOptionDefault={timeType} 
+            handleTimeRange={(timeType, startDate, endDate) => {
+              handleTimeType(timeType)
+              handleTimeRange(startDate, endDate)
             }}
-          >
-            <TimeBox>
-              <SideBar>
-                <List
-                  subheader={
-                    <StyledListSubheader component="div">
-                      Tùy chọn
-                    </StyledListSubheader>
-                  }
-                >
-                  {times.map((time, index) => (
-                    <TimeListItem
-                      key={index}
-                      button
-                      onClick={evt => {
-                        setTimeOption(index);
-                        const [start, end] = times[index].option();
-                        setStartDate(start);
-                        setEndDate(end);
-                      }}
-                      style={timeOption === index ? {
-                        borderLeft: `3px solid ${bgColor.color}`,
-                      } : {
-                        borderLeft: '3px solid #fff',
-                      }}
-                    >
-                      <ListItemText primary={time.title} />
-                    </TimeListItem>
-                  ))}
-                </List>
-              </SideBar>
-              <MainBar>
-                <SubHeader>
-                  <span>Thời gian được chọn</span>
-                  <IconButton>
-                    <Icon 
-                      path={mdiClose} 
-                      size={1} 
-                      onClick={evt => setTimeAnchor(null)}
-                    />
-                  </IconButton>
-                </SubHeader>
-                <Content>
-                  <YearBox>{times[timeOption].description}</YearBox>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateWrapper>
-                      {timeOption === 5 ? (
-                        <>
-                          <TextField
-                            disabled
-                            value={'Toàn bộ'}
-                          />
-                          <TextField
-                            disabled
-                            value={'Toàn bộ'}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <KeyboardDatePicker
-                            disableToolbar
-                            disabled={timeOption !== 6}
-                            inputVariant="outlined"
-                            variant="inline"
-                            ampm={false}
-                            label="Ngày bắt đầu"
-                            value={startDate}
-                            onChange={setStartDate}
-                            format="dd/MM/yyyy"
-                            maxDate={endDate}
-                            maxDateMessage='Phải trước ngày kết thúc'
-                          />
-                          <KeyboardDatePicker 
-                            disableToolbar
-                            disabled={timeOption !== 6}
-                            inputVariant="outlined"
-                            variant="inline"
-                            ampm={false}
-                            label="Ngày kết thúc"
-                            value={endDate}
-                            onChange={setEndDate}
-                            format="dd/MM/yyyy"
-                            minDate={startDate}
-                            minDateMessage='Phải sau ngày bắt đầu'
-                          />
-                        </>
-                      )}
-                    </DateWrapper>
-                  </MuiPickersUtilsProvider>
-                  <StyledButton 
-                    style={{
-                      backgroundColor: bgColor.color,
-                    }}
-                    fullWidth
-                    onClick={evt => {
-                      handleTimeType(timeOption)
-                      handleTimeRange(
-                        startDate ? moment(startDate).toDate() : undefined, 
-                        endDate ? moment(endDate).toDate() : undefined
-                      )
-                      setTimeAnchor(null)
-                    }}
-                  >Áp dụng</StyledButton>
-                </Content>
-              </MainBar>
-            </TimeBox>
-          </Popover>
+          />
           <Menu
             id="simple-menu"
             anchorEl={menuAnchor}

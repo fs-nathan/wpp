@@ -1,6 +1,7 @@
 import React from 'react';
 import { get } from 'lodash';
 import { useHistory } from 'react-router-dom';
+import { TimeRangePopover, times } from '../../../../components/CustomPopover';
 import Icon from '@mdi/react';
 import {
   IconButton,
@@ -101,9 +102,13 @@ function AllTaskTable({
   handleDeleteTask,
   handleSortTask,
   handleOpenModal,
+  bgColor, timeType,
+  handleTimeType, handleTimeRange,
 }) {
 
   const history = useHistory();
+
+  const [timeAnchor, setTimeAnchor] = React.useState(null);
 
   const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
   const [currentSettingTask, setCurrentSettingTask] = React.useState(null);
@@ -138,9 +143,9 @@ function AllTaskTable({
                 iconPath: mdiDownload,
                 onClick: (evt) => null,
               }, {
-                label: 'Năm 2019',
+                label: times[timeType].title,
                 iconPath: mdiCalendar,
-                onClick: (evt) => null,
+                onClick: evt => setTimeAnchor(evt.currentTarget)
               }],
               mainAction: {
                 label: '+ Tạo công việc',
@@ -265,6 +270,16 @@ function AllTaskTable({
               width: '2%',
             }]}
             data={tasks.tasks}
+          />
+          <TimeRangePopover 
+            bgColor={bgColor}
+            anchorEl={timeAnchor}
+            setAnchorEl={setTimeAnchor}
+            timeOptionDefault={timeType} 
+            handleTimeRange={(timeType, startDate, endDate) => {
+              handleTimeType(timeType)
+              handleTimeRange(startDate, endDate)
+            }}
           />
           <Menu
             id="simple-menu"

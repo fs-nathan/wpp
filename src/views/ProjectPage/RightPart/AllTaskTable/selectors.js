@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 
 const listTask = state => state.task.listTask;
 const detailProject = state => state.project.detailProject;
+const colors = state => state.setting.colors;
 
 export const tasksSelector = createSelector(
   [listTask],
@@ -24,5 +25,12 @@ export const projectSelector = createSelector(
       loading,
       error,
     }
+  }
+);
+
+export const bgColorSelector = createSelector(
+  [colors],
+  (colors) => {
+    return colors.find(item => item.selected === true); 
   }
 );

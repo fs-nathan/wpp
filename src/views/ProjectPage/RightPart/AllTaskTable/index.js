@@ -9,11 +9,12 @@ import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
 import { deleteTask } from '../../../../actions/task/deleteTask';
 import { sortTask } from '../../../../actions/task/sortTask';
-import { tasksSelector, projectSelector } from './selectors';
+import { tasksSelector, projectSelector, bgColorSelector } from './selectors';
 import AllTaskTablePresenter from './presenters';
 
 function AllTaskTable({ 
   expand, handleExpand, 
+  bgColor,
   handleSubSlide,
   tasks, project,
   doShowProject, doHideProject,
@@ -21,12 +22,14 @@ function AllTaskTable({
   doSortTask,
 }) {
 
-  const { setProjectId } = React.useContext(ProjectPageContext);
+  const { setProjectId, setTimeRange } = React.useContext(ProjectPageContext);
   const { projectId } = useParams();
 
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
+
+  const [timeType, setTimeType] = React.useState(5);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -68,6 +71,13 @@ function AllTaskTable({
           })
         }
         handleOpenModal={doOpenModal}
+        bgColor={bgColor}
+        timeType={timeType}
+        handleTimeType={type => setTimeType(type)}
+        handleTimeRange={(start, end) => setTimeRange({
+          timeStart: start,
+          timeEnd: end,
+        })}
       />
       <CreateNewTaskModal 
         open={openCreate} 
@@ -86,6 +96,7 @@ const mapStateToProps = state => {
   return {
     tasks: tasksSelector(state),
     project: projectSelector(state),
+    bgColor: bgColorSelector(state),
   }
 }
 

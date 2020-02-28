@@ -97,7 +97,8 @@ function AllProjectTable({
     <>
       <AllProjectTablePresenter
         expand={expand} handleExpand={handleExpand}
-        projects={newProjects} bgColor={bgColor}
+        projects={newProjects}
+        bgColor={bgColor}
         filterType={filterType} handleFilterType={type => setFilterType(type)} 
         timeType={timeType} handleTimeType={type => setTimeType(type)}
         handleSortType={type => setSortType(oldType => {

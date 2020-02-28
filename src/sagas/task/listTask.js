@@ -4,13 +4,15 @@ import { apiService } from '../../constants/axiosInstance';
 import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
 
-async function doListTask({ projectId }) {
+async function doListTask({ projectId, timeStart, timeEnd }) {
   try {
     const config = {
       url: '/task/list-task-table',
       method: 'get',
       params: {
         project_id: projectId,
+        time_start: timeStart,
+        time_end: timeEnd,
       },
     }
     const result = await apiService(config);

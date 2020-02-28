@@ -28,7 +28,6 @@ const generateContent = typeDrawer => {
     case DRAWER_TYPE.JOIN_NEW_GROUP:
       return <DrawerNewGroup />;
     case DRAWER_TYPE.ADD_USER:
-      console.log('add');
       return <AddUser />;
     default:
       return '';

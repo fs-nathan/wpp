@@ -1,0 +1,88 @@
+.comp_CustomPopper_Time___list-subheader {
+  text-transform: uppercase;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.comp_CustomPopper_Time___time-box {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 200px 450px;
+  grid-template-areas: 'side main';
+};
+
+.comp_CustomPopper_Time___side-bar {
+  grid-area: side;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+};
+
+.comp_CustomPopper_Time___main-bar {
+  grid-area: main;
+};
+
+.comp_CustomPopper_Time___subheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  & > span {
+    padding: 15px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.54);
+    font-weight: 500;
+    font-size: 14px;
+    height: 18px;
+  }
+  & > button {
+    & svg {
+      fill: rgba(0, 0, 0, 0.54); 
+    }
+  }
+};
+
+.comp_CustomPopper_Time___content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 80%;
+};
+
+.comp_CustomPopper_Time___year-box {
+  padding: 15px 0;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  background-color: #ddd;
+  width: 90%;
+};
+
+.comp_CustomPopper_Time___date-wrapper {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  & > div {
+    max-width: 170px;
+  }
+};
+
+.comp_CustomPopper_Time___button {
+  & {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 10px auto;
+    color: #fff;
+    width: 90%;
+  }
+  &:hover {
+    color: #fff;
+  }
+};
+
+.comp_CustomPopper_Time___tooltip {
+  & * {
+    font-size: 11px;
+  }
+}
