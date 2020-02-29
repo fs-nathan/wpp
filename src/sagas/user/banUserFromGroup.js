@@ -8,7 +8,7 @@ import { get } from 'lodash';
 async function doBanUserFromGroup({ userId }) {
   try {
     const config = {
-      url: '/ban-user-from-group',
+      url: '/ban-user-out-group',
       method: 'post',
       data: {
         user_id: userId,

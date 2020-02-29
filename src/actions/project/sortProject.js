@@ -4,11 +4,10 @@ import {
   SORT_PROJECT_SUCCESS,
 } from '../../constants/actions/project/sortProject';
 
-export const sortProject = ({ sortData, groupId }) => ({
+export const sortProject = ({ sortData }) => ({
   type: SORT_PROJECT,
   options: {
     sortData,
-    groupId,
   },
 });
 
