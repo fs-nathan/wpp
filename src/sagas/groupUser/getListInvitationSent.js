@@ -1,13 +1,13 @@
 import { call, put } from 'redux-saga/effects';
-import { getRequirementJoinGroupSuccess, getRequirementJoinGroupFail } from '../../actions/groupUser/getRequirementJoinGroup';
+import { getListInvitationSentSuccess, getListInvitationSentFail } from '../../actions/groupUser/getListInvitationSent';
 import { apiService } from '../../constants/axiosInstance';
 import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
 
-async function doGetRequirementJoinGroup() {
+async function doGetListInvitationSent() {
   try {
     const config = {
-      url: '/get-requirement-join-group',
+      url: '/get-invitation-group-sent',
       method: 'get',
     }
     const result = await apiService(config);
@@ -17,16 +17,16 @@ async function doGetRequirementJoinGroup() {
   }
 }
 
-function* getRequirementJoinGroup(action) {
+function* getListInvitationSent(action) {
   try {
-    const { requirements} = yield call(doGetRequirementJoinGroup, action.options);
-    yield put(getRequirementJoinGroupSuccess({ requirements }, action.options));
+    const { invitations } = yield call(doGetListInvitationSent, action.options);
+    yield put(getListInvitationSentSuccess({ invitations }, action.options));
   } catch (error) {
-    yield put(getRequirementJoinGroupFail(error, action.options));
+    yield put(getListInvitationSentFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 
 export {
-  getRequirementJoinGroup,
+  getListInvitationSent,
 }

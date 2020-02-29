@@ -9,7 +9,7 @@ import { StyledList, StyledListItem, Primary, Secondary } from '../../../../comp
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { ListItemAvatar, ListItemText, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
-import { get } from 'lodash';
+import { get, find, isNil } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -61,6 +61,7 @@ const IconWrapper = ({ className = '', ...rest }) => (<div className={`view_Depa
 const DesiringUserList = ({ 
   user, loading, bgColor,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
+  handleCancleInvitationJoinGroup,
 }) => {
 
   function onInviteUserJoinGroup(userId) {
@@ -110,7 +111,9 @@ const DesiringUserList = ({
                   {get(user, 'status_code', 0) === 1 && (
                     <CancleButton 
                       disabled={loading}
-                      onClick={() => null} 
+                      onClick={evt => handleCancleInvitationJoinGroup({
+                        invitationId: get(user, 'invitation')
+                      })} 
                     >
                       Hủy
                     </CancleButton>
@@ -123,6 +126,62 @@ const DesiringUserList = ({
       </StyledList>)
     : null}
     </>
+  );
+}
+
+const InvitedUserList = ({ 
+  invitations, loading, bgColor,
+  handleResendInvitationUserJoinGroup,
+  handleCancleInvitationJoinGroup,
+}) => {
+
+  function onResendInvitationUserJoinGroup(userId) {
+    handleResendInvitationUserJoinGroup({ userId });
+  }
+
+  return (
+    <StyledList>
+      {invitations.map(invitation => (
+        <StyledListItem
+          key={get(invitation, 'user')}
+          style={{ cursor: 'default' }}
+        >
+          <ListItemAvatar>
+            <CustomAvatar style={{ width: 50, height: 50, }} src={get(invitation, 'avatar')} alt='avatar' />
+          </ListItemAvatar>
+          <ListItemText 
+            primary={
+              <Primary>{get(invitation, 'name')}</Primary>  
+            }
+            secondary={
+              <StyledSecondary>
+                <Secondary>{get(invitation, 'email')}</Secondary>
+                <span>
+                  <OkButton 
+                    style={{
+                      backgroundColor: bgColor.color,
+                      borderColor: bgColor.color
+                    }}
+                    disabled={loading}
+                    onClick={() => onResendInvitationUserJoinGroup(get(invitation, 'id'))} 
+                  >
+                    Mời lại
+                  </OkButton>
+                  <CancleButton 
+                      disabled={loading}
+                      onClick={evt => handleCancleInvitationJoinGroup({
+                        invitationId: get(invitation, 'invitation_id')
+                      })} 
+                    >
+                      Hủy
+                    </CancleButton>
+                </span>
+              </StyledSecondary>
+            }
+          />
+        </StyledListItem>
+      ))}
+    </StyledList>
   );
 }
 
@@ -179,9 +238,6 @@ const RequestingUserList = ({
               </StyledSecondary>
             }
           />
-          <ColorTypo component='small'>
-            {t("views.user_page.left_part.add_user.time", { minute: 3 })}
-          </ColorTypo>
         </StyledListItem>
       ))}
     </StyledList>
@@ -192,9 +248,11 @@ function AddUser({
   bgColor, 
   desireUser, desireLoading,
   requireUsers, requireLoading,
+  invitations,
   handleSearchUser, handleSearchUserReset,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
   handleAcceptRequirementJoinGroup, handleRejectRequirementJoinGroup,
+  handleCancleInvitationJoinGroup,
   searchPatern, handleSearchPatern,
   anchorDrawer, handleVisibleDrawerMessage
 }) {
@@ -250,9 +308,40 @@ function AddUser({
             <DesiringUserList 
               bgColor={bgColor}
               loading={desireLoading}
-              user={desireUser.user} 
+              user={desireUser.user && {
+                ...desireUser.user,
+                invitation: get(
+                  find(
+                    invitations.invitations, 
+                    { 
+                      user: 
+                      get(
+                        desireUser.user, 
+                        'id'
+                      )
+                    }
+                  ),
+                  'invitation_id'
+                )
+              }} 
               handleInviteUserJoinGroup={handleInviteUserJoinGroup} 
               handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+              handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+            />
+          )}
+        </StyledBox>
+        <StyledBox>
+          <ColorTypo bold>
+            Đã mời thành viên tham gia nhóm
+          </ColorTypo>
+          {invitations.error !== null && <ErrorBox size={16} />}
+          {!invitations.loading && invitations.error === null && (
+            <InvitedUserList 
+              bgColor={bgColor}
+              loading={requireLoading}
+              invitations={invitations.invitations} 
+              handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+              handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
             />
           )}
         </StyledBox>
@@ -260,7 +349,6 @@ function AddUser({
           <ColorTypo bold>
             {t("views.user_page.left_part.add_user.request_member_title")}
           </ColorTypo>
-          {requireUsers.loading && <LoadingBox />}
           {requireUsers.error !== null && <ErrorBox size={16} />}
           {!requireUsers.loading && requireUsers.error === null && (
             <RequestingUserList 
