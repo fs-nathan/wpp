@@ -168,7 +168,8 @@ export const actionChangeLanguage = (language = 'vi') => {
 
 export const actionSearchTask = info => {
   const config = {
-    url: '/task/search',
+    // url: '/task/search',
+    url: '/search-task',
     method: 'get',
     params: { info }
   };
