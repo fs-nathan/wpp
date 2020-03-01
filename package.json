@@ -17,6 +17,7 @@
     "classnames": "^2.2.6",
     "cropperjs": "^1.5.6",
     "date-fns": "^2.8.1",
+    "file-saver": "^2.0.2",
     "i18next": "^17.2.0",
     "i18next-browser-languagedetector": "^4.0.0",
     "i18next-xhr-backend": "^3.2.0",
@@ -46,7 +47,8 @@
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
     "reselect": "^4.0.0",
-    "styled-components": "^4.4.0"
+    "styled-components": "^4.4.0",
+    "xlsx": "^0.15.5"
   },
   "scripts": {
     "start": "react-scripts start",

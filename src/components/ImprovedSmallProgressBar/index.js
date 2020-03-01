@@ -67,6 +67,7 @@ function ImprovedSmallProgressBar({ color, percentDone, data }) {
           barsData.widths,
           (width, index) => 
             <FrontBar 
+              key={index}
               width={width}
               color={barsData.colors[index]}
               left={barsData.lefts[index]}
