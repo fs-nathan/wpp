@@ -7,7 +7,7 @@ import { get } from 'lodash';
 async function doListTask({ projectId, timeStart, timeEnd }) {
   try {
     const config = {
-      url: '/task/list-task-table',
+      url: '/project/list-task-table',
       method: 'get',
       params: {
         project_id: projectId,

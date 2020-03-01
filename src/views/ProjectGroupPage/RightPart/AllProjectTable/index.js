@@ -115,8 +115,8 @@ function AllProjectTable({
           : doShowProject({ projectId: get(project, 'id') })
         }
         handleDeleteProject={project => doDeleteProject({ projectId: get(project, 'id') })}
-        handleSortProject={sortData => null
-          //doSortProject({ sortData, groupId: isDefault ? '__default__' : projectGroupId })
+        handleSortProject={sortData =>
+          doSortProject({ sortData })
         }
         handleOpenModal={doOpenModal}
         handleTimeRange={(start, end) => setTimeRange({

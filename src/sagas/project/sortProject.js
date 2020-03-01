@@ -5,28 +5,17 @@ import { CustomEventEmitter, SORT_PROJECT } from '../../constants/events';
 import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
 
-async function doSortProject({ sortData, groupId, }) {
+async function doSortProject({ sortData }) {
   try {
-    let config = {
+    const config = {
       method: 'post',
-    }
-    if (groupId !== undefined) {
-      config = {
-        ...config,
-        url: '/project/sort-in-group',
-        data: {
-          sort_data: sortData.map(data => data.id),
-          group_id: groupId,
-        },
-      }
-    } else {
-      config = {
-        ...config,
-        url: '/project/sort',
-        data: {
-          sort_data: sortData.map(data => data.id),
-        },
-      }
+      url: '/project/sort',
+      data: {
+        sort_data: sortData.map(project => ({
+          id: get(project, 'id'),
+          sort_index: get(project, 'sort_index')
+        })),
+      },
     }
     const result = await apiService(config);
     return result.data;

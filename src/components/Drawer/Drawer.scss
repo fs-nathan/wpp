@@ -23,10 +23,12 @@
       transform: none !important;
       margin-top: 55px;
       margin-left: 80px;
-      width: 321.5px;
+      width: calc((100vw - 80px) / 4);
+      min-width: 300px;
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
     .MuiPaper-elevation16 {
-      box-shadow: none;
+      box-shadow: 5px 2px 5px 2px rgba(0, 0, 0, 0.2);
     }
   }
   &.anchor-drawer-top {

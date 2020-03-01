@@ -8,6 +8,7 @@ const resendInvitationUserJoinGroup = state => state.groupUser.resendInvitationU
 const acceptRequirementJoinGroup = state => state.groupUser.acceptRequirementJoinGroup;
 const rejectRequirementJoinGroup = state => state.groupUser.rejectRequirementJoinGroup;
 const getRequirementJoinGroup = state => state.groupUser.getRequirementJoinGroup;
+const getListInvitationSent = state => state.groupUser.getListInvitationSent;
 
 export const bgColorSelector = createSelector(
   [colors],
@@ -32,6 +33,18 @@ export const requireUsersSelector = createSelector(
     const { data: { requirements }, loading, error } = getRequirementJoinGroup;
     return ({
       users: requirements,
+      loading,
+      error,
+    });
+  }
+);
+
+export const invitationSentsSelector = createSelector(
+  [getListInvitationSent],
+  (getListInvitationSent) => {
+    const { data: { invitations }, loading, error } = getListInvitationSent;
+    return ({
+      invitations,
       loading,
       error,
     });

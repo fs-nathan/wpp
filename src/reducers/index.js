@@ -39,8 +39,10 @@ import searchUser, { initialState as searchUserInitialState } from './groupUser/
 import inviteUserJoinGroup, { initialState as inviteUserJoinGroupInitialState } from './groupUser/inviteUserJoinGroup';
 import resendInvitationUserJoinGroup, { initialState as resendInvitationUserJoinGroupInitialState } from './groupUser/resendInvitationUserJoinGroup';
 import getRequirementJoinGroup, { initialState as getRequirementJoinGroupInitialState } from './groupUser/getRequirementJoinGroup';
+import getListInvitationSent, { initialState as getListInvitationSentInitialState } from './groupUser/getListInvitationSent';
 import acceptRequirementJoinGroup, { initialState as acceptRequirementJoinGroupInitialState } from './groupUser/acceptRequirementJoinGroup';
 import rejectRequirementJoinGroup, { initialState as rejectRequirementJoinGroupInitialState } from './groupUser/rejectRequirementJoinGroup';
+import cancleInvitationJoinGroup, { initialState as cancleInvitationJoinGroupInitialState } from './groupUser/cancleInvitationJoinGroup';
 import getListGroup, { initialState as getListGroupInitialState } from './groupUser/getListGroup';
 import createIcon, { initialState as createIconInitialState } from './icon/createIcon';
 import deleteIcon, { initialState as deleteIconInitialState } from './icon/deleteIcon';
@@ -224,8 +226,10 @@ const rootReducer = combineReducers({
     inviteUserJoinGroup,
     resendInvitationUserJoinGroup,
     getRequirementJoinGroup,
+    getListInvitationSent,
     acceptRequirementJoinGroup,
     rejectRequirementJoinGroup,
+    cancleInvitationJoinGroup,
     getListGroup,
   }),
   register: combineReducers({
@@ -341,6 +345,8 @@ export const DEFAULT_STATE = {
     inviteUserJoinGroup: inviteUserJoinGroupInitialState,
     resendInvitationUserJoinGroup: resendInvitationUserJoinGroupInitialState,
     getRequirementJoinGroup: getRequirementJoinGroupInitialState,
+    getListInvitationSent: getListInvitationSentInitialState,
+    cancleInvitationJoinGroup: cancleInvitationJoinGroupInitialState,
     acceptRequirementJoinGroup: acceptRequirementJoinGroupInitialState,
     rejectRequirementJoinGroup: rejectRequirementJoinGroupInitialState,
     getListGroup: getListGroupInitialState,
