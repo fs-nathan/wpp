@@ -469,6 +469,10 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.STATIC_TASK_REQUEST, taskDetailSaga.getStaticTask);
   //updateComplete
   yield takeLeading(taskDetailType.UPDATE_COMPLETE_REQUEST,taskDetailSaga.updateComplete);
+  // pin
+  yield takeLeading(taskDetailType.PIN_TASK_REQUEST,taskDetailSaga.pinTask);
+  yield takeLeading(taskDetailType.UN_PIN_TASK_REQUEST,taskDetailSaga.unPinTask);
+
 };
 
 export default rootSaga;

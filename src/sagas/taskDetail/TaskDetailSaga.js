@@ -1256,6 +1256,25 @@ function* deleteTask(action) {
   }
 }
 
+export function* pinTask({payload}) {
+  try {
+    const {task_id} = payload;
+    const res = yield call(apiService.post,'/task/ghim-task', {task_id})
+    yield put(actions.pinTaskSuccess(res.data))
+  } catch (error) {
+    yield put(actions.pinTaskFail(error))
+  }
+}
+
+export function* unPinTask({payload}) {
+  try {
+    const {task_id} = payload;
+    const res = yield call(apiService.post,'/task/cancel-ghim-task', {task_id})
+    yield put(actions.unPinTaskSuccess(res.data))
+  } catch (error) {
+    yield put(actions.unPinTaskFail(error))
+  }
+}
 
 export {
   //updateComplete

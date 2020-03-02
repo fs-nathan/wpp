@@ -868,3 +868,31 @@ export const deleteTaskFail = error => ({
     type: types.DELETE_TASK_FAIL,
     error: error
 })
+
+// Pin TASK
+export const pinTaskAction = payload => ({
+    type: types.PIN_TASK_REQUEST,
+    payload
+})
+export const pinTaskSuccess = payload => ({
+    type: types.PIN_TASK_SUCCESS,
+    payload
+})
+export const pinTaskFail = error => ({
+    type: types.PIN_TASK_FAIL,
+    error: error
+})
+
+// UnPin TASK
+export const unPinTaskAction = payload => ({
+    type: types.UN_PIN_TASK_REQUEST,
+    payload
+})
+export const unPinTaskSuccess = payload => ({
+    type: types.UN_PIN_TASK_SUCCESS,
+    payload
+})
+export const unPinTaskFail = error => ({
+    type: types.UN_PIN_TASK_FAIL,
+    error: error
+})

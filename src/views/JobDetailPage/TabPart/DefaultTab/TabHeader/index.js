@@ -9,6 +9,10 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
 import { WrapperContext } from '../../../index';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { selectedTaskSelector } from '../../../selectors';
+import { pinTaskAction, unPinTaskAction } from '../../../../../actions/taskDetail/taskDetailActions';
 // const Container = styled.div`
 //   padding: 0 20px;
 //   display: flex;
@@ -53,6 +57,9 @@ const StyledIconButton = styled(IconButton)`
 //   return convert_day.split('-').reverse().join('-');
 // }
 function TabHeader(props) {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isPinned = useSelector(selectedTaskSelector);
   // const [isRight, setIsRight] = React.useState(true);
   //
   // const [open, setOpen] = React.useState(false);
@@ -103,6 +110,15 @@ function TabHeader(props) {
   const confirmDelete = () => {
     props.deleteTask(value.taskId);
   };
+
+  function onClickPin() {
+    setAnchorEl(null);
+    if (isPinned) {
+      dispatch(unPinTaskAction({ task_id: value.taskId }));
+    } else {
+      dispatch(pinTaskAction({ task_id: value.taskId }));
+    }
+  }
   // console.log("task id::::", value.taskId)
   return (
     <div className="container-dt-tabheader">
@@ -149,11 +165,9 @@ function TabHeader(props) {
           Chỉnh sửa
         </MenuItem>
         <MenuItem
-          onClick={() => {
-            setAnchorEl(null);
-          }}
+          onClick={onClickPin}
         >
-          Ghim công việc
+          {isPinned ? 'Bỏ ghim' : 'Ghim công việc'}
         </MenuItem>
         {pause ? (
           <MenuItem
@@ -166,16 +180,16 @@ function TabHeader(props) {
             Tạm dừng
           </MenuItem>
         ) : (
-          <MenuItem
-            onClick={() => {
-              props.onClickPause();
-              handleClickPause();
-              setAnchorEl(null);
-            }}
-          >
-            Hủy tạm dừng
+            <MenuItem
+              onClick={() => {
+                props.onClickPause();
+                handleClickPause();
+                setAnchorEl(null);
+              }}
+            >
+              Hủy tạm dừng
           </MenuItem>
-        )}
+          )}
 
         <MenuItem
           onClick={() => {
