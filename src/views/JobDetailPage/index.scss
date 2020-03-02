@@ -337,7 +337,7 @@
   border: none;
   cursor: pointer;
   margin-bottom: 0;
-  &:hover {
+  &:hover, &__selected {
     background-color: #f2f5fa;
   }
   &:active {

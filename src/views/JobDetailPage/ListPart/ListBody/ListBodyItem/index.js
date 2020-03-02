@@ -1,6 +1,7 @@
 import React from 'react';
 import { ListItemAvatar, ListItemText, Avatar } from '@material-ui/core';
 import styled from 'styled-components';
+import clsx from 'classnames';
 import Icon from '@mdi/react';
 import { mdiPin } from '@mdi/js';
 import SimpleDonutChart from '../../../../../components/SimpleDonutChart';
@@ -101,18 +102,25 @@ function JobUnit(props) {
 }
 
 function ListBodyItem(props) {
-  const value = React.useContext(WrapperContext);
+  const { history, chooseTask, getTaskDetailByTaskId } = React.useContext(
+    WrapperContext
+  );
   // console.log({value})
+
+  function onClickItem() {
+    chooseTask(props.id);
+    getTaskDetailByTaskId(props.id);
+    // getMemberByTaskId(props.id)
+    // getMemberNotAssignedByTaskId(props.id)
+    history.push({ search: `?task_id=${props.id}` });
+  }
+
   return (
     <div
-      className="container-lbd"
-      onClick={() => {
-        value.chooseTask(props.id);
-        value.getTaskDetailByTaskId(props.id);
-        // value.getMemberByTaskId(props.id)
-        // value.getMemberNotAssignedByTaskId(props.id)
-        value.history.push({ search: `?task_id=${props.id}` });
-      }}
+      className={clsx("container-lbd", {
+        "container-lbd__selected": props.isSelected
+      })}
+      onClick={onClickItem}
     >
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />

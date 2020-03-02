@@ -7,9 +7,9 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { WrapperContext } from '../../index'
 const StyledList = styled(List)`
 
-    & > li {
-      &:not(:last-child) {
-        margin-bottom: 10px;
+  & > li {
+    &:not(:last-child) {
+      margin-bottom: 10px;
     }
   }
   &:last-child {
@@ -25,31 +25,35 @@ const Body = styled(Scrollbars)`
 `;
 
 function ListBody() {
-  const value = React.useContext(WrapperContext)
-  let data = []
-
-  let listTaskDetail = value.listTaskDetail
+  const { taskId, listTaskDetail } = React.useContext(WrapperContext);
+  let data = [];
+  // fix use effect
   if (listTaskDetail) {
     data = listTaskDetail.tasks;
-    console.log({data})
+    console.log({ data });
   }
 
-   
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200} >
-        {data.map((item, key) => {
-          return (
-            <StyledList key={key} >
-              <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
-              {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
-            </StyledList>
-          )
-        })}
-     
-
+    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+      {data.map((item, key) => {
+        return (
+          <StyledList key={key}>
+            <ListBodySubHeader
+              subPrimary={item.name}
+              subSecondary={"(" + item.tasks.length + " việc)"}
+            />
+            {item.tasks.map((detail, idx) => (
+              <ListBodyItem
+                key={idx}
+                {...detail}
+                isSelected={taskId === detail.id}
+              />
+            ))}
+          </StyledList>
+        );
+      })}
     </Body>
-
-  )
+  );
 }
 
 export default ListBody;
