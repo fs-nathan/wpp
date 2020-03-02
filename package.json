@@ -52,9 +52,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "serve-firebase": "react-scripts build && firebase serve",
     "deploy-firebase": "react-scripts build && firebase deploy",
+    "surge": "yarn build && surge build v-task.surge.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
