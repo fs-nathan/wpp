@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import sum from 'lodash/sum';
+
 import ColorChip from '../../../../components/ColorChip';
 import { WrapperContext } from '../../index';
 
@@ -12,29 +14,24 @@ const ListBanner = props => {
     value.filterTaskByType(typeIdx);
     setSelected(typeIdx);
   };
-  // console.log({value})
+  // console.log('listTaskDetail', value)
 
   let data = [];
   if (value && value.projectDetail && value.projectDetail) {
     data = value.projectDetail;
   }
-  let task_of_me = 0;
-  if (value.listTaskDetail && value.listTaskDetail.tasks.length > 0) {
-    value.listTaskDetail.tasks.forEach((e, i) => {
-      task_of_me += e.tasks.length;
-    });
-  }
 
   const taskStatic = {
-    task_me: task_of_me,
     task_waiting: data.task_waiting,
     task_doing: data.task_doing,
     task_complete: data.task_complete,
     task_expired: data.task_expired,
     task_stop: data.task_stop
   };
+  const allTask = sum(Object.values(taskStatic));
+  
   const jobTypes = [
-    'Tất cả (' + (taskStatic.task_me ? taskStatic.task_me : 0) + ')',
+    'Tất cả (' + allTask + ')',
     'Đang chờ (' +
       (taskStatic.task_waiting ? taskStatic.task_waiting : 0) +
       ')', // Waiting
