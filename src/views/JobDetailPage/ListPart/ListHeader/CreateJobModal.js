@@ -26,6 +26,7 @@ import colorPal from '../../../../helpers/colorPalette';
 import AddMemberModal from './AddMemberModal';
 // import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect';
+import CustomSelect from '../../../../components/CustomSelect';
 // import { Scrollbars } from 'react-custom-scrollbars'
 import {
   DEFAULT_DATE_TEXT,
@@ -87,7 +88,9 @@ const TitleText = styled(Typography)`
 const BeginEndTime = styled(Typography)`
   width: 120px;
   margin-right: 20px;
+  margin-left: 20px;
 `;
+
 const TypoText = styled(Typography)`
   font-size: 15px;
   color: #505050;
@@ -418,7 +421,7 @@ function CreateJobModal(props) {
   const createJobByProjectId = data => dispatch(taskDetailAction.createTask(data));
 
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
-  const [openAddModal, setOpenAddModal] = React.useState(false);
+  // const [openAddModal, setOpenAddModal] = React.useState(false);
   const [listGroupTask, setListGroupTask] = React.useState([]);
   const [groupTaskValue, setGroupTaskValue] = React.useState(null);
   const [type, setType] = useState('Ngày và giờ (mặc định)');
@@ -533,10 +536,10 @@ function CreateJobModal(props) {
         <ContentDialog dividers>
           <TypoText component={'div'}> Chọn nhóm công việc </TypoText>
           <Typography component={'div'} style={{ marginBottom: '20px' }}>
-            <TextInputSelect
-              commandSelect={listGroupTask}
-              selectedIndex={groupTaskValue}
-              setOptions={typeId => handleChangeData('group_task', typeId)}
+            <CustomSelect
+              options={listGroupTask}
+              value={groupTaskValue}
+              onChange={({ value: groupTaskId }) => handleChangeData('group_task', groupTaskId)}
             />
           </Typography>
           <Typography component={'div'} style={{ marginBottom: 10 }}>
@@ -579,11 +582,11 @@ function CreateJobModal(props) {
             {type === 'Chỉ nhập ngày' ? (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <InputDate
+                  size="small"
                   disableToolbar
                   variant="inline"
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  label="Ngày"
                   value={data.start_date}
                   onChange={e => handleChangeData('start_date', convertDate(e))}
                 />
@@ -591,8 +594,8 @@ function CreateJobModal(props) {
             ) : (
                 <DivTime>
                   <InputTime
+                    size="small"
                     type={'time'}
-                    label="Thời gian"
                     variant="outlined"
                     value={data.start_time}
                     onChange={e => handleChangeData('start_time', e.target.value)}
@@ -602,11 +605,11 @@ function CreateJobModal(props) {
             {type !== 'Chỉ nhập ngày' && (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <InputDate
+                  size="small"
                   disableToolbar
                   variant="inline"
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  label="Ngày"
                   value={data.start_date}
                   onChange={e => handleChangeData('start_date', convertDate(e))}
                 />
@@ -618,11 +621,11 @@ function CreateJobModal(props) {
             {type === 'Chỉ nhập ngày' ? (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <InputDate
+                  size="small"
                   disableToolbar
                   variant="inline"
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  label="Ngày"
                   value={data.end_date}
                   // minDate={data.start_date}
                   onChange={e => handleChangeData('end_date', convertDate(e))}
@@ -631,8 +634,8 @@ function CreateJobModal(props) {
             ) : (
                 <DivTime>
                   <InputTime
+                    size="small"
                     type={'time'}
-                    label="Thời gian"
                     variant="outlined"
                     value={data.end_time}
                     onChange={e => handleChangeData('end_time', e.target.value)}
@@ -642,11 +645,11 @@ function CreateJobModal(props) {
             {type !== 'Chỉ nhập ngày' && (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <InputDate
+                  size="small"
                   disableToolbar
                   variant="inline"
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  label="Ngày"
                   value={data.end_date}
                   // minDate={data.start_date}
                   onChange={e => handleChangeData('end_date', convertDate(e))}
@@ -684,9 +687,7 @@ function CreateJobModal(props) {
                   Hủy
                 </Button>
                 <Button
-                  onClick={() => {
-                    updateData();
-                  }}
+                  onClick={updateData}
                   color="primary"
                 >
                   Hoàn Thành
@@ -695,7 +696,7 @@ function CreateJobModal(props) {
             </>
           ) : (
               <>
-                <ButtonImage
+                {/* <ButtonImage
                   onClick={() => {
                     // handleClose()
                     setOpenAddModal(true);
@@ -707,8 +708,9 @@ function CreateJobModal(props) {
                     size={1}
                     color={'#878a88'}
                   />{' '}
-                  &nbsp;&nbsp;<span>(0 thành viên)</span>
-                </ButtonImage>
+                  &nbsp;<span>(0 thành viên)</span>
+                </ButtonImage> */}
+                &nbsp;
                 <Button autoFocus onClick={handlePressConfirm} color="primary">
                   TẠO VIỆC
               </Button>
@@ -716,7 +718,7 @@ function CreateJobModal(props) {
             )}
         </DialogFooter>
       </StyleDialog>
-      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
+      {/* <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} /> */}
     </div>
   );
 }
