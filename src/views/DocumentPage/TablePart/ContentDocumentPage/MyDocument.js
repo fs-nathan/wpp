@@ -240,7 +240,7 @@ const MyDocument = props => {
     return (
       <div className="no-file-container">
         <div>
-          <img src={icons.ic_no_file} />
+          <img src={icons.ic_no_file} alt="" />
           <p className="text-des">{t('IDS_WP_NO_FILE_TITLE')}</p>
           <p className="text-des">{t('IDS_WP_NO_FILE_DES')}</p>
         </div>
