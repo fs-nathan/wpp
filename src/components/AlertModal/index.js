@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AlertModal({ 
   open, setOpen, 
-  content, onConfirm = () => null, onCancle = () => null, 
+  content = '', onConfirm = () => null, onCancle = () => null, 
   colors 
 }) {
 

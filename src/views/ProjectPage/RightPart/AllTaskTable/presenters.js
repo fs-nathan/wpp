@@ -1,7 +1,7 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get, join, flattenDeep } from 'lodash';
 import { useHistory } from 'react-router-dom';
-import { TimeRangePopover, times } from '../../../../components/CustomPopover';
+import { TimeRangePopover, times, DownloadPopover } from '../../../../components/CustomPopover';
 import Icon from '@mdi/react';
 import {
   IconButton,
@@ -109,6 +109,7 @@ function AllTaskTable({
   const history = useHistory();
 
   const [timeAnchor, setTimeAnchor] = React.useState(null);
+  const [downloadAnchor, setDownloadAnchor] = React.useState(null);
 
   const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
   const [currentSettingTask, setCurrentSettingTask] = React.useState(null);
@@ -141,7 +142,7 @@ function AllTaskTable({
               }, {
                 label: 'Tải xuống',
                 iconPath: mdiDownload,
-                onClick: (evt) => null,
+                onClick: (evt) => setDownloadAnchor(evt.currentTarget)
               }, {
                 label: times[timeType].title,
                 iconPath: mdiCalendar,
@@ -270,6 +271,34 @@ function AllTaskTable({
               width: '2%',
             }]}
             data={tasks.tasks}
+          />
+          <DownloadPopover 
+            anchorEl={downloadAnchor}
+            setAnchorEl={setDownloadAnchor}
+            fileName='tasks'
+            data={flattenDeep(
+              tasks.tasks.map(groupTask => 
+                get(groupTask, 'tasks', [])
+                  .map(task => ({
+                    id: get(task, 'id', ''),
+                    groupTask: get(groupTask, 'name', ''),
+                    name: get(task, 'name', ''),
+                    status: get(task, 'status_name', ''),
+                    duration: get(task, 'duration_value', 0) + ' ' + get(task, 'duration_unit', ''),
+                    start_time: get(task, 'start_time', ''),
+                    start_date: get(task, 'start_date', ''),
+                    end_time: get(task, 'end_time', ''),
+                    end_date: get(task, 'end_date', ''),
+                    progress: get(task, 'complete', 0) + '%',
+                    priority: get(task, 'priority_name', ''),
+                    members: join(
+                      get(task, 'members', [])
+                        .map(member => get(member, 'name')),
+                      ','
+                    )
+                  }))
+              )
+            )}
           />
           <TimeRangePopover 
             bgColor={bgColor}

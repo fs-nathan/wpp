@@ -1,16 +1,11 @@
 import React from 'react';
-import { get, remove, slice } from 'lodash';
-import { TimeRangePopover, times } from '../../../../components/CustomPopover';
+import { get, remove, slice, join } from 'lodash';
+import { TimeRangePopover, times, DownloadPopover } from '../../../../components/CustomPopover';
 import { useHistory } from 'react-router-dom';
 import {
   IconButton,
   Menu,
   MenuItem,
-  Popover,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
@@ -40,12 +35,6 @@ const CustomMenuItem = ({ className = '', selected, refs, ...props }) =>
       ? 'view_ProjectGroup_Table_All___menu-item-selected'
       : 'view_ProjectGroup_Table_All___menu-item'
     } ${className}`}
-    {...props}
-  />;
-
-const StyledListSubheader = ({ className = '', ...props }) => 
-  <ListSubheader 
-    className={`view_ProjectGroup_Table_All___list-subheader ${className}`}
     {...props}
   />;
 
@@ -406,28 +395,34 @@ function AllProjectTable({
               </CustomMenuItem>
             ))}
           </Menu>
-          <Popover
-            id="download-menu"
+          <DownloadPopover 
             anchorEl={downloadAnchor}
-            open={Boolean(downloadAnchor)}
-            onClose={evt => setDownloadAnchor(null)}
-            transformOrigin={{
-              vertical: -30,
-              horizontal: 'right'
-            }}
-          >
-            <List
-              subheader={
-                <StyledListSubheader component="div">
-                  Tải xuống File
-                </StyledListSubheader>
-              }
-            >
-              <ListItem button onClick={evt => setDownloadAnchor(null)}>
-                <ListItemText primary={'Xuất ra file Excel .xls'} />
-              </ListItem>
-            </List>
-          </Popover>
+            setAnchorEl={setDownloadAnchor}
+            fileName='projects'
+            data={projects.projects.map(project => ({
+              id: get(project, 'id', ''),
+              icon: get(project, 'icon', ''),
+              name: get(project, 'name', ''),
+              status: get(project, 'visibility', true) === false
+                ? 'Hidden'
+                : get(project, 'state_name', ''),
+              task_count: get(project, 'statistic.waiting', 0)
+                + get(project, 'statistic.doing', 0)
+                + get(project, 'statistic.expired', 0)
+                + get(project, 'statistic.complete', 0)
+                + get(project, 'statistic.stop', 0),
+              progress: `${get(project, 'complete', 0)}%`,
+              duration: get(project, 'duration') 
+                ? `${get(project, 'duration')} ngày (${get(project, 'date_start')} - ${get(project, 'date_end')})`
+                : '',
+              priority: get(project, 'priority_name', ''),
+              members: join(
+                get(project, 'members', [])
+                  .map(member => get(member, 'name')),
+                ','
+              )
+            }))}
+          />
           <TimeRangePopover 
             bgColor={bgColor}
             anchorEl={timeAnchor}

@@ -9,7 +9,7 @@ import { StyledList, StyledListItem, Primary, Secondary } from '../../../../comp
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { ListItemAvatar, ListItemText, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
-import { get, find, isNil } from 'lodash';
+import { get, find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';

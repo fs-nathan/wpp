@@ -19,6 +19,8 @@ import {
   mdiClose,
 } from '@mdi/js';
 import Icon from '@mdi/react';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 import './style.scss';
 
 const StyledListSubheader = ({ className = '', ...props }) => 
@@ -268,6 +270,51 @@ export const TimeRangePopover = ({
           </Content>
         </MainBar>
       </TimeBox>
+    </Popover>
+  );
+}
+
+export const DownloadPopover = ({
+  anchorEl = null, setAnchorEl = () => null,
+  data = [], fileName = 'data',
+}) => {
+
+  const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  const fileExtension = '.xlsx';
+
+  const exportToCSV = (csvData, fileName) => {
+    const ws = XLSX.utils.json_to_sheet(csvData);
+    const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], {type: fileType});
+    FileSaver.saveAs(data, fileName + fileExtension);
+  }
+
+  return (
+    <Popover
+      id="download-menu"
+      anchorEl={anchorEl}
+      open={Boolean(anchorEl)}
+      onClose={evt => setAnchorEl(null)}
+      transformOrigin={{
+        vertical: -30,
+        horizontal: 'right'
+      }}
+    >
+      <List
+        subheader={
+          <StyledListSubheader component="div">
+            Tải xuống File
+          </StyledListSubheader>
+        }
+      >
+        <ListItem button onClick={evt => {
+          exportToCSV(data, fileName);
+          setAnchorEl(null);
+        }}>
+          <ListItemText primary={'Xuất ra file Excel'} />
+        </ListItem>
+      </List>
     </Popover>
   );
 }
