@@ -96,10 +96,10 @@ const NotificationItemCommon = props => {
         console.log('Load url google driver at another tab');
         break;
       case 17:
-        console.log('Show popup get-list-requirement');
+        console.log('Show popup add new member');
         props.actionVisibleDrawerMessage({
-          type: DRAWER_TYPE.JOIN_NEW_GROUP,
-          anchor: 'top'
+          type: DRAWER_TYPE.ADD_USER,
+          anchor: 'left'
         });
         break;
       case 5:
@@ -112,6 +112,10 @@ const NotificationItemCommon = props => {
       case 19:
       case 20:
         return;
+      case 21:
+        console.log('refresh page');
+        window.location.reload(false);
+        break;
       default:
         return;
     }

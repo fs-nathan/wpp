@@ -446,7 +446,7 @@
   "IDS_WP_EXPIRE_ORDER_NOTICE": "Thông báo đơn hàng hết hạn!",
   "IDS_WP_WELCOME": "Xin chào",
   "IDS_WP_LOGIN_SUCCESS_INTRO": "Chào mừng bạn đến với hệ thống quản trị doanh nghiệp trực tuyến",
-  "IDS_WP_LOGIN_SUCCESS_INTRO_1": "Nhóm tài khoản này chưa NÂNG CẤP hoặc đã HẾT HẠN.",
+  "IDS_WP_LOGIN_SUCCESS_INTRO_1": "Nhóm tài khoản này chưa NÂNG CẤP hoặc đã HẾT HẠN!",
   "IDS_WP_SELECT_GROUP_ACC": "Chọn nhóm tài khoản",
   "IDS_WP_UPGRADE_ACC": "Nâng cấp tài khoản",
   "IDS_WP_JOIN_OTHER_GROUP": "Tham gia nhóm khác",
@@ -519,5 +519,12 @@
   "IDS_WP_SELECT_COLOR": "Chọn màu sắc menu trái",
   "IDS_WP_TM_CK": "TM/CK",
   "IDS_WP_FILTER_RESULT": "KẾT QUẢ LỌC ĐƯỢC",
-  "IDS_WP_EXPIRED": "Hết hạn!"
+  "IDS_WP_EXPIRED": "Hết hạn!",
+  "IDS_WP_CHANGE_LOGO_SUCCESS": "Đổi ảnh logo thành công!",
+  "IDS_WP_CHANGE_COVER_SUCCESS": "Đổi ảnh cover thành công!",
+  "IDS_WP_FEMALE": "Nam",
+  "IDS_WP_MALE": "Nữ",
+  "IDS_WP_OUT_GROUP": "Đã rời nhóm",
+  "IDS_WP_NO_FILE_TITLE": "Quản lý và lưu trữ tất cả tài liệu của bạn một cách an toàn trên đám mây W+ Cloud",
+  "IDS_WP_NO_FILE_DES": "Kéo thả tài liệu vào đây hoặc click + THÊM MỚI để tải tài liệu lên"
 }

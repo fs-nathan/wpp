@@ -36,7 +36,7 @@ class ExportPDF extends Component {
       dataNumberOldOder,
       t
     } = this.props;
-
+    // console.log('dataNumberOldOder', dataNumberOldOder);
     let pricePacketUser = 50000; //a
     if (!isEmpty(dataBeforOder)) {
       dataBeforOder.price_user_packet.forEach(element => {

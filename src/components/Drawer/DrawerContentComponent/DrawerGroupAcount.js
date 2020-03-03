@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Icon from '@mdi/react';
-import { mdiClose, mdiPlus } from '@mdi/js';
+import { mdiClose, mdiPlus, mdiContentCopy } from '@mdi/js';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -55,6 +55,10 @@ const DrawerGroupAcount = props => {
     } catch (error) {
       handleToast('error', error.message);
     }
+  };
+  const handleCopyText = text => {
+    window.navigator.clipboard.writeText(text);
+    handleToast('success', `Đã copy ${text}`);
   };
   const bgColor = props.colors.find(item => item.selected === true);
   return (
@@ -129,7 +133,11 @@ const DrawerGroupAcount = props => {
                     handleFetchData={handleFetchData}
                   />
                 ))}
-                {/* <ItemGroupAcount item={groupList.group_me} type="invitations" /> */}
+                {/* <ItemGroupAcount
+                  item={groupList.group_me}
+                  type="invitations"
+                  handleFetchData={handleFetchData}
+                /> */}
               </div>
             )}
 
@@ -159,6 +167,22 @@ const DrawerGroupAcount = props => {
                     >
                       {t('IDS_WP_JOIN')}
                     </Button>
+                  </div>
+                  <div className="acc-item-group-account">
+                    <p className="text-value-email-phone">
+                      ID: {groupList.group_demo.code}&nbsp;
+                      <Icon
+                        path={mdiContentCopy}
+                        size={0.6}
+                        color="#a5a5a5"
+                        className="cursor-pointer"
+                        title={t('IDS_WP_COPY_TEXT_CLIPBOARD')}
+                        onClick={e => {
+                          handleCopyText(groupList.group_demo.code);
+                          e.stopPropagation();
+                        }}
+                      />
+                    </p>
                   </div>
                 </div>
               </div>

@@ -363,7 +363,12 @@ const ShareDocumentModal = props => {
                         {item.is_owner ? (
                           <span className="red-color">{t('IDS_WP_OWNER')}</span>
                         ) : (
-                          <span>{item.date_share}</span>
+                          <div className="info-left-item">
+                            <div className="name-member">{item.date_share}</div>
+                            <span className="red-color">
+                              {!item.is_in_group && t('IDS_WP_OUT_GROUP')}
+                            </span>
+                          </div>
                         )}
                       </div>
                       <div className="right-item">

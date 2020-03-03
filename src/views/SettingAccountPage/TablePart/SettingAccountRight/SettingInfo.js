@@ -7,6 +7,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Icon from '@mdi/react';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 import {
@@ -95,8 +96,8 @@ class SettingInfo extends Component {
           job: this.state.data.job,
           order_user_id: this.state.data.order_user_id,
           order_storage_id: this.state.data.order_storage_id,
-          type: this.state.data.type,
-          gender_name: this.state.data.gender_name
+          type: this.state.data.type
+          // gender_name: this.state.data.gender_name
         };
         // formData.append('name', this.state.data.name);
         // formData.append('email', this.state.data.email);
@@ -275,17 +276,30 @@ class SettingInfo extends Component {
               </div>
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-3">
+              <div className="title-item-info col-sm-9 gender-title">
                 {t('IDS_WP_GENDER')}
               </div>
-              <InputBase
-                className="value-item-info col-sm-9"
-                value={data.gender_name}
-                disabled={mode !== 'edit'}
-                onChange={e =>
-                  this.handleChangeData('gender_name', e.target.value)
-                }
-              />
+              {mode !== 'edit' ? (
+                <InputBase
+                  className="value-item-info col-sm-3 gender-content"
+                  value={
+                    data.gender === 1 ? t('IDS_WP_FEMALE') : t('IDS_WP_MALE')
+                  }
+                  disabled={true}
+                />
+              ) : (
+                <Select
+                  native
+                  className="value-item-info col-sm-3 gender-content"
+                  value={data.gender}
+                  onChange={e =>
+                    this.handleChangeData('gender', e.target.value)
+                  }
+                >
+                  <option value={1}>{t('IDS_WP_FEMALE')}</option>
+                  <option value={0}>{t('IDS_WP_MALE')}</option>
+                </Select>
+              )}
             </div>
             <div className="item-info row">
               <div className="title-item-info col-sm-3">

@@ -31,14 +31,18 @@ const TopBar = props => {
   const [marginLeftModal, setMarginLeftModal] = useState(280);
   const [marginTopModal, setMarginTopModal] = useState(10);
 
-  const handleFetchProfile = async () => {
+  const handleFetchProfile = async isNotice => {
     try {
       const { data } = await getProfileService();
       if (data.data) {
         props.actionGetProfile(data.data);
         i18n.changeLanguage((data.data && data.data.language) || 'vi');
         props.actionActiveGroup(data.data.group_active);
-        if (data.data.group_active && data.data.group_active.type === 'Free') {
+        if (
+          data.data.group_active &&
+          data.data.group_active.type === 'Free' &&
+          !isNotice
+        ) {
           props.openNoticeModal();
         }
       }
@@ -83,6 +87,7 @@ const TopBar = props => {
         type: DRAWER_TYPE.GROUP_ACCOUNT,
         anchor: 'top'
       });
+      handleFetchProfile(true);
     } else {
       props.actionVisibleDrawerMessage({
         type: '',
