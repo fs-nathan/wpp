@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+// import { withRouter } from 'react-router-dom';
 import sum from 'lodash/sum';
 
 import ColorChip from '../../../../components/ColorChip';
@@ -9,11 +9,11 @@ import { filterTaskByType } from '../../../../actions/taskDetail/taskDetailActio
 const ListBanner = props => {
   const dispatch = useDispatch();
   const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
-
+  const colors = useSelector(state => state.setting.colors);
   const [selected, setSelected] = React.useState(0);
   // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
   const handleChangeFilterType = typeIdx => {
-    dispatch(filterTaskByType(typeIdx))
+    dispatch(filterTaskByType(typeIdx));
     setSelected(typeIdx);
   };
   // console.log('listTaskDetail', value)
@@ -44,7 +44,7 @@ const ListBanner = props => {
     'Quá hạn (' + (taskStatic.task_expired ? taskStatic.task_expired : 0) + ')', // Expired
     'Tạm dừng (' + (taskStatic.task_stop ? taskStatic.task_stop : 0) + ')' // Stop
   ];
-  const bgColor = props.colors.find(item => item.selected === true);
+  const bgColor = colors.find(item => item.selected === true);
   return (
     <div className="container-list-banner">
       {jobTypes.map((jobType, index) => (
@@ -61,9 +61,4 @@ const ListBanner = props => {
   );
 };
 
-export default connect(
-  state => ({
-    colors: state.setting.colors
-  }),
-  {}
-)(withRouter(ListBanner));
+export default ListBanner;
