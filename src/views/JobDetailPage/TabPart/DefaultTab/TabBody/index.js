@@ -20,6 +20,9 @@ import { isLongerContent, getCollapseText } from '../../../../../helpers/jobDeta
 import Tooltip from '@material-ui/core/Tooltip';
 import { WrapperContext } from '../../../index'
 import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper'
+import { useSelector, useDispatch } from 'react-redux';
+import { updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
+import { taskIdSelector } from '../../../selectors';
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
   & > * > *:first-child {
@@ -339,25 +342,28 @@ const ButtonDropdown = styled(DropdownButton)`
 `
 
 function TabBody(props) {
-  const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
+  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
+  const taskId = useSelector(taskIdSelector);
+
   // console.log("Props::::", value.detailTask)
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
   let content = ""
   let data = ""
   // let dataComplete = ""
-  if (value && value.detailTask) {
-    content = value.detailTask.description || ""
-    data = value.detailTask
+  if (detailTask) {
+    content = detailTask.description || ""
+    data = detailTask
     // dataComplete = value.listTaskDetail.tasks
   }
   React.useEffect(() => {
-    if (!value.detailTask) return
+    if (!detailTask) return
     const {
       total_subtask_complete, total_subtask, total_location,
       total_remind, total_file, total_img, total_link, priority_code,
       total_offer, total_offer_approved, total_command, members,
       duration_value, duration_unit
-    } = value.detailTask
+    } = detailTask
     setTaskStatistic({
       progressCnt: duration_value + " " + duration_unit,
       subTaskCnt: total_subtask_complete + '/' + total_subtask + ' hoàn thành',
@@ -369,10 +375,13 @@ function TabBody(props) {
       members,
       priority_code
     })
-  }, [value.detailTask])
+  }, [detailTask])
   // console.log("data detail task:::::", value.detailTask)
   // console.log("data List TASK:::::", value.listTaskDetail.tasks)
 
+  function onChangeItem(idx) {
+    dispatch(updatePriority({ task_id: taskId, priority: idx }))
+  }
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -383,7 +392,7 @@ function TabBody(props) {
               Tên công việc
            </ColorTypo>
             <ContentText component='span'>
-              {value.detailTask && <span>{value.detailTask.name}</span>}
+              {detailTask && <span>{detailTask.name}</span>}
               {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
             </ContentText>
           </ListItemText>
@@ -409,19 +418,19 @@ function TabBody(props) {
             </HtmlTooltip>
             :
             <>
-            <ButtonDropdown
-              size='small' selectedIndex={0}
-              values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
-              handleChangeItem={() => { }}
-              show={isExpiredDate(data.end_date)}
-            />
-            <ButtonDropdown
-              size='small'
-              values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
-              selectedIndex={taskStatistic.priority_code}
-              handleChangeItem={idx => value.updateTaskPriority(value.taskId, idx)}
-              show={isExpiredDate(data.end_date)}
-            />
+              <ButtonDropdown
+                size='small' selectedIndex={0}
+                values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
+                handleChangeItem={() => { }}
+                show={isExpiredDate(data.end_date)}
+              />
+              <ButtonDropdown
+                size='small'
+                values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
+                selectedIndex={taskStatistic.priority_code}
+                handleChangeItem={onChangeItem}
+                show={isExpiredDate(data.end_date)}
+              />
             </>
           }
 

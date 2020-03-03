@@ -34,27 +34,12 @@ const TexTitle = styled(Typography)`
   margin-left: 0;
 `
 
-// const TitleText = styled(Typography)`
-//   font-size: 15px;
-//   margin: 20px 0
-// `
-
-// const HelperText = styled(TextField)`
-//   & > *:last-child {
-//     font-size: 12px;
-//     margin: 8px 0 0;
-//     & > select {
-//       font-size: 14px;
-//     }
-//   }
-// `
 const Text = styled(TextField)`
   & > label {
       font-size: 14px;
       z-index: 0
   }
 `
-
 
 const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;

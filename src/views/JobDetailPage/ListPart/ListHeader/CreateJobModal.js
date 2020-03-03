@@ -27,7 +27,6 @@ import AddMemberModal from './AddMemberModal';
 // import TimeField from 'react-simple-timefield';
 import InputSelect from '../../TabPart/ProgressTab/OutlinedInputSelect';
 // import { Scrollbars } from 'react-custom-scrollbars'
-import { WrapperContext } from '../../index';
 import {
   DEFAULT_DATE_TEXT,
   DEFAULT_END_TIME_TEXT,
@@ -45,17 +44,9 @@ import {
   convertDate,
   convertDateToJSFormat
 } from '../../../../helpers/jobDetail/stringHelper';
-// const Header = styled.div`
-//   padding: 0 15px;
-//   height: 85px;
-//   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-//   & > * {
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-//     cursor: pointer;
-//   }
-// `;
+import { useSelector, useDispatch } from 'react-redux';
+import { taskIdSelector } from '../../selectors';
+import * as taskDetailAction from '../../../../actions/taskDetail/taskDetailActions';
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -419,7 +410,13 @@ const DEFAULT_DATA = {
 };
 
 function CreateJobModal(props) {
-  const value = React.useContext(WrapperContext);
+  const dispatch = useDispatch();
+  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
+  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const taskId = useSelector(taskIdSelector);
+  const updateNameDescriptionTask = data => dispatch(taskDetailAction.updateNameDescriptionTask(data));
+  const createJobByProjectId = data => dispatch(taskDetailAction.createTask(data));
+
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [listGroupTask, setListGroupTask] = React.useState([]);
@@ -428,25 +425,25 @@ function CreateJobModal(props) {
 
   const updateData = () => {
     const dataNameDescription = {
-      task_id: value.taskId,
+      task_id: taskId,
       name: data.name,
       description: data.description
     };
     const dataTimeDuration = {
-      task_id: value.taskId,
+      task_id: taskId,
       start_time: data.start_time,
       start_date: data.start_date,
       end_time: data.end_time,
       end_date: data.end_date
     };
-    value.updateNameDescriptionTask({ dataNameDescription, dataTimeDuration });
+    updateNameDescriptionTask({ dataNameDescription, dataTimeDuration });
     props.setOpen(false);
   };
 
   React.useEffect(() => {
-    if (value.listTaskDetail) {
+    if (listTaskDetail) {
       // Map task to input
-      let listTask = value.listTaskDetail.tasks.map(item => ({
+      let listTask = listTaskDetail.tasks.map(item => ({
         label:
           item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : 'Chưa phân loại',
         value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ''
@@ -454,12 +451,12 @@ function CreateJobModal(props) {
       setListGroupTask(listTask);
 
       // Set default group for input
-      let item = value.listTaskDetail.tasks.find(
+      let item = listTaskDetail.tasks.find(
         item => item.id === DEFAULT_GROUP_TASK_VALUE
       );
       if (item) setGroupTaskValue(DEFAULT_GROUP_TASK_VALUE);
     }
-  }, [value.listTaskDetail]);
+  }, [listTaskDetail]);
 
   React.useEffect(() => {
     if (props.data) {
@@ -493,7 +490,7 @@ function CreateJobModal(props) {
   };
 
   const dataCreateJob = {
-    project_id: value.projectId,
+    project_id: projectId,
     group_task: data.group_task,
     name: data.name,
     description: data.description,
@@ -513,7 +510,7 @@ function CreateJobModal(props) {
       let data = dataCreateJob;
       if (!dataCreateJob.group_task) delete data.group_task;
       // Call api
-      value.createJobByProjectId({ data, projectId: value.projectId });
+      createJobByProjectId({ data, projectId: projectId });
 
       // Clear temporary data
       setDataMember(DEFAULT_DATA);
@@ -531,8 +528,8 @@ function CreateJobModal(props) {
         {props.isRight ? (
           <TitleDialog onClose={handleClose}>Chỉnh sửa công việc</TitleDialog>
         ) : (
-          <TitleDialog onClose={handleClose}>Tạo công việc</TitleDialog>
-        )}
+            <TitleDialog onClose={handleClose}>Tạo công việc</TitleDialog>
+          )}
         <ContentDialog dividers>
           <TypoText component={'div'}> Chọn nhóm công việc </TypoText>
           <Typography component={'div'} style={{ marginBottom: '20px' }}>
@@ -592,16 +589,16 @@ function CreateJobModal(props) {
                 />
               </MuiPickersUtilsProvider>
             ) : (
-              <DivTime>
-                <InputTime
-                  type={'time'}
-                  label="Thời gian"
-                  variant="outlined"
-                  value={data.start_time}
-                  onChange={e => handleChangeData('start_time', e.target.value)}
-                />
-              </DivTime>
-            )}
+                <DivTime>
+                  <InputTime
+                    type={'time'}
+                    label="Thời gian"
+                    variant="outlined"
+                    value={data.start_time}
+                    onChange={e => handleChangeData('start_time', e.target.value)}
+                  />
+                </DivTime>
+              )}
             {type !== 'Chỉ nhập ngày' && (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <InputDate
@@ -632,16 +629,16 @@ function CreateJobModal(props) {
                 />
               </MuiPickersUtilsProvider>
             ) : (
-              <DivTime>
-                <InputTime
-                  type={'time'}
-                  label="Thời gian"
-                  variant="outlined"
-                  value={data.end_time}
-                  onChange={e => handleChangeData('end_time', e.target.value)}
-                />
-              </DivTime>
-            )}
+                <DivTime>
+                  <InputTime
+                    type={'time'}
+                    label="Thời gian"
+                    variant="outlined"
+                    value={data.end_time}
+                    onChange={e => handleChangeData('end_time', e.target.value)}
+                  />
+                </DivTime>
+              )}
             {type !== 'Chỉ nhập ngày' && (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <InputDate
@@ -697,26 +694,26 @@ function CreateJobModal(props) {
               </div>
             </>
           ) : (
-            <>
-              <ButtonImage
-                onClick={() => {
-                  // handleClose()
-                  setOpenAddModal(true);
-                }}
-              >
-                <Icon
-                  path={mdiAccountPlus}
-                  alt="addMemberIcon"
-                  size={1}
-                  color={'#878a88'}
-                />{' '}
-                &nbsp;&nbsp;<span>(0 thành viên)</span>
-              </ButtonImage>
-              <Button autoFocus onClick={handlePressConfirm} color="primary">
-                TẠO VIỆC
+              <>
+                <ButtonImage
+                  onClick={() => {
+                    // handleClose()
+                    setOpenAddModal(true);
+                  }}
+                >
+                  <Icon
+                    path={mdiAccountPlus}
+                    alt="addMemberIcon"
+                    size={1}
+                    color={'#878a88'}
+                  />{' '}
+                  &nbsp;&nbsp;<span>(0 thành viên)</span>
+                </ButtonImage>
+                <Button autoFocus onClick={handlePressConfirm} color="primary">
+                  TẠO VIỆC
               </Button>
-            </>
-          )}
+              </>
+            )}
         </DialogFooter>
       </StyleDialog>
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

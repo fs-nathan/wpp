@@ -1,24 +1,26 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import sum from 'lodash/sum';
 
 import ColorChip from '../../../../components/ColorChip';
-import { WrapperContext } from '../../index';
+import { filterTaskByType } from '../../../../actions/taskDetail/taskDetailActions';
 
 const ListBanner = props => {
-  const value = React.useContext(WrapperContext);
+  const dispatch = useDispatch();
+  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
+
   const [selected, setSelected] = React.useState(0);
   // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
   const handleChangeFilterType = typeIdx => {
-    value.filterTaskByType(typeIdx);
+    dispatch(filterTaskByType(typeIdx))
     setSelected(typeIdx);
   };
   // console.log('listTaskDetail', value)
 
   let data = [];
-  if (value && value.projectDetail && value.projectDetail) {
-    data = value.projectDetail;
+  if (projectDetail) {
+    data = projectDetail;
   }
 
   const taskStatic = {
@@ -29,16 +31,16 @@ const ListBanner = props => {
     task_stop: data.task_stop
   };
   const allTask = sum(Object.values(taskStatic));
-  
+
   const jobTypes = [
     'Tất cả (' + allTask + ')',
     'Đang chờ (' +
-      (taskStatic.task_waiting ? taskStatic.task_waiting : 0) +
-      ')', // Waiting
+    (taskStatic.task_waiting ? taskStatic.task_waiting : 0) +
+    ')', // Waiting
     'Đang làm (' + (taskStatic.task_doing ? taskStatic.task_doing : 0) + ')', // Doing
     'Hoàn thành (' +
-      (taskStatic.task_complete ? taskStatic.task_complete : 0) +
-      ')', // Complete
+    (taskStatic.task_complete ? taskStatic.task_complete : 0) +
+    ')', // Complete
     'Quá hạn (' + (taskStatic.task_expired ? taskStatic.task_expired : 0) + ')', // Expired
     'Tạm dừng (' + (taskStatic.task_stop ? taskStatic.task_stop : 0) + ')' // Stop
   ];

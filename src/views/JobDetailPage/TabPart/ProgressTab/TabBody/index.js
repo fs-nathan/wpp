@@ -7,52 +7,14 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { mdiCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import { Scrollbars } from 'react-custom-scrollbars'
-import { WrapperContext } from '../../../index'
-
-// const Container = styled.div`
-//   padding: 10px 0 50px 20px;
-
-//   & > *:not(last-child) {
-//     padding-top: 40px;
-//     margin: 0 auto;
-//   }
-//   & > hr {
-//     border-color: rgba(0, 0, 0, .1);
-//   }
-// `;
-
-// const StartEndDateBox = styled.div`
-//   padding: 8px 0 0 0;
-//   display: flex;
-//   align-items: center;
-//   & > *:first-child {
-//     margin-right: auto;
-//   }
-//   & > *:last-child {
-//     margin-left: auto;
-//   }
-// `;
-
-// const StartDateBox = styled.div`
-//   text-align: left;
-// `;
-
-// const EndDateBox = styled.div`
-//   text-align: right;
-//   margin-right: 20px;
-// `;
+import { useSelector, useDispatch } from 'react-redux';
+import { taskIdSelector } from '../../../selectors';
+import { updateComplete } from '../../../../../actions/taskDetail/taskDetailActions';
 
 const BlueTableCell = styled(TableCell)`
   color: ${colorPal['blue'][0]};
 `;
 
-// const RedTableCell = styled.p`
-//   color: ${colorPal['red'][0]}
-//   padding: 0;
-//   margin: 0;
-//   border: 0;
-//   font-size: 11px
-// `
 const CellAvatar = styled(TableCell)`
   padding-left: 0;
 `
@@ -79,15 +41,6 @@ const TableRowItem = styled(TableRow)`
   }
 `
 
-// const LegendBox = styled.div`
-//   margin: 10px 20px;
-//   display: flex;
-//   align-items: center;
-//   margin-top: 10px;
-//   & > *:first-child {
-//     margin-right: 10px;
-//   }
-// `;
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
@@ -138,12 +91,16 @@ const WrapperProgressBar = styled.div`
 
 function TabBody() {
   const classes = useStyles();
-  const value = React.useContext(WrapperContext)
-  
-  let listTime
+  const dispatch = useDispatch();
+  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
+  const taskId = useSelector(taskIdSelector);
+  const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
+  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
 
-  if (value.listTime && value.listTime.trackings) {
-    listTime = value.listTime.trackings.map((item, key) => {
+  let listTimeRender = null;
+
+  if (listTime && listTime.trackings) {
+    listTimeRender = listTime.trackings.map((item, key) => {
       return (
         <TableRowItem key={key}>
           <CellAvatar>
@@ -162,38 +119,37 @@ function TabBody() {
       )
     })
   }
-  // function convertDate(convert_day){
-  //   return convert_day.split('-').reverse().join('-');
-  // }
-  const updateComplete=(data)=>{
-    let task_id=value.taskId
-    let complete=parseFloat(data)
-    value.updateComplete({data:{task_id,complete}, projectId: value.projectId})
+
+  const onChangeCommitted = (data) => {
+    let task_id = taskId
+    let complete = parseFloat(data);
+    dispatch(updateComplete({ data: { task_id, complete }, projectId: projectId }));
   }
+
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-progress-tabbody">
         <div className="start-end-date-box">
           <div className="start-date-box">
-            <ColorTypo>{value.detailTask && value.detailTask.start_time}</ColorTypo>
-            <ColorTypo>{value.detailTask && value.detailTask.start_date}</ColorTypo>
+            <ColorTypo>{detailTask && detailTask.start_time}</ColorTypo>
+            <ColorTypo>{detailTask && detailTask.start_date}</ColorTypo>
           </div>
           <div className="end-date-box">
-            <ColorTypo>{value.detailTask && value.detailTask.end_time}</ColorTypo>
-            <ColorTypo>{value.detailTask && value.detailTask.end_date}</ColorTypo>
+            <ColorTypo>{detailTask && detailTask.end_time}</ColorTypo>
+            <ColorTypo>{detailTask && detailTask.end_date}</ColorTypo>
           </div>
         </div>
         {/* progress bar */}
-      
+
         <WrapperProgressBar className={classes.root}>
-          <PrettoSlider 
-          valueLabelDisplay="on" 
-          aria-label="pretto slider" 
-          defaultValue={0}
-          onChangeCommitted={(e, val) => {
-            updateComplete(val)
-            // console.log("GOI API voi value la: ", val)
-          }}
+          <PrettoSlider
+            valueLabelDisplay="on"
+            aria-label="pretto slider"
+            defaultValue={0}
+            onChangeCommitted={(e, val) => {
+              onChangeCommitted(val)
+              // console.log("GOI API voi value la: ", val)
+            }}
           />
         </WrapperProgressBar>
         <div className="legend-box">
@@ -215,7 +171,7 @@ function TabBody() {
             </TableRowItem>
           </TableHead>
           <TableBody>
-            {listTime}
+            {listTimeRender}
           </TableBody>
         </TableHistory>
       </div>

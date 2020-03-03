@@ -10,18 +10,14 @@ import ColorChip from '../../../../../components/ColorChip';
 import colorPal from '../../../../../helpers/colorPalette';
 import MemberModal from '../MemberModal'
 import { Scrollbars } from 'react-custom-scrollbars'
-import { WrapperContext } from '../../../index'
+import { useDispatch } from 'react-redux';
+import { searchMember } from '../../../../../actions/taskDetail/taskDetailActions';
+
 const members = [
   { id: 1, name: 'Trần Văn Nam', role: 'Giám đốc', projectRole: 'Admin', authorityList: ['Giao việc'] },
   { id: 2, name: 'Trần Văn Nam', projectRole: 'Quản lý', authorityList: ['Giao việc', 'Giám sát'] },
   { id: 3, name: 'Trần Văn Nam', role: 'Khác', projectRole: 'Admin', authorityList: ['Giao việc'] },
 ]
-
-
-// const Container = styled.div`
-//   padding: 10px 20px 50px 20px;
-// `;
-
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -128,7 +124,7 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
     setAnchorEl(null);
   };
 
-  
+
   return (
     <React.Fragment>
       <StyledListItem>
@@ -207,18 +203,18 @@ const MemberList = () => {
 }
 
 function TabBody() {
-  const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
   const searchMemberTabPart = (e) => {
-    value.searchMember(e.target.value)
+    dispatch(searchMember(e.target.value));
   }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-member-tabbody">
-        <SearchInput 
-          placeholder={'Nhập từ khóa'} 
+        <SearchInput
+          placeholder={'Nhập từ khóa'}
           fullWidth
           onChange={e => searchMemberTabPart(e)}
-          />
+        />
         <MemberList />
       </div>
     </Body>

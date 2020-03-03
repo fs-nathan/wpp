@@ -1258,9 +1258,10 @@ function* deleteTask(action) {
 
 export function* pinTask({payload}) {
   try {
-    const {task_id} = payload;
+    const {task_id, projectId} = payload;
     const res = yield call(apiService.post,'/task/ghim-task', {task_id})
     yield put(actions.pinTaskSuccess(res.data))
+    yield put(actions.getListTaskDetail({project_id: projectId}))
   } catch (error) {
     yield put(actions.pinTaskFail(error))
   }
@@ -1268,9 +1269,10 @@ export function* pinTask({payload}) {
 
 export function* unPinTask({payload}) {
   try {
-    const {task_id} = payload;
+    const {task_id, projectId} = payload;
     const res = yield call(apiService.post,'/task/cancel-ghim-task', {task_id})
     yield put(actions.unPinTaskSuccess(res.data))
+    yield put(actions.getListTaskDetail({project_id: projectId}))
   } catch (error) {
     yield put(actions.unPinTaskFail(error))
   }

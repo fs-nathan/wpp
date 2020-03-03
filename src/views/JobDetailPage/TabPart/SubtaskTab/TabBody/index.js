@@ -12,6 +12,7 @@ import colorPal from '../../../../../helpers/colorPalette';
 import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
+import { useSelector } from 'react-redux';
 // import { WrapperContext } from '../../../index'  
 const Container = styled.div`
   padding: 0 0 50px 0;
@@ -140,7 +141,7 @@ function AllSubtaskListItem(props) {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteSubTaskByTaskId({subTaskId: props.task.id, taskId: props.taskId})
+    props.deleteSubTaskByTaskId({ subTaskId: props.task.id, taskId: props.taskId })
   }
 
   return (
@@ -161,9 +162,9 @@ function AllSubtaskListItem(props) {
           {
             !isHover
               ? <Avatar src={props.task.user_create_avatar} alt='avatar' />
-              : 
+              :
               <ButtonIcon onClick={() => {
-                props.completeSubTaskByTaskId({subTaskId: props.task.id, taskId: props.taskId})
+                props.completeSubTaskByTaskId({ subTaskId: props.task.id, taskId: props.taskId })
               }}>
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
               </ButtonIcon>
@@ -206,12 +207,11 @@ function AllSubtaskListItem(props) {
 
 function AllSubtaskList(props) {
 
-  // console.log('data props', props);
+  const uncompleteSubTasks = useSelector(state => state.taskDetail.subTask.uncompleteSubTasks)
 
-  // const [data, setData] = React.useState(__data);
   const [data, setData] = React.useState(
-    props.uncompleteSubTasks.length
-      ? convertResponseDataToMotionData(props.uncompleteSubTasks)
+    uncompleteSubTasks.length
+      ? convertResponseDataToMotionData(uncompleteSubTasks)
       : __data
   )
 
@@ -241,8 +241,8 @@ function AllSubtaskList(props) {
 
   React.useEffect(() => {
     // Reset sub task when changing props
-    setData(convertResponseDataToMotionData(props.uncompleteSubTasks))
-  }, [props.uncompleteSubTasks])
+    setData(convertResponseDataToMotionData(uncompleteSubTasks))
+  }, [uncompleteSubTasks])
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -315,6 +315,7 @@ const StyledMenuComplete = styled.div`
   }
 `
 const FinishedSubtaskList = (props) => {
+  const completeSubTasks = useSelector(state => state.taskDetail.subTask.completeSubTasks)
   // bien modal delete
   const [isOpenDel, setOpenDel] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState("")
@@ -349,7 +350,7 @@ const FinishedSubtaskList = (props) => {
   return (
     <ul style={{ padding: 0 }}>
 
-      {props.completeSubTasks.map((item, index) => {
+      {completeSubTasks.map((item, index) => {
         return (
           <StyledListItemComplete key={index}>
             <Avatar style={{ marginRight: 13 }} src={item.user_complete_avatar} alt='avatar' />
@@ -462,7 +463,7 @@ function TabBody(props) {
           </NewWork>
           :
           <Div>
-            <Search 
+            <Search
               placeholder={'Nhập từ khóa'}
               onChange={e => searchSubTaskTabPart(e)}
             />

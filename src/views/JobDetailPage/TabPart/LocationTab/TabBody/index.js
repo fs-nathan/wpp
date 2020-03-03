@@ -11,10 +11,9 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import ColorButton from '../../../../../components/ColorButton';
 import SearchInput from '../../../../../components/SearchInput';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { WrapperContext } from '../../../index'
-// const Container = styled.div`
-//   padding: 10px 20px 50px 20px;
-// `;
+import { useSelector, useDispatch } from 'react-redux';
+import { searchLocation } from '../../../../../actions/taskDetail/taskDetailActions';
+
 const ItemAvatar = styled(ListItemAvatar)`
   & > div {
     background: #d6d6d6;
@@ -46,18 +45,7 @@ const HeaderSubText = styled(ListSubheader)`
   padding: 0;
   margin: 0;
 `
-// const StyledCommonLocation = styled.div`
-//   display: flex;
-//   align-items: center;
-//   width: 100%;
-// `
-// const StyledListItemLocation = styled.div``
-// const StyledMenuLocation = styled.div`
-//   opacity: 0 ;
-//   ${StyledListItemLocation}:hover & {
-//     opacity: 1;
-//   }
-// `
+
 const CustomListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -68,8 +56,7 @@ const CustomListItem = () => {
   const handleClose = () => {
     setAnchorEl(null);
   }
-  const value = React.useContext(WrapperContext)
-  let locationArr = value.location
+  let locationArr = useSelector(state => state.taskDetail.location.locations);
   return (
     <ListItem>
       {Array.isArray(locationArr) && locationArr.map((location, idx) => {
@@ -139,9 +126,9 @@ const WrapList = styled(List)`
 `
 
 const LocationShareBox = () => {
-  const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
   const searchLocationTabPart = (e) => {
-    value.searchLocation(e.target.value)
+    dispatch(searchLocation(e.target.value))
   }
   return (
     <React.Fragment>

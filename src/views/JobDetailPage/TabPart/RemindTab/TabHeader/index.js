@@ -5,15 +5,10 @@ import Icon from '@mdi/react';
 import { mdiChevronLeft , mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import RemindModal from '../RemindModal'
-import { WrapperContext } from '../../../index'
-// const Container = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   background-color: #fff;
-//   height: 85px;
-//   border-bottom: 1px solid rgba(0, 0, 0, .1);
-// `;
+import { useDispatch, useSelector } from 'react-redux';
+import { taskIdSelector } from '../../../selectors';
+import { getRemind } from '../../../../../actions/taskDetail/taskDetailActions';
+
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -26,9 +21,11 @@ const ButtonIcon = styled(IconButton)`
 `
 
 function TabHeader({ setShow }) {
-  const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
+  
   useEffect(() => {
-    value.getRemindByTaskId(value.taskId)
+    dispatch(getRemind({ taskId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   // bien cua modal cong viec con

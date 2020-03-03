@@ -5,6 +5,9 @@ import Icon from '@mdi/react';
 import { mdiChevronLeft , mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import { WrapperContext } from '../../../index'
+import { useDispatch, useSelector } from 'react-redux';
+import { getSubTask } from '../../../../../actions/taskDetail/taskDetailActions';
+import { taskIdSelector } from '../../../selectors';
 
 const Container = styled.div`
   display: flex;
@@ -35,10 +38,11 @@ const ButtonIcon = styled(IconButton)`
 `
 
 function TabHeader(props) {
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
   // console.log('header props::', props)
-  const value = React.useContext(WrapperContext)
   useEffect(() => {
-    value.getSubTaskByTaskId(value.taskId)
+    dispatch(getSubTask({ taskId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   const [isPlus, setOnPlus] = React.useState(true)

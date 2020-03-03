@@ -8,7 +8,9 @@ import SimpleDonutChart from '../../../../../components/SimpleDonutChart';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
-import { WrapperContext } from '../../../index';
+import { useDispatch } from 'react-redux';
+import * as taskDetailAction from '../../../../../actions/taskDetail/taskDetailActions';
+import { useHistory } from 'react-router-dom';
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -103,9 +105,10 @@ function JobUnit(props) {
 }
 
 function ListBodyItem(props) {
-  const { history, chooseTask, getTaskDetailByTaskId } = React.useContext(
-    WrapperContext
-  );
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const chooseTask = task => dispatch(taskDetailAction.chooseTask(task));
+  const getTaskDetailByTaskId = taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }));
   // console.log({value})
 
   function onClickItem() {

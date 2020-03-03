@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import { ListItem, Avatar,  Table, TableBody, TableHead, TableRow, Paper, TableCell, Menu, MenuItem, IconButton } from '@material-ui/core';
+import { ListItem, Avatar, Table, TableBody, TableHead, TableRow, Paper, TableCell, Menu, MenuItem, IconButton } from '@material-ui/core';
 import avatar from '../../../../assets/avatar.jpg';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorChip from '../../../../components/ColorChip';
@@ -19,6 +19,8 @@ import { mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
 import RoleMemberModal from './RoleMemberModal';
 import PriorityMemberModal from './PriorityMemberModal';
 import { WrapperContext } from '../..';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 // import { Scrollbars } from 'react-custom-scrollbars';
 
 const StyledListItem = styled(ListItem)`
@@ -157,25 +159,7 @@ const CustomMenu = styled(Menu)`
     }
   }
 `
-// const TableScroll = styled.div`
-//   overflow-y: scroll;
 
-//   ::-webkit-scrollbar {
-//     width: 7px;
-//     border-radius: 5px;
-    
-//   }
-//   ::-webkit-scrollbar-thumb {
-//     background-color: #fff;
-//     border: none;
-//   }
-//   &&:hover {
-//     ::-webkit-scrollbar-thumb {
-//       background-color: rgba(0, 0, 0, 0.2);
-//       border-radius: 10px; 
-//     }
-//   }
-// `
 const StyledTableRow = styled(TableRow)`
     &:hover {
         & > *:last-child {
@@ -203,8 +187,8 @@ function ProjectMember(props) {
                 label="Thêm"
                 onClick={props.valueContext.createMemberToTask}
             /> */}
-            <AddButton onClick= {() => valueMember.createMemberToTask()}>Thêm</AddButton>
-        </StyledListItem> 
+            <AddButton onClick={() => valueMember.createMemberToTask()}>Thêm</AddButton>
+        </StyledListItem>
     )
 }
 
@@ -236,37 +220,10 @@ function MemberPriority(props) {
         </div>
     )
 }
-// function Test(roles) {
-//     console.log("data....", roles);
 
-//     return (
-//         <div>
-//             <div>
-//                 {
-//                     roles[0] &&
-//                     <ColorChip color='grey' badge label={roles[0]} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-//                 }
-//                 {
-//                     roles[1] &&
-//                     <ColorChip color='grey' badge label={roles[1]} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-//                 }
-//             </div>
-//             <div>
-//                 {
-//                     roles[2] &&
-//                     <ColorChip color='grey' badge label={roles[2]} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-//                 }
-//                 {
-//                     roles[3] &&
-//                     <ColorChip color='grey' badge label={roles[3]} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-//                 }
-//             </div>
-//         </div >
-//     )
-// }
 let listData = []
-function MemberRole() {
 
+function MemberRole() {
 
     const [openRoleModal, setOpenRoleModal] = React.useState(false)
     // console.log("listData...", listData);
@@ -317,12 +274,6 @@ function TableMember(props) {
     const handleCloseEliminate = () => {
         setAnchorEl(null);
     }
-
-//     const Body = styled(Scrollbars)`
-//   grid-area: body;
-//   height: 100%;
-// `;
-    // console.log("demo.........", props.listMemberJobState);
 
     return (
         <Paper className={classes.root}>
@@ -375,20 +326,22 @@ function TableMember(props) {
 }
 
 function AddMemberModal(props) {
-    const valueContext = React.useContext(WrapperContext);
+    const { t } = useTranslation()
+    const member = useSelector(state => state.taskDetail.taskMember.member);
+    const memberNotAssigned = useSelector(state => state.taskDetail.taskMember.memberNotAssigned);
     const [listMemberProjectState, setListMemberProject] = React.useState([])
     const [listMemberJobState, setListMemberJob] = React.useState([])
     React.useEffect(() => {
-        let arrayMemberNotAssigned = valueContext.memberNotAssigned && valueContext.memberNotAssigned.map((item, key) => {
+        let arrayMemberNotAssigned = memberNotAssigned && memberNotAssigned.map((item, key) => {
             return (
                 <ProjectMember key={key} name={item.name} email={item.email} label={item.permission} />
             )
         })
         setListMemberProject(arrayMemberNotAssigned)
-    }, [valueContext.memberNotAssigned])
+    }, [memberNotAssigned])
 
     React.useEffect(() => {
-        let arrayMember = valueContext.member && valueContext.member.map((item) => {
+        let arrayMember = member && member.map((item) => {
             return {
                 avatarMember: <Avatar alt="Avatar Member" src={avatar} sizes='10px' style={{ width: 30, height: 30 }} />,
                 name: <MemberDetail name={item.name} email={item.email} />,
@@ -397,30 +350,11 @@ function AddMemberModal(props) {
             }
         })
         setListMemberJob(arrayMember)
-    }, [valueContext.member])
+    }, [member])
 
     const handleClose = () => {
         props.setOpen(false);
     };
-
-    // const handleAddAll = () => {
-    //     setListMemberProject([])
-    //     setListMemberJob([...listMemberJobState, ...listMemberProject.map((item) => {
-    //         return {
-    //             avatarMember,
-    //             name: <MemberDetail name={item.name} email={item.email} />,
-    //             permission: item.master
-    //                 ? <MemberPriority label={item.permission} master />
-    //                 : <MemberPriority label={item.permission} />,
-    //             role: <MemberRole
-    //                 role1={item.role[0] && item.role[0]}
-    //                 role2={item.role[1] && item.role[1]}
-    //                 role3={item.role[2] && item.role[2]}
-    //                 role4={item.role[3] && item.role[3]} />
-    //         }
-    //     }
-    //     )])
-    // }
 
     return (
         <div>
@@ -439,12 +373,11 @@ function AddMemberModal(props) {
                                 <ButtonAddAll
                                 // onClick={handleAddAll}
                                 >
-                                    + Thêm tất cả
-                        </ButtonAddAll>
-                        <div className="table-scroll-add-member">
-                                {listMemberProjectState}
-                        </div>
-                               
+                                    {t('+ Thêm tất cả')}
+                                </ButtonAddAll>
+                                <div className="table-scroll-add-member">
+                                    {listMemberProjectState}
+                                </div>
                             </Typography>
                         </BorderGrid>
                         <Typography component="div">

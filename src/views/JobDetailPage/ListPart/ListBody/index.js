@@ -4,7 +4,8 @@ import { List } from '@material-ui/core';
 import ListBodySubHeader from './ListBodySubHeader';
 import ListBodyItem from './ListBodyItem';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { WrapperContext } from '../../index'
+import { useSelector } from 'react-redux';
+import { taskIdSelector } from '../../selectors';
 const StyledList = styled(List)`
 
   & > li {
@@ -25,7 +26,9 @@ const Body = styled(Scrollbars)`
 `;
 
 function ListBody() {
-  const { taskId, listTaskDetail } = React.useContext(WrapperContext);
+  const taskId = useSelector(taskIdSelector);
+  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
+
   let data = [];
   // fix use effect
   if (listTaskDetail) {

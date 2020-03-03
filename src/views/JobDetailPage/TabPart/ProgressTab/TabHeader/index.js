@@ -5,7 +5,9 @@ import Icon from '@mdi/react';
 import { mdiChevronLeft , mdiSettings } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ProgressModal from '../ProgressModal'
-import { WrapperContext } from '../../../index'
+import { useSelector, useDispatch } from 'react-redux';
+import { taskIdSelector } from '../../../selectors';
+import { getTrackingTime } from '../../../../../actions/taskDetail/taskDetailActions';
 // const Container = styled.div`
 //   display: flex;
 //   align-items: center;
@@ -32,15 +34,12 @@ const ProgressTitle = styled(ColorTypo)`
 `
 
 function TabHeader({ setShow }) {
-  // const [time, setTime] = React.useState('')
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
 
-  // const handleTime = () => {
-  //   setTime(time);
-  // }
   // bien cua modal cong viec con
-  const value = React.useContext(WrapperContext)
   useEffect(() => {
-    value.getTrackingTime(value.taskId)
+    dispatch(getTrackingTime(taskId))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   const [open, setOpen] = React.useState(false);
