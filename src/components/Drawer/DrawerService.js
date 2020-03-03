@@ -13,7 +13,7 @@ export const inviteUserService = user_id => {
 };
 export const resendInviteUserService = user_id => {
   return apiService({
-    url: '/resend-invitation-user-join-group',
+    url: '/re-send-requirement-join-group',
     method: 'post',
     data: { user_id }
   });
@@ -74,7 +74,7 @@ export const acceptJoinGroupService = requirement_id => {
 };
 export const rejectJoinGroupService = requirement_id => {
   return apiService({
-    url: '/reject-requirement-join-group',
+    url: '/cancel-requirement-join-group',
     method: 'post',
     data: { requirement_id }
   });

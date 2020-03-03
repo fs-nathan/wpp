@@ -52,6 +52,7 @@ import LoadingBox from '../../../../components/LoadingBox';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 import ShareColumnAvatar from '../DocumentComponent/ShareColumnAvatar';
+import * as icons from '../../../../assets';
 
 const MyDocument = props => {
   const [alert, setAlert] = useState(false);
@@ -220,13 +221,9 @@ const MyDocument = props => {
     if (isFetching) return;
     try {
       if (fileSelectAction.type === 'folder') {
-        await actionDeleteFolder({
-          folder_id: fileSelectAction.id
-        });
+        await actionDeleteFolder({ folder_id: [fileSelectAction.id] });
       } else {
-        await actionDeleteFile({
-          file_id: [fileSelectAction.id]
-        });
+        await actionDeleteFile({ file_id: [fileSelectAction.id] });
       }
       getListMyDocument();
       props.resetListSelectDocument();
@@ -239,6 +236,16 @@ const MyDocument = props => {
     dataTemp.splice(index, 1, itemUpdate);
     setListData(dataTemp);
   };
+  if (isEmpty(listData))
+    return (
+      <div className="no-file-container">
+        <div>
+          <img src={icons.ic_no_file} />
+          <p className="text-des">{t('IDS_WP_NO_FILE_TITLE')}</p>
+          <p className="text-des">{t('IDS_WP_NO_FILE_DES')}</p>
+        </div>
+      </div>
+    );
   return (
     <React.Fragment>
       <Table stickyHeader>

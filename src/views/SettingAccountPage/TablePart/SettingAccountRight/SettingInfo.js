@@ -282,7 +282,9 @@ class SettingInfo extends Component {
               {mode !== 'edit' ? (
                 <InputBase
                   className="value-item-info col-sm-3 gender-content"
-                  value={data.gender_name}
+                  value={
+                    data.gender === 1 ? t('IDS_WP_FEMALE') : t('IDS_WP_MALE')
+                  }
                   disabled={true}
                 />
               ) : (

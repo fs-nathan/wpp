@@ -64,7 +64,7 @@
   }
   .drawer-content-container {
     position: relative;
-    height: calc(100% - 55px);
+    height: calc(100vh - 55px);
     display: flex;
     .drawer-content-left {
       position: absolute;
