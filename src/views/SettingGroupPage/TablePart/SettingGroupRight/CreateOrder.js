@@ -63,7 +63,7 @@ const CreateOrder = props => {
     }
   };
   useEffect(() => {
-    fetInfoBeforeCreateOrder();
+    fetInfoBeforeCreateOrder(); // eslint-disable-next-line
   }, []);
 
   const fetInfoBeforeCreateOrder = async () => {
