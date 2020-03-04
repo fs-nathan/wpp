@@ -16,7 +16,7 @@ function UpdateUser({
       open={open} setOpen={setOpen}
       updatedUser={updatedUser}
       options={options}
-      handleUpdateUser={(userId, roomId, levelId, majorId, positionId, description) =>
+      handleUpdateUser={(userId, roomId, positionId, majorId, levelId, description) =>
         doUpdateUser({ userId, roomId, levelId, majorId, positionId, description })
       }
     />

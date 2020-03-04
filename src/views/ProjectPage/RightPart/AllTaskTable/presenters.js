@@ -61,11 +61,12 @@ function decodePriorityCode(priorityCode) {
   }
 }
 
-function displayDate(time, date) {
+function displayDate(time, date, type) {
   return (
     <>
-      <span>{time}</span>
-      <span>{date}</span>
+      {type === 2 && <span>Không yêu cầu</span>}
+      {type === 0 && <span>{time}</span>}
+      {type <= 1 && <span>{date}</span>}
     </>
   );
 }
@@ -212,20 +213,20 @@ function AllTaskTable({
               width: '10%',
             }, {
               label: 'Tiến độ',
-              field: (row) => `${get(row, 'duration', 0)} ngày`,
+              field: (row) => `${get(row, 'duration_value', 0)} ${get(row, 'duration_unit', 'ngày')}`,
               align: 'center',
               width: '8%',
             }, {
               label: 'Bắt đầu',
               field: (row) => <DateBox>
-                                {displayDate(get(row, 'start_time'), get(row, 'start_date'))}
+                                {displayDate(get(row, 'start_time'), get(row, 'start_date'), get(row, 'type_time'))}
                               </DateBox>,
               align: 'left',
               width: '10%',
             }, {
               label: 'Kết thúc',
               field: (row) => <DateBox>
-                                {displayDate(get(row, 'end_time'), get(row, 'end_date'))}
+                                {displayDate(get(row, 'end_time'), get(row, 'end_date'), get(row, 'type_time'))}
                               </DateBox>,
               align: 'left',
               width: '10%',

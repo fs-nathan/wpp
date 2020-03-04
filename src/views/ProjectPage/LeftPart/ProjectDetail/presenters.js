@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get, isNaN, clamp } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
@@ -14,6 +14,7 @@ import { mdiChevronLeft, } from '@mdi/js';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
+import moment from 'moment';
 import './style.scss';
 
 const ProjectName = ({ className = '', ...props }) => 
@@ -61,6 +62,19 @@ function decodeStateName(stateName) {
         color: 'orange',
         name: 'Đang chờ',
       });
+  }
+}
+
+function getExpectedProgress(startDate, endDate) {
+  if (startDate === -1 || endDate === 1) {
+    return 0;
+  } else {
+    const start = moment(startDate, 'DD-MM-YYYY').toDate();
+    const end = moment(endDate, 'DD-MM-YYYY').toDate();
+    const now = moment().toDate();
+    const total = (end - start) / 1000;
+    const current = (now - start) / 1000;
+    return clamp(isNaN(current / total) ? 0 : parseInt((current / total) * 100), 0, 100);
   }
 }
 
@@ -165,12 +179,17 @@ function ProjectDetail({
                   <ColorTypo color='gray' uppercase>Tiến độ dự án</ColorTypo>
                 </SubHeader>
                 <DateBox>
-                  <div>{get(project.project, 'date_start')}</div>
-                  <div>{get(project.project, 'date_end')}</div>
+                  <div>{get(project.project, 'date_start', -1)}</div>
+                  <div>{get(project.project, 'date_end', -1)}</div>
                 </DateBox>
                 <ProgressBar 
                   percentDone={get(project.project, 'complete', 0)}
-                  percentTarget={get(project.project, 'duration', 0)} 
+                  percentTarget={
+                    getExpectedProgress(
+                      get(project.project, 'date_start', -1), 
+                      get(project.project, 'date_end', -1)
+                    )
+                  } 
                   colorDone={'#31b586'} 
                   colorTarget={'#fd7e14'}
                 />
