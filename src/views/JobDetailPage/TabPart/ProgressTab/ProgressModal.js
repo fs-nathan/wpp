@@ -8,7 +8,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 // import TimeField from 'react-simple-timefield';
 // import OutlinedInputSelect from './OutlinedInputSelect'
-import { WrapperContext } from '../../index';
 import {
   DEFAULT_DATE_TEXT, DEFAULT_END_TIME_TEXT, DEFAULT_START_TIME_TEXT
 } from '../../../../helpers/jobDetail/stringHelper';
@@ -19,6 +18,9 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
+import { updateTimeDuration } from '../../../../actions/taskDetail/taskDetailActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { taskIdSelector } from '../../selectors';
 const StartEndDay = styled(Typography)`
   display: flex;
   flex-direction: row;
@@ -115,7 +117,8 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 const ProgressModal = (props) => {
-  const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
   // console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState(DEFAULT_START_TIME_TEXT)
   const [endTime, setEndTime] = React.useState(DEFAULT_END_TIME_TEXT)
@@ -137,18 +140,15 @@ const ProgressModal = (props) => {
 
   const setDataTimeDuration = () => {
     const data = {
-      task_id: value.taskId,
+      task_id: taskId,
       start_date: startDay,
       start_time: startTime,
       end_date: endDay,
       end_time: endTime
     }
     console.log("data", data);
-    value.updateTimeDuration(data)
+    dispatch(updateTimeDuration(data));
   }
-
-
-
 
   return (
     <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} >

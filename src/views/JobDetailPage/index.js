@@ -225,8 +225,6 @@ const mapDispatchToProps = dispatch => {
 
     //time
 
-    updateTimeDuration: dataTime =>
-      dispatch(taskDetailAction.updateTimeDuration(dataTime)),
     // List Task Detail
 
     //  List Group Task
@@ -235,7 +233,6 @@ const mapDispatchToProps = dispatch => {
 
     // get project group
     // getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
-
 
     searchSubTask: data => dispatch(taskDetailAction.searchSubTask(data)),
     searchRemind: data => dispatch(taskDetailAction.searchRemind(data)),
