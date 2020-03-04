@@ -245,9 +245,6 @@ const mapDispatchToProps = dispatch => {
     //updateComplete
 
     closeNoticeModal: () => dispatch(closeNoticeModal()),
-    deleteTask: data => {
-      dispatch(taskDetailAction.deleteTask(data));
-    }
   };
 };
 

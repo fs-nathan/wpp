@@ -162,7 +162,7 @@ import { LIST_TASK } from '../constants/actions/task/listTask';
 import { listTask } from './task/listTask';
 import { CREATE_TASK } from '../constants/actions/task/createTask';
 import { createTask } from './task/createTask';
-import { DELETE_TASK } from '../constants/actions/task/deleteTask';
+
 import { deleteTask } from './task/deleteTask';
 import { SORT_TASK } from '../constants/actions/task/sortTask';
 import { sortTask } from './task/sortTask';
@@ -290,7 +290,7 @@ function* rootSaga() {
   yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
   yield takeLatest(LIST_TASK, listTask);
   yield takeEvery(CREATE_TASK, createTask);
-  yield takeEvery(DELETE_TASK, deleteTask);
+  yield takeLeading(taskDetailType.DELETE_TASK_REQUEST, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
   yield takeEvery(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, inviteOtherPeopleCreateAccount);
 

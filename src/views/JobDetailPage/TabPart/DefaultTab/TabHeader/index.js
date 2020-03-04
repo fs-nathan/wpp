@@ -4,14 +4,12 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
-// import avatar from '../../../../../assets/avatar.jpg';
-// import EditWorkModal from '../EditWorkModal'
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { selectedTaskSelector, taskIdSelector } from '../../../selectors';
-import { pinTaskAction, unPinTaskAction } from '../../../../../actions/taskDetail/taskDetailActions';
+import { pinTaskAction, unPinTaskAction, deleteTask } from '../../../../../actions/taskDetail/taskDetailActions';
 
 const AvatarHeader = styled(Avatar)`
   width: 60px;
@@ -30,9 +28,6 @@ const StyledIconButton = styled(IconButton)`
   }
 `;
 
-// function convertDate(convert_day){
-//   return convert_day.split('-').reverse().join('-');
-// }
 function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -75,7 +70,7 @@ function TabHeader(props) {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteTask(taskId);
+    dispatch(deleteTask(taskId));
   };
 
   function onClickPin() {

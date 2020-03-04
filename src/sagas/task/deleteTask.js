@@ -5,7 +5,7 @@ import { CustomEventEmitter, DELETE_TASK } from '../../constants/events';
 import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
 
-async function doDeleteTask({ taskId }) {
+async function doDeleteTask(taskId) {
   try {
     const config = {
       url: '/task/delete',
@@ -23,12 +23,12 @@ async function doDeleteTask({ taskId }) {
 
 function* deleteTask(action) {
   try {
-    yield call(doDeleteTask, action.options);
-    yield put(deleteTaskSuccess(action.options));
+    yield call(doDeleteTask, action.payload);
+    yield put(deleteTaskSuccess(action.payload));
     CustomEventEmitter(DELETE_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(deleteTaskFail(error, action.options));
+    yield put(deleteTaskFail(error, action.payload));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
