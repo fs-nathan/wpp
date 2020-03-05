@@ -21,6 +21,7 @@ import {
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { useSelector, useDispatch } from 'react-redux';
+import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 
 import CustomSelect from '../../../../../components/CustomSelect';
 import {
@@ -38,6 +39,7 @@ import * as taskDetailAction from '../../../../../actions/taskDetail/taskDetailA
 import CommonProgressForm from './CommonProgressForm';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
+import TextEditor from '../../../../../components/TextEditor';
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -234,7 +236,7 @@ const DialogFooter = styled(DialogActions)`
 const today = setMinutes(new Date(), 0);
 const DEFAULT_DATA = {
   name: EMPTY_STRING,
-  description: EMPTY_STRING,
+  description: EditorState.createEmpty(),
   start_time: setHours(today, 8),
   start_date: DEFAULT_DATE_TEXT,
   end_time: setHours(today, 17),
@@ -350,6 +352,7 @@ function CreateJobModal(props) {
       data.start_time = convertTime(data.start_time);
       data.end_time = convertTime(data.end_time);
       data.date_status = type;
+      data.description = JSON.stringify(convertToRaw(data.description.getCurrentContent()));
       // Call api
       createJobByProjectId({ data, projectId: projectId });
       // Clear temporary data
@@ -383,7 +386,7 @@ function CreateJobModal(props) {
             <TitleText component={'span'}>
               <InputTextJob
                 label="Tên công việc"
-                helperText="Không được để trống"
+                helperText={data.name ? '' : "Không được để trống"}
                 margin="normal"
                 variant="outlined"
                 fullWidth
@@ -393,17 +396,12 @@ function CreateJobModal(props) {
             </TitleText>
           </Typography>
           <Descripe component={'div'}>
-            <TitleText component={'div'}>
-              <InputTextJob
-                label="Mô tả công việc"
-                // helperText=""
-                margin="normal"
-                fullWidth
-                variant="outlined"
-                value={data.description}
-                onChange={e => handleChangeData('description', e.target.value)}
-              />
-            </TitleText>
+            <Typotitle component={'span'}>Mô tả công việc</Typotitle>
+            <TextEditor
+              variant="outlined"
+              value={data.description}
+              onChange={value => handleChangeData('description', value)}
+            />
           </Descripe>
           <ProgressWork component={'span'}>
             <Typotitle component={'span'}>Tiến độ công việc</Typotitle>
@@ -539,7 +537,7 @@ function CreateJobModal(props) {
                 </ButtonImage> */}
                 &nbsp;
                 <div>
-                  <Button autoFocus onClick={handleClose}>
+                  <Button autoFocus onClick={handleClose} style={{ color: '#222222' }} >
                     Hủy
                 </Button>
                   <Button autoFocus onClick={handlePressConfirm} color="primary">

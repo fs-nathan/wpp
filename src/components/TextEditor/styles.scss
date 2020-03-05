@@ -1,0 +1,15 @@
+.editor {
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  &--button {
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    padding: 4px;
+    margin: 2px;
+  }
+}
+
+.RichEditor-root {
+  border-top: 1px solid rgba(0, 0, 0, 0.23);
+  min-height: 6em;
+}
