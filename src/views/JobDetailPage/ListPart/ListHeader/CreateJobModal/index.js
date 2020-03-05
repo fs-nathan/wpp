@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IconButton,
   Typography,
@@ -40,6 +40,7 @@ import CommonProgressForm from './CommonProgressForm';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import TextEditor from '../../../../../components/TextEditor';
+import spinnerGif from '../../../../../assets/loading_spinner.gif';
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -252,6 +253,7 @@ function CreateJobModal(props) {
   const dispatch = useDispatch();
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
   const updateNameDescriptionTask = data => dispatch(taskDetailAction.updateNameDescriptionTask(data));
   const createJobByProjectId = data => dispatch(taskDetailAction.createTask(data));
@@ -320,6 +322,12 @@ function CreateJobModal(props) {
     }
   }, [props.data]);
 
+  useEffect(() => {
+    if (!isFetching)
+      props.setOpen(false);
+    // eslint-disable-next-line
+  }, [isFetching])
+
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
@@ -358,7 +366,7 @@ function CreateJobModal(props) {
       // Clear temporary data
       setDataMember(DEFAULT_DATA);
       // Close modal
-      handleClose();
+      // handleClose();
     } else {
       // Alert user
       alert('Bạn cần nhập tên công việc');
@@ -541,6 +549,7 @@ function CreateJobModal(props) {
                     Hủy
                 </Button>
                   <Button autoFocus onClick={handlePressConfirm} color="primary">
+                    {isFetching && <img alt='loading' width="30px" src={spinnerGif}></img>}
                     TẠO VIỆC
               </Button>
                 </div>
