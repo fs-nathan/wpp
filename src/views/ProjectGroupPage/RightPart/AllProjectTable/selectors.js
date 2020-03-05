@@ -29,14 +29,11 @@ export const projectsSelector = createSelector(
     const loading = listProjectLoading || detailProjectGroupLoading || listProjectGroupLoading;
     const error = listProjectError || detailProjectGroupError || listProjectGroupError;
 
-    const newProjects = projects.map(project => {
-      const curIcon = get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon');
-      return {
-        ...project,
-        icon: curIcon,
-      }
-    });
-
+    const newProjects = projects.map(project => ({
+      ...project,
+      icon: get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon'),
+      state_name: get(project, 'visibility') ? get(project, 'state_name') : 'Hidden',
+    }));
     return {
       projects: newProjects,
       loading,

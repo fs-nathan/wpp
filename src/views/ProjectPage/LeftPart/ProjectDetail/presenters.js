@@ -8,7 +8,7 @@ import AvatarCircleList from '../../../../components/AvatarCircleList';
 import ColorButton from '../../../../components/ColorButton';
 import { Container, SubContainer, ActionBox } from '../../../../components/CustomDetailBox';
 import { 
-  ChartBox, ChartDrawer, ChartInfoBox, ChartTitle, CustomChart, 
+  ChartBox, ChartDrawer, ChartInfoBox, ChartTitle, CustomChart, ChartPlacedolder,
 } from '../../../../components/CustomDonutChart';
 import { mdiChevronLeft, } from '@mdi/js';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -34,36 +34,6 @@ const DateBox = ({ className = '', ...props }) =>
     className={`view_Project_ProjectDetail___date-box ${className}`}
     {...props}
   />
-
-function decodeStateName(stateName) {
-  switch (stateName) {
-    case 'waiting': 
-      return ({
-        color: 'orange',
-        name: 'Đang chờ',
-      });
-    case 'doing': 
-      return ({
-        color: 'green',
-        name: 'Đang làm',
-      });
-    case 'expired': 
-      return ({
-        color: 'red',
-        name: 'Quá hạn',
-      });
-    case 'hidden':
-      return ({
-        color: '#20194d',
-        name: 'Đang ẩn',
-      })
-    default:
-      return ({
-        color: 'orange',
-        name: 'Đang chờ',
-      });
-  }
-}
 
 function getExpectedProgress(startDate, endDate) {
   if (startDate === -1 || endDate === 1) {
@@ -137,12 +107,17 @@ function ProjectDetail({
                       height={250}
                     />
                     <ChartTitle>
-                      {decodeStateName(
-                        get(project.project, 'visibility', true) === false 
-                          ? 'hidden' 
-                          : get(project.project, 'state_name')
-                      ).name}
+                      {get(project.project, 'state_name')}
                     </ChartTitle>
+                    {
+                      get(project.project, 'task_waiting', 0) +
+                      get(project.project, 'task_doing', 0) +
+                      get(project.project, 'task_expired', 0) +
+                      get(project.project, 'task_complete', 0) +
+                      get(project.project, 'task_stop', 0) === 0
+                        ? <ChartPlacedolder />
+                        : null
+                    }
                   </ChartDrawer>
                   <ProjectName>
                     {project.loading ? '...' : get(project.project, 'name', '')}
