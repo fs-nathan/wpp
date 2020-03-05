@@ -15,6 +15,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import ColorTypo from '../../../../components/ColorTypo'
 import { WrapperContext } from '../../index'
 import { DEFAULT_OFFER_ITEM } from '../../../../helpers/jobDetail/arrayHelper'
+import { useDispatch, useSelector } from 'react-redux';
+import { uploadDocumentToOffer, deleteDocumentToOffer, createOffer, updateOffer } from '../../../../actions/taskDetail/taskDetailActions';
 const TexTitle = styled(Typography)`
   font-size: 15px;
   margin: 15px 0;
@@ -141,7 +143,9 @@ const OfferFile = ({ file, handleDeleteFile }) => {
 }
 
 const OfferModal = (props) => {
-  const valueOffer = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+
   const [tempSelectedItem, setTempSelectedItem] = React.useState(DEFAULT_OFFER_ITEM)
   const classes = useStyles()
 
@@ -173,7 +177,7 @@ const OfferModal = (props) => {
       setParams("files", [...tempSelectedItem.files, ...responseFiles])
     }
     // Call api
-    valueOffer.uploadDocumentToOfferById({payload, appendFileCallBack, taskId: valueOffer.taskId})
+    dispatch(uploadDocumentToOffer(payload, appendFileCallBack, taskId))
   }
 
   const handleDeleteFile = fileId => {
@@ -183,7 +187,7 @@ const OfferModal = (props) => {
       setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
     }
     // Call api
-    valueOffer.deleteDocumentToOfferById({payload, removeFileCallBack, taskId: valueOffer.taskId})
+    dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId))
   }
 
 
@@ -204,7 +208,7 @@ const OfferModal = (props) => {
     for (let i = 0; i < tempSelectedItem.files.length; i++) {
       dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
     }
-    props.createOfferByTaskId({data: dataCreateOfferFormData, taskId: props.taskId})
+    dispatch(createOffer({ data: dataCreateOfferFormData, taskId }))
     setParams("files", [])
   }
 
@@ -271,7 +275,7 @@ const OfferModal = (props) => {
             onClick={() => {
               props.handleClickClose()
               if (tempSelectedItem.content) {
-                props.updateOfferById({offerId: tempSelectedItem.offer_id, content:tempSelectedItem.content, taskId: valueOffer.taskId})
+                dispatch(updateOffer({ offerId: tempSelectedItem.offer_id, content: tempSelectedItem.content, taskId }))
               }
               setParams("content", '')
             }}>

@@ -7,7 +7,7 @@ import ColorTypo from '../../../../../components/ColorTypo';
 import DemandModal from '../DemandModal'
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
-import { getCommand } from '../../../../../actions/taskDetail/taskDetailActions';
+import { getCommand, createCommand } from '../../../../../actions/taskDetail/taskDetailActions';
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -26,9 +26,9 @@ function TabHeader(props) {
   const taskId = useSelector(taskIdSelector);
 
   useEffect(() => {
-    dispatch(getCommand({ task_id:taskId }))
+    dispatch(getCommand({ task_id: taskId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  }, [])
   const [open, setOpen] = React.useState(false)
   // console.log('props nè', props )
   const handleClickOpen = () => {
@@ -37,8 +37,8 @@ function TabHeader(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const confirmCreateCommand = ({ content, type}) => {
-    props.createCommandByTaskId({ task_id: props.taskId, content: content, type: type})
+  const confirmCreateCommand = ({ content, type }) => {
+    dispatch(createCommand({ task_id: taskId, content, type }))
   }
   return (
     <div className="container-normal-tabheader">
@@ -57,7 +57,7 @@ function TabHeader(props) {
         handleClose={handleClose}
         handleOpen={handleClickOpen}
         confirmCreateCommand={confirmCreateCommand}
-        item={{content: "", type: -1}}
+        item={{ content: "", type: -1 }}
         {...props}
       />
     </div>

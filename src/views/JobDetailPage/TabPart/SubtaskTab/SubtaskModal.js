@@ -7,17 +7,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { updateSubTask } from '../../../../actions/taskDetail/taskDetailActions';
 import { useDispatch, useSelector } from 'react-redux';
-// import colorPal from '../../../../helpers/colorPalette';
-
-// const TexTitle = styled(Typography)`
-//   font-size: 14px;
-//   color: ${colorPal['gray'][0]}
-//   margin-bottom: 30px;
-// `
-// const TextInput = styled(TextField)`
-//   font-size: 14px;
-//   margin-bottom: 20px
-// `
 
 const styles = theme => ({
   root: {

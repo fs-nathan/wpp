@@ -227,8 +227,6 @@ function AllSubtaskListItem(props) {
   )
 }
 
-
-
 function AllSubtaskList(props) {
 
   const uncompleteSubTasks = useSelector(state => state.taskDetail.subTask.uncompleteSubTasks)

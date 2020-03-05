@@ -6,18 +6,6 @@ import { mdiChevronLeft, mdiSettings } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import AddMemberModal from '../../../ListPart/ListHeader/AddMemberModal'
 
-// const Container = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between; 
-//   background-color: #fff;
-//   height: 85px;
-//   border-bottom: 1px solid rgba(0, 0, 0, .1);
-//   & > *:last-child {
-//     display: none;
-//   }
-// `;
-
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -28,7 +16,6 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
-
 
 function TabHeader({ setShow }) {
   const [openAddModal, setOpenAddModal] = React.useState(false);

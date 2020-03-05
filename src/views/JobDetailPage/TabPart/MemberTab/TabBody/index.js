@@ -35,10 +35,6 @@ const Text = styled(ColorTypo)`
   padding-left: 3px;
   display: inline;
 `
-// const StyledDiv = styled.span`
-//   display: flex;
-//   margin-bottom: 7px;
-// `
 
 const BadgeAdmin = styled(ColorTypo)`
   font-size: 11px;
@@ -65,22 +61,10 @@ const StyledListItem = styled(ListItem)`
     }
 `
 
-// const StyledMenuMember = styled.div`
-//   opacity: 0 ;
-//   ${StyledListItem}:hover & {
-//     opacity: 1;
-//   }
-// `
 const StyledAvatar = styled(Avatar)`
   width: 50px;
   height: 50px;
 `
-// const StyledMenuMember = styled.div`
-//   opacity: 0 ;
-//   ${StyledListItem}:hover & {
-//     opacity: 1;
-//   }
-// `
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -102,7 +86,6 @@ const getBadgeProjectRole = (projectRole) => {
   )
 }
 
-
 const MemberListItem = ({ name, role, projectRole, authorityList }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -123,7 +106,6 @@ const MemberListItem = ({ name, role, projectRole, authorityList }) => {
     setOpen(true);
     setAnchorEl(null);
   };
-
 
   return (
     <React.Fragment>

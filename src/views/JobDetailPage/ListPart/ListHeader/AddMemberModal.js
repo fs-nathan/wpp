@@ -19,8 +19,9 @@ import { mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
 import RoleMemberModal from './RoleMemberModal';
 import PriorityMemberModal from './PriorityMemberModal';
 import { WrapperContext } from '../..';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { createMember } from '../../../../actions/taskDetail/taskDetailActions';
 // import { Scrollbars } from 'react-custom-scrollbars';
 
 const StyledListItem = styled(ListItem)`
@@ -172,8 +173,12 @@ const StyledMenu = styled(TableCell)`
 `
 
 function ProjectMember(props) {
-    const valueMember = React.useContext(WrapperContext)
-    // console.log('hello', valueMember)
+    const dispatch = useDispatch();
+    const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+    function onClickAdd() {
+        // dispatch(createMember({ task_id: taskId, member_id }))
+        // console.log('hello', valueMember)
+    }
     return (
         <StyledListItem>
             <Avatar src={avatar} alt='avatar' />
@@ -187,7 +192,7 @@ function ProjectMember(props) {
                 label="Thêm"
                 onClick={props.valueContext.createMemberToTask}
             /> */}
-            <AddButton onClick={() => valueMember.createMemberToTask()}>Thêm</AddButton>
+            <AddButton onClick={onClickAdd}>Thêm</AddButton>
         </StyledListItem>
     )
 }

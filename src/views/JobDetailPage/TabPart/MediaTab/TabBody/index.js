@@ -15,11 +15,8 @@ import SearchInput from '../../../../../components/SearchInput';
 import colorPal from '../../../../../helpers/colorPalette';
 import iconDoc from '../../../../../assets/doc.png';
 import { Scrollbars } from 'react-custom-scrollbars';
-
-
-// const Container = styled.div`
-//   padding: 20px;
-// `;
+import { useSelector, useDispatch } from 'react-redux';
+import { searchFile, searchLink, searchImage } from '../../../../../actions/taskDetail/taskDetailActions';
 
 const SubHeader = styled(ListSubheader)`
   padding: 0;
@@ -29,17 +26,6 @@ const ImageMedia = styled(GridListTile)`
   margin-right: 7px;
 `
 
-// const Image = styled.img`
-//   height: 80px;
-//   width: 80px;
-//   margin: 0;
-//   padding: 0;
-//   border-radius: 5px;
-//   cursor: pointer;
-//   &:hover {
-//     opacity: 0.7
-//   }
-// `
 const ButtonIcon = styled(IconButton)`
   position: absolute;
   top: 0;
@@ -61,14 +47,6 @@ const Button = styled(IconButton)`
     }
   }
 `
-// const MediaImage = styled.div`
-//   width: auto !important;
-//   height: auto !important;
-// `
-// const WrapImage = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-// `
 
 const MenuListItem = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -105,9 +83,10 @@ const MenuListItem = () => {
 }
 
 const MediaBox = (props) => {
-  return (
+    const image = useSelector(state=>state.taskDetail.media.image);
+    return (
     <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
-      {props.image.images && props.image.images.map((image, key) => {
+      {image.images && image.images.map((image, key) => {
         return (
           <div className="media-image" key={key}>
             <GridListTile cols={5}>
@@ -131,8 +110,9 @@ const MediaBox = (props) => {
 }
 
 const MediaContainer = (props) => {
+  const dispatch = useDispatch();
   const searchImagesTabPart = (e) => {
-    props.searchImages(e.target.value)
+    dispatch(searchImage(e.target.value))
   }
   return (
     <React.Fragment>
@@ -165,19 +145,10 @@ const FileBoxStyledListItem = styled(ListItem)`
     opacity: 1;
   }
 `;
-// const FileName = styled.div`
-//   width: 300px;
-//   word-break: break-word;
-// `
-// const StyledMenuFile = styled.div`
-//   opacity: 0 ;
-//   ${FileBoxStyledListItem}:hover & {
-//     opacity: 1;
-//   }
-// `
 
 const FileBox = (props) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+    const file = useSelector(state=>state.taskDetail.media.file);
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -189,7 +160,7 @@ const FileBox = (props) => {
 
   return (
     <FileBoxStyledList>
-      {props.file.files && props.file.files.map((item, idx) => {
+      {file.files && file.files.map((item, idx) => {
         return (
 
           <FileBoxStyledListItem key={idx}>
@@ -237,8 +208,9 @@ const FileBox = (props) => {
 }
 
 const FileContainer = (props) => {
+  const dispatch = useDispatch();
   const searchFileTabPart = (e) => {
-    props.searchFile(e.target.value)
+    dispatch(searchFile(e.target.value))
   }
   return (
     <React.Fragment>
@@ -274,15 +246,10 @@ const Body = styled(Scrollbars)`
   height: 100%;
   
 `;
-// const StyledListItemLink = styled.div``
-// const StyledMenuLink = styled.div`
-//   opacity: 0 ;
-//   ${StyledListItemLink}:hover & {
-//     opacity: 1;
-//   }
-// `
+
 const LinkBox = (props) => {
   // console.log("link::",);
+    const link = useSelector(state=>state.taskDetail.media.links);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -296,7 +263,7 @@ const LinkBox = (props) => {
 
   return (
     <List subheader={<li />}>
-      {props.link.links && props.link.links.map((item, idx) => {
+      {link.links && link.links.map((item, idx) => {
         return (
           <div className="styled-list-item-link" key={idx}>
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
@@ -348,8 +315,9 @@ const LinkBox = (props) => {
 }
 
 const LinkContainer = (props) => {
+  const dispatch = useDispatch();
   const searchLinkTabPart = (e) => {
-    props.searchLink(e.target.value)
+    dispatch(searchLink(e.target.value))
   }
   return (
     <React.Fragment>

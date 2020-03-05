@@ -13,48 +13,9 @@ import SearchInput from '../../../../../components/SearchInput';
 import RemindModal from '../RemindModal';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
-// import { convertDateToText } from '../../../../../helpers/jobDetail/stringHelper';
+import { useSelector, useDispatch } from 'react-redux';
+import { searchRemind, deleteRemind } from '../../../../../actions/taskDetail/taskDetailActions';
 
-
-// const StyledList = styled.ul`
-//   margin-top: 20px;
-//   padding-inline-start: 0 !important;
-//   list-style-type: none;
-//   & > li {
-//     padding: 8px 0;
-//   }
-// `;
-
-// const StyledListItem = styled.li`
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const StyledTitleBox = styled.div`
-//   display: flex;
-//   align-items: center;
-//   & > *:not(:first-child) {
-//     margin-left: 5px;
-//   }
-// `;
-
-// const StyledContentBox = styled.div`
-//   margin: 10px 0 30px 30px;
-//   background-color: #f8f8f8;
-//   padding: 13px 15px;
-//   border-radius: 10px;
-//   font-weight: bold;
-// `;
-
-// const Container = styled.div`
-//   padding: 10px 20px;
-//   height: 100%;
-// `;
-
-// const Content = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-// `
 const Badge = styled(ColorChip)`
   border-radius: 3px !important;
 `
@@ -78,13 +39,10 @@ const Body = styled(Scrollbars)`
   height: 100%;
   
 `;
-// const StyledMenu = styled.div`
-//   opacity: 0 ;
-//   ${StyledListItem}:hover & {
-//     opacity: 1;
-//   }
-// `
+
 const MemberMenuLists = (props) => {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
@@ -104,7 +62,7 @@ const MemberMenuLists = (props) => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteRemindWByRemindId({remindId:props.item.id, taskId: props.taskId})
+    dispatch(deleteRemind({ remind_id: props.item.id, taskId: taskId }))
   }
 
   return (
@@ -149,16 +107,8 @@ const selector = [
     value: 1,
     label: 'Nhắc hẹn theo tiến độ thực tế',
   }
-  // ,
-  // {
-  //   value: 2,
-  //   label: 'Nhắc hẹn theo tiến độ kế hoạch',
-  // },
-  // {
-  //   value: 3,
-  //   label: 'Nhắc hẹn theo chênh lệch tiến độ hoàn thành giữa Kế hoạch - Thực tế',
-  // },
 ];
+
 const badges = [
   {
     value: 0,
@@ -179,6 +129,7 @@ const badges = [
 ]
 
 const RemindList = (props) => {
+  const remind = useSelector(state => state.taskDetail.taskRemind.remind);
   const [isRemind] = React.useState(true)
   const [open, _setOpen] = React.useState(false);
   const [elemState, _setElem] = React.useState(null)
@@ -225,7 +176,7 @@ const RemindList = (props) => {
   }
   return (
     <ul className="styled-list">
-      {props.remind.map((item, idx) => {
+      {remind.map((item, idx) => {
         return (
           <li className="styled-list-item" key={idx} {...props}>
             <div className="content-list-item">
@@ -256,14 +207,15 @@ const RemindList = (props) => {
 }
 
 function TabBody(props) {
+  const dispatch = useDispatch();
   const searchRemindTabPart = (e) => {
-    props.searchRemind(e.target.value)
+    dispatch(searchRemind(e.target.value))
   }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-tabbody-remind">
-        <SearchInput 
-          placeholder={'Nhập từ khóa'} 
+        <SearchInput
+          placeholder={'Nhập từ khóa'}
           fullWidth
           onChange={e => searchRemindTabPart(e)}
         />

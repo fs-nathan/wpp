@@ -18,6 +18,9 @@ import SearchInput from '../../../../../components/SearchInput';
 import DemandModal from '../DemandModal';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
+import { useSelector, useDispatch } from 'react-redux';
+import { taskIdSelector } from '../../../selectors';
+import { deleteCommand, updateCommand, searchDemand } from '../../../../../actions/taskDetail/taskDetailActions';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -164,6 +167,8 @@ const StyledList = styled.ul`
 `;
 
 const ListDemand = props => {
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
   const [open, setOpen] = React.useState(false);
   const [isEditDemand] = React.useState(true);
   const [selectedItem, setSelectedItem] = React.useState({
@@ -187,16 +192,20 @@ const ListDemand = props => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteCommandByCommandId({
-      command_id: selectedItem.id,
-      task_id: props.taskId
-    });
+    dispatch(deleteCommand({ command_id:selectedItem.id, task_id:taskId }))
   };
   const confirmUpdateCommand = ({ id, content, type }) => {
-    props.updateCommandByTaskId({ id, content, type, taskId: props.taskId });
+    dispatch(
+      updateCommand({
+        command_id: id,
+        content,
+        type,
+        taskId
+      })
+    )
   };
   const searchDemandTabPart = e => {
-    props.searchDemand(e.target.value);
+    dispatch(searchDemand(e.target.value))
   };
   return (
     <React.Fragment>
@@ -246,6 +255,9 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function TabBody(props) {
+  const commandItems = useSelector(state => state.taskDetail.taskCommand.commandItems);
+  const command = useSelector(state => state.taskDetail.taskCommand.command);
+  const decisionItems = useSelector(state => state.taskDetail.taskCommand.decisionItems);
   const [value, setValue] = React.useState(0);
 
   return (
@@ -254,42 +266,42 @@ function TabBody(props) {
         <StyledButtonGroup fullWidth variant="text">
           <ColorButton onClick={() => setValue(0)}>
             {value === 0 ? (
-              <ColorTypo bold>Tất cả ({props.command.length})</ColorTypo>
+              <ColorTypo bold>Tất cả ({command.length})</ColorTypo>
             ) : (
-              <ColorTypo color="gray">
-                Tất cả ({props.command.length})
+                <ColorTypo color="gray">
+                  Tất cả ({command.length})
               </ColorTypo>
-            )}
+              )}
           </ColorButton>
           <ColorButton onClick={() => setValue(1)}>
             {value === 1 ? (
-              <ColorTypo bold>Chỉ đạo ({props.commandItems.length})</ColorTypo>
+              <ColorTypo bold>Chỉ đạo ({commandItems.length})</ColorTypo>
             ) : (
-              <ColorTypo color="gray">
-                Chỉ đạo ({props.commandItems.length})
+                <ColorTypo color="gray">
+                  Chỉ đạo ({commandItems.length})
               </ColorTypo>
-            )}
+              )}
           </ColorButton>
           <ColorButton onClick={() => setValue(2)}>
             {value === 2 ? (
               <ColorTypo bold>
-                Quyết định ({props.decisionItems.length})
+                Quyết định ({decisionItems.length})
               </ColorTypo>
             ) : (
-              <ColorTypo color="gray">
-                Quyết định ({props.decisionItems.length})
+                <ColorTypo color="gray">
+                  Quyết định ({decisionItems.length})
               </ColorTypo>
-            )}
+              )}
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.command} />
+          <ListDemand {...props} activeArr={command} />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.commandItems} />
+          <ListDemand {...props} activeArr={commandItems} />
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.decisionItems} />
+          <ListDemand {...props} activeArr={decisionItems} />
         </Collapse>
       </div>
     </Body>

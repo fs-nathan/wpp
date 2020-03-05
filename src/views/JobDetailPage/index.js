@@ -93,34 +93,9 @@ function JobDetailPage(props) {
 const mapStateTo = state => {
   // console.log('state time task::::', state.taskDetail.commonTaskDetail.updateComplete);
   return {
-    // offer
-    // const offer = useSelector(state=>state.taskDetail.taskOffer.offer);
-    // const pendingItems = useSelector(state=>state.taskDetail.taskOffer.pendingItems);
-    // const approvedItems = useSelector(state=>state.taskDetail.taskOffer.approvedItems);
-    // remind
-    // const remind = useSelector(state=>state.taskDetail.taskRemind.remind);
-    // subtask
-    // media
-    // const image = useSelector(state=>state.taskDetail.media.image);
-    // const file = useSelector(state=>state.taskDetail.media.file);
-    // const link = useSelector(state=>state.taskDetail.media.links);
-    // command
-    // const command = useSelector(state=>state.taskDetail.taskCommand.command);
-    // const commandItems = useSelector(state=>state.taskDetail.taskCommand.commandItems);
-    // const decisionItems = useSelector(state=>state.taskDetail.taskCommand.decisionItems);
-    // fake ID
-    // location
-    // task Detail
-    // list group task
     // const listGroupTask = useSelector(state=>state.taskDetail.listGroupTask.listGroupTask);
-    // member
-
-    // const userRoles = useSelector(state=>state.taskDetail.taskMember.user_roles);
-
     // project group
     // const projectGroup = useSelector(state=>state.taskDetail.commonTaskDetail.projectGroups);
-    // project detail
-    // project list basic
     // static task
     // const staticTask = useSelector(state=>state.taskDetail.listDetailTask.staticTask);
     // const updateComplete = useSelector(state=>state.taskDetail.commonTaskDetail.updateComplet);
@@ -129,98 +104,15 @@ const mapStateTo = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // sub-task
-
-
-
-    // remind
-
-    createRemindWithTimeDetail: data =>
-      dispatch(taskDetailAction.postRemindWithTimeDetail(data)),
-    createRemindWithDurationDetail: data =>
-      dispatch(taskDetailAction.postRemindDuration(data)),
-    updateRemindWithTimeDetail: ({ data, taskId }) =>
-      dispatch(taskDetailAction.updateRemindWithTimeDetail({ data, taskId })),
-    updateRemindWithDurationDetail: ({ data, taskId }) =>
-      dispatch(taskDetailAction.updateRemindWithDuration({ data, taskId })),
-    deleteRemindWByRemindId: ({ remindId, taskId }) =>
-      dispatch(
-        taskDetailAction.deleteRemind({ remind_id: remindId, taskId: taskId })
-      ),
-    // offer
-    createOfferByTaskId: ({ data, taskId }) =>
-      dispatch(taskDetailAction.createOffer({ data, taskId })),
-    deleteOfferByTaskId: ({ offer_id, taskId }) =>
-      dispatch(taskDetailAction.deleteOffer({ offer_id, taskId })),
-    updateOfferById: ({ offerId, content, taskId }) =>
-      dispatch(taskDetailAction.updateOffer({ offerId, content, taskId })),
-    uploadDocumentToOfferById: (data, cb, taskId) =>
-      dispatch(taskDetailAction.uploadDocumentToOffer(data, cb, taskId)),
-    deleteDocumentToOfferById: (data, cb, taskId) =>
-      dispatch(taskDetailAction.deleteDocumentToOffer(data, cb, taskId)),
-    handleOfferById: ({ data, taskId }) =>
-      dispatch(taskDetailAction.handleOffer({ data, taskId })),
-    // command
-
-    createCommandByTaskId: ({ task_id, content, type }) =>
-      dispatch(taskDetailAction.createCommand({ task_id, content, type })),
-    updateCommandByTaskId: ({ id, content, type, taskId }) =>
-      dispatch(
-        taskDetailAction.updateCommand({
-          command_id: id,
-          content,
-          type,
-          taskId
-        })
-      ),
-    deleteCommandByCommandId: ({ command_id, task_id }) =>
-      dispatch(taskDetailAction.deleteCommand({ command_id, task_id })),
-    // Media Image File Link
-
-    // Location
-
-    // Task Detail - cot phai
-
-    // update Priority
-
     // Member
-
-    createMemberToTask: (task_id, member_id) =>
-      dispatch(taskDetailAction.createMember({ task_id, member_id })),
     deleteMemberToTask: (task_id, member_id) =>
       dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
     // Member Priority
     getGroupPermission: () => dispatch(taskDetailAction.getPermission()),
     updateGroupPermission: data =>
       dispatch(taskDetailAction.updatePermission(data)),
-    // Member Role
-    createRoleTask: (name, description) =>
-      dispatch(taskDetailAction.createRole({ name, description })),
-    updateRoleTask: (user_role_id, name, description) =>
-      dispatch(
-        taskDetailAction.updateRole({ user_role_id, name, description })
-      ),
-    deleteRoleTask: user_role_id =>
-      dispatch(taskDetailAction.deleteRole({ user_role_id })),
-
-    //time
-
-    // List Task Detail
-
-    //  List Group Task
-
-    //edit name and description task
-
     // get project group
     // getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
-
-    searchRemind: data => dispatch(taskDetailAction.searchRemind(data)),
-    searchImages: data => dispatch(taskDetailAction.searchImage(data)),
-    searchFile: data => dispatch(taskDetailAction.searchFile(data)),
-    searchLink: data => dispatch(taskDetailAction.searchLink(data)),
-    searchDemand: data => dispatch(taskDetailAction.searchDemand(data)),
-    searchOffer: data => dispatch(taskDetailAction.searchOffer(data)),
-
     //updateComplete
 
     closeNoticeModal: () => dispatch(closeNoticeModal()),

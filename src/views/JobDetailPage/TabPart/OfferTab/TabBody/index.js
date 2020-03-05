@@ -15,24 +15,8 @@ import ApproveModal from '../ApproveModal'
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import { DEFAULT_OFFER_ITEM } from '../../../../../helpers/jobDetail/arrayHelper'
-
-// const Container = styled.div`
-//   padding: 10px 20px 50px 20px;
-// `;
-
-// const ApprovedContainer = styled.div`
-//   margin-left: 30px;
-//   margin-top: 10px;
-// `;
-
-// const StyledButton = styled(({ color, ...rest }) => <Button {...rest} />)`
-//   font-size: 11px;
-//   border-radius: 999px;
-//   & > span {
-//     color : ${props => props.color ? props.color : 'rgba(0, 0, 0, .4)'};
-//       display: flex;
-//   }
-// `
+import { useSelector, useDispatch } from 'react-redux';
+import { searchOffer, deleteOffer, handleOffer } from '../../../../../actions/taskDetail/taskDetailActions';
 
 const StyledButton = styled(Button)`
   box-shadow: none;
@@ -62,14 +46,9 @@ const UserHanderAvatar = styled(Avatar)`
   width: 25px;
   height: 25px;
 `
-// const StyledMenuApprove = styled.div`
-//   opacity: 0 ;
-//   ${ApprovedContainer}:hover & {
-//     opacity: 1;
-//   }
-// `
+
 const BadgeOffer = (status) => {
-  let label, color ;
+  let label, color;
   if (status === 1) {
     label = "Duyệt"
     color = "bluelight"
@@ -79,11 +58,13 @@ const BadgeOffer = (status) => {
   }
   return (
     <Badge component='small' color={color} badge size='small' label={label} />
-  ) 
+  )
 }
 
 const ApprovedBox = (props) => {
-  // const [anchorEl, setAnchorEl] = React.useState(null);
+  const dispatch = useDispatch();
+  const offer = useSelector(state => state.taskDetail.taskOffer.offer);
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
   // const handleClick = (evt) => {
   //   setAnchorEl(evt.currentTarget);
@@ -104,45 +85,31 @@ const ApprovedBox = (props) => {
   };
 
   const DENIED_VALUE = {
-    offer_id: props.offer.id,
+    offer_id: offer.id,
     content: "Từ chối phê duyệt",
     status: 2
   }
- 
+
   return (
     <React.Fragment>
       {props.approved && (
         <React.Fragment>
           <div className="approved-container">
             <div className="styled-title-box-ot">
-              <UserHanderAvatar src={props.offer.dataHander.user_hander_avatar} alt='avatar' />
+              <UserHanderAvatar src={offer.dataHander.user_hander_avatar} alt='avatar' />
               <div>
-                <StyleContent variant='body1' bold>{props.offer.dataHander.user_hander_name}</StyleContent>
+                <StyleContent variant='body1' bold>{offer.dataHander.user_hander_name}</StyleContent>
                 <ColorTypo variant='caption'>
                   {/* <Badge component='small' color='bluelight' badge size='small' label={label} /> */}
-                  {BadgeOffer(props.offer.status)}
+                  {BadgeOffer(offer.status)}
                 </ColorTypo>
               </div>
-              {/* <div className="styled-menu-approve">
-                <ButtonIcon size='small' onClick={handleClick} >
-                  <Icon path={mdiDotsHorizontal} size={1} />
-                </ButtonIcon>
-              </div> */}
             </div>
             <div className="styled-content-box-ot">
-              <ColorTypo variant='caption'>{props.offer.dataHander.date_hander}</ColorTypo>
-              <StyleContent >{props.offer.dataHander.content_hander}</StyleContent>
+              <ColorTypo variant='caption'>{offer.dataHander.date_hander}</ColorTypo>
+              <StyleContent >{offer.dataHander.content_hander}</StyleContent>
             </div>
           </div>
-          {/* <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={() => props.handleClickOpen()}>Chỉnh sửa</MenuItem>
-            <MenuItem onClick={handleClose}>Xóa</MenuItem>
-          </Menu>  */}
         </React.Fragment>
       )}
       {!props.approved && (
@@ -152,7 +119,7 @@ const ApprovedBox = (props) => {
               <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
               <Button variant="outlined" size="small"
                 onClick={() => {
-                  props.handleOfferById({data: DENIED_VALUE, taskId: props.taskId})
+                  dispatch(handleOffer({ data:DENIED_VALUE, taskId }))
                 }}
               >Từ chối</Button>
               <span />
@@ -165,31 +132,6 @@ const ApprovedBox = (props) => {
   );
 }
 
-// const StyledListItem = styled.li`
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const StyledTitleBox = styled.div`
-//   display: flex;
-//   align-items: center;
-//   & > *:not(:first-child) {
-//     margin-left: 5px;
-//   }
-//   & > *:last-child   {
-//     margin-left: auto;
-//   }
-// `;
-
-// const StyledContentBox = styled.div`
-//   margin-left: 30px;
-//   margin-top: 10px;
-//   background-color: #f9f9f9;
-//   padding: 8px 10px;
-//   border-radius: 5px;
-//   font-weight: bold;
-// `;
-
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -200,20 +142,14 @@ const ButtonIcon = styled(IconButton)`
     }
   }
 `
-// const WrapperCommon = styled.div``
-// const StyledMenuOffer = styled.div`
-//   opacity: 0 ;
-//   ${WrapperCommon}:hover & {
-//     opacity: 1;
-//   }
-// `
+
 const CustomListItem = (props) => {
-  // console.log("props delete::::", props)
+  const offer = useSelector(state => state.taskDetail.taskOffer.offer);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
     content, dataHander, date_create,
     user_create_avatar, user_create_name, user_can_handers
-  } = props.offer
+  } = offer
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -286,8 +222,9 @@ const StyledList = styled.ul`
 `;
 
 const ListOffer = (props) => {
+  const dispatch = useDispatch();
   const searchOfferTabPart = (e) => {
-    props.searchOffer(e.target.value)
+    dispatch(searchOffer(e.target.value))
   }
   return (
     <React.Fragment>
@@ -327,7 +264,11 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function TabBody(props) {
-
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const offer = useSelector(state => state.taskDetail.taskOffer.offer);
+  const pendingItems = useSelector(state => state.taskDetail.taskOffer.pendingItems);
+  const approvedItems = useSelector(state => state.taskDetail.taskOffer.approvedItems);
 
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -349,8 +290,7 @@ function TabBody(props) {
   };
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const confirmDelete = () => {
-
-    props.deleteOfferByTaskId({offer_id: selectedItem.offer_id, taskId: props.taskId})
+    dispatch(deleteOffer({ offer_id: selectedItem.offer_id, taskId }))
   }
   const handleOpenModalDelete = item => {
     setSelectedItem({ ...item, offer_id: item.id })
@@ -369,22 +309,22 @@ function TabBody(props) {
             onClick={evt => handleChange(evt, 0)}
           >
             {value === 0
-              ? <ColorTypo bold>Tất cả({props.offer.length})</ColorTypo>
-              : <ColorTypo color='gray'>Tất cả ({props.offer.length})</ColorTypo>}
+              ? <ColorTypo bold>Tất cả({offer.length})</ColorTypo>
+              : <ColorTypo color='gray'>Tất cả ({offer.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 1)}
           >
             {value === 1
-              ? <ColorTypo bold>Đã duyệt ({props.approvedItems.length})</ColorTypo>
-              : <ColorTypo color='gray'>Đã duyệt ({props.approvedItems.length})</ColorTypo>}
+              ? <ColorTypo bold>Đã duyệt ({approvedItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>Đã duyệt ({approvedItems.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 2)}
           >
             {value === 2
-              ? <ColorTypo bold>Chờ duyệt ({props.pendingItems.length})</ColorTypo>
-              : <ColorTypo color='gray'>Chờ duyệt ({props.pendingItems.length})</ColorTypo>}
+              ? <ColorTypo bold>Chờ duyệt ({pendingItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>Chờ duyệt ({pendingItems.length})</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
@@ -394,7 +334,7 @@ function TabBody(props) {
             handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
             handleClickEditItem={(data) => handleClickEditItem(data)}
             {...props}
-            offer={props.offer}
+            offer={offer}
           />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
@@ -404,7 +344,7 @@ function TabBody(props) {
             handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
             handleClickEditItem={(data) => handleClickEditItem(data)}
             {...props}
-            offer={props.approvedItems}
+            offer={approvedItems}
           />
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
@@ -414,7 +354,7 @@ function TabBody(props) {
             handleOpenModalDelete={(data) => handleOpenModalDelete(data)}
             handleClickEditItem={(data) => handleClickEditItem(data)}
             {...props}
-            offer={props.pendingItems}
+            offer={pendingItems}
           />
         </Collapse>
         <OfferModal

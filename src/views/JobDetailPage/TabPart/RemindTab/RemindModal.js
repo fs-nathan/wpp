@@ -25,6 +25,8 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
+import { useDispatch, useSelector } from 'react-redux';
+import { postRemindWithTimeDetail, postRemindDuration, updateRemindWithTimeDetail, updateRemindWithDuration } from '../../../../actions/taskDetail/taskDetailActions';
 const selector = [
   {
     value: 0,
@@ -131,7 +133,7 @@ const InputDate = styled(KeyboardDatePicker)`
   } 
 `
 // const DivTime = styled.span`
-    
+
 //   `
 // const SelectInput = styled.div`
 //     margin-top: 8px;
@@ -160,7 +162,7 @@ const DurationButton = styled(Button)`
   margin-left: 20px;
   width: 90px;
   box-shadow: none;
-`  
+`
 const styles = theme => ({
   root: {
     margin: 0,
@@ -216,32 +218,14 @@ const DEFAULT_DATA = {
   type_remind: REMIND_SCHEDULE_TYPE,
   duration: [],
 }
-// const DATA_REMIND_DURATION = {
-//   id: "",
-//   type: REMIND_TIME_TYPE,
-//   content: "",
-//   duration: REMINDER_PROGRESS,
-// }
 
+const KEYCODE_ENTER = 13;
 
 function RemindModal(props) {
-  const KEYCODE_ENTER = 13
-  const valueRemind = React.useContext(WrapperContext)
-  // console.log('valueRemind', valueRemind.taskId)
-  // const classes = useStyles()
-  // bien menu item
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [data, setData] = React.useState(DEFAULT_DATA)
-  // const [dataDuration, setDataDuration] = React.useState(DATA_REMIND_DURATION)
   const [isCreateModal] = React.useState(props.isCreate)
-
-  // Life cycle
-  // React.useEffect(() => {
-  //   if (props.dataDuration) {
-  //     let templateData = props.dataDuration
-  //     if (!templateData.duration) templateData.duration = REMINDER_PROGRESS
-  //     setDataDuration(templateData)
-  //   }
-  // }, [props.dataDuration])
 
   React.useEffect(() => {
     if (props.data) {
@@ -259,12 +243,6 @@ function RemindModal(props) {
     setData(prevState => ({ ...prevState, [attName]: value }))
   }
 
-  // const createRemind = (data) => {
-  //   console.log(data);
-
-  //   valueRemind.createRemindWithTimeDetail(data)
-  // }
-
   const handlePressConfirm = () => {
     // TODO: validate
     const dataUpdateRemind = {
@@ -275,7 +253,7 @@ function RemindModal(props) {
       type_remind: data.type_remind
     }
     const dataCreateRemindDuration = {
-      task_id: valueRemind.taskId,
+      task_id: taskId,
       content: data.content,
       duration: data.duration
     }
@@ -286,21 +264,28 @@ function RemindModal(props) {
     }
     if (isCreateModal) {
       // Case 1: Call create remind with time
-      if (data.type === REMIND_TIME_TYPE) { valueRemind.createRemindWithTimeDetail({ taskId: valueRemind.taskId, data }) }
+      if (data.type === REMIND_TIME_TYPE) {
+        dispatch(postRemindWithTimeDetail({ taskId: taskId, data }))
+      }
       // Case 2: Call create remind with progress
-      else { valueRemind.createRemindWithDurationDetail(dataCreateRemindDuration) }
+      else {
+        dispatch(postRemindDuration(dataCreateRemindDuration))
+      }
     } else {
       // Case 3: Call update remind with time
-      if (data.type === REMIND_TIME_TYPE) { valueRemind.updateRemindWithTimeDetail({ data: dataUpdateRemind, taskId: valueRemind.taskId }) }
+      if (data.type === REMIND_TIME_TYPE) {
+        dispatch(updateRemindWithTimeDetail({ data: dataUpdateRemind, taskId }))
+      }
       // Case 4: Call update remind with progress
-      else { valueRemind.updateRemindWithDurationDetail({  data: dataUpdateRemindDuration, taskId: valueRemind.taskId }) }
+      else {
+        dispatch(updateRemindWithDuration({ data: dataUpdateRemindDuration, taskId }))
+      }
     }
-
     // Close modal
     props.handleClickClose()
   }
   const [value, setValue] = React.useState('')
-// console.log("daataaA::::", data)
+  // console.log("daataaA::::", data)
 
   const handleChangeDuration = value => {
     if (isValidDuration(value) || value === "")
@@ -343,14 +328,14 @@ function RemindModal(props) {
     // Close modal
     props.handleClickClose()
   }
-  
+
 
   return (
     <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={handleCloseModal} fullWidth>
       <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
         Nhắc hẹn
       </DialogTitle>
-      <DialogContent dividers style={{overflow: 'hidden'}}>
+      <DialogContent dividers style={{ overflow: 'hidden' }}>
         <TitleText component="div">Loại nhắc hẹn</TitleText>
         <InputSelect
           commandSelect={selector}
