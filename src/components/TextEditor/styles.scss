@@ -7,9 +7,16 @@
     padding: 4px;
     margin: 2px;
   }
-}
-
-.RichEditor-root {
-  border-top: 1px solid rgba(0, 0, 0, 0.23);
-  min-height: 6em;
+  &--readOnly {
+    border: none;
+  }
+  .RichEditor-root {
+    border-top: 1px solid rgba(0, 0, 0, 0.23);
+    min-height: 6em;
+    color: initial;
+    font-weight: initial;
+    &--readOnly {
+      border: none;
+    }
+  }
 }

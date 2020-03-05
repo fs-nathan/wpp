@@ -6,10 +6,14 @@ import {
   // mdiPin, 
   mdiClockAlert
 } from '@mdi/js';
-import { List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem } from '@material-ui/core';
+import {
+  List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem
+} from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
+import { EditorState, convertFromRaw, ContentState } from 'draft-js';
+
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorButton from '../../../../../components/ColorButton';
@@ -18,11 +22,13 @@ import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import colorPal from '../../../../../helpers/colorPalette';
 import { isLongerContent, getCollapseText } from '../../../../../helpers/jobDetail/stringHelper'
 import Tooltip from '@material-ui/core/Tooltip';
-import { WrapperContext } from '../../../index'
+
 import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper'
 import { useSelector, useDispatch } from 'react-redux';
 import { updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
 import { taskIdSelector } from '../../../selectors';
+import TextEditor from '../../../../../components/TextEditor';
+
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
   & > * > *:first-child {
@@ -58,10 +64,6 @@ margin-bottom: 6px;
   }
 `;
 
-// const SimpleSmallProgressBarWrapper = styled.div`
-//   width: 150px;
-// `;
-
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
   border-radius: 3px !important
@@ -74,22 +76,7 @@ const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
 `;
-// const ButtonText = styled.button`
-//   background: none;
-//   border: none;
-//   font-size: 14px;
-//   font-weight: 500;
-//   padding: 0;
-//   color: #a6a6a6;
-//   cursor: pointer;
-//   padding-top: 10px;
-//   &:focus {
-//     outline: none;
-//   }
-//   &:active {
-//     outline: none;
-//   }
-// `
+
 const ListItemTabPart = styled(ListItem)`
   display: flex;
   flex-direction: column;
@@ -120,8 +107,6 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
     handleChangeItem(index)
     handleClose()
   }
-  // console.log('values::::', values);
-
 
   if (values.length === 0) return (
     <ColorButton variantColor='teal' size='small' aria-haspopup="true" variant="outlined" style={{ margin: '0 15px 10px 0' }}
@@ -181,6 +166,21 @@ function DropdownButton({ values, handleChangeItem, selectedIndex }) {
   );
 }
 
+const getEditorData = (value) => {
+  try {
+    const raw = JSON.parse(value);
+    const data = EditorState.createWithContent(convertFromRaw(raw));
+    return data;
+  } catch (e) {
+    try {
+      const data = EditorState.createWithContent(ContentState.createFromText(value));
+      return data;
+    } catch (e) {
+      return EditorState.createEmpty();
+    }
+  }
+}
+
 function Content({ value }) {
   const [isOpen, setOpen] = React.useState(false)
   const handlePressViewButton = () => {
@@ -195,7 +195,11 @@ function Content({ value }) {
               <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>Mô tả</ColorTypo>
             }
             secondary={
-              <ColorTypo component='span' style={{ fontSize: 15 }}>{value}</ColorTypo>
+              <TextEditor isReadOnly
+                value={getEditorData(value)}
+              >
+              </TextEditor>
+              // <ColorTypo component='span' style={{ fontSize: 15 }}>{value}</ColorTypo>
             }
           />
           :
@@ -205,9 +209,13 @@ function Content({ value }) {
                 <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>Mô tả</ColorTypo>
               }
               secondary={
-                <ColorTypo component='span' style={{ fontSize: 15 }}>
-                  {isOpen ? value : getCollapseText(value)}
-                </ColorTypo>
+                // <ColorTypo component='span' style={{ fontSize: 15 }}>
+                //   {isOpen ? value : getCollapseText(value)}
+                // </ColorTypo>
+                <TextEditor isReadOnly
+                  value={getEditorData(value)}
+                >
+                </TextEditor>
               }
 
             />
@@ -245,30 +253,6 @@ const HtmlTooltip = withStyles(theme => ({
     border: '1px solid #dadde9',
   },
 }))(Tooltip);
-// const StyledContextStatus = styled.div`
-//   & > *:first-child {
-//     display: flex;
-//     align-items: center;
-//     & > p:nth-child(2) {
-//       color: #000;
-//       margin-left: 8px;
-//       margin-right: 5px;
-//     }
-//     & > p:nth-child(3) {
-//       color: #0ce8b5;
-//       font-size: 13px;
-//     }
-//   }
-//   & > *:last-child {
-//     color: #969696;
-//     font-weight: 300;
-//     font-size: 12px;
-//     line-height: 1.8;
-//     margin: 3px 5px 0 0;
-//   }
-// `
-// const WrapperButton = styled.div`
-// `
 
 const ModalStatus = (status) => {
 
@@ -324,17 +308,7 @@ const ModalStatus = (status) => {
     </React.Fragment>
   )
 }
-// const MemberTask = (obj) => {
-//   const [value, setValue] = React.useState('')
-//   if (obj.members.length <= 6) {
-//     setValue(false)
-//   } else {
-//     setValue(true)
-//   }
-//   return (
-//     <AvatarCircleList total={10} display={6} />
-//   )
-// }
+
 const ButtonDropdown = styled(DropdownButton)`
   display: ${props =>
     props.show ? 'block' : 'none'
@@ -376,8 +350,6 @@ function TabBody(props) {
       priority_code
     })
   }, [detailTask])
-  // console.log("data detail task:::::", value.detailTask)
-  // console.log("data List TASK:::::", value.listTaskDetail.tasks)
 
   function onChangeItem(idx) {
     dispatch(updatePriority({ task_id: taskId, priority: idx }))
@@ -392,7 +364,7 @@ function TabBody(props) {
               Tên công việc
            </ColorTypo>
             <ContentText component='span'>
-              {detailTask && <span>{detailTask.name}</span>}
+              {detailTask && detailTask.name}
               {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
             </ContentText>
           </ListItemText>
