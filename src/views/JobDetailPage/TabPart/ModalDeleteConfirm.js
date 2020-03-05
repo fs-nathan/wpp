@@ -21,7 +21,7 @@ export default function ModalDeleteConfirm(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleCloseModalDelete} color="#222">
+          <Button onClick={props.handleCloseModalDelete} style={{ color: "#222" }}>
             Hủy
           </Button>
           <Button

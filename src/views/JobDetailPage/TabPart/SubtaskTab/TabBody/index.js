@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiCheck, mdiDragVertical, mdiDotsVertical, mdiSend } from '@mdi/js';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { List, ListItem, ListItemText, Avatar, IconButton, Menu, MenuItem, InputBase } from '@material-ui/core';
+import {
+  List, ListItem, ListItemText, Avatar, IconButton, Menu, MenuItem, InputBase
+} from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import SearchInput from '../../../../../components/SearchInput';
@@ -12,8 +14,11 @@ import colorPal from '../../../../../helpers/colorPalette';
 import SubtaskModal from '../SubtaskModal'
 import { Scrollbars } from 'react-custom-scrollbars'
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
-import { useSelector } from 'react-redux';
-// import { WrapperContext } from '../../../index'  
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  postSubTask, searchSubTask, deleteSubTask, completeSubTask
+} from '../../../../../actions/taskDetail/taskDetailActions';
+
 const Container = styled.div`
   padding: 0 0 50px 0;
 `;
@@ -103,8 +108,9 @@ const StyledMenu = styled.div`
   }
 `
 
-
 function AllSubtaskListItem(props) {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   // bien chinh sua cong viec con
   // const value = React.useContext(WrapperContext)
   // useEffect(() => 
@@ -141,7 +147,21 @@ function AllSubtaskListItem(props) {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteSubTaskByTaskId({ subTaskId: props.task.id, taskId: props.taskId })
+    dispatch(
+      deleteSubTask({
+        sub_task_id: props.task.id,
+        taskId: taskId
+      })
+    )
+  }
+
+  function onClickCompleteTask() {
+    dispatch(
+      completeSubTask({
+        sub_task_id: props.task.id,
+        taskId: taskId
+      })
+    )
   }
 
   return (
@@ -163,9 +183,7 @@ function AllSubtaskListItem(props) {
             !isHover
               ? <Avatar src={props.task.user_create_avatar} alt='avatar' />
               :
-              <ButtonIcon onClick={() => {
-                props.completeSubTaskByTaskId({ subTaskId: props.task.id, taskId: props.taskId })
-              }}>
+              <ButtonIcon onClick={onClickCompleteTask}>
                 <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
               </ButtonIcon>
           }
@@ -188,13 +206,19 @@ function AllSubtaskListItem(props) {
               <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
             </Menu>
           </StyledMenu>
-          <SubtaskModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} task={props.task.id} name={props.task.name} {...props} />
+          <SubtaskModal isOpen={open}
+            handleClickClose={handleClickClose}
+            handleClickOpen={handleClickOpen}
+            task={props.task.id}
+            name={props.task.name}
+            {...props}
+          />
           <ModalDeleteConfirm
             confirmDelete={confirmDelete}
             isOpen={isOpenDelete}
             handleCloseModalDelete={handleCloseModalDelete}
             handleOpenModalDelete={handleOpenModalDelete}
-            // task={props.task.id}
+            // task={task.id}
             {...props}
           />
         </AllSubtaskListItemContainer>
@@ -343,7 +367,7 @@ const FinishedSubtaskList = (props) => {
     setOpenDel(false);
   };
   const confirmDelete = () => {
-    // props.deleteSubTaskByTaskId(props.task)
+    // deleteSubTaskByTaskId(task)
     // console.log('taskId::::', props);
   }
 
@@ -425,6 +449,8 @@ const Body = styled(Scrollbars)`
 `;
 
 function TabBody(props) {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   // const [data, setData] = React.useState({ name: "" })
   const [name, setName] = React.useState("")
 
@@ -436,11 +462,11 @@ function TabBody(props) {
   }
 
   const createSubTask = (taskId, name) => {
-    props.postSubTaskByTaskId(taskId, name)
+    dispatch(postSubTask({ task_id: taskId, name }))
     setName("")
   }
   const searchSubTaskTabPart = (e) => {
-    props.searchSubTask(e.target.value)
+    dispatch(searchSubTask(e.target.value))
   }
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -456,7 +482,7 @@ function TabBody(props) {
             <ButtonIcon
               style={{ paddingBottom: 9, marginRight: 14 }}
               onClick={() => {
-                createSubTask(props.taskId, name)
+                createSubTask(taskId, name)
               }}>
               <Icon path={mdiSend} size={1} color={'gray'} />
             </ButtonIcon>

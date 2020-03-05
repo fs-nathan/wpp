@@ -2,17 +2,11 @@ import React, { useEffect } from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiChevronLeft   } from '@mdi/js';
+import { mdiChevronLeft } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
-import { WrapperContext } from '../../../index'
-// const Container = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between; 
-//   background-color: #fff;
-//   height: 85px;
-//   border-bottom: 1px solid rgba(0, 0, 0, .1);
-// `;
+import { useDispatch, useSelector } from 'react-redux';
+import { getLocationTabPart } from '../../../../../actions/taskDetail/taskDetailActions';
+
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -25,18 +19,20 @@ const ButtonIcon = styled(IconButton)`
 `
 
 function TabHeader({ setShow }) {
-  const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+
   useEffect(() => {
-    value.getLocationByTaskId(value.taskId)
+    dispatch(getLocationTabPart({ taskId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  }, [])
   return (
     <div className="container-normal-tabheader">
       <ButtonIcon onClick={() => setShow(0)}>
-        <Icon path={mdiChevronLeft } size={1}/>
+        <Icon path={mdiChevronLeft} size={1} />
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Chia sẻ vị trí</ColorTypo>
-      <span style={{ width: 30}}></span>
+      <span style={{ width: 30 }}></span>
     </div>
   );
 }

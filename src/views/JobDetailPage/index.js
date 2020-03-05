@@ -109,7 +109,6 @@ const mapStateTo = state => {
     // const commandItems = useSelector(state=>state.taskDetail.taskCommand.commandItems);
     // const decisionItems = useSelector(state=>state.taskDetail.taskCommand.decisionItems);
     // fake ID
-    // const taskId = useSelector(state=>state.taskDetail.commonTaskDetail.activeTaskId);
     // location
     // task Detail
     // list group task
@@ -132,26 +131,8 @@ const mapDispatchToProps = dispatch => {
   return {
     // sub-task
 
-    postSubTaskByTaskId: (taskId, name) =>
-      dispatch(taskDetailAction.postSubTask({ task_id: taskId, name })),
-    updateSubTaskByTaskId: (subTaskId, name, taskId) =>
-      dispatch(
-        taskDetailAction.updateSubTask({ sub_task_id: subTaskId, name, taskId })
-      ),
-    deleteSubTaskByTaskId: ({ subTaskId, taskId }) =>
-      dispatch(
-        taskDetailAction.deleteSubTask({
-          sub_task_id: subTaskId,
-          taskId: taskId
-        })
-      ),
-    completeSubTaskByTaskId: ({ subTaskId, taskId }) =>
-      dispatch(
-        taskDetailAction.completeSubTask({
-          sub_task_id: subTaskId,
-          taskId: taskId
-        })
-      ),
+
+
     // remind
 
     createRemindWithTimeDetail: data =>
@@ -197,8 +178,7 @@ const mapDispatchToProps = dispatch => {
     // Media Image File Link
 
     // Location
-    getLocationByTaskId: taskId =>
-      dispatch(taskDetailAction.getLocationTabPart({ taskId })),
+
     // Task Detail - cot phai
 
     // update Priority
@@ -234,7 +214,6 @@ const mapDispatchToProps = dispatch => {
     // get project group
     // getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
 
-    searchSubTask: data => dispatch(taskDetailAction.searchSubTask(data)),
     searchRemind: data => dispatch(taskDetailAction.searchRemind(data)),
     searchImages: data => dispatch(taskDetailAction.searchImage(data)),
     searchFile: data => dispatch(taskDetailAction.searchFile(data)),
