@@ -28,7 +28,7 @@ function AllProjectTable({
   isDefault = false,
 }) {
 
-  const { setTimeRange, setProjectGroupId } = React.useContext(ProjectPageContext);
+  const { setTimeRange, setProjectGroupId, setStatusProjectId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
 
   React.useEffect(() => {
@@ -129,6 +129,7 @@ function AllProjectTable({
       <ProjectSettingModal 
         open={openSetting} 
         setOpen={setOpenSetting} 
+        setStatusProjectId={setStatusProjectId}
         {...settingProps}
       />
       <AlertModal

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 
 const detailRoom = state => state.room.detailRoom;
 const getUserOfRoom = state => state.room.getUserOfRoom;
@@ -12,14 +12,14 @@ export const roomSelector = createSelector(
     const { data: { room }, loading: detailRoomLoading, error: detailRoomError } = detailRoom;
     const { data: { users }, loading: getUserOfRoomLoading, error: getUserOfRoomError } = getUserOfRoom;
     const { data: { positions }, loading: listPositionLoading, error: listPositionError } = listPosition;  
-    const positionNames = positions.map(position => get(position, 'name'));
     const newRoom = {
       ...room,
       users: users.map(user => ({
         ...user,
-        position: positionNames.includes(get(user, 'position', '___no-position___')) 
-          ? get(user, 'position')
-          : undefined,
+        position: get(
+          find(positions, { id: get(user, 'position_id') }),
+          'name',
+        )
       })),
       number_member: users.length,
     }

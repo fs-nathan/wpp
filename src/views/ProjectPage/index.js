@@ -8,6 +8,7 @@ import { listTask } from '../../actions/task/listTask';
 import { listGroupTask } from '../../actions/groupTask/listGroupTask';
 import { getAllGroupTask } from '../../actions/groupTask/getAllGroupTask';
 import { listUserRole } from '../../actions/userRole/listUserRole';
+import { detailStatus } from '../../actions/project/setting/detailStatus';
 import ProjectDetail from './LeftPart/ProjectDetail';
 import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
 import GroupTaskSlide from './LeftPart/GroupTaskSlide';
@@ -24,6 +25,7 @@ import {
   CREATE_TASK, DELETE_TASK, SORT_TASK,
   SHOW_PROJECT, HIDE_PROJECT,
   CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
+  UPDATE_STATUS_COPY, UPDATE_STATUS_DATE,
 } from '../../constants/events';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -39,6 +41,7 @@ function ProjectPage({
   doListTask,
   doListGroupTask, doGetAllGroupTask,
   doListUserRole,
+  doDetailStatus,
 }) {
 
   React.useEffect(() => {
@@ -234,10 +237,35 @@ function ProjectPage({
     }
   }, [doListUserRole]);
 
+  const [statusProjectId, setStatusProjectId] = React.useState(null);
+
+  React.useEffect(() => {
+    if (statusProjectId !== null) {
+      doDetailStatus({
+        projectId: statusProjectId,
+      });
+
+      const reloadDetailStatus = () => {
+        doDetailStatus({
+          projectId: statusProjectId,
+        }, true);
+      }
+  
+      CustomEventListener(UPDATE_STATUS_COPY, reloadDetailStatus);
+      CustomEventListener(UPDATE_STATUS_DATE, reloadDetailStatus);
+  
+      return () => {
+        CustomEventDispose(UPDATE_STATUS_COPY, reloadDetailStatus);
+        CustomEventDispose(UPDATE_STATUS_DATE, reloadDetailStatus);
+      }
+    }
+  }, [statusProjectId, doDetailStatus]);
+
   return (
     <Provider value={{
       setProjectId,
       setTimeRange,
+      setStatusProjectId,
     }}>
       <Route 
         path='/project'
@@ -281,6 +309,7 @@ const mapDispatchToProps = dispatch => {
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doGetAllGroupTask: (quite) => dispatch(getAllGroupTask(quite)),
     doListUserRole: (quite) => dispatch(listUserRole(quite)),
+    doDetailStatus: ({ projectId }, quite) => dispatch(detailStatus({ projectId }, quite)),
   }
 };
 

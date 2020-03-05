@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Context as ProjectPageContext } from '../../index';
 import AlertModal from '../../../../components/AlertModal';
 import CreateNewTaskModal from '../../Modals/CreateNewTask';
+import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
 import { deleteTask } from '../../../../actions/task/deleteTask';
@@ -22,7 +23,7 @@ function AllTaskTable({
   doSortTask,
 }) {
 
-  const { setProjectId, setTimeRange } = React.useContext(ProjectPageContext);
+  const { setProjectId, setTimeRange, setStatusProjectId } = React.useContext(ProjectPageContext);
   const { projectId } = useParams();
 
   React.useEffect(() => {
@@ -32,6 +33,8 @@ function AllTaskTable({
   const [timeType, setTimeType] = React.useState(5);
 
   const [openCreate, setOpenCreate] = React.useState(false);
+  const [openSetting, setOpenSetting] = React.useState(false);
+  const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
 
@@ -39,6 +42,10 @@ function AllTaskTable({
     switch (type) {
       case 'CREATE': 
         setOpenCreate(true);
+        return;
+      case 'SETTING':
+        setOpenSetting(true);
+        setSettingProps(props);
         return;
       case 'ALERT':
         setOpenAlert(true);
@@ -82,6 +89,12 @@ function AllTaskTable({
       <CreateNewTaskModal 
         open={openCreate} 
         setOpen={setOpenCreate}
+      />
+      <ProjectSettingModal 
+        open={openSetting} 
+        setOpen={setOpenSetting} 
+        setStatusProjectId={setStatusProjectId}
+        {...settingProps}
       />
       <AlertModal
         open={openAlert}

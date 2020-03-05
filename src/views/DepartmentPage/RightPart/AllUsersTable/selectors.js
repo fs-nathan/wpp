@@ -12,7 +12,6 @@ export const roomsSelector = createSelector(
     const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
     const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
     const { data: { positions }, loading: listPositionLoading, error: listPositionError } = listPosition;  
-    const positionNames = positions.map(position => get(position, 'name'));
     const newRooms = group.map(curGroup => ({
       ...curGroup,
       ...find(rooms, { 'id': get(curGroup, 'id') }),
@@ -20,9 +19,10 @@ export const roomsSelector = createSelector(
       users: get(curGroup, 'users', [])
         .map(user => ({
           ...user,
-          position: positionNames.includes(get(user, 'position', '___no-position___')) 
-            ? get(user, 'position')
-            : undefined,
+          position: get(
+            find(positions, { id: get(user, 'position_id') }),
+            'name',
+          )
         })),
     }));
     return {

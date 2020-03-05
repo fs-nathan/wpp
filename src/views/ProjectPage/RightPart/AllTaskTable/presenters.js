@@ -158,8 +158,10 @@ function AllTaskTable({
                 toggleExpand: () => handleExpand(!expand),
               },
               moreMenu: [{
-                label: 'Cài đặt bảng',
-                onClick: () => null,
+                label: 'Cài đặt dự án',
+                onClick: () => handleOpenModal('SETTING', {
+                  curProject: project.project,
+                }),
               }, {
                 label: `${get(project.project, 'visibility') ? 'Ẩn dự án' : 'Bỏ ẩn dự án'}`,
                 onClick: () => handleShowOrHideProject(project.project),
