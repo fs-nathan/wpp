@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { get } from 'lodash';
 import { 
-  ChartBox, ChartDrawer, ChartTitle, CustomChart, ChartInfoBox
+  ChartBox, ChartDrawer, ChartTitle, CustomChart, ChartInfoBox, ChartPlacedolder
 } from '../../../../components/CustomDonutChart';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
@@ -72,9 +72,6 @@ function ProjectGroupDetail({
                             expandOnClick: false,
                           },
                         },
-                        dataLabels: {
-                          enabled: false,
-                        },
                         labels: [
                           'Công việc đang chờ', 
                           'Công việc đang làm', 
@@ -97,6 +94,15 @@ function ProjectGroupDetail({
                     <ChartTitle>
                       Hoạt động
                     </ChartTitle>
+                    {
+                      get(group.group, 'task_waiting', 0) +
+                      get(group.group, 'task_doing', 0) +
+                      get(group.group, 'task_expired', 0) +
+                      get(group.group, 'task_complete', 0) +
+                      get(group.group, 'task_stop', 0) === 0
+                        ? <ChartPlacedolder />
+                        : null
+                    }
                   </ChartDrawer>
                   <ProjectGroupName>
                     {group.loading ? '...' : get(group.group, 'name', '')}

@@ -4,7 +4,7 @@ import {
   LIST_USER_OF_GROUP_FAIL,
 } from '../../constants/actions/user/listUserOfGroup';
 import { UPDATE_USER } from '../../constants/actions/user/updateUser';
-import { SORT_USER } from '../../constants/actions/user/sortUser';
+import { SORT_USER_SUCCESS } from '../../constants/actions/user/sortUser';
 import { get, findIndex, remove, slice } from 'lodash';
 import { PUBLIC_MEMBER } from '../../constants/actions/user/publicMember';
 import { PRIVATE_MEMBER } from '../../constants/actions/user/privateMember';
@@ -106,7 +106,7 @@ function reducer(state = initialState, action) {
           rooms,
         },
       };
-    case SORT_USER:
+    case SORT_USER_SUCCESS:
       rooms = [...state.data.rooms].map(room => {
         let users = get(room, 'users', []);
         if (findIndex(users, { id: get(action.options, 'userId') }) > -1)

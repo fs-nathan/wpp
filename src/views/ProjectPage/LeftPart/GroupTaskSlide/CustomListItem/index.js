@@ -38,7 +38,7 @@ function CustomListItem({ taskGroup, index, setAnchorEl, setCurGroupTask }) {
               <Primary>{get(taskGroup, 'name', '')}</Primary>  
             }
             secondary={
-              <Secondary>{get(taskGroup, 'tasks', []).length} việc</Secondary>
+              <Secondary>{get(taskGroup, 'number_task', 0)} việc</Secondary>
             }
           />
           <IconButton
