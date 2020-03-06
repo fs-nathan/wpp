@@ -4,7 +4,7 @@ import {
   DETAIL_PROJECT_GROUP_FAIL,
 } from '../../constants/actions/projectGroup/detailProjectGroup';
 import {
-  EDIT_PROJECT_GROUP,
+  EDIT_PROJECT_GROUP_SUCCESS,
 } from '../../constants/actions/projectGroup/editProjectGroup';
 import { get } from 'lodash';
 
@@ -17,7 +17,6 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  let projectGroup = null;
   switch (action.type) {
     case DETAIL_PROJECT_GROUP:
       return {
@@ -38,21 +37,22 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case EDIT_PROJECT_GROUP:
-      projectGroup = state.data.projectGroup;
-      if (get(projectGroup, 'id') === get(action.options, 'projectGroupId')) {
-        projectGroup = {
-          ...projectGroup,
-          ...action.options,
+    case EDIT_PROJECT_GROUP_SUCCESS: {
+      let newProjectGroup = state.data.projectGroup;
+      if (get(newProjectGroup, 'id') === get(action.data, 'projectGroup.id')) {
+        newProjectGroup = {
+          ...newProjectGroup,
+          ...get(action.data, 'projectGroup'),
         };
       }
       return {
         ...state,
         data: {
           ...state.data,
-          projectGroup,
+          projectGroup: newProjectGroup,
         },
       };
+    }
     default:
       return state;
   }

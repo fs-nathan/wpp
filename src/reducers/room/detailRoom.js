@@ -18,7 +18,6 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  let room = null;
   switch (action.type) {
     case DETAIL_ROOM:
       return {
@@ -33,44 +32,27 @@ function reducer(state = initialState, action) {
         error: null,
         loading: false,
       };
-    case UPDATE_ROOM: 
-      room = {
-        ...state.data.room,
-      };
-      if (get(state.data.room, 'id') === get(action.option, 'roomId')) {
-        room = {
-          ...room,
-          ...action.options,
-        }
-      }
+    case DETAIL_ROOM_FAIL: 
       return {
         ...state, 
-        data: {
-          room,
-        },
-      };
-    case UPDATE_ROOM_SUCCESS:
-      room = {
-        ...state.data.room,
-      };
-      if (get(state.data.room, 'id') === get(action.data.room, 'id')) {
-        room = {
-          ...room,
-          ...action.data.room,
-        }
-      }
-      return {
-        ...state,
-        data: {
-          room,
-        },
-      };
-    case DETAIL_ROOM_FAIL:
-      return {
-        ...state,
         error: action.error,
         loading: false,
       };
+    case UPDATE_ROOM_SUCCESS: {
+      let newRoom = state.data.room;
+      if (get(newRoom, 'id') === get(action.data, 'room.id')) {
+        newRoom = {
+          ...newRoom,
+          ...get(action.data, 'room.id'),
+        }
+      }
+      return {
+        ...state,
+        data: {
+          room: newRoom,
+        },
+      };
+    }
     default:
       return state;
   }

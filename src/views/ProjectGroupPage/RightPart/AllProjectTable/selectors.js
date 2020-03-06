@@ -43,7 +43,6 @@ export const projectsSelector = createSelector(
       ) 
         ? get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon') 
         : get(defaults[0], 'url_icon'),
-      state_name: get(project, 'visibility') ? get(project, 'state_name') : 'Hidden',
     }));
     return {
       projects: newProjects,

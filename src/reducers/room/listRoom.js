@@ -7,14 +7,13 @@ import {
   CREATE_ROOM_SUCCESS,
 } from '../../constants/actions/room/createRoom';
 import {
-  UPDATE_ROOM, 
   UPDATE_ROOM_SUCCESS,
 } from '../../constants/actions/room/updateRoom';
 import {
-  DELETE_ROOM,
+  DELETE_ROOM_SUCCESS,
 } from '../../constants/actions/room/deleteRoom';
 import { 
-  SORT_ROOM 
+  SORT_ROOM_SUCCESS, 
 } from '../../constants/actions/room/sortRoom';
 
 import { concat, findIndex, get, remove, slice } from 'lodash';
@@ -28,8 +27,6 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  let rooms = [];
-  let index = -1;
   switch (action.type) {
     case LIST_ROOM:
       return {
@@ -50,59 +47,54 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case CREATE_ROOM_SUCCESS:
-      rooms = concat([...state.data.rooms], action.data.room);
+    case CREATE_ROOM_SUCCESS: {
+      const newRooms = concat(state.data.rooms, get(action.data, 'room'));
       return {
         ...state,
         data: {
-          rooms,
+          rooms: newRooms,
         },
       };
-    case UPDATE_ROOM:
-      rooms = [...state.data.rooms];
-      index = findIndex(rooms, { id: get(action.options, 'roomId') });
-      rooms[index] = {
-        ...rooms[index],
-        ...action.options,
-      };
-      return {
-        ...state,
-        data: {
-          rooms,
-        },
-      };
-    case UPDATE_ROOM_SUCCESS:
-      rooms = [...state.data.rooms];
-      index = findIndex(rooms, { id: get(action.data.room, 'id') });
-      rooms[index] = {
-        ...rooms[index],
-        ...action.data.room,
+    }
+    case UPDATE_ROOM_SUCCESS: {
+      let newRooms = state.data.rooms;
+      const index = findIndex(newRooms, { id: get(action.data, 'room.id') });
+      newRooms[index] = {
+        ...newRooms[index],
+        ...get(action.data, 'room'),
       };
       return {
         ...state,
         data: {
-          rooms,
+          rooms: newRooms,
         },
       };
-    case DELETE_ROOM:
-      rooms = [...state.data.rooms];
-      remove(rooms, { id: get(action.options, 'roomId') });
+    }
+    case DELETE_ROOM_SUCCESS: {
+      let newRooms = state.data.rooms;
+      remove(newRooms, { id: get(action.options, 'roomId') });
       return {
         ...state,
         data: {
-          rooms,
+          rooms: newRooms,
         },
-      };    
-    case SORT_ROOM: 
-      rooms = [...state.data.rooms];
-      let removed = remove(rooms, { id: get(action.options, 'roomId') });
-      rooms = [...slice(rooms, 0, action.options.sortIndex), ...removed, ...slice(rooms, action.options.sortIndex)];
+      };   
+    } 
+    case SORT_ROOM_SUCCESS: {
+      let newRooms = state.data.rooms;
+      const removed = remove(rooms, { id: get(action.options, 'roomId') });
+      newRooms = [
+        ...slice(rooms, 0, action.options.sortIndex), 
+        ...removed, 
+        ...slice(rooms, action.options.sortIndex)
+      ];
       return {
         ...state,
         data: {
-          rooms,
+          rooms: newRooms,
         },
       };
+    } 
     default:
       return state;
   }

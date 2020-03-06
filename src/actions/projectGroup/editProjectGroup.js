@@ -14,9 +14,12 @@ export const editProjectGroup = ({ projectGroupId, name, icon, description }) =>
   },
 });
 
-export const editProjectGroupSuccess = (options) => ({
+export const editProjectGroupSuccess = ({ projectGroup }, options) => ({
   type: EDIT_PROJECT_GROUP_SUCCESS,
   options,
+  data: {
+    projectGroup
+  }
 });
 
 export const editProjectGroupFail = (error, options) => ({

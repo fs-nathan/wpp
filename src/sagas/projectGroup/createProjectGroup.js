@@ -25,8 +25,8 @@ async function doCreateProjectGroup({ name, icon, description }) {
 
 function* createProjectGroup(action) {
   try {
-    const { project_group_id: projectGroupId } = yield call(doCreateProjectGroup, action.options);
-    yield put(createProjectGroupSuccess({ projectGroupId }, action.options));
+    const { project_group: projectGroup } = yield call(doCreateProjectGroup, action.options);
+    yield put(createProjectGroupSuccess({ projectGroup }, action.options));
     CustomEventEmitter(CREATE_PROJECT_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {

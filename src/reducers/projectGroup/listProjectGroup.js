@@ -4,13 +4,16 @@ import {
   LIST_PROJECT_GROUP_FAIL,
 } from '../../constants/actions/projectGroup/listProjectGroup';
 import {
-  EDIT_PROJECT_GROUP,
+  CREATE_PROJECT_GROUP_SUCCESS,
+} from '../../constants/actions/projectGroup/createProjectGroup';
+import {
+  EDIT_PROJECT_GROUP_SUCCESS,
 } from '../../constants/actions/projectGroup/editProjectGroup';
 import {
-  DELETE_PROJECT_GROUP,
+  DELETE_PROJECT_GROUP_SUCCESS,
 } from '../../constants/actions/projectGroup/deleteProjectGroup';
 import {
-  SORT_PROJECT_GROUP,
+  SORT_PROJECT_GROUP_SUCCESS,
 } from '../../constants/actions/projectGroup/sortProjectGroup';
 import { findIndex, get, remove, slice } from 'lodash';
 
@@ -23,9 +26,6 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  let projectGroups = [];
-  let index = -1;
-  let removed = [];
   switch (action.type) {
     case LIST_PROJECT_GROUP:
       return {
@@ -46,41 +46,58 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case EDIT_PROJECT_GROUP:
-      projectGroups = [...state.data.projectGroups];
-      index = findIndex(projectGroups, { id: get(action.options, 'projectGroupId') });
-      projectGroups[index] = {
-        ...projectGroups[index],
-        ...action.options,
+    case CREATE_PROJECT_GROUP_SUCCESS: {
+      const newProjectGroups = concat(state.data.projectGroups, get(action.data, 'projectGroup'));
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projectGroups: newProjectGroups
+        }
+      }
+    }
+    case EDIT_PROJECT_GROUP_SUCCESS: {
+      let newProjectGroups = state.data.projectGroups;
+      const index = findIndex(newProjectGroups, { id: get(action.data, 'projectGroup.id') });
+      newProjectGroups[index] = {
+        ...newProjectGroups[index],
+        ...get(action.data, 'projectGroup'),
       };
       return {
         ...state,
         data: {
           ...state.data,
-          projectGroups,
+          projectGroups: newProjectGroups,
         },
       };
-    case DELETE_PROJECT_GROUP:
-      projectGroups = [...state.data.projectGroups];
-      remove(projectGroups, { id: get(action.options, 'projectGroupId') });
+    }
+    case DELETE_PROJECT_GROUP_SUCCESS: {
+      let newProjectGroups = state.data.projectGroups;
+      remove(newProjectGroups, { id: get(action.options, 'projectGroupId') });
       return {
         ...state,
         data: {
           ...state.data,
-          projectGroups,
+          projectGroups: newProjectGroups,
         },
       };
-    case SORT_PROJECT_GROUP: 
-      projectGroups = [...state.data.projectGroups];
-      removed = remove(projectGroups, { id: get(action.options, 'projectGroupId') });
-      projectGroups = [...slice(projectGroups, 0, action.options.sortIndex), ...removed, ...slice(projectGroups, action.options.sortIndex)];
+    }
+    case SORT_PROJECT_GROUP_SUCCESS: {
+      let newProjectGroups = state.data.projectGroups;
+      const removed = remove(newProjectGroups, { id: get(action.options, 'projectGroupId') });
+      newProjectGroups = [
+        ...slice(newProjectGroups, 0, action.options.sortIndex), 
+        ...removed, 
+        ...slice(newProjectGroups, action.options.sortIndex)
+      ];
       return {
         ...state,
         data: {
           ...state.data,
-          projectGroups,
+          projectGroups: newProjectGroups,
         },
       };
+    }
     default:
       return state;
   }

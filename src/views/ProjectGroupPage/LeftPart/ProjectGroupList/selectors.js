@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { get, filter, find } from 'lodash';
+import { get, filter } from 'lodash';
 
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
 const listProject = state => state.project.listProject;
