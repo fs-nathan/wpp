@@ -66,13 +66,6 @@ const ApprovedBox = (props) => {
   const offer = useSelector(state => state.taskDetail.taskOffer.offer);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
-  // const handleClick = (evt) => {
-  //   setAnchorEl(evt.currentTarget);
-  // }
-
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // }
   // bien của modal phe duyet
   const [open, setOpen] = React.useState(false);
 
@@ -234,7 +227,6 @@ const ListOffer = (props) => {
         onChange={e => searchOfferTabPart(e)}
       />
       <StyledList>
-
         {props.offer.map((item) => {
           return (
             <CustomListItem
@@ -247,13 +239,9 @@ const ListOffer = (props) => {
               handleOpenModalDelete={() => {
                 props.handleOpenModalDelete(item)
               }}
-
-
               handleClickClose={() => props.handleClickClose()} />
           )
         })}
-
-
       </StyledList>
     </React.Fragment>
   );

@@ -9,45 +9,18 @@ import CloseIcon from '@material-ui/icons/Close';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import IntegrationReactSelect from '../Tag/index'
 // import colorPal from '../../../../helpers/colorPalette';
 import { makeStyles } from '@material-ui/core/styles';
-import ColorTypo from '../../../../components/ColorTypo'
-import { WrapperContext } from '../../index'
-import { DEFAULT_OFFER_ITEM } from '../../../../helpers/jobDetail/arrayHelper'
 import { useDispatch, useSelector } from 'react-redux';
+import IntegrationReactSelect from '../Tag/index'
+import ColorTypo from '../../../../components/ColorTypo'
+import { DEFAULT_OFFER_ITEM } from '../../../../helpers/jobDetail/arrayHelper'
 import { uploadDocumentToOffer, deleteDocumentToOffer, createOffer, updateOffer } from '../../../../actions/taskDetail/taskDetailActions';
 const TexTitle = styled(Typography)`
   font-size: 15px;
   margin: 15px 0;
 `
-// const Text = styled(TextField)`
-//   & > *:first-child {
-//     margin-bottom: 20px;
-//     & > input {
-//       font-size: 16px;
-//       margin-bottom: 100px;
-//     }
-//   }
-// `
 
-// const TitleText = styled(Typography)`
-//   font-size: 15px;
-//   margin: 15px 0;
-// `
-// const ButtonFile = styled.label`
-//       & > span {
-//         margin: 20px 0 0 0;
-//         & > span {
-//           display: flex;
-//           align-items: center;
-//           justify-content: start;
-//           padding: 3px 10px;
-//           font-size: 14px;
-//           font-weight: 500;
-//         }
-//       }
-// `
 const TextContent = styled(TextField)`
   & > label {
       font-size: 14px;
@@ -62,18 +35,6 @@ const FileSize = styled(ColorTypo)`
 const FileId = styled(Icon)`
  cursor: pointer;
 `
-
-// const FileBoxStyledListItem = styled.div`
-//   display: flex;
-//   align-items: center;
-//   margin-top: 10px;
-//   border-bottom: 1px solid #b5b5b5;
-// `
-// const FileName = styled.span`
-//   width: 440px;
-//   word-break: break-word;
-//   margin-right: 30px
-// `
 
 // bien cua modal
 const styles = theme => ({
@@ -190,7 +151,6 @@ const OfferModal = (props) => {
     dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId))
   }
 
-
   const handleUploadFileAdd = files => {
     setParams("files", [...tempSelectedItem.files, ...files])
   }
@@ -199,7 +159,7 @@ const OfferModal = (props) => {
     let dataCreateOfferFormData = new FormData()
     // add content and task id to form data
     dataCreateOfferFormData.append('content', tempSelectedItem.content)
-    dataCreateOfferFormData.append('task_id', props.taskId)
+    dataCreateOfferFormData.append('task_id', taskId)
     // add each user to formdata
     for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
       dataCreateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
@@ -211,15 +171,6 @@ const OfferModal = (props) => {
     dispatch(createOffer({ data: dataCreateOfferFormData, taskId }))
     setParams("files", [])
   }
-
-  // const handleUpdateOffer = () => {
-  //   let dataUpdateOfferFormData = new FormData()
-  //   dataUpdateOfferFormData.append('offer_id', tempSelectedItem.offer_id)
-  //   // add each user to formdata
-  //   for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
-  //     dataUpdateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
-  //   }
-  // }
 
   return (
     <Dialog open={props.isOpen} onClose={props.handleClickClose} fullWidth>

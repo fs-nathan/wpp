@@ -27,29 +27,12 @@ const StartEndDay = styled(Typography)`
   align-items: center;
   margin: 30px 0;
 `
-// const StartEndDate = styled(Typography)`
-//   margin: 0 20px;
-// `
 
 const BeginEndTime = styled(Typography)`
   width: 50px;
   margin-right: 20px;
 `
-// const TexTitle = styled(Typography)`
-//   font-size: 15px;
-//   margin-right: 10px;
-// `
 
-// const Div = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-// `
-// const DivTime = styled.div`
-// `
-// const InputSelect = styled(OutlinedInputSelect)`
-//   width: 331px;
-// `
 const InputDateTime = styled(TextField)`
   width: 186px;
   margin-right: 25px;

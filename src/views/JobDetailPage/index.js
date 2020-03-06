@@ -1,36 +1,31 @@
 import React, { useEffect } from 'react';
-// import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+
 import ListPart from './ListPart';
 import ChatPart from './ChatPart';
 import TabPart from './TabPart';
-import { useSelector, useDispatch } from 'react-redux';
 import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions';
-import '../JobDetailPage/index.scss';
 import Intro from './introduce';
 import { closeNoticeModal } from '../../actions/system/system';
 import { taskIdSelector } from './selectors';
-
-export const WrapperContext = React.createContext(null);
+import '../JobDetailPage/index.scss';
 
 function JobDetailPage(props) {
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
 
-  const chooseTask = task => dispatch(taskDetailAction.chooseTask(task));
-  const getProjectListBasic = projectId => dispatch(taskDetailAction.getProjectListBasic(projectId));
-
+  // console.log('JobDetailPage', { taskId });
   useEffect(() => {
-    // console.log({ taskId });
     if (taskId) {
-      chooseTask(taskId);
+      dispatch(taskDetailAction.chooseTask(taskId))
     } // eslint-disable-next-line
   }, [taskId]);
 
   useEffect(() => {
     closeNoticeModal();
     // getProjectGroup()
-    getProjectListBasic();
+    dispatch(taskDetailAction.getProjectListBasic(projectId));
     // getDetailProject(projectId)
     // eslint-disable-next-line
   }, []);
@@ -49,9 +44,9 @@ function JobDetailPage(props) {
   }, [dispatch, id, projectId]);
 
   useEffect(() => {
-    const getMemberNotAssignedByTaskId = task_id => dispatch(taskDetailAction.getMemberNotAssigned({ task_id }));
-    const getMemberByTaskId = task_id => dispatch(taskDetailAction.getMember({ task_id }));
-    const getTaskDetailByTaskId = taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }));
+    dispatch(taskDetailAction.getMemberNotAssigned({ task_id: taskId }));
+    dispatch(taskDetailAction.getMember({ task_id: taskId }));
+    dispatch(taskDetailAction.getTaskDetailTabPart({ task_id: taskId }));
     // getSubTaskByTaskId(taskId)
     // getRemindByTaskId(taskId)
     // getOfferByTaskId(taskId)
@@ -60,9 +55,6 @@ function JobDetailPage(props) {
     // getFileByTaskId(taskId)
     // getLinkByTaskId(taskId)
     // getLocationByTaskId(taskId)
-    getTaskDetailByTaskId(taskId);
-    getMemberByTaskId(taskId);
-    getMemberNotAssignedByTaskId(taskId);
     // getTrackingTime(taskId)
   }, [dispatch, taskId]);
 
@@ -113,8 +105,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(taskDetailAction.updatePermission(data)),
     // get project group
     // getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
-    //updateComplete
-
     closeNoticeModal: () => dispatch(closeNoticeModal()),
   };
 };

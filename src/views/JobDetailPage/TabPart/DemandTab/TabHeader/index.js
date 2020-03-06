@@ -20,7 +20,6 @@ const ButtonIcon = styled(IconButton)`
   }
 `
 
-
 function TabHeader(props) {
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
