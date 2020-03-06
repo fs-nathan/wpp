@@ -547,11 +547,10 @@
   background: none;
   border: none;
   font-size: 14px;
-  font-weight: 500;
-  padding: 0;
-  color: #a6a6a6;
+  font-weight: normal;
+  padding: 10px 0 0;
+  color: #03a9f4;
   cursor: pointer;
-  padding-top: 10px;
   &:focus {
     outline: none;
   }

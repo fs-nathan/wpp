@@ -23,7 +23,7 @@ function JobDetailPage(props) {
   }, [taskId]);
 
   useEffect(() => {
-    closeNoticeModal();
+    dispatch(closeNoticeModal());
     // getProjectGroup()
     dispatch(taskDetailAction.getProjectListBasic(projectId));
     // getDetailProject(projectId)
@@ -105,7 +105,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(taskDetailAction.updatePermission(data)),
     // get project group
     // getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
-    closeNoticeModal: () => dispatch(closeNoticeModal()),
   };
 };
 

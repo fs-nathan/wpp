@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  List, ListItem, ListItemText,
+  List, ListItem, ListItemText, Typography,
 } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,6 +20,8 @@ import Description from './Description';
 import ModalStatus from './ModalStatus';
 import DropdownButton from './DropdownButton';
 import HtmlTooltip from './HtmlTooltip';
+
+import './styles.scss';
 
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
@@ -136,7 +138,7 @@ function TabBody(props) {
   }
 
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body className="listPartTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}>
       <StyledList>
         <ListItem>
           <ListItemText>
@@ -188,14 +190,11 @@ function TabBody(props) {
           {
             !isExpiredDate(data.end_date)
             &&
-            <ColorButton
-              size='small' variant='contained' variantColor='red'
-              style={{
-                marginBottom: '10px',
-                boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1)'
-              }}>
+            <Typography
+              className="listPartTabBody--expired"
+            >
               Đã quá hạn
-              </ColorButton>
+              </Typography>
           }
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
