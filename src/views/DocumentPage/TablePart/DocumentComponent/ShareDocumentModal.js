@@ -219,7 +219,7 @@ const ShareDocumentModal = props => {
     member_avatar
   ) => {
     try {
-      if (item.isGoogleDocument) {
+      if (item.isGoogleDocument || item.document_type === 2) {
         await actionCancelShareGoogleFile({
           file_id: item.id,
           member_id: member_id
@@ -243,7 +243,7 @@ const ShareDocumentModal = props => {
       fetDataForShare();
     } catch (error) {}
   };
-
+  console.log('item', item);
   return (
     <ModalCommon
       title={t('IDS_WP_SHARE_DOCUMENT')}
@@ -361,10 +361,14 @@ const ShareDocumentModal = props => {
                     <div className="right-content">
                       <div>
                         {item.is_owner ? (
-                          <span className="red-color">{t('IDS_WP_OWNER')}</span>
+                          <span className="info-left-item red-color">
+                            {t('IDS_WP_OWNER')}
+                          </span>
                         ) : (
                           <div className="info-left-item">
-                            <div className="name-member">{item.date_share}</div>
+                            <div className="name-member">
+                              {item.date_share || item.shared_at}
+                            </div>
                             <span className="red-color">
                               {!item.is_in_group && t('IDS_WP_OUT_GROUP')}
                             </span>
