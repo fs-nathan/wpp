@@ -8,7 +8,7 @@ export const membersSelector = createSelector(
   [memberProject, listTask],
   (memberProject, listTask) => {
     const { data: { membersAdded, }, error: memberProjectError, loading: memberProjectLoading } = memberProject;
-    const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
+    const { data: { tasks } } = listTask;
     const allTasks = flatten(tasks.map(groupTasks => get(groupTasks, 'tasks', [])));
     const newMembers = membersAdded.map(member => ({
       ...member,
@@ -21,8 +21,8 @@ export const membersSelector = createSelector(
     }))
     return {
       members: newMembers,
-      loading: memberProjectLoading || listTaskLoading,
-      error: memberProjectError || listTaskError,
+      loading: memberProjectLoading,
+      error: memberProjectError,
     }
   }
 );

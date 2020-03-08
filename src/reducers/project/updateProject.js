@@ -5,7 +5,9 @@ import {
 } from '../../constants/actions/project/updateProject';
 
 export const initialState = {
-  data: {},
+  data: {
+    project: null,
+  },
   error: null,
   loading: false,
 };
@@ -21,6 +23,7 @@ function reducer(state = initialState, action) {
     case UPDATE_PROJECT_SUCCESS: 
       return {
         ...state, 
+        data: action.data,
         error: null,
         loading: false,
       };

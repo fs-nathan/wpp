@@ -26,8 +26,8 @@ async function doEditProjectGroup({ projectGroupId, name, icon, description }) {
 
 function* editProjectGroup(action) {
   try {
-    yield call(doEditProjectGroup, action.options);
-    yield put(editProjectGroupSuccess(action.options));
+    const { project_group: projectGroup } = yield call(doEditProjectGroup, action.options);
+    yield put(editProjectGroupSuccess({ projectGroup }, action.options));
     CustomEventEmitter(EDIT_PROJECT_GROUP);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {

@@ -1,16 +1,18 @@
 import { createSelector } from 'reselect';
-import { get, filter, find } from 'lodash';
+import { get, filter } from 'lodash';
 
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
+const sortProjectGroup = state => state.projectGroup.sortProjectGroup;
 const listProject = state => state.project.listProject;
 const listIcon = state => state.icon.listIcon;
 
 export const groupsSelector = createSelector(
-  [listProjectGroup, listProject, listIcon],
-  (listProjectGroup, listProject, listIcon) => {
+  [listProjectGroup, listProject, listIcon, sortProjectGroup],
+  (listProjectGroup, listProject, listIcon, sortProjectGroup) => {
+    const { error: sortProjectGroupError, loading: sortProjectGroupLoading } = sortProjectGroup;
     const { data: { projectGroups }, error: listProjectGroupError, loading: listProjectGroupLoading } = listProjectGroup;
-    const { data: { projects }, loading: listProjectLoading, error: listProjectError } = listProject;
-    const { data: { icons, defaults }, loading: iconLoading, error: iconError } = listIcon;
+    const { data: { projects } } = listProject;
+    const { data: { icons, defaults } } = listIcon;
     const allIcons = [...icons.map(icon => get(icon, 'url_full')), ...defaults.map(icon => get(icon, 'url_icon'))];
     const newProjectGroups = projectGroups.map(
       projectGroup => ({
@@ -31,8 +33,8 @@ export const groupsSelector = createSelector(
     return {
       groups: newProjectGroups,
       defaultNumberProject,
-      loading: listProjectLoading || listProjectGroupLoading || iconLoading,
-      error: listProjectGroupError || listProjectError || iconError,
+      loading: listProjectGroupLoading || sortProjectGroupLoading,
+      error: listProjectGroupError || sortProjectGroupError,
     }
   }
 );

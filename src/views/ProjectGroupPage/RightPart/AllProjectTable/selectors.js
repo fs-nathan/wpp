@@ -2,36 +2,34 @@ import { createSelector } from 'reselect';
 import { get, find } from 'lodash';
 
 const listProject = state => state.project.listProject;
+const sortProject = state => state.project.sortProject;
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
-const detailProjectGroup = state => state.projectGroup.detailProjectGroup;
 const colors = state => state.setting.colors;
 const listIcon = state => state.icon.listIcon;
 
 export const projectsSelector = createSelector(
-  [listProjectGroup, listProject, detailProjectGroup, listIcon],
-  (listProjectGroup, listProject, detailProjectGroup, listIcon) => {
+  [listProjectGroup, listProject, listIcon, sortProject],
+  (listProjectGroup, listProject, listIcon, sortProject) => {
     const {
       data: { projects },
       loading: listProjectLoading,
       error: listProjectError
     } = listProject;
+
+    const {
+      loading: sortProjectLoading,
+      error: sortProjectError
+    } = sortProject;
   
     const {
       data: { projectGroups },
-      loading: listProjectGroupLoading,
-      error: listProjectGroupError,
     } = listProjectGroup;
-  
-    const {
-      loading: detailProjectGroupLoading,
-      error: detailProjectGroupError
-    } = detailProjectGroup;
 
-    const { data: { icons, defaults }, loading: iconLoading, error: iconError } = listIcon;
+    const { data: { icons, defaults } } = listIcon;
     const allIcons = [...icons.map(icon => get(icon, 'url_full')), ...defaults.map(icon => get(icon, 'url_icon'))];
   
-    const loading = listProjectLoading || detailProjectGroupLoading || listProjectGroupLoading || iconLoading;
-    const error = listProjectError || detailProjectGroupError || listProjectGroupError || iconError;
+    const loading = listProjectLoading || sortProjectLoading;
+    const error = listProjectError || sortProjectError;
 
     const newProjects = projects.map(project => ({
       ...project,
@@ -43,7 +41,6 @@ export const projectsSelector = createSelector(
       ) 
         ? get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon') 
         : get(defaults[0], 'url_icon'),
-      state_name: get(project, 'visibility') ? get(project, 'state_name') : 'Hidden',
     }));
     return {
       projects: newProjects,

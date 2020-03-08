@@ -6,7 +6,7 @@ import {
 
 export const initialState = {
   data: {
-    projectGroupId: null,  
+    projectGroup: null,  
   },
   error: null,
   loading: false,

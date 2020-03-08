@@ -3,15 +3,17 @@ import { find, get } from 'lodash';
 
 const listRoom = state => state.room.listRoom;
 const listUserOfGroup = state => state.user.listUserOfGroup;
+const sortUser = state => state.user.sortUser;
 const getRequirementJoinGroup = state => state.groupUser.getRequirementJoinGroup;
 const listPosition = state => state.position.listPosition;
 
 export const roomsSelector = createSelector(
-  [listRoom, listUserOfGroup, listPosition],
-  (listRoom, listUserOfGroup, listPosition) => {
-    const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
+  [listRoom, listUserOfGroup, listPosition, sortUser],
+  (listRoom, listUserOfGroup, listPosition, sortUser) => {
+    const { loading: sortUserLoading, error: sortUserError } = sortUser;
+    const { data: { rooms } } = listRoom;
     const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
-    const { data: { positions }, loading: listPositionLoading, error: listPositionError } = listPosition;  
+    const { data: { positions } } = listPosition;  
     const newRooms = group.map(curGroup => ({
       ...curGroup,
       ...find(rooms, { 'id': get(curGroup, 'id') }),
@@ -27,8 +29,8 @@ export const roomsSelector = createSelector(
     }));
     return {
       rooms: newRooms,
-      loading: listRoomLoading || listUserOfGroupLoading || listPositionLoading,
-      error: listRoomError || listUserOfGroupError || listPositionError,
+      loading: listUserOfGroupLoading || sortUserLoading,
+      error: listUserOfGroupError || sortUserError,
     }
   }
 ) 

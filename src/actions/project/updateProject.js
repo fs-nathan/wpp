@@ -16,9 +16,12 @@ export const updateProject = ({ projectId, name, description, projectGroupId, pr
   },
 });
 
-export const updateProjectSuccess = (options) => ({
+export const updateProjectSuccess = ({ project }, options) => ({
   type: UPDATE_PROJECT_SUCCESS,
   options,
+  data: {
+    project,
+  }
 });
 
 export const updateProjectFail = (error, options) => ({

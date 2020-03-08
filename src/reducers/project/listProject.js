@@ -3,12 +3,15 @@ import {
   LIST_PROJECT_SUCCESS,
   LIST_PROJECT_FAIL,
 } from '../../constants/actions/project/listProject';
-import { get, findIndex, remove } from 'lodash';
-import { UPDATE_PROJECT } from '../../constants/actions/project/updateProject';
-import { DELETE_PROJECT } from '../../constants/actions/project/deleteProject';
-import { HIDE_PROJECT } from '../../constants/actions/project/hideProject';
-import { SHOW_PROJECT } from '../../constants/actions/project/showProject';
-import { SORT_PROJECT } from '../../constants/actions/project/sortProject';
+import { concat, get, findIndex, remove } from 'lodash';
+import { CREATE_PROJECT_SUCCESS } from '../../constants/actions/project/createProject';
+import { COPY_PROJECT_SUCCESS } from '../../constants/actions/project/copyProject';
+import { UPDATE_PROJECT_SUCCESS } from '../../constants/actions/project/updateProject';
+import { DELETE_PROJECT_SUCCESS } from '../../constants/actions/project/deleteProject';
+import { HIDE_PROJECT_SUCCESS } from '../../constants/actions/project/hideProject';
+import { SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
+import { SORT_PROJECT_SUCCESS } from '../../constants/actions/project/sortProject';
+import { UPDATE_STATUS_COPY_SUCCESS } from '../../constants/actions/project/setting/updateStatusCopy';
 
 export const initialState = {
   data: {
@@ -19,8 +22,6 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  let projects = [];
-  let index = -1;
   switch (action.type) {
     case LIST_PROJECT:
       return {
@@ -41,67 +42,107 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case UPDATE_PROJECT:
-      projects = [...state.data.projects];
-      index = findIndex(projects, { id: get(action.options, 'projectId') });
-      projects[index] = {
-        ...projects[index],
-        ...action.options,
+    case CREATE_PROJECT_SUCCESS: {
+      let newProjects = concat(state.data.projects, action.data.project);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects: newProjects
+        }
+      }
+    }
+    case COPY_PROJECT_SUCCESS: {
+      let newProjects = concat(state.data.projects, action.data.project);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects: newProjects
+        }
+      }
+    }
+    case UPDATE_PROJECT_SUCCESS: {
+      let newProjects = state.data.projects;
+      const index = findIndex(newProjects, { id: get(action.data, 'project.id') });
+      newProjects[index] = {
+        ...newProjects[index],
+        ...get(action.data, 'project'),
       }
       return {
         ...state,
         data: {
           ...state.data,
-          projects,
+          projects: newProjects
         },
       };
-    case DELETE_PROJECT: 
-      projects = [...state.data.projects];
-      remove(projects, { id: get(action.options, 'projectId') });
+    }
+    case DELETE_PROJECT_SUCCESS: {
+      let newProjects = state.data.projects;
+      remove(newProjects, { id: get(action.options, 'projectId') });
       return {
         ...state,
         data: {
           ...state.data,
-          projects,
+          projects: newProjects
         },
       };
-    case HIDE_PROJECT: 
-      projects = [...state.data.projects];
-      index = findIndex(projects, { id: get(action.options, 'projectId') });
-      projects[index] = {
-        ...projects[index],
+    } 
+    case HIDE_PROJECT_SUCCESS: {
+      let newProjects = state.data.projects;
+      const index = findIndex(newProjects, { id: get(action.data, 'project.id') });
+      newProjects[index] = {
+        ...newProjects[index],
         visibility: false,
-      };
+      }
       return {
         ...state,
         data: {
           ...state.data,
-          projects,
+          projects: newProjects
         },
       };
-    case SHOW_PROJECT: 
-      projects = [...state.data.projects];
-      index = findIndex(projects, { id: get(action.options, 'projectId') });
-      projects[index] = {
-        ...projects[index],
+    }
+    case SHOW_PROJECT_SUCCESS: {
+      let newProjects = state.data.projects;
+      const index = findIndex(newProjects, { id: get(action.data, 'project.id') });
+      newProjects[index] = {
+        ...newProjects[index],
         visibility: true,
-      };
+      }
       return {
         ...state,
         data: {
           ...state.data,
-          projects,
+          projects: newProjects
         },
       };
-    case SORT_PROJECT:
-      projects = [...action.options.sortData];
+    }
+    case SORT_PROJECT_SUCCESS: {
+      let newProjects = action.options.sortData;
       return {
         ...state,
         data: {
           ...state.data,
-          projects,
+          projects: newProjects
         },
       };
+    }
+    case UPDATE_STATUS_COPY_SUCCESS: {
+      let newProjects = state.data.projects;
+      const index = findIndex(newProjects, { id: get(action.options, 'projectId') });
+      newProjects[index] = {
+        ...newProjects[index],
+        can_copy: get(action.options, 'status'),
+      }
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projects: newProjects
+        },
+      };
+    }
     default:
       return state;
   }

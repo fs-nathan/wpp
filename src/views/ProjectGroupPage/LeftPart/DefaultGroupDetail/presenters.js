@@ -2,14 +2,12 @@ import React from 'react';
 import { get } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { 
-  ChartBox, ChartDrawer, ChartLegendBox, ChartTitle, CustomChart 
+  ChartBox, ChartDrawer, ChartInfoBox, ChartTitle, CustomChart 
 } from '../../../../components/CustomDonutChart';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
-import AvatarCircleList from '../../../../components/AvatarCircleList';
 import { Container, SubContainer, } from '../../../../components/CustomDetailBox';
-import Icon from '@mdi/react';
-import { mdiChevronLeft, mdiSquare } from '@mdi/js';
+import { mdiChevronLeft } from '@mdi/js';
 import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
@@ -70,16 +68,18 @@ function DefaultGroupDetail({
                           'Công việc đang làm', 
                           'Công việc quá hạn',
                           'Công việc hoàn thành',
+                          'Công việc ẩn',
                           'Công việc dừng',
                         ],
-                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
+                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d', 'black'],
                       }}
                       series={[
-                        get(group.group, 'task_waiting', 0),
-                        get(group.group, 'task_doing', 0),
-                        get(group.group, 'task_expired', 0),
-                        get(group.group, 'task_complete', 0),
-                        get(group.group, 'task_stop', 0),
+                        get(group.group, 'statistics.task_waiting', 0),
+                        get(group.group, 'statistics.task_doing', 0),
+                        get(group.group, 'statistics.task_expired', 0),
+                        get(group.group, 'statistics.task_complete', 0),
+                        get(group.group, 'statistics.task_hidden', 0),
+                        get(group.group, 'statistics.task_stop', 0),
                       ]}
                       width={250}
                       height={250}
@@ -89,33 +89,37 @@ function DefaultGroupDetail({
                     </ChartTitle>
                   </ChartDrawer>
                   <ProjectGroupName>
-                    {group.loading ? '...' : get(group.group, 'name', '')}
+                    Chưa phân loại
                   </ProjectGroupName>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#ff9800'} />
-                    <ColorTypo>Công việc đang chờ</ColorTypo>
-                    <ColorTypo>{get(group.group, 'task_waiting', 0)}</ColorTypo>
-                  </ChartLegendBox>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#03a9f4'} />
-                    <ColorTypo>Công việc đang làm</ColorTypo>
-                    <ColorTypo>{get(group.group, 'task_doing', 0)}</ColorTypo>
-                  </ChartLegendBox>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#f44336'} />
-                    <ColorTypo>Công việc quá hạn</ColorTypo>
-                    <ColorTypo>{get(group.group, 'task_expired', 0)}</ColorTypo>
-                  </ChartLegendBox>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#03c30b'} />
-                    <ColorTypo>Công việc hoàn thành</ColorTypo>
-                    <ColorTypo>{get(group.group, 'task_complete', 0)}</ColorTypo>
-                  </ChartLegendBox>
-                  <ChartLegendBox>
-                    <Icon path={mdiSquare} size={1} color={'#black'} />
-                    <ColorTypo>Công việc dừng</ColorTypo>
-                    <ColorTypo>{get(group.group, 'task_stop', 0)}</ColorTypo>
-                  </ChartLegendBox>
+                  <ChartInfoBox
+                    data={
+                      [{
+                        color: '#ff9800',
+                        title: 'Công việc đang chờ',
+                        value: get(group.group, 'statistics.task_waiting', 0),
+                      }, {
+                        color: '#03a9f4',
+                        title: 'Công việc đang làm',
+                        value: get(group.group, 'statistics.task_doing', 0),
+                      }, {
+                        color: '#f44336',
+                        title: 'Công việc quá hạn',
+                        value: get(group.group, 'statistics.task_expired', 0),
+                      }, {
+                        color: '#03c30b',
+                        title: 'Công việc hoàn thành',
+                        value: get(group.group, 'statistics.task_complete', 0),
+                      }, {
+                        color: '#20194d',
+                        title: 'Công việc ẩn',
+                        value: get(group.group, 'statistics.task_hidden', 0),
+                      }, {
+                        color: '#000',
+                        title: 'Công việc dừng',
+                        value: get(group.group, 'statistics.task_stop', 0),
+                      }]
+                    }
+                  />
                 </ChartBox>
               </SubContainer>
               <SubContainer>
@@ -125,12 +129,6 @@ function DefaultGroupDetail({
                 <ColorTextField 
                   value={get(group.group, 'description', '')}
                 />
-              </SubContainer>
-              <SubContainer className='view_DefaultGroup_Detail___bottom-box'>
-                <SubHeader>
-                  <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
-                </SubHeader>
-                <AvatarCircleList users={get(group.group, 'members', [])} total={20} display={12}/>
               </SubContainer>
             </div>
           </Container>

@@ -20,7 +20,7 @@ export default function LoadingBox({ ...rest }) {
       <Fade
         in={true}
         style={{
-          transitionDelay: '700ms',
+          transitionDelay: '200ms',
         }}
         unmountOnExit
       >
