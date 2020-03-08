@@ -10,9 +10,10 @@ import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
 import { detailUser } from '../../actions/user/detailUser';
 import {
   CustomEventListener, CustomEventDispose,
-  SORT_ROOM, CREATE_ROOM, DELETE_ROOM, UPDATE_ROOM,
-  SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER, UPLOAD_DOCUMENTS_USER, UPDATE_USER,
-  CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION,
+  //SORT_ROOM, CREATE_ROOM, DELETE_ROOM, UPDATE_ROOM,
+  //SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER, UPLOAD_DOCUMENTS_USER, 
+  UPDATE_USER,
+  //CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION,
 } from '../../constants/events';
 import UserList from './LeftPart/UserList';
 import UserInfo from './RightPart/UserInfo';
@@ -47,6 +48,7 @@ function UserPage({
   React.useEffect(() => {
     doListRoom();
 
+    /*
     const reloadListRoom = () => {
       doListRoom(true);
     }
@@ -62,11 +64,13 @@ function UserPage({
       CustomEventDispose(DELETE_ROOM, reloadListRoom);
       CustomEventDispose(SORT_ROOM, reloadListRoom);
     }
+    */
   }, [doListRoom]); 
 
   React.useEffect(() => {
     doListPosition();
 
+    /*
     const reloadListPosition = () => {
       doListPosition(true);
     };
@@ -80,6 +84,7 @@ function UserPage({
       CustomEventDispose(UPDATE_POSITION, reloadListPosition);
       CustomEventDispose(DELETE_POSITION, reloadListPosition);
     }
+    */
   }, [doListPosition]);
 
   React.useEffect(() => {
@@ -94,31 +99,31 @@ function UserPage({
     doListUserOfGroup();
 
     const reloadListUserOfGroup = () => {
-      doListUserOfGroup(true);
+      doListUserOfGroup(/*true*/);
     }
 
-    CustomEventListener(CREATE_ROOM, reloadListUserOfGroup);
-    CustomEventListener(UPDATE_ROOM, reloadListUserOfGroup);
-    CustomEventListener(DELETE_ROOM, reloadListUserOfGroup);
-    CustomEventListener(SORT_ROOM, reloadListUserOfGroup);
+    //CustomEventListener(CREATE_ROOM, reloadListUserOfGroup);
+    //CustomEventListener(UPDATE_ROOM, reloadListUserOfGroup);
+    //CustomEventListener(DELETE_ROOM, reloadListUserOfGroup);
+    //CustomEventListener(SORT_ROOM, reloadListUserOfGroup);
     CustomEventListener(UPDATE_USER, reloadListUserOfGroup);
-    CustomEventListener(SORT_USER, reloadListUserOfGroup);
-    CustomEventListener(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
-    CustomEventListener(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
-    CustomEventListener(PUBLIC_MEMBER, reloadListUserOfGroup);
-    CustomEventListener(PRIVATE_MEMBER, reloadListUserOfGroup);
+    //CustomEventListener(SORT_USER, reloadListUserOfGroup);
+    //CustomEventListener(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
+    //CustomEventListener(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
+    //CustomEventListener(PUBLIC_MEMBER, reloadListUserOfGroup);
+    //CustomEventListener(PRIVATE_MEMBER, reloadListUserOfGroup);
 
     return () => {
-      CustomEventDispose(CREATE_ROOM, reloadListUserOfGroup);
-      CustomEventDispose(UPDATE_ROOM, reloadListUserOfGroup);
-      CustomEventDispose(DELETE_ROOM, reloadListUserOfGroup);
-      CustomEventDispose(SORT_ROOM, reloadListUserOfGroup);
+      //CustomEventDispose(CREATE_ROOM, reloadListUserOfGroup);
+      //CustomEventDispose(UPDATE_ROOM, reloadListUserOfGroup);
+      //CustomEventDispose(DELETE_ROOM, reloadListUserOfGroup);
+      //CustomEventDispose(SORT_ROOM, reloadListUserOfGroup);
       CustomEventDispose(UPDATE_USER, reloadListUserOfGroup);
-      CustomEventDispose(SORT_USER, reloadListUserOfGroup);
-      CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
-      CustomEventDispose(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
-      CustomEventDispose(PUBLIC_MEMBER, reloadListUserOfGroup);
-      CustomEventDispose(PRIVATE_MEMBER, reloadListUserOfGroup);
+      //CustomEventDispose(SORT_USER, reloadListUserOfGroup);
+      //CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
+      //CustomEventDispose(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
+      //CustomEventDispose(PUBLIC_MEMBER, reloadListUserOfGroup);
+      //CustomEventDispose(PRIVATE_MEMBER, reloadListUserOfGroup);
     }
   }, [doListUserOfGroup]); 
 
@@ -127,6 +132,7 @@ function UserPage({
   React.useEffect(() => {
     doDetailUser({ userId });
     
+    /*
     const reloadDetailUserHandler = () => doDetailUser({ userId }, true);
 
     CustomEventListener(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
@@ -136,6 +142,7 @@ function UserPage({
       CustomEventDispose(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
       CustomEventDispose(UPDATE_USER, reloadDetailUserHandler);
     }
+    */
   }, [doDetailUser, userId]);
 
   return (

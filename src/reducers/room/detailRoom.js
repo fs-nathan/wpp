@@ -4,7 +4,6 @@ import {
   DETAIL_ROOM_FAIL,
 } from '../../constants/actions/room/detailRoom';
 import {
-  UPDATE_ROOM,
   UPDATE_ROOM_SUCCESS,
 } from '../../constants/actions/room/updateRoom';
 import { get } from 'lodash';

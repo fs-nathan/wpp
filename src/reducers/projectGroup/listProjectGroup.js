@@ -15,7 +15,7 @@ import {
 import {
   SORT_PROJECT_GROUP_SUCCESS,
 } from '../../constants/actions/projectGroup/sortProjectGroup';
-import { findIndex, get, remove, slice } from 'lodash';
+import { findIndex, get, remove, slice, concat } from 'lodash';
 
 export const initialState = {
   data: {

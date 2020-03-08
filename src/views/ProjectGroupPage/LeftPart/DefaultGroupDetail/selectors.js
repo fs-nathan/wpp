@@ -8,7 +8,7 @@ export const groupSelector = createSelector(
   [detailDefaultGroup, listProject],
   (detailDefaultGroup, listProject) => {
     const { data: { projectGroup }, error: detailDefaultGroupError, loading: detailDefaultGroupLoading } = detailDefaultGroup;
-    const { data: { projects }, loading: listProjectLoading, error: listProjectError } = listProject;
+    const { data: { projects } } = listProject;
     const newGroup = {
       ...projectGroup,
       statistics: {
@@ -23,8 +23,8 @@ export const groupSelector = createSelector(
     }
     return {
       group: newGroup,
-      loading: detailDefaultGroupLoading || listProjectLoading,
-      error: detailDefaultGroupError || listProjectError,
+      loading: detailDefaultGroupLoading,
+      error: detailDefaultGroupError,
     }
   }
 );
