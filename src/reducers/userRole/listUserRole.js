@@ -3,10 +3,10 @@ import {
   LIST_USER_ROLE_SUCCESS,
   LIST_USER_ROLE_FAIL,
 } from '../../constants/actions/userRole/listUserRole';
-import {concat, get, findIndex, remove} from 'lodash';
+import { concat, get, findIndex, remove} from 'lodash';
 import { CREATE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/createUserRole';
-import { DELETE_USER_ROLE } from '../../constants/actions/userRole/deleteUserRole';
-import { UPDATE_USER_ROLE, UPDATE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/updateUserRole';
+import { DELETE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/deleteUserRole';
+import { UPDATE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/updateUserRole';
 
 export const initialState = {
   data: {
@@ -17,8 +17,6 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  let userRoles = [];
-  let index = 0;
   switch (action.type) {
     case LIST_USER_ROLE:
       return {
@@ -39,49 +37,42 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case CREATE_USER_ROLE_SUCCESS: 
-      userRoles = concat(state.data.userRoles, action.data.userRole);
+    case CREATE_USER_ROLE_SUCCESS: {
+      const newUserRoles = concat(state.data.userRoles, get(action.data, 'userRole'));
       return {
         ...state,
         data: {
-          userRoles,
+          ...state.data,
+          userRoles: newUserRoles,
         }
       };
-    case UPDATE_USER_ROLE: 
-      userRoles = [...state.data.userRoles];
-      index = findIndex(userRoles, { id: get(action.options, 'userRoleId') });
-      userRoles[index] = {
-        ...userRoles[index],
-        ...action.options,
-      };
+    }
+    case UPDATE_USER_ROLE_SUCCESS: {
+      const index = findIndex(state.data.userRoles, { id: get(action.data, 'userRole.id') });
+      let newUserRoles = state.data.userRoles;
+      newUserRoles[index] = {
+        ...newUserRoles[index],
+        ...get(action.data, 'userRole')
+      }
       return {
         ...state,
         data: {
-          userRoles,
+          ...state.data,
+          userRoles: newUserRoles
         }
-      };
-    case UPDATE_USER_ROLE_SUCCESS: 
-      userRoles = [...state.data.userRoles];
-      index = findIndex(userRoles, { id: get(action.data.userRole, 'id') });
-      userRoles[index] = {
-        ...userRoles[index],
-        ...action.data.userRole,
-      };
+      }
+    }
+    case DELETE_USER_ROLE_SUCCESS: {
+      let newUserRoles = state.data.userRoles;
+      remove(newUserRoles, { id: get(action.options, 'userRoleId') });
       return {
         ...state,
         data: {
-          userRoles,
+          ...state.data,
+          userRoles: newUserRoles,
         }
       };
-    case DELETE_USER_ROLE:
-      userRoles = [...state.data.userRoles];
-      remove(userRoles, { id: get(action.options, 'userRoleId') });
-      return {
-        ...state,
-        data: {
-          userRoles,
-        }
-      };
+    }
     default:
       return state;
   }

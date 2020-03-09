@@ -3,8 +3,9 @@ import {
   DETAIL_USER_SUCCESS,
   DETAIL_USER_FAIL,
 } from '../../constants/actions/user/detailUser';
-import { PUBLIC_MEMBER } from '../../constants/actions/user/publicMember';
-import { PRIVATE_MEMBER } from '../../constants/actions/user/privateMember';
+import { UPDATE_USER_SUCCESS } from '../../constants/actions/user/updateUser';
+import { UPLOAD_DOCUMENTS_USER_SUCCESS } from '../../constants/actions/user/uploadDocumentsUser';
+import { get } from 'lodash';
 
 export const initialState = {
   data: {  
@@ -15,7 +16,6 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  let user = null;
   switch (action.type) {
     case DETAIL_USER:
       return {
@@ -36,28 +36,36 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case PUBLIC_MEMBER:
-      user = {
+    case UPDATE_USER_SUCCESS: {
+      const newUser = {
         ...state.data.user,
-        state: 1,
+        room_id: get(action.options, 'roomId'),
+        position_id: get(action.options, 'positionId'),
+        level_id: get(action.options, 'levelId'),
+        major_id: get(action.options, 'majorId'),
+        description: get(action.options, 'description'),
       };
       return {
         ...state,
         data: {
-          user,
-        },
-      };
-    case PRIVATE_MEMBER:
-      user = {
+          ...state.data,
+          user: newUser,
+        }
+      }
+    }
+    case UPLOAD_DOCUMENTS_USER_SUCCESS: {
+      const newUser = {
         ...state.data.user,
-        state: 0,
+        documents: get(action.data, 'documents'),
       };
       return {
         ...state,
         data: {
-          user,
-        },
-      };
+          ...state.data,
+          user: newUser,
+        }
+      }
+    }
     default:
       return state;
   }

@@ -2,19 +2,21 @@ import { createSelector } from 'reselect';
 import { get, find } from 'lodash';
 
 const listRoom = state => state.room.listRoom;
+const sortRoom = state => state.room.sortRoom;
 const listUserOfGroup = state => state.user.listUserOfGroup;
 const listIcon = state => state.icon.listIcon;
 
 export const roomsSelector = createSelector(
-  [listRoom, listUserOfGroup, listIcon],
-  (listRoom, listUserOfGroup, listIcon) => {
+  [listRoom, listUserOfGroup, listIcon, sortRoom],
+  (listRoom, listUserOfGroup, listIcon, sortRoom) => {
+    const { loading: sortRoomLoading, error: sortRoomError } = sortRoom;
     const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
-    const { data: { rooms: groups }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
+    const { data: { rooms: groups } } = listUserOfGroup;
     const newGroups = groups.map(group => ({
       ...group,
       id: get(group, 'id').toLowerCase(),
     }))
-    const { data: { icons, defaults }, loading: iconLoading, error: iconError } = listIcon;
+    const { data: { icons, defaults } } = listIcon;
     const allIcons = [...icons.map(icon => get(icon, 'url_full')), ...defaults.map(icon => get(icon, 'url_icon'))];
     const newRooms = rooms.map(curRoom => {
       const curGroup = find(newGroups, { 'id': get(curRoom, 'id').toLowerCase() });
@@ -29,8 +31,8 @@ export const roomsSelector = createSelector(
     });
     return ({
       rooms: newRooms,
-      loading: listRoomLoading || listUserOfGroupLoading || iconLoading,
-      error: listRoomError || listUserOfGroupError || iconError,
+      loading: listRoomLoading || sortRoomLoading,
+      error: listRoomError || sortRoomError,
     });
   }
 );

@@ -12,10 +12,14 @@ import { listDeletedProject } from '../../actions/project/listDeletedProject';
 import { detailStatus } from '../../actions/project/setting/detailStatus';
 import { 
   CustomEventListener, CustomEventDispose, 
-  CREATE_PROJECT_GROUP, SORT_PROJECT_GROUP, DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
-  CREATE_ICON, DELETE_ICON,
-  CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT, HIDE_PROJECT, SHOW_PROJECT, SORT_PROJECT, COPY_PROJECT,
-  UPDATE_STATUS_COPY, UPDATE_STATUS_DATE,
+  //CREATE_PROJECT_GROUP, 
+  SORT_PROJECT_GROUP, 
+  //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
+  //CREATE_ICON, DELETE_ICON,
+  //CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT, HIDE_PROJECT, SHOW_PROJECT, 
+  SORT_PROJECT, 
+  //COPY_PROJECT,
+  //UPDATE_STATUS_COPY, UPDATE_STATUS_DATE,
 } from '../../constants/events';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
 import DefaultGroupDetail from './LeftPart/DefaultGroupDetail';
@@ -42,6 +46,7 @@ function ProjectGroupPage({
   React.useEffect(() => {
     doListIcon();
 
+    /*
     const reloadListIcon = () => {
       doListIcon(true);
     };
@@ -53,29 +58,30 @@ function ProjectGroupPage({
       CustomEventDispose(CREATE_ICON, reloadListIcon);
       CustomEventDispose(DELETE_ICON, reloadListIcon);
     }
+    */
   }, [doListIcon]);
 
   React.useEffect(() => {
     doListProjectGroup();
 
     const reloadListProjectGroup = () => {
-      doListProjectGroup(true);
+      doListProjectGroup(/*true*/);
     }
 
-    CustomEventListener(CREATE_PROJECT_GROUP, reloadListProjectGroup);
+    //CustomEventListener(CREATE_PROJECT_GROUP, reloadListProjectGroup);
     CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
-    CustomEventListener(DELETE_PROJECT_GROUP, reloadListProjectGroup);
-    CustomEventListener(EDIT_PROJECT_GROUP, reloadListProjectGroup);
-    CustomEventListener(CREATE_PROJECT, reloadListProjectGroup);
-    CustomEventListener(DELETE_PROJECT, reloadListProjectGroup);
+    //CustomEventListener(DELETE_PROJECT_GROUP, reloadListProjectGroup);
+    //CustomEventListener(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+    //CustomEventListener(CREATE_PROJECT, reloadListProjectGroup);
+    //CustomEventListener(DELETE_PROJECT, reloadListProjectGroup);
 
     return () => {
-      CustomEventDispose(CREATE_PROJECT_GROUP, reloadListProjectGroup);
+      //CustomEventDispose(CREATE_PROJECT_GROUP, reloadListProjectGroup);
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
-      CustomEventDispose(DELETE_PROJECT_GROUP, reloadListProjectGroup);
-      CustomEventDispose(EDIT_PROJECT_GROUP, reloadListProjectGroup);
-      CustomEventDispose(CREATE_PROJECT, reloadListProjectGroup);
-      CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
+      //CustomEventDispose(DELETE_PROJECT_GROUP, reloadListProjectGroup);
+      //CustomEventDispose(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+      //CustomEventDispose(CREATE_PROJECT, reloadListProjectGroup);
+      //CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
     }
   }, [doListProjectGroup]);
 
@@ -86,6 +92,7 @@ function ProjectGroupPage({
     if (projectGroupId) {
       doDetailProjectGroup({ projectGroupId });
 
+      /*
       const reloadDetailProjectGroup = () => {
         doDetailProjectGroup({ projectGroupId }, true);
       }
@@ -95,6 +102,7 @@ function ProjectGroupPage({
       return () => {
         CustomEventDispose(EDIT_PROJECT_GROUP, reloadDetailProjectGroup);
       }
+      */
     }
   }, [projectGroupId, doDetailProjectGroup]);
 
@@ -107,6 +115,7 @@ function ProjectGroupPage({
     if (projectGroupId) {
       doMemberProjectGroup({ projectGroupId });
 
+      /*
       const reloadMemberProjectGroup = () => {
         doMemberProjectGroup({ projectGroupId }, true);
       }
@@ -116,6 +125,7 @@ function ProjectGroupPage({
       return () => {
         CustomEventDispose(EDIT_PROJECT_GROUP, reloadMemberProjectGroup);
       }
+      */
     }
   }, [projectGroupId, doMemberProjectGroup]);
 
@@ -134,31 +144,32 @@ function ProjectGroupPage({
         groupProject: projectGroupId,
         timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
         timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-      }, true);
+      }, /*true*/);
     }
 
-    CustomEventListener(CREATE_PROJECT, reloadListProject);
-    CustomEventListener(UPDATE_PROJECT, reloadListProject);
-    CustomEventListener(DELETE_PROJECT, reloadListProject);
-    CustomEventListener(HIDE_PROJECT, reloadListProject);
-    CustomEventListener(SHOW_PROJECT, reloadListProject);
+    //CustomEventListener(CREATE_PROJECT, reloadListProject);
+    //CustomEventListener(UPDATE_PROJECT, reloadListProject);
+    //CustomEventListener(DELETE_PROJECT, reloadListProject);
+    //CustomEventListener(HIDE_PROJECT, reloadListProject);
+    //CustomEventListener(SHOW_PROJECT, reloadListProject);
     CustomEventListener(SORT_PROJECT, reloadListProject);
-    CustomEventListener(COPY_PROJECT, reloadListProject);
+    //CustomEventListener(COPY_PROJECT, reloadListProject);
 
     return () => {
-      CustomEventDispose(CREATE_PROJECT, reloadListProject);
-      CustomEventDispose(UPDATE_PROJECT, reloadListProject);
-      CustomEventDispose(DELETE_PROJECT, reloadListProject);
-      CustomEventDispose(HIDE_PROJECT, reloadListProject);
-      CustomEventDispose(SHOW_PROJECT, reloadListProject);
+      //CustomEventDispose(CREATE_PROJECT, reloadListProject);
+      //CustomEventDispose(UPDATE_PROJECT, reloadListProject);
+      //CustomEventDispose(DELETE_PROJECT, reloadListProject);
+      //CustomEventDispose(HIDE_PROJECT, reloadListProject);
+      //CustomEventDispose(SHOW_PROJECT, reloadListProject);
       CustomEventDispose(SORT_PROJECT, reloadListProject);
-      CustomEventDispose(COPY_PROJECT, reloadListProject);
+      //CustomEventDispose(COPY_PROJECT, reloadListProject);
     }
   }, [projectGroupId, timeRange, doListProject]);
 
   React.useEffect(() => {
     doListDeletedProject({});
 
+    /*
     const reloadListDeletedProject = () => {
       doListDeletedProject({}, true);
     }
@@ -168,6 +179,7 @@ function ProjectGroupPage({
     return () => {
       CustomEventDispose(DELETE_PROJECT, reloadListDeletedProject);
     }
+    */
   }, [doListDeletedProject]);
 
   const [statusProjectId, setStatusProjectId] = React.useState(null);
@@ -178,6 +190,7 @@ function ProjectGroupPage({
         projectId: statusProjectId,
       });
 
+      /*
       const reloadDetailStatus = () => {
         doDetailStatus({
           projectId: statusProjectId,
@@ -191,6 +204,7 @@ function ProjectGroupPage({
         CustomEventDispose(UPDATE_STATUS_COPY, reloadDetailStatus);
         CustomEventDispose(UPDATE_STATUS_DATE, reloadDetailStatus);
       }
+      */
     }
   }, [statusProjectId, doDetailStatus]);
 

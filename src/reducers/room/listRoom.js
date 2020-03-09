@@ -82,11 +82,11 @@ function reducer(state = initialState, action) {
     } 
     case SORT_ROOM_SUCCESS: {
       let newRooms = state.data.rooms;
-      const removed = remove(rooms, { id: get(action.options, 'roomId') });
+      const removed = remove(newRooms, { id: get(action.options, 'roomId') });
       newRooms = [
-        ...slice(rooms, 0, action.options.sortIndex), 
+        ...slice(newRooms, 0, action.options.sortIndex), 
         ...removed, 
-        ...slice(rooms, action.options.sortIndex)
+        ...slice(newRooms, action.options.sortIndex)
       ];
       return {
         ...state,

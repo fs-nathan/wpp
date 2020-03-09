@@ -8,7 +8,7 @@ export const projectSelector = createSelector(
   [detailProject, listTask],
   (detailProject, listTask) => {
     const { data: { project }, error: detailProjectError, loading: detailProjectLoading } = detailProject;
-    const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
+    const { data: { tasks } } = listTask;
     const allTasks = flatten(tasks.map(groupTasks => get(groupTasks, 'tasks', [])));
     const newProject = {
       ...project,
@@ -21,8 +21,8 @@ export const projectSelector = createSelector(
     }
     return {
       project: newProject,
-      loading: detailProjectLoading || listTaskLoading,
-      error: detailProjectError || listTaskError,
+      loading: detailProjectLoading,
+      error: detailProjectError,
     }
   }
 );
