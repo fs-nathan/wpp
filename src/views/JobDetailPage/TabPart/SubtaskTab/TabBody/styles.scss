@@ -1,0 +1,7 @@
+.subTaskBody {
+  grid-area: body;
+  height: 100%;
+  &--noData {
+    color: #cccccc;
+  }
+}
