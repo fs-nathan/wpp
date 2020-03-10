@@ -95,7 +95,7 @@ function GroupTaskSlide({
                       }
                       secondary={
                         <Secondary>
-                          {groupTasks.groupTasks.reduce((sum, taskGroup) => sum += get(taskGroup, 'tasks', []).length, 0)} việc
+                          {groupTasks.groupTasks.reduce((sum, taskGroup) => sum += get(taskGroup, 'number_task', 0), 0)} việc
                         </Secondary>
                       }
                     />
@@ -123,7 +123,7 @@ function GroupTaskSlide({
                       }
                       secondary={
                         <Secondary>
-                          {filter(groupTasks.groupTasks, taskGroup => get(taskGroup, 'id') === 'default').reduce((sum, taskGroup) => sum += get(taskGroup, 'tasks', []), 0)} việc
+                          {filter(groupTasks.groupTasks, taskGroup => get(taskGroup, 'id') === 'default').reduce((sum, taskGroup) => sum += get(taskGroup, 'number_task', 0), 0)} việc
                         </Secondary>
                       }
                     />

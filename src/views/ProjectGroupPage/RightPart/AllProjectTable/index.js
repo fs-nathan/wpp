@@ -28,7 +28,7 @@ function AllProjectTable({
   isDefault = false,
 }) {
 
-  const { setTimeRange, setProjectGroupId } = React.useContext(ProjectPageContext);
+  const { setTimeRange, setProjectGroupId, setStatusProjectId } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
 
   React.useEffect(() => {
@@ -45,14 +45,7 @@ function AllProjectTable({
   React.useEffect(() => {
     let _projects = [...projects.projects];
     _projects = filter(_projects, filters[filterType].option);
-    _projects = (sortType.col === 'state_name'
-      ? sortBy(_projects, [
-        o => get(o, 'visibility'),
-        o => get(o, sortType.col) 
-      ])
-      : sortBy(_projects, [
-        o => get(o, sortType.col)
-      ]));
+    _projects = sortBy(_projects, o => get(o, sortType.col));
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
     setNewProjects({
       ...projects,
@@ -136,6 +129,7 @@ function AllProjectTable({
       <ProjectSettingModal 
         open={openSetting} 
         setOpen={setOpenSetting} 
+        setStatusProjectId={setStatusProjectId}
         {...settingProps}
       />
       <AlertModal

@@ -3,7 +3,8 @@ import {
   LIST_ICON_SUCCESS,
   LIST_ICON_FAIL,
 } from '../../constants/actions/icon/listIcon';
-import { DELETE_ICON } from '../../constants/actions/icon/deleteIcon';
+import { DELETE_ICON_SUCCESS } from '../../constants/actions/icon/deleteIcon';
+import { CREATE_ICON_SUCCESS } from '../../constants/actions/icon/createIcon';
 import { remove, get, } from 'lodash';
 
 export const initialState = {
@@ -37,9 +38,21 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case DELETE_ICON:
+    case DELETE_ICON_SUCCESS:
       icons = [...state.data.icons];
       remove(icons, { id: get(action.options, 'iconId') });
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          icons,
+        },
+      };
+    case CREATE_ICON_SUCCESS:
+      icons = [...state.data.icons, {
+        ...get(action.data, 'dataIcon'),
+        url_full: get(action.data, 'dataIcon.url')
+      }];
       return {
         ...state,
         data: {

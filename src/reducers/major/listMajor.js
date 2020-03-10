@@ -3,6 +3,16 @@ import {
   LIST_MAJOR_SUCCESS,
   LIST_MAJOR_FAIL,
 } from '../../constants/actions/major/listMajor';
+import {
+  CREATE_MAJOR_SUCCESS,
+} from '../../constants/actions/major/createMajor';
+import {
+  UPDATE_MAJOR_SUCCESS,
+} from '../../constants/actions/major/updateMajor';
+import {
+  DELETE_MAJOR_SUCCESS,
+} from '../../constants/actions/major/deleteMajor';
+import { findIndex, get, remove } from 'lodash';
 
 export const initialState = {
   data: {
@@ -33,6 +43,40 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case CREATE_MAJOR_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          majors: [...state.data.majors, action.data.major]
+        }
+      }
+    case UPDATE_MAJOR_SUCCESS: {
+      const index = findIndex(state.data.majors, { id: get(action.data, 'major.id') });
+      let newLevels = state.data.majors;
+      newLevels[index] = {
+        ...newLevels[index],
+        ...get(action.data, 'major')
+      }
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          majors: newLevels
+        }
+      }
+    }
+    case DELETE_MAJOR_SUCCESS: {
+      let newLevels = state.data.majors;
+      remove(newLevels, { id: get(action.options, 'majorId') });
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          majors: newLevels
+        }
+      }
+    }
     default:
       return state;
   }

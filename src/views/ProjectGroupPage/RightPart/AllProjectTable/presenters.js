@@ -209,23 +209,17 @@ function AllProjectTable({
                 label: 'Trạng thái',
                 field: row => (
                   <StateBox
-                    stateName={
-                      get(row, 'visibility', true) === false
-                        ? 'Hidden'
-                        : get(row, 'state_name', '')
-                    }
+                    stateName={get(row, 'state_name')}
                   >
                     <div>
                       <span>&#11044;</span>
                       <span>
-                        {get(row, 'visibility', true) === false
-                          ? 'Hidden'
-                          : get(row, 'state_name', '')}
+                        {get(row, 'state_name')}
                       </span>
                     </div>
-                    {get(row, 'visibility', true) && (
+                    {get(row, 'state_name') !== 'Hidden' && (
                       <small>
-                        {get(row, 'state_name', '') === 'expired'
+                        {get(row, 'state_name', '') === 'Expired'
                           ? get(row, 'day_expired', 0)
                           : get(row, 'day_implement', 0)}{' '}
                         ngày
@@ -330,7 +324,7 @@ function AllProjectTable({
                         .background
                     }
                   >
-                    {get(row, 'priority_name', '')}
+                    {decodePriorityCode(get(row, 'priority_code', 0)).name}
                   </CustomBadge>
                 ),
                 sort: evt => handleSortType('priority_code'),
@@ -403,9 +397,7 @@ function AllProjectTable({
               id: get(project, 'id', ''),
               icon: get(project, 'icon', ''),
               name: get(project, 'name', ''),
-              status: get(project, 'visibility', true) === false
-                ? 'Hidden'
-                : get(project, 'state_name', ''),
+              status: get(project, 'state_name', ''),
               task_count: get(project, 'statistic.waiting', 0)
                 + get(project, 'statistic.doing', 0)
                 + get(project, 'statistic.expired', 0)

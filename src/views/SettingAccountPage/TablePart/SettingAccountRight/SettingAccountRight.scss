@@ -79,10 +79,16 @@
           width: 25%;
           display: flex;
           align-items: center;
+          &.gender-title {
+            width: 85%;
+          }
         }
         .value-item-info {
           text-align: right;
           width: 75%;
+          &.gender-content {
+            width: 15%;
+          }
           .MuiFormControl-fullWidth {
             width: unset;
             margin: 0;

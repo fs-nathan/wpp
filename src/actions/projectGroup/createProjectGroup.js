@@ -13,11 +13,11 @@ export const createProjectGroup = ({ name, icon, description }) => ({
   },
 });
 
-export const createProjectGroupSuccess = ({ projectGroupId }, options) => ({
+export const createProjectGroupSuccess = ({ projectGroup }, options) => ({
   type: CREATE_PROJECT_GROUP_SUCCESS,
   options,
   data: {
-    projectGroupId,
+    projectGroup,
   },
 });
 

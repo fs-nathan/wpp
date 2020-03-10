@@ -1,17 +1,26 @@
 import { createSelector } from 'reselect';
+import { find, get } from 'lodash';
 
 const listTask = state => state.task.listTask;
+const sortTask = state => state.task.sortTask;
 const detailProject = state => state.project.detailProject;
 const colors = state => state.setting.colors;
+const listGroupTask = state => state.groupTask.listGroupTask;
 
 export const tasksSelector = createSelector(
-  [listTask],
-  (listTask) => {
-    const { data: { tasks }, loading, error } = listTask;
+  [listTask, listGroupTask, sortTask],
+  (listTask, listGroupTask, sortTask) => {
+    const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
+    const { loading: sortTaskLoading, error: sortTaskError } = sortTask;
+    const { data: { groupTasks } } = listGroupTask;
+    const newTasks = tasks.map(groupTask => ({
+      ...groupTask,
+      ...find(groupTasks, { id: get(groupTask, 'id') }),
+    }));
     return {
-      tasks,
-      loading,
-      error,
+      tasks: newTasks,
+      loading: listTaskLoading || sortTaskLoading,
+      error: listTaskError || sortTaskError,
     }
   }
 );

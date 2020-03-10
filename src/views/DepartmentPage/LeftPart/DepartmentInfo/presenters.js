@@ -84,10 +84,7 @@ export const NormalDepartment = ({
                     {get(room.detail, 'name', '')}
                   </ColorTypo>
                   <ColorTypo>
-                    {t(
-                      'views.user_page.left_part.department_info.member_count',
-                      { member_count: get(room.detail, 'number_member', 0) }
-                    )}
+                    Số nhân sự: {get(room.detail, 'number_member', 0)} thành viên
                   </ColorTypo>
                 </LogoBox>
                 <ColorTypo uppercase bold color="gray">

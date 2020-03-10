@@ -104,7 +104,9 @@ const Info = props => {
         setLogoGroup(data.logo);
         props.actionFetchGroupDetail(true);
         setUpdatingImg(false);
+        handleToast('success', t('IDS_WP_CHANGE_LOGO_SUCCESS'));
       } catch (error) {
+        handleToast('error', error.message);
         setUpdatingImg(false);
       }
     } else if ((type = CROP_TYPE.COVER)) {
@@ -112,8 +114,10 @@ const Info = props => {
         const { data } = await actionUpdateCoverGroup(formData);
         setCoverGroup(data.cover);
         props.actionFetchGroupDetail(true);
+        handleToast('success', t('IDS_WP_CHANGE_COVER_SUCCESS'));
         setUpdatingImg(false);
       } catch (error) {
+        handleToast('error', error.message);
         setUpdatingImg(false);
       }
     }
@@ -207,6 +211,7 @@ const Info = props => {
     window.navigator.clipboard.writeText(text);
     handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${text}`);
   };
+  console.log('test', props.profile);
   return (
     <div className="setting-group-info">
       <div className="group-info-left">
@@ -393,9 +398,8 @@ const Info = props => {
                   component="label"
                   htmlFor="raised-button-file"
                   disableTouchRipple
-                  onClick={() => {
-                    setCropType(CROP_TYPE.LOGO);
-                  }}
+                  // disabled={true}
+                  onClick={() => setCropType(CROP_TYPE.LOGO)}
                 >
                   {t('IDS_WP_CHANGE_LOGO')}
                 </Button>
@@ -405,9 +409,7 @@ const Info = props => {
                   color="primary"
                   component="label"
                   disableTouchRipple
-                  onClick={() => {
-                    handleResetImage(CROP_TYPE.LOGO);
-                  }}
+                  onClick={() => handleResetImage(CROP_TYPE.LOGO)}
                 >
                   {t('IDS_WP_USE_DEFAULT')}
                 </Button>
@@ -422,19 +424,23 @@ const Info = props => {
             <div className="heading-title">
               <span>{t('IDS_WP_COVER_IMAGE_GROUP')} (1200x400px)</span>
               <span className="action-update-img">
-                <Button
-                  className="crop-image-btn"
-                  color="primary"
-                  component="label"
-                  htmlFor="raised-button-file"
-                  disableTouchRipple
-                  onClick={() => {
-                    setCropType(CROP_TYPE.COVER);
-                  }}
-                >
-                  {t('IDS_WP_CHANGE_COVER_IMAGE')}
-                </Button>
-                <Divider orientation="vertical" />
+                {props.profile.type === 'Pro' && (
+                  <Button
+                    className="crop-image-btn"
+                    color="primary"
+                    component="label"
+                    htmlFor="raised-button-file"
+                    disableTouchRipple
+                    disabled={true}
+                    onClick={() => setCropType(CROP_TYPE.COVER)}
+                  >
+                    {t('IDS_WP_CHANGE_COVER_IMAGE')}
+                  </Button>
+                )}
+                {props.profile.type === 'Pro' && (
+                  <Divider orientation="vertical" />
+                )}
+
                 <Button
                   className="crop-image-btn"
                   color="primary"
@@ -485,7 +491,8 @@ export default connect(
     isLoading: state.setting.isLoading,
     groupDetail: state.setting.groupDetail,
     colors: state.setting.colors,
-    toast: state.system.toast
+    toast: state.system.toast,
+    profile: state.system.profile
   }),
   { actionFetchGroupDetail, actionGetProfile, actionActiveGroup, actionToast }
 )(Info);

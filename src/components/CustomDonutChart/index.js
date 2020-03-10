@@ -11,6 +11,7 @@ export const ChartBox = ({ className = '', ...props }) => <div className={`comp_
 export const ChartDrawer = ({ className = '', ...props }) => <div className={`comp_CustomDonutChart___chart-drawer ${className}`} {...props} />;
 
 export const ChartTitle = ({ className = '', ...props }) => <span className={`comp_CustomDonutChart___chart-title ${className}`} {...props} />;
+export const ChartPlacedolder = ({ className = '', ...props }) => <span className={`comp_CustomDonutChart___chart-placeholder ${className}`} {...props} />;
 
 export const ChartLegendBox = ({ className = '', ...props }) => <div className={`comp_CustomDonutChart___chart-legend-box ${className}`} {...props} />;
 export const ChartLegendTitleBox = ({ className = '', ...props }) => <div className={`comp_CustomDonutChart___chart-legend-box-title ${className}`} {...props} />;

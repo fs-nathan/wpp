@@ -4,7 +4,7 @@ import {
   LIST_TASK_FAIL,
 } from '../../constants/actions/task/listTask';
 import {
-  SORT_TASK,
+  SORT_TASK_SUCCESS,
 } from '../../constants/actions/task/sortTask';
 import { get, findIndex, remove, slice } from 'lodash';
 
@@ -39,7 +39,7 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case SORT_TASK:
+    case SORT_TASK_SUCCESS:
       tasks = [...state.data.tasks].map(task => {
         let _tasks = get(task, 'tasks', []);
         if (findIndex(_tasks, { id: get(action.options, 'taskId') }) > -1)

@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { get } from 'lodash';
 import { 
-  ChartBox, ChartDrawer, ChartTitle, CustomChart, ChartInfoBox
+  ChartBox, ChartDrawer, ChartTitle, CustomChart, ChartInfoBox, ChartPlacedolder
 } from '../../../../components/CustomDonutChart';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
@@ -72,24 +72,23 @@ function ProjectGroupDetail({
                             expandOnClick: false,
                           },
                         },
-                        dataLabels: {
-                          enabled: false,
-                        },
                         labels: [
                           'Công việc đang chờ', 
                           'Công việc đang làm', 
                           'Công việc quá hạn',
                           'Công việc hoàn thành',
+                          'Công việc ẩn',
                           'Công việc dừng',
                         ],
-                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
+                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d', 'black'],
                       }}
                       series={[
-                        get(group.group, 'task_waiting', 0),
-                        get(group.group, 'task_doing', 0),
-                        get(group.group, 'task_expired', 0),
-                        get(group.group, 'task_complete', 0),
-                        get(group.group, 'task_stop', 0),
+                        get(group.group, 'statistics.task_waiting', 0),
+                        get(group.group, 'statistics.task_doing', 0),
+                        get(group.group, 'statistics.task_expired', 0),
+                        get(group.group, 'statistics.task_complete', 0),
+                        get(group.group, 'statistics.task_hidden', 0),
+                        get(group.group, 'statistics.task_stop', 0),
                       ]}
                       width={250}
                       height={250}
@@ -97,6 +96,16 @@ function ProjectGroupDetail({
                     <ChartTitle>
                       Hoạt động
                     </ChartTitle>
+                    {
+                      get(group.group, 'statistics.task_waiting', 0) +
+                      get(group.group, 'statistics.task_doing', 0) +
+                      get(group.group, 'statistics.task_expired', 0) +
+                      get(group.group, 'statistics.task_complete', 0) +
+                      get(group.group, 'statistics.task_hidden', 0) +
+                      get(group.group, 'statistics.task_stop', 0) === 0
+                        ? <ChartPlacedolder />
+                        : null
+                    }
                   </ChartDrawer>
                   <ProjectGroupName>
                     {group.loading ? '...' : get(group.group, 'name', '')}
@@ -106,23 +115,27 @@ function ProjectGroupDetail({
                       [{
                         color: '#ff9800',
                         title: 'Công việc đang chờ',
-                        value: get(group.group, 'task_waiting', 0),
+                        value: get(group.group, 'statistics.task_waiting', 0),
                       }, {
                         color: '#03a9f4',
                         title: 'Công việc đang làm',
-                        value: get(group.group, 'task_doing', 0),
+                        value: get(group.group, 'statistics.task_doing', 0),
                       }, {
                         color: '#f44336',
                         title: 'Công việc quá hạn',
-                        value: get(group.group, 'task_expired', 0),
+                        value: get(group.group, 'statistics.task_expired', 0),
                       }, {
                         color: '#03c30b',
                         title: 'Công việc hoàn thành',
-                        value: get(group.group, 'task_complete', 0),
+                        value: get(group.group, 'statistics.task_complete', 0),
+                      }, {
+                        color: '#20194d',
+                        title: 'Công việc ẩn',
+                        value: get(group.group, 'statistics.task_hidden', 0),
                       }, {
                         color: '#000',
                         title: 'Công việc dừng',
-                        value: get(group.group, 'task_stop', 0),
+                        value: get(group.group, 'statistics.task_stop', 0),
                       }]
                     }
                   />

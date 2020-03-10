@@ -3,6 +3,13 @@ import {
   DETAIL_STATUS_SUCCESS,
   DETAIL_STATUS_FAIL,
 } from '../../../constants/actions/project/setting/detailStatus';
+import {
+  UPDATE_STATUS_COPY_SUCCESS
+} from '../../../constants/actions/project/setting/updateStatusCopy';
+import {
+  UPDATE_STATUS_DATE_SUCCESS
+} from '../../../constants/actions/project/setting/updateStatusDate';
+import { get } from 'lodash';
 
 export const initialState = {
   data: {
@@ -33,6 +40,32 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case UPDATE_STATUS_DATE_SUCCESS: {
+      const newStatus = {
+        ...state.data.status,
+        date_status: get(action.options, 'status')
+      }
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          status: newStatus,
+        }
+      };
+    }
+    case UPDATE_STATUS_COPY_SUCCESS: {
+      const newStatus = {
+        ...state.data.status,
+        can_copy: get(action.options, 'status')
+      }
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          status: newStatus,
+        }
+      };
+    }
     default:
       return state;
   }

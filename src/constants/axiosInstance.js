@@ -2,8 +2,8 @@ import axios from 'axios';
 import config from './apiConstant';
 import store from '../configStore';
 import { openNoticeModal } from '../actions/system/system';
-// import { Routes } from './routes';
-// import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from './constants';
+import { Routes } from '../constants/routes';
+import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from '../constants/constants';
 
 const apiService = axios.create({
   baseURL: config.BASE_API,
@@ -41,21 +41,10 @@ apiService.interceptors.response.use(
   },
   function(error) {
     if (error.response.status === 403) {
-      apiService
-        .post('login', {
-          email: 'huuthanhxd@gmail.com',
-          password: '12345678'
-        })
-        .then(response => {
-          localStorage.setItem('token', response.data.accessToken);
-          localStorage.setItem('refreshToken', response.data.refreshToken);
-          localStorage.setItem('group-active', response.data.group_active);
-          apiService.defaults.headers.common[
-            'Authorization'
-          ] = `Bearer ${response.data.accessToken}`;
-          apiService.defaults.headers.common['group-active'] =
-            response.data.group_active;
-        });
+      localStorage.removeItem(TOKEN);
+      localStorage.removeItem(REFRESH_TOKEN);
+      localStorage.removeItem(GROUP_ACTIVE);
+      window.location.href = Routes.LOGIN;
       return error.response;
     }
     return Promise.reject(error);

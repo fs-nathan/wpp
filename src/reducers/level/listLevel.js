@@ -3,6 +3,16 @@ import {
   LIST_LEVEL_SUCCESS,
   LIST_LEVEL_FAIL,
 } from '../../constants/actions/level/listLevel';
+import {
+  CREATE_LEVEL_SUCCESS
+} from '../../constants/actions/level/createLevel';
+import {
+  UPDATE_LEVEL_SUCCESS
+} from '../../constants/actions/level/updateLevel';
+import {
+  DELETE_LEVEL_SUCCESS
+} from '../../constants/actions/level/deleteLevel';
+import { findIndex, get, remove } from 'lodash';
 
 export const initialState = {
   data: {
@@ -33,6 +43,40 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case CREATE_LEVEL_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          levels: [...state.data.levels, action.data.level]
+        }
+      }
+    case UPDATE_LEVEL_SUCCESS: {
+      const index = findIndex(state.data.levels, { id: get(action.data, 'level.id') });
+      let newLevels = state.data.levels;
+      newLevels[index] = {
+        ...newLevels[index],
+        ...get(action.data, 'level')
+      }
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          levels: newLevels
+        }
+      }
+    }
+    case DELETE_LEVEL_SUCCESS: {
+      let newLevels = state.data.levels;
+      remove(newLevels, { id: get(action.options, 'levelId') });
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          levels: newLevels
+        }
+      }
+    }
     default:
       return state;
   }

@@ -3,7 +3,6 @@ import { detailStatus } from '../../../../actions/project/setting/detailStatus';
 import { updateStatusCopy } from '../../../../actions/project/setting/updateStatusCopy';
 import { updateStatusDate } from '../../../../actions/project/setting/updateStatusDate';
 import { connect } from 'react-redux';
-import { Context as ProjectPageContext } from '../../index';
 import './style.scss';
 import { statusSelector } from './selectors';
 import { get } from 'lodash';
@@ -14,9 +13,8 @@ function ProjectSetting({
   open, setOpen,
   status,
   doUpdateStatusCopy, doUpdateStatusDate,
+  setStatusProjectId = () => null,
 }) {
-
-  const { setStatusProjectId } = React.useContext(ProjectPageContext);
 
   React.useEffect(() => {
     if (curProject) setStatusProjectId(get(curProject, 'id'))

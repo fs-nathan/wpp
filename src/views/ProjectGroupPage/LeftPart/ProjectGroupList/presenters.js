@@ -89,7 +89,10 @@ function ProjectList({
                         <StyledPrimary>Tất cả</StyledPrimary>  
                       }
                       secondary={
-                        <Secondary>{groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'number_project', 0), 0)} dự án</Secondary>
+                        <Secondary>{
+                          groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'number_project', 0), 0) + 
+                          groups.defaultNumberProject
+                        } dự án</Secondary>
                       }
                     />
                   </StyledListItem>
@@ -110,7 +113,7 @@ function ProjectList({
                         <StyledPrimary>Chưa phân loại</StyledPrimary>  
                       }
                       secondary={
-                        <Secondary>0 dự án</Secondary>
+                        <Secondary>{groups.defaultNumberProject} dự án</Secondary>
                       }
                     />
                   </StyledListItem>

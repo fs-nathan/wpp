@@ -34,7 +34,7 @@ function CustomListItem({ member, index }) {
               <Primary>{get(member, 'name', '')}</Primary>  
             }
             secondary={
-              <Secondary>{get(member, 'tasks', []).length} việc</Secondary>
+              <Secondary>{get(member, 'number_task', 0)} việc</Secondary>
             }
           />
         </StyledListItem>

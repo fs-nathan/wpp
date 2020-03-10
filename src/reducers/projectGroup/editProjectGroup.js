@@ -5,7 +5,9 @@ import {
 } from '../../constants/actions/projectGroup/editProjectGroup';
 
 export const initialState = {
-  data: {},
+  data: {
+    projectGroup: null,
+  },
   error: null,
   loading: false,
 };
@@ -21,6 +23,7 @@ function reducer(state = initialState, action) {
     case EDIT_PROJECT_GROUP_SUCCESS: 
       return {
         ...state,
+        data: state.data,
         error: null,
         loading: false,
       };

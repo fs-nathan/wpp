@@ -19,7 +19,8 @@ import './SettingGroupRight.scss';
 import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
 import OrderInit from '../../../../components/ExportPDF/OrderInit';
 import SliderProgess from '../../../../components/SliderProgess/SliderProgess';
-
+let timeout1 = null;
+let timeout2 = null;
 const CreateOrder = props => {
   const { t } = useTranslation();
   const [isCheckedManagerWork, setIsCheckedManagerWork] = useState(false);
@@ -62,19 +63,36 @@ const CreateOrder = props => {
     }
   };
   useEffect(() => {
-    fetInfoBeforeCreateOrder();
-    fetNumberDayFromOldOrder();
+    fetInfoBeforeCreateOrder(); // eslint-disable-next-line
   }, []);
 
   const fetInfoBeforeCreateOrder = async () => {
     try {
       const { data } = await getInfoBeforeCreateOrder();
       setDataBeforOder(data);
+      let pricePacketUser = 0;
+      data.price_user_packet.forEach(element => {
+        if (element.min <= 5 && 5 <= element.max) {
+          pricePacketUser = element.value;
+          return;
+        }
+      });
+      let pricePacketData = 0;
+      data.price_storage_packet.forEach(element => {
+        if (element.min <= 1000 && 1000 <= element.max) {
+          pricePacketData = element.value;
+          return;
+        }
+      });
+      fetNumberDayFromOldOrder({
+        unit_price_packet_user: pricePacketUser,
+        unit_price_packet_storage: pricePacketData
+      });
     } catch (error) {}
   };
-  const fetNumberDayFromOldOrder = async () => {
+  const fetNumberDayFromOldOrder = async params => {
     try {
-      const { data } = await getNumberDayFromOldOrder();
+      const { data } = await getNumberDayFromOldOrder(params);
       setDataNumberOldOder(data.data);
     } catch (error) {}
   };
@@ -101,15 +119,63 @@ const CreateOrder = props => {
   };
   const handleChangeSilder = (type, value) => {
     switch (type) {
-      case 'numAcc':
+      case 'numAcc': {
+        if (timeout1) {
+          clearTimeout(timeout1);
+        }
+        timeout1 = setTimeout(async () => {
+          let pricePacketUser = 0;
+          dataBeforOder.price_user_packet.forEach(element => {
+            if (element.min <= value && value <= element.max) {
+              pricePacketUser = element.value;
+              return;
+            }
+          });
+          let pricePacketData = 0;
+          dataBeforOder.price_storage_packet.forEach(element => {
+            if (element.min <= dataBuy && dataBuy <= element.max) {
+              pricePacketData = element.value;
+              return;
+            }
+          });
+          fetNumberDayFromOldOrder({
+            unit_price_packet_user: pricePacketUser,
+            unit_price_packet_storage: pricePacketData
+          });
+        }, 1000);
         SetnumAcc(value);
         break;
+      }
       case 'dateUse':
         SetdateUse(value);
         break;
-      case 'dataBuy':
+      case 'dataBuy': {
+        if (timeout2) {
+          clearTimeout(timeout2);
+        }
+        timeout2 = setTimeout(async () => {
+          let pricePacketUser = 0;
+          dataBeforOder.price_user_packet.forEach(element => {
+            if (element.min <= numAcc && numAcc <= element.max) {
+              pricePacketUser = element.value;
+              return;
+            }
+          });
+          let pricePacketData = 0;
+          dataBeforOder.price_storage_packet.forEach(element => {
+            if (element.min <= value && value <= element.max) {
+              pricePacketData = element.value;
+              return;
+            }
+          });
+          fetNumberDayFromOldOrder({
+            unit_price_packet_user: pricePacketUser,
+            unit_price_packet_storage: pricePacketData
+          });
+        }, 1000);
         SetdataBuy(value);
         break;
+      }
       default:
         SetdateSave(value);
     }
