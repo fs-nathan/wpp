@@ -1,341 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiDownload, mdiDotsHorizontal, mdiImage, mdiFile, mdiLink } from '@mdi/js';
+import { mdiImage, mdiFile, mdiLink } from '@mdi/js';
 import {
-  List, ListItem, ListItemText,
-  IconButton, Menu, MenuItem, ButtonGroup,
-  GridList, GridListTile, ListSubheader, ListItemIcon,
+  ButtonGroup,
   Collapse,
-  Typography
 } from '@material-ui/core';
+import get from 'lodash/get';
+
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorButton from '../../../../../components/ColorButton';
-import SearchInput from '../../../../../components/SearchInput';
 import colorPal from '../../../../../helpers/colorPalette';
-import iconDoc from '../../../../../assets/doc.png';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { useSelector, useDispatch } from 'react-redux';
-import { searchFile, searchLink, searchImage } from '../../../../../actions/taskDetail/taskDetailActions';
 
-const SubHeader = styled(ListSubheader)`
-  padding: 0;
-  font-size: 14px;
-`
-const ImageMedia = styled(GridListTile)`
-  margin-right: 7px;
-`
+import MediaContainer from './MediaContainer';
+import FileContainer from './FileContainer';
+import LinkContainer from './LinkContainer';
+import { useSelector } from 'react-redux';
+import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 
-const ButtonIcon = styled(IconButton)`
-  position: absolute;
-  top: 0;
-  right: 0;
-`
-const Div = styled.div`
-  display: none;
-  ${ImageMedia}:hover & {
-    display: inline;
-  }
-`
-const Button = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`
-
-const MenuListItem = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  function handleClick(evt) {
-    setAnchorEl(evt.currentTarget)
-  }
-  function handleClose() {
-    setAnchorEl(null);
-  }
-
-  return (
-    <Div>
-      <ButtonIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true" size={'small'} >
-        <Icon path={mdiDotsHorizontal} size={1} color={'#fff'} />
-      </ButtonIcon>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        transformOrigin={{
-          vertical: -31,
-          horizontal: -21,
-        }}
-      >
-        <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-        <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-        <MenuItem onClick={handleClose}>Xóa</MenuItem>
-      </Menu>
-    </Div>
-  )
-}
-
-const MediaBox = (props) => {
-    const image = useSelector(state=>state.taskDetail.media.image);
-    return (
-    <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
-      {image.images && image.images.map((image, key) => {
-        return (
-          <div className="media-image" key={key}>
-            <GridListTile cols={5}>
-              <SubHeader component='div'>{image.date_create}</SubHeader>
-            </GridListTile>
-            <div className="wrap-image">
-              {image.images.map((item, idx) => {
-                return (
-                  <ImageMedia key={idx}>
-                    <img src={item.url} alt='avatar' className="image-media-box" />
-                    <MenuListItem />
-                  </ImageMedia>
-                )
-              })}
-            </div>
-          </div>
-        );
-      })}
-    </GridList>
-  );
-}
-
-const MediaContainer = (props) => {
-  const dispatch = useDispatch();
-  const searchImagesTabPart = (e) => {
-    dispatch(searchImage(e.target.value))
-  }
-  return (
-    <React.Fragment>
-      <SearchInput 
-        fullWidth
-        placeholder='Nhập ngày đăng...'
-        onChange={e => searchImagesTabPart(e)}
-      />
-      <MediaBox {...props} />
-    </React.Fragment>
-  );
-}
-
-const FileBoxStyledList = styled(List)``;
-const FileBoxStyledListItem = styled(ListItem)`
-  display: flex;
-  align-items: center;
-  & > img {
-    width: 50px;
-    height: 50px;
-  }
-  & > div {
-    margin-left: 10px;
-    &:last-child {
-      margin-left: auto;
-      text-align: end;
-    }
-  }
-  &:hover .styled-menu-file {
-    opacity: 1;
-  }
-`;
-
-const FileBox = (props) => {
-    const file = useSelector(state=>state.taskDetail.media.file);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (evt) => {
-    setAnchorEl(evt.currentTarget);
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  }
-
-  return (
-    <FileBoxStyledList>
-      {file.files && file.files.map((item, idx) => {
-        return (
-
-          <FileBoxStyledListItem key={idx}>
-            <img src={iconDoc} alt='avatar' />
-            <div>
-              <div className="file-name">{item.name}</div>
-              <ColorTypo variant='caption'>
-                <Button size='small'>
-                  <a href={item.url}>
-                    <Icon path={mdiDownload} size={1} />
-                  </a>
-                </Button>
-                {item.size}
-              </ColorTypo>
-            </div>
-            <div>
-              <ColorTypo variant='body1'>{item.date_create}</ColorTypo>
-              <div className="styled-menu-file">
-
-                <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                  <Icon path={mdiDotsHorizontal} size={1} ></Icon>
-                </Button>
-              </div>
-            </div>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              transformOrigin={{
-                vertical: -30,
-                horizontal: 'right',
-              }}
-            >
-              <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-              <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-              <MenuItem onClick={handleClose}>Xóa</MenuItem>
-            </Menu>
-          </FileBoxStyledListItem>
-        )
-      })}
-    </FileBoxStyledList>
-  );
-}
-
-const FileContainer = (props) => {
-  const dispatch = useDispatch();
-  const searchFileTabPart = (e) => {
-    dispatch(searchFile(e.target.value))
-  }
-  return (
-    <React.Fragment>
-      <SearchInput 
-        fullWidth 
-        placeholder='Nhập từ khóa file'
-        onChange={e => searchFileTabPart(e)}
-      />
-      <FileBox {...props} />
-    </React.Fragment>
-  );
-}
-
-const ListItemLink = styled(ListItem)`
-  padding-left: 0;
-  & > *:first-child {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 23px;
-  }
-  & > div:nth-child(2) {
-    word-break: break-word;
-    width: 300px;
-  }
-`
-const HeaderSubText = styled(ListSubheader)`
-  font-size: 13px;
-  color: #6e6d6d;
-`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  
 `;
-
-const LinkBox = (props) => {
-  // console.log("link::",);
-    const link = useSelector(state=>state.taskDetail.media.links);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (evt) => {
-    setAnchorEl(evt.currentTarget);
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  }
-
-  return (
-    <List subheader={<li />}>
-      {link.links && link.links.map((item, idx) => {
-        return (
-          <div className="styled-list-item-link" key={idx}>
-            <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
-            {item.links.map((item, idx) => {
-              return (
-                <ListItemLink key={idx}>
-                  <Typography component='div'>
-                    <Icon path={mdiLink} size={1.4} color={'green'} />
-                  </Typography>
-                  <ListItemText>
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer">
-                      {item.url}
-                    </a>
-                  </ListItemText>
-                  <div className="styled-menu-link">
-                    <ListItemIcon>
-                      <Button onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                        <Icon path={mdiDotsHorizontal} size={1} />
-                      </Button>
-                    </ListItemIcon>
-                  </div>
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                    transformOrigin={{
-                      vertical: -30,
-                      horizontal: 'right',
-                    }}
-                  >
-                    <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-                    <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-                    <MenuItem onClick={handleClose}>Xóa</MenuItem>
-                  </Menu>
-                </ListItemLink>
-              )
-            })}
-          </div>
-        )
-      })}
-    </List>
-  );
-
-}
-
-const LinkContainer = (props) => {
-  const dispatch = useDispatch();
-  const searchLinkTabPart = (e) => {
-    dispatch(searchLink(e.target.value))
-  }
-  return (
-    <React.Fragment>
-      <SearchInput 
-        fullWidth 
-        placeholder='Nhập từ khóa link'
-        onChange={e => searchLinkTabPart(e)}
-      />
-      <LinkBox {...props} />
-    </React.Fragment>
-  );
-}
 
 const StyledButtonGroup = styled(ButtonGroup)`
   margin: 8px 0 20px 0;
 `;
 
 function TabBody(props) {
+  const links = useSelector(state => state.taskDetail.media.links);
+  const file = useSelector(state => state.taskDetail.media.file);
+  const image = useSelector(state => state.taskDetail.media.image);
+  const isNoData = (get(links, 'links.length', 0) + get(file, 'files.length', 0) + get(image, 'images.length', 0)) === 0;
 
   const [value, setValue] = React.useState(0);
 
@@ -366,15 +63,22 @@ function TabBody(props) {
             {value === 2 ? <ColorTypo bold>Link</ColorTypo> : <ColorTypo color='gray'>Link</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
-        <Collapse in={value === 0} mountOnEnter unmountOnExit>
-          <MediaContainer {...props} />
-        </Collapse>
-        <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          <FileContainer {...props} />
-        </Collapse>
-        <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          <LinkContainer {...props} />
-        </Collapse>
+        {isNoData ? <NoDataPlaceHolder
+          src="/images/no-files.png"
+          title="Chưa có tài liệu nào được chia sẻ! Thêm tài liệu bằng cách kéo thả, chụp màn hình hoặc lấy từ thư viện tài liệu."
+        ></NoDataPlaceHolder> :
+          <React.Fragment>
+            <Collapse in={value === 0} mountOnEnter unmountOnExit>
+              <MediaContainer {...props} />
+            </Collapse>
+            <Collapse in={value === 1} mountOnEnter unmountOnExit>
+              <FileContainer {...props} />
+            </Collapse>
+            <Collapse in={value === 2} mountOnEnter unmountOnExit>
+              <LinkContainer {...props} />
+            </Collapse>
+          </React.Fragment>
+        }
       </div>
     </Body>
   )
