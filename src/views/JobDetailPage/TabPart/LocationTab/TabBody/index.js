@@ -25,7 +25,7 @@ function TabBody() {
   const locations = useSelector(state => state.taskDetail.location.locations);
   const [value, setValue] = React.useState(0);
 
-  const isNoData = locations.length === 0
+  const isNoData = locations.length === 0;
 
   const handleChange = (evt, newValue) => {
     setValue(newValue);
