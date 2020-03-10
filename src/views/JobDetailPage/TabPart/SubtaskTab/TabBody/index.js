@@ -13,6 +13,7 @@ import { postSubTask, searchSubTask } from '../../../../../actions/taskDetail/ta
 import { ButtonIcon } from './AllSubtaskListItem';
 import AllSubtaskList from './AllSubtaskList';
 import FinishedSubtaskList from './FinishedSubtaskList';
+import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 
 import './styles.scss';
 
@@ -98,12 +99,10 @@ function TabBody(props) {
             />
           </Div>
         }
-        {isNoSubTask ? <div className="subTaskBody--noData">
-          <img src="/images/no-subtask.png" alt="no sub task"></img>
-          <div>
-            Chưa có công việc con được khởi tạo Click + để tạo mới công việc con
-          </div>
-        </div>
+        {isNoSubTask ? <NoDataPlaceHolder
+          src="/images/no-subtask.png"
+          title="Chưa có công việc con được khởi tạo Click + để tạo mới công việc con"
+        ></NoDataPlaceHolder>
           :
           <React.Fragment>
             <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Đang thực hiện({uncompleteSubTasks.length})</TextTitle>

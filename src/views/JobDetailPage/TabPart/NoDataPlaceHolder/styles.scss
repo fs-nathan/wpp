@@ -1,0 +1,9 @@
+.placeholder {
+  text-align: center;
+  img {
+    width: 70%;
+  }
+  &--noData {
+    color: #cccccc;
+  }
+}
