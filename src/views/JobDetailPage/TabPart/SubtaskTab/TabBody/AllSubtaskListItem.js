@@ -7,7 +7,7 @@ import {
 import Icon from '@mdi/react';
 import { mdiCheck, mdiDragVertical, mdiDotsVertical } from '@mdi/js';
 import { useSelector, useDispatch } from 'react-redux';
-import {deleteSubTask, completeSubTask} from '../../../../../actions/taskDetail/taskDetailActions';
+import { deleteSubTask, completeSubTask } from '../../../../../actions/taskDetail/taskDetailActions';
 import colorPal from '../../../../../helpers/colorPalette';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import SubtaskModal from '../SubtaskModal';
@@ -90,16 +90,17 @@ function AllSubtaskListItem(props) {
     dispatch(
       deleteSubTask({
         sub_task_id: props.task.id,
-        taskId: taskId
+        task_id: taskId
       })
     )
   }
 
   function onClickCompleteTask() {
+    console.log('onClickCompleteTask', taskId)
     dispatch(
       completeSubTask({
         sub_task_id: props.task.id,
-        taskId: taskId
+        taskId
       })
     )
   }
@@ -117,14 +118,21 @@ function AllSubtaskListItem(props) {
           onMouseLeave={() => setIsHover(false)}
         >
           <StyledMenu {...provided.dragHandleProps}>
-            <Icon path={mdiDragVertical} size={1} />
+            <abbr title="Kéo thả sắp xếp">
+              <Icon color="#ccc" path={mdiDragVertical} size={1} />
+            </abbr>
           </StyledMenu>
           {
             !isHover
-              ? <Avatar src={props.task.user_create_avatar} alt='avatar' />
+              ?
+              <abbr title="Đánh dấu hoàn thành">
+                <Avatar src={props.task.user_create_avatar} alt='avatar' />
+              </abbr>
               :
               <ButtonIcon onClick={onClickCompleteTask}>
-                <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
+                <abbr title="Đánh dấu hoàn thành">
+                  <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
+                </abbr>
               </ButtonIcon>
           }
           <ItemList>{props.task.name}</ItemList>

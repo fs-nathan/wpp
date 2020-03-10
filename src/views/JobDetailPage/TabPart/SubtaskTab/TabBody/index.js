@@ -85,7 +85,9 @@ function TabBody(props) {
               onClick={() => {
                 createSubTask(taskId, name)
               }}>
-              <Icon path={mdiSend} size={1} color={'gray'} />
+              <abbr title="Thêm">
+                <Icon path={mdiSend} size={1} color={'gray'} />
+              </abbr>
             </ButtonIcon>
           </NewWork>
           :
@@ -97,17 +99,18 @@ function TabBody(props) {
           </Div>
         }
         {isNoSubTask ? <div className="subTaskBody--noData">
-          <img src="/images/no-subtask.png" alt="no sub task"></img> 
+          <img src="/images/no-subtask.png" alt="no sub task"></img>
           <div>
             Chưa có công việc con được khởi tạo Click + để tạo mới công việc con
           </div>
         </div>
-       : 
-        <React.Fragment>
-          <AllSubtaskList {...props} />
-          <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Hoàn thành</TextTitle>
-          <FinishedSubtaskList {...props} />
-        </React.Fragment>}
+          :
+          <React.Fragment>
+            <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Đang thực hiện({uncompleteSubTasks.length})</TextTitle>
+            <AllSubtaskList {...props} />
+            <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Hoàn thành({completeSubTasks.length})</TextTitle>
+            <FinishedSubtaskList {...props} />
+          </React.Fragment>}
       </Container>
     </Scrollbars>
   )

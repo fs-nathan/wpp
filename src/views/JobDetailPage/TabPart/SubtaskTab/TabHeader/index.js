@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { IconButton } from '@material-ui/core';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiChevronLeft , mdiPlus } from '@mdi/js';
+import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
 import { WrapperContext } from '../../../index'
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,7 +44,7 @@ function TabHeader(props) {
   useEffect(() => {
     dispatch(getSubTask({ taskId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  }, []);
   const [isPlus, setOnPlus] = React.useState(true)
   const handleClick = () => {
     setOnPlus(!isPlus)
@@ -52,7 +52,9 @@ function TabHeader(props) {
   return (
     <Container>
       <ButtonIcon onClick={() => props.setShow(0)}>
-        <Icon path={mdiChevronLeft } size={1} />
+        <abbr title="Quay lại">
+          <Icon path={mdiChevronLeft} size={1} />
+        </abbr>
       </ButtonIcon>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Công việc con</ColorTypo>
       {isPlus ?
@@ -61,7 +63,9 @@ function TabHeader(props) {
           handleClick()
         }
         }>
-          <Icon path={mdiPlus} size={1} />
+          <abbr title="Thêm">
+            <Icon path={mdiPlus} size={1} />
+          </abbr>
         </ButtonIcon>
         :
         <ButtonCancel onClick={() => {

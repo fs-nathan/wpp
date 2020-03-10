@@ -72,7 +72,7 @@ function* postSubTask(action) {
     // console.log("action payload id::", action.options.task_id);
     const res = yield call(doPostSubTask, action.options)
     yield put(actions.postSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: action.options.task_id}))
+    yield put(actions.getSubTask({ taskId: action.options.task_id }))
   } catch (error) {
     yield put(actions.postSubTaskFail(error))
   }
@@ -94,8 +94,8 @@ async function doUpdateSubTask(payload) {
 
 function* updateSubTask(action) {
   const data = {
-    sub_task_id : action.options.sub_task_id,
-    name : action.options.name
+    sub_task_id: action.options.sub_task_id,
+    name: action.options.name
   }
   try {
     const res = yield call(doUpdateSubTask, data)
@@ -148,9 +148,10 @@ async function doCompleteSubTask(payload) {
 
 function* completeSubTask(action) {
   try {
-    const res = yield call(doCompleteSubTask, {sub_task_id: action.options.sub_task_id})
+    const { taskId, sub_task_id } = action.options
+    const res = yield call(doCompleteSubTask, { sub_task_id, task_id: taskId })
     yield put(actions.completeSubTaskSuccess(res))
-    yield put(actions.getSubTask({taskId: action.options.taskId}))
+    yield put(actions.getSubTask({ taskId }))
   } catch (error) {
     yield put(actions.completeSubTaskFail(error))
   }
@@ -203,7 +204,7 @@ async function doPostRemindWithTimeDetail(payload) {
 function* postRemindWithTimeDetail(action) {
   try {
     yield call(doPostRemindWithTimeDetail, action.options)
-    yield put(actions.getRemind({ taskId: action.options.taskId}))
+    yield put(actions.getRemind({ taskId: action.options.taskId }))
   } catch (error) {
     yield put(actions.postRemindWithTimeDetailFail(error))
   }
@@ -227,7 +228,7 @@ function* postRemindDuration(action) {
   try {
     const res = yield call(doPostRemindDuration, action.options)
     yield put(actions.postRemindDurationSuccess(res))
-    yield put(actions.getRemind({ taskId: action.options.task_id}))
+    yield put(actions.getRemind({ taskId: action.options.task_id }))
   } catch (error) {
     yield put(actions.postRemindDurationFail(error))
   }
@@ -251,7 +252,7 @@ function* updateRemindWithTimeDetail(action) {
   try {
     const res = yield call(doUpdateRemindWithTimeDetail, action.options.data)
     yield put(actions.updateRemindWithTimeDetailSuccess(res))
-    yield put(actions.getRemind({taskId: action.options.taskId}))
+    yield put(actions.getRemind({ taskId: action.options.taskId }))
   } catch (error) {
     yield put(actions.updateRemindWithTimeDetailFail(error))
   }
@@ -275,7 +276,7 @@ function* updateRemindWithDuration(action) {
   try {
     const res = yield call(doUpdateRemindWithDuration, action.options.data)
     yield put(actions.updateRemindWithDurationSuccess(res))
-    yield put(actions.getRemind({ taskId: action.options.taskId}))
+    yield put(actions.getRemind({ taskId: action.options.taskId }))
   } catch (error) {
     yield put(actions.updateRemindWithDurationFail(error))
   }
@@ -297,9 +298,9 @@ async function doDeleteRemind(payload) {
 
 function* deleteRemind(action) {
   try {
-    const res = yield call(doDeleteRemind, {remind_id: action.payload.remind_id})
+    const res = yield call(doDeleteRemind, { remind_id: action.payload.remind_id })
     yield put(actions.deleteRemindSuccess(res))
-    yield put(actions.getRemind({taskId: action.payload.taskId}))
+    yield put(actions.getRemind({ taskId: action.payload.taskId }))
   } catch (error) {
     yield put(actions.deleteRemindFail(error))
   }
@@ -345,7 +346,7 @@ function* createOffer(action) {
   try {
     const res = yield call(doCreateOffer, action.payload.data)
     yield put(actions.createOfferSuccess(res))
-    yield put(actions.getOffer({taskId: action.payload.taskId}))
+    yield put(actions.getOffer({ taskId: action.payload.taskId }))
   } catch (error) {
     yield put(actions.createOfferFail(error))
   }
@@ -373,7 +374,7 @@ function* updateOffer(action) {
   try {
     yield call(doUpdateOffer, data)
     // yield put(actions.updateOfferSuccess(res))
-    yield put(actions.getOffer({taskId: action.payload.taskId}))
+    yield put(actions.getOffer({ taskId: action.payload.taskId }))
   } catch (error) {
     yield put(actions.updateOfferFail(error))
   }
@@ -396,9 +397,9 @@ async function doDeleteOffer(payload) {
 function* deleteOffer(action) {
   try {
     // console.log("offer_id:::::::", action.payload);
-    const res = yield call(doDeleteOffer, {offer_id: action.payload.offer_id})
+    const res = yield call(doDeleteOffer, { offer_id: action.payload.offer_id })
     yield put(actions.deleteOfferSuccess(res))
-    yield put(actions.getOffer({ taskId :action.payload.taskId}))
+    yield put(actions.getOffer({ taskId: action.payload.taskId }))
   } catch (error) {
     yield put(actions.deleteOfferFail(error))
   }
@@ -474,7 +475,7 @@ function* handleOffer(action) {
   try {
     const res = yield call(doHandleOffer, action.payload.data)
     yield put(actions.handleOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: action.payload.taskId}))
+    yield put(actions.getOffer({ taskId: action.payload.taskId }))
   } catch (error) {
     yield put(actions.handleOfferFail(error))
   }
@@ -594,7 +595,7 @@ function* getTaskDetail(action) {
 }
 
 //Command
-async function doGetCommand({task_id}) {
+async function doGetCommand({ task_id }) {
   try {
     const config = {
       url: 'task/get-command-decision?task_id=' + task_id,
@@ -634,7 +635,7 @@ function* createCommand(action) {
   try {
     const res = yield call(doCreateCommand, action.payload)
     yield put(actions.createCommandSuccess(res))
-    yield put(actions.getCommand({task_id: action.payload.task_id}))
+    yield put(actions.getCommand({ task_id: action.payload.task_id }))
   } catch (error) {
     yield put(actions.createCommandFail(error))
   }
@@ -663,7 +664,7 @@ function* updateCommand(action) {
   try {
     const res = yield call(doUpdateCommand, data)
     yield put(actions.updateCommandSuccess(res))
-    yield put(actions.getCommand({task_id: action.payload.taskId}))
+    yield put(actions.getCommand({ task_id: action.payload.taskId }))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }
@@ -685,9 +686,9 @@ async function doDeleteCommand(payload) {
 
 function* deleteCommand(action) {
   try {
-    const res = yield call(doDeleteCommand, {command_id: action.payload.command_id})
+    const res = yield call(doDeleteCommand, { command_id: action.payload.command_id })
     yield put(actions.deleteCommandSuccess(res))
-    yield put(actions.getCommand({task_id: action.payload.task_id}))
+    yield put(actions.getCommand({ task_id: action.payload.task_id }))
   } catch (error) {
     yield put(actions.deleteCommandFail(error))
   }
@@ -943,8 +944,8 @@ async function doGetListTaskDetail({ project_id }) {
 function* getListTaskDetail(action) {
   try {
     const res = yield call(doGetListTaskDetail, action.payload)
- 
-    
+
+
     yield put(actions.getListTaskDetailSuccess(res))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error))
@@ -1088,7 +1089,7 @@ function* getListGroupTask(action) {
 //       }
 //       const tempResponse = yield call(doGetListProject, payload)
 //       projectGroups[i].projects = tempResponse.projects
-      // set active project id to call other API
+// set active project id to call other API
 //       if (i === 0) projectId = getFirstProjectId(projectGroups[i])
 //     }
 
@@ -1120,8 +1121,8 @@ function* getProjectListBasic(action) {
     // // set active project id to call other API
     // let projectDetail = getFirstProjectDetail(projectGroups)
     // if(projectDetail.id) projectId = projectDetail.id 
-    
-    yield put(actions.getProjectListBasicSuccess({projectGroups, projectId}))
+
+    yield put(actions.getProjectListBasicSuccess({ projectGroups, projectId }))
   } catch (error) {
     yield put(actions.getProjectListBasicFail(error))
   }
@@ -1184,7 +1185,7 @@ function* getProjectDetail(action) {
   }
 }
 //updateComplete
-async function doUpdateComplete(payload){
+async function doUpdateComplete(payload) {
   try {
     const config = {
       url: 'task/update-complete',
@@ -1198,13 +1199,13 @@ async function doUpdateComplete(payload){
     throw error;
   }
 }
-function*updateComplete(action){
+function* updateComplete(action) {
   try {
-    
-    const res =yield call(doUpdateComplete,action.payload.data)
-    
+
+    const res = yield call(doUpdateComplete, action.payload.data)
+
     yield put(actions.updateCompleteSuccess(res))
-    yield put(actions.getListTaskDetail({project_id: action.payload.projectId}))
+    yield put(actions.getListTaskDetail({ project_id: action.payload.projectId }))
   } catch (error) {
     yield put(actions.updateCommandFail(error))
   }
@@ -1227,7 +1228,7 @@ async function doGetStaticTask(project_id) {
 }
 function* getStaticTask(action) {
   try {
-    const res =yield call(doGetStaticTask, action.payload)
+    const res = yield call(doGetStaticTask, action.payload)
     yield put(actions.getStaticTaskSuccess(res))
   } catch (error) {
     yield put(actions.getStaticTaskFail(error))
@@ -1249,30 +1250,30 @@ async function doDeleteTask(task_id) {
 }
 function* deleteTask(action) {
   try {
-    const res =yield call(doDeleteTask, action.payload)
+    const res = yield call(doDeleteTask, action.payload)
     yield put(actions.deleteTaskSuccess(res))
   } catch (error) {
     yield put(actions.deleteTaskFail(error))
   }
 }
 
-export function* pinTask({payload}) {
+export function* pinTask({ payload }) {
   try {
-    const {task_id, projectId} = payload;
-    const res = yield call(apiService.post,'/task/ghim-task', {task_id})
+    const { task_id, projectId } = payload;
+    const res = yield call(apiService.post, '/task/ghim-task', { task_id })
     yield put(actions.pinTaskSuccess(res.data))
-    yield put(actions.getListTaskDetail({project_id: projectId}))
+    yield put(actions.getListTaskDetail({ project_id: projectId }))
   } catch (error) {
     yield put(actions.pinTaskFail(error))
   }
 }
 
-export function* unPinTask({payload}) {
+export function* unPinTask({ payload }) {
   try {
-    const {task_id, projectId} = payload;
-    const res = yield call(apiService.post,'/task/cancel-ghim-task', {task_id})
+    const { task_id, projectId } = payload;
+    const res = yield call(apiService.post, '/task/cancel-ghim-task', { task_id })
     yield put(actions.unPinTaskSuccess(res.data))
-    yield put(actions.getListTaskDetail({project_id: projectId}))
+    yield put(actions.getListTaskDetail({ project_id: projectId }))
   } catch (error) {
     yield put(actions.unPinTaskFail(error))
   }
