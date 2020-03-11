@@ -27,8 +27,8 @@ async function doListProject({ groupProject, type, status, timeStart, timeEnd })
 
 function* listProject(action) {
   try {
-    const { projects } = yield call(doListProject, action.options);
-    yield put(listProjectSuccess({ projects }, action.options));
+    const { projects, summary } = yield call(doListProject, action.options);
+    yield put(listProjectSuccess({ projects, summary }, action.options));
   } catch (error) {
     yield put(listProjectFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));

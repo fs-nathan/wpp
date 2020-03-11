@@ -24,7 +24,7 @@ import {
   UPDATE_STATE_JOIN_TASK,
   ASSIGN_MEMBER_TO_ALL_TASK,
   ADD_PROJECT_ROLE_TO_MEMBER, REMOVE_PROJECT_ROLE_FROM_MEMBER,
-  //CREATE_TASK, DELETE_TASK, 
+  CREATE_TASK, DELETE_TASK, 
   SORT_TASK,
   //SHOW_PROJECT, HIDE_PROJECT,
   //CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
@@ -33,6 +33,7 @@ import {
 import { get } from 'lodash';
 import moment from 'moment';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
+import { useLocalStorage } from '../../hooks';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -46,6 +47,11 @@ function ProjectPage({
   doListUserRole,
   doDetailStatus,
 }) {
+
+  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_OPTIONS', {
+    filterType: 1,
+    timeType: 5,
+  });
 
   React.useEffect(() => {
     doListProjectGroup();
@@ -88,6 +94,8 @@ function ProjectPage({
       CustomEventListener(REMOVE_MEMBER_PROJECT, reloadDetailProject);
       CustomEventListener(UPDATE_STATE_JOIN_TASK, reloadDetailProject);
       CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
+      CustomEventListener(CREATE_TASK, reloadDetailProject);
+      CustomEventListener(DELETE_TASK, reloadDetailProject);
       
       return () => {
         //CustomEventDispose(UPDATE_PROJECT, reloadDetailProject);
@@ -97,6 +105,8 @@ function ProjectPage({
         CustomEventDispose(REMOVE_MEMBER_PROJECT, reloadDetailProject);
         CustomEventDispose(UPDATE_STATE_JOIN_TASK, reloadDetailProject);
         CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
+        CustomEventDispose(CREATE_TASK, reloadDetailProject);
+        CustomEventDispose(DELETE_TASK, reloadDetailProject);
       }
     }
   }, [projectId, doDetailProject]);
@@ -271,6 +281,7 @@ function ProjectPage({
       setProjectId,
       setTimeRange,
       setStatusProjectId,
+      localOptions, setLocalOptions
     }}>
       <Route 
         path='/project'

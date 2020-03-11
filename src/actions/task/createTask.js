@@ -20,11 +20,11 @@ export const createTask = ({ name, projectId, groupTask, typeAssign, priority, d
   },
 });
 
-export const createTaskSuccess = ({ taskId }, options) => ({
+export const createTaskSuccess = ({ task }, options) => ({
   type: CREATE_TASK_SUCCESS,
   options,
   data: {
-    taskId,
+    task,
   }
 });
 

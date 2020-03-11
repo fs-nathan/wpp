@@ -28,7 +28,12 @@ function AllProjectTable({
   isDefault = false,
 }) {
 
-  const { setTimeRange, setProjectGroupId, setStatusProjectId } = React.useContext(ProjectPageContext);
+  const { 
+    setTimeRange, 
+    setProjectGroupId, 
+    setStatusProjectId, 
+    localOptions, setLocalOptions 
+  } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
 
   React.useEffect(() => {
@@ -36,11 +41,27 @@ function AllProjectTable({
     else setProjectGroupId(projectGroupId);
   }, [setProjectGroupId, isDefault, projectGroupId])
 
-  const [filterType, setFilterType] = React.useState(1);
-  const [timeType, setTimeType] = React.useState(5);
+  const [filterType, setFilterType] = React.useState(localOptions.filterType);
+  const [timeType, setTimeType] = React.useState(localOptions.timeType);
   const [sortType, setSortType] = React.useState({});
 
   const [newProjects, setNewProjects] = React.useState(projects);
+
+  React.useEffect(() => {
+    setLocalOptions(pastOptions => ({
+      ...pastOptions,
+      timeType,
+    }));
+    // eslint-disable-next-line
+  }, [timeType]);
+
+  React.useEffect(() => {
+    setLocalOptions(pastOptions => ({
+      ...pastOptions,
+      filterType,
+    }));
+    // eslint-disable-next-line
+  }, [filterType]);
 
   React.useEffect(() => {
     let _projects = [...projects.projects];

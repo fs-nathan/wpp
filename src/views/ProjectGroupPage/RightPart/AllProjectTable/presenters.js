@@ -31,6 +31,7 @@ import './style.scss';
 
 const CustomMenuItem = ({ className = '', selected, refs, ...props }) => 
   <MenuItem 
+    button={false}
     className={`${selected 
       ? 'view_ProjectGroup_Table_All___menu-item-selected'
       : 'view_ProjectGroup_Table_All___menu-item'
@@ -169,8 +170,16 @@ function AllProjectTable({
                   )
                     return;
                   let sortData = [...projects.projects];
+                  const indexes = sortData.map(data => get(data, 'sort_index'));
                   let removed = remove(sortData, { id: draggableId });
-                  sortData = [...slice(sortData, 0, destination.index), ...removed, ...slice(sortData, destination.index)];
+                  sortData = [
+                    ...slice(sortData, 0, destination.index), 
+                    ...removed, 
+                    ...slice(sortData, destination.index)
+                  ].map((data, index) => ({
+                    ...data,
+                    sort_index: indexes[index],
+                  }));
                   handleSortProject(sortData);
                 }
               },
@@ -385,7 +394,9 @@ function AllProjectTable({
                 }}
                 selected={filterType === index}
               >
-                <Icon path={mdiCheckCircle} size={0.7} /> {filter.title}
+                <Icon path={mdiCheckCircle} size={0.7} />
+                <span>{filter.title}</span> 
+                <span>{get(projects.summary, filter.field, 0)}</span>
               </CustomMenuItem>
             ))}
           </Menu>

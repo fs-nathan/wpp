@@ -91,7 +91,7 @@ function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject })
           </StyledListSubheader>
         }
       >
-        {get(projectGroup, 'projects', []).map(project => (
+        {get(projectGroup, 'projects', []).filter(project => get(project, 'can_copy', false)).map(project => (
           <CustomListItem 
             key={get(project, 'id')} 
             onClick={() => setSelectedProject(project)}

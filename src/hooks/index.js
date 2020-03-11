@@ -47,3 +47,28 @@ export function useRequiredDate(initial = moment().toDate()) {
 
   return [date, setDate, error];
 }
+
+export function useLocalStorage(key, initialValue) {
+
+  const [storedValue, setStoredValue] = React.useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      window.localStorage.setItem(key, JSON.stringify(initialValue));
+      return initialValue;
+    }
+  });
+
+  const setValue = value => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      setStoredValue(storedValue);
+    }
+  };
+  
+  return [storedValue, setValue];
+}

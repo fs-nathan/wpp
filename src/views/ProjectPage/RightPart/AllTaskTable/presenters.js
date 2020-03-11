@@ -211,7 +211,7 @@ function AllTaskTable({
                     </span>
                   </div>
                 </StateBox>,
-              align: 'center',
+              align: 'left',
               width: '10%',
             }, {
               label: 'Tiến độ',

@@ -11,7 +11,7 @@
           "time": "{{minute}} phút",
           "title": "Thêm thành viên",
           "invite_member": "Mời thành viên tham gia nhóm",
-          "find_member": "Tìm kiếm thành viên",
+          "find_member": "Nhập email, số điện thoại thành viên",
           "find_member_button": "Lọc",
           "request_member_title": "Thành viên yêu cầu tham gia nhóm"
         },

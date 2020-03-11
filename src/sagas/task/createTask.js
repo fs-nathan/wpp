@@ -10,6 +10,9 @@ async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, 
     const config = {
       url: '/task/create',
       method: 'post',
+      params: {
+        gird: 'table',
+      },
       data: {
         name,
         project_id: projectId,
@@ -32,8 +35,8 @@ async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, 
 
 function* createTask(action) {
   try {
-    const { task_id: taskId } = yield call(doCreateTask, action.options);
-    yield put(createTaskSuccess({ taskId }, action.options));
+    const { task } = yield call(doCreateTask, action.options);
+    yield put(createTaskSuccess({ task }, action.options));
     CustomEventEmitter(CREATE_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {

@@ -1,8 +1,17 @@
 @mixin view_ProjectGroup_Table_All___menu-item {
   display: flex;
   align-items: center;
-  & > svg {
-    margin-right: 10px;
+  width: 180px;
+  &:hover {
+    cursor: pointer;
+  }
+  & > * {
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+    &:last-child {
+      margin-left: auto;
+    }
   }
   &:nth-child(2),
   &:nth-child(4),
@@ -16,7 +25,7 @@
     @include view_ProjectGroup_Table_All___menu-item;
     color: #222;
     & > svg {
-      fill: #888;
+      fill: #d4d4d4;
     }
   };
   &-selected {
