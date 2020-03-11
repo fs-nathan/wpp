@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, Table, TableHead, TableBody, TableRow, TableCell, Slider } from '@material-ui/core';
-import ColorTypo from '../../../../../components/ColorTypo';
-import colorPal from '../../../../../helpers/colorPalette';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { Avatar, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import { mdiCircle } from '@mdi/js';
 import Icon from '@mdi/react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { useSelector, useDispatch } from 'react-redux';
+import ColorTypo from '../../../../../components/ColorTypo';
+import colorPal from '../../../../../helpers/colorPalette';
 import { taskIdSelector } from '../../../selectors';
 import { updateComplete } from '../../../../../actions/taskDetail/taskDetailActions';
+import ProgressSlider from './ProgressSlider';
 
 const BlueTableCell = styled(TableCell)`
   color: ${colorPal['blue'][0]};
@@ -44,53 +44,9 @@ const TableRowItem = styled(TableRow)`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  
 `;
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: 300 + theme.spacing(3) * 2,
-  },
-  margin: {
-    height: theme.spacing(3),
-  },
-}));
-const PrettoSlider = withStyles({
-  root: {
-    color: '#2dc63a',
-    height: 8,
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid currentColor',
-    marginTop: -8,
-    marginLeft: -12,
-    '&:focus,&:hover,&$active': {
-      boxShadow: 'inherit',
-    },
-  },
-  active: {},
-  valueLabel: {
-    left: 'calc(-50% + 4px)',
-  },
-  track: {
-    height: 8,
-    borderRadius: 4,
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4,
-  },
-})(Slider);
-const WrapperProgressBar = styled.div`
-  & > *:first-child > span:nth-child(4) > span > span > span {
-    color: #fff;
-  }
-`
 
 function TabBody() {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(taskIdSelector);
@@ -140,18 +96,11 @@ function TabBody() {
           </div>
         </div>
         {/* progress bar */}
-
-        <WrapperProgressBar className={classes.root}>
-          <PrettoSlider
-            valueLabelDisplay="on"
-            aria-label="pretto slider"
-            defaultValue={0}
-            onChangeCommitted={(e, val) => {
-              onChangeCommitted(val)
-              // console.log("GOI API voi value la: ", val)
-            }}
-          />
-        </WrapperProgressBar>
+        <ProgressSlider
+          value={detailTask.complete}
+          onChange={onChangeCommitted}
+          expected={detailTask.complete_with_time}
+        />
         <div className="legend-box">
           <Icon path={mdiCircle} size={1} color={'#2dc63a'} />
           <ColorTypo>Hoàn thành thực tế</ColorTypo>
