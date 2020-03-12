@@ -1,0 +1,34 @@
+.comp_JobPage_Layout_Header {
+  height: 69px;
+  border-bottom: 1px solid #cecece;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+.comp_JobPage_Layout__Title {
+  font-weight: bold;
+  font-size: 1.4em;
+  flex: 1;
+}
+.comp_JobPage_Layout__Actions {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+.comp_JobPage_Layout__Actions_Item {
+  padding: 8px;
+  margin: 3px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  min-width: 50px;
+  color: #848484;
+  cursor: pointer;
+}
+.comp_JobPage_Layout__Actions_Item > *:first-child {
+  margin-bottom: 8px;
+}
+.comp_JobPage_Layout__Actions_Item:hover {
+  background: #f1f1f1;
+}
