@@ -1,0 +1,40 @@
+.detailEditProgress {
+  &--header {
+    display: flex;
+  }
+  svg {
+    padding: 0 4px;
+    transform: translateY(6px);
+  }
+  &--change {
+    // line-height: 0;
+    margin-left: 6px;
+  }
+  &--detail {
+    color: blue;
+  }
+  &__expanded {
+    transform: rotate(90deg);
+  }
+}
+
+.editProgressItem {
+  display: flex;
+  margin: 20px 10px;
+  &--avatar {
+    margin: 12px;
+  }
+  &--change {
+    border-left: 1px solid rgba(0, 0, 0, 0.54);
+    padding-left: 4px;
+    display: inline-table;
+  }
+  &--changeNumber {
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 2;
+  }
+  &--time {
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
