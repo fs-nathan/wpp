@@ -18,10 +18,10 @@ import { updatePriority } from '../../../../../actions/taskDetail/taskDetailActi
 import { taskIdSelector } from '../../../selectors';
 import Description from './Description';
 import ModalStatus from './ModalStatus';
-import DropdownButton from './DropdownButton';
 import HtmlTooltip from './HtmlTooltip';
 
 import './styles.scss';
+import StatusLabel, { TYPE_STATUS, TYPE_PRIORITY } from './StatusLabel';
 
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
@@ -87,11 +87,13 @@ const DEFAULT_TASK_STATISTIC = {
   linkCnt: "Đang tải"
 }
 
-const ButtonDropdown = styled(DropdownButton)`
-  display: ${props =>
-    props.show ? 'block' : 'none'
-  }
-`
+function getCompleteStatus(complete) {
+  if (complete === 100)
+    return 2
+  if (complete === 0)
+    return 0
+  return 1
+}
 
 function TabBody(props) {
   const dispatch = useDispatch();
@@ -172,18 +174,13 @@ function TabBody(props) {
             </HtmlTooltip>
             :
             <>
-              <ButtonDropdown
-                size='small' selectedIndex={0}
-                values={['Đang làm', 'Đang chờ', 'Hoàn thành']}
-                handleChangeItem={() => { }}
-                show={isExpiredDate(data.end_date)}
+              <StatusLabel
+                type={TYPE_STATUS}
+                value={getCompleteStatus(taskStatistic.complete)}
               />
-              <ButtonDropdown
-                size='small'
-                values={['Ưu tiên cao', 'Ưu tiên trung bình', 'Ưu tiên thấp']}
-                selectedIndex={taskStatistic.priority_code}
-                handleChangeItem={onChangeItem}
-                show={isExpiredDate(data.end_date)}
+              <StatusLabel
+                type={TYPE_PRIORITY}
+                value={taskStatistic.priority_code}
               />
             </>
           }

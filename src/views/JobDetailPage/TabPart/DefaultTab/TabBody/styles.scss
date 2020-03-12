@@ -4,7 +4,96 @@
     color: white;
     padding: 5px 9px;
     border-radius: 4px;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
+.MuiTooltip-tooltip {
+  background-color: #fff;
+  max-width: 210px;
+  height: 110px;
+  border: 1px solid #dadde9;
+}
+
+.statusLabel {
+  color: #b1b1b1;
+  font-weight: normal;
+  &--icon {
+    margin: 3px 4px 0px 4px;
+    transform: translateY(4px);
+  }
+  &--description {
+    line-height: 1.5;
+  }
+  &--label {
+    font-weight: bold;
+    &__wait {
+      color: rgb(255, 152, 0);
+    }
+    &__doing {
+      color: rgb(3, 169, 244);
+    }
+    &__completed {
+      color: rgb(3, 195, 11);
+    }
+    &__high {
+      color: rgb(244, 67, 54);
+    }
+    &__avg {
+      color: rgb(255, 152, 0);
+    }
+    &__low {
+      color: rgb(3, 195, 11);
+    }
+  }
+
+  &--button {
+    border-radius: 4px;
+    padding: 7px 9px;
+    margin: 5px;
+    font-weight: bold;
+    &__wait {
+      color: rgb(255, 152, 0);
+      border: 1px solid rgb(255, 152, 0);
+    }
+    &__doing {
+      color: rgb(3, 169, 244);
+      border: 1px solid rgb(3, 169, 244);
+    }
+    &__completed {
+      color: rgb(3, 195, 11);
+      border: 1px solid rgb(3, 195, 11);
+    }
+    &__high {
+      color: rgb(244, 67, 54);
+      border: 1px solid rgb(244, 67, 54);
+    }
+    &__avg {
+      color: rgb(255, 152, 0);
+      border: 1px solid rgb(255, 152, 0);
+    }
+    &__low {
+      color: rgb(3, 195, 11);
+      border: 1px solid rgb(3, 195, 11);
+    }
+  }
+  &__wait {
+    fill: rgb(255, 152, 0);
+  }
+  &__doing {
+    fill: rgb(3, 169, 244);
+  }
+  &__completed {
+    fill: rgb(3, 195, 11);
+  }
+  &__high {
+    fill: rgb(244, 67, 54);
+  }
+  &__avg {
+    fill: rgb(255, 152, 0);
+  }
+  &__low {
+    fill: rgb(3, 195, 11);
   }
 }
