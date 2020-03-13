@@ -17,7 +17,7 @@ import {
 } from '@material-ui/pickers';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import { convertToRaw } from 'draft-js';
 
 import CustomSelect from '../../../../../components/CustomSelect';
 import {
@@ -34,7 +34,7 @@ import * as taskDetailAction from '../../../../../actions/taskDetail/taskDetailA
 import CommonProgressForm from './CommonProgressForm';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
-import TextEditor from '../../../../../components/TextEditor';
+import TextEditor, { getEditorData } from '../../../../../components/TextEditor';
 import spinnerGif from '../../../../../assets/loading_spinner.gif';
 import DialogTitle from './DialogTitle';
 
@@ -190,7 +190,7 @@ listTimeSelect = listTimeSelect.map(value => ({ value, label: value }))
 
 const DEFAULT_DATA = {
   name: EMPTY_STRING,
-  description: EditorState.createEmpty(),
+  description: getEditorData(),
   start_time: listTimeSelect[16],
   start_date: DEFAULT_DATE_TEXT,
   end_time: listTimeSelect[34],

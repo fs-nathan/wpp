@@ -3,10 +3,9 @@ import {
   ListItem, ListItemText,
 } from '@material-ui/core';
 import styled from 'styled-components';
-import { EditorState, convertFromRaw, ContentState } from 'draft-js';
 
 import { isLongerContent, getCollapseText } from '../../../../../helpers/jobDetail/stringHelper'
-import TextEditor from '../../../../../components/TextEditor';
+import TextEditor, { getEditorData } from '../../../../../components/TextEditor';
 import ColorTypo from '../../../../../components/ColorTypo';
 
 const ListItemTabPart = styled(ListItem)`
@@ -14,20 +13,6 @@ const ListItemTabPart = styled(ListItem)`
   flex-direction: column;
   align-items: start;
 `
-const getEditorData = (value) => {
-  try {
-    const raw = JSON.parse(value);
-    const data = EditorState.createWithContent(convertFromRaw(raw));
-    return data;
-  } catch (e) {
-    try {
-      const data = EditorState.createWithContent(ContentState.createFromText(value));
-      return data;
-    } catch (e) {
-      return EditorState.createEmpty();
-    }
-  }
-}
 
 function Description({ value }) {
   const [isOpen, setOpen] = React.useState(false)
