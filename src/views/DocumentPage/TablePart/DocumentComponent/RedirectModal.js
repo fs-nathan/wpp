@@ -12,7 +12,11 @@ const RedirectModal = props => {
   const { t } = useTranslation();
   const bgColor = props.colors.find(item => item.selected === true);
   return (
-    <ModalCommon title="Tải tài liệu" onClose={props.onClose} footerAction={[]}>
+    <ModalCommon
+      title={t('IDS_WP_TITLE_DOWNLOAD_DOCUMENT')}
+      onClose={props.onClose}
+      footerAction={[]}
+    >
       <DialogContent dividers className="dialog-content redirect-modal">
         <p className="redirect-text">
           {t('IDS_WP_SELECT_A_DOCUMENT')} <b>{t('IDS_WP_MY_DOCUMENT')}</b>{' '}

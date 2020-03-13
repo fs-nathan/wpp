@@ -134,7 +134,7 @@ const CommentItem = ({ comment, onRefreshList }) => {
       <CustomModal
         open={visibleEditModal}
         setOpen={() => setVisibleEditModal(false)}
-        title="Chỉnh sửa thảo luận"
+        title={t('IDS_WP_TITLE_EDIT_DISCUSS')}
         className="edit-comment-modal"
         onConfirm={handleUpdateComment}
       >

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { withRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../components/ColorTypo';
 import HeaderButtonGroup from './HeaderButtonGroup';
 import { SETTING_GROUP } from '../../../constants/constants';
@@ -19,29 +20,30 @@ import {
   StyledButton
 } from '../../DocumentPage/TablePart/DocumentComponent/TableCommon';
 
-const getHeaderText = (type, search) => {
+const getHeaderText = (type, search, t) => {
   const isOder = isEmpty(search);
   switch (type) {
     case SETTING_GROUP.INFO:
-      return 'Thiết lập nhóm';
+      return t('IDS_WP_SETTING_GROUP');
     case SETTING_GROUP.SETTING:
     case SETTING_GROUP.LANGUAGE:
-      return 'Cài đặt phần mềm';
+      return t('IDS_WP_SETUP_SOFTWARE');
     case SETTING_GROUP.NOTIFICATION:
-      return 'Cài đặt nhận thông báo';
+      return t('IDS_WP_SETTING_NOTI');
     case SETTING_GROUP.ORDER: {
-      if (isOder) return 'Đơn hàng';
-      return 'Chi tiết đơn hàng';
+      if (isOder) return t('IDS_WP_ORDER');
+      return t('IDS_WP_ORDER_DETAIL');
     }
     case SETTING_GROUP.PAYMENT:
-      return 'Thanh toán';
+      return t('IDS_WP_PAYMENT');
     case SETTING_GROUP.CREATE_ORDER:
-      return 'Tạo đơn hàng';
+      return t('IDS_WP_CREATE_ORDER');
     default:
       return null;
   }
 };
 const TablePart = props => {
+  const { t } = useTranslation();
   const type = props.match.params.type;
   const isOder = isEmpty(props.location.search);
   const getContentSettingAccount = () => {
@@ -78,7 +80,7 @@ const TablePart = props => {
     <div className="header-setting-container">
       <div className="header-setting">
         <ColorTypo className="header-title">
-          {getHeaderText(props.match.params.type, props.location.search)}
+          {getHeaderText(props.match.params.type, props.location.search, t)}
         </ColorTypo>
         <RightHeader>
           <div
@@ -96,7 +98,7 @@ const TablePart = props => {
                 })
               }
             >
-              + TẠO ĐƠN HÀNG
+              + {t('IDS_WP_CREATE_ORDER')}
             </StyledButton>
           )}
           {checkShowBtnCancelOder() && (
@@ -108,7 +110,7 @@ const TablePart = props => {
                 })
               }
             >
-              HỦY
+              {t('IDS_WP_CANCEL')}
             </StyledButton>
           )}
         </RightHeader>

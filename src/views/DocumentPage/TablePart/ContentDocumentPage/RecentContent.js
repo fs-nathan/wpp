@@ -158,9 +158,10 @@ const RecentContent = props => {
                 }
               />
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="5%">
-              {t('IDS_WP_TYPE')}
-            </StyledTableHeadCell>
+            <StyledTableHeadCell
+              align="center"
+              width="5%"
+            ></StyledTableHeadCell>
             <StyledTableHeadCell align="left">
               <div
                 className="cursor-pointer"
@@ -172,7 +173,9 @@ const RecentContent = props => {
                 </IconButton>
               </div>
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center">Chia sẻ</StyledTableHeadCell>
+            <StyledTableHeadCell align="center">
+              {t('IDS_WP_SHARE')}
+            </StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="15%">
               {t('IDS_WP_STORAGE_ADDRESS')}
             </StyledTableHeadCell>

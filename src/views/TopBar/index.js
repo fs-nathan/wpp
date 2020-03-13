@@ -172,7 +172,7 @@ const TopBar = props => {
         >
           <IconButton
             className="cursor-pointer top-icon"
-            title="Tin nhắn"
+            title={t('IDS_WP_MESSAGE')}
             onClick={() =>
               props.actionVisibleDrawerMessage({
                 type: DRAWER_TYPE.MESSAGE,
@@ -229,7 +229,7 @@ const TopBar = props => {
           <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
           <img
-            title="Tài khoản"
+            title={t('IDS_WP_ACCOUNT')}
             onClick={() =>
               props.actionVisibleDrawerMessage({
                 type: DRAWER_TYPE.SETTING,
