@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  List, ListItem, ListItemText, ListItemIcon, Menu, MenuItem
+  ListItem, ListItemText,
 } from '@material-ui/core';
 import styled from 'styled-components';
 import { EditorState, convertFromRaw, ContentState } from 'draft-js';

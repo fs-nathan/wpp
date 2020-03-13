@@ -690,9 +690,9 @@
   background-color: #fff;
   height: 85px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  & > *:last-child {
-    display: none;
-  }
+  // & > *:last-child {
+  //   display: none;
+  // }
 }
 
 // TabBody - MemberTab
@@ -818,7 +818,7 @@
   padding: 10px 0 50px 20px;
   & > *:not(last-child) {
     padding-top: 40px;
-    margin: 0 auto;
+    // margin: 0 auto;
   }
   & > hr {
     border-color: rgba(0, 0, 0, 0.1);

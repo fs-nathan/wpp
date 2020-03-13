@@ -51,7 +51,7 @@ const ListItemTab = styled(ListItem)`
 const StyledList = styled(List)`
 margin-bottom: 6px;
   & > * {
-    padding: 20px;
+    padding: 20px 16px 0;
     & > div {
       margin: 0;
     }

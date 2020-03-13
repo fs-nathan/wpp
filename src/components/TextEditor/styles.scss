@@ -17,6 +17,7 @@
     font-weight: initial;
     &--readOnly {
       border: none;
+      min-height: 0em;
     }
   }
 }
