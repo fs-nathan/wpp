@@ -83,7 +83,7 @@ const _components = {
   Menu,
 };
 
-function IntegrationReactSelect({ options = [], placeholder = '', isMulti = false, value = null, onChange = () => null, }) {
+function IntegrationReactSelect({ className, options = [], placeholder = '', isMulti = false, value = null, onChange = () => null, }) {
   const classes = useStyles();
   const theme = useTheme();
   const [selected, setSelected] = React.useState(value);
@@ -108,7 +108,7 @@ function IntegrationReactSelect({ options = [], placeholder = '', isMulti = fals
   };
 
   return (
-    <div className={classes.root}>
+    <div className={clsx(classes.root, className)}>
       <NoSsr>
         <Select
           classes={classes}

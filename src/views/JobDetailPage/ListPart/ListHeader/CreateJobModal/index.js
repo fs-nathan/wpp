@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import {
-  IconButton,
   Typography,
   Dialog,
   Button,
   withStyles,
   TextField,
   DialogActions as MuiDialogActions,
-  DialogTitle as MuiDialogTitle,
   DialogContent as MuiDialogContent,
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+
 import styled from 'styled-components';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
-  KeyboardTimePicker,
 } from '@material-ui/pickers';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 
@@ -31,7 +27,6 @@ import {
 } from '../../../../../helpers/jobDetail/stringHelper';
 import {
   convertDate,
-  convertTime,
   convertDateToJSFormat
 } from '../../../../../helpers/jobDetail/stringHelper';
 import { taskIdSelector } from '../../../selectors';
@@ -41,6 +36,9 @@ import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import TextEditor from '../../../../../components/TextEditor';
 import spinnerGif from '../../../../../assets/loading_spinner.gif';
+import DialogTitle from './DialogTitle';
+
+import './styles.scss';
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -99,46 +97,6 @@ const InputDate = styled(KeyboardDatePicker)`
   }
 `;
 
-
-
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2)
-  },
-  title: {
-    textTransform: 'uppercase',
-    fontSize: 14,
-    fontWeight: 400
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500]
-  }
-});
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">
-        {children}
-      </Typography>
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
 const DialogContent = withStyles(theme => ({
   root: {
     padding: theme.spacing(2)
@@ -166,16 +124,6 @@ const InputTextJob = styled(TextField)`
 
 const Descripe = styled(Typography)`
   margin-top: 15px;
-`;
-const TitleDialog = styled(DialogTitle)`
-  display: flex;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background: #f5f8fc;
-  border-bottom: 1px solid #0000001f;
-  text-transform: uppercase;
-  font-weight: 400;
 `;
 //
 let optionsList = [
@@ -234,13 +182,18 @@ const DialogFooter = styled(DialogActions)`
   border-top: 1px solid rgba(0, 0, 0, 0.12);
 `;
 
-const today = setMinutes(new Date(), 0);
+let listTimeSelect = [];
+for (let index = 0; index < 24; index++) {
+  listTimeSelect.push(`${index}:00`, `${index}:30`)
+}
+listTimeSelect = listTimeSelect.map(value => ({ value, label: value }))
+
 const DEFAULT_DATA = {
   name: EMPTY_STRING,
   description: EditorState.createEmpty(),
-  start_time: setHours(today, 8),
+  start_time: listTimeSelect[16],
   start_date: DEFAULT_DATE_TEXT,
-  end_time: setHours(today, 17),
+  end_time: listTimeSelect[34],
   end_date: DEFAULT_DATE_TEXT,
   type_assign: DEFAULT_ASSIGN_ID,
   priority: DEFAULT_PRIORITY_ID,
@@ -357,8 +310,8 @@ function CreateJobModal(props) {
       let data = dataCreateJob;
       if (!dataCreateJob.group_task ||
         dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE) delete data.group_task;
-      data.start_time = convertTime(data.start_time);
-      data.end_time = convertTime(data.end_time);
+      data.start_time = data.start_time.value;
+      data.end_time = data.end_time.value;
       data.date_status = type;
       data.description = JSON.stringify(convertToRaw(data.description.getCurrentContent()));
       // Call api
@@ -376,11 +329,9 @@ function CreateJobModal(props) {
   return (
     <div>
       <StyleDialog open={props.isOpen} fullWidth onClose={handleClose}>
-        {props.isRight ? (
-          <TitleDialog onClose={handleClose}>Chỉnh sửa công việc</TitleDialog>
-        ) : (
-            <TitleDialog onClose={handleClose}>Tạo công việc</TitleDialog>
-          )}
+        <DialogTitle onClose={handleClose}>
+          {props.isRight ? 'Chỉnh sửa công việc' : 'Tạo công việc'}
+        </DialogTitle>
         <ContentDialog dividers>
           <TypoText component={'div'}> Chọn nhóm công việc </TypoText>
           <Typography component={'div'} style={{ marginBottom: '20px' }}>
@@ -420,76 +371,76 @@ function CreateJobModal(props) {
             value={type}
             handleChange={setType}
           />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <StartEndDay component={'span'}>
-              <BeginEndTime component={'span'}>Ngày bắt đầu</BeginEndTime>
-              {type === 1 ? (
-                <InputDate
-                  size="small"
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.start_date}
-                  onChange={e => handleChangeData('start_date', convertDate(e))}
-                />
-              ) : (
-                  <KeyboardTimePicker
-                    ampm={false}
+          {type !== 0 &&
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <StartEndDay component={'span'}>
+                <BeginEndTime component={'span'}>Ngày bắt đầu</BeginEndTime>
+                {type === 1 ? (
+                  <InputDate
                     size="small"
+                    disableToolbar
+                    variant="inline"
                     inputVariant="outlined"
-                    value={data.start_time}
-                    onChange={e => handleChangeData('start_time', e)}
+                    format="dd/MM/yyyy"
+                    value={data.start_date}
+                    onChange={e => handleChangeData('start_date', convertDate(e))}
+                  />
+                ) : (
+                    <CustomSelect
+                      className="createJob--timeSelect"
+                      options={listTimeSelect}
+                      value={data.start_time}
+                      onChange={({ value: startTime }) => handleChangeData('start_time', startTime)}
+                    />
+                  )}
+                {type !== 1 && (
+                  <InputDate
+                    size="small"
+                    disableToolbar
+                    variant="inline"
+                    inputVariant="outlined"
+                    format="dd/MM/yyyy"
+                    value={data.start_date}
+                    onChange={e => handleChangeData('start_date', convertDate(e))}
                   />
                 )}
-              {type !== 1 && (
-                <InputDate
-                  size="small"
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.start_date}
-                  onChange={e => handleChangeData('start_date', convertDate(e))}
-                />
-              )}
-            </StartEndDay>
-            <StartEndDay component={'span'}>
-              <BeginEndTime component={'span'}>Ngày kết thúc</BeginEndTime>
-              {type === 1 ? (
-                <InputDate
-                  size="small"
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.end_date}
-                  // minDate={data.start_date}
-                  onChange={e => handleChangeData('end_date', convertDate(e))}
-                />
-              ) : (
-                  <KeyboardTimePicker
-                    ampm={false}
+              </StartEndDay>
+              <StartEndDay component={'span'}>
+                <BeginEndTime component={'span'}>Ngày kết thúc</BeginEndTime>
+                {type === 1 ? (
+                  <InputDate
                     size="small"
+                    disableToolbar
+                    variant="inline"
                     inputVariant="outlined"
-                    value={data.end_time}
-                    onChange={e => handleChangeData('end_time', e)}
+                    format="dd/MM/yyyy"
+                    value={data.end_date}
+                    // minDate={data.start_date}
+                    onChange={e => handleChangeData('end_date', convertDate(e))}
+                  />
+                ) : (
+                    <CustomSelect
+                      className="createJob--timeSelect"
+                      options={listTimeSelect}
+                      value={data.end_time}
+                      onChange={({ value: endTime }) => handleChangeData('end_time', endTime)}
+                    />
+                  )}
+                {type !== 1 && (
+                  <InputDate
+                    size="small"
+                    disableToolbar
+                    variant="inline"
+                    inputVariant="outlined"
+                    format="dd/MM/yyyy"
+                    value={data.end_date}
+                    // minDate={data.start_date}
+                    onChange={e => handleChangeData('end_date', convertDate(e))}
                   />
                 )}
-              {type !== 1 && (
-                <InputDate
-                  size="small"
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.end_date}
-                  // minDate={data.start_date}
-                  onChange={e => handleChangeData('end_date', convertDate(e))}
-                />
-              )}
-            </StartEndDay>
-          </MuiPickersUtilsProvider>
+              </StartEndDay>
+            </MuiPickersUtilsProvider>
+          }
           <Typography component={'span'}>
             <TypoText component={'div'}>Mức độ ưu tiên</TypoText>
             <CommonPriorityForm
