@@ -1,5 +1,6 @@
 .progressSlider {
   position: relative;
+  width: 90%;
   &--expected {
     border-radius: 50%;
     background-color: rgb(255, 152, 0);
@@ -10,9 +11,15 @@
     &Label {
       color: red;
       position: absolute;
-      top: 30px;
+      top: 42px;
       left: -2px;
     }
+  }
+  &--text{
+    top: 27px;
+    left: -12px;
+    position: absolute;
+    white-space: nowrap;
   }
   &--lineConnect {
     top: 12px;
