@@ -1,9 +1,17 @@
+.comp_JobPage_Layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
 .comp_JobPage_Layout_Header {
-  height: 69px;
-  border-bottom: 1px solid #cecece;
+  height: 70px;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+}
+.comp_JobPage_Layout__Content {
+  flex: 1;
+  padding: 20px 0;
+  background-color: #f6f6f6;
 }
 .comp_JobPage_Layout__Title {
   font-weight: bold;
@@ -22,7 +30,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  min-width: 50px;
+  min-width: 60px;
   color: #848484;
   cursor: pointer;
 }

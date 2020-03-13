@@ -1,42 +1,61 @@
 import React from "react";
 import MailIcon from "@material-ui/icons/Mail";
 import "./Layout.css";
-import { Button } from "@material-ui/core";
+import { Button, ButtonBase, Container } from "@material-ui/core";
 import PlusOne from "@material-ui/icons/PlusOne";
 import Calendar from "@material-ui/icons/CalendarToday";
+import { withStyles } from "@material-ui/styles";
+import SearchIcon from "@material-ui/icons/Search";
+import EventIcon from "@material-ui/icons/Event";
+import ZoomOutMapIcon from "@material-ui/icons/ZoomOutMap";
+import SettingsIcon from "@material-ui/icons/Settings";
+const BootstrapButton = withStyles({
+  root: {
+    boxShadow: "none",
+    color: "#fff"
+  }
+})(Button);
+
+const ActionButton = ({ icon, children }) => (
+  <ButtonBase className="comp_JobPage_Layout__Actions_Item">
+    {icon}
+    {children}
+  </ButtonBase>
+);
 function Header({ title, actions = [] }) {
   return (
-    <div className="comp_JobPage_Layout_Header">
+    <Container className="comp_JobPage_Layout_Header">
       <div className="comp_JobPage_Layout__Title">{title}</div>
       <div className="comp_JobPage_Layout__Actions">
-        <div className="comp_JobPage_Layout__Actions_Item">
-          <MailIcon />
+        <ActionButton icon={<SearchIcon />}>
           <div>Tim kiem</div>
-        </div>
-        <div className="comp_JobPage_Layout__Actions_Item">
-          <Calendar />
+        </ActionButton>
+        <ActionButton icon={<EventIcon />}>
           <div>2019</div>
-        </div>
-        <div className="comp_JobPage_Layout__Actions_Item">
-          <MailIcon />
+        </ActionButton>
+        <ActionButton icon={<ZoomOutMapIcon />}>
           <div>mo rong</div>
-        </div>
-        <div className="comp_JobPage_Layout__Actions_Item">
-          <MailIcon />
+        </ActionButton>
+        <ActionButton icon={<SettingsIcon />}>
           <div>cai dat</div>
-        </div>
+        </ActionButton>
       </div>
-      <Button variant="contained" color="secondary" startIcon={<PlusOne />}>
+      <BootstrapButton
+        variant="contained"
+        color="secondary"
+        disableElevation
+        startIcon={<PlusOne />}
+      >
         tao cong viec
-      </Button>
-    </div>
+      </BootstrapButton>
+    </Container>
   );
 }
 function Layout({ children, title }) {
   return (
-    <div>
+    <div className="comp_JobPage_Layout">
       <Header title={title} />
-      {children}
+      <div className="comp_JobPage_Layout__Content">{children}</div>
     </div>
   );
 }

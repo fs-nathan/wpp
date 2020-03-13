@@ -19,6 +19,11 @@ import { Routes } from "../../contants/routes";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import { Link } from "react-router-dom";
 import MailIcon from "@material-ui/icons/Mail";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import WatchLaterIcon from "@material-ui/icons/WatchLater";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import HowToRegIcon from "@material-ui/icons/HowToReg";
+
 const TaskPrimary = ({ tab, className = "", ...props }) => (
   <ListItem button key={get(tab, "name")} {...props}>
     <Link
@@ -46,21 +51,21 @@ const tabs = [
     path: Routes.OVERVIEW,
     name: "overview",
     task_count: 0,
-    icon: <InboxIcon />,
+    icon: <DashboardIcon />,
     iconColor: "#ffa900"
   },
   {
     path: Routes.DUE,
     name: "due",
     task_count: 0,
-    icon: <InboxIcon />,
+    icon: <WatchLaterIcon />,
     iconColor: "#ffa900"
   },
   {
     group: "mission",
     path: Routes.MISSION,
     name: "mission",
-    icon: <InboxIcon />,
+    icon: <PeopleAltIcon />,
     iconColor: "#ffa900",
     children: [
       {
@@ -92,7 +97,7 @@ const tabs = [
   {
     path: Routes.ROLE,
     name: "mission",
-    icon: <InboxIcon />,
+    icon: <HowToRegIcon />,
     iconColor: "#ffa900",
     children: [
       {
