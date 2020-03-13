@@ -170,9 +170,7 @@ const ProjectDocument = props => {
               align="left"
               width="5%"
               className="first-column"
-            >
-              {t('IDS_WP_TYPE')}
-            </StyledTableHeadCell>
+            ></StyledTableHeadCell>
             <StyledTableHeadCell align="left" width="50%">
               <div
                 className="cursor-pointer"

@@ -175,9 +175,10 @@ const Trash = props => {
                 }
               />
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="5%">
-              {t('IDS_WP_TYPE')}
-            </StyledTableHeadCell>
+            <StyledTableHeadCell
+              align="center"
+              width="5%"
+            ></StyledTableHeadCell>
             <StyledTableHeadCell align="left">
               <div
                 className="cursor-pointer file-name-document"

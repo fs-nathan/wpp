@@ -431,7 +431,6 @@ const Info = props => {
                     component="label"
                     htmlFor="raised-button-file"
                     disableTouchRipple
-                    disabled={true}
                     onClick={() => setCropType(CROP_TYPE.COVER)}
                   >
                     {t('IDS_WP_CHANGE_COVER_IMAGE')}

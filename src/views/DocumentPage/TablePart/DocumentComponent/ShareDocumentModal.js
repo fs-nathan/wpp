@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import { Avatar } from '@material-ui/core';
+import { Avatar, CircularProgress } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { connect } from 'react-redux';
 import { remove, findIndex } from 'lodash';
@@ -35,6 +35,7 @@ import {
 } from '../../../../actions/documents/index';
 
 let originListMember = [];
+let memberIdShared = null;
 const ShareDocumentModal = props => {
   const { t } = useTranslation();
   const { pathname } = props.location;
@@ -43,6 +44,7 @@ const ShareDocumentModal = props => {
   const [listMember, setListMember] = useState([]);
   const [listMemberShared, setListMemberShared] = useState([]);
   const [itemSelected, setItemSelected] = useState(props.item);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -174,6 +176,8 @@ const ShareDocumentModal = props => {
   const handleShareMember = async (member_id, member_name, member_avatar) => {
     try {
       console.log('test', item);
+      setIsLoading(true);
+      memberIdShared = member_id;
       if (item.isGoogleDocument || item.document_type === 2) {
         let data = {
           file_id: item.id,
@@ -189,6 +193,7 @@ const ShareDocumentModal = props => {
           file_type: item.document_type === 2 ? item.type : item.fileExtension
         };
         await actionShareGoogleFile(data);
+        setIsLoading(false);
       } else {
         let dataDTO = {};
         if (item.type === 'folder') {
@@ -199,6 +204,7 @@ const ShareDocumentModal = props => {
           dataDTO.share_to = member_id;
         }
         const { data } = await actionShareFile(dataDTO, item.type);
+        setIsLoading(false);
         if (data.state) {
           let itemSelectedTemp = itemSelected;
           itemSelectedTemp.users_shared.push({
@@ -210,7 +216,9 @@ const ShareDocumentModal = props => {
         }
       }
       fetDataForShare();
-    } catch (error) {}
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
 
   const handleCancelShareMember = async (
@@ -219,11 +227,14 @@ const ShareDocumentModal = props => {
     member_avatar
   ) => {
     try {
+      setIsLoading(true);
+      memberIdShared = member_id;
       if (item.isGoogleDocument || item.document_type === 2) {
         await actionCancelShareGoogleFile({
           file_id: item.id,
           member_id: member_id
         });
+        setIsLoading(false);
       } else {
         let dataDTO = {};
         if (item.type === 'folder') {
@@ -234,6 +245,7 @@ const ShareDocumentModal = props => {
           dataDTO.member_id = member_id;
         }
         const { data } = await actionCancelShareFile(dataDTO, item.type);
+        setIsLoading(false);
         if (data.state) {
           let itemSelectedTemp = itemSelected;
           remove(itemSelectedTemp.users_shared, { id: member_id });
@@ -241,9 +253,10 @@ const ShareDocumentModal = props => {
         }
       }
       fetDataForShare();
-    } catch (error) {}
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
-  console.log('item', item);
   return (
     <ModalCommon
       title={t('IDS_WP_SHARE_DOCUMENT')}
@@ -301,7 +314,14 @@ const ShareDocumentModal = props => {
                     <div className="right-item">
                       <Button
                         variant="outlined"
-                        className="share-btn"
+                        className={`${
+                          isLoading && memberIdShared === item.member_id
+                            ? 'share-btn-disable'
+                            : 'share-btn'
+                        }`}
+                        disabled={
+                          isLoading && memberIdShared === item.member_id
+                        }
                         onClick={() =>
                           handleShareMember(
                             item.member_id,
@@ -310,6 +330,13 @@ const ShareDocumentModal = props => {
                           )
                         }
                       >
+                        {isLoading && memberIdShared === item.member_id && (
+                          <CircularProgress
+                            size={16}
+                            className="margin-circular"
+                            color="white"
+                          />
+                        )}
                         {t('IDS_WP_SHARE')}
                       </Button>
                     </div>
@@ -327,10 +354,16 @@ const ShareDocumentModal = props => {
           </div>
           <div className="header-share-doc">
             <div className="left-content">
-              <span className="text-title">{t('IDS_WP_MEMBER')}</span>
+              <span className="text-title member-text">
+                {t('IDS_WP_MEMBER')}
+              </span>
             </div>
             <div className="right-content">
               <span className="text-title">{t('IDS_WP_DAY_SHARE')}</span>
+              <span className="text-title">{t('IDS_WP_SHARE_BY_MEMBER')}</span>
+              <span className="text-title opacity-0">
+                {t('IDS_WP_SHARE_BY_MEMBER')}
+              </span>
             </div>
           </div>
           <div className="list-member">
@@ -377,9 +410,29 @@ const ShareDocumentModal = props => {
                       </div>
                       <div className="right-item">
                         {!item.is_owner && (
+                          <Avatar
+                            src={`${item.user_share_avatar}`}
+                            alt="avatar"
+                            className="share-by-avatar"
+                            title={item.user_share_name}
+                          />
+                        )}
+                      </div>
+                      <div className="right-item">
+                        {!item.is_owner && (
                           <Button
                             variant="outlined"
-                            className="share-btn"
+                            className={`${
+                              item.can_cancel_share
+                                ? isLoading && memberIdShared === item.member_id
+                                  ? 'share-btn-disable'
+                                  : 'share-btn'
+                                : 'share-btn-disable'
+                            }`}
+                            disabled={
+                              !item.can_cancel_share ||
+                              (isLoading && memberIdShared === item.member_id)
+                            }
                             onClick={() =>
                               handleCancelShareMember(
                                 item.member_id,
@@ -388,6 +441,13 @@ const ShareDocumentModal = props => {
                               )
                             }
                           >
+                            {isLoading && memberIdShared === item.member_id && (
+                              <CircularProgress
+                                size={16}
+                                className="margin-circular"
+                                color="white"
+                              />
+                            )}
                             {t('IDS_WP_CANCEL')}
                           </Button>
                         )}
