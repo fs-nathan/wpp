@@ -1,24 +1,10 @@
 import React, { useEffect } from 'react';
-import { IconButton } from '@material-ui/core';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiChevronLeft, mdiPlus } from '@mdi/js';
-import ColorTypo from '../../../../../components/ColorTypo';
-import RemindModal from '../RemindModal'
 import { useDispatch, useSelector } from 'react-redux';
+
+import RemindModal from '../RemindModal'
 import { taskIdSelector } from '../../../selectors';
 import { getRemind } from '../../../../../actions/taskDetail/taskDetailActions';
-
-const ButtonIcon = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`
+import HeaderTab from '../../HeaderTab';
 
 function TabHeader({ setShow }) {
   const dispatch = useDispatch();
@@ -39,18 +25,10 @@ function TabHeader({ setShow }) {
 
   return (
     <div className="container-normal-tabheader">
-      <ButtonIcon onClick={() => setShow(0)}>
-        <abbr title="Quay lại">
-          <Icon path={mdiChevronLeft} size={1} />
-        </abbr>
-      </ButtonIcon>
-      <ColorTypo uppercase bold style={{ fontSize: 17 }}>Nhắc hẹn</ColorTypo>
-      <ButtonIcon onClick={handleClickOpen}>
-        <abbr title="Thêm">
-          <Icon path={mdiPlus} size={1} />
-        </abbr>
-      </ButtonIcon>
-      {/* modal tao moi cong viec con */}
+      <HeaderTab title="Nhắc hẹn"
+        onClickBack={() => setShow(0)}
+        onClickOpen={handleClickOpen}
+      />
       <RemindModal isOpen={isOpen} handleClickClose={handleClickClose} isCreate />
     </div>
   );

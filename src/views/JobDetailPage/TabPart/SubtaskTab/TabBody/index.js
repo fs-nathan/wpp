@@ -107,7 +107,7 @@ function TabBody(props) {
           <React.Fragment>
             <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Đang thực hiện({uncompleteSubTasks.length})</TextTitle>
             <AllSubtaskList {...props} />
-            <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Hoàn thành({completeSubTasks.length})</TextTitle>
+            <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Đã hoàn thành({completeSubTasks.length})</TextTitle>
             <FinishedSubtaskList {...props} />
           </React.Fragment>}
       </Container>

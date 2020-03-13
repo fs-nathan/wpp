@@ -135,7 +135,9 @@ function AllSubtaskListItem(props) {
                 </abbr>
               </ButtonIcon>
           }
-          <ItemList>{props.task.name}</ItemList>
+          <ItemList>{props.task.name}
+            <div className="subTaskItem--createdAt">Tạo lúc {props.task.name}</div>
+          </ItemList>
           <StyledMenu>
             <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
               <Icon path={mdiDotsVertical} size={1} />

@@ -4,19 +4,12 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
-import { WrapperContext } from '../../../index'
 import { useDispatch, useSelector } from 'react-redux';
 import { getSubTask } from '../../../../../actions/taskDetail/taskDetailActions';
 import { taskIdSelector } from '../../../selectors';
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  height: 85px;
-`;
+import '../../HeaderTab/styles.scss';
+
 const ButtonCancel = styled.p`
   background: #edeff0;
   font-size: 13px;
@@ -25,16 +18,6 @@ const ButtonCancel = styled.p`
   padding: 12px 8px;
   margin-right: 5px;
   border-radius: 50%;
-`
-const ButtonIcon = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
 `
 
 function TabHeader(props) {
@@ -50,15 +33,15 @@ function TabHeader(props) {
     setOnPlus(!isPlus)
   }
   return (
-    <Container>
-      <ButtonIcon onClick={() => props.setShow(0)}>
+    <div  className="headerTab">
+      <IconButton className="headerTab--button" onClick={() => props.setShow(0)}>
         <abbr title="Quay lại">
           <Icon path={mdiChevronLeft} size={1} />
         </abbr>
-      </ButtonIcon>
+      </IconButton>
       <ColorTypo uppercase bold style={{ fontSize: 17 }}>Công việc con</ColorTypo>
       {isPlus ?
-        <ButtonIcon onClick={() => {
+        <IconButton className="headerTab--button" onClick={() => {
           props.onClickPlusIcon()
           handleClick()
         }
@@ -66,7 +49,7 @@ function TabHeader(props) {
           <abbr title="Thêm">
             <Icon path={mdiPlus} size={1} />
           </abbr>
-        </ButtonIcon>
+        </IconButton>
         :
         <ButtonCancel onClick={() => {
           props.onClickPlusIcon()
@@ -74,7 +57,7 @@ function TabHeader(props) {
         }
         }>Hủy</ButtonCancel>
       }
-    </Container>
+    </div>
   );
 }
 

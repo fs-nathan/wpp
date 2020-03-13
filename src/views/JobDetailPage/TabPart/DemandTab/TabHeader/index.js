@@ -1,24 +1,9 @@
 import React, { useEffect } from 'react';
-import { IconButton } from '@material-ui/core';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiChevronLeft, mdiPlus } from '@mdi/js';
-import ColorTypo from '../../../../../components/ColorTypo';
 import DemandModal from '../DemandModal'
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
 import { getCommand, createCommand } from '../../../../../actions/taskDetail/taskDetailActions';
-
-const ButtonIcon = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`
+import HeaderTab from '../../HeaderTab';
 
 function TabHeader(props) {
   const dispatch = useDispatch();
@@ -41,15 +26,10 @@ function TabHeader(props) {
   }
   return (
     <div className="container-normal-tabheader">
-      <ButtonIcon
-        onClick={() => { props.setShow(0) }}
-      >
-        <Icon path={mdiChevronLeft} size={1} />
-      </ButtonIcon>
-      <ColorTypo uppercase bold style={{ fontSize: 17 }}>Chỉ đạo - Quyết định</ColorTypo>
-      <ButtonIcon onClick={handleClickOpen}>
-        <Icon path={mdiPlus} size={1} />
-      </ButtonIcon>
+      <HeaderTab title="Chỉ đạo - Quyết định"
+        onClickBack={() => props.setShow(0)}
+        onClickOpen={handleClickOpen}
+      />
       {/* modal chi dao quyet dinh */}
       <DemandModal
         isOpen={open}
