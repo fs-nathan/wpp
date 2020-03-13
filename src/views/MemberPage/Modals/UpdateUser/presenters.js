@@ -43,25 +43,24 @@ function UpdateUser({
   }, [updatedUser]);
 
   return (
-    <React.Fragment>
-      <CustomModal
-        open={open}
-        setOpen={setOpen}
-        title={get(updatedUser, 'name', '')}
-        canConfirm={!errorDescription}
-        onConfirm={() => handleUpdateUser(
-          get(updatedUser, 'id'), 
-          get(room, 'id'),
-          get(position, 'id'),
-          get(major, 'id'),
-          get(level, 'id'),
-          description
-        )}
-      >
-        {options.loading && <LoadingBox />}
-        {options.error !== null && <ErrorBox />}
-        {!options.loading && options.error === null && (
-          <React.Fragment>
+    <CustomModal
+      open={open}
+      setOpen={setOpen}
+      title={get(updatedUser, 'name', '')}
+      canConfirm={!errorDescription}
+      onConfirm={() => handleUpdateUser(
+        get(updatedUser, 'id'), 
+        get(room, 'id'),
+        get(position, 'id'),
+        get(major, 'id'),
+        get(level, 'id'),
+        description
+      )}
+      loading={options.loading}
+    >
+      {options.error !== null 
+        ? <ErrorBox />
+        : <>
             <StyledFormControl fullWidth>
               <label htmlFor='room-select'>
                 {t("views.user_page.modals.update_user.room_select")}
@@ -154,10 +153,9 @@ function UpdateUser({
                 }
               />
             </StyledFormControl>
-          </React.Fragment>
-        )}
-      </CustomModal>
-    </React.Fragment>
+          </>
+      }
+    </CustomModal>
   )
 }
 

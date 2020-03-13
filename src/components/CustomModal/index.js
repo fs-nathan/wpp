@@ -10,6 +10,7 @@ import ColorTypo from '../ColorTypo';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
+import LoadingOverlay from 'react-loading-overlay';
 import './style.scss';
 
 const StyledScrollbars = ({ className = '', height, ...props }) => 
@@ -101,6 +102,7 @@ function TwoColumns({ maxWidth, left, right, height, }) {
 }
 
 function CustomModal({ 
+  loading = false,
   title, 
   columns = 1, 
   children = null, left = null, right = null, 
@@ -136,38 +138,45 @@ function CustomModal({
       aria-labelledby="alert-dialog-slide-title"
       className={className}
     >
-      <StyledDialogTitle id="alert-dialog-slide-title">
-        <ColorTypo uppercase>{title}</ColorTypo>
-        <IconButton onClick={() => handleCancle()}>
-          <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
-        </IconButton>
-      </StyledDialogTitle>
-      {columns === 1 && (
-        <OneColumn 
-          children={children} 
-          height={height}
-        />
-      )}
-      {columns === 2 && (
-        <TwoColumns 
-          maxWidth={maxWidth} 
-          left={left} 
-          right={right} 
-          height={height}
-      />
-      )}
-      <StyledDialogActions>
-        {cancleRender !== null && (
-          <ActionsCancleButton onClick={() => handleCancle()}>
-            {cancleRender()}
-          </ActionsCancleButton>
-        )}
-        {confirmRender !== null && (
-          <ActionsAcceptButton style={{ color: bgColor.color }} disabled={!canConfirm} onClick={() => handleConfirm()}>
-            {confirmRender()}
-          </ActionsAcceptButton>
-        )}
-      </StyledDialogActions>
+        <StyledDialogTitle id="alert-dialog-slide-title">
+          <ColorTypo uppercase>{title}</ColorTypo>
+          <IconButton onClick={() => handleCancle()}>
+            <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'}/>
+          </IconButton>
+        </StyledDialogTitle>
+        <LoadingOverlay
+          active={loading}
+          spinner
+          text='Đang tải...'
+          fadeSpeed={0}
+        >
+          {columns === 1 && (
+            <OneColumn 
+              children={children} 
+              height={height}
+            />
+          )}
+          {columns === 2 && (
+            <TwoColumns 
+              maxWidth={maxWidth} 
+              left={left} 
+              right={right} 
+              height={height}
+          />
+          )}
+        </LoadingOverlay>
+        <StyledDialogActions>
+          {cancleRender !== null && (
+            <ActionsCancleButton onClick={() => handleCancle()}>
+              {cancleRender()}
+            </ActionsCancleButton>
+          )}
+          {confirmRender !== null && (
+            <ActionsAcceptButton style={{ color: bgColor.color }} disabled={!canConfirm} onClick={() => handleConfirm()}>
+              {confirmRender()}
+            </ActionsAcceptButton>
+          )}
+        </StyledDialogActions>
     </StyledDialog>
   )
 }

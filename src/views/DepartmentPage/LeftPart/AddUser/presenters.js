@@ -11,7 +11,7 @@ import { ListItemAvatar, ListItemText, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import { get, find } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import LoadingBox from '../../../../components/LoadingBox';
+import LoadingOverlay from 'react-loading-overlay';
 import ErrorBox from '../../../../components/ErrorBox';
 import './style.scss';
 
@@ -302,63 +302,80 @@ function AddUser({
               {t("views.user_page.left_part.add_user.find_member_button")}
             </PillButton>
           </div>
-          {desireUser.loading && <LoadingBox />}
-          {desireUser.error !== null && <ErrorBox size={16} />}
-          {!desireUser.loading && desireUser.error === null && (
-            <DesiringUserList 
-              bgColor={bgColor}
-              loading={desireLoading}
-              user={desireUser.user && {
-                ...desireUser.user,
-                invitation: get(
-                  find(
-                    invitations.invitations, 
-                    { 
-                      user: 
-                      get(
-                        desireUser.user, 
-                        'id'
-                      )
-                    }
-                  ),
-                  'invitation_id'
-                )
-              }} 
-              handleInviteUserJoinGroup={handleInviteUserJoinGroup} 
-              handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-              handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
-            />
-          )}
+          {desireUser.error !== null 
+            ? <ErrorBox size={16} />
+            : <LoadingOverlay
+                active={desireUser.loading}
+                spinner
+                text='Đang tải...'
+              >
+                <DesiringUserList 
+                  bgColor={bgColor}
+                  loading={desireLoading}
+                  user={desireUser.user && {
+                    ...desireUser.user,
+                    invitation: get(
+                      find(
+                        invitations.invitations, 
+                        { 
+                          user: 
+                          get(
+                            desireUser.user, 
+                            'id'
+                          )
+                        }
+                      ),
+                      'invitation_id'
+                    )
+                  }} 
+                  handleInviteUserJoinGroup={handleInviteUserJoinGroup} 
+                  handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+                  handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+                />
+              </LoadingOverlay>
+          }
         </StyledBox>
         <StyledBox>
           <ColorTypo bold>
             Đã mời thành viên tham gia nhóm
           </ColorTypo>
-          {invitations.error !== null && <ErrorBox size={16} />}
-          {!invitations.loading && invitations.error === null && (
-            <InvitedUserList 
-              bgColor={bgColor}
-              loading={requireLoading}
-              invitations={invitations.invitations} 
-              handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-              handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
-            />
-          )}
+          {invitations.error !== null 
+            ? <ErrorBox size={16} />
+            : <LoadingOverlay
+                active={invitations.loading}
+                spinner
+                text='Đang tải...'
+              >
+                <InvitedUserList 
+                  bgColor={bgColor}
+                  loading={requireLoading}
+                  invitations={invitations.invitations} 
+                  handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+                  handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+                />
+              </LoadingOverlay>
+          }
         </StyledBox>
         <StyledBox>
           <ColorTypo bold>
             {t("views.user_page.left_part.add_user.request_member_title")}
           </ColorTypo>
-          {requireUsers.error !== null && <ErrorBox size={16} />}
-          {!requireUsers.loading && requireUsers.error === null && (
-            <RequestingUserList 
-              bgColor={bgColor}
-              loading={requireLoading}
-              users={requireUsers.users} 
-              handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup} 
-              handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
-            />
-          )}
+          {requireUsers.error !== null 
+            ? <ErrorBox size={16} />
+            : <LoadingOverlay
+                active={requireUsers.loading}
+                spinner
+                text='Đang tải...'
+              >
+                <RequestingUserList 
+                  bgColor={bgColor}
+                  loading={requireLoading}
+                  users={requireUsers.users} 
+                  handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup} 
+                  handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
+                />
+              </LoadingOverlay>
+          }
         </StyledBox>
       </Body>
     </Container>

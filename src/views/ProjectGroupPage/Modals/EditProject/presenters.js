@@ -47,7 +47,9 @@ function EditProject({
       setDescription(get(curProject, 'description', ''));
       setPriority(get(curProject, 'priority_code', 0));
       setCurrency(get(curProject, 'currency', 0));
-      setProjectGroup(find(groups.groups, { id: get(curProject, 'project_group_id') }) || groups.groups[0]);
+      setProjectGroup(find(groups.groups, { id: get(curProject, 'project_group_id') }) 
+        || find(groups.groups, { id: get(curProject, 'group_project_id') }) 
+        || groups.groups[0]);
     }
     // eslint-disable-next-line
   }, [curProject]);
