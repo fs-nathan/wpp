@@ -1,4 +1,4 @@
-import { labels, statistic, colors } from "../contants/attrs";
+import { colors, labels, statistic } from "../contants/attrs";
 import { get } from "./index.js";
 export const createPieChartProps = (strings, data) => {
   return {

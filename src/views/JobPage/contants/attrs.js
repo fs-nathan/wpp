@@ -39,6 +39,7 @@ export const statistic = {
   roles: "static.roles"
 };
 export const labels = {
+  pageTitle: "công việc của bạn",
   task_of_me: "static.task_of_me",
   task_waiting: "waiting",
   task_doing: "doing",
@@ -52,7 +53,17 @@ export const labels = {
   task_me_assign: "static.task_me_assign",
   task_assign_to_me: "static.task_assign_to_me",
   task_me_offer: "static.task_me_offer",
-  roles: "static.roles"
+  roles: "static.roles",
+  overview: "overview",
+  due: "due",
+  mission: "mission",
+  mission_giving: "giving",
+  mission_given: "given",
+  self_giving: "self giving",
+  role: "role",
+  role_doing: "doing",
+  role_monitor: "monitor",
+  role_coordination: "coordination"
 };
 export const colors = {
   task_of_me: cls.orange[0],
@@ -61,8 +72,8 @@ export const colors = {
   task_complete: cls.green[0],
   task_stop: "static.task_stop",
   task_will_expire: "static.task_will_expire",
-  task_expired: cls.red[0],
-  task_hight_priority: cls.red[0],
+  task_expired: cls.pink[0],
+  task_hight_priority: cls.pink[0],
   task_medium_priority: cls.orange[0],
   task_low_priority: cls.green[0],
   task_me_assign: "static.task_me_assign",

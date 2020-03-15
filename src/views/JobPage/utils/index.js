@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import { get, isFunction } from "lodash";
 
 const loginlineParams = param => {
   console.trace("param", param);
@@ -41,4 +41,4 @@ export default function loginlineFunc(fn, prefix) {
     return result;
   };
 }
-export { get, loginlineParams, loginlineFunc };
+export { get, isFunction, loginlineParams, loginlineFunc };

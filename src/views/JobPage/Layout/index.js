@@ -1,63 +1,99 @@
-import React from "react";
-import MailIcon from "@material-ui/icons/Mail";
+import {
+  mdiCalendar,
+  mdiFullscreen,
+  mdiFullscreenExit,
+  mdiSettingsOutline
+} from "@mdi/js";
+import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { TimeRangePopover, times } from "../../../components/CustomPopover";
+import {
+  CustomTableLayout,
+  CustomTableProvider
+} from "../../../components/CustomTable";
+import LoadingBox from "../../../components/LoadingBox";
+import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
+import { JobPageContext } from "../JobPageContext";
+import loginlineFunc from "../utils";
 import "./Layout.css";
-import { Button, ButtonBase, Container } from "@material-ui/core";
-import PlusOne from "@material-ui/icons/PlusOne";
-import Calendar from "@material-ui/icons/CalendarToday";
-import { withStyles } from "@material-ui/styles";
-import SearchIcon from "@material-ui/icons/Search";
-import EventIcon from "@material-ui/icons/Event";
-import ZoomOutMapIcon from "@material-ui/icons/ZoomOutMap";
-import SettingsIcon from "@material-ui/icons/Settings";
-const BootstrapButton = withStyles({
-  root: {
-    boxShadow: "none",
-    color: "#fff"
-  }
-})(Button);
-
-const ActionButton = ({ icon, children }) => (
-  <ButtonBase className="comp_JobPage_Layout__Actions_Item">
-    {icon}
-    {children}
-  </ButtonBase>
-);
-function Header({ title, actions = [] }) {
+function Layout({ children, title, bgColor }) {
+  const { t } = useTranslation();
+  const { expand, handleExpand } = useContext(JobPageContext);
+  const [timeAnchor, setTimeAnchor] = React.useState(null);
+  const [timeType, setTimeType] = React.useState(0);
+  const [timeRange, settimeRange] = React.useState(null);
+  console.log({ expand, timeAnchor, timeType, timeRange });
   return (
-    <Container className="comp_JobPage_Layout_Header">
-      <div className="comp_JobPage_Layout__Title">{title}</div>
-      <div className="comp_JobPage_Layout__Actions">
-        <ActionButton icon={<SearchIcon />}>
-          <div>Tim kiem</div>
-        </ActionButton>
-        <ActionButton icon={<EventIcon />}>
-          <div>2019</div>
-        </ActionButton>
-        <ActionButton icon={<ZoomOutMapIcon />}>
-          <div>mo rong</div>
-        </ActionButton>
-        <ActionButton icon={<SettingsIcon />}>
-          <div>cai dat</div>
-        </ActionButton>
-      </div>
-      <BootstrapButton
-        variant="contained"
-        color="secondary"
-        disableElevation
-        startIcon={<PlusOne />}
-      >
-        tao cong viec
-      </BootstrapButton>
-    </Container>
+    <CustomTableProvider
+      value={{
+        options: {
+          title,
+          subActions: [
+            {
+              label: times[timeType].title,
+              iconPath: mdiCalendar,
+              onClick: loginlineFunc(evt => setTimeAnchor(evt.target))
+            },
+            {
+              label: t(expand ? "Thu gọn" : "Mở rộng"),
+              iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
+              onClick: () => handleExpand(!expand)
+            },
+            {
+              label: "setting",
+              iconPath: mdiSettingsOutline,
+              onClick: loginlineFunc
+            }
+          ],
+          mainAction: {
+            label: "+ Tạo công việc",
+            onClick: loginlineFunc
+          },
+          search: {
+            patern: "",
+            onChange: loginlineFunc
+          },
+
+          grouped: {
+            bool: true,
+            id: "id",
+            label: loginlineFunc,
+            item: "tasks"
+          },
+
+          draggable: {
+            bool: true,
+            onDragEnd: result => {}
+          },
+
+          loading: {
+            bool: false,
+            component: () => <LoadingBox />
+          },
+          row: {
+            id: "id"
+          }
+        }
+      }}
+    >
+      <CustomTableLayout>{children}</CustomTableLayout>
+      <TimeRangePopover
+        bgColor={bgColor}
+        anchorEl={timeAnchor}
+        setAnchorEl={setTimeAnchor}
+        timeOptionDefault={timeType}
+        handleTimeRange={(timeType, startDate, endDate) => {
+          setTimeType(timeType);
+          settimeRange({ startDate, endDate });
+        }}
+      />
+    </CustomTableProvider>
   );
 }
-function Layout({ children, title }) {
-  return (
-    <div className="comp_JobPage_Layout">
-      <Header title={title} />
-      <div className="comp_JobPage_Layout__Content">{children}</div>
-    </div>
-  );
-}
-
-export default Layout;
+const mapStateToProps = state => {
+  return {
+    bgColor: bgColorSelector(state)
+  };
+};
+export default connect(mapStateToProps)(Layout);

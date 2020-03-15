@@ -1,19 +1,19 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import { Route } from "react-router-dom";
-import TabList from "./LeftPart_new/TabList";
+import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
+import { JobPageContext } from "./JobPageContext";
+import TabList from "./LeftPart_new/TabList";
 import routes from "./routes";
-import { apiService } from "../../constants/axiosInstance";
 
-export const Context = React.createContext();
-const { Provider } = Context;
+const { Provider } = JobPageContext;
 function JobPage() {
   return (
-    <Provider value={{}}>
-      <TwoColumnsLayout
-        leftRenders={[() => <TabList />]}
-        rightRender={() => (
-          <Suspense fallback={<div>Loading...</div>}>
+    <TwoColumnsLayout
+      leftRenders={[() => <TabList />]}
+      rightRender={({ expand, handleExpand, handleSubSlide }) => (
+        <Provider value={{ expand, handleExpand, handleSubSlide }}>
+          <Suspense fallback={<LoadingBox />}>
             {routes.map((route, index) => {
               return (
                 <Route
@@ -25,9 +25,9 @@ function JobPage() {
               );
             })}
           </Suspense>
-        )}
-      />
-    </Provider>
+        </Provider>
+      )}
+    />
   );
 }
 

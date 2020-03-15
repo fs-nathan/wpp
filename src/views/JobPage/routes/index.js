@@ -1,11 +1,12 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import { Routes } from "../contants/routes";
-import Layout from "../Layout";
-import { Grid, Paper, makeStyles, Container } from "@material-ui/core";
-import Overview from "../views/Overview";
-import Mission from "../views/Mission";
-
 const routes = [
+  {
+    path: "/tasks",
+    exact: true,
+    component: () => <Redirect to={Routes.OVERVIEW} />
+  },
   {
     path: Routes.OVERVIEW,
     exact: true,
