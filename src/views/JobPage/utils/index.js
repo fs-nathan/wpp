@@ -1,4 +1,4 @@
-import { get, isFunction } from "lodash";
+import { get, isFunction, merge } from "lodash";
 
 const loginlineParams = param => {
   console.trace("param", param);
@@ -16,7 +16,7 @@ function getParamNames(func) {
   return result;
 }
 
-export default function loginlineFunc(fn, prefix) {
+function loginlineFunc(fn, prefix) {
   return (...args) => {
     const argsName = getParamNames(fn);
     const fnName = prefix ? `${prefix}.${fn.name}` : fn.name;
@@ -41,4 +41,16 @@ export default function loginlineFunc(fn, prefix) {
     return result;
   };
 }
-export { get, isFunction, loginlineParams, loginlineFunc };
+
+const createMapPropsFromAttrs = (strings = []) => (data = {}) => {
+  return strings.map(string => get(data, string));
+};
+
+export {
+  get,
+  isFunction,
+  merge,
+  loginlineParams,
+  loginlineFunc,
+  createMapPropsFromAttrs
+};

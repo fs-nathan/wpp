@@ -26,36 +26,41 @@ const ListPart = props => {
     {
       title: t(labels.mission),
       url: Routes.MISSION,
-      icon: mdiAccountSwitch
+      icon: mdiAccountSwitch,
+      sub: [
+        {
+          name: t(labels.mission_giving),
+          url: Routes.MISSION_GIVING
+        },
+        {
+          name: t(labels.mission_given),
+          url: Routes.MISSION_GIVEN
+        },
+        {
+          name: t(labels.self_giving),
+          url: Routes.MISSION_SELFGIVING
+        }
+      ]
     },
-    {
-      title: t(labels.mission_giving),
-      url: Routes.MISSION_GIVING
-    },
-    {
-      title: t(labels.mission_given),
-      url: Routes.MISSION_GIVEN
-    },
-    {
-      title: t(labels.self_giving),
-      url: Routes.MISSION_SELFGIVING
-    },
+
     {
       title: t(labels.role),
       url: Routes.ROLE,
-      icon: mdiAccountTie
-    },
-    {
-      title: t(labels.role_doing),
-      url: Routes.ROLE_RUNNING
-    },
-    {
-      title: t(labels.role_monitor),
-      url: Routes.ROLE_MONITOR
-    },
-    {
-      title: t(labels.role_coordination),
-      url: Routes.ROLE_COORDINATION
+      icon: mdiAccountTie,
+      sub: [
+        {
+          name: t(labels.role_doing),
+          url: Routes.ROLE_RUNNING
+        },
+        {
+          name: t(labels.role_monitor),
+          url: Routes.ROLE_MONITOR
+        },
+        {
+          name: t(labels.role_coordination),
+          url: Routes.ROLE_COORDINATION
+        }
+      ]
     }
   ];
   return <LeftSetting title={t(labels.pageTitle)} listMenu={listMenu} />;

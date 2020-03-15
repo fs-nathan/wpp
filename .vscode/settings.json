@@ -1,6 +1,6 @@
 {
   "editor.tabSize": 2,
-  //   "editor.foldingStrategy": "indentation",
+  "editor.foldingStrategy": "indentation",
   //   "prettier.printWidth": 40,
   //   "prettier.semi": false,
   //   "prettier.singleQuote": true,

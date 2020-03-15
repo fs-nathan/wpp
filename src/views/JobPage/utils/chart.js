@@ -5,9 +5,9 @@ export const createPieChartProps = (strings, data) => {
     type: "pie",
     options: {
       chart: {
-        animations: {
-          enabled: false
-        },
+        // animations: {
+        //   enabled: false
+        // },
         toolbar: {
           show: false
         }
@@ -25,7 +25,7 @@ export const createPieChartProps = (strings, data) => {
       colors: strings.map(string => colors[string])
     },
     series: strings.map(string =>
-      Math.max(Number(get(data, "data." + statistic[string], 0)), 1)
+      Math.max(Number(get(data, statistic[string], 0)), 0)
     ),
     height: 300
   };
@@ -88,7 +88,7 @@ export const createColumnChartProps = (
     series: [
       {
         data: strings.map(string =>
-          Math.max(Number(get(data, "data." + statistic[string], 0)), 1)
+          Math.max(Number(get(data, statistic[string], 0)), 0)
         )
       }
     ],

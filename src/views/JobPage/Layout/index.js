@@ -15,7 +15,7 @@ import {
 import LoadingBox from "../../../components/LoadingBox";
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import { JobPageContext } from "../JobPageContext";
-import loginlineFunc from "../utils";
+import { loginlineFunc } from "../utils";
 import "./Layout.css";
 function Layout({ children, title, bgColor }) {
   const { t } = useTranslation();
