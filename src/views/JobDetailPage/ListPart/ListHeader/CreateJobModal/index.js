@@ -18,6 +18,7 @@ import {
 
 import { useSelector, useDispatch } from 'react-redux';
 import { convertToRaw } from 'draft-js';
+import get from 'lodash/get';
 
 import CustomSelect from '../../../../../components/CustomSelect';
 import {
@@ -208,6 +209,8 @@ function CreateJobModal(props) {
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
+  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+
   const updateNameDescriptionTask = data => dispatch(taskDetailAction.updateNameDescriptionTask(data));
   const createJobByProjectId = data => dispatch(taskDetailAction.createTask(data));
 
@@ -499,7 +502,9 @@ function CreateJobModal(props) {
                   <Button autoFocus onClick={handleClose} style={{ color: '#222222' }} >
                     Hủy
                 </Button>
-                  <Button autoFocus onClick={handlePressConfirm} color="primary">
+                  <Button disabled={!data.name} autoFocus
+                    onClick={handlePressConfirm}
+                    style={{ color: groupActiveColor }}>
                     {isFetching && <img alt='loading' width="30px" src={spinnerGif}></img>}
                     TẠO VIỆC
               </Button>

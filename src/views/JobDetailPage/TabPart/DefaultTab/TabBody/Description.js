@@ -23,7 +23,7 @@ function Description({ value }) {
     <ListItemTabPart>
       {
         !isLongerContent(value)
-          ? <ListItemText
+          ? <ListItemText disableTypography
             primary={
               <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>Mô tả</ColorTypo>
             }
@@ -37,7 +37,7 @@ function Description({ value }) {
           />
           :
           <>
-            <ListItemText
+            <ListItemText disableTypography
               primary={
                 <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>Mô tả</ColorTypo>
               }

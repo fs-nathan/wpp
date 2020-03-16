@@ -18,7 +18,8 @@ import Icon from '@mdi/react';
 import { mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
 import RoleMemberModal from './RoleMemberModal';
 import PriorityMemberModal from './PriorityMemberModal';
-import { WrapperContext } from '../..';
+import get from 'lodash/get';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { createMember } from '../../../../actions/taskDetail/taskDetailActions';
@@ -175,6 +176,7 @@ const StyledMenu = styled(TableCell)`
 function ProjectMember(props) {
     const dispatch = useDispatch();
     const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+
     function onClickAdd() {
         // dispatch(createMember({ task_id: taskId, member_id }))
         // console.log('hello', valueMember)
@@ -334,6 +336,8 @@ function AddMemberModal(props) {
     const { t } = useTranslation()
     const member = useSelector(state => state.taskDetail.taskMember.member);
     const memberNotAssigned = useSelector(state => state.taskDetail.taskMember.memberNotAssigned);
+    const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+
     const [listMemberProjectState, setListMemberProject] = React.useState([])
     const [listMemberJobState, setListMemberJob] = React.useState([])
     React.useEffect(() => {
@@ -394,10 +398,10 @@ function AddMemberModal(props) {
                     </GridArea>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose} color="#222">
+                    <Button autoFocus onClick={handleClose} style={{ color: "#222" }}>
                         Hủy
                     </Button>
-                    <Button autoFocus onClick={handleClose} color="primary">
+                    <Button autoFocus onClick={handleClose} style={{ color: groupActiveColor }}>
                         Cập nhật
                     </Button>
                 </DialogActions>

@@ -26,6 +26,7 @@ function TabHeader({ setShow }) {
       <HeaderTab title="Tiến độ công việc"
         onClickBack={() => setShow(0)}
         onClickOpen={handleClickOpen}
+        rightIcon="settings"
       />
       <ProgressModal isOpen={open} handleClickOpen={handleClickOpen} handleClickClose={handleClickClose} />
     </div>

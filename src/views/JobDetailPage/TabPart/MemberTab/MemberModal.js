@@ -13,16 +13,11 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import imgDoc from '../../../../assets/doc.png'
 import avatar from '../../../../assets/avatar.jpg';
 
-
 const staff = {
     name: 'Trần Văn Nam', datejoined: '18/10/2018', department: 'Phòng tài chính kế toán', role: 'Trưởng phòng', level: 'Đại học', specialized: 'Kinh tế quốc tế',
     description: 'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book.',
     birthday: '20/10/1978', gender: 'Nam', email: 'thuy@gmail.com', phonenumber: '0918006181', address: 'Nhà A, Phố B, Quận Hai Bà Trưng, Thành Phố Hà Nộis'
 }
-
-// const Div = styled.div`
-//   display: flex;
-// `
 
 const StyledEmploy = styled(Typography)`
   width: 700px;
@@ -76,20 +71,6 @@ const ContentDescription = styled(Typography)`
   font-weight: 400;
   color: ${colorPal['black'][0]}
 `
-
-// const ButtonFile = styled.label`
-//       & > span {
-//         margin: 20px 0 0 0;
-//         & > span {
-//           display: flex;
-//           align-items: center;
-//           justify-content: start;
-//           padding: 3px 10px;
-//           font-size: 16px;
-//           font-weight: 500;
-//         }
-//       }
-// `
 
 const WrapperMember = styled(Typography)`
     padding-top: 20px;
@@ -167,9 +148,9 @@ const DialogActions = withStyles(theme => ({
 
 const MemberModal = (props) => {
     const classes = useStyles();
-    
+
     return (
-        <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers}  open={props.isOpen} >
+        <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers} open={props.isOpen} >
             <DialogTitle onClose={props.handleCloseMembers}>
                 Thông tin chi tiết thành viên
             </DialogTitle>
@@ -233,12 +214,12 @@ const MemberModal = (props) => {
                         />
                         <label className="button-file" htmlFor="contained-button-file">
                             <Button variant="contained" component="span" fullWidth className={classes.button}>
-                                <img className="member-image"alt="vtask" src={imgDoc} />
+                                <img className="member-image" alt="vtask" src={imgDoc} />
                                 Xem file hồ sơ
                             </Button>
                         </label>
                     </StyledEmploy>
-                                    
+
                     <StyledStaff component={'div'}>
                         <TextItem > Thông tin cá nhân</TextItem>
                         <WrapperMember component="div" >
