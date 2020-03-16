@@ -308,8 +308,6 @@ function CreateJobModal(props) {
       let data = dataCreateJob;
       if (!dataCreateJob.group_task ||
         dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE) delete data.group_task;
-      data.start_time = data.start_time.value;
-      data.end_time = data.end_time.value;
       data.date_status = type;
       data.description = JSON.stringify(convertToRaw(data.description.getCurrentContent()));
       // Call api
@@ -387,7 +385,7 @@ function CreateJobModal(props) {
                     <TimeSelect
                       className="createJob--timeSelect"
                       value={data.start_time}
-                      onChange={({ value: startTime }) => handleChangeData('start_time', startTime)}
+                      onChange={({ target}) => handleChangeData('start_time', target.value)}
                     />
                   )}
                 {type !== 1 && (
@@ -419,7 +417,7 @@ function CreateJobModal(props) {
                     <TimeSelect
                       className="createJob--timeSelect"
                       value={data.end_time}
-                      onChange={({ value: endTime }) => handleChangeData('end_time', endTime)}
+                      onChange={({ target }) => handleChangeData('end_time', target.value)}
                     />
                   )}
                 {type !== 1 && (

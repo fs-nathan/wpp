@@ -1,21 +1,31 @@
 import React from 'react';
+import clsx from 'clsx';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
-import CustomSelect from 'components/CustomSelect';
+import './styles.scss';
 
-let listTimeSelect = [];
+const listTimeSelect = [];
 for (let index = 0; index < 24; index++) {
   listTimeSelect.push(`${index}:00`, `${index}:30`)
 }
-listTimeSelect = listTimeSelect.map(value => ({ value, label: value }))
 
 function TimeSelect({ className, value, onChange }) {
   return (
-    <CustomSelect
-      className={className}
+    <Select
+      autoFocus
+      className={clsx('timeSelect', className)}
       value={value}
       onChange={onChange}
-      options={listTimeSelect}
-    />
+      variant="outlined"
+      inputProps={{}}
+    >
+      {
+        listTimeSelect.map((time) => (
+          <MenuItem value={time}>{time}</MenuItem>
+        ))
+      }
+    </Select>
   )
 }
 
