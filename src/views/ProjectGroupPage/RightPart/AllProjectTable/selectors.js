@@ -41,17 +41,17 @@ export const projectsSelector = createSelector(
       ) 
         ? get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon') 
         : get(defaults[0], 'url_icon'),
-      state_name: get(project, 'visibility') ? get(project, 'state_name') : 'Hidden',
+      state_code: get(project, 'visibility') ? get(project, 'state_code') : 5,
     }));
 
     const newSummary = {
       all: newProjects.length,
       active: filter(newProjects, { visibility: true }).length,
       hidden: filter(newProjects, { visibility: false }).length,
-      waiting: filter(newProjects, { state_name: 'Waiting' }).length,
-      doing: filter(newProjects, { state_name: 'Doing' }).length,
-      complete: filter(newProjects, { state_name: 'Complete' }).length,
-      expired: filter(newProjects, { state_name: 'Expired' }).length,
+      waiting: filter(newProjects, { state_code: 0 }).length,
+      doing: filter(newProjects, { state_code: 1 }).length,
+      complete: filter(newProjects, { state_code: 2 }).length,
+      expired: filter(newProjects, { state_code: 3 }).length,
       created: filter(newProjects, { me_created: true }).length,
       assigned: filter(newProjects, { me_created: false }).length,
     }

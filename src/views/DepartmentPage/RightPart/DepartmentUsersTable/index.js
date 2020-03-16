@@ -20,7 +20,7 @@ import DepartmentUsersTablePresenter from './presenters';
 
 function DepartmentUsersTable({ 
   room, hasRequirement,
-  expand, handleExpand, handleSubSlide,
+  expand, handleExpand,
   doSortUser,
   doPublicMember, doPrivateMember,
   doBanUserFromGroup, 
@@ -80,7 +80,6 @@ function DepartmentUsersTable({
       default: return;
     }
   }
-
   return (
     <>
       <DepartmentUsersTablePresenter 

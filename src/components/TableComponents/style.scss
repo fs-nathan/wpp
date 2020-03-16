@@ -19,6 +19,7 @@
 };
 
 .comp_TableComponents___setting-container {
+  margin-right: 20px;
 };
 
 @mixin comp_TableComponents___state-box {
@@ -42,37 +43,37 @@
 };
 
 .comp_TableComponents___state-box {
-  &-waiting {
+  &-0 {
     @include comp_TableComponents___state-box;
     & > div > span {
       color: #ff9800;
     }
   }
-  &-doing {
+  &-1 {
     @include comp_TableComponents___state-box;
     & > div > span {
       color: #03a9f4;
     }
   }
-  &-expired {
+  &-3 {
     @include comp_TableComponents___state-box;
     & > div > span {
       color: #f44336;
     }
   }
-  &-complete {
+  &-2 {
     @include comp_TableComponents___state-box;
     & > div > span {
       color: #03c30b;
     }
   }
-  &-stop {
+  &-4 {
     @include comp_TableComponents___state-box;
     & > div > span {
       color: #000;
     }
   }
-  &-hidden {
+  &-5 {
     @include comp_TableComponents___state-box;
     & > div > span {
       color: #20194d;

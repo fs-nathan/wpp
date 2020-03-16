@@ -50,6 +50,7 @@ function ProjectSetting({
         setOpen={setOpen}
         confirmRender={null}
         cancleRender={() => 'Thoát'}
+        loading={status.loading}
       >
         {status.error === null && (
           <>
@@ -62,9 +63,9 @@ function ProjectSetting({
                   setProgress(parseInt(evt.target.value));
                 }}
               >
-                <CustomFormControlLabel value={2} control={<Radio disabled={status.loading} color={'primary'}/>} label={<React.Fragment>Ngày và giờ (nhập đầy đủ ngày và giờ) <small>(mặc định)</small></React.Fragment>} />
-                <CustomFormControlLabel value={1} control={<Radio disabled={status.loading} color={'primary'}/>} label='Chỉ nhập ngày (không nhập giờ bắt đầu và kết thúc)' />
-                <CustomFormControlLabel value={0} control={<Radio disabled={status.loading} color={'primary'}/>} label='Không yêu cầu (dành cho công việc không yêu cầu tiến độ)' />
+                <CustomFormControlLabel value={2} control={<Radio color={'primary'}/>} label={<React.Fragment>Ngày và giờ (nhập đầy đủ ngày và giờ) <small>(mặc định)</small></React.Fragment>} />
+                <CustomFormControlLabel value={1} control={<Radio color={'primary'}/>} label='Chỉ nhập ngày (không nhập giờ bắt đầu và kết thúc)' />
+                <CustomFormControlLabel value={0} control={<Radio color={'primary'}/>} label='Không yêu cầu (dành cho công việc không yêu cầu tiến độ)' />
               </RadioGroup>
             </StyledFormControl>
             <StyledFormControl component='fieldset'>
@@ -75,8 +76,8 @@ function ProjectSetting({
                   setCopy(parseInt(evt.target.value));
                 }}
               >
-                <CustomFormControlLabel value={0} control={<Radio disabled={status.loading} color={'primary'}/>} label={<React.Fragment>Không được sao chép <small>(mặc định)</small></React.Fragment>} />
-                <CustomFormControlLabel value={1} control={<Radio disabled={status.loading} color={'primary'}/>} label='Được sao chép' />
+                <CustomFormControlLabel value={0} control={<Radio color={'primary'}/>} label={<React.Fragment>Không được sao chép <small>(mặc định)</small></React.Fragment>} />
+                <CustomFormControlLabel value={1} control={<Radio color={'primary'}/>} label='Được sao chép' />
               </RadioGroup>
             </StyledFormControl>
           </>

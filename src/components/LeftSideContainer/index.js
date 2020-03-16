@@ -4,7 +4,7 @@ import Icon from '@mdi/react';
 import { mdiBorderNoneVariant } from '@mdi/js';
 import { IconButton } from '@material-ui/core';
 import CustomAvatar from '../CustomAvatar';
-import LoadingOverlay from 'react-loading-overlay';
+import LoadingOverlay from '../LoadingOverlay';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import './style.scss';

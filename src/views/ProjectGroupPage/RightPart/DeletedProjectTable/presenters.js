@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import {
   mdiArrowLeft,
@@ -26,8 +26,8 @@ function DeletedProjectTable({
 
   return (
     <Container>
-      {projects.error !== null && <ErrorBox />}
-      {projects.error === null && (
+      {isNil(projects.error)
+      ? (
         <React.Fragment>
           <CustomTable
             options={{
@@ -95,7 +95,7 @@ function DeletedProjectTable({
             data={projects.projects}
           />
         </React.Fragment>
-      )}
+      ) : <ErrorBox />}
     </Container>
   )
 }

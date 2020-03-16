@@ -69,6 +69,7 @@ function EditProject({
           ? get(projectGroup, 'id')
           : undefined,
       })}
+      loading={groups.loading}
     >
       <StyledFormControl fullWidth>
         <label htmlFor='room-select'>

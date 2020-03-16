@@ -8,6 +8,9 @@
     &:nth-child(1) {
       text-align: center;
       margin: 20px 0 40px 0;
+      font-size: 20px;
+      font-weight: 500;
+      text-transform: uppercase;
     }
     &:nth-child(2), &:nth-child(3) {
       margin: 10px 0;
@@ -17,6 +20,11 @@
     }
     &:nth-child(5) {
       margin-bottom: 5px;
+    }
+    &:nth-child(6) {
+      font-size: 13px;
+      line-height: 17px;
+      color: #777;
     }
   }
 };

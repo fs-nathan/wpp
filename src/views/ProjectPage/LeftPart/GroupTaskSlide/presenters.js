@@ -9,7 +9,7 @@ import LeftSideContainer from '../../../../components/LeftSideContainer';
 import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
 import CustomListItem from './CustomListItem';
 import { ListItemText, Menu, MenuItem } from '@material-ui/core';
-import { filter, get, } from 'lodash';
+import { find, get, filter } from 'lodash';
 import SearchInput from '../../../../components/SearchInput';
 import './style.scss';
  
@@ -123,7 +123,13 @@ function GroupTaskSlide({
                       }
                       secondary={
                         <Secondary>
-                          {filter(groupTasks.groupTasks, taskGroup => get(taskGroup, 'id') === 'default').reduce((sum, taskGroup) => sum += get(taskGroup, 'number_task', 0), 0)} việc
+                          {get(
+                            find(
+                              groupTasks.groupTasks, 
+                              { id: 'default' }
+                            ),
+                            'number_task',
+                            0)} việc
                         </Secondary>
                       }
                     />

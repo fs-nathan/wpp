@@ -4,7 +4,6 @@ import { FormControl, OutlinedInput } from '@material-ui/core';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomSelect from '../../../../components/CustomSelect';
 import ErrorBox from '../../../../components/ErrorBox';
-import LoadingBox from '../../../../components/LoadingBox';
 import CustomModal from '../../../../components/CustomModal';
 import { useMaxlenString } from '../../../../hooks';
 import { get, find } from 'lodash';

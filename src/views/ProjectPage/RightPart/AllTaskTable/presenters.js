@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, join, flattenDeep } from 'lodash';
+import { get, join, flattenDeep, isNil } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { TimeRangePopover, times, DownloadPopover } from '../../../../components/CustomPopover';
 import Icon from '@mdi/react';
@@ -39,24 +39,20 @@ function decodePriorityCode(priorityCode) {
       return ({
         color: '#4caf50',
         background: '#4caf5042',
-        name: 'Thấp',
       });
     case 1: 
       return ({
         color: '#ff9800',
         background: '#ff980038',
-        name: 'Trung bình',
       });
     case 2: 
       return ({
         color: '#fe0707',
         background: '#ff050524',
-        name: 'Cao',
       });
     default:
       return ({
         color: '#53d7fc',
-        name: 'Thấp',
       });
   }
 }
@@ -117,8 +113,8 @@ function AllTaskTable({
   
   return (
     <Container>
-      {tasks.error !== null && <ErrorBox />}
-      {tasks.error === null && (
+      {isNil(tasks.error) 
+      ? (
         <React.Fragment>
           <CustomTable
             options={{
@@ -202,12 +198,12 @@ function AllTaskTable({
             }, {
               label: 'Trạng thái',
               field: (row) => <StateBox
-                  stateName={get(row, 'status_name', '')}
+                  stateName={get(row, 'status_code')}
                 >
                   <div>
                     <span>&#11044;</span>
                     <span>
-                      {get(row, 'status_name', '')}
+                      {get(row, 'status_name')}
                     </span>
                   </div>
                 </StateBox>,
@@ -243,7 +239,7 @@ function AllTaskTable({
                                 color={decodePriorityCode(get(row, 'priority_code', 0)).color}
                                 background={decodePriorityCode(get(row, 'priority_code', 0)).background}
                               >
-                                {decodePriorityCode(get(row, 'priority_code', 0)).name}  
+                                {get(row, 'priority_name', '0')}  
                               </CustomBadge>,
               align: 'center',
               width: '10%',
@@ -333,7 +329,7 @@ function AllTaskTable({
             }}>Xóa</MenuItem>
           </Menu>
         </React.Fragment>
-      )}
+      ) : <ErrorBox />}
     </Container>
   )
 }

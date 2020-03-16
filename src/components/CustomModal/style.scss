@@ -114,10 +114,25 @@
   }
 };
 
-.comp_CustomModal___dialog {
+@mixin comp_CustomModal___dialog {
   & > div:nth-child(3) > div {
     overflow: hidden;
-    min-width: 600px;
+    min-width: 50vw;
+  }
+}
+
+.comp_CustomModal___dialog {
+  &-md {
+    @include comp_CustomModal___dialog;
+    & > div:nth-child(3) > div {
+      max-width: 70vw;
+    }
+  }
+  &-lg {
+    @include comp_CustomModal___dialog;
+    & > div:nth-child(3) > div {
+      max-width: 90vw;
+    }
   }
 };
 
@@ -138,7 +153,7 @@
   }
   &-w-lg {
     @include comp_CustomModal___two-columns-container;
-    grid-template-columns: 5fr 12fr;
+    grid-template-columns: 3fr 8fr;
   }
 };
 

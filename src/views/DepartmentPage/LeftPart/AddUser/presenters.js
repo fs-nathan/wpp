@@ -9,7 +9,7 @@ import { StyledList, StyledListItem, Primary, Secondary } from '../../../../comp
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { ListItemAvatar, ListItemText, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
-import { get, find } from 'lodash';
+import { get, find, isNil } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import LoadingOverlay from 'react-loading-overlay';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -74,7 +74,7 @@ const DesiringUserList = ({
 
   return (
     <>
-    {(user !== null && user !== undefined)
+    {!isNil(user)
     ? (<StyledList>
         <StyledListItem 
           key={get(user, 'id')}

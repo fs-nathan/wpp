@@ -57,6 +57,7 @@ function CustomTable() {
 }
 
 function CustomTableWrapper({ options, columns, data }) {
+  console.log('X');
   const [searchPatern, setSearchPatern] = React.useState('');
   const [expand, setExpand] = React.useState(false);
 

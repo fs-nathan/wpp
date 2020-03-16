@@ -10,7 +10,7 @@ import ColorTypo from '../ColorTypo';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
-import LoadingOverlay from 'react-loading-overlay';
+import LoadingOverlay from '../LoadingOverlay';
 import './style.scss';
 
 const StyledScrollbars = ({ className = '', height, ...props }) => 
@@ -34,7 +34,12 @@ const ActionsAcceptButton = ({ className = '' , disabled, ...props }) =>
 
 const ActionsCancleButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___cancle-button ${className}`} {...props} />;
 
-const StyledDialog = ({ className = '', ...props }) => <Dialog className={`comp_CustomModal___dialog ${className}`} {...props} />;
+const StyledDialog = ({ className = '', maxWidth = 'md', ...props }) => 
+  <Dialog className={`${maxWidth === 'lg' 
+    ? 'comp_CustomModal___dialog-lg'
+    : 'comp_CustomModal___dialog-md'} ${className}`} 
+    {...props} 
+  />;
 
 const TwoColumnsContainer = ({ maxWidth, className = '', ...rest }) => 
   <div 
