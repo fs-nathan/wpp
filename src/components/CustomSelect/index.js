@@ -9,6 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PropTypes from 'prop-types';
 
+import './styles.scss';
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -60,8 +62,8 @@ const MenuListWrapper = styled(components.MenuList)`
   max-height: 200px !important;
 `;
 
-const MenuList = ({ children, ...props }  ) => {
-return (
+const MenuList = ({ children, ...props }) => {
+  return (
     <MenuListWrapper {...props}>
       {children}
     </MenuListWrapper>
@@ -108,7 +110,7 @@ function IntegrationReactSelect({ className, options = [], placeholder = '', isM
   };
 
   return (
-    <div className={clsx(classes.root, className)}>
+    <div className={clsx(classes.root, className, 'customSelect')}>
       <NoSsr>
         <Select
           classes={classes}
@@ -133,10 +135,10 @@ function IntegrationReactSelect({ className, options = [], placeholder = '', isM
 }
 
 IntegrationReactSelect.propTypes = {
-  options: PropTypes.array, 
-  placeholder: PropTypes.string, 
-  isMulti: PropTypes.bool, 
-  value: PropTypes.any, 
+  options: PropTypes.array,
+  placeholder: PropTypes.string,
+  isMulti: PropTypes.bool,
+  value: PropTypes.any,
   onChange: PropTypes.func,
 }
 

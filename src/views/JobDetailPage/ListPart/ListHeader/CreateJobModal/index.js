@@ -20,26 +20,27 @@ import { useSelector, useDispatch } from 'react-redux';
 import { convertToRaw } from 'draft-js';
 import get from 'lodash/get';
 
-import CustomSelect from '../../../../../components/CustomSelect';
+import CustomSelect from 'components/CustomSelect';
 import {
   DEFAULT_DATE_TEXT,
   EMPTY_STRING,
   DEFAULT_GROUP_TASK_VALUE
-} from '../../../../../helpers/jobDetail/stringHelper';
+} from 'helpers/jobDetail/stringHelper';
 import {
   convertDate,
   convertDateToJSFormat
-} from '../../../../../helpers/jobDetail/stringHelper';
+} from 'helpers/jobDetail/stringHelper';
 import { taskIdSelector } from '../../../selectors';
-import * as taskDetailAction from '../../../../../actions/taskDetail/taskDetailActions';
+import * as taskDetailAction from 'actions/taskDetail/taskDetailActions';
 import CommonProgressForm from './CommonProgressForm';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
-import TextEditor, { getEditorData } from '../../../../../components/TextEditor';
-import spinnerGif from '../../../../../assets/loading_spinner.gif';
+import TextEditor, { getEditorData } from 'components/TextEditor';
+import spinnerGif from 'assets/loading_spinner.gif';
 import DialogTitle from './DialogTitle';
 
 import './styles.scss';
+import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -182,12 +183,6 @@ const DialogFooter = styled(DialogActions)`
   z-index: 100;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
 `;
-
-let listTimeSelect = [];
-for (let index = 0; index < 24; index++) {
-  listTimeSelect.push(`${index}:00`, `${index}:30`)
-}
-listTimeSelect = listTimeSelect.map(value => ({ value, label: value }))
 
 const DEFAULT_DATA = {
   name: EMPTY_STRING,
@@ -389,9 +384,8 @@ function CreateJobModal(props) {
                     onChange={e => handleChangeData('start_date', convertDate(e))}
                   />
                 ) : (
-                    <CustomSelect
+                    <TimeSelect
                       className="createJob--timeSelect"
-                      options={listTimeSelect}
                       value={data.start_time}
                       onChange={({ value: startTime }) => handleChangeData('start_time', startTime)}
                     />
@@ -422,9 +416,8 @@ function CreateJobModal(props) {
                     onChange={e => handleChangeData('end_date', convertDate(e))}
                   />
                 ) : (
-                    <CustomSelect
+                    <TimeSelect
                       className="createJob--timeSelect"
-                      options={listTimeSelect}
                       value={data.end_time}
                       onChange={({ value: endTime }) => handleChangeData('end_time', endTime)}
                     />

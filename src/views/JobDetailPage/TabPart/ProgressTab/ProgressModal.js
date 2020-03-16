@@ -21,6 +21,9 @@ import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
 import { updateTimeDuration } from '../../../../actions/taskDetail/taskDetailActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../selectors';
+import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import get from 'lodash/get';
+
 const StartEndDay = styled(Typography)`
   display: flex;
   flex-direction: row;
@@ -102,6 +105,7 @@ const DialogActions = withStyles(theme => ({
 const ProgressModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
+  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   // console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState(DEFAULT_START_TIME_TEXT)
   const [endTime, setEndTime] = React.useState(DEFAULT_END_TIME_TEXT)
@@ -125,9 +129,9 @@ const ProgressModal = (props) => {
     const data = {
       task_id: taskId,
       start_date: startDay,
-      start_time: startTime,
       end_date: endDay,
-      end_time: endTime
+      start_time: listTimeSelect[16],
+      end_time: listTimeSelect[34],
     }
     console.log("data", data);
     dispatch(updateTimeDuration(data));
@@ -142,13 +146,10 @@ const ProgressModal = (props) => {
         <StartEndDay component={'span'}>
           <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
           <div>
-            <InputDateTime
-              type={'time'}
-              label="Thời gian"
-              variant="outlined"
+            <TimeSelect
               value={startTime}
               onChange={(e) => handleStartTime(e.target.value)}
-            />
+            ></TimeSelect>
           </div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
@@ -168,12 +169,11 @@ const ProgressModal = (props) => {
         <StartEndDay component={'span'}>
           <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
           <div>
-            <InputDateTime
-              type={'time'}
-              label="Thời gian"
-              variant="outlined"
+            <TimeSelect
               value={endTime}
               onChange={(e) => handleEndTime(e.target.value)}
+            ></TimeSelect>
+            <InputDateTime
             />
           </div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -194,14 +194,14 @@ const ProgressModal = (props) => {
         </StartEndDay>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={props.handleClickClose} color='#222'>
+        <Button autoFocus onClick={props.handleClickClose} style={{ color: '#222222' }} >
           Hủy
         </Button>
         <Button onClick={() => {
-
           setDataTimeDuration()
           props.handleClickClose()
-        }} color="primary">
+        }}
+          style={{ color: groupActiveColor }}>
           Hoàn Thành
               </Button>
       </DialogActions>
