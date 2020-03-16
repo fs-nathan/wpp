@@ -1,36 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
+import clsx from 'clsx';
 import Icon from '@mdi/react';
-import { mdiDotsHorizontal } from '@mdi/js';
+import { mdiDotsHorizontal, mdiStarCircle, mdiStarCircleOutline, mdiClockOutline } from '@mdi/js';
 import {
   Avatar,
   IconButton,
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
 
-const Text = styled(ColorTypo)`
-  font-size: 15px;
-`;
-const Badge = styled(ColorChip)`
-  border-radius: 3px !important;
-`;
-const ButtonIcon = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`;
-const UserAvatar = styled(Avatar)`
-  width: 25px;
-  height: 25px;
-`;
+import './styles.scss';
 
 const CustomListItem = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -45,36 +25,28 @@ const CustomListItem = props => {
 
   return (
     <React.Fragment>
-      <li className="styled-list-item">
+      <li className="styled-list-item demandTabItem">
         <div className="styled-title-box-dmt">
-          <UserAvatar src={props.item.user_create_avatar} alt="avatar" />
-          <div>
-            <Text variant="body1" bold>
+          <Icon className={clsx("demandTabItem--icon", props.isDemand ? 'demandTabItem--icon__orange' : 'demandTabItem--icon__blue')}
+            path={props.isDemand ? mdiStarCircleOutline : mdiStarCircle}
+            size={2}
+          />
+          <div className="demandTabItem--items">
+            <div className="demandTabItem--title">{props.item.content}</div>
+            <div className="demandTabItem--creator">
+              <Avatar className="demandTabItem--avatar" src={props.item.user_create_avatar} alt="avatar" />
               {props.item.user_create_name}
-            </Text>
-            <ColorTypo variant="caption">
-              <div className="wrapper-filter-dmt">
-                <Badge
-                  color={props.isDemand ? 'orangelight' : 'bluelight'}
-                  label={props.isDemand ? 'Chỉ đạo' : 'Quyết định'}
-                  size="small"
-                  badge
-                  component="small"
-                ></Badge>
-                <p className="demand-create-time">
-                  lúc {props.item.date_create}
-                </p>
-              </div>
-            </ColorTypo>
+            </div >
+            <div className="demandTabItem--time">
+              <Icon path={mdiClockOutline} size={1} />
+              {props.isDemand ? 'Chỉ đạo' : 'Quyết định'} lúc {props.item.date_create}
+            </div>
           </div>
           <div className="styled-menu-demand">
-            <ButtonIcon size="small" onClick={handleClick}>
+            <IconButton className="demandTabItem--button" size="small" onClick={handleClick}>
               <Icon path={mdiDotsHorizontal} size={1} />
-            </ButtonIcon>
+            </IconButton>
           </div>
-        </div>
-        <div className="styled-content-box-dmt">
-          <Text>{props.item.content}</Text>
         </div>
       </li>
       <Menu

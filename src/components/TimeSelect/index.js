@@ -18,7 +18,6 @@ function TimeSelect({ className, value, onChange }) {
       value={value}
       onChange={onChange}
       variant="outlined"
-      inputProps={{}}
     >
       {
         listTimeSelect.map((time) => (

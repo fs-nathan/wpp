@@ -1,0 +1,47 @@
+.demandTabItem {
+  &--title {
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+  }
+  &--creator {
+    display: flex;
+  }
+  &--time {
+    display: flex;
+  }
+  &--icon {
+    padding: 12px 6px;
+    background-color: #ccc;
+    &__orange {
+      path {
+        fill: orange;
+      }
+    }
+    &__blue {
+      path {
+        fill: blue;
+      }
+    }
+  }
+  &--avatar {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+  }
+  &--button {
+    &:hover {
+      background: none;
+    }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+  &--items {
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.8;
+  }
+}
