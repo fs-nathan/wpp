@@ -11,7 +11,6 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import imgDoc from '../../../../assets/doc.png'
-import avatar from '../../../../assets/avatar.jpg';
 
 const staff = {
     name: 'Trần Văn Nam', datejoined: '18/10/2018', department: 'Phòng tài chính kế toán', role: 'Trưởng phòng', level: 'Đại học', specialized: 'Kinh tế quốc tế',
@@ -146,12 +145,12 @@ const DialogActions = withStyles(theme => ({
     },
 }))(MuiDialogActions);
 
-const MemberModal = (props) => {
+const MemberModal = ({ handleCloseMembers, isOpen, avatar, }) => {
     const classes = useStyles();
 
     return (
-        <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers} open={props.isOpen} >
-            <DialogTitle onClose={props.handleCloseMembers}>
+        <Dialog maxWidth={'lg'} onClose={handleCloseMembers} open={isOpen} >
+            <DialogTitle onClose={handleCloseMembers}>
                 Thông tin chi tiết thành viên
             </DialogTitle>
             <DialogContent dividers>
@@ -252,7 +251,7 @@ const MemberModal = (props) => {
                 </div>
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={props.handleCloseMembers} color="primary">
+                <Button autoFocus onClick={handleCloseMembers} color="primary">
                     Đóng
                 </Button>
             </DialogActions>
