@@ -1129,8 +1129,8 @@ function* getProjectListBasic(action) {
 async function doUpdateNameDescriptionTask(payload) {
   try {
     const config = {
-      url: 'task/update-name-description',
-      method: 'put',
+      url: '/task/update',
+      method: 'post',
       data: payload,
     }
     const result = await apiService(config);
@@ -1143,13 +1143,13 @@ async function doUpdateNameDescriptionTask(payload) {
 
 function* updateNameDescriptionTask(action) {
   try {
-    const res = yield call(doUpdateNameDescriptionTask, action.payload.dataNameDescription)
-    const taskId = action.payload.dataNameDescription.task_id
+    const res = yield call(doUpdateNameDescriptionTask, action.payload)
+    const taskId = action.payload.task_id
     yield put(actions.updateNameDescriptionTaskSuccess(res))
     yield put(actions.getTaskDetailTabPart({ taskId }))
-    const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
-    yield put(actions.updateTimeDurationSuccess(resTime))
-    yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
+    // const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
+    // yield put(actions.updateTimeDurationSuccess(resTime))
+    // yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
   } catch (error) {
     yield put(actions.updateNameDescriptionTaskFail(error))
   }
@@ -1236,7 +1236,8 @@ async function doDeleteTask(task_id) {
   try {
     const config = {
       url: '/task/delete?task_id=' + task_id,
-      method: 'delete'
+      method: 'delete',
+      data: { task_id },
     }
     const result = await apiService(config);
     return result.data;
@@ -1246,8 +1247,9 @@ async function doDeleteTask(task_id) {
 }
 function* deleteTask(action) {
   try {
-    const res = yield call(doDeleteTask, action.payload)
+    const res = yield call(doDeleteTask, action.payload.taskId)
     yield put(actions.deleteTaskSuccess(res))
+    yield put(actions.getListTaskDetail({ project_id: action.payload.projectId }))
   } catch (error) {
     yield put(actions.deleteTaskFail(error))
   }

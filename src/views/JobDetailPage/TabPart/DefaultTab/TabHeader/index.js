@@ -32,7 +32,7 @@ const StyledIconButton = styled(IconButton)`
 function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const isPinned = useSelector(state => get(state,'taskDetail.detailTask.taskDetails.is_ghim'));
+  const isPinned = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.is_ghim'));
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -71,7 +71,7 @@ function TabHeader(props) {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    dispatch(deleteTask(taskId));
+    dispatch(deleteTask({ taskId, projectId }));
   };
 
   function onClickPin() {
@@ -151,7 +151,7 @@ function TabHeader(props) {
               }}
             >
               Hủy tạm dừng
-          </MenuItem>
+            </MenuItem>
           )}
 
         <MenuItem

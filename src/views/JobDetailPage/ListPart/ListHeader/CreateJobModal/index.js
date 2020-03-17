@@ -31,7 +31,10 @@ import {
   convertDateToJSFormat
 } from 'helpers/jobDetail/stringHelper';
 import { taskIdSelector } from '../../../selectors';
-import * as taskDetailAction from 'actions/taskDetail/taskDetailActions';
+import {
+  createTask,
+  updateNameDescriptionTask
+} from 'actions/taskDetail/taskDetailActions';
 import CommonProgressForm from './CommonProgressForm';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
@@ -140,7 +143,7 @@ let assignList = [
   { id: 2, value: 'Giao việc cho' }
 ];
 
-const DEFAULT_ASSIGN = assignList[0].value;
+const DEFAULT_ASSIGN = assignList[0];
 const DEFAULT_ASSIGN_ID = assignList[0].id;
 
 // Define variable using in form
@@ -206,9 +209,6 @@ function CreateJobModal(props) {
   const taskId = useSelector(taskIdSelector);
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
 
-  const updateNameDescriptionTask = data => dispatch(taskDetailAction.updateNameDescriptionTask(data));
-  const createJobByProjectId = data => dispatch(taskDetailAction.createTask(data));
-
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
   const [listGroupTask, setListGroupTask] = React.useState([]);
@@ -219,16 +219,17 @@ function CreateJobModal(props) {
     const dataNameDescription = {
       task_id: taskId,
       name: data.name,
-      description: data.description
-    };
-    const dataTimeDuration = {
-      task_id: taskId,
+      description: JSON.stringify(convertToRaw(data.description.getCurrentContent())),
       start_time: data.start_time,
       start_date: data.start_date,
       end_time: data.end_time,
-      end_date: data.end_date
-    };
-    updateNameDescriptionTask({ dataNameDescription, dataTimeDuration });
+      end_date: data.end_date,
+      priority: data.priority,
+      project_id: projectId,
+      group_task: data.group_task,
+      type_assign: data.type_assign.id,
+    }
+    dispatch(updateNameDescriptionTask(dataNameDescription));
     props.setOpen(false);
   };
 
@@ -262,13 +263,13 @@ function CreateJobModal(props) {
       else tempData.end_date = convertDateToJSFormat(tempData.end_date);
       if (!tempData.end_time) tempData.end_time = '';
       if (!tempData.group_task) tempData.group_task = '';
-      // if (!tempData.type_assign) tempData.type_assign = ''
+      tempData.type_assign = assignList.find(ass => ass.id === props.data.assign_code);
       let priority = priorityList.find(
         item => item.id === tempData.priority_code
       );
       tempData.priorityLabel = priority ? priority.value : DEFAULT_PRIORITY;
       let assign = assignList.find(item => item.id === tempData.type_assign);
-      tempData.assignLabel = assign ? assign.value : DEFAULT_ASSIGN;
+      tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
       setDataMember(tempData);
     }
   }, [props.data]);
@@ -292,7 +293,7 @@ function CreateJobModal(props) {
     group_task: data.group_task,
     name: data.name,
     description: data.description,
-    type_assign: data.type_assign,
+    type_assign: data.type_assign.id,
     priority: data.priority,
     start_date: data.start_date,
     start_time: data.start_time,
@@ -311,7 +312,7 @@ function CreateJobModal(props) {
       data.date_status = type;
       data.description = JSON.stringify(convertToRaw(data.description.getCurrentContent()));
       // Call api
-      createJobByProjectId({ data, projectId: projectId });
+      dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data
       setDataMember(DEFAULT_DATA);
       // Close modal
@@ -449,9 +450,9 @@ function CreateJobModal(props) {
             <TypoText component={'div'}> Hình thức giao việc </TypoText>
             <CommonControlForm
               labels={assignList}
-              assign={data.assignValue}
+              assign={data.type_assign}
               handleChangeAssign={assignItem =>
-                handleChangeData('type_assign', assignItem.id)
+                handleChangeData('type_assign', assignItem)
               }
             />
           </Typography>

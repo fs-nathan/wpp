@@ -6,33 +6,35 @@ import {
   FormControl,
 } from '@material-ui/core';
 
-function CommonControlForm(props) {
-  const [value, setValue] = React.useState(props.assign);
-  const handleChangeFormAssign = itemValue => {
+function CommonControlForm({
+  labels = [],
+  assign,
+  handleChangeAssign,
+}) {
+  const handleChangeFormAssign = event => {
+    const itemValue = event.target.value;
     // console.log('itemValue::::', itemValue);
-    setValue(itemValue);
-    let clickedItem = props.labels.find(item => item.value === itemValue);
-    props.handleChangeAssign(clickedItem);
+    let clickedItem = labels.find(item => item.value === itemValue);
+    handleChangeAssign(clickedItem);
   };
   return (
     <FormControl component="fieldset">
       <RadioGroup
         aria-label="position"
         name="position"
-        value={value}
-        onChange={event => handleChangeFormAssign(event.target.value)}
+        value={assign.value}
+        onChange={handleChangeFormAssign}
         row
       >
-        {props.labels &&
-          props.labels.map((item, key) => (
-            <FormControlLabel
-              key={key}
-              value={item.value}
-              control={<Radio color="primary" />}
-              label={item.value}
-              labelPlacement="end"
-            />
-          ))}
+        {labels.map((item, key) => (
+          <FormControlLabel
+            key={key}
+            value={item.value}
+            control={<Radio color="primary" />}
+            label={item.value}
+            labelPlacement="end"
+          />
+        ))}
       </RadioGroup>
     </FormControl>
   );

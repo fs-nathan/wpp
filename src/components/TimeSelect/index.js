@@ -7,7 +7,10 @@ import './styles.scss';
 
 const listTimeSelect = [];
 for (let index = 0; index < 24; index++) {
-  listTimeSelect.push(`${index}:00`, `${index}:30`)
+  if (index < 10)
+    listTimeSelect.push(`0${index}:00`, `0${index}:30`)
+  else
+    listTimeSelect.push(`${index}:00`, `${index}:30`)
 }
 
 function TimeSelect({ className, value, onChange }) {
@@ -21,7 +24,7 @@ function TimeSelect({ className, value, onChange }) {
     >
       {
         listTimeSelect.map((time) => (
-          <MenuItem value={time}>{time}</MenuItem>
+          <MenuItem key={time} value={time}>{time}</MenuItem>
         ))
       }
     </Select>
