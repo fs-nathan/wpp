@@ -328,24 +328,11 @@ function* getOffer(action) {
   }
 }
 
-async function doCreateOffer(payload) {
-  try {
-    const config = {
-      url: '/task/create-offer',
-      method: 'post',
-      data: payload
-    }
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
 function* createOffer(action) {
   try {
-    const res = yield call(doCreateOffer, action.payload.data)
-    yield put(actions.createOfferSuccess(res))
+    const url = `/task/create-offer?task_id=${action.payload.taskId}`;
+    const res = yield call(apiService.post, url, action.payload.data)
+    yield put(actions.createOfferSuccess(res.data))
     yield put(actions.getOffer({ taskId: action.payload.taskId }))
   } catch (error) {
     yield put(actions.createOfferFail(error))
@@ -1038,14 +1025,22 @@ async function doGetListGroupTask({ project_id }) {
     throw error;
   }
 }
+
 function* getListGroupTask(action) {
-
-
   try {
     const res = yield call(doGetListGroupTask, action.payload)
     yield put(actions.getListGroupTaskSuccess(res))
   } catch (error) {
     yield put(actions.getListGroupTaskFail(error))
+  }
+}
+
+function* getListOffer(action) {
+  try {
+    const res = yield call(apiService.get, '/offers/list-group-offer')
+    yield put(actions.getListOfferSuccess(res.data))
+  } catch (error) {
+    yield put(actions.getListOfferFail(error))
   }
 }
 // Get project group - listpart
@@ -1294,7 +1289,7 @@ export {
   uploadDocumentToOffer,
   deleteDocumentToOffer,
   handleOffer,
-
+  getListOffer,
   // Remind::
   getRemind,
   postRemindWithTimeDetail,

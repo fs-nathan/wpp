@@ -23,9 +23,10 @@ const OfferModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const members = useSelector(state => state.taskDetail.taskMember.member);
-  const listGroupOffer = useSelector(state => state.taskDetail.listGroupOffer.offers);
-
-  const [tempSelectedItem, setTempSelectedItem] = React.useState(DEFAULT_OFFER_ITEM)
+  const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
+  const listGroupOffer = offers.map(off => ({ value: off.id, label: off.name }))
+  const defaultOffer = { ...DEFAULT_OFFER_ITEM, offer_group_id: listGroupOffer[0], priority: priorityList[0] }
+  const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
   const [handlers, setHandlers] = React.useState([])
   const [monitors, setMonitors] = React.useState([])
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
@@ -81,11 +82,16 @@ const OfferModal = (props) => {
     // add content and task id to form data
     dataCreateOfferFormData.append('content', tempSelectedItem.content)
     dataCreateOfferFormData.append('task_id', taskId)
-    // add each user to formdata
-    for (let i = 0; i < tempSelectedItem.user_hander.length; i++) {
-      dataCreateOfferFormData.append("user_hander[" + i + "]", tempSelectedItem.user_hander[i])
+    dataCreateOfferFormData.append('offer_group_id', tempSelectedItem.offer_group_id.value)
+    dataCreateOfferFormData.append('priority', tempSelectedItem.priority.id)
+    // add each user to form data
+    for (let i = 0; i < handlers.length; i++) {
+      dataCreateOfferFormData.append("user_hander[" + i + "]", members[handlers[i]].id)
     }
-    // add each file to formdata  
+    for (let i = 0; i < monitors.length; i++) {
+      dataCreateOfferFormData.append("user_monitor[" + i + "]", members[monitors[i]].id)
+    }
+    // add each file to form data  
     for (let i = 0; i < tempSelectedItem.files.length; i++) {
       dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
     }
@@ -161,7 +167,7 @@ const OfferModal = (props) => {
             members={members}
           />
         </div>
-        <Typography className="offerModal--title"  >Giám sát ({monitors.length})</Typography>
+        <Typography className="offerModal--title">Giám sát ({monitors.length})</Typography>
         <div>
           {monitors.map((index) =>
             <Chip
@@ -185,33 +191,32 @@ const OfferModal = (props) => {
         <Typography className="offerModal--title" >Chọn nhóm đề xuất</Typography>
         <CustomSelect
           options={listGroupOffer}
-          value={listGroupOffer[0]}
-          onChange={({ value: groupOfferId }) => setParams('offer_group_id', groupOfferId)}
+          value={tempSelectedItem.offer_group_id}
+          onChange={(groupOffer) => setParams('offer_group_id', groupOffer)}
         />
         <Typography className="offerModal--title" >Chọn mức độ</Typography>
         <CommonPriorityForm
           labels={priorityList}
-          priority={tempSelectedItem.priority.value}
+          priority={tempSelectedItem.priority.id}
           handleChangeLabel={priorityItem =>
-            setParams('priority', priorityItem.id)
+            setParams('priority', priorityItem)
           }
         />
+        <Typography className="offerModal--title" >Nội dung phê duyệt</Typography>
         <TextField
           className="offerModal--content"
-          label="Nội dung phê duyệt"
           fullWidth
           multiline
           rows="7"
           margin="normal"
           placeholder="Nhập nội dung"
           variant="outlined"
-          style={{ marginTop: 20 }}
           value={tempSelectedItem ? tempSelectedItem.content : ""}
           onChange={e => setParams("content", e.target.value)}
         />
         <input
           accept="image/*"
-          className={'classes.input'}
+          className={'offerModal--input__hidden'}
           id="outlined-button-file"
           multiple
           type="file"

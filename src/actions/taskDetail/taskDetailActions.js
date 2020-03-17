@@ -644,6 +644,22 @@ export const getListGroupTaskFail = (error) => ({
     error: error,
 });
 
+// GET LIST GROUP OFFER
+export const getListOffer = (payload) => ({
+    type: types.GET_LIST_OFFER_REQUEST,
+    payload
+});
+
+export const getListOfferSuccess = (payload) => ({
+    type: types.GET_LIST_OFFER_SUCCESS,
+    payload
+});
+
+export const getListOfferFail = (error) => ({
+    type: types.GET_LIST_OFFER_FAIL,
+    error: error,
+});
+
 // Create Task
 export const createTask = (payload) => ({
     type: types.POST_TASK_REQUEST,

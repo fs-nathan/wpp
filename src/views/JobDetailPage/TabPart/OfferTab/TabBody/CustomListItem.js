@@ -35,8 +35,8 @@ const CustomListItem = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
     content, dataHander, date_create,
-    user_create_avatar, user_create_name, user_can_handers
-  } = offer
+    user_create_avatar, user_create_name, user_can_handers = []
+  } = offer || {}
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);

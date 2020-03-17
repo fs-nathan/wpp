@@ -99,6 +99,7 @@ import commonTaskDetail from './taskDetail/common';
 import location from './taskDetail/location'
 import detailTask from './taskDetail/taskDetail';
 import taskMember from './taskDetail/member';
+import listGroupOffer from './taskDetail/listGroupOffer';
 import trackingTime from './taskDetail/time';
 import listDetailTask from './taskDetail/listTaskDetail'
 import listGroupTask from './taskDetail/listGroupTask'
@@ -122,6 +123,7 @@ const rootReducer = combineReducers({
     trackingTime,
     listDetailTask,
     listGroupTask,
+    listGroupOffer,
   }),
   room: combineReducers({
     listRoom,

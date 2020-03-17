@@ -9,6 +9,9 @@
       z-index: 0;
     }
   }
+  &--input__hidden {
+    visibility: hidden;
+  }
 }
 
 .offerFile {
