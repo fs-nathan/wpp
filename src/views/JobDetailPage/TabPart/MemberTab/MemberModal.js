@@ -156,7 +156,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
     phone,
     address,
     room_name,
-    department,
+    grade,
     level,
     specialized,
     description,
@@ -178,7 +178,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
               </div>
             </div>
             <TextInput
-              value={department}
+              value={room_name}
               InputProps={{
                 startAdornment: <AdornmentInput position="start" >Phòng/ban:</AdornmentInput>,
               }}
@@ -186,7 +186,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
               disabled
             />
             <TextInput
-              value={room_name}
+              value={grade}
               InputProps={{
                 startAdornment: <AdornmentInput position="start" >Chức danh:</AdornmentInput>,
               }}
@@ -241,7 +241,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
               </MemberDetail>
               <MemberDetail component='div'>
                 <TitleText >Giới tính:</TitleText>
-                <ContentDescription>{gender}</ContentDescription>
+                <ContentDescription>{gender_name}</ContentDescription>
               </MemberDetail>
               <MemberDetail component='div'>
                 <TitleText >Email:</TitleText>

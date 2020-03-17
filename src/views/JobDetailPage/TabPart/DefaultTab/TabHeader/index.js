@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { selectedTaskSelector, taskIdSelector } from '../../../selectors';
 import { pinTaskAction, unPinTaskAction, deleteTask } from '../../../../../actions/taskDetail/taskDetailActions';
+import get from 'lodash/get'
 
 const AvatarHeader = styled(Avatar)`
   width: 60px;
@@ -31,7 +32,7 @@ const StyledIconButton = styled(IconButton)`
 function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const isPinned = useSelector(selectedTaskSelector);
+  const isPinned = useSelector(state => get(state,'taskDetail.detailTask.taskDetails.is_ghim'));
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
