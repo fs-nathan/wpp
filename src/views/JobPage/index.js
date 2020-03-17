@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { Route } from "react-router-dom";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
@@ -8,10 +8,17 @@ import routes from "./routes";
 
 const { Provider } = JobPageContext;
 function JobPage() {
+  const [quickTask, setQuickTask] = useState();
   return (
     <TwoColumnsLayout
       leftRenders={[() => <TabList />]}
-      rightRender={({ expand, handleExpand, handleSubSlide }) => (
+      rightRender={({
+        expand,
+        handleExpand,
+        quickTask,
+        setQuickTask,
+        handleSubSlide
+      }) => (
         <Provider value={{ expand, handleExpand, handleSubSlide }}>
           <Suspense fallback={<LoadingBox />}>
             {routes.map((route, index) => {

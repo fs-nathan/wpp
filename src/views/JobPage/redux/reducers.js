@@ -306,10 +306,13 @@ export const initialState = {
 };
 function taskReducer(state = initialState, action) {
   switch (action.type) {
-    default:
+    case TASK_OVERVIEW_STATISTIC:
+    case TASK_OVERVIEW_RECENT:
       return merge({}, state, {
         [action.type]: { ...action.payload, updated: Date.now() }
       });
+    default:
+      return state;
   }
 }
 

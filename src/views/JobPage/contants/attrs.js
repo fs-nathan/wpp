@@ -84,7 +84,7 @@ export const labels = {
   task_assign_to_me: "Được giao việc",
   task_me_offer: "Tự đề xuất công việc",
   roles: "Vai trò",
-  overview: "Tồng quan",
+  overview: "Tổng quan",
   due: "Đến hạn",
   mission: "Nhiệm vụ",
   mission_giving: "Giao viêc cho nhân viên",
