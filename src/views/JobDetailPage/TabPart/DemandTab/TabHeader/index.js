@@ -12,7 +12,7 @@ function TabHeader(props) {
   useEffect(() => {
     dispatch(getCommand({ task_id: taskId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [taskId])
   const [open, setOpen] = React.useState(false)
   // console.log('props nè', props )
   const handleClickOpen = () => {
@@ -34,6 +34,7 @@ function TabHeader(props) {
       <DemandModal
         isOpen={open}
         handleClose={handleClose}
+        taskId={taskId}
         handleOpen={handleClickOpen}
         confirmCreateCommand={confirmCreateCommand}
         item={{ content: "", type: -1 }}

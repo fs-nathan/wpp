@@ -254,7 +254,7 @@ function CreateJobModal(props) {
     if (props.data) {
       let tempData = props.data;
       if (!tempData.name) tempData.name = '';
-      if (!tempData.description) tempData.description = '';
+      tempData.description = getEditorData(tempData.description);
       if (!tempData.start_date) tempData.start_date = '';
       else tempData.start_date = convertDateToJSFormat(tempData.start_date);
       if (!tempData.start_time) tempData.start_time = '';
@@ -385,7 +385,7 @@ function CreateJobModal(props) {
                     <TimeSelect
                       className="createJob--timeSelect"
                       value={data.start_time}
-                      onChange={({ target}) => handleChangeData('start_time', target.value)}
+                      onChange={({ target }) => handleChangeData('start_time', target.value)}
                     />
                   )}
                 {type !== 1 && (

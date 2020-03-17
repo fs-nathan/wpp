@@ -657,7 +657,8 @@ async function doUpdateCommand(payload) {
 
 function* updateCommand(action) {
   const data = {
-    command_id: action.payload.command_id,
+    task_id: action.payload.taskId,
+    command_id: action.payload.id,
     content: action.payload.content,
     type: action.payload.type
   }
@@ -686,7 +687,7 @@ async function doDeleteCommand(payload) {
 
 function* deleteCommand(action) {
   try {
-    const res = yield call(doDeleteCommand, { command_id: action.payload.command_id })
+    const res = yield call(doDeleteCommand, { task_id: action.payload.task_id, command_id: action.payload.command_id })
     yield put(actions.deleteCommandSuccess(res))
     yield put(actions.getCommand({ task_id: action.payload.task_id }))
   } catch (error) {

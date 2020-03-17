@@ -14,7 +14,9 @@
     color: blue;
   }
   &__expanded {
-    transform: rotate(90deg);
+    svg {
+      transform: translateY(6px) rotate(-90deg);
+    }
   }
 }
 

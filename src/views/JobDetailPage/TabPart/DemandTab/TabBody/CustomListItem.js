@@ -1,14 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
 import Icon from '@mdi/react';
-import { mdiDotsHorizontal, mdiStarCircle, mdiStarCircleOutline, mdiClockOutline } from '@mdi/js';
+import { 
+  mdiDotsHorizontal, mdiStarCircle, mdiStarCircleOutline, mdiClockOutline 
+} from '@mdi/js';
 import {
   Avatar,
   IconButton,
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import ColorTypo from '../../../../../components/ColorTypo';
 
 import './styles.scss';
 

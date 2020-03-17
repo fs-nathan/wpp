@@ -2,6 +2,8 @@
   &--title {
     text-transform: uppercase;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 2em;
   }
   &--creator {
     display: flex;
@@ -12,6 +14,7 @@
   &--icon {
     padding: 12px 6px;
     background-color: #ccc;
+    min-width: 3em;
     &__orange {
       path {
         fill: orange;

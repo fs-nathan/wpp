@@ -43,7 +43,8 @@ const ListDemand = props => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    dispatch(deleteCommand({ command_id:selectedItem.id, task_id:taskId }))
+    console.log( 'tempSelectedItem', taskId)
+    dispatch(deleteCommand({ command_id: selectedItem.id, task_id: taskId }))
   };
   const confirmUpdateCommand = ({ id, content, type }) => {
     dispatch(
