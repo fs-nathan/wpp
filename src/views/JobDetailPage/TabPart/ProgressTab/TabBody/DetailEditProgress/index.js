@@ -29,7 +29,7 @@ function DetailEditProgress({ trackings }) {
             path={mdiMenuDown}
             color="rgba(0, 0, 0, 0.54)"
             size={1}
-            className={clsx({ 'detailEditProgress__expanded': showDetail })}
+            className={clsx('detailEditProgress--icon', { 'detailEditProgress__expanded': showDetail })}
           />
         </div>
       </div>

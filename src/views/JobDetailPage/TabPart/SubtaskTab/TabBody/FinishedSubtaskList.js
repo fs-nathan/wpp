@@ -1,18 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Avatar,  Menu, MenuItem} from '@material-ui/core';
+import { Avatar, Menu, MenuItem } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import ColorChip from '../../../../../components/ColorChip';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import { ButtonIcon,ItemList } from './AllSubtaskListItem';
-
-
-const Badge = styled(ColorChip)`
-  border-radius: 3px !important;
-`
+import { ButtonIcon, ItemList } from './AllSubtaskListItem';
+import { deleteSubTask } from 'actions/taskDetail/taskDetailActions';
 
 const CustomMenu = styled(Menu)`
   & > .MuiPaper-root {
@@ -52,6 +47,8 @@ const FinishedSubtaskListItemTextSecondary = styled.span`
 `;
 
 const FinishedSubtaskList = (props) => {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const completeSubTasks = useSelector(state => state.taskDetail.subTask.completeSubTasks);
   // bien modal delete
   const [isOpenDel, setOpenDel] = React.useState(false);
@@ -70,33 +67,33 @@ const FinishedSubtaskList = (props) => {
     setAnchorEl(null);
   }
 
-
   const handleOpenModalDelete = () => {
     console.log(selectedId)
     setOpenDel(true)
     setAnchorEl(null)
   };
+
   const handleCloseModalDelete = () => {
     setOpenDel(false);
   };
+
   const confirmDelete = () => {
-    // deleteSubTaskByTaskId(task)
+    dispatch(deleteSubTask({ taskId, sub_task_id: selectedId }))
     // console.log('taskId::::', props);
   }
 
   return (
     <ul style={{ padding: 0 }}>
-
       {completeSubTasks.map((item, index) => {
         return (
           <StyledListItemComplete key={index}>
-            <Avatar style={{ marginRight: 13 }} src={item.user_complete_avatar} alt='avatar' />
+            <Avatar style={{ marginRight: 13 }} src={item.user_create_avatar} alt='avatar' />
             <ItemList
               primary={`${item.name}`}
               secondary={
                 <FinishedSubtaskListItemTextSecondary>
-                  <Badge component='small' color='bluelight' badge size='small' label={'Hoàn thành'} />
-                  lúc {item.time_complete}
+                  <Avatar src={item.user_complete_avatar} style={{ width: 12, height: 12 }} />
+                  Hoàn thành lúc {item.time_complete}
                 </FinishedSubtaskListItemTextSecondary>
               }
             />
@@ -104,9 +101,7 @@ const FinishedSubtaskList = (props) => {
               <ButtonIcon onClick={e => handleClick(e, item.id)} aria-haspopup="true">
                 <Icon path={mdiDotsVertical} size={1} />
               </ButtonIcon>
-
             </StyledMenuComplete>
-
           </StyledListItemComplete>
         );
       })}

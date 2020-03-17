@@ -50,6 +50,7 @@ export const ItemList = styled(ListItemText)`
     width: 300px;
     display: flex;
     flex-wrap: nowrap;
+    flex-direction: column;
   }
 `
 
@@ -90,7 +91,7 @@ function AllSubtaskListItem(props) {
     dispatch(
       deleteSubTask({
         sub_task_id: props.task.id,
-        task_id: taskId
+        taskId
       })
     )
   }
@@ -135,8 +136,9 @@ function AllSubtaskListItem(props) {
                 </abbr>
               </ButtonIcon>
           }
-          <ItemList>{props.task.name}
-            <div className="subTaskItem--createdAt">Tạo lúc {props.task.name}</div>
+          <ItemList>
+            <div>{props.task.name}</div>
+            <div className="subTaskItem--createdAt">Tạo lúc {props.task.created_at}</div>
           </ItemList>
           <StyledMenu>
             <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">

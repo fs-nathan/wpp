@@ -94,25 +94,26 @@ async function doUpdateSubTask(payload) {
 
 function* updateSubTask(action) {
   const data = {
+    task_id: action.options.taskId,
     sub_task_id: action.options.sub_task_id,
     name: action.options.name
   }
   try {
     const res = yield call(doUpdateSubTask, data)
     yield put(actions.updateSubTaskSuccess(res))
-    yield put(actions.getSubTask(action.options.taskId))
+    yield put(actions.getSubTask(action.options))
   } catch (error) {
     yield put(actions.updateSubTaskFail(error))
   }
 }
 // ==== delete
-async function doDeleteSubTask({ sub_task_id }) {
+async function doDeleteSubTask({ sub_task_id, taskId }) {
 
   try {
     const config = {
       url: 'task/delete-subtask?sub_task_id=' + sub_task_id,
       method: 'post',
-      data: { sub_task_id }
+      data: { sub_task_id, task_id: taskId }
     }
     const result = await apiService(config);
     return result.data;
@@ -122,11 +123,10 @@ async function doDeleteSubTask({ sub_task_id }) {
 }
 
 function* deleteSubTask(action) {
-
   try {
-    const res = yield call(doDeleteSubTask, action.options.sub_task_id)
+    const res = yield call(doDeleteSubTask, action.options)
     yield put(actions.deleteSubTaskSuccess(res))
-    yield put(actions.getSubTask(action.options.taskId))
+    yield put(actions.getSubTask(action.options))
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error))
   }

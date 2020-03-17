@@ -2,7 +2,7 @@
   &--header {
     display: flex;
   }
-  svg {
+  &--icon {
     padding: 0 4px;
     transform: translateY(6px);
   }
@@ -14,15 +14,17 @@
     color: blue;
   }
   &__expanded {
-    svg {
-      transform: translateY(6px) rotate(-90deg);
-    }
+    transform: translateY(6px) rotate(-90deg);
   }
 }
 
 .editProgressItem {
   display: flex;
   margin: 20px 10px;
+  svg {
+    padding: 0 4px;
+    transform: translateY(6px);
+  }
   &--avatar {
     margin: 12px;
   }
