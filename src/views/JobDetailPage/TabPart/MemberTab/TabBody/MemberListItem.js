@@ -7,6 +7,8 @@ import ColorTypo from '../../../../../components/ColorTypo'
 import ColorChip from '../../../../../components/ColorChip';
 import colorPal from '../../../../../helpers/colorPalette';
 import MemberModal from '../MemberModal'
+import { useDispatch } from 'react-redux';
+import { detailUser } from 'actions/user/detailUser';
 
 
 const BadgeItem = styled(ColorChip)`
@@ -72,7 +74,8 @@ const getBadgeProjectRole = (projectRole) => {
   )
 }
 
-const MemberListItem = ({ name, avatar, role, projectRole, authorityList = [] }) => {
+const MemberListItem = ({ id, name, avatar, role, projectRole, authorityList = [] }) => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -91,6 +94,11 @@ const MemberListItem = ({ name, avatar, role, projectRole, authorityList = [] })
   const handleClickOpen = () => {
     setOpen(true);
     setAnchorEl(null);
+  };
+
+  const handleClickDetail = () => {
+    handleClickOpen();
+    dispatch(detailUser({ userId: id }))
   };
 
   return (
@@ -149,7 +157,7 @@ const MemberListItem = ({ name, avatar, role, projectRole, authorityList = [] })
           horizontal: 'right',
         }}
       >
-        <MenuItemCheck onClick={() => { handleClickOpen() }}>Chi tiết</MenuItemCheck>
+        <MenuItemCheck onClick={handleClickDetail}>Chi tiết</MenuItemCheck>
         <MenuItemCheck onClick={handleClose}>Xóa</MenuItemCheck>
       </Menu>
     </React.Fragment>
