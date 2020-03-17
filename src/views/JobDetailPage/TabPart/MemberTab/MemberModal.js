@@ -143,7 +143,7 @@ const DialogActions = withStyles(theme => ({
 
 const MemberModal = ({ handleCloseMembers, isOpen, }) => {
   const classes = useStyles();
-  const userDetail = useSelector(state => get(state, 'user.detailUser.data.user', {}));
+  const userDetail = useSelector(state => get(state, 'user.detailUser.data.user'));
   const {
     documents = [],
     date_join,
@@ -160,7 +160,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
     level,
     specialized,
     description,
-  } = userDetail;
+  } = userDetail || {};
 
   return (
     <Dialog maxWidth={'lg'} onClose={handleCloseMembers} open={isOpen} >

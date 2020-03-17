@@ -1,0 +1,24 @@
+.offerModal {
+  &--title {
+    font-size: 15px;
+    margin: 15px 0;
+  }
+  &--content {
+    label {
+      font-size: 14px;
+      z-index: 0;
+    }
+  }
+}
+
+.offerFile {
+  &--name {
+  }
+  &--size {
+    margin-right: 20px;
+    width: 67px;
+  }
+  &--icon {
+    cursor: pointer;
+  }
+}

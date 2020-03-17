@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '@mdi/react';
-import { mdiDotsHorizontal } from '@mdi/js';
+import { mdiDotsHorizontal, mdiCancel, mdiCheck } from '@mdi/js';
 import {
   Avatar, IconButton, Menu, MenuItem,
 } from '@material-ui/core';
