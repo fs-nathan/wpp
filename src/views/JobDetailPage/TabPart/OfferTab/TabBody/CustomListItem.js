@@ -34,8 +34,10 @@ const CustomListItem = (props) => {
   const offer = useSelector(state => state.taskDetail.taskOffer.offer);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
-    content, dataHander, date_create,
-    user_create_avatar, user_create_name, user_can_handers = []
+    content, dataHander, date_create, priority,
+    user_create_avatar, user_create_name,status,
+    agree,
+    disagree,
   } = offer || {}
 
   const handleClick = (evt) => {
@@ -48,31 +50,20 @@ const CustomListItem = (props) => {
 
   return (
     <React.Fragment>
-      <li className="styled-list-item-ot">
-        <div className="wrapper-list-item">
-          <div className="styled-title-box-ot">
-            <UserHanderAvatar src={user_create_avatar} alt='avatar' />
-            <div>
-              <StyleContent variant='body1' bold>{user_create_name}</StyleContent>
-              <ColorTypo variant='caption'>
-                <Badge component='small' size='small' badge color='orangelight' label={'Đề xuất'} />
-                &nbsp;
-                với
-                &nbsp;
-            <ColorTypo color='orange' variant='caption'>{user_can_handers.join(", ")}</ColorTypo> lúc {date_create}
-              </ColorTypo>
-            </div>
-            <div className="styled-menu-offer">
-              <ButtonIcon size='small' onClick={handleClick} >
-                <Icon path={mdiDotsHorizontal} size={1} />
-              </ButtonIcon>
-            </div>
-          </div>
-          <div className="styled-content-box-ot">
-            <StyleContent>{content}</StyleContent>
-          </div>
+      <li className="offerTabItem">
+        <ColorTypo className="offerTabItem--content">{content}</ColorTypo>
+        <ColorTypo color='orange' variant='caption'>
+          <Avatar className="offerTabItem--avatar" src={user_create_avatar} alt='avatar' />
+          lúc {date_create}
+          {priority}
+        </ColorTypo>
+        <div className="offerTabItem--status">
+            {status}
+            {agree} dong y - {disagree} tu choi
         </div>
-        <ApprovedBox {...props} approved={dataHander} handleClickOpen={() => props.handleClickOpen()} />
+        <ButtonIcon size='small' onClick={handleClick} >
+          <Icon path={mdiDotsHorizontal} size={1} />
+        </ButtonIcon>
       </li>
       <Menu
         anchorEl={anchorEl}

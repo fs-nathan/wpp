@@ -5,14 +5,15 @@ import {
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ColorTypo from '../../../../../components/ColorTypo';
-import ColorButton from '../../../../../components/ColorButton';
+import ColorTypo from 'components/ColorTypo';
+import ColorButton from 'components/ColorButton';
 import OfferModal from '../OfferModal';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import { DEFAULT_OFFER_ITEM } from '../../../../../helpers/jobDetail/arrayHelper'
-import { deleteOffer, } from '../../../../../actions/taskDetail/taskDetailActions';
+import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper'
+import { deleteOffer, } from 'actions/taskDetail/taskDetailActions';
 import ListOffer from './ListOffer';
+import OfferDetail from './OfferDetail';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 
 const Body = styled(Scrollbars)`
@@ -37,6 +38,7 @@ function TabBody(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [openDetail, setOpenDetail] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [isOffer] = React.useState(true);
   const handleClickOpen = () => {
@@ -63,6 +65,13 @@ function TabBody(props) {
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
+
+  function onClickDetail(item) {
+    return () => {
+      setSelectedItem({ ...item, offer_id: item.id })
+      setOpenDetail(true)
+    }
+  }
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -104,6 +113,7 @@ function TabBody(props) {
                   handleClickEditItem={(data) => handleClickEditItem(data)}
                   {...props}
                   offer={offer}
+                  onClick={onClickDetail}
                 />
               </Collapse>
               <Collapse in={value === 1} mountOnEnter unmountOnExit>
@@ -142,6 +152,12 @@ function TabBody(props) {
           handleCloseModalDelete={handleCloseModalDelete}
           item={selectedItem}
           {...props} />
+        <OfferDetail
+          isOpen={openDetail}
+          handleClickClose={() => setOpenDetail(false)}
+          handleClickOpen={() => setOpenDetail(true)}
+          item={selectedItem}
+        />
       </div>
     </Body>
   )
