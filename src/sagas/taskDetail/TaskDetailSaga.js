@@ -184,7 +184,7 @@ async function doPostRemindWithTimeDetail(payload) {
   const payloadRemind = {
     content: payload.data.content,
     date_remind: payload.data.date_remind + " " + payload.data.time_remind,
-    type_remind: payload.data.type,
+    type_remind: payload.data.type_remind,
     task_id: payload.taskId
   }
 
@@ -298,9 +298,10 @@ async function doDeleteRemind(payload) {
 
 function* deleteRemind(action) {
   try {
-    const res = yield call(doDeleteRemind, { remind_id: action.payload.remind_id })
+    const { remind_id, taskId } = action.payload;
+    const res = yield call(doDeleteRemind, { remind_id, task_id: taskId })
     yield put(actions.deleteRemindSuccess(res))
-    yield put(actions.getRemind({ taskId: action.payload.taskId }))
+    yield put(actions.getRemind({ taskId }))
   } catch (error) {
     yield put(actions.deleteRemindFail(error))
   }

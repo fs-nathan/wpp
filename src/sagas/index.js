@@ -158,8 +158,6 @@ import { SORT_GROUP_TASK } from '../constants/actions/groupTask/sortGroupTask';
 import { sortGroupTask } from './groupTask/sortGroupTask';
 import { GET_ALL_GROUP_TASK } from '../constants/actions/groupTask/getAllGroupTask';
 import { getAllGroupTask } from './groupTask/getAllGroupTask';
-import { SORT_TASK } from '../constants/actions/task/sortTask';
-import { sortTask } from './task/sortTask';
 import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from '../constants/actions/register/inviteOtherPeopleCreateAccount';
 import { inviteOtherPeopleCreateAccount } from './register/inviteOtherPeopleCreateAccount';
 // ==================================
@@ -283,7 +281,6 @@ function* rootSaga() {
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
   yield takeLeading(taskDetailType.DELETE_TASK_REQUEST, taskDetailSaga.deleteTask);
-  yield takeEvery(SORT_TASK, sortTask);
   yield takeEvery(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, inviteOtherPeopleCreateAccount);
 
   // Hoang - end

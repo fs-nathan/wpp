@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -47,7 +48,7 @@ const MemberMenuLists = (props) => {
   }
 
   return (
-    <div className="styled-menu" >
+    <div className={clsx(props.className, "styled-menu")} >
       <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
       </ButtonIcon>
