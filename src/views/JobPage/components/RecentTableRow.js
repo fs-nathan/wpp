@@ -1,5 +1,6 @@
 import { Avatar, TableRow } from "@material-ui/core";
-import { mdiAccount } from "@mdi/js";
+import { mdiAccount, mdiMessageAlert } from "@mdi/js";
+import Icon from "@mdi/react";
 import classnames from "classnames";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +12,7 @@ import { colors } from "../contants/attrs";
 import { taskDetailLink } from "../contants/links";
 import { loginlineFunc } from "../utils";
 import InlineBadge from "./InlineBadge";
-
+import InlineStatusBadge from "./InlineStatusBadge";
 export const RecentTableRow = ({ className, ...props }) => (
   <TableRow className={classnames("table-body-row", className)} {...props} />
 );
@@ -35,11 +36,19 @@ export const DurationCell = ({ ...props }) => (
 export const EndTimeCell = ({ ...props }) => (
   <StyledTableBodyCell align="right" width="10%" {...props} />
 );
+export const HasMessage = styled(({ path = mdiMessageAlert, ...props }) => (
+  <Icon path={path} {...props} />
+))`
+  vertical-align: middle;
+  width: 1.5rem;
+  fill: ${colors.task_expired};
+`;
 export const TaskTitleLink = styled(Link)`
-  color: #000;
-  text-decoration: none;
+  color: ${props => (props.complete ? colors.task_complete : "#000")};
+  text-decoration: ${props => (props.complete ? "line-through" : "none")};
   &:hover {
-    text-decoration: underline;
+    text-decoration: ${props =>
+      props.complete ? "line-through" : "underline"};
   }
 `;
 export const SmallAvatar = styled(Avatar)`
@@ -52,6 +61,7 @@ export default ({
   avatar,
   name,
   complete,
+  haveNewChat,
   status_name,
   status_code,
   number_member,
@@ -70,6 +80,7 @@ export default ({
       </AvatarCell>
       <TitleCell onClick={loginlineFunc}>
         <TaskTitleLink
+          complete={complete === 100}
           to={taskDetailLink
             .replace("{projectId}", project_id)
             .replace("{taskId}", id)}
@@ -77,18 +88,10 @@ export default ({
           {name}
         </TaskTitleLink>{" "}
         {[
-          complete === 100 && (
-            <InlineBadge color={colors.task_complete}>
-              {t("Hoàn thành")}
-            </InlineBadge>
-          ),
-          status_code === 0 && (
-            <InlineBadge color={colors.task_waiting}>{status_name}</InlineBadge>
-          ),
-          status_code === 1 && (
-            <InlineBadge color={colors.task_expired}>
-              quá hạn 10 ngày
-            </InlineBadge>
+          status_name && (
+            <InlineStatusBadge status={status_code}>
+              {status_name}
+            </InlineStatusBadge>
           ),
           <InlineBadge color={colors.task_complete}>{complete}%</InlineBadge>,
           <InlineBadge icon={mdiAccount} color={colors.task_waiting}>
@@ -99,6 +102,7 @@ export default ({
           .map((item, i) => (
             <React.Fragment key={i}>{item} </React.Fragment>
           ))}
+        {haveNewChat && <HasMessage />}
       </TitleCell>
       <DurationCell onClick={loginlineFunc}>
         {duration_value} {t(duration_unit)}

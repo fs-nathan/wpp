@@ -13,8 +13,8 @@ export const createPieChartProps = (strings, data) => {
         }
       },
       legend: {
-        // show: false
-        position: "bottom"
+        show: false
+        // position: "bottom"
       },
       plotOptions: {
         pie: {
@@ -22,12 +22,19 @@ export const createPieChartProps = (strings, data) => {
         }
       },
       labels: strings.map(string => labels[string]),
-      colors: strings.map(string => colors[string])
+      colors: strings.map(string => colors[string]),
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      },
+      floating: true
     },
     series: strings.map(string =>
       Math.max(Number(get(data, statistic[string], 0)), 0)
     ),
-    height: 300
+    height: 250
   };
 };
 
@@ -59,6 +66,10 @@ export const createRadarChartProps = (strings, data) => {
           show: false
         }
       },
+      legend: {
+        show: false
+        // position: "bottom"
+      },
       stroke: {
         width: 1
       },
@@ -72,7 +83,7 @@ export const createRadarChartProps = (strings, data) => {
         categories: ["2011", "2012", "2013", "2014", "2015", "2016"]
       }
     },
-    height: 300
+    height: 250
   };
 };
 export const createColumnChartProps = (
@@ -115,7 +126,8 @@ export const createColumnChartProps = (
         enabled: false
       },
       legend: {
-        // show: false
+        show: false
+        // position: "bottom"
       },
       xaxis: {
         categories: strings.map(string => labels[string]),
@@ -135,6 +147,6 @@ export const createColumnChartProps = (
         enabled: false
       }
     },
-    height: 300
+    height: 250
   };
 };

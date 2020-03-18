@@ -1,9 +1,9 @@
+import { Typography } from "@material-ui/core";
+import { mdiSquare } from "@mdi/js";
+import Icon from "@mdi/react";
+import { get, map, reduce } from "lodash";
 import React from "react";
 import Chart from "react-apexcharts";
-import { reduce, get, map } from "lodash";
-import Icon from "@mdi/react";
-import { mdiSquare } from "@mdi/js";
-import { Typography } from "@material-ui/core";
 import "./style.scss";
 
 export const ChartBox = ({ className = "", ...props }) => (
@@ -27,10 +27,7 @@ export const ChartTitle = ({ className = "", ...props }) => (
   />
 );
 export const ChartPlacedolder = ({ className = "", ...props }) => (
-  <span
-    className={`comp_CustomDonutChart___chart-placeholder ${className}`}
-    {...props}
-  />
+  <span className={`-placeholder ${className}`} {...props} />
 );
 
 export const ChartLegendBox = ({ className = "", ...props }) => (

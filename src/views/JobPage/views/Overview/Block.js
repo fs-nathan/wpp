@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: "start"
   },
   cardContent: {
-    justifyContent: "center",
-    height: "270px",
+    justifyContent: "flex-end",
+    height: "300px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
