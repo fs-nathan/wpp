@@ -61,6 +61,11 @@ const CustomListItem = props => {
         }}
       >
         <MenuItem
+          onClick={props.onClickDetail}
+        >
+          Chi tiết
+        </MenuItem>
+        <MenuItem
           onClick={() => {
             props.handleClickOpen();
             setAnchorEl(null);

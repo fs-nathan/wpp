@@ -12,9 +12,9 @@ import '../JobDetailPage/index.scss';
 
 function JobDetailPage(props) {
   const dispatch = useDispatch();
-  const taskId = useSelector(taskIdSelector);
+  const url = new URL(window.location.href);
+  const taskId = useSelector(taskIdSelector) || url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-
   // console.log('JobDetailPage', { taskId });
   useEffect(() => {
     if (taskId) {

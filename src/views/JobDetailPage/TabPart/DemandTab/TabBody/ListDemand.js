@@ -7,6 +7,7 @@ import DemandModal from '../DemandModal';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import SearchInput from '../../../../../components/SearchInput';
 import CustomListItem from './CustomListItem';
+import DemandDetail from './DemandDetail';
 
 const StyledList = styled.ul`
   margin-top: 20px;
@@ -22,6 +23,7 @@ const ListDemand = props => {
   const taskId = useSelector(taskIdSelector);
   const [open, setOpen] = React.useState(false);
   const [isEditDemand] = React.useState(true);
+  const [openDetail, setOpenDetail] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState({
     content: '',
     type: -1
@@ -43,7 +45,7 @@ const ListDemand = props => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    console.log( 'tempSelectedItem', taskId)
+    // console.log('tempSelectedItem', taskId)
     dispatch(deleteCommand({ command_id: selectedItem.id, task_id: taskId }))
   };
   const confirmUpdateCommand = ({ id, content, type }) => {
@@ -59,6 +61,13 @@ const ListDemand = props => {
   const searchDemandTabPart = e => {
     dispatch(searchDemand(e.target.value))
   };
+
+  function onClickDetail(item) {
+    return () => {
+      setSelectedItem({ ...item, offer_id: item.id })
+      setOpenDetail(true)
+    }
+  }
   return (
     <React.Fragment>
       <SearchInput
@@ -76,6 +85,7 @@ const ListDemand = props => {
               handleClickOpen={() => handleClickEditItem(item)}
               handleOpenModalDelete={() => handleOpenModalDelete(item)}
               item={item}
+              onClickDetail={onClickDetail(item)}
               {...props}
             />
           );
@@ -97,6 +107,11 @@ const ListDemand = props => {
         handleCloseModalDelete={handleCloseModalDelete}
         handleOpenModalDelete={handleOpenModalDelete}
         {...props}
+      />
+      <DemandDetail
+        isOpen={openDetail}
+        handleClickClose={() => setOpenDetail(false)}
+        item={selectedItem}
       />
     </React.Fragment>
   );

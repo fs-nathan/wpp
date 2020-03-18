@@ -48,3 +48,52 @@
     line-height: 1.8;
   }
 }
+
+.demandDetail {
+  &--title {
+    display: flex;
+  }
+  &--closeButton {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    color: grey;
+  }
+  &--user {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+  }
+  &--avatar {
+    margin: 12px auto 20px;
+  }
+  &--iconContainer {
+    text-align: center;
+  }
+  &--icon {
+    padding: 12px 4px;
+    &__orange {
+      path {
+        fill: orange;
+      }
+    }
+    &__blue {
+      path {
+        fill: blue;
+      }
+    }
+  }
+  &--label {
+    font-size: 28px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+  }
+  &--content {
+    text-align: center;
+    min-width: 500px;
+    min-height: 300px;
+    margin-top: 10px;
+  }
+}
