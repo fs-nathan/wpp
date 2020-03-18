@@ -379,6 +379,14 @@ function* rootSaga() {
     taskDetailType.DELETE_REMIND_REQUEST,
     taskDetailSaga.deleteRemind
   );
+  yield takeLeading(
+    taskDetailType.PIN_REMIND_REQUEST,
+    taskDetailSaga.pinRemind
+  );
+  yield takeLeading(
+    taskDetailType.UNPIN_REMIND_REQUEST,
+    taskDetailSaga.unpinRemind
+  );
 
   // Media Image File
   yield takeLeading(

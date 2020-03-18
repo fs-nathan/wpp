@@ -185,7 +185,7 @@ function RemindModal(props) {
   React.useEffect(() => {
     if (props.data) {
       let tempData = { ...props.data }
-      if (!tempData.date_remind) tempData.date_remind = DEFAULT_DATE_TEXT
+      tempData.date_remind = props.data.created_at_original || DEFAULT_DATE_TEXT
       if (!tempData.time_remind) tempData.time_remind = DEFAULT_TIME_TEXT
       if (!tempData.type_remind) tempData.type_remind = REMIND_SCHEDULE_TYPE
       if (!tempData.duration) tempData.duration = []

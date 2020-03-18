@@ -3,7 +3,7 @@ import { Avatar, } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import MemberMenuLists from './MemberMenuLists';
 import ColorChip from '../../../../../components/ColorChip';
-import { mdiClockOutline } from '@mdi/js';
+import { mdiClockOutline, mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
@@ -27,6 +27,7 @@ function RemindItem(item) {
     created_at,
     content,
     handleClickOpen,
+    is_ghim,
   } = item
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   const [day, month] = created_at.split('/');
@@ -63,6 +64,8 @@ function RemindItem(item) {
               )))
             }
           </ColorTypo>
+          {is_ghim && <Icon  className="remindItem--pinned" path={mdiPin} color="rgba(0, 0, 0, 0.54)"
+            size={1} />}
         </div>
         <MemberMenuLists className="remindItem--menu" idx={idx} handleClickOpen={() => handleClickOpen(item)} item={item} />
       </div>

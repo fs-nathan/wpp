@@ -9,7 +9,7 @@ import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 
 import ModalDeleteConfirm from '../../ModalDeleteConfirm'
-import { deleteRemind } from '../../../../../actions/taskDetail/taskDetailActions';
+import { deleteRemind, unPinRemind, pinRemind } from 'actions/taskDetail/taskDetailActions';
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -22,7 +22,7 @@ const ButtonIcon = styled(IconButton)`
   }
 `
 
-const MemberMenuLists = (props) => {
+const MemberMenuLists = ({ item, className, idx, handleClickOpen }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -44,16 +44,22 @@ const MemberMenuLists = (props) => {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    dispatch(deleteRemind({ remind_id: props.item.id, taskId: taskId }))
+    dispatch(deleteRemind({ remind_id: item.id, taskId: taskId }))
+  }
+
+  function onClickPin() {
+    const action = item.is_ghim ? unPinRemind : pinRemind;
+    dispatch(action({ remind_id: item.id, taskId: taskId }))
+    handleClose();
   }
 
   return (
-    <div className={clsx(props.className, "styled-menu")} >
-      <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + props.idx} aria-haspopup="true">
+    <div className={clsx(className, "styled-menu")} >
+      <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + idx} aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
       </ButtonIcon>
       <Menu
-        id={"simple-menu" + props.idx}
+        id={"simple-menu" + idx}
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -63,19 +69,21 @@ const MemberMenuLists = (props) => {
           horizontal: 'right',
         }}
       >
+        <MenuItem onClick={onClickPin}>
+          {item.is_ghim ? 'Bỏ ghim' : 'Ghim nhắc hẹn'}
+        </MenuItem>
         <MenuItem onClick={() => {
-          props.handleClickOpen(props.idx);
+          handleClickOpen(idx);
           handleClose();
-        }}>Chỉnh sửa</MenuItem>
-        <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
+        }}>Sửa nhắc hẹn</MenuItem>
+        <MenuItem onClick={handleOpenModalDelete}>Xóa nhắc hẹn</MenuItem>
       </Menu>
       <ModalDeleteConfirm
         confirmDelete={confirmDelete}
         isOpen={isOpenDelete}
         handleCloseModalDelete={handleCloseModalDelete}
         handleOpenModalDelete={handleOpenModalDelete}
-        // task={props.task.id} 
-        {...props} />
+      />
     </div>
   )
 }

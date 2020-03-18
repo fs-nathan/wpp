@@ -6,13 +6,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function ModalDeleteConfirm(props) {
+export default function ModalDeleteConfirm({
+  isOpen,
+  handleCloseModalDelete,
+  confirmDelete,
+}) {
 
   return (
     <div>
       <Dialog
-        open={props.isOpen}
-        onClose={props.handleCloseModalDelete}
+        open={isOpen}
+        onClose={handleCloseModalDelete}
       >
         <DialogTitle>{"Thông báo hệ thống"}</DialogTitle>
         <DialogContent>
@@ -21,14 +25,14 @@ export default function ModalDeleteConfirm(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleCloseModalDelete} style={{ color: "#222" }}>
+          <Button onClick={handleCloseModalDelete} style={{ color: "#222" }}>
             Hủy
           </Button>
           <Button
             color="primary" autoFocus
             onClick={() => {
-              props.confirmDelete()
-              props.handleCloseModalDelete()
+              confirmDelete()
+              handleCloseModalDelete()
             }} > Xóa </Button>
         </DialogActions>
       </Dialog>

@@ -181,6 +181,42 @@ export const deleteRemindFail = (error) => ({
     type: types.DELETE_REMIND_FAIL,
     error: error
 });
+// ======= pin remind
+export const pinRemind = ({ remind_id, taskId }) => ({
+    type: types.PIN_REMIND_REQUEST,
+    payload: {
+        remind_id,
+        taskId
+    }
+});
+
+export const pinRemindSuccess = (remind_id) => ({
+    type: types.PIN_REMIND_SUCCESS,
+    payload: remind_id
+});
+
+export const pinRemindFail = (error) => ({
+    type: types.PIN_REMIND_FAIL,
+    error: error
+});
+// ======= unPin remind
+export const unPinRemind = ({ remind_id, taskId }) => ({
+    type: types.UNPIN_REMIND_REQUEST,
+    payload: {
+        remind_id,
+        taskId
+    }
+});
+
+export const unPinRemindSuccess = (remind_id) => ({
+    type: types.UNPIN_REMIND_SUCCESS,
+    payload: remind_id
+});
+
+export const unPinRemindFail = (error) => ({
+    type: types.UNPIN_REMIND_FAIL,
+    error: error
+});
 //  offer
 export const getOffer = ({ taskId }) => ({
     type: types.GET_OFFER_REQUEST,

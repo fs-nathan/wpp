@@ -306,6 +306,29 @@ function* deleteRemind(action) {
     yield put(actions.deleteRemindFail(error))
   }
 }
+
+function* pinRemind(action) {
+  try {
+    const { remind_id, taskId } = action.payload;
+    const res = yield call(apiService.post, '/task/pin-remind', { remind_id, task_id: taskId })
+    yield put(actions.pinRemindSuccess(res.data))
+    yield put(actions.getRemind({ taskId }))
+  } catch (error) {
+    yield put(actions.pinRemindFail(error))
+  }
+}
+
+function* unpinRemind(action) {
+  try {
+    const { remind_id, taskId } = action.payload;
+    const res = yield call(apiService.post, '/task/remove-pin-remind', { remind_id, task_id: taskId })
+    yield put(actions.unPinRemindSuccess(res.data))
+    yield put(actions.getRemind({ taskId }))
+  } catch (error) {
+    yield put(actions.unPinRemindFail(error))
+  }
+}
+
 //Offer::
 async function doGetOffer({ taskId }) {
   try {
@@ -1302,7 +1325,8 @@ export {
   updateRemindWithTimeDetail,
   updateRemindWithDuration,
   deleteRemind,
-
+  pinRemind,
+  unpinRemind,
   // Sub-Task::
   getSubTask,
   postSubTask,
