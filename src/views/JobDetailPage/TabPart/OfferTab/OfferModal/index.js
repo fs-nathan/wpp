@@ -12,12 +12,7 @@ import OfferFile from './OfferFile';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
 import CustomSelect from 'components/CustomSelect';
-
-const priorityList = [
-  { id: 0, value: 'Bình thường' },
-  { id: 1, value: 'Gấp' },
-  { id: 2, value: 'Rất gấp' }
-];
+import { priorityList } from '../data';
 
 const OfferModal = (props) => {
   const dispatch = useDispatch();

@@ -31,8 +31,9 @@ function OfferDetail({
     handlers = [],
     members = [],
     monitors = [],
-    results,
-  } = item
+    results = [],
+  } = item;
+  console.log('monitors', monitors)
   return (
     <div>
       <Dialog
@@ -73,7 +74,7 @@ function OfferDetail({
               />
             )}
           </div>
-            Ket qua phe duyet
+            Kết quả phê duyệt
             {
             results.map((res, index) =>
               <OfferDetailItem
