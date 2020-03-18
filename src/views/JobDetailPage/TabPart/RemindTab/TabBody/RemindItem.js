@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar, } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import MemberMenuLists from './MemberMenuLists';
-import ColorChip from '../../../../../components/ColorChip';
+import ColorChip from 'components/ColorChip';
 import { mdiClockOutline, mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
 import { useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ const typesRemind = [
   'Nhắc theo tháng',
 ]
 
-function RemindItem(item) {
+function RemindItem(props) {
   const { user_create_avatar, type,
     date_remind,
     time_remind,
@@ -28,11 +28,12 @@ function RemindItem(item) {
     content,
     handleClickOpen,
     is_ghim,
-  } = item
+    onClick,
+  } = props
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   const [day, month] = created_at.split('/');
   return (
-    <li className="remindItem" key={idx} >
+    <li className="remindItem" key={idx} onClick={onClick}>
       <div className="remindItem--time" style={{ color: groupActiveColor }}>
         <div className="remindItem--month">
           Tháng {month}
@@ -64,10 +65,10 @@ function RemindItem(item) {
               )))
             }
           </ColorTypo>
-          {is_ghim && <Icon  className="remindItem--pinned" path={mdiPin} color="rgba(0, 0, 0, 0.54)"
+          {is_ghim && <Icon className="remindItem--pinned" path={mdiPin} color="rgba(0, 0, 0, 0.54)"
             size={1} />}
         </div>
-        <MemberMenuLists className="remindItem--menu" idx={idx} handleClickOpen={() => handleClickOpen(item)} item={item} />
+        <MemberMenuLists className="remindItem--menu" idx={idx} handleClickOpen={() => handleClickOpen(props)} item={props} />
       </div>
     </li>
   );

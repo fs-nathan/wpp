@@ -1,0 +1,55 @@
+.detailRemind {
+  .MuiDialogContent-root {
+    padding: 8px 0;
+  }
+  &--closeButton {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    color: grey;
+  }
+  &--time {
+    padding: 16px;
+    margin-right: 14px;
+    color: #ffffff;
+  }
+  &--main {
+    display: flex;
+    background-color: #cccccc;
+    padding: 16px 20px;
+  }
+  &--day {
+    font-size: 48px;
+  }
+  &--title {
+    display: flex;
+  }
+  &--avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 14px;
+  }
+  &--creator {
+    display: flex;
+  }
+  &--content {
+    padding: 16px 20px;
+    min-width: 500px;
+  }
+  &--remind {
+    display: flex;
+    svg {
+      margin-right: 4px;
+    }
+    .MuiChip-root {
+      border-radius: 5px;
+    }
+  }
+  &--data {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    line-height: 2;
+    font-weight: bold;
+  }
+}

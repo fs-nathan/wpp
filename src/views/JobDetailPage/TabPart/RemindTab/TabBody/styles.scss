@@ -13,6 +13,9 @@
   &--title {
     text-transform: uppercase;
     font-size: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 2em;
   }
   &--avatar {
     width: 20px;
