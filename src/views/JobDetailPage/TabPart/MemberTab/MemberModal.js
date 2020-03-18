@@ -156,7 +156,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
     phone,
     address,
     room_name,
-    grade,
+    position_name,
     level,
     specialized,
     description,
@@ -186,7 +186,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
               disabled
             />
             <TextInput
-              value={grade}
+              value={position_name}
               InputProps={{
                 startAdornment: <AdornmentInput position="start" >Chức danh:</AdornmentInput>,
               }}

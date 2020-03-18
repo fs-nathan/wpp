@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import Icon from '@mdi/react';
-import { 
-  mdiDotsHorizontal, mdiStarCircle, mdiStarCircleOutline, mdiClockOutline 
+import {
+  mdiDotsHorizontal, mdiStarCircle, mdiStarCircleOutline, mdiClockOutline
 } from '@mdi/js';
 import {
   Avatar,
@@ -14,6 +14,19 @@ import {
 import './styles.scss';
 
 const CustomListItem = props => {
+  const { isDemand,
+    item,
+    onClickDetail,
+    handleClickOpen,
+    handleOpenModalDelete,
+  } = props;
+  const { content,
+    user_create_avatar,
+    user_create_name,
+    date_create,
+    user_create_roles = [],
+    user_create_position,
+  } = item;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = evt => {
@@ -28,19 +41,19 @@ const CustomListItem = props => {
     <React.Fragment>
       <li className="styled-list-item demandTabItem">
         <div className="styled-title-box-dmt">
-          <Icon className={clsx("demandTabItem--icon", props.isDemand ? 'demandTabItem--icon__orange' : 'demandTabItem--icon__blue')}
-            path={props.isDemand ? mdiStarCircleOutline : mdiStarCircle}
+          <Icon className={clsx("demandTabItem--icon", isDemand ? 'demandTabItem--icon__orange' : 'demandTabItem--icon__blue')}
+            path={isDemand ? mdiStarCircleOutline : mdiStarCircle}
             size={2}
           />
           <div className="demandTabItem--items">
-            <div className="demandTabItem--title">{props.item.content}</div>
+            <div className="demandTabItem--title">{content}</div>
             <div className="demandTabItem--creator">
-              <Avatar className="demandTabItem--avatar" src={props.item.user_create_avatar} alt="avatar" />
-              {props.item.user_create_name}
+              <Avatar className="demandTabItem--avatar" src={user_create_avatar} alt="avatar" />
+              {[user_create_name, user_create_position, ...user_create_roles].join(' - ')}
             </div >
             <div className="demandTabItem--time">
               <Icon path={mdiClockOutline} size={1} />
-              {props.isDemand ? 'Chỉ đạo' : 'Quyết định'} lúc {props.item.date_create}
+              {isDemand ? 'Chỉ đạo' : 'Quyết định'} lúc {date_create}
             </div>
           </div>
           <div className="styled-menu-demand">
@@ -61,13 +74,13 @@ const CustomListItem = props => {
         }}
       >
         <MenuItem
-          onClick={props.onClickDetail}
+          onClick={onClickDetail}
         >
           Chi tiết
         </MenuItem>
         <MenuItem
           onClick={() => {
-            props.handleClickOpen();
+            handleClickOpen();
             setAnchorEl(null);
           }}
         >
@@ -75,7 +88,7 @@ const CustomListItem = props => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            props.handleOpenModalDelete();
+            handleOpenModalDelete();
             setAnchorEl(null);
           }}
         >

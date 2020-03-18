@@ -74,7 +74,7 @@ const getBadgeProjectRole = (projectRole) => {
   )
 }
 
-const MemberListItem = ({ id, name, avatar, role, projectRole, authorityList = [] }) => {
+const MemberListItem = ({ id, name, avatar, roles, projectRole, authorityList = [] }) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -113,8 +113,8 @@ const MemberListItem = ({ id, name, avatar, role, projectRole, authorityList = [
               <span className="wrapper-span">
                 <TextName component="span" bold>{name}</TextName>
                 {
-                  role &&
-                  <Text component="span">{role}</Text>
+                  roles &&
+                  <Text component="span">{roles.map(({name})=>name).join(' - ')}</Text>
                 }
               </span>
             </React.Fragment>
