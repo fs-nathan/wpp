@@ -2,7 +2,7 @@ import { Avatar, TableRow } from "@material-ui/core";
 import { mdiAccount, mdiMessageAlert } from "@mdi/js";
 import Icon from "@mdi/react";
 import classnames from "classnames";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -10,9 +10,11 @@ import styled from "styled-components";
 import { StyledTableBodyCell } from "../../DocumentPage/TablePart/DocumentComponent/TableCommon";
 import { colors } from "../contants/attrs";
 import { taskDetailLink } from "../contants/links";
+import { JobPageContext } from "../JobPageContext";
 import { loginlineFunc } from "../utils";
 import InlineBadge from "./InlineBadge";
 import InlineStatusBadge from "./InlineStatusBadge";
+import QuickViewTaskDetail from "./QuickViewTaskDetail";
 export const RecentTableRow = ({ className, ...props }) => (
   <TableRow className={classnames("table-body-row", className)} {...props} />
 );
@@ -59,6 +61,7 @@ export default ({
   project_id,
   id,
   avatar,
+  user_name,
   name,
   complete,
   haveNewChat,
@@ -71,7 +74,7 @@ export default ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState();
+  const { setQuickTask } = useContext(JobPageContext);
 
   return (
     <RecentTableRow>
@@ -108,7 +111,11 @@ export default ({
         {duration_value} {t(duration_unit)}
       </DurationCell>
       <EndTimeCell onClick={loginlineFunc}>{time_end}</EndTimeCell>
-      <QuickViewCell onClick={() => setOpen(true)}>
+      <QuickViewCell
+        onClick={() =>
+          setQuickTask(<QuickViewTaskDetail {...{ avatar, user_name }} />)
+        }
+      >
         {t("Xem nhanh")}
       </QuickViewCell>
     </RecentTableRow>

@@ -26,6 +26,7 @@ export const RecentTable = ({ tasks = [] }) => {
             project_id,
             id,
             avatar,
+            user_name,
             name,
             status_code,
             status_name,
@@ -39,7 +40,8 @@ export const RecentTable = ({ tasks = [] }) => {
             createMapPropsFromAttrs([
               taskAtrrs.project_id,
               taskAtrrs.id,
-              taskAtrrs.user_create.avatar,
+              taskAtrrs.user_create_avatar,
+              taskAtrrs.user_create_name,
               taskAtrrs.name,
               taskAtrrs.status_code,
               taskAtrrs.status_name,
@@ -64,6 +66,7 @@ export const RecentTable = ({ tasks = [] }) => {
                 haveNewChat,
                 duration_value,
                 duration_unit,
+                user_name,
                 complete,
                 number_member
               }}

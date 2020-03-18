@@ -54,10 +54,8 @@ export const taskAtrrs = {
   id: "id",
   project_id: "project_id",
   name: "name",
-  user_create: {
-    avatar: "user_create.avatar",
-    name: "user_create.name"
-  },
+  user_create_avatar: "user_create.avatar",
+  user_create_name: "user_create.name",
   created_at: "created_at",
   status_code: "status_code",
   status_name: "status_name",
