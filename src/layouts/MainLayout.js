@@ -135,7 +135,7 @@ function MainLayout({
       console.log(uri);
       const socket = io(uri, {});
       socket.on('WP_NEW_NOTIFICATION', res => handleNewNoti());
-      socket.on('WP_NEW_MESSAGE', res => handleNewMessage());
+      socket.on('WP_NEW_NOTIFICATION_MESSAGE_TASK', res => handleNewMessage());
     }
     // eslint-disable-next-line
   }, []);
