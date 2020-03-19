@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiBorderNoneVariant } from '@mdi/js';
 import { IconButton } from '@material-ui/core';
 import CustomAvatar from '../CustomAvatar';
+import LoadingOverlay from '../LoadingOverlay';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import './style.scss';
@@ -73,15 +74,19 @@ function LeftSideContainer({
         <Title>{title}</Title>
         {parseAction(rightAction)}
       </Header>
-      {loading.bool && loading.component()}
-      {!loading.bool && (
+      <LoadingOverlay
+        active={loading.bool}
+        spinner
+        text='Đang tải...'
+        fadeSpeed={0}
+      >
         <Body
           autoHide
           autoHideTimeout={500}
         >
           {children}
         </Body>
-      )}
+      </LoadingOverlay>
     </Container>
   )
 }

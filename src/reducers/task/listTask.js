@@ -6,7 +6,13 @@ import {
 import {
   SORT_TASK_SUCCESS,
 } from '../../constants/actions/task/sortTask';
-import { get, findIndex, remove, slice } from 'lodash';
+import {
+  CREATE_TASK_SUCCESS,
+} from '../../constants/actions/task/createTask';
+import {
+  DELETE_TASK_SUCCESS,
+} from '../../constants/actions/task/deleteTask';
+import { get, findIndex, remove, slice, find } from 'lodash';
 
 export const initialState = {
   data: {
@@ -17,8 +23,6 @@ export const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  let tasks = [];
-  let removed = [];
   switch (action.type) {
     case LIST_TASK:
       return {
@@ -39,8 +43,44 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case SORT_TASK_SUCCESS:
-      tasks = [...state.data.tasks].map(task => {
+    case CREATE_TASK_SUCCESS: {
+      const newTasks = state.data.tasks.map(groupTask => 
+        get(groupTask, 'id') === get(action.data, 'task.group_task')
+          ?  ({
+            ...groupTask,
+            tasks: [...groupTask.tasks, get(action.data, 'task')]
+          })
+          : groupTask
+      )
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          tasks: newTasks,
+        },
+      };
+    }
+    case DELETE_TASK_SUCCESS: {
+      const newTasks = state.data.tasks.map(groupTask => {
+        let _newTasks = get(groupTask, 'tasks', [])
+        if (find(_newTasks, { id: get(action.options, 'taskId') }))
+          remove(_newTasks, { id: get(action.options, 'taskId') })
+        return {
+          ...groupTask,
+          tasks: _newTasks
+        }
+      });
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          tasks: newTasks,
+        },
+      };
+    }
+    case SORT_TASK_SUCCESS: {
+      let removed = [];
+      let tasks = state.data.tasks.map(task => {
         let _tasks = get(task, 'tasks', []);
         if (findIndex(_tasks, { id: get(action.options, 'taskId') }) > -1)
           removed = remove(_tasks, { id: get(action.options, 'taskId') });
@@ -65,6 +105,7 @@ function reducer(state = initialState, action) {
           tasks,
         },
       };
+    }
     default:
       return state;
   }

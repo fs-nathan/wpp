@@ -38,7 +38,7 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
   return (
     <div className="comment-container">
       <div className="header-box-comment">
-        <div className="box-title">Tải tài liệu</div>
+        <div className="box-title">{t('IDS_WP_TITLE_DOWNLOAD_DOCUMENT')}</div>
         <div className="btn-actions-right">
           <div className="btn-action btn-collapse">
             <IconButton size="small" onClick={closeComment}>
@@ -60,20 +60,24 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
                   <Icon path={mdiDownloadOutline} size={1} color="#007bff" />
                 </IconButton>
               </div>
-              <div className="lb-add">Tải về máy</div>
+              <div className="lb-add">{t('IDS_WP_DOWNLOAD_MY_PC')}</div>
             </div>
           </div>
           <div className="comment-item info-item">
             <div className="content-item">
               <div className="header-item">
                 <div>
-                  <div className="sub-title">Số lượt xem</div>
+                  <div className="sub-title">{t('IDS_WP_VIEW_NUNBER')}</div>
                   <div className="sub-title">
                     <span>
-                      <b>{fileInfo.number_of_view + 1} lượt xem</b>
+                      <b>
+                        {fileInfo.number_of_view + 1} {t('IDS_WP_VIEWS')}
+                      </b>
                     </span>
                     &nbsp;
-                    <span>(dung lượng xem {fileInfo.size || ''})</span>
+                    <span>
+                      ({t('IDS_WP_VIEW_STORAGE')} {fileInfo.size || ''})
+                    </span>
                   </div>
                   {!isEmpty(fileInfo.user_views) && (
                     <div className="avatar-list">
@@ -123,10 +127,15 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
             <div className="content-item no-border">
               <div className="header-item">
                 <div>
-                  <div className="sub-title">Số lượt download</div>
+                  <div className="sub-title">
+                    {t('IDS_WP_DOWNLOAD_COUNT_NUMBER')}
+                  </div>
                   <div className="sub-title">
                     <span>
-                      <b>{fileInfo.number_of_download || 0} lượt tải</b>
+                      <b>
+                        {fileInfo.number_of_download || 0}{' '}
+                        {t('IDS_WP_DOWNLOAD_COUNT')}
+                      </b>
                     </span>
                     &nbsp;
                     <span>{`(dung lượng tải xuống ${fileInfo.size ||

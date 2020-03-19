@@ -23,14 +23,28 @@ function AllTaskTable({
   doSortTask,
 }) {
 
-  const { setProjectId, setTimeRange, setStatusProjectId } = React.useContext(ProjectPageContext);
+  const { 
+    setProjectId, 
+    setTimeRange, 
+    setStatusProjectId,
+    localOptions, setLocalOptions
+  } = React.useContext(ProjectPageContext);
+
   const { projectId } = useParams();
 
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
 
-  const [timeType, setTimeType] = React.useState(5);
+  const [timeType, setTimeType] = React.useState(localOptions.timeType);
+
+  React.useEffect(() => {
+    setLocalOptions(pastOptions => ({
+      ...pastOptions,
+      timeType,
+    }));
+    // eslint-disable-next-line
+  }, [timeType]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openSetting, setOpenSetting] = React.useState(false);
@@ -73,7 +87,7 @@ function AllTaskTable({
           doSortTask({
             taskId,
             projectId,
-            groupTask,
+            groupTask: groupTask === 'default' ? undefined : groupTask,
             sortIndex,
           })
         }

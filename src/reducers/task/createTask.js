@@ -6,7 +6,7 @@ import {
 
 export const initialState = {
   data: {
-    taskId: null,
+    task: null,
   },
   error: null,
   loading: false,

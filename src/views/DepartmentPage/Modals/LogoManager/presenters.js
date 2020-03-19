@@ -5,8 +5,8 @@ import {
 import ColorButton from '../../../../components/ColorButton';
 import CustomModal from '../../../../components/CustomModal';
 import ColorTypo from '../../../../components/ColorTypo';
-import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
+import LoadingBox from '../../../../components/LoadingBox';
 import { get } from 'lodash';
 import './style.scss';
 
@@ -46,83 +46,83 @@ function LogoManager({
       onConfirm={() => handleSelectIcon(selectedIcon)}
       cancleRender={() => isSelect ? 'Hủy' : 'Thoát'}
       confirmRender={isSelect ? () => 'Hoàn thành' : null}
+      loading={icons.loading}
     >
-      {icons.loading && <LoadingBox />}
-      {icons.error !== null && <ErrorBox />}
-      {!icons.loading && icons.error === null && (
-        <>
-          <ColorTypo>Biểu tượng có sẵn</ColorTypo>
-          <LogoList cols={8}>
-            {icons.defaults.map(icon => (
-              <LogoBox 
-                key={get(icon, 'url_icon')} 
-                isSelect={isSelect && (get(selectedIcon, 'url_sort', 'x') === get(icon, 'icon', 'y'))}
-              >
-                <ButtonBase 
-                  disabled={!isSelect}
-                  onClick={() => isSelect && setSelectedIcon({
-                    id: get(icon, 'id'),
-                    url_sort: get(icon, 'icon'),
-                    url_full: get(icon, 'url_icon'),
-                  })}>
-                  <Avatar src={get(icon, 'url_icon')} alt='avatar' />
-                </ButtonBase>
-              </LogoBox>
-            ))}
-          </LogoList>
-          <ColorTypo>Biểu tượng tải lên</ColorTypo>
-          <LogoList cols={8}>
-            {icons.createds.map(icon => (
-              <LogoBox 
-                key={get(icon, 'id', '')} 
-                isSelect={isSelect && (get(selectedIcon, 'id', 'x') === get(icon, 'id', 'y'))}
-              >
-                <ButtonBase 
-                  disabled={!isSelect}
-                  onClick={() => isSelect && setSelectedIcon(icon)}
+      {icons.error !== null 
+        ? <ErrorBox />
+        : <>
+            <ColorTypo>Biểu tượng có sẵn</ColorTypo>
+            <LogoList cols={8}>
+              {icons.defaults.map(icon => (
+                <LogoBox 
+                  key={get(icon, 'url_icon')} 
+                  isSelect={isSelect && (get(selectedIcon, 'url_sort', 'x') === get(icon, 'icon', 'y'))}
                 >
-                  <Avatar src={get(icon, 'url_full')} alt='avatar' />
-                </ButtonBase>
-                <ColorButton 
-                  fullWidth 
-                  variant='text' 
-                  size='small' 
-                  variantColor='red'
-                  onClick={() => handleOpenModal('ALERT', {
-                    content: 'Bạn chắc chắn muốn xóa biểu tượng?',
-                    onConfirm: () => handleDeleteIcon(icon)
-                  })}
+                  <ButtonBase 
+                    disabled={!isSelect}
+                    onClick={() => isSelect && setSelectedIcon({
+                      id: get(icon, 'id'),
+                      url_sort: get(icon, 'icon'),
+                      url_full: get(icon, 'url_icon'),
+                    })}>
+                    <Avatar src={get(icon, 'url_icon')} alt='avatar' />
+                  </ButtonBase>
+                </LogoBox>
+              ))}
+            </LogoList>
+            <ColorTypo>Biểu tượng tải lên</ColorTypo>
+            <LogoList cols={8}>
+              {icons.createds.map(icon => (
+                <LogoBox 
+                  key={get(icon, 'id', '')} 
+                  isSelect={isSelect && (get(selectedIcon, 'id', 'x') === get(icon, 'id', 'y'))}
                 >
-                  {mutateIcon.loading 
-                    ? <LoadingBox size={8} />
-                    : 'Xóa'}
-                </ColorButton>      
-              </LogoBox>
-            ))}
-          </LogoList>
-          <input
-            disabled={mutateIcon.loading}
-            accept='image/*'
-            id="raised-button-file"
-            type="file" 
-            onChange={evt => !mutateIcon.loading && handleOpenModal('UPLOAD', {
-              image: evt.target.files[0], 
-              uploadImage: handleCreateIcon,
-            })}
-          />
-          {mutateIcon.loading 
-            ? (
-              <ColorButton variant='text' variantColor='green' size='small'>
-                <LoadingBox size={16} />
-              </ColorButton>
-            )
-            : (
-              <ColorButton variant='text' variantColor='green' size='small' component='label' htmlFor='raised-button-file'>
-                + Tải biểu tượng
-              </ColorButton>
-            )}
-        </>
-      )}
+                  <ButtonBase 
+                    disabled={!isSelect}
+                    onClick={() => isSelect && setSelectedIcon(icon)}
+                  >
+                    <Avatar src={get(icon, 'url_full')} alt='avatar' />
+                  </ButtonBase>
+                  <ColorButton 
+                    fullWidth 
+                    variant='text' 
+                    size='small' 
+                    variantColor='red'
+                    onClick={() => handleOpenModal('ALERT', {
+                      content: 'Bạn chắc chắn muốn xóa biểu tượng?',
+                      onConfirm: () => handleDeleteIcon(icon)
+                    })}
+                  >
+                    {mutateIcon.loading 
+                      ? <LoadingBox size={8} />
+                      : 'Xóa'}
+                  </ColorButton>      
+                </LogoBox>
+              ))}
+            </LogoList>
+            <input
+              disabled={mutateIcon.loading}
+              accept='image/*'
+              id="raised-button-file"
+              type="file" 
+              onChange={evt => !mutateIcon.loading && handleOpenModal('UPLOAD', {
+                image: evt.target.files[0], 
+                uploadImage: handleCreateIcon,
+              })}
+            />
+            {mutateIcon.loading 
+              ? (
+                <ColorButton variant='text' variantColor='green' size='small'>
+                  <LoadingBox size={16} />
+                </ColorButton>
+              )
+              : (
+                <ColorButton variant='text' variantColor='green' size='small' component='label' htmlFor='raised-button-file'>
+                  + Tải biểu tượng
+                </ColorButton>
+              )}
+          </>
+      }
     </CustomModal>
   )
 }

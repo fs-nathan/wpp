@@ -44,7 +44,7 @@ function getExpectedProgress(startDate, endDate) {
     const now = moment().toDate();
     const total = (end - start) / 1000;
     const current = (now - start) / 1000;
-    return clamp(isNaN(current / total) ? 0 : parseInt((current / total) * 100), 0, 100);
+    return clamp(total === 0 || isNaN(current / total) ? 0 : parseInt((current / total) * 100), 0, 100);
   }
 }
 

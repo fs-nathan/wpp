@@ -91,7 +91,7 @@ function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject })
           </StyledListSubheader>
         }
       >
-        {get(projectGroup, 'projects', []).map(project => (
+        {get(projectGroup, 'projects', []).filter(project => get(project, 'can_copy', false)).map(project => (
           <CustomListItem 
             key={get(project, 'id')} 
             onClick={() => setSelectedProject(project)}
@@ -147,6 +147,7 @@ function CopyProject({
       )}
       height='tall'
       columns={2}
+      loading={groups.loading}
       left={{
         title: 'Chọn dự án sao chép',
         content: () =>

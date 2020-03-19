@@ -16,6 +16,7 @@ import { UPDATE_STATUS_COPY_SUCCESS } from '../../constants/actions/project/sett
 export const initialState = {
   data: {
     projects: [],
+    summary: null,
   },
   error: null,
   loading: false,
@@ -90,7 +91,7 @@ function reducer(state = initialState, action) {
     } 
     case HIDE_PROJECT_SUCCESS: {
       let newProjects = state.data.projects;
-      const index = findIndex(newProjects, { id: get(action.data, 'project.id') });
+      const index = findIndex(newProjects, { id: get(action.options, 'projectId') });
       newProjects[index] = {
         ...newProjects[index],
         visibility: false,
@@ -105,7 +106,7 @@ function reducer(state = initialState, action) {
     }
     case SHOW_PROJECT_SUCCESS: {
       let newProjects = state.data.projects;
-      const index = findIndex(newProjects, { id: get(action.data, 'project.id') });
+      const index = findIndex(newProjects, { id: get(action.options, 'projectId') });
       newProjects[index] = {
         ...newProjects[index],
         visibility: true,

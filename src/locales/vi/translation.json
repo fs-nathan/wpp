@@ -11,7 +11,7 @@
           "time": "{{minute}} phút",
           "title": "Thêm thành viên",
           "invite_member": "Mời thành viên tham gia nhóm",
-          "find_member": "Tìm kiếm thành viên",
+          "find_member": "Nhập email, số điện thoại thành viên",
           "find_member_button": "Lọc",
           "request_member_title": "Thành viên yêu cầu tham gia nhóm"
         },
@@ -526,5 +526,17 @@
   "IDS_WP_MALE": "Nữ",
   "IDS_WP_OUT_GROUP": "Đã rời nhóm",
   "IDS_WP_NO_FILE_TITLE": "Quản lý và lưu trữ tất cả tài liệu của bạn một cách an toàn trên đám mây W+ Cloud",
-  "IDS_WP_NO_FILE_DES": "Kéo thả tài liệu vào đây hoặc click + THÊM MỚI để tải tài liệu lên"
+  "IDS_WP_NO_FILE_DES": "Kéo thả tài liệu vào đây hoặc click + THÊM MỚI để tải tài liệu lên",
+  "IDS_WP_SHARE_BY_MEMBER": "Chia sẻ bởi",
+  "IDS_WP_TITLE_READ_FILE": "read-file",
+  "IDS_WP_TITLE_EDIT_DISCUSS": "Chỉnh sửa thảo luận",
+  "IDS_WP_TITLE_CREATE_AVATAR": "user create avatar",
+  "IDS_WP_TITLE_DOWNLOAD_DOCUMENT": "Tải tài liệu",
+  "IDS_WP_ORDER_DETAIL": "Chi tiết đơn hàng",
+  "IDS_WP_DOWNLOAD_MY_PC": "Tải về máy",
+  "IDS_WP_VIEW_NUNBER": "Số lượt xem",
+  "IDS_WP_VIEWS": "lượt xem",
+  "IDS_WP_VIEW_STORAGE": "dung lượng xem",
+  "IDS_WP_DOWNLOAD_COUNT_NUMBER": "Số lượt download",
+  "IDS_WP_DOWNLOAD_COUNT": "lượt tải"
 }

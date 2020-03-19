@@ -6,6 +6,7 @@ import { CustomTableContext } from '../index';
 import TableHeaderRow from './TableHeaderRow';
 import TableBodyGroupRow from './TableBodyGroupRow';
 import TableBodyRow from './TableBodyGroupRow/TableBodyRow'; 
+import LoadingOverlay from '../../LoadingOverlay';
 import { get } from 'lodash';
 import './style.scss';
 
@@ -20,8 +21,12 @@ function TableMain() {
       autoHide
       autoHideTimeout={500}
     >
-      {get(options, 'loading.bool', false) && get(options, 'loading.component')()}
-      {!get(options, 'loading.bool', false) && (
+      <LoadingOverlay
+        active={get(options, 'loading.bool', false)}
+        spinner
+        text='Đang tải...'
+        fadeSpeed={0}
+      >
         <Table stickyHeader>
           <TableHead>
             <TableHeaderRow />
@@ -57,7 +62,7 @@ function TableMain() {
             }}/>
           </TableFooter>
         </Table>
-      )}
+      </LoadingOverlay>
     </Container>
   )
 }

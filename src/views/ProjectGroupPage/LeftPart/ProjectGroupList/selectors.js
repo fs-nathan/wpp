@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { get, filter } from 'lodash';
+import { get, filter, remove } from 'lodash';
 
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
 const sortProjectGroup = state => state.projectGroup.sortProjectGroup;
@@ -14,7 +14,9 @@ export const groupsSelector = createSelector(
     const { data: { projects } } = listProject;
     const { data: { icons, defaults } } = listIcon;
     const allIcons = [...icons.map(icon => get(icon, 'url_full')), ...defaults.map(icon => get(icon, 'url_icon'))];
-    const newProjectGroups = projectGroups.map(
+    let newProjectGroups = projectGroups;
+    remove(newProjectGroups, { id: 'default'} );
+    newProjectGroups = newProjectGroups.map(
       projectGroup => ({
         ...projectGroup,
         number_project: filter(

@@ -8,7 +8,7 @@ import { StyledList, StyledListItem } from '../../../../components/CustomList';
 import CustomListItem from './CustomListItem';
 import ErrorBox from '../../../../components/ErrorBox';
 import LoadingBox from '../../../../components/LoadingBox';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import './style.scss';
 
 const Banner = ({ className = '', ...props }) =>
@@ -54,8 +54,8 @@ function UserList({
 
   return (
     <>
-      {rooms.error !== null && <ErrorBox />}
-      {rooms.error === null && (
+      {isNil(rooms.error)
+      ? (
         <LeftSideContainer
           title='Danh sách thành viên'
           leftAction={{
@@ -102,7 +102,7 @@ function UserList({
             })}
           </DragDropContext>
         </LeftSideContainer>
-      )}
+      ) : <ErrorBox />}
     </>
   )
 }

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { get, find } from 'lodash';
+import { get, find, filter } from 'lodash';
 
 const listProject = state => state.project.listProject;
 const sortProject = state => state.project.sortProject;
@@ -41,9 +41,23 @@ export const projectsSelector = createSelector(
       ) 
         ? get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon') 
         : get(defaults[0], 'url_icon'),
+      state_code: get(project, 'visibility') ? get(project, 'state_code') : 5,
     }));
+
+    const newSummary = {
+      all: newProjects.length,
+      active: filter(newProjects, { visibility: true }).length,
+      hidden: filter(newProjects, { visibility: false }).length,
+      waiting: filter(newProjects, { state_code: 0 }).length,
+      doing: filter(newProjects, { state_code: 1 }).length,
+      complete: filter(newProjects, { state_code: 2 }).length,
+      expired: filter(newProjects, { state_code: 3 }).length,
+      created: filter(newProjects, { me_created: true }).length,
+      assigned: filter(newProjects, { me_created: false }).length,
+    }
     return {
       projects: newProjects,
+      summary: newSummary,
       loading,
       error,
     }

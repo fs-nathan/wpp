@@ -127,7 +127,7 @@ function ProjectMemberSlide({
             </Wrapper>
             <Button onClick={evt => handleOpenModal('MEMBER_SETTING')}>
               <Icon path={mdiAccount} size={1} />
-              <span>Cài đặt thành viên</span>
+              <span>Quản lý thành viên</span>
             </Button>
           </Container>
         </LeftSideContainer>

@@ -47,7 +47,7 @@ function UserPage({
     doListRoom();
 
     const reloadListRoom = () => {
-      doListRoom(/*true*/);
+      doListRoom();
     }
 
     //CustomEventListener(CREATE_ROOM, reloadListRoom);
@@ -70,7 +70,7 @@ function UserPage({
       doDetailRoom({ roomId: departmentId });
       /*
       const reloadDetailRoom = () => {
-        doDetailRoom({ roomId: departmentId }, true);
+        doDetailRoom({ roomId: departmentId });
       }  
 
       CustomEventListener(UPDATE_ROOM, reloadDetailRoom);
@@ -87,7 +87,7 @@ function UserPage({
       doGetUserOfRoom({ roomId: departmentId });
 
       const reloadGetUserOfRoom = () => {
-        doGetUserOfRoom({ roomId: departmentId }, /*true*/);
+        doGetUserOfRoom({ roomId: departmentId });
       }
 
       //CustomEventListener(UPDATE_USER, reloadGetUserOfRoom);
@@ -113,7 +113,7 @@ function UserPage({
 
     /*
     const reloadListPosition = () => {
-      doListPosition(true);
+      doListPosition();
     };
 
     CustomEventListener(CREATE_POSITION, reloadListPosition);
@@ -133,7 +133,7 @@ function UserPage({
 
     /*
     const reloadListMajor = () => {
-      doListMajor(true);
+      doListMajor();
     };
 
     CustomEventListener(CREATE_MAJOR, reloadListMajor);
@@ -153,7 +153,7 @@ function UserPage({
 
     /*
     const reloadListLevel = () => {
-      doListLevel(true);
+      doListLevel();
     };
 
     CustomEventListener(CREATE_LEVEL, reloadListLevel);
@@ -173,7 +173,7 @@ function UserPage({
 
     /*
     const reloadListUserRole = () => {
-      doListUserRole(true);
+      doListUserRole();
     };
 
     CustomEventListener(CREATE_USER_ROLE, reloadListUserRole);
@@ -193,7 +193,7 @@ function UserPage({
 
     /*
     const reloadListIcon = () => {
-      doListIcon(true);
+      doListIcon();
     };
 
     CustomEventListener(CREATE_ICON, reloadListIcon);
@@ -210,7 +210,7 @@ function UserPage({
     doListUserOfGroup();
 
     const reloadListUserOfGroup = () => {
-      doListUserOfGroup(/*true*/);
+      doListUserOfGroup();
     }
 
     CustomEventListener(CREATE_ROOM, reloadListUserOfGroup);
@@ -236,7 +236,7 @@ function UserPage({
       CustomEventDispose(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
       //CustomEventDispose(PUBLIC_MEMBER, reloadListUserOfGroup);
       //CustomEventDispose(PRIVATE_MEMBER, reloadListUserOfGroup);
-      //CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
+      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
     }
   }, [doListUserOfGroup]);
 

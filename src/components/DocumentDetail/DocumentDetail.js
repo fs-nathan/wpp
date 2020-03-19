@@ -311,7 +311,7 @@ const DocumentDetail = props => {
                   src={`https://drive.google.com/viewerng/viewer?url=${fileInfo.url}&hl=en&pid=explorer&efh=false&a=v&chrome=false&embedded=true`}
                   frameBorder="0"
                   className="google-view-file"
-                  title="read-file"
+                  title={t('IDS_WP_TITLE_READ_FILE')}
                   id="file_view"
                 ></iframe>
               )}
@@ -360,7 +360,7 @@ const DocumentDetail = props => {
             <React.Fragment>
               <iframe
                 className="google-view-file"
-                title="read-file"
+                title={t('IDS_WP_TITLE_READ_FILE')}
                 src={fileInfo.url}
                 id="file_view"
               />

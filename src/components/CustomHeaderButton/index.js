@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { ButtonGroup, Button } from '@material-ui/core';
 import { mdiMagnify, mdiClose } from '@mdi/js';
@@ -9,6 +10,7 @@ import './HeaderButton.scss';
 import { actionChangeSearchText } from '../../actions/documents';
 
 const CustomHeaderButton = props => {
+  const { t } = useTranslation();
   const [isSearch, setSearch] = useState(false);
   const { pathname } = props.location;
   const handleChangeSearch = ({ target: { value } }) => {
@@ -25,7 +27,7 @@ const CustomHeaderButton = props => {
       <div className={`search-container ${isSearch ? 'show-input' : ''}`}>
         {isSearch && (
           <SearchInput
-            placeholder="Nhập nội dung cần tìm"
+            placeholder={t('IDS_WP_INPUT_SEARCH')}
             onChange={handleChangeSearch}
           />
         )}
@@ -53,7 +55,9 @@ const CustomHeaderButton = props => {
                       color="rgba(0, 0, 0, 0.54)"
                     />
                   </div>
-                  <span>{isSearch ? 'Hủy' : 'Tìm kiếm'}</span>
+                  <span>
+                    {isSearch ? t('IDS_WP_CANCEL') : t('IDS_WP_SEARCH')}
+                  </span>
                 </Button>
               );
             } else {

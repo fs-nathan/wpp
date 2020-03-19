@@ -243,9 +243,7 @@ const GoogleDrive = props => {
                 className="first-column"
                 align="left"
                 width="5%"
-              >
-                {t('IDS_WP_TYPE')}
-              </StyledTableHeadCell>
+              ></StyledTableHeadCell>
               <StyledTableHeadCell align="left">
                 <div
                   className="cursor-pointer"

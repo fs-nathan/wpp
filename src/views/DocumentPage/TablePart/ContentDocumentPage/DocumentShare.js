@@ -193,10 +193,13 @@ const DocumentShare = props => {
                 }
               />
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="5%">
-              {t('IDS_WP_TYPE')}
+            <StyledTableHeadCell
+              align="center"
+              width="5%"
+            ></StyledTableHeadCell>
+            <StyledTableHeadCell align="left">
+              {t('IDS_WP_DOCUMENT_NAME')}
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left">Tên tài liệu</StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
               {t('IDS_WP_SHARE')}
             </StyledTableHeadCell>

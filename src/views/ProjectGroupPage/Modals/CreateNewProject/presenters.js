@@ -57,6 +57,7 @@ function CreateNewProject({
           currency,
         })
       }
+      loading={groups.loading}
     >
       <StyledFormControl fullWidth>
         <label htmlFor='room-select'>
