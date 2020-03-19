@@ -9,20 +9,16 @@ const QuickViewTaskDetailTitle = styled.div`
   flex: 1;
   padding: 0 1em;
 `;
-const QuickViewTaskDetailHeader = ({ avatar, user_name }) => {
+const QuickViewTaskDetailHeader = ({ avatar, title }) => {
   return (
     <QuickViewTaskDetailHeaderWrap>
       <Avatar src={avatar}></Avatar>
-      <QuickViewTaskDetailTitle>{user_name}</QuickViewTaskDetailTitle>
+      <QuickViewTaskDetailTitle>{title}</QuickViewTaskDetailTitle>
     </QuickViewTaskDetailHeaderWrap>
   );
 };
 function QuickViewTaskDetail({ avatar, user_name }) {
-  return (
-    <QuickView
-      title={<QuickViewTaskDetailHeader {...{ avatar, user_name }} />}
-    ></QuickView>
-  );
+  return <QuickView title={<QuickViewTaskDetailHeader />}></QuickView>;
 }
 
 export default QuickViewTaskDetail;

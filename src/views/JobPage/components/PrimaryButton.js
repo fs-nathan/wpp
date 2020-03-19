@@ -25,7 +25,8 @@ const useStyles = makeStyles(theme => ({
 export default function PrimaryButton({
   count = 104,
   color,
-  label = "cong viec duoc thuc hien"
+  label = "cong viec duoc thuc hien",
+  ...props
 }) {
   const classes = useStyles();
   return (
@@ -33,6 +34,7 @@ export default function PrimaryButton({
       focusRipple
       className={classes.root}
       focusVisibleClassName={classes.focusVisible}
+      {...props}
     >
       <div className={classes.count}>{count}</div>
       <div className={classes.label}>{label}</div>

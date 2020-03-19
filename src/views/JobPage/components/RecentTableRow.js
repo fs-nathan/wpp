@@ -4,9 +4,7 @@ import Icon from "@mdi/react";
 import classnames from "classnames";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { StyledTableBodyCell } from "../../DocumentPage/TablePart/DocumentComponent/TableCommon";
 import { colors } from "../contants/attrs";
 import { taskDetailLink } from "../contants/links";
@@ -15,48 +13,74 @@ import { loginlineFunc } from "../utils";
 import InlineBadge from "./InlineBadge";
 import InlineStatusBadge from "./InlineStatusBadge";
 import QuickViewTaskDetail from "./QuickViewTaskDetail";
+import "./RecentTableRow.css";
 export const RecentTableRow = ({ className, ...props }) => (
-  <TableRow className={classnames("table-body-row", className)} {...props} />
+  <TableRow
+    className={classnames("comp_RecentTableRow table-body-row", className)}
+    {...props}
+  />
 );
 
-export const AvatarCell = ({ ...props }) => (
-  <StyledTableBodyCell align="left" width="5%" {...props} />
+export const AvatarCell = ({ className, ...props }) => (
+  <StyledTableBodyCell
+    className={classnames("comp_AvatarCell", className)}
+    align="left"
+    width="5%"
+    {...props}
+  />
 );
-export const QuickViewCell = styled(({ ...props }) => (
-  <StyledTableBodyCell align="right" width="10%" {...props} />
-))`
-  color: ${colors.task_doing};
-`;
-export const TitleCell = styled(({ ...props }) => (
-  <StyledTableBodyCell align="left" {...props} />
-))`
-  padding: 10px !important;
-`;
-export const DurationCell = ({ ...props }) => (
-  <StyledTableBodyCell align="right" width="10%" {...props} />
+export const QuickViewCell = ({ className, ...props }) => (
+  <StyledTableBodyCell
+    className={classnames("comp_QuickViewCell", className)}
+    align="right"
+    width="10%"
+    {...props}
+  />
 );
-export const EndTimeCell = ({ ...props }) => (
-  <StyledTableBodyCell align="right" width="10%" {...props} />
+export const TitleCell = ({ className, ...props }) => (
+  <StyledTableBodyCell
+    className={classnames("comp_TitleCell", className)}
+    align="left"
+    {...props}
+  />
 );
-export const HasMessage = styled(({ path = mdiMessageAlert, ...props }) => (
-  <Icon path={path} {...props} />
-))`
-  vertical-align: middle;
-  width: 1.5rem;
-  fill: ${colors.task_expired};
-`;
-export const TaskTitleLink = styled(Link)`
-  color: ${props => (props.complete ? colors.task_complete : "#000")};
-  text-decoration: ${props => (props.complete ? "line-through" : "none")};
-  &:hover {
-    text-decoration: ${props =>
-      props.complete ? "line-through" : "underline"};
-  }
-`;
-export const SmallAvatar = styled(Avatar)`
-  width: 25px;
-  height: 25px;
-`;
+export const DurationCell = ({ className, ...props }) => (
+  <StyledTableBodyCell
+    className={classnames("comp_DurationCell", className)}
+    align="left"
+    width="10%"
+    {...props}
+  />
+);
+export const EndTimeCell = ({ className, ...props }) => (
+  <StyledTableBodyCell
+    className={classnames("comp_EndTimeCell", className)}
+    align="right"
+    width="10%"
+    {...props}
+  />
+);
+export const HasMessage = ({ className, path = mdiMessageAlert, ...props }) => (
+  <Icon
+    className={classnames("comp_HasMessage", className)}
+    path={path}
+    {...props}
+  />
+);
+
+export const TaskTitleLink = ({ className, ...props }) => (
+  <Link
+    className={classnames(
+      "comp_TaskTitleLink",
+      props.complete && "comp_TaskTitleLink__complete",
+      className
+    )}
+    {...props}
+  />
+);
+export const SmallAvatar = ({ className, ...props }) => (
+  <Avatar className={classnames("comp_SmallAvatar", className)} {...props} />
+);
 export default ({
   project_id,
   id,
@@ -73,7 +97,6 @@ export default ({
   time_end
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const { setQuickTask } = useContext(JobPageContext);
 
   return (

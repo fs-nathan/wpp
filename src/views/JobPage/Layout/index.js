@@ -1,49 +1,25 @@
-import { ClickAwayListener, Drawer, makeStyles } from "@material-ui/core";
-import { mdiCalendar, mdiFullscreen, mdiFullscreenExit, mdiSettingsOutline } from "@mdi/js";
+import { ClickAwayListener, Drawer } from "@material-ui/core";
+import {
+  mdiCalendar,
+  mdiFullscreen,
+  mdiFullscreenExit,
+  mdiSettingsOutline
+} from "@mdi/js";
 import React, { useContext } from "react";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { TimeRangePopover, times } from "../../../components/CustomPopover";
-import { CustomTableLayout, CustomTableProvider } from "../../../components/CustomTable";
+import {
+  CustomTableLayout,
+  CustomTableProvider
+} from "../../../components/CustomTable";
 import LoadingBox from "../../../components/LoadingBox";
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import { JobPageContext } from "../JobPageContext";
 import { loginlineFunc } from "../utils";
 import "./Layout.css";
-const drawerWidth = 400;
-const useStyles = makeStyles(theme => ({
-  layoutWrapper: {
-    position: "relative",
-    display: "flex"
-  },
-  content: {
-    flexGrow: 1,
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-    // marginRight: -drawerWidth
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    }),
-    marginRight: 0
-  },
-  drawer: {
-    // width: drawerWidth,
-    flexShrink: 0
-  },
-  drawerPaper: {
-    top: "70px",
-    height: "calc(100% - 70px)",
-    position: "absolute",
-    width: drawerWidth,
-    boxShadow: "-18px 8px 24px -10px rgba(0, 0, 0, 0.2)"
-  }
-}));
+
 function Layout({ children, title, bgColor }) {
   const { t } = useTranslation();
   const {
@@ -60,11 +36,10 @@ function Layout({ children, title, bgColor }) {
   } = useContext(JobPageContext);
 
   console.log({ expand, timeAnchor, timeType, timeRange });
-  const classes = useStyles();
   const open = !!quickTask;
   return (
-    <div className={classes.layoutWrapper}>
-      <div className={classes.content}>
+    <div className="comp_JobPageLayoutWrapper">
+      <div className="comp_JobPageLayout__content">
         <CustomTableProvider
           value={{
             options: {
@@ -132,13 +107,12 @@ function Layout({ children, title, bgColor }) {
       </div>
 
       <Drawer
-        className={classes.drawer}
+        className="comp_JobPageLayout__drawer"
         variant="persistent"
-        disableBackdropClick={false}
         anchor="right"
         open={open}
         classes={{
-          paper: classes.drawerPaper
+          paper: "comp_JobPageLayout__drawerPaper"
         }}
         closeAfterTransition
         onClose={() => setQuickTask(undefined)}
@@ -149,9 +123,7 @@ function Layout({ children, title, bgColor }) {
               setQuickTask(undefined);
             }}
           >
-            <Scrollbars>
-              {quickTask}
-            </Scrollbars>
+            <Scrollbars>{quickTask}</Scrollbars>
           </ClickAwayListener>
         )}
       </Drawer>

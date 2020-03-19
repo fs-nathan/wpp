@@ -1,42 +1,20 @@
-.comp_JobPage_Layout {
+.comp_JobPageLayoutWrapper {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  min-height: 100%;
 }
-.comp_JobPage_Layout_Header {
-  height: 70px;
-  display: flex;
-  align-items: center;
+.comp_JobPageLayout__content {
+  flex-grow: 1;
 }
-.comp_JobPage_Layout__Content {
-  flex: 1;
-  padding: 20px 0;
-  background-color: #f6f6f6;
+.comp_JobPageLayout__contentShift {
+  margin-right: 0;
 }
-.comp_JobPage_Layout__Title {
-  font-weight: bold;
-  font-size: 1.4em;
-  flex: 1;
+.comp_JobPageLayout__drawer {
+  flex-shrink: 0;
 }
-.comp_JobPage_Layout__Actions {
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-}
-.comp_JobPage_Layout__Actions_Item {
-  padding: 8px;
-  margin: 3px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  min-width: 60px;
-  color: #848484;
-  cursor: pointer;
-}
-.comp_JobPage_Layout__Actions_Item > *:first-child {
-  margin-bottom: 8px;
-}
-.comp_JobPage_Layout__Actions_Item:hover {
-  background: #f1f1f1;
+.comp_JobPageLayout__drawerPaper {
+  top: 70px;
+  height: calc(100% - 70px);
+  position: absolute;
+  width: 400px;
+  box-shadow: -18px 8px 24px -10px rgba(0, 0, 0, 0.2);
 }

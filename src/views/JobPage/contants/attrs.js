@@ -134,3 +134,9 @@ export const colors = {
   task_assign_to_me: "static.task_assign_to_me",
   task_me_offer: "static.task_me_offer"
 };
+export const taskStatusMap = {
+  "0": "waiting",
+  "1": "doing",
+  "2": "complete",
+  "3": "expired"
+};

@@ -7,13 +7,15 @@ import {
   Table,
   TableBody
 } from "@material-ui/core";
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useDebounce } from "react-use";
 import AnalyticButton from "../../components/AnalyticButton";
 import PrimaryButton from "../../components/PrimaryButton";
 import RecentTableRow from "../../components/RecentTableRow";
-import { colors, recent, taskAtrrs } from "../../contants/attrs";
+import { colors, recent, taskAtrrs, taskStatusMap } from "../../contants/attrs";
+import { JobPageContext } from "../../JobPageContext";
 import { TASK_OVERVIEW_RECENT } from "../../redux/types";
 import { createMapPropsFromAttrs, loginlineFunc } from "../../utils";
 
@@ -79,8 +81,17 @@ export const RecentTable = ({ tasks = [] }) => {
     </Table>
   );
 };
+
 export function RecentBlock() {
   const { t } = useTranslation();
+  const {
+    statusFilter,
+    setstatusFilter,
+    handleRemovestatusFilter,
+    hoverstatusFilter,
+    setHoverstatusFilter,
+    handleRemovesHovertatusFilter
+  } = useContext(JobPageContext);
   const [waiting, doing, complete, expired, tasks = []] = useSelector(state => {
     return loginlineFunc(
       createMapPropsFromAttrs([
@@ -92,6 +103,33 @@ export function RecentBlock() {
       ])
     )(state.taskPage[TASK_OVERVIEW_RECENT]);
   });
+
+  const createAnalyticButtonProps = string => ({
+    onCloseClick: () => handleRemovestatusFilter(string),
+    onMouseEnter: () => setHoverstatusFilter(string),
+    onMouseLeave: () => handleRemovesHovertatusFilter(string),
+    active: statusFilter[string],
+    onClick: () => setstatusFilter(string)
+  });
+  const [debouncedFilteredTasks, setdebouncedFilteredTasks] = React.useState(
+    []
+  );
+
+  useDebounce(
+    () => {
+      setdebouncedFilteredTasks(
+        Object.values(statusFilter).filter(item => item).length
+          ? tasks.filter(
+              item =>
+                statusFilter[taskStatusMap[item.status_code]] ||
+                hoverstatusFilter[taskStatusMap[item.status_code]]
+            )
+          : tasks
+      );
+    },
+    300,
+    [tasks, statusFilter, hoverstatusFilter]
+  );
   return (
     <Card variant="outlined">
       <CardHeader title={"Công việc gần đây"} />
@@ -99,6 +137,7 @@ export function RecentBlock() {
         <Grid container spacing={3}>
           <Grid item flex={1}>
             <PrimaryButton
+              onClick={() => setstatusFilter(undefined)}
               count={[waiting, doing, complete, expired].reduce(
                 (result = 0, value) => result + value
               )}
@@ -108,6 +147,7 @@ export function RecentBlock() {
           <Box flex={1}></Box>
           <Grid item>
             <AnalyticButton
+              {...createAnalyticButtonProps("waiting")}
               count={waiting}
               label={t("Đang chờ")}
               color={colors.task_waiting}
@@ -116,6 +156,7 @@ export function RecentBlock() {
           </Grid>
           <Grid item>
             <AnalyticButton
+              {...createAnalyticButtonProps("doing")}
               count={doing}
               label={t("Đang làm")}
               color={colors.task_doing}
@@ -124,6 +165,7 @@ export function RecentBlock() {
           </Grid>
           <Grid item>
             <AnalyticButton
+              {...createAnalyticButtonProps("complete")}
               count={complete}
               label={t("Hoàn thành")}
               color={colors.task_complete}
@@ -132,6 +174,7 @@ export function RecentBlock() {
           </Grid>
           <Grid item>
             <AnalyticButton
+              {...createAnalyticButtonProps("expired")}
               count={expired}
               label={t("Quá hạn")}
               color={colors.task_expired}
@@ -139,7 +182,7 @@ export function RecentBlock() {
             />
           </Grid>
           <Grid item container xs={12}>
-            <RecentTable tasks={tasks} />
+            <RecentTable tasks={debouncedFilteredTasks} />
           </Grid>
         </Grid>
       </CardContent>

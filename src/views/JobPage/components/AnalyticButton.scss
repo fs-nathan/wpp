@@ -1,0 +1,82 @@
+.comp_AnalyticButton {
+  display: flex;
+  align-items: center;
+  height: 5rem;
+  justify-content: space-between;
+  padding: 0 1rem;
+  border-radius: 0.3rem;
+  border: 1px solid #f1f1f1;
+  transition: background 0.3s linear;
+}
+.comp_AnalyticButton__circle {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  justify-content: center;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 100%;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid currentColor;
+}
+.comp_AnalyticButton__circleBackground {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0.2;
+  background: currentColor;
+}
+.comp_AnalyticButton__label {
+  font-size: 1rem;
+  color: #545454;
+  font-weight: bold;
+}
+.comp_AnalyticButton__right {
+  padding-left: 2rem;
+  text-align: right;
+}
+.comp_AnalyticButton__count {
+  font-weight: bolder;
+  font-size: 1.4rem;
+  margin-bottom: 0.2rem;
+}
+.comp_AnalyticButton__closeIcon {
+  position: absolute;
+  width: 13px;
+  top: 2px;
+  left: 2px;
+  fill: #fff;
+}
+.comp_AnalyticButton__closeIcon:hover {
+  transform: scale(1.2);
+}
+.comp_AnalyticButton:hover,
+.comp_AnalyticButton__active {
+  background: currentColor;
+  .comp_AnalyticButton__circle {
+    border-color: white;
+  }
+  .comp_AnalyticButton__circleBackground {
+    color: white;
+  }
+  .comp_AnalyticButton__label {
+    color: white;
+  }
+  .comp_AnalyticButton__circleText {
+    color: white;
+  }
+  .comp_AnalyticButton__right {
+    padding-left: 2rem;
+    text-align: right;
+  }
+  .comp_AnalyticButton__count {
+    font-weight: bolder;
+    font-size: 1.4rem;
+    color: white;
+    margin-bottom: 0.2rem;
+  }
+}
