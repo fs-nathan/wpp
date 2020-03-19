@@ -1,11 +1,11 @@
-import { ClickAwayListener, Drawer } from "@material-ui/core";
+import { ClickAwayListener, Drawer, SvgIcon } from "@material-ui/core";
 import {
   mdiCalendar,
   mdiFullscreen,
   mdiFullscreenExit,
   mdiSettingsOutline
 } from "@mdi/js";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -16,9 +16,12 @@ import {
 } from "../../../components/CustomTable";
 import LoadingBox from "../../../components/LoadingBox";
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
+import { QuickViewTaskDetailHeaderWrap } from "../components/QuickViewTaskDetail";
+import RedirectModal from "../components/RedirectModal";
 import { JobPageContext } from "../JobPageContext";
 import { loginlineFunc } from "../utils";
 import "./Layout.css";
+import QuickView from "./QuickView";
 
 function Layout({ children, title, bgColor }) {
   const { t } = useTranslation();
@@ -37,6 +40,7 @@ function Layout({ children, title, bgColor }) {
 
   console.log({ expand, timeAnchor, timeType, timeRange });
   const open = !!quickTask;
+  const [openModalDirect, setOopenModalDirect] = useState();
   return (
     <div className="comp_JobPageLayoutWrapper">
       <div className="comp_JobPageLayout__content">
@@ -58,12 +62,21 @@ function Layout({ children, title, bgColor }) {
                 {
                   label: "setting",
                   iconPath: mdiSettingsOutline,
-                  onClick: loginlineFunc
+                  onClick: () =>
+                    setQuickTask(
+                      <QuickView
+                        title={
+                          <QuickViewTaskDetailHeaderWrap>
+                            <SvgIcon>{mdiSettingsOutline}</SvgIcon>
+                          </QuickViewTaskDetailHeaderWrap>
+                        }
+                      ></QuickView>
+                    )
                 }
               ],
               mainAction: {
                 label: "+ Tạo công việc",
-                onClick: loginlineFunc
+                onClick: () => setOopenModalDirect(true)
               },
               search: {
                 patern: "",
@@ -127,6 +140,9 @@ function Layout({ children, title, bgColor }) {
           </ClickAwayListener>
         )}
       </Drawer>
+      {openModalDirect && (
+        <RedirectModal onClose={() => setOopenModalDirect(false)} />
+      )}
     </div>
   );
 }
