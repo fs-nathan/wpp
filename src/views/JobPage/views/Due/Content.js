@@ -1,11 +1,12 @@
 import {
   Box,
-  Card,
-  CardContent,
-  CardHeader,
   Grid,
   Table,
-  TableBody
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableSortLabel
 } from "@material-ui/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -20,8 +21,30 @@ import { TASK_OVERVIEW_RECENT } from "../../redux/types";
 import { createMapPropsFromAttrs, loginlineFunc } from "../../utils";
 
 export const RecentTable = ({ tasks = [] }) => {
+  const { t } = useTranslation();
   return (
     <Table className="header-document">
+      <TableHead>
+        <TableRow>
+          <TableCell width="5%"></TableCell>
+          <TableCell sortDirection={true} align="left">
+            <TableSortLabel
+              active={true}
+              direction={"asc"}
+              onClick={loginlineFunc}
+            >
+              {t("Tên công việc")}
+            </TableSortLabel>
+          </TableCell>
+          <TableCell width="10%" align="left">
+            {t("Tiến độ")}
+          </TableCell>
+          <TableCell width="10%" align="right">
+            {t("Kết thúc")}
+          </TableCell>
+          <TableCell width="10%" align="right"></TableCell>
+        </TableRow>
+      </TableHead>
       <TableBody>
         {tasks.map((task, index) => {
           const [
@@ -88,7 +111,7 @@ export const defaultStatusFilter = {
   complete: false,
   expired: false
 };
-export function RecentBlock() {
+export function Content() {
   const { t } = useTranslation();
 
   const [
@@ -139,65 +162,57 @@ export function RecentBlock() {
     300,
     [tasks, statusFilter, hoverstatusFilter]
   );
-  const allCount = [waiting, doing, complete, expired].reduce(
-    (result = 0, value) => result + value
-  );
   return (
-    <Card variant="outlined">
-      <CardHeader title={"Công việc gần đây"} />
-      <CardContent>
-        <Grid container spacing={3}>
-          <Grid item flex={1}>
-            <PrimaryButton
-              onClick={() => setstatusFilter(undefined)}
-              count={[waiting, doing, complete, expired].reduce(
-                (result = 0, value) => result + value
-              )}
-              label={t("Công việc được thực hiện")}
-            />
-          </Grid>
-          <Box flex={1}></Box>
-          <Grid item>
-            <AnalyticButton
-              {...createAnalyticButtonProps("waiting")}
-              count={waiting}
-              label={t("Đang chờ")}
-              color={colors.task_waiting}
-              circleText={`${Math.floor((waiting * 100) / allCount)}%`}
-            />
-          </Grid>
-          <Grid item>
-            <AnalyticButton
-              {...createAnalyticButtonProps("doing")}
-              count={doing}
-              label={t("Đang làm")}
-              color={colors.task_doing}
-              circleText={`${Math.floor((doing * 100) / allCount)}%`}
-            />
-          </Grid>
-          <Grid item>
-            <AnalyticButton
-              {...createAnalyticButtonProps("complete")}
-              count={complete}
-              label={t("Hoàn thành")}
-              color={colors.task_complete}
-              circleText={`${Math.floor((complete * 100) / allCount)}%`}
-            />
-          </Grid>
-          <Grid item>
-            <AnalyticButton
-              {...createAnalyticButtonProps("expired")}
-              count={expired}
-              label={t("Quá hạn")}
-              color={colors.task_expired}
-              circleText={`${Math.floor((expired * 100) / allCount)}%`}
-            />
-          </Grid>
-          <Grid item container xs={12}>
-            <RecentTable tasks={debouncedFilteredTasks} />
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+    <Grid container spacing={3}>
+      <Grid item flex={1}>
+        <PrimaryButton
+          onClick={() => setstatusFilter(undefined)}
+          count={[waiting, doing, complete, expired].reduce(
+            (result = 0, value) => result + value
+          )}
+          label={t("Công việc được thực hiện")}
+        />
+      </Grid>
+      <Box flex={1}></Box>
+      <Grid item>
+        <AnalyticButton
+          {...createAnalyticButtonProps("waiting")}
+          count={waiting}
+          label={t("Đang chờ")}
+          color={colors.task_waiting}
+          circleText="10%"
+        />
+      </Grid>
+      <Grid item>
+        <AnalyticButton
+          {...createAnalyticButtonProps("doing")}
+          count={doing}
+          label={t("Đang làm")}
+          color={colors.task_doing}
+          circleText="10%"
+        />
+      </Grid>
+      <Grid item>
+        <AnalyticButton
+          {...createAnalyticButtonProps("complete")}
+          count={complete}
+          label={t("Hoàn thành")}
+          color={colors.task_complete}
+          circleText="10%"
+        />
+      </Grid>
+      <Grid item>
+        <AnalyticButton
+          {...createAnalyticButtonProps("expired")}
+          count={expired}
+          label={t("Quá hạn")}
+          color={colors.task_expired}
+          circleText="10%"
+        />
+      </Grid>
+      <Grid item container xs={12}>
+        <RecentTable tasks={debouncedFilteredTasks} />
+      </Grid>
+    </Grid>
   );
 }

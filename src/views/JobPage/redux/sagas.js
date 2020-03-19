@@ -1,17 +1,19 @@
 import { all, fork, put, take } from "redux-saga/effects";
 import { apiService } from "../../../constants/axiosInstance";
 import {
+  LOADPAGE_TASK_DUE,
   LOAD_TASK_OVERVIEW,
+  TASK_DUE,
   TASK_OVERVIEW_RECENT,
   TASK_OVERVIEW_STATISTIC
 } from "./types";
 
-function* doGetStaticTask(project_id) {
+function* doGetStaticTask(timeRange) {
   // console.log("PPPP", project_id)
   try {
+    const { timeStart, timeEnd } = timeRange;
     const config = {
-      url:
-        "https://appapi.workplus.vn/api/v1/task-statistic?from_time=2019/01/01&&to_time=2020/05/01",
+      url: `/task-statistic?from_time=${timeStart}&&to_time=${timeEnd}`,
       method: "get"
     };
     const result = yield apiService(config);
@@ -30,7 +32,7 @@ function* doGetStaticTaskRecent(project_id) {
   // console.log("PPPP", project_id)
   try {
     const config = {
-      url: "https://appapi.workplus.vn/api/v1/task-statistic/recently",
+      url: "/task-statistic/recently",
       method: "get"
     };
     const result = yield apiService(config);
@@ -45,10 +47,40 @@ function* doGetStaticTaskRecent(project_id) {
     });
   }
 }
-function* watchLoadTaskOverviewPage() {
-  while (true) {
-    const { login, requiredFields = [] } = yield take(LOAD_TASK_OVERVIEW);
-    yield all([fork(doGetStaticTask), fork(doGetStaticTaskRecent)]);
+
+function* doGetDueTasks() {
+  try {
+    const config = {
+      url: "/task-statistic/about-to-expire",
+      method: "get"
+    };
+    const result = yield apiService(config);
+    yield put({ type: TASK_DUE, payload: result.data });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: TASK_DUE,
+      payload: {
+        error: error.toString()
+      }
+    });
   }
 }
-export { watchLoadTaskOverviewPage };
+
+// watchPage
+function* watchLoadTaskOverviewPage() {
+  while (true) {
+    const {
+      payload: { timeRange }
+    } = yield take(LOAD_TASK_OVERVIEW);
+    yield all([fork(doGetStaticTask, timeRange), fork(doGetStaticTaskRecent)]);
+  }
+}
+
+function* watchLoadTaskDuePage() {
+  while (true) {
+    const {} = yield take(LOADPAGE_TASK_DUE);
+    yield all([fork(doGetDueTasks)]);
+  }
+}
+export { watchLoadTaskOverviewPage, watchLoadTaskDuePage };

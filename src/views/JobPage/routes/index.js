@@ -12,24 +12,41 @@ const routes = [
     exact: true,
     component: React.lazy(() => import("../views/Overview"))
   },
-  { path: Routes.DUE, exact: true, component: () => <div>DUE</div> },
+  {
+    path: Routes.DUE,
+    exact: true,
+    component: React.lazy(() => import("../views/Due"))
+  },
   {
     path: Routes.MISSION,
     exact: true,
     component: React.lazy(() => import("../views/Mission"))
   },
-  { path: Routes.MISSION_GIVING, component: () => <div>MISSION_GIVING</div> },
-  { path: Routes.MISSION_GIVEN, component: () => <div>MISSION_GIVEN</div> },
+  {
+    path: Routes.MISSION_GIVING,
+    component: React.lazy(() => import("../views/Due"))
+  },
+  {
+    path: Routes.MISSION_GIVEN,
+    component: React.lazy(() => import("../views/Due"))
+  },
   {
     path: Routes.MISSION_SELFGIVING,
     exact: true,
-    component: () => <div>MISSION_SELFGIVING</div>
+    component: React.lazy(() => import("../views/Due"))
   },
-  { path: Routes.ROLE, exact: true, component: () => <div>ROLE</div> },
-  { path: Routes.ROLE_RUNNING, component: () => <div>ROLE_RUNNING</div> },
+  {
+    path: Routes.ROLE,
+    exact: true,
+    component: React.lazy(() => import("../views/Due"))
+  },
+  {
+    path: Routes.ROLE_RUNNING,
+    component: React.lazy(() => import("../views/Due"))
+  },
   {
     path: Routes.ROLE_COORDINATION,
-    component: () => <div>ROLE_COORDINATION</div>
+    component: React.lazy(() => import("../views/Due"))
   }
 ];
 

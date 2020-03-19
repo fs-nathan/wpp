@@ -102,7 +102,10 @@ import { CREATE_USER_ROLE } from "../constants/actions/userRole/createUserRole";
 import { DELETE_USER_ROLE } from "../constants/actions/userRole/deleteUserRole";
 import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
 import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
-import { watchLoadTaskOverviewPage } from "../views/JobPage/redux/sagas";
+import {
+  watchLoadTaskDuePage,
+  watchLoadTaskOverviewPage
+} from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
 import {
   listComment,
@@ -539,6 +542,7 @@ function* rootSaga() {
 
   // overview
   yield fork(watchLoadTaskOverviewPage);
+  yield fork(watchLoadTaskDuePage);
 }
 
 export default rootSaga;

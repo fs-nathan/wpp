@@ -1,48 +1,47 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Route } from "react-router-dom";
+import { times } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
-import { useMultipleSelect } from "./hooks/useMultipleSelect";
+import { useLocalStorage } from "../../hooks";
 import { JobPageContext } from "./JobPageContext";
 import TabList from "./LeftPart_new/TabList";
 import routes from "./routes";
 const { Provider } = JobPageContext;
 
-export const defaultStatusFilter = {
-  all: false,
-  waiting: false,
-  doing: false,
-  complete: false,
-  expired: false
-};
-
 function JobPage() {
+  const [localOptions, setLocalOptions] = useLocalStorage(
+    "LOCAL_PROJECT_OPTIONS",
+    {
+      filterType: 1,
+      timeType: 5
+    }
+  );
   const [quickTask, setQuickTask] = useState();
   const [timeAnchor, setTimeAnchor] = React.useState(null);
-  const [timeType, setTimeType] = React.useState(0);
-  const [timeRange, settimeRange] = React.useState(null);
-  const [
-    statusFilter,
-    setstatusFilter,
-    handleRemovestatusFilter
-  ] = useMultipleSelect(defaultStatusFilter);
-  const [
-    hoverstatusFilter,
-    setHoverstatusFilter,
-    handleRemovesHovertatusFilter
-  ] = useMultipleSelect(defaultStatusFilter, false);
+  const [timeType, setTimeType] = React.useState(localOptions.timeType);
+  useEffect(() => {
+    setLocalOptions({
+      ...localOptions,
+      timeType
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeType]);
+  const [timeRange, settimeRange] = React.useState(() => {
+    const [timeStart, timeEnd] = times[1].option();
+    return {
+      timeStart,
+      timeEnd
+    };
+  });
+
   return (
     <TwoColumnsLayout
       leftRenders={[() => <TabList />]}
       rightRender={({ expand, handleExpand, handleSubSlide }) => (
         <Provider
           value={{
-            statusFilter,
-            setstatusFilter,
-            handleRemovestatusFilter,
-            hoverstatusFilter,
-            setHoverstatusFilter,
-            handleRemovesHovertatusFilter,
             expand,
             handleExpand,
             quickTask,
