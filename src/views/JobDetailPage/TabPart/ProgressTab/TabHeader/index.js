@@ -1,48 +1,19 @@
 import React, { useEffect } from 'react';
-import { IconButton} from '@material-ui/core';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiChevronLeft , mdiSettings } from '@mdi/js';
-import ColorTypo from '../../../../../components/ColorTypo';
+import { useSelector, useDispatch } from 'react-redux';
+
 import ProgressModal from '../ProgressModal'
-import { WrapperContext } from '../../../index'
-// const Container = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   background-color: #fff;
-//   border-bottom: 1px solid rgba(0, 0, 0, .1);
-//   height: 85px;
-//   overflow-y: hidden;
-// `;
-
-const ButtonIcon = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`
-
-const ProgressTitle = styled(ColorTypo)`
-  font-size: 17px;
-`
+import { taskIdSelector } from '../../../selectors';
+import { getTrackingTime } from '../../../../../actions/taskDetail/taskDetailActions';
+import HeaderTab from '../../HeaderTab';
 
 function TabHeader({ setShow }) {
-  // const [time, setTime] = React.useState('')
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
 
-  // const handleTime = () => {
-  //   setTime(time);
-  // }
-  // bien cua modal cong viec con
-  const value = React.useContext(WrapperContext)
   useEffect(() => {
-    value.getTrackingTime(value.taskId)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+    dispatch(getTrackingTime(taskId))
+  }, [dispatch, taskId])
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,14 +23,11 @@ function TabHeader({ setShow }) {
   };
   return (
     <div className="container-progress-tabheader">
-      <ButtonIcon onClick={() => setShow(0)}>
-        <Icon path={mdiChevronLeft } size={1} />
-      </ButtonIcon>
-      <ProgressTitle uppercase bold>Tiến độ công việc</ProgressTitle>
-      <ButtonIcon onClick={handleClickOpen}>
-        <Icon path={mdiSettings} size={1} />
-      </ButtonIcon>
-      {/* modal tao moi cong viec con */}
+      <HeaderTab title="Tiến độ công việc"
+        onClickBack={() => setShow(0)}
+        onClickOpen={handleClickOpen}
+        rightIcon="settings"
+      />
       <ProgressModal isOpen={open} handleClickOpen={handleClickOpen} handleClickClose={handleClickClose} />
     </div>
   );

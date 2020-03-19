@@ -1,251 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiDotsHorizontal } from '@mdi/js';
 import {
-  Avatar,
-  IconButton,
-  Menu,
-  MenuItem,
   ButtonGroup,
   Collapse
 } from '@material-ui/core';
-import ColorTypo from '../../../../../components/ColorTypo';
-import ColorChip from '../../../../../components/ColorChip';
-import ColorButton from '../../../../../components/ColorButton';
-import SearchInput from '../../../../../components/SearchInput';
-// import avatar from '../../../../../assets/avatar.jpg';
-import DemandModal from '../DemandModal';
 import { Scrollbars } from 'react-custom-scrollbars';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
+import { useSelector } from 'react-redux';
+import ColorTypo from '../../../../../components/ColorTypo';
+import ColorButton from '../../../../../components/ColorButton';
+import ListDemand from './ListDemand';
+import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
 `;
 
-// const Container = styled.div`
-//   padding: 0 20px 50px 20px;
-// `;
-
-// const StyledListItem = styled.li`
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const StyledTitleBox = styled.div`
-//   display: flex;
-//   align-items: center;
-//   & > *:not(:first-child) {
-//     margin-left: 5px;
-//   }
-//   & > *:last-child   {
-//     margin-left: auto;
-//   }
-// `;
-
-// const StyledContentBox = styled.div`
-//   margin-left: 20px;
-//   margin-top: 5px;
-//   padding: 8px 10px;
-//   font-weight: 500;
-// `;
-
-const Text = styled(ColorTypo)`
-  font-size: 15px;
-`;
-const Badge = styled(ColorChip)`
-  border-radius: 3px !important;
-`;
-const ButtonIcon = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`;
-const UserAvatar = styled(Avatar)`
-  width: 25px;
-  height: 25px;
-`;
-
-// const StyledMenuDemand = styled.div`
-//   opacity: 0 ;
-//   ${StyledListItem}:hover & {
-//     opacity: 1;
-//   }
-// `
-const CustomListItem = props => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = evt => {
-    setAnchorEl(evt.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <React.Fragment>
-      <li className="styled-list-item">
-        <div className="styled-title-box-dmt">
-          <UserAvatar src={props.item.user_create_avatar} alt="avatar" />
-          <div>
-            <Text variant="body1" bold>
-              {props.item.user_create_name}
-            </Text>
-            <ColorTypo variant="caption">
-              <div className="wrapper-filter-dmt">
-                <Badge
-                  color={props.isDemand ? 'orangelight' : 'bluelight'}
-                  label={props.isDemand ? 'Chỉ đạo' : 'Quyết định'}
-                  size="small"
-                  badge
-                  component="small"
-                ></Badge>
-                <p className="demand-create-time">
-                  lúc {props.item.date_create}
-                </p>
-              </div>
-            </ColorTypo>
-          </div>
-          <div className="styled-menu-demand">
-            <ButtonIcon size="small" onClick={handleClick}>
-              <Icon path={mdiDotsHorizontal} size={1} />
-            </ButtonIcon>
-          </div>
-        </div>
-        <div className="styled-content-box-dmt">
-          <Text>{props.item.content}</Text>
-        </div>
-      </li>
-      <Menu
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        transformOrigin={{
-          vertical: -30,
-          horizontal: 'right'
-        }}
-      >
-        <MenuItem
-          onClick={() => {
-            props.handleClickOpen();
-            setAnchorEl(null);
-          }}
-        >
-          Chỉnh sửa
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            props.handleOpenModalDelete();
-            setAnchorEl(null);
-          }}
-        >
-          Xóa
-        </MenuItem>
-      </Menu>
-    </React.Fragment>
-  );
-};
-
-const StyledList = styled.ul`
-  margin-top: 20px;
-  padding-inline-start: 0 !important;
-  list-style-type: none;
-  & > li {
-    padding: 8px 0;
-  }
-`;
-
-const ListDemand = props => {
-  const [open, setOpen] = React.useState(false);
-  const [isEditDemand] = React.useState(true);
-  const [selectedItem, setSelectedItem] = React.useState({
-    content: '',
-    type: -1
-  });
-  const handleClickEditItem = item => {
-    setSelectedItem(item);
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const [isOpenDelete, setOpenDelete] = React.useState(false);
-  const handleOpenModalDelete = item => {
-    setOpenDelete(true);
-    setSelectedItem({ ...item, command_id: item.id });
-    // setAnchorEl(null);
-  };
-  const handleCloseModalDelete = () => {
-    setOpenDelete(false);
-  };
-  const confirmDelete = () => {
-    props.deleteCommandByCommandId({
-      command_id: selectedItem.id,
-      task_id: props.taskId
-    });
-  };
-  const confirmUpdateCommand = ({ id, content, type }) => {
-    props.updateCommandByTaskId({ id, content, type, taskId: props.taskId });
-  };
-  const searchDemandTabPart = e => {
-    props.searchDemand(e.target.value);
-  };
-  return (
-    <React.Fragment>
-      <SearchInput
-        fullWidth
-        placeholder="Nhập từ khóa..."
-        onChange={e => searchDemandTabPart(e)}
-      />
-      <StyledList>
-        {props.activeArr.map((item, index) => {
-          return (
-            <CustomListItem
-              activeArr={item}
-              key={index}
-              isDemand={item.type !== 0}
-              handleClickOpen={() => handleClickEditItem(item)}
-              handleOpenModalDelete={() => handleOpenModalDelete(item)}
-              item={item}
-              {...props}
-            />
-          );
-        })}
-      </StyledList>
-
-      {/* modal chi dao quyet dinh */}
-      <DemandModal
-        isOpen={open}
-        handleClose={handleClose}
-        // handleOpen={handleClickOpen}
-        isEditDemand={isEditDemand}
-        item={selectedItem}
-        confirmUpdateCommand={confirmUpdateCommand}
-      />
-      <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDelete}
-        handleCloseModalDelete={handleCloseModalDelete}
-        handleOpenModalDelete={handleOpenModalDelete}
-        {...props}
-      />
-    </React.Fragment>
-  );
-};
-
 const StyledButtonGroup = styled(ButtonGroup)`
   margin: 8px 0 20px 0;
 `;
 
 function TabBody(props) {
+  const commandItems = useSelector(state => state.taskDetail.taskCommand.commandItems);
+  const command = useSelector(state => state.taskDetail.taskCommand.command);
+  const decisionItems = useSelector(state => state.taskDetail.taskCommand.decisionItems);
   const [value, setValue] = React.useState(0);
 
   return (
@@ -254,43 +32,51 @@ function TabBody(props) {
         <StyledButtonGroup fullWidth variant="text">
           <ColorButton onClick={() => setValue(0)}>
             {value === 0 ? (
-              <ColorTypo bold>Tất cả ({props.command.length})</ColorTypo>
+              <ColorTypo bold>Tất cả ({command.length})</ColorTypo>
             ) : (
-              <ColorTypo color="gray">
-                Tất cả ({props.command.length})
+                <ColorTypo color="gray">
+                  Tất cả ({command.length})
               </ColorTypo>
-            )}
+              )}
           </ColorButton>
           <ColorButton onClick={() => setValue(1)}>
             {value === 1 ? (
-              <ColorTypo bold>Chỉ đạo ({props.commandItems.length})</ColorTypo>
+              <ColorTypo bold>Chỉ đạo ({commandItems.length})</ColorTypo>
             ) : (
-              <ColorTypo color="gray">
-                Chỉ đạo ({props.commandItems.length})
+                <ColorTypo color="gray">
+                  Chỉ đạo ({commandItems.length})
               </ColorTypo>
-            )}
+              )}
           </ColorButton>
           <ColorButton onClick={() => setValue(2)}>
             {value === 2 ? (
               <ColorTypo bold>
-                Quyết định ({props.decisionItems.length})
+                Quyết định ({decisionItems.length})
               </ColorTypo>
             ) : (
-              <ColorTypo color="gray">
-                Quyết định ({props.decisionItems.length})
+                <ColorTypo color="gray">
+                  Quyết định ({decisionItems.length})
               </ColorTypo>
-            )}
+              )}
           </ColorButton>
         </StyledButtonGroup>
+        {command.length?
+        <React.Fragment>
         <Collapse in={value === 0} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.command} />
+          <ListDemand {...props} activeArr={command} />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.commandItems} />
+          <ListDemand {...props} activeArr={commandItems} />
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={props.decisionItems} />
+          <ListDemand {...props} activeArr={decisionItems} />
         </Collapse>
+        </React.Fragment>
+        :
+        <NoDataPlaceHolder
+            src="/images/no-command.png"
+            title="Chưa có chỉ đạo / Quyết định nào được tạo! Click + để tạo mới."
+          ></NoDataPlaceHolder> }
       </div>
     </Body>
   );

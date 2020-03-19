@@ -158,14 +158,6 @@ import { SORT_GROUP_TASK } from '../constants/actions/groupTask/sortGroupTask';
 import { sortGroupTask } from './groupTask/sortGroupTask';
 import { GET_ALL_GROUP_TASK } from '../constants/actions/groupTask/getAllGroupTask';
 import { getAllGroupTask } from './groupTask/getAllGroupTask';
-import { LIST_TASK } from '../constants/actions/task/listTask';
-import { listTask } from './task/listTask';
-import { CREATE_TASK } from '../constants/actions/task/createTask';
-import { createTask } from './task/createTask';
-import { DELETE_TASK } from '../constants/actions/task/deleteTask';
-import { deleteTask } from './task/deleteTask';
-import { SORT_TASK } from '../constants/actions/task/sortTask';
-import { sortTask } from './task/sortTask';
 import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from '../constants/actions/register/inviteOtherPeopleCreateAccount';
 import { inviteOtherPeopleCreateAccount } from './register/inviteOtherPeopleCreateAccount';
 // ==================================
@@ -288,10 +280,7 @@ function* rootSaga() {
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
-  yield takeLatest(LIST_TASK, listTask);
-  yield takeEvery(CREATE_TASK, createTask);
-  yield takeEvery(DELETE_TASK, deleteTask);
-  yield takeEvery(SORT_TASK, sortTask);
+  yield takeLeading(taskDetailType.DELETE_TASK_REQUEST, taskDetailSaga.deleteTask);
   yield takeEvery(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, inviteOtherPeopleCreateAccount);
 
   // Hoang - end
@@ -390,6 +379,14 @@ function* rootSaga() {
     taskDetailType.DELETE_REMIND_REQUEST,
     taskDetailSaga.deleteRemind
   );
+  yield takeLeading(
+    taskDetailType.PIN_REMIND_REQUEST,
+    taskDetailSaga.pinRemind
+  );
+  yield takeLeading(
+    taskDetailType.UNPIN_REMIND_REQUEST,
+    taskDetailSaga.unpinRemind
+  );
 
   // Media Image File
   yield takeLeading(
@@ -457,6 +454,7 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.POST_TASK_REQUEST, taskDetailSaga.createTask);
   // List Group Task 
   yield takeLeading(taskDetailType.GET_LIST_GROUP_TASK_REQUEST, taskDetailSaga.getListGroupTask);
+  yield takeLeading(taskDetailType.GET_LIST_OFFER_REQUEST, taskDetailSaga.getListOffer);
   // get project group 
   // yield takeLeading(taskDetailType.GET_PROJECT_GROUP_LISTPART_REQUEST, taskDetailSaga.getProjectGroup);
   // get project detail
@@ -469,6 +467,10 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.STATIC_TASK_REQUEST, taskDetailSaga.getStaticTask);
   //updateComplete
   yield takeLeading(taskDetailType.UPDATE_COMPLETE_REQUEST,taskDetailSaga.updateComplete);
+  // pin
+  yield takeLeading(taskDetailType.PIN_TASK_REQUEST,taskDetailSaga.pinTask);
+  yield takeLeading(taskDetailType.UN_PIN_TASK_REQUEST,taskDetailSaga.unPinTask);
+
 };
 
 export default rootSaga;

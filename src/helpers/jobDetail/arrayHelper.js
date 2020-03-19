@@ -32,11 +32,14 @@ const OFFER_STATUS = {
 export const filterPendingItem = arr => arr.filter(item => item.status === OFFER_STATUS.PENDING)
 export const filterApprovedItem = arr => arr.filter(item => item.status === OFFER_STATUS.APPROVED)
 
-export const DEFAULT_OFFER_ITEM = { offer_id: "", content: "", user_hander: [], files: [] }
+export const DEFAULT_OFFER_ITEM = {
+    offer_id: "", content: "", user_hander: [],
+    files: [], priority: 0, offer_group_id: null,
+}
 
 // Remove duplicate user (by their id)
 export const getIndividualHandleUsers =
-    arr => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])
+    (arr = []) => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])
 
 export const filterTaskByType = (groups, idx) => {
     return idx === 0
@@ -45,8 +48,12 @@ export const filterTaskByType = (groups, idx) => {
 }
 
 export const searchTaskByTaskName = (groups, keyword) => {
+    const filteredGroup = groups.filter(({ tasks }) => tasks.length);
     return keyword
-        ? groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase())) }))
+        ? filteredGroup.map(item => ({
+            ...item,
+            tasks: item.tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase()))
+        }))
         : groups
 }
 export const searchProjectByProjectName = (groups, keyword) => {

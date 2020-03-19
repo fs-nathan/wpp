@@ -1,0 +1,18 @@
+.timeSelect {
+  min-width: 120px;
+  margin-right: 30px;
+  height: 36px;
+  &::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #fff;
+  }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import clamp from 'lodash/clamp'
 
 const Container = styled(({ color, ...rest }) => <div {...rest} />)`
   display: flex;
@@ -29,10 +30,12 @@ const FrontBar = styled(({ percentDone, color, ...rest }) => <div {...rest} />)`
   background-color: ${props => props.color};
 `;
 
+const expectedPercent = props => clamp(props.percentTarget, 0, 100);
+
 const Target = styled(({ percentTarget, color, ...rest }) => <span {...rest} />)`
   position: absolute;
   top: 0;
-  left: ${props => props.percentTarget}%;
+  left: calc(${expectedPercent}% - 4px);
   height: 8px;
   width: 8px;
   border-radius: 999px;
@@ -43,8 +46,8 @@ function SimpleSmallProgressBar({ percentDone, percentTarget, color, targetColor
   return (
     <Container color={color}>
       <BackBar>
-        <FrontBar percentDone={percentDone} color={color}/>
-        {percentTarget && <Target percentTarget={percentTarget} color={targetColor} />}
+        <FrontBar percentDone={percentDone} color={color} />
+        {percentTarget !== null && <Target percentTarget={percentTarget} color={targetColor} />}
       </BackBar>
       <span>{percentDone}%</span>
     </Container>

@@ -1,0 +1,64 @@
+.offerTabItem {
+  position: relative;
+  &--content {
+    font-size: 14px;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 2em;
+  }
+  &--user {
+    display: flex;
+    color: #000000;
+  }
+  &--vote {
+    margin: auto 8px;
+  }
+  &--avatar {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+  }
+  &--priority {
+    margin-left: 8px;
+    padding: 0px 8px;
+    color: #ffffff;
+    &__urgent {
+      background-color: red;
+    }
+    &__nomal {
+      background-color: #cccccc;
+    }
+  }
+  &--status {
+    display: flex;
+  }
+  &--button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    &:hover {
+      background: none;
+    }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+  &--statusIcon {
+    padding: 0px 12px;
+    svg {
+      fill: #ffffff;
+    }
+    &__rejected {
+      background-color: red;
+    }
+    &__approve {
+      background-color: greenyellow;
+    }
+    &__normal {
+      background-color: #cccccc;
+    }
+  }
+}

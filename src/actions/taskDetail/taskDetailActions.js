@@ -181,6 +181,42 @@ export const deleteRemindFail = (error) => ({
     type: types.DELETE_REMIND_FAIL,
     error: error
 });
+// ======= pin remind
+export const pinRemind = ({ remind_id, taskId }) => ({
+    type: types.PIN_REMIND_REQUEST,
+    payload: {
+        remind_id,
+        taskId
+    }
+});
+
+export const pinRemindSuccess = (remind_id) => ({
+    type: types.PIN_REMIND_SUCCESS,
+    payload: remind_id
+});
+
+export const pinRemindFail = (error) => ({
+    type: types.PIN_REMIND_FAIL,
+    error: error
+});
+// ======= unPin remind
+export const unPinRemind = ({ remind_id, taskId }) => ({
+    type: types.UNPIN_REMIND_REQUEST,
+    payload: {
+        remind_id,
+        taskId
+    }
+});
+
+export const unPinRemindSuccess = (remind_id) => ({
+    type: types.UNPIN_REMIND_SUCCESS,
+    payload: remind_id
+});
+
+export const unPinRemindFail = (error) => ({
+    type: types.UNPIN_REMIND_FAIL,
+    error: error
+});
 //  offer
 export const getOffer = ({ taskId }) => ({
     type: types.GET_OFFER_REQUEST,
@@ -644,6 +680,22 @@ export const getListGroupTaskFail = (error) => ({
     error: error,
 });
 
+// GET LIST GROUP OFFER
+export const getListOffer = (payload) => ({
+    type: types.GET_LIST_OFFER_REQUEST,
+    payload
+});
+
+export const getListOfferSuccess = (payload) => ({
+    type: types.GET_LIST_OFFER_SUCCESS,
+    payload
+});
+
+export const getListOfferFail = (error) => ({
+    type: types.GET_LIST_OFFER_FAIL,
+    error: error,
+});
+
 // Create Task
 export const createTask = (payload) => ({
     type: types.POST_TASK_REQUEST,
@@ -866,5 +918,33 @@ export const deleteTaskSuccess = payload => ({
 })
 export const deleteTaskFail = error => ({
     type: types.DELETE_TASK_FAIL,
+    error: error
+})
+
+// Pin TASK
+export const pinTaskAction = payload => ({
+    type: types.PIN_TASK_REQUEST,
+    payload
+})
+export const pinTaskSuccess = payload => ({
+    type: types.PIN_TASK_SUCCESS,
+    payload
+})
+export const pinTaskFail = error => ({
+    type: types.PIN_TASK_FAIL,
+    error: error
+})
+
+// UnPin TASK
+export const unPinTaskAction = payload => ({
+    type: types.UN_PIN_TASK_REQUEST,
+    payload
+})
+export const unPinTaskSuccess = payload => ({
+    type: types.UN_PIN_TASK_SUCCESS,
+    payload
+})
+export const unPinTaskFail = error => ({
+    type: types.UN_PIN_TASK_FAIL,
     error: error
 })
