@@ -229,7 +229,7 @@ const OfferModal = (props) => {
         <Typography className="offerModal--title" >Chọn mức độ</Typography>
         <CommonPriorityForm
           labels={priorityList}
-          priority={tempSelectedItem.priority.value}
+          priority={tempSelectedItem.priority ? tempSelectedItem.priority.value : ''}
           handleChangeLabel={priorityItem =>
             setParams('priority', priorityItem)
           }

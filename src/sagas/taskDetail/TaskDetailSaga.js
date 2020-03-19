@@ -408,9 +408,10 @@ async function doDeleteOffer(payload) {
 function* deleteOffer(action) {
   try {
     // console.log("offer_id:::::::", action.payload);
-    const res = yield call(doDeleteOffer, { offer_id: action.payload.offer_id })
+    const { offer_id, taskId } = action.payload
+    const res = yield call(doDeleteOffer, { offer_id, task_id: taskId })
     yield put(actions.deleteOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: action.payload.taskId }))
+    yield put(actions.getOffer({ taskId }))
   } catch (error) {
     yield put(actions.deleteOfferFail(error))
   }
