@@ -14,6 +14,7 @@ import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper'
 import { deleteOffer, } from 'actions/taskDetail/taskDetailActions';
 import ListOffer from './ListOffer';
 import OfferDetail from './OfferDetail';
+import ApproveOfferDialog from './ApproveOfferDialog';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 
 const Body = styled(Scrollbars)`
@@ -38,6 +39,7 @@ function TabBody(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [openApprove, setOpenApprove] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [isOffer] = React.useState(true);
@@ -70,6 +72,11 @@ function TabBody(props) {
     setSelectedItem({ ...item, offer_id: item.id })
     setOpenDetail(true)
   }
+  const handleClickApprove = item => {
+    setSelectedItem({ ...item, offer_id: item.id })
+    setOpenApprove(true);
+    setOpenDetail(false);
+  };
 
   return (
     <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -159,7 +166,14 @@ function TabBody(props) {
           item={selectedItem}
           handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
           handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
-          handleClickApprove={(data) => handleClickEditItem(selectedItem)}
+          handleClickApprove={(data) => handleClickApprove(selectedItem)}
+        />
+        <ApproveOfferDialog
+          isOpen={openApprove}
+          handleClickClose={() => setOpenApprove(false)}
+          handleClickOpen={() => setOpenApprove(true)}
+          item={selectedItem}
+          handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
         />
       </div>
     </Body>

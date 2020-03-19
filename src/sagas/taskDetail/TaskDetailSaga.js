@@ -430,6 +430,17 @@ async function doUploadDocumentToOffer(payload) {
   }
 }
 
+function* approveOffer(action) {
+  try {
+    // console.log("offer_id:::::::", action.payload);
+    const res = yield call(apiService.post, 'task/approve-offer', action.payload)
+    yield put(actions.deleteOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: action.payload.task_id }))
+  } catch (error) {
+    yield put(actions.deleteOfferFail(error))
+  }
+}
+
 function* uploadDocumentToOffer(action) {
   try {
     const res = yield call(doUploadDocumentToOffer, action.payload.data)
@@ -1313,6 +1324,7 @@ export {
   getOffer,
   createOffer,
   deleteOffer,
+  approveOffer,
   updateOffer,
   uploadDocumentToOffer,
   deleteDocumentToOffer,

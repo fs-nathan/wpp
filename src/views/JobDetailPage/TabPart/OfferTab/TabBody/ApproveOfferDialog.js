@@ -1,122 +1,83 @@
 import React from 'react';
-import findIndex from 'lodash/findIndex';
-import { Button, IconButton, TextField, Typography, Avatar, Chip } from '@material-ui/core';
+import clsx from 'clsx';
+import { mdiAccountArrowRight, mdiCancel, mdiCheck } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
+import { Button, IconButton, TextField, Typography, Avatar, Chip } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper'
-import { uploadDocumentToOffer, deleteDocumentToOffer, createOffer, updateOffer } from 'actions/taskDetail/taskDetailActions';
+import { approveOffer } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
 
 import './styles.scss';
-import OfferFile from './OfferFile';
-import AddOfferMemberModal from '../AddOfferMemberModal';
-import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
-import CustomSelect from 'components/CustomSelect';
-import { priorityList } from '../data';
 
 const ApproveOfferDialog = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const members = useSelector(state => state.taskDetail.taskMember.member);
-  const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
-  const listGroupOffer = offers.map(off => ({ value: off.id, label: off.name }))
-  const defaultOffer = { ...DEFAULT_OFFER_ITEM, offer_group_id: listGroupOffer[0], priority: priorityList[0] }
-  const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
-  const [handlers, setHandlers] = React.useState([])
-  const [monitors, setMonitors] = React.useState([])
-  const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
-  const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
+  const [type, setType] = React.useState(0);
+  const [description, setDescription] = React.useState('');
   const { item } = props;
+  const {
+    user_create_avatar,
+    user_create_name,
+    date_create,
+    priority_name = '',
+    content,
+    id,
+  } = item;
 
-  React.useEffect(() => {
-    if (item) {
-      const { user_can_handers, user_monitors,
-        priority_code,
-        id } = item;
-      if (user_can_handers) {
-        const handlerIndexes = user_can_handers.map(
-          handler => findIndex(members, member => member.id === handler.id))
-        setHandlers(handlerIndexes.filter(idx => idx !== -1))
-      }
-      if (user_monitors) {
-        const monitorsIndexes = user_monitors.map(monitor => findIndex(members, member => member.id === monitor.id))
-        setMonitors(monitorsIndexes.filter(idx => idx !== -1))
-      }
-      if (priority_code) item.priority = priorityList[priority_code];
-      if (id) item.offer_id = id;
-      setTempSelectedItem(item)
-    }
-  }, [item, members])
-
-  const setParams = (nameParam, value) => {
-    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
-  }
-
-
-  function openAddMonitorsDialog() {
-    setOpenAddMonitor(true)
-  }
-
-  function closeAddMonitorsDialog() {
-    setOpenAddMonitor(false)
+  function onClickApproveOffer() {
+    dispatch(approveOffer({ offer_id: id, content: description, status: type, task_id: taskId }));
   }
 
   return (
     <DialogWrap
-      title={props.isOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
+      title={'Phê duyệt đề xuất'}
       isOpen={props.isOpen}
       handleClickClose={props.handleClickClose}
-      successLabel={props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
-      onClickSuccess={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
+      successLabel={"Hoàn Thành"}
+      onClickSuccess={onClickApproveOffer}
     >
       <React.Fragment>
-        <Typography className="offerModal--title" >Tiêu đề</Typography>
-        <TextField
-          className="offerModal--titleText"
-          placeholder="Nhập tiêu đề đề xuất"
-          value={tempSelectedItem.title}
-          onChange={e => setParams("title", e.target.value)}
-        />
-
-        <Typography className="offerModal--title" >Chọn nhóm đề xuất</Typography>
-        <CustomSelect
-          options={listGroupOffer}
-          value={tempSelectedItem.offer_group_id}
-          onChange={(groupOffer) => setParams('offer_group_id', groupOffer)}
-        />
-        <Typography className="offerModal--title" >Người phê duyệt ({handlers.length})</Typography>
-        <div>
-          {handlers.map((index) =>
-            <Chip
-              key={index}
-              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-              label={members[index].name}
-              onDelete={handleDeleteHandler(index)}
-            />
-          )}
-          <IconButton onClick={openAddHandlersDialog}>
-            <Icon size={1} path={mdiPlusCircleOutline} />
-          </IconButton>
-          <AddOfferMemberModal
-            isOpen={isOpenAddHandler}
-            value={handlers}
-            onChange={setHandlers}
-            handleClickClose={closeAddHandlersDialog}
-            members={members}
-          />
+        <div className="approve--user">
+          <Avatar className="offerDetail--avatar" src={user_create_avatar} alt='avatar' />
+          <Typography className="offerDetail--title" component="div">
+            {user_create_name}
+            <div className="offerDetail--createdAt">Đã tạo đề xuất lúc {date_create}</div>
+            <div className={clsx("offerDetail--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`)}>
+              {priority_name}
+            </div>
+          </Typography>
         </div>
-        <Typography className="offerModal--title" >Nội dung phê duyệt</Typography>
+        <Typography className="approve--content" >{content}</Typography>
+        <Typography className="approve--title" >Nội dung phê duyệt</Typography>
+        <div className="approve--select">
+          <div className="approve--option" onClick={() => setType(0)}>
+            <div className={clsx("approve--option-icon", { "approve--option__green": type === 0 })} >
+              <Icon path={mdiCheck} size={2} />
+            </div>
+            <div className={clsx("approve--option-text", { "approve--option__selected": type === 0 })} >
+              Đồng ý
+          </div>
+          </div>
+          <div className="approve--option" onClick={() => setType(1)}>
+            <div className={clsx("approve--option-icon", { "approve--option__red": type === 1 })} >
+              <Icon path={mdiCancel} size={2} />
+            </div>
+            <div className={clsx("approve--option-text", { "approve--option__selected": type === 1 })} >
+              Từ chối
+          </div>
+          </div>
+        </div>
+        <Typography className="approve--title" >Mô tả thêm (nếu có)</Typography>
         <TextField
-          className="offerModal--content"
+          className="approve--description"
           fullWidth
           multiline
-          rows="7"
+          rows="6"
           margin="normal"
           placeholder="Nhập nội dung"
           variant="outlined"
-          value={tempSelectedItem ? tempSelectedItem.content : ""}
-          onChange={e => setParams("content", e.target.value)}
+          value={description}
+          onChange={e => setDescription(e.target.value)}
         />
       </React.Fragment>
     </DialogWrap>

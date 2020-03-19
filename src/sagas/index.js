@@ -322,6 +322,10 @@ function* rootSaga() {
     taskDetailSaga.deleteOffer
   );
   yield takeLeading(
+    taskDetailType.APPROVE_OFFER_REQUEST,
+    taskDetailSaga.approveOffer
+  );
+  yield takeLeading(
     taskDetailType.UPLOAD_DOCUMENT_TO_OFFER_REQUEST,
     taskDetailSaga.uploadDocumentToOffer
   );

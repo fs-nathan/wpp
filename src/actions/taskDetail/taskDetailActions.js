@@ -279,6 +279,21 @@ export const deleteOfferFail = (error) => ({
     type: types.DELETE_OFFER_FAIL,
     error: error,
 });
+
+export const approveOffer = payload => ({
+    type: types.APPROVE_OFFER_REQUEST,
+    payload
+});
+
+export const approveOfferSuccess = (payload) => ({
+    type: types.APPROVE_OFFER_SUCCESS,
+    payload
+});
+
+export const approveOfferFail = (error) => ({
+    type: types.APPROVE_OFFER_FAIL,
+    error: error,
+});
 // ==== upload document to offer
 export const uploadDocumentToOffer = (data, cb, taskId) => ({
     type: types.UPLOAD_DOCUMENT_TO_OFFER_REQUEST,

@@ -175,3 +175,55 @@
     }
   }
 }
+
+.approve {
+  &--content {
+    margin: 20px 0;
+    min-width: 500px;
+  }
+  &--user {
+    display: flex;
+  }
+  &--select {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  &--option {
+    margin: 4px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    color: #dddddd;
+    padding: 4px;
+     &-icon {
+      padding: 4px;
+      background-color: #dddddd;
+      text-align: center;
+    }
+    &-text {
+      padding: 20px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    &__selected {
+      color: #000000;
+    }
+    svg {
+      fill: #999999;
+    }
+    &__red {
+      background-color: red;
+      svg {
+        fill: #ffffff;
+      }
+    }
+    &__green {
+      background-color: green;
+      svg {
+        fill: #ffffff;
+      }
+    }
+  }
+  &--title {
+    font-weight: bold;
+  }
+}
