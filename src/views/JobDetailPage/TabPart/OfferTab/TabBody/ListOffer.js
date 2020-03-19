@@ -35,6 +35,7 @@ const ListOffer = (props) => {
               {...props}
               key={item.id}
               offer={item}
+              handleClickDetail={props.onClickDetail}
               handleClickOpen={() => {
                 props.handleClickEditItem(item)
               }}

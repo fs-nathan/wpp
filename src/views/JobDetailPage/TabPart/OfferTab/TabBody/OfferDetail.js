@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -17,38 +18,40 @@ import './styles.scss';
 
 function OfferDetail({
   isOpen,
-  handleCloseModal,
-  handleOpenEdit,
+  handleClickClose,
+  handleOpenModalDelete,
+  handleClickEditItem,
+  handleClickApprove,
   item
 }) {
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   const {
     user_create_avatar,
     user_create_name,
-    status,
+    priority_name = '',
     content,
-    created_at,
-    handlers = [],
-    members = [],
-    monitors = [],
-    results = [],
+    date_create,
+    user_can_handers = [],
+    user_monitors = [],
+    data_handers = [],
   } = item;
-  console.log('monitors', monitors)
   return (
     <div>
       <Dialog
         className="offerDetail"
         open={isOpen}
-        onClose={handleCloseModal}
+        onClose={handleClickClose}
       >
         <DialogTitle disableTypography>
+          <Avatar className="offerDetail--avatar" src={user_create_avatar} alt='avatar' />
           <Typography className="offerDetail--title" component="div">
-            <Avatar className="offerDetail--avatar" src={user_create_avatar} alt='avatar' />
             {user_create_name}
-            <div>{created_at}</div>
-            {status}
+            <div className="offerDetail--createdAt">Đã tạo đề xuất lúc {date_create}</div>
+            <div className={clsx("offerDetail--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`)}>
+              {priority_name}
+            </div>
           </Typography>
-          <IconButton aria-label="close" className="offerDetail--closeButton" onClick={handleCloseModal}>
+          <IconButton aria-label="close" className="offerDetail--closeButton" onClick={handleClickClose}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -57,38 +60,51 @@ function OfferDetail({
             {content}
           </DialogContentText>
           <div className="offerDetail--handler">
-            {handlers.map((index) =>
+            <div className="offerDetail--label">
+              Phê duyệt ({user_can_handers.length})
+          </div>
+            {user_can_handers.map(({ avatar }, index) =>
               <Avatar
                 className="offerDetail--avatarIcon"
                 key={index}
-                alt="avatar" src={members[index].avatar}
+                alt="avatar" src={avatar}
               />
             )}
           </div>
           <div className="offerDetail--monitor">
-            {monitors.map((index) =>
+            <div className="offerDetail--label">
+              Giám sát ({user_monitors.length})
+          </div>
+            {user_monitors.map(({ avatar }, index) =>
               <Avatar
                 className="offerDetail--avatarIcon"
                 key={index}
-                alt="avatar" src={members[index].avatar}
+                alt="avatar" src={avatar}
               />
             )}
           </div>
-            Kết quả phê duyệt
-            {
-            results.map((res, index) =>
+          <div className="offerDetail--result">
+            Kết quả phê duyệt ({data_handers.length})
+          </div>
+          {
+            data_handers.map((res, index) =>
               <OfferDetailItem
                 {...res}
                 key={index}
+                handleOpenModalDelete={handleOpenModalDelete}
+                handleClickOpen={handleClickEditItem}
               />
             )
           }
         </DialogContent>
         <DialogActions>
+          <Button autoFocus onClick={handleClickClose} style={{ color: '#222222' }} >
+            Thoát
+        </Button>
           <Button
             style={{ color: groupActiveColor }}
             autoFocus
-            onClick={handleOpenEdit} > Chỉnh sửa </Button>
+            onClick={handleClickApprove} > Phê duyệt </Button>
         </DialogActions>
       </Dialog>
     </div>

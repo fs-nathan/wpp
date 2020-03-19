@@ -67,10 +67,8 @@ function TabBody(props) {
   };
 
   function onClickDetail(item) {
-    return () => {
-      setSelectedItem({ ...item, offer_id: item.id })
-      setOpenDetail(true)
-    }
+    setSelectedItem({ ...item, offer_id: item.id })
+    setOpenDetail(true)
   }
 
   return (
@@ -113,7 +111,7 @@ function TabBody(props) {
                   handleClickEditItem={(data) => handleClickEditItem(data)}
                   {...props}
                   offer={offer}
-                  onClick={onClickDetail}
+                  onClickDetail={onClickDetail}
                 />
               </Collapse>
               <Collapse in={value === 1} mountOnEnter unmountOnExit>
@@ -124,6 +122,7 @@ function TabBody(props) {
                   handleClickEditItem={(data) => handleClickEditItem(data)}
                   {...props}
                   offer={approvedItems}
+                  onClickDetail={onClickDetail}
                 />
               </Collapse>
               <Collapse in={value === 2} mountOnEnter unmountOnExit>
@@ -134,6 +133,7 @@ function TabBody(props) {
                   handleClickEditItem={(data) => handleClickEditItem(data)}
                   {...props}
                   offer={pendingItems}
+                  onClickDetail={onClickDetail}
                 />
               </Collapse>
             </React.Fragment>
@@ -157,6 +157,9 @@ function TabBody(props) {
           handleClickClose={() => setOpenDetail(false)}
           handleClickOpen={() => setOpenDetail(true)}
           item={selectedItem}
+          handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
+          handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
+          handleClickApprove={(data) => handleClickEditItem(selectedItem)}
         />
       </div>
     </Body>

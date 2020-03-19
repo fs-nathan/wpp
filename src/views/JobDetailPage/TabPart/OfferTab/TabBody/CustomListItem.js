@@ -37,6 +37,11 @@ const CustomListItem = (props) => {
     setAnchorEl(null);
   }
 
+  function onClickDetail() {
+    props.handleClickDetail(props.offer);
+    setAnchorEl(null)
+  }
+
   return (
     <React.Fragment>
       <li className="offerTabItem">
@@ -70,6 +75,7 @@ const CustomListItem = (props) => {
           horizontal: 'right',
         }}
       >
+        <MenuItem onClick={onClickDetail}>Chi tiết</MenuItem>
         <MenuItem onClick={() => {
           props.handleClickOpen()
           setAnchorEl(null)

@@ -62,3 +62,116 @@
     }
   }
 }
+
+.offerDetail {
+  .MuiDialogTitle-root {
+    display: flex;
+    border-bottom: 1px solid #cccccc;
+  }
+  .MuiDialogActions-root {
+    border-top: 1px solid #cccccc;
+  }
+  &--avatar {
+    margin-right: 8px;
+  }
+  &--title {
+    font-weight: bold;
+  }
+  &--priority {
+    padding: 0px 8px;
+    color: #ffffff;
+    font-weight: normal;
+    width: fit-content;
+  }
+  &--createdAt {
+    font-weight: normal;
+  }
+  &--closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  &--content {
+    margin: 20px 0 30px;
+  }
+  &--label {
+    color: #cccccc;
+    margin: 4px;
+  }
+  &--result {
+    color: #cccccc;
+    margin: 14px 0;
+  }
+  &--avatarIcon {
+    width: 20px;
+    height: 20px;
+    margin: auto 4px;
+  }
+  &--handler {
+    display: flex;
+    color: #cccccc;
+    border-top: 1px solid #cccccc;
+    padding: 14px 18px;
+  }
+  &--monitor {
+    display: flex;
+    color: #cccccc;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    padding: 14px 18px;
+    margin-bottom: 8px;
+  }
+}
+
+.offerDetailItem {
+  display: flex;
+  margin: 8px;
+  &--avatarIcon {
+    margin: 4px;
+  }
+  &--data {
+    background-color: #cccccc;
+    padding: 8px;
+  }
+  &--itemName {
+    font-weight: bold;
+  }
+  &--itemRole {
+    font-weight: normal;
+    color: #666666;
+  }
+  &--itemStatus {
+    &__ok {
+      color: green;
+    }
+    &__denied {
+      color: red;
+    }
+  }
+  &--itemComment {
+  }
+  &--iconStatus {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    svg {
+      fill: #ffffff;
+    }
+    &__ok {
+      background-color: green;
+    }
+    &__denied {
+      background-color: red;
+    }
+  }
+  &--buttonMore {
+    &:hover {
+      background: none;
+    }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+}
