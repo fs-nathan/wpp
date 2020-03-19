@@ -11,11 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import { Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/core';
 import styled from 'styled-components';
 import Checkbox from '@material-ui/core/Checkbox';
+import { useSelector, useDispatch } from 'react-redux';
 import AddRoleModal from './AddRoleModal';
 import ModalDeleteConfirm from '../../TabPart/ModalDeleteConfirm';
-import { WrapperContext } from '../../index';
-
-
+import { updateRole, deleteRole, createRole } from '../../../../actions/taskDetail/taskDetailActions';
 
 const styles = theme => ({
   root: {
@@ -49,15 +48,6 @@ const AddRoleButton = styled(Button)`
      background: #125fdb;
    }
   `
-// const HandleButton = styled.div`
-//     display: flex;  
-//     justify-content: flex-end;
-//   & > *:last-child {
-//     background: #e63737;
-//     margin-left: 12px;
-//     color: #fff;
-// }
-// `
 
 const UpdateDeleteButton = styled(Button)`
    justify-content: center;
@@ -98,6 +88,8 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 let array = []
 function RoleMemberModal(props) {
+  const dispatch = useDispatch();
+  const userRoles = useSelector(state => state.taskDetail.taskMember.user_roles);
 
   // const rows = [
   //   createData('Nhà đầu tư 2', 'asdassdd'),
@@ -120,62 +112,61 @@ function RoleMemberModal(props) {
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const handleOpenModalDelete = (id) => {
     setSelectedItem(id);
-
     setOpenDelete(true);
-
   };
-  const value = React.useContext(WrapperContext)
+
   const handleCloseModalDelete = () => {
     setOpenDelete(false);
   };
   const addData = (name, description) => {
-    value.createRoleTask(name, description)
+    dispatch(createRole({ name, description }))
   }
   const confirmDelete = () => {
-    value.deleteRoleTask(selectedItem)
+    dispatch(deleteRole({ user_role_id: selectedItem }))
   }
-  const editData = (id, name, des) => {
-    value.updateRoleTask(id, name, des)
+
+  const editData = (id, name, description) => {
+    dispatch(updateRole({ user_role_id: id, name, description }))
   }
   const [valueNameEdit, setValueNameEdit] = React.useState('')
   const [valueDesEdit, setValueDesEdit] = React.useState('')
   const [valueIdEdit, setValueIdEdit] = React.useState('')
   // const [check, setCheck] = React.useState(true)
-  function setData(data,check) {
-    if(check===false){
-    for (var i = 0; i < array.length+1; i++) {
-      if (array[i] === data) {
-        array.splice(i, 1)
+  function setData(data, check) {
+    if (check === false) {
+      for (var i = 0; i < array.length + 1; i++) {
+        if (array[i] === data) {
+          array.splice(i, 1)
+        }
       }
-    }}
-    else{
+    }
+    else {
       array.push(data)
     }
     // console.log("arrrrr",array);
   }
-  
+
   function test(array) {
     props.setListData(array)
   }
   const setArray = () => {
     array = []
   }
-  
+
 
 
   let list
-  if (value.userRoles) {
-    list = value.userRoles.map((item, key) => {
+  if (userRoles) {
+    list = userRoles.map((item, key) => {
       return (
-
         <TableRow
           key={key}
         >
           <TableCell component="th" scope="row">
-            <Checkbox 
-            onChange={(e) => {
-              setData(item.name,e.target.checked)
-            }}
+            <Checkbox
+              onChange={(e) => {
+                setData(item.name, e.target.checked)
+              }}
             />
           </TableCell>
           <TableCell style={{ fontWeight: 'bold' }} >{item.name}</TableCell>

@@ -5,6 +5,7 @@
   &:hover {
     cursor: pointer;
   }
+  border: none;
   & > * {
     &:not(:last-child) {
       margin-right: 10px;
@@ -31,6 +32,7 @@
   &-selected {
     @include view_ProjectGroup_Table_All___menu-item;
     color: #05b50c;
+    background: #05b50c1c;
     & > svg {
       fill: #05b50c;
     }

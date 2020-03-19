@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   ListItemText, ListSubheader, Button,
   TableCell, Table, TableHead, TableBody, TableRow,
-  Menu, MenuItem, IconButton,
+  Menu, MenuItem, IconButton, CircularProgress
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import {
@@ -64,9 +64,13 @@ const MiddleTableCell = ({ className = '', ...props }) =>
     {...props}
   />;
 
-const AddButton = ({ className = '', ...props }) => 
+const AddButton = ({ className = '', disabled, ...props }) => 
   <Button 
-    className={`view_Project_MemberSetting_Modal___add-button ${className}`}
+    variant="outlined"
+    className={`${disabled 
+      ? 'view_Project_MemberSetting_Modal___add-button-disabled' 
+      : 'view_Project_MemberSetting_Modal___add-button'} ${className}`}
+    disabled={disabled}
     {...props}
   />;
 
@@ -147,11 +151,16 @@ function UserFreeRoomList({
               }
             />
             <AddButton
-              size='small'
-              variant='outlined'
               onClick={evt => onAddMember(user)}
               disabled={loading}
             >
+              {loading && (
+                <CircularProgress
+                  size={16}
+                  className="margin-circular"
+                  color="white"
+                />
+              )}
               Thêm
             </AddButton>
           </CustomListItem>
@@ -214,14 +223,15 @@ function MemberSetting({
     <CustomModal
       title={`Quản lý thành viên dự án`}
       fullWidth={true}
-      maxWidth='lg'
       open={open}
       setOpen={setOpen}
       confirmRender={null}
       onConfirm={() => null}
       cancleRender={() => 'Thoát'}
       height='tall'
+      maxWidth='lg'
       columns={2}
+      loading={members.loading}
       left={{
         title: 'Danh sách thành viên',
         content: () => 
@@ -338,10 +348,13 @@ function MemberSetting({
                 <Icon path={mdiAccountConvert} size={0.7} /> Gán vào công việc được tạo
               </CustomMenuItem>
               <CustomMenuItem
-                onClick={evt => handleOpenModal('ALERT', {
-                  content: 'Bạn chắc chắn muốn loại trừ thành viên?',
-                  onConfirm: () => handleRemoveMember(curMemberSetting)
-                })}
+                onClick={evt => {
+                  setAnchorEl(null);
+                  handleOpenModal('ALERT', {
+                    content: 'Bạn chắc chắn muốn loại trừ thành viên?',
+                    onConfirm: () => handleRemoveMember(curMemberSetting)
+                  }
+                )}}
               >
                 <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
               </CustomMenuItem>

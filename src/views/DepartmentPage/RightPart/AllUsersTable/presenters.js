@@ -15,7 +15,7 @@ import CustomBadge from '../../../../components/CustomBadge';
 import {
   Container, SubTitle, LinkSpan, SettingContainer,
 } from '../../../../components/TableComponents';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import { DRAWER_TYPE } from '../../../../constants/constants';
 import './style.scss';
 
@@ -116,8 +116,8 @@ function AllUsersTable({
 
   return (
     <Container>
-      {rooms.error !== null && <ErrorBox />}
-      {rooms.error === null && (
+      {isNil(rooms.error)
+      ? (
         <CustomTable
           options={{
             title: 'Danh sách nhân sự',
@@ -258,7 +258,7 @@ function AllUsersTable({
           }]}
           data={rooms.rooms}
         />
-      )}
+      ) : <ErrorBox />}
       <Menu
         id="simple-menu"
         anchorEl={menuAnchorEl}

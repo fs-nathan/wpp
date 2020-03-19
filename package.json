@@ -17,6 +17,7 @@
     "classnames": "^2.2.6",
     "cropperjs": "^1.5.6",
     "date-fns": "^2.8.1",
+    "draft-js": "^0.11.4",
     "file-saver": "^2.0.2",
     "i18next": "^17.2.0",
     "i18next-browser-languagedetector": "^4.0.0",
@@ -54,9 +55,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "serve-firebase": "react-scripts build && firebase serve",
     "deploy-firebase": "react-scripts build && firebase deploy",
+    "surge": "yarn build && surge build v-task.surge.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

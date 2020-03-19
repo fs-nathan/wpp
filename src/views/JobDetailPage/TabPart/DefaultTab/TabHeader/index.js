@@ -4,38 +4,18 @@ import styled from 'styled-components';
 import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import ColorTypo from '../../../../../components/ColorTypo';
-// import avatar from '../../../../../assets/avatar.jpg';
-// import EditWorkModal from '../EditWorkModal'
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
-import { WrapperContext } from '../../../index';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-// const Container = styled.div`
-//   padding: 0 20px;
-//   display: flex;
-//   align-items: center;
-//   background-color: #fff;
-//   border-bottom: 1px solid rgba(0, 0, 0, .1);
-//   height: 85px;
-//   position: sticky;
-//   top: 0;
-// `;
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { selectedTaskSelector, taskIdSelector } from '../../../selectors';
+import { pinTaskAction, unPinTaskAction, deleteTask } from '../../../../../actions/taskDetail/taskDetailActions';
+import get from 'lodash/get'
 
 const AvatarHeader = styled(Avatar)`
   width: 60px;
   height: 60px;
 `;
-
-// const TagsContainer = styled.div`
-//   margin-left: 10px;
-//   & > p {
-//     font-size: 16px;
-//   }
-//   & > span:nth-child(1) {
-//     color: #007bff;
-//     text-transform: unset;
-//     font-size: 13px;
-//   }
-// `;
 
 const StyledIconButton = styled(IconButton)`
   margin-left: auto;
@@ -49,20 +29,11 @@ const StyledIconButton = styled(IconButton)`
   }
 `;
 
-// function convertDate(convert_day){
-//   return convert_day.split('-').reverse().join('-');
-// }
 function TabHeader(props) {
-  // const [isRight, setIsRight] = React.useState(true);
-  //
-  // const [open, setOpen] = React.useState(false);
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
-  // const handleClickClose = () => {
-  //   setOpen(false);
-  // };
-  //
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isPinned = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.is_ghim'));
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
@@ -79,18 +50,17 @@ function TabHeader(props) {
   };
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenDelete, setOpenDelete] = React.useState(false);
-  const value = React.useContext(WrapperContext);
+  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
+  const taskId = useSelector(taskIdSelector);
+  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
 
   let avatar, name, roles;
-  if (value) {
-    let detailTask = value.detailTask;
-    if (detailTask) {
-      let user_create = detailTask.user_create;
-      if (user_create) {
-        avatar = user_create.avatar;
-        name = user_create.name;
-        roles = user_create.roles;
-      }
+  if (detailTask) {
+    let user_create = detailTask.user_create;
+    if (user_create) {
+      avatar = user_create.avatar;
+      name = user_create.name;
+      roles = user_create.roles;
     }
   }
   const handleOpenModalDelete = () => {
@@ -101,8 +71,17 @@ function TabHeader(props) {
     setOpenDelete(false);
   };
   const confirmDelete = () => {
-    props.deleteTask(value.taskId);
+    dispatch(deleteTask({ taskId, projectId }));
   };
+
+  function onClickPin() {
+    setAnchorEl(null);
+    if (isPinned) {
+      dispatch(unPinTaskAction({ task_id: taskId, projectId }));
+    } else {
+      dispatch(pinTaskAction({ task_id: taskId, projectId }));
+    }
+  }
   // console.log("task id::::", value.taskId)
   return (
     <div className="container-dt-tabheader">
@@ -113,12 +92,12 @@ function TabHeader(props) {
           {roles}
         </ColorTypo>
         <br />
-        {value.detailTask && (
+        {detailTask && (
           <ColorTypo
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
           >
-            Đã được giao ngày {value.detailTask.date_create}
+            Đã được giao ngày {detailTask.date_create}
           </ColorTypo>
         )}
       </div>
@@ -149,11 +128,9 @@ function TabHeader(props) {
           Chỉnh sửa
         </MenuItem>
         <MenuItem
-          onClick={() => {
-            setAnchorEl(null);
-          }}
+          onClick={onClickPin}
         >
-          Ghim công việc
+          {isPinned ? 'Bỏ ghim' : 'Ghim công việc'}
         </MenuItem>
         {pause ? (
           <MenuItem
@@ -166,16 +143,16 @@ function TabHeader(props) {
             Tạm dừng
           </MenuItem>
         ) : (
-          <MenuItem
-            onClick={() => {
-              props.onClickPause();
-              handleClickPause();
-              setAnchorEl(null);
-            }}
-          >
-            Hủy tạm dừng
-          </MenuItem>
-        )}
+            <MenuItem
+              onClick={() => {
+                props.onClickPause();
+                handleClickPause();
+                setAnchorEl(null);
+              }}
+            >
+              Hủy tạm dừng
+            </MenuItem>
+          )}
 
         <MenuItem
           onClick={() => {
@@ -190,7 +167,7 @@ function TabHeader(props) {
         isOpen={openCreateJobModal}
         setOpen={setOpenCreateJobModal}
         isRight={true}
-        data={value.detailTask}
+        data={detailTask}
       />
       <ModalDeleteConfirm
         confirmDelete={confirmDelete}

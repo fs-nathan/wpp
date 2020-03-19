@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, remove, slice, join } from 'lodash';
+import { get, remove, slice, join, isNil } from 'lodash';
 import { TimeRangePopover, times, DownloadPopover } from '../../../../components/CustomPopover';
 import { useHistory } from 'react-router-dom';
 import {
@@ -45,24 +45,20 @@ function decodePriorityCode(priorityCode) {
       return {
         color: '#4caf50',
         background: '#4caf5042',
-        name: 'Thấp'
       };
     case 1:
       return {
         color: '#ff9800',
         background: '#ff980038',
-        name: 'Trung bình'
       };
     case 2:
       return {
         color: '#fe0707',
         background: '#ff050524',
-        name: 'Cao'
       };
     default:
       return {
         color: '#53d7fc',
-        name: 'Thấp'
       };
   }
 }
@@ -114,8 +110,8 @@ function AllProjectTable({
 
   return (
     <Container>
-      {projects.error !== null && <ErrorBox />}
-      {projects.error === null && (
+      {isNil(projects.error) 
+      ? (
         <React.Fragment>
           <CustomTable
             options={{
@@ -218,17 +214,17 @@ function AllProjectTable({
                 label: 'Trạng thái',
                 field: row => (
                   <StateBox
-                    stateName={get(row, 'state_name')}
+                    stateCode={get(row, 'state_code')}
                   >
                     <div>
                       <span>&#11044;</span>
                       <span>
-                        {get(row, 'state_name')}
+                        {get(row, 'state_code') === 5 ? 'Ẩn' : get(row, 'state_name')}
                       </span>
                     </div>
-                    {get(row, 'state_name') !== 'Hidden' && (
+                    {get(row, 'state_code') !== 5 && (
                       <small>
-                        {get(row, 'state_name', '') === 'Expired'
+                        {get(row, 'state_code', '') === 3
                           ? get(row, 'day_expired', 0)
                           : get(row, 'day_implement', 0)}{' '}
                         ngày
@@ -333,7 +329,7 @@ function AllProjectTable({
                         .background
                     }
                   >
-                    {decodePriorityCode(get(row, 'priority_code', 0)).name}
+                    {get(row, 'priority_name', '')}
                   </CustomBadge>
                 ),
                 sort: evt => handleSortType('priority_code'),
@@ -486,7 +482,7 @@ function AllProjectTable({
             >Xóa</MenuItem>
           </Menu>
         </React.Fragment>
-      )}
+      ) : <ErrorBox />}
     </Container>
   );
 }

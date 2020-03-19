@@ -7,6 +7,9 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { withStyles } from '@material-ui/core/styles';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
+import { updateCommand, createCommand } from 'actions/taskDetail/taskDetailActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { taskIdSelector } from '../../selectors';
 
 const styles = theme => ({
   root: {
@@ -34,27 +37,12 @@ const TexTitle = styled(Typography)`
   margin-left: 0;
 `
 
-// const TitleText = styled(Typography)`
-//   font-size: 15px;
-//   margin: 20px 0
-// `
-
-// const HelperText = styled(TextField)`
-//   & > *:last-child {
-//     font-size: 12px;
-//     margin: 8px 0 0;
-//     & > select {
-//       font-size: 14px;
-//     }
-//   }
-// `
 const Text = styled(TextField)`
   & > label {
       font-size: 14px;
       z-index: 0
   }
 `
-
 
 const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose, ...other } = props;
@@ -89,8 +77,9 @@ const selector = [
 ]
 
 const DemandModal = (props) => {
-
-  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: "", content: "", type: -1 })
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
+  const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: props.taskId, content: "", type: -1 })
 
   React.useEffect(() => {
     setTempSelectedItem(props.item)
@@ -98,6 +87,19 @@ const DemandModal = (props) => {
 
   const setParams = (nameParam, value) => {
     setTempSelectedItem({ ...tempSelectedItem, [nameParam]: value })
+  }
+
+  function onClickCreate() {
+    props.handleClose()
+    props.confirmCreateCommand(tempSelectedItem)
+    setParams("content", '')
+  }
+
+  function onClickUpdate() {
+    props.handleClose();
+    tempSelectedItem.taskId = taskId;
+    dispatch(updateCommand(tempSelectedItem))
+    setParams("content", '')
   }
 
   return (
@@ -131,22 +133,14 @@ const DemandModal = (props) => {
         {(props.isEditDemand) ?
           <Button
             autoFocus
-            onClick={() => {
-              props.handleClose()
-              props.confirmUpdateCommand(tempSelectedItem)
-              setParams("content", '')
-            }}
+            onClick={onClickUpdate}
             color="primary">
             Chỉnh sửa
           </Button>
           :
           <Button
             autoFocus
-            onClick={() => {
-              props.handleClose()
-              props.confirmCreateCommand(tempSelectedItem)
-              setParams("content", '')
-            }}
+            onClick={onClickCreate}
             color="primary">
             Tạo mới
           </Button>

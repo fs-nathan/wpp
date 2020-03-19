@@ -5,10 +5,10 @@ import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
 import ColorButton from '../../../../components/ColorButton';
 import PillButton from '../../../../components/PillButton';
-import LoadingBox from '../../../../components/LoadingBox';
 import ErrorBox from '../../../../components/ErrorBox';
-import LoadingOverlay from 'react-loading-overlay';
-import { get } from 'lodash';
+import LoadingBox from '../../../../components/LoadingBox';
+import LoadingOverlay from '../../../../components/LoadingOverlay';
+import { get, isNil } from 'lodash';
 import './style.scss';
 
 const Container = ({ className = '', ...props }) => 
@@ -84,9 +84,8 @@ function UserInfo({
 
   return (
     <>
-      {user.error !== null 
-        ? <ErrorBox />
-        : 
+      {isNil(user.error)
+        ?
           <LoadingOverlay
             active={user.loading}
             spinner
@@ -224,7 +223,7 @@ function UserInfo({
               </SideBox>
             </Container>
           </LoadingOverlay>
-      }
+      : <ErrorBox />}
     </>
   )
 }

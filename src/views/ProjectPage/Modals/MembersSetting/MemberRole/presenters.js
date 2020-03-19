@@ -27,6 +27,7 @@ function MemberRole({
       setOpen={setOpen}
       confirmRender={null}
       cancleRender={evt => "Thoát"}
+      loading={userRoles.loading}
     >
       <FormControl 
         component="fieldset"

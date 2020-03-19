@@ -6,7 +6,7 @@ import { CustomTableContext } from '../index';
 import TableHeaderRow from './TableHeaderRow';
 import TableBodyGroupRow from './TableBodyGroupRow';
 import TableBodyRow from './TableBodyGroupRow/TableBodyRow'; 
-import LoadingOverlay from 'react-loading-overlay';
+import LoadingOverlay from '../../LoadingOverlay';
 import { get } from 'lodash';
 import './style.scss';
 

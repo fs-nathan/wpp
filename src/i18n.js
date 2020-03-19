@@ -11,7 +11,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    debug: true,
+    // debug: true,
     lng: 'vi',
     fallbackLng: 'vi', // use en if detected lng is not available
     
