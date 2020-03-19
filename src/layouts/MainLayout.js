@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Routes } from '../constants/routes';
-import { TOKEN } from '../constants/constants';
+import { TOKEN, NOTI_NUMBER, MESS_NUMBER } from '../constants/constants';
 import routes from '../routes';
 import { avatar_default_120 } from '../assets';
 import LeftBar from '../views/LeftBar';
@@ -19,7 +19,14 @@ import {
   actionFetchListColor,
   actioGetSettingDate
 } from '../actions/setting/setting';
-import { actionToast } from '../actions/system/system';
+import {
+  actionToast,
+  actionChangeNumNotificationNotView,
+  actionChangeNumMessageNotView,
+  getNumberNotificationNotViewer,
+  getNumberMessageNotViewer
+} from '../actions/system/system';
+import io from 'socket.io-client';
 
 const Container = styled.div`
   height: 100vh;
@@ -109,7 +116,9 @@ function MainLayout({
   groupDetail,
   isDocumentDetail,
   actionFetchListColor,
-  actioGetSettingDate
+  actioGetSettingDate,
+  actionChangeNumNotificationNotView,
+  actionChangeNumMessageNotView
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
 
@@ -117,10 +126,35 @@ function MainLayout({
     if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
       actionFetchGroupDetail(true);
       actionFetchListColor();
-      actioGetSettingDate()
+      actioGetSettingDate();
+    }
+    if (localStorage.getItem(TOKEN)) {
+      handleFetchNoti();
+      const uri =
+        'https://appapi.workplus.vn?token=' + localStorage.getItem(TOKEN);
+      console.log(uri);
+      const socket = io(uri, {});
+      socket.on('WP_NEW_NOTIFICATION', res => handleNewNoti());
+      socket.on('WP_NEW_MESSAGE', res => handleNewMessage());
     }
     // eslint-disable-next-line
   }, []);
+  const handleFetchNoti = async () => {
+    try {
+      const { data } = await getNumberNotificationNotViewer();
+      actionChangeNumNotificationNotView(data.number_notification);
+      const res = await getNumberMessageNotViewer();
+      actionChangeNumMessageNotView(res.data.number_chat);
+    } catch (error) {}
+  };
+  const handleNewNoti = () => {
+    actionChangeNumNotificationNotView(
+      parseInt(localStorage.getItem(NOTI_NUMBER)) + 1
+    );
+  };
+  const handleNewMessage = () => {
+    getNumberMessageNotViewer(parseInt(localStorage.getItem(MESS_NUMBER)) + 1);
+  };
 
   const isViewFullPage = route => {
     return (
@@ -204,7 +238,15 @@ export default connect(
     colors: state.setting.colors,
     groupDetail: state.setting.groupDetail,
     isDocumentDetail: state.system.isDocumentDetail,
+    numberNotificationNotView: state.system.numberNotificationNotView,
     toast: state.system.toast
   }),
-  { actionFetchGroupDetail, actionToast, actionFetchListColor, actioGetSettingDate }
+  {
+    actionFetchGroupDetail,
+    actionToast,
+    actionFetchListColor,
+    actioGetSettingDate,
+    actionChangeNumNotificationNotView,
+    actionChangeNumMessageNotView
+  }
 )(withRouter(MainLayoutWrapper));

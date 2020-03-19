@@ -166,7 +166,11 @@ const TopBar = props => {
         </IconButton>
 
         <Badge
-          badgeContent={props.numberMessageNotView ? 'N' : 0}
+          badgeContent={
+            props.numberMessageNotView > 100
+              ? '99+'
+              : props.numberMessageNotView
+          }
           color="error"
           className={`bag-cus ${props.numberMessageNotView ? 'none-view' : ''}`}
         >
@@ -192,7 +196,11 @@ const TopBar = props => {
           </IconButton>
         </Badge>
         <Badge
-          badgeContent={props.numberNotificationNotView ? 'N' : 0}
+          badgeContent={
+            props.numberNotificationNotView > 100
+              ? '99+'
+              : props.numberNotificationNotView
+          }
           color="error"
           className={`bag-cus ${
             props.numberNotificationNotView ? 'none-view' : ''
