@@ -1,52 +1,137 @@
-import React from 'react';
-import HeaderButtonGroup from './HeaderButtonGroup';
-import TableMain from './TableMain';
-import { Button } from '@material-ui/core';
-import PropTypes from 'prop-types';
-import { get } from 'lodash';
-import './style.scss';
+import { Button } from "@material-ui/core";
+import { get } from "lodash";
+import PropTypes from "prop-types";
+import React, { useContext } from "react";
+import HeaderButtonGroup from "./HeaderButtonGroup";
+import "./style.scss";
+import TableMain from "./TableMain";
 
 export const CustomTableContext = React.createContext();
 export const CustomTableProvider = CustomTableContext.Provider;
 export const CustomTableConsumer = CustomTableContext.Consumer;
 
-const Container = ({ className = '', ...rest }) => <div className={`comp_CustomTable___container ${className}`} {...rest} />;
-const Header = ({ className = '', ...rest }) => <div className={`comp_CustomTable___header ${className}`} {...rest} />;
-const LeftHeader = ({ className = '', ...rest }) => <div className={`comp_CustomTable___left-header ${className}`} {...rest} />;
-const RightHeader = ({ className = '', ...rest }) => <div className={`comp_CustomTable___right-header ${className}`} {...rest} />;
-const StyledButton = ({ className = '', ...rest }) => <Button className={`comp_CustomTable___button ${className}`} {...rest} />;
-const StyledTableMain = ({ className = '', ...rest }) => <TableMain className={`comp_CustomTable___table-main ${className}`} {...rest} />;
+const Container = ({ className = "", ...rest }) => (
+  <div className={`comp_CustomTable___container ${className}`} {...rest} />
+);
+const Header = ({ className = "", ...rest }) => (
+  <div className={`comp_CustomTable___header ${className}`} {...rest} />
+);
+const LeftHeader = ({ className = "", ...rest }) => (
+  <div className={`comp_CustomTable___left-header ${className}`} {...rest} />
+);
+const RightHeader = ({ className = "", ...rest }) => (
+  <div className={`comp_CustomTable___right-header ${className}`} {...rest} />
+);
+const StyledButton = ({ className = "", ...rest }) => (
+  <Button className={`comp_CustomTable___button ${className}`} {...rest} />
+);
+const StyledTableMain = ({ className = "", ...rest }) => (
+  <TableMain
+    className={`comp_CustomTable___table-main ${className}`}
+    {...rest}
+  />
+);
 
-function CustomTable() {
+export const TableHeader = () => {
+  const { options } = useContext(CustomTableContext);
+  return (
+    <Header>
+      <LeftHeader>
+        <div>
+          <p>
+            {typeof get(options, "title") === "function"
+              ? options.title()
+              : get(options, "title", "")}
+          </p>
+        </div>
+        {get(options, "subTitle") ? (
+          <span>
+            {typeof get(options, "subTitle") === "function"
+              ? options.subTitle()
+              : get(options, "subTitle", "")}
+          </span>
+        ) : null}
+      </LeftHeader>
+      <RightHeader>
+        <HeaderButtonGroup />
+        {get(options, "mainAction") && (
+          <StyledButton
+            size="small"
+            onClick={get(options, "mainAction.onClick", () => null)}
+          >
+            {get(options, "mainAction.label", "")}
+          </StyledButton>
+        )}
+      </RightHeader>
+    </Header>
+  );
+};
+export function CustomTableLayout({ children }) {
   const { options } = React.useContext(CustomTableContext);
-
   return (
     <Container>
       <Header>
         <LeftHeader>
           <div>
             <p>
-              {typeof get(options, 'title') === 'function'
+              {typeof get(options, "title") === "function"
                 ? options.title()
-                : get(options, 'title', '')}
+                : get(options, "title", "")}
             </p>
           </div>
-          {get(options, 'subTitle') ? (
+          {get(options, "subTitle") ? (
             <span>
-              {typeof get(options, 'subTitle') === 'function'
+              {typeof get(options, "subTitle") === "function"
                 ? options.subTitle()
-                : get(options, 'subTitle', '')}
+                : get(options, "subTitle", "")}
             </span>
           ) : null}
         </LeftHeader>
         <RightHeader>
           <HeaderButtonGroup />
-          {get(options, 'mainAction') && (
+          {get(options, "mainAction") && (
             <StyledButton
               size="small"
-              onClick={get(options, 'mainAction.onClick', () => null)}
+              onClick={get(options, "mainAction.onClick", () => null)}
             >
-              {get(options, 'mainAction.label', '')}
+              {get(options, "mainAction.label", "")}
+            </StyledButton>
+          )}
+        </RightHeader>
+      </Header>
+      {children}
+    </Container>
+  );
+}
+function CustomTable() {
+  const { options } = React.useContext(CustomTableContext);
+  return (
+    <Container>
+      <Header>
+        <LeftHeader>
+          <div>
+            <p>
+              {typeof get(options, "title") === "function"
+                ? options.title()
+                : get(options, "title", "")}
+            </p>
+          </div>
+          {get(options, "subTitle") ? (
+            <span>
+              {typeof get(options, "subTitle") === "function"
+                ? options.subTitle()
+                : get(options, "subTitle", "")}
+            </span>
+          ) : null}
+        </LeftHeader>
+        <RightHeader>
+          <HeaderButtonGroup />
+          {get(options, "mainAction") && (
+            <StyledButton
+              size="small"
+              onClick={get(options, "mainAction.onClick", () => null)}
+            >
+              {get(options, "mainAction.label", "")}
             </StyledButton>
           )}
         </RightHeader>
@@ -57,8 +142,8 @@ function CustomTable() {
 }
 
 function CustomTableWrapper({ options, columns, data }) {
-  console.log('X');
-  const [searchPatern, setSearchPatern] = React.useState('');
+  console.log("X");
+  const [searchPatern, setSearchPatern] = React.useState("");
   const [expand, setExpand] = React.useState(false);
 
   const defaultOptions = {

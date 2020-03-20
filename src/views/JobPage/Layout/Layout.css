@@ -1,0 +1,20 @@
+.comp_JobPageLayoutWrapper {
+  position: relative;
+  display: flex;
+}
+.comp_JobPageLayout__content {
+  flex-grow: 1;
+}
+.comp_JobPageLayout__contentShift {
+  margin-right: 0;
+}
+.comp_JobPageLayout__drawer {
+  flex-shrink: 0;
+}
+.comp_JobPageLayout__drawerPaper {
+  top: 70px;
+  height: calc(100% - 70px);
+  position: absolute;
+  width: 400px;
+  box-shadow: -18px 8px 24px -10px rgba(0, 0, 0, 0.2);
+}
