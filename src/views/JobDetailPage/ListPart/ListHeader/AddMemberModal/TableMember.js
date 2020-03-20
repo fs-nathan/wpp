@@ -7,6 +7,13 @@ import {
 } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
+import { Avatar, } from '@material-ui/core';
+import MemberRole from './MemberRole';
+import MemberPriority from './MemberPriority';
+import MemberDetail from './MemberDetail';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteMember } from 'actions/taskDetail/taskDetailActions';
+import ModalDeleteConfirm from '../../../TabPart/ModalDeleteConfirm';
 
 const CustomMenu = styled(Menu)`
 & > .MuiPaper-root {
@@ -45,6 +52,11 @@ const useStyles = makeStyles({
 
 function TableMember(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const members = useSelector(state => state.taskDetail.taskMember.member);
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const [selectedItem, setSelectedItem] = React.useState()
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClickEliminate = (evt) => {
@@ -52,6 +64,18 @@ function TableMember(props) {
   }
   const handleCloseEliminate = () => {
     setAnchorEl(null);
+  }
+  const handleOpenModalDelete = (id) => () => {
+    setSelectedItem(id);
+    setOpenDelete(true);
+  };
+
+  const handleCloseModalDelete = () => {
+    setOpenDelete(false);
+  };
+
+  const confirmDelete = () => {
+    dispatch(deleteMember({ task_id: taskId, member_id:  selectedItem }))
   }
 
   return (
@@ -71,12 +95,18 @@ function TableMember(props) {
       <div className="table-scroll">
         <Table className={classes.table}>
           <TableBody>
-            {props.listMemberJobState.map((addData, idx) => (
-              <StyledTableRow key={idx}>
-                <TableCell style={{ width: '9%' }}>{addData.avatarMember}</TableCell>
-                <TableCell style={{ width: '40%' }}>{addData.name}</TableCell>
-                <TableCell style={{ width: '20%' }}>{addData.permission}</TableCell>
-                <TableCell style={{ width: '32%' }}>{addData.roles}</TableCell>
+            {members.map((item, idx) => (
+              <StyledTableRow key={item.id}>
+                <TableCell style={{ width: '9%' }}>
+                  <Avatar alt="Avatar Member" src={item.avatar} sizes='10px' style={{ width: 30, height: 30 }} />
+                </TableCell>
+                <TableCell style={{ width: '40%' }}>
+                  <MemberDetail name={item.name} email={item.email} />
+                </TableCell>
+                <TableCell style={{ width: '20%' }}><MemberPriority /></TableCell>
+                <TableCell style={{ width: '32%' }}>
+                  <MemberRole roles={item.roles || []} memberId={item.id} />
+                </TableCell>
                 <StyledMenu >
                   <IconButton size='small' onClick={handleClickEliminate} >
                     <Icon path={mdiDotsVertical} size={1} />
@@ -91,7 +121,7 @@ function TableMember(props) {
                       horizontal: 'right',
                     }}
                   >
-                    <MenuItem onClick={handleCloseEliminate}>Loại trừ</MenuItem>
+                    <MenuItem onClick={handleOpenModalDelete(item.id)}>Loại trừ</MenuItem>
                   </CustomMenu>
                 </StyledMenu>
               </StyledTableRow>
@@ -99,6 +129,11 @@ function TableMember(props) {
           </TableBody>
         </Table>
       </div>
+      <ModalDeleteConfirm
+        confirmDelete={confirmDelete}
+        isOpen={isOpenDelete}
+        handleCloseModalDelete={handleCloseModalDelete}
+      ></ModalDeleteConfirm>
     </Paper>
   )
 }

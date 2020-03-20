@@ -779,6 +779,8 @@ async function doCreateMember(payload) {
 function* createMember(action) {
   try {
     const res = yield call(doCreateMember, action.payload)
+    yield put(actions.getMember({ task_id: action.payload.task_id }))
+    yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
     yield put(actions.createMemberSuccess(res))
   } catch (error) {
     yield put(actions.createMemberFail(error))
@@ -802,6 +804,8 @@ async function doDeleteMember(payload) {
 function* deleteMember(action) {
   try {
     const res = yield call(doDeleteMember, action.payload)
+    yield put(actions.getMember({ task_id: action.payload.task_id }))
+    yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
     yield put(actions.deleteMemberSuccess(res))
   } catch (error) {
     yield put(actions.deleteMemberFail(error))
@@ -951,6 +955,16 @@ function* deleteRole(action) {
     yield put(actions.deleteRoleFail(error))
   }
 }
+
+function* updateRolesForMember(action) {
+  try {
+    const res = yield call(apiService.post, 'task/update-role-of-member', action.payload)
+    yield put(actions.updateRolesForMemberSuccess(res.data))
+    yield put(actions.getMember({ task_id: action.payload.task_id }))
+  } catch (error) {
+    yield put(actions.updateRolesForMemberFail(error))
+  }
+}
 // Get list task detail
 async function doGetListTaskDetail({ project_id }) {
   try {
@@ -968,8 +982,6 @@ async function doGetListTaskDetail({ project_id }) {
 function* getListTaskDetail(action) {
   try {
     const res = yield call(doGetListTaskDetail, action.payload)
-
-
     yield put(actions.getListTaskDetailSuccess(res))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error))
@@ -1376,6 +1388,7 @@ export {
   createRole,
   updateRole,
   deleteRole,
+  updateRolesForMember,
 
   //time
   getTrackingTime,

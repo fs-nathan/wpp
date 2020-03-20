@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { ListItem, Avatar, } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { createMember } from 'actions/taskDetail/taskDetailActions';
 
@@ -37,7 +36,7 @@ function ProjectMember(props) {
 
   function onClickAdd() {
     dispatch(createMember({ task_id: taskId, member_id: props.id }))
-    console.log('hello', props)
+    // console.log('hello', props)
   }
   return (
     <StyledListItem>

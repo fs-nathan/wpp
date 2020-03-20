@@ -18,10 +18,11 @@ function DialogWrap({
   onClickSuccess,
   successLabel = 'Hoàn Thành',
   children,
+  maxWidth,
 }) {
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   return (
-    <Dialog className="dialogWrap" aria-labelledby="customized-dialog-title" open={isOpen} >
+    <Dialog maxWidth={maxWidth} className="dialogWrap" aria-labelledby="customized-dialog-title" open={isOpen} >
       <DialogTitle disableTypography >
         <Typography className="dialogWrap--title" variant="h6">{title}</Typography>
         <IconButton aria-label="close" className="dialogWrap--closeButton" onClick={handleClickClose}>

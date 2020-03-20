@@ -6,43 +6,31 @@ import Icon from '@mdi/react';
 import { mdiPlusCircleOutline } from '@mdi/js';
 import { IconButton } from '@material-ui/core';
 
-let listData = []
+function MemberRole({ roles, memberId }) {
 
-function MemberRole() {
+  const [openRoleModal, setOpenRoleModal] = React.useState(false);
 
-  const [openRoleModal, setOpenRoleModal] = React.useState(false)
-  // console.log("listData...", listData);
-  if (listData) {
-    listData.map((item, key) => {
-      return (
-        <div key={key}>
-          {
-            item &&
-            <ColorChip color='grey' badge label={item} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
-          }
-        </div>
-      )
-    })
+  function onClickAdd() {
+    setOpenRoleModal(true)
   }
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      {listData}
+      {roles.map((item, key) => (
+        <ColorChip key={item.id} color='grey' badge label={item.name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+      )
+      )}
       <IconButton style={{ float: 'right' }}
         size='small'
-        onClick={() => {
-          // handleClose()
-          setOpenRoleModal(true)
-        }}
+        onClick={onClickAdd}
       >
-
         <Icon path={mdiPlusCircleOutline} size={1} style={{ fill: '#b0b0b0' }} />
       </IconButton>
       <RoleMemberModal
-
+        roles={roles}
+        memberId={memberId}
         isOpen={openRoleModal}
         setOpen={setOpenRoleModal}
-        setListData={data => { listData = data }}
       />
     </div>
   )

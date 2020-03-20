@@ -60,9 +60,9 @@ function JobDetailPage(props) {
 
   useEffect(() => {
     dispatch(taskDetailAction.getRole());
-    dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
     dispatch(taskDetailAction.getListOffer());
     if (projectId !== '') {
+      dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId }));
       dispatch(taskDetailAction.getStaticTask(projectId));
     }

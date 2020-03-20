@@ -447,6 +447,7 @@ function* rootSaga() {
   yield takeLeading(taskDetailType.POST_ROLE_REQUEST, taskDetailSaga.createRole);
   yield takeLeading(taskDetailType.UPDATE_ROLE_REQUEST, taskDetailSaga.updateRole);
   yield takeLeading(taskDetailType.DELETE_ROLE_REQUEST, taskDetailSaga.deleteRole);
+  yield takeLeading(taskDetailType.UPDATE_ROLES_FOR_MEMBER_REQUEST, taskDetailSaga.updateRolesForMember);
 
   //Time
   yield takeLeading(taskDetailType.GET_TRACKING_TIME_REQUEST, taskDetailSaga.getTrackingTime);

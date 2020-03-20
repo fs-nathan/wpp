@@ -653,6 +653,21 @@ export const deleteRoleFail = (error) => ({
     error: error,
 });
 
+export const updateRolesForMember = (payload) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_REQUEST,
+    payload
+});
+
+export const updateRolesForMemberSuccess = (payload) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_SUCCESS,
+    payload
+});
+
+export const updateRolesForMemberFail = (error) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_FAIL,
+    error: error,
+});
+
 //Tien do - time
 export const getTrackingTime = (payload) => ({
     type: types.GET_TRACKING_TIME_REQUEST,
