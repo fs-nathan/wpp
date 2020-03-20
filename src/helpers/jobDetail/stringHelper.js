@@ -1,3 +1,5 @@
+import format from 'date-fns/format';
+
 const DEFAULT_MAX_LENGTH = 120
 export const isLongerContent = str => str.length > DEFAULT_MAX_LENGTH
 export const getCollapseText = str => isLongerContent(str) ? str.substring(0, DEFAULT_MAX_LENGTH - 3) + "..." : str
@@ -22,7 +24,13 @@ export const convertDateToText = date => {
         return `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`
     }
 }
-export const  convertDate = inputFormat => {
+
+export const convertTime = inputFormat => {
+    const d = new Date(inputFormat)
+    return format(d, 'HH:mm');
+  }
+
+export const   convertDate= inputFormat => {
     function pad(s) { return (s < 10) ? '0' + s : s; }
     var d = new Date(inputFormat)
     return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('-')

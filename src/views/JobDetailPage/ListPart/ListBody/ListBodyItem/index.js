@@ -1,13 +1,16 @@
 import React from 'react';
 import { ListItemAvatar, ListItemText, Avatar } from '@material-ui/core';
 import styled from 'styled-components';
+import clsx from 'classnames';
 import Icon from '@mdi/react';
 import { mdiPin } from '@mdi/js';
 import SimpleDonutChart from '../../../../../components/SimpleDonutChart';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ColorChip from '../../../../../components/ColorChip';
 import Chip from '@material-ui/core/Chip';
-import { WrapperContext } from '../../../index';
+import { useDispatch } from 'react-redux';
+import * as taskDetailAction from '../../../../../actions/taskDetail/taskDetailActions';
+import { useHistory } from 'react-router-dom';
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -62,17 +65,18 @@ function JobName(props) {
   );
 }
 function JobContent(props) {
+  const {avatar, ...rest} = props
   return (
     <div className="container-content-lbd">
       <div title={props.name}>
-        <Avatar src={props.avatar} alt="avatar" />
+        <Avatar src={avatar} alt="avatar" />
         <ColorTypo color="#7a869a">{props.content}</ColorTypo>
       </div>
       <div>
         <ChipMes
           label={'N'}
           size="small"
-          {...props}
+          {...rest}
           notification={props.notification.toString()}
         />
         <div>{props.time}</div>
@@ -101,18 +105,26 @@ function JobUnit(props) {
 }
 
 function ListBodyItem(props) {
-  const value = React.useContext(WrapperContext);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const chooseTask = task => dispatch(taskDetailAction.chooseTask(task));
+  const getTaskDetailByTaskId = taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }));
   // console.log({value})
+
+  function onClickItem() {
+    chooseTask(props.id);
+    getTaskDetailByTaskId(props.id);
+    // getMemberByTaskId(props.id)
+    // getMemberNotAssignedByTaskId(props.id)
+    history.push({ search: `?task_id=${props.id}` });
+  }
+
   return (
     <div
-      className="container-lbd"
-      onClick={() => {
-        value.chooseTask(props.id);
-        value.getTaskDetailByTaskId(props.id);
-        // value.getMemberByTaskId(props.id)
-        // value.getMemberNotAssignedByTaskId(props.id)
-        value.history.push({ search: `?task_id=${props.id}` });
-      }}
+      className={clsx("container-lbd", {
+        "container-lbd__selected": props.isSelected
+      })}
+      onClick={onClickItem}
     >
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart percentDone={props.complete} />

@@ -1,0 +1,99 @@
+.demandTabItem {
+  &--title {
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 2em;
+  }
+  &--creator {
+    display: flex;
+  }
+  &--time {
+    display: flex;
+  }
+  &--icon {
+    padding: 12px 6px;
+    background-color: #ccc;
+    min-width: 3em;
+    &__orange {
+      path {
+        fill: orange;
+      }
+    }
+    &__blue {
+      path {
+        fill: blue;
+      }
+    }
+  }
+  &--avatar {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+  }
+  &--button {
+    &:hover {
+      background: none;
+    }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+  &--items {
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.8;
+  }
+}
+
+.demandDetail {
+  &--title {
+    display: flex;
+  }
+  &--closeButton {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    color: grey;
+  }
+  &--user {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+  }
+  &--avatar {
+    margin: 12px auto 20px;
+  }
+  &--iconContainer {
+    text-align: center;
+  }
+  &--icon {
+    padding: 12px 4px;
+    &__orange {
+      path {
+        fill: orange;
+      }
+    }
+    &__blue {
+      path {
+        fill: blue;
+      }
+    }
+  }
+  &--label {
+    font-size: 28px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+  }
+  &--content {
+    text-align: center;
+    min-width: 500px;
+    min-height: 300px;
+    margin-top: 10px;
+  }
+}

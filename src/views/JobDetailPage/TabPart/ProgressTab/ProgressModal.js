@@ -8,9 +8,8 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 // import TimeField from 'react-simple-timefield';
 // import OutlinedInputSelect from './OutlinedInputSelect'
-import { WrapperContext } from '../../index';
 import {
-  DEFAULT_DATE_TEXT, DEFAULT_END_TIME_TEXT, DEFAULT_START_TIME_TEXT
+  DEFAULT_DATE_TEXT,
 } from '../../../../helpers/jobDetail/stringHelper';
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
@@ -19,42 +18,26 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
+import { updateTimeDuration } from '../../../../actions/taskDetail/taskDetailActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { taskIdSelector } from '../../selectors';
+import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import get from 'lodash/get';
+
+import './styles.scss';
+
 const StartEndDay = styled(Typography)`
   display: flex;
   flex-direction: row;
   align-items: center;
   margin: 30px 0;
 `
-// const StartEndDate = styled(Typography)`
-//   margin: 0 20px;
-// `
 
 const BeginEndTime = styled(Typography)`
   width: 50px;
   margin-right: 20px;
 `
-// const TexTitle = styled(Typography)`
-//   font-size: 15px;
-//   margin-right: 10px;
-// `
 
-// const Div = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-// `
-// const DivTime = styled.div`
-// `
-// const InputSelect = styled(OutlinedInputSelect)`
-//   width: 331px;
-// `
-const InputDateTime = styled(TextField)`
-  width: 186px;
-  margin-right: 25px;
-  & > div:nth-child(2) > input {
-    padding: 14px;
-  }
-`
 const InputDate = styled(KeyboardDatePicker)`
 
   & > div:nth-child(2) {
@@ -115,18 +98,20 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 const ProgressModal = (props) => {
-  const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
+  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   // console.log("value time:::::", value);
-  const [startTime, setStartTime] = React.useState(DEFAULT_START_TIME_TEXT)
-  const [endTime, setEndTime] = React.useState(DEFAULT_END_TIME_TEXT)
+  const [startTime, setStartTime] = React.useState(listTimeSelect[16])
+  const [endTime, setEndTime] = React.useState(listTimeSelect[34])
   const [startDay, setStartDay] = React.useState(DEFAULT_DATE_TEXT)
   const [endDay, setEndDay] = React.useState(DEFAULT_DATE_TEXT)
 
-  const handleStartTime = (startTime) => {
-    setStartTime(startTime)
+  const handleStartTime = ({ target }) => {
+    setStartTime(target.value)
   }
-  const handleEndTime = (endTime) => {
-    setEndTime(endTime)
+  const handleEndTime = ({ target }) => {
+    setEndTime(target.value)
   }
   const handleStartDay = (startDay) => {
     setStartDay(startDay)
@@ -137,44 +122,37 @@ const ProgressModal = (props) => {
 
   const setDataTimeDuration = () => {
     const data = {
-      task_id: value.taskId,
+      task_id: taskId,
       start_date: startDay,
-      start_time: startTime,
       end_date: endDay,
-      end_time: endTime
+      start_time: startTime,
+      end_time: endTime,
     }
     console.log("data", data);
-    value.updateTimeDuration(data)
+    dispatch(updateTimeDuration(data));
   }
-
-
-
 
   return (
     <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} >
       <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
         Điều chỉnh tiến độ
         </DialogTitle>
-      <DialogContent dividers style={{ overflowY: 'hidden' }}>
+      <DialogContent dividers >
         <StartEndDay component={'span'}>
           <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
-          <div>
-            <InputDateTime
-              type={'time'}
-              label="Thời gian"
-              variant="outlined"
-              value={startTime}
-              onChange={(e) => handleStartTime(e.target.value)}
-            />
-          </div>
+          <TimeSelect
+            className="progressModal--timeSelect"
+            value={startTime}
+            onChange={handleStartTime}
+          />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
               disableToolbar
               variant="inline"
               inputVariant="outlined"
               format="dd/MM/yyyy"
-              label="Ngày"
               value={startDay}
+              size="small"
               onChange={e => handleStartDay(convertDate(e))}
               KeyboardButtonProps={{
                 "aria-label": "change date"
@@ -184,23 +162,19 @@ const ProgressModal = (props) => {
         </StartEndDay>
         <StartEndDay component={'span'}>
           <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
-          <div>
-            <InputDateTime
-              type={'time'}
-              label="Thời gian"
-              variant="outlined"
-              value={endTime}
-              onChange={(e) => handleEndTime(e.target.value)}
-            />
-          </div>
+          <TimeSelect
+            className="progressModal--timeSelect"
+            value={endTime}
+            onChange={handleEndTime}
+          />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
               disableToolbar
               variant="inline"
               inputVariant="outlined"
               format="dd/MM/yyyy"
-              label="Ngày"
               value={endDay}
+              size="small"
               minDate={startDay}
               onChange={e => handleEndDay(convertDate(e))}
               KeyboardButtonProps={{
@@ -211,14 +185,14 @@ const ProgressModal = (props) => {
         </StartEndDay>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={props.handleClickClose} color='#222'>
+        <Button autoFocus onClick={props.handleClickClose} style={{ color: '#222222' }} >
           Hủy
         </Button>
         <Button onClick={() => {
-
           setDataTimeDuration()
           props.handleClickClose()
-        }} color="primary">
+        }}
+          style={{ color: groupActiveColor }}>
           Hoàn Thành
               </Button>
       </DialogActions>

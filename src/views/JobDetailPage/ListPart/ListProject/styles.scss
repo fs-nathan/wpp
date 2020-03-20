@@ -1,0 +1,52 @@
+.listProject {
+  &--header {
+    grid-area: header;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0px;
+    background-color: #fff;
+    z-index: 999;
+  }
+  &--body {
+    grid-area: body;
+    height: 100%;
+    & > div > *:last-child {
+      margin-bottom: 15px;
+    }
+  }
+  &--project-panel {
+    box-shadow: none !important;
+    & > *:first-child {
+      flex-direction: row-reverse;
+      padding: 0;
+      margin: 0 30px 0 0;
+      min-height: 0;
+
+      & > div {
+        margin: 0;
+      }
+    }
+    & > *:last-child {
+      margin-left: 43px;
+      & > div {
+        & > div {
+          & > div {
+            & > *:first-child {
+              padding: 0;
+              border-top: 1px solid #0000001a;
+            }
+          }
+        }
+      }
+    }
+  }
+  &--project-panel-detail {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+}

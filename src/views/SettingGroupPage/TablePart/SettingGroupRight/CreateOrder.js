@@ -362,7 +362,6 @@ const CreateOrder = props => {
                 type="text"
                 required
                 className="evoucher-input"
-                placeholder="Nhập mã khuyến mại"
               /> */}
             <OutlinedInput
               type="text"

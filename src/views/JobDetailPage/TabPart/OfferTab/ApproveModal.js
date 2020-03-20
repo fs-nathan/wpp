@@ -21,20 +21,6 @@ const InputText = styled(InputBase)`
   font-weight: 700;
   margin-bottom: 30px;
 `
-// const Text = styled(TextField)`
-//   & > *:first-child {
-//     margin-bottom: 20px;
-//     & > input {
-//       font-size: 16px;
-//       margin-bottom: 100px;
-//     }
-//   }
-// `
-
-// const TitleText = styled(Typography)`
-//   font-size: 15px;
-//   margin: 15px 0;
-// `
 
 const styles = theme => ({
   root: {
@@ -107,17 +93,6 @@ const ApproveModal = (props) => {
           value={'Xin phê duyệt chi phí tiếp khách'}
           fullWidth
         />
-        {/* <TitleText component="div">Nội dung phê duyệt(nếu có)</TitleText>
-          <Text component="span"
-            id="outlined-full-width"
-            value={'Đồng ý phê duyệt'}
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-          /> */}
         <TextField
           label="Nội dung phê duyệt"
           fullWidth

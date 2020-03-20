@@ -159,7 +159,7 @@ function ProjectGroupPage({
     }
 
     //CustomEventListener(CREATE_PROJECT, reloadListProject);
-    //CustomEventListener(UPDATE_PROJECT, reloadListProject);
+    CustomEventListener(UPDATE_PROJECT, reloadListProject);
     //CustomEventListener(DELETE_PROJECT, reloadListProject);
     //CustomEventListener(HIDE_PROJECT, reloadListProject);
     //CustomEventListener(SHOW_PROJECT, reloadListProject);
@@ -168,7 +168,7 @@ function ProjectGroupPage({
 
     return () => {
       //CustomEventDispose(CREATE_PROJECT, reloadListProject);
-      //CustomEventDispose(UPDATE_PROJECT, reloadListProject);
+      CustomEventDispose(UPDATE_PROJECT, reloadListProject);
       //CustomEventDispose(DELETE_PROJECT, reloadListProject);
       //CustomEventDispose(HIDE_PROJECT, reloadListProject);
       //CustomEventDispose(SHOW_PROJECT, reloadListProject);

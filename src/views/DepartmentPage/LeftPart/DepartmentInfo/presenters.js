@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
@@ -57,8 +57,8 @@ export const NormalDepartment = ({
 
   return (
     <React.Fragment>
-      {room.error !== null && <ErrorBox />}
-      {room.error === null && (
+      {isNil(room.error) 
+      ? (
         <LeftSideContainer
           leftAction={{
             iconPath: mdiChevronLeft,
@@ -125,7 +125,7 @@ export const NormalDepartment = ({
             </ActionBox>
           </Container>
         </LeftSideContainer>
-      )}
+      ) : <ErrorBox />}
     </React.Fragment>
   );
 };

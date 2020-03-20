@@ -337,7 +337,7 @@
   border: none;
   cursor: pointer;
   margin-bottom: 0;
-  &:hover {
+  &:hover, &__selected {
     background-color: #f2f5fa;
   }
   &:active {
@@ -547,11 +547,10 @@
   background: none;
   border: none;
   font-size: 14px;
-  font-weight: 500;
-  padding: 0;
-  color: #a6a6a6;
+  font-weight: normal;
+  padding: 10px 0 0;
+  color: #03a9f4;
   cursor: pointer;
-  padding-top: 10px;
   &:focus {
     outline: none;
   }
@@ -691,9 +690,9 @@
   background-color: #fff;
   height: 85px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  & > *:last-child {
-    display: none;
-  }
+  // & > *:last-child {
+  //   display: none;
+  // }
 }
 
 // TabBody - MemberTab
@@ -819,7 +818,7 @@
   padding: 10px 0 50px 20px;
   & > *:not(last-child) {
     padding-top: 40px;
-    margin: 0 auto;
+    // margin: 0 auto;
   }
   & > hr {
     border-color: rgba(0, 0, 0, 0.1);

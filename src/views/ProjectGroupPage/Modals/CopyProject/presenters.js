@@ -147,6 +147,7 @@ function CopyProject({
       )}
       height='tall'
       columns={2}
+      loading={groups.loading}
       left={{
         title: 'Chọn dự án sao chép',
         content: () =>

@@ -26,13 +26,13 @@ export const SettingContainer = ({ className = '', ...props }) =>
   />;
 
 
-export const StateBox = ({ stateName, className = '', ...props }) => 
+export const StateBox = ({ stateCode, className = '', ...props }) => 
   <div 
-    className={`comp_TableComponents___state-box-${stateName.toLowerCase()} ${className}`}
+    className={`comp_TableComponents___state-box-${stateCode} ${className}`}
     {...props} 
   />;
 
-export const DateBox = ({ stateName, className = '', ...props }) => 
+export const DateBox = ({ className = '', ...props }) => 
   <div 
     className={`comp_TableComponents___date-box`}
     {...props} 

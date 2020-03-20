@@ -162,20 +162,20 @@ function ProjectPage({
       }, /*true*/);
     }
 
-    //CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
-    //CustomEventListener(COPY_GROUP_TASK, reloadListTask);
-    //CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
-    //CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
+    CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
+    CustomEventListener(COPY_GROUP_TASK, reloadListTask);
+    CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
+    CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
     CustomEventListener(SORT_GROUP_TASK, reloadListTask);
     //CustomEventListener(CREATE_TASK, reloadListTask);
     //CustomEventListener(DELETE_TASK, reloadListTask);
     CustomEventListener(SORT_TASK, reloadListTask);
 
     return () => {
-      //CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
-      //CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
-      //CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
-      //CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
+      CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
+      CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
       CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
       //CustomEventDispose(CREATE_TASK, reloadListTask);
       //CustomEventDispose(DELETE_TASK, reloadListTask);

@@ -87,7 +87,7 @@ function AllTaskTable({
           doSortTask({
             taskId,
             projectId,
-            groupTask,
+            groupTask: groupTask === 'default' ? undefined : groupTask,
             sortIndex,
           })
         }

@@ -218,6 +218,15 @@
             color: #444;
             line-height: 20px;
           }
+          .share-btn-disable {
+            height: 25px;
+            text-transform: unset;
+            padding: 2px 8px;
+            font-weight: normal;
+            line-height: 20px;
+            cursor: not-allowed;
+            opacity: 0.65;
+          }
         }
       }
     }
@@ -243,20 +252,38 @@
         background-color: #f8f8f8;
         .left-content {
           width: 50%;
-          text-align: center;
+          // text-align: center;
           .text-title {
             font-weight: 600;
             font-size: 13px;
             color: #444;
+            &.member-text {
+              text-align: left;
+              padding-left: 45px;
+            }
           }
         }
         .right-content {
           width: 50%;
+          display: flex;
+          margin-left: 0;
           font-weight: 600;
           font-size: 13px;
           color: #444;
+          justify-content: space-between;
           .text-title {
             padding-left: 10px;
+          }
+          .title-shared-by-member {
+            padding-left: 35px;
+          }
+        }
+        .text-title-share-by {
+          width: 50%;
+          display: flex;
+          justify-content: center;
+          .text-title {
+            padding: 0;
           }
         }
       }
@@ -310,6 +337,20 @@
               font-weight: normal;
               color: #444;
               line-height: 20px;
+            }
+            .share-btn-disable {
+              height: 25px;
+              text-transform: unset;
+              padding: 2px 8px;
+              font-weight: normal;
+              line-height: 20px;
+              cursor: not-allowed;
+              opacity: 0.65;
+            }
+            .share-by-avatar {
+              width: 25px;
+              height: 25px;
+              margin: auto;
             }
           }
         }
@@ -514,4 +555,7 @@
     font-size: 13px;
     margin: 0 3px;
   }
+}
+.opacity-0 {
+  opacity: 0;
 }

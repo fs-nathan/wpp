@@ -2,7 +2,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { 
-  ChartBox, ChartDrawer, ChartInfoBox, ChartTitle, CustomChart 
+  ChartBox, ChartDrawer, ChartInfoBox, ChartTitle, CustomChart, ChartPlacedolder
 } from '../../../../components/CustomDonutChart';
 import ColorTypo from '../../../../components/ColorTypo';
 import ColorTextField from '../../../../components/ColorTextField';
@@ -64,12 +64,12 @@ function DefaultGroupDetail({
                           },
                         },
                         labels: [
-                          'Công việc đang chờ', 
-                          'Công việc đang làm', 
-                          'Công việc quá hạn',
-                          'Công việc hoàn thành',
-                          'Công việc ẩn',
-                          'Công việc dừng',
+                          'Dự án đang chờ', 
+                          'Dự án đang làm', 
+                          'Dự án quá hạn',
+                          'Dự án hoàn thành',
+                          'Dự án ẩn',
+                          'Dự án dừng',
                         ],
                         colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d', 'black'],
                       }}
@@ -87,6 +87,16 @@ function DefaultGroupDetail({
                     <ChartTitle>
                       Hoạt động
                     </ChartTitle>
+                    {
+                      get(group.group, 'statistics.task_waiting', 0) +
+                      get(group.group, 'statistics.task_doing', 0) +
+                      get(group.group, 'statistics.task_expired', 0) +
+                      get(group.group, 'statistics.task_complete', 0) +
+                      get(group.group, 'statistics.task_hidden', 0) +
+                      get(group.group, 'statistics.task_stop', 0) === 0
+                        ? <ChartPlacedolder />
+                        : null
+                    }
                   </ChartDrawer>
                   <ProjectGroupName>
                     Chưa phân loại
@@ -95,27 +105,27 @@ function DefaultGroupDetail({
                     data={
                       [{
                         color: '#ff9800',
-                        title: 'Công việc đang chờ',
+                        title: 'Dự án đang chờ',
                         value: get(group.group, 'statistics.task_waiting', 0),
                       }, {
                         color: '#03a9f4',
-                        title: 'Công việc đang làm',
+                        title: 'Dự án đang làm',
                         value: get(group.group, 'statistics.task_doing', 0),
                       }, {
                         color: '#f44336',
-                        title: 'Công việc quá hạn',
+                        title: 'Dự án quá hạn',
                         value: get(group.group, 'statistics.task_expired', 0),
                       }, {
                         color: '#03c30b',
-                        title: 'Công việc hoàn thành',
+                        title: 'Dự án hoàn thành',
                         value: get(group.group, 'statistics.task_complete', 0),
                       }, {
                         color: '#20194d',
-                        title: 'Công việc ẩn',
+                        title: 'Dự án ẩn',
                         value: get(group.group, 'statistics.task_hidden', 0),
                       }, {
                         color: '#000',
-                        title: 'Công việc dừng',
+                        title: 'Dự án dừng',
                         value: get(group.group, 'statistics.task_stop', 0),
                       }]
                     }

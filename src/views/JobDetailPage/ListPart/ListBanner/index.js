@@ -1,51 +1,44 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+// import { withRouter } from 'react-router-dom';
+
 import ColorChip from '../../../../components/ColorChip';
-import { WrapperContext } from '../../index';
+import { filterTaskByType } from '../../../../actions/taskDetail/taskDetailActions';
 
 const ListBanner = props => {
-  const value = React.useContext(WrapperContext);
+  const dispatch = useDispatch();
+  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
+  const colors = useSelector(state => state.setting.colors);
   const [selected, setSelected] = React.useState(0);
   // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
   const handleChangeFilterType = typeIdx => {
-    value.filterTaskByType(typeIdx);
+    dispatch(filterTaskByType(typeIdx));
     setSelected(typeIdx);
   };
-  // console.log({value})
+  // console.log('listTaskDetail', value)
 
-  let data = [];
-  if (value && value.projectDetail && value.projectDetail) {
-    data = value.projectDetail;
-  }
-  let task_of_me = 0;
-  if (value.listTaskDetail && value.listTaskDetail.tasks.length > 0) {
-    value.listTaskDetail.tasks.forEach((e, i) => {
-      task_of_me += e.tasks.length;
-    });
-  }
+  const {
+    task_waiting = 0,
+    task_doing = 0,
+    task_complete = 0,
+    task_expired = 0,
+    task_stop = 0
+  } = projectDetail || {};
+  const allTask = task_waiting + task_doing + task_complete + task_expired + task_stop;
 
-  const taskStatic = {
-    task_me: task_of_me,
-    task_waiting: data.task_waiting,
-    task_doing: data.task_doing,
-    task_complete: data.task_complete,
-    task_expired: data.task_expired,
-    task_stop: data.task_stop
-  };
   const jobTypes = [
-    'Tất cả (' + (taskStatic.task_me ? taskStatic.task_me : 0) + ')',
+    'Tất cả (' + allTask + ')',
     'Đang chờ (' +
-      (taskStatic.task_waiting ? taskStatic.task_waiting : 0) +
-      ')', // Waiting
-    'Đang làm (' + (taskStatic.task_doing ? taskStatic.task_doing : 0) + ')', // Doing
+    (task_waiting) +
+    ')', // Waiting
+    'Đang làm (' + (task_doing) + ')', // Doing
     'Hoàn thành (' +
-      (taskStatic.task_complete ? taskStatic.task_complete : 0) +
-      ')', // Complete
-    'Quá hạn (' + (taskStatic.task_expired ? taskStatic.task_expired : 0) + ')', // Expired
-    'Tạm dừng (' + (taskStatic.task_stop ? taskStatic.task_stop : 0) + ')' // Stop
+    (task_complete) +
+    ')', // Complete
+    'Quá hạn (' + (task_expired) + ')', // Expired
+    'Tạm dừng (' + (task_stop) + ')' // Stop
   ];
-  const bgColor = props.colors.find(item => item.selected === true);
+  const bgColor = colors.find(item => item.selected === true);
   return (
     <div className="container-list-banner">
       {jobTypes.map((jobType, index) => (
@@ -62,9 +55,4 @@ const ListBanner = props => {
   );
 };
 
-export default connect(
-  state => ({
-    colors: state.setting.colors
-  }),
-  {}
-)(withRouter(ListBanner));
+export default ListBanner;

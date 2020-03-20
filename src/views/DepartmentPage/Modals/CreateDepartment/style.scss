@@ -1,0 +1,14 @@
+.view_Department_Create_Modal___logo-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  & > div {
+    & > *:not(:last-child) {
+      margin-bottom: 8px;
+    }
+    & > button {
+      text-transform: none;
+    }
+  }
+};

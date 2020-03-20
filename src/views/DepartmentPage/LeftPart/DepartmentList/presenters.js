@@ -11,7 +11,7 @@ import CustomAvatar from '../../../../components/CustomAvatar';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiDrag, mdiDragVertical } from '@mdi/js';
 import CustomListItem from './CustomListItem';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import './style.scss';
 
 const Banner = ({ className = '', ...props }) => 
@@ -36,8 +36,8 @@ function DepartmentList({
 
   return (
     <React.Fragment>
-      {rooms.error !== null && <ErrorBox />}
-      {rooms.error === null && (
+      {isNil(rooms.error)
+      ? (
         <LeftSideContainer
           title='Danh sách bộ phận'
           leftAction={{
@@ -118,7 +118,8 @@ function DepartmentList({
             </Droppable>
           </DragDropContext>
         </LeftSideContainer>
-      )}
+      )
+      : <ErrorBox />}
     </React.Fragment>
   )
 };

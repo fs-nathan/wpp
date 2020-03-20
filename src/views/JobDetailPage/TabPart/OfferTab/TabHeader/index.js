@@ -1,37 +1,18 @@
 import React, { useEffect } from 'react';
-import { IconButton } from '@material-ui/core';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiChevronLeft , mdiPlus, } from '@mdi/js';
-import ColorTypo from '../../../../../components/ColorTypo';
-import OfferModal from '../OfferModal'
-import { WrapperContext } from '../../../index'
-// const Container = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   background-color: #fff;
-//   height: 85px;
-//   border-bottom: 1px solid rgba(0, 0, 0, .1);
+import { useDispatch, useSelector } from 'react-redux';
 
-// `;
-const ButtonIcon = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`
+import OfferModal from '../OfferModal'
+import { getOffer } from '../../../../../actions/taskDetail/taskDetailActions';
+import { taskIdSelector } from '../../../selectors';
+import HeaderTab from '../../HeaderTab';
 
 function TabHeader(props) {
-  const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
+  const taskId = useSelector(taskIdSelector);
   useEffect(() => {
-    value.getOfferByTaskId(value.taskId)
+    dispatch(getOffer({ taskId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  }, [])
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,13 +22,10 @@ function TabHeader(props) {
   };
   return (
     <div className="container-normal-tabheader">
-      <ButtonIcon onClick={() => { props.setShow(0) }}>
-        <Icon path={mdiChevronLeft } size={1} />
-      </ButtonIcon>
-      <ColorTypo uppercase bold style={{ fontSize: 17 }}>Đề xuất - Phê duyệt</ColorTypo>
-      <ButtonIcon onClick={handleClickOpen} >
-        <Icon path={mdiPlus} size={1} />
-      </ButtonIcon>
+      <HeaderTab title="Đề xuất - Phê duyệt"
+        onClickBack={() => props.setShow(0)}
+        onClickOpen={handleClickOpen}
+      />
       <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} {...props} />
     </div>
   );

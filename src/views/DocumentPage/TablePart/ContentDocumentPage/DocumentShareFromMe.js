@@ -198,10 +198,13 @@ const DocumentShareFromMe = props => {
                 }
               />
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="center" width="5%">
-              {t('IDS_WP_TYPE')}
+            <StyledTableHeadCell
+              align="center"
+              width="5%"
+            ></StyledTableHeadCell>
+            <StyledTableHeadCell align="left">
+              {t('IDS_WP_DOCUMENT_NAME')}
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left">Tên tài liệu</StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="20%">
               {t('IDS_WP_SHARE')}
             </StyledTableHeadCell>
@@ -267,7 +270,7 @@ const DocumentShareFromMe = props => {
                 <StyledTableBodyCell align="center" width="15%">
                   <CustomAvatar
                     src={file.user_create_avatar}
-                    title="user create avatar"
+                    title={t('IDS_WP_TITLE_CREATE_AVATAR')}
                   />
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">

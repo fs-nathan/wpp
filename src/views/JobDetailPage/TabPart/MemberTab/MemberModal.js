@@ -11,18 +11,8 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import imgDoc from '../../../../assets/doc.png'
-import avatar from '../../../../assets/avatar.jpg';
-
-
-const staff = {
-    name: 'Trần Văn Nam', datejoined: '18/10/2018', department: 'Phòng tài chính kế toán', role: 'Trưởng phòng', level: 'Đại học', specialized: 'Kinh tế quốc tế',
-    description: 'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book.',
-    birthday: '20/10/1978', gender: 'Nam', email: 'thuy@gmail.com', phonenumber: '0918006181', address: 'Nhà A, Phố B, Quận Hai Bà Trưng, Thành Phố Hà Nộis'
-}
-
-// const Div = styled.div`
-//   display: flex;
-// `
+import { useDispatch, useSelector } from 'react-redux';
+import get from 'lodash/get';
 
 const StyledEmploy = styled(Typography)`
   width: 700px;
@@ -77,20 +67,6 @@ const ContentDescription = styled(Typography)`
   color: ${colorPal['black'][0]}
 `
 
-// const ButtonFile = styled.label`
-//       & > span {
-//         margin: 20px 0 0 0;
-//         & > span {
-//           display: flex;
-//           align-items: center;
-//           justify-content: start;
-//           padding: 3px 10px;
-//           font-size: 16px;
-//           font-weight: 500;
-//         }
-//       }
-// `
-
 const WrapperMember = styled(Typography)`
     padding-top: 20px;
     padding-left: 20px;
@@ -111,172 +87,185 @@ const StyledAvatar = styled(Avatar)`
     `
 
 const useStyles = makeStyles(theme => ({
-    button: {
-        margin: theme.spacing(1),
-    },
-    input: {
-        display: 'none',
-    },
+  button: {
+    margin: theme.spacing(1),
+  },
+  input: {
+    display: 'none',
+  },
 }));
 
 const styles = theme => ({
-    root: {
-        margin: 0,
-        padding: theme.spacing(2),
-        background: '#f5f8fc'
-    },
-    title: {
-        textTransform: 'uppercase',
-        fontSize: 14,
-        fontWeight: 400,
-    },
-    closeButton: {
-        position: 'absolute',
-        right: theme.spacing(1),
-        top: theme.spacing(1),
-        color: theme.palette.grey[500],
-    },
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+    background: '#f5f8fc'
+  },
+  title: {
+    textTransform: 'uppercase',
+    fontSize: 14,
+    fontWeight: 400,
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
 });
 
 const DialogTitle = withStyles(styles)(props => {
-    const { children, classes, onClose, ...other } = props;
-    return (
-        <MuiDialogTitle disableTypography className={classes.root} {...other}>
-            <Typography className={classes.title} variant="h6">{children}</Typography>
-            {onClose ? (
-                <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-                    <CloseIcon />
-                </IconButton>
-            ) : null}
-        </MuiDialogTitle>
-    );
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography className={classes.title} variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
 });
 
 const DialogContent = withStyles(theme => ({
-    root: {
-        padding: theme.spacing(2),
-    },
+  root: {
+    padding: theme.spacing(2),
+  },
 }))(MuiDialogContent);
 
 const DialogActions = withStyles(theme => ({
-    root: {
-        margin: 0,
-        padding: '15px 24px',
-    },
+  root: {
+    margin: 0,
+    padding: '15px 24px',
+  },
 }))(MuiDialogActions);
 
-const MemberModal = (props) => {
-    const classes = useStyles();
-    
-    return (
-        <Dialog maxWidth={'lg'} onClose={props.handleCloseMembers}  open={props.isOpen} >
-            <DialogTitle onClose={props.handleCloseMembers}>
-                Thông tin chi tiết thành viên
+const MemberModal = ({ handleCloseMembers, isOpen, }) => {
+  const classes = useStyles();
+  const userDetail = useSelector(state => get(state, 'user.detailUser.data.user'));
+  const {
+    documents = [],
+    date_join,
+    email,
+    name,
+    avatar,
+    birthday,
+    gender,
+    gender_name,
+    phone,
+    address,
+    room_name,
+    position_name,
+    level,
+    specialized,
+    description,
+  } = userDetail || {};
+
+  return (
+    <Dialog maxWidth={'lg'} onClose={handleCloseMembers} open={isOpen} >
+      <DialogTitle onClose={handleCloseMembers}>
+        Thông tin chi tiết thành viên
             </DialogTitle>
-            <DialogContent dividers>
-                <div className="wrapper-member-modal">
-                    <StyledEmploy component={'div'}>
-                        <div className="member-general-info">
-                            <StyledAvatar src={avatar} alt='avatar' />
-                            <div className="general-info">
-                                <NameStaff bold uppercase >{staff.name}</NameStaff>
-                                <ColorTypo color='gray'  >Ngày tham gia: {staff.datejoined}</ColorTypo>
-                            </div>
-                        </div>
-                        <TextInput
-                            value={staff.department}
-                            InputProps={{
-                                startAdornment: <AdornmentInput position="start" >Phòng/ban:</AdornmentInput>,
-                            }}
-                            fullWidth
-                            disabled
-                        />
-                        <TextInput
-                            value={staff.role}
-                            InputProps={{
-                                startAdornment: <AdornmentInput position="start" >Chức danh:</AdornmentInput>,
-                            }}
-                            fullWidth
-                            disabled
-                        />
-                        <TextInput
-                            value={staff.level}
-                            InputProps={{
-                                startAdornment: <AdornmentInput position="start" >Trình độ:</AdornmentInput>,
-                            }}
-                            fullWidth
-                            disabled
-                        />
-                        <TextInput
-                            value={staff.specialized}
-                            InputProps={{
-                                startAdornment: <AdornmentInput position="start" >Chuyên nghành:</AdornmentInput>,
-                            }}
-                            fullWidth
-                            disabled
-                        />
-                        <TitleDescription>Mô tả công việc:</TitleDescription>
-                        <ContentDescription>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Quos blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-              </ContentDescription>
-                        <input
-                            accept="image/*"
-                            className={classes.input}
-                            id="contained-button-file"
-                            multiple
-                            type="file"
-                        />
-                        <label className="button-file" htmlFor="contained-button-file">
-                            <Button variant="contained" component="span" fullWidth className={classes.button}>
-                                <img className="member-image"alt="vtask" src={imgDoc} />
+      <DialogContent dividers>
+        <div className="wrapper-member-modal">
+          <StyledEmploy component={'div'}>
+            <div className="member-general-info">
+              <StyledAvatar src={avatar} alt='avatar' />
+              <div className="general-info">
+                <NameStaff bold uppercase >{name}</NameStaff>
+                <ColorTypo color='gray'  >Ngày tham gia: {date_join}</ColorTypo>
+              </div>
+            </div>
+            <TextInput
+              value={room_name}
+              InputProps={{
+                startAdornment: <AdornmentInput position="start" >Phòng/ban:</AdornmentInput>,
+              }}
+              fullWidth
+              disabled
+            />
+            <TextInput
+              value={position_name}
+              InputProps={{
+                startAdornment: <AdornmentInput position="start" >Chức danh:</AdornmentInput>,
+              }}
+              fullWidth
+              disabled
+            />
+            <TextInput
+              value={level}
+              InputProps={{
+                startAdornment: <AdornmentInput position="start" >Trình độ:</AdornmentInput>,
+              }}
+              fullWidth
+              disabled
+            />
+            <TextInput
+              value={specialized}
+              InputProps={{
+                startAdornment: <AdornmentInput position="start" >Chuyên nghành:</AdornmentInput>,
+              }}
+              fullWidth
+              disabled
+            />
+            <TitleDescription>Mô tả công việc:</TitleDescription>
+            <ContentDescription>
+              {description}
+            </ContentDescription>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+            />
+            <label className="button-file" htmlFor="contained-button-file">
+              <Button variant="contained" component="span" fullWidth className={classes.button}>
+                <img className="member-image" alt="vtask" src={imgDoc} />
                                 Xem file hồ sơ
                             </Button>
-                        </label>
-                    </StyledEmploy>
-                                    
-                    <StyledStaff component={'div'}>
-                        <TextItem > Thông tin cá nhân</TextItem>
-                        <WrapperMember component="div" >
-                            <MemberDetail component='div'>
-                                <TitleText >Họ và tên đầy đủ:</TitleText>
-                                <ContentDescription>{staff.name}</ContentDescription>
-                            </MemberDetail>
-                            <MemberDetail component='div'>
-                                <TitleText >Ngày sinh:</TitleText>
-                                <ContentDescription>{staff.birthday}</ContentDescription>
-                            </MemberDetail>
-                            <MemberDetail component='div'>
-                                <TitleText >Giới tính:</TitleText>
-                                <ContentDescription>{staff.gender}</ContentDescription>
-                            </MemberDetail>
-                            <MemberDetail component='div'>
-                                <TitleText >Email:</TitleText>
-                                <ContentDescription>{staff.email}</ContentDescription>
-                            </MemberDetail>
-                            <MemberDetail component='div'>
-                                <TitleText >Điện thoại:</TitleText>
-                                <ContentDescription>{staff.phonenumber}</ContentDescription>
-                            </MemberDetail>
-                            <MemberDetail component='div'>
-                                <TitleText >Địa chỉ:</TitleText>
-                                <ContentDescription>{staff.address}</ContentDescription>
-                            </MemberDetail>
-                        </WrapperMember>
-                    </StyledStaff>
-                </div>
-            </DialogContent>
-            <DialogActions>
-                <Button autoFocus onClick={props.handleCloseMembers} color="primary">
-                    Đóng
+            </label>
+          </StyledEmploy>
+
+          <StyledStaff component={'div'}>
+            <TextItem > Thông tin cá nhân</TextItem>
+            <WrapperMember component="div" >
+              <MemberDetail component='div'>
+                <TitleText >Họ và tên đầy đủ:</TitleText>
+                <ContentDescription>{name}</ContentDescription>
+              </MemberDetail>
+              <MemberDetail component='div'>
+                <TitleText >Ngày sinh:</TitleText>
+                <ContentDescription>{birthday}</ContentDescription>
+              </MemberDetail>
+              <MemberDetail component='div'>
+                <TitleText >Giới tính:</TitleText>
+                <ContentDescription>{gender_name}</ContentDescription>
+              </MemberDetail>
+              <MemberDetail component='div'>
+                <TitleText >Email:</TitleText>
+                <ContentDescription>{email}</ContentDescription>
+              </MemberDetail>
+              <MemberDetail component='div'>
+                <TitleText >Điện thoại:</TitleText>
+                <ContentDescription>{phone}</ContentDescription>
+              </MemberDetail>
+              <MemberDetail component='div'>
+                <TitleText >Địa chỉ:</TitleText>
+                <ContentDescription>{address}</ContentDescription>
+              </MemberDetail>
+            </WrapperMember>
+          </StyledStaff>
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus onClick={handleCloseMembers} color="primary">
+          Đóng
                 </Button>
-            </DialogActions>
-        </Dialog>
-    )
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 export default MemberModal;

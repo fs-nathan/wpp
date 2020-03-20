@@ -11,7 +11,8 @@ import { detailUser } from '../../actions/user/detailUser';
 import {
   CustomEventListener, CustomEventDispose,
   //SORT_ROOM, CREATE_ROOM, DELETE_ROOM, UPDATE_ROOM,
-  //SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER, UPLOAD_DOCUMENTS_USER, 
+  //SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER, 
+  UPLOAD_DOCUMENTS_USER, 
   UPDATE_USER,
   //CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION,
 } from '../../constants/events';
@@ -50,7 +51,7 @@ function UserPage({
 
     /*
     const reloadListRoom = () => {
-      doListRoom(true);
+      doListRoom();
     }
 
     CustomEventListener(CREATE_ROOM, reloadListRoom);
@@ -72,7 +73,7 @@ function UserPage({
 
     /*
     const reloadListPosition = () => {
-      doListPosition(true);
+      doListPosition();
     };
 
     CustomEventListener(CREATE_POSITION, reloadListPosition);
@@ -97,9 +98,9 @@ function UserPage({
 
   React.useEffect(() => {
     doListUserOfGroup();
-
+    
     const reloadListUserOfGroup = () => {
-      doListUserOfGroup(/*true*/);
+      doListUserOfGroup();
     }
 
     //CustomEventListener(CREATE_ROOM, reloadListUserOfGroup);
@@ -132,17 +133,17 @@ function UserPage({
   React.useEffect(() => {
     doDetailUser({ userId });
     
-    /*
+  
     const reloadDetailUserHandler = () => doDetailUser({ userId }, true);
 
     CustomEventListener(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
-    CustomEventListener(UPDATE_USER, reloadDetailUserHandler);
+    //CustomEventListener(UPDATE_USER, reloadDetailUserHandler);
 
     return () => {
       CustomEventDispose(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
-      CustomEventDispose(UPDATE_USER, reloadDetailUserHandler);
+      //CustomEventDispose(UPDATE_USER, reloadDetailUserHandler);
     }
-    */
+
   }, [doDetailUser, userId]);
 
   return (
