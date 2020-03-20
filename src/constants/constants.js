@@ -1,7 +1,8 @@
-<<<<<<< HEAD
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
 export const GROUP_ACTIVE = "group-active";
+export const NOTI_NUMBER = "notification_number";
+export const MESS_NUMBER = "message_number";
 
 export const DRAWER_TYPE = {
   SUPPORT: "SUPPORT",
@@ -11,22 +12,6 @@ export const DRAWER_TYPE = {
   SETTING: "SETTING",
   JOIN_NEW_GROUP: "JOIN_NEW_GROUP",
   ADD_USER: "ADD_USER"
-=======
-export const TOKEN = 'token';
-export const REFRESH_TOKEN = 'refreshToken';
-export const GROUP_ACTIVE = 'group-active';
-export const NOTI_NUMBER = 'notification_number';
-export const MESS_NUMBER = 'message_number';
-
-export const DRAWER_TYPE = {
-  SUPPORT: 'SUPPORT',
-  MESSAGE: 'MESSAGE',
-  NOTIFICATION: 'NOTIFICATION',
-  GROUP_ACCOUNT: 'GROUP_ACCOUNT',
-  SETTING: 'SETTING',
-  JOIN_NEW_GROUP: 'JOIN_NEW_GROUP',
-  ADD_USER: 'ADD_USER'
->>>>>>> origin/master
 };
 export const SETTING_ACCOUNT = {
   INFO: "info",

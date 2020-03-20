@@ -142,12 +142,8 @@ function CustomTable() {
 }
 
 function CustomTableWrapper({ options, columns, data }) {
-<<<<<<< HEAD
+  console.log("X");
   const [searchPatern, setSearchPatern] = React.useState("");
-=======
-  console.log('X');
-  const [searchPatern, setSearchPatern] = React.useState('');
->>>>>>> origin/master
   const [expand, setExpand] = React.useState(false);
 
   const defaultOptions = {

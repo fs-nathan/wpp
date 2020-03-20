@@ -1,173 +1,5 @@
-<<<<<<< HEAD
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
-=======
-import { takeLatest, takeLeading, takeEvery } from 'redux-saga/effects';
-import { LOGIN, LOGIN_CHECK_STATE } from '../constants/actions/authentications';
-import { login, loginCheckState } from './authentications';
-import { LIST_ROOM } from '../constants/actions/room/listRoom';
-import { listRoom } from './room/listRoom';
-import { DETAIL_ROOM } from '../constants/actions/room/detailRoom';
-import { detailRoom } from './room/detailRoom';
-import { GET_USER_OF_ROOM } from '../constants/actions/room/getUserOfRoom';
-import { getUserOfRoom } from './room/getUserOfRoom';
-import { LIST_USER_OF_GROUP } from '../constants/actions/user/listUserOfGroup';
-import { listUserOfGroup } from './user/listUserOfGroup';
-import { SORT_USER } from '../constants/actions/user/sortUser';
-import { sortUser } from './user/sortUser';
-import { LIST_ICON } from '../constants/actions/icon/listIcon';
-import { listIcon } from './icon/listIcon';
-import { CREATE_ROOM } from '../constants/actions/room/createRoom';
-import { createRoom } from './room/createRoom';
-import { DELETE_ROOM } from '../constants/actions/room/deleteRoom';
-import { deleteRoom } from './room/deleteRoom';
-import { UPDATE_ROOM } from '../constants/actions/room/updateRoom';
-import { updateRoom } from './room/updateRoom';
-import { SORT_ROOM } from '../constants/actions/room/sortRoom';
-import { sortRoom } from './room/sortRoom';
-import { DETAIL_USER } from '../constants/actions/user/detailUser';
-import { detailUser } from './user/detailUser';
-import { UPLOAD_DOCUMENTS_USER } from '../constants/actions/user/uploadDocumentsUser';
-import { uploadDocumentsUser } from './user/uploadDocumentsUser';
-import { LIST_MAJOR } from '../constants/actions/major/listMajor';
-import { listMajor } from './major/listMajor';
-import { LIST_LEVEL } from '../constants/actions/level/listLevel';
-import { listLevel } from './level/listLevel';
-import { LIST_POSITION } from '../constants/actions/position/listPosition';
-import { listPosition } from './position/listPosition';
-import { UPDATE_USER } from '../constants/actions/user/updateUser';
-import { updateUser } from './user/updateUser';
-import { CREATE_POSITION } from '../constants/actions/position/createPosition';
-import { createPosition } from './position/createPosition';
-import { UPDATE_POSITION } from '../constants/actions/position/updatePosition';
-import { updatePosition } from './position/updatePosition';
-import { DELETE_POSITION } from '../constants/actions/position/deletePosition';
-import { deletePosition } from './position/deletePosition';
-import { CREATE_MAJOR } from '../constants/actions/major/createMajor';
-import { createMajor } from './major/createMajor';
-import { UPDATE_MAJOR } from '../constants/actions/major/updateMajor';
-import { updateMajor } from './major/updateMajor';
-import { DELETE_MAJOR } from '../constants/actions/major/deleteMajor';
-import { deleteMajor } from './major/deleteMajor';
-import { CREATE_LEVEL } from '../constants/actions/level/createLevel';
-import { createLevel } from './level/createLevel';
-import { UPDATE_LEVEL } from '../constants/actions/level/updateLevel';
-import { updateLevel } from './level/updateLevel';
-import { DELETE_LEVEL } from '../constants/actions/level/deleteLevel';
-import { deleteLevel } from './level/deleteLevel';
-import { LIST_USER_ROLE } from '../constants/actions/userRole/listUserRole';
-import { listUserRole } from './userRole/listUserRole';
-import { CREATE_USER_ROLE } from '../constants/actions/userRole/createUserRole';
-import { createUserRole } from './userRole/createUserRole';
-import { UPDATE_USER_ROLE } from '../constants/actions/userRole/updateUserRole';
-import { updateUserRole } from './userRole/updateUserRole';
-import { DELETE_USER_ROLE } from '../constants/actions/userRole/deleteUserRole';
-import { deleteUserRole } from './userRole/deleteUserRole';
-import { PUBLIC_MEMBER } from '../constants/actions/user/publicMember';
-import { publicMember } from './user/publicMember';
-import { PRIVATE_MEMBER } from '../constants/actions/user/privateMember';
-import { privateMember } from './user/privateMember';
-import { BAN_USER_FROM_GROUP } from '../constants/actions/user/banUserFromGroup';
-import { banUserFromGroup } from './user/banUserFromGroup';
-import { SEARCH_USER } from '../constants/actions/groupUser/searchUser';
-import { searchUser } from './groupUser/searchUser';
-import { INVITE_USER_JOIN_GROUP } from '../constants/actions/groupUser/inviteUserJoinGroup';
-import { inviteUserJoinGroup } from './groupUser/inviteUserJoinGroup';
-import { RESEND_INVITATION_USER_JOIN_GROUP } from '../constants/actions/groupUser/resendInvitationUserJoinGroup';
-import { resendInvitationUserJoinGroup } from './groupUser/resendInvitationUserJoinGroup';
-import { GET_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/getRequirementJoinGroup';
-import { getRequirementJoinGroup } from './groupUser/getRequirementUserJoinGroup';
-import { GET_LIST_INVITATION_SENT } from '../constants/actions/groupUser/getListInvitationSent';
-import { getListInvitationSent } from './groupUser/getListInvitationSent';
-import { CANCLE_INVITATION_JOIN_GROUP } from '../constants/actions/groupUser/cancleInvitationJoinGroup';
-import { cancleInvitationJoinGroup } from './groupUser/cancleInvitationJoinGroup';
-import { ACCEPT_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/acceptRequirementJoinGroup';
-import { acceptRequirementJoinGroup } from './groupUser/acceptRequirementUserJoinGroup';
-import { REJECT_REQUIREMENT_JOIN_GROUP } from '../constants/actions/groupUser/rejectRequirementJoinGroup';
-import { rejectRequirementJoinGroup } from './groupUser/rejectRequirementUserJoinGroup';
-import { GET_LIST_GROUP } from '../constants/actions/groupUser/getListGroup';
-import { getListGroup } from './groupUser/getListGroup';
-import { CREATE_ICON } from '../constants/actions/icon/createIcon';
-import { createIcon } from './icon/createIcon';
-import { DELETE_ICON } from '../constants/actions/icon/deleteIcon';
-import { deleteIcon } from './icon/deleteIcon';
-import { CREATE_PROJECT_GROUP } from '../constants/actions/projectGroup/createProjectGroup';
-import { createProjectGroup } from './projectGroup/createProjectGroup';
-import { EDIT_PROJECT_GROUP } from '../constants/actions/projectGroup/editProjectGroup';
-import { editProjectGroup } from './projectGroup/editProjectGroup';
-import { LIST_PROJECT_GROUP } from '../constants/actions/projectGroup/listProjectGroup';
-import { listProjectGroup } from './projectGroup/listProjectGroup';
-import { DELETE_PROJECT_GROUP } from '../constants/actions/projectGroup/deleteProjectGroup';
-import { deleteProjectGroup } from './projectGroup/deleteProjectGroup';
-import { SORT_PROJECT_GROUP } from '../constants/actions/projectGroup/sortProjectGroup';
-import { sortProjectGroup } from './projectGroup/sortProjectGroup';
-import { DETAIL_PROJECT_GROUP } from '../constants/actions/projectGroup/detailProjectGroup';
-import { detailProjectGroup } from './projectGroup/detailProjectGroup';
-import { MEMBER_PROJECT_GROUP } from '../constants/actions/projectGroup/memberProjectGroup';
-import { memberProjectGroup } from './projectGroup/memberProjectGroup';
-import { DETAIL_DEFAULT_GROUP } from '../constants/actions/projectGroup/detailDefaultGroup';
-import { detailDefaultGroup } from './projectGroup/detailDefaultGroup';
-import { CREATE_PROJECT } from '../constants/actions/project/createProject';
-import { createProject } from './project/createProject';
-import { COPY_PROJECT } from '../constants/actions/project/copyProject';
-import { copyProject } from './project/copyProject';
-import { SORT_PROJECT } from '../constants/actions/project/sortProject';
-import { sortProject } from './project/sortProject';
-import { UPDATE_PROJECT } from '../constants/actions/project/updateProject';
-import { updateProject } from './project/updateProject';
-import { DELETE_PROJECT } from '../constants/actions/project/deleteProject';
-import { deleteProject } from './project/deleteProject';
-import { LIST_PROJECT } from '../constants/actions/project/listProject';
-import { LIST_DELETED_PROJECT } from '../constants/actions/project/listDeletedProject';
-import { listProject, listDeletedProject } from './project/listProject';
-import { DETAIL_PROJECT } from '../constants/actions/project/detailProject';
-import { detailProject } from './project/detailProject';
-import { HIDE_PROJECT } from '../constants/actions/project/hideProject';
-import { hideProject } from './project/hideProject';
-import { SHOW_PROJECT } from '../constants/actions/project/showProject';
-import { showProject } from './project/showProject';
-import { MEMBER_PROJECT } from '../constants/actions/project/memberProject';
-import { memberProject } from './project/memberProject';
-import { ADD_MEMBER_PROJECT } from '../constants/actions/project/addMemberProject';
-import { addMemberProject } from './project/addMemberProject';
-import { REMOVE_MEMBER_PROJECT } from '../constants/actions/project/removeMemberProject';
-import { removeMemberProject } from './project/removeMemberProject';
-import { UPDATE_STATE_JOIN_TASK } from '../constants/actions/project/updateStateJoinTask';
-import { updateStateJoinTask } from './project/updateStateJoinTask';
-import { ADD_PROJECT_ROLE_TO_MEMBER } from '../constants/actions/project/addProjectRoleToMember';
-import { addProjectRoleToMember } from './project/addProjectRoleToMember';
-import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../constants/actions/project/removeProjectRoleFromMember';
-import { removeProjectRoleFromMember } from './project/removeProjectRoleFromMember';
-import { UPDATE_GROUP_PERMISSION_MEMBER } from '../constants/actions/project/updateGroupPermissionMember';
-import { updateGroupPermissionMember } from './project/updateGroupPermissionMember';
-import { ASSIGN_MEMBER_TO_ALL_TASK } from '../constants/actions/project/assignMemberToAllTask';
-import { assignMemberToAllTask } from './project/assignMemberToAllTask';
-import { DETAIL_STATUS } from '../constants/actions/project/setting/detailStatus';
-import { detailStatus } from './project/setting/detailStatus';
-import { UPDATE_STATUS_COPY } from '../constants/actions/project/setting/updateStatusCopy';
-import { updateStatusCopy } from './project/setting/updateStatusCopy';
-import { UPDATE_STATUS_DATE } from '../constants/actions/project/setting/updateStatusDate';
-import { updateStatusDate } from './project/setting/updateStatusDate';
-import { LIST_GROUP_TASK } from '../constants/actions/groupTask/listGroupTask';
-import { listGroupTask } from './groupTask/listGroupTask';
-import { CREATE_GROUP_TASK } from '../constants/actions/groupTask/createGroupTask';
-import { createGroupTask } from './groupTask/createGroupTask';
-import { COPY_GROUP_TASK } from '../constants/actions/groupTask/copyGroupTask';
-import { copyGroupTask } from './groupTask/copyGroupTask';
-import { UPDATE_GROUP_TASK } from '../constants/actions/groupTask/updateGroupTask ';
-import { updateGroupTask } from './groupTask/updateGroupTask';
-import { DELETE_GROUP_TASK } from '../constants/actions/groupTask/deleteGroupTask';
-import { deleteGroupTask } from './groupTask/deleteGroupTask';
-import { SORT_GROUP_TASK } from '../constants/actions/groupTask/sortGroupTask';
-import { sortGroupTask } from './groupTask/sortGroupTask';
-import { GET_ALL_GROUP_TASK } from '../constants/actions/groupTask/getAllGroupTask';
-import { getAllGroupTask } from './groupTask/getAllGroupTask';
-import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from '../constants/actions/register/inviteOtherPeopleCreateAccount';
-import { inviteOtherPeopleCreateAccount } from './register/inviteOtherPeopleCreateAccount';
-// ==================================
-import * as taskDetailType from '../constants/actions/taskDetail/taskDetailConst';
-import * as taskDetailSaga from './taskDetail/TaskDetailSaga';
->>>>>>> origin/master
 import {
   LIST_COMMENT,
   LIST_DOCUMENT_FROM_ME,
@@ -252,10 +84,6 @@ import {
   FETCH_LIST_COLOR_GROUP,
   GET_SETTING_DATE
 } from "../constants/actions/setting/setting";
-import { CREATE_TASK } from "../constants/actions/task/createTask";
-import { DELETE_TASK } from "../constants/actions/task/deleteTask";
-import { LIST_TASK } from "../constants/actions/task/listTask";
-import { SORT_TASK } from "../constants/actions/task/sortTask";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -270,6 +98,7 @@ import { CREATE_USER_ROLE } from "../constants/actions/userRole/createUserRole";
 import { DELETE_USER_ROLE } from "../constants/actions/userRole/deleteUserRole";
 import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
 import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
+// ==================================
 import {
   watchLoadTaskDuePage,
   watchLoadTaskOverviewPage
@@ -358,10 +187,6 @@ import {
   getListColor,
   getSettingDate
 } from "./setting/setting";
-import { createTask } from "./task/createTask";
-import { deleteTask } from "./task/deleteTask";
-import { listTask } from "./task/listTask";
-import { sortTask } from "./task/sortTask";
 import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
 import { detailUser } from "./user/detailUser";
@@ -463,19 +288,14 @@ function* rootSaga() {
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
-<<<<<<< HEAD
-  yield takeLatest(LIST_TASK, listTask);
-  yield takeEvery(CREATE_TASK, createTask);
-  yield takeEvery(DELETE_TASK, deleteTask);
-  yield takeEvery(SORT_TASK, sortTask);
+  yield takeLeading(
+    taskDetailType.DELETE_TASK_REQUEST,
+    taskDetailSaga.deleteTask
+  );
   yield takeEvery(
     INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
     inviteOtherPeopleCreateAccount
   );
-=======
-  yield takeLeading(taskDetailType.DELETE_TASK_REQUEST, taskDetailSaga.deleteTask);
-  yield takeEvery(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, inviteOtherPeopleCreateAccount);
->>>>>>> origin/master
 
   // Hoang - end
 
@@ -680,7 +500,6 @@ function* rootSaga() {
   );
 
   // List Task Detail
-<<<<<<< HEAD
   yield takeLeading(
     taskDetailType.GET_LIST_TASK_DETAIL_REQUEST,
     taskDetailSaga.getListTaskDetail
@@ -694,15 +513,11 @@ function* rootSaga() {
     taskDetailType.GET_LIST_GROUP_TASK_REQUEST,
     taskDetailSaga.getListGroupTask
   );
+  yield takeLeading(
+    taskDetailType.GET_LIST_OFFER_REQUEST,
+    taskDetailSaga.getListOffer
+  );
   // get project group
-=======
-  yield takeLeading(taskDetailType.GET_LIST_TASK_DETAIL_REQUEST, taskDetailSaga.getListTaskDetail);
-  yield takeLeading(taskDetailType.POST_TASK_REQUEST, taskDetailSaga.createTask);
-  // List Group Task 
-  yield takeLeading(taskDetailType.GET_LIST_GROUP_TASK_REQUEST, taskDetailSaga.getListGroupTask);
-  yield takeLeading(taskDetailType.GET_LIST_OFFER_REQUEST, taskDetailSaga.getListOffer);
-  // get project group 
->>>>>>> origin/master
   // yield takeLeading(taskDetailType.GET_PROJECT_GROUP_LISTPART_REQUEST, taskDetailSaga.getProjectGroup);
   // get project detail
   yield takeLeading(
@@ -725,23 +540,19 @@ function* rootSaga() {
     taskDetailSaga.getStaticTask
   );
   //updateComplete
-<<<<<<< HEAD
   yield takeLeading(
     taskDetailType.UPDATE_COMPLETE_REQUEST,
     taskDetailSaga.updateComplete
   );
+  // pin
+  yield takeLeading(taskDetailType.PIN_TASK_REQUEST, taskDetailSaga.pinTask);
+  yield takeLeading(
+    taskDetailType.UN_PIN_TASK_REQUEST,
+    taskDetailSaga.unPinTask
+  );
 
-  // overview
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
 }
-=======
-  yield takeLeading(taskDetailType.UPDATE_COMPLETE_REQUEST,taskDetailSaga.updateComplete);
-  // pin
-  yield takeLeading(taskDetailType.PIN_TASK_REQUEST,taskDetailSaga.pinTask);
-  yield takeLeading(taskDetailType.UN_PIN_TASK_REQUEST,taskDetailSaga.unPinTask);
-
-};
->>>>>>> origin/master
 
 export default rootSaga;
