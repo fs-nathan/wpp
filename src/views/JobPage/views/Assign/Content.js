@@ -1,113 +1,16 @@
-import {
-  Box,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableSortLabel
-} from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useList, useToggle } from "react-use";
+import { RecentTable } from "views/JobPage/components/RecentTable";
 import { TASK_ASSIGN } from "views/JobPage/redux/types";
 import AnalyticButton from "../../components/AnalyticButton";
 import PrimaryButton from "../../components/PrimaryButton";
-import RecentTableRow from "../../components/RecentTableRow";
-import { colors, recent, taskAtrrs, taskStatusMap } from "../../contants/attrs";
+import { colors, recent, taskStatusMap } from "../../contants/attrs";
 import { useMultipleSelect } from "../../hooks/useMultipleSelect";
-import { createMapPropsFromAttrs, loginlineFunc } from "../../utils";
+import { createMapPropsFromAttrs } from "../../utils";
 
-export const RecentTable = ({
-  tasks = [],
-  isToggleSortName,
-  toggleSortName
-}) => {
-  const { t } = useTranslation();
-  return (
-    <Table className="header-document">
-      <TableHead>
-        <TableRow>
-          <TableCell width="5%"></TableCell>
-          <TableCell sortDirection={true} align="left">
-            <TableSortLabel
-              active={true}
-              direction={isToggleSortName ? "asc" : "desc"}
-              onClick={() => toggleSortName()}
-            >
-              {t("Tên công việc")}
-            </TableSortLabel>
-          </TableCell>
-          <TableCell width="10%" align="left">
-            {t("Tiến độ")}
-          </TableCell>
-          <TableCell width="10%" align="right">
-            {t("Kết thúc")}
-          </TableCell>
-          <TableCell width="10%" align="right"></TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {tasks.map((task, index) => {
-          const [
-            project_id,
-            id,
-            avatar,
-            user_name,
-            name,
-            status_code,
-            status_name,
-            time_end,
-            haveNewChat,
-            duration_value,
-            duration_unit,
-            complete,
-            number_member
-          ] = loginlineFunc(
-            createMapPropsFromAttrs([
-              taskAtrrs.project_id,
-              taskAtrrs.id,
-              taskAtrrs.user_create_avatar,
-              taskAtrrs.user_create_name,
-              taskAtrrs.name,
-              taskAtrrs.status_code,
-              taskAtrrs.status_name,
-              taskAtrrs.time_end,
-              taskAtrrs.haveNewChat,
-              taskAtrrs.duration_value,
-              taskAtrrs.duration_unit,
-              taskAtrrs.complete,
-              taskAtrrs.number_member
-            ])
-          )(task);
-          return (
-            <RecentTableRow
-              {...{
-                project_id,
-                id,
-                avatar,
-                name,
-                status_code,
-                status_name,
-                time_end,
-                haveNewChat,
-                duration_value,
-                duration_unit,
-                user_name,
-                complete,
-                number_member
-              }}
-              className="table-body-row"
-              key={index}
-            ></RecentTableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
-  );
-};
 export const defaultStatusFilter = {
   all: false,
   waiting: false,
@@ -129,17 +32,23 @@ export function Content() {
   ] = useMultipleSelect(defaultStatusFilter, false);
   const [isToggleSortName, toggleSortName] = useToggle();
 
-  const [waiting, doing, stop, expired, tasks = emptyArray] = useSelector(
-    state => {
-      return createMapPropsFromAttrs([
-        recent.waiting,
-        recent.doing,
-        recent.stop,
-        recent.expired,
-        recent.tasks
-      ])(state.taskPage[TASK_ASSIGN]);
-    }
-  );
+  const [
+    waiting,
+    doing,
+    stop,
+    complete,
+    expired,
+    tasks = emptyArray
+  ] = useSelector(state => {
+    return createMapPropsFromAttrs([
+      recent.waiting,
+      recent.doing,
+      recent.stop,
+      recent.complete,
+      recent.expired,
+      recent.tasks
+    ])(state.taskPage[TASK_ASSIGN]);
+  });
   const [
     list,
     {
@@ -159,7 +68,7 @@ export function Content() {
   ] = useList(tasks);
   const sortMemo = useMemo(
     () => (a, b) =>
-      isToggleSortName
+      !isToggleSortName
         ? a.name.localeCompare(b.name)
         : b.name.localeCompare(a.name),
     [isToggleSortName]
@@ -190,7 +99,7 @@ export function Content() {
     onClick: () => setstatusFilter(string)
   });
 
-  const allCount = [waiting, doing, stop, expired].reduce(
+  const allCount = [waiting, doing, stop, complete, expired].reduce(
     (result = 0, value) => result + value
   );
   return (
@@ -217,7 +126,15 @@ export function Content() {
           circleText={`${Math.floor((doing * 100) / allCount)}%`}
         />
       </Grid>
-
+      <Grid item>
+        <AnalyticButton
+          {...createAnalyticButtonProps("complete")}
+          count={complete}
+          label={t("Hoàn thành")}
+          color={colors.task_complete}
+          circleText={`${Math.floor((complete * 100) / allCount)}%`}
+        />
+      </Grid>
       <Grid item>
         <AnalyticButton
           {...createAnalyticButtonProps("expired")}

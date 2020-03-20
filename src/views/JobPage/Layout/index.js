@@ -1,6 +1,7 @@
 import { ClickAwayListener, Drawer, SvgIcon } from "@material-ui/core";
 import {
   mdiCalendar,
+  mdiFilterOutline,
   mdiFullscreen,
   mdiFullscreenExit,
   mdiSettingsOutline
@@ -60,8 +61,8 @@ function Layout({ children, title, bgColor }) {
                   onClick: () => handleExpand(!expand)
                 },
                 {
-                  label: "setting",
-                  iconPath: mdiSettingsOutline,
+                  label: "Lọc",
+                  iconPath: mdiFilterOutline,
                   onClick: () =>
                     setQuickTask(
                       <QuickView
