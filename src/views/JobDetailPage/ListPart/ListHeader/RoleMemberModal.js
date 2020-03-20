@@ -12,27 +12,6 @@ import DialogWrap from 'components/DialogWrap';
 const RoleTable = styled(TableCell)`
 padding: 15px 15px;
 `
-const AddRoleButton = styled(Button)`
-    border: 1px solid;
-    background: #0362fc;
-    color: #fff ;
-    text-transform: inherit;
-    padding: 3px 12px;
-   &:hover {
-     background: #125fdb;
-   }
-  `
-
-const UpdateDeleteButton = styled(Button)`
-   justify-content: center;
-   border: 1px solid #222222;
-   background: #fff;
-   color: #000000;
-   text-transform: inherit;
-   padding: 0;
-   font-weight: 400; 
-   min-width: 42px;
-`
 
 function RoleMemberModal({
   roles,
@@ -60,6 +39,7 @@ function RoleMemberModal({
   React.useEffect(() => {
     setSelectedRoles(roles.map(role => role.id))
   }, [roles])
+
   const handleOpenModalDelete = (id) => {
     setSelectedItem(id);
     setOpenDelete(true);

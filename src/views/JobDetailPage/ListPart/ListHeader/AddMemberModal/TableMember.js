@@ -9,7 +9,7 @@ import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
 import { Avatar, } from '@material-ui/core';
 import MemberRole from './MemberRole';
-import MemberPriority from './MemberPriority';
+import MemberPermission from './MemberPermission';
 import MemberDetail from './MemberDetail';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteMember } from 'actions/taskDetail/taskDetailActions';
@@ -75,7 +75,7 @@ function TableMember(props) {
   };
 
   const confirmDelete = () => {
-    dispatch(deleteMember({ task_id: taskId, member_id:  selectedItem }))
+    dispatch(deleteMember({ task_id: taskId, member_id: selectedItem }))
   }
 
   return (
@@ -103,7 +103,7 @@ function TableMember(props) {
                 <TableCell style={{ width: '40%' }}>
                   <MemberDetail name={item.name} email={item.email} />
                 </TableCell>
-                <TableCell style={{ width: '20%' }}><MemberPriority /></TableCell>
+                <TableCell style={{ width: '20%' }}><MemberPermission permission={item.group_permission} memberId={item.id} /></TableCell>
                 <TableCell style={{ width: '32%' }}>
                   <MemberRole roles={item.roles || []} memberId={item.id} />
                 </TableCell>

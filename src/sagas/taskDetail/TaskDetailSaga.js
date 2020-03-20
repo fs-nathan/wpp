@@ -816,7 +816,7 @@ function* deleteMember(action) {
 async function doGetPermission(payload) {
   try {
     const config = {
-      url: '/task/get-group-permission',
+      url: '/permissions/list-group-permission?type=' + payload.type,
       method: 'get',
       data: payload
     }
@@ -839,7 +839,7 @@ function* getPermission(action) {
 async function doUpdatePermission(payload) {
   try {
     const config = {
-      url: '/task/update-group-permission-member',
+      url: 'task/update-group-permission-for-member',
       method: 'post',
       data: payload
     }
@@ -854,6 +854,7 @@ function* updatePermission(action) {
   try {
     const res = yield call(doUpdatePermission, action.payload)
     yield put(actions.updatePermissionSuccess(res))
+    yield put(actions.getMember({ task_id: action.payload.task_id }))
   } catch (error) {
     yield put(actions.updatePermissionFail(error))
   }

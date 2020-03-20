@@ -61,6 +61,7 @@ function JobDetailPage(props) {
   useEffect(() => {
     dispatch(taskDetailAction.getRole());
     dispatch(taskDetailAction.getListOffer());
+    dispatch(taskDetailAction.getPermission({ type: 4 }));
     if (projectId !== '') {
       dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId }));
@@ -82,31 +83,5 @@ function JobDetailPage(props) {
     </div>
   );
 }
-
-const mapStateTo = state => {
-  // console.log('state time task::::', state.taskDetail.commonTaskDetail.updateComplete);
-  return {
-    // const listGroupTask = useSelector(state=>state.taskDetail.listGroupTask.listGroupTask);
-    // project group
-    // const projectGroup = useSelector(state=>state.taskDetail.commonTaskDetail.projectGroups);
-    // static task
-    // const staticTask = useSelector(state=>state.taskDetail.listDetailTask.staticTask);
-    // const updateComplete = useSelector(state=>state.taskDetail.commonTaskDetail.updateComplet);
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    // Member
-    deleteMemberToTask: (task_id, member_id) =>
-      dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
-    // Member Priority
-    getGroupPermission: () => dispatch(taskDetailAction.getPermission()),
-    updateGroupPermission: data =>
-      dispatch(taskDetailAction.updatePermission(data)),
-    // get project group
-    // getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
-  };
-};
 
 export default JobDetailPage;
