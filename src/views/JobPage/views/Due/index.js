@@ -7,7 +7,7 @@ import { labels } from "../../contants/attrs";
 import { JobPageContext } from "../../JobPageContext";
 import Layout from "../../Layout";
 import { loadTaskDuePage } from "../../redux/actions";
-import { Content } from "../ASSIGN/Content";
+import { Content } from "./Content";
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
