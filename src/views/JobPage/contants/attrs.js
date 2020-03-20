@@ -138,5 +138,6 @@ export const taskStatusMap = {
   "0": "waiting",
   "1": "doing",
   "2": "complete",
-  "3": "expired"
+  "3": "expired",
+  "4": "stop"
 };

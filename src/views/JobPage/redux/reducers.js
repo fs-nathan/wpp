@@ -1,5 +1,10 @@
-import { merge } from "../utils";
-import { TASK_OVERVIEW_RECENT, TASK_OVERVIEW_STATISTIC } from "./types";
+import {
+  TASK_ASSIGN,
+  TASK_DUE,
+  TASK_OVERVIEW_RECENT,
+  TASK_OVERVIEW_STATISTIC,
+  TASK_ROLE
+} from "./types";
 
 // export const initialState = {
 //   [TASK_OVERVIEW_STATISTIC]: {
@@ -308,9 +313,13 @@ function taskReducer(state = initialState, action) {
   switch (action.type) {
     case TASK_OVERVIEW_STATISTIC:
     case TASK_OVERVIEW_RECENT:
-      return merge({}, state, {
+    case TASK_DUE:
+    case TASK_ASSIGN:
+    case TASK_ROLE:
+      return {
+        ...state,
         [action.type]: { ...action.payload, updated: Date.now() }
-      });
+      };
     default:
       return state;
   }

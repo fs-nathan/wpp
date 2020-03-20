@@ -6,7 +6,6 @@ import authentications, {
 import chat, { initialState as chatInitialState } from "./chat/chat";
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
-<<<<<<< HEAD
 import documents from "./documents";
 import copyGroupTask, {
   initialState as copyGroupTaskInitialState
@@ -230,6 +229,7 @@ import sortTask, {
 } from "./task/sortTask";
 import taskCommand from "./taskDetail/command";
 import commonTaskDetail from "./taskDetail/common";
+import listGroupOffer from "./taskDetail/listGroupOffer";
 import listGroupTask from "./taskDetail/listGroupTask";
 import listDetailTask from "./taskDetail/listTaskDetail";
 import location from "./taskDetail/location";
@@ -276,22 +276,6 @@ import listUserRole, {
 import updateUserRole, {
   initialState as updateUserRoleInitialState
 } from "./userRole/updateUserRole";
-=======
-import documents from './documents';
-import taskOffer from './taskDetail/offer';
-import taskRemind from './taskDetail/remind';
-import subTask from './taskDetail/subTask';
-import media from './taskDetail/media';
-import taskCommand from './taskDetail/command';
-import commonTaskDetail from './taskDetail/common';
-import location from './taskDetail/location'
-import detailTask from './taskDetail/taskDetail';
-import taskMember from './taskDetail/member';
-import listGroupOffer from './taskDetail/listGroupOffer';
-import trackingTime from './taskDetail/time';
-import listDetailTask from './taskDetail/listTaskDetail'
-import listGroupTask from './taskDetail/listGroupTask'
->>>>>>> origin/master
 
 const rootReducer = combineReducers({
   authentications,
@@ -311,12 +295,8 @@ const rootReducer = combineReducers({
     taskMember,
     trackingTime,
     listDetailTask,
-<<<<<<< HEAD
-    listGroupTask
-=======
     listGroupTask,
-    listGroupOffer,
->>>>>>> origin/master
+    listGroupOffer
   }),
   room: combineReducers({
     listRoom,

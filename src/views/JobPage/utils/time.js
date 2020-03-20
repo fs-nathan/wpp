@@ -1,7 +1,4 @@
 import moment from "moment";
-import { get } from ".";
 
-export const formatTime = (timeRange, string) =>
-  get(timeRange, string)
-    ? moment(get(timeRange, string)).format("YYYY-MM-DD")
-    : undefined;
+export const formatTime = time =>
+  time ? moment(time).format("YYYY-MM-DD") : undefined;

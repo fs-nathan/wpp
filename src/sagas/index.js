@@ -100,8 +100,10 @@ import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
 import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
 // ==================================
 import {
+  watchLoadTaskAssignPage,
   watchLoadTaskDuePage,
-  watchLoadTaskOverviewPage
+  watchLoadTaskOverviewPage,
+  watchLoadTaskRolePage
 } from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
 import {
@@ -553,6 +555,8 @@ function* rootSaga() {
 
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
+  yield fork(watchLoadTaskAssignPage);
+  yield fork(watchLoadTaskRolePage);
 }
 
 export default rootSaga;

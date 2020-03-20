@@ -20,33 +20,12 @@ const routes = [
   {
     path: Routes.MISSION,
     exact: true,
-    component: React.lazy(() => import("../views/Mission"))
-  },
-  {
-    path: Routes.MISSION_GIVING,
-    component: React.lazy(() => import("../views/Due"))
-  },
-  {
-    path: Routes.MISSION_GIVEN,
-    component: React.lazy(() => import("../views/Due"))
-  },
-  {
-    path: Routes.MISSION_SELFGIVING,
-    exact: true,
-    component: React.lazy(() => import("../views/Due"))
+    component: React.lazy(() => import("../views/Assign"))
   },
   {
     path: Routes.ROLE,
     exact: true,
-    component: React.lazy(() => import("../views/Due"))
-  },
-  {
-    path: Routes.ROLE_RUNNING,
-    component: React.lazy(() => import("../views/Due"))
-  },
-  {
-    path: Routes.ROLE_COORDINATION,
-    component: React.lazy(() => import("../views/Due"))
+    component: React.lazy(() => import("../views/Role"))
   }
 ];
 

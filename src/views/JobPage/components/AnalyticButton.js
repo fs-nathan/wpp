@@ -9,9 +9,9 @@ import "./AnalyticButton.scss";
 export default function AnalyticButton({
   active,
   onCloseClick,
-  count = 104,
+  count = 0,
   color = "rgb(0, 156, 243)",
-  label = "cong viec duoc thuc hien",
+  label = "",
   circleText,
   ...props
 }) {

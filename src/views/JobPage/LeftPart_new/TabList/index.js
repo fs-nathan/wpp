@@ -10,7 +10,7 @@ import LeftSetting from "../../../../components/LeftSetting/LeftSetting";
 import { labels } from "../../contants/attrs";
 import { Routes } from "../../contants/routes";
 import "./style.scss";
-const ListPart = props => {
+const ListPart = () => {
   const { t } = useTranslation();
   const listMenu = [
     {
@@ -25,40 +25,38 @@ const ListPart = props => {
     },
     {
       title: t(labels.mission),
-      url: Routes.MISSION,
       icon: mdiAccountSwitch,
       sub: [
         {
           name: t(labels.mission_giving),
-          url: Routes.MISSION_GIVING
+          url: Routes.MISSION.replace(":typeAssign", "0")
         },
         {
           name: t(labels.mission_given),
-          url: Routes.MISSION_GIVEN
+          url: Routes.MISSION.replace(":typeAssign", "1")
         },
         {
           name: t(labels.self_giving),
-          url: Routes.MISSION_SELFGIVING
+          url: Routes.MISSION.replace(":typeAssign", "2")
         }
       ]
     },
 
     {
       title: t(labels.role),
-      url: Routes.ROLE,
       icon: mdiAccountTie,
       sub: [
         {
           name: t(labels.role_doing),
-          url: Routes.ROLE_RUNNING
+          url: Routes.ROLE.replace(":roleId", "0")
         },
         {
           name: t(labels.role_monitor),
-          url: Routes.ROLE_MONITOR
+          url: Routes.ROLE.replace(":roleId", "1")
         },
         {
           name: t(labels.role_coordination),
-          url: Routes.ROLE_COORDINATION
+          url: Routes.ROLE.replace(":roleId", "2")
         }
       ]
     }

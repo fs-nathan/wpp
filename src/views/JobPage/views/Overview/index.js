@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
+import { loginlineFunc } from "views/JobPage/utils";
 import { labels } from "../../contants/attrs";
 import { JobPageContext } from "../../JobPageContext";
 import Layout from "../../Layout";
@@ -22,17 +23,17 @@ export const PageContainer = styled(Container)`
 const Overview = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { timeRange } = useContext(JobPageContext);
+  const { timeRange = {} } = useContext(JobPageContext);
   const isMounted = useMountedState();
   useEffect(() => {
     isMounted &&
       dispatch(
         loadTaskOverViewPage({
-          timeStart: formatTime(timeRange, "timeStart"),
-          timeEnd: formatTime(timeRange, "timeEnd")
+          timeStart: loginlineFunc(formatTime)(timeRange.timeStart),
+          timeEnd: loginlineFunc(formatTime)(timeRange.timeEnd)
         })
       );
-  }, [dispatch, isMounted, timeRange]);
+  }, [dispatch, isMounted, timeRange.timeStart, timeRange.timeEnd]);
   return (
     <Layout title={t(labels.overview)}>
       {isMounted && (

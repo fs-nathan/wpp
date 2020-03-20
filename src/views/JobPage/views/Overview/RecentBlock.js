@@ -90,17 +90,16 @@ export const defaultStatusFilter = {
 };
 export function RecentBlock() {
   const { t } = useTranslation();
-
   const [
     statusFilter,
     setstatusFilter,
     handleRemovestatusFilter
-  ] = useMultipleSelect(defaultStatusFilter);
-  const [
-    hoverstatusFilter,
-    setHoverstatusFilter,
-    handleRemovesHovertatusFilter
   ] = useMultipleSelect(defaultStatusFilter, false);
+  // const [
+  //   hoverstatusFilter,
+  //   setHoverstatusFilter,
+  //   handleRemovesHovertatusFilter
+  // ] = useMultipleSelect(defaultStatusFilter, false);
   const [waiting, doing, complete, expired, tasks = []] = useSelector(state => {
     return loginlineFunc(
       createMapPropsFromAttrs([
@@ -115,8 +114,8 @@ export function RecentBlock() {
 
   const createAnalyticButtonProps = string => ({
     onCloseClick: () => handleRemovestatusFilter(string),
-    onMouseEnter: () => setHoverstatusFilter(string),
-    onMouseLeave: () => handleRemovesHovertatusFilter(string),
+    // onMouseEnter: () => setHoverstatusFilter(string),
+    // onMouseLeave: () => handleRemovesHovertatusFilter(string),
     active: statusFilter[string],
     onClick: () => setstatusFilter(string)
   });
@@ -129,15 +128,15 @@ export function RecentBlock() {
       setdebouncedFilteredTasks(
         Object.values(statusFilter).filter(item => item).length
           ? tasks.filter(
-              item =>
-                statusFilter[taskStatusMap[item.status_code]] ||
-                hoverstatusFilter[taskStatusMap[item.status_code]]
+              item => statusFilter[taskStatusMap[item.status_code]]
+              // ||
+              // hoverstatusFilter[taskStatusMap[item.status_code]]
             )
           : tasks
       );
     },
     300,
-    [tasks, statusFilter, hoverstatusFilter]
+    [tasks, statusFilter]
   );
   const allCount = [waiting, doing, complete, expired].reduce(
     (result = 0, value) => result + value

@@ -70,15 +70,9 @@ async function doPostSubTask(payload) {
 function* postSubTask(action) {
   try {
     // console.log("action payload id::", action.options.task_id);
-<<<<<<< HEAD
     const res = yield call(doPostSubTask, action.options);
     yield put(actions.postSubTaskSuccess(res));
     yield put(actions.getSubTask({ taskId: action.options.task_id }));
-=======
-    const res = yield call(doPostSubTask, action.options)
-    yield put(actions.postSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId: action.options.task_id }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.postSubTaskFail(error));
   }
@@ -100,47 +94,26 @@ async function doUpdateSubTask(payload) {
 
 function* updateSubTask(action) {
   const data = {
-<<<<<<< HEAD
+    task_id: action.options.taskId,
     sub_task_id: action.options.sub_task_id,
     name: action.options.name
   };
   try {
     const res = yield call(doUpdateSubTask, data);
     yield put(actions.updateSubTaskSuccess(res));
-    yield put(actions.getSubTask(action.options.taskId));
-=======
-    task_id: action.options.taskId,
-    sub_task_id: action.options.sub_task_id,
-    name: action.options.name
-  }
-  try {
-    const res = yield call(doUpdateSubTask, data)
-    yield put(actions.updateSubTaskSuccess(res))
-    yield put(actions.getSubTask(action.options))
->>>>>>> origin/master
+    yield put(actions.getSubTask(action.options));
   } catch (error) {
     yield put(actions.updateSubTaskFail(error));
   }
 }
 // ==== delete
-<<<<<<< HEAD
-async function doDeleteSubTask({ sub_task_id }) {
+async function doDeleteSubTask({ sub_task_id, taskId }) {
   try {
     const config = {
       url: "task/delete-subtask?sub_task_id=" + sub_task_id,
       method: "post",
-      data: { sub_task_id }
-    };
-=======
-async function doDeleteSubTask({ sub_task_id, taskId }) {
-
-  try {
-    const config = {
-      url: 'task/delete-subtask?sub_task_id=' + sub_task_id,
-      method: 'post',
       data: { sub_task_id, task_id: taskId }
-    }
->>>>>>> origin/master
+    };
     const result = await apiService(config);
     return result.data;
   } catch (error) {
@@ -150,15 +123,9 @@ async function doDeleteSubTask({ sub_task_id, taskId }) {
 
 function* deleteSubTask(action) {
   try {
-<<<<<<< HEAD
-    const res = yield call(doDeleteSubTask, action.options.sub_task_id);
+    const res = yield call(doDeleteSubTask, action.options);
     yield put(actions.deleteSubTaskSuccess(res));
-    yield put(actions.getSubTask(action.options.taskId));
-=======
-    const res = yield call(doDeleteSubTask, action.options)
-    yield put(actions.deleteSubTaskSuccess(res))
-    yield put(actions.getSubTask(action.options))
->>>>>>> origin/master
+    yield put(actions.getSubTask(action.options));
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error));
   }
@@ -180,18 +147,10 @@ async function doCompleteSubTask(payload) {
 
 function* completeSubTask(action) {
   try {
-<<<<<<< HEAD
-    const res = yield call(doCompleteSubTask, {
-      sub_task_id: action.options.sub_task_id
-    });
+    const { taskId, sub_task_id } = action.options;
+    const res = yield call(doCompleteSubTask, { sub_task_id, task_id: taskId });
     yield put(actions.completeSubTaskSuccess(res));
-    yield put(actions.getSubTask({ taskId: action.options.taskId }));
-=======
-    const { taskId, sub_task_id } = action.options
-    const res = yield call(doCompleteSubTask, { sub_task_id, task_id: taskId })
-    yield put(actions.completeSubTaskSuccess(res))
-    yield put(actions.getSubTask({ taskId }))
->>>>>>> origin/master
+    yield put(actions.getSubTask({ taskId }));
   } catch (error) {
     yield put(actions.completeSubTaskFail(error));
   }
@@ -243,13 +202,8 @@ async function doPostRemindWithTimeDetail(payload) {
 
 function* postRemindWithTimeDetail(action) {
   try {
-<<<<<<< HEAD
     yield call(doPostRemindWithTimeDetail, action.options);
     yield put(actions.getRemind({ taskId: action.options.taskId }));
-=======
-    yield call(doPostRemindWithTimeDetail, action.options)
-    yield put(actions.getRemind({ taskId: action.options.taskId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.postRemindWithTimeDetailFail(error));
   }
@@ -271,15 +225,9 @@ async function doPostRemindDuration(payload) {
 
 function* postRemindDuration(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doPostRemindDuration, action.options);
     yield put(actions.postRemindDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.task_id }));
-=======
-    const res = yield call(doPostRemindDuration, action.options)
-    yield put(actions.postRemindDurationSuccess(res))
-    yield put(actions.getRemind({ taskId: action.options.task_id }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.postRemindDurationFail(error));
   }
@@ -301,15 +249,9 @@ async function doUpdateRemindWithTimeDetail(payload) {
 
 function* updateRemindWithTimeDetail(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doUpdateRemindWithTimeDetail, action.options.data);
     yield put(actions.updateRemindWithTimeDetailSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
-=======
-    const res = yield call(doUpdateRemindWithTimeDetail, action.options.data)
-    yield put(actions.updateRemindWithTimeDetailSuccess(res))
-    yield put(actions.getRemind({ taskId: action.options.taskId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.updateRemindWithTimeDetailFail(error));
   }
@@ -331,15 +273,9 @@ async function doUpdateRemindWithDuration(payload) {
 
 function* updateRemindWithDuration(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doUpdateRemindWithDuration, action.options.data);
     yield put(actions.updateRemindWithDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
-=======
-    const res = yield call(doUpdateRemindWithDuration, action.options.data)
-    yield put(actions.updateRemindWithDurationSuccess(res))
-    yield put(actions.getRemind({ taskId: action.options.taskId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.updateRemindWithDurationFail(error));
   }
@@ -361,18 +297,10 @@ async function doDeleteRemind(payload) {
 
 function* deleteRemind(action) {
   try {
-<<<<<<< HEAD
-    const res = yield call(doDeleteRemind, {
-      remind_id: action.payload.remind_id
-    });
-    yield put(actions.deleteRemindSuccess(res));
-    yield put(actions.getRemind({ taskId: action.payload.taskId }));
-=======
     const { remind_id, taskId } = action.payload;
-    const res = yield call(doDeleteRemind, { remind_id, task_id: taskId })
-    yield put(actions.deleteRemindSuccess(res))
-    yield put(actions.getRemind({ taskId }))
->>>>>>> origin/master
+    const res = yield call(doDeleteRemind, { remind_id, task_id: taskId });
+    yield put(actions.deleteRemindSuccess(res));
+    yield put(actions.getRemind({ taskId }));
   } catch (error) {
     yield put(actions.deleteRemindFail(error));
   }
@@ -381,22 +309,28 @@ function* deleteRemind(action) {
 function* pinRemind(action) {
   try {
     const { remind_id, taskId } = action.payload;
-    const res = yield call(apiService.post, '/task/pin-remind', { remind_id, task_id: taskId })
-    yield put(actions.pinRemindSuccess(res.data))
-    yield put(actions.getRemind({ taskId }))
+    const res = yield call(apiService.post, "/task/pin-remind", {
+      remind_id,
+      task_id: taskId
+    });
+    yield put(actions.pinRemindSuccess(res.data));
+    yield put(actions.getRemind({ taskId }));
   } catch (error) {
-    yield put(actions.pinRemindFail(error))
+    yield put(actions.pinRemindFail(error));
   }
 }
 
 function* unpinRemind(action) {
   try {
     const { remind_id, taskId } = action.payload;
-    const res = yield call(apiService.post, '/task/remove-pin-remind', { remind_id, task_id: taskId })
-    yield put(actions.unPinRemindSuccess(res.data))
-    yield put(actions.getRemind({ taskId }))
+    const res = yield call(apiService.post, "/task/remove-pin-remind", {
+      remind_id,
+      task_id: taskId
+    });
+    yield put(actions.unPinRemindSuccess(res.data));
+    yield put(actions.getRemind({ taskId }));
   } catch (error) {
-    yield put(actions.unPinRemindFail(error))
+    yield put(actions.unPinRemindFail(error));
   }
 }
 
@@ -423,34 +357,12 @@ function* getOffer(action) {
   }
 }
 
-<<<<<<< HEAD
-async function doCreateOffer(payload) {
-  try {
-    const config = {
-      url: "/task/create-offer",
-      method: "post",
-      data: payload
-    };
-    const result = await apiService(config);
-    return result.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-function* createOffer(action) {
-  try {
-    const res = yield call(doCreateOffer, action.payload.data);
-    yield put(actions.createOfferSuccess(res));
-    yield put(actions.getOffer({ taskId: action.payload.taskId }));
-=======
 function* createOffer(action) {
   try {
     const url = `/task/create-offer?task_id=${action.payload.taskId}`;
-    const res = yield call(apiService.post, url, action.payload.data)
-    yield put(actions.createOfferSuccess(res.data))
-    yield put(actions.getOffer({ taskId: action.payload.taskId }))
->>>>>>> origin/master
+    const res = yield call(apiService.post, url, action.payload.data);
+    yield put(actions.createOfferSuccess(res.data));
+    yield put(actions.getOffer({ taskId: action.payload.taskId }));
   } catch (error) {
     yield put(actions.createOfferFail(error));
   }
@@ -478,11 +390,7 @@ function* updateOffer(action) {
   try {
     yield call(doUpdateOffer, data);
     // yield put(actions.updateOfferSuccess(res))
-<<<<<<< HEAD
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
-=======
-    yield put(actions.getOffer({ taskId: action.payload.taskId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.updateOfferFail(error));
   }
@@ -505,17 +413,11 @@ async function doDeleteOffer(payload) {
 function* deleteOffer(action) {
   try {
     // console.log("offer_id:::::::", action.payload);
-<<<<<<< HEAD
     const res = yield call(doDeleteOffer, {
       offer_id: action.payload.offer_id
     });
     yield put(actions.deleteOfferSuccess(res));
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
-=======
-    const res = yield call(doDeleteOffer, { offer_id: action.payload.offer_id })
-    yield put(actions.deleteOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: action.payload.taskId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.deleteOfferFail(error));
   }
@@ -589,15 +491,9 @@ async function doHandleOffer(data) {
 
 function* handleOffer(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doHandleOffer, action.payload.data);
     yield put(actions.handleOfferSuccess(res));
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
-=======
-    const res = yield call(doHandleOffer, action.payload.data)
-    yield put(actions.handleOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: action.payload.taskId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.handleOfferFail(error));
   }
@@ -755,15 +651,9 @@ async function doCreateCommand(payload) {
 
 function* createCommand(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doCreateCommand, action.payload);
     yield put(actions.createCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
-=======
-    const res = yield call(doCreateCommand, action.payload)
-    yield put(actions.createCommandSuccess(res))
-    yield put(actions.getCommand({ task_id: action.payload.task_id }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.createCommandFail(error));
   }
@@ -791,15 +681,9 @@ function* updateCommand(action) {
     type: action.payload.type
   };
   try {
-<<<<<<< HEAD
     const res = yield call(doUpdateCommand, data);
     yield put(actions.updateCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.taskId }));
-=======
-    const res = yield call(doUpdateCommand, data)
-    yield put(actions.updateCommandSuccess(res))
-    yield put(actions.getCommand({ task_id: action.payload.taskId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.updateCommandFail(error));
   }
@@ -821,17 +705,12 @@ async function doDeleteCommand(payload) {
 
 function* deleteCommand(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doDeleteCommand, {
+      task_id: action.payload.task_id,
       command_id: action.payload.command_id
     });
     yield put(actions.deleteCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
-=======
-    const res = yield call(doDeleteCommand, { task_id: action.payload.task_id, command_id: action.payload.command_id })
-    yield put(actions.deleteCommandSuccess(res))
-    yield put(actions.getCommand({ task_id: action.payload.task_id }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.deleteCommandFail(error));
   }
@@ -1085,16 +964,9 @@ async function doGetListTaskDetail({ project_id }) {
 
 function* getListTaskDetail(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doGetListTaskDetail, action.payload);
 
     yield put(actions.getListTaskDetailSuccess(res));
-=======
-    const res = yield call(doGetListTaskDetail, action.payload)
-
-
-    yield put(actions.getListTaskDetailSuccess(res))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error));
   }
@@ -1184,10 +1056,7 @@ async function doGetListGroupTask({ project_id }) {
     throw error;
   }
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
 function* getListGroupTask(action) {
   try {
     const res = yield call(doGetListGroupTask, action.payload);
@@ -1199,10 +1068,10 @@ function* getListGroupTask(action) {
 
 function* getListOffer(action) {
   try {
-    const res = yield call(apiService.get, '/offers/list-group-offer')
-    yield put(actions.getListOfferSuccess(res.data))
+    const res = yield call(apiService.get, "/offers/list-group-offer");
+    yield put(actions.getListOfferSuccess(res.data));
   } catch (error) {
-    yield put(actions.getListOfferFail(error))
+    yield put(actions.getListOfferFail(error));
   }
 }
 // Get project group - listpart
@@ -1278,15 +1147,9 @@ function* getProjectListBasic(action) {
     const projectId = action.payload || "";
     // // set active project id to call other API
     // let projectDetail = getFirstProjectDetail(projectGroups)
-<<<<<<< HEAD
     // if(projectDetail.id) projectId = projectDetail.id
 
     yield put(actions.getProjectListBasicSuccess({ projectGroups, projectId }));
-=======
-    // if(projectDetail.id) projectId = projectDetail.id 
-
-    yield put(actions.getProjectListBasicSuccess({ projectGroups, projectId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.getProjectListBasicFail(error));
   }
@@ -1296,17 +1159,10 @@ function* getProjectListBasic(action) {
 async function doUpdateNameDescriptionTask(payload) {
   try {
     const config = {
-<<<<<<< HEAD
-      url: "task/update-name-description",
-      method: "put",
+      url: "/task/update",
+      method: "post",
       data: payload
     };
-=======
-      url: '/task/update',
-      method: 'post',
-      data: payload,
-    }
->>>>>>> origin/master
     const result = await apiService(config);
     return result.data;
     // return null;
@@ -1317,29 +1173,13 @@ async function doUpdateNameDescriptionTask(payload) {
 
 function* updateNameDescriptionTask(action) {
   try {
-<<<<<<< HEAD
-    const res = yield call(
-      doUpdateNameDescriptionTask,
-      action.payload.dataNameDescription
-    );
-    const taskId = action.payload.dataNameDescription.task_id;
+    const res = yield call(doUpdateNameDescriptionTask, action.payload);
+    const taskId = action.payload.task_id;
     yield put(actions.updateNameDescriptionTaskSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId }));
-    const resTime = yield call(
-      doUpdateTimeDuration,
-      action.payload.dataTimeDuration
-    );
-    yield put(actions.updateTimeDurationSuccess(resTime));
-    yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id));
-=======
-    const res = yield call(doUpdateNameDescriptionTask, action.payload)
-    const taskId = action.payload.task_id
-    yield put(actions.updateNameDescriptionTaskSuccess(res))
-    yield put(actions.getTaskDetailTabPart({ taskId }))
     // const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
     // yield put(actions.updateTimeDurationSuccess(resTime))
     // yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.updateNameDescriptionTaskFail(error));
   }
@@ -1385,20 +1225,12 @@ async function doUpdateComplete(payload) {
 }
 function* updateComplete(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doUpdateComplete, action.payload.data);
 
     yield put(actions.updateCompleteSuccess(res));
     yield put(
       actions.getListTaskDetail({ project_id: action.payload.projectId })
     );
-=======
-
-    const res = yield call(doUpdateComplete, action.payload.data)
-
-    yield put(actions.updateCompleteSuccess(res))
-    yield put(actions.getListTaskDetail({ project_id: action.payload.projectId }))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.updateCommandFail(error));
   }
@@ -1420,13 +1252,8 @@ async function doGetStaticTask(project_id) {
 }
 function* getStaticTask(action) {
   try {
-<<<<<<< HEAD
     const res = yield call(doGetStaticTask, action.payload);
     yield put(actions.getStaticTaskSuccess(res));
-=======
-    const res = yield call(doGetStaticTask, action.payload)
-    yield put(actions.getStaticTaskSuccess(res))
->>>>>>> origin/master
   } catch (error) {
     yield put(actions.getStaticTaskFail(error));
   }
@@ -1435,16 +1262,10 @@ function* getStaticTask(action) {
 async function doDeleteTask(task_id) {
   try {
     const config = {
-<<<<<<< HEAD
       url: "/task/delete?task_id=" + task_id,
-      method: "delete"
+      method: "delete",
+      data: { task_id }
     };
-=======
-      url: '/task/delete?task_id=' + task_id,
-      method: 'delete',
-      data: { task_id },
-    }
->>>>>>> origin/master
     const result = await apiService(config);
     return result.data;
   } catch (error) {
@@ -1453,48 +1274,43 @@ async function doDeleteTask(task_id) {
 }
 function* deleteTask(action) {
   try {
-<<<<<<< HEAD
-    const res = yield call(doDeleteTask, action.payload);
+    const res = yield call(doDeleteTask, action.payload.taskId);
     yield put(actions.deleteTaskSuccess(res));
-=======
-    const res = yield call(doDeleteTask, action.payload.taskId)
-    yield put(actions.deleteTaskSuccess(res))
-    yield put(actions.getListTaskDetail({ project_id: action.payload.projectId }))
->>>>>>> origin/master
+    yield put(
+      actions.getListTaskDetail({ project_id: action.payload.projectId })
+    );
   } catch (error) {
     yield put(actions.deleteTaskFail(error));
   }
 }
 
-<<<<<<< HEAD
-=======
 export function* pinTask({ payload }) {
   try {
     const { task_id, projectId } = payload;
-    const res = yield call(apiService.post, '/task/ghim-task', { task_id })
-    yield put(actions.pinTaskSuccess(res.data))
-    yield put(actions.getListTaskDetail({ project_id: projectId }))
-    yield put(actions.getTaskDetailTabPart({ taskId: task_id }))
+    const res = yield call(apiService.post, "/task/ghim-task", { task_id });
+    yield put(actions.pinTaskSuccess(res.data));
+    yield put(actions.getListTaskDetail({ project_id: projectId }));
+    yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
   } catch (error) {
-    yield put(actions.pinTaskFail(error))
+    yield put(actions.pinTaskFail(error));
   }
 }
 
 export function* unPinTask({ payload }) {
   try {
     const { task_id, projectId } = payload;
-    const res = yield call(apiService.post, '/task/cancel-ghim-task', { task_id })
-    yield put(actions.unPinTaskSuccess(res.data))
-    yield put(actions.getListTaskDetail({ project_id: projectId }))
-    yield put(actions.getTaskDetailTabPart({ taskId: task_id }))
+    const res = yield call(apiService.post, "/task/cancel-ghim-task", {
+      task_id
+    });
+    yield put(actions.unPinTaskSuccess(res.data));
+    yield put(actions.getListTaskDetail({ project_id: projectId }));
+    yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
   } catch (error) {
-    yield put(actions.unPinTaskFail(error))
+    yield put(actions.unPinTaskFail(error));
   }
 }
 
->>>>>>> origin/master
 export {
-  //updateComplete
   updateComplete,
   // Update Priority
   updatePriority,
@@ -1506,10 +1322,7 @@ export {
   uploadDocumentToOffer,
   deleteDocumentToOffer,
   handleOffer,
-<<<<<<< HEAD
-=======
   getListOffer,
->>>>>>> origin/master
   // Remind::
   getRemind,
   postRemindWithTimeDetail,
@@ -1517,11 +1330,8 @@ export {
   updateRemindWithTimeDetail,
   updateRemindWithDuration,
   deleteRemind,
-<<<<<<< HEAD
-=======
   pinRemind,
   unpinRemind,
->>>>>>> origin/master
   // Sub-Task::
   getSubTask,
   postSubTask,

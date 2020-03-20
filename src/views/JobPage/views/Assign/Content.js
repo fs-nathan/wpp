@@ -8,11 +8,11 @@ import {
   TableRow,
   TableSortLabel
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useDebounce } from "react-use";
-import { TASK_DUE } from "views/JobPage/redux/types";
+import { useList, useToggle } from "react-use";
+import { TASK_ASSIGN } from "views/JobPage/redux/types";
 import AnalyticButton from "../../components/AnalyticButton";
 import PrimaryButton from "../../components/PrimaryButton";
 import RecentTableRow from "../../components/RecentTableRow";
@@ -20,7 +20,11 @@ import { colors, recent, taskAtrrs, taskStatusMap } from "../../contants/attrs";
 import { useMultipleSelect } from "../../hooks/useMultipleSelect";
 import { createMapPropsFromAttrs, loginlineFunc } from "../../utils";
 
-export const RecentTable = ({ tasks = [] }) => {
+export const RecentTable = ({
+  tasks = [],
+  isToggleSortName,
+  toggleSortName
+}) => {
   const { t } = useTranslation();
   return (
     <Table className="header-document">
@@ -30,8 +34,8 @@ export const RecentTable = ({ tasks = [] }) => {
           <TableCell sortDirection={true} align="left">
             <TableSortLabel
               active={true}
-              direction={"asc"}
-              onClick={loginlineFunc}
+              direction={isToggleSortName ? "asc" : "desc"}
+              onClick={() => toggleSortName()}
             >
               {t("Tên công việc")}
             </TableSortLabel>
@@ -108,9 +112,13 @@ export const defaultStatusFilter = {
   all: false,
   waiting: false,
   doing: false,
+  stop: false,
   complete: false,
   expired: false
 };
+
+const emptyArray = [];
+
 export function Content() {
   const { t } = useTranslation();
 
@@ -118,58 +126,77 @@ export function Content() {
     statusFilter,
     setstatusFilter,
     handleRemovestatusFilter
-  ] = useMultipleSelect(defaultStatusFilter);
-  const [
-    hoverstatusFilter,
-    setHoverstatusFilter,
-    handleRemovesHovertatusFilter
   ] = useMultipleSelect(defaultStatusFilter, false);
-  const [waiting, doing, stop, expired, tasks = []] = useSelector(state => {
-    return createMapPropsFromAttrs([
-      recent.waiting,
-      recent.doing,
-      recent.stop,
-      recent.expired,
-      recent.tasks
-    ])(state.taskPage[TASK_DUE]);
-  });
+  const [isToggleSortName, toggleSortName] = useToggle();
 
+  const [waiting, doing, stop, expired, tasks = emptyArray] = useSelector(
+    state => {
+      return createMapPropsFromAttrs([
+        recent.waiting,
+        recent.doing,
+        recent.stop,
+        recent.expired,
+        recent.tasks
+      ])(state.taskPage[TASK_ASSIGN]);
+    }
+  );
+  const [
+    list,
+    {
+      set,
+      push,
+      updateAt,
+      insertAt,
+      update,
+      updateFirst,
+      upsert,
+      sort,
+      filter,
+      removeAt,
+      clear,
+      reset
+    }
+  ] = useList(tasks);
+  const sortMemo = useMemo(
+    () => (a, b) =>
+      isToggleSortName
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name),
+    [isToggleSortName]
+  );
+  const filterStatusMemo = useMemo(
+    () => item => statusFilter[taskStatusMap[item.status_code]],
+    [statusFilter]
+  );
+  useEffect(() => {
+    set(tasks);
+    sort(sortMemo);
+    if (Object.values(statusFilter).filter(item => item).length) {
+      filter(filterStatusMemo);
+    }
+  }, [
+    filter,
+    filterStatusMemo,
+    isToggleSortName,
+    set,
+    sort,
+    sortMemo,
+    statusFilter,
+    tasks
+  ]);
   const createAnalyticButtonProps = string => ({
     onCloseClick: () => handleRemovestatusFilter(string),
-    onMouseEnter: () => setHoverstatusFilter(string),
-    onMouseLeave: () => handleRemovesHovertatusFilter(string),
     active: statusFilter[string],
     onClick: () => setstatusFilter(string)
   });
-  const [debouncedFilteredTasks, setdebouncedFilteredTasks] = React.useState(
-    []
-  );
 
-  useDebounce(
-    () => {
-      setdebouncedFilteredTasks(
-        Object.values(statusFilter).filter(item => item).length
-          ? tasks.filter(
-              item =>
-                statusFilter[taskStatusMap[item.status_code]] ||
-                hoverstatusFilter[taskStatusMap[item.status_code]]
-            )
-          : tasks
-      );
-    },
-    300,
-    [tasks, statusFilter, hoverstatusFilter]
+  const allCount = [waiting, doing, stop, expired].reduce(
+    (result = 0, value) => result + value
   );
   return (
     <Grid container spacing={3}>
       <Grid item flex={1}>
-        <PrimaryButton
-          onClick={() => setstatusFilter(undefined)}
-          count={[waiting, doing, stop, expired].reduce(
-            (result = 0, value = 0) => result + value
-          )}
-          label={t("Công việc được thực hiện")}
-        />
+        <PrimaryButton count={allCount} label={t("Công việc được thực hiện")} />
       </Grid>
       <Box flex={1}></Box>
       <Grid item>
@@ -178,7 +205,7 @@ export function Content() {
           count={waiting}
           label={t("Đang chờ")}
           color={colors.task_waiting}
-          circleText="10%"
+          circleText={`${Math.floor((waiting * 100) / allCount)}%`}
         />
       </Grid>
       <Grid item>
@@ -187,7 +214,7 @@ export function Content() {
           count={doing}
           label={t("Đang làm")}
           color={colors.task_doing}
-          circleText="10%"
+          circleText={`${Math.floor((doing * 100) / allCount)}%`}
         />
       </Grid>
 
@@ -197,7 +224,7 @@ export function Content() {
           count={expired}
           label={t("Quá hạn")}
           color={colors.task_expired}
-          circleText="10%"
+          circleText={`${Math.floor((expired * 100) / allCount)}%`}
         />
       </Grid>
       <Grid item>
@@ -206,11 +233,11 @@ export function Content() {
           count={stop}
           label={t("Tạm dừng")}
           color={"rgb(0, 0, 0)"}
-          circleText="10%"
+          circleText={`${Math.floor((stop * 100) / allCount)}%`}
         />
       </Grid>
       <Grid item container xs={12}>
-        <RecentTable tasks={debouncedFilteredTasks} />
+        <RecentTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
       </Grid>
     </Grid>
   );
