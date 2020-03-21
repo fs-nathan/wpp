@@ -61,6 +61,7 @@ function TableBodyRow({ index, row, group }) {
             </StyledTableBodyCell>
             {columns.map((column, index) => (
               <StyledTableBodyCell 
+                width={get(column, 'width')} 
                 key={index}
                 align={get(column, 'align', 'left')}
                 draggable={true}

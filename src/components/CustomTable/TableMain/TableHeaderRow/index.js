@@ -25,8 +25,7 @@ function TableHeaderRow() {
   return (
     <StyledTableHeadRow>
       {options.draggable.bool && (
-        <StyledTableHeadCell 
-          width='1%'
+        <StyledTableHeadCell
           align={'right'}
           draggable={get(options, 'draggable.bool', false)}
         >
@@ -37,7 +36,7 @@ function TableHeaderRow() {
       )}
       {columns.map((column, index) => (
         <StyledTableHeadCell 
-          width={get(column, 'width', `${(100 - (options.draggable.bool ? 5 : 0)) / columns.length}%`)} 
+          width={get(column, 'width')} 
           key={index} 
           align={get(column, 'align', 'left')}
           draggable={get(options, 'draggable.bool', false)}

@@ -1,10 +1,11 @@
-import { Button } from "@material-ui/core";
-import { get } from "lodash";
-import PropTypes from "prop-types";
-import React, { useContext } from "react";
-import HeaderButtonGroup from "./HeaderButtonGroup";
-import "./style.scss";
-import TableMain from "./TableMain";
+import React from 'react';
+import HeaderButtonGroup from './HeaderButtonGroup';
+import TableMain from './TableMain';
+import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { get } from 'lodash';
+import LoadingOverlay from '../LoadingOverlay';
+import './style.scss';
 
 export const CustomTableContext = React.createContext();
 export const CustomTableProvider = CustomTableContext.Provider;
@@ -106,44 +107,52 @@ export function CustomTableLayout({ children }) {
 function CustomTable() {
   const { options } = React.useContext(CustomTableContext);
   return (
-    <Container>
-      <Header>
-        <LeftHeader>
-          <div>
-            <p>
-              {typeof get(options, "title") === "function"
-                ? options.title()
-                : get(options, "title", "")}
-            </p>
-          </div>
-          {get(options, "subTitle") ? (
-            <span>
-              {typeof get(options, "subTitle") === "function"
-                ? options.subTitle()
-                : get(options, "subTitle", "")}
-            </span>
-          ) : null}
-        </LeftHeader>
-        <RightHeader>
-          <HeaderButtonGroup />
-          {get(options, "mainAction") && (
-            <StyledButton
-              size="small"
-              onClick={get(options, "mainAction.onClick", () => null)}
-            >
-              {get(options, "mainAction.label", "")}
-            </StyledButton>
-          )}
-        </RightHeader>
-      </Header>
-      <StyledTableMain />
-    </Container>
+    <LoadingOverlay
+      active={get(options, 'loading.bool', false)}
+      spinner
+      fadeSpeed={100}
+      style={{
+        height: '100%',
+      }}
+    >
+     <Container>
+        <Header>
+          <LeftHeader>
+            <div>
+              <p>
+                {typeof get(options, 'title') === 'function'
+                  ? options.title()
+                  : get(options, 'title', '')}
+              </p>
+            </div>
+            {get(options, 'subTitle') ? (
+              <span>
+                {typeof get(options, 'subTitle') === 'function'
+                  ? options.subTitle()
+                  : get(options, 'subTitle', '')}
+              </span>
+            ) : null}
+          </LeftHeader>
+          <RightHeader>
+            <HeaderButtonGroup />
+            {get(options, 'mainAction') && (
+              <StyledButton
+                size="small"
+                onClick={get(options, 'mainAction.onClick', () => null)}
+              >
+                {get(options, 'mainAction.label', '')}
+              </StyledButton>
+            )}
+          </RightHeader>
+        </Header>
+        <StyledTableMain />
+      </Container>
+    </LoadingOverlay>
   );
 }
 
 function CustomTableWrapper({ options, columns, data }) {
-  console.log("X");
-  const [searchPatern, setSearchPatern] = React.useState("");
+  const [searchPatern, setSearchPatern] = React.useState('');
   const [expand, setExpand] = React.useState(false);
 
   const defaultOptions = {

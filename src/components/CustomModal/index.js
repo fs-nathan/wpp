@@ -152,8 +152,7 @@ function CustomModal({
         <LoadingOverlay
           active={loading}
           spinner
-          text='Đang tải...'
-          fadeSpeed={0}
+          fadeSpeed={100}
         >
           {columns === 1 && (
             <OneColumn 
