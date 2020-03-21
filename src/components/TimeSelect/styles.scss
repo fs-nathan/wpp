@@ -9,6 +9,8 @@
     .MuiPaper-root {
       max-height: 150px;
       transform: translateY(93px) !important;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
       &::-webkit-scrollbar {
         width: 5px;
         background-color: unset !important;

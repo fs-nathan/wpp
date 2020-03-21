@@ -20,9 +20,6 @@ const StyledList = styled(List)`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  & > div:nth-child(1) {
-    margin-right: -7px !important;
-  }
 `;
 
 function ListBody() {
