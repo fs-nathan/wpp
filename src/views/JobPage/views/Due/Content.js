@@ -1,33 +1,25 @@
 import { Box, Grid } from "@material-ui/core";
-import React, { useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useList, useToggle } from "react-use";
-import { RecentTable } from "views/JobPage/components/RecentTable";
+import { TaskTable } from "views/JobPage/components/TaskTable";
+import { JobPageContext } from "views/JobPage/JobPageContext";
 import { TASK_DUE } from "views/JobPage/redux/types";
 import AnalyticButton from "../../components/AnalyticButton";
 import PrimaryButton from "../../components/PrimaryButton";
 import { colors, recent, taskStatusMap } from "../../contants/attrs";
-import { useMultipleSelect } from "../../hooks/useMultipleSelect";
 import { createMapPropsFromAttrs } from "../../utils";
 
-export const defaultStatusFilter = {
-  all: false,
-  waiting: false,
-  doing: false,
-  complete: false,
-  expired: false
-};
 export function Content() {
   const { t } = useTranslation();
 
-  const [
+  const {
     statusFilter,
     setstatusFilter,
     handleRemovestatusFilter
-  ] = useMultipleSelect(defaultStatusFilter);
+  } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
-
   const [waiting, doing, stop, expired, tasks = []] = useSelector(state => {
     return createMapPropsFromAttrs([
       recent.waiting,
@@ -72,18 +64,9 @@ export function Content() {
     if (Object.values(statusFilter).filter(item => item).length) {
       filter(filterStatusMemo);
     }
-  }, [
-    filter,
-    filterStatusMemo,
-    isToggleSortName,
-    set,
-    sort,
-    sortMemo,
-    statusFilter,
-    tasks
-  ]);
+  }, [filter, filterStatusMemo, set, sort, sortMemo, statusFilter, tasks]);
   const createAnalyticButtonProps = string => ({
-    onCloseClick: () => handleRemovestatusFilter(string),
+    // onCloseClick: () => handleRemovestatusFilter(string),
     active: statusFilter[string],
     onClick: () => setstatusFilter(string)
   });
@@ -139,7 +122,7 @@ export function Content() {
         />
       </Grid>
       <Grid item container xs={12}>
-        <RecentTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
+        <TaskTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
       </Grid>
     </Grid>
   );

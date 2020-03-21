@@ -1,14 +1,14 @@
 import { Box, Grid } from "@material-ui/core";
-import React, { useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useList, useToggle } from "react-use";
-import { RecentTable } from "views/JobPage/components/RecentTable";
+import { TaskTable } from "views/JobPage/components/TaskTable";
+import { JobPageContext } from "views/JobPage/JobPageContext";
 import { TASK_ASSIGN } from "views/JobPage/redux/types";
 import AnalyticButton from "../../components/AnalyticButton";
 import PrimaryButton from "../../components/PrimaryButton";
 import { colors, recent, taskStatusMap } from "../../contants/attrs";
-import { useMultipleSelect } from "../../hooks/useMultipleSelect";
 import { createMapPropsFromAttrs } from "../../utils";
 
 export const defaultStatusFilter = {
@@ -25,11 +25,11 @@ const emptyArray = [];
 export function Content() {
   const { t } = useTranslation();
 
-  const [
+  const {
     statusFilter,
     setstatusFilter,
     handleRemovestatusFilter
-  ] = useMultipleSelect(defaultStatusFilter, false);
+  } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
 
   const [
@@ -95,8 +95,8 @@ export function Content() {
   ]);
   const createAnalyticButtonProps = string => ({
     onCloseClick: () => handleRemovestatusFilter(string),
-    active: statusFilter[string],
-    onClick: () => setstatusFilter(string)
+    active: statusFilter[string]
+    // onClick: () => setstatusFilter(string)
   });
 
   const allCount = [waiting, doing, stop, complete, expired].reduce(
@@ -154,7 +154,7 @@ export function Content() {
         />
       </Grid>
       <Grid item container xs={12}>
-        <RecentTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
+        <TaskTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
       </Grid>
     </Grid>
   );

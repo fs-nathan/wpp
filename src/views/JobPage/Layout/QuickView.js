@@ -5,13 +5,15 @@ import styled from "styled-components";
 import { JobPageContext } from "../JobPageContext";
 export const QuickViewWrapper = styled.div`
   height: 100%;
-  display: grid;
-  grid-template-rows: 70px calc(100% - 70px) 50px;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "header"
-    "body"
-    "footer";
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  // grid-template-rows: 70px calc(100% - 70px) 50px;
+  // grid-template-columns: 1fr;
+  // grid-template-areas:
+  //   "header"
+  //   "body"
+  //   "footer";
 `;
 export const QuickViewHeader = styled.div`
   grid-area: header;

@@ -4,11 +4,67 @@ import { times } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
 import { useLocalStorage } from "../../hooks";
+import { useMultipleSelect } from "./hooks/useMultipleSelect";
 import { JobPageContext } from "./JobPageContext";
 import TabList from "./LeftPart_new/TabList";
 import routes from "./routes";
 const { Provider } = JobPageContext;
-
+const filterConfig = [
+  {
+    title: "LỌC THEO TRẠNG THÁI CÔNG VIỆC",
+    subTitle: "Chọn/bỏ chọn trạng thái để lọc công việc",
+    optionEntities: {
+      waiting: {
+        label: "Đang chờ",
+        value: "waiting"
+      },
+      doing: {
+        label: "Đang làm",
+        value: "doing"
+      },
+      complete: {
+        label: "Hoàn thành",
+        value: "complete"
+      },
+      expired: {
+        label: "Quá hạn",
+        value: "expired"
+      },
+      stop: {
+        label: "Tạm dừng",
+        value: "stop"
+      }
+    },
+    orders: ["waiting", "doing", "complete", "expired", "stop"]
+  },
+  {
+    title: "LỌC THEO MỨC ĐỘ ƯU TIÊN",
+    subTitle: "Chọn/bỏ chọn mức độ ưu tiên để lọc công việc",
+    optionEntities: {
+      piority_low: {
+        label: "Ưu tiên thấp",
+        value: "piority_low"
+      },
+      piority_medium: {
+        label: "Ưu tiên trung bình",
+        value: "piority_medium"
+      },
+      piority_hight: {
+        label: "Ưu tiên cao",
+        value: "piority_hight"
+      }
+    },
+    orders: ["piority_low", "piority_medium", "piority_hight"]
+  }
+];
+export const defaultStatusFilter = {
+  all: false,
+  waiting: false,
+  doing: false,
+  complete: false,
+  expired: false,
+  stop: false
+};
 function JobPage() {
   const [localOptions, setLocalOptions] = useLocalStorage(
     "LOCAL_PROJECT_OPTIONS",
@@ -35,7 +91,11 @@ function JobPage() {
       timeEnd
     };
   });
-
+  const [
+    statusFilter,
+    setstatusFilter,
+    handleRemovestatusFilter
+  ] = useMultipleSelect(defaultStatusFilter, true, true);
   return (
     <TwoColumnsLayout
       leftRenders={[() => <TabList />]}
@@ -43,6 +103,7 @@ function JobPage() {
         <Provider
           value={{
             expand,
+            filterConfig,
             handleExpand,
             quickTask,
             setQuickTask,
@@ -52,7 +113,10 @@ function JobPage() {
             timeType,
             setTimeType,
             timeRange,
-            settimeRange
+            settimeRange,
+            statusFilter,
+            setstatusFilter,
+            handleRemovestatusFilter
           }}
         >
           <div>

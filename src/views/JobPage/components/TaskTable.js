@@ -11,11 +11,7 @@ import { useTranslation } from "react-i18next";
 import { taskAtrrs } from "../contants/attrs";
 import { createMapPropsFromAttrs, loginlineFunc } from "../utils";
 import RecentTableRow from "./RecentTableRow";
-export const RecentTable = ({
-  tasks = [],
-  isToggleSortName,
-  toggleSortName
-}) => {
+export const TaskTable = ({ tasks = [], isToggleSortName, toggleSortName }) => {
   const { t } = useTranslation();
   return (
     <Table className="header-document">

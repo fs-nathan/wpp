@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useList, useToggle } from "react-use";
-import { RecentTable } from "views/JobPage/components/RecentTable";
+import { TaskTable } from "views/JobPage/components/TaskTable";
 import { TASK_ROLE } from "views/JobPage/redux/types";
 import AnalyticButton from "../../components/AnalyticButton";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -92,7 +92,7 @@ export function Content() {
     tasks
   ]);
   const createAnalyticButtonProps = string => ({
-    onCloseClick: () => handleRemovestatusFilter(string),
+    // onCloseClick: () => handleRemovestatusFilter(string),
     active: statusFilter[string],
     onClick: () => setstatusFilter(string)
   });
@@ -153,7 +153,7 @@ export function Content() {
         />
       </Grid>
       <Grid item container xs={12}>
-        <RecentTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
+        <TaskTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
       </Grid>
     </Grid>
   );

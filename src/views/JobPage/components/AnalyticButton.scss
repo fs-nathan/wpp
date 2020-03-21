@@ -54,9 +54,9 @@
 .comp_AnalyticButton__closeIcon:hover {
   transform: scale(1.2);
 }
-.comp_AnalyticButton:hover {
-  box-shadow: 1px 1px 1px currentColor;
-}
+// .comp_AnalyticButton:hover {
+//   box-shadow: 1px 1px 1px currentColor;
+// }
 .comp_AnalyticButton__active {
   background: currentColor;
   .comp_AnalyticButton__circle {

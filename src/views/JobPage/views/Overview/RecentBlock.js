@@ -1,21 +1,13 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  Table,
-  TableBody
-} from "@material-ui/core";
-import React from "react";
+import { Box, Card, CardContent, CardHeader, Grid, Table, TableBody } from "@material-ui/core";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useDebounce } from "react-use";
+import { JobPageContext } from "views/JobPage/JobPageContext";
 import AnalyticButton from "../../components/AnalyticButton";
 import PrimaryButton from "../../components/PrimaryButton";
 import RecentTableRow from "../../components/RecentTableRow";
 import { colors, recent, taskAtrrs, taskStatusMap } from "../../contants/attrs";
-import { useMultipleSelect } from "../../hooks/useMultipleSelect";
 import { TASK_OVERVIEW_RECENT } from "../../redux/types";
 import { createMapPropsFromAttrs, loginlineFunc } from "../../utils";
 
@@ -81,41 +73,26 @@ export const RecentTable = ({ tasks = [] }) => {
     </Table>
   );
 };
-export const defaultStatusFilter = {
-  all: false,
-  waiting: false,
-  doing: false,
-  complete: false,
-  expired: false
-};
+
 export function RecentBlock() {
   const { t } = useTranslation();
-  const [
+  const {
     statusFilter,
     setstatusFilter,
     handleRemovestatusFilter
-  ] = useMultipleSelect(defaultStatusFilter, false);
-  // const [
-  //   hoverstatusFilter,
-  //   setHoverstatusFilter,
-  //   handleRemovesHovertatusFilter
-  // ] = useMultipleSelect(defaultStatusFilter, false);
+  } = useContext(JobPageContext);
+
   const [waiting, doing, complete, expired, tasks = []] = useSelector(state => {
-    return loginlineFunc(
-      createMapPropsFromAttrs([
-        recent.waiting,
-        recent.doing,
-        recent.complete,
-        recent.expired,
-        recent.tasks
-      ])
-    )(state.taskPage[TASK_OVERVIEW_RECENT]);
+    return createMapPropsFromAttrs([
+      recent.waiting,
+      recent.doing,
+      recent.complete,
+      recent.expired,
+      recent.tasks
+    ])(state.taskPage[TASK_OVERVIEW_RECENT]);
   });
 
   const createAnalyticButtonProps = string => ({
-    onCloseClick: () => handleRemovestatusFilter(string),
-    // onMouseEnter: () => setHoverstatusFilter(string),
-    // onMouseLeave: () => handleRemovesHovertatusFilter(string),
     active: statusFilter[string],
     onClick: () => setstatusFilter(string)
   });

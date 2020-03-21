@@ -1,10 +1,9 @@
-import { ClickAwayListener, Drawer, SvgIcon } from "@material-ui/core";
+import { ClickAwayListener, Drawer } from "@material-ui/core";
 import {
   mdiCalendar,
   mdiFilterOutline,
   mdiFullscreen,
-  mdiFullscreenExit,
-  mdiSettingsOutline
+  mdiFullscreenExit
 } from "@mdi/js";
 import React, { useContext, useState } from "react";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
@@ -17,12 +16,11 @@ import {
 } from "../../../components/CustomTable";
 import LoadingBox from "../../../components/LoadingBox";
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
-import { QuickViewTaskDetailHeaderWrap } from "../components/QuickViewTaskDetail";
+import QuickViewFilter from "../components/QuickViewFilter";
 import RedirectModal from "../components/RedirectModal";
 import { JobPageContext } from "../JobPageContext";
 import { loginlineFunc } from "../utils";
 import "./Layout.css";
-import QuickView from "./QuickView";
 
 function Layout({ children, title, bgColor }) {
   const { t } = useTranslation();
@@ -63,16 +61,7 @@ function Layout({ children, title, bgColor }) {
                 {
                   label: "Lọc",
                   iconPath: mdiFilterOutline,
-                  onClick: () =>
-                    setQuickTask(
-                      <QuickView
-                        title={
-                          <QuickViewTaskDetailHeaderWrap>
-                            <SvgIcon>{mdiSettingsOutline}</SvgIcon>
-                          </QuickViewTaskDetailHeaderWrap>
-                        }
-                      ></QuickView>
-                    )
+                  onClick: () => setQuickTask(<QuickViewFilter />)
                 }
               ],
               mainAction: {
