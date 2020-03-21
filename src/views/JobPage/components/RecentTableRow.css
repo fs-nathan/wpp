@@ -6,6 +6,7 @@
 }
 .comp_TitleCell {
   padding: 10px;
+  display: flex;
 }
 .comp_HasMessage {
   vertical-align: middle;
@@ -16,6 +17,14 @@
   font-size: 14px;
   color: #000;
   text-decoration: none;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comp_LabelWrap {
+  flex: 1;
+  padding: 0 10px;
 }
 .comp_TaskTitleLink:hover {
   text-decoration: underline;

@@ -11,25 +11,12 @@ import PrimaryButton from "../../components/PrimaryButton";
 import { colors, recent, taskStatusMap } from "../../contants/attrs";
 import { createMapPropsFromAttrs } from "../../utils";
 
-export const defaultStatusFilter = {
-  all: false,
-  waiting: false,
-  doing: false,
-  stop: false,
-  complete: false,
-  expired: false
-};
-
 const emptyArray = [];
 
 export function Content() {
   const { t } = useTranslation();
 
-  const {
-    statusFilter,
-    setstatusFilter,
-    handleRemovestatusFilter
-  } = useContext(JobPageContext);
+  const { statusFilter } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
 
   const [
@@ -94,7 +81,6 @@ export function Content() {
     tasks
   ]);
   const createAnalyticButtonProps = string => ({
-    onCloseClick: () => handleRemovestatusFilter(string),
     active: statusFilter[string]
     // onClick: () => setstatusFilter(string)
   });

@@ -1,32 +1,20 @@
 import { Box, Grid } from "@material-ui/core";
-import React, { useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useList, useToggle } from "react-use";
 import { TaskTable } from "views/JobPage/components/TaskTable";
+import { JobPageContext } from "views/JobPage/JobPageContext";
 import { TASK_ROLE } from "views/JobPage/redux/types";
 import AnalyticButton from "../../components/AnalyticButton";
 import PrimaryButton from "../../components/PrimaryButton";
 import { colors, recent, taskStatusMap } from "../../contants/attrs";
-import { useMultipleSelect } from "../../hooks/useMultipleSelect";
 import { createMapPropsFromAttrs } from "../../utils";
 
-export const defaultStatusFilter = {
-  all: false,
-  waiting: false,
-  doing: false,
-  stop: false,
-  complete: false,
-  expired: false
-};
 const emptyArray = [];
 export function Content() {
   const { t } = useTranslation();
-  const [
-    statusFilter,
-    setstatusFilter,
-    handleRemovestatusFilter
-  ] = useMultipleSelect(defaultStatusFilter, false);
+  const { statusFilter } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
 
   const [
@@ -93,8 +81,7 @@ export function Content() {
   ]);
   const createAnalyticButtonProps = string => ({
     // onCloseClick: () => handleRemovestatusFilter(string),
-    active: statusFilter[string],
-    onClick: () => setstatusFilter(string)
+    active: statusFilter[string]
   });
 
   const allCount = [waiting, doing, stop, complete, expired].reduce(

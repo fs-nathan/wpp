@@ -18,6 +18,7 @@ export const PageContainer = styled(Container)`
   overflow: auto;
   background: #f6f6f6;
   padding: 16px;
+  min-height: 100%;
 `;
 
 const Overview = () => {

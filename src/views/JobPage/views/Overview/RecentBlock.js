@@ -1,4 +1,12 @@
-import { Box, Card, CardContent, CardHeader, Grid, Table, TableBody } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  Table,
+  TableBody
+} from "@material-ui/core";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -93,8 +101,8 @@ export function RecentBlock() {
   });
 
   const createAnalyticButtonProps = string => ({
-    active: statusFilter[string],
-    onClick: () => setstatusFilter(string)
+    active: statusFilter[string]
+    // onClick: () => setstatusFilter(string)
   });
   const [debouncedFilteredTasks, setdebouncedFilteredTasks] = React.useState(
     []

@@ -14,11 +14,7 @@ import { createMapPropsFromAttrs } from "../../utils";
 export function Content() {
   const { t } = useTranslation();
 
-  const {
-    statusFilter,
-    setstatusFilter,
-    handleRemovestatusFilter
-  } = useContext(JobPageContext);
+  const { statusFilter } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
   const [waiting, doing, stop, expired, tasks = []] = useSelector(state => {
     return createMapPropsFromAttrs([
@@ -67,8 +63,8 @@ export function Content() {
   }, [filter, filterStatusMemo, set, sort, sortMemo, statusFilter, tasks]);
   const createAnalyticButtonProps = string => ({
     // onCloseClick: () => handleRemovestatusFilter(string),
-    active: statusFilter[string],
-    onClick: () => setstatusFilter(string)
+    active: statusFilter[string]
+    // onClick: () => setstatusFilter(string)
   });
 
   const allCount = [waiting, doing, stop, expired].reduce(
@@ -77,11 +73,7 @@ export function Content() {
   return (
     <Grid container spacing={3}>
       <Grid item flex={1}>
-        <PrimaryButton
-          onClick={() => setstatusFilter(undefined)}
-          count={allCount}
-          label={t("Công việc được thực hiện")}
-        />
+        <PrimaryButton count={allCount} label={t("Công việc được thực hiện")} />
       </Grid>
       <Box flex={1}></Box>
       <Grid item>

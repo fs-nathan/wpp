@@ -78,6 +78,9 @@ export const TaskTitleLink = ({ className, ...props }) => (
     {...props}
   />
 );
+export const LabelWrap = ({ className, ...props }) => (
+  <div className={classnames("comp_LabelWrap", className)} {...props} />
+);
 export const SmallAvatar = ({ className, ...props }) => (
   <Avatar className={classnames("comp_SmallAvatar", className)} {...props} />
 );
@@ -106,29 +109,32 @@ export default ({
       </AvatarCell>
       <TitleCell onClick={loginlineFunc}>
         <TaskTitleLink
+          title={name}
           complete={complete === 100}
           to={taskDetailLink
             .replace("{projectId}", project_id)
             .replace("{taskId}", id)}
         >
           {name}
-        </TaskTitleLink>{" "}
-        {[
-          status_name && (
-            <InlineStatusBadge status={status_code}>
-              {status_name}
-            </InlineStatusBadge>
-          ),
-          <InlineBadge color={colors.task_complete}>{complete}%</InlineBadge>,
-          <InlineBadge icon={mdiAccount} color={colors.task_waiting}>
-            {number_member}
-          </InlineBadge>
-        ]
-          .filter(item => item)
-          .map((item, i) => (
-            <React.Fragment key={i}>{item} </React.Fragment>
-          ))}
-        {haveNewChat && <HasMessage />}
+        </TaskTitleLink>
+        <div className="comp_LabelWrap">
+          {[
+            status_name && (
+              <InlineStatusBadge status={status_code}>
+                {status_name}
+              </InlineStatusBadge>
+            ),
+            <InlineBadge color={colors.task_complete}>{complete}%</InlineBadge>,
+            <InlineBadge icon={mdiAccount} color={colors.task_waiting}>
+              {number_member}
+            </InlineBadge>
+          ]
+            .filter(item => item)
+            .map((item, i) => (
+              <React.Fragment key={i}>{item} </React.Fragment>
+            ))}
+          {haveNewChat && <HasMessage />}
+        </div>
       </TitleCell>
       <DurationCell onClick={loginlineFunc}>
         {duration_value} {t(duration_unit)}

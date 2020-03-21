@@ -95,7 +95,9 @@ function Layout({ children, title, bgColor }) {
             }
           }}
         >
-          <CustomTableLayout>{children}</CustomTableLayout>
+          <CustomTableLayout>
+            <Scrollbars>{children}</Scrollbars>
+          </CustomTableLayout>
           <TimeRangePopover
             bgColor={bgColor}
             anchorEl={timeAnchor}
