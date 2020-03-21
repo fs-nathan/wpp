@@ -4,7 +4,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Icon from '@mdi/react';
 import { mdiPlusCircleOutline } from '@mdi/js';
 import IconButton from '@material-ui/core/IconButton';
-import PriorityMemberModal from '../PriorityMemberModal';
+import PermissionMemberModal from '../PermissionMemberModal';
 
 function MemberPermission({ permission, memberId }) {
   const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
@@ -34,7 +34,7 @@ function MemberPermission({ permission, memberId }) {
           {permission.name}<ArrowDropDownIcon />
         </Button>
       }
-      <PriorityMemberModal permission={permission}
+      <PermissionMemberModal permission={permission}
         memberId={memberId}
         isOpen={openPriorityModal} setOpen={setOpenPriorityModal} />
     </div>

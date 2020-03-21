@@ -43,7 +43,7 @@ function PriorityTable(props) {
   )
 }
 
-function PriorityMemberModal({ memberId, setOpen,
+function PermissionMemberModal({ memberId, setOpen,
   isOpen
 }) {
   const dispatch = useDispatch();
@@ -102,4 +102,4 @@ function PriorityMemberModal({ memberId, setOpen,
     </DialogWrap>
   );
 }
-export default PriorityMemberModal
+export default PermissionMemberModal
