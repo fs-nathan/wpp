@@ -21,6 +21,7 @@ function TimeSelect({ className, value, onChange }) {
       value={value}
       onChange={onChange}
       variant="outlined"
+      MenuProps={{ className: "timeSelect--paper" }}
     >
       {
         listTimeSelect.map((time) => (

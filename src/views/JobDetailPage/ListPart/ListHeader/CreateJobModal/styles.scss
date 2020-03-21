@@ -1,3 +1,62 @@
 .createJob {
-
+  &--timeWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 15px;
+  }
+  &--titleLabel {
+    font-size: 16px;
+    color: #444444;
+    margin: 8px 0;
+  }
+  &--processWork {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  &--titleText {
+    display: flex;
+    justify-content: space-between;
+    & > *:first-child {
+      font-size: 15px;
+      color: #444444;
+    }
+    & > *:last-child {
+      color: #fa0000;
+      font-size: 14px;
+    }
+  }
+  &--description {
+    margin-top: 15px;
+    min-width: 520px;
+  }
+  &--inputTextJob {
+    margin: 0;
+    & > label {
+      font-size: 14px;
+      z-index: 0;
+    }
+    & > p {
+      color: red;
+    }
+  }
+  &--inputDate {
+    & > div:nth-child(2) {
+      width: 160px;
+      padding-right: 5px;
+      & > input {
+        padding: 10px;
+      }
+      & > div > button {
+        padding: 5px;
+      }
+    }
+  }
+  &--endTime {
+    width: 120px;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
 }

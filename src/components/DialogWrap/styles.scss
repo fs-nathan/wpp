@@ -19,4 +19,12 @@
     top: 4px;
     color: grey;
   }
+  &--button {
+    &__cancel {
+      color: #222222;
+    }
+    &__disabled {
+      opacity: 0.5;
+    }
+  }
 }
