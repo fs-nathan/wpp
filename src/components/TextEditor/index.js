@@ -44,7 +44,7 @@ function myKeyBindingFn(e) {
   return getDefaultKeyBinding(e);
 }
 
-function TextEditor({ value, onChange, isReadOnly = false }) {
+function TextEditor({ value, onChange, isReadOnly = false, className }) {
   const editor = React.useRef(null);
 
   function focusEditor() {
@@ -104,7 +104,7 @@ function TextEditor({ value, onChange, isReadOnly = false }) {
   return (
     <div className={clsx("editor", { "editor--readOnly": isReadOnly })}>
       <div
-        className={clsx("RichEditor-root", { "RichEditor-root--readOnly": isReadOnly })}
+        className={clsx("RichEditor-root", { "RichEditor-root--readOnly": isReadOnly }, className)}
         onClick={focusEditor}
       >
         <Editor

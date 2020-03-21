@@ -6,15 +6,23 @@
     margin-top: 15px;
   }
   &--titleLabel {
-    font-size: 16px;
-    color: #444444;
-    margin: 8px 0;
+    color: #9a9a9a;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+    display: block;
+    position: relative;
+    line-height: 15px;
+    margin: 25px 0 10px 0;
+    width: 100%;
+  }
+  &--content {
+    padding: 10px;
   }
   &--processWork {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
   }
   &--titleText {
     display: flex;
@@ -29,7 +37,7 @@
     }
   }
   &--description {
-    margin-top: 15px;
+    margin-top: 5px;
     min-width: 520px;
   }
   &--inputTextJob {
@@ -43,6 +51,9 @@
     }
   }
   &--inputDate {
+    .MuiOutlinedInput-adornedEnd {
+      padding-right: 0;
+    }
     & > div:nth-child(2) {
       width: 160px;
       padding-right: 5px;

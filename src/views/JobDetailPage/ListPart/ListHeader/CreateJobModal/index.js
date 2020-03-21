@@ -236,7 +236,7 @@ function CreateJobModal(props) {
         <Typography className="createJob--description" component={'div'}>
           <Typography className="createJob--titleLabel" component={'span'}>Mô tả công việc</Typography>
           <TextEditor
-            variant="outlined"
+            className="createJob--content"
             value={data.description}
             onChange={value => handleChangeData('description', value)}
           />
