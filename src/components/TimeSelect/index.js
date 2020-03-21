@@ -16,7 +16,6 @@ for (let index = 0; index < 24; index++) {
 function TimeSelect({ className, value, onChange }) {
   return (
     <Select
-      autoFocus
       className={clsx('timeSelect', className)}
       value={value}
       onChange={onChange}

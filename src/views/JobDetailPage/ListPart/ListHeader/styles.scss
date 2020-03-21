@@ -1,0 +1,21 @@
+.permissionItem {
+  padding: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  &__checked {
+    background-color: #58abf3;
+  }
+  .MuiRadio-colorSecondary.Mui-checked {
+    color: white;
+  }
+  .MuiIconButton-colorSecondary:hover {
+    background-color: transparent;
+  }
+  &--radio {
+    width: 16;
+    height: 16;
+    display: block;
+    margin: auto;
+  }
+}

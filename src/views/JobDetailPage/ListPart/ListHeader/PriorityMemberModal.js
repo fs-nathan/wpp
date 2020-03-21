@@ -1,12 +1,10 @@
 import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { withStyles } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
 import Radio from "@material-ui/core/Radio";
 import { useSelector, useDispatch } from 'react-redux';
 import { mdiCheckboxMarked, mdiKey } from '@mdi/js';
@@ -15,15 +13,7 @@ import styled from 'styled-components';
 import DialogWrap from 'components/DialogWrap';
 import { updatePermission } from "actions/taskDetail/taskDetailActions";
 
-const GreenRadio = withStyles({
-  root: {
-    color: "",
-    "&$checked": {
-      color: green[600]
-    }
-  },
-  checked: {}
-})((props) => <Radio color="default" {...props} />);
+import './styles.scss';
 
 const RowTable = styled(TableRow)`
 & > *:not(first-child) {
@@ -42,14 +32,14 @@ const CellTable = styled(TableCell)`
 
 function PriorityTable(props) {
   return (
-    <CellTable style={{ fontSize: '15px', fontWeight: 500 }} align="center">{props.radio}
-      <GreenRadio
-        style={{ width: 16, height: 16 }}
+    <TableCell className={clsx("permissionItem", { "permissionItem__checked": props.checked })} align="center">{props.radio}
+      <Radio
+        className="permissionItem--radio"
         checked={props.checked}
         onChange={props.onChange}
         value={props.value}
       />
-    </CellTable>
+    </TableCell>
   )
 }
 

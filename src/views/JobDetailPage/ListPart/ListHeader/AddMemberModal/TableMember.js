@@ -68,6 +68,7 @@ function TableMember(props) {
   const handleOpenModalDelete = (id) => () => {
     setSelectedItem(id);
     setOpenDelete(true);
+    setAnchorEl(null);
   };
 
   const handleCloseModalDelete = () => {

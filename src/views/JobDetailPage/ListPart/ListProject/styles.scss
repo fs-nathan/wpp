@@ -21,6 +21,21 @@
   }
   &--project-panel {
     box-shadow: none !important;
+    .MuiExpansionPanelSummary-expandIcon {
+      transform: rotate(90deg);
+      svg {
+        fill: rgb(130, 130, 130);
+      }
+    }
+    .MuiExpansionPanelSummary-expandIcon.Mui-expanded {
+      transform: rotate(180deg);
+    }
+    .MuiCollapse-container {
+      padding-left: 43px;
+      &:hover {
+        background-color: #f2f5fa;
+      }
+    }
     & > *:first-child {
       flex-direction: row-reverse;
       padding: 0;
@@ -32,13 +47,11 @@
       }
     }
     & > *:last-child {
-      margin-left: 43px;
       & > div {
         & > div {
           & > div {
             & > *:first-child {
               padding: 0;
-              border-top: 1px solid #0000001a;
             }
           }
         }

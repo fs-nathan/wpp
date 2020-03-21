@@ -5,10 +5,11 @@ import SearchInput from 'components/SearchInput';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import DialogWrap from 'components/DialogWrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import ProjectMember from './ProjectMember';
 import TableMember from './TableMember';
+import { createMember } from 'actions/taskDetail/taskDetailActions';
 
 const GridArea = styled(Typography)`
     display: grid;
@@ -48,11 +49,19 @@ const FlexJobMember = styled(Typography)`
 
 function AddMemberModal(props) {
   const { t } = useTranslation()
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const memberNotAssigned = useSelector(state => state.taskDetail.taskMember.memberNotAssigned);
 
   const handleClose = () => {
     props.setOpen(false);
   };
+
+  function handleAddAll() {
+    memberNotAssigned.forEach(member => {
+      dispatch(createMember({ task_id: taskId, member_id: member.id }))
+    })
+  }
 
   return (
     <DialogWrap
@@ -74,7 +83,7 @@ function AddMemberModal(props) {
                 <SearchInput placeholder='Tìm thành viên' />
               </div>
               <ButtonAddAll
-              // onClick={handleAddAll}
+                onClick={handleAddAll}
               >
                 {t('+ Thêm tất cả')}
               </ButtonAddAll>
