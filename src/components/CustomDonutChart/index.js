@@ -47,7 +47,7 @@ export const CustomChart = ({ className = "", ...props }) => (
   <Chart className={`comp_CustomDonutChart___chart ${className}`} {...props} />
 );
 
-export const ChartInfoBox = ({ className = '', data, title = 'Tổng số công việc:' }) => 
+export const ChartInfoBox = ({ className = '', data, title = 'Tổng số công việc:' }) =>
   <>
     <ChartLegendTitleBox className={className}>
       <span>{title}</span>
@@ -62,5 +62,4 @@ export const ChartInfoBox = ({ className = '', data, title = 'Tổng số công 
         <Typography>{get(info, "value", 0)}</Typography>
       </ChartLegendBox>
     ))}
-  </>
-);
+  </>;

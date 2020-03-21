@@ -1,11 +1,11 @@
-import React from 'react';
-import HeaderButtonGroup from './HeaderButtonGroup';
-import TableMain from './TableMain';
 import { Button } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 import LoadingOverlay from '../LoadingOverlay';
+import HeaderButtonGroup from './HeaderButtonGroup';
 import './style.scss';
+import TableMain from './TableMain';
 
 export const CustomTableContext = React.createContext();
 export const CustomTableProvider = CustomTableContext.Provider;
@@ -34,7 +34,7 @@ const StyledTableMain = ({ className = "", ...rest }) => (
 );
 
 export const TableHeader = () => {
-  const { options } = useContext(CustomTableContext);
+  const { options } = React.useContext(CustomTableContext);
   return (
     <Header>
       <LeftHeader>
@@ -115,7 +115,7 @@ function CustomTable() {
         height: '100%',
       }}
     >
-     <Container>
+      <Container>
         <Header>
           <LeftHeader>
             <div>
