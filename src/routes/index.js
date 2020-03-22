@@ -16,7 +16,7 @@ import ForgotPassword from '../views/AccountPage/ForgotPassword';
 import ResetPassword from '../views/AccountPage/ResetPassword';
 import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
 import MessageNoticePage from '../views/MessageNoticePage';
-
+import Grant from '../views/GrantPage/GrantTable'
 import TestPage from '../__test__';
 import { Routes } from '../constants/routes';
 
@@ -37,12 +37,13 @@ const routes = [
   { path: Routes.REGISTER, component: () => <RegisterPage /> },
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
   { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
+  { path: Routes.PROJECT_GRANT, component: () => <Grant/> },
   {
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />
   },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
-  { path: '', exact: false, component: () => null }
+  { path: '', exact: false, component: () => null },
 ];
 
 export default routes;
