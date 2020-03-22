@@ -1,15 +1,13 @@
+import { TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
-import { 
-  TextField,
-} from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../../hooks';
+import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
-function TitleManager({ 
-  open, setOpen, 
-  updatedPosition = null, 
+function TitleManager({
+  open, setOpen,
+  updatedPosition = null,
   handleCreateOrUpdatePosition
 }) {
 
@@ -31,6 +29,7 @@ function TitleManager({
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdatePosition(name, description)}
     >
+      <ColorTypo>Tên chức danh</ColorTypo>
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
@@ -44,6 +43,7 @@ function TitleManager({
           </ColorTypo>
         }
       />
+      <ColorTypo>Mô tả chức danh</ColorTypo>
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}

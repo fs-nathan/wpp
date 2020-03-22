@@ -1,0 +1,39 @@
+.comp_CustomTextBox___textbox {
+  & {
+    width: 100%;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    & > div:first-child > div:first-child {
+      border-style: solid;
+      border-width: 1px;
+      border-color: rgba(0, 0, 0, 0.23);
+      border-radius: 4px;
+      padding: 18.5px 14px;
+      font-weight: 400;
+      line-height: 1.1875em;
+      letter-spacing: 0.00938em;
+      &:hover {
+        border-color: rgba(0, 0, 0, 0.87);
+        cursor: text;
+      }
+      &:focus-within {
+        border-color: rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 2px #48bb78 inset;
+      }
+    }
+  }
+  &-readonly {
+    width: 100%;
+    box-sizing: border-box;
+    & > span {
+      color: #48bb78;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

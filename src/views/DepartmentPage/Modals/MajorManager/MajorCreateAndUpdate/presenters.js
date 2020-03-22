@@ -1,15 +1,13 @@
+import { TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
-import { 
-  TextField,
-} from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../../hooks';
+import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
-function MajorCreateAndUpdate({ 
-  open, setOpen, 
-  updatedMajor = null, 
+function MajorCreateAndUpdate({
+  open, setOpen,
+  updatedMajor = null,
   handleCreateOrUpdateMajor,
 }) {
 
@@ -31,12 +29,12 @@ function MajorCreateAndUpdate({
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateMajor(name, description)}
     >
+      <ColorTypo>Tên chuyên ngành</ColorTypo>
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Tên chuyên ngành'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -44,12 +42,12 @@ function MajorCreateAndUpdate({
           </ColorTypo>
         }
       />
+      <ColorTypo>Mô tả chuyên ngành</ColorTypo>
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Mô tả chuyên ngành'
         fullWidth
         multiline
         rowsMax='4'
