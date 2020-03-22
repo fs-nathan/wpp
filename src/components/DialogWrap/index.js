@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ColorTypo from 'components/ColorTypo';
+import { Scrollbars } from 'react-custom-scrollbars'
 
 import './styles.scss';
 import { useTranslation } from 'react-i18next';
@@ -35,9 +36,15 @@ function DialogWrap({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent className="dialogWrap--content" >
-        {children}
-      </DialogContent>
+      <Scrollbars className="dialogWrap--scroll"
+        autoHeight
+        autoHeightMin={100}
+        autoHeightMax={700}
+      >
+        <DialogContent className="dialogWrap--content" >
+          {children}
+        </DialogContent>
+      </Scrollbars>
       <DialogActions>
         <Button className={clsx("dialogWrap--button", "dialogWrap--button__cancel")} autoFocus onClick={handleClickClose} style={{}} >
           {t('IDS_WP_CANCEL')}
