@@ -1,9 +1,9 @@
 .comp_AnalyticButton {
   display: flex;
   align-items: center;
-  height: 5rem;
+  height: 4.4em;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0 1em;
   border-radius: 0.3rem;
   border: 1px solid #f1f1f1;
   transition: background 0.3s linear;
@@ -14,8 +14,9 @@
   overflow: hidden;
   justify-content: center;
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
   border-radius: 100%;
   text-align: center;
   font-weight: bold;
@@ -34,6 +35,7 @@
   font-size: 1rem;
   color: #545454;
   font-weight: bold;
+  white-space: nowrap;
 }
 .comp_AnalyticButton__right {
   padding-left: 2rem;
@@ -57,28 +59,28 @@
 // .comp_AnalyticButton:hover {
 //   box-shadow: 1px 1px 1px currentColor;
 // }
-.comp_AnalyticButton__active {
-  background: currentColor;
-  .comp_AnalyticButton__circle {
-    border-color: white;
-  }
-  .comp_AnalyticButton__circleBackground {
-    color: white;
-  }
-  .comp_AnalyticButton__label {
-    color: white;
-  }
-  .comp_AnalyticButton__circleText {
-    color: white;
-  }
-  .comp_AnalyticButton__right {
-    padding-left: 2rem;
-    text-align: right;
-  }
-  .comp_AnalyticButton__count {
-    font-weight: bolder;
-    font-size: 1.4rem;
-    color: white;
-    margin-bottom: 0.2rem;
-  }
-}
+// .comp_AnalyticButton__active {
+//   background: currentColor;
+//   .comp_AnalyticButton__circle {
+//     border-color: white;
+//   }
+//   .comp_AnalyticButton__circleBackground {
+//     color: white;
+//   }
+//   .comp_AnalyticButton__label {
+//     color: white;
+//   }
+//   .comp_AnalyticButton__circleText {
+//     color: white;
+//   }
+//   .comp_AnalyticButton__right {
+//     padding-left: 2rem;
+//     text-align: right;
+//   }
+//   .comp_AnalyticButton__count {
+//     font-weight: bolder;
+//     font-size: 1.4rem;
+//     color: white;
+//     margin-bottom: 0.2rem;
+//   }
+// }

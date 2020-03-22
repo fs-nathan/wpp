@@ -11,6 +11,7 @@ import { Content } from "./Content";
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
+  padding-right: 32px;
 `;
 
 const Due = () => {
@@ -18,7 +19,9 @@ const Due = () => {
   const { timeRange } = useContext(JobPageContext);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadTaskDuePage());
+    setTimeout(() => {
+      dispatch(loadTaskDuePage());
+    });
   }, [dispatch, timeRange]);
   return (
     <Layout title={t(labels.due)}>

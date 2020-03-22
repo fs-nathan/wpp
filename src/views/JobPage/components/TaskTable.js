@@ -87,6 +87,7 @@ export const TaskTable = ({ tasks = [], isToggleSortName, toggleSortName }) => {
                 number_member
               }}
               className="table-body-row"
+              task={task}
               key={index}
             ></RecentTableRow>
           );

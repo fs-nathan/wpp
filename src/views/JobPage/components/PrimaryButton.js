@@ -1,24 +1,23 @@
-import ButtonBase from "@material-ui/core/ButtonBase";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex",
+    display: "inline-flex",
     alignItems: "center",
-    padding: "1rem",
-    height: "5rem",
+    padding: "0 1em",
+    height: "4.4em",
     background: "rgb(0, 156, 243)",
     color: "white",
-    borderRadius: "0.3rem"
+    borderRadius: "0.3em"
   },
   label: {
-    fontSize: "1.1rem",
-    paddingLeft: "1rem"
+    fontSize: "1.1em",
+    paddingLeft: "1em"
   },
   count: {
     fontWeight: "bold",
-    fontSize: "3rem"
+    fontSize: "3em"
   }
 }));
 
@@ -30,14 +29,13 @@ export default function PrimaryButton({
 }) {
   const classes = useStyles();
   return (
-    <ButtonBase
-      focusRipple
+    <div
       className={classes.root}
       focusVisibleClassName={classes.focusVisible}
       {...props}
     >
       <div className={classes.count}>{count}</div>
       <div className={classes.label}>{label}</div>
-    </ButtonBase>
+    </div>
   );
 }

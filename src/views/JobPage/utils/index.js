@@ -1,4 +1,4 @@
-import { get, isFunction, merge } from "lodash";
+import { get, isFunction, merge, template } from "lodash";
 
 const loginlineParams = param => {
   console.trace("param", param);
@@ -50,6 +50,7 @@ export {
   get,
   isFunction,
   merge,
+  template,
   loginlineParams,
   loginlineFunc,
   createMapPropsFromAttrs

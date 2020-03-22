@@ -1,4 +1,3 @@
-import ButtonBase from "@material-ui/core/ButtonBase";
 import classnames from "classnames";
 import React from "react";
 import "./AnalyticButton.scss";
@@ -13,8 +12,8 @@ export default function AnalyticButton({
   ...props
 }) {
   return (
-    <ButtonBase
-      focusRipple
+    <div
+      // focusRipple
       className={classnames(
         "comp_AnalyticButton",
         active && "comp_AnalyticButton__active"
@@ -31,6 +30,6 @@ export default function AnalyticButton({
         <div className="comp_AnalyticButton__count">{count}</div>
         <div className="comp_AnalyticButton__label">{label}</div>
       </div>
-    </ButtonBase>
+    </div>
   );
 }

@@ -13,6 +13,7 @@ import { Content } from "./Content";
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
+  padding-right: 32px;
 `;
 
 const Assign = () => {

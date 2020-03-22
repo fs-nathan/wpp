@@ -58,12 +58,11 @@ const filterConfig = [
   }
 ];
 export const defaultStatusFilter = {
-  all: false,
-  waiting: false,
-  doing: false,
-  complete: false,
-  expired: false,
-  stop: false
+  waiting: true,
+  doing: true,
+  complete: true,
+  expired: true,
+  stop: true
 };
 function JobPage() {
   const [localOptions, setLocalOptions] = useLocalStorage(

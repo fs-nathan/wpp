@@ -6,6 +6,7 @@ import { JobPageContext } from "../JobPageContext";
 export const QuickViewWrapper = styled.div`
   height: 100%;
   display: flex;
+  padding-right: 10px;
   flex-direction: column;
   font-size: 14px;
   // grid-template-rows: 70px calc(100% - 70px) 50px;
