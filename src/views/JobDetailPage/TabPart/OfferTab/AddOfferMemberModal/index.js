@@ -43,7 +43,9 @@ function AddOfferMemberModal({
     >
       <React.Fragment>
         <SearchInput placeholder='Tìm kiếm thành viên' />
-        <ColorTypo >Đã chọn {selected.length} thành viên</ColorTypo>
+        <ColorTypo className="addOfferMemberModal--selected">
+          Đã chọn {selected.length} thành viên
+          </ColorTypo>
         {members.map((member, i) => <OfferMemberItem
           key={i}
           isSelected={selected.indexOf(i) !== -1}

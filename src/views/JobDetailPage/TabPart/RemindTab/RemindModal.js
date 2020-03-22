@@ -1,13 +1,10 @@
 import React from 'react';
 import {
-  IconButton, Typography, Dialog, Button,
-  TextField, withStyles, InputAdornment
+  Typography, Button,
+  TextField, InputAdornment
 } from '@material-ui/core';
 import styled from 'styled-components';
-import CloseIcon from '@material-ui/icons/Close';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
+
 // import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import ColorChip from '../../../../components/ColorChip';
@@ -27,6 +24,8 @@ import {
 import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
 import { useDispatch, useSelector } from 'react-redux';
 import { postRemindWithTimeDetail, postRemindDuration, updateRemindWithTimeDetail, updateRemindWithDuration } from '../../../../actions/taskDetail/taskDetailActions';
+import DialogWrap from 'components/DialogWrap';
+
 const selector = [
   {
     value: 0,
@@ -118,51 +117,6 @@ const DurationButton = styled(Button)`
   width: 90px;
   box-shadow: none;
 `
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-    background: '#f5f8fc'
-  },
-  title: {
-    textTransform: 'uppercase',
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: '15px 24px',
-  },
-}))(MuiDialogActions);
 
 const DEFAULT_DATA = {
   id: "",
@@ -289,11 +243,14 @@ function RemindModal(props) {
   }
 
   return (
-    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={handleCloseModal} fullWidth>
-      <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
-        Nhắc hẹn
-      </DialogTitle>
-      <DialogContent dividers style={{ overflow: 'hidden' }}>
+    <DialogWrap
+      title={"Nhắc hẹn"}
+      isOpen={props.isOpen}
+      handleClickClose={handleCloseModal}
+      successLabel={(props.isRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
+      onClickSuccess={handlePressConfirm}
+    >
+      <React.Fragment>
         <TitleText component="div">Loại nhắc hẹn</TitleText>
         <InputSelect
           commandSelect={selector}
@@ -380,22 +337,8 @@ function RemindModal(props) {
           styled={{ zIndex: 1 }}
           onChange={e => handleChangeData("content", e.target.value)}
         />
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCloseModal} color='#222'>
-          Hủy
-        </Button>
-        {props.isRemind ?
-          <Button onClick={handlePressConfirm} color="primary">
-            Chỉnh sửa nhắc hẹn
-        </Button>
-          :
-          <Button onClick={handlePressConfirm} color="primary">
-            Tạo nhắc hẹn
-        </Button>
-        }
-      </DialogActions>
-    </Dialog>
+      </React.Fragment>
+    </DialogWrap>
   )
 }
 

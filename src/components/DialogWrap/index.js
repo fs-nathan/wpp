@@ -36,9 +36,12 @@ function DialogWrap({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <Scrollbars className="dialogWrap--scroll"
+      <Scrollbars
+        className="dialogWrap--scroll"
+        autoHide
+        autoHideTimeout={500}
         autoHeight
-        autoHeightMin={100}
+        autoHeightMin={200}
         autoHeightMax={700}
       >
         <DialogContent className="dialogWrap--content" >
