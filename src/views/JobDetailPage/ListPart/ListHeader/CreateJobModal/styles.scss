@@ -1,4 +1,7 @@
 .createJob {
+  .MuiDialogContent-root:first-child {
+    padding-top: 0px;
+  }
   &--timeWrap {
     display: flex;
     flex-direction: row;

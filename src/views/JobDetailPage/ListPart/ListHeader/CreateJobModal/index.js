@@ -32,7 +32,7 @@ import TextEditor, { getEditorData } from 'components/TextEditor';
 
 import './styles.scss';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
-import DialogWrap from 'components/DialogWrap';
+import CustomModal from 'components/CustomModal';
 
 let optionsList = [
   { value: 2, label: 'Ngày và giờ (mặc định)' },
@@ -163,10 +163,6 @@ function CreateJobModal(props) {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
 
-  const handleClose = () => {
-    props.setOpen(false);
-  };
-
   const dataCreateJob = {
     project_id: projectId,
     group_task: data.group_task,
@@ -201,13 +197,13 @@ function CreateJobModal(props) {
   };
 
   return (
-    <DialogWrap
+    <CustomModal
       title={props.isRight ? 'Chỉnh sửa công việc' : 'Tạo công việc'}
-      isOpen={props.isOpen}
-      handleClickClose={handleClose}
-      successLabel={props.isRight ? "Hoàn Thành" : "TẠO VIỆC"}
-      onClickSuccess={props.isRight ? updateData : handlePressConfirm}
-      isDisableSubmit={!validate(data)}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => props.isRight ? "Hoàn Thành" : "TẠO VIỆC"}
+      onConfirm={props.isRight ? updateData : handlePressConfirm}
+      canConfirm={!validate(data)}
       className="createJob"
     >
       <React.Fragment>
@@ -342,7 +338,7 @@ function CreateJobModal(props) {
           />
         </Typography>
       </React.Fragment>
-    </DialogWrap>
+    </CustomModal>
   );
 }
 

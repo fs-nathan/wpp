@@ -28,7 +28,6 @@ function TimeSelect({ className, value, onChange }) {
         }
       }}
     >
-
       {
         listTimeSelect.map((time) => (
           <MenuItem key={time} value={time}>{time}</MenuItem>
