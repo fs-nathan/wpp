@@ -1,18 +1,18 @@
-import React from 'react';
-import { mdiClose, mdiDrag, mdiMenuUp } from '@mdi/js';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import { mdiMenuUp } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'classnames';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector } from 'react-redux';
-import ProjectItem from './ProjectItem';
+import '../ListPart.scss';
 import ListProjectBody from './ListProjectBody';
 import ListProjectHeader from './ListProjectHeader';
-
-import '../ListPart.scss';
+import ProjectItem from './ProjectItem';
 import './styles.scss';
+
 
 function ListProject(props) {
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);

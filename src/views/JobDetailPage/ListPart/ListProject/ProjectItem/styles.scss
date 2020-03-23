@@ -1,14 +1,17 @@
 .projectItem {
-  margin: 12px 30px 12px 0;
+  margin: 4px 0;
   font-weight: 500;
   // border-bottom: 1px solid #0000001a;
-  padding: 5px 0;
+  padding: 15px 15px 15px 43px;
   cursor: pointer;
   line-height: 1.5;
   & > *:first-child {
     border-top: 1px solid #0000001a;
   }
-  // &:hover{
-  //   background-color: #f2f5fa;
-  // }
+  &:hover {
+    background-color: #f2f5fa;
+  }
+  &__selected {
+    background-color: #f2f5fa;
+  }
 }

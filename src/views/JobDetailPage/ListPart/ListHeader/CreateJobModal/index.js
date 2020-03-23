@@ -186,7 +186,7 @@ function CreateJobModal(props) {
       setOpen={props.setOpen}
       confirmRender={() => props.isRight ? "Hoàn Thành" : "TẠO VIỆC"}
       onConfirm={props.isRight ? updateData : handlePressConfirm}
-      canConfirm={!validate(data)}
+      canConfirm={validate(data)}
       maxWidth='sm'
       className="createJob"
     >

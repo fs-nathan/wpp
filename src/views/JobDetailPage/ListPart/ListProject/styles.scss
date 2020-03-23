@@ -30,12 +30,12 @@
     .MuiExpansionPanelSummary-expandIcon.Mui-expanded {
       transform: rotate(180deg);
     }
-    .MuiCollapse-container {
-      padding-left: 43px;
-      &:hover {
-        background-color: #f2f5fa;
-      }
-    }
+    // .MuiCollapse-container {
+    // padding-left: 43px;
+    // &:hover {
+    //   background-color: #f2f5fa;
+    // }
+    // }
     & > *:first-child {
       flex-direction: row-reverse;
       padding: 0;

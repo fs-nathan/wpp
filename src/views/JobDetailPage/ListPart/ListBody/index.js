@@ -1,11 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
 import { List } from '@material-ui/core';
-import ListBodySubHeader from './ListBodySubHeader';
-import ListBodyItem from './ListBodyItem';
+import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { taskIdSelector } from '../../selectors';
+import ListBodyItem from './ListBodyItem';
+import ListBodySubHeader from './ListBodySubHeader';
+import './styles.scss';
+
 const StyledList = styled(List)`
 
   & > li {
@@ -34,7 +36,9 @@ function ListBody() {
   }
 
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body className="listJobBody"
+      renderView={props => <div {...props} className="listJobBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       {data.map((item, key) => {
         return (
           <StyledList key={key}>
