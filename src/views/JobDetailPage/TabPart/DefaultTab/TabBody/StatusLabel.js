@@ -1,10 +1,7 @@
-import React from 'react';
-import clsx from 'classnames';
+import { mdiCheckCircle } from '@mdi/js';
 import Icon from '@mdi/react';
-import {
-  mdiCheckCircle,
-} from '@mdi/js';
-import Tooltip from '@material-ui/core/Tooltip';
+import clsx from 'classnames';
+import React from 'react';
 
 export const TYPE_STATUS = 'Trạng thái: ';
 export const TYPE_PRIORITY = 'Ưu tiên: ';
@@ -13,7 +10,7 @@ const priorityLabel = ["Cao", "Trung bình", "Thấp"];
 
 const typeDescription = [
   'Hãy cập nhập tiến độ hoàn thành để thay đổi trạng thái công việc',
-  'Mức độ ưu tiên phản ánh tính chất khẩn cấp công việc',
+  'Mức độ ưu tiên phản ánh tầm quan trọng và tính chất khẩn cấp công việc',
   'Admin đã tạm dừng công việc, vào cài đặt công việc để thay đổi trạng thái'
 ]
 
@@ -30,23 +27,23 @@ const StatusLabel = ({ value, icon, type }) => {
   const description = (type === TYPE_STATUS) ? typeDescription[0] : typeDescription[1];
 
   return (
-    <Tooltip title={(
-      <div className={clsx("statusLabel", `statusLabel__${getStatusLabel(value, type)}`)}>
+    <span className={clsx("statusLabel--button", `statusLabel--button__${getStatusLabel(value, type)}`)}>
+      <div className={clsx("statusLabel--popup", `statusLabel__${getStatusLabel(value, type)}`)}>
         <Icon path={icon || mdiCheckCircle} size={1}
           className="statusLabel--icon" />
         <span>{type}</span>
         <span className={clsx("statusLabel--label", `statusLabel--label__${getStatusLabel(value, type)}`)}>
           {label}
         </span>
-        <p className="statusLabel--description">{description}</p>
+        <div className="statusLabel--description">{description}</div>
+        {(type === TYPE_STATUS) && <div>
+          <div>0% = <span className="statusLabel--label__wait">Đang chờ</span></div>
+          <div>0% &lt; <span className="statusLabel--label__doing">Đang làm</span> &lt; 99%</div>
+          <div>100% = <span className="statusLabel--label__completed">Hoàn thành</span></div>
+        </div>}
       </div>
-    )}
-    placement="top-start"
-    >
-      <span className={clsx("statusLabel--button", `statusLabel--button__${getStatusLabel(value, type)}`)}>
-        {labelButton}
-      </span>
-    </Tooltip>
+      {labelButton}
+    </span>
   )
 }
 

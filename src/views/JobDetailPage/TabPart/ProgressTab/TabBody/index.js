@@ -1,19 +1,18 @@
-import React from 'react';
 import { mdiCircle } from '@mdi/js';
-import Icon from '@mdi/react'
-import { Scrollbars } from 'react-custom-scrollbars'
-import { useSelector, useDispatch } from 'react-redux';
+import Icon from '@mdi/react';
+import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateComplete } from '../../../../../actions/taskDetail/taskDetailActions';
 import ColorTypo from '../../../../../components/ColorTypo';
 import { taskIdSelector } from '../../../selectors';
-import { updateComplete } from '../../../../../actions/taskDetail/taskDetailActions';
-import ProgressSlider from './ProgressSlider';
 import DetailEditProgress from './DetailEditProgress';
-
-import './styles.scss'
+import ProgressSlider from './ProgressSlider';
+import './styles.scss';
 
 function TabBody() {
   const dispatch = useDispatch();
-  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
+  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
   const taskId = useSelector(taskIdSelector);
   const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);

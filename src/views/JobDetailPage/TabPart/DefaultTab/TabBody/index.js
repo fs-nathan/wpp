@@ -1,27 +1,25 @@
+import { List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import React from 'react';
-import styled from 'styled-components';
-import {
-  List, ListItem, ListItemText, Typography,
-} from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { useSelector, useDispatch } from 'react-redux';
-
-import ColorTypo from '../../../../../components/ColorTypo';
-import ColorChip from '../../../../../components/ColorChip';
-import ColorButton from '../../../../../components/ColorButton';
-import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
-import AvatarCircleList from '../../../../../components/AvatarCircleList';
-import colorPal from '../../../../../helpers/colorPalette';
-
-import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
+import AvatarCircleList from '../../../../../components/AvatarCircleList';
+import ColorButton from '../../../../../components/ColorButton';
+import ColorChip from '../../../../../components/ColorChip';
+import ColorTypo from '../../../../../components/ColorTypo';
+import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
+import colorPal from '../../../../../helpers/colorPalette';
+import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper';
 import { taskIdSelector } from '../../../selectors';
 import Description from './Description';
-import ModalStatus from './ModalStatus';
 import HtmlTooltip from './HtmlTooltip';
-
+import ModalStatus from './ModalStatus';
+import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS } from './StatusLabel';
 import './styles.scss';
-import StatusLabel, { TYPE_STATUS, TYPE_PRIORITY } from './StatusLabel';
+
+
+
 
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
@@ -51,7 +49,7 @@ const ListItemTab = styled(ListItem)`
 const StyledList = styled(List)`
 margin-bottom: 6px;
   & > * {
-    padding: 20px 16px 0;
+    padding: 20px 16px;
     & > div {
       margin: 0;
     }
@@ -140,7 +138,9 @@ function TabBody(props) {
   }
 
   return (
-    <Body className="listPartTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body className="listPartTabBody"
+      renderView={props => <div {...props} className="listPartTabBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       <StyledList>
         <ListItem>
           <ListItemText>

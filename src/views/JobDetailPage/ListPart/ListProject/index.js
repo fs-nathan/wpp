@@ -7,7 +7,6 @@ import clsx from 'classnames';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector } from 'react-redux';
-import { groupsSelector } from 'views/ProjectGroupPage/LeftPart/ProjectGroupList/selectors';
 import '../ListPart.scss';
 import ListProjectBody from './ListProjectBody';
 import ListProjectHeader from './ListProjectHeader';
@@ -17,13 +16,13 @@ import './styles.scss';
 
 function ListProject(props) {
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);
-  const groups = useSelector(groupsSelector);
+  // const groups = useSelector(groupsSelector);
 
   let data = [];
   if (projectListBasic) {
     data = projectListBasic.projectGroups;
   }
-  console.log('ListProject', groups)
+  // console.log('ListProject', groups)
   return (
     <div
       className={clsx('listProject',

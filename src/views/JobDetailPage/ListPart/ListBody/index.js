@@ -32,7 +32,7 @@ function ListBody() {
   // fix use effect
   if (listTaskDetail) {
     data = listTaskDetail.tasks;
-    console.log({ data });
+    // console.log({ data });
   }
 
   return (

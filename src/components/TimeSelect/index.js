@@ -1,9 +1,8 @@
-import React from 'react';
-import clsx from 'clsx';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { Scrollbars } from 'react-custom-scrollbars'
-
+import clsx from 'clsx';
+import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import './styles.scss';
 
 const listTimeSelect = [];
@@ -38,4 +37,5 @@ function TimeSelect({ className, value, onChange }) {
 }
 
 export default TimeSelect
-export { listTimeSelect }
+export { listTimeSelect };
+

@@ -1,16 +1,16 @@
-import React from 'react';
 import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
+import Icon from '@mdi/react';
+import get from 'lodash/get';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { deleteTask, pinTaskAction, unPinTaskAction } from '../../../../../actions/taskDetail/taskDetailActions';
 import ColorTypo from '../../../../../components/ColorTypo';
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
+import { taskIdSelector } from '../../../selectors';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { selectedTaskSelector, taskIdSelector } from '../../../selectors';
-import { pinTaskAction, unPinTaskAction, deleteTask } from '../../../../../actions/taskDetail/taskDetailActions';
-import get from 'lodash/get'
 
 const AvatarHeader = styled(Avatar)`
   width: 60px;
@@ -18,7 +18,8 @@ const AvatarHeader = styled(Avatar)`
 `;
 
 const StyledIconButton = styled(IconButton)`
-  margin-left: auto;
+  margin: 0;
+  padding: 0;
   &:hover {
     background: none;
   }
@@ -87,13 +88,15 @@ function TabHeader(props) {
     <div className="container-dt-tabheader">
       <AvatarHeader src={avatar} alt="avatar" />
       <div className="tags-container">
-        <ColorTypo bold>{name}</ColorTypo>
-        <ColorTypo color={'blue'} variant="caption" style={{ fontSize: 13 }}>
-          {roles}
-        </ColorTypo>
-        <br />
+        <ColorTypo bold component="div">{name}</ColorTypo>
+        {roles &&
+          <ColorTypo color={'blue'} component="div" variant="caption" style={{ fontSize: 13 }}>
+            {roles}
+          </ColorTypo>
+        }
         {detailTask && (
           <ColorTypo
+            component="div"
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
           >
