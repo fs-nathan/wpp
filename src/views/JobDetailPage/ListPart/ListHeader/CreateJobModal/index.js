@@ -1,38 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Typography,
-  TextField,
-} from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import { useSelector, useDispatch } from 'react-redux';
-import { convertToRaw } from 'draft-js'
+import { TextField, Typography } from '@material-ui/core';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { createTask, updateNameDescriptionTask } from 'actions/taskDetail/taskDetailActions';
+import CustomModal from 'components/CustomModal';
 import CustomSelect from 'components/CustomSelect';
-import {
-  DEFAULT_DATE_TEXT,
-  EMPTY_STRING,
-  DEFAULT_GROUP_TASK_VALUE
-} from 'helpers/jobDetail/stringHelper';
-import {
-  convertDate,
-  convertDateToJSFormat
-} from 'helpers/jobDetail/stringHelper';
+import TextEditor, { getEditorData } from 'components/TextEditor';
+import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import { convertToRaw } from 'draft-js';
+import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
-import {
-  createTask,
-  updateNameDescriptionTask
-} from 'actions/taskDetail/taskDetailActions';
-import CommonProgressForm from './CommonProgressForm';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
-import TextEditor, { getEditorData } from 'components/TextEditor';
-
+import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
-import CustomModal from 'components/CustomModal';
+
 
 let optionsList = [
   { value: 2, label: 'Ngày và giờ (mặc định)' },
@@ -204,6 +187,7 @@ function CreateJobModal(props) {
       confirmRender={() => props.isRight ? "Hoàn Thành" : "TẠO VIỆC"}
       onConfirm={props.isRight ? updateData : handlePressConfirm}
       canConfirm={!validate(data)}
+      maxWidth='sm'
       className="createJob"
     >
       <React.Fragment>
