@@ -94,7 +94,8 @@
   }
   &-disabled {
     @include comp_CustomModal___accept-button;
-    color: #999 !important;
+    // color: #999 !important;
+    opacity: 0.5;
   }
 }
 
