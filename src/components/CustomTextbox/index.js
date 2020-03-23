@@ -1,12 +1,9 @@
-import clsx from 'classnames';
-// import 'draft-js/dist/Draft.css';
+import { FormHelperText } from '@material-ui/core';
 import { ContentState, convertFromRaw, Editor, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
 import getFragmentFromSelection from 'draft-js/lib/getFragmentFromSelection';
 import React from 'react';
 import decorator from './EditorLink';
-import './styles.scss';
-
-
+import './style.scss';
 
 const { hasCommandModifier } = KeyBindingUtil;
 
@@ -38,7 +35,7 @@ function myKeyBindingFn(e) {
   return getDefaultKeyBinding(e);
 }
 
-function TextEditor({ value, onChange, isReadOnly = false }) {
+function CustomTextbox({ value, onChange, isReadOnly = false, maxHeight = 100, className = '', helperText = '' }) {
   const editor = React.useRef(null);
 
   function focusEditor() {
@@ -95,23 +92,47 @@ function TextEditor({ value, onChange, isReadOnly = false }) {
     return 'not-handled';
   }
 
+  const [innerHeight, setInnerHeight] = React.useState(0);
+  const [showMore, setShowMore] = React.useState(false);
+
+  const innerRef = React.useCallback(node => {
+    if (node !== null) {
+      setInnerHeight(node.getBoundingClientRect().height);
+    }
+  }, [value]);
+
   return (
-    <div className={clsx("editor", { "editor--readOnly": isReadOnly })}>
+    <div
+      className={`comp_CustomTextBox___textbox${isReadOnly ? '-readonly' : ''} ${className}`}
+    >
       <div
-        className={clsx("RichEditor-root", { "RichEditor-root--readOnly": isReadOnly })}
-        onClick={focusEditor}
+        style={{
+          maxHeight: !isReadOnly || showMore ? 'initial' : maxHeight,
+          overflow: !isReadOnly || showMore ? 'initial' : 'hidden',
+        }}
       >
-        <Editor
-          ref={editor}
-          readOnly={isReadOnly}
-          editorState={value}
-          onChange={onChange}
-          handleKeyCommand={handleKeyCommand}
-          keyBindingFn={myKeyBindingFn}
-        />
+        <div
+          onClick={focusEditor}
+          ref={innerRef}
+        >
+          <Editor
+            ref={editor}
+            readOnly={isReadOnly}
+            editorState={value}
+            onChange={onChange}
+            handleKeyCommand={handleKeyCommand}
+            keyBindingFn={myKeyBindingFn}
+          />
+        </div>
+        {!isReadOnly &&
+          <FormHelperText error filled variant='filled'>
+            {helperText}
+          </FormHelperText>
+        }
       </div>
+      {isReadOnly && innerHeight > maxHeight && <span onClick={() => setShowMore(old => !old)}>{showMore ? 'Thu gọn' : 'Mở rộng'}</span>}
     </div>
   );
 }
 
-export default TextEditor;
+export default CustomTextbox;

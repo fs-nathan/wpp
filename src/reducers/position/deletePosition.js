@@ -1,36 +1,39 @@
-import {
-  DELETE_POSITION,
-  DELETE_POSITION_SUCCESS,
-  DELETE_POSITION_FAIL,
-} from '../../constants/actions/position/deletePosition';
+import { concat, get, remove } from 'lodash';
+import { DELETE_POSITION, DELETE_POSITION_FAIL, DELETE_POSITION_SUCCESS } from '../../constants/actions/position/deletePosition';
 
 export const initialState = {
-  data: {},
   error: null,
-  loading: false,
+  pendings: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case DELETE_POSITION:
+    case DELETE_POSITION: {
+      const newPendings = concat(state.pendings, get(action.options, 'positionId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case DELETE_POSITION_SUCCESS: 
+        pendings: newPendings,
+      }
+    }
+    case DELETE_POSITION_SUCCESS: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'positionId'))
       return {
-        ...state, 
-        data: {},
+        ...state,
         error: null,
-        loading: false,
-      };
-    case DELETE_POSITION_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case DELETE_POSITION_FAIL: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'positionId'))
       return {
         ...state,
         error: action.error,
-        loading: false,
-      };
+        pendings: newPendings,
+      }
+    }
     default:
       return state;
   }

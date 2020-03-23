@@ -1,34 +1,30 @@
-import React from 'react';
-import { sortUser } from '../../../../actions/user/sortUser';
-import { publicMember } from '../../../../actions/user/publicMember';
-import { privateMember } from '../../../../actions/user/privateMember';
-import { banUserFromGroup } from '../../../../actions/user/banUserFromGroup';
-import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
-import { connect } from 'react-redux';
-import AlertModal from '../../../../components/AlertModal';
 import { get } from 'lodash';
-import TitleManagerModal from '../../Modals/TitleManager';
-import RoleManagerModal from '../../Modals/RoleManager';
-import LevelManagerModal from '../../Modals/LevelManager';
-import MajorManagerModal from '../../Modals/MajorManager';
-import LogoManagerModal from '../../Modals/LogoManager';
-import TableSettingsModal from '../../Modals/TableSettings';
-import PermissionSettingsModal from '../../Modals/PermissionSettings';
+import React from 'react';
+import { connect } from 'react-redux';
+import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
+import { banUserFromGroup } from '../../../../actions/user/banUserFromGroup';
+import { privateMember } from '../../../../actions/user/privateMember';
+import { publicMember } from '../../../../actions/user/publicMember';
+import { sortUser } from '../../../../actions/user/sortUser';
+import AlertModal from '../../../../components/AlertModal';
 import CreateAccountModal from '../../Modals/CreateAccount';
-import './style.scss';
-import {
-  roomsSelector,
-  maxUserSelector, 
-  hasRequirementSelector 
-} from './selectors';
+import LevelManagerModal from '../../Modals/LevelManager';
+import LogoManagerModal from '../../Modals/LogoManager';
+import MajorManagerModal from '../../Modals/MajorManager';
+import PermissionSettingsModal from '../../Modals/PermissionSettings';
+import RoleManagerModal from '../../Modals/RoleManager';
+import TableSettingsModal from '../../Modals/TableSettings';
+import TitleManagerModal from '../../Modals/TitleManager';
 import AllUsersTablePresenter from './presenters';
+import { hasRequirementSelector, maxUserSelector, publicPrivatePendingsSelector, roomsSelector } from './selectors';
+import './style.scss';
 
-function AllUsersTable({ 
-  rooms, maxUser, hasRequirement,
+function AllUsersTable({
+  rooms, maxUser, hasRequirement, publicPrivatePendings,
   doSortUser,
   expand, handleExpand,
   doPublicMember, doPrivateMember,
-  doBanUserFromGroup, 
+  doBanUserFromGroup,
   doActionVisibleDrawerMessage,
 }) {
 
@@ -88,11 +84,11 @@ function AllUsersTable({
 
   return (
     <>
-      <AllUsersTablePresenter 
-        rooms={rooms} maxUser={maxUser} hasRequirement={hasRequirement}
+      <AllUsersTablePresenter
+        rooms={rooms} maxUser={maxUser} hasRequirement={hasRequirement} publicPrivatePendings={publicPrivatePendings}
         expand={expand} handleExpand={handleExpand}
         handleSortUser={(roomId, userId, sortIndex) => doSortUser({ roomId, userId, sortIndex })}
-        handleChangeState={(user) => 
+        handleChangeState={(user) =>
           get(user, 'state', 0) === 0
             ? doPublicMember({
               userId: get(user, 'id'),
@@ -117,7 +113,7 @@ function AllUsersTable({
       <TableSettingsModal open={openTableSetting} setOpen={setOpenTableSetting} />
       <CreateAccountModal open={openCreateAccount} setOpen={setOpenCreateAccount} />
       <PermissionSettingsModal open={openPermissionSetting} setOpen={setOpenPermissionSetting} />
-      <AlertModal 
+      <AlertModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
@@ -131,6 +127,7 @@ const mapStateToProps = state => {
     rooms: roomsSelector(state),
     maxUser: maxUserSelector(state),
     hasRequirement: hasRequirementSelector(state),
+    publicPrivatePendings: publicPrivatePendingsSelector(state),
   }
 }
 

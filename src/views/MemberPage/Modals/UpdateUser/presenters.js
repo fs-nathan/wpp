@@ -1,25 +1,31 @@
+import { FormControl, MenuItem, TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormControl, OutlinedInput } from '@material-ui/core';
 import ColorTypo from '../../../../components/ColorTypo';
-import CustomSelect from '../../../../components/CustomSelect';
-import ErrorBox from '../../../../components/ErrorBox';
 import CustomModal from '../../../../components/CustomModal';
-import { useMaxlenString } from '../../../../hooks';
-import { get, find } from 'lodash';
+import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
+import ErrorBox from '../../../../components/ErrorBox';
+import { useTextboxString } from '../../../../hooks';
 import './style.scss';
 
-const StyledFormControl = ({ className = '', ...props }) => 
+const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
     className={`view_Member_UpdateUser_Modal___form-control ${className}`}
     {...props}
   />;
 
-function UpdateUser({ 
-  updatedUser, 
-  open, setOpen, 
-  options, 
-  handleUpdateUser, 
+const CustomTextField = ({ className = '', ...props }) =>
+  <TextField
+    className={`view_Member_UpdateUser_Modal___text-field ${className}`}
+    {...props}
+  />;
+
+function UpdateUser({
+  updatedUser,
+  open, setOpen,
+  options,
+  handleUpdateUser,
 }) {
 
   const { t } = useTranslation();
@@ -28,15 +34,15 @@ function UpdateUser({
   const [position, setPosition] = React.useState(null);
   const [major, setMajor] = React.useState(null);
   const [level, setLevel] = React.useState(null);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
+  const [description, setDescription, errorDescription, rawDescription] = useTextboxString('', 500);
 
   React.useEffect(() => {
     if (updatedUser) {
-      setRoom(find(options.rooms, { id: get(updatedUser, 'room_id') }));
-      setPosition(find(options.positions, { id: get(updatedUser, 'position_id') }));
-      setMajor(find(options.majors, { id: get(updatedUser, 'major_id') }));
-      setLevel(find(options.levels, { id: get(updatedUser, 'level_id') }));
-      setDescription(get(updatedUser, 'description', ''));
+      setRoom(get(updatedUser, 'room_id'));
+      setPosition(get(updatedUser, 'position_id'));
+      setMajor(get(updatedUser, 'major_id'));
+      setLevel(get(updatedUser, 'level_id'));
+      setDescription(getEditorData(get(updatedUser, 'description', '')));
     }
     // eslint-disable-next-line
   }, [updatedUser]);
@@ -48,111 +54,85 @@ function UpdateUser({
       title={get(updatedUser, 'name', '')}
       canConfirm={!errorDescription}
       onConfirm={() => handleUpdateUser(
-        get(updatedUser, 'id'), 
-        get(room, 'id'),
-        get(position, 'id'),
-        get(major, 'id'),
-        get(level, 'id'),
-        description
+        get(updatedUser, 'id'),
+        room,
+        position,
+        major,
+        level,
+        rawDescription,
       )}
       loading={options.loading}
     >
-      {options.error !== null 
+      {options.error !== null
         ? <ErrorBox />
         : <>
-            <StyledFormControl fullWidth>
-              <label htmlFor='room-select'>
-                {t("views.user_page.modals.update_user.room_select")}
-              </label>
-              <CustomSelect
-                options={
-                  options.rooms.map(room => ({
-                      value: get(room, 'id'),
-                      label: get(room, 'name', ''),
-                    })
-                  )}
-                value={{
-                  value: get(room, 'id'),
-                  label: get(room, 'name', '')
-                }}
-                onChange={({ value: roomId }) => setRoom(find(options.rooms, { id: roomId }))}
-              />
-            </StyledFormControl>
-            <StyledFormControl fullWidth>
-              <label htmlFor='position-select'>
-                {t("views.user_page.modals.update_user.position_select")}
-              </label>
-              <CustomSelect
-                options={
-                  options.positions.map(position => ({
-                      value: get(position, 'id'),
-                      label: get(position, 'name', ''),
-                    })
-                  )}
-                value={{
-                  value: get(position, 'id'),
-                  label: get(position, 'name', ''),
-                }}
-                onChange={({ value: positionId }) => setPosition(find(options.positions, { id: positionId }))}
-              />
-            </StyledFormControl>
-            <StyledFormControl fullWidth>
-              <label htmlFor='level-select'>
-                {t("views.user_page.modals.update_user.level_select")}
-              </label>
-              <CustomSelect
-                options={
-                  options.levels.map(level => ({
-                      value: get(level, 'id'),
-                      label: get(level, 'name', ''),
-                    })
-                  )}
-                value={{
-                  value: get(level, 'id'),
-                  label: get(level, 'name', ''),
-                }}
-                onChange={({ value: levelId }) => setLevel(find(options.levels, { id: levelId }))}
-              />
-            </StyledFormControl>
-            <StyledFormControl fullWidth>
-              <label htmlFor='major-select'>
-                {t("views.user_page.modals.update_user.major_select")}
-              </label>
-              <CustomSelect
-                options={
-                  options.majors.map(major => ({
-                      value: get(major, 'id'),
-                      label: get(major, 'name', ''),
-                    })
-                  )}
-                value={{
-                  value: get(major, 'id'),
-                  label: get(major, 'name', ''),
-                }}
-                onChange={({ value: majorId }) => setMajor(find(options.majors, { id: majorId }))}
-              />
-            </StyledFormControl>
-            <StyledFormControl fullWidth>
-              <label htmlFor='major-select'>
-                Mô tả công việc
-              </label>
-              <OutlinedInput 
-                id='description'
-                value={description}
-                onChange={evt => setDescription(evt.target.value)}
-                multiline
-                margin="normal"
-                variant="outlined"
-                rowsMax={4}
-                fullWidth
-                helperText={
-                  <ColorTypo component='span' color='red'>
-                    {get(errorDescription, 'message', '')}
-                  </ColorTypo>
-                }
-              />
-            </StyledFormControl>
-          </>
+          <ColorTypo>{t("views.user_page.modals.update_user.room_select")}</ColorTypo>
+          <StyledFormControl fullWidth>
+            <CustomTextField
+              select
+              variant="outlined"
+              value={room}
+              onChange={evt => setRoom(evt.target.value)}
+            >
+              {options.rooms.map(room =>
+                <MenuItem key={get(room, 'id')} value={get(room, 'id')}>
+                  {get(room, 'name')}
+                </MenuItem>
+              )}
+            </CustomTextField>
+          </StyledFormControl>
+          <ColorTypo>{t("views.user_page.modals.update_user.position_select")}</ColorTypo>
+          <StyledFormControl fullWidth>
+            <CustomTextField
+              select
+              variant="outlined"
+              value={position}
+              onChange={evt => setPosition(evt.target.value)}
+            >
+              {options.positions.map(position =>
+                <MenuItem key={get(position, 'id')} value={get(position, 'id')}>
+                  {get(position, 'name')}
+                </MenuItem>
+              )}
+            </CustomTextField>
+          </StyledFormControl>
+          <ColorTypo>{t("views.user_page.modals.update_user.level_select")}</ColorTypo>
+          <StyledFormControl fullWidth>
+            <CustomTextField
+              select
+              variant="outlined"
+              value={level}
+              onChange={evt => setLevel(evt.target.value)}
+            >
+              {options.levels.map(level =>
+                <MenuItem key={get(level, 'id')} value={get(level, 'id')}>
+                  {get(level, 'name')}
+                </MenuItem>
+              )}
+            </CustomTextField>
+          </StyledFormControl>
+          <ColorTypo>{t("views.user_page.modals.update_user.major_select")}</ColorTypo>
+          <StyledFormControl fullWidth>
+            <CustomTextField
+              select
+              variant="outlined"
+              value={major}
+              onChange={evt => setMajor(evt.target.value)}
+            >
+              {options.majors.map(major =>
+                <MenuItem key={get(major, 'id')} value={get(major, 'id')}>
+                  {get(major, 'name')}
+                </MenuItem>
+              )}
+            </CustomTextField>
+          </StyledFormControl>
+          <ColorTypo>Mô tả công việc</ColorTypo>
+          <CustomTextbox
+            value={description}
+            onChange={value => setDescription(value)}
+            helperText={get(errorDescription, 'message', '')}
+          />
+        </>
       }
     </CustomModal>
   )

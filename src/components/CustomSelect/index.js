@@ -1,15 +1,15 @@
-import React from 'react';
-import clsx from 'clsx';
-import Select, { components } from 'react-select';
-import { emphasize, makeStyles, useTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
-import NoSsr from '@material-ui/core/NoSsr';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
+import NoSsr from '@material-ui/core/NoSsr';
+import { emphasize, makeStyles, useTheme } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/Cancel';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
-
+import React from 'react';
+import Select, { components } from 'react-select';
+import styled from 'styled-components';
 import './styles.scss';
+
 
 const useStyles = makeStyles(theme => ({
   root: {

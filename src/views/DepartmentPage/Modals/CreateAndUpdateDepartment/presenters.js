@@ -1,28 +1,29 @@
-import React from 'react';
 import { TextField } from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import CustomAvatar from '../../../../components/CustomAvatar';
+import { get } from 'lodash';
+import React from 'react';
 import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../hooks';
+import CustomAvatar from '../../../../components/CustomAvatar';
+import CustomModal from '../../../../components/CustomModal';
+import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
+import { useRequiredString, useTextboxString } from '../../../../hooks';
 import './style.scss';
 
 const LogoBox = ({ className = '', ...props }) =>
-  <div 
+  <div
     className={`view_Department_Create_Modal___logo-box ${className}`}
     {...props}
   />;
 
-function CreateAndUpdateDepartment({ 
-  updateDepartment = null, 
-  open, setOpen, 
-  handleCreateOrUpdateRoom, 
+function CreateAndUpdateDepartment({
+  updateDepartment = null,
+  open, setOpen,
+  handleCreateOrUpdateRoom,
   handleOpenModal,
 }) {
 
-  const [name, setName, errorName] = useRequiredString('', 150);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
+  const [name, setName, errorName] = useRequiredString('', 100);
+  const [description, setDescription, errorDescription, rawDescription] = useTextboxString('', 500);
   const [icon, setIcon] = React.useState({
     url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
     url_sort: '/storage_vtask_net/Icon_default/bt0.png',
@@ -31,7 +32,7 @@ function CreateAndUpdateDepartment({
   React.useEffect(() => {
     if (updateDepartment) {
       setName(get(updateDepartment, 'name', ''));
-      setDescription(get(updateDepartment, 'description', ''));
+      setDescription(getEditorData(get(updateDepartment, 'description', '')));
       setIcon({
         url_full: get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png'),
         url_sort: get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png')
@@ -46,15 +47,15 @@ function CreateAndUpdateDepartment({
         title={`${updateDepartment ? 'Cập nhật' : 'Tạo'} bộ phận`}
         open={open}
         setOpen={setOpen}
-        onConfirm={() => handleCreateOrUpdateRoom(name, description, icon)}
+        onConfirm={() => handleCreateOrUpdateRoom(name, rawDescription, icon)}
         canConfirm={!errorName && !errorDescription}
       >
+        <ColorTypo>Tên bộ phận</ColorTypo>
         <TextField
           value={name}
           onChange={evt => setName(evt.target.value)}
           margin="normal"
           variant="outlined"
-          label='Tên bộ phận'
           fullWidth
           helperText={
             <ColorTypo variant='caption' color='red'>
@@ -62,26 +63,17 @@ function CreateAndUpdateDepartment({
             </ColorTypo>
           }
         />
-        <TextField
+        <ColorTypo>Mô tả bộ phận</ColorTypo>
+        <CustomTextbox
           value={description}
-          onChange={evt => setDescription(evt.target.value)}
-          margin="normal"
-          variant="outlined"
-          label='Mô tả bộ phận'
-          fullWidth
-          multiline
-          rowsMax='4'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorDescription, 'message', '')}
-            </ColorTypo>
-          }
+          onChange={editorState => setDescription(editorState)}
+          helperText={get(errorDescription, 'message', '')}
         />
         <LogoBox>
-          <div>  
+          <div>
             <ColorTypo>Biểu tượng</ColorTypo>
-            <ColorButton 
-              color='primary' 
+            <ColorButton
+              color='primary'
               onClick={() => handleOpenModal('LOGO', {
                 doSelectIcon: icon => setIcon(icon),
               })}
