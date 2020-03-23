@@ -26,6 +26,7 @@
   &-readonly {
     width: 100%;
     box-sizing: border-box;
+    word-break: break-word;
     & > span {
       color: #48bb78;
       display: inline-block;

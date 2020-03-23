@@ -26,8 +26,8 @@ export const ChartTitle = ({ className = "", ...props }) => (
     {...props}
   />
 );
-export const ChartPlacedolder = ({ className = "", ...props }) => (
-  <span className={`-placeholder ${className}`} {...props} />
+export const ChartPlaceholder = ({ className = "", ...props }) => (
+  <span className={`comp_CustomDonutChart___chart-placeholder ${className}`} {...props} />
 );
 
 export const ChartLegendBox = ({ className = "", ...props }) => (
