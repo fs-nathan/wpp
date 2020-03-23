@@ -34,9 +34,12 @@ const ItemNotification = props => {
         </div>
         <div>
           <div className="name-message">
-            <span className="text-name-message">
-              {item.data_notification.content}
-            </span>
+            <div
+              className="text-name-message content-text"
+              dangerouslySetInnerHTML={{
+                __html: item.data_notification.content
+              }}
+            ></div>
           </div>
           <div className="des-message">
             <span>{item.data_notification.time_label}</span>

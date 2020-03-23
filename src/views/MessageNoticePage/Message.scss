@@ -58,14 +58,26 @@
         justify-content: space-between;
         display: flex;
         .text-name-message {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 500;
           margin-bottom: 5px;
+          &.content-text {
+            font-weight: 400;
+          }
+          b {
+            font-size: 14px;
+          }
         }
       }
       .des-message {
         color: #90949c;
         font-size: 12px;
+        .content-text {
+          font-weight: 400;
+        }
+        b {
+          font-size: 14px;
+        }
       }
       &.un-read {
         background-color: #f9f9f9;
@@ -141,9 +153,15 @@
         justify-content: space-between;
         display: flex;
         .text-name-message {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 500;
           margin-bottom: 5px;
+          &.content-text {
+            font-weight: 400;
+          }
+          b {
+            font-size: 14px;
+          }
         }
       }
       &.un-read {
