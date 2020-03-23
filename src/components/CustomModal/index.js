@@ -144,7 +144,7 @@ function CustomModal({
     >
       <StyledDialogTitle id="alert-dialog-slide-title">
         <ColorTypo uppercase>{title}</ColorTypo>
-        <IconButton onClick={() => handleCancle()}>
+        <IconButton className="comp_CustomModal___iconButton" onClick={() => handleCancle()}>
           <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
         </IconButton>
       </StyledDialogTitle>

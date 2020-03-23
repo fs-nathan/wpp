@@ -60,7 +60,7 @@
 
 .comp_CustomModal___dialog-title {
   background-color: #f5f8fc;
-  padding: 6px 24px;
+  padding: 20px 24px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > h2 {
     display: flex;
@@ -125,7 +125,7 @@
   &-sm {
     @include comp_CustomModal___dialog;
     & > div:nth-child(3) > div {
-      max-width: 50vw;
+      max-width: 800px;
     }
   }
   &-md {
@@ -179,4 +179,8 @@
     @include comp_CustomModal___header;
     text-align: start;
   }
+}
+
+.comp_CustomModal___iconButton {
+  padding: 0px;
 }
