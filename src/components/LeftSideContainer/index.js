@@ -68,26 +68,29 @@ function LeftSideContainer({
   );
 
   return (
-    <Container>
-      <Header>
-        {parseAction(leftAction)}
-        <Title>{title}</Title>
-        {parseAction(rightAction)}
-      </Header>
-      <LoadingOverlay
-        active={loading.bool}
-        spinner
-        text='Đang tải...'
-        fadeSpeed={0}
-      >
+    <LoadingOverlay
+      active={loading.bool}
+      spinner
+      fadeSpeed={100}
+      style={{
+        height: '100%',
+        zIndex: '999',
+      }}
+    >
+      <Container>
+        <Header>
+          {parseAction(leftAction)}
+          <Title>{title}</Title>
+          {parseAction(rightAction)}
+        </Header>
         <Body
           autoHide
           autoHideTimeout={500}
         >
           {children}
         </Body>
-      </LoadingOverlay>
-    </Container>
+      </Container>
+    </LoadingOverlay>
   )
 }
 

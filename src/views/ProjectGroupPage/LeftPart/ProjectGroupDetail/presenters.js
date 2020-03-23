@@ -111,6 +111,7 @@ function ProjectGroupDetail({
                     {group.loading ? '...' : get(group.group, 'name', '')}
                   </ProjectGroupName>
                   <ChartInfoBox
+                    title='Tổng số dự án:'
                     data={
                       [{
                         color: '#ff9800',

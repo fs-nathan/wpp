@@ -198,7 +198,7 @@ function AllTaskTable({
             }, {
               label: 'Trạng thái',
               field: (row) => <StateBox
-                  stateName={get(row, 'status_code')}
+                  stateCode={get(row, 'status_code')}
                 >
                   <div>
                     <span>&#11044;</span>

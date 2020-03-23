@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Button from '@material-ui/core/Button';
+import Badge from '@material-ui/core/Badge';
 
 import { actionVisibleDrawerMessage } from '../../actions/system/system';
 
@@ -43,17 +44,24 @@ const HeaderDrawer = props => {
           >
             {t('IDS_WP_RECENT')}
           </Button>
-          <Button
-            className={`cus-btn btn-unread ${
-              activeTab === 'notView' ? 'active' : ''
-            }`}
-            variant="text"
-            disableTouchRipple
-            onClick={() => handleChangeTab('notView')}
+          <Badge
+            badgeContent={numberNotView > 100 ? '99+' : numberNotView}
+            color="error"
+            className={`bag-cus ${numberNotView ? 'none-view' : ''}`}
           >
-            {title} {t('IDS_WP_UNREAD')}
-          </Button>
-          {numberNotView > 0 && <span className="badges">{numberNotView}</span>}
+            <Button
+              className={`cus-btn btn-unread ${
+                activeTab === 'notView' ? 'active' : ''
+              }`}
+              variant="text"
+              disableTouchRipple
+              onClick={() => handleChangeTab('notView')}
+            >
+              {title} {t('IDS_WP_UNREAD')}
+            </Button>
+          </Badge>
+
+          {/* {numberNotView > 0 && <span className="badges">{numberNotView}</span>} */}
         </span>
       )}
     </React.Fragment>

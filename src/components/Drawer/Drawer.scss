@@ -149,6 +149,7 @@
     }
     .btn-unread {
       margin-left: 25px;
+      padding: 0 12px 0 0;
       .MuiButton-label {
         color: #9094c9;
         font-weight: normal;
@@ -158,12 +159,15 @@
         }
       }
     }
+    .MuiBadge-badge {
+      margin-top: -4px;
+    }
     .badges {
-      font-size: 13px;
+      font-size: 10px;
       background-color: red;
       padding: 0 5px;
       color: #fff;
-      line-height: 13px;
+      line-height: 10px;
       border-radius: 10px;
     }
   }
