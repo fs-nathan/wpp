@@ -1,5 +1,15 @@
 import { get, isFunction, merge, template } from "lodash";
-
+export * from "./chart";
+export * from "./time";
+export {
+  get,
+  isFunction,
+  merge,
+  template,
+  loginlineParams,
+  loginlineFunc,
+  createMapPropsFromAttrs
+};
 const loginlineParams = param => {
   console.trace("param", param);
   return param;
@@ -44,14 +54,4 @@ function loginlineFunc(fn, prefix) {
 
 const createMapPropsFromAttrs = (strings = []) => (data = {}) => {
   return strings.map(string => get(data, string));
-};
-
-export {
-  get,
-  isFunction,
-  merge,
-  template,
-  loginlineParams,
-  loginlineFunc,
-  createMapPropsFromAttrs
 };

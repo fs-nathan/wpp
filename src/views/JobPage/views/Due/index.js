@@ -1,4 +1,6 @@
-import { Container } from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
+import { mdiAlarm } from "@mdi/js";
+import Icon from "@mdi/react";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -24,7 +26,23 @@ const Due = () => {
     });
   }, [dispatch, timeRange]);
   return (
-    <Layout title={t(labels.due)}>
+    <Layout
+      title={
+        <Box display="flex" alignItems="center">
+          <Icon size={1.4} {...{ color: "#FF9800", path: mdiAlarm }}></Icon>
+          <Box
+            {...{
+              paddingLeft: "20px",
+              fontSize: "21px",
+              lineHeight: "26px",
+              fontWeight: "600"
+            }}
+          >
+            {t(labels.due)}
+          </Box>
+        </Box>
+      }
+    >
       <PageContainer maxWidth="xl">
         <Content />
       </PageContainer>

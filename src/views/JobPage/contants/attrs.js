@@ -110,9 +110,9 @@ export const labels = {
   task_waiting: "Đang chờ",
   task_doing: "Đang làm",
   task_complete: "Hoàn thành",
-  task_stop: "Kết thúc",
+  task_stop: "Tạm dừng",
   task_will_expire: "Sắp hết hạn",
-  task_expired: "Hết hạn",
+  task_expired: "Quá hạn",
   task_hight_priority: "Cao",
   task_medium_priority: "Trung bình",
   task_low_priority: "Thấp",
@@ -162,7 +162,7 @@ export const colors = {
   task_waiting: "#ff9800",
   task_doing: "#03a9f4",
   task_complete: "#03c30b",
-  task_stop: "#000",
+  task_stop: "#888",
   task_will_expire: "static.task_will_expire",
   task_expired: "#f44336",
   task_hight_priority: "#f44336",
@@ -173,9 +173,14 @@ export const colors = {
   task_me_offer: "static.task_me_offer"
 };
 export const taskStatusMap = {
-  "0": "waiting",
-  "1": "doing",
-  "2": "complete",
-  "3": "expired",
-  "4": "stop"
+  waiting: "0",
+  doing: "1",
+  complete: "2",
+  expired: "3",
+  stop: "4"
+};
+export const taskPriorityMap = {
+  priority_hight: "0",
+  priority_medium: "1",
+  priority_low: "2"
 };

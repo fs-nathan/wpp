@@ -1,6 +1,12 @@
 import { Box } from "@material-ui/core";
-import React from "react";
+import { times } from "components/CustomPopover";
+import moment from "moment";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { emptyObject } from "../contants/defaultValue";
+import { JobPageContext } from "../JobPageContext";
+import { get } from "../utils";
 import "./Analytic.css";
 import AnalyticButton from "./AnalyticButton";
 import PrimaryButton from "./PrimaryButton";
@@ -19,10 +25,25 @@ export function Analytic({ options = [] }) {
     (result = 0, option) => result + option.count || 0,
     0
   );
+  const formatDateTemplate = useSelector(state =>
+    get(state, "system.profile.format_date", "DD/MM/YYYY")
+  );
+  const { timeType, timeRange = emptyObject } = useContext(JobPageContext);
+  const { timeStart, timeEnd } = timeRange;
   return (
     <Box className="comp_Analytic">
       <Box flex="1">
-        <PrimaryButton count={allCount} label={t("Công việc được thực hiện")} />
+        <PrimaryButton
+          count={allCount}
+          label={t("Công việc")}
+          subLabel={
+            timeType === 5
+              ? times[timeType].title
+              : `${moment(timeStart).format(formatDateTemplate)} - ${moment(
+                  timeEnd
+                ).format(formatDateTemplate)}`
+          }
+        />
       </Box>
       {options
         .filter(option => option.show)

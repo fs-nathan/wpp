@@ -3,7 +3,7 @@
   line-height: 1.2;
   padding: 2px 3px;
   min-width: unset;
-  margin-right: 10px;
+  /* margin-right: 10px; */
   white-space: nowrap;
 }
 .comp_InlineBadge__icon {

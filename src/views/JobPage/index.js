@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { times } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
@@ -41,20 +41,20 @@ const filterConfig = [
     title: "LỌC THEO MỨC ĐỘ ƯU TIÊN",
     subTitle: "Chọn/bỏ chọn mức độ ưu tiên để lọc công việc",
     optionEntities: {
-      piority_low: {
+      priority_low: {
         label: "Ưu tiên thấp",
-        value: "piority_low"
+        value: "priority_low"
       },
-      piority_medium: {
+      priority_medium: {
         label: "Ưu tiên trung bình",
-        value: "piority_medium"
+        value: "priority_medium"
       },
-      piority_hight: {
+      priority_hight: {
         label: "Ưu tiên cao",
-        value: "piority_hight"
+        value: "priority_hight"
       }
     },
-    orders: ["piority_low", "piority_medium", "piority_hight"]
+    orders: ["priority_low", "priority_medium", "priority_hight"]
   }
 ];
 export const defaultStatusFilter = {
@@ -63,6 +63,16 @@ export const defaultStatusFilter = {
   complete: true,
   expired: true,
   stop: true
+};
+export const defaultPriorityFilter = {
+  priority_low: true,
+  priority_medium: true,
+  priority_hight: true
+};
+
+export const defaultFilter = {
+  ...defaultStatusFilter,
+  ...defaultPriorityFilter
 };
 function JobPage() {
   const [localOptions, setLocalOptions] = useLocalStorage(
@@ -94,7 +104,8 @@ function JobPage() {
     statusFilter,
     setstatusFilter,
     handleRemovestatusFilter
-  ] = useMultipleSelect(defaultStatusFilter, true, true);
+  ] = useMultipleSelect(defaultFilter, true, true);
+
   return (
     <TwoColumnsLayout
       leftRenders={[() => <TabList />]}
@@ -120,16 +131,18 @@ function JobPage() {
         >
           <div>
             <Suspense fallback={<LoadingBox />}>
-              {routes.map((route, index) => {
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    exact={route.exact}
-                    component={route.component}
-                  />
-                );
-              })}
+              <Switch>
+                {routes.map((route, index) => {
+                  return (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      exact={route.exact}
+                      component={route.component}
+                    />
+                  );
+                })}
+              </Switch>
             </Suspense>
           </div>
         </Provider>

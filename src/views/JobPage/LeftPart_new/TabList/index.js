@@ -6,9 +6,9 @@ import {
 } from "@mdi/js";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import LeftSetting from "../../../../components/LeftSetting/LeftSetting";
 import { labels } from "../../contants/attrs";
 import { Routes } from "../../contants/routes";
+import LeftSetting from "../LeftSetting";
 import "./style.scss";
 const ListPart = () => {
   const { t } = useTranslation();
@@ -16,16 +16,19 @@ const ListPart = () => {
     {
       title: t(labels.overview),
       url: Routes.OVERVIEW,
+      color: "#7d99a6",
       icon: mdiViewDashboard
     },
     {
       title: t(labels.due),
       url: Routes.DUE,
+      color: "#FF9800",
       icon: mdiAlarm
     },
     {
       title: t(labels.mission),
       icon: mdiAccountSwitch,
+      color: "#03a9f4",
       sub: [
         {
           name: t(labels.mission_giving),
@@ -45,6 +48,7 @@ const ListPart = () => {
     {
       title: t(labels.role),
       icon: mdiAccountTie,
+      color: "#f44336",
       sub: [
         {
           name: t(labels.role_doing),

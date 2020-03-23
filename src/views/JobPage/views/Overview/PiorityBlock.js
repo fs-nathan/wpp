@@ -1,6 +1,8 @@
-import React from "react";
+import { times } from "components/CustomPopover";
+import React, { useContext } from "react";
 import Chart from "react-apexcharts";
 import { useSelector } from "react-redux";
+import { JobPageContext } from "views/JobPage/JobPageContext";
 import ChartLegend from "../../components/ChartLegend";
 import { TASK_OVERVIEW_STATISTIC } from "../../redux/types";
 import { createColumnChartProps } from "../../utils/chart";
@@ -17,11 +19,12 @@ export function PiorityBlock() {
       state.taskPage[TASK_OVERVIEW_STATISTIC]
     );
   });
+  const { timeType = 0 } = useContext(JobPageContext);
   return (
     <Block
       title="Ưu tiên"
       subheader="Biểu đồ tỗng hợp mức ưu tiên của công việc"
-      extra={<div>tháng này</div>}
+      extra={times[timeType].title}
     >
       <Chart {...chartProps} />
       <ChartLegend strings={strings} xs={4} />

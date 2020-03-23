@@ -1,5 +1,5 @@
 import { Avatar, TableRow } from "@material-ui/core";
-import { mdiAccount, mdiMessageAlert } from "@mdi/js";
+import { mdiAccount, mdiMessageText } from "@mdi/js";
 import Icon from "@mdi/react";
 import classnames from "classnames";
 import React, { useContext } from "react";
@@ -59,7 +59,7 @@ export const EndTimeCell = ({ className, ...props }) => (
     {...props}
   />
 );
-export const HasMessage = ({ className, path = mdiMessageAlert, ...props }) => (
+export const HasMessage = ({ className, path = mdiMessageText, ...props }) => (
   <Icon
     className={classnames("comp_HasMessage", className)}
     path={path}
@@ -106,7 +106,7 @@ export default React.memo(
     return (
       <RecentTableRow>
         <AvatarCell>
-          <SmallAvatar src={avatar} />
+          <SmallAvatar title={user_name} src={avatar} />
         </AvatarCell>
         <TitleCell>
           <TaskTitleLink

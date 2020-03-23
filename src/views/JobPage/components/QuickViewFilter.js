@@ -3,8 +3,7 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormGroup,
-  FormLabel
+  FormGroup
 } from "@material-ui/core";
 import { mdiFilterOutline } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -47,14 +46,14 @@ function QuickViewFilter() {
                     style={{ marginTop: i > 0 && "2em" }}
                     component="fieldset"
                   >
-                    <FormLabel component="legend">
+                    <legend>
                       <Box fontSize="14px" fontWeight="bold">
                         {title}
                       </Box>
                       <Box marginTop="0.5em" color={colors.gray[0]}>
                         {subTitle}
                       </Box>
-                    </FormLabel>
+                    </legend>
                     <FormGroup
                       style={{
                         marginTop: "1em",

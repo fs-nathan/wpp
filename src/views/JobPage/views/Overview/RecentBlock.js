@@ -8,17 +8,12 @@ import {
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useDebounce } from "react-use";
+import { useToggle } from "react-use";
 import { Analytic } from "views/JobPage/components/Analytic";
+import { useCustomList } from "views/JobPage/hooks/useCustomList";
 import { JobPageContext } from "views/JobPage/JobPageContext";
 import RecentTableRow from "../../components/RecentTableRow";
-import {
-  colors,
-  labels,
-  recent,
-  taskAtrrs,
-  taskStatusMap
-} from "../../contants/attrs";
+import { colors, labels, recent, taskAtrrs } from "../../contants/attrs";
 import { TASK_OVERVIEW_RECENT } from "../../redux/types";
 import { createMapPropsFromAttrs, loginlineFunc } from "../../utils";
 
@@ -105,25 +100,8 @@ export function RecentBlock() {
     }
   );
 
-  const [debouncedFilteredTasks, setdebouncedFilteredTasks] = React.useState(
-    []
-  );
-
-  useDebounce(
-    () => {
-      setdebouncedFilteredTasks(
-        Object.values(statusFilter).filter(item => item).length
-          ? tasks.filter(
-              item => statusFilter[taskStatusMap[item.status_code]]
-              // ||
-              // hoverstatusFilter[taskStatusMap[item.status_code]]
-            )
-          : tasks
-      );
-    },
-    300,
-    [tasks, statusFilter]
-  );
+  const [isToggleSortName, toggleSortName] = useToggle();
+  const [list] = useCustomList({ tasks, statusFilter, isToggleSortName });
 
   return (
     <Card variant="outlined">
@@ -171,7 +149,7 @@ export function RecentBlock() {
           }}
         />
         <br />
-        <RecentTable tasks={debouncedFilteredTasks} />
+        <RecentTable tasks={list} />
       </CardContent>
     </Card>
   );
