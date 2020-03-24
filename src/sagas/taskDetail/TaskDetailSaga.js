@@ -1315,61 +1315,29 @@ export {
   // Update Priority
   updatePriority,
   // Offer::
-  getOffer,
-  createOffer,
-  deleteOffer,
-  updateOffer,
-  uploadDocumentToOffer,
-  deleteDocumentToOffer,
-  handleOffer,
-  getListOffer,
+  getOffer, createOffer, deleteOffer, updateOffer, uploadDocumentToOffer, deleteDocumentToOffer, handleOffer, getListOffer,
   // Remind::
-  getRemind,
-  postRemindWithTimeDetail,
-  postRemindDuration,
-  updateRemindWithTimeDetail,
-  updateRemindWithDuration,
-  deleteRemind,
-  pinRemind,
-  unpinRemind,
+  getRemind, postRemindWithTimeDetail, postRemindDuration, updateRemindWithTimeDetail, updateRemindWithDuration, deleteRemind, pinRemind, unpinRemind,
   // Sub-Task::
-  getSubTask,
-  postSubTask,
-  updateSubTask,
-  deleteSubTask,
-  completeSubTask,
+  getSubTask, postSubTask, updateSubTask, deleteSubTask, completeSubTask,
   // Media Image File
-  getImage,
-  getFile,
-  getLink,
+  getImage, getFile, getLink,
   // Location
   getLocation,
   // Task Detail - TabPart- Cot phai
   getTaskDetail,
   // Command and Decision::
-  getCommand,
-  createCommand,
-  updateCommand,
-  deleteCommand,
+  getCommand, createCommand, updateCommand, deleteCommand,
   // Member - Tabpart
-  getMember,
-  getMemberNotAssigned,
-  createMember,
-  deleteMember,
+  getMember, getMemberNotAssigned, createMember, deleteMember,
   // Member Permission - Tabpart
-  getPermission,
-  updatePermission,
+  getPermission, updatePermission,
   // Member Role - Tabpart
-  getRole,
-  createRole,
-  updateRole,
-  deleteRole,
+  getRole, createRole, updateRole, deleteRole,
   //time
-  getTrackingTime,
-  updateTimeDuration,
+  getTrackingTime, updateTimeDuration,
   // List task detail
-  getListTaskDetail,
-  createTask,
+  getListTaskDetail, createTask,
   // List Group Task
   getListGroupTask,
   // getProjectGroup,
@@ -1384,3 +1352,4 @@ export {
   // delete task
   deleteTask
 };
+
