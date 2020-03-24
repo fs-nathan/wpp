@@ -22,7 +22,7 @@ function Description({ value }) {
       </TextEditor>
       {
         isLong &&
-        <div className="button-text" onClick={handlePressViewButton}>
+        <div className="tabBodyDescription--more" onClick={handlePressViewButton}>
           {isOpen ? "Thu gọn" : "Xem thêm"}
         </div>
       }
