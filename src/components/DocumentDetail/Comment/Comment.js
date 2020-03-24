@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { IconButton, Menu, MenuItem, InputBase } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiDotsVertical, mdiChevronRight, mdiPlus } from '@mdi/js';
 import { connect } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroller';
 import {
   actionFetchListComment,
   actionCreateComment,
@@ -38,6 +39,7 @@ const Comment = ({
   listComment,
   isLoading,
   doListComment,
+  pagingComment,
   onRefreshData
 }) => {
   const { t } = useTranslation();
@@ -46,6 +48,8 @@ const Comment = ({
   const [commentText, setCommentText] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [alert, setAlert] = useState(false);
+  const [hasMoreComment, setHasMore] = useState(true);
+  const [keyInfinite, setKeyInfinite] = useState(0);
   const openMoreMenu = Boolean(anchorEl);
 
   useEffect(() => {
@@ -54,9 +58,19 @@ const Comment = ({
     }
   }, [fileInfo]);
 
-  const getListComment = (fileInfo, quite) => {
+  useEffect(() => {
+    if (pagingComment.total_page && pagingComment.total_page <= 1) {
+      setHasMore(false);
+    }
+  }, [pagingComment.total_page]);
+
+  const getListComment = (fileInfo, quite, page, isLoadMore) => {
     if (fileInfo.id) {
-      doListComment(fileInfo.id, quite);
+      if (!isLoadMore) {
+        setHasMore(true);
+        setKeyInfinite(1 - keyInfinite);
+      }
+      doListComment(fileInfo.id, quite, page, isLoadMore);
     }
   };
 
@@ -113,6 +127,17 @@ const Comment = ({
         setBlockComment(false);
       }
     } catch (error) {}
+  };
+
+  const handleLoadMore = page => {
+    if (page > pagingComment.total_page) {
+      setHasMore(false);
+      return;
+    }
+    if (page === pagingComment.total_page) {
+      setHasMore(false);
+    }
+    getListComment(fileInfo, true, page, true);
   };
 
   return (
@@ -179,6 +204,7 @@ const Comment = ({
         </div>
       </div>
       <div className="body-box-comment">
+        {hasMoreComment}
         {!isEmpty(fileInfo) && blockComment && (
           <NoComment
             className="dis-comment"
@@ -189,58 +215,72 @@ const Comment = ({
         )}
         {!isEmpty(fileInfo) && !blockComment && (
           <Scrollbars autoHide autoHideTimeout={500}>
-            <div className="add-comment-content">
-              {!addComment && (
-                <div className="action-add" onClick={() => setAddComment(true)}>
-                  <div className="btn-add">
-                    <IconButton size="small">
-                      <Icon path={mdiPlus} size={1} color="#007bff" />
-                    </IconButton>
-                  </div>
-                  <div className="lb-add">{t('IDS_WP_ADD')}</div>
-                </div>
-              )}
-              {addComment && (
-                <div className="comment-content">
-                  <InputBase
-                    multiline
-                    fullWidth
-                    rowsMax="7"
-                    value={commentText}
-                    onChange={handleOnChange}
-                    placeholder={t('IDS_WP_INPUT_COMMENT')}
-                  />
-                  <ColorButton
-                    onClick={handleSendComment}
-                    variant="text"
-                    size="small"
-                    className="btn-send"
+            <InfiniteScroll
+              pageStart={1}
+              loadMore={handleLoadMore}
+              hasMore={!isLoading && hasMoreComment}
+              useWindow={false}
+              initialLoad={false}
+              key={keyInfinite}
+            >
+              <div className="add-comment-content">
+                {!addComment && (
+                  <div
+                    className="action-add"
+                    onClick={() => setAddComment(true)}
                   >
-                    {t('IDS_WP_SEND')}
-                  </ColorButton>
-                </div>
-              )}
-            </div>
-            {isLoading && <LoadingBox />}
-            {!isLoading && listComment.length > 0 ? (
-              <div className="comment-list-wrapper">
-                {listComment.map((item, idx) => (
-                  <CommentItem
-                    key={idx}
-                    comment={item}
-                    onRefreshList={() => getListComment(fileInfo, true)}
-                  />
-                ))}
+                    <div className="btn-add">
+                      <IconButton size="small">
+                        <Icon path={mdiPlus} size={1} color="#007bff" />
+                      </IconButton>
+                    </div>
+                    <div className="lb-add">{t('IDS_WP_ADD')}</div>
+                  </div>
+                )}
+                {addComment && (
+                  <div className="comment-content">
+                    <InputBase
+                      multiline
+                      fullWidth
+                      rowsMax="7"
+                      value={commentText}
+                      onChange={handleOnChange}
+                      placeholder={t('IDS_WP_INPUT_COMMENT')}
+                    />
+                    <ColorButton
+                      onClick={handleSendComment}
+                      variant="text"
+                      size="small"
+                      className="btn-send"
+                    >
+                      {t('IDS_WP_SEND')}
+                    </ColorButton>
+                  </div>
+                )}
               </div>
-            ) : (
-              !isLoading && (
-                <NoComment
-                  imageUrl={images.no_comment}
-                  title={t('IDS_WP_NO_COMMENT_TITLE')}
-                  subTitle={t('IDS_WP_NO_COMMENT_TITLE_DES')}
-                />
-              )
-            )}
+              {isLoading && <LoadingBox />}
+              {!isLoading && listComment.length > 0 ? (
+                <div
+                  className="comment-list-wrapper"
+                >
+                  {listComment.map((item, idx) => (
+                    <CommentItem
+                      key={idx}
+                      comment={item}
+                      onRefreshList={() => getListComment(fileInfo, true)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                !isLoading && (
+                  <NoComment
+                    imageUrl={images.no_comment}
+                    title={t('IDS_WP_NO_COMMENT_TITLE')}
+                    subTitle={t('IDS_WP_NO_COMMENT_TITLE_DES')}
+                  />
+                )
+              )}
+            </InfiniteScroll>
             <AlertModal
               open={alert}
               setOpen={setAlert}
@@ -256,14 +296,15 @@ const Comment = ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListComment: (fileId, quite) =>
-      dispatch(actionFetchListComment(fileId, quite))
+    doListComment: (fileId, quite, page, isLoadMore) =>
+      dispatch(actionFetchListComment(fileId, quite, page, isLoadMore))
   };
 };
 
 export default connect(
   state => ({
     isLoading: state.documents.isLoading,
+    pagingComment: state.documents.pagingComment,
     listComment: state.documents.listComment
   }),
   mapDispatchToProps

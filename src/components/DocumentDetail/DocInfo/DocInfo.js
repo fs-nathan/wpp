@@ -143,8 +143,7 @@ const DocInfo = ({ closeComment, fileInfo, handleFetchData }) => {
 
 export default connect(
   state => ({
-    isLoading: state.documents.isLoading,
-    listComment: state.documents.listComment
+    isLoading: state.documents.isLoading
   }),
   {}
 )(DocInfo);
