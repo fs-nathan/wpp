@@ -383,12 +383,8 @@ async function doUpdateOffer(payload) {
 }
 
 function* updateOffer(action) {
-  const data = {
-    offer_id: action.payload.offerId,
-    content: action.payload.content
-  };
   try {
-    yield call(doUpdateOffer, data);
+    yield call(doUpdateOffer, action.payload.data);
     // yield put(actions.updateOfferSuccess(res))
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
   } catch (error) {

@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-
-import ColorTypo from 'components/ColorTypo'
+import ColorTypo from 'components/ColorTypo';
+import CustomModal from 'components/CustomModal';
 import SearchInput from 'components/SearchInput';
-import DialogWrap from 'components/DialogWrap';
+import React, { useState } from 'react';
 import OfferMemberItem from './OfferMemberItem';
-
 import './styles.scss';
 
 function AddOfferMemberModal({
   isOpen,
-  handleClickClose,
+  setOpen,
   value = [],
   onChange,
   members,
@@ -18,7 +16,7 @@ function AddOfferMemberModal({
 
   function onClickDone() {
     onChange(selected)
-    handleClickClose();
+    setOpen(false);
   }
 
   function onClickMember(i) {
@@ -34,12 +32,12 @@ function AddOfferMemberModal({
   }
 
   return (
-    <DialogWrap
+    <CustomModal
       title={"Thêm thành viên"}
-      isOpen={isOpen}
-      handleClickClose={handleClickClose}
-      successLabel={"Hoàn Thành"}
-      onClickSuccess={onClickDone}
+      open={isOpen}
+      setOpen={setOpen}
+      confirmRender={() => "Hoàn Thành"}
+      onConfirm={onClickDone}
     >
       <React.Fragment>
         <SearchInput placeholder='Tìm kiếm thành viên' />
@@ -53,7 +51,7 @@ function AddOfferMemberModal({
           avatar={member.avatar}
           name={member.name} />)}
       </React.Fragment>
-    </DialogWrap>
+    </CustomModal>
   )
 }
 

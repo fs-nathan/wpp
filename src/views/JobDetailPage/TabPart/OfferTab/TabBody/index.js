@@ -1,21 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
-import {
-  ButtonGroup, Collapse,
-} from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
-
-import ColorTypo from 'components/ColorTypo';
+import { ButtonGroup, Collapse } from '@material-ui/core';
+import { deleteOffer } from 'actions/taskDetail/taskDetailActions';
 import ColorButton from 'components/ColorButton';
-import OfferModal from '../OfferModal';
+import ColorTypo from 'components/ColorTypo';
+import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
+import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper'
-import { deleteOffer, } from 'actions/taskDetail/taskDetailActions';
+import NoDataPlaceHolder from '../../NoDataPlaceHolder';
+import OfferModal from '../OfferModal';
+import ApproveOfferDialog from './ApproveOfferDialog';
 import ListOffer from './ListOffer';
 import OfferDetail from './OfferDetail';
-import ApproveOfferDialog from './ApproveOfferDialog';
-import NoDataPlaceHolder from '../../NoDataPlaceHolder';
+
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -42,7 +40,6 @@ function TabBody(props) {
   const [openApprove, setOpenApprove] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [isOffer] = React.useState(true);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -148,9 +145,8 @@ function TabBody(props) {
         <OfferModal
           {...props}
           isOpen={open}
-          handleClickClose={handleClickClose}
-          handleClickOpen={handleClickOpen}
-          isOffer={isOffer}
+          setOpen={setOpen}
+          isOffer
           item={selectedItem}
         />
         <ModalDeleteConfirm

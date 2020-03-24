@@ -1,11 +1,11 @@
+import { TextField, Typography } from '@material-ui/core';
+import { updateCommand } from 'actions/taskDetail/taskDetailActions';
+import CustomModal from 'components/CustomModal';
 import React from 'react';
-import { Typography, TextField } from '@material-ui/core';
-import styled from 'styled-components';
-import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
-import { updateCommand, } from 'actions/taskDetail/taskDetailActions';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { taskIdSelector } from '../../selectors';
-import DialogWrap from 'components/DialogWrap';
+import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect';
 
 const TexTitle = styled(Typography)`
   font-size: 15px;
@@ -50,14 +50,17 @@ const DemandModal = (props) => {
     dispatch(updateCommand(tempSelectedItem))
     setParams("content", '')
   }
-
+  function validate() {
+    return tempSelectedItem.content && tempSelectedItem.type
+  }
   return (
-    <DialogWrap
+    <CustomModal
       title={"Chỉ đạo, quyết định"}
-      isOpen={props.isOpen}
-      handleClickClose={props.handleClose}
-      successLabel={(props.isEditDemand) ? "Chỉnh sửa" : "Tạo mới"}
-      onClickSuccess={(props.isEditDemand) ? onClickUpdate : onClickCreate}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => (props.isEditDemand) ? "Chỉnh sửa" : "Tạo mới"}
+      onConfirm={(props.isEditDemand) ? onClickUpdate : onClickCreate}
+      canConfirm={validate()}
     >
       <React.Fragment>
         <TexTitle >Chọn loại</TexTitle>
@@ -78,7 +81,7 @@ const DemandModal = (props) => {
           onChange={e => setParams("content", e.target.value)}
         />
       </React.Fragment>
-    </DialogWrap>
+    </CustomModal>
   )
 }
 

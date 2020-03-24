@@ -103,7 +103,7 @@ const ProgressModal = (props) => {
       onConfirm={handlePressConfirm}
       canConfirm={validate()}
       maxWidth='sm'
-      className="createJob"
+      className="progressModal"
     >
       <DialogContent >
         <StartEndDay component={'span'}>

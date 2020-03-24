@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import DemandModal from '../DemandModal'
 import { useDispatch, useSelector } from 'react-redux';
+import { createCommand, getCommand } from '../../../../../actions/taskDetail/taskDetailActions';
 import { taskIdSelector } from '../../../selectors';
-import { getCommand, createCommand } from '../../../../../actions/taskDetail/taskDetailActions';
 import HeaderTab from '../../HeaderTab';
+import DemandModal from '../DemandModal';
 
 function TabHeader(props) {
   const dispatch = useDispatch();
@@ -18,9 +18,7 @@ function TabHeader(props) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
   const confirmCreateCommand = ({ content, type }) => {
     dispatch(createCommand({ task_id: taskId, content, type }))
   }
@@ -33,9 +31,8 @@ function TabHeader(props) {
       {/* modal chi dao quyet dinh */}
       <DemandModal
         isOpen={open}
-        handleClose={handleClose}
+        setOpen={setOpen}
         taskId={taskId}
-        handleOpen={handleClickOpen}
         confirmCreateCommand={confirmCreateCommand}
         item={{ content: "", type: -1 }}
         {...props}

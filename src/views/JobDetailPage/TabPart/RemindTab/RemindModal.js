@@ -1,30 +1,18 @@
-import React from 'react';
-import {
-  Typography, Button,
-  TextField, InputAdornment
-} from '@material-ui/core';
-import styled from 'styled-components';
-
+import DateFnsUtils from "@date-io/date-fns";
+import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 // import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import ColorChip from '../../../../components/ColorChip';
-// import TimeField from 'react-simple-timefield';
-import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
-import {
-  DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, REMIND_TIME_TYPE,
-  REMIND_SCHEDULE_TYPE, isValidDuration
-} from '../../../../helpers/jobDetail/stringHelper'
-
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import CustomModal from 'components/CustomModal';
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
-import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { postRemindWithTimeDetail, postRemindDuration, updateRemindWithTimeDetail, updateRemindWithDuration } from '../../../../actions/taskDetail/taskDetailActions';
-import DialogWrap from 'components/DialogWrap';
+import styled from 'styled-components';
+import { postRemindDuration, postRemindWithTimeDetail, updateRemindWithDuration, updateRemindWithTimeDetail } from '../../../../actions/taskDetail/taskDetailActions';
+import ColorChip from '../../../../components/ColorChip';
+import { convertDate, DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, isValidDuration, REMIND_SCHEDULE_TYPE, REMIND_TIME_TYPE } from '../../../../helpers/jobDetail/stringHelper';
+// import TimeField from 'react-simple-timefield';
+import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect';
 
 const selector = [
   {
@@ -195,7 +183,7 @@ function RemindModal(props) {
       }
     }
     // Close modal
-    props.handleClickClose()
+    props.setOpen(false)
   }
   const [value, setValue] = React.useState('')
   // console.log("daataaA::::", data)
@@ -235,20 +223,19 @@ function RemindModal(props) {
     handleChangeData("duration", newDuration)
   }
 
-  const handleCloseModal = () => {
-    // Reset data
-    setData(DEFAULT_DATA)
-    // Close modal
-    props.handleClickClose()
+  function validate() {
+    return data.content
   }
-
   return (
-    <DialogWrap
+    <CustomModal
+      maxWidth='sm'
+      className="remindModal"
       title={"Nhắc hẹn"}
-      isOpen={props.isOpen}
-      handleClickClose={handleCloseModal}
-      successLabel={(props.isRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
-      onClickSuccess={handlePressConfirm}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => (props.isRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
+      onConfirm={handlePressConfirm}
+      canConfirm={validate()}
     >
       <React.Fragment>
         <TitleText component="div">Loại nhắc hẹn</TitleText>
@@ -338,7 +325,7 @@ function RemindModal(props) {
           onChange={e => handleChangeData("content", e.target.value)}
         />
       </React.Fragment>
-    </DialogWrap>
+    </CustomModal >
   )
 }
 

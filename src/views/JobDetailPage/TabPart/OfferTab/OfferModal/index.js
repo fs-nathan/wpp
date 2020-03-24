@@ -1,19 +1,18 @@
-import React from 'react';
-import findIndex from 'lodash/findIndex';
-import { Button, IconButton, TextField, Typography, Avatar, Chip } from '@material-ui/core';
-import Icon from '@mdi/react';
+import { Avatar, Button, Chip, IconButton, TextField, Typography } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
-import { useDispatch, useSelector } from 'react-redux';
-import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper'
-import { uploadDocumentToOffer, deleteDocumentToOffer, createOffer, updateOffer } from 'actions/taskDetail/taskDetailActions';
-import DialogWrap from 'components/DialogWrap';
-
-import './styles.scss';
-import OfferFile from './OfferFile';
-import AddOfferMemberModal from '../AddOfferMemberModal';
-import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import Icon from '@mdi/react';
+import { createOffer, deleteDocumentToOffer, updateOffer, uploadDocumentToOffer } from 'actions/taskDetail/taskDetailActions';
+import CustomModal from 'components/CustomModal';
 import CustomSelect from 'components/CustomSelect';
+import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
+import findIndex from 'lodash/findIndex';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
+import OfferFile from './OfferFile';
+import './styles.scss';
 
 const OfferModal = (props) => {
   const dispatch = useDispatch();
@@ -89,9 +88,10 @@ const OfferModal = (props) => {
     setParams("files", [...tempSelectedItem.files, ...files])
   }
 
-  const handleCreateOffer = () => {
+  const getFormData = () => {
     let dataCreateOfferFormData = new FormData()
     // add content and task id to form data
+    dataCreateOfferFormData.append('title', tempSelectedItem.title)
     dataCreateOfferFormData.append('content', tempSelectedItem.content)
     dataCreateOfferFormData.append('task_id', taskId)
     dataCreateOfferFormData.append('offer_group_id', tempSelectedItem.offer_group_id.value)
@@ -107,21 +107,27 @@ const OfferModal = (props) => {
     for (let i = 0; i < tempSelectedItem.files.length; i++) {
       dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
     }
-    dispatch(createOffer({ data: dataCreateOfferFormData, taskId }))
+    return dataCreateOfferFormData;
+  }
+
+  const handleCreateOffer = () => {
+    dispatch(createOffer({ data: getFormData(), taskId }))
     setParams("files", [])
   }
 
   function onClickCreateOffer() {
-    props.handleClickClose()
+    props.setOpen(false)
     if (tempSelectedItem.content)
       handleCreateOffer()
     setParams("content", '')
   }
 
   function onClickUpdateOffer() {
-    props.handleClickClose()
+    props.setOpen(false)
     if (tempSelectedItem.content) {
-      dispatch(updateOffer({ offerId: tempSelectedItem.offer_id, content: tempSelectedItem.content, taskId }))
+      const data = getFormData();
+      data.append("offer_id", tempSelectedItem.offer_id)
+      dispatch(updateOffer({ data, taskId }))
     }
     setParams("content", '')
   }
@@ -137,25 +143,24 @@ const OfferModal = (props) => {
     setOpenAddHandler(true)
   }
 
-  function closeAddHandlersDialog() {
-    setOpenAddHandler(false)
-  }
-
   function openAddMonitorsDialog() {
     setOpenAddMonitor(true)
   }
 
-  function closeAddMonitorsDialog() {
-    setOpenAddMonitor(false)
+  function validate() {
+    return tempSelectedItem.content && tempSelectedItem.title
+      && handlers.length
+      && tempSelectedItem.offer_group_id
+      && tempSelectedItem.priority
   }
-
   return (
-    <DialogWrap
+    <CustomModal
       title={props.isOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
-      isOpen={props.isOpen}
-      handleClickClose={props.handleClickClose}
-      successLabel={props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
-      onClickSuccess={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
+      onConfirm={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
+      canConfirm={validate()}
     >
       <React.Fragment>
         <Typography className="offerModal--title" >Tiêu đề</Typography>
@@ -199,9 +204,9 @@ const OfferModal = (props) => {
           </IconButton>
           <AddOfferMemberModal
             isOpen={isOpenAddHandler}
+            setOpen={setOpenAddHandler}
             value={handlers}
             onChange={setHandlers}
-            handleClickClose={closeAddHandlersDialog}
             members={members}
           />
         </div>
@@ -220,9 +225,9 @@ const OfferModal = (props) => {
           </IconButton>
           <AddOfferMemberModal
             isOpen={isOpenAddMonitor}
+            setOpen={setOpenAddMonitor}
             value={monitors}
             onChange={setMonitors}
-            handleClickClose={closeAddMonitorsDialog}
             members={members}
           />
         </div>
@@ -252,7 +257,7 @@ const OfferModal = (props) => {
           tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
         }
       </React.Fragment>
-    </DialogWrap>
+    </CustomModal>
   )
 }
 
