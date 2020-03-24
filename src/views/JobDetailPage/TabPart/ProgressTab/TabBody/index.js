@@ -2,6 +2,7 @@ import { updateComplete } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
 import differenceInDays from 'date-fns/differenceInDays';
 import parse from 'date-fns/parse';
+import clamp from 'lodash/clamp';
 import React from 'react';
 import ReactApexChart from "react-apexcharts";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -73,6 +74,13 @@ function TabBody() {
           }
         }
       },
+      yaxis: {
+        min: 0,
+        max: 100,
+        title: {
+          // text: 'Age',
+        },
+      },
       tooltip: {
         shared: false,
         theme: 'dark',
@@ -101,61 +109,61 @@ function TabBody() {
   } = detailTask;
   const isHaveDate = (start_date && end_date);
   const totalDay = isHaveDate ? differenceInDays(parse(end_date, 'yyyy-MM-dd', new Date()), parse(start_date, 'yyyy-MM-dd', new Date())) : 0;
+  const completePercent = clamp(complete_with_time, 0, 100);
   return (
-    <Scrollbars className="progressTabBody" autoHide autoHideTimeout={500} autoHideDuration={200} >
-      <div className="progressTabBody--container">
-        <ColorTypo className="progressTabBody--title">{"Tiến độ thực tế"}</ColorTypo>
-        <ColorTypo>{"Kéo, thả tiến độ để cập nhật"}</ColorTypo>
-        <ProgressSlider
-          value={complete}
-          onChange={onChangeCommitted}
-          expected={complete_with_time}
-          isHaveDate={isHaveDate}
-        />
-        {
-          isHaveDate &&
-          <>
-            <div className="progressTabBody--timeBox">
-              <div className="progressTabBody--start-date-box">
-                <div>{"Bắt đầu"}</div>
-                <div>{`${start_time} ${start_date}`}</div>
-              </div>
-              <div className="progressTabBody--totalDay">
-                <div>{"Tiến độ"}</div>
-                <div>{`${totalDay} ngày`}</div>
-              </div>
-              <div className="progressTabBody--end-date-box">
-                <div>{"Kết thúc"}</div>
-                <div>{`${end_time} ${end_date}`}</div>
-              </div>
+    <Scrollbars className="progressTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}
+      renderView={props => <div {...props} className="progressTabBody--container" />}>
+      <ColorTypo className="progressTabBody--title">{"Tiến độ thực tế"}</ColorTypo>
+      <ColorTypo color="#818181">{"Kéo, thả tiến độ để cập nhật"}</ColorTypo>
+      <ProgressSlider
+        value={complete}
+        onChange={onChangeCommitted}
+        expected={completePercent}
+        isHaveDate={isHaveDate}
+      />
+      {
+        isHaveDate &&
+        <>
+          <div className="progressTabBody--timeBox">
+            <div className="progressTabBody--start-date-box">
+              <div>{"Bắt đầu"}</div>
+              <div>{`${start_time} ${start_date}`}</div>
             </div>
-            <ColorTypo className="progressTabBody--title">{"Tiến độ kế hoạch"}</ColorTypo>
-            <ColorTypo>{"Tự động xác định đến thời điểm hiện tại"}</ColorTypo>
-            <div className="progressTimeExpect">
-              <div className="progressTimeExpect--progressExpect"
-                style={{ width: `calc(${complete_with_time}% - 3px)` }}>
-                <div className="progressTimeExpect--progressExpectLabel">
-                  {`${complete_with_time}% `}
-                  <div className="progressTimeExpect--today"
-                    style={{ left: `calc(${complete_with_time}% - 30px)` }}
-                  >
-                    <div>
-                      Hôm nay
+            <div className="progressTabBody--totalDay">
+              <div>{"Tiến độ"}</div>
+              <div>{`${totalDay} ngày`}</div>
+            </div>
+            <div className="progressTabBody--end-date-box">
+              <div>{"Kết thúc"}</div>
+              <div>{`${end_time} ${end_date}`}</div>
+            </div>
+          </div>
+          <ColorTypo className="progressTabBody--title">{"Tiến độ kế hoạch"}</ColorTypo>
+          <ColorTypo color="#818181">{"Tự động xác định đến thời điểm hiện tại"}</ColorTypo>
+          <div className="progressTimeExpect">
+            <div className="progressTimeExpect--progressExpect"
+              style={{ width: `${completePercent}%` }}>
+              <div className="progressTimeExpect--progressExpectLabel">
+                {`${completePercent}% `}
+                <div className="progressTimeExpect--today"
+                  style={{ left: `calc(${completePercent}% - 30px)` }}
+                >
+                  <div>
+                    Hôm nay
                 </div>
-                    <div>
-                      {detailTask.start_date}
-                    </div>
+                  <div>
+                    {detailTask.start_date}
                   </div>
                 </div>
               </div>
             </div>
-          </>
-        }
-        <ColorTypo className="progressTabBody--title">{"Biểu đồ cập nhật tiến độ"}</ColorTypo>
-        <ColorTypo>{"Biểu đồ thể hiện lịch sử hoàn thành công việc"}</ColorTypo>
-        <ReactApexChart options={chartData.options} series={chartData.series} type="bar" height={350} />
-        <DetailEditProgress trackings={trackings} />
-      </div>
+          </div>
+        </>
+      }
+      <ColorTypo className="progressTabBody--title">{"Biểu đồ cập nhật tiến độ"}</ColorTypo>
+      <ColorTypo color="#818181">{"Biểu đồ thể hiện lịch sử hoàn thành công việc"}</ColorTypo>
+      <ReactApexChart options={chartData.options} series={chartData.series} type="bar" height={350} />
+      <DetailEditProgress trackings={trackings} />
     </Scrollbars >
   )
 }

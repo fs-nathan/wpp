@@ -34,18 +34,25 @@
     background-color: #fff;
     border-radius: 4px;
     width: 222px;
-    padding: 8px;
+    padding: 10px 20px;
     display: none;
   }
   &--icon {
-    margin: 3px 4px 0px 4px;
+    margin-right: 5px;
+    width: 15px !important;
+    height: 15px !important;
     transform: translateY(4px);
   }
   &--description {
     line-height: 1.5;
+    margin: 10px 0;
+  }
+  &--guide {
+    margin: 5px 0;
   }
   &--label {
-    font-weight: bold;
+    font-weight: 500;
+    margin-left: 5px;
     &__wait {
       color: rgb(255, 152, 0);
     }
@@ -124,4 +131,13 @@
 
 .tabBodyDescription {
   padding: 2px 16px;
+  &--more {
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 10px 0 0;
+    color: #03a9f4;
+    cursor: pointer;
+  }
 }

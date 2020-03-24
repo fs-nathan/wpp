@@ -1,13 +1,13 @@
 .progressSlider {
   position: relative;
-  width: 90%;
+  width: 100%;
   margin-bottom: 32px;
   &--expected {
     background-color: #ff9800;
     position: absolute;
-    width: 6px;
+    width: 2px;
     height: 24px;
-    top: 13px;
+    top: 20px;
     &Label {
       color: red;
       position: absolute;
@@ -30,10 +30,10 @@
     background: #999999;
   }
   .MuiSlider {
-    color: #2dc63a;
+    color: #00c351;
     height: 8px;
     &-thumb {
-      height: 34px;
+      height: 30px;
       width: 4px;
       background-color: #999999;
       margin-left: 0px;
@@ -42,7 +42,7 @@
     &-valueLabel {
       background-color: transparent;
       left: -32px;
-      top: 11px;
+      top: 9px;
       span {
         background-color: transparent;
         color: #ffffff;
@@ -55,6 +55,7 @@
     &-rail {
       height: 24px;
       border-radius: 0;
+      opacity: 0.2;
     }
   }
 }

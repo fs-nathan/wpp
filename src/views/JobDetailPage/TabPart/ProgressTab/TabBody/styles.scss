@@ -6,16 +6,22 @@
     color: rgba(0, 0, 0, 0.54);
   }
   &--title {
-    margin-top: 8px;
-    font-weight: bold;
+    margin-top: 25px;
+    font-weight: 500;
     text-transform: uppercase;
+    font-size: 13px;
+    display: block;
+    position: relative;
+    line-height: 15px;
   }
   &--container {
+    margin-bottom: 0px !important;
+    padding: 0px 30px 50px 16px;
   }
   &--timeBox {
     display: flex;
     justify-content: space-between;
-    width: 90%;
+    width: 100%;
   }
   &--totalDay {
     text-align: center;
@@ -30,12 +36,13 @@
 
 .progressTimeExpect {
   position: relative;
-  width: 90%;
+  width: 100%;
   height: 20px;
+  margin-top: 10px;
   margin-bottom: 44px;
-  background-color: #f7df90;
+  background-color: #fb8d6d;
   &--progressExpect {
-    background-color: #ffd000;
+    background-color: #ff9800;
   }
   &--progressExpectLabel {
     color: #fff;

@@ -37,9 +37,9 @@ const StatusLabel = ({ value, icon, type }) => {
         </span>
         <div className="statusLabel--description">{description}</div>
         {(type === TYPE_STATUS) && <div>
-          <div>0% = <span className="statusLabel--label__wait">Đang chờ</span></div>
-          <div>0% &lt; <span className="statusLabel--label__doing">Đang làm</span> &lt; 99%</div>
-          <div>100% = <span className="statusLabel--label__completed">Hoàn thành</span></div>
+          <div className="statusLabel--guide">0% = <span className="statusLabel--label__wait">Đang chờ</span></div>
+          <div className="statusLabel--guide">0% &lt; <span className="statusLabel--label__doing">Đang làm</span> &lt; 99%</div>
+          <div className="statusLabel--guide">100% = <span className="statusLabel--label__completed">Hoàn thành</span></div>
         </div>}
       </div>
       {labelButton}
