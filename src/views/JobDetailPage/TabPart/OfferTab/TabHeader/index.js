@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import OfferModal from '../OfferModal'
 import { getOffer } from '../../../../../actions/taskDetail/taskDetailActions';
 import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
+import OfferModal from '../OfferModal';
 
 function TabHeader(props) {
   const dispatch = useDispatch();
@@ -17,16 +16,14 @@ function TabHeader(props) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const handleClickClose = () => {
-    setOpen(false);
-  };
+
   return (
     <div className="container-normal-tabheader">
       <HeaderTab title="Đề xuất - Phê duyệt"
         onClickBack={() => props.setShow(0)}
         onClickOpen={handleClickOpen}
       />
-      <OfferModal isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} {...props} />
+      <OfferModal isOpen={open} setOpen={setOpen}{...props} />
     </div>
   );
 }

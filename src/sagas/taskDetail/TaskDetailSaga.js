@@ -384,9 +384,9 @@ async function doUpdateOffer(payload) {
 
 function* updateOffer(action) {
   try {
-    yield call(doUpdateOffer, action.payload.data);
+    yield call(doUpdateOffer, action.payload);
     // yield put(actions.updateOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: action.payload.taskId }));
+    yield put(actions.getOffer({ taskId: action.payload.task_id }));
   } catch (error) {
     yield put(actions.updateOfferFail(error));
   }
@@ -1342,7 +1342,7 @@ export function* unPinTask({ payload }) {
 }
 
 export {
-  updateComplete,
+updateComplete,
   // Update Priority
   updatePriority,
   // Offer::

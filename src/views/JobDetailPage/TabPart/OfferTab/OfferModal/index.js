@@ -14,6 +14,11 @@ import { priorityList } from '../data';
 import OfferFile from './OfferFile';
 import './styles.scss';
 
+const formToJSON = elements => [].reduce.call(elements, (data, element) => {
+  data[element.name] = element.value;
+  return data;
+}, {});
+
 const OfferModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -125,9 +130,16 @@ const OfferModal = (props) => {
   function onClickUpdateOffer() {
     props.setOpen(false)
     if (tempSelectedItem.content) {
-      const data = getFormData();
-      data.append("offer_id", tempSelectedItem.offer_id)
-      dispatch(updateOffer({ data, taskId }))
+      dispatch(updateOffer({
+        task_id: taskId,
+        offer_id: tempSelectedItem.offer_id,
+        user_hander: handlers.map((id) => members[id].id),
+        user_monitor: monitors.map((id) => members[id].id),
+        title: tempSelectedItem.title,
+        content: tempSelectedItem.content,
+        offer_group_id: tempSelectedItem.offer_group_id.value,
+        priority: tempSelectedItem.priority.id,
+      }))
     }
     setParams("content", '')
   }
