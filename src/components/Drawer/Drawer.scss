@@ -246,6 +246,12 @@
         .text-name-message {
           font-size: 14px;
           font-weight: 500;
+          &.content-text {
+            font-weight: 400;
+          }
+          b {
+            font-size: 14px;
+          }
           .header-item-text {
             font-weight: normal;
             margin: 0 0 5px 0;
