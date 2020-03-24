@@ -1,13 +1,13 @@
 .progressSlider {
   position: relative;
   width: 90%;
+  margin-bottom: 32px;
   &--expected {
-    border-radius: 50%;
-    background-color: rgb(255, 152, 0);
+    background-color: #ff9800;
     position: absolute;
-    width: 10px;
-    height: 10px;
-    top: 52px;
+    width: 6px;
+    height: 24px;
+    top: 13px;
     &Label {
       color: red;
       position: absolute;
@@ -15,7 +15,7 @@
       left: -2px;
     }
   }
-  &--text{
+  &--text {
     top: 27px;
     left: -12px;
     position: absolute;
@@ -33,29 +33,28 @@
     color: #2dc63a;
     height: 8px;
     &-thumb {
-      height: 24px;
+      height: 34px;
       width: 4px;
       background-color: #999999;
-      margin-top: -8px;
       margin-left: 0px;
       border-radius: unset;
     }
     &-valueLabel {
       background-color: transparent;
-      left: -12px;
-      top: -21px;
+      left: -32px;
+      top: 11px;
       span {
         background-color: transparent;
-        color: red;
+        color: #ffffff;
       }
     }
     &-track {
-      height: 8px;
-      border-radius: 4px 0px 0px 4px;
+      height: 24px;
+      border-radius: 0;
     }
     &-rail {
-      height: 8px;
-      border-radius: 4px;
+      height: 24px;
+      border-radius: 0;
     }
   }
 }

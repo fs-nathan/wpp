@@ -456,6 +456,10 @@ function* rootSaga() {
     taskDetailSaga.getTrackingTime
   );
   yield takeLeading(
+    taskDetailType.GET_TRACKING_TIME_COMPLETE_REQUEST,
+    taskDetailSaga.getTrackingTimeComplete
+  );
+  yield takeLeading(
     taskDetailType.UPDATE_TIME_DURATION_REQUEST,
     taskDetailSaga.updateTimeDuration
   );

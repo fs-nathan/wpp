@@ -5,4 +5,48 @@
     margin-left: 3px;
     color: rgba(0, 0, 0, 0.54);
   }
+  &--title {
+    margin-top: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  &--container {
+  }
+  &--timeBox {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+  }
+  &--totalDay {
+    text-align: center;
+    color: #f00;
+  }
+  &--start-date-box {
+  }
+  &--end-date-box {
+    text-align: right;
+  }
+}
+
+.progressTimeExpect {
+  position: relative;
+  width: 90%;
+  height: 20px;
+  margin-bottom: 44px;
+  background-color: #f7df90;
+  &--progressExpect {
+    background-color: #ffd000;
+  }
+  &--progressExpectLabel {
+    color: #fff;
+    padding-top: 4px;
+    height: 16px;
+    text-align: right;
+  }
+  &--today {
+    position: absolute;
+    top: 24px;
+    color: #f00;
+    text-align: center;
+  }
 }

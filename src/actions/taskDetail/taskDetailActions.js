@@ -681,6 +681,18 @@ export const getTrackingTimeFail = (error) => ({
     type: types.GET_TRACKING_TIME_FAIl,
     error: error
 });
+export const getTrackingTimeComplete = (payload) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_REQUEST,
+    payload
+});
+export const getTrackingTimeCompleteSuccess = (payload) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_SUCCESS,
+    payload
+});
+export const getTrackingTimeCompleteFail = (error) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_FAIl,
+    error: error
+});
 export const updateTimeDuration = (payload) => ({
     type: types.UPDATE_TIME_DURATION_REQUEST,
     payload

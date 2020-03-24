@@ -1018,6 +1018,16 @@ function* getTrackingTime(action) {
   }
 }
 
+function* getTrackingTimeComplete(action) {
+  try {
+    const url = `task/get-tracking-complete?task_id=${action.payload}`
+    const res = yield call(apiService.get, url);
+    yield put(actions.getTrackingTimeCompleteSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getTrackingTimeCompleteFail(error));
+  }
+}
+
 async function doUpdateTimeDuration(payload) {
   try {
     const config = {
@@ -1035,7 +1045,8 @@ function* updateTimeDuration(action) {
   try {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
-    yield put(actions.getTrackingTime(action.payload.task_id));
+    // yield put(actions.getTrackingTime(action.payload.task_id));
+    yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
   } catch (error) {
     yield put(actions.updateTimeDurationFail);
   }
@@ -1250,8 +1261,8 @@ async function doUpdateComplete(payload) {
 function* updateComplete(action) {
   try {
     const res = yield call(doUpdateComplete, action.payload.data);
-
     yield put(actions.updateCompleteSuccess(res));
+    yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
     yield put(
       actions.getListTaskDetail({ project_id: action.payload.projectId })
     );
@@ -1359,7 +1370,7 @@ export {
   // Member Role - Tabpart
   getRole, createRole, updateRole, deleteRole, updateRolesForMember,
   //time
-  getTrackingTime, updateTimeDuration,
+  getTrackingTime, updateTimeDuration, getTrackingTimeComplete,
   // List task detail
   getListTaskDetail, createTask,
   // List Group Task

@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-import ListPart from './ListPart';
-import ChatPart from './ChatPart';
-import TabPart from './TabPart';
-import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions';
-import Intro from './introduce';
+import { useDispatch, useSelector } from 'react-redux';
 import { closeNoticeModal } from '../../actions/system/system';
-import { taskIdSelector } from './selectors';
+import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions';
 import '../JobDetailPage/index.scss';
+import ChatPart from './ChatPart';
+import Intro from './introduce';
+import ListPart from './ListPart';
+import { taskIdSelector } from './selectors';
+import TabPart from './TabPart';
+
 
 function JobDetailPage(props) {
   const dispatch = useDispatch();
   const url = new URL(window.location.href);
   const taskId = useSelector(taskIdSelector) || url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  // console.log('JobDetailPage', { taskId });
+  console.log('JobDetailPage', taskId);
   useEffect(() => {
     if (taskId) {
       dispatch(taskDetailAction.chooseTask(taskId))
+      dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
     } // eslint-disable-next-line
   }, [taskId]);
 

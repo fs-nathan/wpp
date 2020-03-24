@@ -89,7 +89,7 @@ function TabHeader(props) {
       <AvatarHeader src={avatar} alt="avatar" />
       <div className="tags-container">
         <ColorTypo bold component="div">{name}</ColorTypo>
-        {roles &&
+        {roles && !!roles.length &&
           <ColorTypo color={'blue'} component="div" variant="caption" style={{ fontSize: 13 }}>
             {roles}
           </ColorTypo>
