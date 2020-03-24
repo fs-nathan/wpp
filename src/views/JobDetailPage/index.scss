@@ -532,22 +532,6 @@
   height: 85px;
   position: sticky;
   top: 0;
-  .tags-container {
-    margin-left: 10px;
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 100%;
-    & > p {
-      font-size: 16px;
-    }
-    & > span:nth-child(1) {
-      color: #007bff;
-      text-transform: unset;
-      font-size: 13px;
-    }
-  }
 }
 // index.js - TabBody - Default Tab
 .button-text {

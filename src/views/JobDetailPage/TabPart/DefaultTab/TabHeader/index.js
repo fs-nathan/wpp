@@ -1,34 +1,16 @@
 import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
+import { deleteTask, pinTaskAction, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
+import ColorTypo from 'components/ColorTypo';
 import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { deleteTask, pinTaskAction, unPinTaskAction } from '../../../../../actions/taskDetail/taskDetailActions';
-import ColorTypo from '../../../../../components/ColorTypo';
 import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
 import { taskIdSelector } from '../../../selectors';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-
-const AvatarHeader = styled(Avatar)`
-  width: 60px;
-  height: 60px;
-`;
-
-const StyledIconButton = styled(IconButton)`
-  margin: 0;
-  padding: 0;
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`;
+import './styles.scss';
 
 function TabHeader(props) {
   const { t } = useTranslation();
@@ -84,15 +66,33 @@ function TabHeader(props) {
     }
   }
   // console.log("task id::::", value.taskId)
+  const onClickEdit = () => {
+    setOpenCreateJobModal(true);
+    setAnchorEl(null);
+  }
+  const onClickPause = () => {
+    props.onClickPause();
+    handleClickPause();
+    setAnchorEl(null);
+  }
+  const onClickResume = () => {
+    props.onClickPause();
+    handleClickPause();
+    setAnchorEl(null);
+  }
+  const onClickDelete = () => {
+    handleCloseMenu();
+    handleOpenModalDelete();
+  }
   return (
     <div className="container-dt-tabheader">
-      <AvatarHeader src={avatar} alt="avatar" />
-      <div className="tags-container">
-        <ColorTypo bold component="div">{name}</ColorTypo>
+      <Avatar className="tabHeaderDefault--avatar" src={avatar} alt="avatar" />
+      <div className="tabHeaderDefault--container">
+        <div className="tabHeaderDefault--name">{name}</div>
         {roles && !!roles.length &&
-          <ColorTypo color={'blue'} component="div" variant="caption" style={{ fontSize: 13 }}>
+          <div className="tabHeaderDefault--role">
             {roles}
-          </ColorTypo>
+          </div>
         }
         {detailTask && (
           <ColorTypo
@@ -104,13 +104,14 @@ function TabHeader(props) {
           </ColorTypo>
         )}
       </div>
-      <StyledIconButton
+      <IconButton
+        className="tabHeaderDefault--button"
         onClick={handleClick}
         aria-controls="simple-menu"
         aria-haspopup="true"
       >
         <Icon path={mdiDotsVertical} size={1} className="job-detail-icon" />
-      </StyledIconButton>
+      </IconButton>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -123,10 +124,7 @@ function TabHeader(props) {
         }}
       >
         <MenuItem
-          onClick={() => {
-            setOpenCreateJobModal(true);
-            setAnchorEl(null);
-          }}
+          onClick={onClickEdit}
         >
           Chỉnh sửa
         </MenuItem>
@@ -137,31 +135,19 @@ function TabHeader(props) {
         </MenuItem>
         {pause ? (
           <MenuItem
-            onClick={() => {
-              props.onClickPause();
-              handleClickPause();
-              setAnchorEl(null);
-            }}
+            onClick={onClickPause}
           >
             Tạm dừng
           </MenuItem>
         ) : (
             <MenuItem
-              onClick={() => {
-                props.onClickPause();
-                handleClickPause();
-                setAnchorEl(null);
-              }}
+              onClick={onClickResume}
             >
               Hủy tạm dừng
             </MenuItem>
           )}
-
         <MenuItem
-          onClick={() => {
-            handleCloseMenu();
-            handleOpenModalDelete();
-          }}
+          onClick={onClickDelete}
         >
           Xóa
         </MenuItem>

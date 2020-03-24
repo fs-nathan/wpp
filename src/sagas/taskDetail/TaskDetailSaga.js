@@ -1045,7 +1045,6 @@ function* updateTimeDuration(action) {
   try {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
-    // yield put(actions.getTrackingTime(action.payload.task_id));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
   } catch (error) {
     yield put(actions.updateTimeDurationFail);
@@ -1263,6 +1262,7 @@ function* updateComplete(action) {
     const res = yield call(doUpdateComplete, action.payload.data);
     yield put(actions.updateCompleteSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
+    yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
     yield put(
       actions.getListTaskDetail({ project_id: action.payload.projectId })
     );

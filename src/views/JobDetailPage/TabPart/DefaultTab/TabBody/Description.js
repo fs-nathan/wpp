@@ -1,63 +1,32 @@
+import ColorTypo from 'components/ColorTypo';
+import TextEditor, { getEditorData } from 'components/TextEditor';
+import { getCollapseText, isLongerContent } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
-import {
-  ListItem, ListItemText,
-} from '@material-ui/core';
-import styled from 'styled-components';
-
-import { isLongerContent, getCollapseText } from '../../../../../helpers/jobDetail/stringHelper'
-import TextEditor, { getEditorData } from '../../../../../components/TextEditor';
-import ColorTypo from '../../../../../components/ColorTypo';
-
-const ListItemTabPart = styled(ListItem)`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-`
+import './styles.scss';
 
 function Description({ value }) {
-  const [isOpen, setOpen] = React.useState(false)
+  const [isOpen, setOpen] = React.useState(true)
   const handlePressViewButton = () => {
     setOpen(!isOpen)
   }
+  const raw = getEditorData(value).getCurrentContent().getPlainText();
+  const isLong = isLongerContent(raw);
+  const contentCollapsed = getEditorData(getCollapseText(raw));
+  // console.log('raw', raw)
   return (
-    <ListItemTabPart>
+    <div className="tabBodyDescription">
+      <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>Mô tả</ColorTypo>
+      <TextEditor isReadOnly
+        value={isOpen ? getEditorData(value) : contentCollapsed}
+      >
+      </TextEditor>
       {
-        !isLongerContent(value)
-          ? <ListItemText disableTypography
-            primary={
-              <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>Mô tả</ColorTypo>
-            }
-            secondary={
-              <TextEditor isReadOnly
-                value={getEditorData(value)}
-              >
-              </TextEditor>
-              // <ColorTypo component='span' style={{ fontSize: 15 }}>{value}</ColorTypo>
-            }
-          />
-          :
-          <>
-            <ListItemText disableTypography
-              primary={
-                <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>Mô tả</ColorTypo>
-              }
-              secondary={
-                // <ColorTypo component='span' style={{ fontSize: 15 }}>
-                //   {isOpen ? value : getCollapseText(value)}
-                // </ColorTypo>
-                <TextEditor isReadOnly
-                  value={getEditorData(value)}
-                >
-                </TextEditor>
-              }
-            />
-            {isOpen
-              ? <div className="button-text" onClick={handlePressViewButton}>Thu gọn</div>
-              : <div className="button-text" onClick={handlePressViewButton}>Xem thêm</div>
-            }
-          </>
+        isLong &&
+        <div className="button-text" onClick={handlePressViewButton}>
+          {isOpen ? "Thu gọn" : "Xem thêm"}
+        </div>
       }
-    </ListItemTabPart>
+    </div >
   )
 }
 

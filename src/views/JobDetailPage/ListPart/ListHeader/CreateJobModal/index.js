@@ -116,6 +116,7 @@ function CreateJobModal(props) {
   React.useEffect(() => {
     if (props.data) {
       let tempData = props.data;
+      tempData.priority = tempData.priority_code;
       if (!tempData.name) tempData.name = '';
       tempData.description = getEditorData(tempData.description);
       if (!tempData.start_date) tempData.start_date = '';
