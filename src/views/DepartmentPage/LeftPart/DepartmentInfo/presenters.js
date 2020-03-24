@@ -6,7 +6,7 @@ import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { ActionBox, Container, SubContainer } from '../../../../components/CustomDetailBox';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -91,7 +91,7 @@ export const NormalDepartment = ({
                     {t('views.user_page.left_part.department_info.intro')}
                   </ColorTypo>
                   <StyledTextbox
-                    value={getEditorData(get(room.detail, 'description', ''))}
+                    value={get(room.detail, 'description', '')}
                     isReadOnly={true}
                     maxHeight={200}
                   />

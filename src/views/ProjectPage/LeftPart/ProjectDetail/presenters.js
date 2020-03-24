@@ -8,7 +8,7 @@ import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import { ActionBox, Container, SubContainer } from '../../../../components/CustomDetailBox';
 import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -169,7 +169,7 @@ function ProjectDetail({
                   <ColorTypo color='gray' uppercase>Mô tả dự án</ColorTypo>
                 </SubHeader>
                 <CustomTextbox
-                  value={getEditorData(get(project.project, 'description', ''))}
+                  value={get(project.project, 'description', '')}
                   isReadOnly={true}
                 />
               </SubContainer>

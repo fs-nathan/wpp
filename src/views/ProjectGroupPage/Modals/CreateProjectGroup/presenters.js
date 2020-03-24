@@ -5,8 +5,8 @@ import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
-import { useRequiredString, useTextboxString } from '../../../../hooks';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const LogoBox = ({ className = '', ...props }) =>
@@ -22,7 +22,7 @@ function CreateProjectGroup({
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
-  const [description, setDescription, errorDescription, rawDescription] = useTextboxString('', 500);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
     url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
     url_sort: '/storage_vtask_net/Icon_default/bt0.png',
@@ -30,7 +30,7 @@ function CreateProjectGroup({
 
   React.useEffect(() => {
     setName(get(updatedProjectGroup, 'name'));
-    setDescription(getEditorData(get(updatedProjectGroup, 'description')));
+    setDescription(get(updatedProjectGroup, 'description'));
     setIcon({
       url_full: get(updatedProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png'),
       url_sort: get(updatedProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png')
@@ -44,7 +44,7 @@ function CreateProjectGroup({
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName && !errorDescription}
-      onConfirm={() => handleCreateOrEditProjectGroup(name, rawDescription, icon)}
+      onConfirm={() => handleCreateOrEditProjectGroup(name, description, icon)}
     >
       <ColorTypo>Tên nhóm dự án</ColorTypo>
       <TextField

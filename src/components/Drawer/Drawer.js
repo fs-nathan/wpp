@@ -46,9 +46,9 @@ const DrawerComponent = props => {
         anchorDrawer === "left"
           ? "anchor-drawer-left"
           : anchorDrawer === "right"
-          ? "anchor-drawer-right"
-          : "anchor-drawer-top"
-      }`}
+            ? "anchor-drawer-right"
+            : "anchor-drawer-top"
+        }`}
     >
       {generateContent(typeDrawer)}
     </Drawer>

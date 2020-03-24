@@ -5,8 +5,8 @@ import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
-import { useRequiredString, useTextboxString } from '../../../../hooks';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const LogoBox = ({ className = '', ...props }) =>
@@ -23,7 +23,7 @@ function CreateAndUpdateDepartment({
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 100);
-  const [description, setDescription, errorDescription, rawDescription] = useTextboxString('', 500);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
     url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
     url_sort: '/storage_vtask_net/Icon_default/bt0.png',
@@ -32,7 +32,7 @@ function CreateAndUpdateDepartment({
   React.useEffect(() => {
     if (updateDepartment) {
       setName(get(updateDepartment, 'name', ''));
-      setDescription(getEditorData(get(updateDepartment, 'description', '')));
+      setDescription(get(updateDepartment, 'description', ''));
       setIcon({
         url_full: get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png'),
         url_sort: get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png')
@@ -47,7 +47,7 @@ function CreateAndUpdateDepartment({
         title={`${updateDepartment ? 'Cập nhật' : 'Tạo'} bộ phận`}
         open={open}
         setOpen={setOpen}
-        onConfirm={() => handleCreateOrUpdateRoom(name, rawDescription, icon)}
+        onConfirm={() => handleCreateOrUpdateRoom(name, description, icon)}
         canConfirm={!errorName && !errorDescription}
       >
         <ColorTypo>Tên bộ phận</ColorTypo>
