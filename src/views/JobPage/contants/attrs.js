@@ -38,6 +38,12 @@ export const statistic = {
   task_me_offer: "static.task_me_offer",
   roles: "static.roles"
 };
+export const roleAttrs = {
+  id: "id",
+  name: "name",
+  tasks: "tasks",
+  number_task: "number_task"
+};
 export const recent = {
   success: "state",
   error: "msg",
@@ -183,4 +189,9 @@ export const taskPriorityMap = {
   priority_hight: "0",
   priority_medium: "1",
   priority_low: "2"
+};
+export const taskAssignMap = {
+  role_doing: "0",
+  role_monitor: "1",
+  role_coordination: "2"
 };

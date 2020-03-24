@@ -6,6 +6,8 @@
 }
 .comp_TitleCell {
   padding: 10px;
+}
+.comp_TitleCell__inner {
   display: flex;
 }
 .comp_HasMessage {

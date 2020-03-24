@@ -103,6 +103,7 @@ import {
   watchLoadTaskAssignPage,
   watchLoadTaskDuePage,
   watchLoadTaskOverviewPage,
+  watchLoadTaskPage,
   watchLoadTaskRolePage
 } from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
@@ -552,7 +553,7 @@ function* rootSaga() {
     taskDetailType.UN_PIN_TASK_REQUEST,
     taskDetailSaga.unPinTask
   );
-
+  yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
   yield fork(watchLoadTaskAssignPage);

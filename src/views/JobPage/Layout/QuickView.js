@@ -28,7 +28,7 @@ export const QuickViewHeader = styled.div`
   position: sticky;
   top: 0px;
   background-color: #fff;
-  z-index: 999;
+  z-index: 1;
 `;
 export const QuickViewHeaderLeft = styled.div`
   flex: 1;

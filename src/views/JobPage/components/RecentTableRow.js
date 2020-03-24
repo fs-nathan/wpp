@@ -22,11 +22,11 @@ export const RecentTableRow = ({ className, ...props }) => (
 
 export const AvatarCell = ({ className, ...props }) => (
   <StyledTableBodyCell
-    className={classnames("comp_AvatarCell", className)}
+    className="comp_AvatarCell"
+    {...props}
     align="left"
     width="5%"
-    {...props}
-  />
+  ></StyledTableBodyCell>
 );
 export const QuickViewCell = ({ className, ...props }) => (
   <StyledTableBodyCell
@@ -37,11 +37,9 @@ export const QuickViewCell = ({ className, ...props }) => (
   />
 );
 export const TitleCell = ({ className, ...props }) => (
-  <StyledTableBodyCell
-    className={classnames("comp_TitleCell", className)}
-    align="left"
-    {...props}
-  />
+  <StyledTableBodyCell className="comp_TitleCell" align="left">
+    <div className="comp_TitleCell__inner" {...props}></div>
+  </StyledTableBodyCell>
 );
 export const DurationCell = ({ className, ...props }) => (
   <StyledTableBodyCell
@@ -142,7 +140,7 @@ export default React.memo(
         <DurationCell>
           {duration_value} {t(duration_unit)}
         </DurationCell>
-        <EndTimeCell>{time_end}</EndTimeCell>
+        <EndTimeCell>{time_end !== "Invalid date" && time_end}</EndTimeCell>
         <QuickViewCell
           onClick={() =>
             setQuickTask(

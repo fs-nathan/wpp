@@ -1,13 +1,27 @@
+import {
+  mdiAccountSwitch,
+  mdiAccountTie,
+  mdiAlarm,
+  mdiViewDashboard
+} from "@mdi/js";
 import React, { Suspense, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import { times } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
 import { useLocalStorage } from "../../hooks";
+import { labels, roleAttrs, statistic } from "./contants/attrs";
+import { emptyArray } from "./contants/defaultValue";
+import { Routes } from "./contants/routes";
 import { useMultipleSelect } from "./hooks/useMultipleSelect";
 import { JobPageContext } from "./JobPageContext";
 import TabList from "./LeftPart_new/TabList";
+import { loadTaskPage } from "./redux/actions";
+import { TASK_OVERVIEW_STATISTIC } from "./redux/types";
 import routes from "./routes";
+import { formatTime, get } from "./utils";
 const { Provider } = JobPageContext;
 const filterConfig = [
   {
@@ -75,6 +89,7 @@ export const defaultFilter = {
   ...defaultPriorityFilter
 };
 function JobPage() {
+  const { t } = useTranslation();
   const [localOptions, setLocalOptions] = useLocalStorage(
     "LOCAL_PROJECT_OPTIONS",
     {
@@ -94,10 +109,10 @@ function JobPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeType]);
   const [timeRange, settimeRange] = React.useState(() => {
-    const [timeStart, timeEnd] = times[1].option();
+    const [startDate, endDate] = times[1].option();
     return {
-      timeStart,
-      timeEnd
+      startDate,
+      endDate
     };
   });
   const [
@@ -105,14 +120,76 @@ function JobPage() {
     setstatusFilter,
     handleRemovestatusFilter
   ] = useMultipleSelect(defaultFilter, true, true);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      loadTaskPage({
+        timeStart: formatTime(timeRange.startDate),
+        timeEnd: formatTime(timeRange.endDate)
+      })
+    );
+  }, [dispatch, timeRange.startDate, timeRange.endDate]);
+  const roles = useSelector(state => {
+    return get(
+      state.taskPage[TASK_OVERVIEW_STATISTIC],
+      statistic.roles,
+      emptyArray
+    );
+  });
+  const listMenu = [
+    {
+      title: t(labels.overview),
+      url: Routes.OVERVIEW,
+      color: "#7d99a6",
+      icon: mdiViewDashboard
+    },
+    {
+      title: t(labels.due),
+      url: Routes.DUE,
+      color: "#FF9800",
+      icon: mdiAlarm
+    },
+    {
+      title: t(labels.mission),
+      icon: mdiAccountSwitch,
+      color: "#03a9f4",
+      sub: [
+        {
+          name: t(labels.mission_giving),
+          url: Routes.MISSION.replace(":typeAssign", "0")
+        },
+        {
+          name: t(labels.mission_given),
+          url: Routes.MISSION.replace(":typeAssign", "1")
+        },
+        {
+          name: t(labels.self_giving),
+          url: Routes.MISSION.replace(":typeAssign", "2")
+        }
+      ]
+    },
 
+    {
+      title: t(labels.role),
+      icon: mdiAccountTie,
+      color: "#f44336",
+      sub: roles.map(role => ({
+        name: `${t(get(role, roleAttrs.name))} (${get(
+          role,
+          roleAttrs.number_task
+        )})`,
+        url: Routes.ROLE.replace(":roleId", get(role, roleAttrs.id))
+      }))
+    }
+  ];
   return (
     <TwoColumnsLayout
-      leftRenders={[() => <TabList />]}
+      leftRenders={[() => <TabList {...{ listMenu }} />]}
       rightRender={({ expand, handleExpand, handleSubSlide }) => (
         <Provider
           value={{
             expand,
+            listMenu,
             filterConfig,
             handleExpand,
             quickTask,

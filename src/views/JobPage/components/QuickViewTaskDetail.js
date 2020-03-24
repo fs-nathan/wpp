@@ -97,7 +97,7 @@ export const QuickViewTaskDetailHeader = ({ detailTask }) => {
   return (
     <Box display="flex" alignItems="center">
       <Avatar
-        style={{ marginRight: "15px", width: 60, height: 60 }}
+        style={{ marginRight: "15px", width: 40, height: 40 }}
         src={get(detailTask, taskAtrrs.user_create_avatar)}
       ></Avatar>
       <Box display="flex" flexDirection="column">
@@ -124,7 +124,7 @@ export const QuickViewTaskDetailHeader = ({ detailTask }) => {
 const EditAction = ({ ...props }) => {
   const { t } = useTranslation();
   return (
-    <Box color={"#03a9f4"} {...props} className="cursor-pointer">
+    <Box color={"#03a9f4 "} {...props} className="cursor-pointer">
       {t("Chỉnh sửa")}
     </Box>
   );
@@ -138,20 +138,20 @@ function QuickViewTaskDetail({ detailTask }) {
           {get(detailTask, taskAtrrs.name, "#########")}
         </QuickViewRow>
         <QuickViewRow title={t("MÔ TẢ CÔNG VIỆC")} actions={<EditAction />}>
-          <Box fontWeight="450" lineHeight="1.4" fontSize="14px">
+          <Box lineHeight="1.4" fontSize="14px">
             {get(detailTask, taskAtrrs.description, "#########")}
           </Box>
         </QuickViewRow>
         <QuickViewRow title={t("TIẾN ĐỘ")} actions={<EditAction />}>
-          <Box fontWeight="450" fontSize="14px">
+          <Box fontSize="14px">
             Ngày bắt đầu: {get(detailTask, taskAtrrs.start_time)}{" "}
             {get(detailTask, taskAtrrs.start_date, "##/##/####")}
           </Box>
-          <Box fontWeight="450" marginTop="0.5em" fontSize="14px">
+          <Box marginTop="0.5em" fontSize="14px">
             Ngày kết thúc: {get(detailTask, taskAtrrs.end_time)}{" "}
             {get(detailTask, taskAtrrs.end_date, "##/##/####")}
           </Box>
-          <Box fontWeight="450" marginTop="0.5em" fontSize="14px">
+          <Box marginTop="0.5em" fontSize="14px">
             Hoàn thành: {get(detailTask, taskAtrrs.complete, 0)}%
           </Box>
         </QuickViewRow>
@@ -159,7 +159,7 @@ function QuickViewTaskDetail({ detailTask }) {
           <Box lineHeight="1">
             <InlineStatusBadge status={get(detailTask, taskAtrrs.state_code)}>
               {get(detailTask, taskAtrrs.state_name)}
-            </InlineStatusBadge>
+            </InlineStatusBadge>{" "}
             <InlinePiorityBadge
               status={get(detailTask, taskAtrrs.priority_code)}
             >

@@ -10,13 +10,13 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import { Analytic } from "views/JobPage/components/Analytic";
+import EmptyHolder from "views/JobPage/components/EmptyHolder";
+import { RecentTableRow } from "views/JobPage/components/RecentTableRow";
 import { useCustomList } from "views/JobPage/hooks/useCustomList";
 import { JobPageContext } from "views/JobPage/JobPageContext";
-import RecentTableRow from "../../components/RecentTableRow";
 import { colors, labels, recent, taskAtrrs } from "../../contants/attrs";
 import { TASK_OVERVIEW_RECENT } from "../../redux/types";
-import { createMapPropsFromAttrs, loginlineFunc } from "../../utils";
-
+import { createMapPropsFromAttrs } from "../../utils";
 export const RecentTable = ({ tasks = [] }) => {
   const { setQuickTask } = useContext(JobPageContext);
 
@@ -38,23 +38,21 @@ export const RecentTable = ({ tasks = [] }) => {
             duration_unit,
             complete,
             number_member
-          ] = loginlineFunc(
-            createMapPropsFromAttrs([
-              taskAtrrs.project_id,
-              taskAtrrs.id,
-              taskAtrrs.user_create_avatar,
-              taskAtrrs.user_create_name,
-              taskAtrrs.name,
-              taskAtrrs.status_code,
-              taskAtrrs.status_name,
-              taskAtrrs.time_end,
-              taskAtrrs.haveNewChat,
-              taskAtrrs.duration_value,
-              taskAtrrs.duration_unit,
-              taskAtrrs.complete,
-              taskAtrrs.number_member
-            ])
-          )(task);
+          ] = createMapPropsFromAttrs([
+            taskAtrrs.project_id,
+            taskAtrrs.id,
+            taskAtrrs.user_create_avatar,
+            taskAtrrs.user_create_name,
+            taskAtrrs.name,
+            taskAtrrs.status_code,
+            taskAtrrs.status_name,
+            taskAtrrs.time_end,
+            taskAtrrs.haveNewChat,
+            taskAtrrs.duration_value,
+            taskAtrrs.duration_unit,
+            taskAtrrs.complete,
+            taskAtrrs.number_member
+          ])(task);
           return (
             <RecentTableRow
               {...{
@@ -150,6 +148,7 @@ export function RecentBlock() {
         />
         <br />
         <RecentTable tasks={list} />
+        {tasks.length === 0 && <EmptyHolder />}
       </CardContent>
     </Card>
   );

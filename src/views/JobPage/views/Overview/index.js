@@ -1,11 +1,10 @@
-import { Container, Grid } from "@material-ui/core";
+import { Box, Container, Grid } from "@material-ui/core";
+import Icon from "@mdi/react";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { loginlineFunc } from "views/JobPage/utils";
-import { labels } from "../../contants/attrs";
 import { JobPageContext } from "../../JobPageContext";
 import Layout from "../../Layout";
 import { loadTaskOverViewPage } from "../../redux/actions";
@@ -25,19 +24,38 @@ export const PageContainer = styled(Container)`
 const Overview = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { timeRange = {} } = useContext(JobPageContext);
+  const { listMenu, timeRange = {} } = useContext(JobPageContext);
   const isMounted = useMountedState();
   useEffect(() => {
     isMounted &&
       dispatch(
         loadTaskOverViewPage({
-          timeStart: loginlineFunc(formatTime)(timeRange.timeStart),
-          timeEnd: loginlineFunc(formatTime)(timeRange.timeEnd)
+          timeStart: formatTime(timeRange.startDate),
+          timeEnd: formatTime(timeRange.endDate)
         })
       );
-  }, [dispatch, isMounted, timeRange.timeStart, timeRange.timeEnd]);
+  }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate]);
   return (
-    <Layout title={t(labels.overview)}>
+    <Layout
+      title={
+        <Box display="flex" alignItems="center">
+          <Icon
+            size={1.4}
+            {...{ color: listMenu[0].color, path: listMenu[0].icon }}
+          ></Icon>
+          <Box
+            {...{
+              paddingLeft: "20px",
+              fontSize: "21px",
+              lineHeight: "1",
+              fontWeight: "600"
+            }}
+          >
+            {t(listMenu[0].title)}
+          </Box>
+        </Box>
+      }
+    >
       {isMounted && (
         <PageContainer maxWidth="xl">
           <Grid container spacing={3}>
