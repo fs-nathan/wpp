@@ -81,7 +81,7 @@ function CreateJobModal(props) {
   const [groupTaskValue, setGroupTaskValue] = React.useState(null);
   const [type, setType] = useState(2);
 
-  console.log(listTaskDetail);
+  // console.log(listTaskDetail);
 
   const updateData = () => {
     const dataNameDescription = {
@@ -121,7 +121,7 @@ function CreateJobModal(props) {
 
   React.useEffect(() => {
     if (props.data) {
-      let tempData = props.data;
+      let tempData = { ...props.data };
       tempData.priority = tempData.priority_code;
       if (!tempData.name) tempData.name = '';
       tempData.description = getEditorData(tempData.description);

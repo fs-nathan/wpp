@@ -17,9 +17,6 @@ import ModalStatus from './ModalStatus';
 import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS } from './StatusLabel';
 import './styles.scss';
 
-
-
-
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
   & > * > *:first-child {
@@ -48,7 +45,6 @@ const ListItemTab = styled(ListItem)`
 const StyledList = styled(List)`
 margin-bottom: 6px;
   & > * {
-    padding: 20px 16px;
     & > div {
       margin: 0;
     }
@@ -178,7 +174,7 @@ function TabBody(props) {
               <Typography
                 className="listPartTabBody--expired listPartTabBody--paused"
               >
-                Đang tạm dừng
+                Tạm dừng
               </Typography>
             </HtmlTooltip>
           }

@@ -4,6 +4,7 @@ import { updateComplete } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'classnames';
 import ColorTypo from 'components/ColorTypo';
 import differenceInDays from 'date-fns/differenceInDays';
+import format from 'date-fns/format';
 import parse from 'date-fns/parse';
 import clamp from 'lodash/clamp';
 import React, { useState } from 'react';
@@ -18,6 +19,14 @@ import './styles.scss';
 const colors = ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
   '#f48024', '#69d2e7'
 ]
+const regDMY = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/;
+
+function parseDate(date = '') {
+  if (regDMY.test(date)) {
+    return parse(date, 'dd/MM/yyyy', new Date());
+  }
+  return parse(date, 'yyyy-MM-dd', new Date());
+}
 
 function TabBody() {
   const dispatch = useDispatch();
@@ -115,7 +124,7 @@ function TabBody() {
     complete_with_time,
   } = detailTask;
   const isHaveDate = (start_date && end_date);
-  const totalDay = isHaveDate ? differenceInDays(parse(end_date, 'yyyy-MM-dd', new Date()), parse(start_date, 'yyyy-MM-dd', new Date())) : 0;
+  const totalDay = isHaveDate ? differenceInDays(parseDate(end_date), parseDate(start_date)) : 0;
   const completePercent = clamp(complete_with_time, 0, 100);
   return (
     <Scrollbars className="progressTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}
@@ -152,18 +161,11 @@ function TabBody() {
               style={{ width: `${completePercent}%` }}>
               <div className="progressTimeExpect--progressExpectLabel">
                 {`${completePercent}% `}
-                <div className="progressTimeExpect--today"
-                  style={{ left: `calc(${completePercent}% - 30px)` }}
-                >
-                  <div>
-                    Hôm nay
-                </div>
-                  <div>
-                    {detailTask.start_date}
-                  </div>
-                </div>
               </div>
             </div>
+          </div>
+          <div className="progressTimeExpect--today">
+            {`Hôm nay: ${format(new Date(), 'dd/MM/yyyy')}`}
           </div>
         </>
       }

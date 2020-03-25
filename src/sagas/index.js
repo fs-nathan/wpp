@@ -471,10 +471,6 @@ function* rootSaga() {
     taskDetailType.UPDATE_TIME_DURATION_REQUEST,
     taskDetailSaga.updateTimeDuration
   );
-  yield takeLeading(
-    taskDetailType.GET_TRACKING_TIME_REQUEST,
-    taskDetailSaga.getTrackingTime
-  );
 
   // List Task Detail
   yield takeLeading(
