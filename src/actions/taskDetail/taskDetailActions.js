@@ -990,3 +990,8 @@ export const unPinTaskFail = error => ({
     type: types.UN_PIN_TASK_FAIL,
     error: error
 })
+
+export const showTab = payload => ({
+    type: types.SET_SHOW_INDEX,
+    payload
+})

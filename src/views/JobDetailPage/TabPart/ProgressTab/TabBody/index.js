@@ -55,7 +55,7 @@ function TabBody() {
     options: {
       chart: {
         type: 'bar',
-        barHeight: '80%',
+        barHeight: '20px',
         // height: 350
       },
       legend: {
@@ -171,7 +171,10 @@ function TabBody() {
       }
       <ColorTypo className="progressTabBody--title">{"Biểu đồ cập nhật tiến độ"}</ColorTypo>
       <ColorTypo className="progressTabBody--subTitle">{"Biểu đồ thể hiện lịch sử hoàn thành công việc"}</ColorTypo>
-      <ReactApexChart options={chartData.options} series={chartData.series} type="bar" height={350} />
+      <ReactApexChart
+        options={chartData.options}
+        series={chartData.series} type="bar"
+        height={20 * chartData.series[0].data.length + 100} />
       <ColorTypo className="progressTabBody--title"
         onClick={toggleDetail}
       >{"Điều chỉnh tiến độ"}

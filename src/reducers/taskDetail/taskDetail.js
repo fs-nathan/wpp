@@ -7,6 +7,7 @@ const initialState = {
   isFetching: false,
   dataFetched: false,
   error: false,
+  showIndex: 0,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -49,6 +50,9 @@ export default (state = initialState, action) =>
         draft.isFetching = false
         draft.dataFetched = false
         draft.error = true
+        break;
+      case types.SET_SHOW_INDEX:
+        draft.showIndex = action.payload
         break;
     }
   });

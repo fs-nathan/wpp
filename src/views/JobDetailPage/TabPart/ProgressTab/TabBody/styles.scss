@@ -13,6 +13,9 @@
     display: block;
     position: relative;
     line-height: 15px;
+    &:hover {
+      cursor: pointer;
+    }
   }
   &--subTitle {
     color: #818881;
@@ -37,10 +40,10 @@
   }
   &--icon {
     padding: 0 4px;
-    transform: translateY(6px);
+    transform: translateY(6px) rotate(-90deg);
   }
   &__expanded {
-    transform: translateY(6px) rotate(-90deg);
+    transform: translateY(6px);
   }
 }
 

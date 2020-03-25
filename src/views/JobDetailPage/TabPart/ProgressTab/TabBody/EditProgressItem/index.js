@@ -1,10 +1,16 @@
-import React from 'react';
 import { Avatar } from '@material-ui/core';
 import { mdiClockOutline } from '@mdi/js';
-import Icon from '@mdi/react'
+import Icon from '@mdi/react';
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import React from 'react';
+import './styles.scss';
 
-import './styles.scss'
 
+function getFormat(dateString) {
+  const date = parse(dateString, 'dd/MM/yyyy HH:mm', new Date())
+  return format(date, 'HH:mm dd/MM/yyyy').replace(' ', ' ngày ')
+}
 function EditProgressItem({ fixedNumber,
   fixStart,
   fixEnd,
@@ -23,12 +29,12 @@ function EditProgressItem({ fixedNumber,
       {fixStart && <div className="editProgressItem--time">
         <Icon path={mdiClockOutline} color="rgba(0, 0, 0, 0.54)"
           size={1}></Icon>
-        {fixStart}
+        Bắt đầu: {getFormat(fixStart)}
       </div>}
       {fixEnd && <div className="editProgressItem--time">
         <Icon path={mdiClockOutline} color="rgba(0, 0, 0, 0.54)"
           size={1}></Icon>
-        {fixEnd}
+        Kết thúc: {getFormat(fixEnd)}
       </div>}
     </div>
   </div >)

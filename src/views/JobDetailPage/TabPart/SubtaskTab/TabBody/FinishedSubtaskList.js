@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Avatar, Menu, MenuItem } from '@material-ui/core';
-import Icon from '@mdi/react';
+import { Avatar, ListItemText, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
-import { useSelector, useDispatch } from 'react-redux';
-
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import { ButtonIcon, ItemList } from './AllSubtaskListItem';
+import Icon from '@mdi/react';
 import { deleteSubTask } from 'actions/taskDetail/taskDetailActions';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import ModalDeleteConfirm from '../../ModalDeleteConfirm';
+import { ButtonIcon } from './AllSubtaskListItem';
+import './styles.scss';
 
 const CustomMenu = styled(Menu)`
   & > .MuiPaper-root {
@@ -23,9 +23,8 @@ const CustomMenu = styled(Menu)`
 `
 
 const StyledListItemComplete = styled.li`
-  padding-left: 30px;
+  padding-left: 16px;
   display: flex;
-  align-items: center;
 `
 
 const StyledMenuComplete = styled.div`
@@ -87,12 +86,14 @@ const FinishedSubtaskList = (props) => {
       {completeSubTasks.map((item, index) => {
         return (
           <StyledListItemComplete key={index}>
-            <Avatar style={{ marginRight: 13 }} src={item.user_create_avatar} alt='avatar' />
-            <ItemList
+            <Avatar className="finishedSubTask--avatar" src={item.user_create_avatar} alt='avatar' />
+            <ListItemText
               primary={`${item.name}`}
               secondary={
                 <FinishedSubtaskListItemTextSecondary>
-                  <Avatar src={item.user_complete_avatar} style={{ width: 12, height: 12 }} />
+                  <abbr title={item.user_complete_name}>
+                    <Avatar src={item.user_complete_avatar} style={{ width: 12, height: 12 }} />
+                  </abbr>
                   Hoàn thành lúc {item.time_complete}
                 </FinishedSubtaskListItemTextSecondary>
               }

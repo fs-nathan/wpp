@@ -1,14 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Draggable } from 'react-beautiful-dnd';
-import {
-  ListItem, ListItemText, Avatar, IconButton, Menu, MenuItem
-} from '@material-ui/core';
+import { Avatar, IconButton, ListItem, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { mdiCheck, mdiDotsVertical, mdiDragVertical } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiCheck, mdiDragVertical, mdiDotsVertical } from '@mdi/js';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteSubTask, completeSubTask } from '../../../../../actions/taskDetail/taskDetailActions';
-import colorPal from '../../../../../helpers/colorPalette';
+import { completeSubTask, deleteSubTask } from 'actions/taskDetail/taskDetailActions';
+import colorPal from 'helpers/colorPalette';
+import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import SubtaskModal from '../SubtaskModal';
 
@@ -41,16 +39,6 @@ export const ButtonIcon = styled(IconButton)`
     &:hover {
       fill: #03b000;
     }
-  }
-`
-
-export const ItemList = styled(ListItemText)`
-  & > span {
-    font-size: 16px;
-    width: 300px;
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
   }
 `
 
@@ -136,10 +124,10 @@ function AllSubtaskListItem(props) {
                 </abbr>
               </ButtonIcon>
           }
-          <ItemList>
-            <div>{props.task.name}</div>
+          <ListItemText>
+            <div className="subTaskItem--content">{props.task.name}</div>
             <div className="subTaskItem--createdAt">Tạo lúc {props.task.created_at}</div>
-          </ItemList>
+          </ListItemText>
           <StyledMenu>
             <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
               <Icon path={mdiDotsVertical} size={1} />

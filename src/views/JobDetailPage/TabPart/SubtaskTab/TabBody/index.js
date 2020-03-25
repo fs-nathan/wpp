@@ -1,21 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiSend } from '@mdi/js';
 import { InputBase } from '@material-ui/core';
+import { mdiSend } from '@mdi/js';
+import Icon from '@mdi/react';
+import React from 'react';
+// import avatar from '../../../../../assets/avatar.jpg';
+import { Scrollbars } from 'react-custom-scrollbars';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { postSubTask, searchSubTask } from '../../../../../actions/taskDetail/taskDetailActions';
 import ColorTypo from '../../../../../components/ColorTypo';
 import SearchInput from '../../../../../components/SearchInput';
 import colorPal from '../../../../../helpers/colorPalette';
-// import avatar from '../../../../../assets/avatar.jpg';
-import { Scrollbars } from 'react-custom-scrollbars'
-import { useSelector, useDispatch } from 'react-redux';
-import { postSubTask, searchSubTask } from '../../../../../actions/taskDetail/taskDetailActions';
-import { ButtonIcon } from './AllSubtaskListItem';
-import AllSubtaskList from './AllSubtaskList';
-import FinishedSubtaskList from './FinishedSubtaskList';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
-
+import AllSubtaskList from './AllSubtaskList';
+import { ButtonIcon } from './AllSubtaskListItem';
+import FinishedSubtaskList from './FinishedSubtaskList';
 import './styles.scss';
+
 
 const Container = styled.div`
   padding: 0 0 50px 0;
@@ -39,7 +39,7 @@ const NewWork = styled.div`
 
 `
 const InputText = styled(InputBase)`
-  padding-left: 30px;
+  padding-left: 16px;
   font-size: 16px;
   align-item: center;
   width: 100%;
@@ -71,7 +71,9 @@ function TabBody(props) {
     dispatch(searchSubTask(e.target.value))
   }
   return (
-    <Scrollbars className="subTaskBody" autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Scrollbars className="subTaskBody"
+      renderView={props => <div {...props} className="subTaskBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         {props.isClicked ?
           <NewWork>
@@ -105,9 +107,9 @@ function TabBody(props) {
         ></NoDataPlaceHolder>
           :
           <React.Fragment>
-            <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Đang thực hiện({uncompleteSubTasks.length})</TextTitle>
+            <TextTitle className="subTaskBody--title">Đang thực hiện({uncompleteSubTasks.length})</TextTitle>
             <AllSubtaskList {...props} />
-            <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Đã hoàn thành({completeSubTasks.length})</TextTitle>
+            <TextTitle className="subTaskBody--title">Đã hoàn thành({completeSubTasks.length})</TextTitle>
             <FinishedSubtaskList {...props} />
           </React.Fragment>}
       </Container>
