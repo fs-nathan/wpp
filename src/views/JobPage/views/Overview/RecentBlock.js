@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import { Analytic } from "views/JobPage/components/Analytic";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
-import { RecentTableRow } from "views/JobPage/components/RecentTableRow";
+import RecentTableRow from "views/JobPage/components/RecentTableRow";
 import { useCustomList } from "views/JobPage/hooks/useCustomList";
 import { JobPageContext } from "views/JobPage/JobPageContext";
 import { colors, labels, recent, taskAtrrs } from "../../contants/attrs";
@@ -148,7 +148,7 @@ export function RecentBlock() {
         />
         <br />
         <RecentTable tasks={list} />
-        {tasks.length === 0 && <EmptyHolder />}
+        {list.length === 0 && <EmptyHolder />}
       </CardContent>
     </Card>
   );

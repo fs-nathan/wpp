@@ -1,9 +1,9 @@
-import { Box } from "@material-ui/core";
 import noDataImg from "assets/no-data.png";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { bgColorSelector } from "views/ProjectGroupPage/RightPart/AllProjectTable/selectors";
+import "./EmptyHolder.css";
 function EmptyHolder({
   bgColor,
   title = "Không có dữ liệu",
@@ -11,36 +11,18 @@ function EmptyHolder({
 }) {
   const { t } = useTranslation();
   return (
-    <Box
-      width="100%"
-      padding="70px 30px"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      flexDirection="column"
-    >
-      <img
-        style={{
-          filter: "opacity(0.5)"
-        }}
-        width="300px"
-        src={noDataImg}
-        alt="empty"
-      ></img>
-      <Box
-        fontWeight="bold"
-        fontSize="19px"
-        marginTop="40px"
+    <div className="comp_EmptyHolder__wrapper">
+      <img className="comp_EmptyHolder__img" src={noDataImg} alt="empty"></img>
+      <div
+        className="comp_EmptyHolder__title"
         style={{
           color: bgColor.color
         }}
       >
         {t(title)}
-      </Box>
-      <Box fontSize="14px" marginTop="15px" color={"#555555"}>
-        {t(description)}
-      </Box>
-    </Box>
+      </div>
+      <div className="comp_EmptyHolder__description">{t(description)}</div>
+    </div>
   );
 }
 const mapStateToProps = state => {
