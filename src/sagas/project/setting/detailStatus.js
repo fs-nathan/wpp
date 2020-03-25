@@ -1,8 +1,8 @@
-import { call, put } from 'redux-saga/effects';
-import { detailStatusSuccess, detailStatusFail } from '../../../actions/project/setting/detailStatus';
-import { apiService } from '../../../constants/axiosInstance';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { detailStatusFail, detailStatusSuccess } from '../../../actions/project/setting/detailStatus';
+import { apiService } from '../../../constants/axiosInstance';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../../constants/snackbarController';
 
 async function doDetailStatus({ projectId }) {
   try {
@@ -22,10 +22,11 @@ async function doDetailStatus({ projectId }) {
 
 function* detailStatus(action) {
   try {
-    const { can_copy, date_status } = yield call(doDetailStatus, action.options);
+    const { can_copy, date_status, task_view } = yield call(doDetailStatus, action.options);
     const status = {
       copy: can_copy,
       date: date_status,
+      view: task_view,
     }
     yield put(detailStatusSuccess({ status }, action.options));
   } catch (error) {
@@ -34,6 +35,5 @@ function* detailStatus(action) {
   }
 }
 
-export {
-  detailStatus,
-}
+export { detailStatus, };
+
