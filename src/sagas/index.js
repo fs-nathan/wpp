@@ -70,6 +70,10 @@ import { LIST_ROOM } from "../constants/actions/room/listRoom";
 import { SORT_ROOM } from "../constants/actions/room/sortRoom";
 import { UPDATE_ROOM } from "../constants/actions/room/updateRoom";
 import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP, GET_SETTING_DATE } from "../constants/actions/setting/setting";
+import { CREATE_TASK } from '../constants/actions/task/createTask';
+import { DELETE_TASK } from '../constants/actions/task/deleteTask';
+import { LIST_TASK } from '../constants/actions/task/listTask';
+import { SORT_TASK } from '../constants/actions/task/sortTask';
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -156,6 +160,10 @@ import { listRoom } from "./room/listRoom";
 import { sortRoom } from "./room/sortRoom";
 import { updateRoom } from "./room/updateRoom";
 import { getGroupDetail, getListColor, getSettingDate } from "./setting/setting";
+import { createTask } from './task/createTask';
+import { deleteTask } from './task/deleteTask';
+import { listTask } from './task/listTask';
+import { sortTask } from './task/sortTask';
 import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
 import { detailUser } from "./user/detailUser";
@@ -257,10 +265,10 @@ function* rootSaga() {
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
-  yield takeLeading(
-    taskDetailType.DELETE_TASK_REQUEST,
-    taskDetailSaga.deleteTask
-  );
+  yield takeLatest(LIST_TASK, listTask);
+  yield takeEvery(CREATE_TASK, createTask);
+  yield takeEvery(DELETE_TASK, deleteTask);
+  yield takeEvery(SORT_TASK, sortTask);
   yield takeEvery(
     INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
     inviteOtherPeopleCreateAccount

@@ -33,7 +33,10 @@ const MessageRightItem = props => {
           <span>{item.time_label}</span>
         </div>
         <div className="des-message">
-          <span>{item.content}</span>
+          <div
+            className="content-text"
+            dangerouslySetInnerHTML={{ __html: item.content }}
+          ></div>
         </div>
       </div>
     </div>

@@ -1,0 +1,25 @@
+.comp_CustomTextBox___textbox {
+  & {
+    width: 100%;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+  }
+  &-readonly {
+    width: 100%;
+    box-sizing: border-box;
+    word-break: break-word;
+    & > div > div {
+      white-space: pre-line;
+    }
+    & > span {
+      color: #48bb78;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

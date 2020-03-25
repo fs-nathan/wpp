@@ -8,6 +8,7 @@ import TextEditor, { getEditorData } from 'components/TextEditor';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
 import { convertToRaw } from 'draft-js';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
+import { get, isNil } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
@@ -66,8 +67,11 @@ function validate(data) {
 
 function CreateJobModal(props) {
   const dispatch = useDispatch();
-  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
-  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
+  const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const projectId = isNil(get(props, 'projectId'))
+    ? _projectId
+    : get(props, 'projectId');
   const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
 
@@ -76,6 +80,8 @@ function CreateJobModal(props) {
   const [listGroupTask, setListGroupTask] = React.useState([]);
   const [groupTaskValue, setGroupTaskValue] = React.useState(null);
   const [type, setType] = useState(2);
+
+  console.log(listTaskDetail);
 
   const updateData = () => {
     const dataNameDescription = {
@@ -169,7 +175,9 @@ function CreateJobModal(props) {
       data.date_status = type;
       data.description = JSON.stringify(convertToRaw(data.description.getCurrentContent()));
       // Call api
-      dispatch(createTask({ data, projectId: projectId }));
+      isNil(get(props, 'doCreateTask'))
+        ? get(props, 'doCreateTask')({ data, projectId: projectId })
+        : dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data
       setDataMember(DEFAULT_DATA);
       // Close modal

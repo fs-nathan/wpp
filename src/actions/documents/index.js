@@ -101,11 +101,18 @@ export const actionDeletePermantly = data => {
 };
 
 // handle for comment of a document
-export const actionFetchListComment = (fileId, quite = false) => ({
+export const actionFetchListComment = (
+  fileId,
+  quite = false,
+  page = 1,
+  isLoadMore = false
+) => ({
   type: LIST_COMMENT,
   quite,
   options: {
-    fileId
+    fileId,
+    page,
+    isLoadMore
   }
 });
 

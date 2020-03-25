@@ -13,13 +13,14 @@ import {
 } from '../../constants/actions/documents';
 import { apiService } from '../../constants/axiosInstance';
 
-async function doListComment({ fileId }) {
+async function doListComment({ fileId, page }) {
   try {
     const config = {
       url: '/documents/list-comment',
       method: 'get',
       params: {
-        file_id: fileId
+        file_id: fileId,
+        page
       }
     };
     const result = await apiService(config);
@@ -31,8 +32,13 @@ async function doListComment({ fileId }) {
 
 function* listComment(action) {
   try {
-    const { comments } = yield call(doListComment, action.options);
-    yield put({ type: LIST_COMMENT_SUCCESS, payload: comments || [] });
+    const { comments, paging } = yield call(doListComment, action.options);
+    yield put({
+      type: LIST_COMMENT_SUCCESS,
+      payload: comments || [],
+      paging,
+      isLoadMore: action.options.isLoadMore
+    });
   } catch (error) {
     yield put({ type: DOCUMENT_HIDE_LOADING });
   }

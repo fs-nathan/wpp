@@ -1,19 +1,23 @@
+import { concat, find, get } from 'lodash';
 import { createSelector } from 'reselect';
-import { find, get } from 'lodash';
 
 const listRoom = state => state.room.listRoom;
 const listUserOfGroup = state => state.user.listUserOfGroup;
 const sortUser = state => state.user.sortUser;
 const getRequirementJoinGroup = state => state.groupUser.getRequirementJoinGroup;
+const banUserFromGroup = state => state.user.banUserFromGroup;
 const listPosition = state => state.position.listPosition;
+const publicMember = state => state.user.publicMember;
+const privateMember = state => state.user.privateMember;
 
 export const roomsSelector = createSelector(
-  [listRoom, listUserOfGroup, listPosition, sortUser],
-  (listRoom, listUserOfGroup, listPosition, sortUser) => {
+  [listRoom, listUserOfGroup, listPosition, sortUser, banUserFromGroup],
+  (listRoom, listUserOfGroup, listPosition, sortUser, banUserFromGroup) => {
     const { loading: sortUserLoading, error: sortUserError } = sortUser;
     const { data: { rooms } } = listRoom;
     const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
-    const { data: { positions } } = listPosition;  
+    const { data: { positions } } = listPosition;
+    const { loading: banUserLoading, error: banUserError } = banUserFromGroup;
     const newRooms = group.map(curGroup => ({
       ...curGroup,
       ...find(rooms, { 'id': get(curGroup, 'id') }),
@@ -29,16 +33,28 @@ export const roomsSelector = createSelector(
     }));
     return {
       rooms: newRooms,
-      loading: listUserOfGroupLoading || sortUserLoading,
-      error: listUserOfGroupError || sortUserError,
+      loading: listUserOfGroupLoading || sortUserLoading || banUserLoading,
+      error: listUserOfGroupError || sortUserError || banUserError,
     }
   }
-) 
+)
+
+export const publicPrivatePendingsSelector = createSelector(
+  [publicMember, privateMember],
+  (publicMember, privateMember) => {
+    const { pendings: publicPendings, error: publicError } = publicMember;
+    const { pendings: privatePendings, error: privateError } = privateMember;
+    return {
+      pendings: concat(publicPendings, privatePendings),
+      error: publicError || privateError,
+    }
+  }
+)
 
 export const maxUserSelector = createSelector(
   [listUserOfGroup],
   (listUserOfGroup) => {
-    const { data: {  maxUser } } = listUserOfGroup;
+    const { data: { maxUser } } = listUserOfGroup;
     return maxUser;
   }
 )

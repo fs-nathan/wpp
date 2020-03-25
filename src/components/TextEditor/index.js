@@ -6,6 +6,8 @@ import React from 'react';
 import decorator from './EditorLink';
 import './styles.scss';
 
+
+
 const { hasCommandModifier } = KeyBindingUtil;
 
 export const getEditorData = (value = '') => {

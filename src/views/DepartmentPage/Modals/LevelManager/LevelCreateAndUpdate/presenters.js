@@ -1,15 +1,13 @@
+import { TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
-import { 
-  TextField,
-} from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../../hooks';
+import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
-function LevelCreateAndUpdate({ 
-  updatedLevel = null, 
-  open, setOpen, 
+function LevelCreateAndUpdate({
+  updatedLevel = null,
+  open, setOpen,
   handleCreateOrUpdateLevel,
 }) {
 
@@ -31,12 +29,12 @@ function LevelCreateAndUpdate({
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateLevel(name, description)}
     >
+      <ColorTypo>Tên trình độ</ColorTypo>
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Tên trình độ'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -44,12 +42,12 @@ function LevelCreateAndUpdate({
           </ColorTypo>
         }
       />
+      <ColorTypo>Mô tả trình độ</ColorTypo>
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Mô tả trình độ'
         fullWidth
         multiline
         rowsMax='4'

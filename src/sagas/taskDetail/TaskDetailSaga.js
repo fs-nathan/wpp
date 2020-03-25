@@ -1342,7 +1342,7 @@ export function* unPinTask({ payload }) {
 }
 
 export {
-updateComplete,
+  updateComplete,
   // Update Priority
   updatePriority,
   // Offer::

@@ -1,36 +1,34 @@
-import React from 'react';
-import { get } from 'lodash';
-import { useHistory } from 'react-router-dom';
-import { 
-  ChartBox, ChartDrawer, ChartInfoBox, ChartTitle, CustomChart, ChartPlacedolder
-} from '../../../../components/CustomDonutChart';
-import ColorTypo from '../../../../components/ColorTypo';
-import ColorTextField from '../../../../components/ColorTextField';
-import { Container, SubContainer, } from '../../../../components/CustomDetailBox';
 import { mdiChevronLeft } from '@mdi/js';
-import LoadingBox from '../../../../components/LoadingBox';
+import { get } from 'lodash';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import ColorTypo from '../../../../components/ColorTypo';
+import { Container, SubContainer } from '../../../../components/CustomDetailBox';
+import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
+import LoadingBox from '../../../../components/LoadingBox';
 import './style.scss';
 
-const ProjectGroupName = ({ className = '', ...props }) => 
-  <span 
+const ProjectGroupName = ({ className = '', ...props }) =>
+  <span
     className={`view_ProjectGroup_Detail___name ${className}`}
     {...props}
   />;
 
-const SubHeader = ({ className = '', ...props }) => 
-  <div 
+const SubHeader = ({ className = '', ...props }) =>
+  <div
     className={`view_ProjectGroup_Detail___sub-header ${className}`}
     {...props}
   />;
 
-function DefaultGroupDetail({ 
-  group, 
+function DefaultGroupDetail({
+  group,
 }) {
-  
+
   const history = useHistory();
-  
+
   return (
     <React.Fragment>
       {group.error !== null && (<ErrorBox />)}
@@ -52,7 +50,7 @@ function DefaultGroupDetail({
               <SubContainer>
                 <ChartBox>
                   <ChartDrawer>
-                    <CustomChart 
+                    <CustomChart
                       type='donut'
                       options={{
                         legend: {
@@ -64,14 +62,13 @@ function DefaultGroupDetail({
                           },
                         },
                         labels: [
-                          'Dự án đang chờ', 
-                          'Dự án đang làm', 
+                          'Dự án đang chờ',
+                          'Dự án đang làm',
                           'Dự án quá hạn',
                           'Dự án hoàn thành',
                           'Dự án ẩn',
-                          'Dự án dừng',
                         ],
-                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d', 'black'],
+                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d'],
                       }}
                       series={[
                         get(group.group, 'statistics.task_waiting', 0),
@@ -79,22 +76,20 @@ function DefaultGroupDetail({
                         get(group.group, 'statistics.task_expired', 0),
                         get(group.group, 'statistics.task_complete', 0),
                         get(group.group, 'statistics.task_hidden', 0),
-                        get(group.group, 'statistics.task_stop', 0),
                       ]}
-                      width={250}
-                      height={250}
+                      width={200}
+                      height={200}
                     />
                     <ChartTitle>
                       Hoạt động
                     </ChartTitle>
                     {
                       get(group.group, 'statistics.task_waiting', 0) +
-                      get(group.group, 'statistics.task_doing', 0) +
-                      get(group.group, 'statistics.task_expired', 0) +
-                      get(group.group, 'statistics.task_complete', 0) +
-                      get(group.group, 'statistics.task_hidden', 0) +
-                      get(group.group, 'statistics.task_stop', 0) === 0
-                        ? <ChartPlacedolder />
+                        get(group.group, 'statistics.task_doing', 0) +
+                        get(group.group, 'statistics.task_expired', 0) +
+                        get(group.group, 'statistics.task_complete', 0) +
+                        get(group.group, 'statistics.task_hidden', 0) === 0
+                        ? <ChartPlaceholder />
                         : null
                     }
                   </ChartDrawer>
@@ -136,8 +131,9 @@ function DefaultGroupDetail({
                 <SubHeader>
                   <ColorTypo color='gray' uppercase>Mô tả</ColorTypo>
                 </SubHeader>
-                <ColorTextField 
+                <CustomTextbox
                   value={get(group.group, 'description', '')}
+                  isReadOnly={true}
                 />
               </SubContainer>
             </div>

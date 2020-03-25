@@ -1,11 +1,11 @@
-import React from 'react';
 import Joi from '@hapi/joi';
 import moment from 'moment';
+import React from 'react';
 
 export function useRequiredString(initial = '', maxLength = 100) {
   const [string, setString] = React.useState(initial);
   const [error, setError] = React.useState(null);
-  
+
   React.useEffect(() => {
     const schema = Joi.string().max(maxLength).required().messages({
       'any.required': 'Không được để trống',
@@ -20,19 +20,19 @@ export function useRequiredString(initial = '', maxLength = 100) {
 }
 
 export function useMaxlenString(initial = '', maxLength = 100) {
-  const [string, setString] = React.useState(initial);
+  const [value, setValue] = React.useState(initial);
   const [error, setError] = React.useState(null);
-  
+
   React.useEffect(() => {
     const schema = Joi.string().allow('').max(maxLength).messages({
       'string.max': 'Tối đa {#limit} ký tự',
     });
-    const { error } = schema.validate(string);
+    const { error } = schema.validate(value);
     setError(error);
-  }, [string, maxLength]);
+  }, [value, maxLength]);
 
-  return [string, setString, error];
-} 
+  return [value, setValue, error];
+}
 
 export function useRequiredDate(initial = moment().toDate()) {
   const [date, setDate] = React.useState(initial);
@@ -69,6 +69,6 @@ export function useLocalStorage(key, initialValue) {
       setStoredValue(storedValue);
     }
   };
-  
+
   return [storedValue, setValue];
 }

@@ -1,16 +1,14 @@
+import { TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
-import { 
-  TextField,
-} from '@material-ui/core';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../../hooks';
+import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
-function RoleCreateAndUpdate({ 
-  open, setOpen, 
-  updatedUserRole = null, 
-  handleCreateOrUpdateUserRole 
+function RoleCreateAndUpdate({
+  open, setOpen,
+  updatedUserRole = null,
+  handleCreateOrUpdateUserRole
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 100);
@@ -31,12 +29,12 @@ function RoleCreateAndUpdate({
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateUserRole(name, description)}
     >
+      <ColorTypo>Tên vai trò</ColorTypo>
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Tên vai trò'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -44,12 +42,12 @@ function RoleCreateAndUpdate({
           </ColorTypo>
         }
       />
+      <ColorTypo>Mô tả vai trò</ColorTypo>
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Mô tả vai trò'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>

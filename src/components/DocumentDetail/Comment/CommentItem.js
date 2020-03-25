@@ -1,21 +1,12 @@
-import React, { useState } from 'react';
-import {
-  Avatar,
-  IconButton,
-  Menu,
-  MenuItem,
-  TextField
-} from '@material-ui/core';
-import { useTranslation } from 'react-i18next';
-import { Icon } from '@mdi/react';
+import { Avatar, IconButton, Menu, MenuItem, TextField } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
-import ColorTypo from '../../ColorTypo';
+import { Icon } from '@mdi/react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { actionDeleteComment, actionUpdateComment } from '../../../actions/documents';
 import AlertModal from '../../AlertModal';
+import ColorTypo from '../../ColorTypo';
 import CustomModal from '../../CustomModal';
-import {
-  actionDeleteComment,
-  actionUpdateComment
-} from '../../../actions/documents';
 import '../DocumentDetail.scss';
 
 const CommentItem = ({ comment, onRefreshList }) => {

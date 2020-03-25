@@ -1,35 +1,39 @@
-import {
-  HIDE_PROJECT,
-  HIDE_PROJECT_SUCCESS,
-  HIDE_PROJECT_FAIL,
-} from '../../constants/actions/project/hideProject';
+import { concat, get, remove } from 'lodash';
+import { HIDE_PROJECT, HIDE_PROJECT_FAIL, HIDE_PROJECT_SUCCESS } from '../../constants/actions/project/hideProject';
 
 export const initialState = {
-  data: {},
   error: null,
-  loading: false,
+  pendings: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case HIDE_PROJECT:
+    case HIDE_PROJECT: {
+      const newPendings = concat(state.pendings, get(action.options, 'projectId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case HIDE_PROJECT_SUCCESS: 
+        pendings: newPendings,
+      }
+    }
+    case HIDE_PROJECT_SUCCESS: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'projectId'))
       return {
         ...state,
         error: null,
-        loading: false,
-      };
-    case HIDE_PROJECT_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case HIDE_PROJECT_FAIL: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'projectId'))
       return {
         ...state,
         error: action.error,
-        loading: false,
-      };
+        pendings: newPendings,
+      }
+    }
     default:
       return state;
   }

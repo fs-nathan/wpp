@@ -1,21 +1,10 @@
 .view_ProjectGroup_CreateNew_Project_Modal___form-control {
   min-width: 300px;
   max-width: 100%;
+  margin-top: 16px;
+  margin-bottom: 8px;
   & > * {
     margin-bottom: 10px;
     font-size: 12px;
   }  
-};
-
-.view_ProjectGroup_CreateNew_Project_Modal___text-field {
-  & > label {
-    z-index: 0;
-  }
-};
-
-.view_ProjectGroup_CreateNew_Project_Modal___form-label {
-  font-size: 14px;
-  & {
-    color: #a5a0a0;
-  }
 };

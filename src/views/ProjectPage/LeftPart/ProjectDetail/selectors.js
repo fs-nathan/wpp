@@ -1,15 +1,19 @@
+import { filter, flatten, get } from 'lodash';
 import { createSelector } from 'reselect';
-import { get, flatten, filter } from 'lodash';
 
 const detailProject = state => state.project.detailProject;
+const updateProject = state => state.project.updateProject;
+const deleteProject = state => state.project.deleteProject;
 const listTask = state => state.task.listTask;
 
 export const projectSelector = createSelector(
-  [detailProject, listTask],
-  (detailProject, listTask) => {
+  [detailProject, listTask, updateProject, deleteProject],
+  (detailProject, listTask, updateProject, deleteProject) => {
     const { data: { project }, error: detailProjectError, loading: detailProjectLoading } = detailProject;
     const { data: { tasks } } = listTask;
     const allTasks = flatten(tasks.map(groupTasks => get(groupTasks, 'tasks', [])));
+    const { loading: updateLoading, error: updateError } = updateProject;
+    const { loading: deleteLoading, error: deleteError } = deleteProject;
     const newProject = {
       ...project,
       state_name: get(project, 'visibility') ? get(project, 'state_name') : 'Ẩn',
@@ -21,8 +25,8 @@ export const projectSelector = createSelector(
     }
     return {
       project: newProject,
-      loading: detailProjectLoading,
-      error: detailProjectError,
+      loading: detailProjectLoading || updateLoading || deleteLoading,
+      error: detailProjectError || updateError || deleteError,
     }
   }
 );

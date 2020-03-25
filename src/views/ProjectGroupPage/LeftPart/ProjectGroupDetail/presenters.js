@@ -1,43 +1,41 @@
+import { mdiChevronLeft } from '@mdi/js';
+import { get } from 'lodash';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { get } from 'lodash';
-import { 
-  ChartBox, ChartDrawer, ChartTitle, CustomChart, ChartInfoBox, ChartPlacedolder
-} from '../../../../components/CustomDonutChart';
-import ColorTypo from '../../../../components/ColorTypo';
-import ColorTextField from '../../../../components/ColorTextField';
-import ColorButton from '../../../../components/ColorButton';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
-import { Container, SubContainer, ActionBox, } from '../../../../components/CustomDetailBox';
-import { mdiChevronLeft } from '@mdi/js';
-import LoadingBox from '../../../../components/LoadingBox';
+import ColorButton from '../../../../components/ColorButton';
+import ColorTypo from '../../../../components/ColorTypo';
+import { ActionBox, Container, SubContainer } from '../../../../components/CustomDetailBox';
+import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
+import LoadingBox from '../../../../components/LoadingBox';
 import './style.scss';
 
-const ProjectGroupName = ({ className = '', ...props }) => 
-  <span 
+const ProjectGroupName = ({ className = '', ...props }) =>
+  <span
     className={`view_ProjectGroup_Detail___name ${className}`}
     {...props}
   />;
 
-const SubHeader = ({ className = '', ...props }) => 
-  <div 
+const SubHeader = ({ className = '', ...props }) =>
+  <div
     className={`view_ProjectGroup_Detail___sub-header ${className}`}
     {...props}
   />;
 
-const StyledColorTypo = ({ className = '', ...props }) => 
-  <ColorTypo 
+const StyledColorTypo = ({ className = '', ...props }) =>
+  <ColorTypo
     className={`view_ProjectGroup_Detail___typography ${className}`}
     {...props}
   />;
 
-function ProjectGroupDetail({ 
-  group, 
+function ProjectGroupDetail({
+  group,
   handleDeleteProjectGroup, handleOpenModal,
 }) {
-  
+
   const history = useHistory();
 
   return (
@@ -61,7 +59,7 @@ function ProjectGroupDetail({
               <SubContainer>
                 <ChartBox>
                   <ChartDrawer>
-                    <CustomChart 
+                    <CustomChart
                       type='donut'
                       options={{
                         legend: {
@@ -73,14 +71,13 @@ function ProjectGroupDetail({
                           },
                         },
                         labels: [
-                          'Dự án đang chờ', 
-                          'Dự án đang làm', 
+                          'Dự án đang chờ',
+                          'Dự án đang làm',
                           'Dự án quá hạn',
                           'Dự án hoàn thành',
                           'Dự án ẩn',
-                          'Dự án dừng',
                         ],
-                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d', 'black'],
+                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d'],
                       }}
                       series={[
                         get(group.group, 'statistics.task_waiting', 0),
@@ -88,7 +85,6 @@ function ProjectGroupDetail({
                         get(group.group, 'statistics.task_expired', 0),
                         get(group.group, 'statistics.task_complete', 0),
                         get(group.group, 'statistics.task_hidden', 0),
-                        get(group.group, 'statistics.task_stop', 0),
                       ]}
                       width={250}
                       height={250}
@@ -98,12 +94,11 @@ function ProjectGroupDetail({
                     </ChartTitle>
                     {
                       get(group.group, 'statistics.task_waiting', 0) +
-                      get(group.group, 'statistics.task_doing', 0) +
-                      get(group.group, 'statistics.task_expired', 0) +
-                      get(group.group, 'statistics.task_complete', 0) +
-                      get(group.group, 'statistics.task_hidden', 0) +
-                      get(group.group, 'statistics.task_stop', 0) === 0
-                        ? <ChartPlacedolder />
+                        get(group.group, 'statistics.task_doing', 0) +
+                        get(group.group, 'statistics.task_expired', 0) +
+                        get(group.group, 'statistics.task_complete', 0) +
+                        get(group.group, 'statistics.task_hidden', 0) === 0
+                        ? <ChartPlaceholder />
                         : null
                     }
                   </ChartDrawer>
@@ -146,15 +141,16 @@ function ProjectGroupDetail({
                 <SubHeader>
                   <ColorTypo color='gray' uppercase>Mô tả</ColorTypo>
                 </SubHeader>
-                <ColorTextField 
+                <CustomTextbox
                   value={get(group.group, 'description', '')}
+                  isReadOnly={true}
                 />
               </SubContainer>
               <SubContainer>
                 <SubHeader>
                   <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
                 </SubHeader>
-                <AvatarCircleList users={group.group.members} total={20} display={12}/>
+                <AvatarCircleList users={group.group.members} total={20} display={12} />
                 <StyledColorTypo color='blue' onClick={() => handleOpenModal('MEMBER', {
                   members: get(group.group, 'members', []),
                 })}>Xem chi tiết thành viên</StyledColorTypo>
