@@ -119,7 +119,9 @@ function Layout({ children, title, bgColor }) {
     timeRange,
     settimeRange,
     expand,
-    handleExpand
+    handleExpand,
+    keyword,
+    setkeyword
   } = useContext(JobPageContext);
 
   console.log({ expand, timeAnchor, timeType, timeRange });
@@ -154,8 +156,8 @@ function Layout({ children, title, bgColor }) {
                 onClick: () => setOopenModalDirect(true)
               },
               search: {
-                patern: "",
-                onChange: loginlineFunc
+                patern: keyword,
+                onChange: setkeyword
               },
 
               grouped: {

@@ -90,6 +90,7 @@ export const defaultFilter = {
 };
 function JobPage() {
   const { t } = useTranslation();
+  const [keyword, setkeyword] = useState("");
   const [localOptions, setLocalOptions] = useLocalStorage(
     "LOCAL_PROJECT_OPTIONS",
     {
@@ -203,7 +204,9 @@ function JobPage() {
             settimeRange,
             statusFilter,
             setstatusFilter,
-            handleRemovestatusFilter
+            handleRemovestatusFilter,
+            keyword,
+            setkeyword
           }}
         >
           <div>

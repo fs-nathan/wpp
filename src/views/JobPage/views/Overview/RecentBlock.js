@@ -83,7 +83,7 @@ export const RecentTable = ({ tasks = [] }) => {
 
 export function RecentBlock() {
   const { t } = useTranslation();
-  const { statusFilter } = useContext(JobPageContext);
+  const { statusFilter, keyword } = useContext(JobPageContext);
 
   const [waiting, doing, complete, expired, stop, tasks = []] = useSelector(
     state => {
@@ -99,7 +99,12 @@ export function RecentBlock() {
   );
 
   const [isToggleSortName, toggleSortName] = useToggle();
-  const [list] = useCustomList({ tasks, statusFilter, isToggleSortName });
+  const [list] = useCustomList({
+    tasks,
+    statusFilter,
+    isToggleSortName,
+    keyword
+  });
 
   return (
     <Card variant="outlined">

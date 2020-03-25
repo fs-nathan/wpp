@@ -1,7 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { useList } from "react-use";
 import { taskPriorityMap, taskStatusMap } from "../contants/attrs";
-export const useCustomList = ({ tasks, isToggleSortName, statusFilter }) => {
+export const useCustomList = ({
+  tasks,
+  isToggleSortName,
+  statusFilter,
+  keyword = ""
+}) => {
   const [
     list,
     {
@@ -36,14 +41,19 @@ export const useCustomList = ({ tasks, isToggleSortName, statusFilter }) => {
         .find(key => true || item.priority_code == key),
     [statusFilter]
   );
+  const filterKeyWordMemo = useMemo(
+    () => item => item.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1,
+    [keyword]
+  );
   useEffect(() => {
     set(tasks);
     sort(sortMemo);
     if (Object.values(statusFilter).filter(item => item).length) {
-      filter(filterStatusMemo);
+      filter(item => filterStatusMemo(item) && filterKeyWordMemo(item));
     }
   }, [
     filter,
+    filterKeyWordMemo,
     filterStatusMemo,
     isToggleSortName,
     set,

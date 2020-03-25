@@ -14,7 +14,7 @@ import { createMapPropsFromAttrs } from "../../utils";
 const emptyArray = [];
 export function Content() {
   const { t } = useTranslation();
-  const { statusFilter } = useContext(JobPageContext);
+  const { statusFilter, keyword } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
   const [
     waiting,
@@ -33,7 +33,12 @@ export function Content() {
       recent.tasks
     ])(state.taskPage[TASK_ASSIGN]);
   });
-  const [list] = useCustomList({ tasks, statusFilter, isToggleSortName });
+  const [list] = useCustomList({
+    tasks,
+    statusFilter,
+    isToggleSortName,
+    keyword
+  });
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
