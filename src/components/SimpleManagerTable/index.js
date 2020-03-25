@@ -1,7 +1,8 @@
 import { Button, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
-import ColorButton from '../ColorButton';
+import { connect } from 'react-redux';
+import { bgColorSelector } from './selectors';
 import './style.scss';
 
 const StyledTableHead = ({ className = '', ...props }) =>
@@ -41,6 +42,7 @@ function SimpleManagerTable({
   handleAdd = () => null,
   handleEdit = () => null,
   handleDelete = () => null,
+  bgColor,
 }) {
 
   return (
@@ -50,12 +52,16 @@ function SimpleManagerTable({
           <StyledTableCell width={'30%'}>Tên</StyledTableCell>
           <StyledTableCell width={'50%'}>Mô tả</StyledTableCell>
           <TableCell width={'20%'} colSpan={2}>
-            <ColorButton variantColor='orange' size='small' variant='contained'
+            <Button
               fullWidth
+              style={{
+                backgroundColor: bgColor.color,
+                color: 'white',
+              }}
               onClick={() => handleAdd()}
             >
               + Thêm mới
-            </ColorButton>
+            </Button>
           </TableCell>
         </TableRow>
       </StyledTableHead>
@@ -104,4 +110,13 @@ function SimpleManagerTable({
   )
 }
 
-export default SimpleManagerTable;
+const mapStateToProps = state => {
+  return {
+    bgColor: bgColorSelector(state),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+)(SimpleManagerTable);

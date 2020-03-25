@@ -145,80 +145,81 @@ function ProjectPage({
         timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
         timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
       });
-    }
 
-    const reloadListTask = () => {
-      doListTask({
-        projectId,
-        timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
-        timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-      });
-    }
+      const reloadListTask = () => {
+        doListTask({
+          projectId,
+          timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
+          timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
+        });
+      }
 
-    CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
-    CustomEventListener(COPY_GROUP_TASK, reloadListTask);
-    CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
-    CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
-    CustomEventListener(SORT_GROUP_TASK, reloadListTask);
-    CustomEventListener(CREATE_TASK, reloadListTask);
-    //CustomEventListener(DELETE_TASK, reloadListTask);
-    CustomEventListener(SORT_TASK, reloadListTask);
+      CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
+      CustomEventListener(COPY_GROUP_TASK, reloadListTask);
+      CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
+      CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
+      CustomEventListener(SORT_GROUP_TASK, reloadListTask);
+      CustomEventListener(CREATE_TASK, reloadListTask);
+      //CustomEventListener(DELETE_TASK, reloadListTask);
+      CustomEventListener(SORT_TASK, reloadListTask);
 
-    return () => {
-      CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
-      CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
-      CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
-      CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
-      CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
-      CustomEventDispose(CREATE_TASK, reloadListTask);
-      //CustomEventDispose(DELETE_TASK, reloadListTask);
-      CustomEventDispose(SORT_TASK, reloadListTask);
+      return () => {
+        CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
+        CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
+        CustomEventDispose(CREATE_TASK, reloadListTask);
+        //CustomEventDispose(DELETE_TASK, reloadListTask);
+        CustomEventDispose(SORT_TASK, reloadListTask);
+      }
     }
   }, [projectId, doListTask, timeRange]);
 
   React.useEffect(() => {
     if (projectId) {
       doListGroupTask({ projectId });
-    }
 
-    const reloadListGroupTask = () => {
-      doListGroupTask({ projectId });
-    }
 
-    //CustomEventListener(CREATE_GROUP_TASK, reloadListGroupTask);
-    //CustomEventListener(COPY_GROUP_TASK, reloadListGroupTask);
-    //CustomEventListener(UPDATE_GROUP_TASK, reloadListGroupTask);
-    //CustomEventListener(DELETE_GROUP_TASK, reloadListGroupTask);
-    CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
+      const reloadListGroupTask = () => {
+        doListGroupTask({ projectId });
+      }
 
-    return () => {
-      //CustomEventDispose(CREATE_GROUP_TASK, reloadListGroupTask);
-      //CustomEventDispose(COPY_GROUP_TASK, reloadListGroupTask);
-      //CustomEventDispose(UPDATE_GROUP_TASK, reloadListGroupTask);
-      //CustomEventDispose(DELETE_GROUP_TASK, reloadListGroupTask);
-      CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
+      //CustomEventListener(CREATE_GROUP_TASK, reloadListGroupTask);
+      //CustomEventListener(COPY_GROUP_TASK, reloadListGroupTask);
+      //CustomEventListener(UPDATE_GROUP_TASK, reloadListGroupTask);
+      //CustomEventListener(DELETE_GROUP_TASK, reloadListGroupTask);
+      CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
+
+      return () => {
+        //CustomEventDispose(CREATE_GROUP_TASK, reloadListGroupTask);
+        //CustomEventDispose(COPY_GROUP_TASK, reloadListGroupTask);
+        //CustomEventDispose(UPDATE_GROUP_TASK, reloadListGroupTask);
+        //CustomEventDispose(DELETE_GROUP_TASK, reloadListGroupTask);
+        CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
+      }
     }
   }, [projectId, doListGroupTask]);
 
   React.useEffect(() => {
     if (projectId) {
       doGetListTaskDetail({ projectId });
-    }
 
-    const reloadGetListTaskDetail = () => {
-      getListTaskDetail({ projectId });
-    }
+      const reloadGetListTaskDetail = () => {
+        doGetListTaskDetail({ projectId });
+      }
 
-    CustomEventListener(CREATE_GROUP_TASK, reloadGetListTaskDetail);
-    CustomEventListener(COPY_GROUP_TASK, reloadGetListTaskDetail);
-    CustomEventListener(UPDATE_GROUP_TASK, reloadGetListTaskDetail);
-    CustomEventListener(DELETE_GROUP_TASK, reloadGetListTaskDetail);
+      CustomEventListener(CREATE_GROUP_TASK, reloadGetListTaskDetail);
+      CustomEventListener(COPY_GROUP_TASK, reloadGetListTaskDetail);
+      CustomEventListener(UPDATE_GROUP_TASK, reloadGetListTaskDetail);
+      CustomEventListener(DELETE_GROUP_TASK, reloadGetListTaskDetail);
 
-    return () => {
-      CustomEventDispose(CREATE_GROUP_TASK, reloadGetListTaskDetail);
-      CustomEventDispose(COPY_GROUP_TASK, reloadGetListTaskDetail);
-      CustomEventDispose(UPDATE_GROUP_TASK, reloadGetListTaskDetail);
-      CustomEventDispose(DELETE_GROUP_TASK, reloadGetListTaskDetail);
+      return () => {
+        CustomEventDispose(CREATE_GROUP_TASK, reloadGetListTaskDetail);
+        CustomEventDispose(COPY_GROUP_TASK, reloadGetListTaskDetail);
+        CustomEventDispose(UPDATE_GROUP_TASK, reloadGetListTaskDetail);
+        CustomEventDispose(DELETE_GROUP_TASK, reloadGetListTaskDetail);
+      }
     }
   }, [projectId, doGetListTaskDetail]);
 
