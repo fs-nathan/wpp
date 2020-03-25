@@ -35,6 +35,13 @@
   &--end-date-box {
     text-align: right;
   }
+  &--icon {
+    padding: 0 4px;
+    transform: translateY(6px);
+  }
+  &__expanded {
+    transform: translateY(6px) rotate(-90deg);
+  }
 }
 
 .progressTimeExpect {

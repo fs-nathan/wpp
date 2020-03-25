@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
-import ColorButton from '../../../../../components/ColorButton';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
@@ -155,35 +154,14 @@ function TabBody(props) {
         </ListItem>
         <Description value={content} />
         <ListItemButtonGroup>
-          {isExpiredDate(data.end_date)
-            &&
-            props.isPause
-            ?
-            <HtmlTooltip title={<ModalStatus values="Đang tạm dừng" />} placement="top-start">
-              <div>
-                <ColorButton size='small' variant='outlined'
-                  style={{
-                    marginBottom: '10px',
-                    marginRight: '15px',
-                    color: '#dc3545',
-                    borderColor: '#dc3545',
-                  }}>
-                  Đang tạm dừng
-                </ColorButton>
-              </div>
-            </HtmlTooltip>
-            :
-            <>
-              <StatusLabel
-                type={TYPE_STATUS}
-                value={getCompleteStatus(taskStatistic.complete)}
-              />
-              <StatusLabel
-                type={TYPE_PRIORITY}
-                value={taskStatistic.priority_code}
-              />
-            </>
-          }
+          <StatusLabel
+            type={TYPE_STATUS}
+            value={getCompleteStatus(taskStatistic.complete)}
+          />
+          <StatusLabel
+            type={TYPE_PRIORITY}
+            value={taskStatistic.priority_code}
+          />
           {
             !isExpiredDate(data.end_date)
             &&
@@ -192,6 +170,17 @@ function TabBody(props) {
             >
               Đã quá hạn
               </Typography>
+          }
+          {
+            props.isPause
+            &&
+            <HtmlTooltip title={<ModalStatus values="Đang tạm dừng" />} placement="top-start">
+              <Typography
+                className="listPartTabBody--expired listPartTabBody--paused"
+              >
+                Đang tạm dừng
+              </Typography>
+            </HtmlTooltip>
           }
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>

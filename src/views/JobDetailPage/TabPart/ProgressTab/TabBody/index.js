@@ -1,14 +1,17 @@
+import { mdiMenuDown } from '@mdi/js';
+import Icon from '@mdi/react';
 import { updateComplete } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'classnames';
 import ColorTypo from 'components/ColorTypo';
 import differenceInDays from 'date-fns/differenceInDays';
 import parse from 'date-fns/parse';
 import clamp from 'lodash/clamp';
-import React from 'react';
+import React, { useState } from 'react';
 import ReactApexChart from "react-apexcharts";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
-import DetailEditProgress from './DetailEditProgress';
+import EditProgressItem from './EditProgressItem';
 import ProgressSlider from './ProgressSlider';
 import './styles.scss';
 
@@ -23,7 +26,11 @@ function TabBody() {
   const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
   const trackTimeCompleted = useSelector(state => state.taskDetail.trackingTime.trackTimeCompleted);
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const [showDetail, setShowDetail] = useState(false);
 
+  function toggleDetail() {
+    setShowDetail(!showDetail)
+  }
   const trackings = listTime ? listTime.trackings : [];
   const onChangeCommitted = (data) => {
     let task_id = taskId
@@ -163,7 +170,26 @@ function TabBody() {
       <ColorTypo className="progressTabBody--title">{"Biểu đồ cập nhật tiến độ"}</ColorTypo>
       <ColorTypo className="progressTabBody--subTitle">{"Biểu đồ thể hiện lịch sử hoàn thành công việc"}</ColorTypo>
       <ReactApexChart options={chartData.options} series={chartData.series} type="bar" height={350} />
-      <DetailEditProgress trackings={trackings} />
+      <ColorTypo className="progressTabBody--title"
+        onClick={toggleDetail}
+      >{"Điều chỉnh tiến độ"}
+        <Icon
+          path={mdiMenuDown}
+          color="rgba(0, 0, 0, 0.54)"
+          size={1}
+          className={clsx('progressTabBody--icon', { 'progressTabBody__expanded': showDetail })}
+        />
+      </ColorTypo>
+      <ColorTypo className="progressTabBody--subTitle">{`${trackings.length} lần điều chỉnh`}</ColorTypo>
+      {showDetail && trackings.map((track, i) => (<EditProgressItem
+        key={i}
+        fixedNumber={i + 1}
+        fixStart={track.new_start}
+        fixEnd={track.new_end}
+        createdAt={track.time_create}
+        avatarUrl={track.user_create_avatar}
+      // userName={track.user_created}
+      ></EditProgressItem>))}
     </Scrollbars >
   )
 }
