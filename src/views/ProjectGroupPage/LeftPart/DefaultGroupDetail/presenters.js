@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import { Container, SubContainer } from '../../../../components/CustomDetailBox';
 import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -132,7 +132,7 @@ function DefaultGroupDetail({
                   <ColorTypo color='gray' uppercase>Mô tả</ColorTypo>
                 </SubHeader>
                 <CustomTextbox
-                  value={getEditorData(get(group.group, 'description', ''))}
+                  value={get(group.group, 'description', '')}
                   isReadOnly={true}
                 />
               </SubContainer>

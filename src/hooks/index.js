@@ -1,8 +1,6 @@
 import Joi from '@hapi/joi';
-import { convertToRaw } from 'draft-js';
 import moment from 'moment';
 import React from 'react';
-import { getEditorData } from '../components/TextEditor';
 
 export function useRequiredString(initial = '', maxLength = 100) {
   const [string, setString] = React.useState(initial);
@@ -22,38 +20,18 @@ export function useRequiredString(initial = '', maxLength = 100) {
 }
 
 export function useMaxlenString(initial = '', maxLength = 100) {
-  const [string, setString] = React.useState(initial);
+  const [value, setValue] = React.useState(initial);
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
     const schema = Joi.string().allow('').max(maxLength).messages({
       'string.max': 'Tối đa {#limit} ký tự',
     });
-    const { error } = schema.validate(string);
+    const { error } = schema.validate(value);
     setError(error);
-  }, [string, maxLength]);
+  }, [value, maxLength]);
 
-  return [string, setString, error];
-}
-
-export function useTextboxString(initial = '', maxLength = 100) {
-  const [editorState, setEditorState] = React.useState(getEditorData(initial));
-  const [error, setError] = React.useState(null);
-  const [raw, setRaw] = React.useState(null);
-
-  React.useEffect(() => {
-    const string = editorState
-      .getCurrentContent()
-      .getPlainText('')
-    const schema = Joi.string().allow('').max(maxLength).messages({
-      'string.max': 'Tối đa {#limit} ký tự',
-    });
-    const { error } = schema.validate(string);
-    setError(error);
-    setRaw(JSON.stringify(convertToRaw(editorState.getCurrentContent())))
-  }, [editorState, maxLength]);
-
-  return [editorState, setEditorState, error, raw];
+  return [value, setValue, error];
 }
 
 export function useRequiredDate(initial = moment().toDate()) {
@@ -93,14 +71,4 @@ export function useLocalStorage(key, initialValue) {
   };
 
   return [storedValue, setValue];
-}
-
-export function useClientReact(...dependencies) {
-  const [rect, setRect] = React.useState();
-  const ref = React.useCallback(node => {
-    if (node !== null) {
-      setRect(node.getBoundingClientRect())
-    }
-  }, dependencies);
-  return [rect, ref];
 }

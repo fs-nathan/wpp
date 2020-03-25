@@ -3,8 +3,8 @@ import { find, get, isNil } from 'lodash';
 import React from 'react';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
-import { useRequiredString, useTextboxString } from '../../../../hooks';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -27,7 +27,7 @@ function EditProject({
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 200);
-  const [description, setDescription, errorDescription, rawDescription] = useTextboxString('', 500);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
   const [priority, setPriority] = React.useState(0);
   const [currency, setCurrency] = React.useState(0);
@@ -35,7 +35,7 @@ function EditProject({
   React.useEffect(() => {
     if (curProject) {
       setName(get(curProject, 'name', ''));
-      setDescription(getEditorData(get(curProject, 'description', '')));
+      setDescription(get(curProject, 'description', ''));
       setPriority(get(curProject, 'priority_code', 0));
       setCurrency(get(curProject, 'currency', 0));
       setCurProjectGroupId(
@@ -57,7 +57,7 @@ function EditProject({
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleEditProject({
         name,
-        description: rawDescription,
+        description,
         priority,
         currency,
         projectGroupId: curProjectGroupId !== get(groups.groups[0], 'id')

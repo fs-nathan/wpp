@@ -4,7 +4,7 @@ import React from 'react';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomModal from '../../../../components/CustomModal';
 import CustomTextbox from '../../../../components/CustomTextbox';
-import { useRequiredString, useTextboxString } from '../../../../hooks';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -26,7 +26,7 @@ function CreateNewProject({
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 200);
-  const [description, setDescription, errorDescription, rawDescription] = useTextboxString('', 500);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [priority, setPriority] = React.useState(0);
   const [currency] = React.useState(0);
   const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
@@ -43,7 +43,7 @@ function CreateNewProject({
             ? curProjectGroupId
             : undefined,
           name,
-          description: rawDescription,
+          description,
           priority,
           currency,
         })

@@ -11,7 +11,7 @@ import { Primary, StyledList, StyledListItem } from '../../../../components/Cust
 import CustomModal from '../../../../components/CustomModal';
 import CustomTextbox from '../../../../components/CustomTextbox';
 import SearchInput from '../../../../components/SearchInput';
-import { useRequiredDate, useRequiredString, useTextboxString } from '../../../../hooks';
+import { useMaxlenString, useRequiredDate, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const Header = ({ className = '', ...props }) =>
@@ -118,7 +118,7 @@ function CopyProject({
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 200);
-  const [description, setDescription, errorDescription, rawDescription] = useTextboxString('', 500);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [isCopyMember, setIsCopyMember] = React.useState(false);
   const [startDate, setStartDate, errorDate] = useRequiredDate(moment().toDate());
 
@@ -134,7 +134,7 @@ function CopyProject({
       onConfirm={() => handleCopyProject(
         get(selectedProject, 'id'),
         name,
-        rawDescription,
+        description,
         moment(startDate).format('YYYY-MM-DD'),
         isCopyMember
       )}
