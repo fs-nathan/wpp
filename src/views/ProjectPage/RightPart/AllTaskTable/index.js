@@ -1,31 +1,33 @@
-import React from 'react';
 import { get } from 'lodash';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Context as ProjectPageContext } from '../../index';
-import AlertModal from '../../../../components/AlertModal';
-import CreateNewTaskModal from '../../Modals/CreateNewTask';
-import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting';
 import { hideProject } from '../../../../actions/project/hideProject';
 import { showProject } from '../../../../actions/project/showProject';
+import { createTask } from '../../../../actions/task/createTask';
 import { deleteTask } from '../../../../actions/task/deleteTask';
 import { sortTask } from '../../../../actions/task/sortTask';
-import { tasksSelector, projectSelector, bgColorSelector } from './selectors';
+import AlertModal from '../../../../components/AlertModal';
+import CreateJobModal from '../../../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal';
+import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting';
+import { Context as ProjectPageContext } from '../../index';
 import AllTaskTablePresenter from './presenters';
+import { bgColorSelector, projectSelector, showHidePendingsSelector, tasksSelector } from './selectors';
 
-function AllTaskTable({ 
-  expand, handleExpand, 
+function AllTaskTable({
+  expand, handleExpand,
   bgColor,
+  showHidePendings,
   handleSubSlide,
   tasks, project,
   doShowProject, doHideProject,
-  doDeleteTask,
+  doDeleteTask, doCreateTask,
   doSortTask,
 }) {
 
-  const { 
-    setProjectId, 
-    setTimeRange, 
+  const {
+    setProjectId,
+    setTimeRange,
     setStatusProjectId,
     localOptions, setLocalOptions
   } = React.useContext(ProjectPageContext);
@@ -54,7 +56,7 @@ function AllTaskTable({
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'CREATE': 
+      case 'CREATE':
         setOpenCreate(true);
         return;
       case 'SETTING':
@@ -71,16 +73,17 @@ function AllTaskTable({
 
   return (
     <>
-      <AllTaskTablePresenter 
-        expand={expand} handleExpand={handleExpand} 
+      <AllTaskTablePresenter
+        expand={expand} handleExpand={handleExpand}
         handleSubSlide={handleSubSlide}
+        showHidePendings={showHidePendings}
         tasks={tasks} project={project}
-        handleShowOrHideProject={project => 
+        handleShowOrHideProject={project =>
           get(project, 'visibility', false)
-          ? doHideProject({ projectId: get(project, 'id') })
-          : doShowProject({ projectId: get(project, 'id') })
+            ? doHideProject({ projectId: get(project, 'id') })
+            : doShowProject({ projectId: get(project, 'id') })
         }
-        handleDeleteTask={task => 
+        handleDeleteTask={task =>
           doDeleteTask({ taskId: get(task, 'id') })
         }
         handleSortTask={(taskId, groupTask, sortIndex) =>
@@ -100,13 +103,29 @@ function AllTaskTable({
           timeEnd: end,
         })}
       />
-      <CreateNewTaskModal 
-        open={openCreate} 
+      <CreateJobModal
+        isOpen={openCreate}
         setOpen={setOpenCreate}
+        isRight={false}
+        projectId={projectId}
+        doCreateTask={({ data, projectId }) =>
+          doCreateTask({
+            name: data.name,
+            projectId,
+            groupTask: data.group_task,
+            typeAssign: data.type_assign,
+            priority: data.priority,
+            description: data.description,
+            startDate: data.start_date,
+            startTime: data.start_time,
+            endDate: data.end_date,
+            endTime: data.end_time,
+          })
+        }
       />
-      <ProjectSettingModal 
-        open={openSetting} 
-        setOpen={setOpenSetting} 
+      <ProjectSettingModal
+        open={openSetting}
+        setOpen={setOpenSetting}
         setStatusProjectId={setStatusProjectId}
         {...settingProps}
       />
@@ -124,6 +143,7 @@ const mapStateToProps = state => {
     tasks: tasksSelector(state),
     project: projectSelector(state),
     bgColor: bgColorSelector(state),
+    showHidePendings: showHidePendingsSelector(state),
   }
 }
 
@@ -133,6 +153,7 @@ const mapDispatchToProps = dispatch => {
     doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
     doDeleteTask: ({ taskId }) => dispatch(deleteTask({ taskId })),
     doSortTask: ({ taskId, projectId, groupTask, sortIndex }) => dispatch(sortTask({ taskId, projectId, groupTask, sortIndex })),
+    doCreateTask: ({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) => dispatch(createTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, })),
   };
 };
 

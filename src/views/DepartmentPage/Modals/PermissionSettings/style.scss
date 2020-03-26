@@ -1,22 +1,30 @@
-.view_Department_Permission_Modal___table-head {
-  background-color: #eee; 
-  & * {
+.view_Department_Permission_Modal___container {
+  & > * {
+    &:first-child {
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+  }
+  & > span {
+    font-size: 13px;
+    line-height: 17px;
+    color: #777;
+  }
+}
+
+.view_Department_Permission_Modal___boxes-container {
+  margin-top: 10px;
+}
+
+.view_Department_Permission_Modal___box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-self: center;
+  & > * {
     text-transform: none;
+    font-size: 13px;
   }
-};
-
-.view_Department_Permission_Modal___table-cell-radio {
-  & > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-};
-
-.view_Department_Permission_Modal___table-cell-checkbox {
-  & > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-};
+}

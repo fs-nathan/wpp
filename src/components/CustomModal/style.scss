@@ -50,9 +50,6 @@
 }
 
 .comp_CustomModal___dialog-content {
-  & > *:not(:last-child) {
-    margin-bottom: 12px;
-  }
   & > input[type=file] {
     display: none;
   } 

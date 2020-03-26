@@ -1,44 +1,35 @@
+import { FormControl, FormControlLabel, MenuItem, Radio, RadioGroup, TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
-import { 
-  TextField, FormControl, Radio,
-  FormLabel, RadioGroup, FormControlLabel, 
-} from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import CustomSelect from '../../../../components/CustomSelect';
 import ColorTypo from '../../../../components/ColorTypo';
-import { get, find } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../hooks';
+import CustomModal from '../../../../components/CustomModal';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
-const StyledFormControl = ({ className = '', ...props }) => 
-  <FormControl 
+const StyledFormControl = ({ className = '', ...props }) =>
+  <FormControl
     className={`view_ProjectGroup_CreateNew_Project_Modal___form-control ${className}`}
     {...props}
   />;
 
-const CustomTextField = ({ className = '', ...props }) => 
-  <TextField 
+const CustomTextField = ({ className = '', ...props }) =>
+  <TextField
     className={`view_ProjectGroup_CreateNew_Project_Modal___text-field ${className}`}
     {...props}
   />;
 
-const StyledFormLabel = ({ className = '', ...props }) => 
-  <FormLabel 
-    className={`view_ProjectGroup_CreateNew_Project_Modal___form-label ${className}`}
-    {...props}
-  />;
-
-function CreateNewProject({ 
-  open, setOpen, 
-  groups, 
-  handleCreateProject, 
+function CreateNewProject({
+  open, setOpen,
+  groups,
+  handleCreateProject,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
-  const [projectGroup, setProjectGroup] = React.useState(groups.groups[0]);
   const [priority, setPriority] = React.useState(0);
   const [currency] = React.useState(0);
+  const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
 
   return (
     <CustomModal
@@ -46,10 +37,10 @@ function CreateNewProject({
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName && !errorDescription}
-      onConfirm={() => 
+      onConfirm={() =>
         handleCreateProject({
-          projectGroupId: get(projectGroup, 'id') !== '__default__'
-            ? get(projectGroup, 'id')
+          projectGroupId: curProjectGroupId !== get(groups.groups[0], 'id')
+            ? curProjectGroupId
             : undefined,
           name,
           description,
@@ -59,30 +50,27 @@ function CreateNewProject({
       }
       loading={groups.loading}
     >
+      <ColorTypo>Nhóm dự án</ColorTypo>
       <StyledFormControl fullWidth>
-        <label htmlFor='room-select'>
-          Nhóm dự án
-        </label>
-        <CustomSelect
-          options={
-            groups.groups.map(projectGroup => ({
-                value: get(projectGroup, 'id'),
-                label: get(projectGroup, 'name', ''),
-              })
-            )}
-          value={{
-            value: get(projectGroup, 'id'),
-            label: get(projectGroup, 'name', ''),
-          }}
-          onChange={({ value: projectGroupId }) => setProjectGroup(find(groups.groups, { id: projectGroupId }))}
-        />
+        <CustomTextField
+          select
+          variant="outlined"
+          value={curProjectGroupId}
+          onChange={evt => setCurProjectGroupId(evt.target.value)}
+        >
+          {groups.groups.map(projectGroup =>
+            <MenuItem key={get(projectGroup, 'id')} value={get(projectGroup, 'id')}>
+              {get(projectGroup, 'name')}
+            </MenuItem>
+          )}
+        </CustomTextField>
       </StyledFormControl>
+      <ColorTypo>Tên dự án</ColorTypo>
       <CustomTextField
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Tên dự án'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -90,30 +78,16 @@ function CreateNewProject({
           </ColorTypo>
         }
       />
-      <CustomTextField
-        value={description}
-        onChange={evt => setDescription(evt.target.value)}
-        margin="normal"
-        variant="outlined"
-        label='Mô tả dự án'
-        fullWidth
-        multiline
-        rowsMax='6'
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorDescription, 'message', '')}
-          </ColorTypo>
-        }
-      />
+      <ColorTypo>
+        Mức độ ưu tiên
+      </ColorTypo>
       <StyledFormControl fullWidth>
-        <StyledFormLabel component="legend" htmlFor='room-select'>
-          Mức độ ưu tiên
-        </StyledFormLabel>
         <RadioGroup
           aria-label='priority'
           name='priority'
           value={priority}
           onChange={evt => setPriority(parseInt(evt.target.value))}
+          row={true}
         >
           <FormControlLabel
             value={0}
@@ -135,6 +109,12 @@ function CreateNewProject({
           />
         </RadioGroup>
       </StyledFormControl>
+      <ColorTypo>Mô tả dự án</ColorTypo>
+      <CustomTextbox
+        value={description}
+        onChange={value => setDescription(value)}
+        helperText={get(errorDescription, 'message', '')}
+      />
     </CustomModal>
   )
 }

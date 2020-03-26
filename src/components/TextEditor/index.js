@@ -1,18 +1,12 @@
-import React, { useEffect } from 'react';
 import clsx from 'classnames';
 // import 'draft-js/dist/Draft.css';
-import {
-  Editor, EditorState, RichUtils, convertToRaw, Entity, convertFromRaw, ContentState,
-  getDefaultKeyBinding, KeyBindingUtil
-} from 'draft-js';
-import BoldIcon from '@material-ui/icons/FormatBoldOutlined';
-import FormatItalicRounded from '@material-ui/icons/FormatItalicRounded';
-import FormatUnderlinedSharp from '@material-ui/icons/FormatUnderlinedSharp';
+import { ContentState, convertFromRaw, Editor, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
 import getFragmentFromSelection from 'draft-js/lib/getFragmentFromSelection';
-
+import React from 'react';
 import decorator from './EditorLink';
-
 import './styles.scss';
+
+
 
 const { hasCommandModifier } = KeyBindingUtil;
 

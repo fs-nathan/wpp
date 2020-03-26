@@ -1,10 +1,13 @@
-import { Button } from "@material-ui/core";
-import { get } from "lodash";
-import PropTypes from "prop-types";
-import React, { useContext } from "react";
-import HeaderButtonGroup from "./HeaderButtonGroup";
-import "./style.scss";
-import TableMain from "./TableMain";
+import { Button } from '@material-ui/core';
+import { get } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import LoadingOverlay from '../LoadingOverlay';
+import HeaderButtonGroup from './HeaderButtonGroup';
+import { bgColorSelector } from './selectors';
+import './style.scss';
+import TableMain from './TableMain';
 
 export const CustomTableContext = React.createContext();
 export const CustomTableProvider = CustomTableContext.Provider;
@@ -22,9 +25,6 @@ const LeftHeader = ({ className = "", ...rest }) => (
 const RightHeader = ({ className = "", ...rest }) => (
   <div className={`comp_CustomTable___right-header ${className}`} {...rest} />
 );
-const StyledButton = ({ className = "", ...rest }) => (
-  <Button className={`comp_CustomTable___button ${className}`} {...rest} />
-);
 const StyledTableMain = ({ className = "", ...rest }) => (
   <TableMain
     className={`comp_CustomTable___table-main ${className}`}
@@ -33,7 +33,7 @@ const StyledTableMain = ({ className = "", ...rest }) => (
 );
 
 export const TableHeader = () => {
-  const { options } = useContext(CustomTableContext);
+  const { options, bgColor } = React.useContext(CustomTableContext);
   return (
     <Header>
       <LeftHeader>
@@ -55,19 +55,25 @@ export const TableHeader = () => {
       <RightHeader>
         <HeaderButtonGroup />
         {get(options, "mainAction") && (
-          <StyledButton
+          <Button
             size="small"
             onClick={get(options, "mainAction.onClick", () => null)}
+            style={{
+              backgroundColor: bgColor.color,
+              color: 'white',
+              padding: '8px 12px',
+              marginTop: '8px',
+            }}
           >
             {get(options, "mainAction.label", "")}
-          </StyledButton>
+          </Button>
         )}
       </RightHeader>
     </Header>
   );
 };
 export function CustomTableLayout({ children }) {
-  const { options } = React.useContext(CustomTableContext);
+  const { options, bgColor } = React.useContext(CustomTableContext);
   return (
     <Container>
       <Header>
@@ -90,12 +96,18 @@ export function CustomTableLayout({ children }) {
         <RightHeader>
           <HeaderButtonGroup />
           {get(options, "mainAction") && (
-            <StyledButton
+            <Button
               size="small"
               onClick={get(options, "mainAction.onClick", () => null)}
+              style={{
+                backgroundColor: bgColor.color,
+                color: 'white',
+                padding: '8px 12px',
+                marginTop: '8px',
+              }}
             >
               {get(options, "mainAction.label", "")}
-            </StyledButton>
+            </Button>
           )}
         </RightHeader>
       </Header>
@@ -104,46 +116,60 @@ export function CustomTableLayout({ children }) {
   );
 }
 function CustomTable() {
-  const { options } = React.useContext(CustomTableContext);
+  const { options, bgColor } = React.useContext(CustomTableContext);
   return (
-    <Container>
-      <Header>
-        <LeftHeader>
-          <div>
-            <p>
-              {typeof get(options, "title") === "function"
-                ? options.title()
-                : get(options, "title", "")}
-            </p>
-          </div>
-          {get(options, "subTitle") ? (
-            <span>
-              {typeof get(options, "subTitle") === "function"
-                ? options.subTitle()
-                : get(options, "subTitle", "")}
-            </span>
-          ) : null}
-        </LeftHeader>
-        <RightHeader>
-          <HeaderButtonGroup />
-          {get(options, "mainAction") && (
-            <StyledButton
-              size="small"
-              onClick={get(options, "mainAction.onClick", () => null)}
-            >
-              {get(options, "mainAction.label", "")}
-            </StyledButton>
-          )}
-        </RightHeader>
-      </Header>
-      <StyledTableMain />
-    </Container>
+    <LoadingOverlay
+      active={get(options, 'loading.bool', false)}
+      spinner
+      fadeSpeed={100}
+      style={{
+        height: '100%',
+      }}
+    >
+      <Container>
+        <Header>
+          <LeftHeader>
+            <div>
+              <p>
+                {typeof get(options, 'title') === 'function'
+                  ? options.title()
+                  : get(options, 'title', '')}
+              </p>
+            </div>
+            {get(options, 'subTitle') ? (
+              <span>
+                {typeof get(options, 'subTitle') === 'function'
+                  ? options.subTitle()
+                  : get(options, 'subTitle', '')}
+              </span>
+            ) : null}
+          </LeftHeader>
+          <RightHeader>
+            <HeaderButtonGroup />
+            {get(options, 'mainAction') && (
+              <Button
+                size="small"
+                onClick={get(options, "mainAction.onClick", () => null)}
+                style={{
+                  backgroundColor: bgColor.color,
+                  color: 'white',
+                  padding: '8px 12px',
+                  marginTop: '8px',
+                }}
+              >
+                {get(options, "mainAction.label", "")}
+              </Button>
+            )}
+          </RightHeader>
+        </Header>
+        <StyledTableMain />
+      </Container>
+    </LoadingOverlay>
   );
 }
 
-function CustomTableWrapper({ options, columns, data }) {
-  console.log("X");
-  const [searchPatern, setSearchPatern] = React.useState("");
+function CustomTableWrapper({ options, columns, data, bgColor }) {
+  const [searchPatern, setSearchPatern] = React.useState('');
   const [expand, setExpand] = React.useState(false);
 
   const defaultOptions = {
@@ -163,7 +189,8 @@ function CustomTableWrapper({ options, columns, data }) {
       ...options
     },
     columns: columns || [],
-    data: data || []
+    data: data || [],
+    bgColor,
   };
 
   return (
@@ -179,4 +206,13 @@ CustomTableWrapper.propTypes = {
   data: PropTypes.array.isRequired
 };
 
-export default CustomTableWrapper;
+const mapStateToProps = state => {
+  return {
+    bgColor: bgColorSelector(state),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+)(CustomTableWrapper);

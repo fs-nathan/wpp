@@ -1,17 +1,19 @@
+import { find, get } from 'lodash';
 import { createSelector } from 'reselect';
-import { get, find } from 'lodash';
 
 const listRoom = state => state.room.listRoom;
 const sortRoom = state => state.room.sortRoom;
 const listUserOfGroup = state => state.user.listUserOfGroup;
 const listIcon = state => state.icon.listIcon;
+const createRoom = state => state.room.createRoom;
 
 export const roomsSelector = createSelector(
-  [listRoom, listUserOfGroup, listIcon, sortRoom],
-  (listRoom, listUserOfGroup, listIcon, sortRoom) => {
+  [listRoom, listUserOfGroup, listIcon, sortRoom, createRoom],
+  (listRoom, listUserOfGroup, listIcon, sortRoom, createRoom) => {
     const { loading: sortRoomLoading, error: sortRoomError } = sortRoom;
     const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
     const { data: { rooms: groups } } = listUserOfGroup;
+    const { loading: createRoomLoading, error: createRoomError } = createRoom;
     const newGroups = groups.map(group => ({
       ...group,
       id: get(group, 'id').toLowerCase(),
@@ -23,16 +25,16 @@ export const roomsSelector = createSelector(
       const result = {
         ...curRoom,
         number_member: get(curGroup, 'users', []).length,
-        icon: allIcons.includes(get(curRoom, 'icon', '___no-icon___')) 
-          ? get(curRoom, 'icon') 
+        icon: allIcons.includes(get(curRoom, 'icon', '___no-icon___'))
+          ? get(curRoom, 'icon')
           : get(defaults[0], 'url_icon'),
       }
       return result;
     });
     return ({
       rooms: newRooms,
-      loading: listRoomLoading || sortRoomLoading,
-      error: listRoomError || sortRoomError,
+      loading: listRoomLoading || sortRoomLoading || createRoomLoading,
+      error: listRoomError || sortRoomError || createRoomError,
     });
   }
 );

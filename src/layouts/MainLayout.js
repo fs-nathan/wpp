@@ -153,7 +153,9 @@ function MainLayout({
     );
   };
   const handleNewMessage = () => {
-    getNumberMessageNotViewer(parseInt(localStorage.getItem(MESS_NUMBER)) + 1);
+    actionChangeNumMessageNotView(
+      parseInt(localStorage.getItem(MESS_NUMBER)) + 1
+    );
   };
 
   const isViewFullPage = route => {

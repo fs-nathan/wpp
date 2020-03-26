@@ -1,39 +1,31 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
-import { detailProject } from '../../actions/project/detailProject';
-import { memberProject } from '../../actions/project/memberProject';
-import { listTask } from '../../actions/task/listTask';
-import { listGroupTask } from '../../actions/groupTask/listGroupTask';
-import { getAllGroupTask } from '../../actions/groupTask/getAllGroupTask';
-import { listUserRole } from '../../actions/userRole/listUserRole';
-import { detailStatus } from '../../actions/project/setting/detailStatus';
-import ProjectDetail from './LeftPart/ProjectDetail';
-import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
-import GroupTaskSlide from './LeftPart/GroupTaskSlide';
-import AllTaskTable from './RightPart/AllTaskTable';
-import { 
-  CustomEventListener, CustomEventDispose,
-  //CREATE_PROJECT_GROUP,
-  SORT_PROJECT_GROUP, 
-  //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
-  //CREATE_PROJECT, DELETE_PROJECT, UPDATE_PROJECT,
-  CREATE_GROUP_TASK, COPY_GROUP_TASK, UPDATE_GROUP_TASK, SORT_GROUP_TASK, DELETE_GROUP_TASK,
-  ADD_MEMBER_PROJECT, REMOVE_MEMBER_PROJECT,
-  UPDATE_STATE_JOIN_TASK,
-  ASSIGN_MEMBER_TO_ALL_TASK,
-  ADD_PROJECT_ROLE_TO_MEMBER, REMOVE_PROJECT_ROLE_FROM_MEMBER,
-  CREATE_TASK, DELETE_TASK, 
-  SORT_TASK,
-  //SHOW_PROJECT, HIDE_PROJECT,
-  //CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
-  //UPDATE_STATUS_COPY, UPDATE_STATUS_DATE,
-} from '../../constants/events';
 import { get } from 'lodash';
 import moment from 'moment';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
+import { getAllGroupTask } from '../../actions/groupTask/getAllGroupTask';
+import { listGroupTask } from '../../actions/groupTask/listGroupTask';
+import { detailProject } from '../../actions/project/detailProject';
+import { memberProject } from '../../actions/project/memberProject';
+import { detailStatus } from '../../actions/project/setting/detailStatus';
+import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
+import { listTask } from '../../actions/task/listTask';
+import { getListTaskDetail } from '../../actions/taskDetail/taskDetailActions';
+import { listUserRole } from '../../actions/userRole/listUserRole';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
+import {
+  ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, COPY_GROUP_TASK,
+  //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
+  //CREATE_PROJECT, DELETE_PROJECT, UPDATE_PROJECT,
+  CREATE_GROUP_TASK, CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, DELETE_TASK, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, SORT_GROUP_TASK,
+  //CREATE_PROJECT_GROUP,
+  SORT_PROJECT_GROUP, SORT_TASK, UPDATE_GROUP_TASK, UPDATE_STATE_JOIN_TASK
+} from '../../constants/events';
 import { useLocalStorage } from '../../hooks';
+import GroupTaskSlide from './LeftPart/GroupTaskSlide';
+import ProjectDetail from './LeftPart/ProjectDetail';
+import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
+import AllTaskTable from './RightPart/AllTaskTable';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -46,6 +38,7 @@ function ProjectPage({
   doListGroupTask, doGetAllGroupTask,
   doListUserRole,
   doDetailStatus,
+  doGetListTaskDetail,
 }) {
 
   const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_OPTIONS', {
@@ -82,11 +75,11 @@ function ProjectPage({
   React.useEffect(() => {
     if (projectId) {
       doDetailProject({ projectId });
-      
+
       const reloadDetailProject = () => {
-        doDetailProject({ projectId }, /*true*/);
+        doDetailProject({ projectId });
       }
-      
+
       //CustomEventListener(UPDATE_PROJECT, reloadDetailProject);
       //CustomEventListener(SHOW_PROJECT, reloadDetailProject);
       //CustomEventListener(HIDE_PROJECT, reloadDetailProject);
@@ -96,7 +89,7 @@ function ProjectPage({
       CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
       CustomEventListener(CREATE_TASK, reloadDetailProject);
       CustomEventListener(DELETE_TASK, reloadDetailProject);
-      
+
       return () => {
         //CustomEventDispose(UPDATE_PROJECT, reloadDetailProject);
         //CustomEventDispose(SHOW_PROJECT, reloadDetailProject);
@@ -114,11 +107,11 @@ function ProjectPage({
   React.useEffect(() => {
     if (projectId) {
       doMemberProject({ projectId });
-      
+
       const reloadMemberProject = () => {
-        doMemberProject({ projectId }, /*true*/);
+        doMemberProject({ projectId });
       }
-      
+
       //CustomEventListener(UPDATE_PROJECT, reloadMemberProject);
       //CustomEventListener(SHOW_PROJECT, reloadMemberProject);
       //CustomEventListener(HIDE_PROJECT, reloadMemberProject);
@@ -128,7 +121,7 @@ function ProjectPage({
       CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
       CustomEventListener(ADD_PROJECT_ROLE_TO_MEMBER, reloadMemberProject);
       CustomEventListener(REMOVE_PROJECT_ROLE_FROM_MEMBER, reloadMemberProject);
-      
+
       return () => {
         //CustomEventDispose(UPDATE_PROJECT, reloadMemberProject);
         //CustomEventDispose(SHOW_PROJECT, reloadMemberProject);
@@ -147,68 +140,91 @@ function ProjectPage({
 
   React.useEffect(() => {
     if (projectId) {
-      doListTask({ 
+      doListTask({
         projectId,
         timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
         timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
       });
-    }
 
-    const reloadListTask = () => {
-      doListTask({ 
-        projectId,
-        timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
-        timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-      }, /*true*/);
-    }
+      const reloadListTask = () => {
+        doListTask({
+          projectId,
+          timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
+          timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
+        });
+      }
 
-    CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
-    CustomEventListener(COPY_GROUP_TASK, reloadListTask);
-    CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
-    CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
-    CustomEventListener(SORT_GROUP_TASK, reloadListTask);
-    //CustomEventListener(CREATE_TASK, reloadListTask);
-    //CustomEventListener(DELETE_TASK, reloadListTask);
-    CustomEventListener(SORT_TASK, reloadListTask);
+      CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
+      CustomEventListener(COPY_GROUP_TASK, reloadListTask);
+      CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
+      CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
+      CustomEventListener(SORT_GROUP_TASK, reloadListTask);
+      CustomEventListener(CREATE_TASK, reloadListTask);
+      //CustomEventListener(DELETE_TASK, reloadListTask);
+      CustomEventListener(SORT_TASK, reloadListTask);
 
-    return () => {
-      CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
-      CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
-      CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
-      CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
-      CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
-      //CustomEventDispose(CREATE_TASK, reloadListTask);
-      //CustomEventDispose(DELETE_TASK, reloadListTask);
-      CustomEventDispose(SORT_TASK, reloadListTask);
+      return () => {
+        CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
+        CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
+        CustomEventDispose(CREATE_TASK, reloadListTask);
+        //CustomEventDispose(DELETE_TASK, reloadListTask);
+        CustomEventDispose(SORT_TASK, reloadListTask);
+      }
     }
   }, [projectId, doListTask, timeRange]);
 
   React.useEffect(() => {
     if (projectId) {
       doListGroupTask({ projectId });
-    }
 
-    const reloadListGroupTask = () => {
-      doListGroupTask({ projectId }, /*true*/);
-    }
 
-    //CustomEventListener(CREATE_GROUP_TASK, reloadListGroupTask);
-    //CustomEventListener(COPY_GROUP_TASK, reloadListGroupTask);
-    //CustomEventListener(UPDATE_GROUP_TASK, reloadListGroupTask);
-    //CustomEventListener(DELETE_GROUP_TASK, reloadListGroupTask);
-    CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
+      const reloadListGroupTask = () => {
+        doListGroupTask({ projectId });
+      }
 
-    return () => {
-      //CustomEventDispose(CREATE_GROUP_TASK, reloadListGroupTask);
-      //CustomEventDispose(COPY_GROUP_TASK, reloadListGroupTask);
-      //CustomEventDispose(UPDATE_GROUP_TASK, reloadListGroupTask);
-      //CustomEventDispose(DELETE_GROUP_TASK, reloadListGroupTask);
-      CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
+      //CustomEventListener(CREATE_GROUP_TASK, reloadListGroupTask);
+      //CustomEventListener(COPY_GROUP_TASK, reloadListGroupTask);
+      //CustomEventListener(UPDATE_GROUP_TASK, reloadListGroupTask);
+      //CustomEventListener(DELETE_GROUP_TASK, reloadListGroupTask);
+      CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
+
+      return () => {
+        //CustomEventDispose(CREATE_GROUP_TASK, reloadListGroupTask);
+        //CustomEventDispose(COPY_GROUP_TASK, reloadListGroupTask);
+        //CustomEventDispose(UPDATE_GROUP_TASK, reloadListGroupTask);
+        //CustomEventDispose(DELETE_GROUP_TASK, reloadListGroupTask);
+        CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
+      }
     }
   }, [projectId, doListGroupTask]);
 
   React.useEffect(() => {
-    
+    if (projectId) {
+      doGetListTaskDetail({ projectId });
+
+      const reloadGetListTaskDetail = () => {
+        doGetListTaskDetail({ projectId });
+      }
+
+      CustomEventListener(CREATE_GROUP_TASK, reloadGetListTaskDetail);
+      CustomEventListener(COPY_GROUP_TASK, reloadGetListTaskDetail);
+      CustomEventListener(UPDATE_GROUP_TASK, reloadGetListTaskDetail);
+      CustomEventListener(DELETE_GROUP_TASK, reloadGetListTaskDetail);
+
+      return () => {
+        CustomEventDispose(CREATE_GROUP_TASK, reloadGetListTaskDetail);
+        CustomEventDispose(COPY_GROUP_TASK, reloadGetListTaskDetail);
+        CustomEventDispose(UPDATE_GROUP_TASK, reloadGetListTaskDetail);
+        CustomEventDispose(DELETE_GROUP_TASK, reloadGetListTaskDetail);
+      }
+    }
+  }, [projectId, doGetListTaskDetail]);
+
+  React.useEffect(() => {
+
     doGetAllGroupTask();
 
     const reloadGetAllGroupTask = () => {
@@ -283,31 +299,31 @@ function ProjectPage({
       setStatusProjectId,
       localOptions, setLocalOptions
     }}>
-      <Route 
+      <Route
         path='/project'
         render={({ match: { url, } }) => (
           <>
-            <Route 
+            <Route
               path={`${url}/:projectId`}
               exact
               render={props => (
-                <TwoColumnsLayout 
+                <TwoColumnsLayout
                   leftRenders={[
                     () => <ProjectDetail {...props} />,
                     ({ handleSubSlide }) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide} />,
                     ({ handleSubSlide }) => <GroupTaskSlide {...props} handleSubSlide={handleSubSlide} />,
                   ]}
                   rightRender={
-                    ({ expand, handleExpand, handleSubSlide, }) => 
-                      <AllTaskTable 
+                    ({ expand, handleExpand, handleSubSlide, }) =>
+                      <AllTaskTable
                         {...props}
                         expand={expand}
                         handleExpand={handleExpand}
-                        handleSubSlide={handleSubSlide}  
-                      /> 
+                        handleSubSlide={handleSubSlide}
+                      />
                   }
                 />
-              )}  
+              )}
             />
           </>
         )}
@@ -326,6 +342,7 @@ const mapDispatchToProps = dispatch => {
     doGetAllGroupTask: (quite) => dispatch(getAllGroupTask(quite)),
     doListUserRole: (quite) => dispatch(listUserRole(quite)),
     doDetailStatus: ({ projectId }, quite) => dispatch(detailStatus({ projectId }, quite)),
+    doGetListTaskDetail: ({ projectId }) => dispatch(getListTaskDetail({ project_id: projectId }))
   }
 };
 

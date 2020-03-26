@@ -58,6 +58,7 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from "../constants/actions/project/re
 import { DETAIL_STATUS } from "../constants/actions/project/setting/detailStatus";
 import { UPDATE_STATUS_COPY } from "../constants/actions/project/setting/updateStatusCopy";
 import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateStatusDate";
+import { UPDATE_STATUS_VIEW } from "../constants/actions/project/setting/updateStatusView";
 import { SHOW_PROJECT } from "../constants/actions/project/showProject";
 import { SORT_PROJECT } from "../constants/actions/project/sortProject";
 import { UPDATE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/updateGroupPermissionMember";
@@ -84,6 +85,10 @@ import {
   FETCH_LIST_COLOR_GROUP,
   GET_SETTING_DATE
 } from "../constants/actions/setting/setting";
+import { CREATE_TASK } from "../constants/actions/task/createTask";
+import { DELETE_TASK } from "../constants/actions/task/deleteTask";
+import { LIST_TASK } from "../constants/actions/task/listTask";
+import { SORT_TASK } from "../constants/actions/task/sortTask";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -164,6 +169,7 @@ import { removeProjectRoleFromMember } from "./project/removeProjectRoleFromMemb
 import { detailStatus } from "./project/setting/detailStatus";
 import { updateStatusCopy } from "./project/setting/updateStatusCopy";
 import { updateStatusDate } from "./project/setting/updateStatusDate";
+import { updateStatusView } from "./project/setting/updateStatusView";
 import { showProject } from "./project/showProject";
 import { sortProject } from "./project/sortProject";
 import { updateGroupPermissionMember } from "./project/updateGroupPermissionMember";
@@ -190,6 +196,10 @@ import {
   getListColor,
   getSettingDate
 } from "./setting/setting";
+import { createTask } from "./task/createTask";
+import { deleteTask } from "./task/deleteTask";
+import { listTask } from "./task/listTask";
+import { sortTask } from "./task/sortTask";
 import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
 import { detailUser } from "./user/detailUser";
@@ -284,6 +294,7 @@ function* rootSaga() {
   yield takeLatest(DETAIL_STATUS, detailStatus);
   yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
   yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
+  yield takeEvery(UPDATE_STATUS_VIEW, updateStatusView);
   yield takeLatest(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
@@ -291,10 +302,10 @@ function* rootSaga() {
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
-  yield takeLeading(
-    taskDetailType.DELETE_TASK_REQUEST,
-    taskDetailSaga.deleteTask
-  );
+  yield takeLatest(LIST_TASK, listTask);
+  yield takeEvery(CREATE_TASK, createTask);
+  yield takeEvery(DELETE_TASK, deleteTask);
+  yield takeEvery(SORT_TASK, sortTask);
   yield takeEvery(
     INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
     inviteOtherPeopleCreateAccount

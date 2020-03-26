@@ -1,35 +1,39 @@
-import {
-  SHOW_PROJECT,
-  SHOW_PROJECT_SUCCESS,
-  SHOW_PROJECT_FAIL,
-} from '../../constants/actions/project/showProject';
+import { concat, get, remove } from 'lodash';
+import { SHOW_PROJECT, SHOW_PROJECT_FAIL, SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
 
 export const initialState = {
-  data: {},
   error: null,
-  loading: false,
+  pendings: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case SHOW_PROJECT:
+    case SHOW_PROJECT: {
+      const newPendings = concat(state.pendings, get(action.options, 'projectId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case SHOW_PROJECT_SUCCESS: 
+        pendings: newPendings,
+      }
+    }
+    case SHOW_PROJECT_SUCCESS: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'projectId'))
       return {
         ...state,
         error: null,
-        loading: false,
-      };
-    case SHOW_PROJECT_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case SHOW_PROJECT_FAIL: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'projectId'))
       return {
         ...state,
         error: action.error,
-        loading: false,
-      };
+        pendings: newPendings,
+      }
+    }
     default:
       return state;
   }

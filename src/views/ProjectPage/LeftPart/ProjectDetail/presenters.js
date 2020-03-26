@@ -1,36 +1,34 @@
+import { mdiChevronLeft } from '@mdi/js';
+import { clamp, get, isNaN } from 'lodash';
+import moment from 'moment';
 import React from 'react';
-import { get, isNaN, clamp } from 'lodash';
 import { useHistory } from 'react-router-dom';
-import ColorTypo from '../../../../components/ColorTypo';
-import ColorTextField from '../../../../components/ColorTextField';
-import ProgressBar from '../../../../components/ProgressBar';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import ColorButton from '../../../../components/ColorButton';
-import { Container, SubContainer, ActionBox } from '../../../../components/CustomDetailBox';
-import { 
-  ChartBox, ChartDrawer, ChartInfoBox, ChartTitle, CustomChart, ChartPlacedolder,
-} from '../../../../components/CustomDonutChart';
-import { mdiChevronLeft, } from '@mdi/js';
-import LoadingBox from '../../../../components/LoadingBox';
+import ColorTypo from '../../../../components/ColorTypo';
+import { ActionBox, Container, SubContainer } from '../../../../components/CustomDetailBox';
+import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
-import moment from 'moment';
+import LoadingBox from '../../../../components/LoadingBox';
+import ProgressBar from '../../../../components/ProgressBar';
 import './style.scss';
 
-const ProjectName = ({ className = '', ...props }) => 
-  <span 
+const ProjectName = ({ className = '', ...props }) =>
+  <span
     className={`view_Project_ProjectDetail___name ${className}`}
     {...props}
   />
 
-const SubHeader = ({ className = '', ...props }) => 
-  <div 
+const SubHeader = ({ className = '', ...props }) =>
+  <div
     className={`view_Project_ProjectDetail___subheader ${className}`}
     {...props}
   />
 
-const DateBox = ({ className = '', ...props }) => 
-  <div 
+const DateBox = ({ className = '', ...props }) =>
+  <div
     className={`view_Project_ProjectDetail___date-box ${className}`}
     {...props}
   />
@@ -48,13 +46,13 @@ function getExpectedProgress(startDate, endDate) {
   }
 }
 
-function ProjectDetail({ 
-  project, 
+function ProjectDetail({
+  project,
   handleDeleteProject, handleOpenModal,
 }) {
 
   const history = useHistory();
-  
+
   return (
     <>
       {project.error !== null && (<ErrorBox />)}
@@ -76,7 +74,7 @@ function ProjectDetail({
               <SubContainer>
                 <ChartBox>
                   <ChartDrawer>
-                    <CustomChart 
+                    <CustomChart
                       type='donut'
                       options={{
                         legend: {
@@ -88,20 +86,18 @@ function ProjectDetail({
                           },
                         },
                         labels: [
-                          'Công việc đang chờ', 
-                          'Công việc đang làm', 
+                          'Công việc đang chờ',
+                          'Công việc đang làm',
                           'Công việc quá hạn',
                           'Công việc hoàn thành',
-                          'Công việc dừng',
                         ],
-                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
+                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b'],
                       }}
                       series={[
                         get(project.project, 'task_waiting', 0),
                         get(project.project, 'task_doing', 0),
                         get(project.project, 'task_expired', 0),
                         get(project.project, 'task_complete', 0),
-                        get(project.project, 'task_stop', 0),
                       ]}
                       width={250}
                       height={250}
@@ -111,11 +107,10 @@ function ProjectDetail({
                     </ChartTitle>
                     {
                       get(project.project, 'task_waiting', 0) +
-                      get(project.project, 'task_doing', 0) +
-                      get(project.project, 'task_expired', 0) +
-                      get(project.project, 'task_complete', 0) +
-                      get(project.project, 'task_stop', 0) === 0
-                        ? <ChartPlacedolder />
+                        get(project.project, 'task_doing', 0) +
+                        get(project.project, 'task_expired', 0) +
+                        get(project.project, 'task_complete', 0) === 0
+                        ? <ChartPlaceholder />
                         : null
                     }
                   </ChartDrawer>
@@ -157,15 +152,15 @@ function ProjectDetail({
                   <div>{get(project.project, 'date_start', -1)}</div>
                   <div>{get(project.project, 'date_end', -1)}</div>
                 </DateBox>
-                <ProgressBar 
+                <ProgressBar
                   percentDone={get(project.project, 'complete', 0)}
                   percentTarget={
                     getExpectedProgress(
-                      get(project.project, 'date_start', -1), 
+                      get(project.project, 'date_start', -1),
                       get(project.project, 'date_end', -1)
                     )
-                  } 
-                  colorDone={'#31b586'} 
+                  }
+                  colorDone={'#31b586'}
                   colorTarget={'#fd7e14'}
                 />
               </SubContainer>
@@ -173,34 +168,35 @@ function ProjectDetail({
                 <SubHeader>
                   <ColorTypo color='gray' uppercase>Mô tả dự án</ColorTypo>
                 </SubHeader>
-                <ColorTextField 
+                <CustomTextbox
                   value={get(project.project, 'description', '')}
+                  isReadOnly={true}
                 />
               </SubContainer>
               <SubContainer>
                 <SubHeader>
                   <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
                 </SubHeader>
-                <AvatarCircleList users={get(project.project, 'members', [])} total={20} display={12}/>
+                <AvatarCircleList users={get(project.project, 'members', [])} total={20} display={12} />
               </SubContainer>
             </div>
             <ActionBox>
-              <ColorButton 
+              <ColorButton
                 onClick={() => handleOpenModal('UPDATE', {
                   curProject: project.project
-                })} 
-                variant='text' 
-                size='small' 
+                })}
+                variant='text'
+                size='small'
                 fullWidth
               >Chỉnh sửa</ColorButton>
-              <ColorButton 
+              <ColorButton
                 onClick={() => handleOpenModal('ALERT', {
                   content: 'Bạn chắc chắn muốn xóa?',
                   onConfirm: () => handleDeleteProject(project.project),
-                })} 
-                variant='text' 
-                variantColor='red' 
-                size='small' 
+                })}
+                variant='text'
+                variantColor='red'
+                size='small'
                 fullWidth
               >Xóa dự án</ColorButton>
             </ActionBox>
