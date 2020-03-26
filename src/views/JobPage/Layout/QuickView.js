@@ -38,9 +38,13 @@ export const QuickViewBody = styled.div`
   grid-area: body;
   padding: 15px;
   padding-bottom: 50px;
+  min-height: calc(100% - 70px);
 `;
 export const QuickViewFooter = styled.div`
   grid-area: footer;
+  height: 50px;
+  display: flex;
+  items-align: center;
   padding: 15px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -64,7 +68,7 @@ function QuickView({ title, children, bottom }) {
         </QuickViewHeaderRight>
       </QuickViewHeader>
       <QuickViewBody>{children}</QuickViewBody>
-      {bottom && <QuickViewFooter></QuickViewFooter>}
+      {bottom && <QuickViewFooter>{bottom}</QuickViewFooter>}
     </QuickViewWrapper>
   );
 }

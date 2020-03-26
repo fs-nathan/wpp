@@ -5,9 +5,11 @@ import colors from "helpers/colorPalette";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { taskAtrrs } from "../contants/attrs";
+import { taskDetailLink } from "../contants/links";
 import QuickView from "../Layout/QuickView";
-import { get, template } from "../utils";
+import { createMapPropsFromAttrs, get, template } from "../utils";
 import InlineBadge from "./InlineBadge";
 import InlinePiorityBadge from "./InlinePiorityBadge";
 import InlineStatusBadge from "./InlineStatusBadge";
@@ -131,64 +133,97 @@ const EditAction = ({ ...props }) => {
 };
 function QuickViewTaskDetail({ detailTask }) {
   const { t } = useTranslation();
+  const history = useHistory();
+  const [project_id, id] = createMapPropsFromAttrs([
+    taskAtrrs.project_id,
+    taskAtrrs.id
+  ])(task);
   return (
-    <QuickView title={<QuickViewTaskDetailHeader detailTask={detailTask} />}>
-      <VerticleList>
-        <QuickViewRow title={t("TÊN CÔNG VIỆC")} actions={<EditAction />}>
-          {get(detailTask, taskAtrrs.name, "#########")}
-        </QuickViewRow>
-        <QuickViewRow title={t("MÔ TẢ CÔNG VIỆC")} actions={<EditAction />}>
-          <Box lineHeight="1.4" fontSize="14px">
-            {get(detailTask, taskAtrrs.description, "#########")}
-          </Box>
-        </QuickViewRow>
-        <QuickViewRow title={t("TIẾN ĐỘ")} actions={<EditAction />}>
-          <Box fontSize="14px">
-            Ngày bắt đầu: {get(detailTask, taskAtrrs.start_time)}{" "}
-            {get(detailTask, taskAtrrs.start_date, "##/##/####")}
-          </Box>
-          <Box marginTop="0.5em" fontSize="14px">
-            Ngày kết thúc: {get(detailTask, taskAtrrs.end_time)}{" "}
-            {get(detailTask, taskAtrrs.end_date, "##/##/####")}
-          </Box>
-          <Box marginTop="0.5em" fontSize="14px">
-            Hoàn thành: {get(detailTask, taskAtrrs.complete, 0)}%
-          </Box>
-        </QuickViewRow>
-        <QuickViewRow title={t("TRẠNG THÁI, ƯU TIÊN")} actions={<EditAction />}>
-          <Box lineHeight="1">
-            <InlineStatusBadge status={get(detailTask, taskAtrrs.state_code)}>
-              {get(detailTask, taskAtrrs.state_name)}
-            </InlineStatusBadge>{" "}
-            <InlinePiorityBadge
-              status={get(detailTask, taskAtrrs.priority_code)}
+    <>
+      <QuickView
+        bottom={
+          <Box display="flex" width="100%">
+            <Box
+              onClick={() => {
+                history.push(
+                  taskDetailLink
+                    .replace("{projectId}", project_id)
+                    .replace("{taskId}", id)
+                );
+              }}
+              className="cursor-pointer"
+              flex="1"
+              color={"#03a9f4 "}
             >
-              {get(detailTask, taskAtrrs.priority_name)}
-            </InlinePiorityBadge>
+              {t("Xem chi tiết công viêc")}
+            </Box>
+            <Box className="cursor-pointer" color={colors.red[0]}>
+              {t("Xóa công viêc")}
+            </Box>
           </Box>
-        </QuickViewRow>
+        }
+        title={<QuickViewTaskDetailHeader detailTask={detailTask} />}
+      >
+        <VerticleList>
+          <QuickViewRow title={t("TÊN CÔNG VIỆC")} actions={<EditAction />}>
+            {get(detailTask, taskAtrrs.name, "#########")}
+          </QuickViewRow>
+          <QuickViewRow title={t("MÔ TẢ CÔNG VIỆC")} actions={<EditAction />}>
+            <Box lineHeight="1.4" fontSize="14px">
+              {get(detailTask, taskAtrrs.description, "#########")}
+            </Box>
+          </QuickViewRow>
+          <QuickViewRow title={t("TIẾN ĐỘ")} actions={<EditAction />}>
+            <Box fontSize="14px">
+              Ngày bắt đầu: {get(detailTask, taskAtrrs.start_time)}{" "}
+              {get(detailTask, taskAtrrs.start_date, "##/##/####")}
+            </Box>
+            <Box marginTop="0.5em" fontSize="14px">
+              Ngày kết thúc: {get(detailTask, taskAtrrs.end_time)}{" "}
+              {get(detailTask, taskAtrrs.end_date, "##/##/####")}
+            </Box>
+            <Box marginTop="0.5em" fontSize="14px">
+              Hoàn thành: {get(detailTask, taskAtrrs.complete, 0)}%
+            </Box>
+          </QuickViewRow>
+          <QuickViewRow
+            title={t("TRẠNG THÁI, ƯU TIÊN")}
+            actions={<EditAction />}
+          >
+            <Box lineHeight="1">
+              <InlineStatusBadge status={get(detailTask, taskAtrrs.state_code)}>
+                {get(detailTask, taskAtrrs.state_name)}
+              </InlineStatusBadge>{" "}
+              <InlinePiorityBadge
+                status={get(detailTask, taskAtrrs.priority_code)}
+              >
+                {get(detailTask, taskAtrrs.priority_name)}
+              </InlinePiorityBadge>
+            </Box>
+          </QuickViewRow>
 
-        <Box marginTop="2em" display="block">
-          <Box display="flex" flexDirection="column" color={colors.gray[0]}>
-            THÀNH VIÊN
+          <Box marginTop="2em" display="block">
+            <Box display="flex" flexDirection="column" color={colors.gray[0]}>
+              THÀNH VIÊN
+            </Box>
+            <Box marginTop="0.6em" display="flex">
+              <AvatarCircleList
+                display={3}
+                users={get(detailTask, taskAtrrs.members, [{}, {}, {}])}
+              />
+            </Box>
           </Box>
-          <Box marginTop="0.6em" display="flex">
-            <AvatarCircleList
-              display={3}
-              users={get(detailTask, taskAtrrs.members, [{}, {}, {}])}
-            />
+          <Box marginTop="2em" display="block">
+            <Box display="flex" flexDirection="column" color={colors.gray[0]}>
+              CÔNG VIỆC CON
+            </Box>
+            <Box marginTop="0.6em" display="flex">
+              <InlineBadge color={colors.green[0]}>3 công việc</InlineBadge>
+            </Box>
           </Box>
-        </Box>
-        <Box marginTop="2em" display="block">
-          <Box display="flex" flexDirection="column" color={colors.gray[0]}>
-            CÔNG VIỆC CON
-          </Box>
-          <Box marginTop="0.6em" display="flex">
-            <InlineBadge color={colors.green[0]}>3 công việc</InlineBadge>
-          </Box>
-        </Box>
-      </VerticleList>
-    </QuickView>
+        </VerticleList>
+      </QuickView>
+    </>
   );
 }
 const QuickViewTaskDetailContainer = ({ taskId, defaultTaskDetail = {} }) => {
