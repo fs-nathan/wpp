@@ -39,6 +39,7 @@ export const createPieChartProps = (strings, data) => {
 };
 
 export const createRadarChartProps = (strings, data) => {
+  const roles = get(data, statistic.roles, [0]);
   return {
     type: "radar",
 
@@ -80,7 +81,7 @@ export const createRadarChartProps = (strings, data) => {
         size: 0
       },
       xaxis: {
-        categories: ["2011", "2012", "2013", "2014", "2015", "2016"]
+        categories: roles.map(role => role.name)
       }
     },
     height: 250

@@ -36,11 +36,7 @@ export default function PrimaryButton({
 }) {
   const classes = useStyles();
   return (
-    <div
-      className={classes.root}
-      focusVisibleClassName={classes.focusVisible}
-      {...props}
-    >
+    <div className={classes.root} {...props}>
       <div className={classes.count}>{count}</div>
       <div className={classes.label}>
         <div>{label}</div>

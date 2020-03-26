@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { taskAtrrs } from "../contants/attrs";
-import { createMapPropsFromAttrs, loginlineFunc } from "../utils";
+import { createMapPropsFromAttrs } from "../utils";
 import EmptyHolder from "./EmptyHolder";
 import RecentTableRow from "./RecentTableRow";
 export const TaskTable = ({ tasks = [], isToggleSortName, toggleSortName }) => {
@@ -54,23 +54,21 @@ export const TaskTable = ({ tasks = [], isToggleSortName, toggleSortName }) => {
               duration_unit,
               complete,
               number_member
-            ] = loginlineFunc(
-              createMapPropsFromAttrs([
-                taskAtrrs.project_id,
-                taskAtrrs.id,
-                taskAtrrs.user_create_avatar,
-                taskAtrrs.user_create_name,
-                taskAtrrs.name,
-                taskAtrrs.status_code,
-                taskAtrrs.status_name,
-                taskAtrrs.time_end,
-                taskAtrrs.haveNewChat,
-                taskAtrrs.duration_value,
-                taskAtrrs.duration_unit,
-                taskAtrrs.complete,
-                taskAtrrs.number_member
-              ])
-            )(task);
+            ] = createMapPropsFromAttrs([
+              taskAtrrs.project_id,
+              taskAtrrs.id,
+              taskAtrrs.user_create_avatar,
+              taskAtrrs.user_create_name,
+              taskAtrrs.name,
+              taskAtrrs.status_code,
+              taskAtrrs.status_name,
+              taskAtrrs.time_end,
+              taskAtrrs.haveNewChat,
+              taskAtrrs.duration_value,
+              taskAtrrs.duration_unit,
+              taskAtrrs.complete,
+              taskAtrrs.number_member
+            ])(task);
             return (
               <RecentTableRow
                 {...{

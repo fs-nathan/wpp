@@ -19,7 +19,6 @@ export default function AnalyticButton({
         active && "comp_AnalyticButton__active"
       )}
       style={{ color }}
-      focusVisibleClassName="comp_AnalyticButton__focusVisible"
       {...props}
     >
       <div className="comp_AnalyticButton__circle">

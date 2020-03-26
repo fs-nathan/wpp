@@ -20,7 +20,7 @@ import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTabl
 import QuickViewFilter from "../components/QuickViewFilter";
 import RedirectModal from "../components/RedirectModal";
 import { JobPageContext } from "../JobPageContext";
-import { get, loginlineFunc } from "../utils";
+import { get } from "../utils";
 import "./Layout.css";
 
 const Container = ({ className = "", ...rest }) => (
@@ -138,7 +138,7 @@ function Layout({ children, title, bgColor }) {
                 {
                   label: times[timeType].title,
                   iconPath: mdiCalendar,
-                  onClick: loginlineFunc(evt => setTimeAnchor(evt.target))
+                  onClick: evt => setTimeAnchor(evt.target)
                 },
                 {
                   label: t(expand ? "Thu gọn" : "Mở rộng"),
@@ -158,13 +158,6 @@ function Layout({ children, title, bgColor }) {
               search: {
                 patern: keyword,
                 onChange: setkeyword
-              },
-
-              grouped: {
-                bool: true,
-                id: "id",
-                label: loginlineFunc,
-                item: "tasks"
               },
 
               draggable: {
