@@ -1,32 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
+import { ButtonGroup, Collapse } from '@material-ui/core';
+import { mdiFile, mdiImage, mdiLink } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiImage, mdiFile, mdiLink } from '@mdi/js';
-import {
-  ButtonGroup,
-  Collapse,
-} from '@material-ui/core';
+import clsx from 'clsx';
+import ColorButton from 'components/ColorButton';
+import ColorTypo from 'components/ColorTypo';
+import colorPal from 'helpers/colorPalette';
 import get from 'lodash/get';
-
-import ColorTypo from '../../../../../components/ColorTypo';
-import ColorButton from '../../../../../components/ColorButton';
-import colorPal from '../../../../../helpers/colorPalette';
+import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-
-import MediaContainer from './MediaContainer';
-import FileContainer from './FileContainer';
-import LinkContainer from './LinkContainer';
 import { useSelector } from 'react-redux';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
-
-const Body = styled(Scrollbars)`
-  grid-area: body;
-  height: 100%;
-`;
-
-const StyledButtonGroup = styled(ButtonGroup)`
-  margin: 8px 0 20px 0;
-`;
+import FileContainer from './FileContainer';
+import LinkContainer from './LinkContainer';
+import MediaContainer from './MediaContainer';
+import './styles.scss';
 
 function TabBody(props) {
   const links = useSelector(state => state.taskDetail.media.links);
@@ -41,28 +28,35 @@ function TabBody(props) {
   };
 
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Scrollbars
+      className="mediaBody"
+      renderView={props => <div {...props} className="mediaBody--scroll" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-media-tabbody">
-        <StyledButtonGroup fullWidth variant="text" aria-label="full width outlined button group">
+        <ButtonGroup className="mediaBody--buttonGroup"
+          fullWidth variant="text" aria-label="full width outlined button group">
           <ColorButton
+            className={clsx({ "mediaBody--button__selected": value === 0 })}
             startIcon={<Icon path={mdiImage} size={1} color={value === 0 ? colorPal['default'][0] : colorPal['gray'][0]} />}
             onClick={evt => handleChange(evt, 0)}
           >
             {value === 0 ? <ColorTypo bold>Media</ColorTypo> : <ColorTypo color='gray'>Media</ColorTypo>}
           </ColorButton>
           <ColorButton
+            className={clsx({ "mediaBody--button__selected": value === 1 })}
             startIcon={<Icon path={mdiFile} size={1} color={value === 1 ? colorPal['default'][0] : colorPal['gray'][0]} />}
             onClick={evt => handleChange(evt, 1)}
           >
             {value === 1 ? <ColorTypo bold>File</ColorTypo> : <ColorTypo color='gray'>File</ColorTypo>}
           </ColorButton>
           <ColorButton
+            className={clsx({ "mediaBody--button__selected": value === 2 })}
             startIcon={<Icon path={mdiLink} size={1} color={value === 2 ? colorPal['default'][0] : colorPal['gray'][0]} />}
             onClick={evt => handleChange(evt, 2)}
           >
             {value === 2 ? <ColorTypo bold>Link</ColorTypo> : <ColorTypo color='gray'>Link</ColorTypo>}
           </ColorButton>
-        </StyledButtonGroup>
+        </ButtonGroup>
         {isNoData ? <NoDataPlaceHolder
           src="/images/no-files.png"
           title="Chưa có tài liệu nào được chia sẻ! Thêm tài liệu bằng cách kéo thả, chụp màn hình hoặc lấy từ thư viện tài liệu."
@@ -80,7 +74,7 @@ function TabBody(props) {
           </React.Fragment>
         }
       </div>
-    </Body>
+    </Scrollbars>
   )
 }
 

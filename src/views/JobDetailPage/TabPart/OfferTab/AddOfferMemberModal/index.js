@@ -11,8 +11,10 @@ function AddOfferMemberModal({
   value = [],
   onChange,
   members,
+  disableIndexes,
 }) {
   const [selected, setSelected] = useState(value);
+  const [searchValue, setSearchValue] = useState('');
 
   function onClickDone() {
     onChange(selected)
@@ -31,6 +33,14 @@ function AddOfferMemberModal({
     }
   }
 
+  function handleChangeSearch(evt) {
+    setSearchValue(evt.target.value)
+  }
+
+  const filteredMembers = members
+    .map((member, index) => ({ ...member, index }))
+    .filter(({ name }) => name.indexOf(searchValue) !== -1)
+
   return (
     <CustomModal
       title={"Thêm thành viên"}
@@ -38,18 +48,25 @@ function AddOfferMemberModal({
       setOpen={setOpen}
       confirmRender={() => "Hoàn Thành"}
       onConfirm={onClickDone}
+      className="addOfferMemberModal"
     >
       <React.Fragment>
-        <SearchInput placeholder='Tìm kiếm thành viên' />
+        <SearchInput placeholder='Tìm kiếm thành viên'
+          value={searchValue}
+          onChange={handleChangeSearch}
+        />
         <ColorTypo className="addOfferMemberModal--selected">
           Đã chọn {selected.length} thành viên
           </ColorTypo>
-        {members.map((member, i) => <OfferMemberItem
+        {filteredMembers.map((member, i) => <OfferMemberItem
           key={i}
-          isSelected={selected.indexOf(i) !== -1}
-          onClick={onClickMember(i)}
+          isSelected={selected.indexOf(member.index) !== -1}
+          onClick={onClickMember(member.index)}
           avatar={member.avatar}
-          name={member.name} />)}
+          roles={member.roles}
+          name={member.name}
+          isDisable={disableIndexes.indexOf(member.index) !== -1}
+        />)}
       </React.Fragment>
     </CustomModal>
   )

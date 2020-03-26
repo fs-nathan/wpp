@@ -418,6 +418,17 @@ function* deleteOffer(action) {
   }
 }
 
+function* approveOffer(action) {
+  try {
+    // console.log("offer_id:::::::", action.payload);
+    const res = yield call(apiService.post, 'task/approve-offer', action.payload)
+    yield put(actions.deleteOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: action.payload.task_id }))
+  } catch (error) {
+    yield put(actions.deleteOfferFail(error))
+  }
+}
+
 async function doUploadDocumentToOffer(payload) {
   try {
     const config = {
@@ -429,17 +440,6 @@ async function doUploadDocumentToOffer(payload) {
     return result.data;
   } catch (error) {
     throw error;
-  }
-}
-
-function* approveOffer(action) {
-  try {
-    // console.log("offer_id:::::::", action.payload);
-    const res = yield call(apiService.post, 'task/approve-offer', action.payload)
-    yield put(actions.deleteOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: action.payload.task_id }))
-  } catch (error) {
-    yield put(actions.deleteOfferFail(error))
   }
 }
 

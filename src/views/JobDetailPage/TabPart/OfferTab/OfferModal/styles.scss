@@ -1,7 +1,26 @@
 .offerModal {
+  .MuiDialogContent-root {
+    padding: 0 24px 30px 24px;
+  }
+  .MuiInput-underline:before {
+    border-bottom: 1px solid rgba(153, 153, 153, 0.42);
+  }
+  .MuiOutlinedInput-multiline {
+    padding: 10px;
+  }
+  .MuiChip-root {
+    background-color: #ececec;
+  }
   &--title {
-    font-size: 15px;
-    margin: 15px 0;
+    color: #9a9a9a;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+    display: block;
+    position: relative;
+    line-height: 15px;
+    margin: 25px 0 10px 0;
+    width: 100%;
   }
   &--content {
     label {
@@ -12,10 +31,49 @@
   &--input__hidden {
     visibility: hidden;
   }
+  &--buttonAdd {
+    svg {
+      width: 15px !important;
+      height: 15px !important;
+      fill: #0486ee;
+    }
+  }
+  &--textAdd {
+    color: #0486ee;
+    line-height: 17px;
+    margin-left: 5px;
+    font-size: 13px;
+  }
+  &--attach {
+    .MuiButton-root {
+      margin: 20px 0 0;
+      background-color: #fbfbfb;
+      border: 1px solid #e6e6e6;
+    }
+    .MuiButton-label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 3px 10px;
+      font-size: 14px;
+      font-weight: normal;
+      text-transform: initial;
+    }
+  }
 }
 
 .offerFile {
+  display: inline-block;
+  position: relative;
+  background-color: #f5f5f5;
+  margin: 10px 0;
+  padding: 10px 15px;
+  border-radius: 25px;
+  color: #007de0;
   &--name {
+    display: block;
+    float: left;
+    line-height: 15px;
   }
   &--size {
     margin-right: 20px;
@@ -23,5 +81,9 @@
   }
   &--icon {
     cursor: pointer;
+    width: 15px !important;
+    height: 15px !important;
+    margin-left: 10px;
+    fill: #a4a4a4;
   }
 }

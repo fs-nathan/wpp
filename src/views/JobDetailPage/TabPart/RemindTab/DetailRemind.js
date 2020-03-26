@@ -41,7 +41,7 @@ function DetailRemind({
     content,
     is_ghim,
     user_create_name,
-    user_create_role = '',
+    user_create_position = '',
   } = item
   const [day, month] = created_at.split('/');
   return (
@@ -54,8 +54,11 @@ function DetailRemind({
         <DialogTitle disableTypography>
           <Typography className="detailRemind--title" component="div">
             <Avatar className="detailRemind--avatar" src={user_create_avatar} alt='avatar' />
-            {user_create_name}
-            <div className="detailRemind--role">{user_create_role}</div>
+            <div className="detailRemind--user">
+              {user_create_name}
+              <br />
+              <div className="detailRemind--role">{user_create_position}</div>
+            </div>
           </Typography>
           <IconButton aria-label="close" className="detailRemind--closeButton" onClick={handleCloseModal}>
             <CloseIcon />

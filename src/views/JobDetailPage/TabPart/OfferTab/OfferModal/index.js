@@ -80,13 +80,17 @@ const OfferModal = (props) => {
   }
 
   const handleDeleteFile = fileId => {
-    let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
-    // Build a callback that allow saga remove file in state array
     let removeFileCallBack = () => {
       setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
     }
-    // Call api
-    dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId))
+    if (props.isOffer) {
+      let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
+      // Build a callback that allow saga remove file in state array
+      // Call api
+      dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId))
+    } else {
+      removeFileCallBack()
+    }
   }
 
   const handleUploadFileAdd = files => {
@@ -173,9 +177,10 @@ const OfferModal = (props) => {
       confirmRender={() => props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
       onConfirm={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
       canConfirm={validate()}
+      className="offerModal"
     >
       <React.Fragment>
-        <Typography className="offerModal--title" >Tiêu đề</Typography>
+        <Typography className="offerModal--title createJob--titleLabel" >Tên đề xuất</Typography>
         <TextField
           className="offerModal--titleText"
           placeholder="Nhập tiêu đề đề xuất"
@@ -183,7 +188,7 @@ const OfferModal = (props) => {
           value={tempSelectedItem.title}
           onChange={e => setParams("title", e.target.value)}
         />
-        <Typography className="offerModal--title" >Nội dung phê duyệt</Typography>
+        <Typography className="offerModal--title" >Nội dung đề xuất</Typography>
         <TextField
           className="offerModal--content"
           fullWidth
@@ -211,8 +216,9 @@ const OfferModal = (props) => {
               onDelete={handleDeleteHandler(index)}
             />
           )}
-          <IconButton onClick={openAddHandlersDialog}>
+          <IconButton className="offerModal--buttonAdd" onClick={openAddHandlersDialog}>
             <Icon size={1} path={mdiPlusCircleOutline} />
+            <span className="offerModal--textAdd">Thêm</span>
           </IconButton>
           <AddOfferMemberModal
             isOpen={isOpenAddHandler}
@@ -220,9 +226,10 @@ const OfferModal = (props) => {
             value={handlers}
             onChange={setHandlers}
             members={members}
+            disableIndexes={monitors}
           />
         </div>
-        <Typography className="offerModal--title">Giám sát ({monitors.length})</Typography>
+        <Typography className="offerModal--title">Người giám sát ({monitors.length})</Typography>
         <div>
           {monitors.map((index) =>
             <Chip
@@ -232,8 +239,11 @@ const OfferModal = (props) => {
               onDelete={handleDeleteHandler(index)}
             />
           )}
-          <IconButton onClick={openAddMonitorsDialog}>
+          <IconButton
+            className="offerModal--buttonAdd"
+            onClick={openAddMonitorsDialog}>
             <Icon size={1} path={mdiPlusCircleOutline} />
+            <span className="offerModal--textAdd">Thêm</span>
           </IconButton>
           <AddOfferMemberModal
             isOpen={isOpenAddMonitor}
@@ -241,6 +251,7 @@ const OfferModal = (props) => {
             value={monitors}
             onChange={setMonitors}
             members={members}
+            disableIndexes={handlers}
           />
         </div>
         <Typography className="offerModal--title" >Chọn mức độ</Typography>
@@ -259,7 +270,7 @@ const OfferModal = (props) => {
           type="file"
           onChange={e => props.isOffer ? handleUploadFileUpdate(e.target.files) : handleUploadFileAdd(e.target.files)}
         />
-        <label className="button-offer-modal" htmlFor="outlined-button-file">
+        <label className="offerModal--attach" htmlFor="outlined-button-file">
           <Button variant="outlined" component="span" fullWidth className={'classes.button'}>
             <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
             Đính kèm tài liệu
