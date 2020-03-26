@@ -28,7 +28,7 @@ const RemindList = (props) => {
     handleClickOpen(itemSelected)
   }
   return remind.length ? (
-    <ul className="styled-list">
+    <ul className="remindList">
       {remind.map((item, idx) =>
         (
           <RemindItem key={idx} {...item} idx={idx}

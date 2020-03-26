@@ -2,6 +2,9 @@
   .MuiDialogContent-root {
     padding: 8px 0;
   }
+  .MuiDialogTitle-root {
+    border-bottom: 1px solid #c4c4c4;
+  }
   &--closeButton {
     position: absolute;
     right: 4px;
@@ -12,17 +15,22 @@
     padding: 16px;
     margin-right: 14px;
     color: #ffffff;
+    background-color: rgb(0, 156, 243);
+    border-radius: 2px;
   }
   &--main {
     display: flex;
-    background-color: #cccccc;
+    background-color: #f0f0f0;
     padding: 16px 20px;
   }
   &--day {
     font-size: 48px;
+    font-weight: 700;
   }
   &--title {
     display: flex;
+    font-size: 14px;
+    font-weight: 500;
   }
   &--avatar {
     width: 40px;
@@ -35,6 +43,8 @@
   &--content {
     padding: 16px 20px;
     min-width: 500px;
+    font-size: 16px;
+    color: #111111;
   }
   &--remind {
     display: flex;
@@ -47,9 +57,11 @@
   }
   &--data {
     justify-content: center;
-    display: flex;
+    display: block;
     flex-direction: column;
     line-height: 2;
     font-weight: bold;
+    width: 100%;
+    font-size: 14px;
   }
 }

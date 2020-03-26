@@ -261,7 +261,6 @@ function RemindModal(props) {
                   variant="inline"
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  label="Ngày"
                   value={data.date_remind}
                   onChange={e => handleChangeData("date_remind", convertDate(e))}
                   KeyboardButtonProps={{
@@ -272,7 +271,6 @@ function RemindModal(props) {
               <span>
                 <InputDateTime
                   type={'time'}
-                  label="Thời gian"
                   variant="outlined"
                   value={data.time_remind}
                   onChange={e => handleChangeData("time_remind", e.target.value)}

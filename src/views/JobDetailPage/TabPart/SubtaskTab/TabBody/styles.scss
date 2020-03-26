@@ -35,7 +35,45 @@
 }
 
 .finishedSubTask {
+  &--item {
+    padding-left: 16px;
+    display: flex;
+    position: relative;
+  }
   &--avatar {
     margin: 6px 13px 0 10px;
+  }
+  &--title {
+    margin: 5px 0;
+    line-height: 18px;
+    font-size: 14px;
+  }
+  &--subTitle {
+    color: rgba(0, 0, 0, 0.54);
+    display: flex;
+    align-items: baseline;
+    & > *:first-child {
+      margin-right: 10px;
+    }
+  }
+  &--menuIcon {
+    position: absolute;
+    right: 8px;
+    display: none;
+  }
+  &--item:hover &--menuIcon {
+    display: inline;
+  }
+  &--menu {
+    & > .MuiPaper-root {
+      box-shadow: none;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      & > ul {
+        padding: 0;
+        & > li {
+          padding: 10px 20px;
+        }
+      }
+    }
   }
 }

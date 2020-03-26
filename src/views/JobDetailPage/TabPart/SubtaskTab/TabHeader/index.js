@@ -32,9 +32,12 @@ function TabHeader(props) {
   const handleClick = () => {
     setOnPlus(!isPlus)
   }
+  function onClickBack() {
+    props.setShow(0)
+  }
   return (
     <div className="headerTab">
-      <IconButton className="headerTab--button" onClick={() => props.setShow(0)}>
+      <IconButton className="headerTab--button" onClick={onClickBack}>
         <abbr title="Quay lại">
           <Icon path={mdiChevronLeft} size={1} />
         </abbr>

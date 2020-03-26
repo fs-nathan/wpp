@@ -1,15 +1,14 @@
 import { InputBase } from '@material-ui/core';
 import { mdiSend } from '@mdi/js';
 import Icon from '@mdi/react';
+import { postSubTask, searchSubTask } from 'actions/taskDetail/taskDetailActions';
+import ColorTypo from 'components/ColorTypo';
+import SearchInput from 'components/SearchInput';
+import colorPal from 'helpers/colorPalette';
 import React from 'react';
-// import avatar from '../../../../../assets/avatar.jpg';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { postSubTask, searchSubTask } from '../../../../../actions/taskDetail/taskDetailActions';
-import ColorTypo from '../../../../../components/ColorTypo';
-import SearchInput from '../../../../../components/SearchInput';
-import colorPal from '../../../../../helpers/colorPalette';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 import AllSubtaskList from './AllSubtaskList';
 import { ButtonIcon } from './AllSubtaskListItem';
@@ -101,10 +100,11 @@ function TabBody(props) {
             />
           </Div>
         }
-        {isNoSubTask ? <NoDataPlaceHolder
-          src="/images/no-subtask.png"
-          title="Chưa có công việc con được khởi tạo Click + để tạo mới công việc con"
-        ></NoDataPlaceHolder>
+        {isNoSubTask ?
+          <NoDataPlaceHolder
+            src="/images/no-subtask.png"
+            title="Chưa có công việc con được khởi tạo Click + để tạo mới công việc con"
+          />
           :
           <React.Fragment>
             <TextTitle className="subTaskBody--title">Đang thực hiện({uncompleteSubTasks.length})</TextTitle>

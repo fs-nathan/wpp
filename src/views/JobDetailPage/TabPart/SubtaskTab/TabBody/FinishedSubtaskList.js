@@ -1,49 +1,12 @@
-import { Avatar, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { Avatar, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { deleteSubTask } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import { ButtonIcon } from './AllSubtaskListItem';
 import './styles.scss';
-
-const CustomMenu = styled(Menu)`
-  & > .MuiPaper-root {
-    box-shadow: none;
-    border: 1px solid rgba(0,0,0,.1);
-    & > ul {
-      padding : 0;
-      & > li {
-        padding : 10px 20px;
-      }
-    }
-  }
-`
-
-const StyledListItemComplete = styled.li`
-  padding-left: 16px;
-  display: flex;
-`
-
-const StyledMenuComplete = styled.div`
-  & > *:first-child {
-    margin-right: 8px;
-  }
-  display: none;
-  ${StyledListItemComplete}:hover & {
-    display: inline;
-  }
-`
-
-const FinishedSubtaskListItemTextSecondary = styled.span`
-  display: flex;
-  align-items: baseline;
-  & > *:first-child {
-    margin-right: 10px;
-  }
-`;
 
 const FinishedSubtaskList = (props) => {
   const dispatch = useDispatch();
@@ -85,29 +48,32 @@ const FinishedSubtaskList = (props) => {
     <ul style={{ padding: 0 }}>
       {completeSubTasks.map((item, index) => {
         return (
-          <StyledListItemComplete key={index}>
-            <Avatar className="finishedSubTask--avatar" src={item.user_create_avatar} alt='avatar' />
-            <ListItemText
-              primary={`${item.name}`}
-              secondary={
-                <FinishedSubtaskListItemTextSecondary>
-                  <abbr title={item.user_complete_name}>
-                    <Avatar src={item.user_complete_avatar} style={{ width: 12, height: 12 }} />
-                  </abbr>
+          <li className="finishedSubTask--item" key={index}>
+            <abbr title={item.user_create_name}>
+              <Avatar className="finishedSubTask--avatar" src={item.user_create_avatar} alt='avatar' />
+            </abbr>
+            <div>
+              <div className="finishedSubTask--title">
+                {`${item.name}`}
+              </div>
+              <div className="finishedSubTask--subTitle" >
+                <abbr title={item.user_complete_name}>
+                  <Avatar src={item.user_complete_avatar} style={{ width: 12, height: 12 }} />
+                </abbr>
                   Hoàn thành lúc {item.time_complete}
-                </FinishedSubtaskListItemTextSecondary>
-              }
-            />
-            <StyledMenuComplete>
+              </div>
+            </div>
+            <div className="finishedSubTask--menuIcon" >
               <ButtonIcon onClick={e => handleClick(e, item.id)} aria-haspopup="true">
                 <Icon path={mdiDotsVertical} size={1} />
               </ButtonIcon>
-            </StyledMenuComplete>
-          </StyledListItemComplete>
+            </div>
+          </li>
         );
       })}
 
-      <CustomMenu
+      <Menu
+        className="finishedSubTask--menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -118,7 +84,7 @@ const FinishedSubtaskList = (props) => {
         }}
       >
         <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
-      </CustomMenu>
+      </Menu>
 
       <ModalDeleteConfirm
         confirmDelete={confirmDelete}

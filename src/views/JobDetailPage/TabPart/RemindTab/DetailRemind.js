@@ -1,20 +1,20 @@
-import React from 'react';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import { useSelector } from 'react-redux';
-import get from 'lodash/get';
-import ColorTypo from 'components/ColorTypo';
 import ColorChip from 'components/ColorChip';
-
+import ColorTypo from 'components/ColorTypo';
+import get from 'lodash/get';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import './styles.scss';
+
 
 const typesRemind = [
   'Nhắc 1 lần',
@@ -55,7 +55,7 @@ function DetailRemind({
           <Typography className="detailRemind--title" component="div">
             <Avatar className="detailRemind--avatar" src={user_create_avatar} alt='avatar' />
             {user_create_name}
-            <div>{user_create_role}</div>
+            <div className="detailRemind--role">{user_create_role}</div>
           </Typography>
           <IconButton aria-label="close" className="detailRemind--closeButton" onClick={handleCloseModal}>
             <CloseIcon />
