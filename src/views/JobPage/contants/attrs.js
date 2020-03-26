@@ -111,6 +111,7 @@ export const taskAtrrs = {
   date_create: "date_create"
 };
 export const labels = {
+  task_all: "Tất cả",
   pageTitle: "Công việc của bạn",
   task_of_me: "Công việc của bạn",
   task_waiting: "Đang chờ",
@@ -166,6 +167,7 @@ export const labels = {
 export const colors = {
   task_of_me: cls.orange[0],
   task_waiting: "#ff9800",
+  task_all: "#ff9800",
   task_doing: "#03a9f4",
   task_complete: "#03c30b",
   task_stop: "#888",
