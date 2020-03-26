@@ -1,11 +1,12 @@
-import { call, put } from 'redux-saga/effects';
-import { createTaskSuccess, createTaskFail } from '../../actions/task/createTask';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, CREATE_TASK } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { createTaskFail, createTaskSuccess } from '../../actions/task/createTask';
+import { apiService } from '../../constants/axiosInstance';
+import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) {
+  console.log('x');
   try {
     const config = {
       url: '/task/create',
@@ -45,6 +46,5 @@ function* createTask(action) {
   }
 }
 
-export {
-  createTask,
-}
+export { createTask, };
+

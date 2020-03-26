@@ -1,9 +1,9 @@
-import { call, put } from 'redux-saga/effects';
-import { copyGroupTaskSuccess, copyGroupTaskFail } from '../../actions/groupTask/copyGroupTask';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, COPY_GROUP_TASK } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { copyGroupTaskFail, copyGroupTaskSuccess } from '../../actions/groupTask/copyGroupTask';
+import { apiService } from '../../constants/axiosInstance';
+import { COPY_GROUP_TASK, CustomEventEmitter } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doCopyGroupTask({ groupTaskId, projectId }) {
   try {
@@ -24,7 +24,11 @@ async function doCopyGroupTask({ groupTaskId, projectId }) {
 
 function* copyGroupTask(action) {
   try {
-    const { group_tasks: groupTasks } = yield call(doCopyGroupTask, action.options);
+    const { group_tasks } = yield call(doCopyGroupTask, action.options);
+    const groupTasks = group_tasks.map(groupTask => ({
+      ...groupTask,
+      id: get(groupTask, '_id'),
+    }))
     yield put(copyGroupTaskSuccess({ groupTasks }, action.options));
     CustomEventEmitter(COPY_GROUP_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
@@ -34,6 +38,5 @@ function* copyGroupTask(action) {
   }
 }
 
-export {
-  copyGroupTask,
-}
+export { copyGroupTask, };
+

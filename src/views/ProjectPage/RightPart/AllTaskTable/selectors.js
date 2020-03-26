@@ -2,6 +2,7 @@ import { concat, find, get } from 'lodash';
 import { createSelector } from 'reselect';
 
 const listTask = state => state.task.listTask;
+const deleteTask = state => state.task.deleteTask;
 const sortTask = state => state.task.sortTask;
 const detailProject = state => state.project.detailProject;
 const colors = state => state.setting.colors;
@@ -10,10 +11,11 @@ const showProject = state => state.project.showProject;
 const hideProject = state => state.project.hideProject;
 
 export const tasksSelector = createSelector(
-  [listTask, listGroupTask, sortTask],
-  (listTask, listGroupTask, sortTask) => {
+  [listTask, listGroupTask, sortTask, deleteTask],
+  (listTask, listGroupTask, sortTask, deleteTask) => {
     const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
     const { loading: sortTaskLoading, error: sortTaskError } = sortTask;
+    const { loading: deleteTaskLoading, error: deleteTaskError } = deleteTask;
     const { data: { groupTasks } } = listGroupTask;
     const newTasks = tasks.map(groupTask => ({
       ...groupTask,
@@ -21,8 +23,8 @@ export const tasksSelector = createSelector(
     }));
     return {
       tasks: newTasks,
-      loading: listTaskLoading || sortTaskLoading,
-      error: listTaskError || sortTaskError,
+      loading: listTaskLoading || sortTaskLoading || deleteTaskLoading,
+      error: listTaskError || sortTaskError || deleteTaskError,
     }
   }
 );
@@ -57,21 +59,3 @@ export const bgColorSelector = createSelector(
     return colors.find(item => item.selected === true);
   }
 );
-
-export const groupTasksSelector = createSelector(
-  [listGroupTask, listTask],
-  (listGroupTask, listTask) => {
-    const { data: { groupTasks }, loading: listGroupTaskLoading, error: listGroupTaskError } = listGroupTask;
-    const { data: { tasks } } = listTask;
-    const newGroupTasks = tasks.map(groupTask => ({
-      ...groupTask,
-      ...find(groupTasks, { id: get(groupTask, 'id') }),
-      number_task: get(groupTask, 'tasks', []).length,
-    }));
-    return {
-      groupTasks: newGroupTasks,
-      loading: listGroupTaskLoading,
-      error: listGroupTaskError,
-    }
-  }
-)
