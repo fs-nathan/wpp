@@ -39,13 +39,13 @@ const DemandModal = (props) => {
   }
 
   function onClickCreate() {
-    props.handleClose()
+    props.setOpen(false)
     props.confirmCreateCommand(tempSelectedItem)
     setParams("content", '')
   }
 
   function onClickUpdate() {
-    props.handleClose();
+    props.setOpen(false);
     tempSelectedItem.taskId = taskId;
     dispatch(updateCommand(tempSelectedItem))
     setParams("content", '')

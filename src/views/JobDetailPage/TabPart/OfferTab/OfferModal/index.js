@@ -14,11 +14,6 @@ import { priorityList } from '../data';
 import OfferFile from './OfferFile';
 import './styles.scss';
 
-const formToJSON = elements => [].reduce.call(elements, (data, element) => {
-  data[element.name] = element.value;
-  return data;
-}, {});
-
 const OfferModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);

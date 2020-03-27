@@ -1,11 +1,19 @@
 .offerTabItem {
   position: relative;
+  border-bottom: 1px solid #eeeeee;
+  padding: 8px 0 10px;
+  margin: 17px 0;
+  cursor: pointer;
   &--content {
-    font-size: 14px;
-    text-transform: uppercase;
+    overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 15px;
     white-space: nowrap;
-    max-width: 2em;
+    font-weight: 500;
+    margin-bottom: 10px;
+    line-height: 18px;
+    width: 91%;
+    color: #5a5a5a;
   }
   &--user {
     display: flex;
@@ -23,12 +31,14 @@
   &--priority {
     margin: 4px 4px 4px 0;
     padding: 4px;
-    color: #ffffff;
-    background-color: red;
+    background-color: #ff110038;
+    color: #ff1100;
     &__urgent {
-      background-color: orange;
+      background-color: #ff980030;
+      color: #ff9800;
     }
     &__nomal {
+      color: #ffffff;
       background-color: blue;
     }
   }
@@ -52,8 +62,13 @@
     }
   }
   &--statusIcon {
+    background-color: #9696962b;
+    color: #878787;
+    font-size: 12px;
+    font-weight: 500;
     margin: 4px;
-    padding: 4px;
+    padding: 4px 6px;
+    border-radius: 2px;
     svg {
       fill: #ffffff;
     }
@@ -64,7 +79,8 @@
       background-color: greenyellow;
     }
     &__normal {
-      background-color: #cccccc;
+      background-color: #9696962b;
+      color: #878787;
     }
   }
 }

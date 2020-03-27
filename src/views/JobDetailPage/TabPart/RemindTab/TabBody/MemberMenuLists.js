@@ -1,15 +1,13 @@
-import React from 'react';
-import clsx from 'clsx';
-import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  IconButton, Menu, MenuItem
-} from '@material-ui/core';
-import Icon from '@mdi/react';
+import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
+import Icon from '@mdi/react';
+import { deleteRemind, pinRemind, unPinRemind } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'clsx';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 
-import ModalDeleteConfirm from '../../ModalDeleteConfirm'
-import { deleteRemind, unPinRemind, pinRemind } from 'actions/taskDetail/taskDetailActions';
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -55,7 +53,9 @@ const MemberMenuLists = ({ item, className, idx, handleClickOpen }) => {
 
   return (
     <div className={clsx(className, "styled-menu")} >
-      <ButtonIcon onClick={e => handleClick(e)} aria-controls={"simple-menu" + idx} aria-haspopup="true">
+      <ButtonIcon
+        onClick={handleClick}
+        aria-controls={"simple-menu" + idx} aria-haspopup="true">
         <Icon path={mdiDotsVertical} size={1} />
       </ButtonIcon>
       <Menu

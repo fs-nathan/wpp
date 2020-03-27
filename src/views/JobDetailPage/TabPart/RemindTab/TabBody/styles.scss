@@ -57,11 +57,15 @@
     border-left: 1px solid #cccccc;
   }
   &--title {
-    text-transform: uppercase;
-    font-size: 18px;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 2em;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    line-height: 18px;
+    width: 91%;
+    color: #5a5a5a;
   }
   &--avatar {
     width: 13px;
@@ -88,10 +92,22 @@
     position: absolute;
     top: 0;
     right: 0;
+    margin-right: -15px;
+    svg {
+      fill: #858585;
+    }
+    .MuiIconButton-root {
+      display: none;
+    }
   }
   &--pinned {
     position: absolute;
     top: 0;
     right: 20px;
+  }
+  &:hover {
+    .MuiIconButton-root {
+      display: block;
+    }
   }
 }
