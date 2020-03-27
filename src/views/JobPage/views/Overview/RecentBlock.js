@@ -12,14 +12,13 @@ import { useToggle } from "react-use";
 import { Analytic } from "views/JobPage/components/Analytic";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import RecentTableRow from "views/JobPage/components/RecentTableRow";
+import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { useCustomList } from "views/JobPage/hooks/useCustomList";
 import { JobPageContext } from "views/JobPage/JobPageContext";
 import { colors, labels, recent, taskAtrrs } from "../../contants/attrs";
 import { TASK_OVERVIEW_RECENT } from "../../redux/types";
 import { createMapPropsFromAttrs } from "../../utils";
-export const RecentTable = ({ tasks = [] }) => {
-  const { setQuickTask } = useContext(JobPageContext);
-
+export const RecentTable = ({ tasks = emptyArray }) => {
   return (
     <Table className="header-document">
       <TableBody>
@@ -80,25 +79,30 @@ export const RecentTable = ({ tasks = [] }) => {
     </Table>
   );
 };
-
+const selector = state => {
+  return createMapPropsFromAttrs([
+    recent.waiting,
+    recent.doing,
+    recent.complete,
+    recent.expired,
+    recent.stop,
+    recent.tasks
+  ])(state.taskPage[TASK_OVERVIEW_RECENT]);
+};
 export function RecentBlock() {
   const { t } = useTranslation();
   const { statusFilter, keyword } = useContext(JobPageContext);
 
-  const [waiting, doing, complete, expired, stop, tasks = []] = useSelector(
-    state => {
-      return createMapPropsFromAttrs([
-        recent.waiting,
-        recent.doing,
-        recent.complete,
-        recent.expired,
-        recent.stop,
-        recent.tasks
-      ])(state.taskPage[TASK_OVERVIEW_RECENT]);
-    }
-  );
+  const [
+    waiting,
+    doing,
+    complete,
+    expired,
+    stop,
+    tasks = emptyArray
+  ] = useSelector(selector);
 
-  const [isToggleSortName, toggleSortName] = useToggle();
+  const [isToggleSortName] = useToggle();
   const [list] = useCustomList({
     tasks,
     statusFilter,

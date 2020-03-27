@@ -12,7 +12,6 @@ import AnalyticButton from "./AnalyticButton";
 import PrimaryButton from "./PrimaryButton";
 const createAnalyticButtonProps = ({ key, show, count, label, color }) => ({
   key,
-  show,
   active: show,
   count,
   label,

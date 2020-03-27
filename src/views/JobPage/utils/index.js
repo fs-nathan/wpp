@@ -10,6 +10,7 @@ export {
   loginlineFunc,
   createMapPropsFromAttrs
 };
+
 const loginlineParams = param => {
   console.trace("param", param);
   return param;

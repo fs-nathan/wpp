@@ -111,7 +111,7 @@ function* doGetRoleTasks({ timeStart, timeEnd, roleId }) {
 // watchPage
 function* watchLoadTaskOverviewPage() {
   while (true) {
-    const {} = yield take(LOAD_TASK_OVERVIEW);
+    yield take(LOAD_TASK_OVERVIEW);
     yield all([fork(doGetStaticTaskRecent)]);
   }
 }
@@ -125,7 +125,7 @@ function* watchLoadTaskPage() {
 }
 function* watchLoadTaskDuePage() {
   while (true) {
-    const {} = yield take(LOADPAGE_TASK_DUE);
+    yield take(LOADPAGE_TASK_DUE);
     yield all([fork(doGetDueTasks)]);
   }
 }

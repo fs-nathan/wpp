@@ -65,11 +65,11 @@ export const HasMessage = ({ className, path = mdiMessageText, ...props }) => (
   />
 );
 
-export const TaskTitleLink = ({ className, ...props }) => (
+export const TaskTitleLink = ({ complete, className, ...props }) => (
   <Link
     className={classnames(
       "comp_TaskTitleLink",
-      props.complete && "comp_TaskTitleLink__complete",
+      complete && "comp_TaskTitleLink__complete",
       className
     )}
     {...props}
