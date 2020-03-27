@@ -2,8 +2,10 @@ import { Button } from '@material-ui/core';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import LoadingOverlay from '../LoadingOverlay';
 import HeaderButtonGroup from './HeaderButtonGroup';
+import { bgColorSelector } from './selectors';
 import './style.scss';
 import TableMain from './TableMain';
 
@@ -23,9 +25,6 @@ const LeftHeader = ({ className = "", ...rest }) => (
 const RightHeader = ({ className = "", ...rest }) => (
   <div className={`comp_CustomTable___right-header ${className}`} {...rest} />
 );
-const StyledButton = ({ className = "", ...rest }) => (
-  <Button className={`comp_CustomTable___button ${className}`} {...rest} />
-);
 const StyledTableMain = ({ className = "", ...rest }) => (
   <TableMain
     className={`comp_CustomTable___table-main ${className}`}
@@ -34,7 +33,7 @@ const StyledTableMain = ({ className = "", ...rest }) => (
 );
 
 export const TableHeader = () => {
-  const { options } = React.useContext(CustomTableContext);
+  const { options, bgColor } = React.useContext(CustomTableContext);
   return (
     <Header>
       <LeftHeader>
@@ -56,19 +55,25 @@ export const TableHeader = () => {
       <RightHeader>
         <HeaderButtonGroup />
         {get(options, "mainAction") && (
-          <StyledButton
+          <Button
             size="small"
             onClick={get(options, "mainAction.onClick", () => null)}
+            style={{
+              backgroundColor: bgColor.color,
+              color: 'white',
+              padding: '8px 12px',
+              marginTop: '8px',
+            }}
           >
             {get(options, "mainAction.label", "")}
-          </StyledButton>
+          </Button>
         )}
       </RightHeader>
     </Header>
   );
 };
 export function CustomTableLayout({ children }) {
-  const { options } = React.useContext(CustomTableContext);
+  const { options, bgColor } = React.useContext(CustomTableContext);
   return (
     <Container>
       <Header>
@@ -91,12 +96,18 @@ export function CustomTableLayout({ children }) {
         <RightHeader>
           <HeaderButtonGroup />
           {get(options, "mainAction") && (
-            <StyledButton
+            <Button
               size="small"
               onClick={get(options, "mainAction.onClick", () => null)}
+              style={{
+                backgroundColor: bgColor.color,
+                color: 'white',
+                padding: '8px 12px',
+                marginTop: '8px',
+              }}
             >
               {get(options, "mainAction.label", "")}
-            </StyledButton>
+            </Button>
           )}
         </RightHeader>
       </Header>
@@ -105,7 +116,7 @@ export function CustomTableLayout({ children }) {
   );
 }
 function CustomTable() {
-  const { options } = React.useContext(CustomTableContext);
+  const { options, bgColor } = React.useContext(CustomTableContext);
   return (
     <LoadingOverlay
       active={get(options, 'loading.bool', false)}
@@ -136,12 +147,18 @@ function CustomTable() {
           <RightHeader>
             <HeaderButtonGroup />
             {get(options, 'mainAction') && (
-              <StyledButton
+              <Button
                 size="small"
-                onClick={get(options, 'mainAction.onClick', () => null)}
+                onClick={get(options, "mainAction.onClick", () => null)}
+                style={{
+                  backgroundColor: bgColor.color,
+                  color: 'white',
+                  padding: '8px 12px',
+                  marginTop: '8px',
+                }}
               >
-                {get(options, 'mainAction.label', '')}
-              </StyledButton>
+                {get(options, "mainAction.label", "")}
+              </Button>
             )}
           </RightHeader>
         </Header>
@@ -151,7 +168,7 @@ function CustomTable() {
   );
 }
 
-function CustomTableWrapper({ options, columns, data }) {
+function CustomTableWrapper({ options, columns, data, bgColor }) {
   const [searchPatern, setSearchPatern] = React.useState('');
   const [expand, setExpand] = React.useState(false);
 
@@ -172,7 +189,8 @@ function CustomTableWrapper({ options, columns, data }) {
       ...options
     },
     columns: columns || [],
-    data: data || []
+    data: data || [],
+    bgColor,
   };
 
   return (
@@ -188,4 +206,13 @@ CustomTableWrapper.propTypes = {
   data: PropTypes.array.isRequired
 };
 
-export default CustomTableWrapper;
+const mapStateToProps = state => {
+  return {
+    bgColor: bgColorSelector(state),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+)(CustomTableWrapper);

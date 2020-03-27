@@ -1,35 +1,32 @@
-import React from 'react';
-import TwoColumnsLayout from '../../components/TwoColumnsLayout';
-import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
-import { detailProjectGroup } from '../../actions/projectGroup/detailProjectGroup';
-import { memberProjectGroup } from '../../actions/projectGroup/memberProjectGroup';
-import { detailDefaultGroup } from '../../actions/projectGroup/detailDefaultGroup';
-import { listIcon } from '../../actions/icon/listIcon';
-import { listProject } from '../../actions/project/listProject';
-import { listDeletedProject } from '../../actions/project/listDeletedProject';
-import { detailStatus } from '../../actions/project/setting/detailStatus';
-import { 
-  CustomEventListener, CustomEventDispose, 
-  //CREATE_PROJECT_GROUP, 
-  SORT_PROJECT_GROUP, 
-  //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
-  //CREATE_ICON, DELETE_ICON,
-  CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT, 
-  //HIDE_PROJECT, SHOW_PROJECT, 
-  SORT_PROJECT, 
-  //COPY_PROJECT,
-  UPDATE_STATUS_COPY, UPDATE_STATUS_DATE,
-} from '../../constants/events';
-import ProjectGroupList from './LeftPart/ProjectGroupList';
-import DefaultGroupDetail from './LeftPart/DefaultGroupDetail';
-import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
-import AllProjectTable from './RightPart/AllProjectTable';
-import DeletedProjectTable from './RightPart/DeletedProjectTable';
 import { get } from 'lodash';
 import moment from 'moment';
-import { useLocalStorage } from '../../hooks'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
+import { listIcon } from '../../actions/icon/listIcon';
+import { listDeletedProject } from '../../actions/project/listDeletedProject';
+import { listProject } from '../../actions/project/listProject';
+import { detailStatus } from '../../actions/project/setting/detailStatus';
+import { detailDefaultGroup } from '../../actions/projectGroup/detailDefaultGroup';
+import { detailProjectGroup } from '../../actions/projectGroup/detailProjectGroup';
+import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
+import { memberProjectGroup } from '../../actions/projectGroup/memberProjectGroup';
+import TwoColumnsLayout from '../../components/TwoColumnsLayout';
+import {
+  //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
+  //CREATE_ICON, DELETE_ICON,
+  CREATE_PROJECT, CustomEventDispose, CustomEventListener, DELETE_PROJECT,
+  //HIDE_PROJECT, SHOW_PROJECT, 
+  SORT_PROJECT,
+  //CREATE_PROJECT_GROUP, 
+  SORT_PROJECT_GROUP, UPDATE_PROJECT
+} from '../../constants/events';
+import { useLocalStorage } from '../../hooks';
+import DefaultGroupDetail from './LeftPart/DefaultGroupDetail';
+import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
+import ProjectGroupList from './LeftPart/ProjectGroupList';
+import AllProjectTable from './RightPart/AllProjectTable';
+import DeletedProjectTable from './RightPart/DeletedProjectTable';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -100,14 +97,14 @@ function ProjectGroupPage({
       doDetailProjectGroup({ projectGroupId });
 
       const reloadDetailProjectGroup = () => {
-        doDetailProjectGroup({ projectGroupId }, /*true*/);
+        doDetailProjectGroup({ projectGroupId });
       }
 
       //CustomEventListener(EDIT_PROJECT_GROUP, reloadDetailProjectGroup);
       CustomEventListener(CREATE_PROJECT, reloadDetailProjectGroup);
       CustomEventListener(UPDATE_PROJECT, reloadDetailProjectGroup);
       CustomEventListener(DELETE_PROJECT, reloadDetailProjectGroup);
-      
+
       return () => {
         //CustomEventDispose(EDIT_PROJECT_GROUP, reloadDetailProjectGroup);
         CustomEventDispose(CREATE_PROJECT, reloadDetailProjectGroup);
@@ -155,7 +152,7 @@ function ProjectGroupPage({
         groupProject: projectGroupId,
         timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
         timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-      }, /*true*/);
+      });
     }
 
     //CustomEventListener(CREATE_PROJECT, reloadListProject);
@@ -181,7 +178,7 @@ function ProjectGroupPage({
     doListDeletedProject({});
 
     const reloadListDeletedProject = () => {
-      doListDeletedProject({}, /*true*/);
+      doListDeletedProject({});
     }
 
     CustomEventListener(DELETE_PROJECT, reloadListDeletedProject);
@@ -198,11 +195,11 @@ function ProjectGroupPage({
       doDetailStatus({
         projectId: statusProjectId,
       });
-
+      /*
       const reloadDetailStatus = () => {
         doDetailStatus({
           projectId: statusProjectId,
-        }, /*true*/);
+        }, true);
       }
   
       CustomEventListener(UPDATE_STATUS_COPY, reloadDetailStatus);
@@ -212,6 +209,7 @@ function ProjectGroupPage({
         CustomEventDispose(UPDATE_STATUS_COPY, reloadDetailStatus);
         CustomEventDispose(UPDATE_STATUS_DATE, reloadDetailStatus);
       }
+      */
     }
   }, [statusProjectId, doDetailStatus]);
 
@@ -226,21 +224,21 @@ function ProjectGroupPage({
         path='/projects'
         render={({ match: { url } }) => (
           <Switch>
-            <Route 
+            <Route
               path={`${url}`}
               exact
               render={props => (
-                <TwoColumnsLayout 
+                <TwoColumnsLayout
                   leftRenders={[
-                    () => 
-                      <ProjectGroupList 
+                    () =>
+                      <ProjectGroupList
                         {...props}
                       />,
                   ]}
                   rightRender={
-                    ({ expand, handleExpand }) => 
-                      <AllProjectTable 
-                        {...props} 
+                    ({ expand, handleExpand }) =>
+                      <AllProjectTable
+                        {...props}
                         expand={expand}
                         handleExpand={handleExpand}
                       />
@@ -248,21 +246,21 @@ function ProjectGroupPage({
                 />
               )}
             />
-            <Route 
+            <Route
               path={`${url}/deleted`}
               exact
               render={props => (
-                <TwoColumnsLayout 
+                <TwoColumnsLayout
                   leftRenders={[
-                    () => 
-                      <ProjectGroupList 
+                    () =>
+                      <ProjectGroupList
                         {...props}
                       />,
                   ]}
                   rightRender={
-                    ({ expand, handleExpand }) => 
-                      <DeletedProjectTable 
-                        {...props} 
+                    ({ expand, handleExpand }) =>
+                      <DeletedProjectTable
+                        {...props}
                         expand={expand}
                         handleExpand={handleExpand}
                       />
@@ -270,21 +268,21 @@ function ProjectGroupPage({
                 />
               )}
             />
-            <Route 
+            <Route
               path={`${url}/default`}
               exact
               render={props => (
-                <TwoColumnsLayout 
+                <TwoColumnsLayout
                   leftRenders={[
-                    () => 
-                      <DefaultGroupDetail 
+                    () =>
+                      <DefaultGroupDetail
                         {...props}
                       />,
                   ]}
                   rightRender={
-                    ({ expand, handleExpand }) => 
-                      <AllProjectTable 
-                        {...props} 
+                    ({ expand, handleExpand }) =>
+                      <AllProjectTable
+                        {...props}
                         expand={expand}
                         handleExpand={handleExpand}
                         isDefault={true}
@@ -293,20 +291,20 @@ function ProjectGroupPage({
                 />
               )}
             />
-            <Route 
+            <Route
               path={`${url}/:projectGroupId`}
               render={props => (
-                <TwoColumnsLayout 
+                <TwoColumnsLayout
                   leftRenders={[
-                    () => 
-                      <ProjectGroupDetail 
+                    () =>
+                      <ProjectGroupDetail
                         {...props}
                       />,
                   ]}
                   rightRender={
-                    ({ expand, handleExpand }) => 
-                      <AllProjectTable 
-                        {...props} 
+                    ({ expand, handleExpand }) =>
+                      <AllProjectTable
+                        {...props}
                         expand={expand}
                         handleExpand={handleExpand}
                       />

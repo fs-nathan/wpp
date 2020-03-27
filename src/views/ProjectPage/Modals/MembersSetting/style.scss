@@ -49,6 +49,23 @@
   text-align: center;
 };
 
+.view_Project_MemberSetting_Modal___roles-box {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  & > * {
+    margin: 3px 5px 0 0;
+    padding: 2px 3px;
+  }
+  & > p {
+    border: 1px solid #444;
+    color: #444;
+    font-size: 12px;
+    border-radius: 2px;
+  }
+};
+
 @mixin view_Project_MemberSetting_Modal___add-button {
   height: 25px;
   text-transform: unset;

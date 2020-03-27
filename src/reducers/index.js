@@ -52,6 +52,7 @@ import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMembe
 import detailStatus, { initialState as detailStatusInitialState } from "./project/setting/detailStatus";
 import updateStatusCopy, { initialState as updateStatusCopyInitialState } from "./project/setting/updateStatusCopy";
 import updateStatusDate, { initialState as updateStatusDateInitialState } from "./project/setting/updateStatusDate";
+import updateStatusView, { initialState as updateStatusViewInitialState } from "./project/setting/updateStatusView";
 import showProject, { initialState as showProjectInitialState } from "./project/showProject";
 import sortProject, { initialState as sortProjectInitialState } from "./project/sortProject";
 import updateGroupPermissionMember, { initialState as updateGroupPermissionMemberInitialState } from "./project/updateGroupPermissionMember";
@@ -208,7 +209,8 @@ const rootReducer = combineReducers({
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
-      updateStatusCopy
+      updateStatusCopy,
+      updateStatusView,
     })
   }),
   groupTask: combineReducers({
@@ -328,7 +330,8 @@ export const DEFAULT_STATE = {
     setting: {
       detailStatus: detailStatusInitialState,
       updateStatusDate: updateStatusDateInitialState,
-      updateStatusCopy: updateStatusCopyInitialState
+      updateStatusCopy: updateStatusCopyInitialState,
+      updateStatusView: updateStatusViewInitialState,
     }
   },
   groupTask: {

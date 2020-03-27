@@ -8,7 +8,7 @@ import TextEditor, { getEditorData } from 'components/TextEditor';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
 import { convertToRaw } from 'draft-js';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
-import { get, isNil } from 'lodash';
+import { get, isFunction, isNil } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
@@ -80,8 +80,6 @@ function CreateJobModal(props) {
   const [listGroupTask, setListGroupTask] = React.useState([]);
   const [groupTaskValue, setGroupTaskValue] = React.useState(null);
   const [type, setType] = useState(2);
-
-  // console.log(listTaskDetail);
 
   const updateData = () => {
     const dataNameDescription = {
@@ -175,7 +173,7 @@ function CreateJobModal(props) {
       data.date_status = type;
       data.description = JSON.stringify(convertToRaw(data.description.getCurrentContent()));
       // Call api
-      isNil(get(props, 'doCreateTask'))
+      isFunction(get(props, 'doCreateTask'))
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
         : dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data

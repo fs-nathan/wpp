@@ -12,7 +12,7 @@ import CreateJobModal from '../../../../views/JobDetailPage/ListPart/ListHeader/
 import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting';
 import { Context as ProjectPageContext } from '../../index';
 import AllTaskTablePresenter from './presenters';
-import { bgColorSelector, groupTasksSelector, projectSelector, showHidePendingsSelector, tasksSelector } from './selectors';
+import { bgColorSelector, projectSelector, showHidePendingsSelector, tasksSelector } from './selectors';
 
 function AllTaskTable({
   expand, handleExpand,
@@ -23,7 +23,6 @@ function AllTaskTable({
   doShowProject, doHideProject,
   doDeleteTask, doCreateTask,
   doSortTask,
-  groupTasks,
 }) {
 
   const {
@@ -145,7 +144,6 @@ const mapStateToProps = state => {
     project: projectSelector(state),
     bgColor: bgColorSelector(state),
     showHidePendings: showHidePendingsSelector(state),
-    groupTasks: groupTasksSelector(state),
   }
 }
 

@@ -1,18 +1,18 @@
+import { find, get } from 'lodash';
 import React from 'react';
+import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import RoleManagerModal from '../../../../DepartmentPage/Modals/RoleManager';
 import { addProjectRoleToMember } from '../../../../../actions/project/addProjectRoleToMember';
 import { removeProjectRoleFromMember } from '../../../../../actions/project/removeProjectRoleFromMember';
-import { connect } from 'react-redux';
-import { get } from 'lodash';
-import { bgColorSelector, updateMemberRoleSelector, userRolesSelector } from './selectors';
+import RoleManagerModal from '../../../../DepartmentPage/Modals/RoleManager';
 import MemberRolePresenter from './presenters';
+import { bgColorSelector, membersSelector, updateMemberRoleSelector, userRolesSelector } from './selectors';
 
-function MemberRole({ 
-  open, setOpen, 
-  bgColor, userRoles, updateMemberRole,
-  curMember = null, 
-  doRemoveProjectRoleFromMember, doAddProjectRoleToMember 
+function MemberRole({
+  open, setOpen,
+  bgColor, userRoles, updateMemberRole, members,
+  curMemberId = null,
+  doRemoveProjectRoleFromMember, doAddProjectRoleToMember
 }) {
 
   const { projectId } = useParams();
@@ -20,7 +20,7 @@ function MemberRole({
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'ROLE': 
+      case 'ROLE':
         setOpenRoleManager(true);
         return;
       default: return;
@@ -29,28 +29,28 @@ function MemberRole({
 
   return (
     <>
-      <MemberRolePresenter 
-        open={open} setOpen={setOpen} 
-        curMember={curMember}
+      <MemberRolePresenter
+        open={open} setOpen={setOpen}
+        curMemberId={curMemberId} members={members}
         bgColor={bgColor} userRoles={userRoles} updateMemberRole={updateMemberRole}
         handleUpdateRoleOfMember={curRole => {
-          get(curMember, 'roles', [])
+          get(find(members.members, { id: curMemberId }), 'roles', [])
             .map(role => get(role, 'id'))
             .includes(get(curRole, 'id'))
             ? doRemoveProjectRoleFromMember({
-                projectId,
-                memberId: get(curMember, 'id'),
-                roleId: get(curRole, 'id'),
-              })
+              projectId,
+              memberId: curMemberId,
+              roleId: get(curRole, 'id'),
+            })
             : doAddProjectRoleToMember({
-                projectId,
-                memberId: get(curMember, 'id'),
-                roleId: get(curRole, 'id'),
-              })
+              projectId,
+              memberId: curMemberId,
+              roleId: get(curRole, 'id'),
+            })
         }}
         handleOpenModal={doOpenModal}
       />
-      <RoleManagerModal 
+      <RoleManagerModal
         open={openRoleManager}
         setOpen={setOpenRoleManager}
       />
@@ -63,6 +63,7 @@ const mapStateToProps = state => {
     bgColor: bgColorSelector(state),
     userRoles: userRolesSelector(state),
     updateMemberRole: updateMemberRoleSelector(state),
+    members: membersSelector(state),
   }
 }
 

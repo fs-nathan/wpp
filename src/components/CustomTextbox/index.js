@@ -3,6 +3,11 @@ import React from 'react';
 import ColorTypo from '../ColorTypo';
 import './style.scss';
 
+const StyledTextField = ({ className = '', ...rest }) =>
+  <TextField
+    className={`comp_CustomTextbox___text-field ${className}`}
+    {...rest}
+  />
 
 function CustomTextbox({
   value,
@@ -25,7 +30,7 @@ function CustomTextbox({
   if (isReadOnly) {
     return (
       <div
-        className={`comp_CustomTextBox___textbox${isReadOnly ? '-readonly' : ''} ${className}`}
+        className={`comp_CustomTextBox___readonly ${className}`}
       >
         <div
           style={{
@@ -48,7 +53,7 @@ function CustomTextbox({
     )
   } else {
     return (
-      <TextField
+      <StyledTextField
         multiline
         fullWidth
         autoFocus
