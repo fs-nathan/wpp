@@ -1,6 +1,7 @@
 import { all, fork, put, take } from "redux-saga/effects";
 import { apiService } from "../../../constants/axiosInstance";
 import {
+  LOADPAGE_TASK,
   LOADPAGE_TASK_ASSIGN,
   LOADPAGE_TASK_DUE,
   LOADPAGE_TASK_ROLE,
@@ -70,96 +71,6 @@ function* doGetDueTasks() {
     });
   }
 }
-function* doGetExpiredTasks() {
-  try {
-    const config = {
-      url: "/task-statistic/status?status=3",
-      method: "get"
-    };
-    const result = yield apiService(config);
-    yield put({ type: TASK_DUE, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_DUE,
-      payload: {
-        error: error.toString()
-      }
-    });
-  }
-}
-function* doGetWaitingTasks() {
-  try {
-    const config = {
-      url: "/task-statistic/status?status=0",
-      method: "get"
-    };
-    const result = yield apiService(config);
-    yield put({ type: TASK_DUE, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_DUE,
-      payload: {
-        error: error.toString()
-      }
-    });
-  }
-}
-function* doGetCompleteTasks() {
-  try {
-    const config = {
-      url: "/task-statistic/status?status=2",
-      method: "get"
-    };
-    const result = yield apiService(config);
-    yield put({ type: TASK_DUE, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_DUE,
-      payload: {
-        error: error.toString()
-      }
-    });
-  }
-}
-function* doGetDoingTasks() {
-  try {
-    const config = {
-      url: "/task-statistic/status?status=1",
-      method: "get"
-    };
-    const result = yield apiService(config);
-    yield put({ type: TASK_DUE, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_DUE,
-      payload: {
-        error: error.toString()
-      }
-    });
-  }
-}
-function* doGetStopTasks() {
-  try {
-    const config = {
-      url: "/task-statistic/status?status=4",
-      method: "get"
-    };
-    const result = yield apiService(config);
-    yield put({ type: TASK_DUE, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_DUE,
-      payload: {
-        error: error.toString()
-      }
-    });
-  }
-}
 
 function* doGetAssignTasks({ timeStart, timeEnd, typeAssign }) {
   try {
@@ -200,13 +111,18 @@ function* doGetRoleTasks({ timeStart, timeEnd, roleId }) {
 // watchPage
 function* watchLoadTaskOverviewPage() {
   while (true) {
-    const {
-      payload: { timeRange }
-    } = yield take(LOAD_TASK_OVERVIEW);
-    yield all([fork(doGetStaticTask, timeRange), fork(doGetStaticTaskRecent)]);
+    const {} = yield take(LOAD_TASK_OVERVIEW);
+    yield all([fork(doGetStaticTaskRecent)]);
   }
 }
-
+function* watchLoadTaskPage() {
+  while (true) {
+    const {
+      payload: { timeRange }
+    } = yield take(LOADPAGE_TASK);
+    yield all([fork(doGetStaticTask, timeRange)]);
+  }
+}
 function* watchLoadTaskDuePage() {
   while (true) {
     const {} = yield take(LOADPAGE_TASK_DUE);
@@ -232,6 +148,7 @@ function* watchLoadTaskRolePage() {
   }
 }
 export {
+  watchLoadTaskPage,
   watchLoadTaskOverviewPage,
   watchLoadTaskDuePage,
   watchLoadTaskAssignPage,

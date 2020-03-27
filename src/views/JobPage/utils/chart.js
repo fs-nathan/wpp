@@ -39,25 +39,92 @@ export const createPieChartProps = (strings, data) => {
 };
 
 export const createRadarChartProps = (strings, data) => {
+  const roles = get(data, statistic.roles, []);
+  // const roles = [
+  //   {
+  //     id: "5e70408ce2f6b848a81653b5",
+  //     name: "Công nhân",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 1,
+  //     number_task: 8
+  //   },
+  //   {
+  //     id: "5e70408ce2f6b848a81653b5",
+  //     name: "Lao công",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 1,
+  //     number_task: 10
+  //   },
+  //   {
+  //     id: "5e70408ce2f6b848a81653b5",
+  //     name: "GIám sát công việc",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 9,
+  //     number_task: 14
+  //   },
+  //   {
+  //     id: "5e65e39b22db895ea23b6229",
+  //     name: "Giám sát dự án",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 7,
+  //     number_task: 15
+  //   },
+  //   {
+  //     id: "5e70408ce2f6b848a81653b5",
+  //     name: "GIám sát công việc",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 12,
+  //     number_task: 22
+  //   }
+  // ];
+  const categories = roles.map(role => role.name);
+  const series = roles.reduce(
+    (result, value) => {
+      const [all, complete] = result;
+      const { number_task_complete, number_task } = value;
+      all.data.push(number_task);
+      complete.data.push(number_task_complete);
+      return result;
+    },
+    [
+      {
+        name: "Tất cả",
+        color: colors.task_all,
+        data: []
+      },
+      {
+        name: "Hoàn thành",
+        color: colors.task_complete,
+        data: []
+      }
+    ]
+  );
   return {
     type: "radar",
 
-    series: [
-      {
-        name: "Series",
-        data: [80, 50, 30, 40, 100, 20]
-      },
-      {
-        name: "Series 2",
-        data: [20, 30, 40, 80, 20, 80]
-      },
-      {
-        name: "Series 3",
-        data: [44, 76, 78, 13, 43, 10]
-      }
-    ],
-    colors: [],
+    series,
+    // [
+    //   {
+    //     name: "Series",
+    //     data: [80, 50, 30, 40, 100, 20]
+    //   },
+    //   {
+    //     name: "Series 2",
+    //     data: [20, 30, 40, 80, 20, 80]
+    //   },
+    //   {
+    //     name: "Series 3",
+    //     data: [44, 76, 78, 13, 43, 10]
+    //   }
+    // ]
+
     options: {
+      plotOptions: {
+        radar: {
+          size: 100
+        }
+      },
+      colors: [colors.task_all, colors.task_complete],
       chart: {
         animations: {
           enabled: false
@@ -80,7 +147,15 @@ export const createRadarChartProps = (strings, data) => {
         size: 0
       },
       xaxis: {
-        categories: ["2011", "2012", "2013", "2014", "2015", "2016"]
+        // categories: ["2011", "2012", "2013", "2014", "2015", "2016"]
+        categories
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val, i) {
+            return Math.floor(val);
+          }
+        }
       }
     },
     height: 250

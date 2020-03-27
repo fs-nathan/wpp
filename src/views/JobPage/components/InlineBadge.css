@@ -1,0 +1,11 @@
+.comp_InlineBadge__wrap {
+  display: inline-block;
+  line-height: 1.2;
+  padding: 2px 3px;
+  min-width: unset;
+  white-space: nowrap;
+}
+.comp_InlineBadge__icon {
+  vertical-align: top;
+  width: 1em;
+}
