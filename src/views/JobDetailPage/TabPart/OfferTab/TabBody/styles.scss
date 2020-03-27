@@ -9,7 +9,8 @@
   }
   &--user {
     display: flex;
-    color: #000000;
+    color: #666666;
+    margin: 4px 0;
   }
   &--vote {
     margin: auto 8px;
@@ -20,14 +21,15 @@
     margin-right: 4px;
   }
   &--priority {
-    margin-left: 8px;
-    padding: 0px 8px;
+    margin: 4px 4px 4px 0;
+    padding: 4px;
     color: #ffffff;
+    background-color: red;
     &__urgent {
-      background-color: red;
+      background-color: orange;
     }
     &__nomal {
-      background-color: #cccccc;
+      background-color: blue;
     }
   }
   &--status {
@@ -37,6 +39,9 @@
     position: absolute;
     top: 0;
     right: 0;
+    svg {
+      transform: rotate(90deg);
+    }
     &:hover {
       background: none;
     }
@@ -47,7 +52,8 @@
     }
   }
   &--statusIcon {
-    padding: 0px 12px;
+    margin: 4px;
+    padding: 4px;
     svg {
       fill: #ffffff;
     }
@@ -71,6 +77,10 @@
   .MuiDialogActions-root {
     border-top: 1px solid #cccccc;
   }
+  .MuiDialogContent-root {
+    min-width: 600px;
+    padding: 0;
+  }
   &--avatar {
     margin-right: 8px;
   }
@@ -78,10 +88,18 @@
     font-weight: bold;
   }
   &--priority {
-    padding: 0px 8px;
-    color: #ffffff;
-    font-weight: normal;
-    width: fit-content;
+    border-top: 1px solid #cccccc;
+    display: flex;
+    padding: 18px 0px;
+    &Label {
+      color: red;
+      &__urgent {
+        color: orange;
+      }
+      &__nomal {
+        color: blue;
+      }
+    }
   }
   &--createdAt {
     font-weight: normal;
@@ -91,16 +109,31 @@
     top: 0;
     right: 0;
   }
+  &--container {
+    padding: 0px 24px;
+  }
   &--content {
     margin: 20px 0 30px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  &--data {
+    display: flex;
+  }
+  &--user {
+    display: flex;
+    &Name {
+      line-height: 20px;
+    }
   }
   &--label {
-    color: #cccccc;
-    margin: 4px;
+    color: #6d6d6d;
+    width: 25%;
   }
   &--result {
-    color: #cccccc;
-    margin: 14px 0;
+    color: #6d6d6d;
+    display: flex;
+    padding: 18px 0px;
   }
   &--avatarIcon {
     width: 20px;
@@ -109,17 +142,16 @@
   }
   &--handler {
     display: flex;
-    color: #cccccc;
+    color: #6d6d6d;
     border-top: 1px solid #cccccc;
-    padding: 14px 18px;
+    padding: 18px 0px;
   }
   &--monitor {
     display: flex;
-    color: #cccccc;
+    color: #6d6d6d;
     border-top: 1px solid #cccccc;
     border-bottom: 1px solid #cccccc;
-    padding: 14px 18px;
-    margin-bottom: 8px;
+    padding: 18px 0px;
   }
 }
 
@@ -194,7 +226,7 @@
     border-radius: 4px;
     color: #dddddd;
     padding: 4px;
-     &-icon {
+    &-icon {
       padding: 4px;
       background-color: #dddddd;
       text-align: center;

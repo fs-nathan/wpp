@@ -1,19 +1,17 @@
-import React from 'react';
-import clsx from 'clsx';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import { useSelector } from 'react-redux';
+import clsx from 'clsx';
 import get from 'lodash/get';
-import OfferDetailItem from './OfferDetailItem';
-
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { getStatusName, priorityList } from '../data';
 import './styles.scss';
 
 function OfferDetail({
@@ -29,12 +27,19 @@ function OfferDetail({
     user_create_avatar,
     user_create_name,
     priority_name = '',
+    priority_code = 0,
     content,
     date_create,
     user_can_handers = [],
     user_monitors = [],
     data_handers = [],
+    total_accepted,
+    total_approved,
+    total_rejected,
   } = item;
+  const priority = priorityList[priority_code].value;
+  const status = getStatusName(total_rejected, total_approved);
+
   return (
     <div>
       <Dialog
@@ -46,47 +51,76 @@ function OfferDetail({
           <Avatar className="offerDetail--avatar" src={user_create_avatar} alt='avatar' />
           <Typography className="offerDetail--title" component="div">
             {user_create_name}
-            <div className="offerDetail--createdAt">Đã tạo đề xuất lúc {date_create}</div>
-            <div className={clsx("offerDetail--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`)}>
-              {priority_name}
-            </div>
+            <div className="offerDetail--createdAt">Đã tạo đề xuất lúc: {date_create}</div>
+
           </Typography>
           <IconButton aria-label="close" className="offerDetail--closeButton" onClick={handleClickClose}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText className="offerDetail--content">
-            {content}
-          </DialogContentText>
-          <div className="offerDetail--handler">
-            <div className="offerDetail--label">
-              Phê duyệt ({user_can_handers.length})
+          <div className="offerDetail--container">
+            <div className="offerDetail--content">
+              {content}
+            </div>
+            <div className="offerDetail--priority">
+              <div className="offerDetail--label">
+                Mức độ:
           </div>
-            {user_can_handers.map(({ avatar }, index) =>
-              <Avatar
-                className="offerDetail--avatarIcon"
-                key={index}
-                alt="avatar" src={avatar}
-              />
-            )}
+              <div className="offerDetail--data">
+                <div className={clsx("offerDetail--priorityLabel", `offerDetail--priorityLabel__${priority_name.toLowerCase()}`)}>
+                  {priority}
+                </div>
+              </div>
+            </div>
+            <div className="offerDetail--handler">
+              <div className="offerDetail--label">
+                Phê duyệt ({user_can_handers.length})
           </div>
-          <div className="offerDetail--monitor">
-            <div className="offerDetail--label">
-              Giám sát ({user_monitors.length})
+              <div className="offerDetail--data">
+                {user_can_handers.map(({ avatar, name }, index) =>
+                  <div className="offerDetail--user">
+                    <Avatar
+                      className="offerDetail--avatarIcon"
+                      key={index}
+                      alt="avatar" src={avatar}
+                    />
+                    <div className="offerDetail--userName">
+                      {name}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="offerDetail--monitor">
+              <div className="offerDetail--label">
+                Giám sát ({user_monitors.length})
           </div>
-            {user_monitors.map(({ avatar }, index) =>
-              <Avatar
-                className="offerDetail--avatarIcon"
-                key={index}
-                alt="avatar" src={avatar}
-              />
-            )}
+              <div className="offerDetail--data">
+                {user_monitors.map(({ avatar, name }, index) =>
+                  <div className="offerDetail--user">
+                    <Avatar
+                      className="offerDetail--avatarIcon"
+                      key={index}
+                      alt="avatar" src={avatar}
+                    />
+                    <div className="offerDetail--userName">
+                      {name}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="offerDetail--result">
+              <div className="offerDetail--label">
+                Kết quả phê duyệt
+            </div>
+              <div className="offerDetail--data">
+                {status} ({total_accepted}/{total_approved} đồng ý - {total_rejected}/{total_approved} từ chối)
           </div>
-          <div className="offerDetail--result">
-            Kết quả phê duyệt ({data_handers.length})
+            </div>
           </div>
-          {
+          {/* {
             data_handers.map((res, index) =>
               <OfferDetailItem
                 {...res}
@@ -95,7 +129,7 @@ function OfferDetail({
                 handleClickOpen={handleClickEditItem}
               />
             )
-          }
+          } */}
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClickClose} style={{ color: '#222222' }} >

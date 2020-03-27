@@ -4,7 +4,6 @@ import Icon from '@mdi/react';
 import { postSubTask, searchSubTask } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
-import colorPal from 'helpers/colorPalette';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,17 +14,9 @@ import { ButtonIcon } from './AllSubtaskListItem';
 import FinishedSubtaskList from './FinishedSubtaskList';
 import './styles.scss';
 
-
 const Container = styled.div`
   padding: 0 0 50px 0;
 `;
-
-
-const TextTitle = styled(ColorTypo)`
-  font-size: 16px;
-  color: ${colorPal['gray'][0]};
-  margin-left: 30pxreact-beautiful-dnd
-`
 
 const NewWork = styled.div`
   display: flex;
@@ -107,9 +98,9 @@ function TabBody(props) {
           />
           :
           <React.Fragment>
-            <TextTitle className="subTaskBody--title">Đang thực hiện({uncompleteSubTasks.length})</TextTitle>
+            <ColorTypo className="subTaskBody--title">Đang thực hiện({uncompleteSubTasks.length})</ColorTypo>
             <AllSubtaskList {...props} />
-            <TextTitle className="subTaskBody--title">Đã hoàn thành({completeSubTasks.length})</TextTitle>
+            <ColorTypo className="subTaskBody--title">Đã hoàn thành({completeSubTasks.length})</ColorTypo>
             <FinishedSubtaskList {...props} />
           </React.Fragment>}
       </Container>
