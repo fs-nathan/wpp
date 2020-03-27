@@ -8,10 +8,13 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin: 0;
     padding: 8px;
+    .MuiButton-text {
+      padding: 8px 16px;
+    }
   }
-  &--content {
+  & &--content {
     min-width: 500px;
-    padding: 0px 24px 24px;
+    padding: 0px;
     position: relative;
     display: block;
     float: left;

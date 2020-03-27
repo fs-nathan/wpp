@@ -107,7 +107,7 @@ function TabBody(props) {
             title="Chưa có đề xuất / phê duyệt nào được tạo! Click + để tạo mới."
           ></NoDataPlaceHolder> :
             <React.Fragment>
-              <Collapse in={value === 0} mountOnEnter unmountOnExit>
+              <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
                 <ListOffer
                   handleClickClose={() => handleClickClose()}
                   handleClickOpen={() => handleClickOpen()}
@@ -118,7 +118,7 @@ function TabBody(props) {
                   onClickDetail={onClickDetail}
                 />
               </Collapse>
-              <Collapse in={value === 1} mountOnEnter unmountOnExit>
+              <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
                 <ListOffer
                   handleClickClose={() => handleClickClose()}
                   handleClickOpen={() => handleClickOpen()}
@@ -129,7 +129,7 @@ function TabBody(props) {
                   onClickDetail={onClickDetail}
                 />
               </Collapse>
-              <Collapse in={value === 2} mountOnEnter unmountOnExit>
+              <Collapse in={value === 2} mountOnEnter unmountOnExit timeout={0}>
                 <ListOffer
                   handleClickClose={() => handleClickClose()}
                   handleClickOpen={() => handleClickOpen()}
@@ -157,8 +157,7 @@ function TabBody(props) {
           {...props} />
         <OfferDetail
           isOpen={openDetail}
-          handleClickClose={() => setOpenDetail(false)}
-          handleClickOpen={() => setOpenDetail(true)}
+          setOpen={setOpenDetail}
           item={selectedItem}
           handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
           handleClickEditItem={(data) => handleClickEditItem(selectedItem)}

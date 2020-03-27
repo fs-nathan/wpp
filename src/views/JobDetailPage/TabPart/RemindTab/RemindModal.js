@@ -49,11 +49,6 @@ const TitleText = styled(Typography)`
     margin: 0 0 15px 0;
   `
 
-const TextTitle = styled(Typography)`
-    font-size: 15px;
-    width: 204px;
-    padding: 15px 0 8px 0;
-  `
 const HelperText = styled(Typography)`
       color: #a3a3a3
       font-size: 12px;
@@ -66,11 +61,6 @@ const BadgeItem = styled(ColorChip)`
     margin: 5px 6px 5px 0;
   `
 
-const TextRemind = styled(Typography)`
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-  `
 const InputDateTime = styled(TextField)`
     width: 146px !important;
   `
@@ -250,9 +240,9 @@ function RemindModal(props) {
           <Typography component="div">
             <HelperText>Bạn có lịch hẹn, ghi chú, sự kiện... quan trọng ? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhở bạn khi đến hẹn</HelperText>
             <div className="remind-title">
-              <TextTitle component="span">Ngày nhắc</TextTitle>
-              <TextTitle component="span">Giờ nhắc</TextTitle>
-              <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
+              <div className="remindModal--dateRemind" component="span">Ngày nhắc</div>
+              <div className="remindModal--timeRemind" component="span">Giờ nhắc</div>
+              <div className="remindModal--repeatRemind" component="span">Nhắc hẹn định kỳ</div>
             </div>
             <div className="remind-body">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -288,7 +278,7 @@ function RemindModal(props) {
           :
           <div>
             <HelperText>Khi tiến độ công việc được xác định (tự động) dựa trên thời gian hiện tại (thời gian thực) lớn hơn hoặc bằng mốc đã chọn, hệ thống sẽ nhắc nhở bạn</HelperText>
-            <TextTitle component="div">Mốc tiến độ cần nhắc</TextTitle>
+            <Typography className="remindModal--mileStone" component="div">Mốc tiến độ cần nhắc</Typography>
             <div className="wrapper-progress">
               <InputProgress
                 fullWidth

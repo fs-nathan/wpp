@@ -1,36 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
+import { Avatar, IconButton, ListItem, ListItemAvatar, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
-import { Avatar, ListItem, ListItemAvatar, ListItemText, IconButton, Menu, MenuItem } from '@material-ui/core';
-import ColorTypo from '../../../../../components/ColorTypo'
-import ColorChip from '../../../../../components/ColorChip';
-import colorPal from '../../../../../helpers/colorPalette';
-import MemberModal from '../MemberModal'
-import { useDispatch } from 'react-redux';
+import Icon from '@mdi/react';
+import { deleteMember } from 'actions/taskDetail/taskDetailActions';
 import { detailUser } from 'actions/user/detailUser';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import MemberModal from '../MemberModal';
+import './styles.scss';
 
-
-const BadgeItem = styled(ColorChip)`
-  font-weight: 600;
-  border-radius: 3px;
-  margin-right: 6px;
-`
-const TextName = styled(ColorTypo)`
-  font-size: 15px;
-  padding-right: 4px;
-`
-const Text = styled(ColorTypo)`
-  font-size: 14px;
-  color: ${colorPal['gray'][0]}
-  border-left: 1px solid ${colorPal['gray'][0]}
-  padding-left: 3px;
-  display: inline;
-`
-
-const MenuItemCheck = styled(MenuItem)`
-  padding-right: 30px;
-`
 const ButtonIcon = styled(IconButton)`
   &:hover {
     background: none;
@@ -48,34 +26,13 @@ const StyledListItem = styled(ListItem)`
     }
 `
 
-const StyledAvatar = styled(Avatar)`
-  width: 50px;
-  height: 50px;
-`
-
-const BadgeAdmin = styled(ColorTypo)`
-  font-size: 11px;
-  font-weight: 600;
-  margin-right: 7px;
-`
-
-const getBadgeProjectRole = (projectRole) => {
-  let color = ""
-  switch (projectRole) {
-    case "Admin":
-      color = "red";
-      break;
-    default:
-      color = "black";
-      break;
-  }
-  return (
-    <BadgeAdmin color={color} variant='caption' component='span'>{projectRole}</BadgeAdmin>
-  )
-}
-
-const MemberListItem = ({ id, name, avatar, roles, projectRole, authorityList = [] }) => {
+const MemberListItem = ({
+  id, name, avatar,
+  roles, group_permission,
+  handleClickPermission,
+}) => {
   const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -91,6 +48,10 @@ const MemberListItem = ({ id, name, avatar, roles, projectRole, authorityList = 
   const handleCloseMembers = () => {
     setOpen(false);
   };
+  const handleDeleteMembers = () => {
+    setOpen(false);
+    dispatch(deleteMember({ task_id: taskId, member_id: id }))
+  };
   const handleClickOpen = () => {
     setOpen(true);
     setAnchorEl(null);
@@ -101,50 +62,34 @@ const MemberListItem = ({ id, name, avatar, roles, projectRole, authorityList = 
     dispatch(detailUser({ userId: id }))
   };
 
+  const onClickPermission = () => {
+    setAnchorEl(null);
+    handleClickPermission()
+  };
+
   return (
     <React.Fragment>
-      <StyledListItem>
+      <StyledListItem className="memberItem">
         <ListItemAvatar>
-          <StyledAvatar src={avatar} alt='avatar' />
+          <Avatar className="memberItem--avatar" src={avatar} alt='avatar' />
         </ListItemAvatar>
-        <ListItemText
-          primary={
-            <React.Fragment>
-              <span className="wrapper-span">
-                <TextName component="span" bold>{name}</TextName>
-                {
-                  roles &&
-                  <Text component="span">{roles.map(({name})=>name).join(' - ')}</Text>
-                }
-              </span>
-            </React.Fragment>
-          }
-          secondary={
-            <React.Fragment>
-              <span className="wrapper-span">
-                {getBadgeProjectRole(projectRole)}
-                {
-                  authorityList.map((authority, index) =>
-                    <BadgeItem
-                      key={index}
-                      color={'light-green'}
-                      label={authority}
-                      size='small'
-                      badge
-                      component='span' />
-                  )
-                }
-              </span>
-            </React.Fragment>
-          }
-        />
-        <div className="styled-menu-member">
-          <ButtonIcon size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-            <Icon path={mdiDotsVertical} size={1} />
-          </ButtonIcon>
+        <div className="memberItem--textWrap">
+          <div className="memberItem--name">
+            {name}
+          </div>
+          <div className="memberItem--department">
+            {group_permission}
+          </div>
+          <div className="memberItem--role">
+            {roles.map(({ name }) => name).join(' - ')}
+          </div>
         </div>
+        <ButtonIcon
+          className="memberItem--menuButton"
+          size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+          <Icon path={mdiDotsVertical} size={1} />
+        </ButtonIcon>
       </StyledListItem>
-      {/* modal members */}
       <MemberModal isOpen={open} handleCloseMembers={handleCloseMembers} handleOpen={handleClickOpen} />
       <Menu
         id="simple-menu"
@@ -157,10 +102,11 @@ const MemberListItem = ({ id, name, avatar, roles, projectRole, authorityList = 
           horizontal: 'right',
         }}
       >
-        <MenuItemCheck onClick={handleClickDetail}>Chi tiết</MenuItemCheck>
-        <MenuItemCheck onClick={handleClose}>Xóa</MenuItemCheck>
+        <MenuItem className="memberItem--menuItem" onClick={handleClickDetail}>Chi tiết</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>Phân quyền</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>Xóa</MenuItem>
       </Menu>
-    </React.Fragment>
+    </React.Fragment >
   );
 }
 

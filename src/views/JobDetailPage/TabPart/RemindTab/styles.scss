@@ -65,3 +65,33 @@
     font-size: 14px;
   }
 }
+
+.remindModal {
+  .MuiOutlinedInput-inputAdornedEnd,
+  .MuiOutlinedInput-input {
+    padding: 11px;
+  }
+  .MuiOutlinedInput-adornedEnd {
+    .MuiButtonBase-root {
+      padding: 0px;
+    }
+  }
+  &--dateRemind,
+  &--mileStone {
+    font-size: 13px;
+    width: 228px;
+    padding: 15px 0 3px;
+  }
+  &--timeRemind {
+    font-size: 13px;
+    width: 164px;
+    padding: 15px 0 3px;
+  }
+  &--repeatRemind {
+    font-size: 13px;
+    width: 164px;
+    padding: 15px 0 3px;
+    display: flex;
+    align-items: center;
+  }
+}

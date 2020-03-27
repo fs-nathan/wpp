@@ -1,18 +1,24 @@
-import React from 'react';
 import { List } from '@material-ui/core';
-import { Scrollbars } from 'react-custom-scrollbars'
+import { searchMember } from 'actions/taskDetail/taskDetailActions';
+import SearchInput from 'components/SearchInput';
+import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
-
-import SearchInput from '../../../../../components/SearchInput';
-import { searchMember } from '../../../../../actions/taskDetail/taskDetailActions';
+import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
 import MemberListItem from './MemberListItem';
+import './styles.scss';
 
 function TabBody() {
   const dispatch = useDispatch();
   const members = useSelector(state => state.taskDetail.taskMember.member);
+  const [open, setOpen] = React.useState(false);
 
   const searchMemberTabPart = (e) => {
     dispatch(searchMember(e.target.value));
+  }
+  function handleClickPermission() {
+    console.log('handleClickPermission')
+    setOpen(true)
   }
   return (
     <Scrollbars className="memberTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -25,10 +31,11 @@ function TabBody() {
         <List>
           {members.map((element, index) => {
             return (
-              <MemberListItem key={element.id} {...element} />
+              <MemberListItem key={element.id} {...element} handleClickPermission={handleClickPermission} />
             );
           })}
         </List>
+        <AddMemberModal isOpen={open} setOpen={setOpen} />
       </div>
     </Scrollbars>
   )

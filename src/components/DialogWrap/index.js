@@ -1,18 +1,18 @@
-import React from 'react';
-import clsx from 'clsx';
-import { IconButton, Dialog, Button, } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import { useSelector } from 'react-redux';
-import get from 'lodash/get';
+import { Button, Dialog, IconButton } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import CloseIcon from '@material-ui/icons/Close';
+import clsx from 'clsx';
 import ColorTypo from 'components/ColorTypo';
-import { Scrollbars } from 'react-custom-scrollbars'
-
-import './styles.scss';
+import get from 'lodash/get';
+import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import './styles.scss';
+
 
 function DialogWrap({
   title,
@@ -25,6 +25,7 @@ function DialogWrap({
   maxWidth,
   isDisableSubmit,
   className,
+  isOneButton
 }) {
   const { t } = useTranslation();
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
@@ -49,14 +50,14 @@ function DialogWrap({
         </DialogContent>
       </Scrollbars>
       <DialogActions>
-        <Button className={clsx("dialogWrap--button", "dialogWrap--button__cancel")} autoFocus onClick={handleClickClose} style={{}} >
+        {!isOneButton && <Button className={clsx("dialogWrap--button", "dialogWrap--button__cancel")} autoFocus onClick={handleClickClose} style={{}} >
           {t('IDS_WP_CANCEL')}
-        </Button>
+        </Button>}
         <Button
           className={clsx("dialogWrap--button", { "dialogWrap--button__disabled": isDisableSubmit })}
           onClick={onClickSuccess}
           disabled={isDisableSubmit}
-          style={{ color: groupActiveColor }}>
+          style={{ color: isOneButton ? "#222" : groupActiveColor }}>
           {isLoading && (
             <CircularProgress size={20} className="margin-circular" />
           )}

@@ -1,15 +1,15 @@
-import React from 'react';
 import Button from '@material-ui/core/Button';
-
-import SearchInput from 'components/SearchInput';
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
+import { createMember } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
-import { useSelector, useDispatch } from 'react-redux';
+import SearchInput from 'components/SearchInput';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import ProjectMember from './ProjectMember';
 import TableMember from './TableMember';
-import { createMember } from 'actions/taskDetail/taskDetailActions';
+
 
 const GridArea = styled(Typography)`
     display: grid;
@@ -47,14 +47,14 @@ const FlexJobMember = styled(Typography)`
     padding-left: 25px;
 `
 
-function AddMemberModal(props) {
+function AddMemberModal({ setOpen, isOpen }) {
   const { t } = useTranslation()
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const memberNotAssigned = useSelector(state => state.taskDetail.taskMember.memberNotAssigned);
 
   const handleClose = () => {
-    props.setOpen(false);
+    setOpen(false);
   };
 
   function handleAddAll() {
@@ -66,11 +66,12 @@ function AddMemberModal(props) {
   return (
     <DialogWrap
       title={'Thành viên công việc'}
-      isOpen={props.isOpen}
+      isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel={"Cập nhật"}
+      successLabel={"Thoát"}
       onClickSuccess={handleClose}
       maxWidth="xl"
+      isOneButton
     >
       <React.Fragment>
         <GridArea component={'div'} style={{ borderBottom: 'none' }} >

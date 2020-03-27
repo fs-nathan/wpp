@@ -109,6 +109,7 @@ function TwoColumns({ maxWidth, left, right, height, }) {
 function CustomModal({
   loading = false,
   title,
+  titleRender,
   columns = 1,
   children = null, left = null, right = null,
   canConfirm = true,
@@ -143,7 +144,9 @@ function CustomModal({
       className={className}
     >
       <StyledDialogTitle id="alert-dialog-slide-title">
-        <ColorTypo uppercase>{title}</ColorTypo>
+        {
+          titleRender || <ColorTypo uppercase>{title}</ColorTypo>
+        }
         <IconButton className="comp_CustomModal___iconButton" onClick={() => handleCancle()}>
           <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
         </IconButton>

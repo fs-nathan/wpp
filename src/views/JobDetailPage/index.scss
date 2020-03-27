@@ -853,17 +853,17 @@
 //RemindModal - RemindTab
 .remind-title {
   display: flex;
-  margin: 15px 0;
+  margin: 15px 0 0 0;
 }
 .remind-body {
   display: flex;
   justify-content: space-between;
   align-items: center;
   .type-remind {
-    margin-top: 8px;
+    margin: 0px;
     width: 160px;
     & > div > div > div {
-      padding: 7px 0;
+      padding: 0;
     }
   }
 }

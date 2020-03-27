@@ -10,7 +10,7 @@ import './styles.scss';
 const CustomListItem = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
-    content, dataHander, date_create, priority_code = 0, priority_name = '',
+    title, dataHander, date_create, priority_code = 0, priority_name = '',
     user_create_avatar, user_create_name,
     total_approved,
     total_accepted,
@@ -36,7 +36,7 @@ const CustomListItem = (props) => {
   return (
     <React.Fragment>
       <li className="offerTabItem">
-        <ColorTypo className="offerTabItem--content" onClick={onClickDetail}>{content}</ColorTypo>
+        <ColorTypo className="offerTabItem--content" onClick={onClickDetail}>{title}</ColorTypo>
         <div className="offerTabItem--user">
           <Avatar className="offerTabItem--avatar" src={user_create_avatar} alt='avatar' />
           {`${user_create_name} đề xuất lúc ${date_create}`}

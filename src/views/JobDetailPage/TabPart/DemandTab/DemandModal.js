@@ -51,7 +51,7 @@ const DemandModal = (props) => {
     setParams("content", '')
   }
   function validate() {
-    return tempSelectedItem.content && tempSelectedItem.type
+    return tempSelectedItem.content && tempSelectedItem.type !== -1
   }
   return (
     <CustomModal
