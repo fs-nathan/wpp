@@ -634,45 +634,6 @@
   }
 }
 
-// TabBody - Media Tab
-.container-media-tabbody {
-  padding: 8px 20px 20px 16px;
-  .media-image {
-    width: auto !important;
-    height: auto !important;
-    .wrap-image {
-      display: flex;
-      flex-wrap: wrap;
-      .image-media-box {
-        height: 80px;
-        width: 80px;
-        margin: 0;
-        padding: 0;
-        border-radius: 5px;
-        cursor: pointer;
-        &:hover {
-          opacity: 0.7;
-        }
-      }
-    }
-  }
-  .file-name {
-    width: 300px;
-    word-break: break-word;
-    .styled-menu-file {
-      opacity: 0;
-    }
-  }
-  .styled-list-item-link {
-    .styled-menu-link {
-      opacity: 0;
-    }
-    &:hover .styled-menu-link {
-      opacity: 1;
-    }
-  }
-}
-
 // TabHeader - MemberTab
 .container-member-tabheader {
   display: flex;

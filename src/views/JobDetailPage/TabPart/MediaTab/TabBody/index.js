@@ -62,13 +62,13 @@ function TabBody(props) {
           title="Chưa có tài liệu nào được chia sẻ! Thêm tài liệu bằng cách kéo thả, chụp màn hình hoặc lấy từ thư viện tài liệu."
         ></NoDataPlaceHolder> :
           <React.Fragment>
-            <Collapse in={value === 0} mountOnEnter unmountOnExit>
+            <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
               <MediaContainer {...props} />
             </Collapse>
-            <Collapse in={value === 1} mountOnEnter unmountOnExit>
+            <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
               <FileContainer {...props} />
             </Collapse>
-            <Collapse in={value === 2} mountOnEnter unmountOnExit>
+            <Collapse in={value === 2} mountOnEnter unmountOnExit timeout={0}>
               <LinkContainer {...props} />
             </Collapse>
           </React.Fragment>

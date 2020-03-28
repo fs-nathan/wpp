@@ -78,7 +78,7 @@ const MemberListItem = ({
             {name}
           </div>
           <div className="memberItem--department">
-            {group_permission}
+            {group_permission && group_permission.name}
           </div>
           <div className="memberItem--role">
             {roles.map(({ name }) => name).join(' - ')}

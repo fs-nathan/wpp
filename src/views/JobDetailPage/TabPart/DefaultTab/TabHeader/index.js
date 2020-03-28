@@ -43,7 +43,7 @@ function TabHeader(props) {
     if (user_create) {
       avatar = user_create.avatar;
       name = user_create.name;
-      roles = user_create.roles;
+      roles = `${user_create.position} - ${user_create.room}`;
     }
   }
   const handleOpenModalDelete = () => {
@@ -89,11 +89,9 @@ function TabHeader(props) {
       <Avatar className="tabHeaderDefault--avatar" src={avatar} alt="avatar" />
       <div className="tabHeaderDefault--container">
         <div className="tabHeaderDefault--name">{name}</div>
-        {roles && !!roles.length &&
-          <div className="tabHeaderDefault--role">
-            {roles}
-          </div>
-        }
+        <div className="tabHeaderDefault--role">
+          {roles}
+        </div>
         {detailTask && (
           <ColorTypo
             component="div"
