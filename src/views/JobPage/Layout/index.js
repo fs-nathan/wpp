@@ -210,7 +210,7 @@ function Layout({ children, title, bgColor }) {
               setQuickTask(undefined);
             }}
           >
-            <Scrollbars>{quickTask}</Scrollbars>
+            <div style={{ width: "100%", height: "100%" }}>{quickTask}</div>
           </ClickAwayListener>
         )}
       </Drawer>

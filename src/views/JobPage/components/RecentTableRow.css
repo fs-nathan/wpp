@@ -27,6 +27,7 @@
 .comp_LabelWrap {
   flex: 1;
   padding: 0 10px;
+  white-space: nowrap;
 }
 .comp_TaskTitleLink:hover {
   text-decoration: underline;

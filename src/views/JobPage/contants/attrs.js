@@ -65,6 +65,8 @@ export const taskAtrrs = {
   created_at: "created_at",
   status_code: "status_code",
   status_name: "status_name",
+  priority_code: "priority_code",
+  priority_name: "priority_name",
   complete: "complete",
   number_member: "number_member",
   duration_unit: "duration_unit",
