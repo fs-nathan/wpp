@@ -22,3 +22,8 @@
   max-width: unset;
   white-space: nowrap;
 }
+.comp_PrimaryHeaderButton {
+  color: white;
+  padding: 8px 12px;
+  margin-top: 8px;
+}

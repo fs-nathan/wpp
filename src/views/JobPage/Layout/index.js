@@ -95,11 +95,9 @@ export function CustomTableLayout({ children }) {
           <HeaderButtonGroup />
           {get(options, "mainAction") && (
             <StyledButton
+              className="comp_PrimaryHeaderButton"
               style={{
-                backgroundColor: bgColor.color,
-                color: "white",
-                padding: "8px 12px",
-                marginTop: "8px"
+                backgroundColor: bgColor.color
               }}
               onClick={get(options, "mainAction.onClick", () => null)}
             >

@@ -3,7 +3,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import React, { useContext } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { JobPageContext } from "../JobPageContext";
-
+import "./QuickView.css";
 export const CloseButton = () => {
   const { setQuickTask } = useContext(JobPageContext);
   return (
