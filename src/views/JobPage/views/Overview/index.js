@@ -65,7 +65,6 @@ const Overview = () => {
                   key={i}
                   container
                   alignItems="stretch"
-                  justify="stretch"
                   item
                   xs={12}
                   md={4}

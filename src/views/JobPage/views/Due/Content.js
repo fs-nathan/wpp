@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import { Analytic } from "views/JobPage/components/Analytic";
 import { TaskTable } from "views/JobPage/components/TaskTable";
+import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { useCustomList } from "views/JobPage/hooks/useCustomList";
 import { JobPageContext } from "views/JobPage/JobPageContext";
 import { TASK_DUE } from "views/JobPage/redux/types";
@@ -15,15 +16,17 @@ export function Content() {
   const { t } = useTranslation();
   const { statusFilter, keyword } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
-  const [waiting, doing, stop, expired, tasks = []] = useSelector(state => {
-    return createMapPropsFromAttrs([
-      recent.waiting,
-      recent.doing,
-      recent.stop,
-      recent.expired,
-      recent.tasks
-    ])(state.taskPage[TASK_DUE]);
-  });
+  const [waiting, doing, stop, expired, tasks = emptyArray] = useSelector(
+    state => {
+      return createMapPropsFromAttrs([
+        recent.waiting,
+        recent.doing,
+        recent.stop,
+        recent.expired,
+        recent.tasks
+      ])(state.taskPage[TASK_DUE]);
+    }
+  );
   const [list] = useCustomList({
     tasks,
     isToggleSortName,

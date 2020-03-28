@@ -35,9 +35,11 @@ export const useCustomList = ({
     () => item =>
       ["waiting", "doing", "complete", "expired", "stop"]
         .map(key => statusFilter[key] && taskStatusMap[key])
+        // eslint-disable-next-line eqeqeq
         .find(value => item.status_code == value) &&
       ["priority_hight", "priority_medium", "priority_low"]
         .map(key => statusFilter[key] && taskPriorityMap[key])
+        // eslint-disable-next-line eqeqeq
         .find(key => true || item.priority_code == key),
     [statusFilter]
   );

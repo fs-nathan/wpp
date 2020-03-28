@@ -73,7 +73,7 @@ export const TableHeader = () => {
   );
 };
 export function CustomTableLayout({ children }) {
-  const { options } = React.useContext(CustomTableContext);
+  const { options, bgColor } = React.useContext(CustomTableContext);
   return (
     <Container>
       <Header>
@@ -95,7 +95,12 @@ export function CustomTableLayout({ children }) {
           <HeaderButtonGroup />
           {get(options, "mainAction") && (
             <StyledButton
-              size="small"
+              style={{
+                backgroundColor: bgColor.color,
+                color: "white",
+                padding: "8px 12px",
+                marginTop: "8px"
+              }}
               onClick={get(options, "mainAction.onClick", () => null)}
             >
               {get(options, "mainAction.label", "")}
@@ -116,15 +121,12 @@ function Layout({ children, title, bgColor }) {
     setQuickTask,
     timeType,
     setTimeType,
-    timeRange,
     settimeRange,
     expand,
     handleExpand,
     keyword,
     setkeyword
   } = useContext(JobPageContext);
-
-  console.log({ expand, timeAnchor, timeType, timeRange });
   const open = !!quickTask;
   const [openModalDirect, setOopenModalDirect] = useState();
   return (
@@ -162,7 +164,7 @@ function Layout({ children, title, bgColor }) {
 
               draggable: {
                 bool: true,
-                onDragEnd: result => {}
+                onDragEnd: () => {}
               },
 
               loading: {
@@ -172,7 +174,8 @@ function Layout({ children, title, bgColor }) {
               row: {
                 id: "id"
               }
-            }
+            },
+            bgColor
           }}
         >
           <CustomTableLayout>
@@ -199,7 +202,6 @@ function Layout({ children, title, bgColor }) {
         classes={{
           paper: "comp_JobPageLayout__drawerPaper"
         }}
-        closeAfterTransition
         onClose={() => setQuickTask(undefined)}
       >
         {open && (

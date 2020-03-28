@@ -9,10 +9,15 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { taskAtrrs } from "../contants/attrs";
+import { emptyArray } from "../contants/defaultValue";
 import { createMapPropsFromAttrs } from "../utils";
 import EmptyHolder from "./EmptyHolder";
 import RecentTableRow from "./RecentTableRow";
-export const TaskTable = ({ tasks = [], isToggleSortName, toggleSortName }) => {
+export const TaskTable = ({
+  tasks = emptyArray,
+  isToggleSortName,
+  toggleSortName
+}) => {
   const { t } = useTranslation();
   return (
     <>
@@ -20,7 +25,7 @@ export const TaskTable = ({ tasks = [], isToggleSortName, toggleSortName }) => {
         <TableHead>
           <TableRow>
             <TableCell width="5%"></TableCell>
-            <TableCell sortDirection={true} align="left">
+            <TableCell align="left">
               <TableSortLabel
                 active={true}
                 direction={isToggleSortName ? "asc" : "desc"}
