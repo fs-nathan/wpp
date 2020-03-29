@@ -4,21 +4,19 @@ import React, { useContext } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { JobPageContext } from "../JobPageContext";
 import "./QuickView.css";
-export const CloseButton = () => {
-  const { setQuickTask } = useContext(JobPageContext);
-  return (
-    <IconButton onClick={() => setQuickTask(undefined)}>
-      <CloseIcon />
-    </IconButton>
-  );
-};
+
 function QuickView({ title, children, bottom }) {
+  const { handleClose } = useContext(JobPageContext);
+
   return (
+    // <ClickAwayListener onClickAway={handleClose}>
     <div className="comp_QuickViewWrapper">
       <div className="comp_QuickViewHeader">
         <div className="comp_QuickViewHeaderLeft">{title}</div>
         <div className="comp_QuickViewHeaderRight">
-          <CloseButton />
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
         </div>
       </div>
       <Scrollbars styled={{ flex: 1 }}>
@@ -27,6 +25,7 @@ function QuickView({ title, children, bottom }) {
 
       {bottom && <div className="comp_QuickViewFooter">{bottom}</div>}
     </div>
+    // </ClickAwayListener>
   );
 }
 

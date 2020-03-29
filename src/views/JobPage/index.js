@@ -180,6 +180,10 @@ function JobPage() {
       }))
     }
   ];
+  const [pin, setPin] = useState(false);
+  const handleClose = () => {
+    !pin && setQuickTask(undefined);
+  };
   return (
     <TwoColumnsLayout
       leftRenders={[() => <TabList {...{ listMenu }} />]}
@@ -187,6 +191,8 @@ function JobPage() {
         <Provider
           value={{
             expand,
+            setPin,
+            handleClose,
             listMenu,
             filterConfig,
             handleExpand,

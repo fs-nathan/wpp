@@ -1,5 +1,5 @@
 import { colors, labels, statistic } from "../contants/attrs";
-import { get, loginlineParams } from "./index.js";
+import { get } from "./index.js";
 export const createPieChartProps = (strings, data) => {
   return {
     type: "pie",
@@ -157,7 +157,7 @@ export const createRadarChartProps = (strings, data) => {
         categories
       },
       yaxis: {
-        tickAmount: loginlineParams(maxValue) < 4 ? maxValue : undefined,
+        tickAmount: maxValue < 4 ? maxValue : undefined,
         labels: {
           formatter: function(val, i) {
             return Math.floor(val);

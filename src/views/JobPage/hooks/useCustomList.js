@@ -40,7 +40,7 @@ export const useCustomList = ({
       ["priority_hight", "priority_medium", "priority_low"]
         .map(key => statusFilter[key] && taskPriorityMap[key])
         // eslint-disable-next-line eqeqeq
-        .find(key => true || item.priority_code == key),
+        .find(key => item.priority_code == key),
     [statusFilter]
   );
   const filterKeyWordMemo = useMemo(

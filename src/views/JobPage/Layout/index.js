@@ -1,4 +1,4 @@
-import { Box, Button, ClickAwayListener, Drawer } from "@material-ui/core";
+import { Box, Button, Drawer } from "@material-ui/core";
 import {
   mdiCalendar,
   mdiFilterOutline,
@@ -202,15 +202,7 @@ function Layout({ children, title, bgColor }) {
         }}
         onClose={() => setQuickTask(undefined)}
       >
-        {open && (
-          <ClickAwayListener
-            onClickAway={() => {
-              setQuickTask(undefined);
-            }}
-          >
-            <div style={{ width: "100%", height: "100%" }}>{quickTask}</div>
-          </ClickAwayListener>
-        )}
+        {open && quickTask}
       </Drawer>
       {openModalDirect && (
         <RedirectModal onClose={() => setOopenModalDirect(false)} />

@@ -2,12 +2,14 @@ import { Avatar, Box } from "@material-ui/core";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
 import AvatarCircleList from "components/AvatarCircleList";
 import colors from "helpers/colorPalette";
-import React, { useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import { taskAtrrs } from "../contants/attrs";
 import { taskDetailLink } from "../contants/links";
+import { JobPageContext } from "../JobPageContext";
 import QuickView from "../Layout/QuickView";
 import { createMapPropsFromAttrs, get, template } from "../utils";
 import InlineBadge from "./InlineBadge";
@@ -132,13 +134,28 @@ const EditAction = ({ ...props }) => {
     </Box>
   );
 };
+
 function QuickViewTaskDetail({ detailTask }) {
   const { t } = useTranslation();
+  const { pin, setPin } = useContext(JobPageContext);
   const history = useHistory();
   const [project_id, id] = createMapPropsFromAttrs([
     taskAtrrs.project_id,
     taskAtrrs.id
   ])(detailTask);
+  const [openEditJob, setOpenEditJob] = useState();
+  const [modal, setModal] = useState(undefined);
+  const openModal = useCallback(
+    modal => {
+      setPin(true);
+      setModal(modal);
+    },
+    [setPin]
+  );
+  const closeModal = useCallback(() => {
+    setPin(false);
+    setModal(undefined);
+  }, [setPin]);
   return (
     <>
       <QuickView
@@ -164,12 +181,23 @@ function QuickViewTaskDetail({ detailTask }) {
         title={<QuickViewTaskDetailHeader detailTask={detailTask} />}
       >
         <VerticleList>
-          <QuickViewRow title={t("TÊN CÔNG VIỆC")} actions={<EditAction />}>
+          <QuickViewRow
+            title={t("TÊN CÔNG VIỆC")}
+            actions={
+              <EditAction
+                onClick={() => {
+                  setOpenEditJob(true);
+                }}
+              />
+            }
+          >
             {get(detailTask, taskAtrrs.name, "#########")}
           </QuickViewRow>
           <QuickViewRow title={t("MÔ TẢ CÔNG VIỆC")} actions={<EditAction />}>
-            <Box lineHeight="1.4" fontSize="14px">
-              {get(detailTask, taskAtrrs.description, "#########")}
+            <Box whiteSpace="pre" lineHeight="1.4" fontSize="14px">
+              {JSON.stringify(
+                get(detailTask, taskAtrrs.description, "#########")
+              )}
             </Box>
           </QuickViewRow>
           <QuickViewRow title={t("TIẾN ĐỘ")} actions={<EditAction />}>
@@ -212,11 +240,23 @@ function QuickViewTaskDetail({ detailTask }) {
             </InlineBadge>
           </QuickViewRow>
         </VerticleList>
+        {
+          <CreateJobModal
+            isOpen={openEditJob}
+            setOpen={setOpenEditJob}
+            isRight={true}
+            data={detailTask}
+          />
+        }
       </QuickView>
     </>
   );
 }
-const QuickViewTaskDetailContainer = ({ taskId, defaultTaskDetail = {} }) => {
+const QuickViewTaskDetailContainer = ({
+  taskId,
+  defaultTaskDetail = {},
+  ...props
+}) => {
   const dispatch = useDispatch();
   const detailTask = useSelector(
     state => state.taskDetail.detailTask.taskDetails
@@ -226,11 +266,15 @@ const QuickViewTaskDetailContainer = ({ taskId, defaultTaskDetail = {} }) => {
   }, [dispatch, taskId]);
 
   const finalTask = {
+    ...{
+      assign_code: 0
+    },
     ...defaultTaskDetail,
     ...(detailTask && detailTask !== null && taskId === detailTask.id
       ? detailTask
       : {})
   };
-  return <QuickViewTaskDetail detailTask={finalTask} />;
+  if (!detailTask) return null;
+  return <QuickViewTaskDetail detailTask={finalTask} {...props} />;
 };
 export default QuickViewTaskDetailContainer;
