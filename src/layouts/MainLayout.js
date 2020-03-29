@@ -132,7 +132,6 @@ function MainLayout({
       handleFetchNoti();
       const uri =
         'https://appapi.workplus.vn?token=' + localStorage.getItem(TOKEN);
-      console.log(uri);
       const socket = io(uri, {});
       socket.on('WP_NEW_NOTIFICATION', res => handleNewNoti());
       socket.on('WP_NEW_NOTIFICATION_MESSAGE_TASK', res => handleNewMessage());
