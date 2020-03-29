@@ -1,104 +1,42 @@
 {
-  "views": {
-    "user_page": {
-      "left_part": {
-        "add_user": {
-          "no_accounts": "Không tìm thấy tài khoản",
-          "invited": "Đã mời",
-          "invite": "Mời",
-          "accept_request": "Duyệt",
-          "deny_request": "Từ chối",
-          "time": "{{minute}} phút",
-          "title": "Thêm thành viên",
-          "invite_member": "Mời thành viên tham gia nhóm",
-          "find_member": "Nhập email, số điện thoại thành viên",
-          "find_member_button": "Lọc",
-          "request_member_title": "Thành viên yêu cầu tham gia nhóm"
-        },
-        "department_info": {
-          "modal_title": "Chi tiết bộ phận",
-          "default": "Mặc định",
-          "member_count": "Số nhân sự: {{count}} thành viên",
-          "intro": "Giới thiệu",
-          "update": "Chỉnh sửa",
-          "delete": "Xóa bộ phận",
-          "alert_content": "Bạn chắc chắn muốn xóa?"
-        }
+  "DMH": {
+    "COMP": {
+      "ALERT_MODAL": {
+        "TITLE": "Thông báo hệ thống",
+        "CANCLE_BTN": "Hủy",
+        "ACCEPT_BTN": "Đồng ý"
       },
-      "modals": {
-        "search_modal": {
-          "search_title": "Tìm kiếm",
-          "search_label": "Nhập nội dung cần tìm",
-          "search_button": "Tìm"
-        },
-        "update_user": {
-          "room_select": "Chọn bộ phận",
-          "position_select": "Chọn chức danh",
-          "level_select": "Chọn trình độ",
-          "major_select": "Chọn chuyên ngành",
-          "description": "Mô tả công việc",
-          "description_helper": "Tối đa {{max_count}} ký tự",
-          "ok_button": "Hoàn thành"
-        }
+      "CUSTOM_MODAL": {
+        "CONFIRM": "Hoàn thành",
+        "CANCLE": "Hủy"
       },
-      "right_part": {
-        "users_table": {
-          "header_button_group": {
-            "search_label": "Tìm kiếm",
-            "add_user_label": "Thêm thành viên",
-            "expand_true_label": "Mở rộng",
-            "expand_false_label": "Thu gọn",
-            "more_label": "Thêm",
-            "title_manager_menu_item": "Quản lý chức danh",
-            "role_manager_menu_item": "Quản lý vai trò",
-            "logo_manager_menu_item": "Quản lý biểu tượng",
-            "table_settings_menu_item": "Cài đặt bảng"
+      "CUSTOM_POPOVER": {
+        "TIME_FUNC": {
+          "MONTH": {
+            "JAN": "Tháng 1",
+            "FEB": "Tháng 2",
+            "MAR": "Tháng 3",
+            "APR": "Tháng 4",
+            "MAY": "Tháng 5",
+            "JUN": "Tháng 6",
+            "JUL": "Tháng 7",
+            "AUG": "Tháng 8",
+            "SEP": "Tháng 9",
+            "OCT": "Tháng 10",
+            "NOV": "Tháng 11",
+            "DEC": "Tháng 12"
           },
-          "table_main": {
-            "no_data_label": "Không có dữ liệu",
-            "table_header_row": {
-              "name_cell": "Họ và tên",
-              "position_cell": "Chức danh",
-              "birthday_cell": "Ngày sinh",
-              "gender_cell": "Giới tính",
-              "email_cell": "Email",
-              "phone_cell": "Điện thoại",
-              "role_cell": "Vai trò",
-              "status_cell": "Trạng thái"
-            },
-            "table_body_row": {
-              "state_label": {
-                "public": "Công khai",
-                "private": "Hạn chế"
-              },
-              "change_state": "Chuyển trạng thái",
-              "manage_permission": "Phân quyền",
-              "leave_group": "Rời nhóm"
-            }
-          },
-          "create_account_label": "Tạo tài khoản",
-          "table_title": "Danh sách nhân sự",
-          "total_user_count": "Đã có {{user_count}} thành viên",
-          "upgrade_sublabel": "(Nâng cấp)"
-        },
-        "user_info": {
-          "date_join": "Ngày tham gia",
-          "modify_info": "Chỉnh sửa",
-          "room_name": "Bộ phận",
-          "position_name": "Chức danh",
-          "level_name": "Trình độ",
-          "major_name": "Chuyên ngành",
-          "description": "Mô tả công việc",
-          "documents_view": "Xem file hồ sơ",
-          "upload_documents_error": "Upload file bị lỗi",
-          "upload_documents": "Upload file hồ sơ",
-          "infomation": "Thông tin cá nhân",
-          "name": "Họ tên đầy đủ",
-          "birthday": "Ngày sinh",
-          "gender": "Giới tính",
-          "email": "Email",
-          "phone": "Điện thoại",
-          "address": "Địa chỉ"
+          "THIS_YEAR": "Năm nay",
+          "THIS_MONTH": "Tháng này",
+          "LAST_MONTH": "Tháng trước",
+          "THIS_WEEK": "Tuần này",
+          "LAST_WEEK": "Tuần trước",
+          "ALL_TIME": "Mọi lúc",
+          "CUSTOM": "Tùy chọn",
+          "YEAR_DESC": "Năm {{year}}",
+          "MONTH_DESC": "{{month}}",
+          "WEEK_DESC": "Tuần {{week}}",
+          "ALL_DESC": "Toàn bộ thời gian"
         }
       }
     }

@@ -56,7 +56,6 @@ function CustomTextbox({
       <StyledTextField
         multiline
         fullWidth
-        autoFocus
         rows={3}
         variant="outlined"
         value={value}
