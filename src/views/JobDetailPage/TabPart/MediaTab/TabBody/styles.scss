@@ -136,3 +136,76 @@
   top: 0;
   right: 0;
 }
+
+.fileBoxItem {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 10px 0;
+  & > img {
+    width: 40px;
+    height: auto;
+  }
+  & > div {
+    margin-left: 10px;
+    &:last-child {
+      margin-left: auto;
+      text-align: end;
+    }
+  }
+  &:hover .styled-menu-file {
+    opacity: 1;
+  }
+  &--content {
+    width: calc(100% - 140px);
+    margin: 0;
+    padding-left: 15px;
+  }
+  &--name {
+    text-transform: unset;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 230px;
+  }
+  &--downloaded {
+    width: 100%;
+    margin-top: 10px;
+    float: left;
+    color: #929292;
+    svg {
+      fill: #949494;
+    }
+  }
+  &--createdAt {
+    font-size: 13px;
+    color: #777;
+  }
+  &--buttonMenu {
+    svg {
+      fill: #777777;
+    }
+  }
+  &--button {
+    &:hover {
+      background: none;
+    }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+}
+
+.linkBox--button {
+  &:hover {
+    background: none;
+  }
+  & > span > svg {
+    &:hover {
+      fill: #03b000;
+    }
+  }
+}

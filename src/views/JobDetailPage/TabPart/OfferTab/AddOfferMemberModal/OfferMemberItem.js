@@ -6,7 +6,7 @@ function OfferMemberItem({
   isSelected = false,
   avatar,
   name,
-  roles = [],
+  roles,
   onClick,
   isDisable,
 }) {
@@ -18,7 +18,7 @@ function OfferMemberItem({
         {name}
         <Typography
           className="offerMemberItem--role"
-          component="div">{roles.map(({ name }) => name).join(' - ')}</Typography>
+          component="div">{roles}</Typography>
       </Typography>
     </div>
   )

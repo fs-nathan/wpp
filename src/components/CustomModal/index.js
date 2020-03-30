@@ -190,7 +190,7 @@ function CustomModal({
 }
 
 CustomModal.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   columns: PropTypes.number,
   children: PropTypes.node,
   left: PropTypes.shape({

@@ -1,15 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import {
-  List, ListItem, ListItemText,
-  Menu, MenuItem, ListSubheader, ListItemIcon,
-  Typography
-} from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import Icon from '@mdi/react';
+import { IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem, Typography } from '@material-ui/core';
 import { mdiDotsHorizontal, mdiLink } from '@mdi/js';
-
-import { Button } from './FileBox'
+import Icon from '@mdi/react';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 const HeaderSubText = styled(ListSubheader)`
   font-size: 13px;
@@ -48,7 +42,7 @@ const LinkBox = (props) => {
     <List subheader={<li />}>
       {link.links && link.links.map((item, idx) => {
         return (
-          <div className="styled-list-item-link" key={idx}>
+          <div className="styled-list-item-link linkBox" key={idx}>
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
             {item.links.map((item, idx) => {
               return (
@@ -66,9 +60,10 @@ const LinkBox = (props) => {
                   </ListItemText>
                   <div className="styled-menu-link">
                     <ListItemIcon>
-                      <Button onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+                      <IconButton className="linkBox--button"
+                        onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
                         <Icon path={mdiDotsHorizontal} size={1} />
-                      </Button>
+                      </IconButton>
                     </ListItemIcon>
                   </div>
                   <Menu

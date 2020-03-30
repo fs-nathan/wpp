@@ -1,18 +1,20 @@
-import React from "react";
-import clsx from "clsx";
+import Radio from "@material-ui/core/Radio";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Radio from "@material-ui/core/Radio";
-import { useSelector, useDispatch } from 'react-redux';
-import { mdiCheckboxMarked, mdiKey } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiKey } from '@mdi/js';
 import Icon from '@mdi/react';
-import styled from 'styled-components';
-import DialogWrap from 'components/DialogWrap';
 import { updatePermission } from "actions/taskDetail/taskDetailActions";
-
+import clsx from "clsx";
+import DialogWrap from 'components/DialogWrap';
+import React from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import styled from 'styled-components';
 import './styles.scss';
 
 const RowTable = styled(TableRow)`
@@ -32,15 +34,25 @@ const CellTable = styled(TableCell)`
 
 function PriorityTable(props) {
   return (
-    <TableCell className={clsx("permissionItem", { "permissionItem__checked": props.checked })} align="center">{props.radio}
+    <div className={clsx("permissionItem", { "permissionItem__checked": props.checked })} align="center">{props.radio}
       <Radio
         className="permissionItem--radio"
         checked={props.checked}
         onChange={props.onChange}
         value={props.value}
       />
-    </TableCell>
+    </div>
   )
+}
+
+function CustomArrow({ path, className, isDisabled, onClick }) {
+  return (
+    <Icon
+      path={path}
+      className={clsx(className, { "customArrow__disabled": isDisabled })}
+      onClick={!isDisabled && onClick}
+    />
+  );
 }
 
 function PermissionMemberModal({ memberId, setOpen,
@@ -65,19 +77,28 @@ function PermissionMemberModal({ memberId, setOpen,
 
   return (
     <DialogWrap
-      title="Phân quyền thành viên trong công việc"
+      title="Phân quyền thành viên"
       isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel="Cập nhật"
+      successLabel="Hoàn thành"
       onClickSuccess={handleUpdateMemberPermission}
       maxWidth="md"
+      className="permissionMemberModal"
     >
       <React.Fragment>
-        <div>Chọn nhóm quyền</div>
-        <div>Mỗi nhóm bao gồm 1 số quyền. Nhóm quyền do chủ sở hữu hoặc người được phần quyền tạo lập. Nếu không có nhóm quyền phù hợp hãy liên hệ chủ sở hữu.</div>
-        {listGroupPermission.map((group, i) =>
-          <PriorityTable key={group.name} radio={group.name} value={i} checked={selectedValue === i} onChange={handleChange} />
-        )}
+        <div className="permissionMemberModal--title">Chọn nhóm quyền</div>
+        <div className="permissionMemberModal--content">Mỗi nhóm bao gồm 1 số quyền. Nhóm quyền do chủ sở hữu hoặc người được phần quyền tạo lập. Nếu không có nhóm quyền phù hợp hãy liên hệ chủ sở hữu.</div>
+        <div className="permissionMemberModal--slider">
+          <Slider adaptiveHeight variableWidth infinite={false}
+            nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}
+            prevArrow={<CustomArrow path={mdiChevronLeft} isDisabled={listGroupPermission.length < 5} />}
+            settings={{ dots: false, slidesToShow: 5, adaptiveHeight: true }}
+          >
+            {listGroupPermission.map((group, i) =>
+              <PriorityTable key={group.name} radio={group.name} value={i} checked={selectedValue === i} onChange={handleChange} />
+            )}
+          </Slider>
+        </div>
         <Table>
           <TableHead>
             <RowTable>

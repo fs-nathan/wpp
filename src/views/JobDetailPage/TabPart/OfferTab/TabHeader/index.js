@@ -10,8 +10,7 @@ function TabHeader(props) {
   const taskId = useSelector(taskIdSelector);
   useEffect(() => {
     dispatch(getOffer({ taskId }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dispatch, taskId])
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);

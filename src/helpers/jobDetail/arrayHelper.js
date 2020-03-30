@@ -25,8 +25,8 @@ export const filterCommandItem = arr => arr.filter(item => item.type === CM_DC_T
 export const filterDecisionItem = arr => arr.filter(item => item.type === CM_DC_TYPE.DECISION)
 
 const OFFER_STATUS = {
-    PENDING: 0,
-    APPROVED: 1,
+    APPROVED: 0,
+    PENDING: 1,
 }
 
 export const filterPendingItem = arr => arr.filter(item => item.status === OFFER_STATUS.PENDING)

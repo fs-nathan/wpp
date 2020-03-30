@@ -47,11 +47,13 @@
     "react-scripts": "3.2.0",
     "react-select": "^3.0.8",
     "react-simple-timefield": "^3.0.0",
+    "react-slick": "^0.25.2",
     "react-swipeable-views": "^0.13.3",
     "react-use": "^13.27.0",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
     "reselect": "^4.0.0",
+    "slick-carousel": "^1.8.1",
     "socket.io-client": "^2.3.0",
     "styled-components": "^4.4.0",
     "xlsx": "^0.15.5"

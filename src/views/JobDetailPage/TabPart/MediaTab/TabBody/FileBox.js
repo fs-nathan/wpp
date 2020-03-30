@@ -1,46 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import {
-  List, ListItem,
-  IconButton, Menu, MenuItem,
-} from '@material-ui/core';
+import { IconButton, List, ListItem, Menu, MenuItem } from '@material-ui/core';
+import { mdiDotsHorizontal, mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiDownload, mdiDotsHorizontal, } from '@mdi/js';
-
-import ColorTypo from '../../../../../components/ColorTypo';
-import iconDoc from '../../../../../assets/doc.png';
-
-const FileBoxStyledList = styled(List)``;
-const FileBoxStyledListItem = styled(ListItem)`
-  display: flex;
-  align-items: center;
-  & > img {
-    width: 50px;
-    height: 50px;
-  }
-  & > div {
-    margin-left: 10px;
-    &:last-child {
-      margin-left: auto;
-      text-align: end;
-    }
-  }
-  &:hover .styled-menu-file {
-    opacity: 1;
-  }
-`;
-
-export const Button = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`
+import iconDoc from 'assets/doc.png';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 const FileBox = (props) => {
   const file = useSelector(state => state.taskDetail.media.file);
@@ -55,31 +18,27 @@ const FileBox = (props) => {
   }
 
   return (
-    <FileBoxStyledList>
+    <List>
       {file.files && file.files.map((item, idx) => {
         return (
-
-          <FileBoxStyledListItem key={idx}>
+          <ListItem className="fileBoxItem" key={idx}>
             <img src={iconDoc} alt='avatar' />
-            <div>
-              <div className="file-name">{item.name}</div>
-              <ColorTypo variant='caption'>
-                <Button size='small'>
+            <div className="fileBoxItem--content" >
+              <div className="fileBoxItem--name">{item.name}</div>
+              <div className="fileBoxItem--downloaded">
+                <IconButton className="fileBoxItem--button" size='small'>
                   <a href={item.url}>
                     <Icon path={mdiDownload} size={1} />
                   </a>
-                </Button>
+                </IconButton>
                 {item.size}
-              </ColorTypo>
+              </div>
             </div>
             <div>
-              <ColorTypo variant='body1'>{item.date_create}</ColorTypo>
-              <div className="styled-menu-file">
-
-                <Button size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                  <Icon path={mdiDotsHorizontal} size={1} ></Icon>
-                </Button>
-              </div>
+              <div className="fileBoxItem--createdAt">{item.date_create}</div>
+              <IconButton className="fileBoxItem--buttonMenu" size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
+                <Icon path={mdiDotsHorizontal} size={1} ></Icon>
+              </IconButton>
             </div>
             <Menu
               id="simple-menu"
@@ -96,10 +55,10 @@ const FileBox = (props) => {
               <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
               <MenuItem onClick={handleClose}>Xóa</MenuItem>
             </Menu>
-          </FileBoxStyledListItem>
+          </ListItem>
         )
       })}
-    </FileBoxStyledList>
+    </List>
   );
 }
 

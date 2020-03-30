@@ -63,7 +63,7 @@ function AddOfferMemberModal({
           isSelected={selected.indexOf(member.index) !== -1}
           onClick={onClickMember(member.index)}
           avatar={member.avatar}
-          roles={member.roles}
+          roles={`${member.position} - ${member.room}`}
           name={member.name}
           isDisable={disableIndexes.indexOf(member.index) !== -1}
         />)}

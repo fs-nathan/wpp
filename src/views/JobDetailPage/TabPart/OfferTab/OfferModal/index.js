@@ -17,6 +17,7 @@ import './styles.scss';
 const OfferModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const currentUserId = useSelector(state => state.system.profile.order_user_id);
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
   const listGroupOffer = offers.map(off => ({ value: off.id, label: off.name }))
@@ -27,6 +28,8 @@ const OfferModal = (props) => {
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
   const { item } = props;
+  const createId = (item && item.user_create_id) || currentUserId;
+  const createUserIndex = findIndex(members, member => member.id === createId);
 
   React.useEffect(() => {
     if (item) {
@@ -221,7 +224,7 @@ const OfferModal = (props) => {
             value={handlers}
             onChange={setHandlers}
             members={members}
-            disableIndexes={monitors}
+            disableIndexes={[...monitors, createUserIndex]}
           />
         </div>
         <Typography className="offerModal--title">Người giám sát ({monitors.length})</Typography>
@@ -246,7 +249,7 @@ const OfferModal = (props) => {
             value={monitors}
             onChange={setMonitors}
             members={members}
-            disableIndexes={handlers}
+            disableIndexes={[...handlers, createUserIndex]}
           />
         </div>
         <Typography className="offerModal--title" >Chọn mức độ</Typography>
@@ -268,10 +271,11 @@ const OfferModal = (props) => {
         <label className="offerModal--attach" htmlFor="outlined-button-file">
           <Button variant="outlined" component="span" fullWidth className={'classes.button'}>
             <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
-            Đính kèm tài liệu
-                </Button>
+              Đính kèm tài liệu
+            </Button>
         </label>
         {
+          tempSelectedItem.files &&
           tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
         }
       </React.Fragment>
