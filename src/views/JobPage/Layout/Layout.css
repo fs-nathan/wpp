@@ -13,7 +13,7 @@
 }
 .comp_JobPageLayout__drawerPaper {
   top: 70px;
-  height: calc(100% - 70px);
+  height: calc(100% - 75px);
   position: absolute;
   width: 400px;
   box-shadow: -18px 8px 24px -10px rgba(0, 0, 0, 0.2);
@@ -21,4 +21,9 @@
 .comp_TaskPage_CustomTable___header {
   max-width: unset;
   white-space: nowrap;
+}
+.comp_PrimaryHeaderButton {
+  color: white;
+  padding: 8px 12px;
+  margin-top: 8px;
 }

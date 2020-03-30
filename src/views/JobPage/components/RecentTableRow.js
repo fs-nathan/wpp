@@ -10,6 +10,7 @@ import { colors } from "../contants/attrs";
 import { taskDetailLink } from "../contants/links";
 import { JobPageContext } from "../JobPageContext";
 import InlineBadge from "./InlineBadge";
+import InlinePiorityBadge from "./InlinePiorityBadge";
 import InlineStatusBadge from "./InlineStatusBadge";
 import QuickViewTaskDetail from "./QuickViewTaskDetail";
 import "./RecentTableRow.css";
@@ -93,6 +94,8 @@ export default React.memo(
     haveNewChat,
     status_name,
     status_code,
+    priority_code,
+    priority_name,
     number_member,
     duration_value,
     duration_unit,
@@ -123,6 +126,9 @@ export default React.memo(
                   {status_name}
                 </InlineStatusBadge>
               ),
+              <InlinePiorityBadge status={priority_code}>
+                {priority_name}
+              </InlinePiorityBadge>,
               <InlineBadge color={colors.task_complete}>
                 {complete}%
               </InlineBadge>,

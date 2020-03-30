@@ -40,6 +40,12 @@ export const createPieChartProps = (strings, data) => {
 
 export const createRadarChartProps = (strings, data) => {
   const roles = get(data, statistic.roles, []);
+  const maxValue = roles.reduce((result, role) => {
+    if (role.number_task > result) {
+      return role.number_task;
+    }
+    return result;
+  }, 0);
   // const roles = [
   //   {
   //     id: "5e70408ce2f6b848a81653b5",
@@ -151,6 +157,7 @@ export const createRadarChartProps = (strings, data) => {
         categories
       },
       yaxis: {
+        tickAmount: maxValue < 4 ? maxValue : undefined,
         labels: {
           formatter: function(val, i) {
             return Math.floor(val);

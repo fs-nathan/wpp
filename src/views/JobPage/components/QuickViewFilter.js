@@ -7,12 +7,14 @@ import {
 } from "@material-ui/core";
 import { mdiFilterOutline } from "@mdi/js";
 import Icon from "@mdi/react";
-import colors from "helpers/colorPalette";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { JobPageContext } from "../JobPageContext";
 import QuickView from "../Layout/QuickView";
+import "./QuickViewFilter.css";
 
 function QuickViewFilter() {
+  const { t } = useTranslation();
   return (
     <JobPageContext.Consumer>
       {({
@@ -23,45 +25,37 @@ function QuickViewFilter() {
       }) => (
         <QuickView
           title={
-            <Box flex={1} display="flex" alignItems="center">
+            <Box className="comp_QuickViewFilter__headerWrapper">
               <Icon
-                style={{
-                  marginRight: "15px",
-                  width: "1.5em",
-                  height: "1.5em",
-                  fill: "#666"
-                }}
+                className="comp_QuickViewFilter__headerIcon"
                 path={mdiFilterOutline}
               ></Icon>
-              <Box fontSize="15px">FILTER</Box>
+              <Box className="comp_QuickViewFilter__headerTitle">
+                {t("FILTER")}
+              </Box>
             </Box>
           }
         >
-          <Box display="flex" flexDirection="column">
+          <Box className="comp_QuickViewFilter">
             {filterConfig.map(
               ({ title, subTitle, optionEntities, orders }, i) => {
                 return (
                   <FormControl
+                    className="comp_QuickViewFilter__formControl"
                     key={i}
                     style={{ marginTop: i > 0 && "2em" }}
                     component="fieldset"
                   >
                     <legend>
-                      <Box fontSize="14px" fontWeight="bold">
-                        {title}
-                      </Box>
-                      <Box marginTop="0.5em" color={colors.gray[0]}>
+                      <Box className="comp_QuickViewFilter__title">{title}</Box>
+                      <Box className="comp_QuickViewFilter__subTitle">
                         {subTitle}
                       </Box>
                     </legend>
-                    <FormGroup
-                      style={{
-                        marginTop: "1em",
-                        paddingLeft: "9px"
-                      }}
-                    >
+                    <FormGroup className="comp_QuickViewFilter__FormGroup">
                       {orders.map(key => (
                         <FormControlLabel
+                          className="comp_QuickViewFilter__FormControlLabel"
                           key={key}
                           control={
                             <Checkbox

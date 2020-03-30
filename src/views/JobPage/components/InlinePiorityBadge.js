@@ -6,7 +6,7 @@ const colorMap = {
   default: colors.task_waiting,
   "0": colors.task_hight_priority,
   "1": colors.task_medium_priority,
-  "3": colors.task_low_priority
+  "2": colors.task_low_priority
 };
 function InlinePiorityBadge({ status, ...props }) {
   return (

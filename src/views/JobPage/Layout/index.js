@@ -1,4 +1,4 @@
-import { Box, Button, ClickAwayListener, Drawer } from "@material-ui/core";
+import { Box, Button, Drawer } from "@material-ui/core";
 import {
   mdiCalendar,
   mdiFilterOutline,
@@ -95,11 +95,9 @@ export function CustomTableLayout({ children }) {
           <HeaderButtonGroup />
           {get(options, "mainAction") && (
             <StyledButton
+              className="comp_PrimaryHeaderButton"
               style={{
-                backgroundColor: bgColor.color,
-                color: "white",
-                padding: "8px 12px",
-                marginTop: "8px"
+                backgroundColor: bgColor.color
               }}
               onClick={get(options, "mainAction.onClick", () => null)}
             >
@@ -204,15 +202,7 @@ function Layout({ children, title, bgColor }) {
         }}
         onClose={() => setQuickTask(undefined)}
       >
-        {open && (
-          <ClickAwayListener
-            onClickAway={() => {
-              setQuickTask(undefined);
-            }}
-          >
-            <Scrollbars>{quickTask}</Scrollbars>
-          </ClickAwayListener>
-        )}
+        {open && quickTask}
       </Drawer>
       {openModalDirect && (
         <RedirectModal onClose={() => setOopenModalDirect(false)} />
