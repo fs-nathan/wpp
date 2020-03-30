@@ -1,8 +1,7 @@
-import { Avatar, IconButton, ListItem, ListItemText, Menu, MenuItem } from '@material-ui/core';
-import { mdiCheck, mdiDotsVertical, mdiDragVertical } from '@mdi/js';
+import { IconButton, ListItem, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { mdiCheck, mdiCircleOutline, mdiDotsVertical, mdiDragVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { completeSubTask, deleteSubTask } from 'actions/taskDetail/taskDetailActions';
-import colorPal from 'helpers/colorPalette';
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -93,6 +92,9 @@ function AllSubtaskListItem(props) {
       })
     )
   }
+  const onClickTitle = () => {
+    props.setSelectedItem(props.task)
+  }
 
   return (
     <Draggable
@@ -115,18 +117,21 @@ function AllSubtaskListItem(props) {
             !isHover
               ?
               <abbr title="Đánh dấu hoàn thành">
-                <Avatar src={props.task.user_create_avatar} alt='avatar' />
+                {/* <Avatar src={props.task.user_create_avatar} alt='avatar' /> */}
+                <Icon path={mdiCircleOutline} size={1} color="#757575" />
               </abbr>
               :
               <ButtonIcon onClick={onClickCompleteTask}>
                 <abbr title="Đánh dấu hoàn thành">
-                  <Icon path={mdiCheck} size={1} color={colorPal['blue'][0]} />
+                  <Icon path={mdiCheck} size={1} color="#74f5c0" />
                 </abbr>
               </ButtonIcon>
           }
           <ListItemText>
-            <div className="subTaskItem--content">{props.task.name}</div>
-            <div className="subTaskItem--createdAt">Tạo lúc {props.task.created_at}</div>
+            <div className="subTaskItem--content"
+              onClick={onClickTitle}
+            >{props.task.name}</div>
+            {/* <div className="subTaskItem--createdAt">Tạo lúc {props.task.created_at}</div> */}
           </ListItemText>
           <StyledMenu>
             <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">

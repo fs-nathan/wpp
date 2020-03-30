@@ -15,10 +15,14 @@ function EditProgressItem({ fixedNumber,
   fixStart,
   fixEnd,
   createdAt,
-  avatarUrl, }) {
+  avatarUrl,
+  userName,
+}) {
 
   return (<div className="editProgressItem">
-    <Avatar className="editProgressItem--avatar" src={avatarUrl}></Avatar>
+    <abbr title={userName}>
+      <Avatar className="editProgressItem--avatar" src={avatarUrl}></Avatar>
+    </abbr>
     <div className="editProgressItem--change" >
       <div className="editProgressItem--changeNumber">
         Điều chỉnh tiến độ lần {fixedNumber}

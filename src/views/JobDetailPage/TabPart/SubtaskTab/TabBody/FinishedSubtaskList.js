@@ -1,5 +1,5 @@
-import { Avatar, Menu, MenuItem } from '@material-ui/core';
-import { mdiDotsVertical } from '@mdi/js';
+import { Menu, MenuItem } from '@material-ui/core';
+import { mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { deleteSubTask } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
@@ -44,25 +44,29 @@ const FinishedSubtaskList = (props) => {
     // console.log('taskId::::', props);
   }
 
+  const onClickTitle = (item) => {
+    return () => props.setSelectedItem(item)
+  }
+
   return (
     <ul style={{ padding: 0 }}>
       {completeSubTasks.map((item, index) => {
         return (
           <li className="finishedSubTask--item" key={index}>
-            <abbr title={item.user_create_name}>
+            {/* <abbr title={item.user_create_name}>
               <Avatar className="finishedSubTask--avatar" src={item.user_create_avatar} alt='avatar' />
-            </abbr>
-            <div>
-              <div className="finishedSubTask--title">
-                {`${item.name}`}
-              </div>
-              <div className="finishedSubTask--subTitle" >
+            </abbr> */}
+            <Icon path={mdiCheckCircle} size={1} color="#74f5c0" />
+            <div className="finishedSubTask--title" onClick={onClickTitle(item)}>
+              {`${item.name}`}
+            </div>
+            {/* <div className="finishedSubTask--subTitle" >
                 <abbr title={item.user_complete_name}>
                   <Avatar src={item.user_complete_avatar} style={{ width: 12, height: 12 }} />
+                  <Icon path={mdiDotsVertical} size={1} />
                 </abbr>
                   Hoàn thành lúc {item.time_complete}
-              </div>
-            </div>
+              </div> */}
             <div className="finishedSubTask--menuIcon" >
               <ButtonIcon onClick={e => handleClick(e, item.id)} aria-haspopup="true">
                 <Icon path={mdiDotsVertical} size={1} />
