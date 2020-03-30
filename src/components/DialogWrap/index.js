@@ -30,7 +30,8 @@ function DialogWrap({
   const { t } = useTranslation();
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   return (
-    <Dialog maxWidth={maxWidth} className={clsx("dialogWrap", className)} aria-labelledby="customized-dialog-title" open={isOpen} >
+    <Dialog
+      maxWidth={maxWidth} className={clsx("dialogWrap", className)} aria-labelledby="customized-dialog-title" open={isOpen} >
       <DialogTitle disableTypography >
         <ColorTypo className="dialogWrap--title" >{title}</ColorTypo>
         <IconButton aria-label="close" className="dialogWrap--closeButton" onClick={handleClickClose}>
@@ -42,8 +43,9 @@ function DialogWrap({
         autoHide
         autoHideTimeout={500}
         autoHeight
-        autoHeightMin={200}
-        autoHeightMax={700}
+        autoHeightMin={300}
+        autoHeightMax={"70vh"}
+        renderView={props => <div {...props} className="dialogWrap--scrollContainer" />}
       >
         <DialogContent className="dialogWrap--content" >
           {children}

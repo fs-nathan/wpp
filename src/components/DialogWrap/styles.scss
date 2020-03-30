@@ -12,9 +12,16 @@
       padding: 8px 16px;
     }
   }
+  &--scrollContainer {
+    position: relative !important;
+    overflow-y: scroll !important;
+    margin-right: -17px !important;
+    margin-bottom: -17px !important;
+    height: 100%;
+  }
   & &--content {
     min-width: 500px;
-    padding: 0px;
+    padding: 24px;
     position: relative;
     display: block;
     float: left;
@@ -62,5 +69,14 @@
     &__disabled {
       opacity: 0.5;
     }
+  }
+  &--scroll {
+    float: left;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    min-height: 300px;
+    max-height: 70vh;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
 }

@@ -21,7 +21,9 @@ function TabBody() {
     setOpen(true)
   }
   return (
-    <Scrollbars className="memberTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Scrollbars className="memberTabBody"
+      renderView={props => <div {...props} className="memberTabBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-member-tabbody">
         <SearchInput
           placeholder={'Nhập từ khóa'}

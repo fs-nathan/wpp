@@ -44,7 +44,7 @@ const ApproveOfferDialog = (props) => {
       <React.Fragment>
         <div className="approve--user">
           <Avatar className="offerDetail--avatar" src={user_create_avatar} alt='avatar' />
-          <Typography className="offerDetail--title" component="div">
+          <Typography className="approve--userName" component="div">
             {user_create_name}
             <div className="offerDetail--createdAt">Đã tạo đề xuất lúc {date_create}</div>
             <div className={clsx("approve--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`)}>

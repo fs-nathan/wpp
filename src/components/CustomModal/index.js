@@ -63,6 +63,7 @@ function OneColumn({ children, height, }) {
       autoHide
       autoHideTimeout={500}
       height={height}
+      className="comp_CustomModal___scroll"
     >
       <StyledDialogContent>
         {children}
@@ -141,7 +142,7 @@ function CustomModal({
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
-      className={className}
+      className={clsx(className, "comp_CustomModal")}
     >
       <StyledDialogTitle id="alert-dialog-slide-title">
         {
@@ -152,6 +153,7 @@ function CustomModal({
         </IconButton>
       </StyledDialogTitle>
       <LoadingOverlay
+        className="comp_CustomModal___overlay"
         active={loading}
         spinner
         fadeSpeed={100}

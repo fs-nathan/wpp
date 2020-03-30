@@ -26,7 +26,7 @@ function SubTaskDetailDialog({
     <CustomModal
       open={isOpen}
       setOpen={setOpen}
-      confirmRender={() => null}
+      confirmRender={null}
       className="subTaskDetailDialog"
       titleRender={
         <div className="subTaskDetailDialog--titleWrap">

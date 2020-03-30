@@ -1,0 +1,42 @@
+// TabHeader - Demand Tab
+.container-dmt-tabbody {
+  padding: 16px 25px 50px 16px;
+  .styled-list-item {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #eeeeee;
+    padding: 10px 0;
+    margin-bottom: 8px;
+    .styled-title-box-dmt {
+      display: flex;
+      align-items: center;
+      & > *:not(:first-child) {
+        margin-left: 5px;
+      }
+      & > *:last-child {
+        margin-left: auto;
+      }
+      .wrapper-filter-dmt {
+        display: flex;
+        align-items: center;
+        .demand-create-time {
+          margin: 0 7px;
+          font-size: 0.75em;
+          color: #a6a6a6;
+        }
+      }
+      .styled-menu-demand {
+        opacity: 0;
+      }
+    }
+    .styled-content-box-dmt {
+      margin-left: 20px;
+      margin-top: 5px;
+      padding: 8px 10px;
+      font-weight: 500;
+    }
+    &:hover .styled-menu-demand {
+      opacity: 1;
+    }
+  }
+}

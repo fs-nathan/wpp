@@ -76,14 +76,16 @@ function TabBody(props) {
   };
 
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body
+      renderView={props => <div {...props} className="offerBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-offer-tabbody">
         <StyledButtonGroup fullWidth variant="text" >
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
           >
             {value === 0
-              ? <ColorTypo bold>Tất cả({offer.length})</ColorTypo>
+              ? <ColorTypo bold>Tất cả ({offer.length})</ColorTypo>
               : <ColorTypo color='gray'>Tất cả ({offer.length})</ColorTypo>}
           </ColorButton>
           <ColorButton

@@ -183,6 +183,24 @@
   }
 }
 
-.comp_CustomModal___iconButton {
-  padding: 0px;
+.comp_CustomModal {
+  &___iconButton {
+    padding: 0px;
+  }
+  &___scroll {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    float: left;
+    display: block;
+  }
+  &___overlay {
+    min-height: 300px;
+    float: left;
+    display: block;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    max-height: 70vh;
+  }
 }

@@ -1,4 +1,4 @@
-import { Avatar, IconButton, ListItem, ListItemAvatar, Menu, MenuItem } from '@material-ui/core';
+import { Avatar, IconButton, ListItem, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { deleteMember } from 'actions/taskDetail/taskDetailActions';
@@ -28,7 +28,7 @@ const StyledListItem = styled(ListItem)`
 
 const MemberListItem = ({
   id, name, avatar,
-  roles, group_permission,
+  room, position, group_permission,
   handleClickPermission,
 }) => {
   const dispatch = useDispatch();
@@ -70,9 +70,7 @@ const MemberListItem = ({
   return (
     <React.Fragment>
       <StyledListItem className="memberItem">
-        <ListItemAvatar>
-          <Avatar className="memberItem--avatar" src={avatar} alt='avatar' />
-        </ListItemAvatar>
+        <Avatar className="memberItem--avatar" src={avatar} alt='avatar' />
         <div className="memberItem--textWrap">
           <div className="memberItem--name">
             {name}
@@ -81,7 +79,7 @@ const MemberListItem = ({
             {group_permission && group_permission.name}
           </div>
           <div className="memberItem--role">
-            {roles.map(({ name }) => name).join(' - ')}
+            {[room, position].join(' - ')}
           </div>
         </div>
         <ButtonIcon

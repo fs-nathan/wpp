@@ -1,22 +1,31 @@
 .memberTabBody {
   grid-area: body;
   height: 100%;
+  .MuiList-root {
+    margin-top: 15px;
+  }
 }
+
 .memberItem {
   &--textWrap {
-    // display: flex;
-    // flex-direction: column;
+    width: 100%;
+    float: left;
+    display: block;
+    position: relative;
   }
   &--avatar {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
   }
   &--name {
-    font-weight: 600;
+    font-weight: 500;
     font-size: 15px;
+    margin-bottom: 5px;
+    color: #585858;
   }
   &--department {
-    color: #b9b9b9;
+    color: #666666;
   }
   &--role {
     color: orange;
@@ -25,8 +34,11 @@
     position: absolute;
     top: 0;
     right: 0;
-    // margin-right: -15px;
     display: none;
+    margin-top: 15px;
+    svg {
+      fill: #777777;
+    }
   }
   &:hover &--menuButton {
     display: block;

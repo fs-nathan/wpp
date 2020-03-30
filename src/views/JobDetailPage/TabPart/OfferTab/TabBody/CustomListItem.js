@@ -2,7 +2,6 @@ import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsHorizontal } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
-import ColorTypo from 'components/ColorTypo';
 import React from 'react';
 import { getStatus, getStatusName, priorityList } from '../data';
 import './styles.scss';
@@ -36,7 +35,7 @@ const CustomListItem = (props) => {
   return (
     <React.Fragment>
       <li className="offerTabItem">
-        <ColorTypo className="offerTabItem--content" onClick={onClickDetail}>{title}</ColorTypo>
+        <div className="offerTabItem--content" onClick={onClickDetail}>{title}</div>
         <div className="offerTabItem--user">
           <Avatar className="offerTabItem--avatar" src={user_create_avatar} alt='avatar' />
           {`${user_create_name} đề xuất lúc ${date_create}`}

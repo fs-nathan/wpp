@@ -7,3 +7,29 @@
     background-color: #f4f4f4;
   }
 }
+
+.projectMemberItem {
+  display: flex;
+  align-items: center;
+  & > *:not(:last-child) {
+    margin-right: 8px;
+  }
+  & > *:last-child {
+    margin-left: auto;
+  }
+  &--button {
+    border: 1px solid #e2e2e2;
+    padding: 0 5px;
+    color: gray;
+    font-weight: 400;
+    border-radius: 2px;
+    &:hover {
+      color: #fff;
+      background: #10c401;
+    }
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: #f2f5fa;
+  }
+}

@@ -60,7 +60,7 @@ function OfferDetail({
         <div className="offerDetail--content">
           {content}
         </div>
-        <div className="offerDetail--priority">
+        <div className="offerDetail--priority offerDetail--row">
           <div className="offerDetail--label">
             Mức độ:
           </div>
@@ -70,7 +70,7 @@ function OfferDetail({
             </div>
           </div>
         </div>
-        <div className="offerDetail--handler">
+        <div className="offerDetail--row">
           <div className="offerDetail--label">
             Phê duyệt ({user_can_handers.length})
           </div>
@@ -89,7 +89,7 @@ function OfferDetail({
             )}
           </div>
         </div>
-        <div className="offerDetail--monitor">
+        <div className="offerDetail--row">
           <div className="offerDetail--label">
             Giám sát ({user_monitors.length})
           </div>
@@ -108,7 +108,7 @@ function OfferDetail({
             )}
           </div>
         </div>
-        <div className="offerDetail--result">
+        <div className="offerDetail--row">
           <div className="offerDetail--label">
             Kết quả phê duyệt
             </div>

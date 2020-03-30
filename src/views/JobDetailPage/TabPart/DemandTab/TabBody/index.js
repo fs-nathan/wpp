@@ -24,7 +24,9 @@ function TabBody(props) {
   const [value, setValue] = React.useState(0);
 
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body autoHide
+      renderView={props => <div {...props} className="demandBody--container" />}
+      autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-dmt-tabbody">
         <StyledButtonGroup fullWidth variant="text">
           <ColorButton onClick={() => setValue(0)}>
