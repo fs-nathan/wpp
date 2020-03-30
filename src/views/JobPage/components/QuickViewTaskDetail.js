@@ -6,7 +6,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import { taskAtrrs } from "../contants/attrs";
 import { taskDetailLink } from "../contants/links";
 import { JobPageContext } from "../JobPageContext";
@@ -173,9 +172,9 @@ function QuickViewTaskDetail({ detailTask }) {
             >
               {t("Xem chi tiết công viêc")}
             </Box>
-            <Box className="comp_QuickViewTaskDetail__bottomAction__delete cursor-pointer">
+            {/* <Box className="comp_QuickViewTaskDetail__bottomAction__delete cursor-pointer">
               {t("Xóa công viêc")}
-            </Box>
+            </Box> */}
           </Box>
         }
         title={<QuickViewTaskDetailHeader detailTask={detailTask} />}
@@ -193,14 +192,14 @@ function QuickViewTaskDetail({ detailTask }) {
           >
             {get(detailTask, taskAtrrs.name, "#########")}
           </QuickViewRow>
-          <QuickViewRow title={t("MÔ TẢ CÔNG VIỆC")} actions={<EditAction />}>
+          <QuickViewRow title={t("MÔ TẢ CÔNG VIỆC")}>
             <Box whiteSpace="pre" lineHeight="1.4" fontSize="14px">
               {JSON.stringify(
                 get(detailTask, taskAtrrs.description, "#########")
               )}
             </Box>
           </QuickViewRow>
-          <QuickViewRow title={t("TIẾN ĐỘ")} actions={<EditAction />}>
+          <QuickViewRow title={t("TIẾN ĐỘ")}>
             <Box fontSize="14px">
               {t("Ngày bắt đầu")}: {get(detailTask, taskAtrrs.start_time)}{" "}
               {get(detailTask, taskAtrrs.start_date, "##/##/####")}
@@ -213,10 +212,7 @@ function QuickViewTaskDetail({ detailTask }) {
               {t("Hoàn thành")}: {get(detailTask, taskAtrrs.complete, 0)}%
             </Box>
           </QuickViewRow>
-          <QuickViewRow
-            title={t("TRẠNG THÁI, ƯU TIÊN")}
-            actions={<EditAction />}
-          >
+          <QuickViewRow title={t("TRẠNG THÁI, ƯU TIÊN")}>
             <Box lineHeight="1">
               <InlineStatusBadge status={get(detailTask, taskAtrrs.state_code)}>
                 {get(detailTask, taskAtrrs.state_name)}
@@ -240,14 +236,6 @@ function QuickViewTaskDetail({ detailTask }) {
             </InlineBadge>
           </QuickViewRow>
         </VerticleList>
-        {
-          <CreateJobModal
-            isOpen={openEditJob}
-            setOpen={setOpenEditJob}
-            isRight={true}
-            data={detailTask}
-          />
-        }
       </QuickView>
     </>
   );
@@ -274,7 +262,6 @@ const QuickViewTaskDetailContainer = ({
       ? detailTask
       : {})
   };
-  if (!detailTask) return null;
   return <QuickViewTaskDetail detailTask={finalTask} {...props} />;
 };
 export default QuickViewTaskDetailContainer;

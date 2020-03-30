@@ -107,23 +107,7 @@ export const createRadarChartProps = (strings, data) => {
   );
   return {
     type: "radar",
-
     series,
-    // [
-    //   {
-    //     name: "Series",
-    //     data: [80, 50, 30, 40, 100, 20]
-    //   },
-    //   {
-    //     name: "Series 2",
-    //     data: [20, 30, 40, 80, 20, 80]
-    //   },
-    //   {
-    //     name: "Series 3",
-    //     data: [44, 76, 78, 13, 43, 10]
-    //   }
-    // ]
-
     options: {
       plotOptions: {
         radar: {
@@ -132,16 +116,12 @@ export const createRadarChartProps = (strings, data) => {
       },
       colors: [colors.task_all, colors.task_complete],
       chart: {
-        animations: {
-          enabled: false
-        },
         toolbar: {
           show: false
         }
       },
       legend: {
         show: false
-        // position: "bottom"
       },
       stroke: {
         width: 1
@@ -149,11 +129,14 @@ export const createRadarChartProps = (strings, data) => {
       fill: {
         opacity: 0.4
       },
-      markers: {
-        size: 0
+      marker: {
+        size: 4,
+        hover: {
+          size: 7,
+          sizeOffset: 3
+        }
       },
       xaxis: {
-        // categories: ["2011", "2012", "2013", "2014", "2015", "2016"]
         categories
       },
       yaxis: {
@@ -180,6 +163,7 @@ export const createColumnChartProps = (
     type: "bar",
     series: [
       {
+        name: "Số lượng",
         data: strings.map(string =>
           Math.max(Number(get(data, statistic[string], 0)), 0)
         )
@@ -205,7 +189,7 @@ export const createColumnChartProps = (
         }
       },
       dataLabels: {
-        enabled: false
+        // enabled: false
       },
       legend: {
         show: false
@@ -213,20 +197,17 @@ export const createColumnChartProps = (
       },
       xaxis: {
         categories: strings.map(string => labels[string]),
-        show: false,
+        // show: false,
         labels: {
-          show: false,
+          // show: false,
           labels: strings.map(string => labels[string])
-        },
-        axisBorder: {
-          show: false
-        },
-        axisTicks: {
-          show: false
         }
-      },
-      tooltip: {
-        enabled: false
+        // axisBorder: {
+        //   show: false
+        // },
+        // axisTicks: {
+        //   show: false
+        // }
       }
     },
     height: 250
