@@ -5,13 +5,16 @@ import styled from "styled-components";
 import { JobPageContext } from "../JobPageContext";
 export const QuickViewWrapper = styled.div`
   height: 100%;
-  display: grid;
-  grid-template-rows: 70px calc(100% - 70px) 50px;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "header"
-    "body"
-    "footer";
+  display: flex;
+  padding-right: 10px;
+  flex-direction: column;
+  font-size: 14px;
+  // grid-template-rows: 70px calc(100% - 70px) 50px;
+  // grid-template-columns: 1fr;
+  // grid-template-areas:
+  //   "header"
+  //   "body"
+  //   "footer";
 `;
 export const QuickViewHeader = styled.div`
   grid-area: header;
@@ -25,7 +28,7 @@ export const QuickViewHeader = styled.div`
   position: sticky;
   top: 0px;
   background-color: #fff;
-  z-index: 999;
+  z-index: 1;
 `;
 export const QuickViewHeaderLeft = styled.div`
   flex: 1;
@@ -35,9 +38,13 @@ export const QuickViewBody = styled.div`
   grid-area: body;
   padding: 15px;
   padding-bottom: 50px;
+  min-height: calc(100% - 70px);
 `;
 export const QuickViewFooter = styled.div`
   grid-area: footer;
+  height: 50px;
+  display: flex;
+  items-align: center;
   padding: 15px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -61,7 +68,7 @@ function QuickView({ title, children, bottom }) {
         </QuickViewHeaderRight>
       </QuickViewHeader>
       <QuickViewBody>{children}</QuickViewBody>
-      {bottom && <QuickViewFooter></QuickViewFooter>}
+      {bottom && <QuickViewFooter>{bottom}</QuickViewFooter>}
     </QuickViewWrapper>
   );
 }

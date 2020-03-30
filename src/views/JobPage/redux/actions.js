@@ -1,10 +1,18 @@
 import {
+  LOADPAGE_TASK,
   LOADPAGE_TASK_ASSIGN,
   LOADPAGE_TASK_DUE,
   LOADPAGE_TASK_ROLE,
   LOAD_TASK_OVERVIEW
 } from "./types";
-
+export const loadTaskPage = timeRange => {
+  return {
+    type: LOADPAGE_TASK,
+    payload: {
+      timeRange
+    }
+  };
+};
 export const loadTaskOverViewPage = timeRange => {
   return {
     type: LOAD_TASK_OVERVIEW,
