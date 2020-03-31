@@ -37,7 +37,7 @@ export const TaskTable = ({
             <TableCell width="10%" align="left">
               {t("Tiến độ")}
             </TableCell>
-            <TableCell width="10%" align="right">
+            <TableCell width="10%" align="left">
               {t("Kết thúc")}
             </TableCell>
             <TableCell width="10%" align="right"></TableCell>

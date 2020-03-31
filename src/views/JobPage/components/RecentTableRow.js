@@ -53,7 +53,7 @@ export const DurationCell = ({ className, ...props }) => (
 export const EndTimeCell = ({ className, ...props }) => (
   <StyledTableBodyCell
     className={classnames("comp_EndTimeCell", className)}
-    align="right"
+    align="left"
     width="10%"
     {...props}
   />
