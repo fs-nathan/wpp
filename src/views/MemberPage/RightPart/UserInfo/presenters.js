@@ -5,7 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LoadingBox from '../../../../components/LoadingBox';
 import LoadingOverlay from '../../../../components/LoadingOverlay';
@@ -133,7 +133,7 @@ function UserInfo({
                   <StyledListItem>
                     <ColorTypo>Mô tả công việc:</ColorTypo>
                     <CustomTextbox
-                      value={getEditorData(get(user.user, 'description', ''))}
+                      value={get(user.user, 'description', '')}
                       isReadOnly={true}
                       maxHeight={100}
                     />

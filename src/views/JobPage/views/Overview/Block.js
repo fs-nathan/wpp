@@ -29,6 +29,15 @@ const useStyles = makeStyles(theme => ({
   cardHeaderSubTitle: {
     marginTop: "0.2rem",
     fontSize: "0.9rem"
+  },
+  extra: {
+    marginTop: "23px",
+    color: "rgba(0,0,0,0.54)",
+    fontSize: "12px",
+    marginRight: "10px",
+    background: "#f0f0f0",
+    padding: "5px",
+    borderRadius: "3px"
   }
 }));
 export const Block = ({ title, subheader, extra, children, ...props }) => {
@@ -46,7 +55,7 @@ export const Block = ({ title, subheader, extra, children, ...props }) => {
           title: classes.cardHeaderTitle,
           subheader: classes.cardHeaderSubTitle
         }}
-        action={extra}
+        action={<div className={classes.extra}>{extra}</div>}
         title={title}
         subheader={subheader}
       />

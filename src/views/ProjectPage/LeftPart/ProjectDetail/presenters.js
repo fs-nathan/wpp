@@ -7,8 +7,8 @@ import AvatarCircleList from '../../../../components/AvatarCircleList';
 import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import { ActionBox, Container, SubContainer } from '../../../../components/CustomDetailBox';
-import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlacedolder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
+import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -90,16 +90,14 @@ function ProjectDetail({
                           'Công việc đang làm',
                           'Công việc quá hạn',
                           'Công việc hoàn thành',
-                          'Công việc dừng',
                         ],
-                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', 'black'],
+                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b'],
                       }}
                       series={[
                         get(project.project, 'task_waiting', 0),
                         get(project.project, 'task_doing', 0),
                         get(project.project, 'task_expired', 0),
                         get(project.project, 'task_complete', 0),
-                        get(project.project, 'task_stop', 0),
                       ]}
                       width={250}
                       height={250}
@@ -111,9 +109,8 @@ function ProjectDetail({
                       get(project.project, 'task_waiting', 0) +
                         get(project.project, 'task_doing', 0) +
                         get(project.project, 'task_expired', 0) +
-                        get(project.project, 'task_complete', 0) +
-                        get(project.project, 'task_stop', 0) === 0
-                        ? <ChartPlacedolder />
+                        get(project.project, 'task_complete', 0) === 0
+                        ? <ChartPlaceholder />
                         : null
                     }
                   </ChartDrawer>
@@ -172,7 +169,7 @@ function ProjectDetail({
                   <ColorTypo color='gray' uppercase>Mô tả dự án</ColorTypo>
                 </SubHeader>
                 <CustomTextbox
-                  value={getEditorData(get(project.project, 'description', ''))}
+                  value={get(project.project, 'description', '')}
                   isReadOnly={true}
                 />
               </SubContainer>

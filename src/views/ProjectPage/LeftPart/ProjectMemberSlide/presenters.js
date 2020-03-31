@@ -1,48 +1,47 @@
-import React from 'react';
-import { Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { Button, ListItemText } from '@material-ui/core';
+import { mdiAccountCog, mdiChevronLeft, mdiDragVertical, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiChevronLeft, mdiDragVertical, mdiPlus, mdiAccount } from '@mdi/js';
-import LoadingBox from '../../../../components/LoadingBox';
-import ErrorBox from '../../../../components/ErrorBox';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import LeftSideContainer from '../../../../components/LeftSideContainer';
-import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
-import CustomListItem from './CustomListItem';
-import { ListItemText } from '@material-ui/core';
 import { get } from 'lodash';
-import SearchInput from '../../../../components/SearchInput';
+import React from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { Link } from 'react-router-dom';
+import CustomAvatar from '../../../../components/CustomAvatar';
+import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
+import ErrorBox from '../../../../components/ErrorBox';
+import LeftSideContainer from '../../../../components/LeftSideContainer';
+import LoadingBox from '../../../../components/LoadingBox';
+import SearchInput from '../../../../components/SearchInput';
+import CustomListItem from './CustomListItem';
 import './style.scss';
 
-const Container = ({ className = '', ...props }) => 
+const Container = ({ className = '', ...props }) =>
   <div
     className={`view_Project_ProjectMemberSlide___container ${className}`}
     {...props}
   />
 
-const Banner = ({ className = '', ...props }) => 
-  <div 
+const Banner = ({ className = '', ...props }) =>
+  <div
     className={`view_Project_ProjectMemberSlide___banner ${className}`}
     {...props}
   />;
 
-const StyledPrimary = ({ className = '', ...props }) => 
-  <Primary 
+const StyledPrimary = ({ className = '', ...props }) =>
+  <Primary
     className={`view_Project_ProjectMemberSlide___primary ${className}`}
     {...props}
   />;
 
-const Wrapper = ({ className = '', ...rest }) => 
-  <Scrollbars 
-    className={`view_Project_ProjectMemberSlide___wrapper ${className}`} 
-    {...rest} 
+const Wrapper = ({ className = '', ...rest }) =>
+  <Scrollbars
+    className={`view_Project_ProjectMemberSlide___wrapper ${className}`}
+    {...rest}
   />;
 
-function ProjectMemberSlide({ 
-  handleSubSlide, 
-  members, 
+function ProjectMemberSlide({
+  handleSubSlide,
+  members,
   searchPatern, setSearchPatern,
   handleOpenModal,
 }) {
@@ -79,12 +78,12 @@ function ProjectMemberSlide({
         >
           <Container>
             <Banner>
-              <SearchInput 
-                fullWidth 
+              <SearchInput
+                fullWidth
                 placeholder='Tìm thành viên'
                 value={searchPatern}
                 onChange={evt => setSearchPatern(evt.target.value)}
-              />  
+              />
             </Banner>
             <Wrapper
               autoHide
@@ -102,12 +101,12 @@ function ProjectMemberSlide({
                         component={Link}
                       >
                         <div>
-                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'}/>
+                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
                         </div>
                         <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
-                        <ListItemText 
+                        <ListItemText
                           primary={
-                            <StyledPrimary>Tất cả</StyledPrimary>  
+                            <StyledPrimary>Tất cả</StyledPrimary>
                           }
                           secondary={
                             <Secondary>
@@ -117,7 +116,7 @@ function ProjectMemberSlide({
                         />
                       </StyledListItem>
                       {members.members.map((member, index) => (
-                        <CustomListItem key={get(member, 'id')} member={member} index={index} />  
+                        <CustomListItem key={get(member, 'id')} member={member} index={index} />
                       ))}
                       {provided.placeholder}
                     </StyledList>
@@ -126,7 +125,7 @@ function ProjectMemberSlide({
               </DragDropContext>
             </Wrapper>
             <Button onClick={evt => handleOpenModal('MEMBER_SETTING')}>
-              <Icon path={mdiAccount} size={1} />
+              <Icon path={mdiAccountCog} size={1} />
               <span>Quản lý thành viên</span>
             </Button>
           </Container>

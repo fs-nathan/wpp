@@ -1,96 +1,22 @@
-import { FormHelperText } from '@material-ui/core';
-import { ContentState, convertFromRaw, Editor, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, RichUtils } from 'draft-js';
-import getFragmentFromSelection from 'draft-js/lib/getFragmentFromSelection';
+import { TextField } from '@material-ui/core';
 import React from 'react';
-import decorator from './EditorLink';
+import ColorTypo from '../ColorTypo';
 import './style.scss';
 
-const { hasCommandModifier } = KeyBindingUtil;
+const StyledTextField = ({ className = '', ...rest }) =>
+  <TextField
+    className={`comp_CustomTextbox___text-field ${className}`}
+    {...rest}
+  />
 
-export const getEditorData = (value) => {
-  try {
-    const raw = JSON.parse(value);
-    const data = EditorState.createWithContent(convertFromRaw(raw), decorator);
-    return data;
-  } catch (e) {
-    try {
-      const data = EditorState.createWithContent(ContentState.createFromText(value), decorator);
-      return data;
-    } catch (e) {
-      return EditorState.createEmpty(decorator);
-    }
-  }
-}
-
-function myKeyBindingFn(e) {
-  if (e.keyCode === 85 /* `U` key */ && hasCommandModifier(e)) {
-    return 'under-line';
-  }
-  if (e.keyCode === 66 /* `B` key */ && hasCommandModifier(e)) {
-    return 'bold';
-  }
-  if (e.keyCode === 73 /* `I` key */ && hasCommandModifier(e)) {
-    return 'italic';
-  }
-  return getDefaultKeyBinding(e);
-}
-
-function CustomTextbox({ value, onChange, isReadOnly = false, maxHeight = 100, className = '', helperText = '' }) {
-  const editor = React.useRef(null);
-
-  function focusEditor() {
-    if (!isReadOnly)
-      editor.current.focus();
-  }
-
-  function onClickBold() {
-    onChange(RichUtils.toggleInlineStyle(value, 'BOLD'));
-  }
-
-  function onClickItalic() {
-    const edited = RichUtils.toggleInlineStyle(value, 'ITALIC')
-    onChange(edited);
-  }
-
-  function onClickUnderline() {
-    const edited = RichUtils.toggleInlineStyle(value, 'UNDERLINE')
-    onChange(edited);
-  }
-
-  function onClickLink() {
-    const selection = value.getSelection();
-    if (!selection.isCollapsed()) {
-      onChange(RichUtils.toggleLink(value, selection, null))
-    } else {
-      const selected = getFragmentFromSelection(value);
-      const url = (selected ? selected.map(x => x.getText()).join('\n') : '');
-      console.log('url', url)
-      const entityKey = Entity.create('LINK', 'MUTABLE', { url });
-      onChange(RichUtils.toggleLink(value, selection, entityKey));
-    }
-  }
-
-  function handleKeyCommand(command) {
-    if (command === 'under-line') {
-      // Perform a request to save your contents, set
-      // a new `editorState`, etc.
-      onClickUnderline()
-      return 'handled';
-    }
-    if (command === 'bold') {
-      // Perform a request to save your contents, set
-      // a new `editorState`, etc.
-      onClickBold()
-      return 'handled';
-    }
-    if (command === 'italic') {
-      // Perform a request to save your contents, set
-      // a new `editorState`, etc.
-      onClickItalic()
-      return 'handled';
-    }
-    return 'not-handled';
-  }
+function CustomTextbox({
+  value,
+  onChange,
+  isReadOnly = false,
+  maxHeight = 100,
+  className = '',
+  helperText = ''
+}) {
 
   const [innerHeight, setInnerHeight] = React.useState(0);
   const [showMore, setShowMore] = React.useState(false);
@@ -101,38 +27,48 @@ function CustomTextbox({ value, onChange, isReadOnly = false, maxHeight = 100, c
     }
   }, [value]);
 
-  return (
-    <div
-      className={`comp_CustomTextBox___textbox${isReadOnly ? '-readonly' : ''} ${className}`}
-    >
+  if (isReadOnly) {
+    return (
       <div
-        style={{
-          maxHeight: !isReadOnly || showMore ? 'initial' : maxHeight,
-          overflow: !isReadOnly || showMore ? 'initial' : 'hidden',
-        }}
+        className={`comp_CustomTextBox___readonly ${className}`}
       >
         <div
-          onClick={focusEditor}
-          ref={innerRef}
+          style={{
+            maxHeight: !isReadOnly || showMore ? 'initial' : maxHeight,
+            overflow: !isReadOnly || showMore ? 'initial' : 'hidden',
+          }}
         >
-          <Editor
-            ref={editor}
-            readOnly={isReadOnly}
-            editorState={value}
-            onChange={onChange}
-            handleKeyCommand={handleKeyCommand}
-            keyBindingFn={myKeyBindingFn}
+          <div
+            ref={innerRef}
+            dangerouslySetInnerHTML={{
+              __html: value.replace(
+                /(https?:\/\/[^\s]+)/g,
+                "<a href='$1' target='_blank' >$1</a>"
+              )
+            }}
           />
         </div>
-        {!isReadOnly &&
-          <FormHelperText error filled variant='filled'>
+        {innerHeight > maxHeight && <span onClick={() => setShowMore(old => !old)}>{showMore ? 'Thu gọn' : 'Mở rộng'}</span>}
+      </div >
+    )
+  } else {
+    return (
+      <StyledTextField
+        multiline
+        fullWidth
+        autoFocus
+        rows={3}
+        variant="outlined"
+        value={value}
+        onChange={evt => onChange(evt.target.value)}
+        helperText={
+          <ColorTypo variant='caption' color='red'>
             {helperText}
-          </FormHelperText>
+          </ColorTypo>
         }
-      </div>
-      {isReadOnly && innerHeight > maxHeight && <span onClick={() => setShowMore(old => !old)}>{showMore ? 'Thu gọn' : 'Mở rộng'}</span>}
-    </div>
-  );
+      />
+    )
+  }
 }
 
 export default CustomTextbox;

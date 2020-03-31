@@ -1,6 +1,6 @@
-import { apiService } from '../../constants/axiosInstance';
 import * as actionTypes from '../../constants/actions/system/system';
-import { NOTI_NUMBER, MESS_NUMBER } from '../../constants/constants';
+import { apiService } from '../../constants/axiosInstance';
+import { MESS_NUMBER, NOTI_NUMBER } from '../../constants/constants';
 
 export const actionVisibleDrawerMessage = option => {
   return {
@@ -105,7 +105,7 @@ export const convertUrlToBlob = (
     let ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    canvas.toBlob(function(blob) {
+    canvas.toBlob(function (blob) {
       if (successCallback) {
         successCallback(blob);
       }

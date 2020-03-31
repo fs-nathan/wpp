@@ -47,16 +47,6 @@
   };
 };
 
-.comp_CustomTable___button {
-  padding: 8px 12px;
-  margin-top: 8px;
-  background-color: #fd7e14;
-  color: #fff;
-  &:hover {
-    background-color: rgb(227,113,18);
-  }
-};
-
 .comp_CustomTable___table-main {
   grid-area: body;
   overflow-y: auto;

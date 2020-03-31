@@ -1,6 +1,16 @@
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
-import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH } from "../constants/actions/documents";
+import {
+  LIST_COMMENT,
+  LIST_DOCUMENT_FROM_ME,
+  LIST_DOCUMENT_SHARE,
+  LIST_GOOGLE_DOCUMENT,
+  LIST_MY_DOCUMENT,
+  LIST_PROJECT_DOCUMENT,
+  LIST_PROJECT_DOCUMENT_OF_FOLDER,
+  LIST_RECENT,
+  LIST_TRASH
+} from "../constants/actions/documents";
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
 import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
 import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
@@ -48,6 +58,7 @@ import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from "../constants/actions/project/re
 import { DETAIL_STATUS } from "../constants/actions/project/setting/detailStatus";
 import { UPDATE_STATUS_COPY } from "../constants/actions/project/setting/updateStatusCopy";
 import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateStatusDate";
+import { UPDATE_STATUS_VIEW } from "../constants/actions/project/setting/updateStatusView";
 import { SHOW_PROJECT } from "../constants/actions/project/showProject";
 import { SORT_PROJECT } from "../constants/actions/project/sortProject";
 import { UPDATE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/updateGroupPermissionMember";
@@ -69,11 +80,15 @@ import { GET_USER_OF_ROOM } from "../constants/actions/room/getUserOfRoom";
 import { LIST_ROOM } from "../constants/actions/room/listRoom";
 import { SORT_ROOM } from "../constants/actions/room/sortRoom";
 import { UPDATE_ROOM } from "../constants/actions/room/updateRoom";
-import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP, GET_SETTING_DATE } from "../constants/actions/setting/setting";
-import { CREATE_TASK } from '../constants/actions/task/createTask';
-import { DELETE_TASK } from '../constants/actions/task/deleteTask';
-import { LIST_TASK } from '../constants/actions/task/listTask';
-import { SORT_TASK } from '../constants/actions/task/sortTask';
+import {
+  FETCH_GROUP_DETAIL,
+  FETCH_LIST_COLOR_GROUP,
+  GET_SETTING_DATE
+} from "../constants/actions/setting/setting";
+import { CREATE_TASK } from "../constants/actions/task/createTask";
+import { DELETE_TASK } from "../constants/actions/task/deleteTask";
+import { LIST_TASK } from "../constants/actions/task/listTask";
+import { SORT_TASK } from "../constants/actions/task/sortTask";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -89,9 +104,25 @@ import { DELETE_USER_ROLE } from "../constants/actions/userRole/deleteUserRole";
 import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
 import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
 // ==================================
-import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
+import {
+  watchLoadTaskAssignPage,
+  watchLoadTaskDuePage,
+  watchLoadTaskOverviewPage,
+  watchLoadTaskPage,
+  watchLoadTaskRolePage
+} from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
-import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash } from "./documents";
+import {
+  listComment,
+  listDocumentShare,
+  listDocumentShareFromMe,
+  listGoogleDocument,
+  listMyDocument,
+  listProjectDocument,
+  listProjectDocumentOfFolder,
+  listRecent,
+  listTrash
+} from "./documents";
 import { copyGroupTask } from "./groupTask/copyGroupTask";
 import { createGroupTask } from "./groupTask/createGroupTask";
 import { deleteGroupTask } from "./groupTask/deleteGroupTask";
@@ -138,6 +169,7 @@ import { removeProjectRoleFromMember } from "./project/removeProjectRoleFromMemb
 import { detailStatus } from "./project/setting/detailStatus";
 import { updateStatusCopy } from "./project/setting/updateStatusCopy";
 import { updateStatusDate } from "./project/setting/updateStatusDate";
+import { updateStatusView } from "./project/setting/updateStatusView";
 import { showProject } from "./project/showProject";
 import { sortProject } from "./project/sortProject";
 import { updateGroupPermissionMember } from "./project/updateGroupPermissionMember";
@@ -159,11 +191,15 @@ import { getUserOfRoom } from "./room/getUserOfRoom";
 import { listRoom } from "./room/listRoom";
 import { sortRoom } from "./room/sortRoom";
 import { updateRoom } from "./room/updateRoom";
-import { getGroupDetail, getListColor, getSettingDate } from "./setting/setting";
-import { createTask } from './task/createTask';
-import { deleteTask } from './task/deleteTask';
-import { listTask } from './task/listTask';
-import { sortTask } from './task/sortTask';
+import {
+  getGroupDetail,
+  getListColor,
+  getSettingDate
+} from "./setting/setting";
+import { createTask } from "./task/createTask";
+import { deleteTask } from "./task/deleteTask";
+import { listTask } from "./task/listTask";
+import { sortTask } from "./task/sortTask";
 import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
 import { detailUser } from "./user/detailUser";
@@ -258,6 +294,7 @@ function* rootSaga() {
   yield takeLatest(DETAIL_STATUS, detailStatus);
   yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
   yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
+  yield takeEvery(UPDATE_STATUS_VIEW, updateStatusView);
   yield takeLatest(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
@@ -527,7 +564,7 @@ function* rootSaga() {
     taskDetailType.UN_PIN_TASK_REQUEST,
     taskDetailSaga.unPinTask
   );
-
+  yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
   yield fork(watchLoadTaskAssignPage);

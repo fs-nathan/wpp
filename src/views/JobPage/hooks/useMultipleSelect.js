@@ -1,5 +1,4 @@
 import React from "react";
-import { loginlineFunc } from "../utils";
 export const useMultipleSelect = (
   initvalue = {},
   multiple = true,
@@ -18,11 +17,11 @@ export const useMultipleSelect = (
       });
     }
   };
-  const handleRemove = loginlineFunc(string => {
+  const handleRemove = string => {
     setSelect({
       ...select,
       [string]: false
     });
-  });
+  };
   return [select, handleMultipleSelect, handleRemove];
 };

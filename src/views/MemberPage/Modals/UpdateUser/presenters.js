@@ -4,9 +4,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox, { getEditorData } from '../../../../components/CustomTextbox';
+import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
-import { useTextboxString } from '../../../../hooks';
+import { useMaxlenString } from '../../../../hooks';
 import './style.scss';
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -34,7 +34,7 @@ function UpdateUser({
   const [position, setPosition] = React.useState(null);
   const [major, setMajor] = React.useState(null);
   const [level, setLevel] = React.useState(null);
-  const [description, setDescription, errorDescription, rawDescription] = useTextboxString('', 500);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
 
   React.useEffect(() => {
     if (updatedUser) {
@@ -42,7 +42,7 @@ function UpdateUser({
       setPosition(get(updatedUser, 'position_id'));
       setMajor(get(updatedUser, 'major_id'));
       setLevel(get(updatedUser, 'level_id'));
-      setDescription(getEditorData(get(updatedUser, 'description', '')));
+      setDescription(get(updatedUser, 'description', ''));
     }
     // eslint-disable-next-line
   }, [updatedUser]);
@@ -59,7 +59,7 @@ function UpdateUser({
         position,
         major,
         level,
-        rawDescription,
+        description,
       )}
       loading={options.loading}
     >
