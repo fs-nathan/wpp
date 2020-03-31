@@ -1,28 +1,15 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import queryString from 'query-string';
-import colors from '../../../helpers/colorPalette';
+import { Avatar, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  IconButton,
-  Typography,
-  Avatar,
-  Grid,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
-  FormControl
-} from '@material-ui/core';
-import Icon from '@mdi/react';
 import { mdiMagnify } from '@mdi/js';
-import fakeAvatar from '../../../assets/avatar.jpg';
-import {
-  getMemberTaskService,
-  getMemberTask
-} from '../../../actions/chat/chat';
-
+import Icon from '@mdi/react';
+import { getMemberTask, getMemberTaskService } from 'actions/chat/chat';
+import fakeAvatar from 'assets/avatar.jpg';
+import clsx from 'clsx';
+import queryString from 'query-string';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import './styles.scss';
 // Fake data
 const tabs = ['Chat', 'Table', 'Gantt'];
 const tabSelected = tabs[0];
@@ -35,32 +22,6 @@ const useStyles = makeStyles({
   },
   smallAvatar: { width: 25, height: 25 }
 });
-const ProjectText = styled(Typography)`
-  font-size: 24px;
-  font-weight: 500;
-`;
-
-const TabLabel = styled(FormControlLabel)`
-  color: ${props => (props.checked ? colors['blue'][0] : colors['gray'][0])};
-  width: auto;
-  margin-left: 0;
-  margin-right: 10px;
-  padding: 5px 0;
-  & > span:first-child {
-    display: none;
-  }
-`;
-
-const ButtonIcon = styled(IconButton)`
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`;
 
 const TabForm = props => {
   const [value, setValue] = React.useState(tabSelected);
@@ -74,7 +35,8 @@ const TabForm = props => {
         row
       >
         {props.tabs.map((label, idx) => (
-          <TabLabel
+          <FormControlLabel
+            className={clsx("chatHeader--tabLabel", { "chatHeader--tabLabel__selected": value === label })}
             key={idx}
             value={label}
             control={<Radio />}
@@ -95,8 +57,8 @@ const renderAvatars = props => {
         {number ? (
           <Avatar className="header-chat-avatar">{number}</Avatar>
         ) : (
-          <Avatar className="header-chat-avatar" src={src} />
-        )}
+            <Avatar className="header-chat-avatar" src={src} />
+          )}
       </Grid>
     );
   };
@@ -117,51 +79,33 @@ const renderAvatars = props => {
   );
 };
 
-const renderRoomDescription = props => {
-  return (
-    <div className="wrap-room-description">
-      <ProjectText>Thảo Luận</ProjectText>
-      <TabForm tabs={tabs} />
-    </div>
-  );
-};
-
-const renderFunctionBar = props => {
-  return (
-    <ButtonIcon>
-      <Icon path={mdiMagnify} size={1.2} className="job-detail-icon" />
-    </ButtonIcon>
-  );
-};
-
 const HeaderPart = props => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const members = useSelector(state => state.chat.members)
   useEffect(() => {
+    const fetchMemberlist = async () => {
+      try {
+        const { data } = await getMemberTaskService(
+          queryString.parse(props.location.search).task_id
+        );
+        dispatch(getMemberTask(data.members));
+      } catch (error) { }
+    };
     fetchMemberlist();
     // eslint-disable-next-line
   }, []);
-  const fetchMemberlist = async () => {
-    try {
-      const { data } = await getMemberTaskService(
-        queryString.parse(props.location.search).task_id
-      );
-      props.getMemberTask(data.members);
-    } catch (error) {}
-  };
   return (
     <div className="container-header">
-      {renderAvatars({ styles: classes, images: props.members })}
-      {renderRoomDescription(props)}
-      {renderFunctionBar(props)}
-      {/* <WrapNotification>
-                {renderNotify(props)}
-            </WrapNotification> */}
+      {renderAvatars({ styles: classes, images: members })}
+      <div className="wrap-room-description">
+        <Typography className="chatHeader--title">Thảo Luận</Typography>
+        <TabForm tabs={tabs} />
+      </div>
+      <IconButton className="chatHeader--button">
+        <Icon path={mdiMagnify} size={1.2} className="job-detail-icon" />
+      </IconButton>
     </div>
   );
 };
-export default connect(
-  state => ({
-    members: state.chat.members
-  }),
-  { getMemberTask }
-)(withRouter(HeaderPart));
+export default withRouter(HeaderPart);

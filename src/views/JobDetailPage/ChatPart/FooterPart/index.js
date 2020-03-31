@@ -1,21 +1,13 @@
-import React, { useState } from 'react';
 import { IconButton } from '@material-ui/core';
-import {
-  mdiAlarmPlus,
-  mdiFileTree,
-  mdiPaperclip,
-  mdiImage,
-  mdiEmoticon,
-  mdiAt
-} from '@mdi/js';
+import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
 // import * as MaterialIcon from '@material-ui/icons'
-// import colors from '../../../helpers/colorPalette'
-import IconLike from '../../../assets/like.svg';
-import SendFileModal from '../ChatComponent/SendFile/SendFileModal';
-import './Chat.scss';
-import { file } from '../../../assets/fileType';
-import TagModal from '../ChatComponent/TagModal';
+// import colors from 'helpers/colorPalette'
+import IconLike from 'assets/like.svg';
+import React, { useState } from 'react';
+import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
+import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
+import '../Chat.scss';
 
 const FooterPart = props => {
   const [marginLeftModal, setMarginLeftModal] = useState(0);
