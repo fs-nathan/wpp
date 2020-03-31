@@ -10,8 +10,6 @@ import SetUp from '../TablePart/SettingGroupRight/SetUp';
 import Order from '../TablePart/SettingGroupRight/Order';
 import OrderDetail from '../TablePart/SettingGroupRight/OrderDetail';
 import Payment from '../TablePart/SettingGroupRight/Payment';
-import TimeAndLanguage from '../TablePart/SettingGroupRight/TimeAndLanguage';
-import Notification from '../TablePart/SettingGroupRight/Notification';
 import CreateOrder from '../TablePart/SettingGroupRight/CreateOrder';
 import { Routes } from '../../../constants/routes';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
@@ -58,10 +56,7 @@ const TablePart = props => {
       }
       case SETTING_GROUP.CREATE_ORDER:
         return <CreateOrder />;
-      case SETTING_GROUP.LANGUAGE:
-        return <TimeAndLanguage />;
-      case SETTING_GROUP.NOTIFICATION:
-        return <Notification />;
+
       case SETTING_GROUP.PAYMENT:
         return <Payment />;
       default:

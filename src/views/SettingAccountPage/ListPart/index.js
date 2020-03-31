@@ -42,6 +42,17 @@ const ListPart = props => {
       ]
     },
     {
+      title: t('IDS_WP_COMMON_SETUP'),
+      // icon: mdiAccountCircle,
+      sub: [
+        { name: t('IDS_WP_TIME_LANGUAGE'), url: Routes.SETTING_GROUP_LANGUAGE },
+        {
+          name: t('IDS_WP_SETUP_NOTICE'),
+          url: Routes.SETTING_GROUP_NOTIFICATION
+        }
+      ]
+    },
+    {
       title: t('IDS_WP_NOTICE_WORKPLUS'),
       url: Routes.SETTING_ACCOUNT_NOTIFI,
       // icon: mdiBell,
