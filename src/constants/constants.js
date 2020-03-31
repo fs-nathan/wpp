@@ -22,6 +22,7 @@ export const SETTING_ACCOUNT = {
 export const SETTING_GROUP = {
   INFO: "info",
   SETTING: "setting",
+  HOME: "home",
   ORDER: "order",
   ORDER_DETAIL: "order-detail",
   CREATE_ORDER: "create-order",

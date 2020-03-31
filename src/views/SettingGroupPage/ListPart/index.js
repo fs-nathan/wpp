@@ -1,8 +1,8 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { withRouter } from 'react-router-dom';
-import { Routes } from '../../../constants/routes';
-import LeftSetting from '../../../components/LeftSetting/LeftSetting';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { withRouter } from "react-router-dom";
+import LeftSetting from "../../../components/LeftSetting/LeftSetting";
+import { Routes } from "../../../constants/routes";
 
 const ListPart = props => {
   const { t } = useTranslation();
@@ -13,27 +13,27 @@ const ListPart = props => {
     //   // icon: mdiAccountMultiple
     // },
     {
-      title: t('IDS_WP_SETTING_SOFTWARE'),
+      title: t("IDS_WP_SETTING_SOFTWARE"),
       // url: Routes.SETTING_GROUP_SETTING,
       sub: [
-        { name: t('IDS_WP_GROUP_INFO'), url: Routes.SETTING_GROUP_INFO },
-        { name: t('IDS_WP_HOME'), url: null },
-        { name: t('IDS_WP_PERMISSION_GROUP'), url: null },
-        { name: t('IDS_WP_SYMBOLISM'), url: null },
-        { name: t('IDS_WP_ROLE'), url: null }
+        { name: t("IDS_WP_GROUP_INFO"), url: Routes.SETTING_GROUP_INFO },
+        { name: t("IDS_WP_HOME"), url: Routes.SETTING_GROUP_HOME },
+        { name: t("IDS_WP_PERMISSION_GROUP"), url: null },
+        { name: t("IDS_WP_SYMBOLISM"), url: null },
+        { name: t("IDS_WP_ROLE"), url: null }
       ]
       // icon: mdiSettings
     },
     {
-      title: t('IDS_WP_ORDER_MANAGE'),
+      title: t("IDS_WP_ORDER_MANAGE"),
       // url: Routes.SETTING_GROUP_ORDER,
       sub: [
         {
-          name: t('IDS_WP_CREATE_ORDER'),
+          name: t("IDS_WP_CREATE_ORDER"),
           url: Routes.SETTING_GROUP_CREATE_ORDER
         },
-        { name: t('IDS_WP_ORDER_LIST'), url: Routes.SETTING_GROUP_ORDER },
-        { name: t('IDS_WP_PAYMENT_INFO'), url: Routes.SETTING_GROUP_PAYMENT }
+        { name: t("IDS_WP_ORDER_LIST"), url: Routes.SETTING_GROUP_ORDER },
+        { name: t("IDS_WP_PAYMENT_INFO"), url: Routes.SETTING_GROUP_PAYMENT }
       ]
       // icon: mdiCart
     }
@@ -43,7 +43,7 @@ const ListPart = props => {
     //   icon: mdiCreditCardOutline
     // }
   ];
-  return <LeftSetting title={t('IDS_WP_MANAGE_GROUP')} listMenu={listMenu} />;
+  return <LeftSetting title={t("IDS_WP_MANAGE_GROUP")} listMenu={listMenu} />;
 };
 
 export default withRouter(ListPart);
