@@ -1,17 +1,20 @@
-import React from 'react';
-
-import ColorChip from 'components/ColorChip';
-import RoleMemberModal from '../RoleMemberModal';
-import Icon from '@mdi/react';
-import { mdiPlusCircleOutline } from '@mdi/js';
 import { IconButton } from '@material-ui/core';
+import { mdiPlusCircleOutline } from '@mdi/js';
+import Icon from '@mdi/react';
+import { getRole } from 'actions/taskDetail/taskDetailActions';
+import ColorChip from 'components/ColorChip';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import RoleMemberModal from '../RoleMemberModal';
+
 
 function MemberRole({ roles, memberId }) {
-
+  const dispatch = useDispatch();
   const [openRoleModal, setOpenRoleModal] = React.useState(false);
 
   function onClickAdd() {
     setOpenRoleModal(true)
+    dispatch(getRole())
   }
 
   return (

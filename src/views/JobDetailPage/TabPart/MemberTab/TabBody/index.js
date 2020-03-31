@@ -1,5 +1,5 @@
 import { List } from '@material-ui/core';
-import { searchMember } from 'actions/taskDetail/taskDetailActions';
+import { getMember, getMemberNotAssigned, searchMember } from 'actions/taskDetail/taskDetailActions';
 import SearchInput from 'components/SearchInput';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -11,6 +11,7 @@ import './styles.scss';
 function TabBody() {
   const dispatch = useDispatch();
   const members = useSelector(state => state.taskDetail.taskMember.member);
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [open, setOpen] = React.useState(false);
 
   const searchMemberTabPart = (e) => {
@@ -19,6 +20,8 @@ function TabBody() {
   function handleClickPermission() {
     console.log('handleClickPermission')
     setOpen(true)
+    dispatch(getMember({ task_id: taskId }))
+    dispatch(getMemberNotAssigned({ task_id: taskId }))
   }
   return (
     <Scrollbars className="memberTabBody"

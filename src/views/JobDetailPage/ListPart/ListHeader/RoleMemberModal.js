@@ -1,13 +1,12 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import { Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/core';
-import styled from 'styled-components';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
-import { useSelector, useDispatch } from 'react-redux';
-import AddRoleModal from './AddRoleModal';
-import ModalDeleteConfirm from '../../TabPart/ModalDeleteConfirm';
-import { updateRole, deleteRole, createRole, updateRolesForMember } from 'actions/taskDetail/taskDetailActions';
+import { createRole, deleteRole, updateRole, updateRolesForMember } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import ModalDeleteConfirm from '../../TabPart/ModalDeleteConfirm';
+import AddRoleModal from './AddRoleModal';
 
 const RoleTable = styled(TableCell)`
 padding: 15px 15px;

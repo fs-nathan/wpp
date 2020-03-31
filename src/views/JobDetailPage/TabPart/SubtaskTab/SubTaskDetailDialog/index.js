@@ -56,7 +56,9 @@ function SubTaskDetailDialog({
             Hoàn thành:
           </div>
           <div className="subTaskDetailDialog--content">
-            <Avatar className="subTaskDetailDialog--avatarCompleted" src={user_complete_avatar} alt='avatar' />
+            {user_complete_name &&
+              <Avatar className="subTaskDetailDialog--avatarCompleted" src={user_complete_avatar} alt='avatar' />
+            }
             {user_complete_name}
           </div>
         </div>
