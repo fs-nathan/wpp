@@ -1,39 +1,14 @@
 import { Avatar } from '@material-ui/core';
 import { getListChat, getListChatService } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
-import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
-import ContentMessage from '../ContentMessage';
-import DetailMessage from '../DetailMessage';
-import QuoteMessage from '../QuoteMessage';
-import RemindMessage from '../RemindMessage';
-import WrapMessage from '../WrapMessage';
+import Message from './Message';
 import './styles.scss';
-
-const TextMessage = props => {
-  return (
-    <WrapMessage {...props}>
-      {props.quote && <QuoteMessage {...props.quote} />}
-      <ContentMessage content={props.content} />
-    </WrapMessage>
-  );
-};
-
-const Message = props => {
-  switch (props.type) {
-    case CHAT_TYPE.REMIND_TASK:
-      return <RemindMessage {...props} />;
-    case CHAT_TYPE.TEXT:
-      return <TextMessage {...props} />;
-    default:
-      return <div>Tin nhắn này bị lỗi hiển thị</div>;
-  }
-};
 
 const BodyPart = props => {
   const chatRef = useRef();
@@ -124,7 +99,7 @@ const BodyPart = props => {
       </div>
       {!isEmpty(chats.data) &&
         chats.data.map(el => <Message {...el} key={el.id} />)}
-      <DetailMessage />
+      {/* <DetailMessage /> */}
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>
   );

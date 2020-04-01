@@ -1,17 +1,23 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
+import { appendChat, createChatText } from 'actions/chat/chat';
 // import * as MaterialIcon from '@material-ui/icons'
 // import colors from 'helpers/colorPalette'
 import IconLike from 'assets/like.svg';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
 import '../Chat.scss';
 
 const FooterPart = props => {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+
   const [marginLeftModal, setMarginLeftModal] = useState(0);
   const [marginTopModal, setMarginTopModal] = useState(0);
+  const [textChat, setTextChat] = useState('');
   const [visibleTag, setVisible] = useState(null);
   const [visibleSendFile, setVisibleSendFile] = useState(false);
 
@@ -34,6 +40,27 @@ const FooterPart = props => {
     }
     setVisible('mention');
   };
+
+  function onChangeTextChat(event) {
+    setTextChat(event.target.value)
+  }
+
+  async function onKeyPressChat(event) {
+    if (textChat.length === 0) return;
+    if (event.key === 'Enter') {
+      console.log('enter press here! ', textChat)
+      setTextChat('')
+      try {
+        const { data } = await createChatText({
+          task_id: taskId, content: textChat
+        });
+        dispatch(appendChat(data));
+      } catch (error) {
+        console.error('error here! ', error)
+      }
+    }
+  }
+
   return (
     <div className="footer-chat-container">
       <div className="wrap-function-bar-fp">
@@ -92,8 +119,11 @@ const FooterPart = props => {
         )}
 
         <input
+          onKeyPress={onKeyPressChat}
           className="chat-input"
           type="text"
+          value={textChat}
+          onChange={onChangeTextChat}
           placeholder="Nhập @ gợi ý, nội dung thảo luận..."
         />
       </div>

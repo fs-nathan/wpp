@@ -1,0 +1,25 @@
+.ImageMessage {
+  &--wrap {
+    position: relative;
+  }
+  &--quality {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 2px 5px;
+  }
+  &--img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+  }
+  &--time {
+    font-size: 12px;
+    color: #ababab;
+    &__self {
+      color: #d8d7d7;
+    }
+  }
+}

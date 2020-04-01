@@ -1,0 +1,50 @@
+.TextMessage {
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 10px;
+  display: flex;
+  &--rightContentWrap {
+    margin-left: 10px;
+  }
+  &--sender {
+    display: flex;
+  }
+  &--name {
+    font-size: 12px;
+    color: #01a750;
+    &__admin {
+      color: #e47212;
+    }
+  }
+  &--position {
+    font-size: 12px;
+    color: #ababab;
+  }
+  &--room {
+    font-size: 11px;
+    background-color: #eaebed;
+    color: #e47212;
+    padding: 2px 3px;
+    border-radius: 50%;
+  }
+  &--content {
+    font-size: 18px;
+    color: #000000;
+    text-align: left;
+    &__self {
+      color: #ffffff;
+    }
+  }
+  &--quote &--content {
+    font-size: 14px;
+    color: #5b5b5b;
+  }
+  &--time {
+    font-size: 12px;
+    color: #ababab;
+    &__self {
+      color: #d8d7d7;
+    }
+  }
+}
