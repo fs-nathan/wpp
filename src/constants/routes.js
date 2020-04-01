@@ -30,11 +30,11 @@ export const Routes = {
   SETTING_ACCOUNT_INFO: '/setting-account/info',
   SETTING_ACCOUNT_PASSWORD: '/setting-account/change-password',
   SETTING_ACCOUNT_NOTIFI: '/setting-account/notification-workplus',
+  SETTING_GROUP_LANGUAGE: '/setting-account/language',
+  SETTING_GROUP_NOTIFICATION: '/setting-account/notification',
   SETTING_GROUP: '/setting-group/:type',
   SETTING_GROUP_INFO: '/setting-group/info',
   SETTING_GROUP_SETTING: '/setting-group/setting',
-  SETTING_GROUP_LANGUAGE: '/setting-group/language',
-  SETTING_GROUP_NOTIFICATION: '/setting-group/notification',
   SETTING_GROUP_ORDER: '/setting-group/order',
   SETTING_GROUP_CREATE_ORDER: '/setting-group/create-order',
   SETTING_GROUP_PAYMENT: '/setting-group/payment'

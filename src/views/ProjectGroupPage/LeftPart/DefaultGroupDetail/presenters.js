@@ -1,6 +1,7 @@
 import { mdiChevronLeft } from '@mdi/js';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import ColorTypo from '../../../../components/ColorTypo';
 import { Container, SubContainer } from '../../../../components/CustomDetailBox';
@@ -28,6 +29,7 @@ function DefaultGroupDetail({
 }) {
 
   const history = useHistory();
+  const { t } = useTranslation();
 
   return (
     <React.Fragment>
@@ -37,9 +39,9 @@ function DefaultGroupDetail({
           leftAction={{
             iconPath: mdiChevronLeft,
             onClick: () => history.push('/projects'),
-            tooltip: 'Quay lại',
+            tooltip: t("DMH.VIEW.PGP.LEFT.INFO.BACK"),
           }}
-          title='Chi tiết nhóm dự án'
+          title={t("DMH.VIEW.PGP.LEFT.INFO.TITLE")}
           loading={{
             bool: group.loading,
             component: () => <LoadingBox />
@@ -62,11 +64,11 @@ function DefaultGroupDetail({
                           },
                         },
                         labels: [
-                          'Dự án đang chờ',
-                          'Dự án đang làm',
-                          'Dự án quá hạn',
-                          'Dự án hoàn thành',
-                          'Dự án ẩn',
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.WAITING"),
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.DOING"),
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.HIDDEN"),
                         ],
                         colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d'],
                       }}
@@ -81,7 +83,7 @@ function DefaultGroupDetail({
                       height={200}
                     />
                     <ChartTitle>
-                      Hoạt động
+                      {t("DMH.VIEW.PGP.LEFT.INFO.ACTV")}
                     </ChartTitle>
                     {
                       get(group.group, 'statistics.task_waiting', 0) +
@@ -94,34 +96,31 @@ function DefaultGroupDetail({
                     }
                   </ChartDrawer>
                   <ProjectGroupName>
-                    Chưa phân loại
+                    {t("DMH.VIEW.PGP.LEFT.INFO.DEFAULT")}
                   </ProjectGroupName>
                   <ChartInfoBox
+                    title={t("DMH.VIEW.PGP.LEFT.INFO.STATS.TOTAL")}
                     data={
                       [{
                         color: '#ff9800',
-                        title: 'Dự án đang chờ',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.WAITING"),
                         value: get(group.group, 'statistics.task_waiting', 0),
                       }, {
                         color: '#03a9f4',
-                        title: 'Dự án đang làm',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.DOING"),
                         value: get(group.group, 'statistics.task_doing', 0),
                       }, {
                         color: '#f44336',
-                        title: 'Dự án quá hạn',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
                         value: get(group.group, 'statistics.task_expired', 0),
                       }, {
                         color: '#03c30b',
-                        title: 'Dự án hoàn thành',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
                         value: get(group.group, 'statistics.task_complete', 0),
                       }, {
                         color: '#20194d',
-                        title: 'Dự án ẩn',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.HIDDEN"),
                         value: get(group.group, 'statistics.task_hidden', 0),
-                      }, {
-                        color: '#000',
-                        title: 'Dự án dừng',
-                        value: get(group.group, 'statistics.task_stop', 0),
                       }]
                     }
                   />
@@ -129,7 +128,7 @@ function DefaultGroupDetail({
               </SubContainer>
               <SubContainer>
                 <SubHeader>
-                  <ColorTypo color='gray' uppercase>Mô tả</ColorTypo>
+                  <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PGP.LEFT.INFO.DESC")}</ColorTypo>
                 </SubHeader>
                 <CustomTextbox
                   value={get(group.group, 'description', '')}

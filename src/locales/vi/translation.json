@@ -37,6 +37,361 @@
           "MONTH_DESC": "{{month}}",
           "WEEK_DESC": "Tuần {{week}}",
           "ALL_DESC": "Toàn bộ thời gian"
+        },
+        "FILTER_FUNC": {
+          "ALL": "Tất cả",
+          "ACTIVE": "Hoạt động",
+          "HIDDEN": "Ẩn",
+          "WAITING": "Đang chờ",
+          "DOING": "Đang thực hiện",
+          "COMPLETE": "Hoàn thành",
+          "EXPIRED": "Quá hạn",
+          "CREATED": "Bạn tạo",
+          "ASSIGNED": "Bạn tham gia"
+        }
+      },
+      "CUSTOM_TEXTBOX": {
+        "MORE": "Mở rộng",
+        "LESS": "Thu gọn"
+      },
+      "PROGRESS_BAR": {
+        "PLAN": "Kế hoạch",
+        "DONE": "Hoàn thành thực tế"
+      },
+      "SMT": {
+        "LABEL": {
+          "NAME": "Tên",
+          "DESC": "Mô tả",
+          "ADD": "+ Thêm mới"
+        },
+        "BTN": {
+          "UPT": "Sửa",
+          "DEL": "Xóa"
+        }
+      }
+    },
+    "VIEW": {
+      "DP": {
+        "LEFT": {
+          "ADD": {
+            "LABEL": {
+              "ADD": "Thêm tài khoản",
+              "CLOSE": "Đóng",
+              "INVT": "Mời thành viên tham gia nhóm",
+              "FIND": "Nhập email, số điện thoại thành viên",
+              "INVD": "Đã mời thành viên tham gia nhóm",
+              "REQS": "Thành viên yêu cầu tham gia nhóm"
+            },
+            "BTN": {
+              "CANCLE": "Hủy",
+              "INVT": "Mời",
+              "REINVT": "Mời lại",
+              "ACPT": "Đồng ý",
+              "DENY": "Từ chối",
+              "FIND": "Lọc"
+            }
+          },
+          "INFO": {
+            "TITLE": "Chi tiết bộ phận",
+            "DEFAULT": "Mặc định",
+            "NUM_MEM": "Số nhân sự: {{members}} thành viên",
+            "INFO": "Giới thiệu",
+            "BACK": "Quay lại",
+            "BTN": {
+              "UPT": "Chỉnh sửa",
+              "DEL": "Xóa bộ phận"
+            },
+            "ALERT": "Bạn chắc chắn muốn xóa bộ phận?"
+          },
+          "LIST": {
+            "NUM_MEM": "{{members}} thành viên",
+            "TITLE": "Danh sách bộ phận",
+            "ADD": "Thêm bộ phận",
+            "FIND": "Tìm bộ phận",
+            "ALL": "Tất cả",
+            "DEFAULT": "Mặc định"
+          }
+        },
+        "MODAL": {
+          "CA": {
+            "TITLE": "Thêm tài khoản",
+            "CANCLE": "Hủy",
+            "INVT": "Mời đăng ký tài khoản",
+            "EMAIL": "Nhập email bạn muốn mời đăng ký sử dụng phần mềm",
+            "EMAIL_INP": "Nhập email đăng ký",
+            "SEND": "Gửi yêu cầu",
+            "NOTE": "Lưu ý:",
+            "DESC": "Hệ thống sẽ gửi Email kèm theo mã xác thực tới tài khoản được mời đăng ký. Bạn vui lòng nhắc người được mời kiểm tra mail trong Hòm thư đến hoặc Spam để lấy mã"
+          },
+          "CUDP": {
+            "C_TITLE": "Tạo bộ phận",
+            "U_TITLE": "Cập nhật bộ phận",
+            "NAME": "Tên bộ phận",
+            "DESC": "Mô tả bộ phận",
+            "LOGO": "Biểu tượng",
+            "LOGO_SELECT": "+ Chọn biểu tượng"
+          },
+          "LOGO": {
+            "TITLE": "Quản lý biểu tượng",
+            "EXIT": "Thoát",
+            "CANCLE": "Hủy",
+            "DONE": "Hoàn thành",
+            "DEFAULT": "Biểu tượng có sẵn",
+            "UPLOADED": "Biểu tượng tải lên",
+            "ALERT": "Bạn chắc chắn muốn xóa biểu tượng?",
+            "DEL": "Xóa",
+            "UPLOAD": "+ Tải biểu tượng"
+          },
+          "LEVEL": {
+            "C_TITLE": "Tạo trình độ",
+            "U_TITLE": "Chỉnh sửa trình độ",
+            "NAME": "Tên trình độ",
+            "DESC": "Mô tả trình độ",
+            "TITLE": "Quản lý trình độ",
+            "EXIT": "Thoát",
+            "ALERT": "Bạn chắc chắn muốn xóa trình độ?"
+          },
+          "MAJOR": {
+            "C_TITLE": "Tạo chuyên ngành",
+            "U_TITLE": "Chỉnh sửa chuyên ngành",
+            "NAME": "Tên chuyên ngành",
+            "DESC": "Mô tả chuyên ngành",
+            "TITLE": "Quản lý chuyên ngành",
+            "EXIT": "Thoát",
+            "ALERT": "Bạn chắc chắn muốn xóa chuyên ngành?"
+          },
+          "ROLE": {
+            "C_TITLE": "Tạo vai trò",
+            "U_TITLE": "Chỉnh sửa vai trò",
+            "NAME": "Tên vai trò",
+            "DESC": "Mô tả vai trò",
+            "TITLE": "Quản lý vai trò",
+            "EXIT": "Thoát",
+            "ALERT": "Bạn chắc chắn muốn xóa vai trò?"
+          },
+          "TITLE": {
+            "C_TITLE": "Tạo chức danh",
+            "U_TITLE": "Chỉnh sửa chức danh",
+            "NAME": "Tên chức danh",
+            "DESC": "Mô tả chức danh",
+            "TITLE": "Quản lý chức danh",
+            "EXIT": "Thoát",
+            "ALERT": "Bạn chắc chắn muốn xóa chức danh?"
+          }
+        },
+        "RIGHT": {
+          "UT": {
+            "STATE": {
+              "TITLE": "Trạng thái",
+              "CHANGE": "Chuyển trạng thái",
+              "PUB": {
+                "NAME": "Công khai",
+                "DESC": "Tương tác được với tất cả các thành viên"
+              },
+              "PRI": {
+                "NAME": "Hạn chế",
+                "DESC": "Chỉ tương tác được với các thành viên có trạng thái Công khai khác"
+              }
+            },
+            "TITLE": "Danh sách nhân sự",
+            "NUM_MEMBER_AUT": "Đã có {{total}}/{{max}} thành viên",
+            "NUM_MEMBER_DUT": "Đã có {{total}} thành viên",
+            "ADD_USER": "Thêm thành viên",
+            "ADD_ACC": "+ Thêm tài khoản",
+            "TABLE_SETTING": "Cài đặt bảng",
+            "DEFAULT": "Mặc định",
+            "LABEL": {
+              "NAME": "Họ và tên",
+              "POS": "Chức danh",
+              "B_DAY": "Ngày sinh",
+              "GENDER": "Giới tính",
+              "EMAIL": "Email",
+              "PHONE": "Điện thoại",
+              "ROLE": "Vai trò"
+            },
+            "PERMISSION": "Phân quyền",
+            "LEAVE": "Rời nhóm",
+            "ALERT": "Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?"
+          }
+        }
+      },
+      "MP": {
+        "LEFT": {
+          "UL": {
+            "TITLE": "Danh sách thành viên",
+            "BACK": "Quay lại",
+            "SEARCH": "Tìm thành viên",
+            "DEFAULT": "Mặc định"
+          }
+        },
+        "MODAL": {
+          "UPT": {
+            "ROOM": "Chọn bộ phận",
+            "POSITION": "Chọn chức danh",
+            "LEVEL": "Chọn trình độ",
+            "MAJOR": "Chọn chuyên ngành",
+            "DESC": "Mô tả công việc"
+          },
+          "DOC": {
+            "TITLE": "File hồ sơ thành viên",
+            "EXIT": "Thoát"
+          }
+        },
+        "RIGHT": {
+          "INFO": {
+            "DATE_JOIN": "Ngày tham gia: {{date}}",
+            "EDIT": "Chỉnh sửa",
+            "ROOM": "Bộ phận",
+            "POSITION": "Chức danh",
+            "LEVEL": "Trình độ",
+            "MAJOR": "Chuyên ngành",
+            "DESC": "Mô tả công việc",
+            "DOC": {
+              "TITLE": "Xem file hồ sơ",
+              "BTN": "+ Upload file hồ sơ"
+            },
+            "INFO": {
+              "TITLE": "Thông tin cá nhân",
+              "NAME": "Họ tên đầy đủ",
+              "B_DAY": "Ngày sinh",
+              "GENDER": "Giới tính",
+              "EMAIL": "Email",
+              "PHONE": "Điện thoại",
+              "ADDR": "Địa chỉ"
+            }
+          }
+        }
+      },
+      "PGP": {
+        "LEFT": {
+          "INFO": {
+            "BACK": "Quay lại",
+            "TITLE": "Chi tiết nhóm dự án",
+            "STATS": {
+              "TOTAL": "Tổng số dự án:",
+              "WAITING": "Dự án đang chờ",
+              "DOING": "Dự án đang làm",
+              "EXPIRED": "Dự án quá hạn",
+              "COMPLETE": "Dự án hoàn thành",
+              "HIDDEN": "Dự án ẩn"
+            },
+            "ACTV": "Hoạt động",
+            "DEFAULT": "Chưa phân loại",
+            "DESC": "Mô tả",
+            "MEMBER": {
+              "TITLE": "Thành viên",
+              "BTN": "Xem chi tiết thành viên"
+            },
+            "BTN": {
+              "UPT": "Chỉnh sửa",
+              "DEL": "Xóa nhóm dự án"
+            },
+            "ALERT": "Bạn chắc chắn muốn xóa nhóm dự án?"
+          },
+          "LIST": {
+            "NUM_MEM": "{{projectGroups}} dự án",
+            "TITLE": "Nhóm dự án",
+            "ADD": "Thêm nhóm dự án",
+            "FIND": "Tìm nhóm dự án",
+            "ALL": "Tất cả",
+            "DEFAULT": "Chưa phân loại"
+          }
+        },
+        "MODAL": {
+          "COPY": {
+            "TITLE": "Sao chép dự án",
+            "LEFT": {
+              "TITLE": "Chọn dự án sao chép",
+              "FIND": "Tìm dự án"
+            },
+            "RIGHT": {
+              "TITLE": "Thông tin dự án mới",
+              "PROJECT": {
+                "NAME": "Dự án được sao chép",
+                "PLACEHOLDER": "Hãy chọn dự án để sao chép",
+                "DESC": "Thông tin dự án",
+                "NEW_NAME": "Tên dự án mới",
+                "NEW_DESC": "Mô tả dự án mới",
+                "DATE": "Chọn ngày bắt đầu tiến độ"
+              },
+              "MEMBER": {
+                "TITLE": "Cài đặt thành viên",
+                "KEEP": "Giữ nguyên thành viên",
+                "DISCARD": "Xóa toàn bộ thành viên"
+              }
+            }
+          },
+          "CUPG": {
+            "C_TITLE": "Tạo nhóm dự án",
+            "U_TITLE": "Cập nhật nhóm dự án",
+            "NAME": "Tên nhóm dự án",
+            "DESC": "Mô tả nhóm dự án",
+            "LOGO": "Biểu tượng nhóm",
+            "LOGO_SELECT": "+ Chọn biểu tượng"
+          },
+          "CUP": {
+            "C_TITLE": "Tạo mới dự án",
+            "U_TITLE": "Chỉnh sửa dự án",
+            "GROUPS": "Nhóm dự án",
+            "NAME": "Tên dự án",
+            "PRIO": {
+              "TITLE": "Mức độ ưu tiên",
+              "LOW": "Thấp",
+              "MED": "Trung bình",
+              "HIGH": "Cao"
+            },
+            "DESC": "Mô tả dự án"
+          },
+          "NEWPG": {
+            "TITLE": "Tạo dự án",
+            "CREATE": {
+              "TITLE": "Tạo mới dự án",
+              "DESC": "Bắt đầu dự án bằng cách tạo mới hoàn toàn các thông số của dự án"
+            },
+            "COPY": {
+              "TITLE": "Sao chép dự án",
+              "DESC": "Tạo dự án mới bằng cách sao chép các thông số của dự án cũ như: Danh mục công việc, tiến độ, ..."
+            }
+          },
+          "MEMBER": {
+            "TITLE": "Thành viên nhóm",
+            "NAME": "Thành viên",
+            "DESC": "Mô tả",
+            "TIT": "Chức danh",
+            "EXIT": "Thoát"
+          }
+        },
+        "RIGHT": {
+          "ALL": {
+            "TITLE": "Danh sách dự án",
+            "DOWN": "Tải xuống",
+            "ADD": "+ Tạo dự án",
+            "TABLE_SETTING": "Cài đặt bảng",
+            "TRASH": "Thùng rác",
+            "LABEL": {
+              "NAME": "Dự án",
+              "STATE": "Trạng thái",
+              "DATE": "{{date}} ngày",
+              "PROGRESS": "Hoàn thành",
+              "DURATION": "Tiến độ",
+              "PRIO": "Ưu tiên"
+            },
+            "SETTING": "Cài đặt",
+            "EDIT": "Chỉnh sửa",
+            "HIDE": "Ẩn",
+            "SHOW": "Bỏ ẩn",
+            "DEL": "Xóa",
+            "ALERT": "Bạn chắc chắn muốn xóa dự án?"
+          },
+          "TRASH": {
+            "TITLE": "Thùng rác",
+            "BACK": "Quay lại",
+            "LABEL": {
+              "NAME": "Dự án",
+              "USER": "Người xóa",
+              "DATE": "Ngày xóa"
+            }
+          }
         }
       }
     }
@@ -460,8 +815,8 @@
   "IDS_WP_EXPIRED": "Hết hạn!",
   "IDS_WP_CHANGE_LOGO_SUCCESS": "Đổi ảnh logo thành công!",
   "IDS_WP_CHANGE_COVER_SUCCESS": "Đổi ảnh cover thành công!",
-  "IDS_WP_FEMALE": "Nam",
-  "IDS_WP_MALE": "Nữ",
+  "IDS_WP_FEMALE": "Nữ",
+  "IDS_WP_MALE": "Nam",
   "IDS_WP_OUT_GROUP": "Đã rời nhóm",
   "IDS_WP_NO_FILE_TITLE": "Quản lý và lưu trữ tất cả tài liệu của bạn một cách an toàn trên đám mây W+ Cloud",
   "IDS_WP_NO_FILE_DES": "Kéo thả tài liệu vào đây hoặc click + THÊM MỚI để tải tài liệu lên",
@@ -476,5 +831,10 @@
   "IDS_WP_VIEWS": "lượt xem",
   "IDS_WP_VIEW_STORAGE": "dung lượng xem",
   "IDS_WP_DOWNLOAD_COUNT_NUMBER": "Số lượt download",
-  "IDS_WP_DOWNLOAD_COUNT": "lượt tải"
+  "IDS_WP_DOWNLOAD_COUNT": "lượt tải",
+  "IDS_WP_PERMISSION_GROUP": "Nhóm quyền",
+  "IDS_WP_SYMBOLISM": "Biểu tượng",
+  "IDS_WP_ROLE": "Vai trò",
+  "IDS_WP_SETTING_SOFTWARE": "Thiết lập phần mềm",
+  "IDS_WP_COMMON_SETUP": "Cài đặt chung"
 }

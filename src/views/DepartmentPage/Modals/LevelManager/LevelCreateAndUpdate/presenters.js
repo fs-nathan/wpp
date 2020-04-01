@@ -1,6 +1,7 @@
 import { TextField } from '@material-ui/core';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
 import { useMaxlenString, useRequiredString } from '../../../../../hooks';
@@ -13,6 +14,7 @@ function LevelCreateAndUpdate({
 
   const [name, setName, errorName] = useRequiredString('', 150);
   const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (updatedLevel) {
@@ -25,13 +27,13 @@ function LevelCreateAndUpdate({
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title={updatedLevel ? 'Chỉnh sửa trình độ' : 'Tạo trình độ'}
+      title={updatedLevel ? t('DMH.VIEW.DP.MODAL.LEVEL.U_TITLE') : t('DMH.VIEW.DP.MODAL.LEVEL.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateLevel(name, description)}
     >
-      <ColorTypo>Tên trình độ</ColorTypo>
       <TextField
         value={name}
+        label={t('DMH.VIEW.DP.MODAL.LEVEL.NAME')}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
@@ -42,9 +44,9 @@ function LevelCreateAndUpdate({
           </ColorTypo>
         }
       />
-      <ColorTypo>Mô tả trình độ</ColorTypo>
       <TextField
         value={description}
+        label={t('DMH.VIEW.DP.MODAL.LEVEL.DESC')}
         onChange={evt => setDescription(evt.target.value)}
         margin="normal"
         variant="outlined"

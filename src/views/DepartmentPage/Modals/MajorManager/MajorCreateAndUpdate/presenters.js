@@ -1,6 +1,7 @@
 import { TextField } from '@material-ui/core';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
 import { useMaxlenString, useRequiredString } from '../../../../../hooks';
@@ -13,6 +14,7 @@ function MajorCreateAndUpdate({
 
   const [name, setName, errorName] = useRequiredString('', 150);
   const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (updatedMajor) {
@@ -25,14 +27,14 @@ function MajorCreateAndUpdate({
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title={updatedMajor ? 'Chỉnh sửa chuyên ngành' : 'Tạo chuyên ngành'}
+      title={updatedMajor ? t('DMH.VIEW.DP.MODAL.MAJOR.U_TITLE') : t('DMH.VIEW.DP.MODAL.MAJOR.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateMajor(name, description)}
     >
-      <ColorTypo>Tên chuyên ngành</ColorTypo>
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
+        label={t('DMH.VIEW.DP.MODAL.MAJOR.NAME')}
         margin="normal"
         variant="outlined"
         fullWidth
@@ -42,10 +44,10 @@ function MajorCreateAndUpdate({
           </ColorTypo>
         }
       />
-      <ColorTypo>Mô tả chuyên ngành</ColorTypo>
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}
+        label={t('DMH.VIEW.DP.MODAL.MAJOR.DESC')}
         margin="normal"
         variant="outlined"
         fullWidth

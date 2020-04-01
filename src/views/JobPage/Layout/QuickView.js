@@ -1,68 +1,31 @@
 import { IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useContext } from "react";
-import styled from "styled-components";
+import { Scrollbars } from "react-custom-scrollbars";
 import { JobPageContext } from "../JobPageContext";
-export const QuickViewWrapper = styled.div`
-  height: 100%;
-  display: grid;
-  grid-template-rows: 70px calc(100% - 70px) 50px;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "header"
-    "body"
-    "footer";
-`;
-export const QuickViewHeader = styled.div`
-  grid-area: header;
-  padding: 15px;
-  display: flex;
+import "./QuickView.css";
 
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0px;
-  background-color: #fff;
-  z-index: 999;
-`;
-export const QuickViewHeaderLeft = styled.div`
-  flex: 1;
-`;
-export const QuickViewHeaderRight = styled.div``;
-export const QuickViewBody = styled.div`
-  grid-area: body;
-  padding: 15px;
-  padding-bottom: 50px;
-`;
-export const QuickViewFooter = styled.div`
-  grid-area: footer;
-  padding: 15px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  position: sticky;
-  bottom: 0px;
-`;
-export const CloseButton = () => {
-  const { setQuickTask } = useContext(JobPageContext);
-  return (
-    <IconButton onClick={() => setQuickTask(undefined)}>
-      <CloseIcon />
-    </IconButton>
-  );
-};
 function QuickView({ title, children, bottom }) {
+  const { handleClose } = useContext(JobPageContext);
+
   return (
-    <QuickViewWrapper>
-      <QuickViewHeader>
-        <QuickViewHeaderLeft>{title}</QuickViewHeaderLeft>
-        <QuickViewHeaderRight>
-          <CloseButton />
-        </QuickViewHeaderRight>
-      </QuickViewHeader>
-      <QuickViewBody>{children}</QuickViewBody>
-      {bottom && <QuickViewFooter></QuickViewFooter>}
-    </QuickViewWrapper>
+    // <ClickAwayListener onClickAway={handleClose}>
+    <div className="comp_QuickViewWrapper">
+      <div className="comp_QuickViewHeader">
+        <div className="comp_QuickViewHeaderLeft">{title}</div>
+        <div className="comp_QuickViewHeaderRight">
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+      </div>
+      <Scrollbars styled={{ flex: 1 }}>
+        <div className="comp_QuickViewBody">{children}</div>
+      </Scrollbars>
+
+      {bottom && <div className="comp_QuickViewFooter">{bottom}</div>}
+    </div>
+    // </ClickAwayListener>
   );
 }
 

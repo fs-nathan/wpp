@@ -63,6 +63,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    & > button {
+      padding: 12px 0;
+    }
   }
 };
 
@@ -89,10 +92,6 @@
   & {
     @include comp_CustomModal___accept-button;
   };
-  &-disabled {
-    @include comp_CustomModal___accept-button;
-    color: #999 !important;
-  };
 };
 
 .comp_CustomModal___cancle-button {
@@ -114,7 +113,8 @@
 @mixin comp_CustomModal___dialog {
   & > div:nth-child(3) > div {
     overflow: hidden;
-    min-width: 50vw;
+    min-width: 60vw;
+    max-width: 80vw;
   }
 }
 

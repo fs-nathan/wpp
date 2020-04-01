@@ -70,7 +70,7 @@ const TimeListItem = ({ className = '', selected, ...props }) =>
     {...props}
   />;
 
-export const timesFunc = () => {
+export const useTimes = () => {
 
   const { t } = useTranslation();
 
@@ -99,14 +99,14 @@ export const timesFunc = () => {
       ],
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.THIS_MONTH'),
-      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH_DESC', { month: monthsArr(moment().month()) }),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH_DESC', { month: monthsArr[moment().month()] }),
       option: () => [
         moment().startOf('month').toDate(),
         moment().endOf('month').toDate(),
       ]
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.LAST_MONTH'),
-      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH_DESC', { month: monthsArr(moment().subtract(1, 'M').month()) }),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH_DESC', { month: monthsArr[moment().subtract(1, 'M').month()] }),
       option: () => [
         moment().subtract(1, 'M').startOf('month').toDate(),
         moment().subtract(1, 'M').endOf('month').toDate(),
@@ -142,6 +142,50 @@ export const timesFunc = () => {
     }]
 };
 
+export const useFilters = () => {
+
+  const { t } = useTranslation();
+  const filters = [
+    {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ALL'),
+      field: 'all',
+      option: {},
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ACTIVE'),
+      field: 'active',
+      option: { visibility: true },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.HIDDEN'),
+      field: 'hidden',
+      option: { visibility: false },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.WAITING'),
+      field: 'waiting',
+      option: { visibility: true, state_name: 'Waiting' },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.DOING'),
+      field: 'doing',
+      option: { visibility: true, state_name: 'Doing' },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.COMPLETE'),
+      field: 'complete',
+      option: { visibility: true, state_name: 'Finished' },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.EXPIRED'),
+      field: 'expired',
+      option: { visibility: true, state_name: 'Expired' },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.CREATED'),
+      field: 'created',
+      option: {},
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ASSIGNED'),
+      field: 'assigned',
+      option: {},
+    }]
+  return filters;
+};
+
 export const TimeRangePopover = ({
   bgColor,
   anchorEl = null, setAnchorEl = () => null,
@@ -152,12 +196,14 @@ export const TimeRangePopover = ({
   const [timeOption, setTimeOption] = React.useState(0);
   const [startDate, setStartDate] = React.useState(moment().toDate());
   const [endDate, setEndDate] = React.useState(moment().toDate());
+  const times = useTimes();
 
   React.useEffect(() => {
     setTimeOption(timeOptionDefault);
-    const [start, end] = timesFunc()[timeOptionDefault].option();
+    const [start, end] = times[timeOptionDefault].option();
     setStartDate(start);
     setEndDate(end);
+    //eslint-disable-next-line
   }, [timeOptionDefault]);
 
   return (
@@ -180,13 +226,13 @@ export const TimeRangePopover = ({
               </StyledListSubheader>
             }
           >
-            {timesFunc().map((time, index) => (
+            {times.map((time, index) => (
               <TimeListItem
                 key={index}
                 button
                 onClick={evt => {
                   setTimeOption(index);
-                  const [start, end] = timesFunc()[index].option();
+                  const [start, end] = times[index].option();
                   setStartDate(start);
                   setEndDate(end);
                 }}
@@ -213,7 +259,7 @@ export const TimeRangePopover = ({
             </IconButton>
           </SubHeader>
           <Content>
-            <YearBox>{timesFunc[timeOption].description}</YearBox>
+            <YearBox>{times[timeOption].description}</YearBox>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <DateWrapper>
                 {timeOption === 5 ? (

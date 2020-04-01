@@ -3,16 +3,24 @@ import { mdiAccountPlus, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomBadge from '../../../../components/CustomBadge';
 import CustomTable from '../../../../components/CustomTable';
 import ErrorBox from '../../../../components/ErrorBox';
+import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
 import LoadingBox from '../../../../components/LoadingBox';
 import { Container, LinkSpan, SettingContainer } from '../../../../components/TableComponents';
 import { DRAWER_TYPE } from '../../../../constants/constants';
 import { Context as UserPageContext } from '../../index';
 import '../AllUsersTable/style.scss';
+
+const TooltipBody = ({ className = '', state, ...props }) =>
+  <div
+    className={`view_Department_AllUserTalbe___tooltip-${state === 0 ? 'private' : 'public'} ${className}`}
+    {...props}
+  />
 
 const NewUserBadge = ({ className = '', ...props }) =>
   <Badge
@@ -37,17 +45,50 @@ const PermissionButton = ({
 }
 
 function StateBadge({ user }) {
+
+  const { t } = useTranslation();
+
   return (
     get(user, 'state', 0) === 0
       ? (
-        <CustomBadge color='#ec1000'>
-          Hạn chế
-        </CustomBadge>
+        <LightTooltip
+          placement='top'
+          title={
+            <TooltipBody state={0}>
+              <div>
+                <span>{t('DMH.VIEW.DP.RIGHT.UT.STATE.TITLE')}:</span>
+                <span>{t('DMH.VIEW.DP.RIGHT.UT.STATE.PRI.NAME')}</span>
+              </div>
+              <small>{t('DMH.VIEW.DP.RIGHT.UT.STATE.PRI.DESC')}</small>
+            </TooltipBody>
+          }
+        >
+          <TooltipWrapper>
+            <CustomBadge color='#ec1000'>
+              {t('DMH.VIEW.DP.RIGHT.UT.STATE.PRI.NAME')}
+            </CustomBadge>
+          </TooltipWrapper>
+        </LightTooltip>
       )
       : (
-        <CustomBadge color='#48bb78'>
-          Công khai
-        </CustomBadge>
+        <LightTooltip
+          placement='top'
+          title={
+            <TooltipBody state={1}>
+              <div>
+                <span>{t('DMH.VIEW.DP.RIGHT.UT.STATE.TITLE')}:</span>
+                <span>{t('DMH.VIEW.DP.RIGHT.UT.STATE.PUB.NAME')}</span>
+              </div>
+              <small>{t('DMH.VIEW.DP.RIGHT.UT.STATE.PUB.DESC')}</small>
+            </TooltipBody>
+          }
+        >
+          <TooltipWrapper>
+            <CustomBadge color='#48bb78'>
+              {t('DMH.VIEW.DP.RIGHT.UT.STATE.PUB.NAME')}
+            </CustomBadge>
+          </TooltipWrapper>
+        </LightTooltip>
       )
   );
 }
@@ -65,6 +106,7 @@ function DepartmentUsersTable({
   const { setDepartmentId } = React.useContext(UserPageContext);
   const { departmentId } = useParams();
   const history = useHistory();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     setDepartmentId(departmentId);
@@ -92,10 +134,12 @@ function DepartmentUsersTable({
         ? (
           <CustomTable
             options={{
-              title: 'Danh sách nhân sự',
-              subTitle: `Đã có ${get(room.room, 'number_member', 0)} thành viên`,
+              title: t('DMH.VIEW.DP.RIGHT.UT.TITLE'),
+              subTitle: t('DMH.VIEW.DP.RIGHT.UT.NUM_MEMBER_DUT', {
+                total: get(room.room, 'number_member', 0),
+              }),
               subActions: [{
-                label: 'Thêm thành viên',
+                label: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
                 icon: () => hasRequirement
                   ? <NewUserBadge badgeContent={'N'}>
                     <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
@@ -108,7 +152,7 @@ function DepartmentUsersTable({
                 noExpand: true,
               }],
               mainAction: {
-                label: '+ Thêm tài khoản',
+                label: t('DMH.VIEW.DP.RIGHT.UT.ADD_ACC'),
                 onClick: () => handleOpenModal('CREATE_ACCOUNT'),
               },
               expand: {
@@ -116,22 +160,22 @@ function DepartmentUsersTable({
                 toggleExpand: () => handleExpand(!expand),
               },
               moreMenu: [{
-                label: 'Quản lý chức danh',
+                label: t('DMH.VIEW.DP.MODAL.TITLE.TITLE'),
                 onClick: () => handleOpenModal('TITLE'),
               }, {
-                label: 'Quản lý vai trò',
+                label: t('DMH.VIEW.DP.MODAL.ROLE.TITLE'),
                 onClick: () => handleOpenModal('ROLE'),
               }, {
-                label: 'Quản lý trình độ',
+                label: t('DMH.VIEW.DP.MODAL.LEVEL.TITLE'),
                 onClick: () => handleOpenModal('LEVEL'),
               }, {
-                label: 'Quản lý chuyên ngành',
+                label: t('DMH.VIEW.DP.MODAL.MAJOR.TITLE'),
                 onClick: () => handleOpenModal('MAJOR'),
               }, {
-                label: 'Quản lý biểu tượng',
+                label: t('DMH.VIEW.DP.MODAL.LOGO.TITLE'),
                 onClick: () => handleOpenModal('LOGO'),
               }, {
-                label: 'Cài đặt bảng',
+                label: t('DMH.VIEW.DP.RIGHT.UT.TABLE_SETTING'),
                 onClick: () => handleOpenModal('TABLE_SETTING'),
               }],
               grouped: {
@@ -164,44 +208,44 @@ function DepartmentUsersTable({
               align: 'left',
               width: '5%',
             }, {
-              label: 'Họ và tên',
+              label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.NAME'),
               field: (user) => <LinkSpan
                 onClick={evt => history.push(`/members/${get(user, 'id')}`)}
               >{get(user, 'name', '')}</LinkSpan>,
               align: 'left',
               width: '14%',
             }, {
-              label: 'Chức danh',
+              label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.POS'),
               field: 'position',
               align: 'left',
               width: '10%',
             }, {
-              label: 'Ngày sinh',
+              label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.B_DAY'),
               field: (user) => get(user, 'birthday'),
               align: 'left',
               width: '10%',
             }, {
-              label: 'Giới tính',
+              label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.GENDER'),
               field: 'gender',
               align: 'left',
               width: '10%',
             }, {
-              label: 'Email',
+              label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.EMAIL'),
               field: 'email',
               align: 'left',
               width: '15%',
             }, {
-              label: 'Điện thoại',
+              label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.PHONE'),
               field: 'phone',
               align: 'left',
               width: '10%',
             }, {
-              label: 'Vai trò',
+              label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.ROLE'),
               field: 'role',
               align: 'left',
               width: '10%',
             }, {
-              label: 'Trạng thái',
+              label: t('DMH.VIEW.DP.RIGHT.UT.STATE.TITLE'),
               field: (user) => <StateBadge user={user} />,
               align: 'center',
               width: '10%',
@@ -245,22 +289,22 @@ function DepartmentUsersTable({
               className="margin-circular"
               color="white"
             />}
-          Chuyển trạng thái
+          {t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}
         </MenuItem>
         <MenuItem onClick={() => {
           handleOpenModal('PERMISSION_SETTING');
           setMenuAnchorEl(null);
         }}>
-          Phân quyền
+          {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}
         </MenuItem>
         <MenuItem onClick={() => {
           handleOpenModal('ALERT', {
-            content: 'Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?',
+            content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
             onConfirm: () => handleBanUserFromGroup(user),
           });
           setMenuAnchorEl(null);
         }}>
-          Rời nhóm
+          {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
         </MenuItem>
       </Menu>
     </Container>

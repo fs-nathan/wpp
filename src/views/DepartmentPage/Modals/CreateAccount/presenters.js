@@ -1,35 +1,37 @@
-import React from 'react';
-import { TextField, Typography, InputAdornment, Button } from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import Icon from '@mdi/react';
+import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 import { mdiAccountOutline } from '@mdi/js';
+import Icon from '@mdi/react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import CustomModal from '../../../../components/CustomModal';
 import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
-  <div 
+  <div
     className={`view_Department_CreateAccount_Modal___container ${className}`}
     {...props}
   />
 
-function CreateAccount({ 
-  open, setOpen, 
-  bgColor, 
-  handleInviteOtherPeopleCreateAccount, 
+function CreateAccount({
+  open, setOpen,
+  bgColor,
+  handleInviteOtherPeopleCreateAccount,
 }) {
 
   const [email, setEmail] = React.useState('');
+  const { t } = useTranslation();
 
   return (
     <CustomModal
-      title={`Thêm tài khoản`}
+      title={t('DMH.VIEW.DP.MODAL.CA.TITLE')}
       open={open}
       setOpen={setOpen}
       confirmRender={null}
-      cancleRender={() => 'Hủy'}
+      cancleRender={() => t('DMH.VIEW.DP.MODAL.CA.CANCLE')}
     >
       <Container>
-        <Typography variant="h4">Mời đăng ký tài khoản</Typography>
-        <span>Nhập email bạn muốn mời đăng ký sử dụng phần mềm</span>
+        <Typography variant="h4">{t('DMH.VIEW.DP.MODAL.CA.INVT')}</Typography>
+        <span>{t('DMH.VIEW.DP.MODAL.CA.EMAIL')}</span>
         <TextField
           InputProps={{
             startAdornment: <InputAdornment position="start">
@@ -38,9 +40,9 @@ function CreateAccount({
           }}
           value={email}
           onChange={evt => setEmail(evt.target.value)}
-          placeholder='Nhập email đăng ký'
+          placeholder={t('DMH.VIEW.DP.MODAL.CA.EMAIL_INP')}
         />
-        <Button 
+        <Button
           style={{
             backgroundColor: bgColor.color,
             color: 'white',
@@ -51,10 +53,10 @@ function CreateAccount({
             handleInviteOtherPeopleCreateAccount(email);
           }}
         >
-          Gửi yêu cầu
+          {t('DMH.VIEW.DP.MODAL.CA.SEND')}
         </Button>
-        <span>Lưu ý:</span>
-        <small>Hệ thống sẽ gửi Email kèm theo mã xác thực tới tài khoản được mời đăng ký. Bạn vui lòng nhắc người được mời kiểm tra mail trong Hòm thư đến hoặc Spam để lấy mã</small>
+        <span>{t('DMH.VIEW.DP.MODAL.CA.NOTE')}</span>
+        <small>{t('DMH.VIEW.DP.MODAL.CA.DESC')}</small>
       </Container>
     </CustomModal>
   )

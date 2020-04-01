@@ -10,8 +10,10 @@ import ChangePassword from '../TablePart/SettingAccountRight/ChangePassword';
 import NotificationWorkPlus from '../TablePart/SettingAccountRight/NotificationWorkPlus';
 import NotificationWorkPlusDetail from '../TablePart/SettingAccountRight/NotificationWorkPlusDetail';
 import '../SettingAccount.scss';
-import { SETTING_ACCOUNT } from '../../../constants/constants';
+import { SETTING_ACCOUNT, SETTING_GROUP } from '../../../constants/constants';
 import { RightHeader } from '../../DocumentPage/TablePart/DocumentComponent/TableCommon';
+import TimeAndLanguage from '../../SettingGroupPage/TablePart/SettingGroupRight/TimeAndLanguage';
+import Notification from '../../SettingGroupPage/TablePart/SettingGroupRight/Notification';
 
 const TablePart = props => {
   const { t } = useTranslation();
@@ -32,6 +34,10 @@ const TablePart = props => {
         }
         return <NotificationWorkPlusDetail />;
       }
+      case SETTING_GROUP.LANGUAGE:
+        return <TimeAndLanguage />;
+      case SETTING_GROUP.NOTIFICATION:
+        return <Notification />;
       default:
         return <SettingInfo />;
     }
@@ -49,6 +55,10 @@ const TablePart = props => {
           return t('IDS_WP_NOTICE_WORKPLUS');
         }
         return t('IDS_WP_NOTICE_DETAIl');
+      case SETTING_GROUP.LANGUAGE:
+        return t('IDS_WP_SETUP_SOFTWARE');
+      case SETTING_GROUP.NOTIFICATION:
+        return t('IDS_WP_SETTING_NOTI');
       default:
         return '';
     }

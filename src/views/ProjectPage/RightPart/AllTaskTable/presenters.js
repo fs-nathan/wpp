@@ -6,7 +6,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import CustomBadge from '../../../../components/CustomBadge';
-import { DownloadPopover, TimeRangePopover, times } from '../../../../components/CustomPopover';
+import { DownloadPopover, TimeRangePopover, useTimes } from '../../../../components/CustomPopover';
 import CustomTable from '../../../../components/CustomTable';
 import ErrorBox from '../../../../components/ErrorBox';
 import LoadingBox from '../../../../components/LoadingBox';
@@ -98,6 +98,7 @@ function AllTaskTable({
 
   const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
   const [currentSettingTask, setCurrentSettingTask] = React.useState(null);
+  const times = useTimes();
 
   return (
     <Container>

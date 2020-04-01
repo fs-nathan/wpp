@@ -1,7 +1,7 @@
 import { ButtonBase, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import { get, isNil } from 'lodash';
+import { get, isFunction } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -26,7 +26,7 @@ const StyledDialogActions = ({ className = '', ...props }) => <DialogActions cla
 const ActionsAcceptButton = ({ className = '', disabled, ...props }) =>
   <ButtonBase
     disabled={disabled}
-    className={`${disabled ? 'comp_CustomModal___accept-button-disabled' : 'comp_CustomModal___accept-button'} ${className}`}
+    className={`comp_CustomModal___accept-button ${className}`}
     {...props}
   />;
 
@@ -73,9 +73,12 @@ function TwoColumns({ maxWidth, left, right, height, }) {
   return (
     <TwoColumnsContainer maxWidth={maxWidth}>
       <div>
-        <LeftHeader>
-          {get(left, 'title', '')}
-        </LeftHeader>
+        {isFunction(get(left, 'title'))
+          ? get(left, 'title')()
+          : <LeftHeader>
+            {get(left, 'title')}
+          </LeftHeader>
+        }
         <StyledScrollbarsSide
           autoHide
           autoHideTimeout={500}
@@ -87,9 +90,12 @@ function TwoColumns({ maxWidth, left, right, height, }) {
         </StyledScrollbarsSide>
       </div>
       <div>
-        <RightHeader>
-          {get(right, 'title', '')}
-        </RightHeader>
+        {isFunction(get(right, 'title'))
+          ? get(right, 'title')()
+          : <RightHeader>
+            {get(right, 'title')}
+          </RightHeader>
+        }
         <StyledScrollbarsSide
           autoHide
           autoHideTimeout={500}
@@ -110,8 +116,8 @@ function CustomModal({
   columns = 1,
   children = null, left = null, right = null,
   canConfirm = true,
-  confirmRender = null, onConfirm = () => null,
-  cancleRender = null, onCancle = () => null,
+  confirmRender = undefined, onConfirm = () => null,
+  cancleRender = undefined, onCancle = () => null,
   open, setOpen,
   maxWidth = 'md', fullWidth = false,
   height = 'medium',
@@ -171,12 +177,12 @@ function CustomModal({
       <StyledDialogActions>
         {cancleRender !== null && (
           <ActionsCancleButton onClick={() => handleCancle()}>
-            {isNil(cancleRender) ? t('DMH.COMP.CUSTOM_MODAL.CANCLE') : cancleRender()}
+            {isFunction(cancleRender) ? cancleRender() : t('DMH.COMP.CUSTOM_MODAL.CANCLE')}
           </ActionsCancleButton>
         )}
         {confirmRender !== null && (
-          <ActionsAcceptButton style={{ color: bgColor.color }} disabled={!canConfirm} onClick={() => handleConfirm()}>
-            {isNil(confirmRender) ? t('DMH.COMP.CUSTOM_MODAL.CONFIRM') : confirmRender()}
+          <ActionsAcceptButton style={{ color: bgColor.color, opacity: canConfirm ? 1 : 0.5 }} disabled={!canConfirm} onClick={() => handleConfirm()}>
+            {isFunction(confirmRender) ? confirmRender() : t('DMH.COMP.CUSTOM_MODAL.CONFIRM')}
           </ActionsAcceptButton>
         )}
       </StyledDialogActions>

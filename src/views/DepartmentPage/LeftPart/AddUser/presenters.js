@@ -71,6 +71,8 @@ const DesiringUserList = ({
     handleResendInvitationUserJoinGroup({ userId });
   }
 
+  const { t } = useTranslation();
+
   return (
     <>
       {!isNil(user)
@@ -104,8 +106,8 @@ const DesiringUserList = ({
                       }
                     >
                       {get(user, 'status_code', 0) === 0
-                        ? 'Mời'
-                        : 'Mời lại'}
+                        ? t('DMH.VIEW.DP.LEFT.ADD.BTN.INVT')
+                        : t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
                     </OkButton>
                     {get(user, 'status_code', 0) === 1 && (
                       <CancleButton
@@ -114,7 +116,7 @@ const DesiringUserList = ({
                           invitationId: get(user, 'invitation')
                         })}
                       >
-                        Hủy
+                        {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
                       </CancleButton>
                     )}
                   </span>
@@ -137,6 +139,8 @@ const InvitedUserList = ({
   function onResendInvitationUserJoinGroup(userId) {
     handleResendInvitationUserJoinGroup({ userId });
   }
+
+  const { t } = useTranslation();
 
   return (
     <StyledList>
@@ -164,7 +168,7 @@ const InvitedUserList = ({
                     disabled={loading}
                     onClick={() => onResendInvitationUserJoinGroup(get(invitation, 'id'))}
                   >
-                    Mời lại
+                    {t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
                   </OkButton>
                   <CancleButton
                     disabled={loading}
@@ -172,8 +176,8 @@ const InvitedUserList = ({
                       invitationId: get(invitation, 'invitation_id')
                     })}
                   >
-                    Hủy
-                    </CancleButton>
+                    {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
+                  </CancleButton>
                 </span>
               </StyledSecondary>
             }
@@ -225,13 +229,13 @@ const RequestingUserList = ({
                     disabled={loading}
                     onClick={() => onAcceptRequirementJoinGroup(get(user, 'requirement_id'))}
                   >
-                    {t("views.user_page.left_part.add_user.accept_request")}
+                    {t('DMH.VIEW.DP.LEFT.ADD.BTN.ACPT')}
                   </OkButton>
                   <CancleButton
                     disabled={loading}
                     onClick={() => onRejectRequirementJoinGroup(get(user, 'requirement_id'))}
                   >
-                    {t("views.user_page.left_part.add_user.deny_request")}
+                    {t('DMH.VIEW.DP.LEFT.ADD.BTN.DENY')}
                   </CancleButton>
                 </span>
               </StyledSecondary>
@@ -264,13 +268,13 @@ function AddUser({
         <IconWrapper>
           <Icon path={mdiClose} size={1} color='rgba(0, 0, 0, 0)' />
         </IconWrapper>
-        <Title>Thêm tài khoản</Title>
+        <Title>{t('DMH.VIEW.DP.LEFT.ADD.LABEL.ADD')}</Title>
         <StyledIconButton size='small' onClick={evt => {
           handleSearchUserReset();
           handleVisibleDrawerMessage({ type: '', anchor: anchorDrawer });
         }}>
           <abbr
-            title={'Đóng'}
+            title={t('DMH.VIEW.DP.LEFT.ADD.LABEL.CLOSE')}
           >
             <div>
               <Icon path={mdiClose} size={1} color='rgba(0, 0, 0, 0.54)' />
@@ -284,11 +288,11 @@ function AddUser({
       >
         <StyledBox>
           <ColorTypo bold>
-            {t("views.user_page.left_part.add_user.invite_member")}
+            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVT')}
           </ColorTypo>
           <div>
             <StyledSearchInput
-              placeholder={t("views.user_page.left_part.add_user.find_member")}
+              placeholder={t('DMH.VIEW.DP.LEFT.ADD.LABEL.FIND')}
               value={searchPatern}
               onChange={handleSearchPatern}
             />
@@ -298,7 +302,7 @@ function AddUser({
               text={'#333'}
               onClick={() => searchPatern !== '' && handleSearchUser({ info: searchPatern })}
             >
-              {t("views.user_page.left_part.add_user.find_member_button")}
+              {t('DMH.VIEW.DP.LEFT.ADD.BTN.FIND')}
             </PillButton>
           </div>
           {desireUser.error !== null
@@ -335,7 +339,7 @@ function AddUser({
         </StyledBox>
         <StyledBox>
           <ColorTypo bold>
-            Đã mời thành viên tham gia nhóm
+            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVD')}
           </ColorTypo>
           {invitations.error !== null
             ? <ErrorBox size={16} />
@@ -355,7 +359,7 @@ function AddUser({
         </StyledBox>
         <StyledBox>
           <ColorTypo bold>
-            {t("views.user_page.left_part.add_user.request_member_title")}
+            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQS')}
           </ColorTypo>
           {requireUsers.error !== null
             ? <ErrorBox size={16} />
