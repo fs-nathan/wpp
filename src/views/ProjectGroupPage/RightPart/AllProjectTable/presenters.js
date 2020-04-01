@@ -3,19 +3,19 @@ import { mdiAccount, mdiCalendar, mdiCheckCircle, mdiDotsVertical, mdiDownload, 
 import Icon from '@mdi/react';
 import { find, get, isNil, join, remove, slice } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomBadge from '../../../../components/CustomBadge';
 import { ChartInfoBox } from '../../../../components/CustomDonutChart';
-import { DownloadPopover, TimeRangePopover, times } from '../../../../components/CustomPopover';
+import { DownloadPopover, TimeRangePopover, useFilters, useTimes } from '../../../../components/CustomPopover';
 import CustomTable from '../../../../components/CustomTable';
 import ErrorBox from '../../../../components/ErrorBox';
 import ImprovedSmallProgressBar from '../../../../components/ImprovedSmallProgressBar';
 import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
 import LoadingBox from '../../../../components/LoadingBox';
 import { Container, DateBox, LinkSpan, SettingContainer, StateBox } from '../../../../components/TableComponents';
-import { filters } from './constants';
 import './style.scss';
 
 const CustomMenuItem = ({ className = '', selected, refs, ...props }) =>
@@ -86,6 +86,7 @@ function AllProjectTable({
 }) {
 
   const history = useHistory();
+  const { t } = useTranslation();
 
   const [filterAnchor, setFilterAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
@@ -94,6 +95,9 @@ function AllProjectTable({
   const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [curProject, setCurProject] = React.useState(null);
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
+
+  const times = useTimes();
+  const filters = useFilters();
 
   function doOpenMenu(anchorEl, project) {
     setMenuAnchor(anchorEl)
@@ -117,7 +121,7 @@ function AllProjectTable({
           <React.Fragment>
             <CustomTable
               options={{
-                title: `Danh sách dự án`,
+                title: t("DMH.VIEW.PGP.RIGHT.ALL.TITLE"),
                 subTitle: '',
                 subActions: [
                   {
@@ -126,7 +130,7 @@ function AllProjectTable({
                     onClick: evt => setFilterAnchor(evt.currentTarget)
                   },
                   {
-                    label: 'Tải xuống',
+                    label: t("DMH.VIEW.PGP.RIGHT.ALL.DOWN"),
                     iconPath: mdiDownload,
                     onClick: evt => setDownloadAnchor(evt.currentTarget)
                   },
@@ -137,7 +141,7 @@ function AllProjectTable({
                   }
                 ],
                 mainAction: {
-                  label: '+ Tạo dự án',
+                  label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
                   onClick: evt => handleOpenModal('CREATE'),
                 },
                 expand: {
@@ -146,11 +150,11 @@ function AllProjectTable({
                 },
                 moreMenu: [
                   {
-                    label: 'Cài đặt bảng',
+                    label: t("DMH.VIEW.PGP.RIGHT.ALL.TABLE_SETTING"),
                     onClick: () => null
                   },
                   {
-                    label: 'Thùng rác',
+                    label: t("DMH.VIEW.PGP.RIGHT.ALL.TRASH"),
                     onClick: () => history.push(`/projects/deleted`)
                   }
                 ],
@@ -206,14 +210,14 @@ function AllProjectTable({
                   width: '5%',
                 },
                 {
-                  label: 'Dự án',
+                  label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.NAME"),
                   field: (row) => <LinkSpan onClick={evt => history.push(`/project/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
                   sort: evt => handleSortType('name'),
                   align: 'left',
                   width: '24%',
                 },
                 {
-                  label: 'Trạng thái',
+                  label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.STATE"),
                   field: row => (
                     <StateBox
                       stateCode={get(row, 'state_code')}
@@ -221,15 +225,17 @@ function AllProjectTable({
                       <div>
                         <span>&#11044;</span>
                         <span>
-                          {get(row, 'state_code') === 5 ? 'Ẩn' : get(row, 'state_name')}
+                          {get(row, 'state_code') === 5 ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : get(row, 'state_name')}
                         </span>
                       </div>
                       {get(row, 'state_code') !== 5 && (
                         <small>
-                          {get(row, 'state_code', '') === 3
-                            ? get(row, 'day_expired', 0)
-                            : get(row, 'day_implement', 0)}{' '}
-                        ngày
+                          {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
+                            date: get(row, 'state_code', '') === 3
+                              ? get(row, 'day_expired', 0)
+                              : get(row, 'day_implement', 0)
+                          }
+                          )}
                         </small>
                       )}
                     </StateBox>
@@ -239,7 +245,7 @@ function AllProjectTable({
                   width: '10%',
                 },
                 {
-                  label: 'Hoàn thành',
+                  label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.PROGRESS"),
                   field: row => (
                     <LightTooltip
                       placement='top'
@@ -249,24 +255,20 @@ function AllProjectTable({
                           data={
                             [{
                               color: '#ff9800',
-                              title: 'Công việc đang chờ',
-                              value: get(row, 'statistic.waiting', 0),
+                              title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.WAITING"),
+                              value: get(row, 'statistics.task_waiting', 0),
                             }, {
                               color: '#03a9f4',
-                              title: 'Công việc đang làm',
-                              value: get(row, 'statistic.doing', 0),
+                              title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.DOING"),
+                              value: get(row, 'statistics.task_doing', 0),
                             }, {
                               color: '#f44336',
-                              title: 'Công việc quá hạn',
-                              value: get(row, 'statistic.expired', 0),
+                              title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
+                              value: get(row, 'statistics.task_expired', 0),
                             }, {
                               color: '#03c30b',
-                              title: 'Công việc hoàn thành',
-                              value: get(row, 'statistic.complete', 0),
-                            }, {
-                              color: '#000',
-                              title: 'Công việc dừng',
-                              value: get(row, 'statistic.stop', 0),
+                              title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
+                              value: get(row, 'statistics.task_complete', 0),
                             }]
                           }
                         />
@@ -286,9 +288,6 @@ function AllProjectTable({
                           }, {
                             color: '#03c30b',
                             value: get(row, 'statistic.complete', 0),
-                          }, {
-                            color: '#000',
-                            value: get(row, 'statistic.stop', 0),
                           }]}
                           color={'#05b50c'}
                           percentDone={get(row, 'complete', 0)}
@@ -301,12 +300,12 @@ function AllProjectTable({
                   width: '17%',
                 },
                 {
-                  label: 'Tiến độ',
+                  label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DURATION"),
                   field: row => (
                     <DateBox>
                       {get(row, 'duration') ? (
                         <>
-                          <span>{get(row, 'duration') + ' ngày'}</span>
+                          <span>{t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", { date: get(row, 'duration') })}</span>
                           <small>
                             {get(row, 'date_start')} - {get(row, 'date_end')}
                           </small>
@@ -320,7 +319,7 @@ function AllProjectTable({
                   width: '18%',
                 },
                 {
-                  label: 'Ưu tiên',
+                  label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.PRIO"),
                   field: row => (
                     <CustomBadge
                       color={
@@ -456,8 +455,8 @@ function AllProjectTable({
                   });
                 }}
               >
-                Cài đặt
-            </MenuItem>
+                {t("DMH.VIEW.PGP.RIGHT.ALL.SETTING")}
+              </MenuItem>
               <MenuItem
                 onClick={evt => {
                   setMenuAnchor(null);
@@ -466,8 +465,8 @@ function AllProjectTable({
                   });
                 }}
               >
-                Chỉnh sửa
-            </MenuItem>
+                {t("DMH.VIEW.PGP.RIGHT.ALL.EDIT")}
+              </MenuItem>
               <MenuItem
                 onClick={evt => {
                   setMenuAnchor(null);
@@ -481,17 +480,17 @@ function AllProjectTable({
                     className="margin-circular"
                     color="white"
                   />}
-                {get(curProject, 'visibility', false) ? 'Ẩn' : 'Bỏ ẩn'}
+                {get(curProject, 'visibility', false) ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : t("DMH.VIEW.PGP.RIGHT.ALL.SHOW")}
               </MenuItem>
               <MenuItem
                 onClick={evt => {
                   setMenuAnchor(null)
                   handleOpenModal('ALERT', {
-                    content: "Bạn chắc chắn muốn xóa dự án?",
+                    content: t("DMH.VIEW.PGP.RIGHT.ALL.ALERT"),
                     onConfirm: () => handleDeleteProject(curProject),
                   })
                 }}
-              >Xóa</MenuItem>
+              >{t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}</MenuItem>
             </Menu>
           </React.Fragment>
         ) : <ErrorBox />}

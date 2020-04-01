@@ -1,157 +1,209 @@
-import React from 'react';
-import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import {
-  TextField,
-  ListItem,
-  Button,
-  Popover,
-  List,
-  ListItemText,
-  IconButton,
-  ListSubheader,
-} from '@material-ui/core';
-import {
-  mdiClose,
-} from '@mdi/js';
+import { Button, IconButton, List, ListItem, ListItemText, ListSubheader, Popover, TextField } from '@material-ui/core';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import * as FileSaver from 'file-saver';
+import moment from 'moment';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import * as XLSX from 'xlsx';
 import './style.scss';
 
-const StyledListSubheader = ({ className = '', ...props }) => 
-  <ListSubheader 
+const StyledListSubheader = ({ className = '', ...props }) =>
+  <ListSubheader
     className={`comp_CustomPopper_Time___list-subheader ${className}`}
     {...props}
   />;
 
-const TimeBox = ({ className = '', ...props }) => 
-  <div 
+const TimeBox = ({ className = '', ...props }) =>
+  <div
     className={`comp_CustomPopper_Time___time-box ${className}`}
     {...props}
   />;
 
-const SideBar = ({ className = '', ...props }) => 
-  <div 
+const SideBar = ({ className = '', ...props }) =>
+  <div
     className={`comp_CustomPopper_Time___side-bar ${className}`}
     {...props}
   />;
 
-const MainBar = ({ className = '', ...props }) => 
-  <div 
+const MainBar = ({ className = '', ...props }) =>
+  <div
     className={`comp_CustomPopper_Time___main-bar ${className}`}
     {...props}
   />;
 
-const SubHeader = ({ className = '', ...props }) => 
-  <div 
+const SubHeader = ({ className = '', ...props }) =>
+  <div
     className={`comp_CustomPopper_Time___subheader ${className}`}
     {...props}
   />;
 
-const Content = ({ className = '', ...props }) => 
-  <div 
+const Content = ({ className = '', ...props }) =>
+  <div
     className={`comp_CustomPopper_Time___content ${className}`}
     {...props}
   />;
 
-const YearBox = ({ className = '', ...props }) => 
-  <div 
+const YearBox = ({ className = '', ...props }) =>
+  <div
     className={`comp_CustomPopper_Time___year-box ${className}`}
     {...props}
   />;
 
-const DateWrapper = ({ className = '', ...props }) => 
-  <div 
+const DateWrapper = ({ className = '', ...props }) =>
+  <div
     className={`comp_CustomPopper_Time___date-wrapper ${className}`}
     {...props}
   />;
 
-const StyledButton = ({ className = '', ...props }) => 
-  <Button 
+const StyledButton = ({ className = '', ...props }) =>
+  <Button
     className={`comp_CustomPopper_Time___button ${className}`}
     {...props}
   />;
 
-const TimeListItem = ({ className = '', selected, ...props }) => 
-  <ListItem 
+const TimeListItem = ({ className = '', selected, ...props }) =>
+  <ListItem
     className={`${className}`}
     {...props}
   />;
 
-export const times = [
-  {
-    title: 'Năm nay',
-    description: `Năm ${moment().year()}`,
-    option: () => [
-      moment().startOf('year').toDate(), 
-      moment().endOf('year').toDate(),
-    ],
-  }, {
-    title: 'Tháng này',
-    description: `Tháng ${moment().month() + 1}`,
-    option: () => [
-      moment().startOf('month').toDate(), 
-      moment().endOf('month').toDate(),
-    ]
-  }, {
-    title: 'Tháng trước',
-    description: `Tháng ${moment().subtract(1, 'M').month() + 1}`,
-    option: () => [
-      moment().subtract(1, 'M').startOf('month').toDate(),
-      moment().subtract(1, 'M').endOf('month').toDate(),
-    ]
-  }, {
-    title: 'Tuần này',
-    description: `Tuần ${moment().isoWeek()}`,
-    option: () => [
-      moment().startOf('isoWeek').toDate(),
-      moment().endOf('isoWeek').toDate(),
-    ]
-  }, {
-    title: 'Tuần trước',
-    description: `Tuần ${moment().subtract(1, 'w').isoWeek()}`,
-    option: () => [
-      moment().subtract(1, 'w').startOf('isoWeek').toDate(),
-      moment().subtract(1, 'w').endOf('isoWeek').toDate(),
-    ]
-  }, {
-    title: 'Mọi lúc',
-    description: `Toàn bộ thời gian`, 
-    option: () => [
-      undefined, 
-      undefined,
-    ]
-  }, {
-    title: 'Tùy chọn',
-    description: 'Tùy chọn',
-    option: () => [
-      moment().toDate(),
-      moment().toDate(),
-    ]
-  }
-];
+export const useTimes = () => {
+
+  const { t } = useTranslation();
+
+  const monthsArr = [
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.JAN'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.FEB'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.MAR'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.APR'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.MAY'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.JUN'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.JUL'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.AUG'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.SEP'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.OCT'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.NOV'),
+    t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.DEC'),
+  ];
+
+  return [
+    {
+      title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.THIS_YEAR'),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.YEAR_DESC', { year: moment().year() }),
+      option: () => [
+        moment().startOf('year').toDate(),
+        moment().endOf('year').toDate(),
+      ],
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.THIS_MONTH'),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH_DESC', { month: monthsArr[moment().month()] }),
+      option: () => [
+        moment().startOf('month').toDate(),
+        moment().endOf('month').toDate(),
+      ]
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.LAST_MONTH'),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH_DESC', { month: monthsArr[moment().subtract(1, 'M').month()] }),
+      option: () => [
+        moment().subtract(1, 'M').startOf('month').toDate(),
+        moment().subtract(1, 'M').endOf('month').toDate(),
+      ]
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.THIS_WEEK'),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.WEEK_DESC', { week: moment().isoWeek() }),
+      option: () => [
+        moment().startOf('isoWeek').toDate(),
+        moment().endOf('isoWeek').toDate(),
+      ]
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.LAST_WEEK'),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.WEEK_DESC', { week: moment().subtract(1, 'w').isoWeek() }),
+      option: () => [
+        moment().subtract(1, 'w').startOf('isoWeek').toDate(),
+        moment().subtract(1, 'w').endOf('isoWeek').toDate(),
+      ]
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.ALL_TIME'),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.ALL_DESC'),
+      option: () => [
+        undefined,
+        undefined,
+      ]
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.CUSTOM'),
+      description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.CUSTOM'),
+      option: () => [
+        moment().toDate(),
+        moment().toDate(),
+      ]
+    }]
+};
+
+export const useFilters = () => {
+
+  const { t } = useTranslation();
+  const filters = [
+    {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ALL'),
+      field: 'all',
+      option: {},
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ACTIVE'),
+      field: 'active',
+      option: { visibility: true },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.HIDDEN'),
+      field: 'hidden',
+      option: { visibility: false },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.WAITING'),
+      field: 'waiting',
+      option: { visibility: true, state_name: 'Waiting' },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.DOING'),
+      field: 'doing',
+      option: { visibility: true, state_name: 'Doing' },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.COMPLETE'),
+      field: 'complete',
+      option: { visibility: true, state_name: 'Finished' },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.EXPIRED'),
+      field: 'expired',
+      option: { visibility: true, state_name: 'Expired' },
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.CREATED'),
+      field: 'created',
+      option: {},
+    }, {
+      title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ASSIGNED'),
+      field: 'assigned',
+      option: {},
+    }]
+  return filters;
+};
 
 export const TimeRangePopover = ({
   bgColor,
   anchorEl = null, setAnchorEl = () => null,
-  timeOptionDefault = 0, 
+  timeOptionDefault = 0,
   handleTimeRange = () => null,
 }) => {
 
   const [timeOption, setTimeOption] = React.useState(0);
   const [startDate, setStartDate] = React.useState(moment().toDate());
   const [endDate, setEndDate] = React.useState(moment().toDate());
+  const times = useTimes();
 
   React.useEffect(() => {
     setTimeOption(timeOptionDefault);
     const [start, end] = times[timeOptionDefault].option();
     setStartDate(start);
     setEndDate(end);
+    //eslint-disable-next-line
   }, [timeOptionDefault]);
 
   return (
@@ -187,8 +239,8 @@ export const TimeRangePopover = ({
                 style={timeOption === index ? {
                   borderLeft: `3px solid ${bgColor.color}`,
                 } : {
-                  borderLeft: '3px solid #fff',
-                }}
+                    borderLeft: '3px solid #fff',
+                  }}
               >
                 <ListItemText primary={time.title} />
               </TimeListItem>
@@ -199,9 +251,9 @@ export const TimeRangePopover = ({
           <SubHeader>
             <span>Thời gian được chọn</span>
             <IconButton>
-              <Icon 
-                path={mdiClose} 
-                size={1} 
+              <Icon
+                path={mdiClose}
+                size={1}
                 onClick={evt => setAnchorEl(null)}
               />
             </IconButton>
@@ -222,46 +274,46 @@ export const TimeRangePopover = ({
                     />
                   </>
                 ) : (
-                  <>
-                    <KeyboardDatePicker
-                      disableToolbar
-                      disabled={timeOption !== 6}
-                      inputVariant="outlined"
-                      variant="inline"
-                      ampm={false}
-                      label="Ngày bắt đầu"
-                      value={startDate}
-                      onChange={setStartDate}
-                      format="dd/MM/yyyy"
-                      maxDate={endDate}
-                      maxDateMessage='Phải trước ngày kết thúc'
-                    />
-                    <KeyboardDatePicker 
-                      disableToolbar
-                      disabled={timeOption !== 6}
-                      inputVariant="outlined"
-                      variant="inline"
-                      ampm={false}
-                      label="Ngày kết thúc"
-                      value={endDate}
-                      onChange={setEndDate}
-                      format="dd/MM/yyyy"
-                      minDate={startDate}
-                      minDateMessage='Phải sau ngày bắt đầu'
-                    />
-                  </>
-                )}
+                    <>
+                      <KeyboardDatePicker
+                        disableToolbar
+                        disabled={timeOption !== 6}
+                        inputVariant="outlined"
+                        variant="inline"
+                        ampm={false}
+                        label="Ngày bắt đầu"
+                        value={startDate}
+                        onChange={setStartDate}
+                        format="dd/MM/yyyy"
+                        maxDate={endDate}
+                        maxDateMessage='Phải trước ngày kết thúc'
+                      />
+                      <KeyboardDatePicker
+                        disableToolbar
+                        disabled={timeOption !== 6}
+                        inputVariant="outlined"
+                        variant="inline"
+                        ampm={false}
+                        label="Ngày kết thúc"
+                        value={endDate}
+                        onChange={setEndDate}
+                        format="dd/MM/yyyy"
+                        minDate={startDate}
+                        minDateMessage='Phải sau ngày bắt đầu'
+                      />
+                    </>
+                  )}
               </DateWrapper>
             </MuiPickersUtilsProvider>
-            <StyledButton 
+            <StyledButton
               style={{
                 backgroundColor: bgColor.color,
               }}
               fullWidth
               onClick={evt => {
                 handleTimeRange(
-                  timeOption, 
-                  startDate ? moment(startDate).toDate() : undefined, 
+                  timeOption,
+                  startDate ? moment(startDate).toDate() : undefined,
                   endDate ? moment(endDate).toDate() : undefined,
                 );
                 setAnchorEl(null);
@@ -286,7 +338,7 @@ export const DownloadPopover = ({
     const ws = XLSX.utils.json_to_sheet(csvData);
     const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const data = new Blob([excelBuffer], {type: fileType});
+    const data = new Blob([excelBuffer], { type: fileType });
     FileSaver.saveAs(data, fileName + fileExtension);
   }
 

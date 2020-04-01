@@ -1,11 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
 import { mdiCircle } from '@mdi/js';
+import Icon from '@mdi/react';
 import moment from 'moment';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 import ColorTypo from '../ColorTypo';
 
-const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTarget, ...rest }) => 
+const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTarget, ...rest }) =>
   <div {...rest}>
     <div>
       <div />
@@ -111,16 +112,17 @@ const LegendBox = styled.div`
 `;
 
 function ProgressBar(props) {
+  const { t } = useTranslation();
   return (
     <div>
       <ProgressBarBox {...props} />
       <LegendBox>
         <Icon path={mdiCircle} size={1} color={props.colorDone || 'rgb(49, 181, 134)'} />
-        <ColorTypo>Hoàn thành thực tế</ColorTypo>
+        <ColorTypo>{t('DMH.COMP.PROGRESS_BAR.DONE')}</ColorTypo>
       </LegendBox>
       <LegendBox>
         <Icon path={mdiCircle} size={1} color={props.colorTarget || '#ff9800'} />
-        <ColorTypo>Kế hoạch</ColorTypo>
+        <ColorTypo>{t('DMH.COMP.PROGRESS_BAR.PLAN')}</ColorTypo>
       </LegendBox>
     </div>
   )

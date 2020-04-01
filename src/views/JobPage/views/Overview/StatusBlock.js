@@ -1,4 +1,4 @@
-import { times } from "components/CustomPopover";
+import { useTimes } from "components/CustomPopover";
 import React, { useContext } from "react";
 import Chart from "react-apexcharts";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ export function StatusBlock() {
   });
   const { t } = useTranslation();
   const { timeType = 0 } = useContext(JobPageContext);
+  const times = useTimes();
   return (
     <Block
       title={t("Trạng thái")}

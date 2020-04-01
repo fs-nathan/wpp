@@ -1,6 +1,7 @@
 import { FormControl, FormControlLabel, MenuItem, Radio, RadioGroup, TextField } from '@material-ui/core';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomModal from '../../../../components/CustomModal';
 import CustomTextbox from '../../../../components/CustomTextbox';
@@ -25,6 +26,7 @@ function CreateNewProject({
   handleCreateProject,
 }) {
 
+  const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [priority, setPriority] = React.useState(0);
@@ -33,7 +35,7 @@ function CreateNewProject({
 
   return (
     <CustomModal
-      title={`Tạo mới dự án`}
+      title={t("DMH.VIEW.PGP.MODAL.CUP.C_TITLE")}
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName && !errorDescription}
@@ -50,11 +52,11 @@ function CreateNewProject({
       }
       loading={groups.loading}
     >
-      <ColorTypo>Nhóm dự án</ColorTypo>
       <StyledFormControl fullWidth>
         <CustomTextField
           select
           variant="outlined"
+          label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
           value={curProjectGroupId}
           onChange={evt => setCurProjectGroupId(evt.target.value)}
         >
@@ -65,10 +67,10 @@ function CreateNewProject({
           )}
         </CustomTextField>
       </StyledFormControl>
-      <ColorTypo>Tên dự án</ColorTypo>
       <CustomTextField
         value={name}
         onChange={evt => setName(evt.target.value)}
+        label={t("DMH.VIEW.PGP.MODAL.CUP.NAME")}
         margin="normal"
         variant="outlined"
         fullWidth
@@ -79,7 +81,7 @@ function CreateNewProject({
         }
       />
       <ColorTypo>
-        Mức độ ưu tiên
+        {t("DMH.VIEW.PGP.MODAL.CUP.PRIO.TITLE")}
       </ColorTypo>
       <StyledFormControl fullWidth>
         <RadioGroup
@@ -92,27 +94,27 @@ function CreateNewProject({
           <FormControlLabel
             value={0}
             control={<Radio color="primary" />}
-            label="Thấp"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.LOW")}
             labelPlacement="end"
           />
           <FormControlLabel
             value={1}
             control={<Radio color="primary" />}
-            label="Trung bình"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.MED")}
             labelPlacement="end"
           />
           <FormControlLabel
             value={2}
             control={<Radio color="primary" />}
-            label="Cao"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.HIGH")}
             labelPlacement="end"
           />
         </RadioGroup>
       </StyledFormControl>
-      <ColorTypo>Mô tả dự án</ColorTypo>
       <CustomTextbox
         value={description}
         onChange={value => setDescription(value)}
+        label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
         helperText={get(errorDescription, 'message', '')}
       />
     </CustomModal>

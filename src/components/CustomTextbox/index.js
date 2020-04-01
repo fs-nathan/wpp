@@ -1,5 +1,6 @@
 import { TextField } from '@material-ui/core';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../ColorTypo';
 import './style.scss';
 
@@ -15,9 +16,11 @@ function CustomTextbox({
   isReadOnly = false,
   maxHeight = 100,
   className = '',
-  helperText = ''
+  helperText = '',
+  label = undefined
 }) {
 
+  const { t } = useTranslation();
   const [innerHeight, setInnerHeight] = React.useState(0);
   const [showMore, setShowMore] = React.useState(false);
 
@@ -25,6 +28,7 @@ function CustomTextbox({
     if (node !== null) {
       setInnerHeight(node.getBoundingClientRect().height);
     }
+    //eslint-disable-next-line
   }, [value]);
 
   if (isReadOnly) {
@@ -48,7 +52,9 @@ function CustomTextbox({
             }}
           />
         </div>
-        {innerHeight > maxHeight && <span onClick={() => setShowMore(old => !old)}>{showMore ? 'Thu gọn' : 'Mở rộng'}</span>}
+        {innerHeight > maxHeight && <span onClick={() => setShowMore(old => !old)}>
+          {showMore ? t('DMH.COMP.CUSTOM_TEXTBOX.LESS') : t('DMH.COMP.CUSTOM_TEXTBOX.MORE')}
+        </span>}
       </div >
     )
   } else {
@@ -56,8 +62,8 @@ function CustomTextbox({
       <StyledTextField
         multiline
         fullWidth
-        autoFocus
         rows={3}
+        label={label}
         variant="outlined"
         value={value}
         onChange={evt => onChange(evt.target.value)}

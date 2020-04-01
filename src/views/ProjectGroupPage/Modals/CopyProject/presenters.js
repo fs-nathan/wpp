@@ -6,6 +6,7 @@ import Icon from '@mdi/react';
 import { get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../components/ColorTypo';
 import { Primary, StyledList, StyledListItem } from '../../../../components/CustomList';
 import CustomModal from '../../../../components/CustomModal';
@@ -117,6 +118,7 @@ function CopyProject({
   handleCopyProject,
 }) {
 
+  const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [isCopyMember, setIsCopyMember] = React.useState(false);
@@ -126,7 +128,7 @@ function CopyProject({
 
   return (
     <CustomModal
-      title={`Sao chép dự án`}
+      title={t("DMH.VIEW.PGP.MODAL.COPY.TITLE")}
       fullWidth={true}
       open={open}
       setOpen={setOpen}
@@ -142,12 +144,12 @@ function CopyProject({
       columns={2}
       loading={groups.loading}
       left={{
-        title: 'Chọn dự án sao chép',
+        title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE"),
         content: () =>
           <LeftContainer>
             <SearchInput
               fullWidth
-              placeholder='Tìm dự án'
+              placeholder={t("DMH.VIEW.PGP.MODAL.COPY.LEFT.FIND")}
               value={searchPatern}
               onChange={evt => setSearchPatern(evt.target.value)}
             />
@@ -164,18 +166,18 @@ function CopyProject({
           </LeftContainer>,
       }}
       right={{
-        title: 'Thông tin dự án mới',
+        title: t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.TITLE"),
         content: () =>
           <RightContainer>
-            <Header uppercase bold>Dự án được sao chép</Header>
-            <StyledTypo>{get(selectedProject, 'name', 'Hãy chọn dự án để sao chép')}</StyledTypo>
-            <Header uppercase bold>Thông tin dự án</Header>
-            <ColorTypo>Tên dự án mới</ColorTypo>
+            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NAME")}</Header>
+            <StyledTypo>{get(selectedProject, 'name', t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.PLACEHOLDER"))}</StyledTypo>
+            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DESC")}</Header>
             <TextField
               value={name}
               onChange={evt => setName(evt.target.value)}
               margin="normal"
               variant="outlined"
+              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_NAME")}
               fullWidth
               helperText={
                 <ColorTypo variant='caption' color='red'>
@@ -183,26 +185,26 @@ function CopyProject({
                 </ColorTypo>
               }
             />
-            <ColorTypo>Mô tả dự án mới</ColorTypo>
             <CustomTextbox
               value={description}
               onChange={value => setDescription(value)}
+              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_DESC")}
               helperText={get(errorDescription, 'message', '')}
             />
-            <ColorTypo>Cài đặt thành viên</ColorTypo>
+            <ColorTypo>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}</ColorTypo>
             <StyledFormControl component="div" fullWidth>
               <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
-                <FormControlLabel value={true} control={<Radio color='primary' />} label="Giữ nguyên thành viên" />
-                <FormControlLabel value={false} control={<Radio color='primary' />} label="Xóa toàn bộ thành viên" />
+                <FormControlLabel value={true} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.KEEP")} />
+                <FormControlLabel value={false} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.DISCARD")} />
               </RadioGroup>
             </StyledFormControl>
-            <ColorTypo>Chọn ngày bắt đầu tiến độ</ColorTypo>
             <StyledFormControl component="div">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   disableToolbar
                   inputVariant="outlined"
                   variant="inline"
+                  label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DATE")}
                   ampm={false}
                   value={startDate}
                   onChange={setStartDate}

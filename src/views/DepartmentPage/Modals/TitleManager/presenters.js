@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../components/CustomModal';
 import ErrorBox from '../../../../components/ErrorBox';
 import SimpleManagerTable from '../../../../components/SimpleManagerTable';
@@ -9,13 +10,15 @@ function TitleManager({
   handleDeletePosition, handleOpenModal
 }) {
 
+  const { t } = useTranslation();
+
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title='Quản lý chức danh'
+      title={t('DMH.VIEW.DP.MODAL.TITLE.TITLE')}
       confirmRender={null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t('DMH.VIEW.DP.MODAL.TITLE.EXIT')}
       loading={positions.loading}
     >
       {positions.error !== null
@@ -28,7 +31,7 @@ function TitleManager({
             updatedPosition: position,
           })}
           handleDelete={position => handleOpenModal('ALERT', {
-            content: 'Bạn chắc chắn muốn xóa chức danh?',
+            content: t('DMH.VIEW.DP.MODAL.TITLE.EXIT'),
             onConfirm: () => handleDeletePosition(position),
           })}
         />

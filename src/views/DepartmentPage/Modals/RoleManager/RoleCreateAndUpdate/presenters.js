@@ -1,6 +1,7 @@
 import { TextField } from '@material-ui/core';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
 import { useMaxlenString, useRequiredString } from '../../../../../hooks';
@@ -11,8 +12,9 @@ function RoleCreateAndUpdate({
   handleCreateOrUpdateUserRole
 }) {
 
-  const [name, setName, errorName] = useRequiredString('', 100);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 100);
+  const [name, setName, errorName] = useRequiredString('', 150);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (updatedUserRole) {
@@ -25,14 +27,14 @@ function RoleCreateAndUpdate({
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title={updatedUserRole ? 'Chỉnh sửa vai trò' : 'Tạo vai trò'}
+      title={updatedUserRole ? t('DMH.VIEW.DP.MODAL.ROLE.U_TITLE') : t('DMH.VIEW.DP.MODAL.ROLE.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateUserRole(name, description)}
     >
-      <ColorTypo>Tên vai trò</ColorTypo>
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
+        label={t('DMH.VIEW.DP.MODAL.ROLE.NAME')}
         margin="normal"
         variant="outlined"
         fullWidth
@@ -42,10 +44,10 @@ function RoleCreateAndUpdate({
           </ColorTypo>
         }
       />
-      <ColorTypo>Mô tả vai trò</ColorTypo>
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}
+        label={t('DMH.VIEW.DP.MODAL.ROLE.DESC')}
         margin="normal"
         variant="outlined"
         fullWidth

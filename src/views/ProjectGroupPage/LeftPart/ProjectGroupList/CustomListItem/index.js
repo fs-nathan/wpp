@@ -1,40 +1,42 @@
+import { ListItemText } from '@material-ui/core';
+import { mdiDragVertical } from '@mdi/js';
+import Icon from '@mdi/react';
+import { get } from 'lodash';
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import Icon from '@mdi/react';
-import { mdiDragVertical } from '@mdi/js';
-import { ListItemText } from '@material-ui/core';
-import { StyledListItem, Primary, Secondary } from '../../../../../components/CustomList';
 import CustomAvatar from '../../../../../components/CustomAvatar';
-import { get } from 'lodash';
+import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
 
 function CustomListItem({ projectGroup, index }) {
   const [isHover, setIsHover] = React.useState(false);
+  const { t } = useTranslation();
 
   return (
-    <Draggable 
+    <Draggable
       draggableId={get(projectGroup, 'id')}
-      index={index}  
+      index={index}
     >
       {(provided) => (
-        <StyledListItem 
+        <StyledListItem
           component={Link}
           to={`/projects/${get(projectGroup, 'id', '')}`}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}  
+          onMouseLeave={() => setIsHover(false)}
         >
           <div {...provided.dragHandleProps}>
-            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'}/>
+            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
           </div>
           <CustomAvatar style={{ height: 50, width: 50, }} src={get(projectGroup, 'icon')} alt='avatar' />
-          <ListItemText 
+          <ListItemText
             primary={
-              <Primary>{get(projectGroup, 'name', '')}</Primary>  
+              <Primary>{get(projectGroup, 'name', '')}</Primary>
             }
             secondary={
-              <Secondary>{get(projectGroup, 'number_project', 0)} dự án</Secondary>
+              <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", { projectGroups: get(projectGroup, 'number_project', 0) })}</Secondary>
             }
           />
         </StyledListItem>

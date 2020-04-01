@@ -1,48 +1,47 @@
-import React from 'react';
-import ColorTypo from '../../../../components/ColorTypo';
-import PillButton from '../../../../components/PillButton';
-import SearchInput from '../../../../components/SearchInput';
-import { Scrollbars } from 'react-custom-scrollbars';
-import Icon from '@mdi/react';
-import { ButtonBase } from '@material-ui/core';
-import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import { ListItemAvatar, ListItemText, IconButton } from '@material-ui/core';
+import { ButtonBase, IconButton, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
-import { get, find, isNil } from 'lodash';
+import Icon from '@mdi/react';
+import { find, get, isNil } from 'lodash';
+import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import LoadingOverlay from 'react-loading-overlay';
+import ColorTypo from '../../../../components/ColorTypo';
+import CustomAvatar from '../../../../components/CustomAvatar';
+import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
 import ErrorBox from '../../../../components/ErrorBox';
+import PillButton from '../../../../components/PillButton';
+import SearchInput from '../../../../components/SearchInput';
 import './style.scss';
 
-const StyledBox = ({ className = '', ...props }) => 
-  <div 
-    className={`view_Department_AddUser___box ${className}`} 
-    {...props} 
+const StyledBox = ({ className = '', ...props }) =>
+  <div
+    className={`view_Department_AddUser___box ${className}`}
+    {...props}
   />;
 
-const OkButton = ({ className = '', ...props }) => 
-  <ButtonBase 
+const OkButton = ({ className = '', ...props }) =>
+  <ButtonBase
     className={`view_Department_AddUser___ok-btn ${className}`}
     {...props}
   />;
 
-const CancleButton = ({ className = '', ...props }) => 
-  <ButtonBase 
+const CancleButton = ({ className = '', ...props }) =>
+  <ButtonBase
     className={`view_Department_AddUser___cancle-btn ${className}`}
     {...props}
   />;
 
-const StyledSecondary = ({ className = '', ...props }) => 
-  <span 
-    className={`view_Department_AddUser___style-secondary ${className}`} 
-    {...props} 
+const StyledSecondary = ({ className = '', ...props }) =>
+  <span
+    className={`view_Department_AddUser___style-secondary ${className}`}
+    {...props}
   />;
 
-const StyledSearchInput = ({ className = '', ...props }) => 
-  <SearchInput 
-    className={`view_Department_AddUser___search-input ${className}`} 
-    {...props} 
+const StyledSearchInput = ({ className = '', ...props }) =>
+  <SearchInput
+    className={`view_Department_AddUser___search-input ${className}`}
+    {...props}
   />;
 
 const Container = ({ className = '', ...rest }) => (<div className={`view_Department_AddUser___container ${className}`} {...rest} />);
@@ -58,7 +57,7 @@ const StyledIconButton = ({ className = '', ...rest }) => (<IconButton className
 const IconWrapper = ({ className = '', ...rest }) => (<div className={`view_Department_AddUser___icon-wrapper ${className}`} {...rest} />);
 
 
-const DesiringUserList = ({ 
+const DesiringUserList = ({
   user, loading, bgColor,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
   handleCancleInvitationJoinGroup,
@@ -72,64 +71,66 @@ const DesiringUserList = ({
     handleResendInvitationUserJoinGroup({ userId });
   }
 
+  const { t } = useTranslation();
+
   return (
     <>
-    {!isNil(user)
-    ? (<StyledList>
-        <StyledListItem 
-          key={get(user, 'id')}
-          style={{ cursor: 'default' }}
-        >
-          <ListItemAvatar>
-            <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
-          </ListItemAvatar>
-          <ListItemText 
-            primary={
-              <Primary>{get(user, 'name', '')}</Primary>  
-            }
-            secondary={
-              <StyledSecondary>
-              <Secondary>{get(user, 'email', '')}</Secondary>
-                <span>
-                  <OkButton 
-                    style={{
-                      backgroundColor: bgColor.color,
-                      borderColor: bgColor.color
-                    }}
-                    disabled={loading}
-                    onClick={
-                      () => 
-                        get(user, 'status_code', 0) === 0 
-                        ? onInviteUserJoinGroup(get(user, 'id'))
-                        : onResendInvitationUserJoinGroup(get(user, 'id'))
-                      }  
-                  >
-                    {get(user, 'status_code', 0) === 0 
-                    ? 'Mời'
-                    : 'Mời lại'}
-                  </OkButton>
-                  {get(user, 'status_code', 0) === 1 && (
-                    <CancleButton 
+      {!isNil(user)
+        ? (<StyledList>
+          <StyledListItem
+            key={get(user, 'id')}
+            style={{ cursor: 'default' }}
+          >
+            <ListItemAvatar>
+              <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
+            </ListItemAvatar>
+            <ListItemText
+              primary={
+                <Primary>{get(user, 'name', '')}</Primary>
+              }
+              secondary={
+                <StyledSecondary>
+                  <Secondary>{get(user, 'email', '')}</Secondary>
+                  <span>
+                    <OkButton
+                      style={{
+                        backgroundColor: bgColor.color,
+                        borderColor: bgColor.color
+                      }}
                       disabled={loading}
-                      onClick={evt => handleCancleInvitationJoinGroup({
-                        invitationId: get(user, 'invitation')
-                      })} 
+                      onClick={
+                        () =>
+                          get(user, 'status_code', 0) === 0
+                            ? onInviteUserJoinGroup(get(user, 'id'))
+                            : onResendInvitationUserJoinGroup(get(user, 'id'))
+                      }
                     >
-                      Hủy
-                    </CancleButton>
-                  )}
-                </span>
-              </StyledSecondary>
-            }
-          />
-        </StyledListItem>
-      </StyledList>)
-    : null}
+                      {get(user, 'status_code', 0) === 0
+                        ? t('DMH.VIEW.DP.LEFT.ADD.BTN.INVT')
+                        : t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
+                    </OkButton>
+                    {get(user, 'status_code', 0) === 1 && (
+                      <CancleButton
+                        disabled={loading}
+                        onClick={evt => handleCancleInvitationJoinGroup({
+                          invitationId: get(user, 'invitation')
+                        })}
+                      >
+                        {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
+                      </CancleButton>
+                    )}
+                  </span>
+                </StyledSecondary>
+              }
+            />
+          </StyledListItem>
+        </StyledList>)
+        : null}
     </>
   );
 }
 
-const InvitedUserList = ({ 
+const InvitedUserList = ({
   invitations, loading, bgColor,
   handleResendInvitationUserJoinGroup,
   handleCancleInvitationJoinGroup,
@@ -138,6 +139,8 @@ const InvitedUserList = ({
   function onResendInvitationUserJoinGroup(userId) {
     handleResendInvitationUserJoinGroup({ userId });
   }
+
+  const { t } = useTranslation();
 
   return (
     <StyledList>
@@ -149,32 +152,32 @@ const InvitedUserList = ({
           <ListItemAvatar>
             <CustomAvatar style={{ width: 50, height: 50, }} src={get(invitation, 'avatar')} alt='avatar' />
           </ListItemAvatar>
-          <ListItemText 
+          <ListItemText
             primary={
-              <Primary>{get(invitation, 'name')}</Primary>  
+              <Primary>{get(invitation, 'name')}</Primary>
             }
             secondary={
               <StyledSecondary>
                 <Secondary>{get(invitation, 'email')}</Secondary>
                 <span>
-                  <OkButton 
+                  <OkButton
                     style={{
                       backgroundColor: bgColor.color,
                       borderColor: bgColor.color
                     }}
                     disabled={loading}
-                    onClick={() => onResendInvitationUserJoinGroup(get(invitation, 'id'))} 
+                    onClick={() => onResendInvitationUserJoinGroup(get(invitation, 'id'))}
                   >
-                    Mời lại
+                    {t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
                   </OkButton>
-                  <CancleButton 
-                      disabled={loading}
-                      onClick={evt => handleCancleInvitationJoinGroup({
-                        invitationId: get(invitation, 'invitation_id')
-                      })} 
-                    >
-                      Hủy
-                    </CancleButton>
+                  <CancleButton
+                    disabled={loading}
+                    onClick={evt => handleCancleInvitationJoinGroup({
+                      invitationId: get(invitation, 'invitation_id')
+                    })}
+                  >
+                    {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
+                  </CancleButton>
                 </span>
               </StyledSecondary>
             }
@@ -185,7 +188,7 @@ const InvitedUserList = ({
   );
 }
 
-const RequestingUserList = ({ 
+const RequestingUserList = ({
   users, loading, bgColor,
   handleAcceptRequirementJoinGroup, handleRejectRequirementJoinGroup,
 }) => {
@@ -210,29 +213,29 @@ const RequestingUserList = ({
           <ListItemAvatar>
             <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
           </ListItemAvatar>
-          <ListItemText 
+          <ListItemText
             primary={
-              <Primary>{get(user, 'name')}</Primary>  
+              <Primary>{get(user, 'name')}</Primary>
             }
             secondary={
               <StyledSecondary>
                 <Secondary>{get(user, 'email')}</Secondary>
                 <span>
-                  <OkButton 
+                  <OkButton
                     style={{
                       backgroundColor: bgColor.color,
                       borderColor: bgColor.color
                     }}
                     disabled={loading}
-                    onClick={() => onAcceptRequirementJoinGroup(get(user, 'requirement_id'))} 
+                    onClick={() => onAcceptRequirementJoinGroup(get(user, 'requirement_id'))}
                   >
-                    {t("views.user_page.left_part.add_user.accept_request")}
+                    {t('DMH.VIEW.DP.LEFT.ADD.BTN.ACPT')}
                   </OkButton>
-                  <CancleButton 
+                  <CancleButton
                     disabled={loading}
-                    onClick={() => onRejectRequirementJoinGroup(get(user, 'requirement_id'))} 
+                    onClick={() => onRejectRequirementJoinGroup(get(user, 'requirement_id'))}
                   >
-                    {t("views.user_page.left_part.add_user.deny_request")}
+                    {t('DMH.VIEW.DP.LEFT.ADD.BTN.DENY')}
                   </CancleButton>
                 </span>
               </StyledSecondary>
@@ -245,7 +248,7 @@ const RequestingUserList = ({
 }
 
 function AddUser({
-  bgColor, 
+  bgColor,
   desireUser, desireLoading,
   requireUsers, requireLoading,
   invitations,
@@ -265,13 +268,13 @@ function AddUser({
         <IconWrapper>
           <Icon path={mdiClose} size={1} color='rgba(0, 0, 0, 0)' />
         </IconWrapper>
-        <Title>Thêm tài khoản</Title>
+        <Title>{t('DMH.VIEW.DP.LEFT.ADD.LABEL.ADD')}</Title>
         <StyledIconButton size='small' onClick={evt => {
           handleSearchUserReset();
-          handleVisibleDrawerMessage({ type: '', anchor: anchorDrawer});
+          handleVisibleDrawerMessage({ type: '', anchor: anchorDrawer });
         }}>
           <abbr
-            title={'Đóng'}
+            title={t('DMH.VIEW.DP.LEFT.ADD.LABEL.CLOSE')}
           >
             <div>
               <Icon path={mdiClose} size={1} color='rgba(0, 0, 0, 0.54)' />
@@ -285,96 +288,93 @@ function AddUser({
       >
         <StyledBox>
           <ColorTypo bold>
-            {t("views.user_page.left_part.add_user.invite_member")}
+            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVT')}
           </ColorTypo>
-          <div> 
-            <StyledSearchInput 
-              placeholder={t("views.user_page.left_part.add_user.find_member")}
+          <div>
+            <StyledSearchInput
+              placeholder={t('DMH.VIEW.DP.LEFT.ADD.LABEL.FIND')}
               value={searchPatern}
               onChange={handleSearchPatern}
             />
-            <PillButton 
+            <PillButton
               size='large'
               background={'#eee'}
               text={'#333'}
-              onClick={() => searchPatern !== '' && handleSearchUser({ info: searchPatern })}  
+              onClick={() => searchPatern !== '' && handleSearchUser({ info: searchPatern })}
             >
-              {t("views.user_page.left_part.add_user.find_member_button")}
+              {t('DMH.VIEW.DP.LEFT.ADD.BTN.FIND')}
             </PillButton>
           </div>
-          {desireUser.error !== null 
+          {desireUser.error !== null
             ? <ErrorBox size={16} />
             : <LoadingOverlay
-                active={desireUser.loading}
-                spinner
-                text='Đang tải...'
-              >
-                <DesiringUserList 
-                  bgColor={bgColor}
-                  loading={desireLoading}
-                  user={desireUser.user && {
-                    ...desireUser.user,
-                    invitation: get(
-                      find(
-                        invitations.invitations, 
-                        { 
-                          user: 
+              active={desireUser.loading}
+              spinner
+            >
+              <DesiringUserList
+                bgColor={bgColor}
+                loading={desireLoading}
+                user={desireUser.user && {
+                  ...desireUser.user,
+                  invitation: get(
+                    find(
+                      invitations.invitations,
+                      {
+                        user:
                           get(
-                            desireUser.user, 
+                            desireUser.user,
                             'id'
                           )
-                        }
-                      ),
-                      'invitation_id'
-                    )
-                  }} 
-                  handleInviteUserJoinGroup={handleInviteUserJoinGroup} 
-                  handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-                  handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
-                />
-              </LoadingOverlay>
+                      }
+                    ),
+                    'invitation_id'
+                  )
+                }}
+                handleInviteUserJoinGroup={handleInviteUserJoinGroup}
+                handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+                handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+              />
+            </LoadingOverlay>
           }
         </StyledBox>
         <StyledBox>
           <ColorTypo bold>
-            Đã mời thành viên tham gia nhóm
+            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVD')}
           </ColorTypo>
-          {invitations.error !== null 
+          {invitations.error !== null
             ? <ErrorBox size={16} />
             : <LoadingOverlay
-                active={invitations.loading}
-                spinner
-                text='Đang tải...'
-              >
-                <InvitedUserList 
-                  bgColor={bgColor}
-                  loading={requireLoading}
-                  invitations={invitations.invitations} 
-                  handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-                  handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
-                />
-              </LoadingOverlay>
+              active={invitations.loading}
+              spinner
+            >
+              <InvitedUserList
+                bgColor={bgColor}
+                loading={requireLoading}
+                invitations={invitations.invitations}
+                handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+                handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+              />
+            </LoadingOverlay>
           }
         </StyledBox>
         <StyledBox>
           <ColorTypo bold>
-            {t("views.user_page.left_part.add_user.request_member_title")}
+            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQS')}
           </ColorTypo>
-          {requireUsers.error !== null 
+          {requireUsers.error !== null
             ? <ErrorBox size={16} />
             : <LoadingOverlay
-                active={requireUsers.loading}
-                spinner
-                text='Đang tải...'
-              >
-                <RequestingUserList 
-                  bgColor={bgColor}
-                  loading={requireLoading}
-                  users={requireUsers.users} 
-                  handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup} 
-                  handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
-                />
-              </LoadingOverlay>
+              active={requireUsers.loading}
+              spinner
+            >
+              <RequestingUserList
+                bgColor={bgColor}
+                loading={requireLoading}
+                users={requireUsers.users}
+                handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup}
+                handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
+              />
+            </LoadingOverlay>
           }
         </StyledBox>
       </Body>
