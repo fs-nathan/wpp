@@ -1,5 +1,6 @@
 import { colors, labels, statistic } from "../contants/attrs";
 import { get } from "./index.js";
+
 export const createPieChartProps = (strings, data) => {
   return {
     type: "pie",
@@ -364,9 +365,26 @@ export const createPriorityRadialBarChartProps = (
       },
       labels: strings.map(string => labels[string]),
       legend: {
-        show: false
+        show: false,
+        floating: true,
+        fontSize: "12px",
+        position: "left",
+        offsetX: 120,
+        offsetY: 5,
+        labels: {
+          useSeriesColors: true
+        },
+        markers: {
+          width: 0,
+          height: 0
+        },
+        formatter: function(seriesName, opts) {
+          return opts.w.globals.series[opts.seriesIndex];
+        },
+        itemMargin: {
+          vertical: 3
+        }
       },
-
       tooltip: {
         enabled: true
       }

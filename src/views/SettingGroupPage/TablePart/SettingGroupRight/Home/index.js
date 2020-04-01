@@ -1,14 +1,16 @@
 import { Avatar, Box, Checkbox, Chip, Divider } from "@material-ui/core";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
+import { AddCircle } from "@material-ui/icons";
 import { mdiDragVertical } from "@mdi/js";
 import Icon from "@mdi/react";
 import colors from "helpers/colorPalette";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { loginlineFunc } from "views/JobPage/utils";
-
+import { createMapPropsFromAttrs, loginlineFunc } from "views/JobPage/utils";
+import { categoryAttr } from "./contants";
+import { categoryListSelector, loadCategoryList, loadPostCategoryLogoList } from "./redux";
 const ChipGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -48,6 +50,7 @@ const SubTitle = styled.div`
   font-size: 15px;
 `;
 function Home() {
+  const { categories } = useContext(HomeContext);
   const { t } = useTranslation();
   const [strings, setStrings] = useState([
     "Lịch tuần",
@@ -62,20 +65,25 @@ function Home() {
           <SubTitle>{t("Thiết lập thể loại đăng tin trên trang chủ")}</SubTitle>
         </Stack>
         <ChipGroup>
-          <Chip
-            avatar={<Avatar>M</Avatar>}
-            label={t("Thông báo")}
-            onDelete={loginlineFunc}
-          />
-          <Chip
-            avatar={<Avatar>C</Avatar>}
-            label={t("Chia sẻ")}
-            onDelete={loginlineFunc}
-          />
+          {categories.map((cate, i) => {
+            const [id, name, logo] = createMapPropsFromAttrs([
+              categoryAttr.id,
+              categoryAttr.name,
+              categoryAttr.logo
+            ])(cate);
+            return (
+              <Chip
+                key={id}
+                avatar={<Avatar alt={name} src={logo} />}
+                label={name}
+                onDelete={loginlineFunc}
+              />
+            );
+          })}
           <Box flexBasis="100%" margin="0px!important" />
           <Chip
             style={{ background: "transparent" }}
-            icon={<AddCircleIcon style={{ color: colors.blue[0] }} />}
+            icon={<AddCircle style={{ color: colors.blue[0] }} />}
             label={t("Thêm")}
             onClick={loginlineFunc}
           />
@@ -136,4 +144,18 @@ function Home() {
   );
 }
 
-export default Home;
+const HomeContext = React.createContext({});
+export default () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadCategoryList());
+    dispatch(loadPostCategoryLogoList());
+  }, [dispatch]);
+
+  const categories = useSelector(categoryListSelector);
+  return (
+    <HomeContext.Provider value={{ categories }}>
+      <Home />
+    </HomeContext.Provider>
+  );
+};
