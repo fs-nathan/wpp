@@ -1,5 +1,6 @@
 import { all, fork, put, take } from "redux-saga/effects";
 import { apiService } from "../../../constants/axiosInstance";
+import { encodeQueryData } from "../utils";
 import {
   LOADPAGE_TASK,
   LOADPAGE_TASK_ASSIGN,
@@ -18,7 +19,10 @@ function* doGetStaticTask(timeRange) {
   try {
     const { timeStart, timeEnd } = timeRange;
     const config = {
-      url: `/task-statistic?from_time=${timeStart}&&to_time=${timeEnd}`,
+      url: `/task-statistic?${encodeQueryData({
+        from_time: timeStart,
+        to_time: timeEnd
+      })}`,
       method: "get"
     };
     const result = yield apiService(config);
@@ -75,7 +79,11 @@ function* doGetDueTasks() {
 function* doGetAssignTasks({ timeStart, timeEnd, typeAssign }) {
   try {
     const config = {
-      url: `/task-statistic/assign?from_time=${timeStart}&&to_time=${timeEnd}&&type_assign=${typeAssign}`,
+      url: `/task-statistic/assign?${encodeQueryData({
+        from_time: timeStart,
+        to_time: timeEnd,
+        type_assign: typeAssign
+      })}`,
       method: "get"
     };
     const result = yield apiService(config);
@@ -93,7 +101,11 @@ function* doGetAssignTasks({ timeStart, timeEnd, typeAssign }) {
 function* doGetRoleTasks({ timeStart, timeEnd, roleId }) {
   try {
     const config = {
-      url: `/task-statistic/role?from_time=${timeStart}&&to_time=${timeEnd}&&role_id=${roleId}`,
+      url: `/task-statistic/role?${encodeQueryData({
+        from_time: timeStart,
+        to_time: timeEnd,
+        role_id: roleId
+      })}`,
       method: "get"
     };
     const result = yield apiService(config);

@@ -8,9 +8,17 @@ export {
   template,
   loginlineParams,
   loginlineFunc,
-  createMapPropsFromAttrs
+  createMapPropsFromAttrs,
+  encodeQueryData
 };
-
+function encodeQueryData(data) {
+  const ret = [];
+  for (let d in data) {
+    if (data[d])
+      ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
+  }
+  return ret.join("&");
+}
 const loginlineParams = param => {
   console.trace("param", param);
   return param;

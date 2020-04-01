@@ -6,12 +6,12 @@ import { useSelector } from "react-redux";
 import { JobPageContext } from "views/JobPage/JobPageContext";
 import ChartLegend from "../../components/ChartLegend";
 import { TASK_OVERVIEW_STATISTIC } from "../../redux/types";
-import { createRadarChartProps } from "../../utils/chart";
+import { createColumnRoleChartProps } from "../../utils/chart";
 import { Block } from "./Block";
 const strings = ["task_all", "task_complete"];
 export function RoleBlock() {
   const chartProps = useSelector(state => {
-    return createRadarChartProps(
+    return createColumnRoleChartProps(
       strings,
       state.taskPage[TASK_OVERVIEW_STATISTIC]
     );

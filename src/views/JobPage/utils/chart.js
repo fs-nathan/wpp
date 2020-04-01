@@ -213,3 +213,164 @@ export const createColumnChartProps = (
     height: 250
   };
 };
+export const createColumnRoleChartProps = (strings, data) => {
+  const roles = get(data, statistic.roles, []);
+  const maxValue = roles.reduce((result, role) => {
+    if (role.number_task > result) {
+      return role.number_task;
+    }
+    return result;
+  }, 0);
+  // const roles = [
+  //   {
+  //     id: "5e70408ce2f6b848a81653b5",
+  //     name: "Công nhân",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 1,
+  //     number_task: 8
+  //   },
+  //   {
+  //     id: "5e70408ce2f6b848a81653b5",
+  //     name: "Lao công",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 1,
+  //     number_task: 10
+  //   },
+  //   {
+  //     id: "5e70408ce2f6b848a81653b5",
+  //     name: "GIám sát công việc",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 9,
+  //     number_task: 14
+  //   },
+  //   {
+  //     id: "5e65e39b22db895ea23b6229",
+  //     name: "Giám sát dự án",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 7,
+  //     number_task: 15
+  //   },
+  //   {
+  //     id: "5e70408ce2f6b848a81653b5",
+  //     name: "GIám sát công việc",
+  //     tasks: ["5e7b044b12e9e7f8cfb35dfb"],
+  //     number_task_complete: 12,
+  //     number_task: 22
+  //   }
+  // ];
+  const categories = roles.map(role => role.name);
+  const series = roles.reduce(
+    (result, value) => {
+      const [all, complete] = result;
+      const { number_task_complete, number_task } = value;
+      all.data.push(number_task);
+      complete.data.push(number_task_complete);
+      return result;
+    },
+    [
+      {
+        name: "Tất cả",
+        color: colors.task_all,
+        data: []
+      },
+      {
+        name: "Hoàn thành",
+        color: colors.task_complete,
+        data: []
+      }
+    ]
+  );
+  return {
+    type: "bar",
+    series,
+    options: {
+      colors: [colors.task_all, colors.task_complete],
+      chart: {
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded"
+        }
+      },
+      legend: {
+        show: false
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        categories,
+        labels: {
+          hideOverlappingLabels: false,
+          style: {
+            fontSize: "10px"
+          }
+        }
+      },
+      yaxis: {},
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        enabled: true
+      }
+    },
+    height: 250
+  };
+};
+export const createPriorityRadialBarChartProps = (
+  strings = [
+    "task_hight_priority",
+    "task_medium_priority",
+    "task_low_priority"
+  ],
+  data
+) => {
+  return {
+    type: "radialBar",
+    series: strings.map(string => Number(get(data, statistic[string], 0))),
+    options: {
+      colors: strings.map(string => colors[string]),
+      plotOptions: {
+        radialBar: {
+          offsetY: 0,
+          startAngle: 0,
+          endAngle: 270,
+          hollow: {
+            margin: 5,
+            size: "30%",
+            background: "transparent",
+            image: undefined
+          },
+          dataLabels: {
+            name: {
+              show: false
+            },
+            value: {
+              show: false
+            }
+          }
+        }
+      },
+      labels: strings.map(string => labels[string]),
+      legend: {
+        show: false
+      },
+
+      tooltip: {
+        enabled: true
+      }
+    },
+    height: 250
+  };
+};
