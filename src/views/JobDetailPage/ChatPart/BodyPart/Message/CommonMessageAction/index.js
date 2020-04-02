@@ -21,19 +21,23 @@ const CommonMessageAction = ({ chatId }) => {
   }
 
   function handleClickCopy() {
+    setAnchorEl(null);
 
   }
 
   function onClickMarkSubTask() {
+    setAnchorEl(null);
 
   }
 
   function onClickMarkDemand() {
+    setAnchorEl(null);
 
   }
 
   function handleDeleteChat() {
     dispatch(deleteChat(taskId, chatId))
+    setAnchorEl(null);
   }
 
   function handleReplyChat() {
@@ -89,10 +93,3 @@ CommonMessageAction.propTypes = {
 };
 
 export default CommonMessageAction;
-
-// import * as chatTypes from "../constants/actions/chat/chat";
-//   //chat 
-//   yield takeLeading(
-//     chatTypes.DELETE_CHAT,
-//     chatDetailSaga.deleteChat
-//   );
