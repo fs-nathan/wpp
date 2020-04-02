@@ -15,42 +15,47 @@ const TextMessage = ({
   content,
   time_create,
   chat_parent,
-  isReply
+  isReply,
+  isSelf,
+  chatPosition = "top",
 }) => {
 
   return (
-    <div className="TextMessage"  >
-      {!isReply &&
-        <Avatar className="TextMessage--avatar" src={user_create_avatar} />
+    <div className={clsx("TextMessage", `TextMessage__${chatPosition}`)}  >
+      {!isReply && !isSelf &&
+        <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
       }
-      <div className={clsx("TextMessage--rightContentWrap", { "TextMessage--reply": isReply })}  >
-        <div className="TextMessage--sender"  >
-          {isReply &&
-            <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
-          }
-          <div className="TextMessage--name"  >
-            {user_create_name}
+      <div className={clsx("TextMessage--rightContentWrap", `TextMessage--rightContentWrap__${chatPosition}`, { "TextMessage--reply": isReply })}  >
+        {
+          chatPosition === 'top' && !isSelf &&
+          <div className="TextMessage--sender"  >
+            {isReply &&
+              <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
+            }
+            <div className="TextMessage--name"  >
+              {user_create_name}
+            </div>
+            <div className="TextMessage--position"  >
+              {user_create_position}
+            </div>
+            <div className="TextMessage--room"  >
+              {user_create_roles[0]}
+            </div>
           </div>
-          <div className="TextMessage--position"  >
-            {user_create_position}
-          </div>
-          <div className="TextMessage--room"  >
-            {user_create_roles[0]}
-          </div>
-        </div>
-        <div className="TextMessage--content"  >
+        }
+        <div className={clsx("TextMessage--content", { "TextMessage--content__self": isSelf })} >
           {chat_parent &&
             <TextMessage {...chat_parent} isReply></TextMessage>
           }
           {content}
         </div>
         {!isReply &&
-          <div className="TextMessage--time"  >
+          <div className={clsx("TextMessage--time", { "TextMessage--time__self": isSelf })} >
             {time_create}
           </div>
         }
       </div>
-      {!isReply &&
+      {!isReply && !isSelf &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
       }
     </div >

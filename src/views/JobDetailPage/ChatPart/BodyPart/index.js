@@ -15,10 +15,24 @@ const BodyPart = props => {
   const chatRef = useRef();
   const dispatch = useDispatch();
   const chats = useSelector(state => state.chat.chats)
+  const userId = useSelector(state => state.system.profile.order_user_id)
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [openAddModal, setOpenAddModal] = React.useState(false);
-
+  const calculatedChats = isEmpty(chats.data) ? [] : chats.data.map((chat, i) => {
+    let chatPosition = 'top';
+    const lastChat = chats.data[i - 1]
+    if (lastChat && lastChat.user_create_id === chat.user_create_id) {
+      chatPosition = 'mid';
+    }
+    const nextChat = chats.data[i + 1]
+    if (nextChat && nextChat.user_create_id !== chat.user_create_id) {
+      chatPosition = 'bot';
+    }
+    const isSelf = chat.user_create_id === userId;
+    return { ...chat, chatPosition, isSelf }
+  })
+  console.log(userId, 'userId')
   const {
     date_create,
     name,
@@ -103,8 +117,8 @@ const BodyPart = props => {
           </div>
         </div>
       </div>
-      {!isEmpty(chats.data) &&
-        chats.data.map(el => <Message {...el} key={el.id} handleReplyChat={handleReplyChat(el)} />)}
+      {
+        calculatedChats.map(el => <Message {...el} key={el.id} handleReplyChat={handleReplyChat(el)} />)}
       {/* <DetailMessage /> */}
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>

@@ -1,5 +1,5 @@
 .bodyChat {
-  background-color: #f8f8f8;
+  background-color: #dddddd;
   height: calc(100% - 230px);
   padding: 10px;
   overflow-x: hidden;
@@ -46,7 +46,7 @@
     font-size: 18px;
     background-color: transparent;
     border: none;
-    color: blue;
+    color: #7cb8ee;
     cursor: pointer;
   }
   &--introImages {
@@ -56,7 +56,7 @@
     margin-right: 25px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    color: greenyellow;
+    color: #72c770;
     background-color: #f8f8f8;
     img {
       width: 18vh;
