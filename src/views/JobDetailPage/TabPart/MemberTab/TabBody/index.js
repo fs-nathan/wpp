@@ -1,27 +1,32 @@
-import React from 'react';
 import { List } from '@material-ui/core';
-import { Scrollbars } from 'react-custom-scrollbars'
+import { getMember, getMemberNotAssigned, searchMember } from 'actions/taskDetail/taskDetailActions';
+import SearchInput from 'components/SearchInput';
+import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
-
-import SearchInput from '../../../../../components/SearchInput';
-import { searchMember } from '../../../../../actions/taskDetail/taskDetailActions';
+import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
 import MemberListItem from './MemberListItem';
-
-const members = [
-  { id: 1, name: 'Trần Văn Nam', role: 'Giám đốc', projectRole: 'Admin', authorityList: ['Giao việc'] },
-  { id: 2, name: 'Trần Văn Nam', projectRole: 'Quản lý', authorityList: ['Giao việc', 'Giám sát'] },
-  { id: 3, name: 'Trần Văn Nam', role: 'Khác', projectRole: 'Admin', authorityList: ['Giao việc'] },
-]
+import './styles.scss';
 
 function TabBody() {
   const dispatch = useDispatch();
   const members = useSelector(state => state.taskDetail.taskMember.member);
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const [open, setOpen] = React.useState(false);
 
   const searchMemberTabPart = (e) => {
     dispatch(searchMember(e.target.value));
   }
+  function handleClickPermission() {
+    console.log('handleClickPermission')
+    setOpen(true)
+    dispatch(getMember({ task_id: taskId }))
+    dispatch(getMemberNotAssigned({ task_id: taskId }))
+  }
   return (
-    <Scrollbars className="memberTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Scrollbars className="memberTabBody"
+      renderView={props => <div {...props} className="memberTabBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-member-tabbody">
         <SearchInput
           placeholder={'Nhập từ khóa'}
@@ -31,10 +36,11 @@ function TabBody() {
         <List>
           {members.map((element, index) => {
             return (
-              <MemberListItem key={element.id} {...element} />
+              <MemberListItem key={element.id} {...element} handleClickPermission={handleClickPermission} />
             );
           })}
         </List>
+        <AddMemberModal isOpen={open} setOpen={setOpen} />
       </div>
     </Scrollbars>
   )

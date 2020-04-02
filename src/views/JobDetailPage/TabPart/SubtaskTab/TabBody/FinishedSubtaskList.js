@@ -1,50 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Avatar, Menu, MenuItem } from '@material-ui/core';
+import { Menu, MenuItem } from '@material-ui/core';
+import { mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiDotsVertical } from '@mdi/js';
-import { useSelector, useDispatch } from 'react-redux';
-
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import { ButtonIcon, ItemList } from './AllSubtaskListItem';
 import { deleteSubTask } from 'actions/taskDetail/taskDetailActions';
-
-const CustomMenu = styled(Menu)`
-  & > .MuiPaper-root {
-    box-shadow: none;
-    border: 1px solid rgba(0,0,0,.1);
-    & > ul {
-      padding : 0;
-      & > li {
-        padding : 10px 20px;
-      }
-    }
-  }
-`
-
-const StyledListItemComplete = styled.li`
-  padding-left: 30px;
-  display: flex;
-  align-items: center;
-`
-
-const StyledMenuComplete = styled.div`
-  & > *:first-child {
-    margin-right: 8px;
-  }
-  display: none;
-  ${StyledListItemComplete}:hover & {
-    display: inline;
-  }
-`
-
-const FinishedSubtaskListItemTextSecondary = styled.span`
-  display: flex;
-  align-items: baseline;
-  & > *:first-child {
-    margin-right: 10px;
-  }
-`;
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ModalDeleteConfirm from '../../ModalDeleteConfirm';
+import { ButtonIcon } from './AllSubtaskListItem';
+import './styles.scss';
 
 const FinishedSubtaskList = (props) => {
   const dispatch = useDispatch();
@@ -82,31 +44,40 @@ const FinishedSubtaskList = (props) => {
     // console.log('taskId::::', props);
   }
 
+  const onClickTitle = (item) => {
+    return () => props.setSelectedItem(item)
+  }
+
   return (
     <ul style={{ padding: 0 }}>
       {completeSubTasks.map((item, index) => {
         return (
-          <StyledListItemComplete key={index}>
-            <Avatar style={{ marginRight: 13 }} src={item.user_create_avatar} alt='avatar' />
-            <ItemList
-              primary={`${item.name}`}
-              secondary={
-                <FinishedSubtaskListItemTextSecondary>
+          <li className="finishedSubTask--item" key={index}>
+            {/* <abbr title={item.user_create_name}>
+              <Avatar className="finishedSubTask--avatar" src={item.user_create_avatar} alt='avatar' />
+            </abbr> */}
+            <Icon path={mdiCheckCircle} size={1} color="#74f5c0" />
+            <div className="finishedSubTask--title" onClick={onClickTitle(item)}>
+              {`${item.name}`}
+            </div>
+            {/* <div className="finishedSubTask--subTitle" >
+                <abbr title={item.user_complete_name}>
                   <Avatar src={item.user_complete_avatar} style={{ width: 12, height: 12 }} />
+                  <Icon path={mdiDotsVertical} size={1} />
+                </abbr>
                   Hoàn thành lúc {item.time_complete}
-                </FinishedSubtaskListItemTextSecondary>
-              }
-            />
-            <StyledMenuComplete>
+              </div> */}
+            <div className="finishedSubTask--menuIcon" >
               <ButtonIcon onClick={e => handleClick(e, item.id)} aria-haspopup="true">
                 <Icon path={mdiDotsVertical} size={1} />
               </ButtonIcon>
-            </StyledMenuComplete>
-          </StyledListItemComplete>
+            </div>
+          </li>
         );
       })}
 
-      <CustomMenu
+      <Menu
+        className="finishedSubTask--menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -117,7 +88,7 @@ const FinishedSubtaskList = (props) => {
         }}
       >
         <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
-      </CustomMenu>
+      </Menu>
 
       <ModalDeleteConfirm
         confirmDelete={confirmDelete}

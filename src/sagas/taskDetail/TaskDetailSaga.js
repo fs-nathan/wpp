@@ -383,14 +383,10 @@ async function doUpdateOffer(payload) {
 }
 
 function* updateOffer(action) {
-  const data = {
-    offer_id: action.payload.offerId,
-    content: action.payload.content
-  };
   try {
-    yield call(doUpdateOffer, data);
+    yield call(doUpdateOffer, action.payload);
     // yield put(actions.updateOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: action.payload.taskId }));
+    yield put(actions.getOffer({ taskId: action.payload.task_id }));
   } catch (error) {
     yield put(actions.updateOfferFail(error));
   }
@@ -413,13 +409,23 @@ async function doDeleteOffer(payload) {
 function* deleteOffer(action) {
   try {
     // console.log("offer_id:::::::", action.payload);
-    const res = yield call(doDeleteOffer, {
-      offer_id: action.payload.offer_id
-    });
-    yield put(actions.deleteOfferSuccess(res));
-    yield put(actions.getOffer({ taskId: action.payload.taskId }));
+    const { offer_id, taskId } = action.payload
+    const res = yield call(doDeleteOffer, { offer_id, task_id: taskId })
+    yield put(actions.deleteOfferSuccess(res))
+    yield put(actions.getOffer({ taskId }))
   } catch (error) {
     yield put(actions.deleteOfferFail(error));
+  }
+}
+
+function* approveOffer(action) {
+  try {
+    // console.log("offer_id:::::::", action.payload);
+    const res = yield call(apiService.post, 'task/approve-offer', action.payload)
+    yield put(actions.deleteOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: action.payload.task_id }))
+  } catch (error) {
+    yield put(actions.deleteOfferFail(error))
   }
 }
 
@@ -776,8 +782,10 @@ async function doCreateMember(payload) {
 
 function* createMember(action) {
   try {
-    const res = yield call(doCreateMember, action.payload);
-    yield put(actions.createMemberSuccess(res));
+    const res = yield call(doCreateMember, action.payload)
+    yield put(actions.getMember({ task_id: action.payload.task_id }))
+    yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
+    yield put(actions.createMemberSuccess(res))
   } catch (error) {
     yield put(actions.createMemberFail(error));
   }
@@ -799,8 +807,10 @@ async function doDeleteMember(payload) {
 
 function* deleteMember(action) {
   try {
-    const res = yield call(doDeleteMember, action.payload);
-    yield put(actions.deleteMemberSuccess(res));
+    const res = yield call(doDeleteMember, action.payload)
+    yield put(actions.getMember({ task_id: action.payload.task_id }))
+    yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
+    yield put(actions.deleteMemberSuccess(res))
   } catch (error) {
     yield put(actions.deleteMemberFail(error));
   }
@@ -810,8 +820,8 @@ function* deleteMember(action) {
 async function doGetPermission(payload) {
   try {
     const config = {
-      url: "/task/get-group-permission",
-      method: "get",
+      url: '/permissions/list-group-permission?type=' + payload.type,
+      method: 'get',
       data: payload
     };
     const result = await apiService(config);
@@ -833,8 +843,8 @@ function* getPermission(action) {
 async function doUpdatePermission(payload) {
   try {
     const config = {
-      url: "/task/update-group-permission-member",
-      method: "post",
+      url: 'task/update-group-permission-for-member',
+      method: 'post',
       data: payload
     };
     const result = await apiService(config);
@@ -846,8 +856,9 @@ async function doUpdatePermission(payload) {
 
 function* updatePermission(action) {
   try {
-    const res = yield call(doUpdatePermission, action.payload);
-    yield put(actions.updatePermissionSuccess(res));
+    const res = yield call(doUpdatePermission, action.payload)
+    yield put(actions.updatePermissionSuccess(res))
+    yield put(actions.getMember({ task_id: action.payload.task_id }))
   } catch (error) {
     yield put(actions.updatePermissionFail(error));
   }
@@ -948,6 +959,16 @@ function* deleteRole(action) {
     yield put(actions.deleteRoleFail(error));
   }
 }
+
+function* updateRolesForMember(action) {
+  try {
+    const res = yield call(apiService.post, 'task/update-role-of-member', action.payload)
+    yield put(actions.updateRolesForMemberSuccess(res.data))
+    yield put(actions.getMember({ task_id: action.payload.task_id }))
+  } catch (error) {
+    yield put(actions.updateRolesForMemberFail(error))
+  }
+}
 // Get list task detail
 async function doGetListTaskDetail({ project_id }) {
   try {
@@ -964,9 +985,8 @@ async function doGetListTaskDetail({ project_id }) {
 
 function* getListTaskDetail(action) {
   try {
-    const res = yield call(doGetListTaskDetail, action.payload);
-
-    yield put(actions.getListTaskDetailSuccess(res));
+    const res = yield call(doGetListTaskDetail, action.payload)
+    yield put(actions.getListTaskDetailSuccess(res))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error));
   }
@@ -994,6 +1014,16 @@ function* getTrackingTime(action) {
   }
 }
 
+function* getTrackingTimeComplete(action) {
+  try {
+    const url = `task/get-tracking-complete?task_id=${action.payload}`
+    const res = yield call(apiService.get, url);
+    yield put(actions.getTrackingTimeCompleteSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getTrackingTimeCompleteFail(error));
+  }
+}
+
 async function doUpdateTimeDuration(payload) {
   try {
     const config = {
@@ -1011,7 +1041,7 @@ function* updateTimeDuration(action) {
   try {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
-    yield put(actions.getTrackingTime(action.payload.task_id));
+    yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
   } catch (error) {
     yield put(actions.updateTimeDurationFail);
   }
@@ -1226,8 +1256,9 @@ async function doUpdateComplete(payload) {
 function* updateComplete(action) {
   try {
     const res = yield call(doUpdateComplete, action.payload.data);
-
     yield put(actions.updateCompleteSuccess(res));
+    yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
+    yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
     yield put(
       actions.getListTaskDetail({ project_id: action.payload.projectId })
     );
@@ -1315,7 +1346,7 @@ export {
   // Update Priority
   updatePriority,
   // Offer::
-  getOffer, createOffer, deleteOffer, updateOffer, uploadDocumentToOffer, deleteDocumentToOffer, handleOffer, getListOffer,
+  getOffer, createOffer, deleteOffer, approveOffer, updateOffer, uploadDocumentToOffer, deleteDocumentToOffer, handleOffer, getListOffer,
   // Remind::
   getRemind, postRemindWithTimeDetail, postRemindDuration, updateRemindWithTimeDetail, updateRemindWithDuration, deleteRemind, pinRemind, unpinRemind,
   // Sub-Task::
@@ -1333,9 +1364,9 @@ export {
   // Member Permission - Tabpart
   getPermission, updatePermission,
   // Member Role - Tabpart
-  getRole, createRole, updateRole, deleteRole,
+  getRole, createRole, updateRole, deleteRole, updateRolesForMember,
   //time
-  getTrackingTime, updateTimeDuration,
+  getTrackingTime, updateTimeDuration, getTrackingTimeComplete,
   // List task detail
   getListTaskDetail, createTask,
   // List Group Task

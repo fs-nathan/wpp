@@ -1,14 +1,14 @@
-import React from 'react';
-import { Avatar, } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
-import MemberMenuLists from './MemberMenuLists';
-import ColorChip from 'components/ColorChip';
+import { Avatar } from '@material-ui/core';
 import { mdiClockOutline, mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
-import { useSelector } from 'react-redux';
+import ColorChip from 'components/ColorChip';
+import ColorTypo from 'components/ColorTypo';
 import get from 'lodash/get';
-
+import React from 'react';
+import { useSelector } from 'react-redux';
+import MemberMenuLists from './MemberMenuLists';
 import './styles.scss';
+
 
 const typesRemind = [
   'Nhắc 1 lần',
@@ -33,8 +33,8 @@ function RemindItem(props) {
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   const [day, month] = created_at.split('/');
   return (
-    <li className="remindItem" key={idx} onClick={onClick}>
-      <div className="remindItem--time" style={{ color: groupActiveColor }}>
+    <li className="remindItem" key={idx}>
+      <div className="remindItem--time" style={{ color: groupActiveColor }} onClick={onClick}>
         <div className="remindItem--month">
           Tháng {month}
         </div>
@@ -42,7 +42,7 @@ function RemindItem(props) {
           {day}
         </div>
       </div>
-      <div className="remindItem--content">
+      <div className="remindItem--content" onClick={onClick}>
         <div className="remindItem--title">
           {content}
         </div>
@@ -68,8 +68,8 @@ function RemindItem(props) {
           {is_ghim && <Icon className="remindItem--pinned" path={mdiPin} color="rgba(0, 0, 0, 0.54)"
             size={1} />}
         </div>
-        <MemberMenuLists className="remindItem--menu" idx={idx} handleClickOpen={() => handleClickOpen(props)} item={props} />
       </div>
+      <MemberMenuLists className="remindItem--menu" idx={idx} handleClickOpen={() => handleClickOpen(props)} item={props} />
     </li>
   );
 }

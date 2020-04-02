@@ -1,0 +1,40 @@
+.subTaskDetailDialog {
+  &--titleWrap {
+    display: flex;
+  }
+  &--avatar {
+    margin-right: 8px;
+  }
+  &--title {
+    font-weight: 700;
+  }
+  &--createdAt {
+    font-weight: normal;
+  }
+  &--container {
+  }
+  &--contentLabel {
+    font-weight: 700;
+    margin-bottom: 32px;
+  }
+  &--row {
+    border-top: 1px solid #ececec;
+    display: flex;
+    padding: 18px 0;
+  }
+  &--label {
+    color: #6d6d6d;
+    width: 25%;
+  }
+  &--content {
+    display: flex;
+  }
+  &--avatarCompleted {
+    width: 15px;
+    height: 15px;
+    margin: auto 4px;
+  }
+  &__finished {
+    color: #74f5c0;
+  }
+}

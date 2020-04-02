@@ -1,16 +1,17 @@
-import React from 'react';
-import { ListItemAvatar, ListItemText, Avatar } from '@material-ui/core';
-import styled from 'styled-components';
-import clsx from 'classnames';
-import Icon from '@mdi/react';
-import { mdiPin } from '@mdi/js';
-import SimpleDonutChart from '../../../../../components/SimpleDonutChart';
-import ColorTypo from '../../../../../components/ColorTypo';
-import ColorChip from '../../../../../components/ColorChip';
+import { Avatar, ListItemAvatar, ListItemText } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
-import { useDispatch } from 'react-redux';
-import * as taskDetailAction from '../../../../../actions/taskDetail/taskDetailActions';
+import { mdiPin } from '@mdi/js';
+import Icon from '@mdi/react';
+import { chooseTask, getTaskDetailTabPart, showTab } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'classnames';
+import ColorChip from 'components/ColorChip';
+import ColorTypo from 'components/ColorTypo';
+import SimpleDonutChart from 'components/SimpleDonutChart';
+import get from 'lodash/get';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -64,8 +65,9 @@ function JobName(props) {
     </div>
   );
 }
+
 function JobContent(props) {
-  const {avatar, ...rest} = props
+  const { avatar, notify = 1, ...rest } = props
   return (
     <div className="container-content-lbd">
       <div title={props.name}>
@@ -74,7 +76,7 @@ function JobContent(props) {
       </div>
       <div>
         <ChipMes
-          label={'N'}
+          label={notify}
           size="small"
           {...rest}
           notification={props.notification.toString()}
@@ -107,13 +109,13 @@ function JobUnit(props) {
 function ListBodyItem(props) {
   const history = useHistory();
   const dispatch = useDispatch();
-  const chooseTask = task => dispatch(taskDetailAction.chooseTask(task));
-  const getTaskDetailByTaskId = taskId => dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }));
+  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   // console.log({value})
 
   function onClickItem() {
-    chooseTask(props.id);
-    getTaskDetailByTaskId(props.id);
+    dispatch(chooseTask(props.id));
+    dispatch(getTaskDetailTabPart({ taskId: props.id }));
+    dispatch(showTab(0))
     // getMemberByTaskId(props.id)
     // getMemberNotAssignedByTaskId(props.id)
     history.push({ search: `?task_id=${props.id}` });
@@ -127,7 +129,7 @@ function ListBodyItem(props) {
       onClick={onClickItem}
     >
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
-        <SimpleDonutChart percentDone={props.complete} />
+        <SimpleDonutChart color={groupActiveColor} percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...props} />
     </div>

@@ -1,0 +1,40 @@
+.tabHeaderDefault {
+  &--container {
+    margin-left: 10px;
+    width: 90%;
+    display: inline-block;
+    height: 100%;
+    align-items: center;
+    align-content: center;
+    float: left;
+    position: relative;
+  }
+  &--avatar {
+    width: 60px;
+    height: 60px;
+  }
+  &--role {
+    color: blue;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  &--button {
+    margin: 0;
+    padding: 0;
+    &:hover {
+      background: none;
+    }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+  &--name {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    margin-top: 18px;
+    margin-bottom: 5px;
+  }
+}

@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-import ListPart from './ListPart';
-import ChatPart from './ChatPart';
-import TabPart from './TabPart';
-import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions';
-import Intro from './introduce';
+import { useDispatch, useSelector } from 'react-redux';
 import { closeNoticeModal } from '../../actions/system/system';
-import { taskIdSelector } from './selectors';
+import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions';
 import '../JobDetailPage/index.scss';
+import ChatPart from './ChatPart';
+import Intro from './introduce';
+import ListPart from './ListPart';
+import { taskIdSelector } from './selectors';
+import TabPart from './TabPart';
+
 
 function JobDetailPage(props) {
   const dispatch = useDispatch();
   const url = new URL(window.location.href);
   const taskId = useSelector(taskIdSelector) || url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  // console.log('JobDetailPage', { taskId });
+  console.log('JobDetailPage', taskId);
   useEffect(() => {
     if (taskId) {
       dispatch(taskDetailAction.chooseTask(taskId))
+      dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
     } // eslint-disable-next-line
   }, [taskId]);
 
@@ -60,9 +61,10 @@ function JobDetailPage(props) {
 
   useEffect(() => {
     dispatch(taskDetailAction.getRole());
-    dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
     dispatch(taskDetailAction.getListOffer());
+    dispatch(taskDetailAction.getPermission({ type: 4 }));
     if (projectId !== '') {
+      dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId }));
       dispatch(taskDetailAction.getStaticTask(projectId));
     }
@@ -82,31 +84,5 @@ function JobDetailPage(props) {
     </div>
   );
 }
-
-const mapStateTo = state => {
-  // console.log('state time task::::', state.taskDetail.commonTaskDetail.updateComplete);
-  return {
-    // const listGroupTask = useSelector(state=>state.taskDetail.listGroupTask.listGroupTask);
-    // project group
-    // const projectGroup = useSelector(state=>state.taskDetail.commonTaskDetail.projectGroups);
-    // static task
-    // const staticTask = useSelector(state=>state.taskDetail.listDetailTask.staticTask);
-    // const updateComplete = useSelector(state=>state.taskDetail.commonTaskDetail.updateComplet);
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    // Member
-    deleteMemberToTask: (task_id, member_id) =>
-      dispatch(taskDetailAction.deleteMember({ task_id, member_id })),
-    // Member Priority
-    getGroupPermission: () => dispatch(taskDetailAction.getPermission()),
-    updateGroupPermission: data =>
-      dispatch(taskDetailAction.updatePermission(data)),
-    // get project group
-    // getProjectGroup: () => dispatch(taskDetailAction.getProjectGroup()),
-  };
-};
 
 export default JobDetailPage;

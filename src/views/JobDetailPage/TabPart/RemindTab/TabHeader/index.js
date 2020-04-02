@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import RemindModal from '../RemindModal'
-import { taskIdSelector } from '../../../selectors';
 import { getRemind } from '../../../../../actions/taskDetail/taskDetailActions';
+import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
+import RemindModal from '../RemindModal';
+
 
 function TabHeader({ setShow }) {
   const dispatch = useDispatch();
@@ -19,9 +19,6 @@ function TabHeader({ setShow }) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const handleClickClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div className="container-normal-tabheader">
@@ -29,7 +26,7 @@ function TabHeader({ setShow }) {
         onClickBack={() => setShow(0)}
         onClickOpen={handleClickOpen}
       />
-      <RemindModal isOpen={isOpen} handleClickClose={handleClickClose} isCreate />
+      <RemindModal isOpen={isOpen} setOpen={setOpen} isCreate />
     </div>
   );
 }
