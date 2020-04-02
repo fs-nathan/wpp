@@ -1,4 +1,18 @@
 .CommonMessageAction {
-
-
+  display: flex;
+  &--button {
+    transition: unset;
+    background-color: unset;
+    border: none;
+    height: fit-content;
+    margin: auto 0;
+    cursor: pointer;
+    &:hover {
+      background-color: unset;
+    }
+  }
+  &--icon {
+    fill: #999999;
+    width: 20px;
+  }
 }

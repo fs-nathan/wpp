@@ -41,3 +41,24 @@ export const createChatImg = data => {
 export const createChatFile = data => {
   return apiService({ method: 'post', url: '/task/create-chat-file', data });
 };
+
+export function deleteChat(task_id, chat_id) {
+  return {
+    type: actionTypes.DELETE_CHAT,
+    task_id, chat_id,
+  };
+}
+
+export function deleteChatSuccess(payload) {
+  return {
+    type: actionTypes.DELETE_CHAT_SUCCESS,
+    payload,
+  };
+}
+
+export function deleteChatFail(error) {
+  return {
+    type: actionTypes.DELETE_CHAT_FAIL,
+    error,
+  };
+}
