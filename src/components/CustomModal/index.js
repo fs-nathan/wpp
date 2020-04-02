@@ -2,10 +2,11 @@ import { ButtonBase, Dialog, DialogActions, DialogContent, DialogTitle, Fade, Ic
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
-import { get } from 'lodash';
+import { get, isFunction } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import ColorTypo from '../ColorTypo';
 import LoadingOverlay from '../LoadingOverlay';
@@ -76,9 +77,12 @@ function TwoColumns({ maxWidth, left, right, height, }) {
   return (
     <TwoColumnsContainer maxWidth={maxWidth}>
       <div>
-        <LeftHeader>
-          {get(left, 'title', '')}
-        </LeftHeader>
+        {isFunction(get(left, 'title'))
+          ? get(left, 'title')()
+          : <LeftHeader>
+            {get(left, 'title')}
+          </LeftHeader>
+        }
         <StyledScrollbarsSide
           autoHide
           autoHideTimeout={500}
@@ -90,9 +94,12 @@ function TwoColumns({ maxWidth, left, right, height, }) {
         </StyledScrollbarsSide>
       </div>
       <div>
-        <RightHeader>
-          {get(right, 'title', '')}
-        </RightHeader>
+        {isFunction(get(right, 'title'))
+          ? get(right, 'title')()
+          : <RightHeader>
+            {get(right, 'title')}
+          </RightHeader>
+        }
         <StyledScrollbarsSide
           autoHide
           autoHideTimeout={500}
@@ -114,14 +121,16 @@ function CustomModal({
   columns = 1,
   children = null, left = null, right = null,
   canConfirm = true,
-  confirmRender = () => 'Hoàn thành', onConfirm = () => null,
-  cancleRender = () => 'Hủy', onCancle = () => null,
+  confirmRender = undefined, onConfirm = () => null,
+  cancleRender = undefined, onCancle = () => null,
   open, setOpen,
   maxWidth = 'md', fullWidth = false,
   height = 'medium',
   className = '',
 }) {
   const colors = useSelector(state => state.setting.colors)
+
+  const { t } = useTranslation();
   const bgColor = colors.find(item => item.selected === true);
 
   function handleCancle() {
@@ -176,12 +185,12 @@ function CustomModal({
       <StyledDialogActions>
         {cancleRender !== null && (
           <ActionsCancleButton onClick={() => handleCancle()}>
-            {cancleRender()}
+            {isFunction(cancleRender) ? cancleRender() : t('DMH.COMP.CUSTOM_MODAL.CANCLE')}
           </ActionsCancleButton>
         )}
         {confirmRender !== null && (
-          <ActionsAcceptButton style={{ color: bgColor.color }} disabled={!canConfirm} onClick={() => handleConfirm()}>
-            {confirmRender()}
+          <ActionsAcceptButton style={{ color: bgColor.color, opacity: canConfirm ? 1 : 0.5 }} disabled={!canConfirm} onClick={() => handleConfirm()}>
+            {isFunction(confirmRender) ? confirmRender() : t('DMH.COMP.CUSTOM_MODAL.CONFIRM')}
           </ActionsAcceptButton>
         )}
       </StyledDialogActions>

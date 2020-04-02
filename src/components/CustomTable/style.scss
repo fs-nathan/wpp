@@ -51,3 +51,13 @@
   grid-area: body;
   overflow-y: auto;
 };
+
+.comp_CustomTable___table-button {
+  background-color: #fd7e14;
+  color: #fff;
+  padding: 8px 12px;
+  margin-top: 8px;
+  &:hover {
+    background-color: #c46111;
+  }
+};

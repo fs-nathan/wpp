@@ -9,11 +9,11 @@ import { showProject } from '../../../../actions/project/showProject';
 import { sortProject } from '../../../../actions/project/sortProject';
 import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
 import AlertModal from '../../../../components/AlertModal';
+import { useFilters } from '../../../../components/CustomPopover';
 import { Context as ProjectPageContext } from '../../index';
 import CreateProjectModal from '../../Modals/CreateProject';
 import EditProjectModal from '../../Modals/EditProject';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
-import { filters } from './constants';
 import AllProjectTablePresenter from './presenters';
 import { bgColorSelector, projectsSelector, showHidePendingsSelector } from './selectors';
 
@@ -28,6 +28,7 @@ function AllProjectTable({
   isDefault = false,
 }) {
 
+  const filters = useFilters();
   const {
     setTimeRange,
     setProjectGroupId,

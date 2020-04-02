@@ -1,20 +1,12 @@
-import { Box, Button, ClickAwayListener, Drawer } from "@material-ui/core";
-import {
-  mdiCalendar,
-  mdiFilterOutline,
-  mdiFullscreen,
-  mdiFullscreenExit
-} from "@mdi/js";
-import {
-  CustomTableContext,
-  CustomTableProvider
-} from "components/CustomTable";
+import { Box, Button, Drawer } from "@material-ui/core";
+import { mdiCalendar, mdiFilterOutline, mdiFullscreen, mdiFullscreenExit } from "@mdi/js";
+import { CustomTableContext, CustomTableProvider } from "components/CustomTable";
 import HeaderButtonGroup from "components/CustomTable/HeaderButtonGroup";
 import React, { useContext, useState } from "react";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { TimeRangePopover, times } from "../../../components/CustomPopover";
+import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import LoadingBox from "../../../components/LoadingBox";
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
@@ -95,11 +87,9 @@ export function CustomTableLayout({ children }) {
           <HeaderButtonGroup />
           {get(options, "mainAction") && (
             <StyledButton
+              className="comp_PrimaryHeaderButton"
               style={{
-                backgroundColor: bgColor.color,
-                color: "white",
-                padding: "8px 12px",
-                marginTop: "8px"
+                backgroundColor: bgColor.color
               }}
               onClick={get(options, "mainAction.onClick", () => null)}
             >
@@ -114,6 +104,7 @@ export function CustomTableLayout({ children }) {
 }
 function Layout({ children, title, bgColor }) {
   const { t } = useTranslation();
+  const times = useTimes();
   const {
     timeAnchor,
     setTimeAnchor,
@@ -164,7 +155,7 @@ function Layout({ children, title, bgColor }) {
 
               draggable: {
                 bool: true,
-                onDragEnd: () => {}
+                onDragEnd: () => { }
               },
 
               loading: {
@@ -204,15 +195,7 @@ function Layout({ children, title, bgColor }) {
         }}
         onClose={() => setQuickTask(undefined)}
       >
-        {open && (
-          <ClickAwayListener
-            onClickAway={() => {
-              setQuickTask(undefined);
-            }}
-          >
-            <Scrollbars>{quickTask}</Scrollbars>
-          </ClickAwayListener>
-        )}
+        {open && quickTask}
       </Drawer>
       {openModalDirect && (
         <RedirectModal onClose={() => setOopenModalDirect(false)} />

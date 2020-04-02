@@ -1,6 +1,7 @@
 import { FormControl, FormControlLabel, MenuItem, Radio, RadioGroup, TextField } from '@material-ui/core';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomModal from '../../../../components/CustomModal';
 import CustomTextbox from '../../../../components/CustomTextbox';
@@ -26,6 +27,7 @@ function EditProject({
   handleEditProject,
 }) {
 
+  const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
@@ -66,11 +68,11 @@ function EditProject({
       })}
       loading={groups.loading}
     >
-      <ColorTypo>Nhóm dự án</ColorTypo>
       <StyledFormControl fullWidth>
         <CustomTextField
           select
           variant="outlined"
+          label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
           value={curProjectGroupId}
           onChange={evt => setCurProjectGroupId(evt.target.value)}
         >
@@ -81,10 +83,10 @@ function EditProject({
           )}
         </CustomTextField>
       </StyledFormControl>
-      <ColorTypo>Tên dự án</ColorTypo>
       <CustomTextField
         value={name}
         onChange={evt => setName(evt.target.value)}
+        label={t("DMH.VIEW.PGP.MODAL.CUP.NAME")}
         margin="normal"
         variant="outlined"
         fullWidth
@@ -95,7 +97,7 @@ function EditProject({
         }
       />
       <ColorTypo>
-        Mức độ ưu tiên
+        {t("DMH.VIEW.PGP.MODAL.CUP.PRIO.TITLE")}
       </ColorTypo>
       <StyledFormControl fullWidth>
         <RadioGroup
@@ -108,27 +110,27 @@ function EditProject({
           <FormControlLabel
             value={0}
             control={<Radio color="primary" />}
-            label="Thấp"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.LOW")}
             labelPlacement="end"
           />
           <FormControlLabel
             value={1}
             control={<Radio color="primary" />}
-            label="Trung bình"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.MED")}
             labelPlacement="end"
           />
           <FormControlLabel
             value={2}
             control={<Radio color="primary" />}
-            label="Cao"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.HIGH")}
             labelPlacement="end"
           />
         </RadioGroup>
       </StyledFormControl>
-      <ColorTypo>Mô tả dự án</ColorTypo>
       <CustomTextbox
         value={description}
         onChange={value => setDescription(value)}
+        label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
         helperText={get(errorDescription, 'message', '')}
       />
     </CustomModal>

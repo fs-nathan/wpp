@@ -1,6 +1,7 @@
 import { TextField } from '@material-ui/core';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
 import { useMaxlenString, useRequiredString } from '../../../../../hooks';
@@ -13,6 +14,7 @@ function TitleManager({
 
   const [name, setName, errorName] = useRequiredString('', 150);
   const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (updatedPosition) {
@@ -25,17 +27,16 @@ function TitleManager({
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title={updatedPosition ? 'Chỉnh sửa chức danh' : 'Tạo chức danh'}
+      title={updatedPosition ? t('DMH.VIEW.DP.MODAL.TITLE.U_TITLE') : t('DMH.VIEW.DP.MODAL.TITLE.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdatePosition(name, description)}
     >
-      <ColorTypo>Tên chức danh</ColorTypo>
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Tên chức danh'
+        label={t('DMH.VIEW.DP.MODAL.TITLE.NAME')}
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -43,13 +44,12 @@ function TitleManager({
           </ColorTypo>
         }
       />
-      <ColorTypo>Mô tả chức danh</ColorTypo>
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Mô tả chức danh'
+        label={t('DMH.VIEW.DP.MODAL.TITLE.DESC')}
         fullWidth
         multiline
         rowsMax='4'

@@ -1,6 +1,7 @@
 import { Button, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bgColorSelector } from './selectors';
 import './style.scss';
@@ -45,12 +46,14 @@ function SimpleManagerTable({
   bgColor,
 }) {
 
+  const { t } = useTranslation();
+
   return (
     <StyledTable>
       <StyledTableHead>
         <TableRow>
-          <StyledTableCell width={'30%'}>Tên</StyledTableCell>
-          <StyledTableCell width={'50%'}>Mô tả</StyledTableCell>
+          <StyledTableCell width={'30%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
+          <StyledTableCell width={'50%'}>{t('DMH.COMP.SMT.LABEL.DESC')}</StyledTableCell>
           <TableCell width={'20%'} colSpan={2}>
             <Button
               fullWidth
@@ -60,7 +63,7 @@ function SimpleManagerTable({
               }}
               onClick={() => handleAdd()}
             >
-              + Thêm mới
+              {t('DMH.COMP.SMT.LABEL.ADD')}
             </Button>
           </TableCell>
         </TableRow>
@@ -83,7 +86,7 @@ function SimpleManagerTable({
                     className="margin-circular"
                     color="white"
                   />}
-                Sửa
+                {t('DMH.COMP.SMT.BTN.UPT')}
               </MyButton>
             </TableCell>
             <TableCell width={'10%'} align='center'>
@@ -100,7 +103,7 @@ function SimpleManagerTable({
                     className="margin-circular"
                     color="white"
                   />}
-                Xóa
+                {t('DMH.COMP.SMT.BTN.DEL')}
               </MyButton>
             </TableCell>
           </TableRow>

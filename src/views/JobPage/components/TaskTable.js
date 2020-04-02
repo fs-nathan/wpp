@@ -37,7 +37,7 @@ export const TaskTable = ({
             <TableCell width="10%" align="left">
               {t("Tiến độ")}
             </TableCell>
-            <TableCell width="10%" align="right">
+            <TableCell width="10%" align="left">
               {t("Kết thúc")}
             </TableCell>
             <TableCell width="10%" align="right"></TableCell>
@@ -53,6 +53,9 @@ export const TaskTable = ({
               name,
               status_code,
               status_name,
+              priority_code,
+              priority_name,
+
               time_end,
               haveNewChat,
               duration_value,
@@ -67,6 +70,8 @@ export const TaskTable = ({
               taskAtrrs.name,
               taskAtrrs.status_code,
               taskAtrrs.status_name,
+              taskAtrrs.priority_code,
+              taskAtrrs.priority_name,
               taskAtrrs.time_end,
               taskAtrrs.haveNewChat,
               taskAtrrs.duration_value,
@@ -83,6 +88,8 @@ export const TaskTable = ({
                   name,
                   status_code,
                   status_name,
+                  priority_code,
+                  priority_name,
                   time_end,
                   haveNewChat,
                   duration_value,

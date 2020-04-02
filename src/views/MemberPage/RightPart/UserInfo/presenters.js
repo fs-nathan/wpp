@@ -2,6 +2,7 @@ import { List, ListItem, ListItemText } from '@material-ui/core';
 import { get, isNil } from 'lodash';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
@@ -83,6 +84,8 @@ function UserInfo({
   handleUploadDocumentsUser, handleOpenModal,
 }) {
 
+  const { t } = useTranslation();
+
   return (
     <>
       {isNil(user.error)
@@ -98,7 +101,7 @@ function UserInfo({
                 <CustomAvatar style={{ width: 60, height: 60, }} src={get(user.user, 'avatar')} alt='avatar' />
                 <div>
                   <NameSpan>{get(user.user, 'name', '')}</NameSpan>
-                  <ColorTypo>Ngày tham gia: {get(user.user, 'date_join', '')}</ColorTypo>
+                  <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.DATE_JOIN", { date: get(user.user, 'date_join', '') })}</ColorTypo>
                 </div>
                 <PillButton
                   size='medium'
@@ -106,7 +109,7 @@ function UserInfo({
                     updatedUser: user.user,
                   })}
                 >
-                  Chỉnh sửa
+                  {t("DMH.VIEW.MP.RIGHT.INFO.EDIT")}
                 </PillButton>
               </MainHeader>
               <Scrollbars
@@ -115,23 +118,23 @@ function UserInfo({
               >
                 <MainList>
                   <StyledListItem>
-                    <ColorTypo>Bộ phận:</ColorTypo>
+                    <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.ROOM")}:</ColorTypo>
                     <ColorTypo bold>{get(user.user, 'room_name', '')}</ColorTypo>
                   </StyledListItem>
                   <StyledListItem>
-                    <ColorTypo>Chức danh:</ColorTypo>
+                    <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.POSITION")}:</ColorTypo>
                     <ColorTypo bold>{get(user.user, 'position_name', '')}</ColorTypo>
                   </StyledListItem>
                   <StyledListItem>
-                    <ColorTypo>Trình độ:</ColorTypo>
+                    <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.LEVEL")}:</ColorTypo>
                     <ColorTypo bold>{get(user.user, 'level_name', '')}</ColorTypo>
                   </StyledListItem>
                   <StyledListItem>
-                    <ColorTypo>Chuyên ngành:</ColorTypo>
+                    <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.MAJOR")}:</ColorTypo>
                     <ColorTypo bold>{get(user.user, 'major_name', '')}</ColorTypo>
                   </StyledListItem>
                   <StyledListItem>
-                    <ColorTypo>Mô tả công việc:</ColorTypo>
+                    <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.DESC")}:</ColorTypo>
                     <CustomTextbox
                       value={get(user.user, 'description', '')}
                       isReadOnly={true}
@@ -145,7 +148,7 @@ function UserInfo({
                   files: get(user.user, 'documents', [])
                 })}>
                   <CustomAvatar alt='avatar' />
-                  <ColorTypo>Xem file hồ sơ</ColorTypo>
+                  <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.DOC.TITLE")}</ColorTypo>
                 </StyledButton>
                 <input
                   id="raised-button-file"
@@ -158,20 +161,20 @@ function UserInfo({
                   </ColorButton>)
                   : (
                     <ColorButton variant='text' variantColor='blue' size='small' component='label' htmlFor='raised-button-file'>
-                      {`+ Upload file hồ sơ`}
+                      {t("DMH.VIEW.MP.RIGHT.INFO.DOC.BTN")}
                     </ColorButton>)
                 }
               </MainFooter>
             </MainBox>
             <SideBox>
               <SideHeader>
-                <ColorTypo bold uppercase>Thông tin cá nhân</ColorTypo>
+                <ColorTypo bold uppercase>{t("DMH.VIEW.MP.RIGHT.INFO.INFO.TITLE")}</ColorTypo>
               </SideHeader>
               <SideList>
                 <StyledListItem>
                   <ListItemText
                     primary={
-                      <ColorTypo component='span' color='gray'>Họ tên đầy đủ</ColorTypo>
+                      <ColorTypo component='span' color='gray'>{t("DMH.VIEW.MP.RIGHT.INFO.INFO.NAME")}</ColorTypo>
                     }
                     secondary={
                       <ColorTypo component='span' bold>{get(user.user, 'name', '')}</ColorTypo>
@@ -181,7 +184,7 @@ function UserInfo({
                 <StyledListItem>
                   <ListItemText
                     primary={
-                      <ColorTypo component='span' color='gray'>Ngày sinh</ColorTypo>
+                      <ColorTypo component='span' color='gray'>{t("DMH.VIEW.MP.RIGHT.INFO.INFO.B_DAY")}</ColorTypo>
                     }
                     secondary={
                       <ColorTypo component='span' bold>{get(user.user, 'birthday', '')}</ColorTypo>
@@ -191,7 +194,7 @@ function UserInfo({
                 <StyledListItem>
                   <ListItemText
                     primary={
-                      <ColorTypo component='span' color='gray'>Giới tính</ColorTypo>
+                      <ColorTypo component='span' color='gray'>{t("DMH.VIEW.MP.RIGHT.INFO.INFO.GENDER")}</ColorTypo>
                     }
                     secondary={
                       <ColorTypo component='span' bold>{get(user.user, 'gender_name', '')}</ColorTypo>
@@ -201,7 +204,7 @@ function UserInfo({
                 <StyledListItem>
                   <ListItemText
                     primary={
-                      <ColorTypo component='span' color='gray'>Email</ColorTypo>
+                      <ColorTypo component='span' color='gray'>{t("DMH.VIEW.MP.RIGHT.INFO.INFO.EMAIL")}</ColorTypo>
                     }
                     secondary={
                       <ColorTypo component='span' bold>{get(user.user, 'email', '')}</ColorTypo>
@@ -211,7 +214,7 @@ function UserInfo({
                 <StyledListItem>
                   <ListItemText
                     primary={
-                      <ColorTypo component='span' color='gray'>Điện thoại</ColorTypo>
+                      <ColorTypo component='span' color='gray'>{t("DMH.VIEW.MP.RIGHT.INFO.INFO.PHONE")}</ColorTypo>
                     }
                     secondary={
                       <ColorTypo component='span' bold>{get(user.user, 'phone', '')}</ColorTypo>
@@ -221,7 +224,7 @@ function UserInfo({
                 <StyledListItem>
                   <ListItemText
                     primary={
-                      <ColorTypo component='span' color='gray'>Địa chỉ</ColorTypo>
+                      <ColorTypo component='span' color='gray'>{t("DMH.VIEW.MP.RIGHT.INFO.INFO.ADDR")}</ColorTypo>
                     }
                     secondary={
                       <ColorTypo component='span' bold>{get(user.user, 'address', '')}</ColorTypo>

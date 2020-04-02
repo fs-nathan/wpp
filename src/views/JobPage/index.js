@@ -1,14 +1,9 @@
-import {
-  mdiAccountSwitch,
-  mdiAccountTie,
-  mdiAlarm,
-  mdiViewDashboard
-} from "@mdi/js";
+import { mdiAccountSwitch, mdiAccountTie, mdiAlarm, mdiViewDashboard } from "@mdi/js";
 import React, { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import { times } from "../../components/CustomPopover";
+import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
 import { useLocalStorage } from "../../hooks";
@@ -101,6 +96,7 @@ function JobPage() {
   const [quickTask, setQuickTask] = useState();
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [timeType, setTimeType] = React.useState(localOptions.timeType);
+  const times = useTimes();
   useEffect(() => {
     setLocalOptions({
       ...localOptions,
@@ -175,14 +171,15 @@ function JobPage() {
       icon: mdiAccountTie,
       color: "#f44336",
       sub: roles.map(role => ({
-        name: `${t(get(role, roleAttrs.name))} (${get(
-          role,
-          roleAttrs.number_task
-        )})`,
+        name: t(get(role, roleAttrs.name)),
         url: Routes.ROLE.replace(":roleId", get(role, roleAttrs.id))
       }))
     }
   ];
+  const [pin, setPin] = useState(false);
+  const handleClose = () => {
+    !pin && setQuickTask(undefined);
+  };
   return (
     <TwoColumnsLayout
       leftRenders={[() => <TabList {...{ listMenu }} />]}
@@ -190,6 +187,8 @@ function JobPage() {
         <Provider
           value={{
             expand,
+            setPin,
+            handleClose,
             listMenu,
             filterConfig,
             handleExpand,

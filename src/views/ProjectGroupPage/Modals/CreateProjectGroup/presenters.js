@@ -1,6 +1,7 @@
 import { TextField } from '@material-ui/core';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
@@ -21,6 +22,7 @@ function CreateProjectGroup({
   handleCreateOrEditProjectGroup, handleOpenModal
 }) {
 
+  const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 150);
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
@@ -40,18 +42,18 @@ function CreateProjectGroup({
 
   return (
     <CustomModal
-      title={`${updatedProjectGroup ? 'Cập nhật' : 'Tạo'} nhóm dự án`}
+      title={updatedProjectGroup ? t("DMH.VIEW.PGP.MODAL.CUPG.U_TITLE") : t("DMH.VIEW.PGP.MODAL.CUPG.C_TITLE")}
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrEditProjectGroup(name, description, icon)}
     >
-      <ColorTypo>Tên nhóm dự án</ColorTypo>
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
+        label={t("DMH.VIEW.PGP.MODAL.CUPG.NAME")}
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -59,21 +61,21 @@ function CreateProjectGroup({
           </ColorTypo>
         }
       />
-      <ColorTypo>Mô tả nhóm dự án</ColorTypo>
       <CustomTextbox
         value={description}
+        label={t("DMH.VIEW.PGP.MODAL.CUPG.DESC")}
         onChange={value => setDescription(value)}
         helperText={get(errorDescription, 'message', '')}
       />
       <LogoBox>
         <div>
-          <ColorTypo>Biểu tượng nhóm</ColorTypo>
+          <ColorTypo>{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO")}</ColorTypo>
           <ColorButton
             color='primary'
             onClick={() => handleOpenModal('LOGO', {
               doSelectIcon: icon => setIcon(icon),
             })}
-          >+ Chọn biểu tượng</ColorButton>
+          >{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO_SELECT")}</ColorButton>
         </div>
         <CustomAvatar src={icon.url_full} alt='avatar' />
       </LogoBox>

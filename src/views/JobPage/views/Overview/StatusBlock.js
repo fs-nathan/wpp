@@ -1,6 +1,7 @@
-import { times } from "components/CustomPopover";
+import { useTimes } from "components/CustomPopover";
 import React, { useContext } from "react";
 import Chart from "react-apexcharts";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { JobPageContext } from "views/JobPage/JobPageContext";
 import ChartLegend from "../../components/ChartLegend";
@@ -16,11 +17,13 @@ export function StatusBlock() {
       state.taskPage[TASK_OVERVIEW_STATISTIC]
     );
   });
+  const { t } = useTranslation();
   const { timeType = 0 } = useContext(JobPageContext);
+  const times = useTimes();
   return (
     <Block
-      title="Trạng thái"
-      subheader="Biểu đồ theo trạng thái công việc"
+      title={t("Trạng thái")}
+      subheader={t("Biểu đồ theo trạng thái công việc")}
       extra={times[timeType].title}
     >
       <Chart {...chartProps} />

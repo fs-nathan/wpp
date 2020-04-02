@@ -31,9 +31,15 @@ const StyledTableMain = ({ className = "", ...rest }) => (
     {...rest}
   />
 );
+const StyledButton = ({ className = "", ...rest }) => (
+  <Button
+    className={`comp_CustomTable___table-button ${className}`}
+    {...rest}
+  />
+);
 
 export const TableHeader = () => {
-  const { options, bgColor } = React.useContext(CustomTableContext);
+  const { options } = React.useContext(CustomTableContext);
   return (
     <Header>
       <LeftHeader>
@@ -55,25 +61,19 @@ export const TableHeader = () => {
       <RightHeader>
         <HeaderButtonGroup />
         {get(options, "mainAction") && (
-          <Button
+          <StyledButton
             size="small"
             onClick={get(options, "mainAction.onClick", () => null)}
-            style={{
-              backgroundColor: bgColor.color,
-              color: 'white',
-              padding: '8px 12px',
-              marginTop: '8px',
-            }}
           >
             {get(options, "mainAction.label", "")}
-          </Button>
+          </StyledButton>
         )}
       </RightHeader>
     </Header>
   );
 };
 export function CustomTableLayout({ children }) {
-  const { options, bgColor } = React.useContext(CustomTableContext);
+  const { options } = React.useContext(CustomTableContext);
   return (
     <Container>
       <Header>
@@ -96,18 +96,12 @@ export function CustomTableLayout({ children }) {
         <RightHeader>
           <HeaderButtonGroup />
           {get(options, "mainAction") && (
-            <Button
+            <StyledButton
               size="small"
               onClick={get(options, "mainAction.onClick", () => null)}
-              style={{
-                backgroundColor: bgColor.color,
-                color: 'white',
-                padding: '8px 12px',
-                marginTop: '8px',
-              }}
             >
               {get(options, "mainAction.label", "")}
-            </Button>
+            </StyledButton>
           )}
         </RightHeader>
       </Header>
@@ -116,7 +110,7 @@ export function CustomTableLayout({ children }) {
   );
 }
 function CustomTable() {
-  const { options, bgColor } = React.useContext(CustomTableContext);
+  const { options } = React.useContext(CustomTableContext);
   return (
     <LoadingOverlay
       active={get(options, 'loading.bool', false)}
@@ -147,18 +141,12 @@ function CustomTable() {
           <RightHeader>
             <HeaderButtonGroup />
             {get(options, 'mainAction') && (
-              <Button
+              <StyledButton
                 size="small"
                 onClick={get(options, "mainAction.onClick", () => null)}
-                style={{
-                  backgroundColor: bgColor.color,
-                  color: 'white',
-                  padding: '8px 12px',
-                  marginTop: '8px',
-                }}
               >
                 {get(options, "mainAction.label", "")}
-              </Button>
+              </StyledButton>
             )}
           </RightHeader>
         </Header>

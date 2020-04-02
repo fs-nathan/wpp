@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../components/CustomModal';
 import ErrorBox from '../../../../components/ErrorBox';
 import SimpleManagerTable from '../../../../components/SimpleManagerTable';
@@ -9,13 +10,15 @@ function RoleManager({
   handleDeleteUserRole, handleOpenModal,
 }) {
 
+  const { t } = useTranslation();
+
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title='Quản lý vai trò'
+      title={t('DMH.VIEW.DP.MODAL.ROLE.TITLE')}
       confirmRender={null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t('DMH.VIEW.DP.MODAL.ROLE.EXIT')}
       loading={userRoles.loading}
     >
       {userRoles.error !== null
@@ -28,7 +31,7 @@ function RoleManager({
             updatedUserRole: userRole,
           })}
           handleDelete={userRole => handleOpenModal('ALERT', {
-            content: 'Bạn chắc chắn muốn xóa vai trò?',
+            content: t('DMH.VIEW.DP.MODAL.ROLE.ALERT'),
             onConfirm: () => handleDeleteUserRole(userRole),
           })}
         />

@@ -33,12 +33,12 @@ export const DefaultDepartment = ({
           iconPath: mdiChevronLeft,
           onClick: handleGoBack,
         }}
-        title={t('views.user_page.left_part.department_info.modal_title')}
+        title={t('DMH.VIEW.DP.LEFT.INFO.TITLE')}
       >
         <LogoBox>
           <CustomAvatar style={{ width: 60, height: 60 }} alt="avatar" />
           <ColorTypo uppercase bold color="green" variant="h6">
-            {t('views.user_page.left_part.department_info.default')}
+            {t('DMH.VIEW.DP.LEFT.INFO.DEFAULT')}
           </ColorTypo>
         </LogoBox>
       </LeftSideContainer>
@@ -63,9 +63,9 @@ export const NormalDepartment = ({
             leftAction={{
               iconPath: mdiChevronLeft,
               onClick: handleGoBack,
-              tooltip: 'Quay lại'
+              tooltip: t('DMH.VIEW.DP.LEFT.INFO.BACK')
             }}
-            title={t('views.user_page.left_part.department_info.modal_title')}
+            title={t('DMH.VIEW.DP.LEFT.INFO.TITLE')}
             loading={{
               bool: room.loading,
               component: () => <LoadingBox />
@@ -84,11 +84,11 @@ export const NormalDepartment = ({
                       {get(room.detail, 'name', '')}
                     </ColorTypo>
                     <ColorTypo>
-                      Số nhân sự: {get(room.detail, 'number_member', 0)} thành viên
-                  </ColorTypo>
+                      {t('DMH.VIEW.DP.LEFT.INFO.NUM_MEM', { members: get(room.detail, 'number_member', 0) })}
+                    </ColorTypo>
                   </LogoBox>
                   <ColorTypo uppercase bold color="gray">
-                    {t('views.user_page.left_part.department_info.intro')}
+                    {t('DMH.VIEW.DP.LEFT.INFO.INFO')}
                   </ColorTypo>
                   <StyledTextbox
                     value={get(room.detail, 'description', '')}
@@ -108,12 +108,12 @@ export const NormalDepartment = ({
                   size="small"
                   fullWidth
                 >
-                  {t('views.user_page.left_part.department_info.update')}
+                  {t('DMH.VIEW.DP.LEFT.INFO.BTN.UPT')}
                 </ColorButton>
                 <ColorButton
                   onClick={() =>
                     handleOpenModal('ALERT', {
-                      content: "Bạn chắc chắn muốn xóa bộ phận?",
+                      content: t('DMH.VIEW.DP.LEFT.INFO.ALERT'),
                       onConfirm: () => handleDeleteRoom(departmentId)
                     })
                   }
@@ -122,7 +122,7 @@ export const NormalDepartment = ({
                   size="small"
                   fullWidth
                 >
-                  {t('views.user_page.left_part.department_info.delete')}
+                  {t('DMH.VIEW.DP.LEFT.INFO.BTN.DEL')}
                 </ColorButton>
               </ActionBox>
             </Container>

@@ -67,6 +67,9 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    & > button {
+      padding: 12px 0;
+    }
   }
 }
 
@@ -119,7 +122,8 @@
 @mixin comp_CustomModal___dialog {
   & > div:nth-child(3) > div {
     overflow: hidden;
-    min-width: 600px;
+    min-width: 60vw;
+    max-width: 80vw;
   }
 }
 

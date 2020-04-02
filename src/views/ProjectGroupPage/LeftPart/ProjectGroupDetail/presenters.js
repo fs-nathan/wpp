@@ -1,6 +1,7 @@
 import { mdiChevronLeft } from '@mdi/js';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import ColorButton from '../../../../components/ColorButton';
@@ -37,6 +38,7 @@ function ProjectGroupDetail({
 }) {
 
   const history = useHistory();
+  const { t } = useTranslation();
 
   return (
     <React.Fragment>
@@ -46,9 +48,9 @@ function ProjectGroupDetail({
           leftAction={{
             iconPath: mdiChevronLeft,
             onClick: () => history.push('/projects'),
-            tooltip: 'Quay lại',
+            tooltip: t("DMH.VIEW.PGP.LEFT.INFO.BACK"),
           }}
-          title='Chi tiết nhóm dự án'
+          title={t("DMH.VIEW.PGP.LEFT.INFO.TITLE")}
           loading={{
             bool: group.loading,
             component: () => <LoadingBox />
@@ -71,11 +73,11 @@ function ProjectGroupDetail({
                           },
                         },
                         labels: [
-                          'Dự án đang chờ',
-                          'Dự án đang làm',
-                          'Dự án quá hạn',
-                          'Dự án hoàn thành',
-                          'Dự án ẩn',
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.WAITING"),
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.DOING"),
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
+                          t("DMH.VIEW.PGP.LEFT.INFO.STATS.HIDDEN"),
                         ],
                         colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#20194d'],
                       }}
@@ -86,11 +88,11 @@ function ProjectGroupDetail({
                         get(group.group, 'statistics.task_complete', 0),
                         get(group.group, 'statistics.task_hidden', 0),
                       ]}
-                      width={250}
-                      height={250}
+                      width={200}
+                      height={200}
                     />
                     <ChartTitle>
-                      Hoạt động
+                      {t("DMH.VIEW.PGP.LEFT.INFO.ACTV")}
                     </ChartTitle>
                     {
                       get(group.group, 'statistics.task_waiting', 0) +
@@ -106,32 +108,28 @@ function ProjectGroupDetail({
                     {group.loading ? '...' : get(group.group, 'name', '')}
                   </ProjectGroupName>
                   <ChartInfoBox
-                    title='Tổng số dự án:'
+                    title={t("DMH.VIEW.PGP.LEFT.INFO.STATS.TOTAL")}
                     data={
                       [{
                         color: '#ff9800',
-                        title: 'Dự án đang chờ',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.WAITING"),
                         value: get(group.group, 'statistics.task_waiting', 0),
                       }, {
                         color: '#03a9f4',
-                        title: 'Dự án đang làm',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.DOING"),
                         value: get(group.group, 'statistics.task_doing', 0),
                       }, {
                         color: '#f44336',
-                        title: 'Dự án quá hạn',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
                         value: get(group.group, 'statistics.task_expired', 0),
                       }, {
                         color: '#03c30b',
-                        title: 'Dự án hoàn thành',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
                         value: get(group.group, 'statistics.task_complete', 0),
                       }, {
                         color: '#20194d',
-                        title: 'Dự án ẩn',
+                        title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.HIDDEN"),
                         value: get(group.group, 'statistics.task_hidden', 0),
-                      }, {
-                        color: '#000',
-                        title: 'Dự án dừng',
-                        value: get(group.group, 'statistics.task_stop', 0),
                       }]
                     }
                   />
@@ -139,7 +137,7 @@ function ProjectGroupDetail({
               </SubContainer>
               <SubContainer>
                 <SubHeader>
-                  <ColorTypo color='gray' uppercase>Mô tả</ColorTypo>
+                  <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PGP.LEFT.INFO.DESC")}</ColorTypo>
                 </SubHeader>
                 <CustomTextbox
                   value={get(group.group, 'description', '')}
@@ -148,22 +146,22 @@ function ProjectGroupDetail({
               </SubContainer>
               <SubContainer>
                 <SubHeader>
-                  <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
+                  <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE")}</ColorTypo>
                 </SubHeader>
                 <AvatarCircleList users={group.group.members} total={20} display={12} />
                 <StyledColorTypo color='blue' onClick={() => handleOpenModal('MEMBER', {
                   members: get(group.group, 'members', []),
-                })}>Xem chi tiết thành viên</StyledColorTypo>
+                })}>{t("DMH.VIEW.PGP.LEFT.INFO.MEMBER.BTN")}</StyledColorTypo>
               </SubContainer>
             </div>
             <ActionBox>
               <ColorButton onClick={() => handleOpenModal('UPDATE', {
                 updatedProjectGroup: group.group,
-              })} variant='text' size='small' fullWidth>Chỉnh sửa</ColorButton>
+              })} variant='text' size='small' fullWidth>{t("DMH.VIEW.PGP.LEFT.INFO.BTN.UPT")}</ColorButton>
               <ColorButton onClick={() => handleOpenModal('ALERT', {
-                content: 'Bạn chắc chắn muốn xóa?',
+                content: t("DMH.VIEW.PGP.LEFT.INFO.ALERT"),
                 onConfirm: () => handleDeleteProjectGroup(group.group)
-              })} variant='text' variantColor='red' size='small' fullWidth>Xóa nhóm dự án</ColorButton>
+              })} variant='text' variantColor='red' size='small' fullWidth>{t("DMH.VIEW.PGP.LEFT.INFO.BTN.DEL")}</ColorButton>
             </ActionBox>
           </Container>
         </LeftSideContainer>
