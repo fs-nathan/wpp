@@ -38,9 +38,11 @@ const TextMessage = ({
             <div className="TextMessage--position"  >
               {user_create_position}
             </div>
-            <div className="TextMessage--room"  >
-              {user_create_roles[0]}
-            </div>
+            {user_create_roles[0] &&
+              <div className="TextMessage--room"  >
+                {user_create_roles[0]}
+              </div>
+            }
           </div>
         }
         <div className={clsx("TextMessage--content", { "TextMessage--content__self": isSelf })} >

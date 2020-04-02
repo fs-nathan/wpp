@@ -1,9 +1,9 @@
 .TextMessage {
-  margin-bottom: 15px;
+  margin-top: 15px;
   display: flex;
   &__mid,
-  &__top {
-    margin-bottom: 5px;
+  &__bot {
+    margin-top: 5px;
   }
   &--rightContentWrap {
     padding: 10px;

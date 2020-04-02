@@ -1,6 +1,79 @@
 .ImageMessage {
+  margin-top: 15px;
+  display: flex;
+  &__mid,
+  &__bot {
+    margin-top: 5px;
+  }
+  &--rightContentWrap {
+    width: 100%;
+  }
+  &--sender {
+    display: flex;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 25px;
+    margin-left: 10px;
+    width: max-content;
+  }
+  &--avatar {
+    width: 25px;
+    height: 25px;
+    &Reply {
+      margin-right: 4px;
+      width: 12px;
+      height: 12px;
+    }
+    &__hidden {
+      img {
+        display: none;
+      }
+    }
+  }
+  &--name {
+    font-size: 12px;
+    color: #01a750;
+    &__admin {
+      color: #e47212;
+    }
+  }
+  &--position {
+    font-size: 12px;
+    color: #ababab;
+    margin-left: 5px;
+  }
+  &--room {
+    font-size: 11px;
+    background-color: #eaebed;
+    color: #e47212;
+    padding: 2px 3px;
+    border-radius: 50%;
+    margin-left: 5px;
+  }
+  &--imagesContainer {
+    display: flex;
+  }
   &--wrap {
     position: relative;
+    margin: 5px;
+    &__total1 {
+      width: 66%;
+    }
+    &__total2 {
+      width: 38%;
+    }
+    &__total3 {
+      width: 25%;
+    }
+    &__number4 {
+      width: 100%;
+    }
+    &__number5 {
+      width: 100%;
+    }
+    &__number6 {
+      width: 100%;
+    }
   }
   &--quality {
     position: absolute;
@@ -11,8 +84,7 @@
     padding: 2px 5px;
   }
   &--img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
     border-radius: 10px;
   }
   &--time {
