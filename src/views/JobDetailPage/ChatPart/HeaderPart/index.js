@@ -50,7 +50,7 @@ const TabForm = props => {
 };
 
 const renderAvatars = props => {
-  const { styles, images } = props;
+  const { styles, images = [] } = props;
   const getAvatar = ({ number, src }) => {
     return (
       <Grid item xs={6}>

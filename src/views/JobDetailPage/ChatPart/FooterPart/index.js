@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
+import Message from '../BodyPart/Message';
 import '../Chat.scss';
 
 const FooterPart = props => {
@@ -52,12 +53,14 @@ const FooterPart = props => {
       setTextChat('')
       try {
         const { data } = await createChatText({
-          task_id: taskId, content: textChat
+          task_id: taskId, content: textChat,
+          parent_id: props.parentMessage.id,
         });
         dispatch(appendChat(data));
       } catch (error) {
         console.error('error here! ', error)
       }
+      props.setSelectedChat(null)
     }
   }
 
@@ -109,6 +112,7 @@ const FooterPart = props => {
           </IconButton>
         </div>
       </div>
+      <Message {...props.parentMessage} isReply></Message>
       <div className="wrap-input-message" id="input_message">
         {visibleTag === 'mention' && (
           <TagModal
@@ -117,7 +121,6 @@ const FooterPart = props => {
             onClose={() => setVisible(null)}
           />
         )}
-
         <input
           onKeyPress={onKeyPressChat}
           className="chat-input"

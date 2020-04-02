@@ -6,6 +6,7 @@ import RemindMessage from './RemindMessage';
 import TextMessage from './TextMessage';
 
 const Message = props => {
+  if (props.type === undefined) return null;
   switch (props.type) {
     case CHAT_TYPE.TEXT:
       return <TextMessage {...props} />;

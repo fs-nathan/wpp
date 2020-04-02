@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './styles.scss';
 
 
-const CommonMessageAction = ({ chatId }) => {
+const CommonMessageAction = ({ chatId, handleReplyChat }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -38,10 +38,6 @@ const CommonMessageAction = ({ chatId }) => {
   function handleDeleteChat() {
     dispatch(deleteChat(taskId, chatId))
     setAnchorEl(null);
-  }
-
-  function handleReplyChat() {
-
   }
 
   function handleForwardChat() {

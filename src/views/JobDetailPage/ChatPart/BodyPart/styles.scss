@@ -3,6 +3,9 @@
   height: calc(100% - 230px);
   padding: 10px;
   overflow-x: hidden;
+  &__reply {
+    height: calc(100% - 300px);
+  }
   &--project {
     width: 100%;
     background-color: white;

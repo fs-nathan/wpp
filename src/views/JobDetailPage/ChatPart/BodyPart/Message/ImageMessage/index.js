@@ -30,7 +30,7 @@ const ImageMessage = ({
         </div>
         {
           images.map(({ url }) =>
-            <div className="ImageMessage--wrap" >
+            <div key={url} className="ImageMessage--wrap" >
               <div className="ImageMessage--quality" >
                 HD
             </div>

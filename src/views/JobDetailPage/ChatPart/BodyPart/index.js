@@ -1,6 +1,7 @@
 import { Avatar } from '@material-ui/core';
 import { getListChat, getListChatService } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'clsx';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
@@ -51,8 +52,13 @@ const BodyPart = props => {
     dispatch(getMember({ task_id: taskId }))
     dispatch(getMemberNotAssigned({ task_id: taskId }))
   }
+
+  function handleReplyChat(data) {
+    return () => props.setSelectedChat(data)
+  }
+
   return (
-    <div className="bodyChat" ref={chatRef}>
+    <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} ref={chatRef}>
       <div className="wrap-time">
         <div className="line" />
         <div className="time">{date_create}</div>
@@ -98,7 +104,7 @@ const BodyPart = props => {
         </div>
       </div>
       {!isEmpty(chats.data) &&
-        chats.data.map(el => <Message {...el} key={el.id} />)}
+        chats.data.map(el => <Message {...el} key={el.id} handleReplyChat={handleReplyChat(el)} />)}
       {/* <DetailMessage /> */}
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>
