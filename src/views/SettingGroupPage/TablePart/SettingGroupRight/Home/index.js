@@ -9,8 +9,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { createMapPropsFromAttrs, loginlineFunc } from "views/JobPage/utils";
+import AddCategotyModal from "./components/AddCategotyModal";
 import { categoryAttr } from "./contants";
-import { categoryListSelector, loadCategoryList, loadPostCategoryLogoList } from "./redux";
+import HomeContext from "./HomeContext";
+import {
+  categoryListSelector,
+  loadCategoryList,
+  loadPostCategoryLogoList
+} from "./redux";
 const ChipGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -50,7 +56,7 @@ const SubTitle = styled.div`
   font-size: 15px;
 `;
 function Home() {
-  const { categories } = useContext(HomeContext);
+  const { categories, setModal } = useContext(HomeContext);
   const { t } = useTranslation();
   const [strings, setStrings] = useState([
     "Lịch tuần",
@@ -85,7 +91,9 @@ function Home() {
             style={{ background: "transparent" }}
             icon={<AddCircle style={{ color: colors.blue[0] }} />}
             label={t("Thêm")}
-            onClick={loginlineFunc}
+            onClick={() => {
+              setModal(<AddCategotyModal />);
+            }}
           />
         </ChipGroup>
         <Divider />
@@ -144,8 +152,8 @@ function Home() {
   );
 }
 
-const HomeContext = React.createContext({});
 export default () => {
+  const [modal, setModal] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadCategoryList());
@@ -154,8 +162,9 @@ export default () => {
 
   const categories = useSelector(categoryListSelector);
   return (
-    <HomeContext.Provider value={{ categories }}>
+    <HomeContext.Provider value={{ categories, setModal }}>
       <Home />
+      {modal}
     </HomeContext.Provider>
   );
 };
