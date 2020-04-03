@@ -73,6 +73,7 @@ function* postSubTask(action) {
     const res = yield call(doPostSubTask, action.options);
     yield put(actions.postSubTaskSuccess(res));
     yield put(actions.getSubTask({ taskId: action.options.task_id }));
+    yield put(actions.loadChat(action.options.task_id));
   } catch (error) {
     yield put(actions.postSubTaskFail(error));
   }
@@ -126,6 +127,7 @@ function* deleteSubTask(action) {
     const res = yield call(doDeleteSubTask, action.options);
     yield put(actions.deleteSubTaskSuccess(res));
     yield put(actions.getSubTask(action.options));
+    yield put(actions.loadChat(action.payload.taskId));
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error));
   }
@@ -204,6 +206,7 @@ function* postRemindWithTimeDetail(action) {
   try {
     yield call(doPostRemindWithTimeDetail, action.options);
     yield put(actions.getRemind({ taskId: action.options.taskId }));
+    yield put(actions.loadChat(action.options.taskId));
   } catch (error) {
     yield put(actions.postRemindWithTimeDetailFail(error));
   }
@@ -301,6 +304,7 @@ function* deleteRemind(action) {
     const res = yield call(doDeleteRemind, { remind_id, task_id: taskId });
     yield put(actions.deleteRemindSuccess(res));
     yield put(actions.getRemind({ taskId }));
+    yield put(actions.loadChat(action.payload.taskId));
   } catch (error) {
     yield put(actions.deleteRemindFail(error));
   }
@@ -363,6 +367,7 @@ function* createOffer(action) {
     const res = yield call(apiService.post, url, action.payload.data);
     yield put(actions.createOfferSuccess(res.data));
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
+    yield put(actions.loadChat(action.payload.taskId));
   } catch (error) {
     yield put(actions.createOfferFail(error));
   }
@@ -413,6 +418,7 @@ function* deleteOffer(action) {
     const res = yield call(doDeleteOffer, { offer_id, task_id: taskId })
     yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId }))
+    yield put(actions.loadChat(action.payload.taskId));
   } catch (error) {
     yield put(actions.deleteOfferFail(error));
   }
@@ -422,10 +428,10 @@ function* approveOffer(action) {
   try {
     // console.log("offer_id:::::::", action.payload);
     const res = yield call(apiService.post, 'task/approve-offer', action.payload)
-    yield put(actions.deleteOfferSuccess(res))
+    yield put(actions.approveOfferSuccess(res))
     yield put(actions.getOffer({ taskId: action.payload.task_id }))
   } catch (error) {
-    yield put(actions.deleteOfferFail(error))
+    yield put(actions.approveOfferFail(error))
   }
 }
 
@@ -660,6 +666,7 @@ function* createCommand(action) {
     const res = yield call(doCreateCommand, action.payload);
     yield put(actions.createCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
+    yield put(actions.loadChat(action.payload.task_id));
   } catch (error) {
     yield put(actions.createCommandFail(error));
   }
@@ -717,6 +724,7 @@ function* deleteCommand(action) {
     });
     yield put(actions.deleteCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
+    yield put(actions.loadChat(action.payload.task_id));
   } catch (error) {
     yield put(actions.deleteCommandFail(error));
   }
@@ -786,6 +794,7 @@ function* createMember(action) {
     yield put(actions.getMember({ task_id: action.payload.task_id }))
     yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
     yield put(actions.createMemberSuccess(res))
+    yield put(actions.loadChat(action.payload.task_id));
   } catch (error) {
     yield put(actions.createMemberFail(error));
   }
@@ -811,6 +820,7 @@ function* deleteMember(action) {
     yield put(actions.getMember({ task_id: action.payload.task_id }))
     yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
     yield put(actions.deleteMemberSuccess(res))
+    yield put(actions.loadChat(action.payload.task_id));
   } catch (error) {
     yield put(actions.deleteMemberFail(error));
   }
@@ -1042,6 +1052,7 @@ function* updateTimeDuration(action) {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
+    yield put(actions.loadChat(action.payload.task_id));
   } catch (error) {
     yield put(actions.updateTimeDurationFail);
   }
@@ -1207,6 +1218,7 @@ function* updateNameDescriptionTask(action) {
     const taskId = action.payload.task_id;
     yield put(actions.updateNameDescriptionTaskSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId }));
+    yield put(actions.loadChat(taskId));
     // const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
     // yield put(actions.updateTimeDurationSuccess(resTime))
     // yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
@@ -1259,6 +1271,7 @@ function* updateComplete(action) {
     yield put(actions.updateCompleteSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
     yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
+    yield put(actions.loadChat(action.payload.data.task_id));
     yield put(
       actions.getListTaskDetail({ project_id: action.payload.projectId })
     );
