@@ -1,8 +1,7 @@
 import { API_CALL } from "./saga";
 
 export const createAsyncAction = ({
-  config: { url, method = "get" },
-  data,
+  config: { url, method = "get", data },
   success,
   failure
 }) => {
@@ -11,7 +10,8 @@ export const createAsyncAction = ({
     payload: {
       config: {
         url,
-        method
+        method,
+        data
       },
       data,
       success,

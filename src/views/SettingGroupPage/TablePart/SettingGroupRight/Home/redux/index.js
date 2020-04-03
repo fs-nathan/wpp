@@ -20,8 +20,19 @@ const updateCategoryLogoList = createAction(
 export const loadPostCategoryLogoList = () => {
   return createAsyncAction({
     config: {
-      url: "/post-category/list-logo"
+      url: "/list-icon"
     },
+    success: updateCategoryLogoList
+  });
+};
+export const createPostCategory = ({ name, logo }) => {
+  return createAsyncAction({
+    config: {
+      url: "/post-category/create",
+      method: "post",
+      data: { name, logo }
+    },
+
     success: updateCategoryLogoList
   });
 };

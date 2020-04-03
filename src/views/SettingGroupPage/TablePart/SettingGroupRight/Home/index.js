@@ -1,14 +1,13 @@
 import { Avatar, Box, Checkbox, Chip, Divider } from "@material-ui/core";
-import { AddCircle } from "@material-ui/icons";
 import { mdiDragVertical } from "@mdi/js";
 import Icon from "@mdi/react";
-import colors from "helpers/colorPalette";
 import React, { useContext, useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { createMapPropsFromAttrs, loginlineFunc } from "views/JobPage/utils";
+import AddButton from "./components/AddButton";
 import AddCategotyModal from "./components/AddCategotyModal";
 import { categoryAttr } from "./contants";
 import HomeContext from "./HomeContext";
@@ -87,14 +86,12 @@ function Home() {
             );
           })}
           <Box flexBasis="100%" margin="0px!important" />
-          <Chip
-            style={{ background: "transparent" }}
-            icon={<AddCircle style={{ color: colors.blue[0] }} />}
+          <AddButton
             label={t("Thêm")}
             onClick={() => {
               setModal(<AddCategotyModal />);
             }}
-          />
+          ></AddButton>
         </ChipGroup>
         <Divider />
         <Stack small>
