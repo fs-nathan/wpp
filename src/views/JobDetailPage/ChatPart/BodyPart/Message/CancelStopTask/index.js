@@ -23,7 +23,7 @@ const CancelStopTask = ({
 
 
   return (
-    <div className={clsx("CancelStopTask", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("CancelStopTask", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--header" >
         Thông báo
       </div>
@@ -42,14 +42,14 @@ const CancelStopTask = ({
         }
       </div>
       <div className="UpdateTaskNameMessage--title" >
-        {"Tạm dừng công việc"}
+        {"Bỏ Tạm dừng công việc"}
       </div>
       <Icon className="CancelStopTask--icon" path={mdiTimerOff}></Icon>
       <div className="UpdateTaskNameMessage--content" >
         Lúc {time_create}
       </div>
       <div className="CancelStopTask--notify" >
-        {"Tiến độ công việc sẽ chạy lại sau khi bỏ tạm dừng!"}
+        {"Tiến độ công việc sẽ tiếp tục tính từ thời điểm này"}
       </div>
       {!isReply &&
         <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >

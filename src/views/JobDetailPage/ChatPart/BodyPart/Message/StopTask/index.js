@@ -23,7 +23,7 @@ const StopTask = ({
 
 
   return (
-    <div className={clsx("StopTask", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("StopTask", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--header" >
         Thông báo
       </div>

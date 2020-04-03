@@ -16,7 +16,7 @@ export function* deleteChat(payload) {
 export function* loadChat(payload) {
   try {
     const { task_id } = payload;
-    const res = yield call(apiService.get, "/task/get-chat", { task_id });
+    const res = yield call(apiService.get, `/task/get-chat?task_id=${task_id}`, { task_id });
     yield put(actions.loadChatSuccess(res.data));
   } catch (error) {
     yield put(actions.loadChatFail(error));
@@ -55,7 +55,7 @@ export function* chatForwardFile(payload) {
 export function* chatSticker(payload) {
   try {
     const { task_id, sticker_id } = payload;
-    const res = yield call(apiService.post, `/task/create-chat-forward-file?task_id=${task_id}`, { sticker_id });
+    const res = yield call(apiService.post, `/task/create-chat-sticker?task_id=${task_id}`, { sticker_id });
     yield put(actions.chatStickerSuccess(res.data));
     yield put(actions.loadChat(task_id));
   } catch (error) {
@@ -87,5 +87,15 @@ export function* forwardChat(payload) {
     yield put(actions.forwardChatSuccess(res.data));
   } catch (error) {
     yield put(actions.forwardChatFail(error));
+  }
+}
+
+export function* getListStickers(payload) {
+  try {
+    const { task_id, chat_id, forward_to } = payload;
+    const res = yield call(apiService.get, "/stickers/get-list", { task_id, chat_id, forward_to });
+    yield put(actions.getListStickersSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getListStickersFail(error));
   }
 }

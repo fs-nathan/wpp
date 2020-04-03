@@ -565,6 +565,10 @@ function* rootSaga() {
     chatTypes.FORWARD_CHAT,
     chatDetailSaga.forwardChat
   );
+  yield takeLeading(
+    chatTypes.GET_LIST_STICKERS,
+    chatDetailSaga.getListStickers
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);

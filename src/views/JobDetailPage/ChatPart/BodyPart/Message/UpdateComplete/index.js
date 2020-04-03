@@ -19,6 +19,8 @@ const UpdateComplete = ({
   time_create,
   isReply,
   is_me,
+  old_complete,
+  complete,
   chatPosition = "top",
 }) => {
   const dispatch = useDispatch();
@@ -49,13 +51,13 @@ const UpdateComplete = ({
       <div className="UpdateTaskNameMessage--title" >
         Tạo công việc con
       </div>
-      <div className="UpdateTaskNameMessage--content" >
+      <div className="UpdateComplete--content" >
         <div className="UpdateComplete--circle" >
-          <div>{priority_name}</div>
+          <div>{old_complete}%</div>
         </div>
         <Icon className="UpdateComplete--icon" path={mdiTransferRight}></Icon>
         <div className="UpdateComplete--circle" >
-          <div>{priority_name}</div>
+          <div>{complete}%</div>
         </div>
       </div>
       {!isReply &&

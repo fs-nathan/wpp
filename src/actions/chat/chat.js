@@ -149,10 +149,11 @@ export function chatForwardFileFail(error) {
   };
 }
 
-export function chatSticker(sticker) {
+export function chatSticker(task_id, sticker_id) {
   return {
     type: actionTypes.CHAT_STICKER,
-    sticker,
+    task_id,
+    sticker_id,
   };
 }
 
@@ -229,6 +230,26 @@ export function forwardChatSuccess(payload) {
 export function forwardChatFail(error) {
   return {
     type: actionTypes.FORWARD_CHAT_FAIL,
+    error,
+  };
+}
+export function getListStickersRequest(chatId) {
+  return {
+    type: actionTypes.GET_LIST_STICKERS,
+    chatId,
+  };
+}
+
+export function getListStickersSuccess(payload) {
+  return {
+    type: actionTypes.GET_LIST_STICKERS_SUCCESS,
+    payload,
+  };
+}
+
+export function getListStickersFail(error) {
+  return {
+    type: actionTypes.GET_LIST_STICKERS_FAIL,
     error,
   };
 }

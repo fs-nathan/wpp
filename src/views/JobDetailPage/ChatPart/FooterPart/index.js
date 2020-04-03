@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, chatImage, createChatText } from 'actions/chat/chat';
+import { chatImage, chatSticker, createChatText, loadChat } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 // import * as MaterialIcon from '@material-ui/icons'
 // import colors from 'helpers/colorPalette'
@@ -13,9 +13,13 @@ import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
 import Message from '../BodyPart/Message';
 import '../Chat.scss';
 
-const FooterPart = props => {
+const FooterPart = ({
+  parentMessage,
+  setSelectedChat,
+}) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const stickers = useSelector(state => state.chat.listStickers);
 
   const [marginLeftModal, setMarginLeftModal] = useState(0);
   const [marginTopModal, setMarginTopModal] = useState(0);
@@ -53,7 +57,7 @@ const FooterPart = props => {
   }
 
   function onClickSticker() {
-    dispatch(showTab(3))
+    dispatch(chatSticker(taskId, stickers[0].id))
   }
 
   function onClickSubTask() {
@@ -72,13 +76,14 @@ const FooterPart = props => {
       try {
         const { data } = await createChatText({
           task_id: taskId, content: textChat,
-          parent_id: props.parentMessage.id,
+          parent_id: parentMessage && parentMessage.id,
         });
-        dispatch(appendChat(data));
+        // dispatch(appendChat(data));
+        dispatch(loadChat(taskId));
       } catch (error) {
         console.error('error here! ', error)
       }
-      props.setSelectedChat(null)
+      setSelectedChat(null)
     }
   }
 
@@ -130,7 +135,7 @@ const FooterPart = props => {
           </IconButton>
         </div>
       </div>
-      <Message {...props.parentMessage} isReply></Message>
+      <Message {...parentMessage} isReply></Message>
       <div className="wrap-input-message" id="input_message">
         {visibleTag === 'mention' && (
           <TagModal

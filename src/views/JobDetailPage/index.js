@@ -1,3 +1,4 @@
+import { getListStickersRequest } from 'actions/chat/chat';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeNoticeModal } from '../../actions/system/system';
@@ -9,13 +10,12 @@ import ListPart from './ListPart';
 import { taskIdSelector } from './selectors';
 import TabPart from './TabPart';
 
-
 function JobDetailPage(props) {
   const dispatch = useDispatch();
   const url = new URL(window.location.href);
   const taskId = useSelector(taskIdSelector) || url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  console.log('JobDetailPage', taskId);
+  // console.log('JobDetailPage', taskId);
   useEffect(() => {
     if (taskId) {
       dispatch(taskDetailAction.chooseTask(taskId))
@@ -25,6 +25,7 @@ function JobDetailPage(props) {
 
   useEffect(() => {
     dispatch(closeNoticeModal());
+    dispatch(getListStickersRequest());
     // getProjectGroup()
     dispatch(taskDetailAction.getProjectListBasic(projectId));
     // getDetailProject(projectId)

@@ -12,7 +12,7 @@ const UpdateDurationMessage = ({
   user_create_position,
   user_create_roles = [],
   new_task_name,
-  time_changes,
+  time_changes = [],
   time_create,
   chat_parent,
   isReply,
@@ -43,9 +43,9 @@ const UpdateDurationMessage = ({
         Cập nhật tiến độ
       </div>
       <div className="UpdateTaskNameMessage--content" >
-        Bắt đầu: Từ {time_changes[0].old} sang {time_changes[0].new}
+        {time_changes[0] && `Bắt đầu: Từ ${time_changes[0].old} sang ${time_changes[0].new}`}
         <br />
-        Kết thúc: Từ {time_changes[1].old} sang {time_changes[1].new}
+        {time_changes[1] && `Kết thúc: Từ ${time_changes[1].old} sang ${time_changes[1].new}`}
       </div>
       {!isReply &&
         <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >

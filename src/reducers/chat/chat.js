@@ -3,7 +3,8 @@ import * as actionTypes from '../../constants/actions/chat/chat';
 
 export const initialState = {
   chats: {},
-  members: []
+  members: [],
+  listStickers: [],
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) =>
@@ -56,6 +57,11 @@ export default (state = initialState, action) =>
       case actionTypes.FORWARD_CHAT_SUCCESS: {
         const { payload } = action;
         draft.payload = payload;
+        break;
+      }
+      case actionTypes.GET_LIST_STICKERS_SUCCESS: {
+        const { payload } = action;
+        draft.listStickers = payload.stickers;
         break;
       }
     }

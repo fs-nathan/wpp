@@ -17,7 +17,6 @@ import EditPriority from './EditPriority';
 import ExtendTime from './ExtendTime';
 import FileMessage from './FileMessage';
 import HandleOffer from './HandleOffer';
-import HandleRemind from './HandleRemind';
 import ImageMessage from './ImageMessage';
 import RemindMessage from './RemindMessage';
 import RemoveMember from './RemoveMember';
@@ -67,7 +66,7 @@ const Message = props => {
     case CHAT_TYPE.REMOVE_MEMBER:
       return <RemoveMember {...props} />;
     case CHAT_TYPE.HANDLE_REMIND:
-      return <HandleRemind {...props} />;
+      return <RemindMessage {...props} />;
     case CHAT_TYPE.SHARE_FILE:
       return <ShareFile {...props} />;
     case CHAT_TYPE.EDIT_PRIORITY:
