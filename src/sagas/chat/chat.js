@@ -35,8 +35,8 @@ export function* chatImage(payload) {
 }
 export function* chatFile(payload) {
   try {
-    const { task_id, file } = payload;
-    const res = yield call(apiService.post, `/task/create-chat-file?task_id=${task_id}`, { file });
+    const { task_id, data } = payload;
+    const res = yield call(apiService.post, `/task/create-chat-file?task_id=${task_id}`, data);
     yield put(actions.chatFileSuccess(res.data));
     yield put(actions.loadChat(task_id));
   } catch (error) {

@@ -1,6 +1,33 @@
 .FileMessage {
-
   &--avatar {
-    
+  }
+  &--files {
+    display: flex;
+  }
+  &--icon {
+    width: 25px;
+    height: auto;
+  }
+  &--fileName {
+    font-size: 18px;
+    color: #000;
+    margin: 0 5px;
+  }
+  &--download {
+    &Button {
+      cursor: pointer;
+    }
+    width: 20px;
+    height: 20px;
+    background-color: #eeeeee;
+    border-radius: 50%;
+    svg {
+      fill: #333333;
+    }
+  }
+  &--fileSize {
+    font-size: 14px;
+    color: #777777;
+    margin-left: 5px;
   }
 }
