@@ -1,0 +1,48 @@
+.UpdateTaskNameMessage {
+  background-color: #ffffff;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 66%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  &--header {
+    background-color: #ff4c55;
+    color: #ffffff;
+    font-size: 19px;
+    padding: 12px;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  &--sender {
+    width: fit-content;
+    margin: 14px auto;
+    display: flex;
+  }
+  &--avatarReply {
+  }
+  &--name {
+    font-size: 16px;
+  }
+  &--position {
+  }
+  &--title {
+    font-size: 30px;
+    color: #000000;
+    line-height: 40px;
+    text-transform: uppercase;
+  }
+  &--content {
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 20px;
+  }
+  &--time {
+    line-height: 30px;
+    border-top: 1px solid #cccccc;
+    text-align: left;
+    margin-left: 5px;
+    position: relative;
+  }
+}

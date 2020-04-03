@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { mdiAlarm } from '@mdi/js';
+import { mdiTransferRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
@@ -8,17 +8,15 @@ import { useDispatch } from 'react-redux';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
-const RemindMessage = ({
+const UpdateComplete = ({
   handleReplyChat,
   id,
   user_create_name,
   user_create_avatar,
   user_create_position,
   user_create_roles = [],
-  remind_name,
-  content,
+  priority_name,
   time_create,
-  chat_parent,
   isReply,
   is_me,
   chatPosition = "top",
@@ -26,11 +24,11 @@ const RemindMessage = ({
   const dispatch = useDispatch();
 
   function onClickViewDetail() {
-    dispatch(showTab(3))
+    dispatch(showTab(0))
   }
 
   return (
-    <div className={clsx("RemindMessage", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("UpdateComplete", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--header" >
         Thông báo
       </div>
@@ -49,16 +47,22 @@ const RemindMessage = ({
         }
       </div>
       <div className="UpdateTaskNameMessage--title" >
-        Nhắc hẹn công việc
+        Tạo công việc con
       </div>
       <div className="UpdateTaskNameMessage--content" >
-        {remind_name}
+        <div className="UpdateComplete--circle" >
+          <div>{priority_name}</div>
+        </div>
+        <Icon className="UpdateComplete--icon" path={mdiTransferRight}></Icon>
+        <div className="UpdateComplete--circle" >
+          <div>{priority_name}</div>
+        </div>
       </div>
       {!isReply &&
         <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
           {time_create}
           <span className="CreateNewSubTask--detail" onClick={onClickViewDetail}>
-            <Icon className="RemindMessage--icon" path={mdiAlarm}></Icon>Xem chi tiết
+            Xem chi tiết
           </span>
         </div>
       }
@@ -69,8 +73,8 @@ const RemindMessage = ({
   );
 }
 
-RemindMessage.propTypes = {
+UpdateComplete.propTypes = {
 
 };
 
-export default RemindMessage;
+export default UpdateComplete;

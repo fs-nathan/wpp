@@ -1,5 +1,6 @@
+
 import { Avatar } from '@material-ui/core';
-import { mdiAlarm } from '@mdi/js';
+import { mdiMapMarkerDistance } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
@@ -8,14 +9,14 @@ import { useDispatch } from 'react-redux';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
-const RemindMessage = ({
+const ShareLocation = ({
   handleReplyChat,
   id,
   user_create_name,
   user_create_avatar,
   user_create_position,
   user_create_roles = [],
-  remind_name,
+  address,
   content,
   time_create,
   chat_parent,
@@ -26,14 +27,14 @@ const RemindMessage = ({
   const dispatch = useDispatch();
 
   function onClickViewDetail() {
-    dispatch(showTab(3))
+    dispatch(showTab(5))
   }
 
   return (
-    <div className={clsx("RemindMessage", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("ShareLocation", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--header" >
         Thông báo
-      </div>
+        </div>
       <div className="UpdateTaskNameMessage--sender" >
         <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
         <div className="TextMessage--name" >
@@ -49,17 +50,18 @@ const RemindMessage = ({
         }
       </div>
       <div className="UpdateTaskNameMessage--title" >
-        Nhắc hẹn công việc
+        Chia sẻ vị trí
+      <Icon className="ShareLocation--icon" path={mdiMapMarkerDistance}></Icon>
       </div>
       <div className="UpdateTaskNameMessage--content" >
-        {remind_name}
+        {address}
       </div>
       {!isReply &&
         <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
           {time_create}
           <span className="CreateNewSubTask--detail" onClick={onClickViewDetail}>
-            <Icon className="RemindMessage--icon" path={mdiAlarm}></Icon>Xem chi tiết
-          </span>
+            Xem chi tiết
+            </span>
         </div>
       }
       {!isReply && !is_me &&
@@ -69,8 +71,8 @@ const RemindMessage = ({
   );
 }
 
-RemindMessage.propTypes = {
+ShareLocation.propTypes = {
 
 };
 
-export default RemindMessage;
+export default ShareLocation;

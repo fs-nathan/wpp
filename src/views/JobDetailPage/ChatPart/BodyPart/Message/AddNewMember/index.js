@@ -1,6 +1,4 @@
 import { Avatar } from '@material-ui/core';
-import { mdiAlarm } from '@mdi/js';
-import Icon from '@mdi/react';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import React from 'react';
@@ -8,15 +6,15 @@ import { useDispatch } from 'react-redux';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
-const RemindMessage = ({
+const AddNewMember = ({
   handleReplyChat,
   id,
   user_create_name,
   user_create_avatar,
   user_create_position,
   user_create_roles = [],
-  remind_name,
-  content,
+  member_name,
+  member_avatar,
   time_create,
   chat_parent,
   isReply,
@@ -26,11 +24,11 @@ const RemindMessage = ({
   const dispatch = useDispatch();
 
   function onClickViewDetail() {
-    dispatch(showTab(3))
+    dispatch(showTab(8))
   }
 
   return (
-    <div className={clsx("RemindMessage", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("AddNewMember", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--header" >
         Thông báo
       </div>
@@ -49,16 +47,17 @@ const RemindMessage = ({
         }
       </div>
       <div className="UpdateTaskNameMessage--title" >
-        Nhắc hẹn công việc
+        Tạo công việc con
       </div>
       <div className="UpdateTaskNameMessage--content" >
-        {remind_name}
+        <Avatar className="TextMessage--avatarReply" src={member_avatar} />
+        {member_name}
       </div>
       {!isReply &&
         <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
           {time_create}
           <span className="CreateNewSubTask--detail" onClick={onClickViewDetail}>
-            <Icon className="RemindMessage--icon" path={mdiAlarm}></Icon>Xem chi tiết
+            Xem chi tiết
           </span>
         </div>
       }
@@ -69,8 +68,8 @@ const RemindMessage = ({
   );
 }
 
-RemindMessage.propTypes = {
+AddNewMember.propTypes = {
 
 };
 
-export default RemindMessage;
+export default AddNewMember;

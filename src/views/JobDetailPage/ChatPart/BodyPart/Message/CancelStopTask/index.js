@@ -1,36 +1,29 @@
 import { Avatar } from '@material-ui/core';
-import { mdiAlarm } from '@mdi/js';
+import { mdiTimerOff } from '@mdi/js';
 import Icon from '@mdi/react';
-import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
-const RemindMessage = ({
+const CancelStopTask = ({
   handleReplyChat,
   id,
   user_create_name,
   user_create_avatar,
   user_create_position,
   user_create_roles = [],
-  remind_name,
-  content,
+  new_task_name,
   time_create,
-  chat_parent,
   isReply,
   is_me,
   chatPosition = "top",
+  title = "Đổi tên công việc"
 }) => {
-  const dispatch = useDispatch();
 
-  function onClickViewDetail() {
-    dispatch(showTab(3))
-  }
 
   return (
-    <div className={clsx("RemindMessage", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("CancelStopTask", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--header" >
         Thông báo
       </div>
@@ -49,17 +42,18 @@ const RemindMessage = ({
         }
       </div>
       <div className="UpdateTaskNameMessage--title" >
-        Nhắc hẹn công việc
+        {"Tạm dừng công việc"}
       </div>
+      <Icon className="CancelStopTask--icon" path={mdiTimerOff}></Icon>
       <div className="UpdateTaskNameMessage--content" >
-        {remind_name}
+        Lúc {time_create}
+      </div>
+      <div className="CancelStopTask--notify" >
+        {"Tiến độ công việc sẽ chạy lại sau khi bỏ tạm dừng!"}
       </div>
       {!isReply &&
         <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
           {time_create}
-          <span className="CreateNewSubTask--detail" onClick={onClickViewDetail}>
-            <Icon className="RemindMessage--icon" path={mdiAlarm}></Icon>Xem chi tiết
-          </span>
         </div>
       }
       {!isReply && !is_me &&
@@ -69,8 +63,8 @@ const RemindMessage = ({
   );
 }
 
-RemindMessage.propTypes = {
+CancelStopTask.propTypes = {
 
 };
 
-export default RemindMessage;
+export default CancelStopTask;
