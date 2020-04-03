@@ -1,7 +1,8 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, createChatText } from 'actions/chat/chat';
+import { appendChat, chatImage, createChatText } from 'actions/chat/chat';
+import { showTab } from 'actions/taskDetail/taskDetailActions';
 // import * as MaterialIcon from '@material-ui/icons'
 // import colors from 'helpers/colorPalette'
 import IconLike from 'assets/like.svg';
@@ -28,6 +29,11 @@ const FooterPart = props => {
   const handleUploadImage = e => {
     const { files } = e.target;
     console.log('upload image', files);
+    let data = new FormData()
+    for (let i = 0; i < files.length; i++) {
+      data.append("image", files[i], files[i].name)
+    }
+    dispatch(chatImage(taskId, data))
   };
 
   const openTag = () => {
@@ -44,6 +50,18 @@ const FooterPart = props => {
 
   function onChangeTextChat(event) {
     setTextChat(event.target.value)
+  }
+
+  function onClickSticker() {
+    dispatch(showTab(3))
+  }
+
+  function onClickSubTask() {
+    dispatch(showTab(2))
+  }
+
+  function onClickRemind() {
+    dispatch(showTab(3))
   }
 
   async function onKeyPressChat(event) {
@@ -71,7 +89,7 @@ const FooterPart = props => {
           <IconButton className="icon-btn" onClick={openTag}>
             <Icon path={mdiAt} size={1.2} />
           </IconButton>
-          <IconButton className="icon-btn">
+          <IconButton className="icon-btn" onClick={onClickSticker}>
             <Icon path={mdiEmoticon} size={1.2} />
           </IconButton>
           <IconButton
@@ -95,10 +113,10 @@ const FooterPart = props => {
           >
             <Icon path={mdiPaperclip} size={1.2} />
           </IconButton>
-          <IconButton className="icon-btn">
+          <IconButton className="icon-btn" onClick={onClickSubTask}>
             <Icon path={mdiFileTree} size={1.2} />
           </IconButton>
-          <IconButton className="icon-btn">
+          <IconButton className="icon-btn" onClick={onClickRemind}>
             <Icon path={mdiAlarmPlus} size={1.2} />
           </IconButton>
         </div>

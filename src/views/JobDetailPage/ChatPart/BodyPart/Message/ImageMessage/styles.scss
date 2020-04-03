@@ -7,6 +7,14 @@
   }
   &--rightContentWrap {
     width: 100%;
+    &__self {
+      width: 75%;
+      margin-right: 0;
+      margin-left: auto;
+      .ImageMessage--imagesContainer {
+        justify-content: flex-end;
+      }
+    }
   }
   &--sender {
     display: flex;
@@ -56,13 +64,13 @@
   &--wrap {
     position: relative;
     margin: 5px;
-    &__total1 {
-      width: 66%;
+    &__number1 {
+      width: 25%;
     }
-    &__total2 {
-      width: 38%;
+    &__number2 {
+      width: 25%;
     }
-    &__total3 {
+    &__number3 {
       width: 25%;
     }
     &__number4 {
@@ -72,7 +80,24 @@
       width: 100%;
     }
     &__number6 {
+      width: 25%;
+    }
+    &__total1-1 {
+      width: 66%;
+    }
+    &__total2-1,
+    &__total2-2 {
+      width: 38%;
+    }
+    &__number4-4 {
       width: 100%;
+    }
+    &__number5-4,
+    &__number5-5 {
+      width: 100%;
+    }
+    &__number6-plus {
+      width: 25%;
     }
   }
   &--quality {

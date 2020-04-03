@@ -62,3 +62,172 @@ export function deleteChatFail(error) {
     error,
   };
 }
+
+export function loadChat(taskId) {
+  return {
+    type: actionTypes.LOAD_CHAT,
+    task_id: taskId,
+  };
+}
+
+export function loadChatSuccess(payload) {
+  return {
+    type: actionTypes.LOAD_CHAT_SUCCESS,
+    payload,
+  };
+}
+
+export function loadChatFail(error) {
+  return {
+    type: actionTypes.LOAD_CHAT_FAIL,
+    error,
+  };
+}
+
+
+export function chatImage(task_id, data) {
+  return {
+    type: actionTypes.CHAT_IMAGE,
+    task_id, data,
+  };
+}
+
+export function chatImageSuccess(payload) {
+  return {
+    type: actionTypes.CHAT_IMAGE_SUCCESS,
+    payload,
+  };
+}
+
+export function chatImageFail(error) {
+  return {
+    type: actionTypes.CHAT_IMAGE_FAIL,
+    error,
+  };
+}
+
+export function chatFile(file) {
+  return {
+    type: actionTypes.CHAT_FILE,
+    file,
+  };
+}
+
+export function chatFileSuccess(payload) {
+  return {
+    type: actionTypes.CHAT_FILE_SUCCESS,
+    payload,
+  };
+}
+
+export function chatFileFail(error) {
+  return {
+    type: actionTypes.CHAT_FILE_FAIL,
+    error,
+  };
+}
+
+export function chatForwardFile(file) {
+  return {
+    type: actionTypes.CHAT_FORWARD_FILE,
+    file,
+  };
+}
+
+export function chatForwardFileSuccess(payload) {
+  return {
+    type: actionTypes.CHAT_FORWARD_FILE_SUCCESS,
+    payload,
+  };
+}
+
+export function chatForwardFileFail(error) {
+  return {
+    type: actionTypes.CHAT_FORWARD_FILE_FAIL,
+    error,
+  };
+}
+
+export function chatSticker(sticker) {
+  return {
+    type: actionTypes.CHAT_STICKER,
+    sticker,
+  };
+}
+
+export function chatStickerSuccess(payload) {
+  return {
+    type: actionTypes.CHAT_STICKER_SUCCESS,
+    payload,
+  };
+}
+
+export function chatStickerFail(error) {
+  return {
+    type: actionTypes.CHAT_STICKER_FAIL,
+    error,
+  };
+}
+
+export function getChatNotViewed(taskId) {
+  return {
+    type: actionTypes.GET_CHAT_NOT_VIEWED,
+    taskId,
+  };
+}
+
+export function getChatNotViewedSuccess(payload) {
+  return {
+    type: actionTypes.GET_CHAT_NOT_VIEWED_SUCCESS,
+    payload,
+  };
+}
+
+export function getChatNotViewedFail(error) {
+  return {
+    type: actionTypes.GET_CHAT_NOT_VIEWED_FAIL,
+    error,
+  };
+}
+
+export function getNotiChat(taskId) {
+  return {
+    type: actionTypes.GET_NOTI_CHAT,
+    taskId,
+  };
+}
+
+export function getNotiChatSuccess(payload) {
+  return {
+    type: actionTypes.GET_NOTI_CHAT_SUCCESS,
+    payload,
+  };
+}
+
+export function getNotiChatFail(error) {
+  return {
+    type: actionTypes.GET_NOTI_CHAT_FAIL,
+    error,
+  };
+}
+
+export function forwardChat(chatId) {
+  return {
+    type: actionTypes.FORWARD_CHAT,
+    chatId,
+  };
+}
+
+export function forwardChatSuccess(payload) {
+  return {
+    type: actionTypes.FORWARD_CHAT_SUCCESS,
+    payload,
+  };
+}
+
+export function forwardChatFail(error) {
+  return {
+    type: actionTypes.FORWARD_CHAT_FAIL,
+    error,
+  };
+}

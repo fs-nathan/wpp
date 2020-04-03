@@ -15,18 +15,18 @@ const ImageMessage = ({
   user_create_position,
   user_create_roles,
   isReply,
-  isSelf,
+  is_me,
   chatPosition = "top",
 }) => {
 
   return (
     <div className={clsx("ImageMessage", `ImageMessage__${chatPosition}`)} >
-      {!isReply && !isSelf &&
+      {!isReply && !is_me &&
         <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
       }
-      <div className="ImageMessage--rightContentWrap"  >
+      <div className={clsx("ImageMessage--rightContentWrap", { "ImageMessage--rightContentWrap__self": is_me })} >
         {
-          chatPosition === 'top' && !isSelf &&
+          chatPosition === 'top' && !is_me &&
           <div className="ImageMessage--sender"  >
             {isReply &&
               <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
@@ -47,7 +47,7 @@ const ImageMessage = ({
         <div className="ImageMessage--imagesContainer" >
           {
             images.map(({ url }, i) =>
-              <div key={url} className={clsx("ImageMessage--wrap", `ImageMessage--wrap__total${images.length}`, `ImageMessage--wrap__number${i + 1}`)} >
+              <div key={url} className={clsx("ImageMessage--wrap", `ImageMessage--wrap__total${images.length}-${i + 1}`, `ImageMessage--wrap__number${i + 1}`)} >
                 <div className="ImageMessage--quality" >
                   HD
             </div>
@@ -57,12 +57,12 @@ const ImageMessage = ({
           }
         </div>
         {!isReply &&
-          <div className={clsx("TextMessage--time", { "TextMessage--time__self": isSelf })} >
+          <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
             {time_create}
           </div>
         }
       </div>
-      {!isReply && !isSelf &&
+      {!isReply && !is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
       }
     </div>

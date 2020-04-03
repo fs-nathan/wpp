@@ -11,6 +11,12 @@
     border-radius: 5px;
     margin-left: 10px;
     width: 100%;
+    &__self {
+      background-color: #2fa145;
+      width: 75%;
+      margin-right: 0;
+      margin-left: auto;
+    }
     &__top {
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;

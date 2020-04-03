@@ -533,6 +533,38 @@ function* rootSaga() {
     chatTypes.DELETE_CHAT,
     chatDetailSaga.deleteChat
   );
+  yield takeLeading(
+    chatTypes.LOAD_CHAT,
+    chatDetailSaga.loadChat
+  );
+  yield takeLeading(
+    chatTypes.CHAT_IMAGE,
+    chatDetailSaga.chatImage
+  );
+  yield takeLeading(
+    chatTypes.CHAT_FILE,
+    chatDetailSaga.chatFile
+  );
+  yield takeLeading(
+    chatTypes.CHAT_FORWARD_FILE,
+    chatDetailSaga.chatForwardFile
+  );
+  yield takeLeading(
+    chatTypes.CHAT_STICKER,
+    chatDetailSaga.chatSticker
+  );
+  yield takeLeading(
+    chatTypes.GET_CHAT_NOT_VIEWED,
+    chatDetailSaga.getChatNotViewed
+  );
+  yield takeLeading(
+    chatTypes.GET_NOTI_CHAT,
+    chatDetailSaga.getNotiChat
+  );
+  yield takeLeading(
+    chatTypes.FORWARD_CHAT,
+    chatDetailSaga.forwardChat
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);

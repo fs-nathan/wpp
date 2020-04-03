@@ -15,7 +15,7 @@ const BodyPart = props => {
   const chatRef = useRef();
   const dispatch = useDispatch();
   const chats = useSelector(state => state.chat.chats)
-  const userId = useSelector(state => state.system.profile.order_user_id)
+  // const userId = useSelector(state => state.system.profile.order_user_id)
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -24,15 +24,14 @@ const BodyPart = props => {
     const lastChat = chats.data[i - 1]
     if (lastChat && lastChat.user_create_id === chat.user_create_id) {
       chatPosition = 'mid';
+      const nextChat = chats.data[i + 1]
+      if (nextChat && nextChat.user_create_id !== chat.user_create_id) {
+        chatPosition = 'bot';
+      }
     }
-    const nextChat = chats.data[i + 1]
-    if (nextChat && nextChat.user_create_id !== chat.user_create_id) {
-      chatPosition = 'bot';
-    }
-    const isSelf = chat.user_create_id === userId;
-    return { ...chat, chatPosition, isSelf }
+    return { ...chat, chatPosition }
   })
-  console.log(userId, 'userId')
+  console.log(calculatedChats, 'calculatedChats')
   const {
     date_create,
     name,
@@ -60,7 +59,7 @@ const BodyPart = props => {
     fetchListChat();
     // eslint-disable-next-line
   }, []);
-  console.log('chats', chats);
+  // console.log('chats', chats);
   function onClickCreateMember() {
     setOpenAddModal(true)
     dispatch(getMember({ task_id: taskId }))
