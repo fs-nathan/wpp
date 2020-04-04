@@ -14,9 +14,9 @@ import {
   //SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER, 
   UPLOAD_DOCUMENTS_USER
 } from '../../constants/events';
-import { Routes } from '../../constants/routes';
 import UserList from './LeftPart/UserList';
 import UserInfo from './RightPart/UserInfo';
+import { routeSelector } from './selectors';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -37,6 +37,7 @@ const RightDiv = styled.div`
 `;
 
 function UserPage({
+  route,
   doListRoom,
   doListPosition,
   doListMajor,
@@ -151,7 +152,7 @@ function UserPage({
     }}>
       <Container>
         <Route
-          path={Routes.MEMBERS}
+          path={route}
           render={({ match: { url, } }) => (
             <LeftDiv>
               <Route path={`${url}/`} component={UserList} />
@@ -159,7 +160,7 @@ function UserPage({
           )}
         />
         <Route
-          path={Routes.MEMBERS}
+          path={route}
           render={({ match: { url, } }) => (
             <RightDiv>
               <Route path={`${url}/:userId`}
@@ -190,6 +191,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    route: routeSelector(state),
+  }),
   mapDispatchToProps,
 )(UserPage);

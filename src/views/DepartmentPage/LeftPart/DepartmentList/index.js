@@ -1,20 +1,21 @@
+import { filter, get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
 import { sortRoom } from '../../../../actions/room/sortRoom';
-import { filter, get } from 'lodash';
-import { roomsSelector } from './selectors';
+import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
+import { routeSelector } from '../../selectors';
 import DepartmentListPresenter from './presenters';
+import { roomsSelector } from './selectors';
 
-function DepartmentList({ 
-  rooms, 
-  doSortRoom, 
+function DepartmentList({
+  rooms, route,
+  doSortRoom,
 }) {
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
   const filteredRooms = filter(
-    rooms.rooms, 
+    rooms.rooms,
     room => get(room, 'name', '')
       .toLowerCase()
       .includes(searchPatern.toLowerCase())
@@ -53,12 +54,13 @@ function DepartmentList({
           loading: rooms.loading,
           error: rooms.error,
         }}
+        route={route}
         searchPatern={searchPatern}
         handleDragEnd={onDragEnd}
         handleSearchPatern={evt => setSearchPatern(evt.target.value)}
         handleOpenModal={doOpenModal}
       />
-      <CreateAndUpdateDepartmentModal 
+      <CreateAndUpdateDepartmentModal
         open={openCreateAndUpdateDepartmentModal}
         setOpen={setOpenCreateAndUpdateDepartmentModal}
       />
@@ -69,6 +71,7 @@ function DepartmentList({
 const mapStateToProps = state => {
   return {
     rooms: roomsSelector(state),
+    route: routeSelector(state),
   };
 };
 

@@ -5,15 +5,14 @@ import { get } from 'lodash';
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CustomAvatar from '../../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
 
 function CustomListItem({
-  room, index
+  room, index, handleLink
 }) {
 
-  const location = useLocation();
   const [isHover, setIsHover] = React.useState(false);
   const { t } = useTranslation();
 
@@ -25,7 +24,8 @@ function CustomListItem({
       {(provided) => (
         <StyledListItem
           component={Link}
-          to={`${location.pathname}/room/${get(room, 'id')}`}
+          to={'#'}
+          onClick={evt => handleLink(get(room, 'id'))}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}
@@ -48,5 +48,7 @@ function CustomListItem({
     </Draggable>
   )
 }
+
+
 
 export default CustomListItem;

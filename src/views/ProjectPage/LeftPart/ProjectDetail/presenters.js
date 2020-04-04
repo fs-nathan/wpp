@@ -12,7 +12,6 @@ import CustomTextbox from '../../../../components/CustomTextbox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import ProgressBar from '../../../../components/ProgressBar';
-import { Routes } from '../../../../constants/routes';
 import './style.scss';
 
 const ProjectName = ({ className = '', ...props }) =>
@@ -47,7 +46,7 @@ function getExpectedProgress(startDate, endDate) {
 }
 
 function ProjectDetail({
-  project,
+  project, route,
   handleDeleteProject, handleOpenModal,
 }) {
 
@@ -59,7 +58,7 @@ function ProjectDetail({
         title='Thông tin dự án'
         leftAction={{
           iconPath: mdiChevronLeft,
-          onClick: () => history.push(Routes.PROJECTS),
+          onClick: () => history.push(route),
           tooltip: 'Quay lại',
         }}
         loading={{

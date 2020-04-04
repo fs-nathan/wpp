@@ -1,12 +1,13 @@
+import { get, reverse, sortBy } from 'lodash';
 import React from 'react';
-import { get, sortBy, reverse } from 'lodash';
 import { connect } from 'react-redux';
-import { projectsSelector } from './selectors';
+import { routeSelector } from '../../selectors';
 import DeletedProjectTablePresenter from './presenters';
+import { projectsSelector } from './selectors';
 
-function DeletedProjectTable({ 
-  expand, handleExpand, 
-  projects,
+function DeletedProjectTable({
+  expand, handleExpand,
+  projects, route,
 }) {
 
   const [newProjects, setNewProjects] = React.useState(projects);
@@ -25,8 +26,8 @@ function DeletedProjectTable({
   }, [projects, sortType]);
 
   return (
-    <DeletedProjectTablePresenter 
-      expand={expand} handleExpand={handleExpand} 
+    <DeletedProjectTablePresenter
+      expand={expand} handleExpand={handleExpand} route={route}
       projects={newProjects}
       handleSortType={type => setSortType(oldType => {
         const newCol = type;
@@ -43,6 +44,7 @@ function DeletedProjectTable({
 const mapStateToProps = state => {
   return {
     projects: projectsSelector(state),
+    route: routeSelector(state),
   }
 }
 

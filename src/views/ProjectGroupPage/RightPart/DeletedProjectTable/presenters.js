@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomTable from '../../../../components/CustomTable';
 import LoadingBox from '../../../../components/LoadingBox';
-import { Routes } from '../../../../constants/routes';
 import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
@@ -16,7 +15,7 @@ const Container = ({ className = '', ...props }) =>
   />;
 
 function DeletedProjectTable({
-  expand, handleExpand,
+  expand, handleExpand, route,
   projects,
   handleSortType,
 }) {
@@ -34,7 +33,7 @@ function DeletedProjectTable({
             subActions: [{
               label: t("DMH.VIEW.PGP.RIGHT.TRASH.BACK"),
               iconPath: mdiArrowLeft,
-              onClick: (evt) => history.push(Routes.PROJECTS),
+              onClick: (evt) => history.push(route),
             }],
             expand: {
               bool: expand,

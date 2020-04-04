@@ -5,13 +5,12 @@ import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import SearchInput from '../../../../components/SearchInput';
-import { Routes } from '../../../../constants/routes';
 import CustomListItem from './CustomListItem';
 import './style.scss';
 
@@ -28,12 +27,11 @@ const StyledPrimary = ({ className = '', ...props }) =>
   />;
 
 function ProjectList({
-  groups,
+  groups, route,
   searchPatern, setSearchPatern,
   handleSortProjectGroup, handleOpenModal,
 }) {
 
-  const location = useLocation();
   const { t } = useTranslation();
 
   function onDragEnd(result) {
@@ -76,7 +74,7 @@ function ProjectList({
                 {...provided.droppableProps}
               >
                 <StyledListItem
-                  to={`${Routes.PROJECTS}`}
+                  to={`${route}`}
                   component={Link}
                 >
                   <div>
@@ -95,11 +93,11 @@ function ProjectList({
                   />
                 </StyledListItem>
                 {groups.groups.map((projectGroup, index) => (
-                  <CustomListItem key={index} projectGroup={projectGroup} index={index} />
+                  <CustomListItem key={index} projectGroup={projectGroup} index={index} route={route} />
                 ))}
                 {provided.placeholder}
                 <StyledListItem
-                  to={`${Routes.PROJECTS}/default`}
+                  to={`${route}/group/default`}
                   component={Link}
                 >
                   <div>

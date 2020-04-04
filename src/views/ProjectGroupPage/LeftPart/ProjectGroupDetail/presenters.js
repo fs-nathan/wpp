@@ -11,7 +11,6 @@ import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, Cust
 import CustomTextbox from '../../../../components/CustomTextbox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
-import { Routes } from '../../../../constants/routes';
 import './style.scss';
 
 const ProjectGroupName = ({ className = '', ...props }) =>
@@ -33,7 +32,7 @@ const StyledColorTypo = ({ className = '', ...props }) =>
   />;
 
 function ProjectGroupDetail({
-  group,
+  group, route,
   handleDeleteProjectGroup, handleOpenModal,
 }) {
 
@@ -45,7 +44,7 @@ function ProjectGroupDetail({
       <LeftSideContainer
         leftAction={{
           iconPath: mdiChevronLeft,
-          onClick: () => history.push(Routes.PROJECTS),
+          onClick: () => history.push(route),
           tooltip: t("DMH.VIEW.PGP.LEFT.INFO.BACK"),
         }}
         title={t("DMH.VIEW.PGP.LEFT.INFO.TITLE")}

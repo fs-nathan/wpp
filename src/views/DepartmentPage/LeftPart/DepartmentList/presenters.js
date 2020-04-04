@@ -5,13 +5,12 @@ import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import SearchInput from '../../../../components/SearchInput';
-import { Routes } from '../../../../constants/routes';
 import CustomListItem from './CustomListItem';
 import './style.scss';
 
@@ -28,12 +27,17 @@ const StyledPrimary = ({ className = '', ...props }) =>
   />;
 
 function DepartmentList({
-  rooms, searchPatern,
+  rooms, searchPatern, route,
   handleSearchPatern, handleDragEnd,
   handleOpenModal,
 }) {
 
   const { t } = useTranslation();
+  const history = useHistory();
+
+  function doLink(roomId) {
+    history.push(`${route}/room/${roomId}`);
+  }
 
   return (
     <React.Fragment>
@@ -71,7 +75,7 @@ function DepartmentList({
                 {...provided.droppableProps}
               >
                 <StyledListItem
-                  to={`${Routes.DEPARTMENTS}`}
+                  to={`${route}`}
                   component={Link}
                 >
                   <div>
@@ -90,12 +94,12 @@ function DepartmentList({
                   />
                 </StyledListItem>
                 {rooms.rooms.filter(room => get(room, 'id') !== 'default').map((room, index) => (
-                  <CustomListItem key={get(room, 'id')} room={room} index={index} />
+                  <CustomListItem key={get(room, 'id')} room={room} index={index} handleLink={doLink} />
                 ))}
                 {provided.placeholder}
                 <StyledListItem
                   component={Link}
-                  to={`${Routes.DEPARTMENTS}/default`}
+                  to={`${route}/room/default`}
                 >
                   <div>
                     <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />

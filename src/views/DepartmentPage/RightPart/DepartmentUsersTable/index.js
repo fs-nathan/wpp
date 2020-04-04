@@ -7,6 +7,7 @@ import { privateMember } from '../../../../actions/user/privateMember';
 import { publicMember } from '../../../../actions/user/publicMember';
 import { sortUser } from '../../../../actions/user/sortUser';
 import AlertModal from '../../../../components/AlertModal';
+import { routeSelector } from '../../../MemberPage/selectors';
 import CreateAccountModal from '../../Modals/CreateAccount';
 import LevelManagerModal from '../../Modals/LevelManager';
 import LogoManagerModal from '../../Modals/LogoManager';
@@ -19,7 +20,7 @@ import DepartmentUsersTablePresenter from './presenters';
 import { hasRequirementSelector, publicPrivatePendingsSelector, roomSelector } from './selectors';
 
 function DepartmentUsersTable({
-  room, hasRequirement, publicPrivatePendings,
+  room, hasRequirement, publicPrivatePendings, route,
   expand, handleExpand,
   doSortUser,
   doPublicMember, doPrivateMember,
@@ -84,6 +85,7 @@ function DepartmentUsersTable({
     <>
       <DepartmentUsersTablePresenter
         room={room} hasRequirement={hasRequirement} publicPrivatePendings={publicPrivatePendings}
+        route={route}
         expand={expand} handleExpand={handleExpand}
         handleSortUser={(roomId, userId, sortIndex) => doSortUser({ roomId, userId, sortIndex })}
         handleChangeState={(user) =>
@@ -125,6 +127,7 @@ const mapStateToProps = state => {
     room: roomSelector(state),
     hasRequirement: hasRequirementSelector(state),
     publicPrivatePendings: publicPrivatePendingsSelector(state),
+    route: routeSelector(state),
   }
 }
 

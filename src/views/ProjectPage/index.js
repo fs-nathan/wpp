@@ -26,6 +26,7 @@ import GroupTaskSlide from './LeftPart/GroupTaskSlide';
 import ProjectDetail from './LeftPart/ProjectDetail';
 import ProjectMemberSlide from './LeftPart/ProjectMemberSlide';
 import AllTaskTable from './RightPart/AllTaskTable';
+import { routeSelector } from './selectors';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -39,6 +40,7 @@ function ProjectPage({
   doListUserRole,
   doDetailStatus,
   doGetListTaskDetail,
+  route,
 }) {
 
   const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_OPTIONS', {
@@ -300,7 +302,7 @@ function ProjectPage({
       localOptions, setLocalOptions
     }}>
       <Route
-        path='/project'
+        path={route}
         render={({ match: { url, } }) => (
           <>
             <Route
@@ -347,6 +349,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    route: routeSelector(state),
+  }),
   mapDispatchToProps,
 )(ProjectPage);

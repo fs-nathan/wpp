@@ -1,46 +1,48 @@
-import React from 'react';
 import { get } from 'lodash';
-import { useParams, useHistory } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Context as ProjectGroupContext } from '../../index';
+import { useHistory, useParams } from 'react-router-dom';
 import { deleteProjectGroup } from '../../../../actions/projectGroup/deleteProjectGroup';
 import AlertModal from '../../../../components/AlertModal';
-import { CustomEventListener, CustomEventDispose, DELETE_PROJECT_GROUP } from '../../../../constants/events.js';
+import { CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP } from '../../../../constants/events.js';
+import { Context as ProjectGroupContext } from '../../index';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
 import MembersDetail from '../../Modals/MembersDetail';
-import { groupSelector } from './selectors';
+import { routeSelector } from '../../selectors';
 import ProjectGroupDetailPresenter from './presenters';
+import { groupSelector } from './selectors';
 
-function ProjectGroupDetail({ 
-  group, 
+function ProjectGroupDetail({
+  group, route,
   doDeleteProjectGroup,
 }) {
-  
+
   const { setProjectGroupId } = React.useContext(ProjectGroupContext);
   const { projectGroupId } = useParams();
   const history = useHistory();
-  
+
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});
   const [openMember, setOpenMember] = React.useState(false);
   const [memberProps, setMemberProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
-  
+
   React.useEffect(() => {
     setProjectGroupId(projectGroupId);
   }, [setProjectGroupId, projectGroupId]);
 
   React.useEffect(() => {
     const historyPushHandler = () => {
-      history.push('/projects');
+      history.push(route);
     };
 
     CustomEventListener(DELETE_PROJECT_GROUP, historyPushHandler);
-    
+
     return () => {
       CustomEventDispose(DELETE_PROJECT_GROUP, historyPushHandler);
     };
+    //eslint-disable-next-line
   }, [history, projectGroupId]);
 
   function doOpenModal(type, props) {
@@ -66,21 +68,21 @@ function ProjectGroupDetail({
 
   return (
     <>
-      <ProjectGroupDetailPresenter 
-        group={group}
-        handleDeleteProjectGroup={projectGroup => 
+      <ProjectGroupDetailPresenter
+        group={group} route={route}
+        handleDeleteProjectGroup={projectGroup =>
           doDeleteProjectGroup({ projectGroupId: get(projectGroup, 'id') })
-        } 
+        }
         handleOpenModal={doOpenModal}
       />
-      <CreateProjectGroup 
-        open={openCreate} 
-        setOpen={setOpenCreate} 
-        {...createProps}  
+      <CreateProjectGroup
+        open={openCreate}
+        setOpen={setOpenCreate}
+        {...createProps}
       />
-      <MembersDetail 
-        open={openMember} 
-        setOpen={setOpenMember} 
+      <MembersDetail
+        open={openMember}
+        setOpen={setOpenMember}
         {...memberProps}
       />
       <AlertModal
@@ -95,6 +97,7 @@ function ProjectGroupDetail({
 const mapStateToProps = state => {
   return {
     group: groupSelector(state),
+    route: routeSelector(state),
   };
 };
 

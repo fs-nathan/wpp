@@ -71,7 +71,7 @@ const SettingButton = ({
 };
 
 function AllProjectTable({
-  expand, handleExpand,
+  expand, handleExpand, route,
   projects,
   filterType, handleFilterType,
   timeType, handleTimeType,
@@ -209,7 +209,7 @@ function AllProjectTable({
             },
             {
               label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.NAME"),
-              field: (row) => <LinkSpan onClick={evt => history.push(`${Routes.PROJECT}/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
+              field: (row) => <LinkSpan onClick={evt => history.push(`${route}/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
               sort: evt => handleSortType('name'),
               align: 'left',
               width: '24%',

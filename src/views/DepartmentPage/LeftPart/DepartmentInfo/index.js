@@ -7,11 +7,12 @@ import { CustomEventDispose, CustomEventListener, DELETE_ROOM } from '../../../.
 import { Routes } from '../../../../constants/routes';
 import { Context as UserPageContext } from '../../index';
 import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
+import { routeSelector } from '../../selectors';
 import { DefaultDepartment, NormalDepartment } from './presenters';
 import { roomSelector } from './selectors';
 
 function DepartmentInfo({
-  room,
+  room, route,
   doDeleteRoom
 }) {
 
@@ -60,7 +61,7 @@ function DepartmentInfo({
       {departmentId === 'default'
         ? (
           <DefaultDepartment
-            handleGoBack={evt => history.push('/departments')}
+            handleGoBack={evt => history.push(route)}
           />
         )
         : (
@@ -68,7 +69,7 @@ function DepartmentInfo({
             room={room}
             departmentId={departmentId}
             handleDeleteRoom={roomId => doDeleteRoom({ roomId })}
-            handleGoBack={() => history.push('/departments')}
+            handleGoBack={() => history.push(route)}
             handleOpenModal={doOpenModal}
           />
         )}
@@ -89,6 +90,7 @@ function DepartmentInfo({
 const mapStateToProps = state => {
   return {
     room: roomSelector(state),
+    route: routeSelector(state),
   };
 };
 

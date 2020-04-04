@@ -21,13 +21,13 @@ import {
   //CREATE_PROJECT_GROUP, 
   SORT_PROJECT_GROUP, UPDATE_PROJECT
 } from '../../constants/events';
-import { Routes } from '../../constants/routes';
 import { useLocalStorage } from '../../hooks';
 import DefaultGroupDetail from './LeftPart/DefaultGroupDetail';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
 import AllProjectTable from './RightPart/AllProjectTable';
 import DeletedProjectTable from './RightPart/DeletedProjectTable';
+import { routeSelector } from './selectors';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -41,6 +41,7 @@ function ProjectGroupPage({
   doListDeletedProject,
   doDetailDefaultGroup,
   doDetailStatus,
+  route,
 }) {
 
   const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_OPTIONS', {
@@ -222,7 +223,7 @@ function ProjectGroupPage({
       localOptions, setLocalOptions,
     }}>
       <Route
-        path={Routes.PROJECTS}
+        path={route}
         render={({ match: { url } }) => (
           <Switch>
             <Route
@@ -270,7 +271,7 @@ function ProjectGroupPage({
               )}
             />
             <Route
-              path={`${url}/default`}
+              path={`${url}/group/default`}
               exact
               render={props => (
                 <TwoColumnsLayout
@@ -293,7 +294,7 @@ function ProjectGroupPage({
               )}
             />
             <Route
-              path={`${url}/:projectGroupId`}
+              path={`${url}/group/:projectGroupId`}
               render={props => (
                 <TwoColumnsLayout
                   leftRenders={[
@@ -334,6 +335,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    route: routeSelector(state),
+  }),
   mapDispatchToProps,
 )(ProjectGroupPage);

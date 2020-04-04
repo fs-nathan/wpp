@@ -89,7 +89,7 @@ export const useTimes = () => {
     t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.MONTH.DEC'),
   ];
 
-  return [
+  const times = React.useMemo(() => [
     {
       title: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.THIS_YEAR'),
       description: t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.YEAR_DESC', { year: moment().year() }),
@@ -139,13 +139,14 @@ export const useTimes = () => {
         moment().toDate(),
         moment().toDate(),
       ]
-    }]
+    }], [monthsArr, t]);
+  return times;
 };
 
 export const useFilters = () => {
 
   const { t } = useTranslation();
-  const filters = [
+  const filters = React.useMemo(() => [
     {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ALL'),
       field: 'all',
@@ -182,7 +183,7 @@ export const useFilters = () => {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ASSIGNED'),
       field: 'assigned',
       option: {},
-    }]
+    }], [t]);
   return filters;
 };
 

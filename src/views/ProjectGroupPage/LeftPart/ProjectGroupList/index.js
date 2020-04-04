@@ -1,14 +1,15 @@
+import { filter, get } from 'lodash';
 import React from 'react';
-import { get, filter } from 'lodash';
-import CreateProjectGroup from '../../Modals/CreateProjectGroup';
 import { connect } from 'react-redux';
 import { sortProjectGroup } from '../../../../actions/projectGroup/sortProjectGroup';
-import { groupsSelector } from './selectors';
+import CreateProjectGroup from '../../Modals/CreateProjectGroup';
+import { routeSelector } from '../../selectors';
 import ProjectGroupListPresenter from './presenters';
+import { groupsSelector } from './selectors';
 
-function ProjectList({ 
-  groups, 
-  doSortProjectGroup, 
+function ProjectList({
+  groups, route,
+  doSortProjectGroup,
 }) {
 
   const [searchPatern, setSearchPatern] = React.useState('');
@@ -22,7 +23,7 @@ function ProjectList({
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'CREATE': {  
+      case 'CREATE': {
         setOpenCreate(true);
         return;
       }
@@ -32,10 +33,10 @@ function ProjectList({
 
   return (
     <>
-      <ProjectGroupListPresenter 
-        groups={newGroups}
+      <ProjectGroupListPresenter
+        groups={newGroups} route={route}
         searchPatern={searchPatern} setSearchPatern={setSearchPatern}
-        handleSortProjectGroup={(projectGroupId, sortIndex) => doSortProjectGroup({ projectGroupId, sortIndex })} 
+        handleSortProjectGroup={(projectGroupId, sortIndex) => doSortProjectGroup({ projectGroupId, sortIndex })}
         handleOpenModal={doOpenModal}
       />
       <CreateProjectGroup open={openCreate} setOpen={setOpenCreate} />
@@ -46,6 +47,7 @@ function ProjectList({
 const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
+    route: routeSelector(state),
   }
 }
 

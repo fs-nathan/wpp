@@ -12,7 +12,6 @@ import { LightTooltip, TooltipWrapper } from '../../../../components/LightToolti
 import LoadingBox from '../../../../components/LoadingBox';
 import { Container, LinkSpan, SettingContainer, SubTitle } from '../../../../components/TableComponents';
 import { DRAWER_TYPE } from '../../../../constants/constants';
-import { Routes } from '../../../../constants/routes';
 import './style.scss';
 
 const TooltipBody = ({ className = '', state, ...props }) =>
@@ -93,7 +92,7 @@ function StateBadge({ user }) {
 }
 
 function AllUsersTable({
-  rooms, maxUser, hasRequirement, publicPrivatePendings,
+  rooms, maxUser, hasRequirement, publicPrivatePendings, route,
   expand, handleExpand,
   handleSortUser,
   handleChangeState,
@@ -181,7 +180,7 @@ function AllUsersTable({
           },
           row: {
             id: 'id',
-            onClick: (user) => history.push(`${Routes.MEMBERS}/${get(user, 'id')}`),
+            onClick: (user) => null,
           },
           draggable: {
             bool: true,
@@ -212,7 +211,7 @@ function AllUsersTable({
         }, {
           label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.NAME'),
           field: (user) => <LinkSpan
-            onClick={evt => history.push(`/members/${get(user, 'id')}`)}
+            onClick={evt => history.push(`${route}/${get(user, 'id')}`)}
           >{get(user, 'name', '')}</LinkSpan>,
           align: 'left',
           width: '14%',

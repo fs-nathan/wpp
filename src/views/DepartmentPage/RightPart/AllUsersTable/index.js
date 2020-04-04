@@ -7,6 +7,7 @@ import { privateMember } from '../../../../actions/user/privateMember';
 import { publicMember } from '../../../../actions/user/publicMember';
 import { sortUser } from '../../../../actions/user/sortUser';
 import AlertModal from '../../../../components/AlertModal';
+import { routeSelector } from '../../../MemberPage/selectors';
 import CreateAccountModal from '../../Modals/CreateAccount';
 import LevelManagerModal from '../../Modals/LevelManager';
 import LogoManagerModal from '../../Modals/LogoManager';
@@ -20,7 +21,7 @@ import { hasRequirementSelector, maxUserSelector, publicPrivatePendingsSelector,
 import './style.scss';
 
 function AllUsersTable({
-  rooms, maxUser, hasRequirement, publicPrivatePendings,
+  rooms, maxUser, hasRequirement, publicPrivatePendings, route,
   doSortUser,
   expand, handleExpand,
   doPublicMember, doPrivateMember,
@@ -86,6 +87,7 @@ function AllUsersTable({
     <>
       <AllUsersTablePresenter
         rooms={rooms} maxUser={maxUser} hasRequirement={hasRequirement} publicPrivatePendings={publicPrivatePendings}
+        route={route}
         expand={expand} handleExpand={handleExpand}
         handleSortUser={(roomId, userId, sortIndex) => doSortUser({ roomId, userId, sortIndex })}
         handleChangeState={(user) =>
@@ -128,6 +130,7 @@ const mapStateToProps = state => {
     maxUser: maxUserSelector(state),
     hasRequirement: hasRequirementSelector(state),
     publicPrivatePendings: publicPrivatePendingsSelector(state),
+    route: routeSelector(state),
   }
 }
 

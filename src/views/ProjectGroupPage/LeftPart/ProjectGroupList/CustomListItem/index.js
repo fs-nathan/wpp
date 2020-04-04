@@ -8,9 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import CustomAvatar from '../../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
-import { Routes } from '../../../../../constants/routes';
 
-function CustomListItem({ projectGroup, index }) {
+function CustomListItem({ projectGroup, index, route }) {
   const [isHover, setIsHover] = React.useState(false);
   const { t } = useTranslation();
 
@@ -22,7 +21,7 @@ function CustomListItem({ projectGroup, index }) {
       {(provided) => (
         <StyledListItem
           component={Link}
-          to={`${Routes.PROJECTS}/${get(projectGroup, 'id', '')}`}
+          to={`${route}/group/${get(projectGroup, 'id', '')}`}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}

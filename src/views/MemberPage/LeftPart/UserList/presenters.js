@@ -8,7 +8,6 @@ import { StyledList, StyledListItem } from '../../../../components/CustomList';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import SearchInput from '../../../../components/SearchInput';
-import { Routes } from '../../../../constants/routes';
 import CustomListItem from './CustomListItem';
 import './style.scss';
 
@@ -31,7 +30,7 @@ const RoomNameSpan = ({ className = '', ...props }) =>
   />;
 
 function UserList({
-  rooms,
+  rooms, departmentRoute, memberRoute,
   handleSortUser,
 }) {
 
@@ -51,7 +50,7 @@ function UserList({
   }
 
   function doLink(userId) {
-    history.push(`${Routes.MEMBERS}/${userId}`);
+    history.push(`${memberRoute}/${userId}`);
   }
 
   return (
@@ -60,7 +59,7 @@ function UserList({
         title={t('DMH.VIEW.MP.LEFT.UL.TITLE')}
         leftAction={{
           iconPath: mdiChevronLeft,
-          onClick: () => history.push(Routes.DEPARTMENTS),
+          onClick: () => history.push(departmentRoute),
           tooltip: t('DMH.VIEW.MP.LEFT.UL.BACK'),
         }}
         loading={{

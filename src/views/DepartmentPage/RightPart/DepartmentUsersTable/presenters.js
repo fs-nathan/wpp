@@ -12,7 +12,6 @@ import { LightTooltip, TooltipWrapper } from '../../../../components/LightToolti
 import LoadingBox from '../../../../components/LoadingBox';
 import { Container, LinkSpan, SettingContainer } from '../../../../components/TableComponents';
 import { DRAWER_TYPE } from '../../../../constants/constants';
-import { Routes } from '../../../../constants/routes';
 import { Context as UserPageContext } from '../../index';
 import '../AllUsersTable/style.scss';
 
@@ -94,7 +93,7 @@ function StateBadge({ user }) {
 }
 
 function DepartmentUsersTable({
-  room, hasRequirement, publicPrivatePendings,
+  room, hasRequirement, publicPrivatePendings, route,
   expand, handleExpand,
   handleSortUser,
   handleChangeState,
@@ -181,7 +180,7 @@ function DepartmentUsersTable({
           },
           row: {
             id: 'id',
-            onClick: (user) => history.push(`${Routes.MEMBERS}/${get(user, 'id', '')}`),
+            onClick: (user) => null,
           },
           draggable: {
             bool: true,
@@ -208,7 +207,7 @@ function DepartmentUsersTable({
         }, {
           label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.NAME'),
           field: (user) => <LinkSpan
-            onClick={evt => history.push(`/members/${get(user, 'id')}`)}
+            onClick={evt => history.push(`${route}/${get(user, 'id')}`)}
           >{get(user, 'name', '')}</LinkSpan>,
           align: 'left',
           width: '14%',

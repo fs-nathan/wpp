@@ -1,17 +1,17 @@
-import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { Table, TableHead, TableBody, TableFooter, TableRow } from '@material-ui/core';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { CustomTableContext } from '../index';
-import TableHeaderRow from './TableHeaderRow';
-import TableBodyGroupRow from './TableBodyGroupRow';
-import TableBodyRow from './TableBodyGroupRow/TableBodyRow'; 
+import { Table, TableBody, TableFooter, TableHead, TableRow } from '@material-ui/core';
 import { get } from 'lodash';
+import React from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { Scrollbars } from 'react-custom-scrollbars';
+import { CustomTableContext } from '../index';
 import './style.scss';
+import TableBodyGroupRow from './TableBodyGroupRow';
+import TableBodyRow from './TableBodyGroupRow/TableBodyRow';
+import TableHeaderRow from './TableHeaderRow';
 
 const Container = ({ className = '', ...rest }) => <Scrollbars className={`comp_CustomTable_TableMain___container ${className}`} {...rest} />;
-const PlaceholderRow = ({ className = '', ...rest }) => 
-  <TableRow 
+const PlaceholderRow = ({ className = '', ...rest }) =>
+  <TableRow
     className={`comp_CustomTable_TableMain___placeholder ${className}`}
     {...rest}
   />
@@ -32,9 +32,9 @@ function TableMain() {
         <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)}>
           {get(options, 'grouped.bool', false)
             ? (
-            data.map((group, index) => (
-              <TableBodyGroupRow group={group} key={index} />
-            )))
+              data.map((group, index) => (
+                <TableBodyGroupRow group={group} key={index} />
+              )))
             : (
               <Droppable
                 droppableId={'custom-table-droppable-id'}
@@ -45,7 +45,7 @@ function TableMain() {
                     {...provided.droppableProps}
                   >
                     {data.map((row, index) => (
-                      
+
                       <TableBodyRow key={index} index={index} row={row} group={null} />
                     ))}
                     {provided.placeholder}
@@ -55,9 +55,7 @@ function TableMain() {
             )}
         </DragDropContext>
         <TableFooter>
-          <PlaceholderRow 
-            placeholder={data.length === 0}
-          />
+          <PlaceholderRow />
         </TableFooter>
       </Table>
     </Container>

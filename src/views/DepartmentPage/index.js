@@ -20,16 +20,17 @@ import {
   //CREATE_ICON, DELETE_ICON,
   ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CREATE_ROOM, CustomEventDispose, CustomEventListener, DELETE_ROOM, INVITE_USER_JOIN_GROUP, SORT_ROOM, SORT_USER, UPDATE_ROOM
 } from '../../constants/events';
-import { Routes } from '../../constants/routes';
 import DepartmentInfo from './LeftPart/DepartmentInfo';
 import DepartmentList from './LeftPart/DepartmentList';
 import AllUsersTable from './RightPart/AllUsersTable';
 import DepartmentUsersTable from './RightPart/DepartmentUsersTable';
+import { routeSelector } from './selectors';
 
 export const Context = React.createContext();
 const { Provider } = Context;
 
 function UserPage({
+  route,
   doListRoom,
   doDetailRoom,
   doGetUserOfRoom,
@@ -243,7 +244,7 @@ function UserPage({
       setDepartmentId,
     }}>
       <Route
-        path={Routes.DEPARTMENTS}
+        path={route}
         render={({ match: { url }, }) => (
           <>
             <Route
@@ -269,7 +270,7 @@ function UserPage({
               )}
             />
             <Route
-              path={`${url}/rooom/:departmentId`}
+              path={`${url}/room/:departmentId`}
               exact
               render={props => (
                 <TwoColumnsLayout
@@ -312,6 +313,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    route: routeSelector(state),
+  }),
   mapDispatchToProps,
 )(UserPage);
