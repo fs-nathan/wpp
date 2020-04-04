@@ -22,7 +22,7 @@ const DeleteCommandDecided = ({
 }) => {
 
   return (
-    <div className={clsx("DeleteCommandDecided", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("DeleteCommandDecided", "DeleteSubTask", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--sender" >
         <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
         <div className="TextMessage--name" >

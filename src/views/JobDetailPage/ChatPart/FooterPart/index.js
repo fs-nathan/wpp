@@ -154,12 +154,10 @@ const FooterPart = ({
         />
       </div>
 
-      {visibleSendFile && (
-        <SendFileModal
-          open={visibleSendFile}
-          setOpen={() => setVisibleSendFile(false)}
-        />
-      )}
+      <SendFileModal
+        open={visibleSendFile}
+        setOpen={() => setVisibleSendFile(false)}
+      />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ModalImage from 'views/JobDetailPage/ModalImage';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
@@ -18,6 +19,16 @@ const ImageMessage = ({
   is_me,
   chatPosition = "top",
 }) => {
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  }
 
   return (
     <div className={clsx("ImageMessage", `ImageMessage__${chatPosition}`)} >
@@ -47,7 +58,8 @@ const ImageMessage = ({
         <div className="ImageMessage--imagesContainer" >
           {
             images.map(({ url }, i) =>
-              <div key={url} className={clsx("ImageMessage--wrap", `ImageMessage--wrap__total${images.length}-${i + 1}`, `ImageMessage--wrap__number${i + 1}`)} >
+              <div key={url} onClick={handleClickOpen}
+                className={clsx("ImageMessage--wrap", `ImageMessage--wrap__total${images.length}-${i + 1}`, `ImageMessage--wrap__number${i + 1}`)} >
                 <div className="ImageMessage--quality" >
                   HD
             </div>
@@ -65,6 +77,9 @@ const ImageMessage = ({
       {!isReply && !is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
       }
+      <ModalImage images={images}
+        {...{ user_create_avatar, user_create_name, time_create, user_create_position }}
+        isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
     </div>
   );
 }

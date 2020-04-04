@@ -1,9 +1,11 @@
 import { Avatar } from '@material-ui/core';
 import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
+import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
@@ -23,6 +25,7 @@ const FileMessage = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const dispatch = useDispatch();
 
   function onClickDownload(url, name) {
     return () => {
@@ -32,6 +35,10 @@ const FileMessage = ({
       link.target = '_blank';
       link.click();
     }
+  }
+
+  function onClickFile() {
+    dispatch(openDocumentDetail(files[0]))
   }
 
   return (
@@ -70,7 +77,7 @@ const FileMessage = ({
             <TextMessage {...chat_parent} isReply></TextMessage>
           }
           {files[0] &&
-            <div className="FileMessage--files">
+            <div className="FileMessage--files" onClick={onClickFile}>
               <img className="FileMessage--icon" src={files[0].file_icon} alt="file-icon"></img>
               <div className="FileMessage--fileName">
                 {files[0].name}
@@ -99,7 +106,7 @@ const FileMessage = ({
 }
 
 FileMessage.propTypes = {
-  file: PropTypes.string.isRequired,
+  files: PropTypes.array.isRequired,
 
 };
 

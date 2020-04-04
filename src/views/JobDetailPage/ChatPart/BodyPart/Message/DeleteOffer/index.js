@@ -20,7 +20,7 @@ const DeleteOffer = ({
 }) => {
 
   return (
-    <div className={clsx("DeleteOffer", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("DeleteOffer", "DeleteSubTask", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--sender" >
         <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
         <div className="TextMessage--name" >
