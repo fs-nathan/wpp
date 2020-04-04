@@ -64,7 +64,7 @@ function AlertModal({
 AlertModal.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
-  content: PropTypes.node.isRequired,
+  content: PropTypes.node,
   onConfirm: PropTypes.func,
   onCancle: PropTypes.func,
 };

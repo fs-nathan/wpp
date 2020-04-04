@@ -21,6 +21,7 @@ function reducer(state = initialState, action) {
     case DETAIL_ROOM_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -28,6 +29,7 @@ function reducer(state = initialState, action) {
     case DETAIL_ROOM_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

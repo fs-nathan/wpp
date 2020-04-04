@@ -1,7 +1,7 @@
 import { ButtonBase, IconButton, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import { find, get, isNil } from 'lodash';
+import { find, get } from 'lodash';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,6 @@ import LoadingOverlay from 'react-loading-overlay';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import ErrorBox from '../../../../components/ErrorBox';
 import PillButton from '../../../../components/PillButton';
 import SearchInput from '../../../../components/SearchInput';
 import './style.scss';
@@ -75,57 +74,55 @@ const DesiringUserList = ({
 
   return (
     <>
-      {!isNil(user)
-        ? (<StyledList>
-          <StyledListItem
-            key={get(user, 'id')}
-            style={{ cursor: 'default' }}
-          >
-            <ListItemAvatar>
-              <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <Primary>{get(user, 'name', '')}</Primary>
-              }
-              secondary={
-                <StyledSecondary>
-                  <Secondary>{get(user, 'email', '')}</Secondary>
-                  <span>
-                    <OkButton
-                      style={{
-                        backgroundColor: bgColor.color,
-                        borderColor: bgColor.color
-                      }}
+      <StyledList>
+        <StyledListItem
+          key={get(user, 'id')}
+          style={{ cursor: 'default' }}
+        >
+          <ListItemAvatar>
+            <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
+          </ListItemAvatar>
+          <ListItemText
+            primary={
+              <Primary>{get(user, 'name', '')}</Primary>
+            }
+            secondary={
+              <StyledSecondary>
+                <Secondary>{get(user, 'email', '')}</Secondary>
+                <span>
+                  <OkButton
+                    style={{
+                      backgroundColor: bgColor.color,
+                      borderColor: bgColor.color
+                    }}
+                    disabled={loading}
+                    onClick={
+                      () =>
+                        get(user, 'status_code', 0) === 0
+                          ? onInviteUserJoinGroup(get(user, 'id'))
+                          : onResendInvitationUserJoinGroup(get(user, 'id'))
+                    }
+                  >
+                    {get(user, 'status_code', 0) === 0
+                      ? t('DMH.VIEW.DP.LEFT.ADD.BTN.INVT')
+                      : t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
+                  </OkButton>
+                  {get(user, 'status_code', 0) === 1 && (
+                    <CancleButton
                       disabled={loading}
-                      onClick={
-                        () =>
-                          get(user, 'status_code', 0) === 0
-                            ? onInviteUserJoinGroup(get(user, 'id'))
-                            : onResendInvitationUserJoinGroup(get(user, 'id'))
-                      }
+                      onClick={evt => handleCancleInvitationJoinGroup({
+                        invitationId: get(user, 'invitation')
+                      })}
                     >
-                      {get(user, 'status_code', 0) === 0
-                        ? t('DMH.VIEW.DP.LEFT.ADD.BTN.INVT')
-                        : t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
-                    </OkButton>
-                    {get(user, 'status_code', 0) === 1 && (
-                      <CancleButton
-                        disabled={loading}
-                        onClick={evt => handleCancleInvitationJoinGroup({
-                          invitationId: get(user, 'invitation')
-                        })}
-                      >
-                        {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
-                      </CancleButton>
-                    )}
-                  </span>
-                </StyledSecondary>
-              }
-            />
-          </StyledListItem>
-        </StyledList>)
-        : null}
+                      {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
+                    </CancleButton>
+                  )}
+                </span>
+              </StyledSecondary>
+            }
+          />
+        </StyledListItem>
+      </StyledList>
     </>
   );
 }
@@ -305,77 +302,68 @@ function AddUser({
               {t('DMH.VIEW.DP.LEFT.ADD.BTN.FIND')}
             </PillButton>
           </div>
-          {desireUser.error !== null
-            ? <ErrorBox size={16} />
-            : <LoadingOverlay
-              active={desireUser.loading}
-              spinner
-            >
-              <DesiringUserList
-                bgColor={bgColor}
-                loading={desireLoading}
-                user={desireUser.user && {
-                  ...desireUser.user,
-                  invitation: get(
-                    find(
-                      invitations.invitations,
-                      {
-                        user:
-                          get(
-                            desireUser.user,
-                            'id'
-                          )
-                      }
-                    ),
-                    'invitation_id'
-                  )
-                }}
-                handleInviteUserJoinGroup={handleInviteUserJoinGroup}
-                handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-                handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
-              />
-            </LoadingOverlay>
-          }
+          <LoadingOverlay
+            active={desireUser.loading}
+            spinner
+          >
+            <DesiringUserList
+              bgColor={bgColor}
+              loading={desireLoading}
+              user={desireUser.user && {
+                ...desireUser.user,
+                invitation: get(
+                  find(
+                    invitations.invitations,
+                    {
+                      user:
+                        get(
+                          desireUser.user,
+                          'id'
+                        )
+                    }
+                  ),
+                  'invitation_id'
+                )
+              }}
+              handleInviteUserJoinGroup={handleInviteUserJoinGroup}
+              handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+              handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+            />
+          </LoadingOverlay>
         </StyledBox>
         <StyledBox>
           <ColorTypo bold>
             {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVD')}
           </ColorTypo>
-          {invitations.error !== null
-            ? <ErrorBox size={16} />
-            : <LoadingOverlay
-              active={invitations.loading}
-              spinner
-            >
-              <InvitedUserList
-                bgColor={bgColor}
-                loading={requireLoading}
-                invitations={invitations.invitations}
-                handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-                handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
-              />
-            </LoadingOverlay>
-          }
+          <LoadingOverlay
+            active={invitations.loading}
+            spinner
+          >
+            <InvitedUserList
+              bgColor={bgColor}
+              loading={requireLoading}
+              invitations={invitations.invitations}
+              handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+              handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+            />
+          </LoadingOverlay>
         </StyledBox>
         <StyledBox>
           <ColorTypo bold>
             {t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQS')}
           </ColorTypo>
-          {requireUsers.error !== null
-            ? <ErrorBox size={16} />
-            : <LoadingOverlay
-              active={requireUsers.loading}
-              spinner
-            >
-              <RequestingUserList
-                bgColor={bgColor}
-                loading={requireLoading}
-                users={requireUsers.users}
-                handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup}
-                handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
-              />
-            </LoadingOverlay>
-          }
+          <LoadingOverlay
+            active={requireUsers.loading}
+            spinner
+          >
+            <RequestingUserList
+              bgColor={bgColor}
+              loading={requireLoading}
+              users={requireUsers.users}
+              handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup}
+              handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
+            />
+          </LoadingOverlay>
         </StyledBox>
       </Body>
     </Container>

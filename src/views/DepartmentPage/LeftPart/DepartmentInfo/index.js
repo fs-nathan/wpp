@@ -1,21 +1,18 @@
 import React from 'react';
-import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AlertModal from '../../../../components/AlertModal';
-import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
+import { useHistory, useParams } from 'react-router-dom';
 import { deleteRoom } from '../../../../actions/room/deleteRoom';
-import {
-  CustomEventListener,
-  CustomEventDispose,
-  DELETE_ROOM
-} from '../../../../constants/events.js';
+import AlertModal from '../../../../components/AlertModal';
+import { CustomEventDispose, CustomEventListener, DELETE_ROOM } from '../../../../constants/events.js';
+import { Routes } from '../../../../constants/routes';
 import { Context as UserPageContext } from '../../index';
+import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
+import { DefaultDepartment, NormalDepartment } from './presenters';
 import { roomSelector } from './selectors';
-import { DefaultDepartment, NormalDepartment, } from './presenters';
 
-function DepartmentInfo({ 
-  room, 
-  doDeleteRoom 
+function DepartmentInfo({
+  room,
+  doDeleteRoom
 }) {
 
   const { setDepartmentId } = React.useContext(UserPageContext);
@@ -28,7 +25,7 @@ function DepartmentInfo({
 
   React.useEffect(() => {
     const historyPushHandler = () => {
-      history.push('/departments');
+      history.push(Routes.DEPARTMENTS);
     };
 
     CustomEventListener(DELETE_ROOM, historyPushHandler);
@@ -60,9 +57,9 @@ function DepartmentInfo({
 
   return (
     <>
-      {departmentId === 'default' 
+      {departmentId === 'default'
         ? (
-          <DefaultDepartment 
+          <DefaultDepartment
             handleGoBack={evt => history.push('/departments')}
           />
         )
@@ -75,12 +72,12 @@ function DepartmentInfo({
             handleOpenModal={doOpenModal}
           />
         )}
-      <AlertModal 
+      <AlertModal
         open={openAlertModal}
         setOpen={setOpenAlertModal}
         {...alertProps}
       />
-      <CreateAndUpdateDepartmentModal 
+      <CreateAndUpdateDepartmentModal
         open={openCreateAndUpdateDepartmentModal}
         setOpen={setOpenCreateAndUpdateDepartmentModal}
         {...createAndUpdateDepartmentProps}

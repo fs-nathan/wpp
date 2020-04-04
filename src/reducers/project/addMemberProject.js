@@ -1,8 +1,4 @@
-import {
-  ADD_MEMBER_PROJECT,
-  ADD_MEMBER_PROJECT_SUCCESS,
-  ADD_MEMBER_PROJECT_FAIL,
-} from '../../constants/actions/project/addMemberProject';
+import { ADD_MEMBER_PROJECT, ADD_MEMBER_PROJECT_FAIL, ADD_MEMBER_PROJECT_SUCCESS } from '../../constants/actions/project/addMemberProject';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case ADD_MEMBER_PROJECT_SUCCESS: 
+    case ADD_MEMBER_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case ADD_MEMBER_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

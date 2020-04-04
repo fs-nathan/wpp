@@ -1,8 +1,4 @@
-import {
-  COPY_PROJECT,
-  COPY_PROJECT_SUCCESS,
-  COPY_PROJECT_FAIL,
-} from '../../constants/actions/project/copyProject';
+import { COPY_PROJECT, COPY_PROJECT_FAIL, COPY_PROJECT_SUCCESS } from '../../constants/actions/project/copyProject';
 
 export const initialState = {
   data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case COPY_PROJECT_SUCCESS: 
+    case COPY_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case COPY_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

@@ -1,8 +1,4 @@
-import {
-  ACCEPT_REQUIREMENT_JOIN_GROUP,
-  ACCEPT_REQUIREMENT_JOIN_GROUP_SUCCESS,
-  ACCEPT_REQUIREMENT_JOIN_GROUP_FAIL,
-} from '../../constants/actions/groupUser/acceptRequirementJoinGroup';
+import { ACCEPT_REQUIREMENT_JOIN_GROUP, ACCEPT_REQUIREMENT_JOIN_GROUP_FAIL, ACCEPT_REQUIREMENT_JOIN_GROUP_SUCCESS } from '../../constants/actions/groupUser/acceptRequirementJoinGroup';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case ACCEPT_REQUIREMENT_JOIN_GROUP_SUCCESS: 
+    case ACCEPT_REQUIREMENT_JOIN_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case ACCEPT_REQUIREMENT_JOIN_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

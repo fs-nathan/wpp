@@ -1,14 +1,14 @@
 import { mdiChevronLeft } from '@mdi/js';
-import { get, isNil } from 'lodash';
+import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { StyledList, StyledListItem } from '../../../../components/CustomList';
-import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import SearchInput from '../../../../components/SearchInput';
+import { Routes } from '../../../../constants/routes';
 import CustomListItem from './CustomListItem';
 import './style.scss';
 
@@ -51,60 +51,57 @@ function UserList({
   }
 
   function doLink(userId) {
-    history.push(`/members/${userId}`);
+    history.push(`${Routes.MEMBERS}/${userId}`);
   }
 
   return (
     <>
-      {isNil(rooms.error)
-        ? (
-          <LeftSideContainer
-            title={t('DMH.VIEW.MP.LEFT.UL.TITLE')}
-            leftAction={{
-              iconPath: mdiChevronLeft,
-              onClick: () => history.push('/departments'),
-              tooltip: t('DMH.VIEW.MP.LEFT.UL.BACK'),
-            }}
-            loading={{
-              bool: rooms.loading,
-              component: () => <LoadingBox />
-            }}
-          >
-            <Banner>
-              <SearchInput
-                value={searchPatern}
-                onChange={evt => setSearchPatern(evt.target.value)}
-                fullWidth
-                placeholder={t('DMH.VIEW.MP.LEFT.UL.SEARCH')}
-              />
-            </Banner>
-            <DragDropContext onDragEnd={onDragEnd}>
-              {rooms.rooms.map((room, index) => {
-                const users = get(room, 'users', []);
-                return (
-                  <Droppable key={index} droppableId={get(room, 'id')}>
-                    {provided => (
-                      <CustomStyledList
-                        innerRef={provided.innerRef}
-                        {...provided.droppableProps}
-                      >
-                        <StyledListItem>
-                          <RoomNameSpan>
-                            {get(room, 'name', '') === 'default' ? t('DMH.VIEW.MP.LEFT.UL.DEFAULT') : get(room, 'name', '')}
-                          </RoomNameSpan>
-                        </StyledListItem>
-                        {users.filter(user => get(user, 'name').toLowerCase().includes(searchPatern.toLowerCase())).map((user, index) =>
-                          <CustomListItem key={index} user={user} index={index} handleLink={doLink} />
-                        )}
-                        {provided.placeholder}
-                      </CustomStyledList>
+      <LeftSideContainer
+        title={t('DMH.VIEW.MP.LEFT.UL.TITLE')}
+        leftAction={{
+          iconPath: mdiChevronLeft,
+          onClick: () => history.push(Routes.DEPARTMENTS),
+          tooltip: t('DMH.VIEW.MP.LEFT.UL.BACK'),
+        }}
+        loading={{
+          bool: rooms.loading,
+          component: () => <LoadingBox />
+        }}
+      >
+        <Banner>
+          <SearchInput
+            value={searchPatern}
+            onChange={evt => setSearchPatern(evt.target.value)}
+            fullWidth
+            placeholder={t('DMH.VIEW.MP.LEFT.UL.SEARCH')}
+          />
+        </Banner>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {rooms.rooms.map((room, index) => {
+            const users = get(room, 'users', []);
+            return (
+              <Droppable key={index} droppableId={get(room, 'id')}>
+                {provided => (
+                  <CustomStyledList
+                    innerRef={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <StyledListItem>
+                      <RoomNameSpan>
+                        {get(room, 'name', '') === 'default' ? t('DMH.VIEW.MP.LEFT.UL.DEFAULT') : get(room, 'name', '')}
+                      </RoomNameSpan>
+                    </StyledListItem>
+                    {users.filter(user => get(user, 'name').toLowerCase().includes(searchPatern.toLowerCase())).map((user, index) =>
+                      <CustomListItem key={index} user={user} index={index} handleLink={doLink} />
                     )}
-                  </Droppable>
-                );
-              })}
-            </DragDropContext>
-          </LeftSideContainer>
-        ) : <ErrorBox />}
+                    {provided.placeholder}
+                  </CustomStyledList>
+                )}
+              </Droppable>
+            );
+          })}
+        </DragDropContext>
+      </LeftSideContainer>
     </>
   )
 }

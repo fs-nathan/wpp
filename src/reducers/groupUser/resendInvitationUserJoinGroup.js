@@ -1,8 +1,4 @@
-import {
-  RESEND_INVITATION_USER_JOIN_GROUP,
-  RESEND_INVITATION_USER_JOIN_GROUP_SUCCESS,
-  RESEND_INVITATION_USER_JOIN_GROUP_FAIL,
-} from '../../constants/actions/groupUser/resendInvitationUserJoinGroup';
+import { RESEND_INVITATION_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP_FAIL, RESEND_INVITATION_USER_JOIN_GROUP_SUCCESS } from '../../constants/actions/groupUser/resendInvitationUserJoinGroup';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case RESEND_INVITATION_USER_JOIN_GROUP_SUCCESS: 
+    case RESEND_INVITATION_USER_JOIN_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case RESEND_INVITATION_USER_JOIN_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

@@ -25,7 +25,7 @@ function CustomListItem({
       {(provided) => (
         <StyledListItem
           component={Link}
-          to={`${location.pathname}/${get(room, 'id')}`}
+          to={`${location.pathname}/room/${get(room, 'id')}`}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}

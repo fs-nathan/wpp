@@ -1,21 +1,9 @@
-import {
-  LIST_PROJECT_GROUP,
-  LIST_PROJECT_GROUP_SUCCESS,
-  LIST_PROJECT_GROUP_FAIL,
-} from '../../constants/actions/projectGroup/listProjectGroup';
-import {
-  CREATE_PROJECT_GROUP_SUCCESS,
-} from '../../constants/actions/projectGroup/createProjectGroup';
-import {
-  EDIT_PROJECT_GROUP_SUCCESS,
-} from '../../constants/actions/projectGroup/editProjectGroup';
-import {
-  DELETE_PROJECT_GROUP_SUCCESS,
-} from '../../constants/actions/projectGroup/deleteProjectGroup';
-import {
-  SORT_PROJECT_GROUP_SUCCESS,
-} from '../../constants/actions/projectGroup/sortProjectGroup';
-import { findIndex, get, remove, slice, concat } from 'lodash';
+import { concat, findIndex, get, remove, slice } from 'lodash';
+import { CREATE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/createProjectGroup';
+import { DELETE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/deleteProjectGroup';
+import { EDIT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/editProjectGroup';
+import { LIST_PROJECT_GROUP, LIST_PROJECT_GROUP_FAIL, LIST_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/listProjectGroup';
+import { SORT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/sortProjectGroup';
 
 export const initialState = {
   data: {
@@ -33,9 +21,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_PROJECT_GROUP_SUCCESS: 
+    case LIST_PROJECT_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -43,6 +32,7 @@ function reducer(state = initialState, action) {
     case LIST_PROJECT_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
@@ -86,8 +76,8 @@ function reducer(state = initialState, action) {
       let newProjectGroups = state.data.projectGroups;
       const removed = remove(newProjectGroups, { id: get(action.options, 'projectGroupId') });
       newProjectGroups = [
-        ...slice(newProjectGroups, 0, action.options.sortIndex), 
-        ...removed, 
+        ...slice(newProjectGroups, 0, action.options.sortIndex),
+        ...removed,
         ...slice(newProjectGroups, action.options.sortIndex)
       ];
       return {

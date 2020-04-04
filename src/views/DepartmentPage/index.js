@@ -1,30 +1,28 @@
 import React from 'react';
-import TwoColumnsLayout from '../../components/TwoColumnsLayout';
-import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { listRoom } from '../../actions/room/listRoom';
+import { Route } from 'react-router-dom';
+import { listIcon } from '../../actions/icon/listIcon';
+import { listLevel } from '../../actions/level/listLevel';
+import { listMajor } from '../../actions/major/listMajor';
+import { listPosition } from '../../actions/position/listPosition';
 import { detailRoom } from '../../actions/room/detailRoom';
 import { getUserOfRoom } from '../../actions/room/getUserOfRoom';
-import { listPosition } from '../../actions/position/listPosition';
-import { listUserRole } from '../../actions/userRole/listUserRole';
-import { listMajor } from '../../actions/major/listMajor';
-import { listLevel } from '../../actions/level/listLevel';
-import { listIcon } from '../../actions/icon/listIcon';
+import { listRoom } from '../../actions/room/listRoom';
 import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
+import { listUserRole } from '../../actions/userRole/listUserRole';
+import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
-  CustomEventListener, CustomEventDispose,
-  SORT_ROOM, CREATE_ROOM, DELETE_ROOM, UPDATE_ROOM,
-  SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, 
   //PUBLIC_MEMBER, PRIVATE_MEMBER, UPDATE_USER,
   //CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION,
   //CREATE_LEVEL, UPDATE_LEVEL, DELETE_LEVEL,
   //CREATE_MAJOR, UPDATE_MAJOR, DELETE_MAJOR,
   //CREATE_USER_ROLE, UPDATE_USER_ROLE, DELETE_USER_ROLE,
   //CREATE_ICON, DELETE_ICON,
-  ACCEPT_REQUIREMENT_USER_JOIN_GROUP,
+  ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CREATE_ROOM, CustomEventDispose, CustomEventListener, DELETE_ROOM, INVITE_USER_JOIN_GROUP, SORT_ROOM, SORT_USER, UPDATE_ROOM
 } from '../../constants/events';
-import DepartmentList from './LeftPart/DepartmentList';
+import { Routes } from '../../constants/routes';
 import DepartmentInfo from './LeftPart/DepartmentInfo';
+import DepartmentList from './LeftPart/DepartmentList';
 import AllUsersTable from './RightPart/AllUsersTable';
 import DepartmentUsersTable from './RightPart/DepartmentUsersTable';
 
@@ -61,7 +59,7 @@ function UserPage({
       //CustomEventDispose(DELETE_ROOM, reloadListRoom);
       CustomEventDispose(SORT_ROOM, reloadListRoom);
     }
-  }, [doListRoom]); 
+  }, [doListRoom]);
 
   const [departmentId, setDepartmentId] = React.useState();
 
@@ -96,7 +94,7 @@ function UserPage({
       CustomEventListener(BAN_USER_FROM_GROUP, reloadGetUserOfRoom);
       //CustomEventListener(PUBLIC_MEMBER, reloadGetUserOfRoom);
       //CustomEventListener(PRIVATE_MEMBER, reloadGetUserOfRoom);
-      
+
       return () => {
         //CustomEventDispose(UPDATE_USER, reloadGetUserOfRoom);
         CustomEventDispose(SORT_USER, reloadGetUserOfRoom);
@@ -245,48 +243,48 @@ function UserPage({
       setDepartmentId,
     }}>
       <Route
-        path='/departments'
+        path={Routes.DEPARTMENTS}
         render={({ match: { url }, }) => (
           <>
             <Route
               path={`${url}`}
               exact
               render={props => (
-                <TwoColumnsLayout 
+                <TwoColumnsLayout
                   leftRenders={[
-                    () => 
-                      <DepartmentList 
+                    () =>
+                      <DepartmentList
                         {...props}
                       />,
                   ]}
                   rightRender={
-                    ({ expand, handleExpand }) => 
-                      <AllUsersTable 
-                        {...props} 
+                    ({ expand, handleExpand }) =>
+                      <AllUsersTable
+                        {...props}
                         expand={expand}
-                        handleExpand={handleExpand} 
+                        handleExpand={handleExpand}
                       />
                   }
                 />
               )}
             />
             <Route
-              path={`${url}/:departmentId`}
+              path={`${url}/rooom/:departmentId`}
               exact
               render={props => (
-                <TwoColumnsLayout 
+                <TwoColumnsLayout
                   leftRenders={[
-                    () => 
-                      <DepartmentInfo 
+                    () =>
+                      <DepartmentInfo
                         {...props}
                       />,
                   ]}
                   rightRender={
-                    ({ expand, handleExpand }) => 
-                      <DepartmentUsersTable 
-                        {...props} 
+                    ({ expand, handleExpand }) =>
+                      <DepartmentUsersTable
+                        {...props}
                         expand={expand}
-                        handleExpand={handleExpand} 
+                        handleExpand={handleExpand}
                       />
                   }
                 />

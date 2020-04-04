@@ -1,8 +1,4 @@
-import {
-	DELETE_GROUP_TASK,
-	DELETE_GROUP_TASK_SUCCESS,
-	DELETE_GROUP_TASK_FAIL,
-} from '../../constants/actions/groupTask/deleteGroupTask';
+import { DELETE_GROUP_TASK, DELETE_GROUP_TASK_FAIL, DELETE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/deleteGroupTask';
 
 export const initialState = {
 	data: null,
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
 				error: null,
 				loading: true,
 			};
-		case DELETE_GROUP_TASK_SUCCESS: 
+		case DELETE_GROUP_TASK_SUCCESS:
 			return {
-				...state, 
+				...state,
+				...initialState,
 				error: null,
 				loading: false,
 			};
 		case DELETE_GROUP_TASK_FAIL:
 			return {
 				...state,
+				...initialState,
 				error: action.error,
 				loading: false,
 			};

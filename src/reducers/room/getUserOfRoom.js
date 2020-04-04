@@ -1,16 +1,12 @@
-import {
-  GET_USER_OF_ROOM,
-  GET_USER_OF_ROOM_SUCCESS,
-  GET_USER_OF_ROOM_FAIL,
-} from '../../constants/actions/room/getUserOfRoom';
-import { SORT_USER } from '../../constants/actions/user/sortUser';
-import { PUBLIC_MEMBER } from '../../constants/actions/user/publicMember';
+import { findIndex, get, remove, slice } from 'lodash';
+import { GET_USER_OF_ROOM, GET_USER_OF_ROOM_FAIL, GET_USER_OF_ROOM_SUCCESS } from '../../constants/actions/room/getUserOfRoom';
 import { PRIVATE_MEMBER } from '../../constants/actions/user/privateMember';
-import { remove, get, slice, findIndex, } from 'lodash';
+import { PUBLIC_MEMBER } from '../../constants/actions/user/publicMember';
+import { SORT_USER } from '../../constants/actions/user/sortUser';
 
 export const initialState = {
   data: {
-    users: [],  
+    users: [],
   },
   error: null,
   loading: false,
@@ -26,9 +22,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case GET_USER_OF_ROOM_SUCCESS: 
+    case GET_USER_OF_ROOM_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -36,6 +33,7 @@ function reducer(state = initialState, action) {
     case GET_USER_OF_ROOM_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
@@ -69,7 +67,7 @@ function reducer(state = initialState, action) {
           users,
         },
       };
-    case SORT_USER: 
+    case SORT_USER:
       users = [...state.data.users];
       let removed = remove(users, { id: get(action.options, 'userId') });
       users = [...slice(users, 0, action.options.sortIndex), ...removed, ...slice(users, action.options.sortIndex)];

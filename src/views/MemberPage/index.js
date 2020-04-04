@@ -1,21 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { listRoom } from '../../actions/room/listRoom';
-import { listPosition } from '../../actions/position/listPosition';
-import { listMajor } from '../../actions/major/listMajor';
+import { Route } from 'react-router-dom';
+import styled from 'styled-components';
 import { listLevel } from '../../actions/level/listLevel';
-import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
+import { listMajor } from '../../actions/major/listMajor';
+import { listPosition } from '../../actions/position/listPosition';
+import { listRoom } from '../../actions/room/listRoom';
 import { detailUser } from '../../actions/user/detailUser';
+import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
 import {
-  CustomEventListener, CustomEventDispose,
+  CustomEventDispose, CustomEventListener, UPDATE_USER,
   //SORT_ROOM, CREATE_ROOM, DELETE_ROOM, UPDATE_ROOM,
   //SORT_USER, INVITE_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, PUBLIC_MEMBER, PRIVATE_MEMBER, 
-  UPLOAD_DOCUMENTS_USER, 
-  UPDATE_USER,
-  //CREATE_POSITION, UPDATE_POSITION, DELETE_POSITION,
+  UPLOAD_DOCUMENTS_USER
 } from '../../constants/events';
+import { Routes } from '../../constants/routes';
 import UserList from './LeftPart/UserList';
 import UserInfo from './RightPart/UserInfo';
 
@@ -66,7 +65,7 @@ function UserPage({
       CustomEventDispose(SORT_ROOM, reloadListRoom);
     }
     */
-  }, [doListRoom]); 
+  }, [doListRoom]);
 
   React.useEffect(() => {
     doListPosition();
@@ -98,7 +97,7 @@ function UserPage({
 
   React.useEffect(() => {
     doListUserOfGroup();
-    
+
     const reloadListUserOfGroup = () => {
       doListUserOfGroup();
     }
@@ -126,14 +125,14 @@ function UserPage({
       //CustomEventDispose(PUBLIC_MEMBER, reloadListUserOfGroup);
       //CustomEventDispose(PRIVATE_MEMBER, reloadListUserOfGroup);
     }
-  }, [doListUserOfGroup]); 
+  }, [doListUserOfGroup]);
 
   const [userId, setUserId] = React.useState();
 
   React.useEffect(() => {
     doDetailUser({ userId });
-    
-  
+
+
     const reloadDetailUserHandler = () => doDetailUser({ userId }, true);
 
     CustomEventListener(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
@@ -151,25 +150,25 @@ function UserPage({
       setUserId,
     }}>
       <Container>
-        <Route 
-          path='/members'
+        <Route
+          path={Routes.MEMBERS}
           render={({ match: { url, } }) => (
             <LeftDiv>
               <Route path={`${url}/`} component={UserList} />
             </LeftDiv>
           )}
         />
-        <Route 
-          path='/members'
+        <Route
+          path={Routes.MEMBERS}
           render={({ match: { url, } }) => (
             <RightDiv>
-              <Route path={`${url}/:userId`} 
-                render={props => 
-                  <UserInfo 
-                    {...props} 
+              <Route path={`${url}/:userId`}
+                render={props =>
+                  <UserInfo
+                    {...props}
                   />
                 }
-                exact 
+                exact
               />
             </RightDiv>
           )}

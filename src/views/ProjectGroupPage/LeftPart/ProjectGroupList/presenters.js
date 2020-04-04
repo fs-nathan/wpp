@@ -8,10 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import SearchInput from '../../../../components/SearchInput';
+import { Routes } from '../../../../constants/routes';
 import CustomListItem from './CustomListItem';
 import './style.scss';
 
@@ -48,83 +48,80 @@ function ProjectList({
 
   return (
     <>
-      {groups.error !== null && <ErrorBox />}
-      {groups.error === null && (
-        <LeftSideContainer
-          title={t("DMH.VIEW.PGP.LEFT.LIST.TITLE")}
-          rightAction={{
-            iconPath: mdiPlus,
-            onClick: () => handleOpenModal('CREATE'),
-            tooltip: t("DMH.VIEW.PGP.LEFT.LIST.ADD"),
-          }}
-          loading={{
-            bool: groups.loading,
-            component: () => <LoadingBox />,
-          }}
-        >
-          <Banner>
-            <SearchInput
-              fullWidth
-              placeholder={t("DMH.VIEW.PGP.LEFT.LIST.FIND")}
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
-            />
-          </Banner>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId='project-group-list'>
-              {provided => (
-                <StyledList
-                  innerRef={provided.innerRef}
-                  {...provided.droppableProps}
+      <LeftSideContainer
+        title={t("DMH.VIEW.PGP.LEFT.LIST.TITLE")}
+        rightAction={{
+          iconPath: mdiPlus,
+          onClick: () => handleOpenModal('CREATE'),
+          tooltip: t("DMH.VIEW.PGP.LEFT.LIST.ADD"),
+        }}
+        loading={{
+          bool: groups.loading,
+          component: () => <LoadingBox />,
+        }}
+      >
+        <Banner>
+          <SearchInput
+            fullWidth
+            placeholder={t("DMH.VIEW.PGP.LEFT.LIST.FIND")}
+            value={searchPatern}
+            onChange={evt => setSearchPatern(evt.target.value)}
+          />
+        </Banner>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId='project-group-list'>
+            {provided => (
+              <StyledList
+                innerRef={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <StyledListItem
+                  to={`${Routes.PROJECTS}`}
+                  component={Link}
                 >
-                  <StyledListItem
-                    to={`${location.pathname}`}
-                    component={Link}
-                  >
-                    <div>
-                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                    </div>
-                    <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                    <ListItemText
-                      primary={
-                        <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.ALL")}</StyledPrimary>
-                      }
-                      secondary={
-                        <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", {
-                          projectGroups: groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'number_project', 0), 0) + groups.defaultNumberProject
-                        })}</Secondary>
-                      }
-                    />
-                  </StyledListItem>
-                  {groups.groups.map((projectGroup, index) => (
-                    <CustomListItem key={index} projectGroup={projectGroup} index={index} />
-                  ))}
-                  {provided.placeholder}
-                  <StyledListItem
-                    to={`${location.pathname}/default`}
-                    component={Link}
-                  >
-                    <div>
-                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                    </div>
-                    <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                    <ListItemText
-                      primary={
-                        <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.DEFAULT")}</StyledPrimary>
-                      }
-                      secondary={
-                        <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", {
-                          projectGroups: groups.defaultNumberProject
-                        })}</Secondary>
-                      }
-                    />
-                  </StyledListItem>
-                </StyledList>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </LeftSideContainer>
-      )}
+                  <div>
+                    <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
+                  </div>
+                  <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
+                  <ListItemText
+                    primary={
+                      <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.ALL")}</StyledPrimary>
+                    }
+                    secondary={
+                      <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", {
+                        projectGroups: groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'number_project', 0), 0) + groups.defaultNumberProject
+                      })}</Secondary>
+                    }
+                  />
+                </StyledListItem>
+                {groups.groups.map((projectGroup, index) => (
+                  <CustomListItem key={index} projectGroup={projectGroup} index={index} />
+                ))}
+                {provided.placeholder}
+                <StyledListItem
+                  to={`${Routes.PROJECTS}/default`}
+                  component={Link}
+                >
+                  <div>
+                    <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
+                  </div>
+                  <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
+                  <ListItemText
+                    primary={
+                      <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.DEFAULT")}</StyledPrimary>
+                    }
+                    secondary={
+                      <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", {
+                        projectGroups: groups.defaultNumberProject
+                      })}</Secondary>
+                    }
+                  />
+                </StyledListItem>
+              </StyledList>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </LeftSideContainer>
     </>
   )
 }

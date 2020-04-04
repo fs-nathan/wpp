@@ -1,9 +1,9 @@
 export const Routes = {
   HOME: '/',
-  PROJECTS: '/projects',
-  PROJECT: '/project',
-  DEPARTMENTS: '/departments',
-  MEMBERS: '/members',
+  PROJECTS: '/projects/group',
+  PROJECT: '/tasks/table',
+  DEPARTMENTS: '/users',
+  MEMBERS: '/users/detail',
   REPORT: '/report',
   DOCUMENT: '/document/:documentType',
   DOCUMENT_RECENT: '/document/recent',

@@ -1,12 +1,8 @@
-import {
-  CREATE_ICON,
-  CREATE_ICON_SUCCESS,
-  CREATE_ICON_FAIL,
-} from '../../constants/actions/icon/createIcon';
+import { CREATE_ICON, CREATE_ICON_FAIL, CREATE_ICON_SUCCESS } from '../../constants/actions/icon/createIcon';
 
 export const initialState = {
   data: {
-    dataIcon: null,  
+    dataIcon: null,
   },
   error: null,
   loading: false,
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case CREATE_ICON_SUCCESS: 
+    case CREATE_ICON_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case CREATE_ICON_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

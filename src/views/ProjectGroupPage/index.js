@@ -21,6 +21,7 @@ import {
   //CREATE_PROJECT_GROUP, 
   SORT_PROJECT_GROUP, UPDATE_PROJECT
 } from '../../constants/events';
+import { Routes } from '../../constants/routes';
 import { useLocalStorage } from '../../hooks';
 import DefaultGroupDetail from './LeftPart/DefaultGroupDetail';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
@@ -221,7 +222,7 @@ function ProjectGroupPage({
       localOptions, setLocalOptions,
     }}>
       <Route
-        path='/projects'
+        path={Routes.PROJECTS}
         render={({ match: { url } }) => (
           <Switch>
             <Route
