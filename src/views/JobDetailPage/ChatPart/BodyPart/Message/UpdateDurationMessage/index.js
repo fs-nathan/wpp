@@ -1,7 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
-import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
 const UpdateDurationMessage = ({
@@ -52,9 +51,7 @@ const UpdateDurationMessage = ({
           {time_create}
         </div>
       }
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+
     </div>
   );
 }

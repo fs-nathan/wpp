@@ -1,6 +1,8 @@
 .TextMessage {
-  margin-top: 15px;
   display: flex;
+  &__top {
+    margin-top: 15px;
+  }
   &__mid,
   &__bot {
     margin-top: 5px;
@@ -93,5 +95,8 @@
     &__self {
       color: #d8d7d7;
     }
+  }
+  &:hover .CommonMessageAction {
+    opacity: 1;
   }
 }

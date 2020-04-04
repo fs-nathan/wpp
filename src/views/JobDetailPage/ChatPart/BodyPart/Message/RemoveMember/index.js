@@ -1,7 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
-import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
 const RemoveMember = ({
@@ -42,9 +41,7 @@ const RemoveMember = ({
         <Avatar className="TextMessage--avatarReply" src={member_avatar} />
         {member_name}
       </div>
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+
     </div>
   );
 }

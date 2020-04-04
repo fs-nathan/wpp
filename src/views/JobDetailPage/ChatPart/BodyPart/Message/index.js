@@ -20,7 +20,6 @@ import HandleOffer from './HandleOffer';
 import ImageMessage from './ImageMessage';
 import RemindMessage from './RemindMessage';
 import RemoveMember from './RemoveMember';
-import ShareFile from './ShareFile';
 import ShareLocation from './ShareLocation';
 import StopTask from './StopTask';
 import TextMessage from './TextMessage';
@@ -68,7 +67,7 @@ const Message = props => {
     case CHAT_TYPE.HANDLE_REMIND:
       return <RemindMessage {...props} />;
     case CHAT_TYPE.SHARE_FILE:
-      return <ShareFile {...props} />;
+      return <FileMessage {...props} />;
     case CHAT_TYPE.EDIT_PRIORITY:
       return <EditPriority {...props} />;
     case CHAT_TYPE.EXTEND_TIME:

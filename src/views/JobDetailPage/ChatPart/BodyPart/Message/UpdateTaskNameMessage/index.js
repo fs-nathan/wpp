@@ -2,7 +2,6 @@ import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
 const UpdateTaskNameMessage = ({
@@ -51,15 +50,13 @@ const UpdateTaskNameMessage = ({
           {time_create}
         </div>
       }
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+
     </div>
   );
 }
 
 UpdateTaskNameMessage.propTypes = {
-  new_task_name: PropTypes.string.isRequired,
+  new_task_name: PropTypes.string,
 
 };
 

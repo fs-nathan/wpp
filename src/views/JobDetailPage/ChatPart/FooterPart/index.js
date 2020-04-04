@@ -68,10 +68,16 @@ const FooterPart = ({
     dispatch(showTab(3))
   }
 
+  async function onKeyDownChat(event) {
+    if (event.key === "Escape") {
+      setSelectedChat(null)
+    }
+  }
+
   async function onKeyPressChat(event) {
+    console.log('enter press here! ', event.which)
     if (textChat.length === 0) return;
-    if (event.key === 'Enter') {
-      console.log('enter press here! ', textChat)
+    if (event.key === 'Enter' || event.which === 13) {
       setTextChat('')
       try {
         const { data } = await createChatText({
@@ -146,6 +152,7 @@ const FooterPart = ({
         )}
         <input
           onKeyPress={onKeyPressChat}
+          onKeyDown={onKeyDownChat}
           className="chat-input"
           type="text"
           value={textChat}

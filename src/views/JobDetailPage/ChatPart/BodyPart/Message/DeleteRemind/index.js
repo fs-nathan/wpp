@@ -1,7 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
-import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
 const DeleteRemind = ({
@@ -39,9 +38,7 @@ const DeleteRemind = ({
       <div className="DeleteSubTask--title" >
         <span className="DeleteRemind__red">Đã xoá nhắc hẹn lúc </span> {time_create}
       </div>
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+
     </div>
   );
 }

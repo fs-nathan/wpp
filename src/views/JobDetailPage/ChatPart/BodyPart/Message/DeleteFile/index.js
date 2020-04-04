@@ -3,7 +3,6 @@ import { mdiSignCaution } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
 import React from 'react';
-import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
 const DeleteFile = ({
@@ -67,9 +66,7 @@ const DeleteFile = ({
           </div>
         }
       </div>
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+
     </div >
   );
 }

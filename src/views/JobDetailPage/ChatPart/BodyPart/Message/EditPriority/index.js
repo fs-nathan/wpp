@@ -5,7 +5,6 @@ import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
 const EditPriority = ({
@@ -66,9 +65,7 @@ const EditPriority = ({
           </span>
         </div>
       }
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+
     </div>
   );
 }

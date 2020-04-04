@@ -2,7 +2,6 @@ import { Avatar } from '@material-ui/core';
 import { getListChat, getListChatService } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
-import { isEmpty } from 'helpers/utils/isEmpty';
 import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,24 +13,26 @@ import './styles.scss';
 const BodyPart = props => {
   const chatRef = useRef();
   const dispatch = useDispatch();
-  const chats = useSelector(state => state.chat.chats)
+  const chats = useSelector(state => state.chat.chats);
   // const userId = useSelector(state => state.system.profile.order_user_id)
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [openAddModal, setOpenAddModal] = React.useState(false);
-  const calculatedChats = isEmpty(chats.data) ? [] : chats.data.map((chat, i) => {
+  const chatData = !Boolean(chats.data) ? [] : [...chats.data];
+  chatData.reverse();
+  const calculatedChats = chatData.map((chat, i) => {
     let chatPosition = 'top';
-    const lastChat = chats.data[i - 1]
-    if (lastChat && lastChat.user_create_id === chat.user_create_id) {
+    const prevChat = chatData[i - 1];
+    if (prevChat && prevChat.user_create_id === chat.user_create_id) {
       chatPosition = 'mid';
-      const nextChat = chats.data[i + 1]
-      if (nextChat && nextChat.user_create_id !== chat.user_create_id) {
+      const nextChat = chatData[i + 1]
+      if (!nextChat || nextChat.user_create_id !== chat.user_create_id) {
         chatPosition = 'bot';
       }
     }
     return { ...chat, chatPosition }
   })
-  console.log(calculatedChats, 'calculatedChats')
+  // console.log(calculatedChats, 'calculatedChats')
   const {
     date_create,
     name,
@@ -42,11 +43,11 @@ const BodyPart = props => {
   } = detailTask || {}
   useEffect(() => {
     if (chatRef && chatRef.current) {
-      chatRef.current.scrollTop = 700;
+      // chatRef.current.scrollTop = chatRef.current.scrollHeight;
       // console.log(chatRef)
-      // chatRef.scrollIntoView({ behavior: "smooth" });
+      chatRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [chatRef]);
+  });
   useEffect(() => {
     const fetchListChat = async () => {
       try {
@@ -71,7 +72,7 @@ const BodyPart = props => {
   }
 
   return (
-    <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} ref={chatRef}>
+    <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} >
       <div className="wrap-time">
         <div className="line" />
         <div className="time">{date_create}</div>
@@ -117,7 +118,9 @@ const BodyPart = props => {
         </div>
       </div>
       {
-        calculatedChats.map(el => <Message {...el} key={el.id} handleReplyChat={handleReplyChat(el)} />)}
+        calculatedChats.map((el, id) => <Message {...el} key={id} handleReplyChat={handleReplyChat(el)} />)
+      }
+      <div ref={chatRef} />
       {/* <DetailMessage /> */}
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>

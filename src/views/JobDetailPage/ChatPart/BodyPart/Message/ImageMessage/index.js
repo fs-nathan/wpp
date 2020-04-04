@@ -35,6 +35,9 @@ const ImageMessage = ({
       {!isReply && !is_me &&
         <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
       }
+      {!isReply && is_me &&
+        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
+      }
       <div className={clsx("ImageMessage--rightContentWrap", { "ImageMessage--rightContentWrap__self": is_me })} >
         {
           chatPosition === 'top' && !is_me &&

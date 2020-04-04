@@ -1,5 +1,6 @@
 .CommonMessageAction {
   display: flex;
+  opacity: 0;
   &--button {
     transition: unset;
     background-color: unset;
