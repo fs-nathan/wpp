@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
+import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
 import taskReducer from "../views/JobPage/redux/reducers";
 import authentications, {
   initialState as authenticationsInitialState
@@ -416,7 +417,8 @@ const rootReducer = combineReducers({
   register: combineReducers({
     inviteOtherPeopleCreateAccount
   }),
-  [settingGroupHome.key]: settingGroupHome.reducer
+  [settingGroupHome.key]: settingGroupHome.reducer,
+  apiCall: apiCall
 });
 
 export const DEFAULT_STATE = {

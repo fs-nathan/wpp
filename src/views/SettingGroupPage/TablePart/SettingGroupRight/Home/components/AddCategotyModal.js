@@ -2,7 +2,7 @@ import Joi from "@hapi/joi";
 import { Box } from "@material-ui/core";
 import { listIcon } from "actions/icon/listIcon";
 import { Field, Formik, FormikContext } from "formik";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useToggle } from "react-use";
@@ -12,17 +12,20 @@ import { DialogContent } from "views/DocumentPage/TablePart/DocumentComponent/Ta
 import VerticleList from "views/JobPage/components/VerticleList";
 import { emptyObject } from "views/JobPage/contants/defaultValue";
 import HomeContext from "../HomeContext";
-import { createPostCategory, loadCategoryList } from "../redux";
+import { createPostCategory } from "../redux";
+import { apiCallStatus } from "../redux/apiCall/types";
+import useAsyncTracker from "../redux/apiCall/useAsyncTracker";
 import {
   InputFormControl,
   MultilineInputFormControl,
   SelecIconInputFormControl
 } from "./CssFormControl";
-const AddCategoryModal = ({ onClose, toggleLogoModal }) => {
+const AddCategoryModal = ({ loading, onClose, toggleLogoModal }) => {
   const { t } = useTranslation();
   const { handleSubmit } = useContext(FormikContext);
   return (
     <ModalCommon
+      loading={loading}
       title={t("Tạo thể loại")}
       onClose={onClose}
       footerAction={[
@@ -75,7 +78,7 @@ const validateAddCategoryForm = createValidate(
     name: Joi.string().required(),
     logo: Joi.any(),
     logoPreview: Joi.any(),
-    description: Joi.string()
+    description: Joi.any()
   })
 );
 const AddCategoryForm = ({ children, onSubmit }) => {
@@ -99,18 +102,24 @@ const AddCategoryForm = ({ children, onSubmit }) => {
   );
 };
 export default () => {
-  const dispatch = useDispatch();
   const { setModal } = useContext(HomeContext);
-  const onClose = () => {
-    dispatch(loadCategoryList());
+  const [{ status }, setAsyncAction] = useAsyncTracker();
+  const onClose = useCallback(() => {
     setModal(null);
-  };
+  }, [setModal]);
+  useEffect(() => {
+    status === apiCallStatus.success && onClose();
+  }, [onClose, status]);
   const [openLogoModal, toggleLogoModal] = useToggle();
-  const handleSubmit = values => dispatch(createPostCategory(values));
+  const handleSubmit = values => setAsyncAction(createPostCategory(values));
   return (
     <AddCategoryForm onSubmit={handleSubmit}>
       <>
-        <AddCategoryModal onClose={onClose} toggleLogoModal={toggleLogoModal} />
+        <AddCategoryModal
+          loading={status === apiCallStatus.loading}
+          onClose={onClose}
+          toggleLogoModal={toggleLogoModal}
+        />
         {openLogoModal && (
           <Field name="logo">
             {({ field }) => (

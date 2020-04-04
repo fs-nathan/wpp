@@ -1,7 +1,17 @@
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
-import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/saga";
+import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
-import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH } from "../constants/actions/documents";
+import {
+  LIST_COMMENT,
+  LIST_DOCUMENT_FROM_ME,
+  LIST_DOCUMENT_SHARE,
+  LIST_GOOGLE_DOCUMENT,
+  LIST_MY_DOCUMENT,
+  LIST_PROJECT_DOCUMENT,
+  LIST_PROJECT_DOCUMENT_OF_FOLDER,
+  LIST_RECENT,
+  LIST_TRASH
+} from "../constants/actions/documents";
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
 import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
 import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
@@ -71,7 +81,11 @@ import { GET_USER_OF_ROOM } from "../constants/actions/room/getUserOfRoom";
 import { LIST_ROOM } from "../constants/actions/room/listRoom";
 import { SORT_ROOM } from "../constants/actions/room/sortRoom";
 import { UPDATE_ROOM } from "../constants/actions/room/updateRoom";
-import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP, GET_SETTING_DATE } from "../constants/actions/setting/setting";
+import {
+  FETCH_GROUP_DETAIL,
+  FETCH_LIST_COLOR_GROUP,
+  GET_SETTING_DATE
+} from "../constants/actions/setting/setting";
 import { CREATE_TASK } from "../constants/actions/task/createTask";
 import { DELETE_TASK } from "../constants/actions/task/deleteTask";
 import { LIST_TASK } from "../constants/actions/task/listTask";
@@ -91,9 +105,25 @@ import { DELETE_USER_ROLE } from "../constants/actions/userRole/deleteUserRole";
 import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
 import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
 // ==================================
-import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
+import {
+  watchLoadTaskAssignPage,
+  watchLoadTaskDuePage,
+  watchLoadTaskOverviewPage,
+  watchLoadTaskPage,
+  watchLoadTaskRolePage
+} from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
-import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash } from "./documents";
+import {
+  listComment,
+  listDocumentShare,
+  listDocumentShareFromMe,
+  listGoogleDocument,
+  listMyDocument,
+  listProjectDocument,
+  listProjectDocumentOfFolder,
+  listRecent,
+  listTrash
+} from "./documents";
 import { copyGroupTask } from "./groupTask/copyGroupTask";
 import { createGroupTask } from "./groupTask/createGroupTask";
 import { deleteGroupTask } from "./groupTask/deleteGroupTask";
@@ -162,7 +192,11 @@ import { getUserOfRoom } from "./room/getUserOfRoom";
 import { listRoom } from "./room/listRoom";
 import { sortRoom } from "./room/sortRoom";
 import { updateRoom } from "./room/updateRoom";
-import { getGroupDetail, getListColor, getSettingDate } from "./setting/setting";
+import {
+  getGroupDetail,
+  getListColor,
+  getSettingDate
+} from "./setting/setting";
 import { createTask } from "./task/createTask";
 import { deleteTask } from "./task/deleteTask";
 import { listTask } from "./task/listTask";
@@ -537,7 +571,7 @@ function* rootSaga() {
   yield fork(watchLoadTaskAssignPage);
   yield fork(watchLoadTaskRolePage);
 
-  yield fork(watchAsyncAction)
+  yield fork(watchAsyncAction);
 }
 
 export default rootSaga;

@@ -1,16 +1,7 @@
-import { get, isFunction, merge, template } from "lodash";
-export * from "./chart";
-export * from "./time";
-export {
-  get,
-  isFunction,
-  merge,
-  template,
-  loginlineParams,
-  loginlineFunc,
-  createMapPropsFromAttrs,
-  encodeQueryData
-};
+import { get, isFunction, merge, remove, template, uniqueId } from "lodash";
+import * as chart from "./chart";
+import * as time from "./time";
+
 function encodeQueryData(data) {
   const ret = [];
   for (let d in data) {
@@ -63,4 +54,18 @@ function loginlineFunc(fn, prefix) {
 
 const createMapPropsFromAttrs = (strings = []) => (data = {}) => {
   return strings.map(string => get(data, string));
+};
+export {
+  chart,
+  time,
+  remove,
+  get,
+  isFunction,
+  merge,
+  uniqueId,
+  template,
+  loginlineParams,
+  loginlineFunc,
+  createMapPropsFromAttrs,
+  encodeQueryData
 };

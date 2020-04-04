@@ -6,16 +6,19 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { createMapPropsFromAttrs, loginlineFunc } from "views/JobPage/utils";
+import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import AddButton from "./components/AddButton";
 import AddCategotyModal from "./components/AddCategotyModal";
 import { categoryAttr } from "./contants";
 import HomeContext from "./HomeContext";
 import {
   categoryListSelector,
+  deletePostCategory,
   loadCategoryList,
   loadPostCategoryLogoList
 } from "./redux";
+import { apiCallStatus } from "./redux/apiCall/types";
+import useAsyncTracker from "./redux/apiCall/useAsyncTracker";
 const ChipGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -54,6 +57,19 @@ const Title = styled.div`
 const SubTitle = styled.div`
   font-size: 15px;
 `;
+const EnchanedChip = ({ id, logo, name }) => {
+  const [{ status }, setAsyncAction] = useAsyncTracker();
+  const handleDelete = () =>
+    setAsyncAction(deletePostCategory({ category_id: id }));
+  return (
+    <Chip
+      disabled={status === apiCallStatus.loading}
+      avatar={<Avatar alt={name} src={logo} />}
+      label={name}
+      onDelete={handleDelete}
+    />
+  );
+};
 function Home() {
   const { categories, setModal } = useContext(HomeContext);
   const { t } = useTranslation();
@@ -76,14 +92,7 @@ function Home() {
               categoryAttr.name,
               categoryAttr.logo
             ])(cate);
-            return (
-              <Chip
-                key={id}
-                avatar={<Avatar alt={name} src={logo} />}
-                label={name}
-                onDelete={loginlineFunc}
-              />
-            );
+            return <EnchanedChip key={id} {...{ id, name, logo }} />;
           })}
           <Box flexBasis="100%" margin="0px!important" />
           <AddButton
