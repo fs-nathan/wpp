@@ -1,18 +1,14 @@
-import React from 'react'
-import { Avatar, Typography, ListItemText, ListItem, CardMedia } from '@material-ui/core';
-import styled from 'styled-components';
-import avatar from '../../../assets/avatar.jpg'
-import colorPal from '../../../helpers/colorPalette'
-import { 
-    mdiClockOutline, mdiArrowRightBold, mdiAlarm, 
-    mdiFileTree, mdiDownload, mdiLinkVariant, 
-    mdiLinkOff, mdiMapMarker, mdiEmailSend 
-} from '@mdi/js';
+import { Avatar, CardMedia, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { mdiAlarm, mdiArrowRightBold, mdiClockOutline, mdiDownload, mdiEmailSend, mdiFileTree, mdiLinkOff, mdiLinkVariant, mdiMapMarker } from '@mdi/js';
 import Icon from '@mdi/react';
-import ImageChatTest from '../../../assets/imageChatTest.jpg'
-import NoImage from '../../../assets/no-img.png'
-import iconXls from '../../../assets/xls.png'
-import ModalImage from '../ModalImage'
+import React from 'react';
+import styled from 'styled-components';
+import avatar from '../../../assets/avatar.jpg';
+import ImageChatTest from '../../../assets/imageChatTest.jpg';
+import NoImage from '../../../assets/no-img.png';
+import iconXls from '../../../assets/xls.png';
+import colorPal from '../../../helpers/colorPalette';
+import ModalImage from '../ModalImage';
 
 
 const members = [
@@ -38,10 +34,6 @@ const members = [
     { id: 20, name: 'Hà Thanh Mai', role: 'Nhân viên', projectRole: 'Khác    ', authorityList: ['Thực hiện'] },
 ]
 
-
-// const Container = styled.div`
-//     margin: 20px 0;
-// `
 const StyledFrameMess = styled(Typography)`
     height: auto;
     padding: 11px 15px 10px 17px;
@@ -567,11 +559,11 @@ const ShareLink = () => {
                         style={{ margin: 0 }}
                         primary={
                             <Typography component='div'>
-                                <a 
-                                    href='https://vtask.net/' 
+                                <a
+                                    href='https://vtask.net/'
                                     target="_blank"
                                     rel="noopener noreferrer">
-                                        https://vtask.net/
+                                    https://vtask.net/
                                 </a>
                             </Typography>
                         }
@@ -747,86 +739,6 @@ const ReplyImg = () => {
         </>
     )
 }
-
-// const WrapCommonRow = styled.span`
-//     display: flex;
-//     justify-content:center;
-//     align-items: center;
-//     margin-bottom: 10px;
-// `
-// const WrapProjectMessage = styled.div`
-//     background-color: white;
-//     border-radius: 20px;
-//     width: 380px;
-//     display: flex;
-//     border-radius: 10px;
-//     flex-direction: column;
-//     & > div:nth-child(1) {
-//         background: red;
-//         text-align: center;
-//         padding: 13px 0 25px 0;
-//         border-top-left-radius: 10px;
-//         border-top-right-radius: 10px;
-//         & > span {
-//             text-align: center;
-//             font-weight: 600;
-//             background: red;
-//             color: white;
-//             font-size: 14px;
-//             padding-bottom: 9px;
-//             border-bottom: 2px solid white;
-//         }
-//     }
-//     & > div:nth-child(2) {
-//         display: flex;
-//         justify-content: center;
-//         flex-direction: column;
-//         align-items: center;
-//         border-bottom: 1px solid #bfbfbf;
-//         padding: 15px 0;
-//         & > div:nth-child(1){
-//             font-size: 16px;
-//             font-weight: bold;
-//         }
-//         & > div:nth-child(2) {
-//             font-size: 76px;
-//             font-weight: bold;
-//         }
-//         & > div:nth-child(3) {
-//             font-size: 19px;
-//             font-weight: 500;
-//             text-transform: uppercase;
-//             margin: 0 10px;
-//             text-align: center;
-//         }
-//         & > div:nth-child(4) {
-//             font-size: 14px;
-//             margin-top: 10px;
-//             color: #a6a6a6;
-//         }
-//     }
-//     & > button {
-//         & > span > div{
-//         display: flex;
-//         justify-content: center;
-//         flex-direction: column;
-//         align-items: center;
-//         & > div {
-//             display: flex;
-//             align-items: center;
-//             padding: 15px 0;
-//             & > svg {
-//                 margin-right: 7px;
-//             }
-//             & > span {
-//                 color : #05bdfa;
-//                 font-size: 14px;
-//                 font-weight: 500;
-//             }
-//         }
-//     }
-// }
-// `
 
 export default function DetailMessage(props) {
     //const [data] = React.useState(members);

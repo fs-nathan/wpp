@@ -1,12 +1,13 @@
 import { ButtonBase, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
+import clsx from 'clsx';
 import { get, isFunction } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ColorTypo from '../ColorTypo';
 import LoadingOverlay from '../LoadingOverlay';
 import './style.scss';
@@ -26,16 +27,18 @@ const StyledDialogActions = ({ className = '', ...props }) => <DialogActions cla
 const ActionsAcceptButton = ({ className = '', disabled, ...props }) =>
   <ButtonBase
     disabled={disabled}
-    className={`comp_CustomModal___accept-button ${className}`}
+    className={`${disabled ? 'comp_CustomModal___accept-button-disabled' : 'comp_CustomModal___accept-button'} ${className}`}
     {...props}
   />;
 
 const ActionsCancleButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___cancle-button ${className}`} {...props} />;
 
 const StyledDialog = ({ className = '', maxWidth = 'md', ...props }) =>
-  <Dialog className={`${maxWidth === 'lg'
-    ? 'comp_CustomModal___dialog-lg'
-    : 'comp_CustomModal___dialog-md'} ${className}`}
+  <Dialog className={clsx({
+    'comp_CustomModal___dialog-lg': maxWidth === 'lg',
+    'comp_CustomModal___dialog-md': maxWidth === 'md',
+    'comp_CustomModal___dialog-sm': maxWidth === 'sm',
+  }, className)}
     {...props}
   />;
 
@@ -61,6 +64,7 @@ function OneColumn({ children, height, }) {
       autoHide
       autoHideTimeout={500}
       height={height}
+      className="comp_CustomModal___scroll"
     >
       <StyledDialogContent>
         {children}
@@ -113,6 +117,7 @@ function TwoColumns({ maxWidth, left, right, height, }) {
 function CustomModal({
   loading = false,
   title,
+  titleRender,
   columns = 1,
   children = null, left = null, right = null,
   canConfirm = true,
@@ -122,8 +127,8 @@ function CustomModal({
   maxWidth = 'md', fullWidth = false,
   height = 'medium',
   className = '',
-  colors,
 }) {
+  const colors = useSelector(state => state.setting.colors)
 
   const { t } = useTranslation();
   const bgColor = colors.find(item => item.selected === true);
@@ -146,15 +151,18 @@ function CustomModal({
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
-      className={className}
+      className={clsx(className, "comp_CustomModal")}
     >
       <StyledDialogTitle id="alert-dialog-slide-title">
-        <ColorTypo uppercase>{title}</ColorTypo>
-        <IconButton onClick={() => handleCancle()}>
+        {
+          titleRender || <ColorTypo uppercase>{title}</ColorTypo>
+        }
+        <IconButton className="comp_CustomModal___iconButton" onClick={() => handleCancle()}>
           <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
         </IconButton>
       </StyledDialogTitle>
       <LoadingOverlay
+        className="comp_CustomModal___overlay"
         active={loading}
         spinner
         fadeSpeed={100}
@@ -191,7 +199,7 @@ function CustomModal({
 }
 
 CustomModal.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   columns: PropTypes.number,
   children: PropTypes.node,
   left: PropTypes.shape({
@@ -211,8 +219,4 @@ CustomModal.propTypes = {
   height: PropTypes.oneOf(['short', 'medium', 'tall', 'mini']),
 };
 
-export default connect(state => ({
-  colors: state.setting.colors
-}),
-  {},
-)(CustomModal);
+export default CustomModal;

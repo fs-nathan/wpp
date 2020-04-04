@@ -1,32 +1,19 @@
-import React from 'react';
-import {
-  IconButton, Typography, Dialog, Button,
-  TextField, withStyles, InputAdornment
-} from '@material-ui/core';
-import styled from 'styled-components';
-import CloseIcon from '@material-ui/icons/Close';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
+import DateFnsUtils from "@date-io/date-fns";
+import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 // import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import ColorChip from '../../../../components/ColorChip';
-// import TimeField from 'react-simple-timefield';
-import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
-import {
-  DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, REMIND_TIME_TYPE,
-  REMIND_SCHEDULE_TYPE, isValidDuration
-} from '../../../../helpers/jobDetail/stringHelper'
-
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import CustomModal from 'components/CustomModal';
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
-import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { postRemindWithTimeDetail, postRemindDuration, updateRemindWithTimeDetail, updateRemindWithDuration } from '../../../../actions/taskDetail/taskDetailActions';
+import styled from 'styled-components';
+import { postRemindDuration, postRemindWithTimeDetail, updateRemindWithDuration, updateRemindWithTimeDetail } from '../../../../actions/taskDetail/taskDetailActions';
+import ColorChip from '../../../../components/ColorChip';
+import { convertDate, DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, isValidDuration, REMIND_SCHEDULE_TYPE, REMIND_TIME_TYPE } from '../../../../helpers/jobDetail/stringHelper';
+// import TimeField from 'react-simple-timefield';
+import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect';
+
 const selector = [
   {
     value: 0,
@@ -62,11 +49,6 @@ const TitleText = styled(Typography)`
     margin: 0 0 15px 0;
   `
 
-const TextTitle = styled(Typography)`
-    font-size: 15px;
-    width: 204px;
-    padding: 15px 0 8px 0;
-  `
 const HelperText = styled(Typography)`
       color: #a3a3a3
       font-size: 12px;
@@ -79,11 +61,6 @@ const BadgeItem = styled(ColorChip)`
     margin: 5px 6px 5px 0;
   `
 
-const TextRemind = styled(Typography)`
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-  `
 const InputDateTime = styled(TextField)`
     width: 146px !important;
   `
@@ -118,51 +95,6 @@ const DurationButton = styled(Button)`
   width: 90px;
   box-shadow: none;
 `
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-    background: '#f5f8fc'
-  },
-  title: {
-    textTransform: 'uppercase',
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: '15px 24px',
-  },
-}))(MuiDialogActions);
 
 const DEFAULT_DATA = {
   id: "",
@@ -241,7 +173,7 @@ function RemindModal(props) {
       }
     }
     // Close modal
-    props.handleClickClose()
+    props.setOpen(false)
   }
   const [value, setValue] = React.useState('')
   // console.log("daataaA::::", data)
@@ -281,19 +213,21 @@ function RemindModal(props) {
     handleChangeData("duration", newDuration)
   }
 
-  const handleCloseModal = () => {
-    // Reset data
-    setData(DEFAULT_DATA)
-    // Close modal
-    props.handleClickClose()
+  function validate() {
+    return data.content
   }
-
   return (
-    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} onClose={handleCloseModal} fullWidth>
-      <DialogTitle id="customized-dialog-title" onClose={() => props.handleClickClose()}>
-        Nhắc hẹn
-      </DialogTitle>
-      <DialogContent dividers style={{ overflow: 'hidden' }}>
+    <CustomModal
+      maxWidth='sm'
+      className="remindModal"
+      title={"Nhắc hẹn"}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => (props.isRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
+      onConfirm={handlePressConfirm}
+      canConfirm={validate()}
+    >
+      <React.Fragment>
         <TitleText component="div">Loại nhắc hẹn</TitleText>
         <InputSelect
           commandSelect={selector}
@@ -306,9 +240,9 @@ function RemindModal(props) {
           <Typography component="div">
             <HelperText>Bạn có lịch hẹn, ghi chú, sự kiện... quan trọng ? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhở bạn khi đến hẹn</HelperText>
             <div className="remind-title">
-              <TextTitle component="span">Ngày nhắc</TextTitle>
-              <TextTitle component="span">Giờ nhắc</TextTitle>
-              <TextRemind component="span">Nhắc hẹn định kỳ</TextRemind>
+              <div className="remindModal--dateRemind" component="span">Ngày nhắc</div>
+              <div className="remindModal--timeRemind" component="span">Giờ nhắc</div>
+              <div className="remindModal--repeatRemind" component="span">Nhắc hẹn định kỳ</div>
             </div>
             <div className="remind-body">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -317,7 +251,6 @@ function RemindModal(props) {
                   variant="inline"
                   inputVariant="outlined"
                   format="dd/MM/yyyy"
-                  label="Ngày"
                   value={data.date_remind}
                   onChange={e => handleChangeData("date_remind", convertDate(e))}
                   KeyboardButtonProps={{
@@ -328,7 +261,6 @@ function RemindModal(props) {
               <span>
                 <InputDateTime
                   type={'time'}
-                  label="Thời gian"
                   variant="outlined"
                   value={data.time_remind}
                   onChange={e => handleChangeData("time_remind", e.target.value)}
@@ -346,7 +278,7 @@ function RemindModal(props) {
           :
           <div>
             <HelperText>Khi tiến độ công việc được xác định (tự động) dựa trên thời gian hiện tại (thời gian thực) lớn hơn hoặc bằng mốc đã chọn, hệ thống sẽ nhắc nhở bạn</HelperText>
-            <TextTitle component="div">Mốc tiến độ cần nhắc</TextTitle>
+            <Typography className="remindModal--mileStone" component="div">Mốc tiến độ cần nhắc</Typography>
             <div className="wrapper-progress">
               <InputProgress
                 fullWidth
@@ -380,22 +312,8 @@ function RemindModal(props) {
           styled={{ zIndex: 1 }}
           onChange={e => handleChangeData("content", e.target.value)}
         />
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCloseModal} color='#222'>
-          Hủy
-        </Button>
-        {props.isRemind ?
-          <Button onClick={handlePressConfirm} color="primary">
-            Chỉnh sửa nhắc hẹn
-        </Button>
-          :
-          <Button onClick={handlePressConfirm} color="primary">
-            Tạo nhắc hẹn
-        </Button>
-        }
-      </DialogActions>
-    </Dialog>
+      </React.Fragment>
+    </CustomModal >
   )
 }
 

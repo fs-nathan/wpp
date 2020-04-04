@@ -279,6 +279,21 @@ export const deleteOfferFail = (error) => ({
     type: types.DELETE_OFFER_FAIL,
     error: error,
 });
+
+export const approveOffer = payload => ({
+    type: types.APPROVE_OFFER_REQUEST,
+    payload
+});
+
+export const approveOfferSuccess = (payload) => ({
+    type: types.APPROVE_OFFER_SUCCESS,
+    payload
+});
+
+export const approveOfferFail = (error) => ({
+    type: types.APPROVE_OFFER_FAIL,
+    error: error,
+});
 // ==== upload document to offer
 export const uploadDocumentToOffer = (data, cb, taskId) => ({
     type: types.UPLOAD_DOCUMENT_TO_OFFER_REQUEST,
@@ -638,6 +653,21 @@ export const deleteRoleFail = (error) => ({
     error: error,
 });
 
+export const updateRolesForMember = (payload) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_REQUEST,
+    payload
+});
+
+export const updateRolesForMemberSuccess = (payload) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_SUCCESS,
+    payload
+});
+
+export const updateRolesForMemberFail = (error) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_FAIL,
+    error: error,
+});
+
 //Tien do - time
 export const getTrackingTime = (payload) => ({
     type: types.GET_TRACKING_TIME_REQUEST,
@@ -649,6 +679,18 @@ export const getTrackingTimeSuccess = (payload) => ({
 });
 export const getTrackingTimeFail = (error) => ({
     type: types.GET_TRACKING_TIME_FAIl,
+    error: error
+});
+export const getTrackingTimeComplete = (payload) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_REQUEST,
+    payload
+});
+export const getTrackingTimeCompleteSuccess = (payload) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_SUCCESS,
+    payload
+});
+export const getTrackingTimeCompleteFail = (error) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_FAIl,
     error: error
 });
 export const updateTimeDuration = (payload) => ({
@@ -947,4 +989,9 @@ export const unPinTaskSuccess = payload => ({
 export const unPinTaskFail = error => ({
     type: types.UN_PIN_TASK_FAIL,
     error: error
+})
+
+export const showTab = payload => ({
+    type: types.SET_SHOW_INDEX,
+    payload
 })

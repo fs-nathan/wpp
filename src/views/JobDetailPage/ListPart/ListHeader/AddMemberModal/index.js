@@ -1,72 +1,15 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import SearchInput from 'components/SearchInput';
-import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
-import {
-  Avatar, IconButton
-} from '@material-ui/core';
-import get from 'lodash/get';
-
-import { useSelector } from 'react-redux';
+import { createMember } from 'actions/taskDetail/taskDetailActions';
+import DialogWrap from 'components/DialogWrap';
+import SearchInput from 'components/SearchInput';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import ProjectMember from './ProjectMember';
-import MemberRole from './MemberRole';
-import MemberPriority from './MemberPriority';
-import MemberDetail from './MemberDetail';
 import TableMember from './TableMember';
 
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-    background: '#f5f8fc'
-  },
-  title: {
-    textTransform: 'uppercase',
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: '15px 24px',
-  },
-}))(MuiDialogActions);
 
 const GridArea = styled(Typography)`
     display: grid;
@@ -104,85 +47,70 @@ const FlexJobMember = styled(Typography)`
     padding-left: 25px;
 `
 
-function AddMemberModal(props) {
+function AddMemberModal({ setOpen, isOpen }) {
   const { t } = useTranslation()
-  const member = useSelector(state => state.taskDetail.taskMember.member);
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const memberNotAssigned = useSelector(state => state.taskDetail.taskMember.memberNotAssigned);
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
-
-  const [listMemberProjectState, setListMemberProject] = React.useState([])
-  const [listMemberJobState, setListMemberJob] = React.useState([])
-  React.useEffect(() => {
-    let arrayMemberNotAssigned = memberNotAssigned && memberNotAssigned.map((item, key) => {
-      return (
-        <ProjectMember avatar={item.avatar} key={item.id}
-          id={item.id}
-          name={item.name} email={item.email}
-          label={item.permission}
-        />
-      )
-    })
-    setListMemberProject(arrayMemberNotAssigned)
-  }, [memberNotAssigned])
-
-  React.useEffect(() => {
-    let arrayMember = member && member.map((item) => {
-      return {
-        avatarMember: <Avatar alt="Avatar Member" src={item.avatar} sizes='10px' style={{ width: 30, height: 30 }} />,
-        name: <MemberDetail name={item.name} email={item.email} />,
-        permission: <MemberPriority />,
-        roles: <MemberRole roles={item.roles || []} />
-      }
-    })
-    setListMemberJob(arrayMember)
-  }, [member])
 
   const handleClose = () => {
-    props.setOpen(false);
+    setOpen(false);
   };
 
+  function handleAddAll() {
+    memberNotAssigned.forEach(member => {
+      dispatch(createMember({ task_id: taskId, member_id: member.id }))
+    })
+  }
+
   return (
-    <div>
-      <Dialog maxWidth="xl" onClose={handleClose} open={props.isOpen}>
-        <DialogTitle onClose={handleClose}> Thành viên công việc </DialogTitle>
-        <DialogContent dividers style={{ padding: 0, overflow: 'hidden' }}>
-          <GridArea component={'div'} style={{ borderBottom: 'none' }} >
-            <BorderGrid component={'div'}>
-              <FlexMemberProject component={'span'}>
-                <MemberProject component={'div'} >Thành viên dự án</MemberProject>
-              </FlexMemberProject>
-              <Typography component="span">
-                <div style={{ margin: '10px 10px 0 10px' }}>
-                  <SearchInput placeholder='Tìm thành viên' />
-                </div>
-                <ButtonAddAll
-                // onClick={handleAddAll}
-                >
-                  {t('+ Thêm tất cả')}
-                </ButtonAddAll>
-                <div className="table-scroll-add-member">
-                  {listMemberProjectState}
-                </div>
-              </Typography>
-            </BorderGrid>
-            <Typography component="div">
-              <FlexJobMember component="div">
-                <MemberProject component={'div'}>Thành viên công việc</MemberProject>
-              </FlexJobMember>
-              <TableMember listMemberJobState={listMemberJobState} style={{ boxShadow: 'none' }} />
+    <DialogWrap
+      title={'Thành viên công việc'}
+      isOpen={isOpen}
+      handleClickClose={handleClose}
+      successLabel={"Thoát"}
+      onClickSuccess={handleClose}
+      maxWidth="xl"
+      isOneButton
+    >
+      <React.Fragment>
+        <GridArea component={'div'} style={{ borderBottom: 'none' }} >
+          <BorderGrid component={'div'}>
+            <FlexMemberProject component={'span'}>
+              <MemberProject component={'div'} >Thành viên dự án</MemberProject>
+            </FlexMemberProject>
+            <Typography component="span">
+              <div style={{ margin: '10px 10px 0 10px' }}>
+                <SearchInput placeholder='Tìm thành viên' />
+              </div>
+              <ButtonAddAll
+                onClick={handleAddAll}
+              >
+                {t('+ Thêm tất cả')}
+              </ButtonAddAll>
+              <div className="table-scroll-add-member">
+                {
+                  memberNotAssigned.map((item, key) =>
+                    (
+                      <ProjectMember avatar={item.avatar} key={item.id}
+                        id={item.id}
+                        name={item.name} email={item.email}
+                        label={item.permission}
+                      />
+                    )
+                  )}
+              </div>
             </Typography>
-          </GridArea>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} style={{ color: "#222" }}>
-            Hủy
-                    </Button>
-          <Button autoFocus onClick={handleClose} style={{ color: groupActiveColor }}>
-            Cập nhật
-                    </Button>
-        </DialogActions>
-      </Dialog>
-    </div >
+          </BorderGrid>
+          <Typography component="div">
+            <FlexJobMember component="div">
+              <MemberProject component={'div'}>Thành viên công việc</MemberProject>
+            </FlexJobMember>
+            <TableMember style={{ boxShadow: 'none' }} />
+          </Typography>
+        </GridArea>
+      </React.Fragment>
+    </DialogWrap>
   );
 }
 

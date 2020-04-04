@@ -3,18 +3,15 @@
   height: 100%;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(
-      200px,
-      29%
-    );
-  grid-template-areas: 'list chat tab';
+  grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(200px, 29%);
+  grid-template-areas: "list chat tab";
 }
 .container-job-introduce {
   height: 100%;
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: minmax(200px, 27%) minmax(400px, 73%);
-  grid-template-areas: 'list intro';
+  grid-template-areas: "list intro";
 }
 /* Header Part */
 .container-header {
@@ -270,8 +267,8 @@
   grid-template-rows: 107px calc(83vh - 8px);
   grid-template-columns: 1fr;
   grid-template-areas:
-    'header'
-    'body';
+    "header"
+    "body";
 }
 
 .lp-container-block {
@@ -291,8 +288,8 @@
     grid-template-rows: 165px calc(76vh);
     grid-template-columns: 1fr;
     grid-template-areas:
-      'header'
-      'body';
+      "header"
+      "body";
     .wlt-header {
       grid-area: header;
       position: -webkit-sticky; /* Safari */
@@ -337,7 +334,8 @@
   border: none;
   cursor: pointer;
   margin-bottom: 0;
-  &:hover, &__selected {
+  &:hover,
+  &__selected {
     background-color: #f2f5fa;
   }
   &:active {
@@ -386,7 +384,7 @@
       height: 15px;
     }
     & > p:nth-child(2) {
-      font-size: '13px';
+      font-size: "13px";
       text-overflow: ellipsis;
       width: 180px;
       white-space: nowrap;
@@ -456,6 +454,8 @@
 .table-scroll {
   overflow-y: scroll;
   height: 542px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
   &::-webkit-scrollbar {
     width: 5px;
     border-radius: 5px;
@@ -474,6 +474,8 @@
 .table-scroll-add-member {
   overflow-y: scroll;
   height: 470px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
   &::-webkit-scrollbar {
     width: 5px;
     border-radius: 5px;
@@ -508,8 +510,8 @@
   grid-template-rows: 85px calc(85vh);
   grid-template-columns: 1fr;
   grid-template-areas:
-    'header'
-    'body';
+    "header"
+    "body";
   .container-normal-tabheader {
     display: flex;
     align-items: center;
@@ -530,17 +532,6 @@
   height: 85px;
   position: sticky;
   top: 0;
-  .tags-container {
-    margin-left: 10px;
-    & > p {
-      font-size: 16px;
-    }
-    & > span:nth-child(1) {
-      color: #007bff;
-      text-transform: unset;
-      font-size: 13px;
-    }
-  }
 }
 // index.js - TabBody - Default Tab
 .button-text {
@@ -584,46 +575,6 @@
   }
 }
 
-// TabHeader - Demand Tab
-.container-dmt-tabbody {
-  padding: 0 20px 50px 20px;
-  .styled-list-item {
-    display: flex;
-    flex-direction: column;
-    .styled-title-box-dmt {
-      display: flex;
-      align-items: center;
-      & > *:not(:first-child) {
-        margin-left: 5px;
-      }
-      & > *:last-child {
-        margin-left: auto;
-      }
-      .wrapper-filter-dmt {
-        display: flex;
-        align-items: center;
-        .demand-create-time {
-          margin: 0 7px;
-          font-size: 0.75em;
-          color: #a6a6a6;
-        }
-      }
-      .styled-menu-demand {
-        opacity: 0;
-      }
-    }
-    .styled-content-box-dmt {
-      margin-left: 20px;
-      margin-top: 5px;
-      padding: 8px 10px;
-      font-weight: 500;
-    }
-    &:hover .styled-menu-demand {
-      opacity: 1;
-    }
-  }
-}
-
 // TabBody - Location Tab
 .container-location-tabbody {
   padding: 10px 20px 50px 20px;
@@ -638,45 +589,6 @@
       }
     }
     &:hover .styled-menu-location {
-      opacity: 1;
-    }
-  }
-}
-
-// TabBody - Media Tab
-.container-media-tabbody {
-  padding: 20px;
-  .media-image {
-    width: auto !important;
-    height: auto !important;
-    .wrap-image {
-      display: flex;
-      flex-wrap: wrap;
-      .image-media-box {
-        height: 80px;
-        width: 80px;
-        margin: 0;
-        padding: 0;
-        border-radius: 5px;
-        cursor: pointer;
-        &:hover {
-          opacity: 0.7;
-        }
-      }
-    }
-  }
-  .file-name {
-    width: 300px;
-    word-break: break-word;
-    .styled-menu-file {
-      opacity: 0;
-    }
-  }
-  .styled-list-item-link {
-    .styled-menu-link {
-      opacity: 0;
-    }
-    &:hover .styled-menu-link {
       opacity: 1;
     }
   }
@@ -697,7 +609,7 @@
 
 // TabBody - MemberTab
 .container-member-tabbody {
-  padding: 10px 20px 50px 20px;
+  padding: 16px 25px 50px 16px;
   .wrapper-span {
     display: flex;
     margin-bottom: 7px;
@@ -862,17 +774,17 @@
 //RemindModal - RemindTab
 .remind-title {
   display: flex;
-  margin: 15px 0;
+  margin: 15px 0 0 0;
 }
 .remind-body {
   display: flex;
   justify-content: space-between;
   align-items: center;
   .type-remind {
-    margin-top: 8px;
+    margin: 0px;
     width: 160px;
     & > div > div > div {
-      padding: 7px 0;
+      padding: 0;
     }
   }
 }

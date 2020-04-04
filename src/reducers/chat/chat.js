@@ -1,19 +1,22 @@
+import produce from "immer";
 import * as actionTypes from '../../constants/actions/chat/chat';
 
 export const initialState = {
   chats: {},
   members: []
 };
-
-const chat = (state = initialState, action) => {
-  switch (action.type) {
-    case actionTypes.FETCH_LIST_CHAT:
-      return { ...state, chats: action.payload };
-    case actionTypes.FETCH_MEMBER_CHAT:
-      return { ...state, members: action.payload };
-    default:
-      return state;
-  }
-};
-
-export default chat;
+/* eslint-disable default-case, no-param-reassign */
+export default (state = initialState, action) =>
+  produce(state, draft => {
+    switch (action.type) {
+      case actionTypes.FETCH_LIST_CHAT:
+        draft.chats = action.payload;
+        break;
+      case actionTypes.APPEND_CHAT:
+        draft.chats.data.push(action.payload.data_chat)
+        break;
+      case actionTypes.FETCH_MEMBER_CHAT:
+        draft.members = action.payload;
+        break;
+    }
+  });

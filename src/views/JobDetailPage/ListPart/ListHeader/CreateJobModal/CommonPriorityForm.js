@@ -6,7 +6,6 @@ import {
   FormControl,
 } from '@material-ui/core';
 import styled from 'styled-components';
-import colorPal from '../../../../../helpers/colorPalette';
 
 const PriorityFormControl = styled(FormControl)`
 display: flex;
@@ -19,7 +18,7 @@ const PriorityRadioGroup = styled(RadioGroup)`
 
 const SpecialControlLabel = styled(FormControlLabel)`
   background-color: ${props =>
-    props.checked ? colorPal['#07bd0b'][0] : '#f0f0f0'};
+    props.checked ? '#ff9800' : '#f0f0f0'};
   color: ${props => (props.checked ? 'white' : 'black')};
   width: 27%;
   border-radius: 30px;

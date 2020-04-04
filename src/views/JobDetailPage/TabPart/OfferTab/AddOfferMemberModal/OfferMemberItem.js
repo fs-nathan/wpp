@@ -1,22 +1,24 @@
+import { Avatar, Checkbox, Typography } from '@material-ui/core';
 import React from 'react';
-import { Checkbox, Avatar, Typography } from '@material-ui/core';
-
 import './styles.scss';
 
 function OfferMemberItem({
   isSelected = false,
   avatar,
   name,
-  role,
+  roles,
   onClick,
+  isDisable,
 }) {
   return (
     <div className="offerMemberItem">
-      <Checkbox checked={isSelected} onClick={onClick} ></Checkbox>
+      <Checkbox checked={isSelected} onClick={onClick} disabled={isDisable}></Checkbox>
       <Avatar className="offerMemberItem--avatar" src={avatar}></Avatar>
-      <Typography component="div">
+      <Typography className="offerMemberItem--name" component="div">
         {name}
-        <Typography component="div">{role}</Typography>
+        <Typography
+          className="offerMemberItem--role"
+          component="div">{roles}</Typography>
       </Typography>
     </div>
   )

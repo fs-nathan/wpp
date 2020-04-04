@@ -1,33 +1,16 @@
-import React from 'react';
 import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
-import ColorTypo from '../../../../../components/ColorTypo';
-import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import { useDispatch, useSelector } from 'react-redux';
+import Icon from '@mdi/react';
+import { deleteTask, pinTaskAction, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
+import ColorTypo from 'components/ColorTypo';
+import get from 'lodash/get';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { selectedTaskSelector, taskIdSelector } from '../../../selectors';
-import { pinTaskAction, unPinTaskAction, deleteTask } from '../../../../../actions/taskDetail/taskDetailActions';
-import get from 'lodash/get'
-
-const AvatarHeader = styled(Avatar)`
-  width: 60px;
-  height: 60px;
-`;
-
-const StyledIconButton = styled(IconButton)`
-  margin-left: auto;
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
-    &:hover {
-      fill: #03b000;
-    }
-  }
-`;
+import { useDispatch, useSelector } from 'react-redux';
+import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
+import { taskIdSelector } from '../../../selectors';
+import ModalDeleteConfirm from '../../ModalDeleteConfirm';
+import './styles.scss';
 
 function TabHeader(props) {
   const { t } = useTranslation();
@@ -60,7 +43,7 @@ function TabHeader(props) {
     if (user_create) {
       avatar = user_create.avatar;
       name = user_create.name;
-      roles = user_create.roles;
+      roles = `${user_create.position} - ${user_create.room}`;
     }
   }
   const handleOpenModalDelete = () => {
@@ -83,17 +66,35 @@ function TabHeader(props) {
     }
   }
   // console.log("task id::::", value.taskId)
+  const onClickEdit = () => {
+    setOpenCreateJobModal(true);
+    setAnchorEl(null);
+  }
+  const onClickPause = () => {
+    props.onClickPause();
+    handleClickPause();
+    setAnchorEl(null);
+  }
+  const onClickResume = () => {
+    props.onClickPause();
+    handleClickPause();
+    setAnchorEl(null);
+  }
+  const onClickDelete = () => {
+    handleCloseMenu();
+    handleOpenModalDelete();
+  }
   return (
     <div className="container-dt-tabheader">
-      <AvatarHeader src={avatar} alt="avatar" />
-      <div className="tags-container">
-        <ColorTypo bold>{name}</ColorTypo>
-        <ColorTypo color={'blue'} variant="caption" style={{ fontSize: 13 }}>
+      <Avatar className="tabHeaderDefault--avatar" src={avatar} alt="avatar" />
+      <div className="tabHeaderDefault--container">
+        <div className="tabHeaderDefault--name">{name}</div>
+        <div className="tabHeaderDefault--role">
           {roles}
-        </ColorTypo>
-        <br />
+        </div>
         {detailTask && (
           <ColorTypo
+            component="div"
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
           >
@@ -101,13 +102,14 @@ function TabHeader(props) {
           </ColorTypo>
         )}
       </div>
-      <StyledIconButton
+      <IconButton
+        className="tabHeaderDefault--button"
         onClick={handleClick}
         aria-controls="simple-menu"
         aria-haspopup="true"
       >
         <Icon path={mdiDotsVertical} size={1} className="job-detail-icon" />
-      </StyledIconButton>
+      </IconButton>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -120,10 +122,7 @@ function TabHeader(props) {
         }}
       >
         <MenuItem
-          onClick={() => {
-            setOpenCreateJobModal(true);
-            setAnchorEl(null);
-          }}
+          onClick={onClickEdit}
         >
           Chỉnh sửa
         </MenuItem>
@@ -134,31 +133,19 @@ function TabHeader(props) {
         </MenuItem>
         {pause ? (
           <MenuItem
-            onClick={() => {
-              props.onClickPause();
-              handleClickPause();
-              setAnchorEl(null);
-            }}
+            onClick={onClickPause}
           >
             Tạm dừng
           </MenuItem>
         ) : (
             <MenuItem
-              onClick={() => {
-                props.onClickPause();
-                handleClickPause();
-                setAnchorEl(null);
-              }}
+              onClick={onClickResume}
             >
               Hủy tạm dừng
             </MenuItem>
           )}
-
         <MenuItem
-          onClick={() => {
-            handleCloseMenu();
-            handleOpenModalDelete();
-          }}
+          onClick={onClickDelete}
         >
           Xóa
         </MenuItem>

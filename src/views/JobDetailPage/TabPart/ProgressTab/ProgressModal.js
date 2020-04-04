@@ -1,29 +1,16 @@
-import React from 'react';
-import { IconButton, withStyles, Typography, Dialog, Button, TextField } from '@material-ui/core';
-import styled from 'styled-components';
-// import OutlinedInput from '@material-ui/core/OutlinedInput';
-import CloseIcon from '@material-ui/icons/Close';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-// import TimeField from 'react-simple-timefield';
-// import OutlinedInputSelect from './OutlinedInputSelect'
-import {
-  DEFAULT_DATE_TEXT,
-} from '../../../../helpers/jobDetail/stringHelper';
-import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
-import { convertDate } from '../../../../helpers/jobDetail/stringHelper'
-import { updateTimeDuration } from '../../../../actions/taskDetail/taskDetailActions';
-import { useDispatch, useSelector } from 'react-redux';
-import { taskIdSelector } from '../../selectors';
+import { Typography } from '@material-ui/core';
+import DialogContent from '@material-ui/core/DialogContent';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { updateTimeDuration } from 'actions/taskDetail/taskDetailActions';
+import CustomModal from 'components/CustomModal';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
-import get from 'lodash/get';
-
+import "date-fns";
+import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { taskIdSelector } from '../../selectors';
 import './styles.scss';
 
 const StartEndDay = styled(Typography)`
@@ -51,62 +38,32 @@ const InputDate = styled(KeyboardDatePicker)`
     }
   } 
 `
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-    background: '#f5f8fc'
-  },
-  title: {
-    textTransform: 'uppercase',
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: '15px 24px',
-  },
-}))(MuiDialogActions);
 
 const ProgressModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
+  const trackings = listTime ? listTime.trackings : [];
+
   // console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState(listTimeSelect[16])
   const [endTime, setEndTime] = React.useState(listTimeSelect[34])
   const [startDay, setStartDay] = React.useState(DEFAULT_DATE_TEXT)
   const [endDay, setEndDay] = React.useState(DEFAULT_DATE_TEXT)
 
+  React.useEffect(() => {
+    if (trackings.length) {
+      const lastTrack = trackings[trackings.length - 1]
+      const { new_start, new_end } = lastTrack;
+      // const startNew = parse(new_start, 'dd/MM/yyyy HH:mm', new Date());
+      const [startNewDay, startNewTime] = new_start.split(' ')
+      setStartDay(convertDateToJSFormat(startNewDay))
+      setStartTime(startNewTime)
+      const [endNewDay, endNewTime] = new_end.split(' ')
+      setEndDay(convertDateToJSFormat(endNewDay))
+      setEndTime(endNewTime)
+    }
+  }, [trackings])
   const handleStartTime = ({ target }) => {
     setStartTime(target.value)
   }
@@ -120,7 +77,7 @@ const ProgressModal = (props) => {
     setEndDay(endDay)
   }
 
-  const setDataTimeDuration = () => {
+  const handlePressConfirm = () => {
     const data = {
       task_id: taskId,
       start_date: startDay,
@@ -128,16 +85,27 @@ const ProgressModal = (props) => {
       start_time: startTime,
       end_time: endTime,
     }
-    console.log("data", data);
+    // console.log("data", data);
     dispatch(updateTimeDuration(data));
+    props.setOpen(false)
+  }
+
+  function validate() {
+    return true
   }
 
   return (
-    <Dialog aria-labelledby="customized-dialog-title" open={props.isOpen} >
-      <DialogTitle id="customized-dialog-title" onClose={props.handleClickClose}>
-        Điều chỉnh tiến độ
-        </DialogTitle>
-      <DialogContent dividers >
+    <CustomModal
+      title={"Điều chỉnh tiến độ"}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => "Hoàn Thành"}
+      onConfirm={handlePressConfirm}
+      canConfirm={validate()}
+      maxWidth='sm'
+      className="progressModal"
+    >
+      <DialogContent >
         <StartEndDay component={'span'}>
           <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
           <TimeSelect
@@ -184,19 +152,7 @@ const ProgressModal = (props) => {
           </MuiPickersUtilsProvider>
         </StartEndDay>
       </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={props.handleClickClose} style={{ color: '#222222' }} >
-          Hủy
-        </Button>
-        <Button onClick={() => {
-          setDataTimeDuration()
-          props.handleClickClose()
-        }}
-          style={{ color: groupActiveColor }}>
-          Hoàn Thành
-              </Button>
-      </DialogActions>
-    </Dialog>
+    </CustomModal>
   )
 }
 

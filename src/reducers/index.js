@@ -83,6 +83,7 @@ import sortTask, { initialState as sortTaskInitialState } from "./task/sortTask"
 import taskCommand from "./taskDetail/command";
 import commonTaskDetail from "./taskDetail/common";
 import listGroupOffer from "./taskDetail/listGroupOffer";
+import listGroupPermission from "./taskDetail/listGroupPermission";
 import listGroupTask from "./taskDetail/listGroupTask";
 import listDetailTask from "./taskDetail/listTaskDetail";
 import location from "./taskDetail/location";
@@ -125,7 +126,8 @@ const rootReducer = combineReducers({
     trackingTime,
     listDetailTask,
     listGroupTask,
-    listGroupOffer
+    listGroupOffer,
+    listGroupPermission,
   }),
   room: combineReducers({
     listRoom,

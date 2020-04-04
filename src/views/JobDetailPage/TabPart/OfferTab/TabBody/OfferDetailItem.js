@@ -1,11 +1,25 @@
 import React from 'react';
+import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { mdiDotsHorizontal, mdiCancel, mdiCheck } from '@mdi/js';
 import {
   Avatar, IconButton, Menu, MenuItem,
 } from '@material-ui/core';
 
+import './styles.scss';
+
 function OfferDetailItem(props) {
+  const {
+    avatar,
+    user_hander_name,
+    user_hander_position,
+    date_hander,
+    content_hander,
+    status,
+    handleClickOpen,
+    handleOpenModalDelete,
+    offer,
+  } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -14,29 +28,31 @@ function OfferDetailItem(props) {
   const handleClose = () => {
     setAnchorEl(null);
   }
-  return <div className="offerDetail--result">
+  const statusLabel = status === 0 ? 'ok' : 'denied';
+  const statusContent = status === 0 ? 'Đồng ý' : 'Từ chối';
+  return <div className="offerDetailItem">
     <Avatar
-      className="offerDetail--avatarIcon"
-      alt="avatar" src={props.avatar}
+      className="offerDetailItem--avatarIcon"
+      alt="avatar" src={avatar}
     />
-    <div className="offerDetail--data" >
-      <div className="offerDetail--itemName">
-        {props.name}
-        <div className="offerDetail--itemRole">
-          {props.role}
-        </div>
+    <div className="offerDetailItem--data" >
+      <div className="offerDetailItem--itemName">
+        {user_hander_name}
+        <span className="offerDetailItem--itemRole">
+          - {user_hander_position}
+        </span>
       </div>
-      <div className="offerDetail--itemStatus">
-        {props.role}
+      <div className={clsx("offerDetailItem--itemStatus", `offerDetailItem--itemStatus__${statusLabel}`)}>
+        {statusContent} đề xuất lúc {date_hander}
       </div>
-      <div className="offerDetail--itemComment">
-        {props.role}
+      <div className="offerDetailItem--itemComment">
+        {content_hander}
       </div>
     </div>
-    <div className="offerDetail--iconStatus" >
-      <Icon path={props.status ? mdiCancel : mdiCheck} size={2} />
+    <div className={clsx("offerDetailItem--iconStatus", `offerDetailItem--iconStatus__${statusLabel}`)} >
+      <Icon path={status ? mdiCancel : mdiCheck} size={2} />
     </div>
-    <IconButton size='small' onClick={handleClick} >
+    <IconButton className="offerDetailItem--buttonMore" size='small' onClick={handleClick} >
       <Icon path={mdiDotsHorizontal} size={1} />
     </IconButton>
     <Menu
@@ -50,11 +66,11 @@ function OfferDetailItem(props) {
       }}
     >
       <MenuItem onClick={() => {
-        props.handleClickOpen()
+        handleClickOpen()
         setAnchorEl(null)
       }}>Chỉnh sửa</MenuItem>
       <MenuItem onClick={() => {
-        props.handleOpenModalDelete(props.offer)
+        handleOpenModalDelete(offer)
         setAnchorEl(null)
       }}>Xóa</MenuItem>
     </Menu>

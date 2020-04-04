@@ -1,10 +1,10 @@
 @mixin comp_CustomModal___scrollbar {
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   min-height: calc(100vh - 64px - 64px - 56.5px);
   & > div:nth-child(3) {
     z-index: 999;
   }
-};
+}
 
 .comp_CustomModal___scrollbar {
   &-main {
@@ -28,57 +28,61 @@
   &-side {
     &-tall {
       @include comp_CustomModal___scrollbar;
-      height: calc(100% - 46px) !important; 
+      height: calc(100% - 46px) !important;
       min-height: calc(100vh - 64px - 64px - 56.5px - 46px);
     }
     &-medium {
       @include comp_CustomModal___scrollbar;
-      height: calc(100% - 46px) !important; 
+      height: calc(100% - 46px) !important;
       min-height: calc(85vh - 64px - 64px - 56.5px - 46px);
     }
     &-short {
       @include comp_CustomModal___scrollbar;
-      height: calc(100% - 46px) !important; 
+      height: calc(100% - 46px) !important;
       min-height: calc(70vh - 64px - 64px - 56.5px - 46px);
     }
     &-mini {
       @include comp_CustomModal___scrollbar;
-      height: calc(100% - 46px) !important; 
+      height: calc(100% - 46px) !important;
       min-height: calc(50vh - 64px - 64px - 56.5px - 46px);
     }
   }
 }
 
 .comp_CustomModal___dialog-content {
-  & > input[type=file] {
+  // & > *:not(:last-child) {
+  //   margin-bottom: 12px;
+  // }
+  & > input[type="file"] {
     display: none;
-  } 
-};
+  }
+}
 
 .comp_CustomModal___dialog-title {
   background-color: #f5f8fc;
-  padding: 6px 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     & > button {
       padding: 12px 0;
     }
   }
-};
+}
 
 .comp_CustomModal___dialog-actions {
   padding: 15px 24px;
-};
+}
 
 @mixin comp_CustomModal___accept-button {
   padding: 8px 16px;
   background-color: #fff;
   &:hover {
     background-color: #eee;
-  };
+  }
   font-weight: 500;
   font-size: 16px;
   text-transform: uppercase;
@@ -91,8 +95,13 @@
 .comp_CustomModal___accept-button {
   & {
     @include comp_CustomModal___accept-button;
-  };
-};
+  }
+  &-disabled {
+    @include comp_CustomModal___accept-button;
+    // color: #999 !important;
+    opacity: 0.5;
+  }
+}
 
 .comp_CustomModal___cancle-button {
   padding: 8px 16px;
@@ -108,7 +117,7 @@
   & > span:last-child {
     display: none;
   }
-};
+}
 
 @mixin comp_CustomModal___dialog {
   & > div:nth-child(3) > div {
@@ -119,6 +128,12 @@
 }
 
 .comp_CustomModal___dialog {
+  &-sm {
+    @include comp_CustomModal___dialog;
+    & > div:nth-child(3) > div {
+      max-width: 800px;
+    }
+  }
   &-md {
     @include comp_CustomModal___dialog;
     & > div:nth-child(3) > div {
@@ -131,7 +146,7 @@
       max-width: 90vw;
     }
   }
-};
+}
 
 @mixin comp_CustomModal___two-columns-container {
   display: grid;
@@ -139,9 +154,9 @@
   & > * {
     &:first-child {
       border-right: 1px solid rgba(0, 0, 0, 0.1);
-    };
-  };
-};
+    }
+  }
+}
 
 .comp_CustomModal___two-columns-container {
   &-w-md {
@@ -152,22 +167,44 @@
     @include comp_CustomModal___two-columns-container;
     grid-template-columns: 3fr 8fr;
   }
-};
+}
 
 @mixin comp_CustomModal___header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   font-size: 14px;
   text-align: center;
   padding: 12px;
-};
+}
 
 .comp_CustomModal___header {
   &-left {
     @include comp_CustomModal___header;
     text-align: center;
-  };
+  }
   &-right {
     @include comp_CustomModal___header;
     text-align: start;
+  }
+}
+
+.comp_CustomModal {
+  &___iconButton {
+    padding: 0px;
+  }
+  &___scroll {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    float: left;
+    display: block;
+  }
+  &___overlay {
+    min-height: 300px;
+    float: left;
+    display: block;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    max-height: 70vh;
   }
 }

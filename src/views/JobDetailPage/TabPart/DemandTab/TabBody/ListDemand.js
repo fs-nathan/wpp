@@ -1,11 +1,11 @@
+import { deleteCommand, searchDemand, updateCommand } from 'actions/taskDetail/taskDetailActions';
+import SearchInput from 'components/SearchInput';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
-import { deleteCommand, updateCommand, searchDemand } from '../../../../../actions/taskDetail/taskDetailActions';
-import DemandModal from '../DemandModal';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import SearchInput from '../../../../../components/SearchInput';
+import DemandModal from '../DemandModal';
 import CustomListItem from './CustomListItem';
 import DemandDetail from './DemandDetail';
 
@@ -32,9 +32,7 @@ const ListDemand = props => {
     setSelectedItem(item);
     setOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const handleOpenModalDelete = item => {
     setOpenDelete(true);
@@ -95,8 +93,7 @@ const ListDemand = props => {
       {/* modal chi dao quyet dinh */}
       <DemandModal
         isOpen={open}
-        handleClose={handleClose}
-        // handleOpen={handleClickOpen}
+        setOpen={setOpen}
         isEditDemand={isEditDemand}
         item={selectedItem}
         confirmUpdateCommand={confirmUpdateCommand}

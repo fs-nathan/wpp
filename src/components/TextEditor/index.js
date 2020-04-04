@@ -10,11 +10,15 @@ import './styles.scss';
 
 const { hasCommandModifier } = KeyBindingUtil;
 
-export const getEditorData = (value) => {
+export const getEditorData = (value = '') => {
   try {
-    const raw = JSON.parse(value);
-    const data = EditorState.createWithContent(convertFromRaw(raw), decorator);
-    return data;
+    if (typeof value === "string") {
+      const raw = JSON.parse(value);
+      const data = EditorState.createWithContent(convertFromRaw(raw), decorator);
+      return data;
+    }
+    // console.log('getEditorData', typeof value)
+    return value;
   } catch (e) {
     try {
       const data = EditorState.createWithContent(ContentState.createFromText(value), decorator);
@@ -38,7 +42,7 @@ function myKeyBindingFn(e) {
   return getDefaultKeyBinding(e);
 }
 
-function TextEditor({ value, onChange, isReadOnly = false }) {
+function TextEditor({ value, onChange, isReadOnly = false, className }) {
   const editor = React.useRef(null);
 
   function focusEditor() {
@@ -98,7 +102,7 @@ function TextEditor({ value, onChange, isReadOnly = false }) {
   return (
     <div className={clsx("editor", { "editor--readOnly": isReadOnly })}>
       <div
-        className={clsx("RichEditor-root", { "RichEditor-root--readOnly": isReadOnly })}
+        className={clsx("RichEditor-root", { "RichEditor-root--readOnly": isReadOnly }, className)}
         onClick={focusEditor}
       >
         <Editor
