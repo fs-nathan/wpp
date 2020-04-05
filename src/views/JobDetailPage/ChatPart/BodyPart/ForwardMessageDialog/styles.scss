@@ -1,10 +1,26 @@
 .ForwardMessageDialog {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  border: 1px solid #e0e0e0;
+  // &--container {
+  //   height: 500px;
+  // }
+  &--content {
+    min-width: 800px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border: 1px solid #e0e0e0;
+  }
+  &--body {
+    min-height: 600px;
+  }
+  &--scroll {
+    // margin-bottom: 30px !important;
+    // margin-right: 0px !important;
+    width: calc(100% + 5px) !important;
+    scrollbar-width: none !important;
+    padding-top: 5px;
+  }
   &--border {
     border-right: 1px solid #e0e0e0;
-    min-height: 660px;
+    // min-height: 660px;
   }
   &--title {
     border-bottom: 1px solid #e0e0e0;
@@ -13,23 +29,27 @@
     font-size: 16px;
     text-transform: uppercase;
   }
+  &--subTitle {
+    background-color: #efefef;
+    padding: 12px;
+  }
   &--taskGroup {
     text-transform: uppercase;
     font-weight: bold;
-    background-color: #cccccc;
+    background-color: #efefef;
     &Title {
-      padding: 8px 12px;
+      padding: 12px;
     }
   }
   &--task {
     position: relative;
-    padding: 8px 12px;
+    padding: 12px;
     background-color: #ffffff;
     border-bottom: 1px solid #cccccc;
   }
   &--sendButton {
     position: absolute;
-    top: 8px;
+    top: 12px;
     right: 20px;
   }
 }

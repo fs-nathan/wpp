@@ -21,10 +21,19 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
   const listTasks = useSelector(state => state.chat.listTasks);
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);
   const [selectedProject, setSelectedProject] = useState(0);
+  const [searchKey, setSearchKey] = useState('');
   let data = [];
   if (projectListBasic) {
     data = projectListBasic.projectGroups;
   }
+
+  if (searchKey) {
+    data = data.filter(group => {
+      return group.name.indexOf(searchKey) !== -1
+        || group.projects.some(project => project.name.indexOf(searchKey) !== -1)
+    });
+  }
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -47,6 +56,10 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
     }
   }
 
+  function onChangeKey(evt) {
+    setSearchKey(evt.target.value)
+  }
+
   return (
     <DialogWrap
       title={'Thành viên công việc'}
@@ -56,19 +69,20 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
       onClickSuccess={handleClose}
       maxWidth="xl"
       isOneButton
+      className="ForwardMessageDialog"
     >
-      <div className="ForwardMessageDialog" >
+      <div className="ForwardMessageDialog--content" >
         <div className="ForwardMessageDialog--border">
           <div className="ForwardMessageDialog--title">
             Chọn dự án
           </div>
           <div >
             <div style={{ margin: '10px 10px 0 10px' }}>
-              <SearchInput placeholder='Tìm thành viên' />
+              <SearchInput placeholder='Tìm dự án' value={searchKey} onChange={onChangeKey} />
             </div>
-            <div className="table-scroll-add-member">
-              <Scrollbars className="listProject--body"
-                renderView={props => <div {...props} className="listProject--container" />}
+            <div className="ForwardMessageDialog--container">
+              <Scrollbars className="ForwardMessageDialog--body"
+                renderView={props => <div {...props} className="ForwardMessageDialog--scroll" />}
                 autoHide autoHideTimeout={500} autoHideDuration={200}>
                 {data.map(group => {
                   return (
@@ -102,6 +116,9 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
         <div>
           <div className="ForwardMessageDialog--title">
             Danh sách công việc
+          </div>
+          <div className="ForwardMessageDialog--subTitle">
+            Tên công việc
           </div>
           {listTasks.map(taskGroup => (
             <div className="ForwardMessageDialog--taskGroup" key={taskGroup.id}>
