@@ -95,6 +95,11 @@ const HeaderPart = props => {
     fetchMemberlist();
     // eslint-disable-next-line
   }, []);
+
+  function openSearch() {
+    props.setShowSearch(true)
+  }
+
   return (
     <div className="container-header">
       {renderAvatars({ styles: classes, images: members })}
@@ -102,7 +107,7 @@ const HeaderPart = props => {
         <Typography className="chatHeader--title">Thảo Luận</Typography>
         <TabForm tabs={tabs} />
       </div>
-      <IconButton className="chatHeader--button">
+      <IconButton className="chatHeader--button" onClick={openSearch}>
         <Icon path={mdiMagnify} size={1.2} className="job-detail-icon" />
       </IconButton>
     </div>

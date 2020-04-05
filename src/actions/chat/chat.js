@@ -278,3 +278,10 @@ export function loadListTaskFail(error) {
     error,
   };
 }
+
+export function searchChat(key) {
+  return {
+    type: actionTypes.SEARCH_CHAT,
+    key,
+  };
+}

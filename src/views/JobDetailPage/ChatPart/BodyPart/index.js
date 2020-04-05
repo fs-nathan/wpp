@@ -18,10 +18,15 @@ const BodyPart = props => {
   // const userId = useSelector(state => state.system.profile.order_user_id)
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const searchChatKey = useSelector(state => state.chat.searchChatKey)
+
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [isOpenForward, setOpenForward] = React.useState(false);
   const [forwardChat, setForwardChat] = React.useState(false);
-  const chatData = !Boolean(chats.data) ? [] : [...chats.data];
+  const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
+    return !searchChatKey
+      || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
+  });
   chatData.reverse();
   const calculatedChats = chatData.map((chat, i) => {
     let chatPosition = 'top';
@@ -76,7 +81,7 @@ const BodyPart = props => {
 
   function handleForwardChat(data) {
     return () => {
-      console.log('handleForwardChat', data);
+      // console.log('handleForwardChat', data);
       setOpenForward(true);
       setForwardChat(data);
     }

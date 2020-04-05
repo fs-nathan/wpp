@@ -6,6 +6,7 @@ export const initialState = {
   members: [],
   listStickers: [],
   listTasks: [],
+  searchChatKey: '',
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) =>
@@ -68,6 +69,11 @@ export default (state = initialState, action) =>
       case actionTypes.LOAD_LIST_TASK_SUCCESS: {
         const { payload } = action;
         draft.listTasks = payload.tasks;
+        break;
+      }
+      case actionTypes.SEARCH_CHAT: {
+        const { key } = action;
+        draft.searchChatKey = key;
         break;
       }
     }
