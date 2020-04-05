@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
+import { mapQueryStatusAndPriority } from "views/JobPage/utils";
 import { JobPageContext } from "../../JobPageContext";
 import Layout from "../../Layout";
 import { loadTaskOverViewPage } from "../../redux/actions";
@@ -24,17 +25,24 @@ export const PageContainer = styled(Container)`
 const Overview = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { listMenu, timeRange = {} } = useContext(JobPageContext);
+  const { listMenu, timeRange = {}, statusFilter } = useContext(JobPageContext);
   const isMounted = useMountedState();
   useEffect(() => {
     isMounted &&
       dispatch(
         loadTaskOverViewPage({
           timeStart: formatTime(timeRange.startDate),
-          timeEnd: formatTime(timeRange.endDate)
+          timeEnd: formatTime(timeRange.endDate),
+          ...mapQueryStatusAndPriority(statusFilter),
         })
       );
-  }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate]);
+  }, [
+    dispatch,
+    isMounted,
+    timeRange.startDate,
+    timeRange.endDate,
+    statusFilter,
+  ]);
   return (
     <Layout
       title={
@@ -48,7 +56,7 @@ const Overview = () => {
               paddingLeft: "20px",
               fontSize: "21px",
               lineHeight: "1",
-              fontWeight: "600"
+              fontWeight: "600",
             }}
           >
             {t(listMenu[0].title)}

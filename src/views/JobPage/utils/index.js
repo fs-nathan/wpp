@@ -1,4 +1,5 @@
 import { get, isFunction, merge, remove, template, uniqueId } from "lodash";
+import { taskPriorityMap, taskStatusMap } from "../contants/attrs";
 import * as chart from "./chart";
 import * as time from "./time";
 
@@ -10,7 +11,7 @@ function encodeQueryData(data) {
   }
   return ret.join("&");
 }
-const loginlineParams = param => {
+const loginlineParams = (param) => {
   console.trace("param", param);
   return param;
 };
@@ -46,14 +47,24 @@ function loginlineFunc(fn, prefix) {
       fn,
       argsName,
       args,
-      result
+      result,
     });
     return result;
   };
 }
-
+const mapQueryStatusAndPriority = (statusFilter) => {
+  const status = ["waiting", "doing", "complete", "expired", "stop"]
+    .map((key) => statusFilter[key] && taskStatusMap[key])
+    .filter((item) => item)
+    .toString();
+  const priority = ["priority_hight", "priority_medium", "priority_low"]
+    .map((key) => statusFilter[key] && taskPriorityMap[key])
+    .filter((item) => item)
+    .toString();
+  return { status, priority };
+};
 const createMapPropsFromAttrs = (strings = []) => (data = {}) => {
-  return strings.map(string => get(data, string));
+  return strings.map((string) => get(data, string));
 };
 export {
   chart,
@@ -65,7 +76,8 @@ export {
   uniqueId,
   template,
   loginlineParams,
+  mapQueryStatusAndPriority,
   loginlineFunc,
   createMapPropsFromAttrs,
-  encodeQueryData
+  encodeQueryData,
 };
