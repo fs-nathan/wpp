@@ -569,6 +569,10 @@ function* rootSaga() {
     chatTypes.GET_LIST_STICKERS,
     chatDetailSaga.getListStickers
   );
+  yield takeLeading(
+    chatTypes.LOAD_LIST_TASK,
+    chatDetailSaga.loadListTask
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);

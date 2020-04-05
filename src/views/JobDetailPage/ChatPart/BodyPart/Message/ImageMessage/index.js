@@ -8,6 +8,7 @@ import './styles.scss';
 
 const ImageMessage = ({
   handleReplyChat,
+  handleForwardChat,
   id,
   images,
   user_create_avatar,
@@ -36,8 +37,7 @@ const ImageMessage = ({
         <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
       }
       {!isReply && is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
       <div className={clsx("ImageMessage--rightContentWrap", { "ImageMessage--rightContentWrap__self": is_me })} >
         {
           chatPosition === 'top' && !is_me &&
@@ -78,8 +78,7 @@ const ImageMessage = ({
         }
       </div>
       {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
       <ModalImage images={images}
         {...{ user_create_avatar, user_create_name, time_create, user_create_position }}
         isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />

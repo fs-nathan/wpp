@@ -7,6 +7,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
+import ForwardMessageDialog from './ForwardMessageDialog';
 import Message from './Message';
 import './styles.scss';
 
@@ -18,6 +19,8 @@ const BodyPart = props => {
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [openAddModal, setOpenAddModal] = React.useState(false);
+  const [isOpenForward, setOpenForward] = React.useState(false);
+  const [forwardChat, setForwardChat] = React.useState(false);
   const chatData = !Boolean(chats.data) ? [] : [...chats.data];
   chatData.reverse();
   const calculatedChats = chatData.map((chat, i) => {
@@ -71,6 +74,14 @@ const BodyPart = props => {
     return () => props.setSelectedChat(data)
   }
 
+  function handleForwardChat(data) {
+    return () => {
+      console.log('handleForwardChat', data);
+      setOpenForward(true);
+      setForwardChat(data);
+    }
+  }
+
   return (
     <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} >
       <div className="wrap-time">
@@ -118,10 +129,13 @@ const BodyPart = props => {
         </div>
       </div>
       {
-        calculatedChats.map((el, id) => <Message {...el} key={id} handleReplyChat={handleReplyChat(el)} />)
+        calculatedChats.map((el, id) => <Message {...el}
+          key={id}
+          handleForwardChat={handleForwardChat(el)}
+          handleReplyChat={handleReplyChat(el)} />)
       }
       <div ref={chatRef} />
-      {/* <DetailMessage /> */}
+      <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>
   );

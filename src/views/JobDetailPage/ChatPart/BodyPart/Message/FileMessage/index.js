@@ -13,6 +13,7 @@ import './styles.scss';
 const FileMessage = ({
   files = [],
   handleReplyChat,
+  handleForwardChat,
   id,
   user_create_name,
   user_create_avatar,
@@ -47,8 +48,7 @@ const FileMessage = ({
         <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
       }
       {!isReply && is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
       <div className={clsx("TextMessage--rightContentWrap",
         `TextMessage--rightContentWrap__${chatPosition}`,
         {
@@ -102,8 +102,7 @@ const FileMessage = ({
         }
       </div>
       {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat}></CommonMessageAction>
-      }
+        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
     </div >
   );
 }

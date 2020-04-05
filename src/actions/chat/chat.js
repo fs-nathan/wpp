@@ -213,10 +213,14 @@ export function getNotiChatFail(error) {
   };
 }
 
-export function forwardChat(chatId) {
+export function forwardChat(task_id,
+  chat_id,
+  forward_to) {
   return {
     type: actionTypes.FORWARD_CHAT,
-    chatId,
+    task_id,
+    chat_id,
+    forward_to,
   };
 }
 
@@ -250,6 +254,27 @@ export function getListStickersSuccess(payload) {
 export function getListStickersFail(error) {
   return {
     type: actionTypes.GET_LIST_STICKERS_FAIL,
+    error,
+  };
+}
+
+export function loadListTask(projectId) {
+  return {
+    type: actionTypes.LOAD_LIST_TASK,
+    projectId,
+  };
+}
+
+export function loadListTaskSuccess(payload) {
+  return {
+    type: actionTypes.LOAD_LIST_TASK_SUCCESS,
+    payload,
+  };
+}
+
+export function loadListTaskFail(error) {
+  return {
+    type: actionTypes.LOAD_LIST_TASK_FAIL,
     error,
   };
 }

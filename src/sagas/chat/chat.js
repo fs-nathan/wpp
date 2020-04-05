@@ -99,3 +99,13 @@ export function* getListStickers(payload) {
     yield put(actions.getListStickersFail(error));
   }
 }
+
+export function* loadListTask(payload) {
+  try {
+    const { task_id, projectId } = payload;
+    const res = yield call(apiService.get, `project/list-task-detail?project_id=${projectId}`);
+    yield put(actions.loadListTaskSuccess(res.data));
+  } catch (error) {
+    yield put(actions.loadListTaskFail(error));
+  }
+}

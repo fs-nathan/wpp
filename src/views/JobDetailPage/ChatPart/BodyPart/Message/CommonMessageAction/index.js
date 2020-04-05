@@ -2,12 +2,12 @@ import { Menu, MenuItem } from '@material-ui/core';
 import { mdiCommentQuoteOutline, mdiDotsVertical, mdiShare, mdiThumbUp } from '@mdi/js';
 import Icon from '@mdi/react';
 import { deleteChat } from 'actions/chat/chat';
+import { showTab } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './styles.scss';
 
-
-const CommonMessageAction = ({ chatId, handleReplyChat }) => {
+const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -27,21 +27,17 @@ const CommonMessageAction = ({ chatId, handleReplyChat }) => {
 
   function onClickMarkSubTask() {
     setAnchorEl(null);
-
+    dispatch(showTab(2))
   }
 
   function onClickMarkDemand() {
     setAnchorEl(null);
-
+    dispatch(showTab(3))
   }
 
   function handleDeleteChat() {
     dispatch(deleteChat(taskId, chatId))
     setAnchorEl(null);
-  }
-
-  function handleForwardChat() {
-
   }
 
   function handleLikeChat() {
