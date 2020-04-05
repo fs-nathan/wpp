@@ -18,7 +18,10 @@ const ListPart = props => {
       sub: [
         { name: t("IDS_WP_GROUP_INFO"), url: Routes.SETTING_GROUP_INFO },
         { name: t("IDS_WP_HOME"), url: Routes.SETTING_GROUP_HOME },
-        { name: t("IDS_WP_PERMISSION_GROUP"), url: null },
+        {
+          name: t("IDS_WP_PERMISSION_GROUP"),
+          url: Routes.SETTING_GROUP_GROUP_PERMISSION
+        },
         { name: t("IDS_WP_SYMBOLISM"), url: null },
         { name: t("IDS_WP_ROLE"), url: null }
       ]

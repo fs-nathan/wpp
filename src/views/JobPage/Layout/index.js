@@ -3,11 +3,11 @@ import {
   mdiCalendar,
   mdiFilterOutline,
   mdiFullscreen,
-  mdiFullscreenExit
+  mdiFullscreenExit,
 } from "@mdi/js";
 import {
   CustomTableContext,
-  CustomTableProvider
+  CustomTableProvider,
 } from "components/CustomTable";
 import HeaderButtonGroup from "components/CustomTable/HeaderButtonGroup";
 import React, { useContext, useState } from "react";
@@ -51,7 +51,7 @@ export const TableHeader = () => {
           fontSize: "21px",
           lineHeight: "1",
           fontWeight: "600",
-          whiteSpace: "nowrap"
+          whiteSpace: "nowrap",
         }}
       >
         {typeof get(options, "title") === "function"
@@ -97,7 +97,8 @@ export function CustomTableLayout({ children }) {
             <StyledButton
               className="comp_PrimaryHeaderButton"
               style={{
-                backgroundColor: bgColor.color
+                backgroundColor:
+                  get(options, "mainAction.color") || bgColor.color,
               }}
               onClick={get(options, "mainAction.onClick", () => null)}
             >
@@ -110,7 +111,34 @@ export function CustomTableLayout({ children }) {
     </Container>
   );
 }
-function Layout({ children, title, bgColor }) {
+export function LayoutStateLess({ open, quickTask, children, setQuickTask }) {
+  return (
+    <div className="comp_JobPageLayoutWrapper">
+      <div className="comp_JobPageLayout__content">
+        <CustomTableLayout>{children}</CustomTableLayout>
+      </div>
+
+      <Drawer
+        className="comp_JobPageLayout__drawer"
+        variant="persistent"
+        anchor="right"
+        open={open}
+        classes={{
+          paper: "comp_JobPageLayout__drawerPaper",
+        }}
+        onClose={() => setQuickTask(undefined)}
+      >
+        {open && quickTask}
+      </Drawer>
+    </div>
+  );
+}
+const mapStateToProps = (state) => {
+  return {
+    bgColor: bgColorSelector(state),
+  };
+};
+export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   const { t } = useTranslation();
   const {
     timeAnchor,
@@ -123,96 +151,85 @@ function Layout({ children, title, bgColor }) {
     expand,
     handleExpand,
     keyword,
-    setkeyword
+    setkeyword,
   } = useContext(JobPageContext);
   const open = !!quickTask;
   const [openModalDirect, setOopenModalDirect] = useState();
+  const options = {
+    title: props.title,
+    subActions: [
+      {
+        label: times[timeType].title,
+        iconPath: mdiCalendar,
+        onClick: (evt) => setTimeAnchor(evt.target),
+      },
+      {
+        label: t(expand ? "Thu gọn" : "Mở rộng"),
+        iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
+        onClick: () => handleExpand(!expand),
+      },
+      {
+        label: "Lọc",
+        iconPath: mdiFilterOutline,
+        onClick: () => setQuickTask(<QuickViewFilter />),
+      },
+    ],
+    mainAction: {
+      label: "+ Tạo công việc",
+      onClick: () => setOopenModalDirect(true),
+    },
+    search: {
+      patern: keyword,
+      onChange: setkeyword,
+    },
+
+    draggable: {
+      bool: true,
+      onDragEnd: () => {},
+    },
+
+    loading: {
+      bool: false,
+      component: () => <LoadingBox />,
+    },
+    row: {
+      id: "id",
+    },
+  };
   return (
-    <div className="comp_JobPageLayoutWrapper">
-      <div className="comp_JobPageLayout__content">
-        <CustomTableProvider
-          value={{
-            options: {
-              title,
-              subActions: [
-                {
-                  label: times[timeType].title,
-                  iconPath: mdiCalendar,
-                  onClick: evt => setTimeAnchor(evt.target)
-                },
-                {
-                  label: t(expand ? "Thu gọn" : "Mở rộng"),
-                  iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
-                  onClick: () => handleExpand(!expand)
-                },
-                {
-                  label: "Lọc",
-                  iconPath: mdiFilterOutline,
-                  onClick: () => setQuickTask(<QuickViewFilter />)
-                }
-              ],
-              mainAction: {
-                label: "+ Tạo công việc",
-                onClick: () => setOopenModalDirect(true)
-              },
-              search: {
-                patern: keyword,
-                onChange: setkeyword
-              },
-
-              draggable: {
-                bool: true,
-                onDragEnd: () => {}
-              },
-
-              loading: {
-                bool: false,
-                component: () => <LoadingBox />
-              },
-              row: {
-                id: "id"
-              }
-            },
-            bgColor
+    <CustomTableProvider
+      value={{
+        options: options,
+        bgColor,
+      }}
+    >
+      <>
+        <LayoutStateLess
+          {...{
+            open,
+            quickTask,
+            options,
+            setQuickTask,
+            ...props,
           }}
         >
-          <CustomTableLayout>
-            <Scrollbars>{children}</Scrollbars>
-          </CustomTableLayout>
-          <TimeRangePopover
-            bgColor={bgColor}
-            anchorEl={timeAnchor}
-            setAnchorEl={setTimeAnchor}
-            timeOptionDefault={timeType}
-            handleTimeRange={(timeType, startDate, endDate) => {
-              setTimeType(timeType);
-              settimeRange({ startDate, endDate });
-            }}
-          />
-        </CustomTableProvider>
-      </div>
+          <Scrollbars>{children}</Scrollbars>
+        </LayoutStateLess>
 
-      <Drawer
-        className="comp_JobPageLayout__drawer"
-        variant="persistent"
-        anchor="right"
-        open={open}
-        classes={{
-          paper: "comp_JobPageLayout__drawerPaper"
-        }}
-        onClose={() => setQuickTask(undefined)}
-      >
-        {open && quickTask}
-      </Drawer>
-      {openModalDirect && (
-        <RedirectModal onClose={() => setOopenModalDirect(false)} />
-      )}
-    </div>
+        <TimeRangePopover
+          bgColor={bgColor}
+          anchorEl={timeAnchor}
+          setAnchorEl={setTimeAnchor}
+          timeOptionDefault={timeType}
+          handleTimeRange={(timeType, startDate, endDate) => {
+            setTimeType(timeType);
+            settimeRange({ startDate, endDate });
+          }}
+        />
+        {openModalDirect && (
+          <RedirectModal onClose={() => setOopenModalDirect(false)} />
+        )}
+      </>
+    </CustomTableProvider>
   );
-}
-const mapStateToProps = state => {
-  return {
-    bgColor: bgColorSelector(state)
-  };
-};
-export default connect(mapStateToProps)(Layout);
+});

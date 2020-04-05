@@ -35,6 +35,7 @@ export const Routes = {
   SETTING_GROUP: "/setting-group/:type",
   SETTING_GROUP_INFO: "/setting-group/info",
   SETTING_GROUP_HOME: "/setting-group/home",
+  SETTING_GROUP_GROUP_PERMISSION: "/setting-group/group-permission",
   SETTING_GROUP_SETTING: "/setting-group/setting",
   SETTING_GROUP_ORDER: "/setting-group/order",
   SETTING_GROUP_CREATE_ORDER: "/setting-group/create-order",

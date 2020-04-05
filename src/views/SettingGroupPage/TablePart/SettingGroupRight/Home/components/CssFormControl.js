@@ -30,12 +30,12 @@ export const CssFormControl = ({
   );
 };
 export const InputFormControl = ({ name, ...props }) => {
-  const [field, meta, helpers] = useField({ name });
+  const [field, meta] = useField({ name });
   const error = meta.touched && meta.error;
   return (
     <CssFormControl {...props} errorMessage={meta.touched && meta.error}>
       <TextField
-        error={error}
+        error={!!error}
         {...field}
         variant="outlined"
         fullWidth
@@ -44,7 +44,7 @@ export const InputFormControl = ({ name, ...props }) => {
   );
 };
 export const MultilineInputFormControl = ({ name, ...props }) => {
-  const [field, meta, helpers] = useField({ name });
+  const [field, meta] = useField({ name });
   const error = meta.touched && meta.error;
   return (
     <CssFormControl {...props} errorMessage={meta.touched && meta.error}>
@@ -68,14 +68,10 @@ export const SelecIconInputFormControl = ({
   onClick,
   ...props
 }) => {
-  const [field, meta, helpers] = useField({ name });
+  const [field, meta] = useField({ name });
   const error = meta.touched && meta.error;
   return (
-    <CssFormControl
-      label={label}
-      {...props}
-      errorMessage={meta.touched && meta.error}
-    >
+    <CssFormControl label={label} {...props} errorMessage={error}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <AddButton onClick={onClick} label={addLabel}></AddButton>
         {field.value && <Avatar src={field.value}></Avatar>}

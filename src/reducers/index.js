@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
 import taskReducer from "../views/JobPage/redux/reducers";
@@ -418,6 +419,8 @@ const rootReducer = combineReducers({
     inviteOtherPeopleCreateAccount
   }),
   [settingGroupHome.key]: settingGroupHome.reducer,
+  [settingGroupPermission.key]: settingGroupPermission.reducer,
+
   apiCall: apiCall
 });
 
