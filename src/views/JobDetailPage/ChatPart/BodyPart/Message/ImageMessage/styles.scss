@@ -7,6 +7,7 @@
   }
   &--rightContentWrap {
     width: 100%;
+    margin-left: 10px;
     &__self {
       width: 75%;
       margin-right: 0;
@@ -23,6 +24,9 @@
     border-radius: 25px;
     margin-left: 10px;
     width: max-content;
+    &__reply {
+      padding: 0;
+    }
   }
   &--avatar {
     width: 25px;
@@ -60,6 +64,7 @@
   }
   &--imagesContainer {
     display: flex;
+    flex-wrap: wrap;
   }
   &--wrap {
     position: relative;
@@ -79,7 +84,9 @@
     &__number5 {
       width: 100%;
     }
-    &__number6 {
+    &__number6,
+    &__total6-4,
+    &__total6-5 {
       width: 25%;
     }
     &__total1-1 {
@@ -99,6 +106,37 @@
     &__number6-plus {
       width: 25%;
     }
+    &__reply {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  &--plus {
+    background-color: #d8d8d8;
+    font-size: 15px;
+    color: #333333;
+    text-align: center;
+    line-height: 30px;
+    position: relative;
+    &Text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      &Number {
+        font-size: 24px;
+        color: #fff;
+        position: absolute;
+        top: 40%;
+        left: 40%;
+      }
+    }
+    &__reply {
+      width: 30px;
+      height: 30px;
+    }
   }
   &--quality {
     position: absolute;
@@ -110,7 +148,13 @@
   }
   &--img {
     width: 100%;
+    height: 100%;
     border-radius: 10px;
+    &__reply {
+      width: inherit;
+      height: inherit;
+      border-radius: 0px;
+    }
   }
   &--time {
     font-size: 12px;

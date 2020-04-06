@@ -3,7 +3,18 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import CommonMessageAction from '../CommonMessageAction';
+import FileMessage from '../FileMessage';
+import ImageMessage from '../ImageMessage';
 import './styles.scss';
+
+function getChatParent(chat_parent) {
+  if (!chat_parent) return null;
+  if (chat_parent.type === 1)
+    return <FileMessage {...chat_parent} isReply></FileMessage>
+  if (chat_parent.type === 2)
+    return <ImageMessage {...chat_parent} isReply></ImageMessage>
+  return <TextMessage {...chat_parent} isReply></TextMessage>
+}
 
 const TextMessage = ({
   handleReplyChat,
@@ -36,7 +47,7 @@ const TextMessage = ({
         })}
       >
         {
-          chatPosition === 'top' && !is_me &&
+          ((chatPosition === 'top' && !is_me) || isReply) &&
           <div className="TextMessage--sender"  >
             {isReply &&
               <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
@@ -54,17 +65,15 @@ const TextMessage = ({
             }
           </div>
         }
+        {getChatParent(chat_parent)}
         <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })} >
-          {chat_parent &&
-            <TextMessage {...chat_parent} isReply></TextMessage>
-          }
           {content}
+          {!isReply &&
+            <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
+              {time_create}
+            </div>
+          }
         </div>
-        {!isReply &&
-          <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
-            {time_create}
-          </div>
-        }
       </div>
       {!isReply && !is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />

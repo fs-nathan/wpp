@@ -57,7 +57,7 @@ const FileMessage = ({
         })}
       >
         {
-          chatPosition === 'top' && !is_me &&
+          ((chatPosition === 'top' && !is_me) || isReply) &&
           <div className="TextMessage--sender"  >
             {isReply &&
               <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />

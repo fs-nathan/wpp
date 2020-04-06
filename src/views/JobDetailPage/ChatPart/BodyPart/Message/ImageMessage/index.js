@@ -10,12 +10,12 @@ const ImageMessage = ({
   handleReplyChat,
   handleForwardChat,
   id,
-  images,
+  images = [],
   user_create_avatar,
   user_create_name,
   time_create,
   user_create_position,
-  user_create_roles,
+  user_create_roles = [],
   isReply,
   is_me,
   chatPosition = "top",
@@ -31,6 +31,13 @@ const ImageMessage = ({
     setOpen(false);
   }
 
+  let showImages = images;
+  const imgNum = (isReply ? 5 : 6);
+  const plusImage = images.length - imgNum;
+  if (plusImage > 0) {
+    showImages = images.slice(0, imgNum);
+  }
+
   return (
     <div className={clsx("ImageMessage", `ImageMessage__${chatPosition}`)} >
       {!isReply && !is_me &&
@@ -38,10 +45,14 @@ const ImageMessage = ({
       }
       {!isReply && is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
-      <div className={clsx("ImageMessage--rightContentWrap", { "ImageMessage--rightContentWrap__self": is_me })} >
+      <div className={clsx("ImageMessage--rightContentWrap", {
+        "TextMessage--reply": isReply,
+        "ImageMessage--rightContentWrap__self": is_me
+      })} >
         {
-          chatPosition === 'top' && !is_me &&
-          <div className="ImageMessage--sender"  >
+          ((chatPosition === 'top' && !is_me) || isReply) &&
+          <div className={clsx("ImageMessage--sender",
+            { "ImageMessage--sender__reply": isReply })}  >
             {isReply &&
               <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
             }
@@ -60,13 +71,40 @@ const ImageMessage = ({
         }
         <div className="ImageMessage--imagesContainer" >
           {
-            images.map(({ url }, i) =>
+            showImages.map(({ url }, i) =>
               <div key={url} onClick={handleClickOpen}
-                className={clsx("ImageMessage--wrap", `ImageMessage--wrap__total${images.length}-${i + 1}`, `ImageMessage--wrap__number${i + 1}`)} >
-                <div className="ImageMessage--quality" >
-                  HD
-            </div>
-                <img className="ImageMessage--img" src={url} alt="hd" />
+                className={clsx("ImageMessage--wrap",
+                  `ImageMessage--wrap__total${showImages.length}-${i + 1}`,
+                  `ImageMessage--wrap__number${i + 1}`,
+                  { 'ImageMessage--wrap__reply': isReply }
+                )} >
+                {!isReply &&
+                  <div className="ImageMessage--quality" >
+                    HD
+                    </div>
+                }
+                {
+                  (plusImage > 0 && !isReply && i === 5) ? (
+                    <div className={clsx("ImageMessage--plus")}>
+                      <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
+                      <div className={clsx("ImageMessage--plusText")}>
+                        <div className={clsx("ImageMessage--plusTextNumber")}>
+                          +{plusImage}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                    :
+                    <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
+                }
+              </div>
+            )
+          }
+          {
+            (plusImage > 0) && isReply && (
+              <div className={clsx("ImageMessage--wrap ImageMessage--plus",
+                { 'ImageMessage--plus__reply': isReply })}>
+                (+{plusImage})
               </div>
             )
           }

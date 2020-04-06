@@ -14,10 +14,11 @@
     margin-left: 10px;
     width: 100%;
     &__self {
-      background-color: #2fa145;
       width: 75%;
       margin-right: 0;
       margin-left: auto;
+      border-radius: 20px;
+      padding: 0px;
     }
     &__top {
       border-top-left-radius: 20px;
@@ -75,7 +76,10 @@
     font-size: 18px;
     color: #000000;
     text-align: left;
+    padding: 10px;
+    border-radius: 20px;
     &__self {
+      background-color: #2fa145;
       color: #ffffff;
     }
   }
