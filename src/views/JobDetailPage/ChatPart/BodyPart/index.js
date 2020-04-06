@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { getListChat, getListChatService } from 'actions/chat/chat';
+import { loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import queryString from 'query-string';
@@ -57,15 +57,8 @@ const BodyPart = props => {
     }
   });
   useEffect(() => {
-    const fetchListChat = async () => {
-      try {
-        const { data } = await getListChatService(
-          queryString.parse(props.location.search).task_id
-        );
-        dispatch(getListChat(data));
-      } catch (error) { }
-    };
-    fetchListChat();
+    const task_id = queryString.parse(props.location.search).task_id
+    dispatch(loadChat(task_id));
     // eslint-disable-next-line
   }, []);
   // console.log('chats', chats);

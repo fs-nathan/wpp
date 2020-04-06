@@ -18,13 +18,6 @@ export const getMemberTask = data => ({
 });
 
 // service
-export const getListChatService = task_id => {
-  return apiService({
-    method: 'get',
-    url: '/task/get-chat',
-    params: { task_id }
-  });
-};
 export const getMemberTaskService = task_id => {
   return apiService({
     method: 'get',

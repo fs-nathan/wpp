@@ -3,8 +3,7 @@
   height: 100%;
   display: grid;
   grid-template-rows: auto;
-  // grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(200px, 29%);
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(200px, 29%);
   grid-template-areas: "list chat tab";
 }
 .container-job-introduce {

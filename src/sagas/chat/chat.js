@@ -16,7 +16,7 @@ export function* deleteChat(payload) {
 export function* loadChat(payload) {
   try {
     const { task_id } = payload;
-    const res = yield call(apiService.get, `/task/get-chat?task_id=${task_id}`, { task_id });
+    const res = yield call(apiService.get, `/task/get-chat?task_id=${task_id}&page=1`, { task_id });
     yield put(actions.loadChatSuccess(res.data));
   } catch (error) {
     yield put(actions.loadChatFail(error));
