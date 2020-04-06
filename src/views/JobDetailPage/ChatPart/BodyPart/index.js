@@ -51,9 +51,8 @@ const BodyPart = props => {
   } = detailTask || {}
   useEffect(() => {
     if (chatRef && chatRef.current) {
-      // chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
       // console.log(chatRef)
-      chatRef.current.scrollIntoView({ behavior: "smooth" });
     }
   });
   useEffect(() => {
@@ -81,7 +80,7 @@ const BodyPart = props => {
   }
 
   return (
-    <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} >
+    <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} ref={chatRef} >
       <div className="wrap-time">
         <div className="line" />
         <div className="time">{date_create}</div>
@@ -132,7 +131,6 @@ const BodyPart = props => {
           handleForwardChat={handleForwardChat(el)}
           handleReplyChat={handleReplyChat(el)} />)
       }
-      <div ref={chatRef} />
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>
