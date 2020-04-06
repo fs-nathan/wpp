@@ -7,6 +7,7 @@ export const initialState = {
   listStickers: [],
   listTasks: [],
   searchChatKey: '',
+  uploadingPercent: 0,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) =>
@@ -16,7 +17,7 @@ export default (state = initialState, action) =>
         draft.chats = action.payload;
         break;
       case actionTypes.APPEND_CHAT:
-        draft.chats.data.push(action.payload.data_chat)
+        draft.chats.data.unshift(action.payload.data_chat)
         break;
       case actionTypes.FETCH_MEMBER_CHAT:
         draft.members = action.payload;
@@ -74,6 +75,11 @@ export default (state = initialState, action) =>
       case actionTypes.SEARCH_CHAT: {
         const { key } = action;
         draft.searchChatKey = key;
+        break;
+      }
+      case actionTypes.ON_UPLOADING: {
+        const { percent } = action;
+        draft.uploadingPercent = percent;
         break;
       }
     }

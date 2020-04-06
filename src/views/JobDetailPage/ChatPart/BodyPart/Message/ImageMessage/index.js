@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import ModalImage from 'views/JobDetailPage/ModalImage';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
@@ -17,9 +18,11 @@ const ImageMessage = ({
   user_create_position,
   user_create_roles = [],
   isReply,
+  isUploading,
   is_me,
   chatPosition = "top",
 }) => {
+  const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
 
   const [open, setOpen] = React.useState(false);
 
@@ -108,6 +111,10 @@ const ImageMessage = ({
               </div>
             )
           }
+          {isUploading && <div className="ImageMessage--loading" >
+            <div className="ImageMessage--loadingPercent" style={{ width: uploadingPercent }} >
+            </div>
+          </div>}
         </div>
         {!isReply &&
           <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >

@@ -25,18 +25,34 @@ export function* loadChat(payload) {
 
 export function* chatImage(payload) {
   try {
-    const { task_id, data } = payload;
-    const res = yield call(apiService.post, `/task/create-chat-image?task_id=${task_id}`, data);
+    const { task_id, data, onUploading } = payload;
+    const res = yield call(apiService.post,
+      `/task/create-chat-image?task_id=${task_id}`,
+      data,
+      {
+        onUploadProgress: progressEvent => {
+          const percent = (progressEvent.loaded / progressEvent.total) * 100;
+          onUploading(percent);
+        }
+      });
     yield put(actions.chatImageSuccess(res.data));
     yield put(actions.loadChat(task_id));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }
 }
-export function* chatFile(payload) {
+export function* chatFile(dispatch) {
   try {
-    const { task_id, data } = payload;
-    const res = yield call(apiService.post, `/task/create-chat-file?task_id=${task_id}`, data);
+    const { task_id, data, onUploading } = dispatch;
+    const res = yield call(apiService.post,
+      `/task/create-chat-file?task_id=${task_id}`,
+      data,
+      {
+        onUploadProgress: progressEvent => {
+          const percent = (progressEvent.loaded / progressEvent.total) * 100;
+          onUploading(percent);
+        }
+      });
     yield put(actions.chatFileSuccess(res.data));
     yield put(actions.loadChat(task_id));
   } catch (error) {

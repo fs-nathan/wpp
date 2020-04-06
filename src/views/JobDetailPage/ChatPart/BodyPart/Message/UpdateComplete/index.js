@@ -52,11 +52,11 @@ const UpdateComplete = ({
       </div>
       <div className="UpdateComplete--content" >
         <div className="UpdateComplete--circle" >
-          <div>{old_complete}%</div>
+          {old_complete}%
         </div>
         <Icon className="UpdateComplete--icon" path={mdiTransferRight}></Icon>
         <div className="UpdateComplete--circle" >
-          <div>{complete}%</div>
+          {complete}%
         </div>
       </div>
       {!isReply &&

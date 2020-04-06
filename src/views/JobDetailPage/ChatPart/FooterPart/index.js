@@ -1,11 +1,10 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { chatImage, chatSticker, createChatText, loadChat } from 'actions/chat/chat';
+import { appendChat, chatImage, chatSticker, createChatText, loadChat, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
-// import * as MaterialIcon from '@material-ui/icons'
-// import colors from 'helpers/colorPalette'
 import IconLike from 'assets/like.svg';
+import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
@@ -30,14 +29,32 @@ const FooterPart = ({
   const handleTriggerUpload = id => {
     document.getElementById(id).click();
   };
-  const handleUploadImage = e => {
+
+  function onUploadingHandler(percent) {
+    dispatch(onUploading(percent));
+  }
+
+  const handleUploadImage = async e => {
     const { files } = e.target;
     console.log('upload image', files);
+    const images = [];
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      const url = await getFileUrl(file)
+      images.push({ url })
+    }
+
+    const data_chat = {
+      type: CHAT_TYPE.UPLOADING_IMAGES, images,
+      isUploading: true,
+      is_me: true,
+    }
+    dispatch(appendChat({ data_chat }));
     let data = new FormData()
     for (let i = 0; i < files.length; i++) {
       data.append("image", files[i], files[i].name)
     }
-    dispatch(chatImage(taskId, data))
+    dispatch(chatImage(taskId, data, onUploadingHandler))
   };
 
   const openTag = () => {

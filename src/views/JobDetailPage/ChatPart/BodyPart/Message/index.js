@@ -94,6 +94,10 @@ const Message = props => {
       return <ChatSticker {...props} />;
     case CHAT_TYPE.CHAT_FORWARD_FILE:
       return <ChatForwardFile {...props} />;
+    case CHAT_TYPE.UPLOADING_IMAGES:
+      return <ImageMessage {...props} />;
+    case CHAT_TYPE.UPLOADING_FILE:
+      return <FileMessage {...props} />;
     default:
       return <div>Tin nhắn này bị lỗi hiển thị</div>;
   }

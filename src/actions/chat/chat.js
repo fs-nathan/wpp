@@ -85,10 +85,10 @@ export function loadChatFail(error) {
 }
 
 
-export function chatImage(task_id, data) {
+export function chatImage(task_id, data, onUploading) {
   return {
     type: actionTypes.CHAT_IMAGE,
-    task_id, data,
+    task_id, data, onUploading,
   };
 }
 
@@ -114,10 +114,10 @@ export function chatFile(task_id, data) {
   };
 }
 
-export function chatFileSuccess(payload) {
+export function chatFileSuccess(payload, onUploading) {
   return {
     type: actionTypes.CHAT_FILE_SUCCESS,
-    payload,
+    payload, onUploading,
   };
 }
 
@@ -283,5 +283,12 @@ export function searchChat(key) {
   return {
     type: actionTypes.SEARCH_CHAT,
     key,
+  };
+}
+
+export function onUploading(percent) {
+  return {
+    type: actionTypes.ON_UPLOADING,
+    percent,
   };
 }
