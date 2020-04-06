@@ -117,7 +117,7 @@ function TwoColumns({ maxWidth, left, right, height, }) {
 function CustomModal({
   loading = false,
   title,
-  titleRender,
+  titleRender = null,
   columns = 1,
   children = null, left = null, right = null,
   canConfirm = true,
@@ -153,7 +153,7 @@ function CustomModal({
       aria-labelledby="alert-dialog-slide-title"
       className={clsx(className, "comp_CustomModal")}
     >
-      <StyledDialogTitle id="alert-dialog-slide-title">
+      <StyledDialogTitle className={clsx({ "comp_CustomModal__renderTitle": titleRender !== null })} id="alert-dialog-slide-title">
         {
           titleRender || <ColorTypo uppercase>{title}</ColorTypo>
         }

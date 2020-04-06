@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { mdiStarCircle, mdiStarCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
-import CustomModal from 'components/CustomModal';
 import React from 'react';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
 
 
@@ -25,7 +25,7 @@ function DemandDetail({
   } = item;
   const isDemand = type === 1
   return (
-    <CustomModal
+    <JobDetailModalWrap
       open={isOpen}
       setOpen={setOpen}
       confirmRender={null}
@@ -60,7 +60,7 @@ function DemandDetail({
           {content}
         </DialogContentText>
       </DialogContent>
-    </CustomModal>
+    </JobDetailModalWrap>
   );
 }
 

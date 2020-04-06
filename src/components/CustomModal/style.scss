@@ -60,7 +60,7 @@
 
 .comp_CustomModal___dialog-title {
   background-color: #f5f8fc;
-  padding: 20px 24px;
+  padding: 6px 24px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   & > h2 {
     display: flex;
@@ -71,6 +71,10 @@
       padding: 12px 0;
     }
   }
+}
+
+.comp_CustomModal__renderTitle {
+  padding: 20px 24px;
 }
 
 .comp_CustomModal___dialog-actions {
