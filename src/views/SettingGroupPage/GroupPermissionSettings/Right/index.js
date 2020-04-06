@@ -31,16 +31,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { StyledTableBodyCell } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { LayoutStateLess } from "views/JobPage/Layout";
-import {
-  createMapPropsFromAttrs,
-  loginlineParams,
-  template,
-} from "views/JobPage/utils";
+import { createMapPropsFromAttrs, template } from "views/JobPage/utils";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import { GroupPermissionSettingsCotnext } from "..";
+import DeleteGroupPermissionModal from "../components/DeleteGroupPermissionModal";
+import UpdateGroupPermissionModal from "../components/UpdateGroupPermissionModal";
 import { groupPermissionAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
 const Right = () => {
@@ -52,6 +50,7 @@ const Right = () => {
       permissions: emptyArray,
     },
     setSelect,
+    setModal,
   } = useContext(GroupPermissionSettingsCotnext);
   const [id, name, permissions] = createMapPropsFromAttrs([
     groupPermissionAttr.id,
@@ -85,7 +84,10 @@ const Right = () => {
               number: permissionsNumber,
             })}
             actions={
-              <AddButton onClick={loginlineParams} label={t("Thêm quyền")} />
+              <AddButton
+                onClick={() => setModal(<UpdateGroupPermissionModal />)}
+                label={t("Thêm quyền")}
+              />
             }
           ></ListItemLayout>
         </Grid>
@@ -105,69 +107,74 @@ const Right = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {// new Array(60)
-                    //   .fill({
-                    //     name: "Chỉnh sửa nhóm việc",
-                    //     description: "Cập nhật thông tin nhóm việc",
-                    //   })
-                    permissions.map(({ name, description }, i) => (
-                      <TableRow
-                        key={i}
-                        className="comp_RecentTableRow table-body-row"
-                      >
-                        <StyledTableBodyCell
-                          className="comp_AvatarCell"
-                          align="left"
+                    {
+                      // new Array(60)
+                      //   .fill({
+                      //     name: "Chỉnh sửa nhóm việc",
+                      //     description: "Cập nhật thông tin nhóm việc",
+                      //   })
+                      permissions.map(({ name, description }, i) => (
+                        <TableRow
+                          key={i}
+                          className="comp_RecentTableRow table-body-row"
                         >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
+                          <StyledTableBodyCell
+                            className="comp_AvatarCell"
+                            align="left"
                           >
-                            <Icon
-                              color="#8d8d8d"
-                              style={{ width: "18px" }}
-                              path={mdiKey}
-                            ></Icon>
-                          </div>
-                        </StyledTableBodyCell>
-                        <StyledTableBodyCell
-                          className="comp_TitleCell"
-                          align="left"
-                        >
-                          <Typography
-                            noWrap
-                            style={{ padding: "10px 10px 10px 0" }}
-                            className="comp_TitleCell__inner text-bold"
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Icon
+                                color="#8d8d8d"
+                                style={{ width: "18px" }}
+                                path={mdiKey}
+                              ></Icon>
+                            </div>
+                          </StyledTableBodyCell>
+                          <StyledTableBodyCell
+                            className="comp_TitleCell"
+                            align="left"
                           >
-                            <b>{name + " " + i}</b>
-                          </Typography>
-                        </StyledTableBodyCell>
-                        <StyledTableBodyCell
-                          className="comp_TitleCell"
-                          align="left"
-                        >
-                          <Typography noWrap className="comp_TitleCell__inner">
-                            {description}
-                          </Typography>
-                        </StyledTableBodyCell>
-                        <StyledTableBodyCell align="right">
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
+                            <Typography
+                              noWrap
+                              style={{ padding: "10px 10px 10px 0" }}
+                              className="comp_TitleCell__inner text-bold"
+                            >
+                              <b>{name + " " + i}</b>
+                            </Typography>
+                          </StyledTableBodyCell>
+                          <StyledTableBodyCell
+                            className="comp_TitleCell"
+                            align="left"
                           >
-                            <Icon
-                              color="#8d8d8d"
-                              style={{ width: "18px" }}
-                              path={mdiTrashCanOutline}
-                            ></Icon>
-                          </div>
-                        </StyledTableBodyCell>
-                      </TableRow>
-                    ))}
+                            <Typography
+                              noWrap
+                              className="comp_TitleCell__inner"
+                            >
+                              {description}
+                            </Typography>
+                          </StyledTableBodyCell>
+                          <StyledTableBodyCell align="right">
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Icon
+                                color="#8d8d8d"
+                                style={{ width: "18px" }}
+                                path={mdiTrashCanOutline}
+                              ></Icon>
+                            </div>
+                          </StyledTableBodyCell>
+                        </TableRow>
+                      ))
+                    }
                   </TableBody>
                 </Table>
                 <Space height={"50px"}></Space>
@@ -252,6 +259,7 @@ const Right = () => {
   );
 };
 export default ({ ...props }) => {
+  const { setModal } = useContext(GroupPermissionSettingsCotnext);
   const [quickTask, setQuickTask] = useState();
   const { t } = useTranslation();
   const bgColor = useSelector(bgColorSelector);
@@ -269,7 +277,7 @@ export default ({ ...props }) => {
             fontWeight: "600",
           }}
         >
-          Chủ sở hữu
+          {t("Chủ sở hữu")}
         </Box>
       </Box>
     ),
@@ -277,7 +285,7 @@ export default ({ ...props }) => {
     mainAction: {
       color: colors.red[0],
       label: t("Xóa nhóm quyền"),
-      onClick: loginlineParams,
+      onClick: () => setModal(<DeleteGroupPermissionModal />),
     },
     draggable: {
       bool: true,

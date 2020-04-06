@@ -22,10 +22,10 @@ import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/H
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import { GroupPermissionSettingsCotnext } from "..";
+import AddGroupPermissionModal from "../components/AddGroupPermissionModal";
 import { groupPermissionAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
-function Left({ groupPermissionList }) {
-  const { select, setSelect } = useContext(GroupPermissionSettingsCotnext);
+function Left({ groupPermissionList, setSelect, setModal }) {
   const history = useHistory();
   const { t } = useTranslation();
   return (
@@ -56,7 +56,12 @@ function Left({ groupPermissionList }) {
               <ListItemLayout
                 title={t("Danh sách nhóm quyền")}
                 actions={
-                  <AddButton onClick={() => {}} label={t("Thêm nhóm")} />
+                  <AddButton
+                    onClick={() => {
+                      setModal(<AddGroupPermissionModal />);
+                    }}
+                    label={t("Thêm nhóm")}
+                  />
                 }
               ></ListItemLayout>
             </Box>
@@ -130,9 +135,9 @@ function Left({ groupPermissionList }) {
     </LeftSideContainer>
   );
 }
-
 export default () => {
   const dispatch = useDispatch();
+  const { setSelect, setModal } = useContext(GroupPermissionSettingsCotnext);
   useEffect(() => {
     dispatch(settingGroupPermission.actions.loadGroupPermissionList());
   }, [dispatch]);
@@ -142,5 +147,10 @@ export default () => {
   const groupPermissionList = useSelector(
     settingGroupPermission.selectors.groupPermissionListSelector
   );
-  return <Left groupPermissionList={groupPermissionList} />;
+  return (
+    <Left
+      groupPermissionList={groupPermissionList}
+      {...{ setSelect, setModal }}
+    />
+  );
 };

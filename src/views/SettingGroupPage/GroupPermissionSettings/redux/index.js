@@ -11,6 +11,9 @@ import { createAsyncAction } from "../../TablePart/SettingGroupRight/Home/redux/
 const rootPath = "/setting-group/group-permission";
 export const types = {
   groupPermissionListUpdated: `[${rootPath}]/permissions/list-group-permission`,
+  createGroupPermission: `[${rootPath}]/permissions/create-group-permission`,
+  updateGroupPermission: `[${rootPath}]/permissions/update-group-permission`,
+  deleteGroupPermission: `[${rootPath}]/permissions/delete-group-permission`,
   permissionListUpdated: `[${rootPath}]/permissions/list`,
   detailGroupPermissionUpdated: `[${rootPath}]/permissions/detail-group-permission`,
   permissionViewUserUpdated: `[${rootPath}]/permissions/get-permission-view-user`,
@@ -25,29 +28,8 @@ const updateGroupPermissionList = createAction(
     };
   }
 );
-const deleteGroupPermissionList = createAction(
-  types.groupPermissionListUpdated,
-  function prepare(data) {
-    return {
-      payload: data.id,
-      meta: {
-        action: listremove(data.id),
-      },
-    };
-  }
-);
-const addGroupPermissionList = createAction(
-  types.groupPermissionListUpdated,
-  function prepare(data) {
-    return {
-      payload: data.data,
-      meta: {
-        action: listcreate(data.data),
-      },
-    };
-  }
-);
 
+// GroupPermission
 export const loadGroupPermissionList = ({ type } = {}) => {
   return createAsyncAction({
     config: {
@@ -58,6 +40,70 @@ export const loadGroupPermissionList = ({ type } = {}) => {
       },
     },
     success: updateGroupPermissionList,
+  });
+};
+
+// name:string,permissions:array of permission,type: int(0,1,2,3,4)
+export const createGroupPermission = ({ name, permissions, type }) => {
+  return createAsyncAction({
+    config: {
+      url: "/permissions/create-group-permission",
+      method: "post",
+      data: { name, permissions, type },
+    },
+    success: createAction(updateGroupPermissionList.type, function prepare(
+      data
+    ) {
+      return {
+        payload: data.data,
+        meta: {
+          action: listcreate(data.data),
+        },
+      };
+    }),
+  });
+};
+export const updateGroupPermission = ({
+  group_permission_id,
+  name,
+  permissions,
+  type,
+}) => {
+  return createAsyncAction({
+    config: {
+      url: "/permissions/update-group-permission",
+      method: "put",
+      data: { group_permission_id, name, permissions, type },
+    },
+    // success: createAction(updateGroupPermissionList.type, function prepare(
+    //   data
+    // ) {
+    //   return {
+    //     payload: data.id,
+    //     meta: {
+    //       action: listremove(data.id),
+    //     },
+    //   };
+    // }),
+  });
+};
+export const deleteGroupPermission = ({ group_permission_id }) => {
+  return createAsyncAction({
+    config: {
+      url: "/post-category/delete",
+      method: "delete",
+      data: { group_permission_id },
+    },
+    success: createAction(updateGroupPermissionList.type, function prepare(
+      data
+    ) {
+      return {
+        payload: data.id,
+        meta: {
+          action: listremove(data.id),
+        },
+      };
+    }),
   });
 };
 const updatePermissionList = createAction(
@@ -100,10 +146,10 @@ export const settingGroupPermission = {
     loadDetailGroupPermission,
     loadGroupPermissionList,
     loadPermissionList,
+    createGroupPermission,
+    deleteGroupPermission,
     updateGroupPermissionList,
     updatePermissionList,
-    deleteGroupPermissionList,
-    addGroupPermissionList,
   },
   key: "settingGroupPermission",
   reducer: createReducer(
