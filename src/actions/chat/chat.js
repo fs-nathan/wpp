@@ -285,3 +285,10 @@ export function onUploading(percent) {
     percent,
   };
 }
+
+export function tagMember(index) {
+  return {
+    type: actionTypes.TAG_MEMBER,
+    index,
+  };
+}

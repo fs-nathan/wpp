@@ -6,6 +6,7 @@ export const initialState = {
   members: [],
   listStickers: [],
   listTasks: [],
+  tagMembers: [],
   searchChatKey: '',
   uploadingPercent: 0,
 };
@@ -80,6 +81,15 @@ export default (state = initialState, action) =>
       case actionTypes.ON_UPLOADING: {
         const { percent } = action;
         draft.uploadingPercent = percent;
+        break;
+      }
+      case actionTypes.TAG_MEMBER: {
+        const { index } = action;
+        const memberIndex = draft.tagMembers.indexOf(index)
+        if (memberIndex === -1)
+          draft.tagMembers.push(index);
+        else
+          draft.tagMembers.splice(memberIndex, 1);
         break;
       }
     }

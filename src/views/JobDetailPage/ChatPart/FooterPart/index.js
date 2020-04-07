@@ -8,6 +8,7 @@ import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
+import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
 import Message from '../BodyPart/Message';
 import '../Chat.scss';
@@ -18,13 +19,11 @@ const FooterPart = ({
 }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const stickers = useSelector(state => state.chat.listStickers);
 
-  const [marginLeftModal, setMarginLeftModal] = useState(0);
-  const [marginTopModal, setMarginTopModal] = useState(0);
   const [textChat, setTextChat] = useState('');
-  const [visibleTag, setVisible] = useState(null);
   const [visibleSendFile, setVisibleSendFile] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElSticker, setAnchorElSticker] = useState(null);
 
   const handleTriggerUpload = id => {
     document.getElementById(id).click();
@@ -36,7 +35,7 @@ const FooterPart = ({
 
   const handleUploadImage = async e => {
     const { files } = e.target;
-    console.log('upload image', files);
+    // console.log('upload image', files);
     const images = [];
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
@@ -57,24 +56,28 @@ const FooterPart = ({
     dispatch(chatImage(taskId, data, onUploadingHandler))
   };
 
-  const openTag = () => {
-    // Handle position of search modal
-    const inputElm = document.getElementById('input_message');
-    if (inputElm) {
-      const posLeft = inputElm.offsetLeft;
-      const posTop = inputElm.offsetTop;
-      setMarginLeftModal(posLeft);
-      setMarginTopModal(posTop);
-    }
-    setVisible('mention');
+  const openTag = (evt) => {
+    setAnchorEl(evt.currentTarget);
   };
+
+  function handleCloseTag() {
+    setAnchorEl(null)
+  }
+
+  const openSticker = (evt) => {
+    setAnchorElSticker(evt.currentTarget);
+  };
+
+  function handleCloseSticker() {
+    setAnchorElSticker(null)
+  }
 
   function onChangeTextChat(event) {
     setTextChat(event.target.value)
   }
 
-  function onClickSticker() {
-    dispatch(chatSticker(taskId, stickers[0].id))
+  function handleClickSticker(id) {
+    dispatch(chatSticker(taskId, id))
   }
 
   function onClickSubTask() {
@@ -117,7 +120,7 @@ const FooterPart = ({
           <IconButton className="icon-btn" onClick={openTag}>
             <Icon path={mdiAt} size={1.2} />
           </IconButton>
-          <IconButton className="icon-btn" onClick={onClickSticker}>
+          <IconButton className="icon-btn" onClick={openSticker}>
             <Icon path={mdiEmoticon} size={1.2} />
           </IconButton>
           <IconButton
@@ -160,13 +163,15 @@ const FooterPart = ({
       </div>
       <Message {...parentMessage} isReply></Message>
       <div className="wrap-input-message" id="input_message">
-        {visibleTag === 'mention' && (
-          <TagModal
-            marginLeft={marginLeftModal}
-            marginTop={marginTopModal}
-            onClose={() => setVisible(null)}
-          />
-        )}
+        <TagModal
+          anchorEl={anchorEl}
+          handleClose={handleCloseTag}
+        />
+        <StickerModal
+          anchorEl={anchorElSticker}
+          handleClose={handleCloseSticker}
+          handleClickSticker={handleClickSticker}
+        />
         <input
           onKeyPress={onKeyPressChat}
           onKeyDown={onKeyDownChat}

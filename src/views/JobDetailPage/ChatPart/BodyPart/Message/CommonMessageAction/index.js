@@ -59,7 +59,7 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat }) => 
         <Icon className="CommonMessageAction--icon" path={mdiDotsVertical} />
       </button>
       <Menu
-        id="simple-menu"
+        id="CommonMessageAction-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}

@@ -1,57 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-// import { Scrollbars } from 'react-custom-scrollbars';
-import { Dialog, DialogContent, Avatar } from '@material-ui/core';
-import './ChatComponent.scss';
+import { Avatar, Menu, MenuItem } from '@material-ui/core';
+import { tagMember } from 'actions/chat/chat';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
+import './ChatComponent.scss';
 
-const TagModal = props => {
-  const handleCloseModal = () => {
-    props.onClose();
-  };
+const TagModal = ({
+  anchorEl,
+  handleClose,
+}) => {
+  const dispatch = useDispatch();
+  const members = useSelector(state => state.chat.members);
+  const tagMembers = useSelector(state => state.chat.tagMembers);
 
-  useEffect(() => {
-    setTimeout(() => {
-      const tagModal = document.querySelector('.tag-modal');
-      const contentModal = document.getElementById('tag_content');
-      const dialogContainer = tagModal.querySelector('.MuiDialog-container');
-      dialogContainer.style.display = 'block';
-      const dialogContent = tagModal.querySelector('.MuiPaper-root');
-
-      const marTop = props.marginTop - contentModal.offsetHeight - 3;
-
-      dialogContent.style.marginTop = `${marTop}px`;
-      dialogContent.style.marginLeft = `${props.marginLeft + 10}px`;
-      dialogContent.style.marginRight = `${props.marginLeft}px`;
-      dialogContent.style.maxWidth = '200px';
-    }, 0); // eslint-disable-next-line
-  }, []);
+  function handleClickMember(index) {
+    return () => dispatch(tagMember(index))
+  }
 
   return (
-    <Dialog
-      open={true}
-      maxWidth="xs"
-      onClose={handleCloseModal}
-      className="tag-modal"
+    <Menu
+      id="tag-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
     >
-      <DialogContent dividers id="tag_content">
-        {!isEmpty(props.members) &&
-          props.members.map(el => (
-            <div key={el.id} className="tag-item">
-              <Avatar className="header-chat-avatar" src={el.avatar} />
+      {!isEmpty(members) &&
+        members.map((el, index) => (
+          <MenuItem key={el.id} className="tag--menuItem" onClick={handleClickMember(index)}>
+            <Avatar className="header-chat-avatar" src={el.avatar} />
               &nbsp;&nbsp;&nbsp;
-              <span>{el.name}</span>
-            </div>
-          ))}
-      </DialogContent>
-    </Dialog>
+            <span>{el.name}</span>
+          </MenuItem>
+        ))}
+    </Menu>
   );
 };
 
-export default connect(
-  state => ({
-    members: state.chat.members
-  }),
-  {}
-)(withRouter(TagModal));
+export default TagModal;
