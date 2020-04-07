@@ -27,6 +27,10 @@ const FileMessage = ({
   chatPosition = "top",
 }) => {
   const dispatch = useDispatch();
+  const [file] = files;
+  const { name = '' } = file || {};
+  const nameSplitted = name.split('.');
+  const type = nameSplitted[nameSplitted.length - 1];
 
   function onClickDownload(url, name) {
     return () => {
@@ -39,11 +43,6 @@ const FileMessage = ({
   }
 
   function onClickFile() {
-    console.log(files)
-    const [file] = files;
-    const { name } = file;
-    const nameSplitted = name.split('.');
-    const type = nameSplitted[nameSplitted.length - 1];
     dispatch(openDocumentDetail({ ...file, type }));
   }
 
@@ -84,15 +83,16 @@ const FileMessage = ({
           {chat_parent &&
             <TextMessage {...chat_parent} isReply></TextMessage>
           }
-          {files[0] &&
+          {file &&
             <div className="FileMessage--files" onClick={onClickFile}>
-              <img className="FileMessage--icon" src={files[0].file_icon} alt="file-icon"></img>
-              <div className="FileMessage--fileName">
-                {files[0].name}
+              <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
+                src={file.file_icon} alt="file-icon"></img>
+              <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
+                {file.name}
               </div>
               <div className="FileMessage--downloadButton"
-                onClick={onClickDownload(files[0].url, files[0].name)}>
-                <Icon className="FileMessage--download" path={mdiDownload}></Icon>
+                onClick={onClickDownload(file.url, file.name)}>
+                <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
               </div>
             </div>
           }
@@ -100,8 +100,8 @@ const FileMessage = ({
         {!isReply &&
           <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
             {time_create}
-            <span className="FileMessage--fileSize">
-              {files[0] && files[0].size}
+            <span className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
+              {type} - {file && file.size}
             </span>
           </div>
         }

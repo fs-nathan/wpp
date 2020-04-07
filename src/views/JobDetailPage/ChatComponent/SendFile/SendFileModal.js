@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import { chatFile } from 'actions/chat/chat';
+import { chatFile, onUploading } from 'actions/chat/chat';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomModal from '../../../../components/CustomModal';
@@ -11,6 +11,10 @@ const SendFileModal = ({ open, setOpen }) => {
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [visibleDocumentFile, setVisibleDocumentFile] = useState(false);
 
+  function onUploadingHandler(percent) {
+    dispatch(onUploading(percent));
+  }
+
   const handleUploadFile = e => {
     const { files } = e.target;
     console.log('upload file', files);
@@ -18,7 +22,7 @@ const SendFileModal = ({ open, setOpen }) => {
     for (let i = 0; i < files.length; i++) {
       data.append("file", files[i], files[i].name)
     }
-    dispatch(chatFile(taskId, data))
+    dispatch(chatFile(taskId, data, onUploadingHandler))
     setOpen(false)
   };
 

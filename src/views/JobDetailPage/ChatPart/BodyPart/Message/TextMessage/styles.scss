@@ -18,7 +18,11 @@
       margin-right: 0;
       margin-left: auto;
       border-radius: 20px;
+      background-color: #2fa145;
+    }
+    &__haveParent {
       padding: 0px;
+      background-color: #eaeaea;
     }
     &__top {
       border-top-left-radius: 20px;
@@ -93,6 +97,7 @@
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
     padding: 0 5px;
+    background-color: #eaeaea;
   }
   &--reply &--content {
     font-size: 14px;

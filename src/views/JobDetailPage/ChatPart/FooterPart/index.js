@@ -99,7 +99,7 @@ const FooterPart = ({
 
   async function onKeyPressChat(event) {
     console.log('enter press here! ', event.which)
-    if (textChat.length === 0) return;
+    if (textChat.trim().length === 0) return;
     if (event.key === 'Enter' || event.which === 13) {
       setTextChat('');
       dispatch(clearTags());

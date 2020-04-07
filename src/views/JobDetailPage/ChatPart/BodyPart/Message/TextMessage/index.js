@@ -55,7 +55,8 @@ const TextMessage = ({
         `TextMessage--rightContentWrap__${chatPosition}`,
         {
           "TextMessage--reply": isReply,
-          "TextMessage--rightContentWrap__self": is_me
+          "TextMessage--rightContentWrap__self": is_me,
+          "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
         })}
       >
         {
