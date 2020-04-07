@@ -1,4 +1,6 @@
 .FileMessage {
+  display: flex;
+  cursor: pointer;
   &--avatar {
   }
   &--files {

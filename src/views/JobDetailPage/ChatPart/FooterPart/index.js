@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, chatImage, chatSticker, createChatText, loadChat, onUploading } from 'actions/chat/chat';
+import { appendChat, chatImage, chatSticker, clearTags, createChatText, loadChat, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import IconLike from 'assets/like.svg';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
@@ -12,6 +12,7 @@ import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
 import Message from '../BodyPart/Message';
 import '../Chat.scss';
+import './styles.scss';
 
 const FooterPart = ({
   parentMessage,
@@ -19,6 +20,8 @@ const FooterPart = ({
 }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const members = useSelector(state => state.chat.members);
+  const tagMembers = useSelector(state => state.chat.tagMembers);
 
   const [textChat, setTextChat] = useState('');
   const [visibleSendFile, setVisibleSendFile] = useState(false);
@@ -98,11 +101,13 @@ const FooterPart = ({
     console.log('enter press here! ', event.which)
     if (textChat.length === 0) return;
     if (event.key === 'Enter' || event.which === 13) {
-      setTextChat('')
+      setTextChat('');
+      dispatch(clearTags());
       try {
         const { data } = await createChatText({
           task_id: taskId, content: textChat,
           parent_id: parentMessage && parentMessage.id,
+          tags: tagMembers.map(index => members[index].id)
         });
         // dispatch(appendChat(data));
         dispatch(loadChat(taskId));
@@ -172,6 +177,7 @@ const FooterPart = ({
           handleClose={handleCloseSticker}
           handleClickSticker={handleClickSticker}
         />
+        {tagMembers.map(index => <span key={index} className="footerChat--tag">@{members[index].name}</span>)}
         <input
           onKeyPress={onKeyPressChat}
           onKeyDown={onKeyDownChat}

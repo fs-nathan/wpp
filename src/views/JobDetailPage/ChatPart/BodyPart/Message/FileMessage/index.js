@@ -39,7 +39,12 @@ const FileMessage = ({
   }
 
   function onClickFile() {
-    dispatch(openDocumentDetail(files[0]))
+    console.log(files)
+    const [file] = files;
+    const { name } = file;
+    const nameSplitted = name.split('.');
+    const type = nameSplitted[nameSplitted.length - 1];
+    dispatch(openDocumentDetail({ ...file, type }));
   }
 
   return (

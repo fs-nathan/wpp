@@ -292,3 +292,9 @@ export function tagMember(index) {
     index,
   };
 }
+
+export function clearTags() {
+  return {
+    type: actionTypes.CLEAR_TAGS,
+  };
+}

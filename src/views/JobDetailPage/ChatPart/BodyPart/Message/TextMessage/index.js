@@ -1,7 +1,9 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import CommonMessageAction from '../CommonMessageAction';
 import FileMessage from '../FileMessage';
 import ImageMessage from '../ImageMessage';
@@ -15,6 +17,8 @@ function getChatParent(chat_parent) {
     return <ImageMessage {...chat_parent} isReply></ImageMessage>
   return <TextMessage {...chat_parent} isReply></TextMessage>
 }
+
+
 
 const TextMessage = ({
   handleReplyChat,
@@ -30,7 +34,15 @@ const TextMessage = ({
   isReply,
   is_me,
   chatPosition = "top",
+  tags = [],
 }) => {
+  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+
+  function getColor() {
+    if (isReply) return "#5b5b5b"
+    if (is_me) return "#fff"
+    return groupActiveColor;
+  }
 
   return (
     <div className={clsx("TextMessage", `TextMessage__${chatPosition}`)}  >
@@ -67,6 +79,7 @@ const TextMessage = ({
         }
         {getChatParent(chat_parent)}
         <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })} >
+          {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)}
           {content}
           {!isReply &&
             <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >

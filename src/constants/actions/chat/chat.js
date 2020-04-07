@@ -49,3 +49,4 @@ export const LOAD_LIST_TASK_FAIL = 'LOAD_LIST_TASK_FAIL';
 export const SEARCH_CHAT = 'SEARCH_CHAT';
 export const ON_UPLOADING = 'ON_UPLOADING';
 export const TAG_MEMBER = 'TAG_MEMBER';
+export const CLEAR_TAGS = 'CLEAR_TAGS';

@@ -92,5 +92,9 @@ export default (state = initialState, action) =>
           draft.tagMembers.splice(memberIndex, 1);
         break;
       }
+      case actionTypes.CLEAR_TAGS: {
+        draft.tagMembers = []
+        break;
+      }
     }
   });
