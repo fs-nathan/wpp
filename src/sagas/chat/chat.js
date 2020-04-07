@@ -125,3 +125,31 @@ export function* loadListTask(payload) {
     yield put(actions.loadListTaskFail(error));
   }
 }
+
+export function* getEmotions(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.get, "/emotions/get-list", { task_id });
+    yield put(actions.getEmotionsSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getEmotionsFail(error));
+  }
+}
+export function* chatEmotion(payload) {
+  try {
+    const { task_id, chat_id, emotion } = payload;
+    const res = yield call(apiService.post, "/task/chat-create-emotion", { task_id, chat_id, emotion });
+    yield put(actions.chatEmotionSuccess(res.data));
+  } catch (error) {
+    yield put(actions.chatEmotionFail(error));
+  }
+}
+export function* getEmotionsReactMember(payload) {
+  try {
+    const { task_id, chat_id, emotion } = payload;
+    const res = yield call(apiService.get, "/task/get-member-react-emotion-one-chat", { task_id, chat_id, emotion });
+    yield put(actions.getEmotionsReactMemberSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getEmotionsReactMemberFail(error));
+  }
+}

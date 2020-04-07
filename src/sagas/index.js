@@ -573,6 +573,18 @@ function* rootSaga() {
     chatTypes.LOAD_LIST_TASK,
     chatDetailSaga.loadListTask
   );
+  yield takeLeading(
+    chatTypes.GET_EMOTIONS,
+    chatDetailSaga.getEmotions
+  );
+  yield takeLeading(
+    chatTypes.CHAT_EMOTION,
+    chatDetailSaga.chatEmotion
+  );
+  yield takeLeading(
+    chatTypes.GET_EMOTIONS_REACT_MEMBER,
+    chatDetailSaga.getEmotionsReactMember
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);

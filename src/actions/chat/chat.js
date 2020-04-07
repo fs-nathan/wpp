@@ -298,3 +298,66 @@ export function clearTags() {
     type: actionTypes.CLEAR_TAGS,
   };
 }
+
+export function getEmotions(task) {
+  return {
+    type: actionTypes.GET_EMOTIONS,
+    task,
+  };
+}
+
+export function getEmotionsSuccess(payload) {
+  return {
+    type: actionTypes.GET_EMOTIONS_SUCCESS,
+    payload,
+  };
+}
+
+export function getEmotionsFail(error) {
+  return {
+    type: actionTypes.GET_EMOTIONS_FAIL,
+    error,
+  };
+}
+
+export function chatEmotion(task_id, chat_id, emotion) {
+  return {
+    type: actionTypes.CHAT_EMOTION,
+    task_id, chat_id, emotion,
+  };
+}
+
+export function chatEmotionSuccess(payload) {
+  return {
+    type: actionTypes.CHAT_EMOTION_SUCCESS,
+    payload,
+  };
+}
+
+export function chatEmotionFail(error) {
+  return {
+    type: actionTypes.CHAT_EMOTION_FAIL,
+    error,
+  };
+}
+
+export function getEmotionsReactMember(task_id, chat_id, emotion) {
+  return {
+    type: actionTypes.GET_EMOTIONS_REACT_MEMBER,
+    task_id, chat_id, emotion,
+  };
+}
+
+export function getEmotionsReactMemberSuccess(payload) {
+  return {
+    type: actionTypes.GET_EMOTIONS_REACT_MEMBER_SUCCESS,
+    payload,
+  };
+}
+
+export function getEmotionsReactMemberFail(error) {
+  return {
+    type: actionTypes.GET_EMOTIONS_REACT_MEMBER_FAIL,
+    error,
+  };
+}

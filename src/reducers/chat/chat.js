@@ -7,6 +7,7 @@ export const initialState = {
   listStickers: [],
   listTasks: [],
   tagMembers: [],
+  emotionsList: [],
   searchChatKey: '',
   uploadingPercent: 0,
 };
@@ -94,6 +95,21 @@ export default (state = initialState, action) =>
       }
       case actionTypes.CLEAR_TAGS: {
         draft.tagMembers = []
+        break;
+      }
+      case actionTypes.GET_EMOTIONS_SUCCESS: {
+        const { payload } = action;
+        draft.emotionsList = payload.imotions;
+        break;
+      }
+      case actionTypes.CHAT_EMOTION_SUCCESS: {
+        const { payload } = action;
+        draft.payload = payload;
+        break;
+      }
+      case actionTypes.GET_EMOTIONS_REACT_MEMBER_SUCCESS: {
+        const { payload } = action;
+        draft.payload = payload;
         break;
       }
     }

@@ -20,7 +20,7 @@ const CreateCommandDecided = ({
 
 
   return (
-    <div className={clsx("CreateCommandDecided", `TextMessage__${chatPosition}`)} >
+    <div className={clsx("CreateCommandDecided", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
       <div className="UpdateTaskNameMessage--header" >
         Thông báo
       </div>

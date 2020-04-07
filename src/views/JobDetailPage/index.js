@@ -1,4 +1,4 @@
-import { getListStickersRequest } from 'actions/chat/chat';
+import { getEmotions, getListStickersRequest } from 'actions/chat/chat';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeNoticeModal } from '../../actions/system/system';
@@ -15,24 +15,15 @@ function JobDetailPage(props) {
   const url = new URL(window.location.href);
   const taskId = useSelector(taskIdSelector) || url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  let id = props.history.location.pathname.substring(18);
   // console.log('JobDetailPage', taskId);
-  useEffect(() => {
-    if (taskId) {
-      dispatch(taskDetailAction.chooseTask(taskId))
-      dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
-    } // eslint-disable-next-line
-  }, [taskId]);
 
   useEffect(() => {
     dispatch(closeNoticeModal());
     dispatch(getListStickersRequest());
-    // getProjectGroup()
-    dispatch(taskDetailAction.getProjectListBasic(projectId));
-    // getDetailProject(projectId)
-    // eslint-disable-next-line
-  }, []);
+    dispatch(getEmotions());
+  }, [dispatch]);
 
-  let id = props.history.location.pathname.substring(18);
   useEffect(() => {
     const chooseProject = project => dispatch(taskDetailAction.chooseProject(project))
     const getDetailProject = project_id => dispatch(taskDetailAction.getProjectDetail(project_id))
@@ -49,15 +40,10 @@ function JobDetailPage(props) {
     dispatch(taskDetailAction.getMemberNotAssigned({ task_id: taskId }));
     dispatch(taskDetailAction.getMember({ task_id: taskId }));
     dispatch(taskDetailAction.getTaskDetailTabPart({ task_id: taskId }));
-    // getSubTaskByTaskId(taskId)
-    // getRemindByTaskId(taskId)
-    // getOfferByTaskId(taskId)
-    // getCommandByTaskId(taskId)
-    // getImageByTaskId(taskId)
-    // getFileByTaskId(taskId)
-    // getLinkByTaskId(taskId)
-    // getLocationByTaskId(taskId)
-    // getTrackingTime(taskId)
+    if (taskId) {
+      dispatch(taskDetailAction.chooseTask(taskId))
+      dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
+    }
   }, [dispatch, taskId]);
 
   useEffect(() => {
@@ -68,6 +54,7 @@ function JobDetailPage(props) {
       dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId }));
       dispatch(taskDetailAction.getStaticTask(projectId));
+      dispatch(taskDetailAction.getProjectListBasic(projectId));
     }
   }, [dispatch, projectId]);
 
