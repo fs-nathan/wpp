@@ -9,23 +9,25 @@ const apiCall = createReducer(
       action.payload.asyncId
         ? {
             ...state,
-            [action.payload.asyncId]: { status: apiCallStatus.loading }
+            [action.payload.asyncId]: { status: apiCallStatus.loading },
           }
         : state,
-    [apiCallSuccess]: (state, action) =>
-      action.payload.asyncId
+    [apiCallSuccess]: (state, action) => {
+      const { asyncId, data } = action.payload;
+      return action.payload.asyncId
         ? {
             ...state,
-            [action.payload.asyncId]: { status: apiCallStatus.success }
+            [asyncId]: { status: apiCallStatus.success, data },
           }
-        : state,
+        : state;
+    },
     [apiCallFailure]: (state, action) =>
       action.payload.asyncId
         ? {
             ...state,
-            [action.payload.asyncId]: { status: apiCallStatus.failure }
+            [action.payload.asyncId]: { status: apiCallStatus.failure },
           }
-        : state
+        : state,
   }
 );
 export default apiCall;

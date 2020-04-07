@@ -1,32 +1,40 @@
 import Joi from "@hapi/joi";
 import { Box, TableCell } from "@material-ui/core";
-import { Formik } from "formik";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Formik, FormikContext } from "formik";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
 import { DialogContent } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
 import VerticleList from "views/JobPage/components/VerticleList";
 import { emptyObject } from "views/JobPage/contants/defaultValue";
 import {
+  createMapPropsFromAttrs,
+  get,
+  loginlineFunc,
+  loginlineParams,
+} from "views/JobPage/utils";
+import {
   InputFormControl,
   MultilineInputFormControl,
+  RadioGroupFormControl,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/CssFormControl";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { GroupPermissionSettingsCotnext } from "..";
+import { permissionModulesAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
-import { SetPermissionModal } from "./SetPermissionModal";
+import UpdateGroupPermissionModal from "./UpdateGroupPermissionModal";
 export const CustomTableBodyCell = styled(TableCell)`
   border-bottom: none;
 `;
-const AddGroupPermissionModal = ({ loading, handleSubmit, onClose }) => {
+const AddGroupPermissionModal = ({
+  loading,
+  permissionModules = [],
+  onClose,
+}) => {
+  const { handleSubmit } = useContext(FormikContext);
   const { t } = useTranslation();
   return (
     <ModalCommon
@@ -48,6 +56,21 @@ const AddGroupPermissionModal = ({ loading, handleSubmit, onClose }) => {
               name="description"
               label={t("Mô tả nhóm quyền")}
             />
+            <RadioGroupFormControl
+              options={permissionModules.map((item) => {
+                const [name, value] = createMapPropsFromAttrs([
+                  permissionModulesAttr.name,
+                  permissionModulesAttr.value,
+                ])(item);
+                return {
+                  label: name,
+                  name,
+                  value,
+                };
+              })}
+              name="type"
+              label={t("Phạm vi module phân quyền")}
+            />
           </VerticleList>
         </Box>
       </DialogContent>
@@ -68,9 +91,8 @@ const createValidate = (schema) => (values = {}, mapError = {}) => {
 const validateAddGroupPermissionForm = createValidate(
   Joi.object({
     name: Joi.string().required(),
-    logo: Joi.any(),
-    logoPreview: Joi.any(),
     description: Joi.any(),
+    type: Joi.any(),
   })
 );
 const AddGroupPermissionForm = ({ children, onSubmit }) => {
@@ -94,36 +116,39 @@ const AddGroupPermissionForm = ({ children, onSubmit }) => {
   );
 };
 export default () => {
-  const [step, setStep] = useState(0); //0,1
+  const dispath = useDispatch();
   const { setModal } = useContext(GroupPermissionSettingsCotnext);
-  const [{ status }, setAsyncAction] = useAsyncTracker();
+  const [{ status, data }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
     setModal(null);
   }, [setModal]);
   useEffect(() => {
-    status === apiCallStatus.success && onClose();
-  }, [onClose, status]);
+    dispath(settingGroupPermission.actions.loadGroupModules());
+  }, [dispath]);
+  useEffect(() => {
+    if (status === apiCallStatus.success) {
+      setModal(
+        <UpdateGroupPermissionModal
+          item={loginlineFunc(get)(loginlineParams(data), "group_permission")}
+        />
+      );
+    }
+  }, [data, setModal, status]);
   const handleSubmit = (values) =>
     setAsyncAction(
       settingGroupPermission.actions.createGroupPermission(values)
     );
+  const permissionModules = useSelector(
+    settingGroupPermission.selectors.groupModulesListSelector
+  );
+
   return (
     <AddGroupPermissionForm onSubmit={handleSubmit}>
-      <>
-        {step === 0 && (
-          <AddGroupPermissionModal
-            handleSubmit={() => setStep(1)}
-            loading={status === apiCallStatus.loading}
-            onClose={onClose}
-          />
-        )}
-        {step === 1 && (
-          <SetPermissionModal
-            loading={status === apiCallStatus.loading}
-            onClose={onClose}
-          />
-        )}
-      </>
+      <AddGroupPermissionModal
+        permissionModules={permissionModules}
+        loading={status === apiCallStatus.loading}
+        onClose={onClose}
+      />
     </AddGroupPermissionForm>
   );
 };

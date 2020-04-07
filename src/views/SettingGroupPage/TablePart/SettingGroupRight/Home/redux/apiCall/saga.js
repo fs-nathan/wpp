@@ -7,7 +7,7 @@ function* doAsync(action) {
   const { config, success, failure, asyncId } = action.payload;
   try {
     const result = yield apiService(config);
-    yield put(apiCallSuccess({ asyncId }));
+    yield put(apiCallSuccess({ asyncId, data: result.data }));
     if (success) {
       yield put(success(result.data));
     }
@@ -17,7 +17,7 @@ function* doAsync(action) {
       apiCallFailure({
         asyncId,
         error: error.toString(),
-        action
+        action,
       })
     );
     if (failure) {

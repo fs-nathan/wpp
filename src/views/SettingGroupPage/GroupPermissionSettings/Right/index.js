@@ -216,7 +216,7 @@ const Right = () => {
                   >
                     <legend>
                       <Box className="comp_QuickViewFilter__title">
-                        {t("Gán quyền cho module")}
+                        {t("Gán nhóm quyền cho module")}
                       </Box>
                     </legend>
                     <FormGroup className="comp_QuickViewFilter__FormGroup">

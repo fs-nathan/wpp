@@ -5,14 +5,14 @@ import { merge, uniqueId } from "views/JobPage/utils";
 const defaultasyncSelector = () => {
   return emptyObject;
 };
-const useAsyncTracker = () => {
+const useAsyncTracker = (action) => {
   const dispatch = useDispatch();
   const [asyncId, setasyncId] = useState();
   const asyncSelector = asyncId
-    ? state => state.apiCall[asyncId]
+    ? (state) => state.apiCall[asyncId]
     : defaultasyncSelector;
   const [asyncAction, setAsyncAction] = useState();
-  const { status } = useSelector(asyncSelector);
+  const { status, data } = useSelector(asyncSelector);
   useEffect(() => {
     if (asyncAction) {
       const asyncId = uniqueId("apiCall.");
@@ -20,12 +20,17 @@ const useAsyncTracker = () => {
       dispatch(
         merge(asyncAction, {
           payload: {
-            asyncId
-          }
+            asyncId,
+          },
         })
       );
     }
   }, [asyncAction, dispatch]);
-  return useMemo(() => [{ status }, setAsyncAction], [status]);
+  useEffect(() => {
+    if (action) {
+      setAsyncAction(action);
+    }
+  }, [action]);
+  return useMemo(() => [{ status, data }, setAsyncAction], [data, status]);
 };
 export default useAsyncTracker;

@@ -32,10 +32,14 @@
 export const groupPermissionAttr = {
   id: "id",
   name: "name",
-  permissions: "permissions"
+  permissions: "permissions",
 };
 export const permissionAttr = {
   name: "name",
   value: "value",
-  description: "description"
+  description: "description",
+};
+export const permissionModulesAttr = {
+  name: "name",
+  value: "value",
 };

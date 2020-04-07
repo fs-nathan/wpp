@@ -2,7 +2,7 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get } from "views/JobPage/utils";
 import {
-  listcreate,
+  listAddFirst,
   listremove,
   mapPayloadToState,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
@@ -10,6 +10,8 @@ import { createAsyncAction } from "../../TablePart/SettingGroupRight/Home/redux/
 
 const rootPath = "/setting-group/group-permission";
 export const types = {
+  getModules: `[${rootPath}]/permissions/get-modules`,
+  permissionViewGroupSetting: `[${rootPath}]/permissions/get-permission-view-setting-group`,
   groupPermissionListUpdated: `[${rootPath}]/permissions/list-group-permission`,
   createGroupPermission: `[${rootPath}]/permissions/create-group-permission`,
   updateGroupPermission: `[${rootPath}]/permissions/update-group-permission`,
@@ -28,6 +30,41 @@ const updateGroupPermissionList = createAction(
     };
   }
 );
+
+const updateGroupModules = createAction(types.getModules, function prepare(
+  data
+) {
+  return {
+    payload: data.modules,
+  };
+});
+
+const updatePermissionViewGroupSetting = createAction(
+  types.permissionViewGroupSetting,
+  function prepare(data) {
+    return {
+      payload: data.modules,
+    };
+  }
+);
+export const loadPermissionViewGroupSetting = () => {
+  return createAsyncAction({
+    config: {
+      url: "/permissions/get-permission-view-setting-group",
+    },
+    success: updatePermissionViewGroupSetting,
+  });
+};
+
+// GroupPermission
+export const loadGroupModules = ({ type } = {}) => {
+  return createAsyncAction({
+    config: {
+      url: "/permissions/get-modules",
+    },
+    success: updateGroupModules,
+  });
+};
 
 // GroupPermission
 export const loadGroupPermissionList = ({ type } = {}) => {
@@ -55,9 +92,9 @@ export const createGroupPermission = ({ name, permissions, type }) => {
       data
     ) {
       return {
-        payload: data.data,
+        payload: data.group_permission,
         meta: {
-          action: listcreate(data.data),
+          action: listAddFirst(data.group_permission),
         },
       };
     }),
@@ -137,17 +174,29 @@ export const groupPermissionListSelector = (state) =>
     [settingGroupPermission.key, types.groupPermissionListUpdated],
     emptyArray
   );
+export const groupModulesListSelector = (state) =>
+  get(state, [settingGroupPermission.key, updateGroupModules.type], emptyArray);
 
+export const permissionViewGroupSettingSelector = (state) =>
+  get(
+    state,
+    [settingGroupPermission.key, updatePermissionViewGroupSetting.type],
+    emptyArray
+  );
 export const settingGroupPermission = {
   selectors: {
     groupPermissionListSelector,
+    groupModulesListSelector,
+    permissionViewGroupSettingSelector,
   },
   actions: {
     loadDetailGroupPermission,
     loadGroupPermissionList,
     loadPermissionList,
     createGroupPermission,
+    loadGroupModules,
     deleteGroupPermission,
+    loadPermissionViewGroupSetting,
     updateGroupPermissionList,
     updatePermissionList,
   },
@@ -155,8 +204,13 @@ export const settingGroupPermission = {
   reducer: createReducer(
     {
       [updateGroupPermissionList]: [],
+      [updatePermissionViewGroupSetting]: [],
+      [updateGroupModules]: [],
+      [updatePermissionList]: [],
     },
     {
+      [updatePermissionViewGroupSetting]: mapPayloadToState,
+      [updateGroupModules]: mapPayloadToState,
       [updateGroupPermissionList]: mapPayloadToState,
       [updatePermissionList]: mapPayloadToState,
     }

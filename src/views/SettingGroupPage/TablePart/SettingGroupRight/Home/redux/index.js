@@ -7,14 +7,14 @@ const rootPath = "/setting-group/home";
 
 export const types = {
   categoryListUpdated: `[${rootPath}]/post-category/list`,
-  categoryLogoListUpdated: `[${rootPath}]/post-category/list-logo`
+  categoryLogoListUpdated: `[${rootPath}]/post-category/list-logo`,
 };
 
 const updateCategoryList = createAction(
   types.categoryListUpdated,
   function prepare(data) {
     return {
-      payload: data.categories
+      payload: data.categories,
     };
   }
 );
@@ -24,8 +24,8 @@ const deleteCategoryList = createAction(
     return {
       payload: data.id,
       meta: {
-        action: listremove(data.id)
-      }
+        action: listremove(data.id),
+      },
     };
   }
 );
@@ -35,8 +35,8 @@ const addCategoryList = createAction(
     return {
       payload: data.data,
       meta: {
-        action: listcreate(data.data)
-      }
+        action: listcreate(data.data),
+      },
     };
   }
 );
@@ -46,9 +46,9 @@ export const createPostCategory = ({ name, logo }) => {
     config: {
       url: "/post-category/create",
       method: "post",
-      data: { name, logo }
+      data: { name, logo },
     },
-    success: addCategoryList
+    success: addCategoryList,
   });
 };
 export const deletePostCategory = ({ category_id }) => {
@@ -56,17 +56,17 @@ export const deletePostCategory = ({ category_id }) => {
     config: {
       url: "/post-category/delete",
       method: "delete",
-      data: { category_id }
+      data: { category_id },
     },
-    success: deleteCategoryList
+    success: deleteCategoryList,
   });
 };
 export const loadCategoryList = () => {
   return createAsyncAction({
     config: {
-      url: "/post-category/list"
+      url: "/post-category/list",
     },
-    success: updateCategoryList
+    success: updateCategoryList,
   });
 };
 
@@ -74,13 +74,13 @@ export const settingGroupHome = {
   key: "settingGroupHome",
   reducer: createReducer(
     {
-      [types.categoryListUpdated]: []
+      [types.categoryListUpdated]: [],
     },
     {
-      [updateCategoryList]: mapPayloadToState
+      [updateCategoryList]: mapPayloadToState,
     }
-  )
+  ),
 };
 
-export const categoryListSelector = state =>
+export const categoryListSelector = (state) =>
   get(state, [settingGroupHome.key, types.categoryListUpdated], emptyArray);

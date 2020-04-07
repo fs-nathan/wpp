@@ -18,7 +18,7 @@ import useAsyncTracker from "../redux/apiCall/useAsyncTracker";
 import {
   InputFormControl,
   MultilineInputFormControl,
-  SelecIconInputFormControl
+  SelecIconInputFormControl,
 } from "./CssFormControl";
 const AddCategoryModal = ({ loading, onClose, toggleLogoModal }) => {
   const { t } = useTranslation();
@@ -31,8 +31,8 @@ const AddCategoryModal = ({ loading, onClose, toggleLogoModal }) => {
       footerAction={[
         {
           action: handleSubmit,
-          name: t("Hoàn thành")
-        }
+          name: t("Hoàn thành"),
+        },
       ]}
     >
       <DialogContent dividers className="dialog-content move-content">
@@ -47,7 +47,7 @@ const AddCategoryModal = ({ loading, onClose, toggleLogoModal }) => {
               name="logoPreview"
               onClick={toggleLogoModal}
               label={t("Biểu tượng")}
-              addLabel={t("Cọn biểu tượng")}
+              addLabel={t("Chọn biểu tượng")}
             ></SelecIconInputFormControl>
           </VerticleList>
         </Box>
@@ -55,7 +55,7 @@ const AddCategoryModal = ({ loading, onClose, toggleLogoModal }) => {
     </ModalCommon>
   );
 };
-const LogoManagerModal = props => {
+const LogoManagerModal = (props) => {
   const dispath = useDispatch();
   useEffect(() => {
     dispath(listIcon());
@@ -64,7 +64,7 @@ const LogoManagerModal = props => {
 };
 const addCategoryFormInitialValues = { name: "", description: "", logo: "" };
 
-const createValidate = schema => (values = {}, mapError = {}) => {
+const createValidate = (schema) => (values = {}, mapError = {}) => {
   const { error } = schema.validate(values);
   return error
     ? error.details.reduce((result, error) => {
@@ -78,7 +78,7 @@ const validateAddCategoryForm = createValidate(
     name: Joi.string().required(),
     logo: Joi.any(),
     logoPreview: Joi.any(),
-    description: Joi.any()
+    description: Joi.any(),
   })
 );
 const AddCategoryForm = ({ children, onSubmit }) => {
@@ -111,7 +111,7 @@ export default () => {
     status === apiCallStatus.success && onClose();
   }, [onClose, status]);
   const [openLogoModal, toggleLogoModal] = useToggle();
-  const handleSubmit = values => setAsyncAction(createPostCategory(values));
+  const handleSubmit = (values) => setAsyncAction(createPostCategory(values));
   return (
     <AddCategoryForm onSubmit={handleSubmit}>
       <>
@@ -126,18 +126,18 @@ export default () => {
               <LogoManagerModal
                 open={openLogoModal}
                 setOpen={toggleLogoModal}
-                doSelectIcon={value => {
+                doSelectIcon={(value) => {
                   field.onChange({
                     target: {
                       name: "logo",
-                      value: value.url_sort
-                    }
+                      value: value.url_sort,
+                    },
                   });
                   field.onChange({
                     target: {
                       name: "logoPreview",
-                      value: value.url_full
-                    }
+                      value: value.url_full,
+                    },
                   });
                   toggleLogoModal(false);
                 }}

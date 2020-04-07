@@ -1,17 +1,13 @@
 import Joi from "@hapi/joi";
 import { Formik } from "formik";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { emptyObject } from "views/JobPage/contants/defaultValue";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { GroupPermissionSettingsCotnext } from "..";
+import { settingGroupPermission } from "../redux";
 import { SetPermissionModal } from "./SetPermissionModal";
 
 const addGroupPermissionFormInitialValues = { name: "", description: "" };
@@ -53,17 +49,22 @@ const UpdateGroupPermissionForm = ({ children, onSubmit }) => {
     </Formik>
   );
 };
-export default () => {
-  const [step, setStep] = useState(0); //0,1
+export default ({ item }) => {
   const { setModal } = useContext(GroupPermissionSettingsCotnext);
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
     setModal(null);
   }, [setModal]);
+  const dispatch = useDispatch();
   useEffect(() => {
-    status === apiCallStatus.success && onClose();
+    dispatch(settingGroupPermission.actions.loadPermissionViewGroupSetting());
+  }, [dispatch]);
+  useEffect(() => {
+    if (status === apiCallStatus.success) {
+      onClose();
+    }
   }, [onClose, status]);
-  const handleSubmit = (values) => setModal(null);
+  const handleSubmit = (values) => setAsyncAction(null);
 
   return (
     <UpdateGroupPermissionForm onSubmit={handleSubmit}>
