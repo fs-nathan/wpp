@@ -57,7 +57,7 @@ const BodyPart = props => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
       // console.log(chatRef)
     }
-  });
+  }, [chats.data]);
   useEffect(() => {
     const task_id = queryString.parse(props.location.search).task_id
     dispatch(loadChat(task_id));

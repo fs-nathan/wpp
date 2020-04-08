@@ -1,11 +1,12 @@
 import { Avatar } from '@material-ui/core';
-import { mdiDownload, mdiThumbUpOutline } from '@mdi/js';
+import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
@@ -108,12 +109,7 @@ const FileMessage = ({
           </div>
         }
         {data_emotion.length > 0 &&
-          <div className={clsx("TextMessage--emo", { "TextMessage--emo__self": is_me })} >
-            {data_emotion.map(emo => <img className="TextMessage--emoImage" src={emo.icon} alt="emo"></img>)}
-            <button className="TextMessage--emoButton" onClick={handleDetailEmotion} >
-              <Icon className="TextMessage--emoIcon" path={mdiThumbUpOutline} />
-            </button>
-          </div>
+          <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
         }
       </div>
       {!isReply && !is_me &&

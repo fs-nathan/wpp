@@ -1,11 +1,10 @@
 import { Avatar } from '@material-ui/core';
-import { mdiThumbUpOutline } from '@mdi/js';
-import Icon from '@mdi/react';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import CommonMessageAction from '../CommonMessageAction';
 import FileMessage from '../FileMessage';
 import ImageMessage from '../ImageMessage';
@@ -18,15 +17,6 @@ function getChatParent(chat_parent) {
   if (chat_parent.type === 2)
     return <ImageMessage {...chat_parent} isReply></ImageMessage>
   return <TextMessage {...chat_parent} isReply></TextMessage>
-}
-
-function getTotalReact(data_emotion) {
-  let total = 0;
-  for (let index = 0; index < data_emotion.length; index++) {
-    const { members } = data_emotion[index];
-    total += members.length
-  }
-  return total;
 }
 
 const TextMessage = ({
@@ -100,15 +90,7 @@ const TextMessage = ({
           }
         </div>
         {data_emotion.length > 0 &&
-          <div className={clsx("TextMessage--emo", { "TextMessage--emo__self": is_me })} >
-            <div className="TextMessage--emoReact" onClick={handleDetailEmotion} >
-              {data_emotion.map(emo => <img className="TextMessage--emoImage" src={emo.icon} alt="emo"></img>)}
-              {getTotalReact(data_emotion)}
-            </div>
-            <button className="TextMessage--emoButton" onClick={handleDetailEmotion} >
-              <Icon className="TextMessage--emoIcon" path={mdiThumbUpOutline} />
-            </button>
-          </div>
+          <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
         }
       </div>
       {!isReply && !is_me &&
