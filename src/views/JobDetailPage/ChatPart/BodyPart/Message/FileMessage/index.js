@@ -5,7 +5,7 @@ import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
@@ -26,10 +26,12 @@ const FileMessage = ({
   time_create,
   chat_parent,
   isReply,
+  isUploading,
   is_me,
   chatPosition = "top",
 }) => {
   const dispatch = useDispatch();
+  const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
   const [file] = files;
   const { name = '' } = file || {};
   const nameSplitted = name.split('.');
@@ -92,6 +94,19 @@ const FileMessage = ({
                 src={file.file_icon} alt="file-icon"></img>
               <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
                 {file.name}
+                <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
+                  {type} - {file && file.size}
+                </div>
+                {isUploading &&
+                  <div className="FileMessage--loading" >
+                    Đang tải:
+                  <div className="FileMessage--loadingBackground" >
+                      <div className="FileMessage--loadingPercent" style={{ width: uploadingPercent }} >
+                      </div>
+                    </div>
+                    {uploadingPercent}%
+              </div>
+                }
               </div>
               <div className="FileMessage--downloadButton"
                 onClick={onClickDownload(file.url, file.name)}>
@@ -103,9 +118,7 @@ const FileMessage = ({
         {!isReply &&
           <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
             {time_create}
-            <span className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
-              {type} - {file && file.size}
-            </span>
+
           </div>
         }
         {data_emotion.length > 0 &&

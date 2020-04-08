@@ -32,7 +32,7 @@ export function* chatImage(payload) {
       {
         onUploadProgress: progressEvent => {
           const percent = (progressEvent.loaded / progressEvent.total) * 100;
-          onUploading(percent);
+          onUploading(Math.round(percent));
         }
       });
     yield put(actions.chatImageSuccess(res.data));
@@ -50,7 +50,7 @@ export function* chatFile(dispatch) {
       {
         onUploadProgress: progressEvent => {
           const percent = (progressEvent.loaded / progressEvent.total) * 100;
-          onUploading(percent);
+          onUploading(Math.round(percent));
         }
       });
     yield put(actions.chatFileSuccess(res.data));

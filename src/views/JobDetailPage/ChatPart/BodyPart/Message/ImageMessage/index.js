@@ -114,10 +114,13 @@ const ImageMessage = ({
               </div>
             )
           }
-          {isUploading && <div className="ImageMessage--loading" >
-            <div className="ImageMessage--loadingPercent" style={{ width: uploadingPercent }} >
-            </div>
-          </div>}
+          {isUploading &&
+            <div className="ImageMessage--loading" >
+              <div className="ImageMessage--loadingBackground" >
+                <div className="ImageMessage--loadingPercent" style={{ width: uploadingPercent }} >
+                </div>
+              </div>
+            </div>}
         </div>
         {!isReply &&
           <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >

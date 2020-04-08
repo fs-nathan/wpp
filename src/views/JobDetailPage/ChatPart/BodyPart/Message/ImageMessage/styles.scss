@@ -23,12 +23,16 @@
     bottom: 0px;
     left: 0;
     width: 100%;
+  }
+  &--loadingBackground {
     height: 10px;
-    background-color: greenyellow;
+    background-color: #e6e6e6;
+    border-radius: 10px;
   }
   &--loadingPercent {
-    background-color: green;
+    background-color: #00be43;
     height: 10px;
+    border-radius: 10px;
   }
   &--sender {
     display: flex;

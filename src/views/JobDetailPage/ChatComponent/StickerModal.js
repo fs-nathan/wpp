@@ -10,7 +10,6 @@ const StickerModal = ({
   handleClickSticker,
 }) => {
   const listStickers = useSelector(state => state.chat.listStickers);
-
   function onClickSticker(id) {
     return () => handleClickSticker(id)
   }
@@ -28,13 +27,16 @@ const StickerModal = ({
       }}
       transformOrigin={{
         vertical: 'bottom',
-        horizontal: 'left',
+        horizontal: 57,
+      }}
+      classes={{
+        list: "stickerModal--list"
       }}
     >
       {!isEmpty(listStickers) &&
         listStickers.map(el => (
-          <MenuItem key={el.id} className="tag--menuItem" onClick={onClickSticker(el.id)}>
-            <img className="header-chat-avatar" alt="sticker" src={el.url} />
+          <MenuItem key={el.id} className="stickerModal--menuItem" onClick={onClickSticker(el.id)}>
+            <img className="stickerModal--image" alt="sticker" src={el.url} />
               &nbsp;&nbsp;&nbsp;
             <span>{el.name}</span>
           </MenuItem>

@@ -25,6 +25,21 @@
       color: #5b5b5b;
     }
   }
+  &--loading {
+    display: flex;
+  }
+  &--loadingBackground {
+    height: 10px;
+    background-color: #e6e6e6;
+    width: 60%;
+    margin: auto 4px;
+    border-radius: 10px;
+  }
+  &--loadingPercent {
+    background-color: #00be43;
+    height: 10px;
+    border-radius: 10px;
+  }
   &--download {
     &Button {
       cursor: pointer;

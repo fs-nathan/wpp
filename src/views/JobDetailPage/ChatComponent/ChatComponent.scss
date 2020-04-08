@@ -19,3 +19,17 @@
     line-height: 25px;
   }
 }
+
+.stickerModal {
+  &--list {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 210px;
+    min-height: 105px;
+    width: 555px;
+  }
+  &--image {
+    height: 96px;
+    width: 96px;
+  }
+}
