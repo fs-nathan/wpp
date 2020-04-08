@@ -1,8 +1,4 @@
-import {
-  LIST_DELETED_PROJECT,
-  LIST_DELETED_PROJECT_SUCCESS,
-  LIST_DELETED_PROJECT_FAIL,
-} from '../../constants/actions/project/listDeletedProject';
+import { LIST_DELETED_PROJECT, LIST_DELETED_PROJECT_FAIL, LIST_DELETED_PROJECT_SUCCESS } from '../../constants/actions/project/listDeletedProject';
 
 export const initialState = {
   data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_DELETED_PROJECT_SUCCESS: 
+    case LIST_DELETED_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case LIST_DELETED_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

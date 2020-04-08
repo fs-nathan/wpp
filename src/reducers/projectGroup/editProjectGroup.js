@@ -1,8 +1,4 @@
-import {
-  EDIT_PROJECT_GROUP,
-  EDIT_PROJECT_GROUP_SUCCESS,
-  EDIT_PROJECT_GROUP_FAIL,
-} from '../../constants/actions/projectGroup/editProjectGroup';
+import { EDIT_PROJECT_GROUP, EDIT_PROJECT_GROUP_FAIL, EDIT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/editProjectGroup';
 
 export const initialState = {
   data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case EDIT_PROJECT_GROUP_SUCCESS: 
+    case EDIT_PROJECT_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: state.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case EDIT_PROJECT_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

@@ -1,15 +1,14 @@
 import { ButtonBase, IconButton, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import { find, get, isNil } from 'lodash';
+import { find, get } from 'lodash';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
-import LoadingOverlay from 'react-loading-overlay';
 import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import ErrorBox from '../../../../components/ErrorBox';
+import LoadingOverlay from '../../../../components/LoadingOverlay';
 import PillButton from '../../../../components/PillButton';
 import SearchInput from '../../../../components/SearchInput';
 import './style.scss';
@@ -58,7 +57,7 @@ const IconWrapper = ({ className = '', ...rest }) => (<div className={`view_Depa
 
 
 const DesiringUserList = ({
-  user, loading, bgColor,
+  user, loading, bgColor, canModify,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
   handleCancleInvitationJoinGroup,
 }) => {
@@ -75,8 +74,8 @@ const DesiringUserList = ({
 
   return (
     <>
-      {!isNil(user)
-        ? (<StyledList>
+      {user !== null && (
+        <StyledList>
           <StyledListItem
             key={get(user, 'id')}
             style={{ cursor: 'default' }}
@@ -91,7 +90,7 @@ const DesiringUserList = ({
               secondary={
                 <StyledSecondary>
                   <Secondary>{get(user, 'email', '')}</Secondary>
-                  <span>
+                  {canModify && <span>
                     <OkButton
                       style={{
                         backgroundColor: bgColor.color,
@@ -119,19 +118,19 @@ const DesiringUserList = ({
                         {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
                       </CancleButton>
                     )}
-                  </span>
+                  </span>}
                 </StyledSecondary>
               }
             />
           </StyledListItem>
-        </StyledList>)
-        : null}
+        </StyledList>
+      )}
     </>
   );
 }
 
 const InvitedUserList = ({
-  invitations, loading, bgColor,
+  invitations, loading, bgColor, canModify,
   handleResendInvitationUserJoinGroup,
   handleCancleInvitationJoinGroup,
 }) => {
@@ -159,7 +158,7 @@ const InvitedUserList = ({
             secondary={
               <StyledSecondary>
                 <Secondary>{get(invitation, 'email')}</Secondary>
-                <span>
+                {canModify && <span>
                   <OkButton
                     style={{
                       backgroundColor: bgColor.color,
@@ -178,7 +177,7 @@ const InvitedUserList = ({
                   >
                     {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
                   </CancleButton>
-                </span>
+                </span>}
               </StyledSecondary>
             }
           />
@@ -189,7 +188,7 @@ const InvitedUserList = ({
 }
 
 const RequestingUserList = ({
-  users, loading, bgColor,
+  users, loading, bgColor, canModify,
   handleAcceptRequirementJoinGroup, handleRejectRequirementJoinGroup,
 }) => {
 
@@ -220,7 +219,7 @@ const RequestingUserList = ({
             secondary={
               <StyledSecondary>
                 <Secondary>{get(user, 'email')}</Secondary>
-                <span>
+                {canModify && <span>
                   <OkButton
                     style={{
                       backgroundColor: bgColor.color,
@@ -237,7 +236,7 @@ const RequestingUserList = ({
                   >
                     {t('DMH.VIEW.DP.LEFT.ADD.BTN.DENY')}
                   </CancleButton>
-                </span>
+                </span>}
               </StyledSecondary>
             }
           />
@@ -248,7 +247,7 @@ const RequestingUserList = ({
 }
 
 function AddUser({
-  bgColor,
+  bgColor, viewPermissions,
   desireUser, desireLoading,
   requireUsers, requireLoading,
   invitations,
@@ -286,32 +285,35 @@ function AddUser({
         autoHide
         autoHideTimeout={500}
       >
-        <StyledBox>
-          <ColorTypo bold>
-            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVT')}
-          </ColorTypo>
-          <div>
-            <StyledSearchInput
-              placeholder={t('DMH.VIEW.DP.LEFT.ADD.LABEL.FIND')}
-              value={searchPatern}
-              onChange={handleSearchPatern}
-            />
-            <PillButton
-              size='large'
-              background={'#eee'}
-              text={'#333'}
-              onClick={() => searchPatern !== '' && handleSearchUser({ info: searchPatern })}
-            >
-              {t('DMH.VIEW.DP.LEFT.ADD.BTN.FIND')}
-            </PillButton>
-          </div>
-          {desireUser.error !== null
-            ? <ErrorBox size={16} />
-            : <LoadingOverlay
+        <LoadingOverlay
+          active={viewPermissions.loading}
+          spinner
+        >
+          <StyledBox>
+            <ColorTypo bold>
+              {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVT')}
+            </ColorTypo>
+            <div>
+              <StyledSearchInput
+                placeholder={t('DMH.VIEW.DP.LEFT.ADD.LABEL.FIND')}
+                value={searchPatern}
+                onChange={handleSearchPatern}
+              />
+              <PillButton
+                size='large'
+                background={'#eee'}
+                text={'#333'}
+                onClick={() => searchPatern !== '' && handleSearchUser({ info: searchPatern })}
+              >
+                {t('DMH.VIEW.DP.LEFT.ADD.BTN.FIND')}
+              </PillButton>
+            </div>
+            <LoadingOverlay
               active={desireUser.loading}
               spinner
             >
               <DesiringUserList
+                canModify={get(viewPermissions.permissions, 'can_modify', false)}
                 bgColor={bgColor}
                 loading={desireLoading}
                 user={desireUser.user && {
@@ -335,19 +337,17 @@ function AddUser({
                 handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
               />
             </LoadingOverlay>
-          }
-        </StyledBox>
-        <StyledBox>
-          <ColorTypo bold>
-            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVD')}
-          </ColorTypo>
-          {invitations.error !== null
-            ? <ErrorBox size={16} />
-            : <LoadingOverlay
+          </StyledBox>
+          <StyledBox>
+            <ColorTypo bold>
+              {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVD')}
+            </ColorTypo>
+            <LoadingOverlay
               active={invitations.loading}
               spinner
             >
               <InvitedUserList
+                canModify={get(viewPermissions.permissions, 'can_modify', false)}
                 bgColor={bgColor}
                 loading={requireLoading}
                 invitations={invitations.invitations}
@@ -355,19 +355,17 @@ function AddUser({
                 handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
               />
             </LoadingOverlay>
-          }
-        </StyledBox>
-        <StyledBox>
-          <ColorTypo bold>
-            {t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQS')}
-          </ColorTypo>
-          {requireUsers.error !== null
-            ? <ErrorBox size={16} />
-            : <LoadingOverlay
+          </StyledBox>
+          <StyledBox>
+            <ColorTypo bold>
+              {t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQS')}
+            </ColorTypo>
+            <LoadingOverlay
               active={requireUsers.loading}
               spinner
             >
               <RequestingUserList
+                canModify={get(viewPermissions.permissions, 'can_modify', false)}
                 bgColor={bgColor}
                 loading={requireLoading}
                 users={requireUsers.users}
@@ -375,8 +373,8 @@ function AddUser({
                 handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
               />
             </LoadingOverlay>
-          }
-        </StyledBox>
+          </StyledBox>
+        </LoadingOverlay>
       </Body>
     </Container>
   )

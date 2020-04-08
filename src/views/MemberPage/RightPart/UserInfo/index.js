@@ -1,16 +1,18 @@
+import { get } from 'lodash';
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import UserDocumentModal from '../../Modals/UserDocument';
-import UpdateUserModal from '../../Modals/UpdateUser';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { detailUser } from '../../../../actions/user/detailUser';
 import { uploadDocumentsUser } from '../../../../actions/user/uploadDocumentsUser';
 import { Context as MemberPageContext } from '../../index';
-import { userSelector, isUploadSelector } from './selectors';
+import UpdateUserModal from '../../Modals/UpdateUser';
+import UserDocumentModal from '../../Modals/UserDocument';
+import { viewPermissionsSelector } from '../../selectors';
 import UserInfoPresenter from './presenters';
+import { isUploadSelector, userSelector } from './selectors';
 
-function UserInfo({ 
-  user, isUpload, 
+function UserInfo({
+  user, isUpload, viewPermissions,
   doUploadDocumentsUser,
 }) {
 
@@ -29,8 +31,10 @@ function UserInfo({
   function doOpenModal(type, props) {
     switch (type) {
       case 'UPDATE': {
-        setOpenUpdate(true);
-        setUpdateProps(props);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setOpenUpdate(true);
+          setUpdateProps(props);
+        }
         return;
       }
       case 'DOCUMENT': {
@@ -44,9 +48,10 @@ function UserInfo({
 
   return (
     <>
-      <UserInfoPresenter 
-        user={user} isUpload={isUpload} 
-        handleUploadDocumentsUser={file => doUploadDocumentsUser({ userId, file })} 
+      <UserInfoPresenter
+        canModify={get(viewPermissions.permissions, 'can_modify', false)}
+        user={user} isUpload={isUpload}
+        handleUploadDocumentsUser={file => doUploadDocumentsUser({ userId, file })}
         handleOpenModal={doOpenModal}
       />
       <UserDocumentModal open={openDocuments} setOpen={setOpenDocuments} {...documentsProps} />
@@ -59,6 +64,7 @@ const mapStateToProps = state => {
   return {
     user: userSelector(state),
     isUpload: isUploadSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   };
 };
 

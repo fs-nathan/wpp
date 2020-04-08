@@ -1,8 +1,4 @@
-import {
-	SORT_GROUP_TASK,
-	SORT_GROUP_TASK_SUCCESS,
-	SORT_GROUP_TASK_FAIL,
-} from '../../constants/actions/groupTask/sortGroupTask';
+import { SORT_GROUP_TASK, SORT_GROUP_TASK_FAIL, SORT_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/sortGroupTask';
 
 export const initialState = {
 	data: null,
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
 				error: null,
 				loading: true,
 			};
-		case SORT_GROUP_TASK_SUCCESS: 
+		case SORT_GROUP_TASK_SUCCESS:
 			return {
-				...state, 
+				...state,
+				...initialState,
 				error: null,
 				loading: false,
 			};
 		case SORT_GROUP_TASK_FAIL:
 			return {
 				...state,
+				...initialState,
 				error: action.error,
 				loading: false,
 			};

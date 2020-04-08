@@ -1,8 +1,4 @@
-import {
-  UPDATE_ROOM,
-  UPDATE_ROOM_SUCCESS,
-  UPDATE_ROOM_FAIL,
-} from '../../constants/actions/room/updateRoom';
+import { UPDATE_ROOM, UPDATE_ROOM_FAIL, UPDATE_ROOM_SUCCESS } from '../../constants/actions/room/updateRoom';
 
 export const initialState = {
   data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case UPDATE_ROOM_SUCCESS: 
+    case UPDATE_ROOM_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case UPDATE_ROOM_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

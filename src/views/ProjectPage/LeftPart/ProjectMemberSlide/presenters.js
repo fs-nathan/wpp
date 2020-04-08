@@ -8,7 +8,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Link } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import SearchInput from '../../../../components/SearchInput';
@@ -57,80 +56,77 @@ function ProjectMemberSlide({
 
   return (
     <>
-      {members.error !== null && (<ErrorBox />)}
-      {members.error === null && (
-        <LeftSideContainer
-          title='Thành viên dự án'
-          leftAction={{
-            iconPath: mdiChevronLeft,
-            onClick: () => handleSubSlide(0),
-            tooltip: 'Quay lại',
-          }}
-          rightAction={{
-            iconPath: mdiPlus,
-            onClick: () => handleOpenModal('MEMBER_SETTING'),
-            tooltip: 'Thêm thành viên dự án',
-          }}
-          loading={{
-            bool: members.loading,
-            component: () => <LoadingBox />
-          }}
-        >
-          <Container>
-            <Banner>
-              <SearchInput
-                fullWidth
-                placeholder='Tìm thành viên'
-                value={searchPatern}
-                onChange={evt => setSearchPatern(evt.target.value)}
-              />
-            </Banner>
-            <Wrapper
-              autoHide
-              autoHideTimeout={500}
-            >
-              <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId={'member-list'}>
-                  {provided => (
-                    <StyledList
-                      innerRef={provided.innerRef}
-                      {...provided.droppableProps}
+      <LeftSideContainer
+        title='Thành viên dự án'
+        leftAction={{
+          iconPath: mdiChevronLeft,
+          onClick: () => handleSubSlide(0),
+          tooltip: 'Quay lại',
+        }}
+        rightAction={{
+          iconPath: mdiPlus,
+          onClick: () => handleOpenModal('MEMBER_SETTING'),
+          tooltip: 'Thêm thành viên dự án',
+        }}
+        loading={{
+          bool: members.loading,
+          component: () => <LoadingBox />
+        }}
+      >
+        <Container>
+          <Banner>
+            <SearchInput
+              fullWidth
+              placeholder='Tìm thành viên'
+              value={searchPatern}
+              onChange={evt => setSearchPatern(evt.target.value)}
+            />
+          </Banner>
+          <Wrapper
+            autoHide
+            autoHideTimeout={500}
+          >
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId={'member-list'}>
+                {provided => (
+                  <StyledList
+                    innerRef={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <StyledListItem
+                      to={`#`}
+                      component={Link}
                     >
-                      <StyledListItem
-                        to={`#`}
-                        component={Link}
-                      >
-                        <div>
-                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                        </div>
-                        <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
-                        <ListItemText
-                          primary={
-                            <StyledPrimary>Tất cả</StyledPrimary>
-                          }
-                          secondary={
-                            <Secondary>
-                              {members.members.reduce((sum, member) => sum += get(member, 'number_task', 0), 0)} việc
+                      <div>
+                        <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
+                      </div>
+                      <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
+                      <ListItemText
+                        primary={
+                          <StyledPrimary>Tất cả</StyledPrimary>
+                        }
+                        secondary={
+                          <Secondary>
+                            {members.members.reduce((sum, member) => sum += get(member, 'number_task', 0), 0)} việc
                             </Secondary>
-                          }
-                        />
-                      </StyledListItem>
-                      {members.members.map((member, index) => (
-                        <CustomListItem key={get(member, 'id')} member={member} index={index} />
-                      ))}
-                      {provided.placeholder}
-                    </StyledList>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            </Wrapper>
-            <Button onClick={evt => handleOpenModal('MEMBER_SETTING')}>
-              <Icon path={mdiAccountCog} size={1} />
-              <span>Quản lý thành viên</span>
-            </Button>
-          </Container>
-        </LeftSideContainer>
-      )}
+                        }
+                      />
+                    </StyledListItem>
+                    {members.members.map((member, index) => (
+                      <CustomListItem key={get(member, 'id')} member={member} index={index} />
+                    ))}
+                    {provided.placeholder}
+                  </StyledList>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </Wrapper>
+          <Button onClick={evt => handleOpenModal('MEMBER_SETTING')}>
+            <Icon path={mdiAccountCog} size={1} />
+            <span>Quản lý thành viên</span>
+          </Button>
+        </Container>
+      </LeftSideContainer>
     </>
   )
 }

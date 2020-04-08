@@ -1,8 +1,4 @@
-import {
-  UPDATE_STATUS_COPY,
-  UPDATE_STATUS_COPY_SUCCESS,
-  UPDATE_STATUS_COPY_FAIL,
-} from '../../../constants/actions/project/setting/updateStatusCopy';
+import { UPDATE_STATUS_COPY, UPDATE_STATUS_COPY_FAIL, UPDATE_STATUS_COPY_SUCCESS } from '../../../constants/actions/project/setting/updateStatusCopy';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case UPDATE_STATUS_COPY_SUCCESS: 
+    case UPDATE_STATUS_COPY_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case UPDATE_STATUS_COPY_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

@@ -17,11 +17,13 @@ export const DEFAULT_MESSAGE = {
 }
 
 export const SnackbarEmitter = (VARIANT, MESSAGE) => {
-  const customEvent = new CustomEvent(SNACKBAR_EVENT, {
-    detail: {
-      message: MESSAGE,
-      variant: VARIANT,
-    },
-  });
-  window.dispatchEvent(customEvent);
+  if (MESSAGE !== '__NO_SNACKBAR_ERROR__') {
+    const customEvent = new CustomEvent(SNACKBAR_EVENT, {
+      detail: {
+        message: MESSAGE,
+        variant: VARIANT,
+      },
+    });
+    window.dispatchEvent(customEvent);
+  }
 };

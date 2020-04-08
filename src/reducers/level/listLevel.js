@@ -23,6 +23,7 @@ function reducer(state = initialState, action) {
     case LIST_LEVEL_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +31,7 @@ function reducer(state = initialState, action) {
     case LIST_LEVEL_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

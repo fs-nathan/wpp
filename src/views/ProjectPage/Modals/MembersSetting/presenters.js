@@ -82,7 +82,7 @@ const AddButton = ({ className = '', disabled, ...props }) =>
     {...props}
   />;
 
-const CustomMenuItem = ({ className = '', selected, refs, ...props }) =>
+const CustomMenuItem = ({ className = '', selected, ...props }) =>
   <MenuItem
     className={`${selected
       ? 'view_Project_MemberSetting_Modal___menu-item-selected'

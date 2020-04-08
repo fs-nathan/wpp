@@ -1,12 +1,8 @@
-import {
-  CREATE_LEVEL,
-  CREATE_LEVEL_SUCCESS,
-  CREATE_LEVEL_FAIL,
-} from '../../constants/actions/level/createLevel';
+import { CREATE_LEVEL, CREATE_LEVEL_FAIL, CREATE_LEVEL_SUCCESS } from '../../constants/actions/level/createLevel';
 
 export const initialState = {
   data: {
-    level: null,  
+    level: null,
   },
   error: null,
   loading: false,
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case CREATE_LEVEL_SUCCESS: 
+    case CREATE_LEVEL_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case CREATE_LEVEL_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

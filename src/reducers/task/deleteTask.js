@@ -1,8 +1,4 @@
-import {
-  DELETE_TASK,
-  DELETE_TASK_SUCCESS,
-  DELETE_TASK_FAIL,
-} from '../../constants/actions/task/deleteTask';
+import { DELETE_TASK, DELETE_TASK_FAIL, DELETE_TASK_SUCCESS } from '../../constants/actions/task/deleteTask';
 
 export const initialState = {
   data: null,
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case DELETE_TASK_SUCCESS: 
+    case DELETE_TASK_SUCCESS:
       return {
         ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case DELETE_TASK_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

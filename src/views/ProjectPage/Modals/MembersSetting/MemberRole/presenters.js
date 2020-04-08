@@ -1,4 +1,4 @@
-import { Button, Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { find, get } from 'lodash';
 import React from 'react';
 import CustomModal from '../../../../../components/CustomModal';
@@ -56,18 +56,7 @@ function MemberRole({
             <TableCell></TableCell>
             <StyledTableCell width='30%'>Tên vai trò</StyledTableCell>
             <StyledTableCell width='50%'>Mô tả vai trò</StyledTableCell>
-            <TableCell width='20%'>
-              <Button
-                style={{
-                  backgroundColor: bgColor.color,
-                  color: 'white',
-                }}
-                onClick={evt => handleOpenModal('ROLE')}
-                fullWidth
-              >
-                Quản lý
-              </Button>
-            </TableCell>
+            <TableCell width='20%' />
           </TableRow>
         </StyledTableHead>
         <StyledTableBody>
@@ -82,6 +71,7 @@ function MemberRole({
                   }
                   onChange={evt => handleUpdateRoleOfMember(userRole)}
                   value={get(userRole, 'name', '')}
+                  color='primary'
                 />
               </TableCell>
               <StyledTableCell>

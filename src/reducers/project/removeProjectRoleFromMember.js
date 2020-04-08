@@ -1,8 +1,4 @@
-import {
-  REMOVE_PROJECT_ROLE_FROM_MEMBER,
-  REMOVE_PROJECT_ROLE_FROM_MEMBER_SUCCESS,
-  REMOVE_PROJECT_ROLE_FROM_MEMBER_FAIL,
-} from '../../constants/actions/project/removeProjectRoleFromMember';
+import { REMOVE_PROJECT_ROLE_FROM_MEMBER, REMOVE_PROJECT_ROLE_FROM_MEMBER_FAIL, REMOVE_PROJECT_ROLE_FROM_MEMBER_SUCCESS } from '../../constants/actions/project/removeProjectRoleFromMember';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case REMOVE_PROJECT_ROLE_FROM_MEMBER_SUCCESS: 
+    case REMOVE_PROJECT_ROLE_FROM_MEMBER_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case REMOVE_PROJECT_ROLE_FROM_MEMBER_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

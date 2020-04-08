@@ -30,6 +30,7 @@ function reducer(state = initialState, action) {
       remove(newPendings, pending => pending === get(action.options, 'projectId'))
       return {
         ...state,
+        ...initialState,
         error: action.error,
         pendings: newPendings,
       }

@@ -1,12 +1,8 @@
-import {
-	CREATE_GROUP_TASK,
-	CREATE_GROUP_TASK_SUCCESS,
-	CREATE_GROUP_TASK_FAIL,
-} from '../../constants/actions/groupTask/createGroupTask';
+import { CREATE_GROUP_TASK, CREATE_GROUP_TASK_FAIL, CREATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/createGroupTask';
 
 export const initialState = {
 	data: {
-		groupTask: null,  
+		groupTask: null,
 	},
 	error: null,
 	loading: false,
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
 				error: null,
 				loading: true,
 			};
-		case CREATE_GROUP_TASK_SUCCESS: 
+		case CREATE_GROUP_TASK_SUCCESS:
 			return {
-				...state, 
+				...state,
+				...initialState,
 				data: action.data,
 				error: null,
 				loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
 		case CREATE_GROUP_TASK_FAIL:
 			return {
 				...state,
+				...initialState,
 				error: action.error,
 				loading: false,
 			};
