@@ -3,7 +3,7 @@ import { Box, TableCell } from "@material-ui/core";
 import { Formik, FormikContext } from "formik";
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
 import { DialogContent } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
@@ -116,15 +116,12 @@ const AddGroupPermissionForm = ({ children, onSubmit }) => {
   );
 };
 export default () => {
-  const dispath = useDispatch();
   const { setModal } = useContext(GroupPermissionSettingsCotnext);
   const [{ status, data }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
     setModal(null);
   }, [setModal]);
-  useEffect(() => {
-    dispath(settingGroupPermission.actions.loadGroupModules());
-  }, [dispath]);
+
   useEffect(() => {
     if (status === apiCallStatus.success) {
       setModal(

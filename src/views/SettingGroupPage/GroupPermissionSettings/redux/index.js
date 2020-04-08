@@ -3,7 +3,6 @@ import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get, loginlineFunc } from "views/JobPage/utils";
 import {
   listAddFirst,
-  listremove,
   mapPayloadToState,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
 import { createAsyncAction } from "../../TablePart/SettingGroupRight/Home/redux/apiCall/utils";
@@ -14,8 +13,8 @@ export const types = {
   permissionViewGroupSetting: `[${rootPath}]/permissions/get-permission-view-setting-group`,
   groupPermissionListUpdated: `[${rootPath}]/permissions/list-group-permission`,
   createGroupPermission: `[${rootPath}]/permissions/create-group-permission`,
-  updateGroupPermission: `[${rootPath}]/permissions/update-group-permission`,
-  deleteGroupPermission: `[${rootPath}]/permissions/delete-group-permission`,
+  updateGroupPermission: `[${rootPath}]/permissions/update-permissions-of-group-permission`,
+  deleteGroupPermission: `[${rootPath}]/permissions/delete-permission-of-group-permission`,
   permissionListUpdated: `[${rootPath}]/permissions/list`,
   detailGroupPermissionUpdated: `[${rootPath}]/permissions/detail-group-permission`,
   permissionViewUserUpdated: `[${rootPath}]/permissions/get-permission-view-user`,
@@ -108,39 +107,22 @@ export const updateGroupPermission = ({
 }) => {
   return createAsyncAction({
     config: {
-      url: "/permissions/update-group-permission",
-      method: "put",
+      url: "/permissions/update-permissions-of-group-permission",
+      method: "post",
       data: { group_permission_id, name, permissions, type },
     },
-    // success: createAction(updateGroupPermissionList.type, function prepare(
-    //   data
-    // ) {
-    //   return {
-    //     payload: data.id,
-    //     meta: {
-    //       action: listremove(data.id),
-    //     },
-    //   };
-    // }),
+    success: function onSuccess(data) {
+      return loadDetailGroupPermission({ group_permission_id });
+    },
   });
 };
 export const deleteGroupPermission = ({ group_permission_id }) => {
   return createAsyncAction({
     config: {
-      url: "/post-category/delete",
-      method: "delete",
+      url: "/permissions/delete-permission-of-group-permission",
+      method: "post",
       data: { group_permission_id },
     },
-    success: createAction(updateGroupPermissionList.type, function prepare(
-      data
-    ) {
-      return {
-        payload: data.id,
-        meta: {
-          action: listremove(data.id),
-        },
-      };
-    }),
   });
 };
 const updatePermissionList = createAction(
@@ -151,16 +133,27 @@ const updatePermissionList = createAction(
     };
   }
 );
-export const loadPermissionList = ({ module } = {}) => {
+
+// module(1,2,3)
+export const loadPermissionList = ({ module = 1 } = {}) => {
   return createAsyncAction({
     config: {
-      url: `/permissions/list?module=${encodeQueryData({
-        module,
+      url: `/permissions/list?${encodeQueryData({
+        module: "" + module,
       })}`,
     },
     success: loginlineFunc(updatePermissionList),
   });
 };
+
+const updateDetailGroupPermission = createAction(
+  types.detailGroupPermissionUpdated,
+  function prepare(data) {
+    return {
+      payload: data.group_detail,
+    };
+  }
+);
 export const loadDetailGroupPermission = ({ group_permission_id } = {}) => {
   return createAsyncAction({
     config: {
@@ -168,6 +161,7 @@ export const loadDetailGroupPermission = ({ group_permission_id } = {}) => {
         group_permission_id,
       })}`,
     },
+    success: updateDetailGroupPermission,
   });
 };
 export const groupPermissionListSelector = (state) =>
@@ -191,12 +185,19 @@ export const permissionListSelector = (state) =>
     [settingGroupPermission.key, updatePermissionList.type],
     emptyArray
   );
+export const detailGroupPermissionSelector = (state) =>
+  get(
+    state,
+    [settingGroupPermission.key, updateDetailGroupPermission.type],
+    emptyArray
+  );
 export const settingGroupPermission = {
   selectors: {
     permissionListSelector,
     groupPermissionListSelector,
     groupModulesListSelector,
     permissionViewGroupSettingSelector,
+    detailGroupPermissionSelector,
   },
   actions: {
     loadDetailGroupPermission,
@@ -207,6 +208,7 @@ export const settingGroupPermission = {
     deleteGroupPermission,
     loadPermissionViewGroupSetting,
     updateGroupPermissionList,
+    updateGroupPermission,
     updatePermissionList,
   },
   key: "settingGroupPermission",
@@ -216,12 +218,14 @@ export const settingGroupPermission = {
       [updatePermissionViewGroupSetting]: [],
       [updateGroupModules]: [],
       [updatePermissionList]: [],
+      [updateDetailGroupPermission]: [],
     },
     {
       [updatePermissionViewGroupSetting]: mapPayloadToState,
       [updateGroupModules]: mapPayloadToState,
       [updateGroupPermissionList]: mapPayloadToState,
       [updatePermissionList]: mapPayloadToState,
+      [updateDetailGroupPermission]: mapPayloadToState,
     }
   ),
 };

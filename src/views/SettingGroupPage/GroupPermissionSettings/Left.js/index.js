@@ -6,10 +6,9 @@ import LeftSideContainer from "components/LeftSideContainer";
 import LoadingBox from "components/LoadingBox";
 import SearchBox from "components/SearchInput";
 import { Routes } from "constants/routes";
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   createMapPropsFromAttrs,
@@ -24,8 +23,9 @@ import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import { GroupPermissionSettingsCotnext } from "..";
 import AddGroupPermissionModal from "../components/AddGroupPermissionModal";
 import { groupPermissionAttr } from "../contants";
-import { settingGroupPermission } from "../redux";
 function Left({ groupPermissionList, setSelect, setModal }) {
+  const [keyword, setKeyword] = useState("");
+  const handleInputChange = useCallback((e) => setKeyword(e.target.value), []);
   const history = useHistory();
   const { t } = useTranslation();
   return (
@@ -69,8 +69,7 @@ function Left({ groupPermissionList, setSelect, setModal }) {
               <SearchBox
                 fullWidth
                 placeholder="Tìm nhóm dự án"
-                value={""}
-                onChange={loginlineParams}
+                onChange={handleInputChange}
               />
             </Box>
           </Stack>
@@ -78,9 +77,11 @@ function Left({ groupPermissionList, setSelect, setModal }) {
         </Box>
         <Box flex="1">
           <Scrollbars>
-            <Box paddingRight="20px">
+            <Box paddingRight="10px">
               <DraggableList
-                list={groupPermissionList}
+                list={groupPermissionList.filter((item) =>
+                  item.name.includes(keyword)
+                )}
                 getId={(item) => item.id}
                 renderListWrapper={(children) => (
                   <StyledList>{children}</StyledList>
@@ -88,10 +89,12 @@ function Left({ groupPermissionList, setSelect, setModal }) {
                 onDragEnd={loginlineParams}
               >
                 {(item, bindDraggable, bindDragHandle) => {
-                  const [id, name, permissions] = createMapPropsFromAttrs([
-                    groupPermissionAttr.id,
+                  const [
+                    name,
+                    total_of_member_assigned,
+                  ] = createMapPropsFromAttrs([
                     groupPermissionAttr.name,
-                    groupPermissionAttr.permissions,
+                    groupPermissionAttr.total_of_member_assigned,
                   ])(item);
                   return bindDraggable(
                     <div>
@@ -119,7 +122,7 @@ function Left({ groupPermissionList, setSelect, setModal }) {
                           subTitle={template(
                             t("Đã gán <%= number %> thành viên")
                           )({
-                            number: 10,
+                            number: total_of_member_assigned,
                           })}
                         ></ListItemLayout>
                       </StyledListItem>
@@ -136,14 +139,8 @@ function Left({ groupPermissionList, setSelect, setModal }) {
   );
 }
 export default () => {
-  const dispatch = useDispatch();
-  const { setSelect, setModal } = useContext(GroupPermissionSettingsCotnext);
-  useEffect(() => {
-    dispatch(settingGroupPermission.actions.loadGroupPermissionList());
-  }, [dispatch]);
-
-  const groupPermissionList = useSelector(
-    settingGroupPermission.selectors.groupPermissionListSelector
+  const { setSelect, setModal, groupPermissionList } = useContext(
+    GroupPermissionSettingsCotnext
   );
   return (
     <Left

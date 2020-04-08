@@ -9,13 +9,14 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
 import { DialogContent } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
 import VerticleList from "views/JobPage/components/VerticleList";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { get, loginlineParams } from "views/JobPage/utils";
+import { useMultipleSelect } from "views/JobPage/hooks/useMultipleSelect";
+import { get } from "views/JobPage/utils";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { CustomTableBodyCell } from "./AddGroupPermissionModal";
 import { RoundSearchBox } from "./SearchBox";
@@ -23,10 +24,21 @@ export const SetPermissionModal = ({
   permissionList = emptyArray,
   loading,
   onClose,
+  name,
+  onChange,
   value = emptyArray,
   onSubmit,
 }) => {
   const [keyword, setKeyword] = useState("");
+  const [select, setSelect] = useMultipleSelect({}, true, true);
+  useEffect(() => {
+    onChange({
+      target: {
+        name,
+        value: Object.keys(select).filter((key) => select[key]),
+      },
+    });
+  }, [name, onChange, select]);
   const { t } = useTranslation();
   const onInputChange = useCallback(
     (e) => {
@@ -60,10 +72,10 @@ export const SetPermissionModal = ({
               <TableHead>
                 <TableRow>
                   <TableCell style={{ padding: "0px" }} width="20px">
-                    <Checkbox
+                    {/* <Checkbox
                       onChange={(e) => loginlineParams(e.target.value)}
                       color="primary"
-                    />
+                    /> */}
                   </TableCell>
                   <TableCell width="30%" align="left">
                     {t("Tên quyền")}
@@ -72,14 +84,14 @@ export const SetPermissionModal = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {permissionList.map((group) => (
-                  <>
+                {permissionList.map((group, i) => (
+                  <React.Fragment key={i}>
                     <TableRow>
                       <CustomTableBodyCell
                         style={{ padding: "0px" }}
                         align="left"
                       >
-                        <Checkbox color="primary" />
+                        {/* <Checkbox color="primary" /> */}
                       </CustomTableBodyCell>
                       <CustomTableBodyCell
                         colSpan={12}
@@ -103,8 +115,8 @@ export const SetPermissionModal = ({
                             align="left"
                           >
                             <Checkbox
-                              checked={value.includes(permission)}
-                              onChange={loginlineParams}
+                              checked={select[permission]}
+                              onChange={() => setSelect(permission)}
                               color="primary"
                             />
                           </CustomTableBodyCell>
@@ -127,10 +139,11 @@ export const SetPermissionModal = ({
                         <Divider />
                       </CustomTableBodyCell>
                     </TableRow>
-                  </>
+                  </React.Fragment>
                 ))}
               </TableBody>
             </Table>
+
             <Space height={"50px"}></Space>
           </VerticleList>
         </Box>

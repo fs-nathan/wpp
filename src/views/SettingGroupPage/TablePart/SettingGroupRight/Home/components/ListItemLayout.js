@@ -1,4 +1,4 @@
-import { Avatar, Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Stack } from "./Stack";
@@ -19,13 +19,9 @@ function ListItemLayout({ title, left, right, avatar, actions, subTitle }) {
       alignItems="center"
       container
       wrap="nowrap"
+      spacing={1}
     >
       {left && <Grid item>{left}</Grid>}
-      {avatar && (
-        <Grid item>
-          <Avatar>W</Avatar>
-        </Grid>
-      )}
       <Grid item container alignItems="center" xs zeroMinWidth>
         <Stack space={"2px"}>
           <Title>{title}</Title>

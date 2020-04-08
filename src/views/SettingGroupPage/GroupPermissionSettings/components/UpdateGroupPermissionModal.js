@@ -2,42 +2,18 @@ import { Formik, FormikConsumer } from "formik";
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { emptyObject } from "views/JobPage/contants/defaultValue";
 import { get } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { GroupPermissionSettingsCotnext } from "..";
+import { groupPermissionAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
 import { SetPermissionModal } from "./SetPermissionModal";
 
 const addGroupPermissionFormInitialValues = { permissions: [] };
 
-const createValidate = (schema) => (values = {}, mapError = {}) => {
-  const { error } = schema.validate(values);
-  return error
-    ? error.details.reduce((result, error) => {
-        result[error.context.key] = mapError[error.type] || error.type;
-        return result;
-      }, {})
-    : emptyObject;
-};
-// const validateUpdateGroupPermissionForm = createValidate(
-//   Joi.object({
-//     name: Joi.string().required(),
-//     logo: Joi.any(),
-//     p: Joi.any(),
-//   })
-// );
 const UpdateGroupPermissionForm = ({ initialValues, children, onSubmit }) => {
-  // error.details[0].type
   const { t } = useTranslation();
-  // const validateMemo = useMemo(
-  //   () => (values = {}) => {
-  //     const mapError = { "string.empty": t("required") };
-  //     return validateUpdateGroupPermissionForm(values, mapError);
-  //   },
-  //   [t]
-  // );
   return (
     <Formik
       initialValues={initialValues || addGroupPermissionFormInitialValues}
@@ -56,14 +32,17 @@ export default ({ item }) => {
   }, [setModal]);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(settingGroupPermission.actions.loadPermissionViewGroupSetting());
-  }, [dispatch]);
-  useEffect(() => {
     if (status === apiCallStatus.success) {
       onClose();
     }
   }, [onClose, status]);
-  const handleSubmit = (values) => setAsyncAction(null);
+  const handleSubmit = (values) =>
+    setAsyncAction(
+      settingGroupPermission.actions.updateGroupPermission({
+        group_permission_id: get(item, groupPermissionAttr.id),
+        ...values,
+      })
+    );
   useEffect(() => {
     item &&
       dispatch(
@@ -88,9 +67,11 @@ export default ({ item }) => {
       onSubmit={handleSubmit}
     >
       <FormikConsumer>
-        {({ values, handleSubmit }) => {
+        {({ values, handleSubmit, handleChange }) => {
           return (
             <SetPermissionModal
+              name="permissions"
+              onChange={handleChange}
               value={values.permissions}
               onSubmit={handleSubmit}
               permissionList={permissionList}
