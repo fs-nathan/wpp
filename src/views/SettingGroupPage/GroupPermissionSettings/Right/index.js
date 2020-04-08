@@ -154,6 +154,7 @@ const ColumnRight = () => {
   const {
     permissionModules = emptyArray,
     members_assigned = emptyArray,
+    module: groupModule,
   } = useContext(GroupPermissionSettingsCotnext);
   return (
     <ColumnLayout
@@ -183,7 +184,7 @@ const ColumnRight = () => {
                   key={value}
                   control={
                     <Checkbox
-                      checked={"" + module === "" + value}
+                      checked={"" + groupModule === "" + value}
                       color="primary"
                     />
                   }
