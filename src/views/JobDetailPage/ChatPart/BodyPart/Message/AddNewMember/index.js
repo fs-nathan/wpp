@@ -46,11 +46,13 @@ const AddNewMember = ({
         }
       </div>
       <div className="UpdateTaskNameMessage--title" >
-        Tạo công việc con
+        Thêm thành viên
       </div>
       <div className="UpdateTaskNameMessage--content" >
-        <Avatar className="TextMessage--avatarReply" src={member_avatar} />
-        {member_name}
+        <div className="AddNewMember--content" >
+          <Avatar className="AddNewMember--avatar" src={member_avatar} />
+          {member_name}
+        </div>
       </div>
       {!isReply &&
         <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >

@@ -38,8 +38,10 @@ const RemoveMember = ({
         Đã xoá thành viên lúc {time_create}
       </div>
       <div className="DeleteSubTask--content" >
-        <Avatar className="TextMessage--avatarReply" src={member_avatar} />
-        {member_name}
+        <div className="RemoveMember--content" >
+          <Avatar className="RemoveMember--avatar" src={member_avatar} />
+          {member_name}
+        </div>
       </div>
 
     </div>
