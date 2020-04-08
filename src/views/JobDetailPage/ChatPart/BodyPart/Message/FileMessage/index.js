@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { mdiDownload } from '@mdi/js';
+import { mdiDownload, mdiThumbUpOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
@@ -14,11 +14,13 @@ const FileMessage = ({
   files = [],
   handleReplyChat,
   handleForwardChat,
+  handleDetailEmotion,
   id,
   user_create_name,
   user_create_avatar,
   user_create_position,
   user_create_roles = [],
+  data_emotion = [],
   content,
   time_create,
   chat_parent,
@@ -103,6 +105,14 @@ const FileMessage = ({
             <span className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
               {type} - {file && file.size}
             </span>
+          </div>
+        }
+        {data_emotion.length > 0 &&
+          <div className={clsx("TextMessage--emo", { "TextMessage--emo__self": is_me })} >
+            {data_emotion.map(emo => <img className="TextMessage--emoImage" src={emo.icon} alt="emo"></img>)}
+            <button className="TextMessage--emoButton" onClick={handleDetailEmotion} >
+              <Icon className="TextMessage--emoIcon" path={mdiThumbUpOutline} />
+            </button>
           </div>
         }
       </div>

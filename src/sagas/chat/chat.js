@@ -140,6 +140,7 @@ export function* chatEmotion(payload) {
     const { task_id, chat_id, emotion } = payload;
     const res = yield call(apiService.post, "/task/chat-create-emotion", { task_id, chat_id, emotion });
     yield put(actions.chatEmotionSuccess(res.data));
+    yield put(actions.loadChat(task_id));
   } catch (error) {
     yield put(actions.chatEmotionFail(error));
   }
@@ -147,7 +148,7 @@ export function* chatEmotion(payload) {
 export function* getEmotionsReactMember(payload) {
   try {
     const { task_id, chat_id, emotion } = payload;
-    const res = yield call(apiService.get, "/task/get-member-react-emotion-one-chat", { task_id, chat_id, emotion });
+    const res = yield call(apiService.get, "/task/get-member-react-emotion-one-chat", { params: { task_id, chat_id, emotion } });
     yield put(actions.getEmotionsReactMemberSuccess(res.data));
   } catch (error) {
     yield put(actions.getEmotionsReactMemberFail(error));

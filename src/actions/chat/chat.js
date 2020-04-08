@@ -99,11 +99,12 @@ export function chatImageFail(error) {
   };
 }
 
-export function chatFile(task_id, data) {
+export function chatFile(task_id, data, onUploading) {
   return {
     type: actionTypes.CHAT_FILE,
     task_id,
     data,
+    onUploading,
   };
 }
 

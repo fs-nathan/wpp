@@ -1,0 +1,11 @@
+.DetailEmotionModal {
+  .MuiDialogActions-root {
+    padding: 0;
+  }
+  .MuiDialogContent-root {
+    padding: 0px;
+  }
+  & > div:nth-child(3) > div {
+    width: 40vw;
+  }
+}

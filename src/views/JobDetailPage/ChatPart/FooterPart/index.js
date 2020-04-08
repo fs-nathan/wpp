@@ -3,7 +3,6 @@ import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip }
 import Icon from '@mdi/react';
 import { appendChat, chatImage, chatSticker, clearTags, createChatText, loadChat, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
-import IconLike from 'assets/like.svg';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -156,7 +155,7 @@ const FooterPart = ({
             <Icon path={mdiAlarmPlus} size={1.2} />
           </IconButton>
         </div>
-        <div>
+        {/* <div>
           <IconButton className="icon-btn">
             <img
               src={IconLike}
@@ -164,7 +163,7 @@ const FooterPart = ({
               style={{ width: 25, height: 25 }}
             />
           </IconButton>
-        </div>
+        </div> */}
       </div>
       <Message {...parentMessage} isReply></Message>
       <div className="wrap-input-message" id="input_message">

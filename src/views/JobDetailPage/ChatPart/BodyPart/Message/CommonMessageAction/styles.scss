@@ -17,3 +17,17 @@
     width: 20px;
   }
 }
+
+.emoMenu {
+  &--list {
+    display: flex;
+  }
+  &--menuItem {
+    padding: 0;
+    margin-left: 5px;
+  }
+  &--image {
+    width: 20px;
+    height: 20px;
+  }
+}

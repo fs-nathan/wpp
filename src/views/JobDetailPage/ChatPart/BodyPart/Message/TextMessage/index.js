@@ -1,4 +1,6 @@
 import { Avatar } from '@material-ui/core';
+import { mdiThumbUpOutline } from '@mdi/js';
+import Icon from '@mdi/react';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
@@ -23,6 +25,7 @@ function getChatParent(chat_parent) {
 const TextMessage = ({
   handleReplyChat,
   handleForwardChat,
+  handleDetailEmotion,
   id,
   user_create_name,
   user_create_avatar,
@@ -35,6 +38,7 @@ const TextMessage = ({
   is_me,
   chatPosition = "top",
   tags = [],
+  data_emotion = [],
 }) => {
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
 
@@ -88,6 +92,14 @@ const TextMessage = ({
             </div>
           }
         </div>
+        {data_emotion.length > 0 &&
+          <div className={clsx("TextMessage--emo", { "TextMessage--emo__self": is_me })} >
+            {data_emotion.map(emo => <img className="TextMessage--emoImage" src={emo.icon} alt="emo"></img>)}
+            <button className="TextMessage--emoButton" onClick={handleDetailEmotion} >
+              <Icon className="TextMessage--emoIcon" path={mdiThumbUpOutline} />
+            </button>
+          </div>
+        }
       </div>
       {!isReply && !is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />

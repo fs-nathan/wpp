@@ -43,7 +43,7 @@ const ChatSticker = ({
           </div>
         }
         <div className="ImageMessage--imagesContainer" >
-          <div className={clsx("ImageMessage--wrap", `ImageMessage--wrap__total1-1`)} >
+          <div className={clsx("ImageMessage--wrap")} >
             <img className="ImageMessage--img" src={sticker} alt="hd" />
           </div>
         </div>

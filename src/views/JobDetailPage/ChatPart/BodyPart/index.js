@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { loadChat } from 'actions/chat/chat';
+import { getEmotionsReactMember, loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import queryString from 'query-string';
@@ -7,6 +7,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
+import DetailEmotionModal from './DetailEmotionModal';
 import ForwardMessageDialog from './ForwardMessageDialog';
 import Message from './Message';
 import './styles.scss';
@@ -23,6 +24,7 @@ const BodyPart = props => {
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [isOpenForward, setOpenForward] = React.useState(false);
   const [forwardChat, setForwardChat] = React.useState(false);
+  const [openDetailEmotionModal, setOpenDetailEmotionModal] = React.useState(false);
   const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
     return !searchChatKey
       || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
@@ -79,6 +81,14 @@ const BodyPart = props => {
     }
   }
 
+  function handleDetailEmotion(data) {
+    return () => {
+      console.log('handleForwardChat', data);
+      setOpenDetailEmotionModal(true);
+      dispatch(getEmotionsReactMember(taskId, data.id, 0));
+    }
+  }
+
   return (
     <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} ref={chatRef} >
       <div className="wrap-time">
@@ -129,10 +139,12 @@ const BodyPart = props => {
         calculatedChats.map((el, id) => <Message {...el}
           key={id}
           handleForwardChat={handleForwardChat(el)}
+          handleDetailEmotion={handleDetailEmotion(el)}
           handleReplyChat={handleReplyChat(el)} />)
       }
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
+      <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} />
     </div>
   );
 };
