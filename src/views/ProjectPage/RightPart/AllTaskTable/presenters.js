@@ -1,5 +1,4 @@
-import { IconButton, Menu, MenuItem } from '@material-ui/core';
-import { mdiAccount, mdiAccountCircle, mdiCalendar, mdiDotsVertical, mdiDownload, mdiScatterPlot } from '@mdi/js';
+import { mdiAccount, mdiAccountCircle, mdiCalendar, mdiDownload, mdiScatterPlot } from '@mdi/js';
 import Icon from '@mdi/react';
 import { find, flattenDeep, get, isNil, join } from 'lodash';
 import React from 'react';
@@ -10,7 +9,7 @@ import { DownloadPopover, TimeRangePopover, useTimes } from '../../../../compone
 import CustomTable from '../../../../components/CustomTable';
 import LoadingBox from '../../../../components/LoadingBox';
 import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
-import { Container, DateBox, LinkSpan, SettingContainer, StateBox } from '../../../../components/TableComponents';
+import { Container, DateBox, LinkSpan, StateBox } from '../../../../components/TableComponents';
 import './style.scss';
 
 const SubTitle = ({ className = '', ...props }) =>
@@ -53,30 +52,6 @@ function displayDate(time, date, type) {
   );
 }
 
-const SettingButton = ({
-  task,
-  setCurrentSettingTask, setCurrentSettingAnchorEl,
-}) => {
-
-  function handleClick(evt) {
-    setCurrentSettingAnchorEl(evt.currentTarget);
-    setCurrentSettingTask(task);
-  }
-
-  return (
-    <SettingContainer onClick={evt => evt.stopPropagation()}>
-      <IconButton
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        size="small"
-      >
-        <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
-      </IconButton>
-    </SettingContainer>
-  );
-};
-
 function AllTaskTable({
   expand, handleExpand,
   showHidePendings,
@@ -94,9 +69,6 @@ function AllTaskTable({
 
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
-
-  const [currentSettingAnchorEl, setCurrentSettingAnchorEl] = React.useState(null);
-  const [currentSettingTask, setCurrentSettingTask] = React.useState(null);
   const times = useTimes();
 
   return (
@@ -244,17 +216,6 @@ function AllTaskTable({
             />,
             align: 'center',
             width: '10%',
-          }, {
-            label: () => <IconButton size="small" disabled><Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0)" /></IconButton>,
-            field: row => (
-              <SettingButton
-                task={row}
-                setCurrentSettingAnchorEl={setCurrentSettingAnchorEl}
-                setCurrentSettingTask={setCurrentSettingTask}
-              />
-            ),
-            align: 'center',
-            width: '2%',
           }]}
           data={tasks.tasks}
         />
@@ -296,25 +257,6 @@ function AllTaskTable({
             handleTimeRange(startDate, endDate)
           }}
         />
-        <Menu
-          id="simple-menu"
-          anchorEl={currentSettingAnchorEl}
-          keepMounted
-          open={Boolean(currentSettingAnchorEl)}
-          onClose={evt => setCurrentSettingAnchorEl(null)}
-          transformOrigin={{
-            vertical: -30,
-            horizontal: 'right'
-          }}
-        >
-          <MenuItem onClick={evt => {
-            setCurrentSettingAnchorEl(null);
-            handleOpenModal('ALERT', {
-              content: "Bạn chắc chắn muốn xóa công việc?",
-              onConfirm: () => handleDeleteTask(currentSettingTask),
-            });
-          }}>Xóa</MenuItem>
-        </Menu>
       </React.Fragment>
     </Container>
   )
