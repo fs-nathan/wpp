@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { getEmotionsReactMember, loadChat } from 'actions/chat/chat';
+import { loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import queryString from 'query-string';
@@ -23,7 +23,8 @@ const BodyPart = props => {
 
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [isOpenForward, setOpenForward] = React.useState(false);
-  const [forwardChat, setForwardChat] = React.useState(false);
+  const [forwardChat, setForwardChat] = React.useState(null);
+  const [chatEmotion, setChatEmotion] = React.useState([]);
   const [openDetailEmotionModal, setOpenDetailEmotionModal] = React.useState(false);
   const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
     return !searchChatKey
@@ -83,9 +84,9 @@ const BodyPart = props => {
 
   function handleDetailEmotion(data) {
     return () => {
-      console.log('handleForwardChat', data);
       setOpenDetailEmotionModal(true);
-      dispatch(getEmotionsReactMember(taskId, data.id, 0));
+      // dispatch(getEmotionsReactMember(taskId, data.id, 0));
+      setChatEmotion(data.data_emotion)
     }
   }
 
@@ -144,7 +145,7 @@ const BodyPart = props => {
       }
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
-      <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} />
+      <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />
     </div>
   );
 };

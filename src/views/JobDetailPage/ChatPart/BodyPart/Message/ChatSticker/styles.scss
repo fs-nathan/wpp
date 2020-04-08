@@ -1,4 +1,7 @@
 .ChatSticker {
-  width: 75%;
-  max-width: 130px;
+  display: flex;
+  .ImageMessage--img {
+    width: 130px;
+    height: auto;
+  }
 }

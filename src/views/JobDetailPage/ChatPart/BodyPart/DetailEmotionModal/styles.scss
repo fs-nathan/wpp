@@ -5,7 +5,33 @@
   .MuiDialogContent-root {
     padding: 0px;
   }
+  .MuiTab-wrapper {
+    flex-direction: row;
+    display: initial;
+  }
+  .MuiAppBar-colorPrimary {
+    background-color: #ffffff;
+  }
+  .MuiTabs-indicator {
+    background-color: blue;
+  }
   & > div:nth-child(3) > div {
-    width: 40vw;
+    width: 600px;
+    min-width: 600px;
+  }
+  &--member {
+    display: flex;
+    position: relative;
+    line-height: 30px;
+    padding: 6px 10px;
+  }
+  &--avatar {
+    margin-right: 6px;
+    width: 30px;
+    height: 30px;
+  }
+  &--icon {
+    position: absolute;
+    right: 10px;
   }
 }

@@ -20,7 +20,14 @@ function getChatParent(chat_parent) {
   return <TextMessage {...chat_parent} isReply></TextMessage>
 }
 
-
+function getTotalReact(data_emotion) {
+  let total = 0;
+  for (let index = 0; index < data_emotion.length; index++) {
+    const { members } = data_emotion[index];
+    total += members.length
+  }
+  return total;
+}
 
 const TextMessage = ({
   handleReplyChat,
@@ -94,7 +101,10 @@ const TextMessage = ({
         </div>
         {data_emotion.length > 0 &&
           <div className={clsx("TextMessage--emo", { "TextMessage--emo__self": is_me })} >
-            {data_emotion.map(emo => <img className="TextMessage--emoImage" src={emo.icon} alt="emo"></img>)}
+            <div className="TextMessage--emoReact" onClick={handleDetailEmotion} >
+              {data_emotion.map(emo => <img className="TextMessage--emoImage" src={emo.icon} alt="emo"></img>)}
+              {getTotalReact(data_emotion)}
+            </div>
             <button className="TextMessage--emoButton" onClick={handleDetailEmotion} >
               <Icon className="TextMessage--emoIcon" path={mdiThumbUpOutline} />
             </button>

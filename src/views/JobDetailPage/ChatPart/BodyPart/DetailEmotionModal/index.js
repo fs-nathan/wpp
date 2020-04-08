@@ -1,37 +1,26 @@
-import { AppBar, Tab, Tabs } from '@material-ui/core';
-import { getListMyDocument } from 'actions/documents';
+import { AppBar, Avatar, Tab, Tabs } from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './styles.scss';
 
-const DetailEmotionModal = ({ isOpen, setOpen }) => {
-  const [listData, setListData] = useState([]);
-  const [value, setValue] = React.useState(0);
+const DetailEmotionModal = ({ isOpen, setOpen, data_emotion = [] }) => {
+  const [tab, setTab] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChange = (event, newTab) => {
+    // console.log('newTab', newTab)
+    setTab(newTab);
   };
 
-  const fetchListMyDocument = async params => {
-    try {
-      const { data } = await getListMyDocument(params);
-      let transformData = [];
-      if (data.folders.length > 0) {
-        transformData = data.folders.map(item => ({ ...item, type: 'folder' }));
-      }
-      if (data.documents.length > 0) {
-        transformData = transformData.concat(data.documents);
-      }
-      setListData(transformData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const all = [];
+  for (let index = 0; index < data_emotion.length; index++) {
+    const data = data_emotion[index];
+    const memberWithIcon = data.members.map(member => ({ ...member, icon: data.icon }))
+    all.push(...memberWithIcon)
+  }
 
-  useEffect(() => {
-    fetchListMyDocument();
-  }, []);
+  const { members = [], icon } = data_emotion[tab - 1] || {};
 
+  const interactedMembers = (tab === 0) ? all : members;
 
   return (
     <CustomModal
@@ -46,38 +35,26 @@ const DetailEmotionModal = ({ isOpen, setOpen }) => {
       <div className="DetailEmotionModal--container">
         <AppBar position="static">
           <Tabs
-            value={value}
+            value={tab}
             onChange={handleChange}
             variant="scrollable"
             scrollButtons="off"
             aria-label="scrollable prevent tabs example"
           >
-            <Tab icon={<img alt="icon" />} aria-label="phone" />
-            <Tab icon={<img alt="icon" />} aria-label="favorite" />
-
+            <Tab label={`Tất cả (${all.length})`} />
+            {data_emotion.map(({ icon, value, members = [] }) =>
+              <Tab icon={<img alt="icon" src={icon} key={value} />} label={` (${members.length})`} />
+            )}
           </Tabs>
         </AppBar>
-        <div value={value} index={0}>
-          Item One
-      </div>
-        <div value={value} index={1}>
-          Item Two
-      </div>
-        <div value={value} index={2}>
-          Item Three
-      </div>
-        <div value={value} index={3}>
-          Item Four
-      </div>
-        <div value={value} index={4}>
-          Item Five
-      </div>
-        <div value={value} index={5}>
-          Item Six
-      </div>
-        <div value={value} index={6}>
-          Item Seven
-      </div>
+        {interactedMembers.map(({ id, avatar, name, icon: src }) =>
+          <div key={id} className="DetailEmotionModal--member">
+            <Avatar className="DetailEmotionModal--avatar" src={avatar} />
+            {name}
+            <img className="DetailEmotionModal--icon" src={src || icon} alt="icon" />
+          </div>
+        )}
+
       </div>
     </CustomModal >
   );

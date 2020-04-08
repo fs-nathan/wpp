@@ -18,7 +18,7 @@ const ChatSticker = ({
 }) => {
 
   return (
-    <div className={clsx("ChatSticker", `ImageMessage__${chatPosition}`)} >
+    <div className={clsx("ChatSticker", `TextMessage__${chatPosition}`)} >
       {!isReply && !is_me &&
         <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
       }
