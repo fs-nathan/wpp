@@ -93,7 +93,7 @@ function StateBadge({ user }) {
 }
 
 function DepartmentUsersTable({
-  room, hasRequirement, publicPrivatePendings, route,
+  room, hasRequirement, publicPrivatePendings, route, canModify,
   expand, handleExpand,
   handleSortUser,
   handleChangeState,
@@ -135,7 +135,7 @@ function DepartmentUsersTable({
           subTitle: t('DMH.VIEW.DP.RIGHT.UT.NUM_MEMBER_DUT', {
             total: get(room.room, 'number_member', 0),
           }),
-          subActions: [{
+          subActions: canModify ? [{
             label: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
             icon: () => hasRequirement
               ? <NewUserBadge badgeContent={'N'}>
@@ -147,16 +147,16 @@ function DepartmentUsersTable({
               anchor: 'left'
             }),
             noExpand: true,
-          }],
-          mainAction: {
+          }] : [],
+          mainAction: canModify ? {
             label: t('DMH.VIEW.DP.RIGHT.UT.ADD_ACC'),
             onClick: () => handleOpenModal('CREATE_ACCOUNT'),
-          },
+          } : null,
           expand: {
             bool: expand,
             toggleExpand: () => handleExpand(!expand),
           },
-          moreMenu: [{
+          moreMenu: canModify ? [{
             label: t('DMH.VIEW.DP.MODAL.TITLE.TITLE'),
             onClick: () => handleOpenModal('TITLE'),
           }, {
@@ -174,7 +174,7 @@ function DepartmentUsersTable({
           }, {
             label: t('DMH.VIEW.DP.RIGHT.UT.TABLE_SETTING'),
             onClick: () => handleOpenModal('TABLE_SETTING'),
-          }],
+          }] : null,
           grouped: {
             bool: false,
           },
@@ -182,7 +182,7 @@ function DepartmentUsersTable({
             id: 'id',
             onClick: (user) => null,
           },
-          draggable: {
+          draggable: canModify ? {
             bool: true,
             onDragEnd: result => {
               const { source, destination, draggableId } = result;
@@ -193,7 +193,9 @@ function DepartmentUsersTable({
               ) return;
               handleSortUser(draggableId, departmentId, destination.index);
             },
-          },
+          } : {
+              bool: false
+            },
           loading: {
             bool: room.loading,
             component: () => <LoadingBox />,
@@ -246,7 +248,7 @@ function DepartmentUsersTable({
           field: (user) => <StateBadge user={user} />,
           align: 'center',
           width: '10%',
-        }, {
+        }, canModify ? {
           label: () => <IconButton disabled>
             <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0)'} />
           </IconButton>,
@@ -260,7 +262,7 @@ function DepartmentUsersTable({
           />,
           align: 'center',
           width: '5%',
-        }]}
+        } : undefined]}
         data={room.room.users}
       />
       <Menu

@@ -8,12 +8,12 @@ import { CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP } from '.
 import { Context as ProjectGroupContext } from '../../index';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
 import MembersDetail from '../../Modals/MembersDetail';
-import { routeSelector } from '../../selectors';
+import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import ProjectGroupDetailPresenter from './presenters';
 import { groupSelector } from './selectors';
 
 function ProjectGroupDetail({
-  group, route,
+  group, route, viewPermissions,
   doDeleteProjectGroup,
 }) {
 
@@ -48,18 +48,24 @@ function ProjectGroupDetail({
   function doOpenModal(type, props) {
     switch (type) {
       case 'UPDATE': {
-        setOpenCreate(true);
-        setCreateProps(props);
+        if (get(viewPermissions.permissions, 'manage_project_group', false)) {
+          setOpenCreate(true);
+          setCreateProps(props);
+        }
         return;
       }
       case 'MEMBER': {
-        setOpenMember(true);
-        setMemberProps(props);
+        if (get(viewPermissions.permissions, 'manage_project_group', false)) {
+          setOpenMember(true);
+          setMemberProps(props);
+        }
         return;
       }
       case 'ALERT': {
-        setOpenAlert(true);
-        setAlertProps(props);
+        if (get(viewPermissions.permissions, 'manage_project_group', false)) {
+          setOpenAlert(true);
+          setAlertProps(props);
+        }
         return;
       }
       default: return;
@@ -69,7 +75,7 @@ function ProjectGroupDetail({
   return (
     <>
       <ProjectGroupDetailPresenter
-        group={group} route={route}
+        group={group} route={route} canModify={get(viewPermissions.permissions, 'manage_project_group', false)}
         handleDeleteProjectGroup={projectGroup =>
           doDeleteProjectGroup({ projectGroupId: get(projectGroup, 'id') })
         }
@@ -98,6 +104,7 @@ const mapStateToProps = state => {
   return {
     group: groupSelector(state),
     route: routeSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   };
 };
 

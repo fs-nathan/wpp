@@ -79,7 +79,7 @@ const NameSpan = ({ className = '', ...props }) =>
   />
 
 function UserInfo({
-  user, isUpload,
+  user, isUpload, canModify,
   handleUploadDocumentsUser, handleOpenModal,
 }) {
 
@@ -100,14 +100,16 @@ function UserInfo({
                 <NameSpan>{get(user.user, 'name', '')}</NameSpan>
                 <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.DATE_JOIN", { date: get(user.user, 'date_join', '') })}</ColorTypo>
               </div>
-              <PillButton
-                size='medium'
-                onClick={() => handleOpenModal('UPDATE', {
-                  updatedUser: user.user,
-                })}
-              >
-                {t("DMH.VIEW.MP.RIGHT.INFO.EDIT")}
-              </PillButton>
+              {canModify && (
+                <PillButton
+                  size='medium'
+                  onClick={() => handleOpenModal('UPDATE', {
+                    updatedUser: user.user,
+                  })}
+                >
+                  {t("DMH.VIEW.MP.RIGHT.INFO.EDIT")}
+                </PillButton>
+              )}
             </MainHeader>
             <Scrollbars
               autoHide
@@ -147,20 +149,23 @@ function UserInfo({
                 <CustomAvatar alt='avatar' />
                 <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.DOC.TITLE")}</ColorTypo>
               </StyledButton>
-              <input
-                id="raised-button-file"
-                type="file"
-                onChange={evt => handleUploadDocumentsUser(evt.target.files[0])}
-              />
-              {isUpload
-                ? (<ColorButton variant='text' variantColor='blue' size='small'>
-                  <LoadingBox size={16} />
-                </ColorButton>)
-                : (
-                  <ColorButton variant='text' variantColor='blue' size='small' component='label' htmlFor='raised-button-file'>
-                    {t("DMH.VIEW.MP.RIGHT.INFO.DOC.BTN")}
-                  </ColorButton>)
-              }
+              {canModify && (
+                <>
+                  <input
+                    id="raised-button-file"
+                    type="file"
+                    onChange={evt => handleUploadDocumentsUser(evt.target.files[0])}
+                  />
+                  {isUpload
+                    ? (<ColorButton variant='text' variantColor='blue' size='small'>
+                      <LoadingBox size={16} />
+                    </ColorButton>)
+                    : (
+                      <ColorButton variant='text' variantColor='blue' size='small' component='label' htmlFor='raised-button-file'>
+                        {t("DMH.VIEW.MP.RIGHT.INFO.DOC.BTN")}
+                      </ColorButton>)}
+                </>
+              )}
             </MainFooter>
           </MainBox>
           <SideBox>

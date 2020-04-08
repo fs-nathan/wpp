@@ -90,6 +90,7 @@ import { CREATE_USER_ROLE } from "../constants/actions/userRole/createUserRole";
 import { DELETE_USER_ROLE } from "../constants/actions/userRole/deleteUserRole";
 import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
 import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
+import { GET_PERMISSION_VIEW_PROJECTS, GET_PERMISSION_VIEW_USERS } from "../constants/actions/viewPermissions";
 // ==================================
 import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
@@ -181,6 +182,7 @@ import { createUserRole } from "./userRole/createUserRole";
 import { deleteUserRole } from "./userRole/deleteUserRole";
 import { listUserRole } from "./userRole/listUserRole";
 import { updateUserRole } from "./userRole/updateUserRole";
+import { getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
 
 function* rootSaga() {
   // Hoang - begin
@@ -277,6 +279,14 @@ function* rootSaga() {
   yield takeEvery(
     INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
     inviteOtherPeopleCreateAccount
+  );
+  yield takeEvery(
+    GET_PERMISSION_VIEW_PROJECTS,
+    getPermissionViewProjects
+  );
+  yield takeEvery(
+    GET_PERMISSION_VIEW_USERS,
+    getPermissionViewUsers
   );
 
   // Hoang - end

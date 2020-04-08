@@ -27,7 +27,7 @@ const StyledPrimary = ({ className = '', ...props }) =>
   />;
 
 function ProjectList({
-  groups, route,
+  groups, route, canModify,
   searchPatern, setSearchPatern,
   handleSortProjectGroup, handleOpenModal,
 }) {
@@ -48,11 +48,11 @@ function ProjectList({
     <>
       <LeftSideContainer
         title={t("DMH.VIEW.PGP.LEFT.LIST.TITLE")}
-        rightAction={{
+        rightAction={canModify ? {
           iconPath: mdiPlus,
           onClick: () => handleOpenModal('CREATE'),
           tooltip: t("DMH.VIEW.PGP.LEFT.LIST.ADD"),
-        }}
+        } : null}
         loading={{
           bool: groups.loading,
           component: () => <LoadingBox />,
@@ -93,7 +93,7 @@ function ProjectList({
                   />
                 </StyledListItem>
                 {groups.groups.map((projectGroup, index) => (
-                  <CustomListItem key={index} projectGroup={projectGroup} index={index} route={route} />
+                  <CustomListItem canDrag={canModify} key={index} projectGroup={projectGroup} index={index} route={route} />
                 ))}
                 {provided.placeholder}
                 <StyledListItem

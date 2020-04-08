@@ -2,7 +2,7 @@ export const Routes = {
   HOME: '/',
   PROJECTS: '/projects',
   PROJECT: '/tasks/table',
-  DEPARTMENTS: '/users',
+  DEPARTMENTS: '/departments',
   MEMBERS: '/users/detail',
   REPORT: '/report',
   DOCUMENT: '/document/:documentType',

@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { mdiBorderNoneVariant } from '@mdi/js';
 import Icon from '@mdi/react';
-import { get } from 'lodash';
+import { get, isFunction } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -42,7 +42,7 @@ function LeftSideContainer({
     get(action, 'avatar') ? (
       <CustomAvatar src={get(action, 'avatar')} alt='avatar' />
     )
-      : typeof (get(action, 'onClick') === 'function') ? (
+      : isFunction(get(action, 'onClick')) ? (
         <StyledIconButton size='small' onClick={get(action, 'onClick')}>
           <abbr
             title={get(action, 'tooltip', '')}

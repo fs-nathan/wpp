@@ -27,7 +27,7 @@ const StyledPrimary = ({ className = '', ...props }) =>
   />;
 
 function DepartmentList({
-  rooms, searchPatern, route,
+  rooms, searchPatern, route, viewPermissions,
   handleSearchPatern, handleDragEnd,
   handleOpenModal,
 }) {
@@ -47,13 +47,13 @@ function DepartmentList({
           iconPath: mdiDrag,
           onClick: null,
         }}
-        rightAction={{
+        rightAction={get(viewPermissions.permissions, 'can_modify', false) ? {
           iconPath: mdiPlus,
           onClick: () =>
             handleOpenModal('CREATE')
           ,
           tooltip: t('DMH.VIEW.DP.LEFT.LIST.ADD'),
-        }}
+        } : null}
         loading={{
           bool: rooms.loading,
           component: () => <LoadingBox />,
@@ -94,7 +94,7 @@ function DepartmentList({
                   />
                 </StyledListItem>
                 {rooms.rooms.filter(room => get(room, 'id') !== 'default').map((room, index) => (
-                  <CustomListItem key={get(room, 'id')} room={room} index={index} handleLink={doLink} />
+                  <CustomListItem canDrag={get(viewPermissions.permissions, 'can_modify', false)} key={get(room, 'id')} room={room} index={index} handleLink={doLink} />
                 ))}
                 {provided.placeholder}
                 <StyledListItem

@@ -11,6 +11,8 @@ import { detailDefaultGroup } from '../../actions/projectGroup/detailDefaultGrou
 import { detailProjectGroup } from '../../actions/projectGroup/detailProjectGroup';
 import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
 import { memberProjectGroup } from '../../actions/projectGroup/memberProjectGroup';
+import { getPermissionViewProjects } from '../../actions/viewPermissions';
+import LoadingOverlay from '../../components/LoadingOverlay';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
   //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
@@ -27,7 +29,7 @@ import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
 import AllProjectTable from './RightPart/AllProjectTable';
 import DeletedProjectTable from './RightPart/DeletedProjectTable';
-import { routeSelector } from './selectors';
+import { routeSelector, viewPermissionsSelector } from './selectors';
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -41,8 +43,13 @@ function ProjectGroupPage({
   doListDeletedProject,
   doDetailDefaultGroup,
   doDetailStatus,
-  route,
+  doGetPermissionViewProjects,
+  route, viewPermissions
 }) {
+
+  React.useEffect(() => {
+    doGetPermissionViewProjects();
+  }, [doGetPermissionViewProjects]);
 
   const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_OPTIONS', {
     filterType: 1,
@@ -50,274 +57,296 @@ function ProjectGroupPage({
   });
 
   React.useEffect(() => {
-    doListIcon();
+    if (viewPermissions.permissions !== null) {
+      doListIcon();
 
-    /*
-    const reloadListIcon = () => {
-      doListIcon(true);
-    };
+      /*
+      const reloadListIcon = () => {
+        doListIcon(true);
+      };
 
-    CustomEventListener(CREATE_ICON, reloadListIcon);
-    CustomEventListener(DELETE_ICON, reloadListIcon);
+      CustomEventListener(CREATE_ICON, reloadListIcon);
+      CustomEventListener(DELETE_ICON, reloadListIcon);
 
-    return () => {
-      CustomEventDispose(CREATE_ICON, reloadListIcon);
-      CustomEventDispose(DELETE_ICON, reloadListIcon);
+      return () => {
+        CustomEventDispose(CREATE_ICON, reloadListIcon);
+        CustomEventDispose(DELETE_ICON, reloadListIcon);
+      }
+      */
     }
-    */
-  }, [doListIcon]);
+  }, [doListIcon, viewPermissions]);
 
   React.useEffect(() => {
-    doListProjectGroup();
+    if (viewPermissions.permissions !== null) {
+      doListProjectGroup();
 
-    const reloadListProjectGroup = () => {
-      doListProjectGroup(/*true*/);
+      const reloadListProjectGroup = () => {
+        doListProjectGroup(/*true*/);
+      }
+
+      //CustomEventListener(CREATE_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
+      //CustomEventListener(DELETE_PROJECT_GROUP, reloadListProjectGroup);
+      //CustomEventListener(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+      //CustomEventListener(CREATE_PROJECT, reloadListProjectGroup);
+      //CustomEventListener(DELETE_PROJECT, reloadListProjectGroup);
+
+      return () => {
+        //CustomEventDispose(CREATE_PROJECT_GROUP, reloadListProjectGroup);
+        CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
+        //CustomEventDispose(DELETE_PROJECT_GROUP, reloadListProjectGroup);
+        //CustomEventDispose(EDIT_PROJECT_GROUP, reloadListProjectGroup);
+        //CustomEventDispose(CREATE_PROJECT, reloadListProjectGroup);
+        //CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
+      }
     }
-
-    //CustomEventListener(CREATE_PROJECT_GROUP, reloadListProjectGroup);
-    CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
-    //CustomEventListener(DELETE_PROJECT_GROUP, reloadListProjectGroup);
-    //CustomEventListener(EDIT_PROJECT_GROUP, reloadListProjectGroup);
-    //CustomEventListener(CREATE_PROJECT, reloadListProjectGroup);
-    //CustomEventListener(DELETE_PROJECT, reloadListProjectGroup);
-
-    return () => {
-      //CustomEventDispose(CREATE_PROJECT_GROUP, reloadListProjectGroup);
-      CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
-      //CustomEventDispose(DELETE_PROJECT_GROUP, reloadListProjectGroup);
-      //CustomEventDispose(EDIT_PROJECT_GROUP, reloadListProjectGroup);
-      //CustomEventDispose(CREATE_PROJECT, reloadListProjectGroup);
-      //CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
-    }
-  }, [doListProjectGroup]);
+  }, [doListProjectGroup, viewPermissions]);
 
   const [projectGroupId, setProjectGroupId] = React.useState();
 
   React.useEffect(() => {
-    if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
-    if (projectGroupId) {
-      doDetailProjectGroup({ projectGroupId });
-
-      const reloadDetailProjectGroup = () => {
+    if (viewPermissions.permissions !== null) {
+      if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
+      if (projectGroupId) {
         doDetailProjectGroup({ projectGroupId });
-      }
 
-      //CustomEventListener(EDIT_PROJECT_GROUP, reloadDetailProjectGroup);
-      CustomEventListener(CREATE_PROJECT, reloadDetailProjectGroup);
-      CustomEventListener(UPDATE_PROJECT, reloadDetailProjectGroup);
-      CustomEventListener(DELETE_PROJECT, reloadDetailProjectGroup);
+        const reloadDetailProjectGroup = () => {
+          doDetailProjectGroup({ projectGroupId });
+        }
 
-      return () => {
-        //CustomEventDispose(EDIT_PROJECT_GROUP, reloadDetailProjectGroup);
-        CustomEventDispose(CREATE_PROJECT, reloadDetailProjectGroup);
-        CustomEventDispose(UPDATE_PROJECT, reloadDetailProjectGroup);
-        CustomEventDispose(DELETE_PROJECT, reloadDetailProjectGroup);
+        //CustomEventListener(EDIT_PROJECT_GROUP, reloadDetailProjectGroup);
+        CustomEventListener(CREATE_PROJECT, reloadDetailProjectGroup);
+        CustomEventListener(UPDATE_PROJECT, reloadDetailProjectGroup);
+        CustomEventListener(DELETE_PROJECT, reloadDetailProjectGroup);
+
+        return () => {
+          //CustomEventDispose(EDIT_PROJECT_GROUP, reloadDetailProjectGroup);
+          CustomEventDispose(CREATE_PROJECT, reloadDetailProjectGroup);
+          CustomEventDispose(UPDATE_PROJECT, reloadDetailProjectGroup);
+          CustomEventDispose(DELETE_PROJECT, reloadDetailProjectGroup);
+        }
       }
     }
-  }, [projectGroupId, doDetailProjectGroup]);
+  }, [projectGroupId, doDetailProjectGroup, viewPermissions]);
 
   React.useEffect(() => {
-    doDetailDefaultGroup();
-  }, [doDetailDefaultGroup]);
-
-  React.useEffect(() => {
-    if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
-    if (projectGroupId) {
-      doMemberProjectGroup({ projectGroupId });
-
-      /*
-      const reloadMemberProjectGroup = () => {
-        doMemberProjectGroup({ projectGroupId }, true);
-      }
-
-      CustomEventListener(EDIT_PROJECT_GROUP, reloadMemberProjectGroup);
-      
-      return () => {
-        CustomEventDispose(EDIT_PROJECT_GROUP, reloadMemberProjectGroup);
-      }
-      */
+    if (viewPermissions.permissions !== null) {
+      doDetailDefaultGroup();
     }
-  }, [projectGroupId, doMemberProjectGroup]);
+  }, [doDetailDefaultGroup, viewPermissions]);
+
+  React.useEffect(() => {
+    if (viewPermissions.permissions !== null) {
+      if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
+      if (projectGroupId) {
+        doMemberProjectGroup({ projectGroupId });
+
+        /*
+        const reloadMemberProjectGroup = () => {
+          doMemberProjectGroup({ projectGroupId }, true);
+        }
+
+        CustomEventListener(EDIT_PROJECT_GROUP, reloadMemberProjectGroup);
+        
+        return () => {
+          CustomEventDispose(EDIT_PROJECT_GROUP, reloadMemberProjectGroup);
+        }
+        */
+      }
+    }
+  }, [projectGroupId, doMemberProjectGroup, viewPermissions]);
 
   const [timeRange, setTimeRange] = React.useState({});
 
   React.useEffect(() => {
-    if (projectGroupId === 'deleted') return;
-    doListProject({
-      groupProject: projectGroupId,
-      timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
-      timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-    });
-
-    const reloadListProject = () => {
+    if (viewPermissions.permissions !== null) {
+      if (projectGroupId === 'deleted') return;
       doListProject({
         groupProject: projectGroupId,
         timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
         timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
       });
-    }
 
-    //CustomEventListener(CREATE_PROJECT, reloadListProject);
-    CustomEventListener(UPDATE_PROJECT, reloadListProject);
-    //CustomEventListener(DELETE_PROJECT, reloadListProject);
-    //CustomEventListener(HIDE_PROJECT, reloadListProject);
-    //CustomEventListener(SHOW_PROJECT, reloadListProject);
-    CustomEventListener(SORT_PROJECT, reloadListProject);
-    //CustomEventListener(COPY_PROJECT, reloadListProject);
+      const reloadListProject = () => {
+        doListProject({
+          groupProject: projectGroupId,
+          timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
+          timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
+        });
+      }
 
-    return () => {
-      //CustomEventDispose(CREATE_PROJECT, reloadListProject);
-      CustomEventDispose(UPDATE_PROJECT, reloadListProject);
-      //CustomEventDispose(DELETE_PROJECT, reloadListProject);
-      //CustomEventDispose(HIDE_PROJECT, reloadListProject);
-      //CustomEventDispose(SHOW_PROJECT, reloadListProject);
-      CustomEventDispose(SORT_PROJECT, reloadListProject);
-      //CustomEventDispose(COPY_PROJECT, reloadListProject);
+      //CustomEventListener(CREATE_PROJECT, reloadListProject);
+      CustomEventListener(UPDATE_PROJECT, reloadListProject);
+      //CustomEventListener(DELETE_PROJECT, reloadListProject);
+      //CustomEventListener(HIDE_PROJECT, reloadListProject);
+      //CustomEventListener(SHOW_PROJECT, reloadListProject);
+      CustomEventListener(SORT_PROJECT, reloadListProject);
+      //CustomEventListener(COPY_PROJECT, reloadListProject);
+
+      return () => {
+        //CustomEventDispose(CREATE_PROJECT, reloadListProject);
+        CustomEventDispose(UPDATE_PROJECT, reloadListProject);
+        //CustomEventDispose(DELETE_PROJECT, reloadListProject);
+        //CustomEventDispose(HIDE_PROJECT, reloadListProject);
+        //CustomEventDispose(SHOW_PROJECT, reloadListProject);
+        CustomEventDispose(SORT_PROJECT, reloadListProject);
+        //CustomEventDispose(COPY_PROJECT, reloadListProject);
+      }
     }
-  }, [projectGroupId, timeRange, doListProject]);
+  }, [projectGroupId, timeRange, doListProject, viewPermissions]);
 
   React.useEffect(() => {
-    doListDeletedProject({});
-
-    const reloadListDeletedProject = () => {
+    if (viewPermissions.permissions !== null) {
       doListDeletedProject({});
-    }
 
-    CustomEventListener(DELETE_PROJECT, reloadListDeletedProject);
+      const reloadListDeletedProject = () => {
+        doListDeletedProject({});
+      }
 
-    return () => {
-      CustomEventDispose(DELETE_PROJECT, reloadListDeletedProject);
+      CustomEventListener(DELETE_PROJECT, reloadListDeletedProject);
+
+      return () => {
+        CustomEventDispose(DELETE_PROJECT, reloadListDeletedProject);
+      }
     }
-  }, [doListDeletedProject]);
+  }, [doListDeletedProject, viewPermissions]);
 
   const [statusProjectId, setStatusProjectId] = React.useState(null);
 
   React.useEffect(() => {
-    if (statusProjectId !== null) {
-      doDetailStatus({
-        projectId: statusProjectId,
-      });
-      /*
-      const reloadDetailStatus = () => {
+    if (viewPermissions.permissions !== null) {
+      if (statusProjectId !== null) {
         doDetailStatus({
           projectId: statusProjectId,
-        }, true);
+        });
+        /*
+        const reloadDetailStatus = () => {
+          doDetailStatus({
+            projectId: statusProjectId,
+          }, true);
+        }
+    
+        CustomEventListener(UPDATE_STATUS_COPY, reloadDetailStatus);
+        CustomEventListener(UPDATE_STATUS_DATE, reloadDetailStatus);
+    
+        return () => {
+          CustomEventDispose(UPDATE_STATUS_COPY, reloadDetailStatus);
+          CustomEventDispose(UPDATE_STATUS_DATE, reloadDetailStatus);
+        }
+        */
       }
-  
-      CustomEventListener(UPDATE_STATUS_COPY, reloadDetailStatus);
-      CustomEventListener(UPDATE_STATUS_DATE, reloadDetailStatus);
-  
-      return () => {
-        CustomEventDispose(UPDATE_STATUS_COPY, reloadDetailStatus);
-        CustomEventDispose(UPDATE_STATUS_DATE, reloadDetailStatus);
-      }
-      */
     }
-  }, [statusProjectId, doDetailStatus]);
+  }, [statusProjectId, doDetailStatus, viewPermissions]);
 
   return (
-    <Provider value={{
-      setProjectGroupId,
-      setStatusProjectId,
-      setTimeRange,
-      localOptions, setLocalOptions,
-    }}>
-      <Route
-        path={route}
-        render={({ match: { url } }) => (
-          <Switch>
-            <Route
-              path={`${url}`}
-              exact
-              render={props => (
-                <TwoColumnsLayout
-                  leftRenders={[
-                    () =>
-                      <ProjectGroupList
-                        {...props}
-                      />,
-                  ]}
-                  rightRender={
-                    ({ expand, handleExpand }) =>
-                      <AllProjectTable
-                        {...props}
-                        expand={expand}
-                        handleExpand={handleExpand}
-                      />
-                  }
-                />
-              )}
-            />
-            <Route
-              path={`${url}/deleted`}
-              exact
-              render={props => (
-                <TwoColumnsLayout
-                  leftRenders={[
-                    () =>
-                      <ProjectGroupList
-                        {...props}
-                      />,
-                  ]}
-                  rightRender={
-                    ({ expand, handleExpand }) =>
-                      <DeletedProjectTable
-                        {...props}
-                        expand={expand}
-                        handleExpand={handleExpand}
-                      />
-                  }
-                />
-              )}
-            />
-            <Route
-              path={`${url}/group/default`}
-              exact
-              render={props => (
-                <TwoColumnsLayout
-                  leftRenders={[
-                    () =>
-                      <DefaultGroupDetail
-                        {...props}
-                      />,
-                  ]}
-                  rightRender={
-                    ({ expand, handleExpand }) =>
-                      <AllProjectTable
-                        {...props}
-                        expand={expand}
-                        handleExpand={handleExpand}
-                        isDefault={true}
-                      />
-                  }
-                />
-              )}
-            />
-            <Route
-              path={`${url}/group/:projectGroupId`}
-              render={props => (
-                <TwoColumnsLayout
-                  leftRenders={[
-                    () =>
-                      <ProjectGroupDetail
-                        {...props}
-                      />,
-                  ]}
-                  rightRender={
-                    ({ expand, handleExpand }) =>
-                      <AllProjectTable
-                        {...props}
-                        expand={expand}
-                        handleExpand={handleExpand}
-                      />
-                  }
-                />
-              )}
-            />
-          </Switch>
-        )}
-      />
-    </Provider>
+    <LoadingOverlay
+      active={viewPermissions.loading}
+      spinner
+      fadeSpeed={100}
+    >
+      <Provider value={{
+        setProjectGroupId,
+        setStatusProjectId,
+        setTimeRange,
+        localOptions, setLocalOptions,
+      }}>
+        <Route
+          path={route}
+          render={({ match: { url } }) => (
+            <Switch>
+              <Route
+                path={`${url}`}
+                exact
+                render={props => (
+                  <TwoColumnsLayout
+                    leftRenders={[
+                      () =>
+                        <ProjectGroupList
+                          {...props}
+                        />,
+                    ]}
+                    rightRender={
+                      ({ expand, handleExpand }) =>
+                        <AllProjectTable
+                          {...props}
+                          expand={expand}
+                          handleExpand={handleExpand}
+                        />
+                    }
+                  />
+                )}
+              />
+              <Route
+                path={`${url}/deleted`}
+                exact
+                render={props => (
+                  <TwoColumnsLayout
+                    leftRenders={[
+                      () =>
+                        <ProjectGroupList
+                          {...props}
+                        />,
+                    ]}
+                    rightRender={
+                      ({ expand, handleExpand }) =>
+                        <DeletedProjectTable
+                          {...props}
+                          expand={expand}
+                          handleExpand={handleExpand}
+                        />
+                    }
+                  />
+                )}
+              />
+              <Route
+                path={`${url}/group/default`}
+                exact
+                render={props => (
+                  <TwoColumnsLayout
+                    leftRenders={[
+                      () =>
+                        <DefaultGroupDetail
+                          {...props}
+                        />,
+                    ]}
+                    rightRender={
+                      ({ expand, handleExpand }) =>
+                        <AllProjectTable
+                          {...props}
+                          expand={expand}
+                          handleExpand={handleExpand}
+                          isDefault={true}
+                        />
+                    }
+                  />
+                )}
+              />
+              <Route
+                path={`${url}/group/:projectGroupId`}
+                render={props => (
+                  <TwoColumnsLayout
+                    leftRenders={[
+                      () =>
+                        <ProjectGroupDetail
+                          {...props}
+                        />,
+                    ]}
+                    rightRender={
+                      ({ expand, handleExpand }) =>
+                        <AllProjectTable
+                          {...props}
+                          expand={expand}
+                          handleExpand={handleExpand}
+                        />
+                    }
+                  />
+                )}
+              />
+            </Switch>
+          )}
+        />
+      </Provider>
+    </LoadingOverlay>
   )
 }
 
@@ -331,11 +360,13 @@ const mapDispatchToProps = dispatch => {
     doListDeletedProject: (options, quite) => dispatch(listDeletedProject(options, quite)),
     doDetailDefaultGroup: (quite) => dispatch(detailDefaultGroup(quite)),
     doDetailStatus: ({ projectId }, quite) => dispatch(detailStatus({ projectId }, quite)),
+    doGetPermissionViewProjects: (quite) => dispatch(getPermissionViewProjects(quite)),
   }
 };
 
 export default connect(
   state => ({
+    viewPermissions: viewPermissionsSelector(state),
     route: routeSelector(state),
   }),
   mapDispatchToProps,

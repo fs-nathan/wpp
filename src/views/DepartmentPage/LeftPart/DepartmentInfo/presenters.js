@@ -46,6 +46,7 @@ export const DefaultDepartment = ({
 };
 
 export const NormalDepartment = ({
+  viewPermissions,
   room,
   departmentId,
   handleDeleteRoom, handleGoBack,
@@ -94,34 +95,36 @@ export const NormalDepartment = ({
               />
             </SubContainer>
           </div>
-          <ActionBox>
-            <ColorButton
-              onClick={() =>
-                handleOpenModal('UPDATE', {
-                  updateDepartment: room.detail
-                })
-              }
-              variant="text"
-              size="small"
-              fullWidth
-            >
-              {t('DMH.VIEW.DP.LEFT.INFO.BTN.UPT')}
-            </ColorButton>
-            <ColorButton
-              onClick={() =>
-                handleOpenModal('ALERT', {
-                  content: t('DMH.VIEW.DP.LEFT.INFO.ALERT'),
-                  onConfirm: () => handleDeleteRoom(departmentId)
-                })
-              }
-              variant="text"
-              variantColor="red"
-              size="small"
-              fullWidth
-            >
-              {t('DMH.VIEW.DP.LEFT.INFO.BTN.DEL')}
-            </ColorButton>
-          </ActionBox>
+          {get(viewPermissions.permissions, 'can_modify', false) ? (
+            <ActionBox>
+              <ColorButton
+                onClick={() =>
+                  handleOpenModal('UPDATE', {
+                    updateDepartment: room.detail
+                  })
+                }
+                variant="text"
+                size="small"
+                fullWidth
+              >
+                {t('DMH.VIEW.DP.LEFT.INFO.BTN.UPT')}
+              </ColorButton>
+              <ColorButton
+                onClick={() =>
+                  handleOpenModal('ALERT', {
+                    content: t('DMH.VIEW.DP.LEFT.INFO.ALERT'),
+                    onConfirm: () => handleDeleteRoom(departmentId)
+                  })
+                }
+                variant="text"
+                variantColor="red"
+                size="small"
+                fullWidth
+              >
+                {t('DMH.VIEW.DP.LEFT.INFO.BTN.DEL')}
+              </ColorButton>
+            </ActionBox>
+          ) : null}
         </Container>
       </LeftSideContainer>
     </React.Fragment>

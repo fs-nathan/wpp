@@ -92,7 +92,7 @@ function StateBadge({ user }) {
 }
 
 function AllUsersTable({
-  rooms, maxUser, hasRequirement, publicPrivatePendings, route,
+  rooms, maxUser, hasRequirement, publicPrivatePendings, route, canModify,
   expand, handleExpand,
   handleSortUser,
   handleChangeState,
@@ -130,7 +130,7 @@ function AllUsersTable({
                 max: maxUser,
               })}
             </SubTitle>,
-          subActions: [{
+          subActions: canModify ? [{
             label: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
             icon: () => hasRequirement
               ? <NewUserBadge badgeContent={'N'}>
@@ -144,16 +144,16 @@ function AllUsersTable({
               })
             },
             noExpand: true,
-          }],
-          mainAction: {
+          }] : [],
+          mainAction: canModify ? {
             label: t('DMH.VIEW.DP.RIGHT.UT.ADD_ACC'),
             onClick: () => handleOpenModal('CREATE_ACCOUNT'),
-          },
+          } : null,
           expand: {
             bool: expand,
             toggleExpand: () => handleExpand(!expand),
           },
-          moreMenu: [{
+          moreMenu: canModify ? [{
             label: t('DMH.VIEW.DP.MODAL.TITLE.TITLE'),
             onClick: () => handleOpenModal('TITLE'),
           }, {
@@ -171,7 +171,7 @@ function AllUsersTable({
           }, {
             label: t('DMH.VIEW.DP.RIGHT.UT.TABLE_SETTING'),
             onClick: () => handleOpenModal('TABLE_SETTING'),
-          }],
+          }] : null,
           grouped: {
             bool: true,
             id: 'id',
@@ -182,7 +182,7 @@ function AllUsersTable({
             id: 'id',
             onClick: (user) => null,
           },
-          draggable: {
+          draggable: canModify ? {
             bool: true,
             onDragEnd: result => {
               const { source, destination, draggableId } = result;
@@ -197,7 +197,9 @@ function AllUsersTable({
                 destination.index
               );
             },
-          },
+          } : {
+              bool: false
+            },
           loading: {
             bool: rooms.loading,
             component: () => <LoadingBox />,
@@ -250,7 +252,7 @@ function AllUsersTable({
           field: (user) => <StateBadge user={user} />,
           align: 'center',
           width: '10%',
-        }, {
+        }, canModify ? {
           label: () => <IconButton disabled>
             <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0)'} />
           </IconButton>,
@@ -264,7 +266,7 @@ function AllUsersTable({
           />,
           align: 'center',
           width: '5%',
-        }]}
+        } : undefined]}
         data={rooms.rooms}
       />
       <Menu

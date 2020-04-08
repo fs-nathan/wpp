@@ -16,12 +16,13 @@ import PermissionSettingsModal from '../../Modals/PermissionSettings';
 import RoleManagerModal from '../../Modals/RoleManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import TitleManagerModal from '../../Modals/TitleManager';
+import { viewPermissionsSelector } from '../../selectors';
 import AllUsersTablePresenter from './presenters';
 import { hasRequirementSelector, maxUserSelector, publicPrivatePendingsSelector, roomsSelector } from './selectors';
 import './style.scss';
 
 function AllUsersTable({
-  rooms, maxUser, hasRequirement, publicPrivatePendings, route,
+  rooms, maxUser, hasRequirement, publicPrivatePendings, route, viewPermissions,
   doSortUser,
   expand, handleExpand,
   doPublicMember, doPrivateMember,
@@ -43,40 +44,42 @@ function AllUsersTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'TITLE': {
-        setOpenTitle(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenTitle(true);
         return;
       }
       case 'ROLE': {
-        setOpenRole(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenRole(true);
         return;
       }
       case 'LEVEL': {
-        setOpenLevel(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenLevel(true);
         return;
       }
       case 'MAJOR': {
-        setOpenMajor(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenMajor(true);
         return;
       }
       case 'LOGO': {
-        setOpenLogo(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenLogo(true);
         return;
       }
       case 'TABLE_SETTING': {
-        setOpenTableSetting(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenTableSetting(true);
         return;
       }
       case 'CREATE_ACCOUNT': {
-        setOpenCreateAccount(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenCreateAccount(true);
         return;
       }
       case 'PERMISSION_SETTING': {
-        setOpenPermissionSetting(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenPermissionSetting(true);
         return;
       }
       case 'ALERT': {
-        setOpenAlert(true);
-        setAlertProps(props);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setOpenAlert(true);
+          setAlertProps(props);
+        }
         return;
       }
       default: return;
@@ -88,6 +91,7 @@ function AllUsersTable({
       <AllUsersTablePresenter
         rooms={rooms} maxUser={maxUser} hasRequirement={hasRequirement} publicPrivatePendings={publicPrivatePendings}
         route={route}
+        canModify={get(viewPermissions.permissions, 'can_modify', false)}
         expand={expand} handleExpand={handleExpand}
         handleSortUser={(roomId, userId, sortIndex) => doSortUser({ roomId, userId, sortIndex })}
         handleChangeState={(user) =>
@@ -131,6 +135,7 @@ const mapStateToProps = state => {
     hasRequirement: hasRequirementSelector(state),
     publicPrivatePendings: publicPrivatePendingsSelector(state),
     route: routeSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   }
 }
 

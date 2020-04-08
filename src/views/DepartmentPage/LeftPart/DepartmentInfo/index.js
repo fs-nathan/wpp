@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -7,12 +8,12 @@ import { CustomEventDispose, CustomEventListener, DELETE_ROOM } from '../../../.
 import { Routes } from '../../../../constants/routes';
 import { Context as UserPageContext } from '../../index';
 import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
-import { routeSelector } from '../../selectors';
+import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import { DefaultDepartment, NormalDepartment } from './presenters';
 import { roomSelector } from './selectors';
 
 function DepartmentInfo({
-  room, route,
+  room, route, viewPermissions,
   doDeleteRoom
 }) {
 
@@ -45,12 +46,16 @@ function DepartmentInfo({
   function doOpenModal(type, props) {
     switch (type) {
       case 'UPDATE':
-        setCreateAndUpdateDepartmentProps(props);
-        setOpenCreateAndUpdateDepartmentModal(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setCreateAndUpdateDepartmentProps(props);
+          setOpenCreateAndUpdateDepartmentModal(true);
+        }
         return;
       case 'ALERT':
-        setAlertProps(props);
-        setOpenAlertModal(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setAlertProps(props);
+          setOpenAlertModal(true);
+        }
         return;
       default: return;
     }
@@ -66,6 +71,7 @@ function DepartmentInfo({
         )
         : (
           <NormalDepartment
+            viewPermissions={viewPermissions}
             room={room}
             departmentId={departmentId}
             handleDeleteRoom={roomId => doDeleteRoom({ roomId })}
@@ -91,6 +97,7 @@ const mapStateToProps = state => {
   return {
     room: roomSelector(state),
     route: routeSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   };
 };
 

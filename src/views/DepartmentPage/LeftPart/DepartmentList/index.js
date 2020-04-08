@@ -3,12 +3,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { sortRoom } from '../../../../actions/room/sortRoom';
 import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
-import { routeSelector } from '../../selectors';
+import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import DepartmentListPresenter from './presenters';
 import { roomsSelector } from './selectors';
 
 function DepartmentList({
-  rooms, route,
+  rooms, route, viewPermissions,
   doSortRoom,
 }) {
 
@@ -39,7 +39,9 @@ function DepartmentList({
   function doOpenModal(type) {
     switch (type) {
       case 'CREATE': {
-        setOpenCreateAndUpdateDepartmentModal(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setOpenCreateAndUpdateDepartmentModal(true);
+        }
         return;
       }
       default: return;
@@ -55,6 +57,7 @@ function DepartmentList({
           error: rooms.error,
         }}
         route={route}
+        viewPermissions={viewPermissions}
         searchPatern={searchPatern}
         handleDragEnd={onDragEnd}
         handleSearchPatern={evt => setSearchPatern(evt.target.value)}
@@ -70,6 +73,7 @@ function DepartmentList({
 
 const mapStateToProps = state => {
   return {
+    viewPermissions: viewPermissionsSelector(state),
     rooms: roomsSelector(state),
     route: routeSelector(state),
   };

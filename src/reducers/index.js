@@ -106,6 +106,7 @@ import createUserRole, { initialState as createUserRoleInitialState } from "./us
 import deleteUserRole, { initialState as deleteUserRoleInitialState } from "./userRole/deleteUserRole";
 import listUserRole, { initialState as listUserRoleInitialState } from "./userRole/listUserRole";
 import updateUserRole, { initialState as updateUserRoleInitialState } from "./userRole/updateUserRole";
+import viewPermissions, { initialState as viewPermissionsInitialState } from "./viewPermissions";
 
 const rootReducer = combineReducers({
   authentications,
@@ -242,7 +243,8 @@ const rootReducer = combineReducers({
   }),
   register: combineReducers({
     inviteOtherPeopleCreateAccount
-  })
+  }),
+  viewPermissions,
 });
 
 export const DEFAULT_STATE = {
@@ -362,7 +364,8 @@ export const DEFAULT_STATE = {
   },
   register: {
     inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState
-  }
+  },
+  viewPermissions: viewPermissionsInitialState,
 };
 
 export default rootReducer;

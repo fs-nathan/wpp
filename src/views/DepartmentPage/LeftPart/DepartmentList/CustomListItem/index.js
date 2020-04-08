@@ -10,43 +10,67 @@ import CustomAvatar from '../../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
 
 function CustomListItem({
-  room, index, handleLink
+  room, index, handleLink, canDrag,
 }) {
 
   const [isHover, setIsHover] = React.useState(false);
   const { t } = useTranslation();
 
-  return (
-    <Draggable
-      draggableId={get(room, 'id')}
-      index={index}
-    >
-      {(provided) => (
-        <StyledListItem
-          component={Link}
-          to={'#'}
-          onClick={evt => handleLink(get(room, 'id'))}
-          innerRef={provided.innerRef}
-          {...provided.draggableProps}
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
-        >
-          <div {...provided.dragHandleProps}>
-            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
-          </div>
-          <CustomAvatar style={{ height: 50, width: 50, }} src={room.icon} alt='avatar' />
-          <ListItemText
-            primary={
-              <Primary>{get(room, 'name', '')}</Primary>
-            }
-            secondary={
-              <Secondary>{t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: get(room, 'number_member', 0) })}</Secondary>
-            }
-          />
-        </StyledListItem>
-      )}
-    </Draggable>
-  )
+  if (canDrag)
+    return (
+      <Draggable
+        draggableId={get(room, 'id')}
+        index={index}
+      >
+        {(provided) => (
+          <StyledListItem
+            component={Link}
+            to={'#'}
+            onClick={evt => handleLink(get(room, 'id'))}
+            innerRef={provided.innerRef}
+            {...provided.draggableProps}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+          >
+            <div {...provided.dragHandleProps}>
+              <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
+            </div>
+            <CustomAvatar style={{ height: 50, width: 50, }} src={room.icon} alt='avatar' />
+            <ListItemText
+              primary={
+                <Primary>{get(room, 'name', '')}</Primary>
+              }
+              secondary={
+                <Secondary>{t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: get(room, 'number_member', 0) })}</Secondary>
+              }
+            />
+          </StyledListItem>
+        )}
+      </Draggable>
+    )
+  else
+    return (
+      <StyledListItem
+        component={Link}
+        to={'#'}
+        onClick={evt => handleLink(get(room, 'id'))}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+      >
+        <div>
+          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
+        </div>
+        <CustomAvatar style={{ height: 50, width: 50, }} src={room.icon} alt='avatar' />
+        <ListItemText
+          primary={
+            <Primary>{get(room, 'name', '')}</Primary>
+          }
+          secondary={
+            <Secondary>{t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: get(room, 'number_member', 0) })}</Secondary>
+          }
+        />
+      </StyledListItem>
+    )
 }
 
 

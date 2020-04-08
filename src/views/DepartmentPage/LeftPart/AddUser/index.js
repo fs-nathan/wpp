@@ -1,30 +1,23 @@
+import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { searchUser, searchUserReset } from '../../../../actions/groupUser/searchUser';
-import { inviteUserJoinGroup } from '../../../../actions/groupUser/inviteUserJoinGroup';
-import { resendInvitationUserJoinGroup } from '../../../../actions/groupUser/resendInvitationUserJoinGroup';
-import { getRequirementJoinGroup } from '../../../../actions/groupUser/getRequirementJoinGroup';
-import { getListInvitationSent } from '../../../../actions/groupUser/getListInvitationSent';
 import { acceptRequirementJoinGroup } from '../../../../actions/groupUser/acceptRequirementJoinGroup';
-import { rejectRequirementJoinGroup } from '../../../../actions/groupUser/rejectRequirementJoinGroup';
 import { cancleInvitationJoinGroup } from '../../../../actions/groupUser/cancleInvitationJoinGroup';
 import { getListGroup } from '../../../../actions/groupUser/getListGroup';
+import { getListInvitationSent } from '../../../../actions/groupUser/getListInvitationSent';
+import { getRequirementJoinGroup } from '../../../../actions/groupUser/getRequirementJoinGroup';
+import { inviteUserJoinGroup } from '../../../../actions/groupUser/inviteUserJoinGroup';
+import { rejectRequirementJoinGroup } from '../../../../actions/groupUser/rejectRequirementJoinGroup';
+import { resendInvitationUserJoinGroup } from '../../../../actions/groupUser/resendInvitationUserJoinGroup';
+import { searchUser, searchUserReset } from '../../../../actions/groupUser/searchUser';
 import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
-import { 
-  CustomEventListener, CustomEventDispose, 
-  INVITE_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP, CANCLE_INVITATION_JOIN_GROUP,
-  ACCEPT_REQUIREMENT_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP,
-} from '../../../../constants/events';
-import {
-  bgColorSelector,
-  desireUserSelector, requireUsersSelector,
-  desireLoadingSelector, requireLoadingSelector,
-  invitationSentsSelector,
-} from './selectors';
+import { getPermissionViewUser } from '../../../../actions/viewPermissions';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CANCLE_INVITATION_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP } from '../../../../constants/events';
 import AddUserPresenter from './presenters';
+import { bgColorSelector, desireLoadingSelector, desireUserSelector, invitationSentsSelector, requireLoadingSelector, requireUsersSelector, viewPermissionsSelector } from './selectors';
 
 function AddUser({
-  bgColor, 
+  bgColor, viewPermissions,
   desireUser, desireLoading,
   requireUsers, requireLoading,
   invitations,
@@ -34,85 +27,97 @@ function AddUser({
   doAcceptRequirementJoinGroup, doRejectRequirementJoinGroup,
   doGetRequirementJoinGroup, doGetListGroup, doGetListInvitationSent,
   doCancleInvitationJoinGroup,
-  doActionVisibleDrawerMessage, 
+  doActionVisibleDrawerMessage,
+  doGetPermissionViewUser,
 }) {
+
+  React.useEffect(() => {
+    doGetPermissionViewUser(true);
+  }, [doGetPermissionViewUser]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
   React.useEffect(() => {
-    if (searchPatern !== '') {
-      const doSearchUserHandler = () => {
-        doSearchUser({ info: searchPatern });
-      };
-  
-      CustomEventListener(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
-      CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
-      CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, doSearchUserHandler);
-  
-      return () => {
-        CustomEventDispose(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
-        CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
-        CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, doSearchUserHandler);
+    if (get(viewPermissions.permissions, 'can_modify', false)) {
+      if (searchPatern !== '') {
+        const doSearchUserHandler = () => {
+          doSearchUser({ info: searchPatern });
+        };
+
+        CustomEventListener(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
+        CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
+        CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, doSearchUserHandler);
+
+        return () => {
+          CustomEventDispose(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
+          CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
+          CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, doSearchUserHandler);
+        }
       }
     }
-  }, [doSearchUser, searchPatern]);
-
-
+  }, [doSearchUser, searchPatern, viewPermissions]);
 
   React.useEffect(() => {
-    doGetRequirementJoinGroup();
+    if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doGetRequirementJoinGroup();
 
-    const doGetRequirementJoinGroupHandler = () => {
-      doGetRequirementJoinGroup(true);
-    };
+      const doGetRequirementJoinGroupHandler = () => {
+        doGetRequirementJoinGroup(true);
+      };
 
-    CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-    CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
 
-    return () => {
-      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-      CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      return () => {
+        CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+        CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      }
     }
-  }, [doGetRequirementJoinGroup]);
+  }, [doGetRequirementJoinGroup, viewPermissions]);
 
   React.useEffect(() => {
-    doGetListGroup();
+    if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doGetListGroup();
 
-    const reloadGetListGroup = () => {
-      doGetListGroup(true);
-    };
+      const reloadGetListGroup = () => {
+        doGetListGroup(true);
+      };
 
-    CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetListGroup);
-    CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListGroup);
-    CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, reloadGetListGroup);
+      CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetListGroup);
+      CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListGroup);
+      CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, reloadGetListGroup);
 
-    return () => {
-      CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetListGroup);
-      CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListGroup);
-      CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, reloadGetListGroup);
+      return () => {
+        CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetListGroup);
+        CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListGroup);
+        CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, reloadGetListGroup);
+      }
     }
-  }, [doGetListGroup]);
+  }, [doGetListGroup, viewPermissions]);
 
   React.useEffect(() => {
-    doGetListInvitationSent();
+    if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doGetListInvitationSent();
 
-    const reloadGetListInvitationSent = () => {
-      doGetListInvitationSent(true);
-    };
+      const reloadGetListInvitationSent = () => {
+        doGetListInvitationSent(true);
+      };
 
-    CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetListInvitationSent);
-    CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListInvitationSent);
-    CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, reloadGetListInvitationSent);
+      CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetListInvitationSent);
+      CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListInvitationSent);
+      CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, reloadGetListInvitationSent);
 
-    return () => {
-      CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetListInvitationSent);
-      CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListInvitationSent);
-      CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, reloadGetListInvitationSent);
+      return () => {
+        CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetListInvitationSent);
+        CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListInvitationSent);
+        CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, reloadGetListInvitationSent);
+      }
     }
-  }, [doGetListInvitationSent]);
+  }, [doGetListInvitationSent, viewPermissions]);
 
   return (
-    <AddUserPresenter 
+    <AddUserPresenter
+      viewPermissions={viewPermissions}
       bgColor={bgColor}
       desireUser={desireUser} desireLoading={desireLoading}
       requireUsers={requireUsers} requireLoading={requireLoading}
@@ -121,7 +126,7 @@ function AddUser({
       handleInviteUserJoinGroup={doInviteUserJoinGroup} handleResendInvitationUserJoinGroup={doResendInvitationUserJoinGroup}
       handleAcceptRequirementJoinGroup={doAcceptRequirementJoinGroup} handleRejectRequirementJoinGroup={doRejectRequirementJoinGroup}
       handleCancleInvitationJoinGroup={doCancleInvitationJoinGroup}
-      searchPatern={searchPatern} 
+      searchPatern={searchPatern}
       handleSearchPatern={evt => setSearchPatern(evt.target.value)}
       anchorDrawer={anchorDrawer}
       handleVisibleDrawerMessage={doActionVisibleDrawerMessage}
@@ -137,6 +142,7 @@ const mapStateToProps = state => {
     requireUsers: requireUsersSelector(state),
     requireLoading: requireLoadingSelector(state),
     invitations: invitationSentsSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
     anchorDrawer: state.system.anchorDrawer,
   }
 };
@@ -154,6 +160,7 @@ const mapDispatchToProps = dispatch => {
     doGetListGroup: (quite) => dispatch(getListGroup(quite)),
     doCancleInvitationJoinGroup: ({ invitationId }) => dispatch(cancleInvitationJoinGroup({ invitationId })),
     doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
+    doGetPermissionViewUser: (quite) => dispatch(getPermissionViewUser(quite)),
   }
 };
 
