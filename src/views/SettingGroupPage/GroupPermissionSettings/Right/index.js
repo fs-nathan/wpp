@@ -85,7 +85,9 @@ const Right = () => {
             })}
             actions={
               <AddButton
-                onClick={() => setModal(<UpdateGroupPermissionModal />)}
+                onClick={() =>
+                  setModal(<UpdateGroupPermissionModal item={select} />)
+                }
                 label={t("Thêm quyền")}
               />
             }

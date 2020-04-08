@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { encodeQueryData, get } from "views/JobPage/utils";
+import { encodeQueryData, get, loginlineFunc } from "views/JobPage/utils";
 import {
   listAddFirst,
   listremove,
@@ -57,7 +57,7 @@ export const loadPermissionViewGroupSetting = () => {
 };
 
 // GroupPermission
-export const loadGroupModules = ({ type } = {}) => {
+export const loadGroupModules = () => {
   return createAsyncAction({
     config: {
       url: "/permissions/get-modules",
@@ -86,7 +86,7 @@ export const createGroupPermission = ({ name, permissions, type }) => {
     config: {
       url: "/permissions/create-group-permission",
       method: "post",
-      data: { name, permissions, type },
+      data: { name, permissions, module: type },
     },
     success: createAction(updateGroupPermissionList.type, function prepare(
       data
@@ -147,16 +147,18 @@ const updatePermissionList = createAction(
   types.permissionListUpdated,
   function prepare(data) {
     return {
-      payload: data.group_permissions,
+      payload: data.data_permissions,
     };
   }
 );
-export const loadPermissionList = ({ type } = {}) => {
+export const loadPermissionList = ({ module } = {}) => {
   return createAsyncAction({
     config: {
-      url: "/permissions/list",
+      url: `/permissions/list?module=${encodeQueryData({
+        module,
+      })}`,
     },
-    success: updatePermissionList,
+    success: loginlineFunc(updatePermissionList),
   });
 };
 export const loadDetailGroupPermission = ({ group_permission_id } = {}) => {
@@ -183,8 +185,15 @@ export const permissionViewGroupSettingSelector = (state) =>
     [settingGroupPermission.key, updatePermissionViewGroupSetting.type],
     emptyArray
   );
+export const permissionListSelector = (state) =>
+  get(
+    state,
+    [settingGroupPermission.key, updatePermissionList.type],
+    emptyArray
+  );
 export const settingGroupPermission = {
   selectors: {
+    permissionListSelector,
     groupPermissionListSelector,
     groupModulesListSelector,
     permissionViewGroupSettingSelector,

@@ -141,9 +141,7 @@ export default () => {
   useEffect(() => {
     dispatch(settingGroupPermission.actions.loadGroupPermissionList());
   }, [dispatch]);
-  useEffect(() => {
-    dispatch(settingGroupPermission.actions.loadPermissionList());
-  }, [dispatch]);
+
   const groupPermissionList = useSelector(
     settingGroupPermission.selectors.groupPermissionListSelector
   );
