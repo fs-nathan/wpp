@@ -8,7 +8,7 @@ export const REMIND_TIME_TYPE = 0
 export const REMIND_SCHEDULE_TYPE = 0
 export const REMINDER_PROGRESS = []
 export const EMPTY_STRING = ''
-export const DEFAULT_DATE_TEXT = 
+export const DEFAULT_DATE_TEXT =
     `${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, "0")}-${(new Date().getDate()).toString().padStart(2, "0")}`
 export const DEFAULT_TIME_TEXT = `00:00`
 export const DEFAULT_START_TIME_TEXT = '08:00'
@@ -28,13 +28,13 @@ export const convertDateToText = date => {
 export const convertTime = inputFormat => {
     const d = new Date(inputFormat)
     return format(d, 'HH:mm');
-  }
+}
 
-export const   convertDate= inputFormat => {
+export const convertDate = inputFormat => {
     function pad(s) { return (s < 10) ? '0' + s : s; }
     var d = new Date(inputFormat)
-    return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('-')
-  }
+    return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
+}
 
 export const isValidDuration = durationText => {
     try {
@@ -58,4 +58,19 @@ export const convertDateToJSFormat = date => {
 export const isExpiredDate = date => {
     return new Date(convertDateToJSFormat(date)) - new Date() > 0
 
+}
+
+export function humanFileSize(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if (Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    var units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    // : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1) + ' ' + units[u];
 }

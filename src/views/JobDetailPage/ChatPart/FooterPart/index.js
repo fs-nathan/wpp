@@ -1,10 +1,13 @@
 import { IconButton } from '@material-ui/core';
-import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
+import { mdiAlarmPlus, mdiAt, mdiCloudUploadOutline, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, chatImage, chatSticker, clearTags, createChatText, loadChat, onUploading } from 'actions/chat/chat';
+import { appendChat, chatFile, chatImage, chatSticker, clearTags, createChatText, loadChat, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
+import { file as file_icon } from 'assets/fileType';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
-import React, { useState } from 'react';
+import { humanFileSize } from 'helpers/jobDetail/stringHelper';
+import React, { useCallback, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
@@ -35,7 +38,7 @@ const FooterPart = ({
     dispatch(onUploading(percent));
   }
 
-  const handleUploadImage = async e => {
+  const handleUploadImage = useCallback(async e => {
     const { files } = e.target;
     // console.log('upload image', files);
     const images = [];
@@ -56,7 +59,41 @@ const FooterPart = ({
       data.append("image", files[i], files[i].name)
     }
     dispatch(chatImage(taskId, data, onUploadingHandler))
-  };
+  });
+
+  const onDrop = useCallback(async (files = []) => {
+    // Do something with the files
+    function onUploadingHandler(percent) {
+      dispatch(onUploading(percent));
+    }
+    // console.log('onDrop', files)
+    const isAllImages = files.every(file => file.type.indexOf('image') !== -1);
+    if (isAllImages) {
+      handleUploadImage({ target: { files } })
+    } else {
+      const images = [];
+      for (let index = 0; index < files.length; index++) {
+        const file = files[index];
+        const url = await getFileUrl(file)
+        images.push({
+          url, name: file.name, file_icon,
+          size: humanFileSize(file.size)
+        })
+      }
+      const data_chat = {
+        type: CHAT_TYPE.UPLOADING_FILE, files: images,
+        isUploading: true,
+        is_me: true,
+      }
+      dispatch(appendChat({ data_chat }));
+      let data = new FormData()
+      for (let i = 0; i < files.length; i++) {
+        data.append("file", files[i], files[i].name)
+      }
+      dispatch(chatFile(taskId, data, onUploadingHandler));
+    }
+  }, [dispatch, handleUploadImage, taskId])
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
   const openTag = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -120,7 +157,7 @@ const FooterPart = ({
   return (
     <div className="footer-chat-container">
       <div className="wrap-function-bar-fp">
-        <div>
+        <div >
           <IconButton className="icon-btn" onClick={openTag}>
             <Icon path={mdiAt} size={1.2} />
           </IconButton>
@@ -166,17 +203,11 @@ const FooterPart = ({
         </div> */}
       </div>
       <Message {...parentMessage} isReply></Message>
-      <div className="wrap-input-message" id="input_message">
-        <TagModal
-          anchorEl={anchorEl}
-          handleClose={handleCloseTag}
-        />
-        <StickerModal
-          anchorEl={anchorElSticker}
-          handleClose={handleCloseSticker}
-          handleClickSticker={handleClickSticker}
-        />
-        {tagMembers.map(index => <span key={index} className="footerChat--tag">@{members[index].name}</span>)}
+      {tagMembers.map(index => <span key={index} className="footerChat--tag">@{members[index].name}</span>)}
+      <div className="wrap-input-message" id="input_message"
+        {...getRootProps({
+          onClick: event => event.stopPropagation()
+        })}>
         <input
           onKeyPress={onKeyPressChat}
           onKeyDown={onKeyDownChat}
@@ -186,8 +217,31 @@ const FooterPart = ({
           onChange={onChangeTextChat}
           placeholder="Nhập @ gợi ý, nội dung thảo luận..."
         />
+        <input {...getInputProps()} />
+        {isDragActive && (
+          <div className="drop-area">
+            <div className="dashed-box">
+              <Icon
+                className="drop-ic-clould"
+                path={mdiCloudUploadOutline}
+                size={5}
+                color={'#c3c3c3'}
+              />
+              <div className="des-drop">{('IDS_WP_DRAG_FILE')}</div>
+            </div>
+          </div>
+        )}
       </div>
 
+      <TagModal
+        anchorEl={anchorEl}
+        handleClose={handleCloseTag}
+      />
+      <StickerModal
+        anchorEl={anchorElSticker}
+        handleClose={handleCloseSticker}
+        handleClickSticker={handleClickSticker}
+      />
       <SendFileModal
         open={visibleSendFile}
         setOpen={() => setVisibleSendFile(false)}
