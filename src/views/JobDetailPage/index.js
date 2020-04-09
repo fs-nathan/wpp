@@ -22,6 +22,9 @@ function JobDetailPage(props) {
     dispatch(closeNoticeModal());
     dispatch(getListStickersRequest());
     dispatch(getEmotions());
+    dispatch(taskDetailAction.getRole());
+    dispatch(taskDetailAction.getListOffer());
+    dispatch(taskDetailAction.getPermission({ type: 4 }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -47,9 +50,6 @@ function JobDetailPage(props) {
   }, [dispatch, taskId]);
 
   useEffect(() => {
-    dispatch(taskDetailAction.getRole());
-    dispatch(taskDetailAction.getListOffer());
-    dispatch(taskDetailAction.getPermission({ type: 4 }));
     if (projectId !== '') {
       dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId }));
