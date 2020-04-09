@@ -1,5 +1,12 @@
-import { Button, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
-import colors from "helpers/colorPalette";
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  makeStyles,
+} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import React, { useCallback, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
@@ -8,6 +15,31 @@ import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/
 import { GroupPermissionSettingsCotnext } from "..";
 import { groupPermissionAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    margin: theme.spacing(1),
+    position: "relative",
+  },
+
+  buttonProgress: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
+  },
+}));
+const LoadingWrap = ({ loading, children }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.wrapper}>
+      {children}
+      {loading && (
+        <CircularProgress size={24} className={classes.buttonProgress} />
+      )}
+    </div>
+  );
+};
 
 function DeleteGroupPermissionModal({ loading, onClose, onDelete }) {
   const { t } = useTranslation();
@@ -23,9 +55,17 @@ function DeleteGroupPermissionModal({ loading, onClose, onDelete }) {
         <Button onClick={onClose} color="primary">
           {t("Cancel")}
         </Button>
-        <Button onClick={onDelete} color={colors.red[0]} autoFocus>
-          {t("Delete")}
-        </Button>
+        <LoadingWrap loading={loading}>
+          <Button
+            onClick={onDelete}
+            variant="contained"
+            color="secondary"
+            disabled={loading}
+            startIcon={<DeleteIcon />}
+          >
+            {t("Delete")}
+          </Button>
+        </LoadingWrap>
       </DialogActions>
     </Dialog>
   );

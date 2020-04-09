@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
@@ -8,7 +8,7 @@ import { Routes } from "../../../constants/routes";
 import { isEmpty } from "../../../helpers/utils/isEmpty";
 import {
   RightHeader,
-  StyledButton
+  StyledButton,
 } from "../../DocumentPage/TablePart/DocumentComponent/TableCommon";
 import CreateOrder from "../TablePart/SettingGroupRight/CreateOrder";
 import Info from "../TablePart/SettingGroupRight/Info";
@@ -18,6 +18,8 @@ import Payment from "../TablePart/SettingGroupRight/Payment";
 import SetUp from "../TablePart/SettingGroupRight/SetUp";
 import HeaderButtonGroup from "./HeaderButtonGroup";
 import Home from "./SettingGroupRight/Home/index";
+import IconManager from "./SettingGroupRight/IconManager";
+import RoleManager from "./SettingGroupRight/RoleManager";
 
 const getHeaderText = (type, search, t) => {
   const isOder = isEmpty(search);
@@ -39,11 +41,16 @@ const getHeaderText = (type, search, t) => {
       return t("IDS_WP_PAYMENT");
     case SETTING_GROUP.CREATE_ORDER:
       return t("IDS_WP_CREATE_ORDER");
+    case SETTING_GROUP.ICON_MANAGER:
+      return t("Thiết lập biểu tượng");
+    case SETTING_GROUP.ROLE_MANAGER:
+      return t("Thiết lập vai trò");
     default:
       return null;
   }
 };
-const TablePart = props => {
+const TablePart = (props) => {
+  const [hackHeader, setHackHeader] = useState();
   const { t } = useTranslation();
   const type = props.match.params.type;
   const isOder = isEmpty(props.location.search);
@@ -64,6 +71,10 @@ const TablePart = props => {
         return <Payment />;
       case SETTING_GROUP.HOME:
         return <Home />;
+      case SETTING_GROUP.ICON_MANAGER:
+        return <IconManager />;
+      case SETTING_GROUP.ROLE_MANAGER:
+        return <RoleManager setHackHeader={setHackHeader} />;
       default:
         return null;
     }
@@ -78,43 +89,45 @@ const TablePart = props => {
   };
   return (
     <div className="header-setting-container">
-      <div className="header-setting">
-        <ColorTypo className="header-title">
-          {getHeaderText(props.match.params.type, props.location.search, t)}
-        </ColorTypo>
-        <RightHeader>
-          <div
-          // className={`${checkShowBtnCreateOder() ? '' : 'none-create-order'}`}
-          >
-            <HeaderButtonGroup />
-          </div>
+      {hackHeader || (
+        <div className="header-setting">
+          <ColorTypo className="header-title">
+            {getHeaderText(props.match.params.type, props.location.search, t)}
+          </ColorTypo>
+          <RightHeader>
+            <div
+            // className={`${checkShowBtnCreateOder() ? '' : 'none-create-order'}`}
+            >
+              <HeaderButtonGroup />
+            </div>
 
-          {checkShowBtnCreateOder() && (
-            <StyledButton
-              size="small"
-              onClick={() =>
-                props.history.push({
-                  pathname: Routes.SETTING_GROUP_CREATE_ORDER
-                })
-              }
-            >
-              + {t("IDS_WP_CREATE_ORDER")}
-            </StyledButton>
-          )}
-          {checkShowBtnCancelOder() && (
-            <StyledButton
-              size="small"
-              onClick={() =>
-                props.history.push({
-                  pathname: Routes.SETTING_GROUP_ORDER
-                })
-              }
-            >
-              {t("IDS_WP_CANCEL")}
-            </StyledButton>
-          )}
-        </RightHeader>
-      </div>
+            {checkShowBtnCreateOder() && (
+              <StyledButton
+                size="small"
+                onClick={() =>
+                  props.history.push({
+                    pathname: Routes.SETTING_GROUP_CREATE_ORDER,
+                  })
+                }
+              >
+                + {t("IDS_WP_CREATE_ORDER")}
+              </StyledButton>
+            )}
+            {checkShowBtnCancelOder() && (
+              <StyledButton
+                size="small"
+                onClick={() =>
+                  props.history.push({
+                    pathname: Routes.SETTING_GROUP_ORDER,
+                  })
+                }
+              >
+                {t("IDS_WP_CANCEL")}
+              </StyledButton>
+            )}
+          </RightHeader>
+        </div>
+      )}
       <div className="setting-right-content">
         <Scrollbars autoHide autoHideTimeout={500}>
           {getContentSettingAccount()}

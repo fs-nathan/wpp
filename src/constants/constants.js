@@ -11,30 +11,32 @@ export const DRAWER_TYPE = {
   GROUP_ACCOUNT: "GROUP_ACCOUNT",
   SETTING: "SETTING",
   JOIN_NEW_GROUP: "JOIN_NEW_GROUP",
-  ADD_USER: "ADD_USER"
+  ADD_USER: "ADD_USER",
 };
 export const SETTING_ACCOUNT = {
   INFO: "info",
   CHANGE_PASSWORD: "change-password",
   NOTIFICATION_WORKPLUS: "notification-workplus",
-  NOTIFICATION_WORKPLUS_DETAIL: "notification-workplus-detail"
+  NOTIFICATION_WORKPLUS_DETAIL: "notification-workplus-detail",
 };
 export const SETTING_GROUP = {
   INFO: "info",
   SETTING: "setting",
   HOME: "home",
   ORDER: "order",
+  ICON_MANAGER: "icon-manager",
+  ROLE_MANAGER: "role-manager",
   ORDER_DETAIL: "order-detail",
   CREATE_ORDER: "create-order",
   PAYMENT: "payment",
   LANGUAGE: "language",
-  NOTIFICATION: "notification"
+  NOTIFICATION: "notification",
 };
 export const MESSAGE = {
   ALL: "message-all",
   NEW: "message-new",
   NOTICE_ALL: "notice-all",
-  NOTICE_NEW: "notice-new"
+  NOTICE_NEW: "notice-new",
 };
 export const DOCUMENT = {
   RECENT: "recent",
@@ -43,5 +45,5 @@ export const DOCUMENT = {
   SHARE_ME: "share-me",
   ME: "me",
   GOOGLE_DRIVE: "google-drive",
-  TRASH: "trash"
+  TRASH: "trash",
 };

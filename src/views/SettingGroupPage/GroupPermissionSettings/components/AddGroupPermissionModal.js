@@ -68,7 +68,7 @@ const AddGroupPermissionModal = ({
                   value,
                 };
               })}
-              name="type"
+              name="module"
               label={t("Phạm vi module phân quyền")}
             />
           </VerticleList>
@@ -77,7 +77,11 @@ const AddGroupPermissionModal = ({
     </ModalCommon>
   );
 };
-const addGroupPermissionFormInitialValues = { name: "", description: "" };
+const addGroupPermissionFormInitialValues = {
+  name: "",
+  description: "",
+  module: "",
+};
 
 const createValidate = (schema) => (values = {}, mapError = {}) => {
   const { error } = schema.validate(values);
@@ -92,7 +96,7 @@ const validateAddGroupPermissionForm = createValidate(
   Joi.object({
     name: Joi.string().required(),
     description: Joi.any(),
-    type: Joi.any(),
+    module: Joi.string().required(),
   })
 );
 const AddGroupPermissionForm = ({ children, onSubmit }) => {
@@ -100,8 +104,10 @@ const AddGroupPermissionForm = ({ children, onSubmit }) => {
   const { t } = useTranslation();
   const validateMemo = useMemo(
     () => (values = {}) => {
-      const mapError = { "string.empty": t("required") };
-      return validateAddGroupPermissionForm(values, mapError);
+      const mapError = {
+        "string.empty": t("required"),
+      };
+      return loginlineFunc(validateAddGroupPermissionForm)(values, mapError);
     },
     [t]
   );

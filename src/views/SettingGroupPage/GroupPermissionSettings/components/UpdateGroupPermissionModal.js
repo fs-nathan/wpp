@@ -16,6 +16,7 @@ const UpdateGroupPermissionForm = ({ initialValues, children, onSubmit }) => {
   const { t } = useTranslation();
   return (
     <Formik
+      enableReinitialize
       initialValues={initialValues || addGroupPermissionFormInitialValues}
       onSubmit={onSubmit}
       // validate={validateMemo}
@@ -54,12 +55,12 @@ export default ({ item }) => {
   const permissionList = useSelector(
     settingGroupPermission.selectors.permissionListSelector
   );
-  const initialValues = useMemo(
-    () => ({
-      permissions: get(item, "permissions", []),
-    }),
-    [item]
-  );
+  const initialValues = useMemo(() => {
+    const mapper = (item) => item.permission;
+    return {
+      permissions: get(item, "permissions", []).map(mapper),
+    };
+  }, [item]);
   if (!item) return null;
   return (
     <UpdateGroupPermissionForm

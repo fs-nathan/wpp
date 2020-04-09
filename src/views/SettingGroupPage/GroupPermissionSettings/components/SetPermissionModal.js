@@ -30,7 +30,17 @@ export const SetPermissionModal = ({
   onSubmit,
 }) => {
   const [keyword, setKeyword] = useState("");
-  const [select, setSelect] = useMultipleSelect({}, true, true);
+  const [select, setSelect] = useMultipleSelect(
+    value.reduce(
+      (result, key) => ({
+        ...result,
+        [key]: true,
+      }),
+      {}
+    ),
+    true,
+    true
+  );
   useEffect(() => {
     onChange({
       target: {

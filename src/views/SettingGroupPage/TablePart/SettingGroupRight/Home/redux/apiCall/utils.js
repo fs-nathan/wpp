@@ -4,17 +4,21 @@ export const createAsyncAction = ({
   config: { url, method = "get", data },
   asyncId,
   success,
-  failure
+  failure,
+  notifyOnFailure,
+  notifyOnSuccess,
 }) => {
   return apiCallRequest({
     config: {
       url,
       method,
-      data
+      data,
     },
     data,
     asyncId,
     success,
-    failure
+    failure,
+    notifyOnFailure,
+    notifyOnSuccess,
   });
 };

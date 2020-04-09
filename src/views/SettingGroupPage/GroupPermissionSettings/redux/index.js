@@ -3,6 +3,7 @@ import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get, loginlineFunc } from "views/JobPage/utils";
 import {
   listAddFirst,
+  listremove,
   mapPayloadToState,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
 import { createAsyncAction } from "../../TablePart/SettingGroupRight/Home/redux/apiCall/utils";
@@ -79,13 +80,13 @@ export const loadGroupPermissionList = ({ type } = {}) => {
   });
 };
 
-// name:string,permissions:array of permission,type: int(0,1,2,3,4)
-export const createGroupPermission = ({ name, permissions, type }) => {
+// name:string,permissions:array of permission,module: int(0,1,2,3,4)
+export const createGroupPermission = ({ name, permissions, module }) => {
   return createAsyncAction({
     config: {
       url: "/permissions/create-group-permission",
       method: "post",
-      data: { name, permissions, module: type },
+      data: { name, permissions, module },
     },
     success: createAction(updateGroupPermissionList.type, function prepare(
       data
@@ -114,6 +115,8 @@ export const updateGroupPermission = ({
     success: function onSuccess(data) {
       return loadDetailGroupPermission({ group_permission_id });
     },
+    notifyOnFailure: true,
+    // notifyOnSuccess: true,
   });
 };
 export const deleteGroupPermission = ({ group_permission_id }) => {
@@ -123,6 +126,18 @@ export const deleteGroupPermission = ({ group_permission_id }) => {
       method: "post",
       data: { group_permission_id },
     },
+    success: createAction(updateGroupPermissionList.type, function prepare(
+      data
+    ) {
+      return {
+        payload: data.group_permission,
+        meta: {
+          action: listremove({ id: group_permission_id }),
+        },
+      };
+    }),
+    notifyOnFailure: true,
+    notifyOnSuccess: true,
   });
 };
 const updatePermissionList = createAction(

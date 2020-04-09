@@ -76,7 +76,7 @@ function Left({ groupPermissionList, setSelect, setModal }) {
           <Space heigth="10px" />
         </Box>
         <Box flex="1">
-          <Scrollbars>
+          <Scrollbars autoHide autoHideTimeout={500}>
             <Box paddingRight="10px">
               <DraggableList
                 list={groupPermissionList.filter((item) =>

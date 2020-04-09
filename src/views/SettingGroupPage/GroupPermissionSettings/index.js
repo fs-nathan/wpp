@@ -34,6 +34,11 @@ const GroupPermissionSettings = () => {
       );
     }
   }, [dispatch, select]);
+  useEffect(() => {
+    if (!select && groupPermissionList[0]) {
+      setSelect(groupPermissionList[0]);
+    }
+  }, [groupPermissionList, select]);
 
   const [
     id,
