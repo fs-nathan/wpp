@@ -4,9 +4,13 @@ import Icon from '@mdi/react';
 import { appendChat, chatFile, chatImage, chatSticker, clearTags, createChatText, loadChat, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { file as file_icon } from 'assets/fileType';
+import { convertToRaw, EditorState, getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import 'draft-js-mention-plugin/lib/plugin.css';
+import Editor from 'draft-js-plugins-editor';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import { humanFileSize } from 'helpers/jobDetail/stringHelper';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
@@ -16,10 +20,76 @@ import Message from '../BodyPart/Message';
 import '../Chat.scss';
 import './styles.scss';
 
+const { isSoftNewlineEvent } = KeyBindingUtil
+
+const positionSuggestions = ({ state, props }) => {
+  let transform;
+  let transition;
+  const translateY = props.suggestions.length * 50 + 10;
+
+  if (state.isActive && props.suggestions.length > 0) {
+    transform = `translateY(-${translateY}px) scaleY(1)`;
+    transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
+  } else if (state.isActive) {
+    transform = `translateY(-${translateY}px) scaleY(0)`;
+    transition = 'all 0.25s cubic-bezier(.3,1,.2,1)';
+  }
+
+  return {
+    transform,
+    transition,
+  };
+};
+
+function spliceSlice(str, index, count, add) {
+  // We cannot pass negative indexes directly to the 2nd slicing operation.
+  if (index < 0) {
+    index = str.length + index;
+    if (index < 0) {
+      index = 0;
+    }
+  }
+
+  return str.slice(0, index) + (add || "") + str.slice(index + count);
+}
+
+function getChatContent({ blocks, entityMap }) {
+  const mapBlocks = blocks.map(block => {
+    const { text = '', entityRanges = [] } = block;
+    let ret = text;
+    for (let index = 0; index < entityRanges.length; index++) {
+      const { offset, length, key } = entityRanges[index];
+      const { data } = entityMap[key];
+      // ret = spliceSlice(ret, offset, length, `{${data.mention.id}}`);
+      ret = ret.replace(data.mention.name, `{${data.mention.id}}`)
+    }
+    return ret;
+  })
+  return mapBlocks.join('\n')
+}
+
+const mentionPlugin = createMentionPlugin({
+  mentionPrefix: '@',
+  positionSuggestions,
+});
+const { MentionSuggestions } = mentionPlugin;
+const plugins = [mentionPlugin];
+
+function myKeyBindingFn(e) {
+  if (e.keyCode === 13 /* `enter` key */ && !isSoftNewlineEvent(e)) {
+    return 'send';
+  }
+
+  return getDefaultKeyBinding(e);
+}
+
+const added = [];
+
 const FooterPart = ({
   parentMessage,
   setSelectedChat,
 }) => {
+  const editorRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const members = useSelector(state => state.chat.members);
@@ -29,6 +99,8 @@ const FooterPart = ({
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElSticker, setAnchorElSticker] = useState(null);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const [suggestions, setSuggestions] = useState(members)
 
   const handleTriggerUpload = id => {
     document.getElementById(id).click();
@@ -117,6 +189,7 @@ const FooterPart = ({
 
   function handleClickSticker(id) {
     dispatch(chatSticker(taskId, id))
+    setAnchorElSticker(null)
   }
 
   function onClickSubTask() {
@@ -152,6 +225,49 @@ const FooterPart = ({
       }
       setSelectedChat(null)
     }
+  }
+
+  const onSearchChange = ({ value }) => {
+    setSuggestions(defaultSuggestionsFilter(value, members))
+  };
+
+  const onAddMention = (mention) => {
+    // get the mention object selected
+    // console.log('onAddMention! ', log)
+    added.push(mention.id)
+  }
+
+  const focus = () => {
+    editorRef.current.focus();
+  };
+
+  async function handleKeyCommand(command) {
+    if (command === 'send') {
+      // console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())))
+      // console.log(getChatContent(convertToRaw(editorState.getCurrentContent())))
+      // Perform a request to save your contents, set
+      // a new `editorState`, etc.
+      const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
+      if (content.trim().length === 0) return;
+      // setTextChat('');
+      // dispatch(clearTags());
+      setEditorState(EditorState.createEmpty())
+      try {
+        const { data } = await createChatText({
+          task_id: taskId, content,
+          parent_id: parentMessage && parentMessage.id,
+          tags: tagMembers.map(index => members[index].id)
+        });
+        // dispatch(appendChat(data));
+        dispatch(loadChat(taskId));
+      } catch (error) {
+        console.error('error here! ', error)
+      }
+      setSelectedChat(null)
+      return 'handled';
+    }
+
+    return 'not-handled';
   }
 
   return (
@@ -204,11 +320,13 @@ const FooterPart = ({
       </div>
       <Message {...parentMessage} isReply></Message>
       {tagMembers.map(index => <span key={index} className="footerChat--tag">@{members[index].name}</span>)}
-      <div className="wrap-input-message" id="input_message"
+      <div className="wrap-input-message chatBox" id="input_message"
         {...getRootProps({
           onClick: event => event.stopPropagation()
-        })}>
-        <input
+        })}
+        onClick={focus}
+      >
+        {/* <input
           onKeyPress={onKeyPressChat}
           onKeyDown={onKeyDownChat}
           className="chat-input"
@@ -216,6 +334,20 @@ const FooterPart = ({
           value={textChat}
           onChange={onChangeTextChat}
           placeholder="Nhập @ gợi ý, nội dung thảo luận..."
+        /> */}
+        <Editor
+          editorState={editorState}
+          onChange={setEditorState}
+          plugins={plugins}
+          ref={editorRef}
+          placeholder="Nhập @ gợi ý, nội dung thảo luận..."
+          handleKeyCommand={handleKeyCommand}
+          keyBindingFn={myKeyBindingFn}
+        />
+        <MentionSuggestions
+          onSearchChange={onSearchChange}
+          suggestions={suggestions}
+          onAddMention={onAddMention}
         />
         <input {...getInputProps()} />
         {isDragActive && (

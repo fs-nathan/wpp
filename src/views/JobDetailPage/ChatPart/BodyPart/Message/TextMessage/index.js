@@ -19,6 +19,27 @@ function getChatParent(chat_parent) {
   return <TextMessage {...chat_parent} isReply></TextMessage>
 }
 
+function getContentMention(content = '', members, color) {
+  if (!content) return '';
+  let ret = content;
+  const reg = /@{(.*?)}/g;
+  const matches = content.match(reg);
+  if (matches && matches.length) {
+    for (let index = 0; index < matches.length; index++) {
+      const element = matches[index];
+      const mentionId = element.replace('@', '').replace('{', '').replace('}', '');
+      const member = members.find(({ id }) => mentionId === id);
+      ret = ret.replace(element,
+        `<span className="TextMessage--tag" style={{ color: ${color} }}>@${member.name}</span>`
+        // `@${member.name}`
+      );
+    }
+  }
+  // console.log(matches)
+  // return matches.join(' ')
+  return ret;
+}
+
 const TextMessage = ({
   handleReplyChat,
   handleForwardChat,
@@ -38,6 +59,7 @@ const TextMessage = ({
   data_emotion = [],
 }) => {
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const members = useSelector(state => state.chat.members);
 
   function getColor() {
     if (isReply) return "#5b5b5b"
@@ -80,15 +102,16 @@ const TextMessage = ({
           </div>
         }
         {getChatParent(chat_parent)}
-        <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })} >
-          {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)}
-          {content}
-          {!isReply &&
-            <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
-              {time_create}
-            </div>
-          }
+        {/* {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)} */}
+        <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })}
+          dangerouslySetInnerHTML={{ __html: getContentMention(content, members, getColor()) }}
+        >
         </div>
+        {!isReply &&
+          <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
+            {time_create}
+          </div>
+        }
         {data_emotion.length > 0 &&
           <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
         }
