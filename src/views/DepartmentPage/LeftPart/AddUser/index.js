@@ -32,7 +32,8 @@ function AddUser({
 }) {
 
   React.useEffect(() => {
-    doGetPermissionViewUser(true);
+    if (viewPermissions.permissions === null) doGetPermissionViewUser(true);
+    //eslint-disable-next-line
   }, [doGetPermissionViewUser]);
 
   const [searchPatern, setSearchPatern] = React.useState('');

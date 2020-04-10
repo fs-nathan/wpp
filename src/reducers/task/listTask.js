@@ -2,7 +2,7 @@ import { find, findIndex, get, remove, slice } from 'lodash';
 import { CREATE_TASK_SUCCESS } from '../../constants/actions/task/createTask';
 import { DELETE_TASK_SUCCESS } from '../../constants/actions/task/deleteTask';
 import { LIST_TASK, LIST_TASK_FAIL, LIST_TASK_SUCCESS } from '../../constants/actions/task/listTask';
-import { SORT_TASK_SUCCESS } from '../../constants/actions/task/sortTask';
+import { SORT_TASK, SORT_TASK_SUCCESS } from '../../constants/actions/task/sortTask';
 
 export const initialState = {
   data: {
@@ -70,6 +70,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    case SORT_TASK:
     case SORT_TASK_SUCCESS: {
       let removed = [];
       let tasks = state.data.tasks.map(task => {

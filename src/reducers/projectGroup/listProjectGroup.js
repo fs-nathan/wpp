@@ -3,7 +3,7 @@ import { CREATE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGro
 import { DELETE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/deleteProjectGroup';
 import { EDIT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/editProjectGroup';
 import { LIST_PROJECT_GROUP, LIST_PROJECT_GROUP_FAIL, LIST_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/listProjectGroup';
-import { SORT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/sortProjectGroup';
+import { SORT_PROJECT_GROUP, SORT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/sortProjectGroup';
 
 export const initialState = {
   data: {
@@ -72,6 +72,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    case SORT_PROJECT_GROUP:
     case SORT_PROJECT_GROUP_SUCCESS: {
       let newProjectGroups = state.data.projectGroups;
       const removed = remove(newProjectGroups, { id: get(action.options, 'projectGroupId') });

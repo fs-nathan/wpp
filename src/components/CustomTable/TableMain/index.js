@@ -16,9 +16,45 @@ const PlaceholderRow = ({ className = '', ...rest }) =>
     {...rest}
   />
 
+const getBodyStyle = isDraggingOver => ({
+  background: isDraggingOver ? "lightblue" : "white",
+});
+
 function TableMain() {
 
   const { options, data } = React.useContext(CustomTableContext);
+  const [placeholderProps, setPlaceholderProps] = React.useState({});
+
+  const onDragUpdate = update => {
+    if (!update.destination) {
+      return;
+    }
+    const draggableId = update.draggableId;
+    const destinationIndex = update.destination.index;
+
+    const domQuery = `[data-react-beautiful-dnd-draggable='${draggableId}']`;
+    const draggedDOM = document.querySelector(domQuery);
+
+    if (!draggedDOM) {
+      return;
+    }
+    const { clientHeight, clientWidth } = draggedDOM;
+
+    const clientY = parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingTop) + [...draggedDOM.parentNode.children]
+      .slice(0, destinationIndex)
+      .reduce((total, curr) => {
+        const style = curr.currentStyle || window.getComputedStyle(curr);
+        const marginBottom = parseFloat(style.marginBottom);
+        return total + curr.clientHeight + marginBottom;
+      }, 0);
+
+    setPlaceholderProps({
+      clientHeight,
+      clientWidth,
+      clientY,
+      clientX: parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingLeft)
+    });
+  };
 
   return (
     <Container
@@ -29,28 +65,32 @@ function TableMain() {
         <TableHead>
           <TableHeaderRow />
         </TableHead>
-        <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)}>
+        <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)} onDragUpdate={onDragUpdate}>
           {get(options, 'grouped.bool', false)
             ? (
               data.map((group, index) => (
-                <TableBodyGroupRow group={group} key={index} />
+                <TableBodyGroupRow group={group} key={index} placeholderProps={placeholderProps} />
               )))
             : (
               <Droppable
                 droppableId={'custom-table-droppable-id'}
               >
-                {(provided, snapshot) => (
-                  <TableBody
-                    innerRef={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    {data.map((row, index) => (
+                {(provided, snapshot) => {
+                  console.log(provided.placeholder);
+                  return (
+                    <TableBody
+                      innerRef={provided.innerRef}
+                      {...provided.droppableProps}
+                      style={getBodyStyle(snapshot.isDraggingOver)}
+                    >
+                      {data.map((row, index) => (
 
-                      <TableBodyRow key={index} index={index} row={row} group={null} />
-                    ))}
-                    {provided.placeholder}
-                  </TableBody>
-                )}
+                        <TableBodyRow key={index} index={index} row={row} group={null} />
+                      ))}
+                      {provided.placeholder}
+                    </TableBody>
+                  )
+                }}
               </Droppable>
             )}
         </DragDropContext>

@@ -3,7 +3,7 @@ import { SORT_ROOM_SUCCESS } from '../../constants/actions/room/sortRoom';
 import { LIST_USER_OF_GROUP, LIST_USER_OF_GROUP_FAIL, LIST_USER_OF_GROUP_SUCCESS } from '../../constants/actions/user/listUserOfGroup';
 import { PRIVATE_MEMBER_SUCCESS } from '../../constants/actions/user/privateMember';
 import { PUBLIC_MEMBER_SUCCESS } from '../../constants/actions/user/publicMember';
-import { SORT_USER_SUCCESS } from '../../constants/actions/user/sortUser';
+import { SORT_USER, SORT_USER_SUCCESS } from '../../constants/actions/user/sortUser';
 import { UPDATE_USER_SUCCESS } from '../../constants/actions/user/updateUser';
 
 export const initialState = {
@@ -143,6 +143,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    case SORT_USER:
     case SORT_USER_SUCCESS: {
       let removed = [];
       let newRooms = state.data.rooms.map(room => {

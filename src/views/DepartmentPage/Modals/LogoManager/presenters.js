@@ -9,9 +9,9 @@ import ErrorBox from '../../../../components/ErrorBox';
 import LoadingBox from '../../../../components/LoadingBox';
 import './style.scss';
 
-const LogoList = ({ className = '', ...props }) =>
+const LogoList = ({ className = '', tall = false, ...props }) =>
   <div
-    className={`view_Department_Logo_Modal___logo-list ${className}`}
+    className={`view_Department_Logo_Modal___logo-list${tall ? '-tall' : ''} ${className}`}
     {...props}
   />;
 
@@ -23,6 +23,12 @@ const LogoBox = ({ className = '', isSelect, ...props }) =>
       } ${className}`}
     {...props}
   />;
+
+const CustomTypo = ({ className = '', ...props }) =>
+  <ColorTypo
+    className={`view_Department_Logo_Modal___typo ${className}`}
+    {...props}
+  />
 
 function LogoManager({
   open, setOpen,
@@ -51,8 +57,8 @@ function LogoManager({
       {icons.error !== null
         ? <ErrorBox />
         : <>
-          <ColorTypo>{t('DMH.VIEW.DP.MODAL.LOGO.DEFAULT')}</ColorTypo>
-          <LogoList cols={8}>
+          <CustomTypo>{t('DMH.VIEW.DP.MODAL.LOGO.DEFAULT')}</CustomTypo>
+          <LogoList>
             {icons.defaults.map(icon => (
               <LogoBox
                 key={get(icon, 'url_icon')}
@@ -70,8 +76,8 @@ function LogoManager({
               </LogoBox>
             ))}
           </LogoList>
-          <ColorTypo>{t('DMH.VIEW.DP.MODAL.LOGO.UPLOADED')}</ColorTypo>
-          <LogoList cols={8}>
+          <CustomTypo>{t('DMH.VIEW.DP.MODAL.LOGO.UPLOADED')}</CustomTypo>
+          <LogoList tall={true}>
             {icons.createds.map(icon => (
               <LogoBox
                 key={get(icon, 'id', '')}

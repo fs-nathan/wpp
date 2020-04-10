@@ -1,22 +1,28 @@
+import { concat, filter, get } from 'lodash';
 import { createSelector } from 'reselect';
-import { get, filter } from 'lodash';
 
 const listProject = state => state.project.listProject;
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
+const detailDefaultGroup = state => state.projectGroup.detailDefaultGroup;
 
 export const groupsSelector = createSelector(
-  [listProjectGroup, listProject],
-  (listProjectGroup, listProject) => {
+  [listProjectGroup, listProject, detailDefaultGroup],
+  (listProjectGroup, listProject, detailDefaultGroup) => {
     const { data: { projectGroups }, loading: listProjectGroupLoading, error: listProjectGroupError } = listProjectGroup;
     const { data: { projects }, loading: listProjectLoading, error: listProjectError } = listProject;
+    const { data: { projectGroup: _defaultProjectGroup }, error: detailDefaultGroupError, loading: detailDefaultGroupLoading } = detailDefaultGroup;
     const groups = projectGroups.map(projectGroup => ({
       ...projectGroup,
       projects: filter(projects, { project_group_id: get(projectGroup, 'id') }),
     }));
+    const defaultProjectGroup = {
+      ..._defaultProjectGroup,
+      projects: filter(projects, { project_group_id: null }),
+    };
     return {
-      groups,
-      loading: listProjectGroupLoading || listProjectLoading,
-      error: listProjectGroupError || listProjectError,
+      groups: concat(groups, defaultProjectGroup),
+      loading: listProjectGroupLoading || listProjectLoading || detailDefaultGroupLoading,
+      error: listProjectGroupError || listProjectError || detailDefaultGroupError,
     }
   }
 );
