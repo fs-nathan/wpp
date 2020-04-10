@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { find, get } from 'lodash';
 import { createSelector } from 'reselect';
 
 const profile = state => state.system.profile;
@@ -8,7 +8,8 @@ export const routeSelector = createSelector(
   [profile],
   (profile) => {
     const { group_active } = profile;
-    const route = get(group_active, 'modules[4].url_redirect', '/users');
+    const modules = get(group_active, 'modules', []);
+    const route = get(find(modules, { name: "Users" }), 'url_redirect', '/users');
     return route;
   }
 );

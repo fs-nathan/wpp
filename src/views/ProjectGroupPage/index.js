@@ -12,7 +12,6 @@ import { detailProjectGroup } from '../../actions/projectGroup/detailProjectGrou
 import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
 import { memberProjectGroup } from '../../actions/projectGroup/memberProjectGroup';
 import { getPermissionViewProjects } from '../../actions/viewPermissions';
-import LoadingOverlay from '../../components/LoadingOverlay';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
   //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
@@ -58,7 +57,7 @@ function ProjectGroupPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListIcon();
+      doListIcon(true);
 
       /*
       const reloadListIcon = () => {
@@ -78,7 +77,7 @@ function ProjectGroupPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListProjectGroup();
+      doListProjectGroup(true);
 
       const reloadListProjectGroup = () => {
         doListProjectGroup(/*true*/);
@@ -108,7 +107,7 @@ function ProjectGroupPage({
     if (viewPermissions.permissions !== null) {
       if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
       if (projectGroupId) {
-        doDetailProjectGroup({ projectGroupId });
+        doDetailProjectGroup({ projectGroupId }, true);
 
         const reloadDetailProjectGroup = () => {
           doDetailProjectGroup({ projectGroupId });
@@ -131,7 +130,7 @@ function ProjectGroupPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doDetailDefaultGroup();
+      doDetailDefaultGroup(true);
     }
   }, [doDetailDefaultGroup, viewPermissions]);
 
@@ -139,7 +138,7 @@ function ProjectGroupPage({
     if (viewPermissions.permissions !== null) {
       if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
       if (projectGroupId) {
-        doMemberProjectGroup({ projectGroupId });
+        doMemberProjectGroup({ projectGroupId }, true);
 
         /*
         const reloadMemberProjectGroup = () => {
@@ -165,7 +164,7 @@ function ProjectGroupPage({
         groupProject: projectGroupId,
         timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
         timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-      });
+      }, true);
 
       const reloadListProject = () => {
         doListProject({
@@ -199,7 +198,7 @@ function ProjectGroupPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListDeletedProject({});
+      doListDeletedProject({}, true);
 
       const reloadListDeletedProject = () => {
         doListDeletedProject({});
@@ -220,7 +219,7 @@ function ProjectGroupPage({
       if (statusProjectId !== null) {
         doDetailStatus({
           projectId: statusProjectId,
-        });
+        }, true);
         /*
         const reloadDetailStatus = () => {
           doDetailStatus({
@@ -241,112 +240,108 @@ function ProjectGroupPage({
   }, [statusProjectId, doDetailStatus, viewPermissions]);
 
   return (
-    <LoadingOverlay
-      active={viewPermissions.loading}
-    >
-      <Provider value={{
-        setProjectGroupId,
-        setStatusProjectId,
-        setTimeRange,
-        localOptions, setLocalOptions,
-      }}>
-        <Route
-          path={route}
-          render={({ match: { url } }) => (
-            <Switch>
-              <Route
-                path={`${url}`}
-                exact
-                render={props => (
-                  <TwoColumnsLayout
-                    leftRenders={[
-                      () =>
-                        <ProjectGroupList
-                          {...props}
-                        />,
-                    ]}
-                    rightRender={
-                      ({ expand, handleExpand }) =>
-                        <AllProjectTable
-                          {...props}
-                          expand={expand}
-                          handleExpand={handleExpand}
-                        />
-                    }
-                  />
-                )}
-              />
-              <Route
-                path={`${url}/deleted`}
-                exact
-                render={props => (
-                  <TwoColumnsLayout
-                    leftRenders={[
-                      () =>
-                        <ProjectGroupList
-                          {...props}
-                        />,
-                    ]}
-                    rightRender={
-                      ({ expand, handleExpand }) =>
-                        <DeletedProjectTable
-                          {...props}
-                          expand={expand}
-                          handleExpand={handleExpand}
-                        />
-                    }
-                  />
-                )}
-              />
-              <Route
-                path={`${url}/group/default`}
-                exact
-                render={props => (
-                  <TwoColumnsLayout
-                    leftRenders={[
-                      () =>
-                        <DefaultGroupDetail
-                          {...props}
-                        />,
-                    ]}
-                    rightRender={
-                      ({ expand, handleExpand }) =>
-                        <AllProjectTable
-                          {...props}
-                          expand={expand}
-                          handleExpand={handleExpand}
-                          isDefault={true}
-                        />
-                    }
-                  />
-                )}
-              />
-              <Route
-                path={`${url}/group/:projectGroupId`}
-                render={props => (
-                  <TwoColumnsLayout
-                    leftRenders={[
-                      () =>
-                        <ProjectGroupDetail
-                          {...props}
-                        />,
-                    ]}
-                    rightRender={
-                      ({ expand, handleExpand }) =>
-                        <AllProjectTable
-                          {...props}
-                          expand={expand}
-                          handleExpand={handleExpand}
-                        />
-                    }
-                  />
-                )}
-              />
-            </Switch>
-          )}
-        />
-      </Provider>
-    </LoadingOverlay>
+    <Provider value={{
+      setProjectGroupId,
+      setStatusProjectId,
+      setTimeRange,
+      localOptions, setLocalOptions,
+    }}>
+      <Route
+        path={route}
+        render={({ match: { url } }) => (
+          <Switch>
+            <Route
+              path={`${url}`}
+              exact
+              render={props => (
+                <TwoColumnsLayout
+                  leftRenders={[
+                    () =>
+                      <ProjectGroupList
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) =>
+                      <AllProjectTable
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                      />
+                  }
+                />
+              )}
+            />
+            <Route
+              path={`${url}/deleted`}
+              exact
+              render={props => (
+                <TwoColumnsLayout
+                  leftRenders={[
+                    () =>
+                      <ProjectGroupList
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) =>
+                      <DeletedProjectTable
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                      />
+                  }
+                />
+              )}
+            />
+            <Route
+              path={`${url}/group/default`}
+              exact
+              render={props => (
+                <TwoColumnsLayout
+                  leftRenders={[
+                    () =>
+                      <DefaultGroupDetail
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) =>
+                      <AllProjectTable
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                        isDefault={true}
+                      />
+                  }
+                />
+              )}
+            />
+            <Route
+              path={`${url}/group/:projectGroupId`}
+              render={props => (
+                <TwoColumnsLayout
+                  leftRenders={[
+                    () =>
+                      <ProjectGroupDetail
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) =>
+                      <AllProjectTable
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                      />
+                  }
+                />
+              )}
+            />
+          </Switch>
+        )}
+      />
+    </Provider>
   )
 }
 

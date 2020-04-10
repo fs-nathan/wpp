@@ -76,7 +76,6 @@ function TableMain() {
                 droppableId={'custom-table-droppable-id'}
               >
                 {(provided, snapshot) => {
-                  console.log(provided.placeholder);
                   return (
                     <TableBody
                       innerRef={provided.innerRef}

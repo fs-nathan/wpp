@@ -11,7 +11,6 @@ import { listRoom } from '../../actions/room/listRoom';
 import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
 import { listUserRole } from '../../actions/userRole/listUserRole';
 import { getPermissionViewUser } from '../../actions/viewPermissions';
-import LoadingOverlay from '../../components/LoadingOverlay';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
   //PUBLIC_MEMBER, PRIVATE_MEMBER, UPDATE_USER,
@@ -51,7 +50,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListRoom();
+      doListRoom(true);
 
       const reloadListRoom = () => {
         doListRoom();
@@ -76,7 +75,7 @@ function UserPage({
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (departmentId && departmentId !== 'default') {
-        doDetailRoom({ roomId: departmentId });
+        doDetailRoom({ roomId: departmentId }, true);
         /*
         const reloadDetailRoom = () => {
           doDetailRoom({ roomId: departmentId });
@@ -95,7 +94,7 @@ function UserPage({
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (departmentId) {
-        doGetUserOfRoom({ roomId: departmentId });
+        doGetUserOfRoom({ roomId: departmentId }, true);
 
         const reloadGetUserOfRoom = () => {
           doGetUserOfRoom({ roomId: departmentId });
@@ -122,7 +121,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListPosition();
+      doListPosition(true);
 
       /*
       const reloadListPosition = () => {
@@ -144,7 +143,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListMajor();
+      doListMajor(true);
 
       /*
       const reloadListMajor = () => {
@@ -166,7 +165,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListLevel();
+      doListLevel(true);
 
       /*
       const reloadListLevel = () => {
@@ -188,7 +187,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListUserRole();
+      doListUserRole(true);
 
       /*
       const reloadListUserRole = () => {
@@ -210,7 +209,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListIcon();
+      doListIcon(true);
 
       /*
       const reloadListIcon = () => {
@@ -230,7 +229,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListUserOfGroup();
+      doListUserOfGroup(true);
 
       const reloadListUserOfGroup = () => {
         doListUserOfGroup();
@@ -265,65 +264,61 @@ function UserPage({
   }, [doListUserOfGroup, viewPermissions]);
 
   return (
-    <LoadingOverlay
-      active={viewPermissions.loading}
-    >
-      <Provider value={{
-        setDepartmentId,
-      }}>
-        <Route
-          path={route}
-          render={({ match: { url }, }) => (
-            <>
-              <Route
-                path={`${url}`}
-                exact
-                render={props => (
-                  <TwoColumnsLayout
-                    leftRenders={[
-                      () =>
-                        <DepartmentList
-                          {...props}
-                        />,
-                    ]}
-                    rightRender={
-                      ({ expand, handleExpand }) =>
-                        <AllUsersTable
-                          {...props}
-                          expand={expand}
-                          handleExpand={handleExpand}
-                        />
-                    }
-                  />
-                )}
-              />
-              <Route
-                path={`${url}/room/:departmentId`}
-                exact
-                render={props => (
-                  <TwoColumnsLayout
-                    leftRenders={[
-                      () =>
-                        <DepartmentInfo
-                          {...props}
-                        />,
-                    ]}
-                    rightRender={
-                      ({ expand, handleExpand }) =>
-                        <DepartmentUsersTable
-                          {...props}
-                          expand={expand}
-                          handleExpand={handleExpand}
-                        />
-                    }
-                  />
-                )}
-              />
-            </>
-          )}
-        />
-      </Provider>
-    </LoadingOverlay>
+    <Provider value={{
+      setDepartmentId,
+    }}>
+      <Route
+        path={route}
+        render={({ match: { url }, }) => (
+          <>
+            <Route
+              path={`${url}`}
+              exact
+              render={props => (
+                <TwoColumnsLayout
+                  leftRenders={[
+                    () =>
+                      <DepartmentList
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) =>
+                      <AllUsersTable
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                      />
+                  }
+                />
+              )}
+            />
+            <Route
+              path={`${url}/room/:departmentId`}
+              exact
+              render={props => (
+                <TwoColumnsLayout
+                  leftRenders={[
+                    () =>
+                      <DepartmentInfo
+                        {...props}
+                      />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand }) =>
+                      <DepartmentUsersTable
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                      />
+                  }
+                />
+              )}
+            />
+          </>
+        )}
+      />
+    </Provider>
   )
 }
 
