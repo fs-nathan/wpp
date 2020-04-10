@@ -13,7 +13,6 @@ import { listTask } from '../../actions/task/listTask';
 import { getListTaskDetail } from '../../actions/taskDetail/taskDetailActions';
 import { listUserRole } from '../../actions/userRole/listUserRole';
 import { getPermissionViewDetailProject } from '../../actions/viewPermissions';
-import LoadingOverlay from '../../components/LoadingOverlay';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
   ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, COPY_GROUP_TASK,
@@ -59,7 +58,7 @@ function ProjectPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListProjectGroup();
+      doListProjectGroup(true);
 
       const reloadListProjectGroup = () => {
         doListProjectGroup(/*true*/);
@@ -86,7 +85,7 @@ function ProjectPage({
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (projectId) {
-        doDetailProject({ projectId });
+        doDetailProject({ projectId }, true);
 
         const reloadDetailProject = () => {
           doDetailProject({ projectId });
@@ -120,7 +119,7 @@ function ProjectPage({
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
       if (projectId) {
-        doMemberProject({ projectId });
+        doMemberProject({ projectId }, true);
 
         const reloadMemberProject = () => {
           doMemberProject({ projectId });
@@ -160,7 +159,7 @@ function ProjectPage({
           projectId,
           timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
           timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-        });
+        }, true);
 
         const reloadListTask = () => {
           doListTask({
@@ -196,7 +195,7 @@ function ProjectPage({
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
       if (projectId) {
-        doListGroupTask({ projectId });
+        doListGroupTask({ projectId }, true);
 
 
         const reloadListGroupTask = () => {
@@ -223,7 +222,7 @@ function ProjectPage({
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
       if (projectId) {
-        doGetListTaskDetail({ projectId });
+        doGetListTaskDetail({ projectId }, true);
 
         const reloadGetListTaskDetail = () => {
           doGetListTaskDetail({ projectId });
@@ -246,7 +245,7 @@ function ProjectPage({
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
-      doGetAllGroupTask();
+      doGetAllGroupTask(true);
 
       const reloadGetAllGroupTask = () => {
         doGetAllGroupTask(true);
@@ -270,7 +269,7 @@ function ProjectPage({
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
-      doListUserRole();
+      doListUserRole(true);
 
       /*
       const reloadListUserRole = () => {
@@ -297,7 +296,7 @@ function ProjectPage({
       if (statusProjectId !== null) {
         doDetailStatus({
           projectId: statusProjectId,
-        });
+        }, true);
 
         /*
         const reloadDetailStatus = () => {
@@ -319,46 +318,42 @@ function ProjectPage({
   }, [statusProjectId, doDetailStatus, viewPermissions]);
 
   return (
-    <LoadingOverlay
-      active={viewPermissions.loading}
-    >
-      <Provider value={{
-        setProjectId,
-        setTimeRange,
-        setStatusProjectId,
-        localOptions, setLocalOptions
-      }}>
-        <Route
-          path={route}
-          render={({ match: { url, } }) => (
-            <>
-              <Route
-                path={`${url}/:projectId`}
-                exact
-                render={props => (
-                  <TwoColumnsLayout
-                    leftRenders={[
-                      () => <ProjectDetail {...props} />,
-                      ({ handleSubSlide }) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide} />,
-                      ({ handleSubSlide }) => <GroupTaskSlide {...props} handleSubSlide={handleSubSlide} />,
-                    ]}
-                    rightRender={
-                      ({ expand, handleExpand, handleSubSlide, }) =>
-                        <AllTaskTable
-                          {...props}
-                          expand={expand}
-                          handleExpand={handleExpand}
-                          handleSubSlide={handleSubSlide}
-                        />
-                    }
-                  />
-                )}
-              />
-            </>
-          )}
-        />
-      </Provider>
-    </LoadingOverlay>
+    <Provider value={{
+      setProjectId,
+      setTimeRange,
+      setStatusProjectId,
+      localOptions, setLocalOptions
+    }}>
+      <Route
+        path={route}
+        render={({ match: { url, } }) => (
+          <>
+            <Route
+              path={`${url}/:projectId`}
+              exact
+              render={props => (
+                <TwoColumnsLayout
+                  leftRenders={[
+                    () => <ProjectDetail {...props} />,
+                    ({ handleSubSlide }) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide} />,
+                    ({ handleSubSlide }) => <GroupTaskSlide {...props} handleSubSlide={handleSubSlide} />,
+                  ]}
+                  rightRender={
+                    ({ expand, handleExpand, handleSubSlide, }) =>
+                      <AllTaskTable
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                        handleSubSlide={handleSubSlide}
+                      />
+                  }
+                />
+              )}
+            />
+          </>
+        )}
+      />
+    </Provider>
   )
 }
 

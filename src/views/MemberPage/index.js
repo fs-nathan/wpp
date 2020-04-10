@@ -9,7 +9,6 @@ import { listRoom } from '../../actions/room/listRoom';
 import { detailUser } from '../../actions/user/detailUser';
 import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
 import { getPermissionViewUser } from '../../actions/viewPermissions';
-import LoadingOverlay from '../../components/LoadingOverlay';
 import {
   CustomEventDispose, CustomEventListener, UPDATE_USER,
   //SORT_ROOM, CREATE_ROOM, DELETE_ROOM, UPDATE_ROOM,
@@ -55,7 +54,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListRoom();
+      doListRoom(true);
 
       /*
       const reloadListRoom = () => {
@@ -79,7 +78,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListPosition();
+      doListPosition(true);
 
       /*
       const reloadListPosition = () => {
@@ -100,16 +99,16 @@ function UserPage({
   }, [doListPosition, viewPermissions]);
 
   React.useEffect(() => {
-    if (viewPermissions.permissions !== null) doListMajor();
+    if (viewPermissions.permissions !== null) doListMajor(true);
   }, [doListMajor, viewPermissions]);
 
   React.useEffect(() => {
-    if (viewPermissions.permissions !== null) doListLevel();
+    if (viewPermissions.permissions !== null) doListLevel(true);
   }, [doListLevel, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListUserOfGroup();
+      doListUserOfGroup(true);
 
       const reloadListUserOfGroup = () => {
         doListUserOfGroup();
@@ -145,7 +144,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doDetailUser({ userId });
+      doDetailUser({ userId }, true);
 
 
       const reloadDetailUserHandler = () => doDetailUser({ userId }, true);
@@ -161,39 +160,35 @@ function UserPage({
   }, [doDetailUser, userId, viewPermissions]);
 
   return (
-    <LoadingOverlay
-      active={viewPermissions.loading}
-    >
-      <Provider value={{
-        setUserId,
-      }}>
-        <Container>
-          <Route
-            path={route}
-            render={({ match: { url, } }) => (
-              <LeftDiv>
-                <Route path={`${url}/`} component={UserList} />
-              </LeftDiv>
-            )}
-          />
-          <Route
-            path={route}
-            render={({ match: { url, } }) => (
-              <RightDiv>
-                <Route path={`${url}/:userId`}
-                  render={props =>
-                    <UserInfo
-                      {...props}
-                    />
-                  }
-                  exact
-                />
-              </RightDiv>
-            )}
-          />
-        </Container>
-      </Provider>
-    </LoadingOverlay>
+    <Provider value={{
+      setUserId,
+    }}>
+      <Container>
+        <Route
+          path={route}
+          render={({ match: { url, } }) => (
+            <LeftDiv>
+              <Route path={`${url}/`} component={UserList} />
+            </LeftDiv>
+          )}
+        />
+        <Route
+          path={route}
+          render={({ match: { url, } }) => (
+            <RightDiv>
+              <Route path={`${url}/:userId`}
+                render={props =>
+                  <UserInfo
+                    {...props}
+                  />
+                }
+                exact
+              />
+            </RightDiv>
+          )}
+        />
+      </Container>
+    </Provider>
   )
 }
 
