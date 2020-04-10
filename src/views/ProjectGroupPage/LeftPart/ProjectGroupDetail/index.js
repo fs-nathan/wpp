@@ -48,21 +48,19 @@ function ProjectGroupDetail({
   function doOpenModal(type, props) {
     switch (type) {
       case 'UPDATE': {
-        if (get(viewPermissions.permissions, 'manage_project_group', false)) {
+        if (get(viewPermissions.permissions, 'manage_group_project', false)) {
           setOpenCreate(true);
           setCreateProps(props);
         }
         return;
       }
       case 'MEMBER': {
-        if (get(viewPermissions.permissions, 'manage_project_group', false)) {
-          setOpenMember(true);
-          setMemberProps(props);
-        }
+        setOpenMember(true);
+        setMemberProps(props);
         return;
       }
       case 'ALERT': {
-        if (get(viewPermissions.permissions, 'manage_project_group', false)) {
+        if (get(viewPermissions.permissions, 'manage_group_project', false)) {
           setOpenAlert(true);
           setAlertProps(props);
         }
@@ -75,7 +73,7 @@ function ProjectGroupDetail({
   return (
     <>
       <ProjectGroupDetailPresenter
-        group={group} route={route} canModify={get(viewPermissions.permissions, 'manage_project_group', false)}
+        group={group} route={route} canModify={get(viewPermissions.permissions, 'manage_group_project', false)}
         handleDeleteProjectGroup={projectGroup =>
           doDeleteProjectGroup({ projectGroupId: get(projectGroup, 'id') })
         }

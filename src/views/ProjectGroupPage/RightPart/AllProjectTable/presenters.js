@@ -83,6 +83,7 @@ function AllProjectTable({
   handleTimeRange,
   bgColor,
   showHidePendings,
+  canCreate,
 }) {
 
   const history = useHistory();
@@ -138,10 +139,10 @@ function AllProjectTable({
                 onClick: evt => setTimeAnchor(evt.currentTarget)
               }
             ],
-            mainAction: {
+            mainAction: canCreate ? {
               label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
               onClick: evt => handleOpenModal('CREATE'),
-            },
+            } : null,
             expand: {
               bool: expand,
               toggleExpand: () => handleExpand(!expand)
@@ -212,7 +213,7 @@ function AllProjectTable({
               field: (row) => <LinkSpan onClick={evt => history.push(`${route}/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
               sort: evt => handleSortType('name'),
               align: 'left',
-              width: '24%',
+              width: '25%',
             },
             {
               label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.STATE"),
@@ -331,7 +332,7 @@ function AllProjectTable({
                   {get(row, 'priority_name', '')}
                 </CustomBadge>
               ),
-              sort: evt => handleSortType('priority_code'),
+              sort: evt => handleSortType('priority_name'),
               align: 'center',
               width: '10%',
             },
@@ -357,16 +358,17 @@ function AllProjectTable({
             },
             {
               label: '',
-              field: project => (
-                <SettingButton
-                  handleOpenMenu={currentTarget =>
-                    doOpenMenu(
-                      currentTarget,
-                      project,
-                    )
-                  }
-                />
-              ),
+              field: project => (get(project, 'can_update', false) || get(project, 'can_delete', false))
+                ? (
+                  <SettingButton
+                    handleOpenMenu={currentTarget =>
+                      doOpenMenu(
+                        currentTarget,
+                        project,
+                      )
+                    }
+                  />
+                ) : null,
               align: 'center',
               width: '5%',
             }
@@ -445,17 +447,22 @@ function AllProjectTable({
             horizontal: 'right'
           }}
         >
-          <MenuItem
+          {get(curProject, 'can_update', false) && <MenuItem
             onClick={evt => {
               setMenuAnchor(null);
               handleOpenModal('SETTING', {
                 curProject,
+                canChange: {
+                  date: true,
+                  copy: true,
+                  view: true,
+                }
               });
             }}
           >
             {t("DMH.VIEW.PGP.RIGHT.ALL.SETTING")}
-          </MenuItem>
-          <MenuItem
+          </MenuItem>}
+          {get(curProject, 'can_update', false) && <MenuItem
             onClick={evt => {
               setMenuAnchor(null);
               handleOpenModal('UPDATE', {
@@ -464,8 +471,8 @@ function AllProjectTable({
             }}
           >
             {t("DMH.VIEW.PGP.RIGHT.ALL.EDIT")}
-          </MenuItem>
-          <MenuItem
+          </MenuItem>}
+          {get(curProject, 'can_update', false) && <MenuItem
             onClick={evt => {
               setMenuAnchor(null);
               handleShowOrHideProject(curProject);
@@ -479,8 +486,8 @@ function AllProjectTable({
                 color="white"
               />}
             {get(curProject, 'visibility', false) ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : t("DMH.VIEW.PGP.RIGHT.ALL.SHOW")}
-          </MenuItem>
-          <MenuItem
+          </MenuItem>}
+          {get(curProject, 'can_delete', false) && <MenuItem
             onClick={evt => {
               setMenuAnchor(null)
               handleOpenModal('ALERT', {
@@ -488,7 +495,7 @@ function AllProjectTable({
                 onConfirm: () => handleDeleteProject(curProject),
               })
             }}
-          >{t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}</MenuItem>
+          >{t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}</MenuItem>}
         </Menu>
       </React.Fragment>
     </Container>

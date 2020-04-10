@@ -3,7 +3,7 @@ import { COPY_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/copyG
 import { CREATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/createGroupTask';
 import { DELETE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/deleteGroupTask';
 import { LIST_GROUP_TASK, LIST_GROUP_TASK_FAIL, LIST_GROUP_TASK_RESET, LIST_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/listGroupTask';
-import { SORT_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/sortGroupTask';
+import { SORT_GROUP_TASK, SORT_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/sortGroupTask';
 import { UPDATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/updateGroupTask ';
 
 export const initialState = {
@@ -104,6 +104,7 @@ function reducer(state = initialState, action) {
         },
       }
     }
+    case SORT_GROUP_TASK:
     case SORT_GROUP_TASK_SUCCESS: {
       let newGroupTasks = [...get(state.data, 'groupTasks', [])];
       let removed = remove(newGroupTasks, { id: get(action.options, 'groupTaskId') });

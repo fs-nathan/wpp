@@ -39,6 +39,7 @@ import { ASSIGN_MEMBER_TO_ALL_TASK } from "../constants/actions/project/assignMe
 import { COPY_PROJECT } from "../constants/actions/project/copyProject";
 import { CREATE_PROJECT } from "../constants/actions/project/createProject";
 import { DELETE_PROJECT } from "../constants/actions/project/deleteProject";
+import { DELETE_TRASH_PROJECT } from "../constants/actions/project/deleteTrashProject";
 import { DETAIL_PROJECT } from "../constants/actions/project/detailProject";
 import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
 import { LIST_DELETED_PROJECT } from "../constants/actions/project/listDeletedProject";
@@ -46,6 +47,7 @@ import { LIST_PROJECT } from "../constants/actions/project/listProject";
 import { MEMBER_PROJECT } from "../constants/actions/project/memberProject";
 import { REMOVE_MEMBER_PROJECT } from "../constants/actions/project/removeMemberProject";
 import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from "../constants/actions/project/removeProjectRoleFromMember";
+import { RESTORE_TRASH_PROJECT } from "../constants/actions/project/restoreTrashProject";
 import { DETAIL_STATUS } from "../constants/actions/project/setting/detailStatus";
 import { UPDATE_STATUS_COPY } from "../constants/actions/project/setting/updateStatusCopy";
 import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateStatusDate";
@@ -90,7 +92,7 @@ import { CREATE_USER_ROLE } from "../constants/actions/userRole/createUserRole";
 import { DELETE_USER_ROLE } from "../constants/actions/userRole/deleteUserRole";
 import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
 import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
-import { GET_PERMISSION_VIEW_PROJECTS, GET_PERMISSION_VIEW_USERS } from "../constants/actions/viewPermissions";
+import { GET_PERMISSION_VIEW_DETAIL_PROJECT, GET_PERMISSION_VIEW_PROJECTS, GET_PERMISSION_VIEW_USERS } from "../constants/actions/viewPermissions";
 // ==================================
 import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
@@ -133,12 +135,14 @@ import { assignMemberToAllTask } from "./project/assignMemberToAllTask";
 import { copyProject } from "./project/copyProject";
 import { createProject } from "./project/createProject";
 import { deleteProject } from "./project/deleteProject";
+import { deleteTrashProject } from "./project/deleteTrashProject";
 import { detailProject } from "./project/detailProject";
 import { hideProject } from "./project/hideProject";
 import { listDeletedProject, listProject } from "./project/listProject";
 import { memberProject } from "./project/memberProject";
 import { removeMemberProject } from "./project/removeMemberProject";
 import { removeProjectRoleFromMember } from "./project/removeProjectRoleFromMember";
+import { restoreTrashProject } from "./project/restoreTrashProject";
 import { detailStatus } from "./project/setting/detailStatus";
 import { updateStatusCopy } from "./project/setting/updateStatusCopy";
 import { updateStatusDate } from "./project/setting/updateStatusDate";
@@ -182,7 +186,7 @@ import { createUserRole } from "./userRole/createUserRole";
 import { deleteUserRole } from "./userRole/deleteUserRole";
 import { listUserRole } from "./userRole/listUserRole";
 import { updateUserRole } from "./userRole/updateUserRole";
-import { getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
+import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
 
 function* rootSaga() {
   // Hoang - begin
@@ -253,6 +257,8 @@ function* rootSaga() {
   yield takeLatest(DETAIL_PROJECT, detailProject);
   yield takeEvery(HIDE_PROJECT, hideProject);
   yield takeEvery(SHOW_PROJECT, showProject);
+  yield takeEvery(DELETE_TRASH_PROJECT, deleteTrashProject);
+  yield takeEvery(RESTORE_TRASH_PROJECT, restoreTrashProject);
   yield takeLatest(MEMBER_PROJECT, memberProject);
   yield takeEvery(ADD_MEMBER_PROJECT, addMemberProject);
   yield takeEvery(REMOVE_MEMBER_PROJECT, removeMemberProject);
@@ -287,6 +293,10 @@ function* rootSaga() {
   yield takeEvery(
     GET_PERMISSION_VIEW_USERS,
     getPermissionViewUsers
+  );
+  yield takeEvery(
+    GET_PERMISSION_VIEW_DETAIL_PROJECT,
+    getPermissionViewDetailProject
   );
 
   // Hoang - end

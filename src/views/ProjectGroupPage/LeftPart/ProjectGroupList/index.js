@@ -24,7 +24,7 @@ function ProjectList({
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE': {
-        if (get(viewPermissions.permissions, 'manage_project_group', false)) {
+        if (get(viewPermissions.permissions, 'manage_group_project', false)) {
           setOpenCreate(true);
         }
         return;
@@ -36,7 +36,7 @@ function ProjectList({
   return (
     <>
       <ProjectGroupListPresenter
-        groups={newGroups} route={route} canModify={get(viewPermissions.permissions, 'manage_project_group', false)}
+        groups={newGroups} route={route} canModify={get(viewPermissions.permissions, 'manage_group_project', false)}
         searchPatern={searchPatern} setSearchPatern={setSearchPatern}
         handleSortProjectGroup={(projectGroupId, sortIndex) => doSortProjectGroup({ projectGroupId, sortIndex })}
         handleOpenModal={doOpenModal}

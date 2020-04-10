@@ -160,17 +160,11 @@ function DepartmentUsersTable({
             label: t('DMH.VIEW.DP.MODAL.TITLE.TITLE'),
             onClick: () => handleOpenModal('TITLE'),
           }, {
-            label: t('DMH.VIEW.DP.MODAL.ROLE.TITLE'),
-            onClick: () => handleOpenModal('ROLE'),
-          }, {
             label: t('DMH.VIEW.DP.MODAL.LEVEL.TITLE'),
             onClick: () => handleOpenModal('LEVEL'),
           }, {
             label: t('DMH.VIEW.DP.MODAL.MAJOR.TITLE'),
             onClick: () => handleOpenModal('MAJOR'),
-          }, {
-            label: t('DMH.VIEW.DP.MODAL.LOGO.TITLE'),
-            onClick: () => handleOpenModal('LOGO'),
           }, {
             label: t('DMH.VIEW.DP.RIGHT.UT.TABLE_SETTING'),
             onClick: () => handleOpenModal('TABLE_SETTING'),

@@ -287,7 +287,6 @@ function AddUser({
       >
         <LoadingOverlay
           active={viewPermissions.loading}
-          spinner
         >
           <StyledBox>
             <ColorTypo bold>
@@ -308,71 +307,56 @@ function AddUser({
                 {t('DMH.VIEW.DP.LEFT.ADD.BTN.FIND')}
               </PillButton>
             </div>
-            <LoadingOverlay
-              active={desireUser.loading}
-              spinner
-            >
-              <DesiringUserList
-                canModify={get(viewPermissions.permissions, 'can_modify', false)}
-                bgColor={bgColor}
-                loading={desireLoading}
-                user={desireUser.user && {
-                  ...desireUser.user,
-                  invitation: get(
-                    find(
-                      invitations.invitations,
-                      {
-                        user:
-                          get(
-                            desireUser.user,
-                            'id'
-                          )
-                      }
-                    ),
-                    'invitation_id'
-                  )
-                }}
-                handleInviteUserJoinGroup={handleInviteUserJoinGroup}
-                handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-                handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
-              />
-            </LoadingOverlay>
+            <DesiringUserList
+              canModify={get(viewPermissions.permissions, 'can_modify', false)}
+              bgColor={bgColor}
+              loading={desireLoading}
+              user={desireUser.user && {
+                ...desireUser.user,
+                invitation: get(
+                  find(
+                    invitations.invitations,
+                    {
+                      user:
+                        get(
+                          desireUser.user,
+                          'id'
+                        )
+                    }
+                  ),
+                  'invitation_id'
+                )
+              }}
+              handleInviteUserJoinGroup={handleInviteUserJoinGroup}
+              handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+              handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+            />
           </StyledBox>
           <StyledBox>
             <ColorTypo bold>
-              {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVD')}
+              {t('DMH.VIEW.DP.LEFT.ADD.LABEL.INVD')}{` (${invitations.invitations.length})`}
             </ColorTypo>
-            <LoadingOverlay
-              active={invitations.loading}
-              spinner
-            >
-              <InvitedUserList
-                canModify={get(viewPermissions.permissions, 'can_modify', false)}
-                bgColor={bgColor}
-                loading={requireLoading}
-                invitations={invitations.invitations}
-                handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
-                handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
-              />
-            </LoadingOverlay>
+            <InvitedUserList
+              canModify={get(viewPermissions.permissions, 'can_modify', false)}
+              bgColor={bgColor}
+              loading={requireLoading}
+              invitations={invitations.invitations}
+              handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
+              handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+            />
           </StyledBox>
           <StyledBox>
             <ColorTypo bold>
-              {t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQS')}
+              {t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQS')}{` (${requireUsers.users.length})`}
             </ColorTypo>
-            <LoadingOverlay
-              active={requireUsers.loading}
-              spinner
-            >
-              <RequestingUserList
-                canModify={get(viewPermissions.permissions, 'can_modify', false)}
-                bgColor={bgColor}
-                loading={requireLoading}
-                users={requireUsers.users}
-                handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup}
-                handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
-              />
-            </LoadingOverlay>
+            <RequestingUserList
+              canModify={get(viewPermissions.permissions, 'can_modify', false)}
+              bgColor={bgColor}
+              loading={requireLoading}
+              users={requireUsers.users}
+              handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup}
+              handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
+            />
           </StyledBox>
         </LoadingOverlay>
       </Body>

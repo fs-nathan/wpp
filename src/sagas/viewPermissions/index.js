@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { getPermissionViewProjectsFail, getPermissionViewProjectsSuccess, getPermissionViewUserFail, getPermissionViewUserSuccess } from '../../actions/viewPermissions';
+import { getPermissionViewDetailProjectFail, getPermissionViewDetailProjectSuccess, getPermissionViewProjectsFail, getPermissionViewProjectsSuccess, getPermissionViewUserFail, getPermissionViewUserSuccess } from '../../actions/viewPermissions';
 import { apiService } from '../../constants/axiosInstance';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
@@ -50,5 +50,31 @@ function* getPermissionViewUsers(action) {
   }
 }
 
-export { getPermissionViewProjects, getPermissionViewUsers, };
+async function doGetPermissionViewDetailProject({ projectId }) {
+  try {
+    const config = {
+      url: '/permissions/get-permission-view-detail-project',
+      method: 'get',
+      params: {
+        project_id: projectId,
+      }
+    }
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* getPermissionViewDetailProject(action) {
+  try {
+    const { permissions } = yield call(doGetPermissionViewDetailProject, action.options);
+    yield put(getPermissionViewDetailProjectSuccess({ permissions }, action.options));
+  } catch (error) {
+    yield put(getPermissionViewDetailProjectFail(error, action.options));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+  }
+}
+
+export { getPermissionViewProjects, getPermissionViewUsers, getPermissionViewDetailProject, };
 

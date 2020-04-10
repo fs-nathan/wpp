@@ -389,7 +389,13 @@
             "LABEL": {
               "NAME": "Dự án",
               "USER": "Người xóa",
-              "DATE": "Ngày xóa"
+              "DATE": "Ngày xóa",
+              "PRIO": "Ưu tiên",
+              "STATE": "Trạng thái"
+            },
+            "BTN": {
+              "DEL": "Xóa",
+              "RES": "Khôi phục"
             }
           }
         }
