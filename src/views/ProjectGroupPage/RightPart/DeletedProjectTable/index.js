@@ -1,13 +1,16 @@
 import { get, reverse, sortBy } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
+import { deleteTrashProject } from '../../../../actions/project/deleteTrashProject';
+import { restoreTrashProject } from '../../../../actions/project/restoreTrashProject';
 import { routeSelector } from '../../selectors';
 import DeletedProjectTablePresenter from './presenters';
-import { projectsSelector } from './selectors';
+import { pendingsSelector, projectsSelector } from './selectors';
 
 function DeletedProjectTable({
   expand, handleExpand,
-  projects, route,
+  projects, route, pendings,
+  doDeleteTrashProject, doRestoreTrashProject,
 }) {
 
   const [newProjects, setNewProjects] = React.useState(projects);
@@ -28,15 +31,17 @@ function DeletedProjectTable({
   return (
     <DeletedProjectTablePresenter
       expand={expand} handleExpand={handleExpand} route={route}
-      projects={newProjects}
+      projects={newProjects} pendings={pendings}
       handleSortType={type => setSortType(oldType => {
         const newCol = type;
         const newDir = type === oldType.col ? -oldType.dir : 1;
         return {
-          newCol,
-          newDir
+          col: newCol,
+          dir: newDir,
         }
       })}
+      handleDelete={projectId => doDeleteTrashProject({ projectId })}
+      handleRestore={projectId => doRestoreTrashProject({ projectId })}
     />
   )
 }
@@ -45,11 +50,15 @@ const mapStateToProps = state => {
   return {
     projects: projectsSelector(state),
     route: routeSelector(state),
+    pendings: pendingsSelector(state),
   }
 }
 
 const mapDispatchToProps = dispatch => {
-  return {}
+  return {
+    doDeleteTrashProject: ({ projectId }) => dispatch(deleteTrashProject({ projectId })),
+    doRestoreTrashProject: ({ projectId }) => dispatch(restoreTrashProject({ projectId })),
+  }
 }
 
 export default connect(

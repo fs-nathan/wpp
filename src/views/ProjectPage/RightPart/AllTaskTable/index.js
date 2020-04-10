@@ -11,11 +11,12 @@ import AlertModal from '../../../../components/AlertModal';
 import CreateJobModal from '../../../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal';
 import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting';
 import { Context as ProjectPageContext } from '../../index';
+import { viewPermissionsSelector } from '../../selectors';
 import AllTaskTablePresenter from './presenters';
 import { bgColorSelector, projectSelector, showHidePendingsSelector, tasksSelector } from './selectors';
 
 function AllTaskTable({
-  expand, handleExpand,
+  expand, handleExpand, viewPermissions,
   bgColor,
   showHidePendings,
   handleSubSlide,
@@ -57,7 +58,9 @@ function AllTaskTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE':
-        setOpenCreate(true);
+        if (get(viewPermissions.permissions, 'create_task', false)) {
+          setOpenCreate(true);
+        }
         return;
       case 'SETTING':
         setOpenSetting(true);
@@ -76,6 +79,8 @@ function AllTaskTable({
       <AllTaskTablePresenter
         expand={expand} handleExpand={handleExpand}
         handleSubSlide={handleSubSlide}
+        canUpdateProject={get(viewPermissions.permissions, 'update_project', false)}
+        canCreateTask={get(viewPermissions.permissions, 'create_task', false)}
         showHidePendings={showHidePendings}
         tasks={tasks} project={project}
         handleShowOrHideProject={project =>
@@ -144,6 +149,7 @@ const mapStateToProps = state => {
     project: projectSelector(state),
     bgColor: bgColorSelector(state),
     showHidePendings: showHidePendingsSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   }
 }
 

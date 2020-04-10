@@ -163,8 +163,6 @@ function UserPage({
   return (
     <LoadingOverlay
       active={viewPermissions.loading}
-      spinner
-      fadeSpeed={100}
     >
       <Provider value={{
         setUserId,

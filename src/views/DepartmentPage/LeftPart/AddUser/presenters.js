@@ -287,7 +287,6 @@ function AddUser({
       >
         <LoadingOverlay
           active={viewPermissions.loading}
-          spinner
         >
           <StyledBox>
             <ColorTypo bold>

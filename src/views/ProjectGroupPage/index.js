@@ -17,7 +17,7 @@ import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
   //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
   //CREATE_ICON, DELETE_ICON,
-  CREATE_PROJECT, CustomEventDispose, CustomEventListener, DELETE_PROJECT,
+  CREATE_PROJECT, CustomEventDispose, CustomEventListener, DELETE_PROJECT, RESTORE_TRASH_PROJECT,
   //HIDE_PROJECT, SHOW_PROJECT, 
   SORT_PROJECT,
   //CREATE_PROJECT_GROUP, 
@@ -181,11 +181,13 @@ function ProjectGroupPage({
       //CustomEventListener(HIDE_PROJECT, reloadListProject);
       //CustomEventListener(SHOW_PROJECT, reloadListProject);
       CustomEventListener(SORT_PROJECT, reloadListProject);
+      CustomEventListener(RESTORE_TRASH_PROJECT, reloadListProject);
       //CustomEventListener(COPY_PROJECT, reloadListProject);
 
       return () => {
         //CustomEventDispose(CREATE_PROJECT, reloadListProject);
         CustomEventDispose(UPDATE_PROJECT, reloadListProject);
+        CustomEventDispose(RESTORE_TRASH_PROJECT, reloadListProject);
         //CustomEventDispose(DELETE_PROJECT, reloadListProject);
         //CustomEventDispose(HIDE_PROJECT, reloadListProject);
         //CustomEventDispose(SHOW_PROJECT, reloadListProject);
@@ -241,8 +243,6 @@ function ProjectGroupPage({
   return (
     <LoadingOverlay
       active={viewPermissions.loading}
-      spinner
-      fadeSpeed={100}
     >
       <Provider value={{
         setProjectGroupId,

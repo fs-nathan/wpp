@@ -1,11 +1,14 @@
+import { Button, CircularProgress } from '@material-ui/core';
 import { mdiArrowLeft } from '@mdi/js';
-import { get } from 'lodash';
+import { find, get, isNil } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
+import CustomBadge from '../../../../components/CustomBadge';
 import CustomTable from '../../../../components/CustomTable';
 import LoadingBox from '../../../../components/LoadingBox';
+import { StateBox } from '../../../../components/TableComponents';
 import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
@@ -14,10 +17,49 @@ const Container = ({ className = '', ...props }) =>
     {...props}
   />;
 
+const MyButton = ({ className = '', disabled = false, isDel = false, ...props }) =>
+  <Button
+    variant="outlined"
+    className={`view_ProjectGroupPage_Table_Deleted___button${isDel ? '-delete' : ''}${disabled ? '-disabled' : ''} ${className}`}
+    disabled={disabled}
+    {...props}
+  />;
+
+const ButtonWrapper = ({ className = '', ...props }) =>
+  <div
+    className={`view_ProjectGroupPage_Table_Deleted___button-wrapper ${className}`}
+    {...props}
+  />;
+
+function decodePriorityCode(priorityCode) {
+  switch (priorityCode) {
+    case 0:
+      return {
+        color: '#4caf50',
+        background: '#4caf5042',
+      };
+    case 1:
+      return {
+        color: '#ff9800',
+        background: '#ff980038',
+      };
+    case 2:
+      return {
+        color: '#fe0707',
+        background: '#ff050524',
+      };
+    default:
+      return {
+        color: '#53d7fc',
+      };
+  }
+}
+
 function DeletedProjectTable({
   expand, handleExpand, route,
-  projects,
+  projects, pendings,
   handleSortType,
+  handleDelete, handleRestore,
 }) {
 
   const history = useHistory();
@@ -62,32 +104,98 @@ function DeletedProjectTable({
                   width: 35,
                   height: 35,
                 }}
-                src={get(row, 'user_create.avatar')}
-                alt='user create avatar'
+                src={get(row, 'user_delete_avatar')}
+                alt='user delete avatar'
               />,
-            align: 'center',
+            align: 'left',
             width: '5%',
           }, {
             label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.NAME"),
             field: 'name',
             sort: (evt) => handleSortType('name'),
+            align: 'left',
+            width: '25%',
+          }, {
+            label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.STATE"),
+            field: row => (
+              <StateBox
+                stateCode={get(row, 'state_code')}
+              >
+                <div>
+                  <span>&#11044;</span>
+                  <span>
+                    {get(row, 'state_code') === 5 ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : get(row, 'state_name')}
+                  </span>
+                </div>
+              </StateBox>
+            ),
+            sort: (evt) => handleSortType('state_name'),
+            align: 'left',
+            width: '10%',
+          }, {
+            label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.PRIO"),
+            field: row => (
+              <CustomBadge
+                color={
+                  decodePriorityCode(get(row, 'priority_code', 0)).color
+                }
+                background={
+                  decodePriorityCode(get(row, 'priority_code', 0))
+                    .background
+                }
+              >
+                {get(row, 'priority_name', '')}
+              </CustomBadge>
+            ),
+            sort: (evt) => handleSortType('priority_name'),
             align: 'center',
-            width: '50%',
+            width: '10%',
           }, {
             label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.USER"),
-            field: (row) => null,
-            align: 'center',
-            width: '15%',
+            field: (row) => get(row, 'user_delete_name'),
+            align: 'left',
+            width: '10%',
           }, {
             label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.DATE"),
-            field: (row) => null,
-            align: 'center',
-            width: '15%',
+            field: (row) => get(row, 'delete_at'),
+            align: 'left',
+            width: '10%',
           }, {
             label: '',
-            field: (row) => null,
+            field: (row) =>
+              <ButtonWrapper>
+                <MyButton
+                  onClick={() => handleDelete(get(row, 'id'))}
+                  disabled={
+                    !isNil(find(pendings.pendings, pending => pending === get(row, 'id')))
+                  }
+                  isDel={true}
+                >
+                  {!isNil(find(pendings.pendings, pending => pending === get(row, 'id'))) &&
+                    <CircularProgress
+                      size={16}
+                      className="margin-circular"
+                      color="white"
+                    />}
+                  {t('DMH.VIEW.PGP.RIGHT.TRASH.BTN.DEL')}
+                </MyButton>
+                <MyButton
+                  onClick={() => handleRestore(get(row, 'id'))}
+                  disabled={
+                    !isNil(find(pendings.pendings, pending => pending === get(row, 'id')))
+                  }
+                >
+                  {!isNil(find(pendings.pendings, pending => pending === get(row, 'id'))) &&
+                    <CircularProgress
+                      size={16}
+                      className="margin-circular"
+                      color="white"
+                    />}
+                  {t('DMH.VIEW.PGP.RIGHT.TRASH.BTN.RES')}
+                </MyButton>
+              </ButtonWrapper>,
             align: 'center',
-            width: '5%',
+            width: '20%',
           }]}
           data={projects.projects}
         />

@@ -132,10 +132,6 @@ function ProjectDetail({
                       color: '#03c30b',
                       title: 'Công việc hoàn thành',
                       value: get(project.project, 'task_complete', 0),
-                    }, {
-                      color: '#000',
-                      title: 'Công việc dừng',
-                      value: get(project.project, 'task_stop', 0),
                     }]
                   }
                 />

@@ -146,9 +146,9 @@ function ProjectGroupDetail({
                 <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE")}</ColorTypo>
               </SubHeader>
               <AvatarCircleList users={group.group.members} total={20} display={12} />
-              {canModify && <StyledColorTypo color='blue' onClick={() => handleOpenModal('MEMBER', {
+              <StyledColorTypo color='blue' onClick={() => handleOpenModal('MEMBER', {
                 members: get(group.group, 'members', []),
-              })}>{t("DMH.VIEW.PGP.LEFT.INFO.MEMBER.BTN")}</StyledColorTypo>}
+              })}>{t("DMH.VIEW.PGP.LEFT.INFO.MEMBER.BTN")}</StyledColorTypo>
             </SubContainer>
           </div>
           {canModify &&

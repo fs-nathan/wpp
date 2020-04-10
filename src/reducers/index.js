@@ -42,6 +42,7 @@ import assignMemberToAllTask, { initialState as assignMemberToAllTaskInitialStat
 import copyProject, { initialState as copyProjectInitialState } from "./project/copyProject";
 import createProject, { initialState as createProjectInitialState } from "./project/createProject";
 import deleteProject, { initialState as deleteProjectInitialState } from "./project/deleteProject";
+import deleteTrashProject, { initialState as deleteTrashProjectInitialState } from "./project/deleteTrashProject";
 import detailProject, { initialState as detailProjectInitialState } from "./project/detailProject";
 import hideProject, { initialState as hideProjectInitialState } from "./project/hideProject";
 import listDeletedProject, { initialState as listDeletedProjectInitialState } from "./project/listDeletedProject";
@@ -49,6 +50,7 @@ import listProject, { initialState as listProjectInitialState } from "./project/
 import memberProject, { initialState as memberProjectInitialState } from "./project/memberProject";
 import removeMemberProject, { initialState as removeMemberProjectInitialState } from "./project/removeMemberProject";
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from "./project/removeProjectRoleFromMember";
+import restoreTrashProject, { initialState as restoreTrashProjectInitialState } from "./project/restoreTrashProject";
 import detailStatus, { initialState as detailStatusInitialState } from "./project/setting/detailStatus";
 import updateStatusCopy, { initialState as updateStatusCopyInitialState } from "./project/setting/updateStatusCopy";
 import updateStatusDate, { initialState as updateStatusDateInitialState } from "./project/setting/updateStatusDate";
@@ -207,6 +209,8 @@ const rootReducer = combineReducers({
     assignMemberToAllTask,
     sortProject,
     copyProject,
+    deleteTrashProject,
+    restoreTrashProject,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
@@ -329,6 +333,8 @@ export const DEFAULT_STATE = {
     assignMemberToAllTask: assignMemberToAllTaskInitialState,
     sortProject: sortProjectInitialState,
     copyProject: copyProjectInitialState,
+    deleteTrashProject: deleteTrashProjectInitialState,
+    restoreTrashProject: restoreTrashProjectInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
       updateStatusDate: updateStatusDateInitialState,

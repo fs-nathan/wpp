@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, CircularProgress, Grow, Menu, MenuItem, Popper } from '@material-ui/core';
 import { mdiClose, mdiDotsVertical, mdiFullscreen, mdiFullscreenExit, mdiMagnify } from '@mdi/js';
 import Icon from '@mdi/react';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import React from 'react';
 import SearchInput from '../../SearchInput';
 import { CustomTableContext } from '../index';
@@ -60,19 +60,21 @@ function HeaderButtonGroup() {
             <span>{Boolean(searchAnchor) ? 'Hủy' : 'Tìm kiếm'}</span>
           </StyledButton>
         )}
-        {get(options, 'subActions', []).map((subAction, index) => (
-          <StyledButton key={index} onClick={evt => {
-            get(subAction, 'onClick', () => null)(evt);
-            get(subAction, 'noExpand', false)
-              && get(options, 'expand.bool', false)
-              && get(options, 'expand.toggleExpand', () => null)();
-          }}>
-            <div>
-              {get(subAction, 'iconPath') ? <Icon path={get(subAction, 'iconPath')} size={1} color={'rgba(0, 0, 0, 0.54)'} /> : get(subAction, 'icon', () => null)()}
-            </div>
-            <span>{get(subAction, 'label', '')}</span>
-          </StyledButton>
-        ))}
+        {get(options, 'subActions', []).map((subAction, index) => isNil(subAction)
+          ? null
+          : (
+            <StyledButton key={index} onClick={evt => {
+              get(subAction, 'onClick', () => null)(evt);
+              get(subAction, 'noExpand', false)
+                && get(options, 'expand.bool', false)
+                && get(options, 'expand.toggleExpand', () => null)();
+            }}>
+              <div>
+                {get(subAction, 'iconPath') ? <Icon path={get(subAction, 'iconPath')} size={1} color={'rgba(0, 0, 0, 0.54)'} /> : get(subAction, 'icon', () => null)()}
+              </div>
+              <span>{get(subAction, 'label', '')}</span>
+            </StyledButton>
+          ))}
         {get(options, 'expand') && (
           <StyledButton onClick={get(options, 'expand.toggleExpand', () => null)}>
             <div>
@@ -121,7 +123,7 @@ function HeaderButtonGroup() {
             horizontal: 'right',
           }}
         >
-          {get(options, 'moreMenu', []).map((item, index) => (
+          {get(options, 'moreMenu', []).map((item, index) => isNil(item) ? null : (
             <MenuItem
               key={index}
               onClick={handleMoreClick(get(item, 'onClick', () => null))}

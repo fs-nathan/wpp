@@ -63,6 +63,7 @@ function AllTaskTable({
   handleOpenModal,
   bgColor, timeType,
   handleTimeType, handleTimeRange,
+  canUpdateProject, canCreateTask,
 }) {
 
   const history = useHistory();
@@ -84,17 +85,17 @@ function AllTaskTable({
                 <span>Grant</span>
               </SubTitle>
             ),
-            subActions: [{
+            subActions: [canUpdateProject ? {
               label: 'Thành viên',
               iconPath: mdiAccountCircle,
               onClick: (evt) => handleSubSlide(1),
               noExpand: true,
-            }, {
+            } : undefined, canUpdateProject ? {
               label: 'Nhóm việc',
               iconPath: mdiScatterPlot,
               onClick: (evt) => handleSubSlide(2),
               noExpand: true,
-            }, {
+            } : undefined, {
               label: 'Tải xuống',
               iconPath: mdiDownload,
               onClick: (evt) => setDownloadAnchor(evt.currentTarget)
@@ -103,10 +104,10 @@ function AllTaskTable({
               iconPath: mdiCalendar,
               onClick: evt => setTimeAnchor(evt.currentTarget)
             }],
-            mainAction: {
+            mainAction: canCreateTask ? {
               label: '+ Tạo công việc',
               onClick: (evt) => handleOpenModal('CREATE'),
-            },
+            } : null,
             expand: {
               bool: expand,
               toggleExpand: () => handleExpand(!expand),
@@ -115,19 +116,24 @@ function AllTaskTable({
               label: 'Cài đặt dự án',
               onClick: () => handleOpenModal('SETTING', {
                 curProject: project.project,
+                canChange: {
+                  date: canUpdateProject,
+                  copy: canUpdateProject,
+                  view: true,
+                }
               }),
-            }, {
+            }, canUpdateProject ? {
               label: `${get(project.project, 'visibility') ? 'Ẩn dự án' : 'Bỏ ẩn dự án'}`,
               onClick: () => handleShowOrHideProject(project.project),
               disabled: !isNil(find(showHidePendings.pendings, pending => pending === get(project.project, 'id'))),
-            }],
+            } : undefined],
             grouped: {
               bool: true,
               id: 'id',
               label: (group) => get(group, 'id') === 'default' ? 'Chưa phân loại' : get(group, 'name'),
               item: 'tasks',
             },
-            draggable: {
+            draggable: canUpdateProject ? {
               bool: true,
               onDragEnd: result => {
                 const { source, destination, draggableId } = result;
@@ -138,7 +144,9 @@ function AllTaskTable({
                 ) return;
                 handleSortTask(draggableId, destination.droppableId, destination.index);
               },
-            },
+            } : {
+                bool: false,
+              },
             loading: {
               bool: tasks.loading,
               component: () => <LoadingBox />,
