@@ -4,6 +4,7 @@ import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailAc
 import clsx from 'clsx';
 import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
@@ -26,6 +27,8 @@ const BodyPart = props => {
   const [forwardChat, setForwardChat] = React.useState(null);
   const [chatEmotion, setChatEmotion] = React.useState([]);
   const [openDetailEmotionModal, setOpenDetailEmotionModal] = React.useState(false);
+
+  const { total_page, page = 1 } = chats.paging || {};
   const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
     return !searchChatKey
       || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
@@ -90,6 +93,11 @@ const BodyPart = props => {
     }
   }
 
+  function loadMoreChat() {
+    if (page > 1)
+      dispatch(loadChat(taskId, page - 1));
+  }
+
   return (
     <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} ref={chatRef} >
       <div className="wrap-time">
@@ -136,13 +144,21 @@ const BodyPart = props => {
           </div>
         </div>
       </div>
-      {
-        calculatedChats.map((el, id) => <Message {...el}
-          key={id}
-          handleForwardChat={handleForwardChat(el)}
-          handleDetailEmotion={handleDetailEmotion(el)}
-          handleReplyChat={handleReplyChat(el)} />)
-      }
+      <InfiniteScroll
+        isReverse
+        pageStart={total_page}
+        loadMore={loadMoreChat}
+        hasMore={page < total_page}
+      // loader={<div className="loader" key={0}>Loading ...</div>}
+      >
+        {
+          calculatedChats.map((el, id) => <Message {...el}
+            key={id}
+            handleForwardChat={handleForwardChat(el)}
+            handleDetailEmotion={handleDetailEmotion(el)}
+            handleReplyChat={handleReplyChat(el)} />)
+        }
+      </InfiniteScroll>
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />

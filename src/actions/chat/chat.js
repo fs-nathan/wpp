@@ -56,10 +56,11 @@ export function deleteChatFail(error) {
   };
 }
 
-export function loadChat(taskId) {
+export function loadChat(taskId, page) {
   return {
     type: actionTypes.LOAD_CHAT,
     task_id: taskId,
+    page,
   };
 }
 

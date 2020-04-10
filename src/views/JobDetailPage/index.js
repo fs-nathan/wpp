@@ -40,10 +40,9 @@ function JobDetailPage(props) {
   }, [dispatch, id, projectId]);
 
   useEffect(() => {
-    dispatch(taskDetailAction.getMemberNotAssigned({ task_id: taskId }));
-    dispatch(taskDetailAction.getMember({ task_id: taskId }));
-    dispatch(taskDetailAction.getTaskDetailTabPart({ task_id: taskId }));
     if (taskId) {
+      dispatch(taskDetailAction.getMemberNotAssigned({ task_id: taskId }));
+      dispatch(taskDetailAction.getMember({ task_id: taskId }));
       dispatch(taskDetailAction.chooseTask(taskId))
       dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
     }
