@@ -10,4 +10,26 @@
   border-radius: 2px;
   margin-bottom: 2em;
   min-height: 140px;
+  &--preview {
+    display: flex;
+  }
+  &--imagePreviewWrap {
+    position: relative;
+    margin: 0 2px;
+  }
+  &--imagePreview {
+    width: 30px;
+    height: 30px;
+  }
+  &--imagePreviewDelete {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    svg {
+      padding: 2px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      fill: #ffffff;
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import { IconButton } from '@material-ui/core';
-import { mdiAlarmPlus, mdiAt, mdiCloudUploadOutline, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
+import { mdiAlarmPlus, mdiAt, mdiClose, mdiCloudUploadOutline, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
 import { appendChat, chatFile, chatImage, chatSticker, clearTags, createChatText, loadChat, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
@@ -10,7 +10,7 @@ import 'draft-js-mention-plugin/lib/plugin.css';
 import Editor from 'draft-js-plugins-editor';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import { humanFileSize } from 'helpers/jobDetail/stringHelper';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
@@ -100,7 +100,44 @@ const FooterPart = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElSticker, setAnchorElSticker] = useState(null);
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
-  const [suggestions, setSuggestions] = useState(members)
+  const [suggestions, setSuggestions] = useState(members);
+  const [imagesQueue, setImagesQueue] = useState([]);
+  const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
+
+  useEffect(() => {
+    async function renderPrepareImages(imagesFiles) {
+      const images = [];
+      for (let index = 0; index < imagesFiles.length; index++) {
+        const file = imagesFiles[index];
+        const url = await getFileUrl(file)
+        images.push({ url, file })
+      }
+      setImagesQueueUrl(images)
+    }
+    renderPrepareImages(imagesQueue)
+  }, [imagesQueue]);
+
+  useEffect(() => {
+    document.onpaste = async function (event) {
+      var items = event.clipboardData.items;
+      // console.log(JSON.stringify(items)); // will give you the mime types
+      const images = [];
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        // console.log('Item: ' + item.type);
+        if (item.type.indexOf('image') !== -1) {
+          //item.
+          const file = item.getAsFile();
+          const url = await getFileUrl(file)
+          images.push({ url, file })
+        } else {
+          // ignore not images
+          console.log('Discarding not image paste data');
+        }
+      }
+      setImagesQueueUrl(images)
+    }
+  }, [])
 
   const handleTriggerUpload = id => {
     document.getElementById(id).click();
@@ -141,7 +178,9 @@ const FooterPart = ({
     // console.log('onDrop', files)
     const isAllImages = files.every(file => file.type.indexOf('image') !== -1);
     if (isAllImages) {
-      handleUploadImage({ target: { files } })
+      // handleUploadImage({ target: { files } })
+      setImagesQueue([...imagesQueue, ...files]);
+      focus();
     } else {
       const images = [];
       for (let index = 0; index < files.length; index++) {
@@ -164,8 +203,17 @@ const FooterPart = ({
       }
       dispatch(chatFile(taskId, data, onUploadingHandler));
     }
-  }, [dispatch, handleUploadImage, taskId])
+  }, [dispatch, imagesQueue, taskId])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+
+  function onClickDeletePreview(i) {
+    return () => {
+      // console.log(i)
+      const filtered = imagesQueue.filter((img, idx) => idx !== i)
+      setImagesQueue([...filtered]);
+    }
+  }
 
   const openTag = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -243,6 +291,24 @@ const FooterPart = ({
 
   async function handleKeyCommand(command) {
     if (command === 'send') {
+      if (imagesQueueUrl.length > 0) {
+        const images = [];
+        let data = new FormData()
+        for (let index = 0; index < imagesQueueUrl.length; index++) {
+          const { file, url } = imagesQueueUrl[index];
+          images.push({ url })
+          data.append("image", file, file.name)
+        }
+        setImagesQueue([]);
+        const data_chat = {
+          type: CHAT_TYPE.UPLOADING_IMAGES, images,
+          isUploading: true,
+          is_me: true,
+        }
+        dispatch(appendChat({ data_chat }));
+        dispatch(chatImage(taskId, data, onUploadingHandler))
+        return 'handled';
+      }
       // console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())))
       // console.log(getChatContent(convertToRaw(editorState.getCurrentContent())))
       // Perform a request to save your contents, set
@@ -319,7 +385,17 @@ const FooterPart = ({
         </div> */}
       </div>
       <Message {...parentMessage} isReply></Message>
-      {tagMembers.map(index => <span key={index} className="footerChat--tag">@{members[index].name}</span>)}
+      {/* {tagMembers.map(index => <span key={index} className="footerChat--tag">@{members[index].name}</span>)} */}
+      <div className="chatBox--preview">
+        {imagesQueueUrl.map(({ url }, i) =>
+          <div key={i} className="chatBox--imagePreviewWrap">
+            <img className="chatBox--imagePreview" src={url} alt="hd" />
+            <IconButton className="chatBox--imagePreviewDelete" onClick={onClickDeletePreview(i)}>
+              <Icon path={mdiClose} size={0.6} />
+            </IconButton>
+          </div>
+        )}
+      </div>
       <div className="wrap-input-message chatBox" id="input_message"
         {...getRootProps({
           onClick: event => event.stopPropagation()
