@@ -10,7 +10,7 @@ const TagModal = ({
   handleClose,
 }) => {
   const dispatch = useDispatch();
-  const members = useSelector(state => state.chat.members);
+  const members = useSelector(state => state.taskDetail.taskMember.member);
   const tagMembers = useSelector(state => state.chat.tagMembers);
 
   function handleClickMember(index) {

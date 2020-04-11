@@ -1,5 +1,66 @@
 .chatHeader {
   position: relative;
+  &--avatar1_1 {
+    width: 55px;
+    height: 55px;
+  }
+  &--avatar2_1 {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    margin: auto;
+  }
+  &--avatar2_2 {
+    width: 40px;
+    height: 40px;
+    transform: translateX(-20px);
+    display: inline-flex;
+    margin: auto;
+    position: absolute;
+    border: solid 2px #fff;
+  }
+  &--avatar3_1 {
+    width: 30px;
+    height: 30px;
+    margin: auto;
+  }
+  &--avatar3_2 {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    margin-right: 2px;
+  }
+  &--avatar3_3 {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    margin-left: 2px;
+  }
+  &--avatar3_1_plus {
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+  }
+  &--avatar3_2_plus {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    margin-left: 2px;
+  }
+  &--avatar3_3_plus {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    margin-right: 2px;
+  }
+  &--avatar_plus {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    margin-left: 2px;
+  }
+  &--avatar_plus {
+  }
   &--title {
     font-size: 24px;
     font-weight: 500;

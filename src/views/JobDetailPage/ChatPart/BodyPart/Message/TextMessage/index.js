@@ -59,7 +59,7 @@ const TextMessage = ({
   data_emotion = [],
 }) => {
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
-  const members = useSelector(state => state.chat.members);
+  const members = useSelector(state => state.taskDetail.taskMember.member);
 
   function getColor() {
     if (isReply) return "#5b5b5b"

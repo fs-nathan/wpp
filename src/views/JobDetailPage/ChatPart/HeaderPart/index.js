@@ -51,6 +51,12 @@ const TabForm = props => {
 
 const renderAvatars = props => {
   const { styles, images = [] } = props;
+  let showImages = images;
+  const imgNum = 3;
+  const plusImage = images.length - imgNum;
+  if (plusImage > 0) {
+    showImages = images.slice(0, imgNum);
+  }
   const getAvatar = ({ number, src }) => {
     return (
       <Grid item xs={6}>
@@ -64,17 +70,15 @@ const renderAvatars = props => {
   };
   return (
     <div className="wrap-avatars">
-      <Grid container spacing={1} justify="center" alignItems="center">
-        <Grid container xs={12} item classes={{ item: styles.wrapRowAvatar }}>
-          {images.length > 0 && getAvatar({ src: images[0].avatar })}
-          {images.length > 1 && getAvatar({ src: images[1].avatar })}
-        </Grid>
-        <Grid container item xs={12}>
-          {images.length > 2 && getAvatar({ src: images[2].avatar })}
-          {images.length === 4 && getAvatar({ src: images[3].avatar })}
-          {images.length > 4 && getAvatar({ number: images.length - 3 })}
-        </Grid>
-      </Grid>
+      {showImages.map(({ avatar }, i) =>
+        <Avatar className={clsx(`chatHeader--avatar${showImages.length}_${i + 1}`,
+          { [`chatHeader--avatar${showImages.length}_${i + 1}_plus`]: (plusImage > 0) }
+        )} src={avatar} />
+      )}
+      {
+        (plusImage > 0) &&
+        <Avatar className="header-chat-avatar chatHeader--avatar_plus">{plusImage}</Avatar>
+      }
     </div>
   );
 };
@@ -82,7 +86,7 @@ const renderAvatars = props => {
 const HeaderPart = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const members = useSelector(state => state.chat.members)
+  const members = useSelector(state => state.taskDetail.taskMember.member)
   useEffect(() => {
     const fetchMemberlist = async () => {
       try {

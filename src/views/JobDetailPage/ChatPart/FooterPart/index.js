@@ -93,7 +93,7 @@ const FooterPart = ({
   const editorRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const members = useSelector(state => state.chat.members);
+  const members = useSelector(state => state.taskDetail.taskMember.member);
   const tagMembers = useSelector(state => state.chat.tagMembers);
 
   const [textChat, setTextChat] = useState('');
