@@ -1,9 +1,19 @@
+.views_HomePage___wrapper {
+  padding: 20px;
+  padding-right: 30px;
+  min-height: 100%;
+  background: #f6f6f6;
+}
 .views_HomePage___container {
+  max-width: 1224px;
+  margin: auto;
   height: 100%;
   display: grid;
-  grid-template-rows: 200px 1fr;
-  grid-template-columns: 250px minmax(750px, 3fr) minmax(300px, 2fr);
-  grid-template-areas: 
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 250px minmax(auto, 3fr) minmax(300px, 2fr);
+  column-gap: 20px;
+  row-gap: 20px;
+  grid-template-areas:
     "left logo logo"
     "left middle right";
 }

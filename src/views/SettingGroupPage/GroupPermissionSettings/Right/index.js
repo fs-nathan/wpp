@@ -1,10 +1,8 @@
 import {
   Avatar,
   Box,
-  Checkbox,
   Divider,
   FormControl,
-  FormControlLabel,
   FormGroup,
   Grid,
   Table,
@@ -178,19 +176,11 @@ const ColumnRight = () => {
               </Box>
             </legend>
             <FormGroup className="comp_QuickViewFilter__FormGroup">
-              {permissionModules.map(({ name, value }) => (
-                <FormControlLabel
-                  className="comp_QuickViewFilter__FormControlLabel"
-                  key={value}
-                  control={
-                    <Checkbox
-                      checked={"" + groupModule === "" + value}
-                      color="primary"
-                    />
-                  }
-                  label={name}
-                />
-              ))}
+              {permissionModules
+                .filter(({ value }) => "" + groupModule === "" + value)
+                .map(({ name, value }) => (
+                  <div>{name}</div>
+                ))}
             </FormGroup>
           </FormControl>
           <Divider />
