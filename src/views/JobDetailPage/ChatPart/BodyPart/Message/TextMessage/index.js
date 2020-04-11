@@ -82,39 +82,41 @@ const TextMessage = ({
           "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
         })}
       >
-        {
-          ((chatPosition === 'top' && !is_me) || isReply) &&
-          <div className="TextMessage--sender"  >
-            {isReply &&
-              <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
-            }
-            <div className="TextMessage--name"  >
-              {user_create_name}
-            </div>
-            <div className="TextMessage--position"  >
-              {user_create_position}
-            </div>
-            {user_create_roles[0] &&
-              <div className="TextMessage--room"  >
-                {user_create_roles[0]}
+        <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
+          {
+            ((chatPosition === 'top' && !is_me) || isReply) &&
+            <div className="TextMessage--sender"  >
+              {isReply &&
+                <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
+              }
+              <div className="TextMessage--name"  >
+                {user_create_name}
               </div>
-            }
+              <div className="TextMessage--position"  >
+                {user_create_position}
+              </div>
+              {user_create_roles[0] &&
+                <div className="TextMessage--room"  >
+                  {user_create_roles[0]}
+                </div>
+              }
+            </div>
+          }
+          {getChatParent(chat_parent)}
+          {/* {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)} */}
+          <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })}
+            dangerouslySetInnerHTML={{ __html: getContentMention(content, members, getColor()) }}
+          >
           </div>
-        }
-        {getChatParent(chat_parent)}
-        {/* {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)} */}
-        <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })}
-          dangerouslySetInnerHTML={{ __html: getContentMention(content, members, getColor()) }}
-        >
-        </div>
-        {!isReply &&
+          {/* {!isReply &&
           <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
             {time_create}
           </div>
-        }
-        {data_emotion.length > 0 &&
-          <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
-        }
+        } */}
+          {data_emotion.length > 0 &&
+            <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
+          }
+        </abbr>
       </div>
       {!isReply && !is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />

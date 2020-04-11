@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
+import RemindModal from 'views/JobDetailPage/TabPart/RemindTab/RemindModal';
 import Message from '../BodyPart/Message';
 import '../Chat.scss';
 import './styles.scss';
@@ -97,6 +98,7 @@ const FooterPart = ({
 
   const [textChat, setTextChat] = useState('');
   const [visibleSendFile, setVisibleSendFile] = useState(false);
+  const [isOpenRemind, setOpenRemind] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElSticker, setAnchorElSticker] = useState(null);
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
@@ -245,7 +247,8 @@ const FooterPart = ({
   }
 
   function onClickRemind() {
-    dispatch(showTab(3))
+    // dispatch(showTab(3))
+    setOpenRemind(true)
   }
 
   async function onKeyDownChat(event) {
@@ -454,6 +457,7 @@ const FooterPart = ({
         open={visibleSendFile}
         setOpen={() => setVisibleSendFile(false)}
       />
+      <RemindModal isOpen={isOpenRemind} setOpen={setOpenRemind} isCreate />
     </div>
   );
 };
