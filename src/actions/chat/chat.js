@@ -25,15 +25,15 @@ export const getMemberTaskService = task_id => {
     params: { task_id }
   });
 };
-export const createChatText = data => {
-  return apiService({ method: 'post', url: '/task/create-chat-text', data });
-};
-export const createChatImg = data => {
-  return apiService({ method: 'post', url: '/task/create-chat-image', data });
-};
-export const createChatFile = data => {
-  return apiService({ method: 'post', url: '/task/create-chat-file', data });
-};
+// export const createChatText = data => {
+//   return apiService({ method: 'post', url: '/task/create-chat-text', data });
+// };
+// export const createChatImg = data => {
+//   return apiService({ method: 'post', url: '/task/create-chat-image', data });
+// };
+// export const createChatFile = data => {
+//   return apiService({ method: 'post', url: '/task/create-chat-file', data });
+// };
 
 export function deleteChat(task_id, chat_id) {
   return {
@@ -361,5 +361,47 @@ export function getEmotionsReactMemberFail(error) {
   return {
     type: actionTypes.GET_EMOTIONS_REACT_MEMBER_FAIL,
     error,
+  };
+}
+
+export function createChatText(content) {
+  return {
+    type: actionTypes.CREATE_CHAT_TEXT,
+    content
+  };
+}
+
+export function createChatTextSuccess(payload) {
+  return {
+    type: actionTypes.CREATE_CHAT_TEXT_SUCCESS,
+    payload
+  };
+}
+
+export function createChatTextFail(error) {
+  return {
+    type: actionTypes.CREATE_CHAT_TEXT_FAIL,
+    error
+  };
+}
+
+export function getViewedChat(task_id) {
+  return {
+    type: actionTypes.GET_VIEWED_CHAT,
+    task_id
+  };
+}
+
+export function getViewedChatSuccess(payload) {
+  return {
+    type: actionTypes.GET_VIEWED_CHAT_SUCCESS,
+    payload
+  };
+}
+
+export function getViewedChatFail(error) {
+  return {
+    type: actionTypes.GET_VIEWED_CHAT_FAIL,
+    error
   };
 }

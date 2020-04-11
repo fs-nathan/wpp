@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiCloudUploadOutline, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, chatFile, chatImage, chatSticker, clearTags, createChatText, loadChat, onUploading } from 'actions/chat/chat';
+import { appendChat, chatFile, chatImage, chatSticker, clearTags, createChatText, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { file as file_icon } from 'assets/fileType';
 import { convertToRaw, EditorState, getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
@@ -95,6 +95,7 @@ const FooterPart = ({
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const tagMembers = useSelector(state => state.chat.tagMembers);
+  const userId = useSelector(state => state.system.profile.order_user_id)
 
   const [textChat, setTextChat] = useState('');
   const [visibleSendFile, setVisibleSendFile] = useState(false);
@@ -264,13 +265,15 @@ const FooterPart = ({
       setTextChat('');
       dispatch(clearTags());
       try {
-        const { data } = await createChatText({
+        const data = {
+          type: CHAT_TYPE.TEXT,
+          is_me: true,
           task_id: taskId, content: textChat,
           parent_id: parentMessage && parentMessage.id,
           tags: tagMembers.map(index => members[index].id)
-        });
-        // dispatch(appendChat(data));
-        dispatch(loadChat(taskId));
+        };
+        dispatch(appendChat(data));
+        dispatch(createChatText(data));
       } catch (error) {
         console.error('error here! ', error)
       }
@@ -322,13 +325,16 @@ const FooterPart = ({
       // dispatch(clearTags());
       setEditorState(EditorState.createEmpty())
       try {
-        const { data } = await createChatText({
+        const data_chat = {
+          type: CHAT_TYPE.TEXT,
+          is_me: true,
+          user_create_id: userId,
           task_id: taskId, content,
           parent_id: parentMessage && parentMessage.id,
           tags: tagMembers.map(index => members[index].id)
-        });
-        // dispatch(appendChat(data));
-        dispatch(loadChat(taskId));
+        };
+        dispatch(appendChat({ data_chat }));
+        dispatch(createChatText(data_chat));
       } catch (error) {
         console.error('error here! ', error)
       }

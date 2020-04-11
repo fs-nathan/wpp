@@ -585,6 +585,14 @@ function* rootSaga() {
     chatTypes.GET_EMOTIONS_REACT_MEMBER,
     chatDetailSaga.getEmotionsReactMember
   );
+  yield takeLeading(
+    chatTypes.CREATE_CHAT_TEXT,
+    chatDetailSaga.createChatText
+  );
+  yield takeLeading(
+    chatTypes.GET_VIEWED_CHAT,
+    chatDetailSaga.getViewedChat
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);

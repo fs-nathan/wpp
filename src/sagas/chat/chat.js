@@ -154,3 +154,24 @@ export function* getEmotionsReactMember(payload) {
     yield put(actions.getEmotionsReactMemberFail(error));
   }
 }
+
+export function* createChatText(payload) {
+  try {
+    const { content } = payload;
+    const res = yield call(apiService.post, "/task/create-chat-text", content);
+    yield put(actions.createChatTextSuccess(res.data));
+    yield put(actions.loadChat(content.task_id));
+  } catch (error) {
+    yield put(actions.createChatTextFail(error));
+  }
+}
+
+export function* getViewedChat(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.get, "/task/get-member-viewed-chat", { params: { task_id } });
+    yield put(actions.getViewedChatSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getViewedChatFail(error));
+  }
+}

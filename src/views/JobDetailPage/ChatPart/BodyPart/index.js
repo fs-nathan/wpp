@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { loadChat } from 'actions/chat/chat';
+import { createChatText, loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import queryString from 'query-string';
@@ -17,10 +17,14 @@ const BodyPart = props => {
   const chatRef = useRef();
   const dispatch = useDispatch();
   const chats = useSelector(state => state.chat.chats);
+  const lastChat = useSelector(state => state.chat.lastChat);
   // const userId = useSelector(state => state.system.profile.order_user_id)
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const searchChatKey = useSelector(state => state.chat.searchChatKey)
+  const isSending = useSelector(state => state.chat.isSending);
+  const isFails = useSelector(state => state.chat.isFails);
+  const isShowSendStatus = useSelector(state => state.chat.isShowSendStatus);
 
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [isOpenForward, setOpenForward] = React.useState(false);
@@ -93,6 +97,15 @@ const BodyPart = props => {
     }
   }
 
+  function onClickDeleteChat(data) {
+    dispatch(loadChat(taskId));
+  }
+
+  function onClickResendChat(data) {
+    dispatch(createChatText(lastChat));
+
+  }
+
   function loadMoreChat() {
     if (page > 1)
       dispatch(loadChat(taskId, page - 1));
@@ -158,11 +171,25 @@ const BodyPart = props => {
             handleDetailEmotion={handleDetailEmotion(el)}
             handleReplyChat={handleReplyChat(el)} />)
         }
-      </InfiniteScroll>
+        {
+          isShowSendStatus &&
+          (
+            isFails ? <div className="bodyChat--sending">
+              < span className="bodyChat--sendingFail">Không thành công</span>
+              <span className="bodyChat--sendingDelete" onClick={onClickDeleteChat}>Xoá</span>
+              <span className="bodyChat--sendingResend" onClick={onClickResendChat}>Gửi lại</span>
+            </div>
+              :
+              <div className="bodyChat--sending">
+                {isSending ? 'Đang gửi...' : 'Đã gửi'}
+              </div>
+          )
+        }
+      </InfiniteScroll >
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />
-    </div>
+    </div >
   );
 };
 export default withRouter(BodyPart);

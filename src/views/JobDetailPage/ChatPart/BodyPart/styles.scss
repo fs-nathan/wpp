@@ -68,4 +68,19 @@
     padding: 10px;
     border-top: 1px solid #ccc;
   }
+  &--sending {
+    margin-top: 4px;
+    padding-right: 10px;
+    color: #666666;
+    text-align: right;
+    &Fail {
+      color: #d6a622;
+    }
+    &Delete {
+      color: #cf2812;
+    }
+    &Resend {
+      color: #1372df;
+    }
+  }
 }

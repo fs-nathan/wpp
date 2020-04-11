@@ -113,7 +113,7 @@
     }
   }
   &--tooltip {
-    text-decoration: none;
+    text-decoration: none !important;
   }
   &:hover .CommonMessageAction {
     opacity: 1;

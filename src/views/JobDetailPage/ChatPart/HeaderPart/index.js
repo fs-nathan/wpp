@@ -71,7 +71,7 @@ const renderAvatars = props => {
   return (
     <div className="wrap-avatars">
       {showImages.map(({ avatar }, i) =>
-        <Avatar className={clsx(`chatHeader--avatar${showImages.length}_${i + 1}`,
+        <Avatar key={i} className={clsx(`chatHeader--avatar${showImages.length}_${i + 1}`,
           { [`chatHeader--avatar${showImages.length}_${i + 1}_plus`]: (plusImage > 0) }
         )} src={avatar} />
       )}

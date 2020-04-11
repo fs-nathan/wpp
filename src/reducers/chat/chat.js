@@ -7,9 +7,14 @@ export const initialState = {
   listStickers: [],
   listTasks: [],
   tagMembers: [],
+  viewedChatMembers: [],
   emotionsList: [],
   searchChatKey: '',
   uploadingPercent: 0,
+  isSending: false,
+  isFails: false,
+  isShowSendStatus: false,
+  lastChat: {},
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) =>
@@ -20,6 +25,8 @@ export default (state = initialState, action) =>
         break;
       case actionTypes.APPEND_CHAT:
         draft.chats.data.unshift(action.payload.data_chat)
+        draft.isSending = true;
+        draft.isShowSendStatus = true;
         break;
       case actionTypes.FETCH_MEMBER_CHAT:
         draft.members = action.payload;
@@ -27,6 +34,7 @@ export default (state = initialState, action) =>
       case actionTypes.LOAD_CHAT_SUCCESS: {
         const { payload } = action;
         draft.chats = payload;
+        draft.isSending = false;
         break;
       }
       case actionTypes.CHAT_IMAGE_SUCCESS: {
@@ -110,6 +118,25 @@ export default (state = initialState, action) =>
       case actionTypes.GET_EMOTIONS_REACT_MEMBER_SUCCESS: {
         const { payload } = action;
         draft.payload = payload;
+        break;
+      }
+      case actionTypes.CREATE_CHAT_TEXT: {
+        const { payload } = action;
+        draft.lastChat = payload.content;
+        break;
+      }
+      case actionTypes.CREATE_CHAT_TEXT_SUCCESS: {
+        const { payload } = action;
+        draft.payload = payload;
+        break;
+      }
+      case actionTypes.CREATE_CHAT_TEXT_FAIL: {
+        draft.isFails = true;
+        break;
+      }
+      case actionTypes.GET_VIEWED_CHAT_SUCCESS: {
+        const { payload } = action;
+        draft.viewedChatMembers = payload;
         break;
       }
     }
