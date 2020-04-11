@@ -83,4 +83,14 @@
       color: #1372df;
     }
   }
+  &--viewed {
+    color: #666666;
+    display: flex;
+    cursor: pointer;
+    &Avatar {
+      width: 15px;
+      height: 15px;
+      margin: 0 2px;
+    }
+  }
 }

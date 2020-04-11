@@ -18,6 +18,7 @@ export function* loadChat(payload) {
     const { task_id, page } = payload;
     const res = yield call(apiService.get, `/task/get-chat?task_id=${task_id}&page=${page}`, { task_id });
     yield put(actions.loadChatSuccess(res.data));
+    yield put(actions.getViewedChat(task_id));
   } catch (error) {
     yield put(actions.loadChatFail(error));
   }

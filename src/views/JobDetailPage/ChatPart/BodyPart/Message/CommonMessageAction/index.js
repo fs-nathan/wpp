@@ -42,7 +42,7 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat }) => 
 
   function onClickMarkDemand() {
     setAnchorEl(null);
-    dispatch(showTab(3))
+    dispatch(showTab(7))
   }
 
   function handleDeleteChat() {

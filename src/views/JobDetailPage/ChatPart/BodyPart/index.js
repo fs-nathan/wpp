@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
 import DetailEmotionModal from './DetailEmotionModal';
+import DetailViewedModal from './DetailViewedModal';
 import ForwardMessageDialog from './ForwardMessageDialog';
 import Message from './Message';
 import './styles.scss';
@@ -25,12 +26,21 @@ const BodyPart = props => {
   const isSending = useSelector(state => state.chat.isSending);
   const isFails = useSelector(state => state.chat.isFails);
   const isShowSendStatus = useSelector(state => state.chat.isShowSendStatus);
+  const viewedChatMembers = useSelector(state => state.chat.viewedChatMembers);
 
+  const [openViewedModal, setOpenViewedModal] = React.useState(false);
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [isOpenForward, setOpenForward] = React.useState(false);
   const [forwardChat, setForwardChat] = React.useState(null);
   const [chatEmotion, setChatEmotion] = React.useState([]);
   const [openDetailEmotionModal, setOpenDetailEmotionModal] = React.useState(false);
+
+  let showMembers = viewedChatMembers;
+  const imgNum = 5;
+  const plusMember = viewedChatMembers.length - imgNum;
+  if (plusMember > 0) {
+    showMembers = viewedChatMembers.slice(0, imgNum);
+  }
 
   const { total_page, page = 1 } = chats.paging || {};
   const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
@@ -103,7 +113,10 @@ const BodyPart = props => {
 
   function onClickResendChat(data) {
     dispatch(createChatText(lastChat));
+  }
 
+  function onClickDetailViewed(data) {
+    setOpenViewedModal(true);
   }
 
   function loadMoreChat() {
@@ -185,10 +198,18 @@ const BodyPart = props => {
               </div>
           )
         }
+        {
+          viewedChatMembers.length > 0 &&
+          <div className="bodyChat--viewed" onClick={onClickDetailViewed}>
+            Đã xem {showMembers.map(({ avatar }) => <Avatar className="bodyChat--viewedAvatar" src={avatar} />)}
+            {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
+          </div>
+        }
       </InfiniteScroll >
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />
+      <DetailViewedModal isOpen={openViewedModal} setOpen={setOpenViewedModal} />
     </div >
   );
 };

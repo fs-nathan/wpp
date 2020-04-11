@@ -136,7 +136,7 @@ export default (state = initialState, action) =>
       }
       case actionTypes.GET_VIEWED_CHAT_SUCCESS: {
         const { payload } = action;
-        draft.viewedChatMembers = payload;
+        draft.viewedChatMembers = payload.members;
         break;
       }
     }
