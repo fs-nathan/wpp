@@ -71,15 +71,15 @@ function DeleteGroupPermissionModal({ loading, onClose, onDelete }) {
   );
 }
 
-export default () => {
-  const { setModal, select, setSelect } = useContext(
+export default ({ item }) => {
+  const { setModal, detail, setSelect } = useContext(
     GroupPermissionSettingsCotnext
   );
   const [id, name, permissions] = createMapPropsFromAttrs([
     groupPermissionAttr.id,
     groupPermissionAttr.name,
     groupPermissionAttr.permissions,
-  ])(select);
+  ])(detail);
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
     setModal(null);
