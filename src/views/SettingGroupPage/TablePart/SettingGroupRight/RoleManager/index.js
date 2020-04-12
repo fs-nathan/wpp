@@ -69,14 +69,18 @@ function RoleManager({ setHackHeader, ...props }) {
               <StyledTableBodyCell className="comp_TitleCell" align="left">
                 <Typography
                   noWrap
+                  title={name}
                   style={{ padding: "10px 10px 10px 0", maxWidth: 300 }}
                   className="comp_TitleCell__inner text-bold"
                 >
-                  <b>{name + " " + i}</b>
+                  <b>{name}</b>
                 </Typography>
               </StyledTableBodyCell>
               <StyledTableBodyCell className="comp_TitleCell" align="left">
-                <Typography className="comp_TitleCell__inner">
+                <Typography
+                  title={description}
+                  className="comp_TitleCell__inner"
+                >
                   {description}
                 </Typography>
               </StyledTableBodyCell>

@@ -179,11 +179,13 @@ const ColumnRight = () => {
           <b className="comp_QuickViewFilter__title">
             {t("Gán nhóm quyền cho module")}
           </b>
-          <Box fontSize="15px">
+          <Box>
             {permissionModules
               .filter(({ value }) => "" + groupModule === "" + value)
               .map(({ name, value }) => (
-                <div key={value}>{name}</div>
+                <Box fontSize="15px" key={value}>
+                  {name}
+                </Box>
               ))}
           </Box>
           <Divider />
