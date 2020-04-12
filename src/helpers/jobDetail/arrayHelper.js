@@ -38,6 +38,7 @@ export const CHAT_TYPE = {
     CHAT_FORWARD_FILE: 31,
     UPLOADING_IMAGES: 101,
     UPLOADING_FILE: 102,
+    DATE_TIME_CHAT_HISTORY: 202,
 }
 
 export const isNotifyText = chatType => {

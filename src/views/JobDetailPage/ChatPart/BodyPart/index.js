@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import { createChatText, loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
+import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
 import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -60,7 +61,18 @@ const BodyPart = props => {
     }
     return { ...chat, chatPosition }
   })
-  // console.log(calculatedChats, 'calculatedChats')
+  const showedChats = [];
+  for (let index = 0; index < calculatedChats.length; index++) {
+    const chat = calculatedChats[index];
+    const prevChat = chatData[index - 1];
+    const time_create = chat.time_create.slice(-10);
+    // console.log(time_create.slice(-10), 'time_create')
+    if (prevChat && prevChat.time_create.slice(-10) !== time_create) {
+      showedChats.push({ type: CHAT_TYPE.DATE_TIME_CHAT_HISTORY, time_create })
+    }
+    showedChats.push(chat)
+  }
+
   const {
     date_create,
     name,
@@ -178,7 +190,7 @@ const BodyPart = props => {
       // loader={<div className="loader" key={0}>Loading ...</div>}
       >
         {
-          calculatedChats.map((el, id) => <Message {...el}
+          showedChats.map((el, id) => <Message {...el}
             key={id}
             handleForwardChat={handleForwardChat(el)}
             handleDetailEmotion={handleDetailEmotion(el)}

@@ -98,6 +98,11 @@ const Message = props => {
       return <ImageMessage {...props} />;
     case CHAT_TYPE.UPLOADING_FILE:
       return <FileMessage {...props} />;
+    case CHAT_TYPE.DATE_TIME_CHAT_HISTORY:
+      return <div className="wrap-time">
+        <div className="line" />
+        <div className="time">{props.time_create}</div>
+      </div>;
     default:
       return <div>Tin nhắn này bị lỗi hiển thị</div>;
   }
