@@ -12,7 +12,11 @@ export const initialState = {
   toast: { type: null, message: '' },
   numberNotificationNotView: 0,
   numberMessageNotView: 0,
-  groupActive: {}
+  groupActive: {},
+  ganttConfig: {
+    state: false,
+    type: ''
+  }
 };
 
 const system = (state = initialState, action) => {
@@ -46,6 +50,8 @@ const system = (state = initialState, action) => {
       return { ...state, numberNotificationNotView: action.payload };
     case actionTypes.CHANGE_NUM_MESSAGE_NOT_VIEW:
       return { ...state, numberMessageNotView: action.payload };
+    case actionTypes.CHANGE_VISIBLE_COMMON_CONFIG:
+      return { ...state, ganttConfig: action.payload };
     default:
       return state;
   }

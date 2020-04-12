@@ -1,39 +1,60 @@
-import React, { useState, useRef } from 'react'
+import React, { useState,useEffect, useRef } from 'react'
 import {ResizableBox}  from 'react-resizable'
 import './test.css';
-const TimeLine = ({startPosition, endPosition, index, handleCallBack }) => {
+import Icon from '@mdi/react';
+import { mdiTriangle   } from '@mdi/js'
+
+const Circle = ({left}) => (
+    <div style={{left}} className="gantt-dot-circle">
+
+    </div>
+)
+
+const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource, startDate, endDate }) => {
     const totalTimeRef = useRef()
     const refProcess = useRef()
     const refResizeTotalTime = useRef()
-    const refResizeProcess = useRef()
+    const refFirstResize = useRef()
     const [ left, setLeft ] = useState(startPosition *48)
-    const [width, setWidth ] = useState((endPosition - startPosition +1)*48)
+    const [width, setWidth ] = useState(endPosition*48)
+    const [showResize, setShowResize ] = useState(false)
     const [widthProcess, setWidthProcess ] = useState(0)
     const [ a, setA ] = useState(0)
+    const [dragFirstResize, setDragFirstResize ] = useState(false)
     const [ drag, setDrag ] = useState(0)
     let offsetLeft = 0
     if(totalTimeRef.current){
           offsetLeft = totalTimeRef.current.offsetLeft
         }
     const handleMouseMove = (e) => {
-        if(drag)
-        setLeft(e.pageX - a)
+        if(!drag) return
+        console.log('vo day')
+        const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
+        if(dragFirstResize){
+            const newWidth = width -(newPosition- left)
+            setWidth(newWidth)
+        }
+        setLeft(newPosition)
         e.stopPropagation()
         e.preventDefault()
     }
     const handleMouseDown = (e) => {
-       if(e
-            .target
-            .className
-            .indexOf("react-resizable-handle") !== -1) return
+        const className = e.target.className
+       if(!className.indexOf ||className
+            .indexOf("react-resizable-handle") !== -1 || className
+            .indexOf("gantt-dot-circle") !== -1 ||className
+            .indexOf("container-icon-drag-duration") !== -1) return
         setDrag(true)
         setA(e.pageX - offsetLeft)
     }
     const handleMouseUp = () => {
         const newLeft = left -left%48
         setLeft(newLeft)
+        if(dragFirstResize)
+            setWidth(width + left - newLeft)
         handleChange(newLeft/48,newLeft/48 + width/48)
        setDrag(false)
+       setDragFirstResize(false)
      }
     const handleResizeStop = (e, node) => {
         const resizeWidth = node.size.width
@@ -47,30 +68,127 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack }) => {
         setWidthProcess(newProcess)
     }
     const handleChange = (start, end) => {
-        handleCallBack(index,start, end)
+        console.log(dataSource)
+        // handleCallBack(index,start, end)
     }
+    const handleMouseUpFirstResize = () => {
+        setDragFirstResize(false)
+        setDrag(false)
+    }
+    useEffect(() =>{
+        if(drag){
+            document.addEventListener('mouseup', handleMouseUp)
+        } else {
+            document.removeEventListener('mouseup', handleMouseUp)
+        }
+        return () => {
+            document.removeEventListener('mouseup', handleMouseUp)
+        }
+    })
     const b = left ? {left} : {}
-    let process
     return (
         <React.Fragment>
             <div ref={totalTimeRef }
-            onMouseOver={() => {
-                setDrag(false)
-            }}
+            //   onMouseOver={() => {
+            //     setDrag(false)
+            // }}
+            onMouseLeave={() => setShowResize(false)}
+            onMouseEnter={() => {
+                setShowResize(true)}}
             onMouseUp={handleMouseUp} 
-            onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} style={{display: 'flex',zIndex:1000,top: "50%", transform: 'translateY(-50%)', position: 'absolute',...b}}>
-            <ResizableBox minConstraints={[48, 0]} ref={refResizeTotalTime} onResizeStop={handleResizeStop} width={width}>
-            <div style={{width: '100%',height:'20px',  background: 'green', zIndex: 1}}>
+            onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}
+            style={{display: 'flex',
+            cursor:'move', 
+            width:'100%',
+            top: "50%", 
+            transform: 'translateY(-50%)', 
+            position: 'absolute',
+            ...b}}>
+                <p className="gantt--start-timeline">
+                {startDate.format('MM/DD/YYYY')}
+            </p>
+            <ResizableBox 
+            minConstraints={[48, 0]}
+            ref={refResizeTotalTime} 
+            className="container-resizable"
+            handle={() => (
+                <span
+                style ={{ 
+                    display: showResize ? 'block' : 'none'
+                }}
+                  className={`resize-width react-resizable-handle`}
+                  onClick={e => {
+                    e.stopPropagation();
+                  }}
+                >
+                       <Circle left={9}/>
+                </span>
+              )}
+            onResizeStop={handleResizeStop} 
+            width={width}>
+                <div
+                    ref={refFirstResize}
+                    style ={{ 
+                        display: showResize ? 'block' : 'none'
+                    }}
+                    onMouseDown={(e) =>{
+                        setDrag(true)
+                        setDragFirstResize(true)
+                        setA(e.pageX - offsetLeft)
+                    }}
+                    className="resize-width"
+                    onMouseUp={handleMouseUpFirstResize}
+                >
+                    <Circle left={-15}/>
+                </div>
+            <div className="gantt--time-task">
             </div>
             </ResizableBox>
+            <p className="gantt--end-timeline">
+            {endDate.format('MM/DD/YYYY')}
+            </p>
 </div>
-<div  onMouseOver={() => {
-                setDrag(false)
-            }}
-            onMouseUp={handleMouseUp} 
-            onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} style={{display: 'flex',top: "50%", transform: 'translateY(-50%)',zIndex:1000,position: 'absolute',...b}}>
-            <ResizableBox onResizeStop={handleProcessResizeStop} ref={refResizeProcess} minConstraints={[0, 0]} width={0}>
-            <div ref={refProcess} style={{overflow: 'hidden', width: '100%', height: '20px',background: 'red', zIndex: 3} }>{widthProcess}%</div>
+            <div
+                //  onMouseOver={() => {
+                //     setDrag(false)
+                // }}
+                onMouseLeave={() =>   setShowResize(false)}
+                onMouseEnter={() => {
+                    setShowResize(true)}}
+                onMouseUp={handleMouseUp} 
+                onMouseDown={handleMouseDown} 
+                onMouseMove={handleMouseMove} 
+                style={{
+                    display: 'flex',
+                    top: "50%", 
+                    transform: 'translateY(-50%)',
+                    position: 'absolute',
+                    cursor:'move',
+                    ...b}}>
+            <ResizableBox 
+                onResize={handleProcessResizeStop} 
+                minConstraints={[0, 0]} 
+                maxConstraints={[width, width]} 
+                width={0}
+                handle={() => (
+                    <span
+                    style ={{ 
+                        display: showResize ? 'block' : 'none'
+                    }}
+                      className={`resize-duration react-resizable-handle`}
+                      onClick={e => {
+                        e.stopPropagation();
+                      }}
+                    >
+                        <span className="container-icon-drag-duration">
+                            <span>
+                           <Icon style={{fill: "#d1cfcf"}} width={10} path={mdiTriangle }/>
+                           </span>
+                           </span>
+                    </span>
+                  )}
+            >
+            <div className="gantt--duration-task" ref={refProcess} ><div className="duration-text-gantt">{widthProcess}%</div></div>
             </ResizableBox>
             </div>
             </React.Fragment>

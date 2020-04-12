@@ -204,3 +204,11 @@ export const getNumberMessageNotViewer = () => {
 export const actionGetSupport = () => {
   return apiService({ url: '/get-url-help', method: 'get' });
 };
+
+export const changeVisibleConfigGantt = (state, type) => ({
+  type: actionTypes.CHANGE_VISIBLE_COMMON_CONFIG,
+  payload: {
+    state,
+    type
+  }
+})

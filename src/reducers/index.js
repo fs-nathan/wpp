@@ -87,6 +87,7 @@ import createTask, { initialState as createTaskInitialState} from './task/create
 import deleteTask, { initialState as deleteTaskInitialState} from './task/deleteTask';
 import sortTask, { initialState as sortTaskInitialState} from './task/sortTask';
 import inviteOtherPeopleCreateAccount, {initialState as inviteOtherPeopleCreateAccountInitialState} from './register/inviteOtherPeopleCreateAccount';
+import gantt, { initialState as ganttInitialState } from './gantt';
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from './documents';
@@ -234,7 +235,8 @@ const rootReducer = combineReducers({
   }),
   register: combineReducers({
     inviteOtherPeopleCreateAccount,
-  })
+  }),
+  gantt,
 });
 
 export const DEFAULT_STATE = {
@@ -353,7 +355,8 @@ export const DEFAULT_STATE = {
   },
   register: {
     inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState,
-  }
+  },
+  gantt: ganttInitialState
 };
 
 export default rootReducer;

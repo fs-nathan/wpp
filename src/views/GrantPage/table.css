@@ -3,15 +3,16 @@
   background-clip: padding-box;
 }
 
-.react-resizable-handle {
+.gantt-table-col.react-resizable-handle {
   position: absolute;
-  width: 10px;
-  height: 100%;
-  bottom: 0;
-  right: -5px;
-  cursor: col-resize;
+  width: 20px;
+  height: 50%;
+  top: 25%;
+  right: -12px;
+  cursor: grab;
   z-index: 1;
 }
+
 tr.drop-over-downward td {
   border-bottom: 2px dashed #1890ff;
 }
@@ -24,15 +25,19 @@ tr.drop-over-upward td {
 }
 
 .table-gantt-header thead tr th{
-  padding: 20px !important;
+  padding: 14px !important;
   white-space: nowrap
 }
 
 .table-gantt-header tbody tr {
   white-space: nowrap;
 }
+
+.table-gantt-header tbody tr td div {
+  height: 20px;
+}
 .grantt-header  thead tr th {
-  padding: 5px !important;
+  padding: 2px !important;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -40,6 +45,263 @@ tr.drop-over-upward td {
   background: unset;
 }
 
-.grantt-header tbody tr td.ant-table-cell {
+.ant-table.ant-table-bordered thead > tr > th {
+  text-align: center;
+}
+/* .grantt-header tbody tr td.ant-table-cell {
   padding: 16px 0 !important
+} */
+.gantt-header-icon {
+  width: 100%;
+  margin: auto;
+}
+.row-grey-table{
+  background: #fafafa;
+}
+.ant-table-content {
+  overflow: unset !important;
+}
+.config--drawer--checkbox-section{
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px !important;  
+  margin-top: 10px;
+}
+body {
+  overflow-x: hidden;
+}
+.config--drawer--section {
+  margin-bottom: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.config--drawer--title{
+  color: #cfcfcf;
+}
+.ant-checkbox-wrapper{
+  margin-bottom: 10px !important;
+  font-size: 15px !important;
+  font-weight: 600!important;
+}
+
+.checkbox-label--drawer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.checkbox-colortag--drawer{
+  width: 80px;
+  height: 16px;
+  margin: 2px 0px;
+}
+.ml-0 {
+  margin-left: 0 !important;
+}
+/* .ml-8 {
+  margin-left: 8px !important;
+} */
+.ant-checkbox {
+  margin-top: 3px !important;
+}
+.config--drawer--checkbox {
+  display: flex !important;
+  margin-top: 13px;
+}
+
+.config--drawer--checkbox span {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+span.ant-checkbox ~ span {
+  width: 100%;
+}
+
+.ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin-left: 0 !important;
+}
+
+.title-drawer-config {
+  width: 30%;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.title-drawer-config p {
+  margin : 0;
+  font-size: 16px;
+}
+.ant-checkbox-checked::after {
+  border: 0 !important;
+}
+
+.gantt--title-project {
+ font-size: 17px;
+ margin-bottom: 2px;
+ font-weight: 500; 
+}
+
+.gantt--navigation {
+  display: flex;
+}
+.gantt--navigation p {
+  margin-right: 5px;
+  margin-bottom: 0;
+}
+
+.gantt--image-project {
+  border-radius: 50%;
+}
+.gantt--button-header-text{
+  text-align: center;
+  margin-top: 5px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.54)
+}
+
+.gantt--timeline--container {
+  margin-top:22.5px;
+}
+
+.gantt--top-timeline{
+  position: relative;
+              height: 20px;
+              margin: 0;
+              left: -10px;
+}
+
+.gantt--start-timeline {
+  position: absolute;
+  height: 20px;
+  margin: 0;
+  left: -90px;
+}
+
+.gantt--end-timeline {
+  position: relative;
+  height: 20px;
+  margin: 0;
+  left: 20px;
+}
+
+.gantt--time-task{
+  width: 100%;
+  height: 20px;
+  background: green;
+  z-index: 1;
+}
+
+.gantt--duration-task {
+  overflow: hidden;
+  width: 100%;
+  height: 20px;
+  background: #e629e6;
+  z-index: 3;
+}
+
+.config--drawer--checkbox .ant-radio-checked .ant-radio-inner::after {
+  transform: translate(0.5px,-0.5px) !important;
+}
+.resize-width{
+  width: 20px;
+  right: -14px !important;
+  bottom: 0;
+  cursor: ew-resize;
+}
+
+.gantt-dot-circle {
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(59, 59, 59, 0.25);
+  background-color: #fafafa;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-55%);
+}
+
+.asfdfs {
+  right: 0 !important;
+}
+.resize-duration{
+  width: 10px;
+  right: -5px !important;
+  bottom: -6.67px;
+  padding: 0 !important;
+}
+.container-icon-drag-duration{
+  width: 20px;
+  height: 10px;
+  position: absolute;
+}
+.container-icon-drag-duration  span {
+  width: 20px;
+  cursor: pointer;
+}
+.icon-resize-gantt-chart{
+  position: absolute;
+  z-index: 1001;
+  width: 1px;
+  cursor: col-resize;
+}
+.icon-resize-gantt-chart svg {
+  width: 20px !important;
+  height: 30px !important;
+  left: -7px;
+  position: absolute;
+  top:50%;
+  fill: #9a9a9a;
+  border-radius: 2px;
+  background: #e8e8e8
+}
+
+.icon-show-header {
+  position: absolute;
+  right:15px;
+  z-index: 1;
+  width: 52px;
+  height:26px;
+  border: 1px solid rgba(59, 59, 59, 0.25);
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  border-top: 0;
+  background-color: white;
+}
+.icon-show-header button:hover {
+  background: transparent;
+}
+.icon-show-header svg {
+  width: 20px !important;
+}
+
+.ant-table tbody > tr.ant-table-row:hover > td {
+  background: #fffae6 !important;
+}
+.gantt--top-timeline-tr:hover{
+  background: #fffae6 !important;
+}
+
+.row-background-yellow {
+  background: #fffae6 !important;
+}
+.name-task-gantt:hover{
+  color: #0089f6 !important;
+}
+.duration-text-gantt {
+  position: relative;
+  right: 10px;
+  text-align: right;
+}
+.right-header-more {
+  margin: 0 !important
+}
+.gantt--icon-setting-task {
+  fill: #b9b9b9;
+}
+.gantt--icon-setting-task:hover {
+  fill: #8e8e8e;
 }
