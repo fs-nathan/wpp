@@ -92,13 +92,27 @@ export const actionDeleteFolderTrash = data => {
   };
   return apiService(config);
 };
+export const actionDeletePermantly = data => {
+  return apiService({
+    url: '/documents/trash/delete-documents',
+    method: 'post',
+    data
+  });
+};
 
 // handle for comment of a document
-export const actionFetchListComment = (fileId, quite = false) => ({
+export const actionFetchListComment = (
+  fileId,
+  quite = false,
+  page = 1,
+  isLoadMore = false
+) => ({
   type: LIST_COMMENT,
   quite,
   options: {
-    fileId
+    fileId,
+    page,
+    isLoadMore
   }
 });
 

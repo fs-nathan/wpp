@@ -82,11 +82,11 @@ export const rejectJoinGroupService = requirement_id => {
 export const listJoinRequirementService = () => {
   return apiService({ url: '/get-requirement-join-group', method: 'get' });
 };
-export const getListNotification = params => {
+export const getListNotification = param => {
   const config = {
     url: '/notifications/list',
     method: 'get',
-    params
+    params: { ...param, type_data: 'html' }
   };
   return apiService(config);
 };
@@ -108,11 +108,11 @@ export const actionViewNotification = data => {
   return apiService(config);
 };
 
-export const getListMessage = params => {
+export const getListMessage = param => {
   const config = {
     url: '/chat/notifications',
     method: 'get',
-    params
+    params: { ...param, type_data: 'html' }
   };
   return apiService(config);
 };

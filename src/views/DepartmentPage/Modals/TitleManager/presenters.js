@@ -1,36 +1,40 @@
 import React from 'react';
-import SimpleManagerTable from '../../../../components/SimpleManagerTable';
-import ErrorBox from '../../../../components/ErrorBox';
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../components/CustomModal';
+import ErrorBox from '../../../../components/ErrorBox';
+import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 
-function TitleManager({ 
-  open, setOpen, 
-  positions, 
+function TitleManager({
+  open, setOpen,
+  positions,
   handleDeletePosition, handleOpenModal
 }) {
+
+  const { t } = useTranslation();
 
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title='Quản lý chức danh'
+      title={t('DMH.VIEW.DP.MODAL.TITLE.TITLE')}
       confirmRender={null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t('DMH.VIEW.DP.MODAL.TITLE.EXIT')}
       loading={positions.loading}
     >
-      {positions.error !== null 
+      {positions.error !== null
         ? <ErrorBox />
-        : <SimpleManagerTable 
-            data={positions.positions}
-            handleAdd={() => handleOpenModal('CREATE')}
-            handleEdit={position => handleOpenModal('UPDATE', {
-              updatedPosition: position,
-            })}
-            handleDelete={position => handleOpenModal('ALERT', {
-              content: 'Bạn chắc chắn muốn xóa chức danh?',
-              onConfirm: () => handleDeletePosition(position),
-            })}
-          />
+        : <SimpleManagerTable
+          data={positions.positions}
+          pendings={positions.pendings}
+          handleAdd={() => handleOpenModal('CREATE')}
+          handleEdit={position => handleOpenModal('UPDATE', {
+            updatedPosition: position,
+          })}
+          handleDelete={position => handleOpenModal('ALERT', {
+            content: t('DMH.VIEW.DP.MODAL.TITLE.EXIT'),
+            onConfirm: () => handleDeletePosition(position),
+          })}
+        />
       }
     </CustomModal>
   )

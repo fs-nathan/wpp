@@ -1,8 +1,4 @@
-import {
-  ASSIGN_MEMBER_TO_ALL_TASK,
-  ASSIGN_MEMBER_TO_ALL_TASK_SUCCESS,
-  ASSIGN_MEMBER_TO_ALL_TASK_FAIL,
-} from '../../constants/actions/project/assignMemberToAllTask';
+import { ASSIGN_MEMBER_TO_ALL_TASK, ASSIGN_MEMBER_TO_ALL_TASK_FAIL, ASSIGN_MEMBER_TO_ALL_TASK_SUCCESS } from '../../constants/actions/project/assignMemberToAllTask';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case ASSIGN_MEMBER_TO_ALL_TASK_SUCCESS: 
+    case ASSIGN_MEMBER_TO_ALL_TASK_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case ASSIGN_MEMBER_TO_ALL_TASK_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

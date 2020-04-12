@@ -7,20 +7,20 @@ import LeftSetting from '../../../components/LeftSetting/LeftSetting';
 const ListPart = props => {
   const { t } = useTranslation();
   const listMenu = [
+    // {
+    //   title: t('IDS_WP_SETTING_GROUP'),
+    //   url: Routes.SETTING_GROUP_INFO
+    //   // icon: mdiAccountMultiple
+    // },
     {
-      title: t('IDS_WP_SETTING_GROUP'),
-      url: Routes.SETTING_GROUP_INFO
-      // icon: mdiAccountMultiple
-    },
-    {
-      title: t('IDS_WP_SETUP_SOFTWARE'),
+      title: t('IDS_WP_SETTING_SOFTWARE'),
       // url: Routes.SETTING_GROUP_SETTING,
       sub: [
-        { name: t('IDS_WP_TIME_LANGUAGE'), url: Routes.SETTING_GROUP_LANGUAGE },
-        {
-          name: t('IDS_WP_SETUP_NOTICE'),
-          url: Routes.SETTING_GROUP_NOTIFICATION
-        }
+        { name: t('IDS_WP_GROUP_INFO'), url: Routes.SETTING_GROUP_INFO },
+        { name: t('IDS_WP_HOME'), url: null },
+        { name: t('IDS_WP_PERMISSION_GROUP'), url: null },
+        { name: t('IDS_WP_SYMBOLISM'), url: null },
+        { name: t('IDS_WP_ROLE'), url: null }
       ]
       // icon: mdiSettings
     },

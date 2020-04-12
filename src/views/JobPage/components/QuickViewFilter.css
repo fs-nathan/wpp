@@ -1,0 +1,35 @@
+.comp_QuickViewFilter__headerWrapper {
+  display: flex;
+  align-items: center;
+  flex: 1 1 0%;
+}
+
+.comp_QuickViewFilter__headerIcon {
+  margin-right: 15px;
+  width: 1.5em;
+  height: 1.5em;
+  fill: rgb(102, 102, 102);
+}
+.comp_QuickViewFilter__headerTitle {
+  font-size: 15px;
+}
+.comp_QuickViewFilter {
+  display: flex;
+  flex-direction: column;
+}
+.comp_QuickViewFilter__formControl {
+}
+.comp_QuickViewFilter__title {
+  font-size: 14px;
+  font-weight: bold;
+}
+.comp_QuickViewFilter__subTitle {
+  color: rgb(165, 160, 160);
+  margin-top: 0.5em;
+}
+.comp_QuickViewFilter__FormGroup {
+  margin-top: 1em;
+  padding-left: 9px;
+}
+.comp_QuickViewFilter__FormControlLabel {
+}

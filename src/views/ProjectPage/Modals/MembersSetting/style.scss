@@ -2,20 +2,31 @@
   margin-top: 8px;  
 };
 
+.view_Project_MemberSetting_Modal___list {
+  margin-bottom: 20px;  
+};
+
 .view_Project_MemberSetting_Modal___list-subheader {
   background-color: #fff;
   display: flex;
   align-items: center;
   padding: 5px 0;
-  margin: 0 16px;
+  margin: 0 15px 0 24px;
+  position: relative;
   & > * {
-    color: rgba(0, 0, 0, 0.54);  
-    font-size: 14px;
+    color: #9a9a9a;
+    text-transform: uppercase; 
+    font-size: 13px;
+    font-weight: 500;
+    display: block;
+    position: relative;
+    line-height: 15px;
+    width: 100%;
   }
 };
 
 .view_Project_MemberSetting_Modal___list-item {
-  padding: 10px 16px;
+  padding: 10px 15px 10px 24px;
   &:hover {
     cursor: auto !important;
   }
@@ -25,6 +36,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: unset;
+  margin: 15px 15px 15px 24px;
 };
 
 .view_Project_MemberSetting_Modal___table-head {
@@ -45,24 +58,58 @@
   }
 };
 
-.view_Project_MemberSetting_Modal___middle-table-cell {
-  text-align: center;
+.view_Project_MemberSetting_Modal___table-row {
+  & > td {
+    border-bottom: 1px solid rgb(240, 240, 240);
+  }
 };
 
-.view_Project_MemberSetting_Modal___add-button {
-  color: #222;
-  background-color: #fff;
-  transition: none;
-  & > span {
-    font-size: 12px;
-    &:last-child {
-      display: none;
-    }
+
+.view_Project_MemberSetting_Modal___avatar-table-cell {
+  text-align: center;
+  padding: 5px 10px 5px 24px !important; 
+};
+
+.view_Project_MemberSetting_Modal___roles-box {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  & > * {
+    margin: 3px 5px 0 0;
+    padding: 2px 3px;
   }
-  &:hover {
-    color: #fff;
-    background-color: #03c30b;
-    border-color: #03c30b; 
+  & > p {
+    color: #222;
+    font-size: 12px;
+    border-radius: 2px;
+    padding: 2px 8px;
+    background: #ff98004f;
+  }
+};
+
+@mixin view_Project_MemberSetting_Modal___add-button {
+  height: 25px;
+  text-transform: unset;
+  padding: 2px 8px;
+  width: 50px;
+  min-width: unset;
+}
+
+.view_Project_MemberSetting_Modal___add-button {
+  & {
+    @include view_Project_MemberSetting_Modal___add-button;
+    border: 1px solid rgb(220, 220, 220);
+    font-weight: normal;
+    color: #444;
+    line-height: 20px;
+  }
+  &-disabled {
+    @include view_Project_MemberSetting_Modal___add-button;
+    font-weight: normal;
+    line-height: 20px;
+    cursor: not-allowed;
+    opacity: 0.65;
   }
 };
 
@@ -104,15 +151,6 @@
   color: #333;
 };
 
-.view_Project_MemberSetting_Modal___left-container {
-  & > * {
-    &:nth-child(1) {
-      width: 90%;
-      margin: 8px auto;
-    }
-  }
-};
-
 .view_Project_MemberSetting_Modal___right-container {
   & > * {
     &:nth-child(1) {
@@ -120,4 +158,22 @@
       padding: 12px;
     }
   }
+};
+
+@mixin view_Project_MemberSetting_Modal___sub-header {
+  color: #555;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  padding: 12px 24px;
+  margin: 0;
+}
+
+.view_Project_MemberSetting_Modal___right-header {
+  @include view_Project_MemberSetting_Modal___sub-header;
+};
+
+.view_Project_MemberSetting_Modal___left-header {
+  @include view_Project_MemberSetting_Modal___sub-header;
 };

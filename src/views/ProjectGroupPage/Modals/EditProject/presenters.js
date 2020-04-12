@@ -1,43 +1,36 @@
+import { FormControl, FormControlLabel, MenuItem, Radio, RadioGroup, TextField } from '@material-ui/core';
+import { find, get, isNil } from 'lodash';
 import React from 'react';
-import { 
-  TextField, FormControl, Radio,
-  FormLabel, RadioGroup, FormControlLabel, 
-} from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import CustomSelect from '../../../../components/CustomSelect';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../components/ColorTypo';
-import { get, find } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../hooks';
+import CustomModal from '../../../../components/CustomModal';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
-const StyledFormControl = ({ className = '', ...props }) => 
-  <FormControl 
+const StyledFormControl = ({ className = '', ...props }) =>
+  <FormControl
     className={`view_ProjectGroup_EditProjectModal___form-control ${className}`}
     {...props}
-  />;  
+  />;
 
-const CustomTextField = ({ className = '', ...props }) => 
-  <TextField 
+const CustomTextField = ({ className = '', ...props }) =>
+  <TextField
     className={`view_ProjectGroup_EditProjectModal___text-field ${className}`}
     {...props}
   />;
 
-const StyledFormLabel = ({ className = '', ...props }) => 
-  <FormLabel 
-    className={`view_ProjectGroup_EditProjectModal___form-label ${className}`}
-    {...props}
-  />;
-
-function EditProject({ 
-  curProject = null, 
-  open, setOpen, 
+function EditProject({
+  curProject = null,
+  open, setOpen,
   groups,
-  handleEditProject, 
+  handleEditProject,
 }) {
 
+  const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 200);
-  const [projectGroup, setProjectGroup] = React.useState(groups.groups[0]);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
+  const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
   const [priority, setPriority] = React.useState(0);
   const [currency, setCurrency] = React.useState(0);
 
@@ -47,9 +40,13 @@ function EditProject({
       setDescription(get(curProject, 'description', ''));
       setPriority(get(curProject, 'priority_code', 0));
       setCurrency(get(curProject, 'currency', 0));
-      setProjectGroup(find(groups.groups, { id: get(curProject, 'project_group_id') }) 
-        || find(groups.groups, { id: get(curProject, 'group_project_id') }) 
-        || groups.groups[0]);
+      setCurProjectGroupId(
+        !isNil(find(groups.groups, { id: get(curProject, 'project_group_id') }))
+          ? get(curProject, 'project_group_id')
+          : !isNil(find(groups.groups, { id: get(curProject, 'group_project_id') }))
+            ? get(curProject, 'group_project_id')
+            : get(groups.groups[0], 'id')
+      );
     }
     // eslint-disable-next-line
   }, [curProject]);
@@ -65,35 +62,33 @@ function EditProject({
         description,
         priority,
         currency,
-        projectGroupId: get(projectGroup, 'id') !== '__default__' 
-          ? get(projectGroup, 'id')
+        projectGroupId: curProjectGroupId !== get(groups.groups[0], 'id')
+          ? curProjectGroupId
           : undefined,
       })}
+      loading={groups.loading}
     >
       <StyledFormControl fullWidth>
-        <label htmlFor='room-select'>
-          Nhóm dự án
-        </label>
-        <CustomSelect
-          options={
-            groups.groups.map(projectGroup => ({
-                value: get(projectGroup, 'id'),
-                label: get(projectGroup, 'name', ''),
-              })
-            )}
-          value={{
-            value: get(projectGroup, 'id'),
-            label: get(projectGroup, 'name', ''),
-          }}
-          onChange={({ value: projectGroupId }) => setProjectGroup(find(groups.groups, { id: projectGroupId }))}
-        />
+        <CustomTextField
+          select
+          variant="outlined"
+          label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
+          value={curProjectGroupId}
+          onChange={evt => setCurProjectGroupId(evt.target.value)}
+        >
+          {groups.groups.map(projectGroup =>
+            <MenuItem key={get(projectGroup, 'id')} value={get(projectGroup, 'id')}>
+              {get(projectGroup, 'name')}
+            </MenuItem>
+          )}
+        </CustomTextField>
       </StyledFormControl>
       <CustomTextField
         value={name}
         onChange={evt => setName(evt.target.value)}
+        label={t("DMH.VIEW.PGP.MODAL.CUP.NAME")}
         margin="normal"
         variant="outlined"
-        label='Tên dự án'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -101,51 +96,43 @@ function EditProject({
           </ColorTypo>
         }
       />
-      <CustomTextField
-        value={description}
-        onChange={evt => setDescription(evt.target.value)}
-        margin="normal"
-        variant="outlined"
-        label='Mô tả dự án'
-        fullWidth
-        multiline
-        rowsMax='6'
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorDescription, 'message', '')}
-          </ColorTypo>
-        }
-      />
+      <ColorTypo>
+        {t("DMH.VIEW.PGP.MODAL.CUP.PRIO.TITLE")}
+      </ColorTypo>
       <StyledFormControl fullWidth>
-        <StyledFormLabel component="legend" htmlFor='room-select'>
-          Mức độ ưu tiên
-        </StyledFormLabel>
         <RadioGroup
           aria-label='priority'
           name='priority'
           value={priority}
           onChange={evt => setPriority(parseInt(evt.target.value))}
+          row={true}
         >
           <FormControlLabel
             value={0}
             control={<Radio color="primary" />}
-            label="Thấp"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.LOW")}
             labelPlacement="end"
           />
           <FormControlLabel
             value={1}
             control={<Radio color="primary" />}
-            label="Trung bình"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.MED")}
             labelPlacement="end"
           />
           <FormControlLabel
             value={2}
             control={<Radio color="primary" />}
-            label="Cao"
+            label={t("DMH.VIEW.PGP.MODAL.CUP.PRIO.HIGH")}
             labelPlacement="end"
           />
         </RadioGroup>
       </StyledFormControl>
+      <CustomTextbox
+        value={description}
+        onChange={value => setDescription(value)}
+        label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
+        helperText={get(errorDescription, 'message', '')}
+      />
     </CustomModal>
   )
 }

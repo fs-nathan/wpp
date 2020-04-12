@@ -1,38 +1,42 @@
+import { filter, get, reverse, sortBy } from 'lodash';
 import React from 'react';
-import { get, sortBy, reverse, filter } from 'lodash';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Context as ProjectPageContext } from '../../index';
-import ProjectSettingModal from '../../Modals/ProjectSetting';
-import CreateProjectModal from '../../Modals/CreateProject';
-import EditProjectModal from '../../Modals/EditProject';
-import AlertModal from '../../../../components/AlertModal';
-import { listProject } from '../../../../actions/project/listProject';
-import { sortProject } from '../../../../actions/project/sortProject';
-import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
 import { deleteProject } from '../../../../actions/project/deleteProject';
 import { hideProject } from '../../../../actions/project/hideProject';
+import { listProject } from '../../../../actions/project/listProject';
 import { showProject } from '../../../../actions/project/showProject';
-import { bgColorSelector, projectsSelector } from './selectors';
-import { filters } from './constants';
+import { sortProject } from '../../../../actions/project/sortProject';
+import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
+import AlertModal from '../../../../components/AlertModal';
+import { useFilters } from '../../../../components/CustomPopover';
+import { routeSelector } from '../../../ProjectPage/selectors';
+import { Context as ProjectPageContext } from '../../index';
+import CreateProjectModal from '../../Modals/CreateProject';
+import EditProjectModal from '../../Modals/EditProject';
+import ProjectSettingModal from '../../Modals/ProjectSetting';
+import { viewPermissionsSelector } from '../../selectors';
 import AllProjectTablePresenter from './presenters';
+import { bgColorSelector, projectsSelector, showHidePendingsSelector } from './selectors';
 
 function AllProjectTable({
   expand,
   handleExpand,
-  projects, bgColor,
+  projects, bgColor, showHidePendings,
   doDeleteProject,
   doHideProject,
   doShowProject,
   doSortProject,
   isDefault = false,
+  route, viewPermissions,
 }) {
 
-  const { 
-    setTimeRange, 
-    setProjectGroupId, 
-    setStatusProjectId, 
-    localOptions, setLocalOptions 
+  const filters = useFilters();
+  const {
+    setTimeRange,
+    setProjectGroupId,
+    setStatusProjectId,
+    localOptions, setLocalOptions
   } = React.useContext(ProjectPageContext);
   const { projectGroupId } = useParams();
 
@@ -72,6 +76,7 @@ function AllProjectTable({
       ...projects,
       projects: _projects,
     });
+    // eslint-disable-next-line
   }, [projects, filterType, sortType]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -85,7 +90,9 @@ function AllProjectTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE': {
-        setOpenCreate(true);
+        if (get(viewPermissions.permissions, 'create_project', false)) {
+          setOpenCreate(true);
+        }
         return;
       }
       case 'UPDATE': {
@@ -110,10 +117,11 @@ function AllProjectTable({
   return (
     <>
       <AllProjectTablePresenter
-        expand={expand} handleExpand={handleExpand}
+        expand={expand} handleExpand={handleExpand} showHidePendings={showHidePendings} route={route}
         projects={newProjects}
         bgColor={bgColor}
-        filterType={filterType} handleFilterType={type => setFilterType(type)} 
+        canCreate={get(viewPermissions.permissions, 'create_project', false)}
+        filterType={filterType} handleFilterType={type => setFilterType(type)}
         timeType={timeType} handleTimeType={type => setTimeType(type)}
         handleSortType={type => setSortType(oldType => {
           const newCol = type;
@@ -123,10 +131,10 @@ function AllProjectTable({
             dir: newDir,
           }
         })}
-        handleShowOrHideProject={project => 
-          get(project, 'visibility', false) 
-          ? doHideProject({ projectId: get(project, 'id') })
-          : doShowProject({ projectId: get(project, 'id') })
+        handleShowOrHideProject={project =>
+          get(project, 'visibility', false)
+            ? doHideProject({ projectId: get(project, 'id') })
+            : doShowProject({ projectId: get(project, 'id') })
         }
         handleDeleteProject={project => doDeleteProject({ projectId: get(project, 'id') })}
         handleSortProject={sortData =>
@@ -147,9 +155,9 @@ function AllProjectTable({
         setOpen={setOpenEdit}
         {...editProps}
       />
-      <ProjectSettingModal 
-        open={openSetting} 
-        setOpen={setOpenSetting} 
+      <ProjectSettingModal
+        open={openSetting}
+        setOpen={setOpenSetting}
         setStatusProjectId={setStatusProjectId}
         {...settingProps}
       />
@@ -166,6 +174,9 @@ const mapStateToProps = state => {
   return {
     projects: projectsSelector(state),
     bgColor: bgColorSelector(state),
+    showHidePendings: showHidePendingsSelector(state),
+    route: routeSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   };
 };
 

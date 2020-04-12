@@ -1,15 +1,19 @@
+import { concat, filter, find, get } from 'lodash';
 import { createSelector } from 'reselect';
-import { get, find, filter } from 'lodash';
 
 const listProject = state => state.project.listProject;
+const createProject = state => state.project.createProject;
 const sortProject = state => state.project.sortProject;
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
+const deleteProjectGroup = state => state.projectGroup.deleteProjectGroup;
 const colors = state => state.setting.colors;
 const listIcon = state => state.icon.listIcon;
+const showProject = state => state.project.showProject;
+const hideProject = state => state.project.hideProject;
 
 export const projectsSelector = createSelector(
-  [listProjectGroup, listProject, listIcon, sortProject],
-  (listProjectGroup, listProject, listIcon, sortProject) => {
+  [listProjectGroup, listProject, listIcon, sortProject, deleteProjectGroup, createProject],
+  (listProjectGroup, listProject, listIcon, sortProject, deleteProjectGroup, createProject) => {
     const {
       data: { projects },
       loading: listProjectLoading,
@@ -20,16 +24,26 @@ export const projectsSelector = createSelector(
       loading: sortProjectLoading,
       error: sortProjectError
     } = sortProject;
-  
+
     const {
       data: { projectGroups },
     } = listProjectGroup;
 
+    const {
+      loading: deleteLoading,
+      error: deleteError,
+    } = deleteProjectGroup;
+
+    const {
+      loading: createLoading,
+      error: createError,
+    } = createProject;
+
     const { data: { icons, defaults } } = listIcon;
     const allIcons = [...icons.map(icon => get(icon, 'url_full')), ...defaults.map(icon => get(icon, 'url_icon'))];
-  
-    const loading = listProjectLoading || sortProjectLoading;
-    const error = listProjectError || sortProjectError;
+
+    const loading = listProjectLoading || sortProjectLoading || deleteLoading || createLoading;
+    const error = listProjectError || sortProjectError || deleteError || createError;
 
     const newProjects = projects.map(project => ({
       ...project,
@@ -38,20 +52,20 @@ export const projectsSelector = createSelector(
         : null,
       icon: allIcons.includes(
         get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon', '___no-icon___')
-      ) 
-        ? get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon') 
+      )
+        ? get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon')
         : get(defaults[0], 'url_icon'),
-      state_name: get(project, 'visibility') ? get(project, 'state_name') : 'Hidden',
+      state_code: get(project, 'visibility') ? get(project, 'state_code') : 5,
     }));
 
     const newSummary = {
       all: newProjects.length,
       active: filter(newProjects, { visibility: true }).length,
       hidden: filter(newProjects, { visibility: false }).length,
-      waiting: filter(newProjects, { state_name: 'Waiting' }).length,
-      doing: filter(newProjects, { state_name: 'Doing' }).length,
-      complete: filter(newProjects, { state_name: 'Complete' }).length,
-      expired: filter(newProjects, { state_name: 'Expired' }).length,
+      waiting: filter(newProjects, { state_code: 0 }).length,
+      doing: filter(newProjects, { state_code: 1 }).length,
+      complete: filter(newProjects, { state_code: 2 }).length,
+      expired: filter(newProjects, { state_code: 3 }).length,
       created: filter(newProjects, { me_created: true }).length,
       assigned: filter(newProjects, { me_created: false }).length,
     }
@@ -63,6 +77,18 @@ export const projectsSelector = createSelector(
     }
   }
 );
+
+export const showHidePendingsSelector = createSelector(
+  [showProject, hideProject],
+  (showProject, hideProject) => {
+    const { pendings: showPendings, erorr: showError } = showProject;
+    const { pendings: hidePendings, erorr: hideError } = hideProject;
+    return {
+      pendings: concat(showPendings, hidePendings),
+      error: showError || hideError,
+    }
+  }
+)
 
 export const bgColorSelector = createSelector(
   [colors],

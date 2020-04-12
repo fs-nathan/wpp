@@ -37,6 +37,7 @@ const initialState = {
   listRecent: [],
   listProject: [],
   listComment: [],
+  pagingComment: {},
   listDocumentFromMe: [],
   listDocumentShareToMe: [],
   listTrash: [],
@@ -136,9 +137,13 @@ export default function reducer(state = initialState, action) {
         isLoading: !action.quite
       };
     case LIST_COMMENT_SUCCESS:
+      let listCommentTemp = action.isLoadMore
+        ? state.listComment.concat(action.payload || [])
+        : action.payload;
       return {
         ...state,
-        listComment: action.payload,
+        listComment: listCommentTemp,
+        pagingComment: action.paging || {},
         isLoading: false
       };
     case LIST_TRASH:

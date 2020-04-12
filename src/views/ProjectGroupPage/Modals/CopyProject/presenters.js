@@ -1,113 +1,107 @@
-import React from 'react';
-import { 
-  TextField, FormControl, FormControlLabel, 
-  Radio, RadioGroup,
-  ListItemText, ListSubheader, Typography,
-  FormHelperText,
-} from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import ColorTypo from '../../../../components/ColorTypo';
-import SearchInput from '../../../../components/SearchInput';
-import moment from 'moment';
-import { StyledList, StyledListItem, Primary } from '../../../../components/CustomList';
-import { get } from 'lodash';
-import Icon from '@mdi/react';
-import { mdiCheckboxMarkedCircle, mdiCheckboxBlankCircleOutline } from '@mdi/js';
-import { useRequiredString, useRequiredDate, useMaxlenString } from '../../../../hooks';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { FormControl, FormControlLabel, FormHelperText, ListItemText, ListSubheader, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle } from '@mdi/js';
+import Icon from '@mdi/react';
+import { get } from 'lodash';
+import moment from 'moment';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import ColorTypo from '../../../../components/ColorTypo';
+import { Primary, StyledList, StyledListItem } from '../../../../components/CustomList';
+import CustomModal from '../../../../components/CustomModal';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import SearchInput from '../../../../components/SearchInput';
+import { useMaxlenString, useRequiredDate, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const Header = ({ className = '', ...props }) =>
-  <ColorTypo 
+  <ColorTypo
     className={`view_ProjecrGroup_Copy_Project_Modal___header ${className}`}
     {...props}
   />;
 
 const StyledTypo = ({ className = '', ...props }) =>
-  <Typography 
+  <Typography
     className={`view_ProjecrGroup_Copy_Project_Modal___typography ${className}`}
     {...props}
   />;
 
 const StyledFormControl = ({ className = '', ...props }) =>
-  <FormControl 
+  <FormControl
     className={`view_ProjecrGroup_Copy_Project_Modal___form-control ${className}`}
     {...props}
   />;
 
 const ListContainer = ({ className = '', ...props }) =>
-  <div 
+  <div
     className={`view_ProjecrGroup_Copy_Project_Modal___list-container ${className}`}
     {...props}
   />;
 
 const StyledListSubheader = ({ className = '', ...props }) =>
-  <ListSubheader 
+  <ListSubheader
     className={`view_ProjecrGroup_Copy_Project_Modal___list-subheader ${className}`}
     {...props}
   />;
 
 const CustomListItem = ({ className = '', ...props }) =>
-  <StyledListItem 
+  <StyledListItem
     className={`view_ProjecrGroup_Copy_Project_Modal___list-item ${className}`}
     {...props}
   />;
 
 const StyledPrimary = ({ className = '', isSelected, ...props }) =>
-  <Primary 
-    className={`${isSelected 
-      ? 'view_ProjecrGroup_Copy_Project_Modal___primary-selected' 
+  <Primary
+    className={`${isSelected
+      ? 'view_ProjecrGroup_Copy_Project_Modal___primary-selected'
       : 'view_ProjecrGroup_Copy_Project_Modal___primary'} ${className}`}
     {...props}
   />;
 
 const LeftContainer = ({ className = '', ...props }) =>
-  <div 
+  <div
     className={`view_ProjecrGroup_Copy_Project_Modal___left-container ${className}`}
     {...props}
   />;
 
 const RightContainer = ({ className = '', ...props }) =>
-  <div 
+  <div
     className={`view_ProjecrGroup_Copy_Project_Modal___right-container ${className}`}
     {...props}
   />;
 
 function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject }) {
 
-  if (get(projectGroup, 'projects', []).length > 0) 
+  if (get(projectGroup, 'projects', []).length > 0)
     return (
       <StyledList
         component="nav"
         aria-labelledby={`list-subheader-${get(projectGroup, 'id')}`}
         subheader={
-          <StyledListSubheader component="div" id={`list-subheader-${get(projectGroup, 'id')}`} 
+          <StyledListSubheader component="div" id={`list-subheader-${get(projectGroup, 'id')}`}
           >
             <ColorTypo bold uppercase>{get(projectGroup, 'name', '')}</ColorTypo>
           </StyledListSubheader>
         }
       >
         {get(projectGroup, 'projects', []).filter(project => get(project, 'can_copy', false)).map(project => (
-          <CustomListItem 
-            key={get(project, 'id')} 
+          <CustomListItem
+            key={get(project, 'id')}
             onClick={() => setSelectedProject(project)}
             disableSticky
           >
-            <ListItemText 
+            <ListItemText
               primary={
                 <StyledPrimary isSelected={get(selectedProject, 'id') === get(project, 'id')}>
-                  <Icon 
-                    path={get(selectedProject, 'id') === get(project, 'id') 
-                      ? mdiCheckboxMarkedCircle 
-                      : mdiCheckboxBlankCircleOutline} 
-                    size={1} 
-                  /> 
+                  <Icon
+                    path={get(selectedProject, 'id') === get(project, 'id')
+                      ? mdiCheckboxMarkedCircle
+                      : mdiCheckboxBlankCircleOutline}
+                    size={1}
+                  />
                   <span>{get(project, 'name', '')}</span>
-                </StyledPrimary>  
+                </StyledPrimary>
               }
             />
           </CustomListItem>
@@ -117,13 +111,14 @@ function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject })
   else return null;
 }
 
-function CopyProject({ 
+function CopyProject({
   open, setOpen,
-  searchPatern, setSearchPatern, 
-  groups, 
+  searchPatern, setSearchPatern,
+  groups,
   handleCopyProject,
 }) {
 
+  const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [isCopyMember, setIsCopyMember] = React.useState(false);
@@ -133,7 +128,7 @@ function CopyProject({
 
   return (
     <CustomModal
-      title={`Sao chép dự án`}
+      title={t("DMH.VIEW.PGP.MODAL.COPY.TITLE")}
       fullWidth={true}
       open={open}
       setOpen={setOpen}
@@ -147,21 +142,22 @@ function CopyProject({
       )}
       height='tall'
       columns={2}
+      loading={groups.loading}
       left={{
-        title: 'Chọn dự án sao chép',
+        title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE"),
         content: () =>
           <LeftContainer>
-            <SearchInput 
-              fullWidth 
-              placeholder='Tìm dự án'
+            <SearchInput
+              fullWidth
+              placeholder={t("DMH.VIEW.PGP.MODAL.COPY.LEFT.FIND")}
               value={searchPatern}
               onChange={evt => setSearchPatern(evt.target.value)}
-            />  
+            />
             <ListContainer>
               {groups.map(projectGroup => (
                 <ProjectGroupList
                   projectGroup={projectGroup}
-                  key={get(projectGroup, 'id')} 
+                  key={get(projectGroup, 'id')}
                   selectedProject={selectedProject}
                   setSelectedProject={setSelectedProject}
                 />
@@ -170,18 +166,18 @@ function CopyProject({
           </LeftContainer>,
       }}
       right={{
-        title: 'Thông tin dự án mới',
+        title: t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.TITLE"),
         content: () =>
           <RightContainer>
-            <Header uppercase bold>Dự án được sao chép</Header>
-            <StyledTypo>{get(selectedProject, 'name', 'Hãy chọn dự án để sao chép')}</StyledTypo>
-            <Header uppercase bold>Thông tin dự án</Header>
+            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NAME")}</Header>
+            <StyledTypo>{get(selectedProject, 'name', t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.PLACEHOLDER"))}</StyledTypo>
+            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DESC")}</Header>
             <TextField
               value={name}
               onChange={evt => setName(evt.target.value)}
               margin="normal"
               variant="outlined"
-              label='Tên dự án mới'
+              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_NAME")}
               fullWidth
               helperText={
                 <ColorTypo variant='caption' color='red'>
@@ -189,35 +185,26 @@ function CopyProject({
                 </ColorTypo>
               }
             />
-            <TextField
+            <CustomTextbox
               value={description}
-              onChange={evt => setDescription(evt.target.value)}
-              margin="normal"
-              variant="outlined"
-              label='Mô tả dự án mới'
-              fullWidth
-              multiline
-              rowsMax='6'
-              helperText={
-                <ColorTypo variant='caption' color='red'>
-                  {get(errorDescription, 'message', '')}
-                </ColorTypo>
-              }
+              onChange={value => setDescription(value)}
+              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_DESC")}
+              helperText={get(errorDescription, 'message', '')}
             />
-            <Header uppercase bold>Cài đặt thành viên</Header>
+            <ColorTypo>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}</ColorTypo>
             <StyledFormControl component="div" fullWidth>
               <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
-                <FormControlLabel value={true} control={<Radio color='primary'/>} label="Giữ nguyên thành viên" />
-                <FormControlLabel value={false} control={<Radio color='primary'/>} label="Xóa toàn bộ thành viên" />
+                <FormControlLabel value={true} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.KEEP")} />
+                <FormControlLabel value={false} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.DISCARD")} />
               </RadioGroup>
             </StyledFormControl>
-            <Header uppercase bold>Chọn ngày bắt đầu tiến độ</Header>
             <StyledFormControl component="div">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker 
+                <KeyboardDatePicker
                   disableToolbar
                   inputVariant="outlined"
                   variant="inline"
+                  label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DATE")}
                   ampm={false}
                   value={startDate}
                   onChange={setStartDate}

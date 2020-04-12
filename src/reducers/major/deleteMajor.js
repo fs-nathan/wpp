@@ -1,36 +1,41 @@
-import {
-  DELETE_MAJOR,
-  DELETE_MAJOR_SUCCESS,
-  DELETE_MAJOR_FAIL,
-} from '../../constants/actions/major/deleteMajor';
+import { concat, get, remove } from 'lodash';
+import { DELETE_MAJOR, DELETE_MAJOR_FAIL, DELETE_MAJOR_SUCCESS } from '../../constants/actions/major/deleteMajor';
 
 export const initialState = {
-  data: {},
   error: null,
-  loading: false,
+  pendings: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case DELETE_MAJOR:
+    case DELETE_MAJOR: {
+      const newPendings = concat(state.pendings, get(action.options, 'majorId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case DELETE_MAJOR_SUCCESS: 
-      return {
-        ...state, 
-        data: {},
-        error: null,
-        loading: false,
-      };
-    case DELETE_MAJOR_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case DELETE_MAJOR_SUCCESS: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'majorId'))
       return {
         ...state,
+        ...initialState,
+        error: null,
+        pendings: newPendings,
+      }
+    }
+    case DELETE_MAJOR_FAIL: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'majorId'))
+      return {
+        ...state,
+        ...initialState,
         error: action.error,
-        loading: false,
-      };
+        pendings: newPendings,
+      }
+    }
     default:
       return state;
   }

@@ -1,12 +1,12 @@
+import { IconButton } from '@material-ui/core';
+import { mdiBorderNoneVariant } from '@mdi/js';
+import Icon from '@mdi/react';
+import { get, isFunction } from 'lodash';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Icon from '@mdi/react';
-import { mdiBorderNoneVariant } from '@mdi/js';
-import { IconButton } from '@material-ui/core';
 import CustomAvatar from '../CustomAvatar';
-import LoadingOverlay from 'react-loading-overlay';
-import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import LoadingOverlay from '../LoadingOverlay';
 import './style.scss';
 
 const Container = ({ className = '', ...rest }) => (<div className={`comp_LeftSideContainer___container ${className}`} {...rest} />);
@@ -41,53 +41,56 @@ function LeftSideContainer({
   const parseAction = (action) => (
     get(action, 'avatar') ? (
       <CustomAvatar src={get(action, 'avatar')} alt='avatar' />
-    ) 
-    : typeof(get(action, 'onClick') === 'function') ? (
-      <StyledIconButton size='small' onClick={get(action, 'onClick')}>
-        <abbr
-          title={get(action, 'tooltip', '')}
-        >
-          <div>
+    )
+      : isFunction(get(action, 'onClick')) ? (
+        <StyledIconButton size='small' onClick={get(action, 'onClick')}>
+          <abbr
+            title={get(action, 'tooltip', '')}
+          >
+            <div>
+              {get(action, 'iconPath') ? (
+                <Icon path={get(action, 'iconPath')} size={1} color='rgba(0, 0, 0, 0.54)' />
+              ) : (
+                  <Icon path={mdiBorderNoneVariant} size={1} color='rgba(0, 0, 0, 0)' />
+                )}
+            </div>
+          </abbr>
+        </StyledIconButton>
+      ) : (
+          <IconWrapper>
             {get(action, 'iconPath') ? (
               <Icon path={get(action, 'iconPath')} size={1} color='rgba(0, 0, 0, 0.54)' />
             ) : (
-              <Icon path={mdiBorderNoneVariant} size={1} color='rgba(0, 0, 0, 0)' />
-            )}
-          </div>
-        </abbr>
-      </StyledIconButton>
-    ) : (
-      <IconWrapper>
-        {get(action, 'iconPath') ? (
-          <Icon path={get(action, 'iconPath')} size={1} color='rgba(0, 0, 0, 0.54)' />
-        ) : (
-          <Icon path={mdiBorderNoneVariant} size={1} color='rgba(0, 0, 0, 0)' />
-        )}
-      </IconWrapper>
-    )
+                <Icon path={mdiBorderNoneVariant} size={1} color='rgba(0, 0, 0, 0)' />
+              )}
+          </IconWrapper>
+        )
   );
 
   return (
-    <Container>
-      <Header>
-        {parseAction(leftAction)}
-        <Title>{title}</Title>
-        {parseAction(rightAction)}
-      </Header>
-      <LoadingOverlay
-        active={loading.bool}
-        spinner
-        text='Đang tải...'
-        fadeSpeed={0}
-      >
+    <LoadingOverlay
+      active={loading.bool}
+      spinner
+      fadeSpeed={100}
+      style={{
+        height: '100%',
+        zIndex: '999',
+      }}
+    >
+      <Container>
+        <Header>
+          {parseAction(leftAction)}
+          <Title>{title}</Title>
+          {parseAction(rightAction)}
+        </Header>
         <Body
           autoHide
           autoHideTimeout={500}
         >
           {children}
         </Body>
-      </LoadingOverlay>
-    </Container>
+      </Container>
+    </LoadingOverlay>
   )
 }
 

@@ -178,12 +178,13 @@ const ProjectDocumentDetail = props => {
     setSelected(selectItem(selected, item.id));
     props.selectDocumentItem(selectItemRedux(props.selectedDocument, item));
   };
-  const getIconAvatar = (url, idx = 0) => {
+  const getIconAvatar = (url, idx = 0, title) => {
     return (
       <Avatar
         key={idx}
         src={url}
         alt="avatar"
+        title={title}
         style={{ width: 25, height: 25, margin: 'auto' }}
       />
     );
@@ -232,7 +233,7 @@ const ProjectDocumentDetail = props => {
             <StyledTableHeadCell align="center" width="15%">
               {t('IDS_WP_SHARE')}
             </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="10%">
+            <StyledTableHeadCell align="center" width="10%">
               {t('IDS_WP_OWNER')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="10%">
@@ -299,7 +300,9 @@ const ProjectDocumentDetail = props => {
                 <StyledTableBodyCell align="left" width="10%">
                   {(file.user_create_avatar &&
                     getIconAvatar(
-                      `https://storage.googleapis.com${file.user_create_avatar}`
+                      `https://storage.googleapis.com${file.user_create_avatar}`,
+                      0,
+                      file.user_create_name
                     )) ||
                     ''}
                 </StyledTableBodyCell>

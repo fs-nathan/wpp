@@ -1,8 +1,4 @@
-import {
-  BAN_USER_FROM_GROUP,
-  BAN_USER_FROM_GROUP_SUCCESS,
-  BAN_USER_FROM_GROUP_FAIL,
-} from '../../constants/actions/user/banUserFromGroup';
+import { BAN_USER_FROM_GROUP, BAN_USER_FROM_GROUP_FAIL, BAN_USER_FROM_GROUP_SUCCESS } from '../../constants/actions/user/banUserFromGroup';
 
 export const initialState = {
   data: {},
@@ -18,9 +14,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case BAN_USER_FROM_GROUP_SUCCESS: 
+    case BAN_USER_FROM_GROUP_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: {},
         error: null,
         loading: false,
@@ -28,6 +25,7 @@ function reducer(state = initialState, action) {
     case BAN_USER_FROM_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

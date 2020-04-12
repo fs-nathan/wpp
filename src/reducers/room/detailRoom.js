@@ -1,16 +1,10 @@
-import {
-  DETAIL_ROOM,
-  DETAIL_ROOM_SUCCESS,
-  DETAIL_ROOM_FAIL,
-} from '../../constants/actions/room/detailRoom';
-import {
-  UPDATE_ROOM_SUCCESS,
-} from '../../constants/actions/room/updateRoom';
 import { get } from 'lodash';
+import { DETAIL_ROOM, DETAIL_ROOM_FAIL, DETAIL_ROOM_SUCCESS } from '../../constants/actions/room/detailRoom';
+import { UPDATE_ROOM_SUCCESS } from '../../constants/actions/room/updateRoom';
 
 export const initialState = {
   data: {
-    room: null,  
+    room: null,
   },
   error: null,
   loading: false,
@@ -24,16 +18,18 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case DETAIL_ROOM_SUCCESS: 
+    case DETAIL_ROOM_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
       };
-    case DETAIL_ROOM_FAIL: 
+    case DETAIL_ROOM_FAIL:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
@@ -42,7 +38,7 @@ function reducer(state = initialState, action) {
       if (get(newRoom, 'id') === get(action.data, 'room.id')) {
         newRoom = {
           ...newRoom,
-          ...get(action.data, 'room.id'),
+          ...get(action.data, 'room'),
         }
       }
       return {

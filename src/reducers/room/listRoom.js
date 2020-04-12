@@ -1,26 +1,14 @@
-import {
-  LIST_ROOM,
-  LIST_ROOM_SUCCESS,
-  LIST_ROOM_FAIL,
-} from '../../constants/actions/room/listRoom';
-import {
-  CREATE_ROOM_SUCCESS,
-} from '../../constants/actions/room/createRoom';
-import {
-  UPDATE_ROOM_SUCCESS,
-} from '../../constants/actions/room/updateRoom';
-import {
-  DELETE_ROOM_SUCCESS,
-} from '../../constants/actions/room/deleteRoom';
-import { 
-  SORT_ROOM_SUCCESS, 
-} from '../../constants/actions/room/sortRoom';
-
 import { concat, findIndex, get, remove, slice } from 'lodash';
-  
+import { CREATE_ROOM_SUCCESS } from '../../constants/actions/room/createRoom';
+import { DELETE_ROOM_SUCCESS } from '../../constants/actions/room/deleteRoom';
+import { LIST_ROOM, LIST_ROOM_FAIL, LIST_ROOM_SUCCESS } from '../../constants/actions/room/listRoom';
+import { SORT_ROOM, SORT_ROOM_SUCCESS } from '../../constants/actions/room/sortRoom';
+import { UPDATE_ROOM_SUCCESS } from '../../constants/actions/room/updateRoom';
+
+
 export const initialState = {
   data: {
-    rooms: [],  
+    rooms: [],
   },
   error: null,
   loading: false,
@@ -34,9 +22,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_ROOM_SUCCESS: 
+    case LIST_ROOM_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -44,6 +33,7 @@ function reducer(state = initialState, action) {
     case LIST_ROOM_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
@@ -78,14 +68,15 @@ function reducer(state = initialState, action) {
         data: {
           rooms: newRooms,
         },
-      };   
-    } 
+      };
+    }
+    case SORT_ROOM:
     case SORT_ROOM_SUCCESS: {
       let newRooms = state.data.rooms;
       const removed = remove(newRooms, { id: get(action.options, 'roomId') });
       newRooms = [
-        ...slice(newRooms, 0, action.options.sortIndex), 
-        ...removed, 
+        ...slice(newRooms, 0, action.options.sortIndex),
+        ...removed,
         ...slice(newRooms, action.options.sortIndex)
       ];
       return {
@@ -94,7 +85,7 @@ function reducer(state = initialState, action) {
           rooms: newRooms,
         },
       };
-    } 
+    }
     default:
       return state;
   }

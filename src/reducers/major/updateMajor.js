@@ -1,38 +1,45 @@
-import {
-  UPDATE_MAJOR,
-  UPDATE_MAJOR_SUCCESS,
-  UPDATE_MAJOR_FAIL,
-} from '../../constants/actions/major/updateMajor';
+import { concat, get, remove } from 'lodash';
+import { UPDATE_MAJOR, UPDATE_MAJOR_FAIL, UPDATE_MAJOR_SUCCESS } from '../../constants/actions/major/updateMajor';
 
 export const initialState = {
   data: {
     major: null,
   },
   error: null,
-  loading: false,
+  pendings: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_MAJOR:
+    case UPDATE_MAJOR: {
+      const newPendings = concat(state.pendings, get(action.options, 'majorId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case UPDATE_MAJOR_SUCCESS: 
+        pendings: newPendings,
+      }
+    }
+    case UPDATE_MAJOR_SUCCESS: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.data, 'major.id'))
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
-        loading: false,
-      };
-    case UPDATE_MAJOR_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case UPDATE_MAJOR_FAIL: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'majorId'))
       return {
         ...state,
+        ...initialState,
         error: action.error,
-        loading: false,
-      };
+        pendings: newPendings,
+      }
+    }
     default:
       return state;
   }

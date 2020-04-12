@@ -36,8 +36,16 @@ const ItemMessage = props => {
         {!item.is_viewed && <span className="badge-un-read"></span>}
       </div>
       <div>
+        {item.task_name && (
+          <div className="name-message">
+            <span className="text-name-message">{item.task_name}</span>
+          </div>
+        )}
         <div className="name-message">
-          <span className="text-name-message">{item.content}</span>
+          <div
+            className="text-name-message content-text"
+            dangerouslySetInnerHTML={{ __html: item.content }}
+          ></div>
         </div>
         <div className="des-message">
           <span>{item.time_label}</span>

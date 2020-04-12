@@ -1,20 +1,20 @@
+import { TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
-import { 
-  TextField,
-} from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../../hooks';
+import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
-function LevelCreateAndUpdate({ 
-  updatedLevel = null, 
-  open, setOpen, 
+function LevelCreateAndUpdate({
+  updatedLevel = null,
+  open, setOpen,
   handleCreateOrUpdateLevel,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
   const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (updatedLevel) {
@@ -27,16 +27,16 @@ function LevelCreateAndUpdate({
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title={updatedLevel ? 'Chỉnh sửa trình độ' : 'Tạo trình độ'}
+      title={updatedLevel ? t('DMH.VIEW.DP.MODAL.LEVEL.U_TITLE') : t('DMH.VIEW.DP.MODAL.LEVEL.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateLevel(name, description)}
     >
       <TextField
         value={name}
+        label={t('DMH.VIEW.DP.MODAL.LEVEL.NAME')}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Tên trình độ'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -46,10 +46,10 @@ function LevelCreateAndUpdate({
       />
       <TextField
         value={description}
+        label={t('DMH.VIEW.DP.MODAL.LEVEL.DESC')}
         onChange={evt => setDescription(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Mô tả trình độ'
         fullWidth
         multiline
         rowsMax='4'

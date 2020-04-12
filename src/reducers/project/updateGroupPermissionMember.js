@@ -1,8 +1,4 @@
-import {
-  UPDATE_GROUP_PERMISSION_MEMBER,
-  UPDATE_GROUP_PERMISSION_MEMBER_SUCCESS,
-  UPDATE_GROUP_PERMISSION_MEMBER_FAIL,
-} from '../../constants/actions/project/updateGroupPermissionMember';
+import { UPDATE_GROUP_PERMISSION_MEMBER, UPDATE_GROUP_PERMISSION_MEMBER_FAIL, UPDATE_GROUP_PERMISSION_MEMBER_SUCCESS } from '../../constants/actions/project/updateGroupPermissionMember';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case UPDATE_GROUP_PERMISSION_MEMBER_SUCCESS: 
+    case UPDATE_GROUP_PERMISSION_MEMBER_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case UPDATE_GROUP_PERMISSION_MEMBER_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

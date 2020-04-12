@@ -1,15 +1,8 @@
-import {
-  DETAIL_STATUS,
-  DETAIL_STATUS_SUCCESS,
-  DETAIL_STATUS_FAIL,
-} from '../../../constants/actions/project/setting/detailStatus';
-import {
-  UPDATE_STATUS_COPY_SUCCESS
-} from '../../../constants/actions/project/setting/updateStatusCopy';
-import {
-  UPDATE_STATUS_DATE_SUCCESS
-} from '../../../constants/actions/project/setting/updateStatusDate';
 import { get } from 'lodash';
+import { DETAIL_STATUS, DETAIL_STATUS_FAIL, DETAIL_STATUS_SUCCESS } from '../../../constants/actions/project/setting/detailStatus';
+import { UPDATE_STATUS_COPY_SUCCESS } from '../../../constants/actions/project/setting/updateStatusCopy';
+import { UPDATE_STATUS_DATE_SUCCESS } from '../../../constants/actions/project/setting/updateStatusDate';
+import { UPDATE_STATUS_VIEW_SUCCESS } from '../../../constants/actions/project/setting/updateStatusView';
 
 export const initialState = {
   data: {
@@ -27,9 +20,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case DETAIL_STATUS_SUCCESS: 
+    case DETAIL_STATUS_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -37,13 +31,14 @@ function reducer(state = initialState, action) {
     case DETAIL_STATUS_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
     case UPDATE_STATUS_DATE_SUCCESS: {
       const newStatus = {
         ...state.data.status,
-        date_status: get(action.options, 'status')
+        date: get(action.options, 'status')
       }
       return {
         ...state,
@@ -56,7 +51,20 @@ function reducer(state = initialState, action) {
     case UPDATE_STATUS_COPY_SUCCESS: {
       const newStatus = {
         ...state.data.status,
-        can_copy: get(action.options, 'status')
+        copy: get(action.options, 'status')
+      }
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          status: newStatus,
+        }
+      };
+    }
+    case UPDATE_STATUS_VIEW_SUCCESS: {
+      const newStatus = {
+        ...state.data.status,
+        view: get(action.options, 'status')
       }
       return {
         ...state,

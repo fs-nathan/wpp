@@ -1,14 +1,9 @@
+import { InputBase, TextField, Typography } from '@material-ui/core';
+import DialogContent from '@material-ui/core/DialogContent';
+import CustomModal from 'components/CustomModal';
+import colorPal from 'helpers/colorPalette';
 import React from 'react';
 import styled from 'styled-components';
-import {
-  IconButton, Button, Dialog, Typography, InputBase, TextField
-} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import colorPal from '../../../../helpers/colorPalette';
-import CloseIcon from '@material-ui/icons/Close';
 
 const TexTitle = styled(Typography)`
   font-size: 14px;
@@ -21,67 +16,6 @@ const InputText = styled(InputBase)`
   font-weight: 700;
   margin-bottom: 30px;
 `
-// const Text = styled(TextField)`
-//   & > *:first-child {
-//     margin-bottom: 20px;
-//     & > input {
-//       font-size: 16px;
-//       margin-bottom: 100px;
-//     }
-//   }
-// `
-
-// const TitleText = styled(Typography)`
-//   font-size: 15px;
-//   margin: 15px 0;
-// `
-
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-    background: '#f5f8fc'
-  },
-  title: {
-    textTransform: 'uppercase',
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: '15px 24px',
-  },
-}))(MuiDialogActions);
-
 
 const ApproveModal = (props) => {
   const DEFAULT_VALUE = {
@@ -93,13 +27,20 @@ const ApproveModal = (props) => {
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
-
+  const onClickApprove = () => {
+    props.setOpen(false)
+    props.handleOfferById({ data: tempSelectedItem, taskId: props.taskId })
+  }
   return (
-    // {/* modal phe duyet */}
-    <Dialog onClose={props.handleClickClose} open={props.isOpen} fullWidth>
-      <DialogTitle onClose={props.handleClickClose}>
-        Phê duyệt đề xuất
-      </DialogTitle>
+    <CustomModal
+      title={"Phê duyệt đề xuất"}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => "Phê duyệt"}
+      onConfirm={onClickApprove}
+      canConfirm={true}
+      className="approveOfferModal"
+    >
       <DialogContent dividers>
         <TexTitle >Nội dung công việc </TexTitle>
         <InputText
@@ -107,17 +48,6 @@ const ApproveModal = (props) => {
           value={'Xin phê duyệt chi phí tiếp khách'}
           fullWidth
         />
-        {/* <TitleText component="div">Nội dung phê duyệt(nếu có)</TitleText>
-          <Text component="span"
-            id="outlined-full-width"
-            value={'Đồng ý phê duyệt'}
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-          /> */}
         <TextField
           label="Nội dung phê duyệt"
           fullWidth
@@ -129,24 +59,8 @@ const ApproveModal = (props) => {
           variant="outlined"
           onChange={e => setParams("content", e.target.value)}
         />
-
       </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={props.handleClickClose} color='#222'>
-          Hủy
-        </Button>
-        <Button
-          autoFocus
-          color="primary"
-          onClick={() => {
-            props.handleClickClose()
-            props.handleOfferById({data: tempSelectedItem, taskId: props.taskId})
-          }}
-        >
-          Phê duyệt
-          </Button>
-      </DialogActions>
-    </Dialog>
+    </CustomModal>
   )
 }
 

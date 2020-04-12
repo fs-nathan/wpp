@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { deleteTaskSuccess, deleteTaskFail } from '../../actions/task/deleteTask';
+import { deleteTaskFail, deleteTaskSuccess } from '../../actions/task/deleteTask';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, DELETE_TASK } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doDeleteTask({ taskId }) {
   try {
@@ -33,6 +33,4 @@ function* deleteTask(action) {
   }
 }
 
-export {
-  deleteTask,
-}
+export { deleteTask, };

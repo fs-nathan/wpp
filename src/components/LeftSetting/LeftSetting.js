@@ -1,16 +1,15 @@
-import React, { Fragment } from 'react';
-import Icon from '@mdi/react';
-import { withRouter, Link } from 'react-router-dom';
-import './LeftSetting.scss';
+import React, { Fragment } from "react";
+import Icon from "@mdi/react";
+import { withRouter, Link } from "react-router-dom";
+import "./LeftSetting.scss";
 // import { mdiDragVertical } from '@mdi/js';
-import { ListItemText } from '@material-ui/core';
-import { StyledList, StyledListItem, Primary, Secondary } from '../CustomList';
-import LeftSideContainer from '../LeftSideContainer';
+import { ListItemText } from "@material-ui/core";
+import { StyledList, StyledListItem, Primary, Secondary } from "../CustomList";
+import LeftSideContainer from "../LeftSideContainer";
 // import { isEmpty } from '../../helpers/utils/isEmpty';
 
 const LeftSetting = props => {
   const { pathname } = props.location;
-
   return (
     <LeftSideContainer
       title={props.title}
@@ -22,13 +21,13 @@ const LeftSetting = props => {
         {props.listMenu.map((item, index) => (
           <Fragment key={index}>
             <StyledListItem
-              to={item.url || ''}
+              to={item.url || ""}
               component={Link}
               onClick={() => {
                 if (item.action) item.action();
               }}
-              className={`${pathname === item.url ? 'item-actived' : ''} ${
-                item.url ? '' : 'none-action'
+              className={`${pathname === item.url ? "item-actived" : ""} ${
+                item.url ? "" : "none-action"
               }`}
             >
               {item.icon && (
@@ -36,14 +35,14 @@ const LeftSetting = props => {
                   className="left-setting-icon"
                   path={item.icon}
                   size={1.4}
-                  color={item.color || 'rgba(0, 0, 0, 0.54)'}
+                  color={item.color || "rgba(0, 0, 0, 0.54)"}
                 />
               )}
               <ListItemText
                 primary={
                   <Primary
                     className={`title-setting-item ${
-                      item.icon ? '' : 'none-icon'
+                      item.icon ? "" : "none-icon"
                     }`}
                   >
                     {item.title}
@@ -59,7 +58,7 @@ const LeftSetting = props => {
                   to={el.url}
                   component={Link}
                   key={idx}
-                  className={`${pathname === el.url ? 'item-actived' : ''}`}
+                  className={`${pathname === el.url ? "item-actived" : ""}`}
                 >
                   <ListItemText
                     primary={

@@ -1,29 +1,31 @@
-import React from 'react';
-import { sortUser } from '../../../../actions/user/sortUser';
-import { publicMember } from '../../../../actions/user/publicMember';
-import { privateMember } from '../../../../actions/user/privateMember';
-import { banUserFromGroup } from '../../../../actions/user/banUserFromGroup';
-import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
-import { connect } from 'react-redux';
-import AlertModal from '../../../../components/AlertModal';
 import { get } from 'lodash';
-import TitleManagerModal from '../../Modals/TitleManager';
-import RoleManagerModal from '../../Modals/RoleManager';
-import LevelManagerModal from '../../Modals/LevelManager';
-import MajorManagerModal from '../../Modals/MajorManager';
-import LogoManagerModal from '../../Modals/LogoManager';
-import TableSettingsModal from '../../Modals/TableSettings';
-import PermissionSettingsModal from '../../Modals/PermissionSettings';
+import React from 'react';
+import { connect } from 'react-redux';
+import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
+import { banUserFromGroup } from '../../../../actions/user/banUserFromGroup';
+import { privateMember } from '../../../../actions/user/privateMember';
+import { publicMember } from '../../../../actions/user/publicMember';
+import { sortUser } from '../../../../actions/user/sortUser';
+import AlertModal from '../../../../components/AlertModal';
+import { routeSelector } from '../../../MemberPage/selectors';
 import CreateAccountModal from '../../Modals/CreateAccount';
-import { roomSelector, hasRequirementSelector } from './selectors';
+import LevelManagerModal from '../../Modals/LevelManager';
+import LogoManagerModal from '../../Modals/LogoManager';
+import MajorManagerModal from '../../Modals/MajorManager';
+import PermissionSettingsModal from '../../Modals/PermissionSettings';
+import RoleManagerModal from '../../Modals/RoleManager';
+import TableSettingsModal from '../../Modals/TableSettings';
+import TitleManagerModal from '../../Modals/TitleManager';
+import { viewPermissionsSelector } from '../../selectors';
 import DepartmentUsersTablePresenter from './presenters';
+import { hasRequirementSelector, publicPrivatePendingsSelector, roomSelector } from './selectors';
 
-function DepartmentUsersTable({ 
-  room, hasRequirement,
-  expand, handleExpand, handleSubSlide,
+function DepartmentUsersTable({
+  room, hasRequirement, publicPrivatePendings, route, viewPermissions,
+  expand, handleExpand,
   doSortUser,
   doPublicMember, doPrivateMember,
-  doBanUserFromGroup, 
+  doBanUserFromGroup,
   doActionVisibleDrawerMessage,
 }) {
 
@@ -41,53 +43,56 @@ function DepartmentUsersTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'TITLE': {
-        setOpenTitle(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenTitle(true);
         return;
       }
       case 'ROLE': {
-        setOpenRole(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenRole(true);
         return;
       }
       case 'LEVEL': {
-        setOpenLevel(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenLevel(true);
         return;
       }
       case 'MAJOR': {
-        setOpenMajor(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenMajor(true);
         return;
       }
       case 'LOGO': {
-        setOpenLogo(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenLogo(true);
         return;
       }
       case 'TABLE_SETTING': {
-        setOpenTableSetting(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenTableSetting(true);
         return;
       }
       case 'CREATE_ACCOUNT': {
-        setOpenCreateAccount(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenCreateAccount(true);
         return;
       }
       case 'PERMISSION_SETTING': {
-        setOpenPermissionSetting(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenPermissionSetting(true);
         return;
       }
       case 'ALERT': {
-        setOpenAlert(true);
-        setAlertProps(props);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setOpenAlert(true);
+          setAlertProps(props);
+        }
         return;
       }
       default: return;
     }
   }
-
   return (
     <>
-      <DepartmentUsersTablePresenter 
-        room={room} hasRequirement={hasRequirement}
+      <DepartmentUsersTablePresenter
+        room={room} hasRequirement={hasRequirement} publicPrivatePendings={publicPrivatePendings}
+        route={route}
+        canModify={get(viewPermissions.permissions, 'can_modify', false)}
         expand={expand} handleExpand={handleExpand}
         handleSortUser={(roomId, userId, sortIndex) => doSortUser({ roomId, userId, sortIndex })}
-        handleChangeState={(user) => 
+        handleChangeState={(user) =>
           get(user, 'state', 0) === 0
             ? doPublicMember({
               userId: get(user, 'id'),
@@ -112,7 +117,7 @@ function DepartmentUsersTable({
       <TableSettingsModal open={openTableSetting} setOpen={setOpenTableSetting} />
       <CreateAccountModal open={openCreateAccount} setOpen={setOpenCreateAccount} />
       <PermissionSettingsModal open={openPermissionSetting} setOpen={setOpenPermissionSetting} />
-      <AlertModal 
+      <AlertModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
@@ -125,6 +130,9 @@ const mapStateToProps = state => {
   return {
     room: roomSelector(state),
     hasRequirement: hasRequirementSelector(state),
+    publicPrivatePendings: publicPrivatePendingsSelector(state),
+    route: routeSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   }
 }
 

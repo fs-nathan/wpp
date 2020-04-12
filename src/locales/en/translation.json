@@ -523,8 +523,8 @@
   "IDS_WP_EXPIRED": "Expired!",
   "IDS_WP_CHANGE_LOGO_SUCCESS": "Change logo image successfully!",
   "IDS_WP_CHANGE_COVER_SUCCESS": "Change cover photo successfully!",
-  "IDS_WP_FEMALE": "Male",
-  "IDS_WP_MALE": "Female",
+  "IDS_WP_FEMALE": "Female",
+  "IDS_WP_MALE": "Male",
   "IDS_WP_OUT_GROUP": "Left group",
   "IDS_WP_NO_FILE_TITLE": "Manage and store all your documents securely on the W + Cloud cloud",
   "IDS_WP_NO_FILE_DES": "Drag and drop documents here or click + ADD NEW to upload documents",
@@ -539,5 +539,10 @@
   "IDS_WP_VIEWS": "lượt xem",
   "IDS_WP_VIEW_STORAGE": "dung lượng xem",
   "IDS_WP_DOWNLOAD_COUNT_NUMBER": "Số lượt download",
-  "IDS_WP_DOWNLOAD_COUNT": "lượt tải"
+  "IDS_WP_DOWNLOAD_COUNT": "lượt tải",
+  "IDS_WP_PERMISSION_GROUP": "Nhóm quyền",
+  "IDS_WP_SYMBOLISM": "Biểu tượng",
+  "IDS_WP_ROLE": "Vai trò",
+  "IDS_WP_SETTING_SOFTWARE": "Thiết lập phần mềm",
+  "IDS_WP_COMMON_SETUP": "Cài đặt chung"
 }

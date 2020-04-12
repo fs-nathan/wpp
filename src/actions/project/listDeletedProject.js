@@ -1,16 +1,10 @@
-import {
-  LIST_DELETED_PROJECT,
-  LIST_DELETED_PROJECT_FAIL,
-  LIST_DELETED_PROJECT_SUCCESS,
-  LIST_DELETED_PROJECT_RESET,
-} from '../../constants/actions/project/listDeletedProject';
+import { LIST_DELETED_PROJECT, LIST_DELETED_PROJECT_FAIL, LIST_DELETED_PROJECT_RESET, LIST_DELETED_PROJECT_SUCCESS } from '../../constants/actions/project/listDeletedProject';
 
 export const listDeletedProject = ({ groupProject, status }, quite = false) => ({
   type: LIST_DELETED_PROJECT,
   quite,
   options: {
     groupProject,
-    type: 'delete',
     status,
   },
 });

@@ -1,15 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
 import { List } from '@material-ui/core';
-import ListBodySubHeader from './ListBodySubHeader';
-import ListBodyItem from './ListBodyItem';
+import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { WrapperContext } from '../../index'
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { taskIdSelector } from '../../selectors';
+import ListBodyItem from './ListBodyItem';
+import ListBodySubHeader from './ListBodySubHeader';
+import './styles.scss';
+
 const StyledList = styled(List)`
 
-    & > li {
-      &:not(:last-child) {
-        margin-bottom: 10px;
+  & > li {
+    &:not(:last-child) {
+      margin-bottom: 10px;
     }
   }
   &:last-child {
@@ -19,37 +22,42 @@ const StyledList = styled(List)`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  & > div:nth-child(1) {
-    margin-right: -7px !important;
-  }
 `;
 
 function ListBody() {
-  const value = React.useContext(WrapperContext)
-  let data = []
+  const taskId = useSelector(taskIdSelector);
+  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
 
-  let listTaskDetail = value.listTaskDetail
+  let data = [];
+  // fix use effect
   if (listTaskDetail) {
     data = listTaskDetail.tasks;
-    console.log({data})
+    // console.log({ data });
   }
 
-   
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200} >
-        {data.map((item, key) => {
-          return (
-            <StyledList key={key} >
-              <ListBodySubHeader subPrimary={item.name} subSecondary={'(' + item.tasks.length + ' việc)'} />
-              {item.tasks.map((detail, idx) => <ListBodyItem key={idx} {...detail} />)}
-            </StyledList>
-          )
-        })}
-     
-
+    <Body className="listJobBody"
+      renderView={props => <div {...props} className="listJobBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
+      {data.map((item, key) => {
+        return (
+          <StyledList key={key}>
+            <ListBodySubHeader
+              subPrimary={item.name}
+              subSecondary={"(" + item.tasks.length + " việc)"}
+            />
+            {item.tasks.map((detail, idx) => (
+              <ListBodyItem
+                key={idx}
+                {...detail}
+                isSelected={taskId === detail.id}
+              />
+            ))}
+          </StyledList>
+        );
+      })}
     </Body>
-
-  )
+  );
 }
 
 export default ListBody;

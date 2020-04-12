@@ -1,20 +1,20 @@
+import { TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
-import { 
-  TextField,
-} from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../../hooks';
+import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
-function MajorCreateAndUpdate({ 
-  open, setOpen, 
-  updatedMajor = null, 
+function MajorCreateAndUpdate({
+  open, setOpen,
+  updatedMajor = null,
   handleCreateOrUpdateMajor,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
   const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (updatedMajor) {
@@ -27,16 +27,16 @@ function MajorCreateAndUpdate({
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title={updatedMajor ? 'Chỉnh sửa chuyên ngành' : 'Tạo chuyên ngành'}
+      title={updatedMajor ? t('DMH.VIEW.DP.MODAL.MAJOR.U_TITLE') : t('DMH.VIEW.DP.MODAL.MAJOR.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateMajor(name, description)}
     >
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
+        label={t('DMH.VIEW.DP.MODAL.MAJOR.NAME')}
         margin="normal"
         variant="outlined"
-        label='Tên chuyên ngành'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -47,9 +47,9 @@ function MajorCreateAndUpdate({
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}
+        label={t('DMH.VIEW.DP.MODAL.MAJOR.DESC')}
         margin="normal"
         variant="outlined"
-        label='Mô tả chuyên ngành'
         fullWidth
         multiline
         rowsMax='4'

@@ -1,106 +1,136 @@
-import React from 'react';
-import { 
-  ListItemText, ListSubheader, Button,
-  TableCell, Table, TableHead, TableBody, TableRow,
-  Menu, MenuItem, IconButton,
-} from '@material-ui/core';
+import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { mdiAccountConvert, mdiAccountMinus, mdiCheckCircle, mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import {
-  mdiDotsVertical,
-  mdiCheckCircle,
-  mdiAccountMinus,
-  mdiAccountConvert,
-  mdiPlusCircleOutline,
-} from '@mdi/js';
-import CustomModal from '../../../../components/CustomModal';
-import ColorTypo from '../../../../components/ColorTypo';
-import SearchInput from '../../../../components/SearchInput';
-import { StyledList, StyledListItem, Primary, Secondary } from '../../../../components/CustomList';
 import { get } from 'lodash';
+import React from 'react';
+import ColorTypo from '../../../../components/ColorTypo';
 import CustomAvatar from '../../../../components/CustomAvatar';
+import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
+import CustomModal from '../../../../components/CustomModal';
+import SearchInput from '../../../../components/SearchInput';
 import './style.scss';
 
-const ListContainer = ({ className = '', ...props }) => 
-  <div 
+const ListContainer = ({ className = '', ...props }) =>
+  <div
     className={`view_Project_MemberSetting_Modal___list-container ${className}`}
     {...props}
   />;
 
-const StyledListSubheader = ({ className = '', ...props }) => 
-  <ListSubheader 
+const StyledListSubheader = ({ className = '', ...props }) =>
+  <ListSubheader
     className={`view_Project_MemberSetting_Modal___list-subheader ${className}`}
     {...props}
   />;
 
-const CustomListItem = ({ className = '', ...props }) => 
-  <StyledListItem 
+const CustomListItem = ({ className = '', ...props }) =>
+  <StyledListItem
     className={`view_Project_MemberSetting_Modal___list-item ${className}`}
     {...props}
   />;
 
-const Banner = ({ className = '', ...props }) => 
-  <div 
+const Banner = ({ className = '', ...props }) =>
+  <div
     className={`view_Project_MemberSetting_Modal___banner ${className}`}
     {...props}
   />;
 
-const StyledTableHead = ({ className = '', ...props }) => 
-  <TableHead 
+const StyledTableHead = ({ className = '', ...props }) =>
+  <TableHead
     className={`view_Project_MemberSetting_Modal___table-head ${className}`}
     {...props}
   />;
 
 const StyledTableBody = TableBody;
 
-const UserTableCell = ({ className = '', ...props }) => 
-  <TableCell 
+const UserTableCell = ({ className = '', ...props }) =>
+  <TableCell
     className={`view_Project_MemberSetting_Modal___table-cell ${className}`}
     {...props}
   />;
 
-const MiddleTableCell = ({ className = '', ...props }) => 
-  <TableCell 
-    className={`view_Project_MemberSetting_Modal___middle-table-cell ${className}`}
+const HeaderTableCell = ({ className = '', ...props }) =>
+  <TableCell
+    className={`view_Project_MemberSetting_Modal___header-table-cell ${className}`}
     {...props}
   />;
 
-const AddButton = ({ className = '', ...props }) => 
-  <Button 
-    className={`view_Project_MemberSetting_Modal___add-button ${className}`}
+const AvatarTableCell = ({ className = '', ...props }) =>
+  <TableCell
+    className={`view_Project_MemberSetting_Modal___avatar-table-cell ${className}`}
     {...props}
   />;
 
-const CustomMenuItem = ({ className = '', selected, refs, ...props }) => 
-  <MenuItem 
-    className={`${selected 
+const StyledRow = ({ className = '', ...props }) =>
+  <TableRow
+    className={`view_Project_MemberSetting_Modal___table-row ${className}`}
+    {...props}
+  />
+
+const RolesBox = ({ className = '', ...props }) =>
+  <div
+    className={`view_Project_MemberSetting_Modal___roles-box ${className}`}
+    {...props}
+  />;
+
+const AddButton = ({ className = '', disabled, ...props }) =>
+  <Button
+    variant="outlined"
+    className={`${disabled
+      ? 'view_Project_MemberSetting_Modal___add-button-disabled'
+      : 'view_Project_MemberSetting_Modal___add-button'} ${className}`}
+    disabled={disabled}
+    {...props}
+  />;
+
+const CustomMenuItem = ({ className = '', selected, ...props }) =>
+  <MenuItem
+    className={`${selected
       ? 'view_Project_MemberSetting_Modal___menu-item-selected'
       : 'view_Project_MemberSetting_Modal___menu-item'} ${className}`}
     {...props}
   />;
 
-const StyledPrimary = ({ className = '', ...props }) => 
-  <Primary 
+const StyledPrimary = ({ className = '', ...props }) =>
+  <Primary
     className={`view_Project_MemberSetting_Modal___primary ${className}`}
     {...props}
   />;
 
-const StyledSecondary = ({ className = '', ...props }) => 
-  <Secondary 
+const StyledSecondary = ({ className = '', ...props }) =>
+  <Secondary
     className={`view_Project_MemberSetting_Modal___secondary ${className}`}
     {...props}
   />;
 
-const LeftContainer = ({ className = '', ...props }) => 
-  <div 
+const LeftContainer = ({ className = '', ...props }) =>
+  <div
     className={`view_Project_MemberSetting_Modal___left-container ${className}`}
     {...props}
   />;
 
-const RightContainer = ({ className = '', ...props }) => 
-  <div 
+const RightContainer = ({ className = '', ...props }) =>
+  <div
     className={`view_Project_MemberSetting_Modal___right-container ${className}`}
     {...props}
   />;
+
+const RightHeader = ({ className = '', ...props }) =>
+  <p
+    className={`view_Project_MemberSetting_Modal___right-header ${className}`}
+    {...props}
+  />
+
+const LeftHeader = ({ className = '', ...props }) =>
+  <p
+    className={`view_Project_MemberSetting_Modal___left-header ${className}`}
+    {...props}
+  />
+
+const CustomList = ({ className = '', ...props }) =>
+  <StyledList
+    className={`view_Project_MemberSetting_Modal___list ${className}`}
+    {...props}
+  />
 
 function getJoinStatusName(statusCode) {
   switch (statusCode) {
@@ -113,14 +143,14 @@ function getJoinStatusName(statusCode) {
   }
 }
 
-function UserFreeRoomList({ 
+function UserFreeRoomList({
   room, loading,
   onAddMember
 }) {
 
   if (get(room, 'users', []).length > 0)
     return (
-      <StyledList
+      <CustomList
         component="nav"
         aria-labelledby={`list-subheader-${get(room, 'id')}`}
         subheader={
@@ -130,15 +160,15 @@ function UserFreeRoomList({
         }
       >
         {get(room, 'users', []).map(user => (
-          <CustomListItem 
+          <CustomListItem
             key={get(user, 'id')}
           >
-            <CustomAvatar style={{ width: 40, height: 40, }} src={get(user, 'avatar', '')} alt='avatar' />
-            <ListItemText 
+            <CustomAvatar src={get(user, 'avatar', '')} alt='avatar' />
+            <ListItemText
               primary={
                 <StyledPrimary>
                   {get(user, 'name', '')}
-                </StyledPrimary>  
+                </StyledPrimary>
               }
               secondary={
                 <StyledSecondary>
@@ -147,35 +177,40 @@ function UserFreeRoomList({
               }
             />
             <AddButton
-              size='small'
-              variant='outlined'
               onClick={evt => onAddMember(user)}
               disabled={loading}
             >
+              {loading && (
+                <CircularProgress
+                  size={16}
+                  className="margin-circular"
+                  color="white"
+                />
+              )}
               Thêm
             </AddButton>
           </CustomListItem>
         ))}
-      </StyledList>
+      </CustomList>
     );
   else return null;
 }
 
-const SettingButton = ({ 
-  member, 
+const SettingButton = ({
+  member,
   setAnchorEl, setCurMemberSetting,
 }) => {
 
   return (
     <div onClick={evt => evt.stopPropagation()}>
-      <IconButton aria-controls="simple-menu" aria-haspopup="true" 
+      <IconButton aria-controls="simple-menu" aria-haspopup="true"
         onClick={evt => {
           setAnchorEl(evt.currentTarget);
           setCurMemberSetting(member);
-        }} 
+        }}
         size='small'
       >
-        <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)'/>
+        <Icon path={mdiDotsVertical} size={1} color='rgba(0, 0, 0, 0.7)' />
       </IconButton>
     </div>
   );
@@ -197,8 +232,8 @@ function ProjectMemberRole({ member, setCurMemberRole }) {
 }
 */
 
-function MemberSetting({ 
-  open, setOpen, 
+function MemberSetting({
+  open, setOpen,
   searchPatern, setSearchPatern,
   members, addMember,
   handleAddMember, handleRemoveMember,
@@ -214,26 +249,27 @@ function MemberSetting({
     <CustomModal
       title={`Quản lý thành viên dự án`}
       fullWidth={true}
-      maxWidth='lg'
       open={open}
       setOpen={setOpen}
       confirmRender={null}
       onConfirm={() => null}
       cancleRender={() => 'Thoát'}
       height='tall'
+      maxWidth='lg'
       columns={2}
+      loading={members.loading}
       left={{
-        title: 'Danh sách thành viên',
-        content: () => 
+        title: () => <LeftHeader>Danh sách thành viên</LeftHeader>,
+        content: () =>
           <LeftContainer>
             <Banner>
-              <SearchInput 
-                fullWidth 
+              <SearchInput
+                fullWidth
                 placeholder='Tìm thành viên'
                 value={searchPatern}
                 onChange={evt => setSearchPatern(evt.target.value)}
               />
-            </Banner>  
+            </Banner>
             <ListContainer>
               {members.free.map(room => (
                 <UserFreeRoomList
@@ -247,56 +283,58 @@ function MemberSetting({
           </LeftContainer>,
       }}
       right={{
-        title: 'Thành viên dự án',
-        content: () => 
+        title: () => <RightHeader>Thành viên dự án</RightHeader>,
+        content: () =>
           <RightContainer>
             <Table>
               <StyledTableHead>
-                <TableRow>
-                  <MiddleTableCell></MiddleTableCell>
-                  <TableCell>Thành viên</TableCell>
-                  <MiddleTableCell>Nhóm quyền</MiddleTableCell>
-                  <MiddleTableCell>Vai trò</MiddleTableCell>
-                  <MiddleTableCell>Trạng thái</MiddleTableCell>
-                  <MiddleTableCell></MiddleTableCell>
-                </TableRow>
+                <StyledRow>
+                  <AvatarTableCell></AvatarTableCell>
+                  <HeaderTableCell>Thành viên</HeaderTableCell>
+                  <HeaderTableCell>Nhóm quyền</HeaderTableCell>
+                  <HeaderTableCell>Vai trò</HeaderTableCell>
+                  <HeaderTableCell>Trạng thái</HeaderTableCell>
+                  <HeaderTableCell></HeaderTableCell>
+                </StyledRow>
               </StyledTableHead>
               <StyledTableBody>
                 {members.added.map(member => (
-                  <TableRow key={get(member, 'id')}>
-                    <MiddleTableCell>
-                      <CustomAvatar src={get(member, 'avatar')} alt='avatar' />
-                    </MiddleTableCell>
-                    <UserTableCell>
+                  <StyledRow key={get(member, 'id')}>
+                    <AvatarTableCell width='5%'>
+                      <CustomAvatar style={{ width: 30, height: 30, }} src={get(member, 'avatar')} alt='avatar' />
+                    </AvatarTableCell>
+                    <UserTableCell width='25%'>
                       <span>{get(member, 'name', '')}</span>
                       <br />
-                      <small>{get(member, 'email', '')}</small>  
+                      <small>{get(member, 'email', '')}</small>
                     </UserTableCell>
-                    <MiddleTableCell>{get(member, 'group_permission_name', '')}</MiddleTableCell>
-                    <MiddleTableCell>
-                      {get(member, 'roles', []).map(role => (
-                        <span key={get(role, 'id')}>{get(role, 'name', '')}</span>
-                      ))}
-                      <IconButton 
-                        size='small' 
-                        onClick={evt => handleOpenModal('ROLE', {
-                          curMember: member
-                        })}
-                      >
-                        <Icon path={mdiPlusCircleOutline} size={0.7} />
-                      </IconButton>
-                    </MiddleTableCell>
-                    <MiddleTableCell>
+                    <TableCell width='15%'>{get(member, 'group_permission_name', '')}</TableCell>
+                    <TableCell width='25%'>
+                      <RolesBox>
+                        {get(member, 'roles', []).map(role => (
+                          <p key={get(role, 'id')}>{get(role, 'name', '')}</p>
+                        ))}
+                        <IconButton
+                          size='small'
+                          onClick={evt => handleOpenModal('ROLE', {
+                            curMemberId: get(member, 'id'),
+                          })}
+                        >
+                          <Icon path={mdiPlusCircleOutline} size={1} color={'#dadada'} />
+                        </IconButton>
+                      </RolesBox>
+                    </TableCell>
+                    <TableCell width='25%'>
                       {getJoinStatusName(get(member, 'join_task_status_code', ''))}
-                    </MiddleTableCell>
-                    <MiddleTableCell>
-                      <SettingButton 
-                        member={member} 
+                    </TableCell>
+                    <TableCell width='5%'>
+                      <SettingButton
+                        member={member}
                         setAnchorEl={setAnchorEl}
                         setCurMemberSetting={setCurMemberSetting}
                       />
-                    </MiddleTableCell>
-                  </TableRow>
+                    </TableCell>
+                  </StyledRow>
                 ))}
               </StyledTableBody>
             </Table>
@@ -311,8 +349,8 @@ function MemberSetting({
                 horizontal: 'right',
               }}
             >
-              <CustomMenuItem 
-                selected={get(curMemberSetting, 'join_task_status_code') === 1} 
+              <CustomMenuItem
+                selected={get(curMemberSetting, 'join_task_status_code') === 1}
                 onClick={evt => {
                   setAnchorEl(null);
                   handleUpdateStateJoinTask(curMemberSetting, 1);
@@ -320,7 +358,7 @@ function MemberSetting({
               >
                 <Icon path={mdiCheckCircle} size={0.7} /> Tham gia tất cả việc
               </CustomMenuItem>
-              <CustomMenuItem 
+              <CustomMenuItem
                 selected={get(curMemberSetting, 'join_task_status_code') === 0}
                 onClick={evt => {
                   setAnchorEl(null);
@@ -338,10 +376,14 @@ function MemberSetting({
                 <Icon path={mdiAccountConvert} size={0.7} /> Gán vào công việc được tạo
               </CustomMenuItem>
               <CustomMenuItem
-                onClick={evt => handleOpenModal('ALERT', {
-                  content: 'Bạn chắc chắn muốn loại trừ thành viên?',
-                  onConfirm: () => handleRemoveMember(curMemberSetting)
-                })}
+                onClick={evt => {
+                  setAnchorEl(null);
+                  handleOpenModal('ALERT', {
+                    content: 'Bạn chắc chắn muốn loại trừ thành viên?',
+                    onConfirm: () => handleRemoveMember(curMemberSetting)
+                  }
+                  )
+                }}
               >
                 <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
               </CustomMenuItem>

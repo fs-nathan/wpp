@@ -1,10 +1,9 @@
-import React from 'react';
-import { 
-  TableCell, Table, TableHead, TableBody, TableRow,
-} from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import CustomAvatar from '../../../../components/CustomAvatar';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { get } from 'lodash';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import CustomAvatar from '../../../../components/CustomAvatar';
+import CustomModal from '../../../../components/CustomModal';
 import './style.scss';
 
 const StyledTableHead = ({ className = '', ...props }) =>
@@ -21,23 +20,25 @@ const UserTableCell = ({ className = '', ...props }) =>
 
 function MembersDetail({ open, setOpen, members = [], }) {
 
+  const { t } = useTranslation();
+
   return (
     <React.Fragment>
       <CustomModal
         open={open}
         setOpen={setOpen}
-        title='Thành viên nhóm'
+        title={t("DMH.VIEW.PGP.MODAL.MEMBER.TITLE")}
         confirmRender={null}
-        cancleRender={() => 'Thoát'}
+        cancleRender={() => t("DMH.VIEW.PGP.MODAL.MEMBER.EXIT")}
         onCancle={() => setOpen(false)}
       >
         <Table>
           <StyledTableHead>
             <TableRow>
               <TableCell></TableCell>
-              <TableCell>Thành viên</TableCell>
-              <TableCell>Chức danh</TableCell>
-              <TableCell>Mô tả</TableCell>
+              <TableCell>{t("DMH.VIEW.PGP.MODAL.MEMBER.NAME")}</TableCell>
+              <TableCell>{t("DMH.VIEW.PGP.MODAL.MEMBER.TIT")}</TableCell>
+              <TableCell>{t("DMH.VIEW.PGP.MODAL.MEMBER.DESC")}</TableCell>
             </TableRow>
           </StyledTableHead>
           <TableBody>

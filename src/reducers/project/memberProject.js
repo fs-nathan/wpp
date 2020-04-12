@@ -1,12 +1,8 @@
-import {
-  MEMBER_PROJECT,
-  MEMBER_PROJECT_SUCCESS,
-  MEMBER_PROJECT_FAIL,
-} from '../../constants/actions/project/memberProject';
-import { ADD_MEMBER_PROJECT } from '../../constants/actions/project/addMemberProject';
-import { REMOVE_MEMBER_PROJECT } from '../../constants/actions/project/removeMemberProject';
-import { UPDATE_STATE_JOIN_TASK } from '../../constants/actions/project/updateStateJoinTask';
-import { get, remove, } from 'lodash';
+import { get, remove } from 'lodash';
+import { ADD_MEMBER_PROJECT_SUCCESS } from '../../constants/actions/project/addMemberProject';
+import { MEMBER_PROJECT, MEMBER_PROJECT_FAIL, MEMBER_PROJECT_SUCCESS } from '../../constants/actions/project/memberProject';
+import { REMOVE_MEMBER_PROJECT_SUCCESS } from '../../constants/actions/project/removeMemberProject';
+import { UPDATE_STATE_JOIN_TASK_SUCCESS } from '../../constants/actions/project/updateStateJoinTask';
 
 export const initialState = {
   data: {
@@ -27,9 +23,9 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case MEMBER_PROJECT_SUCCESS: 
+    case MEMBER_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
         data: action.data,
         error: null,
         loading: false,
@@ -37,10 +33,11 @@ function reducer(state = initialState, action) {
     case MEMBER_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
-    case ADD_MEMBER_PROJECT:
+    case ADD_MEMBER_PROJECT_SUCCESS:
       membersAdded = [...state.data.membersAdded];
       membersFree = [...state.data.membersFree].map(room => {
         const users = get(room, 'users', []);
@@ -67,7 +64,7 @@ function reducer(state = initialState, action) {
           membersFree,
         }
       };
-    case REMOVE_MEMBER_PROJECT:
+    case REMOVE_MEMBER_PROJECT_SUCCESS:
       membersAdded = [...state.data.membersAdded];
       const removed = remove(membersAdded, { id: get(action.options, 'memberId') });
       membersFree = [...state.data.membersFree].map(room => {
@@ -90,7 +87,7 @@ function reducer(state = initialState, action) {
           membersFree,
         }
       };
-    case UPDATE_STATE_JOIN_TASK:
+    case UPDATE_STATE_JOIN_TASK_SUCCESS:
       membersAdded = [...state.data.membersAdded].map(user => {
         let newUser = user;
         if (get(user, 'id') === get(action.options, 'memberId')) {

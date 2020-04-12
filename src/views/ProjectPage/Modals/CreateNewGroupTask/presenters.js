@@ -1,27 +1,26 @@
-import React from 'react';
-import { 
-  TextField,
-} from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import ColorTypo from '../../../../components/ColorTypo';
+import { TextField } from '@material-ui/core';
 import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../hooks';
+import React from 'react';
+import ColorTypo from '../../../../components/ColorTypo';
+import CustomModal from '../../../../components/CustomModal';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const CustomTextField = ({ className = '', ...props }) =>
-  <TextField 
+  <TextField
     className={`view_Project_CreateNewOrUpdateGroupTask_Modal___text-field ${className}`}
     {...props}
   />;
 
-function CreateNewOrUpdateGroupTask({ 
-  open, setOpen, 
+function CreateNewOrUpdateGroupTask({
+  open, setOpen,
   curGroupTask,
-  handleCreateOrUpdateGroupTask, 
+  handleCreateOrUpdateGroupTask,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 100);
-  const [description, setDescription] = useMaxlenString('', 200);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 200);
 
   React.useEffect(() => {
     if (curGroupTask) {
@@ -35,15 +34,15 @@ function CreateNewOrUpdateGroupTask({
       title={`${curGroupTask ? 'Chỉnh sửa' : 'Tạo mới'} nhóm công việc`}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName}
+      canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateGroupTask(name, description)}
     >
+      <ColorTypo>Tên nhóm công việc</ColorTypo>
       <CustomTextField
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Tên nhóm công việc'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -51,15 +50,11 @@ function CreateNewOrUpdateGroupTask({
           </ColorTypo>
         }
       />
-      <CustomTextField
+      <ColorTypo>Mô tả nhóm công việc</ColorTypo>
+      <CustomTextbox
         value={description}
-        onChange={evt => setDescription(evt.target.value)}
-        margin="normal"
-        variant="outlined"
-        label='Mô tả nhóm công việc'
-        fullWidth
-        multiline
-        rowsMax='4'
+        onChange={value => setDescription(value)}
+        helperText={get(errorDescription, 'message', '')}
       />
     </CustomModal>
   )

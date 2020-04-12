@@ -1,0 +1,32 @@
+.editor {
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  &--button {
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    padding: 4px;
+    margin: 2px;
+  }
+  &--readOnly {
+    border: none;
+  }
+  .RichEditor-root {
+    // border-top: 1px solid rgba(0, 0, 0, 0.23);
+    min-height: 40px;
+    color: initial;
+    font-weight: initial;
+    &--readOnly {
+      border: none;
+      min-height: 0em;
+    }
+  }
+  .public-DraftStyleDefault-block {
+    line-height: 15px;
+    margin-bottom: 7px;
+  }
+}
+
+.editorLink {
+  color: #3b5998;
+  text-decoration: underline;
+}

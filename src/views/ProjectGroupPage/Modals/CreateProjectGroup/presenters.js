@@ -1,27 +1,30 @@
-import React from 'react';
 import { TextField } from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import CustomAvatar from '../../../../components/CustomAvatar';
+import { get } from 'lodash';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../hooks';
+import CustomAvatar from '../../../../components/CustomAvatar';
+import CustomModal from '../../../../components/CustomModal';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
-const LogoBox = ({ className = '', ...props }) => 
-  <div 
+const LogoBox = ({ className = '', ...props }) =>
+  <div
     className={`view_ProjectGroup_Create_ProjectGroup___logo-box ${className}`}
     {...props}
   />;
 
-function CreateProjectGroup({ 
-  updatedProjectGroup, 
-  open, setOpen, 
-  handleCreateOrEditProjectGroup, handleOpenModal 
+function CreateProjectGroup({
+  updatedProjectGroup,
+  open, setOpen,
+  handleCreateOrEditProjectGroup, handleOpenModal
 }) {
 
+  const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 150);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 300);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
     url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
     url_sort: '/storage_vtask_net/Icon_default/bt0.png',
@@ -39,7 +42,7 @@ function CreateProjectGroup({
 
   return (
     <CustomModal
-      title={`${updatedProjectGroup ? 'Cập nhật' : 'Tạo'} nhóm dự án`}
+      title={updatedProjectGroup ? t("DMH.VIEW.PGP.MODAL.CUPG.U_TITLE") : t("DMH.VIEW.PGP.MODAL.CUPG.C_TITLE")}
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName && !errorDescription}
@@ -50,7 +53,7 @@ function CreateProjectGroup({
         onChange={evt => setName(evt.target.value)}
         margin="normal"
         variant="outlined"
-        label='Tên nhóm dự án'
+        label={t("DMH.VIEW.PGP.MODAL.CUPG.NAME")}
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -58,30 +61,21 @@ function CreateProjectGroup({
           </ColorTypo>
         }
       />
-      <TextField
+      <CustomTextbox
         value={description}
-        onChange={evt => setDescription(evt.target.value)}
-        margin="normal"
-        variant="outlined"
-        label='Mô tả nhóm dự án'
-        fullWidth
-        multiline
-        rowsMax='4'
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorDescription, 'message', '')}
-          </ColorTypo>
-        }
+        label={t("DMH.VIEW.PGP.MODAL.CUPG.DESC")}
+        onChange={value => setDescription(value)}
+        helperText={get(errorDescription, 'message', '')}
       />
       <LogoBox>
-        <div>  
-          <ColorTypo>Biểu tượng nhóm</ColorTypo>
-          <ColorButton 
-            color='primary' 
+        <div>
+          <ColorTypo>{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO")}</ColorTypo>
+          <ColorButton
+            color='primary'
             onClick={() => handleOpenModal('LOGO', {
               doSelectIcon: icon => setIcon(icon),
-            })}  
-          >+ Chọn biểu tượng</ColorButton>
+            })}
+          >{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO_SELECT")}</ColorButton>
         </div>
         <CustomAvatar src={icon.url_full} alt='avatar' />
       </LogoBox>

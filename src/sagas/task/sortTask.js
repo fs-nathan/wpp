@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { sortTaskSuccess, sortTaskFail } from '../../actions/task/sortTask';
+import { sortTaskFail, sortTaskSuccess } from '../../actions/task/sortTask';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, SORT_TASK } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doSortTask({ taskId, projectId, groupTask, sortIndex, }) {
   try {
@@ -36,6 +36,4 @@ function* sortTask(action) {
   }
 }
 
-export {
-  sortTask,
-}
+export { sortTask, };

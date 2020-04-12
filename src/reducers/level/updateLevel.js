@@ -1,38 +1,45 @@
-import {
-  UPDATE_LEVEL,
-  UPDATE_LEVEL_SUCCESS,
-  UPDATE_LEVEL_FAIL,
-} from '../../constants/actions/level/updateLevel';
+import { concat, get, remove } from 'lodash';
+import { UPDATE_LEVEL, UPDATE_LEVEL_FAIL, UPDATE_LEVEL_SUCCESS } from '../../constants/actions/level/updateLevel';
 
 export const initialState = {
   data: {
     level: null,
   },
   error: null,
-  loading: false,
+  pendings: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_LEVEL:
+    case UPDATE_LEVEL: {
+      const newPendings = concat(state.pendings, get(action.options, 'levelId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case UPDATE_LEVEL_SUCCESS: 
+        pendings: newPendings,
+      }
+    }
+    case UPDATE_LEVEL_SUCCESS: {
+      let newPendings = state.pendings;
+      remove(newPendings, pending => pending === get(action.data, 'level.id'))
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
-        loading: false,
-      };
-    case UPDATE_LEVEL_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case UPDATE_LEVEL_FAIL: {
+      let newPendings = state.pendings;
+      remove(newPendings, pending => pending === get(action.options, 'levelId'))
       return {
         ...state,
+        ...initialState,
         error: action.error,
-        loading: false,
-      };
+        pendings: newPendings,
+      }
+    }
     default:
       return state;
   }

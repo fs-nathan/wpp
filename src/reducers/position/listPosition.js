@@ -1,18 +1,12 @@
-import {
-  LIST_POSITION,
-  LIST_POSITION_SUCCESS,
-  LIST_POSITION_FAIL,
-} from '../../constants/actions/position/listPosition';
-import { 
-  CREATE_POSITION_SUCCESS 
-} from '../../constants/actions/position/createPosition';
 import { concat, findIndex, get, remove } from 'lodash';
-import { UPDATE_POSITION_SUCCESS } from '../../constants/actions/position/updatePosition';
+import { CREATE_POSITION_SUCCESS } from '../../constants/actions/position/createPosition';
 import { DELETE_POSITION_SUCCESS } from '../../constants/actions/position/deletePosition';
+import { LIST_POSITION, LIST_POSITION_FAIL, LIST_POSITION_SUCCESS } from '../../constants/actions/position/listPosition';
+import { UPDATE_POSITION_SUCCESS } from '../../constants/actions/position/updatePosition';
 
 export const initialState = {
   data: {
-    positions: [],  
+    positions: [],
   },
   error: null,
   loading: false,
@@ -26,9 +20,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_POSITION_SUCCESS: 
+    case LIST_POSITION_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -36,6 +31,7 @@ function reducer(state = initialState, action) {
     case LIST_POSITION_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
@@ -50,7 +46,7 @@ function reducer(state = initialState, action) {
       };
     }
     case UPDATE_POSITION_SUCCESS: {
-      const index = findIndex(state.data.positions, { id: get(action.data.position, 'positionId') });
+      const index = findIndex(state.data.positions, { id: get(action.data, 'position.id') });
       let newPositions = [...state.data.positions];
       newPositions[index] = {
         ...state.data.positions[index],

@@ -39,6 +39,7 @@ function CopyGroupTask({
         setOpen={setOpen}
         canConfirm={selectedGroupTasks.length > 0}
         onConfirm={() => handleCopyGroupTask(selectedGroupTasks)}
+        loading={groupTasks.loading}
       >
         <SearchInput 
           fullWidth 

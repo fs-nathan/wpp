@@ -181,6 +181,42 @@ export const deleteRemindFail = (error) => ({
     type: types.DELETE_REMIND_FAIL,
     error: error
 });
+// ======= pin remind
+export const pinRemind = ({ remind_id, taskId }) => ({
+    type: types.PIN_REMIND_REQUEST,
+    payload: {
+        remind_id,
+        taskId
+    }
+});
+
+export const pinRemindSuccess = (remind_id) => ({
+    type: types.PIN_REMIND_SUCCESS,
+    payload: remind_id
+});
+
+export const pinRemindFail = (error) => ({
+    type: types.PIN_REMIND_FAIL,
+    error: error
+});
+// ======= unPin remind
+export const unPinRemind = ({ remind_id, taskId }) => ({
+    type: types.UNPIN_REMIND_REQUEST,
+    payload: {
+        remind_id,
+        taskId
+    }
+});
+
+export const unPinRemindSuccess = (remind_id) => ({
+    type: types.UNPIN_REMIND_SUCCESS,
+    payload: remind_id
+});
+
+export const unPinRemindFail = (error) => ({
+    type: types.UNPIN_REMIND_FAIL,
+    error: error
+});
 //  offer
 export const getOffer = ({ taskId }) => ({
     type: types.GET_OFFER_REQUEST,
@@ -241,6 +277,21 @@ export const deleteOfferSuccess = (payload) => ({
 
 export const deleteOfferFail = (error) => ({
     type: types.DELETE_OFFER_FAIL,
+    error: error,
+});
+
+export const approveOffer = payload => ({
+    type: types.APPROVE_OFFER_REQUEST,
+    payload
+});
+
+export const approveOfferSuccess = (payload) => ({
+    type: types.APPROVE_OFFER_SUCCESS,
+    payload
+});
+
+export const approveOfferFail = (error) => ({
+    type: types.APPROVE_OFFER_FAIL,
     error: error,
 });
 // ==== upload document to offer
@@ -602,6 +653,21 @@ export const deleteRoleFail = (error) => ({
     error: error,
 });
 
+export const updateRolesForMember = (payload) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_REQUEST,
+    payload
+});
+
+export const updateRolesForMemberSuccess = (payload) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_SUCCESS,
+    payload
+});
+
+export const updateRolesForMemberFail = (error) => ({
+    type: types.UPDATE_ROLES_FOR_MEMBER_FAIL,
+    error: error,
+});
+
 //Tien do - time
 export const getTrackingTime = (payload) => ({
     type: types.GET_TRACKING_TIME_REQUEST,
@@ -613,6 +679,18 @@ export const getTrackingTimeSuccess = (payload) => ({
 });
 export const getTrackingTimeFail = (error) => ({
     type: types.GET_TRACKING_TIME_FAIl,
+    error: error
+});
+export const getTrackingTimeComplete = (payload) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_REQUEST,
+    payload
+});
+export const getTrackingTimeCompleteSuccess = (payload) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_SUCCESS,
+    payload
+});
+export const getTrackingTimeCompleteFail = (error) => ({
+    type: types.GET_TRACKING_TIME_COMPLETE_FAIl,
     error: error
 });
 export const updateTimeDuration = (payload) => ({
@@ -641,6 +719,22 @@ export const getListGroupTaskSuccess = (payload) => ({
 
 export const getListGroupTaskFail = (error) => ({
     type: types.GET_LIST_GROUP_TASK_FAIL,
+    error: error,
+});
+
+// GET LIST GROUP OFFER
+export const getListOffer = (payload) => ({
+    type: types.GET_LIST_OFFER_REQUEST,
+    payload
+});
+
+export const getListOfferSuccess = (payload) => ({
+    type: types.GET_LIST_OFFER_SUCCESS,
+    payload
+});
+
+export const getListOfferFail = (error) => ({
+    type: types.GET_LIST_OFFER_FAIL,
     error: error,
 });
 
@@ -867,4 +961,37 @@ export const deleteTaskSuccess = payload => ({
 export const deleteTaskFail = error => ({
     type: types.DELETE_TASK_FAIL,
     error: error
+})
+
+// Pin TASK
+export const pinTaskAction = payload => ({
+    type: types.PIN_TASK_REQUEST,
+    payload
+})
+export const pinTaskSuccess = payload => ({
+    type: types.PIN_TASK_SUCCESS,
+    payload
+})
+export const pinTaskFail = error => ({
+    type: types.PIN_TASK_FAIL,
+    error: error
+})
+
+// UnPin TASK
+export const unPinTaskAction = payload => ({
+    type: types.UN_PIN_TASK_REQUEST,
+    payload
+})
+export const unPinTaskSuccess = payload => ({
+    type: types.UN_PIN_TASK_SUCCESS,
+    payload
+})
+export const unPinTaskFail = error => ({
+    type: types.UN_PIN_TASK_FAIL,
+    error: error
+})
+
+export const showTab = payload => ({
+    type: types.SET_SHOW_INDEX,
+    payload
 })

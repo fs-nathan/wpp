@@ -1,17 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import Drawer from '@material-ui/core/Drawer';
-import { DRAWER_TYPE } from '../../constants/constants';
-import { isEmpty } from '../../helpers/utils/isEmpty';
-import { actionVisibleDrawerMessage } from '../../actions/system/system';
-import DrawerSupport from './DrawerContentComponent/DrawerSupport';
-import DrawerMessage from './DrawerContentComponent/DrawerMessage';
-import DrawerNotification from './DrawerContentComponent/DrawerNotification';
-import DrawerGroupAcount from './DrawerContentComponent/DrawerGroupAcount';
-import DrawerSetting from './DrawerContentComponent/DrawerSetting';
-import DrawerNewGroup from './DrawerContentComponent/DrawerNewGroup';
-import AddUser from '../../views/DepartmentPage/LeftPart/AddUser';
-import './Drawer.scss';
+import Drawer from "@material-ui/core/Drawer";
+import React from "react";
+import { connect } from "react-redux";
+import { actionVisibleDrawerMessage } from "../../actions/system/system";
+import { DRAWER_TYPE } from "../../constants/constants";
+import { isEmpty } from "../../helpers/utils/isEmpty";
+import AddUser from "../../views/DepartmentPage/LeftPart/AddUser";
+import "./Drawer.scss";
+import DrawerGroupAcount from "./DrawerContentComponent/DrawerGroupAcount";
+import DrawerMessage from "./DrawerContentComponent/DrawerMessage";
+import DrawerNewGroup from "./DrawerContentComponent/DrawerNewGroup";
+import DrawerNotification from "./DrawerContentComponent/DrawerNotification";
+import DrawerSetting from "./DrawerContentComponent/DrawerSetting";
+import DrawerSupport from "./DrawerContentComponent/DrawerSupport";
 
 const generateContent = typeDrawer => {
   switch (typeDrawer) {
@@ -30,7 +30,7 @@ const generateContent = typeDrawer => {
     case DRAWER_TYPE.ADD_USER:
       return <AddUser />;
     default:
-      return '';
+      return "";
   }
 };
 const DrawerComponent = props => {
@@ -40,15 +40,15 @@ const DrawerComponent = props => {
       anchor={anchorDrawer}
       open={!isEmpty(typeDrawer)}
       onClose={() =>
-        actionVisibleDrawerMessage({ type: '', anchor: anchorDrawer })
+        actionVisibleDrawerMessage({ type: "", anchor: anchorDrawer })
       }
       className={`Drawer-Compenent ${
-        anchorDrawer === 'left' 
-          ? 'anchor-drawer-left' 
-          : anchorDrawer === 'right' 
-            ? 'anchor-drawer-right' 
-            : 'anchor-drawer-top'
-      }`}
+        anchorDrawer === "left"
+          ? "anchor-drawer-left"
+          : anchorDrawer === "right"
+            ? "anchor-drawer-right"
+            : "anchor-drawer-top"
+        }`}
     >
       {generateContent(typeDrawer)}
     </Drawer>

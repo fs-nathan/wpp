@@ -1,40 +1,41 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import SearchInput from '../../../../components/SearchInput';
 import { mdiChevronLeft } from '@mdi/js';
-import LeftSideContainer from '../../../../components/LeftSideContainer';
-import { StyledList, StyledListItem } from '../../../../components/CustomList';
-import CustomListItem from './CustomListItem';
-import ErrorBox from '../../../../components/ErrorBox';
-import LoadingBox from '../../../../components/LoadingBox';
 import { get } from 'lodash';
+import React from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { StyledList, StyledListItem } from '../../../../components/CustomList';
+import LeftSideContainer from '../../../../components/LeftSideContainer';
+import LoadingBox from '../../../../components/LoadingBox';
+import SearchInput from '../../../../components/SearchInput';
+import CustomListItem from './CustomListItem';
 import './style.scss';
 
 const Banner = ({ className = '', ...props }) =>
-  <div 
+  <div
     className={`view_Member_UserList___banner ${className}`}
     {...props}
   />;
 
 const CustomStyledList = ({ className = '', ...props }) =>
-  <StyledList 
+  <StyledList
     className={`view_Member_UserList___list ${className}`}
     {...props}
   />;
 
 const RoomNameSpan = ({ className = '', ...props }) =>
-  <span 
+  <span
     className={`view_Member_UserList___room-name ${className}`}
     {...props}
   />;
 
-function UserList({ 
-  rooms, 
-  handleSortUser, 
+function UserList({
+  rooms, departmentRoute, memberRoute,
+  handleSortUser,
 }) {
-  
+
   const [searchPatern, setSearchPatern] = React.useState('');
+  const { t } = useTranslation();
 
   const history = useHistory();
 
@@ -49,60 +50,57 @@ function UserList({
   }
 
   function doLink(userId) {
-    history.push(`/members/${userId}`);
+    history.push(`${memberRoute}/${userId}`);
   }
 
   return (
     <>
-      {rooms.error !== null && <ErrorBox />}
-      {rooms.error === null && (
-        <LeftSideContainer
-          title='Danh sách thành viên'
-          leftAction={{
-            iconPath: mdiChevronLeft,
-            onClick: () => history.push('/departments'),
-            tooltip: 'Quay lại',
-          }}
-          loading={{
-            bool: rooms.loading,
-            component: () => <LoadingBox />
-          }}
-        >
-          <Banner>
-            <SearchInput 
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
-              fullWidth 
-              placeholder='Tìm thành viên'  
-            />  
-          </Banner>
-          <DragDropContext onDragEnd={onDragEnd}>
-            {rooms.rooms.map((room, index) => {
-              const users = get(room, 'users', []);
-              return (
-                <Droppable key={index} droppableId={get(room, 'id')}>
-                  {provided => (
-                    <CustomStyledList
-                      innerRef={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      <StyledListItem>
-                        <RoomNameSpan>
-                          {get(room, 'name', '') === 'default' ? 'Mặc định' : get(room, 'name', '')}
-                        </RoomNameSpan>
-                      </StyledListItem>
-                      {users.filter(user => get(user, 'name').toLowerCase().includes(searchPatern.toLowerCase())).map((user, index) => 
-                        <CustomListItem key={index} user={user} index={index} handleLink={doLink} />
-                      )}
-                      {provided.placeholder}
-                    </CustomStyledList>
-                  )}
-                </Droppable>
-              );
-            })}
-          </DragDropContext>
-        </LeftSideContainer>
-      )}
+      <LeftSideContainer
+        title={t('DMH.VIEW.MP.LEFT.UL.TITLE')}
+        leftAction={{
+          iconPath: mdiChevronLeft,
+          onClick: () => history.push(departmentRoute),
+          tooltip: t('DMH.VIEW.MP.LEFT.UL.BACK'),
+        }}
+        loading={{
+          bool: rooms.loading,
+          component: () => <LoadingBox />
+        }}
+      >
+        <Banner>
+          <SearchInput
+            value={searchPatern}
+            onChange={evt => setSearchPatern(evt.target.value)}
+            fullWidth
+            placeholder={t('DMH.VIEW.MP.LEFT.UL.SEARCH')}
+          />
+        </Banner>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {rooms.rooms.map((room, index) => {
+            const users = get(room, 'users', []);
+            return (
+              <Droppable key={index} droppableId={get(room, 'id')}>
+                {provided => (
+                  <CustomStyledList
+                    innerRef={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <StyledListItem>
+                      <RoomNameSpan>
+                        {get(room, 'name', '') === 'default' ? t('DMH.VIEW.MP.LEFT.UL.DEFAULT') : get(room, 'name', '')}
+                      </RoomNameSpan>
+                    </StyledListItem>
+                    {users.filter(user => get(user, 'name').toLowerCase().includes(searchPatern.toLowerCase())).map((user, index) =>
+                      <CustomListItem key={index} user={user} index={index} handleLink={doLink} />
+                    )}
+                    {provided.placeholder}
+                  </CustomStyledList>
+                )}
+              </Droppable>
+            );
+          })}
+        </DragDropContext>
+      </LeftSideContainer>
     </>
   )
 }

@@ -1,8 +1,4 @@
-import {
-  ADD_PROJECT_ROLE_TO_MEMBER,
-  ADD_PROJECT_ROLE_TO_MEMBER_SUCCESS,
-  ADD_PROJECT_ROLE_TO_MEMBER_FAIL,
-} from '../../constants/actions/project/addProjectRoleToMember';
+import { ADD_PROJECT_ROLE_TO_MEMBER, ADD_PROJECT_ROLE_TO_MEMBER_FAIL, ADD_PROJECT_ROLE_TO_MEMBER_SUCCESS } from '../../constants/actions/project/addProjectRoleToMember';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case ADD_PROJECT_ROLE_TO_MEMBER_SUCCESS: 
+    case ADD_PROJECT_ROLE_TO_MEMBER_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case ADD_PROJECT_ROLE_TO_MEMBER_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

@@ -1,0 +1,36 @@
+.addOfferMemberModal {
+  .MuiDialogContent-root {
+    padding: 20px 24px;
+  }
+  &--selected {
+    color: orange;
+    margin: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+  }
+}
+.offerMemberItem {
+  display: flex;
+  margin: 15px 0;
+  padding: 0;
+  .MuiCheckbox-root {
+    padding: 0;
+    margin-right: 20px;
+  }
+  .MuiSvgIcon-root {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .MuiCheckbox-colorSecondary.Mui-checked {
+    color: #01be09;
+  }
+  &--avatar {
+    margin-left: 4px;
+    margin-right: 12px;
+  }
+  &--name {
+    font-size: 15px;
+    font-weight: 500;
+    columns: #222222;
+  }
+}

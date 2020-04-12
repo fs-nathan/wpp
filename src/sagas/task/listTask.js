@@ -1,8 +1,8 @@
-import { call, put } from 'redux-saga/effects';
-import { listTaskSuccess, listTaskFail } from '../../actions/task/listTask';
-import { apiService } from '../../constants/axiosInstance';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { listTaskFail, listTaskSuccess } from '../../actions/task/listTask';
+import { apiService } from '../../constants/axiosInstance';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doListTask({ projectId, timeStart, timeEnd }) {
   try {
@@ -32,6 +32,4 @@ function* listTask(action) {
   }
 }
 
-export {
-  listTask,
-}
+export { listTask, };

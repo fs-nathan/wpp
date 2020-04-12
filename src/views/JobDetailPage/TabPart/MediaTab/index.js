@@ -4,16 +4,6 @@ import TabHeader from './TabHeader';
 import TabBody from './TabBody';
 import styled from 'styled-components'
 
-// const Container = styled.div`
-//   transition: unset !important;
-//   height: 100%;
-//   display: grid;
-//   grid-template-rows: 85px calc(85vh);
-//   grid-template-columns: 1fr;
-//   grid-template-areas: 
-//     "header"
-//     "body";
-// `
 const Header = styled(TabHeader)`
   grid-area: header;
   padding: 15px;

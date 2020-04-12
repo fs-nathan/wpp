@@ -1,36 +1,41 @@
-import {
-  DELETE_LEVEL,
-  DELETE_LEVEL_SUCCESS,
-  DELETE_LEVEL_FAIL,
-} from '../../constants/actions/level/deleteLevel';
+import { concat, get, remove } from 'lodash';
+import { DELETE_LEVEL, DELETE_LEVEL_FAIL, DELETE_LEVEL_SUCCESS } from '../../constants/actions/level/deleteLevel';
 
 export const initialState = {
-  data: {},
   error: null,
-  loading: false,
+  pendings: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case DELETE_LEVEL:
+    case DELETE_LEVEL: {
+      const newPendings = concat(state.pendings, get(action.options, 'levelId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case DELETE_LEVEL_SUCCESS: 
-      return {
-        ...state, 
-        data: {},
-        error: null,
-        loading: false,
-      };
-    case DELETE_LEVEL_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case DELETE_LEVEL_SUCCESS: {
+      let newPendings = state.pendings;
+      remove(newPendings, pending => pending === get(action.options, 'levelId'))
       return {
         ...state,
+        ...initialState,
+        error: null,
+        pendings: newPendings,
+      }
+    }
+    case DELETE_LEVEL_FAIL: {
+      let newPendings = state.pendings;
+      remove(newPendings, pending => pending === get(action.options, 'levelId'))
+      return {
+        ...state,
+        ...initialState,
         error: action.error,
-        loading: false,
-      };
+        pendings: newPendings,
+      }
+    }
     default:
       return state;
   }

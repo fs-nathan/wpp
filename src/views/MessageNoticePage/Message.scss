@@ -58,14 +58,26 @@
         justify-content: space-between;
         display: flex;
         .text-name-message {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 500;
           margin-bottom: 5px;
+          &.content-text {
+            font-weight: 400;
+          }
+          b {
+            font-size: 14px;
+          }
         }
       }
       .des-message {
         color: #90949c;
         font-size: 12px;
+        .content-text {
+          font-weight: 400;
+        }
+        b {
+          font-size: 14px;
+        }
       }
       &.un-read {
         background-color: #f9f9f9;
@@ -141,9 +153,15 @@
         justify-content: space-between;
         display: flex;
         .text-name-message {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 500;
           margin-bottom: 5px;
+          &.content-text {
+            font-weight: 400;
+          }
+          b {
+            font-size: 14px;
+          }
         }
       }
       &.un-read {
@@ -151,4 +169,32 @@
       }
     }
   }
+}
+.badge {
+  height: 20px;
+  width: 23px;
+  border: solid 2px white;
+  top: 15px;
+  right: 8px;
+  font-size: 10px;
+  line-height: 20px;
+  color: #fff;
+  background-color: #f44336;
+  font-weight: 500;
+  display: flex;
+  align-content: center;
+  border-radius: 10px;
+  flex-direction: row;
+  justify-content: center;
+  min-width: 20px;
+  box-sizing: border-box;
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  align-items: center;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 500;
+  line-height: 1;
+  align-content: center;
+  border-radius: 10px;
+  flex-direction: row;
+  justify-content: center;
 }

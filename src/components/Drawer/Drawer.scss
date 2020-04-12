@@ -149,6 +149,7 @@
     }
     .btn-unread {
       margin-left: 25px;
+      padding: 0 12px 0 0;
       .MuiButton-label {
         color: #9094c9;
         font-weight: normal;
@@ -158,12 +159,15 @@
         }
       }
     }
+    .MuiBadge-badge {
+      margin-top: -4px;
+    }
     .badges {
-      font-size: 13px;
+      font-size: 10px;
       background-color: red;
       padding: 0 5px;
       color: #fff;
-      line-height: 13px;
+      line-height: 10px;
       border-radius: 10px;
     }
   }
@@ -242,6 +246,14 @@
         .text-name-message {
           font-size: 14px;
           font-weight: 500;
+          &.content-text {
+            font-weight: 400;
+            line-height: 17px;
+            margin: 5px 0 0;
+          }
+          b {
+            font-size: 14px;
+          }
           .header-item-text {
             font-weight: normal;
             margin: 0 0 5px 0;
@@ -352,6 +364,7 @@
       border-top: 1px solid #ededed;
       text-transform: uppercase;
       cursor: pointer;
+      background: white;
       &.primary-color {
         color: #0076f3;
       }

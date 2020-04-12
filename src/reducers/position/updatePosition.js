@@ -1,38 +1,45 @@
-import {
-  UPDATE_POSITION,
-  UPDATE_POSITION_SUCCESS,
-  UPDATE_POSITION_FAIL,
-} from '../../constants/actions/position/updatePosition';
+import { concat, get, remove } from 'lodash';
+import { UPDATE_POSITION, UPDATE_POSITION_FAIL, UPDATE_POSITION_SUCCESS } from '../../constants/actions/position/updatePosition';
 
 export const initialState = {
   data: {
     position: null,
   },
   error: null,
-  loading: false,
+  pendings: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_POSITION:
+    case UPDATE_POSITION: {
+      const newPendings = concat(state.pendings, get(action.options, 'positionId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case UPDATE_POSITION_SUCCESS: 
+        pendings: newPendings,
+      }
+    }
+    case UPDATE_POSITION_SUCCESS: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.data, 'position.id'))
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
-        loading: false,
-      };
-    case UPDATE_POSITION_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case UPDATE_POSITION_FAIL: {
+      let newPendings = state.pendings
+      remove(newPendings, pending => pending === get(action.options, 'positionId'))
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
-      };
+      }
+    }
     default:
       return state;
   }

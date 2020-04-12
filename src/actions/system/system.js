@@ -1,5 +1,6 @@
-import { apiService } from '../../constants/axiosInstance';
 import * as actionTypes from '../../constants/actions/system/system';
+import { apiService } from '../../constants/axiosInstance';
+import { MESS_NUMBER, NOTI_NUMBER } from '../../constants/constants';
 
 export const actionVisibleDrawerMessage = option => {
   return {
@@ -104,7 +105,7 @@ export const convertUrlToBlob = (
     let ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    canvas.toBlob(function(blob) {
+    canvas.toBlob(function (blob) {
       if (successCallback) {
         successCallback(blob);
       }
@@ -176,12 +177,14 @@ export const actionSearchTask = info => {
   return apiService(config);
 };
 export const actionChangeNumNotificationNotView = numNotification => {
+  localStorage.setItem(NOTI_NUMBER, numNotification);
   return {
     type: actionTypes.CHANGE_NUM_NOTIFICATION_NOT_VIEW,
     payload: numNotification
   };
 };
 export const actionChangeNumMessageNotView = numMessage => {
+  localStorage.setItem(MESS_NUMBER, numMessage);
   return {
     type: actionTypes.CHANGE_NUM_MESSAGE_NOT_VIEW,
     payload: numMessage

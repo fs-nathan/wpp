@@ -1,32 +1,35 @@
-import React from 'react';
 import { TextField } from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import CustomAvatar from '../../../../components/CustomAvatar';
+import { get } from 'lodash';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorButton from '../../../../components/ColorButton';
 import ColorTypo from '../../../../components/ColorTypo';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../hooks';
+import CustomAvatar from '../../../../components/CustomAvatar';
+import CustomModal from '../../../../components/CustomModal';
+import CustomTextbox from '../../../../components/CustomTextbox';
+import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const LogoBox = ({ className = '', ...props }) =>
-  <div 
+  <div
     className={`view_Department_Create_Modal___logo-box ${className}`}
     {...props}
   />;
 
-function CreateAndUpdateDepartment({ 
-  updateDepartment = null, 
-  open, setOpen, 
-  handleCreateOrUpdateRoom, 
+function CreateAndUpdateDepartment({
+  updateDepartment = null,
+  open, setOpen,
+  handleCreateOrUpdateRoom,
   handleOpenModal,
 }) {
 
-  const [name, setName, errorName] = useRequiredString('', 150);
+  const [name, setName, errorName] = useRequiredString('', 100);
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
     url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
     url_sort: '/storage_vtask_net/Icon_default/bt0.png',
   });
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (updateDepartment) {
@@ -43,7 +46,7 @@ function CreateAndUpdateDepartment({
   return (
     <React.Fragment>
       <CustomModal
-        title={`${updateDepartment ? 'Cập nhật' : 'Tạo'} bộ phận`}
+        title={updateDepartment ? t('DMH.VIEW.DP.MODAL.CUDP.U_TITLE') : t('DMH.VIEW.DP.MODAL.CUDP.C_TITLE')}
         open={open}
         setOpen={setOpen}
         onConfirm={() => handleCreateOrUpdateRoom(name, description, icon)}
@@ -54,7 +57,7 @@ function CreateAndUpdateDepartment({
           onChange={evt => setName(evt.target.value)}
           margin="normal"
           variant="outlined"
-          label='Tên bộ phận'
+          label={t('DMH.VIEW.DP.MODAL.CUDP.NAME')}
           fullWidth
           helperText={
             <ColorTypo variant='caption' color='red'>
@@ -62,30 +65,21 @@ function CreateAndUpdateDepartment({
             </ColorTypo>
           }
         />
-        <TextField
+        <CustomTextbox
           value={description}
-          onChange={evt => setDescription(evt.target.value)}
-          margin="normal"
-          variant="outlined"
-          label='Mô tả bộ phận'
-          fullWidth
-          multiline
-          rowsMax='4'
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {get(errorDescription, 'message', '')}
-            </ColorTypo>
-          }
+          label={t('DMH.VIEW.DP.MODAL.CUDP.DESC')}
+          onChange={editorState => setDescription(editorState)}
+          helperText={get(errorDescription, 'message', '')}
         />
         <LogoBox>
-          <div>  
-            <ColorTypo>Biểu tượng</ColorTypo>
-            <ColorButton 
-              color='primary' 
+          <div>
+            <ColorTypo>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO')}</ColorTypo>
+            <ColorButton
+              color='primary'
               onClick={() => handleOpenModal('LOGO', {
                 doSelectIcon: icon => setIcon(icon),
               })}
-            >+ Chọn biểu tượng</ColorButton>
+            >{t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}</ColorButton>
           </div>
           <CustomAvatar src={icon.url_full} alt='avatar' />
         </LogoBox>

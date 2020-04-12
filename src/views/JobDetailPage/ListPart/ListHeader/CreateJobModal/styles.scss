@@ -1,0 +1,76 @@
+.createJob {
+  .MuiDialogContent-root:first-child {
+    padding: 0px 24px 24px;
+  }
+  &--timeWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 15px;
+  }
+  &--titleLabel {
+    color: #9a9a9a;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+    display: block;
+    position: relative;
+    line-height: 15px;
+    margin: 25px 0 10px 0;
+    width: 100%;
+  }
+  &--content {
+    padding: 10px;
+  }
+  &--processWork {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &--titleText {
+    display: flex;
+    justify-content: space-between;
+    & > *:first-child {
+      font-size: 15px;
+      color: #444444;
+    }
+    & > *:last-child {
+      color: #fa0000;
+      font-size: 14px;
+    }
+  }
+  &--description {
+    margin-top: 5px;
+    min-width: 520px;
+  }
+  &--inputTextJob {
+    margin: 0;
+    & > label {
+      font-size: 14px;
+      z-index: 0;
+    }
+    & > p {
+      color: red;
+    }
+  }
+  &--inputDate {
+    .MuiOutlinedInput-adornedEnd {
+      padding-right: 0;
+    }
+    & > div:nth-child(2) {
+      width: 160px;
+      padding-right: 5px;
+      & > input {
+        padding: 10px;
+      }
+      & > div > button {
+        padding: 5px;
+      }
+    }
+  }
+  &--endTime {
+    width: 120px;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+}

@@ -1,36 +1,40 @@
 import React from 'react';
-import SimpleManagerTable from '../../../../components/SimpleManagerTable';
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../components/CustomModal';
 import ErrorBox from '../../../../components/ErrorBox';
+import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 
-function RoleManager({ 
-  open, setOpen, 
-  userRoles, 
+function RoleManager({
+  open, setOpen,
+  userRoles,
   handleDeleteUserRole, handleOpenModal,
 }) {
+
+  const { t } = useTranslation();
 
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title='Quản lý vai trò'
+      title={t('DMH.VIEW.DP.MODAL.ROLE.TITLE')}
       confirmRender={null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t('DMH.VIEW.DP.MODAL.ROLE.EXIT')}
       loading={userRoles.loading}
     >
-      {userRoles.error !== null 
+      {userRoles.error !== null
         ? <ErrorBox />
-        : <SimpleManagerTable 
-            data={userRoles.userRoles}
-            handleAdd={() => handleOpenModal('CREATE')}
-            handleEdit={userRole => handleOpenModal('UPDATE', {
-              updatedUserRole: userRole,
-            })}
-            handleDelete={userRole => handleOpenModal('ALERT', {
-              content: 'Bạn chắc chắn muốn xóa vai trò?',
-              onConfirm: () => handleDeleteUserRole(userRole),
-            })}
-          />
+        : <SimpleManagerTable
+          data={userRoles.userRoles}
+          pendings={userRoles.pendings}
+          handleAdd={() => handleOpenModal('CREATE')}
+          handleEdit={userRole => handleOpenModal('UPDATE', {
+            updatedUserRole: userRole,
+          })}
+          handleDelete={userRole => handleOpenModal('ALERT', {
+            content: t('DMH.VIEW.DP.MODAL.ROLE.ALERT'),
+            onConfirm: () => handleDeleteUserRole(userRole),
+          })}
+        />
       }
     </CustomModal>
   )

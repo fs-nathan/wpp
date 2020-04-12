@@ -1,225 +1,201 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Avatar, Table, TableHead, TableBody, TableRow, TableCell, Slider } from '@material-ui/core';
-import ColorTypo from '../../../../../components/ColorTypo';
-import colorPal from '../../../../../helpers/colorPalette';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { mdiCircle } from '@mdi/js';
-import Icon from '@mdi/react'
-import { Scrollbars } from 'react-custom-scrollbars'
-import { WrapperContext } from '../../../index'
+import { mdiMenuDown } from '@mdi/js';
+import Icon from '@mdi/react';
+import { updateComplete } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'classnames';
+import ColorTypo from 'components/ColorTypo';
+import differenceInDays from 'date-fns/differenceInDays';
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import clamp from 'lodash/clamp';
+import React, { useState } from 'react';
+import ReactApexChart from "react-apexcharts";
+import { Scrollbars } from 'react-custom-scrollbars';
+import { useDispatch, useSelector } from 'react-redux';
+import { taskIdSelector } from '../../../selectors';
+import EditProgressItem from './EditProgressItem';
+import ProgressSlider from './ProgressSlider';
+import './styles.scss';
 
-// const Container = styled.div`
-//   padding: 10px 0 50px 20px;
+const colors = ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
+  '#f48024', '#69d2e7'
+]
+const regDMY = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/;
 
-//   & > *:not(last-child) {
-//     padding-top: 40px;
-//     margin: 0 auto;
-//   }
-//   & > hr {
-//     border-color: rgba(0, 0, 0, .1);
-//   }
-// `;
-
-// const StartEndDateBox = styled.div`
-//   padding: 8px 0 0 0;
-//   display: flex;
-//   align-items: center;
-//   & > *:first-child {
-//     margin-right: auto;
-//   }
-//   & > *:last-child {
-//     margin-left: auto;
-//   }
-// `;
-
-// const StartDateBox = styled.div`
-//   text-align: left;
-// `;
-
-// const EndDateBox = styled.div`
-//   text-align: right;
-//   margin-right: 20px;
-// `;
-
-const BlueTableCell = styled(TableCell)`
-  color: ${colorPal['blue'][0]};
-`;
-
-// const RedTableCell = styled.p`
-//   color: ${colorPal['red'][0]}
-//   padding: 0;
-//   margin: 0;
-//   border: 0;
-//   font-size: 11px
-// `
-const CellAvatar = styled(TableCell)`
-  padding-left: 0;
-`
-
-const TypoTitle = styled(ColorTypo)`
-  color: ${colorPal['gray'][0]};
-  margin-left: 20px;
-`
-const TableHistory = styled(Table)`
-  margin-left: 20px;
-  & > *:first-child {
-    
+function parseDate(date = '') {
+  if (regDMY.test(date)) {
+    return parse(date, 'dd/MM/yyyy', new Date());
   }
-`
-const UserAvatar = styled(Avatar)`
-    width: 30px;
-    height: 30px;
-  `
-
-const TableRowItem = styled(TableRow)`
-  border-bottom: 1px dashed grey;
-  & > th, td {
-    border-bottom: none;
-  }
-`
-
-// const LegendBox = styled.div`
-//   margin: 10px 20px;
-//   display: flex;
-//   align-items: center;
-//   margin-top: 10px;
-//   & > *:first-child {
-//     margin-right: 10px;
-//   }
-// `;
-const Body = styled(Scrollbars)`
-  grid-area: body;
-  height: 100%;
-  
-`;
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: 300 + theme.spacing(3) * 2,
-  },
-  margin: {
-    height: theme.spacing(3),
-  },
-}));
-const PrettoSlider = withStyles({
-  root: {
-    color: '#2dc63a',
-    height: 8,
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid currentColor',
-    marginTop: -8,
-    marginLeft: -12,
-    '&:focus,&:hover,&$active': {
-      boxShadow: 'inherit',
-    },
-  },
-  active: {},
-  valueLabel: {
-    left: 'calc(-50% + 4px)',
-  },
-  track: {
-    height: 8,
-    borderRadius: 4,
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4,
-  },
-})(Slider);
-const WrapperProgressBar = styled.div`
-  & > *:first-child > span:nth-child(4) > span > span > span {
-    color: #fff;
-  }
-`
+  return parse(date, 'yyyy-MM-dd', new Date());
+}
 
 function TabBody() {
-  const classes = useStyles();
-  const value = React.useContext(WrapperContext)
-  
-  let listTime
+  const dispatch = useDispatch();
+  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
+  const taskId = useSelector(taskIdSelector);
+  const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
+  const trackTimeCompleted = useSelector(state => state.taskDetail.trackingTime.trackTimeCompleted);
+  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const [showDetail, setShowDetail] = useState(false);
 
-  if (value.listTime && value.listTime.trackings) {
-    listTime = value.listTime.trackings.map((item, key) => {
-      return (
-        <TableRowItem key={key}>
-          <CellAvatar>
-            <UserAvatar src={item.user_create_avatar} alt='avatar' />
-          </CellAvatar>
-          <TableCell>
-            Lần {key + 1}
-            <p className="red-table-cell">{item.time_create}</p>
-          </TableCell>
-          <BlueTableCell>
-            Bắt đầu: {item.new_start}
-            <br />
-            Kết thúc: {item.new_end}
-          </BlueTableCell>
-        </TableRowItem>
-      )
-    })
+  function toggleDetail() {
+    setShowDetail(!showDetail)
   }
-  // function convertDate(convert_day){
-  //   return convert_day.split('-').reverse().join('-');
-  // }
-  const updateComplete=(data)=>{
-    let task_id=value.taskId
-    let complete=parseFloat(data)
-    value.updateComplete({data:{task_id,complete}, projectId: value.projectId})
+  const trackings = listTime ? listTime.trackings : [];
+  const onChangeCommitted = (data) => {
+    let task_id = taskId
+    let complete = parseFloat(data);
+    dispatch(updateComplete({ data: { task_id, complete }, projectId: projectId }));
   }
+
+  const { data = [] } = trackTimeCompleted || {};
+  const chartData = {
+    series: [{
+      data: data.map(({ complete }) => complete)
+    }],
+    options: {
+      chart: {
+        type: 'bar',
+        barHeight: '20px',
+        // height: 350
+      },
+      legend: {
+        show: false,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          barHeight: '30px',
+          distributed: true,
+          dataLabels: {
+            enabled: false
+          },
+        }
+      },
+      colors,
+      dataLabels: {
+        enabled: false
+      },
+      grid: {
+        xaxis: {
+          lines: {
+            show: true
+          }
+        }
+      },
+      xaxis: {
+        categories: data.map(({ time }) => time),
+        labels: {
+          formatter: function (val) {
+            return Math.abs(Math.round(val)) + "%"
+          }
+        }
+      },
+      yaxis: {
+        min: 0,
+        max: 100,
+        title: {
+          // text: 'Age',
+        },
+      },
+      tooltip: {
+        shared: false,
+        theme: 'dark',
+        x: {
+          show: false
+        },
+        y: {
+          formatter: function (val) {
+            return Math.abs(val) + "%"
+          },
+          title: {
+            formatter: () => ''
+          }
+        },
+      },
+    },
+  };
+
+  const {
+    start_time,
+    start_date,
+    end_time,
+    end_date,
+    complete,
+    complete_with_time,
+  } = detailTask;
+  const isHaveDate = (start_date && end_date);
+  const totalDay = isHaveDate ? differenceInDays(parseDate(end_date), parseDate(start_date)) : 0;
+  const completePercent = clamp(complete_with_time, 0, 100);
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <div className="container-progress-tabbody">
-        <div className="start-end-date-box">
-          <div className="start-date-box">
-            <ColorTypo>{value.detailTask && value.detailTask.start_time}</ColorTypo>
-            <ColorTypo>{value.detailTask && value.detailTask.start_date}</ColorTypo>
+    <Scrollbars className="progressTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}
+      renderView={props => <div {...props} className="progressTabBody--container" />}>
+      <ColorTypo className="progressTabBody--title">{"Tiến độ thực tế"}</ColorTypo>
+      <ColorTypo className="progressTabBody--subTitle">{"Kéo, thả tiến độ để cập nhật"}</ColorTypo>
+      <ProgressSlider
+        value={complete}
+        onChange={onChangeCommitted}
+        expected={completePercent}
+        isHaveDate={isHaveDate}
+      />
+      {
+        isHaveDate &&
+        <>
+          <div className="progressTabBody--timeBox">
+            <div className="progressTabBody--start-date-box">
+              <div>{"Bắt đầu"}</div>
+              <div>{`${start_time} ${start_date}`}</div>
+            </div>
+            <div className="progressTabBody--totalDay">
+              <div>{"Tiến độ"}</div>
+              <div>{`${totalDay} ngày`}</div>
+            </div>
+            <div className="progressTabBody--end-date-box">
+              <div>{"Kết thúc"}</div>
+              <div>{`${end_time} ${end_date}`}</div>
+            </div>
           </div>
-          <div className="end-date-box">
-            <ColorTypo>{value.detailTask && value.detailTask.end_time}</ColorTypo>
-            <ColorTypo>{value.detailTask && value.detailTask.end_date}</ColorTypo>
+          <ColorTypo className="progressTabBody--title">{"Tiến độ kế hoạch"}</ColorTypo>
+          <ColorTypo className="progressTabBody--subTitle">{"Tự động xác định đến thời điểm hiện tại"}</ColorTypo>
+          <div className="progressTimeExpect">
+            <div className="progressTimeExpect--progressExpect"
+              style={{ width: `${completePercent}%` }}>
+              <div className="progressTimeExpect--progressExpectLabel">
+                {`${completePercent}% `}
+              </div>
+            </div>
           </div>
-        </div>
-        {/* progress bar */}
-      
-        <WrapperProgressBar className={classes.root}>
-          <PrettoSlider 
-          valueLabelDisplay="on" 
-          aria-label="pretto slider" 
-          defaultValue={0}
-          onChangeCommitted={(e, val) => {
-            updateComplete(val)
-            // console.log("GOI API voi value la: ", val)
-          }}
-          />
-        </WrapperProgressBar>
-        <div className="legend-box">
-          <Icon path={mdiCircle} size={1} color={'#2dc63a'} />
-          <ColorTypo>Hoàn thành thực tế</ColorTypo>
-        </div>
-        <div className="legend-box">
-          <Icon path={mdiCircle} size={1} color={'#ff9800'} />
-          <ColorTypo>Kế hoạch</ColorTypo>
-        </div>
-        {/* progress end */}
-        <TypoTitle bold variant='subtitle1' >Lịch sử điều chỉnh tiến độ</TypoTitle>
-        <TableHistory style={{ marginLeft: 20, marginRight: 20 }}>
-          <TableHead>
-            <TableRowItem>
-              <TableCell></TableCell>
-              <TableCell>Lần thứ</TableCell>
-              <TableCell>Nội dung điều chỉnh</TableCell>
-            </TableRowItem>
-          </TableHead>
-          <TableBody>
-            {listTime}
-          </TableBody>
-        </TableHistory>
-      </div>
-    </Body>
+          <div className="progressTimeExpect--today">
+            {`Hôm nay: ${format(new Date(), 'dd/MM/yyyy')}`}
+          </div>
+        </>
+      }
+      <ColorTypo className="progressTabBody--title">{"Biểu đồ cập nhật tiến độ"}</ColorTypo>
+      <ColorTypo className="progressTabBody--subTitle">{"Biểu đồ thể hiện lịch sử hoàn thành công việc"}</ColorTypo>
+      <ReactApexChart
+        options={chartData.options}
+        series={chartData.series} type="bar"
+        height={20 * chartData.series[0].data.length + 100} />
+      <ColorTypo className="progressTabBody--title"
+        onClick={toggleDetail}
+      >{"Điều chỉnh tiến độ"}
+        <Icon
+          path={mdiMenuDown}
+          color="rgba(0, 0, 0, 0.54)"
+          size={1}
+          className={clsx('progressTabBody--icon', { 'progressTabBody__expanded': showDetail })}
+        />
+      </ColorTypo>
+      <ColorTypo className="progressTabBody--subTitle">{`${trackings.length} lần điều chỉnh`}</ColorTypo>
+      {showDetail && trackings.map((track, i) => (<EditProgressItem
+        key={i}
+        fixedNumber={i + 1}
+        fixStart={track.new_start}
+        fixEnd={track.new_end}
+        createdAt={track.time_create}
+        avatarUrl={track.user_create_avatar}
+        userName={track.user_create_name}
+      ></EditProgressItem>))}
+    </Scrollbars >
   )
 }
 

@@ -1,0 +1,152 @@
+.listPartTabBody {
+  &--expired {
+    background-color: red;
+    color: #fff;
+    padding: 7px 9px;
+    margin: 5px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: unset;
+    border: 1px solid;
+    // box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  }
+  &--paused {
+    background-color: #607d8b;
+  }
+  &--container {
+    margin-bottom: 0px !important;
+    margin-right: 0px !important;
+    width: calc(100% + 5px) !important;
+    scrollbar-width: none !important;
+    padding-top: 5px;
+    padding-bottom: 30px;
+  }
+}
+
+.MuiTooltip-tooltip {
+  background-color: #fff;
+  max-width: 210px;
+  height: 110px;
+  border: 1px solid #dadde9;
+}
+
+.statusLabel {
+  &--popup {
+    color: #000000;
+    font-weight: normal;
+    position: absolute;
+    border: 1px solid #c4c4c4;
+    bottom: 33px;
+    left: 0px;
+    background-color: #fff;
+    border-radius: 4px;
+    width: 222px;
+    padding: 10px 20px;
+    display: none;
+    box-shadow: 0 0 15px 2px rgba(166, 166, 166, 0.3);
+  }
+  &--icon {
+    margin-right: 5px;
+    width: 15px !important;
+    height: 15px !important;
+    transform: translateY(4px);
+  }
+  &--description {
+    line-height: 1.5;
+    margin: 10px 0;
+  }
+  &--guide {
+    margin: 5px 0;
+  }
+  &--label {
+    font-weight: 500;
+    margin-left: 5px;
+    &__wait {
+      color: rgb(255, 152, 0);
+    }
+    &__doing {
+      color: rgb(3, 169, 244);
+    }
+    &__completed {
+      color: rgb(3, 195, 11);
+    }
+    &__high {
+      color: rgb(244, 67, 54);
+    }
+    &__avg {
+      color: rgb(255, 152, 0);
+    }
+    &__low {
+      color: rgb(3, 195, 11);
+    }
+  }
+
+  &--button {
+    position: relative;
+    border-radius: 4px;
+    padding: 7px 9px;
+    margin: 5px;
+    font-weight: bold;
+    &__wait {
+      color: rgb(255, 152, 0);
+      border: 1px solid rgb(255, 152, 0);
+    }
+    &__doing {
+      color: rgb(3, 169, 244);
+      border: 1px solid rgb(3, 169, 244);
+    }
+    &__completed {
+      color: rgb(3, 195, 11);
+      border: 1px solid rgb(3, 195, 11);
+    }
+    &__high {
+      color: rgb(244, 67, 54);
+      border: 1px solid rgb(244, 67, 54);
+    }
+    &__avg {
+      color: rgb(255, 152, 0);
+      border: 1px solid rgb(255, 152, 0);
+    }
+    &__low {
+      color: rgb(3, 195, 11);
+      border: 1px solid rgb(3, 195, 11);
+    }
+    &:hover {
+      .statusLabel--popup {
+        display: block;
+      }
+    }
+  }
+  &__wait {
+    fill: rgb(255, 152, 0);
+  }
+  &__doing {
+    fill: rgb(3, 169, 244);
+  }
+  &__completed {
+    fill: rgb(3, 195, 11);
+  }
+  &__high {
+    fill: rgb(244, 67, 54);
+  }
+  &__avg {
+    fill: rgb(255, 152, 0);
+  }
+  &__low {
+    fill: rgb(3, 195, 11);
+  }
+}
+
+.tabBodyDescription {
+  padding: 2px 16px;
+  &--more {
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 10px 0 0;
+    color: #03a9f4;
+    cursor: pointer;
+  }
+}

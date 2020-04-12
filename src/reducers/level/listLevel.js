@@ -1,22 +1,12 @@
-import {
-  LIST_LEVEL,
-  LIST_LEVEL_SUCCESS,
-  LIST_LEVEL_FAIL,
-} from '../../constants/actions/level/listLevel';
-import {
-  CREATE_LEVEL_SUCCESS
-} from '../../constants/actions/level/createLevel';
-import {
-  UPDATE_LEVEL_SUCCESS
-} from '../../constants/actions/level/updateLevel';
-import {
-  DELETE_LEVEL_SUCCESS
-} from '../../constants/actions/level/deleteLevel';
 import { findIndex, get, remove } from 'lodash';
+import { CREATE_LEVEL_SUCCESS } from '../../constants/actions/level/createLevel';
+import { DELETE_LEVEL_SUCCESS } from '../../constants/actions/level/deleteLevel';
+import { LIST_LEVEL, LIST_LEVEL_FAIL, LIST_LEVEL_SUCCESS } from '../../constants/actions/level/listLevel';
+import { UPDATE_LEVEL_SUCCESS } from '../../constants/actions/level/updateLevel';
 
 export const initialState = {
   data: {
-    levels: [],  
+    levels: [],
   },
   error: null,
   loading: false,
@@ -30,9 +20,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_LEVEL_SUCCESS: 
+    case LIST_LEVEL_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -40,6 +31,7 @@ function reducer(state = initialState, action) {
     case LIST_LEVEL_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

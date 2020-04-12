@@ -4,10 +4,38 @@ const TASK_STATUS = {
 }
 
 export const CHAT_TYPE = {
-    REMIND_TASK: 0,
-    IMAGE: 1,
-    FILE: 2,
-    TEXT: 3
+    TEXT: 0,
+    FILE: 1,
+    IMAGE: 2,
+    UPDATE_TASK_NAME: 3,
+    UPDATE_DURATION: 4,
+    CREATE_NEW_SUB_TASK: 5,
+    DELETE_SUB_TASK: 6,
+    CREATE_REMIND: 7,
+    DELETE_REMIND: 8,
+    SHARE_LOCATION: 9,
+    CREATE_OFFER: 10,
+    DELETE_OFFER: 11,
+    HANDLE_OFFER: 12,
+    CREATE_COMMAND_DECIDED: 13,
+    DELETE_COMMAND_DECIDED: 14,
+    ADD_NEW_MEMBER: 15,
+    REMOVE_MEMBER: 16,
+    HANDLE_REMIND: 17,
+    SHARE_FILE: 18,
+    EDIT_PRIORITY: 19,
+    EXTEND_TIME: 20,
+    UPDATE_COMPLETE: 21,
+    COMPLETE_SUBTASK: 22,
+    DELETE_FILE: 23,
+    PIN_TASK: 24,
+    CANCEL_PIN_TASK: 25,
+    STOP_TASK: 26,
+    CANCEL_STOP_TASK: 27,
+    PIN_REMIND: 28,
+    CANCEL_PIN_REMIND: 29,
+    CHAT_STICKER: 30,
+    CHAT_FORWARD_FILE: 31,
 }
 
 export const isNotifyText = chatType => {
@@ -25,18 +53,21 @@ export const filterCommandItem = arr => arr.filter(item => item.type === CM_DC_T
 export const filterDecisionItem = arr => arr.filter(item => item.type === CM_DC_TYPE.DECISION)
 
 const OFFER_STATUS = {
-    PENDING: 0,
-    APPROVED: 1,
+    APPROVED: 0,
+    PENDING: 1,
 }
 
 export const filterPendingItem = arr => arr.filter(item => item.status === OFFER_STATUS.PENDING)
 export const filterApprovedItem = arr => arr.filter(item => item.status === OFFER_STATUS.APPROVED)
 
-export const DEFAULT_OFFER_ITEM = { offer_id: "", content: "", user_hander: [], files: [] }
+export const DEFAULT_OFFER_ITEM = {
+    offer_id: "", content: "", user_hander: [],
+    files: [], priority: 0, offer_group_id: null,
+}
 
 // Remove duplicate user (by their id)
 export const getIndividualHandleUsers =
-    arr => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])
+    (arr = []) => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])
 
 export const filterTaskByType = (groups, idx) => {
     return idx === 0
@@ -45,8 +76,12 @@ export const filterTaskByType = (groups, idx) => {
 }
 
 export const searchTaskByTaskName = (groups, keyword) => {
+    const filteredGroup = groups.filter(({ tasks }) => tasks.length);
     return keyword
-        ? groups.map(item => ({ ...item, tasks: item.tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase())) }))
+        ? filteredGroup.map(item => ({
+            ...item,
+            tasks: item.tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase()))
+        }))
         : groups
 }
 export const searchProjectByProjectName = (groups, keyword) => {

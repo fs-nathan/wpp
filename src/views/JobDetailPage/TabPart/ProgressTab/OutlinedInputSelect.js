@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 function Option(props) {
   return (
     <MenuItem

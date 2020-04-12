@@ -1,21 +1,20 @@
+import { get } from 'lodash';
 import React from 'react';
-import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AlertModal from '../../../../components/AlertModal';
-import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
+import { useHistory, useParams } from 'react-router-dom';
 import { deleteRoom } from '../../../../actions/room/deleteRoom';
-import {
-  CustomEventListener,
-  CustomEventDispose,
-  DELETE_ROOM
-} from '../../../../constants/events.js';
+import AlertModal from '../../../../components/AlertModal';
+import { CustomEventDispose, CustomEventListener, DELETE_ROOM } from '../../../../constants/events.js';
+import { Routes } from '../../../../constants/routes';
 import { Context as UserPageContext } from '../../index';
+import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
+import { routeSelector, viewPermissionsSelector } from '../../selectors';
+import { DefaultDepartment, NormalDepartment } from './presenters';
 import { roomSelector } from './selectors';
-import { DefaultDepartment, NormalDepartment, } from './presenters';
 
-function DepartmentInfo({ 
-  room, 
-  doDeleteRoom 
+function DepartmentInfo({
+  room, route, viewPermissions,
+  doDeleteRoom
 }) {
 
   const { setDepartmentId } = React.useContext(UserPageContext);
@@ -28,7 +27,7 @@ function DepartmentInfo({
 
   React.useEffect(() => {
     const historyPushHandler = () => {
-      history.push('/departments');
+      history.push(Routes.DEPARTMENTS);
     };
 
     CustomEventListener(DELETE_ROOM, historyPushHandler);
@@ -47,12 +46,16 @@ function DepartmentInfo({
   function doOpenModal(type, props) {
     switch (type) {
       case 'UPDATE':
-        setCreateAndUpdateDepartmentProps(props);
-        setOpenCreateAndUpdateDepartmentModal(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setCreateAndUpdateDepartmentProps(props);
+          setOpenCreateAndUpdateDepartmentModal(true);
+        }
         return;
       case 'ALERT':
-        setAlertProps(props);
-        setOpenAlertModal(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setAlertProps(props);
+          setOpenAlertModal(true);
+        }
         return;
       default: return;
     }
@@ -60,27 +63,28 @@ function DepartmentInfo({
 
   return (
     <>
-      {departmentId === 'default' 
+      {departmentId === 'default'
         ? (
-          <DefaultDepartment 
-            handleGoBack={evt => history.push('/departments')}
+          <DefaultDepartment
+            handleGoBack={evt => history.push(route)}
           />
         )
         : (
           <NormalDepartment
+            viewPermissions={viewPermissions}
             room={room}
             departmentId={departmentId}
             handleDeleteRoom={roomId => doDeleteRoom({ roomId })}
-            handleGoBack={() => history.push('/departments')}
+            handleGoBack={() => history.push(route)}
             handleOpenModal={doOpenModal}
           />
         )}
-      <AlertModal 
+      <AlertModal
         open={openAlertModal}
         setOpen={setOpenAlertModal}
         {...alertProps}
       />
-      <CreateAndUpdateDepartmentModal 
+      <CreateAndUpdateDepartmentModal
         open={openCreateAndUpdateDepartmentModal}
         setOpen={setOpenCreateAndUpdateDepartmentModal}
         {...createAndUpdateDepartmentProps}
@@ -92,6 +96,8 @@ function DepartmentInfo({
 const mapStateToProps = state => {
   return {
     room: roomSelector(state),
+    route: routeSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   };
 };
 

@@ -17,8 +17,7 @@ import CustomHeaderButton from '../../../../components/CustomHeaderButton';
 import { Routes } from '../../../../constants/routes';
 import AlertModal from '../../../../components/AlertModal';
 import {
-  actionDeleteFileTrash,
-  actionDeleteFolderTrash,
+  actionDeletePermantly,
   actionDeleteFolder,
   actionDeleteFile,
   actionFetchListTrash,
@@ -73,11 +72,14 @@ const HeaderButtonGroup = props => {
 
     try {
       if (pathname === Routes.DOCUMENT_TRASH) {
-        if (!isEmpty(listFileId))
-          listAction.push(actionDeleteFileTrash({ file_id: listFileId }));
-        if (!isEmpty(listFolderId))
-          listAction.push(actionDeleteFolderTrash({ folder_id: listFolderId }));
-        await Promise.all(listAction);
+        // if (!isEmpty(listFileId))
+        //   listAction.push(actionDeleteFileTrash({ file_id: listFileId }));
+        // if (!isEmpty(listFolderId))
+        //   listAction.push(actionDeleteFolderTrash({ folder_id: listFolderId }));
+        await actionDeletePermantly({
+          file_id: !isEmpty(listFileId) ? listFileId : [],
+          folder_id: !isEmpty(listFolderId) ? listFolderId : []
+        });
         let params = {};
         if (!isEmpty(currentFolder)) {
           params.folder_id = currentFolder.id;

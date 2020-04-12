@@ -1,36 +1,41 @@
-import {
-  PRIVATE_MEMBER,
-  PRIVATE_MEMBER_SUCCESS,
-  PRIVATE_MEMBER_FAIL,
-} from '../../constants/actions/user/privateMember';
+import { concat, get, remove } from 'lodash';
+import { PRIVATE_MEMBER, PRIVATE_MEMBER_FAIL, PRIVATE_MEMBER_SUCCESS } from '../../constants/actions/user/privateMember';
 
 export const initialState = {
-  data: {},
+  pendings: [],
   error: null,
-  loading: false,
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case PRIVATE_MEMBER:
+    case PRIVATE_MEMBER: {
+      const newPendings = concat(state.pendings, get(action.options, 'userId'))
       return {
         ...state,
         error: null,
-        loading: true,
-      };
-    case PRIVATE_MEMBER_SUCCESS: 
-      return {
-        ...state, 
-        data: {},
-        error: null,
-        loading: false,
-      };
-    case PRIVATE_MEMBER_FAIL:
+        pendings: newPendings,
+      }
+    }
+    case PRIVATE_MEMBER_SUCCESS: {
+      let newPendings = state.pendings;
+      remove(newPendings, item => item === get(action.options, 'userId'))
       return {
         ...state,
+        ...initialState,
+        error: null,
+        pendings: newPendings,
+      };
+    }
+    case PRIVATE_MEMBER_FAIL: {
+      let newPendings = state.pendings;
+      remove(newPendings, item => item === get(action.options, 'userId'))
+      return {
+        ...state,
+        ...initialState,
         error: action.error,
-        loading: false,
+        pendings: newPendings,
       };
+    }
     default:
       return state;
   }

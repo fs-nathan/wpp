@@ -1,17 +1,13 @@
-import {
-  LIST_PROJECT,
-  LIST_PROJECT_SUCCESS,
-  LIST_PROJECT_FAIL,
-} from '../../constants/actions/project/listProject';
-import { concat, get, findIndex, remove } from 'lodash';
-import { CREATE_PROJECT_SUCCESS } from '../../constants/actions/project/createProject';
+import { concat, findIndex, get, remove } from 'lodash';
 import { COPY_PROJECT_SUCCESS } from '../../constants/actions/project/copyProject';
-import { UPDATE_PROJECT_SUCCESS } from '../../constants/actions/project/updateProject';
+import { CREATE_PROJECT_SUCCESS } from '../../constants/actions/project/createProject';
 import { DELETE_PROJECT_SUCCESS } from '../../constants/actions/project/deleteProject';
 import { HIDE_PROJECT_SUCCESS } from '../../constants/actions/project/hideProject';
-import { SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
-import { SORT_PROJECT_SUCCESS } from '../../constants/actions/project/sortProject';
+import { LIST_PROJECT, LIST_PROJECT_FAIL, LIST_PROJECT_SUCCESS } from '../../constants/actions/project/listProject';
 import { UPDATE_STATUS_COPY_SUCCESS } from '../../constants/actions/project/setting/updateStatusCopy';
+import { SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
+import { SORT_PROJECT, SORT_PROJECT_SUCCESS } from '../../constants/actions/project/sortProject';
+import { UPDATE_PROJECT_SUCCESS } from '../../constants/actions/project/updateProject';
 
 export const initialState = {
   data: {
@@ -30,9 +26,9 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_PROJECT_SUCCESS: 
+    case LIST_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
         data: action.data,
         error: null,
         loading: false,
@@ -40,6 +36,7 @@ function reducer(state = initialState, action) {
     case LIST_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
@@ -88,7 +85,7 @@ function reducer(state = initialState, action) {
           projects: newProjects
         },
       };
-    } 
+    }
     case HIDE_PROJECT_SUCCESS: {
       let newProjects = state.data.projects;
       const index = findIndex(newProjects, { id: get(action.options, 'projectId') });
@@ -119,6 +116,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    case SORT_PROJECT:
     case SORT_PROJECT_SUCCESS: {
       let newProjects = action.options.sortData;
       return {

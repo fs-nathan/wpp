@@ -1,9 +1,9 @@
 import axios from 'axios';
-import config from './apiConstant';
-import store from '../configStore';
 import { openNoticeModal } from '../actions/system/system';
+import store from '../configStore';
+import { GROUP_ACTIVE, REFRESH_TOKEN, TOKEN } from '../constants/constants';
 import { Routes } from '../constants/routes';
-import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from '../constants/constants';
+import config from './apiConstant';
 
 const apiService = axios.create({
   baseURL: config.BASE_API,
@@ -15,7 +15,7 @@ const apiService = axios.create({
   }
 });
 
-apiService.interceptors.request.use(function(config) {
+apiService.interceptors.request.use(function (config) {
   const accessToken = localStorage.getItem('token');
   const group_active = localStorage.getItem('group-active');
   config.headers['Authorization'] = `Bearer ${accessToken}`;
@@ -25,13 +25,14 @@ apiService.interceptors.request.use(function(config) {
 });
 
 apiService.interceptors.response.use(
-  function(res) {
+  function (res) {
     if (res.data.state === false) {
       if (
         res.data.error_code === 'ORDER_EXPIRED' ||
         res.data.error_code === 'ACCOUNT_FREE'
       ) {
         store.dispatch(openNoticeModal());
+        return Promise.reject(new Error("__NO_SNACKBAR_ERROR__"));
       } else {
         return Promise.reject(new Error(res.data.msg));
       }
@@ -39,7 +40,7 @@ apiService.interceptors.response.use(
 
     return res;
   },
-  function(error) {
+  function (error) {
     if (error.response.status === 403) {
       localStorage.removeItem(TOKEN);
       localStorage.removeItem(REFRESH_TOKEN);
@@ -52,3 +53,4 @@ apiService.interceptors.response.use(
 );
 
 export { apiService };
+

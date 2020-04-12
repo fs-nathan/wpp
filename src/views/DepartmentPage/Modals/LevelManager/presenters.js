@@ -1,37 +1,41 @@
 import React from 'react';
-import SimpleManagerTable from '../../../../components/SimpleManagerTable';
-import ErrorBox from '../../../../components/ErrorBox';
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../components/CustomModal';
+import ErrorBox from '../../../../components/ErrorBox';
+import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 
-function LevelManager({ 
-  open, setOpen, 
-  levels, 
+function LevelManager({
+  open, setOpen,
+  levels,
   handleDeleteLevel,
-  handleOpenModal, 
+  handleOpenModal,
 }) {
+
+  const { t } = useTranslation();
 
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title='Quản lý trình độ'
+      title={t('DMH.VIEW.DP.MODAL.LEVEL.TITLE')}
       confirmRender={null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t('DMH.VIEW.DP.MODAL.LEVEL.EXIT')}
       loading={levels.loading}
     >
-      {levels.error !== null 
+      {levels.error !== null
         ? <ErrorBox />
-        : <SimpleManagerTable 
-            data={levels.levels}
-            handleAdd={() => handleOpenModal('CREATE')}
-            handleEdit={level => handleOpenModal('UPDATE', {
-              updatedLevel: level,
-            })}
-            handleDelete={level => handleOpenModal('ALERT', {
-              content: 'Bạn chắc chắn muốn xóa trình độ?',
-              onConfirm: () => handleDeleteLevel(level),
-            })}
-          />
+        : <SimpleManagerTable
+          data={levels.levels}
+          pendings={levels.pendings}
+          handleAdd={() => handleOpenModal('CREATE')}
+          handleEdit={level => handleOpenModal('UPDATE', {
+            updatedLevel: level,
+          })}
+          handleDelete={level => handleOpenModal('ALERT', {
+            content: t('DMH.VIEW.DP.MODAL.LEVEL.ALERT'),
+            onConfirm: () => handleDeleteLevel(level),
+          })}
+        />
       }
     </CustomModal>
   )

@@ -1,20 +1,20 @@
+import { TextField } from '@material-ui/core';
+import { get } from 'lodash';
 import React from 'react';
-import { 
-  TextField,
-} from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../../components/ColorTypo';
 import CustomModal from '../../../../../components/CustomModal';
-import { get } from 'lodash';
-import { useRequiredString, useMaxlenString } from '../../../../../hooks';
+import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
-function RoleCreateAndUpdate({ 
-  open, setOpen, 
-  updatedUserRole = null, 
-  handleCreateOrUpdateUserRole 
+function RoleCreateAndUpdate({
+  open, setOpen,
+  updatedUserRole = null,
+  handleCreateOrUpdateUserRole
 }) {
 
-  const [name, setName, errorName] = useRequiredString('', 100);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 100);
+  const [name, setName, errorName] = useRequiredString('', 150);
+  const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (updatedUserRole) {
@@ -27,16 +27,16 @@ function RoleCreateAndUpdate({
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title={updatedUserRole ? 'Chỉnh sửa vai trò' : 'Tạo vai trò'}
+      title={updatedUserRole ? t('DMH.VIEW.DP.MODAL.ROLE.U_TITLE') : t('DMH.VIEW.DP.MODAL.ROLE.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateUserRole(name, description)}
     >
       <TextField
         value={name}
         onChange={evt => setName(evt.target.value)}
+        label={t('DMH.VIEW.DP.MODAL.ROLE.NAME')}
         margin="normal"
         variant="outlined"
-        label='Tên vai trò'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>
@@ -47,9 +47,9 @@ function RoleCreateAndUpdate({
       <TextField
         value={description}
         onChange={evt => setDescription(evt.target.value)}
+        label={t('DMH.VIEW.DP.MODAL.ROLE.DESC')}
         margin="normal"
         variant="outlined"
-        label='Mô tả vai trò'
         fullWidth
         helperText={
           <ColorTypo variant='caption' color='red'>

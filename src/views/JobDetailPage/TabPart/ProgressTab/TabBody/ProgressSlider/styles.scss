@@ -1,0 +1,62 @@
+.progressSlider {
+  position: relative;
+  width: 100%;
+  margin-bottom: 32px;
+  &--expected {
+    background-color: #ff9800;
+    position: absolute;
+    width: 2px;
+    height: 24px;
+    top: 20px;
+    &Label {
+      color: red;
+      position: absolute;
+      top: 42px;
+      left: -2px;
+    }
+  }
+  &--text {
+    top: 27px;
+    left: -12px;
+    position: absolute;
+    white-space: nowrap;
+  }
+  &--lineConnect {
+    top: 12px;
+    left: 4px;
+    position: absolute;
+    height: 15px;
+    width: 3px;
+    background: #999999;
+  }
+  .MuiSlider {
+    color: #00c351;
+    height: 8px;
+    &-thumb {
+      height: 29px;
+      margin-top: -3px;
+      width: 4px;
+      background-color: #999999;
+      margin-left: 0px;
+      border-radius: unset;
+    }
+    &-valueLabel {
+      background-color: transparent;
+      left: -32px;
+      top: 9px;
+      span {
+        background-color: transparent;
+        color: #ffffff;
+      }
+    }
+    &-track {
+      height: 24px;
+      border-radius: 0;
+    }
+    &-rail {
+      height: 24px;
+      border-radius: 0;
+      opacity: 0.2;
+    }
+  }
+}

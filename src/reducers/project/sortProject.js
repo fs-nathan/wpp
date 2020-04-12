@@ -1,8 +1,4 @@
-import {
-  SORT_PROJECT,
-  SORT_PROJECT_SUCCESS,
-  SORT_PROJECT_FAIL,
-} from '../../constants/actions/project/sortProject';
+import { SORT_PROJECT, SORT_PROJECT_FAIL, SORT_PROJECT_SUCCESS } from '../../constants/actions/project/sortProject';
 
 export const initialState = {
   data: null,
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case SORT_PROJECT_SUCCESS: 
+    case SORT_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case SORT_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
