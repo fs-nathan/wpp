@@ -36,6 +36,7 @@ export const groupPermissionAttr = {
   permissions: "permissions",
   members_assigned: "members_assigned",
   module: "module",
+  can_modify: "can_modify",
   total_of_member_assigned: "total_of_member_assigned",
 };
 export const permissionAttr = {

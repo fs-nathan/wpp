@@ -1,18 +1,14 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get, loginlineFunc } from "views/JobPage/utils";
-import {
-  listAddFirst,
-  listremove,
-  listupdate,
-  mapPayloadToState,
-} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
+import { listAddFirst, listremove, listupdate, mapPayloadToState } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
 import { createAsyncAction } from "../../TablePart/SettingGroupRight/Home/redux/apiCall/utils";
 
 const rootPath = "/setting-group/group-permission";
 export const types = {
   getModules: `[${rootPath}]/permissions/get-modules`,
   permissionViewGroupSetting: `[${rootPath}]/permissions/get-permission-view-setting-group`,
+  groupPermissionDefaultList: `[${rootPath}]/permissions/list-group-permission-default`,
   groupPermissionListUpdated: `[${rootPath}]/permissions/list-group-permission`,
   createGroupPermission: `[${rootPath}]/permissions/create-group-permission`,
   updateGroupPermission: `[${rootPath}]/permissions/update-permissions-of-group-permission`,
@@ -66,6 +62,22 @@ export const loadGroupModules = () => {
   });
 };
 
+const updateGroupPermissionDefaultList = createAction(
+  types.groupPermissionDefaultList,
+  function prepare(data) {
+    return {
+      payload: data.group_permissions,
+    };
+  }
+);
+export const loadGroupPermissionDefaultList = () => {
+  return createAsyncAction({
+    config: {
+      url: "/permissions/list-group-permission-default",
+    },
+    success: updateGroupPermissionDefaultList,
+  });
+};
 // GroupPermission
 export const loadGroupPermissionList = ({ type } = {}) => {
   return createAsyncAction({
@@ -166,7 +178,28 @@ export const loadPermissionList = ({ module = 1 } = {}) => {
     success: loginlineFunc(updatePermissionList),
   });
 };
-
+export const loadDetailGroupPermissionDefault = ({
+  group_permission_id,
+} = {}) => {
+  return createAsyncAction({
+    config: {
+      url: `/permissions/detail-group-permission-default?${encodeQueryData({
+        group_permission_id,
+      })}`,
+    },
+    success: createAction(
+      updateGroupPermissionDefaultList.type,
+      function prepare(data) {
+        return {
+          payload: data.group_detail,
+          meta: {
+            action: listupdate(data.group_detail),
+          },
+        };
+      }
+    ),
+  });
+};
 export const loadDetailGroupPermission = ({ group_permission_id } = {}) => {
   return createAsyncAction({
     config: {
@@ -192,6 +225,12 @@ export const groupPermissionListSelector = (state) =>
     [settingGroupPermission.key, types.groupPermissionListUpdated],
     emptyArray
   );
+export const groupPermissionDefaultListSelector = (state) =>
+  get(
+    state,
+    [settingGroupPermission.key, updateGroupPermissionDefaultList.type],
+    emptyArray
+  );
 export const groupModulesListSelector = (state) =>
   get(state, [settingGroupPermission.key, updateGroupModules.type], emptyArray);
 
@@ -213,6 +252,12 @@ export const detailGroupPermissionSelector = (state, id) =>
     [settingGroupPermission.key, types.groupPermissionListUpdated],
     emptyArray
   ).find((item) => item.id === id);
+export const detailGroupPermissionDefaultSelector = (state, id) =>
+  get(
+    state,
+    [settingGroupPermission.key, updateGroupPermissionDefaultList.type],
+    emptyArray
+  ).find((item) => item.id === id);
 export const settingGroupPermission = {
   selectors: {
     permissionListSelector,
@@ -220,9 +265,13 @@ export const settingGroupPermission = {
     groupModulesListSelector,
     permissionViewGroupSettingSelector,
     detailGroupPermissionSelector,
+    groupPermissionDefaultListSelector,
+    detailGroupPermissionDefaultSelector,
   },
   actions: {
+    loadGroupPermissionDefaultList,
     loadDetailGroupPermission,
+    loadDetailGroupPermissionDefault,
     loadGroupPermissionList,
     loadPermissionList,
     createGroupPermission,
@@ -236,12 +285,14 @@ export const settingGroupPermission = {
   key: "settingGroupPermission",
   reducer: createReducer(
     {
+      [updateGroupPermissionDefaultList]: [],
       [updateGroupPermissionList]: [],
       [updatePermissionViewGroupSetting]: [],
       [updateGroupModules]: [],
       [updatePermissionList]: [],
     },
     {
+      [updateGroupPermissionDefaultList]: mapPayloadToState,
       [updatePermissionViewGroupSetting]: mapPayloadToState,
       [updateGroupModules]: mapPayloadToState,
       [updateGroupPermissionList]: mapPayloadToState,

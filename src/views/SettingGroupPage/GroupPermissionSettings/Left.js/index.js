@@ -177,7 +177,12 @@ const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
   );
 };
 
-function Left({ groupPermissionList, setSelect, setModal }) {
+function Left({
+  groupPermissionList,
+  setSelect,
+  groupPermissionDefaultList,
+  setModal,
+}) {
   const [keyword, setKeyword] = useState("");
   const handleInputChange = useCallback((e) => setKeyword(e.target.value), []);
   const history = useHistory();
@@ -228,6 +233,78 @@ function Left({ groupPermissionList, setSelect, setModal }) {
           </Box>
           <Box flex="1">
             <Box>
+              <StyledList>
+                {groupPermissionDefaultList.map((item) => {
+                  const [
+                    id,
+                    name,
+                    total_of_member_assigned,
+                    can_modify,
+                  ] = createMapPropsFromAttrs([
+                    groupPermissionAttr.id,
+                    groupPermissionAttr.name,
+                    groupPermissionAttr.total_of_member_assigned,
+                    groupPermissionAttr.can_modify,
+                  ])(item);
+                  return (
+                    <StyledListItem
+                      key={id}
+                      onClick={() => {
+                        setSelect(item, true);
+                      }}
+                    >
+                      <div style={{ flexShrink: 0, lineHeight: 1 }}>
+                        {can_modify && (
+                          <Icon
+                            path={mdiDragVertical}
+                            size={1}
+                            color="#8d8d8d"
+                          />
+                        )}
+                      </div>
+
+                      <Icon
+                        style={{ flexShrink: 0, fill: "#8d8d8d" }}
+                        path={mdiAccountKey}
+                        size={1}
+                      />
+                      <ListItemLayout
+                        title={name}
+                        subTitle={template(
+                          t("Đã gán <%= number %> thành viên")
+                        )({
+                          number: total_of_member_assigned,
+                        })}
+                        actions={
+                          can_modify && (
+                            <IconButton
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMenuAnchor(
+                                  <GroupSettingMenu
+                                    item={item}
+                                    menuAnchor={e.currentTarget}
+                                    setMenuAnchor={setMenuAnchor}
+                                  />
+                                );
+                              }}
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <Icon
+                                path={mdiDotsVertical}
+                                size={1}
+                                color="rgba(0, 0, 0, 0.7)"
+                              />
+                            </IconButton>
+                          )
+                        }
+                      ></ListItemLayout>
+                    </StyledListItem>
+                  );
+                })}
+              </StyledList>
               <DraggableList
                 list={groupPermissionList.filter((item) =>
                   item.name.includes(keyword)
@@ -313,12 +390,16 @@ function Left({ groupPermissionList, setSelect, setModal }) {
   );
 }
 export default () => {
-  const { setSelect, setModal, groupPermissionList } = useContext(
-    GroupPermissionSettingsCotnext
-  );
+  const {
+    setSelect,
+    setModal,
+    groupPermissionList,
+    groupPermissionDefaultList,
+  } = useContext(GroupPermissionSettingsCotnext);
   return (
     <Left
       groupPermissionList={groupPermissionList}
+      groupPermissionDefaultList={groupPermissionDefaultList}
       {...{ setSelect, setModal }}
     />
   );

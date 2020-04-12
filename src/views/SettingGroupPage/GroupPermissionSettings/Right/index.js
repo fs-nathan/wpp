@@ -68,7 +68,7 @@ const ColumnLeft = () => {
     permissionsNumber,
     permissions = emptyArray,
   } = useContext(GroupPermissionSettingsCotnext);
-  if (!item) return null;
+  // if (!item) return null;
   return (
     <ColumnLayout
       title={t("Chi tiết quyền trong nhóm")}
