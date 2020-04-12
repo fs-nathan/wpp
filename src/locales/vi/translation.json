@@ -402,6 +402,48 @@
       }
     }
   },
+  "views": {
+    "calendar_page": {
+      "left_part": {
+        "title": "Quản lý lịch"
+      },
+      "right_part": {
+        "add": "+ Tạo Lịch",
+        "setting": "Cài đặt",
+        "delete": "Xóa",
+        "label": {
+          "name": "Tên lịch",
+          "time": "Thời gian",
+          "created_by": "Người tạo",
+          "created_at": "Ngày tạo",
+          "alarm": "Nhắc hẹn"
+        },
+        "no_data": "Không có dữ liệu!",
+        "no_data_description": "Hãy tạo lịch bằng cách click vào nút + TẠO LỊCH để chia sẻ lịch đến mọi thành viên"
+      },
+      "modal": {
+        "create_calendar": {
+          "title": "Tạo lịch tuần"
+        },
+        "setting_weekly_calendar": {
+          "title": "Cài đặt lịch tuần",
+          "monday": "Thứ 2",
+          "tuesday": "Thứ 3",
+          "wednesday": "Thứ 4",
+          "thursday": "Thứ 5",
+          "friday": "Thứ 6",
+          "saturday": "Thứ 7",
+          "sunday": "Chủ nhật",
+          "day_begining": "Thứ bắt đầu trong tuần"
+        },
+        "create_weekly_calendar": {
+          "title": "Tạo lịch tuần",
+          "title_left": "Thiết lập lịch",
+          "title_right": "Lịch tuần"
+        }
+      }
+    }
+  },
   "IDS_WP_SETTING_DATE_FORMAT": "Cài đặt định dạng ngày tháng",
   "IDS_WP_VIETNAMESE": "Tiếng Việt",
   "IDS_WP_ENGLISH": "English",
@@ -842,5 +884,9 @@
   "IDS_WP_SYMBOLISM": "Biểu tượng",
   "IDS_WP_ROLE": "Vai trò",
   "IDS_WP_SETTING_SOFTWARE": "Thiết lập phần mềm",
-  "IDS_WP_COMMON_SETUP": "Cài đặt chung"
+  "IDS_WP_COMMON_SETUP": "Cài đặt chung",
+  "IDS_WP_WEEKLY_CALENDAR": "Lịch tuần",
+  "IDS_WP_PROJECT_CALENDAR": "Lịch dự án",
+  "IDS_WP_ALARM_CALENDAR": "Lịch nhắc hẹn",
+  "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Nhắc hẹn, lịch hẹn, báo hẹn"
 }

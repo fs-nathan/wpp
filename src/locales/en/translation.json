@@ -102,6 +102,43 @@
           }
         }
       }
+    },
+    "calendar_page": {
+      "left_part": {
+        "title": "Calendar management"
+      },
+      "right_part": {
+        "add": "+ Create",
+        "setting": "Setting",
+        "delete": "Delete",
+        "label": {
+          "name": "Calendar name",
+          "time": "Time",
+          "created_by": "Created by",
+          "created_at": "Created at",
+          "alarm": "Alarm"
+        },
+        "no_data": "Data not found!",
+        "no_data_description": "Please create a calendar by click + CREATE and you can share them to anothers."
+      },
+      "modal": {
+        "setting_weekly_calendar": {
+          "title": "Setting weekly calendar",
+          "monday": "Monday",
+          "tuesday": "Tuesday",
+          "wednesday": "Wednesday",
+          "thursday": "Thurday",
+          "friday": "Friday",
+          "saturday": "Saturday",
+          "sunday": "Sunday",
+          "day_begining": "The begining day of week"
+        },
+        "create_weekly_calendar": {
+          "title": "Create weekly calendar",
+          "title_left": "Setting calendar",
+          "title_right": "Weekly calendar"
+        }
+      }
     }
   },
   "IDS_WP_SETTING_DATE_FORMAT": "Setting the date format",
@@ -544,5 +581,9 @@
   "IDS_WP_SYMBOLISM": "Biểu tượng",
   "IDS_WP_ROLE": "Vai trò",
   "IDS_WP_SETTING_SOFTWARE": "Thiết lập phần mềm",
-  "IDS_WP_COMMON_SETUP": "Cài đặt chung"
+  "IDS_WP_COMMON_SETUP": "Cài đặt chung",
+  "IDS_WP_WEEKLY_CALENDAR": "Weekly calendar",
+  "IDS_WP_PROJECT_CALENDAR": "Project calendar",
+  "IDS_WP_ALARM_CALENDAR": "Alarm calendar",
+  "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Alarm appointment calendar"
 }
