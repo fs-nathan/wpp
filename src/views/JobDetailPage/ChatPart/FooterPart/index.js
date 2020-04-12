@@ -1,17 +1,14 @@
 import { IconButton } from '@material-ui/core';
-import { mdiAlarmPlus, mdiAt, mdiClose, mdiCloudUploadOutline, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
+import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, chatFile, chatImage, chatSticker, clearTags, createChatText, onUploading } from 'actions/chat/chat';
+import { appendChat, chatImage, chatSticker, clearTags, createChatText, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
-import { file as file_icon } from 'assets/fileType';
 import { convertToRaw, EditorState, getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import Editor from 'draft-js-plugins-editor';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
-import { humanFileSize } from 'helpers/jobDetail/stringHelper';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
@@ -89,6 +86,8 @@ const added = [];
 const FooterPart = ({
   parentMessage,
   setSelectedChat,
+  imagesQueue,
+  setImagesQueue,
 }) => {
   const editorRef = useRef();
   const dispatch = useDispatch();
@@ -104,7 +103,6 @@ const FooterPart = ({
   const [anchorElSticker, setAnchorElSticker] = useState(null);
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [suggestions, setSuggestions] = useState(members);
-  const [imagesQueue, setImagesQueue] = useState([]);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
 
   useEffect(() => {
@@ -172,43 +170,6 @@ const FooterPart = ({
     }
     dispatch(chatImage(taskId, data, onUploadingHandler))
   });
-
-  const onDrop = useCallback(async (files = []) => {
-    // Do something with the files
-    function onUploadingHandler(percent) {
-      dispatch(onUploading(percent));
-    }
-    // console.log('onDrop', files)
-    const isAllImages = files.every(file => file.type.indexOf('image') !== -1);
-    if (isAllImages) {
-      // handleUploadImage({ target: { files } })
-      setImagesQueue([...imagesQueue, ...files]);
-      focus();
-    } else {
-      const images = [];
-      for (let index = 0; index < files.length; index++) {
-        const file = files[index];
-        const url = await getFileUrl(file)
-        images.push({
-          url, name: file.name, file_icon,
-          size: humanFileSize(file.size)
-        })
-      }
-      const data_chat = {
-        type: CHAT_TYPE.UPLOADING_FILE, files: images,
-        isUploading: true,
-        is_me: true,
-      }
-      dispatch(appendChat({ data_chat }));
-      let data = new FormData()
-      for (let i = 0; i < files.length; i++) {
-        data.append("file", files[i], files[i].name)
-      }
-      dispatch(chatFile(taskId, data, onUploadingHandler));
-    }
-  }, [dispatch, imagesQueue, taskId])
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
   function onClickDeletePreview(i) {
     return () => {
@@ -406,9 +367,7 @@ const FooterPart = ({
         )}
       </div>
       <div className="wrap-input-message chatBox" id="input_message"
-        {...getRootProps({
-          onClick: event => event.stopPropagation()
-        })}
+
         onClick={focus}
       >
         {/* <input
@@ -434,20 +393,6 @@ const FooterPart = ({
           suggestions={suggestions}
           onAddMention={onAddMention}
         />
-        <input {...getInputProps()} />
-        {isDragActive && (
-          <div className="drop-area">
-            <div className="dashed-box">
-              <Icon
-                className="drop-ic-clould"
-                path={mdiCloudUploadOutline}
-                size={5}
-                color={'#c3c3c3'}
-              />
-              <div className="des-drop">{('IDS_WP_DRAG_FILE')}</div>
-            </div>
-          </div>
-        )}
       </div>
 
       <TagModal

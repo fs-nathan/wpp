@@ -121,8 +121,8 @@ export default (state = initialState, action) =>
         break;
       }
       case actionTypes.CREATE_CHAT_TEXT: {
-        const { payload } = action;
-        draft.lastChat = payload.content;
+        const { content } = action;
+        draft.lastChat = content;
         break;
       }
       case actionTypes.CREATE_CHAT_TEXT_SUCCESS: {
