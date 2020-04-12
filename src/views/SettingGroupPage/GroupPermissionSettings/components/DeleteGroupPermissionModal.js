@@ -41,7 +41,11 @@ const LoadingWrap = ({ loading, children }) => {
   );
 };
 
-function DeleteGroupPermissionModal({ loading, onClose, onDelete }) {
+export function DeleteGroupPermissionModalStateLess({
+  loading,
+  onClose,
+  onDelete,
+}) {
   const { t } = useTranslation();
   return (
     <Dialog
@@ -75,11 +79,11 @@ export default ({ item }) => {
   const { setModal, detail, setSelect } = useContext(
     GroupPermissionSettingsCotnext
   );
-  const [id, name, permissions] = createMapPropsFromAttrs([
+  const [id] = createMapPropsFromAttrs([
     groupPermissionAttr.id,
     groupPermissionAttr.name,
     groupPermissionAttr.permissions,
-  ])(detail);
+  ])(item);
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
     setModal(null);
@@ -97,7 +101,7 @@ export default ({ item }) => {
       })
     );
   return (
-    <DeleteGroupPermissionModal
+    <DeleteGroupPermissionModalStateLess
       loading={status === apiCallStatus.loading}
       onDelete={handleSubmit}
       onClose={onClose}

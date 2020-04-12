@@ -1,6 +1,5 @@
 import { Formik, FormikConsumer } from "formik";
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { get } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
@@ -13,13 +12,12 @@ import { SetPermissionModal } from "./SetPermissionModal";
 const addGroupPermissionFormInitialValues = { permissions: [] };
 
 const UpdateGroupPermissionForm = ({ initialValues, children, onSubmit }) => {
-  const { t } = useTranslation();
   return (
     <Formik
       enableReinitialize
+      validateOnMount
       initialValues={initialValues || addGroupPermissionFormInitialValues}
       onSubmit={onSubmit}
-      // validate={validateMemo}
     >
       {children}
     </Formik>
@@ -68,10 +66,11 @@ export default ({ item }) => {
       onSubmit={handleSubmit}
     >
       <FormikConsumer>
-        {({ values, handleSubmit, handleChange }) => {
+        {({ values, handleSubmit, isValid, handleChange }) => {
           return (
             <SetPermissionModal
               name="permissions"
+              isValid={isValid}
               onChange={handleChange}
               value={values.permissions}
               onSubmit={handleSubmit}

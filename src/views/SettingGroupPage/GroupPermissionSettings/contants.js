@@ -32,6 +32,7 @@
 export const groupPermissionAttr = {
   id: "id",
   name: "name",
+  description: "description",
   permissions: "permissions",
   members_assigned: "members_assigned",
   module: "module",

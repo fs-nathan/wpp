@@ -45,9 +45,9 @@ export const CssFormControl = ({
 };
 export const InputFormControl = ({ name, ...props }) => {
   const [field, meta] = useField({ name });
-  const error = meta.touched && meta.error;
+  const error = meta.error;
   return (
-    <CssFormControl {...props} errorMessage={meta.touched && meta.error}>
+    <CssFormControl {...props} errorMessage={meta.error}>
       <TextField
         error={!!error}
         {...field}
@@ -59,9 +59,9 @@ export const InputFormControl = ({ name, ...props }) => {
 };
 export const MultilineInputFormControl = ({ name, ...props }) => {
   const [field, meta] = useField({ name });
-  const error = meta.touched && meta.error;
+  const error = meta.error;
   return (
-    <CssFormControl {...props} errorMessage={meta.touched && meta.error}>
+    <CssFormControl {...props} errorMessage={meta.error}>
       <TextField
         error={error}
         {...field}
@@ -80,7 +80,7 @@ export const GroupCheckBoxFormControl = ({
   ...props
 }) => {
   const [field, meta] = useField({ name });
-  const error = meta.touched && meta.error;
+  const error = meta.error;
   return (
     <CssFormControl {...props} errorMessage={error}>
       <FormGroup
@@ -106,10 +106,11 @@ export const RadioGroupFormControl = ({
   ...props
 }) => {
   const [field, meta] = useField({ name });
-  const error = meta.touched && meta.error;
+  const { value, ...rest } = field;
+  const error = meta.error;
   return (
     <CssFormControl {...props} errorMessage={error}>
-      <RadioGroup aria-label={name} name={name} {...field}>
+      <RadioGroup aria-label={name} name={name} value={"" + value} {...rest}>
         {options.map(({ label, value }) => (
           <FormControlLabel
             key={value}
@@ -131,7 +132,7 @@ export const SelecIconInputFormControl = ({
   ...props
 }) => {
   const [field, meta] = useField({ name });
-  const error = meta.touched && meta.error;
+  const error = meta.error;
   return (
     <CssFormControl label={label} {...props} errorMessage={error}>
       <Box display="flex" justifyContent="space-between" alignItems="center">

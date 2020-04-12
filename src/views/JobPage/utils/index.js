@@ -1,5 +1,6 @@
 import { get, isFunction, merge, remove, template, uniqueId } from "lodash";
 import { taskPriorityMap, taskStatusMap } from "../contants/attrs";
+import { emptyObject } from "../contants/defaultValue";
 import * as chart from "./chart";
 import * as time from "./time";
 
@@ -66,6 +67,17 @@ const mapQueryStatusAndPriority = (statusFilter) => {
 const createMapPropsFromAttrs = (strings = []) => (data = {}) => {
   return strings.map((string) => get(data, string));
 };
+const createValidate = (schema) => (values = {}, mapError = {}) => {
+  const { error } = schema.validate(values);
+  return error
+    ? error.details.reduce((result, error) => {
+        const keyError = error.context.key + "." + error.type;
+        if (!mapError[keyError]) return result;
+        result[error.context.key] = mapError[keyError];
+        return result;
+      }, {})
+    : emptyObject;
+};
 export {
   chart,
   time,
@@ -75,6 +87,7 @@ export {
   merge,
   uniqueId,
   template,
+  createValidate,
   loginlineParams,
   mapQueryStatusAndPriority,
   loginlineFunc,

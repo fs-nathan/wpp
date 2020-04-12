@@ -28,7 +28,7 @@ function ListItemLayout({ title, left, right, avatar, actions, subTitle }) {
           {subTitle && <SubTitle>{subTitle}</SubTitle>}
         </Stack>
       </Grid>
-      {actions}
+      {actions && <Grid item>{actions}</Grid>}
     </Grid>
   );
 }

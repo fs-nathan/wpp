@@ -4,6 +4,7 @@ import { encodeQueryData, get, loginlineFunc } from "views/JobPage/utils";
 import {
   listAddFirst,
   listremove,
+  listupdate,
   mapPayloadToState,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
 import { createAsyncAction } from "../../TablePart/SettingGroupRight/Home/redux/apiCall/utils";
@@ -17,7 +18,6 @@ export const types = {
   updateGroupPermission: `[${rootPath}]/permissions/update-permissions-of-group-permission`,
   deleteGroupPermission: `[${rootPath}]/permissions/delete-permission-of-group-permission`,
   permissionListUpdated: `[${rootPath}]/permissions/list`,
-  detailGroupPermissionUpdated: `[${rootPath}]/permissions/detail-group-permission`,
   permissionViewUserUpdated: `[${rootPath}]/permissions/get-permission-view-user`,
   permissionViewProjectUpdated: `[${rootPath}]/permissions/get-permission-view-project`,
 };
@@ -81,12 +81,17 @@ export const loadGroupPermissionList = ({ type } = {}) => {
 };
 
 // name:string,permissions:array of permission,module: int(0,1,2,3,4)
-export const createGroupPermission = ({ name, permissions, module }) => {
+export const createGroupPermission = ({
+  name,
+  permissions,
+  description,
+  module,
+}) => {
   return createAsyncAction({
     config: {
       url: "/permissions/create-group-permission",
       method: "post",
-      data: { name, permissions, module },
+      data: { name, permissions, description, module },
     },
     success: createAction(updateGroupPermissionList.type, function prepare(
       data
@@ -103,6 +108,7 @@ export const createGroupPermission = ({ name, permissions, module }) => {
 export const updateGroupPermission = ({
   group_permission_id,
   name,
+  description,
   permissions,
   type,
 }) => {
@@ -110,7 +116,7 @@ export const updateGroupPermission = ({
     config: {
       url: "/permissions/update-permissions-of-group-permission",
       method: "post",
-      data: { group_permission_id, name, permissions, type },
+      data: { group_permission_id, name, permissions, type, description },
     },
     success: function onSuccess(data) {
       return loadDetailGroupPermission({ group_permission_id });
@@ -161,14 +167,6 @@ export const loadPermissionList = ({ module = 1 } = {}) => {
   });
 };
 
-const updateDetailGroupPermission = createAction(
-  types.detailGroupPermissionUpdated,
-  function prepare(data) {
-    return {
-      payload: data.group_detail,
-    };
-  }
-);
 export const loadDetailGroupPermission = ({ group_permission_id } = {}) => {
   return createAsyncAction({
     config: {
@@ -176,7 +174,16 @@ export const loadDetailGroupPermission = ({ group_permission_id } = {}) => {
         group_permission_id,
       })}`,
     },
-    success: updateDetailGroupPermission,
+    success: createAction(updateGroupPermissionList.type, function prepare(
+      data
+    ) {
+      return {
+        payload: data.group_detail,
+        meta: {
+          action: listupdate(data.group_detail),
+        },
+      };
+    }),
   });
 };
 export const groupPermissionListSelector = (state) =>
@@ -200,12 +207,12 @@ export const permissionListSelector = (state) =>
     [settingGroupPermission.key, updatePermissionList.type],
     emptyArray
   );
-export const detailGroupPermissionSelector = (state) =>
+export const detailGroupPermissionSelector = (state, id) =>
   get(
     state,
-    [settingGroupPermission.key, updateDetailGroupPermission.type],
+    [settingGroupPermission.key, types.groupPermissionListUpdated],
     emptyArray
-  );
+  ).find((item) => item.id === id);
 export const settingGroupPermission = {
   selectors: {
     permissionListSelector,
@@ -233,14 +240,12 @@ export const settingGroupPermission = {
       [updatePermissionViewGroupSetting]: [],
       [updateGroupModules]: [],
       [updatePermissionList]: [],
-      [updateDetailGroupPermission]: [],
     },
     {
       [updatePermissionViewGroupSetting]: mapPayloadToState,
       [updateGroupModules]: mapPayloadToState,
       [updateGroupPermissionList]: mapPayloadToState,
       [updatePermissionList]: mapPayloadToState,
-      [updateDetailGroupPermission]: mapPayloadToState,
     }
   ),
 };

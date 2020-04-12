@@ -2,8 +2,6 @@ import {
   Avatar,
   Box,
   Divider,
-  FormControl,
-  FormGroup,
   Grid,
   Table,
   TableBody,
@@ -19,7 +17,6 @@ import LoadingBox from "components/LoadingBox";
 import { bgColorSelector } from "components/LoadingOverlay/selectors";
 import colors from "helpers/colorPalette";
 import React, { useContext, useState } from "react";
-import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { StyledTableBodyCell } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
@@ -32,6 +29,7 @@ import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import { GroupPermissionSettingsCotnext } from "..";
 import DeleteGroupPermissionModal from "../components/DeleteGroupPermissionModal";
+import TasksScrollbar from "../components/TasksScrollbar";
 import UpdateGroupPermissionModal from "../components/UpdateGroupPermissionModal";
 
 const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
@@ -51,12 +49,12 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
       </Grid>
       <Grid item container style={{ flex: 1, position: "relative" }}>
         <div style={{ position: "absolute", width: "100%", height: "100%" }}>
-          <Scrollbars>
-            <div style={{ paddingRight: "12px" }}>
+          <TasksScrollbar>
+            <div style={{ paddingRight: "10px" }}>
               {children}
               <Space height={"50px"}></Space>
             </div>
-          </Scrollbars>
+          </TasksScrollbar>
         </div>
       </Grid>
     </Grid>
@@ -114,15 +112,27 @@ const ColumnLeft = () => {
               </StyledTableBodyCell>
               <StyledTableBodyCell className="comp_TitleCell" align="left">
                 <Typography
+                  title={name}
                   noWrap
-                  style={{ padding: "10px 10px 10px 0" }}
+                  style={{
+                    fontSize: "15px",
+                    maxWidth: 300,
+                    padding: "10px 10px 10px 0",
+                  }}
                   className="comp_TitleCell__inner text-bold"
                 >
-                  <b>{name + " " + i}</b>
+                  <b>{name}</b>
                 </Typography>
               </StyledTableBodyCell>
-              <StyledTableBodyCell className="comp_TitleCell" align="left">
-                <Typography noWrap className="comp_TitleCell__inner">
+              <StyledTableBodyCell
+                style={{ maxWidth: 300 }}
+                className="comp_TitleCell"
+                align="left"
+              >
+                <Typography
+                  title={{ description }}
+                  className="comp_TitleCell__inner"
+                >
                   {description}
                 </Typography>
               </StyledTableBodyCell>
@@ -166,23 +176,16 @@ const ColumnRight = () => {
         }}
       >
         <Stack>
-          <FormControl
-            className="comp_QuickViewFilter__formControl"
-            component="fieldset"
-          >
-            <legend>
-              <Box className="comp_QuickViewFilter__title">
-                {t("Gán nhóm quyền cho module")}
-              </Box>
-            </legend>
-            <FormGroup className="comp_QuickViewFilter__FormGroup">
-              {permissionModules
-                .filter(({ value }) => "" + groupModule === "" + value)
-                .map(({ name, value }) => (
-                  <div>{name}</div>
-                ))}
-            </FormGroup>
-          </FormControl>
+          <b className="comp_QuickViewFilter__title">
+            {t("Gán nhóm quyền cho module")}
+          </b>
+          <Box fontSize="15px">
+            {permissionModules
+              .filter(({ value }) => "" + groupModule === "" + value)
+              .map(({ name, value }) => (
+                <div key={value}>{name}</div>
+              ))}
+          </Box>
           <Divider />
           <ListItemLayout
             title={t("Thành viên được gán")}
@@ -204,13 +207,13 @@ const ColumnRight = () => {
                   <b style={{ fontSize: "15px", color: "#8d8d8d" }}>
                     {name} ({members.length})
                   </b>
-                  {members.map(({ avatar, id, name } = {}) => {
+                  {members.map(({ avatar, id, name, position } = {}) => {
                     return (
                       <ListItemLayout
                         key={id}
-                        left={<Avatar sizes={[30, 30]} src={avatar}></Avatar>}
+                        left={<Avatar src={avatar}></Avatar>}
                         title={name}
-                        subTitle={"thiếu trường này"}
+                        subTitle={position}
                       />
                     );
                   })}
@@ -243,7 +246,7 @@ export default ({ ...props }) => {
   const [quickTask, setQuickTask] = useState();
   const bgColor = useSelector(bgColorSelector);
   const open = !!quickTask;
-
+  const { detail } = useContext(GroupPermissionSettingsCotnext);
   const options = {
     title: (
       <Box display="flex" alignItems="center">
@@ -264,7 +267,7 @@ export default ({ ...props }) => {
     mainAction: {
       color: colors.red[0],
       label: t("Xóa nhóm quyền"),
-      onClick: () => setModal(<DeleteGroupPermissionModal />),
+      onClick: () => setModal(<DeleteGroupPermissionModal item={detail} />),
     },
     draggable: {
       bool: true,

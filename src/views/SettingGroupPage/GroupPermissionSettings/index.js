@@ -1,6 +1,7 @@
 import TwoColumnsLayout from "components/TwoColumnsLayout";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { emptyObject } from "views/JobPage/contants/defaultValue.js";
 import { createMapPropsFromAttrs, get } from "views/JobPage/utils/index.js";
 import { groupPermissionAttr } from "./contants.js";
 import Left from "./Left.js";
@@ -11,9 +12,16 @@ const GroupPermissionSettings = () => {
   const [select, setSelect] = useState();
   const [modal, setModal] = useState(null);
   const dispatch = useDispatch();
-  const detail = useSelector(
-    settingGroupPermission.selectors.detailGroupPermissionSelector
-  );
+  const selectDetailGroupPermission = useMemo(() => {
+    return (state) =>
+      select
+        ? settingGroupPermission.selectors.detailGroupPermissionSelector(
+            state,
+            select.id
+          )
+        : emptyObject;
+  }, [select]);
+  const detail = useSelector(selectDetailGroupPermission);
   const permissionModules = useSelector(
     settingGroupPermission.selectors.groupModulesListSelector
   );

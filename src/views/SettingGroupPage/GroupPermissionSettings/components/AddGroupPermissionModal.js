@@ -1,5 +1,6 @@
 import Joi from "@hapi/joi";
 import { Box, TableCell } from "@material-ui/core";
+import { bgColorSelector } from "components/LoadingOverlay/selectors";
 import { Formik, FormikContext } from "formik";
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,6 +12,7 @@ import VerticleList from "views/JobPage/components/VerticleList";
 import { emptyObject } from "views/JobPage/contants/defaultValue";
 import {
   createMapPropsFromAttrs,
+  createValidate,
   get,
   loginlineFunc,
   loginlineParams,
@@ -29,12 +31,40 @@ import UpdateGroupPermissionModal from "./UpdateGroupPermissionModal";
 export const CustomTableBodyCell = styled(TableCell)`
   border-bottom: none;
 `;
-const AddGroupPermissionModal = ({
+export const GroupPermissionFormInner = ({ permissionModules }) => {
+  const { t } = useTranslation();
+  return (
+    <VerticleList>
+      <InputFormControl name="name" label={t("Tên nhóm quyền")} />
+      <MultilineInputFormControl
+        name="description"
+        label={t("Mô tả nhóm quyền")}
+      />
+      <RadioGroupFormControl
+        options={permissionModules.map((item) => {
+          const [name, value] = createMapPropsFromAttrs([
+            permissionModulesAttr.name,
+            permissionModulesAttr.value,
+          ])(item);
+          return {
+            label: name,
+            name,
+            value,
+          };
+        })}
+        name="module"
+        label={t("Phạm vi module phân quyền")}
+      />
+    </VerticleList>
+  );
+};
+export const GroupPermissionModal = ({
   loading,
   permissionModules = [],
   onClose,
 }) => {
-  const { handleSubmit } = useContext(FormikContext);
+  const bgColor = useSelector(bgColorSelector);
+  const { handleSubmit, isValid } = useContext(FormikContext);
   const { t } = useTranslation();
   return (
     <ModalCommon
@@ -43,6 +73,7 @@ const AddGroupPermissionModal = ({
       onClose={onClose}
       footerAction={[
         {
+          disabled: !isValid || loading,
           action: handleSubmit,
           name: t("Hoàn thành"),
         },
@@ -50,28 +81,7 @@ const AddGroupPermissionModal = ({
     >
       <DialogContent dividers className="dialog-content move-content">
         <Box padding="24px">
-          <VerticleList>
-            <InputFormControl name="name" label={t("Tên nhóm quyền")} />
-            <MultilineInputFormControl
-              name="description"
-              label={t("Mô tả nhóm quyền")}
-            />
-            <RadioGroupFormControl
-              options={permissionModules.map((item) => {
-                const [name, value] = createMapPropsFromAttrs([
-                  permissionModulesAttr.name,
-                  permissionModulesAttr.value,
-                ])(item);
-                return {
-                  label: name,
-                  name,
-                  value,
-                };
-              })}
-              name="module"
-              label={t("Phạm vi module phân quyền")}
-            />
-          </VerticleList>
+          <GroupPermissionFormInner permissionModules={permissionModules} />
         </Box>
       </DialogContent>
     </ModalCommon>
@@ -83,37 +93,35 @@ const addGroupPermissionFormInitialValues = {
   module: "",
 };
 
-const createValidate = (schema) => (values = {}, mapError = {}) => {
-  const { error } = schema.validate(values);
-  return error
-    ? error.details.reduce((result, error) => {
-        result[error.context.key] = mapError[error.type] || error.type;
-        return result;
-      }, {})
-    : emptyObject;
-};
 const validateAddGroupPermissionForm = createValidate(
   Joi.object({
     name: Joi.string().required(),
-    description: Joi.any(),
+    // description: Joi.string(),
     module: Joi.string().required(),
   })
 );
-const AddGroupPermissionForm = ({ children, onSubmit }) => {
+export const GroupPermissionForm = ({
+  children,
+  initialValues = emptyObject,
+  onSubmit,
+}) => {
   // error.details[0].type
   const { t } = useTranslation();
   const validateMemo = useMemo(
     () => (values = {}) => {
       const mapError = {
-        "string.empty": t("required"),
+        "name.string.empty": t("required"),
+        "module.string.empty": t("required"),
       };
-      return loginlineFunc(validateAddGroupPermissionForm)(values, mapError);
+      return validateAddGroupPermissionForm(values, mapError);
     },
     [t]
   );
   return (
     <Formik
-      initialValues={addGroupPermissionFormInitialValues}
+      enableReinitialize
+      validateOnMount
+      initialValues={initialValues}
       onSubmit={onSubmit}
       validate={validateMemo}
     >
@@ -122,7 +130,7 @@ const AddGroupPermissionForm = ({ children, onSubmit }) => {
   );
 };
 export default () => {
-  const { setModal } = useContext(GroupPermissionSettingsCotnext);
+  const { setModal, setSelect } = useContext(GroupPermissionSettingsCotnext);
   const [{ status, data }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
     setModal(null);
@@ -130,13 +138,14 @@ export default () => {
 
   useEffect(() => {
     if (status === apiCallStatus.success) {
-      setModal(
-        <UpdateGroupPermissionModal
-          item={loginlineFunc(get)(loginlineParams(data), "group_permission")}
-        />
+      const item = loginlineFunc(get)(
+        loginlineParams(data),
+        "group_permission"
       );
+      setSelect(item);
+      setModal(<UpdateGroupPermissionModal item={item} />);
     }
-  }, [data, setModal, status]);
+  }, [data, setModal, setSelect, status]);
   const handleSubmit = (values) =>
     setAsyncAction(
       settingGroupPermission.actions.createGroupPermission(values)
@@ -146,12 +155,15 @@ export default () => {
   );
 
   return (
-    <AddGroupPermissionForm onSubmit={handleSubmit}>
-      <AddGroupPermissionModal
+    <GroupPermissionForm
+      initialValues={addGroupPermissionFormInitialValues}
+      onSubmit={handleSubmit}
+    >
+      <GroupPermissionModal
         permissionModules={permissionModules}
         loading={status === apiCallStatus.loading}
         onClose={onClose}
       />
-    </AddGroupPermissionForm>
+    </GroupPermissionForm>
   );
 };

@@ -24,6 +24,7 @@ export const SetPermissionModal = ({
   permissionList = emptyArray,
   loading,
   onClose,
+  isValid,
   name,
   onChange,
   value = emptyArray,
@@ -64,6 +65,7 @@ export const SetPermissionModal = ({
       footerAction={[
         {
           action: onSubmit,
+          disabled: !isValid || loading,
           name: t("Hoàn thành"),
         },
       ]}

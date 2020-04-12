@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
 import ColorTypo from "../../../components/ColorTypo";
@@ -10,6 +9,7 @@ import {
   RightHeader,
   StyledButton,
 } from "../../DocumentPage/TablePart/DocumentComponent/TableCommon";
+import TasksScrollbar from "../GroupPermissionSettings/components/TasksScrollbar";
 import CreateOrder from "../TablePart/SettingGroupRight/CreateOrder";
 import Info from "../TablePart/SettingGroupRight/Info";
 import Order from "../TablePart/SettingGroupRight/Order";
@@ -129,9 +129,7 @@ const TablePart = (props) => {
         </div>
       )}
       <div className="setting-right-content">
-        <Scrollbars autoHide autoHideTimeout={500}>
-          {getContentSettingAccount()}
-        </Scrollbars>
+        <TasksScrollbar>{getContentSettingAccount()}</TasksScrollbar>
       </div>
     </div>
   );
