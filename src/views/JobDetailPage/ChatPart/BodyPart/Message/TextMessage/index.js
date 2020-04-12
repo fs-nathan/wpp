@@ -28,9 +28,9 @@ function getContentMention(content = '', members, color) {
     for (let index = 0; index < matches.length; index++) {
       const element = matches[index];
       const mentionId = element.replace('@', '').replace('{', '').replace('}', '');
-      const member = members.find(({ id }) => mentionId === id);
+      const member = members.find(({ id }) => mentionId === id) || { name: '' };
       ret = ret.replace(element,
-        `<span className="TextMessage--tag" style={{ color: ${color} }}>@${member.name}</span>`
+        `<span className="TextMessage--tag" style="color: ${color};">@${member.name}</span>`
         // `@${member.name}`
       );
     }

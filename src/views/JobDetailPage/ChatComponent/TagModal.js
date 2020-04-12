@@ -8,13 +8,18 @@ import './ChatComponent.scss';
 const TagModal = ({
   anchorEl,
   handleClose,
+  handleClickMention,
 }) => {
   const dispatch = useDispatch();
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const tagMembers = useSelector(state => state.chat.tagMembers);
 
   function handleClickMember(index) {
-    return () => dispatch(tagMember(index))
+    return () => {
+      dispatch(tagMember(index))
+      handleClose()
+      handleClickMention(members[index])
+    }
   }
 
   return (

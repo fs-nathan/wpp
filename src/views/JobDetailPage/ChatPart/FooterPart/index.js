@@ -1,9 +1,9 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, chatImage, chatSticker, clearTags, createChatText, onUploading } from 'actions/chat/chat';
+import { appendChat, chatImage, chatSticker, createChatText, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
-import { convertToRaw, EditorState, getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
+import { convertToRaw, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, Modifier } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import Editor from 'draft-js-plugins-editor';
@@ -38,18 +38,6 @@ const positionSuggestions = ({ state, props }) => {
     transition,
   };
 };
-
-function spliceSlice(str, index, count, add) {
-  // We cannot pass negative indexes directly to the 2nd slicing operation.
-  if (index < 0) {
-    index = str.length + index;
-    if (index < 0) {
-      index = 0;
-    }
-  }
-
-  return str.slice(0, index) + (add || "") + str.slice(index + count);
-}
 
 function getChatContent({ blocks, entityMap }) {
   const mapBlocks = blocks.map(block => {
@@ -96,7 +84,6 @@ const FooterPart = ({
   const tagMembers = useSelector(state => state.chat.tagMembers);
   const userId = useSelector(state => state.system.profile.order_user_id)
 
-  const [textChat, setTextChat] = useState('');
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const [isOpenRemind, setOpenRemind] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -195,10 +182,6 @@ const FooterPart = ({
     setAnchorElSticker(null)
   }
 
-  function onChangeTextChat(event) {
-    setTextChat(event.target.value)
-  }
-
   function handleClickSticker(id) {
     dispatch(chatSticker(taskId, id))
     setAnchorElSticker(null)
@@ -213,33 +196,21 @@ const FooterPart = ({
     setOpenRemind(true)
   }
 
-  async function onKeyDownChat(event) {
-    if (event.key === "Escape") {
-      setSelectedChat(null)
-    }
+  function insertMention(label, mention) {
+    const currentContent = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
+    const entityKey = Entity.create('mention', 'SEGMENTED', { mention });
+    const textWithEntity = Modifier.insertText(currentContent, selection, label, null, entityKey);
+    const newState = EditorState.push(editorState, textWithEntity, 'insert-characters')
+    setEditorState(newState);
+    // console.log(convertToRaw(newState.getCurrentContent()))
+    // focus();
   }
 
-  async function onKeyPressChat(event) {
-    console.log('enter press here! ', event.which)
-    if (textChat.trim().length === 0) return;
-    if (event.key === 'Enter' || event.which === 13) {
-      setTextChat('');
-      dispatch(clearTags());
-      try {
-        const data = {
-          type: CHAT_TYPE.TEXT,
-          is_me: true,
-          task_id: taskId, content: textChat,
-          parent_id: parentMessage && parentMessage.id,
-          tags: tagMembers.map(index => members[index].id)
-        };
-        dispatch(appendChat(data));
-        dispatch(createChatText(data));
-      } catch (error) {
-        console.error('error here! ', error)
-      }
-      setSelectedChat(null)
-    }
+  function handleClickMention(data) {
+    // console.log(data)
+    insertMention(`@${data.name} `, data)
+    // console.log(convertToRaw(editorState.getCurrentContent()))
   }
 
   const onSearchChange = ({ value }) => {
@@ -398,6 +369,7 @@ const FooterPart = ({
       <TagModal
         anchorEl={anchorEl}
         handleClose={handleCloseTag}
+        handleClickMention={handleClickMention}
       />
       <StickerModal
         anchorEl={anchorElSticker}
