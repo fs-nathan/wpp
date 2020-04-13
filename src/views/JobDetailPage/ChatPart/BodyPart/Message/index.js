@@ -33,6 +33,7 @@ const Message = props => {
     case CHAT_TYPE.TEXT:
       return <TextMessage {...props} />;
     case CHAT_TYPE.FILE:
+    case CHAT_TYPE.CHAT_FORWARD_FILE:
       return <FileMessage {...props} />;
     case CHAT_TYPE.IMAGE:
       return <ImageMessage {...props} />;

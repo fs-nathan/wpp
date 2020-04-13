@@ -130,10 +130,11 @@ export function chatFileFail(error) {
   };
 }
 
-export function chatForwardFile(file) {
+export function chatForwardFile(task_id, file_ids) {
   return {
     type: actionTypes.CHAT_FORWARD_FILE,
-    file,
+    task_id,
+    file_ids,
   };
 }
 

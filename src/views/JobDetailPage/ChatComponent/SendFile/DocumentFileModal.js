@@ -2,7 +2,9 @@
 import { Avatar, Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { mdiFileDocumentBoxOutline, mdiFileUndoOutline, mdiFolderOpenOutline, mdiGoogleDrive } from '@mdi/js';
 import Icon from '@mdi/react';
+import { chatForwardFile } from 'actions/chat/chat';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getDocumentSharedToMe, getListMyDocument, getListProject } from '../../../../actions/documents';
 import CustomModal from '../../../../components/CustomModal';
 import { FileType } from '../../../../components/FileType';
@@ -10,7 +12,11 @@ import SearchInput from '../../../../components/SearchInput';
 import './SendFileModal.scss';
 
 const DocumentFileModal = ({ open, setOpen }) => {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+
   const [listData, setListData] = useState([]);
+  const [selectedFilesIds, setSelectedFilesIds] = useState([]);
 
   const fetchListMyDocument = async params => {
     try {
@@ -64,6 +70,19 @@ const DocumentFileModal = ({ open, setOpen }) => {
 
   function onClickConfirm() {
     setOpen(false)
+    dispatch(chatForwardFile(taskId, selectedFilesIds))
+    setSelectedFilesIds([])
+  }
+
+  function selectFile(id) {
+    return () => {
+      const memberId = selectedFilesIds.indexOf(id)
+      if (memberId === -1)
+        selectedFilesIds.push(id);
+      else
+        selectedFilesIds.splice(memberId, 1);
+      setSelectedFilesIds([...selectedFilesIds])
+    }
   }
 
   return (
@@ -73,7 +92,7 @@ const DocumentFileModal = ({ open, setOpen }) => {
       fullWidth
       title="Quản lý tài liệu"
       className="document-file-modal"
-      cancleRender={null}
+      cancleRender={() => "Thoát"}
       onConfirm={onClickConfirm}
     >
       <div className="document-file-container">
@@ -108,7 +127,9 @@ const DocumentFileModal = ({ open, setOpen }) => {
                 {listData.map(item => (
                   <TableRow key={item.id}>
                     <TableCell width="50px" align="center">
-                      {item.type !== 'folder' && <Checkbox color="primary" />}
+                      {item.type !== 'folder' && <Checkbox color="primary"
+                        checked={selectedFilesIds.indexOf(item.id) !== -1}
+                        onClick={selectFile(item.id)} />}
                     </TableCell>
                     <TableCell width="50px" align="center">
                       <Avatar
