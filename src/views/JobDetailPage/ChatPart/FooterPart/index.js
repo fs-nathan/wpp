@@ -85,6 +85,7 @@ const FooterPart = ({
   const tagMembers = useSelector(state => state.chat.tagMembers);
   const userId = useSelector(state => state.system.profile.order_user_id)
   const listStickers = useSelector(state => state.chat.listStickers);
+  const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const [isOpenRemind, setOpenRemind] = useState(false);
@@ -110,14 +111,14 @@ const FooterPart = ({
   useEffect(() => {
     const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
     if (content[0] === '@') {
-      const stickerKeyWord = content.slice(1)
-      dispatch(changeStickerKeyWord(stickerKeyWord))
-      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(stickerKeyWord) !== -1);
+      const stickerKey = content.slice(1)
+      dispatch(changeStickerKeyWord(stickerKey))
+      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(stickerKey) !== -1);
       if (renderStickersList.length > 0) {
         setOpenSticker(true)
       }
     }
-  }, [dispatch, editorState]);
+  }, [dispatch, editorState, listStickers]);
 
   useEffect(() => {
     document.onpaste = async function (event) {
@@ -197,6 +198,9 @@ const FooterPart = ({
   }
 
   function handleClickSticker(id) {
+    if (stickerKeyWord) {
+      setEditorState(EditorState.createEmpty())
+    }
     dispatch(chatSticker(taskId, id))
     handleCloseSticker()
   }
