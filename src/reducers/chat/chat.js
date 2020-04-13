@@ -40,6 +40,8 @@ export default (state = initialState, action) =>
           draft.chats = payload;
         }
         draft.isSending = false;
+        draft.isFails = false;
+        draft.lastChat = {};
         break;
       }
       case actionTypes.CHAT_IMAGE_SUCCESS: {
@@ -128,6 +130,7 @@ export default (state = initialState, action) =>
       case actionTypes.CREATE_CHAT_TEXT: {
         const { content } = action;
         draft.lastChat = content;
+        draft.isFails = false;
         break;
       }
       case actionTypes.CREATE_CHAT_TEXT_SUCCESS: {

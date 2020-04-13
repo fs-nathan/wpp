@@ -57,4 +57,7 @@
       // color: #c3c3c3;
     }
   }
+  &:focus {
+    outline: none;
+  }
 }

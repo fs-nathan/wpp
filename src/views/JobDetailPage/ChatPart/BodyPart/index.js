@@ -144,6 +144,7 @@ const BodyPart = props => {
       ref={chatRef}
     >
       <InfiniteScroll
+        className="bodyChat--scroll"
         isReverse
         pageStart={currentPage}
         loadMore={loadMoreChat}
@@ -207,7 +208,7 @@ const BodyPart = props => {
           isShowSendStatus &&
           (
             isFails ? <div className="bodyChat--sending">
-              < span className="bodyChat--sendingFail">Không thành công</span>
+              <span className="bodyChat--sendingFail">Không thành công</span>
               <span className="bodyChat--sendingDelete" onClick={onClickDeleteChat}>Xoá</span>
               <span className="bodyChat--sendingResend" onClick={onClickResendChat}>Gửi lại</span>
             </div>

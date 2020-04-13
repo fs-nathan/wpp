@@ -19,7 +19,7 @@ function getChatParent(chat_parent) {
   return <TextMessage {...chat_parent} isReply></TextMessage>
 }
 
-function getContentMention(content = '', members, color) {
+function getRichContent(content = '', members, color) {
   if (!content) return '';
   let ret = content;
   const reg = /@{(.*?)}/g;
@@ -36,6 +36,7 @@ function getContentMention(content = '', members, color) {
     }
   }
   // console.log(matches)
+  ret = ret.replace('\n', '<br/>');
   // return matches.join(' ')
   return ret;
 }
@@ -105,7 +106,7 @@ const TextMessage = ({
           {getChatParent(chat_parent)}
           {/* {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)} */}
           <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })}
-            dangerouslySetInnerHTML={{ __html: getContentMention(content, members, getColor()) }}
+            dangerouslySetInnerHTML={{ __html: getRichContent(content, members, getColor()) }}
           >
           </div>
           {/* {!isReply &&
