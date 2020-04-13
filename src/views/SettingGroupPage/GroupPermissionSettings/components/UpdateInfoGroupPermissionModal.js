@@ -75,12 +75,10 @@ export default ({ item }) => {
     setModal(null);
   }, [setModal]);
   const handleSubmit = (values) => {
-    const mapper = (item) => item.permission;
     dispatchAsyncAction(
       loginlineParams(
-        settingGroupPermission.actions.updateGroupPermission({
+        settingGroupPermission.actions.updateGroupPermissionInfo({
           group_permission_id: id,
-          permissions: permissions.map(mapper),
           ...values,
         })
       )

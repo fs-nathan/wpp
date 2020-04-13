@@ -96,7 +96,7 @@ const GroupPermissionSettings = () => {
     module,
     total_of_member_assigned,
     members_assigned,
-    can_modify,
+    can_modify = true,
   ] = createMapPropsFromAttrs([
     groupPermissionAttr.id,
     groupPermissionAttr.name,

@@ -67,6 +67,7 @@ const ColumnLeft = () => {
     detail: item,
     permissionsNumber,
     permissions = emptyArray,
+    can_modify,
   } = useContext(GroupPermissionSettingsCotnext);
   // if (!item) return null;
   return (
@@ -76,10 +77,13 @@ const ColumnLeft = () => {
         number: permissionsNumber,
       })}
       actions={
-        <AddButton
-          onClick={() => setModal(<UpdateGroupPermissionModal item={item} />)}
-          label={t("Thêm quyền")}
-        />
+        can_modify && (
+          <AddButton
+            disabled={!can_modify}
+            onClick={() => setModal(<UpdateGroupPermissionModal item={item} />)}
+            label={t("Thêm quyền")}
+          />
+        )
       }
     >
       <Table stickyHeader className="header-document">
@@ -244,7 +248,9 @@ const Right = () => {
 };
 export default ({ ...props }) => {
   const { t } = useTranslation();
-  const { setModal, name } = useContext(GroupPermissionSettingsCotnext);
+  const { setModal, name, can_modify } = useContext(
+    GroupPermissionSettingsCotnext
+  );
   const [quickTask, setQuickTask] = useState();
   const bgColor = useSelector(bgColorSelector);
   const open = !!quickTask;
@@ -266,11 +272,13 @@ export default ({ ...props }) => {
       </Box>
     ),
     subActions: [],
-    mainAction: {
-      color: colors.red[0],
-      label: t("Xóa nhóm quyền"),
-      onClick: () => setModal(<DeleteGroupPermissionModal item={detail} />),
-    },
+    mainAction: can_modify
+      ? {
+          color: colors.red[0],
+          label: t("Xóa nhóm quyền"),
+          onClick: () => setModal(<DeleteGroupPermissionModal item={detail} />),
+        }
+      : undefined,
     draggable: {
       bool: true,
       onDragEnd: () => {},
