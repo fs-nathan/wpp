@@ -22,11 +22,19 @@
 
 .stickerModal {
   &--list {
-    display: flex;
+    position: absolute;
+    bottom: 100px;
+    padding: 4px;
+    display: none;
     flex-wrap: wrap;
     max-height: 210px;
     min-height: 105px;
-    width: 555px;
+    width: 100%;
+    background-color: #fff;
+    overflow-y: scroll;
+  }
+  &__open {
+    display: flex;
   }
   &--image {
     height: 96px;

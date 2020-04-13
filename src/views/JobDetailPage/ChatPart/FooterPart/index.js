@@ -1,13 +1,14 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, chatImage, chatSticker, createChatText, onUploading } from 'actions/chat/chat';
+import { appendChat, changeStickerKeyWord, chatImage, chatSticker, createChatText, onUploading } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { convertToRaw, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, Modifier } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import Editor from 'draft-js-plugins-editor';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
+import words from 'lodash/words';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
@@ -83,11 +84,12 @@ const FooterPart = ({
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const tagMembers = useSelector(state => state.chat.tagMembers);
   const userId = useSelector(state => state.system.profile.order_user_id)
+  const listStickers = useSelector(state => state.chat.listStickers);
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const [isOpenRemind, setOpenRemind] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorElSticker, setAnchorElSticker] = useState(null);
+  const [isOpenSticker, setOpenSticker] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [suggestions, setSuggestions] = useState(members);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
@@ -104,6 +106,18 @@ const FooterPart = ({
     }
     renderPrepareImages(imagesQueue)
   }, [imagesQueue]);
+
+  useEffect(() => {
+    const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
+    if (content[0] === '@') {
+      const stickerKeyWord = content.slice(1)
+      dispatch(changeStickerKeyWord(stickerKeyWord))
+      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(stickerKeyWord) !== -1);
+      if (renderStickersList.length > 0) {
+        setOpenSticker(true)
+      }
+    }
+  }, [dispatch, editorState]);
 
   useEffect(() => {
     document.onpaste = async function (event) {
@@ -174,17 +188,17 @@ const FooterPart = ({
     setAnchorEl(null)
   }
 
-  const openSticker = (evt) => {
-    setAnchorElSticker(evt.currentTarget);
+  const onClickOpenSticker = (evt) => {
+    setOpenSticker(!isOpenSticker);
   };
 
   function handleCloseSticker() {
-    setAnchorElSticker(null)
+    setOpenSticker(false)
   }
 
   function handleClickSticker(id) {
     dispatch(chatSticker(taskId, id))
-    setAnchorElSticker(null)
+    handleCloseSticker()
   }
 
   function onClickSubTask() {
@@ -285,7 +299,7 @@ const FooterPart = ({
           <IconButton className="icon-btn" onClick={openTag}>
             <Icon path={mdiAt} size={1.2} />
           </IconButton>
-          <IconButton className="icon-btn" onClick={openSticker}>
+          <IconButton className="icon-btn" onClick={onClickOpenSticker}>
             <Icon path={mdiEmoticon} size={1.2} />
           </IconButton>
           <IconButton
@@ -373,7 +387,7 @@ const FooterPart = ({
         handleClickMention={handleClickMention}
       />
       <StickerModal
-        anchorEl={anchorElSticker}
+        isOpen={isOpenSticker}
         handleClose={handleCloseSticker}
         handleClickSticker={handleClickSticker}
       />

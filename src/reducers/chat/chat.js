@@ -10,6 +10,7 @@ export const initialState = {
   viewedChatMembers: [],
   emotionsList: [],
   searchChatKey: '',
+  stickerKeyWord: '',
   uploadingPercent: 0,
   isSending: false,
   isFails: false,
@@ -145,6 +146,11 @@ export default (state = initialState, action) =>
       case actionTypes.GET_VIEWED_CHAT_SUCCESS: {
         const { payload } = action;
         draft.viewedChatMembers = payload.members;
+        break;
+      }
+      case actionTypes.CHANGE_STICKER_KEYWORD: {
+        const { payload } = action;
+        draft.stickerKeyWord = payload;
         break;
       }
     }

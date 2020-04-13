@@ -2,6 +2,11 @@ import * as actionTypes from '../../constants/actions/chat/chat';
 import { apiService } from '../../constants/axiosInstance';
 
 // action
+export const changeStickerKeyWord = data => ({
+  type: actionTypes.CHANGE_STICKER_KEYWORD,
+  payload: data
+});
+
 export const getListChat = data => ({
   type: actionTypes.FETCH_LIST_CHAT,
   payload: data
