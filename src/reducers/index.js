@@ -48,6 +48,7 @@ import hideProject, { initialState as hideProjectInitialState } from "./project/
 import listDeletedProject, { initialState as listDeletedProjectInitialState } from "./project/listDeletedProject";
 import listProject, { initialState as listProjectInitialState } from "./project/listProject";
 import memberProject, { initialState as memberProjectInitialState } from "./project/memberProject";
+import permissionProject, { initialState as permissionProjectInitialState } from "./project/permissionProject";
 import removeMemberProject, { initialState as removeMemberProjectInitialState } from "./project/removeMemberProject";
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from "./project/removeProjectRoleFromMember";
 import restoreTrashProject, { initialState as restoreTrashProjectInitialState } from "./project/restoreTrashProject";
@@ -200,6 +201,7 @@ const rootReducer = combineReducers({
     hideProject,
     showProject,
     memberProject,
+    permissionProject,
     addMemberProject,
     removeMemberProject,
     updateStateJoinTask,
@@ -324,6 +326,7 @@ export const DEFAULT_STATE = {
     hideProject: hideProjectInitialState,
     showProject: showProjectInitialState,
     memberProject: memberProjectInitialState,
+    permissionProject: permissionProjectInitialState,
     addMemberProject: addMemberProjectInitialState,
     removeMemberProject: removeMemberProjectInitialState,
     updateStateJoinTask: updateStateJoinTaskInitialState,

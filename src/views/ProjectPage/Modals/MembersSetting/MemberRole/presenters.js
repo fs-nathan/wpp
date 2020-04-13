@@ -31,8 +31,8 @@ const StyledTable = ({ className = '', ...props }) =>
 function MemberRole({
   open, setOpen,
   curMemberId,
-  bgColor, userRoles, updateMemberRole, members,
-  handleUpdateRoleOfMember, handleOpenModal,
+  userRoles, updateMemberRole, members,
+  handleUpdateRoleOfMember,
 }) {
 
   const [roles, setRoles] = React.useState([]);
