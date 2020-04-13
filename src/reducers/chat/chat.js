@@ -32,8 +32,13 @@ export default (state = initialState, action) =>
         draft.members = action.payload;
         break;
       case actionTypes.LOAD_CHAT_SUCCESS: {
-        const { payload } = action;
-        draft.chats = payload;
+        const { payload, isMore } = action;
+        if (isMore) {
+          draft.chats.data.push(...payload.data);
+          draft.chats.paging = payload.paging;
+        } else {
+          draft.chats = payload;
+        }
         draft.isSending = false;
         break;
       }

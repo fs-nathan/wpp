@@ -44,6 +44,7 @@ const BodyPart = props => {
   }
 
   const { total_page, page = 1 } = chats.paging || {};
+  const currentPage = page === null ? total_page : page
   const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
     return !searchChatKey
       || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
@@ -65,9 +66,9 @@ const BodyPart = props => {
   for (let index = 0; index < calculatedChats.length; index++) {
     const chat = calculatedChats[index];
     const prevChat = chatData[index - 1];
-    const time_create = chat.time_create.slice(-10);
+    const time_create = (chat.time_create || '').slice(-10);
     // console.log(time_create.slice(-10), 'time_create')
-    if (prevChat && prevChat.time_create.slice(-10) !== time_create) {
+    if (prevChat && time_create && prevChat.time_create && prevChat.time_create.slice(-10) !== time_create) {
       showedChats.push({ type: CHAT_TYPE.DATE_TIME_CHAT_HISTORY, time_create })
     }
     showedChats.push(chat)
@@ -86,7 +87,7 @@ const BodyPart = props => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
       // console.log(chatRef)
     }
-  }, [chats.data]);
+  }, [chatRef]);
   useEffect(() => {
     const task_id = queryString.parse(props.location.search).task_id
     dispatch(loadChat(task_id));
@@ -132,63 +133,69 @@ const BodyPart = props => {
   }
 
   function loadMoreChat() {
-    if (page > 1)
-      dispatch(loadChat(taskId, page - 1));
+    // console.log('loadMoreChat', currentPage)
+    if (currentPage > 1)
+      dispatch(loadChat(taskId, currentPage - 1, true));
   }
 
   return (
-    <div className={clsx("bodyChat", { "bodyChat__reply": props.isReply })} ref={chatRef} >
-      <div className="wrap-time">
-        <div className="line" />
-        <div className="time">{date_create}</div>
-      </div>
-      <div className="wrap-common-row">
-      </div>
-      <div className="wrap-common-row">
-        <div className="bodyChat--project">
-          <Avatar
-            alt="creator"
-            src={user_create.avatar}
-            className="bodyChat--projectAvatar"
-          />
-          <div className="bodyChat--notifyName">{`${user_create.name} đã tạo công việc mới`}</div>
-          <div className="bodyChat--projectName">{name}</div>
-          <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
-          <button onClick={onClickCreateMember}
-            className="bodyChat--buttonAddMember">
-            + Thêm thành viên
-            </button>
-        </div>
-      </div>
-      <div className="wrap-common-row">
-        <div className="bodyChat--introImages">
-          <div className="bodyChat--introItem">
-            <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
-            <div className="bodyChat--introTitle">
-              Thảo luận
-          </div>
-          </div>
-          <div className="bodyChat--introItem">
-            <img alt="intro" src="/images/intro/intro-bg-3.png"></img>
-            <div className="bodyChat--introTitle">
-              Quản lý
-          </div>
-          </div>
-          <div className="bodyChat--introItem">
-            <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
-            <div className="bodyChat--introTitle">
-              Chia sẻ
-          </div>
-          </div>
-        </div>
-      </div>
+    <div
+      className={clsx("bodyChat", { "bodyChat__reply": props.isReply })}
+      ref={chatRef}
+    >
       <InfiniteScroll
         isReverse
-        pageStart={total_page}
+        pageStart={currentPage}
         loadMore={loadMoreChat}
-        hasMore={page < total_page}
-      // loader={<div className="loader" key={0}>Loading ...</div>}
+        hasMore={currentPage > 1}
+        loader={<div className="loader" key={0}>Đang tải ...</div>}
+        useWindow={false}
+        getScrollParent={() => chatRef.current}
       >
+        <div className="wrap-time">
+          <div className="line" />
+          <div className="time">{date_create}</div>
+        </div>
+        <div className="wrap-common-row">
+        </div>
+        <div className="wrap-common-row">
+          <div className="bodyChat--project">
+            <Avatar
+              alt="creator"
+              src={user_create.avatar}
+              className="bodyChat--projectAvatar"
+            />
+            <div className="bodyChat--notifyName">{`${user_create.name} đã tạo công việc mới`}</div>
+            <div className="bodyChat--projectName">{name}</div>
+            <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
+            <button onClick={onClickCreateMember}
+              className="bodyChat--buttonAddMember">
+              + Thêm thành viên
+            </button>
+          </div>
+        </div>
+        <div className="wrap-common-row">
+          <div className="bodyChat--introImages">
+            <div className="bodyChat--introItem">
+              <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
+              <div className="bodyChat--introTitle">
+                Thảo luận
+          </div>
+            </div>
+            <div className="bodyChat--introItem">
+              <img alt="intro" src="/images/intro/intro-bg-3.png"></img>
+              <div className="bodyChat--introTitle">
+                Quản lý
+          </div>
+            </div>
+            <div className="bodyChat--introItem">
+              <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
+              <div className="bodyChat--introTitle">
+                Chia sẻ
+          </div>
+            </div>
+          </div>
+        </div>
         {
           showedChats.map((el, id) => <Message {...el}
             key={id}
@@ -222,7 +229,7 @@ const BodyPart = props => {
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />
       <DetailViewedModal isOpen={openViewedModal} setOpen={setOpenViewedModal} />
-    </div >
+    </div>
   );
 };
 export default withRouter(BodyPart);

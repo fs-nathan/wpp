@@ -126,7 +126,7 @@ const TextMessage = ({
 }
 
 TextMessage.propTypes = {
-  user_create_name: PropTypes.string.isRequired,
+  type: PropTypes.number.isRequired,
 };
 
 export default TextMessage;

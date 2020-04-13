@@ -56,18 +56,20 @@ export function deleteChatFail(error) {
   };
 }
 
-export function loadChat(taskId, page) {
+export function loadChat(taskId, page, isMore) {
   return {
     type: actionTypes.LOAD_CHAT,
     task_id: taskId,
     page,
+    isMore,
   };
 }
 
-export function loadChatSuccess(payload) {
+export function loadChatSuccess(payload, isMore) {
   return {
     type: actionTypes.LOAD_CHAT_SUCCESS,
     payload,
+    isMore,
   };
 }
 

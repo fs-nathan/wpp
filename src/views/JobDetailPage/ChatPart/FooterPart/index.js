@@ -23,7 +23,7 @@ const { isSoftNewlineEvent } = KeyBindingUtil
 const positionSuggestions = ({ state, props }) => {
   let transform;
   let transition;
-  const translateY = props.suggestions.length * 50 + 10;
+  const translateY = props.suggestions.length * 20 + 200;
 
   if (state.isActive && props.suggestions.length > 0) {
     transform = `translateY(-${translateY}px) scaleY(1)`;
@@ -229,6 +229,7 @@ const FooterPart = ({
 
   async function handleKeyCommand(command) {
     if (command === 'send') {
+      editorRef.current.blur();
       if (imagesQueueUrl.length > 0) {
         const images = [];
         let data = new FormData()
