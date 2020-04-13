@@ -7,6 +7,7 @@ import { getAllGroupTask } from '../../actions/groupTask/getAllGroupTask';
 import { listGroupTask } from '../../actions/groupTask/listGroupTask';
 import { detailProject } from '../../actions/project/detailProject';
 import { memberProject } from '../../actions/project/memberProject';
+import { permissionProject } from '../../actions/project/permissionProject';
 import { detailStatus } from '../../actions/project/setting/detailStatus';
 import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
 import { listTask } from '../../actions/task/listTask';
@@ -20,7 +21,7 @@ import {
   //CREATE_PROJECT, DELETE_PROJECT, UPDATE_PROJECT,
   CREATE_GROUP_TASK, CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, DELETE_TASK, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, SORT_GROUP_TASK,
   //CREATE_PROJECT_GROUP,
-  SORT_PROJECT_GROUP, SORT_TASK, UPDATE_GROUP_TASK, UPDATE_STATE_JOIN_TASK
+  SORT_PROJECT_GROUP, SORT_TASK, UPDATE_GROUP_PERMISSION_MEMBER, UPDATE_GROUP_TASK, UPDATE_STATE_JOIN_TASK
 } from '../../constants/events';
 import { useLocalStorage } from '../../hooks';
 import GroupTaskSlide from './LeftPart/GroupTaskSlide';
@@ -42,7 +43,7 @@ function ProjectPage({
   doDetailStatus,
   doGetListTaskDetail,
   doGetPermissionViewDetailProject,
-  route, viewPermissions,
+  route, viewPermissions, doPermissionProject,
 }) {
 
   const [projectId, setProjectId] = React.useState();
@@ -134,6 +135,7 @@ function ProjectPage({
         CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
         CustomEventListener(ADD_PROJECT_ROLE_TO_MEMBER, reloadMemberProject);
         CustomEventListener(REMOVE_PROJECT_ROLE_FROM_MEMBER, reloadMemberProject);
+        CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER, reloadMemberProject);
 
         return () => {
           //CustomEventDispose(UPDATE_PROJECT, reloadMemberProject);
@@ -145,10 +147,17 @@ function ProjectPage({
           CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
           CustomEventDispose(ADD_PROJECT_ROLE_TO_MEMBER, reloadMemberProject);
           CustomEventDispose(REMOVE_PROJECT_ROLE_FROM_MEMBER, reloadMemberProject);
+          CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER, reloadMemberProject);
         }
       }
     }
   }, [projectId, doMemberProject, viewPermissions]);
+
+  React.useEffect(() => {
+    if (get(viewPermissions.permissions, 'update_project', false)) {
+      doPermissionProject();
+    }
+  }, [doPermissionProject, viewPermissions]);
 
   const [timeRange, setTimeRange] = React.useState({});
 
@@ -362,6 +371,7 @@ const mapDispatchToProps = dispatch => {
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
+    doPermissionProject: (quite) => dispatch(permissionProject(quite)),
     doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doGetAllGroupTask: (quite) => dispatch(getAllGroupTask(quite)),

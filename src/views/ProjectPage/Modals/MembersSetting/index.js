@@ -1,20 +1,21 @@
+import { filter, get, map } from 'lodash';
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import AlertModal from '../../../../components/AlertModal';
 import { connect } from 'react-redux';
-import { get, map, filter } from 'lodash';
+import { useParams } from 'react-router-dom';
 import { addMemberProject } from '../../../../actions/project/addMemberToProject';
+import { assignMemberToAllTask } from '../../../../actions/project/assignMemberToAllTask';
 import { removeMemberProject } from '../../../../actions/project/removeMemberFromProject';
 import { updateStateJoinTask } from '../../../../actions/project/updateStateJoinTask';
-import { assignMemberToAllTask } from '../../../../actions/project/assignMemberToAllTask';
+import AlertModal from '../../../../components/AlertModal';
+import MemberPermissionModal from './MemberPermission';
 import MemberRoleModal from './MemberRole';
-import { addMemberSelector, membersSelector } from './selectors';
 import MemberSettingPresenter from './presenters';
+import { addMemberSelector, membersSelector } from './selectors';
 
-function MemberSetting({ 
-  open, setOpen, 
+function MemberSetting({
+  open, setOpen,
   members, addMember,
-  doAddMemberProject, doRemoveMemberProject, 
+  doAddMemberProject, doRemoveMemberProject,
   doUpdateStateJoinTask,
   doAssignMemberToAllTask,
 }) {
@@ -38,19 +39,25 @@ function MemberSetting({
           users: newUsers,
         }
       }
-    ) 
+    )
   }
 
   const [openRole, setOpenRole] = React.useState(false);
   const [roleProps, setRoleProps] = React.useState({});
+  const [openPermission, setOpenPermission] = React.useState(false);
+  const [permissionProps, setPermissionProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'ROLE': 
+      case 'ROLE':
         setOpenRole(true);
         setRoleProps(props);
+        return;
+      case 'PERMISSION':
+        setOpenPermission(true);
+        setPermissionProps(props);
         return;
       case 'ALERT':
         setOpenAlert(true);
@@ -62,32 +69,32 @@ function MemberSetting({
 
   return (
     <>
-      <MemberSettingPresenter   
-        open={open} setOpen={setOpen} 
+      <MemberSettingPresenter
+        open={open} setOpen={setOpen}
         searchPatern={searchPatern} setSearchPatern={setSearchPatern}
         members={newMembers} addMember={addMember}
-        handleAddMember={member => 
+        handleAddMember={member =>
           doAddMemberProject({
             projectId,
             memberId: get(member, 'id'),
             groupPermission: 0,
             roles: [],
           })
-        } 
-        handleRemoveMember={member => 
+        }
+        handleRemoveMember={member =>
           doRemoveMemberProject({
             projectId,
             memberId: get(member, 'id'),
           })
         }
-        handleUpdateStateJoinTask={(member, state) => 
+        handleUpdateStateJoinTask={(member, state) =>
           doUpdateStateJoinTask({
             projectId,
             memberId: get(member, 'id'),
             state,
           })
         }
-        handleAssignMemberToAllTask={member => 
+        handleAssignMemberToAllTask={member =>
           doAssignMemberToAllTask({
             projectId,
             memberId: get(member, 'id'),
@@ -95,12 +102,17 @@ function MemberSetting({
         }
         handleOpenModal={doOpenModal}
       />
-      <MemberRoleModal 
+      <MemberRoleModal
         open={openRole}
         setOpen={setOpenRole}
         {...roleProps}
       />
-      <AlertModal 
+      <MemberPermissionModal
+        open={openPermission}
+        setOpen={setOpenPermission}
+        {...permissionProps}
+      />
+      <AlertModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
