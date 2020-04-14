@@ -65,6 +65,7 @@ export function* chatForwardFile(payload) {
     const { task_id, file_ids } = payload;
     const res = yield call(apiService.post, `/task/create-chat-forward-file?task_id=${task_id}`, { file_ids });
     yield put(actions.chatForwardFileSuccess(res.data));
+    yield put(actions.loadChat(task_id));
   } catch (error) {
     yield put(actions.chatForwardFileFail(error));
   }

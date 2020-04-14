@@ -12,6 +12,7 @@ import words from 'lodash/words';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
+import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLibraryModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
 import RemindModal from 'views/JobDetailPage/TabPart/RemindTab/RemindModal';
@@ -91,6 +92,7 @@ const FooterPart = ({
   const [isOpenRemind, setOpenRemind] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpenSticker, setOpenSticker] = useState(false);
+  const [isShareFromLib, setShareFromLib] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [suggestions, setSuggestions] = useState(members);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
@@ -212,6 +214,11 @@ const FooterPart = ({
   function onClickRemind() {
     // dispatch(showTab(3))
     setOpenRemind(true)
+  }
+
+  function onClickShareFromLibrary() {
+    setVisibleSendFile(false)
+    setShareFromLib(true)
   }
 
   function insertMention(label, mention) {
@@ -397,7 +404,12 @@ const FooterPart = ({
       />
       <SendFileModal
         open={visibleSendFile}
-        setOpen={() => setVisibleSendFile(false)}
+        setOpen={setVisibleSendFile}
+        onClickShareFromLibrary={onClickShareFromLibrary}
+      />
+      <ShareFromLibraryModal
+        open={isShareFromLib}
+        setOpen={setShareFromLib}
       />
       <RemindModal isOpen={isOpenRemind} setOpen={setOpenRemind} isCreate />
     </div>

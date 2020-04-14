@@ -3,16 +3,14 @@ import { appendChat, chatFile, onUploading } from 'actions/chat/chat';
 import { file as file_icon } from 'assets/fileType';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import { humanFileSize } from 'helpers/jobDetail/stringHelper';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomModal from '../../../../components/CustomModal';
-import DocumentFileModal from './DocumentFileModal';
 import './SendFileModal.scss';
 
-const SendFileModal = ({ open, setOpen }) => {
+const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const [visibleDocumentFile, setVisibleDocumentFile] = useState(false);
 
   function onUploadingHandler(percent) {
     dispatch(onUploading(percent));
@@ -44,14 +42,6 @@ const SendFileModal = ({ open, setOpen }) => {
     setOpen(false)
   };
 
-  function onClickShareDoc() {
-    setVisibleDocumentFile(true)
-  }
-
-  function onCloseShareDoc() {
-    setVisibleDocumentFile(false)
-  }
-
   return (
     <CustomModal
       open={open}
@@ -80,17 +70,11 @@ const SendFileModal = ({ open, setOpen }) => {
         <div className="btn-upload">
           <Button
             variant="outlined"
-            onClick={onClickShareDoc}
+            onClick={onClickShareFromLibrary}
           >
             Chọn từ thư viện
           </Button>
         </div>
-        {visibleDocumentFile && (
-          <DocumentFileModal
-            open={visibleDocumentFile}
-            setOpen={onCloseShareDoc}
-          />
-        )}
       </div>
     </CustomModal>
   );

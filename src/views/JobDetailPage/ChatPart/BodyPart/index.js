@@ -221,7 +221,7 @@ const BodyPart = props => {
         {
           viewedChatMembers.length > 0 &&
           <div className="bodyChat--viewed" onClick={onClickDetailViewed}>
-            Đã xem {showMembers.map(({ avatar }) => <Avatar className="bodyChat--viewedAvatar" src={avatar} />)}
+            Đã xem {showMembers.map(({ avatar }, i) => <Avatar key={i} className="bodyChat--viewedAvatar" src={avatar} />)}
             {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
           </div>
         }
