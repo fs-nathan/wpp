@@ -77,7 +77,8 @@
     text-transform: unset;
     color: #212529;
   }
-  &--bread-crumbs-list {
+  &--bread-crumbs-item {
+    cursor: pointer;
   }
   &--search-box {
   }
