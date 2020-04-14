@@ -1,8 +1,9 @@
 import React from "react";
-import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { connect } from "react-redux";
-import { Route } from "react-router-dom";
+import StickyBox from "react-sticky-box";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
+import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
+import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { groupDetailAttrs } from "./contant/attrs";
 import { GroupDetailProvider } from "./GroupDetailContext";
 import Left from "./Left";
@@ -56,37 +57,31 @@ function HomePage({ groupDetail }) {
         cover,
       }}
     >
-      <Route
-        path="/"
-        render={({ match: { url } }) => (
-          <>
-            <Route
-              path={`${url}`}
-              exact
-              render={(props) => (
-                <Scrollbars autoHide autoHideTimeout={500}>
-                  <div className="views_HomePage___wrapper">
-                    <div className="views_HomePage___container">
-                      <div style={{ gridArea: "left" }}>
-                        <Left />
-                      </div>
-                      <div style={{ gridArea: "logo" }}>
-                        <Logo />
-                      </div>
-                      <div style={{ gridArea: "middle" }}>
-                        <Middle />
-                      </div>
-                      <div style={{ gridArea: "right" }}>
-                        <Right />
-                      </div>
-                    </div>
-                  </div>
-                </Scrollbars>
-              )}
-            />
-          </>
-        )}
-      />
+      <TasksScrollbar>
+        <div className="views_HomePage___wrapper">
+          <div className="views_HomePage___container">
+            <StickyBox
+              className="views_HomePage___left"
+              offsetTop={20}
+              offsetBottom={20}
+            >
+              <Left />
+              <Space height="50px" />
+            </StickyBox>
+
+            <div className="views_HomePage___logo">
+              <Logo />
+            </div>
+            <div className="views_HomePage___middle">
+              <Middle />
+            </div>
+            <StickyBox offsetTop={-320} className="views_HomePage___right">
+              <Right />
+              <Space height="50px" />
+            </StickyBox>
+          </div>
+        </div>
+      </TasksScrollbar>
     </GroupDetailProvider>
   );
 }

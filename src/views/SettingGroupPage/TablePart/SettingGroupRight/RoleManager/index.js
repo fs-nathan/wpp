@@ -38,7 +38,7 @@ function RoleManager({ setHackHeader, ...props }) {
         </StyledTypo>
         <RightHeader>
           <StyledButton size="small" onClick={() => handleOpenModal("CREATE")}>
-            + {t("IDS_WP_CREATE_ORDER")}
+            + {t("Tạo vai trò")}
           </StyledButton>
         </RightHeader>
       </div>

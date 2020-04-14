@@ -129,7 +129,7 @@ export const UploadButton = () => {
         </ColorButton>
       ) : (
         <label htmlFor="raised-button-file">
-          <AddButton onClick={() => {}} label={t("Tải biểu tượng")}></AddButton>
+          <AddButton onClick={() => {}} label={t("Thêm mới")}></AddButton>
         </label>
       )}
       <input

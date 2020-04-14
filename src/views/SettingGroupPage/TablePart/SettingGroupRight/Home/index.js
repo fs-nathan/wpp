@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import AddButton from "./components/AddButton";
 import AddCategotyModal from "./components/AddCategotyModal";
+import { ChipGroup } from "./components/ChipGroup";
 import { DraggableList } from "./components/DraggableList";
 import { Stack } from "./components/Stack";
 import { SubTitle } from "./components/SubTitle";
@@ -19,13 +20,6 @@ import {
 } from "./redux";
 import { apiCallStatus } from "./redux/apiCall/types";
 import useAsyncTracker from "./redux/apiCall/useAsyncTracker";
-const ChipGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  & > * {
-    margin: 0.5em;
-  }
-`;
 const HomeWrap = styled.div`
   padding: 20px;
   font-size: 16px;

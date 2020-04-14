@@ -9,11 +9,27 @@
   margin: auto;
   height: 100%;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 300px auto;
   grid-template-columns: 250px minmax(auto, 3fr) minmax(300px, 2fr);
   column-gap: 20px;
+  align-items: flex-start;
   row-gap: 20px;
   grid-template-areas:
     "left logo logo"
     "left middle right";
+}
+.views_HomePage___left {
+  grid-area: left;
+}
+.views_HomePage___logo {
+  grid-area: logo;
+  overflow: hidden;
+  height: 300px;
+}
+.views_HomePage___middle {
+  grid-area: middle;
+  max-width: 600px;
+}
+.views_HomePage___right {
+  grid-area: right;
 }

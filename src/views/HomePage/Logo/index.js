@@ -7,6 +7,7 @@ function Logo() {
     <div
       style={{
         position: "relative",
+        height: "100%",
       }}
     >
       <img

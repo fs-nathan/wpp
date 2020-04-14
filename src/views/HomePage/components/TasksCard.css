@@ -1,0 +1,22 @@
+.comp_TasksCard__Container {
+  font-size: 15px;
+}
+.comp_TasksCard__HeaderAvatar {
+  font-size: 15px;
+}
+.comp_TasksCard__Header {
+  align-items: center;
+}
+.comp_TasksCard__HeaderTitle {
+  font-size: 15px;
+}
+.comp_TasksCard__HeaderSubTitle {
+  font-size: 15px;
+}
+.comp_TasksCard__Content {
+  font-size: 15px;
+}
+.comp_TasksCard__HeaderAction {
+  align-self: center;
+  margin: 0;
+}

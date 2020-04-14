@@ -48,6 +48,7 @@
     "react-scripts": "3.2.0",
     "react-select": "^3.0.8",
     "react-simple-timefield": "^3.0.0",
+    "react-sticky-box": "^0.9.3",
     "react-swipeable-views": "^0.13.3",
     "react-use": "^13.27.0",
     "redux": "^4.0.4",
