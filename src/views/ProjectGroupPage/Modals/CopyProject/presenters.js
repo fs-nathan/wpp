@@ -71,6 +71,12 @@ const RightContainer = ({ className = '', ...props }) =>
     {...props}
   />;
 
+const Subtitle = ({ className = '', ...props }) =>
+  <Typography
+    className={`view_ProjectGroup_EditProjectModa_Modal___subtitle ${className}`}
+    {...props}
+  />;
+
 function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject }) {
 
   if (get(projectGroup, 'projects', []).length > 0)
@@ -191,8 +197,8 @@ function CopyProject({
               label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_DESC")}
               helperText={get(errorDescription, 'message', '')}
             />
-            <ColorTypo>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}</ColorTypo>
             <StyledFormControl component="div" fullWidth>
+              <Subtitle>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}</Subtitle>
               <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
                 <FormControlLabel value={true} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.KEEP")} />
                 <FormControlLabel value={false} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.DISCARD")} />

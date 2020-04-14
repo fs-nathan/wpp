@@ -37,8 +37,8 @@ function CreateNewOrUpdateGroupTask({
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateGroupTask(name, description)}
     >
-      <ColorTypo>Tên nhóm công việc</ColorTypo>
       <CustomTextField
+        label='Tên nhóm công việc'
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
@@ -50,8 +50,8 @@ function CreateNewOrUpdateGroupTask({
           </ColorTypo>
         }
       />
-      <ColorTypo>Mô tả nhóm công việc</ColorTypo>
       <CustomTextbox
+        label='Mô tả nhóm công việc'
         value={description}
         onChange={value => setDescription(value)}
         helperText={get(errorDescription, 'message', '')}
