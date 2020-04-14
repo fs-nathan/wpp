@@ -369,7 +369,7 @@ const ShareDocumentModal = props => {
           <div className="list-member">
             <Scrollbars autoHide autoHideTimeout={500}>
               <StyledList>
-                {listMemberShared.map((item, index) => (
+                {listMemberShared.map(item => (
                   <StyledListItem
                     key={item.member_id}
                     className={`item-member ${
