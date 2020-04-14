@@ -1,7 +1,7 @@
 // import { Scrollbars } from 'react-custom-scrollbars';
 import { Avatar, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import { mdiChevronRight, mdiContentCopy, mdiDownloadOutline, mdiSwapVertical, mdiTrashCanOutline } from '@mdi/js';
+import { mdiChevronRight, mdiClose, mdiContentCopy, mdiDownloadOutline, mdiMagnify, mdiSwapVertical, mdiTrashCanOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { chatForwardFile } from 'actions/chat/chat';
 import { actionDeleteFile, actionDeleteFolder, actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionSelectedFolder, resetListSelectDocument } from 'actions/documents';
@@ -35,11 +35,28 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
   const [selectedMenu, setSelectedMenu] = useState(DEFAULT_ITEM);
   const [selectedFilesIds, setSelectedFilesIds] = useState([]);
   const [alert, setAlert] = useState(false);
+  const [isSearching, setSearching] = useState(false);
+  const [isSorted, setSorted] = useState(false);
+  const [searchKey, setSearchKey] = useState('');
   const [fileSelectAction, setFileSelectAction] = useState(null);
 
   useEffect(() => {
     dispatch(actionFetchListMyDocument());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (searchKey) {
+      const filtered = listData.filter(({ name }) => name.indexOf(searchKey) !== -1)
+      setListData(filtered)
+    }
+    // eslint-disable-next-line
+  }, [searchKey]);
+
+  useEffect(() => {
+    const sorted = listData.reverse()
+    setListData(sorted)
+    // eslint-disable-next-line
+  }, [isSorted]);
 
   useEffect(() => {
     const key = selectedMenu.key;
@@ -198,19 +215,17 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     return function onClickBreadCrumb() {
       // do not anything if click ending item
       if (idx >= breadCrumbs.length - 1) return false;
-      // call action
-      dispatch(actionFetchListMyDocument({ folder_id: id }, true));
-      //update list bread crumbs
       if (idx === 0) {
         dispatch(actionChangeBreadCrumbs([]));
+        dispatch(actionFetchListMyDocument());
       } else {
         let newList = [...breadCrumbs];
         newList.length = idx + 1;
         dispatch(actionChangeBreadCrumbs(newList));
+        dispatch(actionFetchListMyDocument({ folder_id: id }, true));
       }
     }
   }
-
 
   return (
     <JobDetailModalWrap
@@ -230,34 +245,51 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
           <MenuList className="ShareFromLibraryModal--MenuList" onChangeMenu={handleOnChangeMenu} />
         </div>
         <div className="ShareFromLibraryModal--right" >
-          <div className="ShareFromLibraryModal--right-header-content" >
-            <div className="ShareFromLibraryModal--content-title" >
-              <div className="ShareFromLibraryModal--lb-title" >
-                <Icon
-                  className="ShareFromLibraryModal--iconTitle"
-                  path={selectedMenu.icon}
-                  size={1.4}
-                  color={selectedMenu.color}
-                />
-                {selectedMenu.title}
+          {
+            !isSearching ?
+              <div className="ShareFromLibraryModal--right-header-content" >
+                <div className="ShareFromLibraryModal--content-title" >
+                  <div className="ShareFromLibraryModal--lb-title" >
+                    <Icon
+                      className="ShareFromLibraryModal--iconTitle"
+                      path={selectedMenu.icon}
+                      size={1.4}
+                      color={selectedMenu.color}
+                    />
+                    {selectedMenu.title}
+                  </div>
+                  <div className="ShareFromLibraryModal--bread-crumbs-list" >
+                    <Breadcrumbs separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />} aria-label="breadcrumb">
+                      {(selectedMenu.key === 'myDocument') && breadCrumbs.map(({ name, id }, index) =>
+                        <div
+                          className="ShareFromLibraryModal--bread-crumbs-item"
+                          key={id}
+                          onClick={handleClickLink(index, id)}>
+                          {name}
+                        </div>
+                      )}
+                    </Breadcrumbs>
+                  </div>
+                </div>
+                <div className="ShareFromLibraryModal--search-box" onClick={() => setSearching(!isSearching)} >
+                  <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' />
+                  <div className="ShareFromLibraryModal--lb-title-text" >
+                    Tìm kiếm
+                  </div>
+                </div>
               </div>
-              <div className="ShareFromLibraryModal--bread-crumbs-list" >
-                <Breadcrumbs separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />} aria-label="breadcrumb">
-                  {(selectedMenu.key === 'myDocument') && breadCrumbs.map(({ name, id }, index) =>
-                    <div
-                      className="ShareFromLibraryModal--bread-crumbs-item"
-                      key={id}
-                      onClick={handleClickLink(index, id)}>
-                      {name}
-                    </div>
-                  )}
-                </Breadcrumbs>
+              :
+              <div className="ShareFromLibraryModal--searching" >
+                <SearchInput
+                  value={searchKey}
+                  onChange={evt => setSearchKey(evt.target.value)}
+                  className="ShareFromLibraryModal--SearchInput"
+                  placeholder="Nhập tên tài liệu và ấn Enter để xem kết quả tìm kiếm" />
+                <IconButton className="ShareFromLibraryModal--iconButton" onClick={() => setSearching(false)}>
+                  <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
+                </IconButton>
               </div>
-            </div>
-            <div className="ShareFromLibraryModal--search-box" >
-              <SearchInput className="ShareFromLibraryModal--SearchInput" placeholder="Tìm tài liệu" />
-            </div>
-          </div>
+          }
           <div className="ShareFromLibraryModal--right-table-content" >
             {/* <Scrollbars autoHide autoHideTimeout={500}> */}
             <Table className="ShareFromLibraryModal--table-container" >
@@ -265,14 +297,14 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                 <TableRow className="ShareFromLibraryModal--TableRow" >
                   <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" >
                     <Checkbox color="primary"
-                      checked={listData.length && listData.every(({ id, type }) => type === 'folder' || selectedFilesIds.indexOf(id) !== -1)}
+                      checked={listData.length > 0 && listData.every(({ id, type }) => type === 'folder' || selectedFilesIds.indexOf(id) !== -1)}
                       onClick={selectAll}
                     />
                   </TableCell>
                   <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
                   <TableCell className="ShareFromLibraryModal--TableCell" >
                     {t('Tên')}
-                    <IconButton size="small">
+                    <IconButton size="small" onClick={() => setSorted(!isSorted)}>
                       <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                     </IconButton>
                   </TableCell>
@@ -335,6 +367,26 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                 ))}
               </TableBody>
             </Table>
+            {
+              (listData.length === 0 && searchKey) &&
+              <div className="ShareFromLibraryModal--notFound">
+                Không tìm thấy "<b>{searchKey}</b>" trong danh sách tài liệu của bạn
+                  <div>
+                  Đề xuất:
+                  </div>
+                <ul>
+                  <li>
+                    Kiểm tra lại chính tả từ khoá đã nhập
+                    </li>
+                  <li>
+                    Hãy thử những từ khoá khác
+                    </li>
+                  <li>
+                    Hãy bớt từ khoá
+                    </li>
+                </ul>
+              </div>
+            }
             {/* </Scrollbars> */}
             <AlertModal
               open={alert}

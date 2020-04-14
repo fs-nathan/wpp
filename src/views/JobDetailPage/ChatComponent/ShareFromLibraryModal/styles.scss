@@ -50,6 +50,40 @@
     justify-content: space-between;
     padding: 5px 20px;
   }
+  &--search-box {
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    svg {
+      margin: auto;
+    }
+  }
+  &--lb-title-text {
+    text-align: center;
+  }
+  &--searching {
+    position: relative;
+    padding: 5px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    height: 60px;
+    justify-content: center;
+    display: flex;
+    .MuiInputBase-root {
+      background-color: transparent;
+    }
+  }
+  &--SearchInput {
+    margin: auto;
+  }
+  &--notFound {
+    // text-align: center;
+    padding: 30px 10px 0 40px;
+  }
+  &--iconButton {
+    // position: absolute;
+    // right: 10px;
+    // top: 20px;
+  }
   &--right-table-content {
     // height: calc(100% - 64px);
 
@@ -79,8 +113,6 @@
   }
   &--bread-crumbs-item {
     cursor: pointer;
-  }
-  &--search-box {
   }
   &--table-container {
   }
