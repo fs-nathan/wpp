@@ -1,4 +1,4 @@
-import { Box, IconButton, Menu, MenuItem } from "@material-ui/core";
+import { Box, IconButton } from "@material-ui/core";
 import {
   mdiAccountKey,
   mdiBorderNoneVariant,
@@ -23,7 +23,6 @@ import { Routes } from "constants/routes";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { emptyArray } from "views/JobPage/contants/defaultValue";
 import {
   createMapPropsFromAttrs,
   get,
@@ -38,6 +37,7 @@ import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import { GroupPermissionSettingsCotnext } from "..";
 import AddGroupPermissionModal from "../components/AddGroupPermissionModal";
 import DeleteGroupPermissionModal from "../components/DeleteGroupPermissionModal";
+import { ItemMenu } from "../components/ItemMenu";
 import UpdateInfoGroupPermissionModal from "../components/UpdateInfoGroupPermissionModal";
 import { groupPermissionAttr } from "../contants";
 const CustomLeftSideContainer = ({
@@ -112,38 +112,6 @@ const CustomLeftSideContainer = ({
         <div className="comp_LeftSideContainer___body">{children}</div>
       </Container>
     </LoadingOverlay>
-  );
-};
-const ItemMenu = ({
-  menuAnchor,
-  onClose,
-  onItemClick,
-  options = emptyArray,
-}) => {
-  return (
-    <Menu
-      id="simple-menu"
-      anchorEl={menuAnchor}
-      keepMounted
-      open={Boolean(menuAnchor)}
-      onClose={onClose}
-      transformOrigin={{
-        vertical: -30,
-        horizontal: "right",
-      }}
-    >
-      {options.map(({ key, label }) => (
-        <MenuItem
-          key={key}
-          onClick={(evt) => {
-            onItemClick(key);
-            onClose();
-          }}
-        >
-          {label}
-        </MenuItem>
-      ))}
-    </Menu>
   );
 };
 const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {

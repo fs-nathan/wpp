@@ -75,7 +75,11 @@ function HomePage({ groupDetail }) {
             <div className="views_HomePage___middle">
               <Middle />
             </div>
-            <StickyBox offsetTop={-320} className="views_HomePage___right">
+            <StickyBox
+              offsetTop={-320}
+              offsetBottom={300}
+              className="views_HomePage___right"
+            >
               <Right />
               <Space height="50px" />
             </StickyBox>

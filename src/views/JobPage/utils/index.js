@@ -1,4 +1,12 @@
-import { get, isFunction, merge, remove, template, uniqueId } from "lodash";
+import {
+  chunk,
+  get,
+  isFunction,
+  merge,
+  remove,
+  template,
+  uniqueId,
+} from "lodash";
 import { taskPriorityMap, taskStatusMap } from "../contants/attrs";
 import { emptyObject } from "../contants/defaultValue";
 import * as chart from "./chart";
@@ -86,6 +94,7 @@ export {
   isFunction,
   merge,
   uniqueId,
+  chunk,
   template,
   createValidate,
   loginlineParams,

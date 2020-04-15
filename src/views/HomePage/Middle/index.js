@@ -6,7 +6,7 @@ import {
   IconButton,
   Typography,
 } from "@material-ui/core";
-import { MoreVert, Search } from "@material-ui/icons";
+import { Search } from "@material-ui/icons";
 import { mdiDotsHorizontal } from "@mdi/js";
 import Icon from "@mdi/react";
 import React from "react";
@@ -15,6 +15,7 @@ import { loginlineParams, template } from "views/JobPage/utils";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
+import PostList from "./PostList";
 
 function Middle() {
   const { t } = useTranslation();
@@ -119,45 +120,7 @@ function Middle() {
           </Stack>
         </TasksCard.Content>
       </TasksCard.Container>
-      {new Array(30).fill(true).map((v, i) => (
-        <TasksCard.Container key={i}>
-          <TasksCard.Header
-            avatar={
-              <TasksCard.HeaderAvatar
-                style={{ width: "50px", height: "50px" }}
-                aria-label="tasks"
-              >
-                R
-              </TasksCard.HeaderAvatar>
-            }
-            action={
-              <div>
-                <IconButton size="small" aria-label="settings">
-                  <MoreVert />
-                </IconButton>
-              </div>
-            }
-            title={
-              <TasksCard.HeaderTitle>
-                <b style={{ marginRight: "10px" }}>Trần thu phương</b> Chuyên
-                viên - Phòng hành chính nhân sự
-              </TasksCard.HeaderTitle>
-            }
-            subheader={
-              <TasksCard.HeaderSubTitle>
-                September 14, 2016
-              </TasksCard.HeaderSubTitle>
-            }
-          />
-          <TasksCard.Content>
-            <Typography variant="body2" color="textSecondary" component="p">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </TasksCard.Content>
-        </TasksCard.Container>
-      ))}
+      <PostList />
     </Stack>
   );
 }
