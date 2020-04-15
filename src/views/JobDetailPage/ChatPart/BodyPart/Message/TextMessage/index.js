@@ -19,22 +19,13 @@ function getChatParent(chat_parent) {
   return <TextMessage {...chat_parent} isReply></TextMessage>
 }
 
-function getRichContent(content = '', members, color) {
+function getRichContent(content = '', tags, color) {
   if (!content) return '';
   let ret = content;
-  const reg = /@{(.*?)}/g;
-  const matches = content.match(reg);
-  if (matches && matches.length) {
-    for (let index = 0; index < matches.length; index++) {
-      const element = matches[index];
-      const mentionId = element.replace('@', '').replace('{', '').replace('}', '');
-      const member = members.find(({ id }) => mentionId === id) || { name: '' };
-      ret = ret.replace(element,
-        `<span className="TextMessage--tag" style="color: ${color};">@${member.name}</span>`
-        // `@${member.name}`
-      );
-    }
-  }
+  tags.forEach(({ id, name }) => {
+    let reg = new RegExp(`@${id}`, 'g');
+    ret = ret.replace(reg, `<span class="TextMessage--tag" style="color: ${color};">@${name}</span>`);
+  })
   // console.log(matches)
   ret = ret.replace('\n', '<br/>');
   // return matches.join(' ')
@@ -60,7 +51,6 @@ const TextMessage = ({
   data_emotion = [],
 }) => {
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
-  const members = useSelector(state => state.taskDetail.taskMember.member);
 
   function getColor() {
     if (isReply) return "#5b5b5b"
@@ -106,7 +96,7 @@ const TextMessage = ({
           {getChatParent(chat_parent)}
           {/* {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)} */}
           <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })}
-            dangerouslySetInnerHTML={{ __html: getRichContent(content, members, getColor()) }}
+            dangerouslySetInnerHTML={{ __html: getRichContent(content, tags, getColor()) }}
           >
           </div>
           {/* {!isReply &&

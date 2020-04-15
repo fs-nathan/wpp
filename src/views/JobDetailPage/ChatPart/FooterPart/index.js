@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, changeStickerKeyWord, chatImage, chatSticker, createChatText, onUploading } from 'actions/chat/chat';
+import { appendChat, changeStickerKeyWord, chatImage, chatSticker, clearTags, createChatText, onUploading, tagMember } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { convertToRaw, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, Modifier } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
@@ -9,7 +9,7 @@ import 'draft-js-mention-plugin/lib/plugin.css';
 import Editor from 'draft-js-plugins-editor';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import words from 'lodash/words';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLibraryModal';
@@ -49,7 +49,8 @@ function getChatContent({ blocks, entityMap }) {
       const { offset, length, key } = entityRanges[index];
       const { data } = entityMap[key];
       // ret = spliceSlice(ret, offset, length, `{${data.mention.id}}`);
-      ret = ret.replace(data.mention.name, `{${data.mention.id}}`)
+      const reg = new RegExp(`@${data.mention.name}`, 'g');
+      ret = ret.replace(reg, `${data.mention.id}`)
     }
     return ret;
   })
@@ -70,8 +71,6 @@ function myKeyBindingFn(e) {
 
   return getDefaultKeyBinding(e);
 }
-
-const added = [];
 
 const FooterPart = ({
   parentMessage,
@@ -112,7 +111,7 @@ const FooterPart = ({
 
   useEffect(() => {
     const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
-    if (content[0] === '@') {
+    if (content[0] === '@' && content.indexOf('\n') !== -1) {
       const stickerKey = content.slice(1)
       dispatch(changeStickerKeyWord(stickerKey))
       const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(stickerKey) !== -1);
@@ -152,7 +151,7 @@ const FooterPart = ({
     dispatch(onUploading(percent));
   }
 
-  const handleUploadImage = useCallback(async e => {
+  const handleUploadImage = async e => {
     const { files } = e.target;
     // console.log('upload image', files);
     const images = [];
@@ -173,7 +172,7 @@ const FooterPart = ({
       data.append("image", files[i], files[i].name)
     }
     dispatch(chatImage(taskId, data, onUploadingHandler))
-  });
+  };
 
   function onClickDeletePreview(i) {
     return () => {
@@ -232,10 +231,11 @@ const FooterPart = ({
     // focus();
   }
 
-  function handleClickMention(data) {
-    // console.log(data)
-    insertMention(`@${data.name} `, data)
+  function handleClickMention(mention) {
+    // console.log(mention)
+    insertMention(`@${mention.name} `, mention)
     // console.log(convertToRaw(editorState.getCurrentContent()))
+    dispatch(tagMember(mention.id))
   }
 
   const onSearchChange = ({ value }) => {
@@ -245,7 +245,7 @@ const FooterPart = ({
   const onAddMention = (mention) => {
     // get the mention object selected
     // console.log('onAddMention! ', log)
-    added.push(mention.id)
+    dispatch(tagMember(mention.id))
   }
 
   const focus = () => {
@@ -254,7 +254,7 @@ const FooterPart = ({
 
   async function handleKeyCommand(command) {
     if (command === 'send') {
-      editorRef.current.blur();
+      // editorRef.current.blur();
       if (imagesQueueUrl.length > 0) {
         const images = [];
         let data = new FormData()
@@ -280,7 +280,7 @@ const FooterPart = ({
       const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
       if (content.trim().length === 0) return;
       // setTextChat('');
-      // dispatch(clearTags());
+      dispatch(clearTags());
       setEditorState(EditorState.createEmpty())
       try {
         const data_chat = {
@@ -289,7 +289,7 @@ const FooterPart = ({
           user_create_id: userId,
           task_id: taskId, content,
           parent_id: parentMessage && parentMessage.id,
-          tags: tagMembers.map(index => members[index].id)
+          tags: tagMembers
         };
         dispatch(appendChat({ data_chat }));
         dispatch(createChatText(data_chat));
@@ -341,18 +341,8 @@ const FooterPart = ({
             <Icon path={mdiAlarmPlus} size={1.2} />
           </IconButton>
         </div>
-        {/* <div>
-          <IconButton className="icon-btn">
-            <img
-              src={IconLike}
-              alt="vtask_like_icon"
-              style={{ width: 25, height: 25 }}
-            />
-          </IconButton>
-        </div> */}
       </div>
       <Message {...parentMessage} isReply></Message>
-      {/* {tagMembers.map(index => <span key={index} className="footerChat--tag">@{members[index].name}</span>)} */}
       <div className="chatBox--preview">
         {imagesQueueUrl.map(({ url }, i) =>
           <div key={i} className="chatBox--imagePreviewWrap">
@@ -364,18 +354,8 @@ const FooterPart = ({
         )}
       </div>
       <div className="wrap-input-message chatBox" id="input_message"
-
         onClick={focus}
       >
-        {/* <input
-          onKeyPress={onKeyPressChat}
-          onKeyDown={onKeyDownChat}
-          className="chat-input"
-          type="text"
-          value={textChat}
-          onChange={onChangeTextChat}
-          placeholder="Nhập @ gợi ý, nội dung thảo luận..."
-        /> */}
         <Editor
           editorState={editorState}
           onChange={setEditorState}

@@ -1,5 +1,4 @@
 import { Avatar, Menu, MenuItem } from '@material-ui/core';
-import { tagMember } from 'actions/chat/chat';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
@@ -16,7 +15,6 @@ const TagModal = ({
 
   function handleClickMember(index) {
     return () => {
-      dispatch(tagMember(index))
       handleClose()
       handleClickMention(members[index])
     }

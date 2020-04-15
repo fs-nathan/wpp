@@ -9,7 +9,9 @@
   padding: 4px;
   border-radius: 2px;
   margin-bottom: 2em;
-  min-height: 140px;
+  min-height: 14px;
+  overflow-y: scroll;
+  max-height: 140px;
   .DraftEditor-root {
     height: 100%;
   }

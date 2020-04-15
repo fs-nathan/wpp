@@ -1,4 +1,5 @@
 import produce from "immer";
+import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
 
 export const initialState = {
@@ -102,11 +103,12 @@ export default (state = initialState, action) =>
       }
       case actionTypes.TAG_MEMBER: {
         const { index } = action;
-        const memberIndex = draft.tagMembers.indexOf(index)
-        if (memberIndex === -1)
-          draft.tagMembers.push(index);
-        else
-          draft.tagMembers.splice(memberIndex, 1);
+        // const memberIndex = draft.tagMembers.indexOf(index)
+        // if (memberIndex === -1)
+        draft.tagMembers.push(index);
+        draft.tagMembers = uniq(draft.tagMembers)
+        // else
+        //   draft.tagMembers.splice(memberIndex, 1);
         break;
       }
       case actionTypes.CLEAR_TAGS: {
