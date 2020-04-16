@@ -1,15 +1,11 @@
-import {
-  LIST_ICON,
-  LIST_ICON_SUCCESS,
-  LIST_ICON_FAIL,
-} from '../../constants/actions/icon/listIcon';
-import { DELETE_ICON_SUCCESS } from '../../constants/actions/icon/deleteIcon';
+import { get, remove } from 'lodash';
 import { CREATE_ICON_SUCCESS } from '../../constants/actions/icon/createIcon';
-import { remove, get, } from 'lodash';
+import { DELETE_ICON_SUCCESS } from '../../constants/actions/icon/deleteIcon';
+import { LIST_ICON, LIST_ICON_FAIL, LIST_ICON_SUCCESS } from '../../constants/actions/icon/listIcon';
 
 export const initialState = {
   data: {
-    icons: [],  
+    icons: [],
     defaults: [],
   },
   error: null,
@@ -25,9 +21,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_ICON_SUCCESS: 
+    case LIST_ICON_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -35,6 +32,7 @@ function reducer(state = initialState, action) {
     case LIST_ICON_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

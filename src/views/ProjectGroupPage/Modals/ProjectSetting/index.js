@@ -10,7 +10,7 @@ import { statusSelector } from './selectors';
 import './style.scss';
 
 function ProjectSetting({
-  curProject = null,
+  curProject = null, canChange = null,
   open, setOpen,
   status,
   doUpdateStatusCopy, doUpdateStatusDate, doUpdateStatusView,
@@ -25,6 +25,7 @@ function ProjectSetting({
     <ProjectSettingPresenter
       open={open} setOpen={setOpen}
       status={status}
+      canChange={canChange}
       handleUpdateStatusCopy={status => doUpdateStatusCopy({ projectId: get(curProject, 'id'), status })}
       handleUpdateStatusDate={status => doUpdateStatusDate({ projectId: get(curProject, 'id'), status })}
       handleUpdateStatusView={status => doUpdateStatusView({ projectId: get(curProject, 'id'), status })}

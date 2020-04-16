@@ -1,18 +1,14 @@
-import {
-  LIST_USER_OF_GROUP,
-  LIST_USER_OF_GROUP_SUCCESS,
-  LIST_USER_OF_GROUP_FAIL,
-} from '../../constants/actions/user/listUserOfGroup';
-import { UPDATE_USER_SUCCESS } from '../../constants/actions/user/updateUser';
-import { SORT_USER_SUCCESS } from '../../constants/actions/user/sortUser';
-import { PUBLIC_MEMBER_SUCCESS } from '../../constants/actions/user/publicMember';
-import { PRIVATE_MEMBER_SUCCESS } from '../../constants/actions/user/privateMember';
+import { find, findIndex, get, remove, slice } from 'lodash';
 import { SORT_ROOM_SUCCESS } from '../../constants/actions/room/sortRoom';
-import { get, findIndex, find, remove, slice } from 'lodash';
+import { LIST_USER_OF_GROUP, LIST_USER_OF_GROUP_FAIL, LIST_USER_OF_GROUP_SUCCESS } from '../../constants/actions/user/listUserOfGroup';
+import { PRIVATE_MEMBER_SUCCESS } from '../../constants/actions/user/privateMember';
+import { PUBLIC_MEMBER_SUCCESS } from '../../constants/actions/user/publicMember';
+import { SORT_USER, SORT_USER_SUCCESS } from '../../constants/actions/user/sortUser';
+import { UPDATE_USER_SUCCESS } from '../../constants/actions/user/updateUser';
 
 export const initialState = {
   data: {
-    rooms: [],  
+    rooms: [],
     maxUser: 0,
   },
   error: null,
@@ -27,9 +23,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_USER_OF_GROUP_SUCCESS: 
+    case LIST_USER_OF_GROUP_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -37,6 +34,7 @@ function reducer(state = initialState, action) {
     case LIST_USER_OF_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
@@ -46,13 +44,13 @@ function reducer(state = initialState, action) {
       newRooms.forEach(room => {
         let users = get(room, 'users', []);
         if (find(
-            users, 
+          users,
+          { id: get(action.options, 'userId') }
+        )) {
+          updatedUser = find(
+            users,
             { id: get(action.options, 'userId') }
-          )) {
-            updatedUser = find(
-              users, 
-              { id: get(action.options, 'userId') }
-            );
+          );
         }
       });
       if (get(updatedUser, 'room') === get(action.options, 'roomId')) {
@@ -93,7 +91,7 @@ function reducer(state = initialState, action) {
       }
       return {
         ...state,
-        data: { 
+        data: {
           ...state.data,
           rooms: newRooms,
         },
@@ -116,7 +114,7 @@ function reducer(state = initialState, action) {
       });
       return {
         ...state,
-        data: { 
+        data: {
           ...state.data,
           rooms: newRooms,
         },
@@ -139,12 +137,13 @@ function reducer(state = initialState, action) {
       });
       return {
         ...state,
-        data: { 
+        data: {
           ...state.data,
           rooms: newRooms,
         },
       };
     }
+    case SORT_USER:
     case SORT_USER_SUCCESS: {
       let removed = [];
       let newRooms = state.data.rooms.map(room => {
@@ -178,8 +177,8 @@ function reducer(state = initialState, action) {
       let newRooms = state.data.rooms;
       const removed = remove(newRooms, { id: get(action.options, 'roomId') });
       newRooms = [
-        ...slice(newRooms, 0, get(action.options, 'sortIndex')), 
-        ...removed, 
+        ...slice(newRooms, 0, get(action.options, 'sortIndex')),
+        ...removed,
         ...slice(newRooms, get(action.options, 'sortIndex'))
       ];
       return {

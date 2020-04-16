@@ -1,8 +1,4 @@
-import {
-  UPDATE_USER,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAIL,
-} from '../../constants/actions/user/updateUser';
+import { UPDATE_USER, UPDATE_USER_FAIL, UPDATE_USER_SUCCESS } from '../../constants/actions/user/updateUser';
 
 export const initialState = {
   data: {},
@@ -18,9 +14,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case UPDATE_USER_SUCCESS: 
+    case UPDATE_USER_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: {},
         error: null,
         loading: false,
@@ -28,6 +25,7 @@ function reducer(state = initialState, action) {
     case UPDATE_USER_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

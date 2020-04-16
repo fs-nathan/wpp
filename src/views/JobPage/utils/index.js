@@ -1,17 +1,26 @@
-import { get, isFunction, merge, template } from "lodash";
-export * from "./chart";
-export * from "./time";
-export {
+import {
+  chunk,
   get,
   isFunction,
   merge,
+  remove,
   template,
-  loginlineParams,
-  loginlineFunc,
-  createMapPropsFromAttrs
-};
+  uniqueId,
+} from "lodash";
+import { taskPriorityMap, taskStatusMap } from "../contants/attrs";
+import { emptyObject } from "../contants/defaultValue";
+import * as chart from "./chart";
+import * as time from "./time";
 
-const loginlineParams = param => {
+function encodeQueryData(data) {
+  const ret = [];
+  for (let d in data) {
+    if (data[d])
+      ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
+  }
+  return ret.join("&");
+}
+const loginlineParams = (param) => {
   console.trace("param", param);
   return param;
 };
@@ -47,12 +56,50 @@ function loginlineFunc(fn, prefix) {
       fn,
       argsName,
       args,
-      result
+      result,
     });
     return result;
   };
 }
-
+const mapQueryStatusAndPriority = (statusFilter) => {
+  const status = ["waiting", "doing", "complete", "expired", "stop"]
+    .map((key) => statusFilter[key] && taskStatusMap[key])
+    .filter((item) => item)
+    .toString();
+  const priority = ["priority_hight", "priority_medium", "priority_low"]
+    .map((key) => statusFilter[key] && taskPriorityMap[key])
+    .filter((item) => item)
+    .toString();
+  return { status, priority };
+};
 const createMapPropsFromAttrs = (strings = []) => (data = {}) => {
-  return strings.map(string => get(data, string));
+  return strings.map((string) => get(data, string));
+};
+const createValidate = (schema) => (values = {}, mapError = {}) => {
+  const { error } = schema.validate(values);
+  return error
+    ? error.details.reduce((result, error) => {
+        const keyError = error.context.key + "." + error.type;
+        if (!mapError[keyError]) return result;
+        result[error.context.key] = mapError[keyError];
+        return result;
+      }, {})
+    : emptyObject;
+};
+export {
+  chart,
+  time,
+  remove,
+  get,
+  isFunction,
+  merge,
+  uniqueId,
+  chunk,
+  template,
+  createValidate,
+  loginlineParams,
+  mapQueryStatusAndPriority,
+  loginlineFunc,
+  createMapPropsFromAttrs,
+  encodeQueryData,
 };

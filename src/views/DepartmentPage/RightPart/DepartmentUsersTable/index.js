@@ -7,6 +7,7 @@ import { privateMember } from '../../../../actions/user/privateMember';
 import { publicMember } from '../../../../actions/user/publicMember';
 import { sortUser } from '../../../../actions/user/sortUser';
 import AlertModal from '../../../../components/AlertModal';
+import { routeSelector } from '../../../MemberPage/selectors';
 import CreateAccountModal from '../../Modals/CreateAccount';
 import LevelManagerModal from '../../Modals/LevelManager';
 import LogoManagerModal from '../../Modals/LogoManager';
@@ -15,11 +16,12 @@ import PermissionSettingsModal from '../../Modals/PermissionSettings';
 import RoleManagerModal from '../../Modals/RoleManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import TitleManagerModal from '../../Modals/TitleManager';
+import { viewPermissionsSelector } from '../../selectors';
 import DepartmentUsersTablePresenter from './presenters';
 import { hasRequirementSelector, publicPrivatePendingsSelector, roomSelector } from './selectors';
 
 function DepartmentUsersTable({
-  room, hasRequirement, publicPrivatePendings,
+  room, hasRequirement, publicPrivatePendings, route, viewPermissions,
   expand, handleExpand,
   doSortUser,
   doPublicMember, doPrivateMember,
@@ -41,40 +43,42 @@ function DepartmentUsersTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'TITLE': {
-        setOpenTitle(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenTitle(true);
         return;
       }
       case 'ROLE': {
-        setOpenRole(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenRole(true);
         return;
       }
       case 'LEVEL': {
-        setOpenLevel(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenLevel(true);
         return;
       }
       case 'MAJOR': {
-        setOpenMajor(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenMajor(true);
         return;
       }
       case 'LOGO': {
-        setOpenLogo(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenLogo(true);
         return;
       }
       case 'TABLE_SETTING': {
-        setOpenTableSetting(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenTableSetting(true);
         return;
       }
       case 'CREATE_ACCOUNT': {
-        setOpenCreateAccount(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenCreateAccount(true);
         return;
       }
       case 'PERMISSION_SETTING': {
-        setOpenPermissionSetting(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenPermissionSetting(true);
         return;
       }
       case 'ALERT': {
-        setOpenAlert(true);
-        setAlertProps(props);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setOpenAlert(true);
+          setAlertProps(props);
+        }
         return;
       }
       default: return;
@@ -84,6 +88,8 @@ function DepartmentUsersTable({
     <>
       <DepartmentUsersTablePresenter
         room={room} hasRequirement={hasRequirement} publicPrivatePendings={publicPrivatePendings}
+        route={route}
+        canModify={get(viewPermissions.permissions, 'can_modify', false)}
         expand={expand} handleExpand={handleExpand}
         handleSortUser={(roomId, userId, sortIndex) => doSortUser({ roomId, userId, sortIndex })}
         handleChangeState={(user) =>
@@ -125,6 +131,8 @@ const mapStateToProps = state => {
     room: roomSelector(state),
     hasRequirement: hasRequirementSelector(state),
     publicPrivatePendings: publicPrivatePendingsSelector(state),
+    route: routeSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   }
 }
 

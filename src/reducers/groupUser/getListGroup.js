@@ -1,8 +1,4 @@
-import {
-  GET_LIST_GROUP,
-  GET_LIST_GROUP_SUCCESS,
-  GET_LIST_GROUP_FAIL,
-} from '../../constants/actions/groupUser/getListGroup';
+import { GET_LIST_GROUP, GET_LIST_GROUP_FAIL, GET_LIST_GROUP_SUCCESS } from '../../constants/actions/groupUser/getListGroup';
 
 export const initialState = {
   data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case GET_LIST_GROUP_SUCCESS: 
+    case GET_LIST_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case GET_LIST_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

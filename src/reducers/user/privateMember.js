@@ -21,6 +21,7 @@ function reducer(state = initialState, action) {
       remove(newPendings, item => item === get(action.options, 'userId'))
       return {
         ...state,
+        ...initialState,
         error: null,
         pendings: newPendings,
       };
@@ -30,6 +31,7 @@ function reducer(state = initialState, action) {
       remove(newPendings, item => item === get(action.options, 'userId'))
       return {
         ...state,
+        ...initialState,
         error: action.error,
         pendings: newPendings,
       };

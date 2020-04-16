@@ -1,22 +1,12 @@
-import {
-  LIST_MAJOR,
-  LIST_MAJOR_SUCCESS,
-  LIST_MAJOR_FAIL,
-} from '../../constants/actions/major/listMajor';
-import {
-  CREATE_MAJOR_SUCCESS,
-} from '../../constants/actions/major/createMajor';
-import {
-  UPDATE_MAJOR_SUCCESS,
-} from '../../constants/actions/major/updateMajor';
-import {
-  DELETE_MAJOR_SUCCESS,
-} from '../../constants/actions/major/deleteMajor';
 import { findIndex, get, remove } from 'lodash';
+import { CREATE_MAJOR_SUCCESS } from '../../constants/actions/major/createMajor';
+import { DELETE_MAJOR_SUCCESS } from '../../constants/actions/major/deleteMajor';
+import { LIST_MAJOR, LIST_MAJOR_FAIL, LIST_MAJOR_SUCCESS } from '../../constants/actions/major/listMajor';
+import { UPDATE_MAJOR_SUCCESS } from '../../constants/actions/major/updateMajor';
 
 export const initialState = {
   data: {
-    majors: [],  
+    majors: [],
   },
   error: null,
   loading: false,
@@ -30,9 +20,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_MAJOR_SUCCESS: 
+    case LIST_MAJOR_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -40,6 +31,7 @@ function reducer(state = initialState, action) {
     case LIST_MAJOR_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

@@ -1,39 +1,40 @@
-import React from 'react';
 import { get } from 'lodash';
-import { useParams, useHistory } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Context as ProjectContext } from '../../index';
-import EditProjectModal from '../../../ProjectGroupPage/Modals/EditProject';
-import AlertModal from '../../../../components/AlertModal';
-import { CustomEventListener, CustomEventDispose, DELETE_PROJECT } from '../../../../constants/events.js';
+import { useHistory, useParams } from 'react-router-dom';
 import { deleteProject } from '../../../../actions/project/deleteProject';
-import { projectSelector } from './selectors';
+import AlertModal from '../../../../components/AlertModal';
+import { CustomEventDispose, CustomEventListener, DELETE_PROJECT } from '../../../../constants/events.js';
+import EditProjectModal from '../../../ProjectGroupPage/Modals/EditProject';
+import { routeSelector } from '../../../ProjectGroupPage/selectors';
+import { Context as ProjectContext } from '../../index';
 import ProjectDetailPresenter from './presenters';
+import { projectSelector } from './selectors';
 
-function ProjectDetail({ 
-  project, 
-  doDeleteProject, 
+function ProjectDetail({
+  project, route,
+  doDeleteProject,
 }) {
-  
+
   const { setProjectId } = React.useContext(ProjectContext);
   const { projectId } = useParams();
   const history = useHistory();
-    
+
   React.useEffect(() => {
     setProjectId(projectId);
   }, [setProjectId, projectId]);
-  
+
   React.useEffect(() => {
     const historyPushHandler = () => {
-      history.push('/projects');
+      history.push(route);
     };
 
     CustomEventListener(DELETE_PROJECT, historyPushHandler);
-    
+
     return () => {
       CustomEventDispose(DELETE_PROJECT, historyPushHandler);
     };
-  }, [history, projectId]);
+  }, [history, projectId, route]);
 
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const [updateProps, setUpdateProps] = React.useState({});
@@ -55,20 +56,20 @@ function ProjectDetail({
       default: return;
     }
   }
-  
+
   return (
     <>
-      <ProjectDetailPresenter 
-        project={project}
-        handleDeleteProject={(project) => 
+      <ProjectDetailPresenter
+        project={project} route={route}
+        handleDeleteProject={(project) =>
           doDeleteProject({ projectId: get(project, 'id') })
         }
         handleOpenModal={doOpenModal}
       />
-      <EditProjectModal 
-        open={openUpdate} 
+      <EditProjectModal
+        open={openUpdate}
         setOpen={setOpenUpdate}
-        {...updateProps} 
+        {...updateProps}
       />
       <AlertModal
         open={openAlert}
@@ -82,6 +83,7 @@ function ProjectDetail({
 const mapStateToProps = state => {
   return {
     project: projectSelector(state),
+    route: routeSelector(state),
   };
 };
 

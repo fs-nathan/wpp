@@ -1,8 +1,4 @@
-import {
-  DELETE_ICON,
-  DELETE_ICON_SUCCESS,
-  DELETE_ICON_FAIL,
-} from '../../constants/actions/icon/deleteIcon';
+import { DELETE_ICON, DELETE_ICON_FAIL, DELETE_ICON_SUCCESS } from '../../constants/actions/icon/deleteIcon';
 
 export const initialState = {
   data: {},
@@ -18,9 +14,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case DELETE_ICON_SUCCESS: 
+    case DELETE_ICON_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -28,6 +25,7 @@ function reducer(state = initialState, action) {
     case DELETE_ICON_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

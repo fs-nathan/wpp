@@ -1,18 +1,8 @@
-import {
-  LIST_TASK,
-  LIST_TASK_SUCCESS,
-  LIST_TASK_FAIL,
-} from '../../constants/actions/task/listTask';
-import {
-  SORT_TASK_SUCCESS,
-} from '../../constants/actions/task/sortTask';
-import {
-  CREATE_TASK_SUCCESS,
-} from '../../constants/actions/task/createTask';
-import {
-  DELETE_TASK_SUCCESS,
-} from '../../constants/actions/task/deleteTask';
-import { get, findIndex, remove, slice, find } from 'lodash';
+import { find, findIndex, get, remove, slice } from 'lodash';
+import { CREATE_TASK_SUCCESS } from '../../constants/actions/task/createTask';
+import { DELETE_TASK_SUCCESS } from '../../constants/actions/task/deleteTask';
+import { LIST_TASK, LIST_TASK_FAIL, LIST_TASK_SUCCESS } from '../../constants/actions/task/listTask';
+import { SORT_TASK, SORT_TASK_SUCCESS } from '../../constants/actions/task/sortTask';
 
 export const initialState = {
   data: {
@@ -30,9 +20,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_TASK_SUCCESS: 
+    case LIST_TASK_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -40,13 +31,14 @@ function reducer(state = initialState, action) {
     case LIST_TASK_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
     case CREATE_TASK_SUCCESS: {
-      const newTasks = state.data.tasks.map(groupTask => 
+      const newTasks = state.data.tasks.map(groupTask =>
         get(groupTask, 'id') === get(action.data, 'task.group_task')
-          ?  ({
+          ? ({
             ...groupTask,
             tasks: [...groupTask.tasks, get(action.data, 'task')]
           })
@@ -78,6 +70,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    case SORT_TASK:
     case SORT_TASK_SUCCESS: {
       let removed = [];
       let tasks = state.data.tasks.map(task => {

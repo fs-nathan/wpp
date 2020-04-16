@@ -1,11 +1,7 @@
-import {
-  UPLOAD_DOCUMENTS_USER,
-  UPLOAD_DOCUMENTS_USER_SUCCESS,
-  UPLOAD_DOCUMENTS_USER_FAIL,
-} from '../../constants/actions/user/uploadDocumentsUser';
+import { UPLOAD_DOCUMENTS_USER, UPLOAD_DOCUMENTS_USER_FAIL, UPLOAD_DOCUMENTS_USER_SUCCESS } from '../../constants/actions/user/uploadDocumentsUser';
 
 export const initialState = {
-  data: {  
+  data: {
     documents: [],
   },
   error: null,
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case UPLOAD_DOCUMENTS_USER_SUCCESS: 
+    case UPLOAD_DOCUMENTS_USER_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case UPLOAD_DOCUMENTS_USER_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

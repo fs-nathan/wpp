@@ -1,18 +1,13 @@
-import {
-	GET_ALL_GROUP_TASK,
-	GET_ALL_GROUP_TASK_SUCCESS,
-	GET_ALL_GROUP_TASK_FAIL,
-	GET_ALL_GROUP_TASK_RESET,
-} from '../../constants/actions/groupTask/getAllGroupTask';
-import { get, remove, map, findIndex } from 'lodash';
+import { findIndex, get, map, remove } from 'lodash';
 import { COPY_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/copyGroupTask';
 import { CREATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/createGroupTask';
 import { DELETE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/deleteGroupTask';
+import { GET_ALL_GROUP_TASK, GET_ALL_GROUP_TASK_FAIL, GET_ALL_GROUP_TASK_RESET, GET_ALL_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/getAllGroupTask';
 import { UPDATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/updateGroupTask ';
 
 export const initialState = {
 	data: {
-		groupTasks: [],  
+		groupTasks: [],
 	},
 	error: null,
 	loading: false,
@@ -26,9 +21,10 @@ function reducer(state = initialState, action) {
 				error: null,
 				loading: action.quite ? false : true,
 			};
-		case GET_ALL_GROUP_TASK_SUCCESS: 
+		case GET_ALL_GROUP_TASK_SUCCESS:
 			return {
-				...state, 
+				...state,
+				...initialState,
 				data: action.data,
 				error: null,
 				loading: false,
@@ -36,17 +32,14 @@ function reducer(state = initialState, action) {
 		case GET_ALL_GROUP_TASK_FAIL:
 			return {
 				...state,
+				...initialState,
 				error: action.error,
 				loading: false,
 			};
 		case GET_ALL_GROUP_TASK_RESET:
 			return {
 				...state,
-				data: {
-					groupTasks: [],  
-				},
-				error: null,
-				loading: false,
+				...initialState,
 			}
 		case COPY_GROUP_TASK_SUCCESS: {
 			if (get(action.data, 'groupTasks', []).length === 0) {
@@ -55,7 +48,7 @@ function reducer(state = initialState, action) {
 				}
 			} else {
 				const newGroupTasks = [
-					...get(state.data, 'groupTasks', []), 
+					...get(state.data, 'groupTasks', []),
 					...map(
 						get(action.data, 'groupTasks', []),
 						groupTask => ({
@@ -75,7 +68,7 @@ function reducer(state = initialState, action) {
 		}
 		case CREATE_GROUP_TASK_SUCCESS: {
 			const newGroupTasks = [
-				...get(state.data, 'groupTasks', []), 
+				...get(state.data, 'groupTasks', []),
 				{
 					...get(action.data, 'groupTask'),
 				},

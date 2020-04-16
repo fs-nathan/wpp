@@ -1,12 +1,8 @@
-import {
-  CREATE_ROOM,
-  CREATE_ROOM_SUCCESS,
-  CREATE_ROOM_FAIL,
-} from '../../constants/actions/room/createRoom';
+import { CREATE_ROOM, CREATE_ROOM_FAIL, CREATE_ROOM_SUCCESS } from '../../constants/actions/room/createRoom';
 
 export const initialState = {
   data: {
-    room: null,  
+    room: null,
   },
   error: null,
   loading: false,
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case CREATE_ROOM_SUCCESS: 
+    case CREATE_ROOM_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case CREATE_ROOM_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

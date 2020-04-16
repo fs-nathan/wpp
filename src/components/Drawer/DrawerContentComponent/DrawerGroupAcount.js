@@ -58,7 +58,7 @@ const DrawerGroupAcount = props => {
   };
   const handleCopyText = text => {
     window.navigator.clipboard.writeText(text);
-    handleToast('success', `Đã copy ${text}`);
+    handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${text}`);
   };
   const bgColor = props.colors.find(item => item.selected === true);
   return (

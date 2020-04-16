@@ -1,8 +1,4 @@
-import {
-  SORT_TASK,
-  SORT_TASK_SUCCESS,
-  SORT_TASK_FAIL,
-} from '../../constants/actions/task/sortTask';
+import { SORT_TASK, SORT_TASK_FAIL, SORT_TASK_SUCCESS } from '../../constants/actions/task/sortTask';
 
 export const initialState = {
   data: null,
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case SORT_TASK_SUCCESS: 
+    case SORT_TASK_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case SORT_TASK_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

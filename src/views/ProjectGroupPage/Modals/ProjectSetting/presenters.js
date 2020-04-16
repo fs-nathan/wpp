@@ -31,6 +31,7 @@ const CustomFormControlLabel = ({ className = '', ...props }) =>
 function ProjectSetting({
   open, setOpen,
   status,
+  canChange,
   handleUpdateStatusCopy, handleUpdateStatusDate, handleUpdateStatusView,
 }) {
 
@@ -56,7 +57,7 @@ function ProjectSetting({
       >
         {status.error === null && (
           <>
-            <StyledFormControl component='fieldset' fullWidth>
+            {get(canChange, 'date', false) && <StyledFormControl component='fieldset' fullWidth>
               <TitleFormLabel component='legend'>Tiến độ dự án</TitleFormLabel>
               <StyledFormLabel component='legend'>Thiết lập cách nhập tiến độ mặc định khi tạo công việc mới của dự án</StyledFormLabel>
               <RadioGroup aria-label='progress' name='progress' value={progress}
@@ -69,8 +70,8 @@ function ProjectSetting({
                 <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label='Chỉ nhập ngày (không nhập giờ bắt đầu và kết thúc)' />
                 <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label='Không yêu cầu (dành cho công việc không yêu cầu tiến độ)' />
               </RadioGroup>
-            </StyledFormControl>
-            <StyledFormControl component='fieldset' fullWidth>
+            </StyledFormControl>}
+            {get(canChange, 'copy', false) && <StyledFormControl component='fieldset' fullWidth>
               <TitleFormLabel component='legend'>Sao chép dự án</TitleFormLabel>
               <RadioGroup aria-label='progress' name='progress' value={copy}
                 onChange={evt => {
@@ -81,8 +82,8 @@ function ProjectSetting({
                 <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={<React.Fragment>Không được sao chép <small>(mặc định)</small></React.Fragment>} />
                 <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label='Được sao chép' />
               </RadioGroup>
-            </StyledFormControl>
-            <StyledFormControl component='fieldset' fullWidth>
+            </StyledFormControl>}
+            {get(canChange, 'view', false) && <StyledFormControl component='fieldset' fullWidth>
               <TitleFormLabel component='legend'>Chế độ xem dự án mặc định</TitleFormLabel>
               <StyledFormLabel component='legend'>Thiết lập khung hình mặc định khi click vào một dự án: dạng danh sách công việc (Table), dạng sơ đồ gantt (Gantt), dạng thảo luận (Chat)</StyledFormLabel>
               <RadioGroup aria-label='progress' name='progress' value={view}
@@ -95,7 +96,7 @@ function ProjectSetting({
                 <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label='Sơ đồ gantt (Gantt)' />
                 <CustomFormControlLabel value={2} control={<Radio color={'primary'} />} label='Thảo luận (Chat)' />
               </RadioGroup>
-            </StyledFormControl>
+            </StyledFormControl>}
           </>
         )}
       </CustomModal>

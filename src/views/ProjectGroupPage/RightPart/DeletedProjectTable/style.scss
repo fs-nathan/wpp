@@ -1,3 +1,60 @@
 .view_ProjectGroupPage_Table_Deleted___container {
   grid-area: table;
 };
+
+@mixin view_ProjectGroupPage_Table_Deleted___button {
+  height: 25px;
+  text-transform: unset;
+  padding: 2px 8px;
+  font-weight: normal;
+  line-height: 20px;
+  &:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+.view_ProjectGroupPage_Table_Deleted___button {
+  & {
+    & {
+      @include view_ProjectGroupPage_Table_Deleted___button;
+      background-color: #05b50c;
+      color: rgb(220, 220, 220);
+      &:hover {
+        background-color: #024604;
+      }
+    }
+    &-disabled {
+      @include view_ProjectGroupPage_Table_Deleted___button;
+      background-color: #496e4b;
+      cursor: not-allowed;
+      color: rgb(255, 255, 255) !important;
+    }
+  }
+  &-delete {
+    & {
+      @include view_ProjectGroupPage_Table_Deleted___button;
+      background-color: #dc3545;
+      &:hover {
+        background-color: #570f16;
+      }
+      color: rgb(220, 220, 220)
+    }
+    &-disabled {
+      @include view_ProjectGroupPage_Table_Deleted___button;
+      background-color: #a17277;
+      cursor: not-allowed;
+      color: rgb(255, 255, 255) !important;
+    }
+  }
+};
+
+.view_ProjectGroupPage_Table_Deleted___button-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  & > * {
+    min-width: 100px;
+  }
+}

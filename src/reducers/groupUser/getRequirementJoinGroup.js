@@ -1,8 +1,4 @@
-import {
-  GET_REQUIREMENT_JOIN_GROUP,
-  GET_REQUIREMENT_JOIN_GROUP_SUCCESS,
-  GET_REQUIREMENT_JOIN_GROUP_FAIL,
-} from '../../constants/actions/groupUser/getRequirementJoinGroup';
+import { GET_REQUIREMENT_JOIN_GROUP, GET_REQUIREMENT_JOIN_GROUP_FAIL, GET_REQUIREMENT_JOIN_GROUP_SUCCESS } from '../../constants/actions/groupUser/getRequirementJoinGroup';
 
 export const initialState = {
   data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case GET_REQUIREMENT_JOIN_GROUP_SUCCESS: 
+    case GET_REQUIREMENT_JOIN_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case GET_REQUIREMENT_JOIN_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

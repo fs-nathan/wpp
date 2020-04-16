@@ -10,10 +10,12 @@ import { sortProject } from '../../../../actions/project/sortProject';
 import { detailProjectGroup } from '../../../../actions/projectGroup/detailProjectGroup';
 import AlertModal from '../../../../components/AlertModal';
 import { useFilters } from '../../../../components/CustomPopover';
+import { routeSelector } from '../../../ProjectPage/selectors';
 import { Context as ProjectPageContext } from '../../index';
 import CreateProjectModal from '../../Modals/CreateProject';
 import EditProjectModal from '../../Modals/EditProject';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
+import { viewPermissionsSelector } from '../../selectors';
 import AllProjectTablePresenter from './presenters';
 import { bgColorSelector, projectsSelector, showHidePendingsSelector } from './selectors';
 
@@ -26,6 +28,7 @@ function AllProjectTable({
   doShowProject,
   doSortProject,
   isDefault = false,
+  route, viewPermissions,
 }) {
 
   const filters = useFilters();
@@ -73,6 +76,7 @@ function AllProjectTable({
       ...projects,
       projects: _projects,
     });
+    // eslint-disable-next-line
   }, [projects, filterType, sortType]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -86,7 +90,9 @@ function AllProjectTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE': {
-        setOpenCreate(true);
+        if (get(viewPermissions.permissions, 'create_project', false)) {
+          setOpenCreate(true);
+        }
         return;
       }
       case 'UPDATE': {
@@ -111,9 +117,10 @@ function AllProjectTable({
   return (
     <>
       <AllProjectTablePresenter
-        expand={expand} handleExpand={handleExpand} showHidePendings={showHidePendings}
+        expand={expand} handleExpand={handleExpand} showHidePendings={showHidePendings} route={route}
         projects={newProjects}
         bgColor={bgColor}
+        canCreate={get(viewPermissions.permissions, 'create_project', false)}
         filterType={filterType} handleFilterType={type => setFilterType(type)}
         timeType={timeType} handleTimeType={type => setTimeType(type)}
         handleSortType={type => setSortType(oldType => {
@@ -168,6 +175,8 @@ const mapStateToProps = state => {
     projects: projectsSelector(state),
     bgColor: bgColorSelector(state),
     showHidePendings: showHidePendingsSelector(state),
+    route: routeSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   };
 };
 

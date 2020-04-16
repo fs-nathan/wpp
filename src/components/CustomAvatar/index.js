@@ -8,8 +8,6 @@ import { CustomEventDispose, CustomEventListener, DELETE_ICON } from "../../cons
 function CustomAvatar({ src, alt, srcSet, sizes, className, ...rest }) {
   const [imgSrc, setImgSrc] = React.useState({ src });
 
-  console.log(className, rest, alt)
-
   React.useEffect(() => {
     setImgSrc({ src });
   }, [src]);
