@@ -1,6 +1,6 @@
 .UpdateTaskNameMessage {
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 15px;
   max-width: 500px;
   width: 66%;
   margin-left: auto;
@@ -12,8 +12,8 @@
     font-size: 19px;
     padding: 12px;
     text-align: center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
   }
   &--sender {
     width: fit-content;
@@ -21,11 +21,27 @@
     display: flex;
   }
   &--avatarReply {
+    margin-right: 6px;
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
   }
   &--name {
-    font-size: 16px;
+    font-size: 14px;
+    color: #607d8b;
   }
   &--position {
+    font-size: 14px;
+    color: #ababab;
+    margin-left: 5px;
+  }
+  &--room {
+    font-size: 14px;
+    background-color: #eaebed;
+    color: #e47212;
+    padding: 2px 3px;
+    border-radius: 50%;
+    margin-left: 5px;
   }
   &--title {
     font-size: 30px;

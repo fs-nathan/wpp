@@ -3,11 +3,12 @@ import { mdiCommentQuoteOutline, mdiDotsVertical, mdiShare, mdiThumbUp } from '@
 import Icon from '@mdi/react';
 import { chatEmotion, deleteChat } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'clsx';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './styles.scss';
 
-const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat }) => {
+const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSelf }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const emotionsList = useSelector(state => state.chat.emotionsList);
@@ -58,7 +59,7 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat }) => 
   }
 
   return (
-    <div className="CommonMessageAction"  >
+    <div className={clsx("CommonMessageAction", { 'CommonMessageAction__self': isSelf })} >
       <button className="CommonMessageAction--button" onClick={handleReplyChat} >
         <Icon className="CommonMessageAction--icon" path={mdiCommentQuoteOutline} />
       </button>

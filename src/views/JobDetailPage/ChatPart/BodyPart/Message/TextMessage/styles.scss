@@ -16,10 +16,11 @@
     padding: 10px 20px;
     width: auto;
     &__self {
-      width: 75%;
+      width: auto;
       margin-right: 0;
-      margin-left: auto;
+      margin-left: 0;
       background-color: inherit;
+      border: none;
       &-top {
         border-bottom-right-radius: 5px;
       }
@@ -55,9 +56,10 @@
     border: 1px solid #cccccc;
     background-color: #ffffff;
     &Reply {
-      margin-right: 4px;
-      width: 12px;
-      height: 12px;
+      margin-right: 6px;
+      width: 14px;
+      height: 14px;
+      margin-top: 1px;
     }
     &__hidden {
       opacity: 0;

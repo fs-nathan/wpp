@@ -13,7 +13,6 @@ import DeleteOffer from './DeleteOffer';
 import DeleteRemind from './DeleteRemind';
 import DeleteSubTask from './DeleteSubTask';
 import EditPriority from './EditPriority';
-import ExtendTime from './ExtendTime';
 import FileMessage from './FileMessage';
 import HandleOffer from './HandleOffer';
 import ImageMessage from './ImageMessage';
@@ -71,7 +70,7 @@ const Message = props => {
     case CHAT_TYPE.EDIT_PRIORITY:
       return <EditPriority {...props} />;
     case CHAT_TYPE.EXTEND_TIME:
-      return <ExtendTime {...props} />;
+      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Extend time" />;
     case CHAT_TYPE.UPDATE_COMPLETE:
       return <UpdateComplete {...props} />;
     case CHAT_TYPE.COMPLETE_SUBTASK:

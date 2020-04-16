@@ -104,21 +104,24 @@
     font-weight: 500;
   }
   &--sending {
-    margin-top: 4px;
+    margin-top: 6px;
     padding-right: 10px;
     color: #666666;
     text-align: right;
     &Fail {
-      color: #d6a622;
+      color: #bcbcbc;
+      font-size: 12px;
     }
     &Delete {
-      color: #cf2812;
-      margin: 0 4px;
+      color: #f44336;
+      margin: 0 10px;
       cursor: pointer;
+      font-size: 12px;
     }
     &Resend {
-      color: #1372df;
+      color: #009cf3;
       cursor: pointer;
+      font-size: 12px;
     }
   }
   &--viewed {
@@ -131,10 +134,21 @@
       margin: 0 2px;
     }
   }
+  &--loader {
+    font-size: 12px;
+    padding: 5px 10px;
+    background-color: #dbdbdb;
+    color: #ffffff;
+    border-radius: 30px;
+    width: fit-content;
+    text-align: center;
+    margin: 10px auto;
+  }
   .wrap-time {
     position: relative;
     // margin-bottom: 10px;
     height: 40px;
+    margin: 30px 0 0;
     .line {
       border: 1px solid #e6e7e8;
       position: absolute;

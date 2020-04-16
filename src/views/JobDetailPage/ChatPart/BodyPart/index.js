@@ -47,7 +47,7 @@ const BodyPart = props => {
     // eslint-disable-next-line
   }, [viewedChatMembers])
 
-  const { total_page, page = 1 } = chats.paging || {};
+  const { total_page, page } = chats.paging || {};
   const currentPage = page === null ? total_page : page
   useEffect(() => {
     const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
@@ -73,7 +73,8 @@ const BodyPart = props => {
         if (prevChat.user_create_id === chat.user_create_id) {
           chatPosition = 'mid';
           const nextChat = chatsWithTime[i + 1]
-          if (!nextChat || nextChat.user_create_id !== chat.user_create_id) {
+          if ((!nextChat || nextChat.user_create_id !== chat.user_create_id)
+            || (nextChat.type !== CHAT_TYPE.FILE && nextChat.type !== CHAT_TYPE.TEXT)) {
             chatPosition = 'bot';
           }
         }
@@ -159,53 +160,56 @@ const BodyPart = props => {
         pageStart={currentPage}
         loadMore={loadMoreChat}
         hasMore={currentPage > 1}
-        loader={<div className="loader" key={0}>Đang tải ...</div>}
+        loader={<div className="bodyChat--loader" key={0}>Đang tải ...</div>}
         useWindow={false}
         getScrollParent={() => chatRef.current}
       >
-        <div className="wrap-time">
-          <div className="time">{date_create}</div>
-        </div>
-        <div className="wrap-common-row">
-        </div>
-        <div className="wrap-common-row">
-          <div className="bodyChat--project">
-            <Avatar
-              alt="creator"
-              src={user_create.avatar}
-              className="bodyChat--projectAvatar"
-            />
-            <div className="bodyChat--notifyName">{`${user_create.name} đã tạo công việc mới`}</div>
-            <div className="bodyChat--projectName">{name}</div>
-            <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
-            <button onClick={onClickCreateMember}
-              className="bodyChat--buttonAddMember">
-              + Thêm thành viên
+        {
+          currentPage === 1 &&
+          <React.Fragment>
+            <div className="wrap-time">
+              <div className="time">{date_create}</div>
+            </div>
+            <div className="wrap-common-row">
+              <div className="bodyChat--project">
+                <Avatar
+                  alt="creator"
+                  src={user_create.avatar}
+                  className="bodyChat--projectAvatar"
+                />
+                <div className="bodyChat--notifyName">{`${user_create.name} đã tạo công việc mới`}</div>
+                <div className="bodyChat--projectName">{name}</div>
+                <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
+                <button onClick={onClickCreateMember}
+                  className="bodyChat--buttonAddMember">
+                  + Thêm thành viên
             </button>
-          </div>
-        </div>
-        <div className="bodyChat--introRow">
-          <div className="bodyChat--introImages">
-            <div className="bodyChat--introItem bodyChat--introItem__left">
-              <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
-              <div className="bodyChat--introTitle">
-                Thảo luận
-          </div>
+              </div>
             </div>
-            <div className="bodyChat--introItem">
-              <img alt="intro" src="/images/intro/intro-bg-3.png"></img>
-              <div className="bodyChat--introTitle">
-                Quản lý
-          </div>
+            <div className="bodyChat--introRow">
+              <div className="bodyChat--introImages">
+                <div className="bodyChat--introItem bodyChat--introItem__left">
+                  <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
+                  <div className="bodyChat--introTitle">
+                    Thảo luận
+                  </div>
+                </div>
+                <div className="bodyChat--introItem">
+                  <img alt="intro" src="/images/intro/intro-bg-3.png"></img>
+                  <div className="bodyChat--introTitle">
+                    Quản lý
+                  </div>
+                </div>
+                <div className="bodyChat--introItem bodyChat--introItem__right">
+                  <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
+                  <div className="bodyChat--introTitle">
+                    Chia sẻ
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="bodyChat--introItem bodyChat--introItem__right">
-              <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
-              <div className="bodyChat--introTitle">
-                Chia sẻ
-          </div>
-            </div>
-          </div>
-        </div>
+          </React.Fragment>
+        }
         {
           showedChats.map((el, id) => <Message {...el}
             key={id}

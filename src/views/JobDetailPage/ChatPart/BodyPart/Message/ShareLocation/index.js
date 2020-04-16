@@ -35,15 +35,15 @@ const ShareLocation = ({
         Thông báo
         </div>
       <div className="UpdateTaskNameMessage--sender" >
-        <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
-        <div className="TextMessage--name" >
+        <Avatar className="UpdateTaskNameMessage--avatarReply" src={user_create_avatar} />
+        <div className="UpdateTaskNameMessage--name" >
           {user_create_name}
         </div>
-        <div className="TextMessage--position" >
+        <div className="UpdateTaskNameMessage--position" >
           {user_create_position}
         </div>
         {user_create_roles[0] &&
-          <div className="TextMessage--room"  >
+          <div className="UpdateTaskNameMessage--room"  >
             {user_create_roles[0]}
           </div>
         }
