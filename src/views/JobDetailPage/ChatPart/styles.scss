@@ -3,6 +3,8 @@
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   height: calc(100vh - 56px);
   position: relative;
+  display: flex;
+  flex-direction: column;
   .wrap-header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding: 0 10px;
@@ -10,7 +12,7 @@
   }
   .wrap-body {
     background-color: #f8f8f8;
-    height: calc(100% - 230px);
+    // height: calc(100% - 230px);
     padding: 10px;
     overflow-x: hidden;
     scrollbar-width: thin;
@@ -21,7 +23,7 @@
   }
   .wrap-footer {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    height: 100px;
+    // height: 100px;
     position: relative;
   }
   .drop-area {
