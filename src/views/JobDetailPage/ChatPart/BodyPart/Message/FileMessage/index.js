@@ -83,7 +83,7 @@ const FileMessage = ({
           "TextMessage--reply": isReply,
           "TextMessage--rightContentWrap__self": is_me
         })}
-        style={{ backgroundColor: is_me ? groupActiveColor : 'inherit' }}
+        style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
       >
         <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
           {

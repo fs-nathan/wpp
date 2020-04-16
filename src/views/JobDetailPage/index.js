@@ -1,4 +1,5 @@
 import { getEmotions, getListStickersRequest } from 'actions/chat/chat';
+import last from 'lodash/last';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeNoticeModal } from '../../actions/system/system';
@@ -15,7 +16,6 @@ function JobDetailPage(props) {
   const url = new URL(window.location.href);
   const taskId = useSelector(taskIdSelector) || url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  let id = props.history.location.pathname.substring(18);
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -28,16 +28,16 @@ function JobDetailPage(props) {
   }, [dispatch]);
 
   useEffect(() => {
-    const chooseProject = project => dispatch(taskDetailAction.chooseProject(project))
-    const getDetailProject = project_id => dispatch(taskDetailAction.getProjectDetail(project_id))
-    // console.log({ id });
+    const path = url.pathname;
+    const id = last(path.split('/'));
+    // console.log({ id, path });
     if (id.length > 0) {
       if (id !== projectId) {
-        getDetailProject(id);
-        chooseProject({ id });
+        dispatch(taskDetailAction.chooseProject({ id }))
+        dispatch(taskDetailAction.getProjectDetail(id))
       }
     }
-  }, [dispatch, id, projectId]);
+  }, [dispatch, projectId, url]);
 
   useEffect(() => {
     if (taskId) {

@@ -35,44 +35,54 @@ const BodyPart = props => {
   const [forwardChat, setForwardChat] = React.useState(null);
   const [chatEmotion, setChatEmotion] = React.useState([]);
   const [openDetailEmotionModal, setOpenDetailEmotionModal] = React.useState(false);
+  const [showMembers, setShowMembers] = React.useState(viewedChatMembers);
+  const [showedChats, setShowChats] = React.useState(viewedChatMembers);
 
-  let showMembers = viewedChatMembers;
   const imgNum = 5;
   const plusMember = viewedChatMembers.length - imgNum;
-  if (plusMember > 0) {
-    showMembers = viewedChatMembers.slice(0, imgNum);
-  }
+  useEffect(() => {
+    if (plusMember > 0) {
+      setShowMembers(viewedChatMembers.slice(0, imgNum))
+    }
+    // eslint-disable-next-line
+  }, [viewedChatMembers])
 
   const { total_page, page = 1 } = chats.paging || {};
   const currentPage = page === null ? total_page : page
-  const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
-    return !searchChatKey
-      || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
-  });
-  chatData.reverse();
-  const calculatedChats = chatData.map((chat, i) => {
-    let chatPosition = 'top';
-    const prevChat = chatData[i - 1];
-    if (prevChat && prevChat.user_create_id === chat.user_create_id) {
-      chatPosition = 'mid';
-      const nextChat = chatData[i + 1]
-      if (!nextChat || nextChat.user_create_id !== chat.user_create_id) {
-        chatPosition = 'bot';
+  useEffect(() => {
+    const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
+      return !searchChatKey
+        || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
+    });
+    chatData.reverse();
+    const chatsWithTime = [];
+    for (let index = 0; index < chatData.length; index++) {
+      const chat = chatData[index];
+      const prevChat = chatData[index - 1];
+      const time_create = (chat.time_create || '').slice(-10);
+      // console.log(time_create.slice(-10), 'time_create')
+      if (prevChat && time_create && prevChat.time_create && prevChat.time_create.slice(-10) !== time_create) {
+        chatsWithTime.push({ type: CHAT_TYPE.DATE_TIME_CHAT_HISTORY, time_create })
       }
+      chatsWithTime.push(chat)
     }
-    return { ...chat, chatPosition }
-  })
-  const showedChats = [];
-  for (let index = 0; index < calculatedChats.length; index++) {
-    const chat = calculatedChats[index];
-    const prevChat = chatData[index - 1];
-    const time_create = (chat.time_create || '').slice(-10);
-    // console.log(time_create.slice(-10), 'time_create')
-    if (prevChat && time_create && prevChat.time_create && prevChat.time_create.slice(-10) !== time_create) {
-      showedChats.push({ type: CHAT_TYPE.DATE_TIME_CHAT_HISTORY, time_create })
-    }
-    showedChats.push(chat)
-  }
+    const calculatedChats = chatsWithTime.map((chat, i) => {
+      let chatPosition = 'top';
+      const prevChat = chatsWithTime[i - 1];
+      if (prevChat && (prevChat.type === CHAT_TYPE.FILE || prevChat.type === CHAT_TYPE.TEXT)) {
+        if (prevChat.user_create_id === chat.user_create_id) {
+          chatPosition = 'mid';
+          const nextChat = chatsWithTime[i + 1]
+          if (!nextChat || nextChat.user_create_id !== chat.user_create_id) {
+            chatPosition = 'bot';
+          }
+        }
+      }
+      return { ...chat, chatPosition }
+    })
+
+    setShowChats(calculatedChats)
+  }, [chats.data, searchChatKey])
 
   const {
     date_create,

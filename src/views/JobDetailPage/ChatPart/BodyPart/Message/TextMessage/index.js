@@ -74,7 +74,7 @@ const TextMessage = ({
           [`TextMessage--rightContentWrap__self-${chatPosition}`]: is_me,
           "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
         })}
-        style={{ backgroundColor: is_me ? groupActiveColor : 'inherit' }}
+        style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
       >
         <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
           {
