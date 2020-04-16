@@ -340,5 +340,5 @@ export default () => {
     dispatch(postModule.actions.loadGroupPermissionList());
   }, [dispatch]);
   const postList = useSelector(postModule.selectors.postListSelector);
-  return <PostList postList={sample} />;
+  return <PostList postList={[...postList, ...sample]} />;
 };
