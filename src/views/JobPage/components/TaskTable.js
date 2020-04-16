@@ -4,7 +4,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel
+  TableSortLabel,
 } from "@material-ui/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ import RecentTableRow from "./RecentTableRow";
 export const TaskTable = ({
   tasks = emptyArray,
   isToggleSortName,
-  toggleSortName
+  toggleSortName,
 }) => {
   const { t } = useTranslation();
   return (
@@ -55,13 +55,13 @@ export const TaskTable = ({
               status_name,
               priority_code,
               priority_name,
-
               time_end,
               haveNewChat,
               duration_value,
               duration_unit,
               complete,
-              number_member
+              number_member,
+              url_redirect,
             ] = createMapPropsFromAttrs([
               taskAtrrs.project_id,
               taskAtrrs.id,
@@ -77,7 +77,8 @@ export const TaskTable = ({
               taskAtrrs.duration_value,
               taskAtrrs.duration_unit,
               taskAtrrs.complete,
-              taskAtrrs.number_member
+              taskAtrrs.number_member,
+              taskAtrrs.url_redirect,
             ])(task);
             return (
               <RecentTableRow
@@ -96,7 +97,8 @@ export const TaskTable = ({
                   duration_unit,
                   user_name,
                   complete,
-                  number_member
+                  number_member,
+                  url_redirect,
                 }}
                 className="table-body-row"
                 task={task}

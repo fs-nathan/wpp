@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { StyledTableBodyCell } from "../../DocumentPage/TablePart/DocumentComponent/TableCommon";
 import { colors } from "../contants/attrs";
-import { taskDetailLink } from "../contants/links";
 import { JobPageContext } from "../JobPageContext";
 import InlineBadge from "./InlineBadge";
 import InlinePiorityBadge from "./InlinePiorityBadge";
@@ -99,7 +98,8 @@ export default React.memo(
     number_member,
     duration_value,
     duration_unit,
-    time_end
+    time_end,
+    url_redirect,
   }) => {
     const { t } = useTranslation();
     const { setQuickTask } = useContext(JobPageContext);
@@ -113,9 +113,7 @@ export default React.memo(
           <TaskTitleLink
             title={name}
             complete={complete === 100}
-            to={taskDetailLink
-              .replace("{projectId}", project_id)
-              .replace("{taskId}", id)}
+            to={url_redirect}
           >
             {name}
           </TaskTitleLink>
@@ -134,9 +132,9 @@ export default React.memo(
               </InlineBadge>,
               <InlineBadge icon={mdiAccount} color={colors.task_waiting}>
                 {number_member}
-              </InlineBadge>
+              </InlineBadge>,
             ]
-              .filter(item => item)
+              .filter((item) => item)
               .map((item, i) => (
                 <React.Fragment key={i}>{item} </React.Fragment>
               ))}
