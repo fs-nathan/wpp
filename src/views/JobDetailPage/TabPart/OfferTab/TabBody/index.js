@@ -1,20 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
-import {
-  ButtonGroup, Collapse,
-} from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
-
-import ColorTypo from 'components/ColorTypo';
+import { ButtonGroup, Collapse } from '@material-ui/core';
+import { deleteOffer } from 'actions/taskDetail/taskDetailActions';
 import ColorButton from 'components/ColorButton';
-import OfferModal from '../OfferModal';
+import ColorTypo from 'components/ColorTypo';
+import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
+import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
-import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper'
-import { deleteOffer, } from 'actions/taskDetail/taskDetailActions';
+import NoDataPlaceHolder from '../../NoDataPlaceHolder';
+import OfferModal from '../OfferModal';
+import ApproveOfferDialog from './ApproveOfferDialog';
 import ListOffer from './ListOffer';
 import OfferDetail from './OfferDetail';
-import NoDataPlaceHolder from '../../NoDataPlaceHolder';
+
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -38,9 +37,9 @@ function TabBody(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [openApprove, setOpenApprove] = React.useState(false);
   const [openDetail, setOpenDetail] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [isOffer] = React.useState(true);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -67,21 +66,26 @@ function TabBody(props) {
   };
 
   function onClickDetail(item) {
-    return () => {
-      setSelectedItem({ ...item, offer_id: item.id })
-      setOpenDetail(true)
-    }
+    setSelectedItem({ ...item, offer_id: item.id })
+    setOpenDetail(true)
   }
+  const handleClickApprove = item => {
+    setSelectedItem({ ...item, offer_id: item.id })
+    setOpenApprove(true);
+    setOpenDetail(false);
+  };
 
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body
+      renderView={props => <div {...props} className="offerBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-offer-tabbody">
         <StyledButtonGroup fullWidth variant="text" >
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
           >
             {value === 0
-              ? <ColorTypo bold>Tất cả({offer.length})</ColorTypo>
+              ? <ColorTypo bold>Tất cả ({offer.length})</ColorTypo>
               : <ColorTypo color='gray'>Tất cả ({offer.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
@@ -105,7 +109,7 @@ function TabBody(props) {
             title="Chưa có đề xuất / phê duyệt nào được tạo! Click + để tạo mới."
           ></NoDataPlaceHolder> :
             <React.Fragment>
-              <Collapse in={value === 0} mountOnEnter unmountOnExit>
+              <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
                 <ListOffer
                   handleClickClose={() => handleClickClose()}
                   handleClickOpen={() => handleClickOpen()}
@@ -113,10 +117,10 @@ function TabBody(props) {
                   handleClickEditItem={(data) => handleClickEditItem(data)}
                   {...props}
                   offer={offer}
-                  onClick={onClickDetail}
+                  onClickDetail={onClickDetail}
                 />
               </Collapse>
-              <Collapse in={value === 1} mountOnEnter unmountOnExit>
+              <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
                 <ListOffer
                   handleClickClose={() => handleClickClose()}
                   handleClickOpen={() => handleClickOpen()}
@@ -124,9 +128,10 @@ function TabBody(props) {
                   handleClickEditItem={(data) => handleClickEditItem(data)}
                   {...props}
                   offer={approvedItems}
+                  onClickDetail={onClickDetail}
                 />
               </Collapse>
-              <Collapse in={value === 2} mountOnEnter unmountOnExit>
+              <Collapse in={value === 2} mountOnEnter unmountOnExit timeout={0}>
                 <ListOffer
                   handleClickClose={() => handleClickClose()}
                   handleClickOpen={() => handleClickOpen()}
@@ -134,6 +139,7 @@ function TabBody(props) {
                   handleClickEditItem={(data) => handleClickEditItem(data)}
                   {...props}
                   offer={pendingItems}
+                  onClickDetail={onClickDetail}
                 />
               </Collapse>
             </React.Fragment>
@@ -141,9 +147,8 @@ function TabBody(props) {
         <OfferModal
           {...props}
           isOpen={open}
-          handleClickClose={handleClickClose}
-          handleClickOpen={handleClickOpen}
-          isOffer={isOffer}
+          setOpen={setOpen}
+          isOffer
           item={selectedItem}
         />
         <ModalDeleteConfirm
@@ -154,9 +159,18 @@ function TabBody(props) {
           {...props} />
         <OfferDetail
           isOpen={openDetail}
-          handleClickClose={() => setOpenDetail(false)}
-          handleClickOpen={() => setOpenDetail(true)}
+          setOpen={setOpenDetail}
           item={selectedItem}
+          handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
+          handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
+          handleClickApprove={(data) => handleClickApprove(selectedItem)}
+        />
+        <ApproveOfferDialog
+          isOpen={openApprove}
+          handleClickClose={() => setOpenApprove(false)}
+          handleClickOpen={() => setOpenApprove(true)}
+          item={selectedItem}
+          handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
         />
       </div>
     </Body>

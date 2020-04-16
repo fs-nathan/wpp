@@ -1,88 +1,66 @@
-import React from 'react';
-import clsx from 'clsx';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
+import Avatar from '@material-ui/core/Avatar';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
-import CloseIcon from '@material-ui/icons/Close';
-import { useSelector } from 'react-redux';
-import get from 'lodash/get';
+import { mdiStarCircle, mdiStarCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import {
-  mdiStarCircle, mdiStarCircleOutline
-} from '@mdi/js';
-
+import clsx from 'clsx';
+import CustomModal from 'components/CustomModal';
+import React from 'react';
 import './styles.scss';
+
 
 function DemandDetail({
   isOpen,
-  handleClickClose,
+  setOpen,
   item
 }) {
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   const {
-    user_create_avatar,
+    date_create,
     user_create_name,
-    user_create_role,
+    user_create_roles,
+    user_create_avatar,
     content,
     type,
   } = item;
   const isDemand = type === 1
   return (
-    <div>
-      <Dialog
-        className="demandDetail"
-        open={isOpen}
-        onClose={handleClickClose}
-      >
-        <DialogTitle disableTypography>
-          <Typography className="demandDetail--title" component="div">
-            Chi tiết chỉ đạo / Phê duyệt
-          </Typography>
-          <IconButton aria-label="close" className="demandDetail--closeButton" onClick={handleClickClose}>
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <div className="demandDetail--user">
-            <Avatar className="demandDetail--avatar" src={user_create_avatar} alt='avatar' />
+    <CustomModal
+      open={isOpen}
+      setOpen={setOpen}
+      confirmRender={null}
+      cancleRender={() => "Thoát"}
+      className="subTaskDetailDialog"
+      titleRender={
+        <div className="subTaskDetailDialog--titleWrap">
+          <Avatar className="subTaskDetailDialog--avatar" src={user_create_avatar} alt='avatar' />
+          <Typography className="subTaskDetailDialog--title" component="div">
             {user_create_name}
-            <div className="demandDetail--role">{user_create_role}</div>
+            <div className="subTaskDetailDialog--createdAt">
+              Đã chỉ đạo lúc: {date_create}</div>
+          </Typography>
+        </div>
+      }
+    >
+      <DialogContent>
+        <div className="demandDetail--label">
+          {isDemand ? 'Chỉ đạo' : 'Quyết định'}
+        </div>
+        <div className="demandDetail--iconContainer" >
+          <div className="demandDetail--line">
           </div>
-          <div className="demandDetail--iconContainer" >
-            <Icon className={clsx("demandDetail--icon", isDemand ? 'demandDetail--icon__orange' : 'demandDetail--icon__blue')}
-              path={isDemand ? mdiStarCircleOutline : mdiStarCircle}
-              size={1}
-            />
-            <Icon className={clsx("demandDetail--icon", isDemand ? 'demandDetail--icon__orange' : 'demandDetail--icon__blue')}
-              path={isDemand ? mdiStarCircleOutline : mdiStarCircle}
-              size={1}
-            />
-            <Icon className={clsx("demandDetail--icon", isDemand ? 'demandDetail--icon__orange' : 'demandDetail--icon__blue')}
-              path={isDemand ? mdiStarCircleOutline : mdiStarCircle}
-              size={1}
-            />
+          <Icon className={clsx("demandDetail--icon", isDemand ? 'demandDetail--icon__orange' : 'demandDetail--icon__blue')}
+            path={isDemand ? mdiStarCircleOutline : mdiStarCircle}
+            size={2}
+          />
+          <div className="demandDetail--line">
           </div>
-          <div className="demandDetail--label">
-            {isDemand ? 'Chỉ đạo' : 'Quyết định'}
-          </div>
-          <DialogContentText className="demandDetail--content">
-            {content}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            // style={{ color: groupActiveColor }}
-            autoFocus
-            onClick={handleClickClose} > Thoát </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        </div>
+        <DialogContentText className="demandDetail--content">
+          {content}
+        </DialogContentText>
+      </DialogContent>
+    </CustomModal>
   );
 }
 

@@ -1,35 +1,11 @@
+import { TextField, Typography } from '@material-ui/core';
+import { updateCommand } from 'actions/taskDetail/taskDetailActions';
+import CustomModal from 'components/CustomModal';
 import React from 'react';
-import { IconButton, Button, Dialog, Typography, TextField } from '@material-ui/core';
-import styled from 'styled-components';
-import CloseIcon from '@material-ui/icons/Close';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import { withStyles } from '@material-ui/core/styles';
-import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect'
-import { updateCommand, createCommand } from 'actions/taskDetail/taskDetailActions';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { taskIdSelector } from '../../selectors';
-
-const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-    background: '#f5f8fc'
-  },
-  title: {
-    textTransform: 'uppercase',
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
+import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect';
 
 const TexTitle = styled(Typography)`
   font-size: 15px;
@@ -43,33 +19,6 @@ const Text = styled(TextField)`
       z-index: 0
   }
 `
-
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: "15px 24px",
-  },
-}))(MuiDialogActions);
 
 const selector = [
   { label: 'Chỉ đạo', value: 1 },
@@ -90,24 +39,30 @@ const DemandModal = (props) => {
   }
 
   function onClickCreate() {
-    props.handleClose()
+    props.setOpen(false)
     props.confirmCreateCommand(tempSelectedItem)
     setParams("content", '')
   }
 
   function onClickUpdate() {
-    props.handleClose();
+    props.setOpen(false);
     tempSelectedItem.taskId = taskId;
     dispatch(updateCommand(tempSelectedItem))
     setParams("content", '')
   }
-
+  function validate() {
+    return tempSelectedItem.content && tempSelectedItem.type !== -1
+  }
   return (
-    <Dialog onClose={props.handleClose} open={props.isOpen} fullWidth>
-      <DialogTitle onClose={props.handleClose}>
-        Chỉ đạo, quyết định
-        </DialogTitle>
-      <DialogContent dividers>
+    <CustomModal
+      title={"Chỉ đạo, quyết định"}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => (props.isEditDemand) ? "Chỉnh sửa" : "Tạo mới"}
+      onConfirm={(props.isEditDemand) ? onClickUpdate : onClickCreate}
+      canConfirm={validate()}
+    >
+      <React.Fragment>
         <TexTitle >Chọn loại</TexTitle>
         <OutlinedInputSelect
           selectedIndex={tempSelectedItem.type}
@@ -125,29 +80,8 @@ const DemandModal = (props) => {
           value={tempSelectedItem.content}
           onChange={e => setParams("content", e.target.value)}
         />
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={props.handleClose} color='#222'>
-          Hủy
-        </Button>
-        {(props.isEditDemand) ?
-          <Button
-            autoFocus
-            onClick={onClickUpdate}
-            color="primary">
-            Chỉnh sửa
-          </Button>
-          :
-          <Button
-            autoFocus
-            onClick={onClickCreate}
-            color="primary">
-            Tạo mới
-          </Button>
-        }
-      </DialogActions>
-    </Dialog>
-
+      </React.Fragment>
+    </CustomModal>
   )
 }
 

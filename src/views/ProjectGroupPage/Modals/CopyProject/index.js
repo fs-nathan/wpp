@@ -1,24 +1,21 @@
+import { filter, get, map } from 'lodash';
 import React from 'react';
-import { copyProject } from '../../../../actions/project/copyProject';
 import { connect } from 'react-redux';
-import { get, map, filter } from 'lodash';
+import { copyProject } from '../../../../actions/project/copyProject';
 import CopyProjectPresenter from './presenters';
 import { groupsSelector } from './selectors';
 
-function CopyProject({ 
-  open, setOpen, 
-  groups, 
-  doCopyProject 
+function CopyProject({
+  open, setOpen,
+  groups,
+  doCopyProject
 }) {
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
-  const newGroups = map([...groups.groups, {
-    name: 'Mặc định',
-    id: null,
-  }], (projectGroup) => {
+  const newGroups = map(groups.groups, (projectGroup) => {
     const ownedProjects = filter(
-      projectGroup.projects, 
+      projectGroup.projects,
       project => get(project, 'name').toLowerCase().includes(searchPatern.toLowerCase())
     );
     return {
@@ -28,13 +25,13 @@ function CopyProject({
   });
 
   return (
-    <CopyProjectPresenter 
+    <CopyProjectPresenter
       open={open} setOpen={setOpen}
       searchPatern={searchPatern} setSearchPatern={setSearchPatern}
       groups={newGroups}
-      handleCopyProject={(projectId, name, description, startDate, isCopyMember) => 
+      handleCopyProject={(projectId, name, description, startDate, isCopyMember) =>
         doCopyProject({
-          projectId,
+          projectId: projectId === 'default' ? null : projectId,
           name,
           description,
           startDate,

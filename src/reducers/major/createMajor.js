@@ -1,12 +1,8 @@
-import {
-  CREATE_MAJOR,
-  CREATE_MAJOR_SUCCESS,
-  CREATE_MAJOR_FAIL,
-} from '../../constants/actions/major/createMajor';
+import { CREATE_MAJOR, CREATE_MAJOR_FAIL, CREATE_MAJOR_SUCCESS } from '../../constants/actions/major/createMajor';
 
 export const initialState = {
   data: {
-    major: null,  
+    major: null,
   },
   error: null,
   loading: false,
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case CREATE_MAJOR_SUCCESS: 
+    case CREATE_MAJOR_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case CREATE_MAJOR_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

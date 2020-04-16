@@ -71,7 +71,7 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
                   <div className="sub-title">
                     <span>
                       <b>
-                        {fileInfo.number_of_view + 1} {t('IDS_WP_VIEWS')}
+                        {(fileInfo.number_of_view || -1) + 1} {t('IDS_WP_VIEWS')}
                       </b>
                     </span>
                     &nbsp;
@@ -89,7 +89,7 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
                         ) {
                           return (
                             <span key={idx}>
-                              <Avatar src={el.avatar} alt="avatar" />
+                              <Avatar src={el.avatar} alt="avatar" title={el.name} />
                             </span>
                           );
                         }
@@ -151,7 +151,7 @@ const Download = ({ closeComment, fileInfo, listComment }) => {
                         ) {
                           return (
                             <span key={idx}>
-                              <Avatar src={el.avatar} alt="avatar" />
+                              <Avatar src={el.avatar} alt="avatar" title={el.name} />
                             </span>
                           );
                         }

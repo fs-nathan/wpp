@@ -1,12 +1,6 @@
-import {
-  DETAIL_PROJECT_GROUP,
-  DETAIL_PROJECT_GROUP_SUCCESS,
-  DETAIL_PROJECT_GROUP_FAIL,
-} from '../../constants/actions/projectGroup/detailProjectGroup';
-import {
-  EDIT_PROJECT_GROUP_SUCCESS,
-} from '../../constants/actions/projectGroup/editProjectGroup';
 import { get } from 'lodash';
+import { DETAIL_PROJECT_GROUP, DETAIL_PROJECT_GROUP_FAIL, DETAIL_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/detailProjectGroup';
+import { EDIT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/editProjectGroup';
 
 export const initialState = {
   data: {
@@ -24,9 +18,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case DETAIL_PROJECT_GROUP_SUCCESS: 
+    case DETAIL_PROJECT_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -34,6 +29,7 @@ function reducer(state = initialState, action) {
     case DETAIL_PROJECT_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

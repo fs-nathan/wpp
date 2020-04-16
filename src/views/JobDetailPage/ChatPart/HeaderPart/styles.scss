@@ -1,0 +1,29 @@
+.chatHeader {
+  &--title {
+    font-size: 24px;
+    font-weight: 500;
+  }
+  &--button {
+    &:hover {
+      background: none;
+    }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+  &--tabLabel {
+    color: #a5a0a0;
+    width: auto;
+    margin-left: 0;
+    margin-right: 10px;
+    padding: 5px 0;
+    & > span:first-child {
+      display: none;
+    }
+    &__selected {
+      color: #007bff;
+    }
+  }
+}

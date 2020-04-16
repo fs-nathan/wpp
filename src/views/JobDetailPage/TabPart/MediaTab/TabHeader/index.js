@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
 import { IconButton } from '@material-ui/core';
-import Icon from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
-import ColorTypo from '../../../../../components/ColorTypo';
+import Icon from '@mdi/react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getFileTabPart, getImage, getLinkTabPart } from '../../../../../actions/taskDetail/taskDetailActions';
+import ColorTypo from '../../../../../components/ColorTypo';
 import { taskIdSelector } from '../../../selectors';
-import { getImage, getFileTabPart, getLinkTabPart } from '../../../../../actions/taskDetail/taskDetailActions';
+import './styles.scss';
 
 function TabHeader({ setShow }) {
   const dispatch = useDispatch();
@@ -18,10 +19,10 @@ function TabHeader({ setShow }) {
   }, [])
   return (
     <div className="container-normal-tabheader">
-      <IconButton className="headerTab--button"  onClick={() => setShow(0)}>
+      <IconButton className="headerTab--button" onClick={() => setShow(0)}>
         <Icon path={mdiChevronLeft} size={1} />
       </IconButton>
-      <ColorTypo uppercase bold style={{ fontSize: 17 }}>Tài liệu</ColorTypo>
+      <ColorTypo uppercase className="mediaHeaderTab--button">Tài liệu</ColorTypo>
       <span style={{ width: 30 }}></span>
     </div>
   );

@@ -1,15 +1,12 @@
+import { ButtonGroup, Collapse } from '@material-ui/core';
 import React from 'react';
-import styled from 'styled-components';
-import {
-  ButtonGroup,
-  Collapse
-} from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector } from 'react-redux';
-import ColorTypo from '../../../../../components/ColorTypo';
+import styled from 'styled-components';
 import ColorButton from '../../../../../components/ColorButton';
-import ListDemand from './ListDemand';
+import ColorTypo from '../../../../../components/ColorTypo';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
+import ListDemand from './ListDemand';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -27,7 +24,9 @@ function TabBody(props) {
   const [value, setValue] = React.useState(0);
 
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body autoHide
+      renderView={props => <div {...props} className="demandBody--container" />}
+      autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-dmt-tabbody">
         <StyledButtonGroup fullWidth variant="text">
           <ColorButton onClick={() => setValue(0)}>
@@ -36,7 +35,7 @@ function TabBody(props) {
             ) : (
                 <ColorTypo color="gray">
                   Tất cả ({command.length})
-              </ColorTypo>
+                </ColorTypo>
               )}
           </ColorButton>
           <ColorButton onClick={() => setValue(1)}>
@@ -45,7 +44,7 @@ function TabBody(props) {
             ) : (
                 <ColorTypo color="gray">
                   Chỉ đạo ({commandItems.length})
-              </ColorTypo>
+                </ColorTypo>
               )}
           </ColorButton>
           <ColorButton onClick={() => setValue(2)}>
@@ -56,27 +55,27 @@ function TabBody(props) {
             ) : (
                 <ColorTypo color="gray">
                   Quyết định ({decisionItems.length})
-              </ColorTypo>
+                </ColorTypo>
               )}
           </ColorButton>
         </StyledButtonGroup>
-        {command.length?
-        <React.Fragment>
-        <Collapse in={value === 0} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={command} />
-        </Collapse>
-        <Collapse in={value === 1} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={commandItems} />
-        </Collapse>
-        <Collapse in={value === 2} mountOnEnter unmountOnExit>
-          <ListDemand {...props} activeArr={decisionItems} />
-        </Collapse>
-        </React.Fragment>
-        :
-        <NoDataPlaceHolder
+        {command.length ?
+          <React.Fragment>
+            <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
+              <ListDemand {...props} activeArr={command} />
+            </Collapse>
+            <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
+              <ListDemand {...props} activeArr={commandItems} />
+            </Collapse>
+            <Collapse in={value === 2} mountOnEnter unmountOnExit timeout={0}>
+              <ListDemand {...props} activeArr={decisionItems} />
+            </Collapse>
+          </React.Fragment>
+          :
+          <NoDataPlaceHolder
             src="/images/no-command.png"
             title="Chưa có chỉ đạo / Quyết định nào được tạo! Click + để tạo mới."
-          ></NoDataPlaceHolder> }
+          ></NoDataPlaceHolder>}
       </div>
     </Body>
   );

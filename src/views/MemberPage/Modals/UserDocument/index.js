@@ -1,19 +1,20 @@
-import React from 'react';
-import { 
-  List, ListItem, ListItemText, ListItemAvatar,
-} from '@material-ui/core';
-import CustomModal from '../../../../components/CustomModal';
-import CustomAvatar from '../../../../components/CustomAvatar';
+import { List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { get } from 'lodash';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import CustomAvatar from '../../../../components/CustomAvatar';
+import CustomModal from '../../../../components/CustomModal';
 
 function UserDocument({ open, setOpen, files = [] }) {
+
+  const { t } = useTranslation();
 
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title='File hồ sơ thành viên'
-      cancleRender={() => 'Thoát'}
+      title={t("DMH.VIEW.MP.MODAL.DOC.TITLE")}
+      cancleRender={() => t("DMH.VIEW.MP.MODAL.DOC.EXIT")}
       confirmRender={null}
     >
       <List>

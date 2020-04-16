@@ -2,7 +2,6 @@ import { FormControl, MenuItem, TextField } from '@material-ui/core';
 import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../components/ColorTypo';
 import CustomModal from '../../../../components/CustomModal';
 import CustomTextbox from '../../../../components/CustomTextbox';
 import ErrorBox from '../../../../components/ErrorBox';
@@ -66,11 +65,11 @@ function UpdateUser({
       {options.error !== null
         ? <ErrorBox />
         : <>
-          <ColorTypo>{t("views.user_page.modals.update_user.room_select")}</ColorTypo>
           <StyledFormControl fullWidth>
             <CustomTextField
               select
               variant="outlined"
+              label={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
               value={room}
               onChange={evt => setRoom(evt.target.value)}
             >
@@ -81,11 +80,11 @@ function UpdateUser({
               )}
             </CustomTextField>
           </StyledFormControl>
-          <ColorTypo>{t("views.user_page.modals.update_user.position_select")}</ColorTypo>
           <StyledFormControl fullWidth>
             <CustomTextField
               select
               variant="outlined"
+              label={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
               value={position}
               onChange={evt => setPosition(evt.target.value)}
             >
@@ -96,11 +95,11 @@ function UpdateUser({
               )}
             </CustomTextField>
           </StyledFormControl>
-          <ColorTypo>{t("views.user_page.modals.update_user.level_select")}</ColorTypo>
           <StyledFormControl fullWidth>
             <CustomTextField
               select
               variant="outlined"
+              label={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
               value={level}
               onChange={evt => setLevel(evt.target.value)}
             >
@@ -111,11 +110,11 @@ function UpdateUser({
               )}
             </CustomTextField>
           </StyledFormControl>
-          <ColorTypo>{t("views.user_page.modals.update_user.major_select")}</ColorTypo>
           <StyledFormControl fullWidth>
             <CustomTextField
               select
               variant="outlined"
+              label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
               value={major}
               onChange={evt => setMajor(evt.target.value)}
             >
@@ -126,9 +125,9 @@ function UpdateUser({
               )}
             </CustomTextField>
           </StyledFormControl>
-          <ColorTypo>Mô tả công việc</ColorTypo>
           <CustomTextbox
             value={description}
+            label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
             onChange={value => setDescription(value)}
             helperText={get(errorDescription, 'message', '')}
           />

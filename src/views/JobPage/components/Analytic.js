@@ -1,5 +1,5 @@
 import { Box } from "@material-ui/core";
-import { times } from "components/CustomPopover";
+import { useTimes } from "components/CustomPopover";
 import moment from "moment";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,6 +29,7 @@ export function Analytic({ options = [] }) {
   );
   const { timeType, timeRange = emptyObject } = useContext(JobPageContext);
   const { timeStart, timeEnd } = timeRange;
+  const times = useTimes();
   return (
     <Box className="comp_Analytic">
       <Box flex="1">
@@ -39,8 +40,8 @@ export function Analytic({ options = [] }) {
             timeType === 5
               ? times[timeType].title
               : `${moment(timeStart).format(formatDateTemplate)} - ${moment(
-                  timeEnd
-                ).format(formatDateTemplate)}`
+                timeEnd
+              ).format(formatDateTemplate)}`
           }
         />
       </Box>

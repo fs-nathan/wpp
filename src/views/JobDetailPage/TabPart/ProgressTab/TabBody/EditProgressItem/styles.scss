@@ -1,0 +1,53 @@
+.detailEditProgress {
+  &--header {
+    display: flex;
+  }
+  &--icon {
+    padding: 0 4px;
+    transform: translateY(6px);
+  }
+  &--change {
+    // line-height: 0;
+    margin-left: 6px;
+  }
+  &--detail {
+    color: blue;
+  }
+  &__expanded {
+    transform: translateY(6px) rotate(-90deg);
+  }
+}
+
+.editProgressItem {
+  display: flex;
+  margin: 10px 0px;
+  background-color: #f8f8f8;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: 1px solid #e7e7e7;
+  svg {
+    padding: 0 5px 0 0;
+    transform: translateY(3px);
+    width: 15px !important;
+    height: 15px !important;
+  }
+  &--avatar {
+    margin: 5px 0 0 0;
+    width: 30px;
+    height: 30px;
+  }
+  &--change {
+    // border-left: 1px solid rgba(0, 0, 0, 0.54);
+    padding-left: 20px;
+    display: inline-table;
+    width: 100%;
+  }
+  &--changeNumber {
+    // text-transform: uppercase;
+    font-weight: 500;
+    line-height: 2;
+  }
+  &--time {
+    color: rgba(0, 0, 0, 0.54);
+  }
+}

@@ -1,15 +1,12 @@
+import { Button } from '@material-ui/core';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {
-  Button,
-} from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { handleOffer } from '../../../../../actions/taskDetail/taskDetailActions';
 import ColorTypo from '../../../../../components/ColorTypo';
 import ApproveModal from '../ApproveModal';
-import { handleOffer } from '../../../../../actions/taskDetail/taskDetailActions';
-import { UserHanderAvatar, StyleContent } from './CustomListItem';
 import BadgeOffer from './BadgeOffer';
+import { StyleContent, UserHanderAvatar } from './CustomListItem';
 
 const StyledButton = styled(Button)`
   box-shadow: none;
@@ -36,16 +33,14 @@ const ApprovedBox = (props) => {
     setOpen(true);
   };
 
-  const handleClickClose = () => {
-    setOpen(false);
-  };
-
   const DENIED_VALUE = {
     offer_id: offer.id,
     content: "Từ chối phê duyệt",
     status: 2
   }
-
+  const onClickDenied = () => {
+    dispatch(handleOffer({ data: DENIED_VALUE, taskId }))
+  }
   return (
     <React.Fragment>
       {props.approved && (
@@ -74,13 +69,11 @@ const ApprovedBox = (props) => {
             <div className="styled-title-box-ot">
               <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
               <Button variant="outlined" size="small"
-                onClick={() => {
-                  dispatch(handleOffer({ data: DENIED_VALUE, taskId }))
-                }}
+                onClick={onClickDenied}
               >Từ chối</Button>
               <span />
             </div>
-            <ApproveModal {...props} isOpen={open} handleClickClose={handleClickClose} handleClickOpen={handleClickOpen} />
+            <ApproveModal {...props} isOpen={open} setOpen={setOpen} />
           </div>
         </React.Fragment>
       )}

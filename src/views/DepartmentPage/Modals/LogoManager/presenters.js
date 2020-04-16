@@ -6,13 +6,17 @@ import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import ColorButton from "../../../../components/ColorButton";
+import ColorTypo from "../../../../components/ColorTypo";
 import CustomModal from "../../../../components/CustomModal";
+import ErrorBox from "../../../../components/ErrorBox";
 import LoadingBox from "../../../../components/LoadingBox";
 import "./style.scss";
-export const LogoManagerContext = React.createContext({});
-const LogoList = ({ className = "", ...props }) => (
+const LogoManagerContext = React.createContext({});
+const LogoList = ({ className = "", tall = false, ...props }) => (
   <div
-    className={`view_Department_Logo_Modal___logo-list ${className}`}
+    className={`view_Department_Logo_Modal___logo-list${
+      tall ? "-tall" : ""
+    } ${className}`}
     {...props}
   />
 );
@@ -27,7 +31,8 @@ const LogoBox = ({ className = "", isSelect, ...props }) => (
     {...props}
   />
 );
-export const LogoMnanagerStateLess = () => {
+
+const LogoMnanagerStateLess = () => {
   const {
     open,
     setOpen,
@@ -116,7 +121,7 @@ export const LogoMnanagerStateLess = () => {
     </Stack>
   );
 };
-export const UploadButton = () => {
+const UploadButton = () => {
   const { mutateIcon, handleOpenModal, handleCreateIcon } = useContext(
     LogoManagerContext
   );
@@ -150,7 +155,14 @@ export const UploadButton = () => {
   );
 };
 
-export const LogoManagerModalWrapper = ({ children }) => {
+const CustomTypo = ({ className = "", ...props }) => (
+  <ColorTypo
+    className={`view_Department_Logo_Modal___typo ${className}`}
+    {...props}
+  />
+);
+
+const LogoManagerModalWrapper = ({ children }) => {
   const {
     open,
     setOpen,
@@ -169,13 +181,113 @@ export const LogoManagerModalWrapper = ({ children }) => {
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title={t("Quản lý biểu tượng")}
+      title={t("DMH.VIEW.DP.MODAL.LOGO.TITLE")}
       onConfirm={() => handleSelectIcon(selectedIcon)}
-      cancleRender={() => (isSelect ? t("Hủy") : t("Thoát"))}
-      confirmRender={isSelect ? () => t("Hoàn thành") : null}
+      cancleRender={() =>
+        isSelect
+          ? t("DMH.VIEW.DP.MODAL.LOGO.CANCLE")
+          : t("DMH.VIEW.DP.MODAL.LOGO.EXIT")
+      }
+      confirmRender={isSelect ? () => t("DMH.VIEW.DP.MODAL.LOGO.DONE") : null}
       loading={icons.loading}
     >
-      {children}
+      {icons.error !== null ? (
+        <ErrorBox />
+      ) : (
+        <>
+          <CustomTypo>{t("DMH.VIEW.DP.MODAL.LOGO.DEFAULT")}</CustomTypo>
+          <LogoList>
+            {icons.defaults.map((icon) => (
+              <LogoBox
+                key={get(icon, "url_icon")}
+                isSelect={
+                  isSelect &&
+                  get(selectedIcon, "url_sort", "x") === get(icon, "icon", "y")
+                }
+              >
+                <ButtonBase
+                  disabled={!isSelect}
+                  onClick={() =>
+                    isSelect &&
+                    setSelectedIcon({
+                      id: get(icon, "id"),
+                      url_sort: get(icon, "icon"),
+                      url_full: get(icon, "url_icon"),
+                    })
+                  }
+                >
+                  <Avatar src={get(icon, "url_icon")} alt="avatar" />
+                </ButtonBase>
+              </LogoBox>
+            ))}
+          </LogoList>
+          <CustomTypo>{t("DMH.VIEW.DP.MODAL.LOGO.UPLOADED")}</CustomTypo>
+          <LogoList tall={true}>
+            {icons.createds.map((icon) => (
+              <LogoBox
+                key={get(icon, "id", "")}
+                isSelect={
+                  isSelect &&
+                  get(selectedIcon, "id", "x") === get(icon, "id", "y")
+                }
+              >
+                <ButtonBase
+                  disabled={!isSelect}
+                  onClick={() => isSelect && setSelectedIcon(icon)}
+                >
+                  <Avatar src={get(icon, "url_full")} alt="avatar" />
+                </ButtonBase>
+                <ColorButton
+                  fullWidth
+                  variant="text"
+                  size="small"
+                  variantColor="red"
+                  onClick={() =>
+                    handleOpenModal("ALERT", {
+                      content: t("DMH.VIEW.DP.MODAL.LOGO.ALERT"),
+                      onConfirm: () => handleDeleteIcon(icon),
+                    })
+                  }
+                >
+                  {mutateIcon.loading ? (
+                    <LoadingBox size={8} />
+                  ) : (
+                    t("DMH.VIEW.DP.MODAL.LOGO.DEL")
+                  )}
+                </ColorButton>
+              </LogoBox>
+            ))}
+          </LogoList>
+          <input
+            disabled={mutateIcon.loading}
+            accept="image/*"
+            id="raised-button-file"
+            type="file"
+            onChange={(evt) =>
+              !mutateIcon.loading &&
+              handleOpenModal("UPLOAD", {
+                image: evt.target.files[0],
+                uploadImage: handleCreateIcon,
+              })
+            }
+          />
+          {mutateIcon.loading ? (
+            <ColorButton variant="text" variantColor="green" size="small">
+              <LoadingBox size={16} />
+            </ColorButton>
+          ) : (
+            <ColorButton
+              variant="text"
+              variantColor="green"
+              size="small"
+              component="label"
+              htmlFor="raised-button-file"
+            >
+              {t("DMH.VIEW.DP.MODAL.LOGO.UPLOAD")}
+            </ColorButton>
+          )}
+        </>
+      )}
     </CustomModal>
   );
 };
@@ -217,5 +329,10 @@ function LogoManagerProvider({
     </LogoManagerContext.Provider>
   );
 }
-
+export {
+  LogoManagerContext,
+  LogoManagerModalWrapper,
+  LogoMnanagerStateLess,
+  UploadButton,
+};
 export default LogoManagerProvider;

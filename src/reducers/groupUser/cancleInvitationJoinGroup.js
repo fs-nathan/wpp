@@ -1,8 +1,4 @@
-import {
-  CANCLE_INVITATION_JOIN_GROUP,
-  CANCLE_INVITATION_JOIN_GROUP_SUCCESS,
-  CANCLE_INVITATION_JOIN_GROUP_FAIL,
-} from '../../constants/actions/groupUser/cancleInvitationJoinGroup';
+import { CANCLE_INVITATION_JOIN_GROUP, CANCLE_INVITATION_JOIN_GROUP_FAIL, CANCLE_INVITATION_JOIN_GROUP_SUCCESS } from '../../constants/actions/groupUser/cancleInvitationJoinGroup';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case CANCLE_INVITATION_JOIN_GROUP_SUCCESS: 
+    case CANCLE_INVITATION_JOIN_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case CANCLE_INVITATION_JOIN_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

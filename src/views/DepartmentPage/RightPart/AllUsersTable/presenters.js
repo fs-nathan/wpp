@@ -3,11 +3,11 @@ import { mdiAccountPlus, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomBadge from '../../../../components/CustomBadge';
 import CustomTable from '../../../../components/CustomTable';
-import ErrorBox from '../../../../components/ErrorBox';
 import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
 import LoadingBox from '../../../../components/LoadingBox';
 import { Container, LinkSpan, SettingContainer, SubTitle } from '../../../../components/TableComponents';
@@ -43,6 +43,9 @@ const PermissionButton = ({
 }
 
 function StateBadge({ user }) {
+
+  const { t } = useTranslation();
+
   return (
     get(user, 'state', 0) === 0
       ? (
@@ -51,17 +54,17 @@ function StateBadge({ user }) {
           title={
             <TooltipBody state={0}>
               <div>
-                <span>Trạng thái:</span>
-                <span>Hạn chế</span>
+                <span>{t('DMH.VIEW.DP.RIGHT.UT.STATE.TITLE')}:</span>
+                <span>{t('DMH.VIEW.DP.RIGHT.UT.STATE.PRI.NAME')}</span>
               </div>
-              <small>Chỉ tương tác được với các thành viên có trạng thái Công khai khác</small>
+              <small>{t('DMH.VIEW.DP.RIGHT.UT.STATE.PRI.DESC')}</small>
             </TooltipBody>
           }
         >
           <TooltipWrapper>
             <CustomBadge color='#ec1000'>
-              Hạn chế
-          </CustomBadge>
+              {t('DMH.VIEW.DP.RIGHT.UT.STATE.PRI.NAME')}
+            </CustomBadge>
           </TooltipWrapper>
         </LightTooltip>
       )
@@ -71,17 +74,17 @@ function StateBadge({ user }) {
           title={
             <TooltipBody state={1}>
               <div>
-                <span>Trạng thái:</span>
-                <span>Công khai</span>
+                <span>{t('DMH.VIEW.DP.RIGHT.UT.STATE.TITLE')}:</span>
+                <span>{t('DMH.VIEW.DP.RIGHT.UT.STATE.PUB.NAME')}</span>
               </div>
-              <small>Tương tác được với tất cả các thành viên</small>
+              <small>{t('DMH.VIEW.DP.RIGHT.UT.STATE.PUB.DESC')}</small>
             </TooltipBody>
           }
         >
           <TooltipWrapper>
             <CustomBadge color='#48bb78'>
-              Công khai
-          </CustomBadge>
+              {t('DMH.VIEW.DP.RIGHT.UT.STATE.PUB.NAME')}
+            </CustomBadge>
           </TooltipWrapper>
         </LightTooltip>
       )
@@ -89,7 +92,7 @@ function StateBadge({ user }) {
 }
 
 function AllUsersTable({
-  rooms, maxUser, hasRequirement, publicPrivatePendings,
+  rooms, maxUser, hasRequirement, publicPrivatePendings, route, canModify,
   expand, handleExpand,
   handleSortUser,
   handleChangeState,
@@ -99,6 +102,7 @@ function AllUsersTable({
 }) {
 
   const history = useHistory();
+  const { t } = useTranslation();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
@@ -116,153 +120,149 @@ function AllUsersTable({
 
   return (
     <Container>
-      {isNil(rooms.error)
-        ? (
-          <CustomTable
-            options={{
-              title: 'Danh sách nhân sự',
-              subTitle: () =>
-                <SubTitle>
-                  Đã có {rooms.rooms.reduce((sum, room) => sum += get(room, 'number_member', 0), 0)}/{maxUser} thành viên
-              </SubTitle>,
-              subActions: [{
-                label: 'Thêm thành viên',
-                icon: () => hasRequirement
-                  ? <NewUserBadge badgeContent={'N'}>
-                    <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
-                  </NewUserBadge>
-                  : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
-                onClick: () => {
-                  handleVisibleDrawerMessage({
-                    type: DRAWER_TYPE.ADD_USER,
-                    anchor: 'left'
-                  })
-                },
-                noExpand: true,
-              }],
-              mainAction: {
-                label: '+ Thêm tài khoản',
-                onClick: () => handleOpenModal('CREATE_ACCOUNT'),
-              },
-              expand: {
-                bool: expand,
-                toggleExpand: () => handleExpand(!expand),
-              },
-              moreMenu: [{
-                label: 'Quản lý chức danh',
-                onClick: () => handleOpenModal('TITLE'),
-              }, {
-                label: 'Quản lý vai trò',
-                onClick: () => handleOpenModal('ROLE'),
-              }, {
-                label: 'Quản lý trình độ',
-                onClick: () => handleOpenModal('LEVEL'),
-              }, {
-                label: 'Quản lý chuyên ngành',
-                onClick: () => handleOpenModal('MAJOR'),
-              }, {
-                label: 'Quản lý biểu tượng',
-                onClick: () => handleOpenModal('LOGO'),
-              }, {
-                label: 'Cài đặt bảng',
-                onClick: () => handleOpenModal('TABLE_SETTING'),
-              }],
-              grouped: {
-                bool: true,
-                id: 'id',
-                label: (room) => get(room, 'id') === 'Default' ? 'Mặc định' : get(room, 'name'),
-                item: 'users',
-              },
-              row: {
-                id: 'id',
-                onClick: (user) => history.push(`/members/${get(user, 'id')}`),
-              },
-              draggable: {
-                bool: true,
-                onDragEnd: result => {
-                  const { source, destination, draggableId } = result;
-                  if (!destination) return;
-                  if (
-                    destination.droppableId === source.droppableId &&
-                    destination.index === source.index
-                  ) return;
-                  handleSortUser(
-                    destination.droppableId,
-                    draggableId,
-                    destination.index
-                  );
-                },
-              },
-              loading: {
-                bool: rooms.loading,
-                component: () => <LoadingBox />,
-              },
-            }}
-            columns={[{
-              label: '',
-              field: (user) => <CustomAvatar style={{ width: 35, height: 35 }} src={get(user, 'avatar')} alt='avatar' />,
-              align: 'left',
-              width: '5%',
-            }, {
-              label: 'Họ và tên',
-              field: (user) => <LinkSpan
-                onClick={evt => history.push(`/members/${get(user, 'id')}`)}
-              >{get(user, 'name', '')}</LinkSpan>,
-              align: 'left',
-              width: '14%',
-            }, {
-              label: 'Chức danh',
-              field: 'position',
-              align: 'left',
-              width: '10%',
-            }, {
-              label: 'Ngày sinh',
-              field: (user) => get(user, 'birthday'),
-              align: 'left',
-              width: '10%',
-            }, {
-              label: 'Giới tính',
-              field: 'gender',
-              align: 'left',
-              width: '10%',
-            }, {
-              label: 'Email',
-              field: 'email',
-              align: 'left',
-              width: '15%',
-            }, {
-              label: 'Điện thoại',
-              field: 'phone',
-              align: 'left',
-              width: '10%',
-            }, {
-              label: 'Vai trò',
-              field: 'role',
-              align: 'left',
-              width: '10%',
-            }, {
-              label: 'Trạng thái',
-              field: (user) => <StateBadge user={user} />,
-              align: 'center',
-              width: '10%',
-            }, {
-              label: () => <IconButton disabled>
-                <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0)'} />
-              </IconButton>,
-              field: (user) => <PermissionButton
-                handleOpenMenu={currentTarget =>
-                  doOpenMenu(
-                    currentTarget,
-                    user,
-                  )
-                }
-              />,
-              align: 'center',
-              width: '5%',
-            }]}
-            data={rooms.rooms}
-          />
-        ) : <ErrorBox />}
+      <CustomTable
+        options={{
+          title: t('DMH.VIEW.DP.RIGHT.UT.TITLE'),
+          subTitle: () =>
+            <SubTitle>
+              {t('DMH.VIEW.DP.RIGHT.UT.NUM_MEMBER_AUT', {
+                total: rooms.rooms.reduce((sum, room) => sum += get(room, 'number_member', 0), 0),
+                max: maxUser,
+              })}
+            </SubTitle>,
+          subActions: canModify ? [{
+            label: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
+            icon: () => hasRequirement
+              ? <NewUserBadge badgeContent={'N'}>
+                <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
+              </NewUserBadge>
+              : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
+            onClick: () => {
+              handleVisibleDrawerMessage({
+                type: DRAWER_TYPE.ADD_USER,
+                anchor: 'left'
+              })
+            },
+            noExpand: true,
+          }] : [],
+          mainAction: canModify ? {
+            label: t('DMH.VIEW.DP.RIGHT.UT.ADD_ACC'),
+            onClick: () => handleOpenModal('CREATE_ACCOUNT'),
+          } : null,
+          expand: {
+            bool: expand,
+            toggleExpand: () => handleExpand(!expand),
+          },
+          moreMenu: canModify ? [{
+            label: t('DMH.VIEW.DP.MODAL.TITLE.TITLE'),
+            onClick: () => handleOpenModal('TITLE'),
+          }, {
+            label: t('DMH.VIEW.DP.MODAL.LEVEL.TITLE'),
+            onClick: () => handleOpenModal('LEVEL'),
+          }, {
+            label: t('DMH.VIEW.DP.MODAL.MAJOR.TITLE'),
+            onClick: () => handleOpenModal('MAJOR'),
+          }, {
+            label: t('DMH.VIEW.DP.RIGHT.UT.TABLE_SETTING'),
+            onClick: () => handleOpenModal('TABLE_SETTING'),
+          }] : null,
+          grouped: {
+            bool: true,
+            id: 'id',
+            label: (room) => get(room, 'id') === 'Default' ? t('DMH.VIEW.DP.RIGHT.UT.DEFAULT') : get(room, 'name'),
+            item: 'users',
+          },
+          row: {
+            id: 'id',
+            onClick: (user) => null,
+          },
+          draggable: canModify ? {
+            bool: true,
+            onDragEnd: result => {
+              const { source, destination, draggableId } = result;
+              if (!destination) return;
+              if (
+                destination.droppableId === source.droppableId &&
+                destination.index === source.index
+              ) return;
+              handleSortUser(
+                destination.droppableId,
+                draggableId,
+                destination.index
+              );
+            },
+          } : {
+              bool: false
+            },
+          loading: {
+            bool: rooms.loading,
+            component: () => <LoadingBox />,
+          },
+        }}
+        columns={[{
+          label: '',
+          field: (user) => <CustomAvatar style={{ width: 35, height: 35 }} src={get(user, 'avatar')} alt='avatar' />,
+          align: 'left',
+          width: '5%',
+        }, {
+          label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.NAME'),
+          field: (user) => <LinkSpan
+            onClick={evt => history.push(`${route}/${get(user, 'id')}`)}
+          >{get(user, 'name', '')}</LinkSpan>,
+          align: 'left',
+          width: '14%',
+        }, {
+          label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.POS'),
+          field: 'position',
+          align: 'left',
+          width: '10%',
+        }, {
+          label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.B_DAY'),
+          field: (user) => get(user, 'birthday'),
+          align: 'left',
+          width: '10%',
+        }, {
+          label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.GENDER'),
+          field: 'gender',
+          align: 'left',
+          width: '10%',
+        }, {
+          label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.EMAIL'),
+          field: 'email',
+          align: 'left',
+          width: '15%',
+        }, {
+          label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.PHONE'),
+          field: 'phone',
+          align: 'left',
+          width: '10%',
+        }, {
+          label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.ROLE'),
+          field: 'role',
+          align: 'left',
+          width: '10%',
+        }, {
+          label: t('DMH.VIEW.DP.RIGHT.UT.STATE.TITLE'),
+          field: (user) => <StateBadge user={user} />,
+          align: 'center',
+          width: '10%',
+        }, canModify ? {
+          label: () => <IconButton disabled>
+            <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0)'} />
+          </IconButton>,
+          field: (user) => <PermissionButton
+            handleOpenMenu={currentTarget =>
+              doOpenMenu(
+                currentTarget,
+                user,
+              )
+            }
+          />,
+          align: 'center',
+          width: '5%',
+        } : undefined]}
+        data={rooms.rooms}
+      />
       <Menu
         id="simple-menu"
         anchorEl={menuAnchorEl}
@@ -285,22 +285,22 @@ function AllUsersTable({
               className="margin-circular"
               color="white"
             />}
-          Chuyển trạng thái
+          {t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}
         </MenuItem>
         <MenuItem onClick={() => {
           handleOpenModal('PERMISSION_SETTING');
           setMenuAnchorEl(null);
         }}>
-          Phân quyền
+          {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}
         </MenuItem>
         <MenuItem onClick={() => {
           handleOpenModal('ALERT', {
-            content: 'Bạn chắc chắn muốn xóa người dùng ra khỏi nhóm?',
+            content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
             onConfirm: () => handleBanUserFromGroup(user),
           });
           setMenuAnchorEl(null);
         }}>
-          Rời nhóm
+          {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
         </MenuItem>
       </Menu>
     </Container>

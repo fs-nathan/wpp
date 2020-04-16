@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../components/CustomModal';
 import ErrorBox from '../../../../components/ErrorBox';
 import SimpleManagerTable from '../../../../components/SimpleManagerTable';
@@ -10,13 +11,15 @@ function LevelManager({
   handleOpenModal,
 }) {
 
+  const { t } = useTranslation();
+
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
-      title='Quản lý trình độ'
+      title={t('DMH.VIEW.DP.MODAL.LEVEL.TITLE')}
       confirmRender={null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t('DMH.VIEW.DP.MODAL.LEVEL.EXIT')}
       loading={levels.loading}
     >
       {levels.error !== null
@@ -29,7 +32,7 @@ function LevelManager({
             updatedLevel: level,
           })}
           handleDelete={level => handleOpenModal('ALERT', {
-            content: 'Bạn chắc chắn muốn xóa trình độ?',
+            content: t('DMH.VIEW.DP.MODAL.LEVEL.ALERT'),
             onConfirm: () => handleDeleteLevel(level),
           })}
         />

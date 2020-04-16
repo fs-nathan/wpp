@@ -85,6 +85,7 @@ const MoreAction = props => {
     navigator.clipboard.writeText(
       props.item.url || props.item.webViewLink || ''
     );
+    handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${props.item.url || props.item.webViewLink || ''}`);
   };
   return (
     <React.Fragment>

@@ -1,17 +1,10 @@
-import React from 'react';
-import clsx from 'clsx';
+import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { mdiClockOutline, mdiDotsVertical, mdiStarCircle, mdiStarCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import {
-  mdiDotsHorizontal, mdiStarCircle, mdiStarCircleOutline, mdiClockOutline
-} from '@mdi/js';
-import {
-  Avatar,
-  IconButton,
-  Menu,
-  MenuItem,
-} from '@material-ui/core';
-
+import clsx from 'clsx';
+import React from 'react';
 import './styles.scss';
+
 
 const CustomListItem = props => {
   const { isDemand,
@@ -39,28 +32,27 @@ const CustomListItem = props => {
 
   return (
     <React.Fragment>
-      <li className="styled-list-item demandTabItem">
-        <div className="styled-title-box-dmt">
-          <Icon className={clsx("demandTabItem--icon", isDemand ? 'demandTabItem--icon__orange' : 'demandTabItem--icon__blue')}
-            path={isDemand ? mdiStarCircleOutline : mdiStarCircle}
-            size={2}
-          />
-          <div className="demandTabItem--items">
-            <div className="demandTabItem--title">{content}</div>
-            <div className="demandTabItem--creator">
-              <Avatar className="demandTabItem--avatar" src={user_create_avatar} alt="avatar" />
-              {[user_create_name, user_create_position, ...user_create_roles].join(' - ')}
-            </div >
-            <div className="demandTabItem--time">
-              <Icon path={mdiClockOutline} size={1} />
-              {isDemand ? 'Chỉ đạo' : 'Quyết định'} lúc {date_create}
-            </div>
+      <li className="demandTabItem">
+        <Icon className={clsx("demandTabItem--icon", isDemand ? 'demandTabItem--icon__orange' : 'demandTabItem--icon__blue')}
+          path={isDemand ? mdiStarCircleOutline : mdiStarCircle}
+          size={2}
+          onClick={onClickDetail}
+        />
+        <div className="demandTabItem--items" onClick={onClickDetail}>
+          <div className="demandTabItem--title">{content}</div>
+          <div className="demandTabItem--creator">
+            <Avatar className="demandTabItem--avatar" src={user_create_avatar} alt="avatar" />
+            {[user_create_name, user_create_position, ...user_create_roles].join(' - ')}
+          </div >
+          <div className="demandTabItem--time">
+            <Icon path={mdiClockOutline} size={1} />
+            {isDemand ? 'Chỉ đạo' : 'Quyết định'} lúc {date_create}
           </div>
-          <div className="styled-menu-demand">
-            <IconButton className="demandTabItem--button" size="small" onClick={handleClick}>
-              <Icon path={mdiDotsHorizontal} size={1} />
-            </IconButton>
-          </div>
+        </div>
+        <div className="demandTabItem--menu">
+          <IconButton className="demandTabItem--button" size="small" onClick={handleClick}>
+            <Icon path={mdiDotsVertical} size={1} />
+          </IconButton>
         </div>
       </li>
       <Menu

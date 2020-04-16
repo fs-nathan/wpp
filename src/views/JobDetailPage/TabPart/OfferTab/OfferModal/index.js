@@ -1,22 +1,23 @@
-import React from 'react';
-import { Button, IconButton, TextField, Typography, Avatar, Chip } from '@material-ui/core';
-import Icon from '@mdi/react';
+import { Avatar, Button, Chip, IconButton, TextField, Typography } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
-import { useDispatch, useSelector } from 'react-redux';
-import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper'
-import { uploadDocumentToOffer, deleteDocumentToOffer, createOffer, updateOffer } from 'actions/taskDetail/taskDetailActions';
-import DialogWrap from 'components/DialogWrap';
-
-import './styles.scss';
-import OfferFile from './OfferFile';
-import AddOfferMemberModal from '../AddOfferMemberModal';
-import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import Icon from '@mdi/react';
+import { createOffer, deleteDocumentToOffer, updateOffer, uploadDocumentToOffer } from 'actions/taskDetail/taskDetailActions';
+import CustomModal from 'components/CustomModal';
 import CustomSelect from 'components/CustomSelect';
+import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
+import findIndex from 'lodash/findIndex';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
+import OfferFile from './OfferFile';
+import './styles.scss';
 
 const OfferModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const currentUserId = useSelector(state => state.system.profile.order_user_id);
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
   const listGroupOffer = offers.map(off => ({ value: off.id, label: off.name }))
@@ -26,11 +27,29 @@ const OfferModal = (props) => {
   const [monitors, setMonitors] = React.useState([])
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
+  const { item } = props;
+  const createId = (item && item.user_create_id) || currentUserId;
+  const createUserIndex = findIndex(members, member => member.id === createId);
 
   React.useEffect(() => {
-    if (props.item)
-      setTempSelectedItem(props.item)
-  }, [props.item])
+    if (item) {
+      const { user_can_handers, user_monitors,
+        priority_code,
+        id } = item;
+      if (user_can_handers) {
+        const handlerIndexes = user_can_handers.map(
+          handler => findIndex(members, member => member.id === handler.id))
+        setHandlers(handlerIndexes.filter(idx => idx !== -1))
+      }
+      if (user_monitors) {
+        const monitorsIndexes = user_monitors.map(monitor => findIndex(members, member => member.id === monitor.id))
+        setMonitors(monitorsIndexes.filter(idx => idx !== -1))
+      }
+      if (priority_code) item.priority = priorityList[priority_code];
+      if (id) item.offer_id = id;
+      setTempSelectedItem(item)
+    }
+  }, [item, members])
 
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
@@ -59,22 +78,27 @@ const OfferModal = (props) => {
   }
 
   const handleDeleteFile = fileId => {
-    let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
-    // Build a callback that allow saga remove file in state array
     let removeFileCallBack = () => {
       setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
     }
-    // Call api
-    dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId))
+    if (props.isOffer) {
+      let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
+      // Build a callback that allow saga remove file in state array
+      // Call api
+      dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId))
+    } else {
+      removeFileCallBack()
+    }
   }
 
   const handleUploadFileAdd = files => {
     setParams("files", [...tempSelectedItem.files, ...files])
   }
 
-  const handleCreateOffer = () => {
+  const getFormData = () => {
     let dataCreateOfferFormData = new FormData()
     // add content and task id to form data
+    dataCreateOfferFormData.append('title', tempSelectedItem.title)
     dataCreateOfferFormData.append('content', tempSelectedItem.content)
     dataCreateOfferFormData.append('task_id', taskId)
     dataCreateOfferFormData.append('offer_group_id', tempSelectedItem.offer_group_id.value)
@@ -90,21 +114,34 @@ const OfferModal = (props) => {
     for (let i = 0; i < tempSelectedItem.files.length; i++) {
       dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
     }
-    dispatch(createOffer({ data: dataCreateOfferFormData, taskId }))
+    return dataCreateOfferFormData;
+  }
+
+  const handleCreateOffer = () => {
+    dispatch(createOffer({ data: getFormData(), taskId }))
     setParams("files", [])
   }
 
   function onClickCreateOffer() {
-    props.handleClickClose()
+    props.setOpen(false)
     if (tempSelectedItem.content)
       handleCreateOffer()
     setParams("content", '')
   }
 
   function onClickUpdateOffer() {
-    props.handleClickClose()
+    props.setOpen(false)
     if (tempSelectedItem.content) {
-      dispatch(updateOffer({ offerId: tempSelectedItem.offer_id, content: tempSelectedItem.content, taskId }))
+      dispatch(updateOffer({
+        task_id: taskId,
+        offer_id: tempSelectedItem.offer_id,
+        user_hander: handlers.map((id) => members[id].id),
+        user_monitor: monitors.map((id) => members[id].id),
+        title: tempSelectedItem.title,
+        content: tempSelectedItem.content,
+        offer_group_id: tempSelectedItem.offer_group_id.value,
+        priority: tempSelectedItem.priority.id,
+      }))
     }
     setParams("content", '')
   }
@@ -120,84 +157,36 @@ const OfferModal = (props) => {
     setOpenAddHandler(true)
   }
 
-  function closeAddHandlersDialog() {
-    setOpenAddHandler(false)
-  }
-
   function openAddMonitorsDialog() {
     setOpenAddMonitor(true)
   }
 
-  function closeAddMonitorsDialog() {
-    setOpenAddMonitor(false)
+  function validate() {
+    return tempSelectedItem.content && tempSelectedItem.title
+      && handlers.length
+      && tempSelectedItem.offer_group_id
+      && tempSelectedItem.priority
   }
-
   return (
-    <DialogWrap
+    <CustomModal
       title={props.isOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
-      isOpen={props.isOpen}
-      handleClickClose={props.handleClickClose}
-      successLabel={props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
-      onClickSuccess={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
+      onConfirm={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
+      canConfirm={validate()}
+      className="offerModal"
     >
       <React.Fragment>
-        <Typography className="offerModal--title" >Người phê duyệt ({handlers.length})</Typography>
-        <div>
-          {handlers.map((index) =>
-            <Chip
-              key={index}
-              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-              label={members[index].name}
-              onDelete={handleDeleteHandler(index)}
-            />
-          )}
-          <IconButton onClick={openAddHandlersDialog}>
-            <Icon size={1} path={mdiPlusCircleOutline} />
-          </IconButton>
-          <AddOfferMemberModal
-            isOpen={isOpenAddHandler}
-            value={handlers}
-            onChange={setHandlers}
-            handleClickClose={closeAddHandlersDialog}
-            members={members}
-          />
-        </div>
-        <Typography className="offerModal--title">Giám sát ({monitors.length})</Typography>
-        <div>
-          {monitors.map((index) =>
-            <Chip
-              key={index}
-              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-              label={members[index].name}
-              onDelete={handleDeleteHandler(index)}
-            />
-          )}
-          <IconButton onClick={openAddMonitorsDialog}>
-            <Icon size={1} path={mdiPlusCircleOutline} />
-          </IconButton>
-          <AddOfferMemberModal
-            isOpen={isOpenAddMonitor}
-            value={monitors}
-            onChange={setMonitors}
-            handleClickClose={closeAddMonitorsDialog}
-            members={members}
-          />
-        </div>
-        <Typography className="offerModal--title" >Chọn nhóm đề xuất</Typography>
-        <CustomSelect
-          options={listGroupOffer}
-          value={tempSelectedItem.offer_group_id}
-          onChange={(groupOffer) => setParams('offer_group_id', groupOffer)}
+        <Typography className="offerModal--title createJob--titleLabel" >Tên đề xuất</Typography>
+        <TextField
+          className="offerModal--titleText"
+          placeholder="Nhập tiêu đề đề xuất"
+          fullWidth
+          value={tempSelectedItem.title}
+          onChange={e => setParams("title", e.target.value)}
         />
-        <Typography className="offerModal--title" >Chọn mức độ</Typography>
-        <CommonPriorityForm
-          labels={priorityList}
-          priority={tempSelectedItem.priority.id}
-          handleChangeLabel={priorityItem =>
-            setParams('priority', priorityItem)
-          }
-        />
-        <Typography className="offerModal--title" >Nội dung phê duyệt</Typography>
+        <Typography className="offerModal--title" >Nội dung đề xuất</Typography>
         <TextField
           className="offerModal--content"
           fullWidth
@@ -209,6 +198,68 @@ const OfferModal = (props) => {
           value={tempSelectedItem ? tempSelectedItem.content : ""}
           onChange={e => setParams("content", e.target.value)}
         />
+        <Typography className="offerModal--title" >Chọn nhóm đề xuất</Typography>
+        <CustomSelect
+          options={listGroupOffer}
+          value={tempSelectedItem.offer_group_id}
+          onChange={(groupOffer) => setParams('offer_group_id', groupOffer)}
+        />
+        <Typography className="offerModal--title" >Người phê duyệt ({handlers.length})</Typography>
+        <div>
+          {handlers.map((index) =>
+            <Chip
+              key={index}
+              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
+              label={members[index].name}
+              onDelete={handleDeleteHandler(index)}
+            />
+          )}
+          <IconButton className="offerModal--buttonAdd" onClick={openAddHandlersDialog}>
+            <Icon size={1} path={mdiPlusCircleOutline} />
+            <span className="offerModal--textAdd">Thêm</span>
+          </IconButton>
+          <AddOfferMemberModal
+            isOpen={isOpenAddHandler}
+            setOpen={setOpenAddHandler}
+            value={handlers}
+            onChange={setHandlers}
+            members={members}
+            disableIndexes={[...monitors, createUserIndex]}
+          />
+        </div>
+        <Typography className="offerModal--title">Người giám sát ({monitors.length})</Typography>
+        <div>
+          {monitors.map((index) =>
+            <Chip
+              key={index}
+              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
+              label={members[index].name}
+              onDelete={handleDeleteHandler(index)}
+            />
+          )}
+          <IconButton
+            className="offerModal--buttonAdd"
+            onClick={openAddMonitorsDialog}>
+            <Icon size={1} path={mdiPlusCircleOutline} />
+            <span className="offerModal--textAdd">Thêm</span>
+          </IconButton>
+          <AddOfferMemberModal
+            isOpen={isOpenAddMonitor}
+            setOpen={setOpenAddMonitor}
+            value={monitors}
+            onChange={setMonitors}
+            members={members}
+            disableIndexes={[...handlers, createUserIndex]}
+          />
+        </div>
+        <Typography className="offerModal--title" >Chọn mức độ</Typography>
+        <CommonPriorityForm
+          labels={priorityList}
+          priority={tempSelectedItem.priority ? tempSelectedItem.priority.value : ''}
+          handleChangeLabel={priorityItem =>
+            setParams('priority', priorityItem)
+          }
+        />
         <input
           accept="image/*"
           className={'offerModal--input__hidden'}
@@ -217,17 +268,18 @@ const OfferModal = (props) => {
           type="file"
           onChange={e => props.isOffer ? handleUploadFileUpdate(e.target.files) : handleUploadFileAdd(e.target.files)}
         />
-        <label className="button-offer-modal" htmlFor="outlined-button-file">
+        <label className="offerModal--attach" htmlFor="outlined-button-file">
           <Button variant="outlined" component="span" fullWidth className={'classes.button'}>
             <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
-            Đính kèm tài liệu
-                </Button>
+              Đính kèm tài liệu
+            </Button>
         </label>
         {
+          tempSelectedItem.files &&
           tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
         }
       </React.Fragment>
-    </DialogWrap>
+    </CustomModal>
   )
 }
 

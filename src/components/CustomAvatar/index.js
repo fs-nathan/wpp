@@ -3,11 +3,7 @@ import React from "react";
 import Img from "react-image";
 import defaultImg from "../../assets/default.png";
 import spinner from "../../assets/loading_spinner.gif";
-import {
-  CustomEventDispose,
-  CustomEventListener,
-  DELETE_ICON
-} from "../../constants/events";
+import { CustomEventDispose, CustomEventListener, DELETE_ICON } from "../../constants/events";
 
 function CustomAvatar({ src, alt, srcSet, sizes, className, ...rest }) {
   const [imgSrc, setImgSrc] = React.useState({ src });

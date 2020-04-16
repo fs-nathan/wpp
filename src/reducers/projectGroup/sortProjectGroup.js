@@ -1,8 +1,4 @@
-import {
-  SORT_PROJECT_GROUP,
-  SORT_PROJECT_GROUP_SUCCESS,
-  SORT_PROJECT_GROUP_FAIL,
-} from '../../constants/actions/projectGroup/sortProjectGroup';
+import { SORT_PROJECT_GROUP, SORT_PROJECT_GROUP_FAIL, SORT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/sortProjectGroup';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case SORT_PROJECT_GROUP_SUCCESS: 
+    case SORT_PROJECT_GROUP_SUCCESS:
       return {
         ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case SORT_PROJECT_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

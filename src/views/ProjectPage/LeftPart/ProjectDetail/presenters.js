@@ -9,7 +9,6 @@ import ColorTypo from '../../../../components/ColorTypo';
 import { ActionBox, Container, SubContainer } from '../../../../components/CustomDetailBox';
 import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
 import CustomTextbox from '../../../../components/CustomTextbox';
-import ErrorBox from '../../../../components/ErrorBox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import ProgressBar from '../../../../components/ProgressBar';
@@ -47,7 +46,7 @@ function getExpectedProgress(startDate, endDate) {
 }
 
 function ProjectDetail({
-  project,
+  project, route,
   handleDeleteProject, handleOpenModal,
 }) {
 
@@ -55,154 +54,147 @@ function ProjectDetail({
 
   return (
     <>
-      {project.error !== null && (<ErrorBox />)}
-      {project.error === null && (
-        <LeftSideContainer
-          title='Thông tin dự án'
-          leftAction={{
-            iconPath: mdiChevronLeft,
-            onClick: () => history.push('/projects'),
-            tooltip: 'Quay lại',
-          }}
-          loading={{
-            bool: project.loading,
-            component: () => <LoadingBox />
-          }}
-        >
-          <Container>
-            <div>
-              <SubContainer>
-                <ChartBox>
-                  <ChartDrawer>
-                    <CustomChart
-                      type='donut'
-                      options={{
-                        legend: {
-                          show: false,
+      <LeftSideContainer
+        title='Thông tin dự án'
+        leftAction={{
+          iconPath: mdiChevronLeft,
+          onClick: () => history.push(route),
+          tooltip: 'Quay lại',
+        }}
+        loading={{
+          bool: project.loading,
+          component: () => <LoadingBox />
+        }}
+      >
+        <Container>
+          <div>
+            <SubContainer>
+              <ChartBox>
+                <ChartDrawer>
+                  <CustomChart
+                    type='donut'
+                    options={{
+                      legend: {
+                        show: false,
+                      },
+                      plotOptions: {
+                        pie: {
+                          expandOnClick: false,
                         },
-                        plotOptions: {
-                          pie: {
-                            expandOnClick: false,
-                          },
-                        },
-                        labels: [
-                          'Công việc đang chờ',
-                          'Công việc đang làm',
-                          'Công việc quá hạn',
-                          'Công việc hoàn thành',
-                        ],
-                        colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b'],
-                      }}
-                      series={[
-                        get(project.project, 'task_waiting', 0),
-                        get(project.project, 'task_doing', 0),
-                        get(project.project, 'task_expired', 0),
-                        get(project.project, 'task_complete', 0),
-                      ]}
-                      width={250}
-                      height={250}
-                    />
-                    <ChartTitle>
-                      {get(project.project, 'state_name')}
-                    </ChartTitle>
-                    {
-                      get(project.project, 'task_waiting', 0) +
-                        get(project.project, 'task_doing', 0) +
-                        get(project.project, 'task_expired', 0) +
-                        get(project.project, 'task_complete', 0) === 0
-                        ? <ChartPlaceholder />
-                        : null
-                    }
-                  </ChartDrawer>
-                  <ProjectName>
-                    {project.loading ? '...' : get(project.project, 'name', '')}
-                  </ProjectName>
-                  <ChartInfoBox
-                    data={
-                      [{
-                        color: '#ff9800',
-                        title: 'Công việc đang chờ',
-                        value: get(project.project, 'task_waiting', 0),
-                      }, {
-                        color: '#03a9f4',
-                        title: 'Công việc đang làm',
-                        value: get(project.project, 'task_doing', 0),
-                      }, {
-                        color: '#f44336',
-                        title: 'Công việc quá hạn',
-                        value: get(project.project, 'task_expired', 0),
-                      }, {
-                        color: '#03c30b',
-                        title: 'Công việc hoàn thành',
-                        value: get(project.project, 'task_complete', 0),
-                      }, {
-                        color: '#000',
-                        title: 'Công việc dừng',
-                        value: get(project.project, 'task_stop', 0),
-                      }]
-                    }
+                      },
+                      labels: [
+                        'Công việc đang chờ',
+                        'Công việc đang làm',
+                        'Công việc quá hạn',
+                        'Công việc hoàn thành',
+                      ],
+                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b'],
+                    }}
+                    series={[
+                      get(project.project, 'task_waiting', 0),
+                      get(project.project, 'task_doing', 0),
+                      get(project.project, 'task_expired', 0),
+                      get(project.project, 'task_complete', 0),
+                    ]}
+                    width={250}
+                    height={250}
                   />
-                </ChartBox>
-              </SubContainer>
-              <SubContainer>
-                <SubHeader>
-                  <ColorTypo color='gray' uppercase>Tiến độ dự án</ColorTypo>
-                </SubHeader>
-                <DateBox>
-                  <div>{get(project.project, 'date_start', -1)}</div>
-                  <div>{get(project.project, 'date_end', -1)}</div>
-                </DateBox>
-                <ProgressBar
-                  percentDone={get(project.project, 'complete', 0)}
-                  percentTarget={
-                    getExpectedProgress(
-                      get(project.project, 'date_start', -1),
-                      get(project.project, 'date_end', -1)
-                    )
+                  <ChartTitle>
+                    {get(project.project, 'state_name')}
+                  </ChartTitle>
+                  {
+                    get(project.project, 'task_waiting', 0) +
+                      get(project.project, 'task_doing', 0) +
+                      get(project.project, 'task_expired', 0) +
+                      get(project.project, 'task_complete', 0) === 0
+                      ? <ChartPlaceholder />
+                      : null
                   }
-                  colorDone={'#31b586'}
-                  colorTarget={'#fd7e14'}
+                </ChartDrawer>
+                <ProjectName>
+                  {project.loading ? '...' : get(project.project, 'name', '')}
+                </ProjectName>
+                <ChartInfoBox
+                  data={
+                    [{
+                      color: '#ff9800',
+                      title: 'Công việc đang chờ',
+                      value: get(project.project, 'task_waiting', 0),
+                    }, {
+                      color: '#03a9f4',
+                      title: 'Công việc đang làm',
+                      value: get(project.project, 'task_doing', 0),
+                    }, {
+                      color: '#f44336',
+                      title: 'Công việc quá hạn',
+                      value: get(project.project, 'task_expired', 0),
+                    }, {
+                      color: '#03c30b',
+                      title: 'Công việc hoàn thành',
+                      value: get(project.project, 'task_complete', 0),
+                    }]
+                  }
                 />
-              </SubContainer>
-              <SubContainer>
-                <SubHeader>
-                  <ColorTypo color='gray' uppercase>Mô tả dự án</ColorTypo>
-                </SubHeader>
-                <CustomTextbox
-                  value={get(project.project, 'description', '')}
-                  isReadOnly={true}
-                />
-              </SubContainer>
-              <SubContainer>
-                <SubHeader>
-                  <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
-                </SubHeader>
-                <AvatarCircleList users={get(project.project, 'members', [])} total={20} display={12} />
-              </SubContainer>
-            </div>
-            <ActionBox>
-              <ColorButton
-                onClick={() => handleOpenModal('UPDATE', {
-                  curProject: project.project
-                })}
-                variant='text'
-                size='small'
-                fullWidth
-              >Chỉnh sửa</ColorButton>
-              <ColorButton
-                onClick={() => handleOpenModal('ALERT', {
-                  content: 'Bạn chắc chắn muốn xóa?',
-                  onConfirm: () => handleDeleteProject(project.project),
-                })}
-                variant='text'
-                variantColor='red'
-                size='small'
-                fullWidth
-              >Xóa dự án</ColorButton>
-            </ActionBox>
-          </Container>
-        </LeftSideContainer>
-      )}
+              </ChartBox>
+            </SubContainer>
+            <SubContainer>
+              <SubHeader>
+                <ColorTypo color='gray' uppercase>Tiến độ dự án</ColorTypo>
+              </SubHeader>
+              <DateBox>
+                <div>{get(project.project, 'date_start', -1)}</div>
+                <div>{get(project.project, 'date_end', -1)}</div>
+              </DateBox>
+              <ProgressBar
+                percentDone={get(project.project, 'complete', 0)}
+                percentTarget={
+                  getExpectedProgress(
+                    get(project.project, 'date_start', -1),
+                    get(project.project, 'date_end', -1)
+                  )
+                }
+                colorDone={'#31b586'}
+                colorTarget={'#fd7e14'}
+              />
+            </SubContainer>
+            <SubContainer>
+              <SubHeader>
+                <ColorTypo color='gray' uppercase>Mô tả dự án</ColorTypo>
+              </SubHeader>
+              <CustomTextbox
+                value={get(project.project, 'description', '')}
+                isReadOnly={true}
+              />
+            </SubContainer>
+            <SubContainer>
+              <SubHeader>
+                <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
+              </SubHeader>
+              <AvatarCircleList users={get(project.project, 'members', [])} total={20} display={12} />
+            </SubContainer>
+          </div>
+          <ActionBox>
+            <ColorButton
+              onClick={() => handleOpenModal('UPDATE', {
+                curProject: project.project
+              })}
+              variant='text'
+              size='small'
+              fullWidth
+            >Chỉnh sửa</ColorButton>
+            <ColorButton
+              onClick={() => handleOpenModal('ALERT', {
+                content: 'Bạn chắc chắn muốn xóa?',
+                onConfirm: () => handleDeleteProject(project.project),
+              })}
+              variant='text'
+              variantColor='red'
+              size='small'
+              fullWidth
+            >Xóa dự án</ColorButton>
+          </ActionBox>
+        </Container>
+      </LeftSideContainer>
     </>
   )
 }

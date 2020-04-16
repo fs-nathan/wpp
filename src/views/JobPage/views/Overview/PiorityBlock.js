@@ -1,5 +1,5 @@
 import { Box } from "@material-ui/core";
-import { times } from "components/CustomPopover";
+import { useTimes } from "components/CustomPopover";
 import React, { useContext } from "react";
 import Chart from "react-apexcharts";
 import { useTranslation } from "react-i18next";
@@ -12,10 +12,10 @@ import { Block } from "./Block";
 const strings = [
   "task_hight_priority",
   "task_medium_priority",
-  "task_low_priority"
+  "task_low_priority",
 ];
 export function PiorityBlock() {
-  const chartProps = useSelector(state => {
+  const chartProps = useSelector((state) => {
     return createPriorityRadialBarChartProps(
       strings,
       state.taskPage[TASK_OVERVIEW_STATISTIC]
@@ -23,6 +23,7 @@ export function PiorityBlock() {
   });
   const { t } = useTranslation();
   const { timeType = 0 } = useContext(JobPageContext);
+  const times = useTimes();
   return (
     <Block
       title={t("Ưu tiên")}

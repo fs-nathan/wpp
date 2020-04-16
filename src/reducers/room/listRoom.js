@@ -2,7 +2,7 @@ import { concat, findIndex, get, remove, slice } from 'lodash';
 import { CREATE_ROOM_SUCCESS } from '../../constants/actions/room/createRoom';
 import { DELETE_ROOM_SUCCESS } from '../../constants/actions/room/deleteRoom';
 import { LIST_ROOM, LIST_ROOM_FAIL, LIST_ROOM_SUCCESS } from '../../constants/actions/room/listRoom';
-import { SORT_ROOM_SUCCESS } from '../../constants/actions/room/sortRoom';
+import { SORT_ROOM, SORT_ROOM_SUCCESS } from '../../constants/actions/room/sortRoom';
 import { UPDATE_ROOM_SUCCESS } from '../../constants/actions/room/updateRoom';
 
 
@@ -25,6 +25,7 @@ function reducer(state = initialState, action) {
     case LIST_ROOM_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -32,6 +33,7 @@ function reducer(state = initialState, action) {
     case LIST_ROOM_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };
@@ -68,6 +70,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    case SORT_ROOM:
     case SORT_ROOM_SUCCESS: {
       let newRooms = state.data.rooms;
       const removed = remove(newRooms, { id: get(action.options, 'roomId') });

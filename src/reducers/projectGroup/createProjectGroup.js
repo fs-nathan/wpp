@@ -1,12 +1,8 @@
-import {
-  CREATE_PROJECT_GROUP,
-  CREATE_PROJECT_GROUP_SUCCESS,
-  CREATE_PROJECT_GROUP_FAIL,
-} from '../../constants/actions/projectGroup/createProjectGroup';
+import { CREATE_PROJECT_GROUP, CREATE_PROJECT_GROUP_FAIL, CREATE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/createProjectGroup';
 
 export const initialState = {
   data: {
-    projectGroup: null,  
+    projectGroup: null,
   },
   error: null,
   loading: false,
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case CREATE_PROJECT_GROUP_SUCCESS: 
+    case CREATE_PROJECT_GROUP_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case CREATE_PROJECT_GROUP_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

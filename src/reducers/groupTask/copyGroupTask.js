@@ -1,8 +1,4 @@
-import {
-	COPY_GROUP_TASK,
-	COPY_GROUP_TASK_SUCCESS,
-	COPY_GROUP_TASK_FAIL,
-} from '../../constants/actions/groupTask/copyGroupTask';
+import { COPY_GROUP_TASK, COPY_GROUP_TASK_FAIL, COPY_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/copyGroupTask';
 
 export const initialState = {
 	data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
 				error: null,
 				loading: true,
 			};
-		case COPY_GROUP_TASK_SUCCESS: 
+		case COPY_GROUP_TASK_SUCCESS:
 			return {
-				...state, 
+				...state,
+				...initialState,
 				data: action.data,
 				error: null,
 				loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
 		case COPY_GROUP_TASK_FAIL:
 			return {
 				...state,
+				...initialState,
 				error: action.error,
 				loading: false,
 			};

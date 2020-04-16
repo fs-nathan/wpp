@@ -1,8 +1,4 @@
-import {
-  UPDATE_STATE_JOIN_TASK,
-  UPDATE_STATE_JOIN_TASK_SUCCESS,
-  UPDATE_STATE_JOIN_TASK_FAIL,
-} from '../../constants/actions/project/updateStateJoinTask';
+import { UPDATE_STATE_JOIN_TASK, UPDATE_STATE_JOIN_TASK_FAIL, UPDATE_STATE_JOIN_TASK_SUCCESS } from '../../constants/actions/project/updateStateJoinTask';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case UPDATE_STATE_JOIN_TASK_SUCCESS: 
+    case UPDATE_STATE_JOIN_TASK_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case UPDATE_STATE_JOIN_TASK_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

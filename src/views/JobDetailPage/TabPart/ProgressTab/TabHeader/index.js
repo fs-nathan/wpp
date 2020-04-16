@@ -1,10 +1,9 @@
+import { getTrackingTime, getTrackingTimeComplete } from 'actions/taskDetail/taskDetailActions';
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-import ProgressModal from '../ProgressModal'
+import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
-import { getTrackingTime } from '../../../../../actions/taskDetail/taskDetailActions';
 import HeaderTab from '../../HeaderTab';
+import ProgressModal from '../ProgressModal';
 
 function TabHeader({ setShow }) {
   const dispatch = useDispatch();
@@ -12,23 +11,25 @@ function TabHeader({ setShow }) {
 
   useEffect(() => {
     dispatch(getTrackingTime(taskId))
+    dispatch(getTrackingTimeComplete(taskId))
   }, [dispatch, taskId])
 
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const handleClickClose = () => {
-    setOpen(false);
-  };
+  function onClickBack() {
+    setShow(0)
+  }
+
   return (
     <div className="container-progress-tabheader">
       <HeaderTab title="Tiến độ công việc"
-        onClickBack={() => setShow(0)}
+        onClickBack={onClickBack}
         onClickOpen={handleClickOpen}
         rightIcon="settings"
       />
-      <ProgressModal isOpen={open} handleClickOpen={handleClickOpen} handleClickClose={handleClickClose} />
+      <ProgressModal isOpen={open} setOpen={setOpen} />
     </div>
   );
 }

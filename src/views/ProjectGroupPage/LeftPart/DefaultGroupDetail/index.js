@@ -1,15 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { routeSelector } from '../../selectors';
 import DefaultGroupDetailPresenter from './presenters';
 import { groupSelector } from './selectors';
 
-function DefaultGroupDetail({ 
-  group, 
+function DefaultGroupDetail({
+  group, route
 }) {
-  
+
   return (
-    <DefaultGroupDetailPresenter 
-      group={group}
+    <DefaultGroupDetailPresenter
+      group={group} route={route}
     />
   )
 }
@@ -17,6 +18,7 @@ function DefaultGroupDetail({
 const mapStateToProps = state => {
   return {
     group: groupSelector(state),
+    route: routeSelector(state),
   };
 };
 

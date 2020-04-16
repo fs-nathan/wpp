@@ -1,11 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
 import { List } from '@material-ui/core';
-import ListBodySubHeader from './ListBodySubHeader';
-import ListBodyItem from './ListBodyItem';
+import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { taskIdSelector } from '../../selectors';
+import ListBodyItem from './ListBodyItem';
+import ListBodySubHeader from './ListBodySubHeader';
+import './styles.scss';
+
 const StyledList = styled(List)`
 
   & > li {
@@ -20,9 +22,6 @@ const StyledList = styled(List)`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
-  & > div:nth-child(1) {
-    margin-right: -7px !important;
-  }
 `;
 
 function ListBody() {
@@ -33,11 +32,13 @@ function ListBody() {
   // fix use effect
   if (listTaskDetail) {
     data = listTaskDetail.tasks;
-    console.log({ data });
+    // console.log({ data });
   }
 
   return (
-    <Body autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Body className="listJobBody"
+      renderView={props => <div {...props} className="listJobBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       {data.map((item, key) => {
         return (
           <StyledList key={key}>

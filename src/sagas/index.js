@@ -1,17 +1,8 @@
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
 import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
-import {
-  LIST_COMMENT,
-  LIST_DOCUMENT_FROM_ME,
-  LIST_DOCUMENT_SHARE,
-  LIST_GOOGLE_DOCUMENT,
-  LIST_MY_DOCUMENT,
-  LIST_PROJECT_DOCUMENT,
-  LIST_PROJECT_DOCUMENT_OF_FOLDER,
-  LIST_RECENT,
-  LIST_TRASH
-} from "../constants/actions/documents";
+import * as chatTypes from "../constants/actions/chat/chat";
+import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH } from "../constants/actions/documents";
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
 import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
 import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
@@ -49,13 +40,16 @@ import { ASSIGN_MEMBER_TO_ALL_TASK } from "../constants/actions/project/assignMe
 import { COPY_PROJECT } from "../constants/actions/project/copyProject";
 import { CREATE_PROJECT } from "../constants/actions/project/createProject";
 import { DELETE_PROJECT } from "../constants/actions/project/deleteProject";
+import { DELETE_TRASH_PROJECT } from "../constants/actions/project/deleteTrashProject";
 import { DETAIL_PROJECT } from "../constants/actions/project/detailProject";
 import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
 import { LIST_DELETED_PROJECT } from "../constants/actions/project/listDeletedProject";
 import { LIST_PROJECT } from "../constants/actions/project/listProject";
 import { MEMBER_PROJECT } from "../constants/actions/project/memberProject";
+import { PERMISSION_PROJECT } from "../constants/actions/project/permissionProject";
 import { REMOVE_MEMBER_PROJECT } from "../constants/actions/project/removeMemberProject";
 import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from "../constants/actions/project/removeProjectRoleFromMember";
+import { RESTORE_TRASH_PROJECT } from "../constants/actions/project/restoreTrashProject";
 import { DETAIL_STATUS } from "../constants/actions/project/setting/detailStatus";
 import { UPDATE_STATUS_COPY } from "../constants/actions/project/setting/updateStatusCopy";
 import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateStatusDate";
@@ -81,11 +75,7 @@ import { GET_USER_OF_ROOM } from "../constants/actions/room/getUserOfRoom";
 import { LIST_ROOM } from "../constants/actions/room/listRoom";
 import { SORT_ROOM } from "../constants/actions/room/sortRoom";
 import { UPDATE_ROOM } from "../constants/actions/room/updateRoom";
-import {
-  FETCH_GROUP_DETAIL,
-  FETCH_LIST_COLOR_GROUP,
-  GET_SETTING_DATE
-} from "../constants/actions/setting/setting";
+import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP, GET_SETTING_DATE } from "../constants/actions/setting/setting";
 import { CREATE_TASK } from "../constants/actions/task/createTask";
 import { DELETE_TASK } from "../constants/actions/task/deleteTask";
 import { LIST_TASK } from "../constants/actions/task/listTask";
@@ -104,26 +94,12 @@ import { CREATE_USER_ROLE } from "../constants/actions/userRole/createUserRole";
 import { DELETE_USER_ROLE } from "../constants/actions/userRole/deleteUserRole";
 import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
 import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
+import { GET_PERMISSION_VIEW_DETAIL_PROJECT, GET_PERMISSION_VIEW_PROJECTS, GET_PERMISSION_VIEW_USERS } from "../constants/actions/viewPermissions";
 // ==================================
-import {
-  watchLoadTaskAssignPage,
-  watchLoadTaskDuePage,
-  watchLoadTaskOverviewPage,
-  watchLoadTaskPage,
-  watchLoadTaskRolePage
-} from "../views/JobPage/redux/sagas";
+import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
-import {
-  listComment,
-  listDocumentShare,
-  listDocumentShareFromMe,
-  listGoogleDocument,
-  listMyDocument,
-  listProjectDocument,
-  listProjectDocumentOfFolder,
-  listRecent,
-  listTrash
-} from "./documents";
+import * as chatDetailSaga from "./chat/chat";
+import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash } from "./documents";
 import { copyGroupTask } from "./groupTask/copyGroupTask";
 import { createGroupTask } from "./groupTask/createGroupTask";
 import { deleteGroupTask } from "./groupTask/deleteGroupTask";
@@ -161,12 +137,15 @@ import { assignMemberToAllTask } from "./project/assignMemberToAllTask";
 import { copyProject } from "./project/copyProject";
 import { createProject } from "./project/createProject";
 import { deleteProject } from "./project/deleteProject";
+import { deleteTrashProject } from "./project/deleteTrashProject";
 import { detailProject } from "./project/detailProject";
 import { hideProject } from "./project/hideProject";
 import { listDeletedProject, listProject } from "./project/listProject";
 import { memberProject } from "./project/memberProject";
+import { permissionProject } from "./project/permissionProject";
 import { removeMemberProject } from "./project/removeMemberProject";
 import { removeProjectRoleFromMember } from "./project/removeProjectRoleFromMember";
+import { restoreTrashProject } from "./project/restoreTrashProject";
 import { detailStatus } from "./project/setting/detailStatus";
 import { updateStatusCopy } from "./project/setting/updateStatusCopy";
 import { updateStatusDate } from "./project/setting/updateStatusDate";
@@ -192,11 +171,7 @@ import { getUserOfRoom } from "./room/getUserOfRoom";
 import { listRoom } from "./room/listRoom";
 import { sortRoom } from "./room/sortRoom";
 import { updateRoom } from "./room/updateRoom";
-import {
-  getGroupDetail,
-  getListColor,
-  getSettingDate
-} from "./setting/setting";
+import { getGroupDetail, getListColor, getSettingDate } from "./setting/setting";
 import { createTask } from "./task/createTask";
 import { deleteTask } from "./task/deleteTask";
 import { listTask } from "./task/listTask";
@@ -214,6 +189,7 @@ import { createUserRole } from "./userRole/createUserRole";
 import { deleteUserRole } from "./userRole/deleteUserRole";
 import { listUserRole } from "./userRole/listUserRole";
 import { updateUserRole } from "./userRole/updateUserRole";
+import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
 
 function* rootSaga() {
   // Hoang - begin
@@ -284,7 +260,10 @@ function* rootSaga() {
   yield takeLatest(DETAIL_PROJECT, detailProject);
   yield takeEvery(HIDE_PROJECT, hideProject);
   yield takeEvery(SHOW_PROJECT, showProject);
+  yield takeEvery(DELETE_TRASH_PROJECT, deleteTrashProject);
+  yield takeEvery(RESTORE_TRASH_PROJECT, restoreTrashProject);
   yield takeLatest(MEMBER_PROJECT, memberProject);
+  yield takeLatest(PERMISSION_PROJECT, permissionProject);
   yield takeEvery(ADD_MEMBER_PROJECT, addMemberProject);
   yield takeEvery(REMOVE_MEMBER_PROJECT, removeMemberProject);
   yield takeEvery(UPDATE_STATE_JOIN_TASK, updateStateJoinTask);
@@ -310,6 +289,18 @@ function* rootSaga() {
   yield takeEvery(
     INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
     inviteOtherPeopleCreateAccount
+  );
+  yield takeEvery(
+    GET_PERMISSION_VIEW_PROJECTS,
+    getPermissionViewProjects
+  );
+  yield takeEvery(
+    GET_PERMISSION_VIEW_USERS,
+    getPermissionViewUsers
+  );
+  yield takeEvery(
+    GET_PERMISSION_VIEW_DETAIL_PROJECT,
+    getPermissionViewDetailProject
   );
 
   // Hoang - end
@@ -349,6 +340,10 @@ function* rootSaga() {
   yield takeLeading(
     taskDetailType.DELETE_OFFER_REQUEST,
     taskDetailSaga.deleteOffer
+  );
+  yield takeLeading(
+    taskDetailType.APPROVE_OFFER_REQUEST,
+    taskDetailSaga.approveOffer
   );
   yield takeLeading(
     taskDetailType.UPLOAD_DOCUMENT_TO_OFFER_REQUEST,
@@ -487,18 +482,10 @@ function* rootSaga() {
   );
   // Member Role::
   yield takeLeading(taskDetailType.GET_ROLE_REQUEST, taskDetailSaga.getRole);
-  yield takeLeading(
-    taskDetailType.POST_ROLE_REQUEST,
-    taskDetailSaga.createRole
-  );
-  yield takeLeading(
-    taskDetailType.UPDATE_ROLE_REQUEST,
-    taskDetailSaga.updateRole
-  );
-  yield takeLeading(
-    taskDetailType.DELETE_ROLE_REQUEST,
-    taskDetailSaga.deleteRole
-  );
+  yield takeLeading(taskDetailType.POST_ROLE_REQUEST, taskDetailSaga.createRole);
+  yield takeLeading(taskDetailType.UPDATE_ROLE_REQUEST, taskDetailSaga.updateRole);
+  yield takeLeading(taskDetailType.DELETE_ROLE_REQUEST, taskDetailSaga.deleteRole);
+  yield takeLeading(taskDetailType.UPDATE_ROLES_FOR_MEMBER_REQUEST, taskDetailSaga.updateRolesForMember);
 
   //Time
   yield takeLeading(
@@ -506,12 +493,12 @@ function* rootSaga() {
     taskDetailSaga.getTrackingTime
   );
   yield takeLeading(
-    taskDetailType.UPDATE_TIME_DURATION_REQUEST,
-    taskDetailSaga.updateTimeDuration
+    taskDetailType.GET_TRACKING_TIME_COMPLETE_REQUEST,
+    taskDetailSaga.getTrackingTimeComplete
   );
   yield takeLeading(
-    taskDetailType.GET_TRACKING_TIME_REQUEST,
-    taskDetailSaga.getTrackingTime
+    taskDetailType.UPDATE_TIME_DURATION_REQUEST,
+    taskDetailSaga.updateTimeDuration
   );
 
   // List Task Detail
@@ -564,6 +551,11 @@ function* rootSaga() {
   yield takeLeading(
     taskDetailType.UN_PIN_TASK_REQUEST,
     taskDetailSaga.unPinTask
+  );
+  //chat 
+  yield takeLeading(
+    chatTypes.DELETE_CHAT,
+    chatDetailSaga.deleteChat
   );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);

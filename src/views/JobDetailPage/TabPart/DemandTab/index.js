@@ -1,8 +1,9 @@
-import React from 'react';
 import { Slide } from '@material-ui/core';
-import TabHeader from './TabHeader';
+import React from 'react';
+import styled from 'styled-components';
+import './styles.scss';
 import TabBody from './TabBody';
-import styled from 'styled-components'
+import TabHeader from './TabHeader';
 
 const Header = styled(TabHeader)`
   grid-area: header;
@@ -20,10 +21,10 @@ const Header = styled(TabHeader)`
 
 function DemandTab(props) {
   return (
-    <Slide in={props.show === 7}  mountOnEnter unmountOnExit>
+    <Slide in={props.show === 7} mountOnEnter unmountOnExit>
       <div className="container-tabpart">
         <Header setShow={props.setShow} {...props} />
-        <TabBody {...props}/>
+        <TabBody {...props} />
       </div>
     </Slide>
   )

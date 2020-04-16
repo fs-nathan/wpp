@@ -14,7 +14,7 @@ import React, { useContext, useState } from "react";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { TimeRangePopover, times } from "../../../components/CustomPopover";
+import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import LoadingBox from "../../../components/LoadingBox";
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
@@ -153,6 +153,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     keyword,
     setkeyword,
   } = useContext(JobPageContext);
+  const times = useTimes();
   const open = !!quickTask;
   const [openModalDirect, setOopenModalDirect] = useState();
   const options = {
@@ -215,7 +216,6 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
         >
           <Scrollbars>{children}</Scrollbars>
         </LayoutStateLess>
-
         <TimeRangePopover
           bgColor={bgColor}
           anchorEl={timeAnchor}

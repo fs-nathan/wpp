@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
 import { Slider } from '@material-ui/core';
 import clamp from 'lodash/clamp';
-
+import React, { useEffect, useState } from 'react';
 import './styles.scss';
 
-function ProgressSlider({ value, onChange, expected }) {
+function ProgressSlider({ value, onChange, expected, isHaveDate }) {
   const [progressPercent, setProgressPercent] = useState(value);
   useEffect(() => {
     setProgressPercent(value)
@@ -21,11 +20,13 @@ function ProgressSlider({ value, onChange, expected }) {
         onChange(val)
       }}
     />
-    <div className="progressSlider--expected" style={{ left: `calc(${expectedPercent}% - 3px)` }}>
-      <div className="progressSlider--lineConnect"></div>
+    {isHaveDate &&
+      <div className="progressSlider--expected" style={{ left: `calc(${expectedPercent}% - 3px)` }}>
+        {/* <div className="progressSlider--lineConnect"></div>
       <div className="progressSlider--text">Hôm nay</div>
-      <div className="progressSlider--expectedLabel">{expectedPercent}%</div>
-    </div>
+      <div className="progressSlider--expectedLabel">{expectedPercent}%</div> */}
+      </div>
+    }
   </div>)
 }
 

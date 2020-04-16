@@ -1,32 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiSend } from '@mdi/js';
 import { InputBase } from '@material-ui/core';
-import ColorTypo from '../../../../../components/ColorTypo';
-import SearchInput from '../../../../../components/SearchInput';
-import colorPal from '../../../../../helpers/colorPalette';
-// import avatar from '../../../../../assets/avatar.jpg';
-import { Scrollbars } from 'react-custom-scrollbars'
-import { useSelector, useDispatch } from 'react-redux';
-import { postSubTask, searchSubTask } from '../../../../../actions/taskDetail/taskDetailActions';
-import { ButtonIcon } from './AllSubtaskListItem';
-import AllSubtaskList from './AllSubtaskList';
-import FinishedSubtaskList from './FinishedSubtaskList';
+import { mdiSend } from '@mdi/js';
+import Icon from '@mdi/react';
+import { postSubTask, searchSubTask } from 'actions/taskDetail/taskDetailActions';
+import ColorTypo from 'components/ColorTypo';
+import SearchInput from 'components/SearchInput';
+import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
-
+import SubTaskDetailDialog from '../SubTaskDetailDialog';
+import AllSubtaskList from './AllSubtaskList';
+import { ButtonIcon } from './AllSubtaskListItem';
+import FinishedSubtaskList from './FinishedSubtaskList';
 import './styles.scss';
 
 const Container = styled.div`
   padding: 0 0 50px 0;
 `;
-
-
-const TextTitle = styled(ColorTypo)`
-  font-size: 16px;
-  color: ${colorPal['gray'][0]};
-  margin-left: 30pxreact-beautiful-dnd
-`
 
 const NewWork = styled.div`
   display: flex;
@@ -39,7 +30,7 @@ const NewWork = styled.div`
 
 `
 const InputText = styled(InputBase)`
-  padding-left: 30px;
+  padding-left: 16px;
   font-size: 16px;
   align-item: center;
   width: 100%;
@@ -55,6 +46,8 @@ function TabBody(props) {
   const completeSubTasks = useSelector(state => state.taskDetail.subTask.completeSubTasks);
   const isNoSubTask = (uncompleteSubTasks.length + completeSubTasks.length) === 0;
   const [name, setName] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState(null);
 
   const setStateSubTask = (e) => {
     // let newData = JSON.parse(JSON.stringify(data))
@@ -70,8 +63,14 @@ function TabBody(props) {
   const searchSubTaskTabPart = (e) => {
     dispatch(searchSubTask(e.target.value))
   }
+  function onClickItem(item) {
+    setSelectedItem(item)
+    setOpen(true)
+  }
   return (
-    <Scrollbars className="subTaskBody" autoHide autoHideTimeout={500} autoHideDuration={200}>
+    <Scrollbars className="subTaskBody"
+      renderView={props => <div {...props} className="subTaskBody--container" />}
+      autoHide autoHideTimeout={500} autoHideDuration={200}>
       <Container>
         {props.isClicked ?
           <NewWork>
@@ -99,17 +98,25 @@ function TabBody(props) {
             />
           </Div>
         }
-        {isNoSubTask ? <NoDataPlaceHolder
-          src="/images/no-subtask.png"
-          title="Chưa có công việc con được khởi tạo Click + để tạo mới công việc con"
-        ></NoDataPlaceHolder>
+        {isNoSubTask ?
+          <NoDataPlaceHolder
+            src="/images/no-subtask.png"
+            title="Chưa có công việc con được khởi tạo Click + để tạo mới công việc con"
+          />
           :
           <React.Fragment>
-            <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Đang thực hiện({uncompleteSubTasks.length})</TextTitle>
-            <AllSubtaskList {...props} />
-            <TextTitle uppercase bold style={{ paddingLeft: 30 }}>Đã hoàn thành({completeSubTasks.length})</TextTitle>
-            <FinishedSubtaskList {...props} />
+            <ColorTypo className="subTaskBody--title">Đang thực hiện({uncompleteSubTasks.length})</ColorTypo>
+            <AllSubtaskList {...props} setSelectedItem={onClickItem} />
+            <ColorTypo className="subTaskBody--title">Đã hoàn thành({completeSubTasks.length})</ColorTypo>
+            <FinishedSubtaskList {...props} setSelectedItem={onClickItem} />
           </React.Fragment>}
+        <SubTaskDetailDialog
+          isOpen={open}
+          setOpen={setOpen}
+          item={selectedItem}
+        >
+
+        </SubTaskDetailDialog>
       </Container>
     </Scrollbars>
   )
