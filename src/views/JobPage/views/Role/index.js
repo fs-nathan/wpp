@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { useLocation } from "react-use";
 import styled from "styled-components";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
+import { mapQueryStatusAndPriority } from "views/JobPage/utils";
 import { formatTime } from "views/JobPage/utils/time";
 import { JobPageContext } from "../../JobPageContext";
 import Layout from "../../Layout";
@@ -21,14 +22,15 @@ export const PageContainer = styled(Container)`
 const Role = () => {
   const { roleId } = useParams();
   const { t } = useTranslation();
-  const { timeRange = {}, listMenu } = useContext(JobPageContext);
+  const { timeRange = {}, listMenu, statusFilter } = useContext(JobPageContext);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
       loadTaskRolePage({
         timeStart: formatTime(timeRange.startDate),
         timeEnd: formatTime(timeRange.endDate),
-        roleId
+        roleId,
+        ...mapQueryStatusAndPriority(statusFilter),
       })
     );
   }, [
@@ -37,7 +39,8 @@ const Role = () => {
     timeRange.timeEnd,
     roleId,
     timeRange.startDate,
-    timeRange.endDate
+    timeRange.endDate,
+    statusFilter,
   ]);
   const location = useLocation();
   return (
@@ -53,14 +56,14 @@ const Role = () => {
               paddingLeft: "20px",
               fontSize: "21px",
               lineHeight: "1",
-              fontWeight: "600"
+              fontWeight: "600",
             }}
           >
             {t(listMenu[3].title)}:{" "}
             {
               (
                 (listMenu[3].sub || emptyArray).find(
-                  item => item.url === location.pathname
+                  (item) => item.url === location.pathname
                 ) || {}
               ).name
             }

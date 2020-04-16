@@ -10,7 +10,7 @@ const ChartLegendWrap = styled(Grid)`
 const IconWrap = styled(Grid)`
   line-height: 1;
   margin-right: 12px;
-  margin-left: 30px;
+  margin-left: 20px;
 `;
 const ChartLegend = ({ strings = [], xs = 6 }) => {
   const map = strings.map(string => [labels[string], colors[string]]);
@@ -21,7 +21,7 @@ const ChartLegend = ({ strings = [], xs = 6 }) => {
           <IconWrap item>
             <Icon path={mdiSquare} size={1} color={color} />
           </IconWrap>
-          <Grid item xs zeroMinWidth>
+          <Grid title={label} item xs zeroMinWidth>
             {label}
           </Grid>
         </Grid>

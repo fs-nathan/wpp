@@ -36,13 +36,13 @@ export const statistic = {
   task_me_assign: "static.task_me_assign",
   task_assign_to_me: "static.task_assign_to_me",
   task_me_offer: "static.task_me_offer",
-  roles: "static.roles"
+  roles: "static.roles",
 };
 export const roleAttrs = {
   id: "id",
   name: "name",
   tasks: "tasks",
-  number_task: "number_task"
+  number_task: "number_task",
 };
 export const recent = {
   success: "state",
@@ -54,7 +54,7 @@ export const recent = {
   expired: "summary.expired",
   stop: "summary.stop",
   updated: "summary.updated",
-  tasks: "tasks"
+  tasks: "tasks",
 };
 export const taskAtrrs = {
   id: "id",
@@ -108,7 +108,8 @@ export const taskAtrrs = {
   user_create: "user_create",
   user_create_id: "user_create.id",
   user_create_roles: "user_create.roles",
-  date_create: "date_create"
+  date_create: "date_create",
+  url_redirect: "url_redirect",
 };
 export const labels = {
   task_all: "Tất cả",
@@ -136,7 +137,7 @@ export const labels = {
   role: "Vai trò",
   role_doing: "Thực hiện",
   role_monitor: "Giám sát",
-  role_coordination: "Phối hợp"
+  role_coordination: "Phối hợp",
 };
 
 // [{
@@ -178,22 +179,22 @@ export const colors = {
   task_low_priority: "#03c30b",
   task_me_assign: "static.task_me_assign",
   task_assign_to_me: "static.task_assign_to_me",
-  task_me_offer: "static.task_me_offer"
+  task_me_offer: "static.task_me_offer",
 };
 export const taskStatusMap = {
   waiting: "0",
   doing: "1",
   complete: "2",
   expired: "3",
-  stop: "4"
+  stop: "4",
 };
 export const taskPriorityMap = {
   priority_hight: "0",
   priority_medium: "1",
-  priority_low: "2"
+  priority_low: "2",
 };
 export const taskAssignMap = {
   role_doing: "0",
   role_monitor: "1",
-  role_coordination: "2"
+  role_coordination: "2",
 };

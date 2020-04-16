@@ -1,4 +1,5 @@
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
+import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
 import * as chatTypes from "../constants/actions/chat/chat";
 import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH } from "../constants/actions/documents";
@@ -561,6 +562,8 @@ function* rootSaga() {
   yield fork(watchLoadTaskDuePage);
   yield fork(watchLoadTaskAssignPage);
   yield fork(watchLoadTaskRolePage);
+
+  yield fork(watchAsyncAction);
 }
 
 export default rootSaga;
