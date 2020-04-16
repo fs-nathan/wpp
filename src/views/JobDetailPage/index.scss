@@ -94,30 +94,6 @@
   }
 }
 
-.wrap-time {
-  position: relative;
-  // margin-bottom: 10px;
-  height: 40px;
-  .line {
-    border: 1px solid #e6e7e8;
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    transform: translateY(-50%);
-  }
-  .time {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    background-color: #d7d7d8;
-    color: #f5f5f5;
-    border-radius: 10px;
-    padding: 8px;
-  }
-}
-
 // Footer - Chat Part
 .wrap-function-bar-fp {
   height: 50px;

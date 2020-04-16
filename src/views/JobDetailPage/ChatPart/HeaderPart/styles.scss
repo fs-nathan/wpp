@@ -92,6 +92,13 @@
     .MuiInputBase-root {
       border-radius: 0em;
       height: 40px;
+      background-color: #fff;
+      border-bottom: 1px solid #f1f3f4;
+    }
+    svg {
+      width: 20px !important;
+      height: 20px !important;
+      top: 9px !important;
     }
   }
   &--showSearch {
@@ -99,7 +106,12 @@
   }
   &--close {
     position: absolute;
-    bottom: -7px;
+    bottom: -5px;
     right: 0px;
+    svg {
+      width: 20px !important;
+      height: 20px !important;
+      fill: #666666;
+    }
   }
 }

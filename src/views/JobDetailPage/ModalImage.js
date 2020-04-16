@@ -8,6 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { mdiChevronLeftCircle, mdiChevronRightCircle, mdiDownload, mdiInformation, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import React, { useState } from 'react';
+import ReactPlayer from 'react-player';
 import styled from 'styled-components';
 
 const styles = theme => ({
@@ -213,6 +214,8 @@ const ModalImage = (props) => {
     isOpen,
     handleClose,
     images = [],
+    type,
+    url,
   } = props
   function clickNext() {
     if (currentImage < images.length - 1) {
@@ -249,14 +252,19 @@ const ModalImage = (props) => {
       </ContentDialog>
       <FooterDialog>
         <div>
-          {images.map((image, index) => {
-            return (
-              <WrapperImage key={`1-${index}`
-              }>
-                <Image src={image.url} alt='avatar' />
-              </WrapperImage>
-            );
-          })}
+          {
+            (type === 'mp4') ?
+              <ReactPlayer url={url} playing height="100%" width="100%" />
+              :
+              images.map((image, index) => {
+                return (
+                  <WrapperImage key={`1-${index}`
+                  }>
+                    <Image src={image.url} alt='avatar' />
+                  </WrapperImage>
+                );
+              })
+          }
         </div>
       </FooterDialog >
     </StyledDialog >

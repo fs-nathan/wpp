@@ -66,12 +66,15 @@ const TextMessage = ({
       {!isReply && is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
       <div className={clsx("TextMessage--rightContentWrap",
-        `TextMessage--rightContentWrap__${chatPosition}`,
+        is_me ? `TextMessage--rightContentWrap__self-${chatPosition}`
+          : `TextMessage--rightContentWrap__${chatPosition}`,
         {
           "TextMessage--reply": isReply,
           "TextMessage--rightContentWrap__self": is_me,
+          [`TextMessage--rightContentWrap__self-${chatPosition}`]: is_me,
           "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
         })}
+        style={{ backgroundColor: is_me ? groupActiveColor : 'inherit' }}
       >
         <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
           {

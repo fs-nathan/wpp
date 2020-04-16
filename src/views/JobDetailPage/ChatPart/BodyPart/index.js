@@ -154,7 +154,6 @@ const BodyPart = props => {
         getScrollParent={() => chatRef.current}
       >
         <div className="wrap-time">
-          <div className="line" />
           <div className="time">{date_create}</div>
         </div>
         <div className="wrap-common-row">
@@ -175,9 +174,9 @@ const BodyPart = props => {
             </button>
           </div>
         </div>
-        <div className="wrap-common-row">
+        <div className="bodyChat--introRow">
           <div className="bodyChat--introImages">
-            <div className="bodyChat--introItem">
+            <div className="bodyChat--introItem bodyChat--introItem__left">
               <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
               <div className="bodyChat--introTitle">
                 Thảo luận
@@ -189,7 +188,7 @@ const BodyPart = props => {
                 Quản lý
           </div>
             </div>
-            <div className="bodyChat--introItem">
+            <div className="bodyChat--introItem bodyChat--introItem__right">
               <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
               <div className="bodyChat--introTitle">
                 Chia sẻ

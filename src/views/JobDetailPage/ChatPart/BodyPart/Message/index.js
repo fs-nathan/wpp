@@ -2,7 +2,6 @@ import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
 import React from 'react';
 import AddNewMember from './AddNewMember';
 import CancelStopTask from './CancelStopTask';
-import ChatForwardFile from './ChatForwardFile';
 import ChatSticker from './ChatSticker';
 import CompleteSubtask from './CompleteSubtask';
 import CreateCommandDecided from './CreateCommandDecided';
@@ -93,15 +92,12 @@ const Message = props => {
       return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Đã bỏ Ghim nhắc hẹn" />;
     case CHAT_TYPE.CHAT_STICKER:
       return <ChatSticker {...props} />;
-    case CHAT_TYPE.CHAT_FORWARD_FILE:
-      return <ChatForwardFile {...props} />;
     case CHAT_TYPE.UPLOADING_IMAGES:
       return <ImageMessage {...props} />;
     case CHAT_TYPE.UPLOADING_FILE:
       return <FileMessage {...props} />;
     case CHAT_TYPE.DATE_TIME_CHAT_HISTORY:
       return <div className="wrap-time">
-        <div className="line" />
         <div className="time">{props.time_create}</div>
       </div>;
     default:
