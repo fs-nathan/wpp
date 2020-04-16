@@ -1,16 +1,12 @@
-import {
-  LIST_USER_ROLE,
-  LIST_USER_ROLE_SUCCESS,
-  LIST_USER_ROLE_FAIL,
-} from '../../constants/actions/userRole/listUserRole';
-import { concat, get, findIndex, remove} from 'lodash';
+import { concat, findIndex, get, remove } from 'lodash';
 import { CREATE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/createUserRole';
 import { DELETE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/deleteUserRole';
+import { LIST_USER_ROLE, LIST_USER_ROLE_FAIL, LIST_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/listUserRole';
 import { UPDATE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/updateUserRole';
 
 export const initialState = {
   data: {
-    userRoles: [],  
+    userRoles: [],
   },
   error: null,
   loading: false,
@@ -24,9 +20,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case LIST_USER_ROLE_SUCCESS: 
+    case LIST_USER_ROLE_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -34,6 +31,7 @@ function reducer(state = initialState, action) {
     case LIST_USER_ROLE_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

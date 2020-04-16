@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { updateGroupPermissionMemberSuccess, updateGroupPermissionMemberFail } from '../../actions/project/updateGroupPermissionMember';
+import { updateGroupPermissionMemberFail, updateGroupPermissionMemberSuccess } from '../../actions/project/updateGroupPermissionMember';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPDATE_GROUP_PERMISSION_MEMBER } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doRemoveProjectRoleFromMember({ projectId, memberId, groupPermission, }) {
   try {
@@ -13,7 +13,7 @@ async function doRemoveProjectRoleFromMember({ projectId, memberId, groupPermiss
       data: {
         project_id: projectId,
         member_id: memberId,
-        group_permission: groupPermission,
+        group_permission_id: groupPermission,
       },
     }
     const result = await apiService(config);
@@ -35,6 +35,5 @@ function* updateGroupPermissionMember(action) {
   }
 }
 
-export {
-  updateGroupPermissionMember,
-}
+export { updateGroupPermissionMember, };
+

@@ -14,7 +14,7 @@ const CustomLoadingOverlay = styled(({ bgColor, ...props }) => <ReactLoadingOver
       stroke: ${props => props.bgColor} !important;
     }
   }
-  .comp_LoadingOverlay___wrapper {
+  &.comp_LoadingOverlay___wrapper {
     height: 100%;
   }
 `;

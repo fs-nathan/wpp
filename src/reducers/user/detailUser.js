@@ -1,14 +1,10 @@
-import {
-  DETAIL_USER,
-  DETAIL_USER_SUCCESS,
-  DETAIL_USER_FAIL,
-} from '../../constants/actions/user/detailUser';
+import { get } from 'lodash';
+import { DETAIL_USER, DETAIL_USER_FAIL, DETAIL_USER_SUCCESS } from '../../constants/actions/user/detailUser';
 import { UPDATE_USER_SUCCESS } from '../../constants/actions/user/updateUser';
 import { UPLOAD_DOCUMENTS_USER_SUCCESS } from '../../constants/actions/user/uploadDocumentsUser';
-import { get } from 'lodash';
 
 export const initialState = {
-  data: {  
+  data: {
     user: null,
   },
   error: null,
@@ -23,9 +19,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case DETAIL_USER_SUCCESS: 
+    case DETAIL_USER_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -33,6 +30,7 @@ function reducer(state = initialState, action) {
     case DETAIL_USER_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

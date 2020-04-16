@@ -55,8 +55,8 @@ export const ChartInfoBox = ({ className = '', data, title = 'Tổng số công 
         {reduce(data, (sum, info) => (sum += get(info, "value", 0)), 0)}
       </span>
     </ChartLegendTitleBox>
-    {map(data, info => (
-      <ChartLegendBox className={className}>
+    {map(data, (info, index) => (
+      <ChartLegendBox className={className} key={index}>
         <Icon path={mdiSquare} size={1} color={get(info, "color", "#000")} />
         <Typography>{get(info, "title", "")}</Typography>
         <Typography>{get(info, "value", 0)}</Typography>

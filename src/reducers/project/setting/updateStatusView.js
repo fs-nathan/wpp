@@ -17,12 +17,14 @@ function reducer(state = initialState, action) {
     case UPDATE_STATUS_VIEW_SUCCESS:
       return {
         ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case UPDATE_STATUS_VIEW_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

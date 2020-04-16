@@ -24,6 +24,7 @@ function reducer(state = initialState, action) {
       remove(newPendings, pending => pending === get(action.data, 'major.id'))
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         pendings: newPendings,
@@ -34,6 +35,7 @@ function reducer(state = initialState, action) {
       remove(newPendings, pending => pending === get(action.options, 'majorId'))
       return {
         ...state,
+        ...initialState,
         error: action.error,
         pendings: newPendings,
       }

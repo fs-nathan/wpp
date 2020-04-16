@@ -1,12 +1,8 @@
-import {
-  DETAIL_PROJECT,
-  DETAIL_PROJECT_SUCCESS,
-  DETAIL_PROJECT_FAIL,
-} from '../../constants/actions/project/detailProject';
 import { get } from 'lodash';
-import { UPDATE_PROJECT_SUCCESS } from '../../constants/actions/project/updateProject';
+import { DETAIL_PROJECT, DETAIL_PROJECT_FAIL, DETAIL_PROJECT_SUCCESS } from '../../constants/actions/project/detailProject';
 import { HIDE_PROJECT_SUCCESS } from '../../constants/actions/project/hideProject';
 import { SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
+import { UPDATE_PROJECT_SUCCESS } from '../../constants/actions/project/updateProject';
 
 export const initialState = {
   data: {
@@ -24,9 +20,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: action.quite ? false : true,
       };
-    case DETAIL_PROJECT_SUCCESS: 
+    case DETAIL_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -34,6 +31,7 @@ function reducer(state = initialState, action) {
     case DETAIL_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

@@ -4,6 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { mapQueryStatusAndPriority } from "views/JobPage/utils";
 import { JobPageContext } from "../../JobPageContext";
 import Layout from "../../Layout";
 import { loadTaskDuePage } from "../../redux/actions";
@@ -16,13 +17,17 @@ export const PageContainer = styled(Container)`
 
 const Due = () => {
   const { t } = useTranslation();
-  const { timeRange, listMenu } = useContext(JobPageContext);
+  const { timeRange, listMenu, statusFilter } = useContext(JobPageContext);
   const dispatch = useDispatch();
   useEffect(() => {
     setTimeout(() => {
-      dispatch(loadTaskDuePage());
+      dispatch(
+        loadTaskDuePage({
+          ...mapQueryStatusAndPriority(statusFilter),
+        })
+      );
     });
-  }, [dispatch, timeRange]);
+  }, [dispatch, statusFilter, timeRange]);
   return (
     <Layout
       title={
@@ -36,7 +41,7 @@ const Due = () => {
               paddingLeft: "20px",
               fontSize: "21px",
               lineHeight: "1",
-              fontWeight: "600"
+              fontWeight: "600",
             }}
           >
             {t(listMenu[1].title)}

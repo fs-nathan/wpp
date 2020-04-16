@@ -1,8 +1,4 @@
-import {
-  DELETE_ROOM,
-  DELETE_ROOM_SUCCESS,
-  DELETE_ROOM_FAIL,
-} from '../../constants/actions/room/deleteRoom';
+import { DELETE_ROOM, DELETE_ROOM_FAIL, DELETE_ROOM_SUCCESS } from '../../constants/actions/room/deleteRoom';
 
 export const initialState = {
   data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case DELETE_ROOM_SUCCESS: 
+    case DELETE_ROOM_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case DELETE_ROOM_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loadling: false,
       };

@@ -1,7 +1,8 @@
-.view_Department_Logo_Modal___logo-list {
-  display: grid;
-  grid-template-rows: 70px;
-  grid-template-columns: repeat(8, 70px);
+@mixin view_Department_Logo_Modal___logo-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
   & > * {
     justify-self: center;
     align-self: center;
@@ -11,6 +12,23 @@
     justify-content: space-around;
   }
 };
+
+.view_Department_Logo_Modal___logo-list {
+  & {
+    @include view_Department_Logo_Modal___logo-list;
+    & > * {
+      width: 60px;
+      height: 60px;
+    }
+  }
+  &-tall {
+    @include view_Department_Logo_Modal___logo-list;
+    & > * {
+      width: 60px;
+      height: 80px;
+    }
+  }
+}
 
 @mixin view_Department_Logo_Modal___logo-box {
   & > button {
@@ -39,3 +57,8 @@
     }
   }
 };
+
+.view_Department_Logo_Modal___typo {
+  margin: 0 10px;
+  font-size: 14px;
+}

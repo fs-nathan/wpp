@@ -1,8 +1,4 @@
-import {
-  DELETE_PROJECT,
-  DELETE_PROJECT_SUCCESS,
-  DELETE_PROJECT_FAIL,
-} from '../../constants/actions/project/deleteProject';
+import { DELETE_PROJECT, DELETE_PROJECT_FAIL, DELETE_PROJECT_SUCCESS } from '../../constants/actions/project/deleteProject';
 
 export const initialState = {
   data: {},
@@ -18,15 +14,17 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case DELETE_PROJECT_SUCCESS: 
+    case DELETE_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         error: null,
         loading: false,
       };
     case DELETE_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

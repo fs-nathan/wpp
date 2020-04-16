@@ -1,4 +1,8 @@
 import { combineReducers } from "redux";
+import { postModule } from "views/HomePage/redux/post";
+import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
+import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
+import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
 import taskReducer from "../views/JobPage/redux/reducers";
 import authentications, { initialState as authenticationsInitialState } from "./authentications";
 import chat, { initialState as chatInitialState } from "./chat/chat";
@@ -42,13 +46,16 @@ import assignMemberToAllTask, { initialState as assignMemberToAllTaskInitialStat
 import copyProject, { initialState as copyProjectInitialState } from "./project/copyProject";
 import createProject, { initialState as createProjectInitialState } from "./project/createProject";
 import deleteProject, { initialState as deleteProjectInitialState } from "./project/deleteProject";
+import deleteTrashProject, { initialState as deleteTrashProjectInitialState } from "./project/deleteTrashProject";
 import detailProject, { initialState as detailProjectInitialState } from "./project/detailProject";
 import hideProject, { initialState as hideProjectInitialState } from "./project/hideProject";
 import listDeletedProject, { initialState as listDeletedProjectInitialState } from "./project/listDeletedProject";
 import listProject, { initialState as listProjectInitialState } from "./project/listProject";
 import memberProject, { initialState as memberProjectInitialState } from "./project/memberProject";
+import permissionProject, { initialState as permissionProjectInitialState } from "./project/permissionProject";
 import removeMemberProject, { initialState as removeMemberProjectInitialState } from "./project/removeMemberProject";
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from "./project/removeProjectRoleFromMember";
+import restoreTrashProject, { initialState as restoreTrashProjectInitialState } from "./project/restoreTrashProject";
 import detailStatus, { initialState as detailStatusInitialState } from "./project/setting/detailStatus";
 import updateStatusCopy, { initialState as updateStatusCopyInitialState } from "./project/setting/updateStatusCopy";
 import updateStatusDate, { initialState as updateStatusDateInitialState } from "./project/setting/updateStatusDate";
@@ -106,6 +113,7 @@ import createUserRole, { initialState as createUserRoleInitialState } from "./us
 import deleteUserRole, { initialState as deleteUserRoleInitialState } from "./userRole/deleteUserRole";
 import listUserRole, { initialState as listUserRoleInitialState } from "./userRole/listUserRole";
 import updateUserRole, { initialState as updateUserRoleInitialState } from "./userRole/updateUserRole";
+import viewPermissions, { initialState as viewPermissionsInitialState } from "./viewPermissions";
 
 const rootReducer = combineReducers({
   authentications,
@@ -136,7 +144,7 @@ const rootReducer = combineReducers({
     createRoom,
     deleteRoom,
     updateRoom,
-    sortRoom
+    sortRoom,
   }),
   user: combineReducers({
     listUserOfGroup,
@@ -146,36 +154,36 @@ const rootReducer = combineReducers({
     updateUser,
     publicMember,
     privateMember,
-    banUserFromGroup
+    banUserFromGroup,
   }),
   icon: combineReducers({
     listIcon,
     createIcon,
-    deleteIcon
+    deleteIcon,
   }),
   position: combineReducers({
     listPosition,
     createPosition,
     updatePosition,
-    deletePosition
+    deletePosition,
   }),
   level: combineReducers({
     listLevel,
     createLevel,
     updateLevel,
-    deleteLevel
+    deleteLevel,
   }),
   major: combineReducers({
     listMajor,
     createMajor,
     updateMajor,
-    deleteMajor
+    deleteMajor,
   }),
   userRole: combineReducers({
     listUserRole,
     createUserRole,
     updateUserRole,
-    deleteUserRole
+    deleteUserRole,
   }),
   projectGroup: combineReducers({
     createProjectGroup,
@@ -185,7 +193,7 @@ const rootReducer = combineReducers({
     sortProjectGroup,
     detailProjectGroup,
     memberProjectGroup,
-    detailDefaultGroup
+    detailDefaultGroup,
   }),
   project: combineReducers({
     createProject,
@@ -197,6 +205,7 @@ const rootReducer = combineReducers({
     hideProject,
     showProject,
     memberProject,
+    permissionProject,
     addMemberProject,
     removeMemberProject,
     updateStateJoinTask,
@@ -206,12 +215,14 @@ const rootReducer = combineReducers({
     assignMemberToAllTask,
     sortProject,
     copyProject,
+    deleteTrashProject,
+    restoreTrashProject,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
       updateStatusCopy,
       updateStatusView,
-    })
+    }),
   }),
   groupTask: combineReducers({
     listGroupTask: listGroupTask1,
@@ -220,13 +231,13 @@ const rootReducer = combineReducers({
     deleteGroupTask,
     updateGroupTask,
     sortGroupTask,
-    getAllGroupTask
+    getAllGroupTask,
   }),
   task: combineReducers({
     listTask,
     createTask,
     deleteTask,
-    sortTask
+    sortTask,
   }),
   taskPage: taskReducer,
   groupUser: combineReducers({
@@ -238,11 +249,18 @@ const rootReducer = combineReducers({
     acceptRequirementJoinGroup,
     rejectRequirementJoinGroup,
     cancleInvitationJoinGroup,
-    getListGroup
+    getListGroup,
   }),
   register: combineReducers({
-    inviteOtherPeopleCreateAccount
-  })
+    inviteOtherPeopleCreateAccount,
+  }),
+  [settingGroupHome.key]: settingGroupHome.reducer,
+  [settingGroupPermission.key]: settingGroupPermission.reducer,
+  [postModule.key]: postModule.reducer,
+
+  apiCall: apiCall,
+  inviteOtherPeopleCreateAccount,
+  viewPermissions,
 });
 
 export const DEFAULT_STATE = {
@@ -257,7 +275,7 @@ export const DEFAULT_STATE = {
     createRoom: createRoomInitialState,
     deleteRoom: deleteRoomInitialState,
     updateRoom: updateRoomInitialState,
-    sortRoom: sortRoomInitialState
+    sortRoom: sortRoomInitialState,
   },
   user: {
     listUserOfGroup: listUserOfGroupInitialState,
@@ -267,36 +285,36 @@ export const DEFAULT_STATE = {
     updateUser: updateUserInitialState,
     publicMember: publicMemberInitialState,
     privateMember: privateMemberInitialState,
-    banUserFromGroup: banUserFromGroupInitialState
+    banUserFromGroup: banUserFromGroupInitialState,
   },
   icon: {
     listIcon: listIconInitialState,
     createIcon: createIconInitialState,
-    deleteIcon: deleteIconInitialState
+    deleteIcon: deleteIconInitialState,
   },
   position: {
     listPosition: listPositionInitialState,
     createPosition: createPositionInitialState,
     updatePosition: updatePositionInitialState,
-    deletePosition: deletePositionInitialState
+    deletePosition: deletePositionInitialState,
   },
   level: {
     listLevel: listLevelInitialState,
     createLevel: createLevelInitialState,
     updateLevel: updateLevelInitialState,
-    deleteLevel: deleteLevelInitialState
+    deleteLevel: deleteLevelInitialState,
   },
   major: {
     listMajor: listMajorInitialState,
     createMajor: createMajorInitialState,
     updateMajor: updateMajorInitialState,
-    deleteMajor: deleteMajorInitialState
+    deleteMajor: deleteMajorInitialState,
   },
   userRole: {
     listUserRole: listUserRoleInitialState,
     createUserRole: createUserRoleInitialState,
     updateUserRole: updateUserRoleInitialState,
-    deleteUserRole: deleteUserRoleInitialState
+    deleteUserRole: deleteUserRoleInitialState,
   },
   projectGroup: {
     createProjectGroup: createProjectGroupInitialState,
@@ -306,7 +324,7 @@ export const DEFAULT_STATE = {
     sortProjectGroup: sortProjectGroupInitialState,
     detailProjectGroup: detailProjectGroupInitialState,
     memberProjectGroup: memberProjectGroupInitialState,
-    detailDefaultGroup: detailDefaultGroupInitialState
+    detailDefaultGroup: detailDefaultGroupInitialState,
   },
   project: {
     createProject: createProjectInitialState,
@@ -318,6 +336,7 @@ export const DEFAULT_STATE = {
     hideProject: hideProjectInitialState,
     showProject: showProjectInitialState,
     memberProject: memberProjectInitialState,
+    permissionProject: permissionProjectInitialState,
     addMemberProject: addMemberProjectInitialState,
     removeMemberProject: removeMemberProjectInitialState,
     updateStateJoinTask: updateStateJoinTaskInitialState,
@@ -327,12 +346,14 @@ export const DEFAULT_STATE = {
     assignMemberToAllTask: assignMemberToAllTaskInitialState,
     sortProject: sortProjectInitialState,
     copyProject: copyProjectInitialState,
+    deleteTrashProject: deleteTrashProjectInitialState,
+    restoreTrashProject: restoreTrashProjectInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
       updateStatusDate: updateStatusDateInitialState,
       updateStatusCopy: updateStatusCopyInitialState,
       updateStatusView: updateStatusViewInitialState,
-    }
+    },
   },
   groupTask: {
     listGroupTask: listGroupTaskInitialState,
@@ -341,13 +362,13 @@ export const DEFAULT_STATE = {
     copyGroupTask: copyGroupTaskInitialState,
     deleteGroupTask: deleteGroupTaskInitialState,
     sortGroupTask: sortGroupTaskInitialState,
-    getAllGroupTask: getAllGroupTaskInitialState
+    getAllGroupTask: getAllGroupTaskInitialState,
   },
   task: {
     listTask: listTaskInitialState,
     createTask: createTaskInitialState,
     deleteTask: deleteTaskInitialState,
-    sortTask: sortTaskInitialState
+    sortTask: sortTaskInitialState,
   },
   groupUser: {
     searchUser: searchUserInitialState,
@@ -358,11 +379,12 @@ export const DEFAULT_STATE = {
     cancleInvitationJoinGroup: cancleInvitationJoinGroupInitialState,
     acceptRequirementJoinGroup: acceptRequirementJoinGroupInitialState,
     rejectRequirementJoinGroup: rejectRequirementJoinGroupInitialState,
-    getListGroup: getListGroupInitialState
+    getListGroup: getListGroupInitialState,
   },
   register: {
     inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState
-  }
+  },
+  viewPermissions: viewPermissionsInitialState,
 };
 
 export default rootReducer;

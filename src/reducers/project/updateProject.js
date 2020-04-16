@@ -1,8 +1,4 @@
-import {
-  UPDATE_PROJECT,
-  UPDATE_PROJECT_SUCCESS,
-  UPDATE_PROJECT_FAIL,
-} from '../../constants/actions/project/updateProject';
+import { UPDATE_PROJECT, UPDATE_PROJECT_FAIL, UPDATE_PROJECT_SUCCESS } from '../../constants/actions/project/updateProject';
 
 export const initialState = {
   data: {
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case UPDATE_PROJECT_SUCCESS: 
+    case UPDATE_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case UPDATE_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

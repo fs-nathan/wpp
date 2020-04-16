@@ -162,7 +162,6 @@ function CustomModal({
         </IconButton>
       </StyledDialogTitle>
       <LoadingOverlay
-        className="comp_CustomModal___overlay"
         active={loading}
         spinner
         fadeSpeed={100}
@@ -203,11 +202,11 @@ CustomModal.propTypes = {
   columns: PropTypes.number,
   children: PropTypes.node,
   left: PropTypes.shape({
-    title: PropTypes.string.isRequired,
+    title: PropTypes.any.isRequired,
     content: PropTypes.func.isRequired,
   }),
   right: PropTypes.shape({
-    title: PropTypes.string.isRequired,
+    title: PropTypes.any.isRequired,
     content: PropTypes.func.isRequired,
   }),
   confirmRender: PropTypes.func,

@@ -1,5 +1,5 @@
 import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { mdiAccountConvert, mdiAccountMinus, mdiCheckCircle, mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
+import { mdiAccountConvert, mdiAccountMinus, mdiCheckCircle, mdiChevronDown, mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { get } from 'lodash';
 import React from 'react';
@@ -82,7 +82,7 @@ const AddButton = ({ className = '', disabled, ...props }) =>
     {...props}
   />;
 
-const CustomMenuItem = ({ className = '', selected, refs, ...props }) =>
+const CustomMenuItem = ({ className = '', selected, ...props }) =>
   <MenuItem
     className={`${selected
       ? 'view_Project_MemberSetting_Modal___menu-item-selected'
@@ -129,6 +129,12 @@ const LeftHeader = ({ className = '', ...props }) =>
 const CustomList = ({ className = '', ...props }) =>
   <StyledList
     className={`view_Project_MemberSetting_Modal___list ${className}`}
+    {...props}
+  />
+
+const PermissionBox = ({ className = '', ...props }) =>
+  <div
+    className={`view_Project_MemberSetting_Modal___permission-box ${className}`}
     {...props}
   />
 
@@ -308,7 +314,14 @@ function MemberSetting({
                       <br />
                       <small>{get(member, 'email', '')}</small>
                     </UserTableCell>
-                    <TableCell width='15%'>{get(member, 'group_permission_name', '')}</TableCell>
+                    <TableCell width='15%'>
+                      <PermissionBox onClick={evt => handleOpenModal('PERMISSION', {
+                        curMemberId: get(member, 'id'),
+                      })}>
+                        <span>{get(member, 'group_permission_name', '')}</span>
+                        <Icon path={mdiChevronDown} size={0.6} color={"bbb"} />
+                      </PermissionBox>
+                    </TableCell>
                     <TableCell width='25%'>
                       <RolesBox>
                         {get(member, 'roles', []).map(role => (

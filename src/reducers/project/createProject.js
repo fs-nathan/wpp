@@ -1,12 +1,8 @@
-import {
-  CREATE_PROJECT,
-  CREATE_PROJECT_SUCCESS,
-  CREATE_PROJECT_FAIL,
-} from '../../constants/actions/project/createProject';
+import { CREATE_PROJECT, CREATE_PROJECT_FAIL, CREATE_PROJECT_SUCCESS } from '../../constants/actions/project/createProject';
 
 export const initialState = {
   data: {
-    project: null,  
+    project: null,
   },
   error: null,
   loading: false,
@@ -20,9 +16,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case CREATE_PROJECT_SUCCESS: 
+    case CREATE_PROJECT_SUCCESS:
       return {
-        ...state, 
+        ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -30,6 +27,7 @@ function reducer(state = initialState, action) {
     case CREATE_PROJECT_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

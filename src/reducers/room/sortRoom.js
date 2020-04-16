@@ -1,8 +1,4 @@
-import {
-  SORT_ROOM,
-  SORT_ROOM_SUCCESS,
-  SORT_ROOM_FAIL,
-} from '../../constants/actions/room/sortRoom';
+import { SORT_ROOM, SORT_ROOM_FAIL, SORT_ROOM_SUCCESS } from '../../constants/actions/room/sortRoom';
 
 export const initialState = {
   data: {},
@@ -18,9 +14,10 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case SORT_ROOM_SUCCESS: 
+    case SORT_ROOM_SUCCESS:
       return {
         ...state,
+        ...initialState,
         data: action.data,
         error: null,
         loading: false,
@@ -28,6 +25,7 @@ function reducer(state = initialState, action) {
     case SORT_ROOM_FAIL:
       return {
         ...state,
+        ...initialState,
         error: action.error,
         loading: false,
       };

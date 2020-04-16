@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { Table, TableRow, TableHead, TableBody } from '@material-ui/core';
-import { mdiArrowLeft, mdiChevronRight } from '@mdi/js';
-import Icon from '@mdi/react';
+import { Table, TableBody, TableHead, TableRow } from "@material-ui/core";
+import { mdiArrowLeft, mdiChevronRight } from "@mdi/js";
+import Icon from "@mdi/react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import {
   actionMoveFile,
   actionMoveFolder,
   actionMoveFolderToRoot,
   resetListSelectDocument
-} from '../../../../actions/documents';
-import '../DocumentPage.scss';
-import ModalCommon from './ModalCommon';
-import {
-  DialogContent,
-  StyledTableHeadCell,
-  StyledTableBodyCell,
-  FullAvatar
-} from './TableCommon';
-import ColorTypo from '../../../../components/ColorTypo';
-import { FileType } from '../../../../components/FileType';
-import { isEmpty } from '../../../../helpers/utils/isEmpty';
+} from "../../../../actions/documents";
+import ColorTypo from "../../../../components/ColorTypo";
+import { FileType } from "../../../../components/FileType";
+import { isEmpty } from "../../../../helpers/utils/isEmpty";
 import {
   actionFetchListFolderMoveFile,
   actionFetchListFolderMoveFolder
-} from '../ContentDocumentPage/ContentDocumentAction';
+} from "../ContentDocumentPage/ContentDocumentAction";
+import "../DocumentPage.scss";
+import ModalCommon from "./ModalCommon";
+import {
+  DialogContent,
+  FullAvatar,
+  StyledTableBodyCell,
+  StyledTableHeadCell
+} from "./TableCommon";
 let isFetFile = true;
 let listFileIdSelect = [];
 let listFolderIdSelect = [];
@@ -34,8 +34,8 @@ const MoveDocumentModal = props => {
   const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([
     {
-      name: t('IDS_WP_MY_DOCUMENT'),
-      id: 'root',
+      name: t("IDS_WP_MY_DOCUMENT"),
+      id: "root",
       sub_folder: true
     }
   ]);
@@ -43,9 +43,9 @@ const MoveDocumentModal = props => {
   const [listFolderBr, setListFolderBr] = useState([]);
   useEffect(() => {
     const { selectedDocument } = props;
-    if (props.type === 'header') {
+    if (props.type === "header") {
       selectedDocument.forEach(el => {
-        if (el.type === 'folder') {
+        if (el.type === "folder") {
           isFetFile = false;
           listFolderIdSelect.push(el.id);
         } else {
@@ -53,7 +53,7 @@ const MoveDocumentModal = props => {
         }
       });
     } else {
-      if (props.item.type === 'folder') {
+      if (props.item.type === "folder") {
         listFolderIdSelect.push(props.item.id);
       } else {
         listFileIdSelect.push(props.item.id);
@@ -68,7 +68,7 @@ const MoveDocumentModal = props => {
   useEffect(() => {
     // fetListFodlerChild(); // eslint-disable-next-line
     if (!isEmpty(listFolderBr)) {
-      if (listFolderBr[listFolderBr.length - 1].id === 'root') {
+      if (listFolderBr[listFolderBr.length - 1].id === "root") {
         fetListFolder();
       } else {
         fetListFodlerChild();
@@ -116,8 +116,8 @@ const MoveDocumentModal = props => {
   const handleMove = async () => {
     try {
       setLoading(true);
-      if (props.type !== 'header') {
-        if (props.item.type !== 'folder') {
+      if (props.type !== "header") {
+        if (props.item.type !== "folder") {
           await actionMoveFile({
             file_id: listFileIdSelect,
             folder_id: folderSelected.id
@@ -180,7 +180,7 @@ const MoveDocumentModal = props => {
     tempData.splice(-1, 1);
     if (isEmpty(tempData)) {
       setListData([
-        { name: t('IDS_WP_MY_DOCUMENT'), id: 'root', sub_folder: true }
+        { name: t("IDS_WP_MY_DOCUMENT"), id: "root", sub_folder: true }
       ]);
     }
     setListFolderBr(tempData);
@@ -188,12 +188,12 @@ const MoveDocumentModal = props => {
   };
   return (
     <ModalCommon
-      title={t('IDS_WP_MOVE_DOCUMENT')}
+      title={t("IDS_WP_MOVE_DOCUMENT")}
       onClose={props.onClose}
       loading={loading}
       footerAction={[
         {
-          name: t('IDS_WP_MOVE_FOR_NOW'),
+          name: t("IDS_WP_MOVE_FOR_NOW"),
           action: handleMove,
           disabled: isEmpty(folderSelected)
         }
@@ -224,7 +224,7 @@ const MoveDocumentModal = props => {
                     size={1}
                     color="rgba(0, 0, 0, 0.54)"
                     onClick={() => handleBackParent()}
-                    title={t('IDS_WP_OUT')}
+                    title={t("IDS_WP_OUT")}
                   />
                 </div>
                 <div className="name-document">
@@ -234,13 +234,13 @@ const MoveDocumentModal = props => {
             ) : (
               <React.Fragment>
                 <div className="name-document">
-                  <span>{t('IDS_WP_DOCUMENT')}</span>
+                  <span>{t("IDS_WP_DOCUMENT")}</span>
                 </div>
               </React.Fragment>
             )}
           </div>
           <div className="right-my-document">
-            <span>{t('IDS_WP_SELECT_FOLDER_FOR_MOVE')}</span>
+            <span>{t("IDS_WP_SELECT_FOLDER_FOR_MOVE")}</span>
           </div>
         </div>
         <div className="table-list-folder">
@@ -252,7 +252,7 @@ const MoveDocumentModal = props => {
                   width="5%"
                 ></StyledTableHeadCell>
                 <StyledTableHeadCell align="left" width="40%">
-                  {t('IDS_WP_NAME')}
+                  {t("IDS_WP_NAME")}
                 </StyledTableHeadCell>
                 <StyledTableHeadCell
                   align="left"
@@ -265,9 +265,9 @@ const MoveDocumentModal = props => {
                 return (
                   <TableRow
                     className={`table-body-row move-row ${
-                      folderSelected.id === folder.id ? 'selected-row' : ''
+                      folderSelected.id === folder.id ? "selected-row" : ""
                     }`}
-                    title={t('IDS_WP_CLICK_THIS_FOLDER')}
+                    title={t("IDS_WP_CLICK_THIS_FOLDER")}
                     key={folder.id}
                     onClick={() =>
                       handleSelectFolder(
@@ -276,7 +276,7 @@ const MoveDocumentModal = props => {
                     }
                   >
                     <StyledTableBodyCell align="center" width="5%">
-                      <FullAvatar src={FileType('folder')} />
+                      <FullAvatar src={FileType("folder")} />
                     </StyledTableBodyCell>
                     <StyledTableBodyCell align="left" width="40%">
                       <ColorTypo color="black">{folder.name}</ColorTypo>
@@ -288,10 +288,10 @@ const MoveDocumentModal = props => {
                           size={1}
                           color={
                             folderSelected.id === folder.id
-                              ? '#fff'
-                              : 'rgba(0, 0, 0, 0.54)'
+                              ? "#fff"
+                              : "rgba(0, 0, 0, 0.54)"
                           }
-                          title={t('IDS_WP_JOIN_CHILDREN_FOLDER')}
+                          title={t("IDS_WP_JOIN_CHILDREN_FOLDER")}
                           onClick={e => handleGetChild(e, folder)}
                         />
                       )}

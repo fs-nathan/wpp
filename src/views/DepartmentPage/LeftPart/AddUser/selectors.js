@@ -1,5 +1,5 @@
-import { createSelector } from 'reselect';
 import { find } from 'lodash';
+import { createSelector } from 'reselect';
 
 const colors = state => state.setting.colors;
 const searchUser = state => state.groupUser.searchUser;
@@ -9,6 +9,7 @@ const acceptRequirementJoinGroup = state => state.groupUser.acceptRequirementJoi
 const rejectRequirementJoinGroup = state => state.groupUser.rejectRequirementJoinGroup;
 const getRequirementJoinGroup = state => state.groupUser.getRequirementJoinGroup;
 const getListInvitationSent = state => state.groupUser.getListInvitationSent;
+const viewPermissions = state => state.viewPermissions;
 
 export const bgColorSelector = createSelector(
   [colors],
@@ -66,5 +67,17 @@ export const requireLoadingSelector = createSelector(
     const { loading: loading1 } = acceptRequirementJoinGroup;
     const { loading: loading2 } = rejectRequirementJoinGroup;
     return loading1 || loading2;
+  }
+);
+
+export const viewPermissionsSelector = createSelector(
+  [viewPermissions],
+  (viewPermissions) => {
+    const { data: { users }, loading, error } = viewPermissions;
+    return ({
+      permissions: users,
+      loading,
+      error,
+    });
   }
 );
