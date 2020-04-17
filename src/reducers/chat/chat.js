@@ -26,9 +26,7 @@ export default (state = initialState, action) =>
         draft.chats = action.payload;
         break;
       case actionTypes.APPEND_CHAT:
-        draft.chats.data.unshift(action.payload.data_chat)
-        draft.isSending = true;
-        draft.isShowSendStatus = true;
+        draft.chats.data.unshift(...action.payload.data_chat)
         break;
       case actionTypes.FETCH_MEMBER_CHAT:
         draft.members = action.payload;
@@ -134,15 +132,21 @@ export default (state = initialState, action) =>
         const { content } = action;
         draft.lastChat = content;
         draft.isFails = false;
+        draft.isSending = true;
+        draft.isShowSendStatus = true;
         break;
       }
       case actionTypes.CREATE_CHAT_TEXT_SUCCESS: {
         const { payload } = action;
         draft.payload = payload;
+        draft.isSending = false;
+        draft.isShowSendStatus = false;
         break;
       }
       case actionTypes.CREATE_CHAT_TEXT_FAIL: {
         draft.isFails = true;
+        draft.isSending = false;
+        draft.isShowSendStatus = false;
         break;
       }
       case actionTypes.GET_VIEWED_CHAT_SUCCESS: {

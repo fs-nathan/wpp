@@ -37,7 +37,7 @@ export function* chatImage(payload) {
         }
       });
     yield put(actions.chatImageSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }
@@ -162,7 +162,7 @@ export function* createChatText(payload) {
     const { content } = payload;
     const res = yield call(apiService.post, "/task/create-chat-text", content);
     yield put(actions.createChatTextSuccess(res.data));
-    yield put(actions.loadChat(content.task_id));
+    // yield put(actions.loadChat(content.task_id));
   } catch (error) {
     yield put(actions.createChatTextFail(error));
   }
