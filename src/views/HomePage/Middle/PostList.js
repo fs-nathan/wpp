@@ -1,3 +1,4 @@
+import store from "configStore";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Post from "../components/Post";
@@ -333,11 +334,23 @@ function PostList({ postList }) {
     </>
   );
 }
+let count = 0;
+window.redux = {
+  store: store,
+  postModule,
+  createPost: () =>
+    store.dispatch(
+      postModule.actions.createPost({
+        title: `post ${count}`,
+        content: `content ${count++}`,
+      })
+    ),
+};
 
 export default () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(postModule.actions.loadGroupPermissionList());
+    dispatch(postModule.actions.loadPostList());
   }, [dispatch]);
   const postList = useSelector(postModule.selectors.postListSelector);
   return <PostList postList={[...postList, ...sample]} />;

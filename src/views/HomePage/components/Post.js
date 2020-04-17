@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, IconButton, Typography } from "@material-ui/core";
+import { Avatar, Box, IconButton, Typography } from "@material-ui/core";
 import {
   AttachFileOutlined,
   CameraAltOutlined,
@@ -18,6 +18,8 @@ import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import TasksCard from "../components/TasksCard";
 import postAttr from "../redux/post/attr";
 import AvatarGroup from "./AvatarGroup";
+import { PostActionButton } from "./PostActionButton";
+
 const PostMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
   const { t } = useTranslation();
   const options = useMemo(() => {
@@ -167,24 +169,21 @@ const Post = ({
             borderBottom="1px solid rgba(0, 0, 0, 0.12)"
             alignItems="center"
           >
-            <Button
-              style={{ flex: 1, margin: "4px" }}
+            <PostActionButton
               startIcon={<Icon path={mdiHeartOutline} size={1} />}
             >
-              {t("Yêu")}
-            </Button>
-            <Button
-              style={{ flex: 1, margin: "4px" }}
+              <span>{t("Yêu")}</span>
+            </PostActionButton>
+            <PostActionButton
               startIcon={<Icon path={mdiArmFlexOutline} size={1} />}
             >
               {t("Thích")}
-            </Button>
-            <Button
-              style={{ flex: 1, margin: "4px" }}
+            </PostActionButton>
+            <PostActionButton
               startIcon={<Icon path={mdiMessageOutline} size={1} />}
             >
               {t("Bình luận")}
-            </Button>
+            </PostActionButton>
           </Box>
           <Box padding="0 20px" display="flex" alignItems="center">
             <Box
