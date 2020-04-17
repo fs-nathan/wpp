@@ -194,6 +194,8 @@ function DepartmentUsersTable({
             bool: room.loading,
             component: () => <LoadingBox />,
           },
+          noData: {
+          },
         }}
         columns={[{
           label: '',

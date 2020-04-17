@@ -154,6 +154,9 @@ function AllTaskTable({
             row: {
               id: 'id',
             },
+            noData: {
+              subtitle: 'Chưa có công việc nào được khởi tạo. Hãy click vào nút + TẠO CÔNG VIỆC để bắt đầu quản lý dự án và công việc của bạn'
+            },
           }}
           columns={[{
             label: 'Tên công việc',

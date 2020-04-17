@@ -198,6 +198,8 @@ function AllUsersTable({
             bool: rooms.loading,
             component: () => <LoadingBox />,
           },
+          noData: {
+          },
         }}
         columns={[{
           label: '',

@@ -266,7 +266,7 @@
         "LEFT": {
           "INFO": {
             "BACK": "Quay lại",
-            "TITLE": "Chi tiết nhóm dự án",
+            "TITLE": "Chi tiết nhóm làm việc",
             "STATS": {
               "TOTAL": "Tổng số dự án:",
               "WAITING": "Dự án đang chờ",
@@ -284,15 +284,15 @@
             },
             "BTN": {
               "UPT": "Chỉnh sửa",
-              "DEL": "Xóa nhóm dự án"
+              "DEL": "Xóa nhóm làm việc"
             },
-            "ALERT": "Bạn chắc chắn muốn xóa nhóm dự án?"
+            "ALERT": "Bạn chắc chắn muốn xóa nhóm làm việc?"
           },
           "LIST": {
             "NUM_MEM": "{{projectGroups}} dự án",
-            "TITLE": "Nhóm dự án",
-            "ADD": "Thêm nhóm dự án",
-            "FIND": "Tìm nhóm dự án",
+            "TITLE": "Nhóm làm việc",
+            "ADD": "Thêm nhóm làm việc",
+            "FIND": "Tìm nhóm làm việc",
             "ALL": "Tất cả",
             "DEFAULT": "Chưa phân loại"
           }
@@ -322,17 +322,17 @@
             }
           },
           "CUPG": {
-            "C_TITLE": "Tạo nhóm dự án",
-            "U_TITLE": "Cập nhật nhóm dự án",
-            "NAME": "Tên nhóm dự án",
-            "DESC": "Mô tả nhóm dự án",
+            "C_TITLE": "Tạo nhóm làm việc",
+            "U_TITLE": "Cập nhật nhóm làm việc",
+            "NAME": "Tên nhóm làm việc",
+            "DESC": "Mô tả nhóm làm việc",
             "LOGO": "Biểu tượng nhóm",
             "LOGO_SELECT": "+ Chọn biểu tượng"
           },
           "CUP": {
             "C_TITLE": "Tạo mới dự án",
             "U_TITLE": "Chỉnh sửa dự án",
-            "GROUPS": "Nhóm dự án",
+            "GROUPS": "Nhóm làm việc",
             "NAME": "Tên dự án",
             "PRIO": {
               "TITLE": "Mức độ ưu tiên",
@@ -381,7 +381,11 @@
             "HIDE": "Ẩn",
             "SHOW": "Bỏ ẩn",
             "DEL": "Xóa",
-            "ALERT": "Bạn chắc chắn muốn xóa dự án?"
+            "ALERT": "Bạn chắc chắn muốn xóa dự án?",
+            "NO_DATA": {
+              "NO_PROJECT": "Chưa có dự án nào được khởi tạo. Hãy click vào nút + TẠO DỰ ÁN để bắt đầu quản lý dự án và công việc của bạn.",
+              "NO_TASK": "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc"
+            }
           },
           "TRASH": {
             "TITLE": "Thùng rác",

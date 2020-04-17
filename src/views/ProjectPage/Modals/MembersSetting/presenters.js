@@ -132,9 +132,9 @@ const CustomList = ({ className = '', ...props }) =>
     {...props}
   />
 
-const PermissionBox = ({ className = '', ...props }) =>
+const PermissionBox = ({ className = '', isAdmin = false, ...props }) =>
   <div
-    className={`view_Project_MemberSetting_Modal___permission-box ${className}`}
+    className={`view_Project_MemberSetting_Modal___permission-box${isAdmin ? '-admin' : ''} ${className}`}
     {...props}
   />
 
@@ -222,22 +222,6 @@ const SettingButton = ({
   );
 }
 
-/*
-function ProjectMemberRole({ member, setCurMemberRole }) {
-  
-  return (
-    <>
-      {get(member, 'roles', []).map((role, index) => (
-        <span key={index}>something</span>
-      ))}
-      <IconButton size='small' onClick={evt => setCurMemberRole(member)}>
-        <Icon path={mdiPlusCircleOutline} size={0.7} />
-      </IconButton>
-    </>
-  );
-}
-*/
-
 function MemberSetting({
   open, setOpen,
   searchPatern, setSearchPatern,
@@ -315,9 +299,12 @@ function MemberSetting({
                       <small>{get(member, 'email', '')}</small>
                     </UserTableCell>
                     <TableCell width='15%'>
-                      <PermissionBox onClick={evt => handleOpenModal('PERMISSION', {
-                        curMemberId: get(member, 'id'),
-                      })}>
+                      <PermissionBox
+                        onClick={evt => handleOpenModal('PERMISSION', {
+                          curMemberId: get(member, 'id'),
+                        })}
+                        isAdmin={get(member, 'is_admin', false)}
+                      >
                         <span>{get(member, 'group_permission_name', '')}</span>
                         <Icon path={mdiChevronDown} size={0.6} color={"bbb"} />
                       </PermissionBox>
