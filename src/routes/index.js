@@ -1,4 +1,5 @@
 import React from 'react';
+import { Routes as jobRoutes } from 'views/JobPage/contants/routes';
 import { Routes } from '../constants/routes';
 import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
 import ForgotPassword from '../views/AccountPage/ForgotPassword';
@@ -19,7 +20,6 @@ import SettingAccountPage from '../views/SettingAccountPage';
 import SettingGroupPage from '../views/SettingGroupPage';
 import TestPage from '../__test__';
 
-
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.PROJECTS, component: () => <ProjectGroupPage /> },
@@ -29,6 +29,7 @@ const routes = [
   { path: Routes.REPORT, component: () => <ReportPage /> },
   { path: Routes.DOCUMENT, component: () => <DocumentPage /> },
   { path: Routes.TASKS, component: () => <JobPage /> },
+  ...Object.values(jobRoutes).map(path => ({ path, component: () => <JobPage /> })),
   { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props} /> },
   { path: Routes.TEST, component: () => <TestPage /> },
   { path: Routes.SETTING_ACCOUNT, component: () => <SettingAccountPage /> },
