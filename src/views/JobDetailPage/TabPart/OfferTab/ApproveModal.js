@@ -1,9 +1,9 @@
 import { InputBase, TextField, Typography } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
-import CustomModal from 'components/CustomModal';
 import colorPal from 'helpers/colorPalette';
 import React from 'react';
 import styled from 'styled-components';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 
 const TexTitle = styled(Typography)`
   font-size: 14px;
@@ -32,7 +32,7 @@ const ApproveModal = (props) => {
     props.handleOfferById({ data: tempSelectedItem, taskId: props.taskId })
   }
   return (
-    <CustomModal
+    <JobDetailModalWrap
       title={"Phê duyệt đề xuất"}
       open={props.isOpen}
       setOpen={props.setOpen}
@@ -60,7 +60,7 @@ const ApproveModal = (props) => {
           onChange={e => setParams("content", e.target.value)}
         />
       </DialogContent>
-    </CustomModal>
+    </JobDetailModalWrap>
   )
 }
 

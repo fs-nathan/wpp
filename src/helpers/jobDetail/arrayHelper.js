@@ -36,6 +36,9 @@ export const CHAT_TYPE = {
     CANCEL_PIN_REMIND: 29,
     CHAT_STICKER: 30,
     CHAT_FORWARD_FILE: 31,
+    UPLOADING_IMAGES: 101,
+    UPLOADING_FILE: 102,
+    DATE_TIME_CHAT_HISTORY: 202,
 }
 
 export const isNotifyText = chatType => {
@@ -121,4 +124,20 @@ export const getFirstTaskId = payload => {
         taskId = ""
     }
     return taskId
+}
+
+export function getFileUrl(file) {
+    return new Promise((resolve, reject) => {
+        try {
+            const reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = function (e) {
+                resolve(e.target.result)
+            };
+            // Read in the image file as a data URL.
+            reader.readAsDataURL(file);
+        } catch (error) {
+            reject(error)
+        }
+    })
 }

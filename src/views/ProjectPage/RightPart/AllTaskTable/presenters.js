@@ -80,7 +80,7 @@ function AllTaskTable({
             title: 'Danh sách công việc',
             subTitle: () => (
               <SubTitle>
-                <span onClick={evt => history.push(`/list-task-detail/${get(project.project, 'id')}`)}>Chat</span>
+                <span onClick={evt => history.push(`/tasks/chat/${get(project.project, 'id')}`)}>Chat</span>
                 <span>Table</span>
                 <span>Grant</span>
               </SubTitle>
@@ -158,7 +158,7 @@ function AllTaskTable({
           columns={[{
             label: 'Tên công việc',
             field: (row) => <LinkSpan onClick={evt => {
-              history.push(`/list-task-detail/${get(project.project, 'id')}?task_id=${row.id}`);
+              history.push(`/tasks/chat/${get(project.project, 'id')}?task_id=${row.id}`);
             }}>{get(row, 'name', '')}</LinkSpan>,
             align: 'left',
             width: '25%',

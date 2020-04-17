@@ -3,13 +3,13 @@ import { Typography } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { updateTimeDuration } from 'actions/taskDetail/taskDetailActions';
-import CustomModal from 'components/CustomModal';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
 import "date-fns";
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../selectors';
 import './styles.scss';
 
@@ -95,7 +95,7 @@ const ProgressModal = (props) => {
   }
 
   return (
-    <CustomModal
+    <JobDetailModalWrap
       title={"Điều chỉnh tiến độ"}
       open={props.isOpen}
       setOpen={props.setOpen}
@@ -152,7 +152,7 @@ const ProgressModal = (props) => {
           </MuiPickersUtilsProvider>
         </StartEndDay>
       </DialogContent>
-    </CustomModal>
+    </JobDetailModalWrap>
   )
 }
 
