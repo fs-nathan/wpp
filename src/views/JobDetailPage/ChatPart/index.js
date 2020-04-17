@@ -3,6 +3,7 @@ import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import { appendChat, chatFile, onUploading, searchChat } from 'actions/chat/chat';
 import { file as file_icon } from 'assets/fileType';
+import clsx from 'clsx';
 import SearchInput from 'components/SearchInput';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import { humanFileSize } from 'helpers/jobDetail/stringHelper';
@@ -67,7 +68,7 @@ function ChatPart(props) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
   return (
-    <div className="container-chatpart"
+    <div className="container-chatpart chatPart"
       {...getRootProps({
         onClick: event => event.stopPropagation()
       })}
@@ -75,18 +76,14 @@ function ChatPart(props) {
       <div className="wrap-header">
         <HeaderPart {...props} setShowSearch={setShowSearch} />
       </div>
-      {/* <div className="wrap-body"> */}
-      {isShowSearch && (
-        <div className="chatHeader--showSearch">
-          <SearchInput className="chatHeader--search"
-            placeholder='Tìm nội dung trong hội thảo' value={searchChatKey} onChange={onChangeKey} />
-          <IconButton className="chatHeader--close" onClick={hideSearch}>
-            <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
-          </IconButton>
-        </div>
-      )}
+      <div className={clsx("chatPart--searchWrap", { 'chatPart__showSearch': isShowSearch })}>
+        <SearchInput className="chatPart--search"
+          placeholder='Tìm nội dung trong hội thảo' value={searchChatKey} onChange={onChangeKey} />
+        <IconButton className="chatPart--close" onClick={hideSearch}>
+          <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
+        </IconButton>
+      </div>
       <BodyPart {...props} setSelectedChat={setSelectedChat} isReply={Boolean(selectedChat)} />
-      {/* </div> */}
       <div className="wrap-footer">
         <FooterPart {...props}
           parentMessage={selectedChat}
@@ -98,12 +95,6 @@ function ChatPart(props) {
       {isDragActive && (
         <div className="drop-area">
           <div className="dashed-box">
-            {/* <Icon
-              className="drop-ic-clould"
-              path={mdiCloudUploadOutline}
-              size={5}
-              color={'#c3c3c3'}
-            /> */}
             <div className="des-drop">{('Thả file vào đây')}</div>
           </div>
         </div>
