@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, changeStickerKeyWord, chatImage, chatSticker, clearTags, createChatText, onUploading, tagMember } from 'actions/chat/chat';
+import { appendChat, changeStickerKeyWord, chatImage, chatSticker, clearTags, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { convertToRaw, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, Modifier } from 'draft-js';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
@@ -15,7 +15,6 @@ import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileMo
 import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLibraryModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
-import RemindModal from 'views/JobDetailPage/TabPart/RemindTab/RemindModal';
 import Message from '../BodyPart/Message';
 import '../Chat.scss';
 import './styles.scss';
@@ -88,7 +87,6 @@ const FooterPart = ({
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
-  const [isOpenRemind, setOpenRemind] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpenSticker, setOpenSticker] = useState(false);
   const [isShareFromLib, setShareFromLib] = useState(false);
@@ -212,7 +210,7 @@ const FooterPart = ({
 
   function onClickRemind() {
     // dispatch(showTab(3))
-    setOpenRemind(true)
+    dispatch(openCreateRemind(true, true))
   }
 
   function onClickShareFromLibrary() {
@@ -391,7 +389,6 @@ const FooterPart = ({
         open={isShareFromLib}
         setOpen={setShareFromLib}
       />
-      <RemindModal isOpen={isOpenRemind} setOpen={setOpenRemind} isCreate />
     </div>
   );
 };

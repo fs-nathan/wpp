@@ -3,6 +3,7 @@ import { Button, InputAdornment, TextField, Typography } from '@material-ui/core
 // import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { openCreateRemind } from 'actions/chat/chat';
 import "date-fns";
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -112,18 +113,24 @@ function RemindModal(props) {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [data, setData] = React.useState(DEFAULT_DATA)
-  const [isCreateModal] = React.useState(props.isCreate)
+  const isOpenCreateRemind = useSelector(state => state.chat.isOpenCreateRemind);
+  const isCreateRemind = useSelector(state => state.chat.isCreateRemind);
+  const dataRemind = useSelector(state => state.chat.dataRemind);
+
+  function setOpenCreate(isOpen) {
+    dispatch(openCreateRemind(isOpen))
+  }
 
   React.useEffect(() => {
-    if (props.data) {
-      let tempData = { ...props.data }
-      tempData.date_remind = props.data.created_at_original || DEFAULT_DATE_TEXT
+    if (dataRemind) {
+      let tempData = { ...dataRemind }
+      tempData.date_remind = dataRemind.created_at_original || DEFAULT_DATE_TEXT
       if (!tempData.time_remind) tempData.time_remind = DEFAULT_TIME_TEXT
       if (!tempData.type_remind) tempData.type_remind = REMIND_SCHEDULE_TYPE
       if (!tempData.duration) tempData.duration = []
       setData(tempData)
     }
-  }, [props.data])
+  }, [dataRemind])
 
   const handleChangeData = (attName, value) => {
     // console.log('valueRemind:::',attName, value)
@@ -153,7 +160,7 @@ function RemindModal(props) {
       content: data.content,
       duration: data.duration
     }
-    if (isCreateModal) {
+    if (isCreateRemind) {
       // Case 1: Call create remind with time
       if (data.type === REMIND_TIME_TYPE) {
         dispatch(postRemindWithTimeDetail({ taskId: taskId, data }))
@@ -173,7 +180,7 @@ function RemindModal(props) {
       }
     }
     // Close modal
-    props.setOpen(false)
+    setOpenCreate(false)
   }
   const [value, setValue] = React.useState('')
   // console.log("daataaA::::", data)
@@ -221,9 +228,9 @@ function RemindModal(props) {
       maxWidth='sm'
       className="remindModal"
       title={"Nhắc hẹn"}
-      open={props.isOpen}
-      setOpen={props.setOpen}
-      confirmRender={() => (props.isRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
+      open={isOpenCreateRemind}
+      setOpen={setOpenCreate}
+      confirmRender={() => (!isCreateRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
       onConfirm={handlePressConfirm}
       canConfirm={validate()}
     >
@@ -233,7 +240,7 @@ function RemindModal(props) {
           commandSelect={selector}
           selectedIndex={data.type}
           setOptions={typeId => { handleChangeData("type", typeId); }}
-          isDisabled={!isCreateModal}
+          isDisabled={!isCreateRemind}
         />
         {/* Middle JSX */}
         {data.type === REMIND_TIME_TYPE ?

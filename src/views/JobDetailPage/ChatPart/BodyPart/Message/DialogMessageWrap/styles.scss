@@ -1,0 +1,90 @@
+.DialogMessageWrap {
+  background-color: #ffffff;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 66%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  &--header {
+    background-color: #ff4c55;
+    color: #ffffff;
+    font-size: 19px;
+    padding: 12px;
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+  &--sender {
+    width: fit-content;
+    margin: 10px auto;
+    display: flex;
+  }
+  &--avatar {
+    // margin-right: 6px;
+    width: 25px;
+    height: 25px;
+    margin-top: 1px;
+  }
+  &--name {
+    font-size: 14px;
+    color: #607d8b;
+  }
+  &--position {
+    font-size: 14px;
+    color: #e47212;
+    // margin-left: 5px;
+  }
+  &--room {
+    font-size: 14px;
+    background-color: #eaebed;
+    color: #e47212;
+    padding: 2px 3px;
+    border-radius: 50%;
+    margin-left: 5px;
+  }
+  &--title {
+    margin-bottom: 10px;
+  }
+  &--task {
+    text-transform: lowercase;
+    color: #607d8b;
+  }
+  &--content {
+    font-size: 24px;
+    text-transform: uppercase;
+    color: #000000;
+    font-weight: 500;
+  }
+  &--footer {
+    height: 40px;
+    border-top: 1px solid #cccccc;
+  }
+  &--time {
+    line-height: 30px;
+    text-align: center;
+    color: #ff4c55;
+    position: relative;
+    font-weight: normal;
+    text-transform: initial;
+    margin-bottom: 20px;
+  }
+  &--icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    transform: translate(-3px, 3px);
+    stroke: #03a9f4;
+  }
+  &--detail {
+    line-height: 40px;
+    cursor: pointer;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 18px;
+    font-weight: 500;
+    color: #03a9f4;
+    text-transform: uppercase;
+  }
+}

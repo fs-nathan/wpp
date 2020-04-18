@@ -413,3 +413,38 @@ export function getViewedChatFail(error) {
     error
   };
 }
+
+export function openDetailRemind(isOpenDetailRemind, data) {
+  return {
+    type: actionTypes.OPEN_DETAIL_REMIND,
+    isOpenDetailRemind, data
+  };
+}
+
+export function openCreateRemind(isOpen, isCreate, data) {
+  return {
+    type: actionTypes.OPEN_CREATE_REMIND,
+    isOpen, isCreate, data
+  };
+}
+
+export function getRemindDetail(task_id, remind_id) {
+  return {
+    type: actionTypes.GET_REMIND_DETAIL,
+    task_id, remind_id
+  };
+}
+
+export function getRemindDetailSuccess(payload) {
+  return {
+    type: actionTypes.GET_REMIND_DETAIL_SUCCESS,
+    payload
+  };
+}
+
+export function getRemindDetailFail(error) {
+  return {
+    type: actionTypes.GET_REMIND_DETAIL_FAIL,
+    error
+  };
+}

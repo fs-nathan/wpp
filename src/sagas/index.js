@@ -617,6 +617,10 @@ function* rootSaga() {
     chatTypes.GET_VIEWED_CHAT,
     chatDetailSaga.getViewedChat
   );
+  yield takeLeading(
+    chatTypes.GET_REMIND_DETAIL,
+    chatDetailSaga.getRemindDetail
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);

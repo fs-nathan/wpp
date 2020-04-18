@@ -1,6 +1,7 @@
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
+import { openCreateRemind } from 'actions/chat/chat';
 import { deleteRemind, pinRemind, unPinRemind } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import React from 'react';
@@ -20,7 +21,7 @@ const ButtonIcon = styled(IconButton)`
   }
 `
 
-const MemberMenuLists = ({ item, className, idx, handleClickOpen }) => {
+const MemberMenuLists = ({ item, className, idx }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -51,6 +52,11 @@ const MemberMenuLists = ({ item, className, idx, handleClickOpen }) => {
     handleClose();
   }
 
+  function openEdit() {
+    dispatch(openCreateRemind(true, false, item))
+    handleClose();
+  }
+
   return (
     <div className={clsx(className, "styled-menu")} >
       <ButtonIcon
@@ -72,10 +78,7 @@ const MemberMenuLists = ({ item, className, idx, handleClickOpen }) => {
         <MenuItem onClick={onClickPin}>
           {item.is_ghim ? 'Bỏ ghim' : 'Ghim nhắc hẹn'}
         </MenuItem>
-        <MenuItem onClick={() => {
-          handleClickOpen(idx);
-          handleClose();
-        }}>Sửa nhắc hẹn</MenuItem>
+        <MenuItem onClick={openEdit}>Sửa nhắc hẹn</MenuItem>
         <MenuItem onClick={handleOpenModalDelete}>Xóa nhắc hẹn</MenuItem>
       </Menu>
       <ModalDeleteConfirm

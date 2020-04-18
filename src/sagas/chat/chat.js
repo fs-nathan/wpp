@@ -177,3 +177,14 @@ export function* getViewedChat(payload) {
     yield put(actions.getViewedChatFail(error));
   }
 }
+
+export function* getRemindDetail(payload) {
+  try {
+    const { task_id, remind_id } = payload;
+    const res = yield call(apiService.get, "/task/get-remind-detail", { params: { task_id, remind_id } });
+    yield put(actions.getRemindDetailSuccess(res.data));
+    yield put(actions.openDetailRemind(true, res.data));
+  } catch (error) {
+    yield put(actions.getRemindDetailFail(error));
+  }
+}

@@ -1,16 +1,16 @@
 import { Avatar } from '@material-ui/core';
 import { mdiClockOutline, mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
+import { openDetailRemind } from 'actions/chat/chat';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import get from 'lodash/get';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MemberMenuLists from './MemberMenuLists';
 import './styles.scss';
 
-
-const typesRemind = [
+export const typesRemind = [
   'Nhắc 1 lần',
   'Nhắc theo ngày',
   'Nhắc theo tuần',
@@ -18,7 +18,8 @@ const typesRemind = [
 ]
 
 function RemindItem(props) {
-  const { user_create_avatar, type,
+  const {
+    user_create_avatar, type,
     date_remind,
     time_remind,
     duration,
@@ -26,15 +27,19 @@ function RemindItem(props) {
     idx,
     created_at,
     content,
-    handleClickOpen,
     is_ghim,
-    onClick,
   } = props
+  const dispatch = useDispatch();
   const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
   const [day, month] = created_at.split('/');
+
+  function handleClickOpen() {
+    dispatch(openDetailRemind(true, props))
+  }
+
   return (
     <li className="remindItem" key={idx}>
-      <div className="remindItem--time" style={{ color: groupActiveColor }} onClick={onClick}>
+      <div className="remindItem--time" style={{ color: groupActiveColor }} onClick={handleClickOpen}>
         <div className="remindItem--month">
           Tháng {month}
         </div>
@@ -42,7 +47,7 @@ function RemindItem(props) {
           {day}
         </div>
       </div>
-      <div className="remindItem--content" onClick={onClick}>
+      <div className="remindItem--content" onClick={handleClickOpen}>
         <div className="remindItem--title">
           {content}
         </div>
@@ -69,7 +74,7 @@ function RemindItem(props) {
             size={1} />}
         </div>
       </div>
-      <MemberMenuLists className="remindItem--menu" idx={idx} handleClickOpen={() => handleClickOpen(props)} item={props} />
+      <MemberMenuLists className="remindItem--menu" idx={idx} item={props} />
     </li>
   );
 }
