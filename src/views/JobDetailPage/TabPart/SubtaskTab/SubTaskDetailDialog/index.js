@@ -1,8 +1,8 @@
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import CustomModal from 'components/CustomModal';
 import React from 'react';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
 
 function SubTaskDetailDialog({
@@ -23,7 +23,7 @@ function SubTaskDetailDialog({
   } = item || {};
 
   return (
-    <CustomModal
+    <JobDetailModalWrap
       open={isOpen}
       setOpen={setOpen}
       confirmRender={null}
@@ -71,7 +71,7 @@ function SubTaskDetailDialog({
           </div>
         </div>
       </div>
-    </CustomModal>
+    </JobDetailModalWrap>
   );
 }
 

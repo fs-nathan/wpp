@@ -68,6 +68,10 @@
   }
 }
 
+.comp_CustomModal__renderTitle {
+  padding: 20px 24px;
+}
+
 .comp_CustomModal___dialog-actions {
   padding: 15px 24px;
 }
@@ -117,29 +121,20 @@
 @mixin comp_CustomModal___dialog {
   & > div:nth-child(3) > div {
     overflow: hidden;
-    min-width: 60vw;
-    max-width: 80vw;
+    min-width: 40vw;
+    max-width: 70vw;
   }
 }
 
 .comp_CustomModal___dialog {
   &-sm {
     @include comp_CustomModal___dialog;
-    & > div:nth-child(3) > div {
-      max-width: 800px;
-    }
   }
   &-md {
     @include comp_CustomModal___dialog;
-    & > div:nth-child(3) > div {
-      max-width: 70vw;
-    }
   }
   &-lg {
     @include comp_CustomModal___dialog;
-    & > div:nth-child(3) > div {
-      max-width: 90vw;
-    }
   }
 }
 

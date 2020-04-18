@@ -179,8 +179,7 @@
   @include view_Project_MemberSetting_Modal___sub-header;
 };
 
-.view_Project_MemberSetting_Modal___permission-box {
-  color: #222;
+@mixin view_Project_MemberSetting_Modal___permission-box {
   font-size: 12px;
   border-radius: 2px;
   padding: 2px 8px;
@@ -203,5 +202,16 @@
   }
   &:active {
     background: #ddd;
+  }
+}
+
+.view_Project_MemberSetting_Modal___permission-box {
+  & {
+    @include view_Project_MemberSetting_Modal___permission-box;
+    color: #222;
+  }
+  &-admin {
+    @include view_Project_MemberSetting_Modal___permission-box;
+    color: red;
   }
 };

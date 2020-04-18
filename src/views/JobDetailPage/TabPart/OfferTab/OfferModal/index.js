@@ -2,12 +2,12 @@ import { Avatar, Button, Chip, IconButton, TextField, Typography } from '@materi
 import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { createOffer, deleteDocumentToOffer, updateOffer, uploadDocumentToOffer } from 'actions/taskDetail/taskDetailActions';
-import CustomModal from 'components/CustomModal';
 import CustomSelect from 'components/CustomSelect';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
 import findIndex from 'lodash/findIndex';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
@@ -168,7 +168,7 @@ const OfferModal = (props) => {
       && tempSelectedItem.priority
   }
   return (
-    <CustomModal
+    <JobDetailModalWrap
       title={props.isOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
       open={props.isOpen}
       setOpen={props.setOpen}
@@ -279,7 +279,7 @@ const OfferModal = (props) => {
           tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
         }
       </React.Fragment>
-    </CustomModal>
+    </JobDetailModalWrap>
   )
 }
 

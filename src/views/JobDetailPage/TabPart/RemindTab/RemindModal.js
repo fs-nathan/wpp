@@ -3,11 +3,11 @@ import { Button, InputAdornment, TextField, Typography } from '@material-ui/core
 // import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import CustomModal from 'components/CustomModal';
 import "date-fns";
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { postRemindDuration, postRemindWithTimeDetail, updateRemindWithDuration, updateRemindWithTimeDetail } from '../../../../actions/taskDetail/taskDetailActions';
 import ColorChip from '../../../../components/ColorChip';
 import { convertDate, DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, isValidDuration, REMIND_SCHEDULE_TYPE, REMIND_TIME_TYPE } from '../../../../helpers/jobDetail/stringHelper';
@@ -217,7 +217,7 @@ function RemindModal(props) {
     return data.content
   }
   return (
-    <CustomModal
+    <JobDetailModalWrap
       maxWidth='sm'
       className="remindModal"
       title={"Nhắc hẹn"}
@@ -313,7 +313,7 @@ function RemindModal(props) {
           onChange={e => handleChangeData("content", e.target.value)}
         />
       </React.Fragment>
-    </CustomModal >
+    </JobDetailModalWrap >
   )
 }
 

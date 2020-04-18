@@ -8,11 +8,12 @@ export const permissionProject = (quite = false) => ({
   },
 });
 
-export const permissionProjectSuccess = ({ groupPermissions }, options) => ({
+export const permissionProjectSuccess = ({ groupPermissions, adminPermission }, options) => ({
   type: PERMISSION_PROJECT_SUCCESS,
   options,
   data: {
-    groupPermissions
+    groupPermissions,
+    adminPermission,
   }
 });
 

@@ -190,7 +190,12 @@ function AllProjectTable({
             },
             row: {
               id: 'id',
-            }
+            },
+            noData: {
+              subtitle: projects.projectGroupsCount === 0
+                ? t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_PROJECT")
+                : t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_TASK")
+            },
           }}
           columns={[
             {

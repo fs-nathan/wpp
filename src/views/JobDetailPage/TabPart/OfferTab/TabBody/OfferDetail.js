@@ -1,10 +1,10 @@
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import CustomModal from 'components/CustomModal';
 import get from 'lodash/get';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { getStatusName, priorityList } from '../data';
 import './styles.scss';
 
@@ -36,7 +36,7 @@ function OfferDetail({
   const status = getStatusName(total_rejected, total_approved);
 
   return (
-    <CustomModal
+    <JobDetailModalWrap
       open={isOpen}
       setOpen={setOpen}
       confirmRender={() => " Phê duyệt"}
@@ -117,7 +117,7 @@ function OfferDetail({
           </div>
         </div>
       </div>
-    </CustomModal>
+    </JobDetailModalWrap>
   );
 }
 

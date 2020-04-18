@@ -3,6 +3,7 @@ import { PERMISSION_PROJECT, PERMISSION_PROJECT_FAIL, PERMISSION_PROJECT_SUCCESS
 export const initialState = {
   data: {
     groupPermissions: [],
+    adminPermission: null,
   },
   error: null,
   loading: false,

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import LoadingOverlay from '../LoadingOverlay';
+import NoData from '../NoData';
 import HeaderButtonGroup from './HeaderButtonGroup';
 import { bgColorSelector } from './selectors';
 import './style.scss';
@@ -110,7 +111,7 @@ export function CustomTableLayout({ children }) {
   );
 }
 function CustomTable() {
-  const { options } = React.useContext(CustomTableContext);
+  const { options, data } = React.useContext(CustomTableContext);
   return (
     <LoadingOverlay
       active={get(options, 'loading.bool', false)}
@@ -150,7 +151,12 @@ function CustomTable() {
             )}
           </RightHeader>
         </Header>
-        <StyledTableMain />
+        {data.length === 0
+          ? <NoData
+            title={get(options, 'noData.title')}
+            subtitle={get(options, 'noData.subtitle')}
+          />
+          : <StyledTableMain />}
       </Container>
     </LoadingOverlay>
   );

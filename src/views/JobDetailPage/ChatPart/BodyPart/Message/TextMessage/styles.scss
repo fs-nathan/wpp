@@ -1,26 +1,81 @@
 .TextMessage {
-  margin-bottom: 5px;
   display: flex;
+  &__top {
+    margin-top: 30px;
+  }
+  &__mid,
+  &__bot {
+    margin-top: 3px;
+  }
   &--rightContentWrap {
-    padding: 10px;
+    position: relative;
     background-color: #ffffff;
-    border-radius: 5px;
+    border-radius: 20px;
     margin-left: 10px;
-    width: 100%;
+    border: 1px solid #ececec;
+    padding: 10px 20px;
+    width: auto;
+    &__self {
+      width: auto;
+      margin-right: 0;
+      margin-left: 0;
+      background-color: inherit;
+      border: none;
+      &-top {
+        border-bottom-right-radius: 5px;
+      }
+      &-mid {
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+      &-bot {
+        border-top-right-radius: 5px;
+      }
+    }
+    &__haveParent {
+      padding: 0px;
+      background-color: #eaeaea;
+    }
+    &__top {
+      border-bottom-left-radius: 5px;
+    }
+    &__mid {
+      border-bottom-left-radius: 5px;
+      border-top-left-radius: 5px;
+    }
+    &__bot {
+      border-top-left-radius: 5px;
+    }
   }
   &--sender {
     display: flex;
   }
+  &--avatar {
+    width: 34px;
+    height: 34px;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    &Reply {
+      margin-right: 6px;
+      width: 14px;
+      height: 14px;
+      margin-top: 1px;
+    }
+    &__hidden {
+      opacity: 0;
+    }
+  }
   &--name {
     font-size: 12px;
-    color: #01a750;
+    color: #9c27b0;
     &__admin {
-      color: #e47212;
+      color: #ff0000;
     }
   }
   &--position {
     font-size: 12px;
     color: #ababab;
+    margin-left: 5px;
   }
   &--room {
     font-size: 11px;
@@ -28,24 +83,50 @@
     color: #e47212;
     padding: 2px 3px;
     border-radius: 50%;
+    margin-left: 5px;
   }
   &--content {
-    font-size: 18px;
+    font-size: 15px;
+    line-height: 19px;
     color: #000000;
     text-align: left;
+    padding: 0px;
+    border-radius: 20px;
     &__self {
+      background-color: inherit;
       color: #ffffff;
     }
   }
-  &--quote &--content {
+  &--tag {
+    font-size: 15px;
+    margin-right: 5px;
+    font-weight: 500;
+  }
+  &--reply {
+    border-left: 3px solid #01a750;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    padding: 0 5px;
+    background-color: #eaeaea;
+  }
+  &--reply &--content {
     font-size: 14px;
     color: #5b5b5b;
   }
   &--time {
     font-size: 12px;
     color: #ababab;
+    margin-left: 10px;
     &__self {
       color: #d8d7d7;
+      text-align: right;
+      margin-right: 10px;
     }
+  }
+  &--tooltip {
+    text-decoration: none !important;
+  }
+  &:hover .CommonMessageAction {
+    opacity: 1;
   }
 }

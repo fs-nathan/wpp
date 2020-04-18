@@ -557,6 +557,66 @@ function* rootSaga() {
     chatTypes.DELETE_CHAT,
     chatDetailSaga.deleteChat
   );
+  yield takeLeading(
+    chatTypes.LOAD_CHAT,
+    chatDetailSaga.loadChat
+  );
+  yield takeLeading(
+    chatTypes.CHAT_IMAGE,
+    chatDetailSaga.chatImage
+  );
+  yield takeLeading(
+    chatTypes.CHAT_FILE,
+    chatDetailSaga.chatFile
+  );
+  yield takeLeading(
+    chatTypes.CHAT_FORWARD_FILE,
+    chatDetailSaga.chatForwardFile
+  );
+  yield takeLeading(
+    chatTypes.CHAT_STICKER,
+    chatDetailSaga.chatSticker
+  );
+  yield takeLeading(
+    chatTypes.GET_CHAT_NOT_VIEWED,
+    chatDetailSaga.getChatNotViewed
+  );
+  yield takeLeading(
+    chatTypes.GET_NOTI_CHAT,
+    chatDetailSaga.getNotiChat
+  );
+  yield takeLeading(
+    chatTypes.FORWARD_CHAT,
+    chatDetailSaga.forwardChat
+  );
+  yield takeLeading(
+    chatTypes.GET_LIST_STICKERS,
+    chatDetailSaga.getListStickers
+  );
+  yield takeLeading(
+    chatTypes.LOAD_LIST_TASK,
+    chatDetailSaga.loadListTask
+  );
+  yield takeLeading(
+    chatTypes.GET_EMOTIONS,
+    chatDetailSaga.getEmotions
+  );
+  yield takeLeading(
+    chatTypes.CHAT_EMOTION,
+    chatDetailSaga.chatEmotion
+  );
+  yield takeLeading(
+    chatTypes.GET_EMOTIONS_REACT_MEMBER,
+    chatDetailSaga.getEmotionsReactMember
+  );
+  yield takeLeading(
+    chatTypes.CREATE_CHAT_TEXT,
+    chatDetailSaga.createChatText
+  );
+  yield takeLeading(
+    chatTypes.GET_VIEWED_CHAT,
+    chatDetailSaga.getViewedChat
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
