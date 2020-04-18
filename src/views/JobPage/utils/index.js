@@ -11,7 +11,13 @@ import { taskPriorityMap, taskStatusMap } from "../contants/attrs";
 import { emptyObject } from "../contants/defaultValue";
 import * as chart from "./chart";
 import * as time from "./time";
-
+const toFormData = (data = emptyObject) => {
+  let form_data = new FormData();
+  for (let key in data) {
+    if (data[key]) form_data.append(key, data[key]);
+  }
+  return form_data;
+};
 function encodeQueryData(data) {
   const ret = [];
   for (let d in data) {
@@ -95,6 +101,7 @@ export {
   merge,
   uniqueId,
   chunk,
+  toFormData,
   template,
   createValidate,
   loginlineParams,

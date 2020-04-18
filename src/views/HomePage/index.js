@@ -1,9 +1,10 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { connect, useDispatch } from "react-redux";
 import StickyBox from "react-sticky-box";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
+import { loadCategoryList } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import { groupDetailAttrs } from "./contant/attrs";
 import { GroupDetailProvider } from "./GroupDetailContext";
 import Left from "./Left";
@@ -11,7 +12,6 @@ import Logo from "./Logo";
 import Middle from "./Middle";
 import Right from "./Right";
 import "./style.scss";
-
 function HomePage({ groupDetail }) {
   const [
     id,
@@ -92,4 +92,11 @@ function HomePage({ groupDetail }) {
 
 export default connect((state) => ({
   groupDetail: state.setting.groupDetail,
-}))(HomePage);
+}))((props) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadCategoryList());
+  }, [dispatch]);
+
+  return <HomePage {...props} />;
+});

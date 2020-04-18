@@ -343,6 +343,8 @@ window.redux = {
       postModule.actions.createPost({
         title: `post ${count}`,
         content: `content ${count++}`,
+        is_push_notification: true,
+        category: "12321321",
       })
     ),
 };

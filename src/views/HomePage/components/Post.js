@@ -16,7 +16,7 @@ import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
-import postAttr from "../redux/post/attr";
+import { postAttr } from "../contant/attrs";
 import AvatarGroup from "./AvatarGroup";
 import Message from "./Message";
 import { PostActionButton } from "./PostActionButton";

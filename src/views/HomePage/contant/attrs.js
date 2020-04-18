@@ -32,3 +32,22 @@ export const commentAttr = {
   // ]
   sticker: "sticker", //null
 };
+export const postAttr = {
+  id: "id", // "5e7b1f6ccbfae96d5414fb47",
+  title: "title", // "Thông báo cả làng làm việc ở nhà",
+  content: "content", // "Thông báo đã có lương",
+  user_create_id: "user_create_id", // "5e5dc0dbabaa0b738ab8053d",
+  user_create_name: "user_create_name", // "Thành Nguyễn",
+  user_create_avatar: "user_create_avatar",
+  //"https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
+  files: "files", // [],
+  images: "images", // [],
+  position: "position", // "Phó TGĐ",
+  room: "room", // "Ban đầu não",
+  number_like: "number_like", // 0,
+  number_comment: "number_comment", // 0,
+  comments: "comments", // [],
+  time_label: "time_label", // "1 hours before",
+  last_like_user: "last_like_user", // null,
+  last_love_user: "last_love_user", // null,
+};

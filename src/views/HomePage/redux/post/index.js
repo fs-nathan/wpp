@@ -1,8 +1,14 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { get } from "views/JobPage/utils";
-import { createAsyncAction } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/utils";
-import { mapPayloadToState } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
+import {
+  createAsyncAction,
+  createPostAsyncAction,
+} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/utils";
+import {
+  listAddFirst,
+  mapPayloadToState,
+} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
 
 const rootPath = "post";
 export const types = {
@@ -36,22 +42,21 @@ const createPost = ({
   content,
   file,
   sticker,
-  is_push_notification,
+  is_push_notification = true,
 }) => {
-  return createAsyncAction({
+  return createPostAsyncAction({
     config: {
       url: "/posts/create-post",
-      method: "post",
-      data: {
-        title,
-        category,
-        content,
-        file,
-        sticker,
-        is_push_notification,
-      },
+      data: { title, category, content, file, sticker, is_push_notification },
     },
-    // success: updatePostList,
+    success: createAction(updatePostList.type, function prepare(data) {
+      return {
+        payload: data.post,
+        meta: {
+          action: listAddFirst(data.post),
+        },
+      };
+    }),
   });
 };
 export const postListSelector = (state) =>

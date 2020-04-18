@@ -10,18 +10,48 @@ import {
 import { Search } from "@material-ui/icons";
 import { mdiDotsHorizontal } from "@mdi/js";
 import Icon from "@mdi/react";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useToggle } from "react-use";
-import { loginlineParams, template } from "views/JobPage/utils";
+import { useSelector } from "react-redux";
+import { createMapPropsFromAttrs, template } from "views/JobPage/utils";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
+import { categoryAttr } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/contants";
+import { categoryListSelector } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
+import SelectCategoryModal from "../components/SelectCategoryModal";
 import TasksCard from "../components/TasksCard";
-import { PostCreatorPopupInner } from "./PostCreatorPopupInner";
+import PostCreatorPopupInner from "./PostCreatorPopupInner";
 import PostList from "./PostList";
 const PostCreator = () => {
   const { t } = useTranslation();
-  const [isToggle, toggle] = useToggle();
+  const [modal, setModal] = useState();
+  const categories = useSelector(categoryListSelector);
+  const handleClose = useCallback(() => {
+    setModal(null);
+  }, []);
+  const handleOpenPostCreatorPopup = useCallback(
+    (cate) => {
+      setModal(
+        <Dialog
+          onClose={handleClose}
+          fullWidth={true}
+          maxWidth={"sm"}
+          open={true}
+        >
+          <PostCreatorPopupInner onClose={handleClose} category={cate} />
+        </Dialog>
+      );
+    },
+    [handleClose]
+  );
+  const handleOpenSelectCategoryModal = useCallback(() => {
+    setModal(
+      <SelectCategoryModal
+        categories={categories}
+        onItemClick={handleOpenPostCreatorPopup}
+      />
+    );
+  }, [categories, handleOpenPostCreatorPopup]);
   return (
     <TasksCard.Container>
       <Box
@@ -38,7 +68,7 @@ const PostCreator = () => {
         <Stack>
           <Box display="flex" alignItems="center">
             <Avatar>A</Avatar>
-            <Box padding="16px" onClick={() => toggle()}>
+            <Box padding="16px" onClick={() => handleOpenPostCreatorPopup()}>
               <Typography
                 variant="body2"
                 color="textSecondary"
@@ -57,32 +87,24 @@ const PostCreator = () => {
             }}
           >
             <ChipGroup>
-              <Chip
-                style={{
-                  background: "#f5f6f7",
-                }}
-                onClick={loginlineParams}
-                avatar={<Avatar alt={t("Sự kiện")}>a</Avatar>}
-                label={t("Sự kiện")}
-              />
-              <Chip
-                style={{
-                  background: "#f5f6f7",
-                }}
-                onClick={loginlineParams}
-                avatar={<Avatar alt={t("Thông báo")}>t</Avatar>}
-                label={t("Thông báo")}
-              />
-              <Chip
-                style={{
-                  background: "#f5f6f7",
-                }}
-                onClick={loginlineParams}
-                avatar={<Avatar alt={t("Chia sẻ")}>c</Avatar>}
-                label={t("Chia sẻ")}
-              />
+              {categories.map((cate) => {
+                const [id, name, logo] = createMapPropsFromAttrs([
+                  categoryAttr.id,
+                  categoryAttr.name,
+                  categoryAttr.logo,
+                ])(cate);
+                return (
+                  <Chip
+                    onClick={() => handleOpenPostCreatorPopup(cate)}
+                    key={id}
+                    avatar={<Avatar alt={name} src={logo} />}
+                    label={name}
+                  />
+                );
+              })}
               <Box flex={1}></Box>
               <ButtonBase
+                onClick={handleOpenSelectCategoryModal}
                 size="small"
                 style={{
                   height: "32px",
@@ -102,9 +124,8 @@ const PostCreator = () => {
           </Box>
         </Stack>
       </TasksCard.Content>
-      <Dialog onClose={toggle} fullWidth={true} maxWidth={"sm"} open={isToggle}>
-        <PostCreatorPopupInner />
-      </Dialog>
+
+      {modal}
     </TasksCard.Container>
   );
 };
