@@ -37,10 +37,7 @@ function reducer(state = initialState, action) {
 				loading: false,
 			};
 		case GET_ALL_GROUP_TASK_RESET:
-			return {
-				...state,
-				...initialState,
-			}
+			return initialState;
 		case COPY_GROUP_TASK_SUCCESS: {
 			if (get(action.data, 'groupTasks', []).length === 0) {
 				return {

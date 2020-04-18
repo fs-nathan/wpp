@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { DETAIL_PROJECT, DETAIL_PROJECT_FAIL, DETAIL_PROJECT_SUCCESS } from '../../constants/actions/project/detailProject';
+import { DETAIL_PROJECT, DETAIL_PROJECT_FAIL, DETAIL_PROJECT_RESET, DETAIL_PROJECT_SUCCESS } from '../../constants/actions/project/detailProject';
 import { HIDE_PROJECT_SUCCESS } from '../../constants/actions/project/hideProject';
 import { SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
 import { UPDATE_PROJECT_SUCCESS } from '../../constants/actions/project/updateProject';
@@ -35,6 +35,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case DETAIL_PROJECT_RESET:
+      return initialState;
     case UPDATE_PROJECT_SUCCESS: {
       let newProject = state.data.project;
       if (get(newProject, 'id') === get(action.data, 'project.id')) {

@@ -353,6 +353,12 @@
               "DESC": "Tạo dự án mới bằng cách sao chép các thông số của dự án cũ như: Danh mục công việc, tiến độ, ..."
             }
           },
+          "NOPG": {
+            "TITLE": "Thông báo hệ thống",
+            "LINE_1": "Hiện tại chưa có Nhóm làm việc nào được tạo",
+            "LINE_2": "Hãy tạo mới nhóm làm việc trước khi tạo dự án!",
+            "BTN": "Tạo nhóm làm việc"
+          },
           "MEMBER": {
             "TITLE": "Thành viên nhóm",
             "NAME": "Thành viên",
@@ -385,6 +391,14 @@
             "NO_DATA": {
               "NO_PROJECT": "Chưa có dự án nào được khởi tạo. Hãy click vào nút + TẠO DỰ ÁN để bắt đầu quản lý dự án và công việc của bạn.",
               "NO_TASK": "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc"
+            },
+            "STATS": {
+              "TOTAL": "Tổng số công việc:",
+              "WAITING": "Công việc đang chờ",
+              "DOING": "Công việc đang làm",
+              "EXPIRED": "Công việc quá hạn",
+              "COMPLETE": "Công việc hoàn thành",
+              "STOP": "Công việc dừng"
             }
           },
           "TRASH": {

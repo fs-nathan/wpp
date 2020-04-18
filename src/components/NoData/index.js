@@ -13,10 +13,9 @@ function NoData({
   title = 'Không có dữ liệu',
   subtitle = 'Chưa có dữ liệu, hãy tạo mới dữ liệu để bắt đầu',
   bgColor,
-  ...props
 }) {
   return (
-    <Container {...props}>
+    <Container>
       <img src='/images/no-data.png' alt='no-data-logo' />
       <p
         style={{

@@ -328,11 +328,16 @@ function MemberSetting({
                       {getJoinStatusName(get(member, 'join_task_status_code', ''))}
                     </TableCell>
                     <TableCell width='5%'>
-                      <SettingButton
-                        member={member}
-                        setAnchorEl={setAnchorEl}
-                        setCurMemberSetting={setCurMemberSetting}
-                      />
+                      {get(member, 'is_in_group', false) ?
+                        (<SettingButton
+                          member={member}
+                          setAnchorEl={setAnchorEl}
+                          setCurMemberSetting={setCurMemberSetting}
+                        />) : (
+                          <ColorTypo color='red'>
+                            Đã rời nhóm
+                          </ColorTypo>
+                        )}
                     </TableCell>
                   </StyledRow>
                 ))}
@@ -375,18 +380,19 @@ function MemberSetting({
               >
                 <Icon path={mdiAccountConvert} size={0.7} /> Gán vào công việc được tạo
               </CustomMenuItem>
-              <CustomMenuItem
-                onClick={evt => {
-                  setAnchorEl(null);
-                  handleOpenModal('ALERT', {
-                    content: 'Bạn chắc chắn muốn loại trừ thành viên?',
-                    onConfirm: () => handleRemoveMember(curMemberSetting)
-                  }
-                  )
-                }}
-              >
-                <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
-              </CustomMenuItem>
+              {get(curMemberSetting, 'can_ban', false) && (
+                <CustomMenuItem
+                  onClick={evt => {
+                    setAnchorEl(null);
+                    handleOpenModal('ALERT', {
+                      content: 'Bạn chắc chắn muốn loại trừ thành viên?',
+                      onConfirm: () => handleRemoveMember(curMemberSetting)
+                    })
+                  }}
+                >
+                  <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
+                </CustomMenuItem>
+              )}
             </Menu>
           </RightContainer>,
       }}

@@ -14,6 +14,7 @@ import { routeSelector } from '../../../ProjectPage/selectors';
 import { Context as ProjectPageContext } from '../../index';
 import CreateProjectModal from '../../Modals/CreateProject';
 import EditProjectModal from '../../Modals/EditProject';
+import NoProjectGroupModal from '../../Modals/NoProjectGroup';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
 import { viewPermissionsSelector } from '../../selectors';
 import AllProjectTablePresenter from './presenters';
@@ -80,6 +81,7 @@ function AllProjectTable({
   }, [projects, filterType, sortType]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
+  const [openNoPG, setOpenNoPG] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [editProps, setEditProps] = React.useState({});
   const [openSetting, setOpenSetting] = React.useState(false);
@@ -91,7 +93,10 @@ function AllProjectTable({
     switch (type) {
       case 'CREATE': {
         if (get(viewPermissions.permissions, 'create_project', false)) {
-          setOpenCreate(true);
+          if (projects.projectGroupsCount === 0)
+            setOpenNoPG(true);
+          else
+            setOpenCreate(true);
         }
         return;
       }
@@ -149,6 +154,10 @@ function AllProjectTable({
       <CreateProjectModal
         open={openCreate}
         setOpen={setOpenCreate}
+      />
+      <NoProjectGroupModal
+        open={openNoPG}
+        setOpen={setOpenNoPG}
       />
       <EditProjectModal
         open={openEdit}

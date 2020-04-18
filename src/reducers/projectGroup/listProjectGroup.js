@@ -2,7 +2,7 @@ import { concat, findIndex, get, remove, slice } from 'lodash';
 import { CREATE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/createProjectGroup';
 import { DELETE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/deleteProjectGroup';
 import { EDIT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/editProjectGroup';
-import { LIST_PROJECT_GROUP, LIST_PROJECT_GROUP_FAIL, LIST_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/listProjectGroup';
+import { LIST_PROJECT_GROUP, LIST_PROJECT_GROUP_FAIL, LIST_PROJECT_GROUP_RESET, LIST_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/listProjectGroup';
 import { SORT_PROJECT_GROUP, SORT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/sortProjectGroup';
 
 export const initialState = {
@@ -36,6 +36,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case LIST_PROJECT_GROUP_RESET:
+      return initialState;
     case CREATE_PROJECT_GROUP_SUCCESS: {
       const newProjectGroups = concat(state.data.projectGroups, get(action.data, 'projectGroup'));
       return {

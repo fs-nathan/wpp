@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { DETAIL_ROOM, DETAIL_ROOM_FAIL, DETAIL_ROOM_SUCCESS } from '../../constants/actions/room/detailRoom';
+import { DETAIL_ROOM, DETAIL_ROOM_FAIL, DETAIL_ROOM_RESET, DETAIL_ROOM_SUCCESS } from '../../constants/actions/room/detailRoom';
 import { UPDATE_ROOM_SUCCESS } from '../../constants/actions/room/updateRoom';
 
 export const initialState = {
@@ -33,6 +33,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case DETAIL_ROOM_RESET:
+      return initialState;
     case UPDATE_ROOM_SUCCESS: {
       let newRoom = state.data.room;
       if (get(newRoom, 'id') === get(action.data, 'room.id')) {
