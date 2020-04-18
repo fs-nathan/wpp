@@ -1,5 +1,12 @@
 .CommonMessageAction {
   display: flex;
+  opacity: 0;
+  margin-left: 30px;
+  margin-right: auto;
+  &__self {
+    margin-left: auto;
+    margin-right: 30px;
+  }
   &--button {
     transition: unset;
     background-color: unset;
@@ -14,5 +21,19 @@
   &--icon {
     fill: #999999;
     width: 20px;
+  }
+}
+
+.emoMenu {
+  &--list {
+    display: flex;
+  }
+  &--menuItem {
+    padding: 0;
+    margin-left: 5px;
+  }
+  &--image {
+    width: 20px;
+    height: 20px;
   }
 }

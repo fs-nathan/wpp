@@ -3,46 +3,41 @@ import {
   LOADPAGE_TASK_ASSIGN,
   LOADPAGE_TASK_DUE,
   LOADPAGE_TASK_ROLE,
-  LOAD_TASK_OVERVIEW
+  LOAD_TASK_OVERVIEW,
 } from "./types";
-export const loadTaskPage = timeRange => {
+export const loadTaskPage = (timeRange) => {
   return {
     type: LOADPAGE_TASK,
     payload: {
-      timeRange
-    }
+      timeRange,
+    },
   };
 };
-export const loadTaskOverViewPage = timeRange => {
+export const loadTaskOverViewPage = (timeRange) => {
   return {
     type: LOAD_TASK_OVERVIEW,
     payload: {
-      timeRange
-    }
+      timeRange,
+    },
   };
 };
-export const loadTaskDuePage = () => {
+export const loadTaskDuePage = (timeRange) => {
   return {
-    type: LOADPAGE_TASK_DUE
+    type: LOADPAGE_TASK_DUE,
+    payload: {
+      timeRange,
+    },
   };
 };
-export const loadTaskAssignPage = ({ timeStart, typeAssign, timeEnd }) => {
+export const loadTaskAssignPage = (timeRange) => {
   return {
     type: LOADPAGE_TASK_ASSIGN,
-    payload: {
-      timeStart,
-      typeAssign,
-      timeEnd
-    }
+    payload: timeRange,
   };
 };
-export const loadTaskRolePage = ({ timeStart, roleId, timeEnd }) => {
+export const loadTaskRolePage = (timeRange) => {
   return {
     type: LOADPAGE_TASK_ROLE,
-    payload: {
-      timeStart,
-      roleId,
-      timeEnd
-    }
+    payload: timeRange,
   };
 };

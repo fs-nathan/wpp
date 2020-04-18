@@ -295,7 +295,7 @@ const RecentContent = props => {
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="10%">
                   {file.user_create_avatar && (
-                    <CustomAvatar src={file.user_create_avatar} />
+                    <CustomAvatar src={file.user_create_avatar} title={file.user_create_name} />
                   )}
                 </StyledTableBodyCell>
                 <StyledTableBodyCell

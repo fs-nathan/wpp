@@ -45,7 +45,7 @@ export const canViewFile = fileType => {
   if (!fileType) return false;
   const type = fileType.toLowerCase();
   const listExtensionFile =
-    'jpg,jpeg,png,gif,tiff,bmp,webm,txt,mpeg4,3gpp,mov,avi,mpegps,wmv,flv,txt,css,html,php,c,cpp,h,hpp,js,doc,docx,xls,xlsx,ppt,pptx,pdf,pages,ai,psd,dxf,svg,eps,ps,ttf,xps,zip,rar';
+    'mp3,mp4,jpg,jpeg,png,gif,tiff,bmp,webm,txt,mpeg4,3gpp,mov,avi,mpegps,wmv,flv,txt,css,html,php,c,cpp,h,hpp,js,doc,docx,xls,xlsx,ppt,pptx,pdf,pages,ai,psd,dxf,svg,eps,ps,ttf,xps,zip,rar';
   return listExtensionFile.split(',').indexOf(type) > -1;
 };
 

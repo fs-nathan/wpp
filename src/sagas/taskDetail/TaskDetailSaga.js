@@ -1,7 +1,10 @@
+import { loadChat } from "actions/chat/chat";
+import { get } from 'lodash';
 import { call, put } from "redux-saga/effects";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import { apiService } from "../../constants/axiosInstance";
 // import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -23,10 +26,11 @@ function* updatePriority(action) {
     const res = yield call(doUpdatePriority, action.payload);
     yield put(actions.updatePrioritySuccess(res));
     yield put(actions.getTaskDetailTabPart(action.payload.task_id));
-
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.updatePriorityFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -73,8 +77,11 @@ function* postSubTask(action) {
     const res = yield call(doPostSubTask, action.options);
     yield put(actions.postSubTaskSuccess(res));
     yield put(actions.getSubTask({ taskId: action.options.task_id }));
+    yield put(loadChat(action.options.task_id));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postSubTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 //=== update
@@ -102,8 +109,10 @@ function* updateSubTask(action) {
     const res = yield call(doUpdateSubTask, data);
     yield put(actions.updateSubTaskSuccess(res));
     yield put(actions.getSubTask(action.options));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateSubTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // ==== delete
@@ -126,8 +135,11 @@ function* deleteSubTask(action) {
     const res = yield call(doDeleteSubTask, action.options);
     yield put(actions.deleteSubTaskSuccess(res));
     yield put(actions.getSubTask(action.options));
+    yield put(loadChat(action.payload.taskId));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // ===== complete sub task
@@ -151,8 +163,10 @@ function* completeSubTask(action) {
     const res = yield call(doCompleteSubTask, { sub_task_id, task_id: taskId });
     yield put(actions.completeSubTaskSuccess(res));
     yield put(actions.getSubTask({ taskId }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.completeSubTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -204,8 +218,11 @@ function* postRemindWithTimeDetail(action) {
   try {
     yield call(doPostRemindWithTimeDetail, action.options);
     yield put(actions.getRemind({ taskId: action.options.taskId }));
+    yield put(loadChat(action.options.taskId));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postRemindWithTimeDetailFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // ==== post duration
@@ -228,8 +245,10 @@ function* postRemindDuration(action) {
     const res = yield call(doPostRemindDuration, action.options);
     yield put(actions.postRemindDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.task_id }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postRemindDurationFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // //=== update with time detail
@@ -252,8 +271,10 @@ function* updateRemindWithTimeDetail(action) {
     const res = yield call(doUpdateRemindWithTimeDetail, action.options.data);
     yield put(actions.updateRemindWithTimeDetailSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateRemindWithTimeDetailFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // //=== update with duration
@@ -276,8 +297,10 @@ function* updateRemindWithDuration(action) {
     const res = yield call(doUpdateRemindWithDuration, action.options.data);
     yield put(actions.updateRemindWithDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateRemindWithDurationFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // ==== delete
@@ -301,8 +324,11 @@ function* deleteRemind(action) {
     const res = yield call(doDeleteRemind, { remind_id, task_id: taskId });
     yield put(actions.deleteRemindSuccess(res));
     yield put(actions.getRemind({ taskId }));
+    yield put(loadChat(action.payload.taskId));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteRemindFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -315,8 +341,10 @@ function* pinRemind(action) {
     });
     yield put(actions.pinRemindSuccess(res.data));
     yield put(actions.getRemind({ taskId }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.pinRemindFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -329,8 +357,10 @@ function* unpinRemind(action) {
     });
     yield put(actions.unPinRemindSuccess(res.data));
     yield put(actions.getRemind({ taskId }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.unPinRemindFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -363,8 +393,11 @@ function* createOffer(action) {
     const res = yield call(apiService.post, url, action.payload.data);
     yield put(actions.createOfferSuccess(res.data));
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
+    yield put(loadChat(action.payload.taskId));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createOfferFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -387,8 +420,10 @@ function* updateOffer(action) {
     yield call(doUpdateOffer, action.payload);
     // yield put(actions.updateOfferSuccess(res))
     yield put(actions.getOffer({ taskId: action.payload.task_id }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateOfferFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -413,8 +448,11 @@ function* deleteOffer(action) {
     const res = yield call(doDeleteOffer, { offer_id, task_id: taskId })
     yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId }))
+    yield put(loadChat(action.payload.taskId));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteOfferFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -422,10 +460,12 @@ function* approveOffer(action) {
   try {
     // console.log("offer_id:::::::", action.payload);
     const res = yield call(apiService.post, 'task/approve-offer', action.payload)
-    yield put(actions.deleteOfferSuccess(res))
-    yield put(actions.getOffer({ taskId: action.payload.task_id }))
+    yield put(actions.approveOfferSuccess(res))
+    yield put(actions.getOffer({ taskId: action.payload.task_id }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(actions.deleteOfferFail(error))
+    yield put(actions.approveOfferFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -451,8 +491,10 @@ function* uploadDocumentToOffer(action) {
 
     yield put(actions.uploadDocumentToOfferSuccess(res));
     yield put(actions.getOffer(action.payload.taskId));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.uploadDocumentToOfferFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -476,8 +518,10 @@ function* deleteDocumentToOffer(action) {
     action.payload.removeCallBack(res);
     yield put(actions.deleteDocumentToOfferSuccess(res));
     yield put(actions.getOffer(action.payload.taskId));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteDocumentToOfferFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -500,8 +544,10 @@ function* handleOffer(action) {
     const res = yield call(doHandleOffer, action.payload.data);
     yield put(actions.handleOfferSuccess(res));
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.handleOfferFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -523,8 +569,10 @@ function* getImage(action) {
   try {
     const res = yield call(doGetImage, action.options);
     yield put(actions.getImageSuccess(res));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getImageFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -546,8 +594,10 @@ function* getFile(action) {
   try {
     const res = yield call(doGetFile, action.options);
     yield put(actions.getFileTabPartSuccess(res));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getFileTabPartFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // Media Link
@@ -568,8 +618,10 @@ function* getLink(action) {
   try {
     const res = yield call(doGetLink, action.options);
     yield put(actions.getLinkTabPartSuccess(res));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getLinkTabPartFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // Location
@@ -660,8 +712,11 @@ function* createCommand(action) {
     const res = yield call(doCreateCommand, action.payload);
     yield put(actions.createCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
+    yield put(loadChat(action.payload.task_id));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createCommandFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -690,8 +745,10 @@ function* updateCommand(action) {
     const res = yield call(doUpdateCommand, data);
     yield put(actions.updateCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.taskId }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateCommandFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -717,8 +774,11 @@ function* deleteCommand(action) {
     });
     yield put(actions.deleteCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
+    yield put(loadChat(action.payload.task_id));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteCommandFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -786,8 +846,11 @@ function* createMember(action) {
     yield put(actions.getMember({ task_id: action.payload.task_id }))
     yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
     yield put(actions.createMemberSuccess(res))
+    yield put(loadChat(action.payload.task_id));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createMemberFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -811,8 +874,11 @@ function* deleteMember(action) {
     yield put(actions.getMember({ task_id: action.payload.task_id }))
     yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
     yield put(actions.deleteMemberSuccess(res))
+    yield put(loadChat(action.payload.task_id));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteMemberFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -859,8 +925,10 @@ function* updatePermission(action) {
     const res = yield call(doUpdatePermission, action.payload)
     yield put(actions.updatePermissionSuccess(res))
     yield put(actions.getMember({ task_id: action.payload.task_id }))
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updatePermissionFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -907,8 +975,10 @@ function* createRole(action) {
     const res = yield call(doCreateRole, action.payload);
     yield put(actions.createRoleSuccess(res));
     yield put(actions.getRole());
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createRoleFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -931,8 +1001,10 @@ function* updateRole(action) {
     const res = yield call(doUpdateRole, action.payload);
     yield put(actions.updateRoleSuccess(res));
     yield put(actions.getRole());
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateRoleFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -955,8 +1027,10 @@ function* deleteRole(action) {
     const res = yield call(doDeleteRole, action.payload);
     yield put(actions.deleteRoleSuccess(res));
     yield put(actions.getRole());
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteRoleFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -964,9 +1038,11 @@ function* updateRolesForMember(action) {
   try {
     const res = yield call(apiService.post, 'task/update-role-of-member', action.payload)
     yield put(actions.updateRolesForMemberSuccess(res.data))
-    yield put(actions.getMember({ task_id: action.payload.task_id }))
+    yield put(actions.getMember({ task_id: action.payload.task_id }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(actions.updateRolesForMemberFail(error))
+    yield put(actions.updateRolesForMemberFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 // Get list task detail
@@ -1042,8 +1118,11 @@ function* updateTimeDuration(action) {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
+    yield put(loadChat(action.payload.task_id));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateTimeDurationFail);
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -1068,8 +1147,10 @@ function* createTask(action) {
     yield put(
       actions.getListTaskDetail({ project_id: action.payload.projectId })
     );
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -1207,11 +1288,14 @@ function* updateNameDescriptionTask(action) {
     const taskId = action.payload.task_id;
     yield put(actions.updateNameDescriptionTaskSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId }));
+    yield put(loadChat(taskId));
     // const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
     // yield put(actions.updateTimeDurationSuccess(resTime))
     // yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateNameDescriptionTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -1259,11 +1343,14 @@ function* updateComplete(action) {
     yield put(actions.updateCompleteSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
     yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
+    yield put(loadChat(action.payload.data.task_id));
     yield put(
       actions.getListTaskDetail({ project_id: action.payload.projectId })
     );
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateCommandFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -1310,8 +1397,10 @@ function* deleteTask(action) {
     yield put(
       actions.getListTaskDetail({ project_id: action.payload.projectId })
     );
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -1322,8 +1411,10 @@ export function* pinTask({ payload }) {
     yield put(actions.pinTaskSuccess(res.data));
     yield put(actions.getListTaskDetail({ project_id: projectId }));
     yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.pinTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
@@ -1336,8 +1427,10 @@ export function* unPinTask({ payload }) {
     yield put(actions.unPinTaskSuccess(res.data));
     yield put(actions.getListTaskDetail({ project_id: projectId }));
     yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.unPinTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

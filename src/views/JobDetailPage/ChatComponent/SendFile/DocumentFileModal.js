@@ -1,51 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import Icon from '@mdi/react';
-import {
-  mdiFileDocumentBoxOutline,
-  mdiFolderOpenOutline,
-  mdiFileUndoOutline,
-  mdiGoogleDrive
-} from '@mdi/js';
 // import { Scrollbars } from 'react-custom-scrollbars';
-import {
-  Table,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  Avatar,
-  Checkbox
-} from '@material-ui/core';
+import { Avatar, Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { mdiFileDocumentBoxOutline, mdiFileUndoOutline, mdiFolderOpenOutline, mdiGoogleDrive } from '@mdi/js';
+import Icon from '@mdi/react';
+import { chatForwardFile } from 'actions/chat/chat';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDocumentSharedToMe, getListMyDocument, getListProject } from '../../../../actions/documents';
 import CustomModal from '../../../../components/CustomModal';
-import SearchInput from '../../../../components/SearchInput';
 import { FileType } from '../../../../components/FileType';
-import {
-  getListMyDocument,
-  getDocumentSharedToMe,
-  getListProject
-} from '../../../../actions/documents';
+import SearchInput from '../../../../components/SearchInput';
 import './SendFileModal.scss';
 
 const DocumentFileModal = ({ open, setOpen }) => {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+
   const [listData, setListData] = useState([]);
+  const [selectedFilesIds, setSelectedFilesIds] = useState([]);
 
   const fetchListMyDocument = async params => {
     try {
       const { data } = await getListMyDocument(params);
-      let tranformData = [];
+      let transformData = [];
       if (data.folders.length > 0) {
-        tranformData = data.folders.map(item => ({ ...item, type: 'folder' }));
+        transformData = data.folders.map(item => ({ ...item, type: 'folder' }));
       }
       if (data.documents.length > 0) {
-        tranformData = tranformData.concat(data.documents);
+        transformData = transformData.concat(data.documents);
       }
-      setListData(tranformData);
+      setListData(transformData);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchtDocumentSharedToMe = async params => {
+  const fetchDocumentSharedToMe = async params => {
     try {
       const { data } = await getDocumentSharedToMe(params);
       setListData(data.documents || []);
@@ -54,7 +43,7 @@ const DocumentFileModal = ({ open, setOpen }) => {
     }
   };
 
-  const fetchtListProject = async params => {
+  const fetchListProject = async params => {
     try {
       const { data } = await getListProject(params);
       setListData(data.projects || []);
@@ -69,15 +58,32 @@ const DocumentFileModal = ({ open, setOpen }) => {
 
   const handleOnChangeMenu = keyMenu => {
     if (keyMenu === 'projectDocument') {
-      fetchtListProject();
+      fetchListProject();
     } else if (keyMenu === 'sharedWithMe') {
-      fetchtDocumentSharedToMe();
+      fetchDocumentSharedToMe();
     } else if (keyMenu === 'myDocument') {
       fetchListMyDocument();
     } else if (keyMenu === 'googleDrive') {
       console.log('gg drive');
     }
   };
+
+  function onClickConfirm() {
+    setOpen(false)
+    dispatch(chatForwardFile(taskId, selectedFilesIds))
+    setSelectedFilesIds([])
+  }
+
+  function selectFile(id) {
+    return () => {
+      const memberId = selectedFilesIds.indexOf(id)
+      if (memberId === -1)
+        selectedFilesIds.push(id);
+      else
+        selectedFilesIds.splice(memberId, 1);
+      setSelectedFilesIds([...selectedFilesIds])
+    }
+  }
 
   return (
     <CustomModal
@@ -86,7 +92,8 @@ const DocumentFileModal = ({ open, setOpen }) => {
       fullWidth
       title="Quản lý tài liệu"
       className="document-file-modal"
-      cancleRender={null}
+      cancleRender={() => "Thoát"}
+      onConfirm={onClickConfirm}
     >
       <div className="document-file-container">
         <div className="left-container">
@@ -120,7 +127,9 @@ const DocumentFileModal = ({ open, setOpen }) => {
                 {listData.map(item => (
                   <TableRow key={item.id}>
                     <TableCell width="50px" align="center">
-                      {item.type !== 'folder' && <Checkbox color="primary" />}
+                      {item.type !== 'folder' && <Checkbox color="primary"
+                        checked={selectedFilesIds.indexOf(item.id) !== -1}
+                        onClick={selectFile(item.id)} />}
                     </TableCell>
                     <TableCell width="50px" align="center">
                       <Avatar

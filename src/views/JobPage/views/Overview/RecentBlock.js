@@ -3,7 +3,7 @@ import {
   CardContent,
   CardHeader,
   Table,
-  TableBody
+  TableBody,
 } from "@material-ui/core";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -38,7 +38,8 @@ export const RecentTable = ({ tasks = emptyArray }) => {
             duration_value,
             duration_unit,
             complete,
-            number_member
+            number_member,
+            url_redirect,
           ] = createMapPropsFromAttrs([
             taskAtrrs.project_id,
             taskAtrrs.id,
@@ -54,7 +55,8 @@ export const RecentTable = ({ tasks = emptyArray }) => {
             taskAtrrs.duration_value,
             taskAtrrs.duration_unit,
             taskAtrrs.complete,
-            taskAtrrs.number_member
+            taskAtrrs.number_member,
+            taskAtrrs.url_redirect,
           ])(task);
           return (
             <RecentTableRow
@@ -73,7 +75,8 @@ export const RecentTable = ({ tasks = emptyArray }) => {
                 priority_name,
                 user_name,
                 complete,
-                number_member
+                number_member,
+                url_redirect,
               }}
               className="table-body-row"
               key={index}
@@ -85,14 +88,14 @@ export const RecentTable = ({ tasks = emptyArray }) => {
     </Table>
   );
 };
-const selector = state => {
+const selector = (state) => {
   return createMapPropsFromAttrs([
     recent.waiting,
     recent.doing,
     recent.complete,
     recent.expired,
     recent.stop,
-    recent.tasks
+    recent.tasks,
   ])(state.taskPage[TASK_OVERVIEW_RECENT]);
 };
 export function RecentBlock() {
@@ -105,7 +108,7 @@ export function RecentBlock() {
     complete,
     expired,
     stop,
-    tasks = emptyArray
+    tasks = emptyArray,
   ] = useSelector(selector);
 
   const [isToggleSortName] = useToggle();
@@ -113,7 +116,7 @@ export function RecentBlock() {
     tasks,
     statusFilter,
     isToggleSortName,
-    keyword
+    keyword,
   });
 
   return (
@@ -128,37 +131,37 @@ export function RecentBlock() {
                 label: t(labels.task_waiting),
                 color: colors.task_waiting,
                 count: waiting,
-                show: statusFilter["waiting"]
+                show: statusFilter["waiting"],
               },
               {
                 key: "doing",
                 label: t(labels.task_doing),
                 color: colors.task_doing,
                 count: doing,
-                show: statusFilter["doing"]
+                show: statusFilter["doing"],
               },
               {
                 key: "complete",
                 label: t(labels.task_complete),
                 color: colors.task_complete,
                 count: complete,
-                show: statusFilter["complete"]
+                show: statusFilter["complete"],
               },
               {
                 key: "expired",
                 label: t(labels.task_expired),
                 color: colors.task_expired,
                 count: expired,
-                show: statusFilter["expired"]
+                show: statusFilter["expired"],
               },
               {
                 key: "stop",
                 label: t(labels.task_stop),
                 color: colors.task_stop,
                 count: stop,
-                show: statusFilter["stop"]
-              }
-            ]
+                show: statusFilter["stop"],
+              },
+            ],
           }}
         />
         <br />

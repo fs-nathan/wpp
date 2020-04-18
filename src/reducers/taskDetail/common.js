@@ -1,9 +1,5 @@
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
-import {
-  searchProjectByProjectName,
-  getFirstProjectDetail
-  // getFirstTaskId
-} from '../../helpers/jobDetail/arrayHelper';
+import { getFirstProjectDetail, searchProjectByProjectName } from '../../helpers/jobDetail/arrayHelper';
 const initialState = {
   activeProjectId: '',
   activeTaskId: '',
@@ -43,10 +39,8 @@ export default function reducer(state = initialState, action) {
         activeProjectId:
           action.payload.projectId !== ''
             ? action.payload.projectId
-            : getFirstProjectDetail(action.payload.projectGroups).id,
-        projectDetail:
-          action.payload.projectId === '' &&
-          getFirstProjectDetail(action.payload.projectGroups),
+            : getFirstProjectDetail(action.payload.projectGroups).id
+        ,
         defaultProjectBasic: action.payload.projectGroups
       };
     case types.GET_LIST_TASK_DETAIL_SUCCESS:

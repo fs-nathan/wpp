@@ -1,9 +1,9 @@
 import { TextField, Typography } from '@material-ui/core';
 import { updateCommand } from 'actions/taskDetail/taskDetailActions';
-import CustomModal from 'components/CustomModal';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../selectors';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect';
 
@@ -54,7 +54,7 @@ const DemandModal = (props) => {
     return tempSelectedItem.content && tempSelectedItem.type !== -1
   }
   return (
-    <CustomModal
+    <JobDetailModalWrap
       title={"Chỉ đạo, quyết định"}
       open={props.isOpen}
       setOpen={props.setOpen}
@@ -81,7 +81,7 @@ const DemandModal = (props) => {
           onChange={e => setParams("content", e.target.value)}
         />
       </React.Fragment>
-    </CustomModal>
+    </JobDetailModalWrap>
   )
 }
 

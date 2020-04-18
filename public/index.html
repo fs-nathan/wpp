@@ -51,18 +51,18 @@
               top: "1.7cm",
               bottom: "1.7cm",
               left: "2.5cm",
-              right: "2.5cm"
+              right: "2.5cm",
             },
-            scale: 0.7
+            scale: 0.7,
           })
-          .then(function(group) {
+          .then(function (group) {
             kendo.drawing.pdf.saveAs(group, fileName);
           });
         kendo.pdf.defineFont({
           "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
           "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
           "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
-          "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
+          "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
         });
       }
     </script>

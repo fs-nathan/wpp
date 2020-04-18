@@ -14,7 +14,7 @@ const ProjectItem = props => {
 
   function onClickProject() {
     console.log('Click item ', props);
-    history.push(`/list-task-detail/` + props.project.id);
+    history.push(`/tasks/chat/` + props.project.id);
     // props.value.getDetailProject(props.project.id)
     // props.value.chooseProject(props.project)
     dispatch(chooseTask(null));

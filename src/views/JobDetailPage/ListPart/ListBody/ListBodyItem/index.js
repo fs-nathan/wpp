@@ -2,6 +2,7 @@ import { Avatar, ListItemAvatar, ListItemText } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import { mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
+import { loadChat } from 'actions/chat/chat';
 import { chooseTask, getTaskDetailTabPart, showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'classnames';
 import ColorChip from 'components/ColorChip';
@@ -116,6 +117,7 @@ function ListBodyItem(props) {
     dispatch(chooseTask(props.id));
     dispatch(getTaskDetailTabPart({ taskId: props.id }));
     dispatch(showTab(0))
+    dispatch(loadChat(props.id))
     // getMemberByTaskId(props.id)
     // getMemberNotAssignedByTaskId(props.id)
     history.push({ search: `?task_id=${props.id}` });
