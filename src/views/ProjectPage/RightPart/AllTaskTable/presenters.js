@@ -58,7 +58,6 @@ function AllTaskTable({
   handleSubSlide,
   tasks, project,
   handleShowOrHideProject,
-  handleDeleteTask,
   handleSortTask,
   handleOpenModal,
   bgColor, timeType,
@@ -80,7 +79,7 @@ function AllTaskTable({
             title: 'Danh sách công việc',
             subTitle: () => (
               <SubTitle>
-                <span onClick={evt => history.push(`/tasks/chat/${get(project.project, 'id')}`)}>Chat</span>
+                <span onClick={evt => history.push(`${get(project.project, 'url_redirect')}`)}>Chat</span>
                 <span>Table</span>
                 <span>Grant</span>
               </SubTitle>
@@ -161,7 +160,7 @@ function AllTaskTable({
           columns={[{
             label: 'Tên công việc',
             field: (row) => <LinkSpan onClick={evt => {
-              history.push(`/tasks/chat/${get(project.project, 'id')}?task_id=${row.id}`);
+              history.push(`${get(row, 'url_redirect')}`);
             }}>{get(row, 'name', '')}</LinkSpan>,
             align: 'left',
             width: '25%',

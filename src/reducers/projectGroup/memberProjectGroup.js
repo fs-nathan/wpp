@@ -1,4 +1,4 @@
-import { MEMBER_PROJECT_GROUP, MEMBER_PROJECT_GROUP_FAIL, MEMBER_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/memberProjectGroup';
+import { MEMBER_PROJECT_GROUP, MEMBER_PROJECT_GROUP_FAIL, MEMBER_PROJECT_GROUP_RESET, MEMBER_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/memberProjectGroup';
 
 export const initialState = {
   data: {
@@ -31,6 +31,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case MEMBER_PROJECT_GROUP_RESET:
+      return initialState;
     default:
       return state;
   }

@@ -5,10 +5,10 @@ import { listIcon } from '../../actions/icon/listIcon';
 import { listLevel } from '../../actions/level/listLevel';
 import { listMajor } from '../../actions/major/listMajor';
 import { listPosition } from '../../actions/position/listPosition';
-import { detailRoom } from '../../actions/room/detailRoom';
-import { getUserOfRoom } from '../../actions/room/getUserOfRoom';
-import { listRoom } from '../../actions/room/listRoom';
-import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
+import { detailRoom, detailRoomReset } from '../../actions/room/detailRoom';
+import { getUserOfRoom, getUserOfRoomReset } from '../../actions/room/getUserOfRoom';
+import { listRoom, listRoomReset } from '../../actions/room/listRoom';
+import { listUserOfGroup, listUserOfGroupReset } from '../../actions/user/listUserOfGroup';
 import { listUserRole } from '../../actions/userRole/listUserRole';
 import { getPermissionViewUser } from '../../actions/viewPermissions';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
@@ -42,6 +42,7 @@ function UserPage({
   doListIcon,
   doListUserOfGroup,
   doGetPermissionViewUser,
+  doReset, doResetDetail,
 }) {
 
   React.useEffect(() => {
@@ -50,6 +51,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
+      doReset();
       doListRoom(true);
 
       const reloadListRoom = () => {
@@ -68,13 +70,14 @@ function UserPage({
         CustomEventDispose(SORT_ROOM, reloadListRoom);
       }
     }
-  }, [doListRoom, viewPermissions]);
+  }, [doListRoom, doReset, viewPermissions]);
 
   const [departmentId, setDepartmentId] = React.useState();
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (departmentId && departmentId !== 'default') {
+        doResetDetail();
         doDetailRoom({ roomId: departmentId }, true);
         /*
         const reloadDetailRoom = () => {
@@ -89,11 +92,12 @@ function UserPage({
         */
       }
     }
-  }, [departmentId, doDetailRoom, viewPermissions]);
+  }, [departmentId, doDetailRoom, doResetDetail, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (departmentId) {
+        doResetDetail();
         doGetUserOfRoom({ roomId: departmentId }, true);
 
         const reloadGetUserOfRoom = () => {
@@ -117,7 +121,7 @@ function UserPage({
         }
       }
     }
-  }, [departmentId, doGetUserOfRoom, viewPermissions]);
+  }, [departmentId, doGetUserOfRoom, doResetDetail, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
@@ -229,6 +233,7 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
+      doReset();
       doListUserOfGroup(true);
 
       const reloadListUserOfGroup = () => {
@@ -261,7 +266,7 @@ function UserPage({
         CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
       }
     }
-  }, [doListUserOfGroup, viewPermissions]);
+  }, [doListUserOfGroup, doReset, viewPermissions]);
 
   return (
     <Provider value={{
@@ -324,6 +329,14 @@ function UserPage({
 
 const mapDispatchToProps = dispatch => {
   return {
+    doReset: () => {
+      dispatch(listRoomReset());
+      dispatch(listUserOfGroupReset());
+    },
+    doResetDetail: () => {
+      dispatch(detailRoomReset());
+      dispatch(getUserOfRoomReset());
+    },
     doListRoom: (quite) => dispatch(listRoom(quite)),
     doDetailRoom: ({ roomId }, quite) => dispatch(detailRoom({ roomId }, quite)),
     doGetUserOfRoom: ({ roomId }, quite) => dispatch(getUserOfRoom({ roomId }, quite)),

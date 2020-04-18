@@ -1,0 +1,15 @@
+@mixin view_Project_ProjectMemberSlide_Item___detail {
+  display: block;
+  font-size: 14px;
+};
+
+.view_Project_ProjectMemberSlide_Item___detail {
+  & {
+    @include view_Project_ProjectMemberSlide_Item___detail;
+    color: red;
+  }
+  &-in-group {
+    @include view_Project_ProjectMemberSlide_Item___detail;
+    color: #818181;
+  }
+}

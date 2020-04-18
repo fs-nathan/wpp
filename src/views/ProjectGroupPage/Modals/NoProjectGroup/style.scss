@@ -1,0 +1,21 @@
+.view_ProjectGroup_No_Project_Modal___container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  & > span {
+    &:first-child {
+      margin-top: 30px;
+    }
+    margin: 8px 0;
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+.view_ProjectGroup_No_Project_Modal___button {
+  padding: 12px 24px;
+  margin-top: 16px;
+}

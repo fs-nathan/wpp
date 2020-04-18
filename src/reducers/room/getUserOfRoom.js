@@ -1,5 +1,5 @@
 import { findIndex, get, remove, slice } from 'lodash';
-import { GET_USER_OF_ROOM, GET_USER_OF_ROOM_FAIL, GET_USER_OF_ROOM_SUCCESS } from '../../constants/actions/room/getUserOfRoom';
+import { GET_USER_OF_ROOM, GET_USER_OF_ROOM_FAIL, GET_USER_OF_ROOM_RESET, GET_USER_OF_ROOM_SUCCESS } from '../../constants/actions/room/getUserOfRoom';
 import { PRIVATE_MEMBER } from '../../constants/actions/user/privateMember';
 import { PUBLIC_MEMBER } from '../../constants/actions/user/publicMember';
 import { SORT_USER } from '../../constants/actions/user/sortUser';
@@ -37,6 +37,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case GET_USER_OF_ROOM_RESET:
+      return initialState;
     case PUBLIC_MEMBER:
       users = [...state.data.users];
       index = findIndex(users, { id: get(action.options, 'userId') });

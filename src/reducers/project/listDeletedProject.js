@@ -1,6 +1,6 @@
 import { get, remove } from 'lodash';
 import { DELETE_TRASH_PROJECT_SUCCESS } from '../../constants/actions/project/deleteTrashProject';
-import { LIST_DELETED_PROJECT, LIST_DELETED_PROJECT_FAIL, LIST_DELETED_PROJECT_SUCCESS } from '../../constants/actions/project/listDeletedProject';
+import { LIST_DELETED_PROJECT, LIST_DELETED_PROJECT_FAIL, LIST_DELETED_PROJECT_RESET, LIST_DELETED_PROJECT_SUCCESS } from '../../constants/actions/project/listDeletedProject';
 import { RESTORE_TRASH_PROJECT_SUCCESS } from '../../constants/actions/project/restoreTrashProject';
 
 export const initialState = {
@@ -34,6 +34,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case LIST_DELETED_PROJECT_RESET:
+      return initialState;
     case DELETE_TRASH_PROJECT_SUCCESS:
     case RESTORE_TRASH_PROJECT_SUCCESS: {
       let newProjects = state.data.projects;

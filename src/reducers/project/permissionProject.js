@@ -1,4 +1,4 @@
-import { PERMISSION_PROJECT, PERMISSION_PROJECT_FAIL, PERMISSION_PROJECT_SUCCESS } from '../../constants/actions/project/permissionProject';
+import { PERMISSION_PROJECT, PERMISSION_PROJECT_FAIL, PERMISSION_PROJECT_RESET, PERMISSION_PROJECT_SUCCESS } from '../../constants/actions/project/permissionProject';
 
 export const initialState = {
   data: {
@@ -31,6 +31,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case PERMISSION_PROJECT_RESET:
+      return initialState;
     default:
       return state;
   }
