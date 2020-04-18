@@ -18,8 +18,8 @@ import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import TasksCard from "../components/TasksCard";
 import postAttr from "../redux/post/attr";
 import AvatarGroup from "./AvatarGroup";
+import Message from "./Message";
 import { PostActionButton } from "./PostActionButton";
-
 const PostMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
   const { t } = useTranslation();
   const options = useMemo(() => {
@@ -199,40 +199,9 @@ const Post = ({
         </Stack>
         <TasksCard.Content>
           <Stack>
-            <Box display="flex" alignItems="flex-start">
-              <Avatar>A</Avatar>
-              <Box lineHeight={"30px"} margin="5px 0 0 5px">
-                <Box
-                  style={{ background: "#f5f6f7", borderRadius: "15px" }}
-                  lineHeight={"30px"}
-                  padding="0 8px"
-                >
-                  <span
-                    style={{
-                      marginRight: "8px",
-                      fontWeight: "bold",
-                      color: colors.blue[0],
-                    }}
-                  >
-                    Hà hãi lê
-                  </span>
-                  <span>Con đường cách mang còn lắm gian truân</span>
-                </Box>
-                <Box padding="0 8px">
-                  <span
-                    style={{
-                      marginRight: "8px",
-                      color: colors.blue[0],
-                    }}
-                  >
-                    {t("Trả lời")}
-                  </span>
-                  <Typography component="span" color="textSecondary">
-                    2 giờ
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
+            {comments.map((c, i) => (
+              <Message key={i} message={c}></Message>
+            ))}
             <Box display="flex" alignItems="flex-start">
               <Avatar>A</Avatar>
               <Box
