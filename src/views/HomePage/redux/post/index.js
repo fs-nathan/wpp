@@ -15,7 +15,7 @@ const updatePostList = createAction(types.postList, function prepare(data) {
   };
 });
 
-export const loadGroupPermissionList = () => {
+export const loadPostList = () => {
   return createAsyncAction({
     config: {
       url: "/posts/get-list",
@@ -23,12 +23,43 @@ export const loadGroupPermissionList = () => {
     success: updatePostList,
   });
 };
+
+// title: String required
+// category: String required
+// content: String optional
+// file: Array file optional
+// sticker: String optional
+// is_push_notification: Boolean required
+const createPost = ({
+  title,
+  category,
+  content,
+  file,
+  sticker,
+  is_push_notification,
+}) => {
+  return createAsyncAction({
+    config: {
+      url: "/posts/create-post",
+      method: "post",
+      data: {
+        title,
+        category,
+        content,
+        file,
+        sticker,
+        is_push_notification,
+      },
+    },
+    // success: updatePostList,
+  });
+};
 export const postListSelector = (state) =>
   get(state, [rootPath, updatePostList.type], emptyArray);
 
 export const postModule = {
   selectors: { postListSelector },
-  actions: { loadGroupPermissionList },
+  actions: { loadPostList, createPost },
   key: rootPath,
   reducer: createReducer(
     {

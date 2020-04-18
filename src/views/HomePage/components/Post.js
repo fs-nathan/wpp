@@ -1,14 +1,25 @@
-import { IconButton, Typography } from "@material-ui/core";
-import { MoreVert } from "@material-ui/icons";
+import { Avatar, Box, IconButton, Typography } from "@material-ui/core";
+import {
+  AttachFileOutlined,
+  CameraAltOutlined,
+  ExtensionOutlined,
+  InsertEmoticonOutlined,
+  MoreVert,
+} from "@material-ui/icons";
+import { mdiArmFlexOutline, mdiHeartOutline, mdiMessageOutline } from "@mdi/js";
+import Icon from "@mdi/react";
+import colors from "helpers/colorPalette";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs, loginlineFunc } from "views/JobPage/utils";
+import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
 import postAttr from "../redux/post/attr";
-
+import AvatarGroup from "./AvatarGroup";
+import Message from "./Message";
+import { PostActionButton } from "./PostActionButton";
 const PostMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
   const { t } = useTranslation();
   const options = useMemo(() => {
@@ -61,6 +72,7 @@ const Post = ({
   last_love_user,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { t } = useTranslation();
   return (
     <>
       <TasksCard.Container>
@@ -108,20 +120,122 @@ const Post = ({
         />
         <TasksCard.Content>
           <Stack>
-            <b style={{ fontSize: "16px" }}>{title}</b>
+            <b style={{ fontSize: "17px" }}>{title}</b>
             <Typography
               style={{ fontSize: "15px" }}
               variant="body2"
               color="textSecondary"
-              component="p"
             >
               {content}
             </Typography>
           </Stack>
         </TasksCard.Content>
+
         <TasksCard.Media
           srcs={images.map((item) => item.url)}
         ></TasksCard.Media>
+        <Stack>
+          <div />
+          <Typography
+            color="textSecondary"
+            style={{
+              fontWeight: "bold",
+              fontSize: "15px",
+              padding: "0 20px",
+            }}
+          >
+            # Thông báo
+          </Typography>
+          <Box padding="0 20px" display="flex" alignItems="center">
+            <div>
+              <AvatarGroup
+                size={20}
+                offset={-4}
+                images={[
+                  "https://appapi.workplus.vn/avatars/1586430794068-filename",
+                  "https://appapi.workplus.vn/avatars/1586430794068-filename",
+                ]}
+              ></AvatarGroup>
+            </div>
+            <Box padding="0 4px" flex="1" whiteSpace="now-wrap">
+              <span href="#">Ngọc phạm</span>,{" "}
+              <span href="#">Thanh Mai Nguyển</span> và 280 người khác
+            </Box>
+            <Typography color="textSecondary">203 bình luận</Typography>
+          </Box>
+          <Box
+            display="flex"
+            borderTop="1px solid rgba(0, 0, 0, 0.12)"
+            borderBottom="1px solid rgba(0, 0, 0, 0.12)"
+            alignItems="center"
+          >
+            <PostActionButton
+              startIcon={<Icon path={mdiHeartOutline} size={1} />}
+            >
+              <span>{t("Yêu")}</span>
+            </PostActionButton>
+            <PostActionButton
+              startIcon={<Icon path={mdiArmFlexOutline} size={1} />}
+            >
+              {t("Thích")}
+            </PostActionButton>
+            <PostActionButton
+              startIcon={<Icon path={mdiMessageOutline} size={1} />}
+            >
+              {t("Bình luận")}
+            </PostActionButton>
+          </Box>
+          <Box padding="0 20px" display="flex" alignItems="center">
+            <Box
+              style={{
+                color: colors.blue[0],
+              }}
+              flex="1"
+            >
+              {t("Xem các bình luận trước")}
+            </Box>
+            <Typography color="textSecondary">3/181</Typography>
+          </Box>
+        </Stack>
+        <TasksCard.Content>
+          <Stack>
+            {comments.map((c, i) => (
+              <Message key={i} message={c}></Message>
+            ))}
+            <Box display="flex" alignItems="flex-start">
+              <Avatar>A</Avatar>
+              <Box
+                margin="0 0 0 5px"
+                border="1px solid rgba(0, 0, 0, 0.12)"
+                height={"40px"}
+                display="flex"
+                flex="1"
+                style={{ background: "#f5f6f7", borderRadius: "20px" }}
+                lineHeight={"30px"}
+                padding="0 8px"
+                alignItems="center"
+              >
+                <Box flex="1" padding="5px 8px">
+                  {t("Viết bình luận")}
+                </Box>
+                <div>
+                  <IconButton size="small" aria-label="delete">
+                    <InsertEmoticonOutlined />
+                  </IconButton>
+                  <IconButton size="small" aria-label="delete">
+                    <CameraAltOutlined />
+                  </IconButton>
+                  <IconButton size="small" aria-label="delete">
+                    <AttachFileOutlined />
+                  </IconButton>
+                  <IconButton size="small" aria-label="delete">
+                    <ExtensionOutlined />
+                  </IconButton>
+                </div>
+              </Box>
+            </Box>
+          </Stack>
+        </TasksCard.Content>
       </TasksCard.Container>
       <PostMenu menuAnchor={anchorEl} setMenuAnchor={setAnchorEl} />
     </>
@@ -146,26 +260,24 @@ export default ({ post }) => {
     time_label,
     last_like_user,
     last_love_user,
-  ] = loginlineFunc(
-    createMapPropsFromAttrs([
-      postAttr.id,
-      postAttr.title,
-      postAttr.content,
-      postAttr.user_create_id,
-      postAttr.user_create_name,
-      postAttr.user_create_avatar,
-      postAttr.files,
-      postAttr.images,
-      postAttr.position,
-      postAttr.room,
-      postAttr.number_like,
-      postAttr.number_comment,
-      postAttr.comments,
-      postAttr.time_label,
-      postAttr.last_like_user,
-      postAttr.last_love_user,
-    ])
-  )(post);
+  ] = createMapPropsFromAttrs([
+    postAttr.id,
+    postAttr.title,
+    postAttr.content,
+    postAttr.user_create_id,
+    postAttr.user_create_name,
+    postAttr.user_create_avatar,
+    postAttr.files,
+    postAttr.images,
+    postAttr.position,
+    postAttr.room,
+    postAttr.number_like,
+    postAttr.number_comment,
+    postAttr.comments,
+    postAttr.time_label,
+    postAttr.last_like_user,
+    postAttr.last_love_user,
+  ])(post);
   return (
     <PostContext.Provider
       value={{
