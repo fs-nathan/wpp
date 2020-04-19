@@ -115,6 +115,8 @@ function AllProjectTable({
     setCurProject(oldProject => find(projects.projects, { id: get(oldProject, 'id') }))
   }, [projects]);
 
+  console.log('x');
+
   return (
     <Container>
       <React.Fragment>
@@ -190,7 +192,12 @@ function AllProjectTable({
             },
             row: {
               id: 'id',
-            }
+            },
+            noData: {
+              subtitle: projects.projectGroupsCount === 0
+                ? t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_PROJECT")
+                : t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_TASK")
+            },
           }}
           columns={[
             {
@@ -251,23 +258,28 @@ function AllProjectTable({
                   title={
                     <ChartInfoBox
                       className='view_ProjectGroup_Table_All___tooltip'
+                      title={t("DMH.VIEW.PGP.RIGHT.ALL.STATS.TOTAL")}
                       data={
                         [{
                           color: '#ff9800',
-                          title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.WAITING"),
-                          value: get(row, 'statistics.task_waiting', 0),
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING"),
+                          value: get(row, 'statistic.waiting', 0),
                         }, {
                           color: '#03a9f4',
-                          title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.DOING"),
-                          value: get(row, 'statistics.task_doing', 0),
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING"),
+                          value: get(row, 'statistic.doing', 0),
                         }, {
                           color: '#f44336',
-                          title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
-                          value: get(row, 'statistics.task_expired', 0),
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
+                          value: get(row, 'statistic.expired', 0),
                         }, {
                           color: '#03c30b',
-                          title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
-                          value: get(row, 'statistics.task_complete', 0),
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
+                          value: get(row, 'statistic.complete', 0),
+                        }, {
+                          color: 'black',
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
+                          value: get(row, 'statistic.stop', 0),
                         }]
                       }
                     />
@@ -287,6 +299,9 @@ function AllProjectTable({
                       }, {
                         color: '#03c30b',
                         value: get(row, 'statistic.complete', 0),
+                      }, {
+                        color: 'black',
+                        value: get(row, 'statistic.stop', 0),
                       }]}
                       color={'#05b50c'}
                       percentDone={get(row, 'complete', 0)}

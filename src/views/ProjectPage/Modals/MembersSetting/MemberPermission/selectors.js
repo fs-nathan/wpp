@@ -20,9 +20,10 @@ export const membersSelector = createSelector(
 export const permissionsSelector = createSelector(
   [permissionProject],
   (permissionProject) => {
-    const { data: { groupPermissions }, loading, error } = permissionProject;
+    const { data: { groupPermissions, adminPermission }, loading, error } = permissionProject;
     return {
       groupPermissions,
+      adminPermission,
       loading,
       error,
     }

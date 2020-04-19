@@ -72,6 +72,7 @@ export const projectsSelector = createSelector(
     return {
       projects: newProjects,
       summary: newSummary,
+      projectGroupsCount: projectGroups.length,
       loading,
       error,
     }

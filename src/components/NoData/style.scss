@@ -1,0 +1,21 @@
+.comp_NoData___container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  & > img {
+    width: 256px;
+  }
+  & > p:last-child {
+    font-size: 14px;
+    color: #555;
+    word-wrap: break-word;
+    max-width: 80%;
+  }
+  & > p:nth-child(2) {
+    font-weight: 600;
+    font-size: 19px;
+  }
+}

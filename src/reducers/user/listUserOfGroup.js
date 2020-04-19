@@ -1,6 +1,6 @@
 import { find, findIndex, get, remove, slice } from 'lodash';
 import { SORT_ROOM_SUCCESS } from '../../constants/actions/room/sortRoom';
-import { LIST_USER_OF_GROUP, LIST_USER_OF_GROUP_FAIL, LIST_USER_OF_GROUP_SUCCESS } from '../../constants/actions/user/listUserOfGroup';
+import { LIST_USER_OF_GROUP, LIST_USER_OF_GROUP_FAIL, LIST_USER_OF_GROUP_RESET, LIST_USER_OF_GROUP_SUCCESS } from '../../constants/actions/user/listUserOfGroup';
 import { PRIVATE_MEMBER_SUCCESS } from '../../constants/actions/user/privateMember';
 import { PUBLIC_MEMBER_SUCCESS } from '../../constants/actions/user/publicMember';
 import { SORT_USER, SORT_USER_SUCCESS } from '../../constants/actions/user/sortUser';
@@ -38,6 +38,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case LIST_USER_OF_GROUP_RESET:
+      return initialState;
     case UPDATE_USER_SUCCESS: {
       let updatedUser = null;
       let newRooms = state.data.rooms;

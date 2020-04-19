@@ -132,9 +132,9 @@ const CustomList = ({ className = '', ...props }) =>
     {...props}
   />
 
-const PermissionBox = ({ className = '', ...props }) =>
+const PermissionBox = ({ className = '', isAdmin = false, ...props }) =>
   <div
-    className={`view_Project_MemberSetting_Modal___permission-box ${className}`}
+    className={`view_Project_MemberSetting_Modal___permission-box${isAdmin ? '-admin' : ''} ${className}`}
     {...props}
   />
 
@@ -222,22 +222,6 @@ const SettingButton = ({
   );
 }
 
-/*
-function ProjectMemberRole({ member, setCurMemberRole }) {
-  
-  return (
-    <>
-      {get(member, 'roles', []).map((role, index) => (
-        <span key={index}>something</span>
-      ))}
-      <IconButton size='small' onClick={evt => setCurMemberRole(member)}>
-        <Icon path={mdiPlusCircleOutline} size={0.7} />
-      </IconButton>
-    </>
-  );
-}
-*/
-
 function MemberSetting({
   open, setOpen,
   searchPatern, setSearchPatern,
@@ -315,9 +299,12 @@ function MemberSetting({
                       <small>{get(member, 'email', '')}</small>
                     </UserTableCell>
                     <TableCell width='15%'>
-                      <PermissionBox onClick={evt => handleOpenModal('PERMISSION', {
-                        curMemberId: get(member, 'id'),
-                      })}>
+                      <PermissionBox
+                        onClick={evt => handleOpenModal('PERMISSION', {
+                          curMemberId: get(member, 'id'),
+                        })}
+                        isAdmin={get(member, 'is_admin', false)}
+                      >
                         <span>{get(member, 'group_permission_name', '')}</span>
                         <Icon path={mdiChevronDown} size={0.6} color={"bbb"} />
                       </PermissionBox>
@@ -341,11 +328,16 @@ function MemberSetting({
                       {getJoinStatusName(get(member, 'join_task_status_code', ''))}
                     </TableCell>
                     <TableCell width='5%'>
-                      <SettingButton
-                        member={member}
-                        setAnchorEl={setAnchorEl}
-                        setCurMemberSetting={setCurMemberSetting}
-                      />
+                      {get(member, 'is_in_group', false) ?
+                        (<SettingButton
+                          member={member}
+                          setAnchorEl={setAnchorEl}
+                          setCurMemberSetting={setCurMemberSetting}
+                        />) : (
+                          <ColorTypo color='red'>
+                            Đã rời nhóm
+                          </ColorTypo>
+                        )}
                     </TableCell>
                   </StyledRow>
                 ))}
@@ -388,18 +380,19 @@ function MemberSetting({
               >
                 <Icon path={mdiAccountConvert} size={0.7} /> Gán vào công việc được tạo
               </CustomMenuItem>
-              <CustomMenuItem
-                onClick={evt => {
-                  setAnchorEl(null);
-                  handleOpenModal('ALERT', {
-                    content: 'Bạn chắc chắn muốn loại trừ thành viên?',
-                    onConfirm: () => handleRemoveMember(curMemberSetting)
-                  }
-                  )
-                }}
-              >
-                <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
-              </CustomMenuItem>
+              {get(curMemberSetting, 'can_ban', false) && (
+                <CustomMenuItem
+                  onClick={evt => {
+                    setAnchorEl(null);
+                    handleOpenModal('ALERT', {
+                      content: 'Bạn chắc chắn muốn loại trừ thành viên?',
+                      onConfirm: () => handleRemoveMember(curMemberSetting)
+                    })
+                  }}
+                >
+                  <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
+                </CustomMenuItem>
+              )}
             </Menu>
           </RightContainer>,
       }}

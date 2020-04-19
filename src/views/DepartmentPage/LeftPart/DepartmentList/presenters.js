@@ -34,10 +34,15 @@ function DepartmentList({
 
   const { t } = useTranslation();
   const history = useHistory();
+  const ref = React.useRef();
 
   function doLink(roomId) {
     history.push(`${route}/room/${roomId}`);
   }
+
+  React.useEffect(() => {
+    ref.current.focus();
+  }, []);
 
   return (
     <React.Fragment>
@@ -77,6 +82,7 @@ function DepartmentList({
                 <StyledListItem
                   to={`${route}`}
                   component={Link}
+                  innerRef={ref}
                 >
                   <div>
                     <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
