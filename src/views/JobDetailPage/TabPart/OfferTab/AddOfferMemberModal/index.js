@@ -1,3 +1,4 @@
+import { Checkbox } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
 import React, { useState } from 'react';
@@ -33,6 +34,14 @@ function AddOfferMemberModal({
     }
   }
 
+  function onClickSelectAll() {
+    if (selected.length === members.length) {
+      setSelected([])
+    } else {
+      setSelected(members.map((m, i) => i))
+    }
+  }
+
   function handleChangeSearch(evt) {
     setSearchValue(evt.target.value)
   }
@@ -58,6 +67,12 @@ function AddOfferMemberModal({
         <ColorTypo className="addOfferMemberModal--selected">
           Đã chọn {selected.length} thành viên
           </ColorTypo>
+        <div className="addOfferMemberModal--selectAll">
+          <Checkbox checked={selected.length === members.length} onClick={onClickSelectAll} ></Checkbox>
+          <ColorTypo className="addOfferMemberModal--selectAllText" component="div">
+            Chọn tất cả
+          </ColorTypo>
+        </div>
         {filteredMembers.map((member, i) => <OfferMemberItem
           key={i}
           isSelected={selected.indexOf(member.index) !== -1}
