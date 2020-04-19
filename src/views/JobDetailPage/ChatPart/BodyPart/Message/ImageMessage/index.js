@@ -84,11 +84,7 @@ const ImageMessage = ({
                   `ImageMessage--wrap__number${i + 1}`,
                   { 'ImageMessage--wrap__reply': isReply }
                 )} >
-                {!isReply &&
-                  <div className="ImageMessage--quality" >
-                    HD
-                    </div>
-                }
+
                 {
                   (plusImage > 0 && !isReply && i === 5) ? (
                     <div className={clsx("ImageMessage--plus")}>
@@ -102,6 +98,15 @@ const ImageMessage = ({
                   )
                     :
                     <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
+                }
+                {!isReply &&
+                  <>
+                    <div className="ImageMessage--quality" >
+                      HD
+                    </div>
+                    <div className="ImageMessage--cover" >
+                    </div>
+                  </>
                 }
               </div>
             )

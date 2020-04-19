@@ -67,9 +67,10 @@ const BodyPart = props => {
       chatsWithTime.push(chat)
     }
     const calculatedChats = chatsWithTime.map((chat, i) => {
-      let chatPosition = 'top';
+      let chatPosition = 'one';
       const prevChat = chatsWithTime[i - 1];
       if (prevChat && (prevChat.type === CHAT_TYPE.FILE || prevChat.type === CHAT_TYPE.TEXT)) {
+        chatPosition = 'top';
         if (prevChat.user_create_id === chat.user_create_id) {
           chatPosition = 'mid';
           const nextChat = chatsWithTime[i + 1]

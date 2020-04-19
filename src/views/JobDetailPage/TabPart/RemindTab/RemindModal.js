@@ -122,7 +122,9 @@ function RemindModal(props) {
   }
 
   React.useEffect(() => {
-    if (dataRemind) {
+    if (isCreateRemind) {
+      setData(DEFAULT_DATA)
+    } else if (dataRemind) {
       let tempData = { ...dataRemind }
       tempData.date_remind = dataRemind.created_at_original || DEFAULT_DATE_TEXT
       if (!tempData.time_remind) tempData.time_remind = DEFAULT_TIME_TEXT
@@ -130,7 +132,7 @@ function RemindModal(props) {
       if (!tempData.duration) tempData.duration = []
       setData(tempData)
     }
-  }, [dataRemind])
+  }, [dataRemind, isCreateRemind])
 
   const handleChangeData = (attName, value) => {
     // console.log('valueRemind:::',attName, value)
