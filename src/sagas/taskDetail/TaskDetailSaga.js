@@ -163,6 +163,7 @@ function* completeSubTask(action) {
     const res = yield call(doCompleteSubTask, { sub_task_id, task_id: taskId });
     yield put(actions.completeSubTaskSuccess(res));
     yield put(actions.getSubTask({ taskId }));
+    yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.completeSubTaskFail(error));
@@ -393,7 +394,7 @@ function* createOffer(action) {
     const res = yield call(apiService.post, url, action.payload.data);
     yield put(actions.createOfferSuccess(res.data));
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
-    yield put(appendChat(res));
+    yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createOfferFail(error));
@@ -462,6 +463,7 @@ function* approveOffer(action) {
     const res = yield call(apiService.post, 'task/approve-offer', action.payload)
     yield put(actions.approveOfferSuccess(res))
     yield put(actions.getOffer({ taskId: action.payload.task_id }));
+    yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.approveOfferFail(error));

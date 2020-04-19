@@ -23,6 +23,10 @@ export const initialState = {
   dataRemind: {},
   isOpenDetailSubTask: false,
   dataSubTask: {},
+  isOpenDetailOffer: null,
+  dataOffer: null,
+  isOpenDetailDemand: null,
+  dataDemand: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -191,6 +195,28 @@ export default (state = initialState, action) => produce(state, draft => {
       const { isOpenDetailSubTask, data } = action;
       draft.isOpenDetailSubTask = isOpenDetailSubTask;
       draft.dataSubTask = data;
+      break;
+    }
+    case actionTypes.OPEN_DETAIL_OFFER: {
+      const { isOpenDetailOffer, data } = action;
+      draft.isOpenDetailOffer = isOpenDetailOffer;
+      draft.dataOffer = data;
+      break;
+    }
+    case actionTypes.OPEN_DETAIL_DEMAND: {
+      const { isOpenDetailDemand, data } = action;
+      draft.isOpenDetailDemand = isOpenDetailDemand;
+      draft.dataDemand = data;
+      break;
+    }
+    case actionTypes.GET_OFFER_DETAIL_SUCCESS: {
+      const { payload } = action;
+      draft.dataOffer = payload;
+      break;
+    }
+    case actionTypes.GET_DEMAND_DETAIL_SUCCESS: {
+      const { payload } = action;
+      draft.dataDemand = payload;
       break;
     }
   }

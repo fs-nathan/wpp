@@ -1,6 +1,5 @@
-import { Avatar } from '@material-ui/core';
-import clsx from 'clsx';
 import React from 'react';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const DeleteSubTask = ({
@@ -20,29 +19,22 @@ const DeleteSubTask = ({
 }) => {
 
   return (
-    <div className={clsx("DeleteSubTask", `TextMessage__${chatPosition}`)} >
-      <div className="UpdateTaskNameMessage--sender" >
-        <Avatar className="UpdateTaskNameMessage--avatarReply" src={user_create_avatar} />
-        <div className="UpdateTaskNameMessage--name" >
-          {user_create_name}
-        </div>
-        <div className="UpdateTaskNameMessage--position" >
-          {user_create_position}
-        </div>
-        {user_create_roles[0] &&
-          <div className="UpdateTaskNameMessage--room"  >
-            {user_create_roles[0]}
-          </div>
-        }
-      </div>
-      <div className="DeleteSubTask--title" >
-        Đã xoá công việc con lúc {time_create}
-      </div>
-      <div className="DeleteSubTask--content" >
+    <DialogMessageWrap
+      {...{
+        chatPosition,
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
+      isHideFooterIcon
+      footerText=""
+      taskName="xoá công việc con"
+    >
+      <>
         {sub_task_name}
-      </div>
-
-    </div>
+      </>
+    </DialogMessageWrap>
   );
 }
 

@@ -625,6 +625,14 @@ function* rootSaga() {
     chatTypes.GET_SUBTASK_DETAIL,
     chatDetailSaga.getSubtaskDetail
   );
+  yield takeLeading(
+    chatTypes.GET_OFFER_DETAIL,
+    chatDetailSaga.getOfferDetail
+  );
+  yield takeLeading(
+    chatTypes.GET_DEMAND_DETAIL,
+    chatDetailSaga.getDemandDetail
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);

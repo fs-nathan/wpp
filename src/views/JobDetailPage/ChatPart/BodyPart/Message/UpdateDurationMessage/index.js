@@ -1,6 +1,7 @@
-import { Avatar } from '@material-ui/core';
-import clsx from 'clsx';
+import { showTab } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const UpdateDurationMessage = ({
@@ -18,41 +19,40 @@ const UpdateDurationMessage = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const dispatch = useDispatch();
+
+  function onClickViewDetail() {
+    dispatch(showTab(1))
+  }
 
   return (
-    <div className={clsx("UpdateDurationMessage", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
-      <div className="UpdateTaskNameMessage--header" >
-        Thông báo
+    <DialogMessageWrap
+      {...{
+        chatPosition,
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
+      isHideFooterIcon
+      onClickViewDetail={onClickViewDetail}
+      taskName="điều chỉnh tiến độ thực hiện"
+    >
+      <>
+        <div className="UpdateDurationMessage--title" >
+          Bắt đầu
       </div>
-      <div className="UpdateTaskNameMessage--sender" >
-        <Avatar className="UpdateTaskNameMessage--avatarReply" src={user_create_avatar} />
-        <div className="UpdateTaskNameMessage--name" >
-          {user_create_name}
+        <div className="UpdateDurationMessage--content" >
+          {time_changes[0] && `Từ ${time_changes[0].old} sang ${time_changes[0].new}`}
         </div>
-        <div className="UpdateTaskNameMessage--position" >
-          {user_create_position}
+        <div className="UpdateDurationMessage--title" >
+          Kết thúc
+      </div>
+        <div className="UpdateDurationMessage--content" >
+          {time_changes[1] && `Từ ${time_changes[1].old} sang ${time_changes[1].new}`}
         </div>
-        {user_create_roles[0] &&
-          <div className="UpdateTaskNameMessage--room"  >
-            {user_create_roles[0]}
-          </div>
-        }
-      </div>
-      <div className="UpdateTaskNameMessage--title" >
-        Cập nhật tiến độ
-      </div>
-      <div className="UpdateTaskNameMessage--content" >
-        {time_changes[0] && `Bắt đầu: Từ ${time_changes[0].old} sang ${time_changes[0].new}`}
-        <br />
-        {time_changes[1] && `Kết thúc: Từ ${time_changes[1].old} sang ${time_changes[1].new}`}
-      </div>
-      {!isReply &&
-        <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
-          {time_create}
-        </div>
-      }
-
-    </div>
+      </>
+    </DialogMessageWrap>
   );
 }
 

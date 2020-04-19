@@ -199,3 +199,23 @@ export function* getSubtaskDetail(payload) {
     yield put(actions.getSubtaskDetailFail(error));
   }
 }
+
+export function* getOfferDetail(payload) {
+  try {
+    const { task_id, offer_id } = payload;
+    const res = yield call(apiService.post, "/task/get-offer-detail", { task_id, offer_id });
+    yield put(actions.getOfferDetailSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getOfferDetailFail(error));
+  }
+}
+
+export function* getDemandDetail(payload) {
+  try {
+    const { task_id, demand_id } = payload;
+    const res = yield call(apiService.post, "/task/get-demandr-detail", { task_id, demand_id });
+    yield put(actions.getDemandDetailSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getDemandDetailFail(error));
+  }
+}

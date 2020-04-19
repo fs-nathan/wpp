@@ -476,3 +476,59 @@ export function openDetailSubTask(isOpenDetailSubTask, data) {
     isOpenDetailSubTask, data
   };
 }
+
+export function openDetailOffer(isOpenDetailOffer, data) {
+  return {
+    type: actionTypes.OPEN_DETAIL_OFFER,
+    isOpenDetailOffer, data
+  };
+}
+
+export function openDetailDemand(isOpenDetailDemand, data) {
+  return {
+    type: actionTypes.OPEN_DETAIL_DEMAND,
+    isOpenDetailDemand, data
+  };
+}
+
+export function getOfferDetail(task_id, offer_id) {
+  return {
+    type: actionTypes.GET_OFFER_DETAIL,
+    task_id, offer_id
+  };
+}
+
+export function getOfferDetailSuccess(payload) {
+  return {
+    type: actionTypes.GET_OFFER_DETAIL_SUCCESS,
+    payload
+  };
+}
+
+export function getOfferDetailFail(error) {
+  return {
+    type: actionTypes.GET_OFFER_DETAIL_FAIL,
+    error
+  };
+}
+
+export function getDemandDetail(task_id, demand_id) {
+  return {
+    type: actionTypes.GET_DEMAND_DETAIL,
+    task_id, demand_id
+  };
+}
+
+export function getDemandDetailSuccess(payload) {
+  return {
+    type: actionTypes.GET_DEMAND_DETAIL_SUCCESS,
+    payload
+  };
+}
+
+export function getDemandDetailFail(error) {
+  return {
+    type: actionTypes.GET_DEMAND_DETAIL_FAIL,
+    error
+  };
+}
