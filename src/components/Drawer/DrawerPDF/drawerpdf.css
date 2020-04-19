@@ -1,0 +1,27 @@
+.export-pdf--input{
+    margin-bottom: 15px;
+  }
+  
+.config--drawer--section-subtitle {
+    display: flex;
+    justify-content: space-between;
+}
+
+.config--drawer--section-subtitle span{
+   font-size: 13px;
+   font-weight: normal;
+   text-transform: none;
+   
+}
+.config--drawer--footer-section{
+    display: flex;
+}
+
+.config--drawer--footer-section button{
+    border-radius: 0;
+    height: 60px;
+    text-transform: uppercase;
+}
+.ant-drawer-footer{
+    padding: 0 !important;
+}

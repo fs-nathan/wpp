@@ -100,7 +100,7 @@ function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, mon
         onMouseLeave={() => setShowResizeIcon(false)}
         className="icon-resize-gantt-chart" 
         style={{
-          left:showFullChart ?80 : '50%',
+          left:showFullChart ?80 : '40%',
            ...b,
            display: showResizeIcon ? 'block' : 'none',
           height:heightChart}}>
@@ -111,7 +111,7 @@ function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, mon
           style={{
             width:'100%', 
             position: 'absolute', 
-            left: showFullChart ? 80: '50%',
+            left: showFullChart ? 80: '40%',
             overflow: 'hidden',
             background: 'white',
             ...b

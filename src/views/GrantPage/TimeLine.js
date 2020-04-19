@@ -3,14 +3,16 @@ import {ResizableBox}  from 'react-resizable'
 import './test.css';
 import Icon from '@mdi/react';
 import { mdiTriangle   } from '@mdi/js'
+import {connect} from 'react-redux'
+import {   changeTimelineColor } from '../../actions/gantt'
 
-const Circle = ({left}) => (
-    <div style={{left}} className="gantt-dot-circle">
+const Circle = ({left, show}) => (
+    <div style={{left, backgroundColor: show ? "#fafafa" : 'transparent', border: `1px solid ${show ? "rgba(59, 59, 59, 0.25)" : "transparent"}` }} className="gantt-dot-circle">
 
     </div>
 )
 
-const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource, startDate, endDate }) => {
+const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource, startDate, endDate, timelineColor,visibleGantt }) => {
     const totalTimeRef = useRef()
     const refProcess = useRef()
     const refResizeTotalTime = useRef()
@@ -28,7 +30,6 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
         }
     const handleMouseMove = (e) => {
         if(!drag) return
-        console.log('vo day')
         const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
         if(dragFirstResize){
             const newWidth = width -(newPosition- left)
@@ -75,16 +76,16 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
         setDragFirstResize(false)
         setDrag(false)
     }
-    useEffect(() =>{
-        if(drag){
-            document.addEventListener('mouseup', handleMouseUp)
-        } else {
-            document.removeEventListener('mouseup', handleMouseUp)
-        }
-        return () => {
-            document.removeEventListener('mouseup', handleMouseUp)
-        }
-    })
+    // useEffect(() =>{
+    //     if(drag){
+    //         document.addEventListener('mouseup', handleMouseUp)
+    //     } else {
+    //         document.removeEventListener('mouseup', handleMouseUp)
+    //     }
+    //     return () => {
+    //         document.removeEventListener('mouseup', handleMouseUp)
+    //     }
+    // })
     const b = left ? {left} : {}
     return (
         <React.Fragment>
@@ -104,33 +105,27 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
             transform: 'translateY(-50%)', 
             position: 'absolute',
             ...b}}>
-                <p className="gantt--start-timeline">
+                {visibleGantt.date && <p className="gantt--start-timeline">
                 {startDate.format('MM/DD/YYYY')}
-            </p>
+            </p>}
             <ResizableBox 
             minConstraints={[48, 0]}
             ref={refResizeTotalTime} 
             className="container-resizable"
             handle={() => (
                 <span
-                style ={{ 
-                    display: showResize ? 'block' : 'none'
-                }}
                   className={`resize-width react-resizable-handle`}
                   onClick={e => {
                     e.stopPropagation();
                   }}
                 >
-                       <Circle left={9}/>
+                       <Circle show={showResize} left={9}/>
                 </span>
               )}
             onResizeStop={handleResizeStop} 
             width={width}>
                 <div
                     ref={refFirstResize}
-                    style ={{ 
-                        display: showResize ? 'block' : 'none'
-                    }}
                     onMouseDown={(e) =>{
                         setDrag(true)
                         setDragFirstResize(true)
@@ -139,14 +134,14 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
                     className="resize-width"
                     onMouseUp={handleMouseUpFirstResize}
                 >
-                    <Circle left={-15}/>
+                    <Circle show={showResize} left={-15}/>
                 </div>
-            <div className="gantt--time-task">
+            <div style={{background: timelineColor.task}} className="gantt--time-task">
             </div>
             </ResizableBox>
-            <p className="gantt--end-timeline">
+            {visibleGantt.date &&<p className="gantt--end-timeline">
             {endDate.format('MM/DD/YYYY')}
-            </p>
+            </p>}
 </div>
             <div
                 //  onMouseOver={() => {
@@ -172,9 +167,9 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
                 width={0}
                 handle={() => (
                     <span
-                    style ={{ 
-                        display: showResize ? 'block' : 'none'
-                    }}
+                    // style ={{ 
+                    //     display: showResize ? 'block' : 'none'
+                    // }}
                       className={`resize-duration react-resizable-handle`}
                       onClick={e => {
                         e.stopPropagation();
@@ -182,17 +177,22 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
                     >
                         <span className="container-icon-drag-duration">
                             <span>
-                           <Icon style={{fill: "#d1cfcf"}} width={10} path={mdiTriangle }/>
+                           <Icon style={{fill:showResize? "#d1cfcf" : 'transparent'}} width={10} path={mdiTriangle }/>
                            </span>
                            </span>
                     </span>
                   )}
             >
-            <div className="gantt--duration-task" ref={refProcess} ><div className="duration-text-gantt">{widthProcess}%</div></div>
+            <div style={{background: timelineColor.duration}} className="gantt--duration-task" ref={refProcess} ><div  className="duration-text-gantt">{widthProcess}%</div></div>
             </ResizableBox>
             </div>
             </React.Fragment>
     )
 }
 
-export default TimeLine
+const mapStateToProps = state =>({
+    timelineColor: state.gantt.timelineColor,
+    visibleGantt: state.gantt.visible.gantt,
+})
+
+export default connect(mapStateToProps)(TimeLine)

@@ -1,17 +1,17 @@
 import React from 'react'
-// import BodyPart from './BodyPart'
-// import FooterPart from './FooterPart'
-// import HeaderPart from './HeaderPart'
+import BodyPart from './BodyPart'
+import FooterPart from './FooterPart'
+import HeaderPart from './HeaderPart'
 
 function ChatPart(props) {
   return (
     <div className="container-chatpart">
       <div className="wrap-header">
-        {/* <HeaderPart {...props} /> */}
+        <HeaderPart {...props} />
       </div>
-      {/* <BodyPart {...props} /> */}
+      <BodyPart {...props} />
       <div className="wrap-footer">
-        {/* <FooterPart {...props} /> */}
+        <FooterPart {...props} />
       </div>
     </div>
   )

@@ -17,7 +17,6 @@ const BodyPart = props => {
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [openAddModal, setOpenAddModal] = React.useState(false);
-
   const {
     date_create,
     name,

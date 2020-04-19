@@ -6,6 +6,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import {Resizable} from 'react-resizable'
 import ConfigDrawer from '../../components/Drawer/DrawerConfigGantt'
+import ExportPDFDrawer from '../../components/Drawer/DrawerPDF'
 import CustomBadge from '../../components/CustomBadge';
 import { mdiSettings, mdiAccount, mdiMenuUp , mdiMenuDown, mdiDragVertical   } from '@mdi/js';
 import DragTable from './DragableHOC';
@@ -135,6 +136,7 @@ class DragSortingTable extends React.Component {
           {
             title: 'Tên công việc',
             dataIndex: 'name',
+            id: 1,
             width: 400,
             height: 100,
             render: (text, record) => {
@@ -192,18 +194,21 @@ class DragSortingTable extends React.Component {
           },
           {
             title: 'Bắt đầu',
+            id: 2,
             dataIndex: 'start_date',
             width: 100,
             height: 100
           },
           {
             title: 'Kết thúc',
+            id: 2,
             dataIndex: 'end_date',
             width: 100,
             height: 100
           },
           {
             title: 'Tiến độ',
+            id: 4,
             dataIndex: 'time',
             width: 100,
             height: 100
@@ -211,10 +216,10 @@ class DragSortingTable extends React.Component {
           {
             title: 'Hoàn thành',
             dataIndex: 'process',
+            id: 5,
             width: 100,
             height: 100
           },
-         
         ],
     };
     this.tableRef = React.createRef()
@@ -238,15 +243,16 @@ class DragSortingTable extends React.Component {
     this.setState({
       height: window.innerHeight - this.tableRef.current.offsetTop
     })
-    const  [resultListTask, resultListTableTask ] =await Promise.all([apiService({
-      url: 'group-task/list?project_id=5e8f096bf8185239dd864704'
-    }), apiService({
-      url: 'project/list-task-table?project_id=5e8f096bf8185239dd864704'
-    })])
+    const  [resultListTask, resultListTableTask ] = []
+    // await Promise.all([apiService({
+    //   url: 'group-task/list?project_id=5e8f096bf8185239dd864704'
+    // }), apiService({
+    //   url: 'project/list-task-table?project_id=5e8f096bf8185239dd864704'
+    // })])
     let data =[];
     let startTimeProject
     let endTimeProject
-    if(!resultListTask.data.group_tasks)
+    if(!resultListTask||!resultListTask.data.group_tasks)
       return
     resultListTask.data.group_tasks.forEach((task, index) => {
       let startTimeMainTask;
@@ -288,8 +294,8 @@ class DragSortingTable extends React.Component {
     addType.end_date = endTimeMainTask ? endTimeMainTask.format("MM/DD/YYYY") : null;
       data.push(...[addType, ...detail])
     })
-    startTimeProject = startTimeProject.subtract('3', 'days')
-    endTimeProject = endTimeProject.add(3, 'days')
+    startTimeProject = startTimeProject.subtract(6, 'days')
+    endTimeProject = endTimeProject.add(6, 'days')
     let dateEnd =endTimeProject;
     let dateStart = new moment(startTimeProject)
     const allMonth = [{
@@ -298,7 +304,8 @@ class DragSortingTable extends React.Component {
     }]
     let index = 0
     const daysRender = []
-    while (dateEnd > dateStart || dateStart.format('M') === dateEnd.format('M')) {
+    let minMonth = 0
+    while (dateEnd > dateStart || dateStart.format('M') === dateEnd.format('M') || minMonth < 2) {
       let width = dateStart.daysInMonth() * 48
       if(index === 0){
         width = (dateStart.daysInMonth() - dateStart.format('DD') + 1) * 48
@@ -308,6 +315,7 @@ class DragSortingTable extends React.Component {
         width: width
       })
       dateStart.add(1,'month');
+      minMonth++
       index++
    }
    allMonth.shift()
@@ -368,11 +376,15 @@ class DragSortingTable extends React.Component {
         onResize: this.handleResize(index),
       }),
     }));
+    const {indexColumn, visibleTable} = this.props
+    let colShow = columns.map((item, index) => columns[indexColumn[index]])
+    colShow = colShow.filter(col => visibleTable[col.dataIndex])
     return (
         <React.Fragment>
-          <ConfigDrawer/>
 <Header/>
-          <div style={{display: 'flex'}}>
+          <div id="gantt-page--container" style={{display: 'flex'}}>
+          <ConfigDrawer height={this.state.height}/>
+          <ExportPDFDrawer height={this.state.height}/>
             <div
             style={{
               height: this.state.height
@@ -381,7 +393,7 @@ class DragSortingTable extends React.Component {
             >
       <DndProvider backend={HTML5Backend}>
         <Table
-          columns={columns}
+          columns={colShow}
           size="small"
           className="table-gantt-header"
           bordered
@@ -411,7 +423,9 @@ class DragSortingTable extends React.Component {
 
 
 const mapStateToProps = state => ({
-  rowHover: state.gantt.rowHover
+  rowHover: state.gantt.rowHover,
+  indexColumn: state.gantt.indexColumn,
+  visibleTable: state.gantt.visible.table,
 })
 
 const mapDispatchToProps = {

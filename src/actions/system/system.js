@@ -215,3 +215,8 @@ export const changeVisibleConfigGantt = (state, type) => ({
     type
   }
 })
+
+export const changeVisibleExportPdfDrawer = (state, type) => ({
+  type: actionTypes.CHANGE_VISIBLE_EXPORT_PDF_DRAWER,
+  payload: state
+})

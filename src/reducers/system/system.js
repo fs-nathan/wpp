@@ -13,6 +13,7 @@ export const initialState = {
   numberNotificationNotView: 0,
   numberMessageNotView: 0,
   groupActive: {},
+  exportPdfDrawerVisible: false,
   ganttConfig: {
     state: false,
     type: ''
@@ -52,6 +53,8 @@ const system = (state = initialState, action) => {
       return { ...state, numberMessageNotView: action.payload };
     case actionTypes.CHANGE_VISIBLE_COMMON_CONFIG:
       return { ...state, ganttConfig: action.payload };
+    case actionTypes.CHANGE_VISIBLE_EXPORT_PDF_DRAWER:
+      return { ...state, exportPdfDrawerVisible: action.payload };
     default:
       return state;
   }

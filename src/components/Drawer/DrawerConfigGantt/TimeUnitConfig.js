@@ -1,48 +1,102 @@
 import React from 'react'
 import {Drawer} from 'antd'
 import { connect } from 'react-redux'
-import { Radio } from 'antd'
-import { mdiCalendar } from '@mdi/js';
+import {
+    Radio,
+    FormControlLabel,
+  } from '@material-ui/core';
 import Icon from '@mdi/react';
+import {
+  Box
+} from "@material-ui/core";
+import { mdiCalendar} from '@mdi/js';
 import { changeVisibleConfigGantt } from '../../../actions/system/system'
+import { changeTimelineColor } from '../../../actions/gantt'
+import { Scrollbars } from 'react-custom-scrollbars';
+import "../../../views/JobPage/components/QuickViewFilter.css";
+import "../../../views/JobPage/Layout/QuickView.css";
 
-const TimeUnitConfig = ({ state, type, changeVisibleConfigGantt }) => {
+const StyledScrollbarsSide = ({ className = '', height, ...props }) =>
+  <Scrollbars className={`comp_CustomModal___scrollbar-side-${height} ${className}`} {...props} />;
+const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineColor, changeTimelineColor }) => {
     return (
-        <Drawer title={<div className="title-drawer-config">    
-<Icon style={{fill: 'rgba(0, 0, 0, 0.54)'}} path={mdiCalendar} size={1}/>
-<p>TIẾN ĐỘ</p>
-            </div>}
-        placement="right"
-        closable={true}
-        onClose={() => changeVisibleConfigGantt(false)}
-        visible={state && type === "TIME" }
-        width={400}
-      >
-        <p className="config--drawer--section">Thiếp lập trục thời gian</p>
-        <p className="config--drawer--title">Lựa chọn trục thời gian cho sơ đồ gantt</p>
-        <div className="config--drawer--checkbox-section">
-            <Radio.Group name="radiogroup" defaultValue={1}>
-        <Radio value={1} checked={true} className="config--drawer--checkbox" style={{
-            display: 'flex',
-            width: '100%',
-            marginLeft: '8px !important'
-        }}>Giờ </Radio>
-         <Radio value={2}  className="config--drawer--checkbox"> Tuần </Radio>
-       <Radio value={3} className="config--drawer--checkbox"> Tháng</Radio>
-        <Radio value={4} className="config--drawer--checkbox">Quý</Radio>
-         <Radio value={5} className="config--drawer--checkbox">Năm </Radio>
-         </Radio.Group>
-        </div>
+        <Drawer
+          title={ <Box className="comp_QuickViewFilter__headerWrapper comp_QuickViewFilter__headerConfig">
+          <Icon
+            className="comp_QuickViewFilter__headerIcon"
+            path={mdiCalendar}
+          ></Icon>
+          <Box className="comp_QuickViewFilter__headerTitle">
+            TIẾN ĐỘ
+          </Box>
+        </Box>}
+          placement="right"
+          closable={true}
+          mask={false}
+          onClose={() => {
+            changeVisibleConfigGantt(false, '')}}
+          visible={state && type === 'TIME'}
+          width={400}
+          style={{height, top: `calc(100vh - ${height}px`}}
+        >
+           <StyledScrollbarsSide
+          autoHide
+          autoHideTimeout={500}
+          height={'tail'}
+        >
+          <p className="config--drawer--section">THIẾT LÂP TRỤC THỜI GIAN</p>
+          <p className="config--drawer--title">Lựa chọn trục thời gian cho sơ đồ gantt</p>
+          <div className="config--drawer--checkbox-section">
+            <div className="">
+          <FormControlLabel
+            value={1}
+            control={<Radio color="primary" />}
+            label={"Ngày"}
+            checked={true}
+          />
+            </div><div className="">
+          <FormControlLabel
+            value={1}
+            control={<Radio color="primary" />}
+            label={"Tuần"}
+            checked={true}
+          />
+          </div><div className="">
+           <FormControlLabel
+            value={1}
+            control={<Radio color="primary" />}
+            label={"Tháng"}
+            checked={true}
+          />
+          </div><div className="">
+           <FormControlLabel
+            value={1}
+            control={<Radio color="primary" />}
+            label={"Quý"}
+            checked={true}
+          />
+          </div><div className="">
+           <FormControlLabel
+            value={1}
+            control={<Radio color="primary" />}
+            label={"Năm"}
+            checked={true}
+          />
+          </div>
+          </div>
+          </StyledScrollbarsSide>
         </Drawer>
     )
 }
 
 const mapStateToProps = state => ({
-    state: state.system.ganttConfig.state,
-    type: state.system.ganttConfig.type,
+  state: state.system.ganttConfig.state,
+  type: state.system.ganttConfig.type,
+  timelineColor: state.gantt.timelineColor,
 })
 
 const mapDispatchToProps = {
-    changeVisibleConfigGantt: changeVisibleConfigGantt
+    changeVisibleConfigGantt,
+    changeTimelineColor
 }
-export default connect(mapStateToProps, mapDispatchToProps)(TimeUnitConfig)
+export default connect(mapStateToProps, mapDispatchToProps)(CommonConfig)
