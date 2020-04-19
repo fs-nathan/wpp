@@ -26,9 +26,11 @@ export const CssFormControl = ({
 }) => {
   return (
     <div>
-      <Typography gutterBottom>
-        <b>{label}</b>
-      </Typography>
+      {label && (
+        <Typography gutterBottom>
+          <b>{label}</b>
+        </Typography>
+      )}
       {children}
       {textHelper && (
         <Typography className="comp_CssFormControl__textHelper">

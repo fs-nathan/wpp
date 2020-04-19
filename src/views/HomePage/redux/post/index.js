@@ -29,7 +29,13 @@ export const loadPostList = () => {
     success: updatePostList,
   });
 };
-
+export const loadMorePostList = ({ page } = {}) => {
+  return createAsyncAction({
+    config: {
+      url: `/posts/get-list?page=${page}`,
+    },
+  });
+};
 // title: String required
 // category: String required
 // content: String optional
@@ -64,7 +70,7 @@ export const postListSelector = (state) =>
 
 export const postModule = {
   selectors: { postListSelector },
-  actions: { loadPostList, createPost },
+  actions: { loadPostList, createPost, loadMorePostList },
   key: rootPath,
   reducer: createReducer(
     {

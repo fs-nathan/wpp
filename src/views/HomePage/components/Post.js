@@ -6,7 +6,7 @@ import {
   InsertEmoticonOutlined,
   MoreVert,
 } from "@material-ui/icons";
-import { mdiArmFlexOutline, mdiHeartOutline, mdiMessageOutline } from "@mdi/js";
+import { mdiHeartOutline, mdiMessageOutline, mdiThumbUpOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 import colors from "helpers/colorPalette";
 import React, { useMemo } from "react";
@@ -132,7 +132,9 @@ const Post = ({
         </TasksCard.Content>
 
         <TasksCard.Media
-          srcs={images.map((item) => item.url)}
+          srcs={images.map(
+            (item) => "https://storage.googleapis.com" + item.url
+          )}
         ></TasksCard.Media>
         <Stack>
           <div />
@@ -147,16 +149,16 @@ const Post = ({
             # Thông báo
           </Typography>
           <Box padding="0 20px" display="flex" alignItems="center">
-            <div>
+            <Box display="flex" alignItems="center">
               <AvatarGroup
                 size={20}
                 offset={-4}
                 images={[
-                  "https://appapi.workplus.vn/avatars/1586430794068-filename",
-                  "https://appapi.workplus.vn/avatars/1586430794068-filename",
+                  "https://gfxmag.com/wp-content/uploads/2016/07/facebook-love-emoji-emoticon-icon-vector-logo-2.png",
+                  "https://cdn.imgbin.com/10/17/22/imgbin-facebook-like-button-computer-icons-facebook-facebook-like-logo-7Tce85njFXnFkt7uDFwLHY3Wq.jpg",
                 ]}
               ></AvatarGroup>
-            </div>
+            </Box>
             <Box padding="0 4px" flex="1" whiteSpace="now-wrap">
               <span href="#">Ngọc phạm</span>,{" "}
               <span href="#">Thanh Mai Nguyển</span> và 280 người khác
@@ -175,7 +177,7 @@ const Post = ({
               <span>{t("Yêu")}</span>
             </PostActionButton>
             <PostActionButton
-              startIcon={<Icon path={mdiArmFlexOutline} size={1} />}
+              startIcon={<Icon path={mdiThumbUpOutline} size={1} />}
             >
               {t("Thích")}
             </PostActionButton>

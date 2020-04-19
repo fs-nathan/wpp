@@ -1,33 +1,24 @@
-import {
-  Avatar,
-  Box,
-  Chip,
-  Dialog,
-  DialogTitle,
-  IconButton,
-  List,
-  ListItem,
-} from "@material-ui/core";
+import { Avatar, Box, Chip, IconButton } from "@material-ui/core";
 import { AttachFile, Close, Image } from "@material-ui/icons";
-import { Field, Formik, FormikContext } from "formik";
-import React, { useContext, useEffect, useMemo } from "react";
+import { Field, Formik, useField } from "formik";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs, loginlineParams } from "views/JobPage/utils";
+import { loginlineParams, uniqueId } from "views/JobPage/utils";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
-import {
+import CssFormControl, {
   BindedCssFormControl,
   InputFormControl,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/CssFormControl";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
-import { categoryAttr } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/contants";
 import { categoryListSelector } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { PrimarySubmitAction } from "../components/PrimarySubmitAction";
+import SelectCategoryModal from "../components/SelectCategoryModal";
 import TasksCard from "../components/TasksCard";
 import { postModule } from "../redux/post";
 import "./PostCreatorPopupInner.css";
@@ -43,10 +34,206 @@ const classes = {
   footer: "comp_PostCreatorPopupInner__footer",
 };
 
+const ImageListField = ({ name }) => {
+  return (
+    <ImageField name={name}>
+      {(id, field) =>
+        !!field.value &&
+        !!field.value.length && (
+          <div className={classes.media}>
+            <div>
+              {field.value.map((item, i) => (
+                <ImagePreview
+                  file={item}
+                  key={i}
+                  onDelete={() => {
+                    const newImage = [...field.value];
+                    newImage.splice(i, 1);
+                    field.onChange({
+                      target: {
+                        name,
+                        value: newImage,
+                      },
+                    });
+                  }}
+                ></ImagePreview>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </ImageField>
+  );
+};
+const FileField = ({ name, id, children, ...props }) => {
+  const [inputId] = useState(() => {
+    return id || "FileField_" + uniqueId();
+  });
+  const [field, meta] = useField({ name });
+  return (
+    <>
+      {children(inputId, field, meta)}
+      <input
+        hidden
+        accept="*"
+        id={inputId}
+        type="file"
+        multiple="multiple"
+        onChange={(e) => {
+          field.onChange({
+            target: {
+              name,
+              value: [
+                ...(loginlineParams(field.value) || emptyArray),
+                ...loginlineParams(e.target.files),
+              ],
+            },
+          });
+        }}
+        {...props}
+      />
+    </>
+  );
+};
+const ImageField = (props) => <FileField accept="image/*" {...props} />;
+const FilePreviewField = ({ name }) => {
+  const { t } = useTranslation();
+  return (
+    <FileField name={name}>
+      {(id, field, meta) => {
+        const files = field.value;
+        const error = meta.error;
+        if (!(files && files.length)) return null;
+        return (
+          <CssFormControl label={t("Tài liệu đính kèm")} errorMessage={error}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              {
+                <ChipGroup>
+                  {files.map((file, i) => (
+                    <Chip
+                      label={file.name}
+                      onDelete={() => {
+                        const newValue = [...files];
+                        newValue[i] = undefined;
+                        field.onChange({
+                          target: {
+                            name: name,
+                            value: newValue.filter((item) => item),
+                          },
+                        });
+                      }}
+                    />
+                  ))}
+                  {id && (
+                    <label htmlFor={id}>
+                      <AddButton
+                        onClick={loginlineParams}
+                        label={t("Thêm tài liệu")}
+                      ></AddButton>
+                    </label>
+                  )}
+                </ChipGroup>
+              }
+            </Box>
+          </CssFormControl>
+        );
+      }}
+    </FileField>
+  );
+};
+const ImagePreview = ({ file, onDelete }) => {
+  console.log(file);
+  const [src, setSrc] = useState();
+  useEffect(() => {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      setSrc(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }, [file]);
+  return (
+    <div>
+      {src && <img src={src} />}
+      <IconButton
+        onClick={onDelete}
+        className={classes.mediaCloseButton}
+        size="small"
+      >
+        <Close />
+      </IconButton>
+    </div>
+  );
+};
+const SelectCategoryModalField = ({ onClose, name }) => (
+  <Field name={name}>
+    {({ field }) => (
+      <SelectCategoryModal
+        {...{
+          onItemClick: (cate) => {
+            field.onChange({
+              target: {
+                name: name,
+                value: cate.id,
+              },
+            });
+            onClose();
+          },
+          onClose: onClose,
+        }}
+      ></SelectCategoryModal>
+    )}
+  </Field>
+);
+const CategoryField = ({ name, categories }) => {
+  const [isToggleCatagoryModal, toggleCatagoryModal] = useToggle();
+  const { t } = useTranslation();
+  return (
+    <BindedCssFormControl name={name} label={t("Chọn thể loại muốn đăng")}>
+      {(field) => {
+        const cate = categories.find((item) => field.value === item.id);
+        return (
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <ChipGroup>
+              {cate && (
+                <Chip
+                  avatar={<Avatar alt={cate.name} src={cate.logo} />}
+                  label={cate.name}
+                />
+              )}
+              {cate ? (
+                <AddButton
+                  onClick={toggleCatagoryModal}
+                  label={t("Chọn thể loại khác")}
+                ></AddButton>
+              ) : (
+                <AddButton
+                  onClick={toggleCatagoryModal}
+                  label={t("Chọn thể loại")}
+                ></AddButton>
+              )}
+            </ChipGroup>
+            {isToggleCatagoryModal && (
+              <SelectCategoryModalField
+                name={name}
+                onClose={toggleCatagoryModal}
+              ></SelectCategoryModalField>
+            )}
+          </Box>
+        );
+      }}
+    </BindedCssFormControl>
+  );
+};
 export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
   const { t } = useTranslation();
-  const [isToggleCatagoryModal, toggleCatagoryModal] = useToggle();
-  const { values } = useContext(FormikContext);
   return (
     <TasksCard.Container className={classes.root}>
       <Box
@@ -92,174 +279,36 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
                 label: t("Nội dung bài viết..."),
               }}
             />
-            <BindedCssFormControl
-              name="category"
-              label={t("Chọn thể loại muốn đăng")}
-            >
-              {(field) => {
-                const cate = categories.find((item) => field.value === item.id);
-                return (
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <ChipGroup>
-                      {cate && (
-                        <Chip
-                          avatar={<Avatar alt={cate.name} src={cate.logo} />}
-                          label={cate.name}
-                        />
-                      )}
-                      {cate ? (
-                        <AddButton
-                          onClick={toggleCatagoryModal}
-                          label={t("Chọn thể loại khác")}
-                        ></AddButton>
-                      ) : (
-                        <AddButton
-                          onClick={toggleCatagoryModal}
-                          label={t("Chọn thể loại")}
-                        ></AddButton>
-                      )}
-                    </ChipGroup>
-                  </Box>
-                );
-              }}
-            </BindedCssFormControl>
-            {!!values.file && values.file.length && (
-              <BindedCssFormControl name="file" label={t("Tài liệu đính kèm")}>
-                {(field) => {
-                  const files = field.value || emptyArray;
-                  return (
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      {
-                        <ChipGroup>
-                          {files &&
-                            files.map((file, i) => (
-                              <Chip
-                                label={file.name}
-                                onDelete={() => {
-                                  const newValue = [...files];
-                                  newValue[i] = undefined;
-                                  field.onChange({
-                                    target: {
-                                      name: "file",
-                                      value: newValue.filter((item) => item),
-                                    },
-                                  });
-                                }}
-                              />
-                            ))}
-                          <label htmlFor="raised-button-file">
-                            <AddButton
-                              onClick={loginlineParams}
-                              label={t("Thêm tài liệu")}
-                            ></AddButton>
-                          </label>
-                        </ChipGroup>
-                      }
-                    </Box>
-                  );
-                }}
-              </BindedCssFormControl>
-            )}
+            <CategoryField name="category" categories={categories} />
+            <FilePreviewField name="file" />
           </Stack>
         </TasksCard.Content>
-        <div className={classes.media}>
-          <div>
-            {new Array(6).fill(true).map((item, i) => (
-              <div key={i}>
-                <img src="https://appapi.workplus.vn/images_default/cover.png" />
-                <IconButton className={classes.mediaCloseButton} size="small">
-                  <Close />
-                </IconButton>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ImageListField name="image" />
       </div>
-
       <Box className={classes.footer} padding="10px" display="flex">
-        <IconButton>
-          <label htmlFor="raised-button-file">
-            <AttachFile />
-          </label>
-        </IconButton>
-        <Field name="file">
-          {({ field }) => (
-            <input
-              hidden
-              accept="*"
-              id="raised-button-file"
-              type="file"
-              multiple
-              onChange={(e) => {
-                field.onChange({
-                  target: {
-                    name: "file",
-                    value: [
-                      ...(field.value || emptyArray),
-                      ...loginlineParams(e.target.files),
-                    ],
-                  },
-                });
-              }}
-            />
+        <FileField name="file">
+          {(id) => (
+            <IconButton>
+              <label htmlFor={id}>
+                <AttachFile />
+              </label>
+            </IconButton>
           )}
-        </Field>
-        <IconButton>
-          <Image />
-        </IconButton>
+        </FileField>
+        <ImageField name="image">
+          {(id) => (
+            <IconButton>
+              <label htmlFor={id}>
+                <Image />
+              </label>
+            </IconButton>
+          )}
+        </ImageField>
         <Box flex="1" />
         <PrimarySubmitAction loading={loading}>
           {t("Đăng bài")}
         </PrimarySubmitAction>
       </Box>
-      <Field name="category">
-        {({ field }) => (
-          <Dialog
-            onClose={toggleCatagoryModal}
-            aria-labelledby="simple-dialog-title"
-            open={isToggleCatagoryModal}
-          >
-            <DialogTitle>{t("Chọn thể loại")}</DialogTitle>
-            <List>
-              {categories.map((cate) => {
-                const [id, name, logo] = createMapPropsFromAttrs([
-                  categoryAttr.id,
-                  categoryAttr.name,
-                  categoryAttr.logo,
-                ])(cate);
-                return (
-                  <ListItem
-                    key={id}
-                    button
-                    onClick={() => {
-                      field.onChange({
-                        target: {
-                          name: "category",
-                          value: id,
-                        },
-                      });
-                      toggleCatagoryModal();
-                    }}
-                  >
-                    <Chip
-                      avatar={<Avatar alt={name} src={logo} />}
-                      label={name}
-                    />
-                  </ListItem>
-                );
-              })}
-            </List>
-          </Dialog>
-        )}
-      </Field>
     </TasksCard.Container>
   );
 };
@@ -308,9 +357,14 @@ export default ({ onClose, category }) => {
   return (
     <PostCreatorForm
       initialValues={initialValues}
-      onSubmit={(values) =>
-        setAsyncAction(postModule.actions.createPost(values))
-      }
+      onSubmit={(values) => {
+        const finalValues = { ...values };
+        finalValues.file = finalValues.file || [];
+        if (finalValues.image && finalValues.image.length) {
+          finalValues.file = [...finalValues.file, ...finalValues.image];
+        }
+        setAsyncAction(postModule.actions.createPost(finalValues));
+      }}
     >
       <PostCreatorPopupInner
         categories={categories}

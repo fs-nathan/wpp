@@ -31,6 +31,10 @@ const useAsyncTracker = (action) => {
       setAsyncAction(action);
     }
   }, [action]);
-  return useMemo(() => [{ status, data }, setAsyncAction], [data, status]);
+  return useMemo(() => [{ status, asyncId, data }, setAsyncAction], [
+    asyncId,
+    data,
+    status,
+  ]);
 };
 export default useAsyncTracker;

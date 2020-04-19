@@ -155,6 +155,10 @@ function Middle() {
       <PostCreator />
       {/* <PostCreatorPopupInner /> */}
       <PostList />
+      <TasksCard.Container>
+        {/* <NewsItem /> */}
+        {/* <RemindItem /> */}
+      </TasksCard.Container>
     </Stack>
   );
 }

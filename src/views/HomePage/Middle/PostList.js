@@ -1,6 +1,12 @@
+import { Button } from "@material-ui/core";
+import LoadingBox from "components/LoadingBox";
 import store from "configStore";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useIntersection } from "react-use";
+import { get } from "views/JobPage/utils";
+import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
+import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import Post from "../components/Post";
 import { postModule } from "../redux/post";
 
@@ -348,12 +354,57 @@ window.redux = {
       })
     ),
 };
+const paging = (data) => {
+  const currentPage = get(data, "paging.page");
+  const totalPage = get(data, "paging.total_page");
+  const hasMore = currentPage && totalPage && currentPage < totalPage;
+  return { currentPage, totalPage, hasMore };
+};
 
-export default () => {
-  const dispatch = useDispatch();
+const MorePosts = ({ page }) => {
+  const intersectionRef = React.useRef(null);
+  const intersection = useIntersection(intersectionRef, {
+    root: null,
+    rootMargin: "250px",
+    threshold: 1,
+  });
+  const [{ asyncId, status, data }, dispathAsync] = useAsyncTracker();
   useEffect(() => {
-    dispatch(postModule.actions.loadPostList());
-  }, [dispatch]);
+    !asyncId &&
+      intersection &&
+      intersection.intersectionRatio > 0 &&
+      dispathAsync(postModule.actions.loadMorePostList({ page }));
+  }, [asyncId, dispathAsync, intersection, page]);
+  console.log(data);
+
+  if (status !== apiCallStatus.success)
+    return (
+      <>
+        <div ref={intersectionRef} />
+        <LoadingBox />
+      </>
+    );
+  const { currentPage, totalPage, hasMore } = paging(data);
+  return (
+    <>
+      <PostList postList={[...data.posts]} />
+      {hasMore && <MorePosts page={currentPage + 1} />}
+      {!hasMore && <Button style={{ display: "block" }}>Hết rồi</Button>}
+    </>
+  );
+};
+export default () => {
+  const [{ asyncId, status, data }, dispathAsync] = useAsyncTracker();
+  useEffect(() => {
+    dispathAsync(postModule.actions.loadPostList());
+  }, [dispathAsync]);
   const postList = useSelector(postModule.selectors.postListSelector);
-  return <PostList postList={[...postList, ...sample]} />;
+  const { currentPage, totalPage, hasMore } = paging(data);
+  return (
+    <>
+      <PostList postList={[...postList, ...sample]} />
+      {hasMore && <MorePosts page={currentPage + 1} />}
+      {!hasMore && <Button style={{ display: "block" }}>Hết rồi</Button>}
+    </>
+  );
 };

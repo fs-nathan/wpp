@@ -14,7 +14,14 @@ import * as time from "./time";
 const toFormData = (data = emptyObject) => {
   let form_data = new FormData();
   for (let key in data) {
-    if (data[key]) form_data.append(key, data[key]);
+    const item = data[key];
+    if (Array.isArray(item)) {
+      item.forEach((value) => {
+        form_data.append(key, value);
+      });
+    } else {
+      if (data[key]) form_data.append(key, data[key]);
+    }
   }
   return form_data;
 };

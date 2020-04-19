@@ -97,6 +97,6 @@ export default connect((state) => ({
   useEffect(() => {
     dispatch(loadCategoryList());
   }, [dispatch]);
-
+  if (!props.groupDetail.id) return null;
   return <HomePage {...props} />;
 });

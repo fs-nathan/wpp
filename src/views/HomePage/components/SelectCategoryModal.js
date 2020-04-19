@@ -8,11 +8,13 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import { categoryAttr } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/contants";
+import { categoryListSelector } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 
-function SelectCategoryModal({
+function SelectCategoryModalStateLess({
   categories = emptyArray,
   onItemClick,
   onClose,
@@ -45,4 +47,7 @@ function SelectCategoryModal({
   );
 }
 
-export default SelectCategoryModal;
+export default (props) => {
+  const categories = useSelector(categoryListSelector);
+  return <SelectCategoryModalStateLess categories={categories} {...props} />;
+};
