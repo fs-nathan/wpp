@@ -1,15 +1,16 @@
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import { openDetailSubTask } from 'actions/chat/chat';
 import clsx from 'clsx';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
 
-function SubTaskDetailDialog({
-  isOpen,
-  item,
-  setOpen,
-}) {
+function SubTaskDetailDialog() {
+  const dispatch = useDispatch();
+  const isOpenDetailSubTask = useSelector(state => state.chat.isOpenDetailSubTask);
+  const dataSubTask = useSelector(state => state.chat.dataSubTask);
   const {
     user_create_name,
     user_create_avatar,
@@ -20,12 +21,16 @@ function SubTaskDetailDialog({
     name,
     created_at,
     status,
-  } = item || {};
+  } = dataSubTask || {};
+
+  function setOpenDetailSubTask(isOpen) {
+    dispatch(openDetailSubTask(isOpen))
+  }
 
   return (
     <JobDetailModalWrap
-      open={isOpen}
-      setOpen={setOpen}
+      open={isOpenDetailSubTask}
+      setOpen={setOpenDetailSubTask}
       confirmRender={null}
       className="subTaskDetailDialog"
       titleRender={

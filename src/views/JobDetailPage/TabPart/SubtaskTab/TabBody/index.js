@@ -1,6 +1,7 @@
 import { InputBase } from '@material-ui/core';
 import { mdiSend } from '@mdi/js';
 import Icon from '@mdi/react';
+import { openDetailSubTask } from 'actions/chat/chat';
 import { postSubTask, searchSubTask } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
@@ -9,7 +10,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
-import SubTaskDetailDialog from '../SubTaskDetailDialog';
 import AllSubtaskList from './AllSubtaskList';
 import { ButtonIcon } from './AllSubtaskListItem';
 import FinishedSubtaskList from './FinishedSubtaskList';
@@ -46,8 +46,6 @@ function TabBody(props) {
   const completeSubTasks = useSelector(state => state.taskDetail.subTask.completeSubTasks);
   const isNoSubTask = (uncompleteSubTasks.length + completeSubTasks.length) === 0;
   const [name, setName] = React.useState("");
-  const [open, setOpen] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState(null);
 
   const setStateSubTask = (e) => {
     // let newData = JSON.parse(JSON.stringify(data))
@@ -63,10 +61,11 @@ function TabBody(props) {
   const searchSubTaskTabPart = (e) => {
     dispatch(searchSubTask(e.target.value))
   }
+
   function onClickItem(item) {
-    setSelectedItem(item)
-    setOpen(true)
+    dispatch(openDetailSubTask(true, item))
   }
+
   return (
     <Scrollbars className="subTaskBody"
       renderView={props => <div {...props} className="subTaskBody--container" />}
@@ -110,15 +109,8 @@ function TabBody(props) {
             <ColorTypo className="subTaskBody--title">Đã hoàn thành({completeSubTasks.length})</ColorTypo>
             <FinishedSubtaskList {...props} setSelectedItem={onClickItem} />
           </React.Fragment>}
-        <SubTaskDetailDialog
-          isOpen={open}
-          setOpen={setOpen}
-          item={selectedItem}
-        >
-
-        </SubTaskDetailDialog>
       </Container>
-    </Scrollbars>
+    </Scrollbars >
   )
 }
 

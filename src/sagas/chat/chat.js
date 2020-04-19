@@ -183,8 +183,19 @@ export function* getRemindDetail(payload) {
     const { task_id, remind_id } = payload;
     const res = yield call(apiService.get, "/task/get-remind-detail", { params: { task_id, remind_id } });
     yield put(actions.getRemindDetailSuccess(res.data));
-    yield put(actions.openDetailRemind(true, res.data));
+    yield put(actions.openDetailRemind(true, res.data.remind));
   } catch (error) {
     yield put(actions.getRemindDetailFail(error));
+  }
+}
+
+export function* getSubtaskDetail(payload) {
+  try {
+    const { task_id, sub_task_id } = payload;
+    const res = yield call(apiService.get, "/task/get-subtask-detail", { params: { task_id, sub_task_id } });
+    yield put(actions.getSubtaskDetailSuccess(res.data));
+    yield put(actions.openDetailSubTask(true, res.data.sub_task));
+  } catch (error) {
+    yield put(actions.getSubtaskDetailFail(error));
   }
 }

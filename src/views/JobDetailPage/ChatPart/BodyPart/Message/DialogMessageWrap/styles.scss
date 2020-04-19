@@ -74,7 +74,10 @@
     width: 20px;
     height: 20px;
     transform: translate(-3px, 3px);
-    stroke: #03a9f4;
+    fill: #03a9f4;
+    path {
+      fill: inherit !important;
+    }
   }
   &--detail {
     line-height: 40px;

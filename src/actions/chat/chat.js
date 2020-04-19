@@ -448,3 +448,31 @@ export function getRemindDetailFail(error) {
     error
   };
 }
+
+export function getSubtaskDetail(task_id, sub_task_id) {
+  return {
+    type: actionTypes.GET_SUBTASK_DETAIL,
+    task_id, sub_task_id
+  };
+}
+
+export function getSubtaskDetailSuccess(payload) {
+  return {
+    type: actionTypes.GET_SUBTASK_DETAIL_SUCCESS,
+    payload
+  };
+}
+
+export function getSubtaskDetailFail(error) {
+  return {
+    type: actionTypes.GET_SUBTASK_DETAIL_FAIL,
+    error
+  };
+}
+
+export function openDetailSubTask(isOpenDetailSubTask, data) {
+  return {
+    type: actionTypes.OPEN_DETAIL_SUB_TASK,
+    isOpenDetailSubTask, data
+  };
+}

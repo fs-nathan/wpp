@@ -21,6 +21,8 @@ export const initialState = {
   isOpenCreateRemind: false,
   isOpenDetailRemind: false,
   dataRemind: {},
+  isOpenDetailSubTask: false,
+  dataSubTask: {},
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -178,6 +180,17 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.GET_REMIND_DETAIL_SUCCESS: {
       const { payload } = action;
       draft.dataRemind = payload;
+      break;
+    }
+    case actionTypes.GET_SUBTASK_DETAIL_SUCCESS: {
+      const { payload } = action;
+      draft.dataSubTask = payload.sub_task;
+      break;
+    }
+    case actionTypes.OPEN_DETAIL_SUB_TASK: {
+      const { isOpenDetailSubTask, data } = action;
+      draft.isOpenDetailSubTask = isOpenDetailSubTask;
+      draft.dataSubTask = data;
       break;
     }
   }

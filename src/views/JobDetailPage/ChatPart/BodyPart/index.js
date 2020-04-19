@@ -67,15 +67,21 @@ const BodyPart = props => {
       chatsWithTime.push(chat)
     }
     const calculatedChats = chatsWithTime.map((chat, i) => {
-      let chatPosition = 'one';
+      let chatPosition = 'top';
       const prevChat = chatsWithTime[i - 1];
-      if (prevChat && (prevChat.type === CHAT_TYPE.FILE || prevChat.type === CHAT_TYPE.TEXT)) {
-        chatPosition = 'top';
+      const nextChat = chatsWithTime[i + 1]
+      if (
+        (chat.type === CHAT_TYPE.FILE || chat.type === CHAT_TYPE.TEXT || chat.type === CHAT_TYPE.CHAT_FORWARD_FILE)
+        && (!prevChat || (prevChat.type !== CHAT_TYPE.FILE && prevChat.type !== CHAT_TYPE.TEXT && prevChat.type !== CHAT_TYPE.CHAT_FORWARD_FILE))
+        && (!nextChat || (nextChat.type !== CHAT_TYPE.FILE && nextChat.type !== CHAT_TYPE.TEXT && nextChat.type !== CHAT_TYPE.CHAT_FORWARD_FILE))
+      ) {
+        chatPosition = 'one';
+      }
+      else if (prevChat && (prevChat.type === CHAT_TYPE.FILE || prevChat.type === CHAT_TYPE.TEXT)) {
         if (prevChat.user_create_id === chat.user_create_id) {
           chatPosition = 'mid';
-          const nextChat = chatsWithTime[i + 1]
-          if ((!nextChat || nextChat.user_create_id !== chat.user_create_id)
-            || (nextChat.type !== CHAT_TYPE.FILE && nextChat.type !== CHAT_TYPE.TEXT)) {
+          if (!nextChat || nextChat.user_create_id !== chat.user_create_id
+            || (nextChat.type !== CHAT_TYPE.FILE && nextChat.type !== CHAT_TYPE.TEXT && nextChat.type !== CHAT_TYPE.CHAT_FORWARD_FILE)) {
             chatPosition = 'bot';
           }
         }
