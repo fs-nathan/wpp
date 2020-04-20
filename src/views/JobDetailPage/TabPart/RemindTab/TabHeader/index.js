@@ -1,7 +1,7 @@
 import { openCreateRemind } from 'actions/chat/chat';
+import { getRemind } from 'actions/taskDetail/taskDetailActions';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRemind } from '../../../../../actions/taskDetail/taskDetailActions';
 import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
 import './styles.scss';
@@ -9,10 +9,12 @@ import './styles.scss';
 function TabHeader({ setShow }) {
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
+  const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
 
   useEffect(() => {
-    dispatch(getRemind({ taskId }))
-  }, [dispatch, taskId]);
+    if (reminds.length === 0)
+      dispatch(getRemind({ taskId }))
+  }, [dispatch, reminds.length, taskId]);
 
   const handleClickOpen = () => {
     dispatch(openCreateRemind(true, true))

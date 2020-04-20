@@ -96,4 +96,25 @@
   &__showSearch {
     display: block;
   }
+  &--pinRemind {
+    display: flex;
+    position: relative;
+    padding: 10px;
+  }
+  &--pinRemind &--close {
+    bottom: 2px;
+  }
+  &--pinImage {
+    width: 30px;
+    height: 30px;
+  }
+  &--pinRight {
+    margin-left: 10px;
+  }
+  &--pinContent {
+    text-transform: uppercase;
+  }
+  &--pinType {
+    color: #666666;
+  }
 }
