@@ -995,3 +995,45 @@ export const showTab = payload => ({
     type: types.SET_SHOW_INDEX,
     payload
 })
+
+export function stopTask(task_id) {
+    return {
+        type: types.STOP_TASK,
+        task_id
+    };
+}
+
+export function stopTaskSuccess(payload) {
+    return {
+        type: types.STOP_TASK_SUCCESS,
+        payload
+    };
+}
+
+export function stopTaskFail(error) {
+    return {
+        type: types.STOP_TASK_FAIL,
+        error
+    };
+}
+
+export function cancelStopTask(task_id) {
+    return {
+        type: types.CANCEL_STOP_TASK,
+        task_id
+    };
+}
+
+export function cancelStopTaskSuccess(payload) {
+    return {
+        type: types.CANCEL_STOP_TASK_SUCCESS,
+        payload
+    };
+}
+
+export function cancelStopTaskFail(error) {
+    return {
+        type: types.CANCEL_STOP_TASK_FAIL,
+        error
+    };
+}

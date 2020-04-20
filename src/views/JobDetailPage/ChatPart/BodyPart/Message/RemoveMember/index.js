@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import React from 'react';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
+
 const RemoveMember = ({
   user_create_name,
   user_create_avatar,

@@ -1436,6 +1436,30 @@ export function* unPinTask({ payload }) {
   }
 }
 
+export function* stopTask(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.post, "/task/stop-task", { task_id });
+    yield put(actions.stopTaskSuccess(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+  } catch (error) {
+    yield put(actions.stopTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
+export function* cancelStopTask(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.post, "/task/cancel-stop-task", { task_id });
+    yield put(actions.cancelStopTaskSuccess(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+  } catch (error) {
+    yield put(actions.cancelStopTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
 export {
   updateComplete,
   // Update Priority

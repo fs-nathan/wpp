@@ -1,7 +1,7 @@
 import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
-import { deleteTask, pinTaskAction, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
+import { cancelStopTask, deleteTask, pinTaskAction, stopTask, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
 import get from 'lodash/get';
 import React from 'react';
@@ -71,13 +71,11 @@ function TabHeader(props) {
     setAnchorEl(null);
   }
   const onClickPause = () => {
-    props.onClickPause();
-    handleClickPause();
+    dispatch(stopTask(taskId));
     setAnchorEl(null);
   }
   const onClickResume = () => {
-    props.onClickPause();
-    handleClickPause();
+    dispatch(cancelStopTask(taskId));
     setAnchorEl(null);
   }
   const onClickDelete = () => {

@@ -552,6 +552,12 @@ function* rootSaga() {
     taskDetailType.UN_PIN_TASK_REQUEST,
     taskDetailSaga.unPinTask
   );
+  // stop task
+  yield takeLeading(taskDetailType.STOP_TASK, taskDetailSaga.stopTask);
+  yield takeLeading(
+    taskDetailType.CANCEL_STOP_TASK,
+    taskDetailSaga.cancelStopTask
+  );
   //chat 
   yield takeLeading(
     chatTypes.DELETE_CHAT,
