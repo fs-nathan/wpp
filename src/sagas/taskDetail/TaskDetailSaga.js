@@ -1415,6 +1415,7 @@ export function* pinTask({ payload }) {
     yield put(actions.pinTaskSuccess(res.data));
     yield put(actions.getListTaskDetail({ project_id: projectId }));
     yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
+    yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.pinTaskFail(error));
@@ -1431,6 +1432,7 @@ export function* unPinTask({ payload }) {
     yield put(actions.unPinTaskSuccess(res.data));
     yield put(actions.getListTaskDetail({ project_id: projectId }));
     yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
+    yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.unPinTaskFail(error));

@@ -1,0 +1,14 @@
+.CancelPinRemind {
+  &--icon {
+    width: 40px;
+    height: 40px;
+    fill: #ee1a12;
+    path {
+      fill: inherit !important;
+    }
+  }
+  &--notify {
+    color: #0c92f2;
+    font-size: 16px;
+  }
+}

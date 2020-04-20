@@ -1,6 +1,8 @@
 import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
 import React from 'react';
 import AddNewMember from './AddNewMember';
+import CancelPinRemind from './CancelPinRemind';
+import CancelPinTask from './CancelPinTask';
 import CancelStopTask from './CancelStopTask';
 import ChatSticker from './ChatSticker';
 import CompleteSubtask from './CompleteSubtask';
@@ -13,9 +15,12 @@ import DeleteOffer from './DeleteOffer';
 import DeleteRemind from './DeleteRemind';
 import DeleteSubTask from './DeleteSubTask';
 import EditPriority from './EditPriority';
+import ExtendTime from './ExtendTime';
 import FileMessage from './FileMessage';
 import HandleOffer from './HandleOffer';
 import ImageMessage from './ImageMessage';
+import PinRemind from './PinRemind';
+import PinTask from './PinTask';
 import RemindMessage from './RemindMessage';
 import RemoveMember from './RemoveMember';
 import ShareLocation from './ShareLocation';
@@ -70,7 +75,7 @@ const Message = props => {
     case CHAT_TYPE.EDIT_PRIORITY:
       return <EditPriority {...props} />;
     case CHAT_TYPE.EXTEND_TIME:
-      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Extend time" />;
+      return <ExtendTime {...props} />;
     case CHAT_TYPE.UPDATE_COMPLETE:
       return <UpdateComplete {...props} />;
     case CHAT_TYPE.COMPLETE_SUBTASK:
@@ -78,17 +83,17 @@ const Message = props => {
     case CHAT_TYPE.DELETE_FILE:
       return <DeleteFile {...props} />;
     case CHAT_TYPE.PIN_TASK:
-      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Ghim công việc" />;
+      return <PinTask {...props} />;
     case CHAT_TYPE.CANCEL_PIN_TASK:
-      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Đã bỏ Ghim công việc" />;
+      return <CancelPinTask {...props} />;
     case CHAT_TYPE.STOP_TASK:
       return <StopTask {...props} />;
     case CHAT_TYPE.CANCEL_STOP_TASK:
       return <CancelStopTask {...props} />;
     case CHAT_TYPE.PIN_REMIND:
-      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Ghim nhắc hẹn" />;
+      return <PinRemind {...props} />;
     case CHAT_TYPE.CANCEL_PIN_REMIND:
-      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Đã bỏ Ghim nhắc hẹn" />;
+      return <CancelPinRemind {...props} />;
     case CHAT_TYPE.CHAT_STICKER:
       return <ChatSticker {...props} />;
     case CHAT_TYPE.UPLOADING_IMAGES:
