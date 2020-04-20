@@ -49,9 +49,10 @@ const PostCreator = () => {
       <SelectCategoryModal
         categories={categories}
         onItemClick={handleOpenPostCreatorPopup}
+        onClose={handleClose}
       />
     );
-  }, [categories, handleOpenPostCreatorPopup]);
+  }, [categories, handleClose, handleOpenPostCreatorPopup]);
   return (
     <TasksCard.Container>
       <Box
