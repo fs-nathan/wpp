@@ -145,9 +145,7 @@ const Post = ({
           </Stack>
         </TasksCard.Content>
 
-        <TasksCard.Media
-          srcs={images.map((item) => item.url)}
-        ></TasksCard.Media>
+        <TasksCard.Media images={images}></TasksCard.Media>
         <Stack>
           <div />
           {!!category_name && (

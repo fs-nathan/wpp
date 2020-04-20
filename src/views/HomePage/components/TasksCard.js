@@ -2,26 +2,13 @@ import { CardContent } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import { red } from "@material-ui/core/colors";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import classnames from "classnames";
 import React from "react";
+import { useToggle } from "react-use";
+import ModalImage from "views/JobDetailPage/ModalImage";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import "./TasksCard.css";
-const useStyles = makeStyles((theme) => ({
-  root: {
-    // maxWidth: 345,
-    // fontSize: "15px",
-  },
-  media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-}));
 
 const injectClassName = (classN) => (C) => {
   return ({ className, ...props }) => {
@@ -57,25 +44,31 @@ const Header = ({ className, avatar, title, subheader, action, ...props }) => {
 const Content = injectClassName("comp_TasksCard__Content")(CardContent);
 
 const Media = injectClassName("comp_TasksCard__Media")(
-  ({ className, srcs = emptyArray, ...props }) => {
-    if (!srcs.length) return null;
-    const [one, two, three, four] = srcs;
-    const hadMore = srcs.length && srcs.length >= 5;
+  ({ className, images = emptyArray, ...props }) => {
+    if (!images.length) return null;
+    const [one, two, three, four] = images;
+    const hadMore = images.length && images.length >= 5;
+    const [istoggle, toggle] = useToggle();
     return (
       <div
         className={classnames(
           className,
-          `comp_TasksCard__Media${Math.min(4, srcs.length)}`
+          `comp_TasksCard__Media${Math.min(4, images.length)}`
         )}
         {...props}
       >
-        <div>
-          {one && <img src={one} alt="" />}
-          {two && <img src={two} alt="" />}
-          {three && <img src={three} alt="" />}
+        <div
+          className="cursor-pointer"
+          onClick={() => {
+            toggle();
+          }}
+        >
+          {one && <img src={one.url} alt="" />}
+          {two && <img src={two.url} alt="" />}
+          {three && <img src={three.url} alt="" />}
           {hadMore ? (
             <div style={{ position: "relative", height: "100%" }}>
-              <img src={four} alt="" />
+              <img src={four.url} alt="" />
               <div
                 style={{
                   top: 0,
@@ -91,13 +84,22 @@ const Media = injectClassName("comp_TasksCard__Media")(
                   justifyContent: "center",
                 }}
               >
-                +{srcs.length - 4}
+                +{images.length - 4}
               </div>
             </div>
           ) : (
-            four && <img src={four} alt="" />
+            four && <img src={four.url} alt="" />
           )}
         </div>
+        {istoggle && (
+          <ModalImage
+            {...{
+              isOpen: true,
+              handleClose: toggle,
+              images: images,
+            }}
+          ></ModalImage>
+        )}
       </div>
     );
   }
