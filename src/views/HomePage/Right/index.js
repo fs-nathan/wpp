@@ -35,18 +35,18 @@ function Right() {
             <StyledTypo color="orange">Tuần 25 năm 2020</StyledTypo>
           }
         />
-        <Box display="flex" style={{ background: "rgb(245, 246, 247)" }}><IconButton size="small"><Icon path={mdiChevronLeft} size={1}></Icon></IconButton><Box textAlign="center" flex="1"><StyledTypo bold color="red">Thứ 3 - Ngày 01/09/2020</StyledTypo></Box><IconButton size="small"><Icon path={mdiChevronRight} size={1}></Icon></IconButton></Box>
+        <Box display="flex" alignItems="center" style={{ background: "rgb(245, 246, 247)" }}><IconButton size="small"><Icon path={mdiChevronLeft} size={1}></Icon></IconButton><Box textAlign="center" flex="1"><StyledTypo bold color="red">Thứ 3 - Ngày 01/09/2020</StyledTypo></Box><IconButton size="small"><Icon path={mdiChevronRight} size={1}></Icon></IconButton></Box>
         <TasksCard.Content>
-          <ListItemLayout left={<div>09:00</div>} >
+          <ListItemLayout left={<Box padding="10px">09:00</Box>} >
             - Tong giam doc di cong tac hai phong
         </ListItemLayout>
-          <ListItemLayout left={<div>09:00</div>} >
+          <ListItemLayout left={<Box padding="10px">09:00</Box>} >
+            - Tong giam doc di cong tac hai phongup
+        </ListItemLayout>
+          <ListItemLayout left={<Box padding="10px">09:00</Box>} >
             - Tong giam doc di cong tac hai phong
         </ListItemLayout>
-          <ListItemLayout left={<div>09:00</div>} >
-            - Tong giam doc di cong tac hai phong
-        </ListItemLayout>
-          <ListItemLayout left={<div>09:00</div>} >
+          <ListItemLayout left={<Box padding="10px">09:00</Box>} >
             - Tong giam doc di cong tac hai phong
         </ListItemLayout>
         </TasksCard.Content>
