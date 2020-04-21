@@ -620,6 +620,10 @@ function* rootSaga() {
     chatDetailSaga.createChatText
   );
   yield takeLeading(
+    chatTypes.CHAT_QUICK_LIKE,
+    chatDetailSaga.chatQuickLike
+  );
+  yield takeLeading(
     chatTypes.GET_VIEWED_CHAT,
     chatDetailSaga.getViewedChat
   );

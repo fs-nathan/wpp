@@ -28,7 +28,6 @@ function ChatPart(props) {
   const pinnedRemind = reminds.find(rm => rm.is_ghim);
 
   useEffect(() => {
-    console.log('reminds.lengt', reminds.length)
     if (taskId && reminds.length === 0)
       dispatch(getRemind({ taskId }))
   }, [dispatch, reminds.length, taskId]);

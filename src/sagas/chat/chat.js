@@ -219,3 +219,14 @@ export function* getDemandDetail(payload) {
     yield put(actions.getDemandDetailFail(error));
   }
 }
+
+export function* chatQuickLike(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.post, "/task/chat-quick-like", { task_id });
+    yield put(actions.chatQuickLikeSuccess(res.data));
+    yield put(actions.appendChat(res.data));
+  } catch (error) {
+    yield put(actions.chatQuickLikeFail(error));
+  }
+}

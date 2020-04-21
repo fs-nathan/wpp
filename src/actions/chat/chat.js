@@ -532,3 +532,24 @@ export function getDemandDetailFail(error) {
     error
   };
 }
+
+export function chatQuickLike(task_id) {
+  return {
+    type: actionTypes.CHAT_QUICK_LIKE,
+    task_id
+  };
+}
+
+export function chatQuickLikeSuccess(payload) {
+  return {
+    type: actionTypes.CHAT_QUICK_LIKE_SUCCESS,
+    payload
+  };
+}
+
+export function chatQuickLikeFail(error) {
+  return {
+    type: actionTypes.CHAT_QUICK_LIKE_FAIL,
+    error
+  };
+}

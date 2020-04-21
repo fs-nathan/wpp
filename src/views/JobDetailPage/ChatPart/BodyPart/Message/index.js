@@ -21,6 +21,7 @@ import HandleOffer from './HandleOffer';
 import ImageMessage from './ImageMessage';
 import PinRemind from './PinRemind';
 import PinTask from './PinTask';
+import QuickLike from './QuickLike';
 import RemindMessage from './RemindMessage';
 import RemoveMember from './RemoveMember';
 import ShareLocation from './ShareLocation';
@@ -96,6 +97,8 @@ const Message = props => {
       return <CancelPinRemind {...props} />;
     case CHAT_TYPE.CHAT_STICKER:
       return <ChatSticker {...props} />;
+    case CHAT_TYPE.QUICK_LIKE:
+      return <QuickLike {...props} />;
     case CHAT_TYPE.UPLOADING_IMAGES:
       return <ImageMessage {...props} />;
     case CHAT_TYPE.UPLOADING_FILE:
