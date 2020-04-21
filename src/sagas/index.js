@@ -85,6 +85,7 @@ import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
 import { DETAIL_USER } from "../constants/actions/user/detailUser";
 import { LIST_USER_OF_GROUP } from "../constants/actions/user/listUserOfGroup";
+import { PERMISSION_USER } from "../constants/actions/user/permissionUser";
 import { PRIVATE_MEMBER } from "../constants/actions/user/privateMember";
 import { PUBLIC_MEMBER } from "../constants/actions/user/publicMember";
 import { SORT_USER } from "../constants/actions/user/sortUser";
@@ -180,6 +181,7 @@ import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
 import { detailUser } from "./user/detailUser";
 import { listUserOfGroup } from "./user/listUserOfGroup";
+import { permissionUser } from "./user/permissionUser";
 import { privateMember } from "./user/privateMember";
 import { publicMember } from "./user/publicMember";
 import { sortUser } from "./user/sortUser";
@@ -201,6 +203,7 @@ function* rootSaga() {
   yield takeLatest(GET_USER_OF_ROOM, getUserOfRoom);
   yield takeLatest(LIST_USER_OF_GROUP, listUserOfGroup);
   yield takeEvery(SORT_USER, sortUser);
+  yield takeLatest(PERMISSION_USER, permissionUser);
   yield takeLatest(LIST_ICON, listIcon);
   yield takeEvery(CREATE_ROOM, createRoom);
   yield takeEvery(DELETE_ROOM, deleteRoom);

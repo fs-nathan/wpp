@@ -38,6 +38,7 @@ function AllUsersTable({
   const [openTableSetting, setOpenTableSetting] = React.useState(false);
   const [openCreateAccount, setOpenCreateAccount] = React.useState(false);
   const [openPermissionSetting, setOpenPermissionSetting] = React.useState(false);
+  const [permissionProps, setPermissionProps] = React.useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
 
@@ -72,7 +73,10 @@ function AllUsersTable({
         return;
       }
       case 'PERMISSION_SETTING': {
-        if (get(viewPermissions.permissions, 'can_modify', false)) setOpenPermissionSetting(true);
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setOpenPermissionSetting(true);
+          setPermissionProps(props);
+        }
         return;
       }
       case 'ALERT': {
@@ -118,7 +122,7 @@ function AllUsersTable({
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} isSelect={false} />
       <TableSettingsModal open={openTableSetting} setOpen={setOpenTableSetting} />
       <CreateAccountModal open={openCreateAccount} setOpen={setOpenCreateAccount} />
-      <PermissionSettingsModal open={openPermissionSetting} setOpen={setOpenPermissionSetting} />
+      <PermissionSettingsModal open={openPermissionSetting} setOpen={setOpenPermissionSetting} {...permissionProps} />
       <AlertModal
         open={openAlert}
         setOpen={setOpenAlert}

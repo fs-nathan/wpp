@@ -104,6 +104,7 @@ import trackingTime from "./taskDetail/time";
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from "./user/banUserFromGroup";
 import detailUser, { initialState as detailUserInitialState } from "./user/detailUser";
 import listUserOfGroup, { initialState as listUserOfGroupInitialState } from "./user/listUserOfGroup";
+import permissionUser, { initialState as permissionUserInitialState } from "./user/permissionUser";
 import privateMember, { initialState as privateMemberInitialState } from "./user/privateMember";
 import publicMember, { initialState as publicMemberInitialState } from "./user/publicMember";
 import sortUser, { initialState as sortUserInitialState } from "./user/sortUser";
@@ -155,6 +156,7 @@ const rootReducer = combineReducers({
     publicMember,
     privateMember,
     banUserFromGroup,
+    permissionUser,
   }),
   icon: combineReducers({
     listIcon,
@@ -286,6 +288,7 @@ export const DEFAULT_STATE = {
     publicMember: publicMemberInitialState,
     privateMember: privateMemberInitialState,
     banUserFromGroup: banUserFromGroupInitialState,
+    permissionUser: permissionUserInitialState,
   },
   icon: {
     listIcon: listIconInitialState,

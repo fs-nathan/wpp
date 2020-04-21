@@ -1,13 +1,34 @@
 import React from 'react';
-import PermissionSettingsPresenter from './presenters';
+import { connect } from 'react-redux';
+import UserPermissionPresenter from './presenters';
+import { bgColorSelector, permissionsSelector } from './selectors';
 
-function PermissionSettings({ open, setOpen }) {
+function UserPermission({
+  open, setOpen,
+  bgColor, permissions,
+  curUser = null,
+}) {
+
   return (
-    <PermissionSettingsPresenter 
-      open={open}
-      setOpen={setOpen}
+    <UserPermissionPresenter
+      open={open} setOpen={setOpen} bgColor={bgColor}
+      curUser={curUser} permissions={permissions}
     />
   )
 }
 
-export default PermissionSettings;
+const mapStateToProps = state => {
+  return {
+    bgColor: bgColorSelector(state),
+    permissions: permissionsSelector(state),
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {}
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UserPermission);

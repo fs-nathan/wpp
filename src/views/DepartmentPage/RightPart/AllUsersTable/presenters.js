@@ -290,7 +290,9 @@ function AllUsersTable({
           {t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}
         </MenuItem>
         <MenuItem onClick={() => {
-          handleOpenModal('PERMISSION_SETTING');
+          handleOpenModal('PERMISSION_SETTING', {
+            curUser: user,
+          });
           setMenuAnchorEl(null);
         }}>
           {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}

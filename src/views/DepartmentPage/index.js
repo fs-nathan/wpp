@@ -9,6 +9,7 @@ import { detailRoom, detailRoomReset } from '../../actions/room/detailRoom';
 import { getUserOfRoom, getUserOfRoomReset } from '../../actions/room/getUserOfRoom';
 import { listRoom, listRoomReset } from '../../actions/room/listRoom';
 import { listUserOfGroup, listUserOfGroupReset } from '../../actions/user/listUserOfGroup';
+import { permissionUser, permissionUserReset } from '../../actions/user/permissionUser';
 import { listUserRole } from '../../actions/userRole/listUserRole';
 import { getPermissionViewUser } from '../../actions/viewPermissions';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
@@ -42,6 +43,7 @@ function UserPage({
   doListIcon,
   doListUserOfGroup,
   doGetPermissionViewUser,
+  doPermissionUser,
   doReset, doResetDetail,
 }) {
 
@@ -122,6 +124,28 @@ function UserPage({
       }
     }
   }, [departmentId, doGetUserOfRoom, doResetDetail, viewPermissions]);
+
+  React.useEffect(() => {
+    if (viewPermissions.permissions !== null) {
+      doPermissionUser(true);
+
+      /*
+      const reloadListMajor = () => {
+        doListMajor();
+      };
+
+      CustomEventListener(CREATE_MAJOR, reloadListMajor);
+      CustomEventListener(UPDATE_MAJOR, reloadListMajor);
+      CustomEventListener(DELETE_MAJOR, reloadListMajor);
+
+      return () => {
+        CustomEventDispose(CREATE_MAJOR, reloadListMajor);
+        CustomEventDispose(UPDATE_MAJOR, reloadListMajor);
+        CustomEventDispose(DELETE_MAJOR, reloadListMajor);
+      }
+      */
+    }
+  }, [doPermissionUser, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
@@ -332,6 +356,7 @@ const mapDispatchToProps = dispatch => {
     doReset: () => {
       dispatch(listRoomReset());
       dispatch(listUserOfGroupReset());
+      dispatch(permissionUserReset());
     },
     doResetDetail: () => {
       dispatch(detailRoomReset());
@@ -346,6 +371,7 @@ const mapDispatchToProps = dispatch => {
     doListUserRole: (quite) => dispatch(listUserRole(quite)),
     doListIcon: (quite) => dispatch(listIcon(quite)),
     doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
+    doPermissionUser: (quite) => dispatch(permissionUser(quite)),
     doGetPermissionViewUser: (quite) => dispatch(getPermissionViewUser(quite)),
   };
 };

@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { permissionProjectFail, permissionProjectSuccess } from '../../actions/project/permissionProject';
+import { permissionUserFail, permissionUserSuccess } from '../../actions/user/permissionUser';
 import { apiService } from '../../constants/axiosInstance';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
@@ -36,16 +36,16 @@ async function doAdminPermission({ groupPermissionId }) {
   }
 }
 
-function* permissionProject(action) {
+function* permissionUser(action) {
   try {
     const { group_permissions: groupPermissions } = yield call(doPermissionProject, action.options);
     const { group_detail: adminPermission } = yield call(doAdminPermission, action.options);
-    yield put(permissionProjectSuccess({ groupPermissions, adminPermission }, action.options));
+    yield put(permissionUserSuccess({ groupPermissions, adminPermission }, action.options));
   } catch (error) {
-    yield put(permissionProjectFail(error, action.options));
+    yield put(permissionUserFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 
-export { permissionProject, };
+export { permissionUser, };
 
