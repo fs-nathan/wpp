@@ -36,7 +36,7 @@ export const createPostAsyncAction = ({
     config: {
       url,
       method,
-      data: toFormData(data),
+      data,
     },
     data,
     asyncId,
