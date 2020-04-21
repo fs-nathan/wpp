@@ -1,13 +1,15 @@
 import { IconButton, Typography } from '@material-ui/core';
-import { mdiChevronDown, mdiPlus } from '@mdi/js';
+import { mdiChevronDown, mdiPlus, mdiSettingsOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
 import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
 import CreateJobModal from './CreateJobModal';
+import CreateJobSetting from './CreateJobSetting';
 
 const HeaderText = styled(Typography)`
   width: 315px;
@@ -48,7 +50,25 @@ function ListHeaderSelect({ setShow }) {
 
 function ListHeader(props) {
   const dispatch = useDispatch();
+  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
+  const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
+  const [isOpenSettings, setOpenSettings] = React.useState(false);
+
+  function onClickSettings() {
+    setOpenSettings(true)
+  }
+
+  function onClickCreateJob() {
+    if (listTaskDetail) {
+      if (listTaskDetail.tasks.length === 0) {
+        setOpenCreateGroup(true)
+        return
+      }
+    }
+    setOpenCreateJobModal(true);
+  }
+
   const searchListTask = e => {
     dispatch(searchTask(e.target.value));
   };
@@ -65,9 +85,13 @@ function ListHeader(props) {
           />
           <ButtonIcon
             className="dropdown-icon"
-            onClick={() => {
-              setOpenCreateJobModal(true);
-            }}
+            onClick={onClickSettings}
+          >
+            <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon" />
+          </ButtonIcon>
+          <ButtonIcon
+            className="dropdown-icon"
+            onClick={onClickCreateJob}
           >
             <Icon path={mdiPlus} size={1.2} className="job-detail-icon" />
           </ButtonIcon>
@@ -77,6 +101,11 @@ function ListHeader(props) {
         isOpen={openCreateJobModal}
         setOpen={setOpenCreateJobModal}
       />
+      <CreateJobSetting
+        isOpen={isOpenSettings}
+        setOpen={setOpenSettings}
+      />
+      <CreateProjectGroup open={isOpenCreateGroup} setOpen={setOpenCreateGroup}></CreateProjectGroup>
     </div>
   );
 }

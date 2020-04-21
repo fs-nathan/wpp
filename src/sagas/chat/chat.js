@@ -213,7 +213,7 @@ export function* getOfferDetail(payload) {
 export function* getDemandDetail(payload) {
   try {
     const { task_id, demand_id } = payload;
-    const res = yield call(apiService.post, "/task/get-demandr-detail", { task_id, demand_id });
+    const res = yield call(apiService.post, "/task/get-command-decision-detail", { task_id, demand_id });
     yield put(actions.getDemandDetailSuccess(res.data));
   } catch (error) {
     yield put(actions.getDemandDetailFail(error));

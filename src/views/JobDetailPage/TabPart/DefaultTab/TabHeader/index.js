@@ -7,7 +7,7 @@ import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
+import EditJobModal, { EDIT_MODE } from '../../../ListPart/ListHeader/CreateJobModal';
 import { taskIdSelector } from '../../../selectors';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import './styles.scss';
@@ -18,6 +18,7 @@ function TabHeader(props) {
   const isPinned = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.is_ghim'));
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [editMode, setEditMode] = React.useState(null);
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget);
@@ -66,10 +67,12 @@ function TabHeader(props) {
     }
   }
   // console.log("task id::::", value.taskId)
-  const onClickEdit = () => {
+  const onClickEdit = (mode) => () => {
     setOpenCreateJobModal(true);
     setAnchorEl(null);
+    setEditMode(mode)
   }
+
   const onClickPause = () => {
     dispatch(stopTask(taskId));
     setAnchorEl(null);
@@ -120,9 +123,29 @@ function TabHeader(props) {
         }}
       >
         <MenuItem
-          onClick={onClickEdit}
+          onClick={onClickEdit(EDIT_MODE.NAME_DES)}
         >
-          Chỉnh sửa
+          Sửa tên, mô tả công việc
+        </MenuItem>
+        <MenuItem
+          onClick={onClickEdit(EDIT_MODE.PRIORITY)}
+        >
+          Thay đổi mức độ ưu tiên
+        </MenuItem>
+        <MenuItem
+          onClick={onClickEdit(EDIT_MODE.GROUP)}
+        >
+          Thay đổi nhóm việc
+        </MenuItem>
+        <MenuItem
+          onClick={onClickEdit(EDIT_MODE.ASSIGN_TYPE)}
+        >
+          Thay đổi hình thức giao việc
+        </MenuItem>
+        <MenuItem
+          onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
+        >
+          Thay đổi lịch làm việc
         </MenuItem>
         <MenuItem
           onClick={onClickPin}
@@ -151,8 +174,8 @@ function TabHeader(props) {
       <EditJobModal
         isOpen={openCreateJobModal}
         setOpen={setOpenCreateJobModal}
-        isRight={true}
         data={detailTask}
+        editMode={editMode}
       />
       <ModalDeleteConfirm
         confirmDelete={confirmDelete}
