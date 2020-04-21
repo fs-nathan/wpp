@@ -164,7 +164,7 @@ export function* createChatText(payload) {
     yield put(actions.createChatTextSuccess(res.data));
     // yield put(actions.loadChat(content.task_id));
   } catch (error) {
-    yield put(actions.createChatTextFail(error));
+    yield put(actions.createChatTextFail(error, payload.content.id));
   }
 }
 

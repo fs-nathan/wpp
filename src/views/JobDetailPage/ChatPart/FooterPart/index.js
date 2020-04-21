@@ -271,6 +271,7 @@ const FooterPart = ({
     dispatch(clearTags());
     setEditorState(EditorState.createEmpty())
     const data_chat = {
+      id: Date.now(),
       type: CHAT_TYPE.TEXT,
       is_me: true,
       user_create_id: userId,

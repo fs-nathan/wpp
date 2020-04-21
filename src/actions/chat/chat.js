@@ -386,10 +386,10 @@ export function createChatTextSuccess(payload) {
   };
 }
 
-export function createChatTextFail(error) {
+export function createChatTextFail(error, id) {
   return {
     type: actionTypes.CREATE_CHAT_TEXT_FAIL,
-    error
+    error, id
   };
 }
 
@@ -551,5 +551,12 @@ export function chatQuickLikeFail(error) {
   return {
     type: actionTypes.CHAT_QUICK_LIKE_FAIL,
     error
+  };
+}
+
+export function deleteFailedChat(id) {
+  return {
+    type: actionTypes.DELETE_FAILED_CHAT,
+    id
   };
 }

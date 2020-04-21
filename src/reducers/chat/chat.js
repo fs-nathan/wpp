@@ -153,9 +153,11 @@ export default (state = initialState, action) => produce(state, draft => {
       break;
     }
     case actionTypes.CREATE_CHAT_TEXT_FAIL: {
-      draft.isFails = true;
       draft.isSending = false;
       draft.isShowSendStatus = false;
+      draft.chats.data = draft.chats.data.map(
+        (data) => (data.id !== action.id) ? data : { ...data, isFails: true }
+      )
       break;
     }
     case actionTypes.GET_VIEWED_CHAT_SUCCESS: {
@@ -217,6 +219,10 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.GET_DEMAND_DETAIL_SUCCESS: {
       const { payload } = action;
       draft.dataDemand = payload;
+      break;
+    }
+    case actionTypes.DELETE_FAILED_CHAT: {
+      draft.chats.data = draft.chats.data.filter(({ id }) => id !== action.id)
       break;
     }
   }
