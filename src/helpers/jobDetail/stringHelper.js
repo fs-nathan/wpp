@@ -74,3 +74,21 @@ export function humanFileSize(bytes, si) {
     } while (Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1) + ' ' + units[u];
 }
+
+// const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+const urlRegex = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+
+export const replaceMultipleReg = (str = '', regex, replacer) => {
+    let match;
+    let lastEnd = 0, ret = '';
+    while (match = regex.exec(str)) {
+        // console.log(match.index + ':' + match[0] + '::' + urlRegex.lastIndex);
+        ret += str.slice(lastEnd, match.index) + replacer(match[0])
+        lastEnd = urlRegex.lastIndex;
+    }
+    return ret + str.slice(lastEnd);
+}
+
+export function replaceUrl(str) {
+    return replaceMultipleReg(str, urlRegex, match => `<a href='${match}' target="_blank">${match}'</a>`)
+}

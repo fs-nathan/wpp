@@ -1,5 +1,9 @@
 .TextMessage {
   display: flex;
+  a {
+    color: inherit;
+    font-size: inherit;
+  }
   &__top {
     margin-top: 30px;
   }

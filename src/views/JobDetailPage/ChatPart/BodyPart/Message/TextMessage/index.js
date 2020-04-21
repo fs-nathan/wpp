@@ -1,5 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
+import { replaceUrl } from 'helpers/jobDetail/stringHelper';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -29,7 +30,7 @@ function getRichContent(content = '', tags, color) {
   // console.log(matches)
   ret = ret.replace('\n', '<br/>');
   // return matches.join(' ')
-  return ret;
+  return replaceUrl(ret);
 }
 
 const TextMessage = ({

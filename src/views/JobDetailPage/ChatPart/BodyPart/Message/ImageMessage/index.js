@@ -1,5 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -26,6 +27,7 @@ const ImageMessage = ({
   chatPosition = "top",
 }) => {
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
+  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
 
   const [open, setOpen] = React.useState(false);
 
@@ -119,10 +121,10 @@ const ImageMessage = ({
               </div>
             )
           }
-          {isUploading &&
+          {isUploading && uploadingPercent !== 100 &&
             <div className="ImageMessage--loading" >
               <div className="ImageMessage--loadingBackground" >
-                <div className="ImageMessage--loadingPercent" style={{ width: uploadingPercent }} >
+                <div className="ImageMessage--loadingPercent" style={{ width: `${uploadingPercent}%`, backgroundColor: groupActiveColor }} >
                 </div>
               </div>
             </div>}

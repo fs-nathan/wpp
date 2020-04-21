@@ -49,8 +49,10 @@ function getChatContent({ blocks, entityMap }) {
       const { offset, length, key } = entityRanges[index];
       const { data } = entityMap[key];
       // ret = spliceSlice(ret, offset, length, `{${data.mention.id}}`);
-      const reg = new RegExp(`@${data.mention.name}`, 'g');
-      ret = ret.replace(reg, `${data.mention.id}`)
+      if (data.mention) {
+        const reg = new RegExp(`@${data.mention.name}`, 'g');
+        ret = ret.replace(reg, `${data.mention.id}`)
+      }
     }
     return ret;
   })

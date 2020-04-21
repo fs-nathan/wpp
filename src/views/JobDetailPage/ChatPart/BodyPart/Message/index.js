@@ -40,7 +40,7 @@ const Message = props => {
     case CHAT_TYPE.CHAT_FORWARD_FILE:
       return <FileMessage {...props} />;
     case CHAT_TYPE.IMAGE:
-      return <ImageMessage {...props} />;
+      return <ImageMessage {...props} isUploading={false} />;
     case CHAT_TYPE.UPDATE_TASK_NAME:
       return <UpdateTaskNameMessage {...props} />;
     case CHAT_TYPE.UPDATE_DURATION:

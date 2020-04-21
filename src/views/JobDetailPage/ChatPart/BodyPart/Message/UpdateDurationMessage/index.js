@@ -39,18 +39,26 @@ const UpdateDurationMessage = ({
       taskName="điều chỉnh tiến độ thực hiện"
     >
       <>
-        <div className="UpdateDurationMessage--title" >
-          Bắt đầu
-      </div>
-        <div className="UpdateDurationMessage--content" >
-          {time_changes[0] && `Từ ${time_changes[0].old} sang ${time_changes[0].new}`}
-        </div>
-        <div className="UpdateDurationMessage--title" >
-          Kết thúc
-      </div>
-        <div className="UpdateDurationMessage--content" >
-          {time_changes[1] && `Từ ${time_changes[1].old} sang ${time_changes[1].new}`}
-        </div>
+        {time_changes[0] &&
+          <>
+            <div className="UpdateDurationMessage--title" >
+              Bắt đầu
+            </div>
+            <div className="UpdateDurationMessage--content" >
+              {`Từ ${time_changes[0].old} sang ${time_changes[0].new}`}
+            </div>
+          </>
+        }
+        {time_changes[1] &&
+          <>
+            <div className="UpdateDurationMessage--title" >
+              Kết thúc
+            </div>
+            <div className="UpdateDurationMessage--content" >
+              {`Từ ${time_changes[1].old} sang ${time_changes[1].new}`}
+            </div>
+          </>
+        }
       </>
     </DialogMessageWrap>
   );
