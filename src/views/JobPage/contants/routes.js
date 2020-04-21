@@ -1,7 +1,7 @@
-const rootPath = "/tasks";
+const rootPath = "/tasks/overview";
 export const Routes = {
-  OVERVIEW: rootPath + "/overview",
+  OVERVIEW: rootPath,
   DUE: rootPath + "/due",
   MISSION: rootPath + "/assign/:typeAssign",
-  ROLE: rootPath + "/role/:roleId"
+  ROLE: rootPath + "/role/:roleId",
 };

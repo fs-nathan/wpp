@@ -1,15 +1,10 @@
 import { CardContent } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import { red } from "@material-ui/core/colors";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import ShareIcon from "@material-ui/icons/Share";
 import classnames from "classnames";
 import React from "react";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
@@ -37,7 +32,9 @@ const Container = injectClassName("comp_TasksCard__Container")((props) => {
   return <Card variant="outlined" {...props}></Card>;
 });
 const HeaderAvatar = injectClassName("comp_TasksCard__HeaderAvatar")(Avatar);
-const HeaderTitle = injectClassName("comp_TasksCard__HeaderTitle")(Typography);
+const HeaderTitle = injectClassName("comp_TasksCard__HeaderTitle")((props) => (
+  <Typography component="div" {...props} />
+));
 const HeaderSubTitle = injectClassName("comp_TasksCard__HeaderSubTitle")(
   Typography
 );
@@ -105,39 +102,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
     );
   }
 );
-export function TasksCard() {
-  const classes = useStyles();
-  return (
-    <Container>
-      <Header
-        avatar={<HeaderAvatar aria-label="tasks">R</HeaderAvatar>}
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={<HeaderTitle>Shrimp and Chorizo Paella</HeaderTitle>}
-        subheader={<HeaderSubTitle>September 14, 2016</HeaderSubTitle>}
-      />
-      <Media srcs={["/static/images/cards/paella.jpg"]} />
-      <Content>
-        <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
-      </Content>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-      </CardActions>
-    </Container>
-  );
-}
+
 export default {
   Container,
   HeaderAvatar,
