@@ -151,7 +151,7 @@ function CustomTable() {
             )}
           </RightHeader>
         </Header>
-        {data.length === 0
+        {get(options, 'noData.bool', false)
           ? <NoData
             title={get(options, 'noData.title')}
             subtitle={get(options, 'noData.subtitle')}

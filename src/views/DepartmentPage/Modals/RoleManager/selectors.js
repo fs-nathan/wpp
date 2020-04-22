@@ -9,15 +9,16 @@ const deleteUserRole = state => state.userRole.deleteUserRole;
 export const userRolesSelector = createSelector(
   [listUserRole, createUserRole, updateUserRole, deleteUserRole],
   (listUserRole, createUserRole, updateUserRole, deleteUserRole) => {
-    const { data: { userRoles }, loading: listLoading, error: listError } = listUserRole;
+    const { data: { userRoles }, loading: listLoading, error: listError, firstTime } = listUserRole;
     const { loading: createLoading, error: createError } = createUserRole;
     const { pendings: updatePendings, error: updateError } = updateUserRole;
     const { pendings: deletePendings, error: deleteError } = deleteUserRole;
     return {
       userRoles,
-      loading: listLoading || createLoading,
+      loading: (firstTime ? false : listLoading) || createLoading,
       error: listError || createError || updateError || deleteError,
-      pendings: concat(updatePendings, deletePendings)
+      pendings: concat(updatePendings, deletePendings),
+      firstTime,
     }
   }
 );

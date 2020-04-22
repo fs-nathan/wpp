@@ -115,8 +115,6 @@ function AllProjectTable({
     setCurProject(oldProject => find(projects.projects, { id: get(oldProject, 'id') }))
   }, [projects]);
 
-  console.log('x');
-
   return (
     <Container>
       <React.Fragment>
@@ -194,6 +192,8 @@ function AllProjectTable({
               id: 'id',
             },
             noData: {
+              bool: (projects.firstTime === false)
+                && (projects.projectGroupsCount === 0 || projects.projects.length === 0),
               subtitle: projects.projectGroupsCount === 0
                 ? t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_PROJECT")
                 : t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_TASK")

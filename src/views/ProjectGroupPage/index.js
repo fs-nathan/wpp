@@ -3,17 +3,18 @@ import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import { listIcon } from '../../actions/icon/listIcon';
+import { listIcon, listIconReset } from '../../actions/icon/listIcon';
 import { listDeletedProject, listDeletedProjectReset } from '../../actions/project/listDeletedProject';
 import { listProject, listProjectReset } from '../../actions/project/listProject';
-import { detailStatus } from '../../actions/project/setting/detailStatus';
+import { detailStatus, detailStatusReset } from '../../actions/project/setting/detailStatus';
 import { detailDefaultGroup, detailDefaultGroupReset } from '../../actions/projectGroup/detailDefaultGroup';
 import { detailProjectGroup, detailProjectGroupReset } from '../../actions/projectGroup/detailProjectGroup';
-import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
+import { listProjectGroup, listProjectGroupReset } from '../../actions/projectGroup/listProjectGroup';
 import { memberProjectGroup, memberProjectGroupReset } from '../../actions/projectGroup/memberProjectGroup';
 import { getPermissionViewProjects } from '../../actions/viewPermissions';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
+  COPY_PROJECT,
   //DELETE_PROJECT_GROUP, EDIT_PROJECT_GROUP,
   //CREATE_ICON, DELETE_ICON,
   CREATE_PROJECT, CustomEventDispose, CustomEventListener, DELETE_PROJECT, RESTORE_TRASH_PROJECT,
@@ -34,17 +35,16 @@ export const Context = React.createContext();
 const { Provider } = Context;
 
 function ProjectGroupPage({
-  doListIcon,
-  doListProjectGroup,
-  doDetailProjectGroup,
-  doMemberProjectGroup,
-  doListProject,
-  doListDeletedProject,
-  doDetailDefaultGroup,
-  doDetailStatus,
+  doListIcon, doListIconReset,
+  doListProjectGroup, doListProjectGroupReset,
+  doDetailProjectGroup, doDetailProjectGroupReset,
+  doMemberProjectGroup, doMemberProjectGroupReset,
+  doListProject, doListProjectReset,
+  doListDeletedProject, doListDeletedProjectReset,
+  doDetailDefaultGroup, doDetailDefaultGroupReset,
+  doDetailStatus, doDetailStatusReset,
   doGetPermissionViewProjects,
   route, viewPermissions,
-  doResetDetail, doResetList, doResetProjects,
 }) {
 
   React.useEffect(() => {
@@ -58,7 +58,8 @@ function ProjectGroupPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListIcon(true);
+      doListIconReset();
+      doListIcon();
 
       /*
       const reloadListIcon = () => {
@@ -74,12 +75,12 @@ function ProjectGroupPage({
       }
       */
     }
-  }, [doListIcon, viewPermissions]);
+  }, [doListIcon, doListIconReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doResetList();
-      doListProjectGroup(true);
+      doListProjectGroupReset();
+      doListProjectGroup();
 
       const reloadListProjectGroup = () => {
         doListProjectGroup(/*true*/);
@@ -101,16 +102,16 @@ function ProjectGroupPage({
         //CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
       }
     }
-  }, [doListProjectGroup, doResetList, viewPermissions]);
+  }, [doListProjectGroup, doListProjectGroupReset, viewPermissions]);
 
   const [projectGroupId, setProjectGroupId] = React.useState();
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
+      doDetailProjectGroupReset();
       if (projectGroupId) {
-        doResetDetail();
-        doDetailProjectGroup({ projectGroupId }, true);
+        doDetailProjectGroup({ projectGroupId });
 
         const reloadDetailProjectGroup = () => {
           doDetailProjectGroup({ projectGroupId });
@@ -129,20 +130,21 @@ function ProjectGroupPage({
         }
       }
     }
-  }, [projectGroupId, doDetailProjectGroup, viewPermissions, doResetDetail]);
+  }, [projectGroupId, doDetailProjectGroup, viewPermissions, doDetailProjectGroupReset]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doDetailDefaultGroup(true);
+      doDetailDefaultGroupReset();
+      doDetailDefaultGroup();
     }
-  }, [doDetailDefaultGroup, viewPermissions]);
+  }, [doDetailDefaultGroup, doDetailDefaultGroupReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (projectGroupId === 'deleted' || projectGroupId === 'default') return;
+      doMemberProjectGroupReset();
       if (projectGroupId) {
-        doResetDetail();
-        doMemberProjectGroup({ projectGroupId }, true);
+        doMemberProjectGroup({ projectGroupId });
 
         /*
         const reloadMemberProjectGroup = () => {
@@ -157,19 +159,19 @@ function ProjectGroupPage({
         */
       }
     }
-  }, [projectGroupId, doMemberProjectGroup, viewPermissions, doResetDetail]);
+  }, [projectGroupId, doMemberProjectGroup, viewPermissions, doMemberProjectGroupReset]);
 
   const [timeRange, setTimeRange] = React.useState({});
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (projectGroupId === 'deleted') return;
-      doResetProjects();
+      doListProjectReset();
       doListProject({
         groupProject: projectGroupId,
         timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
         timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-      }, true);
+      });
 
       const reloadListProject = () => {
         doListProject({
@@ -186,7 +188,7 @@ function ProjectGroupPage({
       //CustomEventListener(SHOW_PROJECT, reloadListProject);
       CustomEventListener(SORT_PROJECT, reloadListProject);
       CustomEventListener(RESTORE_TRASH_PROJECT, reloadListProject);
-      //CustomEventListener(COPY_PROJECT, reloadListProject);
+      CustomEventListener(COPY_PROJECT, reloadListProject);
 
       return () => {
         //CustomEventDispose(CREATE_PROJECT, reloadListProject);
@@ -196,15 +198,15 @@ function ProjectGroupPage({
         //CustomEventDispose(HIDE_PROJECT, reloadListProject);
         //CustomEventDispose(SHOW_PROJECT, reloadListProject);
         CustomEventDispose(SORT_PROJECT, reloadListProject);
-        //CustomEventDispose(COPY_PROJECT, reloadListProject);
+        CustomEventDispose(COPY_PROJECT, reloadListProject);
       }
     }
-  }, [projectGroupId, timeRange, doListProject, viewPermissions, doResetProjects]);
+  }, [projectGroupId, timeRange, doListProject, viewPermissions, doListProjectReset]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doResetList();
-      doListDeletedProject({}, true);
+      doListDeletedProjectReset();
+      doListDeletedProject({});
 
       const reloadListDeletedProject = () => {
         doListDeletedProject({});
@@ -216,16 +218,17 @@ function ProjectGroupPage({
         CustomEventDispose(DELETE_PROJECT, reloadListDeletedProject);
       }
     }
-  }, [doListDeletedProject, doResetList, viewPermissions]);
+  }, [doListDeletedProject, doListDeletedProjectReset, viewPermissions]);
 
   const [statusProjectId, setStatusProjectId] = React.useState(null);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (statusProjectId !== null) {
+        doDetailStatusReset();
         doDetailStatus({
           projectId: statusProjectId,
-        }, true);
+        });
         /*
         const reloadDetailStatus = () => {
           doDetailStatus({
@@ -243,7 +246,7 @@ function ProjectGroupPage({
         */
       }
     }
-  }, [statusProjectId, doDetailStatus, viewPermissions]);
+  }, [statusProjectId, doDetailStatus, viewPermissions, doDetailStatusReset]);
 
   return (
     <Provider value={{
@@ -353,24 +356,22 @@ function ProjectGroupPage({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doResetProjects: () => dispatch(listProjectReset()),
-    doResetDetail: () => {
-      dispatch(detailDefaultGroupReset());
-      dispatch(detailProjectGroupReset());
-      dispatch(memberProjectGroupReset());
-    },
-    doResetList: () => {
-      dispatch(listProjectReset());
-      dispatch(listDeletedProjectReset());
-    },
     doListIcon: (quite) => dispatch(listIcon(quite)),
+    doListIconReset: () => dispatch(listIconReset()),
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doListProjectGroupReset: () => dispatch(listProjectGroupReset()),
     doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),
+    doDetailProjectGroupReset: () => dispatch(detailProjectGroupReset()),
     doMemberProjectGroup: ({ projectGroupId }, quite) => dispatch(memberProjectGroup({ projectGroupId }, quite)),
+    doMemberProjectGroupReset: () => dispatch(memberProjectGroupReset()),
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
+    doListProjectReset: () => dispatch(listProjectReset()),
     doListDeletedProject: (options, quite) => dispatch(listDeletedProject(options, quite)),
+    doListDeletedProjectReset: () => dispatch(listDeletedProjectReset()),
     doDetailDefaultGroup: (quite) => dispatch(detailDefaultGroup(quite)),
+    doDetailDefaultGroupReset: () => dispatch(detailDefaultGroupReset()),
     doDetailStatus: ({ projectId }, quite) => dispatch(detailStatus({ projectId }, quite)),
+    doDetailStatusReset: () => dispatch(detailStatusReset()),
     doGetPermissionViewProjects: (quite) => dispatch(getPermissionViewProjects(quite)),
   }
 };

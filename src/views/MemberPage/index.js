@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import styled from 'styled-components';
-import { listLevel } from '../../actions/level/listLevel';
-import { listMajor } from '../../actions/major/listMajor';
-import { listPosition } from '../../actions/position/listPosition';
-import { listRoom } from '../../actions/room/listRoom';
-import { detailUser } from '../../actions/user/detailUser';
-import { listUserOfGroup } from '../../actions/user/listUserOfGroup';
+import { listLevel, listLevelReset } from '../../actions/level/listLevel';
+import { listMajor, listMajorReset } from '../../actions/major/listMajor';
+import { listPosition, listPositionReset } from '../../actions/position/listPosition';
+import { listRoom, listRoomReset } from '../../actions/room/listRoom';
+import { detailUser, detailUserReset } from '../../actions/user/detailUser';
+import { listUserOfGroup, listUserOfGroupReset } from '../../actions/user/listUserOfGroup';
 import { getPermissionViewUser } from '../../actions/viewPermissions';
 import {
   CustomEventDispose, CustomEventListener, UPDATE_USER,
@@ -39,12 +39,12 @@ const RightDiv = styled.div`
 
 function UserPage({
   route, viewPermissions,
-  doListRoom,
-  doListPosition,
-  doListMajor,
-  doListLevel,
-  doListUserOfGroup,
-  doDetailUser,
+  doListRoom, doListRoomReset,
+  doListPosition, doListPositionReset,
+  doListMajor, doListMajorReset,
+  doListLevel, doListLevelReset,
+  doListUserOfGroup, doListUserOfGroupReset,
+  doDetailUser, doDetailUserReset,
   doGetPermissionViewUser
 }) {
 
@@ -54,7 +54,8 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListRoom(true);
+      doListRoomReset();
+      doListRoom();
 
       /*
       const reloadListRoom = () => {
@@ -74,41 +75,33 @@ function UserPage({
       }
       */
     }
-  }, [doListRoom, viewPermissions]);
+  }, [doListRoom, doListRoomReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListPosition(true);
-
-      /*
-      const reloadListPosition = () => {
-        doListPosition();
-      };
-  
-      CustomEventListener(CREATE_POSITION, reloadListPosition);
-      CustomEventListener(UPDATE_POSITION, reloadListPosition);
-      CustomEventListener(DELETE_POSITION, reloadListPosition);
-  
-      return () => {
-        CustomEventDispose(CREATE_POSITION, reloadListPosition);
-        CustomEventDispose(UPDATE_POSITION, reloadListPosition);
-        CustomEventDispose(DELETE_POSITION, reloadListPosition);
-      }
-      */
+      doListPositionReset();
+      doListPosition();
     }
-  }, [doListPosition, viewPermissions]);
-
-  React.useEffect(() => {
-    if (viewPermissions.permissions !== null) doListMajor(true);
-  }, [doListMajor, viewPermissions]);
-
-  React.useEffect(() => {
-    if (viewPermissions.permissions !== null) doListLevel(true);
-  }, [doListLevel, viewPermissions]);
+  }, [doListPosition, doListPositionReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListUserOfGroup(true);
+      doListMajorReset();
+      doListMajor();
+    }
+  }, [doListMajor, doListMajorReset, viewPermissions]);
+
+  React.useEffect(() => {
+    if (viewPermissions.permissions !== null) {
+      doListLevelReset();
+      doListLevel();
+    }
+  }, [doListLevel, doListLevelReset, viewPermissions]);
+
+  React.useEffect(() => {
+    if (viewPermissions.permissions !== null) {
+      doListUserOfGroupReset();
+      doListUserOfGroup();
 
       const reloadListUserOfGroup = () => {
         doListUserOfGroup();
@@ -138,14 +131,19 @@ function UserPage({
         //CustomEventDispose(PRIVATE_MEMBER, reloadListUserOfGroup);
       }
     }
-  }, [doListUserOfGroup, viewPermissions]);
+  }, [doListUserOfGroup, doListUserOfGroupReset, viewPermissions]);
 
   const [userId, setUserId] = React.useState();
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doDetailUser({ userId }, true);
+      doDetailUserReset();
+    }
+  }, [doDetailUser, doDetailUserReset, viewPermissions]);
 
+  React.useEffect(() => {
+    if (viewPermissions.permissions !== null) {
+      doDetailUser({ userId });
 
       const reloadDetailUserHandler = () => doDetailUser({ userId }, true);
 
@@ -195,11 +193,17 @@ function UserPage({
 const mapDispatchToProps = dispatch => {
   return {
     doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListRoomReset: () => dispatch(listRoomReset()),
     doListPosition: (quite) => dispatch(listPosition(quite)),
+    doListPositionReset: () => dispatch(listPositionReset()),
     doListMajor: (quite) => dispatch(listMajor(quite)),
+    doListMajorReset: () => dispatch(listMajorReset()),
     doListLevel: (quite) => dispatch(listLevel(quite)),
+    doListLevelReset: () => dispatch(listLevelReset()),
     doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
+    doListUserOfGroupReset: () => dispatch(listUserOfGroupReset()),
     doDetailUser: ({ userId }, quite) => dispatch(detailUser({ userId }, quite)),
+    doDetailUserReset: () => dispatch(detailUserReset()),
     doGetPermissionViewUser: (quite) => dispatch(getPermissionViewUser(quite)),
   };
 };

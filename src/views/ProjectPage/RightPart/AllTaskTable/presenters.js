@@ -154,6 +154,7 @@ function AllTaskTable({
               id: 'id',
             },
             noData: {
+              bool: (tasks.firstTime === false) && (tasks.tasks.length === 0),
               subtitle: 'Chưa có công việc nào được khởi tạo. Hãy click vào nút + TẠO CÔNG VIỆC để bắt đầu quản lý dự án và công việc của bạn'
             },
           }}

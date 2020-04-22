@@ -1,30 +1,25 @@
-import React from 'react';
-import { updateProject } from '../../../../actions/project/updateProject';
-import { connect } from 'react-redux';
-import { groupsSelector } from './selectors';
-import EditProjectPresenter from './presenters';
 import { get } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
+import { updateProject } from '../../../../actions/project/updateProject';
+import EditProjectPresenter from './presenters';
+import { groupsSelector } from './selectors';
 
-function EditProject({ 
-  curProject = null, 
-  open, setOpen, 
-  groups, 
+function EditProject({
+  curProject = null,
+  open, setOpen,
+  groups,
   doUpdateProject
 }) {
 
-  const newGroups = {
-    ...groups,
-    groups: [{ id: '__default__', name: 'Chưa phân loại' }, ...groups.groups],
-  }
-
   return (
-    <EditProjectPresenter 
-      curProject={curProject} 
+    <EditProjectPresenter
+      curProject={curProject}
       open={open} setOpen={setOpen}
-      groups={newGroups}
+      groups={groups}
       handleEditProject={({ name, description, projectGroupId, priority, currency }) =>
         doUpdateProject({ projectId: get(curProject, 'id'), name, description, projectGroupId, priority, currency })
-      } 
+      }
     />
   )
 }

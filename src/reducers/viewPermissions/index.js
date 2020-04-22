@@ -8,6 +8,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -25,22 +26,22 @@ function reducer(state = initialState, action) {
     case GET_PERMISSION_VIEW_DETAIL_PROJECT_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: {
           ...state.data,
           ...action.data,
         },
         error: null,
         loading: false,
+        firstTime: false,
       };
     case GET_PERMISSION_VIEW_PROJECTS_FAIL:
     case GET_PERMISSION_VIEW_USERS_FAIL:
     case GET_PERMISSION_VIEW_DETAIL_PROJECT_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
     default:
       return state;

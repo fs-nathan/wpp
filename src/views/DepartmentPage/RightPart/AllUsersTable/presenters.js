@@ -199,6 +199,7 @@ function AllUsersTable({
             component: () => <LoadingBox />,
           },
           noData: {
+            bool: (rooms.firstTime === false) && (rooms.rooms.length === 0),
           },
         }}
         columns={[{

@@ -11,7 +11,7 @@ export const roomsSelector = createSelector(
   [listRoom, listUserOfGroup, listIcon, sortRoom, createRoom],
   (listRoom, listUserOfGroup, listIcon, sortRoom, createRoom) => {
     const { loading: sortRoomLoading, error: sortRoomError } = sortRoom;
-    const { data: { rooms }, loading: listRoomLoading, error: listRoomError } = listRoom;
+    const { data: { rooms }, loading: listRoomLoading, error: listRoomError, firstTime: listFirst } = listRoom;
     const { data: { rooms: groups } } = listUserOfGroup;
     const { loading: createRoomLoading, error: createRoomError } = createRoom;
     const newGroups = groups.map(group => ({
@@ -33,8 +33,9 @@ export const roomsSelector = createSelector(
     });
     return ({
       rooms: newRooms,
-      loading: listRoomLoading || sortRoomLoading || createRoomLoading,
+      loading: (listFirst ? false : listRoomLoading) || sortRoomLoading || createRoomLoading,
       error: listRoomError || sortRoomError || createRoomError,
+      firstTime: listFirst,
     });
   }
 );

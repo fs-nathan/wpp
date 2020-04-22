@@ -1,4 +1,4 @@
-import { FormControl, TextField } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
 import { find, get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,12 +12,6 @@ import './style.scss';
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
     className={`view_Member_UpdateUser_Modal___form-control ${className}`}
-    {...props}
-  />;
-
-const CustomTextField = ({ className = '', ...props }) =>
-  <TextField
-    className={`view_Member_UpdateUser_Modal___text-field ${className}`}
     {...props}
   />;
 
@@ -108,20 +102,18 @@ function UpdateUser({
               onChange={({ value: levelId }) => setLevel(levelId)}
             />
           </StyledFormControl>
-          <StyledFormControl fullWidth>
-            <MySelect
-              label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
-              options={options.majors.map(major => ({
-                label: get(major, 'name'),
-                value: get(major, 'id'),
-              }))}
-              value={{
-                label: get(find(options.majors, { id: major }), 'name'),
-                value: major,
-              }}
-              onChange={({ value: majorId }) => setMajor(majorId)}
-            />
-          </StyledFormControl>
+          <MySelect
+            label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
+            options={options.majors.map(major => ({
+              label: get(major, 'name'),
+              value: get(major, 'id'),
+            }))}
+            value={{
+              label: get(find(options.majors, { id: major }), 'name'),
+              value: major,
+            }}
+            onChange={({ value: majorId }) => setMajor(majorId)}
+          />
           <CustomTextbox
             value={description}
             label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}

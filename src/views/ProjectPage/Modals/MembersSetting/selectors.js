@@ -6,12 +6,13 @@ const addMemberProject = state => state.project.addMemberProject;
 export const membersSelector = createSelector(
   [memberProject],
   (memberProject) => {
-    const { data: { membersAdded, membersFree }, loading, error } = memberProject;
+    const { data: { membersAdded, membersFree }, loading, error, firstTime } = memberProject;
     return {
       added: membersAdded,
       free: membersFree,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 );

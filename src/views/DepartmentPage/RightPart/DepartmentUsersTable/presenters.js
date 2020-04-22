@@ -195,6 +195,7 @@ function DepartmentUsersTable({
             component: () => <LoadingBox />,
           },
           noData: {
+            bool: (room.firstTime === false) && (room.room.users.length === 0),
           },
         }}
         columns={[{

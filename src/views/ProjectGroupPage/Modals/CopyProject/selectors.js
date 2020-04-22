@@ -8,9 +8,9 @@ const detailDefaultGroup = state => state.projectGroup.detailDefaultGroup;
 export const groupsSelector = createSelector(
   [listProjectGroup, listProject, detailDefaultGroup],
   (listProjectGroup, listProject, detailDefaultGroup) => {
-    const { data: { projectGroups }, loading: listProjectGroupLoading, error: listProjectGroupError } = listProjectGroup;
-    const { data: { projects }, loading: listProjectLoading, error: listProjectError } = listProject;
-    const { data: { projectGroup: _defaultProjectGroup }, error: detailDefaultGroupError, loading: detailDefaultGroupLoading } = detailDefaultGroup;
+    const { data: { projectGroups }, loading: listProjectGroupLoading, error: listProjectGroupError, firstTime: groupFirst } = listProjectGroup;
+    const { data: { projects }, loading: listProjectLoading, error: listProjectError, firstTime: projectFirst } = listProject;
+    const { data: { projectGroup: _defaultProjectGroup }, error: detailDefaultGroupError, loading: detailDefaultGroupLoading, firstTime: defaultFirst } = detailDefaultGroup;
     const groups = projectGroups.map(projectGroup => ({
       ...projectGroup,
       projects: filter(projects, { project_group_id: get(projectGroup, 'id') }),
@@ -21,8 +21,11 @@ export const groupsSelector = createSelector(
     };
     return {
       groups: concat(groups, defaultProjectGroup),
-      loading: listProjectGroupLoading || listProjectLoading || detailDefaultGroupLoading,
+      loading: (groupFirst ? false : listProjectGroupLoading) ||
+        (projectFirst ? false : listProjectLoading) ||
+        (defaultFirst ? false : detailDefaultGroupLoading),
       error: listProjectGroupError || listProjectError || detailDefaultGroupError,
+      firstTime: groupFirst && projectFirst, defaultFirst,
     }
   }
 );

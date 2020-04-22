@@ -9,6 +9,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -22,17 +23,17 @@ function reducer(state = initialState, action) {
     case LIST_DELETED_PROJECT_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case LIST_DELETED_PROJECT_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
     case LIST_DELETED_PROJECT_RESET:
       return initialState;

@@ -17,10 +17,10 @@ export const routeSelector = createSelector(
 export const viewPermissionsSelector = createSelector(
   [viewPermissions],
   (viewPermissions) => {
-    const { data: { users }, loading, error } = viewPermissions;
+    const { data: { users }, loading, error, firstTime } = viewPermissions;
     return ({
       permissions: users,
-      loading,
+      loading: firstTime ? false : loading,
       error,
     });
   }

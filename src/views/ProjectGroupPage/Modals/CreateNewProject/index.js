@@ -1,27 +1,22 @@
 import React from 'react';
-import { createProject } from '../../../../actions/project/createProject';
 import { connect } from 'react-redux';
-import { groupsSelector } from './selectors';
+import { createProject } from '../../../../actions/project/createProject';
 import CreateNewProjectPresenter from './presenters';
+import { groupsSelector } from './selectors';
 
-function CreateNewProject({ 
-  open, setOpen, 
+function CreateNewProject({
+  open, setOpen,
   groups,
-  doCreateProject, 
+  doCreateProject,
 }) {
 
-  const newGroups = {
-    ...groups,
-    groups: [{ id: '__default__', name: 'Chưa phân loại' }, ...groups.groups],
-  };
-
   return (
-    <CreateNewProjectPresenter 
-      open={open} setOpen={setOpen} 
-      groups={newGroups}
-      handleCreateProject={({ name, description, projectGroupId, priority, currency }) => 
+    <CreateNewProjectPresenter
+      open={open} setOpen={setOpen}
+      groups={groups}
+      handleCreateProject={({ name, description, projectGroupId, priority, currency }) =>
         doCreateProject({ name, description, projectGroupId, priority, currency })
-      } 
+      }
     />
   )
 }

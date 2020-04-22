@@ -11,11 +11,12 @@ export const statusSelector = createSelector(
     const { loading: copyLoading, error: copyError } = updateStatusCopy;
     const { loading: dateLoading, error: dateError } = updateStatusDate;
     const { loading: viewLoading, error: viewError } = updateStatusView;
-    const { data: { status }, loading: detailLoading, error: detailError, } = detailStatus;
+    const { data: { status }, loading: detailLoading, error: detailError, firstTime } = detailStatus;
     return {
       status,
-      loading: copyLoading || dateLoading || viewLoading || detailLoading,
+      loading: copyLoading || dateLoading || viewLoading || (firstTime ? false : detailLoading),
       error: copyError || dateError || viewError || detailError,
+      firstTime,
     }
   }
 );

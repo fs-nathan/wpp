@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { listIcon } from '../../actions/icon/listIcon';
-import { listLevel } from '../../actions/level/listLevel';
-import { listMajor } from '../../actions/major/listMajor';
-import { listPosition } from '../../actions/position/listPosition';
+import { listIcon, listIconReset } from '../../actions/icon/listIcon';
+import { listLevel, listLevelReset } from '../../actions/level/listLevel';
+import { listMajor, listMajorReset } from '../../actions/major/listMajor';
+import { listPosition, listPositionReset } from '../../actions/position/listPosition';
 import { detailRoom, detailRoomReset } from '../../actions/room/detailRoom';
 import { getUserOfRoom, getUserOfRoomReset } from '../../actions/room/getUserOfRoom';
 import { listRoom, listRoomReset } from '../../actions/room/listRoom';
 import { listUserOfGroup, listUserOfGroupReset } from '../../actions/user/listUserOfGroup';
 import { permissionUser, permissionUserReset } from '../../actions/user/permissionUser';
-import { listUserRole } from '../../actions/userRole/listUserRole';
+import { listUserRole, listUserRoleReset } from '../../actions/userRole/listUserRole';
 import { getPermissionViewUser } from '../../actions/viewPermissions';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
@@ -33,18 +33,17 @@ const { Provider } = Context;
 
 function UserPage({
   route, viewPermissions,
-  doListRoom,
-  doDetailRoom,
-  doGetUserOfRoom,
-  doListPosition,
-  doListMajor,
-  doListLevel,
-  doListUserRole,
-  doListIcon,
-  doListUserOfGroup,
+  doListRoom, doListRoomReset,
+  doDetailRoom, doDetailRoomReset,
+  doGetUserOfRoom, doGetUserOfRoomReset,
+  doListPosition, doListPositionReset,
+  doListMajor, doListMajorReset,
+  doListLevel, doListLevelReset,
+  doListUserRole, doListUserRoleReset,
+  doListIcon, doListIconReset,
+  doListUserOfGroup, doListUserOfGroupReset,
   doGetPermissionViewUser,
-  doPermissionUser,
-  doReset, doResetDetail,
+  doPermissionUser, doPermissionUserReset,
 }) {
 
   React.useEffect(() => {
@@ -53,8 +52,8 @@ function UserPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doReset();
-      doListRoom(true);
+      doListRoomReset();
+      doListRoom();
 
       const reloadListRoom = () => {
         doListRoom();
@@ -72,15 +71,15 @@ function UserPage({
         CustomEventDispose(SORT_ROOM, reloadListRoom);
       }
     }
-  }, [doListRoom, doReset, viewPermissions]);
+  }, [doListRoom, doListRoomReset, viewPermissions]);
 
   const [departmentId, setDepartmentId] = React.useState();
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (departmentId && departmentId !== 'default') {
-        doResetDetail();
-        doDetailRoom({ roomId: departmentId }, true);
+        doDetailRoomReset();
+        doDetailRoom({ roomId: departmentId });
         /*
         const reloadDetailRoom = () => {
           doDetailRoom({ roomId: departmentId });
@@ -94,13 +93,13 @@ function UserPage({
         */
       }
     }
-  }, [departmentId, doDetailRoom, doResetDetail, viewPermissions]);
+  }, [departmentId, doDetailRoom, doDetailRoomReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (departmentId) {
-        doResetDetail();
-        doGetUserOfRoom({ roomId: departmentId }, true);
+        doGetUserOfRoomReset();
+        doGetUserOfRoom({ roomId: departmentId });
 
         const reloadGetUserOfRoom = () => {
           doGetUserOfRoom({ roomId: departmentId });
@@ -123,11 +122,12 @@ function UserPage({
         }
       }
     }
-  }, [departmentId, doGetUserOfRoom, doResetDetail, viewPermissions]);
+  }, [departmentId, doGetUserOfRoom, doGetUserOfRoomReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doPermissionUser(true);
+      doPermissionUserReset();
+      doPermissionUser();
 
       /*
       const reloadListMajor = () => {
@@ -145,11 +145,12 @@ function UserPage({
       }
       */
     }
-  }, [doPermissionUser, viewPermissions]);
+  }, [doPermissionUser, doPermissionUserReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListPosition(true);
+      doListPositionReset();
+      doListPosition();
 
       /*
       const reloadListPosition = () => {
@@ -167,11 +168,12 @@ function UserPage({
       }
       */
     }
-  }, [doListPosition, viewPermissions]);
+  }, [doListPosition, doListPositionReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListMajor(true);
+      doListMajorReset();
+      doListMajor();
 
       /*
       const reloadListMajor = () => {
@@ -189,11 +191,12 @@ function UserPage({
       }
       */
     }
-  }, [doListMajor, viewPermissions]);
+  }, [doListMajor, doListMajorReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListLevel(true);
+      doListLevelReset();
+      doListLevel();
 
       /*
       const reloadListLevel = () => {
@@ -211,11 +214,12 @@ function UserPage({
       }
       */
     }
-  }, [doListLevel, viewPermissions]);
+  }, [doListLevel, doListLevelReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListUserRole(true);
+      doListUserRoleReset();
+      doListUserRole();
 
       /*
       const reloadListUserRole = () => {
@@ -233,11 +237,12 @@ function UserPage({
       }
       */
     }
-  }, [doListUserRole, viewPermissions]);
+  }, [doListUserRole, doListUserRoleReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListIcon(true);
+      doListIconReset();
+      doListIcon();
 
       /*
       const reloadListIcon = () => {
@@ -253,12 +258,12 @@ function UserPage({
       }
       */
     }
-  }, [doListIcon, viewPermissions]);
+  }, [doListIcon, doListIconReset, viewPermissions]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doReset();
-      doListUserOfGroup(true);
+      doListUserOfGroupReset();
+      doListUserOfGroup();
 
       const reloadListUserOfGroup = () => {
         doListUserOfGroup();
@@ -290,7 +295,7 @@ function UserPage({
         CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
       }
     }
-  }, [doListUserOfGroup, doReset, viewPermissions]);
+  }, [doListUserOfGroup, doListUserOfGroupReset, viewPermissions]);
 
   return (
     <Provider value={{
@@ -353,25 +358,26 @@ function UserPage({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doReset: () => {
-      dispatch(listRoomReset());
-      dispatch(listUserOfGroupReset());
-      dispatch(permissionUserReset());
-    },
-    doResetDetail: () => {
-      dispatch(detailRoomReset());
-      dispatch(getUserOfRoomReset());
-    },
     doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListRoomReset: () => dispatch(listRoomReset()),
     doDetailRoom: ({ roomId }, quite) => dispatch(detailRoom({ roomId }, quite)),
+    doDetailRoomReset: () => dispatch(detailRoomReset()),
     doGetUserOfRoom: ({ roomId }, quite) => dispatch(getUserOfRoom({ roomId }, quite)),
+    doGetUserOfRoomReset: () => dispatch(getUserOfRoomReset()),
     doListPosition: (quite) => dispatch(listPosition(quite)),
+    doListPositionReset: () => dispatch(listPositionReset()),
     doListMajor: (quite) => dispatch(listMajor(quite)),
+    doListMajorReset: () => dispatch(listMajorReset()),
     doListLevel: (quite) => dispatch(listLevel(quite)),
+    doListLevelReset: () => dispatch(listLevelReset()),
     doListUserRole: (quite) => dispatch(listUserRole(quite)),
+    doListUserRoleReset: () => dispatch(listUserRoleReset()),
     doListIcon: (quite) => dispatch(listIcon(quite)),
+    doListIconReset: () => dispatch(listIconReset()),
     doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
+    doListUserOfGroupReset: () => dispatch(listUserOfGroupReset()),
     doPermissionUser: (quite) => dispatch(permissionUser(quite)),
+    doPermissionUserReset: () => dispatch(permissionUserReset()),
     doGetPermissionViewUser: (quite) => dispatch(getPermissionViewUser(quite)),
   };
 };

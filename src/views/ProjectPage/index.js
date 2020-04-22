@@ -3,16 +3,16 @@ import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { getAllGroupTask } from '../../actions/groupTask/getAllGroupTask';
-import { listGroupTask } from '../../actions/groupTask/listGroupTask';
+import { getAllGroupTask, getAllGroupTaskReset } from '../../actions/groupTask/getAllGroupTask';
+import { listGroupTask, listGroupTaskReset } from '../../actions/groupTask/listGroupTask';
 import { detailProject, detailProjectReset } from '../../actions/project/detailProject';
 import { memberProject, memberProjectReset } from '../../actions/project/memberProject';
-import { permissionProject } from '../../actions/project/permissionProject';
-import { detailStatus } from '../../actions/project/setting/detailStatus';
-import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
+import { permissionProject, permissionProjectReset } from '../../actions/project/permissionProject';
+import { detailStatus, detailStatusReset } from '../../actions/project/setting/detailStatus';
+import { listProjectGroup, listProjectGroupReset } from '../../actions/projectGroup/listProjectGroup';
 import { listTask, listTaskReset } from '../../actions/task/listTask';
 import { getListTaskDetail } from '../../actions/taskDetail/taskDetailActions';
-import { listUserRole } from '../../actions/userRole/listUserRole';
+import { listUserRole, listUserRoleReset } from '../../actions/userRole/listUserRole';
 import { getPermissionViewDetailProject } from '../../actions/viewPermissions';
 import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import {
@@ -34,16 +34,18 @@ export const Context = React.createContext();
 const { Provider } = Context;
 
 function ProjectPage({
-  doListProjectGroup,
-  doDetailProject,
-  doMemberProject,
-  doListTask,
-  doListGroupTask, doGetAllGroupTask,
-  doListUserRole,
-  doDetailStatus,
+  doListProjectGroup, doListProjectGroupReset,
+  doDetailProject, doDetailProjectReset,
+  doMemberProject, doMemberProjectReset,
+  doListTask, doListTaskReset,
+  doListGroupTask, doListGroupTaskReset,
+  doGetAllGroupTask, doGetAllGroupTaskReset,
+  doListUserRole, doListUserRoleReset,
+  doDetailStatus, doDetailStatusReset,
+  doPermissionProject, doPermissionProjectReset,
   doGetListTaskDetail,
   doGetPermissionViewDetailProject,
-  route, viewPermissions, doPermissionProject,
+  route, viewPermissions,
   doReset,
 }) {
 
@@ -60,7 +62,8 @@ function ProjectPage({
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
-      doListProjectGroup(true);
+      doListProjectGroupReset();
+      doListProjectGroup();
 
       const reloadListProjectGroup = () => {
         doListProjectGroup(/*true*/);
@@ -82,13 +85,18 @@ function ProjectPage({
         //CustomEventDispose(DELETE_PROJECT, reloadListProjectGroup);
       }
     }
-  }, [doListProjectGroup, viewPermissions]);
+  }, [doListProjectGroup, doListProjectGroupReset, viewPermissions]);
+
+  React.useEffect(() => {
+    if (viewPermissions.permissions !== null) {
+      doDetailProjectReset();
+    }
+  }, [viewPermissions, doDetailProjectReset]);
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (projectId) {
-        doReset();
-        doDetailProject({ projectId }, true);
+        doDetailProject({ projectId });
 
         const reloadDetailProject = () => {
           doDetailProject({ projectId });
@@ -117,13 +125,18 @@ function ProjectPage({
         }
       }
     }
-  }, [projectId, doDetailProject, viewPermissions, doReset]);
+  }, [projectId, doDetailProject, viewPermissions]);
+
+  React.useEffect(() => {
+    if (get(viewPermissions.permissions, 'update_project', false)) {
+      doMemberProjectReset();
+    }
+  }, [viewPermissions, doMemberProjectReset]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
       if (projectId) {
-        doReset();
-        doMemberProject({ projectId }, true);
+        doMemberProject({ projectId });
 
         const reloadMemberProject = () => {
           doMemberProject({ projectId });
@@ -154,25 +167,31 @@ function ProjectPage({
         }
       }
     }
-  }, [projectId, doMemberProject, viewPermissions, doReset]);
+  }, [projectId, doMemberProject, viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
+      doPermissionProjectReset();
       doPermissionProject();
     }
-  }, [doPermissionProject, viewPermissions]);
+  }, [doPermissionProject, doPermissionProjectReset, viewPermissions]);
 
   const [timeRange, setTimeRange] = React.useState({});
 
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
+      doListTaskReset();
+    }
+  }, [viewPermissions, doListTaskReset]);
+
+  React.useEffect(() => {
+    if (viewPermissions.permissions !== null) {
       if (projectId) {
-        doReset();
         doListTask({
           projectId,
           timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
           timeEnd: get(timeRange, 'timeEnd') ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD') : undefined,
-        }, true);
+        });
 
         const reloadListTask = () => {
           doListTask({
@@ -203,12 +222,18 @@ function ProjectPage({
         }
       }
     }
-  }, [projectId, doListTask, timeRange, viewPermissions, doReset]);
+  }, [projectId, doListTask, timeRange, viewPermissions]);
+
+  React.useEffect(() => {
+    if (viewPermissions.permissions !== null) {
+      doListGroupTaskReset();
+    }
+  }, [doListGroupTaskReset, viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
       if (projectId) {
-        doListGroupTask({ projectId }, true);
+        doListGroupTask({ projectId });
 
 
         const reloadListGroupTask = () => {
@@ -235,7 +260,7 @@ function ProjectPage({
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
       if (projectId) {
-        doGetListTaskDetail({ projectId }, true);
+        doGetListTaskDetail({ projectId });
 
         const reloadGetListTaskDetail = () => {
           doGetListTaskDetail({ projectId });
@@ -258,7 +283,8 @@ function ProjectPage({
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
-      doGetAllGroupTask(true);
+      doGetAllGroupTaskReset();
+      doGetAllGroupTask();
 
       const reloadGetAllGroupTask = () => {
         doGetAllGroupTask(true);
@@ -278,11 +304,12 @@ function ProjectPage({
         CustomEventDispose(SORT_GROUP_TASK, reloadGetAllGroupTask);
       }
     }
-  }, [doGetAllGroupTask, viewPermissions]);
+  }, [doGetAllGroupTask, doGetAllGroupTaskReset, viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
-      doListUserRole(true);
+      doListUserRoleReset();
+      doListUserRole();
 
       /*
       const reloadListUserRole = () => {
@@ -300,16 +327,22 @@ function ProjectPage({
       }
       */
     }
-  }, [doListUserRole, viewPermissions]);
+  }, [doListUserRole, doListUserRoleReset, viewPermissions]);
 
   const [statusProjectId, setStatusProjectId] = React.useState(null);
+
+  React.useEffect(() => {
+    if (get(viewPermissions.permissions, 'update_project', false)) {
+      doDetailStatusReset()
+    }
+  }, [viewPermissions, doDetailStatusReset]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
       if (statusProjectId !== null) {
         doDetailStatus({
           projectId: statusProjectId,
-        }, true);
+        });
 
         /*
         const reloadDetailStatus = () => {
@@ -372,20 +405,24 @@ function ProjectPage({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doReset: () => {
-      dispatch(detailProjectReset());
-      dispatch(memberProjectReset());
-      dispatch(listTaskReset());
-    },
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doListProjectGroupReset: () => dispatch(listProjectGroupReset()),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
+    doDetailProjectReset: () => dispatch(detailProjectReset()),
     doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
+    doMemberProjectReset: () => dispatch(memberProjectReset()),
     doPermissionProject: (quite) => dispatch(permissionProject(quite)),
+    doPermissionProjectReset: () => dispatch(permissionProjectReset()),
     doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
+    doListTaskReset: () => dispatch(listTaskReset()),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
+    doListGroupTaskReset: () => dispatch(listGroupTaskReset()),
     doGetAllGroupTask: (quite) => dispatch(getAllGroupTask(quite)),
+    doGetAllGroupTaskReset: () => dispatch(getAllGroupTaskReset()),
     doListUserRole: (quite) => dispatch(listUserRole(quite)),
+    doListUserRoleReset: () => dispatch(listUserRoleReset()),
     doDetailStatus: ({ projectId }, quite) => dispatch(detailStatus({ projectId }, quite)),
+    doDetailStatusReset: () => dispatch(detailStatusReset()),
     doGetListTaskDetail: ({ projectId }) => dispatch(getListTaskDetail({ project_id: projectId })),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   }

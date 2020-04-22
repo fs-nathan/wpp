@@ -96,25 +96,6 @@ function ProjectList({
                   <CustomListItem canDrag={canModify} key={index} projectGroup={projectGroup} index={index} route={route} />
                 ))}
                 {provided.placeholder}
-                <StyledListItem
-                  to={`${route}/group/default`}
-                  component={Link}
-                >
-                  <div>
-                    <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                  </div>
-                  <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                  <ListItemText
-                    primary={
-                      <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.DEFAULT")}</StyledPrimary>
-                    }
-                    secondary={
-                      <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", {
-                        projectGroups: groups.defaultNumberProject
-                      })}</Secondary>
-                    }
-                  />
-                </StyledListItem>
               </StyledList>
             )}
           </Droppable>

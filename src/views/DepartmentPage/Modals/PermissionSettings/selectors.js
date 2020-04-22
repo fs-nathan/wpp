@@ -6,12 +6,13 @@ const permissionUser = state => state.user.permissionUser;
 export const permissionsSelector = createSelector(
   [permissionUser],
   (permissionUser) => {
-    const { data: { groupPermissions, adminPermission }, loading, error } = permissionUser;
+    const { data: { groupPermissions, adminPermission }, loading, error, firstTime } = permissionUser;
     return {
       groupPermissions,
       adminPermission,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 )

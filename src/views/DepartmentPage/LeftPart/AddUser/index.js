@@ -3,9 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { acceptRequirementJoinGroup } from '../../../../actions/groupUser/acceptRequirementJoinGroup';
 import { cancleInvitationJoinGroup } from '../../../../actions/groupUser/cancleInvitationJoinGroup';
-import { getListGroup } from '../../../../actions/groupUser/getListGroup';
-import { getListInvitationSent } from '../../../../actions/groupUser/getListInvitationSent';
-import { getRequirementJoinGroup } from '../../../../actions/groupUser/getRequirementJoinGroup';
+import { getListGroup, getListGroupReset } from '../../../../actions/groupUser/getListGroup';
+import { getListInvitationSent, getListInvitationSentReset } from '../../../../actions/groupUser/getListInvitationSent';
+import { getRequirementJoinGroup, getRequirementJoinGroupReset } from '../../../../actions/groupUser/getRequirementJoinGroup';
 import { inviteUserJoinGroup } from '../../../../actions/groupUser/inviteUserJoinGroup';
 import { rejectRequirementJoinGroup } from '../../../../actions/groupUser/rejectRequirementJoinGroup';
 import { resendInvitationUserJoinGroup } from '../../../../actions/groupUser/resendInvitationUserJoinGroup';
@@ -25,7 +25,9 @@ function AddUser({
   doSearchUser, doSearchUserReset,
   doInviteUserJoinGroup, doResendInvitationUserJoinGroup,
   doAcceptRequirementJoinGroup, doRejectRequirementJoinGroup,
-  doGetRequirementJoinGroup, doGetListGroup, doGetListInvitationSent,
+  doGetRequirementJoinGroup, doGetRequirementJoinGroupReset,
+  doGetListGroup, doGetListGroupReset,
+  doGetListInvitationSent, doGetListInvitationSentReset,
   doCancleInvitationJoinGroup,
   doActionVisibleDrawerMessage,
   doGetPermissionViewUser,
@@ -37,6 +39,12 @@ function AddUser({
   }, [doGetPermissionViewUser]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
+
+  React.useEffect(() => {
+    if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doSearchUserReset();
+    }
+  }, [doSearchUserReset, viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
@@ -60,6 +68,7 @@ function AddUser({
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doGetRequirementJoinGroupReset();
       doGetRequirementJoinGroup();
 
       const doGetRequirementJoinGroupHandler = () => {
@@ -74,10 +83,11 @@ function AddUser({
         CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
       }
     }
-  }, [doGetRequirementJoinGroup, viewPermissions]);
+  }, [doGetRequirementJoinGroup, doGetRequirementJoinGroupReset, viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doGetListGroupReset();
       doGetListGroup();
 
       const reloadGetListGroup = () => {
@@ -94,10 +104,11 @@ function AddUser({
         CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, reloadGetListGroup);
       }
     }
-  }, [doGetListGroup, viewPermissions]);
+  }, [doGetListGroup, doGetListGroupReset, viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doGetListInvitationSentReset();
       doGetListInvitationSent();
 
       const reloadGetListInvitationSent = () => {
@@ -114,7 +125,7 @@ function AddUser({
         CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, reloadGetListInvitationSent);
       }
     }
-  }, [doGetListInvitationSent, viewPermissions]);
+  }, [doGetListInvitationSent, doGetListInvitationSentReset, viewPermissions]);
 
   return (
     <AddUserPresenter
@@ -155,10 +166,13 @@ const mapDispatchToProps = dispatch => {
     doInviteUserJoinGroup: ({ userId }) => dispatch(inviteUserJoinGroup({ userId })),
     doResendInvitationUserJoinGroup: ({ userId }) => dispatch(resendInvitationUserJoinGroup({ userId })),
     doGetRequirementJoinGroup: (quite) => dispatch(getRequirementJoinGroup(quite)),
+    doGetRequirementJoinGroupReset: () => dispatch(getRequirementJoinGroupReset()),
     doGetListInvitationSent: (quite) => dispatch(getListInvitationSent(quite)),
+    doGetListInvitationSentReset: () => dispatch(getListInvitationSentReset()),
     doAcceptRequirementJoinGroup: ({ requirementId }) => dispatch(acceptRequirementJoinGroup({ requirementId })),
     doRejectRequirementJoinGroup: ({ requirementId }) => dispatch(rejectRequirementJoinGroup({ requirementId })),
     doGetListGroup: (quite) => dispatch(getListGroup(quite)),
+    doGetListGroupReset: () => dispatch(getListGroupReset()),
     doCancleInvitationJoinGroup: ({ invitationId }) => dispatch(cancleInvitationJoinGroup({ invitationId })),
     doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
     doGetPermissionViewUser: (quite) => dispatch(getPermissionViewUser(quite)),
