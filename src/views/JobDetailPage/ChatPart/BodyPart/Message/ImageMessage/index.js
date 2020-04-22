@@ -1,11 +1,11 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
-import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import ModalImage from 'views/JobDetailPage/ModalImage';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
@@ -27,7 +27,7 @@ const ImageMessage = ({
   chatPosition = "top",
 }) => {
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
 
   const [open, setOpen] = React.useState(false);
 

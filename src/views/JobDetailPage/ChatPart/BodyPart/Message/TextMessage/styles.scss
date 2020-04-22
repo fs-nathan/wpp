@@ -37,7 +37,7 @@
       }
     }
     &__haveParent {
-      padding: 0px;
+      padding: 10px 20px;
       background-color: #eaeaea;
     }
     &__top {
@@ -107,15 +107,23 @@
     font-weight: 500;
   }
   &--reply {
-    border-left: 3px solid #01a750;
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
-    padding: 0 5px;
-    background-color: #eaeaea;
+    // border-left: 3px solid #01a750;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 10px;
+    background-color: #f6f6f6;
+    margin: 0px;
+    width: 100%;
+  }
+  &__replyPosition {
+    margin-bottom: 10px;
   }
   &--reply &--content {
     font-size: 14px;
-    color: #5b5b5b;
+    color: #8e8e8e;
+    margin-top: 5px;
   }
   &--time {
     font-size: 12px;

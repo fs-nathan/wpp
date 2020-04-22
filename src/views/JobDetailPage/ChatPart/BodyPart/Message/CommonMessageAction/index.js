@@ -4,10 +4,10 @@ import Icon from '@mdi/react';
 import { chatEmotion, deleteChat } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
-import get from 'lodash/get';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
 
 const StyledButton = styled.button`
@@ -20,7 +20,7 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const emotionsList = useSelector(state => state.chat.emotionsList);
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorElEmotion, setAnchorElEmotion] = React.useState(null);
 
@@ -69,26 +69,26 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
 
   return (
     <div className={clsx("CommonMessageAction", { 'CommonMessageAction__self': isSelf })} >
-      <abbr title="Trả lời">
-        <StyledButton className="CommonMessageAction--button" onClick={handleReplyChat} colorHover={groupActiveColor}>
+      <StyledButton className="CommonMessageAction--button" onClick={handleReplyChat} colorHover={groupActiveColor}>
+        <abbr title="Trả lời">
           <Icon className="CommonMessageAction--icon" path={mdiCommentQuoteOutline} />
-        </StyledButton>
-      </abbr>
-      <abbr title="Chuyển tiếp">
-        <StyledButton className="CommonMessageAction--button" onClick={handleForwardChat} colorHover={groupActiveColor}>
+        </abbr>
+      </StyledButton>
+      <StyledButton className="CommonMessageAction--button" onClick={handleForwardChat} colorHover={groupActiveColor}>
+        <abbr title="Chuyển tiếp">
           <Icon className="CommonMessageAction--icon" path={mdiShare} />
-        </StyledButton>
-      </abbr>
-      <abbr title="Biểu cảm">
-        <StyledButton className="CommonMessageAction--button" onClick={handleClickEmotion} colorHover={groupActiveColor}>
+        </abbr>
+      </StyledButton>
+      <StyledButton className="CommonMessageAction--button" onClick={handleClickEmotion} colorHover={groupActiveColor}>
+        <abbr title="Biểu cảm">
           <Icon className="CommonMessageAction--icon" path={mdiThumbUp} />
-        </StyledButton>
-      </abbr>
-      <abbr title="Thêm">
-        <StyledButton className="CommonMessageAction--button" onClick={handleClick} colorHover={groupActiveColor}>
+        </abbr>
+      </StyledButton>
+      <StyledButton className="CommonMessageAction--button" onClick={handleClick} colorHover={groupActiveColor}>
+        <abbr title="Thêm">
           <Icon className="CommonMessageAction--icon" path={mdiDotsVertical} />
-        </StyledButton>
-      </abbr>
+        </abbr>
+      </StyledButton>
       <Menu
         id="CommonMessageAction-menu"
         anchorEl={anchorEl}

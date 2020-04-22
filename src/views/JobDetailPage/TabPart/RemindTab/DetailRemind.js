@@ -11,9 +11,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import { openCreateRemind, openDetailRemind } from 'actions/chat/chat';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
-import get from 'lodash/get';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
 
 const typesRemind = [
@@ -25,7 +25,7 @@ const typesRemind = [
 
 function DetailRemind() {
   const dispatch = useDispatch();
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   const isOpenDetailRemind = useSelector(state => state.chat.isOpenDetailRemind);
   const dataRemind = useSelector(state => state.chat.dataRemind);
 

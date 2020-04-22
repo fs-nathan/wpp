@@ -1,10 +1,10 @@
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import get from 'lodash/get';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import { getStatusName, priorityList } from '../data';
 import './styles.scss';
 
@@ -16,7 +16,7 @@ function OfferDetail({
   item,
   setOpen,
 }) {
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   const {
     user_create_avatar,
     user_create_name,

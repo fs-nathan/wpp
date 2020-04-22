@@ -90,5 +90,9 @@ export const replaceMultipleReg = (str = '', regex, replacer) => {
 }
 
 export function replaceUrl(str) {
-    return replaceMultipleReg(str, urlRegex, match => `<a href='${match}' target="_blank">${match}'</a>`)
+    const replacer = match => {
+        const url = match.indexOf('http') !== -1 ? match : `http://${match}`
+        return `<a href="${url}" target="_blank">${match}</a>`
+    }
+    return replaceMultipleReg(str, urlRegex, replacer)
 }

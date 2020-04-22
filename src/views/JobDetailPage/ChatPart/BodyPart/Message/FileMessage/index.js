@@ -3,12 +3,12 @@ import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
-import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import ModalImage from 'views/JobDetailPage/ModalImage';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
@@ -34,7 +34,7 @@ const FileMessage = ({
 }) => {
   const dispatch = useDispatch();
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
 
   const [open, setOpen] = React.useState(false);
 

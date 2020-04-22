@@ -4,9 +4,9 @@ import Icon from '@mdi/react';
 import { openDetailRemind } from 'actions/chat/chat';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
-import get from 'lodash/get';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import MemberMenuLists from './MemberMenuLists';
 import './styles.scss';
 
@@ -30,7 +30,7 @@ function RemindItem(props) {
     is_ghim,
   } = props
   const dispatch = useDispatch();
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   const [day, month] = created_at.split('/');
 
   function handleClickOpen() {

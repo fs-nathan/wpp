@@ -11,7 +11,7 @@ const ChatSticker = ({
   user_create_name,
   time_create,
   user_create_position,
-  user_create_roles,
+  user_create_roles = [],
   isReply,
   is_me,
   chatPosition = "top",
@@ -43,15 +43,12 @@ const ChatSticker = ({
           </div>
         }
         <div className="ImageMessage--imagesContainer" >
-          <div className={clsx("ImageMessage--wrap")} >
-            <img className="ImageMessage--img" src={sticker} alt="hd" />
-          </div>
+          <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
+            <div className={clsx("ImageMessage--wrap")} >
+              <img className="ImageMessage--img" src={sticker} alt="hd" />
+            </div>
+          </abbr>
         </div>
-        {!isReply &&
-          <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
-            {time_create}
-          </div>
-        }
       </div>
 
     </div>

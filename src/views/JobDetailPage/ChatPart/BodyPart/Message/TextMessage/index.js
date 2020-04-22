@@ -2,11 +2,11 @@ import { Avatar } from '@material-ui/core';
 import { createChatText, deleteFailedChat } from 'actions/chat/chat';
 import clsx from 'clsx';
 import { replaceUrl } from 'helpers/jobDetail/stringHelper';
-import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import FileMessage from '../FileMessage';
 import ImageMessage from '../ImageMessage';
@@ -55,7 +55,7 @@ const TextMessage = ({
   isFails,
 }) => {
   const dispatch = useDispatch();
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
   function getColor() {
@@ -74,7 +74,7 @@ const TextMessage = ({
 
   return (
     <>
-      <div className={clsx("TextMessage", `TextMessage__${chatPosition}`)}  >
+      <div className={clsx("TextMessage", { [`TextMessage__${chatPosition}`]: !isReply, [`TextMessage__replyPosition`]: isReply })}  >
         {!isReply && !is_me &&
           <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
         }
@@ -131,11 +131,13 @@ const TextMessage = ({
           <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
         }
       </div >
-      {isFails && <div className="bodyChat--sending">
-        <span className="bodyChat--sendingFail">Không thành công</span>
-        <span className="bodyChat--sendingDelete" onClick={onClickDeleteChat}>Xoá</span>
-        <span className="bodyChat--sendingResend" onClick={onClickResendChat}>Gửi lại</span>
-      </div>}
+      {
+        isFails && <div className="bodyChat--sending">
+          <span className="bodyChat--sendingFail">Không thành công</span>
+          <span className="bodyChat--sendingDelete" onClick={onClickDeleteChat}>Xoá</span>
+          <span className="bodyChat--sendingResend" onClick={onClickResendChat}>Gửi lại</span>
+        </div>
+      }
     </>
   );
 }

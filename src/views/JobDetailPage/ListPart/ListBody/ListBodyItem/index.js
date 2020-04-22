@@ -8,11 +8,11 @@ import clsx from 'classnames';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import SimpleDonutChart from 'components/SimpleDonutChart';
-import get from 'lodash/get';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -110,7 +110,7 @@ function JobUnit(props) {
 function ListBodyItem(props) {
   const history = useHistory();
   const dispatch = useDispatch();
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   // console.log({value})
 
   function onClickItem() {

@@ -8,18 +8,24 @@ import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-
 import 'draft-js-mention-plugin/lib/plugin.css';
 import Editor from 'draft-js-plugins-editor';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
-import get from 'lodash/get';
 import words from 'lodash/words';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLibraryModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import Message from '../BodyPart/Message';
 import '../Chat.scss';
 import './styles.scss';
 
+const StyledIcon = styled(Icon)`
+  &:hover {
+    color : ${props => props.hoverColor}
+  }
+`
 const { isSoftNewlineEvent } = KeyBindingUtil
 
 const positionSuggestions = ({ state, props }) => {
@@ -88,7 +94,7 @@ const FooterPart = ({
   const userId = useSelector(state => state.system.profile.order_user_id)
   const listStickers = useSelector(state => state.chat.listStickers);
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -324,12 +330,12 @@ const FooterPart = ({
   return (
     <div className="footer-chat-container">
       <div className="wrap-function-bar-fp">
-        <div >
+        <div>
           <IconButton className="icon-btn" onClick={openTag}>
-            <Icon path={mdiAt} size={1.2} />
+            <StyledIcon path={mdiAt} size={1.2} hoverColor={groupActiveColor} />
           </IconButton>
           <IconButton className="icon-btn" onClick={onClickOpenSticker}>
-            <Icon path={mdiEmoticon} size={1.2} />
+            <StyledIcon path={mdiEmoticon} size={1.2} />
           </IconButton>
           <IconButton
             className="icon-btn"
@@ -344,19 +350,19 @@ const FooterPart = ({
               multiple
               onChange={handleUploadImage}
             />
-            <Icon path={mdiImage} size={1.2} />
+            <StyledIcon path={mdiImage} size={1.2} />
           </IconButton>
           <IconButton
             className="icon-btn"
             onClick={() => setVisibleSendFile(true)}
           >
-            <Icon path={mdiPaperclip} size={1.2} />
+            <StyledIcon path={mdiPaperclip} size={1.2} />
           </IconButton>
           <IconButton className="icon-btn" onClick={onClickSubTask}>
-            <Icon path={mdiFileTree} size={1.2} />
+            <StyledIcon path={mdiFileTree} size={1.2} />
           </IconButton>
           <IconButton className="icon-btn" onClick={onClickRemind}>
-            <Icon path={mdiAlarmPlus} size={1.2} />
+            <StyledIcon path={mdiAlarmPlus} size={1.2} />
           </IconButton>
         </div>
       </div>
