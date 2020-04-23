@@ -10,9 +10,12 @@ import ModalImage from "views/JobDetailPage/ModalImage";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import "./TasksCard.css";
 
-const injectClassName = (classN) => (C) => {
+const injectClassName = (classN) => (C = "div") => {
   return ({ className, ...props }) => {
-    return <C className={classnames(classN, className)} {...props}></C>;
+    return React.createElement(C, {
+      className: classnames(classN, className),
+      ...props,
+    });
   };
 };
 const Container = injectClassName("comp_TasksCard__Container")((props) => {
@@ -20,11 +23,12 @@ const Container = injectClassName("comp_TasksCard__Container")((props) => {
 });
 const HeaderAvatar = injectClassName("comp_TasksCard__HeaderAvatar")(Avatar);
 const HeaderTitle = injectClassName("comp_TasksCard__HeaderTitle")((props) => (
-  <Typography component="div" {...props} />
+  <Typography component="span" {...props} />
 ));
-const HeaderSubTitle = injectClassName("comp_TasksCard__HeaderSubTitle")(
-  Typography
-);
+const HeaderSubTitle = injectClassName(
+  "comp_TasksCard__HeaderSubTitle"
+)((props) => <Typography component="span" {...props} />);
+const HighLight = injectClassName("comp_TasksCard__HighLight")();
 const Header = ({ className, avatar, title, subheader, action, ...props }) => {
   const classes = {
     root: "comp_TasksCard__Header",
@@ -113,4 +117,5 @@ export default {
   Header,
   Content,
   Media,
+  HighLight,
 };

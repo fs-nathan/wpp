@@ -1,5 +1,11 @@
-import { template } from "@hapi/joi/lib/errors";
-import { Avatar, Box, IconButton, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Box,
+  IconButton,
+  InputBase,
+  SvgIcon,
+  Typography,
+} from "@material-ui/core";
 import {
   AttachFileOutlined,
   CameraAltOutlined,
@@ -7,42 +13,38 @@ import {
   InsertEmoticonOutlined,
   MoreVert,
 } from "@material-ui/icons";
-import { mdiHeartOutline, mdiMessageOutline, mdiThumbUpOutline } from "@mdi/js";
+import {
+  mdiHeartOutline,
+  mdiMessageOutline,
+  mdiPin,
+  mdiThumbUpOutline,
+} from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
 import colors from "helpers/colorPalette";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs } from "views/JobPage/utils";
+import { createMapPropsFromAttrs, template } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
 import { postAttr } from "../contant/attrs";
+import { postModule } from "../redux/post";
 import AvatarGroup from "./AvatarGroup";
+import likeImage from "./like-image.jpg";
+import loveImage from "./love-image.png";
 import Message from "./Message";
 import { PostActionButton } from "./PostActionButton";
-const PostMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
-  const { t } = useTranslation();
-  const options = useMemo(() => {
-    return [
-      { key: "pin", label: t("Ghim") },
-      { key: "highLight", label: t("Nổi bật") },
-      { key: "delete", label: t("Xóa") },
-    ];
-  }, [t]);
-  const handleItemClick = (key) => {
-    switch (key) {
-      case "edit":
-        // setModal(<UpdateInfoGroupPermissionModal item={item} />);
-        break;
-      case "delete":
-        // setModal(<DeleteGroupPermissionModal item={item} />);
-        break;
-      default:
-        break;
-    }
-  };
+const PostMenu = ({
+  menuAnchor,
+  item,
+  options,
+  handleActionClick,
+  setMenuAnchor,
+}) => {
+  const handleItemClick = handleActionClick;
   return (
     <ItemMenu
       onItemClick={handleItemClick}
@@ -52,7 +54,48 @@ const PostMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
     ></ItemMenu>
   );
 };
-
+const CommentInput = React.memo(({ placeholder, handleComment }) => {
+  return (
+    <Box
+      alignSelf="flex-end"
+      margin="0 0 0 5px"
+      border="1px solid rgba(0, 0, 0, 0.12)"
+      minHeight={"40px"}
+      display="flex"
+      flex="1"
+      style={{ background: "#f5f6f7", borderRadius: "20px" }}
+      lineHeight={"30px"}
+      padding="0 8px"
+    >
+      <InputBase
+        onKeyPress={(e) => {
+          if (e.which == 13 || e.keyCode == 13) {
+            e.preventDefault();
+            handleComment(e.target.value);
+            e.target.value = "";
+          }
+        }}
+        multiline
+        style={{ flex: 1, padding: "5px 8px", lineHeight: 1.5 }}
+        placeholder={placeholder}
+      ></InputBase>
+      <Box display="flex" alignItems="center" height={"40px"}>
+        <IconButton size="small" aria-label="delete">
+          <InsertEmoticonOutlined />
+        </IconButton>
+        <IconButton size="small" aria-label="delete">
+          <CameraAltOutlined />
+        </IconButton>
+        <IconButton size="small" aria-label="delete">
+          <AttachFileOutlined />
+        </IconButton>
+        <IconButton size="small" aria-label="delete">
+          <ExtensionOutlined />
+        </IconButton>
+      </Box>
+    </Box>
+  );
+});
 const PostContext = React.createContext({});
 
 const Post = ({
@@ -75,9 +118,14 @@ const Post = ({
   category_name,
   number_love,
   total_comments,
+  is_highlight,
+  is_pin,
+  menuoptions,
+  handleActionClick,
+  handleComment,
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const { t } = useTranslation();
+  const [anchorEl, setAnchorEl] = React.useState(null);
   let otherNumber = Number(number_like) + Number(number_love);
   const hadLikeUser = last_like_user && last_like_user !== null;
   const hadLoveUser = last_love_user && last_love_user !== null;
@@ -125,10 +173,15 @@ const Post = ({
           }
           subheader={
             <TasksCard.HeaderSubTitle>
-              <StyledTypo color="orange" variant="subtitle1">
+              <StyledTypo component="span" color="orange" variant="subtitle1">
                 {category_name}{" "}
               </StyledTypo>
               {time_label}{" "}
+              {is_pin && (
+                <SvgIcon style={{ verticalAlign: "middle", padding: "0 10px" }}>
+                  <path d={mdiPin}></path>
+                </SvgIcon>
+              )}
             </TasksCard.HeaderSubTitle>
           }
         />
@@ -157,7 +210,7 @@ const Post = ({
                 padding: "0 20px",
               }}
             >
-              # Thông báo
+              # {category_name}
             </Typography>
           )}
           <Box padding="0 20px" display="flex" alignItems="center">
@@ -166,10 +219,8 @@ const Post = ({
                 size={20}
                 offset={-4}
                 images={[
-                  hadLikeUser &&
-                    "https://gfxmag.com/wp-content/uploads/2016/07/facebook-love-emoji-emoticon-icon-vector-logo-2.png",
-                  last_love_user &&
-                    "https://cdn.imgbin.com/10/17/22/imgbin-facebook-like-button-computer-icons-facebook-facebook-like-logo-7Tce85njFXnFkt7uDFwLHY3Wq.jpg",
+                  hadLikeUser && likeImage,
+                  hadLoveUser && loveImage,
                 ].filter((item) => item)}
               ></AvatarGroup>
             </Box>
@@ -215,11 +266,13 @@ const Post = ({
             alignItems="center"
           >
             <PostActionButton
+              onClick={() => handleActionClick("love")}
               startIcon={<Icon path={mdiHeartOutline} size={1} />}
             >
               <span>{t("Yêu")}</span>
             </PostActionButton>
             <PostActionButton
+              onClick={() => handleActionClick("like")}
               startIcon={<Icon path={mdiThumbUpOutline} size={1} />}
             >
               {t("Thích")}
@@ -242,6 +295,8 @@ const Post = ({
             <Typography color="textSecondary">3/181</Typography>
           </Box>
         </Stack>
+        {is_highlight && <TasksCard.HighLight />}
+
         <TasksCard.Content>
           <Stack>
             {comments.map((c, i) => (
@@ -249,40 +304,20 @@ const Post = ({
             ))}
             <Box display="flex" alignItems="flex-start">
               <Avatar>A</Avatar>
-              <Box
-                margin="0 0 0 5px"
-                border="1px solid rgba(0, 0, 0, 0.12)"
-                height={"40px"}
-                display="flex"
-                flex="1"
-                style={{ background: "#f5f6f7", borderRadius: "20px" }}
-                lineHeight={"30px"}
-                padding="0 8px"
-                alignItems="center"
-              >
-                <Box flex="1" padding="5px 8px">
-                  {t("Viết bình luận")}
-                </Box>
-                <div>
-                  <IconButton size="small" aria-label="delete">
-                    <InsertEmoticonOutlined />
-                  </IconButton>
-                  <IconButton size="small" aria-label="delete">
-                    <CameraAltOutlined />
-                  </IconButton>
-                  <IconButton size="small" aria-label="delete">
-                    <AttachFileOutlined />
-                  </IconButton>
-                  <IconButton size="small" aria-label="delete">
-                    <ExtensionOutlined />
-                  </IconButton>
-                </div>
-              </Box>
+              <CommentInput
+                handleComment={handleComment}
+                placeholder={t("Viết bình luận")}
+              />
             </Box>
           </Stack>
         </TasksCard.Content>
       </TasksCard.Container>
-      <PostMenu menuAnchor={anchorEl} setMenuAnchor={setAnchorEl} />
+      <PostMenu
+        menuAnchor={anchorEl}
+        handleActionClick={handleActionClick}
+        setMenuAnchor={setAnchorEl}
+        options={menuoptions}
+      />
     </>
   );
 };
@@ -308,6 +343,8 @@ export default ({ post }) => {
     category_name,
     total_comments,
     number_love,
+    is_highlight,
+    is_pin,
   ] = createMapPropsFromAttrs([
     postAttr.id,
     postAttr.title,
@@ -328,7 +365,59 @@ export default ({ post }) => {
     postAttr.category_name,
     postAttr.total_comments,
     postAttr.number_love,
+    postAttr.is_highlight,
+    postAttr.is_pin,
   ])(post);
+  const dispatch = useDispatch();
+  const handleActionClick = useCallback(
+    (key) => {
+      switch (key) {
+        case "highLight":
+          dispatch(postModule.actions.makePostHighLight({ post_id: id }));
+          break;
+        case "cancel-highLight":
+          dispatch(postModule.actions.cancelPostHighLight({ post_id: id }));
+        case "pin":
+          dispatch(postModule.actions.pinPost({ post_id: id }));
+          break;
+        case "cancel-pin":
+          dispatch(postModule.actions.cancelPinPost({ post_id: id }));
+          break;
+        case "delete":
+          dispatch(postModule.actions.deletePost({ post_id: id }));
+          break;
+        case "like":
+          dispatch(postModule.actions.like({ post_id: id }));
+          break;
+        case "love":
+          dispatch(postModule.actions.love({ post_id: id }));
+          break;
+        default:
+          break;
+      }
+    },
+    [id]
+  );
+  const { t } = useTranslation();
+
+  const menuoptions = useMemo(() => {
+    return [
+      !is_pin
+        ? { key: "pin", label: t("Ghim") }
+        : { key: "cancel-pin", label: t("Bỏ ghim") },
+      !is_highlight
+        ? { key: "highLight", label: t("Nổi bật") }
+        : { key: "cancel-highLight", label: t("Bỏ nổi bật") },
+      { key: "delete", label: t("Xóa") },
+    ];
+  }, [t, is_pin, is_highlight]);
+
+  const handleComment = useCallback(
+    (value) => {
+      dispatch(postModule.actions.comment({ post_id: id, content: value }));
+    },
+    [id]
+  );
   return (
     <PostContext.Provider
       value={{
@@ -351,6 +440,11 @@ export default ({ post }) => {
         category_name,
         total_comments,
         number_love,
+        is_highlight,
+        is_pin,
+        menuoptions,
+        handleActionClick,
+        handleComment,
       }}
     >
       <Post
@@ -374,6 +468,11 @@ export default ({ post }) => {
           category_name,
           total_comments,
           number_love,
+          is_highlight,
+          is_pin,
+          menuoptions,
+          handleActionClick,
+          handleComment,
         }}
       />
     </PostContext.Provider>
