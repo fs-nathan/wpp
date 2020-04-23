@@ -27,7 +27,9 @@ const DialogMessageWrap = ({
         {titleHeader}
       </div>
       {user_create_name && <div className="DialogMessageWrap--sender" >
-        <Avatar className="DialogMessageWrap--avatar" src={user_create_avatar} />
+        <abbr title={user_create_name}>
+          <Avatar className="DialogMessageWrap--avatar" src={user_create_avatar} />
+        </abbr>
       </div>}
       <div className="DialogMessageWrap--title" >
         <span className="DialogMessageWrap--name" >

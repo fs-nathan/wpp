@@ -1,13 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import Icon from '@mdi/react';
+import { IconButton, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
-import {
-  ListItem, ListItemAvatar, ListItemText,
-  IconButton, Menu, MenuItem,
-  ListSubheader, ListItemIcon,
-} from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import Icon from '@mdi/react';
+import { deleteShareLocation } from 'actions/taskDetail/taskDetailActions';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import ColorTypo from '../../../../../components/ColorTypo';
 
 const HeaderSubText = styled(ListSubheader)`
@@ -41,6 +38,8 @@ const ButtonIcon = styled(IconButton)`
 `
 
 const CustomListItem = () => {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -50,6 +49,12 @@ const CustomListItem = () => {
   const handleClose = () => {
     setAnchorEl(null);
   }
+
+  const handleDelete = (id) => () => {
+    handleClose();
+    dispatch(deleteShareLocation(taskId, id))
+  }
+
   let locationArr = useSelector(state => state.taskDetail.location.locations);
   return (
     <ListItem>
@@ -95,7 +100,7 @@ const CustomListItem = () => {
                   >
                     <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
                     <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-                    <MenuItem onClick={handleClose}>Xóa</MenuItem>
+                    <MenuItem onClick={handleDelete(item.id)}>Xóa</MenuItem>
                   </Menu>
                 </div>
               )

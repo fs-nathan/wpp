@@ -8,8 +8,6 @@ export const initialState = {
   dataFetched: false,
   error: false,
   showIndex: 0,
-  payload: null,
-  payload: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -63,6 +61,10 @@ export default (state = initialState, action) => produce(state, draft => {
     case types.CANCEL_STOP_TASK_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      break;
+    }
+    case types.DELETE_SHARE_LOCATION_SUCCESS: {
+      const { payload } = action;
       break;
     }
   }

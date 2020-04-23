@@ -13,11 +13,13 @@ import DeleteCommandDecided from './DeleteCommandDecided';
 import DeleteFile from './DeleteFile';
 import DeleteOffer from './DeleteOffer';
 import DeleteRemind from './DeleteRemind';
+import DeleteShareLocation from './DeleteShareLocation';
 import DeleteSubTask from './DeleteSubTask';
 import EditPriority from './EditPriority';
 import ExtendTime from './ExtendTime';
 import FileMessage from './FileMessage';
 import HandleOffer from './HandleOffer';
+import HandleRemindWithDuration from './HandleRemindWithDuration';
 import ImageMessage from './ImageMessage';
 import PinRemind from './PinRemind';
 import PinTask from './PinTask';
@@ -27,9 +29,17 @@ import RemoveMember from './RemoveMember';
 import ShareLocation from './ShareLocation';
 import StopTask from './StopTask';
 import TextMessage from './TextMessage';
+import UpdateCommandDecided from './UpdateCommandDecided';
 import UpdateComplete from './UpdateComplete';
 import UpdateDurationMessage from './UpdateDurationMessage';
+import UpdateGroupTask from './UpdateGroupTask';
+import UpdateOffer from './UpdateOffer';
+import UpdateRemind from './UpdateRemind';
+import UpdateRoleMember from './UpdateRoleMember';
+import UpdateScheduleTask from './UpdateScheduleTask';
+import UpdateSubtask from './UpdateSubtask';
 import UpdateTaskNameMessage from './UpdateTaskNameMessage';
+import UpdateTypeAssignTask from './UpdateTypeAssignTask';
 
 const Message = props => {
   if (props.type === undefined) return null;
@@ -99,6 +109,26 @@ const Message = props => {
       return <ChatSticker {...props} />;
     case CHAT_TYPE.QUICK_LIKE:
       return <QuickLike {...props} />;
+    case CHAT_TYPE.UPDATE_GROUP_TASK:
+      return <UpdateGroupTask {...props} />;
+    case CHAT_TYPE.UPDATE_TYPE_ASSIGN_TASK:
+      return <UpdateTypeAssignTask {...props} />;
+    case CHAT_TYPE.UPDATE_SCHEDULE_TASK:
+      return <UpdateScheduleTask {...props} />;
+    case CHAT_TYPE.DELETE_SHARE_LOCATION:
+      return <DeleteShareLocation {...props} />;
+    case CHAT_TYPE.UPDATE_SUBTASK:
+      return <UpdateSubtask {...props} />;
+    case CHAT_TYPE.UPDATE_REMIND:
+      return <UpdateRemind {...props} />;
+    case CHAT_TYPE.UPDATE_OFFER:
+      return <UpdateOffer {...props} />;
+    case CHAT_TYPE.UPDATE_COMMAND_DECIDED:
+      return <UpdateCommandDecided {...props} />;
+    case CHAT_TYPE.UPDATE_ROLE_MEMBER:
+      return <UpdateRoleMember {...props} />;
+    case CHAT_TYPE.HANDLE_REMIND_WITH_DURATION:
+      return <HandleRemindWithDuration {...props} />;
     case CHAT_TYPE.UPLOADING_IMAGES:
       return <ImageMessage {...props} />;
     case CHAT_TYPE.UPLOADING_FILE:

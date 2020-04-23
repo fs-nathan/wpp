@@ -246,6 +246,7 @@ function* postRemindDuration(action) {
     const res = yield call(doPostRemindDuration, action.options);
     yield put(actions.postRemindDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.task_id }));
+    yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postRemindDurationFail(error));
@@ -1461,6 +1462,17 @@ export function* cancelStopTask(payload) {
   } catch (error) {
     yield put(actions.cancelStopTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
+export function* deleteShareLocation(payload) {
+  try {
+    const { task_id, location_share_id } = payload;
+    const res = yield call(apiService.post, "/task/delete-share-location", { task_id, location_share_id });
+    yield put(actions.deleteShareLocationSuccess(res.data));
+    yield put(appendChat(res.data));
+  } catch (error) {
+    yield put(actions.deleteShareLocationFail(error));
   }
 }
 

@@ -1037,3 +1037,24 @@ export function cancelStopTaskFail(error) {
         error
     };
 }
+
+export function deleteShareLocation(task_id, location_share_id) {
+    return {
+        type: types.DELETE_SHARE_LOCATION,
+        task_id, location_share_id
+    };
+}
+
+export function deleteShareLocationSuccess(payload) {
+    return {
+        type: types.DELETE_SHARE_LOCATION_SUCCESS,
+        payload
+    };
+}
+
+export function deleteShareLocationFail(error) {
+    return {
+        type: types.DELETE_SHARE_LOCATION_FAIL,
+        error
+    };
+}

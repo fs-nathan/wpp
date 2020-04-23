@@ -558,6 +558,11 @@ function* rootSaga() {
     taskDetailType.CANCEL_STOP_TASK,
     taskDetailSaga.cancelStopTask
   );
+  // stop task
+  yield takeLeading(
+    taskDetailType.DELETE_SHARE_LOCATION,
+    taskDetailSaga.deleteShareLocation
+  );
   //chat 
   yield takeLeading(
     chatTypes.DELETE_CHAT,
