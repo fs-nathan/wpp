@@ -1,20 +1,17 @@
 import { IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import React, { useContext } from "react";
+import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
-import { JobPageContext } from "../JobPageContext";
 import "./QuickView.css";
 
-function QuickView({ title, children, bottom }) {
-  const { handleClose } = useContext(JobPageContext);
-
+function QuickView({ title, onClose, children, bottom }) {
   return (
     // <ClickAwayListener onClickAway={handleClose}>
     <div className="comp_QuickViewWrapper">
       <div className="comp_QuickViewHeader">
         <div className="comp_QuickViewHeaderLeft">{title}</div>
         <div className="comp_QuickViewHeaderRight">
-          <IconButton onClick={handleClose}>
+          <IconButton onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </div>
