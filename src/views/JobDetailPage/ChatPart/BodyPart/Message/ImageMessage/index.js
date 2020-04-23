@@ -49,7 +49,9 @@ const ImageMessage = ({
   return (
     <div className={clsx("ImageMessage", `ImageMessage__${chatPosition}`)} >
       {!isReply && !is_me &&
-        <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        <abbr title={user_create_name}>
+          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        </abbr>
       }
       {!isReply && is_me &&
         <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
@@ -64,7 +66,7 @@ const ImageMessage = ({
             {isReply &&
               <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
             }
-            <div className="TextMessage--name"  >
+            {/* <div className="TextMessage--name"  >
               {user_create_name}
             </div>
             <div className="TextMessage--position"  >
@@ -74,7 +76,7 @@ const ImageMessage = ({
               <div className="TextMessage--room"  >
                 {user_create_roles[0]}
               </div>
-            }
+            } */}
           </div>
         }
         <div className="ImageMessage--imagesContainer" >

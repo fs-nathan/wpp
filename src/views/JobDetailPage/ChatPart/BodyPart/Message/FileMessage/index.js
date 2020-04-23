@@ -72,7 +72,9 @@ const FileMessage = ({
   return (
     <div className={clsx("FileMessage", `TextMessage__${chatPosition}`)}  >
       {!isReply && !is_me &&
-        <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        <abbr title={user_create_name}>
+          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        </abbr>
       }
       {!isReply && is_me &&
         <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
@@ -120,7 +122,7 @@ const FileMessage = ({
                   </div>
                   {isUploading &&
                     <div className="FileMessage--loading" >
-                      Đang tải:
+                      Đang tải
                   <div className="FileMessage--loadingBackground" >
                         <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
                         </div>

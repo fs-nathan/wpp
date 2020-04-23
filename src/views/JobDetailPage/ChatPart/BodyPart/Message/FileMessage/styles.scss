@@ -27,12 +27,14 @@
   }
   &--loading {
     display: flex;
+    min-width: 230px;
   }
   &--loadingBackground {
-    height: 10px;
-    background-color: #e6e6e6;
-    width: 60%;
-    margin: auto 4px;
+    padding: 2px 3px;
+    width: 120px;
+    height: 6px;
+    background-color: #eaeaea;
+    margin: auto 10px;
     border-radius: 10px;
   }
   &--loadingPercent {

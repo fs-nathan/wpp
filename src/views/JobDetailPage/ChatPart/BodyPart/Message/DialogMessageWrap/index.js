@@ -22,7 +22,7 @@ const DialogMessageWrap = ({
 }) => {
 
   return (
-    <div className={clsx("DialogMessageWrap", `TextMessage__${chatPosition}`, className)} >
+    <div className={clsx("DialogMessageWrap", className)} >
       <div className="DialogMessageWrap--header" >
         {titleHeader}
       </div>

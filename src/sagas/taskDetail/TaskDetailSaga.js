@@ -716,7 +716,7 @@ function* createCommand(action) {
     const res = yield call(doCreateCommand, action.payload);
     yield put(actions.createCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
-    yield put(appendChat(res));
+    yield put(appendChat({ data_chat: res.data }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createCommandFail(error));

@@ -41,6 +41,8 @@ const BodyPart = props => {
   useEffect(() => {
     if (plusMember > 0) {
       setShowMembers(viewedChatMembers.slice(0, imgNum))
+    } else {
+      setShowMembers(viewedChatMembers)
     }
     // eslint-disable-next-line
   }, [viewedChatMembers])
@@ -99,11 +101,11 @@ const BodyPart = props => {
     user_create = {},
   } = detailTask || {}
   useEffect(() => {
-    if (chatRef && chatRef.current) {
+    if (chatRef && chatRef.current && chats.data && chats.data.length) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
       // console.log(chatRef)
     }
-  }, [chatRef]);
+  }, [chatRef, chats.data]);
   useEffect(() => {
     const task_id = queryString.parse(props.location.search).task_id
     dispatch(loadChat(task_id));
@@ -225,7 +227,11 @@ const BodyPart = props => {
         {
           viewedChatMembers.length > 0 &&
           <div className="bodyChat--viewed" onClick={onClickDetailViewed}>
-            Đã xem {showMembers.map(({ avatar }, i) => <Avatar key={i} className="bodyChat--viewedAvatar" src={avatar} />)}
+            Đã xem {showMembers.map(({ avatar, name }, i) =>
+            <abbr title={name}>
+              <Avatar key={i} className="bodyChat--viewedAvatar" src={avatar} />
+            </abbr>
+          )}
             {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
           </div>
         }

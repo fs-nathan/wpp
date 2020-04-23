@@ -25,7 +25,7 @@ function getRichContent(content = '', tags, color) {
   if (!content) return '';
   let ret = content;
   tags.forEach(({ id, name }) => {
-    let reg = new RegExp(`@${id}`, 'g');
+    let reg = new RegExp(`{${id}}`, 'g');
     ret = ret.replace(reg, `<span class="TextMessage--tag" style="color: ${color};">@${name}</span>`);
   })
   // console.log(matches)
@@ -76,7 +76,9 @@ const TextMessage = ({
     <>
       <div className={clsx("TextMessage", { [`TextMessage__${chatPosition}`]: !isReply, [`TextMessage__replyPosition`]: isReply })}  >
         {!isReply && !is_me &&
-          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <abbr title={user_create_name}>
+            <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          </abbr>
         }
         {!isReply && is_me &&
           <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}

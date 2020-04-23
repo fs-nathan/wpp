@@ -20,28 +20,11 @@ const ChatSticker = ({
   return (
     <div className={clsx("ChatSticker", `TextMessage__${chatPosition}`)} >
       {!isReply && !is_me &&
-        <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        <abbr title={user_create_name}>
+          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        </abbr>
       }
       <div className={clsx("ImageMessage--rightContentWrap", { "ImageMessage--rightContentWrap__self": is_me })} >
-        {
-          chatPosition === 'top' && !is_me &&
-          <div className="ImageMessage--sender"  >
-            {isReply &&
-              <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
-            }
-            <div className="TextMessage--name"  >
-              {user_create_name}
-            </div>
-            <div className="TextMessage--position"  >
-              {user_create_position}
-            </div>
-            {user_create_roles[0] &&
-              <div className="TextMessage--room"  >
-                {user_create_roles[0]}
-              </div>
-            }
-          </div>
-        }
         <div className="ImageMessage--imagesContainer" >
           <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
             <div className={clsx("ImageMessage--wrap")} >
