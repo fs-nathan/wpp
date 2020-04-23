@@ -92,7 +92,7 @@ const FooterPart = ({
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const tagMembers = useSelector(state => state.chat.tagMembers);
-  const userId = useSelector(state => state.system.profile.order_user_id)
+  const userId = useSelector(state => state.system.profile.id)
   const listStickers = useSelector(state => state.chat.listStickers);
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
   const groupActiveColor = useSelector(currentColorSelector)

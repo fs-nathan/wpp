@@ -1471,8 +1471,10 @@ export function* deleteShareLocation(payload) {
     const res = yield call(apiService.post, "/task/delete-share-location", { task_id, location_share_id });
     yield put(actions.deleteShareLocationSuccess(res.data));
     yield put(appendChat(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteShareLocationFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

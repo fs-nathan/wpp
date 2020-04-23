@@ -19,7 +19,7 @@ const BodyPart = props => {
   const chatRef = useRef();
   const dispatch = useDispatch();
   const chats = useSelector(state => state.chat.chats);
-  // const userId = useSelector(state => state.system.profile.order_user_id)
+  const userId = useSelector(state => state.system.profile.id);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const searchChatKey = useSelector(state => state.chat.searchChatKey)
@@ -86,11 +86,11 @@ const BodyPart = props => {
           }
         }
       }
-      return { ...chat, chatPosition }
+      return { ...chat, chatPosition, is_me: userId === chat.user_create_id }
     })
 
     setShowChats(calculatedChats)
-  }, [chats.data, searchChatKey])
+  }, [chats.data, searchChatKey, userId])
 
   const {
     date_create,
