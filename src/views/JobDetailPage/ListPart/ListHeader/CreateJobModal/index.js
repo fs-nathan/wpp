@@ -1,7 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, updateNameDescriptionTask } from 'actions/taskDetail/taskDetailActions';
+import { createTask, updateGroupTask, updateNameDescription, updatePriority, updateScheduleAssign, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import TextEditor, { getEditorData } from 'components/TextEditor';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
@@ -91,7 +91,7 @@ function CreateJobModal(props) {
   const isEdit = props.editMode !== null && props.editMode !== undefined;
 
   const updateData = () => {
-    const dataNameDescription = {
+    const updateData = {
       task_id: taskId,
       name: data.name,
       description: JSON.stringify(convertToRaw(data.description.getCurrentContent())),
@@ -104,7 +104,27 @@ function CreateJobModal(props) {
       group_task: data.group_task,
       type_assign: data.type_assign.id,
     }
-    dispatch(updateNameDescriptionTask(dataNameDescription));
+    // dispatch(updateNameDescriptionTask(dataNameDescription));
+    switch (props.editMode) {
+      case EDIT_MODE.NAME_DES:
+        dispatch(updateNameDescription(taskId, data.name, updateData.description));
+        break;
+      case EDIT_MODE.PRIORITY:
+        dispatch(updatePriority(taskId, data.priority));
+        break;
+      case EDIT_MODE.WORK_DATE:
+        dispatch(updateScheduleAssign(taskId, data.name, updateData.description));
+        break;
+      case EDIT_MODE.ASSIGN_TYPE:
+        dispatch(updateTypeAssign(taskId, data.type_assign.id));
+        break;
+      case EDIT_MODE.GROUP:
+        dispatch(updateGroupTask(taskId, data.group_task));
+        break;
+
+      default:
+        break;
+    }
     props.setOpen(false);
   };
 

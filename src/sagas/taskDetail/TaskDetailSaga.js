@@ -27,6 +27,7 @@ function* updatePriority(action) {
     yield put(actions.updatePrioritySuccess(res));
     yield put(actions.getTaskDetailTabPart(action.payload.task_id));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(appendChat(res));
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.updatePriorityFail(error));
@@ -1474,6 +1475,57 @@ export function* deleteShareLocation(payload) {
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteShareLocationFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
+export function* updateNameDescription(payload) {
+  try {
+    const { task_id, name, description } = payload;
+    const res = yield call(apiService.put, "/task/update-name-description", { task_id, name, description });
+    yield put(actions.updateNameDescriptionSuccess(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(appendChat(res.data));
+  } catch (error) {
+    yield put(actions.updateNameDescriptionFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
+export function* updateGroupTask(payload) {
+  try {
+    const { task_id, group_task } = payload;
+    const res = yield call(apiService.put, "/task/update-group-task", { task_id, group_task });
+    yield put(actions.updateGroupTaskSuccess(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(appendChat(res.data));
+  } catch (error) {
+    yield put(actions.updateGroupTaskFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
+export function* updateTypeAssign(payload) {
+  try {
+    const { task_id, type_assign } = payload;
+    const res = yield call(apiService.put, "/task/update-type-assign", { task_id, type_assign });
+    yield put(actions.updateTypeAssignSuccess(res.data));
+    yield put(appendChat(res.data));
+  } catch (error) {
+    yield put(actions.updateTypeAssignFail(error));
+  }
+}
+
+export function* updateScheduleAssign(payload) {
+  try {
+    const { task_id, schedule_id } = payload;
+    const res = yield call(apiService.put, "/task/update-schedule-assign", { task_id, schedule_id });
+    yield put(actions.updateScheduleAssignSuccess(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(appendChat(res.data));
+    yield put(appendChat(res.data));
+  } catch (error) {
+    yield put(actions.updateScheduleAssignFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

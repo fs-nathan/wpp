@@ -558,10 +558,27 @@ function* rootSaga() {
     taskDetailType.CANCEL_STOP_TASK,
     taskDetailSaga.cancelStopTask
   );
-  // stop task
+  // delete share location
   yield takeLeading(
     taskDetailType.DELETE_SHARE_LOCATION,
     taskDetailSaga.deleteShareLocation
+  );
+  // update task
+  yield takeLeading(
+    taskDetailType.UPDATE_NAME_DESCRIPTION,
+    taskDetailSaga.updateNameDescription
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_GROUP_TASK,
+    taskDetailSaga.updateGroupTask
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_TYPE_ASSIGN,
+    taskDetailSaga.updateTypeAssign
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_SCHEDULE_ASSIGN,
+    taskDetailSaga.updateScheduleAssign
   );
   //chat 
   yield takeLeading(

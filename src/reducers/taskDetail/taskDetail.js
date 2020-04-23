@@ -67,5 +67,25 @@ export default (state = initialState, action) => produce(state, draft => {
       const { payload } = action;
       break;
     }
+    case types.UPDATE_NAME_DESCRIPTION_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
+      break;
+    }
+    case types.UPDATE_GROUP_TASK_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
+      break;
+    }
+    case types.UPDATE_TYPE_ASSIGN_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
+      break;
+    }
+    case types.UPDATE_SCHEDULE_ASSIGN_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
+      break;
+    }
   }
 });

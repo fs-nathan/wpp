@@ -490,9 +490,9 @@ export const getTaskDetailTabPartFail = (error) => ({
 });
 
 // Update Priority
-export const updatePriority = payload => ({
+export const updatePriority = (task_id, priority) => ({
     type: types.UPDATE_TASK_PRIORITY_REQUEST,
-    payload
+    payload: { task_id, priority }
 })
 export const updatePrioritySuccess = payload => ({
     type: types.UPDATE_TASK_PRIORITY_SUCCESS,
@@ -1055,6 +1055,90 @@ export function deleteShareLocationSuccess(payload) {
 export function deleteShareLocationFail(error) {
     return {
         type: types.DELETE_SHARE_LOCATION_FAIL,
+        error
+    };
+}
+
+export function updateNameDescription(task_id, name, description) {
+    return {
+        type: types.UPDATE_NAME_DESCRIPTION,
+        task_id, name, description
+    };
+}
+
+export function updateNameDescriptionSuccess(payload) {
+    return {
+        type: types.UPDATE_NAME_DESCRIPTION_SUCCESS,
+        payload
+    };
+}
+
+export function updateNameDescriptionFail(error) {
+    return {
+        type: types.UPDATE_NAME_DESCRIPTION_FAIL,
+        error
+    };
+}
+
+export function updateGroupTask(task_id, group_task) {
+    return {
+        type: types.UPDATE_GROUP_TASK,
+        task_id, group_task
+    };
+}
+
+export function updateGroupTaskSuccess(payload) {
+    return {
+        type: types.UPDATE_GROUP_TASK_SUCCESS,
+        payload
+    };
+}
+
+export function updateGroupTaskFail(error) {
+    return {
+        type: types.UPDATE_GROUP_TASK_FAIL,
+        error
+    };
+}
+
+export function updateTypeAssign(task_id, type_assign) {
+    return {
+        type: types.UPDATE_TYPE_ASSIGN,
+        task_id, type_assign
+    };
+}
+
+export function updateTypeAssignSuccess(payload) {
+    return {
+        type: types.UPDATE_TYPE_ASSIGN_SUCCESS,
+        payload
+    };
+}
+
+export function updateTypeAssignFail(error) {
+    return {
+        type: types.UPDATE_TYPE_ASSIGN_FAIL,
+        error
+    };
+}
+
+export function updateScheduleAssign(task_id, schedule_id) {
+    return {
+        type: types.UPDATE_SCHEDULE_ASSIGN,
+        task_id, schedule_id
+    };
+}
+
+export function updateScheduleAssignSuccess(payload) {
+    return {
+        type: types.UPDATE_SCHEDULE_ASSIGN_SUCCESS,
+        payload
+    };
+}
+
+export function updateScheduleAssignFail(error) {
+    return {
+        type: types.UPDATE_SCHEDULE_ASSIGN_FAIL,
         error
     };
 }
