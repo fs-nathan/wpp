@@ -1,0 +1,14 @@
+.mt_5 {
+  margin-top: 5px;
+}
+
+.legend_index {
+  font-weight: 600;
+  font-size: 20px;
+  margin-right: 10px
+}
+
+.legend_index_percent {
+  font-weight: 600;
+  font-size: 12px;
+}

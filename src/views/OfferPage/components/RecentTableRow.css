@@ -1,0 +1,48 @@
+.comp_RecentTableRow {
+  font-size: 13px;
+}
+.comp_QuickViewCell {
+  color: #03a9f4;
+}
+.comp_TitleCell {
+  padding: 10px;
+}
+.comp_TitleCell__inner {
+  display: flex;
+}
+.comp_HasMessage {
+  vertical-align: middle;
+  width: 1.5rem;
+  fill: #f44336;
+}
+.comp_TaskTitleLink {
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comp_LabelWrap {
+  flex: 1;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+.comp_TaskTitleLink:hover {
+  /* text-decoration: underline; */
+  color: #0089f6;
+}
+.comp_TaskTitleLink__complete {
+  color: #03c30b;
+  text-decoration: line-through;
+}
+.comp_SmallAvatar {
+  width: 25px;
+  height: 25px;
+}
+.comp_QuickViewCell,
+.comp_DurationCell,
+.comp_EndTimeCell {
+  font-size: 13px;
+}
