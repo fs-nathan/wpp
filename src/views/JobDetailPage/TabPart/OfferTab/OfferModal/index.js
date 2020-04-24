@@ -141,7 +141,7 @@ const OfferModal = (props) => {
         title: tempSelectedItem.title,
         content: tempSelectedItem.content,
         offer_group_id: get(tempSelectedItem, 'offer_group_id.value'),
-        priority: tempSelectedItem.priority.id,
+        priority: get(tempSelectedItem, 'priority.id'),
       }))
     }
     setParams("content", '')

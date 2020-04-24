@@ -12,7 +12,7 @@ const UpdateRoleMember = ({
   member_name,
   member_avatar,
   time_create,
-  member_role,
+  roles,
   chatPosition = "top",
 }) => {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const UpdateRoleMember = ({
     >
       <div className="UpdateRoleMember--content" >
         <Avatar className="UpdateRoleMember--avatar" src={member_avatar} />
-        {`${member_name} - ${member_role}`}
+        {`${member_name} - ${roles.join(' - ')}`}
       </div>
     </DialogMessageWrap>
   );

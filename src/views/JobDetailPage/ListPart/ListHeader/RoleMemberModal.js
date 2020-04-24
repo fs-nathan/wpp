@@ -1,16 +1,12 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { DialogContent, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { createRole, deleteRole, updateRole, updateRolesForMember } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import ModalDeleteConfirm from '../../TabPart/ModalDeleteConfirm';
 import AddRoleModal from './AddRoleModal';
-
-const RoleTable = styled(TableCell)`
-padding: 15px 15px;
-`
+import './styles.scss';
 
 function RoleMemberModal({
   roles,
@@ -92,46 +88,46 @@ function RoleMemberModal({
   }
 
   return (
-    <div>
-      <DialogWrap
-        title="Vai trò thành viên"
-        isOpen={isOpen}
-        handleClickClose={handleClose}
-        successLabel="Cập nhật"
-        onClickSuccess={handleUpdateRolesForMember}
-      >
-        <React.Fragment>
-          <Table>
-            <TableHead style={{ backgroundColor: '#eee' }}>
-              <TableRow>
-                <RoleTable style={{ width: '9%', textAlign: 'center' }}>Chọn</RoleTable>
-                <RoleTable style={{ width: '30%' }}>Tên vai trò</RoleTable>
-                <RoleTable style={{ width: '30%' }}>Mô tả</RoleTable>
-                {/* <RoleTable align="right">
+    <DialogWrap
+      title="Vai trò thành viên"
+      isOpen={isOpen}
+      handleClickClose={handleClose}
+      successLabel="Cập nhật"
+      onClickSuccess={handleUpdateRolesForMember}
+      className="RoleMemberModal"
+    >
+      <DialogContent>
+        <Table>
+          <TableHead style={{ backgroundColor: '#eee' }}>
+            <TableRow>
+              <TableCell className="RoleMemberModal--cell" style={{ width: '9%', textAlign: 'center' }}>Chọn</TableCell>
+              <TableCell style={{ width: '30%' }}>Tên vai trò</TableCell>
+              <TableCell style={{ width: '30%' }}>Mô tả</TableCell>
+              {/* <TableCell align="right">
                   <AddRoleButton
                     onClick={onClickAddRole}
                   >+ Thêm mới
                   </AddRoleButton>
-                </RoleTable> */}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {
-                userRoles.map((item, key) => (
-                  <TableRow
-                    key={key}
-                  >
-                    <TableCell component="th" scope="row">
-                      <Checkbox
-                        checked={selectedRoles.find(role => role === item.id)}
-                        onChange={(e) => {
-                          setData(item.id, e.target.checked)
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell style={{ fontWeight: 'bold' }} >{item.name}</TableCell>
-                    <TableCell>{item.description}</TableCell>
-                    {/* <TableCell>
+                </TableCell> */}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+              userRoles.map((item, key) => (
+                <TableRow
+                  key={key}
+                >
+                  <TableCell component="th" scope="row">
+                    <Checkbox
+                      checked={selectedRoles.find(role => role === item.id)}
+                      onChange={(e) => {
+                        setData(item.id, e.target.checked)
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell style={{ fontWeight: 'bold' }} >{item.name}</TableCell>
+                  <TableCell>{item.description}</TableCell>
+                  {/* <TableCell>
                       <div className="handle-button">
                         <UpdateDeleteButton
                           onClick={onClickUpdate(item)}>Sửa</UpdateDeleteButton>
@@ -140,13 +136,12 @@ function RoleMemberModal({
                         >Xoá</UpdateDeleteButton>
                       </div>
                     </TableCell> */}
-                  </TableRow>
-                )
-                )}
-            </TableBody>
-          </Table>
-        </React.Fragment>
-      </DialogWrap>
+                </TableRow>
+              )
+              )}
+          </TableBody>
+        </Table>
+      </DialogContent>
       <AddRoleModal
         addData={addData}
         editData={editData}
@@ -162,7 +157,7 @@ function RoleMemberModal({
         isOpen={isOpenDelete}
         handleCloseModalDelete={handleCloseModalDelete}
       ></ModalDeleteConfirm>
-    </div>
+    </DialogWrap>
   );
 }
 

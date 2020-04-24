@@ -1,9 +1,7 @@
-import React from 'react';
-import {
-  TextField,
-} from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import DialogWrap from 'components/DialogWrap';
+import React from 'react';
 
 function AddRoleModal(props) {
   const [name, setName] = React.useState("")
@@ -35,6 +33,7 @@ function AddRoleModal(props) {
       handleClickClose={handleClose}
       successLabel={"Cập nhật"}
       onClickSuccess={handleSubmit}
+      className="AddRoleModal"
     >
       <>
         <TextField

@@ -8,6 +8,7 @@ export const initialState = {
   dataFetched: false,
   error: false,
   showIndex: 0,
+  projectSchedules: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -85,6 +86,11 @@ export default (state = initialState, action) => produce(state, draft => {
     case types.UPDATE_SCHEDULE_ASSIGN_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      break;
+    }
+    case types.GET_SCHEDULES_SUCCESS: {
+      const { payload } = action;
+      draft.projectSchedules = payload.schedules;
       break;
     }
   }

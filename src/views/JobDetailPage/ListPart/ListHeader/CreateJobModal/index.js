@@ -1,7 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, updateGroupTask, updateNameDescription, updatePriority, updateScheduleAssign, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import TextEditor, { getEditorData } from 'components/TextEditor';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
@@ -75,6 +75,7 @@ function validate(data) {
 function CreateJobModal(props) {
   const dispatch = useDispatch();
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
+  const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
@@ -86,6 +87,8 @@ function CreateJobModal(props) {
   // const [openAddModal, setOpenAddModal] = React.useState(false);
   const [listGroupTask, setListGroupTask] = React.useState([]);
   const [groupTaskValue, setGroupTaskValue] = React.useState(null);
+  const [listSchedules, setListSchedules] = React.useState([]);
+  const [scheduleValue, setScheduleValue] = React.useState(null);
   const [type, setType] = useState(2);
 
   const isEdit = props.editMode !== null && props.editMode !== undefined;
@@ -103,6 +106,7 @@ function CreateJobModal(props) {
       project_id: projectId,
       group_task: data.group_task,
       type_assign: data.type_assign.id,
+      schedule_id: data.schedule,
     }
     // dispatch(updateNameDescriptionTask(dataNameDescription));
     switch (props.editMode) {
@@ -113,7 +117,7 @@ function CreateJobModal(props) {
         dispatch(updatePriority(taskId, data.priority));
         break;
       case EDIT_MODE.WORK_DATE:
-        dispatch(updateScheduleAssign(taskId, data.name, updateData.description));
+        dispatch(updateScheduleTask(taskId, updateData.schedule_id));
         break;
       case EDIT_MODE.ASSIGN_TYPE:
         dispatch(updateTypeAssign(taskId, data.type_assign.id));
@@ -147,6 +151,23 @@ function CreateJobModal(props) {
   }, [listTaskDetail]);
 
   React.useEffect(() => {
+    if (listSchedule) {
+      // Map task to input
+      let listSchedulesData = listSchedule.map(item => ({
+        label: item.name,
+        value: item._id
+      }));
+      setListSchedules(listSchedulesData);
+
+      // Set default group for input
+      let item = listSchedulesData.find(
+        item => item.value === ''
+      );
+      if (item) setScheduleValue(item);
+    }
+  }, [listSchedule]);
+
+  React.useEffect(() => {
     if (props.data) {
       let tempData = { ...props.data };
       tempData.priority = tempData.priority_code;
@@ -176,7 +197,13 @@ function CreateJobModal(props) {
     // eslint-disable-next-line
   }, [isFetching])
 
+  useEffect(() => {
+    if (projectId)
+      dispatch(getSchedules(projectId))
+  }, [dispatch, projectId])
+
   const handleChangeData = (attName, value) => {
+    console.log(attName, value)
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
 
@@ -190,7 +217,8 @@ function CreateJobModal(props) {
     start_date: data.start_date,
     start_time: data.start_time,
     end_date: data.end_date,
-    end_time: data.end_time
+    end_time: data.end_time,
+    schedule_id: data.schedule,
   };
 
   const handlePressConfirm = () => {
@@ -283,9 +311,9 @@ function CreateJobModal(props) {
                 <Typography className="createJob--titleLabel" component={'div'}> Lịch công việc </Typography>
                 <Typography component={'div'} style={{ marginBottom: '20px' }}>
                   <CustomSelect
-                    options={listGroupTask}
-                    value={groupTaskValue}
-                    onChange={({ value: groupTaskId }) => handleChangeData('group_task', groupTaskId)}
+                    options={listSchedules}
+                    value={scheduleValue}
+                    onChange={({ value: scheduleId }) => handleChangeData('schedule', scheduleId)}
                   />
                 </Typography>
                 <Typography className="createJob--timeWrap" component={'span'}>

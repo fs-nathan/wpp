@@ -1,16 +1,41 @@
+import { showTab } from 'actions/taskDetail/taskDetailActions';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-
-const UpdateScheduleTask = (props) => {
+const UpdateScheduleTask = ({
+  user_create_name,
+  user_create_avatar,
+  user_create_position,
+  schedule_name,
+  time_create,
+  chatPosition = "top",
+}) => {
   const dispatch = useDispatch();
 
+  function onClickViewDetail() {
+    dispatch(showTab(0))
+  }
 
   return (
-    <div className="UpdateScheduleTask">
-    </div>
+    <DialogMessageWrap
+      {...{
+        chatPosition,
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
+      isHideFooterIcon
+      footerText=""
+      onClickViewDetail={onClickViewDetail}
+      taskName="Thay đổi lịch làm việc"
+    >
+      <>
+        {schedule_name}
+      </>
+    </DialogMessageWrap>
   );
 }
 

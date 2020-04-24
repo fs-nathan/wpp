@@ -1049,6 +1049,7 @@ function* updateRolesForMember(action) {
     yield put(actions.updateRolesForMemberSuccess(res.data))
     yield put(actions.getMember({ task_id: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(appendChat({ data_chat: res.data.data }));
   } catch (error) {
     yield put(actions.updateRolesForMemberFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1514,22 +1515,33 @@ export function* updateTypeAssign(payload) {
     const res = yield call(apiService.put, "/task/update-type-assign", { task_id, type_assign });
     yield put(actions.updateTypeAssignSuccess(res.data));
     yield put(appendChat(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateTypeAssignFail(error));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export function* updateScheduleAssign(payload) {
+export function* updateScheduleTask(payload) {
   try {
     const { task_id, schedule_id } = payload;
-    const res = yield call(apiService.put, "/task/update-schedule-assign", { task_id, schedule_id });
-    yield put(actions.updateScheduleAssignSuccess(res.data));
+    const res = yield call(apiService.put, "/task/update-schedule-task", { task_id, schedule_id });
+    yield put(actions.updateScheduleTaskSuccess(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     yield put(appendChat(res.data));
-    yield put(appendChat(res.data));
   } catch (error) {
-    yield put(actions.updateScheduleAssignFail(error));
+    yield put(actions.updateScheduleTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
+export function* getSchedules(payload) {
+  try {
+    const { project_id } = payload;
+    const res = yield call(apiService.get, "/project/get-schedules", { params: { project_id } });
+    yield put(actions.getSchedulesSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getSchedulesFail(error));
   }
 }
 

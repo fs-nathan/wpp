@@ -1,8 +1,6 @@
 import { getRemindDetail } from 'actions/chat/chat';
-import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { typesRemind } from 'views/JobDetailPage/TabPart/RemindTab/TabBody/RemindItem';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
@@ -13,10 +11,12 @@ const CreateRemindWithDuration = (props) => {
 
   const {
     remind_id,
-    remind_type,
+    user_create_name,
+    user_create_avatar,
+    user_create_position,
     remind_name,
     time_create,
-    remind_time,
+    remind_duration = [],
   } = props;
 
   function onClickViewDetail() {
@@ -25,6 +25,12 @@ const CreateRemindWithDuration = (props) => {
 
   return (
     <DialogMessageWrap
+      {...{
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
       isHaveFooterIcon
       onClickViewDetail={onClickViewDetail}
       taskName="tạo Nhắc hẹn theo tiến độ"
@@ -36,13 +42,10 @@ const CreateRemindWithDuration = (props) => {
             Khi Tiến độ kế hoạch đạt mốc
           </div>
           <div className="CreateRemindWithDuration--percent">
-            {remind_time}
+            {remind_duration.map(pc => (<div key={pc}>{pc}</div>))}
           </div>
         </div>
         {remind_name}
-        <div className="CreateRemindWithDuration--time">
-          {`${typesRemind[remind_type]} lúc ${getUpdateProgressDate(time_create, dateFormat)}`}
-        </div>
       </>
     </DialogMessageWrap>
   );

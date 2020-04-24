@@ -1122,23 +1122,44 @@ export function updateTypeAssignFail(error) {
     };
 }
 
-export function updateScheduleAssign(task_id, schedule_id) {
+export function updateScheduleTask(task_id, schedule_id) {
     return {
         type: types.UPDATE_SCHEDULE_ASSIGN,
         task_id, schedule_id
     };
 }
 
-export function updateScheduleAssignSuccess(payload) {
+export function updateScheduleTaskSuccess(payload) {
     return {
         type: types.UPDATE_SCHEDULE_ASSIGN_SUCCESS,
         payload
     };
 }
 
-export function updateScheduleAssignFail(error) {
+export function updateScheduleTaskFail(error) {
     return {
         type: types.UPDATE_SCHEDULE_ASSIGN_FAIL,
+        error
+    };
+}
+
+export function getSchedules(project_id) {
+    return {
+        type: types.GET_SCHEDULES,
+        project_id
+    };
+}
+
+export function getSchedulesSuccess(payload) {
+    return {
+        type: types.GET_SCHEDULES_SUCCESS,
+        payload
+    };
+}
+
+export function getSchedulesFail(error) {
+    return {
+        type: types.GET_SCHEDULES_FAIL,
         error
     };
 }

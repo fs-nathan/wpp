@@ -578,7 +578,12 @@ function* rootSaga() {
   );
   yield takeLeading(
     taskDetailType.UPDATE_SCHEDULE_ASSIGN,
-    taskDetailSaga.updateScheduleAssign
+    taskDetailSaga.updateScheduleTask
+  );
+  // getSchedules
+  yield takeLeading(
+    taskDetailType.GET_SCHEDULES,
+    taskDetailSaga.getSchedules
   );
   //chat 
   yield takeLeading(
