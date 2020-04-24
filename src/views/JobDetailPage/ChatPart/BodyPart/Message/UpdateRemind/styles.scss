@@ -1,3 +1,8 @@
 .UpdateRemind {
-
+  &--time {
+    text-transform: initial;
+    color: #607d8b;
+    line-height: 30px;
+    margin-bottom: 20px;
+  }
 }

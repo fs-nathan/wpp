@@ -1,45 +1,39 @@
-import { Avatar } from '@material-ui/core';
-import clsx from 'clsx';
+import { getRemindDetail } from 'actions/chat/chat';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const DeleteRemind = ({
-  handleReplyChat,
-  id,
   user_create_name,
   user_create_avatar,
   user_create_position,
-  user_create_roles = [],
-  sub_task_name,
-  content,
+  remind_name,
+  remind_id,
   time_create,
-  chat_parent,
-  isReply,
-  is_me,
-  chatPosition = "top",
 }) => {
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
+  function onClickViewDetail() {
+    dispatch(getRemindDetail(taskId, remind_id))
+  }
   return (
-    <div className={clsx("DeleteRemind", "DeleteSubTask", `TextMessage__${chatPosition}`)} >
-      <div className="UpdateTaskNameMessage--sender" >
-        <Avatar className="UpdateTaskNameMessage--avatarReply" src={user_create_avatar} />
-        <div className="UpdateTaskNameMessage--name" >
-          {user_create_name}
-        </div>
-        <div className="UpdateTaskNameMessage--position" >
-          {user_create_position}
-        </div>
-        {user_create_roles[0] &&
-          <div className="UpdateTaskNameMessage--room"  >
-            {user_create_roles[0]}
-          </div>
-        }
-      </div>
-      <div className="DeleteSubTask--title" >
-        <span className="DeleteRemind__red">Đã xoá nhắc hẹn lúc </span> {time_create}
-      </div>
-
-    </div>
+    <DialogMessageWrap
+      {...{
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
+      // isHideFooterIcon
+      onClickViewDetail={onClickViewDetail}
+      taskName="xoá nhắc hẹn"
+    >
+      <>
+        {remind_name}
+      </>
+    </DialogMessageWrap>
   );
 }
 

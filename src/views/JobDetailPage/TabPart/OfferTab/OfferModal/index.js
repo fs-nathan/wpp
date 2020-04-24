@@ -5,6 +5,7 @@ import { createOffer, deleteDocumentToOffer, updateOffer, uploadDocumentToOffer 
 import CustomSelect from 'components/CustomSelect';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
 import findIndex from 'lodash/findIndex';
+import get from 'lodash/get';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -101,7 +102,7 @@ const OfferModal = (props) => {
     dataCreateOfferFormData.append('title', tempSelectedItem.title)
     dataCreateOfferFormData.append('content', tempSelectedItem.content)
     dataCreateOfferFormData.append('task_id', taskId)
-    dataCreateOfferFormData.append('offer_group_id', tempSelectedItem.offer_group_id.value)
+    dataCreateOfferFormData.append('offer_group_id', get(tempSelectedItem, 'offer_group_id.value'))
     dataCreateOfferFormData.append('priority', tempSelectedItem.priority.id)
     // add each user to form data
     for (let i = 0; i < handlers.length; i++) {
@@ -139,7 +140,7 @@ const OfferModal = (props) => {
         user_monitor: monitors.map((id) => members[id].id),
         title: tempSelectedItem.title,
         content: tempSelectedItem.content,
-        offer_group_id: tempSelectedItem.offer_group_id.value,
+        offer_group_id: get(tempSelectedItem, 'offer_group_id.value'),
         priority: tempSelectedItem.priority.id,
       }))
     }

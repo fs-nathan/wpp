@@ -42,9 +42,9 @@ const DEFAULT_ASSIGN_ID = assignList[0];
 
 // Define variable using in form
 let priorityList = [
-  { id: 0, value: 'Thấp' },
+  { id: 2, value: 'Thấp' },
   { id: 1, value: 'Trung bình' },
-  { id: 2, value: 'Cao' }
+  { id: 0, value: 'Cao' },
 ];
 const DEFAULT_PRIORITY = priorityList[0].value;
 const DEFAULT_PRIORITY_ID = priorityList[0].id;

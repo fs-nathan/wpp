@@ -1,5 +1,3 @@
-import { mdiTransferRight } from '@mdi/js';
-import Icon from '@mdi/react';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import React from 'react';
@@ -38,10 +36,10 @@ const EditPriority = ({
         <div className={clsx("EditPriority--priority", `EditPriority--priority__${priority_name}`)} >
           <div>{priority_name}</div>
         </div>
-        <Icon className="EditPriority--icon" path={mdiTransferRight}></Icon>
+        {/* <Icon className="EditPriority--icon" path={mdiTransferRight}></Icon>
         <div className={clsx("EditPriority--priority", `EditPriority--priority__${priority_name}`)} >
           <div>{priority_name}</div>
-        </div>
+        </div> */}
       </>
     </DialogMessageWrap>
   );

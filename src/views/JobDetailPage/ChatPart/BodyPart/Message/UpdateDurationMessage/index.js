@@ -1,6 +1,7 @@
 import { showTab } from 'actions/taskDetail/taskDetailActions';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
@@ -20,6 +21,7 @@ const UpdateDurationMessage = ({
   chatPosition = "top",
 }) => {
   const dispatch = useDispatch();
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   function onClickViewDetail() {
     dispatch(showTab(1))
@@ -39,23 +41,23 @@ const UpdateDurationMessage = ({
       taskName="điều chỉnh tiến độ thực hiện"
     >
       <>
-        {time_changes[0] &&
+        {time_changes.start &&
           <>
             <div className="UpdateDurationMessage--title" >
               Bắt đầu
             </div>
             <div className="UpdateDurationMessage--content" >
-              {`Từ ${time_changes[0].old} sang ${time_changes[0].new}`}
+              {`Từ ${getUpdateProgressDate(time_changes.start.old, dateFormat)} sang ${getUpdateProgressDate(time_changes.start.new, dateFormat)}`}
             </div>
           </>
         }
-        {time_changes[1] &&
+        {time_changes.end &&
           <>
             <div className="UpdateDurationMessage--title" >
               Kết thúc
             </div>
             <div className="UpdateDurationMessage--content" >
-              {`Từ ${time_changes[1].old} sang ${time_changes[1].new}`}
+              {`Từ ${getUpdateProgressDate(time_changes.end.old, dateFormat)} sang ${getUpdateProgressDate(time_changes.end.new, dateFormat)}`}
             </div>
           </>
         }

@@ -1,6 +1,8 @@
 import { mdiTimerOff } from '@mdi/js';
 import Icon from '@mdi/react';
+import { getDialogDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
@@ -12,6 +14,7 @@ const StopTask = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   return (
     <DialogMessageWrap
@@ -27,8 +30,8 @@ const StopTask = ({
     >
       <>
         <Icon className="StopTask--icon" path={mdiTimerOff}></Icon>
-        <div className="UpdateTaskNameMessage--content" >
-          Lúc {time_create}
+        <div className="StopTask--content" >
+          {getDialogDate(time_create, dateFormat)}
         </div>
         <div className="StopTask--notify" >
           {"Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!"}

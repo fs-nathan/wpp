@@ -275,6 +275,7 @@ function* updateRemindWithTimeDetail(action) {
     yield put(actions.updateRemindWithTimeDetailSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(appendChat(res));
   } catch (error) {
     yield put(actions.updateRemindWithTimeDetailFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -301,6 +302,7 @@ function* updateRemindWithDuration(action) {
     yield put(actions.updateRemindWithDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(appendChat(res));
   } catch (error) {
     yield put(actions.updateRemindWithDurationFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -752,6 +754,7 @@ function* updateCommand(action) {
     yield put(actions.updateCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.taskId }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(appendChat({ data_chat: res.data }));
   } catch (error) {
     yield put(actions.updateCommandFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -780,7 +783,7 @@ function* deleteCommand(action) {
     });
     yield put(actions.deleteCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
-    yield put(appendChat(res));
+    yield put(appendChat({ data_chat: res.data }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteCommandFail(error));

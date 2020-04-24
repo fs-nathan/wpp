@@ -1,16 +1,31 @@
+import React from 'react';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-
-const UpdateTypeAssignTask = (props) => {
-  const dispatch = useDispatch();
-
+const UpdateTypeAssignTask = ({
+  user_create_name,
+  user_create_avatar,
+  user_create_position,
+  type_assign_name,
+  time_create,
+}) => {
 
   return (
-    <div className="UpdateTypeAssignTask">
-    </div>
+    <DialogMessageWrap
+      {...{
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
+      isHideFooterIcon
+      footerText=""
+      taskName="thay đổi hình thức giao việc thành"
+    >
+      <>
+        {type_assign_name}
+      </>
+    </DialogMessageWrap>
   );
 }
 

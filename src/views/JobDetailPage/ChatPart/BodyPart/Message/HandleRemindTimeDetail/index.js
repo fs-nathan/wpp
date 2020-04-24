@@ -6,7 +6,7 @@ import { typesRemind } from 'views/JobDetailPage/TabPart/RemindTab/TabBody/Remin
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
-const UpdateRemind = (props) => {
+const HandleRemindTimeDetail = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const dateFormat = useSelector(state => state.system.profile.format_date);
@@ -14,13 +14,14 @@ const UpdateRemind = (props) => {
   const {
     remind_id,
     remind_type,
-    user_create_name,
-    user_create_avatar,
-    user_create_position,
     remind_name,
     time_create,
-    chatPosition = "top",
+    remind_time,
   } = props;
+
+  const time = new Date(remind_time)
+  const month = time.getMonth() + 1
+  const day = time.getDate()
 
   function onClickViewDetail() {
     dispatch(getRemindDetail(taskId, remind_id))
@@ -28,19 +29,23 @@ const UpdateRemind = (props) => {
 
   return (
     <DialogMessageWrap
-      {...{
-        chatPosition,
-        user_create_name,
-        user_create_avatar,
-        user_create_position,
-      }}
       isHaveFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="chỉnh sửa Nhắc hẹn"
+      taskName=""
+      titleHeader="Nhắc hẹn"
+      className="HandleRemindTimeDetail"
     >
       <>
+        <div className="HandleRemindTimeDetail--timeRemind">
+          <div className="HandleRemindTimeDetail--month">
+            Tháng {month}
+          </div>
+          <div className="HandleRemindTimeDetail--day">
+            {day}
+          </div>
+        </div>
         {remind_name}
-        <div className="UpdateRemind--time">
+        <div className="HandleRemindTimeDetail--time">
           {`${typesRemind[remind_type]} lúc ${getUpdateProgressDate(time_create, dateFormat)}`}
         </div>
       </>
@@ -48,8 +53,8 @@ const UpdateRemind = (props) => {
   );
 }
 
-UpdateRemind.propTypes = {
+HandleRemindTimeDetail.propTypes = {
 
 };
 
-export default UpdateRemind;
+export default HandleRemindTimeDetail;

@@ -9,6 +9,7 @@ import Icon from '@mdi/react';
 import { updatePermission } from "actions/taskDetail/taskDetailActions";
 import clsx from "clsx";
 import DialogWrap from 'components/DialogWrap';
+import get from "lodash/get";
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Slider from "react-slick";
@@ -62,7 +63,7 @@ function PermissionMemberModal({ memberId, setOpen,
   const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [selectedValue, setSelectedValue] = React.useState(0);
-
+  const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
   const handleChange = (event) => {
     setSelectedValue(parseInt(event.target.value));
   };
@@ -108,7 +109,7 @@ function PermissionMemberModal({ memberId, setOpen,
             </RowTable>
           </TableHead>
           <TableBody>
-            {listGroupPermission[selectedValue].permissions.map(row => (
+            {selectedPermission.map(row => (
               <TableRow key={row.name}>
                 <CellTable align="center"><Icon path={mdiKey} size={1} /></CellTable>
                 <CellTable component="th" scope="row" style={{ fontSize: '15px', fontWeight: 'bold' }}>

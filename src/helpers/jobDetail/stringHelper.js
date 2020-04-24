@@ -96,3 +96,15 @@ export function replaceUrl(str) {
     }
     return replaceMultipleReg(str, urlRegex, replacer)
 }
+
+export function getDialogDate(timeString, formatDate = '') {
+    const date = new Date(timeString);
+    const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
+    return `Lúc ${format(date, 'HH:mm')} ngày ${format(date, fixedFormat)}`;
+}
+
+export function getUpdateProgressDate(timeString, formatDate = '') {
+    const date = new Date(timeString);
+    const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
+    return format(date, `HH:mm ${fixedFormat}`);
+}

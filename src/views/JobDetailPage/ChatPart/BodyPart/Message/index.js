@@ -9,6 +9,7 @@ import CompleteSubtask from './CompleteSubtask';
 import CreateCommandDecided from './CreateCommandDecided';
 import CreateNewSubTask from './CreateNewSubTask';
 import CreateOffer from './CreateOffer';
+import CreateRemindWithDuration from './CreateRemindWithDuration';
 import DeleteCommandDecided from './DeleteCommandDecided';
 import DeleteFile from './DeleteFile';
 import DeleteOffer from './DeleteOffer';
@@ -19,6 +20,7 @@ import EditPriority from './EditPriority';
 import ExtendTime from './ExtendTime';
 import FileMessage from './FileMessage';
 import HandleOffer from './HandleOffer';
+import HandleRemindTimeDetail from './HandleRemindTimeDetail';
 import HandleRemindWithDuration from './HandleRemindWithDuration';
 import ImageMessage from './ImageMessage';
 import PinRemind from './PinRemind';
@@ -80,7 +82,7 @@ const Message = props => {
     case CHAT_TYPE.REMOVE_MEMBER:
       return <RemoveMember {...props} />;
     case CHAT_TYPE.HANDLE_REMIND:
-      return <RemindMessage {...props} />;
+      return <HandleRemindTimeDetail {...props} />;
     case CHAT_TYPE.SHARE_FILE:
       return <FileMessage {...props} />;
     case CHAT_TYPE.EDIT_PRIORITY:
@@ -129,6 +131,8 @@ const Message = props => {
       return <UpdateRoleMember {...props} />;
     case CHAT_TYPE.HANDLE_REMIND_WITH_DURATION:
       return <HandleRemindWithDuration {...props} />;
+    case CHAT_TYPE.CREATE_REMIND_WITH_DURATION:
+      return <CreateRemindWithDuration {...props} />;
     case CHAT_TYPE.UPLOADING_IMAGES:
       return <ImageMessage {...props} />;
     case CHAT_TYPE.UPLOADING_FILE:

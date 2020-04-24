@@ -1,4 +1,5 @@
 import { getRemindDetail } from 'actions/chat/chat';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { typesRemind } from 'views/JobDetailPage/TabPart/RemindTab/TabBody/RemindItem';
@@ -8,6 +9,7 @@ import './styles.scss';
 const RemindMessage = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   const {
     remind_id,
@@ -39,7 +41,7 @@ const RemindMessage = (props) => {
       <>
         {remind_name}
         <div className="RemindMessage--time">
-          {`${typesRemind[remind_type]} lúc ${time_create}`}
+          {`${typesRemind[remind_type]} lúc ${getUpdateProgressDate(time_create, dateFormat)}`}
         </div>
       </>
     </DialogMessageWrap>

@@ -2,8 +2,10 @@ import { Avatar } from '@material-ui/core';
 import { mdiAlarm } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
+import { getDialogDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import './styles.scss';
 
 const DialogMessageWrap = ({
@@ -13,13 +15,14 @@ const DialogMessageWrap = ({
   time_create,
   chatPosition = "top",
   titleHeader = "Thông báo",
-  taskName = "Đổi tên công việc",
+  taskName,
   isHideFooterIcon = false,
   footerText = "Xem chi tiết",
   onClickViewDetail,
   className,
   children
 }) => {
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   return (
     <div className={clsx("DialogMessageWrap", className)} >
@@ -31,7 +34,7 @@ const DialogMessageWrap = ({
           <Avatar className="DialogMessageWrap--avatar" src={user_create_avatar} />
         </abbr>
       </div>}
-      <div className="DialogMessageWrap--title" >
+      {taskName && <div className="DialogMessageWrap--title" >
         <span className="DialogMessageWrap--name" >
           {user_create_name}
         </span>
@@ -41,12 +44,12 @@ const DialogMessageWrap = ({
         <span className="DialogMessageWrap--task" >
           {`đã ${taskName}`}
         </span>
-      </div>
+      </div>}
       <div className="DialogMessageWrap--content" >
         {children}
         {time_create &&
           <div className={clsx("DialogMessageWrap--time")} >
-            {`Lúc ${time_create}`}
+            {getDialogDate(time_create, dateFormat)}
           </div>
         }
       </div>

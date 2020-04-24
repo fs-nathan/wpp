@@ -6,7 +6,7 @@ import { typesRemind } from 'views/JobDetailPage/TabPart/RemindTab/TabBody/Remin
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
-const UpdateRemind = (props) => {
+const CreateRemindWithDuration = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const dateFormat = useSelector(state => state.system.profile.format_date);
@@ -14,12 +14,9 @@ const UpdateRemind = (props) => {
   const {
     remind_id,
     remind_type,
-    user_create_name,
-    user_create_avatar,
-    user_create_position,
     remind_name,
     time_create,
-    chatPosition = "top",
+    remind_time,
   } = props;
 
   function onClickViewDetail() {
@@ -28,19 +25,22 @@ const UpdateRemind = (props) => {
 
   return (
     <DialogMessageWrap
-      {...{
-        chatPosition,
-        user_create_name,
-        user_create_avatar,
-        user_create_position,
-      }}
       isHaveFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="chỉnh sửa Nhắc hẹn"
+      taskName="tạo Nhắc hẹn theo tiến độ"
+      className="CreateRemindWithDuration"
     >
       <>
+        <div className="CreateRemindWithDuration--timeRemind">
+          <div className="CreateRemindWithDuration--month">
+            Khi Tiến độ kế hoạch đạt mốc
+          </div>
+          <div className="CreateRemindWithDuration--percent">
+            {remind_time}
+          </div>
+        </div>
         {remind_name}
-        <div className="UpdateRemind--time">
+        <div className="CreateRemindWithDuration--time">
           {`${typesRemind[remind_type]} lúc ${getUpdateProgressDate(time_create, dateFormat)}`}
         </div>
       </>
@@ -48,8 +48,8 @@ const UpdateRemind = (props) => {
   );
 }
 
-UpdateRemind.propTypes = {
+CreateRemindWithDuration.propTypes = {
 
 };
 
-export default UpdateRemind;
+export default CreateRemindWithDuration;

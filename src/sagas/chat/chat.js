@@ -75,7 +75,7 @@ export function* chatSticker(payload) {
     const { task_id, sticker_id } = payload;
     const res = yield call(apiService.post, `/task/create-chat-sticker?task_id=${task_id}`, { sticker_id });
     yield put(actions.chatStickerSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatStickerFail(error));
   }

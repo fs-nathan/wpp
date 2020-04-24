@@ -10,6 +10,7 @@ const CreateOffer = ({
   user_create_avatar,
   user_create_position,
   offer_title,
+  offer_content,
   time_create,
   chatPosition = "top",
 }) => {
@@ -34,7 +35,7 @@ const CreateOffer = ({
       taskName="Tạo đề xuất"
     >
       <>
-        {offer_title}
+        {offer_title || offer_content}
       </>
     </DialogMessageWrap>
   );

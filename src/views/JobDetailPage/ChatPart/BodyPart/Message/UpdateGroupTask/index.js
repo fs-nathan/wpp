@@ -1,16 +1,31 @@
+import React from 'react';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-
-const UpdateGroupTask = (props) => {
-  const dispatch = useDispatch();
-
+const UpdateGroupTask = ({
+  user_create_name,
+  user_create_avatar,
+  user_create_position,
+  group_task_name,
+  time_create,
+}) => {
 
   return (
-    <div className="UpdateGroupTask">
-    </div>
+    <DialogMessageWrap
+      {...{
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
+      isHideFooterIcon
+      footerText=""
+      taskName="thay đổi nhóm công việc thành"
+    >
+      <>
+        {group_task_name}
+      </>
+    </DialogMessageWrap>
   );
 }
 
