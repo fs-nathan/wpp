@@ -29,22 +29,7 @@ const HeaderSubTitle = injectClassName(
   "comp_TasksCard__HeaderSubTitle"
 )((props) => <Typography component="span" {...props} />);
 const HighLight = injectClassName("comp_TasksCard__HighLight")();
-const Header = ({ className, avatar, title, subheader, action, ...props }) => {
-  const classes = {
-    root: "comp_TasksCard__Header",
-    action: "comp_TasksCard__HeaderAction",
-  };
-  return (
-    <CardHeader
-      classes={classes}
-      avatar={avatar}
-      action={action}
-      title={title}
-      subheader={subheader}
-      {...props}
-    />
-  );
-};
+const Header = injectClassName("comp_TasksCard__Header")(CardHeader);
 const Content = injectClassName("comp_TasksCard__Content")(CardContent);
 
 const Media = injectClassName("comp_TasksCard__Media")(

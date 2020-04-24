@@ -9,6 +9,8 @@ import {
 const rootPath = "posts";
 export const types = {
   homepage: `homepage`,
+  highLight: `highLight`,
+  statistic: "statistic",
 };
 const createListModule = (rootPath) => {
   const listremove = createAction(rootPath + "__listremove");
@@ -31,11 +33,7 @@ const createListModule = (rootPath) => {
   };
 };
 const post = createListModule(types.homepage);
-const updatePostList = createAction(types.postList, function prepare(data) {
-  return {
-    payload: data.posts,
-  };
-});
+
 export const loadPostList = () => {
   return createAsyncAction({
     config: {
@@ -271,13 +269,57 @@ const comment = ({ post_id, content, file, sticker, parent_id }) => {
     // }),
   });
 };
+
+const highLightPostList = createListModule(types.highLight);
+
+// /posts/get-post-highlight
+const loadPostHighLightList = () => {
+  return createAsyncAction({
+    config: {
+      url: "/posts/get-post-highlight",
+    },
+    success: createAction(
+      highLightPostList.actions.listcreate.type,
+      function prepare(data) {
+        return {
+          payload: data.posts,
+        };
+      }
+    ),
+  });
+};
+
+// /posts/get-post-highlight
+const loadPostStatistic = () => {
+  return createAsyncAction({
+    config: {
+      url: "/posts/get-statistic",
+    },
+    success: createAction("statistic", function prepare(data) {
+      return {
+        payload: data.data,
+      };
+    }),
+  });
+};
+
 export const postListSelector = (state) =>
   get(state, [rootPath, types.homepage], emptyArray);
+export const highLightPostListSelector = (state) =>
+  get(state, [rootPath, types.highLight], emptyArray);
+export const homeStatisticSelector = (state) =>
+  get(state, [rootPath, types.statistic], emptyArray);
 
 export const postModule = {
-  selectors: { postListSelector },
+  selectors: {
+    postListSelector,
+    highLightPostListSelector,
+    homeStatisticSelector,
+  },
   actions: {
     loadPostList,
+    loadPostHighLightList,
+    loadPostStatistic,
     createPost,
     loadMorePostList,
     makePostHighLight,
@@ -292,5 +334,11 @@ export const postModule = {
   key: rootPath,
   reducer: combineReducers({
     [types.homepage]: post.reducer,
+    [types.highLight]: highLightPostList.reducer,
+    [types.statistic]: createReducer([], {
+      statistic: (state, action) => {
+        return action.payload;
+      },
+    }),
   }),
 };

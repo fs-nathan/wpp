@@ -23,6 +23,7 @@ export const commentAttr = {
   images_size: "images.size", //"46.82 KB",
   images_type: "images.type", //"jpg",
   files: "files",
+  comments: "comments",
   // [
   //   {
   //     id: "5e7a2315411aeb5b50c0d1e9",
@@ -56,4 +57,6 @@ export const postAttr = {
   total_comments: "comments.length", // null,
   is_highlight: "is_highlight", // true
   is_pin: "is_pin", // false
+  is_love: "is_love", // false
+  is_like: "is_like", // false
 };

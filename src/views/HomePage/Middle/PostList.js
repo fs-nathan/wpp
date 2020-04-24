@@ -4,6 +4,7 @@ import store from "configStore";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useIntersection } from "react-use";
+import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import { get } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
@@ -403,6 +404,9 @@ export default () => {
   return (
     <>
       <PostList postList={postList} />
+      {postList.length === 0 && (
+        <EmptyHolder title={"Chưa có bài post nào được tạo"} description={""} />
+      )}
       {hasMore && <MorePosts page={currentPage + 1} />}
       {!hasMore && <Button style={{ display: "block" }}>Hết rồi</Button>}
     </>

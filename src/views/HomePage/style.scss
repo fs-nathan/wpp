@@ -4,9 +4,9 @@
   min-height: 100%;
   background: #f6f6f6;
 }
-.views_HomePage___wrapper *,
-.views_HomePage___wrapper *::before,
-.views_HomePage___wrapper *::after {
+.views_HomePage___wrapper div,
+.views_HomePage___wrapper div::before,
+.views_HomePage___wrapper div::after {
   font-size: 15px;
 }
 .views_HomePage___container {
@@ -38,3 +38,7 @@
 .views_HomePage___right {
   grid-area: right;
 }
+// .views_HomePage___right::before {
+//   content: "";
+//   height: 300px;
+// }

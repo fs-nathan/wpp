@@ -40,14 +40,14 @@ import likeImage from "./like-image.jpg";
 import loveImage from "./love-image.png";
 import Message from "./Message";
 import { PostActionButton } from "./PostActionButton";
-const CommentList = ({ comments = emptyArray, handleReplyClick }) => {
+const CommentList = ({ comments = emptyArray, onReplyClick }) => {
   return (
     <>
       {comments.map((c, i) => (
         <Message
           key={i}
           message={c}
-          onReplyClick={c.id ? () => handleReplyClick(c) : undefined}
+          onReplyClick={c.id ? () => onReplyClick(c) : undefined}
         ></Message>
       ))}
     </>
@@ -78,16 +78,20 @@ const CommentListContainer = () => {
       ]);
       handleDispatchAsyncAction({
         asyncId,
-        ...postModule.actions.comment({ post_id: id, content: value }),
+        ...postModule.actions.comment({
+          post_id: id,
+          content: value,
+          parent_id: reply && reply.id,
+        }),
       });
     },
     [id, newComments]
   );
-  const handleReplyClick = (c) => {
+  const handleReplyClick = useCallback((c) => {
     setReply(c);
     const e = document.querySelector("#" + inputId);
     e && e.focus();
-  };
+  }, []);
   return (
     <>
       <CommentList {...{ comments }} onReplyClick={handleReplyClick} />
@@ -224,6 +228,8 @@ const Post = ({
   menuoptions,
   handleActionClick,
   handleComment,
+  is_love,
+  is_like,
 }) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -314,7 +320,12 @@ const Post = ({
               # {category_name}
             </Typography>
           )}
-          <Box padding="0 20px" display="flex" alignItems="center">
+          <Box
+            padding="0 20px"
+            lineHeight="24px"
+            display="flex"
+            alignItems="center"
+          >
             <Box display="flex" alignItems="center">
               <AvatarGroup
                 size={20}
@@ -373,12 +384,16 @@ const Post = ({
             alignItems="center"
           >
             <PostActionButton
+              active={is_love}
+              color={colors.pink[0]}
               onClick={() => handleActionClick("love")}
               startIcon={<Icon path={mdiHeartOutline} size={1} />}
             >
               <span>{t("Yêu")}</span>
             </PostActionButton>
             <PostActionButton
+              active={is_like}
+              color={colors.blue[0]}
               onClick={() => handleActionClick("like")}
               startIcon={<Icon path={mdiThumbUpOutline} size={1} />}
             >
@@ -442,6 +457,8 @@ export default ({ post }) => {
     number_love,
     is_highlight,
     is_pin,
+    is_love,
+    is_like,
   ] = createMapPropsFromAttrs([
     postAttr.id,
     postAttr.title,
@@ -464,6 +481,8 @@ export default ({ post }) => {
     postAttr.number_love,
     postAttr.is_highlight,
     postAttr.is_pin,
+    postAttr.is_love,
+    postAttr.is_like,
   ])(post);
   const dispatch = useDispatch();
   const handleActionClick = useCallback(
@@ -542,6 +561,8 @@ export default ({ post }) => {
         number_love,
         is_highlight,
         is_pin,
+        is_love,
+        is_like,
         menuoptions,
         handleActionClick,
         handleComment,
@@ -574,6 +595,8 @@ export default ({ post }) => {
           handleActionClick,
           handleComment,
           inputId,
+          is_love,
+          is_like,
         }}
       />
     </PostContext.Provider>

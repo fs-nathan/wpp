@@ -1,4 +1,5 @@
 import { Avatar, Box, ButtonBase, Typography } from "@material-ui/core";
+import ReplyIcon from "@material-ui/icons/Reply";
 import colors from "helpers/colorPalette";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -10,6 +11,7 @@ const Message = ({
   content,
   user_create_name,
   user_create_avatar,
+  comments,
   images,
   images_id,
   images_url,
@@ -60,6 +62,12 @@ const Message = ({
           <Typography component="span" color="textSecondary">
             2 giờ
           </Typography>
+          {comments && comments.length && (
+            <Box>
+              <ReplyIcon style={{ padding: "8px" }}></ReplyIcon>
+              {t("phản hồi")}
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
@@ -78,6 +86,7 @@ export default ({ message, onReplyClick }) => {
     images_type,
     files,
     sticker,
+    comments,
   ] = loginlineFunc(
     createMapPropsFromAttrs([
       commentAttr.id,
@@ -91,6 +100,7 @@ export default ({ message, onReplyClick }) => {
       commentAttr.images_type,
       commentAttr.files,
       commentAttr.sticker,
+      commentAttr.comments,
     ])
   )(message);
   return (
@@ -108,6 +118,7 @@ export default ({ message, onReplyClick }) => {
         images_type,
         files,
         sticker,
+        comments,
       }}
     />
   );
