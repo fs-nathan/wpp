@@ -5,6 +5,8 @@ const classes = {
   root: "comp_PostActionButton",
   label: "comp_PostActionButton__labbel",
 };
-export const PostActionButton = ({ active, ...props }) => {
-  return <Button classes={classes} data-active={active} {...props}></Button>;
+export const PostActionButton = ({ active, color, ...props }) => {
+  return (
+    <Button classes={classes} style={active && { color }} {...props}></Button>
+  );
 };

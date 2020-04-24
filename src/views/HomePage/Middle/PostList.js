@@ -1,6 +1,5 @@
 import { Button } from "@material-ui/core";
 import LoadingBox from "components/LoadingBox";
-import store from "configStore";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useIntersection } from "react-use";
@@ -342,19 +341,19 @@ function PostList({ postList }) {
   );
 }
 let count = 0;
-window.redux = {
-  store: store,
-  postModule,
-  createPost: () =>
-    store.dispatch(
-      postModule.actions.createPost({
-        title: `post ${count}`,
-        content: `content ${count++}`,
-        is_push_notification: true,
-        category: "12321321",
-      })
-    ),
-};
+// window.redux = {
+//   store: store,
+//   postModule,
+//   createPost: () =>
+//     store.dispatch(
+//       postModule.actions.createPost({
+//         title: `post ${count}`,
+//         content: `content ${count++}`,
+//         is_push_notification: true,
+//         category: "12321321",
+//       })
+//     ),
+// };
 const paging = (data) => {
   const currentPage = get(data, "paging.page");
   const totalPage = get(data, "paging.total_page");
@@ -404,7 +403,7 @@ export default () => {
   return (
     <>
       <PostList postList={postList} />
-      {postList.length === 0 && (
+      {status === apiCallStatus.success && postList.length === 0 && (
         <EmptyHolder title={"Chưa có bài post nào được tạo"} description={""} />
       )}
       {hasMore && <MorePosts page={currentPage + 1} />}

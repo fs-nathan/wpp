@@ -15,9 +15,11 @@ import {
   MoreVert,
 } from "@material-ui/icons";
 import {
+  mdiHeart,
   mdiHeartOutline,
   mdiMessageOutline,
   mdiPin,
+  mdiThumbUp,
   mdiThumbUpOutline,
 } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -117,6 +119,7 @@ const CommentListContainer = () => {
       <Box display="flex" alignItems="flex-start">
         <Avatar src={profile.avatar}>{profile.name}</Avatar>
         <CommentInput
+          setReply={setReply}
           reply={reply}
           inputId={inputId}
           handleComment={handleComment}
@@ -144,7 +147,7 @@ const PostMenu = ({
   );
 };
 const CommentInput = React.memo(
-  ({ placeholder, handleComment, inputId, reply }) => {
+  ({ placeholder, handleComment, inputId, reply, setReply }) => {
     return (
       <Box
         alignSelf="flex-end"
@@ -170,11 +173,17 @@ const CommentInput = React.memo(
           )}
           <InputBase
             id={inputId}
-            onKeyPress={(e) => {
-              if (e.which == 13 || e.keyCode == 13) {
+            onKeyDown={(e) => {
+              if (e.which == 13 || e.keyCode == 13 || e.key == "Enter") {
                 e.preventDefault();
                 handleComment(e.target.value);
                 e.target.value = "";
+              }
+              if (e.which == 8 || e.keyCode == 8 || e.key == "Backspace") {
+                if (e.target.value.length === 0) {
+                  e.preventDefault();
+                  setReply(undefined);
+                }
               }
             }}
             multiline
@@ -387,7 +396,13 @@ const Post = ({
               active={is_love}
               color={colors.pink[0]}
               onClick={() => handleActionClick("love")}
-              startIcon={<Icon path={mdiHeartOutline} size={1} />}
+              startIcon={
+                is_love ? (
+                  <Icon path={mdiHeart} size={1} />
+                ) : (
+                  <Icon path={mdiHeartOutline} size={1} />
+                )
+              }
             >
               <span>{t("Yêu")}</span>
             </PostActionButton>
@@ -395,7 +410,13 @@ const Post = ({
               active={is_like}
               color={colors.blue[0]}
               onClick={() => handleActionClick("like")}
-              startIcon={<Icon path={mdiThumbUpOutline} size={1} />}
+              startIcon={
+                is_like ? (
+                  <Icon path={mdiThumbUp} size={1} />
+                ) : (
+                  <Icon path={mdiThumbUpOutline} size={1} />
+                )
+              }
             >
               {t("Thích")}
             </PostActionButton>
