@@ -13,6 +13,7 @@ const IconWrap = styled(Grid)`
 
 const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) => {
   const map = strings.map(string => [labels[string], colors[string]]);
+  const color = strings.map(string => [colors[string]]);
   const getIndexPercent = (value) => {
     const res = series.reduce((total,currentValue) => {
       return total + currentValue;
@@ -35,8 +36,8 @@ const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) =
         <Grid container>
           {series.map((value, key) => (
             <Grid container alignItems="baseline" item xs={xs} className="mt_5" key={key}>
-              <span className="legend_index" style={{color: '#ff9800'}}>{value}</span>
-              <span className="legend_index_percent" style={{color: '#ff9800'}}>{`${getIndexPercent(value)} %`}</span>
+              <span className="legend_index" style={{color: color[key]}}>{value}</span>
+              <span className="legend_index_percent" style={{color: color[key]}}>{`${getIndexPercent(value)} %`}</span>
             </Grid>
           ))}
         </Grid>

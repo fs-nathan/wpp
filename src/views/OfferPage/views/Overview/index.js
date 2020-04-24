@@ -22,10 +22,22 @@ export const PageContainer = styled(Container)`
 
 
 //dữ liệu mẫu
-const stringsSelfOffer = ["offer_sending", "offer_approved", "offer_monitoring"];
-const stringsStatusOffer = ["offer_waiting", "offer_approved", "offer_cancel"];
-const stringsPiorityOffer = ["offer_normal", "offer_urgent", "offer_very_urgent"];
-const series = [456, 0, 24]
+const stringsSelfOffer = ["offer_of_me_sending", "offer_of_me_approved", "offer_of_me_monitoring"];
+const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel"];
+const stringsPiorityOffer = ["offer_piority_normal", "offer_piority_urgent", "offer_piority_very_urgent"];
+const data = {
+  static: {
+    offer_of_me_sending: 32,
+    offer_of_me_approved: 44,
+    offer_of_me_monitoring: 54,
+    offer_status_waiting: 411,
+    offer_status_approved: 122,
+    offer_status_cancel: 44,
+    offer_piority_normal: 11,
+    offer_piority_urgent: 33,
+    offer_piority_very_urgent: 42,
+  }
+}
 
 
 const Overview = () => {
@@ -74,9 +86,9 @@ const Overview = () => {
         <PageContainer maxWidth="xl">
           <Grid container spacing={3}>
             {[
-              <OfferBlock strings={stringsSelfOffer} series={series} title={t("ĐỀ XUẤT CỦA BẠN")} />,
-              <OfferBlock strings={stringsStatusOffer} series={series} title={t("ĐỀ XUẤT THEO TRẠNG THÁI")} />,
-              <OfferBlock strings={stringsPiorityOffer} series={series} title={t("ĐỀ XUẤT THEO MỨC ĐỘ")} />
+              <OfferBlock strings={stringsSelfOffer} data={data} title={t("ĐỀ XUẤT CỦA BẠN")} />,
+              <OfferBlock strings={stringsStatusOffer} data={data} title={t("ĐỀ XUẤT THEO TRẠNG THÁI")} />,
+              <OfferBlock strings={stringsPiorityOffer} data={data} title={t("ĐỀ XUẤT THEO MỨC ĐỘ")} />
             ].map(
               (children, i) => (
                 <Grid
