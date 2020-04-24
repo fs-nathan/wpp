@@ -108,3 +108,8 @@ export function getUpdateProgressDate(timeString, formatDate = '') {
     const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
     return format(date, `HH:mm ${fixedFormat}`);
 }
+
+export function getChatDate(timeString) {
+    const date = timeString ? new Date(timeString) : new Date();
+    return format(date, `dd/MM/yyyy`);
+}

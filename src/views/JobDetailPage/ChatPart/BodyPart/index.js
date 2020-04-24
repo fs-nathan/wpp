@@ -3,6 +3,7 @@ import { loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
+import { getChatDate } from 'helpers/jobDetail/stringHelper';
 import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -59,9 +60,9 @@ const BodyPart = props => {
     for (let index = 0; index < chatData.length; index++) {
       const chat = chatData[index];
       const prevChat = chatData[index - 1];
-      const time_create = (chat.time_create || '').slice(-10);
+      const time_create = getChatDate(chat.time_create);
       // console.log(time_create.slice(-10), 'time_create')
-      if (prevChat && time_create && prevChat.time_create && prevChat.time_create.slice(-10) !== time_create) {
+      if (prevChat && time_create && prevChat.time_create && getChatDate(prevChat.time_create) !== time_create) {
         chatsWithTime.push({ type: CHAT_TYPE.DATE_TIME_CHAT_HISTORY, time_create })
       }
       chatsWithTime.push(chat)

@@ -36,6 +36,9 @@
         border-top-right-radius: 5px;
       }
     }
+    &__deleted {
+      margin-left: auto;
+    }
     &__haveParent {
       padding: 10px 20px;
       background-color: #eaeaea;
@@ -99,6 +102,10 @@
     &__self {
       background-color: inherit;
       color: #ffffff;
+    }
+    &__deleted {
+      font-style: italic;
+      color: #aeaeae;
     }
   }
   &--tag {

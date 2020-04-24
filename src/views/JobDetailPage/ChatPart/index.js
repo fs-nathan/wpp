@@ -106,7 +106,9 @@ function ChatPart(props) {
               {pinnedRemind.content}
             </div>
             <div className="chatPart--pinType">
-              {`Lúc ${pinnedRemind.time_remind} ngày ${pinnedRemind.date_remind} - ${typesRemind[pinnedRemind.type]} `}
+              {pinnedRemind.type === 0 ? `Lúc ${pinnedRemind.time_remind} ngày ${pinnedRemind.date_remind} - ${typesRemind[pinnedRemind.type_remind]} ` :
+                `Nhắc theo tiến độ ${pinnedRemind.duration.map(dr => `${dr}%`).join(', ')}`
+              }
             </div>
           </div>
           <IconButton className="chatPart--close" onClick={onClickClosePin}>

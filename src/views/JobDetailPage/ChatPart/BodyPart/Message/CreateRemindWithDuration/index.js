@@ -37,15 +37,17 @@ const CreateRemindWithDuration = (props) => {
       className="CreateRemindWithDuration"
     >
       <>
-        <div className="CreateRemindWithDuration--timeRemind">
-          <div className="CreateRemindWithDuration--month">
-            Khi Tiến độ kế hoạch đạt mốc
-          </div>
-          <div className="CreateRemindWithDuration--percent">
-            {remind_duration.map(pc => (<div key={pc}>{pc}</div>))}
-          </div>
-        </div>
         {remind_name}
+        <div className="CreateRemindWithDuration--title">
+          Khi tiến độ kế hoạch đạt mốc
+          </div>
+        <div className="CreateRemindWithDuration--percent">
+          {remind_duration.map(pc =>
+            (<div
+              className="CreateRemindWithDuration--duration"
+              key={pc}>{`${pc}%`}
+            </div>))}
+        </div>
       </>
     </DialogMessageWrap>
   );

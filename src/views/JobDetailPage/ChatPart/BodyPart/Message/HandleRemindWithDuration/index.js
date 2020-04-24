@@ -33,7 +33,7 @@ const HandleRemindWithDuration = (props) => {
       <>
         <div className="HandleRemindWithDuration--timeRemind">
           <div className="HandleRemindWithDuration--title">
-            Tiến độ đạt
+            Tiến độ kế hoạch đạt
           </div>
           <div className="HandleRemindWithDuration--percent">
             {`${handle_duration}%`}

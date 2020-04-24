@@ -49,6 +49,7 @@ const TextMessage = ({
   chat_parent,
   isReply,
   is_me,
+  is_deleted,
   chatPosition = "top",
   tags = [],
   data_emotion = [],
@@ -80,7 +81,7 @@ const TextMessage = ({
             <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
           </abbr>
         }
-        {!isReply && is_me &&
+        {!isReply && is_me && !is_deleted &&
           <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
         <div className={clsx("TextMessage--rightContentWrap",
           is_me ? `TextMessage--rightContentWrap__self-${chatPosition}`
@@ -88,6 +89,7 @@ const TextMessage = ({
           {
             "TextMessage--reply": isReply,
             "TextMessage--rightContentWrap__self": is_me,
+            "TextMessage--rightContentWrap__deleted ": is_deleted,
             [`TextMessage--rightContentWrap__self-${chatPosition}`]: is_me,
             "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
           })}
@@ -113,10 +115,16 @@ const TextMessage = ({
                 }
               </div>
             }
-            {getChatParent(chat_parent)}
+            {!is_deleted ? getChatParent(chat_parent) : ''}
             {/* {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)} */}
-            <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })}
-              dangerouslySetInnerHTML={{ __html: getRichContent(content, tags, getColor()) }}
+            <div className={clsx("TextMessage--content", {
+              "TextMessage--content__self": is_me,
+              "TextMessage--content__deleted": is_deleted,
+            })}
+              dangerouslySetInnerHTML={{
+                __html: is_deleted ? `Tin nhắn đã ${!is_me ? 'bị' : 'được'} xoá!`
+                  : getRichContent(content, tags, getColor())
+              }}
             >
             </div>
             {/* {!isReply &&
