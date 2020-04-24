@@ -1,10 +1,12 @@
-import { Avatar, Box, Typography } from "@material-ui/core";
+import { Avatar, Box, ButtonBase, Typography } from "@material-ui/core";
 import colors from "helpers/colorPalette";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { createMapPropsFromAttrs, loginlineFunc } from "views/JobPage/utils";
 import { commentAttr } from "../contant/attrs";
 const Message = ({
+  id,
+  onReplyClick,
   content,
   user_create_name,
   user_create_avatar,
@@ -22,11 +24,15 @@ const Message = ({
       <Avatar src={user_create_avatar}>
         {user_create_name && user_create_name[0]}
       </Avatar>
-      <Box lineHeight={"30px"} margin="5px 0 0 5px">
-        <Box
-          style={{ background: "#f5f6f7", borderRadius: "15px" }}
-          lineHeight={"30px"}
-          padding="0 8px"
+      <Box margin="5px 0 0 5px">
+        <div
+          style={{
+            // minHeight: "30px",
+            lineHeight: "22px",
+            padding: "4px 8px",
+            background: "#f5f6f7",
+            borderRadius: "15px",
+          }}
         >
           <span
             style={{
@@ -37,17 +43,20 @@ const Message = ({
           >
             {user_create_name}
           </span>
-          <span>{content}</span>
-        </Box>
-        <Box padding="0 8px">
-          <span
-            style={{
-              marginRight: "8px",
-              color: colors.blue[0],
-            }}
-          >
-            {t("Trả lời")}
-          </span>
+          {content}
+        </div>
+        <Box padding="0 10px">
+          {onReplyClick && (
+            <ButtonBase
+              onClick={onReplyClick}
+              style={{
+                marginRight: "8px",
+                color: colors.blue[0],
+              }}
+            >
+              {t("Trả lời")}
+            </ButtonBase>
+          )}
           <Typography component="span" color="textSecondary">
             2 giờ
           </Typography>
@@ -56,8 +65,9 @@ const Message = ({
     </Box>
   );
 };
-export default ({ message }) => {
+export default ({ message, onReplyClick }) => {
   const [
+    id,
     content,
     user_create_name,
     user_create_avatar,
@@ -70,6 +80,7 @@ export default ({ message }) => {
     sticker,
   ] = loginlineFunc(
     createMapPropsFromAttrs([
+      commentAttr.id,
       commentAttr.content,
       commentAttr.user_create_name,
       commentAttr.user_create_avatar,
@@ -85,7 +96,9 @@ export default ({ message }) => {
   return (
     <Message
       {...{
+        id,
         content,
+        onReplyClick,
         user_create_name,
         user_create_avatar,
         images,

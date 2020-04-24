@@ -4,6 +4,11 @@
   min-height: 100%;
   background: #f6f6f6;
 }
+.views_HomePage___wrapper *,
+.views_HomePage___wrapper *::before,
+.views_HomePage___wrapper *::after {
+  font-size: 15px;
+}
 .views_HomePage___container {
   max-width: 1224px;
   margin: auto;

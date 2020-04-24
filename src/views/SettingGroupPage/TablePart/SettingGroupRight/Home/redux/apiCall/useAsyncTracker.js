@@ -15,7 +15,7 @@ const useAsyncTracker = (action) => {
   const { status, data } = useSelector(asyncSelector);
   useEffect(() => {
     if (asyncAction) {
-      const asyncId = uniqueId("apiCall.");
+      const asyncId = asyncAction.asyncId || uniqueId("apiCall.");
       setasyncId(asyncId);
       dispatch(
         merge(asyncAction, {

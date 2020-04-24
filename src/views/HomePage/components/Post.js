@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  ButtonBase,
   IconButton,
   InputBase,
   SvgIcon,
@@ -22,21 +23,105 @@ import {
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
 import colors from "helpers/colorPalette";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs, template } from "views/JobPage/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
+import { createMapPropsFromAttrs, get, template } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
+import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/components/AyncTracker";
+import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import TasksCard from "../components/TasksCard";
-import { postAttr } from "../contant/attrs";
+import { commentAttr, postAttr } from "../contant/attrs";
 import { postModule } from "../redux/post";
 import AvatarGroup from "./AvatarGroup";
 import likeImage from "./like-image.jpg";
 import loveImage from "./love-image.png";
 import Message from "./Message";
 import { PostActionButton } from "./PostActionButton";
+const CommentList = ({ comments = emptyArray, handleReplyClick }) => {
+  return (
+    <>
+      {comments.map((c, i) => (
+        <Message
+          key={i}
+          message={c}
+          onReplyClick={c.id ? () => handleReplyClick(c) : undefined}
+        ></Message>
+      ))}
+    </>
+  );
+};
+const profileSelector = (state) => state.system.profile;
+const CommentListContainer = () => {
+  const [reply, setReply] = useState();
+  const [newComments, setNewComments] = useState([]);
+  const profile = useSelector(profileSelector);
+  const { t } = useTranslation();
+  const { comments, id, inputId } = useContext(PostContext);
+  const [
+    { status, asyncId, data },
+    handleDispatchAsyncAction,
+  ] = useAsyncTracker();
+  const handleComment = useCallback(
+    (value) => {
+      const asyncId = Date.now();
+      setNewComments([
+        ...newComments,
+        {
+          asyncId,
+          content: value,
+          user_create_name: profile.name,
+          user_create_avatar: profile.avatar,
+        },
+      ]);
+      handleDispatchAsyncAction({
+        asyncId,
+        ...postModule.actions.comment({ post_id: id, content: value }),
+      });
+    },
+    [id, newComments]
+  );
+  const handleReplyClick = (c) => {
+    setReply(c);
+    const e = document.querySelector("#" + inputId);
+    e && e.focus();
+  };
+  return (
+    <>
+      <CommentList {...{ comments }} onReplyClick={handleReplyClick} />
+      {newComments.map((c, i) => (
+        <AsyncTracker asyncId={c.asyncId}>
+          {({ data: { data_comment } = { data_comment: emptyObject } }) => {
+            const comment = {
+              ...c,
+              ...data_comment,
+            };
+            return (
+              <Message
+                key={i}
+                onReplyClick={
+                  comment.id ? () => handleReplyClick(comment) : undefined
+                }
+                message={comment}
+              ></Message>
+            );
+          }}
+        </AsyncTracker>
+      ))}
+      <Box display="flex" alignItems="flex-start">
+        <Avatar src={profile.avatar}>{profile.name}</Avatar>
+        <CommentInput
+          reply={reply}
+          inputId={inputId}
+          handleComment={handleComment}
+          placeholder={t("Viết bình luận")}
+        />
+      </Box>
+    </>
+  );
+};
 const PostMenu = ({
   menuAnchor,
   item,
@@ -54,52 +139,68 @@ const PostMenu = ({
     ></ItemMenu>
   );
 };
-const CommentInput = React.memo(({ placeholder, handleComment }) => {
-  return (
-    <Box
-      alignSelf="flex-end"
-      margin="0 0 0 5px"
-      border="1px solid rgba(0, 0, 0, 0.12)"
-      minHeight={"40px"}
-      display="flex"
-      flex="1"
-      style={{ background: "#f5f6f7", borderRadius: "20px" }}
-      lineHeight={"30px"}
-      padding="0 8px"
-    >
-      <InputBase
-        onKeyPress={(e) => {
-          if (e.which == 13 || e.keyCode == 13) {
-            e.preventDefault();
-            handleComment(e.target.value);
-            e.target.value = "";
-          }
-        }}
-        multiline
-        style={{ flex: 1, padding: "5px 8px", lineHeight: 1.5 }}
-        placeholder={placeholder}
-      ></InputBase>
-      <Box display="flex" alignItems="center" height={"40px"}>
-        <IconButton size="small" aria-label="delete">
-          <InsertEmoticonOutlined />
-        </IconButton>
-        <IconButton size="small" aria-label="delete">
-          <CameraAltOutlined />
-        </IconButton>
-        <IconButton size="small" aria-label="delete">
-          <AttachFileOutlined />
-        </IconButton>
-        <IconButton size="small" aria-label="delete">
-          <ExtensionOutlined />
-        </IconButton>
+const CommentInput = React.memo(
+  ({ placeholder, handleComment, inputId, reply }) => {
+    return (
+      <Box
+        alignSelf="flex-end"
+        margin="0 0 0 5px"
+        border="1px solid rgba(0, 0, 0, 0.12)"
+        minHeight={"40px"}
+        display="flex"
+        flex="1"
+        style={{ background: "#f5f6f7", borderRadius: "20px" }}
+        lineHeight={"30px"}
+        padding="0 8px"
+      >
+        <Stack small style={{ flex: 1, padding: "5px 8px", lineHeight: 1.5 }}>
+          {reply && (
+            <Box
+              color={colors.gray[0]}
+              padding="0 4px"
+              borderLeft={`2px solid ${colors.blue[0]}`}
+            >
+              <b>{get(reply, commentAttr.user_create_name)}</b>{" "}
+              {get(reply, commentAttr.content)}
+            </Box>
+          )}
+          <InputBase
+            id={inputId}
+            onKeyPress={(e) => {
+              if (e.which == 13 || e.keyCode == 13) {
+                e.preventDefault();
+                handleComment(e.target.value);
+                e.target.value = "";
+              }
+            }}
+            multiline
+            placeholder={placeholder}
+          ></InputBase>
+        </Stack>
+
+        <Box display="flex" alignItems="center" height={"40px"}>
+          <IconButton size="small" aria-label="delete">
+            <InsertEmoticonOutlined />
+          </IconButton>
+          <IconButton size="small" aria-label="delete">
+            <CameraAltOutlined />
+          </IconButton>
+          <IconButton size="small" aria-label="delete">
+            <AttachFileOutlined />
+          </IconButton>
+          <IconButton size="small" aria-label="delete">
+            <ExtensionOutlined />
+          </IconButton>
+        </Box>
       </Box>
-    </Box>
-  );
-});
+    );
+  }
+);
 const PostContext = React.createContext({});
 
 const Post = ({
   id,
+  inputId,
   title,
   content,
   user_create_id,
@@ -256,8 +357,14 @@ const Post = ({
                   }
                   return item;
                 })}
-              {}
             </Box>
+            {!!number_comment && (
+              <ButtonBase htmlFor={inputId} component="label">
+                <StyledTypo component="span" variant="subtitle1">
+                  {number_comment} {t("bình luận")}
+                </StyledTypo>
+              </ButtonBase>
+            )}
           </Box>
           <Box
             display="flex"
@@ -280,7 +387,7 @@ const Post = ({
             <PostActionButton
               startIcon={<Icon path={mdiMessageOutline} size={1} />}
             >
-              {t("Bình luận")}
+              <label htmlFor={inputId}>{t("Bình luận")}</label>
             </PostActionButton>
           </Box>
           <Box padding="0 20px" display="flex" alignItems="center">
@@ -296,19 +403,9 @@ const Post = ({
           </Box>
         </Stack>
         {is_highlight && <TasksCard.HighLight />}
-
         <TasksCard.Content>
           <Stack>
-            {comments.map((c, i) => (
-              <Message key={i} message={c}></Message>
-            ))}
-            <Box display="flex" alignItems="flex-start">
-              <Avatar>A</Avatar>
-              <CommentInput
-                handleComment={handleComment}
-                placeholder={t("Viết bình luận")}
-              />
-            </Box>
+            <CommentListContainer />
           </Stack>
         </TasksCard.Content>
       </TasksCard.Container>
@@ -399,7 +496,6 @@ export default ({ post }) => {
     [id]
   );
   const { t } = useTranslation();
-
   const menuoptions = useMemo(() => {
     return [
       !is_pin
@@ -418,9 +514,13 @@ export default ({ post }) => {
     },
     [id]
   );
+  const inputId = useMemo(() => {
+    return "post-" + id;
+  }, [id]);
   return (
     <PostContext.Provider
       value={{
+        inputId,
         id,
         title,
         content,
@@ -473,6 +573,7 @@ export default ({ post }) => {
           menuoptions,
           handleActionClick,
           handleComment,
+          inputId,
         }}
       />
     </PostContext.Provider>

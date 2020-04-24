@@ -13,6 +13,7 @@ export const groupDetailAttrs = {
   cover: "cover", //(pin):'https://appapi.workplus.vn/im…cover.png'
 };
 export const commentAttr = {
+  id: "id", //"Chao ca nha ok 1",
   content: "content", //"Chao ca nha ok 1",
   user_create_name: "user_create_name", //"Khắc Điệp",
   user_create_avatar: "user_create_avatar", //         "https://storage.googleapis.com/storage_vtask_net/1584162011913-filename",
