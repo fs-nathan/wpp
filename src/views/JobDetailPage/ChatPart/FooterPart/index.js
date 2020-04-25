@@ -3,10 +3,6 @@ import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiP
 import Icon from '@mdi/react';
 import { appendChat, changeStickerKeyWord, chatImage, chatQuickLike, chatSticker, clearTags, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
-import { convertToRaw, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, Modifier } from 'draft-js';
-import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
-import 'draft-js-mention-plugin/lib/plugin.css';
-import Editor from 'draft-js-plugins-editor';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import words from 'lodash/words';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,10 +11,11 @@ import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLibraryModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
-import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
+import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import Message from '../BodyPart/Message';
 import '../Chat.scss';
+import ChatBoxInput from './ChatBoxInput';
 import QuickLikeIcon from './QuickLikeIcon';
 import './styles.scss';
 
@@ -27,60 +24,7 @@ const StyledIcon = styled(Icon)`
     color : ${props => props.hoverColor}
   }
 `
-const { isSoftNewlineEvent } = KeyBindingUtil
-
-const positionSuggestions = ({ state, props }) => {
-  let transform;
-  let transition;
-  const translateY = props.suggestions.length * 20 + 200;
-
-  if (state.isActive && props.suggestions.length > 0) {
-    transform = `translateY(-${translateY}px) scaleY(1)`;
-    transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
-  } else if (state.isActive) {
-    transform = `translateY(-${translateY}px) scaleY(0)`;
-    transition = 'all 0.25s cubic-bezier(.3,1,.2,1)';
-  }
-
-  return {
-    transform,
-    transition,
-  };
-};
-
-function getChatContent({ blocks, entityMap }) {
-  const mapBlocks = blocks.map(block => {
-    const { text = '', entityRanges = [] } = block;
-    let ret = text;
-    for (let index = 0; index < entityRanges.length; index++) {
-      const { offset, length, key } = entityRanges[index];
-      const { data } = entityMap[key];
-      // ret = spliceSlice(ret, offset, length, `{${data.mention.id}}`);
-      if (data.mention) {
-        const reg = new RegExp(`@${data.mention.name}`, 'g');
-        ret = ret.replace(reg, `{${data.mention.id}}`)
-      }
-    }
-    return ret;
-  })
-  return mapBlocks.join('\n')
-}
-
-const mentionPlugin = createMentionPlugin({
-  mentionPrefix: '@',
-  positionSuggestions,
-});
-const { MentionSuggestions } = mentionPlugin;
-const plugins = [mentionPlugin];
-
-function myKeyBindingFn(e) {
-  if (e.keyCode === 13 /* `enter` key */ && !isSoftNewlineEvent(e)) {
-    return 'send';
-  }
-
-  return getDefaultKeyBinding(e);
-}
-
+let isPressShift = false;
 const FooterPart = ({
   parentMessage,
   setSelectedChat,
@@ -98,11 +42,12 @@ const FooterPart = ({
   const groupActiveColor = useSelector(currentColorSelector)
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const chatTextRef = useRef('');
+  const [chatText, setChatText] = useState('');
+  const [isOpenMention, setOpenMention] = useState(false);
   const [isOpenSticker, setOpenSticker] = useState(false);
   const [isShowQuickLike, setShowQuickLike] = useState(false);
   const [isShareFromLib, setShareFromLib] = useState(false);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [suggestions, setSuggestions] = useState(members);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
 
@@ -120,13 +65,8 @@ const FooterPart = ({
   }, [imagesQueue]);
 
   useEffect(() => {
-    const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
-    setShowQuickLike(!content)
-  }, [dispatch, editorState]);
-
-  useEffect(() => {
-    const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
-    if (content[0] === '@' && content.indexOf('\n') !== -1) {
+    const content = chatText;
+    if (content[0] === '@' && content.indexOf('\n') === -1) {
       const stickerKey = content.slice(1)
       dispatch(changeStickerKeyWord(stickerKey))
       const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(stickerKey) !== -1);
@@ -134,29 +74,27 @@ const FooterPart = ({
         setOpenSticker(true)
       }
     }
-  }, [dispatch, editorState, listStickers]);
+  }, [chatText, dispatch, listStickers]);
 
-  useEffect(() => {
-    document.onpaste = async function (event) {
-      var items = event.clipboardData.items;
-      // console.log(JSON.stringify(items)); // will give you the mime types
-      const images = [];
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        // console.log('Item: ' + item.type);
-        if (item.type.indexOf('image') !== -1) {
-          //item.
-          const file = item.getAsFile();
-          const url = await getFileUrl(file)
-          images.push({ url, file })
-        } else {
-          // ignore not images
-          console.log('Discarding not image paste data');
-        }
+  const onpaste = async function (event) {
+    var items = event.clipboardData.items;
+    // console.log(JSON.stringify(items)); // will give you the mime types
+    const images = [];
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      // console.log('Item: ' + item.type);
+      if (item.type.indexOf('image') !== -1) {
+        //item.
+        const file = item.getAsFile();
+        const url = await getFileUrl(file)
+        images.push({ url, file })
+      } else {
+        // ignore not images
+        // console.log('Discarding not image paste data');
       }
-      setImagesQueueUrl(images)
     }
-  }, [])
+    setImagesQueueUrl(images)
+  }
 
   const handleTriggerUpload = id => {
     document.getElementById(id).click();
@@ -198,11 +136,12 @@ const FooterPart = ({
   }
 
   const openTag = (evt) => {
-    setAnchorEl(evt.currentTarget);
+    console.log('openTag', evt)
+    setOpenMention(true);
   };
 
   function handleCloseTag() {
-    setAnchorEl(null)
+    setOpenMention(false)
   }
 
   const onClickOpenSticker = (evt) => {
@@ -215,7 +154,7 @@ const FooterPart = ({
 
   function handleClickSticker(id) {
     if (stickerKeyWord) {
-      setEditorState(EditorState.createEmpty())
+      clearChatText()
     }
     dispatch(chatSticker(taskId, id))
     handleCloseSticker()
@@ -236,12 +175,8 @@ const FooterPart = ({
   }
 
   function insertMention(label, mention) {
-    const currentContent = editorState.getCurrentContent();
-    const selection = editorState.getSelection();
-    const entityKey = Entity.create('mention', 'SEGMENTED', { mention });
-    const textWithEntity = Modifier.insertText(currentContent, selection, label, null, entityKey);
-    const newState = EditorState.push(editorState, textWithEntity, 'insert-characters')
-    setEditorState(newState);
+    const tag = ` <span style="color:#03A9F4;">${label}</span>`
+    setChatText(chatText + tag)
     // console.log(convertToRaw(newState.getCurrentContent()))
     // focus();
   }
@@ -254,7 +189,6 @@ const FooterPart = ({
   }
 
   const onSearchChange = ({ value }) => {
-    setSuggestions(defaultSuggestionsFilter(value, members))
   };
 
   const onAddMention = (mention) => {
@@ -268,15 +202,9 @@ const FooterPart = ({
   };
 
   function sendChatText() {
-    // console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())))
-    // console.log(getChatContent(convertToRaw(editorState.getCurrentContent())))
-    // Perform a request to save your contents, set
-    // a new `editorState`, etc.
-    const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
+    const content = chatTextRef.current;
     if (content.trim().length === 0) return;
-    // setTextChat('');
     dispatch(clearTags());
-    setEditorState(EditorState.createEmpty())
     const data_chat = {
       id: Date.now(),
       type: CHAT_TYPE.TEXT,
@@ -289,6 +217,7 @@ const FooterPart = ({
     dispatch(appendChat({ data_chat }));
     dispatch(createChatText(data_chat));
     setSelectedChat(null)
+    clearChatText()
   }
 
   async function handleKeyCommand(command) {
@@ -327,6 +256,45 @@ const FooterPart = ({
       sendChatText()
     }
   }
+
+  function onKeyDown(event) {
+    const keyCode = event.keyCode || event.which
+    if (keyCode === 16) {// shift
+      isPressShift = true;
+    } else if (keyCode === 13 && !isPressShift) {// enter
+      sendChatText();
+      event.returnValue = false;
+      if (event.preventDefault) event.preventDefault()
+      // console.log(chatText)
+    }
+  }
+
+  function onKeyUp(event) {
+    const keyCode = event.keyCode || event.which
+    isPressShift = false;
+    if (keyCode === 50) {// @
+      setOpenMention(true)
+      focus()
+    } else if (keyCode === 32) {// space
+      setOpenMention(false)
+    }
+  }
+
+  function clearChatText() {
+    // chatTextRef.current = '';
+    setChatText('')
+    setShowQuickLike(true)
+  }
+
+  function onChangeChatText(value) {
+    // chatTextRef.current = value;
+    setShowQuickLike(!value)
+    setChatText(value)
+  }
+
+  useEffect(() => {
+    chatTextRef.current = chatText;
+  }, [chatText])
 
   return (
     <div className="footer-chat-container">
@@ -380,15 +348,15 @@ const FooterPart = ({
       </div>
       <div className="wrap-input-message chatBox" id="input_message"
         onClick={focus}
+        onPaste={onpaste}
       >
-        <Editor
-          editorState={editorState}
-          onChange={setEditorState}
-          plugins={plugins}
-          ref={editorRef}
+        <ChatBoxInput
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
           placeholder="Nhập @ gợi ý, nội dung thảo luận..."
-          handleKeyCommand={handleKeyCommand}
-          keyBindingFn={myKeyBindingFn}
+          innerRef={editorRef}
+          value={chatText}
+          onChange={onChangeChatText}
         />
         <div className="chatBox--send"
           onClick={sendMessage}
@@ -399,15 +367,10 @@ const FooterPart = ({
             : "Gửi"
           }
         </div>
-        <MentionSuggestions
-          onSearchChange={onSearchChange}
-          suggestions={suggestions}
-          onAddMention={onAddMention}
-        />
       </div>
 
       <TagModal
-        anchorEl={anchorEl}
+        isOpen={isOpenMention}
         handleClose={handleCloseTag}
         handleClickMention={handleClickMention}
       />
