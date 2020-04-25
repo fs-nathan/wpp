@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { appendChat, changeStickerKeyWord, chatImage, chatQuickLike, chatSticker, clearTags, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
+import htmlToText from 'helpers/jobDetail/jsHtmlToText';
 import words from 'lodash/words';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -174,35 +175,28 @@ const FooterPart = ({
     setShareFromLib(true)
   }
 
-  function insertMention(label, mention) {
-    const tag = ` <span style="color:#03A9F4;">${label}</span>`
-    setChatText(chatText + tag)
-    // console.log(convertToRaw(newState.getCurrentContent()))
-    // focus();
-  }
-
   function handleClickMention(mention) {
-    // console.log(mention)
-    insertMention(`@${mention.name} `, mention)
-    // console.log(convertToRaw(editorState.getCurrentContent()))
-    dispatch(tagMember(mention.id))
-  }
-
-  const onSearchChange = ({ value }) => {
-  };
-
-  const onAddMention = (mention) => {
-    // get the mention object selected
-    // console.log('onAddMention! ', log)
-    dispatch(tagMember(mention.id))
+    const tag = ` <span style="color:#03A9F4;">@${mention.name}</span>`
+    setChatText(chatText + tag)
+    dispatch(tagMember(mention))
   }
 
   const focus = () => {
     editorRef.current.focus();
   };
 
+  function getChatContent(text) {
+    let ret = text;
+    for (let index = 0; index < tagMembers.length; index++) {
+      const { name, id } = tagMembers[index];
+      const reg = new RegExp(`@${name}`, 'g');
+      ret = ret.replace(reg, `{${id}}`)
+    }
+    return ret;
+  }
+
   function sendChatText() {
-    const content = chatTextRef.current;
+    const content = getChatContent(htmlToText(chatTextRef.current));
     if (content.trim().length === 0) return;
     dispatch(clearTags());
     const data_chat = {
@@ -212,9 +206,10 @@ const FooterPart = ({
       user_create_id: userId,
       task_id: taskId, content,
       parent_id: parentMessage && parentMessage.id,
-      tags: tagMembers
+      chat_parent: parentMessage,
+      tags: tagMembers.map(({ id }) => id)
     };
-    dispatch(appendChat({ data_chat }));
+    dispatch(appendChat({ data_chat: { ...data_chat, tags: tagMembers } }));
     dispatch(createChatText(data_chat));
     setSelectedChat(null)
     clearChatText()
@@ -259,6 +254,8 @@ const FooterPart = ({
 
   function onKeyDown(event) {
     const keyCode = event.keyCode || event.which
+    var selection = window.getSelection();
+    console.log(selection)
     if (keyCode === 16) {// shift
       isPressShift = true;
     } else if (keyCode === 13 && !isPressShift) {// enter
@@ -272,7 +269,7 @@ const FooterPart = ({
   function onKeyUp(event) {
     const keyCode = event.keyCode || event.which
     isPressShift = false;
-    if (keyCode === 50) {// @
+    if (keyCode === 50 && isPressShift) {// @
       setOpenMention(true)
       focus()
     } else if (keyCode === 32) {// space
