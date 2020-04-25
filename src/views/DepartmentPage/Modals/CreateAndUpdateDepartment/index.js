@@ -1,15 +1,16 @@
+import { get } from 'lodash';
 import React from 'react';
-import LogoModal from '../LogoManager';
+import { connect } from 'react-redux';
 import { createRoom } from '../../../../actions/room/createRoom';
 import { updateRoom } from '../../../../actions/room/updateRoom';
-import { connect } from 'react-redux';
-import { get } from 'lodash';
+import LogoModal from '../LogoManager';
 import CreateAndUpdateDepartmentPresenter from './presenters';
+import { actionLoadingSelector } from './selectors';
 
-function CreateAndUpdateDepartment({ 
-  updateDepartment = null, 
-  open, setOpen, 
-  doCreateRoom, doUpdateRoom 
+function CreateAndUpdateDepartment({
+  updateDepartment = null,
+  open, setOpen, actionLoading,
+  doCreateRoom, doUpdateRoom
 }) {
 
   const [openLogoModal, setOpenLogoModal] = React.useState(false);
@@ -30,8 +31,8 @@ function CreateAndUpdateDepartment({
     <>
       <CreateAndUpdateDepartmentPresenter
         updateDepartment={updateDepartment}
-        open={open} setOpen={setOpen}
-        handleCreateOrUpdateRoom={(name, description, icon) => 
+        open={open} setOpen={setOpen} actionLoading={actionLoading}
+        handleCreateOrUpdateRoom={(name, description, icon) =>
           updateDepartment
             ? doUpdateRoom({
               roomId: get(updateDepartment, 'id'),
@@ -47,7 +48,7 @@ function CreateAndUpdateDepartment({
         }
         handleOpenModal={doOpenModal}
       />
-      <LogoModal 
+      <LogoModal
         open={openLogoModal}
         setOpen={setOpenLogoModal}
         {...logoProps}
@@ -64,6 +65,9 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    actionLoading: actionLoadingSelector(state)
+  }
+  ),
   mapDispatchToProps,
 )(CreateAndUpdateDepartment);

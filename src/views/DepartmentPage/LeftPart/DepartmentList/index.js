@@ -1,7 +1,11 @@
+import { listIcon } from 'actions/icon/listIcon';
+import { listRoom } from 'actions/room/listRoom';
+import { sortRoom } from 'actions/room/sortRoom';
+import { listUserOfGroup } from 'actions/user/listUserOfGroup';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CREATE_ROOM, CustomEventDispose, CustomEventListener, DELETE_ROOM, INVITE_USER_JOIN_GROUP, SORT_ROOM, SORT_USER, UPDATE_ROOM } from 'constants/events';
 import { filter, get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { sortRoom } from '../../../../actions/room/sortRoom';
 import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
 import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import DepartmentListPresenter from './presenters';
@@ -10,16 +14,66 @@ import { roomsSelector } from './selectors';
 function DepartmentList({
   rooms, route, viewPermissions,
   doSortRoom,
+  doListIcon,
+  doListRoom,
+  doListUserOfGroup,
 }) {
 
-  const [searchPatern, setSearchPatern] = React.useState('');
+  React.useEffect(() => {
+    doListIcon();
+    // eslint-disable-next-line
+  }, []);
 
-  const filteredRooms = filter(
-    rooms.rooms,
-    room => get(room, 'name', '')
-      .toLowerCase()
-      .includes(searchPatern.toLowerCase())
-  );
+  React.useEffect(() => {
+    doListRoom();
+    const reloadListRoom = () => {
+      doListRoom();
+    }
+    CustomEventListener(SORT_ROOM, reloadListRoom);
+    return () => {
+      CustomEventDispose(SORT_ROOM, reloadListRoom);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListUserOfGroup();
+    const reloadListUserOfGroup = () => {
+      doListUserOfGroup();
+    }
+    CustomEventListener(CREATE_ROOM, reloadListUserOfGroup);
+    CustomEventListener(UPDATE_ROOM, reloadListUserOfGroup);
+    CustomEventListener(DELETE_ROOM, reloadListUserOfGroup);
+    CustomEventListener(SORT_ROOM, reloadListUserOfGroup);
+    CustomEventListener(SORT_USER, reloadListUserOfGroup);
+    CustomEventListener(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
+    CustomEventListener(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
+    CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
+    return () => {
+      CustomEventDispose(CREATE_ROOM, reloadListUserOfGroup);
+      CustomEventDispose(UPDATE_ROOM, reloadListUserOfGroup);
+      CustomEventDispose(DELETE_ROOM, reloadListUserOfGroup);
+      CustomEventDispose(SORT_ROOM, reloadListUserOfGroup);
+      CustomEventDispose(SORT_USER, reloadListUserOfGroup);
+      CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
+      CustomEventDispose(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
+      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  const [searchPatern, setSearchPatern] = React.useState('');
+  const [filteredRooms, setFilteredRooms] = React.useState([]);
+
+  React.useEffect(() => {
+    setFilteredRooms(filter(
+      rooms.rooms,
+      room => get(room, 'name', '')
+        .toLowerCase()
+        .includes(searchPatern.toLowerCase())
+    ));
+    // eslint-disable-next-line
+  }, [searchPatern, rooms]);
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -82,6 +136,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doSortRoom: ({ roomId, sortIndex }) => dispatch(sortRoom({ roomId, sortIndex })),
+    doListIcon: (quite) => dispatch(listIcon(quite)),
+    doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
   };
 };
 

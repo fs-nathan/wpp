@@ -1,18 +1,17 @@
 import { Badge, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiAccountPlus, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
+import CustomAvatar from 'components/CustomAvatar';
+import CustomBadge from 'components/CustomBadge';
+import CustomTable from 'components/CustomTable';
+import { LightTooltip, TooltipWrapper } from 'components/LightTooltip';
+import LoadingBox from 'components/LoadingBox';
+import { Container, LinkSpan, SettingContainer } from 'components/TableComponents';
+import { DRAWER_TYPE } from 'constants/constants';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import CustomBadge from '../../../../components/CustomBadge';
-import CustomTable from '../../../../components/CustomTable';
-import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
-import LoadingBox from '../../../../components/LoadingBox';
-import { Container, LinkSpan, SettingContainer } from '../../../../components/TableComponents';
-import { DRAWER_TYPE } from '../../../../constants/constants';
-import { Context as UserPageContext } from '../../index';
 import '../AllUsersTable/style.scss';
 
 const TooltipBody = ({ className = '', state, ...props }) =>
@@ -102,14 +101,9 @@ function DepartmentUsersTable({
   handleVisibleDrawerMessage,
 }) {
 
-  const { setDepartmentId } = React.useContext(UserPageContext);
   const { departmentId } = useParams();
   const history = useHistory();
   const { t } = useTranslation();
-
-  React.useEffect(() => {
-    setDepartmentId(departmentId);
-  }, [departmentId, setDepartmentId]);
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
@@ -165,9 +159,6 @@ function DepartmentUsersTable({
           }, {
             label: t('DMH.VIEW.DP.MODAL.MAJOR.TITLE'),
             onClick: () => handleOpenModal('MAJOR'),
-          }, {
-            label: t('DMH.VIEW.DP.RIGHT.UT.TABLE_SETTING'),
-            onClick: () => handleOpenModal('TABLE_SETTING'),
           }] : null,
           grouped: {
             bool: false,
@@ -292,15 +283,17 @@ function DepartmentUsersTable({
         }}>
           {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}
         </MenuItem>
-        <MenuItem onClick={() => {
-          handleOpenModal('ALERT', {
-            content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
-            onConfirm: () => handleBanUserFromGroup(user),
-          });
-          setMenuAnchorEl(null);
-        }}>
-          {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
-        </MenuItem>
+        {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
+          <MenuItem onClick={() => {
+            handleOpenModal('ALERT', {
+              content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
+              onConfirm: () => handleBanUserFromGroup(user),
+            });
+            setMenuAnchorEl(null);
+          }}>
+            {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
+          </MenuItem>
+        )}
       </Menu>
     </Container>
   )

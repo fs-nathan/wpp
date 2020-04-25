@@ -1,18 +1,46 @@
+import { listLevel } from 'actions/level/listLevel';
+import { listMajor } from 'actions/major/listMajor';
+import { listPosition } from 'actions/position/listPosition';
+import { listRoom } from 'actions/room/listRoom';
+import { updateUser } from 'actions/user/updateUser';
 import React from 'react';
-import { updateUser } from '../../../../actions/user/updateUser';
 import { connect } from 'react-redux';
-import { optionsSelector } from './selectors';
 import UpdateUserPresenter from './presenters';
+import { optionsSelector } from './selectors';
 
-function UpdateUser({ 
-  updatedUser = null, 
-  open, setOpen, 
-  options, 
-  doUpdateUser 
+function UpdateUser({
+  updatedUser = null,
+  open, setOpen,
+  options,
+  doUpdateUser,
+  doListLevel,
+  doListMajor,
+  doListPosition,
+  doListRoom,
 }) {
 
+  React.useEffect(() => {
+    doListRoom();
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListPosition();
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListMajor();
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListLevel();
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <UpdateUserPresenter 
+    <UpdateUserPresenter
       open={open} setOpen={setOpen}
       updatedUser={updatedUser}
       options={options}
@@ -32,6 +60,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doUpdateUser: ({ userId, roomId, levelId, majorId, positionId, description }) => dispatch(updateUser({ userId, roomId, levelId, majorId, positionId, description })),
+    doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListPosition: (quite) => dispatch(listPosition(quite)),
+    doListMajor: (quite) => dispatch(listMajor(quite)),
+    doListLevel: (quite) => dispatch(listLevel(quite)),
   }
 };
 

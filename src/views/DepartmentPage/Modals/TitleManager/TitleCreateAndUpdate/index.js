@@ -1,31 +1,34 @@
-import React from 'react';
-import { createPosition } from '../../../../../actions/position/createPosition';
-import { updatePosition } from '../../../../../actions/position/updatePosition';
-import { connect } from 'react-redux';
+import { createPosition } from 'actions/position/createPosition';
+import { updatePosition } from 'actions/position/updatePosition';
 import { get } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
 import TitleCreateAndUpdatePresenter from './presenters';
+import { activeLoadingSelector } from './selectors';
 
-function TitleManager({ 
-  open, setOpen, 
-  updatedPosition = null, 
-  doCreatePosition, doUpdatePosition 
+function TitleManager({
+  open, setOpen,
+  updatedPosition = null,
+  doCreatePosition, doUpdatePosition,
+  activeLoading,
 }) {
 
   return (
-    <TitleCreateAndUpdatePresenter 
-      open={open} setOpen={setOpen} 
-      updatedPosition={updatedPosition} 
-      handleCreateOrUpdatePosition={(name, description) => 
+    <TitleCreateAndUpdatePresenter
+      open={open} setOpen={setOpen}
+      activeLoading={activeLoading}
+      updatedPosition={updatedPosition}
+      handleCreateOrUpdatePosition={(name, description) =>
         updatedPosition
           ? doUpdatePosition({
-              positionId: get(updatedPosition, 'id'),
-              name,
-              description,
-            })
+            positionId: get(updatedPosition, 'id'),
+            name,
+            description,
+          })
           : doCreatePosition({
-              name,
-              description,
-            })
+            name,
+            description,
+          })
       }
     />
   )
@@ -39,6 +42,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    activeLoading: activeLoadingSelector(state),
+  }),
   mapDispatchToProps,
 )(TitleManager);

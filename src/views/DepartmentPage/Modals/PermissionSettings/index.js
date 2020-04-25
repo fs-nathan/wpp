@@ -1,3 +1,4 @@
+import { permissionUser } from 'actions/user/permissionUser';
 import React from 'react';
 import { connect } from 'react-redux';
 import UserPermissionPresenter from './presenters';
@@ -7,7 +8,13 @@ function UserPermission({
   open, setOpen,
   bgColor, permissions,
   curUser = null,
+  doPermissionUser,
 }) {
+
+  React.useEffect(() => {
+    if (open) doPermissionUser();
+    // eslint-disable-next-line
+  }, [open]);
 
   return (
     <UserPermissionPresenter
@@ -25,7 +32,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {}
+  return {
+    doPermissionUser: (quite) => dispatch(permissionUser(quite)),
+  }
 };
 
 export default connect(

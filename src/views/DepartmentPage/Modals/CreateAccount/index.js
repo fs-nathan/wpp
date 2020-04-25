@@ -1,18 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { inviteOtherPeopleCreateAccount } from '../../../../actions/register/inviteOtherPeopleCreateAccount';
-import { bgColorSelector } from './selectors';
 import CreateAccountPresenter from './presenters';
+import { actionLoadingSelector, bgColorSelector } from './selectors';
 
-function CreateAccount({ 
-  open, setOpen, bgColor,
-  doInviteOtherPeopleCreateAccount, 
+function CreateAccount({
+  open, setOpen, bgColor, actionLoading,
+  doInviteOtherPeopleCreateAccount,
 }) {
 
   return (
-    <CreateAccountPresenter 
+    <CreateAccountPresenter
       open={open} setOpen={setOpen}
       bgColor={bgColor}
+      actionLoading={actionLoading}
       handleInviteOtherPeopleCreateAccount={email => doInviteOtherPeopleCreateAccount({ email })}
     />
   )
@@ -21,6 +22,7 @@ function CreateAccount({
 const mapStateToProps = state => {
   return {
     bgColor: bgColorSelector(state),
+    actionLoading: actionLoadingSelector(state),
   }
 }
 

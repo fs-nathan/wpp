@@ -116,7 +116,7 @@ function CustomTable() {
     <LoadingOverlay
       active={get(options, 'loading.bool', false)}
       spinner
-      fadeSpeed={100}
+      fadeSpeed={0}
       style={{
         height: '100%',
       }}

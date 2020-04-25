@@ -1,4 +1,4 @@
-import { ButtonBase, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
+import { ButtonBase, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
@@ -116,6 +116,7 @@ function TwoColumns({ maxWidth, left, right, height, }) {
 
 function CustomModal({
   loading = false,
+  actionLoading = false,
   title,
   titleRender = null,
   columns = 1,
@@ -127,6 +128,7 @@ function CustomModal({
   maxWidth = 'md', fullWidth = false,
   height = 'medium',
   className = '',
+  manualClose = false,
 }) {
   const colors = useSelector(state => state.setting.colors)
 
@@ -134,12 +136,12 @@ function CustomModal({
   const bgColor = colors.find(item => item.selected === true);
 
   function handleCancle() {
-    setOpen(false);
+    !manualClose && setOpen(false);
     onCancle();
   }
 
   function handleConfirm() {
-    setOpen(false);
+    !manualClose && setOpen(false);
     onConfirm();
   }
 
@@ -188,7 +190,19 @@ function CustomModal({
           </ActionsCancleButton>
         )}
         {confirmRender !== null && (
-          <ActionsAcceptButton style={{ color: bgColor.color, opacity: canConfirm ? 1 : 0.5 }} disabled={!canConfirm} onClick={() => handleConfirm()}>
+          <ActionsAcceptButton
+            style={{ color: bgColor.color, opacity: canConfirm ? 1 : 0.5 }}
+            disabled={!canConfirm || actionLoading}
+            onClick={() => handleConfirm()}
+          >
+            <CircularProgress
+              size={16}
+              className="margin-circular"
+              color={bgColor.color}
+              style={{
+                opacity: actionLoading ? 1 : 0
+              }}
+            />
             {isFunction(confirmRender) ? confirmRender() : t('DMH.COMP.CUSTOM_MODAL.CONFIRM')}
           </ActionsAcceptButton>
         )}

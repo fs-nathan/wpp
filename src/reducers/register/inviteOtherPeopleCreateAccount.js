@@ -1,8 +1,4 @@
-import {
-  INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
-  INVITE_OTHER_PEOPLE_CREATE_ACCOUNT_SUCCESS,
-  INVITE_OTHER_PEOPLE_CREATE_ACCOUNT_FAIL,
-} from '../../constants/actions/register/inviteOtherPeopleCreateAccount';
+import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, INVITE_OTHER_PEOPLE_CREATE_ACCOUNT_FAIL, INVITE_OTHER_PEOPLE_CREATE_ACCOUNT_SUCCESS } from '../../constants/actions/register/inviteOtherPeopleCreateAccount';
 
 export const initialState = {
   error: null,
@@ -17,9 +13,9 @@ function reducer(state = initialState, action) {
         error: null,
         loading: true,
       };
-    case INVITE_OTHER_PEOPLE_CREATE_ACCOUNT_SUCCESS: 
+    case INVITE_OTHER_PEOPLE_CREATE_ACCOUNT_SUCCESS:
       return {
-        ...state, 
+        ...state,
         error: null,
         loading: false,
       };
@@ -27,7 +23,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         error: action.error,
-        loadling: false,
+        loading: false,
       };
     default:
       return state;

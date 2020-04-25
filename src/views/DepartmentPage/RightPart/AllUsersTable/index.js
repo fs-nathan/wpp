@@ -1,12 +1,17 @@
+import { getRequirementJoinGroup } from 'actions/groupUser/getRequirementJoinGroup';
+import { listPosition } from 'actions/position/listPosition';
+import { listRoom } from 'actions/room/listRoom';
+import { actionVisibleDrawerMessage } from 'actions/system/system';
+import { banUserFromGroup } from 'actions/user/banUserFromGroup';
+import { listUserOfGroup } from 'actions/user/listUserOfGroup';
+import { privateMember } from 'actions/user/privateMember';
+import { publicMember } from 'actions/user/publicMember';
+import { sortUser } from 'actions/user/sortUser';
+import AlertModal from 'components/AlertModal';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CREATE_ROOM, CustomEventDispose, CustomEventListener, DELETE_ROOM, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_ROOM, SORT_USER, UPDATE_ROOM } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
-import { banUserFromGroup } from '../../../../actions/user/banUserFromGroup';
-import { privateMember } from '../../../../actions/user/privateMember';
-import { publicMember } from '../../../../actions/user/publicMember';
-import { sortUser } from '../../../../actions/user/sortUser';
-import AlertModal from '../../../../components/AlertModal';
 import { routeSelector } from '../../../MemberPage/selectors';
 import CreateAccountModal from '../../Modals/CreateAccount';
 import LevelManagerModal from '../../Modals/LevelManager';
@@ -28,7 +33,70 @@ function AllUsersTable({
   doPublicMember, doPrivateMember,
   doBanUserFromGroup,
   doActionVisibleDrawerMessage,
+  doListUserOfGroup,
+  doListRoom,
+  doListPosition,
+  doGetRequirementJoinGroup,
 }) {
+
+  React.useEffect(() => {
+    if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doGetRequirementJoinGroup();
+      const doGetRequirementJoinGroupHandler = () => {
+        doGetRequirementJoinGroup(true);
+      };
+      CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      return () => {
+        CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+        CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      }
+    }
+    // eslint-disable-next-line
+  }, [viewPermissions]);
+
+  React.useEffect(() => {
+    doListRoom();
+    const reloadListRoom = () => {
+      doListRoom();
+    }
+    CustomEventListener(SORT_ROOM, reloadListRoom);
+    return () => {
+      CustomEventDispose(SORT_ROOM, reloadListRoom);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListUserOfGroup();
+    const reloadListUserOfGroup = () => {
+      doListUserOfGroup();
+    }
+    CustomEventListener(CREATE_ROOM, reloadListUserOfGroup);
+    CustomEventListener(UPDATE_ROOM, reloadListUserOfGroup);
+    CustomEventListener(DELETE_ROOM, reloadListUserOfGroup);
+    CustomEventListener(SORT_ROOM, reloadListUserOfGroup);
+    CustomEventListener(SORT_USER, reloadListUserOfGroup);
+    CustomEventListener(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
+    CustomEventListener(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
+    CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
+    return () => {
+      CustomEventDispose(CREATE_ROOM, reloadListUserOfGroup);
+      CustomEventDispose(UPDATE_ROOM, reloadListUserOfGroup);
+      CustomEventDispose(DELETE_ROOM, reloadListUserOfGroup);
+      CustomEventDispose(SORT_ROOM, reloadListUserOfGroup);
+      CustomEventDispose(SORT_USER, reloadListUserOfGroup);
+      CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
+      CustomEventDispose(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
+      CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListPosition();
+    // eslint-disable-next-line
+  }, []);
 
   const [openTitle, setOpenTitle] = React.useState(false);
   const [openRole, setOpenRole] = React.useState(false);
@@ -150,6 +218,10 @@ const mapDispatchToProps = dispatch => {
     doPrivateMember: ({ userId }) => dispatch(privateMember({ userId })),
     doBanUserFromGroup: ({ userId }) => dispatch(banUserFromGroup({ userId })),
     doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
+    doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
+    doListPosition: (quite) => dispatch(listPosition(quite)),
+    doGetRequirementJoinGroup: (quite) => dispatch(getRequirementJoinGroup(quite)),
   }
 }
 
