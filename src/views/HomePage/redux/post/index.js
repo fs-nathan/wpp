@@ -1,6 +1,6 @@
 import { combineReducers, createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { get, merge, toFormData } from "views/JobPage/utils";
+import { encodeQueryData, get, merge, toFormData } from "views/JobPage/utils";
 import {
   createAsyncAction,
   createPostAsyncAction,
@@ -340,6 +340,32 @@ export const loadMoreCommentList = ({ page, post_id } = {}) => {
     },
   });
 };
+
+// /posts/get-reply-comment
+// post_id: String required
+// comment_id: String required
+export const loadReplyList = ({ post_id, comment_id }) => {
+  return createAsyncAction({
+    config: {
+      url: `/posts/get-reply-comment?${encodeQueryData({
+        post_id,
+        comment_id,
+      })}`,
+    },
+  });
+};
+export const loadMoreReplyList = ({ post_id, comment_id, page } = {}) => {
+  return createAsyncAction({
+    config: {
+      url: `/posts/get-reply-comment?${encodeQueryData({
+        post_id,
+        comment_id,
+        page,
+      })}`,
+    },
+  });
+};
+
 export const postListSelector = (state) =>
   get(state, [rootPath, types.homepage], emptyArray);
 export const highLightPostListSelector = (state) =>
@@ -361,6 +387,8 @@ export const postModule = {
     loadPostById,
     loadPostHighLightList,
     loadPostStatistic,
+    loadReplyList,
+    loadMoreReplyList,
     createPost,
     makePostHighLight,
     cancelPostHighLight,

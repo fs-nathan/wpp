@@ -1,15 +1,180 @@
 import { Avatar, Box, ButtonBase, Typography } from "@material-ui/core";
+import { ExpandLess } from "@material-ui/icons";
 import ReplyIcon from "@material-ui/icons/Reply";
 import colors from "helpers/colorPalette";
-import React from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import {
   createMapPropsFromAttrs,
   get,
   loginlineFunc,
+  paging,
 } from "views/JobPage/utils";
+import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
+import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { commentAttr } from "../contant/attrs";
+import { postModule } from "../redux/post";
+import { PostContext } from "./Post";
+
+const RepliesContainer = ({
+  total_sub_comment,
+  post_id,
+  comment_id,
+  onReplyClick,
+}) => {
+  const { t } = useTranslation();
+  const [
+    { data, status, asyncId },
+    handleLoadCommentAction,
+  ] = useAsyncTracker();
+  const { currentPage, totalPage, hasMore } = paging(data);
+  const [asyncIds, setasyncIds] = useState([]);
+  useEffect(() => {
+    asyncId && setasyncIds([asyncId, ...asyncIds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [asyncId]);
+  const { comments, currentCommentNumber } = useSelector((state) => {
+    return asyncIds
+      .map((asyncId) => get(state, ["apiCall", asyncId], emptyObject))
+      .reduce(
+        (result, value) => {
+          const comments = get(value, ["data", "comments"], emptyArray);
+          result.comments = [...result.comments, ...[...comments].reverse()];
+          result.currentCommentNumber =
+            result.currentCommentNumber +
+            comments.length +
+            comments.reduce((res, val) => {
+              return res + get(val, commentAttr.total_sub_comment, 0);
+            }, 0);
+          return result;
+        },
+        {
+          comments: [],
+          currentCommentNumber: 0,
+        }
+      );
+  });
+  const handleLoadFirst = useCallback(() => {
+    handleLoadCommentAction(
+      postModule.actions.loadReplyList({ post_id, comment_id })
+    );
+  }, [comment_id, handleLoadCommentAction, post_id]);
+  const handleLoadMore = useCallback(
+    (page) => {
+      handleLoadCommentAction(
+        postModule.actions.loadMoreReplyList({ post_id, comment_id, page })
+      );
+    },
+    [comment_id, handleLoadCommentAction, post_id]
+  );
+  const [show, setShow] = useState(false);
+  if (!total_sub_comment) return null;
+  return (
+    <>
+      <ButtonBase
+        onClick={() => {
+          if (!show) {
+            setShow(true);
+            if (
+              status === apiCallStatus.success ||
+              status === apiCallStatus.loading
+            )
+              return;
+            handleLoadFirst();
+          } else {
+            setShow(false);
+            // handleLoadMore(asyncIds.length);
+          }
+        }}
+        style={{
+          margin: "6px 0",
+          color: colors.blue[0],
+          display: "flex",
+          alignItems: "center",
+        }}
+        className="cursor-pointer"
+      >
+        {show ? (
+          <ExpandLess
+            style={{
+              fontSize: "16px",
+              marginRight: "6px",
+            }}
+          ></ExpandLess>
+        ) : (
+          <ReplyIcon
+            style={{
+              fontSize: "16px",
+              marginRight: "6px",
+              transform: "rotate(180deg)",
+            }}
+          ></ReplyIcon>
+        )}
+        {total_sub_comment} {t("phản hồi")}
+      </ButtonBase>
+      {show &&
+        comments.map((c, i) => {
+          return <Reply key={i} reply={c} onReplyClick={onReplyClick}></Reply>;
+        })}
+    </>
+  );
+};
+export const Reply = ({ reply, onReplyClick }) => {
+  const [
+    id,
+    content,
+    user_create_name,
+    user_create_avatar,
+    images,
+    images_id,
+    images_url,
+    images_size,
+    images_type,
+    files,
+    sticker,
+    total_sub_comment,
+  ] = loginlineFunc(
+    createMapPropsFromAttrs([
+      commentAttr.id,
+      commentAttr.content,
+      commentAttr.user_create_name,
+      commentAttr.user_create_avatar,
+      commentAttr.images,
+      commentAttr.images_id,
+      commentAttr.images_url,
+      commentAttr.images_size,
+      commentAttr.images_type,
+      commentAttr.files,
+      commentAttr.sticker,
+      commentAttr.total_sub_comment,
+    ])
+  )(reply);
+  return (
+    <Message
+      type="reply"
+      parent={reply.parent}
+      {...{
+        id,
+        content,
+        onReplyClick,
+        user_create_name,
+        user_create_avatar,
+        images,
+        images_id,
+        images_url,
+        images_size,
+        images_type,
+        files,
+        sticker,
+      }}
+    />
+  );
+};
 const Message = ({
+  type = "comment",
+  post_id,
   parent,
   id,
   onReplyClick,
@@ -17,6 +182,7 @@ const Message = ({
   user_create_name,
   user_create_avatar,
   comments,
+  total_sub_comment,
   images,
   images_id,
   images_url,
@@ -28,7 +194,21 @@ const Message = ({
   const { t } = useTranslation();
   return (
     <Box display="flex" alignItems="flex-start">
-      <Avatar src={user_create_avatar}>
+      <Avatar
+        style={
+          type === "comment"
+            ? {
+                width: "40px",
+                height: "40px",
+              }
+            : {
+                marginTop: "5px",
+                width: "30px",
+                height: "30px",
+              }
+        }
+        src={user_create_avatar}
+      >
         {user_create_name && user_create_name[0]}
       </Avatar>
       <Box margin="2px 0 0 5px">
@@ -77,11 +257,10 @@ const Message = ({
           <Typography component="span" color="textSecondary">
             2 giờ
           </Typography>
-          {comments && comments.length && (
-            <Box>
-              <ReplyIcon style={{ padding: "8px" }}></ReplyIcon>
-              {t("phản hồi")}
-            </Box>
+          {type === "comment" && (
+            <RepliesContainer
+              {...{ total_sub_comment, post_id, comment_id: id, onReplyClick }}
+            />
           )}
         </Box>
       </Box>
@@ -89,6 +268,7 @@ const Message = ({
   );
 };
 export default ({ message, onReplyClick }) => {
+  const { id: post_id } = useContext(PostContext);
   const [
     id,
     content,
@@ -101,7 +281,7 @@ export default ({ message, onReplyClick }) => {
     images_type,
     files,
     sticker,
-    comments,
+    total_sub_comment,
   ] = loginlineFunc(
     createMapPropsFromAttrs([
       commentAttr.id,
@@ -115,7 +295,7 @@ export default ({ message, onReplyClick }) => {
       commentAttr.images_type,
       commentAttr.files,
       commentAttr.sticker,
-      commentAttr.comments,
+      commentAttr.total_sub_comment,
     ])
   )(message);
   return (
@@ -123,6 +303,7 @@ export default ({ message, onReplyClick }) => {
       parent={message.parent}
       {...{
         id,
+        post_id,
         content,
         onReplyClick,
         user_create_name,
@@ -134,7 +315,7 @@ export default ({ message, onReplyClick }) => {
         images_type,
         files,
         sticker,
-        comments,
+        total_sub_comment,
       }}
     />
   );

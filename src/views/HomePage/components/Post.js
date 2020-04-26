@@ -3,14 +3,20 @@ import {
   Box,
   ButtonBase,
   IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
   SvgIcon,
   Typography,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
 import {
+  mdiDownload,
   mdiHeart,
   mdiHeartOutline,
   mdiMessageOutline,
+  mdiPin,
   mdiThumbUp,
   mdiThumbUpOutline,
 } from "@mdi/js";
@@ -100,17 +106,21 @@ const CommentListContainer = () => {
     },
     [inputId]
   );
+  const history = useHistory();
   return (
     <>
-      <Box padding="0 20px" display="flex" alignItems="center">
-        <Box
+      <Box display="flex" alignItems="center">
+        <ButtonBase
+          onClick={() =>
+            history.push(routes.postDetail.path.replace(":id", id))
+          }
           style={{
             color: colors.blue[0],
           }}
-          flex="1"
         >
-          {t("Xem các bình luận trước")}
-        </Box>
+          {t("Xem tất cả bình luận")}
+        </ButtonBase>
+        <Box flex="1" />
         <Typography color="textSecondary">
           {total_comments}/{number_comment}
         </Typography>
@@ -155,6 +165,8 @@ export const PostMenu = ({
   setMenuAnchor,
 }) => {
   const handleItemClick = handleActionClick;
+  const { is_modify } = useContext(PostContext);
+  if (!is_modify) return null;
   return (
     <ItemMenu
       onItemClick={handleItemClick}
@@ -224,7 +236,6 @@ export const PostHeader = () => {
     category_name,
     time_label,
     is_pin,
-    mdiPin,
   } = useContext(PostContext);
   return (
     <>
@@ -287,6 +298,44 @@ export const PostHeader = () => {
       />
     </>
   );
+};
+function generate(files, e) {
+  return files.map((value) =>
+    React.cloneElement(e, {
+      key: value,
+      file: value,
+    })
+  );
+}
+const FileListItem = ({ file }) => {
+  return (
+    <ListItem button>
+      <ListItemText primary={file.url} />
+      <ListItemSecondaryAction>
+        <a target="_blank" href={file.url} download id={file.url}>
+          <IconButton edge="end" aria-label="delete">
+            <SvgIcon fontSize="16px">
+              <path d={mdiDownload}></path>
+            </SvgIcon>
+          </IconButton>
+        </a>
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
+};
+export const PostFiles = () => {
+  const { files = emptyArray } = useContext(PostContext);
+  if (files && files.length)
+    return (
+      <TasksCard.Content>
+        <TasksCard.Container>
+          <List style={{ padding: 0 }}>
+            {generate(files, <FileListItem />)}
+          </List>
+        </TasksCard.Container>
+      </TasksCard.Content>
+    );
+  return null;
 };
 export const PostContent = () => {
   const history = useHistory();
@@ -415,6 +464,7 @@ const PostTimeline = () => {
     <TasksCard.Container>
       <PostHeader />
       <PostContent />
+      <PostFiles />
       <PostMedia />
       <PostCategory />
       <PostStats />
@@ -452,6 +502,7 @@ export const PostContainer = ({ post, children }) => {
     is_pin,
     is_love,
     is_like,
+    is_modify,
   ] = createMapPropsFromAttrs([
     postAttr.id,
     postAttr.title,
@@ -476,6 +527,7 @@ export const PostContainer = ({ post, children }) => {
     postAttr.is_pin,
     postAttr.is_love,
     postAttr.is_like,
+    postAttr.is_modify,
   ])(post);
   const dispatch = useDispatch();
   const handleActionClick = useCallback(
@@ -557,6 +609,7 @@ export const PostContainer = ({ post, children }) => {
         is_pin,
         is_love,
         is_like,
+        is_modify,
         menuoptions,
         handleActionClick,
         handleComment,

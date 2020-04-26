@@ -30,6 +30,7 @@ import {
   PostStats,
 } from "views/HomePage/components/Post";
 import TasksCard from "views/HomePage/components/TasksCard";
+import { commentAttr } from "views/HomePage/contant/attrs";
 import { routes } from "views/HomePage/contant/routes";
 import { postModule } from "views/HomePage/redux/post";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
@@ -117,45 +118,60 @@ const CommentListContainer = () => {
     asyncId && setasyncIds([asyncId, ...asyncIds]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asyncId]);
-  const comments = useSelector((state) => {
+  const { comments, currentCommentNumber } = useSelector((state) => {
     return asyncIds
       .map((asyncId) => get(state, ["apiCall", asyncId], emptyObject))
-      .reduce((result, value) => {
-        const comments = get(value, ["data", "comments"], emptyArray);
-        result = [...result, ...[...comments].reverse()];
-        return result;
-      }, []);
+      .reduce(
+        (result, value) => {
+          const comments = get(value, ["data", "comments"], emptyArray);
+          result.comments = [...result.comments, ...[...comments].reverse()];
+          result.currentCommentNumber =
+            result.currentCommentNumber +
+            comments.length +
+            comments.reduce((res, val) => {
+              return res + get(val, commentAttr.total_sub_comment, 0);
+            }, 0);
+          return result;
+        },
+        {
+          comments: [],
+          currentCommentNumber: 0,
+        }
+      );
   });
   return (
     <>
-      <Box padding="0 20px" display="flex" alignItems="center">
-        <Box
-          style={{
-            color: colors.blue[0],
-          }}
-          flex="1"
-        >
-          {hasMore && (
-            <ButtonBase
-              onClick={() =>
-                status !== apiCallStatus.loading &&
-                handleLoadCommentAction(
-                  postModule.actions.loadMoreCommentList({
-                    post_id: id,
-                    page: currentPage + 1,
-                  })
-                )
-              }
-            >
-              {t("Xem các bình luận trước")}
-            </ButtonBase>
-          )}
+      {number_comment > currentCommentNumber && (
+        <Box padding="0 20px" display="flex" alignItems="center">
+          <Box
+            style={{
+              color: colors.blue[0],
+            }}
+            flex="1"
+          >
+            {hasMore && (
+              <ButtonBase
+                onClick={() =>
+                  status !== apiCallStatus.loading &&
+                  handleLoadCommentAction(
+                    postModule.actions.loadMoreCommentList({
+                      post_id: id,
+                      page: currentPage + 1,
+                    })
+                  )
+                }
+              >
+                {t("Xem các bình luận trước")}
+              </ButtonBase>
+            )}
+          </Box>
+
+          <Typography color="textSecondary">
+            {currentCommentNumber + newComments.length}/
+            {number_comment + newComments.length}
+          </Typography>
         </Box>
-        <Typography color="textSecondary">
-          {comments.length + newComments.length}/
-          {number_comment + newComments.length}
-        </Typography>
-      </Box>
+      )}
       <CommentList {...{ comments }} onReplyClick={handleReplyClick} />
       {newComments.map((c, i) => (
         <AsyncTracker asyncId={c.asyncId}>
