@@ -354,7 +354,7 @@ let count = 0;
 //       })
 //     ),
 // };
-const paging = (data) => {
+export const paging = (data) => {
   const currentPage = get(data, "paging.page");
   const totalPage = get(data, "paging.total_page");
   const hasMore = currentPage && totalPage && currentPage < totalPage;

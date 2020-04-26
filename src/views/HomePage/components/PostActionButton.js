@@ -7,6 +7,10 @@ const classes = {
 };
 export const PostActionButton = ({ active, color, ...props }) => {
   return (
-    <Button classes={classes} style={active && { color }} {...props}></Button>
+    <Button
+      classes={classes}
+      style={active ? { color } : {}}
+      {...props}
+    ></Button>
   );
 };

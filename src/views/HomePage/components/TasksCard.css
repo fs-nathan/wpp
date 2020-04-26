@@ -20,6 +20,10 @@
 }
 .comp_TasksCard__Content {
   font-size: 15px;
+  white-space: pre-line;
+  font-size: 15px;
+  color: #545454;
+  font-weight: normal;
 }
 
 .comp_TasksCard__HighLight {

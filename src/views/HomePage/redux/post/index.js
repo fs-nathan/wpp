@@ -33,7 +33,6 @@ const createListModule = (rootPath) => {
   };
 };
 const post = createListModule(types.homepage);
-
 export const loadPostList = () => {
   return createAsyncAction({
     config: {
@@ -42,6 +41,19 @@ export const loadPostList = () => {
     success: createAction(post.actions.listcreate.type, function prepare(data) {
       return {
         payload: data.posts,
+      };
+    }),
+  });
+};
+// post_id: String required
+export const loadPostById = ({ post_id }) => {
+  return createAsyncAction({
+    config: {
+      url: "/posts/get-detail?post_id=" + post_id,
+    },
+    success: createAction(post.actions.listupdate.type, function prepare(data) {
+      return {
+        payload: data.post,
       };
     }),
   });
@@ -70,6 +82,7 @@ const createPost = ({
   is_push_notification = true,
 }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/create-post",
       data: toFormData({
@@ -93,6 +106,7 @@ const createPost = ({
 
 const deletePost = ({ post_id }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/delete-post",
       data: { post_id },
@@ -121,6 +135,7 @@ const deletePost = ({ post_id }) => {
 // }
 const makePostHighLight = ({ post_id }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/make-post-highlight",
       data: { post_id },
@@ -146,6 +161,7 @@ const makePostHighLight = ({ post_id }) => {
 // }
 const cancelPostHighLight = ({ post_id }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/cancel-post-highlight",
       data: { post_id },
@@ -164,6 +180,7 @@ const cancelPostHighLight = ({ post_id }) => {
 // pim
 const pinPost = ({ post_id }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/pin-post",
       data: { post_id },
@@ -180,6 +197,7 @@ const pinPost = ({ post_id }) => {
 };
 const cancelPinPost = ({ post_id }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/cancel-pin-post",
       data: { post_id },
@@ -207,6 +225,7 @@ const cancelPinPost = ({ post_id }) => {
 // }
 const like = ({ post_id }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/like-post",
       data: { post_id },
@@ -215,7 +234,8 @@ const like = ({ post_id }) => {
       return {
         payload: {
           id: post_id,
-          is_like: true,
+          is_like: data.is_like,
+          is_love: data.is_love,
           number_like: data.number_like,
           number_love: data.number_love,
         },
@@ -226,6 +246,7 @@ const like = ({ post_id }) => {
 
 const love = ({ post_id }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/love-post",
       data: { post_id },
@@ -234,7 +255,8 @@ const love = ({ post_id }) => {
       return {
         payload: {
           id: post_id,
-          is_love: true,
+          is_like: data.is_like,
+          is_love: data.is_love,
           number_like: data.number_like,
           number_love: data.number_love,
         },
@@ -250,6 +272,7 @@ const love = ({ post_id }) => {
 // parent_id: String optional
 const comment = ({ post_id, content, file, sticker, parent_id }) => {
   return createPostAsyncAction({
+    notifyOnSuccess: false,
     config: {
       url: "/posts/create-comment",
       data: toFormData({ post_id, content, file, sticker, parent_id }),
@@ -302,7 +325,21 @@ const loadPostStatistic = () => {
     }),
   });
 };
-
+// post_id: String required
+export const loadCommentListByPost = ({ post_id }) => {
+  return createAsyncAction({
+    config: {
+      url: `/posts/get-comment?post_id=${post_id}`,
+    },
+  });
+};
+export const loadMoreCommentList = ({ page, post_id } = {}) => {
+  return createAsyncAction({
+    config: {
+      url: `/posts/get-comment?post_id=${post_id}&&page=${page}`,
+    },
+  });
+};
 export const postListSelector = (state) =>
   get(state, [rootPath, types.homepage], emptyArray);
 export const highLightPostListSelector = (state) =>
@@ -317,11 +354,14 @@ export const postModule = {
     homeStatisticSelector,
   },
   actions: {
+    loadCommentListByPost,
+    loadMoreCommentList,
     loadPostList,
+    loadMorePostList,
+    loadPostById,
     loadPostHighLightList,
     loadPostStatistic,
     createPost,
-    loadMorePostList,
     makePostHighLight,
     cancelPostHighLight,
     pinPost,

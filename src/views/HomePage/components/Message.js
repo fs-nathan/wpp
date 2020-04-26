@@ -3,9 +3,14 @@ import ReplyIcon from "@material-ui/icons/Reply";
 import colors from "helpers/colorPalette";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { createMapPropsFromAttrs, loginlineFunc } from "views/JobPage/utils";
+import {
+  createMapPropsFromAttrs,
+  get,
+  loginlineFunc,
+} from "views/JobPage/utils";
 import { commentAttr } from "../contant/attrs";
 const Message = ({
+  parent,
   id,
   onReplyClick,
   content,
@@ -26,16 +31,26 @@ const Message = ({
       <Avatar src={user_create_avatar}>
         {user_create_name && user_create_name[0]}
       </Avatar>
-      <Box margin="5px 0 0 5px">
+      <Box margin="2px 0 0 5px">
         <div
           style={{
             // minHeight: "30px",
             lineHeight: "22px",
-            padding: "4px 8px",
+            padding: "8px 8px",
             background: "#f5f6f7",
             borderRadius: "15px",
           }}
         >
+          {parent && (
+            <Box
+              color={colors.gray[0]}
+              padding="0 4px"
+              borderLeft={`2px solid ${colors.blue[0]}`}
+            >
+              <b>{get(parent, commentAttr.user_create_name)}</b>{" "}
+              {get(parent, commentAttr.content)}
+            </Box>
+          )}
           <span
             style={{
               marginRight: "8px",
@@ -105,6 +120,7 @@ export default ({ message, onReplyClick }) => {
   )(message);
   return (
     <Message
+      parent={message.parent}
       {...{
         id,
         content,

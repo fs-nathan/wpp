@@ -5,14 +5,17 @@ import StyledTypo from "components/ColorTypo";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
+import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
 
 export const HightLight = ({ posts }) => {
   const { t } = useTranslation();
+  const history = useHistory();
   return (
     <TasksCard.Container>
       <TasksCard.Header
@@ -44,7 +47,18 @@ export const HightLight = ({ posts }) => {
                 <ListItemLayout
                   key={i}
                   left={<Avatar src={item.user_create_avatar}></Avatar>}
-                  title={item.title}
+                  title={
+                    <span
+                      className="cursor-pointer"
+                      onClick={() =>
+                        history.push(
+                          routes.postDetail.path.replace(":id", item.id)
+                        )
+                      }
+                    >
+                      {item.title}
+                    </span>
+                  }
                   subTitle={
                     <span>
                       <StyledTypo component="span" color="blue">

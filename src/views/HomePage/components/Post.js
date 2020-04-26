@@ -3,22 +3,14 @@ import {
   Box,
   ButtonBase,
   IconButton,
-  InputBase,
   SvgIcon,
   Typography,
 } from "@material-ui/core";
-import {
-  AttachFileOutlined,
-  CameraAltOutlined,
-  ExtensionOutlined,
-  InsertEmoticonOutlined,
-  MoreVert,
-} from "@material-ui/icons";
+import { MoreVert } from "@material-ui/icons";
 import {
   mdiHeart,
   mdiHeartOutline,
   mdiMessageOutline,
-  mdiPin,
   mdiThumbUp,
   mdiThumbUpOutline,
 } from "@mdi/js";
@@ -28,16 +20,19 @@ import colors from "helpers/colorPalette";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs, get, template } from "views/JobPage/utils";
+import { createMapPropsFromAttrs, template } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/components/AyncTracker";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import TasksCard from "../components/TasksCard";
-import { commentAttr, postAttr } from "../contant/attrs";
+import { postAttr } from "../contant/attrs";
+import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
 import AvatarGroup from "./AvatarGroup";
+import { CommentInput } from "./CommentInput";
 import likeImage from "./like-image.jpg";
 import loveImage from "./love-image.png";
 import Message from "./Message";
@@ -61,11 +56,10 @@ const CommentListContainer = () => {
   const [newComments, setNewComments] = useState([]);
   const profile = useSelector(profileSelector);
   const { t } = useTranslation();
-  const { comments, id, inputId } = useContext(PostContext);
-  const [
-    { status, asyncId, data },
-    handleDispatchAsyncAction,
-  ] = useAsyncTracker();
+  const { comments, id, inputId, total_comments, number_comment } = useContext(
+    PostContext
+  );
+  const [{}, handleDispatchAsyncAction] = useAsyncTracker();
   const handleComment = useCallback(
     (value) => {
       const asyncId = Date.now();
@@ -73,11 +67,13 @@ const CommentListContainer = () => {
         ...newComments,
         {
           asyncId,
+          parent: reply,
           content: value,
           user_create_name: profile.name,
           user_create_avatar: profile.avatar,
         },
       ]);
+      setReply(undefined);
       handleDispatchAsyncAction({
         asyncId,
         ...postModule.actions.comment({
@@ -87,15 +83,38 @@ const CommentListContainer = () => {
         }),
       });
     },
-    [id, newComments]
+    [
+      handleDispatchAsyncAction,
+      id,
+      newComments,
+      profile.avatar,
+      profile.name,
+      reply,
+    ]
   );
-  const handleReplyClick = useCallback((c) => {
-    setReply(c);
-    const e = document.querySelector("#" + inputId);
-    e && e.focus();
-  }, []);
+  const handleReplyClick = useCallback(
+    (c) => {
+      setReply(c);
+      const e = document.querySelector("#" + inputId);
+      e && e.focus();
+    },
+    [inputId]
+  );
   return (
     <>
+      <Box padding="0 20px" display="flex" alignItems="center">
+        <Box
+          style={{
+            color: colors.blue[0],
+          }}
+          flex="1"
+        >
+          {t("Xem các bình luận trước")}
+        </Box>
+        <Typography color="textSecondary">
+          {total_comments}/{number_comment}
+        </Typography>
+      </Box>
       <CommentList {...{ comments }} onReplyClick={handleReplyClick} />
       {newComments.map((c, i) => (
         <AsyncTracker asyncId={c.asyncId}>
@@ -129,9 +148,8 @@ const CommentListContainer = () => {
     </>
   );
 };
-const PostMenu = ({
+export const PostMenu = ({
   menuAnchor,
-  item,
   options,
   handleActionClick,
   setMenuAnchor,
@@ -146,305 +164,121 @@ const PostMenu = ({
     ></ItemMenu>
   );
 };
-const CommentInput = React.memo(
-  ({ placeholder, handleComment, inputId, reply, setReply }) => {
-    return (
-      <Box
-        alignSelf="flex-end"
-        margin="0 0 0 5px"
-        border="1px solid rgba(0, 0, 0, 0.12)"
-        minHeight={"40px"}
-        display="flex"
-        flex="1"
-        style={{ background: "#f5f6f7", borderRadius: "20px" }}
-        lineHeight={"30px"}
-        padding="0 8px"
-      >
-        <Stack small style={{ flex: 1, padding: "5px 8px", lineHeight: 1.5 }}>
-          {reply && (
-            <Box
-              color={colors.gray[0]}
-              padding="0 4px"
-              borderLeft={`2px solid ${colors.blue[0]}`}
-            >
-              <b>{get(reply, commentAttr.user_create_name)}</b>{" "}
-              {get(reply, commentAttr.content)}
-            </Box>
-          )}
-          <InputBase
-            id={inputId}
-            onKeyDown={(e) => {
-              if (e.which == 13 || e.keyCode == 13 || e.key == "Enter") {
-                e.preventDefault();
-                handleComment(e.target.value);
-                e.target.value = "";
-              }
-              if (e.which == 8 || e.keyCode == 8 || e.key == "Backspace") {
-                if (e.target.value.length === 0) {
-                  e.preventDefault();
-                  setReply(undefined);
-                }
-              }
-            }}
-            multiline
-            placeholder={placeholder}
-          ></InputBase>
-        </Stack>
-
-        <Box display="flex" alignItems="center" height={"40px"}>
-          <IconButton size="small" aria-label="delete">
-            <InsertEmoticonOutlined />
-          </IconButton>
-          <IconButton size="small" aria-label="delete">
-            <CameraAltOutlined />
-          </IconButton>
-          <IconButton size="small" aria-label="delete">
-            <AttachFileOutlined />
-          </IconButton>
-          <IconButton size="small" aria-label="delete">
-            <ExtensionOutlined />
-          </IconButton>
-        </Box>
-      </Box>
-    );
-  }
-);
-const PostContext = React.createContext({});
-
-const Post = ({
-  id,
-  inputId,
-  title,
-  content,
-  user_create_id,
-  user_create_name,
-  user_create_avatar,
-  files,
-  images = emptyArray,
-  position,
-  room,
-  number_like,
-  number_comment,
-  comments,
-  time_label,
-  last_like_user,
-  last_love_user,
-  category_name,
-  number_love,
-  total_comments,
-  is_highlight,
-  is_pin,
-  menuoptions,
-  handleActionClick,
-  handleComment,
+export const PostContext = React.createContext({});
+export const ActionGroup = ({
   is_love,
   is_like,
+  handleActionClick,
+  inputId,
 }) => {
   const { t } = useTranslation();
+  return (
+    <Box
+      display="flex"
+      borderTop="1px solid rgba(0, 0, 0, 0.12)"
+      borderBottom="1px solid rgba(0, 0, 0, 0.12)"
+      alignItems="center"
+    >
+      <PostActionButton
+        active={is_love}
+        color={colors.pink[0]}
+        onClick={() => handleActionClick("love")}
+        startIcon={
+          is_love ? (
+            <Icon path={mdiHeart} size={1} />
+          ) : (
+            <Icon path={mdiHeartOutline} size={1} />
+          )
+        }
+      >
+        <span>{t("Yêu")}</span>
+      </PostActionButton>
+      <PostActionButton
+        active={is_like}
+        color={colors.blue[0]}
+        onClick={() => handleActionClick("like")}
+        startIcon={
+          is_like ? (
+            <Icon path={mdiThumbUp} size={1} />
+          ) : (
+            <Icon path={mdiThumbUpOutline} size={1} />
+          )
+        }
+      >
+        {t("Thích")}
+      </PostActionButton>
+      <PostActionButton startIcon={<Icon path={mdiMessageOutline} size={1} />}>
+        <label htmlFor={inputId}>{t("Bình luận")}</label>
+      </PostActionButton>
+    </Box>
+  );
+};
+export const PostHeader = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  let otherNumber = Number(number_like) + Number(number_love);
-  const hadLikeUser = last_like_user && last_like_user !== null;
-  const hadLoveUser = last_love_user && last_love_user !== null;
-  if (hadLikeUser) otherNumber = otherNumber - 1;
-  if (hadLoveUser) otherNumber = otherNumber - 1;
+  const {
+    user_create_avatar,
+    user_create_name,
+    handleActionClick,
+    menuoptions,
+    position,
+    category_name,
+    time_label,
+    is_pin,
+    mdiPin,
+  } = useContext(PostContext);
   return (
     <>
-      <TasksCard.Container>
-        <TasksCard.Header
-          avatar={
-            <TasksCard.HeaderAvatar
-              style={{ width: "50px", height: "50px" }}
-              aria-label="tasks"
-              src={user_create_avatar}
-            >
-              R
-            </TasksCard.HeaderAvatar>
-          }
-          action={
-            <div>
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAnchorEl(e.currentTarget);
-                }}
-                size="small"
-                aria-label="settings"
-              >
-                <MoreVert />
-              </IconButton>
-            </div>
-          }
-          title={
-            <TasksCard.HeaderTitle>
-              <b style={{ marginRight: "10px", fontSize: "15px" }}>
-                {user_create_name}
-              </b>
-              <Typography
-                style={{ fontSize: "15px", display: "inline" }}
-                color="textSecondary"
-              >
-                {position}
-              </Typography>
-            </TasksCard.HeaderTitle>
-          }
-          subheader={
-            <TasksCard.HeaderSubTitle>
-              <StyledTypo component="span" color="orange" variant="subtitle1">
-                {category_name}{" "}
-              </StyledTypo>
-              {time_label}{" "}
-              {is_pin && (
-                <SvgIcon style={{ verticalAlign: "middle", padding: "0 10px" }}>
-                  <path d={mdiPin}></path>
-                </SvgIcon>
-              )}
-            </TasksCard.HeaderSubTitle>
-          }
-        />
-        <TasksCard.Content>
-          <Stack>
-            <b style={{ fontSize: "17px" }}>{title}</b>
-            <Typography
-              style={{ fontSize: "15px" }}
-              variant="body2"
-              color="textSecondary"
-            >
-              {content}
-            </Typography>
-          </Stack>
-        </TasksCard.Content>
-
-        <TasksCard.Media images={images}></TasksCard.Media>
-        <Stack>
-          <div />
-          {!!category_name && (
-            <Typography
-              color="textSecondary"
-              style={{
-                fontWeight: "bold",
-                fontSize: "15px",
-                padding: "0 20px",
-              }}
-            >
-              # {category_name}
-            </Typography>
-          )}
-          <Box
-            padding="0 20px"
-            lineHeight="24px"
-            display="flex"
-            alignItems="center"
+      <TasksCard.Header
+        avatar={
+          <TasksCard.HeaderAvatar
+            style={{ width: "50px", height: "50px" }}
+            aria-label="tasks"
+            src={user_create_avatar}
           >
-            <Box display="flex" alignItems="center">
-              <AvatarGroup
-                size={20}
-                offset={-4}
-                images={[
-                  hadLikeUser && likeImage,
-                  hadLoveUser && loveImage,
-                ].filter((item) => item)}
-              ></AvatarGroup>
-            </Box>
-            <Box padding="0 4px" flex="1" whiteSpace="now-wrap">
-              {[
-                hadLikeUser && <span href="#">{last_like_user}</span>,
-                hadLoveUser && <span href="#">{last_love_user}</span>,
-                !!otherNumber && (
-                  <span>
-                    {template(t("<%= numner %> người khác"))({
-                      numner: otherNumber,
-                    })}
-                  </span>
-                ),
-              ]
-                .filter((item) => item)
-                .map((item, i, array) => {
-                  if (i === array.length - 2) {
-                    return (
-                      <>
-                        {item}
-                        {" và "}
-                      </>
-                    );
-                  }
-                  if (i < array.length - 1) {
-                    return (
-                      <>
-                        {item}
-                        {" ,"}
-                      </>
-                    );
-                  }
-                  return item;
-                })}
-            </Box>
-            {!!number_comment && (
-              <ButtonBase htmlFor={inputId} component="label">
-                <StyledTypo component="span" variant="subtitle1">
-                  {number_comment} {t("bình luận")}
-                </StyledTypo>
-              </ButtonBase>
+            R
+          </TasksCard.HeaderAvatar>
+        }
+        action={
+          <div>
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setAnchorEl(e.currentTarget);
+              }}
+              size="small"
+              aria-label="settings"
+            >
+              <MoreVert />
+            </IconButton>
+          </div>
+        }
+        title={
+          <TasksCard.HeaderTitle>
+            <b style={{ marginRight: "10px", fontSize: "15px" }}>
+              {user_create_name}
+            </b>
+            <Typography
+              style={{ fontSize: "15px", display: "inline" }}
+              color="textSecondary"
+            >
+              {position}
+            </Typography>
+          </TasksCard.HeaderTitle>
+        }
+        subheader={
+          <TasksCard.HeaderSubTitle>
+            <StyledTypo component="span" color="orange" variant="subtitle1">
+              {category_name}{" "}
+            </StyledTypo>
+            {time_label}{" "}
+            {is_pin && (
+              <SvgIcon style={{ verticalAlign: "middle", padding: "0 10px" }}>
+                <path d={mdiPin}></path>
+              </SvgIcon>
             )}
-          </Box>
-          <Box
-            display="flex"
-            borderTop="1px solid rgba(0, 0, 0, 0.12)"
-            borderBottom="1px solid rgba(0, 0, 0, 0.12)"
-            alignItems="center"
-          >
-            <PostActionButton
-              active={is_love}
-              color={colors.pink[0]}
-              onClick={() => handleActionClick("love")}
-              startIcon={
-                is_love ? (
-                  <Icon path={mdiHeart} size={1} />
-                ) : (
-                  <Icon path={mdiHeartOutline} size={1} />
-                )
-              }
-            >
-              <span>{t("Yêu")}</span>
-            </PostActionButton>
-            <PostActionButton
-              active={is_like}
-              color={colors.blue[0]}
-              onClick={() => handleActionClick("like")}
-              startIcon={
-                is_like ? (
-                  <Icon path={mdiThumbUp} size={1} />
-                ) : (
-                  <Icon path={mdiThumbUpOutline} size={1} />
-                )
-              }
-            >
-              {t("Thích")}
-            </PostActionButton>
-            <PostActionButton
-              startIcon={<Icon path={mdiMessageOutline} size={1} />}
-            >
-              <label htmlFor={inputId}>{t("Bình luận")}</label>
-            </PostActionButton>
-          </Box>
-          <Box padding="0 20px" display="flex" alignItems="center">
-            <Box
-              style={{
-                color: colors.blue[0],
-              }}
-              flex="1"
-            >
-              {t("Xem các bình luận trước")}
-            </Box>
-            <Typography color="textSecondary">3/181</Typography>
-          </Box>
-        </Stack>
-        {is_highlight && <TasksCard.HighLight />}
-        <TasksCard.Content>
-          <Stack>
-            <CommentListContainer />
-          </Stack>
-        </TasksCard.Content>
-      </TasksCard.Container>
+          </TasksCard.HeaderSubTitle>
+        }
+      />{" "}
       <PostMenu
         menuAnchor={anchorEl}
         handleActionClick={handleActionClick}
@@ -454,8 +288,146 @@ const Post = ({
     </>
   );
 };
-
-export default ({ post }) => {
+export const PostContent = () => {
+  const history = useHistory();
+  const { title, content, id } = useContext(PostContext);
+  return (
+    <TasksCard.Content>
+      <Stack>
+        <b
+          className="cursor-pointer"
+          onClick={() =>
+            history.push(routes.postDetail.path.replace(":id", id))
+          }
+          style={{ fontSize: "17px" }}
+        >
+          {title}
+        </b>
+        <Typography style={{ fontSize: "15px" }}>{content}</Typography>
+      </Stack>
+    </TasksCard.Content>
+  );
+};
+export const PostStats = () => {
+  const { t } = useTranslation();
+  const {
+    inputId,
+    number_like,
+    number_comment,
+    last_like_user,
+    last_love_user,
+    number_love,
+    handleActionClick,
+    is_love,
+    is_like,
+  } = useContext(PostContext);
+  let otherNumber = Number(number_like) + Number(number_love);
+  const hadLikeUser = last_like_user && last_like_user !== null;
+  const hadLoveUser = last_love_user && last_love_user !== null;
+  if (hadLikeUser) otherNumber = otherNumber - 1;
+  if (hadLoveUser) otherNumber = otherNumber - 1;
+  return (
+    <Stack small>
+      <div />
+      <Box
+        padding="0 20px"
+        lineHeight="24px"
+        display="flex"
+        alignItems="center"
+      >
+        <Box display="flex" alignItems="center">
+          <AvatarGroup
+            size={20}
+            offset={-4}
+            images={[hadLikeUser && likeImage, hadLoveUser && loveImage].filter(
+              (item) => item
+            )}
+          ></AvatarGroup>
+        </Box>
+        <Box padding="0 4px" flex="1" whiteSpace="now-wrap">
+          {[
+            hadLikeUser && <span href="#">{last_like_user}</span>,
+            hadLoveUser && <span href="#">{last_love_user}</span>,
+            !!otherNumber && (
+              <span>
+                {template(t("<%= numner %> người khác"))({
+                  numner: otherNumber,
+                })}
+              </span>
+            ),
+          ]
+            .filter((item) => item)
+            .map((item, i, array) => {
+              if (i === array.length - 2) {
+                return (
+                  <>
+                    {item}
+                    {" và "}
+                  </>
+                );
+              }
+              if (i < array.length - 1) {
+                return (
+                  <>
+                    {item}
+                    {" ,"}
+                  </>
+                );
+              }
+              return item;
+            })}
+        </Box>
+        {!!number_comment && (
+          <ButtonBase htmlFor={inputId} component="label">
+            <StyledTypo component="span" variant="subtitle1">
+              {number_comment} {t("bình luận")}
+            </StyledTypo>
+          </ButtonBase>
+        )}
+      </Box>
+      <ActionGroup {...{ is_love, is_like, handleActionClick, inputId }} />
+    </Stack>
+  );
+};
+export const PostMedia = () => {
+  const { images } = useContext(PostContext);
+  return <TasksCard.Media images={images}></TasksCard.Media>;
+};
+export const PostCategory = () => {
+  const { category_name } = useContext(PostContext);
+  if (!category_name) return null;
+  return (
+    <Typography
+      color="textSecondary"
+      style={{
+        fontWeight: "bold",
+        fontSize: "15px",
+        padding: "0 20px",
+      }}
+    >
+      # {category_name}
+    </Typography>
+  );
+};
+const PostTimeline = () => {
+  const { is_highlight } = useContext(PostContext);
+  return (
+    <TasksCard.Container>
+      <PostHeader />
+      <PostContent />
+      <PostMedia />
+      <PostCategory />
+      <PostStats />
+      {is_highlight && <TasksCard.HighLight />}
+      <TasksCard.Content>
+        <Stack>
+          <CommentListContainer />
+        </Stack>
+      </TasksCard.Content>
+    </TasksCard.Container>
+  );
+};
+export const PostContainer = ({ post, children }) => {
   const [
     id,
     title,
@@ -514,6 +486,7 @@ export default ({ post }) => {
           break;
         case "cancel-highLight":
           dispatch(postModule.actions.cancelPostHighLight({ post_id: id }));
+          break;
         case "pin":
           dispatch(postModule.actions.pinPost({ post_id: id }));
           break;
@@ -533,7 +506,7 @@ export default ({ post }) => {
           break;
       }
     },
-    [id]
+    [dispatch, id]
   );
   const { t } = useTranslation();
   const menuoptions = useMemo(() => {
@@ -552,7 +525,7 @@ export default ({ post }) => {
     (value) => {
       dispatch(postModule.actions.comment({ post_id: id, content: value }));
     },
-    [id]
+    [dispatch, id]
   );
   const inputId = useMemo(() => {
     return "post-" + id;
@@ -589,37 +562,15 @@ export default ({ post }) => {
         handleComment,
       }}
     >
-      <Post
-        {...{
-          id,
-          title,
-          content,
-          user_create_id,
-          user_create_name,
-          user_create_avatar,
-          files,
-          images,
-          position,
-          room,
-          number_like,
-          number_comment,
-          comments,
-          time_label,
-          last_like_user,
-          last_love_user,
-          category_name,
-          total_comments,
-          number_love,
-          is_highlight,
-          is_pin,
-          menuoptions,
-          handleActionClick,
-          handleComment,
-          inputId,
-          is_love,
-          is_like,
-        }}
-      />
+      {children}
     </PostContext.Provider>
+  );
+};
+
+export default ({ post }) => {
+  return (
+    <PostContainer post={post}>
+      <PostTimeline />
+    </PostContainer>
   );
 };

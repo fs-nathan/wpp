@@ -81,7 +81,7 @@ function Left() {
           {[
             [mdiCogs, t("Cài đặt nhóm")],
             [mdiHelpRhombus, t("Câu hỏi thường gặp")],
-            [mdiLifebuoy, t("HƯớng dẫn sử dụng")],
+            [mdiLifebuoy, t("Hướng dẫn sử dụng")],
           ].map(([iconPath, text], i) => (
             <Box display="flex" key={i} color="#545454" alignItems="flex-start">
               <Icon

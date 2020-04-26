@@ -99,7 +99,14 @@ const createValidate = (schema) => (values = {}, mapError = {}) => {
       }, {})
     : emptyObject;
 };
+const paging = (data) => {
+  const currentPage = get(data, "paging.page");
+  const totalPage = get(data, "paging.total_page");
+  const hasMore = currentPage && totalPage && currentPage < totalPage;
+  return { currentPage, totalPage, hasMore };
+};
 export {
+  paging,
   chart,
   time,
   remove,
