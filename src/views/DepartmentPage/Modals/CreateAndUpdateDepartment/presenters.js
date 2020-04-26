@@ -1,5 +1,4 @@
-import { TextField } from '@material-ui/core';
-import ColorButton from 'components/ColorButton';
+import { Button, TextField } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
 import CustomModal from 'components/CustomModal';
@@ -16,6 +15,15 @@ const LogoBox = ({ className = '', ...props }) =>
     className={`view_Department_Create_Modal___logo-box ${className}`}
     {...props}
   />;
+
+const MyButton = ({ className = '', ...props }) =>
+  <Button
+    className={`view_Department_Create_Modal___button ${className}`}
+    disableRipple
+    disableFocusRipple
+    disableTouchRipple
+    {...props}
+  />
 
 function CreateAndUpdateDepartment({
   updateDepartment = null,
@@ -75,7 +83,7 @@ function CreateAndUpdateDepartment({
         canConfirm={!errorName && !errorDescription}
         onCancle={() => setOpen(false)}
         manualClose={false}
-        actionLoading={true}
+        actionLoading={actionLoading}
       >
         <TextField
           value={name}
@@ -99,12 +107,15 @@ function CreateAndUpdateDepartment({
         <LogoBox>
           <div>
             <ColorTypo>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO')}</ColorTypo>
-            <ColorButton
+            <MyButton
               color='primary'
               onClick={() => handleOpenModal('LOGO', {
                 doSelectIcon: icon => setIcon(icon),
               })}
-            >{t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}</ColorButton>
+            >
+              <span>+</span>
+              <span>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}</span>
+            </MyButton>
           </div>
           <CustomAvatar src={icon.url_full} alt='avatar' />
         </LogoBox>

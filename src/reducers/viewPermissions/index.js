@@ -4,7 +4,7 @@ export const initialState = {
   data: {
     users: null,
     projects: null,
-    detailProject: null,
+    detailProject: {},
   },
   error: null,
   loading: false,
@@ -23,12 +23,25 @@ function reducer(state = initialState, action) {
       };
     case GET_PERMISSION_VIEW_PROJECTS_SUCCESS:
     case GET_PERMISSION_VIEW_USERS_SUCCESS:
-    case GET_PERMISSION_VIEW_DETAIL_PROJECT_SUCCESS:
       return {
         ...state,
         data: {
           ...state.data,
           ...action.data,
+        },
+        error: null,
+        loading: false,
+        firstTime: false,
+      };
+    case GET_PERMISSION_VIEW_DETAIL_PROJECT_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          detailProject: {
+            ...state.data.detailProject,
+            [action.options.projectId]: action.data.detailProject,
+          }
         },
         error: null,
         loading: false,

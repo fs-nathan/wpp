@@ -36,7 +36,6 @@ export const updateGroupPermissionSelector = createSelector(
   [updateGroupPermissionMember],
   (updateGroupPermissionMember) => {
     const { loading, error } = updateGroupPermissionMember;
-    console.log(updateGroupPermissionMember);
     return {
       loading,
       error,

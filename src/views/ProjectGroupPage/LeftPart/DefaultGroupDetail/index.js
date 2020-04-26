@@ -1,3 +1,5 @@
+import { listProject } from 'actions/project/listProject';
+import { detailDefaultGroup } from 'actions/projectGroup/detailDefaultGroup';
 import React from 'react';
 import { connect } from 'react-redux';
 import { routeSelector } from '../../selectors';
@@ -5,7 +7,7 @@ import DefaultGroupDetailPresenter from './presenters';
 import { groupSelector } from './selectors';
 
 function DefaultGroupDetail({
-  group, route
+  group, route,
 }) {
 
   return (
@@ -22,7 +24,14 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    doListProject: (options, quite) => dispatch(listProject(options, quite)),
+    doDetailDefaultGroup: (quite) => dispatch(detailDefaultGroup(quite)),
+  };
+};
+
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(DefaultGroupDetail);

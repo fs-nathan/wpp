@@ -1,20 +1,31 @@
+import { updateProject } from 'actions/project/updateProject';
+import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateProject } from '../../../../actions/project/updateProject';
 import EditProjectPresenter from './presenters';
-import { groupsSelector } from './selectors';
+import { activeLoadingSelector, groupsSelector } from './selectors';
 
 function EditProject({
   curProject = null,
   open, setOpen,
   groups,
-  doUpdateProject
+  doUpdateProject,
+  doListProjectGroup,
+  activeLoading,
 }) {
+
+  React.useEffect(() => {
+    if (open) {
+      doListProjectGroup();
+    }
+    // eslint-disable-next-line
+  }, [open]);
 
   return (
     <EditProjectPresenter
       curProject={curProject}
+      activeLoading={activeLoading}
       open={open} setOpen={setOpen}
       groups={groups}
       handleEditProject={({ name, description, projectGroupId, priority, currency }) =>
@@ -27,12 +38,14 @@ function EditProject({
 const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
+    activeLoading: activeLoadingSelector(state),
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     doUpdateProject: ({ projectId, name, description, projectGroupId, priority, currency }) => dispatch(updateProject({ projectId, name, description, projectGroupId, priority, currency })),
+    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
   }
 };
 

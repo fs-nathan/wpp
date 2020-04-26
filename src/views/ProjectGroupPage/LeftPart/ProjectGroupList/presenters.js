@@ -34,6 +34,12 @@ function ProjectList({
 
   const { t } = useTranslation();
 
+  const ref = React.useRef();
+
+  React.useEffect(() => {
+    ref.current.focus();
+  }, []);
+
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
     if (!destination) return;
@@ -76,6 +82,7 @@ function ProjectList({
                 <StyledListItem
                   to={`${route}`}
                   component={Link}
+                  innerRef={ref}
                 >
                   <div>
                     <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />

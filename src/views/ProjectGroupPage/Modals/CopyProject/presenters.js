@@ -3,16 +3,17 @@ import { FormControl, FormControlLabel, FormHelperText, ListItemText, ListSubhea
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle } from '@mdi/js';
 import Icon from '@mdi/react';
+import ColorTypo from 'components/ColorTypo';
+import { Primary, StyledList, StyledListItem } from 'components/CustomList';
+import CustomModal from 'components/CustomModal';
+import CustomTextbox from 'components/CustomTextbox';
+import SearchInput from 'components/SearchInput';
+import { CustomEventDispose, CustomEventListener, SORT_PROJECT } from 'constants/events.js';
+import { useMaxlenString, useRequiredDate, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../components/ColorTypo';
-import { Primary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox from '../../../../components/CustomTextbox';
-import SearchInput from '../../../../components/SearchInput';
-import { useMaxlenString, useRequiredDate, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const Header = ({ className = '', ...props }) =>
@@ -122,6 +123,7 @@ function CopyProject({
   searchPatern, setSearchPatern,
   groups,
   handleCopyProject,
+  activeLoading,
 }) {
 
   const { t } = useTranslation();
@@ -129,8 +131,21 @@ function CopyProject({
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [isCopyMember, setIsCopyMember] = React.useState(false);
   const [startDate, setStartDate, errorDate] = useRequiredDate(moment().toDate());
-
   const [selectedProject, setSelectedProject] = React.useState(null);
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+      setIsCopyMember(false);
+      setStartDate(moment().toDate());
+      setSelectedProject(null);
+    };
+    CustomEventListener(SORT_PROJECT, successClose);
+    return () => CustomEventDispose(SORT_PROJECT, successClose);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CustomModal
@@ -146,9 +161,12 @@ function CopyProject({
         moment(startDate).format('YYYY-MM-DD'),
         isCopyMember
       )}
+      onCancle={() => setOpen(false)}
       height='tall'
       columns={2}
       loading={groups.loading}
+      activeLoading={activeLoading}
+      manualClose={true}
       left={{
         title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE"),
         content: () =>

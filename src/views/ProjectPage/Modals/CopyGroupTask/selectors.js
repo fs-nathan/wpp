@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 const getAllGroupTask = state => state.groupTask.getAllGroupTask;
+const copyGroupTask = state => state.groupTask.copyGroupTask;
 
 export const groupTasksSelector = createSelector(
   [getAllGroupTask],
@@ -14,3 +15,11 @@ export const groupTasksSelector = createSelector(
     }
   }
 )
+
+export const activeLoadingSelector = createSelector(
+  [copyGroupTask],
+  (copyGroupTask) => {
+    const { loading } = copyGroupTask;
+    return loading;
+  }
+);

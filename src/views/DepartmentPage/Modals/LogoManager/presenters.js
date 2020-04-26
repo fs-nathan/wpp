@@ -8,7 +8,6 @@ import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import ColorButton from "../../../../components/ColorButton";
 import ColorTypo from "../../../../components/ColorTypo";
 import CustomModal from "../../../../components/CustomModal";
-import ErrorBox from "../../../../components/ErrorBox";
 import LoadingBox from "../../../../components/LoadingBox";
 import "./style.scss";
 const LogoManagerContext = React.createContext({});
@@ -189,107 +188,103 @@ const LogoManagerModalWrapper = ({ children }) => {
       loading={icons.loading}
       actionLoading={mutateIcon.loading}
     >
-      {icons.error !== null ? (
-        <ErrorBox />
-      ) : (
-          <>
-            <CustomTypo>{t("DMH.VIEW.DP.MODAL.LOGO.DEFAULT")}</CustomTypo>
-            <LogoList>
-              {icons.defaults.map((icon) => (
-                <LogoBox
-                  key={get(icon, "url_icon")}
-                  isSelect={
-                    isSelect &&
-                    get(selectedIcon, "url_sort", "x") === get(icon, "icon", "y")
-                  }
-                >
-                  <ButtonBase
-                    disabled={!isSelect}
-                    onClick={() =>
-                      isSelect &&
-                      setSelectedIcon({
-                        id: get(icon, "id"),
-                        url_sort: get(icon, "icon"),
-                        url_full: get(icon, "url_icon"),
-                      })
-                    }
-                  >
-                    <Avatar src={get(icon, "url_icon")} alt="avatar" />
-                  </ButtonBase>
-                </LogoBox>
-              ))}
-            </LogoList>
-            <CustomTypo>{t("DMH.VIEW.DP.MODAL.LOGO.UPLOADED")}</CustomTypo>
-            <LogoList tall={true}>
-              {icons.createds.map((icon) => (
-                <LogoBox
-                  key={get(icon, "id", "")}
-                  isSelect={
-                    isSelect &&
-                    get(selectedIcon, "id", "x") === get(icon, "id", "y")
-                  }
-                >
-                  <ButtonBase
-                    disabled={!isSelect}
-                    onClick={() => isSelect && setSelectedIcon(icon)}
-                  >
-                    <Avatar src={get(icon, "url_full")} alt="avatar" />
-                  </ButtonBase>
-                  <ColorButton
-                    fullWidth
-                    variant="text"
-                    size="small"
-                    variantColor="red"
-                    onClick={() =>
-                      handleOpenModal("ALERT", {
-                        content: t("DMH.VIEW.DP.MODAL.LOGO.ALERT"),
-                        onConfirm: () => handleDeleteIcon(icon),
-                      })
-                    }
-                  >
-                    {mutateIcon.loading ? (
-                      <LoadingBox size={8} />
-                    ) : (
-                        t("DMH.VIEW.DP.MODAL.LOGO.DEL")
-                      )}
-                  </ColorButton>
-                </LogoBox>
-              ))}
-            </LogoList>
-            {canUpload && (
-              <>
-                <input
-                  disabled={mutateIcon.loading}
-                  accept="image/*"
-                  id="raised-button-file"
-                  type="file"
-                  onChange={(evt) =>
-                    !mutateIcon.loading &&
-                    handleOpenModal("UPLOAD", {
-                      image: evt.target.files[0],
-                      uploadImage: handleCreateIcon,
-                    })
-                  }
-                />
+      <>
+        <CustomTypo>{t("DMH.VIEW.DP.MODAL.LOGO.DEFAULT")}</CustomTypo>
+        <LogoList>
+          {icons.defaults.map((icon) => (
+            <LogoBox
+              key={get(icon, "url_icon")}
+              isSelect={
+                isSelect &&
+                get(selectedIcon, "url_sort", "x") === get(icon, "icon", "y")
+              }
+            >
+              <ButtonBase
+                disabled={!isSelect}
+                onClick={() =>
+                  isSelect &&
+                  setSelectedIcon({
+                    id: get(icon, "id"),
+                    url_sort: get(icon, "icon"),
+                    url_full: get(icon, "url_icon"),
+                  })
+                }
+              >
+                <Avatar src={get(icon, "url_icon")} alt="avatar" />
+              </ButtonBase>
+            </LogoBox>
+          ))}
+        </LogoList>
+        <CustomTypo>{t("DMH.VIEW.DP.MODAL.LOGO.UPLOADED")}</CustomTypo>
+        <LogoList tall={true}>
+          {icons.createds.map((icon) => (
+            <LogoBox
+              key={get(icon, "id", "")}
+              isSelect={
+                isSelect &&
+                get(selectedIcon, "id", "x") === get(icon, "id", "y")
+              }
+            >
+              <ButtonBase
+                disabled={!isSelect}
+                onClick={() => isSelect && setSelectedIcon(icon)}
+              >
+                <Avatar src={get(icon, "url_full")} alt="avatar" />
+              </ButtonBase>
+              <ColorButton
+                fullWidth
+                variant="text"
+                size="small"
+                variantColor="red"
+                onClick={() =>
+                  handleOpenModal("ALERT", {
+                    content: t("DMH.VIEW.DP.MODAL.LOGO.ALERT"),
+                    onConfirm: () => handleDeleteIcon(icon),
+                  })
+                }
+              >
                 {mutateIcon.loading ? (
-                  <ColorButton variant="text" variantColor="green" size="small">
-                    <LoadingBox size={16} />
-                  </ColorButton>
+                  <LoadingBox size={8} />
                 ) : (
-                    <ColorButton
-                      variant="text"
-                      variantColor="green"
-                      size="small"
-                      component="label"
-                      htmlFor="raised-button-file"
-                    >
-                      {t("DMH.VIEW.DP.MODAL.LOGO.UPLOAD")}
-                    </ColorButton>
+                    t("DMH.VIEW.DP.MODAL.LOGO.DEL")
                   )}
-              </>
-            )}
+              </ColorButton>
+            </LogoBox>
+          ))}
+        </LogoList>
+        {canUpload && (
+          <>
+            <input
+              disabled={mutateIcon.loading}
+              accept="image/*"
+              id="raised-button-file"
+              type="file"
+              onChange={(evt) =>
+                !mutateIcon.loading &&
+                handleOpenModal("UPLOAD", {
+                  image: evt.target.files[0],
+                  uploadImage: handleCreateIcon,
+                })
+              }
+            />
+            {mutateIcon.loading ? (
+              <ColorButton variant="text" variantColor="green" size="small">
+                <LoadingBox size={16} />
+              </ColorButton>
+            ) : (
+                <ColorButton
+                  variant="text"
+                  variantColor="green"
+                  size="small"
+                  component="label"
+                  htmlFor="raised-button-file"
+                >
+                  {t("DMH.VIEW.DP.MODAL.LOGO.UPLOAD")}
+                </ColorButton>
+              )}
           </>
         )}
+      </>
     </CustomModal>
   );
 };

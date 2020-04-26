@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
+const createProject = state => state.project.createProject;
 
 export const groupsSelector = createSelector(
   [listProjectGroup],
@@ -12,5 +13,13 @@ export const groupsSelector = createSelector(
       error,
       firstTime,
     }
+  }
+);
+
+export const activeLoadingSelector = createSelector(
+  [createProject],
+  (createProject) => {
+    const { loading } = createProject;
+    return loading;
   }
 );

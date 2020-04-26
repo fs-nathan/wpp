@@ -1,27 +1,99 @@
+import { deleteGroupTask } from 'actions/groupTask/deleteGroupTask';
+import { listGroupTask } from 'actions/groupTask/listGroupTask';
+import { sortGroupTask } from 'actions/groupTask/sortGroupTask';
+import { listTask } from 'actions/task/listTask';
+import AlertModal from 'components/AlertModal';
+import { COPY_GROUP_TASK, CREATE_GROUP_TASK, CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, SORT_GROUP_TASK, SORT_TASK, UPDATE_GROUP_TASK } from 'constants/events';
+import { filter, get } from 'lodash';
+import moment from 'moment';
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Context as ProjectContext } from '../../index';
-import { filter, get, } from 'lodash';
-import AlertModal from '../../../../components/AlertModal';
-import { sortGroupTask } from '../../../../actions/groupTask/sortGroupTask';
-import { deleteGroupTask } from '../../../../actions/groupTask/deleteGroupTask';
 import CreateGroupTask from '../../Modals/CreateGroupTask';
 import CreateNewGroupTask from '../../Modals/CreateNewGroupTask';
+import { viewPermissionsSelector } from '../../selectors';
 import GroupTaskSlidePresenter from './presenters';
 import { groupTasksSelector } from './selectors';
 
-function GroupTaskSlide({ 
-  handleSubSlide, 
-  groupTasks, 
-  doSortGroupTask, doDeleteGroupTask, 
+function GroupTaskSlide({
+  handleSubSlide,
+  groupTasks,
+  doSortGroupTask, doDeleteGroupTask,
+  doListGroupTask,
+  doListTask,
+  viewPermissions,
 }) {
-  
-  const { setProjectId } = React.useContext(ProjectContext);
+
+  const {
+    timeRange,
+  } = React.useContext(ProjectContext);
+  const [id, setId] = React.useState(null);
   const { projectId } = useParams();
 
+  React.useEffect(() => {
+    setId(projectId);
+  }, [projectId]);
+
+  React.useEffect(() => {
+    if (id !== null) {
+      doListTask({
+        projectId: id,
+        timeStart: get(timeRange, 'timeStart')
+          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+          : undefined,
+        timeEnd: get(timeRange, 'timeEnd')
+          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+          : undefined,
+      });
+      const reloadListTask = () => {
+        doListTask({
+          projectId: id,
+          timeStart: get(timeRange, 'timeStart')
+            ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+            : undefined,
+          timeEnd: get(timeRange, 'timeEnd')
+            ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+            : undefined,
+        });
+      }
+      CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
+      CustomEventListener(COPY_GROUP_TASK, reloadListTask);
+      CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
+      CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
+      CustomEventListener(SORT_GROUP_TASK, reloadListTask);
+      CustomEventListener(CREATE_TASK, reloadListTask);
+      CustomEventListener(SORT_TASK, reloadListTask);
+      return () => {
+        CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
+        CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
+        CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
+        CustomEventDispose(CREATE_TASK, reloadListTask);
+        CustomEventDispose(SORT_TASK, reloadListTask);
+      }
+    }
+    // eslint-disable-next-line
+  }, [id, timeRange]);
+
+  React.useEffect(() => {
+    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (id !== null) {
+      doListGroupTask({ projectId: id });
+      const reloadListGroupTask = () => {
+        doListGroupTask({ projectId: id });
+      }
+      CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
+      return () => {
+        CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
+      }
+    }
+    // eslint-disable-next-line
+  }, [id, viewPermissions]);
+
   const [searchPatern, setSearchPatern] = React.useState('');
-  
+
   const newGroupTasks = {
     ...groupTasks,
     groupTasks: filter(
@@ -29,10 +101,6 @@ function GroupTaskSlide({
       groupTask => get(groupTask, 'name').toLowerCase().includes(searchPatern.toLowerCase()),
     )
   }
-
-  React.useEffect(() => {
-    setProjectId(projectId);
-  }, [setProjectId, projectId]);
 
   const [openCreateOrCopy, setOpenCreateOrCopy] = React.useState(false);
   const [openCreateOrUpdate, setOpenCreateOrUpdate] = React.useState(false);
@@ -59,17 +127,17 @@ function GroupTaskSlide({
       default: return;
     }
   }
-  
+
   return (
     <>
-      <GroupTaskSlidePresenter 
+      <GroupTaskSlidePresenter
         handleSubSlide={handleSubSlide}
         searchPatern={searchPatern} setSearchPatern={setSearchPatern}
-        groupTasks={newGroupTasks} 
-        handleSortGroupTask={(groupTaskId, sortIndex) => 
+        groupTasks={newGroupTasks}
+        handleSortGroupTask={(groupTaskId, sortIndex) =>
           doSortGroupTask({ groupTaskId, sortIndex })
         }
-        handleDeleteGroupTask={groupTask => 
+        handleDeleteGroupTask={groupTask =>
           doDeleteGroupTask({ groupTaskId: get(groupTask, 'id') })
         }
         handleOpenModal={doOpenModal}
@@ -79,13 +147,13 @@ function GroupTaskSlide({
         setOpen={setOpenAlert}
         {...alertProps}
       />
-      <CreateGroupTask 
+      <CreateGroupTask
         open={openCreateOrCopy}
         setOpen={setOpenCreateOrCopy}
       />
-      <CreateNewGroupTask 
-        open={openCreateOrUpdate} 
-        setOpen={setOpenCreateOrUpdate} 
+      <CreateNewGroupTask
+        open={openCreateOrUpdate}
+        setOpen={setOpenCreateOrUpdate}
         {...updateProps}
       />
     </>
@@ -95,6 +163,7 @@ function GroupTaskSlide({
 const mapStateToProps = state => {
   return {
     groupTasks: groupTasksSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   };
 };
 
@@ -102,6 +171,8 @@ const mapDispatchToProps = dispatch => {
   return {
     doSortGroupTask: ({ groupTaskId, sortIndex }) => dispatch(sortGroupTask({ groupTaskId, sortIndex })),
     doDeleteGroupTask: ({ groupTaskId }) => dispatch(deleteGroupTask({ groupTaskId })),
+    doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
+    doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
   };
 };
 

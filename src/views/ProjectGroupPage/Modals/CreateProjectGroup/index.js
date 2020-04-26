@@ -1,15 +1,17 @@
+import { get } from 'lodash';
 import React from 'react';
-import LogoManagerModal from '../../../DepartmentPage/Modals/LogoManager';
+import { connect } from 'react-redux';
 import { createProjectGroup } from '../../../../actions/projectGroup/createProjectGroup';
 import { editProjectGroup } from '../../../../actions/projectGroup/editProjectGroup';
-import { connect } from 'react-redux';
-import { get } from 'lodash';
+import LogoManagerModal from '../../../DepartmentPage/Modals/LogoManager';
 import CreateProjectGroupPresenter from './presenters';
+import { activeLoadingSelector } from './selectors';
 
-function CreateProjectGroup({ 
-  updatedProjectGroup = null, 
-  open, setOpen, 
-  doCreateProjectGroup, doEditProjectGroup 
+function CreateProjectGroup({
+  updatedProjectGroup = null,
+  open, setOpen,
+  doCreateProjectGroup, doEditProjectGroup,
+  activeLoading,
 }) {
 
   const [openLogo, setOpenLogo] = React.useState(false);
@@ -28,28 +30,28 @@ function CreateProjectGroup({
 
   return (
     <>
-      <CreateProjectGroupPresenter 
-        updatedProjectGroup={updatedProjectGroup}
+      <CreateProjectGroupPresenter
+        updatedProjectGroup={updatedProjectGroup} activeLoading={activeLoading}
         open={open} setOpen={setOpen}
-        handleCreateOrEditProjectGroup={(name, description, icon) => 
-          updatedProjectGroup 
-          ? doEditProjectGroup({
+        handleCreateOrEditProjectGroup={(name, description, icon) =>
+          updatedProjectGroup
+            ? doEditProjectGroup({
               projectGroupId: get(updatedProjectGroup, 'id'),
               name,
               description,
               icon: icon.url_sort,
             })
-          : doCreateProjectGroup({
+            : doCreateProjectGroup({
               name,
               description,
               icon: icon.url_sort,
             })
         }
-        handleOpenModal={doOpenModal} 
+        handleOpenModal={doOpenModal}
       />
-      <LogoManagerModal 
-        open={openLogo} 
-        setOpen={setOpenLogo} 
+      <LogoManagerModal
+        open={openLogo}
+        setOpen={setOpenLogo}
         {...logoProps}
       />
     </>
@@ -64,6 +66,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    activeLoading: activeLoadingSelector(state),
+  }),
   mapDispatchToProps,
 )(CreateProjectGroup);

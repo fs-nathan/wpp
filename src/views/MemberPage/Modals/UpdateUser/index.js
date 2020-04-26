@@ -6,7 +6,7 @@ import { updateUser } from 'actions/user/updateUser';
 import React from 'react';
 import { connect } from 'react-redux';
 import UpdateUserPresenter from './presenters';
-import { optionsSelector } from './selectors';
+import { activeLoadingSelector, optionsSelector } from './selectors';
 
 function UpdateUser({
   updatedUser = null,
@@ -17,6 +17,7 @@ function UpdateUser({
   doListMajor,
   doListPosition,
   doListRoom,
+  activeLoading,
 }) {
 
   React.useEffect(() => {
@@ -44,6 +45,7 @@ function UpdateUser({
       open={open} setOpen={setOpen}
       updatedUser={updatedUser}
       options={options}
+      activeLoading={activeLoading}
       handleUpdateUser={(userId, roomId, positionId, majorId, levelId, description) =>
         doUpdateUser({ userId, roomId, levelId, majorId, positionId, description })
       }
@@ -54,6 +56,7 @@ function UpdateUser({
 const mapStateToProps = state => {
   return {
     options: optionsSelector(state),
+    activeLoading: activeLoadingSelector(state),
   }
 };
 
