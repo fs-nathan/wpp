@@ -1,18 +1,13 @@
+import { createIcon } from "actions/icon/createIcon";
+import { deleteIcon } from "actions/icon/deleteIcon";
+import { listIcon } from "actions/icon/listIcon";
+import AlertModal from "components/AlertModal";
 import ErrorBox from "components/ErrorBox";
+import CropModal from "components/ImageCropper/ImageCropper";
 import { get } from "lodash";
 import React from "react";
 import { connect } from "react-redux";
-import { createIcon } from "../../../../actions/icon/createIcon";
-import { deleteIcon } from "../../../../actions/icon/deleteIcon";
-import { listIcon } from "../../../../actions/icon/listIcon";
-import AlertModal from "../../../../components/AlertModal";
-import CropModal from "../../../../components/ImageCropper/ImageCropper";
-import LogoManagerPresenter, {
-  LogoManagerContext,
-  LogoManagerModalWrapper,
-  LogoMnanagerStateLess,
-  UploadButton,
-} from "./presenters";
+import LogoManagerPresenter, { LogoManagerContext, LogoManagerModalWrapper, LogoMnanagerStateLess, UploadButton } from "./presenters";
 import { iconsSelector, mutateIconSelector } from "./selectors";
 
 function LogoManager({
@@ -25,7 +20,15 @@ function LogoManager({
   isSelect = true,
   doSelectIcon = () => null,
   children,
+  doListIcon,
+  canUpload = false,
 }) {
+
+  React.useEffect(() => {
+    if (open) doListIcon();
+    // eslint-disable-next-line
+  }, [open]);
+
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
   const [openCropper, setOpenCropper] = React.useState(false);
@@ -60,6 +63,7 @@ function LogoManager({
         handleDeleteIcon={(icon) => doDeleteIcon({ iconId: get(icon, "id") })}
         handleSelectIcon={(icon) => doSelectIcon(icon)}
         handleOpenModal={doOpenModal}
+        canUpload={canUpload}
       >
         {children}
       </LogoManagerPresenter>
@@ -101,11 +105,11 @@ const LogoManagerModal = (props) => {
             return icons.error !== null ? (
               <ErrorBox />
             ) : (
-              <>
-                <LogoMnanagerStateLess />
-                <UploadButton />
-              </>
-            );
+                <>
+                  <LogoMnanagerStateLess />
+                  <UploadButton />
+                </>
+              );
           }}
         </LogoManagerContext.Consumer>
       </LogoManagerModalWrapper>

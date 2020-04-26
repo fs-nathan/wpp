@@ -10,6 +10,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -25,17 +26,17 @@ function reducer(state = initialState, action) {
     case GET_USER_OF_ROOM_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case GET_USER_OF_ROOM_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
     case GET_USER_OF_ROOM_RESET:
       return initialState;

@@ -17,7 +17,8 @@ export const projectsSelector = createSelector(
     const {
       data: { projects },
       loading: listProjectLoading,
-      error: listProjectError
+      error: listProjectError,
+      firstTime,
     } = listProject;
 
     const {
@@ -73,8 +74,9 @@ export const projectsSelector = createSelector(
       projects: newProjects,
       summary: newSummary,
       projectGroupsCount: projectGroups.length,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 );

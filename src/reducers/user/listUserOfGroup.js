@@ -13,6 +13,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -26,17 +27,17 @@ function reducer(state = initialState, action) {
     case LIST_USER_OF_GROUP_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case LIST_USER_OF_GROUP_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
     case LIST_USER_OF_GROUP_RESET:
       return initialState;

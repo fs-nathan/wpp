@@ -129,7 +129,7 @@
             "NAME": "Tên bộ phận",
             "DESC": "Mô tả bộ phận",
             "LOGO": "Biểu tượng",
-            "LOGO_SELECT": "+ Chọn biểu tượng"
+            "LOGO_SELECT": "Thay đổi biểu tượng"
           },
           "LOGO": {
             "TITLE": "Quản lý biểu tượng",
@@ -327,7 +327,7 @@
             "NAME": "Tên nhóm làm việc",
             "DESC": "Mô tả nhóm làm việc",
             "LOGO": "Biểu tượng nhóm",
-            "LOGO_SELECT": "+ Chọn biểu tượng"
+            "LOGO_SELECT": "Thay đổi biểu tượng"
           },
           "CUP": {
             "C_TITLE": "Tạo mới dự án",

@@ -33,7 +33,7 @@ const Detail = ({ className = '', isInGroup = false, ...props }) =>
     {...props}
   />
 
-function CustomListItem({ member, index }) {
+function CustomListItem({ member, index, totalTasks }) {
   const [isHover, setIsHover] = React.useState(false);
 
   return (
@@ -60,8 +60,8 @@ function CustomListItem({ member, index }) {
             }
             secondary={
               <div>
-                <Secondary>{get(member, 'number_task', 0)} việc</Secondary>
-                <Detail isInGroup={get(member, 'is_in_group', false)}>
+                <Secondary>Tham gia {get(member, 'number_task', 0)}/{totalTasks} việc</Secondary>
+                <Detail isInGroup={get(member, 'is_in_group', false) === false || get(member, 'is_admin', false)}>
                   {get(member, 'is_in_group', false)
                     ? getDetail(member)
                     : 'Đã rời nhóm'

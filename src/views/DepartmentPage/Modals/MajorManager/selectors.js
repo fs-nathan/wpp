@@ -10,15 +10,16 @@ const deleteMajor = state => state.major.deleteMajor;
 export const majorsSelector = createSelector(
   [listMajor, createMajor, updateMajor, deleteMajor],
   (listMajor, createMajor, updateMajor, deleteMajor) => {
-    const { data: { majors }, loading: listLoading, error: listError } = listMajor;
+    const { data: { majors }, loading: listLoading, error: listError, firstTime } = listMajor;
     const { loading: createLoading, error: createError } = createMajor;
     const { pendings: updatePendings, error: updateError } = updateMajor;
     const { pendings: deletePendings, error: deleteError } = deleteMajor;
     return {
       majors,
-      loading: listLoading || createLoading,
+      loading: (firstTime ? false : listLoading) || createLoading,
       error: listError || createError || updateError || deleteError,
       pendings: concat(updatePendings, deletePendings),
+      firstTime,
     }
   }
 );

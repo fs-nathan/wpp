@@ -1,12 +1,13 @@
 import { FormControl, FormControlLabel, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
+import CustomModal from 'components/CustomModal';
+import CustomTextbox from 'components/CustomTextbox';
+import MySelect from 'components/MySelect';
+import { CustomEventDispose, CustomEventListener, UPDATE_PROJECT } from 'constants/events.js';
+import { useMaxlenString, useRequiredString } from 'hooks';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../components/ColorTypo';
-import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox from '../../../../components/CustomTextbox';
-import MySelect from '../../../../components/MySelect';
-import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -32,6 +33,7 @@ function EditProject({
   open, setOpen,
   groups,
   handleEditProject,
+  activeLoading,
 }) {
 
   const { t } = useTranslation();
@@ -58,9 +60,23 @@ function EditProject({
     // eslint-disable-next-line
   }, [curProject]);
 
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+      setPriority(0);
+      setCurrency(0);
+      setCurProjectGroupId(get(groups.groups[0], 'id'));
+    };
+    CustomEventListener(UPDATE_PROJECT, successClose);
+    return () => CustomEventDispose(UPDATE_PROJECT, successClose);
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <CustomModal
-      title={`Chỉnh sửa dự án`}
+      title={t("DMH.VIEW.PGP.MODAL.CUP.U_TITLE")}
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName && !errorDescription}
@@ -73,7 +89,10 @@ function EditProject({
           ? curProjectGroupId
           : undefined,
       })}
+      onCancle={() => setOpen(false)}
       loading={groups.loading}
+      activeLoading={activeLoading}
+      manualClose={true}
     >
       <StyledFormControl fullWidth>
         <MySelect
