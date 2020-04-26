@@ -1,0 +1,44 @@
+.comp_QuickViewTaskDetailHeader {
+  display: flex;
+  align-items: center;
+}
+.comp_QuickViewTaskDetailHeader__avatar {
+  margin-right: 15px;
+  width: 40px;
+  height: 40px;
+}
+.comp_QuickViewTaskDetailHeader__right {
+  display: flex;
+  flex-direction: column;
+}
+.comp_QuickViewTaskDetailHeader__title {
+  font-size: 15px;
+  font-weight: 450;
+}
+.comp_QuickViewTaskDetailHeader__subtitle {
+  color: rgb(3, 169, 244);
+  font-size: 13px;
+  margin-top: 1px;
+}
+.comp_QuickViewTaskDetailHeader__date {
+  color: rgb(165, 160, 160);
+  font-size: 13px;
+  margin-top: 0.6em;
+}
+.comp_QuickViewTaskDetail__action {
+  color: rgb(3, 169, 244);
+  cursor: pointer;
+}
+.comp_QuickViewTaskDetail__bottom {
+  width: 100%;
+  display: flex;
+}
+.comp_QuickViewTaskDetail__bottomAction__detail {
+  color: rgb(3, 169, 244);
+  flex: 1 1 0%;
+  cursor: pointer;
+}
+.comp_QuickViewTaskDetail__bottomAction__delete {
+  color: rgb(220, 53, 69);
+  cursor: pointer;
+}

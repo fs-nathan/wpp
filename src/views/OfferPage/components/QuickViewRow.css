@@ -1,0 +1,17 @@
+.comp_QuickViewRow__wrapper {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+}
+.comp_QuickViewRow__header {
+  display: flex;
+}
+.comp_QuickViewRow__title {
+  color: rgb(165, 160, 160);
+  padding-right: 1em;
+  flex: 1 1 0%;
+}
+.comp_QuickViewRow__body {
+  font-size: 15px;
+  margin-top: 0.4em;
+}
