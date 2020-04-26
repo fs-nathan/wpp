@@ -149,7 +149,7 @@ export default (state = initialState, action) => produce(state, draft => {
       const { payload } = action;
       draft.payload = payload;
       draft.isSending = false;
-      draft.isShowSendStatus = false;
+      // draft.isShowSendStatus = false;
       break;
     }
     case actionTypes.CREATE_CHAT_TEXT_FAIL: {

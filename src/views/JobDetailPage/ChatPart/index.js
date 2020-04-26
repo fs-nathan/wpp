@@ -22,6 +22,7 @@ function ChatPart(props) {
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
   const searchChatKey = useSelector(state => state.chat.searchChatKey)
+  const userId = useSelector(state => state.system.profile.id)
   const [selectedChat, setSelectedChat] = useState();
   const [isShowSearch, setShowSearch] = useState(false);
   const [imagesQueue, setImagesQueue] = useState([]);
@@ -68,6 +69,7 @@ function ChatPart(props) {
       const data_chat = {
         type: CHAT_TYPE.UPLOADING_FILE, files: images,
         isUploading: true,
+        user_create_id: userId,
         is_me: true,
       }
       dispatch(appendChat({ data_chat }));
@@ -77,7 +79,7 @@ function ChatPart(props) {
       }
       dispatch(chatFile(taskId, data, onUploadingHandler));
     }
-  }, [dispatch, imagesQueue, taskId])
+  }, [dispatch, imagesQueue, taskId, userId])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 

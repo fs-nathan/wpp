@@ -20,9 +20,14 @@ import ChatBoxInput from './ChatBoxInput';
 import QuickLikeIcon from './QuickLikeIcon';
 import './styles.scss';
 
-const StyledIcon = styled(Icon)`
+const StyledButton = styled.button`
+  border: none;
   &:hover {
-    color : ${props => props.hoverColor}
+    color : ${props => props.hoverColor};
+    background-color: #f0f0f0;
+  }
+  &:focus {
+    outline: none;
   }
 `
 let isPressShift = false;
@@ -67,11 +72,9 @@ const FooterPart = ({
   }, [imagesQueue]);
 
   useEffect(() => {
-    const content = chatText;
-    if (content[0] === '@' && content.indexOf('\n') === -1) {
-      const stickerKey = content.slice(1)
-      dispatch(changeStickerKeyWord(stickerKey))
-      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(stickerKey) !== -1);
+    if (chatText.indexOf('\n') === -1) {
+      dispatch(changeStickerKeyWord(chatText))
+      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(chatText) !== -1);
       if (renderStickersList.length > 0) {
         setOpenSticker(true)
       }
@@ -119,6 +122,7 @@ const FooterPart = ({
     const data_chat = {
       type: CHAT_TYPE.UPLOADING_IMAGES, images,
       isUploading: true,
+      user_create_id: userId,
       is_me: true,
     }
     dispatch(appendChat({ data_chat }));
@@ -138,8 +142,8 @@ const FooterPart = ({
   }
 
   const openTag = (evt) => {
-    console.log('openTag', evt)
     setOpenMention(true);
+    focus();
   };
 
   function handleCloseTag() {
@@ -180,23 +184,25 @@ const FooterPart = ({
     const tag = `<span style="color:#03A9F4;">@${mention.name}</span>&nbsp;`;
     const sel = window.getSelection();
     const range = sel.getRangeAt(0);
-    const { commonAncestorContainer } = range;
-    const atIndex = commonAncestorContainer.textContent.lastIndexOf('@')
-    // console.log('atIndex', atIndex, range.endOffset)
-    if (atIndex !== -1) {
-      var preCaretRange = range.cloneRange();
-      preCaretRange.setStart(range.commonAncestorContainer, atIndex);
+    var preCaretRange = range.cloneRange();
+    const { commonAncestorContainer } = preCaretRange;
+    const atIndex = commonAncestorContainer.textContent.lastIndexOf('@');
+    // console.log('atIndex', commonAncestorContainer, atIndex)
+    if (atIndex !== -1 || commonAncestorContainer.textContent === '') {
+      preCaretRange.setStart(preCaretRange.startContainer, atIndex + 1);
       // console.log('preCaretRange', preCaretRange, preCaretRange.toString())
       preCaretRange.deleteContents();
       sel.removeAllRanges();
       sel.addRange(preCaretRange);
       // console.log('range', range, range.toString())
-      document.execCommand('delete', false, '@')
+      document.execCommand('delete', false)
+      document.execCommand('insertHTML', false, tag)
+    } else if (isOpenMention) {
+      document.execCommand('insertHTML', false, tag)
     }
-    document.execCommand('insertHTML', false, tag)
+    dispatch(tagMember(mention))
     // console.log('chatTextRef.current.selectionStart', chatTextRef.current.selectionStart)
     // setChatText(newContent)
-    dispatch(tagMember(mention))
   }
 
   const focus = () => {
@@ -224,7 +230,7 @@ const FooterPart = ({
       user_create_id: userId,
       task_id: taskId, content,
       parent_id: parentMessage && parentMessage.id,
-      chat_parent: parentMessage,
+      chat_parent: { ...parentMessage, isReply: true },
       tags: tagMembers.map(({ id }) => id)
     };
     dispatch(appendChat({ data_chat: { ...data_chat, tags: tagMembers } }));
@@ -248,6 +254,7 @@ const FooterPart = ({
         const data_chat = {
           type: CHAT_TYPE.UPLOADING_IMAGES, images,
           isUploading: true,
+          user_create_id: userId,
           is_me: true,
         }
         dispatch(appendChat({ data_chat }));
@@ -311,16 +318,16 @@ const FooterPart = ({
     <div className="footer-chat-container">
       <div className="wrap-function-bar-fp">
         <div>
-          <IconButton className="icon-btn" onClick={openTag}>
-            <StyledIcon path={mdiAt} size={1.2} hoverColor={groupActiveColor} />
-          </IconButton>
-          <IconButton className="icon-btn" onClick={onClickOpenSticker}>
-            <StyledIcon path={mdiEmoticon} size={1.2} hoverColor={groupActiveColor} />
-          </IconButton>
-          <IconButton
+          <StyledButton className="icon-btn" onClick={openTag} hoverColor={groupActiveColor}>
+            <Icon path={mdiAt} size={1.2} />
+          </StyledButton>
+          <StyledButton className="icon-btn" onClick={onClickOpenSticker} hoverColor={groupActiveColor}>
+            <Icon path={mdiEmoticon} size={1.2} />
+          </StyledButton>
+          <StyledButton
             className="icon-btn"
             onClick={() => handleTriggerUpload('upload_image')}
-          >
+            hoverColor={groupActiveColor} >
             <input
               name="image"
               type="file"
@@ -330,20 +337,20 @@ const FooterPart = ({
               multiple
               onChange={handleUploadImage}
             />
-            <StyledIcon path={mdiImage} size={1.2} hoverColor={groupActiveColor} />
-          </IconButton>
-          <IconButton
+            <Icon path={mdiImage} size={1.2} />
+          </StyledButton>
+          <StyledButton
             className="icon-btn"
             onClick={() => setVisibleSendFile(true)}
-          >
-            <StyledIcon path={mdiPaperclip} size={1.2} hoverColor={groupActiveColor} />
-          </IconButton>
-          <IconButton className="icon-btn" onClick={onClickSubTask}>
-            <StyledIcon path={mdiFileTree} size={1.2} hoverColor={groupActiveColor} />
-          </IconButton>
-          <IconButton className="icon-btn" onClick={onClickRemind}>
-            <StyledIcon path={mdiAlarmPlus} size={1.2} hoverColor={groupActiveColor} />
-          </IconButton>
+            hoverColor={groupActiveColor}>
+            <Icon path={mdiPaperclip} size={1.2} />
+          </StyledButton>
+          <StyledButton className="icon-btn" onClick={onClickSubTask} hoverColor={groupActiveColor}>
+            <Icon path={mdiFileTree} size={1.2} />
+          </StyledButton>
+          <StyledButton className="icon-btn" onClick={onClickRemind} hoverColor={groupActiveColor}>
+            <Icon path={mdiAlarmPlus} size={1.2} />
+          </StyledButton>
         </div>
       </div>
       <Message {...parentMessage} isReply></Message>

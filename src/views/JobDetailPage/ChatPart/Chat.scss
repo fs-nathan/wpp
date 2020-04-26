@@ -10,13 +10,5 @@
     margin-left: auto;
     padding: 8px;
     margin-right: 10px;
-    &:hover {
-      background: none;
-    }
-    & > span > svg {
-      &:hover {
-        fill: #03b000;
-      }
-    }
   }
 }
