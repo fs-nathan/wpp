@@ -26,6 +26,7 @@ const StyledIcon = styled(Icon)`
   }
 `
 let isPressShift = false;
+
 const FooterPart = ({
   parentMessage,
   setSelectedChat,
@@ -176,8 +177,25 @@ const FooterPart = ({
   }
 
   function handleClickMention(mention) {
-    const tag = ` <span style="color:#03A9F4;">@${mention.name}</span>`
-    setChatText(chatText + tag)
+    const tag = `<span style="color:#03A9F4;">@${mention.name}</span>&nbsp;`;
+    const sel = window.getSelection();
+    const range = sel.getRangeAt(0);
+    const { commonAncestorContainer } = range;
+    const atIndex = commonAncestorContainer.textContent.lastIndexOf('@')
+    // console.log('atIndex', atIndex, range.endOffset)
+    if (atIndex !== -1) {
+      var preCaretRange = range.cloneRange();
+      preCaretRange.setStart(range.commonAncestorContainer, atIndex);
+      // console.log('preCaretRange', preCaretRange, preCaretRange.toString())
+      preCaretRange.deleteContents();
+      sel.removeAllRanges();
+      sel.addRange(preCaretRange);
+      // console.log('range', range, range.toString())
+      document.execCommand('delete', false, '@')
+    }
+    document.execCommand('insertHTML', false, tag)
+    // console.log('chatTextRef.current.selectionStart', chatTextRef.current.selectionStart)
+    // setChatText(newContent)
     dispatch(tagMember(mention))
   }
 
@@ -254,8 +272,6 @@ const FooterPart = ({
 
   function onKeyDown(event) {
     const keyCode = event.keyCode || event.which
-    var selection = window.getSelection();
-    console.log(selection)
     if (keyCode === 16) {// shift
       isPressShift = true;
     } else if (keyCode === 13 && !isPressShift) {// enter
@@ -263,18 +279,16 @@ const FooterPart = ({
       event.returnValue = false;
       if (event.preventDefault) event.preventDefault()
       // console.log(chatText)
-    }
-  }
-
-  function onKeyUp(event) {
-    const keyCode = event.keyCode || event.which
-    isPressShift = false;
-    if (keyCode === 50 && isPressShift) {// @
+    } else if (keyCode === 50 && isPressShift) {// @
       setOpenMention(true)
       focus()
     } else if (keyCode === 32) {// space
       setOpenMention(false)
     }
+  }
+
+  function onKeyUp(event) {
+    isPressShift = false;
   }
 
   function clearChatText() {

@@ -113,3 +113,15 @@ export function getChatDate(timeString) {
     const date = timeString ? new Date(timeString) : new Date();
     return format(date, `dd/MM/yyyy`);
 }
+
+export function spliceSlice(str, index, count, add) {
+    // We cannot pass negative indexes directly to the 2nd slicing operation.
+    if (index < 0) {
+        index = str.length + index;
+        if (index < 0) {
+            index = 0;
+        }
+    }
+
+    return str.slice(0, index) + (add || "") + str.slice(index + count);
+}
