@@ -122,7 +122,6 @@ function CalendarAlarmLeftPartPresenter({
                     onClick={() => handleOpenModal("PERSONAL_REMIND_CREATE")}
                   >
                     <Icon
-                      className="right-setting-icon"
                       path={mdiPlus}
                       size={0.8}
                       color={"rgba(0, 0, 0, 0.54)"}
@@ -172,7 +171,6 @@ function CalendarAlarmLeftPartPresenter({
                                   >
                                     <Icon
                                       key={item.id}
-                                      className="right-setting-icon"
                                       path={mdiDotsVertical}
                                       size={1}
                                       color={"rgba(0, 0, 0, 0.54)"
