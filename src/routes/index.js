@@ -1,4 +1,8 @@
 import React from 'react';
+import CalendarAlarmPage from 'views/CalendarAlarmPage';
+import CalendarPage from 'views/CalendarPage';
+import CalendarProjectPage from 'views/CalendarProjectPage';
+import CalendarWeeklyPage from 'views/CalendarWeeklyPage';
 import { Routes } from '../constants/routes';
 import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
 import ForgotPassword from '../views/AccountPage/ForgotPassword';
@@ -12,12 +16,12 @@ import JobDetailPage from '../views/JobDetailPage';
 import JobPage from '../views/JobPage';
 import MemberPage from '../views/MemberPage';
 import MessageNoticePage from '../views/MessageNoticePage';
+import OfferPage from '../views/OfferPage';
 import ProjectGroupPage from '../views/ProjectGroupPage';
 import ProjectPage from '../views/ProjectPage';
 import ReportPage from '../views/ReportPage';
 import SettingAccountPage from '../views/SettingAccountPage';
 import SettingGroupPage from '../views/SettingGroupPage';
-import OfferPage from '../views/OfferPage';
 import TestPage from '../__test__';
 
 const routes = [
@@ -38,6 +42,10 @@ const routes = [
   { path: Routes.REGISTER, component: () => <RegisterPage /> },
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
   { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
+  { path: Routes.CALENDAR, component: () => <CalendarPage /> },
+  { path: Routes.CALENDAR_WEEKLY, component: () => <CalendarWeeklyPage /> },
+  { path: Routes.CALENDAR_PROJECT, component: () => <CalendarProjectPage /> },
+  { path: Routes.CALENDAR_ALARM, component: () => <CalendarAlarmPage /> },
   {
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />

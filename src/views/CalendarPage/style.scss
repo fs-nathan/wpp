@@ -1,0 +1,32 @@
+.no_Data_container {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    font-size: 19px;
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .description {
+    font-size: 14px;
+    color: #555555;
+    margin-top: 5px;
+  }
+}
+
+.row_inline {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  &>span {
+    margin: 7px;
+    font-weight: normal;
+  }
+}

@@ -1,0 +1,172 @@
+.view_ProjectCalendar_rightContainer {
+  margin: 15px 0px 25px 25px;
+
+  .table_working_day {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: minmax(320px, 3fr) minmax(320px, 3fr);
+    width: 650px;
+    margin: 15px 0px 15px 10px;
+
+    .table_header {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e6f0ff;
+      padding: 7px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-collapse: collapse;
+    }
+
+    .table_data {
+      padding: 10px;
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+      .MuiFormControl-root {
+        width: 100%;
+      }
+    }
+  }
+
+  .table_working_stage {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 200px 450px;
+    width: 650px;
+    margin: 15px 0px 15px 10px;
+
+    .table_header {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e6f0ff;
+      padding: 7px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-collapse: collapse;
+    }
+
+    .table_data {
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      min-height: 80px;
+    }
+
+    .full_time {
+      min-height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 450;
+      background: #F6F6F6;
+    }
+
+    .MuiListItemSecondaryAction-root {
+      display: inline-flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 60px;
+
+      &>a {
+        color: #009CF3 !important;
+      }
+    }
+
+    .stage_setting_date {
+      background: #FFFF;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      font-weight: normal !important;
+
+      &_label {
+        padding: 20px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+
+      &_control {
+        height: 20px;
+        display: flex;
+        flex-direction: row-reverse;
+        margin-top: 5px;
+        margin-right: 5px;
+
+        &_group {
+          width: 50px;
+          display: inline-flex;
+          justify-content: space-around;
+          align-items: center;
+          background: #F6F6F6;
+          padding: 5px 10px;
+        }
+      }
+    }
+  }
+
+  .MuiTypography-colorPrimary {
+    color: #009CF3 !important;
+    cursor: pointer;
+  }
+
+  .uppercase_title {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .normal_title {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .MuiOutlinedInput-input {
+    padding: 10px 24px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .selector {
+    height: 30px;
+    min-width: 120px;
+  }
+
+  .inputDate {
+    .MuiOutlinedInput-adornedEnd {
+      width: 140px;
+      height: 30px;
+    }
+  }
+
+  .color_mark_green {
+    background-color: #3DA50D;
+    border-radius: 10px;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+
+  .color_mark_red {
+    background-color: rgb(165, 13, 13);
+    border-radius: 10px;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+
+  .add_working_off_day_container {
+    display: flex;
+    justify-content: space-around;
+    max-width: 700px;
+    flex-direction: row;
+
+    .MuiButton-outlinedSizeSmall {
+      min-width: 40px;
+      height: 30px;
+    }
+  }
+}
