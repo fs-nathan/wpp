@@ -5,6 +5,7 @@ import { appendChat, changeStickerKeyWord, chatImage, chatQuickLike, chatSticker
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import htmlToText from 'helpers/jobDetail/jsHtmlToText';
+import isEmpty from 'lodash/isEmpty';
 import words from 'lodash/words';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -223,6 +224,7 @@ const FooterPart = ({
     const content = getChatContent(htmlToText(chatTextRef.current));
     if (content.trim().length === 0) return;
     dispatch(clearTags());
+    const chat_parent = isEmpty(parentMessage) ? undefined : { ...parentMessage, isReply: true }
     const data_chat = {
       id: Date.now(),
       type: CHAT_TYPE.TEXT,
@@ -230,7 +232,7 @@ const FooterPart = ({
       user_create_id: userId,
       task_id: taskId, content,
       parent_id: parentMessage && parentMessage.id,
-      chat_parent: { ...parentMessage, isReply: true },
+      chat_parent,
       tags: tagMembers.map(({ id }) => id)
     };
     dispatch(appendChat({ data_chat: { ...data_chat, tags: tagMembers } }));

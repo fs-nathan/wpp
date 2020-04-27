@@ -70,7 +70,7 @@ const TextMessage = ({
   }
 
   function onClickResendChat() {
-    dispatch(createChatText({ content, tags, task_id: taskId, user_create_id }));
+    dispatch(createChatText({ content, tags, task_id: taskId, user_create_id }, id));
   }
 
   return (

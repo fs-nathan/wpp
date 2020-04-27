@@ -372,10 +372,10 @@ export function getEmotionsReactMemberFail(error) {
   };
 }
 
-export function createChatText(content) {
+export function createChatText(content, resendId) {
   return {
     type: actionTypes.CREATE_CHAT_TEXT,
-    content
+    content, resendId
   };
 }
 

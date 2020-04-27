@@ -138,11 +138,14 @@ export default (state = initialState, action) => produce(state, draft => {
       break;
     }
     case actionTypes.CREATE_CHAT_TEXT: {
-      const { content } = action;
+      const { content, resendId } = action;
       draft.lastChat = content;
-      draft.isFails = false;
-      draft.isSending = true;
-      draft.isShowSendStatus = true;
+      draft.chats.data = draft.chats.data.map(
+        (data) => (data.id !== resendId) ? data : { ...data, isFails: false }
+      )
+      // draft.isFails = false;
+      // draft.isSending = true;
+      // draft.isShowSendStatus = true;
       break;
     }
     case actionTypes.CREATE_CHAT_TEXT_SUCCESS: {
