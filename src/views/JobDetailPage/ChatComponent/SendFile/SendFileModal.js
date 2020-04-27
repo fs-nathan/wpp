@@ -1,15 +1,17 @@
-import { Button } from '@material-ui/core';
+import { mdiCloudUpload, mdiLaptop } from '@mdi/js';
+import Icon from '@mdi/react';
 import { appendChat, chatFile, onUploading } from 'actions/chat/chat';
 import { file as file_icon } from 'assets/fileType';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import { humanFileSize } from 'helpers/jobDetail/stringHelper';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomModal from '../../../../components/CustomModal';
 import './SendFileModal.scss';
 
 const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
   const dispatch = useDispatch();
+  const fileInputRef = useRef()
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const userId = useSelector(state => state.system.profile.id)
 
@@ -44,6 +46,10 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
     setOpen(false)
   };
 
+  function onClickFromComputer() {
+    fileInputRef.current.click()
+  }
+
   return (
     <CustomModal
       open={open}
@@ -55,27 +61,37 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
       cancleRender={() => 'Thoát'}
     >
       <div className="send-file-content">
-        <div className="btn-upload">
+        <div className="SendFileModal--button" onClick={onClickFromComputer}>
           <input
             className="display-none"
             id="upload_file"
             multiple
             type="file"
             onChange={handleUploadFile}
+            ref={fileInputRef}
           />
-          <label htmlFor="upload_file">
-            <Button variant="outlined" component="span">
-              Tải file từ máy tính
-            </Button>
-          </label>
+          <Icon path={mdiLaptop} size={2}></Icon>
+          <div className="SendFileModal--rightButton">
+            <div className="SendFileModal--title">
+              Tải tài liệu từ máy tính
+            </div>
+            <div className="SendFileModal--description">
+              Tài liệu mới từ máy tính của bạn
+            </div>
+          </div>
         </div>
-        <div className="btn-upload">
-          <Button
-            variant="outlined"
-            onClick={onClickShareFromLibrary}
-          >
-            Chọn từ thư viện
-          </Button>
+        <div className="SendFileModal--button"
+          onClick={onClickShareFromLibrary}
+        >
+          <Icon path={mdiCloudUpload} size={2}></Icon>
+          <div className="SendFileModal--rightButton">
+            <div className="SendFileModal--title">
+              Chọn tài liệu từ kho lưu trữ
+          </div>
+            <div className="SendFileModal--description">
+              Sử dụng tài liệu lưu trữ tập trung trên đám mây của hệ thống Work Cloud nhanh chóng và tiện lợi.
+            </div>
+          </div>
         </div>
       </div>
     </CustomModal>

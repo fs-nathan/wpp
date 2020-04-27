@@ -95,3 +95,48 @@
     }
   }
 }
+.SendFileModal {
+  &--button {
+    cursor: pointer;
+    margin-top: 12px;
+    width: 80%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(85, 85, 85);
+    border-image: initial;
+    border-radius: 8px;
+    transition: border 0.15s ease-in-out 0s;
+    &:hover {
+      border-width: 1px;
+      border-style: solid;
+      border-color: rgb(5, 181, 12);
+      border-image: initial;
+    }
+    svg {
+      width: 20% !important;
+    }
+  }
+  &--rightButton {
+    width: 80%;
+  }
+  &--title {
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(85, 85, 85);
+    transition: color 0.15s ease-in-out 0s;
+  }
+  &--description {
+    margin-top: 16px;
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+    line-height: 18px;
+  }
+  &--button:hover &--title {
+    color: rgb(5, 181, 12);
+  }
+}
