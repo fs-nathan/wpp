@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
+import AddNewButton from './AddNewButton';
 import MenuList, { DEFAULT_ITEM } from './MenuList';
 import './styles.scss';
 
@@ -273,10 +274,8 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                 </div>
                 <div className="ShareFromLibraryModal--search-box" onClick={() => setSearching(!isSearching)} >
                   <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' />
-                  <div className="ShareFromLibraryModal--lb-title-text" >
-                    Tìm kiếm
-                  </div>
                 </div>
+                <AddNewButton selectedMenu={selectedMenu} />
               </div>
               :
               <div className="ShareFromLibraryModal--searching" >
@@ -319,7 +318,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
               </TableHead>
               <TableBody className="ShareFromLibraryModal--table-body" >
                 {listData.map(item => (
-                  <TableRow key={item.id}>
+                  <TableRow key={item.id} className="ShareFromLibraryModal--table-item" >
                     <TableCell width="50px" align="center">
                       {item.type !== 'folder' && <Checkbox color="primary"
                         checked={selectedFilesIds.indexOf(item.id) !== -1}

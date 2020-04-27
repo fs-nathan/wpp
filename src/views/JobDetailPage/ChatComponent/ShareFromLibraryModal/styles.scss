@@ -5,8 +5,7 @@
   }
   &--container {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    // border: 1px solid #e0e0e0;
+    grid-template-columns: 1.5fr 3.5fr;
     height: 100%;
   }
   &--left {
@@ -54,8 +53,11 @@
     cursor: pointer;
     text-align: center;
     text-transform: uppercase;
+    margin-left: auto;
     svg {
       margin: auto;
+      width: 25px !important;
+      height: 25px !important;
     }
   }
   &--lb-title-text {
@@ -122,6 +124,9 @@
     color: #666;
   }
   &--table-body {
+  }
+  &--table-item {
+    cursor: pointer;
   }
   .menu-list {
     .menu-item {
