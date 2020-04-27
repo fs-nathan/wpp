@@ -34,7 +34,7 @@
       font-weight: 500;
 
       .header_time {
-        width: 150px;
+        width: 165px;
 
         &>span:nth-child(1) {
           text-transform: uppercase;
@@ -56,7 +56,7 @@
       }
 
       .header_content {
-        min-width: 380px;
+        min-width: 360px;
         font-size: 14px;
       }
 
@@ -76,7 +76,7 @@
     }
 
     .schedule_item_time {
-      max-width: 100px;
+      max-width: 115px;
 
       &>span>span {
         font-size: 14px !important;
