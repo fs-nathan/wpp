@@ -1,6 +1,26 @@
 import { combineReducers } from "redux";
 import taskReducer from "../views/JobPage/redux/reducers";
+import updateSchedule, { initialState as updateScheduleInitialState } from "././calendar/weeklyCalendar/updateSchedule";
 import authentications, { initialState as authenticationsInitialState } from "./authentications";
+import createPersonalRemind, { initialState as createPersonalRemindInitialState } from "./calendar/alarmCalendar/createPersonalRemind";
+import createPersonalRemindCategory, { initialState as createPersonalRemindCategoryInitialState } from "./calendar/alarmCalendar/createPersonalRemindCategory";
+import listPersonalRemind, { initialState as listPersonalRemindInitialState } from "./calendar/alarmCalendar/listPersonalRemind";
+import listPersonalRemindCategory, { initialState as listPersonalRemindCategoryInitialState } from "./calendar/alarmCalendar/listPersonalRemindCategory";
+import listRemindProject, { initialState as listRemindProjectInitialState } from "./calendar/alarmCalendar/listRemindProject";
+import listRemindRecently, { initialState as listRemindRecentlyInitialState } from "./calendar/alarmCalendar/listRemindRecently";
+import projectGroupAddDayOff, { initialState as projectGroupAddDayOffInitialState } from "./calendar/projectCalendar/addDayOff";
+import projectGroupAddWorkingDays from "./calendar/projectCalendar/addWorkingDay";
+import createProjectGroupSchedule, { initialState as createProjectGroupScheduleInitialState } from "./calendar/projectCalendar/createProjectGroupSchedule";
+import projectGroupDeleteWorkingDays, { initialState as projectGroupDeleteWorkingDayInitialState } from "./calendar/projectCalendar/deleteWorkingDay";
+import getProjectGroupScheduleDetail, { initialState as getProjectGroupScheduleDetailInitialState } from "./calendar/projectCalendar/getGroupScheduleDetail";
+import listProjectGroupSchedule, { initialState as listProjectGroupScheduleInitialState } from "./calendar/projectCalendar/listSchedule";
+import projectGroupSettingStartingDay, { initialState as projectGroupSettingStartingDayInitialState } from "./calendar/projectCalendar/settingStartingDay";
+import createSchedule, { initialState as createScheduleInitialState } from "./calendar/weeklyCalendar/createSchedule";
+import deleteSchedule, { initialState as deleteScheduleInitialState } from "./calendar/weeklyCalendar/deleteSchedule";
+import listSchedule, { initialState as listScheduleInitialState } from "./calendar/weeklyCalendar/listSchedule";
+import listScheduleOfWeek, { initialState as listScheduleOfWeekInitialState } from "./calendar/weeklyCalendar/listScheduleOfWeek";
+import listWeeksInYear, { initialState as listWeeksInYearInitialState } from "./calendar/weeklyCalendar/listWeeksInYear";
+import settingStartingDay, { initialState as settingStartingDayInitialState } from "./calendar/weeklyCalendar/settingStartingDay";
 import chat, { initialState as chatInitialState } from "./chat/chat";
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
@@ -249,6 +269,20 @@ const rootReducer = combineReducers({
     inviteOtherPeopleCreateAccount
   }),
   viewPermissions,
+  calendar: combineReducers({
+    listSchedule,
+    listScheduleOfWeek,
+    listWeeksInYear,
+    settingStartingDay,
+    listProjectGroupSchedule,
+    createSchedule, updateSchedule,
+    deleteSchedule, listPersonalRemindCategory,
+    listRemindRecently, listPersonalRemind,
+    createProjectGroupSchedule, getProjectGroupScheduleDetail,
+    projectGroupSettingStartingDay, projectGroupAddWorkingDays,
+    projectGroupDeleteWorkingDays, projectGroupAddDayOff,
+    createPersonalRemindCategory, createPersonalRemind, listRemindProject
+  })
 });
 
 export const DEFAULT_STATE = {
@@ -372,6 +406,28 @@ export const DEFAULT_STATE = {
     inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState
   },
   viewPermissions: viewPermissionsInitialState,
+  calendar: {
+    listSchedule: listScheduleInitialState,
+    listScheduleOfWeek: listScheduleOfWeekInitialState,
+    listWeeksInYear: listWeeksInYearInitialState,
+    settingStartingDay: settingStartingDayInitialState,
+    listProjectGroupSchedule: listProjectGroupScheduleInitialState,
+    createSchedule: createScheduleInitialState,
+    updateSchedule: updateScheduleInitialState,
+    deleteSchedule: deleteScheduleInitialState,
+    listPersonalRemindCategory: listPersonalRemindCategoryInitialState,
+    listRemindRecently: listRemindRecentlyInitialState,
+    createProjectGroupSchedule: createProjectGroupScheduleInitialState,
+    getProjectGroupScheduleDetail: getProjectGroupScheduleDetailInitialState,
+    projectGroupSettingStartingDay: projectGroupSettingStartingDayInitialState,
+    projectGroupAddWorkingDays: projectGroupSettingStartingDayInitialState,
+    projectGroupDeleteWorkingDays: projectGroupDeleteWorkingDayInitialState,
+    projectGroupAddDayOff: projectGroupAddDayOffInitialState,
+    createPersonalRemindCategory: createPersonalRemindCategoryInitialState,
+    listPersonalRemind: listPersonalRemindInitialState,
+    createPersonalRemind: createPersonalRemindInitialState,
+    listRemindProject: listRemindProjectInitialState
+  }
 };
 
 export default rootReducer;

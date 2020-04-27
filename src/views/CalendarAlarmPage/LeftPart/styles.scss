@@ -1,0 +1,30 @@
+.left_sub_menu {
+  margin: 5px 10px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+  padding: 10px;
+
+  .sub_menu_item {
+    min-height: 40px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    background-color: #DDC2FF;
+    padding: 0px 10px;
+    border-radius: 2px;
+  }
+
+  .personal_alarm_name {
+    width: 70%;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 15px;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}

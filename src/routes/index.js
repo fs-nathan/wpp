@@ -1,5 +1,8 @@
 import React from 'react';
+import CalendarAlarmPage from 'views/CalendarAlarmPage';
 import CalendarPage from 'views/CalendarPage';
+import CalendarProjectPage from 'views/CalendarProjectPage';
+import CalendarWeeklyPage from 'views/CalendarWeeklyPage';
 import { Routes } from '../constants/routes';
 import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
 import ForgotPassword from '../views/AccountPage/ForgotPassword';
@@ -38,6 +41,9 @@ const routes = [
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
   { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
   { path: Routes.CALENDAR, component: () => <CalendarPage /> },
+  { path: Routes.CALENDAR_WEEKLY, component: () => <CalendarWeeklyPage /> },
+  { path: Routes.CALENDAR_PROJECT, component: () => <CalendarProjectPage /> },
+  { path: Routes.CALENDAR_ALARM, component: () => <CalendarAlarmPage /> },
   {
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />

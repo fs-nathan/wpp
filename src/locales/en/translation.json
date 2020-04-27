@@ -105,21 +105,50 @@
     },
     "calendar_page": {
       "left_part": {
-        "title": "Calendar management"
+        "title": "Calendar management",
+        "create": "Create new",
+        "recently": "Recently",
+        "project_alarm": "Project alarm",
+        "my_alarm": "My alarm"
       },
       "right_part": {
         "add": "+ Create",
         "setting": "Setting",
         "delete": "Delete",
+        "edit": "Edit",
+        "edit2": "Edit",
+        "delete_calendar": "Delete calendar",
+        "weekly_detail": "Weekly calendar detail",
+        "project_detail": "Project calendar detail",
+        "edit_calendar": "Edit calendar",
+        "create_alarm": "+ Create alarm",
+        "view_task": "View task",
+        "view_detail": "View detail",
         "label": {
           "name": "Calendar name",
           "time": "Time",
           "created_by": "Created by",
           "created_at": "Created at",
-          "alarm": "Alarm"
+          "alarm": "Alarm",
+          "description": "Description",
+          "applied_project": "Applied project",
+          "projects": "projects",
+          "setting_calendar": "Setting calendar",
+          "working_day_inWeek": "working days in a weeek.",
+          "add_working_and_off_day": "Add working day / day off",
+          "setting_working_time": "Setting working time",
+          "many_day": "Many day",
+          "one_day": "One day",
+          "working_day": "Working day",
+          "off_day": "Day off",
+          "working_time": "Working time",
+          "full_time": "Full time",
+          "add_time": "Add time",
+          "add_stage": "Add stage"
         },
         "no_data": "Data not found!",
-        "no_data_description": "Please create a calendar by click + CREATE and you can share them to anothers."
+        "no_data_description": "Please create a calendar by click + CREATE and you can share them to anothers.",
+        "no_data_description_alarm": "Please create a calendar by click + CREATE so you can manage your work easily and don't miss any events."
       },
       "modal": {
         "setting_weekly_calendar": {
@@ -136,7 +165,71 @@
         "create_weekly_calendar": {
           "title": "Create weekly calendar",
           "title_left": "Setting calendar",
-          "title_right": "Weekly calendar"
+          "title_right": "Weekly calendar",
+          "select_year": "Select year",
+          "select_week": "Select week",
+          "select_time": "Select time",
+          "notify_due": "Notify when it is due",
+          "content": "Content",
+          "minues": "Minues",
+          "hours": "Hours",
+          "day": "Day",
+          "notify_before": "Notify before",
+          "receiver": "Receiver",
+          "all": "All",
+          "change": "Change",
+          "detail_content": "Detail content",
+          "label": {
+            "title": "Title"
+          }
+        },
+        "edit_weekly_calendar": {
+          "title": "edit weekly calendar"
+        },
+        "create_project_calendar": {
+          "create_title": "Create project calendar",
+          "edit_title": "Edit project calendar",
+          "name": "Calendar name",
+          "description": "Calendar description",
+          "name_required": "This field is required"
+        },
+        "create_group_personal_remind": {
+          "title_create": "Create personal remind group",
+          "title_update": "Update personal remind group",
+          "group_title": "Group title",
+          "group_color": "Group color avatar"
+        },
+        "create_personal_remind": {
+          "title": "Create remind",
+          "choose_category": "Choose group",
+          "choose_day": "Choose day",
+          "choose_time": "Choose time",
+          "repeat_remind": "Repeat remind type",
+          "one_time": "One time",
+          "daily": "Daily remind",
+          "weekly": "Weekly remind",
+          "monthly": "Monthly remind",
+          "content": "Content",
+          "member_assign": "Select members will recieve remind",
+          "description": "You have important appointment, notes, events? Let's create a remind calendar base on your settings time and system will notify you when it's due.",
+          "empty_category_description": "You don't have any remind category in this time. At first, please create your remind category before you can operate this action!"
+        },
+        "update_personal_remind": {
+          "title": "Edit remind"
+        },
+        "working_stage": {
+          "create_title": "Add time ( setting time )",
+          "edit_title": "Edit time ( Setting time )",
+          "description": "Input the time range that apply for working stage",
+          "from_date": "From date",
+          "to_date": "To date"
+        },
+        "shift_stage": {
+          "create_title": "Add shift stage",
+          "edit_title": "Edit shift stage",
+          "time_start": "Time start",
+          "time_end": "Time end",
+          "shift_name": "Shift name"
         }
       }
     }
@@ -582,8 +675,25 @@
   "IDS_WP_ROLE": "Vai trò",
   "IDS_WP_SETTING_SOFTWARE": "Thiết lập phần mềm",
   "IDS_WP_COMMON_SETUP": "Cài đặt chung",
+  "IDS_WP_EXPAND": "Expand",
+  "IDS_WP_COLLAPS": "Collaps",
+  "IDS_WP_FILTER": "Filter",
   "IDS_WP_WEEKLY_CALENDAR": "Weekly calendar",
   "IDS_WP_PROJECT_CALENDAR": "Project calendar",
   "IDS_WP_ALARM_CALENDAR": "Alarm calendar",
-  "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Alarm appointment calendar"
+  "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Alarm appointment calendar",
+  "IDS_WP_WEEK_COUNT": "Week",
+  "IDS_WP_WEEK": "Week",
+  "IDS_WP_YEAR": "Year",
+  "IDS_WP_FROM": "From",
+  "IDS_WP_SELECT_YEAR": "Select year",
+  "IDS_WP_INPUT_SEARCH_PROJECT": "Search project",
+  "IDS_WP_FILTER_BY_PROJECT": "Filter by project",
+  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Check/Un-check to filter remind calendar by project",
+  "IDS_WP_CREATED_AT": "Created at",
+  "IDS_WP_REMIND": "Remind",
+  "IDS_WP_REQUIRED": "This field is required.",
+  "IDS_WP_COMMON_ADD": "Add",
+  "IDS_WP_PERSONAL": "Personal",
+  "IDS_WP_REQUIRED_LABEL": "Require"
 }

@@ -38,5 +38,8 @@ export const Routes = {
   SETTING_GROUP_ORDER: '/setting-group/order',
   SETTING_GROUP_CREATE_ORDER: '/setting-group/create-order',
   SETTING_GROUP_PAYMENT: '/setting-group/payment',
-  CALENDAR: '/calendar'
+  CALENDAR: '/calendar',
+  CALENDAR_WEEKLY: '/calendar-weekly-detail/:week/:year',
+  CALENDAR_PROJECT: '/calendar-project-detail/:scheduleID',
+  CALENDAR_ALARM: '/calendar-alarm/:category'
 };
