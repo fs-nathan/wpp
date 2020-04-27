@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { IconButton, Menu, MenuItem, InputBase } from '@material-ui/core';
@@ -23,13 +23,11 @@ import AlertModal from '../../AlertModal';
 
 const NoComment = ({ imageUrl, title, subTitle, className }) => {
   return (
-    <Scrollbars autoHide autoHideTimeout={500}>
-      <div className={'no-comment-container ' + className}>
-        <img src={imageUrl} alt="" className="img-content" />
-        <div className="title">{title}</div>
-        <div className="sub-title">{subTitle}</div>
-      </div>
-    </Scrollbars>
+    <div className={'no-comment-container ' + className}>
+      <img src={imageUrl} alt="" className="img-content" />
+      <div className="title">{title}</div>
+      <div className="sub-title">{subTitle}</div>
+    </div>
   );
 };
 
@@ -204,14 +202,16 @@ const Comment = ({
         </div>
       </div>
       <div className="body-box-comment">
-        {hasMoreComment}
+        {/* {hasMoreComment} */}
         {!isEmpty(fileInfo) && blockComment && (
-          <NoComment
-            className="dis-comment"
-            imageUrl={images.dis_comment}
-            title={t('IDS_WP_BLOCK_COMMENT_TITLE')}
-            subTitle={t('IDS_WP_BLOCK_COMMENT_DES')}
-          />
+          <Scrollbars autoHide autoHideTimeout={500}>
+            <NoComment
+              className="dis-comment"
+              imageUrl={images.dis_comment}
+              title={t('IDS_WP_BLOCK_COMMENT_TITLE')}
+              subTitle={t('IDS_WP_BLOCK_COMMENT_DES')}
+            />
+          </Scrollbars>
         )}
         {!isEmpty(fileInfo) && !blockComment && (
           <Scrollbars autoHide autoHideTimeout={500}>

@@ -1,76 +1,104 @@
 import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
 import React from 'react';
+import AddNewMember from './AddNewMember';
+import CancelStopTask from './CancelStopTask';
+import ChatSticker from './ChatSticker';
+import CompleteSubtask from './CompleteSubtask';
+import CreateCommandDecided from './CreateCommandDecided';
+import CreateNewSubTask from './CreateNewSubTask';
+import CreateOffer from './CreateOffer';
+import DeleteCommandDecided from './DeleteCommandDecided';
+import DeleteFile from './DeleteFile';
+import DeleteOffer from './DeleteOffer';
+import DeleteRemind from './DeleteRemind';
+import DeleteSubTask from './DeleteSubTask';
+import EditPriority from './EditPriority';
 import FileMessage from './FileMessage';
+import HandleOffer from './HandleOffer';
 import ImageMessage from './ImageMessage';
 import RemindMessage from './RemindMessage';
+import RemoveMember from './RemoveMember';
+import ShareLocation from './ShareLocation';
+import StopTask from './StopTask';
 import TextMessage from './TextMessage';
+import UpdateComplete from './UpdateComplete';
+import UpdateDurationMessage from './UpdateDurationMessage';
+import UpdateTaskNameMessage from './UpdateTaskNameMessage';
 
 const Message = props => {
+  if (props.type === undefined) return null;
   switch (props.type) {
     case CHAT_TYPE.TEXT:
       return <TextMessage {...props} />;
     case CHAT_TYPE.FILE:
+    case CHAT_TYPE.CHAT_FORWARD_FILE:
       return <FileMessage {...props} />;
     case CHAT_TYPE.IMAGE:
       return <ImageMessage {...props} />;
     case CHAT_TYPE.UPDATE_TASK_NAME:
-      return <TextMessage {...props} />;
+      return <UpdateTaskNameMessage {...props} />;
     case CHAT_TYPE.UPDATE_DURATION:
-      return <TextMessage {...props} />;
+      return <UpdateDurationMessage {...props} />;
     case CHAT_TYPE.CREATE_NEW_SUB_TASK:
-      return <TextMessage {...props} />;
+      return <CreateNewSubTask {...props} />;
     case CHAT_TYPE.DELETE_SUB_TASK:
-      return <TextMessage {...props} />;
+      return <DeleteSubTask {...props} />;
     case CHAT_TYPE.CREATE_REMIND:
       return <RemindMessage {...props} />;
     case CHAT_TYPE.DELETE_REMIND:
-      return <TextMessage {...props} />;
+      return <DeleteRemind {...props} />;
     case CHAT_TYPE.SHARE_LOCATION:
-      return <TextMessage {...props} />;
+      return <ShareLocation {...props} />;
     case CHAT_TYPE.CREATE_OFFER:
-      return <TextMessage {...props} />;
+      return <CreateOffer {...props} />;
     case CHAT_TYPE.DELETE_OFFER:
-      return <TextMessage {...props} />;
+      return <DeleteOffer {...props} />;
     case CHAT_TYPE.HANDLE_OFFER:
-      return <TextMessage {...props} />;
+      return <HandleOffer {...props} />;
     case CHAT_TYPE.CREATE_COMMAND_DECIDED:
-      return <TextMessage {...props} />;
+      return <CreateCommandDecided {...props} />;
     case CHAT_TYPE.DELETE_COMMAND_DECIDED:
-      return <TextMessage {...props} />;
+      return <DeleteCommandDecided {...props} />;
     case CHAT_TYPE.ADD_NEW_MEMBER:
-      return <TextMessage {...props} />;
+      return <AddNewMember {...props} />;
     case CHAT_TYPE.REMOVE_MEMBER:
-      return <TextMessage {...props} />;
+      return <RemoveMember {...props} />;
     case CHAT_TYPE.HANDLE_REMIND:
-      return <TextMessage {...props} />;
+      return <RemindMessage {...props} />;
     case CHAT_TYPE.SHARE_FILE:
-      return <TextMessage {...props} />;
+      return <FileMessage {...props} />;
     case CHAT_TYPE.EDIT_PRIORITY:
-      return <TextMessage {...props} />;
+      return <EditPriority {...props} />;
     case CHAT_TYPE.EXTEND_TIME:
-      return <TextMessage {...props} />;
+      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Extend time" />;
     case CHAT_TYPE.UPDATE_COMPLETE:
-      return <TextMessage {...props} />;
+      return <UpdateComplete {...props} />;
     case CHAT_TYPE.COMPLETE_SUBTASK:
-      return <TextMessage {...props} />;
+      return <CompleteSubtask {...props} />;
     case CHAT_TYPE.DELETE_FILE:
-      return <TextMessage {...props} />;
+      return <DeleteFile {...props} />;
     case CHAT_TYPE.PIN_TASK:
-      return <TextMessage {...props} />;
+      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Ghim công việc" />;
     case CHAT_TYPE.CANCEL_PIN_TASK:
-      return <TextMessage {...props} />;
+      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Đã bỏ Ghim công việc" />;
     case CHAT_TYPE.STOP_TASK:
-      return <TextMessage {...props} />;
+      return <StopTask {...props} />;
     case CHAT_TYPE.CANCEL_STOP_TASK:
-      return <TextMessage {...props} />;
+      return <CancelStopTask {...props} />;
     case CHAT_TYPE.PIN_REMIND:
-      return <RemindMessage {...props} />;
+      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Ghim nhắc hẹn" />;
     case CHAT_TYPE.CANCEL_PIN_REMIND:
-      return <RemindMessage {...props} />;
+      return <UpdateTaskNameMessage {...props} new_task_name={props.content} title="Đã bỏ Ghim nhắc hẹn" />;
     case CHAT_TYPE.CHAT_STICKER:
-      return <RemindMessage {...props} />;
-    case CHAT_TYPE.CHAT_FORWARD_FILE:
-      return <RemindMessage {...props} />;
+      return <ChatSticker {...props} />;
+    case CHAT_TYPE.UPLOADING_IMAGES:
+      return <ImageMessage {...props} />;
+    case CHAT_TYPE.UPLOADING_FILE:
+      return <FileMessage {...props} />;
+    case CHAT_TYPE.DATE_TIME_CHAT_HISTORY:
+      return <div className="wrap-time">
+        <div className="time">{props.time_create}</div>
+      </div>;
     default:
       return <div>Tin nhắn này bị lỗi hiển thị</div>;
   }

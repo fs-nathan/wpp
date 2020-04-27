@@ -1,22 +1,24 @@
-import React from 'react';
-import { createMajor } from '../../../../../actions/major/createMajor';
-import { updateMajor } from '../../../../../actions/major/updateMajor';
-import { connect } from 'react-redux';
+import { createMajor } from 'actions/major/createMajor';
+import { updateMajor } from 'actions/major/updateMajor';
 import { get } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
 import MajorCreateAndUpdatePresenter from './presenters';
+import { activeLoadingSelector } from './selectors';
 
-function MajorCreateAndUpdate({ 
-  open, setOpen, 
-  updatedMajor = null, 
-  doCreateMajor, doUpdateMajor 
+function MajorCreateAndUpdate({
+  open, setOpen,
+  updatedMajor = null,
+  doCreateMajor, doUpdateMajor,
+  activeLoading,
 }) {
 
   return (
-    <MajorCreateAndUpdatePresenter 
-      open={open} setOpen={setOpen} 
-      updatedMajor={updatedMajor} 
-      handleCreateOrUpdateMajor={(name, description) => 
-        updatedMajor 
+    <MajorCreateAndUpdatePresenter
+      open={open} setOpen={setOpen} activeLoading={activeLoading}
+      updatedMajor={updatedMajor}
+      handleCreateOrUpdateMajor={(name, description) =>
+        updatedMajor
           ? doUpdateMajor({ majorId: get(updatedMajor, 'id'), name, description })
           : doCreateMajor({ name, description, })
       }
@@ -32,6 +34,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    activeLoading: activeLoadingSelector(state),
+  }),
   mapDispatchToProps,
 )(MajorCreateAndUpdate);

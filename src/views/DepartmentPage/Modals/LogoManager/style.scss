@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 20px;
   & > * {
     justify-self: center;
     align-self: center;
@@ -61,4 +62,9 @@
 .view_Department_Logo_Modal___typo {
   margin: 0 10px;
   font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 500 !important;
+  color: #333333;
+  margin-bottom: 15px;
 }

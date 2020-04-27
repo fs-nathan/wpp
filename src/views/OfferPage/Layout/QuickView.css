@@ -1,0 +1,40 @@
+.comp_QuickViewWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.comp_QuickViewHeader {
+  grid-area: header;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  background-color: #fff;
+  z-index: 1;
+}
+.comp_QuickViewHeaderLeft {
+  flex: 1;
+}
+.comp_QuickViewHeaderRight {
+}
+.comp_QuickViewBody {
+  flex: 1;
+  grid-area: body;
+  padding: 15px;
+  padding-right: 33px;
+  padding-bottom: 50px;
+}
+.comp_QuickViewFooter {
+  grid-area: footer;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  position: sticky;
+  bottom: 0px;
+}

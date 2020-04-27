@@ -1,4 +1,5 @@
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
+import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
 import { CREATE_PERSONAL_CATEGORY_REMIND, CREATE_PERSONAL_REMIND, DELETE_PERSONAL_CATEGORY_REMIND, DELETE_PERSONAL_REMIND, LIST_PERSONAL_REMIND, LIST_PERSONAL_REMIND_CATEGORY, LIST_REMIND_PROJECT, LIST_REMIND_RECENTLY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_CATEGORY_REMIND, UPDATE_PERSONAL_REMIND } from "../constants/actions/calendar/alarmCalendar";
 import { GROUP_SCHEDULE_ADD_DAY_OFF, GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_STAGE, GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE_WORKING_DAY, GROUP_SCHEDULE_DELETE_WORKING_STAGE, GROUP_SCHEDULE_DETAIL, GROUP_SCHEDULE_LIST, GROUP_SCHEDULE_SET_WORKING_DAY, GROUP_SCHEDULE_UPDATE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_UPDATE_WORKING_STAGE, SETTING_START_DAY_WEEK } from "../constants/actions/calendar/projectCalendar";
@@ -48,6 +49,7 @@ import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
 import { LIST_DELETED_PROJECT } from "../constants/actions/project/listDeletedProject";
 import { LIST_PROJECT } from "../constants/actions/project/listProject";
 import { MEMBER_PROJECT } from "../constants/actions/project/memberProject";
+import { PERMISSION_PROJECT } from "../constants/actions/project/permissionProject";
 import { REMOVE_MEMBER_PROJECT } from "../constants/actions/project/removeMemberProject";
 import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from "../constants/actions/project/removeProjectRoleFromMember";
 import { RESTORE_TRASH_PROJECT } from "../constants/actions/project/restoreTrashProject";
@@ -86,6 +88,7 @@ import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
 import { DETAIL_USER } from "../constants/actions/user/detailUser";
 import { LIST_USER_OF_GROUP } from "../constants/actions/user/listUserOfGroup";
+import { PERMISSION_USER } from "../constants/actions/user/permissionUser";
 import { PRIVATE_MEMBER } from "../constants/actions/user/privateMember";
 import { PUBLIC_MEMBER } from "../constants/actions/user/publicMember";
 import { SORT_USER } from "../constants/actions/user/sortUser";
@@ -180,6 +183,7 @@ import { detailProject } from "./project/detailProject";
 import { hideProject } from "./project/hideProject";
 import { listDeletedProject, listProject } from "./project/listProject";
 import { memberProject } from "./project/memberProject";
+import { permissionProject } from "./project/permissionProject";
 import { removeMemberProject } from "./project/removeMemberProject";
 import { removeProjectRoleFromMember } from "./project/removeProjectRoleFromMember";
 import { restoreTrashProject } from "./project/restoreTrashProject";
@@ -217,6 +221,7 @@ import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
 import { detailUser } from "./user/detailUser";
 import { listUserOfGroup } from "./user/listUserOfGroup";
+import { permissionUser } from "./user/permissionUser";
 import { privateMember } from "./user/privateMember";
 import { publicMember } from "./user/publicMember";
 import { sortUser } from "./user/sortUser";
@@ -233,21 +238,22 @@ function* rootSaga() {
 
   yield takeEvery(LOGIN, login);
   yield takeEvery(LOGIN_CHECK_STATE, loginCheckState);
-  yield takeLatest(LIST_ROOM, listRoom);
-  yield takeLatest(DETAIL_ROOM, detailRoom);
-  yield takeLatest(GET_USER_OF_ROOM, getUserOfRoom);
-  yield takeLatest(LIST_USER_OF_GROUP, listUserOfGroup);
+  yield takeLeading(LIST_ROOM, listRoom);
+  yield takeLeading(DETAIL_ROOM, detailRoom);
+  yield takeLeading(GET_USER_OF_ROOM, getUserOfRoom);
+  yield takeLeading(LIST_USER_OF_GROUP, listUserOfGroup);
   yield takeEvery(SORT_USER, sortUser);
-  yield takeLatest(LIST_ICON, listIcon);
+  yield takeLeading(PERMISSION_USER, permissionUser);
+  yield takeLeading(LIST_ICON, listIcon);
   yield takeEvery(CREATE_ROOM, createRoom);
   yield takeEvery(DELETE_ROOM, deleteRoom);
   yield takeEvery(UPDATE_ROOM, updateRoom);
   yield takeEvery(SORT_ROOM, sortRoom);
-  yield takeLatest(DETAIL_USER, detailUser);
+  yield takeLeading(DETAIL_USER, detailUser);
   yield takeEvery(UPLOAD_DOCUMENTS_USER, uploadDocumentsUser);
-  yield takeLatest(LIST_MAJOR, listMajor);
-  yield takeLatest(LIST_LEVEL, listLevel);
-  yield takeLatest(LIST_POSITION, listPosition);
+  yield takeLeading(LIST_MAJOR, listMajor);
+  yield takeLeading(LIST_LEVEL, listLevel);
+  yield takeLeading(LIST_POSITION, listPosition);
   yield takeEvery(UPDATE_USER, updateUser);
   yield takeEvery(CREATE_POSITION, createPosition);
   yield takeEvery(UPDATE_POSITION, updatePosition);
@@ -258,48 +264,49 @@ function* rootSaga() {
   yield takeEvery(CREATE_LEVEL, createLevel);
   yield takeEvery(UPDATE_LEVEL, updateLevel);
   yield takeEvery(DELETE_LEVEL, deleteLevel);
-  yield takeLatest(LIST_USER_ROLE, listUserRole);
+  yield takeLeading(LIST_USER_ROLE, listUserRole);
   yield takeEvery(CREATE_USER_ROLE, createUserRole);
   yield takeEvery(UPDATE_USER_ROLE, updateUserRole);
   yield takeEvery(DELETE_USER_ROLE, deleteUserRole);
   yield takeEvery(PUBLIC_MEMBER, publicMember);
   yield takeEvery(PRIVATE_MEMBER, privateMember);
-  yield takeLatest(SEARCH_USER, searchUser);
+  yield takeLeading(SEARCH_USER, searchUser);
   yield takeEvery(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
   yield takeEvery(
     RESEND_INVITATION_USER_JOIN_GROUP,
     resendInvitationUserJoinGroup
   );
-  yield takeLatest(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
-  yield takeLatest(GET_LIST_INVITATION_SENT, getListInvitationSent);
-  yield takeLatest(CANCLE_INVITATION_JOIN_GROUP, cancleInvitationJoinGroup);
+  yield takeLeading(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
+  yield takeLeading(GET_LIST_INVITATION_SENT, getListInvitationSent);
+  yield takeLeading(CANCLE_INVITATION_JOIN_GROUP, cancleInvitationJoinGroup);
   yield takeEvery(ACCEPT_REQUIREMENT_JOIN_GROUP, acceptRequirementJoinGroup);
   yield takeEvery(REJECT_REQUIREMENT_JOIN_GROUP, rejectRequirementJoinGroup);
-  yield takeLatest(GET_LIST_GROUP, getListGroup);
+  yield takeLeading(GET_LIST_GROUP, getListGroup);
   yield takeEvery(BAN_USER_FROM_GROUP, banUserFromGroup);
   yield takeEvery(CREATE_ICON, createIcon);
   yield takeEvery(DELETE_ICON, deleteIcon);
   yield takeEvery(CREATE_PROJECT_GROUP, createProjectGroup);
   yield takeEvery(EDIT_PROJECT_GROUP, editProjectGroup);
-  yield takeLatest(LIST_PROJECT_GROUP, listProjectGroup);
+  yield takeLeading(LIST_PROJECT_GROUP, listProjectGroup);
   yield takeEvery(DELETE_PROJECT_GROUP, deleteProjectGroup);
   yield takeEvery(SORT_PROJECT_GROUP, sortProjectGroup);
-  yield takeLatest(DETAIL_PROJECT_GROUP, detailProjectGroup);
-  yield takeLatest(MEMBER_PROJECT_GROUP, memberProjectGroup);
-  yield takeLatest(DETAIL_DEFAULT_GROUP, detailDefaultGroup);
+  yield takeLeading(DETAIL_PROJECT_GROUP, detailProjectGroup);
+  yield takeLeading(MEMBER_PROJECT_GROUP, memberProjectGroup);
+  yield takeLeading(DETAIL_DEFAULT_GROUP, detailDefaultGroup);
   yield takeEvery(CREATE_PROJECT, createProject);
   yield takeEvery(COPY_PROJECT, copyProject);
   yield takeEvery(SORT_PROJECT, sortProject);
   yield takeEvery(UPDATE_PROJECT, updateProject);
   yield takeEvery(DELETE_PROJECT, deleteProject);
-  yield takeLatest(LIST_PROJECT, listProject);
-  yield takeLatest(LIST_DELETED_PROJECT, listDeletedProject);
-  yield takeLatest(DETAIL_PROJECT, detailProject);
+  yield takeLeading(LIST_PROJECT, listProject);
+  yield takeLeading(LIST_DELETED_PROJECT, listDeletedProject);
+  yield takeLeading(DETAIL_PROJECT, detailProject);
   yield takeEvery(HIDE_PROJECT, hideProject);
   yield takeEvery(SHOW_PROJECT, showProject);
   yield takeEvery(DELETE_TRASH_PROJECT, deleteTrashProject);
   yield takeEvery(RESTORE_TRASH_PROJECT, restoreTrashProject);
-  yield takeLatest(MEMBER_PROJECT, memberProject);
+  yield takeLeading(MEMBER_PROJECT, memberProject);
+  yield takeLeading(PERMISSION_PROJECT, permissionProject);
   yield takeEvery(ADD_MEMBER_PROJECT, addMemberProject);
   yield takeEvery(REMOVE_MEMBER_PROJECT, removeMemberProject);
   yield takeEvery(UPDATE_STATE_JOIN_TASK, updateStateJoinTask);
@@ -307,18 +314,18 @@ function* rootSaga() {
   yield takeEvery(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
   yield takeEvery(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
   yield takeEvery(ASSIGN_MEMBER_TO_ALL_TASK, assignMemberToAllTask);
-  yield takeLatest(DETAIL_STATUS, detailStatus);
+  yield takeLeading(DETAIL_STATUS, detailStatus);
   yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
   yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
   yield takeEvery(UPDATE_STATUS_VIEW, updateStatusView);
-  yield takeLatest(LIST_GROUP_TASK, listGroupTask);
+  yield takeLeading(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
-  yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
-  yield takeLatest(LIST_TASK, listTask);
+  yield takeLeading(GET_ALL_GROUP_TASK, getAllGroupTask);
+  yield takeLeading(LIST_TASK, listTask);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
@@ -326,15 +333,15 @@ function* rootSaga() {
     INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
     inviteOtherPeopleCreateAccount
   );
-  yield takeEvery(
+  yield takeLeading(
     GET_PERMISSION_VIEW_PROJECTS,
     getPermissionViewProjects
   );
-  yield takeEvery(
+  yield takeLeading(
     GET_PERMISSION_VIEW_USERS,
     getPermissionViewUsers
   );
-  yield takeEvery(
+  yield takeLeading(
     GET_PERMISSION_VIEW_DETAIL_PROJECT,
     getPermissionViewDetailProject
   );
@@ -593,6 +600,66 @@ function* rootSaga() {
     chatTypes.DELETE_CHAT,
     chatDetailSaga.deleteChat
   );
+  yield takeLeading(
+    chatTypes.LOAD_CHAT,
+    chatDetailSaga.loadChat
+  );
+  yield takeLeading(
+    chatTypes.CHAT_IMAGE,
+    chatDetailSaga.chatImage
+  );
+  yield takeLeading(
+    chatTypes.CHAT_FILE,
+    chatDetailSaga.chatFile
+  );
+  yield takeLeading(
+    chatTypes.CHAT_FORWARD_FILE,
+    chatDetailSaga.chatForwardFile
+  );
+  yield takeLeading(
+    chatTypes.CHAT_STICKER,
+    chatDetailSaga.chatSticker
+  );
+  yield takeLeading(
+    chatTypes.GET_CHAT_NOT_VIEWED,
+    chatDetailSaga.getChatNotViewed
+  );
+  yield takeLeading(
+    chatTypes.GET_NOTI_CHAT,
+    chatDetailSaga.getNotiChat
+  );
+  yield takeLeading(
+    chatTypes.FORWARD_CHAT,
+    chatDetailSaga.forwardChat
+  );
+  yield takeLeading(
+    chatTypes.GET_LIST_STICKERS,
+    chatDetailSaga.getListStickers
+  );
+  yield takeLeading(
+    chatTypes.LOAD_LIST_TASK,
+    chatDetailSaga.loadListTask
+  );
+  yield takeLeading(
+    chatTypes.GET_EMOTIONS,
+    chatDetailSaga.getEmotions
+  );
+  yield takeLeading(
+    chatTypes.CHAT_EMOTION,
+    chatDetailSaga.chatEmotion
+  );
+  yield takeLeading(
+    chatTypes.GET_EMOTIONS_REACT_MEMBER,
+    chatDetailSaga.getEmotionsReactMember
+  );
+  yield takeLeading(
+    chatTypes.CREATE_CHAT_TEXT,
+    chatDetailSaga.createChatText
+  );
+  yield takeLeading(
+    chatTypes.GET_VIEWED_CHAT,
+    chatDetailSaga.getViewedChat
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
@@ -637,6 +704,7 @@ function* rootSaga() {
   yield takeLatest(GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, projectScheduleCreateShiftStageAllTime);
   yield takeLatest(GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, projectScheduleUpdateShiftStageAllTime);
   yield takeEvery(GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, projectScheduleDeleteShiftStageAllTime);
+  yield fork(watchAsyncAction);
 }
 
 export default rootSaga;

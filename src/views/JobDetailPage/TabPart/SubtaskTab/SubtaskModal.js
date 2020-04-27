@@ -1,8 +1,9 @@
-import React from 'react';
 import { TextField } from '@material-ui/core';
 import { updateSubTask } from 'actions/taskDetail/taskDetailActions';
-import { useDispatch, useSelector } from 'react-redux';
 import DialogWrap from 'components/DialogWrap';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './styles.scss';
 
 const SubtaskModal = (props) => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const SubtaskModal = (props) => {
       successLabel={"Hoàn Thành"}
       onClickSuccess={onClickComplete}
     >
-      <React.Fragment>
+      <div className="editSubtask--content">
         <TextField
           label="Nội dung công việc"
           margin="normal"
@@ -30,7 +31,7 @@ const SubtaskModal = (props) => {
           onChange={e => setStateName(e.target.value)}
           value={name}
         />
-      </React.Fragment>
+      </div>
     </DialogWrap>
   )
 }

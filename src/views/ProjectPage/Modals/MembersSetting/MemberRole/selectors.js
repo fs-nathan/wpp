@@ -11,10 +11,11 @@ export const updateMemberRoleSelector = createSelector(
   (addProjectRoleToMember, removeProjectRoleFromMember, memberProject) => {
     const { loading: addLoading, error: addError } = addProjectRoleToMember;
     const { loading: removeLoading, error: removeError } = removeProjectRoleFromMember;
-    const { loading: listLoading, error: listError } = memberProject;
+    const { loading: listLoading, error: listError, firstTime } = memberProject;
     return {
-      loading: addLoading || removeLoading || listLoading,
+      loading: addLoading || removeLoading || (firstTime ? false : listLoading),
       error: addError || removeError || listError,
+      firstTime,
     }
   }
 );
@@ -22,11 +23,12 @@ export const updateMemberRoleSelector = createSelector(
 export const membersSelector = createSelector(
   [memberProject],
   (memberProject) => {
-    const { data: { membersAdded }, loading, error } = memberProject;
+    const { data: { membersAdded }, loading, error, firstTime } = memberProject;
     return {
       members: membersAdded,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 );
@@ -34,11 +36,12 @@ export const membersSelector = createSelector(
 export const userRolesSelector = createSelector(
   [listUserRole],
   (listUserRole) => {
-    const { data: { userRoles }, loading, error } = listUserRole;
+    const { data: { userRoles }, loading, error, firstTime } = listUserRole;
     return {
       userRoles,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 )

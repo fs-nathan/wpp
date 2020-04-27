@@ -1,11 +1,13 @@
-import { FormControl, FormControlLabel, MenuItem, Radio, RadioGroup, TextField } from '@material-ui/core';
-import { get } from 'lodash';
+import { FormControl, FormControlLabel, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
+import CustomModal from 'components/CustomModal';
+import CustomTextbox from 'components/CustomTextbox';
+import MySelect from 'components/MySelect';
+import { CREATE_PROJECT, CustomEventDispose, CustomEventListener } from 'constants/events.js';
+import { useMaxlenString, useRequiredString } from 'hooks';
+import { find, get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../components/ColorTypo';
-import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox from '../../../../components/CustomTextbox';
-import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -20,10 +22,17 @@ const CustomTextField = ({ className = '', ...props }) =>
     {...props}
   />;
 
+const SubTitle = ({ className = '', ...props }) =>
+  <Typography
+    className={`view_ProjectGroup_CreateNew_Project_Modal___subtitle ${className}`}
+    {...props}
+  />
+
 function CreateNewProject({
   open, setOpen,
   groups,
   handleCreateProject,
+  activeLoading,
 }) {
 
   const { t } = useTranslation();
@@ -32,6 +41,19 @@ function CreateNewProject({
   const [priority, setPriority] = React.useState(0);
   const [currency] = React.useState(0);
   const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+      setPriority(0);
+      setCurProjectGroupId(get(groups.groups[0], 'id'));
+    };
+    CustomEventListener(CREATE_PROJECT, successClose);
+    return () => CustomEventDispose(CREATE_PROJECT, successClose);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CustomModal
@@ -50,22 +72,24 @@ function CreateNewProject({
           currency,
         })
       }
+      onCancle={() => setOpen(false)}
       loading={groups.loading}
+      activeLoading={activeLoading}
+      manualClose={true}
     >
       <StyledFormControl fullWidth>
-        <CustomTextField
-          select
-          variant="outlined"
+        <MySelect
           label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
-          value={curProjectGroupId}
-          onChange={evt => setCurProjectGroupId(evt.target.value)}
-        >
-          {groups.groups.map(projectGroup =>
-            <MenuItem key={get(projectGroup, 'id')} value={get(projectGroup, 'id')}>
-              {get(projectGroup, 'name')}
-            </MenuItem>
-          )}
-        </CustomTextField>
+          options={groups.groups.map(projectGroup => ({
+            label: get(projectGroup, 'name'),
+            value: get(projectGroup, 'id'),
+          }))}
+          value={{
+            label: get(find(groups.groups, { id: curProjectGroupId }), 'name'),
+            value: curProjectGroupId,
+          }}
+          onChange={({ value: curProjectGroupId }) => setCurProjectGroupId(curProjectGroupId)}
+        />
       </StyledFormControl>
       <CustomTextField
         value={name}
@@ -80,10 +104,16 @@ function CreateNewProject({
           </ColorTypo>
         }
       />
-      <ColorTypo>
-        {t("DMH.VIEW.PGP.MODAL.CUP.PRIO.TITLE")}
-      </ColorTypo>
+      <CustomTextbox
+        value={description}
+        onChange={value => setDescription(value)}
+        label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
+        helperText={get(errorDescription, 'message', '')}
+      />
       <StyledFormControl fullWidth>
+        <SubTitle>
+          {t("DMH.VIEW.PGP.MODAL.CUP.PRIO.TITLE")}
+        </SubTitle>
         <RadioGroup
           aria-label='priority'
           name='priority'
@@ -111,12 +141,6 @@ function CreateNewProject({
           />
         </RadioGroup>
       </StyledFormControl>
-      <CustomTextbox
-        value={description}
-        onChange={value => setDescription(value)}
-        label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
-        helperText={get(errorDescription, 'message', '')}
-      />
     </CustomModal>
   )
 }

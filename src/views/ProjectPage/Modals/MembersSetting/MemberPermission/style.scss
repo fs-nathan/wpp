@@ -1,0 +1,81 @@
+.view_ProjectPage_MemberPermissionModal___table-row {
+  & > *:not(:first-child) {
+    & > *:nth-child(1) {
+      display: flex;
+      flex-direction : column;
+      margin: auto;   
+      width: 16px;
+      height: 16px;
+    }
+  }
+};
+
+.view_ProjectPage_MemberPermissionModal___table-cell {
+  padding: 8px;
+};
+
+@mixin view_ProjectPage_MemberPermissionModal___permission-item {
+  padding: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #000000;
+  .MuiRadio-colorSecondary.Mui-checked {
+    color: #ffffff;
+  }
+  .MuiIconButton-colorSecondary:hover {
+    background-color: transparent;
+  }
+  & > * {
+    width: 16px;
+    height: 16px;
+    display: block;
+    margin: auto;
+    transition: none;
+  }
+}
+
+.view_ProjectPage_MemberPermissionModal___permission-item {
+  & {
+    @include view_ProjectPage_MemberPermissionModal___permission-item;
+  }
+  &-checked {
+    @include view_ProjectPage_MemberPermissionModal___permission-item;
+    color: #ffffff;
+    background-color: #58abf3;
+  }
+}
+
+.view_ProjectPage_MemberPermissionModal___title {
+  color: #111111;
+  text-transform: unset;
+  font-size: 18px;
+  font-weight: 500;
+  display: block;
+  position: relative;
+  line-height: 23px;
+  margin: 15px 0 10px;
+  width: 100%;
+}
+
+.view_ProjectPage_MemberPermissionModal___content {
+  font-weight: normal;
+  margin: 20px 0px;
+  max-width: 500px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.view_ProjectPage_MemberPermissionModal___slider {
+  background-color: #cccccc;
+  padding: 0 32px;
+}
+
+.view_ProjectPage_MemberPermissionModal___icon {
+  & {
+    fill: #f0f0f0;
+  }
+  &-disabled {
+    fill: #cccccc;
+    cursor: auto;
+  }
+}

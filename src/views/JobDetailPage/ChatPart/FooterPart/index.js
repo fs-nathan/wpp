@@ -1,74 +1,316 @@
 import { IconButton } from '@material-ui/core';
-import { mdiAlarmPlus, mdiAt, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
+import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, createChatText } from 'actions/chat/chat';
-// import * as MaterialIcon from '@material-ui/icons'
-// import colors from 'helpers/colorPalette'
-import IconLike from 'assets/like.svg';
-import React, { useState } from 'react';
+import { appendChat, changeStickerKeyWord, chatImage, chatSticker, clearTags, createChatText, onUploading, tagMember } from 'actions/chat/chat';
+import { showTab } from 'actions/taskDetail/taskDetailActions';
+import { convertToRaw, EditorState, Entity, getDefaultKeyBinding, KeyBindingUtil, Modifier } from 'draft-js';
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import 'draft-js-mention-plugin/lib/plugin.css';
+import Editor from 'draft-js-plugins-editor';
+import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
+import words from 'lodash/words';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
+import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLibraryModal';
+import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal';
+import RemindModal from 'views/JobDetailPage/TabPart/RemindTab/RemindModal';
+import Message from '../BodyPart/Message';
 import '../Chat.scss';
+import './styles.scss';
 
-const FooterPart = props => {
+const { isSoftNewlineEvent } = KeyBindingUtil
+
+const positionSuggestions = ({ state, props }) => {
+  let transform;
+  let transition;
+  const translateY = props.suggestions.length * 20 + 200;
+
+  if (state.isActive && props.suggestions.length > 0) {
+    transform = `translateY(-${translateY}px) scaleY(1)`;
+    transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
+  } else if (state.isActive) {
+    transform = `translateY(-${translateY}px) scaleY(0)`;
+    transition = 'all 0.25s cubic-bezier(.3,1,.2,1)';
+  }
+
+  return {
+    transform,
+    transition,
+  };
+};
+
+function getChatContent({ blocks, entityMap }) {
+  const mapBlocks = blocks.map(block => {
+    const { text = '', entityRanges = [] } = block;
+    let ret = text;
+    for (let index = 0; index < entityRanges.length; index++) {
+      const { offset, length, key } = entityRanges[index];
+      const { data } = entityMap[key];
+      // ret = spliceSlice(ret, offset, length, `{${data.mention.id}}`);
+      const reg = new RegExp(`@${data.mention.name}`, 'g');
+      ret = ret.replace(reg, `${data.mention.id}`)
+    }
+    return ret;
+  })
+  return mapBlocks.join('\n')
+}
+
+const mentionPlugin = createMentionPlugin({
+  mentionPrefix: '@',
+  positionSuggestions,
+});
+const { MentionSuggestions } = mentionPlugin;
+const plugins = [mentionPlugin];
+
+function myKeyBindingFn(e) {
+  if (e.keyCode === 13 /* `enter` key */ && !isSoftNewlineEvent(e)) {
+    return 'send';
+  }
+
+  return getDefaultKeyBinding(e);
+}
+
+const FooterPart = ({
+  parentMessage,
+  setSelectedChat,
+  imagesQueue,
+  setImagesQueue,
+}) => {
+  const editorRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const members = useSelector(state => state.taskDetail.taskMember.member);
+  const tagMembers = useSelector(state => state.chat.tagMembers);
+  const userId = useSelector(state => state.system.profile.order_user_id)
+  const listStickers = useSelector(state => state.chat.listStickers);
+  const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
 
-  const [marginLeftModal, setMarginLeftModal] = useState(0);
-  const [marginTopModal, setMarginTopModal] = useState(0);
-  const [textChat, setTextChat] = useState('');
-  const [visibleTag, setVisible] = useState(null);
   const [visibleSendFile, setVisibleSendFile] = useState(false);
+  const [isOpenRemind, setOpenRemind] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isOpenSticker, setOpenSticker] = useState(false);
+  const [isShareFromLib, setShareFromLib] = useState(false);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const [suggestions, setSuggestions] = useState(members);
+  const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
+
+  useEffect(() => {
+    async function renderPrepareImages(imagesFiles) {
+      const images = [];
+      for (let index = 0; index < imagesFiles.length; index++) {
+        const file = imagesFiles[index];
+        const url = await getFileUrl(file)
+        images.push({ url, file })
+      }
+      setImagesQueueUrl(images)
+    }
+    renderPrepareImages(imagesQueue)
+  }, [imagesQueue]);
+
+  useEffect(() => {
+    const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
+    if (content[0] === '@' && content.indexOf('\n') !== -1) {
+      const stickerKey = content.slice(1)
+      dispatch(changeStickerKeyWord(stickerKey))
+      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(stickerKey) !== -1);
+      if (renderStickersList.length > 0) {
+        setOpenSticker(true)
+      }
+    }
+  }, [dispatch, editorState, listStickers]);
+
+  useEffect(() => {
+    document.onpaste = async function (event) {
+      var items = event.clipboardData.items;
+      // console.log(JSON.stringify(items)); // will give you the mime types
+      const images = [];
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        // console.log('Item: ' + item.type);
+        if (item.type.indexOf('image') !== -1) {
+          //item.
+          const file = item.getAsFile();
+          const url = await getFileUrl(file)
+          images.push({ url, file })
+        } else {
+          // ignore not images
+          console.log('Discarding not image paste data');
+        }
+      }
+      setImagesQueueUrl(images)
+    }
+  }, [])
 
   const handleTriggerUpload = id => {
     document.getElementById(id).click();
   };
-  const handleUploadImage = e => {
-    const { files } = e.target;
-    console.log('upload image', files);
-  };
 
-  const openTag = () => {
-    // Handle position of search modal
-    const inputElm = document.getElementById('input_message');
-    if (inputElm) {
-      const posLeft = inputElm.offsetLeft;
-      const posTop = inputElm.offsetTop;
-      setMarginLeftModal(posLeft);
-      setMarginTopModal(posTop);
-    }
-    setVisible('mention');
-  };
-
-  function onChangeTextChat(event) {
-    setTextChat(event.target.value)
+  function onUploadingHandler(percent) {
+    dispatch(onUploading(percent));
   }
 
-  async function onKeyPressChat(event) {
-    if (textChat.length === 0) return;
-    if (event.key === 'Enter') {
-      console.log('enter press here! ', textChat)
-      setTextChat('')
+  const handleUploadImage = async e => {
+    const { files } = e.target;
+    // console.log('upload image', files);
+    const images = [];
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      const url = await getFileUrl(file)
+      images.push({ url })
+    }
+
+    const data_chat = {
+      type: CHAT_TYPE.UPLOADING_IMAGES, images,
+      isUploading: true,
+      is_me: true,
+    }
+    dispatch(appendChat({ data_chat }));
+    let data = new FormData()
+    for (let i = 0; i < files.length; i++) {
+      data.append("image", files[i], files[i].name)
+    }
+    dispatch(chatImage(taskId, data, onUploadingHandler))
+  };
+
+  function onClickDeletePreview(i) {
+    return () => {
+      // console.log(i)
+      const filtered = imagesQueue.filter((img, idx) => idx !== i)
+      setImagesQueue([...filtered]);
+    }
+  }
+
+  const openTag = (evt) => {
+    setAnchorEl(evt.currentTarget);
+  };
+
+  function handleCloseTag() {
+    setAnchorEl(null)
+  }
+
+  const onClickOpenSticker = (evt) => {
+    setOpenSticker(!isOpenSticker);
+  };
+
+  function handleCloseSticker() {
+    setOpenSticker(false)
+  }
+
+  function handleClickSticker(id) {
+    if (stickerKeyWord) {
+      setEditorState(EditorState.createEmpty())
+    }
+    dispatch(chatSticker(taskId, id))
+    handleCloseSticker()
+  }
+
+  function onClickSubTask() {
+    dispatch(showTab(2))
+  }
+
+  function onClickRemind() {
+    // dispatch(showTab(3))
+    setOpenRemind(true)
+  }
+
+  function onClickShareFromLibrary() {
+    setVisibleSendFile(false)
+    setShareFromLib(true)
+  }
+
+  function insertMention(label, mention) {
+    const currentContent = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
+    const entityKey = Entity.create('mention', 'SEGMENTED', { mention });
+    const textWithEntity = Modifier.insertText(currentContent, selection, label, null, entityKey);
+    const newState = EditorState.push(editorState, textWithEntity, 'insert-characters')
+    setEditorState(newState);
+    // console.log(convertToRaw(newState.getCurrentContent()))
+    // focus();
+  }
+
+  function handleClickMention(mention) {
+    // console.log(mention)
+    insertMention(`@${mention.name} `, mention)
+    // console.log(convertToRaw(editorState.getCurrentContent()))
+    dispatch(tagMember(mention.id))
+  }
+
+  const onSearchChange = ({ value }) => {
+    setSuggestions(defaultSuggestionsFilter(value, members))
+  };
+
+  const onAddMention = (mention) => {
+    // get the mention object selected
+    // console.log('onAddMention! ', log)
+    dispatch(tagMember(mention.id))
+  }
+
+  const focus = () => {
+    editorRef.current.focus();
+  };
+
+  async function handleKeyCommand(command) {
+    if (command === 'send') {
+      // editorRef.current.blur();
+      if (imagesQueueUrl.length > 0) {
+        const images = [];
+        let data = new FormData()
+        for (let index = 0; index < imagesQueueUrl.length; index++) {
+          const { file, url } = imagesQueueUrl[index];
+          images.push({ url })
+          data.append("image", file, file.name)
+        }
+        setImagesQueue([]);
+        const data_chat = {
+          type: CHAT_TYPE.UPLOADING_IMAGES, images,
+          isUploading: true,
+          is_me: true,
+        }
+        dispatch(appendChat({ data_chat }));
+        dispatch(chatImage(taskId, data, onUploadingHandler))
+        return 'handled';
+      }
+      // console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())))
+      // console.log(getChatContent(convertToRaw(editorState.getCurrentContent())))
+      // Perform a request to save your contents, set
+      // a new `editorState`, etc.
+      const content = getChatContent(convertToRaw(editorState.getCurrentContent()));
+      if (content.trim().length === 0) return;
+      // setTextChat('');
+      dispatch(clearTags());
+      setEditorState(EditorState.createEmpty())
       try {
-        const { data } = await createChatText({
-          task_id: taskId, content: textChat
-        });
-        dispatch(appendChat(data));
+        const data_chat = {
+          type: CHAT_TYPE.TEXT,
+          is_me: true,
+          user_create_id: userId,
+          task_id: taskId, content,
+          parent_id: parentMessage && parentMessage.id,
+          tags: tagMembers
+        };
+        dispatch(appendChat({ data_chat }));
+        dispatch(createChatText(data_chat));
       } catch (error) {
         console.error('error here! ', error)
       }
+      setSelectedChat(null)
+      return 'handled';
     }
+
+    return 'not-handled';
   }
 
   return (
     <div className="footer-chat-container">
       <div className="wrap-function-bar-fp">
-        <div>
+        <div >
           <IconButton className="icon-btn" onClick={openTag}>
             <Icon path={mdiAt} size={1.2} />
           </IconButton>
-          <IconButton className="icon-btn">
+          <IconButton className="icon-btn" onClick={onClickOpenSticker}>
             <Icon path={mdiEmoticon} size={1.2} />
           </IconButton>
           <IconButton
@@ -92,48 +334,64 @@ const FooterPart = props => {
           >
             <Icon path={mdiPaperclip} size={1.2} />
           </IconButton>
-          <IconButton className="icon-btn">
+          <IconButton className="icon-btn" onClick={onClickSubTask}>
             <Icon path={mdiFileTree} size={1.2} />
           </IconButton>
-          <IconButton className="icon-btn">
+          <IconButton className="icon-btn" onClick={onClickRemind}>
             <Icon path={mdiAlarmPlus} size={1.2} />
           </IconButton>
         </div>
-        <div>
-          <IconButton className="icon-btn">
-            <img
-              src={IconLike}
-              alt="vtask_like_icon"
-              style={{ width: 25, height: 25 }}
-            />
-          </IconButton>
-        </div>
       </div>
-      <div className="wrap-input-message" id="input_message">
-        {visibleTag === 'mention' && (
-          <TagModal
-            marginLeft={marginLeftModal}
-            marginTop={marginTopModal}
-            onClose={() => setVisible(null)}
-          />
+      <Message {...parentMessage} isReply></Message>
+      <div className="chatBox--preview">
+        {imagesQueueUrl.map(({ url }, i) =>
+          <div key={i} className="chatBox--imagePreviewWrap">
+            <img className="chatBox--imagePreview" src={url} alt="hd" />
+            <IconButton className="chatBox--imagePreviewDelete" onClick={onClickDeletePreview(i)}>
+              <Icon path={mdiClose} size={0.6} />
+            </IconButton>
+          </div>
         )}
-
-        <input
-          onKeyPress={onKeyPressChat}
-          className="chat-input"
-          type="text"
-          value={textChat}
-          onChange={onChangeTextChat}
+      </div>
+      <div className="wrap-input-message chatBox" id="input_message"
+        onClick={focus}
+      >
+        <Editor
+          editorState={editorState}
+          onChange={setEditorState}
+          plugins={plugins}
+          ref={editorRef}
           placeholder="Nhập @ gợi ý, nội dung thảo luận..."
+          handleKeyCommand={handleKeyCommand}
+          keyBindingFn={myKeyBindingFn}
+        />
+        <MentionSuggestions
+          onSearchChange={onSearchChange}
+          suggestions={suggestions}
+          onAddMention={onAddMention}
         />
       </div>
 
-      {visibleSendFile && (
-        <SendFileModal
-          open={visibleSendFile}
-          setOpen={() => setVisibleSendFile(false)}
-        />
-      )}
+      <TagModal
+        anchorEl={anchorEl}
+        handleClose={handleCloseTag}
+        handleClickMention={handleClickMention}
+      />
+      <StickerModal
+        isOpen={isOpenSticker}
+        handleClose={handleCloseSticker}
+        handleClickSticker={handleClickSticker}
+      />
+      <SendFileModal
+        open={visibleSendFile}
+        setOpen={setVisibleSendFile}
+        onClickShareFromLibrary={onClickShareFromLibrary}
+      />
+      <ShareFromLibraryModal
+        open={isShareFromLib}
+        setOpen={setShareFromLib}
+      />
+      <RemindModal isOpen={isOpenRemind} setOpen={setOpenRemind} isCreate />
     </div>
   );
 };

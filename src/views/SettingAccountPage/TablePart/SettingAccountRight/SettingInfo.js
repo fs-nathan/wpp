@@ -22,7 +22,6 @@ import {
 import {
   getProfileService,
   actionGetProfile,
-  actionGetFormatDate,
   actionToast
 } from '../../../../actions/system/system';
 import ImageCropper from '../../../../components/ImageCropper/ImageCropper';
@@ -43,11 +42,10 @@ class SettingInfo extends Component {
           this.props.profile.format_date
         ).toDate()
       : new Date(),
-    formatDate: 'dd/MM/yyyy',
     loading: false
   };
   componentDidMount() {
-    this.getFormatDate();
+    this.getProfile();
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.profile !== this.props.profile && this.props.profile) {
@@ -59,13 +57,10 @@ class SettingInfo extends Component {
       });
     }
   }
-  getFormatDate = async () => {
+  getProfile = async () => {
     try {
-      const { data } = await actionGetFormatDate();
-      const listDate = data.data || [];
-      const formatDate = listDate.find(item => item.selected === true);
-      formatDate.replace(/DD/g, 'dd').replace(/YYYY/g, 'yyyyy');
-      this.setState({ formatDate: formatDate.date_format });
+      const { data } = await getProfileService();
+      if (data.data) this.props.actionGetProfile(data.data);
     } catch (error) {}
   };
   handleChangeStatus = async () => {
@@ -180,10 +175,11 @@ class SettingInfo extends Component {
       showInputFile,
       avatar,
       selectedDate,
-      formatDate,
       loading
     } = this.state;
     const { t } = this.props;
+    const formatDate = this.props.profile.format_date ? 
+    this.props.profile.format_date.replace(/DD/g, 'dd').replace(/YYYY/g, 'yyyy') : 'dd/MM/yyyy';
     return (
       <div className="setting-info">
         <div className="content-setting-info">
@@ -380,7 +376,8 @@ class SettingInfo extends Component {
                   onClick={() =>
                     this.setState({
                       mode: 'view',
-                      data: { ...this.props.profile }
+                      data: { ...this.props.profile },
+                      selectedDate: this.props.profile.birthday
                     })
                   }
                 >

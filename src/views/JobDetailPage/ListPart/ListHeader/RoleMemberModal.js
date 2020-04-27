@@ -19,7 +19,7 @@ function RoleMemberModal({
   memberId,
 }) {
   const dispatch = useDispatch();
-  const userRoles = useSelector(state => state.taskDetail.taskMember.user_roles);
+  const userRoles = useSelector(state => state.taskDetail.taskMember.user_roles) || [];
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
   const handleClose = () => {

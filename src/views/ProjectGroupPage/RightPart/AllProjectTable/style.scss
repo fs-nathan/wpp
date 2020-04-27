@@ -27,7 +27,7 @@
     @include view_ProjectGroup_Table_All___menu-item;
     color: #222;
     & > svg {
-      fill: #d4d4d4;
+      fill: #d4d4d4 !important; 
     }
   };
   &-selected {
@@ -35,7 +35,7 @@
     color: #05b50c;
     background: #05b50c1c;
     & > svg {
-      fill: #05b50c;
+      fill: #05b50c !important;
     }
   };
 };

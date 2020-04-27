@@ -120,6 +120,15 @@ const DocumentDetail = props => {
     } catch (error) {}
   };
 
+  const generateUrl = (fileType, url) => {
+    const type = fileType.toLowerCase();
+    const listExtensionFile = 'pdf,mp4,mp3';
+    if (listExtensionFile.split(',').indexOf(type) > -1) {
+      return url;
+    } else {
+      return `https://drive.google.com/viewerng/viewer?url=${url}&hl=en&pid=explorer&efh=false&a=v&chrome=false&embedded=true`;
+    }
+  };
   const handleZoomImage = evt => {
     let currentTaget = evt.target;
     if (evt.deltaY > 0) {
@@ -308,7 +317,7 @@ const DocumentDetail = props => {
             <React.Fragment>
               {!isImageFile(fileInfo.type) && (
                 <iframe
-                  src={`https://drive.google.com/viewerng/viewer?url=${fileInfo.url}&hl=en&pid=explorer&efh=false&a=v&chrome=false&embedded=true`}
+                  src={generateUrl(fileInfo.type, fileInfo.url)}
                   frameBorder="0"
                   className="google-view-file"
                   title={t('IDS_WP_TITLE_READ_FILE')}

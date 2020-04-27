@@ -162,9 +162,6 @@ function AllUsersTable({
           }, {
             label: t('DMH.VIEW.DP.MODAL.MAJOR.TITLE'),
             onClick: () => handleOpenModal('MAJOR'),
-          }, {
-            label: t('DMH.VIEW.DP.RIGHT.UT.TABLE_SETTING'),
-            onClick: () => handleOpenModal('TABLE_SETTING'),
           }] : null,
           grouped: {
             bool: true,
@@ -197,6 +194,9 @@ function AllUsersTable({
           loading: {
             bool: rooms.loading,
             component: () => <LoadingBox />,
+          },
+          noData: {
+            bool: (rooms.firstTime === false) && (rooms.rooms.length === 0),
           },
         }}
         columns={[{
@@ -288,20 +288,24 @@ function AllUsersTable({
           {t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}
         </MenuItem>
         <MenuItem onClick={() => {
-          handleOpenModal('PERMISSION_SETTING');
+          handleOpenModal('PERMISSION_SETTING', {
+            curUser: user,
+          });
           setMenuAnchorEl(null);
         }}>
           {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}
         </MenuItem>
-        <MenuItem onClick={() => {
-          handleOpenModal('ALERT', {
-            content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
-            onConfirm: () => handleBanUserFromGroup(user),
-          });
-          setMenuAnchorEl(null);
-        }}>
-          {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
-        </MenuItem>
+        {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
+          <MenuItem onClick={() => {
+            handleOpenModal('ALERT', {
+              content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
+              onConfirm: () => handleBanUserFromGroup(user),
+            });
+            setMenuAnchorEl(null);
+          }}>
+            {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
+          </MenuItem>
+        )}
       </Menu>
     </Container>
   )

@@ -15,7 +15,7 @@ export const roomsSelector = createSelector(
   (listRoom, listUserOfGroup, listPosition, sortUser, banUserFromGroup) => {
     const { loading: sortUserLoading, error: sortUserError } = sortUser;
     const { data: { rooms } } = listRoom;
-    const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading } = listUserOfGroup;
+    const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading, firstTime: listFirst } = listUserOfGroup;
     const { data: { positions } } = listPosition;
     const { loading: banUserLoading, error: banUserError } = banUserFromGroup;
     const newRooms = group.map(curGroup => ({
@@ -33,8 +33,9 @@ export const roomsSelector = createSelector(
     }));
     return {
       rooms: newRooms,
-      loading: listUserOfGroupLoading || sortUserLoading || banUserLoading,
+      loading: (listFirst ? false : listUserOfGroupLoading) || sortUserLoading || banUserLoading,
       error: listUserOfGroupError || sortUserError || banUserError,
+      firstTime: listFirst,
     }
   }
 )

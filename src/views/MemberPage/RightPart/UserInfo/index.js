@@ -1,10 +1,14 @@
+import { listLevel } from 'actions/level/listLevel';
+import { listMajor } from 'actions/major/listMajor';
+import { listPosition } from 'actions/position/listPosition';
+import { listRoom } from 'actions/room/listRoom';
+import { detailUser } from 'actions/user/detailUser';
+import { uploadDocumentsUser } from 'actions/user/uploadDocumentsUser';
+import { CustomEventDispose, CustomEventListener, UPLOAD_DOCUMENTS_USER } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { detailUser } from '../../../../actions/user/detailUser';
-import { uploadDocumentsUser } from '../../../../actions/user/uploadDocumentsUser';
-import { Context as MemberPageContext } from '../../index';
 import UpdateUserModal from '../../Modals/UpdateUser';
 import UserDocumentModal from '../../Modals/UserDocument';
 import { viewPermissionsSelector } from '../../selectors';
@@ -14,14 +18,51 @@ import { isUploadSelector, userSelector } from './selectors';
 function UserInfo({
   user, isUpload, viewPermissions,
   doUploadDocumentsUser,
+  doListRoom,
+  doListPosition,
+  doListMajor,
+  doListLevel,
+  doDetailUser,
 }) {
 
-  const { setUserId } = React.useContext(MemberPageContext);
-  const { userId } = useParams();
+  React.useEffect(() => {
+    doListRoom();
+    // eslint-disable-next-line
+  }, []);
 
   React.useEffect(() => {
-    setUserId(userId);
-  }, [setUserId, userId]);
+    doListPosition();
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListMajor();
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListLevel();
+    // eslint-disable-next-line
+  }, []);
+
+  const { userId } = useParams();
+  const [id, setId] = React.useState(null);
+
+  React.useEffect(() => {
+    setId(userId);
+  }, [userId]);
+
+  React.useEffect(() => {
+    if (id !== null) {
+      doDetailUser({ userId: id });
+      const reloadDetailUserHandler = () => doDetailUser({ userId });
+      CustomEventListener(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
+      return () => {
+        CustomEventDispose(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
+      }
+    }
+    // eslint-disable-next-line
+  }, [id]);
 
   const [openDocuments, setOpenDocuments] = React.useState(false);
   const [documentsProps, setDocumentsProps] = React.useState({});
@@ -72,6 +113,10 @@ const mapDispatchToProps = dispatch => {
   return {
     doDetailUser: ({ userId }, quite) => dispatch(detailUser({ userId }, quite)),
     doUploadDocumentsUser: ({ userId, file }) => dispatch(uploadDocumentsUser({ userId, file })),
+    doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListPosition: (quite) => dispatch(listPosition(quite)),
+    doListMajor: (quite) => dispatch(listMajor(quite)),
+    doListLevel: (quite) => dispatch(listLevel(quite)),
   };
 };
 

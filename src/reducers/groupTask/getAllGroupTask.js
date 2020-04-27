@@ -11,6 +11,7 @@ export const initialState = {
 	},
 	error: null,
 	loading: false,
+	firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -24,23 +25,20 @@ function reducer(state = initialState, action) {
 		case GET_ALL_GROUP_TASK_SUCCESS:
 			return {
 				...state,
-				...initialState,
 				data: action.data,
 				error: null,
 				loading: false,
+				firstTime: false,
 			};
 		case GET_ALL_GROUP_TASK_FAIL:
 			return {
 				...state,
-				...initialState,
 				error: action.error,
 				loading: false,
+				firstTime: false,
 			};
 		case GET_ALL_GROUP_TASK_RESET:
-			return {
-				...state,
-				...initialState,
-			}
+			return initialState;
 		case COPY_GROUP_TASK_SUCCESS: {
 			if (get(action.data, 'groupTasks', []).length === 0) {
 				return {

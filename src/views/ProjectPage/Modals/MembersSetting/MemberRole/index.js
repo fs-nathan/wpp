@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { addProjectRoleToMember } from '../../../../../actions/project/addProjectRoleToMember';
 import { removeProjectRoleFromMember } from '../../../../../actions/project/removeProjectRoleFromMember';
-import RoleManagerModal from '../../../../DepartmentPage/Modals/RoleManager';
 import MemberRolePresenter from './presenters';
 import { bgColorSelector, membersSelector, updateMemberRoleSelector, userRolesSelector } from './selectors';
 
@@ -16,16 +15,6 @@ function MemberRole({
 }) {
 
   const { projectId } = useParams();
-  const [openRoleManager, setOpenRoleManager] = React.useState(false);
-
-  function doOpenModal(type, props) {
-    switch (type) {
-      case 'ROLE':
-        setOpenRoleManager(true);
-        return;
-      default: return;
-    }
-  }
 
   return (
     <>
@@ -48,11 +37,6 @@ function MemberRole({
               roleId: get(curRole, 'id'),
             })
         }}
-        handleOpenModal={doOpenModal}
-      />
-      <RoleManagerModal
-        open={openRoleManager}
-        setOpen={setOpenRoleManager}
       />
     </>
   )

@@ -13,9 +13,7 @@
 
 .comp_SimpleManagerTable___table-cell {
   font-weight: 500;
-  &:first-child {
-    min-width: 200px;
-  }
+  word-break: break-all;
 };
 
 .comp_SimpleManagerTable___table {

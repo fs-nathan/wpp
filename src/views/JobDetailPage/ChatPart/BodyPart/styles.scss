@@ -1,68 +1,172 @@
 .bodyChat {
-  background-color: #f8f8f8;
+  background-color: #f1f3f4;
   height: calc(100% - 230px);
   padding: 10px;
   overflow-x: hidden;
+  &__reply {
+    height: calc(100% - 300px);
+  }
   &--project {
     width: 100%;
     background-color: white;
     background-image: url("/images/intro/intro-bg-1.png");
     background-repeat: repeat-x;
-    border-radius: 4px;
-    padding: 70px 50px 20px;
-    margin: 30px 0;
+    margin: 10px 45px 0;
+    border: 1px solid #ececec;
+    text-align: center;
+    padding: 80px 20px 20px;
+    background-size: contain;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.3);
+    // box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.3);
   }
   &--projectAvatar {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
   }
   &--notifyName {
     font-size: 16px;
     margin: 10px auto 30px;
   }
   &--projectName {
-    font-size: 28px;
+    font-size: 18px;
+    text-transform: uppercase;
+    line-height: 24px;
     font-weight: 500;
     text-align: center;
   }
   &--projectProgress {
-    font-size: 18px;
+    font-size: 14px;
+    border-bottom: 1px solid #eaeaea;
+    padding: 10px 20px 30px;
+    width: 100%;
     color: red;
     text-align: center;
-    width: calc(100% + 100px);
-    padding: 10px 0 20px;
-    border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
   }
   &--buttonAddMember {
-    font-size: 18px;
+    font-size: 14px;
+    text-transform: uppercase;
     background-color: transparent;
     border: none;
-    color: blue;
+    color: #2196f3;
+    margin-top: 10px;
     cursor: pointer;
+  }
+  &--introRow {
+    margin: 0 45px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   &--introImages {
     display: flex;
+    width: 100%;
   }
   &--introItem {
-    margin-right: 25px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: greenyellow;
-    background-color: #f8f8f8;
+    margin: 0 5px 0 0;
+    width: calc(100% / 3);
+    border: 1px solid #ececec;
+    color: #72c770;
+    background-color: #ffffff;
+    float: left;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    &__left {
+      border-bottom-left-radius: 20px;
+      margin-left: 0;
+    }
+    &__right {
+      border-bottom-right-radius: 20px;
+      margin-right: 0;
+    }
     img {
-      width: 18vh;
+      width: 100%;
     }
   }
   &--introTitle {
-    font-size: 18px;
+    font-size: 14px;
     text-align: center;
     padding: 10px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #e7e7e7;
+    text-transform: uppercase;
+    color: #ff5722;
+    font-weight: 500;
+  }
+  &--sending {
+    margin-top: 6px;
+    padding-right: 10px;
+    color: #666666;
+    text-align: right;
+    &Fail {
+      color: #bcbcbc;
+      font-size: 12px;
+    }
+    &Delete {
+      color: #f44336;
+      margin: 0 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    &Resend {
+      color: #009cf3;
+      cursor: pointer;
+      font-size: 12px;
+    }
+  }
+  &--viewed {
+    color: #666666;
+    display: flex;
+    cursor: pointer;
+    &Avatar {
+      width: 15px;
+      height: 15px;
+      margin: 0 2px;
+    }
+  }
+  &--loader {
+    font-size: 12px;
+    padding: 5px 10px;
+    background-color: #dbdbdb;
+    color: #ffffff;
+    border-radius: 30px;
+    width: fit-content;
+    text-align: center;
+    margin: 10px auto;
+  }
+  .wrap-time {
+    position: relative;
+    // margin-bottom: 10px;
+    height: 40px;
+    margin: 30px 0 0;
+    .line {
+      border: 1px solid #e6e7e8;
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+    }
+    .time {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      background-color: #dbdbdb;
+      color: #ffffff;
+      border-radius: 30px;
+      font-size: 12px;
+      padding: 5px 10px;
+    }
   }
 }

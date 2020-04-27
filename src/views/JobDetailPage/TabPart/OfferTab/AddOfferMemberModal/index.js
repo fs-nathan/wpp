@@ -1,7 +1,7 @@
 import ColorTypo from 'components/ColorTypo';
-import CustomModal from 'components/CustomModal';
 import SearchInput from 'components/SearchInput';
 import React, { useState } from 'react';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import OfferMemberItem from './OfferMemberItem';
 import './styles.scss';
 
@@ -42,7 +42,7 @@ function AddOfferMemberModal({
     .filter(({ name }) => name.indexOf(searchValue) !== -1)
 
   return (
-    <CustomModal
+    <JobDetailModalWrap
       title={"Thêm thành viên"}
       open={isOpen}
       setOpen={setOpen}
@@ -68,7 +68,7 @@ function AddOfferMemberModal({
           isDisable={disableIndexes.indexOf(member.index) !== -1}
         />)}
       </React.Fragment>
-    </CustomModal>
+    </JobDetailModalWrap>
   )
 }
 

@@ -1,13 +1,13 @@
-import React from 'react';
 import { IconButton, Typography } from '@material-ui/core';
-import styled from 'styled-components';
-import { mdiPlus, mdiChevronDown } from '@mdi/js';
+import { mdiChevronDown, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
-import SearchInput from '../../../../components/SearchInput';
-import CreateJobModal from './CreateJobModal';
-import '../ListPart.scss';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
+import SearchInput from '../../../../components/SearchInput';
+import '../ListPart.scss';
+import CreateJobModal from './CreateJobModal';
 
 const HeaderText = styled(Typography)`
   width: 315px;
@@ -30,7 +30,7 @@ const ButtonIcon = styled(IconButton)`
 `;
 
 function ListHeaderSelect({ setShow }) {
-  const projectDetail = useSelector(state=> state.taskDetail.commonTaskDetail.projectDetail);
+  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
 
   const openListProject = () => {
     setShow(true);
@@ -38,7 +38,7 @@ function ListHeaderSelect({ setShow }) {
 
   return (
     <div onClick={openListProject} style={{ marginTop: 8 }}>
-      <HeaderText component={'div'}>{projectDetail.name}</HeaderText>
+      <HeaderText component={'div'}>{projectDetail && projectDetail.name}</HeaderText>
       <ButtonIcon className="dropdown-icon">
         <Icon path={mdiChevronDown} size={1.2} className="job-detail-icon" />
       </ButtonIcon>
@@ -50,7 +50,7 @@ function ListHeader(props) {
   const dispatch = useDispatch();
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const searchListTask = e => {
-      dispatch(searchTask(e.target.value));
+    dispatch(searchTask(e.target.value));
   };
 
   return (

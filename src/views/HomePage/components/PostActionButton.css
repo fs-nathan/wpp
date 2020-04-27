@@ -1,0 +1,9 @@
+.comp_PostActionButton {
+  flex: 1;
+  margin: 4px;
+}
+.comp_PostActionButton__labbel {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}

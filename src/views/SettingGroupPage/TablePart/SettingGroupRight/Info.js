@@ -298,7 +298,7 @@ const Info = props => {
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'sologan')}
               value={
-                groupInfo.sologan || 'WorkPlus - Thêm công việc, thêm niềm vui'
+                groupInfo.sologan || ''
               }
             />
             <TextField
@@ -311,7 +311,7 @@ const Info = props => {
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'address')}
               value={
-                groupInfo.address || 'Số 3/259 Phố Định Công, Hoàng Mai, Hà Nội'
+                groupInfo.address || ''
               }
             />
             <TextField
@@ -323,7 +323,7 @@ const Info = props => {
               disabled={!editMode}
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'website')}
-              value={groupInfo.website || 'www.workplus.vn'}
+              value={groupInfo.website || ''}
             />
             <TextField
               id="phoneNumber"
@@ -334,7 +334,7 @@ const Info = props => {
               disabled={!editMode}
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'phone')}
-              value={groupInfo.phone || '024.6326.5870'}
+              value={groupInfo.phone || ''}
             />
             <TextField
               id="email"
@@ -346,7 +346,7 @@ const Info = props => {
               disabled={!editMode}
               className="input-item"
               onChange={e => handleOnchangeInput(e, 'email')}
-              value={groupInfo.email || 'info@workplus.vn'}
+              value={groupInfo.email || ''}
             />
             <div className="block-action">
               <Button

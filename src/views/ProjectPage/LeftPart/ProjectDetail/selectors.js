@@ -9,7 +9,7 @@ const listTask = state => state.task.listTask;
 export const projectSelector = createSelector(
   [detailProject, listTask, updateProject, deleteProject],
   (detailProject, listTask, updateProject, deleteProject) => {
-    const { data: { project }, error: detailProjectError, loading: detailProjectLoading } = detailProject;
+    const { data: { project }, error: detailProjectError, loading: detailProjectLoading, firstTime } = detailProject;
     const { data: { tasks } } = listTask;
     const allTasks = flatten(tasks.map(groupTasks => get(groupTasks, 'tasks', [])));
     const { loading: updateLoading, error: updateError } = updateProject;
@@ -25,8 +25,9 @@ export const projectSelector = createSelector(
     }
     return {
       project: newProject,
-      loading: detailProjectLoading || updateLoading || deleteLoading,
+      loading: (firstTime ? false : detailProjectLoading) || updateLoading || deleteLoading,
       error: detailProjectError || updateError || deleteError,
+      firstTime,
     }
   }
 );

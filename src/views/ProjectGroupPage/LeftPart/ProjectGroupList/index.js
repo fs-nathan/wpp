@@ -1,7 +1,14 @@
+import { listIcon } from 'actions/icon/listIcon';
+import { listProject } from 'actions/project/listProject';
+import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
+import { sortProjectGroup } from 'actions/projectGroup/sortProjectGroup';
+import { COPY_PROJECT, CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP, UPDATE_PROJECT } from 'constants/events.js';
 import { filter, get } from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
-import { sortProjectGroup } from '../../../../actions/projectGroup/sortProjectGroup';
+import { useParams } from 'react-router-dom';
+import { Context as ProjectGroupContext } from '../../index';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
 import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import ProjectGroupListPresenter from './presenters';
@@ -10,7 +17,70 @@ import { groupsSelector } from './selectors';
 function ProjectList({
   groups, route, viewPermissions,
   doSortProjectGroup,
+  doListProject,
+  doListProjectGroup,
+  doListIcon,
 }) {
+
+  const { timeRange } = React.useContext(ProjectGroupContext);
+  const { projectGroupId } = useParams();
+  const [id, setId] = React.useState(null);
+
+  React.useEffect(() => {
+    setId(projectGroupId);
+  }, [projectGroupId]);
+
+  React.useEffect(() => {
+    if (id === 'deleted') return;
+    if (id !== null) {
+      doListProject({
+        groupProject: id,
+        timeStart: get(timeRange, 'timeStart')
+          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+          : undefined,
+        timeEnd: get(timeRange, 'timeEnd')
+          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+          : undefined,
+      });
+      const reloadListProject = () => {
+        doListProject({
+          groupProject: id,
+          timeStart: get(timeRange, 'timeStart')
+            ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+            : undefined,
+          timeEnd: get(timeRange, 'timeEnd')
+            ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+            : undefined,
+        });
+      };
+      CustomEventListener(UPDATE_PROJECT, reloadListProject);
+      CustomEventListener(SORT_PROJECT, reloadListProject);
+      CustomEventListener(COPY_PROJECT, reloadListProject);
+      return () => {
+        CustomEventDispose(UPDATE_PROJECT, reloadListProject);
+        CustomEventDispose(SORT_PROJECT, reloadListProject);
+        CustomEventDispose(COPY_PROJECT, reloadListProject);
+      }
+    }
+    // eslint-disable-next-line
+  }, [id, timeRange]);
+
+  React.useEffect(() => {
+    doListProjectGroup();
+    const reloadListProjectGroup = () => {
+      doListProjectGroup();
+    }
+    CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
+    return () => {
+      CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    doListIcon();
+    // eslint-disable-next-line
+  }, []);
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
@@ -57,6 +127,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doSortProjectGroup: ({ projectGroupId, sortIndex }) => dispatch(sortProjectGroup({ projectGroupId, sortIndex })),
+    doListProject: (options, quite) => dispatch(listProject(options, quite)),
+    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doListIcon: (quite) => dispatch(listIcon(quite)),
   }
 }
 

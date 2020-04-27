@@ -2,7 +2,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createTask, updateNameDescriptionTask } from 'actions/taskDetail/taskDetailActions';
-import CustomModal from 'components/CustomModal';
 import CustomSelect from 'components/CustomSelect';
 import TextEditor, { getEditorData } from 'components/TextEditor';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
@@ -11,6 +10,7 @@ import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TA
 import { get, isFunction, isNil } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../../selectors';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
@@ -187,7 +187,7 @@ function CreateJobModal(props) {
   };
 
   return (
-    <CustomModal
+    <JobDetailModalWrap
       title={props.isRight ? 'Chỉnh sửa công việc' : 'Tạo công việc'}
       open={props.isOpen}
       setOpen={props.setOpen}
@@ -329,7 +329,7 @@ function CreateJobModal(props) {
           />
         </Typography>
       </React.Fragment>
-    </CustomModal>
+    </JobDetailModalWrap>
   );
 }
 

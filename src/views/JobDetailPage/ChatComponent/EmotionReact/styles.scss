@@ -1,0 +1,44 @@
+.EmotionReact {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  &--react {
+    border: 1px solid #cccccc;
+    background-color: #eaeaea;
+    border-radius: 25px;
+    position: relative;
+  }
+  &--reactMember {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 4px 10px;
+    top: -40px;
+    display: none;
+    color: #ffffff;
+  }
+  &--react:hover &--reactMember {
+    display: block;
+  }
+  &--image {
+    margin-left: 2px;
+    width: 20px;
+    height: 20px;
+  }
+  &--button {
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    border: 1px solid #cccccc;
+    background-color: #eaeaea;
+    border-radius: 25px;
+  }
+  &--icon {
+    width: 20px;
+    height: 20px;
+  }
+}

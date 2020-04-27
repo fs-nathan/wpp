@@ -1,4 +1,4 @@
-import { DETAIL_DEFAULT_GROUP, DETAIL_DEFAULT_GROUP_FAIL, DETAIL_DEFAULT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/detailDefaultGroup';
+import { DETAIL_DEFAULT_GROUP, DETAIL_DEFAULT_GROUP_FAIL, DETAIL_DEFAULT_GROUP_RESET, DETAIL_DEFAULT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/detailDefaultGroup';
 
 export const initialState = {
   data: {
@@ -6,6 +6,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -19,18 +20,20 @@ function reducer(state = initialState, action) {
     case DETAIL_DEFAULT_GROUP_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case DETAIL_DEFAULT_GROUP_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       }
+    case DETAIL_DEFAULT_GROUP_RESET:
+      return initialState;
     default:
       return state;
   }

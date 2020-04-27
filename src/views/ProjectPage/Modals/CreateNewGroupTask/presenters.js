@@ -1,10 +1,11 @@
 import { TextField } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
+import CustomModal from 'components/CustomModal';
+import CustomTextbox from 'components/CustomTextbox';
+import { CREATE_GROUP_TASK, CustomEventDispose, CustomEventListener, UPDATE_GROUP_TASK } from 'constants/events';
+import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
-import ColorTypo from '../../../../components/ColorTypo';
-import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox from '../../../../components/CustomTextbox';
-import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const CustomTextField = ({ className = '', ...props }) =>
@@ -17,6 +18,7 @@ function CreateNewOrUpdateGroupTask({
   open, setOpen,
   curGroupTask,
   handleCreateOrUpdateGroupTask,
+  activeLoading,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 100);
@@ -27,7 +29,23 @@ function CreateNewOrUpdateGroupTask({
       setName(get(curGroupTask, 'name'));
       setDescription(get(curGroupTask, 'description'));
     }
-  }, [curGroupTask, setName, setDescription]);
+    // eslint-disable-next-line
+  }, [curGroupTask]);
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+    };
+    CustomEventListener(CREATE_GROUP_TASK, successClose);
+    CustomEventListener(UPDATE_GROUP_TASK, successClose);
+    return () => {
+      CustomEventDispose(CREATE_GROUP_TASK, successClose);
+      CustomEventDispose(UPDATE_GROUP_TASK, successClose);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CustomModal
@@ -36,9 +54,12 @@ function CreateNewOrUpdateGroupTask({
       setOpen={setOpen}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateGroupTask(name, description)}
+      onCancle={() => setOpen(false)}
+      activeLoading={activeLoading}
+      manualClose={false}
     >
-      <ColorTypo>Tên nhóm công việc</ColorTypo>
       <CustomTextField
+        label='Tên nhóm công việc'
         value={name}
         onChange={evt => setName(evt.target.value)}
         margin="normal"
@@ -50,8 +71,8 @@ function CreateNewOrUpdateGroupTask({
           </ColorTypo>
         }
       />
-      <ColorTypo>Mô tả nhóm công việc</ColorTypo>
       <CustomTextbox
+        label='Mô tả nhóm công việc'
         value={description}
         onChange={value => setDescription(value)}
         helperText={get(errorDescription, 'message', '')}
