@@ -290,12 +290,12 @@ abbr[title] {
 
 .views_createWeeklyCalendar_CustomModal {
   &>div:nth-child(3)>div {
-    min-width: 70vw;
-    max-width: 80vw;
+    min-width: 70vw !important;
+    max-width: 80vw !important;
   }
 
-  .klIdUG.comp_LoadingOverlay___wrapper {
-    height: 90vh;
+  .comp_LoadingOverlay___wrapper {
+    height: 90vh !important;
   }
 
   .comp_CustomModal___scrollbar-main-medium {
