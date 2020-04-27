@@ -103,8 +103,9 @@ const BodyPart = props => {
   } = detailTask || {}
   useEffect(() => {
     if (chatRef && chatRef.current && chats.data && chats.data.length) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-      // console.log(chatRef)
+      requestAnimationFrame(() => {
+        chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+      })
     }
   }, [chatRef, chats.data]);
   useEffect(() => {

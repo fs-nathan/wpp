@@ -143,9 +143,9 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.chats.data = draft.chats.data.map(
         (data) => (data.id !== resendId) ? data : { ...data, isFails: false }
       )
-      // draft.isFails = false;
-      // draft.isSending = true;
-      // draft.isShowSendStatus = true;
+      draft.isFails = false;
+      draft.isSending = true;
+      draft.isShowSendStatus = true;
       break;
     }
     case actionTypes.CREATE_CHAT_TEXT_SUCCESS: {
