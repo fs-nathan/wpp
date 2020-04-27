@@ -11,6 +11,7 @@ import './SendFileModal.scss';
 const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const userId = useSelector(state => state.system.profile.id)
 
   function onUploadingHandler(percent) {
     dispatch(onUploading(percent));
@@ -31,6 +32,7 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
     const data_chat = {
       type: CHAT_TYPE.UPLOADING_FILE, files: images,
       isUploading: true,
+      user_create_id: userId,
       is_me: true,
     }
     dispatch(appendChat({ data_chat }));

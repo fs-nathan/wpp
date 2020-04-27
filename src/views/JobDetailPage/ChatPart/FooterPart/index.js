@@ -1,10 +1,13 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, changeStickerKeyWord, chatImage, chatQuickLike, chatSticker, clearTags, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
+import { appendChat, changeStickerKeyWord, chatFile, chatImage, chatQuickLike, chatSticker, clearTags, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
+import { file as file_icon } from 'assets/fileType';
+import { FileType } from 'components/FileType';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import htmlToText from 'helpers/jobDetail/jsHtmlToText';
+import { humanFileSize } from 'helpers/jobDetail/stringHelper';
 import isEmpty from 'lodash/isEmpty';
 import words from 'lodash/words';
 import React, { useEffect, useRef, useState } from 'react';
@@ -23,6 +26,7 @@ import './styles.scss';
 
 const StyledButton = styled.button`
   border: none;
+  background-color: transparent;
   &:hover {
     color : ${props => props.hoverColor};
     background-color: #f0f0f0;
@@ -42,7 +46,6 @@ const FooterPart = ({
   const editorRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const members = useSelector(state => state.taskDetail.taskMember.member);
   const tagMembers = useSelector(state => state.chat.tagMembers);
   const userId = useSelector(state => state.system.profile.id)
   const listStickers = useSelector(state => state.chat.listStickers);
@@ -56,7 +59,6 @@ const FooterPart = ({
   const [isOpenSticker, setOpenSticker] = useState(false);
   const [isShowQuickLike, setShowQuickLike] = useState(false);
   const [isShareFromLib, setShareFromLib] = useState(false);
-  const [suggestions, setSuggestions] = useState(members);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
 
   useEffect(() => {
@@ -64,8 +66,12 @@ const FooterPart = ({
       const images = [];
       for (let index = 0; index < imagesFiles.length; index++) {
         const file = imagesFiles[index];
-        const url = await getFileUrl(file)
-        images.push({ url, file })
+        const [type, ext] = file.type.split('/');
+        let url = FileType(ext)
+        if (type === 'image') {
+          url = await getFileUrl(file);
+        }
+        images.push({ url, file, name: file.name })
       }
       setImagesQueueUrl(images)
     }
@@ -241,37 +247,53 @@ const FooterPart = ({
     clearChatText()
   }
 
-  async function handleKeyCommand(command) {
-    if (command === 'send') {
-      // editorRef.current.blur();
-      if (imagesQueueUrl.length > 0) {
-        const images = [];
-        let data = new FormData()
-        for (let index = 0; index < imagesQueueUrl.length; index++) {
-          const { file, url } = imagesQueueUrl[index];
-          images.push({ url })
-          data.append("image", file, file.name)
-        }
-        setImagesQueue([]);
-        const data_chat = {
-          type: CHAT_TYPE.UPLOADING_IMAGES, images,
-          isUploading: true,
-          user_create_id: userId,
-          is_me: true,
-        }
-        dispatch(appendChat({ data_chat }));
-        dispatch(chatImage(taskId, data, onUploadingHandler))
-        return 'handled';
-      }
-      sendChatText()
-      return 'handled';
+  const handleUploadFile = async e => {
+    const { files } = e.target;
+    // console.log('upload file', files);
+    const images = [];
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      const url = await getFileUrl(file)
+      images.push({
+        url, name: file.name, file_icon,
+        size: humanFileSize(file.size)
+      })
     }
+    const data_chat = {
+      type: CHAT_TYPE.UPLOADING_FILE, files: images,
+      isUploading: true,
+      user_create_id: userId,
+      is_me: true,
+    }
+    dispatch(appendChat({ data_chat }));
+    let data = new FormData()
+    for (let i = 0; i < files.length; i++) {
+      data.append("file", files[i], files[i].name)
+    }
+    dispatch(chatFile(taskId, data, onUploadingHandler));
+  };
 
-    return 'not-handled';
+  function sendMultipleFiles() {
+    const images = [];
+    const others = [];
+    for (let index = 0; index < imagesQueue.length; index++) {
+      const file = imagesQueue[index];
+      const [type] = file.type.split('/');
+      if (type === 'image') {
+        images.push(file)
+      } else {
+        others.push(file)
+      }
+    }
+    handleUploadImage({ target: { files: images } });
+    handleUploadFile({ target: { files: others } });
+    setImagesQueue([]);
   }
 
   function sendMessage() {
-    if (isShowQuickLike) {
+    if (imagesQueue.length > 0) {
+      sendMultipleFiles()
+    } else if (isShowQuickLike) {
       dispatch(chatQuickLike(taskId))
       editorRef.current.blur();
     } else {
@@ -356,17 +378,18 @@ const FooterPart = ({
         </div>
       </div>
       <Message {...parentMessage} isReply></Message>
-      <div className="chatBox--preview">
-        {imagesQueueUrl.map(({ url }, i) =>
+      {imagesQueueUrl.length ? <div className="chatBox--preview">
+        {imagesQueueUrl.map(({ url, name }, i) =>
           <div key={i} className="chatBox--imagePreviewWrap">
             <img className="chatBox--imagePreview" src={url} alt="hd" />
             <IconButton className="chatBox--imagePreviewDelete" onClick={onClickDeletePreview(i)}>
               <Icon path={mdiClose} size={0.6} />
             </IconButton>
+            <div className="chatBox--namePreview" >{name}</div>
           </div>
         )}
-      </div>
-      <div className="wrap-input-message chatBox" id="input_message"
+      </div> : null}
+      <div className="chatBox" id="input_message"
         onClick={focus}
         onPaste={onpaste}
       >

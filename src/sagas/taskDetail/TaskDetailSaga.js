@@ -1059,7 +1059,8 @@ function* updateRolesForMember(action) {
 async function doGetListTaskDetail({ project_id }) {
   try {
     const config = {
-      url: "project/list-task-detail?project_id=" + project_id,
+      url: "project/list-task-detail",
+      params: { project_id, type_data: 'include-room' },
       method: "get"
     };
     const result = await apiService(config);
