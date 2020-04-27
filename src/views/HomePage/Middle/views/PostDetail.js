@@ -1,34 +1,14 @@
-import {
-  Avatar,
-  Box,
-  ButtonBase,
-  IconButton,
-  Typography,
-} from "@material-ui/core";
+import { Avatar, Box, ButtonBase, IconButton, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import colors from "helpers/colorPalette";
 import get from "lodash/get";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { CommentInput } from "views/HomePage/components/CommentInput";
 import Message from "views/HomePage/components/Message";
-import {
-  PostCategory,
-  PostContainer,
-  PostContent,
-  PostContext,
-  PostHeader,
-  PostMedia,
-  PostStats,
-} from "views/HomePage/components/Post";
+import { PostCategory, PostContainer, PostContent, PostContext, PostHeader, PostMedia, PostStats } from "views/HomePage/components/Post";
 import TasksCard from "views/HomePage/components/TasksCard";
 import { commentAttr } from "views/HomePage/contant/attrs";
 import { routes } from "views/HomePage/contant/routes";
@@ -221,8 +201,8 @@ const PostDetail = () => {
     </>
   );
 };
-export default () => {
-  const { id } = useParams();
+export default ({id}) => {
+  // const { id } = useParams();
   const postSelector = useMemo(() => {
     return (state) =>
       postModule.selectors

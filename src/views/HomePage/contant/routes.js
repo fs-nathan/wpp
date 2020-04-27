@@ -7,7 +7,7 @@ export const routes = {
     component: Main,
   },
   postDetail: {
-    path: "/post/:id",
+    path: "?post_id=:id",
     component: PostDetail,
   },
 };

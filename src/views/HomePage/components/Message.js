@@ -262,12 +262,18 @@ const Message = ({
               {...{ total_sub_comment, post_id, comment_id: id, onReplyClick }}
             />
           )}
+          {comments &&
+            comments.map((c, i) => {
+              return (
+                <Reply key={i} reply={c} onReplyClick={onReplyClick}></Reply>
+              );
+            })}
         </Box>
       </Box>
     </Box>
   );
 };
-export default ({ message, onReplyClick }) => {
+export default ({ message, comments, onReplyClick }) => {
   const { id: post_id } = useContext(PostContext);
   const [
     id,
@@ -300,6 +306,7 @@ export default ({ message, onReplyClick }) => {
   )(message);
   return (
     <Message
+      comments={comments}
       parent={message.parent}
       {...{
         id,

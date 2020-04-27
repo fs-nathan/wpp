@@ -20,7 +20,13 @@ export const HightLight = ({ posts }) => {
     <TasksCard.Container>
       <TasksCard.Header
         avatar={
-          <TasksCard.HeaderAvatar aria-label="tasks">
+          <TasksCard.HeaderAvatar
+            style={{
+              color: "#ff9800",
+              background: "#ffeccf",
+            }}
+            aria-label="tasks"
+          >
             <Icon path={mdiHeadLightbulb} size={1} />
           </TasksCard.HeaderAvatar>
         }
@@ -91,6 +97,6 @@ export default (props) => {
   const posts = useSelector(postModule.selectors.highLightPostListSelector);
   useEffect(() => {
     dispatch(postModule.actions.loadPostHighLightList());
-  }, []);
+  }, [dispatch]);
   return <HightLight posts={posts} {...props} />;
 };

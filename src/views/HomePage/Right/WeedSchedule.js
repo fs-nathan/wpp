@@ -1,10 +1,9 @@
 import { Box, ButtonBase, IconButton } from "@material-ui/core";
-import { mdiCalendarStar, mdiChevronLeft, mdiChevronRight } from "@mdi/js";
+import { mdiCalendarStar, mdiMenuLeft, mdiMenuRight } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
@@ -14,21 +13,28 @@ export const WeedSchedule = () => {
     <TasksCard.Container>
       <TasksCard.Header
         avatar={
-          <TasksCard.HeaderAvatar aria-label="tasks">
+          <TasksCard.HeaderAvatar
+            style={{
+              color: "#01a9f4",
+              background: "#dbf3fd",
+            }}
+            aria-label="tasks"
+          >
             <Icon path={mdiCalendarStar} size={1} />
           </TasksCard.HeaderAvatar>
         }
-        action={<AddButton onClick={() => {}} label={t("Tạo lịch")} />}
+        // action={<AddButton onClick={() => {}} label={t("Tạo lịch")} />}
         title={<TasksCard.HeaderTitle>{t("LỊCH TUẦN")}</TasksCard.HeaderTitle>}
         subheader={<StyledTypo color="orange">Tuần 25 năm 2020</StyledTypo>}
       />
       <Box
         display="flex"
         alignItems="center"
+        padding="4px"
         style={{ background: "rgb(245, 246, 247)" }}
       >
         <IconButton size="small">
-          <Icon path={mdiChevronLeft} size={1}></Icon>
+          <Icon path={mdiMenuLeft} size={1}></Icon>
         </IconButton>
         <Box textAlign="center" flex="1">
           <StyledTypo bold color="red">
@@ -36,7 +42,7 @@ export const WeedSchedule = () => {
           </StyledTypo>
         </Box>
         <IconButton size="small">
-          <Icon path={mdiChevronRight} size={1}></Icon>
+          <Icon path={mdiMenuRight} size={1}></Icon>
         </IconButton>
       </Box>
       <TasksCard.Content>

@@ -1,5 +1,7 @@
 import { IconButton } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
+import { mdiGoogleAssistant } from "@mdi/js";
+import Icon from "@mdi/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import TasksCard from "views/HomePage/components/TasksCard";
@@ -13,8 +15,14 @@ function Main() {
       <TasksCard.Container>
         <TasksCard.Header
           avatar={
-            <TasksCard.HeaderAvatar aria-label="tasks">
-              R
+            <TasksCard.HeaderAvatar
+              style={{
+                color: "rgb(255, 152, 0)",
+                background: "transparent",
+              }}
+              aria-label="tasks"
+            >
+              <Icon path={mdiGoogleAssistant} size={2} />
             </TasksCard.HeaderAvatar>
           }
           action={

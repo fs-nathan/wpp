@@ -5,6 +5,7 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
   SvgIcon,
@@ -17,11 +18,13 @@ import {
   mdiHeartOutline,
   mdiMessageOutline,
   mdiPin,
+  mdiStarHalf,
   mdiThumbUp,
   mdiThumbUpOutline,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
+import { FileType } from "components/FileType";
 import colors from "helpers/colorPalette";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -48,6 +51,7 @@ const CommentList = ({ comments = emptyArray, onReplyClick }) => {
     <>
       {comments.map((c, i) => (
         <Message
+          comments={c.comments}
           key={i}
           message={c}
           onReplyClick={c.id ? () => onReplyClick(c) : undefined}
@@ -59,7 +63,9 @@ const CommentList = ({ comments = emptyArray, onReplyClick }) => {
 const profileSelector = (state) => state.system.profile;
 const CommentListContainer = () => {
   const [reply, setReply] = useState();
-  const [newComments, setNewComments] = useState([]);
+  const [newComments, setNewComments] = useState({
+    default: [],
+  });
   const profile = useSelector(profileSelector);
   const { t } = useTranslation();
   const { comments, id, inputId, total_comments, number_comment } = useContext(
@@ -69,16 +75,35 @@ const CommentListContainer = () => {
   const handleComment = useCallback(
     (value) => {
       const asyncId = Date.now();
-      setNewComments([
-        ...newComments,
-        {
-          asyncId,
-          parent: reply,
-          content: value,
-          user_create_name: profile.name,
-          user_create_avatar: profile.avatar,
-        },
-      ]);
+      if (!reply) {
+        setNewComments({
+          ...newComments,
+          default: [
+            ...newComments.default,
+            {
+              asyncId,
+              parent: reply,
+              content: value,
+              user_create_name: profile.name,
+              user_create_avatar: profile.avatar,
+            },
+          ],
+        });
+      } else {
+        setNewComments({
+          ...newComments,
+          [reply.id]: [
+            ...(newComments[reply.id] || emptyArray),
+            {
+              asyncId,
+              content: value,
+              user_create_name: profile.name,
+              user_create_avatar: profile.avatar,
+            },
+          ],
+        });
+      }
+
       setReply(undefined);
       handleDispatchAsyncAction({
         asyncId,
@@ -125,20 +150,30 @@ const CommentListContainer = () => {
           {total_comments}/{number_comment}
         </Typography>
       </Box>
-      <CommentList {...{ comments }} onReplyClick={handleReplyClick} />
-      {newComments.map((c, i) => (
+      <CommentList
+        {...{
+          comments: comments.map((c) => ({
+            ...c,
+            comments: newComments[c.id],
+          })),
+        }}
+        onReplyClick={handleReplyClick}
+      />
+      {newComments.default.map((c, i) => (
         <AsyncTracker asyncId={c.asyncId}>
           {({ data: { data_comment } = { data_comment: emptyObject } }) => {
             const comment = {
               ...c,
               ...data_comment,
             };
+            const comments = newComments[comment.id];
             return (
               <Message
                 key={i}
                 onReplyClick={
                   comment.id ? () => handleReplyClick(comment) : undefined
                 }
+                comments={comments}
                 message={comment}
               ></Message>
             );
@@ -235,8 +270,11 @@ export const PostHeader = () => {
     position,
     category_name,
     time_label,
+    is_highlight,
     is_pin,
+    room,
   } = useContext(PostContext);
+  const { t } = useTranslation();
   return (
     <>
       <TasksCard.Header
@@ -272,19 +310,43 @@ export const PostHeader = () => {
               style={{ fontSize: "15px", display: "inline" }}
               color="textSecondary"
             >
-              {position}
+              {position} {(position || room) && "-"} {room}
             </Typography>
           </TasksCard.HeaderTitle>
         }
         subheader={
           <TasksCard.HeaderSubTitle>
-            <StyledTypo component="span" color="orange" variant="subtitle1">
+            {t("Đã đăng")}{" "}
+            <StyledTypo
+              fontSize="15px"
+              component="span"
+              color="orange"
+              variant="subtitle1"
+            >
               {category_name}{" "}
             </StyledTypo>
             {time_label}{" "}
             {is_pin && (
-              <SvgIcon style={{ verticalAlign: "middle", padding: "0 10px" }}>
+              <SvgIcon
+                style={{
+                  transform: "rotate(45deg)",
+                  verticalAlign: "middle",
+                  padding: "0 10px",
+                }}
+              >
                 <path d={mdiPin}></path>
+              </SvgIcon>
+            )}
+            {is_highlight && (
+              <SvgIcon
+                style={{
+                  fontSize: "1.6rem",
+                  fill: colors.orange[0],
+                  verticalAlign: "middle",
+                  padding: "0 10px",
+                }}
+              >
+                <path d={mdiStarHalf}></path>
               </SvgIcon>
             )}
           </TasksCard.HeaderSubTitle>
@@ -310,7 +372,10 @@ function generate(files, e) {
 const FileListItem = ({ file }) => {
   return (
     <ListItem button>
-      <ListItemText primary={file.url} />
+      <ListItemAvatar>
+        <Avatar src={FileType(file.type)}></Avatar>
+      </ListItemAvatar>
+      <ListItemText nowrap primary={file.url} />
       <ListItemSecondaryAction>
         <a target="_blank" href={file.url} download id={file.url}>
           <IconButton edge="end" aria-label="delete">
