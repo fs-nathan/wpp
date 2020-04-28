@@ -228,5 +228,10 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.chats.data = draft.chats.data.filter(({ id }) => id !== action.id)
       break;
     }
+    case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
+      break;
+    }
   }
 });

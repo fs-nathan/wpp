@@ -2,9 +2,10 @@ import { Button, IconButton } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import { mdiChevronRight, mdiClose, mdiLogout, mdiMagnify, mdiRefresh } from '@mdi/js';
 import Icon from '@mdi/react';
-import { chatForwardFile } from 'actions/chat/chat';
-import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, toggleSingoutGoogle } from 'actions/documents';
+import { chatForwardFile, createChatFileFromGoogleDriver } from 'actions/chat/chat';
+import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionFetchListProjectOfFolder, toggleSingoutGoogle } from 'actions/documents';
 import { actionChangeBreadCrumbs } from 'actions/system/system';
+import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
 import { transformGoogleDriverData } from 'helpers/jobDetail/stringHelper';
 import { isEmpty } from 'helpers/utils/isEmpty';
@@ -27,6 +28,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
   const { t } = useTranslation()
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const listProject = useSelector(state => state.documents.listProject);
+  const isFetching = useSelector(state => state.documents.isFetching);
   const listDocumentFromMe = useSelector(state => state.documents.listDocumentFromMe);
   const listDocumentShareToMe = useSelector(state => state.documents.listDocumentShareToMe);
   const listMyDocument = useSelector(state => state.documents.listMyDocument);
@@ -86,13 +88,18 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     } else if (key === 'myDocument') {
       dispatch(actionFetchListMyDocument());
     } else if (key === 'googleDrive') {
+      setInsideProject(true)
       dispatch(actionFetchListGoogleDocument());
     }
+    dispatch(actionChangeBreadCrumbs([]));
   };
 
   function onClickConfirm() {
     setOpen(false)
-    dispatch(chatForwardFile(taskId, selectedFiles))
+    const googleFiles = selectedFiles.filter(({ isGoogleDocument }) => isGoogleDocument)
+    const vtaskFiles = selectedFiles.filter(({ isGoogleDocument }) => !isGoogleDocument)
+    dispatch(chatForwardFile(taskId, vtaskFiles.map(({ id }) => id)))
+    dispatch(createChatFileFromGoogleDriver(taskId, googleFiles))
     setSelectedFiles([])
   }
 
@@ -102,14 +109,50 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       if (idx >= breadCrumbs.length - 1) return false;
       if (idx === 0) {
         dispatch(actionChangeBreadCrumbs([]));
-        dispatch(actionFetchListMyDocument());
+        if (selectedMenu.key === 'googleDrive')
+          dispatch(actionFetchListGoogleDocument());
+        else if (selectedMenu.key === 'projectDocument') {
+          dispatch(actionFetchListProject());
+          setInsideProject(true)
+        }
+        else
+          dispatch(actionFetchListMyDocument());
       } else {
         let newList = [...breadCrumbs];
         newList.length = idx + 1;
         dispatch(actionChangeBreadCrumbs(newList));
-        dispatch(actionFetchListMyDocument({ folder_id: id }, true));
+        if (selectedMenu.key === 'googleDrive')
+          dispatch(actionFetchListGoogleDocument({ folderId: id }, true))
+        else if (selectedMenu.key === 'projectDocument') {
+          dispatch(actionFetchListProjectOfFolder({ project_id: id }));
+          setInsideProject(true)
+        }
+        else
+          dispatch(actionFetchListMyDocument({ folder_id: id }, true));
       }
     }
+  }
+
+  function getContent() {
+    if (isFetching)
+      return <LoadingBox />;
+    if (selectedMenu.key === 'projectDocument' && isInsideProject)
+      return <ProjectDocumentsTable
+        listData={listDataFiltered}
+        setInsideProject={setInsideProject}
+      />
+    if (selectedMenu.key === 'googleDrive' && isInsideProject)
+      return <GoogleDriverDocuments
+        setInsideProject={setInsideProject}
+      />
+    if (listDataFiltered.length === 0 && searchKey)
+      return <NotFoundDocument searchKey={searchKey} />
+    return <DocumentsTable
+      listData={listDataFiltered}
+      setListData={setListData}
+      selectedFiles={selectedFiles}
+      setSelectedFiles={setSelectedFiles}
+    />
   }
 
   return (
@@ -215,29 +258,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
           }
           <div className="ShareFromLibraryModal--right-table-content" >
             <Scrollbars autoHide autoHideTimeout={500}>
-              {(selectedMenu.key === 'projectDocument' && isInsideProject) ?
-                <ProjectDocumentsTable
-                  listData={listDataFiltered}
-                  setInsideProject={setInsideProject}
-                />
-                :
-                (selectedMenu.key === 'googleDrive' && isInsideProject) ?
-                  <GoogleDriverDocuments
-                    setInsideProject={setInsideProject}
-                  />
-                  :
-                  <DocumentsTable
-                    listData={listDataFiltered}
-                    setListData={setListData}
-                    selectedFiles={selectedFiles}
-                    setSelectedFiles={setSelectedFiles}
-                  />
-              }
-              {
-                (listDataFiltered.length === 0 && searchKey) ?
-                  <NotFoundDocument searchKey={searchKey} />
-                  : null
-              }
+              {getContent()}
             </Scrollbars>
           </div>
         </div>

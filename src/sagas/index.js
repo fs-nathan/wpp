@@ -651,6 +651,10 @@ function* rootSaga() {
     chatDetailSaga.chatQuickLike
   );
   yield takeLeading(
+    chatTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER,
+    chatDetailSaga.createChatFileFromGoogleDriver
+  );
+  yield takeLeading(
     chatTypes.GET_VIEWED_CHAT,
     chatDetailSaga.getViewedChat
   );

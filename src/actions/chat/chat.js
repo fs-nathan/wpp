@@ -560,3 +560,24 @@ export function deleteFailedChat(id) {
     id
   };
 }
+
+export function createChatFileFromGoogleDriver(file_id,name,icon,size,url,file_type,task_id) {
+  return {
+    type: actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER,
+    file_id,name,icon,size,url,file_type,task_id
+  };
+}
+
+export function createChatFileFromGoogleDriverSuccess(payload) {
+  return {
+    type: actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_SUCCESS,
+    payload
+  };
+}
+
+export function createChatFileFromGoogleDriverFail(error) {
+  return {
+    type: actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_FAIL,
+    error
+  };
+}

@@ -233,3 +233,14 @@ export function* chatQuickLike(payload) {
     yield put(actions.chatQuickLikeFail(error));
   }
 }
+
+export function* createChatFileFromGoogleDriver(payload) {
+  try {
+    const { file_id, name, icon, size, url, file_type, task_id } = payload;
+    const res = yield call(apiService.post, "/task/create-chat-file-from-google-driver", { file_id, name, icon, size, url, file_type, task_id });
+    yield put(actions.createChatFileFromGoogleDriverSuccess(res.data));
+    yield put(actions.appendChat(res.data));
+  } catch (error) {
+    yield put(actions.createChatFileFromGoogleDriverFail(error));
+  }
+}

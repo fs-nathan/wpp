@@ -1,7 +1,7 @@
 import { Avatar, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { mdiContentCopy, mdiDownloadOutline, mdiSwapVertical, mdiTrashCanOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionDeleteFile, actionDeleteFolder, actionFetchListMyDocument, actionSelectedFolder, resetListSelectDocument } from 'actions/documents';
+import { actionDeleteFile, actionDeleteFolder, actionFetchListGoogleDocument, actionFetchListMyDocument, actionSelectedFolder, resetListSelectDocument } from 'actions/documents';
 import { actionChangeBreadCrumbs, openDocumentDetail } from 'actions/system/system';
 import AlertModal from 'components/AlertModal';
 import { FileType } from 'components/FileType';
@@ -111,8 +111,12 @@ function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles
   };
 
   const handleClickItem = item => {
+    console.log('handleClickItem', item)
     if (item.type === 'folder') {
-      dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
+      if (item.isGoogleDocument)
+        dispatch(actionFetchListGoogleDocument({ folderId: item.id }, true))
+      else
+        dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
       dispatch(actionSelectedFolder(item));
       // handle bread crumbs
       let newBreadCrumbs = [...breadCrumbs];

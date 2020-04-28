@@ -1,13 +1,12 @@
 import { IconButton, Table, TableBody, TableHead, TableRow } from '@material-ui/core';
 import { mdiFolderTextOutline, mdiSwapVertical } from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionFetchListProject, actionFetchListProjectOfFolder, actionSortListProject, resetListSelectDocument } from 'actions/documents';
+import { actionFetchListProjectOfFolder, actionSortListProject } from 'actions/documents';
 import { actionChangeBreadCrumbs, openDocumentDetail } from 'actions/system/system';
 import ColorTypo from 'components/ColorTypo';
 import { FileType } from 'components/FileType';
 import LoadingBox from 'components/LoadingBox';
 import MoreAction from 'components/MoreAction/MoreAction';
-import { isEmpty } from 'helpers/utils/isEmpty';
 import { reverse } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,17 +24,6 @@ function ProjectDocumentsTable({ isLoading, listData, setInsideProject }) {
   const [sortType, setSortType] = React.useState(1);
 
   useEffect(() => {
-    fetDataProjectDocument();
-    // eslint-disable-next-line
-  }, []);
-  useEffect(() => {
-    return () => {
-      resetListSelectDocument();
-    };
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     let projects = [];
     // projects = sortBy(listData, [o => get(o, sortField)]);
     projects = listData.sort((a, b) => a.name.localeCompare(b.name));
@@ -43,22 +31,6 @@ function ProjectDocumentsTable({ isLoading, listData, setInsideProject }) {
     actionSortListProject(projects);
     // eslint-disable-next-line
   }, [sortField, sortType]);
-
-  const handleSearchData = (valueSearch, listData) => {
-    let listResult = [];
-    if (!isEmpty(valueSearch)) {
-      listResult = listData.filter(
-        el => el.name.toLowerCase().indexOf(valueSearch.toLowerCase()) !== -1
-      );
-    } else {
-      listResult = listData;
-    }
-
-    return listResult;
-  };
-  const fetDataProjectDocument = (params = {}, quite = false) => {
-    dispatch(actionFetchListProject(params, quite));
-  };
 
   const isSelected = id => selected.indexOf(id) !== -1;
   const moreAction = [
