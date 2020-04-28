@@ -61,6 +61,7 @@ export const isExpiredDate = date => {
 }
 
 export function humanFileSize(bytes, si) {
+    if (!bytes) return undefined;
     var thresh = si ? 1000 : 1024;
     if (Math.abs(bytes) < thresh) {
         return bytes + ' B';
@@ -125,3 +126,26 @@ export function spliceSlice(str, index, count, add) {
 
     return str.slice(0, index) + (add || "") + str.slice(index + count);
 }
+
+export const transformGoogleDriverData = item => {
+    return {
+        isGoogleDocument: true,
+        id: item.id,
+        name: item.name || '',
+        webViewLink: item.webViewLink,
+        webContentLink: item.webContentLink,
+        url: item.webViewLink.split('?')[0].replace('view', 'preview'),
+        type: (item.mimeType === 'application/vnd.google-apps.folder') ? 'folder' : item.fileExtension,
+        size: humanFileSize(item.size),
+        updated_at: item.modifiedTime
+            ? format(new Date(item.modifiedTime), 'yyyy-MM-dd')
+            : '',
+        date_create: item.createdTime
+            ? format(new Date(item.createdTime), 'yyyy-MM-dd')
+            : '',
+        user_create: {
+            name: item.owners[0].displayName || '',
+            avatar: item.owners[0].photoLink || ''
+        }
+    };
+};

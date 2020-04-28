@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_ITEM } from '../MenuList';
 import './styles.scss';
 
-function DocumentsTable({ listData, setListData, selectedFilesIds, setSelectedFilesIds }) {
+function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles }) {
   const dispatch = useDispatch();
   const { t } = useTranslation()
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -53,32 +53,32 @@ function DocumentsTable({ listData, setListData, selectedFilesIds, setSelectedFi
     } catch (error) { }
   };
 
-  function selectFile(id) {
+  function selectFile(file) {
     return () => {
-      const memberId = selectedFilesIds.indexOf(id)
-      if (memberId === -1)
-        selectedFilesIds.push(id);
+      const fileId = findIndex(selectedFiles, ['id', file.id])
+      if (fileId === -1)
+        selectedFiles.push(file);
       else
-        selectedFilesIds.splice(memberId, 1);
-      setSelectedFilesIds([...selectedFilesIds])
+        selectedFiles.splice(fileId, 1);
+      setSelectedFiles([...selectedFiles])
     }
   }
 
   function selectAll() {
-    const isSelectedAll = listData.every(({ id }) => selectedFilesIds.indexOf(id) !== -1);
-    const allIds = listData.map(({ id, type }) => id && type !== 'folder')
+    const isSelectedAll = listData.every(({ id }) => findIndex(selectedFiles, ['id', id]) !== -1);
+    const allFiles = listData.filter(({ type }) => type !== 'folder')
     if (!isSelectedAll)
-      selectedFilesIds.push(...allIds);
+      selectedFiles.push(...allFiles);
     else {
       for (let index = 0; index < listData.length; index++) {
         const { id, type } = listData[index];
         if (type !== 'folder') {
-          const memberId = selectedFilesIds.indexOf(id);
-          selectedFilesIds.splice(memberId, 1);
+          const memberId = findIndex(selectedFiles, ['id', id]);
+          selectedFiles.splice(memberId, 1);
         }
       }
     }
-    setSelectedFilesIds(uniq([...selectedFilesIds]));
+    setSelectedFiles(uniq([...selectedFiles]));
   }
   const moreAction = [
     { icon: mdiContentCopy, text: t('IDS_WP_COPY_LINK'), type: 'copy' },
@@ -154,7 +154,7 @@ function DocumentsTable({ listData, setListData, selectedFilesIds, setSelectedFi
       <TableRow className="ShareFromLibraryModal--TableRow" >
         <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" >
           <Checkbox color="primary"
-            checked={listData.length > 0 && listData.every(({ id, type }) => type === 'folder' || selectedFilesIds.indexOf(id) !== -1)}
+            checked={listData.length > 0 && listData.every(({ id, type }) => type === 'folder' || selectedFiles.indexOf(id) !== -1)}
             onClick={selectAll}
           />
         </TableCell>
@@ -179,8 +179,8 @@ function DocumentsTable({ listData, setListData, selectedFilesIds, setSelectedFi
         <TableRow key={item.id} className="ShareFromLibraryModal--table-item" >
           <TableCell width="50px" align="center">
             {item.type !== 'folder' && <Checkbox color="primary"
-              checked={selectedFilesIds.indexOf(item.id) !== -1}
-              onClick={selectFile(item.id)} />}
+              checked={findIndex(selectedFiles, ['id', item.id]) !== -1}
+              onClick={selectFile(item)} />}
           </TableCell>
           <TableCell width="50px" align="center" onClick={() => handleClickItem(item)}>
             <Avatar

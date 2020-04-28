@@ -1,18 +1,22 @@
-import { IconButton } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import { mdiChevronRight, mdiClose, mdiMagnify } from '@mdi/js';
+import { mdiChevronRight, mdiClose, mdiLogout, mdiMagnify, mdiRefresh } from '@mdi/js';
 import Icon from '@mdi/react';
 import { chatForwardFile } from 'actions/chat/chat';
-import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject } from 'actions/documents';
+import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, toggleSingoutGoogle } from 'actions/documents';
 import { actionChangeBreadCrumbs } from 'actions/system/system';
 import SearchInput from 'components/SearchInput';
+import { transformGoogleDriverData } from 'helpers/jobDetail/stringHelper';
+import { isEmpty } from 'helpers/utils/isEmpty';
 import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { actionSignoutGoogleDrive } from 'views/DocumentPage/TablePart/ContentDocumentPage/googleDriveApi';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import AddNewButton from './AddNewButton';
 import DocumentsTable from './DocumentsTable';
+import GoogleDriverDocuments from './GoogleDriverDocuments';
 import MenuList, { DEFAULT_ITEM } from './MenuList';
 import NotFoundDocument from './NotFoundDocument';
 import ProjectDocumentsTable from './ProjectDocumentsTable';
@@ -31,8 +35,9 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
   const breadCrumbs = useSelector(state => state.system.breadCrumbs);
 
   const [listData, setListData] = useState([]);
+  const [listDataFiltered, setListDataFiltered] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(DEFAULT_ITEM);
-  const [selectedFilesIds, setSelectedFilesIds] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [isInsideProject, setInsideProject] = useState(true);
   const [isSearching, setSearching] = useState(false);
   const [isSorted, setSorted] = useState(false);
@@ -43,12 +48,9 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (searchKey) {
-      const filtered = listData.filter(({ name }) => name.indexOf(searchKey) !== -1)
-      setListData(filtered)
-    }
-    // eslint-disable-next-line
-  }, [searchKey]);
+    const filtered = listData.filter(({ name }) => !isSearching || !searchKey || name.indexOf(searchKey) !== -1)
+    setListDataFiltered(filtered)
+  }, [isSearching, listData, searchKey]);
 
   useEffect(() => {
     const sorted = listData.reverse()
@@ -67,7 +69,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     } else if (key === 'myDocument') {
       setListData(listMyDocument);
     } else if (key === 'googleDrive') {
-      setListData(listGoogleDocument);
+      setListData(listGoogleDocument.map(transformGoogleDriverData));
     }
   }, [listDocumentFromMe, listDocumentShareToMe, listGoogleDocument, listMyDocument, listProject, selectedMenu]);
 
@@ -90,8 +92,8 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
 
   function onClickConfirm() {
     setOpen(false)
-    dispatch(chatForwardFile(taskId, selectedFilesIds))
-    setSelectedFilesIds([])
+    dispatch(chatForwardFile(taskId, selectedFiles))
+    setSelectedFiles([])
   }
 
   function handleClickLink(idx, id) {
@@ -157,7 +159,47 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                 <div className="ShareFromLibraryModal--search-box" onClick={() => setSearching(!isSearching)} >
                   <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' />
                 </div>
-                <AddNewButton selectedMenu={selectedMenu} />
+                {
+                  (selectedMenu.key === 'googleDrive') &&
+                  <>
+                    <Button
+                      disableRipple
+                      disableTouchRipple
+                      onClick={() => {
+                        let params = {};
+                        if (!isEmpty(currentFolder)) {
+                          params.folderId = currentFolder.id;
+                        }
+                        dispatch(actionFetchListGoogleDocument(params, true));
+                      }}
+                      className="header-button-custom"
+                    >
+                      <div>
+                        <Icon path={mdiRefresh} size={1} color="rgba(0, 0, 0, 0.54)" />
+                      </div>
+                      <span>{t('IDS_WP_UPDATE')}</span>
+                    </Button>
+                    <Button
+                      disableRipple
+                      disableTouchRipple
+                      onClick={() => {
+                        actionSignoutGoogleDrive(() => {
+                          dispatch(toggleSingoutGoogle(false));
+                        });
+                      }}
+                      className="header-button-custom"
+                    >
+                      <div>
+                        <Icon path={mdiLogout} size={1} color="rgba(0, 0, 0, 0.54)" />
+                      </div>
+                      <span>{t('IDS_WP_LOGOUT')}</span>
+                    </Button>
+                  </>
+                }
+                {
+                  (selectedMenu.key === 'myDocument') &&
+                  <AddNewButton selectedMenu={selectedMenu} />
+                }
               </div>
               :
               <div className="ShareFromLibraryModal--searching" >
@@ -175,19 +217,24 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
             <Scrollbars autoHide autoHideTimeout={500}>
               {(selectedMenu.key === 'projectDocument' && isInsideProject) ?
                 <ProjectDocumentsTable
-                  listData={listData}
+                  listData={listDataFiltered}
                   setInsideProject={setInsideProject}
                 />
                 :
-                <DocumentsTable
-                  listData={listData}
-                  setListData={setListData}
-                  selectedFilesIds={selectedFilesIds}
-                  setSelectedFilesIds={setSelectedFilesIds}
-                />
+                (selectedMenu.key === 'googleDrive' && isInsideProject) ?
+                  <GoogleDriverDocuments
+                    setInsideProject={setInsideProject}
+                  />
+                  :
+                  <DocumentsTable
+                    listData={listDataFiltered}
+                    setListData={setListData}
+                    selectedFiles={selectedFiles}
+                    setSelectedFiles={setSelectedFiles}
+                  />
               }
               {
-                (listData.length === 0 && searchKey) ?
+                (listDataFiltered.length === 0 && searchKey) ?
                   <NotFoundDocument searchKey={searchKey} />
                   : null
               }
