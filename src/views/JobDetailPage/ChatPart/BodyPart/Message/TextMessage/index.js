@@ -30,7 +30,6 @@ function getRichContent(content = '', tags, color) {
   })
   // console.log(matches)
   ret = ret.replace('\n', '<br/>');
-  // return matches.join(' ')
   return replaceUrl(ret);
 }
 
@@ -116,7 +115,6 @@ const TextMessage = ({
               </div>
             }
             {!is_deleted ? getChatParent(chat_parent) : ''}
-            {/* {tags.map(({ name, id }) => <span key={id} className="TextMessage--tag" style={{ color: getColor() }}>@{name}</span>)} */}
             <div className={clsx("TextMessage--content", {
               "TextMessage--content__self": is_me,
               "TextMessage--content__deleted": is_deleted,
@@ -127,11 +125,6 @@ const TextMessage = ({
               }}
             >
             </div>
-            {/* {!isReply &&
-          <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
-            {time_create}
-          </div>
-        } */}
             {data_emotion.length > 0 &&
               <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
             }

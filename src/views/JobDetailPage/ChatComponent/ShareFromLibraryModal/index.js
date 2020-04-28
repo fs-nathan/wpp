@@ -1,4 +1,3 @@
-// import { Scrollbars } from 'react-custom-scrollbars';
 import { Avatar, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import { mdiChevronRight, mdiClose, mdiContentCopy, mdiDownloadOutline, mdiMagnify, mdiSwapVertical, mdiTrashCanOutline } from '@mdi/js';
@@ -13,6 +12,7 @@ import SearchInput from 'components/SearchInput';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import { findIndex, uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -290,103 +290,103 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
               </div>
           }
           <div className="ShareFromLibraryModal--right-table-content" >
-            {/* <Scrollbars autoHide autoHideTimeout={500}> */}
-            <Table className="ShareFromLibraryModal--table-container" >
-              <TableHead className="ShareFromLibraryModal--table-header" >
-                <TableRow className="ShareFromLibraryModal--TableRow" >
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" >
-                    <Checkbox color="primary"
-                      checked={listData.length > 0 && listData.every(({ id, type }) => type === 'folder' || selectedFilesIds.indexOf(id) !== -1)}
-                      onClick={selectAll}
-                    />
-                  </TableCell>
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
-                  <TableCell className="ShareFromLibraryModal--TableCell" >
-                    {t('Tên')}
-                    <IconButton size="small" onClick={() => setSorted(!isSorted)}>
-                      <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="120px" align="center" >
-                    Chủ sở hữu
-                  </TableCell>
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="150px" >
-                    Kích thước tệp
-                  </TableCell>
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
-                </TableRow>
-              </TableHead>
-              <TableBody className="ShareFromLibraryModal--table-body" >
-                {listData.map(item => (
-                  <TableRow key={item.id} className="ShareFromLibraryModal--table-item" >
-                    <TableCell width="50px" align="center">
-                      {item.type !== 'folder' && <Checkbox color="primary"
-                        checked={selectedFilesIds.indexOf(item.id) !== -1}
-                        onClick={selectFile(item.id)} />}
-                    </TableCell>
-                    <TableCell width="50px" align="center" onClick={() => handleClickItem(item)}>
-                      <Avatar
-                        src={FileType(item.type)}
-                        className="full-avatar"
+            <Scrollbars autoHide autoHideTimeout={500}>
+              <Table className="ShareFromLibraryModal--table-container" >
+                <TableHead className="ShareFromLibraryModal--table-header" >
+                  <TableRow className="ShareFromLibraryModal--TableRow" >
+                    <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" >
+                      <Checkbox color="primary"
+                        checked={listData.length > 0 && listData.every(({ id, type }) => type === 'folder' || selectedFilesIds.indexOf(id) !== -1)}
+                        onClick={selectAll}
                       />
                     </TableCell>
-                    <TableCell onClick={() => handleClickItem(item)}>{item.name}</TableCell>
-                    <TableCell width="120px" align="center">
-                      {item.owner && item.owner.avatar && (
+                    <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
+                    <TableCell className="ShareFromLibraryModal--TableCell" >
+                      {t('Tên')}
+                      <IconButton size="small" onClick={() => setSorted(!isSorted)}>
+                        <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell className="ShareFromLibraryModal--TableCell" width="120px" align="center" >
+                      Chủ sở hữu
+                  </TableCell>
+                    <TableCell className="ShareFromLibraryModal--TableCell" width="150px" >
+                      Kích thước tệp
+                  </TableCell>
+                    <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
+                  </TableRow>
+                </TableHead>
+                <TableBody className="ShareFromLibraryModal--table-body" >
+                  {listData.map(item => (
+                    <TableRow key={item.id} className="ShareFromLibraryModal--table-item" >
+                      <TableCell width="50px" align="center">
+                        {item.type !== 'folder' && <Checkbox color="primary"
+                          checked={selectedFilesIds.indexOf(item.id) !== -1}
+                          onClick={selectFile(item.id)} />}
+                      </TableCell>
+                      <TableCell width="50px" align="center" onClick={() => handleClickItem(item)}>
                         <Avatar
-                          title={item.owner.name}
-                          src={item.owner.avatar}
-                          className="owner-avatar"
+                          src={FileType(item.type)}
+                          className="full-avatar"
                         />
-                      )}
-                    </TableCell>
-                    <TableCell width="150px">
-                      {item.size || '-'}
-                    </TableCell>
-                    {item.type !== 'folder' ? (
-                      <MoreAction
-                        actionList={moreAction}
-                        item={item}
-                        handleFetData={() => {
-                          getListMyDocument({}, true);
-                        }}
-                        handleUpdateDataLocal={handleUpdateDataLocal}
-                      />
-                    ) : (
+                      </TableCell>
+                      <TableCell onClick={() => handleClickItem(item)}>{item.name}</TableCell>
+                      <TableCell width="120px" align="center">
+                        {item.owner && item.owner.avatar && (
+                          <Avatar
+                            title={item.owner.name}
+                            src={item.owner.avatar}
+                            className="owner-avatar"
+                          />
+                        )}
+                      </TableCell>
+                      <TableCell width="150px">
+                        {item.size || '-'}
+                      </TableCell>
+                      {item.type !== 'folder' ? (
                         <MoreAction
-                          actionList={moreActionFolder}
+                          actionList={moreAction}
                           item={item}
                           handleFetData={() => {
                             getListMyDocument({}, true);
                           }}
                           handleUpdateDataLocal={handleUpdateDataLocal}
                         />
-                      )}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            {
-              (listData.length === 0 && searchKey) &&
-              <div className="ShareFromLibraryModal--notFound">
-                Không tìm thấy "<b>{searchKey}</b>" trong danh sách tài liệu của bạn
+                      ) : (
+                          <MoreAction
+                            actionList={moreActionFolder}
+                            item={item}
+                            handleFetData={() => {
+                              getListMyDocument({}, true);
+                            }}
+                            handleUpdateDataLocal={handleUpdateDataLocal}
+                          />
+                        )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              {
+                (listData.length === 0 && searchKey) &&
+                <div className="ShareFromLibraryModal--notFound">
+                  Không tìm thấy "<b>{searchKey}</b>" trong danh sách tài liệu của bạn
                   <div>
-                  Đề xuất:
+                    Đề xuất:
                   </div>
-                <ul>
-                  <li>
-                    Kiểm tra lại chính tả từ khoá đã nhập
+                  <ul>
+                    <li>
+                      Kiểm tra lại chính tả từ khoá đã nhập
                     </li>
-                  <li>
-                    Hãy thử những từ khoá khác
+                    <li>
+                      Hãy thử những từ khoá khác
                     </li>
-                  <li>
-                    Hãy bớt từ khoá
+                    <li>
+                      Hãy bớt từ khoá
                     </li>
-                </ul>
-              </div>
-            }
-            {/* </Scrollbars> */}
+                  </ul>
+                </div>
+              }
+            </Scrollbars>
             <AlertModal
               open={alert}
               setOpen={setAlert}

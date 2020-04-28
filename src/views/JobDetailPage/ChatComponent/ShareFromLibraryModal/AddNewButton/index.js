@@ -3,6 +3,7 @@ import { DialogContent, Menu, MenuItem, TextField } from '@material-ui/core';
 import { mdiFileUploadOutline, mdiFolderPlusOutline, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 import { actionCreateFolder, actionFetchListMyDocument } from 'actions/documents';
+import UploadModal from 'components/UploadModal';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +24,6 @@ function AddNewButton({ selectedMenu }) {
   const [showInputFile, setShowInputFile] = useState(true);
   const [visibleUploadModal, setVisibleUploadModal] = useState(false);
   const [fileUpload, setFileUpload] = useState(null);
-  const [isRedirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleClick = e => setAnchorEl(e.currentTarget);
@@ -161,6 +161,21 @@ function AddNewButton({ selectedMenu }) {
           />
         </DialogContent>
       </ModalCommon>
+    )}
+    {visibleUploadModal && (
+      <UploadModal
+        title={t('IDS_WP_UPLOAD_DOCUMENT')}
+        open={visibleUploadModal}
+        setOpen={val => setVisibleUploadModal(val)}
+        fileUpload={fileUpload}
+        onCompleted={() => {
+          let params = {};
+          if (!isEmpty(currentFolder)) {
+            params.folder_id = currentFolder.id;
+          }
+          dispatch(actionFetchListMyDocument(params, true));
+        }}
+      />
     )}
   </div>)
 }
