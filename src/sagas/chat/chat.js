@@ -38,6 +38,7 @@ export function* chatImage(payload) {
       });
     yield put(actions.chatImageSuccess(res.data));
     // yield put(actions.loadChat(task_id));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }
@@ -55,7 +56,8 @@ export function* chatFile(dispatch) {
         }
       });
     yield put(actions.chatFileSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatFileFail(error));
   }
@@ -65,7 +67,8 @@ export function* chatForwardFile(payload) {
     const { task_id, file_ids } = payload;
     const res = yield call(apiService.post, `/task/create-chat-forward-file?task_id=${task_id}`, { file_ids });
     yield put(actions.chatForwardFileSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
+    yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatForwardFileFail(error));
   }
