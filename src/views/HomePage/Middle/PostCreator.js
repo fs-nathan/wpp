@@ -20,6 +20,7 @@ import SelectCategoryModal from "../components/SelectCategoryModal";
 import TasksCard from "../components/TasksCard";
 import PostCreatorPopupInner from "./PostCreatorPopupInner";
 export const PostCreator = () => {
+  const profile = useSelector((state) => state.system.profile);
   const { t } = useTranslation();
   const [modal, setModal] = useState();
   const categories = useSelector(categoryListSelector);
@@ -65,7 +66,7 @@ export const PostCreator = () => {
       <TasksCard.Content>
         <Stack>
           <Box display="flex" alignItems="center">
-            <Avatar>A</Avatar>
+            <Avatar src={profile.avatar}>A</Avatar>
             <Box padding="16px" onClick={() => handleOpenPostCreatorPopup()}>
               <Typography
                 variant="body2"

@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { emptyArray } from "views/JobPage/contants/defaultValue";
+import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get, loginlineFunc } from "views/JobPage/utils";
 import {
   listAddFirst,
@@ -35,6 +35,15 @@ const updateGroupModules = createAction(types.getModules, function prepare(
   };
 });
 
+// /permissions/get-permission-view-setting-group
+export const loadPermissionViewSettingGroup = () => {
+  return createAsyncAction({
+    config: {
+      url: "/permissions/get-permission-view-setting-group",
+    },
+    success: createAction(types.permissionViewGroupSetting),
+  });
+};
 // GroupPermission
 export const loadGroupModules = () => {
   return createAsyncAction({
@@ -248,9 +257,21 @@ export const detailGroupPermissionDefaultSelector = (state, id) =>
     [settingGroupPermission.key, updateGroupPermissionDefaultList.type],
     emptyArray
   ).find((item) => item.id === id);
+
+export const permissionViewSettingGroupSelector = (state) =>
+  get(
+    state,
+    [
+      settingGroupPermission.key,
+      types.permissionViewGroupSetting,
+      "permissions",
+    ],
+    emptyObject
+  );
 export const settingGroupPermission = {
   selectors: {
     permissionListSelector,
+    permissionViewSettingGroupSelector,
     groupPermissionListSelector,
     updateGroupPermissionInfo,
     groupModulesListSelector,
@@ -259,6 +280,7 @@ export const settingGroupPermission = {
     detailGroupPermissionDefaultSelector,
   },
   actions: {
+    loadPermissionViewSettingGroup,
     loadGroupPermissionDefaultList,
     loadDetailGroupPermission,
     loadDetailGroupPermissionDefault,
@@ -275,6 +297,7 @@ export const settingGroupPermission = {
   key: "settingGroupPermission",
   reducer: createReducer(
     {
+      [types.permissionViewGroupSetting]: {},
       [updateGroupPermissionDefaultList]: [],
       [updateGroupPermissionList]: [],
       [updateGroupModules]: [],
@@ -285,6 +308,7 @@ export const settingGroupPermission = {
       [updateGroupModules]: mapPayloadToState,
       [updateGroupPermissionList]: mapPayloadToState,
       [updatePermissionList]: mapPayloadToState,
+      [types.permissionViewGroupSetting]: mapPayloadToState,
     }
   ),
 };

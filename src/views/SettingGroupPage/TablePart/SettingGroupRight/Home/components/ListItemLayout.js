@@ -4,13 +4,22 @@ import styled from "styled-components";
 import { Stack } from "./Stack";
 const Title = styled((props) => <Typography noWrap {...props} />)`
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 500;
+  color: #333;
 `;
 const SubTitle = styled((props) => <Typography noWrap {...props} />)`
   font-size: 15px;
   color: #8d8d8d;
 `;
-function ListItemLayout({ title, children, left, right, avatar, actions, subTitle }) {
+function ListItemLayout({
+  title,
+  children,
+  left,
+  right,
+  avatar,
+  actions,
+  subTitle,
+}) {
   return (
     <Grid
       flex="1"

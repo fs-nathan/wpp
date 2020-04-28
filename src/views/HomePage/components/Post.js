@@ -4,16 +4,11 @@ import {
   ButtonBase,
   IconButton,
   List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
   SvgIcon,
   Typography,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
 import {
-  mdiDownload,
   mdiHeart,
   mdiHeartOutline,
   mdiMessageOutline,
@@ -24,7 +19,6 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
-import { FileType } from "components/FileType";
 import colors from "helpers/colorPalette";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -42,6 +36,7 @@ import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
 import AvatarGroup from "./AvatarGroup";
 import { CommentInput } from "./CommentInput";
+import { FileListItem } from "./FileListItem";
 import likeImage from "./like-image.jpg";
 import loveImage from "./love-image.png";
 import Message from "./Message";
@@ -369,25 +364,6 @@ function generate(files, e) {
     })
   );
 }
-const FileListItem = ({ file }) => {
-  return (
-    <ListItem button>
-      <ListItemAvatar>
-        <Avatar src={FileType(file.type)}></Avatar>
-      </ListItemAvatar>
-      <ListItemText nowrap primary={file.url} />
-      <ListItemSecondaryAction>
-        <a target="_blank" href={file.url} download id={file.url}>
-          <IconButton edge="end" aria-label="delete">
-            <SvgIcon fontSize="16px">
-              <path d={mdiDownload}></path>
-            </SvgIcon>
-          </IconButton>
-        </a>
-      </ListItemSecondaryAction>
-    </ListItem>
-  );
-};
 export const PostFiles = () => {
   const { files = emptyArray } = useContext(PostContext);
   if (files && files.length)

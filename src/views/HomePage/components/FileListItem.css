@@ -1,0 +1,9 @@
+.comp_FileListItem .MuiTypography-root {
+  font-size: 15px;
+}
+.comp_FileListItem .MuiListItemText-secondary {
+  text-transform: uppercase;
+}
+.comp_FileListItem svg {
+  font-size: 15px;
+}
