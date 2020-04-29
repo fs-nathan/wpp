@@ -236,8 +236,8 @@ export function* chatQuickLike(payload) {
 
 export function* createChatFileFromGoogleDriver(payload) {
   try {
-    const { file_id, name, icon, size, url, file_type, task_id } = payload;
-    const res = yield call(apiService.post, "/task/create-chat-file-from-google-driver", { file_id, name, icon, size, url, file_type, task_id });
+    const { task_id, google_data } = payload;
+    const res = yield call(apiService.post, "/task/create-chat-file-from-google-driver", { task_id, google_data });
     yield put(actions.createChatFileFromGoogleDriverSuccess(res.data));
     yield put(actions.appendChat(res.data));
   } catch (error) {

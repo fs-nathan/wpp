@@ -7,7 +7,7 @@ import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetc
 import { actionChangeBreadCrumbs } from 'actions/system/system';
 import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
-import { transformGoogleDriverData } from 'helpers/jobDetail/stringHelper';
+import { transformGoogleDriverData, transformToGoogleFormData } from 'helpers/jobDetail/stringHelper';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -99,7 +99,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     const googleFiles = selectedFiles.filter(({ isGoogleDocument }) => isGoogleDocument)
     const vtaskFiles = selectedFiles.filter(({ isGoogleDocument }) => !isGoogleDocument)
     dispatch(chatForwardFile(taskId, vtaskFiles.map(({ id }) => id)))
-    dispatch(createChatFileFromGoogleDriver(taskId, googleFiles))
+    dispatch(createChatFileFromGoogleDriver(taskId, googleFiles.map(transformToGoogleFormData)))
     setSelectedFiles([])
   }
 

@@ -50,6 +50,7 @@ const Message = props => {
       return <TextMessage {...props} />;
     case CHAT_TYPE.FILE:
     case CHAT_TYPE.CHAT_FORWARD_FILE:
+    case CHAT_TYPE.CHAT_FILE_FROM_GOOGLE_DRIVER:
       return <FileMessage {...props} />;
     case CHAT_TYPE.IMAGE:
       return <ImageMessage {...props} isUploading={false} />;
@@ -69,6 +70,7 @@ const Message = props => {
       return <ShareLocation {...props} />;
     case CHAT_TYPE.CREATE_OFFER:
       return <CreateOffer {...props} />;
+    case CHAT_TYPE.DELETE_OFFER_HANDLE:
     case CHAT_TYPE.DELETE_OFFER:
       return <DeleteOffer {...props} />;
     case CHAT_TYPE.HANDLE_OFFER:

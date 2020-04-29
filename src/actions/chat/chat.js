@@ -561,10 +561,10 @@ export function deleteFailedChat(id) {
   };
 }
 
-export function createChatFileFromGoogleDriver(file_id,name,icon,size,url,file_type,task_id) {
+export function createChatFileFromGoogleDriver(task_id, google_data) {
   return {
     type: actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER,
-    file_id,name,icon,size,url,file_type,task_id
+    task_id, google_data
   };
 }
 

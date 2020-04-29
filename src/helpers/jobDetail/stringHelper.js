@@ -137,6 +137,7 @@ export const transformGoogleDriverData = item => {
         url: item.webViewLink.split('?')[0].replace('view', 'preview'),
         type: (item.mimeType === 'application/vnd.google-apps.folder') ? 'folder' : item.fileExtension,
         size: humanFileSize(item.size),
+        rawSize: item.size,
         updated_at: item.modifiedTime
             ? format(new Date(item.modifiedTime), 'yyyy-MM-dd')
             : '',
@@ -149,3 +150,15 @@ export const transformGoogleDriverData = item => {
         }
     };
 };
+
+export function transformToGoogleFormData(ggData) {
+    const { id, name, rawSize, url, webContentLink, type } = ggData;
+    return {
+        file_id: id,
+        name,
+        size: rawSize,
+        url,
+        url_download: webContentLink,
+        file_type: type,
+    }
+}
