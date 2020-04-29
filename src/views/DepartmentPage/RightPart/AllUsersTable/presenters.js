@@ -166,7 +166,7 @@ function AllUsersTable({
           grouped: {
             bool: true,
             id: 'id',
-            label: (room) => get(room, 'id') === 'Default' ? t('DMH.VIEW.DP.RIGHT.UT.DEFAULT') : get(room, 'name'),
+            label: (room) => get(room, 'name'),
             item: 'users',
           },
           row: {

@@ -27,19 +27,19 @@ const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTar
   & > div:first-child {
     position: relative;
     overflow: hidden;
-    height: 10px;
+    height: 16px;
     width: 100%;
-    background-color: rgba(0, 0, 0, .2);
-    border-radius: 10px;
+    background-color: #e8e8e8;
+    border-radius: 2px;
     & > div:nth-child(1) {
       position: absolute;
       top: 0;
       left: 0;
       z-index: 10; 
-      height: 10px;
+      height: 16px;
       width: ${props => props.percentDone || 0}%;
-      background-color: ${props => props.colorDone || 'rgb(49, 181, 134)'};
-      border-radius: 10px 0 0 10px;
+      background-color: #03c30b;
+      border-radius: 2;
     }
     & > div:nth-child(2) { 
       position: absolute;
@@ -47,10 +47,10 @@ const ProgressBarBox = styled(({ percentDone, percentTarget, colorDone, colorTar
       left: ${props => props.percentTarget || 0}%;
       transform: translateX(-50%);
       z-index: 20; 
-      height: 10px;
-      width: 10px;
+      height: 16px;
+      width: 2px;
       background-color: ${props => props.colorTarget || '#ff9800'};
-      border-radius: 10px;
+      border-radius: unset;
     }
   }
   & > span:nth-child(2) {
@@ -117,7 +117,7 @@ function ProgressBar(props) {
     <div>
       <ProgressBarBox {...props} />
       <LegendBox>
-        <Icon path={mdiCircle} size={1} color={props.colorDone || 'rgb(49, 181, 134)'} />
+        <Icon path={mdiCircle} size={1} color={'rgb(3, 195, 11)'} />
         <ColorTypo>{t('DMH.COMP.PROGRESS_BAR.DONE')}</ColorTypo>
       </LegendBox>
       <LegendBox>
