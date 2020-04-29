@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiClockOutline, mdiDotsVertical, mdiStarCircle, mdiStarCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -7,6 +8,7 @@ import './styles.scss';
 
 
 const CustomListItem = props => {
+  const { t } = useTranslation();
   const { isDemand,
     item,
     onClickDetail,
@@ -46,7 +48,7 @@ const CustomListItem = props => {
           </div >
           <div className="demandTabItem--time">
             <Icon path={mdiClockOutline} size={1} />
-            {isDemand ? 'Chỉ đạo' : 'Quyết định'} lúc {date_create}
+            {isDemand ? 'Chỉ đạo' : 'Quyết định'}{t('LABEL_CHAT_TASK_LUC')}{date_create}
           </div>
         </div>
         <div className="demandTabItem--menu">
@@ -67,25 +69,19 @@ const CustomListItem = props => {
       >
         <MenuItem
           onClick={onClickDetail}
-        >
-          Chi tiết
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_CHI_TIET')}</MenuItem>
         <MenuItem
           onClick={() => {
             handleClickOpen();
             setAnchorEl(null);
           }}
-        >
-          Chỉnh sửa
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_CHINH_SUA')}</MenuItem>
         <MenuItem
           onClick={() => {
             handleOpenModalDelete();
             setAnchorEl(null);
           }}
-        >
-          Xóa
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
     </React.Fragment>
   );

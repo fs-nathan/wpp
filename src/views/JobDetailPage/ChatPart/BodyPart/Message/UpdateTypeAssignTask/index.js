@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
@@ -9,6 +10,7 @@ const UpdateTypeAssignTask = ({
   type_assign_name,
   time_create,
 }) => {
+  const { t } = useTranslation();
 
   return (
     <DialogMessageWrap
@@ -20,7 +22,7 @@ const UpdateTypeAssignTask = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="thay đổi hình thức giao việc thành"
+      taskName={t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC')}
     >
       <>
         {type_assign_name}

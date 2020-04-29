@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import React from 'react';
 import DialogMessageWrap from '../DialogMessageWrap';
@@ -12,6 +13,7 @@ const RemoveMember = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
 
   return (
     <DialogMessageWrap
@@ -24,7 +26,7 @@ const RemoveMember = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="xoá thành viên"
+      taskName={t('LABEL_CHAT_TASK_XOA_THANH_VIEN')}
     >
       <div className="RemoveMember--content" >
         <Avatar className="RemoveMember--avatar" src={member_avatar} />

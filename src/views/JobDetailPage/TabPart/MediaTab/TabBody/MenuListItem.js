@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsHorizontal } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -5,6 +6,7 @@ import React from 'react';
 import './styles.scss';
 
 const MenuListItem = () => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
@@ -30,9 +32,9 @@ const MenuListItem = () => {
           horizontal: -21,
         }}
       >
-        <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-        <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+        <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
+        <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
+        <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
     </div>
   )

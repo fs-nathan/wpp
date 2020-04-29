@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getOfferDetail } from 'actions/chat/chat';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +15,7 @@ const UpdateOffer = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -32,7 +34,7 @@ const UpdateOffer = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="chỉnh sửa đề xuất"
+      taskName={t('LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT')}
     >
       <>
         {offer_title || offer_content}

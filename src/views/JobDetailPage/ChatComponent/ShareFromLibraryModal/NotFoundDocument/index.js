@@ -1,21 +1,13 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 
 function NotFoundDocument({ searchKey }) {
-  return <div className="ShareFromLibraryModal--notFound">
-    Không tìm thấy "<b>{searchKey}</b>" trong danh sách tài liệu của bạn
-<div>
-      Đề xuất:
-</div>
+  const { t } = useTranslation();
+  return <div className="ShareFromLibraryModal--notFound">{t('LABEL_CHAT_TASK_KHONG_TIM_THAY')}<b>{searchKey}</b>{t('LABEL_CHAT_TASK_TRONG_DANH_SACH_TAI')}<div>{t('LABEL_CHAT_TASK_DE_XUAT')}</div>
     <ul>
-      <li>
-        Kiểm tra lại chính tả từ khoá đã nhập
-  </li>
-      <li>
-        Hãy thử những từ khoá khác
-  </li>
-      <li>
-        Hãy bớt từ khoá
-  </li>
+      <li>{t('LABEL_CHAT_TASK_KIEM_TRA_LAI_CHINH')}</li>
+      <li>{t('LABEL_CHAT_TASK_HAY_THU_NHUNG_TU_KHOA_KHAC')}</li>
+      <li>{t('LABEL_CHAT_TASK_HAY_BOT_TU_KHOA')}</li>
     </ul>
   </div>
 }

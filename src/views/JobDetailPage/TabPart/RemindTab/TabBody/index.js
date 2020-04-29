@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch } from 'react-redux';
@@ -13,6 +14,7 @@ const Body = styled(Scrollbars)`
 `;
 
 function TabBody(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const searchRemindTabPart = (e) => {
     dispatch(searchRemind(e.target.value))
@@ -23,7 +25,7 @@ function TabBody(props) {
       autoHideTimeout={500} autoHideDuration={200}>
       <div className="remindBody--container">
         <SearchInput
-          placeholder={'Nhập từ khóa'}
+          placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
           fullWidth
           onChange={e => searchRemindTabPart(e)}
         />

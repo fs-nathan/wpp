@@ -3,6 +3,7 @@ import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
 import Icon from '@mdi/react';
 import { deleteShareLocation } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ColorTypo from '../../../../../components/ColorTypo';
@@ -38,6 +39,7 @@ const ButtonIcon = styled(IconButton)`
 `
 
 const CustomListItem = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -74,7 +76,7 @@ const CustomListItem = () => {
                     primary={item.user_share}
                     secondary={
                       <span>
-                        <ColorTypo variant='caption' color='blue'>Lúc {item.time_create} - {item.date_create}</ColorTypo>
+                        <ColorTypo variant='caption' color='blue'>{t('LABEL_CHAT_TASK_LUC')}{item.time_create} - {item.date_create}</ColorTypo>
                         <br />
                         <ColorTypo variant='caption'>{item.address}</ColorTypo>
                       </span>
@@ -98,9 +100,9 @@ const CustomListItem = () => {
                       horizontal: 'right',
                     }}
                   >
-                    <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-                    <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-                    <MenuItem onClick={handleDelete(item.id)}>Xóa</MenuItem>
+                    <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
+                    <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
+                    <MenuItem onClick={handleDelete(item.id)}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
                   </Menu>
                 </div>
               )

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getRemindDetail } from 'actions/chat/chat';
 import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
@@ -7,6 +8,7 @@ import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const UpdateRemind = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const dateFormat = useSelector(state => state.system.profile.format_date);
@@ -36,7 +38,7 @@ const UpdateRemind = (props) => {
       }}
       isHaveFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="chỉnh sửa Nhắc hẹn"
+      taskName={t('LABEL_CHAT_TASK_CHINH_SUA_NHAC_HEN')}
     >
       <>
         {remind_name}

@@ -7,6 +7,7 @@ import fakeAvatar from 'assets/avatar.jpg';
 import clsx from 'clsx';
 import queryString from 'query-string';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import './styles.scss';
@@ -84,6 +85,7 @@ const renderAvatars = props => {
 };
 
 const HeaderPart = props => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const members = useSelector(state => state.taskDetail.taskMember.member)
@@ -108,7 +110,7 @@ const HeaderPart = props => {
     <div className="container-header">
       {renderAvatars({ styles: classes, images: members })}
       <div className="wrap-room-description">
-        <Typography className="chatHeader--title">Thảo Luận</Typography>
+        <Typography className="chatHeader--title">{t('LABEL_CHAT_TASK_THAO_LUAN')}</Typography>
         <TabForm tabs={tabs} />
       </div>
       <IconButton className="chatHeader--button" onClick={openSearch}>

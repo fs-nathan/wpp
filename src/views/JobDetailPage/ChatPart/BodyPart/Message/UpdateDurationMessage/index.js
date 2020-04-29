@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
@@ -20,6 +21,7 @@ const UpdateDurationMessage = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
@@ -38,14 +40,12 @@ const UpdateDurationMessage = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="điều chỉnh tiến độ thực hiện"
+      taskName={t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_THUC_HIEN')}
     >
       <>
         {time_changes.start &&
           <>
-            <div className="UpdateDurationMessage--title" >
-              Bắt đầu
-            </div>
+            <div className="UpdateDurationMessage--title" >{t('LABEL_CHAT_TASK_BAT_DAU')}</div>
             <div className="UpdateDurationMessage--content" >
               {`Từ ${getUpdateProgressDate(time_changes.start.old, dateFormat)} sang ${getUpdateProgressDate(time_changes.start.new, dateFormat)}`}
             </div>
@@ -53,9 +53,7 @@ const UpdateDurationMessage = ({
         }
         {time_changes.end &&
           <>
-            <div className="UpdateDurationMessage--title" >
-              Kết thúc
-            </div>
+            <div className="UpdateDurationMessage--title" >{t('LABEL_CHAT_TASK_KET_THUC')}</div>
             <div className="UpdateDurationMessage--content" >
               {`Từ ${getUpdateProgressDate(time_changes.end.old, dateFormat)} sang ${getUpdateProgressDate(time_changes.end.new, dateFormat)}`}
             </div>

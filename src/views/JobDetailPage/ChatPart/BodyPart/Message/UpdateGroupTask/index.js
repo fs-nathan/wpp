@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
@@ -9,6 +10,7 @@ const UpdateGroupTask = ({
   group_task_name,
   time_create,
 }) => {
+  const { t } = useTranslation();
 
   return (
     <DialogMessageWrap
@@ -20,7 +22,7 @@ const UpdateGroupTask = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="thay đổi nhóm công việc thành"
+      taskName={t('LABEL_CHAT_TASK_THAY_DOI_NHOM_CONG_VIEC_THANH')}
     >
       <>
         {group_task_name}

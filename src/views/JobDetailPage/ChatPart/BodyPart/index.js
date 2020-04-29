@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import { loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
@@ -17,6 +18,7 @@ import Message from './Message';
 import './styles.scss';
 
 const BodyPart = props => {
+  const { t } = useTranslation();
   const chatRef = useRef();
   const dispatch = useDispatch();
   const chats = useSelector(state => state.chat.chats);
@@ -161,7 +163,7 @@ const BodyPart = props => {
         pageStart={currentPage}
         loadMore={loadMoreChat}
         hasMore={currentPage > 1}
-        loader={<div className="bodyChat--loader" key={0}>Đang tải ...</div>}
+        loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
         useWindow={false}
         getScrollParent={() => chatRef.current}
       >
@@ -182,30 +184,22 @@ const BodyPart = props => {
                 <div className="bodyChat--projectName">{name}</div>
                 <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
                 <button onClick={onClickCreateMember}
-                  className="bodyChat--buttonAddMember">
-                  + Thêm thành viên
-            </button>
+                  className="bodyChat--buttonAddMember">{t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}</button>
               </div>
             </div>
             <div className="bodyChat--introRow">
               <div className="bodyChat--introImages">
                 <div className="bodyChat--introItem bodyChat--introItem__left">
                   <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
-                  <div className="bodyChat--introTitle">
-                    Thảo luận
-                  </div>
+                  <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_THAO_LUAN')}</div>
                 </div>
                 <div className="bodyChat--introItem">
                   <img alt="intro" src="/images/intro/intro-bg-3.png"></img>
-                  <div className="bodyChat--introTitle">
-                    Quản lý
-                  </div>
+                  <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_QUAN_LY')}</div>
                 </div>
                 <div className="bodyChat--introItem bodyChat--introItem__right">
                   <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
-                  <div className="bodyChat--introTitle">
-                    Chia sẻ
-                  </div>
+                  <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_CHIA_SE')}</div>
                 </div>
               </div>
             </div>
@@ -228,8 +222,7 @@ const BodyPart = props => {
         }
         {
           viewedChatMembers.length > 0 &&
-          <div className="bodyChat--viewed" onClick={onClickDetailViewed}>
-            Đã xem {showMembers.map(({ avatar, name }, i) =>
+          <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}{showMembers.map(({ avatar, name }, i) =>
             <abbr title={name} key={i}>
               <Avatar className="bodyChat--viewedAvatar" src={avatar} />
             </abbr>

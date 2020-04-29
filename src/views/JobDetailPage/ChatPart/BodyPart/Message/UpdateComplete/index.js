@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { mdiTransferRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
@@ -16,6 +17,7 @@ const UpdateComplete = ({
   complete,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   function onClickViewDetail() {
@@ -33,7 +35,7 @@ const UpdateComplete = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="Cập nhật tiến độ hoàn thành"
+      taskName={t('LABEL_CHAT_TASK_CAP_NHAT_TIEN_DO_HOAN_THANH')}
     >
       <div className="UpdateComplete--content" >
         <div className="UpdateComplete--circle" >

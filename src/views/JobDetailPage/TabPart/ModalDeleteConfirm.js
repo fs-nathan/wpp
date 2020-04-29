@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,6 +12,7 @@ export default function ModalDeleteConfirm({
   handleCloseModalDelete,
   confirmDelete,
 }) {
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -20,20 +22,16 @@ export default function ModalDeleteConfirm({
       >
         <DialogTitle>{"Thông báo hệ thống"}</DialogTitle>
         <DialogContent>
-          <DialogContentText >
-            Bạn có chắc muốn xoá không?
-          </DialogContentText>
+          <DialogContentText >{t('LABEL_CHAT_TASK_BAN_CO_CHAC_MUON_XOA_KHONG')}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseModalDelete} style={{ color: "#222" }}>
-            Hủy
-          </Button>
+          <Button onClick={handleCloseModalDelete} style={{ color: "#222" }}>{t('LABEL_CHAT_TASK_HUY')}</Button>
           <Button
             color="primary" autoFocus
             onClick={() => {
               confirmDelete()
               handleCloseModalDelete()
-            }} > Xóa </Button>
+            }} >{t('LABEL_CHAT_TASK_XOA')}</Button>
         </DialogActions>
       </Dialog>
     </div>

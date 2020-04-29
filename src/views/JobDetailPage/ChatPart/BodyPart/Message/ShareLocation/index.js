@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +15,7 @@ const ShareLocation = ({
   chatPosition = "top",
   address,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -32,7 +34,7 @@ const ShareLocation = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="chia sẻ vị trí"
+      taskName={t('LABEL_CHAT_TASK_CHIA_SE_VI_TRI')}
       className="ShareLocation"
     >
       <>

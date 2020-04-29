@@ -98,8 +98,7 @@ function TabHeader(props) {
             component="div"
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
-          >
-            Đã được giao ngày {detailTask.date_create}
+          >{t('LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY')}{detailTask.date_create}
           </ColorTypo>
         )}
       </div>
@@ -124,29 +123,19 @@ function TabHeader(props) {
       >
         <MenuItem
           onClick={onClickEdit(EDIT_MODE.NAME_DES)}
-        >
-          Sửa tên, mô tả công việc
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_SUA_TEN_MO_TA_CONG_VIEC')}</MenuItem>
         <MenuItem
           onClick={onClickEdit(EDIT_MODE.PRIORITY)}
-        >
-          Thay đổi mức độ ưu tiên
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN')}</MenuItem>
         <MenuItem
           onClick={onClickEdit(EDIT_MODE.GROUP)}
-        >
-          Thay đổi nhóm việc
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC')}</MenuItem>
         <MenuItem
           onClick={onClickEdit(EDIT_MODE.ASSIGN_TYPE)}
-        >
-          Thay đổi hình thức giao việc
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC')}</MenuItem>
         <MenuItem
           onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
-        >
-          Thay đổi lịch làm việc
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}</MenuItem>
         <MenuItem
           onClick={onClickPin}
         >
@@ -155,21 +144,15 @@ function TabHeader(props) {
         {pause ? (
           <MenuItem
             onClick={onClickPause}
-          >
-            Tạm dừng
-          </MenuItem>
+          >{t('LABEL_CHAT_TASK_TAM_DUNG')}</MenuItem>
         ) : (
             <MenuItem
               onClick={onClickResume}
-            >
-              Hủy tạm dừng
-            </MenuItem>
+            >{t('LABEL_CHAT_TASK_HUY_TAM_DUNG')}</MenuItem>
           )}
         <MenuItem
           onClick={onClickDelete}
-        >
-          Xóa
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
       <EditJobModal
         isOpen={openCreateJobModal}

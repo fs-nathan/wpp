@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -73,6 +74,7 @@ function validate(data) {
 }
 
 function CreateJobModal(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
   const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
@@ -258,7 +260,7 @@ function CreateJobModal(props) {
         {
           (!isEdit || props.editMode === EDIT_MODE.GROUP) &&
           <>
-            <Typography className="createJob--titleLabel" component={'div'}> Chọn nhóm công việc </Typography>
+            <Typography className="createJob--titleLabel" component={'div'}>{t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC')}</Typography>
             <Typography component={'div'} >
               <CustomSelect
                 options={listGroupTask}
@@ -286,7 +288,7 @@ function CreateJobModal(props) {
               </Typography>
             </Typography>
             <Typography className="createJob--description" component={'div'}>
-              <Typography className="createJob--titleLabel" component={'span'}>Mô tả công việc</Typography>
+              <Typography className="createJob--titleLabel" component={'span'}>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</Typography>
               <TextEditor
                 className="createJob--content"
                 value={data.description}
@@ -299,7 +301,7 @@ function CreateJobModal(props) {
           (!isEdit || props.editMode === EDIT_MODE.WORK_DATE) &&
           <>
             <Typography className="createJob--processWork" component={'span'}>
-              <Typography className="createJob--titleLabel" component={'span'}>Tiến độ công việc</Typography>
+              <Typography className="createJob--titleLabel" component={'span'}>{t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')}</Typography>
             </Typography>
             <CommonProgressForm
               items={optionsList}
@@ -308,7 +310,7 @@ function CreateJobModal(props) {
             />
             {type !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Typography className="createJob--titleLabel" component={'div'}> Lịch công việc </Typography>
+                <Typography className="createJob--titleLabel" component={'div'}>{t('LABEL_CHAT_TASK_LICH_CONG_VIEC')}</Typography>
                 <Typography component={'div'} style={{ marginBottom: '20px' }}>
                   <CustomSelect
                     options={listSchedules}
@@ -317,7 +319,7 @@ function CreateJobModal(props) {
                   />
                 </Typography>
                 <Typography className="createJob--timeWrap" component={'span'}>
-                  <Typography className="createJob--endTime" component={'span'}>Ngày bắt đầu</Typography>
+                  <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_BAT_DAU')}</Typography>
                   {type === 1 ? (
                     <KeyboardDatePicker
                       className="createJob--inputDate"
@@ -350,7 +352,7 @@ function CreateJobModal(props) {
                   )}
                 </Typography>
                 <Typography className="createJob--timeWrap" component={'span'}>
-                  <Typography className="createJob--endTime" component={'span'}>Ngày kết thúc</Typography>
+                  <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_KET_THUC')}</Typography>
                   {type === 1 ? (
                     <KeyboardDatePicker
                       className="createJob--inputDate"
@@ -392,7 +394,7 @@ function CreateJobModal(props) {
           (!isEdit || props.editMode === EDIT_MODE.PRIORITY) &&
           <>
             <Typography component={'span'}>
-              <Typography className="createJob--titleLabel" component={'div'}>Mức độ ưu tiên</Typography>
+              <Typography className="createJob--titleLabel" component={'div'}>{t('LABEL_CHAT_TASK_MUC_DO_UU_TIEN')}</Typography>
               <CommonPriorityForm
                 labels={priorityList}
                 priority={data.priorityLabel}
@@ -407,7 +409,7 @@ function CreateJobModal(props) {
           (!isEdit || props.editMode === EDIT_MODE.ASSIGN_TYPE) &&
           <>
             <Typography component={'span'}>
-              <Typography className="createJob--titleLabel" component={'div'}> Hình thức giao việc </Typography>
+              <Typography className="createJob--titleLabel" component={'div'}>{t('LABEL_CHAT_TASK_HINH_THUC_GIAO_VIEC')}</Typography>
               <CommonControlForm
                 labels={assignList}
                 assign={data.type_assign}

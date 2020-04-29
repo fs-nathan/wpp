@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ButtonGroup, Collapse } from '@material-ui/core';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -18,6 +19,7 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function TabBody(props) {
+  const { t } = useTranslation();
   const commandItems = useSelector(state => state.taskDetail.taskCommand.commandItems);
   const command = useSelector(state => state.taskDetail.taskCommand.command);
   const decisionItems = useSelector(state => state.taskDetail.taskCommand.decisionItems);
@@ -31,30 +33,26 @@ function TabBody(props) {
         <StyledButtonGroup fullWidth variant="text">
           <ColorButton onClick={() => setValue(0)}>
             {value === 0 ? (
-              <ColorTypo bold>Tất cả ({command.length})</ColorTypo>
+              <ColorTypo bold>{t('LABEL_CHAT_TASK_TAT_CA')}{command.length})</ColorTypo>
             ) : (
-                <ColorTypo color="gray">
-                  Tất cả ({command.length})
+                <ColorTypo color="gray">{t('LABEL_CHAT_TASK_TAT_CA')}{command.length})
                 </ColorTypo>
               )}
           </ColorButton>
           <ColorButton onClick={() => setValue(1)}>
             {value === 1 ? (
-              <ColorTypo bold>Chỉ đạo ({commandItems.length})</ColorTypo>
+              <ColorTypo bold>{t('LABEL_CHAT_TASK_CHI_DAO')}{commandItems.length})</ColorTypo>
             ) : (
-                <ColorTypo color="gray">
-                  Chỉ đạo ({commandItems.length})
+                <ColorTypo color="gray">{t('LABEL_CHAT_TASK_CHI_DAO')}{commandItems.length})
                 </ColorTypo>
               )}
           </ColorButton>
           <ColorButton onClick={() => setValue(2)}>
             {value === 2 ? (
-              <ColorTypo bold>
-                Quyết định ({decisionItems.length})
+              <ColorTypo bold>{t('LABEL_CHAT_TASK_QUYET_DINH')}{decisionItems.length})
               </ColorTypo>
             ) : (
-                <ColorTypo color="gray">
-                  Quyết định ({decisionItems.length})
+                <ColorTypo color="gray">{t('LABEL_CHAT_TASK_QUYET_DINH')}{decisionItems.length})
                 </ColorTypo>
               )}
           </ColorButton>
@@ -74,7 +72,7 @@ function TabBody(props) {
           :
           <NoDataPlaceHolder
             src="/images/no-command.png"
-            title="Chưa có chỉ đạo / Quyết định nào được tạo! Click + để tạo mới."
+            title={t('LABEL_CHAT_TASK_CHUA_CO_CHI_DAO')}
           ></NoDataPlaceHolder>}
       </div>
     </Body>

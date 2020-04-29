@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { mdiHomeMapMarker } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
@@ -12,6 +13,7 @@ const PinRemind = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
 
   return (
     <DialogMessageWrap
@@ -24,7 +26,7 @@ const PinRemind = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="ghim nhắc hẹn lên bảng thảo luận"
+      taskName={t('LABEL_CHAT_TASK_GHIM_NHAC_HEN_LEN')}
     >
       <>
         <Icon className="PinRemind--icon" path={mdiHomeMapMarker}></Icon>

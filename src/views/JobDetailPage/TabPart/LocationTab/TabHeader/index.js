@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { IconButton } from '@material-ui/core';
 import { mdiChevronLeft } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -9,6 +10,7 @@ import '../../HeaderTab/styles.scss';
 
 
 function TabHeader({ setShow }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -21,7 +23,7 @@ function TabHeader({ setShow }) {
       <IconButton className="headerTab--button" onClick={() => setShow(0)}>
         <Icon path={mdiChevronLeft} size={1} />
       </IconButton>
-      <ColorTypo uppercase style={{ fontSize: 17 }}>Chia sẻ vị trí</ColorTypo>
+      <ColorTypo uppercase style={{ fontSize: 17 }}>{t('LABEL_CHAT_TASK_CHIA_SE_VI_TRI')}</ColorTypo>
       <span style={{ width: 30 }}></span>
     </div>
   );

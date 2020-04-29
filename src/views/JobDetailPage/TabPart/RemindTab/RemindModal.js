@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import DateFnsUtils from "@date-io/date-fns";
 import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 // import { makeStyles } from '@material-ui/core/styles';
@@ -110,6 +111,7 @@ const DEFAULT_DATA = {
 const KEYCODE_ENTER = 13;
 
 function RemindModal(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [data, setData] = React.useState(DEFAULT_DATA)
@@ -229,7 +231,7 @@ function RemindModal(props) {
     <JobDetailModalWrap
       maxWidth='sm'
       className="remindModal"
-      title={"Nhắc hẹn"}
+      title={t('LABEL_CHAT_TASK_NHAC_HEN')}
       open={isOpenCreateRemind}
       setOpen={setOpenCreate}
       confirmRender={() => (!isCreateRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
@@ -237,7 +239,7 @@ function RemindModal(props) {
       canConfirm={validate()}
     >
       <React.Fragment>
-        <TitleText component="div">Loại nhắc hẹn</TitleText>
+        <TitleText component="div">{t('LABEL_CHAT_TASK_LOAI_NHAC_HEN')}</TitleText>
         <InputSelect
           commandSelect={selector}
           selectedIndex={data.type}
@@ -247,11 +249,11 @@ function RemindModal(props) {
         {/* Middle JSX */}
         {data.type === REMIND_TIME_TYPE ?
           <Typography component="div">
-            <HelperText>Bạn có lịch hẹn, ghi chú, sự kiện... quan trọng ? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhở bạn khi đến hẹn</HelperText>
+            <HelperText>{t('LABEL_CHAT_TASK_BAN_CO_LICH_HEN')}</HelperText>
             <div className="remind-title">
-              <div className="remindModal--dateRemind" component="span">Ngày nhắc</div>
-              <div className="remindModal--timeRemind" component="span">Giờ nhắc</div>
-              <div className="remindModal--repeatRemind" component="span">Nhắc hẹn định kỳ</div>
+              <div className="remindModal--dateRemind" component="span">{t('LABEL_CHAT_TASK_NGAY_NHAC')}</div>
+              <div className="remindModal--timeRemind" component="span">{t('LABEL_CHAT_TASK_GIO_NHAC')}</div>
+              <div className="remindModal--repeatRemind" component="span">{t('LABEL_CHAT_TASK_NHAC_HEN_DINH_KY')}</div>
             </div>
             <div className="remind-body">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -286,8 +288,8 @@ function RemindModal(props) {
           </Typography>
           :
           <div>
-            <HelperText>Khi tiến độ công việc được xác định (tự động) dựa trên thời gian hiện tại (thời gian thực) lớn hơn hoặc bằng mốc đã chọn, hệ thống sẽ nhắc nhở bạn</HelperText>
-            <Typography className="remindModal--mileStone" component="div">Mốc tiến độ cần nhắc</Typography>
+            <HelperText>{t('LABEL_CHAT_TASK_KHI_TIEN_DO_CONG')}</HelperText>
+            <Typography className="remindModal--mileStone" component="div">{t('LABEL_CHAT_TASK_MOC_TIEN_DO_CAN_NHAC')}</Typography>
             <div className="wrapper-progress">
               <InputProgress
                 fullWidth
@@ -299,7 +301,7 @@ function RemindModal(props) {
               />
               <DurationButton onClick={addDuration}
                 variant="contained"
-              >Thêm</DurationButton>
+              >{t('LABEL_CHAT_TASK_THEM')}</DurationButton>
             </div>
             <Typography component={'div'}>
               {data.duration.map((item, key) => (
@@ -316,7 +318,7 @@ function RemindModal(props) {
           rows="7"
           value={data.content}
           margin="normal"
-          placeholder="Nhập nội dung nhắc hẹn"
+          placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG_NHAC_HEN')}
           variant="outlined"
           styled={{ zIndex: 1 }}
           onChange={e => handleChangeData("content", e.target.value)}

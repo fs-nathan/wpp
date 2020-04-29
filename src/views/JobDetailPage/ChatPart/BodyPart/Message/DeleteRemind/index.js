@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getRemindDetail } from 'actions/chat/chat';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,7 @@ const DeleteRemind = ({
   remind_id,
   time_create,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -28,7 +30,7 @@ const DeleteRemind = ({
       }}
       // isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="xoá nhắc hẹn"
+      taskName={t('LABEL_CHAT_TASK_XOA_NHAC_HEN')}
     >
       <>
         {remind_name}

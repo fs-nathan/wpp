@@ -4,6 +4,7 @@ import { mdiFileDocumentBoxOutline, mdiFileUndoOutline, mdiFolderOpenOutline, md
 import Icon from '@mdi/react';
 import { chatForwardFile } from 'actions/chat/chat';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDocumentSharedToMe, getListMyDocument, getListProject } from '../../../../actions/documents';
 import CustomModal from '../../../../components/CustomModal';
@@ -12,6 +13,7 @@ import SearchInput from '../../../../components/SearchInput';
 import './SendFileModal.scss';
 
 const DocumentFileModal = ({ open, setOpen }) => {
+  const { t } = useTranslation()
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -92,7 +94,7 @@ const DocumentFileModal = ({ open, setOpen }) => {
       fullWidth
       title="Quản lý tài liệu"
       className="document-file-modal"
-      cancleRender={() => "Thoát"}
+      cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
       onConfirm={onClickConfirm}
     >
       <div className="document-file-container">

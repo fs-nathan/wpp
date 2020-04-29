@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +8,7 @@ import '../../HeaderTab/styles.scss';
 
 
 function TabHeader({ setShow }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -17,7 +19,7 @@ function TabHeader({ setShow }) {
   }
   return (
     <div className="container-member-tabheader">
-      <HeaderTab title="Thành viên"
+      <HeaderTab title={t('LABEL_CHAT_TASK_THANH_VIEN')}
         onClickBack={() => setShow(0)}
         onClickOpen={onClickCreateMember}
       />

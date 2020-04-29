@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { replaceUrl } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
@@ -54,6 +55,7 @@ const TextMessage = ({
   data_emotion = [],
   isFails,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -136,9 +138,9 @@ const TextMessage = ({
       </div >
       {
         isFails && <div className="bodyChat--sending">
-          <span className="bodyChat--sendingFail">Không thành công</span>
-          <span className="bodyChat--sendingDelete" onClick={onClickDeleteChat}>Xoá</span>
-          <span className="bodyChat--sendingResend" onClick={onClickResendChat}>Gửi lại</span>
+          <span className="bodyChat--sendingFail">{t('LABEL_CHAT_TASK_KHONG_THANH_CONG')}</span>
+          <span className="bodyChat--sendingDelete" onClick={onClickDeleteChat}>{t('LABEL_CHAT_TASK_XOA')}</span>
+          <span className="bodyChat--sendingResend" onClick={onClickResendChat}>{t('LABEL_CHAT_TASK_GUI_LAI')}</span>
         </div>
       }
     </>

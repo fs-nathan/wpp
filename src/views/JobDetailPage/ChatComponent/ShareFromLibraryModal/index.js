@@ -160,16 +160,14 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       open={open}
       setOpen={setOpen}
       fullWidth
-      title="Lưu trữ tài liệu"
+      title={t('LABEL_CHAT_TASK_LUU_TRU_TAI_LIEU')}
       className="ShareFromLibraryModal"
-      cancleRender={() => "Thoát"}
+      cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
       onConfirm={onClickConfirm}
     >
       <div className="ShareFromLibraryModal--container" >
         <div className="ShareFromLibraryModal--left" >
-          <div className="ShareFromLibraryModal--titleLeft">
-            Quản lý tài liệu
-          </div>
+          <div className="ShareFromLibraryModal--titleLeft">{t('LABEL_CHAT_TASK_QUAN_LY_TAI_LIEU')}</div>
           <MenuList className="ShareFromLibraryModal--MenuList" onChangeMenu={handleOnChangeMenu} />
         </div>
         <div className="ShareFromLibraryModal--right" >
@@ -250,7 +248,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                   value={searchKey}
                   onChange={evt => setSearchKey(evt.target.value)}
                   className="ShareFromLibraryModal--SearchInput"
-                  placeholder="Nhập tên tài liệu và ấn Enter để xem kết quả tìm kiếm" />
+                  placeholder={t('LABEL_CHAT_TASK_NHAP_TEN_TAI_LIEU')} />
                 <IconButton className="ShareFromLibraryModal--iconButton" onClick={() => setSearching(false)}>
                   <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
                 </IconButton>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getOfferDetail } from 'actions/chat/chat';
 import clsx from 'clsx';
 import React from 'react';
@@ -16,6 +17,7 @@ const HandleOffer = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -34,7 +36,7 @@ const HandleOffer = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="phê duyệt đề xuất"
+      taskName={t('LABEL_CHAT_TASK_PHE_DUYET_DE_XUAT')}
     >
       <>
         <div className={clsx("HandleOffer", `HandleOffer__status${handle_status}`)}>

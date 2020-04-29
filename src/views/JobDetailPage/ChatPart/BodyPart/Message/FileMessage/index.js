@@ -5,6 +5,7 @@ import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import ModalImage from 'views/JobDetailPage/ModalImage';
@@ -46,6 +47,7 @@ const FileMessage = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
   const groupActiveColor = useSelector(currentColorSelector)
@@ -131,12 +133,10 @@ const FileMessage = ({
                   {getType(file.name)} - {file && file.size}
                 </div>
                 {isUploading &&
-                  <div className="FileMessage--loading" >
-                    Đang tải
-                  <div className="FileMessage--loadingBackground" >
-                      <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
-                      </div>
+                  <div className="FileMessage--loading" >{t('LABEL_CHAT_TASK_DANG_TAI')}<div className="FileMessage--loadingBackground" >
+                    <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
                     </div>
+                  </div>
                     {uploadingPercent}%
               </div>
                 }

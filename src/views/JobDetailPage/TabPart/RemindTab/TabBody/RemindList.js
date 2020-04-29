@@ -1,9 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 import RemindItem from './RemindItem';
 
 const RemindList = (props) => {
+  const { t } = useTranslation();
   const remind = useSelector(state => state.taskDetail.taskRemind.remind);
 
   return remind.length ? (
@@ -17,7 +19,7 @@ const RemindList = (props) => {
   ) : (
       <NoDataPlaceHolder
         src="/images/no-aler.png"
-        title="Chưa có nhắc hẹn được khởi tạo Click + để tạo mới nhắc hẹn">
+        title={t('LABEL_CHAT_TASK_CHUA_CO_NHAC_HEN')}>
       </NoDataPlaceHolder>
     );
 }

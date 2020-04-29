@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { mdiHomeRemove } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
@@ -12,6 +13,7 @@ const CancelPinRemind = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
 
   return (
     <DialogMessageWrap
@@ -24,7 +26,7 @@ const CancelPinRemind = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="bỏ ghim nhắc hẹn lên bảng thảo luận"
+      taskName={t('LABEL_CHAT_TASK_BO_GHIM_NHAC_HEN')}
     >
       <>
         <Icon className="CancelPinRemind--icon" path={mdiHomeRemove}></Icon>

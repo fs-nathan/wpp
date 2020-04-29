@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getRemindDetail } from 'actions/chat/chat';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -5,6 +6,7 @@ import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const HandleRemindWithDuration = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -32,9 +34,7 @@ const HandleRemindWithDuration = (props) => {
     >
       <>
         <div className="HandleRemindWithDuration--timeRemind">
-          <div className="HandleRemindWithDuration--title">
-            Tiến độ kế hoạch đạt
-          </div>
+          <div className="HandleRemindWithDuration--title">{t('LABEL_CHAT_TASK_TIEN_DO_KE_HOACH_DAT')}</div>
           <div className="HandleRemindWithDuration--percent">
             {`${handle_duration}%`}
           </div>

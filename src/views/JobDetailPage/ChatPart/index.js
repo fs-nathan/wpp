@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -15,6 +16,7 @@ import HeaderPart from './HeaderPart';
 import './styles.scss';
 
 function ChatPart(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
@@ -60,7 +62,7 @@ function ChatPart(props) {
       </div>
       <div className={clsx("chatPart--searchWrap", { 'chatPart__showSearch': isShowSearch })}>
         <SearchInput className="chatPart--search"
-          placeholder='Tìm nội dung trong hội thảo' value={searchChatKey} onChange={onChangeKey} />
+          placeholder={t('LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO')} value={searchChatKey} onChange={onChangeKey} />
         <IconButton className="chatPart--close" onClick={hideSearch}>
           <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
         </IconButton>

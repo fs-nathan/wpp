@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -43,6 +44,7 @@ const FooterPart = ({
   imagesQueue,
   setImagesQueue,
 }) => {
+  const { t } = useTranslation();
   const editorRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -396,7 +398,7 @@ const FooterPart = ({
         <ChatBoxInput
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
-          placeholder="Nhập @ gợi ý, nội dung thảo luận..."
+          placeholder={t('LABEL_CHAT_TASK_NHAP_GOI_Y_NOI')}
           innerRef={editorRef}
           value={chatText}
           onChange={onChangeChatText}

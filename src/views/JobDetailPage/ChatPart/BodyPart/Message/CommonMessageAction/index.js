@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Menu, MenuItem } from '@material-ui/core';
 import { mdiCommentQuoteOutline, mdiDotsVertical, mdiShare, mdiThumbUp } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -17,6 +18,7 @@ const StyledButton = styled.button`
 `
 
 const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSelf }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const emotionsList = useSelector(state => state.chat.emotionsList);
@@ -70,22 +72,22 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
   return (
     <div className={clsx("CommonMessageAction", { 'CommonMessageAction__self': isSelf })} >
       <StyledButton className="CommonMessageAction--button" onClick={handleReplyChat} colorHover={groupActiveColor}>
-        <abbr title="Trả lời">
+        <abbr title={t('LABEL_CHAT_TASK_TRA_LOI')}>
           <Icon className="CommonMessageAction--icon" path={mdiCommentQuoteOutline} />
         </abbr>
       </StyledButton>
       <StyledButton className="CommonMessageAction--button" onClick={handleForwardChat} colorHover={groupActiveColor}>
-        <abbr title="Chuyển tiếp">
+        <abbr title={t('LABEL_CHAT_TASK_CHUYEN_TIEP')}>
           <Icon className="CommonMessageAction--icon" path={mdiShare} />
         </abbr>
       </StyledButton>
       <StyledButton className="CommonMessageAction--button" onClick={handleClickEmotion} colorHover={groupActiveColor}>
-        <abbr title="Biểu cảm">
+        <abbr title={t('LABEL_CHAT_TASK_BIEU_CAM')}>
           <Icon className="CommonMessageAction--icon" path={mdiThumbUp} />
         </abbr>
       </StyledButton>
       <StyledButton className="CommonMessageAction--button" onClick={handleClick} colorHover={groupActiveColor}>
-        <abbr title="Thêm">
+        <abbr title={t('LABEL_CHAT_TASK_THEM')}>
           <Icon className="CommonMessageAction--icon" path={mdiDotsVertical} />
         </abbr>
       </StyledButton>
@@ -100,12 +102,12 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
           horizontal: 'right',
         }}
       >
-        <MenuItem className="memberItem--menuItem" onClick={handleClickCopy}>Copy</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={handleClickCopy}>{t('LABEL_CHAT_TASK_COPY')}</MenuItem>
         <MenuItem divider></MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={onClickMarkSubTask}>Đánh dấu công việc con</MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={onClickMarkDemand}>Đánh dấu là chỉ đạo</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={onClickMarkSubTask}>{t('LABEL_CHAT_TASK_DANH_DAU_CONG_VIEC_CON')}</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={onClickMarkDemand}>{t('LABEL_CHAT_TASK_DANH_DAU_LA_CHI_DAO')}</MenuItem>
         <MenuItem divider></MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={handleDeleteChat}>Xóa</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={handleDeleteChat}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
       <Menu
         id="CommonMessageAction-emo"

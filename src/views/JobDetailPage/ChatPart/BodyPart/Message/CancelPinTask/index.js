@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { mdiPinOff } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
@@ -12,6 +13,7 @@ const CancelPinTask = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
 
   return (
     <DialogMessageWrap
@@ -24,7 +26,7 @@ const CancelPinTask = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="bỏ ghim công việc"
+      taskName={t('LABEL_CHAT_TASK_BO_GHIM_CONG_VIEC')}
     >
       <>
         <Icon className="CancelPinTask--icon" path={mdiPinOff}></Icon>

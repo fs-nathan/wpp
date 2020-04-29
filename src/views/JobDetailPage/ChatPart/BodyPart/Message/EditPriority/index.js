@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import React from 'react';
@@ -13,6 +14,7 @@ const EditPriority = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   function onClickViewDetail() {
@@ -30,7 +32,7 @@ const EditPriority = ({
       isHideFooterIcon
       footerText=""
       onClickViewDetail={onClickViewDetail}
-      taskName="Thay đổi mức độ ưu tiên"
+      taskName={t('LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN')}
     >
       <>
         <div className={clsx("EditPriority--priority", `EditPriority--priority__${priority_name}`)} >

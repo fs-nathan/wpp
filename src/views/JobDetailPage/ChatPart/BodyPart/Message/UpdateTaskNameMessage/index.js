@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import React from 'react';
 import DialogMessageWrap from '../DialogMessageWrap';
@@ -12,6 +13,7 @@ const UpdateTaskNameMessage = ({
   chatPosition = "top",
   title = "Đổi tên công việc"
 }) => {
+  const { t } = useTranslation();
 
   return (
     <DialogMessageWrap
@@ -24,7 +26,7 @@ const UpdateTaskNameMessage = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="Chỉnh sửa tên, mô tả công việc"
+      taskName={t('LABEL_CHAT_TASK_CHINH_SUA_TEN_MO_TA_CONG_VIEC')}
     >
       <>
         {new_task_name}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getRemindDetail } from 'actions/chat/chat';
 import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
@@ -7,6 +8,7 @@ import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const HandleRemindTimeDetail = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const dateFormat = useSelector(state => state.system.profile.format_date);
@@ -37,8 +39,7 @@ const HandleRemindTimeDetail = (props) => {
     >
       <>
         <div className="HandleRemindTimeDetail--timeRemind">
-          <div className="HandleRemindTimeDetail--month">
-            Tháng {month}
+          <div className="HandleRemindTimeDetail--month">{t('LABEL_CHAT_TASK_THANG')}{month}
           </div>
           <div className="HandleRemindTimeDetail--day">
             {day}

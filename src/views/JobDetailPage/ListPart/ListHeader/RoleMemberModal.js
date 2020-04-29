@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { DialogContent, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { createRole, deleteRole, updateRole, updateRolesForMember } from 'actions/taskDetail/taskDetailActions';
@@ -14,6 +15,7 @@ function RoleMemberModal({
   setOpen,
   memberId,
 }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userRoles = useSelector(state => state.taskDetail.taskMember.user_roles) || [];
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -89,7 +91,7 @@ function RoleMemberModal({
 
   return (
     <DialogWrap
-      title="Vai trò thành viên"
+      title={t('LABEL_CHAT_TASK_VAI_TRO_THANH_VIEN')}
       isOpen={isOpen}
       handleClickClose={handleClose}
       successLabel="Cập nhật"
@@ -100,9 +102,9 @@ function RoleMemberModal({
         <Table>
           <TableHead style={{ backgroundColor: '#eee' }}>
             <TableRow>
-              <TableCell className="RoleMemberModal--cell" style={{ width: '9%', textAlign: 'center' }}>Chọn</TableCell>
-              <TableCell style={{ width: '30%' }}>Tên vai trò</TableCell>
-              <TableCell style={{ width: '30%' }}>Mô tả</TableCell>
+              <TableCell className="RoleMemberModal--cell" style={{ width: '9%', textAlign: 'center' }}>{t('LABEL_CHAT_TASK_CHON')}</TableCell>
+              <TableCell style={{ width: '30%' }}>{t('LABEL_CHAT_TASK_TEN_VAI_TRO')}</TableCell>
+              <TableCell style={{ width: '30%' }}>{t('LABEL_CHAT_TASK_MO_TA')}</TableCell>
               {/* <TableCell align="right">
                   <AddRoleButton
                     onClick={onClickAddRole}

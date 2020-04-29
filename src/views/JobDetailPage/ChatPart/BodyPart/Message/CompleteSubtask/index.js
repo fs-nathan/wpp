@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { mdiCheckboxMarkedCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { getSubtaskDetail } from 'actions/chat/chat';
@@ -15,6 +16,7 @@ const CompleteSubtask = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -33,7 +35,7 @@ const CompleteSubtask = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="Hoàn thành công việc con"
+      taskName={t('LABEL_CHAT_TASK_HOAN_THANH_CONG_VIEC_CON')}
     >
       <>
         <Icon className="CompleteSubtask--icon" path={mdiCheckboxMarkedCircleOutline} color="inherit" />

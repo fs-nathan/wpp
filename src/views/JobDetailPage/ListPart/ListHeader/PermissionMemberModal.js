@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Radio from "@material-ui/core/Radio";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -34,6 +35,7 @@ const CellTable = styled(TableCell)`
 `
 
 function PriorityTable(props) {
+  const { t } = useTranslation();
   return (
     <div className={clsx("permissionItem", { "permissionItem__checked": props.checked })} align="center">{props.radio}
       <Radio
@@ -47,6 +49,7 @@ function PriorityTable(props) {
 }
 
 function CustomArrow({ path, className, isDisabled, onClick }) {
+  const { t } = useTranslation();
   return (
     <Icon
       path={path}
@@ -59,6 +62,7 @@ function CustomArrow({ path, className, isDisabled, onClick }) {
 function PermissionMemberModal({ memberId, setOpen,
   isOpen
 }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -78,7 +82,7 @@ function PermissionMemberModal({ memberId, setOpen,
 
   return (
     <DialogWrap
-      title="Phân quyền thành viên"
+      title={t('LABEL_CHAT_TASK_PHAN_QUYEN_THANH_VIEN')}
       isOpen={isOpen}
       handleClickClose={handleClose}
       successLabel="Hoàn thành"
@@ -87,8 +91,8 @@ function PermissionMemberModal({ memberId, setOpen,
       className="permissionMemberModal"
     >
       <React.Fragment>
-        <div className="permissionMemberModal--title">Chọn nhóm quyền</div>
-        <div className="permissionMemberModal--content">Mỗi nhóm bao gồm 1 số quyền. Nhóm quyền do chủ sở hữu hoặc người được phần quyền tạo lập. Nếu không có nhóm quyền phù hợp hãy liên hệ chủ sở hữu.</div>
+        <div className="permissionMemberModal--title">{t('LABEL_CHAT_TASK_CHON_NHOM_QUYEN')}</div>
+        <div className="permissionMemberModal--content">{t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}</div>
         <div className="permissionMemberModal--slider">
           <Slider adaptiveHeight variableWidth infinite={false}
             nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}
@@ -104,8 +108,8 @@ function PermissionMemberModal({ memberId, setOpen,
           <TableHead>
             <RowTable>
               <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>&nbsp;</CellTable>
-              <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Tên quyền</CellTable>
-              <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Mô tả</CellTable>
+              <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t('LABEL_CHAT_TASK_TEN_QUYEN')}</CellTable>
+              <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t('LABEL_CHAT_TASK_MO_TA')}</CellTable>
             </RowTable>
           </TableHead>
           <TableBody>

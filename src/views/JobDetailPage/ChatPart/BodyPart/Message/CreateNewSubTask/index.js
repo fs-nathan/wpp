@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getSubtaskDetail } from 'actions/chat/chat';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +14,7 @@ const CreateNewSubTask = ({
   sub_task_id,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -31,7 +33,7 @@ const CreateNewSubTask = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="Tạo công việc con"
+      taskName={t('LABEL_CHAT_TASK_TAO_CONG_VIEC_CON')}
     >
       <>
         {sub_task_name}

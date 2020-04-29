@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import { mdiClockOutline, mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -18,6 +19,7 @@ export const typesRemind = [
 ]
 
 function RemindItem(props) {
+  const { t } = useTranslation();
   const {
     user_create_avatar, type,
     date_remind,
@@ -40,8 +42,7 @@ function RemindItem(props) {
   return (
     <li className="remindItem" key={idx}>
       <div className="remindItem--time" style={{ color: groupActiveColor }} onClick={handleClickOpen}>
-        <div className="remindItem--month">
-          Tháng {month}
+        <div className="remindItem--month">{t('LABEL_CHAT_TASK_THANG')}{month}
         </div>
         <div className="remindItem--day">
           {day}
@@ -52,7 +53,7 @@ function RemindItem(props) {
           {content}
         </div>
         <div className="remindItem--creator">
-          <Avatar className="remindItem--avatar" src={user_create_avatar} alt='avatar' /> Tạo lúc {created_at}
+          <Avatar className="remindItem--avatar" src={user_create_avatar} alt='avatar' />{t('LABEL_CHAT_TASK_TAO_LUC')}{created_at}
         </div>
         <div className="remindItem--remind">
           <Icon path={mdiClockOutline} color="rgba(0, 0, 0, 0.54)"

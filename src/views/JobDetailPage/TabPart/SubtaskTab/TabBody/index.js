@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { InputBase } from '@material-ui/core';
 import { mdiSend } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -40,6 +41,7 @@ const Div = styled.div`
 `
 
 function TabBody(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const uncompleteSubTasks = useSelector(state => state.taskDetail.subTask.uncompleteSubTasks);
@@ -75,7 +77,7 @@ function TabBody(props) {
           <NewWork>
             <InputText
               inputProps={{ 'aria-label': 'naked' }}
-              placeholder={'Nhập tên công việc...'}
+              placeholder={t('LABEL_CHAT_TASK_NHAP_TEN_CONG_VIEC')}
               onChange={setStateSubTask}
               value={name}
             />
@@ -84,7 +86,7 @@ function TabBody(props) {
               onClick={() => {
                 createSubTask(taskId, name)
               }}>
-              <abbr title="Thêm">
+              <abbr title={t('LABEL_CHAT_TASK_THEM')}>
                 <Icon path={mdiSend} size={1} color={'gray'} />
               </abbr>
             </ButtonIcon>
@@ -92,7 +94,7 @@ function TabBody(props) {
           :
           <Div>
             <SearchInput
-              placeholder={'Nhập từ khóa'}
+              placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
               onChange={e => searchSubTaskTabPart(e)}
             />
           </Div>
@@ -100,13 +102,13 @@ function TabBody(props) {
         {isNoSubTask ?
           <NoDataPlaceHolder
             src="/images/no-subtask.png"
-            title="Chưa có công việc con được khởi tạo Click + để tạo mới công việc con"
+            title={t('LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC')}
           />
           :
           <React.Fragment>
-            <ColorTypo className="subTaskBody--title">Đang thực hiện({uncompleteSubTasks.length})</ColorTypo>
+            <ColorTypo className="subTaskBody--title">{t('LABEL_CHAT_TASK_DANG_THUC_HIEN')}{uncompleteSubTasks.length})</ColorTypo>
             <AllSubtaskList {...props} setSelectedItem={onClickItem} />
-            <ColorTypo className="subTaskBody--title">Đã hoàn thành({completeSubTasks.length})</ColorTypo>
+            <ColorTypo className="subTaskBody--title">{t('LABEL_CHAT_TASK_DA_HOAN_THANH')}{completeSubTasks.length})</ColorTypo>
             <FinishedSubtaskList {...props} setSelectedItem={onClickItem} />
           </React.Fragment>}
       </Container>

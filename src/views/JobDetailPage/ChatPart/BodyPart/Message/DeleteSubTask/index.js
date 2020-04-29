@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
@@ -17,6 +18,7 @@ const DeleteSubTask = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
 
   return (
     <DialogMessageWrap
@@ -29,7 +31,7 @@ const DeleteSubTask = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="xoá công việc con"
+      taskName={t('LABEL_CHAT_TASK_XOA_CONG_VIEC_CON')}
     >
       <>
         {sub_task_name}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { mdiCloudUpload, mdiLaptop } from '@mdi/js';
 import Icon from '@mdi/react';
 import { appendChat, chatFile, onUploading } from 'actions/chat/chat';
@@ -10,6 +11,7 @@ import CustomModal from '../../../../components/CustomModal';
 import './SendFileModal.scss';
 
 const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const fileInputRef = useRef()
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -55,7 +57,7 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
       open={open}
       setOpen={setOpen}
       height="mini"
-      title="Chọn tài liệu"
+      title={t('LABEL_CHAT_TASK_CHON_TAI_LIEU')}
       className="send-file-modal"
       confirmRender={null}
       cancleRender={() => 'Thoát'}
@@ -72,12 +74,8 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
           />
           <Icon path={mdiLaptop} size={2}></Icon>
           <div className="SendFileModal--rightButton">
-            <div className="SendFileModal--title">
-              Tải tài liệu từ máy tính
-            </div>
-            <div className="SendFileModal--description">
-              Tài liệu mới từ máy tính của bạn
-            </div>
+            <div className="SendFileModal--title">{t('LABEL_CHAT_TASK_TAI_TAI_LIEU_TU_MAY_TINH')}</div>
+            <div className="SendFileModal--description">{t('LABEL_CHAT_TASK_TAI_LIEU_MOI_TU')}</div>
           </div>
         </div>
         <div className="SendFileModal--button"
@@ -85,12 +83,8 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
         >
           <Icon path={mdiCloudUpload} size={2}></Icon>
           <div className="SendFileModal--rightButton">
-            <div className="SendFileModal--title">
-              Chọn tài liệu từ kho lưu trữ
-          </div>
-            <div className="SendFileModal--description">
-              Sử dụng tài liệu lưu trữ tập trung trên đám mây của hệ thống Work Cloud nhanh chóng và tiện lợi.
-            </div>
+            <div className="SendFileModal--title">{t('LABEL_CHAT_TASK_CHON_TAI_LIEU_TU_KHO_LUU_TRU')}</div>
+            <div className="SendFileModal--description">{t('LABEL_CHAT_TASK_SU_DUNG_TAI_LIEU')}</div>
           </div>
         </div>
       </div>

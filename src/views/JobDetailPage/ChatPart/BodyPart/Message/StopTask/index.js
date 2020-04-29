@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { mdiTimerOff } from '@mdi/js';
 import Icon from '@mdi/react';
 import { getDialogDate } from 'helpers/jobDetail/stringHelper';
@@ -14,6 +15,7 @@ const StopTask = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
   return (
@@ -26,7 +28,7 @@ const StopTask = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName="Tạm dừng công việc"
+      taskName={t('LABEL_CHAT_TASK_TAM_DUNG_CONG_VIEC')}
     >
       <>
         <Icon className="StopTask--icon" path={mdiTimerOff}></Icon>

@@ -169,12 +169,8 @@ function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles
             <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
           </IconButton>
         </TableCell>
-        <TableCell className="ShareFromLibraryModal--TableCell" width="120px" align="center" >
-          Chủ sở hữu
-    </TableCell>
-        <TableCell className="ShareFromLibraryModal--TableCell" width="150px" >
-          Kích thước tệp
-    </TableCell>
+        <TableCell className="ShareFromLibraryModal--TableCell" width="120px" align="center" >{t('LABEL_CHAT_TASK_CHU_SO_HUU')}</TableCell>
+        <TableCell className="ShareFromLibraryModal--TableCell" width="150px" >{t('LABEL_CHAT_TASK_KICH_THUOC_TEP')}</TableCell>
         <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
       </TableRow>
     </TableHead>

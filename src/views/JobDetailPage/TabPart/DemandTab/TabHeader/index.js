@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCommand, getCommand } from '../../../../../actions/taskDetail/taskDetailActions';
@@ -6,6 +7,7 @@ import HeaderTab from '../../HeaderTab';
 import DemandModal from '../DemandModal';
 
 function TabHeader(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
 
@@ -24,7 +26,7 @@ function TabHeader(props) {
   }
   return (
     <div className="container-normal-tabheader">
-      <HeaderTab title="Chỉ đạo - Quyết định"
+      <HeaderTab title={t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}
         onClickBack={() => props.setShow(0)}
         onClickOpen={handleClickOpen}
       />

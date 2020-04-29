@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useDispatch } from 'react-redux';
@@ -12,6 +13,7 @@ const UpdateScheduleTask = ({
   time_create,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   function onClickViewDetail() {
@@ -30,7 +32,7 @@ const UpdateScheduleTask = ({
       isHideFooterIcon
       footerText=""
       onClickViewDetail={onClickViewDetail}
-      taskName="Thay đổi lịch làm việc"
+      taskName={t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}
     >
       <>
         {schedule_name}

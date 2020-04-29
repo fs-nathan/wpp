@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -51,6 +52,7 @@ const useStyles = makeStyles({
 });
 
 function TableMember(props) {
+  const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const members = useSelector(state => state.taskDetail.taskMember.member);
@@ -85,9 +87,9 @@ function TableMember(props) {
         <TableHead>
           <TableRow style={{ background: '#f7f7f7' }}>
             <TableCell style={{ width: '9%' }}></TableCell>
-            <TableCell style={{ width: '40%' }}>Thành viên</TableCell>
-            <TableCell style={{ width: '20%' }}>Nhóm quyền</TableCell>
-            <TableCell style={{ width: '32%' }}>Vai trò</TableCell>
+            <TableCell style={{ width: '40%' }}>{t('LABEL_CHAT_TASK_THANH_VIEN')}</TableCell>
+            <TableCell style={{ width: '20%' }}>{t('LABEL_CHAT_TASK_NHOM_QUYEN')}</TableCell>
+            <TableCell style={{ width: '32%' }}>{t('LABEL_CHAT_TASK_VAI_TRO')}</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
@@ -122,7 +124,7 @@ function TableMember(props) {
                       horizontal: 'right',
                     }}
                   >
-                    <MenuItem onClick={handleOpenModalDelete(item.id)}>Loại trừ</MenuItem>
+                    <MenuItem onClick={handleOpenModalDelete(item.id)}>{t('LABEL_CHAT_TASK_LOAI_TRU')}</MenuItem>
                   </CustomMenu>
                 </StyledMenu>
               </StyledTableRow>

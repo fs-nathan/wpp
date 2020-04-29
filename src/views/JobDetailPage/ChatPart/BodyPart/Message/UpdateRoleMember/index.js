@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
@@ -15,6 +16,7 @@ const UpdateRoleMember = ({
   roles,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   function onClickViewDetail() {
@@ -32,7 +34,7 @@ const UpdateRoleMember = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName="thay đổi vai trò thành viên"
+      taskName={t('LABEL_CHAT_TASK_THAY_DOI_VAI_TRO_THANH_VIEN')}
     >
       <div className="UpdateRoleMember--content" >
         <Avatar className="UpdateRoleMember--avatar" src={member_avatar} />

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar, Button, Chip, IconButton, TextField, Typography } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -16,6 +17,7 @@ import OfferFile from './OfferFile';
 import './styles.scss';
 
 const OfferModal = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const currentUserId = useSelector(state => state.system.profile.order_user_id);
@@ -179,33 +181,33 @@ const OfferModal = (props) => {
       className="offerModal"
     >
       <React.Fragment>
-        <Typography className="offerModal--title createJob--titleLabel" >Tên đề xuất</Typography>
+        <Typography className="offerModal--title createJob--titleLabel" >{t('LABEL_CHAT_TASK_TEN_DE_XUAT')}</Typography>
         <TextField
           className="offerModal--titleText"
-          placeholder="Nhập tiêu đề đề xuất"
+          placeholder={t('LABEL_CHAT_TASK_NHAP_TIEU_DE_DE_XUAT')}
           fullWidth
           value={tempSelectedItem.title}
           onChange={e => setParams("title", e.target.value)}
         />
-        <Typography className="offerModal--title" >Nội dung đề xuất</Typography>
+        <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_NOI_DUNG_DE_XUAT')}</Typography>
         <TextField
           className="offerModal--content"
           fullWidth
           multiline
           rows="7"
           margin="normal"
-          placeholder="Nhập nội dung"
+          placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
           variant="outlined"
           value={tempSelectedItem ? tempSelectedItem.content : ""}
           onChange={e => setParams("content", e.target.value)}
         />
-        <Typography className="offerModal--title" >Chọn nhóm đề xuất</Typography>
+        <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')}</Typography>
         <CustomSelect
           options={listGroupOffer}
           value={tempSelectedItem.offer_group_id}
           onChange={(groupOffer) => setParams('offer_group_id', groupOffer)}
         />
-        <Typography className="offerModal--title" >Người phê duyệt ({handlers.length})</Typography>
+        <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}{handlers.length})</Typography>
         <div>
           {handlers.map((index) =>
             <Chip
@@ -217,7 +219,7 @@ const OfferModal = (props) => {
           )}
           <IconButton className="offerModal--buttonAdd" onClick={openAddHandlersDialog}>
             <Icon size={1} path={mdiPlusCircleOutline} />
-            <span className="offerModal--textAdd">Thêm</span>
+            <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
           </IconButton>
           <AddOfferMemberModal
             isOpen={isOpenAddHandler}
@@ -228,7 +230,7 @@ const OfferModal = (props) => {
             disableIndexes={[...monitors, createUserIndex]}
           />
         </div>
-        <Typography className="offerModal--title">Người giám sát ({monitors.length})</Typography>
+        <Typography className="offerModal--title">{t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}{monitors.length})</Typography>
         <div>
           {monitors.map((index) =>
             <Chip
@@ -242,7 +244,7 @@ const OfferModal = (props) => {
             className="offerModal--buttonAdd"
             onClick={openAddMonitorsDialog}>
             <Icon size={1} path={mdiPlusCircleOutline} />
-            <span className="offerModal--textAdd">Thêm</span>
+            <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
           </IconButton>
           <AddOfferMemberModal
             isOpen={isOpenAddMonitor}
@@ -253,7 +255,7 @@ const OfferModal = (props) => {
             disableIndexes={[...handlers, createUserIndex]}
           />
         </div>
-        <Typography className="offerModal--title" >Chọn mức độ</Typography>
+        <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_CHON_MUC_DO')}</Typography>
         <CommonPriorityForm
           labels={priorityList}
           priority={tempSelectedItem.priority ? tempSelectedItem.priority.value : ''}
@@ -271,9 +273,7 @@ const OfferModal = (props) => {
         />
         <label className="offerModal--attach" htmlFor="outlined-button-file">
           <Button variant="outlined" component="span" fullWidth className={'classes.button'}>
-            <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />
-              Đính kèm tài liệu
-            </Button>
+            <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
         </label>
         {
           tempSelectedItem.files &&

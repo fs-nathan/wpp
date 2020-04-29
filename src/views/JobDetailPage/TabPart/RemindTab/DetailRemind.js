@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -24,6 +25,7 @@ const typesRemind = [
 ]
 
 function DetailRemind() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
   const isOpenDetailRemind = useSelector(state => state.chat.isOpenDetailRemind);
@@ -78,15 +80,13 @@ function DetailRemind() {
           </DialogContentText>
           <div className="detailRemind--main">
             <div className="detailRemind--time" style={{ backgroundColor: groupActiveColor }}>
-              <div className="detailRemind--month">
-                Tháng {month}
+              <div className="detailRemind--month">{t('LABEL_CHAT_TASK_THANG')}{month}
               </div>
               <div className="detailRemind--day">
                 {day}
               </div>
             </div>
-            <div className="detailRemind--data" >
-              Tạo lúc {created_at}
+            <div className="detailRemind--data" >{t('LABEL_CHAT_TASK_TAO_LUC')}{created_at}
               <ColorTypo variant='body1' component="div">
                 {
                   type === 1 ?
@@ -107,7 +107,7 @@ function DetailRemind() {
           <Button
             style={{ color: groupActiveColor }}
             autoFocus
-            onClick={openEdit} > Chỉnh sửa </Button>
+            onClick={openEdit} >{t('LABEL_CHAT_TASK_CHINH_SUA')}</Button>
         </DialogActions>
       </Dialog>
     </div>

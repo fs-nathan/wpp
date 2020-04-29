@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import DialogWrap from 'components/DialogWrap';
 import React from 'react';
 
 function AddRoleModal(props) {
+  const { t } = useTranslation();
   const [name, setName] = React.useState("")
   const [description, setDescription] = React.useState("")
   const handleClose = () => {
@@ -44,7 +46,7 @@ function AddRoleModal(props) {
           onChange={(e) => setName(e.target.value)}
           fullWidth
           helperText={
-            !name && <ColorTypo variant='caption' color='red'>Không được để trống</ColorTypo>
+            !name && <ColorTypo variant='caption' color='red'>{t('LABEL_CHAT_TASK_KHONG_DUOC_DE_TRONG')}</ColorTypo>
           }
         />
         <TextField
@@ -55,7 +57,7 @@ function AddRoleModal(props) {
           onChange={(e) => setDescription(e.target.value)}
           fullWidth
           helperText={
-            !description && <ColorTypo variant='caption' color='red'>Không được để trống</ColorTypo>
+            !description && <ColorTypo variant='caption' color='red'>{t('LABEL_CHAT_TASK_KHONG_DUOC_DE_TRONG')}</ColorTypo>
           }
         />
       </>
