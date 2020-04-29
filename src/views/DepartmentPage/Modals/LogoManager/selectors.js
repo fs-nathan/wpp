@@ -7,12 +7,13 @@ const deleteIcon = state => state.icon.deleteIcon;
 export const iconsSelector = createSelector(
   [listIcon],
   (listIcon) => {
-    const { data: { icons, defaults }, error, loading } = listIcon;
+    const { data: { icons, defaults }, error, loading, firstTime } = listIcon;
     return {
       createds: icons,
       defaults,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 );

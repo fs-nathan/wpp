@@ -1,12 +1,12 @@
-import { FormControl, TextField } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
+import CustomModal from 'components/CustomModal';
+import CustomTextbox from 'components/CustomTextbox';
+import MySelect from 'components/MySelect';
+import { CustomEventDispose, CustomEventListener, UPDATE_USER } from 'constants/events';
+import { useMaxlenString } from 'hooks';
 import { find, get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox from '../../../../components/CustomTextbox';
-import ErrorBox from '../../../../components/ErrorBox';
-import MySelect from '../../../../components/MySelect';
-import { useMaxlenString } from '../../../../hooks';
 import './style.scss';
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -15,17 +15,12 @@ const StyledFormControl = ({ className = '', ...props }) =>
     {...props}
   />;
 
-const CustomTextField = ({ className = '', ...props }) =>
-  <TextField
-    className={`view_Member_UpdateUser_Modal___text-field ${className}`}
-    {...props}
-  />;
-
 function UpdateUser({
   updatedUser,
   open, setOpen,
   options,
   handleUpdateUser,
+  activeLoading,
 }) {
 
   const { t } = useTranslation();
@@ -47,6 +42,20 @@ function UpdateUser({
     // eslint-disable-next-line
   }, [updatedUser]);
 
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setRoom(null);
+      setPosition(null);
+      setMajor(null);
+      setLevel(null);
+      setDescription('');
+    };
+    CustomEventListener(UPDATE_USER, successClose);
+    return () => CustomEventDispose(UPDATE_USER, successClose);
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <CustomModal
       open={open}
@@ -61,75 +70,75 @@ function UpdateUser({
         level,
         description,
       )}
+      onCancle={() => setOpen(false)}
       loading={options.loading}
+      activeLoading={activeLoading}
+      manualClose={true}
     >
-      {options.error !== null
-        ? <ErrorBox />
-        : <>
-          <StyledFormControl fullWidth>
-            <MySelect
-              label={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
-              options={options.rooms.map(room => ({
-                label: get(room, 'name'),
-                value: get(room, 'id'),
-              }))}
-              value={{
-                label: get(find(options.rooms, { id: room }), 'name'),
-                value: room,
-              }}
-              onChange={({ value: roomId }) => setRoom(roomId)}
-            />
-          </StyledFormControl>
-          <StyledFormControl fullWidth>
-            <MySelect
-              label={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
-              options={options.positions.map(position => ({
-                label: get(position, 'name'),
-                value: get(position, 'id'),
-              }))}
-              value={{
-                label: get(find(options.positions, { id: position }), 'name'),
-                value: position,
-              }}
-              onChange={({ value: positionId }) => setPosition(positionId)}
-            />
-          </StyledFormControl>
-          <StyledFormControl fullWidth>
-            <MySelect
-              label={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
-              options={options.levels.map(level => ({
-                label: get(level, 'name'),
-                value: get(level, 'id'),
-              }))}
-              value={{
-                label: get(find(options.levels, { id: level }), 'name'),
-                value: level,
-              }}
-              onChange={({ value: levelId }) => setLevel(levelId)}
-            />
-          </StyledFormControl>
-          <StyledFormControl fullWidth>
-            <MySelect
-              label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
-              options={options.majors.map(major => ({
-                label: get(major, 'name'),
-                value: get(major, 'id'),
-              }))}
-              value={{
-                label: get(find(options.majors, { id: major }), 'name'),
-                value: major,
-              }}
-              onChange={({ value: majorId }) => setMajor(majorId)}
-            />
-          </StyledFormControl>
-          <CustomTextbox
-            value={description}
-            label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
-            onChange={value => setDescription(value)}
-            helperText={get(errorDescription, 'message', '')}
+      <>
+        <StyledFormControl fullWidth>
+          <MySelect
+            label={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
+            options={options.rooms.map(room => ({
+              label: get(room, 'name'),
+              value: get(room, 'id'),
+            }))}
+            value={{
+              label: get(find(options.rooms, { id: room }), 'name'),
+              value: room,
+            }}
+            onChange={({ value: roomId }) => setRoom(roomId)}
           />
-        </>
-      }
+        </StyledFormControl>
+        <StyledFormControl fullWidth>
+          <MySelect
+            label={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
+            options={options.positions.map(position => ({
+              label: get(position, 'name'),
+              value: get(position, 'id'),
+            }))}
+            value={{
+              label: get(find(options.positions, { id: position }), 'name'),
+              value: position,
+            }}
+            onChange={({ value: positionId }) => setPosition(positionId)}
+          />
+        </StyledFormControl>
+        <StyledFormControl fullWidth>
+          <MySelect
+            label={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
+            options={options.levels.map(level => ({
+              label: get(level, 'name'),
+              value: get(level, 'id'),
+            }))}
+            value={{
+              label: get(find(options.levels, { id: level }), 'name'),
+              value: level,
+            }}
+            onChange={({ value: levelId }) => setLevel(levelId)}
+          />
+        </StyledFormControl>
+        <StyledFormControl fullWidth>
+          <MySelect
+            label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
+            options={options.majors.map(major => ({
+              label: get(major, 'name'),
+              value: get(major, 'id'),
+            }))}
+            value={{
+              label: get(find(options.majors, { id: major }), 'name'),
+              value: major,
+            }}
+            onChange={({ value: majorId }) => setMajor(majorId)}
+          />
+        </StyledFormControl>
+        <CustomTextbox
+          value={description}
+          label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
+          onChange={value => setDescription(value)}
+          helperText={get(errorDescription, 'message', '')}
+        />
+      </>
     </CustomModal>
   )
 }

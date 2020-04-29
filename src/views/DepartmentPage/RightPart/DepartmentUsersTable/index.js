@@ -1,12 +1,18 @@
+import { getRequirementJoinGroup } from 'actions/groupUser/getRequirementJoinGroup';
+import { listPosition } from 'actions/position/listPosition';
+import { detailRoom } from 'actions/room/detailRoom';
+import { getUserOfRoom } from 'actions/room/getUserOfRoom';
+import { actionVisibleDrawerMessage } from 'actions/system/system';
+import { banUserFromGroup } from 'actions/user/banUserFromGroup';
+import { privateMember } from 'actions/user/privateMember';
+import { publicMember } from 'actions/user/publicMember';
+import { sortUser } from 'actions/user/sortUser';
+import AlertModal from 'components/AlertModal';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_USER } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
-import { banUserFromGroup } from '../../../../actions/user/banUserFromGroup';
-import { privateMember } from '../../../../actions/user/privateMember';
-import { publicMember } from '../../../../actions/user/publicMember';
-import { sortUser } from '../../../../actions/user/sortUser';
-import AlertModal from '../../../../components/AlertModal';
+import { useParams } from 'react-router-dom';
 import { routeSelector } from '../../../MemberPage/selectors';
 import CreateAccountModal from '../../Modals/CreateAccount';
 import LevelManagerModal from '../../Modals/LevelManager';
@@ -27,7 +33,64 @@ function DepartmentUsersTable({
   doPublicMember, doPrivateMember,
   doBanUserFromGroup,
   doActionVisibleDrawerMessage,
+  doListPosition,
+  doGetRequirementJoinGroup,
+  doDetailRoom,
+  doGetUserOfRoom,
 }) {
+
+  React.useEffect(() => {
+    if (get(viewPermissions.permissions, 'can_modify', false)) {
+      doGetRequirementJoinGroup();
+      const doGetRequirementJoinGroupHandler = () => {
+        doGetRequirementJoinGroup(true);
+      };
+      CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      return () => {
+        CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+        CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
+      }
+    }
+    // eslint-disable-next-line
+  }, [viewPermissions]);
+
+  const [id, setId] = React.useState(null);
+  const { departmentId } = useParams();
+
+  React.useEffect(() => {
+    setId(departmentId);
+  }, [departmentId]);
+
+  React.useEffect(() => {
+    if (id !== null && id !== 'default') {
+      doDetailRoom({ roomId: id });
+    }
+    // eslint-disable-next-line
+  }, [id]);
+
+  React.useEffect(() => {
+    if (id !== null) {
+      doGetUserOfRoom({ roomId: id });
+      const reloadGetUserOfRoom = () => {
+        doGetUserOfRoom({ roomId: id });
+      }
+      CustomEventListener(SORT_USER, reloadGetUserOfRoom);
+      CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetUserOfRoom);
+      CustomEventListener(BAN_USER_FROM_GROUP, reloadGetUserOfRoom);
+      return () => {
+        CustomEventDispose(SORT_USER, reloadGetUserOfRoom);
+        CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetUserOfRoom);
+        CustomEventDispose(BAN_USER_FROM_GROUP, reloadGetUserOfRoom);
+      }
+    }
+    // eslint-disable-next-line
+  }, [id]);
+
+  React.useEffect(() => {
+    doListPosition();
+    // eslint-disable-next-line
+  }, []);
 
   const [openTitle, setOpenTitle] = React.useState(false);
   const [openRole, setOpenRole] = React.useState(false);
@@ -143,6 +206,10 @@ const mapDispatchToProps = dispatch => {
     doPrivateMember: ({ userId }) => dispatch(privateMember({ userId })),
     doBanUserFromGroup: ({ userId }) => dispatch(banUserFromGroup({ userId })),
     doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
+    doGetUserOfRoom: ({ roomId }, quite) => dispatch(getUserOfRoom({ roomId }, quite)),
+    doDetailRoom: ({ roomId }, quite) => dispatch(detailRoom({ roomId }, quite)),
+    doListPosition: (quite) => dispatch(listPosition(quite)),
+    doGetRequirementJoinGroup: (quite) => dispatch(getRequirementJoinGroup(quite)),
   }
 }
 

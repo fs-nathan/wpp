@@ -6,10 +6,10 @@
 .view_Project_ProjectMemberSlide_Item___detail {
   & {
     @include view_Project_ProjectMemberSlide_Item___detail;
-    color: red;
+    color: #818181;
   }
   &-in-group {
     @include view_Project_ProjectMemberSlide_Item___detail;
-    color: #818181;
+    color: red;
   }
 }

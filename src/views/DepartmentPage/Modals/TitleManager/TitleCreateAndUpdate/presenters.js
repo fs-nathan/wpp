@@ -1,15 +1,17 @@
 import { TextField } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
+import CustomModal from 'components/CustomModal';
+import { CREATE_POSITION, CustomEventDispose, CustomEventListener, UPDATE_POSITION } from 'constants/events';
+import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../../components/ColorTypo';
-import CustomModal from '../../../../../components/CustomModal';
-import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
 function TitleManager({
   open, setOpen,
   updatedPosition = null,
-  handleCreateOrUpdatePosition
+  handleCreateOrUpdatePosition,
+  activeLoading,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
@@ -21,7 +23,23 @@ function TitleManager({
       setName(get(updatedPosition, 'name', ''));
       setDescription(get(updatedPosition, 'description', ''));
     }
-  }, [updatedPosition, setName, setDescription]);
+    // eslint-disable-next-line
+  }, [updatedPosition]);
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+    };
+    CustomEventListener(CREATE_POSITION, successClose);
+    CustomEventListener(UPDATE_POSITION, successClose);
+    return () => {
+      CustomEventDispose(CREATE_POSITION, successClose);
+      CustomEventDispose(UPDATE_POSITION, successClose);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CustomModal
@@ -30,6 +48,9 @@ function TitleManager({
       title={updatedPosition ? t('DMH.VIEW.DP.MODAL.TITLE.U_TITLE') : t('DMH.VIEW.DP.MODAL.TITLE.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdatePosition(name, description)}
+      onCancle={() => setOpen(false)}
+      manualClose={false}
+      activeLoading={activeLoading}
     >
       <TextField
         value={name}

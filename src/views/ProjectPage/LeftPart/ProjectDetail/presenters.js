@@ -87,14 +87,16 @@ function ProjectDetail({
                         'Công việc đang làm',
                         'Công việc quá hạn',
                         'Công việc hoàn thành',
+                        'Công việc dừng',
                       ],
-                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b'],
+                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#000000'],
                     }}
                     series={[
                       get(project.project, 'task_waiting', 0),
                       get(project.project, 'task_doing', 0),
                       get(project.project, 'task_expired', 0),
                       get(project.project, 'task_complete', 0),
+                      get(project.project, 'task_stop', 0),
                     ]}
                     width={250}
                     height={250}
@@ -106,7 +108,8 @@ function ProjectDetail({
                     get(project.project, 'task_waiting', 0) +
                       get(project.project, 'task_doing', 0) +
                       get(project.project, 'task_expired', 0) +
-                      get(project.project, 'task_complete', 0) === 0
+                      get(project.project, 'task_complete', 0) +
+                      get(project.project, 'task_stop', 0) === 0
                       ? <ChartPlaceholder />
                       : null
                   }
@@ -132,6 +135,10 @@ function ProjectDetail({
                       color: '#03c30b',
                       title: 'Công việc hoàn thành',
                       value: get(project.project, 'task_complete', 0),
+                    }, {
+                      color: '#000000',
+                      title: 'Công việc dừng',
+                      value: get(project.project, 'task_stop', 0),
                     }]
                   }
                 />

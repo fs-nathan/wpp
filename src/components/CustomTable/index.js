@@ -116,7 +116,7 @@ function CustomTable() {
     <LoadingOverlay
       active={get(options, 'loading.bool', false)}
       spinner
-      fadeSpeed={100}
+      fadeSpeed={0}
       style={{
         height: '100%',
       }}
@@ -151,7 +151,7 @@ function CustomTable() {
             )}
           </RightHeader>
         </Header>
-        {data.length === 0
+        {get(options, 'noData.bool', false)
           ? <NoData
             title={get(options, 'noData.title')}
             subtitle={get(options, 'noData.subtitle')}

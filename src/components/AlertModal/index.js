@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function AlertModal({
   open, setOpen,
   content = '', onConfirm = () => null, onCancle = () => null,
-  colors
+  colors, canConfirm = true
 }) {
 
   const { t } = useTranslation();
@@ -53,9 +53,13 @@ function AlertModal({
         <ButtonBase className='comp_AlertModal___cancle-button' onClick={() => handleCancle()}>
           {t('DMH.COMP.ALERT_MODAL.CANCLE_BTN')}
         </ButtonBase>
-        <ButtonBase style={{ color: bgColor.color }} className='comp_AlertModal___accept-button' onClick={() => handleConfirm()}>
-          {t('DMH.COMP.ALERT_MODAL.ACCEPT_BTN')}
-        </ButtonBase>
+        {
+          canConfirm && (
+            <ButtonBase style={{ color: bgColor.color }} className='comp_AlertModal___accept-button' onClick={() => handleConfirm()}>
+              {t('DMH.COMP.ALERT_MODAL.ACCEPT_BTN')}
+            </ButtonBase>
+          )
+        }
       </DialogActions>
     </Dialog>
   )
@@ -64,6 +68,7 @@ function AlertModal({
 AlertModal.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
+  canConfirm: PropTypes.bool,
   content: PropTypes.node,
   onConfirm: PropTypes.func,
   onCancle: PropTypes.func,

@@ -1,0 +1,308 @@
+.header_control {
+  width: 95.6%;
+  background-color: #F5F6F7;
+  height: 50px;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px 20px 0px 20px;
+
+  &_icon {
+    align-self: flex-start;
+  }
+
+  .label_block {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-left: 10px;
+  }
+
+  .control_block {
+    display: inline-flex;
+    justify-content: space-between;
+    width: 50%;
+    margin-right: 10px;
+  }
+
+  .yearSelect {
+    width: 30px;
+    background: #ffff;
+    margin-left: 10px;
+  }
+
+  .weekSelect {
+    min-width: 250px;
+    background: #ffff;
+  }
+}
+
+.view_Calendar_CreateWeekly_Modal_text-field {
+  &>label {
+    z-index: 0;
+  }
+}
+
+.view_Calendar_CreateWeekly_Modal_container {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1.5fr 2.5fr;
+
+  .left {
+    border-right: 1px solid rgba(0, 0, 0, .1);
+    padding: 10px 15px;
+
+    .input_text {
+      width: 100%;
+      margin-bottom: 15px;
+      margin-top: 10px;
+    }
+
+    .MuiOutlinedInput-input {
+      width: 100%;
+    }
+
+    .label {
+      margin-top: 10px;
+      font-weight: 500;
+
+      &_required {
+        color: red;
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .right {
+    padding: 10px 15px;
+  }
+}
+
+@mixin view_Calendar_CreateWeekly_Modal_sub-header {
+  color: #2d3436;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 7px 24px;
+  text-align: center;
+  background-color: #F5F6F7;
+  height: 20px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.view_Calendar_CreateWeekly_Modal_left-header {
+  @include view_Calendar_CreateWeekly_Modal_sub-header;
+}
+
+.view_Calendar_CreateWeekly_Modal_right-header {
+  @include view_Calendar_CreateWeekly_Modal_sub-header;
+
+  &>span {
+    text-transform: none;
+  }
+}
+
+.view_Calendar_CreateWeekly_Modal__date-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  &>p {
+    width: 140px;
+  }
+}
+
+.inputDate {
+  width: 130px;
+
+  .MuiOutlinedInput-adornedEnd {
+    padding-right: 0;
+  }
+
+  &>div:nth-child(1) {
+    &>input {
+      padding: 11px;
+    }
+
+    &>div>button {
+      padding: 5px;
+    }
+  }
+}
+
+.notify_setting_block {
+  .divider {
+    align-self: center;
+    text-align: center;
+  }
+
+  .MuiOutlinedInput-root {
+    height: 30px;
+  }
+
+  &__notifyBeforeTime {
+    width: 70px;
+  }
+
+  &__timeTypeSelector {
+    min-width: 100px;
+    height: 36px;
+    width: 100%;
+
+    .MuiSelect-select:focus {
+      background-color: transparent;
+    }
+
+    .MuiSelect-root {
+      text-align: center;
+      width: 100%;
+    }
+
+    &--paper {
+      .MuiList-root {
+        min-height: 60px !important;
+      }
+
+      .MuiPaper-root {
+        transform: translateY(30px) !important;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+
+        &::-webkit-scrollbar {
+          width: 5px;
+          background-color: unset !important;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          cursor: pointer !important;
+          min-height: 50px !important;
+          border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background-color: unset !important;
+        }
+
+        &:hover {
+          &::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.block_grid {
+  padding-left: 30px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 4fr 1fr 1fr 1fr;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.receiver_block {
+  .selected_receiver {
+    padding: 5px 7px;
+    background-color: #F6F6F6;
+    width: 50px;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .MuiButton-root {
+    text-transform: none;
+    line-height: 1.2;
+    width: 100px;
+  }
+
+  .MuiButton-textPrimary {
+    color: #029CF3 !important;
+  }
+}
+
+.centered_block {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .MuiButton-root {
+    color: #fff;
+    width: 200px;
+    font-weight: 400;
+  }
+
+}
+
+.view_createWeeklyCalendar_list {
+  &_container {
+    padding: 10px;
+
+    .MuiListItemSecondaryAction-root {
+      display: inline-flex !important;
+      justify-content: space-around !important;
+      min-width: 0 !important;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .calendar_item_time {
+      margin-right: 15px;
+      margin-left: 15px;
+    }
+  }
+
+  &_scheduleItemContainer {
+    display: inline-flex;
+    justify-content: space-around;
+  }
+}
+
+.MuiListItemSecondaryAction-root {
+  display: inline-flex;
+  justify-content: space-around;
+  cursor: pointer;
+}
+
+.addOfferMemberModal {
+  .MuiDialogContent-root {
+    padding: 20px 24px;
+  }
+}
+
+.views_createWeeklyCalendar_timeSelect {
+  min-width: 100px !important;
+  margin-right: 15px;
+  width: 100px;
+}
+
+abbr[title] {
+  text-decoration: none !important;
+}
+
+.views_createWeeklyCalendar_CustomModal {
+  &>div:nth-child(3)>div {
+    min-width: 70vw;
+    max-width: 80vw;
+  }
+
+  .klIdUG.comp_LoadingOverlay___wrapper {
+    height: 90vh;
+  }
+
+  .comp_CustomModal___scrollbar-main-medium {
+    height: 100% !important;
+  }
+
+  .MuiDialogContent-root {
+    padding: 0px;
+  }
+}

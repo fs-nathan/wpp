@@ -11,23 +11,23 @@ export const RoleManagerContent = () => {
   return userRoles.error !== null ? (
     <ErrorBox />
   ) : (
-    <SimpleManagerTable
-      data={userRoles.userRoles}
-      pendings={userRoles.pendings}
-      handleAdd={() => handleOpenModal("CREATE")}
-      handleEdit={(userRole) =>
-        handleOpenModal("UPDATE", {
-          updatedUserRole: userRole,
-        })
-      }
-      handleDelete={(userRole) =>
-        handleOpenModal("ALERT", {
-          content: "Bạn chắc chắn muốn xóa vai trò?",
-          onConfirm: () => handleDeleteUserRole(userRole),
-        })
-      }
-    />
-  );
+      <SimpleManagerTable
+        data={userRoles.userRoles}
+        pendings={userRoles.pendings}
+        handleAdd={() => handleOpenModal("CREATE")}
+        handleEdit={(userRole) =>
+          handleOpenModal("UPDATE", {
+            updatedUserRole: userRole,
+          })
+        }
+        handleDelete={(userRole) =>
+          handleOpenModal("ALERT", {
+            content: "Bạn chắc chắn muốn xóa vai trò?",
+            onConfirm: () => handleDeleteUserRole(userRole),
+          })
+        }
+      />
+    );
 };
 export function RoleManagerModalWrapper({ children }) {
   const { t } = useTranslation();
@@ -47,26 +47,22 @@ export function RoleManagerModalWrapper({ children }) {
       cancleRender={() => t("DMH.VIEW.DP.MODAL.ROLE.EXIT")}
       loading={userRoles.loading}
     >
-      {userRoles.error !== null ? (
-        <ErrorBox />
-      ) : (
-        <SimpleManagerTable
-          data={userRoles.userRoles}
-          pendings={userRoles.pendings}
-          handleAdd={() => handleOpenModal("CREATE")}
-          handleEdit={(userRole) =>
-            handleOpenModal("UPDATE", {
-              updatedUserRole: userRole,
-            })
-          }
-          handleDelete={(userRole) =>
-            handleOpenModal("ALERT", {
-              content: t("DMH.VIEW.DP.MODAL.ROLE.ALERT"),
-              onConfirm: () => handleDeleteUserRole(userRole),
-            })
-          }
-        />
-      )}
+      <SimpleManagerTable
+        data={userRoles.userRoles}
+        pendings={userRoles.pendings}
+        handleAdd={() => handleOpenModal("CREATE")}
+        handleEdit={(userRole) =>
+          handleOpenModal("UPDATE", {
+            updatedUserRole: userRole,
+          })
+        }
+        handleDelete={(userRole) =>
+          handleOpenModal("ALERT", {
+            content: t("DMH.VIEW.DP.MODAL.ROLE.ALERT"),
+            onConfirm: () => handleDeleteUserRole(userRole),
+          })
+        }
+      />
     </CustomModal>
   );
 }

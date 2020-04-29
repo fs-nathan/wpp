@@ -11,7 +11,7 @@ export const groupsSelector = createSelector(
   [listProjectGroup, listProject, listIcon, sortProjectGroup, createProjectGroup],
   (listProjectGroup, listProject, listIcon, sortProjectGroup, createProjectGroup) => {
     const { error: sortProjectGroupError, loading: sortProjectGroupLoading } = sortProjectGroup;
-    const { data: { projectGroups }, error: listProjectGroupError, loading: listProjectGroupLoading } = listProjectGroup;
+    const { data: { projectGroups }, error: listProjectGroupError, loading: listProjectGroupLoading, firstTime } = listProjectGroup;
     const { data: { projects } } = listProject;
     const { data: { icons, defaults } } = listIcon;
     const { loading: createLoading, error: createError } = createProjectGroup;
@@ -37,8 +37,9 @@ export const groupsSelector = createSelector(
     return {
       groups: newProjectGroups,
       defaultNumberProject,
-      loading: listProjectGroupLoading || sortProjectGroupLoading || createLoading,
+      loading: (firstTime ? false : listProjectGroupLoading) || sortProjectGroupLoading || createLoading,
       error: listProjectGroupError || sortProjectGroupError || createError,
+      firstTime,
     }
   }
 );

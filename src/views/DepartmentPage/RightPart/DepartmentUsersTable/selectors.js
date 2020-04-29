@@ -15,8 +15,8 @@ export const roomSelector = createSelector(
   [detailRoom, getUserOfRoom, listPosition, deleteRoom, sortUser, banUserFromGroup],
   (detailRoom, getUserOfRoom, listPosition, deleteRoom, sortUser, banUserFromGroup) => {
     const { loading: sortUserLoading, error: sortUserError } = sortUser;
-    const { data: { room }, loading: detailRoomLoading, error: detailRoomError } = detailRoom;
-    const { data: { users }, loading: getUserOfRoomLoading, error: getUserOfRoomError } = getUserOfRoom;
+    const { data: { room }, loading: detailRoomLoading, error: detailRoomError, firstTime: detailFirst } = detailRoom;
+    const { data: { users }, loading: getUserOfRoomLoading, error: getUserOfRoomError, firstTime: getUserFirst } = getUserOfRoom;
     const { data: { positions } } = listPosition;
     const { loading: deleteLoading, error: deleteError } = deleteRoom;
     const { loading: banUserLoading, error: banUserError } = banUserFromGroup;
@@ -33,8 +33,9 @@ export const roomSelector = createSelector(
     }
     return {
       room: newRoom,
-      loading: detailRoomLoading || getUserOfRoomLoading || sortUserLoading || deleteLoading || banUserLoading,
+      loading: (detailFirst ? false : detailRoomLoading) || (getUserFirst ? false : getUserOfRoomLoading) || sortUserLoading || deleteLoading || banUserLoading,
       error: detailRoomError || getUserOfRoomError || sortUserError || deleteError || banUserError,
+      firstTime: detailFirst && getUserFirst,
     }
   }
 );

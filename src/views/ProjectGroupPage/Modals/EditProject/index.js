@@ -1,30 +1,36 @@
-import React from 'react';
-import { updateProject } from '../../../../actions/project/updateProject';
-import { connect } from 'react-redux';
-import { groupsSelector } from './selectors';
-import EditProjectPresenter from './presenters';
+import { updateProject } from 'actions/project/updateProject';
+import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
 import { get } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
+import EditProjectPresenter from './presenters';
+import { activeLoadingSelector, groupsSelector } from './selectors';
 
-function EditProject({ 
-  curProject = null, 
-  open, setOpen, 
-  groups, 
-  doUpdateProject
+function EditProject({
+  curProject = null,
+  open, setOpen,
+  groups,
+  doUpdateProject,
+  doListProjectGroup,
+  activeLoading,
 }) {
 
-  const newGroups = {
-    ...groups,
-    groups: [{ id: '__default__', name: 'Chưa phân loại' }, ...groups.groups],
-  }
+  React.useEffect(() => {
+    if (open) {
+      doListProjectGroup();
+    }
+    // eslint-disable-next-line
+  }, [open]);
 
   return (
-    <EditProjectPresenter 
-      curProject={curProject} 
+    <EditProjectPresenter
+      curProject={curProject}
+      activeLoading={activeLoading}
       open={open} setOpen={setOpen}
-      groups={newGroups}
+      groups={groups}
       handleEditProject={({ name, description, projectGroupId, priority, currency }) =>
         doUpdateProject({ projectId: get(curProject, 'id'), name, description, projectGroupId, priority, currency })
-      } 
+      }
     />
   )
 }
@@ -32,12 +38,14 @@ function EditProject({
 const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
+    activeLoading: activeLoadingSelector(state),
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     doUpdateProject: ({ projectId, name, description, projectGroupId, priority, currency }) => dispatch(updateProject({ projectId, name, description, projectGroupId, priority, currency })),
+    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
   }
 };
 

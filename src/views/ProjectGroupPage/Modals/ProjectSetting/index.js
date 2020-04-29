@@ -1,31 +1,49 @@
+import { detailStatus } from 'actions/project/setting/detailStatus';
+import { updateStatusCopy } from 'actions/project/setting/updateStatusCopy';
+import { updateStatusDate } from 'actions/project/setting/updateStatusDate';
+import { updateStatusView } from 'actions/project/setting/updateStatusView';
+import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { detailStatus } from '../../../../actions/project/setting/detailStatus';
-import { updateStatusCopy } from '../../../../actions/project/setting/updateStatusCopy';
-import { updateStatusDate } from '../../../../actions/project/setting/updateStatusDate';
-import { updateStatusView } from '../../../../actions/project/setting/updateStatusView';
 import ProjectSettingPresenter from './presenters';
-import { statusSelector } from './selectors';
+import { permissionSelector, statusSelector } from './selectors';
 import './style.scss';
 
 function ProjectSetting({
-  curProject = null, canChange = null,
+  curProject = null, permission,
   open, setOpen,
   status,
+  doDetailStatus,
   doUpdateStatusCopy, doUpdateStatusDate, doUpdateStatusView,
-  setStatusProjectId = () => null,
+  doGetPermissionViewDetailProject,
 }) {
 
+  React.useLayoutEffect(() => {
+    if (get(curProject, 'id')) doGetPermissionViewDetailProject({ projectId: get(curProject, 'id') });
+    // eslint-disable-next-line
+  }, [curProject])
+
   React.useEffect(() => {
-    if (curProject) setStatusProjectId(get(curProject, 'id'))
-  }, [setStatusProjectId, curProject]);
+    if (open) {
+      if (curProject) {
+        doDetailStatus({
+          projectId: get(curProject, 'id'),
+        });
+      }
+    }
+    // eslint-disable-next-line
+  }, [open, curProject]);
 
   return (
     <ProjectSettingPresenter
       open={open} setOpen={setOpen}
       status={status}
-      canChange={canChange}
+      canChange={{
+        date: get(permission, [get(curProject, 'id'), 'update_project'], false),
+        copy: get(permission, [get(curProject, 'id'), 'update_project'], false),
+        view: true,
+      }}
       handleUpdateStatusCopy={status => doUpdateStatusCopy({ projectId: get(curProject, 'id'), status })}
       handleUpdateStatusDate={status => doUpdateStatusDate({ projectId: get(curProject, 'id'), status })}
       handleUpdateStatusView={status => doUpdateStatusView({ projectId: get(curProject, 'id'), status })}
@@ -36,6 +54,7 @@ function ProjectSetting({
 const mapStateToProps = state => {
   return {
     status: statusSelector(state),
+    permission: permissionSelector(state),
   }
 }
 
@@ -45,6 +64,7 @@ const mapDispatchToProps = dispatch => {
     doUpdateStatusDate: ({ projectId, status }) => dispatch(updateStatusDate({ projectId, status, })),
     doUpdateStatusCopy: ({ projectId, status }) => dispatch(updateStatusCopy({ projectId, status, })),
     doUpdateStatusView: ({ projectId, status }) => dispatch(updateStatusView({ projectId, status, })),
+    doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   }
 };
 

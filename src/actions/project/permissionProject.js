@@ -4,7 +4,8 @@ export const permissionProject = (quite = false) => ({
   type: PERMISSION_PROJECT,
   quite,
   options: {
-    module: 1,
+    module: 2,
+    groupPermissionId: 2,
   },
 });
 

@@ -1,27 +1,32 @@
+import { createProject } from 'actions/project/createProject';
+import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
 import React from 'react';
-import { createProject } from '../../../../actions/project/createProject';
 import { connect } from 'react-redux';
-import { groupsSelector } from './selectors';
 import CreateNewProjectPresenter from './presenters';
+import { activeLoadingSelector, groupsSelector } from './selectors';
 
-function CreateNewProject({ 
-  open, setOpen, 
+function CreateNewProject({
+  open, setOpen,
   groups,
-  doCreateProject, 
+  doCreateProject,
+  doListProjectGroup,
+  activeLoading,
 }) {
 
-  const newGroups = {
-    ...groups,
-    groups: [{ id: '__default__', name: 'Chưa phân loại' }, ...groups.groups],
-  };
+  React.useEffect(() => {
+    if (open) {
+      doListProjectGroup();
+    }
+    // eslint-disable-next-line
+  }, [open]);
 
   return (
-    <CreateNewProjectPresenter 
-      open={open} setOpen={setOpen} 
-      groups={newGroups}
-      handleCreateProject={({ name, description, projectGroupId, priority, currency }) => 
+    <CreateNewProjectPresenter
+      open={open} setOpen={setOpen} activeLoading={activeLoading}
+      groups={groups}
+      handleCreateProject={({ name, description, projectGroupId, priority, currency }) =>
         doCreateProject({ name, description, projectGroupId, priority, currency })
-      } 
+      }
     />
   )
 }
@@ -29,12 +34,14 @@ function CreateNewProject({
 const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
+    activeLoading: activeLoadingSelector(state),
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     doCreateProject: ({ name, description, projectGroupId, priority, currency }) => dispatch(createProject({ name, description, projectGroupId, priority, currency })),
+    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
   }
 };
 

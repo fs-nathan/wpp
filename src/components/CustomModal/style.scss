@@ -1,6 +1,7 @@
 @mixin comp_CustomModal___scrollbar {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  & > div:nth-child(3) {
+
+  &>div:nth-child(3) {
     z-index: 999;
   }
 }
@@ -9,34 +10,41 @@
   &-main {
     &-tall {
       @include comp_CustomModal___scrollbar;
-      height: calc(100vh - 64px - 64px - 56.5px) !important; 
+      height: calc(100vh - 64px - 64px - 56.5px) !important;
     }
+
     &-medium {
       @include comp_CustomModal___scrollbar;
       height: calc(90vh - 64px - 64px - 56.5px) !important;
     }
+
     &-short {
       @include comp_CustomModal___scrollbar;
       height: calc(80vh - 64px - 64px - 56.5px) !important;
     }
+
     &-mini {
       @include comp_CustomModal___scrollbar;
       height: calc(70vh - 64px - 64px - 56.5px) !important;
     }
   }
+
   &-side {
     &-tall {
       @include comp_CustomModal___scrollbar;
       height: calc(100vh - 64px - 64px - 56.5px - 46px) !important;
     }
+
     &-medium {
       @include comp_CustomModal___scrollbar;
       height: calc(90vh - 64px - 64px - 56.5px - 46px) !important;
     }
+
     &-short {
       @include comp_CustomModal___scrollbar;
       height: calc(80vh - 64px - 64px - 56.5px - 46px) !important;
     }
+
     &-mini {
       @include comp_CustomModal___scrollbar;
       height: calc(70vh - 64px - 64px - 56.5px - 46px) !important;
@@ -45,10 +53,11 @@
 }
 
 .comp_CustomModal___dialog-content {
+
   // & > *:not(:last-child) {
   //   margin-bottom: 12px;
   // }
-  & > input[type="file"] {
+  &>input[type="file"] {
     display: none;
   }
 }
@@ -57,12 +66,14 @@
   background-color: #f5f8fc;
   padding: 6px 24px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  & > h2 {
+
+  &>h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    & > button {
+
+    &>button {
       padding: 12px 0;
     }
   }
@@ -79,14 +90,17 @@
 @mixin comp_CustomModal___accept-button {
   padding: 8px 16px;
   background-color: #fff;
+
   &:hover {
     background-color: #eee;
   }
+
   font-weight: 500;
   font-size: 16px;
   text-transform: uppercase;
-  border-radius: 5px;
-  & > span:last-child {
+  min-width: unset;
+
+  &>span:last-child {
     display: none;
   }
 }
@@ -95,6 +109,7 @@
   & {
     @include comp_CustomModal___accept-button;
   }
+
   &-disabled {
     @include comp_CustomModal___accept-button;
     // color: #999 !important;
@@ -105,21 +120,24 @@
 .comp_CustomModal___cancle-button {
   padding: 8px 16px;
   background-color: #fff;
+
   &:hover {
     background-color: #eee;
   }
+
   color: #222;
   font-weight: 500;
   font-size: 16px;
   text-transform: uppercase;
   border-radius: 5px;
-  & > span:last-child {
+
+  &>span:last-child {
     display: none;
   }
 }
 
 @mixin comp_CustomModal___dialog {
-  & > div:nth-child(3) > div {
+  &>div:nth-child(3)>div {
     overflow: hidden;
     min-width: 40vw;
     max-width: 70vw;
@@ -130,9 +148,11 @@
   &-sm {
     @include comp_CustomModal___dialog;
   }
+
   &-md {
     @include comp_CustomModal___dialog;
   }
+
   &-lg {
     @include comp_CustomModal___dialog;
   }
@@ -141,7 +161,8 @@
 @mixin comp_CustomModal___two-columns-container {
   display: grid;
   grid-template-rows: 1fr;
-  & > * {
+
+  &>* {
     &:first-child {
       border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
@@ -153,6 +174,7 @@
     @include comp_CustomModal___two-columns-container;
     grid-template-columns: 2fr 3fr;
   }
+
   &-w-lg {
     @include comp_CustomModal___two-columns-container;
     grid-template-columns: 3fr 8fr;
@@ -171,6 +193,7 @@
     @include comp_CustomModal___header;
     text-align: center;
   }
+
   &-right {
     @include comp_CustomModal___header;
     text-align: start;
@@ -181,6 +204,7 @@
   &___iconButton {
     padding: 0px;
   }
+
   &___scroll {
     position: relative;
     overflow: hidden;
@@ -188,6 +212,7 @@
     float: left;
     display: block;
   }
+
   &___overlay {
     min-height: 300px;
     float: left;

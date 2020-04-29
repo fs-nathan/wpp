@@ -109,20 +109,22 @@ export const NormalDepartment = ({
               >
                 {t('DMH.VIEW.DP.LEFT.INFO.BTN.UPT')}
               </ColorButton>
-              <ColorButton
-                onClick={() =>
-                  handleOpenModal('ALERT', {
-                    content: t('DMH.VIEW.DP.LEFT.INFO.ALERT'),
-                    onConfirm: () => handleDeleteRoom(departmentId)
-                  })
-                }
-                variant="text"
-                variantColor="red"
-                size="small"
-                fullWidth
-              >
-                {t('DMH.VIEW.DP.LEFT.INFO.BTN.DEL')}
-              </ColorButton>
+              {get(room.detail, 'can_delete', false) && (
+                <ColorButton
+                  onClick={() =>
+                    handleOpenModal('ALERT', {
+                      content: t('DMH.VIEW.DP.LEFT.INFO.ALERT'),
+                      onConfirm: () => handleDeleteRoom(departmentId)
+                    })
+                  }
+                  variant="text"
+                  variantColor="red"
+                  size="small"
+                  fullWidth
+                >
+                  {t('DMH.VIEW.DP.LEFT.INFO.BTN.DEL')}
+                </ColorButton>
+              )}
             </ActionBox>
           ) : null}
         </Container>

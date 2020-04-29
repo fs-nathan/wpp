@@ -1,15 +1,17 @@
 import { TextField } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
+import CustomModal from 'components/CustomModal';
+import { CREATE_LEVEL, CustomEventDispose, CustomEventListener, UPDATE_LEVEL } from 'constants/events';
+import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../../components/ColorTypo';
-import CustomModal from '../../../../../components/CustomModal';
-import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
 function LevelCreateAndUpdate({
   updatedLevel = null,
   open, setOpen,
   handleCreateOrUpdateLevel,
+  activeLoading,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
@@ -21,7 +23,23 @@ function LevelCreateAndUpdate({
       setName(get(updatedLevel, 'name', ''));
       setDescription(get(updatedLevel, 'description', ''));
     }
-  }, [updatedLevel, setDescription, setName]);
+    // eslint-disable-next-line
+  }, [updatedLevel]);
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+    };
+    CustomEventListener(CREATE_LEVEL, successClose);
+    CustomEventListener(UPDATE_LEVEL, successClose);
+    return () => {
+      CustomEventDispose(CREATE_LEVEL, successClose);
+      CustomEventDispose(UPDATE_LEVEL, successClose);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CustomModal
@@ -30,6 +48,9 @@ function LevelCreateAndUpdate({
       title={updatedLevel ? t('DMH.VIEW.DP.MODAL.LEVEL.U_TITLE') : t('DMH.VIEW.DP.MODAL.LEVEL.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateLevel(name, description)}
+      onCancle={() => setOpen(false)}
+      manualClose={false}
+      activeLoading={activeLoading}
     >
       <TextField
         value={name}

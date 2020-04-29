@@ -1,15 +1,17 @@
 import { TextField } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
+import CustomModal from 'components/CustomModal';
+import { CREATE_USER_ROLE, CustomEventDispose, CustomEventListener, UPDATE_USER_ROLE } from 'constants/events';
+import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../../components/ColorTypo';
-import CustomModal from '../../../../../components/CustomModal';
-import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
 function RoleCreateAndUpdate({
   open, setOpen,
   updatedUserRole = null,
-  handleCreateOrUpdateUserRole
+  handleCreateOrUpdateUserRole,
+  activeLoading,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
@@ -21,7 +23,23 @@ function RoleCreateAndUpdate({
       setName(get(updatedUserRole, 'name', ''));
       setDescription(get(updatedUserRole, 'description', ''));
     }
-  }, [updatedUserRole, setName, setDescription]);
+    // eslint-disable-next-line
+  }, [updatedUserRole]);
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+    };
+    CustomEventListener(CREATE_USER_ROLE, successClose);
+    CustomEventListener(UPDATE_USER_ROLE, successClose);
+    return () => {
+      CustomEventDispose(CREATE_USER_ROLE, successClose);
+      CustomEventDispose(UPDATE_USER_ROLE, successClose);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CustomModal
@@ -30,6 +48,9 @@ function RoleCreateAndUpdate({
       title={updatedUserRole ? t('DMH.VIEW.DP.MODAL.ROLE.U_TITLE') : t('DMH.VIEW.DP.MODAL.ROLE.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateUserRole(name, description)}
+      onCancle={() => setOpen(false)}
+      manualClose={false}
+      activeLoading={activeLoading}
     >
       <TextField
         value={name}

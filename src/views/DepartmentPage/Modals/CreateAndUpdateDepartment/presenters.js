@@ -1,13 +1,13 @@
-import { TextField } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
+import CustomAvatar from 'components/CustomAvatar';
+import CustomModal from 'components/CustomModal';
+import CustomTextbox from 'components/CustomTextbox';
+import { CREATE_ROOM, CustomEventDispose, CustomEventListener, UPDATE_ROOM } from 'constants/events';
+import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorButton from '../../../../components/ColorButton';
-import ColorTypo from '../../../../components/ColorTypo';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox from '../../../../components/CustomTextbox';
-import { useMaxlenString, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const LogoBox = ({ className = '', ...props }) =>
@@ -16,11 +16,21 @@ const LogoBox = ({ className = '', ...props }) =>
     {...props}
   />;
 
+const MyButton = ({ className = '', ...props }) =>
+  <Button
+    className={`view_Department_Create_Modal___button ${className}`}
+    disableRipple
+    disableFocusRipple
+    disableTouchRipple
+    {...props}
+  />
+
 function CreateAndUpdateDepartment({
   updateDepartment = null,
   open, setOpen,
   handleCreateOrUpdateRoom,
   handleOpenModal,
+  actionLoading,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 100);
@@ -41,7 +51,27 @@ function CreateAndUpdateDepartment({
           .replace('https://storage.googleapis.com', ''),
       });
     }
-  }, [updateDepartment, setName, setDescription]);
+    // eslint-disable-next-line
+  }, [updateDepartment]);
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+      setIcon({
+        url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
+        url_sort: '/storage_vtask_net/Icon_default/bt0.png',
+      });
+    };
+    CustomEventListener(CREATE_ROOM, successClose);
+    CustomEventListener(UPDATE_ROOM, successClose);
+    return () => {
+      CustomEventDispose(CREATE_ROOM, successClose);
+      CustomEventDispose(UPDATE_ROOM, successClose);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <React.Fragment>
@@ -51,6 +81,9 @@ function CreateAndUpdateDepartment({
         setOpen={setOpen}
         onConfirm={() => handleCreateOrUpdateRoom(name, description, icon)}
         canConfirm={!errorName && !errorDescription}
+        onCancle={() => setOpen(false)}
+        manualClose={false}
+        actionLoading={actionLoading}
       >
         <TextField
           value={name}
@@ -74,12 +107,15 @@ function CreateAndUpdateDepartment({
         <LogoBox>
           <div>
             <ColorTypo>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO')}</ColorTypo>
-            <ColorButton
+            <MyButton
               color='primary'
               onClick={() => handleOpenModal('LOGO', {
                 doSelectIcon: icon => setIcon(icon),
               })}
-            >{t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}</ColorButton>
+            >
+              <span>+</span>
+              <span>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}</span>
+            </MyButton>
           </div>
           <CustomAvatar src={icon.url_full} alt='avatar' />
         </LogoBox>

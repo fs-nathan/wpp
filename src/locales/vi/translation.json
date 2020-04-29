@@ -129,7 +129,7 @@
             "NAME": "Tên bộ phận",
             "DESC": "Mô tả bộ phận",
             "LOGO": "Biểu tượng",
-            "LOGO_SELECT": "+ Chọn biểu tượng"
+            "LOGO_SELECT": "Thay đổi biểu tượng"
           },
           "LOGO": {
             "TITLE": "Quản lý biểu tượng",
@@ -327,7 +327,7 @@
             "NAME": "Tên nhóm làm việc",
             "DESC": "Mô tả nhóm làm việc",
             "LOGO": "Biểu tượng nhóm",
-            "LOGO_SELECT": "+ Chọn biểu tượng"
+            "LOGO_SELECT": "Thay đổi biểu tượng"
           },
           "CUP": {
             "C_TITLE": "Tạo mới dự án",
@@ -416,6 +416,141 @@
               "RES": "Khôi phục"
             }
           }
+        }
+      }
+    }
+  },
+  "views": {
+    "calendar_page": {
+      "left_part": {
+        "title": "Quản lý lịch",
+        "create": "Tạo lịch",
+        "recently": "Gần đây",
+        "project_alarm": "Nhắc hẹn dự án",
+        "my_alarm": "Nhắc hẹn của tôi"
+      },
+      "right_part": {
+        "add": "+ Tạo Lịch",
+        "setting": "Cài đặt",
+        "delete": "Xóa",
+        "edit": "Sửa",
+        "edit2": "Chỉnh sửa",
+        "delete_calendar": "Xóa lịch",
+        "weekly_detail": "Chi tiết lịch tuần",
+        "project_detail": "Chi tiết lịch dự án",
+        "edit_calendar": "Chỉnh sửa lịch",
+        "create_alarm": "+ Tạo nhắc hẹn",
+        "view_task": "Xem công việc",
+        "view_detail": "Xem chi tiết",
+        "label": {
+          "name": "Tên lịch",
+          "time": "Thời gian",
+          "created_by": "Người tạo",
+          "created_at": "Ngày tạo",
+          "alarm": "Nhắc hẹn",
+          "description": "Mô tả",
+          "applied_project": "Áp dụng",
+          "projects": "dự án",
+          "setting_calendar": "Thiết lập lịch",
+          "working_day_inWeek": "Ngày làm việc trong tuần",
+          "add_working_and_off_day": "Thêm ngày làm việc / ngày nghỉ",
+          "setting_working_time": "Cài đặt giờ làm việc",
+          "many_day": "Nhiều ngày",
+          "one_day": "Một ngày",
+          "working_day": "Làm việc",
+          "off_day": "Ngày nghỉ",
+          "working_time": "Giờ làm việc",
+          "full_time": "Toàn bộ thời gian",
+          "add_time": "Thêm thời gian",
+          "add_stage": "Thêm ca"
+        },
+        "no_data": "Không có dữ liệu!",
+        "no_data_description": "Hãy tạo lịch bằng cách click vào nút + TẠO LỊCH để chia sẻ lịch đến mọi thành viên",
+        "no_data_description_alarm": "Hãy tạo lịch bằng cách click vào nút + TẠO NHẮC HẸN để quản lý công việc dễ dàng và không bỏ lỡ sự kiện nào của bạn."
+      },
+      "modal": {
+        "create_calendar": {
+          "title": "Tạo lịch tuần"
+        },
+        "setting_weekly_calendar": {
+          "title": "Cài đặt lịch tuần",
+          "monday": "Thứ 2",
+          "tuesday": "Thứ 3",
+          "wednesday": "Thứ 4",
+          "thursday": "Thứ 5",
+          "friday": "Thứ 6",
+          "saturday": "Thứ 7",
+          "sunday": "Chủ nhật",
+          "day_begining": "Thứ bắt đầu trong tuần"
+        },
+        "create_weekly_calendar": {
+          "title": "Tạo lịch tuần",
+          "title_left": "Thiết lập lịch",
+          "title_right": "Lịch tuần",
+          "select_year": "Chọn năm",
+          "select_week": "Chọn tuần",
+          "select_time": "Chọn giờ",
+          "content": "Nội dung",
+          "notify_due": "Thông báo khi đến hạn",
+          "minues": "Phút",
+          "hours": "Giờ",
+          "day": "Ngày",
+          "notify_before": "Nhắc trước",
+          "receiver": "Người nhận",
+          "all": "Tất cả",
+          "change": "Thay đổi",
+          "detail_content": "Nội dung chi tiết",
+          "label": {
+            "title": "Tiêu đề"
+          }
+        },
+        "edit_weekly_calendar": {
+          "title": "Sửa lịch tuần"
+        },
+        "create_project_calendar": {
+          "create_title": "Tạo lịch dự án",
+          "edit_title": "Sửa lịch dự án",
+          "name": "Tên lịch",
+          "description": "Mô tả lịch",
+          "name_required": "Không được để trống."
+        },
+        "create_group_personal_remind": {
+          "title_create": "Tạo nhóm nhắc hẹn",
+          "title_update": "Sửa nhóm nhắc hẹn",
+          "group_title": "Tên nhóm",
+          "group_color": "Chọn màu đại diện"
+        },
+        "create_personal_remind": {
+          "title": "Tạo nhắc hẹn",
+          "choose_category": "Chọn nhóm nhắc hẹn",
+          "choose_day": "Ngày nhắc",
+          "choose_time": "Giờ nhắc",
+          "repeat_remind": "Nhắc hẹn định kỳ",
+          "one_time": "Nhắc 1 lần",
+          "daily": "Nhắc hằng ngày",
+          "weekly": "Nhắc hằng tuần",
+          "monthly": "Nhắc hằng tháng",
+          "content": "Nội dung",
+          "member_assign": "Gắn thành viên nhận nhắc hẹn",
+          "description": "Bạn có lịch hẹn, ghi chú, sự kiên... quan trọng? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhỏ bạn khi đến hạn.",
+          "empty_category_description": "Hiện tại bạn chưa có nhóm nhắc hẹn của bạn được tạo. Hãy tạo mới nhóm nhắc hẹn trước khi tạo nhắc hẹn!"
+        },
+        "update_personal_remind": {
+          "title": "Sửa nhắc hẹn"
+        },
+        "working_stage": {
+          "create_title": "Thêm thời gian ( cài đặt thời gian )",
+          "edit_title": "Sửa thời gian ( cài đặt thời gian )",
+          "description": "Nhập khoảng thời gian áp dụng giờ làm",
+          "from_date": "Từ ngày",
+          "to_date": "đến ngày"
+        },
+        "shift_stage": {
+          "create_title": "Thêm ca làm việc",
+          "edit_title": "Sửa ca làm việc",
+          "time_start": "Thời gian bắt đầu",
+          "time_end": "Thời gian kết thúc",
+          "shift_name": "Tên ca"
         }
       }
     }
@@ -861,6 +996,27 @@
   "IDS_WP_ROLE": "Vai trò",
   "IDS_WP_SETTING_SOFTWARE": "Thiết lập phần mềm",
   "IDS_WP_COMMON_SETUP": "Cài đặt chung",
+  "IDS_WP_EXPAND": "Mở rộng",
+  "IDS_WP_COLLAPS": "Thu hẹp",
+  "IDS_WP_FILTER": "Lọc",
+  "IDS_WP_WEEKLY_CALENDAR": "Lịch tuần",
+  "IDS_WP_PROJECT_CALENDAR": "Lịch dự án",
+  "IDS_WP_ALARM_CALENDAR": "Lịch nhắc hẹn",
+  "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Nhắc hẹn, lịch hẹn, báo hẹn",
+  "IDS_WP_WEEK_COUNT": "Lịch tuần số",
+  "IDS_WP_WEEK": "Tuần",
+  "IDS_WP_YEAR": "Năm",
+  "IDS_WP_FROM": "Từ",
+  "IDS_WP_SELECT_YEAR": "Chọn thời gian",
+  "IDS_WP_INPUT_SEARCH_PROJECT": "Tìm dự án",
+  "IDS_WP_FILTER_BY_PROJECT": "Lọc theo dự án",
+  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Chọn/bỏ chọn để lọc nhắc hẹn theo dự án",
+  "IDS_WP_CREATED_AT": "Tạo lúc",
+  "IDS_WP_REMIND": "Nhắc",
+  "IDS_WP_REQUIRED": "Không được để trống.",
+  "IDS_WP_COMMON_ADD": "Thêm",
+  "IDS_WP_PERSONAL": "Cá nhân",
+  "IDS_WP_REQUIRED_LABEL": "Bắt buộc",
   "LABEL_CHAT_TASK_CHON_TAI_LIEU": "Chọn tài liệu",
   "LABEL_CHAT_TASK_TAI_TAI_LIEU_TU_MAY_TINH": "Tải tài liệu từ máy tính",
   "LABEL_CHAT_TASK_TAI_LIEU_MOI_TU": "Tài liệu mới từ máy tính của bạn",

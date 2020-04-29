@@ -1,0 +1,61 @@
+.view_CreatPeronsalRemindGroup_container {
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  &>span {
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .MuiFormControl-root {
+    margin-bottom: 20px;
+  }
+
+  #group-name-helper-text {
+    color: red;
+  }
+}
+
+.group_remind_color_avatar {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 250px;
+
+  .color_picked_block {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: 1px solid #009CF3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .color_picked_inner {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background: #009CF3;
+  }
+}
+
+@mixin comp_CustomModal___dialog {
+  &>div:nth-child(3)>div {
+    overflow: hidden;
+    min-width: 40vw;
+  }
+}
+
+.comp_CustomModal___dialog {
+  &-sm {
+    @include comp_CustomModal___dialog;
+
+    &>div:nth-child(3)>div {
+      max-width: 800px;
+    }
+  }
+}

@@ -1,8 +1,10 @@
+import { deleteTrashProject } from 'actions/project/deleteTrashProject';
+import { listDeletedProject } from 'actions/project/listDeletedProject';
+import { restoreTrashProject } from 'actions/project/restoreTrashProject';
+import { CustomEventDispose, CustomEventListener, DELETE_PROJECT } from 'constants/events';
 import { get, reverse, sortBy } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteTrashProject } from '../../../../actions/project/deleteTrashProject';
-import { restoreTrashProject } from '../../../../actions/project/restoreTrashProject';
 import { routeSelector } from '../../selectors';
 import DeletedProjectTablePresenter from './presenters';
 import { pendingsSelector, projectsSelector } from './selectors';
@@ -11,7 +13,20 @@ function DeletedProjectTable({
   expand, handleExpand,
   projects, route, pendings,
   doDeleteTrashProject, doRestoreTrashProject,
+  doListDeletedProject,
 }) {
+
+  React.useEffect(() => {
+    doListDeletedProject({});
+    const reloadListDeletedProject = () => {
+      doListDeletedProject({});
+    }
+    CustomEventListener(DELETE_PROJECT, reloadListDeletedProject);
+    return () => {
+      CustomEventDispose(DELETE_PROJECT, reloadListDeletedProject);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const [newProjects, setNewProjects] = React.useState(projects);
   const [sortType, setSortType] = React.useState({});
@@ -58,6 +73,7 @@ const mapDispatchToProps = dispatch => {
   return {
     doDeleteTrashProject: ({ projectId }) => dispatch(deleteTrashProject({ projectId })),
     doRestoreTrashProject: ({ projectId }) => dispatch(restoreTrashProject({ projectId })),
+    doListDeletedProject: (options, quite) => dispatch(listDeletedProject(options, quite)),
   }
 }
 

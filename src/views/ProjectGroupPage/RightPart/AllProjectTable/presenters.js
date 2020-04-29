@@ -115,8 +115,6 @@ function AllProjectTable({
     setCurProject(oldProject => find(projects.projects, { id: get(oldProject, 'id') }))
   }, [projects]);
 
-  console.log('x');
-
   return (
     <Container>
       <React.Fragment>
@@ -194,6 +192,8 @@ function AllProjectTable({
               id: 'id',
             },
             noData: {
+              bool: (projects.firstTime === false)
+                && (projects.projectGroupsCount === 0 || projects.projects.length === 0),
               subtitle: projects.projectGroupsCount === 0
                 ? t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_PROJECT")
                 : t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_TASK")
@@ -234,10 +234,10 @@ function AllProjectTable({
                       {get(row, 'state_code') === 5 ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : get(row, 'state_name')}
                     </span>
                   </div>
-                  {get(row, 'state_code') !== 5 && (
+                  {(get(row, 'state_code') === 1 || get(row, 'state_code') === 3) && (
                     <small>
                       {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
-                        date: get(row, 'state_code', '') === 3
+                        date: get(row, 'state_code') === 3
                           ? get(row, 'day_expired', 0)
                           : get(row, 'day_implement', 0)
                       }
@@ -246,7 +246,7 @@ function AllProjectTable({
                   )}
                 </StateBox>
               ),
-              sort: evt => handleSortType('state_name'),
+              sort: evt => handleSortType('state_code'),
               align: 'left',
               width: '10%',
             },
@@ -309,7 +309,7 @@ function AllProjectTable({
                   </TooltipWrapper>
                 </LightTooltip>
               ),
-              sort: evt => handleSortType('complete'),
+              sort: evt => handleSortType('statistic.doing'),
               align: 'center',
               width: '17%',
             },
@@ -347,7 +347,7 @@ function AllProjectTable({
                   {get(row, 'priority_name', '')}
                 </CustomBadge>
               ),
-              sort: evt => handleSortType('priority_name'),
+              sort: evt => handleSortType('priority_code'),
               align: 'center',
               width: '10%',
             },

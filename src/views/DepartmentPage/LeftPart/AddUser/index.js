@@ -9,7 +9,7 @@ import { getRequirementJoinGroup } from '../../../../actions/groupUser/getRequir
 import { inviteUserJoinGroup } from '../../../../actions/groupUser/inviteUserJoinGroup';
 import { rejectRequirementJoinGroup } from '../../../../actions/groupUser/rejectRequirementJoinGroup';
 import { resendInvitationUserJoinGroup } from '../../../../actions/groupUser/resendInvitationUserJoinGroup';
-import { searchUser, searchUserReset } from '../../../../actions/groupUser/searchUser';
+import { searchUser } from '../../../../actions/groupUser/searchUser';
 import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
 import { getPermissionViewUser } from '../../../../actions/viewPermissions';
 import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CANCLE_INVITATION_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP } from '../../../../constants/events';
@@ -22,10 +22,12 @@ function AddUser({
   requireUsers, requireLoading,
   invitations,
   anchorDrawer,
-  doSearchUser, doSearchUserReset,
+  doSearchUser,
   doInviteUserJoinGroup, doResendInvitationUserJoinGroup,
   doAcceptRequirementJoinGroup, doRejectRequirementJoinGroup,
-  doGetRequirementJoinGroup, doGetListGroup, doGetListInvitationSent,
+  doGetRequirementJoinGroup,
+  doGetListGroup,
+  doGetListInvitationSent,
   doCancleInvitationJoinGroup,
   doActionVisibleDrawerMessage,
   doGetPermissionViewUser,
@@ -44,11 +46,9 @@ function AddUser({
         const doSearchUserHandler = () => {
           doSearchUser({ info: searchPatern });
         };
-
         CustomEventListener(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
         CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
         CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, doSearchUserHandler);
-
         return () => {
           CustomEventDispose(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
           CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
@@ -56,65 +56,60 @@ function AddUser({
         }
       }
     }
-  }, [doSearchUser, searchPatern, viewPermissions]);
+    // eslint-disable-next-line
+  }, [searchPatern, viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
       doGetRequirementJoinGroup();
-
       const doGetRequirementJoinGroupHandler = () => {
         doGetRequirementJoinGroup(true);
       };
-
       CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
       CustomEventListener(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
-
       return () => {
         CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
         CustomEventDispose(REJECT_REQUIREMENT_USER_JOIN_GROUP, doGetRequirementJoinGroupHandler);
       }
     }
-  }, [doGetRequirementJoinGroup, viewPermissions]);
+    // eslint-disable-next-line
+  }, [viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
       doGetListGroup();
-
       const reloadGetListGroup = () => {
         doGetListGroup(true);
       };
-
       CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetListGroup);
       CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListGroup);
       CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, reloadGetListGroup);
-
       return () => {
         CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetListGroup);
         CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListGroup);
         CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, reloadGetListGroup);
       }
     }
-  }, [doGetListGroup, viewPermissions]);
+    // eslint-disable-next-line
+  }, [viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
       doGetListInvitationSent();
-
       const reloadGetListInvitationSent = () => {
         doGetListInvitationSent(true);
       };
-
       CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetListInvitationSent);
       CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListInvitationSent);
       CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, reloadGetListInvitationSent);
-
       return () => {
         CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetListInvitationSent);
         CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, reloadGetListInvitationSent);
         CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, reloadGetListInvitationSent);
       }
     }
-  }, [doGetListInvitationSent, viewPermissions]);
+    // eslint-disable-next-line
+  }, [viewPermissions]);
 
   return (
     <AddUserPresenter
@@ -123,7 +118,7 @@ function AddUser({
       desireUser={desireUser} desireLoading={desireLoading}
       requireUsers={requireUsers} requireLoading={requireLoading}
       invitations={invitations}
-      handleSearchUser={doSearchUser} handleSearchUserReset={doSearchUserReset}
+      handleSearchUser={doSearchUser}
       handleInviteUserJoinGroup={doInviteUserJoinGroup} handleResendInvitationUserJoinGroup={doResendInvitationUserJoinGroup}
       handleAcceptRequirementJoinGroup={doAcceptRequirementJoinGroup} handleRejectRequirementJoinGroup={doRejectRequirementJoinGroup}
       handleCancleInvitationJoinGroup={doCancleInvitationJoinGroup}
@@ -151,7 +146,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doSearchUser: ({ info }, quite) => dispatch(searchUser({ info }, quite)),
-    doSearchUserReset: () => dispatch(searchUserReset()),
     doInviteUserJoinGroup: ({ userId }) => dispatch(inviteUserJoinGroup({ userId })),
     doResendInvitationUserJoinGroup: ({ userId }) => dispatch(resendInvitationUserJoinGroup({ userId })),
     doGetRequirementJoinGroup: (quite) => dispatch(getRequirementJoinGroup(quite)),

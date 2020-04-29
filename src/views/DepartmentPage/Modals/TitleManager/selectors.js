@@ -9,15 +9,16 @@ const deletePosition = state => state.position.deletePosition;
 export const positionsSelector = createSelector(
   [listPosition, createPosition, updatePosition, deletePosition],
   (listPosition, createPosition, updatePosition, deletePosition) => {
-    const { data: { positions }, loading: listLoading, error: listError } = listPosition;
+    const { data: { positions }, loading: listLoading, error: listError, firstTime } = listPosition;
     const { loading: createLoading, error: createError } = createPosition;
     const { pendings: updatePendings, error: updateError } = updatePosition;
     const { pendings: deletePendings, error: deleteError } = deletePosition;
     return {
       positions,
-      loading: listLoading || createLoading,
+      loading: (firstTime ? false : listLoading) || createLoading,
       error: listError || createError || updateError || deleteError,
       pendings: concat(updatePendings, deletePendings),
+      firstTime,
     }
   }
 );
