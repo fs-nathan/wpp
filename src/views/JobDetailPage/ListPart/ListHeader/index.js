@@ -4,7 +4,7 @@ import Icon from '@mdi/react';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
+// import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
 import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
@@ -105,7 +105,7 @@ function ListHeader(props) {
         isOpen={isOpenSettings}
         setOpen={setOpenSettings}
       />
-      <CreateProjectGroup open={isOpenCreateGroup} setOpen={setOpenCreateGroup}></CreateProjectGroup>
+      {/* <CreateProjectGroup open={isOpenCreateGroup} setOpen={setOpenCreateGroup}></CreateProjectGroup> */}
     </div>
   );
 }
