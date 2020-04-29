@@ -60,7 +60,7 @@ function CreateAccount({
           style={{
             backgroundColor: bgColor.color,
             color: 'white',
-            opacity: actionLoading ? 1 : 0.5,
+            opacity: !actionLoading ? 1 : 0.5,
           }}
           onClick={evt => {
             handleInviteOtherPeopleCreateAccount(email);

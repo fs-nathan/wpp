@@ -22,7 +22,7 @@ function AddUser({
   requireUsers, requireLoading,
   invitations,
   anchorDrawer,
-  doSearchUser, doSearchUserReset,
+  doSearchUser,
   doInviteUserJoinGroup, doResendInvitationUserJoinGroup,
   doAcceptRequirementJoinGroup, doRejectRequirementJoinGroup,
   doGetRequirementJoinGroup,
@@ -39,13 +39,6 @@ function AddUser({
   }, [doGetPermissionViewUser]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
-
-  React.useEffect(() => {
-    if (get(viewPermissions.permissions, 'can_modify', false)) {
-      doSearchUserReset();
-    }
-    // eslint-disable-next-line
-  }, [viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
@@ -98,7 +91,7 @@ function AddUser({
       }
     }
     // eslint-disable-next-line
-  }, [dviewPermissions]);
+  }, [viewPermissions]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
@@ -125,7 +118,7 @@ function AddUser({
       desireUser={desireUser} desireLoading={desireLoading}
       requireUsers={requireUsers} requireLoading={requireLoading}
       invitations={invitations}
-      handleSearchUser={doSearchUser} handleSearchUserReset={doSearchUserReset}
+      handleSearchUser={doSearchUser}
       handleInviteUserJoinGroup={doInviteUserJoinGroup} handleResendInvitationUserJoinGroup={doResendInvitationUserJoinGroup}
       handleAcceptRequirementJoinGroup={doAcceptRequirementJoinGroup} handleRejectRequirementJoinGroup={doRejectRequirementJoinGroup}
       handleCancleInvitationJoinGroup={doCancleInvitationJoinGroup}

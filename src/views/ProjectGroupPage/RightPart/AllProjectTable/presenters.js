@@ -234,12 +234,12 @@ function AllProjectTable({
                       {get(row, 'state_code') === 5 ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : get(row, 'state_name')}
                     </span>
                   </div>
-                  {get(row, 'state_code') !== 5 && (
+                  {(get(row, 'state_code') === 1 || get(row, 'state_code') === 3) && (
                     <small>
                       {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
-                        date: get(row, 'state_code', '') === 3
+                        date: get(row, 'state_code') === 3
                           ? get(row, 'day_expired', 0)
-                          : ''
+                          : get(row, 'day_implement', 0)
                       }
                       )}
                     </small>

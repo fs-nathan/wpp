@@ -117,6 +117,7 @@ function TwoColumns({ maxWidth, left, right, height, }) {
 function CustomModal({
   loading = false,
   actionLoading = false,
+  activeLoading = false,
   title,
   titleRender = null,
   columns = 1,
@@ -191,8 +192,8 @@ function CustomModal({
         )}
         {confirmRender !== null && (
           <ActionsAcceptButton
-            style={{ color: bgColor.color, opacity: canConfirm ? 1 : 0.5 }}
-            disabled={!canConfirm || actionLoading}
+            style={{ color: bgColor.color, opacity: !canConfirm || actionLoading || activeLoading ? 0.5 : 1 }}
+            disabled={!canConfirm || actionLoading || activeLoading}
             onClick={() => handleConfirm()}
           >
             <CircularProgress
@@ -200,7 +201,7 @@ function CustomModal({
               className="margin-circular"
               color={bgColor.color}
               style={{
-                opacity: actionLoading ? 1 : 0
+                opacity: (actionLoading || activeLoading) ? 1 : 0
               }}
             />
             {isFunction(confirmRender) ? confirmRender() : t('DMH.COMP.CUSTOM_MODAL.CONFIRM')}
