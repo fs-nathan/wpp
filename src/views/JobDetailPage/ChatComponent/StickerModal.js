@@ -1,3 +1,4 @@
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import clsx from 'clsx';
 import words from 'lodash/words';
 import React from 'react';
@@ -21,22 +22,23 @@ const StickerModal = ({
 
   return (
     !isEmpty(renderStickersList) ?
-      <div
-        id="tag-menu"
-        className={clsx("stickerModal--list", { 'stickerModal__open': isOpen })}
-      >
-        {renderStickersList.map(el => (
-          <div key={el.id}
-            className="stickerModal--menuItem"
-            onClick={onClickSticker(el.id)}>
-            <img className="stickerModal--image"
-              // style={{ width: el.witdh_of_web, height: el.witdh_of_web }}
-              alt="sticker" src={el.url} />
+      <ClickAwayListener onClickAway={handleClose}>
+        <div
+          className={clsx("stickerModal--list", { 'stickerModal__open': isOpen })}
+        >
+          {renderStickersList.map(el => (
+            <div key={el.id}
+              className="stickerModal--menuItem"
+              onClick={onClickSticker(el.id)}>
+              <img className="stickerModal--image"
+                // style={{ width: el.witdh_of_web, height: el.witdh_of_web }}
+                alt="sticker" src={el.url} />
               &nbsp;&nbsp;&nbsp;
-            <span>{el.name}</span>
-          </div>
-        ))}
-      </div>
+              <span>{el.name}</span>
+            </div>
+          ))}
+        </div>
+      </ClickAwayListener>
       : null
   );
 };

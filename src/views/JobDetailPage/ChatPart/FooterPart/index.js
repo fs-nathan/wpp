@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -12,6 +11,7 @@ import { humanFileSize } from 'helpers/jobDetail/stringHelper';
 import isEmpty from 'lodash/isEmpty';
 import words from 'lodash/words';
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
@@ -81,12 +81,17 @@ const FooterPart = ({
   }, [imagesQueue]);
 
   useEffect(() => {
-    if (chatText.indexOf('\n') === -1) {
-      dispatch(changeStickerKeyWord(chatText))
-      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(chatText) !== -1);
+    const wordsChat = words(chatText)
+    if (wordsChat.length > 0) {
+      const lastWord = wordsChat[wordsChat.length - 1]
+      dispatch(changeStickerKeyWord(lastWord))
+      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(lastWord) !== -1);
       if (renderStickersList.length > 0) {
         setOpenSticker(true)
       }
+    } else {
+      setOpenSticker(false)
+      dispatch(changeStickerKeyWord(''))
     }
   }, [chatText, dispatch, listStickers]);
 
@@ -160,6 +165,7 @@ const FooterPart = ({
   }
 
   const onClickOpenSticker = (evt) => {
+    dispatch(changeStickerKeyWord(''))
     setOpenSticker(!isOpenSticker);
   };
 
@@ -419,11 +425,14 @@ const FooterPart = ({
         handleClose={handleCloseTag}
         handleClickMention={handleClickMention}
       />
-      <StickerModal
-        isOpen={isOpenSticker}
-        handleClose={handleCloseSticker}
-        handleClickSticker={handleClickSticker}
-      />
+      {
+        isOpenSticker &&
+        <StickerModal
+          isOpen={isOpenSticker}
+          handleClose={handleCloseSticker}
+          handleClickSticker={handleClickSticker}
+        />
+      }
       <SendFileModal
         open={visibleSendFile}
         setOpen={setVisibleSendFile}

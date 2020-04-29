@@ -23,7 +23,8 @@
 .stickerModal {
   &--list {
     position: absolute;
-    bottom: 146px;
+    top: 0;
+    transform: translateY(-100%);
     display: none;
     flex-wrap: wrap;
     max-height: 215px;
@@ -33,6 +34,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
   }
   &__open {
     display: flex;
