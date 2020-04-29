@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ButtonGroup, Collapse } from '@material-ui/core';
 import { deleteOffer } from 'actions/taskDetail/taskDetailActions';
 import ColorButton from 'components/ColorButton';
@@ -26,6 +27,7 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function TabBody(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const offer = useSelector(state => state.taskDetail.taskOffer.offer);
@@ -85,28 +87,28 @@ function TabBody(props) {
             onClick={evt => handleChange(evt, 0)}
           >
             {value === 0
-              ? <ColorTypo bold>Tất cả ({offer.length})</ColorTypo>
-              : <ColorTypo color='gray'>Tất cả ({offer.length})</ColorTypo>}
+              ? <ColorTypo bold>{t('LABEL_CHAT_TASK_TAT_CA')}{offer.length})</ColorTypo>
+              : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_TAT_CA')}{offer.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 1)}
           >
             {value === 1
-              ? <ColorTypo bold>Đã duyệt ({approvedItems.length})</ColorTypo>
-              : <ColorTypo color='gray'>Đã duyệt ({approvedItems.length})</ColorTypo>}
+              ? <ColorTypo bold>{t('LABEL_CHAT_TASK_DA_DUYET')}{approvedItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_DA_DUYET')}{approvedItems.length})</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 2)}
           >
             {value === 2
-              ? <ColorTypo bold>Chờ duyệt ({pendingItems.length})</ColorTypo>
-              : <ColorTypo color='gray'>Chờ duyệt ({pendingItems.length})</ColorTypo>}
+              ? <ColorTypo bold>{t('LABEL_CHAT_TASK_CHO_DUYET')}{pendingItems.length})</ColorTypo>
+              : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_CHO_DUYET')}{pendingItems.length})</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
         {
           isNoData ? <NoDataPlaceHolder
             src="/images/no-request.png"
-            title="Chưa có đề xuất / phê duyệt nào được tạo! Click + để tạo mới."
+            title={t('LABEL_CHAT_TASK_CHUA_CO_DE_XUAT')}
           ></NoDataPlaceHolder> :
             <React.Fragment>
               <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>

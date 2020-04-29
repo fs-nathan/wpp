@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import styled from 'styled-components';
 import {
@@ -22,6 +23,7 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function TabBody() {
+  const { t } = useTranslation();
   const locations = useSelector(state => state.taskDetail.location.locations);
   const [value, setValue] = React.useState(0);
 
@@ -38,18 +40,18 @@ function TabBody() {
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
           >
-            {value === 0 ? <ColorTypo bold>Tất cả</ColorTypo> : <ColorTypo color='gray'>Tất cả</ColorTypo>}
+            {value === 0 ? <ColorTypo bold>{t('LABEL_CHAT_TASK_TAT_CA')}</ColorTypo> : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_TAT_CA')}</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 1)}
           >
-            {value === 1 ? <ColorTypo bold>Vị trí của tôi</ColorTypo> : <ColorTypo color='gray'>Vị trí của tôi</ColorTypo>}
+            {value === 1 ? <ColorTypo bold>{t('LABEL_CHAT_TASK_VI_TRI_CUA_TOI')}</ColorTypo> : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_VI_TRI_CUA_TOI')}</ColorTypo>}
           </ColorButton>
         </StyledButtonGroup>
         {
           isNoData ? <NoDataPlaceHolder
             src="/images/no-map.png"
-            title="Chưa có vị trí nào được chia sẻ! Sử dụng ứng dụng Workplus trên điện thoại để chia sẻ vị trí của bạn."
+            title={t('LABEL_CHAT_TASK_CHUA_CO_VI_TRI')}
           ></NoDataPlaceHolder> :
             <React.Fragment>
               <Collapse in={value === 0} mountOnEnter unmountOnExit>

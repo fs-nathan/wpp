@@ -1,16 +1,21 @@
-import { Button } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
+import { mdiCloudUpload, mdiLaptop } from '@mdi/js';
+import Icon from '@mdi/react';
 import { appendChat, chatFile, onUploading } from 'actions/chat/chat';
 import { file as file_icon } from 'assets/fileType';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import { humanFileSize } from 'helpers/jobDetail/stringHelper';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomModal from '../../../../components/CustomModal';
 import './SendFileModal.scss';
 
 const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+  const fileInputRef = useRef()
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const userId = useSelector(state => state.system.profile.id)
 
   function onUploadingHandler(percent) {
     dispatch(onUploading(percent));
@@ -31,6 +36,7 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
     const data_chat = {
       type: CHAT_TYPE.UPLOADING_FILE, files: images,
       isUploading: true,
+      user_create_id: userId,
       is_me: true,
     }
     dispatch(appendChat({ data_chat }));
@@ -42,38 +48,44 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
     setOpen(false)
   };
 
+  function onClickFromComputer() {
+    fileInputRef.current.click()
+  }
+
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
       height="mini"
-      title="Chọn tài liệu"
+      title={t('LABEL_CHAT_TASK_CHON_TAI_LIEU')}
       className="send-file-modal"
       confirmRender={null}
       cancleRender={() => 'Thoát'}
     >
       <div className="send-file-content">
-        <div className="btn-upload">
+        <div className="SendFileModal--button" onClick={onClickFromComputer}>
           <input
             className="display-none"
             id="upload_file"
             multiple
             type="file"
             onChange={handleUploadFile}
+            ref={fileInputRef}
           />
-          <label htmlFor="upload_file">
-            <Button variant="outlined" component="span">
-              Tải file từ máy tính
-            </Button>
-          </label>
+          <Icon path={mdiLaptop} size={2}></Icon>
+          <div className="SendFileModal--rightButton">
+            <div className="SendFileModal--title">{t('LABEL_CHAT_TASK_TAI_TAI_LIEU_TU_MAY_TINH')}</div>
+            <div className="SendFileModal--description">{t('LABEL_CHAT_TASK_TAI_LIEU_MOI_TU')}</div>
+          </div>
         </div>
-        <div className="btn-upload">
-          <Button
-            variant="outlined"
-            onClick={onClickShareFromLibrary}
-          >
-            Chọn từ thư viện
-          </Button>
+        <div className="SendFileModal--button"
+          onClick={onClickShareFromLibrary}
+        >
+          <Icon path={mdiCloudUpload} size={2}></Icon>
+          <div className="SendFileModal--rightButton">
+            <div className="SendFileModal--title">{t('LABEL_CHAT_TASK_CHON_TAI_LIEU_TU_KHO_LUU_TRU')}</div>
+            <div className="SendFileModal--description">{t('LABEL_CHAT_TASK_SU_DUNG_TAI_LIEU')}</div>
+          </div>
         </div>
       </div>
     </CustomModal>

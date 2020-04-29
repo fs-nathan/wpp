@@ -88,30 +88,4 @@
       color: #007bff;
     }
   }
-  &--search {
-    .MuiInputBase-root {
-      border-radius: 0em;
-      height: 40px;
-      background-color: #fff;
-      border-bottom: 1px solid #f1f3f4;
-    }
-    svg {
-      width: 20px !important;
-      height: 20px !important;
-      top: 9px !important;
-    }
-  }
-  &--showSearch {
-    position: relative;
-  }
-  &--close {
-    position: absolute;
-    bottom: -5px;
-    right: 0px;
-    svg {
-      width: 20px !important;
-      height: 20px !important;
-      fill: #666666;
-    }
-  }
 }

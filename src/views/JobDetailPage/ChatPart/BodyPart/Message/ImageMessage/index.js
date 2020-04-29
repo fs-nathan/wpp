@@ -5,6 +5,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import ModalImage from 'views/JobDetailPage/ModalImage';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 
@@ -26,6 +27,7 @@ const ImageMessage = ({
   chatPosition = "top",
 }) => {
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
+  const groupActiveColor = useSelector(currentColorSelector)
 
   const [open, setOpen] = React.useState(false);
 
@@ -47,7 +49,9 @@ const ImageMessage = ({
   return (
     <div className={clsx("ImageMessage", `ImageMessage__${chatPosition}`)} >
       {!isReply && !is_me &&
-        <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        <abbr title={user_create_name}>
+          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        </abbr>
       }
       {!isReply && is_me &&
         <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
@@ -62,7 +66,7 @@ const ImageMessage = ({
             {isReply &&
               <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
             }
-            <div className="TextMessage--name"  >
+            {/* <div className="TextMessage--name"  >
               {user_create_name}
             </div>
             <div className="TextMessage--position"  >
@@ -72,7 +76,7 @@ const ImageMessage = ({
               <div className="TextMessage--room"  >
                 {user_create_roles[0]}
               </div>
-            }
+            } */}
           </div>
         }
         <div className="ImageMessage--imagesContainer" >
@@ -84,11 +88,7 @@ const ImageMessage = ({
                   `ImageMessage--wrap__number${i + 1}`,
                   { 'ImageMessage--wrap__reply': isReply }
                 )} >
-                {!isReply &&
-                  <div className="ImageMessage--quality" >
-                    HD
-                    </div>
-                }
+
                 {
                   (plusImage > 0 && !isReply && i === 5) ? (
                     <div className={clsx("ImageMessage--plus")}>
@@ -103,6 +103,15 @@ const ImageMessage = ({
                     :
                     <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
                 }
+                {!isReply &&
+                  <>
+                    <div className="ImageMessage--quality" >
+                      HD
+                    </div>
+                    <div className="ImageMessage--cover" >
+                    </div>
+                  </>
+                }
               </div>
             )
           }
@@ -114,10 +123,10 @@ const ImageMessage = ({
               </div>
             )
           }
-          {isUploading &&
+          {isUploading && uploadingPercent !== 100 &&
             <div className="ImageMessage--loading" >
               <div className="ImageMessage--loadingBackground" >
-                <div className="ImageMessage--loadingPercent" style={{ width: uploadingPercent }} >
+                <div className="ImageMessage--loadingPercent" style={{ width: `${uploadingPercent}%`, backgroundColor: groupActiveColor }} >
                 </div>
               </div>
             </div>}

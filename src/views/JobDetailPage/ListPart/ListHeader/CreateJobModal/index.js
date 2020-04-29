@@ -1,7 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, updateNameDescriptionTask } from 'actions/taskDetail/taskDetailActions';
+import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import TextEditor, { getEditorData } from 'components/TextEditor';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
@@ -17,6 +18,13 @@ import CommonPriorityForm from './CommonPriorityForm';
 import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
 
+export const EDIT_MODE = {
+  NAME_DES: 0,
+  GROUP: 1,
+  WORK_DATE: 2,
+  PRIORITY: 3,
+  ASSIGN_TYPE: 4,
+}
 
 let optionsList = [
   { value: 2, label: 'Ngày và giờ (mặc định)' },
@@ -35,9 +43,9 @@ const DEFAULT_ASSIGN_ID = assignList[0];
 
 // Define variable using in form
 let priorityList = [
-  { id: 0, value: 'Thấp' },
+  { id: 2, value: 'Thấp' },
   { id: 1, value: 'Trung bình' },
-  { id: 2, value: 'Cao' }
+  { id: 0, value: 'Cao' },
 ];
 const DEFAULT_PRIORITY = priorityList[0].value;
 const DEFAULT_PRIORITY_ID = priorityList[0].id;
@@ -66,8 +74,10 @@ function validate(data) {
 }
 
 function CreateJobModal(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
+  const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
@@ -79,10 +89,14 @@ function CreateJobModal(props) {
   // const [openAddModal, setOpenAddModal] = React.useState(false);
   const [listGroupTask, setListGroupTask] = React.useState([]);
   const [groupTaskValue, setGroupTaskValue] = React.useState(null);
+  const [listSchedules, setListSchedules] = React.useState([]);
+  const [scheduleValue, setScheduleValue] = React.useState(null);
   const [type, setType] = useState(2);
 
+  const isEdit = props.editMode !== null && props.editMode !== undefined;
+
   const updateData = () => {
-    const dataNameDescription = {
+    const updateData = {
       task_id: taskId,
       name: data.name,
       description: JSON.stringify(convertToRaw(data.description.getCurrentContent())),
@@ -94,8 +108,29 @@ function CreateJobModal(props) {
       project_id: projectId,
       group_task: data.group_task,
       type_assign: data.type_assign.id,
+      schedule_id: data.schedule,
     }
-    dispatch(updateNameDescriptionTask(dataNameDescription));
+    // dispatch(updateNameDescriptionTask(dataNameDescription));
+    switch (props.editMode) {
+      case EDIT_MODE.NAME_DES:
+        dispatch(updateNameDescription(taskId, data.name, updateData.description));
+        break;
+      case EDIT_MODE.PRIORITY:
+        dispatch(updatePriority(taskId, data.priority));
+        break;
+      case EDIT_MODE.WORK_DATE:
+        dispatch(updateScheduleTask(taskId, updateData.schedule_id));
+        break;
+      case EDIT_MODE.ASSIGN_TYPE:
+        dispatch(updateTypeAssign(taskId, data.type_assign.id));
+        break;
+      case EDIT_MODE.GROUP:
+        dispatch(updateGroupTask(taskId, data.group_task));
+        break;
+
+      default:
+        break;
+    }
     props.setOpen(false);
   };
 
@@ -116,6 +151,23 @@ function CreateJobModal(props) {
       if (item) setGroupTaskValue(item);
     }
   }, [listTaskDetail]);
+
+  React.useEffect(() => {
+    if (listSchedule) {
+      // Map task to input
+      let listSchedulesData = listSchedule.map(item => ({
+        label: item.name,
+        value: item._id
+      }));
+      setListSchedules(listSchedulesData);
+
+      // Set default group for input
+      let item = listSchedulesData.find(
+        item => item.value === ''
+      );
+      if (item) setScheduleValue(item);
+    }
+  }, [listSchedule]);
 
   React.useEffect(() => {
     if (props.data) {
@@ -147,7 +199,13 @@ function CreateJobModal(props) {
     // eslint-disable-next-line
   }, [isFetching])
 
+  useEffect(() => {
+    if (projectId)
+      dispatch(getSchedules(projectId))
+  }, [dispatch, projectId])
+
   const handleChangeData = (attName, value) => {
+    console.log(attName, value)
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
 
@@ -161,7 +219,8 @@ function CreateJobModal(props) {
     start_date: data.start_date,
     start_time: data.start_time,
     end_date: data.end_date,
-    end_time: data.end_time
+    end_time: data.end_time,
+    schedule_id: data.schedule,
   };
 
   const handlePressConfirm = () => {
@@ -188,146 +247,179 @@ function CreateJobModal(props) {
 
   return (
     <JobDetailModalWrap
-      title={props.isRight ? 'Chỉnh sửa công việc' : 'Tạo công việc'}
+      title={isEdit ? 'Chỉnh sửa công việc' : 'Tạo công việc'}
       open={props.isOpen}
       setOpen={props.setOpen}
-      confirmRender={() => props.isRight ? "Hoàn Thành" : "TẠO VIỆC"}
-      onConfirm={props.isRight ? updateData : handlePressConfirm}
+      confirmRender={() => isEdit ? "Hoàn Thành" : "TẠO VIỆC"}
+      onConfirm={isEdit ? updateData : handlePressConfirm}
       canConfirm={validate(data)}
       maxWidth='sm'
       className="createJob"
     >
       <React.Fragment>
-        <Typography className="createJob--titleLabel" component={'div'}> Chọn nhóm công việc </Typography>
-        <Typography component={'div'} style={{ marginBottom: '20px' }}>
-          <CustomSelect
-            options={listGroupTask}
-            value={groupTaskValue}
-            onChange={({ value: groupTaskId }) => handleChangeData('group_task', groupTaskId)}
-          />
-        </Typography>
-        <Typography component={'div'} style={{ marginBottom: 10 }}>
-          <Typography className="createJob--titleText" component={'span'}>
-            <TextField
-              className="createJob--inputTextJob"
-              label="Tên công việc"
-              helperText={data.name ? '' : "Không được để trống"}
-              margin="normal"
-              variant="outlined"
-              fullWidth
-              value={data.name}
-              onChange={e => handleChangeData('name', e.target.value)}
-            />
-          </Typography>
-        </Typography>
-        <Typography className="createJob--description" component={'div'}>
-          <Typography className="createJob--titleLabel" component={'span'}>Mô tả công việc</Typography>
-          <TextEditor
-            className="createJob--content"
-            value={data.description}
-            onChange={value => handleChangeData('description', value)}
-          />
-        </Typography>
-        <Typography className="createJob--processWork" component={'span'}>
-          <Typography className="createJob--titleLabel" component={'span'}>Tiến độ công việc</Typography>
-        </Typography>
-        <CommonProgressForm
-          items={optionsList}
-          value={type}
-          handleChange={setType}
-        />
-        {type !== 0 &&
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Typography className="createJob--timeWrap" component={'span'}>
-              <Typography className="createJob--endTime" component={'span'}>Ngày bắt đầu</Typography>
-              {type === 1 ? (
-                <KeyboardDatePicker
-                  className="createJob--inputDate"
-                  size="small"
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.start_date}
-                  onChange={e => handleChangeData('start_date', convertDate(e))}
-                />
-              ) : (
-                  <TimeSelect
-                    className="createJob--timeSelect"
-                    value={data.start_time}
-                    onChange={({ target }) => handleChangeData('start_time', target.value)}
-                  />
-                )}
-              {type !== 1 && (
-                <KeyboardDatePicker
-                  className="createJob--inputDate"
-                  size="small"
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.start_date}
-                  onChange={e => handleChangeData('start_date', convertDate(e))}
-                />
-              )}
+        {
+          (!isEdit || props.editMode === EDIT_MODE.GROUP) &&
+          <>
+            <Typography className="createJob--titleLabel" component={'div'}>{t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC')}</Typography>
+            <Typography component={'div'} >
+              <CustomSelect
+                options={listGroupTask}
+                value={groupTaskValue}
+                onChange={({ value: groupTaskId }) => handleChangeData('group_task', groupTaskId)}
+              />
             </Typography>
-            <Typography className="createJob--timeWrap" component={'span'}>
-              <Typography className="createJob--endTime" component={'span'}>Ngày kết thúc</Typography>
-              {type === 1 ? (
-                <KeyboardDatePicker
-                  className="createJob--inputDate"
-                  size="small"
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.end_date}
-                  // minDate={data.start_date}
-                  onChange={e => handleChangeData('end_date', convertDate(e))}
-                />
-              ) : (
-                  <TimeSelect
-                    className="createJob--timeSelect"
-                    value={data.end_time}
-                    onChange={({ target }) => handleChangeData('end_time', target.value)}
-                  />
-                )}
-              {type !== 1 && (
-                <KeyboardDatePicker
-                  className="createJob--inputDate"
-                  size="small"
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.end_date}
-                  // minDate={data.start_date}
-                  onChange={e => handleChangeData('end_date', convertDate(e))}
-                />
-              )}
-            </Typography>
-          </MuiPickersUtilsProvider>
+          </>
         }
-        <Typography component={'span'}>
-          <Typography className="createJob--titleLabel" component={'div'}>Mức độ ưu tiên</Typography>
-          <CommonPriorityForm
-            labels={priorityList}
-            priority={data.priorityLabel}
-            handleChangeLabel={priorityItem =>
-              handleChangeData('priority', priorityItem.id)
+        {
+          (!isEdit || props.editMode === EDIT_MODE.NAME_DES) &&
+          <>
+            <Typography component={'div'} style={{ marginBottom: 10, marginTop: '30px' }}>
+              <Typography className="createJob--titleText" component={'span'}>
+                <TextField
+                  className="createJob--inputTextJob"
+                  label="Tên công việc"
+                  helperText={data.name ? '' : "Không được để trống"}
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                  value={data.name}
+                  onChange={e => handleChangeData('name', e.target.value)}
+                />
+              </Typography>
+            </Typography>
+            <Typography className="createJob--description" component={'div'}>
+              <Typography className="createJob--titleLabel" component={'span'}>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</Typography>
+              <TextEditor
+                className="createJob--content"
+                value={data.description}
+                onChange={value => handleChangeData('description', value)}
+              />
+            </Typography>
+          </>
+        }
+        {
+          (!isEdit || props.editMode === EDIT_MODE.WORK_DATE) &&
+          <>
+            <Typography className="createJob--processWork" component={'span'}>
+              <Typography className="createJob--titleLabel" component={'span'}>{t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')}</Typography>
+            </Typography>
+            <CommonProgressForm
+              items={optionsList}
+              value={type}
+              handleChange={setType}
+            />
+            {type !== 0 &&
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Typography className="createJob--titleLabel" component={'div'}>{t('LABEL_CHAT_TASK_LICH_CONG_VIEC')}</Typography>
+                <Typography component={'div'} style={{ marginBottom: '20px' }}>
+                  <CustomSelect
+                    options={listSchedules}
+                    value={scheduleValue}
+                    onChange={({ value: scheduleId }) => handleChangeData('schedule', scheduleId)}
+                  />
+                </Typography>
+                <Typography className="createJob--timeWrap" component={'span'}>
+                  <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_BAT_DAU')}</Typography>
+                  {type === 1 ? (
+                    <KeyboardDatePicker
+                      className="createJob--inputDate"
+                      size="small"
+                      disableToolbar
+                      variant="inline"
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      value={data.start_date}
+                      onChange={e => handleChangeData('start_date', convertDate(e))}
+                    />
+                  ) : (
+                      <TimeSelect
+                        className="createJob--timeSelect"
+                        value={data.start_time}
+                        onChange={({ target }) => handleChangeData('start_time', target.value)}
+                      />
+                    )}
+                  {type !== 1 && (
+                    <KeyboardDatePicker
+                      className="createJob--inputDate"
+                      size="small"
+                      disableToolbar
+                      variant="inline"
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      value={data.start_date}
+                      onChange={e => handleChangeData('start_date', convertDate(e))}
+                    />
+                  )}
+                </Typography>
+                <Typography className="createJob--timeWrap" component={'span'}>
+                  <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_KET_THUC')}</Typography>
+                  {type === 1 ? (
+                    <KeyboardDatePicker
+                      className="createJob--inputDate"
+                      size="small"
+                      disableToolbar
+                      variant="inline"
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      value={data.end_date}
+                      // minDate={data.start_date}
+                      onChange={e => handleChangeData('end_date', convertDate(e))}
+                    />
+                  ) : (
+                      <TimeSelect
+                        className="createJob--timeSelect"
+                        value={data.end_time}
+                        onChange={({ target }) => handleChangeData('end_time', target.value)}
+                      />
+                    )}
+                  {type !== 1 && (
+                    <KeyboardDatePicker
+                      className="createJob--inputDate"
+                      size="small"
+                      disableToolbar
+                      variant="inline"
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      value={data.end_date}
+                      // minDate={data.start_date}
+                      onChange={e => handleChangeData('end_date', convertDate(e))}
+                    />
+                  )}
+                </Typography>
+              </MuiPickersUtilsProvider>
             }
-          />
-        </Typography>
-        <Typography component={'span'}>
-          <Typography className="createJob--titleLabel" component={'div'}> Hình thức giao việc </Typography>
-          <CommonControlForm
-            labels={assignList}
-            assign={data.type_assign}
-            handleChangeAssign={assignItem =>
-              handleChangeData('type_assign', assignItem)
-            }
-          />
-        </Typography>
+          </>
+        }
+        {
+          (!isEdit || props.editMode === EDIT_MODE.PRIORITY) &&
+          <>
+            <Typography component={'span'}>
+              <Typography className="createJob--titleLabel" component={'div'}>{t('LABEL_CHAT_TASK_MUC_DO_UU_TIEN')}</Typography>
+              <CommonPriorityForm
+                labels={priorityList}
+                priority={data.priorityLabel}
+                handleChangeLabel={priorityItem =>
+                  handleChangeData('priority', priorityItem.id)
+                }
+              />
+            </Typography>
+          </>
+        }
+        {
+          (!isEdit || props.editMode === EDIT_MODE.ASSIGN_TYPE) &&
+          <>
+            <Typography component={'span'}>
+              <Typography className="createJob--titleLabel" component={'div'}>{t('LABEL_CHAT_TASK_HINH_THUC_GIAO_VIEC')}</Typography>
+              <CommonControlForm
+                labels={assignList}
+                assign={data.type_assign}
+                handleChangeAssign={assignItem =>
+                  handleChangeData('type_assign', assignItem)
+                }
+              />
+            </Typography>
+          </>
+        }
       </React.Fragment>
     </JobDetailModalWrap>
   );

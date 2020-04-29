@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
 import { updateCommand } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
@@ -26,6 +27,7 @@ const selector = [
 ]
 
 const DemandModal = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: props.taskId, content: "", type: -1 })
@@ -55,7 +57,7 @@ const DemandModal = (props) => {
   }
   return (
     <JobDetailModalWrap
-      title={"Chỉ đạo, quyết định"}
+      title={t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}
       open={props.isOpen}
       setOpen={props.setOpen}
       confirmRender={() => (props.isEditDemand) ? "Chỉnh sửa" : "Tạo mới"}
@@ -63,7 +65,7 @@ const DemandModal = (props) => {
       canConfirm={validate()}
     >
       <React.Fragment>
-        <TexTitle >Chọn loại</TexTitle>
+        <TexTitle >{t('LABEL_CHAT_TASK_CHON_LOAI')}</TexTitle>
         <OutlinedInputSelect
           selectedIndex={tempSelectedItem.type}
           setOptions={typeId => setParams("type", typeId)}
@@ -75,7 +77,7 @@ const DemandModal = (props) => {
           multiline
           rows="7"
           margin="normal"
-          placeholder="Nhập nội dung"
+          placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
           variant="outlined"
           value={tempSelectedItem.content}
           onChange={e => setParams("content", e.target.value)}

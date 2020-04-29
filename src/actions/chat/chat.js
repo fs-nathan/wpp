@@ -372,10 +372,10 @@ export function getEmotionsReactMemberFail(error) {
   };
 }
 
-export function createChatText(content) {
+export function createChatText(content, resendId) {
   return {
     type: actionTypes.CREATE_CHAT_TEXT,
-    content
+    content, resendId
   };
 }
 
@@ -386,10 +386,10 @@ export function createChatTextSuccess(payload) {
   };
 }
 
-export function createChatTextFail(error) {
+export function createChatTextFail(error, id) {
   return {
     type: actionTypes.CREATE_CHAT_TEXT_FAIL,
-    error
+    error, id
   };
 }
 
@@ -410,6 +410,174 @@ export function getViewedChatSuccess(payload) {
 export function getViewedChatFail(error) {
   return {
     type: actionTypes.GET_VIEWED_CHAT_FAIL,
+    error
+  };
+}
+
+export function openDetailRemind(isOpenDetailRemind, data) {
+  return {
+    type: actionTypes.OPEN_DETAIL_REMIND,
+    isOpenDetailRemind, data
+  };
+}
+
+export function openCreateRemind(isOpen, isCreate, data) {
+  return {
+    type: actionTypes.OPEN_CREATE_REMIND,
+    isOpen, isCreate, data
+  };
+}
+
+export function getRemindDetail(task_id, remind_id) {
+  return {
+    type: actionTypes.GET_REMIND_DETAIL,
+    task_id, remind_id
+  };
+}
+
+export function getRemindDetailSuccess(payload) {
+  return {
+    type: actionTypes.GET_REMIND_DETAIL_SUCCESS,
+    payload
+  };
+}
+
+export function getRemindDetailFail(error) {
+  return {
+    type: actionTypes.GET_REMIND_DETAIL_FAIL,
+    error
+  };
+}
+
+export function getSubtaskDetail(task_id, sub_task_id) {
+  return {
+    type: actionTypes.GET_SUBTASK_DETAIL,
+    task_id, sub_task_id
+  };
+}
+
+export function getSubtaskDetailSuccess(payload) {
+  return {
+    type: actionTypes.GET_SUBTASK_DETAIL_SUCCESS,
+    payload
+  };
+}
+
+export function getSubtaskDetailFail(error) {
+  return {
+    type: actionTypes.GET_SUBTASK_DETAIL_FAIL,
+    error
+  };
+}
+
+export function openDetailSubTask(isOpenDetailSubTask, data) {
+  return {
+    type: actionTypes.OPEN_DETAIL_SUB_TASK,
+    isOpenDetailSubTask, data
+  };
+}
+
+export function openDetailOffer(isOpenDetailOffer, data) {
+  return {
+    type: actionTypes.OPEN_DETAIL_OFFER,
+    isOpenDetailOffer, data
+  };
+}
+
+export function openDetailDemand(isOpenDetailDemand, data) {
+  return {
+    type: actionTypes.OPEN_DETAIL_DEMAND,
+    isOpenDetailDemand, data
+  };
+}
+
+export function getOfferDetail(task_id, offer_id) {
+  return {
+    type: actionTypes.GET_OFFER_DETAIL,
+    task_id, offer_id
+  };
+}
+
+export function getOfferDetailSuccess(payload) {
+  return {
+    type: actionTypes.GET_OFFER_DETAIL_SUCCESS,
+    payload
+  };
+}
+
+export function getOfferDetailFail(error) {
+  return {
+    type: actionTypes.GET_OFFER_DETAIL_FAIL,
+    error
+  };
+}
+
+export function getDemandDetail(task_id, demand_id) {
+  return {
+    type: actionTypes.GET_DEMAND_DETAIL,
+    task_id, demand_id
+  };
+}
+
+export function getDemandDetailSuccess(payload) {
+  return {
+    type: actionTypes.GET_DEMAND_DETAIL_SUCCESS,
+    payload
+  };
+}
+
+export function getDemandDetailFail(error) {
+  return {
+    type: actionTypes.GET_DEMAND_DETAIL_FAIL,
+    error
+  };
+}
+
+export function chatQuickLike(task_id) {
+  return {
+    type: actionTypes.CHAT_QUICK_LIKE,
+    task_id
+  };
+}
+
+export function chatQuickLikeSuccess(payload) {
+  return {
+    type: actionTypes.CHAT_QUICK_LIKE_SUCCESS,
+    payload
+  };
+}
+
+export function chatQuickLikeFail(error) {
+  return {
+    type: actionTypes.CHAT_QUICK_LIKE_FAIL,
+    error
+  };
+}
+
+export function deleteFailedChat(id) {
+  return {
+    type: actionTypes.DELETE_FAILED_CHAT,
+    id
+  };
+}
+
+export function createChatFileFromGoogleDriver(task_id, google_data) {
+  return {
+    type: actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER,
+    task_id, google_data
+  };
+}
+
+export function createChatFileFromGoogleDriverSuccess(payload) {
+  return {
+    type: actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_SUCCESS,
+    payload
+  };
+}
+
+export function createChatFileFromGoogleDriverFail(error) {
+  return {
+    type: actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_FAIL,
     error
   };
 }

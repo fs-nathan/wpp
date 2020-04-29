@@ -1,4 +1,7 @@
 .listPartTabBody {
+  path {
+    fill: inherit !important;
+  }
   &--expired {
     background-color: red;
     color: #fff;

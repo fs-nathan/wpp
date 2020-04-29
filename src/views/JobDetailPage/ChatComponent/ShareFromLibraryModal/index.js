@@ -1,22 +1,26 @@
-// import { Scrollbars } from 'react-custom-scrollbars';
-import { Avatar, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import { mdiChevronRight, mdiClose, mdiContentCopy, mdiDownloadOutline, mdiMagnify, mdiSwapVertical, mdiTrashCanOutline } from '@mdi/js';
+import { mdiChevronRight, mdiClose, mdiLogout, mdiMagnify, mdiRefresh } from '@mdi/js';
 import Icon from '@mdi/react';
-import { chatForwardFile } from 'actions/chat/chat';
-import { actionDeleteFile, actionDeleteFolder, actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionSelectedFolder, resetListSelectDocument } from 'actions/documents';
-import { actionChangeBreadCrumbs, openDocumentDetail } from 'actions/system/system';
-import AlertModal from 'components/AlertModal';
-import { FileType } from 'components/FileType';
-import MoreAction from 'components/MoreAction/MoreAction';
+import { chatForwardFile, createChatFileFromGoogleDriver } from 'actions/chat/chat';
+import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionFetchListProjectOfFolder, toggleSingoutGoogle } from 'actions/documents';
+import { actionChangeBreadCrumbs } from 'actions/system/system';
+import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
+import { transformGoogleDriverData, transformToGoogleFormData } from 'helpers/jobDetail/stringHelper';
 import { isEmpty } from 'helpers/utils/isEmpty';
-import { findIndex, uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { actionSignoutGoogleDrive } from 'views/DocumentPage/TablePart/ContentDocumentPage/googleDriveApi';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
+import AddNewButton from './AddNewButton';
+import DocumentsTable from './DocumentsTable';
+import GoogleDriverDocuments from './GoogleDriverDocuments';
 import MenuList, { DEFAULT_ITEM } from './MenuList';
+import NotFoundDocument from './NotFoundDocument';
+import ProjectDocumentsTable from './ProjectDocumentsTable';
 import './styles.scss';
 
 const ShareFromLibraryModal = ({ open, setOpen }) => {
@@ -24,6 +28,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
   const { t } = useTranslation()
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const listProject = useSelector(state => state.documents.listProject);
+  const isFetching = useSelector(state => state.documents.isFetching);
   const listDocumentFromMe = useSelector(state => state.documents.listDocumentFromMe);
   const listDocumentShareToMe = useSelector(state => state.documents.listDocumentShareToMe);
   const listMyDocument = useSelector(state => state.documents.listMyDocument);
@@ -32,25 +37,22 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
   const breadCrumbs = useSelector(state => state.system.breadCrumbs);
 
   const [listData, setListData] = useState([]);
+  const [listDataFiltered, setListDataFiltered] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(DEFAULT_ITEM);
-  const [selectedFilesIds, setSelectedFilesIds] = useState([]);
-  const [alert, setAlert] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isInsideProject, setInsideProject] = useState(true);
   const [isSearching, setSearching] = useState(false);
   const [isSorted, setSorted] = useState(false);
   const [searchKey, setSearchKey] = useState('');
-  const [fileSelectAction, setFileSelectAction] = useState(null);
 
   useEffect(() => {
     dispatch(actionFetchListMyDocument());
   }, [dispatch]);
 
   useEffect(() => {
-    if (searchKey) {
-      const filtered = listData.filter(({ name }) => name.indexOf(searchKey) !== -1)
-      setListData(filtered)
-    }
-    // eslint-disable-next-line
-  }, [searchKey]);
+    const filtered = listData.filter(({ name }) => !isSearching || !searchKey || name.indexOf(searchKey) !== -1)
+    setListDataFiltered(filtered)
+  }, [isSearching, listData, searchKey]);
 
   useEffect(() => {
     const sorted = listData.reverse()
@@ -69,7 +71,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     } else if (key === 'myDocument') {
       setListData(listMyDocument);
     } else if (key === 'googleDrive') {
-      setListData(listGoogleDocument);
+      setListData(listGoogleDocument.map(transformGoogleDriverData));
     }
   }, [listDocumentFromMe, listDocumentShareToMe, listGoogleDocument, listMyDocument, listProject, selectedMenu]);
 
@@ -78,6 +80,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     const key = menu.key;
     if (key === 'projectDocument') {
       dispatch(actionFetchListProject());
+      setInsideProject(true)
     } else if (key === 'sharedWithMe') {
       dispatch(actionFetchListDocumentShare());
     } else if (key === 'sharedFromMe') {
@@ -85,131 +88,20 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     } else if (key === 'myDocument') {
       dispatch(actionFetchListMyDocument());
     } else if (key === 'googleDrive') {
+      setInsideProject(true)
       dispatch(actionFetchListGoogleDocument());
     }
+    dispatch(actionChangeBreadCrumbs([]));
   };
 
   function onClickConfirm() {
     setOpen(false)
-    dispatch(chatForwardFile(taskId, selectedFilesIds))
-    setSelectedFilesIds([])
+    const googleFiles = selectedFiles.filter(({ isGoogleDocument }) => isGoogleDocument)
+    const vtaskFiles = selectedFiles.filter(({ isGoogleDocument }) => !isGoogleDocument)
+    dispatch(chatForwardFile(taskId, vtaskFiles.map(({ id }) => id)))
+    dispatch(createChatFileFromGoogleDriver(taskId, googleFiles.map(transformToGoogleFormData)))
+    setSelectedFiles([])
   }
-
-  function selectFile(id) {
-    return () => {
-      const memberId = selectedFilesIds.indexOf(id)
-      if (memberId === -1)
-        selectedFilesIds.push(id);
-      else
-        selectedFilesIds.splice(memberId, 1);
-      setSelectedFilesIds([...selectedFilesIds])
-    }
-  }
-
-  function selectAll() {
-    const isSelectedAll = listData.every(({ id }) => selectedFilesIds.indexOf(id) !== -1);
-    const allIds = listData.map(({ id, type }) => id && type !== 'folder')
-    if (!isSelectedAll)
-      selectedFilesIds.push(...allIds);
-    else {
-      for (let index = 0; index < listData.length; index++) {
-        const { id, type } = listData[index];
-        if (type !== 'folder') {
-          const memberId = selectedFilesIds.indexOf(id);
-          selectedFilesIds.splice(memberId, 1);
-        }
-      }
-    }
-    setSelectedFilesIds(uniq([...selectedFilesIds]));
-  }
-
-  const moreAction = [
-    { icon: mdiContentCopy, text: t('IDS_WP_COPY_LINK'), type: 'copy' },
-    {
-      icon: mdiDownloadOutline,
-      text: t('IDS_WP_DOWNLOAD_DOWN'),
-      type: 'download'
-    },
-  ];
-  if (selectedMenu.key === 'myDocument') {
-    moreAction.push({
-      icon: mdiTrashCanOutline,
-      text: t('IDS_WP_DELETE'),
-      action: item => {
-        setAlert(true);
-        setFileSelectAction(item);
-      }
-    })
-  }
-  const moreActionFolder = moreAction.filter(
-    el => el.type !== 'download' && el.type !== 'copy'
-  );
-  const handleUpdateDataLocal = (itemId, newName) => {
-    const index = findIndex(listData, { id: itemId });
-    const dataTemp = [...listData];
-    const itemUpdate = { ...listData[index], name: newName };
-    dataTemp.splice(index, 1, itemUpdate);
-    setListData(dataTemp);
-  };
-
-  const getListMyDocument = (params = {}, quite = false) => {
-    let temp = {};
-    if (!isEmpty(currentFolder)) {
-      params.folder_id = currentFolder.id;
-    }
-    dispatch(actionFetchListMyDocument({ ...temp, ...params }, quite));
-  };
-
-  const handleActionDeleteFile = async () => {
-    try {
-      if (fileSelectAction.type === 'folder') {
-        await actionDeleteFolder({ folder_id: [fileSelectAction.id] });
-      } else {
-        await actionDeleteFile({ file_id: [fileSelectAction.id] });
-      }
-      getListMyDocument();
-      dispatch(resetListSelectDocument());
-    } catch (error) { }
-  };
-
-  const handleClickItem = item => {
-    if (item.type === 'folder') {
-      dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
-      dispatch(actionSelectedFolder(item));
-      // handle bread crumbs
-      let newBreadCrumbs = [...breadCrumbs];
-      if (breadCrumbs.length === 0) {
-        newBreadCrumbs.push({
-          id: -1,
-          name: 'Home',
-          action: () => {
-            dispatch(actionSelectedFolder({}));
-            getListMyDocument({}, true);
-          }
-        });
-        newBreadCrumbs.push({
-          id: item.id,
-          name: item.name,
-          action: () => {
-            dispatch(actionSelectedFolder(item));
-            dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
-          }
-        });
-      } else {
-        newBreadCrumbs.push({
-          id: item.id,
-          name: item.name,
-          action: () => {
-            dispatch(actionSelectedFolder(item));
-            dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
-          }
-        });
-      }
-      dispatch(actionChangeBreadCrumbs(newBreadCrumbs));
-    } else {
-      dispatch(openDocumentDetail(item));
-    }
-  };
 
   function handleClickLink(idx, id) {
     return function onClickBreadCrumb() {
@@ -217,14 +109,50 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       if (idx >= breadCrumbs.length - 1) return false;
       if (idx === 0) {
         dispatch(actionChangeBreadCrumbs([]));
-        dispatch(actionFetchListMyDocument());
+        if (selectedMenu.key === 'googleDrive')
+          dispatch(actionFetchListGoogleDocument());
+        else if (selectedMenu.key === 'projectDocument') {
+          dispatch(actionFetchListProject());
+          setInsideProject(true)
+        }
+        else
+          dispatch(actionFetchListMyDocument());
       } else {
         let newList = [...breadCrumbs];
         newList.length = idx + 1;
         dispatch(actionChangeBreadCrumbs(newList));
-        dispatch(actionFetchListMyDocument({ folder_id: id }, true));
+        if (selectedMenu.key === 'googleDrive')
+          dispatch(actionFetchListGoogleDocument({ folderId: id }, true))
+        else if (selectedMenu.key === 'projectDocument') {
+          dispatch(actionFetchListProjectOfFolder({ project_id: id }));
+          setInsideProject(true)
+        }
+        else
+          dispatch(actionFetchListMyDocument({ folder_id: id }, true));
       }
     }
+  }
+
+  function getContent() {
+    if (isFetching)
+      return <LoadingBox />;
+    if (selectedMenu.key === 'projectDocument' && isInsideProject)
+      return <ProjectDocumentsTable
+        listData={listDataFiltered}
+        setInsideProject={setInsideProject}
+      />
+    if (selectedMenu.key === 'googleDrive' && isInsideProject)
+      return <GoogleDriverDocuments
+        setInsideProject={setInsideProject}
+      />
+    if (listDataFiltered.length === 0 && searchKey)
+      return <NotFoundDocument searchKey={searchKey} />
+    return <DocumentsTable
+      listData={listDataFiltered}
+      setListData={setListData}
+      selectedFiles={selectedFiles}
+      setSelectedFiles={setSelectedFiles}
+    />
   }
 
   return (
@@ -232,16 +160,14 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       open={open}
       setOpen={setOpen}
       fullWidth
-      title="Lưu trữ tài liệu"
+      title={t('LABEL_CHAT_TASK_LUU_TRU_TAI_LIEU')}
       className="ShareFromLibraryModal"
-      cancleRender={() => "Thoát"}
+      cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
       onConfirm={onClickConfirm}
     >
       <div className="ShareFromLibraryModal--container" >
         <div className="ShareFromLibraryModal--left" >
-          <div className="ShareFromLibraryModal--titleLeft">
-            Quản lý tài liệu
-          </div>
+          <div className="ShareFromLibraryModal--titleLeft">{t('LABEL_CHAT_TASK_QUAN_LY_TAI_LIEU')}</div>
           <MenuList className="ShareFromLibraryModal--MenuList" onChangeMenu={handleOnChangeMenu} />
         </div>
         <div className="ShareFromLibraryModal--right" >
@@ -260,7 +186,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                   </div>
                   <div className="ShareFromLibraryModal--bread-crumbs-list" >
                     <Breadcrumbs separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />} aria-label="breadcrumb">
-                      {(selectedMenu.key === 'myDocument') && breadCrumbs.map(({ name, id }, index) =>
+                      {breadCrumbs.length && breadCrumbs.map(({ name, id }, index) =>
                         <div
                           className="ShareFromLibraryModal--bread-crumbs-item"
                           key={id}
@@ -273,10 +199,48 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                 </div>
                 <div className="ShareFromLibraryModal--search-box" onClick={() => setSearching(!isSearching)} >
                   <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' />
-                  <div className="ShareFromLibraryModal--lb-title-text" >
-                    Tìm kiếm
-                  </div>
                 </div>
+                {
+                  (selectedMenu.key === 'googleDrive') &&
+                  <>
+                    <Button
+                      disableRipple
+                      disableTouchRipple
+                      onClick={() => {
+                        let params = {};
+                        if (!isEmpty(currentFolder)) {
+                          params.folderId = currentFolder.id;
+                        }
+                        dispatch(actionFetchListGoogleDocument(params, true));
+                      }}
+                      className="header-button-custom"
+                    >
+                      <div>
+                        <Icon path={mdiRefresh} size={1} color="rgba(0, 0, 0, 0.54)" />
+                      </div>
+                      <span>{t('IDS_WP_UPDATE')}</span>
+                    </Button>
+                    <Button
+                      disableRipple
+                      disableTouchRipple
+                      onClick={() => {
+                        actionSignoutGoogleDrive(() => {
+                          dispatch(toggleSingoutGoogle(false));
+                        });
+                      }}
+                      className="header-button-custom"
+                    >
+                      <div>
+                        <Icon path={mdiLogout} size={1} color="rgba(0, 0, 0, 0.54)" />
+                      </div>
+                      <span>{t('IDS_WP_LOGOUT')}</span>
+                    </Button>
+                  </>
+                }
+                {
+                  (selectedMenu.key === 'myDocument') &&
+                  <AddNewButton selectedMenu={selectedMenu} />
+                }
               </div>
               :
               <div className="ShareFromLibraryModal--searching" >
@@ -284,116 +248,16 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                   value={searchKey}
                   onChange={evt => setSearchKey(evt.target.value)}
                   className="ShareFromLibraryModal--SearchInput"
-                  placeholder="Nhập tên tài liệu và ấn Enter để xem kết quả tìm kiếm" />
+                  placeholder={t('LABEL_CHAT_TASK_NHAP_TEN_TAI_LIEU')} />
                 <IconButton className="ShareFromLibraryModal--iconButton" onClick={() => setSearching(false)}>
                   <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
                 </IconButton>
               </div>
           }
           <div className="ShareFromLibraryModal--right-table-content" >
-            {/* <Scrollbars autoHide autoHideTimeout={500}> */}
-            <Table className="ShareFromLibraryModal--table-container" >
-              <TableHead className="ShareFromLibraryModal--table-header" >
-                <TableRow className="ShareFromLibraryModal--TableRow" >
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" >
-                    <Checkbox color="primary"
-                      checked={listData.length > 0 && listData.every(({ id, type }) => type === 'folder' || selectedFilesIds.indexOf(id) !== -1)}
-                      onClick={selectAll}
-                    />
-                  </TableCell>
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
-                  <TableCell className="ShareFromLibraryModal--TableCell" >
-                    {t('Tên')}
-                    <IconButton size="small" onClick={() => setSorted(!isSorted)}>
-                      <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="120px" align="center" >
-                    Chủ sở hữu
-                  </TableCell>
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="150px" >
-                    Kích thước tệp
-                  </TableCell>
-                  <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
-                </TableRow>
-              </TableHead>
-              <TableBody className="ShareFromLibraryModal--table-body" >
-                {listData.map(item => (
-                  <TableRow key={item.id}>
-                    <TableCell width="50px" align="center">
-                      {item.type !== 'folder' && <Checkbox color="primary"
-                        checked={selectedFilesIds.indexOf(item.id) !== -1}
-                        onClick={selectFile(item.id)} />}
-                    </TableCell>
-                    <TableCell width="50px" align="center" onClick={() => handleClickItem(item)}>
-                      <Avatar
-                        src={FileType(item.type)}
-                        className="full-avatar"
-                      />
-                    </TableCell>
-                    <TableCell onClick={() => handleClickItem(item)}>{item.name}</TableCell>
-                    <TableCell width="120px" align="center">
-                      {item.owner && item.owner.avatar && (
-                        <Avatar
-                          title={item.owner.name}
-                          src={item.owner.avatar}
-                          className="owner-avatar"
-                        />
-                      )}
-                    </TableCell>
-                    <TableCell width="150px">
-                      {item.size || '-'}
-                    </TableCell>
-                    {item.type !== 'folder' ? (
-                      <MoreAction
-                        actionList={moreAction}
-                        item={item}
-                        handleFetData={() => {
-                          getListMyDocument({}, true);
-                        }}
-                        handleUpdateDataLocal={handleUpdateDataLocal}
-                      />
-                    ) : (
-                        <MoreAction
-                          actionList={moreActionFolder}
-                          item={item}
-                          handleFetData={() => {
-                            getListMyDocument({}, true);
-                          }}
-                          handleUpdateDataLocal={handleUpdateDataLocal}
-                        />
-                      )}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            {
-              (listData.length === 0 && searchKey) &&
-              <div className="ShareFromLibraryModal--notFound">
-                Không tìm thấy "<b>{searchKey}</b>" trong danh sách tài liệu của bạn
-                  <div>
-                  Đề xuất:
-                  </div>
-                <ul>
-                  <li>
-                    Kiểm tra lại chính tả từ khoá đã nhập
-                    </li>
-                  <li>
-                    Hãy thử những từ khoá khác
-                    </li>
-                  <li>
-                    Hãy bớt từ khoá
-                    </li>
-                </ul>
-              </div>
-            }
-            {/* </Scrollbars> */}
-            <AlertModal
-              open={alert}
-              setOpen={setAlert}
-              content={t('IDS_WP_ALERT_CONTENT')}
-              onConfirm={() => handleActionDeleteFile()}
-            />
+            <Scrollbars autoHide autoHideTimeout={500}>
+              {getContent()}
+            </Scrollbars>
           </div>
         </div>
       </div>

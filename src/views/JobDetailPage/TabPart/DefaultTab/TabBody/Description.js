@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import ColorTypo from 'components/ColorTypo';
 import TextEditor, { getEditorData } from 'components/TextEditor';
 import { getCollapseText, isLongerContent } from 'helpers/jobDetail/stringHelper';
@@ -5,6 +6,7 @@ import React from 'react';
 import './styles.scss';
 
 function Description({ value }) {
+  const { t } = useTranslation();
   const [isOpen, setOpen] = React.useState(true)
   const handlePressViewButton = () => {
     setOpen(!isOpen)
@@ -15,7 +17,7 @@ function Description({ value }) {
   // console.log('raw', raw)
   return (
     <div className="tabBodyDescription">
-      <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>Mô tả</ColorTypo>
+      <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>{t('LABEL_CHAT_TASK_MO_TA')}</ColorTypo>
       <TextEditor isReadOnly
         value={isOpen ? getEditorData(value) : contentCollapsed}
       >

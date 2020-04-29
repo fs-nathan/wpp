@@ -1,13 +1,13 @@
 import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
-import { deleteTask, pinTaskAction, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
+import { cancelStopTask, deleteTask, pinTaskAction, stopTask, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
 import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import EditJobModal from '../../../ListPart/ListHeader/CreateJobModal';
+import EditJobModal, { EDIT_MODE } from '../../../ListPart/ListHeader/CreateJobModal';
 import { taskIdSelector } from '../../../selectors';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import './styles.scss';
@@ -18,6 +18,7 @@ function TabHeader(props) {
   const isPinned = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.is_ghim'));
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [editMode, setEditMode] = React.useState(null);
 
   function handleClick(evt) {
     setAnchorEl(evt.currentTarget);
@@ -66,18 +67,18 @@ function TabHeader(props) {
     }
   }
   // console.log("task id::::", value.taskId)
-  const onClickEdit = () => {
+  const onClickEdit = (mode) => () => {
     setOpenCreateJobModal(true);
     setAnchorEl(null);
+    setEditMode(mode)
   }
+
   const onClickPause = () => {
-    props.onClickPause();
-    handleClickPause();
+    dispatch(stopTask(taskId));
     setAnchorEl(null);
   }
   const onClickResume = () => {
-    props.onClickPause();
-    handleClickPause();
+    dispatch(cancelStopTask(taskId));
     setAnchorEl(null);
   }
   const onClickDelete = () => {
@@ -97,8 +98,7 @@ function TabHeader(props) {
             component="div"
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
-          >
-            Đã được giao ngày {detailTask.date_create}
+          >{t('LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY')}{detailTask.date_create}
           </ColorTypo>
         )}
       </div>
@@ -122,10 +122,20 @@ function TabHeader(props) {
         }}
       >
         <MenuItem
-          onClick={onClickEdit}
-        >
-          Chỉnh sửa
-        </MenuItem>
+          onClick={onClickEdit(EDIT_MODE.NAME_DES)}
+        >{t('LABEL_CHAT_TASK_SUA_TEN_MO_TA_CONG_VIEC')}</MenuItem>
+        <MenuItem
+          onClick={onClickEdit(EDIT_MODE.PRIORITY)}
+        >{t('LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN')}</MenuItem>
+        <MenuItem
+          onClick={onClickEdit(EDIT_MODE.GROUP)}
+        >{t('LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC')}</MenuItem>
+        <MenuItem
+          onClick={onClickEdit(EDIT_MODE.ASSIGN_TYPE)}
+        >{t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC')}</MenuItem>
+        <MenuItem
+          onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
+        >{t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}</MenuItem>
         <MenuItem
           onClick={onClickPin}
         >
@@ -134,27 +144,21 @@ function TabHeader(props) {
         {pause ? (
           <MenuItem
             onClick={onClickPause}
-          >
-            Tạm dừng
-          </MenuItem>
+          >{t('LABEL_CHAT_TASK_TAM_DUNG')}</MenuItem>
         ) : (
             <MenuItem
               onClick={onClickResume}
-            >
-              Hủy tạm dừng
-            </MenuItem>
+            >{t('LABEL_CHAT_TASK_HUY_TAM_DUNG')}</MenuItem>
           )}
         <MenuItem
           onClick={onClickDelete}
-        >
-          Xóa
-        </MenuItem>
+        >{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
       <EditJobModal
         isOpen={openCreateJobModal}
         setOpen={setOpenCreateJobModal}
-        isRight={true}
         data={detailTask}
+        editMode={editMode}
       />
       <ModalDeleteConfirm
         confirmDelete={confirmDelete}

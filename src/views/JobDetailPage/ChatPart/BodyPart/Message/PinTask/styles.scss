@@ -1,0 +1,14 @@
+.PinTask {
+  &--icon {
+    width: 40px;
+    height: 40px;
+    fill: #ec7c1f;
+    path {
+      fill: inherit !important;
+    }
+  }
+  &--notify {
+    color: #0c92f2;
+    font-size: 16px;
+  }
+}

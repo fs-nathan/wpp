@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ButtonGroup, Collapse } from '@material-ui/core';
 import { mdiFile, mdiImage, mdiLink } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -16,6 +17,7 @@ import MediaContainer from './MediaContainer';
 import './styles.scss';
 
 function TabBody(props) {
+  const { t } = useTranslation();
   const links = useSelector(state => state.taskDetail.media.links);
   const file = useSelector(state => state.taskDetail.media.file);
   const image = useSelector(state => state.taskDetail.media.image);
@@ -40,26 +42,26 @@ function TabBody(props) {
             startIcon={<Icon path={mdiImage} size={1} color={value === 0 ? colorPal['default'][0] : colorPal['gray'][0]} />}
             onClick={evt => handleChange(evt, 0)}
           >
-            {value === 0 ? <ColorTypo bold>Media</ColorTypo> : <ColorTypo color='gray'>Media</ColorTypo>}
+            {value === 0 ? <ColorTypo bold>{t('LABEL_CHAT_TASK_MEDIA')}</ColorTypo> : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_MEDIA')}</ColorTypo>}
           </ColorButton>
           <ColorButton
             className={clsx({ "mediaBody--button__selected": value === 1 })}
             startIcon={<Icon path={mdiFile} size={1} color={value === 1 ? colorPal['default'][0] : colorPal['gray'][0]} />}
             onClick={evt => handleChange(evt, 1)}
           >
-            {value === 1 ? <ColorTypo bold>File</ColorTypo> : <ColorTypo color='gray'>File</ColorTypo>}
+            {value === 1 ? <ColorTypo bold>{t('LABEL_CHAT_TASK_FILE')}</ColorTypo> : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_FILE')}</ColorTypo>}
           </ColorButton>
           <ColorButton
             className={clsx({ "mediaBody--button__selected": value === 2 })}
             startIcon={<Icon path={mdiLink} size={1} color={value === 2 ? colorPal['default'][0] : colorPal['gray'][0]} />}
             onClick={evt => handleChange(evt, 2)}
           >
-            {value === 2 ? <ColorTypo bold>Link</ColorTypo> : <ColorTypo color='gray'>Link</ColorTypo>}
+            {value === 2 ? <ColorTypo bold>{t('LABEL_CHAT_TASK_LINK')}</ColorTypo> : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_LINK')}</ColorTypo>}
           </ColorButton>
         </ButtonGroup>
         {isNoData ? <NoDataPlaceHolder
           src="/images/no-files.png"
-          title="Chưa có tài liệu nào được chia sẻ! Thêm tài liệu bằng cách kéo thả, chụp màn hình hoặc lấy từ thư viện tài liệu."
+          title={t('LABEL_CHAT_TASK_CHUA_CO_TAI_LIEU')}
         ></NoDataPlaceHolder> :
           <React.Fragment>
             <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
