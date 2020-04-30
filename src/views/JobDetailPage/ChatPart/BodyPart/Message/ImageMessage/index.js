@@ -1,5 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -28,6 +29,7 @@ const ImageMessage = ({
 }) => {
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
   const groupActiveColor = useSelector(currentColorSelector)
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   const [open, setOpen] = React.useState(false);
 
@@ -66,17 +68,6 @@ const ImageMessage = ({
             {isReply &&
               <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
             }
-            {/* <div className="TextMessage--name"  >
-              {user_create_name}
-            </div>
-            <div className="TextMessage--position"  >
-              {user_create_position}
-            </div>
-            {user_create_roles[0] &&
-              <div className="TextMessage--room"  >
-                {user_create_roles[0]}
-              </div>
-            } */}
           </div>
         }
         <div className="ImageMessage--imagesContainer" >
@@ -133,7 +124,7 @@ const ImageMessage = ({
         </div>
         {!isReply &&
           <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
-            {time_create}
+            {getUpdateProgressDate(time_create, dateFormat)}
           </div>
         }
         {data_emotion.length > 0 &&

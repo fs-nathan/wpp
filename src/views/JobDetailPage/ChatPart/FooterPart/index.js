@@ -230,7 +230,7 @@ const FooterPart = ({
     for (let index = 0; index < tagMembers.length; index++) {
       const { name, id } = tagMembers[index];
       const reg = new RegExp(`@${name}`, 'g');
-      ret = ret.replace(reg, `{${id}}`)
+      ret = ret.replace(reg, `@${id}`)
     }
     return ret;
   }

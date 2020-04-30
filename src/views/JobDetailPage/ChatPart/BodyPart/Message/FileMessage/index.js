@@ -3,6 +3,7 @@ import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -51,6 +52,7 @@ const FileMessage = ({
   const dispatch = useDispatch();
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
   const groupActiveColor = useSelector(currentColorSelector)
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   const [open, setOpen] = React.useState(false);
 
@@ -100,7 +102,7 @@ const FileMessage = ({
         })}
         style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
       >
-        <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
+        <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
           {
             ((chatPosition === 'top' && !is_me) || isReply) &&
             <div className="TextMessage--sender"  >

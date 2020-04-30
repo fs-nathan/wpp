@@ -1,7 +1,7 @@
 import { Avatar } from '@material-ui/core';
 import { createChatText, deleteFailedChat } from 'actions/chat/chat';
 import clsx from 'clsx';
-import { replaceUrl } from 'helpers/jobDetail/stringHelper';
+import { getUpdateProgressDate, replaceUrl } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,7 @@ function getRichContent(content = '', tags, color) {
   if (!content) return '';
   let ret = content;
   tags.forEach(({ id, name }) => {
-    let reg = new RegExp(`{${id}}`, 'g');
+    let reg = new RegExp(`@${id}`, 'g');
     ret = ret.replace(reg, `<span class="TextMessage--tag" style="color: ${color};">@${name}</span>`);
   })
   // console.log(matches)
@@ -59,6 +59,7 @@ const TextMessage = ({
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   function getColor() {
     if (isReply) return "#5b5b5b"
@@ -96,7 +97,7 @@ const TextMessage = ({
           })}
           style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
         >
-          <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
+          <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
             {
               ((chatPosition === 'top' && !is_me) || isReply) &&
               <div className="TextMessage--sender"  >
