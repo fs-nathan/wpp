@@ -46,6 +46,7 @@ const FooterPart = ({
 }) => {
   const { t } = useTranslation();
   const editorRef = useRef();
+  const sendButtonRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const tagMembers = useSelector(state => state.chat.tagMembers);
@@ -299,6 +300,7 @@ const FooterPart = ({
   }
 
   function sendMessage() {
+    console.log('sendMessage', imagesQueue.length)
     if (imagesQueue.length > 0) {
       sendMultipleFiles()
     } else if (isShowQuickLike) {
@@ -311,13 +313,14 @@ const FooterPart = ({
 
   function onKeyDown(event) {
     const keyCode = event.keyCode || event.which
+    console.log('onKeyDown', imagesQueue.length)
     if (keyCode === 16) {// shift
       isPressShift = true;
     } else if (keyCode === 13 && !isPressShift) {// enter
-      sendChatText();
+      // sendMessage();
+      sendButtonRef.current.click();
       event.returnValue = false;
       if (event.preventDefault) event.preventDefault()
-      // console.log(chatText)
     } else if (keyCode === 50 && isPressShift) {// @
       setOpenMention(true)
       focus()
@@ -411,6 +414,7 @@ const FooterPart = ({
         />
         <div className="chatBox--send"
           onClick={sendMessage}
+          ref={sendButtonRef}
           style={{ color: groupActiveColor }}
         >
           {isShowQuickLike ?
@@ -419,12 +423,14 @@ const FooterPart = ({
           }
         </div>
       </div>
-
-      <TagModal
-        isOpen={isOpenMention}
-        handleClose={handleCloseTag}
-        handleClickMention={handleClickMention}
-      />
+      {
+        isOpenMention &&
+        <TagModal
+          isOpen={isOpenMention}
+          handleClose={handleCloseTag}
+          handleClickMention={handleClickMention}
+        />
+      }
       {
         isOpenSticker &&
         <StickerModal
