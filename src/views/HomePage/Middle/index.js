@@ -14,13 +14,16 @@ import { routes } from "../contant/routes";
 // };
 
 export default () => {
-  const post_id = useSearchParam("post_id");
+  const path = useSearchParam("path");
   return (
     <>
-      {!!post_id && <routes.postDetail.component id={post_id} />}
-
-      {/* mặc định phải dc nhét ở cuối */}
-      {!post_id && <routes.home.component></routes.home.component>}
+      {path === "search" && <routes.search.component />}
+      {path === "post" && <routes.postDetail.component />}
+      {!(!!path || path !== null) && (
+        <div hidden={!!path || path !== null}>
+          <routes.home.component></routes.home.component>
+        </div>
+      )}
     </>
   );
 };

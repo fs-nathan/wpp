@@ -1,14 +1,35 @@
-import { Avatar, Box, ButtonBase, IconButton, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Box,
+  ButtonBase,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import colors from "helpers/colorPalette";
 import get from "lodash/get";
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useSearchParam } from "react-use";
 import { CommentInput } from "views/HomePage/components/CommentInput";
 import Message from "views/HomePage/components/Message";
-import { PostCategory, PostContainer, PostContent, PostContext, PostHeader, PostMedia, PostStats } from "views/HomePage/components/Post";
+import {
+  PostCategory,
+  PostContainer,
+  PostContent,
+  PostContext,
+  PostHeader,
+  PostMedia,
+  PostStats,
+} from "views/HomePage/components/Post";
 import TasksCard from "views/HomePage/components/TasksCard";
 import { commentAttr } from "views/HomePage/contant/attrs";
 import { routes } from "views/HomePage/contant/routes";
@@ -201,19 +222,20 @@ const PostDetail = () => {
     </>
   );
 };
-export default ({id}) => {
+export default () => {
   // const { id } = useParams();
+  const post_id = useSearchParam("post_id");
   const postSelector = useMemo(() => {
     return (state) =>
       postModule.selectors
         .postListSelector(state)
-        .find((item) => id === item.id);
-  }, [id]);
+        .find((item) => post_id === item.id);
+  }, [post_id]);
   const post = useSelector(postSelector);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(postModule.actions.loadPostById({ post_id: id }));
-  }, [dispatch, id]);
+    dispatch(postModule.actions.loadPostById({ post_id }));
+  }, [dispatch, post_id]);
   const { t } = useTranslation();
   const history = useHistory();
   return (

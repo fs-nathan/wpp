@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import LoadingBox from "components/LoadingBox";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import { useIntersection } from "react-use";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import { get } from "views/JobPage/utils";
@@ -375,8 +375,6 @@ const MorePosts = ({ page }) => {
       intersection.intersectionRatio > 0 &&
       dispathAsync(postModule.actions.loadMorePostList({ page }));
   }, [asyncId, dispathAsync, intersection, page]);
-  console.log(data);
-
   if (status !== apiCallStatus.success)
     return (
       <>
@@ -393,12 +391,15 @@ const MorePosts = ({ page }) => {
     </>
   );
 };
-export default () => {
+export default React.memo(({ title }) => {
   const [{ asyncId, status, data }, dispathAsync] = useAsyncTracker();
   useEffect(() => {
-    dispathAsync(postModule.actions.loadPostList());
-  }, [dispathAsync]);
-  const postList = useSelector(postModule.selectors.postListSelector);
+    dispathAsync(postModule.actions.loadPostList({ title }));
+  }, [dispathAsync, title]);
+  const postList = useSelector(
+    postModule.selectors.postListSelector,
+    shallowEqual
+  );
   const { currentPage, totalPage, hasMore } = paging(data);
   return (
     <>
@@ -406,8 +407,11 @@ export default () => {
       {status === apiCallStatus.success && postList.length === 0 && (
         <EmptyHolder title={"Chưa có bài post nào được tạo"} description={""} />
       )}
+      {status === apiCallStatus.loading && <LoadingBox />}
       {hasMore && <MorePosts page={currentPage + 1} />}
-      {!hasMore && <Button style={{ display: "block" }}>Hết rồi</Button>}
+      {status === apiCallStatus.success && !hasMore && (
+        <Button style={{ display: "block" }}>Hết rồi</Button>
+      )}
     </>
   );
-};
+});

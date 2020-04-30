@@ -1,5 +1,6 @@
 import Main from "../Middle/views/Main";
 import PostDetail from "../Middle/views/PostDetail";
+import Search from "../Middle/views/Search";
 
 export const routes = {
   home: {
@@ -7,7 +8,11 @@ export const routes = {
     component: Main,
   },
   postDetail: {
-    path: "?post_id=:id",
+    path: "?path=post&&post_id=:id",
     component: PostDetail,
+  },
+  search: {
+    path: "?path=search",
+    component: Search,
   },
 };

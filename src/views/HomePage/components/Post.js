@@ -500,7 +500,6 @@ export const PostCategory = () => {
   );
 };
 const PostTimeline = () => {
-  const { is_highlight } = useContext(PostContext);
   return (
     <TasksCard.Container>
       <PostHeader />
@@ -509,7 +508,6 @@ const PostTimeline = () => {
       <PostMedia />
       <PostCategory />
       <PostStats />
-      {is_highlight && <TasksCard.HighLight />}
       <TasksCard.Content>
         <Stack>
           <CommentListContainer />

@@ -33,10 +33,12 @@ const createListModule = (rootPath) => {
   };
 };
 const post = createListModule(types.homepage);
-export const loadPostList = () => {
+export const loadPostList = ({ title } = {}) => {
   return createAsyncAction({
     config: {
-      url: "/posts/get-list",
+      url: `/posts/get-list?${encodeQueryData({
+        title,
+      })}`,
     },
     success: createAction(post.actions.listcreate.type, function prepare(data) {
       return {

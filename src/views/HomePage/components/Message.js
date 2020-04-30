@@ -6,12 +6,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import {
-  createMapPropsFromAttrs,
-  get,
-  loginlineFunc,
-  paging,
-} from "views/JobPage/utils";
+import { createMapPropsFromAttrs, get, paging } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { commentAttr } from "../contant/attrs";
@@ -135,22 +130,20 @@ export const Reply = ({ reply, onReplyClick }) => {
     files,
     sticker,
     total_sub_comment,
-  ] = loginlineFunc(
-    createMapPropsFromAttrs([
-      commentAttr.id,
-      commentAttr.content,
-      commentAttr.user_create_name,
-      commentAttr.user_create_avatar,
-      commentAttr.images,
-      commentAttr.images_id,
-      commentAttr.images_url,
-      commentAttr.images_size,
-      commentAttr.images_type,
-      commentAttr.files,
-      commentAttr.sticker,
-      commentAttr.total_sub_comment,
-    ])
-  )(reply);
+  ] = createMapPropsFromAttrs([
+    commentAttr.id,
+    commentAttr.content,
+    commentAttr.user_create_name,
+    commentAttr.user_create_avatar,
+    commentAttr.images,
+    commentAttr.images_id,
+    commentAttr.images_url,
+    commentAttr.images_size,
+    commentAttr.images_type,
+    commentAttr.files,
+    commentAttr.sticker,
+    commentAttr.total_sub_comment,
+  ])(reply);
   return (
     <Message
       type="reply"
@@ -288,22 +281,20 @@ export default ({ message, comments, onReplyClick }) => {
     files,
     sticker,
     total_sub_comment,
-  ] = loginlineFunc(
-    createMapPropsFromAttrs([
-      commentAttr.id,
-      commentAttr.content,
-      commentAttr.user_create_name,
-      commentAttr.user_create_avatar,
-      commentAttr.images,
-      commentAttr.images_id,
-      commentAttr.images_url,
-      commentAttr.images_size,
-      commentAttr.images_type,
-      commentAttr.files,
-      commentAttr.sticker,
-      commentAttr.total_sub_comment,
-    ])
-  )(message);
+  ] = createMapPropsFromAttrs([
+    commentAttr.id,
+    commentAttr.content,
+    commentAttr.user_create_name,
+    commentAttr.user_create_avatar,
+    commentAttr.images,
+    commentAttr.images_id,
+    commentAttr.images_url,
+    commentAttr.images_size,
+    commentAttr.images_type,
+    commentAttr.files,
+    commentAttr.sticker,
+    commentAttr.total_sub_comment,
+  ])(message);
   return (
     <Message
       comments={comments}
