@@ -65,7 +65,7 @@ const TextMessage = ({
 
   return (
     <>
-      <div className={clsx("TextMessage", { [`TextMessage__${chatPosition}`]: !isReply, [`TextMessage__replyPosition`]: isReply })}  >
+      <div className={clsx("TextMessage", isReply ? `TextMessage__reply` : `TextMessage__${chatPosition}`)}  >
         {!isReply && !is_me &&
           <abbr title={user_create_name}>
             <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
@@ -83,8 +83,8 @@ const TextMessage = ({
             [`TextMessage--rightContentWrap__self-${chatPosition}`]: is_me,
             "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
           })}
-          style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
         >
+          {!is_deleted ? getChatParent(chat_parent) : ''}
           <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
             {
               ((chatPosition === 'top' && !is_me) || isReply) &&
@@ -95,9 +95,12 @@ const TextMessage = ({
                 <div className="TextMessage--name"  >
                   {user_create_name}
                 </div>
-                <div className="TextMessage--position"  >
-                  {user_create_position}
-                </div>
+                {user_create_position &&
+                  < div className="TextMessage--position"  >
+                    {' - '}
+                    {user_create_position}
+                  </div>
+                }
                 {user_create_roles[0] &&
                   <div className="TextMessage--room"  >
                     {user_create_roles[0]}
@@ -105,11 +108,14 @@ const TextMessage = ({
                 }
               </div>
             }
-            {!is_deleted ? getChatParent(chat_parent) : ''}
-            <div className={clsx("TextMessage--content", {
-              "TextMessage--content__self": is_me,
-              "TextMessage--content__deleted": is_deleted,
-            })}
+            <div className={clsx("TextMessage--content",
+              is_me ? `TextMessage--content__self-${chatPosition}`
+                : `TextMessage--content__${chatPosition}`,
+              {
+                "TextMessage--content__self": is_me,
+                "TextMessage--content__deleted": is_deleted,
+              })}
+              style={{ backgroundColor: is_me ? groupActiveColor : isReply ? 'transparent' : '#fff' }}
               dangerouslySetInnerHTML={{
                 __html: is_deleted ? `Tin nhắn đã ${!is_me ? 'bị' : 'được'} xoá!`
                   : getRichContent(content, tags, getColor())

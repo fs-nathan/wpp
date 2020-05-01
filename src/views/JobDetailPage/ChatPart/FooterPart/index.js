@@ -294,8 +294,10 @@ const FooterPart = ({
         others.push(file)
       }
     }
-    handleUploadImage({ target: { files: images } });
-    handleUploadFile({ target: { files: others } });
+    if (images.length > 0)
+      handleUploadImage({ target: { files: images } });
+    if (others.length > 0)
+      handleUploadFile({ target: { files: others } });
     setImagesQueue([]);
   }
 

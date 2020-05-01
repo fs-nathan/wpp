@@ -79,7 +79,11 @@ const FileMessage = ({
   }
 
   return files.map((file, i) => (
-    <div key={i} className={clsx("FileMessage", `TextMessage__${getPosition(chatPosition, i, files.length)}`)}  >
+    <div key={i} className={clsx("FileMessage",
+      {
+        [`TextMessage__${getPosition(chatPosition, i, files.length)}`]: !isReply,
+        [`TextMessage__reply`]: isReply,
+      })}  >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
           <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />

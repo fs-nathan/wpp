@@ -4,6 +4,9 @@
     color: inherit;
     font-size: inherit;
   }
+  &__reply {
+    padding: 10px 20px;
+  }
   &__top {
     margin-top: 30px;
   }
@@ -17,7 +20,6 @@
     border-radius: 20px;
     margin-left: 10px;
     border: 1px solid #ececec;
-    padding: 10px 20px;
     width: auto;
     &__self {
       width: auto;
@@ -40,7 +42,7 @@
       margin-left: auto;
     }
     &__haveParent {
-      padding: 10px 20px;
+      // padding: 10px 20px;
       background-color: #eaeaea;
     }
     &__top {
@@ -85,11 +87,11 @@
     margin-left: 5px;
   }
   &--room {
-    font-size: 11px;
-    background-color: #eaebed;
+    font-size: 12px;
+    // background-color: #eaebed;
     color: #e47212;
-    padding: 2px 3px;
-    border-radius: 50%;
+    // padding: 2px 3px;
+    // border-radius: 50%;
     margin-left: 5px;
   }
   &--content {
@@ -97,19 +99,42 @@
     line-height: 19px;
     color: #000000;
     text-align: left;
-    padding: 0px;
+    padding: 10px 20px;
     border-radius: 20px;
     &__self {
       background-color: inherit;
       color: #ffffff;
+      &-top {
+        border-bottom-right-radius: 5px;
+      }
+      &-mid {
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+      &-bot {
+        border-top-right-radius: 5px;
+      }
     }
     &__deleted {
       font-style: italic;
       color: #aeaeae;
     }
+    &__top {
+      border-bottom-left-radius: 5px;
+    }
+    &__mid {
+      border-bottom-left-radius: 5px;
+      border-top-left-radius: 5px;
+    }
+    &__bot {
+      border-top-left-radius: 5px;
+    }
   }
   &--tag {
     font-size: 15px;
+    line-height: 19px;
+    text-align: left;
+    padding: 0;
     margin-right: 5px;
     font-weight: 500;
   }

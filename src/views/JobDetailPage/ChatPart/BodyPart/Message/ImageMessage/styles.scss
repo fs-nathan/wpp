@@ -1,9 +1,9 @@
 .ImageMessage {
-  margin-top: 15px;
   display: flex;
+  &__top,
   &__mid,
   &__bot {
-    margin-top: 5px;
+    margin-top: 15px;
   }
   &--rightContentWrap {
     width: 100%;

@@ -49,7 +49,11 @@ const ImageMessage = ({
   }
 
   return (
-    <div className={clsx("ImageMessage", `ImageMessage__${chatPosition}`)} >
+    <div className={clsx("ImageMessage", {
+      [`ImageMessage__${chatPosition}`]: !isReply,
+      [`TextMessage__reply`]: isReply,
+    }
+    )} >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
           <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
