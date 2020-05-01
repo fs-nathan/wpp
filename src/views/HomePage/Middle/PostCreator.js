@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Box,
-  ButtonBase,
-  Chip,
-  Dialog,
-  Typography,
-} from "@material-ui/core";
-import { mdiDotsHorizontal } from "@mdi/js";
-import Icon from "@mdi/react";
+import { Avatar, Box, Chip, Dialog } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -18,6 +9,7 @@ import { categoryAttr } from "views/SettingGroupPage/TablePart/SettingGroupRight
 import { categoryListSelector } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import SelectCategoryModal from "../components/SelectCategoryModal";
 import TasksCard from "../components/TasksCard";
+import "./PostCreator.css";
 import PostCreatorPopupInner from "./PostCreatorPopupInner";
 export const PostCreator = () => {
   const profile = useSelector((state) => state.system.profile);
@@ -53,40 +45,24 @@ export const PostCreator = () => {
   }, [categories, handleClose, handleOpenPostCreatorPopup]);
   return (
     <TasksCard.Container>
-      <Box
-        padding="8px 16px"
-        fontWeight="bold"
-        style={{
-          background: "#f5f6f7",
-          borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-        }}
-      >
-        {t("Tạo bài viết")}
-      </Box>
-      <TasksCard.Content>
+      <div className="comp_PostCreator__header">{t("Tạo bài viết")}</div>
+      <TasksCard.Content onClick={handleOpenSelectCategoryModal}>
         <Stack>
-          <Box display="flex" alignItems="center">
-            <Avatar src={profile.avatar}>A</Avatar>
-            <Box padding="16px" onClick={() => handleOpenPostCreatorPopup()}>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                style={{ fontSize: "15px" }}
-              >
-                {template(t("<%= name %> ơi bạn muốn đăng gì"))({
-                  name: "Nguyễn",
-                })}
-              </Typography>
-            </Box>
-          </Box>
-          <Box
-            style={{
-              paddingTop: "4px",
-              borderTop: "1px solid rgba(0, 0, 0, 0.12)",
-            }}
-          >
+          <div className="comp_PostCreator__profile">
+            <Avatar
+              className="comp_PostCreator__profileTitlte"
+              src={profile.avatar}
+            >
+              A
+            </Avatar>
+            {template(t("<%= name %> ơi bạn muốn đăng gì"))({
+              name: profile.name,
+            })}
+          </div>
+          <div className="comp_PostCreator__categoryGroup">
             <ChipGroup>
-              {categories.map((cate) => {
+              {categories.map((cate, i) => {
+                if (i > 2) return null;
                 const [id, name, logo] = createMapPropsFromAttrs([
                   categoryAttr.id,
                   categoryAttr.name,
@@ -94,7 +70,6 @@ export const PostCreator = () => {
                 ])(cate);
                 return (
                   <Chip
-                    onClick={() => handleOpenPostCreatorPopup(cate)}
                     key={id}
                     avatar={<Avatar alt={name} src={logo} />}
                     label={name}
@@ -102,8 +77,7 @@ export const PostCreator = () => {
                 );
               })}
               <Box flex={1}></Box>
-              <ButtonBase
-                onClick={handleOpenSelectCategoryModal}
+              {/* <ButtonBase
                 size="small"
                 style={{
                   height: "32px",
@@ -118,12 +92,11 @@ export const PostCreator = () => {
                   path={mdiDotsHorizontal}
                   width="20px"
                 />
-              </ButtonBase>
+              </ButtonBase> */}
             </ChipGroup>
-          </Box>
+          </div>
         </Stack>
       </TasksCard.Content>
-
       {modal}
     </TasksCard.Container>
   );

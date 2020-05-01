@@ -1,5 +1,5 @@
 import React from "react";
-import useSearchParam from "react-use/lib/useSearchParam";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { routes } from "../contant/routes";
 
 // export default () => {
@@ -14,16 +14,12 @@ import { routes } from "../contant/routes";
 // };
 
 export default () => {
-  const path = useSearchParam("path");
   return (
-    <>
-      {path === "search" && <routes.search.component />}
-      {path === "post" && <routes.postDetail.component />}
-      {!(!!path || path !== null) && (
-        <div hidden={!!path || path !== null}>
-          <routes.home.component></routes.home.component>
-        </div>
-      )}
-    </>
+    <Switch>
+      <Route {...routes.search}></Route>
+      <Route {...routes.postDetail}></Route>
+      <Route {...routes.home}></Route>
+      <Route path="/" render={() => <Redirect to={routes.home.path} />}></Route>
+    </Switch>
   );
 };

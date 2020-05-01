@@ -22,6 +22,7 @@ import TestPage from "../__test__";
 
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
+  { path: Routes.POST, component: () => <HomePage /> },
   { path: Routes.PROJECTS, component: () => <ProjectGroupPage /> },
   { path: Routes.PROJECT, component: () => <ProjectPage /> },
   { path: Routes.DEPARTMENTS, component: () => <DepartmentPage /> },

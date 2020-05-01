@@ -60,10 +60,13 @@ export const loadPostById = ({ post_id }) => {
     }),
   });
 };
-export const loadMorePostList = ({ page } = {}) => {
+export const loadMorePostList = ({ title, page } = {}) => {
   return createAsyncAction({
     config: {
-      url: `/posts/get-list?page=${page}`,
+      url: `/posts/get-list?${encodeQueryData({
+        title,
+        page,
+      })}`,
     },
   });
 };

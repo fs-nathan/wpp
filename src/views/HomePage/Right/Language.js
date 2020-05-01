@@ -39,8 +39,8 @@ export default (props) => {
   const { t, i18n } = useTranslation();
   console.log({ i18n });
   const handleChangeLanguage = async (lang = "vi") => {
-    await actionChangeLanguage(lang);
     i18n.changeLanguage(lang);
+    await actionChangeLanguage(lang);
   };
   return (
     <Language

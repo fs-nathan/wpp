@@ -17,8 +17,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { useSearchParam } from "react-use";
+import { useHistory, useParams } from "react-router-dom";
 import { CommentInput } from "views/HomePage/components/CommentInput";
 import Message from "views/HomePage/components/Message";
 import {
@@ -223,8 +222,7 @@ const PostDetail = () => {
   );
 };
 export default () => {
-  // const { id } = useParams();
-  const post_id = useSearchParam("post_id");
+  const { id: post_id } = useParams();
   const postSelector = useMemo(() => {
     return (state) =>
       postModule.selectors

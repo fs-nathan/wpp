@@ -4,15 +4,15 @@ import Search from "../Middle/views/Search";
 
 export const routes = {
   home: {
-    path: "/",
+    path: "/home",
     component: Main,
   },
   postDetail: {
-    path: "?path=post&&post_id=:id",
+    path: "/home/post/:id",
     component: PostDetail,
   },
   search: {
-    path: "?path=search",
+    path: "/home/search",
     component: Search,
   },
 };

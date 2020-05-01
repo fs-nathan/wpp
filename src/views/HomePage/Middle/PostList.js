@@ -1,6 +1,6 @@
 import { Button } from "@material-ui/core";
 import LoadingBox from "components/LoadingBox";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import { useIntersection } from "react-use";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
@@ -361,7 +361,7 @@ export const paging = (data) => {
   return { currentPage, totalPage, hasMore };
 };
 
-const MorePosts = ({ page }) => {
+const MorePosts = ({ page, onLoadMore }) => {
   const intersectionRef = React.useRef(null);
   const intersection = useIntersection(intersectionRef, {
     root: null,
@@ -373,8 +373,8 @@ const MorePosts = ({ page }) => {
     !asyncId &&
       intersection &&
       intersection.intersectionRatio > 0 &&
-      dispathAsync(postModule.actions.loadMorePostList({ page }));
-  }, [asyncId, dispathAsync, intersection, page]);
+      onLoadMore(page);
+  }, [asyncId, dispathAsync, intersection, onLoadMore, page]);
   if (status !== apiCallStatus.success)
     return (
       <>
@@ -386,8 +386,10 @@ const MorePosts = ({ page }) => {
   return (
     <>
       <PostList postList={[...data.posts]} />
-      {hasMore && <MorePosts page={currentPage + 1} />}
-      {!hasMore && <Button style={{ display: "block" }}>Hết rồi</Button>}
+      {hasMore && <MorePosts page={currentPage + 1} onLoadMore={onLoadMore} />}
+      {status === apiCallStatus.success && !hasMore && (
+        <Button style={{ display: "block" }}>Hết rồi</Button>
+      )}
     </>
   );
 };
@@ -401,6 +403,12 @@ export default React.memo(({ title }) => {
     shallowEqual
   );
   const { currentPage, totalPage, hasMore } = paging(data);
+  const handleLoadMore = useCallback(
+    (page) => {
+      dispathAsync(postModule.actions.loadMorePostList({ title, page }));
+    },
+    [dispathAsync, title]
+  );
   return (
     <>
       <PostList postList={postList} />
@@ -408,7 +416,13 @@ export default React.memo(({ title }) => {
         <EmptyHolder title={"Chưa có bài post nào được tạo"} description={""} />
       )}
       {status === apiCallStatus.loading && <LoadingBox />}
-      {hasMore && <MorePosts page={currentPage + 1} />}
+      {hasMore && (
+        <MorePosts
+          key={asyncId}
+          page={currentPage + 1}
+          onLoadMore={handleLoadMore}
+        />
+      )}
       {status === apiCallStatus.success && !hasMore && (
         <Button style={{ display: "block" }}>Hết rồi</Button>
       )}
