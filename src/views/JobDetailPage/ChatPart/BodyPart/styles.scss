@@ -125,9 +125,10 @@
     }
   }
   &--viewed {
-    color: #666666;
+    color: #aaaaaa;
     display: flex;
     cursor: pointer;
+    margin: 20px 0 10px;
     &Avatar {
       width: 15px;
       height: 15px;

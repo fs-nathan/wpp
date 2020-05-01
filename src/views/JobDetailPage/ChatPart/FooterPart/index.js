@@ -36,6 +36,13 @@ const StyledButton = styled.button`
     outline: none;
   }
 `
+
+const StyledChatBox = styled.div`
+  .ChatBoxInput:focus {
+    background-color: #fff;
+    border-top: 1px solid ${props => props.borderColor};
+  }
+`
 let isPressShift = false;
 
 const FooterPart = ({
@@ -406,7 +413,8 @@ const FooterPart = ({
           </div>
         )}
       </div> : null}
-      <div className="chatBox" id="input_message"
+      <StyledChatBox className="chatBox" id="input_message"
+        borderColor={groupActiveColor}
         onClick={focus}
         onPaste={onpaste}
       >
@@ -428,7 +436,7 @@ const FooterPart = ({
             : "Gửi"
           }
         </div>
-      </div>
+      </StyledChatBox>
       {
         isOpenMention &&
         <TagModal

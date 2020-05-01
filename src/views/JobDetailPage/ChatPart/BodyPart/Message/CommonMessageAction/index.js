@@ -1,11 +1,11 @@
-import { useTranslation } from 'react-i18next';
 import { Menu, MenuItem } from '@material-ui/core';
-import { mdiCommentQuoteOutline, mdiDotsVertical, mdiShare, mdiThumbUp } from '@mdi/js';
+import { mdiCardsHeart, mdiCommentQuoteOutline, mdiDotsVertical, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import { chatEmotion, deleteChat } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
@@ -83,7 +83,7 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
       </StyledButton>
       <StyledButton className="CommonMessageAction--button" onClick={handleClickEmotion} colorHover={groupActiveColor}>
         <abbr title={t('LABEL_CHAT_TASK_BIEU_CAM')}>
-          <Icon className="CommonMessageAction--icon" path={mdiThumbUp} />
+          <Icon className="CommonMessageAction--icon" path={mdiCardsHeart} />
         </abbr>
       </StyledButton>
       <StyledButton className="CommonMessageAction--button" onClick={handleClick} colorHover={groupActiveColor}>
