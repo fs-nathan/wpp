@@ -18,7 +18,7 @@ const ImageMessage = ({
   images = [],
   user_create_avatar,
   user_create_name,
-  time_create,
+  time_create = Date.now(),
   user_create_position,
   user_create_roles = [],
   data_emotion = [],

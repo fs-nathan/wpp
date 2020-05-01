@@ -19,10 +19,10 @@ import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLi
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
-import Message from '../BodyPart/Message';
 import '../Chat.scss';
 import ChatBoxInput from './ChatBoxInput';
 import QuickLikeIcon from './QuickLikeIcon';
+import ReplyChatPreview from './ReplyChatPreview';
 import './styles.scss';
 
 const StyledButton = styled.button`
@@ -345,6 +345,10 @@ const FooterPart = ({
     setChatText(value)
   }
 
+  function cancelReply() {
+    setSelectedChat(null)
+  }
+
   useEffect(() => {
     chatTextRef.current = chatText;
   }, [chatText])
@@ -388,7 +392,7 @@ const FooterPart = ({
           </StyledButton>
         </div>
       </div>
-      <Message {...parentMessage} isReply></Message>
+      {parentMessage && <ReplyChatPreview {...parentMessage} cancelReply={cancelReply} />}
       {imagesQueueUrl.length ? <div className="chatBox--preview">
         {imagesQueueUrl.map(({ url, name }, i) =>
           <div key={i} className="chatBox--imagePreviewWrap">

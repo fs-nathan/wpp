@@ -1,7 +1,7 @@
 import { Avatar } from '@material-ui/core';
 import { createChatText, deleteFailedChat } from 'actions/chat/chat';
 import clsx from 'clsx';
-import { getUpdateProgressDate, replaceUrl } from 'helpers/jobDetail/stringHelper';
+import { getRichContent, getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,18 +22,6 @@ function getChatParent(chat_parent) {
   return <TextMessage {...chat_parent} isReply></TextMessage>
 }
 
-function getRichContent(content = '', tags, color) {
-  if (!content) return '';
-  let ret = content;
-  tags.forEach(({ id, name }) => {
-    let reg = new RegExp(`@${id}`, 'g');
-    ret = ret.replace(reg, `<span class="TextMessage--tag" style="color: ${color};">@${name}</span>`);
-  })
-  // console.log(matches)
-  ret = ret.replace('\n', '<br/>');
-  return replaceUrl(ret);
-}
-
 const TextMessage = ({
   handleReplyChat,
   handleForwardChat,
@@ -45,7 +33,7 @@ const TextMessage = ({
   user_create_position,
   user_create_roles = [],
   content,
-  time_create,
+  time_create = Date.now(),
   chat_parent,
   isReply,
   is_me,

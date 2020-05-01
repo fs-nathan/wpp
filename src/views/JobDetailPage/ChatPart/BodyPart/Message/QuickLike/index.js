@@ -1,5 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
@@ -11,7 +12,7 @@ const QuickLike = ({
   quick_like_web,
   user_create_avatar,
   user_create_name,
-  time_create,
+  time_create = Date.now(),
   user_create_position,
   user_create_roles = [],
   isReply,
@@ -19,6 +20,7 @@ const QuickLike = ({
   chatPosition = "top",
 }) => {
   const groupActiveColor = useSelector(currentColorSelector)
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   return (
     <div className={clsx("QuickLike", `TextMessage__${chatPosition}`)} >
@@ -29,7 +31,7 @@ const QuickLike = ({
       }
       <div className={clsx("ImageMessage--rightContentWrap", { "ImageMessage--rightContentWrap__self": is_me })} >
         <div className="ImageMessage--imagesContainer" >
-          <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
+          <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
             {/* <div className={clsx("ImageMessage--wrap")}
             dangerouslySetInnerHTML={{ __html: quick_like_web }} > */}
             <svg version="1.1" x="0px" y="0px" width="50px" height="50px" viewBox="40 40 50 50"><g>

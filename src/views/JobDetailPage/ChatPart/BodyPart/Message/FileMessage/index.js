@@ -3,7 +3,7 @@ import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
-import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
+import { getFileType, getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,12 +14,6 @@ import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
-
-function getType(name) {
-  const nameSplitted = name.split('.');
-  const type = nameSplitted[nameSplitted.length - 1];
-  return type
-}
 
 function getPosition(chatPosition, i, length) {
   // if (chatPosition === 'top' && i !== 0)
@@ -41,7 +35,7 @@ const FileMessage = ({
   user_create_roles = [],
   data_emotion = [],
   content,
-  time_create,
+  time_create = Date.now(),
   chat_parent,
   isReply,
   isUploading,
@@ -132,9 +126,9 @@ const FileMessage = ({
               <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
                 {file.name}
                 <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
-                  {getType(file.name)} - {file && file.size}
+                  {getFileType(file.name)} - {file && file.size}
                 </div>
-                {isUploading &&
+                {isUploading && uploadingPercent !== 100 &&
                   <div className="FileMessage--loading" >{t('LABEL_CHAT_TASK_DANG_TAI')}<div className="FileMessage--loadingBackground" >
                     <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
                     </div>
@@ -157,7 +151,7 @@ const FileMessage = ({
       {!isReply && !is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
       <ModalImage images={files}
-        {...{ user_create_avatar, user_create_name, time_create, user_create_position, type: getType(file.name), url: file.url }}
+        {...{ user_create_avatar, user_create_name, time_create, user_create_position, type: getFileType(file.name), url: file.url }}
         isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
     </div >
   ));
