@@ -1,15 +1,13 @@
-import { useTranslation } from 'react-i18next';
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
-import TextEditor, { getEditorData } from 'components/TextEditor';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
-import { convertToRaw } from 'draft-js';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
 import { get, isFunction, isNil } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../../selectors';
@@ -52,7 +50,7 @@ const DEFAULT_PRIORITY_ID = priorityList[0].id;
 
 const DEFAULT_DATA = {
   name: EMPTY_STRING,
-  description: getEditorData(),
+  description: EMPTY_STRING,
   start_time: listTimeSelect[16],
   start_date: DEFAULT_DATE_TEXT,
   end_time: listTimeSelect[34],
@@ -99,7 +97,7 @@ function CreateJobModal(props) {
     const updateData = {
       task_id: taskId,
       name: data.name,
-      description: JSON.stringify(convertToRaw(data.description.getCurrentContent())),
+      description: data.description,
       start_time: data.start_time,
       start_date: data.start_date,
       end_time: data.end_time,
@@ -174,7 +172,6 @@ function CreateJobModal(props) {
       let tempData = { ...props.data };
       tempData.priority = tempData.priority_code;
       if (!tempData.name) tempData.name = '';
-      tempData.description = getEditorData(tempData.description);
       if (!tempData.start_date) tempData.start_date = '';
       else tempData.start_date = convertDateToJSFormat(tempData.start_date);
       if (!tempData.start_time) tempData.start_time = '';
@@ -230,7 +227,6 @@ function CreateJobModal(props) {
       if (!dataCreateJob.group_task ||
         dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE) delete data.group_task;
       data.date_status = type;
-      data.description = JSON.stringify(convertToRaw(data.description.getCurrentContent()));
       // Call api
       isFunction(get(props, 'doCreateTask'))
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
@@ -289,8 +285,11 @@ function CreateJobModal(props) {
             </Typography>
             <Typography className="createJob--description" component={'div'}>
               <Typography className="createJob--titleLabel" component={'span'}>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</Typography>
-              <TextEditor
+              <TextField
                 className="createJob--content"
+                margin="normal"
+                variant="outlined"
+                fullWidth
                 value={data.description}
                 onChange={value => handleChangeData('description', value)}
               />

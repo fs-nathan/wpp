@@ -1,5 +1,6 @@
 import { Avatar } from '@material-ui/core';
 import { createChatText, deleteFailedChat } from 'actions/chat/chat';
+import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
 import { getRichContent, getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
@@ -63,12 +64,16 @@ const TextMessage = ({
     dispatch(createChatText({ content, tags, task_id: taskId, user_create_id }, id));
   }
 
+  function onClickAvatar() {
+    dispatch(detailUser({ userId: user_create_id }))
+  }
+
   return (
     <>
       <div className={clsx("TextMessage", isReply ? `TextMessage__reply` : `TextMessage__${chatPosition}`)}  >
         {!isReply && !is_me &&
           <abbr title={user_create_name}>
-            <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+            <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
           </abbr>
         }
         {!isReply && is_me && !is_deleted &&

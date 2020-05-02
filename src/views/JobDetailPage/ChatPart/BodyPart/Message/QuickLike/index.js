@@ -1,8 +1,9 @@
 import { Avatar } from '@material-ui/core';
+import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
 import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
 
@@ -10,6 +11,7 @@ const QuickLike = ({
   handleReplyChat,
   id,
   quick_like_web,
+  user_create_id,
   user_create_avatar,
   user_create_name,
   time_create = Date.now(),
@@ -19,14 +21,19 @@ const QuickLike = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
   const dateFormat = useSelector(state => state.system.profile.format_date);
+
+  function onClickAvatar() {
+    dispatch(detailUser({ userId: user_create_id }))
+  }
 
   return (
     <div className={clsx("QuickLike", `TextMessage__${chatPosition}`)} >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
-          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
         </abbr>
       }
       <div className={clsx("ImageMessage--rightContentWrap", { "ImageMessage--rightContentWrap__self": is_me })} >

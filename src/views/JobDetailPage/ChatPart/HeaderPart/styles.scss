@@ -38,6 +38,7 @@
     width: 20px;
     height: 20px;
     margin-right: 2px;
+    display: inline-flex;
   }
   &--avatar3_2_plus {
     width: 20px;
@@ -54,10 +55,9 @@
   &--avatar_plus {
     width: 20px;
     height: 20px;
+    top: -5px;
     display: inline-flex;
     margin-left: 2px;
-  }
-  &--avatar_plus {
   }
   &--title {
     font-size: 24px;

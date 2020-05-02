@@ -27,6 +27,7 @@ export const initialState = {
   dataOffer: null,
   isOpenDetailDemand: null,
   dataDemand: null,
+  isOpenDetailMember: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -231,6 +232,11 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      break;
+    }
+    case actionTypes.OPEN_DETAIL_MEMBER: {
+      const { isOpen } = action;
+      draft.isOpenDetailMember = isOpen;
       break;
     }
   }

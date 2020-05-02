@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openDocumentDetail } from 'actions/system/system';
+import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
 import { getFileType, getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
@@ -29,6 +30,7 @@ const FileMessage = ({
   handleForwardChat,
   handleDetailEmotion,
   id,
+  user_create_id,
   user_create_name,
   user_create_avatar,
   user_create_position,
@@ -78,6 +80,10 @@ const FileMessage = ({
     }
   }
 
+  function onClickAvatar() {
+    dispatch(detailUser({ userId: user_create_id }))
+  }
+
   return files.map((file, i) => (
     <div key={i} className={clsx("FileMessage",
       {
@@ -86,7 +92,7 @@ const FileMessage = ({
       })}  >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
-          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
         </abbr>
       }
       {!isReply && is_me &&

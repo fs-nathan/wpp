@@ -582,3 +582,10 @@ export function createChatFileFromGoogleDriverFail(error) {
     error
   };
 }
+
+export function openDetailMember(isOpen) {
+  return {
+    type: actionTypes.OPEN_DETAIL_MEMBER,
+    isOpen
+  };
+}

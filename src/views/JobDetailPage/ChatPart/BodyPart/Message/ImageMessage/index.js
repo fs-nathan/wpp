@@ -1,9 +1,10 @@
 import { Avatar } from '@material-ui/core';
+import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
 import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import ModalImage from 'views/JobDetailPage/ModalImage';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
@@ -16,6 +17,7 @@ const ImageMessage = ({
   handleDetailEmotion,
   id,
   images = [],
+  user_create_id,
   user_create_avatar,
   user_create_name,
   time_create = Date.now(),
@@ -27,6 +29,7 @@ const ImageMessage = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const dispatch = useDispatch();
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
   const groupActiveColor = useSelector(currentColorSelector)
   const dateFormat = useSelector(state => state.system.profile.format_date);
@@ -39,6 +42,10 @@ const ImageMessage = ({
 
   const handleClose = () => {
     setOpen(false);
+  }
+
+  function onClickAvatar() {
+    dispatch(detailUser({ userId: user_create_id }))
   }
 
   let showImages = images;
@@ -56,7 +63,7 @@ const ImageMessage = ({
     )} >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
-          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
         </abbr>
       }
       {!isReply && is_me &&

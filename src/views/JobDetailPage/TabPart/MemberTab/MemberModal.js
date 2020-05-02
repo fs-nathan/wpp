@@ -1,19 +1,19 @@
-import { useTranslation } from 'react-i18next';
-
-import React from 'react';
-import styled from 'styled-components';
-import ColorTypo from '../../../../components/ColorTypo'
-import colorPal from '../../../../helpers/colorPalette';
-import CloseIcon from '@material-ui/icons/Close';
-import { Avatar, IconButton, Typography, Button, Dialog, InputAdornment, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/core/styles';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
+import { Avatar, Button, Dialog, IconButton, InputAdornment, TextField, Typography } from '@material-ui/core';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import imgDoc from '../../../../assets/doc.png'
-import { useDispatch, useSelector } from 'react-redux';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import { openDetailMember } from 'actions/chat/chat';
 import get from 'lodash/get';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import imgDoc from '../../../../assets/doc.png';
+import ColorTypo from '../../../../components/ColorTypo';
+import colorPal from '../../../../helpers/colorPalette';
+
 
 const StyledEmploy = styled(Typography)`
   width: 700px;
@@ -143,10 +143,17 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
-const MemberModal = ({ handleCloseMembers, isOpen, }) => {
+const MemberModal = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const classes = useStyles();
   const userDetail = useSelector(state => get(state, 'user.detailUser.data.user'));
+  const isOpenDetailMember = useSelector(state => state.chat.isOpenDetailMember);
+
+  function handleCloseMembers() {
+    dispatch(openDetailMember(false))
+  }
+
   const {
     documents = [],
     date_join,
@@ -166,7 +173,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
   } = userDetail || {};
 
   return (
-    <Dialog maxWidth={'lg'} onClose={handleCloseMembers} open={isOpen} >
+    <Dialog maxWidth={'lg'} onClose={handleCloseMembers} open={isOpenDetailMember} >
       <DialogTitle onClose={handleCloseMembers}>{t('LABEL_CHAT_TASK_THONG_TIN_CHI_TIET_THANH_VIEN')}</DialogTitle>
       <DialogContent dividers>
         <div className="wrapper-member-modal">
