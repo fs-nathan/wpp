@@ -12,9 +12,10 @@ export const getListChat = data => ({
   payload: data
 });
 
-export const appendChat = data => ({
+export const appendChat = (data, replaceId) => ({
   type: actionTypes.APPEND_CHAT,
-  payload: data
+  payload: data,
+  replaceId,
 });
 
 export const getMemberTask = data => ({

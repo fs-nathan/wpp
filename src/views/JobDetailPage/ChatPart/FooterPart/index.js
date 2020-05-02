@@ -30,7 +30,7 @@ const StyledButton = styled.button`
   background-color: transparent;
   &:hover {
     color : ${props => props.hoverColor};
-    background-color: #f0f0f0;
+    background-color: #f6f6f6;
   }
   &:focus {
     outline: none;

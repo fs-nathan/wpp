@@ -29,12 +29,14 @@
     margin-top: 1px;
   }
   &--name {
-    font-size: 14px;
+    font-size: 13px;
     color: #607d8b;
+    font-weight: 500;
   }
   &--position {
-    font-size: 14px;
-    color: #e47212;
+    font-size: 13px;
+    color: #607d8b;
+    font-weight: 500;
     // margin-left: 5px;
   }
   &--room {

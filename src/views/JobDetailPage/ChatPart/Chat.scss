@@ -8,7 +8,12 @@
 .footer-chat-container {
   .icon-btn {
     margin-left: auto;
-    padding: 8px;
+    padding: 6px 8px;
     margin-right: 10px;
+    border-radius: 50%;
+    svg {
+      fill: #607d8b;
+      color: #607d8b;
+    }
   }
 }
