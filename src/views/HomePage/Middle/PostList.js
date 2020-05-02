@@ -423,9 +423,6 @@ export default React.memo(({ title }) => {
           onLoadMore={handleLoadMore}
         />
       )}
-      {status === apiCallStatus.success && !hasMore && (
-        <Button style={{ display: "block" }}>Hết rồi</Button>
-      )}
     </>
   );
 });

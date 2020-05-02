@@ -4,7 +4,7 @@ import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import HightLight from "./HightLight";
 import Language from "./Language";
 import Statistic from "./Statistic";
-import { WeedSchedule } from "./WeedSchedule";
+import WeedSchedule from "./WeedSchedule";
 function Right() {
   const { t } = useTranslation();
   return (

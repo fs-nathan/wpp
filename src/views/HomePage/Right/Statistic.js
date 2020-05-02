@@ -2,29 +2,32 @@ import { Avatar, Box } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import TasksCard from "../components/TasksCard";
+import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
 
 export const Statistic = ({
   data = [
-    {
-      id: "5e79c8959c136873cbfdb2f9",
-      name: "Thông báo",
-      logo:
-        "https://storage.googleapis.com/storage_vtask_net/Icon_default/group.jpg",
-      number_post: 0,
-    },
-    {
-      id: "5e79c9009c136873cbfdbcec",
-      name: "Sự kiện",
-      logo:
-        "https://storage.googleapis.com/storage_vtask_net/Icon_default/group.jpg",
-      number_post: 8,
-    },
+    // {
+    //   id: "5e79c8959c136873cbfdb2f9",
+    //   name: "Thông báo",
+    //   logo:
+    //     "https://storage.googleapis.com/storage_vtask_net/Icon_default/group.jpg",
+    //   number_post: 0,
+    // },
+    // {
+    //   id: "5e79c9009c136873cbfdbcec",
+    //   name: "Sự kiện",
+    //   logo:
+    //     "https://storage.googleapis.com/storage_vtask_net/Icon_default/group.jpg",
+    //   number_post: 8,
+    // },
   ],
 }) => {
   const { t } = useTranslation();
+  const history = useHistory();
   return (
     <TasksCard.Container>
       {
@@ -46,18 +49,34 @@ export const Statistic = ({
           {data.map((item, i) => {
             return (
               <Box
+                onClick={() => {
+                  history.push(routes.category.path.replace(":id", item.id));
+                }}
                 key={i}
-                flex={1}
-                minWidth="90px"
+                width="25%"
                 padding="20px"
                 display="flex"
                 alignItems="center"
                 flexDirection="column"
               >
-                <Avatar
-                  style={{ width: "70px", height: "70px" }}
-                  src={item.logo}
-                ></Avatar>
+                <div
+                  style={{
+                    width: "100%",
+                    paddingTop: "100%",
+                    position: "relative",
+                  }}
+                >
+                  <Avatar
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    src={item.logo}
+                  ></Avatar>
+                </div>
                 <Box
                   style={{
                     fontSize: "30px",
@@ -84,6 +103,6 @@ export default (props) => {
   const data = useSelector(postModule.selectors.homeStatisticSelector);
   useEffect(() => {
     dispatch(postModule.actions.loadPostStatistic());
-  }, []);
+  }, [dispatch]);
   return <Statistic data={data} {...props} />;
 };

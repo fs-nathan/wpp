@@ -54,6 +54,7 @@ export const postAttr = {
   last_like_user: "last_like_user.name", // null,
   last_love_user: "last_love_user.name", // null,
   category_name: "category_name", // null,
+  category_id: "category_id",
   total_comments: "comments.length", // null,
   is_highlight: "is_highlight", // true
   is_pin: "is_pin", // false

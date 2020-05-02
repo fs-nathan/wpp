@@ -2,12 +2,14 @@ import { Box, ButtonBase, IconButton } from "@material-ui/core";
 import { mdiCalendarStar, mdiMenuLeft, mdiMenuRight } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
-export const WeedSchedule = () => {
+import { workScheduleModule } from "../redux/workSchedule";
+const WeedSchedule = () => {
   const { t } = useTranslation();
   return (
     <TasksCard.Container>
@@ -70,4 +72,12 @@ export const WeedSchedule = () => {
       </TasksCard.Content>
     </TasksCard.Container>
   );
+};
+export default () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(workScheduleModule.actions.loadListSchedule());
+    dispatch(workScheduleModule.actions.loadListWeek());
+  }, [dispatch]);
+  return <WeedSchedule />;
 };

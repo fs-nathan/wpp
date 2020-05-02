@@ -15,4 +15,8 @@ export const routes = {
     path: "/home/search",
     component: Search,
   },
+  category: {
+    path: "/home/category/:id",
+    component: Main,
+  },
 };

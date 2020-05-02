@@ -12,7 +12,6 @@ import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import TasksCard from "../components/TasksCard";
 import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
-
 export const HightLight = ({ posts }) => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -66,7 +65,13 @@ export const HightLight = ({ posts }) => {
                     </span>
                   }
                   subTitle={
-                    <span>
+                    <span
+                      onClick={() => {
+                        history.push(
+                          routes.category.path.replace(":id", item.category_id)
+                        );
+                      }}
+                    >
                       <StyledTypo component="span" color="blue">
                         # {item.category_name}
                       </StyledTypo>{" "}

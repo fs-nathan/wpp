@@ -9,8 +9,6 @@ import {
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
 import {
-  mdiHeart,
-  mdiHeartOutline,
   mdiMessageOutline,
   mdiPin,
   mdiStarHalf,
@@ -32,6 +30,7 @@ import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Hom
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import TasksCard from "../components/TasksCard";
 import { postAttr } from "../contant/attrs";
+import { love } from "../contant/icons";
 import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
 import AvatarGroup from "./AvatarGroup";
@@ -227,9 +226,9 @@ export const ActionGroup = ({
         onClick={() => handleActionClick("love")}
         startIcon={
           is_love ? (
-            <Icon path={mdiHeart} size={1} />
+            <Icon path={love} size={1} />
           ) : (
-            <Icon path={mdiHeartOutline} size={1} />
+            <Icon path={love} size={1} />
           )
         }
       >
@@ -264,12 +263,14 @@ export const PostHeader = () => {
     menuoptions,
     position,
     category_name,
+    category_id,
     time_label,
     is_highlight,
     is_pin,
     room,
   } = useContext(PostContext);
   const { t } = useTranslation();
+  const history = useHistory();
   return (
     <>
       <TasksCard.Header
@@ -313,6 +314,9 @@ export const PostHeader = () => {
           <TasksCard.HeaderSubTitle>
             {t("Đã đăng")}{" "}
             <StyledTypo
+              onClick={() => {
+                history.push(routes.category.path.replace(":id", category_id));
+              }}
               fontSize="15px"
               component="span"
               color="orange"
@@ -484,19 +488,26 @@ export const PostMedia = () => {
   return <TasksCard.Media images={images}></TasksCard.Media>;
 };
 export const PostCategory = () => {
-  const { category_name } = useContext(PostContext);
+  const { category_name, category_id } = useContext(PostContext);
+  const history = useHistory();
   if (!category_name) return null;
   return (
-    <Typography
-      color="textSecondary"
-      style={{
-        fontWeight: "bold",
-        fontSize: "15px",
-        padding: "0 20px",
+    <ButtonBase
+      onClick={() => {
+        history.push(routes.category.path.replace(":id", category_id));
       }}
     >
-      # {category_name}
-    </Typography>
+      <Typography
+        color="textSecondary"
+        style={{
+          fontWeight: "bold",
+          fontSize: "15px",
+          padding: "0 20px",
+        }}
+      >
+        # {category_name}
+      </Typography>
+    </ButtonBase>
   );
 };
 const PostTimeline = () => {
@@ -535,6 +546,7 @@ export const PostContainer = ({ post, children }) => {
     last_like_user,
     last_love_user,
     category_name,
+    category_id,
     total_comments,
     number_love,
     is_highlight,
@@ -560,6 +572,7 @@ export const PostContainer = ({ post, children }) => {
     postAttr.last_like_user,
     postAttr.last_love_user,
     postAttr.category_name,
+    postAttr.category_id,
     postAttr.total_comments,
     postAttr.number_love,
     postAttr.is_highlight,
@@ -630,6 +643,7 @@ export const PostContainer = ({ post, children }) => {
         content,
         user_create_id,
         user_create_name,
+        category_id,
         user_create_avatar,
         files,
         images,

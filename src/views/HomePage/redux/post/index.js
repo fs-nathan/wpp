@@ -1,8 +1,9 @@
 import { combineReducers, createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { encodeQueryData, get, merge, toFormData } from "views/JobPage/utils";
+import { encodeQueryData, get, toFormData } from "views/JobPage/utils";
 import {
   createAsyncAction,
+  createListModule,
   createPostAsyncAction,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/utils";
 
@@ -11,26 +12,6 @@ export const types = {
   homepage: `homepage`,
   highLight: `highLight`,
   statistic: "statistic",
-};
-const createListModule = (rootPath) => {
-  const listremove = createAction(rootPath + "__listremove");
-  const listupdate = createAction(rootPath + "__listupdate");
-  const listcreate = createAction(rootPath + "__listcreate");
-  const listAddFirst = createAction(rootPath + "__listAddFirst");
-  return {
-    actions: { listremove, listupdate, listcreate, listAddFirst },
-    reducer: createReducer([], {
-      [listremove.type]: (state, action) =>
-        state.filter((item) => item.id !== action.payload),
-      [listupdate.type]: (state, action) =>
-        state.map((item) => {
-          if (item.id !== action.payload.id) return item;
-          return merge({}, item, action.payload);
-        }),
-      [listcreate.type]: (state, action) => action.payload,
-      [listAddFirst.type]: (state, action) => [action.payload, ...state],
-    }),
-  };
 };
 const post = createListModule(types.homepage);
 export const loadPostList = ({ title } = {}) => {
