@@ -1,4 +1,4 @@
-import { Avatar, Box } from "@material-ui/core";
+import { Avatar, Box, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,55 +45,57 @@ export const Statistic = ({
         //         "number_post": 8
         //     }
         // ]
-        <Box display="flex">
-          {data.map((item, i) => {
-            return (
-              <Box
-                onClick={() => {
-                  history.push(routes.category.path.replace(":id", item.id));
-                }}
-                key={i}
-                width="25%"
-                padding="20px"
-                display="flex"
-                alignItems="center"
-                flexDirection="column"
-              >
-                <div
-                  style={{
-                    width: "100%",
-                    paddingTop: "100%",
-                    position: "relative",
-                  }}
-                >
-                  <Avatar
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    src={item.logo}
-                  ></Avatar>
-                </div>
+        <TasksCard.Content>
+          <Box display="flex">
+            {data.map((item, i) => {
+              return (
                 <Box
-                  style={{
-                    fontSize: "30px",
-                    marginTop: "8px",
-                    fontWeight: "bold",
+                  onClick={() => {
+                    history.push(routes.category.path.replace(":id", item.id));
                   }}
+                  key={i}
+                  width="25%"
+                  padding="8px"
+                  display="flex"
+                  alignItems="center"
+                  flexDirection="column"
                 >
-                  {item.number_post}
+                  <div
+                    style={{
+                      width: "100%",
+                      paddingTop: "100%",
+                      position: "relative",
+                    }}
+                  >
+                    <Avatar
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      src={item.logo}
+                    ></Avatar>
+                  </div>
+                  <Box
+                    style={{
+                      fontSize: "30px",
+                      marginTop: "8px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {item.number_post}
+                  </Box>
+                  <Typography nowrap>{item.name}</Typography>
                 </Box>
-                <Box>{item.name}</Box>
-              </Box>
-            );
-          })}
-          {data.length === 0 && (
-            <EmptyHolder title="Chưa có dữ liệu" description="" />
-          )}
-        </Box>
+              );
+            })}
+            {data.length === 0 && (
+              <EmptyHolder title="Chưa có dữ liệu" description="" />
+            )}
+          </Box>
+        </TasksCard.Content>
       }
     </TasksCard.Container>
   );

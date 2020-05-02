@@ -393,11 +393,11 @@ const MorePosts = ({ page, onLoadMore }) => {
     </>
   );
 };
-export default React.memo(({ title }) => {
+export default React.memo(({ category_id, title }) => {
   const [{ asyncId, status, data }, dispathAsync] = useAsyncTracker();
   useEffect(() => {
-    dispathAsync(postModule.actions.loadPostList({ title }));
-  }, [dispathAsync, title]);
+    dispathAsync(postModule.actions.loadPostList({ category_id, title }));
+  }, [dispathAsync, category_id, title]);
   const postList = useSelector(
     postModule.selectors.postListSelector,
     shallowEqual
@@ -405,10 +405,13 @@ export default React.memo(({ title }) => {
   const { currentPage, totalPage, hasMore } = paging(data);
   const handleLoadMore = useCallback(
     (page) => {
-      dispathAsync(postModule.actions.loadMorePostList({ title, page }));
+      dispathAsync(
+        postModule.actions.loadMorePostList({ category_id, title, page })
+      );
     },
-    [dispathAsync, title]
+    [dispathAsync, category_id, title]
   );
+  if (status === apiCallStatus.loading) return <LoadingBox />;
   return (
     <>
       <PostList postList={postList} />

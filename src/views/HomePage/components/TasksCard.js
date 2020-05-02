@@ -8,16 +8,8 @@ import React from "react";
 import { useToggle } from "react-use";
 import ModalImage from "views/JobDetailPage/ModalImage";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
+import { injectClassName } from "views/JobPage/utils";
 import "./TasksCard.css";
-
-const injectClassName = (classN) => (C = "div") => {
-  return ({ className, ...props }) => {
-    return React.createElement(C, {
-      className: classnames(classN, className),
-      ...props,
-    });
-  };
-};
 const Container = injectClassName("comp_TasksCard__Container")((props) => {
   return <Card variant="outlined" {...props}></Card>;
 });

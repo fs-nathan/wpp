@@ -18,6 +18,9 @@ export default () => {
     <Switch>
       <Route {...routes.search}></Route>
       <Route {...routes.postDetail}></Route>
+      <Route {...routes.category}></Route>
+
+      {/* must be at bottom */}
       <Route {...routes.home}></Route>
       <Route path="/" render={() => <Redirect to={routes.home.path} />}></Route>
     </Switch>

@@ -1,24 +1,58 @@
-import { IconButton } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
+import { IconButton, InputBase } from "@material-ui/core";
+import { Close, Search } from "@material-ui/icons";
 import { mdiGoogleAssistant } from "@mdi/js";
 import Icon from "@mdi/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { useMountedState } from "react-use";
+import { useMountedState, useToggle } from "react-use";
 import TasksCard from "views/HomePage/components/TasksCard";
 import { routes } from "views/HomePage/contant/routes";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import { PostCreator } from "../PostCreator";
 import PostList from "../PostList";
-
-function Main() {
-  const history = useHistory();
+const Header = React.memo(() => {
   const { t } = useTranslation();
-  const isMounted = useMountedState();
+  const history = useHistory();
+  const [isToggle, toggle] = useToggle();
   return (
-    <Stack>
-      <TasksCard.Container>
+    <TasksCard.Container>
+      {isToggle ? (
+        <TasksCard.Header
+          avatar={
+            <TasksCard.HeaderAvatar
+              style={{
+                color: "rgb(255, 152, 0)",
+                background: "transparent",
+              }}
+              aria-label="tasks"
+            >
+              <Search style={{ width: "30px", height: "30px" }} />
+            </TasksCard.HeaderAvatar>
+          }
+          action={
+            <IconButton onClick={toggle} size="small">
+              <Close style={{ width: "26px", height: "26px" }} />
+            </IconButton>
+          }
+          title={
+            <TasksCard.HeaderTitle>
+              <InputBase
+                onKeyDown={(e) => {
+                  if (e.which === 13 || e.keyCode === 13 || e.key === "Enter") {
+                    e.preventDefault();
+                    history.push(
+                      routes.search.path.replace(":keyword", e.target.value)
+                    );
+                  }
+                }}
+                autoFocus
+                placeholder={t("Enter your keyword...")}
+              />
+            </TasksCard.HeaderTitle>
+          }
+        />
+      ) : (
         <TasksCard.Header
           avatar={
             <TasksCard.HeaderAvatar
@@ -32,12 +66,7 @@ function Main() {
             </TasksCard.HeaderAvatar>
           }
           action={
-            <IconButton
-              onClick={() => {
-                history.push(routes.search.path);
-              }}
-              size="small"
-            >
+            <IconButton onClick={toggle} size="small">
               <Search style={{ width: "26px", height: "26px" }} />
             </IconButton>
           }
@@ -47,7 +76,17 @@ function Main() {
             </TasksCard.HeaderTitle>
           }
         />
-      </TasksCard.Container>
+      )}
+    </TasksCard.Container>
+  );
+});
+function Main() {
+  const history = useHistory();
+  const { t } = useTranslation();
+  const isMounted = useMountedState();
+  return (
+    <Stack>
+      <Header />
       <PostCreator />
       {isMounted && <PostList />}
     </Stack>

@@ -1,6 +1,17 @@
 .comp_PostActionButton {
   flex: 1;
   margin: 4px;
+  /* color: #000; */
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+.comp_PostActionButton img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.comp_PostActionButton__active {
+  filter: grayscale(0);
+  opacity: 1;
 }
 .comp_PostActionButton__labbel {
   /* display: flex;

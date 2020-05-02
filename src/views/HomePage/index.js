@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { loadCategoryList } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
+import ScrollTopLocationChange from "./components/ScrollTopLocationChange";
 import { groupDetailAttrs } from "./contant/attrs";
 import { GroupDetailProvider } from "./GroupDetailContext";
 import Left from "./Left";
@@ -58,6 +60,7 @@ function HomePage({ groupDetail }) {
       }}
     >
       <TasksScrollbar>
+        <ScrollTopLocationChange />
         <div className="views_HomePage___wrapper">
           <div className="views_HomePage___container">
             <StickyBox
@@ -89,10 +92,12 @@ function HomePage({ groupDetail }) {
 export default connect((state) => ({
   groupDetail: state.setting.groupDetail,
 }))((props) => {
+  const location = useLocation();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadCategoryList());
   }, [dispatch]);
+  useEffect(() => {}, [location]);
   if (!props.groupDetail.id) return null;
   return <HomePage {...props} />;
 });

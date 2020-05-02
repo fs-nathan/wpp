@@ -1,6 +1,7 @@
 import Main from "../Middle/views/Main";
 import PostDetail from "../Middle/views/PostDetail";
 import Search from "../Middle/views/Search";
+import SearchByCategory from "../Middle/views/SearchByCategory";
 
 export const routes = {
   home: {
@@ -12,11 +13,11 @@ export const routes = {
     component: PostDetail,
   },
   search: {
-    path: "/home/search",
+    path: "/home/search/:keyword",
     component: Search,
   },
   category: {
     path: "/home/category/:id",
-    component: Main,
+    component: SearchByCategory,
   },
 };

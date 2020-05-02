@@ -1,15 +1,17 @@
-import { IconButton, InputBase } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { Close, Search } from "@material-ui/icons";
-import React, { useCallback } from "react";
+import get from "lodash/get";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import TasksCard from "views/HomePage/components/TasksCard";
 import { routes } from "views/HomePage/contant/routes";
-import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
+import { categoryListSelector } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import PostList from "../PostList";
 
-const Header = React.memo(({ handleKeyDown, defaultKeyword }) => {
+const Header = React.memo(({ categoryName }) => {
   const { t } = useTranslation();
   const history = useHistory();
   return (
@@ -36,12 +38,7 @@ const Header = React.memo(({ handleKeyDown, defaultKeyword }) => {
         }
         title={
           <TasksCard.HeaderTitle>
-            <InputBase
-              defaultValue={defaultKeyword}
-              onKeyDown={handleKeyDown}
-              autoFocus
-              placeholder={t("Enter your keyword...")}
-            />
+            {t("BẢNG TIN NỘI BỘ")} - {categoryName}
           </TasksCard.HeaderTitle>
         }
       />
@@ -49,25 +46,15 @@ const Header = React.memo(({ handleKeyDown, defaultKeyword }) => {
   );
 });
 export default () => {
-  const { keyword: defaultKeyword = "" } = useParams();
-  const history = useHistory();
-  const handleKeyDown = useCallback(
-    (e) => {
-      if (e.which === 13 || e.keyCode === 13 || e.key === "Enter") {
-        e.preventDefault();
-        history.push(routes.search.path.replace(":keyword", e.target.value));
-      }
-    },
-    [history]
+  const { id: category_id } = useParams();
+  const category = useSelector((state) =>
+    categoryListSelector(state).find((item) => item.id === category_id)
   );
+  const categoryName = get(category, "name");
   return (
     <Stack>
-      <Header defaultKeyword={defaultKeyword} handleKeyDown={handleKeyDown} />
-      {defaultKeyword && defaultKeyword.length ? (
-        <PostList title={defaultKeyword} />
-      ) : (
-        <EmptyHolder title="" description="" />
-      )}
+      <Header categoryName={categoryName} />
+      <PostList category_id={category_id} />
     </Stack>
   );
 };

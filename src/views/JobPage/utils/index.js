@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import {
   chunk,
   get,
@@ -7,6 +8,7 @@ import {
   template,
   uniqueId,
 } from "lodash";
+import React from "react";
 import { taskPriorityMap, taskStatusMap } from "../contants/attrs";
 import { emptyObject } from "../contants/defaultValue";
 import * as chart from "./chart";
@@ -105,10 +107,20 @@ const paging = (data) => {
   const hasMore = currentPage && totalPage && currentPage < totalPage;
   return { currentPage, totalPage, hasMore };
 };
+
+const injectClassName = (classN) => (C = "div") => {
+  return ({ className, ...props }) => {
+    return React.createElement(C, {
+      className: classnames(classN, className),
+      ...props,
+    });
+  };
+};
 export {
   paging,
   chart,
   time,
+  injectClassName,
   remove,
   get,
   isFunction,
