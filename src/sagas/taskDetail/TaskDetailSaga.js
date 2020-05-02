@@ -1056,11 +1056,11 @@ function* updateRolesForMember(action) {
   }
 }
 // Get list task detail
-async function doGetListTaskDetail({ project_id }) {
+async function doGetListTaskDetail({ project_id, type_data }) {
   try {
     const config = {
       url: "project/list-task-detail",
-      params: { project_id, type_data: 'include-room' },
+      params: { project_id, type_data },
       method: "get"
     };
     const result = await apiService(config);
@@ -1072,8 +1072,8 @@ async function doGetListTaskDetail({ project_id }) {
 
 function* getListTaskDetail(action) {
   try {
-    const res = yield call(doGetListTaskDetail, action.payload)
-    yield put(actions.getListTaskDetailSuccess(res))
+    const res = yield call(doGetListTaskDetail, action)
+    yield put(actions.getListTaskDetailSuccess(res, action.type_data))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error));
   }

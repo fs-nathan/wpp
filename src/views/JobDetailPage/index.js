@@ -51,7 +51,7 @@ function JobDetailPage(props) {
   useEffect(() => {
     if (projectId !== '') {
       dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
-      dispatch(taskDetailAction.getListTaskDetail({ project_id: projectId }));
+      dispatch(taskDetailAction.getListTaskDetail(projectId));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
     }

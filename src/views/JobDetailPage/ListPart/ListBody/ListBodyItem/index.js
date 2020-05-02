@@ -50,6 +50,7 @@ const badgeState = label => {
   return <BadgeItem color={color} badge label={label} size="small" />;
 };
 function JobName(props) {
+  const { isghim = '' } = props
   return (
     <div className="name-container-lbd" variant="space-between">
       <ColorTypo bold>{props.title}</ColorTypo>
@@ -59,7 +60,7 @@ function JobName(props) {
           path={mdiPin}
           size={0.8}
           {...props}
-          isghim={props.isghim.toString()}
+          isghim={isghim.toString()}
         />
         {badgeState(props.label)}
       </div>
@@ -68,7 +69,7 @@ function JobName(props) {
 }
 
 function JobContent(props) {
-  const { avatar, notify = 1, ...rest } = props
+  const { avatar, notify = 1, notification = '', ...rest } = props
   return (
     <div className="container-content-lbd">
       <div title={props.name}>
@@ -80,7 +81,7 @@ function JobContent(props) {
           label={notify}
           size="small"
           {...rest}
-          notification={props.notification.toString()}
+          notification={notification.toString()}
         />
         <div>{props.time}</div>
       </div>
@@ -89,6 +90,7 @@ function JobContent(props) {
 }
 
 function JobUnit(props) {
+  const { chat = {} } = props
   return (
     <ListItemText disableTypography>
       <JobName
@@ -98,10 +100,10 @@ function JobUnit(props) {
       />
       <JobContent
         time={props.updated_time}
-        avatar={props.chat.user_create_avatar}
-        content={props.chat.content}
+        avatar={chat.user_create_avatar}
+        content={chat.content}
         notification={props.new_chat}
-        name={props.chat.user_create_name}
+        name={chat.user_create_name}
       />
     </ListItemText>
   );
@@ -111,7 +113,7 @@ function ListBodyItem(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
-  // console.log({value})
+  // console.log({ props })
 
   function onClickItem() {
     dispatch(chooseTask(props.id));

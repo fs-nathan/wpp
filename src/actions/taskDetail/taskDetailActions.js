@@ -770,14 +770,14 @@ export const createGroupTaskFail = (error) => ({
 });
 
 // Get List Task Detail
-export const getListTaskDetail = (payload) => ({
+export const getListTaskDetail = (project_id, type_data = 'include-room') => ({
     type: types.GET_LIST_TASK_DETAIL_REQUEST,
-    payload
+    project_id, type_data
 });
 
-export const getListTaskDetailSuccess = (payload) => ({
+export const getListTaskDetailSuccess = (payload, type_data) => ({
     type: types.GET_LIST_TASK_DETAIL_SUCCESS,
-    payload
+    payload, type_data
 });
 
 export const getListTaskDetailFail = (error) => ({
