@@ -87,7 +87,7 @@ function ListHeader(props) {
             className="dropdown-icon"
             onClick={onClickSettings}
           >
-            <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon" />
+            <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon setting-icon" />
           </ButtonIcon>
           <ButtonIcon
             className="dropdown-icon"

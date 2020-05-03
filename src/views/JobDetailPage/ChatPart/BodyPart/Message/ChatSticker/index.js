@@ -18,6 +18,7 @@ const ChatSticker = ({
   user_create_roles = [],
   isReply,
   is_me,
+  sticker_width_of_web,
   chatPosition = "top",
 }) => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const ChatSticker = ({
         <div className="ImageMessage--imagesContainer" >
           <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
             <div className={clsx("ImageMessage--wrap")} >
-              <img className="ImageMessage--img" src={sticker} alt="hd" />
+              <img className="ImageMessage--img" src={sticker} style={{ width: sticker_width_of_web }} alt="hd" />
             </div>
           </abbr>
         </div>

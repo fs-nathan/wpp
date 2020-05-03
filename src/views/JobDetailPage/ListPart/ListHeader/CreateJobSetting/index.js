@@ -24,16 +24,16 @@ function CreateJobSetting(props) {
 
   return (
     <JobDetailModalWrap
-      title={t('LABEL_CHAT_TASK_CAI_DAT')}
+      title={t('LABEL_CHAT_TASK_CAI_DAT_CONG_VIEC')}
       open={props.isOpen}
       setOpen={props.setOpen}
       confirmRender={null}
-      cancelRender={() => t('LABEL_CHAT_TASK_THOAT')}
+      cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
       maxWidth='sm'
       className="CreateJobSetting"
     >
       <React.Fragment>
-        <Typography>
+        <Typography className="CreateJobSetting--title">
           <Checkbox checked={listTaskDataType === listTaskDataTypes[1]} onChange={onCheck} />{t('LABEL_CHAT_TASK_HIEN_NHOM_CONG_VIEC')}</Typography>
       </React.Fragment>
     </JobDetailModalWrap>
