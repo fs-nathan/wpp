@@ -47,7 +47,10 @@ const UpdateDurationMessage = ({
           <>
             <div className="UpdateDurationMessage--title" >{t('LABEL_CHAT_TASK_BAT_DAU')}</div>
             <div className="UpdateDurationMessage--content" >
-              {`Từ ${getUpdateProgressDate(time_changes.start.old, dateFormat)} sang ${getUpdateProgressDate(time_changes.start.new, dateFormat)}`}
+              {t('LABEL_CHAT_TASK_TU_SANG', {
+                from: getUpdateProgressDate(time_changes.start.old, dateFormat),
+                to: getUpdateProgressDate(time_changes.start.new, dateFormat)
+              })}
             </div>
           </>
         }
@@ -55,7 +58,10 @@ const UpdateDurationMessage = ({
           <>
             <div className="UpdateDurationMessage--title" >{t('LABEL_CHAT_TASK_KET_THUC')}</div>
             <div className="UpdateDurationMessage--content" >
-              {`Từ ${getUpdateProgressDate(time_changes.end.old, dateFormat)} sang ${getUpdateProgressDate(time_changes.end.new, dateFormat)}`}
+              {t('LABEL_CHAT_TASK_TU_SANG', {
+                from: getUpdateProgressDate(time_changes.end.old, dateFormat),
+                to: getUpdateProgressDate(time_changes.end.new, dateFormat)
+              })}
             </div>
           </>
         }
