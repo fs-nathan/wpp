@@ -59,9 +59,7 @@ const CommentListContainer = () => {
   const [newComments, setNewComments] = useState([]);
   const profile = useSelector(profileSelector);
   const { t } = useTranslation();
-  const { id, inputId, total_comments, number_comment } = useContext(
-    PostContext
-  );
+  const { id, inputId, number_comment } = useContext(PostContext);
   const [{}, handleDispatchAsyncAction] = useAsyncTracker();
   const handleComment = useCallback(
     (value) => {
@@ -112,7 +110,7 @@ const CommentListContainer = () => {
       postModule.actions.loadCommentListByPost({ post_id: id })
     );
   }, [handleLoadCommentAction, id]);
-  const { currentPage, totalPage, hasMore } = paging(data);
+  const { currentPage, hasMore } = paging(data);
   const [asyncIds, setasyncIds] = useState([]);
   useEffect(() => {
     asyncId && setasyncIds([asyncId, ...asyncIds]);

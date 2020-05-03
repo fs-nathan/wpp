@@ -3,7 +3,6 @@ import { actionChangeLanguage } from "actions/system/system";
 import colors from "helpers/colorPalette";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import TasksCard from "../components/TasksCard";
 
 const Language = ({ handleChangeLanguage, language }) => {
@@ -34,10 +33,8 @@ const Language = ({ handleChangeLanguage, language }) => {
     </TasksCard.Container>
   );
 };
-export default (props) => {
-  const profile = useSelector((state) => state.system.profile);
-  const { t, i18n } = useTranslation();
-  console.log({ i18n });
+export default () => {
+  const { i18n } = useTranslation();
   const handleChangeLanguage = async (lang = "vi") => {
     i18n.changeLanguage(lang);
     await actionChangeLanguage(lang);

@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from "@material-ui/core";
+import { Avatar, ButtonBase, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import TasksCard from "../components/TasksCard";
 import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
-
+import "./Statistic.css";
 export const Statistic = ({
   data = [
     // {
@@ -46,55 +46,33 @@ export const Statistic = ({
         //     }
         // ]
         <TasksCard.Content>
-          <Box display="flex">
+          <div className="comp_Statistic__wrap">
             {data.map((item, i) => {
               return (
-                <Box
+                <ButtonBase
                   onClick={() => {
                     history.push(routes.category.path.replace(":id", item.id));
                   }}
                   key={i}
-                  width="25%"
-                  padding="8px"
-                  display="flex"
-                  alignItems="center"
-                  flexDirection="column"
+                  className="comp_Statistic__button"
                 >
-                  <div
-                    style={{
-                      width: "100%",
-                      paddingTop: "100%",
-                      position: "relative",
-                    }}
-                  >
+                  <div className="comp_Statistic__button__imageWrap">
                     <Avatar
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                      }}
+                      className="comp_Statistic__button__image"
                       src={item.logo}
                     ></Avatar>
                   </div>
-                  <Box
-                    style={{
-                      fontSize: "30px",
-                      marginTop: "8px",
-                      fontWeight: "bold",
-                    }}
-                  >
+                  <div className="comp_Statistic__button__number">
                     {item.number_post}
-                  </Box>
+                  </div>
                   <Typography nowrap>{item.name}</Typography>
-                </Box>
+                </ButtonBase>
               );
             })}
             {data.length === 0 && (
               <EmptyHolder title="Chưa có dữ liệu" description="" />
             )}
-          </Box>
+          </div>
         </TasksCard.Content>
       }
     </TasksCard.Container>

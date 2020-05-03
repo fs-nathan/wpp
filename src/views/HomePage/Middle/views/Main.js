@@ -81,8 +81,6 @@ const Header = React.memo(() => {
   );
 });
 function Main() {
-  const history = useHistory();
-  const { t } = useTranslation();
   const isMounted = useMountedState();
   return (
     <Stack>
