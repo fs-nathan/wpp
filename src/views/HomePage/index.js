@@ -1,3 +1,4 @@
+import { actionFetchGroupDetail } from "actions/setting/setting";
 import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -13,7 +14,7 @@ import Left from "./Left";
 import Logo from "./Logo";
 import Middle from "./Middle";
 import Right from "./Right";
-import "./style.scss";
+import "./style.css";
 function HomePage({ groupDetail }) {
   const [
     id,
@@ -98,6 +99,10 @@ export default connect((state) => ({
     dispatch(loadCategoryList());
   }, [dispatch]);
   useEffect(() => {}, [location]);
+
+  useEffect(() => {
+    dispatch(actionFetchGroupDetail());
+  }, [dispatch]);
   if (!props.groupDetail.id) return null;
   return <HomePage {...props} />;
 });

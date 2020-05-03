@@ -65,7 +65,9 @@ export const Statistic = ({
                   <div className="comp_Statistic__button__number">
                     {item.number_post}
                   </div>
-                  <Typography nowrap>{item.name}</Typography>
+                  <Typography className="comp_Statistic__button__label" nowrap>
+                    {item.name}
+                  </Typography>
                 </ButtonBase>
               );
             })}

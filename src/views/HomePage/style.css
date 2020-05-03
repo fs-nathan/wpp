@@ -9,6 +9,7 @@
 }
 .views_HomePage___wrapper div,
 .views_HomePage___wrapper a,
+.views_HomePage___wrapper b,
 .views_HomePage___wrapper div::before,
 .views_HomePage___wrapper div::after {
   font-size: 15px;
@@ -42,7 +43,3 @@
 .views_HomePage___right {
   grid-area: right;
 }
-// .views_HomePage___right::before {
-//   content: "";
-//   height: 300px;
-// }

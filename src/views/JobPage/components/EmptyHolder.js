@@ -13,7 +13,15 @@ function EmptyHolder({
   const { t } = useTranslation();
   return (
     <div className="comp_EmptyHolder__wrapper">
-      <img className="comp_EmptyHolder__img" src={image} alt="empty"></img>
+      {image ? (
+        image
+      ) : (
+        <img
+          className="comp_EmptyHolder__img"
+          src={noDataImg}
+          alt="empty"
+        ></img>
+      )}
       <div
         className="comp_EmptyHolder__title"
         style={{

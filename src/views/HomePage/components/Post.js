@@ -17,7 +17,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs, template } from "views/JobPage/utils";
+import {
+  createMapPropsFromAttrs,
+  injectClassName,
+  template,
+} from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/components/AyncTracker";
@@ -33,6 +37,7 @@ import { FileListItem } from "./FileListItem";
 import likeImage from "./like-image.jpg";
 import loveImage from "./love-image.png";
 import Message from "./Message";
+import "./Post.css";
 import { PostActionButton } from "./PostActionButton";
 const CommentList = ({ comments = emptyArray, onReplyClick }) => {
   return (
@@ -208,19 +213,14 @@ export const ActionGroup = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <Box
-      display="flex"
-      borderTop="1px solid rgba(0, 0, 0, 0.12)"
-      borderBottom="1px solid rgba(0, 0, 0, 0.12)"
-      alignItems="center"
-    >
+    <div className="comp_Post__actionsWrap">
       <PostActionButton
         active={is_love}
         color={colors.pink[0]}
         onClick={() => handleActionClick("love")}
         startIcon={<Icon viewBox="0 0 24 24" path={love} size={1} />}
       >
-        <span>{t("Yêu")}</span>
+        {t("Yêu")}
       </PostActionButton>
       <PostActionButton
         active={is_like}
@@ -228,7 +228,7 @@ export const ActionGroup = ({
         onClick={() => handleActionClick("like")}
         startIcon={<Icon viewBox="40 40 50 50" path={like} size={1} />}
       >
-        <span>{t("Thích")}</span>
+        {t("Thích")}
       </PostActionButton>
       <PostActionButton
         color={colors.blue[0]}
@@ -238,9 +238,10 @@ export const ActionGroup = ({
       >
         <label htmlFor={inputId}>{t("Bình luận")}</label>
       </PostActionButton>
-    </Box>
+    </div>
   );
 };
+
 export const PostHeader = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
@@ -263,12 +264,9 @@ export const PostHeader = () => {
       <TasksCard.Header
         avatar={
           <TasksCard.HeaderAvatar
-            style={{ width: "50px", height: "50px" }}
             aria-label="tasks"
             src={user_create_avatar}
-          >
-            R
-          </TasksCard.HeaderAvatar>
+          ></TasksCard.HeaderAvatar>
         }
         action={
           <div>
@@ -286,52 +284,31 @@ export const PostHeader = () => {
         }
         title={
           <TasksCard.HeaderTitle>
-            <b style={{ marginRight: "10px", fontSize: "15px" }}>
-              {user_create_name}
-            </b>
-            <Typography
-              style={{ fontSize: "15px", display: "inline" }}
-              color="textSecondary"
-            >
+            <div className="comp_Post__creatorName">{user_create_name}</div>
+            <div className="comp_Post__creatorPostition">
               {position} {(position || room) && "-"} {room}
-            </Typography>
+            </div>
           </TasksCard.HeaderTitle>
         }
         subheader={
           <TasksCard.HeaderSubTitle>
             {t("Đã đăng")}{" "}
-            <StyledTypo
+            <div
               onClick={() => {
                 history.push(routes.category.path.replace(":id", category_id));
               }}
-              fontSize="15px"
-              component="span"
-              color="orange"
-              variant="subtitle1"
+              className="comp_Post__creatorHeaderCategory"
             >
               {category_name}{" "}
-            </StyledTypo>
+            </div>
             {time_label}{" "}
             {is_pin && (
-              <SvgIcon
-                style={{
-                  transform: "rotate(45deg)",
-                  verticalAlign: "middle",
-                  padding: "0 10px",
-                }}
-              >
+              <SvgIcon className="comp_Post__pin">
                 <path d={mdiPin}></path>
               </SvgIcon>
             )}
             {is_highlight && (
-              <SvgIcon
-                style={{
-                  fontSize: "1.6rem",
-                  fill: colors.orange[0],
-                  verticalAlign: "middle",
-                  padding: "0 10px",
-                }}
-              >
+              <SvgIcon className="comp_Post__highlight">
                 <path d={mdiStarHalf}></path>
               </SvgIcon>
             )}
@@ -376,15 +353,14 @@ export const PostContent = () => {
     <TasksCard.Content>
       <Stack>
         <b
-          className="cursor-pointer"
+          className="cursor-pointer comp_Post__title"
           onClick={() =>
             history.push(routes.postDetail.path.replace(":id", id))
           }
-          style={{ fontSize: "17px" }}
         >
           {title}
         </b>
-        <Typography style={{ fontSize: "15px" }}>{content}</Typography>
+        <Typography component="div">{content}</Typography>
       </Stack>
     </TasksCard.Content>
   );
@@ -410,12 +386,7 @@ export const PostStats = () => {
   return (
     <Stack small>
       <div />
-      <Box
-        padding="0 20px"
-        lineHeight="24px"
-        display="flex"
-        alignItems="center"
-      >
+      <div className="comp_Post__statWrap">
         <Box display="flex" alignItems="center">
           <AvatarGroup
             size={20}
@@ -465,7 +436,7 @@ export const PostStats = () => {
             </StyledTypo>
           </ButtonBase>
         )}
-      </Box>
+      </div>
       <ActionGroup {...{ is_love, is_like, handleActionClick, inputId }} />
     </Stack>
   );
@@ -480,26 +451,19 @@ export const PostCategory = () => {
   if (!category_name) return null;
   return (
     <ButtonBase
+      className="comp_Post__category"
       onClick={() => {
         history.push(routes.category.path.replace(":id", category_id));
       }}
     >
-      <Typography
-        color="textSecondary"
-        style={{
-          fontWeight: "bold",
-          fontSize: "15px",
-          padding: "0 20px",
-        }}
-      >
-        # {category_name}
-      </Typography>
+      # {category_name}
     </ButtonBase>
   );
 };
+const PostWrapper = injectClassName("comp_Post")(TasksCard.Container);
 const PostTimeline = () => {
   return (
-    <TasksCard.Container>
+    <PostWrapper>
       <PostHeader />
       <PostContent />
       <PostFiles />
@@ -511,7 +475,7 @@ const PostTimeline = () => {
           <CommentListContainer />
         </Stack>
       </TasksCard.Content>
-    </TasksCard.Container>
+    </PostWrapper>
   );
 };
 export const PostContainer = ({ post, children }) => {

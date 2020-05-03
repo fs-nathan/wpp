@@ -49,16 +49,16 @@ const WeedSchedule = () => {
       </Box>
       <TasksCard.Content>
         <Stack small>
-          <ListItemLayout left={<Box padding="10px">09:00</Box>}>
+          <ListItemLayout left={<Box padding="10px 10px 10px 0">09:00</Box>}>
             - Tong giam doc di cong tac hai phong
           </ListItemLayout>
-          <ListItemLayout left={<Box padding="10px">09:00</Box>}>
+          <ListItemLayout left={<Box padding="10px 10px 10px 0">09:00</Box>}>
             - Tong giam doc di cong tac hai phongup
           </ListItemLayout>
-          <ListItemLayout left={<Box padding="10px">09:00</Box>}>
+          <ListItemLayout left={<Box padding="10px 10px 10px 0">09:00</Box>}>
             - Tong giam doc di cong tac hai phong
           </ListItemLayout>
-          <ListItemLayout left={<Box padding="10px">09:00</Box>}>
+          <ListItemLayout left={<Box padding="10px 10px 10px 0">09:00</Box>}>
             - Tong giam doc di cong tac hai phong
           </ListItemLayout>
           <div>

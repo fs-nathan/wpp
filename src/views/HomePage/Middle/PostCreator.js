@@ -46,7 +46,7 @@ export const PostCreator = () => {
   return (
     <TasksCard.Container>
       <div className="comp_PostCreator__header">{t("Tạo bài viết")}</div>
-      <TasksCard.Content onClick={handleOpenSelectCategoryModal}>
+      <TasksCard.Content onClick={() => handleOpenPostCreatorPopup()}>
         <Stack>
           <div className="comp_PostCreator__profile">
             <Avatar

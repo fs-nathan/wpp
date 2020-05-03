@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import GroupDetailContext from "../GroupDetailContext";
 
 function Logo() {
-  const { cover } = useContext(GroupDetailContext);
+  const { cover, sologan } = useContext(GroupDetailContext);
   return (
     <div
       style={{
@@ -26,7 +26,7 @@ function Logo() {
           bottom: 0,
         }}
       >
-        Workplus - Thên công việc thêm niềm vui
+        {sologan}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
-import { Button } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import LoadingBox from "components/LoadingBox";
 import React, { useCallback, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { shallowEqual, useSelector } from "react-redux";
 import { useIntersection } from "react-use";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
@@ -341,7 +342,6 @@ function PostList({ postList }) {
     </>
   );
 }
-let count = 0;
 // window.redux = {
 //   store: store,
 //   postModule,
@@ -383,7 +383,7 @@ const MorePosts = ({ page, onLoadMore }) => {
         <LoadingBox />
       </>
     );
-  const { currentPage, totalPage, hasMore } = paging(data);
+  const { currentPage, hasMore } = paging(data);
   return (
     <>
       <PostList postList={[...data.posts]} />
@@ -395,6 +395,7 @@ const MorePosts = ({ page, onLoadMore }) => {
   );
 };
 export default React.memo(({ category_id, title }) => {
+  const { t } = useTranslation();
   const [{ asyncId, status, data }, dispathAsync] = useAsyncTracker();
   useEffect(() => {
     dispathAsync(postModule.actions.loadPostList({ category_id, title }));
@@ -403,7 +404,7 @@ export default React.memo(({ category_id, title }) => {
     postModule.selectors.postListSelector,
     shallowEqual
   );
-  const { currentPage, totalPage, hasMore } = paging(data);
+  const { currentPage, hasMore } = paging(data);
   const handleLoadMore = useCallback(
     (page) => {
       dispathAsync(
@@ -417,11 +418,18 @@ export default React.memo(({ category_id, title }) => {
     <>
       <PostList postList={postList} />
       {status === apiCallStatus.success && postList.length === 0 && (
-        <EmptyHolder
-          image={nodataimg}
-          title={"Chưa có bài post nào được tạo"}
-          description={""}
-        />
+        <Box textAlign="center">
+          <EmptyHolder
+            image={
+              <img style={{ width: "80%" }} src={nodataimg} alt="empty"></img>
+            }
+            title={""}
+            description={""}
+          />
+          <Typography color="textSecondary" component="div" bold>
+            {t("Không tìm thấy kết quả!")}
+          </Typography>
+        </Box>
       )}
       {status === apiCallStatus.loading && <LoadingBox />}
       {hasMore && (
