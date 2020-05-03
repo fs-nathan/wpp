@@ -60,3 +60,11 @@
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
+.comp_Post__fileList {
+  padding: 0;
+}
+
+.comp_Timeline__header .MuiCardHeader-action .MuiSvgIcon-root {
+  width: 26px;
+  height: 26px;
+}

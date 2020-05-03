@@ -338,7 +338,7 @@ export const PostFiles = () => {
     return (
       <TasksCard.Content>
         <TasksCard.Container>
-          <List style={{ padding: 0 }}>
+          <List className="comp_Post__fileList">
             {generate(files, <FileListItem />)}
           </List>
         </TasksCard.Container>
@@ -460,8 +460,8 @@ export const PostCategory = () => {
     </ButtonBase>
   );
 };
-const PostWrapper = injectClassName("comp_Post")(TasksCard.Container);
-const PostTimeline = () => {
+export const PostWrapper = injectClassName("comp_Post")(TasksCard.Container);
+export const PostTimeline = () => {
   return (
     <PostWrapper>
       <PostHeader />

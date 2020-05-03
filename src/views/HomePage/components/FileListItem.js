@@ -8,12 +8,15 @@ import {
   SvgIcon,
 } from "@material-ui/core";
 import { mdiDownload } from "@mdi/js";
+import { openDocumentDetail } from "actions/system/system";
 import { FileType } from "components/FileType";
 import React from "react";
+import { useActions } from "views/JobPage/hooks/useActions";
 import "./FileListItem.css";
 export const FileListItem = ({ file }) => {
+  const openDocumentModal = useActions(() => openDocumentDetail(file), [file]);
   return (
-    <ListItem button className="comp_FileListItem">
+    <ListItem onClick={openDocumentModal} button className="comp_FileListItem">
       <ListItemAvatar>
         <Avatar src={FileType(file.type)}></Avatar>
       </ListItemAvatar>
@@ -24,7 +27,11 @@ export const FileListItem = ({ file }) => {
       />
       <ListItemSecondaryAction>
         <a target="_blank" href={file.url} download id={file.url}>
-          <IconButton edge="end" aria-label="delete">
+          <IconButton
+            className="comp_FileListItem__dowload"
+            edge="end"
+            aria-label="delete"
+          >
             <SvgIcon>
               <path d={mdiDownload}></path>
             </SvgIcon>

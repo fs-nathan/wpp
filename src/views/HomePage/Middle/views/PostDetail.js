@@ -6,17 +6,14 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
+import { mdiGoogleAssistant } from "@mdi/js";
+import Icon from "@mdi/react";
+import LoadingBox from "components/LoadingBox";
 import colors from "helpers/colorPalette";
 import get from "lodash/get";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { CommentInput } from "views/HomePage/components/CommentInput";
 import Message from "views/HomePage/components/Message";
@@ -28,6 +25,7 @@ import {
   PostHeader,
   PostMedia,
   PostStats,
+  PostWrapper,
 } from "views/HomePage/components/Post";
 import TasksCard from "views/HomePage/components/TasksCard";
 import { commentAttr } from "views/HomePage/contant/attrs";
@@ -205,7 +203,7 @@ const CommentListContainer = () => {
 };
 const PostDetail = () => {
   return (
-    <>
+    <PostWrapper>
       <PostHeader />
       <PostContent />
       <PostMedia />
@@ -216,31 +214,32 @@ const PostDetail = () => {
           <CommentListContainer />
         </Stack>
       </TasksCard.Content>
-    </>
+    </PostWrapper>
   );
 };
 export default () => {
   const { id: post_id } = useParams();
-  const postSelector = useMemo(() => {
-    return (state) =>
-      postModule.selectors
-        .postListSelector(state)
-        .find((item) => post_id === item.id);
-  }, [post_id]);
-  const post = useSelector(postSelector);
-  const dispatch = useDispatch();
+  const [{ data, status }, dispatch] = useAsyncTracker();
+  const post = get(data, "post", emptyObject);
   useEffect(() => {
     dispatch(postModule.actions.loadPostById({ post_id }));
   }, [dispatch, post_id]);
   const { t } = useTranslation();
   const history = useHistory();
+
   return (
     <Stack>
       <TasksCard.Container>
         <TasksCard.Header
           avatar={
-            <TasksCard.HeaderAvatar aria-label="tasks">
-              R
+            <TasksCard.HeaderAvatar
+              style={{
+                color: "rgb(255, 152, 0)",
+                background: "transparent",
+              }}
+              aria-label="tasks"
+            >
+              <Icon path={mdiGoogleAssistant} size={2} />
             </TasksCard.HeaderAvatar>
           }
           action={
@@ -258,11 +257,13 @@ export default () => {
           }
         />
       </TasksCard.Container>
-      <PostContainer post={post}>
-        <TasksCard.Container>
+      {status === apiCallStatus.loading ? (
+        <LoadingBox />
+      ) : (
+        <PostContainer post={post}>
           <PostDetail />
-        </TasksCard.Container>
-      </PostContainer>
+        </PostContainer>
+      )}
     </Stack>
   );
 };

@@ -16,7 +16,7 @@ const Header = React.memo(() => {
   const history = useHistory();
   const [isToggle, toggle] = useToggle();
   return (
-    <TasksCard.Container>
+    <TasksCard.Container className="comp_Timeline__header">
       {isToggle ? (
         <TasksCard.Header
           avatar={
@@ -32,7 +32,7 @@ const Header = React.memo(() => {
           }
           action={
             <IconButton onClick={toggle} size="small">
-              <Close style={{ width: "26px", height: "26px" }} />
+              <Close />
             </IconButton>
           }
           title={
@@ -67,7 +67,7 @@ const Header = React.memo(() => {
           }
           action={
             <IconButton onClick={toggle} size="small">
-              <Search style={{ width: "26px", height: "26px" }} />
+              <Search />
             </IconButton>
           }
           title={

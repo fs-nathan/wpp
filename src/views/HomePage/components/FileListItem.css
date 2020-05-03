@@ -7,3 +7,17 @@
 .comp_FileListItem svg {
   font-size: 15px;
 }
+.comp_FileListItem__dowload:hover {
+  background: #f1f1f1;
+}
+.comp_FileListItem .MuiListItemText-primary {
+  font-weight: 500;
+  color: #607d8b;
+}
+.comp_FileListItem .MuiListItemText-secondary {
+  font-size: 14px;
+}
+.comp_FileListItem .MuiAvatar-root {
+  overflow: visible;
+  height: auto;
+}
