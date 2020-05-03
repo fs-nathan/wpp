@@ -8,7 +8,7 @@ import { detailProjectGroup } from 'actions/projectGroup/detailProjectGroup';
 import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
 import AlertModal from 'components/AlertModal';
 import { useFilters } from 'components/CustomPopover';
-import { COPY_PROJECT, CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP, UPDATE_PROJECT } from 'constants/events.js';
+import { COPY_PROJECT, CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP, UPDATE_PROJECT, UPDATE_STATUS_VIEW } from 'constants/events.js';
 import { filter, get, reverse, sortBy } from 'lodash';
 import moment from 'moment';
 import React from 'react';
@@ -74,10 +74,12 @@ function AllProjectTable({
         });
       };
       CustomEventListener(UPDATE_PROJECT, reloadListProject);
+      CustomEventListener(UPDATE_STATUS_VIEW, reloadListProject);
       CustomEventListener(SORT_PROJECT, reloadListProject);
       CustomEventListener(COPY_PROJECT, reloadListProject);
       return () => {
         CustomEventDispose(UPDATE_PROJECT, reloadListProject);
+        CustomEventDispose(UPDATE_STATUS_VIEW, reloadListProject);
         CustomEventDispose(SORT_PROJECT, reloadListProject);
         CustomEventDispose(COPY_PROJECT, reloadListProject);
       }

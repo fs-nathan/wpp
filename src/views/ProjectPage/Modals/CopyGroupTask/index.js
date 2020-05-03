@@ -40,7 +40,8 @@ function CopyGroupTask({
         CustomEventDispose(SORT_GROUP_TASK, reloadGetAllGroupTask);
       }
     }
-  }, [open, viewPermissions]);
+    // eslint-disable-next-line
+  }, [projectId, open, viewPermissions]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
