@@ -7,6 +7,7 @@ import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import { get } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
+import nodataimg from "../components/ic_no_data.png";
 import Post from "../components/Post";
 import { postModule } from "../redux/post";
 
@@ -416,7 +417,11 @@ export default React.memo(({ category_id, title }) => {
     <>
       <PostList postList={postList} />
       {status === apiCallStatus.success && postList.length === 0 && (
-        <EmptyHolder title={"Chưa có bài post nào được tạo"} description={""} />
+        <EmptyHolder
+          image={nodataimg}
+          title={"Chưa có bài post nào được tạo"}
+          description={""}
+        />
       )}
       {status === apiCallStatus.loading && <LoadingBox />}
       {hasMore && (

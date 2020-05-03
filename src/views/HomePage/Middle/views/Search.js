@@ -50,6 +50,7 @@ const Header = React.memo(({ handleKeyDown, defaultKeyword }) => {
 });
 export default () => {
   const { keyword: defaultKeyword = "" } = useParams();
+  const { t } = useTranslation();
   const history = useHistory();
   const handleKeyDown = useCallback(
     (e) => {
@@ -63,6 +64,9 @@ export default () => {
   return (
     <Stack>
       <Header defaultKeyword={defaultKeyword} handleKeyDown={handleKeyDown} />
+      <div>
+        {t("Kết quả tìm kiếm")} <b>"{defaultKeyword}"</b>
+      </div>
       {defaultKeyword && defaultKeyword.length ? (
         <PostList title={defaultKeyword} />
       ) : (

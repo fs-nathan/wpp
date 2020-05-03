@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
-import { mdiPin, mdiStarHalf, mdiThumbUp } from "@mdi/js";
+import { mdiPin, mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
 import colors from "helpers/colorPalette";
@@ -24,7 +24,7 @@ import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Hom
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import TasksCard from "../components/TasksCard";
 import { postAttr } from "../contant/attrs";
-import { comment, love } from "../contant/icons";
+import { comment, like, love } from "../contant/icons";
 import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
 import AvatarGroup from "./AvatarGroup";
@@ -218,7 +218,7 @@ export const ActionGroup = ({
         active={is_love}
         color={colors.pink[0]}
         onClick={() => handleActionClick("love")}
-        startIcon={<Icon path={love} size={1} />}
+        startIcon={<Icon viewBox="0 0 24 24" path={love} size={1} />}
       >
         <span>{t("Yêu")}</span>
       </PostActionButton>
@@ -226,7 +226,7 @@ export const ActionGroup = ({
         active={is_like}
         color={colors.blue[0]}
         onClick={() => handleActionClick("like")}
-        startIcon={<Icon path={mdiThumbUp} size={1} />}
+        startIcon={<Icon viewBox="40 40 50 50" path={like} size={1} />}
       >
         <span>{t("Thích")}</span>
       </PostActionButton>

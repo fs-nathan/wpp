@@ -13,8 +13,9 @@
   filter: grayscale(0);
   opacity: 1;
 }
-.comp_PostActionButton__labbel {
+.comp_PostActionButton-label {
   /* display: flex;
   align-items: center;
   line-height: 1; */
+  line-height: 1.5;
 }

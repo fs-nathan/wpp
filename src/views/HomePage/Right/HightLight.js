@@ -1,5 +1,5 @@
 import { Avatar, Box, ButtonBase } from "@material-ui/core";
-import { mdiHeadLightbulb } from "@mdi/js";
+import { mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
 import React, { useEffect } from "react";
@@ -26,7 +26,7 @@ export const HightLight = ({ posts }) => {
             }}
             aria-label="tasks"
           >
-            <Icon path={mdiHeadLightbulb} size={1} />
+            <Icon path={mdiStarHalf} size={1} />
           </TasksCard.HeaderAvatar>
         }
         title={
