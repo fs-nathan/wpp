@@ -4,7 +4,7 @@ const colors = {
   red: ["#dc3545", "#fff"],
   green: ["#05b50c", "#fff"],
   cyan: ["#17a2b8", "#fff"],
-  blue: ["#3F51B5", "#fff"],
+  blue: ["#007bff", "#fff"],
   indigo: ["#6610f2", "#fff"],
   purple: ["#6f42c1", "#fff"],
   pink: ["#e83e8c", "#fff"],

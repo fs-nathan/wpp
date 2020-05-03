@@ -132,9 +132,6 @@ const CommentListContainer = () => {
           onClick={() =>
             history.push(routes.postDetail.path.replace(":id", id))
           }
-          style={{
-            color: colors.blue[0],
-          }}
         >
           {t("Xem tất cả bình luận")}
         </ButtonBase>

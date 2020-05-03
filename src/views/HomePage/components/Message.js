@@ -11,8 +11,8 @@ import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRigh
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { commentAttr } from "../contant/attrs";
 import { postModule } from "../redux/post";
+import "./Message.css";
 import { PostContext } from "./Post";
-
 const RepliesContainer = ({
   total_sub_comment,
   post_id,
@@ -83,26 +83,13 @@ const RepliesContainer = ({
             // handleLoadMore(asyncIds.length);
           }
         }}
-        style={{
-          margin: "6px 0",
-          color: colors.blue[0],
-          display: "flex",
-          alignItems: "center",
-        }}
-        className="cursor-pointer"
+        className="cursor-pointer comp_Message__expand"
       >
         {show ? (
-          <ExpandLess
-            style={{
-              fontSize: "16px",
-              marginRight: "6px",
-            }}
-          ></ExpandLess>
+          <ExpandLess></ExpandLess>
         ) : (
           <ReplyIcon
             style={{
-              fontSize: "16px",
-              marginRight: "6px",
               transform: "rotate(180deg)",
             }}
           ></ReplyIcon>
@@ -186,34 +173,12 @@ const Message = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <Box display="flex" alignItems="flex-start">
-      <Avatar
-        style={
-          type === "comment"
-            ? {
-                width: "40px",
-                height: "40px",
-              }
-            : {
-                marginTop: "5px",
-                width: "30px",
-                height: "30px",
-              }
-        }
-        src={user_create_avatar}
-      >
+    <div className={"comp_Message"}>
+      <Avatar className="comp_Message__avatar" src={user_create_avatar}>
         {user_create_name && user_create_name[0]}
       </Avatar>
       <Box margin="2px 0 0 5px">
-        <div
-          style={{
-            // minHeight: "30px",
-            lineHeight: "22px",
-            padding: "8px 8px",
-            background: "#f5f6f7",
-            borderRadius: "15px",
-          }}
-        >
+        <div className="comp_Message__content">
           {parent && (
             <Box
               color={colors.gray[0]}
@@ -224,26 +189,12 @@ const Message = ({
               {get(parent, commentAttr.content)}
             </Box>
           )}
-          <span
-            style={{
-              marginRight: "8px",
-              fontWeight: "bold",
-              color: colors.blue[0],
-            }}
-          >
-            {user_create_name}
-          </span>
+          <span className="comp_Message__creator">{user_create_name}</span>
           {content}
         </div>
         <Box padding="0 10px">
           {onReplyClick && (
-            <ButtonBase
-              onClick={onReplyClick}
-              style={{
-                marginRight: "8px",
-                color: colors.blue[0],
-              }}
-            >
+            <ButtonBase onClick={onReplyClick} className="comp_Message__reply">
               {t("Trả lời")}
             </ButtonBase>
           )}
@@ -263,7 +214,7 @@ const Message = ({
             })}
         </Box>
       </Box>
-    </Box>
+    </div>
   );
 };
 export default ({ message, comments, onReplyClick }) => {
