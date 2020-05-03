@@ -26,7 +26,7 @@ export function* loadChat(payload) {
 
 export function* chatImage(payload) {
   try {
-    const { task_id, data, onUploading } = payload;
+    const { task_id, data, onUploading, id } = payload;
     const res = yield call(apiService.post,
       `/task/create-chat-image?task_id=${task_id}`,
       data,
@@ -38,14 +38,14 @@ export function* chatImage(payload) {
       });
     yield put(actions.chatImageSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    // yield put(actions.appendChat(res.data));
+    yield put(actions.appendChat(res.data, id));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }
 }
-export function* chatFile(dispatch) {
+export function* chatFile(payload) {
   try {
-    const { task_id, data, onUploading } = dispatch;
+    const { task_id, data, onUploading, id } = payload;
     const res = yield call(apiService.post,
       `/task/create-chat-file?task_id=${task_id}`,
       data,
@@ -57,7 +57,7 @@ export function* chatFile(dispatch) {
       });
     yield put(actions.chatFileSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    // yield put(actions.appendChat(res.data));
+    yield put(actions.appendChat(res.data, id));
   } catch (error) {
     yield put(actions.chatFileFail(error));
   }
@@ -162,10 +162,11 @@ export function* getEmotionsReactMember(payload) {
 
 export function* createChatText(payload) {
   try {
-    const { content } = payload;
+    const { content, resendId } = payload;
     const res = yield call(apiService.post, "/task/create-chat-text", content);
     yield put(actions.createChatTextSuccess(res.data));
     // yield put(actions.loadChat(content.task_id));
+    yield put(actions.appendChat(res.data, resendId));
   } catch (error) {
     yield put(actions.createChatTextFail(error, payload.content.id));
   }

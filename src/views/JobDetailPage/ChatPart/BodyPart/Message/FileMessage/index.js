@@ -71,11 +71,12 @@ const FileMessage = ({
   }
 
   function onClickFile(file) {
+    const type = getFileType(file.name);
     return () => {
-      if (file.type === 'mp4') {
+      if (type === 'mp4') {
         handleClickOpen()
       } else {
-        dispatch(openDocumentDetail({ ...file, type: file.type }));
+        dispatch(openDocumentDetail({ ...file, type: type }));
       }
     }
   }

@@ -140,8 +140,9 @@ const FooterPart = ({
       const url = await getFileUrl(file)
       images.push({ url })
     }
-
+    const id = Date.now();
     const data_chat = {
+      id,
       type: CHAT_TYPE.UPLOADING_IMAGES, images,
       isUploading: true,
       user_create_id: userId,
@@ -152,7 +153,7 @@ const FooterPart = ({
     for (let i = 0; i < files.length; i++) {
       data.append("image", files[i], files[i].name)
     }
-    dispatch(chatImage(taskId, data, onUploadingHandler))
+    dispatch(chatImage(taskId, data, onUploadingHandler, id))
   };
 
   function onClickDeletePreview(i) {
@@ -247,8 +248,9 @@ const FooterPart = ({
     if (content.trim().length === 0) return;
     dispatch(clearTags());
     const chat_parent = isEmpty(parentMessage) ? undefined : { ...parentMessage, isReply: true }
+    const id = Date.now();
     const data_chat = {
-      id: Date.now(),
+      id,
       type: CHAT_TYPE.TEXT,
       is_me: true,
       user_create_id: userId,
@@ -258,7 +260,7 @@ const FooterPart = ({
       tags: tagMembers.map(({ id }) => id)
     };
     dispatch(appendChat({ data_chat: { ...data_chat, tags: tagMembers } }));
-    dispatch(createChatText(data_chat));
+    dispatch(createChatText(data_chat, id));
     setSelectedChat(null)
     clearChatText()
   }
@@ -275,7 +277,9 @@ const FooterPart = ({
         size: humanFileSize(file.size)
       })
     }
+    const id = Date.now();
     const data_chat = {
+      id,
       type: CHAT_TYPE.UPLOADING_FILE, files: images,
       isUploading: true,
       user_create_id: userId,
@@ -286,7 +290,7 @@ const FooterPart = ({
     for (let i = 0; i < files.length; i++) {
       data.append("file", files[i], files[i].name)
     }
-    dispatch(chatFile(taskId, data, onUploadingHandler));
+    dispatch(chatFile(taskId, data, onUploadingHandler, id));
   };
 
   function sendMultipleFiles() {
