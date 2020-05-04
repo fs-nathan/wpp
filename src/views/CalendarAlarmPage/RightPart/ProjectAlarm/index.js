@@ -1,15 +1,16 @@
 import { listRemindProject } from "actions/calendar/alarmCalendar/listRemindProject";
+import { listProjectBasicInfo } from "actions/project/listBasicInfo";
 import moment from "moment";
 import React from 'react';
 import { connect } from 'react-redux';
 import ViewDetailRemind from "views/CalendarPage/views/Modals/ViewDetailRemind";
 import { Context as CalendarAlarmContext } from '../../index';
-import { bgColorSelector, remindProjectSelector } from "../../selectors";
+import { bgColorSelector, listProjectBasicInfoSelector, remindProjectSelector } from "../../selectors";
 import CalendarProjectAlarmPresenter from './presenter';
 
 function CalendarProjectAlarm({
-  bgColor, doListRemindProject,
-  projectReminds
+  bgColor, doListRemindProject, projects,
+  projectReminds, doListProjectBasicInfo,
 }) {
 
   const {
@@ -36,6 +37,10 @@ function CalendarProjectAlarm({
     doListRemindProject({ fromTime, toTime }, false);
   }, [doListRemindProject, timeRange]);
 
+  React.useEffect(() => {
+    doListProjectBasicInfo(false);
+  }, [doListProjectBasicInfo]);
+
   function handleOpenDetail(remind) {
     setOpenModalDetail(true);
     setSelectedRemind(remind);
@@ -56,6 +61,7 @@ function CalendarProjectAlarm({
         filterOpen={filterOpen}
         setFilterOpen={setFilterOpen}
         projectReminds={projectReminds}
+        projects={projects}
         handleOpenDetail={(remind) => handleOpenDetail(remind)}
       />
       <ViewDetailRemind
@@ -70,6 +76,7 @@ function CalendarProjectAlarm({
 const mapDispatchToProps = dispatch => {
   return {
     doListRemindProject: ({ fromTime, toTime }, quite) => dispatch(listRemindProject({ fromTime, toTime }, quite)),
+    doListProjectBasicInfo: (quite) => dispatch(listProjectBasicInfo(quite)),
   };
 };
 
@@ -77,6 +84,7 @@ const mapStateToProps = state => {
   return {
     bgColor: bgColorSelector(state),
     projectReminds: remindProjectSelector(state),
+    projects: listProjectBasicInfoSelector(state)
   };
 };
 

@@ -4,7 +4,8 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import TimePicker from 'components/TimePicker';
+import { listTimeSelect } from 'components/TimeSelect';
 import { isEmpty, isNil } from "lodash";
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -54,7 +55,7 @@ function ShiftStageModal({
       handleChangeData("selectedTimeEnd", shiftStage.end);
       setActionType("EDIT");
     } else setActionType("CREATE");
-  }, [shiftStage]);
+  }, [shiftStage, open]);
 
   React.useEffect(() => {
     if (isEmpty(data.shiftName)) setCanConfirm(false);
@@ -97,16 +98,16 @@ function ShiftStageModal({
               </div>
               <div className="view_ShiftStage_formControl">
                 <span>{t('views.calendar_page.modal.shift_stage.time_start')}</span>
-                <TimeSelect
+                <TimePicker
                   value={data.selectedTimeStart}
-                  onChange={({ target }) => handleChangeData('selectedTimeStart', target.value)}
+                  onChange={(value) => handleChangeData('selectedTimeStart', value)}
                 />
               </div>
               <div className="view_ShiftStage_formControl">
                 <span>{t('views.calendar_page.modal.shift_stage.time_end')}</span>
-                <TimeSelect
+                <TimePicker
                   value={data.selectedTimeEnd}
-                  onChange={({ target }) => handleChangeData('selectedTimeEnd', target.value)}
+                  onChange={(value) => handleChangeData('selectedTimeEnd', value)}
                 />
               </div>
             </MuiPickersUtilsProvider>

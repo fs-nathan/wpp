@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import CalendarWeeklyRightPartPresenter from './presenter';
 
 function CalendarWeeklyRightPart({
-  year, handleYearChanged,
-  scheduleOfWeek, calendar
+  year, handleYearChanged, bgColor, doOpenModal,
+  scheduleOfWeek, calendar, handleDeleteAllSchedule, permissions
 }) {
 
   const { t } = useTranslation();
@@ -20,11 +20,14 @@ function CalendarWeeklyRightPart({
 
   return (
     <CalendarWeeklyRightPartPresenter
-      canDelete={true}
+      havePermission={permissions['manage_week_schedule'] ?? false}
       year={year} handleYearChanged={handleYearChanged}
       scheduleOfWeek={scheduleOfWeek}
       calendar={calendar}
       i18nDays={days}
+      handleDeleteAllSchedule={handleDeleteAllSchedule}
+      bgColor={bgColor}
+      doOpenModal={doOpenModal}
     />
   );
 }

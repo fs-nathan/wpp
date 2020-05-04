@@ -15,6 +15,7 @@
     font-size: 19px;
     text-align: center;
     margin-top: 40px;
+    font-weight: 500;
   }
 
   .description {
@@ -101,7 +102,16 @@
 
     &_Summary {
       padding: 0px;
+      min-height: 48px !important;
       flex-direction: row-reverse;
+
+      .MuiExpansionPanelSummary-content.Mui-expanded {
+        margin: 0px 10px !important;
+
+        &>p {
+          word-break: break-word;
+        }
+      }
 
       svg {
         fill: rgb(130, 130, 130);
@@ -140,6 +150,11 @@
     display: inline-flex;
     align-items: center;
 
+    &>h5 {
+      font-weight: 500;
+      color: #546E7A;
+    }
+
     .mark-color {
       width: 20px;
       height: 20px;
@@ -148,12 +163,13 @@
     }
 
     .reminds_count {
-      background: #fff;
-      padding: 2px 10px;
-      border-radius: 4px;
+      background: #607D8B;
+      padding: 2px 5px;
+      border-radius: 2px;
       display: inline-flex;
       align-items: center;
       justify-content: space-around;
+      color: #fff;
       width: 30px;
       font-weight: 500;
       margin-left: 15px;
@@ -165,10 +181,12 @@
 
   @mixin calendar_item_badge_common {
     text-align: center;
-    width: 40px;
-    border-radius: 4px;
+    width: auto;
+    border-radius: 2px;
+    font-size: 12px;
+    line-height: 12px;
     font-weight: 500;
-    padding: 4px 7px;
+    padding: 3px 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -183,11 +201,15 @@
     padding: 10px 25px 10px 5px;
     border-radius: 4px;
     cursor: pointer;
-    border: 1px solid #ffff;
+    border: 1px solid #eaeaea;
     margin-bottom: 15px;
 
     &:hover {
       border: 1px solid #029CF3;
+
+      .alarm_calendar_item_control {
+        display: block;
+      }
     }
   }
 
@@ -199,19 +221,24 @@
     align-self: center;
     border-right: 2px solid #F0F0F0;
 
+    &>img {
+      margin: 10px 0px;
+    }
+
     .calendar_item_day {
-      font-size: 40px;
-      font-weight: 500;
+      font-size: 55px;
+      font-weight: 700;
     }
 
     .calendar_item_month {
       font-weight: 500;
+      margin-top: 5px;
     }
   }
 
   &_mainContent {
     grid-area: main;
-    padding: 0px 10px;
+    padding: 0px 20px;
 
     &_content {
       display: flex;
@@ -219,13 +246,12 @@
 
       .calendar_item_badge {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
 
         &_bg {
-          width: 260px;
+          width: auto;
         }
 
-        width: 200px;
         align-self: center;
         margin-left: 15px;
 
@@ -233,17 +259,20 @@
           @include calendar_item_badge_common;
           background: #FCD0CC;
           color: #F6675F;
+          margin-right: 5px;
         }
 
         &_secondary {
           @include calendar_item_badge_common;
           background: #C0F0EB;
           color: #3ECD8C;
+          margin-right: 5px;
 
           &_bg {
             background: #C0E9FC;
             color: rgb(94, 179, 245);
-            width: 100px;
+            width: auto;
+            margin-right: 5px;
           }
         }
 
@@ -262,6 +291,16 @@
         margin-bottom: 5px;
       }
 
+      .main_content_auther {
+        margin: 7px 0px;
+      }
+
+      .main_conten_top {
+        font-size: 15px;
+        font-weight: 500;
+        color: #283593;
+      }
+
       .main_content_auther>span,
       .main_content_alarm>span {
         margin-left: 5px;
@@ -271,6 +310,7 @@
 
   &_control {
     grid-area: control;
+    display: none;
   }
 }
 
