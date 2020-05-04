@@ -163,7 +163,7 @@ export function transformToGoogleFormData(ggData) {
   }
 }
 
-export function getRichContent(content = '', tags, color) {
+export function getRichContent(content = '', tags = [], color = 'inherit') {
   if (!content) return '';
   let ret = content;
   tags.forEach(({ id, name }) => {

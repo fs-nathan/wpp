@@ -3,8 +3,7 @@ import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
-import TimePicker from 'components/TimePicker';
-import { listTimeSelect } from 'components/TimeSelect';
+import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
 import TitleSectionModal from 'components/TitleSectionModal';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
 import { get, isFunction, isNil } from 'lodash';
@@ -16,6 +15,7 @@ import { taskIdSelector } from '../../../selectors';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import './styles.scss';
+// import TimePicker from 'components/TimePicker'
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -169,7 +169,7 @@ function CreateJobModal(props) {
   }, [listSchedule]);
 
   React.useEffect(() => {
-    if (props.data && props.editMode) {
+    if (props.data && props.editMode !== null) {
       let tempData = { ...props.data };
       tempData.priority = tempData.priority_code;
       if (!tempData.name) tempData.name = '';
@@ -273,9 +273,10 @@ function CreateJobModal(props) {
             <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_CONG_VIEC')} isRequired />
             <TextField
               className="createJob--inputTextJob"
-              helperText={data.name ? '' : t('LABEL_CHAT_TASK_KHONG_DUOC_DE_TRONG')}
               margin="normal"
               variant="outlined"
+              multiline
+              rowsMax={4}
               fullWidth
               value={data.name}
               onChange={e => handleChangeData('name', e.target.value)}
@@ -286,9 +287,11 @@ function CreateJobModal(props) {
               className="createJob--content"
               margin="normal"
               variant="outlined"
+              multiline
+              rowsMax={4}
               fullWidth
               value={data.description}
-              onChange={value => handleChangeData('description', value)}
+              onChange={e => handleChangeData('description', e.target.value)}
               placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
             />
           </>
@@ -319,7 +322,7 @@ function CreateJobModal(props) {
                       onChange={e => handleChangeData('start_date', convertDate(e))}
                     />
                   ) : (
-                      <TimePicker
+                      <TimeSelect
                         className="createJob--timeSelect"
                         value={data.start_time}
                         onChange={({ target }) => handleChangeData('start_time', target.value)}
@@ -353,7 +356,7 @@ function CreateJobModal(props) {
                       onChange={e => handleChangeData('end_date', convertDate(e))}
                     />
                   ) : (
-                      <TimePicker
+                      <TimeSelect
                         className="createJob--timeSelect"
                         value={data.end_time}
                         onChange={({ target }) => handleChangeData('end_time', target.value)}

@@ -1156,7 +1156,7 @@ function* createTask(action) {
     const res = yield call(doCreateTask, action.payload.data);
     yield put(actions.createTaskSuccess(res));
     yield put(
-      actions.getListTaskDetail({ project_id: action.payload.projectId })
+      actions.getListTaskDetail(action.payload.projectId)
     );
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -1355,9 +1355,7 @@ function* updateComplete(action) {
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
     yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
     yield put(appendChat(res));
-    yield put(
-      actions.getListTaskDetail({ project_id: action.payload.projectId })
-    );
+    yield put(actions.getListTaskDetail(action.payload.projectId));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateCommandFail(error));
@@ -1405,9 +1403,7 @@ function* deleteTask(action) {
   try {
     const res = yield call(doDeleteTask, action.payload.taskId);
     yield put(actions.deleteTaskSuccess(res));
-    yield put(
-      actions.getListTaskDetail({ project_id: action.payload.projectId })
-    );
+    yield put(actions.getListTaskDetail(action.payload.projectId));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteTaskFail(error));
@@ -1420,7 +1416,7 @@ export function* pinTask({ payload }) {
     const { task_id, projectId } = payload;
     const res = yield call(apiService.post, "/task/ghim-task", { task_id });
     yield put(actions.pinTaskSuccess(res.data));
-    yield put(actions.getListTaskDetail({ project_id: projectId }));
+    yield put(actions.getListTaskDetail(projectId));
     yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
     yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
@@ -1437,7 +1433,7 @@ export function* unPinTask({ payload }) {
       task_id
     });
     yield put(actions.unPinTaskSuccess(res.data));
-    yield put(actions.getListTaskDetail({ project_id: projectId }));
+    yield put(actions.getListTaskDetail(projectId));
     yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
     yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);

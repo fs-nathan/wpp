@@ -71,7 +71,7 @@ function ProjectPage({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doGetListTaskDetail: ({ projectId }) => dispatch(getListTaskDetail({ project_id: projectId })),
+    doGetListTaskDetail: ({ projectId }) => dispatch(getListTaskDetail(projectId)),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   }
 };

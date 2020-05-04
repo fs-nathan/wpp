@@ -1129,7 +1129,7 @@
   "LABEL_CHAT_TASK_TRANG_THAI": "Trạng thái:",
   "LABEL_CHAT_TASK_DANG_CHO": "Đang chờ",
   "LABEL_CHAT_TASK_DANG_LAM": "Đang làm",
-  "LABEL_CHAT_TASK_HOAN_THANH": "Hoàn thành:",
+  "LABEL_CHAT_TASK_HOAN_THANH": "Hoàn thành",
   "LABEL_CHAT_TASK_DA_QUA_HAN": "Đã quá hạn",
   "LABEL_CHAT_TASK_TAM_DUNG": "Tạm dừng",
   "LABEL_CHAT_TASK_TIEN_DO": "Tiến độ",
@@ -1234,5 +1234,8 @@
   "LABEL_CHAT_TASK_TU_SANG": "Từ {{from}} sang {{to}}",
   "LABEL_CHAT_TASK_TAO_VIEC": "TẠO VIỆC",
   "LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC": "Chỉnh sửa công việc",
-  "LABEL_CHAT_TASK_TAO_CONG_VIEC": "Tạo công việc"
+  "LABEL_CHAT_TASK_TAO_CONG_VIEC": "Tạo công việc",
+  "LABEL_CHAT_TASK_NOI_DUNG_NHAC_HEN": "Nội dung nhắc hẹn",
+  "LABEL_CHAT_TASK_THU_GON": "Thu gọn",
+  "LABEL_CHAT_TASK_XEM_THEM": "Xem thêm"
 }
