@@ -3,7 +3,8 @@ import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import TimePicker from 'components/TimePicker';
+import { listTimeSelect } from 'components/TimeSelect';
 import TitleSectionModal from 'components/TitleSectionModal';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
 import { get, isFunction, isNil } from 'lodash';
@@ -15,7 +16,6 @@ import { taskIdSelector } from '../../../selectors';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import './styles.scss';
-// import TimePicker from 'components/TimePicker'
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -156,13 +156,14 @@ function CreateJobModal(props) {
       // Map task to input
       let listSchedulesData = listSchedule.map(item => ({
         label: item.name,
+        is_default: item.is_default,
         value: item._id
       }));
       setListSchedules(listSchedulesData);
 
       // Set default group for input
       let item = listSchedulesData.find(
-        item => item.value === ''
+        item => item.is_default
       );
       if (item) setScheduleValue(item);
     }
@@ -275,8 +276,6 @@ function CreateJobModal(props) {
               className="createJob--inputTextJob"
               margin="normal"
               variant="outlined"
-              multiline
-              rowsMax={4}
               fullWidth
               value={data.name}
               onChange={e => handleChangeData('name', e.target.value)}
@@ -322,10 +321,10 @@ function CreateJobModal(props) {
                       onChange={e => handleChangeData('start_date', convertDate(e))}
                     />
                   ) : (
-                      <TimeSelect
+                      <TimePicker
                         className="createJob--timeSelect"
                         value={data.start_time}
-                        onChange={({ target }) => handleChangeData('start_time', target.value)}
+                        onChange={(value) => handleChangeData('start_time', value)}
                       />
                     )}
                   {date_status !== 1 && (
@@ -356,10 +355,10 @@ function CreateJobModal(props) {
                       onChange={e => handleChangeData('end_date', convertDate(e))}
                     />
                   ) : (
-                      <TimeSelect
+                      <TimePicker
                         className="createJob--timeSelect"
                         value={data.end_time}
-                        onChange={({ target }) => handleChangeData('end_time', target.value)}
+                        onChange={(value) => handleChangeData('end_time', value)}
                       />
                     )}
                   {date_status !== 1 && (

@@ -1,6 +1,7 @@
 import { appendChat } from "actions/chat/chat";
 import { get } from 'lodash';
 import { call, put } from "redux-saga/effects";
+import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import { apiService } from "../../constants/axiosInstance";
 // import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
@@ -1058,9 +1059,13 @@ function* updateRolesForMember(action) {
 // Get list task detail
 async function doGetListTaskDetail({ project_id, type_data }) {
   try {
+    let lastType = type_data;
+    if (!type_data) {
+      lastType = localStorage.getItem(lastJobSettingKey) || 'include-room';
+    }
     const config = {
       url: "project/list-task-detail",
-      params: { project_id, type_data },
+      params: { project_id, type_data: lastType },
       method: "get"
     };
     const result = await apiService(config);

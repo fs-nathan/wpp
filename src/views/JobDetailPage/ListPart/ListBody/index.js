@@ -34,13 +34,11 @@ function ListBody() {
 
   useEffect(() => {
     if (listTaskDataType === listTaskDataTypes[1]) {
-      if (listTaskDetail)
-        setData(listTaskDetail.tasks)
+      setData(listTaskDetail ? listTaskDetail.tasks : [])
     } else {
-      if (listDataNotRoom)
-        setData(listDataNotRoom.tasks)
+      setData(listDataNotRoom ? listDataNotRoom.tasks : [])
     }
-  }, [listDataNotRoom, listDataNotRoom.tasks, listTaskDataType, listTaskDetail])
+  }, [listDataNotRoom, listTaskDataType, listTaskDetail])
 
   return (
     <Body className="listJobBody"

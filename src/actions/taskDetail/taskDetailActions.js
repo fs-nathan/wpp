@@ -770,7 +770,7 @@ export const createGroupTaskFail = (error) => ({
 });
 
 // Get List Task Detail
-export const getListTaskDetail = (project_id, type_data = 'include-room') => ({
+export const getListTaskDetail = (project_id, type_data) => ({
     type: types.GET_LIST_TASK_DETAIL_REQUEST,
     project_id, type_data
 });

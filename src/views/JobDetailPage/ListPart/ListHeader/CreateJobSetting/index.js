@@ -7,6 +7,7 @@ import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
 
 export const listTaskDataTypes = ['not-room', 'include-room'];
+export const lastJobSettingKey = 'lastJobSettingKey';
 
 function CreateJobSetting(props) {
   const { t } = useTranslation();
@@ -17,8 +18,10 @@ function CreateJobSetting(props) {
   function onCheck(e, checked) {
     if (listTaskDataType === listTaskDataTypes[1]) {
       dispatch(getListTaskDetail(projectId, listTaskDataTypes[0]));
+      localStorage.setItem(lastJobSettingKey, listTaskDataTypes[0])
     } else {
       dispatch(getListTaskDetail(projectId, listTaskDataTypes[1]));
+      localStorage.setItem(lastJobSettingKey, listTaskDataTypes[1])
     }
   }
 
