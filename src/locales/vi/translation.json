@@ -1104,7 +1104,7 @@
   "LABEL_CHAT_TASK_TIM_THANH_VIEN": "Tìm thành viên",
   "LABEL_CHAT_TASK_KHONG_DUOC_DE_TRONG": "Không được để trống",
   "LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC": "Chọn nhóm công việc",
-  "LABEL_CHAT_TASK_MO_TA_CONG_VIEC": "Mô tả công việc:",
+  "LABEL_CHAT_TASK_MO_TA_CONG_VIEC": "Mô tả công việc",
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC": "Tiến độ công việc",
   "LABEL_CHAT_TASK_LICH_CONG_VIEC": "Lịch công việc",
   "LABEL_CHAT_TASK_NGAY_BAT_DAU": "Ngày bắt đầu",
@@ -1231,5 +1231,8 @@
   "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt...",
   "LABEL_CHAT_TASK_HINH_ANH": "Hình ảnh",
   "LABEL_CHAT_TASK_THA_FILE_VAO_DAY": "Thả file vào đây",
-  "TU_SANG": "Từ {{from}} sang {{to}}"
+  "LABEL_CHAT_TASK_TU_SANG": "Từ {{from}} sang {{to}}",
+  "LABEL_CHAT_TASK_TAO_VIEC": "TẠO VIỆC",
+  "LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC": "Chỉnh sửa công việc",
+  "LABEL_CHAT_TASK_TAO_CONG_VIEC": "Tạo công việc"
 }

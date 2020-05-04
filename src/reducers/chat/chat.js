@@ -24,11 +24,11 @@ export const initialState = {
   dataRemind: {},
   isOpenDetailSubTask: false,
   dataSubTask: {},
-  isOpenDetailOffer: null,
+  isOpenDetailOffer: false,
   dataOffer: null,
-  isOpenDetailDemand: null,
+  isOpenDetailDemand: false,
   dataDemand: null,
-  isOpenDetailMember: null,
+  isOpenDetailMember: false,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {

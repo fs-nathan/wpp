@@ -62,7 +62,7 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
       title={t('LABEL_CHAT_TASK_CHON_TAI_LIEU')}
       className="send-file-modal"
       confirmRender={null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
     >
       <div className="send-file-content">
         <div className="SendFileModal--button" onClick={onClickFromComputer}>

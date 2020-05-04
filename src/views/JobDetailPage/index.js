@@ -1,4 +1,5 @@
 import { getEmotions, getListStickersRequest } from 'actions/chat/chat';
+import { detailStatus } from 'actions/project/setting/detailStatus';
 import last from 'lodash/last';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -54,6 +55,7 @@ function JobDetailPage(props) {
       dispatch(taskDetailAction.getListTaskDetail(projectId));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
+      dispatch(detailStatus({ projectId }));
     }
   }, [dispatch, projectId]);
 
