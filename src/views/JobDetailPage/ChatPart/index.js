@@ -1,26 +1,36 @@
+import { useTranslation } from 'react-i18next';
 import { IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, chatFile, onUploading, searchChat } from 'actions/chat/chat';
-import { file as file_icon } from 'assets/fileType';
+import { searchChat } from 'actions/chat/chat';
+import { getRemind, unPinRemind } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'clsx';
 import SearchInput from 'components/SearchInput';
-import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
-import { humanFileSize } from 'helpers/jobDetail/stringHelper';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
+import { typesRemind } from '../TabPart/RemindTab/TabBody/RemindItem';
 import BodyPart from './BodyPart';
 import FooterPart from './FooterPart';
 import HeaderPart from './HeaderPart';
 import './styles.scss';
 
 function ChatPart(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
   const searchChatKey = useSelector(state => state.chat.searchChatKey)
+  const userId = useSelector(state => state.system.profile.id)
   const [selectedChat, setSelectedChat] = useState();
   const [isShowSearch, setShowSearch] = useState(false);
   const [imagesQueue, setImagesQueue] = useState([]);
+  const pinnedRemind = reminds.find(rm => rm.is_ghim);
+
+  useEffect(() => {
+    if (taskId && reminds.length === 0)
+      dispatch(getRemind({ taskId }))
+  }, [dispatch, reminds.length, taskId]);
 
   function onChangeKey(evt) {
     dispatch(searchChat(evt.target.value))
@@ -29,45 +39,20 @@ function ChatPart(props) {
   function hideSearch() {
     setShowSearch(false)
   }
+
+  function onClickClosePin() {
+    dispatch(unPinRemind({ remind_id: pinnedRemind.id, taskId }))
+  }
+
   const onDrop = useCallback(async (files = []) => {
     // Do something with the files
-    function onUploadingHandler(percent) {
-      dispatch(onUploading(percent));
-    }
-    // console.log('onDrop', files)
-    const isAllImages = files.every(file => file.type.indexOf('image') !== -1);
-    if (isAllImages) {
-      // handleUploadImage({ target: { files } })
-      setImagesQueue([...imagesQueue, ...files]);
-      // focus();
-    } else {
-      const images = [];
-      for (let index = 0; index < files.length; index++) {
-        const file = files[index];
-        const url = await getFileUrl(file)
-        images.push({
-          url, name: file.name, file_icon,
-          size: humanFileSize(file.size)
-        })
-      }
-      const data_chat = {
-        type: CHAT_TYPE.UPLOADING_FILE, files: images,
-        isUploading: true,
-        is_me: true,
-      }
-      dispatch(appendChat({ data_chat }));
-      let data = new FormData()
-      for (let i = 0; i < files.length; i++) {
-        data.append("file", files[i], files[i].name)
-      }
-      dispatch(chatFile(taskId, data, onUploadingHandler));
-    }
-  }, [dispatch, imagesQueue, taskId])
+    setImagesQueue([...imagesQueue, ...files]);
+  }, [imagesQueue])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
   return (
-    <div className="container-chatpart"
+    <div className="container-chatpart chatPart"
       {...getRootProps({
         onClick: event => event.stopPropagation()
       })}
@@ -75,18 +60,33 @@ function ChatPart(props) {
       <div className="wrap-header">
         <HeaderPart {...props} setShowSearch={setShowSearch} />
       </div>
-      {/* <div className="wrap-body"> */}
-      {isShowSearch && (
-        <div className="chatHeader--showSearch">
-          <SearchInput className="chatHeader--search"
-            placeholder='Tìm nội dung trong hội thảo' value={searchChatKey} onChange={onChangeKey} />
-          <IconButton className="chatHeader--close" onClick={hideSearch}>
+      <div className={clsx("chatPart--searchWrap", { 'chatPart__showSearch': isShowSearch })}>
+        <SearchInput className="chatPart--search"
+          placeholder={t('LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO')} value={searchChatKey} onChange={onChangeKey} />
+        <IconButton className="chatPart--close" onClick={hideSearch}>
+          <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
+        </IconButton>
+      </div>
+      {
+        pinnedRemind &&
+        <div className={clsx("chatPart--pinRemind", { 'chatPart__showPinRemind': true })}>
+          <img className="chatPart--pinImage" src="/images/alarm-clock.png" alt="pin"></img>
+          <div className="chatPart--pinRight">
+            <div className="chatPart--pinContent">
+              {pinnedRemind.content}
+            </div>
+            <div className="chatPart--pinType">
+              {pinnedRemind.type === 0 ? `Lúc ${pinnedRemind.time_remind} ngày ${pinnedRemind.date_remind} - ${typesRemind[pinnedRemind.type_remind]} ` :
+                `Nhắc theo tiến độ ${pinnedRemind.duration.map(dr => `${dr}%`).join(', ')}`
+              }
+            </div>
+          </div>
+          <IconButton className="chatPart--close" onClick={onClickClosePin}>
             <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
           </IconButton>
         </div>
-      )}
+      }
       <BodyPart {...props} setSelectedChat={setSelectedChat} isReply={Boolean(selectedChat)} />
-      {/* </div> */}
       <div className="wrap-footer">
         <FooterPart {...props}
           parentMessage={selectedChat}
@@ -98,12 +98,6 @@ function ChatPart(props) {
       {isDragActive && (
         <div className="drop-area">
           <div className="dashed-box">
-            {/* <Icon
-              className="drop-ic-clould"
-              path={mdiCloudUploadOutline}
-              size={5}
-              color={'#c3c3c3'}
-            /> */}
             <div className="des-drop">{('Thả file vào đây')}</div>
           </div>
         </div>

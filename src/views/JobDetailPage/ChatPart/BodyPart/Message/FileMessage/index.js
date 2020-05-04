@@ -3,15 +3,30 @@ import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
-import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import ModalImage from 'views/JobDetailPage/ModalImage';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
+
+function getType(name) {
+  const nameSplitted = name.split('.');
+  const type = nameSplitted[nameSplitted.length - 1];
+  return type
+}
+
+function getPosition(chatPosition, i, length) {
+  // if (chatPosition === 'top' && i !== 0)
+  //   return 'mid'
+  // if (chatPosition === 'bot' && i !== length - 1)
+  //   return 'mid'
+  return chatPosition
+}
 
 const FileMessage = ({
   files = [],
@@ -32,9 +47,10 @@ const FileMessage = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
 
   const [open, setOpen] = React.useState(false);
 
@@ -46,11 +62,6 @@ const FileMessage = ({
     setOpen(false);
   }
 
-  const [file] = files;
-  const { name = '', url } = file || {};
-  const nameSplitted = name.split('.');
-  const type = nameSplitted[nameSplitted.length - 1];
-
   function onClickDownload(url, name) {
     return () => {
       const link = document.createElement('a');
@@ -61,18 +72,22 @@ const FileMessage = ({
     }
   }
 
-  function onClickFile() {
-    if (type === 'mp4') {
-      handleClickOpen()
-    } else {
-      dispatch(openDocumentDetail({ ...file, type }));
+  function onClickFile(file) {
+    return () => {
+      if (file.type === 'mp4') {
+        handleClickOpen()
+      } else {
+        dispatch(openDocumentDetail({ ...file, type: file.type }));
+      }
     }
   }
 
-  return (
-    <div className={clsx("FileMessage", `TextMessage__${chatPosition}`)}  >
+  return files.map((file, i) => (
+    <div key={i} className={clsx("FileMessage", `TextMessage__${getPosition(chatPosition, i, files.length)}`)}  >
       {!isReply && !is_me &&
-        <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        <abbr title={user_create_name}>
+          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+        </abbr>
       }
       {!isReply && is_me &&
         <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
@@ -109,32 +124,28 @@ const FileMessage = ({
             {chat_parent &&
               <TextMessage {...chat_parent} isReply></TextMessage>
             }
-            {file &&
-              <div className="FileMessage--files" onClick={onClickFile}>
-                <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
-                  src={file.file_icon} alt="file-icon"></img>
-                <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
-                  {file.name}
-                  <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
-                    {type} - {file && file.size}
+            <div className="FileMessage--files" onClick={onClickFile(file)}>
+              <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
+                src={file.file_icon} alt="file-icon"></img>
+              <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
+                {file.name}
+                <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
+                  {getType(file.name)} - {file && file.size}
+                </div>
+                {isUploading &&
+                  <div className="FileMessage--loading" >{t('LABEL_CHAT_TASK_DANG_TAI')}<div className="FileMessage--loadingBackground" >
+                    <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
+                    </div>
                   </div>
-                  {isUploading &&
-                    <div className="FileMessage--loading" >
-                      Đang tải:
-                  <div className="FileMessage--loadingBackground" >
-                        <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
-                        </div>
-                      </div>
-                      {uploadingPercent}%
+                    {uploadingPercent}%
               </div>
-                  }
-                </div>
-                <div className="FileMessage--downloadButton"
-                  onClick={onClickDownload(file.url, file.name)}>
-                  <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
-                </div>
+                }
               </div>
-            }
+              <div className="FileMessage--downloadButton"
+                onClick={onClickDownload(file.url, file.name)}>
+                <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
+              </div>
+            </div>
           </div>
           {data_emotion.length > 0 &&
             <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
@@ -144,10 +155,10 @@ const FileMessage = ({
       {!isReply && !is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
       <ModalImage images={files}
-        {...{ user_create_avatar, user_create_name, time_create, user_create_position, type, url }}
+        {...{ user_create_avatar, user_create_name, time_create, user_create_position, type: getType(file.name), url: file.url }}
         isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
     </div >
-  );
+  ));
 }
 
 FileMessage.propTypes = {

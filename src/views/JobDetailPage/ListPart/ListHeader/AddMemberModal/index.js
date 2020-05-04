@@ -65,10 +65,10 @@ function AddMemberModal({ setOpen, isOpen }) {
 
   return (
     <DialogWrap
-      title={'Thành viên công việc'}
+      title={t('LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC')}
       isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel={"Thoát"}
+      successLabel={t('LABEL_CHAT_TASK_THOAT')}
       onClickSuccess={handleClose}
       maxWidth="xl"
       isOneButton
@@ -77,11 +77,11 @@ function AddMemberModal({ setOpen, isOpen }) {
         <GridArea component={'div'} style={{ borderBottom: 'none' }} >
           <BorderGrid component={'div'}>
             <FlexMemberProject component={'span'}>
-              <MemberProject component={'div'} >Thành viên dự án</MemberProject>
+              <MemberProject component={'div'} >{t('LABEL_CHAT_TASK_THANH_VIEN_DU_AN')}</MemberProject>
             </FlexMemberProject>
             <Typography component="span">
               <div style={{ margin: '10px 10px 0 10px' }}>
-                <SearchInput placeholder='Tìm thành viên' />
+                <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_THANH_VIEN')} />
               </div>
               <ButtonAddAll
                 onClick={handleAddAll}
@@ -104,7 +104,7 @@ function AddMemberModal({ setOpen, isOpen }) {
           </BorderGrid>
           <Typography component="div">
             <FlexJobMember component="div">
-              <MemberProject component={'div'}>Thành viên công việc</MemberProject>
+              <MemberProject component={'div'}>{t('LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC')}</MemberProject>
             </FlexJobMember>
             <TableMember style={{ boxShadow: 'none' }} />
           </Typography>

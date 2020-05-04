@@ -68,8 +68,8 @@
   & {
     @include view_ProjecrGroup_Copy_Project_Modal___primary;
     & > * {
-      &:first-child {
-        fill: #a5a5a5;
+      &:first-child * {
+        fill: #a5a5a5 !important;
       }
       &:last-child {
         color: #444;
@@ -79,8 +79,8 @@
   &-selected {
     @include view_ProjecrGroup_Copy_Project_Modal___primary;
     & > * {
-      &:first-child {
-        fill: #05b50c;
+      &:first-child * {
+        fill: #05b50c !important;
       }
       &:last-child {
         color: #05b50c;

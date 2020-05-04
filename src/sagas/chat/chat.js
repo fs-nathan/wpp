@@ -37,7 +37,8 @@ export function* chatImage(payload) {
         }
       });
     yield put(actions.chatImageSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }
@@ -55,7 +56,8 @@ export function* chatFile(dispatch) {
         }
       });
     yield put(actions.chatFileSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatFileFail(error));
   }
@@ -65,7 +67,8 @@ export function* chatForwardFile(payload) {
     const { task_id, file_ids } = payload;
     const res = yield call(apiService.post, `/task/create-chat-forward-file?task_id=${task_id}`, { file_ids });
     yield put(actions.chatForwardFileSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
+    yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatForwardFileFail(error));
   }
@@ -75,7 +78,7 @@ export function* chatSticker(payload) {
     const { task_id, sticker_id } = payload;
     const res = yield call(apiService.post, `/task/create-chat-sticker?task_id=${task_id}`, { sticker_id });
     yield put(actions.chatStickerSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatStickerFail(error));
   }
@@ -162,9 +165,9 @@ export function* createChatText(payload) {
     const { content } = payload;
     const res = yield call(apiService.post, "/task/create-chat-text", content);
     yield put(actions.createChatTextSuccess(res.data));
-    yield put(actions.loadChat(content.task_id));
+    // yield put(actions.loadChat(content.task_id));
   } catch (error) {
-    yield put(actions.createChatTextFail(error));
+    yield put(actions.createChatTextFail(error, payload.content.id));
   }
 }
 
@@ -175,5 +178,69 @@ export function* getViewedChat(payload) {
     yield put(actions.getViewedChatSuccess(res.data));
   } catch (error) {
     yield put(actions.getViewedChatFail(error));
+  }
+}
+
+export function* getRemindDetail(payload) {
+  try {
+    const { task_id, remind_id } = payload;
+    const res = yield call(apiService.get, "/task/get-remind-detail", { params: { task_id, remind_id } });
+    yield put(actions.getRemindDetailSuccess(res.data));
+    yield put(actions.openDetailRemind(true, res.data.remind));
+  } catch (error) {
+    yield put(actions.getRemindDetailFail(error));
+  }
+}
+
+export function* getSubtaskDetail(payload) {
+  try {
+    const { task_id, sub_task_id } = payload;
+    const res = yield call(apiService.get, "/task/get-subtask-detail", { params: { task_id, sub_task_id } });
+    yield put(actions.getSubtaskDetailSuccess(res.data));
+    yield put(actions.openDetailSubTask(true, res.data.sub_task));
+  } catch (error) {
+    yield put(actions.getSubtaskDetailFail(error));
+  }
+}
+
+export function* getOfferDetail(payload) {
+  try {
+    const { task_id, offer_id } = payload;
+    const res = yield call(apiService.post, "/task/get-offer-detail", { task_id, offer_id });
+    yield put(actions.getOfferDetailSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getOfferDetailFail(error));
+  }
+}
+
+export function* getDemandDetail(payload) {
+  try {
+    const { task_id, demand_id } = payload;
+    const res = yield call(apiService.post, "/task/get-command-decision-detail", { task_id, demand_id });
+    yield put(actions.getDemandDetailSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getDemandDetailFail(error));
+  }
+}
+
+export function* chatQuickLike(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.post, "/task/chat-quick-like", { task_id });
+    yield put(actions.chatQuickLikeSuccess(res.data));
+    yield put(actions.appendChat(res.data));
+  } catch (error) {
+    yield put(actions.chatQuickLikeFail(error));
+  }
+}
+
+export function* createChatFileFromGoogleDriver(payload) {
+  try {
+    const { task_id, google_data } = payload;
+    const res = yield call(apiService.post, "/task/create-chat-file-from-google-driver", { task_id, google_data });
+    yield put(actions.createChatFileFromGoogleDriverSuccess(res.data));
+    yield put(actions.appendChat(res.data));
+  } catch (error) {
+    yield put(actions.createChatFileFromGoogleDriverFail(error));
   }
 }

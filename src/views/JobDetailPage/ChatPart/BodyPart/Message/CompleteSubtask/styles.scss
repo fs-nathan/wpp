@@ -1,2 +1,9 @@
 .CompleteSubtask {
+  &--icon {
+    width: 30px;
+    height: 30px;
+    fill: #00ff00;
+    display: block;
+    margin: 10px auto;
+  }
 }

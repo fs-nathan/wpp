@@ -10,7 +10,10 @@ import MemberTab from './MemberTab';
 import OfferTab from './OfferTab';
 import ProgressTab from './ProgressTab';
 import RemindTab from './RemindTab';
+import DetailRemind from './RemindTab/DetailRemind';
+import RemindModal from './RemindTab/RemindModal';
 import SubtaskTab from './SubtaskTab';
+import SubTaskDetailDialog from './SubtaskTab/SubTaskDetailDialog';
 const Container = styled.div`
   grid-area: tab;
   padding: 0px;
@@ -35,6 +38,10 @@ function TabPart(props) {
       <OfferTab show={show} setShow={setShow} {...props} />
       <DemandTab show={show} setShow={setShow} {...props} />
       <MemberTab show={show} setShow={setShow} />
+      <DetailRemind />
+      <RemindModal />
+      <SubTaskDetailDialog />
+
     </Container>
   )
 }

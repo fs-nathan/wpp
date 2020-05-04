@@ -3,9 +3,11 @@ import { mdiDotsHorizontal, mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import iconDoc from 'assets/doc.png';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 const FileBox = (props) => {
+  const { t } = useTranslation();
   const file = useSelector(state => state.taskDetail.media.file);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -51,9 +53,9 @@ const FileBox = (props) => {
                 horizontal: 'right',
               }}
             >
-              <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-              <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-              <MenuItem onClick={handleClose}>Xóa</MenuItem>
+              <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
+              <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
+              <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
             </Menu>
           </ListItem>
         )

@@ -24,7 +24,7 @@ function ProjectMemberSlide({
   }, [projectId]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
     if (id !== null) {
       doMemberProject({ projectId: id });
       const reloadMemberProject = () => {

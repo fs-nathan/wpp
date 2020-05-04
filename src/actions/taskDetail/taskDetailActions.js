@@ -490,9 +490,9 @@ export const getTaskDetailTabPartFail = (error) => ({
 });
 
 // Update Priority
-export const updatePriority = payload => ({
+export const updatePriority = (task_id, priority) => ({
     type: types.UPDATE_TASK_PRIORITY_REQUEST,
-    payload
+    payload: { task_id, priority }
 })
 export const updatePrioritySuccess = payload => ({
     type: types.UPDATE_TASK_PRIORITY_SUCCESS,
@@ -995,3 +995,171 @@ export const showTab = payload => ({
     type: types.SET_SHOW_INDEX,
     payload
 })
+
+export function stopTask(task_id) {
+    return {
+        type: types.STOP_TASK,
+        task_id
+    };
+}
+
+export function stopTaskSuccess(payload) {
+    return {
+        type: types.STOP_TASK_SUCCESS,
+        payload
+    };
+}
+
+export function stopTaskFail(error) {
+    return {
+        type: types.STOP_TASK_FAIL,
+        error
+    };
+}
+
+export function cancelStopTask(task_id) {
+    return {
+        type: types.CANCEL_STOP_TASK,
+        task_id
+    };
+}
+
+export function cancelStopTaskSuccess(payload) {
+    return {
+        type: types.CANCEL_STOP_TASK_SUCCESS,
+        payload
+    };
+}
+
+export function cancelStopTaskFail(error) {
+    return {
+        type: types.CANCEL_STOP_TASK_FAIL,
+        error
+    };
+}
+
+export function deleteShareLocation(task_id, location_share_id) {
+    return {
+        type: types.DELETE_SHARE_LOCATION,
+        task_id, location_share_id
+    };
+}
+
+export function deleteShareLocationSuccess(payload) {
+    return {
+        type: types.DELETE_SHARE_LOCATION_SUCCESS,
+        payload
+    };
+}
+
+export function deleteShareLocationFail(error) {
+    return {
+        type: types.DELETE_SHARE_LOCATION_FAIL,
+        error
+    };
+}
+
+export function updateNameDescription(task_id, name, description) {
+    return {
+        type: types.UPDATE_NAME_DESCRIPTION,
+        task_id, name, description
+    };
+}
+
+export function updateNameDescriptionSuccess(payload) {
+    return {
+        type: types.UPDATE_NAME_DESCRIPTION_SUCCESS,
+        payload
+    };
+}
+
+export function updateNameDescriptionFail(error) {
+    return {
+        type: types.UPDATE_NAME_DESCRIPTION_FAIL,
+        error
+    };
+}
+
+export function updateGroupTask(task_id, group_task) {
+    return {
+        type: types.UPDATE_GROUP_TASK,
+        task_id, group_task
+    };
+}
+
+export function updateGroupTaskSuccess(payload) {
+    return {
+        type: types.UPDATE_GROUP_TASK_SUCCESS,
+        payload
+    };
+}
+
+export function updateGroupTaskFail(error) {
+    return {
+        type: types.UPDATE_GROUP_TASK_FAIL,
+        error
+    };
+}
+
+export function updateTypeAssign(task_id, type_assign) {
+    return {
+        type: types.UPDATE_TYPE_ASSIGN,
+        task_id, type_assign
+    };
+}
+
+export function updateTypeAssignSuccess(payload) {
+    return {
+        type: types.UPDATE_TYPE_ASSIGN_SUCCESS,
+        payload
+    };
+}
+
+export function updateTypeAssignFail(error) {
+    return {
+        type: types.UPDATE_TYPE_ASSIGN_FAIL,
+        error
+    };
+}
+
+export function updateScheduleTask(task_id, schedule_id) {
+    return {
+        type: types.UPDATE_SCHEDULE_ASSIGN,
+        task_id, schedule_id
+    };
+}
+
+export function updateScheduleTaskSuccess(payload) {
+    return {
+        type: types.UPDATE_SCHEDULE_ASSIGN_SUCCESS,
+        payload
+    };
+}
+
+export function updateScheduleTaskFail(error) {
+    return {
+        type: types.UPDATE_SCHEDULE_ASSIGN_FAIL,
+        error
+    };
+}
+
+export function getSchedules(project_id) {
+    return {
+        type: types.GET_SCHEDULES,
+        project_id
+    };
+}
+
+export function getSchedulesSuccess(payload) {
+    return {
+        type: types.GET_SCHEDULES_SUCCESS,
+        payload
+    };
+}
+
+export function getSchedulesFail(error) {
+    return {
+        type: types.GET_SCHEDULES_FAIL,
+        error
+    };
+}

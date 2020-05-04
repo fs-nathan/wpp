@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import React from 'react';
@@ -5,6 +6,7 @@ import { useSelector } from 'react-redux';
 import './styles.scss';
 
 const DetailViewedModal = ({ isOpen, setOpen, data_emotion = [] }) => {
+  const { t } = useTranslation();
   const viewedChatMembers = useSelector(state => state.chat.viewedChatMembers);
 
 
@@ -13,7 +15,7 @@ const DetailViewedModal = ({ isOpen, setOpen, data_emotion = [] }) => {
       open={isOpen}
       setOpen={setOpen}
       fullWidth
-      title="Thành viên đã xem"
+      title={t('LABEL_CHAT_TASK_THANH_VIEN_DA_XEM')}
       className="DetailViewedModal"
       cancleRender={null}
       confirmRender={null}

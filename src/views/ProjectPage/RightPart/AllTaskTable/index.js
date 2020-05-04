@@ -46,6 +46,7 @@ function AllTaskTable({
 
   React.useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
+    // eslint-disable-next-line
   }, [projectId]);
 
   React.useEffect(() => {
@@ -105,7 +106,7 @@ function AllTaskTable({
   }, [id, timeRange]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
     if (id !== null) {
       doListGroupTask({ projectId: id });
       const reloadListGroupTask = () => {
@@ -122,7 +123,7 @@ function AllTaskTable({
 
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
     if (id !== null) {
       doGetListTaskDetail({ projectId: id });
       const reloadGetListTaskDetail = () => {
@@ -139,7 +140,8 @@ function AllTaskTable({
         CustomEventDispose(DELETE_GROUP_TASK, reloadGetListTaskDetail);
       }
     }
-  }, [projectId, doGetListTaskDetail, viewPermissions]);
+    // eslint-disable-next-line
+  }, [viewPermissions, id]);
 
   React.useEffect(() => {
     if (id !== null) {
@@ -195,8 +197,8 @@ function AllTaskTable({
       <AllTaskTablePresenter
         expand={expand} handleExpand={handleExpand}
         handleSubSlide={handleSubSlide}
-        canUpdateProject={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
-        canCreateTask={get(viewPermissions.permissions, [projectId, 'create_task'], false)}
+        canUpdateProject={get(viewPermissions.permissions, [id, 'update_project'], false)}
+        canCreateTask={get(viewPermissions.permissions, [id, 'create_task'], false)}
         showHidePendings={showHidePendings}
         tasks={tasks} project={project}
         handleShowOrHideProject={project =>

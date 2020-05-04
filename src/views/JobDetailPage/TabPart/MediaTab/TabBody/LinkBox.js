@@ -2,6 +2,7 @@ import { IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, 
 import { mdiDotsHorizontal, mdiLink } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -25,6 +26,7 @@ const ListItemLink = styled(ListItem)`
 `
 
 const LinkBox = (props) => {
+  const { t } = useTranslation();
   // console.log("link::",);
   const link = useSelector(state => state.taskDetail.media.links);
 
@@ -77,9 +79,9 @@ const LinkBox = (props) => {
                       horizontal: 'right',
                     }}
                   >
-                    <MenuItem onClick={handleClose}>Chia sẻ</MenuItem>
-                    <MenuItem onClick={handleClose}>Xem tin nhắn</MenuItem>
-                    <MenuItem onClick={handleClose}>Xóa</MenuItem>
+                    <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
+                    <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
+                    <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
                   </Menu>
                 </ListItemLink>
               )

@@ -55,3 +55,14 @@
     padding: 0 32px;
   }
 }
+
+.RoleMemberModal {
+  .MuiDialogContent-root {
+    min-width: 400px;
+    min-height: 300px;
+    padding: 0;
+  }
+  &--cell {
+    padding: 15px 15px;
+  }
+}

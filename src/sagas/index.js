@@ -603,6 +603,39 @@ function* rootSaga() {
     taskDetailType.UN_PIN_TASK_REQUEST,
     taskDetailSaga.unPinTask
   );
+  // stop task
+  yield takeLeading(taskDetailType.STOP_TASK, taskDetailSaga.stopTask);
+  yield takeLeading(
+    taskDetailType.CANCEL_STOP_TASK,
+    taskDetailSaga.cancelStopTask
+  );
+  // delete share location
+  yield takeLeading(
+    taskDetailType.DELETE_SHARE_LOCATION,
+    taskDetailSaga.deleteShareLocation
+  );
+  // update task
+  yield takeLeading(
+    taskDetailType.UPDATE_NAME_DESCRIPTION,
+    taskDetailSaga.updateNameDescription
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_GROUP_TASK,
+    taskDetailSaga.updateGroupTask
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_TYPE_ASSIGN,
+    taskDetailSaga.updateTypeAssign
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_SCHEDULE_ASSIGN,
+    taskDetailSaga.updateScheduleTask
+  );
+  // getSchedules
+  yield takeLeading(
+    taskDetailType.GET_SCHEDULES,
+    taskDetailSaga.getSchedules
+  );
   //chat 
   yield takeLeading(
     chatTypes.DELETE_CHAT,
@@ -665,8 +698,32 @@ function* rootSaga() {
     chatDetailSaga.createChatText
   );
   yield takeLeading(
+    chatTypes.CHAT_QUICK_LIKE,
+    chatDetailSaga.chatQuickLike
+  );
+  yield takeLeading(
+    chatTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER,
+    chatDetailSaga.createChatFileFromGoogleDriver
+  );
+  yield takeLeading(
     chatTypes.GET_VIEWED_CHAT,
     chatDetailSaga.getViewedChat
+  );
+  yield takeLeading(
+    chatTypes.GET_REMIND_DETAIL,
+    chatDetailSaga.getRemindDetail
+  );
+  yield takeLeading(
+    chatTypes.GET_SUBTASK_DETAIL,
+    chatDetailSaga.getSubtaskDetail
+  );
+  yield takeLeading(
+    chatTypes.GET_OFFER_DETAIL,
+    chatDetailSaga.getOfferDetail
+  );
+  yield takeLeading(
+    chatTypes.GET_DEMAND_DETAIL,
+    chatDetailSaga.getDemandDetail
   );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);

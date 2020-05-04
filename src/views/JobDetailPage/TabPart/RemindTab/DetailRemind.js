@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,13 +9,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
+import { openCreateRemind, openDetailRemind } from 'actions/chat/chat';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
-import get from 'lodash/get';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
-
 
 const typesRemind = [
   'Nhắc 1 lần',
@@ -23,13 +24,21 @@ const typesRemind = [
   'Nhắc theo tháng',
 ]
 
-function DetailRemind({
-  isOpen,
-  handleCloseModal,
-  handleOpenEdit,
-  item
-}) {
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+function DetailRemind() {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const groupActiveColor = useSelector(currentColorSelector)
+  const isOpenDetailRemind = useSelector(state => state.chat.isOpenDetailRemind);
+  const dataRemind = useSelector(state => state.chat.dataRemind);
+
+  function setCloseDetailRemind() {
+    dispatch(openDetailRemind(false))
+  }
+
+  function openEdit() {
+    dispatch(openCreateRemind(true, false, dataRemind))
+  }
+
   const {
     user_create_avatar,
     type,
@@ -42,14 +51,15 @@ function DetailRemind({
     is_ghim,
     user_create_name,
     user_create_position = '',
-  } = item
+  } = dataRemind || {};
   const [day, month] = created_at.split('/');
+
   return (
     <div>
       <Dialog
         className="detailRemind"
-        open={isOpen}
-        onClose={handleCloseModal}
+        open={isOpenDetailRemind}
+        onClose={setCloseDetailRemind}
       >
         <DialogTitle disableTypography>
           <Typography className="detailRemind--title" component="div">
@@ -60,7 +70,7 @@ function DetailRemind({
               <div className="detailRemind--role">{user_create_position}</div>
             </div>
           </Typography>
-          <IconButton aria-label="close" className="detailRemind--closeButton" onClick={handleCloseModal}>
+          <IconButton aria-label="close" className="detailRemind--closeButton" onClick={setCloseDetailRemind}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -70,15 +80,13 @@ function DetailRemind({
           </DialogContentText>
           <div className="detailRemind--main">
             <div className="detailRemind--time" style={{ backgroundColor: groupActiveColor }}>
-              <div className="detailRemind--month">
-                Tháng {month}
+              <div className="detailRemind--month">{t('LABEL_CHAT_TASK_THANG')}{month}
               </div>
               <div className="detailRemind--day">
                 {day}
               </div>
             </div>
-            <div className="detailRemind--data" >
-              Tạo lúc {created_at}
+            <div className="detailRemind--data" >{t('LABEL_CHAT_TASK_TAO_LUC')}{created_at}
               <ColorTypo variant='body1' component="div">
                 {
                   type === 1 ?
@@ -99,7 +107,7 @@ function DetailRemind({
           <Button
             style={{ color: groupActiveColor }}
             autoFocus
-            onClick={handleOpenEdit} > Chỉnh sửa </Button>
+            onClick={openEdit} >{t('LABEL_CHAT_TASK_CHINH_SUA')}</Button>
         </DialogActions>
       </Dialog>
     </div>

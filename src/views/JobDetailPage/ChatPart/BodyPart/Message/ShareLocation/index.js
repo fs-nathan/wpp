@@ -1,70 +1,51 @@
-
-import { Avatar } from '@material-ui/core';
-import { mdiMapMarkerDistance } from '@mdi/js';
-import Icon from '@mdi/react';
+import { useTranslation } from 'react-i18next';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
-import clsx from 'clsx';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const ShareLocation = ({
-  handleReplyChat,
-  id,
   user_create_name,
   user_create_avatar,
   user_create_position,
-  user_create_roles = [],
-  address,
-  content,
+  sub_task_name,
   time_create,
-  chat_parent,
-  isReply,
-  is_me,
+  sub_task_id,
   chatPosition = "top",
+  address,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
   function onClickViewDetail() {
     dispatch(showTab(5))
   }
 
   return (
-    <div className={clsx("ShareLocation", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
-      <div className="UpdateTaskNameMessage--header" >
-        Thông báo
-        </div>
-      <div className="UpdateTaskNameMessage--sender" >
-        <Avatar className="UpdateTaskNameMessage--avatarReply" src={user_create_avatar} />
-        <div className="UpdateTaskNameMessage--name" >
-          {user_create_name}
-        </div>
-        <div className="UpdateTaskNameMessage--position" >
-          {user_create_position}
-        </div>
-        {user_create_roles[0] &&
-          <div className="UpdateTaskNameMessage--room"  >
-            {user_create_roles[0]}
+    <DialogMessageWrap
+      {...{
+        chatPosition,
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
+      isHideFooterIcon
+      onClickViewDetail={onClickViewDetail}
+      taskName={t('LABEL_CHAT_TASK_CHIA_SE_VI_TRI')}
+      className="ShareLocation"
+    >
+      <>
+        <div className="ShareLocation--imageWrap">
+          <img className="ShareLocation--image" src="/images/bg_map.png" alt="map" />
+          <div className="ShareLocation--location">
+            {address}
           </div>
-        }
-      </div>
-      <div className="UpdateTaskNameMessage--title" >
-        Chia sẻ vị trí
-      <Icon className="ShareLocation--icon" path={mdiMapMarkerDistance}></Icon>
-      </div>
-      <div className="UpdateTaskNameMessage--content" >
-        {address}
-      </div>
-      {!isReply &&
-        <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
-          {time_create}
-          <span className="CreateNewSubTask--detail" onClick={onClickViewDetail}>
-            Xem chi tiết
-            </span>
         </div>
-      }
-
-    </div>
+      </>
+    </DialogMessageWrap>
   );
 }
 

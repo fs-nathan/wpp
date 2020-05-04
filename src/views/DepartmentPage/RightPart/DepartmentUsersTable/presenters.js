@@ -176,7 +176,7 @@ function DepartmentUsersTable({
                 destination.droppableId === source.droppableId &&
                 destination.index === source.index
               ) return;
-              handleSortUser(draggableId, departmentId, destination.index);
+              handleSortUser(departmentId, draggableId, destination.index);
             },
           } : {
               bool: false

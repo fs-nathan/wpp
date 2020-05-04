@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import { Checkbox } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
 import React, { useState } from 'react';
@@ -13,6 +15,7 @@ function AddOfferMemberModal({
   members,
   disableIndexes,
 }) {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState(value);
   const [searchValue, setSearchValue] = useState('');
 
@@ -33,6 +36,14 @@ function AddOfferMemberModal({
     }
   }
 
+  function onClickSelectAll() {
+    if (selected.length === members.length) {
+      setSelected([])
+    } else {
+      setSelected(members.map((m, i) => i))
+    }
+  }
+
   function handleChangeSearch(evt) {
     setSearchValue(evt.target.value)
   }
@@ -43,7 +54,7 @@ function AddOfferMemberModal({
 
   return (
     <JobDetailModalWrap
-      title={"Thêm thành viên"}
+      title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
       open={isOpen}
       setOpen={setOpen}
       confirmRender={() => "Hoàn Thành"}
@@ -51,13 +62,15 @@ function AddOfferMemberModal({
       className="addOfferMemberModal"
     >
       <React.Fragment>
-        <SearchInput placeholder='Tìm kiếm thành viên'
+        <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_KIEM_THANH_VIEN')}
           value={searchValue}
           onChange={handleChangeSearch}
         />
-        <ColorTypo className="addOfferMemberModal--selected">
-          Đã chọn {selected.length} thành viên
-          </ColorTypo>
+        <ColorTypo className="addOfferMemberModal--selected">{t('LABEL_CHAT_TASK_DA_CHON')}{selected.length}{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
+        <div className="addOfferMemberModal--selectAll">
+          <Checkbox checked={selected.length === members.length} onClick={onClickSelectAll} ></Checkbox>
+          <ColorTypo className="addOfferMemberModal--selectAllText" component="div">{t('LABEL_CHAT_TASK_CHON_TAT_CA')}</ColorTypo>
+        </div>
         {filteredMembers.map((member, i) => <OfferMemberItem
           key={i}
           isSelected={selected.indexOf(member.index) !== -1}

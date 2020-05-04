@@ -3,6 +3,7 @@ import CalendarAlarmPage from 'views/CalendarAlarmPage';
 import CalendarPage from 'views/CalendarPage';
 import CalendarProjectPage from 'views/CalendarProjectPage';
 import CalendarWeeklyPage from 'views/CalendarWeeklyPage';
+import { Routes as jobRoutes } from 'views/JobPage/contants/routes';
 import { Routes } from '../constants/routes';
 import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
 import ForgotPassword from '../views/AccountPage/ForgotPassword';
@@ -33,6 +34,7 @@ const routes = [
   { path: Routes.REPORT, component: () => <ReportPage /> },
   { path: Routes.DOCUMENT, component: () => <DocumentPage /> },
   { path: Routes.TASKS, component: () => <JobPage /> },
+  ...Object.values(jobRoutes).map(path => ({ path, component: () => <JobPage /> })),
   { path: Routes.OFFERS, component: () => <OfferPage /> },
   { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props} /> },
   { path: Routes.TEST, component: () => <TestPage /> },

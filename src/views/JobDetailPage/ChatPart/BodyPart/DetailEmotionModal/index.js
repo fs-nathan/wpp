@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { AppBar, Avatar, Tab, Tabs } from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import React from 'react';
 import './styles.scss';
 
 const DetailEmotionModal = ({ isOpen, setOpen, data_emotion = [] }) => {
+  const { t } = useTranslation();
   const [tab, setTab] = React.useState(0);
 
   const handleChange = (event, newTab) => {
@@ -27,7 +29,7 @@ const DetailEmotionModal = ({ isOpen, setOpen, data_emotion = [] }) => {
       open={isOpen}
       setOpen={setOpen}
       fullWidth
-      title="Biểu cảm"
+      title={t('LABEL_CHAT_TASK_BIEU_CAM')}
       className="DetailEmotionModal"
       cancleRender={null}
       confirmRender={null}

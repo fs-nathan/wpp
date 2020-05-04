@@ -37,7 +37,7 @@ function MemberSetting({
   }, [projectId]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
     if (open && id !== null) {
       doMemberProject({ projectId: id });
       const reloadMemberProject = () => {
@@ -61,19 +61,19 @@ function MemberSetting({
       }
     }
     // eslint-disable-next-line
-  }, [id, viewPermissions]);
+  }, [id, open, viewPermissions]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
     if (open) doListUserRole();
     // eslint-disable-next-line
-  }, [open, viewPermissions]);
+  }, [id, open, viewPermissions]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
     if (open) doPermissionProject();
     // eslint-disable-next-line
-  }, [open, viewPermissions]);
+  }, [id, open, viewPermissions]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
 

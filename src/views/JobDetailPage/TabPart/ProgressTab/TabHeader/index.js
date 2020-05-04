@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getTrackingTime, getTrackingTimeComplete } from 'actions/taskDetail/taskDetailActions';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +7,7 @@ import HeaderTab from '../../HeaderTab';
 import ProgressModal from '../ProgressModal';
 
 function TabHeader({ setShow }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
 
@@ -24,7 +26,7 @@ function TabHeader({ setShow }) {
 
   return (
     <div className="container-progress-tabheader">
-      <HeaderTab title="Tiến độ công việc"
+      <HeaderTab title={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')}
         onClickBack={onClickBack}
         onClickOpen={handleClickOpen}
         rightIcon="settings"

@@ -1,32 +1,33 @@
+import { useTranslation } from 'react-i18next';
+import { openCreateRemind } from 'actions/chat/chat';
+import { getRemind } from 'actions/taskDetail/taskDetailActions';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRemind } from '../../../../../actions/taskDetail/taskDetailActions';
 import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
-import RemindModal from '../RemindModal';
-
+import './styles.scss';
 
 function TabHeader({ setShow }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
+  const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
 
   useEffect(() => {
-    dispatch(getRemind({ taskId }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  // bien cua modal cong viec con
-  const [isOpen, setOpen] = React.useState(false);
+    if (reminds.length === 0)
+      dispatch(getRemind({ taskId }))
+  }, [dispatch, reminds.length, taskId]);
+
   const handleClickOpen = () => {
-    setOpen(true);
+    dispatch(openCreateRemind(true, true))
   };
 
   return (
-    <div className="container-normal-tabheader">
-      <HeaderTab title="Nhắc hẹn"
+    <div className="container-normal-tabheader RemindTab--header">
+      <HeaderTab title={t('LABEL_CHAT_TASK_NHAC_HEN')}
         onClickBack={() => setShow(0)}
         onClickOpen={handleClickOpen}
       />
-      <RemindModal isOpen={isOpen} setOpen={setOpen} isCreate />
     </div>
   );
 }

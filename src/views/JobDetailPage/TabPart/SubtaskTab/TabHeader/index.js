@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { IconButton } from '@material-ui/core';
 import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -21,6 +22,7 @@ const ButtonCancel = styled.p`
 `
 
 function TabHeader(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   // console.log('header props::', props)
@@ -38,18 +40,18 @@ function TabHeader(props) {
   return (
     <div className="headerTab">
       <IconButton className="headerTab--button" onClick={onClickBack}>
-        <abbr title="Quay lại">
+        <abbr title={t('LABEL_CHAT_TASK_QUAY_LAI')}>
           <Icon path={mdiChevronLeft} size={1} />
         </abbr>
       </IconButton>
-      <ColorTypo className="headerTab--text" uppercase>Công việc con</ColorTypo>
+      <ColorTypo className="headerTab--text" uppercase>{t('LABEL_CHAT_TASK_CONG_VIEC_CON')}</ColorTypo>
       {isPlus ?
         <IconButton className="headerTab--button" onClick={() => {
           props.onClickPlusIcon()
           handleClick()
         }
         }>
-          <abbr title="Thêm">
+          <abbr title={t('LABEL_CHAT_TASK_THEM')}>
             <Icon path={mdiPlus} size={1} />
           </abbr>
         </IconButton>
@@ -58,7 +60,7 @@ function TabHeader(props) {
           props.onClickPlusIcon()
           handleClick()
         }
-        }>Hủy</ButtonCancel>
+        }>{t('LABEL_CHAT_TASK_HUY')}</ButtonCancel>
       }
     </div>
   );

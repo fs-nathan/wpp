@@ -6,6 +6,7 @@ import { mdiStarCircle, mdiStarCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
 
@@ -15,6 +16,7 @@ function DemandDetail({
   setOpen,
   item
 }) {
+  const { t } = useTranslation();
   const {
     date_create,
     user_create_name,
@@ -29,15 +31,14 @@ function DemandDetail({
       open={isOpen}
       setOpen={setOpen}
       confirmRender={null}
-      cancleRender={() => "Thoát"}
+      cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
       className="subTaskDetailDialog"
       titleRender={
         <div className="subTaskDetailDialog--titleWrap">
           <Avatar className="subTaskDetailDialog--avatar" src={user_create_avatar} alt='avatar' />
           <Typography className="subTaskDetailDialog--title" component="div">
             {user_create_name}
-            <div className="subTaskDetailDialog--createdAt">
-              Đã chỉ đạo lúc: {date_create}</div>
+            <div className="subTaskDetailDialog--createdAt">{t('LABEL_CHAT_TASK_DA_CHI_DAO_LUC')}{date_create}</div>
           </Typography>
         </div>
       }

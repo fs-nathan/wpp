@@ -5,10 +5,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
 import ColorTypo from 'components/ColorTypo';
-import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
 
 function DialogWrap({
@@ -25,7 +25,7 @@ function DialogWrap({
   isOneButton
 }) {
   const { t } = useTranslation();
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   return (
     <Dialog
       maxWidth={maxWidth} className={clsx("dialogWrap", className)} aria-labelledby="customized-dialog-title" open={isOpen} >

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar, IconButton, ListItem, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -31,6 +32,7 @@ const MemberListItem = ({
   room, position, group_permission,
   handleClickPermission,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -100,9 +102,9 @@ const MemberListItem = ({
           horizontal: 'right',
         }}
       >
-        <MenuItem className="memberItem--menuItem" onClick={handleClickDetail}>Chi tiết</MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>Phân quyền</MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>Xóa</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={handleClickDetail}>{t('LABEL_CHAT_TASK_CHI_TIET')}</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>{t('LABEL_CHAT_TASK_PHAN_QUYEN')}</MenuItem>
+        <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
     </React.Fragment >
   );

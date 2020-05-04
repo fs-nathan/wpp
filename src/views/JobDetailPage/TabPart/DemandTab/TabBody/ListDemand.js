@@ -1,6 +1,7 @@
 import { deleteCommand, searchDemand, updateCommand } from 'actions/taskDetail/taskDetailActions';
 import SearchInput from 'components/SearchInput';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { taskIdSelector } from '../../../selectors';
@@ -19,6 +20,7 @@ const StyledList = styled.ul`
 `;
 
 const ListDemand = props => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const [open, setOpen] = React.useState(false);
@@ -70,7 +72,7 @@ const ListDemand = props => {
     <React.Fragment>
       <SearchInput
         fullWidth
-        placeholder="Nhập từ khóa..."
+        placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
         onChange={e => searchDemandTabPart(e)}
       />
       <StyledList>
