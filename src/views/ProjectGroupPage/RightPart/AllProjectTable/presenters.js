@@ -149,10 +149,6 @@ function AllProjectTable({
             },
             moreMenu: [
               {
-                label: t("DMH.VIEW.PGP.RIGHT.ALL.TABLE_SETTING"),
-                onClick: () => null
-              },
-              {
                 label: t("DMH.VIEW.PGP.RIGHT.ALL.TRASH"),
                 onClick: () => history.push(`${Routes.PROJECTS}/deleted`)
               }
@@ -217,7 +213,7 @@ function AllProjectTable({
             },
             {
               label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.NAME"),
-              field: (row) => <LinkSpan onClick={evt => history.push(`${route}/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
+              field: (row) => <LinkSpan onClick={evt => history.push(`${get(row, 'url_redirect', '#')}`)}>{get(row, 'name', '')}</LinkSpan>,
               sort: evt => handleSortType('name'),
               align: 'left',
               width: '25%',

@@ -8,7 +8,7 @@ import { Primary, StyledList, StyledListItem } from 'components/CustomList';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import SearchInput from 'components/SearchInput';
-import { CustomEventDispose, CustomEventListener, SORT_PROJECT } from 'constants/events.js';
+import { COPY_PROJECT, CustomEventDispose, CustomEventListener } from 'constants/events.js';
 import { useMaxlenString, useRequiredDate, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -142,8 +142,8 @@ function CopyProject({
       setStartDate(moment().toDate());
       setSelectedProject(null);
     };
-    CustomEventListener(SORT_PROJECT, successClose);
-    return () => CustomEventDispose(SORT_PROJECT, successClose);
+    CustomEventListener(COPY_PROJECT, successClose);
+    return () => CustomEventDispose(COPY_PROJECT, successClose);
     // eslint-disable-next-line
   }, []);
 
