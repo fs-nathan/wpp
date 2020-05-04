@@ -19,7 +19,7 @@ export const membersSelector = createSelector(
   }
 )
 
-const listScheduleOfWeek = state => state.calendar.listScheduleOfWeek;
+const listScheduleOfWeek = state => state.calendar.listScheduleOfWeekFromModal;
 export const scheduleOfWeekSelector = createSelector(
   [listScheduleOfWeek],
   (listScheduleOfWeek) => {

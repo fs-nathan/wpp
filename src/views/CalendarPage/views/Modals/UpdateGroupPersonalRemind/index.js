@@ -3,7 +3,6 @@ import ColorPickerModal from "components/ColorPickerModal";
 import CustomModal from 'components/CustomModal';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -60,7 +59,6 @@ function UpdateGroupPersonalRemind({
             size="small"
             value={groupTitle}
             onChange={({ target }) => setGroupTitle(target.value)}
-            helperText={t('IDS_WP_REQUIRED')}
           />
           <div className="group_remind_color_avatar">
             <Typography component={'div'}> {t('views.calendar_page.modal.create_group_personal_remind.group_color')} </Typography>

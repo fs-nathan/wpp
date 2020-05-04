@@ -1,6 +1,6 @@
 export const Routes = {
   WEEKLY: "/calendar/weekly",
-  ALARM_RECENTLY: "/calendar-alarm/recently",
-  ALARM_PROJECT: "/calendar-alarm/project",
-  ALARM_PERSONAL: "/calendar-alarm/personal",
+  ALARM_RECENTLY: "/calendars/alarm/detail/recently",
+  ALARM_PROJECT: "/calendars/alarm/detail/project",
+  ALARM_PERSONAL: "/calendars/alarm/detail/personal",
 }

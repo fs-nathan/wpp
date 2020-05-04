@@ -12,11 +12,12 @@ function WeekSelect({
   className, value, onChange, weeks,
   year, doListWeeksInYear
 }) {
+
   const { t } = useTranslation();
 
   React.useEffect(() => {
     doListWeeksInYear({ year }, false);
-  }, [doListWeeksInYear, year])
+  }, [doListWeeksInYear, year]);
 
   return (
     <Select

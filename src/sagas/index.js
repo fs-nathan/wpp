@@ -2,8 +2,9 @@ import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
 import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
 import { CREATE_PERSONAL_CATEGORY_REMIND, CREATE_PERSONAL_REMIND, DELETE_PERSONAL_CATEGORY_REMIND, DELETE_PERSONAL_REMIND, LIST_PERSONAL_REMIND, LIST_PERSONAL_REMIND_CATEGORY, LIST_REMIND_PROJECT, LIST_REMIND_RECENTLY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_CATEGORY_REMIND, UPDATE_PERSONAL_REMIND } from "../constants/actions/calendar/alarmCalendar";
-import { GROUP_SCHEDULE_ADD_DAY_OFF, GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_STAGE, GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE_WORKING_DAY, GROUP_SCHEDULE_DELETE_WORKING_STAGE, GROUP_SCHEDULE_DETAIL, GROUP_SCHEDULE_LIST, GROUP_SCHEDULE_SET_WORKING_DAY, GROUP_SCHEDULE_UPDATE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_UPDATE_WORKING_STAGE, SETTING_START_DAY_WEEK } from "../constants/actions/calendar/projectCalendar";
-import { CREATE_SCHEDULE, DELETE_SCHEDULE, LIST_WEEKS_IN_YEAR, SCHEDULE_LIST, SCHEDULE_OF_WEEK_LIST, SETTING_STARTING_DAY, UPDATE_SCHEDULE } from "../constants/actions/calendar/weeklyCalendar";
+import { CALENDAR_PAGE_PERMISSION } from "../constants/actions/calendar/permission";
+import { GROUP_SCHEDULE_ADD_DAY_OFF, GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_STAGE, GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE, GROUP_SCHEDULE_DELETE_DAY_OFF, GROUP_SCHEDULE_DELETE_SHIFT_STAGE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE_WORKING_DAY, GROUP_SCHEDULE_DELETE_WORKING_STAGE, GROUP_SCHEDULE_DETAIL, GROUP_SCHEDULE_LIST, GROUP_SCHEDULE_SET_WORKING_DAY, GROUP_SCHEDULE_UPDATE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_UPDATE_WORKING_STAGE, SETTING_START_DAY_WEEK } from "../constants/actions/calendar/projectCalendar";
+import { CREATE_SCHEDULE, DELETE_ALL_SCHEDULE, DELETE_SCHEDULE, LIST_WEEKS_IN_YEAR, SCHEDULE_LIST, SCHEDULE_OF_WEEK_LIST, SCHEDULE_OF_WEEK_LIST_FROM_MODAL, SETTING_STARTING_DAY, UPDATE_SCHEDULE } from "../constants/actions/calendar/weeklyCalendar";
 import * as chatTypes from "../constants/actions/chat/chat";
 import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH } from "../constants/actions/documents";
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
@@ -46,6 +47,7 @@ import { DELETE_PROJECT } from "../constants/actions/project/deleteProject";
 import { DELETE_TRASH_PROJECT } from "../constants/actions/project/deleteTrashProject";
 import { DETAIL_PROJECT } from "../constants/actions/project/detailProject";
 import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
+import { LIST_PROJECT_BASIC_INFO } from "../constants/actions/project/listBasic";
 import { LIST_DELETED_PROJECT } from "../constants/actions/project/listDeletedProject";
 import { LIST_PROJECT } from "../constants/actions/project/listProject";
 import { MEMBER_PROJECT } from "../constants/actions/project/memberProject";
@@ -113,12 +115,14 @@ import { listRemindRecently } from "./calendar/alarmCalendar/listRemindRecently"
 import { sortPersonalRemindCategory } from "./calendar/alarmCalendar/sortPeronalRemindCategory";
 import { updatePersonalRemind } from "./calendar/alarmCalendar/updatePersonalRemind";
 import { updatePersonalRemindCategory } from "./calendar/alarmCalendar/updatePersonalRemindCategory";
+import { listCalendarPermission } from "./calendar/permission/listPermission";
 import { projectScheduleAddDayOff } from "./calendar/projectCalendar/addDayOff";
 import { projectScheduleAddWorkingDays } from "./calendar/projectCalendar/addWorkingDay";
 import { createProjectGroupSchedule } from "./calendar/projectCalendar/createProjectGroupSchedule";
 import { projectScheduleCreateShiftStage } from "./calendar/projectCalendar/createShiftStage";
 import { projectScheduleCreateShiftStageAllTime } from "./calendar/projectCalendar/createShiftStageAllTime";
 import { projectScheduleCreateWorkingStage } from "./calendar/projectCalendar/createWorkingStage";
+import { projectScheduleDeleteDayOff } from "./calendar/projectCalendar/deleteDayOff";
 import { deleteProjectGroupSchedule } from "./calendar/projectCalendar/deleteProjectGroupSchedule";
 import { projectScheduleDeleteShiftStage } from "./calendar/projectCalendar/deleteShiftStage";
 import { projectScheduleDeleteShiftStageAllTime } from "./calendar/projectCalendar/deleteShiftStageAllTime";
@@ -133,9 +137,11 @@ import { projectScheduleUpdateShiftStage } from "./calendar/projectCalendar/upda
 import { projectScheduleUpdateShiftStageAllTime } from "./calendar/projectCalendar/updateShiftStageAllTime";
 import { projectScheduleUpdateWorkingStage } from "./calendar/projectCalendar/updateWorkingStage";
 import { createSchedule } from "./calendar/weeklyCalendar/createSchedule";
+import { deleteAllSchedule } from "./calendar/weeklyCalendar/deleteAllSchedule";
 import { deleteSchedule } from "./calendar/weeklyCalendar/deleteSchedule";
 import { listWeeklySchedule } from "./calendar/weeklyCalendar/listSchedule";
 import { listScheduleOfWeek } from "./calendar/weeklyCalendar/listScheduleOfWeek";
+import { listScheduleOfWeekFromModal } from "./calendar/weeklyCalendar/listScheduleOfWeekFromModal";
 import { listWeeksInYear } from "./calendar/weeklyCalendar/listWeeksInYear";
 import { settingStartingDay } from "./calendar/weeklyCalendar/settingStartingDay";
 import { updateSchedule } from "./calendar/weeklyCalendar/updateSchedule";
@@ -181,6 +187,7 @@ import { deleteProject } from "./project/deleteProject";
 import { deleteTrashProject } from "./project/deleteTrashProject";
 import { detailProject } from "./project/detailProject";
 import { hideProject } from "./project/hideProject";
+import { listProjectBasicInfo } from "./project/listBasicInfo";
 import { listDeletedProject, listProject } from "./project/listProject";
 import { memberProject } from "./project/memberProject";
 import { permissionProject } from "./project/permissionProject";
@@ -299,6 +306,7 @@ function* rootSaga() {
   yield takeEvery(UPDATE_PROJECT, updateProject);
   yield takeEvery(DELETE_PROJECT, deleteProject);
   yield takeLeading(LIST_PROJECT, listProject);
+  yield takeLeading(LIST_PROJECT_BASIC_INFO, listProjectBasicInfo);
   yield takeLeading(LIST_DELETED_PROJECT, listDeletedProject);
   yield takeLeading(DETAIL_PROJECT, detailProject);
   yield takeEvery(HIDE_PROJECT, hideProject);
@@ -669,12 +677,14 @@ function* rootSaga() {
   //calendar
   yield takeLatest(SCHEDULE_LIST, listWeeklySchedule);
   yield takeLatest(SCHEDULE_OF_WEEK_LIST, listScheduleOfWeek);
+  yield takeLatest(SCHEDULE_OF_WEEK_LIST_FROM_MODAL, listScheduleOfWeekFromModal);
   yield takeLatest(LIST_WEEKS_IN_YEAR, listWeeksInYear);
   yield takeLatest(SETTING_STARTING_DAY, settingStartingDay);
   yield takeLatest(GROUP_SCHEDULE_LIST, listProjectGroupSchedule);
   yield takeEvery(CREATE_SCHEDULE, createSchedule);
   yield takeEvery(UPDATE_SCHEDULE, updateSchedule);
   yield takeEvery(DELETE_SCHEDULE, deleteSchedule);
+  yield takeEvery(DELETE_ALL_SCHEDULE, deleteAllSchedule);
   yield takeLatest(LIST_PERSONAL_REMIND_CATEGORY, listPersonalRemindCategory);
   yield takeLatest(SORT_PERSONAL_REMIND_CATEGORY, sortPersonalRemindCategory);
   yield takeLatest(LIST_REMIND_RECENTLY, listRemindRecently);
@@ -685,6 +695,7 @@ function* rootSaga() {
   yield takeLatest(GROUP_SCHEDULE_ADD_WORKING_DAY, projectScheduleAddWorkingDays);
   yield takeEvery(GROUP_SCHEDULE_DELETE_WORKING_DAY, projectScheduleDeleteWorkingDays);
   yield takeLatest(GROUP_SCHEDULE_ADD_DAY_OFF, projectScheduleAddDayOff);
+  yield takeLatest(GROUP_SCHEDULE_DELETE_DAY_OFF, projectScheduleDeleteDayOff);
   yield takeLatest(CREATE_PERSONAL_CATEGORY_REMIND, createPersonalRemindCategory);
   yield takeEvery(UPDATE_PERSONAL_CATEGORY_REMIND, updatePersonalRemindCategory);
   yield takeEvery(DELETE_PERSONAL_CATEGORY_REMIND, deletePersonalRemindCategory);
@@ -704,6 +715,7 @@ function* rootSaga() {
   yield takeLatest(GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, projectScheduleCreateShiftStageAllTime);
   yield takeLatest(GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, projectScheduleUpdateShiftStageAllTime);
   yield takeEvery(GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, projectScheduleDeleteShiftStageAllTime);
+  yield takeLatest(CALENDAR_PAGE_PERMISSION, listCalendarPermission);
   yield fork(watchAsyncAction);
 }
 

@@ -9,7 +9,7 @@ import { updateSchedule } from "actions/calendar/weeklyCalendar/updateSchedule";
 import AvatarCircleList from 'components/AvatarCircleList';
 import ColorTypo from 'components/ColorTypo';
 import CustomModal from 'components/CustomModal';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import TimePicker from 'components/TimePicker';
 import WeekSelect from 'components/WeekSelect';
 import YearSelect from 'components/YearSelect';
 import { CustomEventDispose, CustomEventListener, DELETE_WEEKLY_SCHEDULE, UPDATE_WEEKLY_SCHEDULE } from 'constants/events';
@@ -52,7 +52,7 @@ const DateWrapper = ({ className = '', ...props }) =>
 
 const DEFAULT_DATA = {
   scheduleID: null,
-  selectedTime: listTimeSelect[16],
+  selectedTime: '08:30',
   selectedDate: moment().toDate(),
   title: "",
   content: "",
@@ -204,7 +204,7 @@ function UpdateWeeklyCalendar({
         setOpen={setOpen}
         onConfirm={handleOnClose}
         onCancle={handleOnClose}
-        canConfirm={data.title !== '' && data.content !== ''}
+        canConfirm={data.title !== '' && data.content !== '' && data.selectedTime !== ''}
         height='medium'
         className={"comp_CustomModal views_createWeeklyCalendar_CustomModal"}
       >
@@ -242,10 +242,9 @@ function UpdateWeeklyCalendar({
               </abbr>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DateWrapper>
-                  <TimeSelect
-                    className="views_UpdateWeeklyCalendar_timeSelect"
+                  <TimePicker
                     value={data.selectedTime}
-                    onChange={({ target }) => handleChangeData('selectedTime', target.value)}
+                    onChange={(value) => handleChangeData('selectedTime', value)}
                   />
                   <KeyboardDatePicker
                     disableToolbar
@@ -398,7 +397,7 @@ function UpdateWeeklyCalendar({
                                     >
                                       <ListItemIcon>
                                         {
-                                          schedule.is_remind && <Icon path={mdiBellOutline} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                          schedule.is_remind && <Icon path={mdiBellOutline} size={0.75} color="#969696" />
                                         }
                                         <div className="calendar_item_time">{schedule.time}</div>
                                       </ListItemIcon>
@@ -431,15 +430,15 @@ function UpdateWeeklyCalendar({
                                           <Icon
                                             key={schedule.id}
                                             path={mdiPencilBoxMultipleOutline}
-                                            size={0.7}
-                                            color="rgba(0, 0, 0, 0.7)"
+                                            size={0.75}
+                                            color="#969696"
                                           />
                                         </IconButton>
                                         <IconButton edge="end"
                                           key={`delete_button_schedule_${schedule.id}`}
                                           onClick={evt => handleDeleteSchedule(schedule.id)}
                                         >
-                                          <Icon path={mdiTrashCanOutline} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                          <Icon path={mdiTrashCanOutline} size={0.75} color="#969696" />
                                         </IconButton>
                                       </ListItemSecondaryAction>
                                     </ListItem>
