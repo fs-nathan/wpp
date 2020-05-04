@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import { membersSelector } from "./selectors";
-import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -172,25 +171,11 @@ function UpdatePersonalRemind({
               </Select>
             </div>
           </Box>
-          <Box className="remind_setting_beforeTimeContainer">
-            <Typography component={'span'} className="title_normal"> {t('views.calendar_page.modal.create_weekly_calendar.notify_before')} </Typography>
-            <TextField
-              className="remind_setting_beforeTimeContainer_timeInput"
-              value={data.timeBefore}
-              onChange={({ target }) => handleChangeData("timeBefore", target.value)}
-              variant="outlined"
-            />
-            <Select
-              variant="outlined"
-              className="remind_setting_beforeTimeContainer_selector"
-              value={data.notifyTimeType}
-              onChange={({ target }) => handleChangeData('notifyTimeType', target.value)}
-            >
-              <MenuItem key={'minues'} value={0}>{t('views.calendar_page.modal.create_weekly_calendar.minues')}</MenuItem>
-              <MenuItem key={'hours'} value={1}>{t('views.calendar_page.modal.create_weekly_calendar.hours')}</MenuItem>
-            </Select>
-          </Box>
           <Box className="remind_setting_content">
+            <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
+              <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.remind_content')} </Typography>
+              <span>*</span>
+            </abbr>
             <TextField
               placeholder={t('views.calendar_page.modal.create_personal_remind.content')}
               variant="outlined"

@@ -49,7 +49,6 @@ function CreateGroupPersonalRemind({
             size="small"
             value={groupTitle}
             onChange={({ target }) => setGroupTitle(target.value)}
-            helperText={t('IDS_WP_REQUIRED')}
           />
           <div className="group_remind_color_avatar">
             <Typography component={'div'}> {t('views.calendar_page.modal.create_group_personal_remind.group_color')} </Typography>

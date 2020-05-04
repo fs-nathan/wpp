@@ -45,6 +45,7 @@ const routes = [
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
   { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
   { path: Routes.CALENDAR, component: () => <CalendarPage /> },
+  //{ path: Routes.CALENDAR_WEEKLY_DETAIL, component: () => <CalendarWeeklyPage /> },
   { path: Routes.CALENDAR_WEEKLY, component: () => <CalendarWeeklyPage /> },
   { path: Routes.CALENDAR_PROJECT, component: () => <CalendarProjectPage /> },
   { path: Routes.CALENDAR_ALARM, component: () => <CalendarAlarmPage /> },

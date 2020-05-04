@@ -29,6 +29,7 @@ function ProjectDetail({
 
   React.useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
+    // eslint-disable-next-line
   }, [projectId]);
 
   React.useEffect(() => {

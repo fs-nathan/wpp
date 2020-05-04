@@ -19,7 +19,7 @@ function Weekly({
   doSettingStartingDay, settingStartingDayResult
 }) {
   const {
-    expand, handleExpand
+    expand, handleExpand, permissions
   } = React.useContext(CalendarPageContext);
   const [openCreate, setOpenCreate] = React.useState(false);
   const [year, setYear] = React.useState(new Date().getFullYear());
@@ -85,17 +85,13 @@ function Weekly({
         SnackbarEmitter(SNACKBAR_VARIANT.ERROR, DEFAULT_MESSAGE.MUTATE.ERROR);
       }
     }
-  }, [settingStartingDayResult, doSettingStartingDay, startingDayInWeek])
-
-  function handleOnCloseCreateModel() {
-    //doListSchedule({ year }, false);
-  }
+  }, [settingStartingDayResult, doSettingStartingDay, startingDayInWeek]);
 
   return (
     <>
       <WeeklyCalendarPresenter
         expand={expand} handleExpand={handleExpand}
-        canCreate={true}
+        canCreate={permissions['manage_week_schedule'] ?? false}
         handleOpenModal={doOpenModal}
         bgColor={bgColor}
         year={year} handleYearChanged={year => setYear(year)}
@@ -115,7 +111,6 @@ function Weekly({
       <CreateWeeklyCalendar
         open={openCreate}
         setOpen={setOpenCreate}
-        handleOnClose={handleOnCloseCreateModel}
       />
       <SettingWeeklyCalendar
         open={openSetting}

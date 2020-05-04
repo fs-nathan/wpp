@@ -19,7 +19,7 @@ function Project({
 }) {
   const {
     expand,
-    handleExpand,
+    handleExpand, permissions
   } = React.useContext(CalendarPageContext);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -89,7 +89,7 @@ function Project({
     <>
       <ProjectCalendarPresenter
         expand={expand} handleExpand={handleExpand}
-        canCreate={true}
+        canCreate={permissions['manage_project_schedule'] ?? false}
         handleOpenModal={doOpenModal}
         bgColor={bgColor}
         handleSortType={type => setSortType(oldType => {

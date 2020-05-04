@@ -56,3 +56,15 @@ export const remindProjectSelector = createSelector(
     });
   }
 );
+
+const listProjectBasic = state => state.project.listProjectBasicInfo;
+export const listProjectBasicInfoSelector = createSelector(
+  [listProjectBasic],
+  (listProjectBasic) => {
+    return ({
+      data: listProjectBasic.data.projects,
+      error: listProjectBasic.error,
+      loading: listProjectBasic.loading
+    });
+  }
+);

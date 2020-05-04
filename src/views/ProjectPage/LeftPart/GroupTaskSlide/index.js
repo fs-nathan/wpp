@@ -78,7 +78,7 @@ function GroupTaskSlide({
   }, [id, timeRange]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
     if (id !== null) {
       doListGroupTask({ projectId: id });
       const reloadListGroupTask = () => {
