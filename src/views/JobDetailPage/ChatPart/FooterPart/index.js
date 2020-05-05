@@ -313,7 +313,7 @@ const FooterPart = ({
   }
 
   function sendMessage() {
-    console.log('sendMessage', imagesQueue.length)
+    // console.log('sendMessage', imagesQueue.length)
     if (imagesQueue.length > 0) {
       sendMultipleFiles()
     } else if (isShowQuickLike) {
@@ -326,7 +326,7 @@ const FooterPart = ({
 
   function onKeyDown(event) {
     const keyCode = event.keyCode || event.which
-    console.log('onKeyDown', imagesQueue.length)
+    // console.log('onKeyDown', imagesQueue.length)
     if (keyCode === 16) {// shift
       isPressShift = true;
     } else if (keyCode === 13 && !isPressShift) {// enter

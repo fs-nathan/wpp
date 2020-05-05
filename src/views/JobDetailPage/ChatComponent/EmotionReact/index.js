@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ReactEmotionPopup from 'views/JobDetailPage/ChatPart/BodyPart/Message/ReactEmotionPopup';
 import './styles.scss';
 
 function getTotalReact(data_emotion) {
@@ -55,6 +56,7 @@ const EmotionReact = ({
       </div>
       <button className="EmotionReact--button" onClick={onClickQuickReact} >
         <img className="EmotionReact--image" src={data_emotion[0].icon} alt="emo"></img>
+        <ReactEmotionPopup chatId={chatId} />
       </button>
     </div>
   );

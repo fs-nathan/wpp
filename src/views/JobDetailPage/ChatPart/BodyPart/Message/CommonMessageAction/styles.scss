@@ -28,6 +28,12 @@
       fill: inherit !important;
     }
   }
+  &--buttonEmo {
+    position: relative;
+    &:hover .ReactEmotionPopup {
+      display: flex;
+    }
+  }
 }
 
 .emoMenu {

@@ -1,0 +1,19 @@
+.ReactEmotionPopup {
+  display: none;
+  position: absolute;
+  left: -60px;
+  top: -28px;
+  background-color: #fff;
+  padding: 3px 6px;
+  border-radius: 50px;
+  border: 1px solid #ececec;
+  &--menuItem {
+    padding: 0;
+    margin-left: 5px;
+    height: 20px;
+  }
+  &--image {
+    width: 20px;
+    height: 20px;
+  }
+}

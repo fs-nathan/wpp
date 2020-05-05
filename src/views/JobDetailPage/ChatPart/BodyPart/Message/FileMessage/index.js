@@ -17,10 +17,25 @@ import TextMessage from '../TextMessage';
 import './styles.scss';
 
 function getPosition(chatPosition, i, length) {
-  // if (chatPosition === 'top' && i !== 0)
-  //   return 'mid'
-  // if (chatPosition === 'bot' && i !== length - 1)
-  //   return 'mid'
+  if (length === 1 || chatPosition === 'mid')
+    return chatPosition;
+  if (chatPosition === 'one') {
+    if (i === 0)
+      return 'top'
+    if (i === length - 1)
+      return 'bot'
+    return 'mid'
+  }
+  if (chatPosition === 'top') {
+    if (i === 0)
+      return 'top'
+    return 'mid'
+  }
+  if (chatPosition === 'bot') {
+    if (i === length - 1)
+      return 'bot'
+    return 'mid'
+  }
   return chatPosition
 }
 
@@ -85,87 +100,91 @@ const FileMessage = ({
     dispatch(detailUser({ userId: user_create_id }))
   }
 
-  return files.map((file, i) => (
-    <div key={i} className={clsx("FileMessage",
-      {
-        [`TextMessage__${getPosition(chatPosition, i, files.length)}`]: !isReply,
-        [`TextMessage__reply`]: isReply,
-      })}  >
-      {!isReply && !is_me &&
-        <abbr title={user_create_name}>
-          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
-        </abbr>
-      }
-      {!isReply && is_me &&
-        <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
-      <div className={clsx("TextMessage--rightContentWrap",
-        is_me ? `TextMessage--rightContentWrap__self-${chatPosition}`
-          : `TextMessage--rightContentWrap__${chatPosition}`,
+
+  return files.map((file, i) => {
+    const chatFilePosition = getPosition(chatPosition, i, files.length)
+    return (
+      <div key={i} className={clsx("FileMessage",
         {
-          "TextMessage--reply": isReply,
-          "TextMessage--rightContentWrap__self": is_me
-        })}
-        style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
-      >
-        <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
+          [`TextMessage__${chatFilePosition}`]: !isReply,
+          [`TextMessage__reply`]: isReply,
+        })}  >
+        {!isReply && !is_me &&
+          <abbr title={user_create_name}>
+            <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          </abbr>
+        }
+        {!isReply && is_me &&
+          <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+        <div className={clsx("TextMessage--rightContentWrap",
+          is_me ? `TextMessage--rightContentWrap__self-${chatFilePosition}`
+            : `TextMessage--rightContentWrap__${chatFilePosition}`,
           {
-            ((chatPosition === 'top' && !is_me) || isReply) &&
-            <div className="TextMessage--sender"  >
-              {isReply &&
-                <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
-              }
-              <div className="TextMessage--name"  >
-                {user_create_name}
-              </div>
-              <div className="TextMessage--position"  >
-                {user_create_position}
-              </div>
-              {user_create_roles[0] &&
-                <div className="TextMessage--room"  >
-                  {user_create_roles[0]}
+            "TextMessage--reply": isReply,
+            "TextMessage--rightContentWrap__self": is_me
+          })}
+          style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
+        >
+          <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
+            {
+              ((chatFilePosition === 'top' && !is_me) || isReply) &&
+              <div className="TextMessage--sender"  >
+                {isReply &&
+                  <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
+                }
+                <div className="TextMessage--name"  >
+                  {user_create_name}
                 </div>
-              }
-            </div>
-          }
-          <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })} >
-            {chat_parent &&
-              <TextMessage {...chat_parent} isReply></TextMessage>
-            }
-            <div className="FileMessage--files" onClick={onClickFile(file)}>
-              <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
-                src={file.file_icon} alt="file-icon"></img>
-              <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
-                {file.name}
-                <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
-                  {getFileType(file.name)} - {file && file.size}
+                <div className="TextMessage--position"  >
+                  {user_create_position}
                 </div>
-                {isUploading && uploadingPercent !== 100 &&
-                  <div className="FileMessage--loading" >{t('LABEL_CHAT_TASK_DANG_TAI')}<div className="FileMessage--loadingBackground" >
-                    <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
-                    </div>
+                {user_create_roles[0] &&
+                  <div className="TextMessage--room"  >
+                    {user_create_roles[0]}
                   </div>
-                    {uploadingPercent}%
-              </div>
                 }
               </div>
-              <div className="FileMessage--downloadButton"
-                onClick={onClickDownload(file.url, file.name)}>
-                <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
+            }
+            <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })} >
+              {chat_parent &&
+                <TextMessage {...chat_parent} isReply></TextMessage>
+              }
+              <div className="FileMessage--files" onClick={onClickFile(file)}>
+                <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
+                  src={file.file_icon} alt="file-icon"></img>
+                <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
+                  {file.name}
+                  <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
+                    {getFileType(file.name)} - {file && file.size}
+                  </div>
+                  {isUploading && uploadingPercent !== 100 &&
+                    <div className="FileMessage--loading" >{t('LABEL_CHAT_TASK_DANG_TAI')}<div className="FileMessage--loadingBackground" >
+                      <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
+                      </div>
+                    </div>
+                      {uploadingPercent}%
+              </div>
+                  }
+                </div>
+                <div className="FileMessage--downloadButton"
+                  onClick={onClickDownload(file.url, file.name)}>
+                  <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
+                </div>
               </div>
             </div>
-          </div>
-          {data_emotion.length > 0 &&
-            <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
-          }
-        </abbr>
-      </div>
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
-      <ModalImage images={files}
-        {...{ user_create_avatar, user_create_name, time_create, user_create_position, type: getFileType(file.name), url: file.url }}
-        isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
-    </div >
-  ));
+            {data_emotion.length > 0 &&
+              <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
+            }
+          </abbr>
+        </div>
+        {!isReply && !is_me &&
+          <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+        <ModalImage images={files}
+          {...{ user_create_avatar, user_create_name, time_create, user_create_position, type: getFileType(file.name), url: file.url }}
+          isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
+      </div >
+    )
+  })
 }
 
 FileMessage.propTypes = {

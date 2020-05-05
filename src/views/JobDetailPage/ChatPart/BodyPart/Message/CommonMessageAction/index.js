@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
+import ReactEmotionPopup from '../ReactEmotionPopup';
 import './styles.scss';
 
 const StyledButton = styled.button`
@@ -24,7 +25,6 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
   const emotionsList = useSelector(state => state.chat.emotionsList);
   const groupActiveColor = useSelector(currentColorSelector)
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [anchorElEmotion, setAnchorElEmotion] = React.useState(null);
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -32,14 +32,6 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
-
-  const handleClickEmotion = (evt) => {
-    setAnchorElEmotion(evt.currentTarget);
-  }
-
-  const handleCloseEmotion = () => {
-    setAnchorElEmotion(null);
   }
 
   function handleClickCopy() {
@@ -62,11 +54,8 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
     setAnchorEl(null);
   }
 
-  function handleClickEmo(emo) {
-    return () => {
-      dispatch(chatEmotion(taskId, chatId, emo))
-      setAnchorElEmotion(null);
-    }
+  function handleClickEmotion() {
+    dispatch(chatEmotion(taskId, chatId, emotionsList[0].value))
   }
 
   return (
@@ -81,10 +70,13 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
           <Icon className="CommonMessageAction--icon" path={mdiShare} />
         </abbr>
       </StyledButton>
-      <StyledButton className="CommonMessageAction--button" onClick={handleClickEmotion} colorHover={groupActiveColor}>
+      <StyledButton className="CommonMessageAction--button CommonMessageAction--buttonEmo"
+        onClick={handleClickEmotion}
+        colorHover={groupActiveColor}>
         <abbr title={t('LABEL_CHAT_TASK_BIEU_CAM')}>
           <Icon className="CommonMessageAction--icon" path={mdiCardsHeart} />
         </abbr>
+        <ReactEmotionPopup chatId={chatId} />
       </StyledButton>
       <StyledButton className="CommonMessageAction--button" onClick={handleClick} colorHover={groupActiveColor}>
         <abbr title={t('LABEL_CHAT_TASK_THEM')}>
@@ -108,31 +100,6 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
         <MenuItem className="memberItem--menuItem" onClick={onClickMarkDemand}>{t('LABEL_CHAT_TASK_DANH_DAU_LA_CHI_DAO')}</MenuItem>
         <MenuItem divider></MenuItem>
         <MenuItem className="memberItem--menuItem" onClick={handleDeleteChat}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
-      </Menu>
-      <Menu
-        id="CommonMessageAction-emo"
-        anchorEl={anchorElEmotion}
-        keepMounted
-        open={Boolean(anchorElEmotion)}
-        onClose={handleCloseEmotion}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        classes={{
-          paper: "emoMenu",
-          list: "emoMenu--list"
-        }}
-      >
-        {emotionsList.map(emo =>
-          <MenuItem key={emo.value} className="emoMenu--menuItem" onClick={handleClickEmo(emo.value)}>
-            <img className="emoMenu--image" src={emo.icon} alt="emo"></img>
-          </MenuItem>
-        )}
       </Menu>
     </div>
   );

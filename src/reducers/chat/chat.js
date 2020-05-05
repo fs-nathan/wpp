@@ -39,7 +39,7 @@ export default (state = initialState, action) => produce(state, draft => {
       break;
     case actionTypes.APPEND_CHAT:
       const idx = findIndex(draft.chats.data, ({ id }) => id === action.replaceId)
-      console.log('idx', idx, action.replaceId)
+      // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
         draft.chats.data.splice(idx, 1, action.payload.data_chat)
       } else {
