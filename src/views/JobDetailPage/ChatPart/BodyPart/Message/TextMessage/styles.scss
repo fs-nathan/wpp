@@ -130,6 +130,10 @@
     &__bot {
       border-top-left-radius: 5px;
     }
+    &__withReact {
+      padding-bottom: 40px;
+      min-width: 100px;
+    }
   }
   &--tag {
     font-size: 15px;

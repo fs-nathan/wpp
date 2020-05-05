@@ -139,7 +139,7 @@ const ImageMessage = ({
           </div>
         }
         {data_emotion.length > 0 &&
-          <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
+          <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
         }
       </div>
       {!isReply && !is_me &&

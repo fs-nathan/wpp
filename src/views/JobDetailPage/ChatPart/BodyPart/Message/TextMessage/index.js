@@ -119,6 +119,7 @@ const TextMessage = ({
               {
                 "TextMessage--content__self": is_me,
                 "TextMessage--content__deleted": is_deleted,
+                "TextMessage--content__withReact": !is_deleted && data_emotion.length > 0,
               })}
               style={{ backgroundColor: is_me ? groupActiveColor : isReply ? 'transparent' : '#fff' }}
               dangerouslySetInnerHTML={{
@@ -128,7 +129,7 @@ const TextMessage = ({
             >
             </div>
             {data_emotion.length > 0 &&
-              <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
+              <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
             }
           </abbr>
         </div>

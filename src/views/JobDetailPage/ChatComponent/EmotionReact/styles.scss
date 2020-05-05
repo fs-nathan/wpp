@@ -1,13 +1,20 @@
 .EmotionReact {
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 6px;
   display: flex;
+  flex-direction: row;
   &--react {
     border: 1px solid #cccccc;
     background-color: #eaeaea;
     border-radius: 25px;
     position: relative;
+    padding: 2px 6px;
+    display: flex;
+    flex-direction: row;
+    &__self {
+      flex-direction: row-reverse;
+    }
   }
   &--reactMember {
     position: absolute;
@@ -21,13 +28,19 @@
   &--react:hover &--reactMember {
     display: block;
   }
+  &--totalReact {
+    font-size: 14px;
+    line-height: 20px;
+    margin: auto 5px;
+  }
   &--image {
     margin-left: 2px;
     width: 20px;
     height: 20px;
   }
   &--button {
-    padding: 0;
+    margin: auto 5px;
+    padding: 1px;
     border: none;
     border-radius: 50%;
     width: 24px;
@@ -37,8 +50,16 @@
     background-color: #eaeaea;
     border-radius: 25px;
   }
+  &--button &--image {
+    margin: 0;
+  }
   &--icon {
     width: 20px;
     height: 20px;
+  }
+  &__self {
+    flex-direction: row-reverse;
+    left: 10px;
+    right: unset;
   }
 }

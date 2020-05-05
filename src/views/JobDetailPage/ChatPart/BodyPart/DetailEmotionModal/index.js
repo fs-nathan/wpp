@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { AppBar, Avatar, Tab, Tabs } from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './styles.scss';
 
 const DetailEmotionModal = ({ isOpen, setOpen, data_emotion = [] }) => {
@@ -45,7 +45,7 @@ const DetailEmotionModal = ({ isOpen, setOpen, data_emotion = [] }) => {
           >
             <Tab label={`Tất cả (${all.length})`} />
             {data_emotion.map(({ icon, value, members = [] }) =>
-              <Tab icon={<img alt="icon" src={icon} key={value} />} label={` (${members.length})`} />
+              <Tab icon={<img alt="icon" className="DetailEmotionModal--tabIcon" src={icon} key={value} />} label={` (${members.length})`} />
             )}
           </Tabs>
         </AppBar>
