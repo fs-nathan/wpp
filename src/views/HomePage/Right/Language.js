@@ -13,7 +13,7 @@ const Language = ({ handleChangeLanguage, language }) => {
           disabled={language === "vi"}
           style={{
             padding: "2px 4px",
-            color: language === "vi" ? colors.gray[0] : colors.blue[0],
+            color: language === "vi" ? colors.gray[0] : "#3f51b5",
           }}
           onClick={() => handleChangeLanguage("vi")}
         >
@@ -23,7 +23,7 @@ const Language = ({ handleChangeLanguage, language }) => {
           disabled={language === "en"}
           style={{
             padding: "2px 4px",
-            color: language === "en" ? colors.gray[0] : colors.blue[0],
+            color: language === "en" ? colors.gray[0] : "#3f51b5",
           }}
           onClick={() => handleChangeLanguage("en")}
         >

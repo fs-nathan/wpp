@@ -330,7 +330,7 @@ export const PostCreatorForm = ({ initialValues = emptyObject, ...props }) => {
   );
   return (
     <Formik
-      validate={validateMemo}
+      // validate={validateMemo}
       enableReinitialize
       validateOnMount
       initialValues={initialValues}

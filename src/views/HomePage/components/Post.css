@@ -56,7 +56,7 @@
 }
 .comp_Post__actionsWrap {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -67,4 +67,32 @@
 .comp_Timeline__header .MuiCardHeader-action .MuiSvgIcon-root {
   width: 26px;
   height: 26px;
+}
+.comp_Timeline__header .comp_TasksCard__HeaderTitle {
+  font-weight: 700;
+}
+.comp_Post__statWrap__comment,
+.comp_Post__viewAll {
+  font-size: 13px !important;
+}
+.comp_Post__viewAll {
+  color: #385898;
+}
+.u-fontSize12 {
+  font-size: 12px !important;
+}
+.u-colorBlue {
+  color: #3f51b5;
+}
+.comp_Post_iconLove {
+  width: 15px;
+  height: 15px;
+}
+.comp_Post_iconLike {
+  width: 20px;
+  height: 20px;
+}
+.comp_Post_iconComment {
+  width: 17px;
+  height: 17px;
 }

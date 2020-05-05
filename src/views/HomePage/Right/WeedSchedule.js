@@ -63,7 +63,11 @@ const WeedSchedule = () => {
           </ListItemLayout>
           <div>
             <ButtonBase style={{ float: "right" }}>
-              <StyledTypo component="span" color="blue">
+              <StyledTypo
+                className="u-fontSize12 u-colorBlue"
+                component="span"
+                color="blue"
+              >
                 {t("Xem thêm")}
               </StyledTypo>
             </ButtonBase>

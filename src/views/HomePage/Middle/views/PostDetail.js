@@ -229,7 +229,7 @@ export default () => {
 
   return (
     <Stack>
-      <TasksCard.Container>
+      <TasksCard.Container className="comp_Timeline__header">
         <TasksCard.Header
           avatar={
             <TasksCard.HeaderAvatar

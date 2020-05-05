@@ -194,11 +194,18 @@ const Message = ({
         </div>
         <Box padding="0 10px">
           {onReplyClick && (
-            <ButtonBase onClick={onReplyClick} className="comp_Message__reply">
+            <ButtonBase
+              onClick={onReplyClick}
+              className="comp_Message__reply u-fontSize12"
+            >
               {t("Trả lời")}
             </ButtonBase>
           )}
-          <Typography component="span" color="textSecondary">
+          <Typography
+            className=" u-fontSize12"
+            component="span"
+            color="textSecondary"
+          >
             2 giờ
           </Typography>
           {type === "comment" && (

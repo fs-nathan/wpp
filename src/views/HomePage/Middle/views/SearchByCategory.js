@@ -15,7 +15,7 @@ const Header = React.memo(({ categoryName }) => {
   const { t } = useTranslation();
   const history = useHistory();
   return (
-    <TasksCard.Container>
+    <TasksCard.Container className="comp_Timeline__header">
       <TasksCard.Header
         avatar={
           <TasksCard.HeaderAvatar

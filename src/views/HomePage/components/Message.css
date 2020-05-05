@@ -21,6 +21,8 @@
 .comp_Message__reply {
   color: #3f51b5;
   margin-right: 8px;
+  font-size: 12px !important;
+  color: #385898;
 }
 .comp_Message__expand {
   margin: 6px 0;

@@ -129,6 +129,7 @@ const CommentListContainer = () => {
     <>
       <Box display="flex" alignItems="center">
         <ButtonBase
+          className="comp_Post__viewAll"
           onClick={() =>
             history.push(routes.postDetail.path.replace(":id", id))
           }
@@ -215,22 +216,38 @@ export const ActionGroup = ({
         active={is_love}
         color={colors.pink[0]}
         onClick={() => handleActionClick("love")}
-        startIcon={<Icon viewBox="0 0 24 24" path={love} size={1} />}
+        startIcon={
+          <Icon
+            className="comp_Post_iconLove"
+            viewBox="0 0 24 24"
+            path={love}
+          />
+        }
       >
-        {t("Yêu")}
+        <label>{t("Yêu")}</label>
       </PostActionButton>
       <PostActionButton
         active={is_like}
         color={colors.blue[0]}
         onClick={() => handleActionClick("like")}
-        startIcon={<Icon viewBox="40 40 50 50" path={like} size={1} />}
+        startIcon={
+          <Icon
+            className="comp_Post_iconLike"
+            viewBox="40 40 50 50"
+            path={like}
+          />
+        }
       >
-        {t("Thích")}
+        <label>{t("Thích")}</label>
       </PostActionButton>
       <PostActionButton
         color={colors.blue[0]}
         startIcon={
-          <Icon viewBox="-21 -47 682.66669 682" path={comment} size={1} />
+          <Icon
+            className="comp_Post_iconComment"
+            viewBox="-21 -47 682.66669 682"
+            path={comment}
+          />
         }
       >
         <label htmlFor={inputId}>{t("Bình luận")}</label>
@@ -357,6 +374,7 @@ export const PostContent = () => {
         >
           {title}
         </b>
+
         <Typography component="div">{content}</Typography>
       </Stack>
     </TasksCard.Content>
@@ -428,7 +446,11 @@ export const PostStats = () => {
         </Box>
         {!!number_comment && (
           <ButtonBase htmlFor={inputId} component="label">
-            <StyledTypo component="span" variant="subtitle1">
+            <StyledTypo
+              className="comp_Post__statWrap__comment"
+              component="span"
+              variant="subtitle1"
+            >
               {number_comment} {t("bình luận")}
             </StyledTypo>
           </ButtonBase>
