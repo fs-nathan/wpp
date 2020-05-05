@@ -1,9 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
 import { updateCommand } from 'actions/taskDetail/taskDetailActions';
-import CustomModal from 'components/CustomModal';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../selectors';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect';
 
@@ -26,6 +27,7 @@ const selector = [
 ]
 
 const DemandModal = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: props.taskId, content: "", type: -1 })
@@ -54,8 +56,8 @@ const DemandModal = (props) => {
     return tempSelectedItem.content && tempSelectedItem.type !== -1
   }
   return (
-    <CustomModal
-      title={"Chỉ đạo, quyết định"}
+    <JobDetailModalWrap
+      title={t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}
       open={props.isOpen}
       setOpen={props.setOpen}
       confirmRender={() => (props.isEditDemand) ? "Chỉnh sửa" : "Tạo mới"}
@@ -63,7 +65,7 @@ const DemandModal = (props) => {
       canConfirm={validate()}
     >
       <React.Fragment>
-        <TexTitle >Chọn loại</TexTitle>
+        <TexTitle >{t('LABEL_CHAT_TASK_CHON_LOAI')}</TexTitle>
         <OutlinedInputSelect
           selectedIndex={tempSelectedItem.type}
           setOptions={typeId => setParams("type", typeId)}
@@ -75,13 +77,13 @@ const DemandModal = (props) => {
           multiline
           rows="7"
           margin="normal"
-          placeholder="Nhập nội dung"
+          placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
           variant="outlined"
           value={tempSelectedItem.content}
           onChange={e => setParams("content", e.target.value)}
         />
       </React.Fragment>
-    </CustomModal>
+    </JobDetailModalWrap>
   )
 }
 

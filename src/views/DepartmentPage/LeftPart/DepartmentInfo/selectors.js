@@ -10,7 +10,7 @@ const deleteRoom = state => state.room.deleteRoom;
 export const roomSelector = createSelector(
   [detailRoom, getUserOfRoom, listIcon, updateRoom, deleteRoom],
   (detailRoom, getUserOfRoom, listIcon, updateRoom, deleteRoom) => {
-    const { data: { room }, loading: detailRoomLoading, error: detailRoomError } = detailRoom;
+    const { data: { room }, loading: detailRoomLoading, error: detailRoomError, firstTime: detailFirst } = detailRoom;
     const { loading: updateRoomLoading, error: updateRoomError } = updateRoom;
     const { loading: deleteRoomLoading, error: deleteRoomError } = deleteRoom;
     const { data: { users } } = getUserOfRoom;
@@ -25,8 +25,9 @@ export const roomSelector = createSelector(
     }
     return ({
       detail: newRooms,
-      loading: detailRoomLoading || updateRoomLoading || deleteRoomLoading,
+      loading: (detailFirst ? false : detailRoomLoading) || updateRoomLoading || deleteRoomLoading,
       error: detailRoomError || updateRoomError || deleteRoomError,
+      firstTime: detailFirst,
     });
   }
 );

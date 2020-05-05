@@ -3,16 +3,17 @@ import { FormControl, FormControlLabel, FormHelperText, ListItemText, ListSubhea
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle } from '@mdi/js';
 import Icon from '@mdi/react';
+import ColorTypo from 'components/ColorTypo';
+import { Primary, StyledList, StyledListItem } from 'components/CustomList';
+import CustomModal from 'components/CustomModal';
+import CustomTextbox from 'components/CustomTextbox';
+import SearchInput from 'components/SearchInput';
+import { COPY_PROJECT, CustomEventDispose, CustomEventListener } from 'constants/events.js';
+import { useMaxlenString, useRequiredDate, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../components/ColorTypo';
-import { Primary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import CustomModal from '../../../../components/CustomModal';
-import CustomTextbox from '../../../../components/CustomTextbox';
-import SearchInput from '../../../../components/SearchInput';
-import { useMaxlenString, useRequiredDate, useRequiredString } from '../../../../hooks';
 import './style.scss';
 
 const Header = ({ className = '', ...props }) =>
@@ -71,6 +72,12 @@ const RightContainer = ({ className = '', ...props }) =>
     {...props}
   />;
 
+const Subtitle = ({ className = '', ...props }) =>
+  <Typography
+    className={`view_ProjectGroup_EditProjectModa_Modal___subtitle ${className}`}
+    {...props}
+  />;
+
 function ProjectGroupList({ projectGroup, selectedProject, setSelectedProject }) {
 
   if (get(projectGroup, 'projects', []).length > 0)
@@ -116,6 +123,7 @@ function CopyProject({
   searchPatern, setSearchPatern,
   groups,
   handleCopyProject,
+  activeLoading,
 }) {
 
   const { t } = useTranslation();
@@ -123,8 +131,21 @@ function CopyProject({
   const [description, setDescription, errorDescription] = useMaxlenString('', 500);
   const [isCopyMember, setIsCopyMember] = React.useState(false);
   const [startDate, setStartDate, errorDate] = useRequiredDate(moment().toDate());
-
   const [selectedProject, setSelectedProject] = React.useState(null);
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+      setIsCopyMember(false);
+      setStartDate(moment().toDate());
+      setSelectedProject(null);
+    };
+    CustomEventListener(COPY_PROJECT, successClose);
+    return () => CustomEventDispose(COPY_PROJECT, successClose);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CustomModal
@@ -140,9 +161,12 @@ function CopyProject({
         moment(startDate).format('YYYY-MM-DD'),
         isCopyMember
       )}
+      onCancle={() => setOpen(false)}
       height='tall'
       columns={2}
       loading={groups.loading}
+      activeLoading={activeLoading}
+      manualClose={true}
       left={{
         title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE"),
         content: () =>
@@ -191,8 +215,8 @@ function CopyProject({
               label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_DESC")}
               helperText={get(errorDescription, 'message', '')}
             />
-            <ColorTypo>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}</ColorTypo>
             <StyledFormControl component="div" fullWidth>
+              <Subtitle>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}</Subtitle>
               <RadioGroup aria-label="member-setting" name="member-setting" value={isCopyMember} onChange={evt => setIsCopyMember(evt.target.value === 'true')}>
                 <FormControlLabel value={true} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.KEEP")} />
                 <FormControlLabel value={false} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.DISCARD")} />

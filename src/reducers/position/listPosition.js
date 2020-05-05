@@ -1,7 +1,7 @@
 import { concat, findIndex, get, remove } from 'lodash';
 import { CREATE_POSITION_SUCCESS } from '../../constants/actions/position/createPosition';
 import { DELETE_POSITION_SUCCESS } from '../../constants/actions/position/deletePosition';
-import { LIST_POSITION, LIST_POSITION_FAIL, LIST_POSITION_SUCCESS } from '../../constants/actions/position/listPosition';
+import { LIST_POSITION, LIST_POSITION_FAIL, LIST_POSITION_RESET, LIST_POSITION_SUCCESS } from '../../constants/actions/position/listPosition';
 import { UPDATE_POSITION_SUCCESS } from '../../constants/actions/position/updatePosition';
 
 export const initialState = {
@@ -10,6 +10,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -23,18 +24,20 @@ function reducer(state = initialState, action) {
     case LIST_POSITION_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case LIST_POSITION_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
+    case LIST_POSITION_RESET:
+      return initialState;
     case CREATE_POSITION_SUCCESS: {
       let newPositions = concat(state.data.positions, action.data.position);
       return {

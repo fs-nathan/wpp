@@ -1,28 +1,33 @@
-import { concat, filter, get } from 'lodash';
+import { filter, get } from 'lodash';
 import { createSelector } from 'reselect';
 
 const listProject = state => state.project.listProject;
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
-const detailDefaultGroup = state => state.projectGroup.detailDefaultGroup;
+const copyProject = state => state.project.copyProject;
 
 export const groupsSelector = createSelector(
-  [listProjectGroup, listProject, detailDefaultGroup],
-  (listProjectGroup, listProject, detailDefaultGroup) => {
-    const { data: { projectGroups }, loading: listProjectGroupLoading, error: listProjectGroupError } = listProjectGroup;
-    const { data: { projects }, loading: listProjectLoading, error: listProjectError } = listProject;
-    const { data: { projectGroup: _defaultProjectGroup }, error: detailDefaultGroupError, loading: detailDefaultGroupLoading } = detailDefaultGroup;
+  [listProjectGroup, listProject],
+  (listProjectGroup, listProject) => {
+    const { data: { projectGroups }, loading: listProjectGroupLoading, error: listProjectGroupError, firstTime: groupFirst } = listProjectGroup;
+    const { data: { projects }, loading: listProjectLoading, error: listProjectError, firstTime: projectFirst } = listProject;
     const groups = projectGroups.map(projectGroup => ({
       ...projectGroup,
       projects: filter(projects, { project_group_id: get(projectGroup, 'id') }),
     }));
-    const defaultProjectGroup = {
-      ..._defaultProjectGroup,
-      projects: filter(projects, { project_group_id: null }),
-    };
     return {
-      groups: concat(groups, defaultProjectGroup),
-      loading: listProjectGroupLoading || listProjectLoading || detailDefaultGroupLoading,
-      error: listProjectGroupError || listProjectError || detailDefaultGroupError,
+      groups: groups,
+      loading: (groupFirst ? false : listProjectGroupLoading) ||
+        (projectFirst ? false : listProjectLoading),
+      error: listProjectGroupError || listProjectError,
+      firstTime: groupFirst && projectFirst
     }
+  }
+);
+
+export const activeLoadingSelector = createSelector(
+  [copyProject],
+  (copyProject) => {
+    const { loading } = copyProject;
+    return loading;
   }
 );

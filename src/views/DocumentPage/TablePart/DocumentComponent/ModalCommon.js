@@ -1,30 +1,30 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { useTranslation } from 'react-i18next';
-import '../DocumentPage.scss';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import ColorTypo from '../../../../components/ColorTypo';
-import { DialogTitle } from '@material-ui/core';
+import { DialogTitle } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Dialog from "@material-ui/core/Dialog";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import { withStyles } from "@material-ui/core/styles";
+import CloseIcon from "@material-ui/icons/Close";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import ColorTypo from "../../../../components/ColorTypo";
+import "../DocumentPage.scss";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500]
-  }
+    color: theme.palette.grey[500],
+  },
 });
-const DialogTitleCus = withStyles(styles)(props => {
+const DialogTitleCus = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <DialogTitle disableTypography className={classes.root} {...other}>
@@ -42,19 +42,19 @@ const DialogTitleCus = withStyles(styles)(props => {
   );
 });
 
-const DialogActions = withStyles(theme => ({
-  root: { margin: 0, padding: theme.spacing(1) }
+const DialogActions = withStyles((theme) => ({
+  root: { margin: 0, padding: theme.spacing(1) },
 }))(MuiDialogActions);
 
-const ModalCommon = props => {
+const ModalCommon = (props) => {
   const { t } = useTranslation();
   const isPrimary = props.footerAction.length === 1;
-  const bgColor = props.colors.find(item => item.selected === true);
+  const bgColor = props.colors.find((item) => item.selected === true);
   return (
     <Dialog
       onClose={props.onClose}
       fullWidth={true}
-      maxWidth={props.maxWidth || 'sm'}
+      maxWidth={props.maxWidth || "sm"}
       aria-labelledby="customized-dialog-title"
       open={true}
       className="modal-common-container"
@@ -69,13 +69,13 @@ const ModalCommon = props => {
       {props.children}
       {props.footerAction && (
         <DialogActions>
-          {props.onClose && props.type !== 'share' && (
+          {props.onClose && props.type !== "share" && (
             <Button
               onClick={props.onClose}
               disableRipple
               className="common-btn-modal"
             >
-              {t('IDS_WP_CANCEL')}
+              {t("IDS_WP_CANCEL")}
             </Button>
           )}
 
@@ -86,10 +86,10 @@ const ModalCommon = props => {
               className="common-btn-modal"
               style={{
                 color:
-                  (idx % 2 !== 0 || isPrimary) && el.type !== 'cancel'
+                  (idx % 2 !== 0 || isPrimary) && el.type !== "cancel"
                     ? bgColor.color
-                    : '#222',
-                opacity: el.disabled ? 0.5 : 1
+                    : "#222",
+                opacity: el.disabled ? 0.5 : 1,
               }}
               key={idx}
               disabled={el.disabled || props.loading}
@@ -107,8 +107,8 @@ const ModalCommon = props => {
 };
 
 export default connect(
-  state => ({
-    colors: state.setting.colors
+  (state) => ({
+    colors: state.setting.colors,
   }),
   {}
 )(ModalCommon);

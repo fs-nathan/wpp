@@ -1,0 +1,37 @@
+.view_Setting_Modal_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: left;
+  margin: 20px;
+
+  &>p {
+    font-weight: 500;
+  }
+}
+
+@mixin comp_CustomModal___dialog {
+  &>div:nth-child(3)>div {
+    overflow: hidden;
+    min-width: 40vw;
+  }
+}
+
+.comp_CustomModal___dialog {
+  &-sm {
+    @include comp_CustomModal___dialog;
+
+    &>div:nth-child(3)>div {
+      max-width: 800px;
+    }
+  }
+}
+
+.views_settingWeeklyCalendar_selector {
+  width: 120px;
+  height: 40px;
+
+  .MuiOutlinedInput-input {
+    padding: 12.5px 14px;
+  }
+}

@@ -149,10 +149,6 @@ function AllProjectTable({
             },
             moreMenu: [
               {
-                label: t("DMH.VIEW.PGP.RIGHT.ALL.TABLE_SETTING"),
-                onClick: () => null
-              },
-              {
                 label: t("DMH.VIEW.PGP.RIGHT.ALL.TRASH"),
                 onClick: () => history.push(`${Routes.PROJECTS}/deleted`)
               }
@@ -190,7 +186,14 @@ function AllProjectTable({
             },
             row: {
               id: 'id',
-            }
+            },
+            noData: {
+              bool: (projects.firstTime === false)
+                && (projects.projectGroupsCount === 0 || projects.projects.length === 0),
+              subtitle: projects.projectGroupsCount === 0
+                ? t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_PROJECT")
+                : t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_TASK")
+            },
           }}
           columns={[
             {
@@ -210,7 +213,7 @@ function AllProjectTable({
             },
             {
               label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.NAME"),
-              field: (row) => <LinkSpan onClick={evt => history.push(`${route}/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
+              field: (row) => <LinkSpan onClick={evt => history.push(`${get(row, 'url_redirect', '#')}`)}>{get(row, 'name', '')}</LinkSpan>,
               sort: evt => handleSortType('name'),
               align: 'left',
               width: '25%',
@@ -227,10 +230,10 @@ function AllProjectTable({
                       {get(row, 'state_code') === 5 ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : get(row, 'state_name')}
                     </span>
                   </div>
-                  {get(row, 'state_code') !== 5 && (
+                  {(get(row, 'state_code') === 1 || get(row, 'state_code') === 3) && (
                     <small>
                       {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
-                        date: get(row, 'state_code', '') === 3
+                        date: get(row, 'state_code') === 3
                           ? get(row, 'day_expired', 0)
                           : get(row, 'day_implement', 0)
                       }
@@ -239,7 +242,7 @@ function AllProjectTable({
                   )}
                 </StateBox>
               ),
-              sort: evt => handleSortType('state_name'),
+              sort: evt => handleSortType('state_code'),
               align: 'left',
               width: '10%',
             },
@@ -251,23 +254,28 @@ function AllProjectTable({
                   title={
                     <ChartInfoBox
                       className='view_ProjectGroup_Table_All___tooltip'
+                      title={t("DMH.VIEW.PGP.RIGHT.ALL.STATS.TOTAL")}
                       data={
                         [{
                           color: '#ff9800',
-                          title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.WAITING"),
-                          value: get(row, 'statistics.task_waiting', 0),
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING"),
+                          value: get(row, 'statistic.waiting', 0),
                         }, {
                           color: '#03a9f4',
-                          title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.DOING"),
-                          value: get(row, 'statistics.task_doing', 0),
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING"),
+                          value: get(row, 'statistic.doing', 0),
                         }, {
                           color: '#f44336',
-                          title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
-                          value: get(row, 'statistics.task_expired', 0),
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
+                          value: get(row, 'statistic.expired', 0),
                         }, {
                           color: '#03c30b',
-                          title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
-                          value: get(row, 'statistics.task_complete', 0),
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
+                          value: get(row, 'statistic.complete', 0),
+                        }, {
+                          color: 'black',
+                          title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
+                          value: get(row, 'statistic.stop', 0),
                         }]
                       }
                     />
@@ -287,6 +295,9 @@ function AllProjectTable({
                       }, {
                         color: '#03c30b',
                         value: get(row, 'statistic.complete', 0),
+                      }, {
+                        color: 'black',
+                        value: get(row, 'statistic.stop', 0),
                       }]}
                       color={'#05b50c'}
                       percentDone={get(row, 'complete', 0)}
@@ -294,7 +305,7 @@ function AllProjectTable({
                   </TooltipWrapper>
                 </LightTooltip>
               ),
-              sort: evt => handleSortType('complete'),
+              sort: evt => handleSortType('statistic.doing'),
               align: 'center',
               width: '17%',
             },
@@ -332,7 +343,7 @@ function AllProjectTable({
                   {get(row, 'priority_name', '')}
                 </CustomBadge>
               ),
-              sort: evt => handleSortType('priority_name'),
+              sort: evt => handleSortType('priority_code'),
               align: 'center',
               width: '10%',
             },

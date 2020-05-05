@@ -1,18 +1,107 @@
-import React from 'react'
-import BodyPart from './BodyPart'
-import FooterPart from './FooterPart'
-import HeaderPart from './HeaderPart'
+import { useTranslation } from 'react-i18next';
+import { IconButton } from '@material-ui/core';
+import { mdiClose } from '@mdi/js';
+import Icon from '@mdi/react';
+import { searchChat } from 'actions/chat/chat';
+import { getRemind, unPinRemind } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'clsx';
+import SearchInput from 'components/SearchInput';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { useDispatch, useSelector } from 'react-redux';
+import { typesRemind } from '../TabPart/RemindTab/TabBody/RemindItem';
+import BodyPart from './BodyPart';
+import FooterPart from './FooterPart';
+import HeaderPart from './HeaderPart';
+import './styles.scss';
 
 function ChatPart(props) {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
+  const searchChatKey = useSelector(state => state.chat.searchChatKey)
+  const userId = useSelector(state => state.system.profile.id)
+  const [selectedChat, setSelectedChat] = useState();
+  const [isShowSearch, setShowSearch] = useState(false);
+  const [imagesQueue, setImagesQueue] = useState([]);
+  const pinnedRemind = reminds.find(rm => rm.is_ghim);
+
+  useEffect(() => {
+    if (taskId && reminds.length === 0)
+      dispatch(getRemind({ taskId }))
+  }, [dispatch, reminds.length, taskId]);
+
+  function onChangeKey(evt) {
+    dispatch(searchChat(evt.target.value))
+  }
+
+  function hideSearch() {
+    setShowSearch(false)
+  }
+
+  function onClickClosePin() {
+    dispatch(unPinRemind({ remind_id: pinnedRemind.id, taskId }))
+  }
+
+  const onDrop = useCallback(async (files = []) => {
+    // Do something with the files
+    setImagesQueue([...imagesQueue, ...files]);
+  }, [imagesQueue])
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+
   return (
-    <div className="container-chatpart">
+    <div className="container-chatpart chatPart"
+      {...getRootProps({
+        onClick: event => event.stopPropagation()
+      })}
+    >
       <div className="wrap-header">
-        <HeaderPart {...props} />
+        <HeaderPart {...props} setShowSearch={setShowSearch} />
       </div>
-      <BodyPart {...props} />
+      <div className={clsx("chatPart--searchWrap", { 'chatPart__showSearch': isShowSearch })}>
+        <SearchInput className="chatPart--search"
+          placeholder={t('LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO')} value={searchChatKey} onChange={onChangeKey} />
+        <IconButton className="chatPart--close" onClick={hideSearch}>
+          <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
+        </IconButton>
+      </div>
+      {
+        pinnedRemind &&
+        <div className={clsx("chatPart--pinRemind", { 'chatPart__showPinRemind': true })}>
+          <img className="chatPart--pinImage" src="/images/alarm-clock.png" alt="pin"></img>
+          <div className="chatPart--pinRight">
+            <div className="chatPart--pinContent">
+              {pinnedRemind.content}
+            </div>
+            <div className="chatPart--pinType">
+              {pinnedRemind.type === 0 ? `Lúc ${pinnedRemind.time_remind} ngày ${pinnedRemind.date_remind} - ${typesRemind[pinnedRemind.type_remind]} ` :
+                `Nhắc theo tiến độ ${pinnedRemind.duration.map(dr => `${dr}%`).join(', ')}`
+              }
+            </div>
+          </div>
+          <IconButton className="chatPart--close" onClick={onClickClosePin}>
+            <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
+          </IconButton>
+        </div>
+      }
+      <BodyPart {...props} setSelectedChat={setSelectedChat} isReply={Boolean(selectedChat)} />
       <div className="wrap-footer">
-        <FooterPart {...props} />
+        <FooterPart {...props}
+          parentMessage={selectedChat}
+          imagesQueue={imagesQueue}
+          setImagesQueue={setImagesQueue}
+          setSelectedChat={setSelectedChat} />
       </div>
+      <input {...getInputProps()} />
+      {isDragActive && (
+        <div className="drop-area">
+          <div className="dashed-box">
+            <div className="des-drop">{('Thả file vào đây')}</div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -19,11 +19,12 @@ export const bgColorSelector = createSelector(
 export const desireUserSelector = createSelector(
   [searchUser],
   (searchUser) => {
-    const { data: { member }, loading, error } = searchUser;
+    const { data: { member }, loading, error, firstTime } = searchUser;
     return ({
       user: member,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     });
   }
 );
@@ -31,11 +32,12 @@ export const desireUserSelector = createSelector(
 export const requireUsersSelector = createSelector(
   [getRequirementJoinGroup],
   (getRequirementJoinGroup) => {
-    const { data: { requirements }, loading, error } = getRequirementJoinGroup;
+    const { data: { requirements }, loading, error, firstTime } = getRequirementJoinGroup;
     return ({
       users: requirements,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     });
   }
 );
@@ -43,11 +45,12 @@ export const requireUsersSelector = createSelector(
 export const invitationSentsSelector = createSelector(
   [getListInvitationSent],
   (getListInvitationSent) => {
-    const { data: { invitations }, loading, error } = getListInvitationSent;
+    const { data: { invitations }, loading, error, firstTime } = getListInvitationSent;
     return ({
       invitations,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     });
   }
 );
@@ -73,11 +76,12 @@ export const requireLoadingSelector = createSelector(
 export const viewPermissionsSelector = createSelector(
   [viewPermissions],
   (viewPermissions) => {
-    const { data: { users }, loading, error } = viewPermissions;
+    const { data: { users }, loading, error, firstTime } = viewPermissions;
     return ({
       permissions: users,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     });
   }
 );

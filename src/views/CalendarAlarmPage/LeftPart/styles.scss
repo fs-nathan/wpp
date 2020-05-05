@@ -1,0 +1,40 @@
+.left_sub_menu {
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+  margin-top: 7px;
+
+  .sub_menu_item {
+    min-height: 40px;
+    display: block;
+    background-color: #fff;
+    cursor: pointer;
+    padding: 5px 10px 5px 60px;
+
+    &_inner {
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-radius: 2px;
+
+      &:hover {
+        .personal_alarm_count {
+          color: #fff;
+        }
+
+        &>a {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+  .personal_alarm_name {
+    width: 70%;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 15px;
+  }
+}

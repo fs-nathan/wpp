@@ -1,8 +1,9 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { Button, IconButton, List, ListItem, ListItemText, ListSubheader, Popover, TextField } from '@material-ui/core';
+import { Button, IconButton, List, ListItem, ListItemText, ListSubheader, Popover, TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
+import YearSelect from 'components/YearSelect';
 import * as FileSaver from 'file-saver';
 import moment from 'moment';
 import React from 'react';
@@ -370,4 +371,48 @@ export const DownloadPopover = ({
       </List>
     </Popover>
   );
+}
+
+export const YearPopover = ({
+  anchorEl = null, setAnchorEl = () => null,
+  value, onChange
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Popover
+      id="year-menu"
+      anchorEl={anchorEl}
+      open={Boolean(anchorEl)}
+      onClose={evt => setAnchorEl(null)}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+    >
+      <Typography component="div" className="year_popover_container">
+        <div className="year_popover_container_header">
+          <div>{t('IDS_WP_SELECT_YEAR')}</div>
+          <IconButton>
+            <Icon
+              path={mdiClose}
+              size={1}
+              onClick={evt => setAnchorEl(null)}
+            />
+          </IconButton>
+        </div>
+        <YearSelect
+          numberOfYears={2}
+          value={value}
+          onChange={evt => {
+            onChange(evt)
+            setAnchorEl(null)
+          }}
+        />
+      </Typography>
+    </Popover>
+  )
 }

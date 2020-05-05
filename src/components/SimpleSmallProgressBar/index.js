@@ -1,13 +1,13 @@
+import clamp from 'lodash/clamp';
 import React from 'react';
 import styled from 'styled-components';
-import clamp from 'lodash/clamp'
 
 const Container = styled(({ color, ...rest }) => <div {...rest} />)`
   display: flex;
   align-items: center;
   justify-content: space-between;
   & > span {
-    color: ${props => props.color};
+    color: #00bba9;
     font-size: 13px;
   }
 `;
@@ -15,9 +15,9 @@ const Container = styled(({ color, ...rest }) => <div {...rest} />)`
 const BackBar = styled.div`
   position: relative;
   width: 75%;
-  height: 8px;
-  border-radius: 999px;
-  background-color: rgba(0, 0, 0, 0.1);
+  height: 12px;
+  border-radius: 2px;
+  background-color: #e8e8e8;
 `;
 
 const FrontBar = styled(({ percentDone, color, ...rest }) => <div {...rest} />)`
@@ -25,9 +25,9 @@ const FrontBar = styled(({ percentDone, color, ...rest }) => <div {...rest} />)`
   top: 0;
   left: 0;
   height: 100%;
-  border-radius: 999px;
+  border-radius: 2px;
   width: ${props => props.percentDone}%;
-  background-color: ${props => props.color};
+  background-color: #00db7c;
 `;
 
 const expectedPercent = props => clamp(props.percentTarget, 0, 100);

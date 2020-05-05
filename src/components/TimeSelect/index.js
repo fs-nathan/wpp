@@ -13,7 +13,7 @@ for (let index = 0; index < 24; index++) {
     listTimeSelect.push(`${index}:00`, `${index}:30`)
 }
 
-function TimeSelect({ className, value, onChange }) {
+function TimeSelect({ className, value, onChange, input }) {
   return (
     <Select
       className={clsx('timeSelect', className)}
@@ -26,6 +26,7 @@ function TimeSelect({ className, value, onChange }) {
           component: Scrollbars,
         }
       }}
+      input={input}
     >
       {
         listTimeSelect.map((time) => (

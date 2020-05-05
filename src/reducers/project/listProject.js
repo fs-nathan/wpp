@@ -1,9 +1,8 @@
 import { concat, findIndex, get, remove } from 'lodash';
-import { COPY_PROJECT_SUCCESS } from '../../constants/actions/project/copyProject';
 import { CREATE_PROJECT_SUCCESS } from '../../constants/actions/project/createProject';
 import { DELETE_PROJECT_SUCCESS } from '../../constants/actions/project/deleteProject';
 import { HIDE_PROJECT_SUCCESS } from '../../constants/actions/project/hideProject';
-import { LIST_PROJECT, LIST_PROJECT_FAIL, LIST_PROJECT_SUCCESS } from '../../constants/actions/project/listProject';
+import { LIST_PROJECT, LIST_PROJECT_FAIL, LIST_PROJECT_RESET, LIST_PROJECT_SUCCESS } from '../../constants/actions/project/listProject';
 import { UPDATE_STATUS_COPY_SUCCESS } from '../../constants/actions/project/setting/updateStatusCopy';
 import { SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
 import { SORT_PROJECT, SORT_PROJECT_SUCCESS } from '../../constants/actions/project/sortProject';
@@ -16,6 +15,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -32,14 +32,17 @@ function reducer(state = initialState, action) {
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case LIST_PROJECT_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
+    case LIST_PROJECT_RESET:
+      return initialState;
     case CREATE_PROJECT_SUCCESS: {
       let newProjects = concat(state.data.projects, action.data.project);
       return {
@@ -50,6 +53,7 @@ function reducer(state = initialState, action) {
         }
       }
     }
+    /*
     case COPY_PROJECT_SUCCESS: {
       let newProjects = concat(state.data.projects, action.data.project);
       return {
@@ -60,6 +64,7 @@ function reducer(state = initialState, action) {
         }
       }
     }
+    */
     case UPDATE_PROJECT_SUCCESS: {
       let newProjects = state.data.projects;
       const index = findIndex(newProjects, { id: get(action.data, 'project.id') });

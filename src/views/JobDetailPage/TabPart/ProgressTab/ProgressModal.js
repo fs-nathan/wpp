@@ -1,15 +1,16 @@
+import { useTranslation } from 'react-i18next';
 import DateFnsUtils from "@date-io/date-fns";
 import { Typography } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { updateTimeDuration } from 'actions/taskDetail/taskDetailActions';
-import CustomModal from 'components/CustomModal';
 import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
 import "date-fns";
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../selectors';
 import './styles.scss';
 
@@ -40,6 +41,7 @@ const InputDate = styled(KeyboardDatePicker)`
 `
 
 const ProgressModal = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
@@ -95,8 +97,8 @@ const ProgressModal = (props) => {
   }
 
   return (
-    <CustomModal
-      title={"Điều chỉnh tiến độ"}
+    <JobDetailModalWrap
+      title={t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO')}
       open={props.isOpen}
       setOpen={props.setOpen}
       confirmRender={() => "Hoàn Thành"}
@@ -107,7 +109,7 @@ const ProgressModal = (props) => {
     >
       <DialogContent >
         <StartEndDay component={'span'}>
-          <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
+          <BeginEndTime component={'span'}>{t('LABEL_CHAT_TASK_BAT_DAU')}</BeginEndTime>
           <TimeSelect
             className="progressModal--timeSelect"
             value={startTime}
@@ -129,7 +131,7 @@ const ProgressModal = (props) => {
           </MuiPickersUtilsProvider>
         </StartEndDay>
         <StartEndDay component={'span'}>
-          <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
+          <BeginEndTime component={'span'}>{t('LABEL_CHAT_TASK_KET_THUC')}</BeginEndTime>
           <TimeSelect
             className="progressModal--timeSelect"
             value={endTime}
@@ -152,7 +154,7 @@ const ProgressModal = (props) => {
           </MuiPickersUtilsProvider>
         </StartEndDay>
       </DialogContent>
-    </CustomModal>
+    </JobDetailModalWrap>
   )
 }
 

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -115,6 +116,7 @@ const styles = theme => ({
 });
 
 const DialogTitle = withStyles(styles)(props => {
+  const { t } = useTranslation();
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -142,6 +144,7 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 const MemberModal = ({ handleCloseMembers, isOpen, }) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const userDetail = useSelector(state => get(state, 'user.detailUser.data.user'));
   const {
@@ -164,9 +167,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
 
   return (
     <Dialog maxWidth={'lg'} onClose={handleCloseMembers} open={isOpen} >
-      <DialogTitle onClose={handleCloseMembers}>
-        Thông tin chi tiết thành viên
-            </DialogTitle>
+      <DialogTitle onClose={handleCloseMembers}>{t('LABEL_CHAT_TASK_THONG_TIN_CHI_TIET_THANH_VIEN')}</DialogTitle>
       <DialogContent dividers>
         <div className="wrapper-member-modal">
           <StyledEmploy component={'div'}>
@@ -174,13 +175,13 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
               <StyledAvatar src={avatar} alt='avatar' />
               <div className="general-info">
                 <NameStaff bold uppercase >{name}</NameStaff>
-                <ColorTypo color='gray'  >Ngày tham gia: {date_join}</ColorTypo>
+                <ColorTypo color='gray'  >{t('LABEL_CHAT_TASK_NGAY_THAM_GIA')}{date_join}</ColorTypo>
               </div>
             </div>
             <TextInput
               value={room_name}
               InputProps={{
-                startAdornment: <AdornmentInput position="start" >Phòng/ban:</AdornmentInput>,
+                startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_PHONG_BAN')}</AdornmentInput>,
               }}
               fullWidth
               disabled
@@ -188,7 +189,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
             <TextInput
               value={position_name}
               InputProps={{
-                startAdornment: <AdornmentInput position="start" >Chức danh:</AdornmentInput>,
+                startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUC_DANH')}</AdornmentInput>,
               }}
               fullWidth
               disabled
@@ -196,7 +197,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
             <TextInput
               value={level}
               InputProps={{
-                startAdornment: <AdornmentInput position="start" >Trình độ:</AdornmentInput>,
+                startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_TRINH_DO')}</AdornmentInput>,
               }}
               fullWidth
               disabled
@@ -204,12 +205,12 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
             <TextInput
               value={specialized}
               InputProps={{
-                startAdornment: <AdornmentInput position="start" >Chuyên nghành:</AdornmentInput>,
+                startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUYEN_NGHANH')}</AdornmentInput>,
               }}
               fullWidth
               disabled
             />
-            <TitleDescription>Mô tả công việc:</TitleDescription>
+            <TitleDescription>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</TitleDescription>
             <ContentDescription>
               {description}
             </ContentDescription>
@@ -222,37 +223,35 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
             />
             <label className="button-file" htmlFor="contained-button-file">
               <Button variant="contained" component="span" fullWidth className={classes.button}>
-                <img className="member-image" alt="vtask" src={imgDoc} />
-                                Xem file hồ sơ
-                            </Button>
+                <img className="member-image" alt="vtask" src={imgDoc} />{t('LABEL_CHAT_TASK_XEM_FILE_HO_SO')}</Button>
             </label>
           </StyledEmploy>
 
           <StyledStaff component={'div'}>
-            <TextItem > Thông tin cá nhân</TextItem>
+            <TextItem >{t('LABEL_CHAT_TASK_THONG_TIN_CA_NHAN')}</TextItem>
             <WrapperMember component="div" >
               <MemberDetail component='div'>
-                <TitleText >Họ và tên đầy đủ:</TitleText>
+                <TitleText >{t('LABEL_CHAT_TASK_HO_VA_TEN_DAY_DU')}</TitleText>
                 <ContentDescription>{name}</ContentDescription>
               </MemberDetail>
               <MemberDetail component='div'>
-                <TitleText >Ngày sinh:</TitleText>
+                <TitleText >{t('LABEL_CHAT_TASK_NGAY_SINH')}</TitleText>
                 <ContentDescription>{birthday}</ContentDescription>
               </MemberDetail>
               <MemberDetail component='div'>
-                <TitleText >Giới tính:</TitleText>
+                <TitleText >{t('LABEL_CHAT_TASK_GIOI_TINH')}</TitleText>
                 <ContentDescription>{gender_name}</ContentDescription>
               </MemberDetail>
               <MemberDetail component='div'>
-                <TitleText >Email:</TitleText>
+                <TitleText >{t('LABEL_CHAT_TASK_EMAIL')}</TitleText>
                 <ContentDescription>{email}</ContentDescription>
               </MemberDetail>
               <MemberDetail component='div'>
-                <TitleText >Điện thoại:</TitleText>
+                <TitleText >{t('LABEL_CHAT_TASK_DIEN_THOAI')}</TitleText>
                 <ContentDescription>{phone}</ContentDescription>
               </MemberDetail>
               <MemberDetail component='div'>
-                <TitleText >Địa chỉ:</TitleText>
+                <TitleText >{t('LABEL_CHAT_TASK_DIA_CHI')}</TitleText>
                 <ContentDescription>{address}</ContentDescription>
               </MemberDetail>
             </WrapperMember>
@@ -260,9 +259,7 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCloseMembers} color="primary">
-          Đóng
-                </Button>
+        <Button autoFocus onClick={handleCloseMembers} color="primary">{t('LABEL_CHAT_TASK_DONG')}</Button>
       </DialogActions>
     </Dialog>
   )

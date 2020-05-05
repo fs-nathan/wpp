@@ -85,6 +85,7 @@
     border-radius: 2px;
     padding: 2px 8px;
     background: #ff98004f;
+    width: max-content;
   }
 };
 
@@ -176,4 +177,41 @@
 
 .view_Project_MemberSetting_Modal___left-header {
   @include view_Project_MemberSetting_Modal___sub-header;
+};
+
+@mixin view_Project_MemberSetting_Modal___permission-box {
+  font-size: 12px;
+  border-radius: 2px;
+  padding: 2px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  width: 90px;
+  & > *:first-child {
+    width: 90%;
+    word-break: break-all;
+  }
+  & > *:last-child {
+    margin-left: auto;
+  }
+  &:hover {
+    cursor: pointer;
+    background: #eee;
+  }
+  &:active {
+    background: #ddd;
+  }
+}
+
+.view_Project_MemberSetting_Modal___permission-box {
+  & {
+    @include view_Project_MemberSetting_Modal___permission-box;
+    color: #222;
+  }
+  &-admin {
+    @include view_Project_MemberSetting_Modal___permission-box;
+    color: red;
+  }
 };

@@ -3,15 +3,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
-  font-weight: 500;
+  line-height: 21px;
+  margin-bottom: 20px;
+  color: #111;
+  font-size: 21px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 25px;
 };
 
 .view_Project_ProjectDetail___subheader {
-  padding: 8px 0;
-  margin: 8px 0;
+  padding: 7px 0 3px 0;
+  margin: 8px 0 15px 0;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #e5e5e5;
+  & > p {
+    color: #333;
+    font-weight: 500;
+  }
 };
 
 .view_Project_ProjectDetail___date-box {

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@material-ui/core';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +23,7 @@ const StyledButton = styled(Button)`
 `
 
 const ApprovedBox = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const offer = useSelector(state => state.taskDetail.taskOffer.offer);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -67,10 +69,10 @@ const ApprovedBox = (props) => {
         <React.Fragment>
           <div className="approved-container">
             <div className="styled-title-box-ot">
-              <StyledButton variant="contained" size="small" onClick={handleClickOpen}>Phê duyệt</StyledButton>
+              <StyledButton variant="contained" size="small" onClick={handleClickOpen}>{t('LABEL_CHAT_TASK_PHE_DUYET')}</StyledButton>
               <Button variant="outlined" size="small"
                 onClick={onClickDenied}
-              >Từ chối</Button>
+              >{t('LABEL_CHAT_TASK_TU_CHOI')}</Button>
               <span />
             </div>
             <ApproveModal {...props} isOpen={open} setOpen={setOpen} />

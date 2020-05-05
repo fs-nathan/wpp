@@ -1,0 +1,14 @@
+.UpdateDurationMessage {
+  &--title {
+    font-size: 24px;
+    color: #000000;
+    line-height: 32px;
+    text-transform: uppercase;
+  }
+  &--content {
+    font-size: 13px;
+    color: #607d8b;
+    margin-bottom: 10px;
+    text-transform: initial;
+  }
+}

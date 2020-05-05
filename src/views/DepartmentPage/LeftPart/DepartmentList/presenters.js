@@ -34,10 +34,15 @@ function DepartmentList({
 
   const { t } = useTranslation();
   const history = useHistory();
+  const ref = React.useRef();
 
   function doLink(roomId) {
     history.push(`${route}/room/${roomId}`);
   }
+
+  React.useEffect(() => {
+    ref.current.focus();
+  }, []);
 
   return (
     <React.Fragment>
@@ -77,6 +82,7 @@ function DepartmentList({
                 <StyledListItem
                   to={`${route}`}
                   component={Link}
+                  innerRef={ref}
                 >
                   <div>
                     <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
@@ -97,25 +103,6 @@ function DepartmentList({
                   <CustomListItem canDrag={get(viewPermissions.permissions, 'can_modify', false)} key={get(room, 'id')} room={room} index={index} handleLink={doLink} />
                 ))}
                 {provided.placeholder}
-                <StyledListItem
-                  component={Link}
-                  to={`${route}/room/default`}
-                >
-                  <div>
-                    <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                  </div>
-                  <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
-                  <ListItemText
-                    primary={
-                      <StyledPrimary>{t('DMH.VIEW.DP.LEFT.LIST.DEFAULT')}</StyledPrimary>
-                    }
-                    secondary={
-                      <Secondary>
-                        {t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: rooms.rooms.filter(room => get(room, 'id') === 'default').reduce((sum, room) => sum += get(room, 'number_member'), 0) })}
-                      </Secondary>
-                    }
-                  />
-                </StyledListItem>
               </StyledList>
             )}
           </Droppable>

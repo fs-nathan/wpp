@@ -16,7 +16,8 @@ import TabList from "./LeftPart_new/TabList";
 import { loadTaskPage } from "./redux/actions";
 import { TASK_OVERVIEW_STATISTIC } from "./redux/types";
 import routes from "./routes";
-import { formatTime, get } from "./utils";
+import { get } from "./utils";
+import { formatTime } from "./utils/time";
 const { Provider } = JobPageContext;
 const filterConfig = [
   {
@@ -106,7 +107,7 @@ function JobPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeType]);
   const [timeRange, settimeRange] = React.useState(() => {
-    const [startDate, endDate] = times[1].option();
+    const [startDate, endDate] = times[timeType].option();
     return {
       startDate,
       endDate

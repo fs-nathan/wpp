@@ -95,6 +95,9 @@ function DeletedProjectTable({
               id: 'id',
               onClick: () => null,
             },
+            noData: {
+              bool: (projects.firstTime === false) && (projects.projects.length === 0)
+            },
           }}
           columns={[{
             label: () => null,

@@ -1,6 +1,32 @@
 import { combineReducers } from "redux";
+import { postModule } from "views/HomePage/redux/post";
+import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
+import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
+import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
 import taskReducer from "../views/JobPage/redux/reducers";
+import updateSchedule, { initialState as updateScheduleInitialState } from "././calendar/weeklyCalendar/updateSchedule";
 import authentications, { initialState as authenticationsInitialState } from "./authentications";
+import createPersonalRemind, { initialState as createPersonalRemindInitialState } from "./calendar/alarmCalendar/createPersonalRemind";
+import createPersonalRemindCategory, { initialState as createPersonalRemindCategoryInitialState } from "./calendar/alarmCalendar/createPersonalRemindCategory";
+import listPersonalRemind, { initialState as listPersonalRemindInitialState } from "./calendar/alarmCalendar/listPersonalRemind";
+import listPersonalRemindCategory, { initialState as listPersonalRemindCategoryInitialState } from "./calendar/alarmCalendar/listPersonalRemindCategory";
+import listRemindProject, { initialState as listRemindProjectInitialState } from "./calendar/alarmCalendar/listRemindProject";
+import listRemindRecently, { initialState as listRemindRecentlyInitialState } from "./calendar/alarmCalendar/listRemindRecently";
+import listCalendarPermission, { initialState as listCalendarPermissionInitialState } from "./calendar/permission/listPermission";
+import projectGroupAddDayOff, { initialState as projectGroupAddDayOffInitialState } from "./calendar/projectCalendar/addDayOff";
+import projectGroupAddWorkingDays from "./calendar/projectCalendar/addWorkingDay";
+import createProjectGroupSchedule, { initialState as createProjectGroupScheduleInitialState } from "./calendar/projectCalendar/createProjectGroupSchedule";
+import projectGroupDeleteWorkingDays, { initialState as projectGroupDeleteWorkingDayInitialState } from "./calendar/projectCalendar/deleteWorkingDay";
+import getProjectGroupScheduleDetail, { initialState as getProjectGroupScheduleDetailInitialState } from "./calendar/projectCalendar/getGroupScheduleDetail";
+import listProjectGroupSchedule, { initialState as listProjectGroupScheduleInitialState } from "./calendar/projectCalendar/listSchedule";
+import projectGroupSettingStartingDay, { initialState as projectGroupSettingStartingDayInitialState } from "./calendar/projectCalendar/settingStartingDay";
+import createSchedule, { initialState as createScheduleInitialState } from "./calendar/weeklyCalendar/createSchedule";
+import deleteSchedule, { initialState as deleteScheduleInitialState } from "./calendar/weeklyCalendar/deleteSchedule";
+import listSchedule, { initialState as listScheduleInitialState } from "./calendar/weeklyCalendar/listSchedule";
+import listScheduleOfWeek, { initialState as listScheduleOfWeekInitialState } from "./calendar/weeklyCalendar/listScheduleOfWeek";
+import listScheduleOfWeekFromModal, { initialState as listScheduleOfWeekFromModalInitialState } from "./calendar/weeklyCalendar/listScheduleOfWeekFromModal";
+import listWeeksInYear, { initialState as listWeeksInYearInitialState } from "./calendar/weeklyCalendar/listWeeksInYear";
+import settingStartingDay, { initialState as settingStartingDayInitialState } from "./calendar/weeklyCalendar/settingStartingDay";
 import chat, { initialState as chatInitialState } from "./chat/chat";
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
@@ -45,9 +71,11 @@ import deleteProject, { initialState as deleteProjectInitialState } from "./proj
 import deleteTrashProject, { initialState as deleteTrashProjectInitialState } from "./project/deleteTrashProject";
 import detailProject, { initialState as detailProjectInitialState } from "./project/detailProject";
 import hideProject, { initialState as hideProjectInitialState } from "./project/hideProject";
+import listProjectBasicInfo, { initialState as listProjectBasicInfoInitialState } from "./project/listBasicInfo";
 import listDeletedProject, { initialState as listDeletedProjectInitialState } from "./project/listDeletedProject";
 import listProject, { initialState as listProjectInitialState } from "./project/listProject";
 import memberProject, { initialState as memberProjectInitialState } from "./project/memberProject";
+import permissionProject, { initialState as permissionProjectInitialState } from "./project/permissionProject";
 import removeMemberProject, { initialState as removeMemberProjectInitialState } from "./project/removeMemberProject";
 import removeProjectRoleFromMember, { initialState as removeProjectRoleFromMemberInitialState } from "./project/removeProjectRoleFromMember";
 import restoreTrashProject, { initialState as restoreTrashProjectInitialState } from "./project/restoreTrashProject";
@@ -99,6 +127,7 @@ import trackingTime from "./taskDetail/time";
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from "./user/banUserFromGroup";
 import detailUser, { initialState as detailUserInitialState } from "./user/detailUser";
 import listUserOfGroup, { initialState as listUserOfGroupInitialState } from "./user/listUserOfGroup";
+import permissionUser, { initialState as permissionUserInitialState } from "./user/permissionUser";
 import privateMember, { initialState as privateMemberInitialState } from "./user/privateMember";
 import publicMember, { initialState as publicMemberInitialState } from "./user/publicMember";
 import sortUser, { initialState as sortUserInitialState } from "./user/sortUser";
@@ -140,7 +169,7 @@ const rootReducer = combineReducers({
     createRoom,
     deleteRoom,
     updateRoom,
-    sortRoom
+    sortRoom,
   }),
   user: combineReducers({
     listUserOfGroup,
@@ -150,36 +179,37 @@ const rootReducer = combineReducers({
     updateUser,
     publicMember,
     privateMember,
-    banUserFromGroup
+    banUserFromGroup,
+    permissionUser,
   }),
   icon: combineReducers({
     listIcon,
     createIcon,
-    deleteIcon
+    deleteIcon,
   }),
   position: combineReducers({
     listPosition,
     createPosition,
     updatePosition,
-    deletePosition
+    deletePosition,
   }),
   level: combineReducers({
     listLevel,
     createLevel,
     updateLevel,
-    deleteLevel
+    deleteLevel,
   }),
   major: combineReducers({
     listMajor,
     createMajor,
     updateMajor,
-    deleteMajor
+    deleteMajor,
   }),
   userRole: combineReducers({
     listUserRole,
     createUserRole,
     updateUserRole,
-    deleteUserRole
+    deleteUserRole,
   }),
   projectGroup: combineReducers({
     createProjectGroup,
@@ -189,7 +219,7 @@ const rootReducer = combineReducers({
     sortProjectGroup,
     detailProjectGroup,
     memberProjectGroup,
-    detailDefaultGroup
+    detailDefaultGroup,
   }),
   project: combineReducers({
     createProject,
@@ -201,6 +231,7 @@ const rootReducer = combineReducers({
     hideProject,
     showProject,
     memberProject,
+    permissionProject,
     addMemberProject,
     removeMemberProject,
     updateStateJoinTask,
@@ -212,12 +243,13 @@ const rootReducer = combineReducers({
     copyProject,
     deleteTrashProject,
     restoreTrashProject,
+    listProjectBasicInfo,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
       updateStatusCopy,
       updateStatusView,
-    })
+    }),
   }),
   groupTask: combineReducers({
     listGroupTask: listGroupTask1,
@@ -226,13 +258,13 @@ const rootReducer = combineReducers({
     deleteGroupTask,
     updateGroupTask,
     sortGroupTask,
-    getAllGroupTask
+    getAllGroupTask,
   }),
   task: combineReducers({
     listTask,
     createTask,
     deleteTask,
-    sortTask
+    sortTask,
   }),
   taskPage: taskReducer,
   groupUser: combineReducers({
@@ -244,13 +276,31 @@ const rootReducer = combineReducers({
     acceptRequirementJoinGroup,
     rejectRequirementJoinGroup,
     cancleInvitationJoinGroup,
-    getListGroup
+    getListGroup,
   }),
   register: combineReducers({
     inviteOtherPeopleCreateAccount,
   }),
   gantt,
+  [settingGroupHome.key]: settingGroupHome.reducer,
+  [settingGroupPermission.key]: settingGroupPermission.reducer,
+  [postModule.key]: postModule.reducer,
+
+  apiCall: apiCall,
+  inviteOtherPeopleCreateAccount,
   viewPermissions,
+  calendar: combineReducers({
+    listSchedule, listScheduleOfWeek,
+    listScheduleOfWeekFromModal, listWeeksInYear,
+    settingStartingDay, listProjectGroupSchedule,
+    createSchedule, updateSchedule, listCalendarPermission,
+    deleteSchedule, listPersonalRemindCategory,
+    listRemindRecently, listPersonalRemind,
+    createProjectGroupSchedule, getProjectGroupScheduleDetail,
+    projectGroupSettingStartingDay, projectGroupAddWorkingDays,
+    projectGroupDeleteWorkingDays, projectGroupAddDayOff,
+    createPersonalRemindCategory, createPersonalRemind, listRemindProject
+  })
 });
 
 export const DEFAULT_STATE = {
@@ -265,7 +315,7 @@ export const DEFAULT_STATE = {
     createRoom: createRoomInitialState,
     deleteRoom: deleteRoomInitialState,
     updateRoom: updateRoomInitialState,
-    sortRoom: sortRoomInitialState
+    sortRoom: sortRoomInitialState,
   },
   user: {
     listUserOfGroup: listUserOfGroupInitialState,
@@ -275,36 +325,37 @@ export const DEFAULT_STATE = {
     updateUser: updateUserInitialState,
     publicMember: publicMemberInitialState,
     privateMember: privateMemberInitialState,
-    banUserFromGroup: banUserFromGroupInitialState
+    banUserFromGroup: banUserFromGroupInitialState,
+    permissionUser: permissionUserInitialState,
   },
   icon: {
     listIcon: listIconInitialState,
     createIcon: createIconInitialState,
-    deleteIcon: deleteIconInitialState
+    deleteIcon: deleteIconInitialState,
   },
   position: {
     listPosition: listPositionInitialState,
     createPosition: createPositionInitialState,
     updatePosition: updatePositionInitialState,
-    deletePosition: deletePositionInitialState
+    deletePosition: deletePositionInitialState,
   },
   level: {
     listLevel: listLevelInitialState,
     createLevel: createLevelInitialState,
     updateLevel: updateLevelInitialState,
-    deleteLevel: deleteLevelInitialState
+    deleteLevel: deleteLevelInitialState,
   },
   major: {
     listMajor: listMajorInitialState,
     createMajor: createMajorInitialState,
     updateMajor: updateMajorInitialState,
-    deleteMajor: deleteMajorInitialState
+    deleteMajor: deleteMajorInitialState,
   },
   userRole: {
     listUserRole: listUserRoleInitialState,
     createUserRole: createUserRoleInitialState,
     updateUserRole: updateUserRoleInitialState,
-    deleteUserRole: deleteUserRoleInitialState
+    deleteUserRole: deleteUserRoleInitialState,
   },
   projectGroup: {
     createProjectGroup: createProjectGroupInitialState,
@@ -314,7 +365,7 @@ export const DEFAULT_STATE = {
     sortProjectGroup: sortProjectGroupInitialState,
     detailProjectGroup: detailProjectGroupInitialState,
     memberProjectGroup: memberProjectGroupInitialState,
-    detailDefaultGroup: detailDefaultGroupInitialState
+    detailDefaultGroup: detailDefaultGroupInitialState,
   },
   project: {
     createProject: createProjectInitialState,
@@ -326,6 +377,7 @@ export const DEFAULT_STATE = {
     hideProject: hideProjectInitialState,
     showProject: showProjectInitialState,
     memberProject: memberProjectInitialState,
+    permissionProject: permissionProjectInitialState,
     addMemberProject: addMemberProjectInitialState,
     removeMemberProject: removeMemberProjectInitialState,
     updateStateJoinTask: updateStateJoinTaskInitialState,
@@ -337,12 +389,13 @@ export const DEFAULT_STATE = {
     copyProject: copyProjectInitialState,
     deleteTrashProject: deleteTrashProjectInitialState,
     restoreTrashProject: restoreTrashProjectInitialState,
+    listProjectBasicInfo: listProjectBasicInfoInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
       updateStatusDate: updateStatusDateInitialState,
       updateStatusCopy: updateStatusCopyInitialState,
       updateStatusView: updateStatusViewInitialState,
-    }
+    },
   },
   groupTask: {
     listGroupTask: listGroupTaskInitialState,
@@ -351,13 +404,13 @@ export const DEFAULT_STATE = {
     copyGroupTask: copyGroupTaskInitialState,
     deleteGroupTask: deleteGroupTaskInitialState,
     sortGroupTask: sortGroupTaskInitialState,
-    getAllGroupTask: getAllGroupTaskInitialState
+    getAllGroupTask: getAllGroupTaskInitialState,
   },
   task: {
     listTask: listTaskInitialState,
     createTask: createTaskInitialState,
     deleteTask: deleteTaskInitialState,
-    sortTask: sortTaskInitialState
+    sortTask: sortTaskInitialState,
   },
   groupUser: {
     searchUser: searchUserInitialState,
@@ -368,13 +421,37 @@ export const DEFAULT_STATE = {
     cancleInvitationJoinGroup: cancleInvitationJoinGroupInitialState,
     acceptRequirementJoinGroup: acceptRequirementJoinGroupInitialState,
     rejectRequirementJoinGroup: rejectRequirementJoinGroupInitialState,
-    getListGroup: getListGroupInitialState
+    getListGroup: getListGroupInitialState,
   },
   register: {
     inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState
   },
   viewPermissions: viewPermissionsInitialState,
-  gantt: ganttInitialState
+  gantt: ganttInitialState,
+  calendar: {
+    listSchedule: listScheduleInitialState,
+    listScheduleOfWeek: listScheduleOfWeekInitialState,
+    listScheduleOfWeekFromModal: listScheduleOfWeekFromModalInitialState,
+    listWeeksInYear: listWeeksInYearInitialState,
+    settingStartingDay: settingStartingDayInitialState,
+    listProjectGroupSchedule: listProjectGroupScheduleInitialState,
+    createSchedule: createScheduleInitialState,
+    updateSchedule: updateScheduleInitialState,
+    deleteSchedule: deleteScheduleInitialState,
+    listPersonalRemindCategory: listPersonalRemindCategoryInitialState,
+    listRemindRecently: listRemindRecentlyInitialState,
+    createProjectGroupSchedule: createProjectGroupScheduleInitialState,
+    getProjectGroupScheduleDetail: getProjectGroupScheduleDetailInitialState,
+    projectGroupSettingStartingDay: projectGroupSettingStartingDayInitialState,
+    projectGroupAddWorkingDays: projectGroupSettingStartingDayInitialState,
+    projectGroupDeleteWorkingDays: projectGroupDeleteWorkingDayInitialState,
+    projectGroupAddDayOff: projectGroupAddDayOffInitialState,
+    createPersonalRemindCategory: createPersonalRemindCategoryInitialState,
+    listPersonalRemind: listPersonalRemindInitialState,
+    createPersonalRemind: createPersonalRemindInitialState,
+    listRemindProject: listRemindProjectInitialState,
+    listCalendarPermission: listCalendarPermissionInitialState
+  }
 };
 
 export default rootReducer;

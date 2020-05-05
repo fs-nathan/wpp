@@ -1,0 +1,27 @@
+.ChatBoxInput {
+  position: relative;
+  line-height: 20px;
+  background: #f9f9fd;
+  padding: 20px 50px 20px 10px;
+  font-size: 15px;
+  // border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  height: 20px;
+  &:focus {
+    outline: none;
+  }
+  &__empty:before {
+    content: attr(placeholder);
+    cursor: text;
+    background: none;
+    color: #83878d;
+    display: block;
+    position: absolute;
+    left: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    pointer-events: none;
+  }
+}

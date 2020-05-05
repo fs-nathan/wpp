@@ -1,7 +1,7 @@
 import { find, findIndex, get, remove, slice } from 'lodash';
 import { CREATE_TASK_SUCCESS } from '../../constants/actions/task/createTask';
 import { DELETE_TASK_SUCCESS } from '../../constants/actions/task/deleteTask';
-import { LIST_TASK, LIST_TASK_FAIL, LIST_TASK_SUCCESS } from '../../constants/actions/task/listTask';
+import { LIST_TASK, LIST_TASK_FAIL, LIST_TASK_RESET, LIST_TASK_SUCCESS } from '../../constants/actions/task/listTask';
 import { SORT_TASK, SORT_TASK_SUCCESS } from '../../constants/actions/task/sortTask';
 
 export const initialState = {
@@ -10,6 +10,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -23,18 +24,20 @@ function reducer(state = initialState, action) {
     case LIST_TASK_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case LIST_TASK_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
+    case LIST_TASK_RESET:
+      return initialState;
     case CREATE_TASK_SUCCESS: {
       const newTasks = state.data.tasks.map(groupTask =>
         get(groupTask, 'id') === get(action.data, 'task.group_task')

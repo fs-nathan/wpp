@@ -1,21 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Avatar, IconButton, Dialog, withStyles, Typography, ListItemText, ListItem, GridListTile } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
+import { Avatar, Dialog, GridListTile, IconButton, ListItem, ListItemText, Typography, withStyles } from '@material-ui/core';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import avatar from '../../assets/avatar.jpg'
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { useTheme } from '@material-ui/core/styles';
-import { mdiDownload, mdiShare, mdiInformation, mdiChevronLeftCircle, mdiChevronRightCircle } from '@mdi/js';
-import Icon from '@mdi/react'
-import ImageTest from '../../assets/imageChatTest.jpg'
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import CloseIcon from '@material-ui/icons/Close';
+import { mdiChevronLeftCircle, mdiChevronRightCircle, mdiDownload, mdiInformation, mdiShare } from '@mdi/js';
+import Icon from '@mdi/react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import ReactPlayer from 'react-player';
+import styled from 'styled-components';
 
 const styles = theme => ({
-    closeButton: {
-        color: theme.palette.grey[500],
-    },
+  closeButton: {
+    color: theme.palette.grey[500],
+  },
 });
 const GroupTitle = styled(MuiDialogTitle)`
     display: flex;
@@ -67,60 +67,73 @@ const ButtonAction = styled(Typography)`
 `
 
 const DialogTitle = withStyles(styles)(props => {
-    const { children, classes, onClose, ...other } = props;
-    return (
-        <GroupTitle disableTypography {...other}>
-            <Typography component={'div'}>
-                <TitleImg component='div'>
-                    <ListItem>
-                        <Avatar src={avatar} />
-                        <ListItemText
-                            style={{ margin: 0 }}
-                            primary={
-                                <Typography component='div'>
-                                    Thiết kế giao diện Website
-                                </Typography>
-                            }
-                            secondary={
-                                <Typography component='div'>
-                                    Nguyễn Thu Huyền - 09:12 20/12/2019
-                                </Typography>
-                            }
-                        />
-                    </ListItem>
-                </TitleImg>
-            </Typography>
-            <GroupActionButton component='div'>
-                <ButtonAction component='div'>
-                    <Icon path={mdiDownload} size={1} color={'#fff'} />
-                    <Typography component='div'>Tải xuống</Typography>
-                </ButtonAction>
-                <ButtonAction component='div'>
-                    <Icon path={mdiShare} size={1} color={'#fff'} />
-                    <Typography component='div'>Chia sẻ</Typography>
-                </ButtonAction>
-                <ButtonAction component='div'>
-                    <Icon path={mdiInformation} size={1} color={'#fff'} />
-                    <Typography component='div'>Chi tiết</Typography>
-                </ButtonAction>
-            </GroupActionButton>
-            <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-                <CloseIcon />
-            </IconButton>
-        </GroupTitle>
-    );
+  const { t } = useTranslation();
+  const { children, classes, onClose,
+    user_create_avatar, user_create_name, time_create,
+    user_create_position, image,
+    ...other } = props;
+
+  function onClickDownload() {
+    const link = document.createElement('a');
+    link.href = image.url;
+    link.download = image.name;
+    link.target = '_blank';
+    link.click();
+  }
+
+  return (
+    <GroupTitle disableTypography {...other}>
+      <Typography component={'div'}>
+        <TitleImg component='div'>
+          <ListItem>
+            <Avatar src={user_create_avatar} />
+            <ListItemText
+              style={{ margin: 0 }}
+              primary={
+                <Typography component='div'>
+                  {user_create_position}
+                </Typography>
+              }
+              secondary={
+                <Typography component='div'>
+                  {`${user_create_name} - ${time_create}`}
+                </Typography>
+              }
+            />
+          </ListItem>
+        </TitleImg>
+      </Typography>
+      <GroupActionButton component='div'>
+        <ButtonAction component='div' onClick={onClickDownload}>
+          <Icon path={mdiDownload} size={1} color={'#fff'} />
+          <Typography component='div'>{t('LABEL_CHAT_TASK_TAI_XUONG')}</Typography>
+        </ButtonAction>
+        <ButtonAction component='div'>
+          <Icon path={mdiShare} size={1} color={'#fff'} />
+          <Typography component='div'>{t('LABEL_CHAT_TASK_CHIA_SE')}</Typography>
+        </ButtonAction>
+        <ButtonAction component='div'>
+          <Icon path={mdiInformation} size={1} color={'#fff'} />
+          <Typography component='div'>{t('LABEL_CHAT_TASK_CHI_TIET')}</Typography>
+        </ButtonAction>
+      </GroupActionButton>
+      <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+        <CloseIcon />
+      </IconButton>
+    </GroupTitle>
+  );
 });
 
 const DialogContent = withStyles(theme => ({
-    root: {
-        padding: theme.spacing(2),
-    },
+  root: {
+    padding: theme.spacing(2),
+  },
 }))(MuiDialogContent);
 
 const DialogActions = withStyles(theme => ({
-    root: {
-        margin: 0
-    },
+  root: {
+    margin: 0
+  },
 }))(MuiDialogActions);
 const StyledDialog = styled(Dialog)`
     & > div > div {    
@@ -196,69 +209,68 @@ const Image = styled.img`
   }
 `
 const ModalImage = (props) => {
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
-    // const value = React.useContext(WrapperContext);
-    // let data = []
-    // if (value && value.image) {
-    //     data = value.image
-    // }
-    return (
-        // {/* Modal chinh sua cong viec con */}
-        <StyledDialog
-            aria-labelledby="customized-dialog-title"
-            open={props.isOpen}
-            fullScreen={fullScreen}
-        >
-            <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
-            </DialogTitle>
-            <ContentDialog>
-                <ButtonImage>
-                    <Icon path={mdiChevronLeftCircle} size={5} />
-                </ButtonImage>
-                <div>
-                    <img alt="vtask" src={ImageTest} />
-                </div>
-                <ButtonImage>
-                    <Icon path={mdiChevronRightCircle} size={5} />
-                </ButtonImage>
-            </ContentDialog>
-            <FooterDialog>
-                {/* footer image */}
-                {/* <GridList cellHeight={60} cols={5} style={{ display: "inline-block" }}>
-                    {/* {data.images.map((image, key) => { 
-                        return (
-                            <MediaImage>
-                                {/* <GridListTile cols={5}>
-                                    <SubHeader component='div'>{image.date_create}</SubHeader>
-                                </GridListTile>
-                                <WrapImage>
-                                    {image.images.map((item, idx) => {
-                                        return (
-                                            <ImageMedia key={idx}>
-                                                <Image src={item.url} alt='avatar' />
-                                            </ImageMedia>
-                                        )
-                                    })}
-                                </WrapImage>
-                            </MediaImage>
-                        );
-                    })} 
-                </GridList> */}
-                {/* end footer image */}
-                <div>
-                    {Array.from({ length: 17 }).map((_, index) => {
-                        return (
-                            <WrapperImage key={`1-${index}`
-                            }>
-                                <Image src={avatar} alt='avatar' />
-                            </WrapperImage>
-                        );
-                    })}
-                </div>
-            </FooterDialog >
-        </StyledDialog >
-    )
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
+  const [currentImage, setCurrentImage] = useState(0)
+  const {
+    isOpen,
+    handleClose,
+    images = [],
+    type,
+    url,
+  } = props
+  function clickNext() {
+    if (currentImage < images.length - 1) {
+      setCurrentImage(currentImage + 1)
+    }
+  }
+  function clickBack() {
+    if (currentImage < 0) {
+      setCurrentImage(currentImage - 1)
+    }
+  }
+  return (
+    // {/* Modal chinh sua cong viec con */}
+    <StyledDialog
+      aria-labelledby="customized-dialog-title"
+      open={isOpen}
+      fullScreen={fullScreen}
+    >
+      <DialogTitle id="customized-dialog-title"
+        {...props}
+        image={images[currentImage]}
+        onClose={handleClose}>
+      </DialogTitle>
+      <ContentDialog>
+        <ButtonImage onClick={clickBack}>
+          <Icon path={mdiChevronLeftCircle} size={5} />
+        </ButtonImage>
+        <div>
+          <img alt="vtask" src={images[currentImage] && images[currentImage].url} />
+        </div>
+        <ButtonImage onClick={clickNext}>
+          <Icon path={mdiChevronRightCircle} size={5} />
+        </ButtonImage>
+      </ContentDialog>
+      <FooterDialog>
+        <div>
+          {
+            (type === 'mp4') ?
+              <ReactPlayer url={url} playing height="100%" width="100%" />
+              :
+              images.map((image, index) => {
+                return (
+                  <WrapperImage key={`1-${index}`
+                  }>
+                    <Image src={image.url} alt='avatar' />
+                  </WrapperImage>
+                );
+              })
+          }
+        </div>
+      </FooterDialog >
+    </StyledDialog >
+  )
 }
 
 export default ModalImage;

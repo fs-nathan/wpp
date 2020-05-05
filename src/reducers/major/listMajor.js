@@ -1,7 +1,7 @@
 import { findIndex, get, remove } from 'lodash';
 import { CREATE_MAJOR_SUCCESS } from '../../constants/actions/major/createMajor';
 import { DELETE_MAJOR_SUCCESS } from '../../constants/actions/major/deleteMajor';
-import { LIST_MAJOR, LIST_MAJOR_FAIL, LIST_MAJOR_SUCCESS } from '../../constants/actions/major/listMajor';
+import { LIST_MAJOR, LIST_MAJOR_FAIL, LIST_MAJOR_RESET, LIST_MAJOR_SUCCESS } from '../../constants/actions/major/listMajor';
 import { UPDATE_MAJOR_SUCCESS } from '../../constants/actions/major/updateMajor';
 
 export const initialState = {
@@ -10,6 +10,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -23,18 +24,20 @@ function reducer(state = initialState, action) {
     case LIST_MAJOR_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case LIST_MAJOR_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
+    case LIST_MAJOR_RESET:
+      return initialState;
     case CREATE_MAJOR_SUCCESS:
       return {
         ...state,

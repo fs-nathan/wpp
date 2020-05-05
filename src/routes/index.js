@@ -1,24 +1,32 @@
 import React from 'react';
-import HomePage from '../views/HomePage';
-import ProjectGroupPage from '../views/ProjectGroupPage';
-import ProjectPage from '../views/ProjectPage';
-import DepartmentPage from '../views/DepartmentPage';
-import MemberPage from '../views/MemberPage';
-import ReportPage from '../views/ReportPage';
-import DocumentPage from '../views/DocumentPage';
-import JobPage from '../views/JobPage';
-import JobDetailPage from '../views/JobDetailPage';
-import SettingAccountPage from '../views/SettingAccountPage';
-import SettingGroupPage from '../views/SettingGroupPage';
+import CalendarAlarmPage from 'views/CalendarAlarmPage';
+import CalendarPage from 'views/CalendarPage';
+import CalendarProjectPage from 'views/CalendarProjectPage';
+import CalendarWeeklyPage from 'views/CalendarWeeklyPage';
+import { Routes as jobRoutes } from 'views/JobPage/contants/routes';
+import { Routes } from '../constants/routes';
+import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
+import ForgotPassword from '../views/AccountPage/ForgotPassword';
 import LoginPage from '../views/AccountPage/LoginPage';
 import RegisterPage from '../views/AccountPage/RegisterPage';
-import ForgotPassword from '../views/AccountPage/ForgotPassword';
 import ResetPassword from '../views/AccountPage/ResetPassword';
-import ConfirmRegistration from '../views/AccountPage/ConfirmRegistration';
+import DepartmentPage from '../views/DepartmentPage';
+import DocumentPage from '../views/DocumentPage';
+import HomePage from '../views/HomePage';
+import JobDetailPage from '../views/JobDetailPage';
+import JobPage from '../views/JobPage';
+import MemberPage from '../views/MemberPage';
 import MessageNoticePage from '../views/MessageNoticePage';
+import OfferPage from '../views/OfferPage';
+import ProjectGroupPage from '../views/ProjectGroupPage';
+import ProjectPage from '../views/ProjectPage';
+import ReportPage from '../views/ReportPage';
+import SettingAccountPage from '../views/SettingAccountPage';
+import SettingGroupPage from '../views/SettingGroupPage';
 import Grant from '../views/GrantPage/GrantTable'
+
 import TestPage from '../__test__';
-import { Routes } from '../constants/routes';
+
 
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
@@ -29,7 +37,9 @@ const routes = [
   { path: Routes.REPORT, component: () => <ReportPage /> },
   { path: Routes.DOCUMENT, component: () => <DocumentPage /> },
   { path: Routes.TASKS, component: () => <JobPage /> },
-  { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props}/> },
+  ...Object.values(jobRoutes).map(path => ({ path, component: () => <JobPage /> })),
+  { path: Routes.OFFERS, component: () => <OfferPage /> },
+  { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props} /> },
   { path: Routes.TEST, component: () => <TestPage /> },
   { path: Routes.SETTING_ACCOUNT, component: () => <SettingAccountPage /> },
   { path: Routes.SETTING_GROUP, component: () => <SettingGroupPage /> },
@@ -37,13 +47,18 @@ const routes = [
   { path: Routes.REGISTER, component: () => <RegisterPage /> },
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
   { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
-  { path: Routes.PROJECT_GRANT, component: () => <Grant/> },
-  { 
+  { path: Routes.CALENDAR, component: () => <CalendarPage /> },
+  //{ path: Routes.CALENDAR_WEEKLY_DETAIL, component: () => <CalendarWeeklyPage /> },
+  { path: Routes.CALENDAR_WEEKLY, component: () => <CalendarWeeklyPage /> },
+  { path: Routes.CALENDAR_PROJECT, component: () => <CalendarProjectPage /> },
+  { path: Routes.CALENDAR_ALARM, component: () => <CalendarAlarmPage /> },
+  {
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />
   },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
   { path: '', exact: false, component: () => null },
+  { path: Routes.PROJECT_GRANT, component: () => <Grant/> },
 ];
 
 export default routes;

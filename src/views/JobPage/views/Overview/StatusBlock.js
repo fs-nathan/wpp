@@ -12,6 +12,7 @@ const strings = ["task_waiting", "task_doing", "task_complete", "task_expired"];
 
 export function StatusBlock() {
   const chartProps = useSelector(state => {
+    console.log(state.taskPage[TASK_OVERVIEW_STATISTIC])
     return createPieChartProps(
       strings,
       state.taskPage[TASK_OVERVIEW_STATISTIC]

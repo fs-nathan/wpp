@@ -1,31 +1,33 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { createGroupTask } from '../../../../actions/groupTask/createGroupTask';
-import { updateGroupTask } from '../../../../actions/groupTask/updateGroupTask';
-import { connect } from 'react-redux';
+import { createGroupTask } from 'actions/groupTask/createGroupTask';
+import { updateGroupTask } from 'actions/groupTask/updateGroupTask';
 import { get } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import CreateNewOrUpdateGroupTaskPresenter from './presenters';
+import { activeLoadingSelector } from './selectors';
 
-function CreateNewOrUpdateGroupTask({ 
-  open, setOpen, 
-  curGroupTask = null, 
-  doUpdateGroupTask, doCreateGroupTask, 
+function CreateNewOrUpdateGroupTask({
+  open, setOpen,
+  curGroupTask = null,
+  doUpdateGroupTask, doCreateGroupTask, activeLoading,
 }) {
 
   const { projectId } = useParams();
 
   return (
-    <CreateNewOrUpdateGroupTaskPresenter 
-      open={open} setOpen={setOpen} 
+    <CreateNewOrUpdateGroupTaskPresenter
+      open={open} setOpen={setOpen}
       curGroupTask={curGroupTask}
+      activeLoading={activeLoading}
       handleCreateOrUpdateGroupTask={(name, description) =>
         curGroupTask
-        ? doUpdateGroupTask({
-            groupTaskId: get(curGroupTask, 'id'), 
-            name, 
+          ? doUpdateGroupTask({
+            groupTaskId: get(curGroupTask, 'id'),
+            name,
             description
           })
-        : doCreateGroupTask({
+          : doCreateGroupTask({
             projectId,
             name,
             description,
@@ -43,6 +45,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    activeLoading: activeLoadingSelector(state),
+  }),
   mapDispatchToProps,
 )(CreateNewOrUpdateGroupTask);

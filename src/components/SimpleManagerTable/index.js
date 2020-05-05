@@ -52,9 +52,9 @@ function SimpleManagerTable({
     <StyledTable>
       <StyledTableHead>
         <TableRow>
-          <StyledTableCell width={'30%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
-          <StyledTableCell width={'50%'}>{t('DMH.COMP.SMT.LABEL.DESC')}</StyledTableCell>
-          <TableCell width={'20%'} colSpan={2}>
+          <StyledTableCell width={'25%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
+          <StyledTableCell width={'45%'}>{t('DMH.COMP.SMT.LABEL.DESC')}</StyledTableCell>
+          <TableCell width={'30%'} colSpan={2}>
             <Button
               fullWidth
               style={{
@@ -71,9 +71,9 @@ function SimpleManagerTable({
       <StyledTableBody>
         {data.map(elem => (
           <TableRow key={get(elem, 'id')}>
-            <StyledTableCell width={'30%'}>{get(elem, 'name', '')}</StyledTableCell>
-            <TableCell width={'50%'}>{get(elem, 'description', '')}</TableCell>
-            <TableCell width={'10%'} align='center'>
+            <StyledTableCell width={'25%'}>{get(elem, 'name', '')}</StyledTableCell>
+            <TableCell width={'45%'}>{get(elem, 'description', '')}</TableCell>
+            <TableCell width={'30%'} align='center'>
               <MyButton
                 onClick={() => handleEdit(elem)}
                 disabled={

@@ -1,6 +1,6 @@
 import { get, remove } from 'lodash';
 import { ADD_MEMBER_PROJECT_SUCCESS } from '../../constants/actions/project/addMemberProject';
-import { MEMBER_PROJECT, MEMBER_PROJECT_FAIL, MEMBER_PROJECT_SUCCESS } from '../../constants/actions/project/memberProject';
+import { MEMBER_PROJECT, MEMBER_PROJECT_FAIL, MEMBER_PROJECT_RESET, MEMBER_PROJECT_SUCCESS } from '../../constants/actions/project/memberProject';
 import { REMOVE_MEMBER_PROJECT_SUCCESS } from '../../constants/actions/project/removeMemberProject';
 import { UPDATE_STATE_JOIN_TASK_SUCCESS } from '../../constants/actions/project/updateStateJoinTask';
 
@@ -11,6 +11,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -29,14 +30,17 @@ function reducer(state = initialState, action) {
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case MEMBER_PROJECT_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
+    case MEMBER_PROJECT_RESET:
+      return initialState;
     case ADD_MEMBER_PROJECT_SUCCESS:
       membersAdded = [...state.data.membersAdded];
       membersFree = [...state.data.membersFree].map(room => {

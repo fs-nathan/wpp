@@ -2,16 +2,17 @@ import { Avatar, ListItemAvatar, ListItemText } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import { mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
+import { loadChat } from 'actions/chat/chat';
 import { chooseTask, getTaskDetailTabPart, showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'classnames';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import SimpleDonutChart from 'components/SimpleDonutChart';
-import get from 'lodash/get';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -109,13 +110,14 @@ function JobUnit(props) {
 function ListBodyItem(props) {
   const history = useHistory();
   const dispatch = useDispatch();
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   // console.log({value})
 
   function onClickItem() {
     dispatch(chooseTask(props.id));
     dispatch(getTaskDetailTabPart({ taskId: props.id }));
     dispatch(showTab(0))
+    dispatch(loadChat(props.id))
     // getMemberByTaskId(props.id)
     // getMemberNotAssignedByTaskId(props.id)
     history.push({ search: `?task_id=${props.id}` });

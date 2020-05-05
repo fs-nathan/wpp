@@ -1,22 +1,24 @@
-import React from 'react';
-import { createLevel } from '../../../../../actions/level/createLevel';
-import { updateLevel } from '../../../../../actions/level/updateLevel';
-import { connect } from 'react-redux';
+import { createLevel } from 'actions/level/createLevel';
+import { updateLevel } from 'actions/level/updateLevel';
 import { get } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
 import LevelCreateAndUpdatePresenter from './presenters';
+import { activeLoadingSelector } from './selectors';
 
-function LevelCreateAndUpdate({ 
+function LevelCreateAndUpdate({
   updatedLevel = null,
   open, setOpen,
-  doCreateLevel, doUpdateLevel 
+  doCreateLevel, doUpdateLevel,
+  activeLoading,
 }) {
 
   return (
-    <LevelCreateAndUpdatePresenter 
-      updatedLevel={updatedLevel} 
-      open={open} setOpen={setOpen} 
-      handleCreateOrUpdateLevel={(name, description) => 
-        updatedLevel 
+    <LevelCreateAndUpdatePresenter
+      updatedLevel={updatedLevel} activeLoading={activeLoading}
+      open={open} setOpen={setOpen}
+      handleCreateOrUpdateLevel={(name, description) =>
+        updatedLevel
           ? doUpdateLevel({
             levelId: get(updatedLevel, 'id'),
             name,
@@ -39,6 +41,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    activeLoading: activeLoadingSelector(state),
+  }),
   mapDispatchToProps,
 )(LevelCreateAndUpdate);

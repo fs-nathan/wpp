@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import clsx from 'clsx';
 import Icon from '@mdi/react';
@@ -9,6 +10,7 @@ import {
 import './styles.scss';
 
 function OfferDetailItem(props) {
+  const { t } = useTranslation();
   const {
     avatar,
     user_hander_name,
@@ -43,7 +45,7 @@ function OfferDetailItem(props) {
         </span>
       </div>
       <div className={clsx("offerDetailItem--itemStatus", `offerDetailItem--itemStatus__${statusLabel}`)}>
-        {statusContent} đề xuất lúc {date_hander}
+        {statusContent}{t('LABEL_CHAT_TASK_DE_XUAT_LUC')}{date_hander}
       </div>
       <div className="offerDetailItem--itemComment">
         {content_hander}
@@ -68,11 +70,11 @@ function OfferDetailItem(props) {
       <MenuItem onClick={() => {
         handleClickOpen()
         setAnchorEl(null)
-      }}>Chỉnh sửa</MenuItem>
+      }}>{t('LABEL_CHAT_TASK_CHINH_SUA')}</MenuItem>
       <MenuItem onClick={() => {
         handleOpenModalDelete(offer)
         setAnchorEl(null)
-      }}>Xóa</MenuItem>
+      }}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
     </Menu>
   </div>
 }

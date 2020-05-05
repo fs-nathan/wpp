@@ -1,17 +1,24 @@
-import React from 'react';
-import MajorCreateAndUpdateModal from './MajorCreateAndUpdate';
-import { deleteMajor } from '../../../../actions/major/deleteMajor';
-import { connect } from 'react-redux'; 
-import AlertModal from '../../../../components/AlertModal';
+import { deleteMajor } from 'actions/major/deleteMajor';
+import { listMajor } from 'actions/major/listMajor';
+import AlertModal from 'components/AlertModal';
 import { get } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
+import MajorCreateAndUpdateModal from './MajorCreateAndUpdate';
 import MajorManagerPresenter from './presenters';
 import { majorsSelector } from './selectors';
 
-function MajorManager({ 
-  open, setOpen, 
-  majors, 
-  doDeleteMajor 
+function MajorManager({
+  open, setOpen,
+  majors,
+  doDeleteMajor,
+  doListMajor,
 }) {
+
+  React.useEffect(() => {
+    if (open) doListMajor();
+    // eslint-disable-next-line
+  }, [open]);
 
   const [openCAU, setOpenCAU] = React.useState(false);
   const [CAUProps, setCAUProps] = React.useState({});
@@ -41,18 +48,18 @@ function MajorManager({
 
   return (
     <>
-      <MajorManagerPresenter 
-        open={open} setOpen={setOpen} 
-        majors={majors} 
+      <MajorManagerPresenter
+        open={open} setOpen={setOpen}
+        majors={majors}
         handleDeleteMajor={major => doDeleteMajor({ majorId: get(major, 'id') })}
         handleOpenModal={doOpenModal}
       />
-      <MajorCreateAndUpdateModal 
-        open={openCAU} 
-        setOpen={setOpenCAU} 
-        {...CAUProps}  
+      <MajorCreateAndUpdateModal
+        open={openCAU}
+        setOpen={setOpenCAU}
+        {...CAUProps}
       />
-      <AlertModal 
+      <AlertModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
@@ -70,6 +77,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doDeleteMajor: ({ majorId }) => dispatch(deleteMajor({ majorId })),
+    doListMajor: (quite) => dispatch(listMajor(quite)),
   }
 };
 

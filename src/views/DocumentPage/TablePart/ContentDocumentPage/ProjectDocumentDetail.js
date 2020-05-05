@@ -300,7 +300,9 @@ const ProjectDocumentDetail = props => {
                 <StyledTableBodyCell align="left" width="10%">
                   {(file.user_create_avatar &&
                     getIconAvatar(
-                      `https://storage.googleapis.com${file.user_create_avatar}`,
+                      file.user_create_avatar.indexOf('https:') !== -1 ?
+                        file.user_create_avatar :
+                        `https://storage.googleapis.com${file.user_create_avatar}`,
                       0,
                       file.user_create_name
                     )) ||

@@ -1,10 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import CustomModal from 'components/CustomModal';
-import get from 'lodash/get';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import { getStatusName, priorityList } from '../data';
 import './styles.scss';
 
@@ -16,7 +17,8 @@ function OfferDetail({
   item,
   setOpen,
 }) {
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const { t } = useTranslation();
+  const groupActiveColor = useSelector(currentColorSelector)
   const {
     user_create_avatar,
     user_create_name,
@@ -36,7 +38,7 @@ function OfferDetail({
   const status = getStatusName(total_rejected, total_approved);
 
   return (
-    <CustomModal
+    <JobDetailModalWrap
       open={isOpen}
       setOpen={setOpen}
       confirmRender={() => " Phê duyệt"}
@@ -48,7 +50,7 @@ function OfferDetail({
           <Avatar className="offerDetail--avatar" src={user_create_avatar} alt='avatar' />
           <Typography className="offerDetail--title" component="div">
             {user_create_name}
-            <div className="offerDetail--createdAt">Đã tạo đề xuất lúc: {date_create}</div>
+            <div className="offerDetail--createdAt">{t('LABEL_CHAT_TASK_DA_TAO_DE_XUAT_LUC')}{date_create}</div>
           </Typography>
         </div>
       }
@@ -61,9 +63,7 @@ function OfferDetail({
           {content}
         </div>
         <div className="offerDetail--priority offerDetail--row">
-          <div className="offerDetail--label">
-            Mức độ:
-          </div>
+          <div className="offerDetail--label">{t('LABEL_CHAT_TASK_MUC_DO')}</div>
           <div className="offerDetail--data">
             <div className={clsx("offerDetail--priorityLabel", `offerDetail--priorityLabel__${priority_name.toLowerCase()}`)}>
               {priority}
@@ -71,8 +71,7 @@ function OfferDetail({
           </div>
         </div>
         <div className="offerDetail--row">
-          <div className="offerDetail--label">
-            Phê duyệt ({user_can_handers.length})
+          <div className="offerDetail--label">{t('LABEL_CHAT_TASK_PHE_DUYET')}{user_can_handers.length})
           </div>
           <div className="offerDetail--data">
             {user_can_handers.map(({ avatar, name }, index) =>
@@ -90,8 +89,7 @@ function OfferDetail({
           </div>
         </div>
         <div className="offerDetail--row">
-          <div className="offerDetail--label">
-            Giám sát ({user_monitors.length})
+          <div className="offerDetail--label">{t('LABEL_CHAT_TASK_GIAM_SAT')}{user_monitors.length})
           </div>
           <div className="offerDetail--data">
             {user_monitors.map(({ avatar, name }, index) =>
@@ -109,15 +107,12 @@ function OfferDetail({
           </div>
         </div>
         <div className="offerDetail--row">
-          <div className="offerDetail--label">
-            Kết quả phê duyệt
-            </div>
+          <div className="offerDetail--label">{t('LABEL_CHAT_TASK_KET_QUA_PHE_DUYET')}</div>
           <div className="offerDetail--data">
-            {status} ({total_accepted}/{total_approved} đồng ý - {total_rejected}/{total_approved} từ chối)
-          </div>
+            {status} ({total_accepted}/{total_approved}{t('LABEL_CHAT_TASK_DONG_Y')}{total_rejected}/{total_approved}{t('LABEL_CHAT_TASK_TU_CHOI')}</div>
         </div>
       </div>
-    </CustomModal>
+    </JobDetailModalWrap>
   );
 }
 

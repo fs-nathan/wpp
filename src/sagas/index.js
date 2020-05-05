@@ -1,5 +1,10 @@
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
+import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
+import { CREATE_PERSONAL_CATEGORY_REMIND, CREATE_PERSONAL_REMIND, DELETE_PERSONAL_CATEGORY_REMIND, DELETE_PERSONAL_REMIND, LIST_PERSONAL_REMIND, LIST_PERSONAL_REMIND_CATEGORY, LIST_REMIND_PROJECT, LIST_REMIND_RECENTLY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_CATEGORY_REMIND, UPDATE_PERSONAL_REMIND } from "../constants/actions/calendar/alarmCalendar";
+import { CALENDAR_PAGE_PERMISSION } from "../constants/actions/calendar/permission";
+import { GROUP_SCHEDULE_ADD_DAY_OFF, GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_STAGE, GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE, GROUP_SCHEDULE_DELETE_DAY_OFF, GROUP_SCHEDULE_DELETE_SHIFT_STAGE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE_WORKING_DAY, GROUP_SCHEDULE_DELETE_WORKING_STAGE, GROUP_SCHEDULE_DETAIL, GROUP_SCHEDULE_LIST, GROUP_SCHEDULE_SET_WORKING_DAY, GROUP_SCHEDULE_UPDATE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_UPDATE_WORKING_STAGE, SETTING_START_DAY_WEEK } from "../constants/actions/calendar/projectCalendar";
+import { CREATE_SCHEDULE, DELETE_ALL_SCHEDULE, DELETE_SCHEDULE, LIST_WEEKS_IN_YEAR, SCHEDULE_LIST, SCHEDULE_OF_WEEK_LIST, SCHEDULE_OF_WEEK_LIST_FROM_MODAL, SETTING_STARTING_DAY, UPDATE_SCHEDULE } from "../constants/actions/calendar/weeklyCalendar";
 import * as chatTypes from "../constants/actions/chat/chat";
 import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH } from "../constants/actions/documents";
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
@@ -42,9 +47,11 @@ import { DELETE_PROJECT } from "../constants/actions/project/deleteProject";
 import { DELETE_TRASH_PROJECT } from "../constants/actions/project/deleteTrashProject";
 import { DETAIL_PROJECT } from "../constants/actions/project/detailProject";
 import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
+import { LIST_PROJECT_BASIC_INFO } from "../constants/actions/project/listBasic";
 import { LIST_DELETED_PROJECT } from "../constants/actions/project/listDeletedProject";
 import { LIST_PROJECT } from "../constants/actions/project/listProject";
 import { MEMBER_PROJECT } from "../constants/actions/project/memberProject";
+import { PERMISSION_PROJECT } from "../constants/actions/project/permissionProject";
 import { REMOVE_MEMBER_PROJECT } from "../constants/actions/project/removeMemberProject";
 import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from "../constants/actions/project/removeProjectRoleFromMember";
 import { RESTORE_TRASH_PROJECT } from "../constants/actions/project/restoreTrashProject";
@@ -83,6 +90,7 @@ import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
 import { DETAIL_USER } from "../constants/actions/user/detailUser";
 import { LIST_USER_OF_GROUP } from "../constants/actions/user/listUserOfGroup";
+import { PERMISSION_USER } from "../constants/actions/user/permissionUser";
 import { PRIVATE_MEMBER } from "../constants/actions/user/privateMember";
 import { PUBLIC_MEMBER } from "../constants/actions/user/publicMember";
 import { SORT_USER } from "../constants/actions/user/sortUser";
@@ -96,6 +104,47 @@ import { GET_PERMISSION_VIEW_DETAIL_PROJECT, GET_PERMISSION_VIEW_PROJECTS, GET_P
 // ==================================
 import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
 import { login, loginCheckState } from "./authentications";
+import { createPersonalRemind } from "./calendar/alarmCalendar/createPersonalRemind";
+import { createPersonalRemindCategory } from "./calendar/alarmCalendar/createPersonalRemindCategory";
+import { deletePersonalRemind } from "./calendar/alarmCalendar/deletePersonalRemind";
+import { deletePersonalRemindCategory } from "./calendar/alarmCalendar/deletePersonalRemindCategory";
+import { listPersonalRemind } from "./calendar/alarmCalendar/listPersonalRemind";
+import { listPersonalRemindCategory } from "./calendar/alarmCalendar/listPersonalRemindCategory";
+import { listRemindProject } from "./calendar/alarmCalendar/listRemindProject";
+import { listRemindRecently } from "./calendar/alarmCalendar/listRemindRecently";
+import { sortPersonalRemindCategory } from "./calendar/alarmCalendar/sortPeronalRemindCategory";
+import { updatePersonalRemind } from "./calendar/alarmCalendar/updatePersonalRemind";
+import { updatePersonalRemindCategory } from "./calendar/alarmCalendar/updatePersonalRemindCategory";
+import { listCalendarPermission } from "./calendar/permission/listPermission";
+import { projectScheduleAddDayOff } from "./calendar/projectCalendar/addDayOff";
+import { projectScheduleAddWorkingDays } from "./calendar/projectCalendar/addWorkingDay";
+import { createProjectGroupSchedule } from "./calendar/projectCalendar/createProjectGroupSchedule";
+import { projectScheduleCreateShiftStage } from "./calendar/projectCalendar/createShiftStage";
+import { projectScheduleCreateShiftStageAllTime } from "./calendar/projectCalendar/createShiftStageAllTime";
+import { projectScheduleCreateWorkingStage } from "./calendar/projectCalendar/createWorkingStage";
+import { projectScheduleDeleteDayOff } from "./calendar/projectCalendar/deleteDayOff";
+import { deleteProjectGroupSchedule } from "./calendar/projectCalendar/deleteProjectGroupSchedule";
+import { projectScheduleDeleteShiftStage } from "./calendar/projectCalendar/deleteShiftStage";
+import { projectScheduleDeleteShiftStageAllTime } from "./calendar/projectCalendar/deleteShiftStageAllTime";
+import { projectScheduleDeleteWorkingDays } from "./calendar/projectCalendar/deleteWorkingDay";
+import { projectScheduleDeleteWorkingStage } from "./calendar/projectCalendar/deleteWorkingStage";
+import { projectGroupScheduleDetail } from "./calendar/projectCalendar/getGroupScheduleDetail";
+import { listProjectGroupSchedule } from "./calendar/projectCalendar/listProjectGroupSchedule";
+import { projectScheduleSettingStartingDay } from "./calendar/projectCalendar/settingStartingDay";
+import { projectScheduleSetWorkingDay } from "./calendar/projectCalendar/setWorkingDay";
+import { updateProjectGroupSchedule } from "./calendar/projectCalendar/updateProjectGroupSchedule";
+import { projectScheduleUpdateShiftStage } from "./calendar/projectCalendar/updateShiftStage";
+import { projectScheduleUpdateShiftStageAllTime } from "./calendar/projectCalendar/updateShiftStageAllTime";
+import { projectScheduleUpdateWorkingStage } from "./calendar/projectCalendar/updateWorkingStage";
+import { createSchedule } from "./calendar/weeklyCalendar/createSchedule";
+import { deleteAllSchedule } from "./calendar/weeklyCalendar/deleteAllSchedule";
+import { deleteSchedule } from "./calendar/weeklyCalendar/deleteSchedule";
+import { listWeeklySchedule } from "./calendar/weeklyCalendar/listSchedule";
+import { listScheduleOfWeek } from "./calendar/weeklyCalendar/listScheduleOfWeek";
+import { listScheduleOfWeekFromModal } from "./calendar/weeklyCalendar/listScheduleOfWeekFromModal";
+import { listWeeksInYear } from "./calendar/weeklyCalendar/listWeeksInYear";
+import { settingStartingDay } from "./calendar/weeklyCalendar/settingStartingDay";
+import { updateSchedule } from "./calendar/weeklyCalendar/updateSchedule";
 import * as chatDetailSaga from "./chat/chat";
 import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash } from "./documents";
 import { copyGroupTask } from "./groupTask/copyGroupTask";
@@ -138,8 +187,10 @@ import { deleteProject } from "./project/deleteProject";
 import { deleteTrashProject } from "./project/deleteTrashProject";
 import { detailProject } from "./project/detailProject";
 import { hideProject } from "./project/hideProject";
+import { listProjectBasicInfo } from "./project/listBasicInfo";
 import { listDeletedProject, listProject } from "./project/listProject";
 import { memberProject } from "./project/memberProject";
+import { permissionProject } from "./project/permissionProject";
 import { removeMemberProject } from "./project/removeMemberProject";
 import { removeProjectRoleFromMember } from "./project/removeProjectRoleFromMember";
 import { restoreTrashProject } from "./project/restoreTrashProject";
@@ -177,6 +228,7 @@ import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
 import { detailUser } from "./user/detailUser";
 import { listUserOfGroup } from "./user/listUserOfGroup";
+import { permissionUser } from "./user/permissionUser";
 import { privateMember } from "./user/privateMember";
 import { publicMember } from "./user/publicMember";
 import { sortUser } from "./user/sortUser";
@@ -193,21 +245,22 @@ function* rootSaga() {
 
   yield takeEvery(LOGIN, login);
   yield takeEvery(LOGIN_CHECK_STATE, loginCheckState);
-  yield takeLatest(LIST_ROOM, listRoom);
-  yield takeLatest(DETAIL_ROOM, detailRoom);
-  yield takeLatest(GET_USER_OF_ROOM, getUserOfRoom);
-  yield takeLatest(LIST_USER_OF_GROUP, listUserOfGroup);
+  yield takeLeading(LIST_ROOM, listRoom);
+  yield takeLeading(DETAIL_ROOM, detailRoom);
+  yield takeLeading(GET_USER_OF_ROOM, getUserOfRoom);
+  yield takeLeading(LIST_USER_OF_GROUP, listUserOfGroup);
   yield takeEvery(SORT_USER, sortUser);
-  yield takeLatest(LIST_ICON, listIcon);
+  yield takeLeading(PERMISSION_USER, permissionUser);
+  yield takeLeading(LIST_ICON, listIcon);
   yield takeEvery(CREATE_ROOM, createRoom);
   yield takeEvery(DELETE_ROOM, deleteRoom);
   yield takeEvery(UPDATE_ROOM, updateRoom);
   yield takeEvery(SORT_ROOM, sortRoom);
-  yield takeLatest(DETAIL_USER, detailUser);
+  yield takeLeading(DETAIL_USER, detailUser);
   yield takeEvery(UPLOAD_DOCUMENTS_USER, uploadDocumentsUser);
-  yield takeLatest(LIST_MAJOR, listMajor);
-  yield takeLatest(LIST_LEVEL, listLevel);
-  yield takeLatest(LIST_POSITION, listPosition);
+  yield takeLeading(LIST_MAJOR, listMajor);
+  yield takeLeading(LIST_LEVEL, listLevel);
+  yield takeLeading(LIST_POSITION, listPosition);
   yield takeEvery(UPDATE_USER, updateUser);
   yield takeEvery(CREATE_POSITION, createPosition);
   yield takeEvery(UPDATE_POSITION, updatePosition);
@@ -218,48 +271,50 @@ function* rootSaga() {
   yield takeEvery(CREATE_LEVEL, createLevel);
   yield takeEvery(UPDATE_LEVEL, updateLevel);
   yield takeEvery(DELETE_LEVEL, deleteLevel);
-  yield takeLatest(LIST_USER_ROLE, listUserRole);
+  yield takeLeading(LIST_USER_ROLE, listUserRole);
   yield takeEvery(CREATE_USER_ROLE, createUserRole);
   yield takeEvery(UPDATE_USER_ROLE, updateUserRole);
   yield takeEvery(DELETE_USER_ROLE, deleteUserRole);
   yield takeEvery(PUBLIC_MEMBER, publicMember);
   yield takeEvery(PRIVATE_MEMBER, privateMember);
-  yield takeLatest(SEARCH_USER, searchUser);
+  yield takeLeading(SEARCH_USER, searchUser);
   yield takeEvery(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
   yield takeEvery(
     RESEND_INVITATION_USER_JOIN_GROUP,
     resendInvitationUserJoinGroup
   );
-  yield takeLatest(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
-  yield takeLatest(GET_LIST_INVITATION_SENT, getListInvitationSent);
-  yield takeLatest(CANCLE_INVITATION_JOIN_GROUP, cancleInvitationJoinGroup);
+  yield takeLeading(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
+  yield takeLeading(GET_LIST_INVITATION_SENT, getListInvitationSent);
+  yield takeLeading(CANCLE_INVITATION_JOIN_GROUP, cancleInvitationJoinGroup);
   yield takeEvery(ACCEPT_REQUIREMENT_JOIN_GROUP, acceptRequirementJoinGroup);
   yield takeEvery(REJECT_REQUIREMENT_JOIN_GROUP, rejectRequirementJoinGroup);
-  yield takeLatest(GET_LIST_GROUP, getListGroup);
+  yield takeLeading(GET_LIST_GROUP, getListGroup);
   yield takeEvery(BAN_USER_FROM_GROUP, banUserFromGroup);
   yield takeEvery(CREATE_ICON, createIcon);
   yield takeEvery(DELETE_ICON, deleteIcon);
   yield takeEvery(CREATE_PROJECT_GROUP, createProjectGroup);
   yield takeEvery(EDIT_PROJECT_GROUP, editProjectGroup);
-  yield takeLatest(LIST_PROJECT_GROUP, listProjectGroup);
+  yield takeLeading(LIST_PROJECT_GROUP, listProjectGroup);
   yield takeEvery(DELETE_PROJECT_GROUP, deleteProjectGroup);
   yield takeEvery(SORT_PROJECT_GROUP, sortProjectGroup);
-  yield takeLatest(DETAIL_PROJECT_GROUP, detailProjectGroup);
-  yield takeLatest(MEMBER_PROJECT_GROUP, memberProjectGroup);
-  yield takeLatest(DETAIL_DEFAULT_GROUP, detailDefaultGroup);
+  yield takeLeading(DETAIL_PROJECT_GROUP, detailProjectGroup);
+  yield takeLeading(MEMBER_PROJECT_GROUP, memberProjectGroup);
+  yield takeLeading(DETAIL_DEFAULT_GROUP, detailDefaultGroup);
   yield takeEvery(CREATE_PROJECT, createProject);
   yield takeEvery(COPY_PROJECT, copyProject);
   yield takeEvery(SORT_PROJECT, sortProject);
   yield takeEvery(UPDATE_PROJECT, updateProject);
   yield takeEvery(DELETE_PROJECT, deleteProject);
-  yield takeLatest(LIST_PROJECT, listProject);
-  yield takeLatest(LIST_DELETED_PROJECT, listDeletedProject);
-  yield takeLatest(DETAIL_PROJECT, detailProject);
+  yield takeLeading(LIST_PROJECT, listProject);
+  yield takeLeading(LIST_PROJECT_BASIC_INFO, listProjectBasicInfo);
+  yield takeLeading(LIST_DELETED_PROJECT, listDeletedProject);
+  yield takeLeading(DETAIL_PROJECT, detailProject);
   yield takeEvery(HIDE_PROJECT, hideProject);
   yield takeEvery(SHOW_PROJECT, showProject);
   yield takeEvery(DELETE_TRASH_PROJECT, deleteTrashProject);
   yield takeEvery(RESTORE_TRASH_PROJECT, restoreTrashProject);
-  yield takeLatest(MEMBER_PROJECT, memberProject);
+  yield takeLeading(MEMBER_PROJECT, memberProject);
+  yield takeLeading(PERMISSION_PROJECT, permissionProject);
   yield takeEvery(ADD_MEMBER_PROJECT, addMemberProject);
   yield takeEvery(REMOVE_MEMBER_PROJECT, removeMemberProject);
   yield takeEvery(UPDATE_STATE_JOIN_TASK, updateStateJoinTask);
@@ -267,18 +322,18 @@ function* rootSaga() {
   yield takeEvery(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
   yield takeEvery(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
   yield takeEvery(ASSIGN_MEMBER_TO_ALL_TASK, assignMemberToAllTask);
-  yield takeLatest(DETAIL_STATUS, detailStatus);
+  yield takeLeading(DETAIL_STATUS, detailStatus);
   yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
   yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
   yield takeEvery(UPDATE_STATUS_VIEW, updateStatusView);
-  yield takeLatest(LIST_GROUP_TASK, listGroupTask);
+  yield takeLeading(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
-  yield takeLatest(GET_ALL_GROUP_TASK, getAllGroupTask);
-  yield takeLatest(LIST_TASK, listTask);
+  yield takeLeading(GET_ALL_GROUP_TASK, getAllGroupTask);
+  yield takeLeading(LIST_TASK, listTask);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
@@ -286,15 +341,15 @@ function* rootSaga() {
     INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
     inviteOtherPeopleCreateAccount
   );
-  yield takeEvery(
+  yield takeLeading(
     GET_PERMISSION_VIEW_PROJECTS,
     getPermissionViewProjects
   );
-  yield takeEvery(
+  yield takeLeading(
     GET_PERMISSION_VIEW_USERS,
     getPermissionViewUsers
   );
-  yield takeEvery(
+  yield takeLeading(
     GET_PERMISSION_VIEW_DETAIL_PROJECT,
     getPermissionViewDetailProject
   );
@@ -548,16 +603,177 @@ function* rootSaga() {
     taskDetailType.UN_PIN_TASK_REQUEST,
     taskDetailSaga.unPinTask
   );
+  // stop task
+  yield takeLeading(taskDetailType.STOP_TASK, taskDetailSaga.stopTask);
+  yield takeLeading(
+    taskDetailType.CANCEL_STOP_TASK,
+    taskDetailSaga.cancelStopTask
+  );
+  // delete share location
+  yield takeLeading(
+    taskDetailType.DELETE_SHARE_LOCATION,
+    taskDetailSaga.deleteShareLocation
+  );
+  // update task
+  yield takeLeading(
+    taskDetailType.UPDATE_NAME_DESCRIPTION,
+    taskDetailSaga.updateNameDescription
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_GROUP_TASK,
+    taskDetailSaga.updateGroupTask
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_TYPE_ASSIGN,
+    taskDetailSaga.updateTypeAssign
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_SCHEDULE_ASSIGN,
+    taskDetailSaga.updateScheduleTask
+  );
+  // getSchedules
+  yield takeLeading(
+    taskDetailType.GET_SCHEDULES,
+    taskDetailSaga.getSchedules
+  );
   //chat 
   yield takeLeading(
     chatTypes.DELETE_CHAT,
     chatDetailSaga.deleteChat
+  );
+  yield takeLeading(
+    chatTypes.LOAD_CHAT,
+    chatDetailSaga.loadChat
+  );
+  yield takeLeading(
+    chatTypes.CHAT_IMAGE,
+    chatDetailSaga.chatImage
+  );
+  yield takeLeading(
+    chatTypes.CHAT_FILE,
+    chatDetailSaga.chatFile
+  );
+  yield takeLeading(
+    chatTypes.CHAT_FORWARD_FILE,
+    chatDetailSaga.chatForwardFile
+  );
+  yield takeLeading(
+    chatTypes.CHAT_STICKER,
+    chatDetailSaga.chatSticker
+  );
+  yield takeLeading(
+    chatTypes.GET_CHAT_NOT_VIEWED,
+    chatDetailSaga.getChatNotViewed
+  );
+  yield takeLeading(
+    chatTypes.GET_NOTI_CHAT,
+    chatDetailSaga.getNotiChat
+  );
+  yield takeLeading(
+    chatTypes.FORWARD_CHAT,
+    chatDetailSaga.forwardChat
+  );
+  yield takeLeading(
+    chatTypes.GET_LIST_STICKERS,
+    chatDetailSaga.getListStickers
+  );
+  yield takeLeading(
+    chatTypes.LOAD_LIST_TASK,
+    chatDetailSaga.loadListTask
+  );
+  yield takeLeading(
+    chatTypes.GET_EMOTIONS,
+    chatDetailSaga.getEmotions
+  );
+  yield takeLeading(
+    chatTypes.CHAT_EMOTION,
+    chatDetailSaga.chatEmotion
+  );
+  yield takeLeading(
+    chatTypes.GET_EMOTIONS_REACT_MEMBER,
+    chatDetailSaga.getEmotionsReactMember
+  );
+  yield takeLeading(
+    chatTypes.CREATE_CHAT_TEXT,
+    chatDetailSaga.createChatText
+  );
+  yield takeLeading(
+    chatTypes.CHAT_QUICK_LIKE,
+    chatDetailSaga.chatQuickLike
+  );
+  yield takeLeading(
+    chatTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER,
+    chatDetailSaga.createChatFileFromGoogleDriver
+  );
+  yield takeLeading(
+    chatTypes.GET_VIEWED_CHAT,
+    chatDetailSaga.getViewedChat
+  );
+  yield takeLeading(
+    chatTypes.GET_REMIND_DETAIL,
+    chatDetailSaga.getRemindDetail
+  );
+  yield takeLeading(
+    chatTypes.GET_SUBTASK_DETAIL,
+    chatDetailSaga.getSubtaskDetail
+  );
+  yield takeLeading(
+    chatTypes.GET_OFFER_DETAIL,
+    chatDetailSaga.getOfferDetail
+  );
+  yield takeLeading(
+    chatTypes.GET_DEMAND_DETAIL,
+    chatDetailSaga.getDemandDetail
   );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
   yield fork(watchLoadTaskAssignPage);
   yield fork(watchLoadTaskRolePage);
+
+  //calendar
+  yield takeLatest(SCHEDULE_LIST, listWeeklySchedule);
+  yield takeLatest(SCHEDULE_OF_WEEK_LIST, listScheduleOfWeek);
+  yield takeLatest(SCHEDULE_OF_WEEK_LIST_FROM_MODAL, listScheduleOfWeekFromModal);
+  yield takeLatest(LIST_WEEKS_IN_YEAR, listWeeksInYear);
+  yield takeLatest(SETTING_STARTING_DAY, settingStartingDay);
+  yield takeLatest(GROUP_SCHEDULE_LIST, listProjectGroupSchedule);
+  yield takeEvery(CREATE_SCHEDULE, createSchedule);
+  yield takeEvery(UPDATE_SCHEDULE, updateSchedule);
+  yield takeEvery(DELETE_SCHEDULE, deleteSchedule);
+  yield takeEvery(DELETE_ALL_SCHEDULE, deleteAllSchedule);
+  yield takeLatest(LIST_PERSONAL_REMIND_CATEGORY, listPersonalRemindCategory);
+  yield takeLatest(SORT_PERSONAL_REMIND_CATEGORY, sortPersonalRemindCategory);
+  yield takeLatest(LIST_REMIND_RECENTLY, listRemindRecently);
+  yield takeLatest(LIST_REMIND_PROJECT, listRemindProject);
+  yield takeLatest(GROUP_SCHEDULE_CREATE, createProjectGroupSchedule);
+  yield takeLatest(GROUP_SCHEDULE_DETAIL, projectGroupScheduleDetail);
+  yield takeEvery(SETTING_START_DAY_WEEK, projectScheduleSettingStartingDay);
+  yield takeLatest(GROUP_SCHEDULE_ADD_WORKING_DAY, projectScheduleAddWorkingDays);
+  yield takeEvery(GROUP_SCHEDULE_DELETE_WORKING_DAY, projectScheduleDeleteWorkingDays);
+  yield takeLatest(GROUP_SCHEDULE_ADD_DAY_OFF, projectScheduleAddDayOff);
+  yield takeLatest(GROUP_SCHEDULE_DELETE_DAY_OFF, projectScheduleDeleteDayOff);
+  yield takeLatest(CREATE_PERSONAL_CATEGORY_REMIND, createPersonalRemindCategory);
+  yield takeEvery(UPDATE_PERSONAL_CATEGORY_REMIND, updatePersonalRemindCategory);
+  yield takeEvery(DELETE_PERSONAL_CATEGORY_REMIND, deletePersonalRemindCategory);
+  yield takeLatest(LIST_PERSONAL_REMIND, listPersonalRemind);
+  yield takeLatest(CREATE_PERSONAL_REMIND, createPersonalRemind);
+  yield takeEvery(UPDATE_PERSONAL_REMIND, updatePersonalRemind);
+  yield takeEvery(DELETE_PERSONAL_REMIND, deletePersonalRemind);
+  yield takeEvery(GROUP_SCHEDULE_UPDATE, updateProjectGroupSchedule);
+  yield takeEvery(GROUP_SCHEDULE_DELETE, deleteProjectGroupSchedule);
+  yield takeEvery(GROUP_SCHEDULE_SET_WORKING_DAY, projectScheduleSetWorkingDay);
+  yield takeLatest(GROUP_SCHEDULE_ADD_WORKING_STAGE, projectScheduleCreateWorkingStage);
+  yield takeLatest(GROUP_SCHEDULE_UPDATE_WORKING_STAGE, projectScheduleUpdateWorkingStage);
+  yield takeLatest(GROUP_SCHEDULE_DELETE_WORKING_STAGE, projectScheduleDeleteWorkingStage);
+  yield takeLatest(GROUP_SCHEDULE_CREATE_SHIFT_STAGE, projectScheduleCreateShiftStage);
+  yield takeLatest(GROUP_SCHEDULE_DELETE_SHIFT_STAGE, projectScheduleDeleteShiftStage);
+  yield takeLatest(GROUP_SCHEDULE_UPDATE_SHIFT_STAGE, projectScheduleUpdateShiftStage);
+  yield takeLatest(GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, projectScheduleCreateShiftStageAllTime);
+  yield takeLatest(GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, projectScheduleUpdateShiftStageAllTime);
+  yield takeEvery(GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, projectScheduleDeleteShiftStageAllTime);
+  yield takeLatest(CALENDAR_PAGE_PERMISSION, listCalendarPermission);
+  yield fork(watchAsyncAction);
 }
 
 export default rootSaga;

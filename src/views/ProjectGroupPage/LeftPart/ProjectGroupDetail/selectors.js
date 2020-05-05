@@ -10,8 +10,8 @@ const deleteProjectGroup = state => state.projectGroup.deleteProjectGroup;
 export const groupSelector = createSelector(
   [detailProjectGroup, memberProjectGroup, listProject, editProjectGroup, deleteProjectGroup],
   (detailProjectGroup, memberProjectGroup, listProject, editProjectGroup, deleteProjectGroup) => {
-    const { data: { projectGroup }, error: detailProjectGroupError, loading: detailProjectGroupLoading } = detailProjectGroup;
-    const { data: { members }, error: memberProjectGroupError, loading: memberProjectGroupLoading } = memberProjectGroup;
+    const { data: { projectGroup }, error: detailProjectGroupError, loading: detailProjectGroupLoading, firstTime: detailFirst } = detailProjectGroup;
+    const { data: { members }, error: memberProjectGroupError, loading: memberProjectGroupLoading, firstTime: memberFirst } = memberProjectGroup;
     const { data: { projects } } = listProject;
     const { loading: editLoading, error: editError } = editProjectGroup;
     const { loading: deleteLoading, error: deleteError } = deleteProjectGroup;
@@ -30,8 +30,11 @@ export const groupSelector = createSelector(
     }
     return {
       group: newGroup,
-      loading: detailProjectGroupLoading || memberProjectGroupLoading || editLoading || deleteLoading,
+      loading: (detailFirst ? false : detailProjectGroupLoading) ||
+        (memberFirst ? false : memberProjectGroupLoading) ||
+        editLoading || deleteLoading,
       error: detailProjectGroupError || memberProjectGroupError || editError || deleteError,
+      firstTime: detailFirst && memberFirst,
     }
   }
 );

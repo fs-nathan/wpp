@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
@@ -9,6 +10,7 @@ import SearchInput from '../../../../../components/SearchInput';
 import './styles.scss';
 
 function ListProjectHeader({ setShow }) {
+  const { t } = useTranslation();
   // console.log("setShow::::", setShow);
   const dispatch = useDispatch();
 
@@ -30,13 +32,13 @@ function ListProjectHeader({ setShow }) {
           color={'#000000'}
           className="job-detail-icon"
         />
-        <div>DANH SÁCH DỰ ÁN</div>
+        <div>{t('LABEL_CHAT_TASK_DANH_SÁCH_DU_ÁN')}</div>
         <IconButton className="listProjectHeader--button" onClick={closeListProject}>
           <Icon path={mdiClose} size={1} className="job-detail-icon" />
         </IconButton>
       </div>
       <SearchInput
-        placeholder="Tìm dự án"
+        placeholder={t('LABEL_CHAT_TASK_TIM_DU_AN')}
         onChange={searchListProject}
       />
     </div>

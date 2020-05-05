@@ -1,0 +1,32 @@
+.view_ShiftStage {
+  &_container {
+    width: 300px;
+    min-height: 150px;
+
+    &:nth-child(1) {
+      font-weight: 500;
+    }
+  }
+
+  &_form {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &_formControl {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+
+    &_inputDate {
+      width: 200px;
+
+      .MuiOutlinedInput-input {
+        padding: 11px;
+      }
+    }
+  }
+}

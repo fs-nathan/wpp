@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react'
 import { Button, Typography } from '@material-ui/core'
 import Icon from '@mdi/react'
@@ -10,12 +11,13 @@ const FAKE_DATA = {
 }
 
 export default function RemindMessage(props) {
+  const { t } = useTranslation();
   const { month, date, content, time } = FAKE_DATA
   return (
       <div className="wrap-common-row">
           <div className="wrap-project-remind-message">
               <Typography component='div'>
-                  <span>Nhắc hẹn</span>
+                  <span>{t('LABEL_CHAT_TASK_NHAC_HEN')}</span>
               </Typography>
               <Typography component='div'>
                   <Typography component='div'>{`Tháng ${month}`}</Typography>
@@ -27,7 +29,7 @@ export default function RemindMessage(props) {
                   <Typography component='div'>
                       <Typography component='div'>
                           <Icon path={mdiAlarm} size={1.3} color={'#05bdfa'} />
-                          <Typography component='span'>Xem chi tiết</Typography>
+                          <Typography component='span'>{t('LABEL_CHAT_TASK_XEM_CHI_TIET')}</Typography>
                       </Typography>
                   </Typography>
               </Button>

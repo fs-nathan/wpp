@@ -17,8 +17,11 @@
 };
 
 .view_ProjecrGroup_Copy_Project_Modal___form-control {  
-  margin-top: 16px;
-  margin-bottom: 8px;
+  margin: 25px 0 10px;
+  & > * {
+    margin-bottom: 10px;
+  }
+  z-index: inherit;
 };
 
 .view_ProjecrGroup_Copy_Project_Modal___list-container {  
@@ -65,8 +68,8 @@
   & {
     @include view_ProjecrGroup_Copy_Project_Modal___primary;
     & > * {
-      &:first-child {
-        fill: #a5a5a5;
+      &:first-child * {
+        fill: #a5a5a5 !important;
       }
       &:last-child {
         color: #444;
@@ -76,8 +79,8 @@
   &-selected {
     @include view_ProjecrGroup_Copy_Project_Modal___primary;
     & > * {
-      &:first-child {
-        fill: #05b50c;
+      &:first-child * {
+        fill: #05b50c !important;
       }
       &:last-child {
         color: #05b50c;
@@ -102,3 +105,14 @@
     margin-bottom: 0;
   }
 };
+
+.view_ProjecrGroup_Copy_Project_Modal___subtitle {
+  color: #9a9a9a;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+  position: relative;
+  line-height: 15px;
+  width: 100%;
+}

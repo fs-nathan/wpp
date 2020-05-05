@@ -1,18 +1,15 @@
 import { Button, Dialog, IconButton } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
 import ColorTypo from 'components/ColorTypo';
-import get from 'lodash/get';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
-
 
 function DialogWrap({
   title,
@@ -28,7 +25,7 @@ function DialogWrap({
   isOneButton
 }) {
   const { t } = useTranslation();
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const groupActiveColor = useSelector(currentColorSelector)
   return (
     <Dialog
       maxWidth={maxWidth} className={clsx("dialogWrap", className)} aria-labelledby="customized-dialog-title" open={isOpen} >
@@ -38,19 +35,7 @@ function DialogWrap({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <Scrollbars
-        className="dialogWrap--scroll"
-        autoHide
-        autoHideTimeout={500}
-        autoHeight
-        autoHeightMin={300}
-        autoHeightMax={"70vh"}
-        renderView={props => <div {...props} className="dialogWrap--scrollContainer" />}
-      >
-        <DialogContent className="dialogWrap--content" >
-          {children}
-        </DialogContent>
-      </Scrollbars>
+      {children}
       <DialogActions>
         {!isOneButton && <Button className={clsx("dialogWrap--button", "dialogWrap--button__cancel")} autoFocus onClick={handleClickClose} style={{}} >
           {t('IDS_WP_CANCEL')}
@@ -66,7 +51,7 @@ function DialogWrap({
           {successLabel}
         </Button>
       </DialogActions>
-    </Dialog>
+    </Dialog >
   )
 }
 

@@ -1,15 +1,17 @@
 import { TextField } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
+import CustomModal from 'components/CustomModal';
+import { CREATE_MAJOR, CustomEventDispose, CustomEventListener, UPDATE_MAJOR } from 'constants/events';
+import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../../components/ColorTypo';
-import CustomModal from '../../../../../components/CustomModal';
-import { useMaxlenString, useRequiredString } from '../../../../../hooks';
 
 function MajorCreateAndUpdate({
   open, setOpen,
   updatedMajor = null,
   handleCreateOrUpdateMajor,
+  activeLoading,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
@@ -21,7 +23,24 @@ function MajorCreateAndUpdate({
       setName(get(updatedMajor, 'name', ''));
       setDescription(get(updatedMajor, 'description', ''));
     }
-  }, [updatedMajor, setName, setDescription]);
+    // eslint-disable-next-line
+  }, [updatedMajor]);
+
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setName('');
+      setDescription('');
+    };
+    CustomEventListener(CREATE_MAJOR, successClose);
+    CustomEventListener(UPDATE_MAJOR, successClose);
+    return () => {
+      CustomEventDispose(CREATE_MAJOR, successClose);
+      CustomEventDispose(UPDATE_MAJOR, successClose);
+    }
+    // eslint-disable-next-line
+  }, []);
+
 
   return (
     <CustomModal
@@ -30,6 +49,9 @@ function MajorCreateAndUpdate({
       title={updatedMajor ? t('DMH.VIEW.DP.MODAL.MAJOR.U_TITLE') : t('DMH.VIEW.DP.MODAL.MAJOR.C_TITLE')}
       canConfirm={!errorName && !errorDescription}
       onConfirm={() => handleCreateOrUpdateMajor(name, description)}
+      onCancle={() => setOpen(false)}
+      manualClose={false}
+      activeLoading={activeLoading}
     >
       <TextField
         value={name}

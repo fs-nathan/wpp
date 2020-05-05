@@ -1,0 +1,17 @@
+.comp_CustomLeftSettingSubItem__label {
+  font-weight: normal;
+  font-size: 14px;
+  padding-left: 49px;
+}
+.right-setting-icon {
+  height: 20px;
+  display: flex;
+  padding: 0 6px;
+  align-items: center;
+  border-radius: 10px;
+  justify-content: center;
+  background-color: rgb(244, 67, 54);
+  font-weight: bold;
+  color: #fff;
+  margin-right: 6px;
+}

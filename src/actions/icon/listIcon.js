@@ -1,9 +1,4 @@
-import {
-  LIST_ICON,
-  LIST_ICON_FAIL,
-  LIST_ICON_SUCCESS,
-  LIST_ICON_RESET,
-} from '../../constants/actions/icon/listIcon';
+import { LIST_ICON, LIST_ICON_FAIL, LIST_ICON_RESET, LIST_ICON_SUCCESS } from '../../constants/actions/icon/listIcon';
 
 export const listIcon = (quite = false) => ({
   type: LIST_ICON,
@@ -25,6 +20,6 @@ export const listIconFail = (error, options) => ({
   error,
 });
 
-export const listIconResset = () => ({
+export const listIconReset = () => ({
   type: LIST_ICON_RESET,
 });
