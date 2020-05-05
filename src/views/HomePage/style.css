@@ -10,7 +10,7 @@
 .views_HomePage___wrapper *:not(svg),
 .views_HomePage___wrapper *:not(svg)::before,
 .views_HomePage___wrapper *:not(svg)::after {
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 .views_HomePage___container {
   max-width: 1224px;

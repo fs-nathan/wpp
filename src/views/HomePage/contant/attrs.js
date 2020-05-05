@@ -62,3 +62,17 @@ export const postAttr = {
   is_like: "is_like", // false
   is_modify: "is_modify", //true
 };
+
+export const weekScheduleAttrs = {
+  date: "date", // "03/05/2020",
+  date_original: "date_original", // "2020-05-03",
+  day_of_week: "day_of_week", // "Sunday",
+  is_date_now: "is_date_now", // false,
+  schedules: "schedules", // [],
+};
+export const scheduleAttrs = {
+  id: "id", // "5ead3db9738ab072c01aecee",
+  time: "time", // "08:30",
+  title: "title", // "Test lịch tuần 19",
+  content: "content", // "Test lịch tuần 19"
+};

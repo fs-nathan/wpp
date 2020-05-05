@@ -1,15 +1,28 @@
-import { Box, ButtonBase, IconButton } from "@material-ui/core";
+import { Box, ButtonBase, IconButton, Typography } from "@material-ui/core";
 import { mdiCalendarStar, mdiMenuLeft, mdiMenuRight } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
-import React, { useEffect } from "react";
+import get from "lodash/get";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { emptyArray } from "views/JobPage/contants/defaultValue";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
-import { workScheduleModule } from "../redux/workSchedule";
-const WeedSchedule = () => {
+import { scheduleAttrs, weekScheduleAttrs } from "../contant/attrs";
+import { weekScheduleModule } from "../redux/weekSchedule";
+
+const WeedSchedule = ({ weekScheduleNow = emptyArray }) => {
+  const [currentIndex, setCurrentIndex] = useState(
+    weekScheduleNow.findIndex(({ is_date_now }) => is_date_now)
+  );
+  const currentDay = weekScheduleNow[currentIndex];
+  const canNext = currentIndex < weekScheduleNow.length - 1;
+  const canPrev = currentIndex > 0;
+  const prev = () => setCurrentIndex(Math.max(currentIndex - 1, 0));
+  const next = () =>
+    setCurrentIndex(Math.min(weekScheduleNow.length - 1, currentIndex + 1));
   const { t } = useTranslation();
   return (
     <TasksCard.Container>
@@ -25,7 +38,6 @@ const WeedSchedule = () => {
             <Icon path={mdiCalendarStar} size={1} />
           </TasksCard.HeaderAvatar>
         }
-        // action={<AddButton onClick={() => {}} label={t("Tạo lịch")} />}
         title={<TasksCard.HeaderTitle>{t("LỊCH TUẦN")}</TasksCard.HeaderTitle>}
         subheader={<StyledTypo color="orange">Tuần 25 năm 2020</StyledTypo>}
       />
@@ -35,32 +47,46 @@ const WeedSchedule = () => {
         padding="4px"
         style={{ background: "rgb(245, 246, 247)" }}
       >
-        <IconButton size="small">
+        <IconButton onClick={prev} disabled={!canPrev} size="small">
           <Icon path={mdiMenuLeft} size={1}></Icon>
         </IconButton>
         <Box textAlign="center" flex="1">
           <StyledTypo bold color="red">
-            Thứ 3 - Ngày 01/09/2020
+            {get(currentDay, weekScheduleAttrs.day_of_week)} -{" "}
+            {get(currentDay, weekScheduleAttrs.date)}
           </StyledTypo>
         </Box>
-        <IconButton size="small">
+        <IconButton onClick={next} disabled={!canNext} size="small">
           <Icon path={mdiMenuRight} size={1}></Icon>
         </IconButton>
       </Box>
       <TasksCard.Content>
         <Stack small>
-          <ListItemLayout left={<Box padding="10px 10px 10px 0">09:00</Box>}>
-            - Tong giam doc di cong tac hai phong
-          </ListItemLayout>
-          <ListItemLayout left={<Box padding="10px 10px 10px 0">09:00</Box>}>
-            - Tong giam doc di cong tac hai phongup
-          </ListItemLayout>
-          <ListItemLayout left={<Box padding="10px 10px 10px 0">09:00</Box>}>
-            - Tong giam doc di cong tac hai phong
-          </ListItemLayout>
-          <ListItemLayout left={<Box padding="10px 10px 10px 0">09:00</Box>}>
-            - Tong giam doc di cong tac hai phong
-          </ListItemLayout>
+          {[
+            ...get(currentDay, weekScheduleAttrs.schedules, emptyArray),
+            "empty",
+          ].map((schedule, i) => {
+            if (schedule === "empty")
+              return (
+                i === 0 && (
+                  <Typography bold color="textSecondary">
+                    {t("No data found")}
+                  </Typography>
+                )
+              );
+            return (
+              <ListItemLayout
+                key={get(schedule, scheduleAttrs.id)}
+                left={
+                  <Box padding="10px 10px 10px 0">
+                    {get(schedule, scheduleAttrs.time)}
+                  </Box>
+                }
+              >
+                - {get(schedule, scheduleAttrs.title)}
+              </ListItemLayout>
+            );
+          })}
           <div>
             <ButtonBase style={{ float: "right" }}>
               <StyledTypo
@@ -80,8 +106,12 @@ const WeedSchedule = () => {
 export default () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(workScheduleModule.actions.loadListSchedule());
-    dispatch(workScheduleModule.actions.loadListWeek());
+    dispatch(weekScheduleModule.actions.loadListSchedule());
   }, [dispatch]);
-  return <WeedSchedule />;
+  const weekScheduleNow = useSelector(
+    weekScheduleModule.selectors.listOfWeekNowSelector
+  );
+  return (
+    <WeedSchedule weekScheduleNow={get(weekScheduleNow, "data", emptyArray)} />
+  );
 };

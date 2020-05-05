@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bgColorSelector } from "views/ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import "./EmptyHolder.css";
 function EmptyHolder({
-  image = noDataImg,
+  image,
   bgColor,
   title = "Không có dữ liệu",
   description = "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc",
