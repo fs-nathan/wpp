@@ -38,7 +38,7 @@ const routes = [
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
   { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
   { path: Routes.PROJECT_GRANT, component: () => <Grant/> },
-  {
+  { 
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />
   },

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
-import Timeline from './TimeLine'
-const MonthHeader = ({startTimeProject,allMonth, daysRender,scrollWidth,dataSource, leftHeader = 0}) => {
+import {connect} from 'react-redux'
+
+const MonthHeader = ({girdInstance,allMonth, daysRender,scrollWidth,dataSource, leftHeader = 0}) => {
     const [countDay, setCountDay ] = useState(daysRender.length)
     const [countTask, setCountTask ] = useState(dataSource.length)
     const [table, setTable] = useState([])
@@ -22,7 +23,7 @@ const MonthHeader = ({startTimeProject,allMonth, daysRender,scrollWidth,dataSour
     borderRight: '1px solid #f0f0f0',
     padding: '1px 0px',
     backgroundColor: '#fafafa', width: 48, textAlign: 'center'}}>
-    {new moment(item).add(scrollWidth, 'days').format('DD')}
+    {new moment(item).add(scrollWidth, girdInstance.unit).format(girdInstance.formatChild)}
     </div>)
     const createTable = (axisX, axisY) => {
         let tempTable = []
@@ -82,4 +83,8 @@ const MonthHeader = ({startTimeProject,allMonth, daysRender,scrollWidth,dataSour
     </React.Fragment>
 }
 
-export default MonthHeader
+const mapStateToProps = state => ({
+  girdInstance: state.gantt.girdInstance,
+
+})
+export default connect(mapStateToProps)(MonthHeader)

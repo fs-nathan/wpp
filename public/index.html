@@ -65,6 +65,52 @@
           "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
         });
       }
+      function getDataUrlPdf(kendo, fileName, callback) {
+        kendo.drawing
+          .drawDOM("#printContent", {
+            margin: {
+              top: "1.7cm",
+              bottom: "1.7cm",
+              left: "2.5cm",
+              right: "2.5cm"
+            },
+            scale: 0.7
+          })
+          .then(group => {
+            kendo.drawing.pdf.toDataURL(group,(dataUrl) =>{
+              console.log(dataUrl);
+              callback(dataUrl)
+            })
+          });
+            kendo.pdf.defineFont({
+          "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
+          "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
+          "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
+          "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
+        });
+       
+      }
+      function convertToPdfFullWidth(kendo, fileName) {
+        kendo.drawing
+          .drawDOM("#printContent", {
+            margin: {
+              top: "1.7cm",
+              bottom: "1.7cm",
+              left: "2.5cm",
+              right: "2.5cm"
+            },
+            scale: 0.7
+          })
+          .then(function(group) {
+            kendo.drawing.pdf.saveAs(group, fileName);
+          });
+        kendo.pdf.defineFont({
+          "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
+          "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
+          "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
+          "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
+        });
+      }
     </script>
     <!--
       This HTML file is a template.

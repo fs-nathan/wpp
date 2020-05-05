@@ -8,7 +8,8 @@ import moment from 'moment';
 import {  mdiDragVerticalVariant  } from '@mdi/js'
 import { changeRowHover } from '../../actions/gantt';
 
-function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, monthArray, daysRender, showFullChart,rowHover}){
+
+function GanttChart({minLeft,setDataSource, girdInstance, start,showHeader, end,changeRowHover, dataSource, monthArray, daysRender, showFullChart,rowHover, renderFullDay,widthTable}){
     const dragRef = useRef()
     const ganttRef = useRef()
     const [ left, setLeft ] = useState(0)
@@ -22,7 +23,7 @@ function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, mon
     const handleMouseMove = (e) => {
         if(drag){
           const nextPosX = e.clientX - currentX
-          if(nextPosX < minX) return
+          if(nextPosX < minLeft) return
         setLeft(e.clientX - currentX)
         }
         e.stopPropagation()
@@ -44,9 +45,6 @@ function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, mon
         e.stopPropagation()
         e.preventDefault()
     }
-    const handleCallBack = (index, newStart, newEnd) => {
-     console.log(minX, dataSource)
-    }
     useEffect(() =>{
         if(drag){
             document.addEventListener('mousemove', handleMouseMove)
@@ -63,15 +61,19 @@ function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, mon
     useEffect(() => {
       if(ganttRef.current){
         setHeightChart(window.innerHeight - ganttRef.current.offsetTop)
-        console.log(window.innerWidth - ganttRef.current.offsetLeft)
       }
     }, [showHeader])
-    const b = left ? {left: showFullChart ? 80 : left} : {}
+    const defaultLeft = minLeft +widthTable
+    const b =left ? {left: showFullChart ? minLeft : left} : {}
+    let maxWidth
+    if(renderFullDay){
+       maxWidth = (end.diff(start, girdInstance.unit) +1)*48
+    }
     const timeline = dataSource.map((item,index) => {
-      const startDate = moment(item.start_date, 'MM/DD/YYYY')
-      const endDate =  moment(item.end_date, 'MM/DD/YYYY')
-      const startPosition = startDate.diff(start, 'days')
-      const endPosition = endDate.diff(startDate, 'days') + 1
+      const startDate = moment(item.start_time, girdInstance.formatString)
+      const endDate =  moment(item.end_time, girdInstance.formatString)
+      const startPosition = Math.ceil(startDate.diff(start, girdInstance.unit,true))
+      const endPosition = endDate.diff(startDate, girdInstance.unit)+1
       return <React.Fragment>
         <div
         key={item.id}
@@ -83,7 +85,7 @@ function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, mon
           backgroundColor: rowHover === index ?  '#fffae6' : ''
       }}>
          <div className="gantt--top-timeline"></div>
-        <Timeline startDate={startDate} endDate={endDate}key={item.id} dataSource={dataSource} index={index} startPosition={startPosition} endPosition={endPosition}/>
+        <Timeline isGroupTask={item.isGroupTask} key={item.id + '1'} setDataSource={setDataSource} startDate={startDate} endDate={endDate}key={item.id} dataSource={dataSource} index={index} startPosition={startPosition} endPosition={endPosition}/>
         </div>
         </React.Fragment>
       
@@ -100,7 +102,7 @@ function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, mon
         onMouseLeave={() => setShowResizeIcon(false)}
         className="icon-resize-gantt-chart" 
         style={{
-          left:showFullChart ?80 : '40%',
+          left:showFullChart ?minLeft : defaultLeft,
            ...b,
            display: showResizeIcon ? 'block' : 'none',
           height:heightChart}}>
@@ -109,9 +111,9 @@ function GanttChart({minX, start,showHeader, end,changeRowHover, dataSource, mon
         <div 
           ref={ganttRef} 
           style={{
-            width:'100%', 
+            width:renderFullDay ? maxWidth :showFullChart ? window.innerWidth - minLeft : left ? window.innerWidth - left :window.innerWidth - defaultLeft , 
             position: 'absolute', 
-            left: showFullChart ? 80: '40%',
+            left: showFullChart ? minLeft: defaultLeft,
             overflow: 'hidden',
             background: 'white',
             ...b
@@ -181,6 +183,8 @@ const mapDispatchToProps = {
 const mapStateToProps =(state) => ({
   showFullChart: state.gantt.showFullChart,
   showHeader: state.gantt.showHeader,
-  rowHover: state.gantt.rowHover
+  rowHover: state.gantt.rowHover,
+  renderFullDay: state.gantt.renderFullDay,
+  girdInstance: state.gantt.girdInstance,
 })
 export default connect(mapStateToProps,mapDispatchToProps)(GanttChart)

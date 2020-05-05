@@ -1,16 +1,17 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import {Drawer} from 'antd'
 import { connect } from 'react-redux'
 import { Checkbox } from 'antd'
 import Icon from '@mdi/react';
+import CloseIcon from "@material-ui/icons/Close";
 import {
-  Box
+  Box, IconButton
 } from "@material-ui/core";
 import { mdiDragVertical } from '@mdi/js'
 import { ChromePicker } from 'react-color'
 import { changeVisibleConfigGantt } from '../../../actions/system/system'
-import { changeTimelineColor, changeVisible } from '../../../actions/gantt'
+import { changeTimelineColor, changeVisible, actionChangeColorGanttSetting, actionChangeVisibaleGanttSetting } from '../../../actions/gantt'
 import CheckboxIndex from './CheckBoxIndex'
 import { Scrollbars } from 'react-custom-scrollbars';
 import "../../../views/JobPage/components/QuickViewFilter.css";
@@ -19,29 +20,50 @@ const pathSettingIcon = "M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.1
 const StyledScrollbarsSide = ({ className = '', height, ...props }) =>
   <Scrollbars className={`comp_CustomModal___scrollbar-side-${height} ${className}`} {...props} />;
 
-const TagColor = ({color,setColor, type}) => {
+const TagColor = ({color,setColor, type, projectInfo}) => {
   const [show, setShow ] = useState(false)
+  const handleClickDocument = () => {
+    if(!show){
+      setShow(false)
+    console.log('vo dayyyyyyyyyy')
+    document.removeEventListener('click', handleClickDocument)
+    }
+  }
+  const handleClick = () => {
+    document.addEventListener('click', handleClickDocument)
+    setShow(!show)
+  }
+  useEffect(() => {
+   
+  }, [show])
+  const onChangeComplete = (value) => {
+    actionChangeColorGanttSetting(projectInfo.id,type, value.hex)
+  }
   return(
-    <div className="checkbox-colortag--drawer"  onClick={() => setShow(!show)}  style={{ position: 'absolute',
-    backgroundColor: color,
-    right: 0}}>
+    <div className="checkbox-colortag--drawer__container">
+      <div className="checkbox-colortag--drawer" onClick={handleClick}   style={{backgroundColor: color}}>
+      </div>
   {show&& <div className="color-picker-drawer-config">
-   <ChromePicker color={color} onChange={(value) =>setColor(type,value.hex)}/>
+   <ChromePicker color={color} onChangeComplete={onChangeComplete} onChange={(value) =>setColor(type,value.hex)}/>
    </div>
    }
   </div> 
   )
 }
-const CheckboxColorTimeLine = ({text, color,type, setColor,changeVisible, checked}) => {
+const CheckboxColorTimeLine = ({text,projectInfo, color,type, setColor,changeVisible, checked}) => {
+  const handleChangeCheckBox = (e) => {
+    changeVisible(e.target.checked, 'gantt', type)
+    actionChangeVisibaleGanttSetting(projectInfo.id, type, e.target.checked)
+  }
   return (<div className="config--drawer--checkbox-wrapper" style={{display: 'flex', position: 'relative'}}>
-    <Checkbox checked={checked} onChange={(e) => changeVisible(e.target.checked, 'gantt', type)}   style={{
+    <Checkbox checked={checked} onChange={handleChangeCheckBox}   style={{
       display: 'flex',
-      width: '75%',
+      width: '100%',
       marginLeft: '8px !important'
     }}  className="config--drawer--checkbox">
         <CheckBoxLabel text={text}/>
     </Checkbox>
-    <TagColor color={color} type={type} setColor={setColor}/>
+    <TagColor projectInfo={projectInfo} color={color} type={type} setColor={setColor}/>
     </div>
   )
 }
@@ -53,10 +75,16 @@ const CheckBoxLabel = ({text, drag}) =>{
     </span>
 )}
 
-const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineColor, changeTimelineColor,visibleGantt,changeVisible }) => {
+const CommonConfig = ({visibleLabel,projectInfo,height,state, type, changeVisibleConfigGantt, timelineColor, changeTimelineColor,visibleGantt,changeVisible }) => {
+    const handleChangeColor = (type, hex) => {
+      changeTimelineColor(type, hex)
+    }
     return (
         <Drawer
-          title={ <Box className="comp_QuickViewFilter__headerWrapper comp_QuickViewFilter__headerConfig">
+          closable={false}
+          title={ <div style={{flexDirection: 'row'}} className="comp_QuickViewWrapper">
+            <div className="comp_QuickViewHeaderLeft">
+          <Box className="comp_QuickViewFilter__headerWrapper comp_QuickViewFilter__headerConfig">
           <Icon
             className="comp_QuickViewFilter__headerIcon"
             path={pathSettingIcon}
@@ -64,12 +92,16 @@ const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineCo
           <Box className="comp_QuickViewFilter__headerTitle">
             CÀI ĐẶT
           </Box>
-        </Box>}
+        </Box>
+        </div>
+        <div className="comp_QuickViewHeaderRight">
+          <IconButton >
+            <CloseIcon onClick={() =>changeVisibleConfigGantt(false)}/>
+          </IconButton>
+        </div>
+        </div>}
           placement="right"
-          closable={true}
           mask={false}
-          onClose={() => {
-            changeVisibleConfigGantt(false, '')}}
           visible={state && type === 'COMMON'}
           width={400}
           style={{height, top: `calc(100vh - ${height}px`}}
@@ -90,12 +122,13 @@ const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineCo
             text="Tổng tiến độ dự án" 
             color={timelineColor.total}
             checked={visibleGantt.total}
-             setColor={changeTimelineColor}
+             setColor={handleChangeColor}
              changeVisible={changeVisible}
+             projectInfo={projectInfo}
              type={"total"}/>
-            <CheckboxColorTimeLine  checked={visibleGantt.group}  changeVisible={changeVisible} type={"group"}  text="Nhóm công việc" color={timelineColor.group} setColor={changeTimelineColor}/>
-            <CheckboxColorTimeLine  checked={visibleGantt.task} changeVisible={changeVisible} type={"task"} text="Công việc" color={timelineColor.task} setColor={changeTimelineColor}/>
-          <CheckboxColorTimeLine  checked={visibleGantt.duration} changeVisible={changeVisible} type={"duration"}  text="Hoàn thành" color={timelineColor.duration} setColor={changeTimelineColor}/>
+            <CheckboxColorTimeLine projectInfo={projectInfo}  checked={visibleGantt.group}  changeVisible={changeVisible} type={"group"}  text="Nhóm công việc" color={timelineColor.group}  setColor={handleChangeColor}/>
+            <CheckboxColorTimeLine projectInfo={projectInfo}  checked={visibleGantt.task} changeVisible={changeVisible} type={"task"} text="Công việc" color={timelineColor.task}  setColor={handleChangeColor}/>
+          <CheckboxColorTimeLine projectInfo={projectInfo}  checked={visibleGantt.duration} changeVisible={changeVisible} type={"duration"}  text="Hoàn thành" color={timelineColor.duration}  setColor={handleChangeColor}/>
           <div className="config--drawer--checkbox-wrapper">
            <Checkbox checked={visibleGantt.date} onChange={(e) => changeVisible(e.target.checked, 'gantt', 'date')} className="config--drawer--checkbox"> 
             Hiện ngày bắt đầu/kết thúc trên sơ đồ gantt
@@ -107,7 +140,7 @@ const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineCo
            </Checkbox>
            </div>
            <div className="config--drawer--checkbox-wrapper">
-           <Checkbox className="config--drawer--checkbox"> 
+           <Checkbox checked={visibleGantt.numberDuration}  onChange={(e) => changeVisible(e.target.checked, 'gantt', 'numberDuration')}  className="config--drawer--checkbox"> 
             Hiện tiến độ hoàn thành trên sơ đồ gantt
            </Checkbox>
            </div>
@@ -120,14 +153,14 @@ const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineCo
           <p style={{marginTop: '2em'}}  className="config--drawer--section">Nhãn</p>
           <div className="config--drawer--checkbox-section">
             <div className="config--drawer--checkbox-wrapper">
-          <Checkbox className="config--drawer--checkbox" style={{
+          <Checkbox checked={visibleLabel.status}  onChange={(e) => changeVisible(e.target.checked, 'label', 'status')} className="config--drawer--checkbox" style={{
               display: 'flex',
               width: '100%',
               marginLeft: '8px !important'
           }}> Trạng thái</Checkbox>
           </div>
           <div className="config--drawer--checkbox-wrapper">
-          <Checkbox className="config--drawer--checkbox" style={{
+          <Checkbox checked={visibleLabel.prior}  onChange={(e) => changeVisible(e.target.checked, 'label', 'prior')} className="config--drawer--checkbox" style={{
               display: 'flex',
               width: '100%',
               marginLeft: '8px !important'
@@ -144,6 +177,8 @@ const mapStateToProps = state => ({
   type: state.system.ganttConfig.type,
   timelineColor: state.gantt.timelineColor,
   visibleGantt: state.gantt.visible.gantt,
+  visibleLabel: state.gantt.visible.label,
+  projectInfo: state.gantt.projectInfo,
 })
 
 const mapDispatchToProps = {

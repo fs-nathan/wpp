@@ -9,8 +9,12 @@
   height: 50%;
   top: 25%;
   right: -12px;
-  cursor: grab;
+  cursor: ew-resize;
   z-index: 1;
+}
+
+.gantt-table-col.react-resizable-handle svg{
+  fill: #bfbfbf
 }
 
 tr.drop-over-downward td {
@@ -92,6 +96,8 @@ body {
   width: 80px;
   height: 16px;
   margin-right: 8px;
+  position: absolute;
+  right: 0;
 }
 .checkbox-colortag--drawer:hover{
   background-color: #F2F5FA
@@ -194,6 +200,12 @@ span.ant-checkbox ~ span {
   margin: 0;
   left: 20px;
 }
+.gantt--name-timeline {
+  position: relative;
+  height: 20px;
+  margin: 0;
+  left: 40px;
+}
 
 .gantt--time-task{
   width: 100%;
@@ -266,19 +278,20 @@ span.ant-checkbox ~ span {
   position: absolute;
   right:15px;
   z-index: 1;
-  width: 52px;
-  height:26px;
-  border: 1px solid rgba(59, 59, 59, 0.25);
+  width: 40px;
+  height:20px;
+  border: 1px solid rgba(230, 230, 230, 0.25);
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
   border-top: 0;
-  background-color: white;
+  background-color: #f4f4f4;
 }
 .icon-show-header button:hover {
   background: transparent;
 }
 .icon-show-header svg {
   width: 20px !important;
+  margin-top: -5px;
 }
 
 .ant-table tbody > tr.ant-table-row:hover > td {
@@ -549,9 +562,9 @@ td.table-hourwork-right--border-top-none {
 }
 .color-picker-drawer-config {
   position: absolute;
-  z-index: 15;
-  top: 0;
-  left: -245px;
+    z-index: 15;
+    top: 10px;
+    left: 70px;
 }
 
 div.checkbox-colortag--drawer {
@@ -573,6 +586,7 @@ div.checkbox-colortag--drawer {
 
 .ant-drawer-body{
   padding: 15px !important;
+  padding-right: 0 !important;
 }
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #48bb78 !important;
@@ -583,4 +597,66 @@ div.checkbox-colortag--drawer {
 }
 .config--drawer--drag-checkbox-wrapper:hover,.config--drawer--checkbox-wrapper:hover {
   background-color: #F2F5FA;
+}
+.ant-row-end {
+  line-height: 50px;
+}
+.MuiIconButton-label {
+  padding: 0 10px !important;
+}
+
+.gantt--right-header__more {
+  padding-right: 60px;
+  z-index: 1;
+  border-right: 1px solid #ededed;
+}
+.icon-invisible-header {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.icon-invisible-header svg {
+ fill: rgb(199, 199, 199) !important;
+}
+
+.name-task-gantt__icon-container {
+  display: flex;
+    position: absolute;
+    background: #fff;
+    right: 0;
+    top: 0;
+    align-items: center;
+    padding-left: 5px;
+    height: 35px !important;
+    padding-right: 5px;
+}
+
+.gantt-title-table-project { 
+  display: flex;
+  margin-left: 20%;
+}
+
+.gantt-title-table-project-icon{
+  width: 20%;
+  text-align: right;
+  fill: #cccccc;
+}
+
+.gantt-title-table-project-name {
+  width: 80%;
+}
+
+.gantt--group-task{
+  display: flex;
+  justify-content: space-between;
+}
+
+.gantt--group-task__left{
+  display: flex;
+}
+.gantt--group-task__right{
+  fill: #cccccc;
+  margin-right: 7px;
 }

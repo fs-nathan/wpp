@@ -68,7 +68,7 @@ function validate(data) {
 function CreateJobModal(props) {
   const dispatch = useDispatch();
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
-  const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const _projectId   = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
@@ -108,7 +108,6 @@ function CreateJobModal(props) {
         value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ''
       }));
       setListGroupTask(listTask);
-
       // Set default group for input
       let item = listTask.find(
         item => item.value === ''

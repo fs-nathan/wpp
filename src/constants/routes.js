@@ -38,5 +38,5 @@ export const Routes = {
   SETTING_GROUP_ORDER: '/setting-group/order',
   SETTING_GROUP_CREATE_ORDER: '/setting-group/create-order',
   SETTING_GROUP_PAYMENT: '/setting-group/payment',
-  PROJECT_GRANT: '/gantt'
+  PROJECT_GRANT: '/gantt/:projectId'
 };

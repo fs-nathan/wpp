@@ -25,3 +25,17 @@
 .ant-drawer-footer{
     padding: 0 !important;
 }
+.export-pdf--drawer__container {
+    padding-right: 15px
+}
+.export-pdf--drawer__date-picker {
+    width: 40%
+}
+.export-pdf--drawer__date-picker .MuiOutlinedInput-adornedEnd {
+    padding-right: 0px
+}
+.export-pdf--drawer__date-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px
+}

@@ -92,25 +92,25 @@ const CheckBoxDragItem = ({id,text, index, moveCheckbox, typeVisible,changeVisib
             id: 2,
             text: 'Bắt đầu (ngày bắt đầu)',
             index: 1,
-            typeVisible: 'start_date'
+            typeVisible: 'start_time'
           },
           {
             id: 3,
             text: 'Kết thúc (ngày kết thúc)',
             index: 2,
-            typeVisible: 'end_date'
+            typeVisible: 'end_time'
           },
           {
             id: 4,
             text: 'Tiến độ (ngày)',
             index: 3,
-            typeVisible: 'time'
+            typeVisible: 'duration_actual'
           },
           {
             id: 5,
             text: 'Hoàn thành',
             index: 4,
-            typeVisible: 'process'
+            typeVisible: 'complete'
           },
         ])
         const moveCheckbox = useCallback(

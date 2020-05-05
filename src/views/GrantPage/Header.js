@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Row, Col } from 'antd'
 import './table.css';
 import {connect} from 'react-redux'
@@ -6,8 +6,9 @@ import RightHeader from './RightHeader'
 import { changeShowHeader } from '../../actions/gantt'
 import IconComponent from './IconComponent'
 import { mdiChevronDown   } from '@mdi/js';
-
-const Header =  ({ showHeader, changeShowHeader }) => {
+import ListHeader from "../../views/JobDetailPage/ListPart/ListHeader";
+const Header =  ({ projectInfo, showHeader, changeShowHeader }) => {
+    const [showProject, setShowSelectProject] = useState(false);
     return (
         showHeader ? <Row style={{margin: 0, borderBottom: '1px solid #e8e8e8'}} gutter={[16, 8]}>
         <Col span={12} ><div>
@@ -16,10 +17,12 @@ const Header =  ({ showHeader, changeShowHeader }) => {
             <img height={50}
              width = {50}
              className="gantt--image-project"
-             src="https://storage.googleapis.com/storage_vtask_net/1585844117647-blob"/>
+             src={projectInfo.group_icon}/>
              </Col>
-             <Col>
-             <p className="gantt--title-project" >Sản xuất phim "Sống chung với mẹ chồng"</p>
+             <Col span={22}>
+            
+             <p className="gantt--title-project" >{projectInfo.name}</p>
+             <ListHeader show={showProject} setShow={setShowSelectProject}/>
              <div className="gantt--navigation">
                  <p>Table</p>
                  <p>Gantt</p>
@@ -38,7 +41,8 @@ const Header =  ({ showHeader, changeShowHeader }) => {
 }
 
 const mapStateToProps = state => ({
-    showHeader: state.gantt.showHeader
+    showHeader: state.gantt.showHeader,
+    projectInfo: state.gantt.projectInfo
 })
 const mapDispatchToProps = {
     changeShowHeader

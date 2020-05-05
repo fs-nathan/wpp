@@ -4,24 +4,30 @@ import { connect } from 'react-redux'
 import {
     Radio,
     FormControlLabel,
+  Box,
+  IconButton
   } from '@material-ui/core';
 import Icon from '@mdi/react';
-import {
-  Box
-} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import { mdiCalendar} from '@mdi/js';
 import { changeVisibleConfigGantt } from '../../../actions/system/system'
-import { changeTimelineColor } from '../../../actions/gantt'
+import { changeTimelineColor, changeInstanceGird } from '../../../actions/gantt'
 import { Scrollbars } from 'react-custom-scrollbars';
 import "../../../views/JobPage/components/QuickViewFilter.css";
 import "../../../views/JobPage/Layout/QuickView.css";
 
 const StyledScrollbarsSide = ({ className = '', height, ...props }) =>
   <Scrollbars className={`comp_CustomModal___scrollbar-side-${height} ${className}`} {...props} />;
-const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineColor, changeTimelineColor }) => {
+const TimeUnitConfig = ({changeInstanceGird, height,state, type, changeVisibleConfigGantt, girdType }) => {
+    const handleOnChange = (e) => {
+      changeInstanceGird(e.target.value)
+    }
     return (
         <Drawer
-          title={ <Box className="comp_QuickViewFilter__headerWrapper comp_QuickViewFilter__headerConfig">
+        closable={false}
+          title={ <div style={{flexDirection: 'row'}} className="comp_QuickViewWrapper">
+            <div className="comp_QuickViewHeaderLeft">
+          <Box className="comp_QuickViewFilter__headerWrapper comp_QuickViewFilter__headerConfig">
           <Icon
             className="comp_QuickViewFilter__headerIcon"
             path={mdiCalendar}
@@ -29,12 +35,17 @@ const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineCo
           <Box className="comp_QuickViewFilter__headerTitle">
             TIẾN ĐỘ
           </Box>
-        </Box>}
+        </Box>
+        </div>
+        <div className="comp_QuickViewHeaderRight">
+          <IconButton >
+            <CloseIcon onClick={() =>changeVisibleConfigGantt(false,'')}/>
+          </IconButton>
+        </div>
+        </div>
+        }
           placement="right"
-          closable={true}
           mask={false}
-          onClose={() => {
-            changeVisibleConfigGantt(false, '')}}
           visible={state && type === 'TIME'}
           width={400}
           style={{height, top: `calc(100vh - ${height}px`}}
@@ -49,38 +60,45 @@ const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineCo
           <div className="config--drawer--checkbox-section">
             <div className="">
           <FormControlLabel
-            value={1}
+            value={'HOUR'}
             control={<Radio color="primary" />}
-            label={"Ngày"}
-            checked={true}
+            label={"Giờ"}
+            onChange={handleOnChange}
+            checked={girdType === 'HOUR'}
+            
           />
             </div><div className="">
           <FormControlLabel
-            value={1}
+            value={'DAY'}
+            control={<Radio color="primary" />}
+            label={"Ngày"}
+            onChange={handleOnChange}
+            checked={girdType === 'DAY'}
+          />
+          <div className="">
+           <FormControlLabel
+            value={'WEEK'}
             control={<Radio color="primary" />}
             label={"Tuần"}
-            checked={true}
+            onChange={handleOnChange}
+            checked={girdType === 'WEEK'}
           />
+          </div>
           </div><div className="">
            <FormControlLabel
-            value={1}
+            value={'MONTH'}
             control={<Radio color="primary" />}
             label={"Tháng"}
-            checked={true}
+            onChange={handleOnChange}
+            checked={girdType === 'MONTH'}
           />
           </div><div className="">
            <FormControlLabel
-            value={1}
+            value={'QUARTER'}
             control={<Radio color="primary" />}
             label={"Quý"}
-            checked={true}
-          />
-          </div><div className="">
-           <FormControlLabel
-            value={1}
-            control={<Radio color="primary" />}
-            label={"Năm"}
-            checked={true}
+            onChange={handleOnChange}
+            checked={girdType === 'QUARTER'}
           />
           </div>
           </div>
@@ -92,11 +110,11 @@ const CommonConfig = ({ height,state, type, changeVisibleConfigGantt, timelineCo
 const mapStateToProps = state => ({
   state: state.system.ganttConfig.state,
   type: state.system.ganttConfig.type,
-  timelineColor: state.gantt.timelineColor,
+  girdType: state.gantt.girdType,
 })
 
 const mapDispatchToProps = {
     changeVisibleConfigGantt,
-    changeTimelineColor
+    changeInstanceGird
 }
-export default connect(mapStateToProps, mapDispatchToProps)(CommonConfig)
+export default connect(mapStateToProps, mapDispatchToProps)(TimeUnitConfig)

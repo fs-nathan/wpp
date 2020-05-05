@@ -4,7 +4,7 @@ import './test.css';
 import Icon from '@mdi/react';
 import { mdiTriangle   } from '@mdi/js'
 import {connect} from 'react-redux'
-import {   changeTimelineColor } from '../../actions/gantt'
+import moment from 'moment'
 
 const Circle = ({left, show}) => (
     <div style={{left, backgroundColor: show ? "#fafafa" : 'transparent', border: `1px solid ${show ? "rgba(59, 59, 59, 0.25)" : "transparent"}` }} className="gantt-dot-circle">
@@ -12,15 +12,17 @@ const Circle = ({left, show}) => (
     </div>
 )
 
-const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource, startDate, endDate, timelineColor,visibleGantt }) => {
+const TimeLine = ({startPosition, girdInstance, endPosition, index, setDataSource,dataSource, startDate, endDate, timelineColor,visibleGantt, isGroupTask }) => {
     const totalTimeRef = useRef()
     const refProcess = useRef()
-    const refResizeTotalTime = useRef()
     const refFirstResize = useRef()
-    const [ left, setLeft ] = useState(startPosition *48)
+    const [ left, setLeft ] = useState(null)
+    const [ resizeWidth, setResizeWidth ] = useState(0)
     const [width, setWidth ] = useState(endPosition*48)
     const [showResize, setShowResize ] = useState(false)
     const [widthProcess, setWidthProcess ] = useState(0)
+    const [startDateText, setStartDateText] = useState(new moment(startDate))
+    const [endDateText, setEndDateText] = useState(new moment(endDate))
     const [ a, setA ] = useState(0)
     const [dragFirstResize, setDragFirstResize ] = useState(false)
     const [ drag, setDrag ] = useState(0)
@@ -28,18 +30,35 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
     if(totalTimeRef.current){
           offsetLeft = totalTimeRef.current.offsetLeft
         }
+    useEffect(() => {
+        setStartDateText(new moment(startDate))
+    }, [startDate])
+    useEffect(() => {
+        setEndDateText(new moment(endDate))
+    }, [endDate])
+    useEffect(() => {
+        setLeft(startPosition*48)},
+    [startPosition, dataSource])
+    useEffect(() => {
+        setWidth(endPosition*48)},[endPosition, dataSource,resizeWidth])
     const handleMouseMove = (e) => {
-        if(!drag) return
+        if(!drag && !dragFirstResize) return
         const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
         if(dragFirstResize){
             const newWidth = width -(newPosition- left)
             setWidth(newWidth)
         }
+        const amountUnitAdd = (newPosition - startPosition*48)/48
+        const roundAmountUnitAdd = amountUnitAdd > 0 ?  Math.ceil(amountUnitAdd, girdInstance.unit) : Math.round(amountUnitAdd, girdInstance.unit)
+        setStartDateText(new moment(startDate).add(roundAmountUnitAdd -1, girdInstance.unit));
+        setEndDateText(new moment(endDate).add(roundAmountUnitAdd -1, girdInstance.unit));
         setLeft(newPosition)
         e.stopPropagation()
         e.preventDefault()
     }
     const handleMouseDown = (e) => {
+        e.preventDefault()
+    if(isGroupTask) return
         const className = e.target.className
        if(!className.indexOf ||className
             .indexOf("react-resizable-handle") !== -1 || className
@@ -48,20 +67,28 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
         setDrag(true)
         setA(e.pageX - offsetLeft)
     }
-    const handleMouseUp = () => {
+    const handleMouseUp = (e) => {
+        e.preventDefault()
+        if(!drag && !dragFirstResize) return
         const newLeft = left -left%48
-        setLeft(newLeft)
-        if(dragFirstResize)
-            setWidth(width + left - newLeft)
+        // setLeft(newLeft)
+        // if(dragFirstResize){
+        //     setWidth(width + left - newLeft)
+        // }
+        setDrag(false)
+        setDragFirstResize(false)
         handleChange(newLeft/48,newLeft/48 + width/48)
-       setDrag(false)
-       setDragFirstResize(false)
      }
+     useEffect(() => {
+         document.addEventListener('mouseup', handleMouseUp)
+         return () =>document.removeEventListener('mouseup', handleMouseUp)
+     })
     const handleResizeStop = (e, node) => {
-        const resizeWidth = node.size.width
-        setWidth(resizeWidth - resizeWidth%48)
-        const end = (resizeWidth - resizeWidth%48) / 48 + left /48
-        handleChange(left,end)
+        const newResizeWidth = node.size.width
+        if(newResizeWidth === width) return
+        const add = newResizeWidth > width ? 1 : 0
+        const end = (newResizeWidth - newResizeWidth%48) / 48 + left /48
+        handleChange(left/48,end + add)
     }
     const handleProcessResizeStop = (e, node) => {
         const currentProcessWidth = node.size.width
@@ -69,61 +96,61 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
         setWidthProcess(newProcess)
     }
     const handleChange = (start, end) => {
-        console.log(dataSource)
-        // handleCallBack(index,start, end)
+        setDataSource(index, start, end)
     }
     const handleMouseUpFirstResize = () => {
         setDragFirstResize(false)
         setDrag(false)
     }
-    // useEffect(() =>{
-    //     if(drag){
-    //         document.addEventListener('mouseup', handleMouseUp)
-    //     } else {
-    //         document.removeEventListener('mouseup', handleMouseUp)
-    //     }
-    //     return () => {
-    //         document.removeEventListener('mouseup', handleMouseUp)
-    //     }
-    // })
+    const handleResizeWidth = (e, node) =>{
+        const newResizeWidth = node.size.width
+        const amountUnitAdd = (newResizeWidth - width)/48
+        const roundAmountUnitAdd = amountUnitAdd > 0 ?  Math.ceil(amountUnitAdd, girdInstance.unit) : Math.round(amountUnitAdd, girdInstance.unit)
+        setEndDateText(new moment(endDate).add(roundAmountUnitAdd -1, girdInstance.unit))
+    }
     const b = left ? {left} : {}
+    const styleWidthGroupTask = isGroupTask ? {style: {width}} : {}
+    if(isGroupTask && !visibleGantt.group)
+        return null
+    if(!isGroupTask && !visibleGantt.task)
+        return null
     return (
         <React.Fragment>
             <div ref={totalTimeRef }
             //   onMouseOver={() => {
             //     setDrag(false)
             // }}
-            onMouseLeave={() => setShowResize(false)}
+            onMouseLeave={() => {
+                setShowResize(false)}}
             onMouseEnter={() => {
                 setShowResize(true)}}
-            onMouseUp={handleMouseUp} 
+            // onMouseUp={handleMouseUp} 
             onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}
             style={{display: 'flex',
-            cursor:'move', 
-            width:'100%',
+            cursor:!isGroupTask ?'move' : 'default', 
+            width:'fit-content',
             top: "50%", 
             transform: 'translateY(-50%)', 
             position: 'absolute',
             ...b}}>
                 {visibleGantt.date && <p className="gantt--start-timeline">
-                {startDate.format('MM/DD/YYYY')}
+                {isGroupTask? startDate.format("DD/MM/YYYY") : startDateText.format('DD/MM/YYYY')}
             </p>}
             <ResizableBox 
             minConstraints={[48, 0]}
-            ref={refResizeTotalTime} 
             className="container-resizable"
+            {...styleWidthGroupTask}
             handle={() => (
                 <span
                   className={`resize-width react-resizable-handle`}
-                  onClick={e => {
-                    e.stopPropagation();
-                  }}
                 >
-                       <Circle show={showResize} left={9}/>
+                       {!isGroupTask &&<Circle show={showResize} left={9}/>}
                 </span>
               )}
             onResizeStop={handleResizeStop} 
-            width={width}>
+            onResize={handleResizeWidth}
+            width={width}
+            >
                 <div
                     ref={refFirstResize}
                     onMouseDown={(e) =>{
@@ -132,15 +159,18 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
                         setA(e.pageX - offsetLeft)
                     }}
                     className="resize-width"
-                    onMouseUp={handleMouseUpFirstResize}
+                    // onMouseUp={handleMouseUpFirstResize}
                 >
-                    <Circle show={showResize} left={-15}/>
+                   {!isGroupTask&& <Circle show={showResize} left={-15}/>}
                 </div>
-            <div style={{background: timelineColor.task}} className="gantt--time-task">
+            <div style={{background: isGroupTask ? timelineColor.group :timelineColor.task}} className="gantt--time-task">
             </div>
             </ResizableBox>
             {visibleGantt.date &&<p className="gantt--end-timeline">
-            {endDate.format('MM/DD/YYYY')}
+            {endDateText.format('DD/MM/YYYY')}
+            </p>}
+            {visibleGantt.name && <p className="gantt--name-timeline">
+            {dataSource[index].name}
             </p>}
 </div>
             <div
@@ -150,7 +180,7 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
                 onMouseLeave={() =>   setShowResize(false)}
                 onMouseEnter={() => {
                     setShowResize(true)}}
-                onMouseUp={handleMouseUp} 
+                // onMouseUp={handleMouseUp} 
                 onMouseDown={handleMouseDown} 
                 onMouseMove={handleMouseMove} 
                 style={{
@@ -158,10 +188,10 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
                     top: "50%", 
                     transform: 'translateY(-50%)',
                     position: 'absolute',
-                    cursor:'move',
+                    cursor: !isGroupTask ? 'move' : 'default',
                     ...b}}>
-            <ResizableBox 
-                onResize={handleProcessResizeStop} 
+            {visibleGantt.duration&& <ResizableBox 
+                onResize={handleProcessResizeStop}
                 minConstraints={[0, 0]} 
                 maxConstraints={[width, width]} 
                 width={0}
@@ -183,8 +213,8 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
                     </span>
                   )}
             >
-            <div style={{background: timelineColor.duration}} className="gantt--duration-task" ref={refProcess} ><div  className="duration-text-gantt">{widthProcess}%</div></div>
-            </ResizableBox>
+            <div style={{background: timelineColor.duration}} className="gantt--duration-task" ref={refProcess} ><div  className="duration-text-gantt">{visibleGantt.numberDuration&& widthProcess + '%'}</div></div>
+            </ResizableBox>}
             </div>
             </React.Fragment>
     )
@@ -193,6 +223,7 @@ const TimeLine = ({startPosition, endPosition, index, handleCallBack,dataSource,
 const mapStateToProps = state =>({
     timelineColor: state.gantt.timelineColor,
     visibleGantt: state.gantt.visible.gantt,
+    girdInstance: state.gantt.girdInstance,
 })
 
 export default connect(mapStateToProps)(TimeLine)
