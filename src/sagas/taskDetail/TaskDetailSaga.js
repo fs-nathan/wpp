@@ -1078,7 +1078,7 @@ async function doGetListTaskDetail({ project_id, type_data }) {
 function* getListTaskDetail(action) {
   try {
     const res = yield call(doGetListTaskDetail, action)
-    yield put(actions.getListTaskDetailSuccess(res, action.type_data))
+    yield put(actions.getListTaskDetailSuccess(res, action.type_data || localStorage.getItem(lastJobSettingKey) || 'include-room'))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error));
   }

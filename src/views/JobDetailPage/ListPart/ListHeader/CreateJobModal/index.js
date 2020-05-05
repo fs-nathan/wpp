@@ -147,7 +147,9 @@ function CreateJobModal(props) {
       let item = listTask.find(
         item => item.value === ''
       );
-      if (item) setGroupTaskValue(item);
+      if (item) {
+        setGroupTaskValue(item);
+      }
     }
   }, [listTaskDetail]);
 
@@ -165,7 +167,10 @@ function CreateJobModal(props) {
       let item = listSchedulesData.find(
         item => item.is_default
       );
-      if (item) setScheduleValue(item);
+      if (item) {
+        setScheduleValue(item);
+        handleChangeData('schedule', item.value)
+      }
     }
   }, [listSchedule]);
 

@@ -60,13 +60,11 @@ function ListHeader(props) {
   }
 
   function onClickCreateJob() {
-    if (listTaskDetail) {
-      if (listTaskDetail.tasks.length === 0) {
-        setOpenCreateGroup(true)
-        return
-      }
+    if (!listTaskDetail || listTaskDetail.tasks.length === 0) {
+      setOpenCreateGroup(true)
+    } else {
+      setOpenCreateJobModal(true);
     }
-    setOpenCreateJobModal(true);
   }
 
   const searchListTask = e => {

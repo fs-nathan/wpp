@@ -155,3 +155,7 @@ export function getFileUrl(file) {
         }
     })
 }
+
+export function isOneOf(value, list = []) {
+    return list.indexOf(value) !== -1;
+}

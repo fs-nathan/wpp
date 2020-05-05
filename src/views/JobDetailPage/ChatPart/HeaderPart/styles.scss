@@ -35,29 +35,32 @@
     margin-left: 2px;
   }
   &--avatar3_1_plus {
-    width: 20px;
-    height: 20px;
+    width: 29px;
+    height: 29px;
     margin-right: 2px;
     display: inline-flex;
   }
   &--avatar3_2_plus {
-    width: 20px;
-    height: 20px;
+    width: 29px;
+    height: 29px;
     display: inline-flex;
     margin-left: 2px;
   }
   &--avatar3_3_plus {
-    width: 20px;
-    height: 20px;
+    width: 29px;
+    height: 29px;
     display: inline-flex;
     margin-right: 2px;
+    margin-left: 0px;
   }
   &--avatar_plus {
-    width: 20px;
-    height: 20px;
-    top: -5px;
+    width: 29px;
+    height: 29px;
+    top: -10px;
     display: inline-flex;
     margin-left: 2px;
+    background-color: #b3e5fc;
+    color: #fff;
   }
   &--title {
     font-size: 24px;

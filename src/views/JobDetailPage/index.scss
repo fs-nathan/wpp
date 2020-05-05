@@ -233,7 +233,7 @@
 // index.js - ListPart
 .container-lp {
   grid-area: list;
-  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  border-right: 1px solid #e5e5e9;
   .wrap-list-task {
     height: calc(76vh);
     grid-template-rows: 165px calc(76vh);
@@ -263,7 +263,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-
+  border-bottom: 1px solid #e5e5e9;
   & > * {
     margin-right: 10px;
     margin-bottom: 5px;
@@ -272,7 +272,6 @@
       font-size: 12px;
     }
   }
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 // index.js - ListBodyItem - ListBody
@@ -387,7 +386,7 @@
 .list-header {
   padding: 0 3px 0 15px;
   height: 77px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e5e5e9;
   & > * {
     display: flex;
     align-items: center;
@@ -479,7 +478,7 @@
   display: flex;
   align-items: center;
   background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e5e5e9;
   height: 85px;
   position: sticky;
   top: 0;

@@ -1,12 +1,12 @@
-import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import { loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
-import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
+import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { getChatDate } from 'helpers/jobDetail/stringHelper';
 import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -72,19 +72,20 @@ const BodyPart = props => {
     const calculatedChats = chatsWithTime.map((chat, i) => {
       let chatPosition = 'top';
       const prevChat = chatsWithTime[i - 1];
-      const nextChat = chatsWithTime[i + 1]
+      const nextChat = chatsWithTime[i + 1];
+      const messageStyledTypes = [CHAT_TYPE.FILE, CHAT_TYPE.TEXT, CHAT_TYPE.CHAT_FORWARD_FILE];
       if (
-        (chat.type === CHAT_TYPE.FILE || chat.type === CHAT_TYPE.TEXT || chat.type === CHAT_TYPE.CHAT_FORWARD_FILE)
-        && (!prevChat || (prevChat.type !== CHAT_TYPE.FILE && prevChat.type !== CHAT_TYPE.TEXT && prevChat.type !== CHAT_TYPE.CHAT_FORWARD_FILE))
-        && (!nextChat || (nextChat.type !== CHAT_TYPE.FILE && nextChat.type !== CHAT_TYPE.TEXT && nextChat.type !== CHAT_TYPE.CHAT_FORWARD_FILE))
+        isOneOf(chat.type, messageStyledTypes)
+        && (!prevChat || !isOneOf(prevChat.type, messageStyledTypes))
+        && (!nextChat || !isOneOf(nextChat.type, messageStyledTypes))
       ) {
         chatPosition = 'one';
       }
-      else if (prevChat && (prevChat.type === CHAT_TYPE.FILE || prevChat.type === CHAT_TYPE.TEXT)) {
+      else if (prevChat && isOneOf(prevChat.type, messageStyledTypes)) {
         if (prevChat.user_create_id === chat.user_create_id) {
           chatPosition = 'mid';
           if (!nextChat || nextChat.user_create_id !== chat.user_create_id
-            || (nextChat.type !== CHAT_TYPE.FILE && nextChat.type !== CHAT_TYPE.TEXT && nextChat.type !== CHAT_TYPE.CHAT_FORWARD_FILE)) {
+            || !isOneOf(nextChat.type, messageStyledTypes)) {
             chatPosition = 'bot';
           }
         }

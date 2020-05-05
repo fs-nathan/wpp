@@ -30,13 +30,14 @@ export default function reducer(state = initialState, action) {
                 isFetching: false,
                 dataFetched: true,
                 listTaskDataType: action.type_data,
-                listTaskDetail: action.payload,
             };
-            if (action.type_data === 'include-room') {
-                newData.listTaskDetail = action.payload
-                newData.defaultListTaskDetail = action.payload.tasks
-            } else {
-                newData.listDataNotRoom = action.payload
+            if (action.type_data) {
+                if (action.type_data === 'include-room') {
+                    newData.listTaskDetail = action.payload
+                    newData.defaultListTaskDetail = action.payload.tasks
+                } else {
+                    newData.listDataNotRoom = action.payload
+                }
             }
             return newData;
         case types.FILTER_TASK_BY_TYPE:
