@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { getAllGroupTask } from '../../actions/groupTask/getAllGroupTask';
 import { listGroupTask } from '../../actions/groupTask/listGroupTask';
-import { detailProject } from '../../actions/project/detailProject';
-import { memberProject } from '../../actions/project/memberProject';
+import { detailProject, detailProjectReset } from '../../actions/project/detailProject';
+import { memberProject, memberProjectReset } from '../../actions/project/memberProject';
 import { permissionProject } from '../../actions/project/permissionProject';
 import { detailStatus } from '../../actions/project/setting/detailStatus';
 import { listProjectGroup } from '../../actions/projectGroup/listProjectGroup';
-import { listTask } from '../../actions/task/listTask';
+import { listTask, listTaskReset } from '../../actions/task/listTask';
 import { getListTaskDetail } from '../../actions/taskDetail/taskDetailActions';
 import { listUserRole } from '../../actions/userRole/listUserRole';
 import { getPermissionViewDetailProject } from '../../actions/viewPermissions';
@@ -44,6 +44,7 @@ function ProjectPage({
   doGetListTaskDetail,
   doGetPermissionViewDetailProject,
   route, viewPermissions, doPermissionProject,
+  doReset,
 }) {
 
   const [projectId, setProjectId] = React.useState();
@@ -86,6 +87,7 @@ function ProjectPage({
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (projectId) {
+        doReset();
         doDetailProject({ projectId }, true);
 
         const reloadDetailProject = () => {
@@ -115,11 +117,12 @@ function ProjectPage({
         }
       }
     }
-  }, [projectId, doDetailProject, viewPermissions]);
+  }, [projectId, doDetailProject, viewPermissions, doReset]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
       if (projectId) {
+        doReset();
         doMemberProject({ projectId }, true);
 
         const reloadMemberProject = () => {
@@ -151,7 +154,7 @@ function ProjectPage({
         }
       }
     }
-  }, [projectId, doMemberProject, viewPermissions]);
+  }, [projectId, doMemberProject, viewPermissions, doReset]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
@@ -164,6 +167,7 @@ function ProjectPage({
   React.useEffect(() => {
     if (viewPermissions.permissions !== null) {
       if (projectId) {
+        doReset();
         doListTask({
           projectId,
           timeStart: get(timeRange, 'timeStart') ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD') : undefined,
@@ -199,7 +203,7 @@ function ProjectPage({
         }
       }
     }
-  }, [projectId, doListTask, timeRange, viewPermissions]);
+  }, [projectId, doListTask, timeRange, viewPermissions, doReset]);
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'update_project', false)) {
@@ -368,6 +372,11 @@ function ProjectPage({
 
 const mapDispatchToProps = dispatch => {
   return {
+    doReset: () => {
+      dispatch(detailProjectReset());
+      dispatch(memberProjectReset());
+      dispatch(listTaskReset());
+    },
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),

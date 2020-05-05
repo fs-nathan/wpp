@@ -1,7 +1,7 @@
 import { concat, findIndex, get, remove } from 'lodash';
 import { CREATE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/createUserRole';
 import { DELETE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/deleteUserRole';
-import { LIST_USER_ROLE, LIST_USER_ROLE_FAIL, LIST_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/listUserRole';
+import { LIST_USER_ROLE, LIST_USER_ROLE_FAIL, LIST_USER_ROLE_RESET, LIST_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/listUserRole';
 import { UPDATE_USER_ROLE_SUCCESS } from '../../constants/actions/userRole/updateUserRole';
 
 export const initialState = {
@@ -35,6 +35,8 @@ function reducer(state = initialState, action) {
         error: action.error,
         loading: false,
       };
+    case LIST_USER_ROLE_RESET:
+      return initialState;
     case CREATE_USER_ROLE_SUCCESS: {
       const newUserRoles = concat(state.data.userRoles, get(action.data, 'userRole'));
       return {
