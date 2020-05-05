@@ -1,4 +1,4 @@
-import { getEmotions, getListStickersRequest } from 'actions/chat/chat';
+import { getEmotions, getGirdListTask, getListStickersRequest } from 'actions/chat/chat';
 import { detailStatus } from 'actions/project/setting/detailStatus';
 import last from 'lodash/last';
 import React, { useEffect } from 'react';
@@ -23,6 +23,7 @@ function JobDetailPage(props) {
     dispatch(closeNoticeModal());
     dispatch(getListStickersRequest());
     dispatch(getEmotions());
+    dispatch(getGirdListTask());
     dispatch(taskDetailAction.getRole());
     dispatch(taskDetailAction.getListOffer());
     dispatch(taskDetailAction.getPermission({ type: 4 }));

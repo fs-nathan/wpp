@@ -245,3 +245,12 @@ export function* createChatFileFromGoogleDriver(payload) {
     yield put(actions.createChatFileFromGoogleDriverFail(error));
   }
 }
+
+export function* getGirdListTask(payload) {
+  try {
+    const res = yield call(apiService.get, "/get-gird-list-task");
+    yield put(actions.getGirdListTaskSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getGirdListTaskFail(error));
+  }
+}

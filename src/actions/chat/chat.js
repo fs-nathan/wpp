@@ -590,3 +590,24 @@ export function openDetailMember(isOpen) {
     isOpen
   };
 }
+
+export function getGirdListTask(payload) {
+  return {
+    type: actionTypes.GET_GIRD_LIST_TASK,
+    payload
+  };
+}
+
+export function getGirdListTaskSuccess(payload) {
+  return {
+    type: actionTypes.GET_GIRD_LIST_TASK_SUCCESS,
+    payload
+  };
+}
+
+export function getGirdListTaskFail(error) {
+  return {
+    type: actionTypes.GET_GIRD_LIST_TASK_FAIL,
+    error
+  };
+}

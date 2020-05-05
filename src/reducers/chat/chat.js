@@ -29,6 +29,7 @@ export const initialState = {
   isOpenDetailDemand: false,
   dataDemand: null,
   isOpenDetailMember: false,
+  gridSettings: [],
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -244,6 +245,11 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.OPEN_DETAIL_MEMBER: {
       const { isOpen } = action;
       draft.isOpenDetailMember = isOpen;
+      break;
+    }
+    case actionTypes.GET_GIRD_LIST_TASK_SUCCESS: {
+      const { payload } = action;
+      draft.gridSettings = payload.girds;
       break;
     }
   }
