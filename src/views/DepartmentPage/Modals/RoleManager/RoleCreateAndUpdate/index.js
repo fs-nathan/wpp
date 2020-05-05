@@ -1,28 +1,30 @@
-import React from 'react';
-import { createUserRole } from '../../../../../actions/userRole/createUserRole';
-import { updateUserRole } from '../../../../../actions/userRole/updateUserRole';
-import { connect } from 'react-redux';
+import { createUserRole } from 'actions/userRole/createUserRole';
+import { updateUserRole } from 'actions/userRole/updateUserRole';
 import { get } from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
 import RoleCreateAndUpdatePresenter from './presenters';
+import { activeLoadingSelector } from './selectors';
 
-function RoleCreateAndUpdate({ open, setOpen, updatedUserRole = null, doCreateUserRole, doUpdateUserRole }) {
+function RoleCreateAndUpdate({ open, setOpen, activeLoading, updatedUserRole = null, doCreateUserRole, doUpdateUserRole }) {
 
   return (
     <RoleCreateAndUpdatePresenter
       open={open}
       setOpen={setOpen}
-      updatedUserRole={updatedUserRole} 
+      activeLoading={activeLoading}
+      updatedUserRole={updatedUserRole}
       handleCreateOrUpdateUserRole={(name, description) =>
-        updatedUserRole 
+        updatedUserRole
           ? doUpdateUserRole({
-              userRoleId: get(updatedUserRole, 'id'),
-              name,
-              description,
-            })
+            userRoleId: get(updatedUserRole, 'id'),
+            name,
+            description,
+          })
           : doCreateUserRole({
-              name,
-              description,
-            })
+            name,
+            description,
+          })
       }
     />
   )
@@ -36,6 +38,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    activeLoading: activeLoadingSelector(state),
+  }),
   mapDispatchToProps,
 )(RoleCreateAndUpdate);

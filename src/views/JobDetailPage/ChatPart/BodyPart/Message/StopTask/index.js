@@ -1,62 +1,45 @@
-import { Avatar } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { mdiTimerOff } from '@mdi/js';
 import Icon from '@mdi/react';
-import clsx from 'clsx';
+import { getDialogDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const StopTask = ({
-  handleReplyChat,
-  id,
   user_create_name,
   user_create_avatar,
   user_create_position,
-  user_create_roles = [],
   new_task_name,
   time_create,
-  isReply,
-  is_me,
   chatPosition = "top",
-  title = "Đổi tên công việc"
 }) => {
-
+  const { t } = useTranslation();
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   return (
-    <div className={clsx("StopTask", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
-      <div className="UpdateTaskNameMessage--header" >
-        Thông báo
-      </div>
-      <div className="UpdateTaskNameMessage--sender" >
-        <Avatar className="UpdateTaskNameMessage--avatarReply" src={user_create_avatar} />
-        <div className="UpdateTaskNameMessage--name" >
-          {user_create_name}
+    <DialogMessageWrap
+      {...{
+        chatPosition,
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+      }}
+      isHideFooterIcon
+      footerText=""
+      taskName={t('LABEL_CHAT_TASK_TAM_DUNG_CONG_VIEC')}
+    >
+      <>
+        <Icon className="StopTask--icon" path={mdiTimerOff}></Icon>
+        <div className="StopTask--content" >
+          {getDialogDate(time_create, dateFormat)}
         </div>
-        <div className="UpdateTaskNameMessage--position" >
-          {user_create_position}
+        <div className="StopTask--notify" >
+          {"Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!"}
         </div>
-        {user_create_roles[0] &&
-          <div className="UpdateTaskNameMessage--room"  >
-            {user_create_roles[0]}
-          </div>
-        }
-      </div>
-      <div className="UpdateTaskNameMessage--title" >
-        {"Tạm dừng công việc"}
-      </div>
-      <Icon className="StopTask--icon" path={mdiTimerOff}></Icon>
-      <div className="UpdateTaskNameMessage--content" >
-        Lúc {time_create}
-      </div>
-      <div className="StopTask--notify" >
-        {"Tiến độ công việc sẽ chạy lại sau khi bỏ tạm dừng!"}
-      </div>
-      {!isReply &&
-        <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
-          {time_create}
-        </div>
-      }
-
-    </div>
+      </>
+    </DialogMessageWrap>
   );
 }
 

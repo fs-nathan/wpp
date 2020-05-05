@@ -251,7 +251,7 @@ function AddUser({
   desireUser, desireLoading,
   requireUsers, requireLoading,
   invitations,
-  handleSearchUser, handleSearchUserReset,
+  handleSearchUser,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
   handleAcceptRequirementJoinGroup, handleRejectRequirementJoinGroup,
   handleCancleInvitationJoinGroup,
@@ -269,7 +269,6 @@ function AddUser({
         </IconWrapper>
         <Title>{t('DMH.VIEW.DP.LEFT.ADD.LABEL.ADD')}</Title>
         <StyledIconButton size='small' onClick={evt => {
-          handleSearchUserReset();
           handleVisibleDrawerMessage({ type: '', anchor: anchorDrawer });
         }}>
           <abbr

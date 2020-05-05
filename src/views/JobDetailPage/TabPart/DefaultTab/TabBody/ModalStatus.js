@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import Icon from '@mdi/react';
 import {
@@ -6,6 +7,7 @@ import {
 } from '@mdi/js';
 
 const ModalStatus = (status) => {
+  const { t } = useTranslation();
 
   let value = '', color, icon
   switch (status.values) {
@@ -40,7 +42,7 @@ const ModalStatus = (status) => {
       <div className="styled-context-status">
         <div>
           <Icon path={icon ? icon : mdiCheckCircle} size={1} color={icon ? '#dc3545' : '#03b000'} />
-          <p>Trạng thái:</p>
+          <p>{t('LABEL_CHAT_TASK_TRANG_THAI')}</p>
           <p style={{ color: color }}>{value}</p>
         </div>
         <p>

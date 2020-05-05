@@ -8,11 +8,12 @@ const restoreTrashProject = state => state.project.restoreTrashProject;
 export const projectsSelector = createSelector(
   [listDeletedProject],
   (listDeletedProject) => {
-    const { data: { projects }, loading, error } = listDeletedProject;
+    const { data: { projects }, loading, error, firstTime } = listDeletedProject;
     return {
       projects,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 );

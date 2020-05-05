@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
@@ -17,6 +18,7 @@ const DeleteOffer = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
 
   return (
     <div className={clsx("DeleteOffer", "DeleteSubTask", `TextMessage__${chatPosition}`)} >
@@ -34,8 +36,7 @@ const DeleteOffer = ({
           </div>
         }
       </div>
-      <div className="DeleteSubTask--title" >
-        Đã xoá đề xuất lúc {time_create}
+      <div className="DeleteSubTask--title" >{t('LABEL_CHAT_TASK_DA_XOA_DE_XUAT_LUC')}{time_create}
       </div>
       <div className="DeleteSubTask--content" >
         {offer_content}

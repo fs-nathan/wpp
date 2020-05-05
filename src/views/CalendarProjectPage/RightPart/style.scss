@@ -1,0 +1,271 @@
+.view_ProjectCalendar_rightContainer {
+  margin: 15px 0px 25px 25px;
+
+  &_text,
+  .MuiFormControlLabel-label,
+  .MuiOutlinedInput-input {
+    font-size: 14px !important;
+  }
+
+  .MuiSelect-icon {
+    top: calc(50% - 10px);
+  }
+
+  .table_working_day {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: minmax(320px, 3fr) minmax(320px, 3fr);
+    width: 677px;
+    margin: 15px 0px 15px 10px;
+
+    .table_header {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e6f0ff;
+      padding: 7px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-collapse: collapse;
+      font-size: 14px !important;
+    }
+
+    .table_data {
+      padding: 10px;
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 14px !important;
+
+      .MuiFormControl-root {
+        width: 100%;
+      }
+    }
+
+    &_item {
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 93%;
+      padding: 2px 10px;
+      margin-top: 5px;
+      border-radius: 2px;
+      min-height: 40px;
+
+      &>div:nth-child(1) {
+        font-size: 14px !important;
+      }
+
+      &>button {
+        display: none !important;
+      }
+
+      &:hover {
+        &>button {
+          display: block !important;
+        }
+      }
+    }
+  }
+
+  .table_working_stage {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 200px 477px;
+    width: 677px;
+    margin: 15px 0px 15px 10px;
+
+    .table_header {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e6f0ff;
+      padding: 7px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-collapse: collapse;
+      font-size: 14px !important;
+    }
+
+    .table_data {
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      min-height: 80px;
+
+      &_padding1 {
+        padding: 0px 10px;
+      }
+
+      &_buttonLinkDanger {
+        color: red !important;
+      }
+
+      .MuiListItemText-root {
+        &>span {
+          font-size: 14px !important;
+        }
+      }
+    }
+
+    .full_time {
+      min-height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 450;
+      background: #F6F6F6;
+
+      &>span {
+        font-size: 14px !important;
+      }
+    }
+
+    &_workingStageItemContainer {
+      display: grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: 180px 100px 150px;
+    }
+
+    .MuiListItemSecondaryAction-root {
+      display: inline-flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 80px;
+    }
+
+    .stage_setting_date {
+      background: #FFFF;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      font-weight: normal !important;
+
+      &_label {
+        padding: 20px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        font-size: 14px !important;
+      }
+
+      &_control {
+        height: 20px;
+        display: flex;
+        flex-direction: row-reverse;
+        margin: 0;
+        padding: 5px 10px;
+        background: #e6f0ff;
+
+        &_group {
+          width: 50px;
+          display: inline-flex;
+          justify-content: space-around;
+          align-items: center;
+          padding: 5px;
+        }
+      }
+    }
+  }
+
+  .MuiTypography-colorPrimary {
+    color: #009CF3 !important;
+    cursor: pointer;
+    font-size: 14px !important;
+  }
+
+  .uppercase_title {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .normal_title {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .MuiOutlinedInput-input {
+    padding: 7px 10px 7px 15px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .selector {
+    height: 30px;
+    min-width: 135px;
+  }
+
+  .inputDate {
+    .MuiOutlinedInput-adornedEnd {
+      width: 140px;
+      height: 30px;
+    }
+  }
+
+  .color_mark_green {
+    background-color: #3DA50D;
+    border-radius: 10px;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+
+  .color_mark_red {
+    background-color: red;
+    border-radius: 10px;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+
+  .add_working_off_day_container {
+    display: flex;
+    justify-content: space-around;
+    max-width: 700px;
+    flex-direction: row;
+
+    .MuiButton-outlinedSizeSmall {
+      min-width: 40px;
+      height: 30px;
+      background-color: #8BC34A;
+
+      &:hover {
+        background-color: #6aaa20;
+      }
+    }
+  }
+}
+
+.view_ProjectCalendar_rightContainer_Selector {
+  .MuiList-root {
+    min-height: 50px !important;
+  }
+
+  .MuiPaper-root {
+    transform: translateY(30px) !important;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      background-color: unset !important;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      cursor: pointer !important;
+      min-height: 50px !important;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: unset !important;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+    }
+  }
+}

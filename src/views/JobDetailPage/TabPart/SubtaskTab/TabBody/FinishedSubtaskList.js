@@ -3,12 +3,14 @@ import { mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { deleteSubTask } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import { ButtonIcon } from './AllSubtaskListItem';
 import './styles.scss';
 
 const FinishedSubtaskList = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const completeSubTasks = useSelector(state => state.taskDetail.subTask.completeSubTasks);
@@ -87,7 +89,7 @@ const FinishedSubtaskList = (props) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
+        <MenuItem onClick={handleOpenModalDelete}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
 
       <ModalDeleteConfirm

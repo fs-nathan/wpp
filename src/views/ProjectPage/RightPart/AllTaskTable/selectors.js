@@ -13,7 +13,7 @@ const hideProject = state => state.project.hideProject;
 export const tasksSelector = createSelector(
   [listTask, listGroupTask, sortTask, deleteTask],
   (listTask, listGroupTask, sortTask, deleteTask) => {
-    const { data: { tasks }, loading: listTaskLoading, error: listTaskError } = listTask;
+    const { data: { tasks }, loading: listTaskLoading, error: listTaskError, firstTime } = listTask;
     const { loading: sortTaskLoading, error: sortTaskError } = sortTask;
     const { loading: deleteTaskLoading, error: deleteTaskError } = deleteTask;
     const { data: { groupTasks } } = listGroupTask;
@@ -23,8 +23,9 @@ export const tasksSelector = createSelector(
     }));
     return {
       tasks: newTasks,
-      loading: listTaskLoading || sortTaskLoading || deleteTaskLoading,
+      loading: (firstTime ? false : listTaskLoading) || sortTaskLoading || deleteTaskLoading,
       error: listTaskError || sortTaskError || deleteTaskError,
+      firstTime,
     }
   }
 );
@@ -32,11 +33,12 @@ export const tasksSelector = createSelector(
 export const projectSelector = createSelector(
   [detailProject],
   (detailProject) => {
-    const { data: { project }, loading, error } = detailProject;
+    const { data: { project }, loading, error, firstTime } = detailProject;
     return {
       project,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 );

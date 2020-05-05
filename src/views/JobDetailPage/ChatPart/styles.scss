@@ -64,3 +64,57 @@
     outline: none;
   }
 }
+
+.chatPart {
+  &--searchWrap {
+    position: relative;
+    display: none;
+  }
+  &--search {
+    .MuiInputBase-root {
+      border-radius: 0em;
+      height: 40px;
+      background-color: #fff;
+      border-bottom: 1px solid #f1f3f4;
+    }
+    svg {
+      width: 20px !important;
+      height: 20px !important;
+      top: 9px !important;
+    }
+  }
+  &--close {
+    position: absolute;
+    bottom: -5px;
+    right: 0px;
+    svg {
+      width: 20px !important;
+      height: 20px !important;
+      fill: #666666;
+    }
+  }
+  &__showSearch {
+    display: block;
+  }
+  &--pinRemind {
+    display: flex;
+    position: relative;
+    padding: 10px;
+  }
+  &--pinRemind &--close {
+    bottom: 2px;
+  }
+  &--pinImage {
+    width: 30px;
+    height: 30px;
+  }
+  &--pinRight {
+    margin-left: 10px;
+  }
+  &--pinContent {
+    text-transform: uppercase;
+  }
+  &--pinType {
+    color: #666666;
+  }
+}

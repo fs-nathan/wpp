@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsHorizontal } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -7,6 +8,7 @@ import { getStatus, getStatusName, priorityList } from '../data';
 import './styles.scss';
 
 const CustomListItem = (props) => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
     title, dataHander, date_create, priority_code = 0, priority_name = '',
@@ -50,8 +52,7 @@ const CustomListItem = (props) => {
             {getStatusName(total_rejected, total_approved)}
           </div>
           <div className="offerTabItem--vote" >
-            {total_accepted}/{total_approved} đồng ý - {total_rejected}/{total_approved} từ chối
-          </div>
+            {total_accepted}/{total_approved}{t('LABEL_CHAT_TASK_DONG_Y')}{total_rejected}/{total_approved}{t('LABEL_CHAT_TASK_TU_CHOI')}</div>
         </div>
         <IconButton className="offerTabItem--button" size='small' onClick={handleClick} >
           <Icon path={mdiDotsHorizontal} size={1} />
@@ -67,15 +68,15 @@ const CustomListItem = (props) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={onClickDetail}>Chi tiết</MenuItem>
+        <MenuItem onClick={onClickDetail}>{t('LABEL_CHAT_TASK_CHI_TIET')}</MenuItem>
         <MenuItem onClick={() => {
           props.handleClickOpen()
           setAnchorEl(null)
-        }}>Chỉnh sửa</MenuItem>
+        }}>{t('LABEL_CHAT_TASK_CHINH_SUA')}</MenuItem>
         <MenuItem onClick={() => {
           props.handleOpenModalDelete(props.offer)
           setAnchorEl(null)
-        }}>Xóa</MenuItem>
+        }}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
     </React.Fragment>
   );

@@ -1,7 +1,7 @@
 import { ListItemText, Menu, MenuItem } from '@material-ui/core';
 import { mdiChevronLeft, mdiDragVertical, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
-import { filter, find, get } from 'lodash';
+import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
@@ -97,7 +97,7 @@ function GroupTaskSlide({
                     }
                   />
                 </StyledListItem>
-                {filter(groupTasks.groupTasks, taskGroup => get(taskGroup, 'id') !== 'default').map((taskGroup, index) => (
+                {groupTasks.groupTasks.map((taskGroup, index) => (
                   <CustomListItem
                     key={get(taskGroup, 'id')}
                     taskGroup={taskGroup}
@@ -107,30 +107,6 @@ function GroupTaskSlide({
                   />
                 ))}
                 {provided.placeholder}
-                <StyledListItem
-                  component={Link}
-                  to={`#`}
-                >
-                  <div>
-                    <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                  </div>
-                  <ListItemText
-                    primary={
-                      <StyledPrimary>Chưa phân loại</StyledPrimary>
-                    }
-                    secondary={
-                      <Secondary>
-                        {get(
-                          find(
-                            groupTasks.groupTasks,
-                            { id: 'default' }
-                          ),
-                          'number_task',
-                          0)} việc
-                        </Secondary>
-                    }
-                  />
-                </StyledListItem>
               </StyledList>
             )}
           </Droppable>

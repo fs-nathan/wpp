@@ -8,11 +8,12 @@ const updateGroupPermissionMember = state => state.project.updateGroupPermission
 export const membersSelector = createSelector(
   [memberProject],
   (memberProject) => {
-    const { data: { membersAdded }, loading, error } = memberProject;
+    const { data: { membersAdded }, loading, error, firstTime } = memberProject;
     return {
       members: membersAdded,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 );
@@ -20,12 +21,13 @@ export const membersSelector = createSelector(
 export const permissionsSelector = createSelector(
   [permissionProject],
   (permissionProject) => {
-    const { data: { groupPermissions, adminPermission }, loading, error } = permissionProject;
+    const { data: { groupPermissions, adminPermission }, loading, error, firstTime } = permissionProject;
     return {
       groupPermissions,
       adminPermission,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 )
@@ -34,7 +36,6 @@ export const updateGroupPermissionSelector = createSelector(
   [updateGroupPermissionMember],
   (updateGroupPermissionMember) => {
     const { loading, error } = updateGroupPermissionMember;
-    console.log(updateGroupPermissionMember);
     return {
       loading,
       error,

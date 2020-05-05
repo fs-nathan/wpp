@@ -1,0 +1,29 @@
+.pick-color-modal {
+  .comp_CustomModal___scrollbar-main {
+    min-height: 220px;
+  }
+
+  .pick-color-content {
+    &.list-color {
+      display: grid;
+      grid-template-columns: repeat(7, auto);
+
+      .item-outer {
+        padding: 10px;
+        border-radius: 50%;
+        margin: 10px auto;
+        display: inline-block;
+        border-width: 1px;
+        border-style: solid;
+
+        .item-color {
+          display: block;
+          cursor: pointer;
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { IconButton, ListItem, ListItemText, Menu, MenuItem } from '@material-ui/core';
 import { mdiCheck, mdiCircleOutline, mdiDotsVertical, mdiDragVertical } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -42,6 +43,7 @@ export const ButtonIcon = styled(IconButton)`
 `
 
 function AllSubtaskListItem(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
@@ -109,20 +111,20 @@ function AllSubtaskListItem(props) {
           onMouseLeave={() => setIsHover(false)}
         >
           <StyledMenu {...provided.dragHandleProps}>
-            <abbr title="Kéo thả sắp xếp">
+            <abbr title={t('LABEL_CHAT_TASK_KEO_THA_SAP_XEP')}>
               <Icon color="#ccc" path={mdiDragVertical} size={1} />
             </abbr>
           </StyledMenu>
           {
             !isHover
               ?
-              <abbr title="Đánh dấu hoàn thành">
+              <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}>
                 {/* <Avatar src={props.task.user_create_avatar} alt='avatar' /> */}
                 <Icon path={mdiCircleOutline} size={1} color="#757575" />
               </abbr>
               :
               <ButtonIcon onClick={onClickCompleteTask}>
-                <abbr title="Đánh dấu hoàn thành">
+                <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}>
                   <Icon path={mdiCheck} size={1} color="#74f5c0" />
                 </abbr>
               </ButtonIcon>
@@ -147,8 +149,8 @@ function AllSubtaskListItem(props) {
                 horizontal: 'right',
               }}
             >
-              <MenuItem onClick={handleClickOpen} >Chỉnh sửa</MenuItem>
-              <MenuItem onClick={handleOpenModalDelete}>Xóa</MenuItem>
+              <MenuItem onClick={handleClickOpen} >{t('LABEL_CHAT_TASK_CHINH_SUA')}</MenuItem>
+              <MenuItem onClick={handleOpenModalDelete}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
             </Menu>
           </StyledMenu>
           <SubtaskModal isOpen={open}

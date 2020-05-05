@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -89,6 +90,7 @@ function getCompleteStatus(complete) {
 }
 
 function TabBody(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(taskIdSelector);
@@ -139,9 +141,7 @@ function TabBody(props) {
       <StyledList>
         <ListItem>
           <ListItemText>
-            <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>
-              Tên công việc
-           </ColorTypo>
+            <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
             <ContentText component='span'>
               {detailTask && detailTask.name}
               {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
@@ -163,9 +163,7 @@ function TabBody(props) {
             &&
             <Typography
               className="listPartTabBody--expired"
-            >
-              Đã quá hạn
-              </Typography>
+            >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>
           }
           {
             props.isPause
@@ -173,48 +171,46 @@ function TabBody(props) {
             <HtmlTooltip title={<ModalStatus values="Đang tạm dừng" />} placement="top-start">
               <Typography
                 className="listPartTabBody--expired listPartTabBody--paused"
-              >
-                Tạm dừng
-              </Typography>
+              >{t('LABEL_CHAT_TASK_TAM_DUNG')}</Typography>
             </HtmlTooltip>
           }
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
-          <ColorTypo>Tiến độ</ColorTypo>
+          <ColorTypo>{t('LABEL_CHAT_TASK_TIEN_DO')}</ColorTypo>
           <BadgeItem badge size='small' color='orangelight' label={taskStatistic.progressCnt} style={{ marginRight: 10 }} />
           <div className="simple-progress-bar-wrapper">
             <SimpleSmallProgressBar percentDone={taskStatistic.complete} percentTarget={taskStatistic.complete_with_time} color={colorPal['teal'][0]} targetColor={colorPal['orange'][0]} />
           </div>
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(2)}>
-          <ColorTypo>Công việc con</ColorTypo>
+          <ColorTypo>{t('LABEL_CHAT_TASK_CONG_VIEC_CON')}</ColorTypo>
           <BadgeItem badge size='small' color='bluelight' label={taskStatistic.subTaskCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
-          <ColorTypo>Nhắc hẹn</ColorTypo>
+          <ColorTypo>{t('LABEL_CHAT_TASK_NHAC_HEN')}</ColorTypo>
           <BadgeItem badge size='small' color='redlight' label={taskStatistic.remindCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(4)}>
-          <ColorTypo>Tài liệu</ColorTypo>
+          <ColorTypo>{t('LABEL_CHAT_TASK_TAI_LIEU')}</ColorTypo>
           <BadgeItem badge size='small' color='purplelight' label={taskStatistic.fileCnt} style={{ marginRight: 5 }} />
           <BadgeItem badge size='small' color='purplelight' label={taskStatistic.imgCnt} style={{ marginRight: 5 }} />
           <BadgeItem badge size='small' color='purplelight' label={taskStatistic.linkCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(5)}>
-          <ColorTypo>Chia sẻ vị trí</ColorTypo>
+          <ColorTypo>{t('LABEL_CHAT_TASK_CHIA_SE_VI_TRI')}</ColorTypo>
           <BadgeItem badge size='small' color='indigolight' label={taskStatistic.lctCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(6)}>
-          <ColorTypo>Đề xuất, duyệt</ColorTypo>
+          <ColorTypo>{t('LABEL_CHAT_TASK_DE_XUAT_DUYET')}</ColorTypo>
           <BadgeItem badge size='small' color='orangelight' label={taskStatistic.offerCnt} style={{ marginRight: 5 }} />
           <BadgeItem badge size='small' color='orangelight' label={taskStatistic.acceptOfferCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(7)}>
-          <ColorTypo>Chỉ đạo, quyết định</ColorTypo>
+          <ColorTypo>{t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}</ColorTypo>
           <BadgeItem badge size='small' color='bluelight' label={taskStatistic.commandCnt} />
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
-          <ColorTypo>Thành viên</ColorTypo>
+          <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
           <AvatarCircleList total={taskStatistic.members.length} display={6} />
           {/* {MemberTask(taskStatistic)} */}
         </ListItemTab>

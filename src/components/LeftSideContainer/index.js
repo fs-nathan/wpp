@@ -75,34 +75,34 @@ function LeftSideContainer({
                 color="rgba(0, 0, 0, 0.54)"
               />
             ) : (
-              <Icon
-                path={mdiBorderNoneVariant}
-                size={1}
-                color="rgba(0, 0, 0, 0)"
-              />
-            )}
+                <Icon
+                  path={mdiBorderNoneVariant}
+                  size={1}
+                  color="rgba(0, 0, 0, 0)"
+                />
+              )}
           </div>
         </abbr>
       </StyledIconButton>
     ) : (
-      <IconWrapper>
-        {get(action, "iconPath") ? (
-          <Icon
-            path={get(action, "iconPath")}
-            size={1}
-            color="rgba(0, 0, 0, 0.54)"
-          />
-        ) : (
-          <Icon path={mdiBorderNoneVariant} size={1} color="rgba(0, 0, 0, 0)" />
-        )}
-      </IconWrapper>
-    );
+          <IconWrapper>
+            {get(action, "iconPath") ? (
+              <Icon
+                path={get(action, "iconPath")}
+                size={1}
+                color="rgba(0, 0, 0, 0.54)"
+              />
+            ) : (
+                <Icon path={mdiBorderNoneVariant} size={1} color="rgba(0, 0, 0, 0)" />
+              )}
+          </IconWrapper>
+        );
 
   return (
     <LoadingOverlay
       active={loading.bool}
       spinner
-      fadeSpeed={100}
+      fadeSpeed={0}
       style={{
         height: "100%",
         zIndex: "999",

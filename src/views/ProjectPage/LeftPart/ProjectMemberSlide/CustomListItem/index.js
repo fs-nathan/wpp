@@ -60,8 +60,8 @@ function CustomListItem({ member, index }) {
             }
             secondary={
               <div>
-                <Secondary>{get(member, 'number_task', 0)} việc</Secondary>
-                <Detail isInGroup={get(member, 'is_in_group', false)}>
+                <Secondary>Tham gia {get(member, 'number_task', 0)}/{get(member, 'all_task', 0)} việc</Secondary>
+                <Detail isInGroup={get(member, 'is_in_group', false) === false || get(member, 'is_admin', false)}>
                   {get(member, 'is_in_group', false)
                     ? getDetail(member)
                     : 'Đã rời nhóm'

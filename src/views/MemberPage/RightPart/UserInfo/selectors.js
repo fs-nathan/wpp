@@ -12,11 +12,11 @@ const listPosition = state => state.position.listPosition;
 export const userSelector = createSelector(
   [detailUser, listRoom, listLevel, listMajor, listPosition, updateUser],
   (detailUser, listRoom, listLevel, listMajor, listPosition, updateUser) => {
-    const { data: { user }, error: detailUserError, loading: detailUserLoading } = detailUser;
-    const { data: { rooms }, error: listRoomError, loading: listRoomLoading } = listRoom;
-    const { data: { positions }, error: listPositionError, loading: listPositionLoading } = listPosition;
-    const { data: { majors }, error: listMajorError, loading: listMajorLoading } = listMajor;
-    const { data: { levels }, error: listLevelError, loading: listLevelLoading } = listLevel;
+    const { data: { user }, error: detailUserError, loading: detailUserLoading, firstTime: detailFirst } = detailUser;
+    const { data: { rooms }, error: listRoomError, loading: listRoomLoading, firstTime: roomFirst } = listRoom;
+    const { data: { positions }, error: listPositionError, loading: listPositionLoading, firstTime: positionFirst } = listPosition;
+    const { data: { majors }, error: listMajorError, loading: listMajorLoading, firstTime: majorFirst } = listMajor;
+    const { data: { levels }, error: listLevelError, loading: listLevelLoading, firstTime: levelFirst } = listLevel;
     const { loading: updateLoading, error: updateError } = updateUser;
     const newUser = {
       ...user,
@@ -27,8 +27,14 @@ export const userSelector = createSelector(
     }
     return {
       user: newUser,
-      loading: detailUserLoading || listRoomLoading || listPositionLoading || listMajorLoading || listLevelLoading || updateLoading,
+      loading: (detailFirst ? false : detailUserLoading) ||
+        (roomFirst ? false : listRoomLoading) ||
+        (positionFirst ? false : listPositionLoading) ||
+        (majorFirst ? false : listMajorLoading) ||
+        (levelFirst ? false : listLevelLoading) ||
+        updateLoading,
       error: detailUserError || listRoomError || listPositionError || listMajorError || listLevelError || updateError,
+      firstTime: detailFirst && roomFirst && positionFirst && majorFirst && levelFirst,
     }
   }
 );

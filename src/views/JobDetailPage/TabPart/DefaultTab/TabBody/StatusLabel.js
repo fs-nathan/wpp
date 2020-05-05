@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { mdiCheckCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'classnames';
@@ -22,6 +23,7 @@ function getStatusLabel(value, type) {
 }
 
 const StatusLabel = ({ value, icon, type }) => {
+  const { t } = useTranslation();
   const label = (type === TYPE_STATUS) ? statusLabel[value] : priorityLabel[value];
   const labelButton = (type === TYPE_STATUS) ? statusLabel[value] : `Ưu tiên ${priorityLabel[value].toLocaleLowerCase()}`;
   const description = (type === TYPE_STATUS) ? typeDescription[0] : typeDescription[1];
@@ -37,9 +39,9 @@ const StatusLabel = ({ value, icon, type }) => {
         </span>
         <div className="statusLabel--description">{description}</div>
         {(type === TYPE_STATUS) && <div>
-          <div className="statusLabel--guide">0% = <span className="statusLabel--label__wait">Đang chờ</span></div>
-          <div className="statusLabel--guide">0% &lt; <span className="statusLabel--label__doing">Đang làm</span> &lt; 99%</div>
-          <div className="statusLabel--guide">100% = <span className="statusLabel--label__completed">Hoàn thành</span></div>
+          <div className="statusLabel--guide">0% = <span className="statusLabel--label__wait">{t('LABEL_CHAT_TASK_DANG_CHO')}</span></div>
+          <div className="statusLabel--guide">0% &lt; <span className="statusLabel--label__doing">{t('LABEL_CHAT_TASK_DANG_LAM')}</span> &lt; 99%</div>
+          <div className="statusLabel--guide">100% = <span className="statusLabel--label__completed">{t('LABEL_CHAT_TASK_HOAN_THANH')}</span></div>
         </div>}
       </div>
       {labelButton}

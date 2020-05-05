@@ -8,6 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { mdiChevronLeftCircle, mdiChevronRightCircle, mdiDownload, mdiInformation, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import styled from 'styled-components';
 
@@ -66,6 +67,7 @@ const ButtonAction = styled(Typography)`
 `
 
 const DialogTitle = withStyles(styles)(props => {
+  const { t } = useTranslation();
   const { children, classes, onClose,
     user_create_avatar, user_create_name, time_create,
     user_create_position, image,
@@ -104,15 +106,15 @@ const DialogTitle = withStyles(styles)(props => {
       <GroupActionButton component='div'>
         <ButtonAction component='div' onClick={onClickDownload}>
           <Icon path={mdiDownload} size={1} color={'#fff'} />
-          <Typography component='div'>Tải xuống</Typography>
+          <Typography component='div'>{t('LABEL_CHAT_TASK_TAI_XUONG')}</Typography>
         </ButtonAction>
         <ButtonAction component='div'>
           <Icon path={mdiShare} size={1} color={'#fff'} />
-          <Typography component='div'>Chia sẻ</Typography>
+          <Typography component='div'>{t('LABEL_CHAT_TASK_CHIA_SE')}</Typography>
         </ButtonAction>
         <ButtonAction component='div'>
           <Icon path={mdiInformation} size={1} color={'#fff'} />
-          <Typography component='div'>Chi tiết</Typography>
+          <Typography component='div'>{t('LABEL_CHAT_TASK_CHI_TIET')}</Typography>
         </ButtonAction>
       </GroupActionButton>
       <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>

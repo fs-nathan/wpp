@@ -20,13 +20,13 @@ async function doPermissionProject({ module }) {
   }
 }
 
-async function doAdminPermission() {
+async function doAdminPermission({ groupPermissionId }) {
   try {
     const config = {
       url: '/permissions/detail-group-permission-default',
       method: 'get',
       params: {
-        group_permission_id: 2
+        group_permission_id: groupPermissionId
       },
     }
     const result = await apiService(config);

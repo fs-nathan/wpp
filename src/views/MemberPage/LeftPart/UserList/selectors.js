@@ -5,11 +5,12 @@ const listUserOfGroup = state => state.user.listUserOfGroup;
 export const roomsSelector = createSelector(
   [listUserOfGroup],
   (listUserOfGroup) => {
-    const { data: { rooms }, loading, error } = listUserOfGroup;
+    const { data: { rooms }, loading, error, firstTime } = listUserOfGroup;
     return {
       rooms,
-      loading,
+      loading: firstTime ? false : loading,
       error,
+      firstTime,
     }
   }
 );

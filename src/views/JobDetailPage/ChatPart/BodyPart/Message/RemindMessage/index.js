@@ -1,68 +1,52 @@
-import { Avatar } from '@material-ui/core';
-import { mdiAlarm } from '@mdi/js';
-import Icon from '@mdi/react';
-import { showTab } from 'actions/taskDetail/taskDetailActions';
-import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
+import { getRemindDetail } from 'actions/chat/chat';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { typesRemind } from 'views/JobDetailPage/TabPart/RemindTab/TabBody/RemindItem';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
-const RemindMessage = ({
-  handleReplyChat,
-  id,
-  user_create_name,
-  user_create_avatar,
-  user_create_position,
-  user_create_roles = [],
-  remind_name,
-  content,
-  time_create,
-  chat_parent,
-  isReply,
-  is_me,
-  chatPosition = "top",
-}) => {
+const RemindMessage = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const dateFormat = useSelector(state => state.system.profile.format_date);
+
+  const {
+    remind_id,
+    remind_type,
+    user_create_name,
+    user_create_avatar,
+    user_create_position,
+    remind_name,
+    time_create,
+    chatPosition = "top",
+  } = props;
 
   function onClickViewDetail() {
-    dispatch(showTab(3))
+    dispatch(getRemindDetail(taskId, remind_id))
   }
 
   return (
-    <div className={clsx("RemindMessage", "UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
-      <div className="UpdateTaskNameMessage--header" >
-        Thông báo
-      </div>
-      <div className="UpdateTaskNameMessage--sender" >
-        <Avatar className="UpdateTaskNameMessage--avatarReply" src={user_create_avatar} />
-        <div className="UpdateTaskNameMessage--name" >
-          {user_create_name}
-        </div>
-        <div className="UpdateTaskNameMessage--position" >
-          {user_create_position}
-        </div>
-        {user_create_roles[0] &&
-          <div className="UpdateTaskNameMessage--room"  >
-            {user_create_roles[0]}
-          </div>
-        }
-      </div>
-      <div className="UpdateTaskNameMessage--title" >
-        Nhắc hẹn công việc
-      </div>
-      <div className="UpdateTaskNameMessage--content" >
+    <DialogMessageWrap
+      {...{
+        chatPosition,
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+      }}
+      isHaveFooterIcon
+      onClickViewDetail={onClickViewDetail}
+      taskName={t('LABEL_CHAT_TASK_TAO_NHAC_HEN')}
+    >
+      <>
         {remind_name}
-      </div>
-      {!isReply &&
-        <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
-          {time_create}
-          <span className="CreateNewSubTask--detail" onClick={onClickViewDetail}>
-            <Icon className="RemindMessage--icon" path={mdiAlarm}></Icon>Xem chi tiết
-          </span>
+        <div className="RemindMessage--time">
+          {`${typesRemind[remind_type]} lúc ${getUpdateProgressDate(time_create, dateFormat)}`}
         </div>
-      }
-
-    </div>
+      </>
+    </DialogMessageWrap>
   );
 }
 

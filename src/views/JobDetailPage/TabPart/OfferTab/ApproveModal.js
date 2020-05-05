@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { InputBase, TextField, Typography } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
 import colorPal from 'helpers/colorPalette';
@@ -18,6 +19,7 @@ const InputText = styled(InputBase)`
 `
 
 const ApproveModal = (props) => {
+  const { t } = useTranslation();
   const DEFAULT_VALUE = {
     offer_id: props.offer.id,
     content: "Đồng ý phê duyệt",
@@ -33,7 +35,7 @@ const ApproveModal = (props) => {
   }
   return (
     <JobDetailModalWrap
-      title={"Phê duyệt đề xuất"}
+      title={t('LABEL_CHAT_TASK_PHE_DUYET_DE_XUAT')}
       open={props.isOpen}
       setOpen={props.setOpen}
       confirmRender={() => "Phê duyệt"}
@@ -42,7 +44,7 @@ const ApproveModal = (props) => {
       className="approveOfferModal"
     >
       <DialogContent dividers>
-        <TexTitle >Nội dung công việc </TexTitle>
+        <TexTitle >{t('LABEL_CHAT_TASK_NOI_DUNG_CONG_VIEC')}</TexTitle>
         <InputText
           inputProps={{ 'aria-label': 'naked' }}
           value={'Xin phê duyệt chi phí tiếp khách'}
@@ -55,7 +57,7 @@ const ApproveModal = (props) => {
           rows="7"
           value={tempSelectedItem.content}
           margin="normal"
-          placeholder="Nhập nội dung"
+          placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
           variant="outlined"
           onChange={e => setParams("content", e.target.value)}
         />

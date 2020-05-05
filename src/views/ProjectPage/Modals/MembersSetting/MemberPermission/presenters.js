@@ -6,12 +6,13 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { mdiChevronLeft, mdiChevronRight, mdiKey } from '@mdi/js';
 import Icon from '@mdi/react';
+import CustomModal from 'components/CustomModal';
+import { CustomEventDispose, CustomEventListener, UPDATE_GROUP_PERMISSION_MEMBER } from 'constants/events';
 import { find, get } from 'lodash';
 import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import CustomModal from '../../../../../components/CustomModal';
 import './style.scss';
 
 const StyledTableRow = ({ className = '', ...props }) =>
@@ -116,15 +117,29 @@ function PermissionMemberModal({
     ))
   }, [members, curMemberId, permissions]);
 
+  React.useEffect(() => {
+    const successClose = () => {
+      setOpen(false);
+      setSelectedValue(undefined);
+      setIsAdmin(false);
+    };
+    CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER, successClose);
+    return () => CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER, successClose);
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <CustomModal
       title="Phân quyền thành viên"
       open={open}
       setOpen={setOpen}
-      loading={updateGroupPermission.loading || permissions.loading || members.loading}
+      loading={permissions.loading || members.loading}
       cancleRender={() => isAdmin ? "Thoát" : "Hủy"}
       confirmRender={isAdmin ? null : () => "Hoàn thành"}
       onConfirm={() => !isAdmin && handleUpdateGroupPermission(selectedValue)}
+      onCancle={() => setOpen(false)}
+      activeLoading={updateGroupPermission.loading}
+      manualClose={true}
     >
       {isAdmin
         ? (

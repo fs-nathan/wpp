@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import styled from 'styled-components';
 import {
@@ -21,6 +22,7 @@ const WrapList = styled(List)`
 `
 
 const LocationShareBox = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const searchLocationTabPart = (e) => {
     dispatch(searchLocation(e.target.value))
@@ -28,7 +30,7 @@ const LocationShareBox = () => {
   return (
     <React.Fragment>
       <SearchInput
-        placeholder="Nhập từ khóa"
+        placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
         fullWidth
         onChange={e => searchLocationTabPart(e)}
       />

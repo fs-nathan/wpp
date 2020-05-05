@@ -1,0 +1,51 @@
+.view_CreateProjectCalendar_Modal_container {
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .view_CreateProjectCalendar_label {
+    margin-bottom: 10px;
+
+    &>span:nth-child(1) {
+      font-weight: 500;
+    }
+
+    &>span:nth-child(2) {
+      color: red;
+      margin-left: 5px;
+    }
+  }
+
+  .MuiFormControl-root {
+    margin-bottom: 20px;
+  }
+
+  .editor_description {
+    padding: 10px;
+    min-height: 120px;
+    cursor: text;
+  }
+
+  #calendar-name-helper-text,
+  #calendar-descrtiption-helper-text {
+    color: red;
+  }
+}
+
+@mixin comp_CustomModal___dialog {
+  &>div:nth-child(3)>div {
+    overflow: hidden;
+    min-width: 40vw;
+  }
+}
+
+.comp_CustomModal___dialog {
+  &-sm {
+    @include comp_CustomModal___dialog;
+
+    &>div:nth-child(3)>div {
+      max-width: 800px;
+    }
+  }
+}

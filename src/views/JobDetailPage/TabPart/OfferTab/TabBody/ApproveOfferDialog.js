@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar, TextField, Typography } from '@material-ui/core';
 import { mdiCancel, mdiCheck } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -11,6 +12,7 @@ import './styles.scss';
 
 
 const ApproveOfferDialog = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const [type, setType] = React.useState(0);
@@ -34,7 +36,7 @@ const ApproveOfferDialog = (props) => {
 
   return (
     <DialogWrap
-      title={'Phê duyệt đề xuất'}
+      title={t('LABEL_CHAT_TASK_PHE_DUYET_DE_XUAT')}
       isOpen={props.isOpen}
       handleClickClose={props.handleClickClose}
       successLabel={"Hoàn Thành"}
@@ -46,7 +48,7 @@ const ApproveOfferDialog = (props) => {
           <Avatar className="offerDetail--avatar" src={user_create_avatar} alt='avatar' />
           <Typography className="approve--userName" component="div">
             {user_create_name}
-            <div className="offerDetail--createdAt">Đã tạo đề xuất lúc {date_create}</div>
+            <div className="offerDetail--createdAt">{t('LABEL_CHAT_TASK_DA_TAO_DE_XUAT_LUC')}{date_create}</div>
             <div className={clsx("approve--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`)}>
               {priority}
             </div>
@@ -56,33 +58,29 @@ const ApproveOfferDialog = (props) => {
           {title}
         </div>
         <Typography className="approve--content" >{content}</Typography>
-        <Typography className="approve--title" >Nội dung phê duyệt</Typography>
+        <Typography className="approve--title" >{t('LABEL_CHAT_TASK_NOI_DUNG_PHE_DUYET')}</Typography>
         <div className="approve--select">
           <div className={clsx("approve--option", { "approve--option__green": type === 0 })} onClick={() => setType(0)}>
             <div className={clsx("approve--option-icon")} >
               <Icon path={mdiCheck} size={2} />
             </div>
-            <div className={clsx("approve--option-text", { "approve--option__selected": type === 0 })} >
-              Đồng ý
-          </div>
+            <div className={clsx("approve--option-text", { "approve--option__selected": type === 0 })} >{t('LABEL_CHAT_TASK_DONG_Y')}</div>
           </div>
           <div className={clsx("approve--option", { "approve--option__red": type === 1 })} onClick={() => setType(1)}>
             <div className={clsx("approve--option-icon")} >
               <Icon path={mdiCancel} size={2} />
             </div>
-            <div className={clsx("approve--option-text", { "approve--option__selected": type === 1 })} >
-              Từ chối
-          </div>
+            <div className={clsx("approve--option-text", { "approve--option__selected": type === 1 })} >{t('LABEL_CHAT_TASK_TU_CHOI')}</div>
           </div>
         </div>
-        <Typography className="approve--title" >Mô tả thêm (nếu có)</Typography>
+        <Typography className="approve--title" >{t('LABEL_CHAT_TASK_MO_TA_THEM_NEU_CO')}</Typography>
         <TextField
           className="approve--description"
           fullWidth
           multiline
           rows="6"
           margin="normal"
-          placeholder="Nhập nội dung"
+          placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
           variant="outlined"
           value={description}
           onChange={e => setDescription(e.target.value)}

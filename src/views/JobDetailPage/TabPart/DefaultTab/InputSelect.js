@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import Select from 'react-select';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -26,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Option(props) {
+  const { t } = useTranslation();
   return (
     <MenuItem
       ref={props.innerRef}
@@ -42,10 +44,12 @@ function Option(props) {
 }
 
 function inputComponent({ inputRef, ...props }) {
+  const { t } = useTranslation();
     return <div ref={inputRef} {...props} />;
   }
 
 function Control(props) {
+  const { t } = useTranslation();
     const {
       children,
       innerProps,
@@ -71,6 +75,7 @@ function Control(props) {
   }
 
 function SingleValue(props) {
+  const { t } = useTranslation();
   return (
     <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
       {props.children}
@@ -86,6 +91,7 @@ const components = {
 };
 
 export default function InputSelcct() {
+  const { t } = useTranslation();
   const classes = useStyles();
   const theme = useTheme();
   const [single, setSingle] = React.useState(null);
@@ -117,7 +123,7 @@ export default function InputSelcct() {
               shrink: true,
             },
           }}
-          placeholder="Select...."
+          placeholder={t('LABEL_CHAT_TASK_SELECT')}
           options={suggestions}
           components={components}
           value={single}

@@ -1,16 +1,17 @@
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import { mdiClockOutline, mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
+import { openDetailRemind } from 'actions/chat/chat';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
-import get from 'lodash/get';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import MemberMenuLists from './MemberMenuLists';
 import './styles.scss';
 
-
-const typesRemind = [
+export const typesRemind = [
   'Nhắc 1 lần',
   'Nhắc theo ngày',
   'Nhắc theo tuần',
@@ -18,7 +19,9 @@ const typesRemind = [
 ]
 
 function RemindItem(props) {
-  const { user_create_avatar, type,
+  const { t } = useTranslation();
+  const {
+    user_create_avatar, type,
     date_remind,
     time_remind,
     duration,
@@ -26,28 +29,31 @@ function RemindItem(props) {
     idx,
     created_at,
     content,
-    handleClickOpen,
     is_ghim,
-    onClick,
   } = props
-  const groupActiveColor = useSelector(state => get(state, 'system.profile.group_active.color'))
+  const dispatch = useDispatch();
+  const groupActiveColor = useSelector(currentColorSelector)
   const [day, month] = created_at.split('/');
+
+  function handleClickOpen() {
+    dispatch(openDetailRemind(true, props))
+  }
+
   return (
     <li className="remindItem" key={idx}>
-      <div className="remindItem--time" style={{ color: groupActiveColor }} onClick={onClick}>
-        <div className="remindItem--month">
-          Tháng {month}
+      <div className="remindItem--time" style={{ color: groupActiveColor }} onClick={handleClickOpen}>
+        <div className="remindItem--month">{t('LABEL_CHAT_TASK_THANG')}{month}
         </div>
         <div className="remindItem--day">
           {day}
         </div>
       </div>
-      <div className="remindItem--content" onClick={onClick}>
+      <div className="remindItem--content" onClick={handleClickOpen}>
         <div className="remindItem--title">
           {content}
         </div>
         <div className="remindItem--creator">
-          <Avatar className="remindItem--avatar" src={user_create_avatar} alt='avatar' /> Tạo lúc {created_at}
+          <Avatar className="remindItem--avatar" src={user_create_avatar} alt='avatar' />{t('LABEL_CHAT_TASK_TAO_LUC')}{created_at}
         </div>
         <div className="remindItem--remind">
           <Icon path={mdiClockOutline} color="rgba(0, 0, 0, 0.54)"
@@ -69,7 +75,7 @@ function RemindItem(props) {
             size={1} />}
         </div>
       </div>
-      <MemberMenuLists className="remindItem--menu" idx={idx} handleClickOpen={() => handleClickOpen(props)} item={props} />
+      <MemberMenuLists className="remindItem--menu" idx={idx} item={props} />
     </li>
   );
 }

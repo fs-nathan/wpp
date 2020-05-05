@@ -1,8 +1,9 @@
-import { call, put } from 'redux-saga/effects';
-import { inviteOtherPeopleCreateAccountSuccess, inviteOtherPeopleCreateAccountFail } from '../../actions/register/inviteOtherPeopleCreateAccount';
-import { apiService } from '../../constants/axiosInstance';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { inviteOtherPeopleCreateAccountFail, inviteOtherPeopleCreateAccountSuccess } from '../../actions/register/inviteOtherPeopleCreateAccount';
+import { apiService } from '../../constants/axiosInstance';
+import { CustomEventEmitter, INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doInviteOtherPeopleCreateAccount({ email }) {
   try {
@@ -24,6 +25,7 @@ function* inviteOtherPeopleCreateAccount(action) {
   try {
     yield call(doInviteOtherPeopleCreateAccount, action.options);
     yield put(inviteOtherPeopleCreateAccountSuccess());
+    CustomEventEmitter(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(inviteOtherPeopleCreateAccountFail(error));
@@ -31,6 +33,5 @@ function* inviteOtherPeopleCreateAccount(action) {
   }
 }
 
-export {
-  inviteOtherPeopleCreateAccount,
-}
+export { inviteOtherPeopleCreateAccount, };
+

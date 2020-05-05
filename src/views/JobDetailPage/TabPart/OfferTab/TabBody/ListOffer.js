@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { searchOffer } from '../../../../../actions/taskDetail/taskDetailActions';
@@ -12,6 +13,7 @@ const StyledList = styled.ul`
 `;
 
 const ListOffer = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const searchOfferTabPart = (e) => {
     dispatch(searchOffer(e.target.value))
@@ -20,7 +22,7 @@ const ListOffer = (props) => {
     <React.Fragment>
       <SearchInput
         fullWidth
-        placeholder="Nhập từ khóa"
+        placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
         onChange={e => searchOfferTabPart(e)}
       />
       <StyledList>

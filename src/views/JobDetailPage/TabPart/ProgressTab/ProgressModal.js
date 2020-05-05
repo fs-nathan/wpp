@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import DateFnsUtils from "@date-io/date-fns";
 import { Typography } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -40,6 +41,7 @@ const InputDate = styled(KeyboardDatePicker)`
 `
 
 const ProgressModal = (props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
@@ -96,7 +98,7 @@ const ProgressModal = (props) => {
 
   return (
     <JobDetailModalWrap
-      title={"Điều chỉnh tiến độ"}
+      title={t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO')}
       open={props.isOpen}
       setOpen={props.setOpen}
       confirmRender={() => "Hoàn Thành"}
@@ -107,7 +109,7 @@ const ProgressModal = (props) => {
     >
       <DialogContent >
         <StartEndDay component={'span'}>
-          <BeginEndTime component={'span'}>Bắt đầu</BeginEndTime>
+          <BeginEndTime component={'span'}>{t('LABEL_CHAT_TASK_BAT_DAU')}</BeginEndTime>
           <TimeSelect
             className="progressModal--timeSelect"
             value={startTime}
@@ -129,7 +131,7 @@ const ProgressModal = (props) => {
           </MuiPickersUtilsProvider>
         </StartEndDay>
         <StartEndDay component={'span'}>
-          <BeginEndTime component={'span'}>Kết thúc</BeginEndTime>
+          <BeginEndTime component={'span'}>{t('LABEL_CHAT_TASK_KET_THUC')}</BeginEndTime>
           <TimeSelect
             className="progressModal--timeSelect"
             value={endTime}

@@ -7,6 +7,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -23,13 +24,14 @@ function reducer(state = initialState, action) {
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case PERMISSION_PROJECT_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
     case PERMISSION_PROJECT_RESET:
       return initialState;

@@ -1,0 +1,9 @@
+.TagModal {
+  position: absolute;
+  bottom: 120px;
+  background-color: #ffffff;
+  display: none;
+  &__open {
+    display: block;
+  }
+}

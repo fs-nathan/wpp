@@ -1,57 +1,37 @@
-import { Avatar } from '@material-ui/core';
-import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import React from 'react';
+import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const UpdateTaskNameMessage = ({
-  handleReplyChat,
-  id,
   user_create_name,
   user_create_avatar,
   user_create_position,
-  user_create_roles = [],
   new_task_name,
   time_create,
-  isReply,
-  is_me,
   chatPosition = "top",
   title = "Đổi tên công việc"
 }) => {
-
+  const { t } = useTranslation();
 
   return (
-    <div className={clsx("UpdateTaskNameMessage", `TextMessage__${chatPosition}`)} >
-      <div className="UpdateTaskNameMessage--header" >
-        Thông báo
-      </div>
-      <div className="UpdateTaskNameMessage--sender" >
-        <Avatar className="UpdateTaskNameMessage--avatarReply" src={user_create_avatar} />
-        <div className="UpdateTaskNameMessage--name" >
-          {user_create_name}
-        </div>
-        <div className="UpdateTaskNameMessage--position" >
-          {user_create_position}
-        </div>
-        {user_create_roles[0] &&
-          <div className="UpdateTaskNameMessage--room"  >
-            {user_create_roles[0]}
-          </div>
-        }
-      </div>
-      <div className="UpdateTaskNameMessage--title" >
-        {title}
-      </div>
-      <div className="UpdateTaskNameMessage--content" >
+    <DialogMessageWrap
+      {...{
+        chatPosition,
+        user_create_name,
+        user_create_avatar,
+        user_create_position,
+        time_create,
+      }}
+      isHideFooterIcon
+      footerText=""
+      taskName={t('LABEL_CHAT_TASK_CHINH_SUA_TEN_MO_TA_CONG_VIEC')}
+    >
+      <>
         {new_task_name}
-      </div>
-      {!isReply &&
-        <div className={clsx("UpdateTaskNameMessage--time", { "TextMessage--time__self": is_me })} >
-          {time_create}
-        </div>
-      }
-
-    </div>
+      </>
+    </DialogMessageWrap>
   );
 }
 

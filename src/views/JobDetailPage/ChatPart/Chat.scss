@@ -8,13 +8,7 @@
 .footer-chat-container {
   .icon-btn {
     margin-left: auto;
-    &:hover {
-      background: none;
-    }
-    & > span > svg {
-      &:hover {
-        fill: #03b000;
-      }
-    }
+    padding: 8px;
+    margin-right: 10px;
   }
 }

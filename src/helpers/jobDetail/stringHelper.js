@@ -61,6 +61,7 @@ export const isExpiredDate = date => {
 }
 
 export function humanFileSize(bytes, si) {
+    if (!bytes) return undefined;
     var thresh = si ? 1000 : 1024;
     if (Math.abs(bytes) < thresh) {
         return bytes + ' B';
@@ -73,4 +74,91 @@ export function humanFileSize(bytes, si) {
         ++u;
     } while (Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1) + ' ' + units[u];
+}
+
+// const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+const urlRegex = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+
+export const replaceMultipleReg = (str = '', regex, replacer) => {
+    let match;
+    let lastEnd = 0, ret = '';
+    while (match = regex.exec(str)) {
+        // console.log(match.index + ':' + match[0] + '::' + urlRegex.lastIndex);
+        ret += str.slice(lastEnd, match.index) + replacer(match[0])
+        lastEnd = urlRegex.lastIndex;
+    }
+    return ret + str.slice(lastEnd);
+}
+
+export function replaceUrl(str) {
+    const replacer = match => {
+        const url = match.indexOf('http') !== -1 ? match : `http://${match}`
+        return `<a href="${url}" target="_blank">${match}</a>`
+    }
+    return replaceMultipleReg(str, urlRegex, replacer)
+}
+
+export function getDialogDate(timeString, formatDate = '') {
+    const date = new Date(timeString);
+    const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
+    return `Lúc ${format(date, 'HH:mm')} ngày ${format(date, fixedFormat)}`;
+}
+
+export function getUpdateProgressDate(timeString, formatDate = '') {
+    const date = new Date(timeString);
+    const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
+    return format(date, `HH:mm ${fixedFormat}`);
+}
+
+export function getChatDate(timeString) {
+    const date = timeString ? new Date(timeString) : new Date();
+    return format(date, `dd/MM/yyyy`);
+}
+
+export function spliceSlice(str, index, count, add) {
+    // We cannot pass negative indexes directly to the 2nd slicing operation.
+    if (index < 0) {
+        index = str.length + index;
+        if (index < 0) {
+            index = 0;
+        }
+    }
+
+    return str.slice(0, index) + (add || "") + str.slice(index + count);
+}
+
+export const transformGoogleDriverData = item => {
+    return {
+        isGoogleDocument: true,
+        id: item.id,
+        name: item.name || '',
+        webViewLink: item.webViewLink,
+        webContentLink: item.webContentLink,
+        url: item.webViewLink.split('?')[0].replace('view', 'preview'),
+        type: (item.mimeType === 'application/vnd.google-apps.folder') ? 'folder' : item.fileExtension,
+        size: humanFileSize(item.size),
+        rawSize: item.size,
+        updated_at: item.modifiedTime
+            ? format(new Date(item.modifiedTime), 'yyyy-MM-dd')
+            : '',
+        date_create: item.createdTime
+            ? format(new Date(item.createdTime), 'yyyy-MM-dd')
+            : '',
+        user_create: {
+            name: item.owners[0].displayName || '',
+            avatar: item.owners[0].photoLink || ''
+        }
+    };
+};
+
+export function transformToGoogleFormData(ggData) {
+    const { id, name, rawSize, url, webContentLink, type } = ggData;
+    return {
+        file_id: id,
+        name,
+        size: rawSize,
+        url,
+        url_download: webContentLink,
+        file_type: type,
+    }
 }

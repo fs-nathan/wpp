@@ -62,10 +62,10 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
 
   return (
     <DialogWrap
-      title={'Thành viên công việc'}
+      title={t('LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC')}
       isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel={"Thoát"}
+      successLabel={t('LABEL_CHAT_TASK_THOAT')}
       onClickSuccess={handleClose}
       maxWidth="xl"
       isOneButton
@@ -73,12 +73,10 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
     >
       <div className="ForwardMessageDialog--content" >
         <div className="ForwardMessageDialog--border">
-          <div className="ForwardMessageDialog--title">
-            Chọn dự án
-          </div>
+          <div className="ForwardMessageDialog--title">{t('LABEL_CHAT_TASK_CHON_DU_AN')}</div>
           <div >
             <div style={{ margin: '10px 10px 0 10px' }}>
-              <SearchInput placeholder='Tìm dự án' value={searchKey} onChange={onChangeKey} />
+              <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_DU_AN')} value={searchKey} onChange={onChangeKey} />
             </div>
             <div className="ForwardMessageDialog--container">
               <Scrollbars className="ForwardMessageDialog--body"
@@ -114,12 +112,8 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
           </div>
         </div>
         <div>
-          <div className="ForwardMessageDialog--title">
-            Danh sách công việc
-          </div>
-          <div className="ForwardMessageDialog--subTitle">
-            Tên công việc
-          </div>
+          <div className="ForwardMessageDialog--title">{t('LABEL_CHAT_TASK_DANH_SACH_CONG_VIEC')}</div>
+          <div className="ForwardMessageDialog--subTitle">{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</div>
           {listTasks.map(taskGroup => (
             <div className="ForwardMessageDialog--taskGroup" key={taskGroup.id}>
               <div className="ForwardMessageDialog--taskGroupTitle">
@@ -129,7 +123,7 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
                 taskGroup.tasks.map(task => (
                   <div className="ForwardMessageDialog--task" key={task.id}>
                     {task.name}
-                    <button onClick={onClickSend(task.id)} className="ForwardMessageDialog--sendButton">Gửi</button>
+                    <button onClick={onClickSend(task.id)} className="ForwardMessageDialog--sendButton">{t('LABEL_CHAT_TASK_GUI')}</button>
                   </div>
                 ))
               }

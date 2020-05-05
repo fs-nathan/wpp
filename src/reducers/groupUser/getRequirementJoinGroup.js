@@ -6,6 +6,7 @@ export const initialState = {
   },
   error: null,
   loading: false,
+  firstTime: true,
 };
 
 function reducer(state = initialState, action) {
@@ -19,17 +20,17 @@ function reducer(state = initialState, action) {
     case GET_REQUIREMENT_JOIN_GROUP_SUCCESS:
       return {
         ...state,
-        ...initialState,
         data: action.data,
         error: null,
         loading: false,
+        firstTime: false,
       };
     case GET_REQUIREMENT_JOIN_GROUP_FAIL:
       return {
         ...state,
-        ...initialState,
         error: action.error,
         loading: false,
+        firstTime: false,
       };
     default:
       return state;

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 import clsx from 'clsx';
 import Select from 'react-select';
@@ -28,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 
 function Option(props) {
+  const { t } = useTranslation();
   return (
     <MenuItem
       ref={props.innerRef}
@@ -47,6 +49,7 @@ function Option(props) {
 
 
 function MultiValue(props) {
+  const { t } = useTranslation();
   return (
     <Chip
       tabIndex={-1}
@@ -68,6 +71,7 @@ const components = {
 const DEFAULT_HANDLE_USERS = []
 
 export default function IntegrationReactSelect(props) {
+  const { t } = useTranslation();
   const classes = useStyles();
   const theme = useTheme();
   const [handleUsers, setHandleUsers] = React.useState(DEFAULT_HANDLE_USERS)
@@ -107,7 +111,7 @@ export default function IntegrationReactSelect(props) {
         <Select
           classes={classes}
           styles={selectStyles}
-          placeholder={'Chọn người duyệt...'}
+          placeholder={t('LABEL_CHAT_TASK_CHON_NGUOI_DUYET')}
           options={listHandleUsers}
           components={components}
           value={handleUsers}
