@@ -6,10 +6,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
+import styled from 'styled-components';
 import intro1 from '../../assets/img_introduce_in_detail_1.png';
 import intro2 from '../../assets/img_introduce_in_detail_2.png';
 import intro3 from '../../assets/img_introduce_in_detail_3.png';
 import intro4 from '../../assets/img_introduce_in_detail_4.png';
+import { currentColorSelector } from "./selectors";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -60,10 +62,16 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const StyledName = styled.span`
+    color: ${props => props.color};
+    font-weight: bold;
+`
+
 function Introduce() {
     const classes = useStyles();
     const theme = useTheme();
     const userName = useSelector(state => state.system.profile.name);
+    const groupActiveColor = useSelector(currentColorSelector)
 
     const [activeStep, setActiveStep] = React.useState(0);
     const maxSteps = tutorialSteps.length;
@@ -74,8 +82,8 @@ function Introduce() {
     return (
         <div className="container-intro">
             <div>
-                <Typography>Làm việc mê li cùng <b>VTask PC!</b></Typography>
-                <Typography>Hi <b>{userName}</b>, chào mừng bạn đến với VTask. Hãy tạo mới những công việc, chia sẻ và thảo luận cùng đồng nghiệp để hoàn thành chúng tốt nhất.</Typography>
+                <Typography>Làm việc mê li cùng <b>Workplus PC!</b></Typography>
+                <Typography>Hi <StyledName color={groupActiveColor}>{userName}</StyledName>, chào mừng bạn đến với Workplus. Hãy tạo mới những công việc, chia sẻ và thảo luận cùng đồng nghiệp để hoàn thành chúng tốt nhất.</Typography>
                 <div className={classes.root}>
                     <AutoPlaySwipeableViews
                         axis={theme.direction === "rtl" ? "x-reverse" : "x"}

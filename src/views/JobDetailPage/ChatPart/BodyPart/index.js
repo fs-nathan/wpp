@@ -169,7 +169,7 @@ const BodyPart = props => {
         getScrollParent={() => chatRef.current}
       >
         {
-          currentPage === 1 &&
+          currentPage === 1 && !searchChatKey &&
           <React.Fragment>
             <div className="wrap-time">
               <div className="time">{date_create}</div>
@@ -207,6 +207,12 @@ const BodyPart = props => {
           </React.Fragment>
         }
         {
+          searchChatKey && showedChats.length === 0 &&
+          <div className="bodyChat--searchEmpty">
+            Không tìm thấy kết quả
+          </div>
+        }
+        {
           showedChats.map((el, id) => <Message {...el}
             key={id}
             handleForwardChat={handleForwardChat(el)}
@@ -214,7 +220,7 @@ const BodyPart = props => {
             handleReplyChat={handleReplyChat(el)} />)
         }
         {
-          isShowSendStatus &&
+          isShowSendStatus && !searchChatKey &&
           (
             <div className="bodyChat--sending">
               {isSending ? 'Đang gửi...' : 'Đã gửi'}
@@ -222,7 +228,7 @@ const BodyPart = props => {
           )
         }
         {
-          viewedChatMembers.length > 0 &&
+          viewedChatMembers.length > 0 && !searchChatKey &&
           <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}{showMembers.map(({ avatar, name }, i) =>
             <abbr title={name} key={i}>
               <Avatar className="bodyChat--viewedAvatar" src={avatar} />

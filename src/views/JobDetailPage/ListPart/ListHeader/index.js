@@ -50,7 +50,7 @@ function ListHeaderSelect({ setShow }) {
 
 function ListHeader(props) {
   const dispatch = useDispatch();
-  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
+  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
   const [isOpenSettings, setOpenSettings] = React.useState(false);
@@ -60,7 +60,7 @@ function ListHeader(props) {
   }
 
   function onClickCreateJob() {
-    if (!listTaskDetail || listTaskDetail.tasks.length === 0) {
+    if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
       setOpenCreateGroup(true)
     } else {
       setOpenCreateJobModal(true);

@@ -100,21 +100,25 @@
     display: flex;
     position: relative;
     padding: 10px;
+    border-bottom: 1px solid #eeeeee;
   }
   &--pinRemind &--close {
     bottom: 2px;
   }
   &--pinImage {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
   }
   &--pinRight {
     margin-left: 10px;
   }
   &--pinContent {
     text-transform: uppercase;
+    font-weight: 500;
+    color: #607d8b;
+    margin-bottom: 4px;
   }
   &--pinType {
-    color: #666666;
+    color: #a4a4a4;
   }
 }

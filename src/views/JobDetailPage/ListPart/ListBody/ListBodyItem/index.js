@@ -46,7 +46,7 @@ function JobName(props) {
   const { isghim = '' } = props
   return (
     <div className="name-container-lbd" variant="space-between">
-      <ColorTypo bold>{props.title}</ColorTypo>
+      <ColorTypo bold={props.new_chat}>{props.title}</ColorTypo>
       <div>
         <IconPin
           color={'#6e6e6e'}
@@ -90,6 +90,7 @@ function JobUnit(props) {
         title={props.name}
         label={props.status_name}
         status_code={props.status_code}
+        new_chat={props.new_chat}
         isghim={props.is_ghim}
       />
       <JobContent

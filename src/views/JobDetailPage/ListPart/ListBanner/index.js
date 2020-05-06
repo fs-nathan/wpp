@@ -1,27 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterTaskByType } from '../../../../actions/taskDetail/taskDetailActions';
 // import { withRouter } from 'react-router-dom';
 import ColorChip from '../../../../components/ColorChip';
+import { listTaskDataTypes } from '../ListHeader/CreateJobSetting';
 
 const ListBanner = props => {
   const dispatch = useDispatch();
   const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
   const colors = useSelector(state => state.setting.colors);
+  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
+  const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
+  const [data, setData] = useState([])
   const handleChangeFilterType = typeIdx => {
     dispatch(filterTaskByType(typeIdx));
   };
   // console.log('listTaskDetail', value)
+  useEffect(() => {
+    if (listTaskDataType === listTaskDataTypes[1]) {
+      setData(listTaskDetail ? listTaskDetail.tasks : [])
+    } else {
+      setData(listDataNotRoom ? listDataNotRoom.tasks : [])
+    }
+  }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail])
 
-  const {
-    task_waiting = 0,
-    task_doing = 0,
-    task_complete = 0,
-    task_expired = 0,
-    task_stop = 0
-  } = projectDetail || {};
+  const task_waiting = data.filter(({ status_code }) => status_code === 0).length;
+  const task_doing = data.filter(({ status_code }) => status_code === 1).length;
+  const task_complete = data.filter(({ status_code }) => status_code === 2).length;
+  const task_expired = data.filter(({ status_code }) => status_code === 3).length;
+  const task_stop = data.filter(({ status_code }) => status_code === 4).length;
   const allTask = task_waiting + task_doing + task_complete + task_expired + task_stop;
 
   const jobTypes = [
