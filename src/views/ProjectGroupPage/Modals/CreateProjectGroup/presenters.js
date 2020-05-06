@@ -1,9 +1,9 @@
-import { Button, TextField } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
-import { CREATE_PROJECT_GROUP, CustomEventDispose, CustomEventListener, EDIT_PROJECT_GROUP } from 'constants/events.js';
+import { CREATE_PROJECT_GROUP, CustomEventDispose, CustomEventListener, DETAIL_PROJECT_GROUP, EDIT_PROJECT_GROUP, LIST_PROJECT_GROUP } from 'constants/events.js';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
@@ -29,16 +29,17 @@ function CreateProjectGroup({
   updatedProjectGroup,
   open, setOpen,
   handleCreateOrEditProjectGroup, handleOpenModal,
-  activeLoading,
+  doReloadProjectGroup,
 }) {
 
   const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 150);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
+  const [description, setDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
     url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
     url_sort: '/storage_vtask_net/Icon_default/bt0.png',
   });
+  const [activeLoading, setActiveLoading] = React.useState(false);
 
   React.useEffect(() => {
     setName(get(updatedProjectGroup, 'name'));
@@ -52,7 +53,33 @@ function CreateProjectGroup({
   }, [updatedProjectGroup]);
 
   React.useEffect(() => {
-    const successClose = () => {
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    if (updatedProjectGroup) {
+      CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, doReloadProjectGroup);
+      CustomEventListener(EDIT_PROJECT_GROUP.FAIL, fail);
+    }
+    else {
+      CustomEventListener(CREATE_PROJECT_GROUP.SUCCESS, doReloadProjectGroup);
+      CustomEventListener(CREATE_PROJECT_GROUP.FAIL, fail);
+    }
+    return () => {
+      if (updatedProjectGroup) {
+        CustomEventDispose(EDIT_PROJECT_GROUP.SUCCESS, doReloadProjectGroup);
+        CustomEventDispose(EDIT_PROJECT_GROUP.FAIL, fail);
+      }
+      else {
+        CustomEventDispose(CREATE_PROJECT_GROUP.SUCCESS, doReloadProjectGroup);
+        CustomEventDispose(CREATE_PROJECT_GROUP.FAIL, fail);
+      }
+    }
+    // eslint-disable-next-line
+  }, [updatedProjectGroup]);
+
+  React.useEffect(() => {
+    const success = () => {
+      setActiveLoading(false);
       setOpen(false);
       setName('');
       setDescription('');
@@ -61,44 +88,57 @@ function CreateProjectGroup({
         url_sort: '/storage_vtask_net/Icon_default/bt0.png',
       });
     };
-    CustomEventListener(CREATE_PROJECT_GROUP, successClose);
-    CustomEventListener(EDIT_PROJECT_GROUP, successClose);
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    if (updatedProjectGroup) {
+      CustomEventListener(DETAIL_PROJECT_GROUP.SUCCESS, success);
+      CustomEventListener(DETAIL_PROJECT_GROUP.FAIL, fail);
+    }
+    else {
+      CustomEventListener(LIST_PROJECT_GROUP.SUCCESS, success);
+      CustomEventListener(LIST_PROJECT_GROUP.FAIL, fail);
+    }
     return () => {
-      CustomEventDispose(CREATE_PROJECT_GROUP, successClose);
-      CustomEventDispose(EDIT_PROJECT_GROUP, successClose);
+      if (updatedProjectGroup) {
+        CustomEventDispose(DETAIL_PROJECT_GROUP.SUCCESS, success);
+        CustomEventDispose(DETAIL_PROJECT_GROUP.FAIL, fail);
+      }
+      else {
+        CustomEventDispose(LIST_PROJECT_GROUP.SUCCESS, success);
+        CustomEventDispose(LIST_PROJECT_GROUP.FAIL, fail);
+      }
     }
     // eslint-disable-next-line
-  }, []);
+  }, [updatedProjectGroup]);
 
   return (
     <CustomModal
       title={updatedProjectGroup ? t("DMH.VIEW.PGP.MODAL.CUPG.U_TITLE") : t("DMH.VIEW.PGP.MODAL.CUPG.C_TITLE")}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName && !errorDescription}
-      onConfirm={() => handleCreateOrEditProjectGroup(name, description, icon)}
+      canConfirm={!errorName}
+      onConfirm={() => {
+        handleCreateOrEditProjectGroup(name, description, icon);
+        setActiveLoading(true);
+      }}
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
       manualClose={true}
     >
-      <TextField
+      <CustomTextbox
         value={name}
-        onChange={evt => setName(evt.target.value)}
-        margin="normal"
-        variant="outlined"
+        onChange={value => setName(value)}
         label={t("DMH.VIEW.PGP.MODAL.CUPG.NAME")}
         fullWidth
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorName, 'message', '')}
-          </ColorTypo>
-        }
+        required={true}
       />
       <CustomTextbox
         value={description}
         label={t("DMH.VIEW.PGP.MODAL.CUPG.DESC")}
         onChange={value => setDescription(value)}
-        helperText={get(errorDescription, 'message', '')}
+        fullWidth
+        multiline={true}
       />
       <LogoBox>
         <div>

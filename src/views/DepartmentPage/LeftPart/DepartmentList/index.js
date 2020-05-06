@@ -2,7 +2,7 @@ import { listIcon } from 'actions/icon/listIcon';
 import { listRoom } from 'actions/room/listRoom';
 import { sortRoom } from 'actions/room/sortRoom';
 import { listUserOfGroup } from 'actions/user/listUserOfGroup';
-import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CREATE_ROOM, CustomEventDispose, CustomEventListener, DELETE_ROOM, INVITE_USER_JOIN_GROUP, SORT_ROOM, SORT_USER, UPDATE_ROOM } from 'constants/events';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, SORT_ROOM, SORT_USER } from 'constants/events';
 import { filter, get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -41,22 +41,14 @@ function DepartmentList({
     const reloadListUserOfGroup = () => {
       doListUserOfGroup();
     }
-    CustomEventListener(CREATE_ROOM, reloadListUserOfGroup);
-    CustomEventListener(UPDATE_ROOM, reloadListUserOfGroup);
-    CustomEventListener(DELETE_ROOM, reloadListUserOfGroup);
     CustomEventListener(SORT_ROOM, reloadListUserOfGroup);
     CustomEventListener(SORT_USER, reloadListUserOfGroup);
     CustomEventListener(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
-    CustomEventListener(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
     CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
     return () => {
-      CustomEventDispose(CREATE_ROOM, reloadListUserOfGroup);
-      CustomEventDispose(UPDATE_ROOM, reloadListUserOfGroup);
-      CustomEventDispose(DELETE_ROOM, reloadListUserOfGroup);
       CustomEventDispose(SORT_ROOM, reloadListUserOfGroup);
       CustomEventDispose(SORT_USER, reloadListUserOfGroup);
       CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
-      CustomEventDispose(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
       CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
     }
     // eslint-disable-next-line

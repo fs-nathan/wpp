@@ -1,4 +1,4 @@
-import { ButtonBase, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
+import { ButtonBase, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import PropTypes from 'prop-types';
@@ -15,19 +15,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function AlertModal({
   open, setOpen,
   content = '', onConfirm = () => null, onCancle = () => null,
-  colors, canConfirm = true
+  colors, canConfirm = true,
+  manualClose = false,
+  actionLoading = false,
+  activeLoading = false,
 }) {
 
   const { t } = useTranslation();
   const bgColor = colors.find(item => item.selected === true);
 
   function handleCancle() {
-    setOpen(false);
+    !manualClose && setOpen(false);
     onCancle();
   }
 
   function handleConfirm() {
-    setOpen(false);
+    !manualClose && setOpen(false);
     onConfirm();
   }
 
@@ -53,13 +56,25 @@ function AlertModal({
         <ButtonBase className='comp_AlertModal___cancle-button' onClick={() => handleCancle()}>
           {t('DMH.COMP.ALERT_MODAL.CANCLE_BTN')}
         </ButtonBase>
-        {
-          canConfirm && (
-            <ButtonBase style={{ color: bgColor.color }} className='comp_AlertModal___accept-button' onClick={() => handleConfirm()}>
-              {t('DMH.COMP.ALERT_MODAL.ACCEPT_BTN')}
-            </ButtonBase>
-          )
-        }
+        <ButtonBase
+          style={{
+            color: bgColor.color,
+            opacity: !canConfirm || actionLoading || activeLoading ? 0.5 : 1,
+          }}
+          className='comp_AlertModal___accept-button'
+          onClick={() => handleConfirm()}
+          disabled={!canConfirm || actionLoading || activeLoading}
+        >
+          <CircularProgress
+            size={16}
+            className="margin-circular"
+            color={bgColor.color}
+            style={{
+              opacity: (actionLoading || activeLoading) ? 1 : 0
+            }}
+          />
+          {t('DMH.COMP.ALERT_MODAL.ACCEPT_BTN')}
+        </ButtonBase>
       </DialogActions>
     </Dialog>
   )

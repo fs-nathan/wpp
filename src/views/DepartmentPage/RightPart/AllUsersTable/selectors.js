@@ -5,19 +5,17 @@ const listRoom = state => state.room.listRoom;
 const listUserOfGroup = state => state.user.listUserOfGroup;
 const sortUser = state => state.user.sortUser;
 const getRequirementJoinGroup = state => state.groupUser.getRequirementJoinGroup;
-const banUserFromGroup = state => state.user.banUserFromGroup;
 const listPosition = state => state.position.listPosition;
 const publicMember = state => state.user.publicMember;
 const privateMember = state => state.user.privateMember;
 
 export const roomsSelector = createSelector(
-  [listRoom, listUserOfGroup, listPosition, sortUser, banUserFromGroup],
-  (listRoom, listUserOfGroup, listPosition, sortUser, banUserFromGroup) => {
+  [listRoom, listUserOfGroup, listPosition, sortUser],
+  (listRoom, listUserOfGroup, listPosition, sortUser) => {
     const { loading: sortUserLoading, error: sortUserError } = sortUser;
     const { data: { rooms } } = listRoom;
     const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading, firstTime: listFirst } = listUserOfGroup;
     const { data: { positions } } = listPosition;
-    const { loading: banUserLoading, error: banUserError } = banUserFromGroup;
     const newRooms = group.map(curGroup => ({
       ...curGroup,
       ...find(rooms, { 'id': get(curGroup, 'id') }),
@@ -33,8 +31,8 @@ export const roomsSelector = createSelector(
     }));
     return {
       rooms: newRooms,
-      loading: (listFirst ? false : listUserOfGroupLoading) || sortUserLoading || banUserLoading,
-      error: listUserOfGroupError || sortUserError || banUserError,
+      loading: (listFirst ? false : listUserOfGroupLoading) || sortUserLoading,
+      error: listUserOfGroupError || sortUserError,
       firstTime: listFirst,
     }
   }

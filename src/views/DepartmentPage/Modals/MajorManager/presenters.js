@@ -1,12 +1,12 @@
+import CustomModal from 'components/CustomModal';
+import SimpleManagerTable from 'components/SimpleManagerTable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import CustomModal from '../../../../components/CustomModal';
-import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 
 function MajorManager({
   open, setOpen,
   majors,
-  handleDeleteMajor, handleOpenModal,
+  handleOpenModal,
 }) {
 
   const { t } = useTranslation();
@@ -29,8 +29,7 @@ function MajorManager({
             updatedMajor: major,
           })}
           handleDelete={major => handleOpenModal('ALERT', {
-            content: t('DMH.VIEW.DP.MODAL.MAJOR.ALERT'),
-            onConfirm: () => handleDeleteMajor(major)
+            selectedMajor: major,
           })}
         />
       </CustomModal>

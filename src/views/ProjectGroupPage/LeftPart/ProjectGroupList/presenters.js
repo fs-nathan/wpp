@@ -94,7 +94,7 @@ function ProjectList({
                     }
                     secondary={
                       <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", {
-                        projectGroups: groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'number_project', 0), 0) + groups.defaultNumberProject
+                        projectGroups: groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'number_project', 0), 0)
                       })}</Secondary>
                     }
                   />

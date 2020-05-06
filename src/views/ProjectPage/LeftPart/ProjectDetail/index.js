@@ -1,14 +1,14 @@
 import { deleteProject } from 'actions/project/deleteProject';
 import { detailProject } from 'actions/project/detailProject';
 import { listTask } from 'actions/task/listTask';
-import AlertModal from 'components/AlertModal';
-import { ADD_MEMBER_PROJECT, ASSIGN_MEMBER_TO_ALL_TASK, COPY_GROUP_TASK, CREATE_GROUP_TASK, CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, DELETE_PROJECT, DELETE_TASK, REMOVE_MEMBER_PROJECT, SORT_GROUP_TASK, SORT_TASK, UPDATE_GROUP_TASK, UPDATE_STATE_JOIN_TASK } from 'constants/events';
+import { CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_PROJECT, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
 import { get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import EditProjectModal from '../../../ProjectGroupPage/Modals/EditProject';
+import { ProjectDeleteNoReload as DeleteProjectModal } from '../../../ProjectGroupPage/Modals/DeleteProject';
+import { EditProjectNoReload as EditProjectModal } from '../../../ProjectGroupPage/Modals/EditProject';
 import { routeSelector } from '../../../ProjectGroupPage/selectors';
 import { Context as ProjectContext } from '../../index';
 import ProjectDetailPresenter from './presenters';
@@ -58,18 +58,10 @@ function ProjectDetail({
             : undefined,
         });
       }
-      CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
-      CustomEventListener(COPY_GROUP_TASK, reloadListTask);
-      CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
-      CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
       CustomEventListener(SORT_GROUP_TASK, reloadListTask);
       CustomEventListener(CREATE_TASK, reloadListTask);
       CustomEventListener(SORT_TASK, reloadListTask);
       return () => {
-        CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
-        CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
-        CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
-        CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
         CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
         CustomEventDispose(CREATE_TASK, reloadListTask);
         CustomEventDispose(SORT_TASK, reloadListTask);
@@ -84,17 +76,9 @@ function ProjectDetail({
       const reloadDetailProject = () => {
         doDetailProject({ projectId: id });
       }
-      CustomEventListener(ADD_MEMBER_PROJECT, reloadDetailProject);
-      CustomEventListener(REMOVE_MEMBER_PROJECT, reloadDetailProject);
-      CustomEventListener(UPDATE_STATE_JOIN_TASK, reloadDetailProject);
-      CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
       CustomEventListener(CREATE_TASK, reloadDetailProject);
       CustomEventListener(DELETE_TASK, reloadDetailProject);
       return () => {
-        CustomEventDispose(ADD_MEMBER_PROJECT, reloadDetailProject);
-        CustomEventDispose(REMOVE_MEMBER_PROJECT, reloadDetailProject);
-        CustomEventDispose(UPDATE_STATE_JOIN_TASK, reloadDetailProject);
-        CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadDetailProject);
         CustomEventDispose(CREATE_TASK, reloadDetailProject);
         CustomEventDispose(DELETE_TASK, reloadDetailProject);
       }
@@ -109,10 +93,10 @@ function ProjectDetail({
       history.push(route);
     };
 
-    CustomEventListener(DELETE_PROJECT, historyPushHandler);
+    CustomEventListener(DELETE_PROJECT.SUCCESS, historyPushHandler);
 
     return () => {
-      CustomEventDispose(DELETE_PROJECT, historyPushHandler);
+      CustomEventDispose(DELETE_PROJECT.SUCCESS, historyPushHandler);
     };
   }, [history, projectId, route]);
 
@@ -151,7 +135,7 @@ function ProjectDetail({
         setOpen={setOpenUpdate}
         {...updateProps}
       />
-      <AlertModal
+      <DeleteProjectModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}

@@ -1,8 +1,4 @@
-import { findIndex, get, remove } from 'lodash';
-import { CREATE_LEVEL_SUCCESS } from '../../constants/actions/level/createLevel';
-import { DELETE_LEVEL_SUCCESS } from '../../constants/actions/level/deleteLevel';
 import { LIST_LEVEL, LIST_LEVEL_FAIL, LIST_LEVEL_RESET, LIST_LEVEL_SUCCESS } from '../../constants/actions/level/listLevel';
-import { UPDATE_LEVEL_SUCCESS } from '../../constants/actions/level/updateLevel';
 
 export const initialState = {
   data: {
@@ -38,6 +34,7 @@ function reducer(state = initialState, action) {
       };
     case LIST_LEVEL_RESET:
       return initialState;
+    /*
     case CREATE_LEVEL_SUCCESS:
       return {
         ...state,
@@ -72,6 +69,7 @@ function reducer(state = initialState, action) {
         }
       }
     }
+    */
     default:
       return state;
   }

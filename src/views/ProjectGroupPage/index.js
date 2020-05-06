@@ -23,7 +23,7 @@ function ProjectGroupPage({
     // eslint-disable-next-line
   }, []);
 
-  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_OPTIONS', {
+  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_GROUP_OPTIONS', {
     filterType: 1,
     timeType: 5,
   });

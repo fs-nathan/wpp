@@ -1,10 +1,8 @@
-import { deleteLevel } from 'actions/level/deleteLevel';
 import { listLevel } from 'actions/level/listLevel';
-import AlertModal from 'components/AlertModal';
-import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import LevelCreateAndUpdateModal from './LevelCreateAndUpdate';
+import LevelDeleteModal from './LevelDelete';
 import LevelManagerPresenter from './presenters';
 import { levelsSelector } from './selectors';
 
@@ -16,9 +14,9 @@ function LevelManager({
 }) {
 
   React.useEffect(() => {
-    if (open) doListLevel();
+    doListLevel();
     // eslint-disable-next-line
-  }, [open]);
+  }, []);
 
   const [openCAUModal, setOpenCAUModal] = React.useState(false);
   const [CAUProps, setCAUProps] = React.useState({});
@@ -51,7 +49,6 @@ function LevelManager({
       <LevelManagerPresenter
         open={open} setOpen={setOpen}
         levels={levels}
-        handleDeleteLevel={level => doDeleteLevel({ levelId: get(level, 'id') })}
         handleOpenModal={doOpenModal}
       />
       <LevelCreateAndUpdateModal
@@ -59,7 +56,7 @@ function LevelManager({
         setOpen={setOpenCAUModal}
         {...CAUProps}
       />
-      <AlertModal
+      <LevelDeleteModal
         open={openAlertModal}
         setOpen={setOpenAlertModal}
         {...alertProps}
@@ -76,7 +73,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doDeleteLevel: ({ levelId }) => dispatch(deleteLevel({ levelId })),
     doListLevel: (quite) => dispatch(listLevel(quite)),
   }
 };

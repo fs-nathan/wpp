@@ -7,7 +7,7 @@ import TableRow from "@material-ui/core/TableRow";
 import { mdiChevronLeft, mdiChevronRight, mdiKey } from '@mdi/js';
 import Icon from '@mdi/react';
 import CustomModal from 'components/CustomModal';
-import { CustomEventDispose, CustomEventListener, UPDATE_GROUP_PERMISSION_MEMBER } from 'constants/events';
+import { CustomEventDispose, CustomEventListener, MEMBER_PROJECT, UPDATE_GROUP_PERMISSION_MEMBER } from 'constants/events';
 import { find, get } from 'lodash';
 import React from "react";
 import Slider from "react-slick";
@@ -84,10 +84,14 @@ function CustomArrow({ path, className, isDisabled, onClick }) {
 function PermissionMemberModal({
   setOpen, open,
   permissions, members, curMemberId,
-  updateGroupPermission, handleUpdateGroupPermission
+  updateGroupPermission, handleUpdateGroupPermission,
+  projectId,
+  doReloadMember,
 }) {
+
   const [selectedValue, setSelectedValue] = React.useState(undefined);
   const [isAdmin, setIsAdmin] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     setSelectedValue(
@@ -118,15 +122,36 @@ function PermissionMemberModal({
   }, [members, curMemberId, permissions]);
 
   React.useEffect(() => {
-    const successClose = () => {
+    const fail = () => {
+      setLoading(false);
+    };
+    CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
+    CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER.FAIL, fail);
+    return () => {
+      CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
+      CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectId]);
+
+  React.useEffect(() => {
+    const success = () => {
+      setLoading(false);
       setOpen(false);
       setSelectedValue(undefined);
       setIsAdmin(false);
     };
-    CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER, successClose);
-    return () => CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER, successClose);
+    const fail = () => {
+      setLoading(false);
+    };
+    CustomEventListener(MEMBER_PROJECT.SUCCESS, success);
+    CustomEventListener(MEMBER_PROJECT.FAIL, fail);
+    return () => {
+      CustomEventDispose(MEMBER_PROJECT.SUCCESS, success);
+      CustomEventDispose(MEMBER_PROJECT.FAIL, fail);
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [projectId]);
 
   return (
     <CustomModal
@@ -138,7 +163,7 @@ function PermissionMemberModal({
       confirmRender={isAdmin ? null : () => "Hoàn thành"}
       onConfirm={() => !isAdmin && handleUpdateGroupPermission(selectedValue)}
       onCancle={() => setOpen(false)}
-      activeLoading={updateGroupPermission.loading}
+      activeLoading={updateGroupPermission.loading || loading}
       manualClose={true}
     >
       {isAdmin

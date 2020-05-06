@@ -6,7 +6,7 @@ import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 function TitleManager({
   open, setOpen,
   positions,
-  handleDeletePosition, handleOpenModal
+  handleOpenModal
 }) {
 
   const { t } = useTranslation();
@@ -28,8 +28,7 @@ function TitleManager({
           updatedPosition: position,
         })}
         handleDelete={position => handleOpenModal('ALERT', {
-          content: t('DMH.VIEW.DP.MODAL.TITLE.EXIT'),
-          onConfirm: () => handleDeletePosition(position),
+          selectedPosition: position,
         })}
       />
     </CustomModal>

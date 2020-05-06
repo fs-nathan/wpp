@@ -36,7 +36,6 @@ export function RoleManagerModalWrapper({ children }) {
     userRoles,
     setOpen,
     handleOpenModal,
-    handleDeleteUserRole,
   } = useContext(RoleManagerContext);
   return (
     <CustomModal
@@ -58,8 +57,7 @@ export function RoleManagerModalWrapper({ children }) {
         }
         handleDelete={(userRole) =>
           handleOpenModal("ALERT", {
-            content: t("DMH.VIEW.DP.MODAL.ROLE.ALERT"),
-            onConfirm: () => handleDeleteUserRole(userRole),
+            selectedUserRole: userRole,
           })
         }
       />

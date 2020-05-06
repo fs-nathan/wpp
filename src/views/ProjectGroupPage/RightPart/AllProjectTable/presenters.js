@@ -502,8 +502,7 @@ function AllProjectTable({
             onClick={evt => {
               setMenuAnchor(null)
               handleOpenModal('ALERT', {
-                content: t("DMH.VIEW.PGP.RIGHT.ALL.ALERT"),
-                onConfirm: () => handleDeleteProject(curProject),
+                selectedProject: curProject,
               })
             }}
           >{t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}</MenuItem>}

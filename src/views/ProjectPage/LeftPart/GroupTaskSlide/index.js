@@ -2,16 +2,14 @@ import { deleteGroupTask } from 'actions/groupTask/deleteGroupTask';
 import { listGroupTask } from 'actions/groupTask/listGroupTask';
 import { sortGroupTask } from 'actions/groupTask/sortGroupTask';
 import { listTask } from 'actions/task/listTask';
-import AlertModal from 'components/AlertModal';
-import { COPY_GROUP_TASK, CREATE_GROUP_TASK, CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, SORT_GROUP_TASK, SORT_TASK, UPDATE_GROUP_TASK } from 'constants/events';
+import { CustomEventDispose, CustomEventListener, SORT_GROUP_TASK } from 'constants/events';
 import { filter, get } from 'lodash';
-import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Context as ProjectContext } from '../../index';
 import CreateGroupTask from '../../Modals/CreateGroupTask';
 import CreateNewGroupTask from '../../Modals/CreateNewGroupTask';
+import DeleteGroupTask from '../../Modals/DeleteGroupTask';
 import { viewPermissionsSelector } from '../../selectors';
 import GroupTaskSlidePresenter from './presenters';
 import { groupTasksSelector } from './selectors';
@@ -25,57 +23,12 @@ function GroupTaskSlide({
   viewPermissions,
 }) {
 
-  const {
-    timeRange,
-  } = React.useContext(ProjectContext);
   const [id, setId] = React.useState(null);
   const { projectId } = useParams();
 
   React.useEffect(() => {
     setId(projectId);
   }, [projectId]);
-
-  React.useEffect(() => {
-    if (id !== null) {
-      doListTask({
-        projectId: id,
-        timeStart: get(timeRange, 'timeStart')
-          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-          : undefined,
-        timeEnd: get(timeRange, 'timeEnd')
-          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-          : undefined,
-      });
-      const reloadListTask = () => {
-        doListTask({
-          projectId: id,
-          timeStart: get(timeRange, 'timeStart')
-            ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-            : undefined,
-          timeEnd: get(timeRange, 'timeEnd')
-            ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-            : undefined,
-        });
-      }
-      CustomEventListener(CREATE_GROUP_TASK, reloadListTask);
-      CustomEventListener(COPY_GROUP_TASK, reloadListTask);
-      CustomEventListener(UPDATE_GROUP_TASK, reloadListTask);
-      CustomEventListener(DELETE_GROUP_TASK, reloadListTask);
-      CustomEventListener(SORT_GROUP_TASK, reloadListTask);
-      CustomEventListener(CREATE_TASK, reloadListTask);
-      CustomEventListener(SORT_TASK, reloadListTask);
-      return () => {
-        CustomEventDispose(CREATE_GROUP_TASK, reloadListTask);
-        CustomEventDispose(COPY_GROUP_TASK, reloadListTask);
-        CustomEventDispose(UPDATE_GROUP_TASK, reloadListTask);
-        CustomEventDispose(DELETE_GROUP_TASK, reloadListTask);
-        CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
-        CustomEventDispose(CREATE_TASK, reloadListTask);
-        CustomEventDispose(SORT_TASK, reloadListTask);
-      }
-    }
-    // eslint-disable-next-line
-  }, [id, timeRange]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
@@ -142,7 +95,7 @@ function GroupTaskSlide({
         }
         handleOpenModal={doOpenModal}
       />
-      <AlertModal
+      <DeleteGroupTask
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}

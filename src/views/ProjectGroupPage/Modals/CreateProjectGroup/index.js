@@ -1,17 +1,18 @@
+import { createProjectGroup } from 'actions/projectGroup/createProjectGroup';
+import { detailProjectGroup } from 'actions/projectGroup/detailProjectGroup';
+import { editProjectGroup } from 'actions/projectGroup/editProjectGroup';
+import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { createProjectGroup } from '../../../../actions/projectGroup/createProjectGroup';
-import { editProjectGroup } from '../../../../actions/projectGroup/editProjectGroup';
 import LogoManagerModal from '../../../DepartmentPage/Modals/LogoManager';
 import CreateProjectGroupPresenter from './presenters';
-import { activeLoadingSelector } from './selectors';
 
 function CreateProjectGroup({
   updatedProjectGroup = null,
   open, setOpen,
   doCreateProjectGroup, doEditProjectGroup,
-  activeLoading,
+  doReloadList, doReloadDetail,
 }) {
 
   const [openLogo, setOpenLogo] = React.useState(false);
@@ -31,7 +32,11 @@ function CreateProjectGroup({
   return (
     <>
       <CreateProjectGroupPresenter
-        updatedProjectGroup={updatedProjectGroup} activeLoading={activeLoading}
+        updatedProjectGroup={updatedProjectGroup} doReloadProjectGroup={() =>
+          updatedProjectGroup
+            ? doReloadDetail({ projectGroupId: get(updatedProjectGroup, 'id') })
+            : doReloadList()
+        }
         open={open} setOpen={setOpen}
         handleCreateOrEditProjectGroup={(name, description, icon) =>
           updatedProjectGroup
@@ -60,14 +65,14 @@ function CreateProjectGroup({
 
 const mapDispatchToProps = dispatch => {
   return {
+    doReloadList: () => dispatch(listProjectGroup(true)),
+    doReloadDetail: ({ projectGroupId }) => dispatch(detailProjectGroup({ projectGroupId }, true)),
     doCreateProjectGroup: ({ name, icon, description }) => dispatch(createProjectGroup({ name, icon, description })),
     doEditProjectGroup: ({ projectGroupId, name, icon, description }) => dispatch(editProjectGroup({ projectGroupId, name, icon, description })),
   }
 };
 
 export default connect(
-  state => ({
-    activeLoading: activeLoadingSelector(state),
-  }),
+  null,
   mapDispatchToProps,
 )(CreateProjectGroup);
