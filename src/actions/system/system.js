@@ -216,7 +216,21 @@ export const changeVisibleConfigGantt = (state, type) => ({
   }
 })
 
-export const changeVisibleExportPdfDrawer = (state, type) => ({
+export const changeVisibleExportPdfDrawer = (state) => ({
   type: actionTypes.CHANGE_VISIBLE_EXPORT_PDF_DRAWER,
   payload: state
 })
+
+export const changeVisibleSubtaskDrawer = state => ({
+  type: actionTypes.CHANGE_VISIBLE_SUBTASK_DRAWER,
+  payload: state
+})
+
+export const changeDetailSubtaskDrawer = ({id, name}) => ({
+  type: actionTypes.CHANGE_DETAIL_SUBTASK_DRAWER,
+  payload: {
+    id,
+    name
+  }
+})
+

@@ -57,8 +57,8 @@ const routes = [
     component: () => <ConfirmRegistration />
   },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
-  { path: '', exact: false, component: () => null },
   { path: Routes.PROJECT_GRANT, component: () => <Grant/> },
+  { path: '', exact: false, component: () => null },
 ];
 
 export default routes;

@@ -35,7 +35,8 @@ export const initialState = {
     },
     label: {
       prior: true,
-      status: true
+      status: true,
+      member: true
     }
   },
   previewContent: ["Nội dung 1", "Nội dung 2", "Nội dung 3", "Nội dung 4" ,"Nội dung 5", "Nội dung 6"],

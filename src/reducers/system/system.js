@@ -17,6 +17,11 @@ export const initialState = {
   ganttConfig: {
     state: false,
     type: ''
+  },
+  visibleSubtaskDrawer: false,
+  detailSubTaskDrawer: {
+    id: '',
+    name: ''
   }
 };
 
@@ -55,6 +60,10 @@ const system = (state = initialState, action) => {
       return { ...state, ganttConfig: action.payload };
     case actionTypes.CHANGE_VISIBLE_EXPORT_PDF_DRAWER:
       return { ...state, exportPdfDrawerVisible: action.payload };
+    case actionTypes.CHANGE_VISIBLE_SUBTASK_DRAWER:
+      return { ...state, visibleSubtaskDrawer: action.payload };
+    case actionTypes.CHANGE_DETAIL_SUBTASK_DRAWER:
+      return { ...state, detailSubTaskDrawer: action.payload };
     default:
       return state;
   }

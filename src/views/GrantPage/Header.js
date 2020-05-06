@@ -7,6 +7,7 @@ import { changeShowHeader } from '../../actions/gantt'
 import IconComponent from './IconComponent'
 import { mdiChevronDown   } from '@mdi/js';
 import ListHeader from "../../views/JobDetailPage/ListPart/ListHeader";
+import ListProject from "../../views/JobDetailPage/ListPart/ListProject";
 const Header =  ({ projectInfo, showHeader, changeShowHeader }) => {
     const [showProject, setShowSelectProject] = useState(false);
     return (
@@ -22,7 +23,8 @@ const Header =  ({ projectInfo, showHeader, changeShowHeader }) => {
              <Col span={22}>
             
              <p className="gantt--title-project" >{projectInfo.name}</p>
-             <ListHeader show={showProject} setShow={setShowSelectProject}/>
+             {/* <ListHeader show={showProject} setShow={setShowSelectProject}/> */}
+             {/* <ListProject show={showProject} setShow={setShowSelectProject}/> */}
              <div className="gantt--navigation">
                  <p>Table</p>
                  <p>Gantt</p>

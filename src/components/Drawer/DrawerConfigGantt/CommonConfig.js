@@ -160,6 +160,13 @@ const CommonConfig = ({visibleLabel,projectInfo,height,state, type, changeVisibl
           }}> Trạng thái</Checkbox>
           </div>
           <div className="config--drawer--checkbox-wrapper">
+          <Checkbox checked={visibleLabel.member}  onChange={(e) => changeVisible(e.target.checked, 'label', 'member')} className="config--drawer--checkbox" style={{
+              display: 'flex',
+              width: '100%',
+              marginLeft: '8px !important'
+          }}> Thành viên</Checkbox>
+          </div>
+          <div className="config--drawer--checkbox-wrapper">
           <Checkbox checked={visibleLabel.prior}  onChange={(e) => changeVisible(e.target.checked, 'label', 'prior')} className="config--drawer--checkbox" style={{
               display: 'flex',
               width: '100%',

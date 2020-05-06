@@ -6,10 +6,12 @@ import { DndProvider, } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import {Resizable} from 'react-resizable'
-import ConfigDrawer from '../../components/Drawer/DrawerConfigGantt'
+
+import ConfigGanttDrawer from '../../components/Drawer/DrawerConfigGantt'
+import SubTaskDrawer from '../../components/Drawer/SubTaskDrawer'
 import ExportPDFDrawer from '../../components/Drawer/DrawerPDF'
 import CustomBadge from '../../components/CustomBadge';
-import { mdiSettings,mdiPlus , mdiAccount, mdiMenuUp , mdiMenuDown, mdiDragVertical   } from '@mdi/js';
+import { mdiSettings,mdiPlus ,mdiClockOutline,mdiFileTree, mdiAccount, mdiMenuUp , mdiMenuDown, mdiDragVertical   } from '@mdi/js';
 import DragTable from './DragableHOC';
 import moment from 'moment'
 import Icon from '@mdi/react';
@@ -19,6 +21,7 @@ import {
   IconButton,
 } from '@material-ui/core';
 import { changeRowHover,changeTaskduration, changeTimelineColor, changeVisible, changeProjectInfo } from '../../actions/gantt';
+import { changeVisibleSubtaskDrawer, changeDetailSubtaskDrawer } from '../../actions/system/system';
 import CreateProject from '../../views/ProjectGroupPage/Modals/CreateProject'
 import CreateJobModal from '../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal'
 import DragableBodyRow from './DragableBodyRow'
@@ -151,6 +154,16 @@ class DragSortingTable extends React.Component {
             width: 400,
             height: 100,
             render: (text, record) => {
+              if(record.isTotalDuration)
+              return (
+                <div className="gantt--group-task" style={{display: 'flex', cursor: 'auto'}}>
+                <div className="gantt--group-task__left">
+                 <div>
+                <Icon style={{width: 19, fill:"#777"}} path={mdiClockOutline }/>
+                </div>{record.name} 
+                </div>
+                </div>
+              )
               return (record.isGroupTask ?
                 <React.Fragment>
                <div className="gantt--group-task" onClick={() =>this.handleClickMainTask(record.id)} style={{display: 'flex', cursor: 'auto'}}>
@@ -199,12 +212,28 @@ class DragSortingTable extends React.Component {
         >
           <Icon className="gantt--icon-setting-task" path={mdiSettings} size={1}/>
           </IconButton>}
+          {record.number_subtask > 0 &&  
+              <IconButton
+          aria-controls="simple-menu"
+          style={{padding: 0}}
+          aria-haspopup="true"
+          size="small"
+          onClick={() => {
+            this.props.changeDetailSubtaskDrawer({
+              id: record.id,
+              name: record.name
+            })
+            this.props.changeVisibleSubtaskDrawer(true)
+          }}
+        >
+          <Icon className="gantt--icon-setting-task" path={mdiFileTree} size={1}/>
+          </IconButton>}
            {this.props.visibleLabel.status&& <CustomBadge style={{margin: '0px 4px',...decodePriorityCode(record.status_code)}}
                                  {...decodePriorityCode(record.status_code)}
                                 >
                                 {record.status_name}
                                 </CustomBadge>}
-                                {this.props.visibleLabel.prior&&<CustomBadge style={{margin: '0px 4px',...decodePriorityCode('MEMBER')}}
+                                {this.props.visibleLabel.member&&<CustomBadge style={{margin: '0px 4px',...decodePriorityCode('MEMBER')}}
                               {...decodePriorityCode('MEMBER')}
                                 >
                                 <Icon style={{ transform: "translateY(-50%)",
@@ -213,6 +242,16 @@ class DragSortingTable extends React.Component {
     fill: 'white',
     position: "relative" }} path={mdiAccount }/>
         {record.number_member}
+                                </CustomBadge>}
+                                {this.props.visibleLabel.prior&&<CustomBadge style={{margin: '0px 4px',...decodePriorityCode(record.priority_code)}}
+                              {...decodePriorityCode(record.priority_code)}
+                                >
+                                <Icon style={{ transform: "translateY(-50%)",
+    width: 12,
+    top: "57%",
+    fill: 'white',
+    position: "relative" }} path={mdiAccount }/>
+        {decodePriorityCode(record.priority_code).name}
                                 </CustomBadge>}
                                 </div>
                                 </div>
@@ -288,6 +327,20 @@ class DragSortingTable extends React.Component {
 
     startTimeProject = new moment(getFormatStartStringFromObject(resultListTask.data.total_duration.time), formatString)
     endTimeProject = new moment(getFormatEndStringFromObject(resultListTask.data.total_duration.time), formatString)
+    const totalProjectData = resultListTask.data.total_duration
+    data.push({
+      name: "Tổng tiến độ",
+      start_label: totalProjectData.time.start_label,
+      start_time: getFormatStartStringFromObject(totalProjectData.time),
+      end_time: getFormatEndStringFromObject(totalProjectData.time),
+      end_label: totalProjectData.time.end_label,
+      duration_actual: '1',
+      complete: 0,
+      isTotalDuration: true,
+      show: true,
+      id: "TOTAL_DURATION",
+      key: "TOTAL_DURATION",
+    })
     resultListTask.data.tasks.forEach((task, index) => {
       const {name, time } = task
       data.push({
@@ -315,6 +368,8 @@ class DragSortingTable extends React.Component {
         duration_actual:  subTask.duration_actual.value,
         complete: subTask.complete,
         show: true,
+        priority_code: subTask.priority_code,
+        number_subtask: subTask.number_subtask,
         status_code: subTask.status_code,
         status_name: subTask.status_name,
         number_member: subTask.number_member,
@@ -577,10 +632,11 @@ class DragSortingTable extends React.Component {
     return (
         <React.Fragment>
           <CreateJobModal projectId={this.props.projectInfo.id || null} isOpen={this.state.openCreateJobModal} setOpen={this.handleOpenCraeteJobModal} />
-          <CreateProject open={this.state.openCreateProjectModal} setOpen={this.handleOpenCreateProjectModal}/>
+          {/* <CreateProject open={this.state.openCreateProjectModal} setOpen={this.handleOpenCreateProjectModal}/> */}
 <Header titleProject={this.state.titleProject}/>
           <div id="printContent" style={{display: 'flex', width: widthPdf}}>
-          <ConfigDrawer height={this.state.height}/>
+          <ConfigGanttDrawer height={this.state.height}/>
+          <SubTaskDrawer height={this.state.height}/>
           <ExportPDFDrawer height={this.state.height}/>
             <div
             style={{
@@ -597,7 +653,7 @@ class DragSortingTable extends React.Component {
           rowClassName={(record, index) => {
             if(this.props.rowHover === index)
               return 'row-background-yellow';
-            if(this.state.data[index]&&this.state.data[index].isGroupTask)
+            if(this.state.data[index]&&(this.state.data[index].isGroupTask ||this.state.data[index].isTotalDuration))
               return 'row-grey-table'
             return ''
           }}
@@ -635,6 +691,8 @@ const mapDispatchToProps = {
   changeRowHover,
   changeTimelineColor,
   changeVisible,
-  changeProjectInfo
+  changeProjectInfo,
+  changeVisibleSubtaskDrawer,
+  changeDetailSubtaskDrawer
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DragSortingTable))

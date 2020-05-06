@@ -12,7 +12,7 @@ const Circle = ({left, show}) => (
     </div>
 )
 
-const TimeLine = ({startPosition, girdInstance, endPosition, index, setDataSource,dataSource, startDate, endDate, timelineColor,visibleGantt, isGroupTask }) => {
+const TimeLine = ({startPosition,isTotalDuration, girdInstance, endPosition, index, setDataSource,dataSource, startDate, endDate, timelineColor,visibleGantt, isGroupTask }) => {
     const totalTimeRef = useRef()
     const refProcess = useRef()
     const refFirstResize = useRef()
@@ -98,10 +98,6 @@ const TimeLine = ({startPosition, girdInstance, endPosition, index, setDataSourc
     const handleChange = (start, end) => {
         setDataSource(index, start, end)
     }
-    const handleMouseUpFirstResize = () => {
-        setDragFirstResize(false)
-        setDrag(false)
-    }
     const handleResizeWidth = (e, node) =>{
         const newResizeWidth = node.size.width
         const amountUnitAdd = (newResizeWidth - width)/48
@@ -112,7 +108,9 @@ const TimeLine = ({startPosition, girdInstance, endPosition, index, setDataSourc
     const styleWidthGroupTask = isGroupTask ? {style: {width}} : {}
     if(isGroupTask && !visibleGantt.group)
         return null
-    if(!isGroupTask && !visibleGantt.task)
+    if(!isGroupTask && !isTotalDuration && !visibleGantt.task)
+        return null
+    if(isTotalDuration && !visibleGantt.total)
         return null
     return (
         <React.Fragment>
@@ -163,7 +161,7 @@ const TimeLine = ({startPosition, girdInstance, endPosition, index, setDataSourc
                 >
                    {!isGroupTask&& <Circle show={showResize} left={-15}/>}
                 </div>
-            <div style={{background: isGroupTask ? timelineColor.group :timelineColor.task}} className="gantt--time-task">
+            <div style={{background:isTotalDuration ? timelineColor.total :isGroupTask ? timelineColor.group :timelineColor.task}} className="gantt--time-task">
             </div>
             </ResizableBox>
             {visibleGantt.date &&<p className="gantt--end-timeline">

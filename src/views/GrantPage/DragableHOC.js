@@ -85,7 +85,7 @@ function GanttChart({minLeft,setDataSource, girdInstance, start,showHeader, end,
           backgroundColor: rowHover === index ?  '#fffae6' : ''
       }}>
          <div className="gantt--top-timeline"></div>
-        <Timeline isGroupTask={item.isGroupTask} key={item.id + '1'} setDataSource={setDataSource} startDate={startDate} endDate={endDate}key={item.id} dataSource={dataSource} index={index} startPosition={startPosition} endPosition={endPosition}/>
+        <Timeline isTotalDuration={item.isTotalDuration} isGroupTask={item.isGroupTask} key={item.id + '1'} setDataSource={setDataSource} startDate={startDate} endDate={endDate}key={item.id} dataSource={dataSource} index={index} startPosition={startPosition} endPosition={endPosition}/>
         </div>
         </React.Fragment>
       
