@@ -75,7 +75,7 @@ function validate(data) {
 function CreateJobModal(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
+  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.date'));
@@ -134,9 +134,9 @@ function CreateJobModal(props) {
   };
 
   React.useEffect(() => {
-    if (listTaskDetail) {
+    if (listGroupTaskData) {
       // Map task to input
-      let listTask = listTaskDetail.tasks.map(item => ({
+      let listTask = listGroupTaskData.group_tasks.map(item => ({
         label:
           item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : 'Chưa phân loại',
         value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ''
@@ -151,7 +151,7 @@ function CreateJobModal(props) {
         setGroupTaskValue(item);
       }
     }
-  }, [listTaskDetail]);
+  }, [listGroupTaskData]);
 
   React.useEffect(() => {
     if (listSchedule) {
@@ -209,7 +209,7 @@ function CreateJobModal(props) {
   }, [dispatch, projectId])
 
   const handleChangeData = (attName, value) => {
-    console.log(attName, value)
+    // console.log(attName, value)
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
 
