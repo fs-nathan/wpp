@@ -1,7 +1,7 @@
 // Import actions
 import { lastJobSettingKey } from 'views/JobDetailPage/ListPart/ListHeader/CreateJobSetting';
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
-import { filterTaskByType, searchTaskByTaskName } from '../../helpers/jobDetail/arrayHelper';
+import { searchTaskByTaskName } from '../../helpers/jobDetail/arrayHelper';
 
 // Initial state for store
 const initialState = {
@@ -13,6 +13,7 @@ const initialState = {
     staticTask: [],
     listTaskDataType: localStorage.getItem(lastJobSettingKey) || 'include-room',
     listDataNotRoom: null,
+    filterTaskType: 0,
 };
 
 export default function reducer(state = initialState, action) {
@@ -43,7 +44,8 @@ export default function reducer(state = initialState, action) {
         case types.FILTER_TASK_BY_TYPE:
             return {
                 ...state,
-                listTaskDetail: { tasks: filterTaskByType(state.defaultListTaskDetail, action.payload) }
+                filterTaskType: action.payload,
+                // listTaskDetail: { tasks: filterTaskByType(state.defaultListTaskDetail, action.payload) }
             }
         case types.GET_LIST_TASK_DETAIL_FAIL:
             return {

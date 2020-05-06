@@ -25,30 +25,23 @@ const ChipMes = styled(Chip)`
   display: ${props => (props.notification === 'true' ? 'block' : 'none')};
 `;
 
-const badgeState = label => {
-  let color;
-  switch (label) {
-    case 'Waiting':
-      color = 'orangelight';
-      break;
-    case 'Doing':
-      color = 'indigolight';
-      break;
-    case 'Complete':
-      color = 'light-green';
-      break;
-    case 'Expired':
-      color = 'redlight';
-      break;
-    case 'Stop':
-      color = 'redlight';
-      break;
+const getBadgeColor = status_code => {
+  switch (status_code) {
+    case 0:
+      return 'orangelight';
+    case 1:
+      return 'indigolight';
+    case 2:
+      return 'light-green';
+    case 3:
+      return 'redlight';
+    case 4:
+      return 'redlight';
     default:
-      color = 'redlight';
+      return 'redlight';
   }
-
-  return <BadgeItem color={color} badge label={label} size="small" />;
 };
+
 function JobName(props) {
   const { isghim = '' } = props
   return (
@@ -62,29 +55,29 @@ function JobName(props) {
           {...props}
           isghim={isghim.toString()}
         />
-        {badgeState(props.label)}
+        <BadgeItem color={getBadgeColor(props.status_code)} badge label={props.label} size="small" />
       </div>
     </div>
   );
 }
 
 function JobContent(props) {
-  const { avatar, notify = 1, notification = '', ...rest } = props
+  const { avatar, notify, new_chat, notification = '', ...rest } = props
   return (
     <div className="container-content-lbd">
       <div title={props.name}>
         <Avatar src={avatar} alt="avatar" />
         <ColorTypo color="#7a869a">{props.content}</ColorTypo>
       </div>
-      <div>
+      {new_chat && <div>
         <ChipMes
-          label={notify}
+          label={'N'}
           size="small"
           {...rest}
           notification={notification.toString()}
         />
         <div>{props.time}</div>
-      </div>
+      </div>}
     </div>
   );
 }
@@ -96,6 +89,7 @@ function JobUnit(props) {
       <JobName
         title={props.name}
         label={props.status_name}
+        status_code={props.status_code}
         isghim={props.is_ghim}
       />
       <JobContent

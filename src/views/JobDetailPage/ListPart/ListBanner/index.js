@@ -1,19 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { withRouter } from 'react-router-dom';
-
-import ColorChip from '../../../../components/ColorChip';
 import { filterTaskByType } from '../../../../actions/taskDetail/taskDetailActions';
+// import { withRouter } from 'react-router-dom';
+import ColorChip from '../../../../components/ColorChip';
 
 const ListBanner = props => {
   const dispatch = useDispatch();
   const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
+  const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
   const colors = useSelector(state => state.setting.colors);
-  const [selected, setSelected] = React.useState(0);
   // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
   const handleChangeFilterType = typeIdx => {
     dispatch(filterTaskByType(typeIdx));
-    setSelected(typeIdx);
   };
   // console.log('listTaskDetail', value)
 
@@ -46,8 +44,8 @@ const ListBanner = props => {
           key={index}
           label={jobType}
           onClick={() => handleChangeFilterType(index)}
-          color={selected === index ? 'light-blue' : 'white'}
-          style={{ background: selected === index && bgColor.color }}
+          color={filterTaskType === index ? 'light-blue' : 'white'}
+          style={{ background: filterTaskType === index && bgColor.color }}
           size="small"
         />
       ))}
