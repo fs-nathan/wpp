@@ -9,13 +9,12 @@ import '../JobDetailPage/index.scss';
 import ChatPart from './ChatPart';
 import Intro from './introduce';
 import ListPart from './ListPart';
-import { taskIdSelector } from './selectors';
 import TabPart from './TabPart';
 
 function JobDetailPage(props) {
   const dispatch = useDispatch();
   const url = new URL(window.location.href);
-  const taskId = useSelector(taskIdSelector) || url.searchParams.get('task_id');
+  const taskId = url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   // console.log('JobDetailPage', taskId);
 
@@ -30,18 +29,22 @@ function JobDetailPage(props) {
   }, [dispatch]);
 
   useEffect(() => {
+    // console.log('url', url.pathname, 'projectId', projectId)
     const path = url.pathname;
     const id = last(path.split('/'));
     // console.log({ id, path });
     if (id.length > 0) {
       if (id !== projectId) {
-        dispatch(taskDetailAction.chooseProject({ id }))
+        dispatch(taskDetailAction.getProjectListBasic(id));
+        // dispatch(taskDetailAction.chooseProject({ id }))
+        dispatch(taskDetailAction.getListTaskDetail(id));
         dispatch(taskDetailAction.getProjectDetail(id))
       }
     }
   }, [dispatch, projectId, url]);
 
   useEffect(() => {
+    // console.log('taskId', taskId)
     if (taskId) {
       dispatch(taskDetailAction.getMemberNotAssigned({ task_id: taskId }));
       dispatch(taskDetailAction.getMember({ task_id: taskId }));
@@ -51,6 +54,7 @@ function JobDetailPage(props) {
   }, [dispatch, taskId]);
 
   useEffect(() => {
+    // console.log('projectId', projectId)
     if (projectId !== '') {
       dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail(projectId));

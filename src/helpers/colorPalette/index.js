@@ -11,6 +11,7 @@ const colors = {
   'yellow': ['#ffc107', '#fff'],
   'teal': ['#20c997', '#fff'],
   'gray': ['#a5a0a0', '#fff'],
+  'dark-gray': ['#607d8b29', '#607d8b'],
   'greenlight': ['#fff', '#20c997'],
   'orangelight': ['#fdedd5', '#fd7e14'],
   'bluelight': ['#d2fdf6', '#1abc9c'],
@@ -18,13 +19,13 @@ const colors = {
   'redlight': ['#fdd2d9', '#fa6880'],
   'purplelight': ['#fdd2fc', '#c91dc5'],
   'indigolight': ['#bdedfc', '#68cced'],
-  'light-blue' : ['#4389e4', '#fff'],
+  'light-blue': ['#4389e4', '#fff'],
   'white': ['#f0f0f0', '#8b8b8b'],
   'grey': ['#f8dbd7', '#f16978'],
   'black': ['#000', '#fff'],
-  '#07bd0b' : ['#07bd0b' , '#fff'],
-  'redIcon': ['#fff' , '#dc3545'],
-  '#7a869a' : ['#7a869a', '#fff']
+  '#07bd0b': ['#07bd0b', '#fff'],
+  'redIcon': ['#fff', '#dc3545'],
+  '#7a869a': ['#7a869a', '#fff']
 };
 
 export default colors;

@@ -36,7 +36,7 @@ const getBadgeColor = status_code => {
     case 3:
       return 'redlight';
     case 4:
-      return 'redlight';
+      return 'dark-gray';
     default:
       return 'redlight';
   }
