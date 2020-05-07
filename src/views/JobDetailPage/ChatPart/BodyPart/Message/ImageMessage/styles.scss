@@ -152,6 +152,7 @@
     line-height: 30px;
     position: relative;
     border-radius: 10px;
+    height: 100%;
     &Text {
       position: absolute;
       top: 0;
@@ -186,6 +187,7 @@
     border: 1px solid #ececec;
     color: #333333;
     line-height: 13px;
+    display: none;
   }
   &--img {
     width: 100%;
@@ -204,8 +206,8 @@
     &__self {
       color: #d8d7d7;
       text-align: right;
-      margin-right: 10px;
-      margin-top: 6px;
+      margin-right: 5px;
+      margin-top: 5px;
     }
   }
   &:hover .CommonMessageAction {

@@ -35,9 +35,11 @@ const ImageMessage = ({
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
   const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState(0);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (idx) => () => {
     setOpen(true);
+    setSelected(idx)
   };
 
   const handleClose = () => {
@@ -84,7 +86,7 @@ const ImageMessage = ({
         <div className="ImageMessage--imagesContainer" >
           {
             showImages.map(({ url }, i) =>
-              <div key={url} onClick={handleClickOpen}
+              <div key={url} onClick={handleClickOpen(i)}
                 className={clsx("ImageMessage--wrap",
                   `ImageMessage--wrap__total${showImages.length}-${i + 1}`,
                   `ImageMessage--wrap__number${i + 1}`,
@@ -93,7 +95,7 @@ const ImageMessage = ({
 
                 {
                   (plusImage > 0 && !isReply && i === 5) ? (
-                    <div className={clsx("ImageMessage--plus")}>
+                    <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
                       <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
                       <div className={clsx("ImageMessage--plusText")}>
                         <div className={clsx("ImageMessage--plusTextNumber")}>
@@ -142,12 +144,14 @@ const ImageMessage = ({
           <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
         }
       </div>
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+      {
+        !isReply && !is_me &&
+        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+      }
       <ModalImage images={images}
         {...{ user_create_avatar, user_create_name, time_create, user_create_position }}
-        isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
-    </div>
+        isOpen={open} selected={selected} handleClose={handleClose} />
+    </div >
   );
 }
 

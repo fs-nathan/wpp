@@ -7,7 +7,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
 import { mdiChevronLeftCircle, mdiChevronRightCircle, mdiDownload, mdiInformation, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import styled from 'styled-components';
@@ -204,20 +204,23 @@ const Image = styled.img`
   padding: 0;
   border-radius: 5px;
   cursor: pointer;
+  opacity: ${props => props.selected ? 1 : 0.4};
+  object-fit: cover;
   &:hover {
-    opacity: 0.7
+    opacity: 1;
   }
 `
 const ModalImage = (props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
-  const [currentImage, setCurrentImage] = useState(0)
+  const [currentImage, setCurrentImage] = useState(props.selected);
   const {
     isOpen,
     handleClose,
     images = [],
     type,
     url,
+    selected,
   } = props
   function clickNext() {
     if (currentImage < images.length - 1) {
@@ -229,8 +232,12 @@ const ModalImage = (props) => {
       setCurrentImage(currentImage - 1)
     }
   }
+
+  useEffect(() => {
+    setCurrentImage(selected)
+  }, [selected]);
+
   return (
-    // {/* Modal chinh sua cong viec con */}
     <StyledDialog
       aria-labelledby="customized-dialog-title"
       open={isOpen}
@@ -260,9 +267,10 @@ const ModalImage = (props) => {
               :
               images.map((image, index) => {
                 return (
-                  <WrapperImage key={`1-${index}`
-                  }>
-                    <Image src={image.url} alt='avatar' />
+                  <WrapperImage
+                    onClick={() => setCurrentImage(index)}
+                    key={`1-${index}`}>
+                    <Image src={image.url} alt='avatar' selected={currentImage === index} />
                   </WrapperImage>
                 );
               })

@@ -18,12 +18,14 @@
   }
   &--reactMember {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    padding: 4px 10px;
-    top: -40px;
+    background-color: rgba(0, 0, 0, 0.65);
+    border-radius: 3px;
+    padding: 6px 10px;
+    top: -34px;
     display: none;
     color: #ffffff;
+    min-width: 120px;
+    left: -40px;
   }
   &--react:hover &--reactMember {
     display: block;
