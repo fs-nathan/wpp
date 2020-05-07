@@ -154,6 +154,7 @@ span.ant-checkbox ~ span {
 
 .gantt--title-project {
  font-size: 17px;
+ display: flex;
  margin-bottom: 2px;
  font-weight: 500; 
 }
@@ -670,4 +671,9 @@ div.checkbox-colortag--drawer {
 
 .calendar--hour-work__name {
   width: 30%;
+}
+.gantt-select-project__container{
+  position: absolute;
+  background: #fff;
+  z-index: 1000;
 }

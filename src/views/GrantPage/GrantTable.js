@@ -20,6 +20,7 @@ import ExportPDFDrawer from '../../components/Drawer/DrawerPDF';
 import SubTaskDrawer from '../../components/Drawer/SubTaskDrawer';
 import { apiService } from '../../constants/axiosInstance';
 import CreateJobModal from '../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal';
+import QuickViewTaskDetailDrawer from '../../views/JobPage/components/QuickViewTaskDetailDrawer';
 import DragableBodyRow from './DragableBodyRow';
 import DragTable from './DragableHOC';
 import Header from './Header';
@@ -206,6 +207,9 @@ class DragSortingTable extends React.Component {
                         style={{ padding: 0 }}
                         aria-haspopup="true"
                         size="small"
+                        onClick={() => this.setState({
+                          quickViewId: record.id
+                        })}
                       >
                         <Icon className="gantt--icon-setting-task" path={mdiSettings} size={1} />
                       </IconButton>}
@@ -648,6 +652,9 @@ class DragSortingTable extends React.Component {
           <ConfigGanttDrawer height={this.state.height} />
           <SubTaskDrawer height={this.state.height} />
           <ExportPDFDrawer height={this.state.height} />
+          <QuickViewTaskDetailDrawer onClose={() => this.setState({
+            quickViewId: null
+          })} taskId={this.state.quickViewId} />
           <div
             style={{
               height: this.state.height
@@ -679,7 +686,7 @@ class DragSortingTable extends React.Component {
           </div>
           <DragTable setDataSource={this.setDataSource} minLeft={this.state.minLeft} widthTable={this.state.width} daysRender={this.state.daysRender} monthArray={this.state.monthArray} start={this.state.startTimeProject} end={this.state.endTimeProject} dataSource={this.state.data} />
         </div>
-      </React.Fragment>
+      </React.Fragment >
     );
   }
 }

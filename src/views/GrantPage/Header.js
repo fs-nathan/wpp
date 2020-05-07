@@ -1,4 +1,6 @@
-import { mdiChevronDown } from '@mdi/js';
+import { IconButton } from '@material-ui/core';
+import { mdiChevronDown, mdiMenuDown } from '@mdi/js';
+import Icon from '@mdi/react';
 import { Col, Row } from 'antd';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
@@ -7,6 +9,7 @@ import ListProject from "../../views/JobDetailPage/ListPart/ListProject";
 import IconComponent from './IconComponent';
 import RightHeader from './RightHeader';
 import './table.css';
+
 const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
     const [showProject, setShowSelectProject] = useState(false);
     return (
@@ -20,9 +23,21 @@ const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
                             src={projectInfo.group_icon} />
                     </Col>
                     <Col span={22}>
-                        <p className="gantt--title-project" >{projectInfo.name}</p>
+                        <p className="gantt--title-project" ><div>{projectInfo.name}</div> <div>
+                            <IconButton
+                                onClick={() => setShowSelectProject(!showProject)}
+                                aria-controls="simple-menu"
+                                style={{ padding: 0 }}
+                                aria-haspopup="true"
+                                size="small"
+                            >
+                                <Icon path={mdiMenuDown} size={1} />
+                            </IconButton>
+                        </div></p>
                         {/* <ListHeader show={showProject} setShow={setShowSelectProject} /> */}
-                        <ListProject show={false} setShow={setShowSelectProject} />
+                        {showProject && <div className="gantt-select-project__container">
+                            <ListProject show={showProject} setShow={setShowSelectProject} />
+                        </div>}
                         <div className="gantt--navigation">
                             <p>Table</p>
                             <p>Gantt</p>

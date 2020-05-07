@@ -63,12 +63,12 @@ const routes = [
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />,
   },
+  { path: Routes.PROJECT_GRANT, component: () => <Grant /> },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
   ...(process.env.NODE_ENV !== "production"
     ? [{ path: "/playground", component: () => <Playground /> }]
     : []),
   { path: "", exact: false, component: () => null },
-  { path: Routes.PROJECT_GRANT, component: () => <Grant /> },
 ];
 
 export default routes;
