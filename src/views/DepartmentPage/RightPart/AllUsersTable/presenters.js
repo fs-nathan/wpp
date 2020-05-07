@@ -298,8 +298,8 @@ function AllUsersTable({
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
           <MenuItem onClick={() => {
             handleOpenModal('ALERT', {
-              content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
-              onConfirm: () => handleBanUserFromGroup(user),
+              roomId: null,
+              selectedUser: user,
             });
             setMenuAnchorEl(null);
           }}>

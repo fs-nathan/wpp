@@ -1,12 +1,11 @@
+import CustomModal from 'components/CustomModal';
+import SimpleManagerTable from 'components/SimpleManagerTable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import CustomModal from '../../../../components/CustomModal';
-import SimpleManagerTable from '../../../../components/SimpleManagerTable';
 
 function LevelManager({
   open, setOpen,
   levels,
-  handleDeleteLevel,
   handleOpenModal,
 }) {
 
@@ -29,8 +28,7 @@ function LevelManager({
           updatedLevel: level,
         })}
         handleDelete={level => handleOpenModal('ALERT', {
-          content: t('DMH.VIEW.DP.MODAL.LEVEL.ALERT'),
-          onConfirm: () => handleDeleteLevel(level),
+          selectedLevel: level,
         })}
       />
     </CustomModal>

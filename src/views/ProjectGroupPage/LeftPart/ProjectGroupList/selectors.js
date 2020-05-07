@@ -1,24 +1,20 @@
-import { filter, get, remove } from 'lodash';
+import { filter, get } from 'lodash';
 import { createSelector } from 'reselect';
 
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
-const createProjectGroup = state => state.projectGroup.createProjectGroup;
 const sortProjectGroup = state => state.projectGroup.sortProjectGroup;
 const listProject = state => state.project.listProject;
 const listIcon = state => state.icon.listIcon;
 
 export const groupsSelector = createSelector(
-  [listProjectGroup, listProject, listIcon, sortProjectGroup, createProjectGroup],
-  (listProjectGroup, listProject, listIcon, sortProjectGroup, createProjectGroup) => {
+  [listProjectGroup, listProject, listIcon, sortProjectGroup],
+  (listProjectGroup, listProject, listIcon, sortProjectGroup) => {
     const { error: sortProjectGroupError, loading: sortProjectGroupLoading } = sortProjectGroup;
     const { data: { projectGroups }, error: listProjectGroupError, loading: listProjectGroupLoading, firstTime } = listProjectGroup;
     const { data: { projects } } = listProject;
     const { data: { icons, defaults } } = listIcon;
-    const { loading: createLoading, error: createError } = createProjectGroup;
     const allIcons = [...icons.map(icon => get(icon, 'url_full')), ...defaults.map(icon => get(icon, 'url_icon'))];
-    let newProjectGroups = projectGroups;
-    remove(newProjectGroups, { id: 'default' });
-    newProjectGroups = newProjectGroups.map(
+    const newProjectGroups = projectGroups.map(
       projectGroup => ({
         ...projectGroup,
         number_project: filter(
@@ -30,15 +26,10 @@ export const groupsSelector = createSelector(
           : get(defaults[0], 'url_icon'),
       })
     );
-    const defaultNumberProject = filter(
-      projects,
-      project => get(project, 'project_group_id') === null
-    ).length;
     return {
       groups: newProjectGroups,
-      defaultNumberProject,
-      loading: (firstTime ? false : listProjectGroupLoading) || sortProjectGroupLoading || createLoading,
-      error: listProjectGroupError || sortProjectGroupError || createError,
+      loading: (firstTime ? false : listProjectGroupLoading) || sortProjectGroupLoading,
+      error: listProjectGroupError || sortProjectGroupError,
       firstTime,
     }
   }

@@ -1,22 +1,20 @@
 import { listIcon } from 'actions/icon/listIcon';
-import { deleteRoom } from 'actions/room/deleteRoom';
 import { detailRoom } from 'actions/room/detailRoom';
 import { getUserOfRoom } from 'actions/room/getUserOfRoom';
-import AlertModal from 'components/AlertModal';
-import { BAN_USER_FROM_GROUP, CustomEventDispose, CustomEventListener, DELETE_ROOM, INVITE_USER_JOIN_GROUP, SORT_USER } from 'constants/events';
+import { CustomEventDispose, CustomEventListener, DELETE_ROOM, INVITE_USER_JOIN_GROUP, SORT_USER } from 'constants/events';
 import { Routes } from 'constants/routes';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
+import DeleteDepartmentModal from '../../Modals/DeleteDepartment';
 import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import { DefaultDepartment, NormalDepartment } from './presenters';
 import { roomSelector } from './selectors';
 
 function DepartmentInfo({
   room, route, viewPermissions,
-  doDeleteRoom,
   doGetUserOfRoom,
   doDetailRoom,
   doListIcon,
@@ -45,11 +43,9 @@ function DepartmentInfo({
       }
       CustomEventListener(SORT_USER, reloadGetUserOfRoom);
       CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetUserOfRoom);
-      CustomEventListener(BAN_USER_FROM_GROUP, reloadGetUserOfRoom);
       return () => {
         CustomEventDispose(SORT_USER, reloadGetUserOfRoom);
         CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetUserOfRoom);
-        CustomEventDispose(BAN_USER_FROM_GROUP, reloadGetUserOfRoom);
       }
     }
     // eslint-disable-next-line
@@ -64,9 +60,9 @@ function DepartmentInfo({
     const historyPushHandler = () => {
       history.push(Routes.DEPARTMENTS);
     };
-    CustomEventListener(DELETE_ROOM, historyPushHandler);
+    CustomEventListener(DELETE_ROOM.SUCCESS, historyPushHandler);
     return () => {
-      CustomEventDispose(DELETE_ROOM, historyPushHandler);
+      CustomEventDispose(DELETE_ROOM.SUCCESS, historyPushHandler);
     };
     //eslint-disable-next-line
   }, []);
@@ -107,12 +103,11 @@ function DepartmentInfo({
             viewPermissions={viewPermissions}
             room={room}
             departmentId={departmentId}
-            handleDeleteRoom={roomId => doDeleteRoom({ roomId })}
             handleGoBack={() => history.push(route)}
             handleOpenModal={doOpenModal}
           />
         )}
-      <AlertModal
+      <DeleteDepartmentModal
         open={openAlertModal}
         setOpen={setOpenAlertModal}
         {...alertProps}
@@ -136,7 +131,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doDeleteRoom: ({ roomId }) => dispatch(deleteRoom({ roomId })),
     doGetUserOfRoom: ({ roomId }, quite) => dispatch(getUserOfRoom({ roomId }, quite)),
     doDetailRoom: ({ roomId }, quite) => dispatch(detailRoom({ roomId }, quite)),
     doListIcon: (quite) => dispatch(listIcon(quite)),

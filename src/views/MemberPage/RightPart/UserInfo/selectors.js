@@ -2,7 +2,6 @@ import { find, get } from 'lodash';
 import { createSelector } from 'reselect';
 
 const detailUser = state => state.user.detailUser;
-const updateUser = state => state.user.updateUser;
 const uploadDocumentsUser = state => state.user.uploadDocumentsUser;
 const listRoom = state => state.room.listRoom;
 const listLevel = state => state.level.listLevel;
@@ -10,14 +9,13 @@ const listMajor = state => state.major.listMajor;
 const listPosition = state => state.position.listPosition;
 
 export const userSelector = createSelector(
-  [detailUser, listRoom, listLevel, listMajor, listPosition, updateUser],
-  (detailUser, listRoom, listLevel, listMajor, listPosition, updateUser) => {
+  [detailUser, listRoom, listLevel, listMajor, listPosition],
+  (detailUser, listRoom, listLevel, listMajor, listPosition) => {
     const { data: { user }, error: detailUserError, loading: detailUserLoading, firstTime: detailFirst } = detailUser;
     const { data: { rooms }, error: listRoomError, loading: listRoomLoading, firstTime: roomFirst } = listRoom;
     const { data: { positions }, error: listPositionError, loading: listPositionLoading, firstTime: positionFirst } = listPosition;
     const { data: { majors }, error: listMajorError, loading: listMajorLoading, firstTime: majorFirst } = listMajor;
     const { data: { levels }, error: listLevelError, loading: listLevelLoading, firstTime: levelFirst } = listLevel;
-    const { loading: updateLoading, error: updateError } = updateUser;
     const newUser = {
       ...user,
       room_name: get(find(rooms, { id: get(user, 'room_id') }), 'name', get(user, 'room_name')),
@@ -31,9 +29,8 @@ export const userSelector = createSelector(
         (roomFirst ? false : listRoomLoading) ||
         (positionFirst ? false : listPositionLoading) ||
         (majorFirst ? false : listMajorLoading) ||
-        (levelFirst ? false : listLevelLoading) ||
-        updateLoading,
-      error: detailUserError || listRoomError || listPositionError || listMajorError || listLevelError || updateError,
+        (levelFirst ? false : listLevelLoading),
+      error: detailUserError || listRoomError || listPositionError || listMajorError || listLevelError,
       firstTime: detailFirst && roomFirst && positionFirst && majorFirst && levelFirst,
     }
   }

@@ -1,9 +1,4 @@
-import { findIndex, get, map, remove } from 'lodash';
-import { COPY_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/copyGroupTask';
-import { CREATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/createGroupTask';
-import { DELETE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/deleteGroupTask';
 import { GET_ALL_GROUP_TASK, GET_ALL_GROUP_TASK_FAIL, GET_ALL_GROUP_TASK_RESET, GET_ALL_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/getAllGroupTask';
-import { UPDATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/updateGroupTask ';
 
 export const initialState = {
 	data: {
@@ -39,6 +34,7 @@ function reducer(state = initialState, action) {
 			};
 		case GET_ALL_GROUP_TASK_RESET:
 			return initialState;
+		/*
 		case COPY_GROUP_TASK_SUCCESS: {
 			if (get(action.data, 'groupTasks', []).length === 0) {
 				return {
@@ -107,6 +103,7 @@ function reducer(state = initialState, action) {
 				},
 			}
 		}
+		*/
 		default: return state;
 	}
 }

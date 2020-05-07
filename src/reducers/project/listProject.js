@@ -1,12 +1,8 @@
-import { concat, findIndex, get, remove } from 'lodash';
-import { CREATE_PROJECT_SUCCESS } from '../../constants/actions/project/createProject';
-import { DELETE_PROJECT_SUCCESS } from '../../constants/actions/project/deleteProject';
+import { findIndex, get } from 'lodash';
 import { HIDE_PROJECT_SUCCESS } from '../../constants/actions/project/hideProject';
 import { LIST_PROJECT, LIST_PROJECT_FAIL, LIST_PROJECT_RESET, LIST_PROJECT_SUCCESS } from '../../constants/actions/project/listProject';
-import { UPDATE_STATUS_COPY_SUCCESS } from '../../constants/actions/project/setting/updateStatusCopy';
 import { SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
 import { SORT_PROJECT, SORT_PROJECT_SUCCESS } from '../../constants/actions/project/sortProject';
-import { UPDATE_PROJECT_SUCCESS } from '../../constants/actions/project/updateProject';
 
 export const initialState = {
   data: {
@@ -43,6 +39,7 @@ function reducer(state = initialState, action) {
       };
     case LIST_PROJECT_RESET:
       return initialState;
+    /*
     case CREATE_PROJECT_SUCCESS: {
       let newProjects = concat(state.data.projects, action.data.project);
       return {
@@ -53,7 +50,6 @@ function reducer(state = initialState, action) {
         }
       }
     }
-    /*
     case COPY_PROJECT_SUCCESS: {
       let newProjects = concat(state.data.projects, action.data.project);
       return {
@@ -64,7 +60,6 @@ function reducer(state = initialState, action) {
         }
       }
     }
-    */
     case UPDATE_PROJECT_SUCCESS: {
       let newProjects = state.data.projects;
       const index = findIndex(newProjects, { id: get(action.data, 'project.id') });
@@ -91,6 +86,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    */
     case HIDE_PROJECT_SUCCESS: {
       let newProjects = state.data.projects;
       const index = findIndex(newProjects, { id: get(action.options, 'projectId') });
@@ -132,6 +128,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    /*
     case UPDATE_STATUS_COPY_SUCCESS: {
       let newProjects = state.data.projects;
       const index = findIndex(newProjects, { id: get(action.options, 'projectId') });
@@ -147,6 +144,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    */
     default:
       return state;
   }

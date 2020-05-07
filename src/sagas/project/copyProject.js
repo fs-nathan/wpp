@@ -1,9 +1,9 @@
-import { call, put } from 'redux-saga/effects';
-import { copyProjectSuccess, copyProjectFail } from '../../actions/project/copyProject';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, COPY_PROJECT } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { copyProjectFail, copyProjectSuccess } from '../../actions/project/copyProject';
+import { apiService } from '../../constants/axiosInstance';
+import { COPY_PROJECT, CustomEventEmitter } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doCopyProject({ projectId, name, description, startDate, isCopyMember }) {
   try {
@@ -29,14 +29,14 @@ function* copyProject(action) {
   try {
     const { project } = yield call(doCopyProject, action.options);
     yield put(copyProjectSuccess({ project }, action.options));
-    CustomEventEmitter(COPY_PROJECT);
+    CustomEventEmitter(COPY_PROJECT.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(copyProjectFail(error, action.options));
+    CustomEventEmitter(COPY_PROJECT.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  copyProject,
-}
+export { copyProject, };
+

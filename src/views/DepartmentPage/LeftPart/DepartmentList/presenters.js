@@ -99,7 +99,7 @@ function DepartmentList({
                     }
                   />
                 </StyledListItem>
-                {rooms.rooms.filter(room => get(room, 'id') !== 'default').map((room, index) => (
+                {rooms.rooms.map((room, index) => (
                   <CustomListItem canDrag={get(viewPermissions.permissions, 'can_modify', false)} key={get(room, 'id')} room={room} index={index} handleLink={doLink} />
                 ))}
                 {provided.placeholder}

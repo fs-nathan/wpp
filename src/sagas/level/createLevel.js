@@ -1,9 +1,9 @@
-import { call, put } from 'redux-saga/effects';
-import { createLevelSuccess, createLevelFail } from '../../actions/level/createLevel';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, CREATE_LEVEL } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { createLevelFail, createLevelSuccess } from '../../actions/level/createLevel';
+import { apiService } from '../../constants/axiosInstance';
+import { CREATE_LEVEL, CustomEventEmitter } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doCreateLevel({ name, description }) {
   try {
@@ -26,14 +26,14 @@ function* createLevel(action) {
   try {
     const { level } = yield call(doCreateLevel, action.options);
     yield put(createLevelSuccess({ level }, action.options));
-    CustomEventEmitter(CREATE_LEVEL);
+    CustomEventEmitter(CREATE_LEVEL.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createLevelFail(error, action.options));
+    CustomEventEmitter(CREATE_LEVEL.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  createLevel,
-}
+export { createLevel, };
+

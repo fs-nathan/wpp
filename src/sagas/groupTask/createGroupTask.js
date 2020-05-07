@@ -1,9 +1,9 @@
-import { call, put } from 'redux-saga/effects';
-import { createGroupTaskSuccess, createGroupTaskFail } from '../../actions/groupTask/createGroupTask';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, CREATE_GROUP_TASK } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { createGroupTaskFail, createGroupTaskSuccess } from '../../actions/groupTask/createGroupTask';
+import { apiService } from '../../constants/axiosInstance';
+import { CREATE_GROUP_TASK, CustomEventEmitter } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doCreateGroupTask({ projectId, name, description }) {
   try {
@@ -27,14 +27,14 @@ function* createGroupTask(action) {
   try {
     const { group_task: groupTask } = yield call(doCreateGroupTask, action.options);
     yield put(createGroupTaskSuccess({ groupTask }, action.options));
-    CustomEventEmitter(CREATE_GROUP_TASK);
+    CustomEventEmitter(CREATE_GROUP_TASK.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createGroupTaskFail(error, action.options));
+    CustomEventEmitter(CREATE_GROUP_TASK.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  createGroupTask,
-}
+export { createGroupTask, };
+

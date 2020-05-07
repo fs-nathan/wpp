@@ -191,8 +191,7 @@ function ProjectDetail({
             >Chỉnh sửa</ColorButton>
             <ColorButton
               onClick={() => handleOpenModal('ALERT', {
-                content: 'Bạn chắc chắn muốn xóa?',
-                onConfirm: () => handleDeleteProject(project.project),
+                selectedProject: project.project
               })}
               variant='text'
               variantColor='red'

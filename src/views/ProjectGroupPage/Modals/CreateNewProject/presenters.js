@@ -1,9 +1,8 @@
-import { FormControl, FormControlLabel, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
+import { FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import MySelect from 'components/MySelect';
-import { CREATE_PROJECT, CustomEventDispose, CustomEventListener } from 'constants/events.js';
+import { CREATE_PROJECT, CustomEventDispose, CustomEventListener, LIST_PROJECT } from 'constants/events.js';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { find, get } from 'lodash';
 import React from 'react';
@@ -13,12 +12,6 @@ import './style.scss';
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
     className={`view_ProjectGroup_CreateNew_Project_Modal___form-control ${className}`}
-    {...props}
-  />;
-
-const CustomTextField = ({ className = '', ...props }) =>
-  <TextField
-    className={`view_ProjectGroup_CreateNew_Project_Modal___text-field ${className}`}
     {...props}
   />;
 
@@ -32,46 +25,68 @@ function CreateNewProject({
   open, setOpen,
   groups,
   handleCreateProject,
-  activeLoading,
+  doReload,
+  projectGroupId,
 }) {
 
   const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
+  const [description, setDescription] = useMaxlenString('', 500);
   const [priority, setPriority] = React.useState(0);
   const [currency] = React.useState(0);
   const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
+  const [activeLoading, setActiveLoading] = React.useState(false);
 
   React.useEffect(() => {
-    const successClose = () => {
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(CREATE_PROJECT.SUCCESS, doReload);
+    CustomEventListener(CREATE_PROJECT.FAIL, fail);
+    return () => {
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, doReload);
+      CustomEventDispose(CREATE_PROJECT.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectGroupId]);
+
+  React.useEffect(() => {
+    const success = () => {
+      setActiveLoading(false);
       setOpen(false);
       setName('');
       setDescription('');
       setPriority(0);
       setCurProjectGroupId(get(groups.groups[0], 'id'));
     };
-    CustomEventListener(CREATE_PROJECT, successClose);
-    return () => CustomEventDispose(CREATE_PROJECT, successClose);
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(LIST_PROJECT.SUCCESS, success);
+    CustomEventListener(LIST_PROJECT.FAIL, fail);
+    return () => {
+      CustomEventDispose(LIST_PROJECT.SUCCESS, success);
+      CustomEventDispose(LIST_PROJECT.FAIL, fail);
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [projectGroupId]);
 
   return (
     <CustomModal
       title={t("DMH.VIEW.PGP.MODAL.CUP.C_TITLE")}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName && !errorDescription}
-      onConfirm={() =>
+      canConfirm={!errorName}
+      onConfirm={() => {
         handleCreateProject({
-          projectGroupId: curProjectGroupId !== get(groups.groups[0], 'id')
-            ? curProjectGroupId
-            : undefined,
+          projectGroupId: curProjectGroupId,
           name,
           description,
           priority,
           currency,
-        })
-      }
+        });
+        setActiveLoading(true);
+      }}
       onCancle={() => setOpen(false)}
       loading={groups.loading}
       activeLoading={activeLoading}
@@ -91,24 +106,19 @@ function CreateNewProject({
           onChange={({ value: curProjectGroupId }) => setCurProjectGroupId(curProjectGroupId)}
         />
       </StyledFormControl>
-      <CustomTextField
+      <CustomTextbox
         value={name}
-        onChange={evt => setName(evt.target.value)}
+        onChange={value => setName(value)}
         label={t("DMH.VIEW.PGP.MODAL.CUP.NAME")}
-        margin="normal"
-        variant="outlined"
         fullWidth
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorName, 'message', '')}
-          </ColorTypo>
-        }
+        required={true}
       />
       <CustomTextbox
         value={description}
         onChange={value => setDescription(value)}
         label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
-        helperText={get(errorDescription, 'message', '')}
+        fullWidth
+        multiline={true}
       />
       <StyledFormControl fullWidth>
         <SubTitle>

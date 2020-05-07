@@ -3,6 +3,7 @@ import { call, put } from 'redux-saga/effects';
 import { listDeletedProjectFail, listDeletedProjectSuccess } from '../../actions/project/listDeletedProject';
 import { listProjectFail, listProjectSuccess } from '../../actions/project/listProject';
 import { apiService } from '../../constants/axiosInstance';
+import { CustomEventEmitter, LIST_PROJECT } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doListProject({ groupProject, type, status, timeStart, timeEnd }) {
@@ -29,8 +30,10 @@ function* listProject(action) {
   try {
     const { projects, summary } = yield call(doListProject, action.options);
     yield put(listProjectSuccess({ projects, summary }, action.options));
+    CustomEventEmitter(LIST_PROJECT.SUCCESS);
   } catch (error) {
     yield put(listProjectFail(error, action.options));
+    CustomEventEmitter(LIST_PROJECT.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
