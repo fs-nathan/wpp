@@ -1,4 +1,5 @@
 import { Avatar } from '@material-ui/core';
+import { showImagesList } from 'actions/chat/chat';
 import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
 import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
@@ -6,7 +7,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
-import ModalImage from 'views/JobDetailPage/ModalImage';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
@@ -34,17 +34,10 @@ const ImageMessage = ({
   const groupActiveColor = useSelector(currentColorSelector)
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
-  const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState(0);
-
   const handleClickOpen = (idx) => () => {
-    setOpen(true);
-    setSelected(idx)
+    const user = { user_create_avatar, user_create_name, time_create, user_create_position };
+    dispatch(showImagesList(true, images, idx, user));
   };
-
-  const handleClose = () => {
-    setOpen(false);
-  }
 
   function onClickAvatar() {
     dispatch(detailUser({ userId: user_create_id }))
@@ -148,9 +141,6 @@ const ImageMessage = ({
         !isReply && !is_me &&
         <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
       }
-      <ModalImage images={images}
-        {...{ user_create_avatar, user_create_name, time_create, user_create_position }}
-        isOpen={open} selected={selected} handleClose={handleClose} />
     </div >
   );
 }

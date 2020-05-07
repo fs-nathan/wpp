@@ -618,3 +618,10 @@ export function updateChatState(id, data) {
     id, data
   };
 }
+
+export function showImagesList(isOpen, images = [], selected = 0, user = {}) {
+  return {
+    type: actionTypes.SHOW_IMAGES_LIST,
+    isOpen, images, selected, user
+  };
+}

@@ -5,11 +5,15 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
-import { mdiChevronLeftCircle, mdiChevronRightCircle, mdiDownload, mdiInformation, mdiShare } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiDownload, mdiInformation, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
-import React, { useEffect, useState } from 'react';
+import { showImagesList } from 'actions/chat/chat';
+import { getFileType } from 'helpers/jobDetail/stringHelper';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
+import { useDispatch, useSelector } from 'react-redux';
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import styled from 'styled-components';
 
 const styles = theme => ({
@@ -210,62 +214,89 @@ const Image = styled.img`
     opacity: 1;
   }
 `
-const ModalImage = (props) => {
+const ModalImage = () => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
-  const [currentImage, setCurrentImage] = useState(props.selected);
-  const {
-    isOpen,
-    handleClose,
-    images = [],
-    type,
-    url,
-    selected,
-  } = props
+  const transformRef = useRef();
+  const dispatch = useDispatch();
+  const isOpenImagesListModal = useSelector(state => state.chat.isOpenImagesListModal);
+  const imagesList = useSelector(state => state.chat.imagesList);
+  const selectedImage = useSelector(state => state.chat.selectedImage);
+  const createUser = useSelector(state => state.chat.createUser);
+
+  const [currentImage, setCurrentImage] = useState(selectedImage);
+
+  const { name = '', url } = imagesList[currentImage] || {};
+  const type = getFileType(name);
+  // console.log(type, name)
+
   function clickNext() {
-    if (currentImage < images.length - 1) {
+    if (currentImage < imagesList.length - 1) {
       setCurrentImage(currentImage + 1)
     }
   }
+
   function clickBack() {
     if (currentImage < 0) {
       setCurrentImage(currentImage - 1)
     }
   }
 
+  function handleClose() {
+    dispatch(showImagesList(false))
+  }
+
   useEffect(() => {
-    setCurrentImage(selected)
-  }, [selected]);
+    setCurrentImage(selectedImage);
+  }, [selectedImage]);
+
+  useEffect(() => {
+    console.log('resetTransform', currentImage)
+    if (transformRef && transformRef.current) {
+      var clickEvent = document.createEvent('MouseEvents');
+      clickEvent.initEvent('dblclick', true, true);
+      transformRef.current.dispatchEvent(clickEvent);
+    }
+  }, [currentImage]);
 
   return (
     <StyledDialog
       aria-labelledby="customized-dialog-title"
-      open={isOpen}
+      open={isOpenImagesListModal}
       fullScreen={fullScreen}
     >
       <DialogTitle id="customized-dialog-title"
-        {...props}
-        image={images[currentImage]}
+        {...createUser}
+        image={imagesList[currentImage]}
         onClose={handleClose}>
       </DialogTitle>
       <ContentDialog>
-        <ButtonImage onClick={clickBack}>
-          <Icon path={mdiChevronLeftCircle} size={5} />
-        </ButtonImage>
-        <div>
-          <img alt="vtask" src={images[currentImage] && images[currentImage].url} />
-        </div>
-        <ButtonImage onClick={clickNext}>
-          <Icon path={mdiChevronRightCircle} size={5} />
-        </ButtonImage>
+        {
+          (type === 'mp4') ?
+            <ReactPlayer url={url} playing height="750px" width="1100px" controls style={{ margin: 'auto' }} />
+            :
+            <>
+              <ButtonImage onClick={clickBack}>
+                <Icon path={mdiChevronLeft} size={5} />
+              </ButtonImage>
+              <TransformWrapper pan={{ disabled: true }}
+                options={{ minScale: 0.5 }}
+                doubleClick={{ mode: 'reset' }}>
+                <TransformComponent>
+                  <img ref={transformRef} alt="vtask" src={imagesList[currentImage] && imagesList[currentImage].url} />
+                </TransformComponent>
+              </TransformWrapper>
+              <ButtonImage onClick={clickNext}>
+                <Icon path={mdiChevronRight} size={5} />
+              </ButtonImage>
+            </>
+        }
       </ContentDialog>
       <FooterDialog>
         <div>
           {
-            (type === 'mp4') ?
-              <ReactPlayer url={url} playing height="100%" width="100%" />
-              :
-              images.map((image, index) => {
+            (type === 'mp4') ? null :
+              imagesList.map((image, index) => {
                 return (
                   <WrapperImage
                     onClick={() => setCurrentImage(index)}

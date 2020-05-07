@@ -1,6 +1,7 @@
 import { Avatar } from '@material-ui/core';
 import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
+import { showImagesList } from 'actions/chat/chat';
 import { openDocumentDetail } from 'actions/system/system';
 import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
@@ -10,7 +11,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
-import ModalImage from 'views/JobDetailPage/ModalImage';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
@@ -65,16 +65,6 @@ const FileMessage = ({
   const groupActiveColor = useSelector(currentColorSelector)
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  }
-
   function onClickDownload(url, name) {
     return () => {
       const link = document.createElement('a');
@@ -85,11 +75,12 @@ const FileMessage = ({
     }
   }
 
-  function onClickFile(file) {
+  function onClickFile(file, idx) {
     const type = getFileType(file.name);
     return () => {
       if (type === 'mp4') {
-        handleClickOpen()
+        const user = { user_create_avatar, user_create_name, time_create, user_create_position };
+        dispatch(showImagesList(true, files, idx, user));
       } else {
         dispatch(openDocumentDetail({ ...file, type: type }));
       }
@@ -149,7 +140,7 @@ const FileMessage = ({
               {chat_parent &&
                 <TextMessage {...chat_parent} isReply></TextMessage>
               }
-              <div className="FileMessage--files" onClick={onClickFile(file)}>
+              <div className="FileMessage--files" onClick={onClickFile(file, i)}>
                 <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
                   src={file.file_icon} alt="file-icon"></img>
                 <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
@@ -178,10 +169,8 @@ const FileMessage = ({
           </abbr>
         </div>
         {!isReply && !is_me &&
-          <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
-        <ModalImage images={files}
-          {...{ user_create_avatar, user_create_name, time_create, user_create_position, type: getFileType(file.name), url: file.url }}
-          isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
+          <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+        }
       </div >
     )
   })

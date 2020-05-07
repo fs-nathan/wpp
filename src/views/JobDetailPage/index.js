@@ -10,6 +10,7 @@ import '../JobDetailPage/index.scss';
 import ChatPart from './ChatPart';
 import Intro from './introduce';
 import ListPart from './ListPart';
+import ModalImage from './ModalImage';
 import TabPart from './TabPart';
 
 function JobDetailPage(props) {
@@ -80,6 +81,7 @@ function JobDetailPage(props) {
       ) : (
           <Intro />
         )}
+      <ModalImage />
     </div>
   );
 }

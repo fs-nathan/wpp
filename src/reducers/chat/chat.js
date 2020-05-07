@@ -30,6 +30,10 @@ export const initialState = {
   dataDemand: null,
   isOpenDetailMember: false,
   gridSettings: [],
+  isOpenImagesListModal: false,
+  imagesList: [],
+  selectedImage: 0,
+  createUser: {},
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -256,6 +260,14 @@ export default (state = initialState, action) => produce(state, draft => {
       const idx = findIndex(draft.chats.data, ({ id }) => id === action.id)
       console.log('idx', idx, action.data);
       draft.chats.data[idx] = { ...draft.chats.data[idx], ...action.data }
+      break;
+    }
+    case actionTypes.SHOW_IMAGES_LIST: {
+      const { isOpen, images, selected, user } = action;
+      draft.isOpenImagesListModal = isOpen;
+      draft.imagesList = images;
+      draft.selectedImage = selected;
+      draft.createUser = user;
       break;
     }
   }
