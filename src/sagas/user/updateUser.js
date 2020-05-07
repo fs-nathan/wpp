@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { updateUserSuccess, updateUserFail } from '../../actions/user/updateUser';
+import { updateUserFail, updateUserSuccess } from '../../actions/user/updateUser';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPDATE_USER } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doUpdateUser({ userId, roomId, positionId, levelId, majorId, description }) {
   try {
@@ -30,14 +30,14 @@ function* updateUser(action) {
   try {
     yield call(doUpdateUser, action.options);
     yield put(updateUserSuccess(action.options));
-    CustomEventEmitter(UPDATE_USER);
+    CustomEventEmitter(UPDATE_USER.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(updateUserFail(error, action.options));
+    CustomEventEmitter(UPDATE_USER.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  updateUser,
-}
+export { updateUser, };
+

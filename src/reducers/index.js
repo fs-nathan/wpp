@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { postModule } from "views/HomePage/redux/post";
+import { weekScheduleModule } from "views/HomePage/redux/weekSchedule";
 import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
@@ -31,6 +32,7 @@ import chat, { initialState as chatInitialState } from "./chat/chat";
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from "./documents";
+import gantt, { initialState as ganttInitialState } from './gantt';
 import copyGroupTask, { initialState as copyGroupTaskInitialState } from "./groupTask/copyGroupTask";
 import createGroupTask, { initialState as createGroupTaskInitialState } from "./groupTask/createGroupTask";
 import deleteGroupTask, { initialState as deleteGroupTaskInitialState } from "./groupTask/deleteGroupTask";
@@ -138,7 +140,6 @@ import deleteUserRole, { initialState as deleteUserRoleInitialState } from "./us
 import listUserRole, { initialState as listUserRoleInitialState } from "./userRole/listUserRole";
 import updateUserRole, { initialState as updateUserRoleInitialState } from "./userRole/updateUserRole";
 import viewPermissions, { initialState as viewPermissionsInitialState } from "./viewPermissions";
-import gantt, { initialState as ganttInitialState } from './gantt';
 
 const rootReducer = combineReducers({
   authentications,
@@ -285,22 +286,35 @@ const rootReducer = combineReducers({
   [settingGroupHome.key]: settingGroupHome.reducer,
   [settingGroupPermission.key]: settingGroupPermission.reducer,
   [postModule.key]: postModule.reducer,
+  [weekScheduleModule.key]: weekScheduleModule.reducer,
 
   apiCall: apiCall,
   inviteOtherPeopleCreateAccount,
   viewPermissions,
   calendar: combineReducers({
-    listSchedule, listScheduleOfWeek,
-    listScheduleOfWeekFromModal, listWeeksInYear,
-    settingStartingDay, listProjectGroupSchedule,
-    createSchedule, updateSchedule, listCalendarPermission,
-    deleteSchedule, listPersonalRemindCategory,
-    listRemindRecently, listPersonalRemind,
-    createProjectGroupSchedule, getProjectGroupScheduleDetail,
-    projectGroupSettingStartingDay, projectGroupAddWorkingDays,
-    projectGroupDeleteWorkingDays, projectGroupAddDayOff,
-    createPersonalRemindCategory, createPersonalRemind, listRemindProject
-  })
+    listSchedule,
+    listScheduleOfWeek,
+    listScheduleOfWeekFromModal,
+    listWeeksInYear,
+    settingStartingDay,
+    listProjectGroupSchedule,
+    createSchedule,
+    updateSchedule,
+    listCalendarPermission,
+    deleteSchedule,
+    listPersonalRemindCategory,
+    listRemindRecently,
+    listPersonalRemind,
+    createProjectGroupSchedule,
+    getProjectGroupScheduleDetail,
+    projectGroupSettingStartingDay,
+    projectGroupAddWorkingDays,
+    projectGroupDeleteWorkingDays,
+    projectGroupAddDayOff,
+    createPersonalRemindCategory,
+    createPersonalRemind,
+    listRemindProject,
+  }),
 });
 
 export const DEFAULT_STATE = {
@@ -424,7 +438,7 @@ export const DEFAULT_STATE = {
     getListGroup: getListGroupInitialState,
   },
   register: {
-    inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState
+    inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState,
   },
   viewPermissions: viewPermissionsInitialState,
   gantt: ganttInitialState,
@@ -450,8 +464,8 @@ export const DEFAULT_STATE = {
     listPersonalRemind: listPersonalRemindInitialState,
     createPersonalRemind: createPersonalRemindInitialState,
     listRemindProject: listRemindProjectInitialState,
-    listCalendarPermission: listCalendarPermissionInitialState
-  }
+    listCalendarPermission: listCalendarPermissionInitialState,
+  },
 };
 
 export default rootReducer;

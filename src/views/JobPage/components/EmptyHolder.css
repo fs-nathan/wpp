@@ -4,11 +4,11 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  padding: 70px 30px;
+  padding: 70px 0;
 }
 .comp_EmptyHolder__img {
   filter: opacity(0.1);
-  width: 300px;
+  max-width: 300px;
 }
 .comp_EmptyHolder__title {
   font-size: 19px;

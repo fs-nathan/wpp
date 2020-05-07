@@ -1,6 +1,4 @@
-import { get } from 'lodash';
 import { DETAIL_PROJECT_GROUP, DETAIL_PROJECT_GROUP_FAIL, DETAIL_PROJECT_GROUP_RESET, DETAIL_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/detailProjectGroup';
-import { EDIT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/editProjectGroup';
 
 export const initialState = {
   data: {
@@ -36,6 +34,7 @@ function reducer(state = initialState, action) {
       };
     case DETAIL_PROJECT_GROUP_RESET:
       return initialState;
+    /*
     case EDIT_PROJECT_GROUP_SUCCESS: {
       let newProjectGroup = state.data.projectGroup;
       if (get(newProjectGroup, 'id') === get(action.data, 'projectGroup.id')) {
@@ -52,6 +51,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    */
     default:
       return state;
   }

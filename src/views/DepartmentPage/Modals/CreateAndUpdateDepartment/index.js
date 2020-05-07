@@ -1,16 +1,20 @@
+import { createRoom } from 'actions/room/createRoom';
+import { detailRoom } from 'actions/room/detailRoom';
+import { getUserOfRoom } from 'actions/room/getUserOfRoom';
+import { listRoom } from 'actions/room/listRoom';
+import { updateRoom } from 'actions/room/updateRoom';
+import { listUserOfGroup } from 'actions/user/listUserOfGroup';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { createRoom } from '../../../../actions/room/createRoom';
-import { updateRoom } from '../../../../actions/room/updateRoom';
 import LogoModal from '../LogoManager';
 import CreateAndUpdateDepartmentPresenter from './presenters';
-import { actionLoadingSelector } from './selectors';
 
 function CreateAndUpdateDepartment({
   updateDepartment = null,
-  open, setOpen, actionLoading,
-  doCreateRoom, doUpdateRoom
+  open, setOpen,
+  doCreateRoom, doUpdateRoom,
+  doReloadList, doReloadDetail,
 }) {
 
   const [openLogoModal, setOpenLogoModal] = React.useState(false);
@@ -31,7 +35,14 @@ function CreateAndUpdateDepartment({
     <>
       <CreateAndUpdateDepartmentPresenter
         updateDepartment={updateDepartment}
-        open={open} setOpen={setOpen} actionLoading={actionLoading}
+        doReloadRoom={() =>
+          updateDepartment
+            ? doReloadDetail({
+              roomId: get(updateDepartment, 'id'),
+            })
+            : doReloadList()
+        }
+        open={open} setOpen={setOpen}
         handleCreateOrUpdateRoom={(name, description, icon) =>
           updateDepartment
             ? doUpdateRoom({
@@ -59,15 +70,20 @@ function CreateAndUpdateDepartment({
 
 const mapDispatchToProps = dispatch => {
   return {
+    doReloadList: () => {
+      dispatch(listRoom(true));
+      dispatch(listUserOfGroup(true));
+    },
+    doReloadDetail: ({ roomId }) => {
+      dispatch(detailRoom({ roomId }, true));
+      dispatch(getUserOfRoom({ roomId }, true));
+    },
     doCreateRoom: ({ name, icon, description }) => dispatch(createRoom({ name, icon, description })),
     doUpdateRoom: ({ roomId, name, icon, description }) => dispatch(updateRoom({ roomId, name, icon, description })),
   }
 };
 
 export default connect(
-  state => ({
-    actionLoading: actionLoadingSelector(state)
-  }
-  ),
+  null,
   mapDispatchToProps,
 )(CreateAndUpdateDepartment);

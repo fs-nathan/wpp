@@ -1,7 +1,6 @@
-import { TextField } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
 import CustomModal from 'components/CustomModal';
-import { CREATE_POSITION, CustomEventDispose, CustomEventListener, UPDATE_POSITION } from 'constants/events';
+import CustomTextbox from 'components/CustomTextbox';
+import { CREATE_POSITION, CustomEventDispose, CustomEventListener, LIST_POSITION, UPDATE_POSITION } from 'constants/events';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
@@ -11,12 +10,13 @@ function TitleManager({
   open, setOpen,
   updatedPosition = null,
   handleCreateOrUpdatePosition,
-  activeLoading,
+  doReloadPosition,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const [description, setDescription] = useMaxlenString('', 350);
   const { t } = useTranslation();
+  const [activeLoading, setActiveLoading] = React.useState(false);
 
   React.useEffect(() => {
     if (updatedPosition) {
@@ -27,16 +27,37 @@ function TitleManager({
   }, [updatedPosition]);
 
   React.useEffect(() => {
-    const successClose = () => {
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(CREATE_POSITION.SUCCESS, doReloadPosition);
+    CustomEventListener(UPDATE_POSITION.SUCCESS, doReloadPosition);
+    CustomEventListener(CREATE_POSITION.FAIL, fail);
+    CustomEventListener(UPDATE_POSITION.FAIL, fail);
+    return () => {
+      CustomEventDispose(CREATE_POSITION.SUCCESS, doReloadPosition);
+      CustomEventDispose(UPDATE_POSITION.SUCCESS, doReloadPosition);
+      CustomEventDispose(CREATE_POSITION.FAIL, fail);
+      CustomEventDispose(UPDATE_POSITION.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    const success = () => {
+      setActiveLoading(false);
       setOpen(false);
       setName('');
       setDescription('');
     };
-    CustomEventListener(CREATE_POSITION, successClose);
-    CustomEventListener(UPDATE_POSITION, successClose);
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(LIST_POSITION.SUCCESS, success);
+    CustomEventListener(LIST_POSITION.FAIL, fail);
     return () => {
-      CustomEventDispose(CREATE_POSITION, successClose);
-      CustomEventDispose(UPDATE_POSITION, successClose);
+      CustomEventDispose(LIST_POSITION.SUCCESS, success);
+      CustomEventDispose(LIST_POSITION.FAIL, fail);
     }
     // eslint-disable-next-line
   }, []);
@@ -46,39 +67,28 @@ function TitleManager({
       open={open}
       setOpen={setOpen}
       title={updatedPosition ? t('DMH.VIEW.DP.MODAL.TITLE.U_TITLE') : t('DMH.VIEW.DP.MODAL.TITLE.C_TITLE')}
-      canConfirm={!errorName && !errorDescription}
-      onConfirm={() => handleCreateOrUpdatePosition(name, description)}
+      canConfirm={!errorName}
+      onConfirm={() => {
+        handleCreateOrUpdatePosition(name, description);
+        setActiveLoading(true);
+      }}
       onCancle={() => setOpen(false)}
-      manualClose={false}
+      manualClose={true}
       activeLoading={activeLoading}
     >
-      <TextField
+      <CustomTextbox
         value={name}
-        onChange={evt => setName(evt.target.value)}
-        margin="normal"
-        variant="outlined"
+        onChange={newName => setName(newName)}
         label={t('DMH.VIEW.DP.MODAL.TITLE.NAME')}
         fullWidth
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorName, 'message', '')}
-          </ColorTypo>
-        }
+        required={true}
       />
-      <TextField
+      <CustomTextbox
         value={description}
-        onChange={evt => setDescription(evt.target.value)}
-        margin="normal"
-        variant="outlined"
+        onChange={newDescription => setDescription(newDescription)}
         label={t('DMH.VIEW.DP.MODAL.TITLE.DESC')}
         fullWidth
-        multiline
-        rowsMax='4'
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorDescription, 'message', '')}
-          </ColorTypo>
-        }
+        multiline={true}
       />
     </CustomModal>
   )

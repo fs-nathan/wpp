@@ -2,9 +2,9 @@ import { FormControl } from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import MySelect from 'components/MySelect';
-import { CustomEventDispose, CustomEventListener, UPDATE_USER } from 'constants/events';
+import { CustomEventDispose, CustomEventListener, DETAIL_USER, LIST_USER_OF_GROUP, UPDATE_USER } from 'constants/events';
 import { useMaxlenString } from 'hooks';
-import { find, get } from 'lodash';
+import { find, get, isNil } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
@@ -20,7 +20,7 @@ function UpdateUser({
   open, setOpen,
   options,
   handleUpdateUser,
-  activeLoading,
+  doReloadUser,
 }) {
 
   const { t } = useTranslation();
@@ -29,7 +29,22 @@ function UpdateUser({
   const [position, setPosition] = React.useState(null);
   const [major, setMajor] = React.useState(null);
   const [level, setLevel] = React.useState(null);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
+  const [description, setDescription] = useMaxlenString('', 500);
+  const [activeLoading, setActiveLoading] = React.useState(false);
+  const [activeMask, setActiveMask] = React.useState(-1);
+
+  React.useEffect(() => {
+    setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
+    if (activeMask === 3) {
+      setOpen(false);
+      setRoom(null);
+      setPosition(null);
+      setMajor(null);
+      setLevel(null);
+      setDescription('');
+    }
+    // eslint-disable-next-line
+  }, [activeMask]);
 
   React.useEffect(() => {
     if (updatedUser) {
@@ -43,102 +58,122 @@ function UpdateUser({
   }, [updatedUser]);
 
   React.useEffect(() => {
-    const successClose = () => {
-      setOpen(false);
-      setRoom(null);
-      setPosition(null);
-      setMajor(null);
-      setLevel(null);
-      setDescription('');
+    const fail = () => {
+      setActiveMask(-1);
     };
-    CustomEventListener(UPDATE_USER, successClose);
-    return () => CustomEventDispose(UPDATE_USER, successClose);
+    CustomEventListener(UPDATE_USER.SUCCESS, doReloadUser);
+    CustomEventListener(UPDATE_USER.FAIL, fail);
+    return () => {
+      CustomEventDispose(UPDATE_USER.SUCCESS, doReloadUser);
+      CustomEventDispose(UPDATE_USER.FAIL, fail);
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [updatedUser]);
+
+  React.useEffect(() => {
+    const success = (bit) => () => {
+      setActiveMask(oldMask => oldMask | (1 << bit));
+    };
+    const fail = () => {
+      setActiveMask(-1);
+    };
+    CustomEventListener(DETAIL_USER.SUCCESS, success(0));
+    CustomEventListener(LIST_USER_OF_GROUP.SUCCESS, success(1));
+    CustomEventListener(DETAIL_USER.FAIL, fail);
+    CustomEventListener(LIST_USER_OF_GROUP.FAIL, fail);
+    return () => {
+      CustomEventDispose(DETAIL_USER.SUCCESS, success(0));
+      CustomEventDispose(LIST_USER_OF_GROUP.SUCCESS, success(1));
+      CustomEventDispose(DETAIL_USER.FAIL, fail);
+      CustomEventDispose(LIST_USER_OF_GROUP.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [updatedUser]);
 
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
       title={get(updatedUser, 'name', '')}
-      canConfirm={!errorDescription}
-      onConfirm={() => handleUpdateUser(
-        get(updatedUser, 'id'),
-        room,
-        position,
-        major,
-        level,
-        description,
-      )}
+      canConfirm={!isNil(room) && !isNil(position) && !isNil(major) && !isNil(level)}
+      onConfirm={() => {
+        handleUpdateUser(
+          get(updatedUser, 'id'),
+          room,
+          position,
+          major,
+          level,
+          description,
+        );
+        setActiveMask(0);
+      }}
       onCancle={() => setOpen(false)}
       loading={options.loading}
       activeLoading={activeLoading}
       manualClose={true}
     >
-      <>
-        <StyledFormControl fullWidth>
-          <MySelect
-            label={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
-            options={options.rooms.map(room => ({
-              label: get(room, 'name'),
-              value: get(room, 'id'),
-            }))}
-            value={{
-              label: get(find(options.rooms, { id: room }), 'name'),
-              value: room,
-            }}
-            onChange={({ value: roomId }) => setRoom(roomId)}
-          />
-        </StyledFormControl>
-        <StyledFormControl fullWidth>
-          <MySelect
-            label={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
-            options={options.positions.map(position => ({
-              label: get(position, 'name'),
-              value: get(position, 'id'),
-            }))}
-            value={{
-              label: get(find(options.positions, { id: position }), 'name'),
-              value: position,
-            }}
-            onChange={({ value: positionId }) => setPosition(positionId)}
-          />
-        </StyledFormControl>
-        <StyledFormControl fullWidth>
-          <MySelect
-            label={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
-            options={options.levels.map(level => ({
-              label: get(level, 'name'),
-              value: get(level, 'id'),
-            }))}
-            value={{
-              label: get(find(options.levels, { id: level }), 'name'),
-              value: level,
-            }}
-            onChange={({ value: levelId }) => setLevel(levelId)}
-          />
-        </StyledFormControl>
-        <StyledFormControl fullWidth>
-          <MySelect
-            label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
-            options={options.majors.map(major => ({
-              label: get(major, 'name'),
-              value: get(major, 'id'),
-            }))}
-            value={{
-              label: get(find(options.majors, { id: major }), 'name'),
-              value: major,
-            }}
-            onChange={({ value: majorId }) => setMajor(majorId)}
-          />
-        </StyledFormControl>
-        <CustomTextbox
-          value={description}
-          label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
-          onChange={value => setDescription(value)}
-          helperText={get(errorDescription, 'message', '')}
+      <StyledFormControl fullWidth>
+        <MySelect
+          label={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
+          options={options.rooms.map(room => ({
+            label: get(room, 'name'),
+            value: get(room, 'id'),
+          }))}
+          value={{
+            label: get(find(options.rooms, { id: room }), 'name'),
+            value: room,
+          }}
+          onChange={({ value: roomId }) => setRoom(roomId)}
         />
-      </>
+      </StyledFormControl>
+      <StyledFormControl fullWidth>
+        <MySelect
+          label={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
+          options={options.positions.map(position => ({
+            label: get(position, 'name'),
+            value: get(position, 'id'),
+          }))}
+          value={{
+            label: get(find(options.positions, { id: position }), 'name'),
+            value: position,
+          }}
+          onChange={({ value: positionId }) => setPosition(positionId)}
+        />
+      </StyledFormControl>
+      <StyledFormControl fullWidth>
+        <MySelect
+          label={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
+          options={options.levels.map(level => ({
+            label: get(level, 'name'),
+            value: get(level, 'id'),
+          }))}
+          value={{
+            label: get(find(options.levels, { id: level }), 'name'),
+            value: level,
+          }}
+          onChange={({ value: levelId }) => setLevel(levelId)}
+        />
+      </StyledFormControl>
+      <StyledFormControl fullWidth>
+        <MySelect
+          label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
+          options={options.majors.map(major => ({
+            label: get(major, 'name'),
+            value: get(major, 'id'),
+          }))}
+          value={{
+            label: get(find(options.majors, { id: major }), 'name'),
+            value: major,
+          }}
+          onChange={({ value: majorId }) => setMajor(majorId)}
+        />
+      </StyledFormControl>
+      <CustomTextbox
+        value={description}
+        label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
+        onChange={newDescription => setDescription(newDescription)}
+        multiline={true}
+      />
     </CustomModal>
   )
 }

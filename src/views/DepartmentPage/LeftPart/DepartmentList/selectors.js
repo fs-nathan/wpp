@@ -5,15 +5,13 @@ const listRoom = state => state.room.listRoom;
 const sortRoom = state => state.room.sortRoom;
 const listUserOfGroup = state => state.user.listUserOfGroup;
 const listIcon = state => state.icon.listIcon;
-const createRoom = state => state.room.createRoom;
 
 export const roomsSelector = createSelector(
-  [listRoom, listUserOfGroup, listIcon, sortRoom, createRoom],
-  (listRoom, listUserOfGroup, listIcon, sortRoom, createRoom) => {
+  [listRoom, listUserOfGroup, listIcon, sortRoom],
+  (listRoom, listUserOfGroup, listIcon, sortRoom) => {
     const { loading: sortRoomLoading, error: sortRoomError } = sortRoom;
     const { data: { rooms }, loading: listRoomLoading, error: listRoomError, firstTime: listFirst } = listRoom;
     const { data: { rooms: groups } } = listUserOfGroup;
-    const { loading: createRoomLoading, error: createRoomError } = createRoom;
     const newGroups = groups.map(group => ({
       ...group,
       id: get(group, 'id').toLowerCase(),
@@ -33,8 +31,8 @@ export const roomsSelector = createSelector(
     });
     return ({
       rooms: newRooms,
-      loading: (listFirst ? false : listRoomLoading) || sortRoomLoading || createRoomLoading,
-      error: listRoomError || sortRoomError || createRoomError,
+      loading: (listFirst ? false : listRoomLoading) || sortRoomLoading,
+      error: listRoomError || sortRoomError,
       firstTime: listFirst,
     });
   }

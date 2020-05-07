@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from "@material-ui/core";
+import { Avatar, ButtonBase, Divider } from "@material-ui/core";
 import {
   mdiAt,
   mdiCogs,
@@ -9,13 +9,88 @@ import {
   mdiWeb,
 } from "@mdi/js";
 import Icon from "@mdi/react";
+import { Routes } from "constants/routes";
+import linkify from "linkifyjs/string";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
+import { useHistory } from "react-router-dom";
+import { injectClassName } from "views/JobPage/utils";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import GroupDetailContext from "./GroupDetailContext";
+import "./Left.css";
+const ShortcutGroupTitle = injectClassName("comp_Left__shortcutGroupTitle")();
+const ShortcutGroup = ({ children, title }) => {
+  return (
+    <Stack>
+      {title && <ShortcutGroupTitle>{title}</ShortcutGroupTitle>}
+      <Stack small>{children}</Stack>
+    </Stack>
+  );
+};
+const ShortCut = ({ iconPath, url, text }) => {
+  const history = useHistory();
+  return (
+    <div className="comp_Left__shortcut">
+      <Icon className="comp_Left__shortcutIcon" path={iconPath}></Icon>
+      {url ? (
+        <ButtonBase
+          onClick={() => {
+            history.push(url || "/");
+          }}
+          className="comp_Left__shortcutLink"
+        >
+          {text}
+        </ButtonBase>
+      ) : (
+        <div className="comp_Left__shortcutLink">{text}</div>
+      )}
+    </div>
+  );
+};
+const Left = React.memo(
+  ({ name, code, description, address, website, phone, email, logo }) => {
+    const { t } = useTranslation();
+    return (
+      <Stack large>
+        <Stack className="comp_Left__profile" small>
+          <div className="comp_Left__avatar">
+            <Avatar src={logo}></Avatar>
+          </div>
+          <div>ID:{code}</div>
+          <div className="comp_Left__name">{name}</div>
+        </Stack>
+        <Divider />
+        <div
+          className="comp_Left__description"
+          dangerouslySetInnerHTML={{
+            __html: linkify(description),
+          }}
+        ></div>
+        <ShortcutGroup title={t("Liên hệ")}>
+          {[
+            [mdiMapMarkerRadius, address],
+            [mdiWeb, website],
+            [mdiPhoneInTalk, phone],
+            [mdiAt, email],
+          ].map(([iconPath, text], i) => (
+            <ShortCut key={i} {...{ iconPath, text }} />
+          ))}
+        </ShortcutGroup>
+        <ShortcutGroup title={t("Lối tắt")}>
+          {[
+            [mdiCogs, t("Cài đặt nhóm"), Routes.SETTING_GROUP_INFO],
+            [mdiHelpRhombus, t("Câu hỏi thường gặp"), Routes.FAQ],
+            [mdiLifebuoy, t("Hướng dẫn sử dụng"), Routes.HELP],
+          ].map(([iconPath, text, url], i) => (
+            <ShortCut key={i} {...{ iconPath, text, url }} />
+          ))}
+        </ShortcutGroup>
+      </Stack>
+    );
+  }
+);
 
-function Left() {
+export default () => {
   const {
     name,
     code,
@@ -26,82 +101,9 @@ function Left() {
     email,
     logo,
   } = useContext(GroupDetailContext);
-  const { t } = useTranslation();
   return (
-    <Stack large>
-      <Stack small style={{ textAlign: "center" }}>
-        <Box padding="10px" display="flex" justifyContent="center">
-          <Avatar
-            style={{ width: "140px", height: "140px" }}
-            src={logo}
-          ></Avatar>
-        </Box>
-        <Box style={{ fontSize: "15px" }}>ID:{code}</Box>
-        <Typography style={{ fontWeight: "bold" }} variant="h5">
-          {name}
-        </Typography>
-      </Stack>
-      <Space height="50px" />
-      <Box lineHeight="1.4" fontSize="15px">
-        {description}
-      </Box>
-      <Stack>
-        <Box fontSize="15px" fontWeight="bold">
-          {t("Liên hệ")}
-        </Box>
-        <Stack small>
-          {[
-            [mdiMapMarkerRadius, address],
-            [mdiWeb, website],
-            [mdiPhoneInTalk, phone],
-            [mdiAt, email],
-          ].map(([iconPath, text], i) => (
-            <Box display="flex" key={i} color="#545454" alignItems="flex-start">
-              <Icon
-                style={{
-                  flexShrink: 0,
-                  width: "20px",
-                  fill: "currentColor",
-                  marginRight: "10px",
-                }}
-                path={iconPath}
-              ></Icon>
-              <Box lineHeight="20px" fontSize="15px">
-                {text}
-              </Box>
-            </Box>
-          ))}
-        </Stack>
-      </Stack>
-      <Stack>
-        <Box fontSize="15px" fontWeight="bold">
-          {t("Lối tắt")}
-        </Box>
-        <Stack small>
-          {[
-            [mdiCogs, t("Cài đặt nhóm")],
-            [mdiHelpRhombus, t("Câu hỏi thường gặp")],
-            [mdiLifebuoy, t("HƯớng dẫn sử dụng")],
-          ].map(([iconPath, text], i) => (
-            <Box display="flex" key={i} color="#545454" alignItems="flex-start">
-              <Icon
-                style={{
-                  width: "20px",
-                  flexShrink: 0,
-                  fill: "currentColor",
-                  marginRight: "10px",
-                }}
-                path={iconPath}
-              ></Icon>
-              <Box lineHeight="20px" fontSize="15px">
-                {text}
-              </Box>
-            </Box>
-          ))}
-        </Stack>
-      </Stack>
-    </Stack>
+    <Left
+      {...{ name, code, description, address, website, phone, email, logo }}
+    />
   );
-}
-
-export default Left;
+};

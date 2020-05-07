@@ -1,7 +1,9 @@
 import { Routes } from "constants/routes";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import GroupPermissionSettings from "./GroupPermissionSettings";
+import { settingGroupPermission } from "./GroupPermissionSettings/redux";
 import ListPart from "./ListPart";
 import TablePart from "./TablePart";
 const SettingGroupPage = () => {
@@ -14,6 +16,10 @@ const SettingGroupPage = () => {
 };
 
 export default () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(settingGroupPermission.actions.loadPermissionViewSettingGroup());
+  }, [dispatch]);
   return (
     <Switch>
       <Route

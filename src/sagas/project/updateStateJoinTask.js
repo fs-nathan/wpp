@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { updateStateJoinTaskSuccess, updateStateJoinTaskFail } from '../../actions/project/updateStateJoinTask';
+import { updateStateJoinTaskFail, updateStateJoinTaskSuccess } from '../../actions/project/updateStateJoinTask';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPDATE_STATE_JOIN_TASK } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doUpdateStateJoinTask({ projectId, memberId, state, }) {
   try {
@@ -27,14 +27,14 @@ function* updateStateJoinTask(action) {
   try {
     yield call(doUpdateStateJoinTask, action.options);
     yield put(updateStateJoinTaskSuccess(action.options));
-    CustomEventEmitter(UPDATE_STATE_JOIN_TASK);
+    CustomEventEmitter(UPDATE_STATE_JOIN_TASK.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(updateStateJoinTaskFail(error, action.options));
+    CustomEventEmitter(UPDATE_STATE_JOIN_TASK.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  updateStateJoinTask,
-}
+export { updateStateJoinTask, };
+

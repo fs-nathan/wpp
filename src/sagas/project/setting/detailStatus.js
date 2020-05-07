@@ -2,6 +2,7 @@ import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import { detailStatusFail, detailStatusSuccess } from '../../../actions/project/setting/detailStatus';
 import { apiService } from '../../../constants/axiosInstance';
+import { CustomEventEmitter, DETAIL_STATUS } from '../../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../../constants/snackbarController';
 
 async function doDetailStatus({ projectId }) {
@@ -29,8 +30,10 @@ function* detailStatus(action) {
       view: task_view,
     }
     yield put(detailStatusSuccess({ status }, action.options));
+    CustomEventEmitter(DETAIL_STATUS.SUCCESS);
   } catch (error) {
     yield put(detailStatusFail(error, action.options));
+    CustomEventEmitter(DETAIL_STATUS.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

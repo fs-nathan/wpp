@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { deleteGroupTaskSuccess, deleteGroupTaskFail } from '../../actions/groupTask/deleteGroupTask';
+import { deleteGroupTaskFail, deleteGroupTaskSuccess } from '../../actions/groupTask/deleteGroupTask';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, DELETE_GROUP_TASK } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doDeleteGroupTask({ groupTaskId }) {
   try {
@@ -25,14 +25,14 @@ function* deleteGroupTask(action) {
   try {
     yield call(doDeleteGroupTask, action.options);
     yield put(deleteGroupTaskSuccess(action.options));
-    CustomEventEmitter(DELETE_GROUP_TASK);
+    CustomEventEmitter(DELETE_GROUP_TASK.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(deleteGroupTaskFail(error, action.options));
+    CustomEventEmitter(DELETE_GROUP_TASK.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  deleteGroupTask,
-}
+export { deleteGroupTask, };
+

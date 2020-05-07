@@ -1,6 +1,5 @@
 import { get } from 'lodash';
 import { DETAIL_USER, DETAIL_USER_FAIL, DETAIL_USER_SUCCESS } from '../../constants/actions/user/detailUser';
-import { UPDATE_USER_SUCCESS } from '../../constants/actions/user/updateUser';
 import { UPLOAD_DOCUMENTS_USER_SUCCESS } from '../../constants/actions/user/uploadDocumentsUser';
 
 export const initialState = {
@@ -35,6 +34,7 @@ function reducer(state = initialState, action) {
         loading: false,
         firstTime: false,
       };
+    /*
     case UPDATE_USER_SUCCESS: {
       const newUser = {
         ...state.data.user,
@@ -52,6 +52,7 @@ function reducer(state = initialState, action) {
         }
       }
     }
+    */
     case UPLOAD_DOCUMENTS_USER_SUCCESS: {
       const newUser = {
         ...state.data.user,

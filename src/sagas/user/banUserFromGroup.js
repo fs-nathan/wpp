@@ -1,9 +1,9 @@
-import { call, put } from 'redux-saga/effects';
-import { banUserFromGroupSuccess, banUserFromGroupFail } from '../../actions/user/banUserFromGroup';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, BAN_USER_FROM_GROUP } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { banUserFromGroupFail, banUserFromGroupSuccess } from '../../actions/user/banUserFromGroup';
+import { apiService } from '../../constants/axiosInstance';
+import { BAN_USER_FROM_GROUP, CustomEventEmitter } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doBanUserFromGroup({ userId }) {
   try {
@@ -25,14 +25,14 @@ function* banUserFromGroup(action) {
   try {
     yield call(doBanUserFromGroup, action.options);
     yield put(banUserFromGroupSuccess(action.options));
-    CustomEventEmitter(BAN_USER_FROM_GROUP);
+    CustomEventEmitter(BAN_USER_FROM_GROUP.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(banUserFromGroupFail(error, action.options));
+    CustomEventEmitter(BAN_USER_FROM_GROUP.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  banUserFromGroup,
-}
+export { banUserFromGroup, };
+

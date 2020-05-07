@@ -1,5 +1,7 @@
 .comp_TasksCard__Container {
+  position: relative;
   font-size: 15px;
+  border: 1px solid #dedede;
 }
 .comp_TasksCard__HeaderAvatar {
   font-size: 15px;
@@ -7,18 +9,30 @@
 .comp_TasksCard__Header {
   align-items: center;
 }
+.comp_TasksCard__Header .MuiCardHeader-action {
+  align-self: center;
+  margin: 0;
+}
 .comp_TasksCard__HeaderTitle {
   font-size: 15px;
 }
 .comp_TasksCard__HeaderSubTitle {
-  font-size: 15px;
+  font-size: 13px !important;
 }
 .comp_TasksCard__Content {
   font-size: 15px;
+  white-space: pre-line;
+  font-size: 15px;
+  color: #545454;
+  font-weight: normal;
 }
-.comp_TasksCard__HeaderAction {
-  align-self: center;
-  margin: 0;
+
+.comp_TasksCard__HighLight {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-right: 3px solid rgb(0, 156, 243);
 }
 .comp_TasksCard__Media {
   display: block;
@@ -26,7 +40,7 @@
   background-repeat: no-repeat;
   background-position: center;
   height: 0;
-  padding-top: 56.25%;
+  padding-top: 80%;
   position: relative;
 }
 .comp_TasksCard__Media > div {
@@ -58,7 +72,7 @@
   grid-template-areas: "img1 img";
 }
 .comp_TasksCard__Media3 > div {
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: 3fr 1fr;
   grid-template-columns: 1fr 1fr;
   column-gap: 4px;
   align-items: flex-start;
@@ -68,7 +82,7 @@
     "img img";
 }
 .comp_TasksCard__Media4 > div {
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: 3fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 4px;
   align-items: flex-start;
@@ -78,7 +92,7 @@
     "img img img";
 }
 .comp_TasksCard__Media5 > div {
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: 3fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 4px;
   align-items: flex-start;

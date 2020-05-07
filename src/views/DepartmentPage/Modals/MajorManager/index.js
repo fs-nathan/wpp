@@ -1,24 +1,21 @@
-import { deleteMajor } from 'actions/major/deleteMajor';
 import { listMajor } from 'actions/major/listMajor';
-import AlertModal from 'components/AlertModal';
-import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import MajorCreateAndUpdateModal from './MajorCreateAndUpdate';
+import MajorDeleteModal from './MajorDelete';
 import MajorManagerPresenter from './presenters';
 import { majorsSelector } from './selectors';
 
 function MajorManager({
   open, setOpen,
   majors,
-  doDeleteMajor,
   doListMajor,
 }) {
 
   React.useEffect(() => {
-    if (open) doListMajor();
+    doListMajor();
     // eslint-disable-next-line
-  }, [open]);
+  }, []);
 
   const [openCAU, setOpenCAU] = React.useState(false);
   const [CAUProps, setCAUProps] = React.useState({});
@@ -51,7 +48,6 @@ function MajorManager({
       <MajorManagerPresenter
         open={open} setOpen={setOpen}
         majors={majors}
-        handleDeleteMajor={major => doDeleteMajor({ majorId: get(major, 'id') })}
         handleOpenModal={doOpenModal}
       />
       <MajorCreateAndUpdateModal
@@ -59,7 +55,7 @@ function MajorManager({
         setOpen={setOpenCAU}
         {...CAUProps}
       />
-      <AlertModal
+      <MajorDeleteModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
@@ -76,7 +72,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doDeleteMajor: ({ majorId }) => dispatch(deleteMajor({ majorId })),
     doListMajor: (quite) => dispatch(listMajor(quite)),
   }
 };
