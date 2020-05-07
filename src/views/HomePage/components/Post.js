@@ -16,6 +16,7 @@ import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useToggle } from "react-use";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import {
   createMapPropsFromAttrs,
@@ -360,6 +361,35 @@ export const PostFiles = () => {
     );
   return null;
 };
+const Seemore = ({ children }) => {
+  const { t } = useTranslation();
+  const [isToggle, toggle] = useToggle(false);
+  return isToggle ? (
+    <span>
+      {children}{" "}
+      <b className="u-colorBlue" onClick={() => toggle()}>
+        {t("see less")}
+      </b>
+    </span>
+  ) : (
+    <span>
+      ...{" "}
+      <b className="u-colorBlue" onClick={() => toggle()}>
+        {t("see more")}
+      </b>
+    </span>
+  );
+};
+const Description = ({ children = "", limit = 100 }) => {
+  const sub = children.substring(0, limit);
+  const hasMore = sub.length < children.length;
+  return (
+    <>
+      {sub}
+      {hasMore > 0 && <Seemore>{children.substring(limit)}</Seemore>}
+    </>
+  );
+};
 export const PostContent = () => {
   const history = useHistory();
   const { title, content, id } = useContext(PostContext);
@@ -375,7 +405,9 @@ export const PostContent = () => {
           {title}
         </b>
 
-        <Typography component="div">{content}</Typography>
+        <Typography component="div">
+          <Description>{content}</Description>
+        </Typography>
       </Stack>
     </TasksCard.Content>
   );

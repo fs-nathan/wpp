@@ -1,12 +1,14 @@
 import { Avatar, Box, Chip, IconButton } from "@material-ui/core";
 import { AttachFile, Close, Image } from "@material-ui/icons";
+import classnames from "classnames";
 import { Field, Formik, useField } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { loginlineParams, uniqueId } from "views/JobPage/utils";
+import { get, loginlineParams, uniqueId } from "views/JobPage/utils";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
 import CssFormControl, {
@@ -34,35 +36,61 @@ const classes = {
   footer: "comp_PostCreatorPopupInner__footer",
 };
 
-const ImageListField = ({ name }) => {
+const ImageListField = ({
+  name,
+  placeholder = "Thả file, hình ảnh vào đây...",
+}) => {
+  const [field] = useField({ name });
+  const handleChange = (files = []) => {
+    loginlineParams(files);
+    field.onChange({
+      target: {
+        name,
+        value: [
+          ...(loginlineParams(field.value) || emptyArray),
+          ...loginlineParams(files),
+        ],
+      },
+    });
+  };
+  const fileFiltered = get(field, "value", emptyArray).filter(isFileImage);
+  const showEmpty = !(fileFiltered && fileFiltered.length);
   return (
-    <ImageField name={name}>
-      {(id, field) =>
-        !!field.value &&
-        !!field.value.length && (
-          <div className={classes.media}>
-            <div>
-              {field.value.map((item, i) => (
-                <ImagePreview
-                  file={item}
-                  key={i}
-                  onDelete={() => {
-                    const newImage = [...field.value];
-                    newImage.splice(i, 1);
-                    field.onChange({
-                      target: {
-                        name,
-                        value: newImage,
-                      },
-                    });
-                  }}
-                ></ImagePreview>
-              ))}
-            </div>
+    <DropZone onChange={handleChange}>
+      {(getRootProps, getInputProps, isDragActive) => {
+        return (
+          <div
+            className={classnames(classes.media, { showEmpty })}
+            {...getRootProps()}
+            tabIndex={undefined}
+            onClick={() => {}}
+          >
+            {!showEmpty && (
+              <div>
+                {fileFiltered.map((item, i) => (
+                  <ImagePreview
+                    file={item}
+                    key={i}
+                    onDelete={() => {
+                      const newImage = [...field.value];
+                      newImage.splice(i, 1);
+                      field.onChange({
+                        target: {
+                          name,
+                          value: newImage,
+                        },
+                      });
+                    }}
+                  ></ImagePreview>
+                ))}
+              </div>
+            )}
+            {showEmpty && placeholder}
+            <input {...getInputProps()} />
           </div>
-        )
-      }
-    </ImageField>
+        );
+      }}
+    </DropZone>
   );
 };
 const FileField = ({ name, id, children, ...props }) => {
@@ -98,12 +126,14 @@ const FileField = ({ name, id, children, ...props }) => {
 const ImageField = (props) => <FileField accept="image/*" {...props} />;
 const FilePreviewField = ({ name }) => {
   const { t } = useTranslation();
+
   return (
     <FileField name={name}>
       {(id, field, meta) => {
-        const files = field.value;
+        const files = field.value || emptyArray;
         const error = meta.error;
-        if (!(files && files.length)) return null;
+        const fileFiltered = files.filter((file) => !isFileImage(file));
+        if (!(fileFiltered && fileFiltered.length)) return null;
         return (
           <CssFormControl label={t("Tài liệu đính kèm")} errorMessage={error}>
             <Box
@@ -113,21 +143,23 @@ const FilePreviewField = ({ name }) => {
             >
               {
                 <ChipGroup>
-                  {files.map((file, i) => (
-                    <Chip
-                      label={file.name}
-                      onDelete={() => {
-                        const newValue = [...files];
-                        newValue[i] = undefined;
-                        field.onChange({
-                          target: {
-                            name: name,
-                            value: newValue.filter((item) => item),
-                          },
-                        });
-                      }}
-                    />
-                  ))}
+                  {files
+                    .filter((file) => !isFileImage(file))
+                    .map((file, i) => (
+                      <Chip
+                        label={file.name}
+                        onDelete={() => {
+                          const newValue = [...files];
+                          newValue[i] = undefined;
+                          field.onChange({
+                            target: {
+                              name: name,
+                              value: newValue.filter((item) => item),
+                            },
+                          });
+                        }}
+                      />
+                    ))}
                   {id && (
                     <label htmlFor={id}>
                       <AddButton
@@ -167,6 +199,19 @@ const ImagePreview = ({ file, onDelete }) => {
       </IconButton>
     </div>
   );
+};
+function isFileImage(file) {
+  return file && file["type"].split("/")[0] === "image";
+}
+const DropZone = ({ onChange, children }) => {
+  const onDrop = useCallback(
+    async (files = []) => {
+      onChange(files);
+    },
+    [onChange]
+  );
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  return children(getRootProps, getInputProps, isDragActive);
 };
 const SelectCategoryModalField = ({ onClose, name }) => (
   <Field name={name}>
@@ -236,56 +281,51 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
   const { t } = useTranslation();
   return (
     <TasksCard.Container className={classes.root}>
-      <Box
-        className={classes.header}
-        padding="8px 8px 8px 16px"
-        fontWeight="bold"
-        display="flex"
-        alignItems="center"
-        style={{
-          background: "#f5f6f7",
-          borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-        }}
-      >
-        <Box className={classes.headerTitle} flex="1">
+      <div className={classes.header}>
+        <div className={classes.headerTitle}>
           {t("Tạo bài viết trên bảng tin nội bộ")}
-        </Box>
+        </div>
         <IconButton onClick={onClose} size="small">
           <Close />
         </IconButton>
-      </Box>
+      </div>
       <div className={classes.main}>
         <TasksCard.Content>
           <Stack large>
-            <InputFormControl
-              name="title"
-              inputProps={{
-                error: false,
-                variant: "standard",
-                className: classes.title,
-                size: "medium",
-                multiline: true,
-                label: t("Tiêu đề bài viết..."),
-              }}
-            />
-            <InputFormControl
-              name="content"
-              inputProps={{
-                variant: "standard",
-                className: classes.content,
-                size: "medium",
-                rows: 3,
-                multiline: true,
-                label: t("Nội dung bài viết..."),
-              }}
-            />
+            <div>
+              <InputFormControl
+                name="title"
+                inputProps={{
+                  error: false,
+                  variant: "standard",
+                  className: classes.title,
+                  size: "medium",
+                  multiline: true,
+                  label: t("Tiêu đề bài viết..."),
+                }}
+              />
+              <InputFormControl
+                name="content"
+                inputProps={{
+                  variant: "standard",
+                  className: classes.content,
+                  size: "medium",
+                  rows: 3,
+                  multiline: true,
+                  label: t("Nội dung bài viết..."),
+                }}
+              />
+            </div>
             <CategoryField name="category" categories={categories} />
             <FilePreviewField name="file" />
           </Stack>
         </TasksCard.Content>
-        <ImageListField name="image" />
+        <ImageListField
+          name="file"
+          placeholder={t("Thả file, hình ảnh vào đây...")}
+        />
       </div>
-      <Box className={classes.footer} padding="10px" display="flex">
+      <div className={classes.footer}>
         <FileField name="file">
           {(id) => (
             <IconButton>
@@ -295,7 +335,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
             </IconButton>
           )}
         </FileField>
-        <ImageField name="image">
+        <ImageField name="file">
           {(id) => (
             <IconButton>
               <label htmlFor={id}>
@@ -308,7 +348,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
         <PrimarySubmitAction loading={loading}>
           {t("Đăng bài")}
         </PrimarySubmitAction>
-      </Box>
+      </div>
     </TasksCard.Container>
   );
 };
@@ -359,10 +399,10 @@ export default ({ onClose, category }) => {
       initialValues={initialValues}
       onSubmit={(values) => {
         const finalValues = { ...values };
-        finalValues.file = finalValues.file || [];
-        if (finalValues.image && finalValues.image.length) {
-          finalValues.file = [...finalValues.file, ...finalValues.image];
-        }
+        // finalValues.file = finalValues.file || [];
+        // if (finalValues.image && finalValues.image.length) {
+        //   finalValues.file = [...finalValues.file, ...finalValues.image];
+        // }
         setAsyncAction(postModule.actions.createPost(finalValues));
       }}
     >
