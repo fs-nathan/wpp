@@ -3,11 +3,11 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormGroup
+  FormGroup,
 } from "@material-ui/core";
 import { mdiFilterOutline } from "@mdi/js";
 import Icon from "@mdi/react";
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { JobPageContext } from "../JobPageContext";
 import QuickView from "../Layout/QuickView";
@@ -15,15 +15,17 @@ import "./QuickViewFilter.css";
 
 function QuickViewFilter() {
   const { t } = useTranslation();
+  const { handleClose } = useContext(JobPageContext);
   return (
     <JobPageContext.Consumer>
       {({
         statusFilter,
         setstatusFilter,
         handleRemovestatusFilter,
-        filterConfig
+        filterConfig,
       }) => (
         <QuickView
+          onClose={handleClose}
           title={
             <Box className="comp_QuickViewFilter__headerWrapper">
               <Icon
@@ -53,7 +55,7 @@ function QuickViewFilter() {
                       </Box>
                     </legend>
                     <FormGroup className="comp_QuickViewFilter__FormGroup">
-                      {orders.map(key => (
+                      {orders.map((key) => (
                         <FormControlLabel
                           className="comp_QuickViewFilter__FormControlLabel"
                           key={key}

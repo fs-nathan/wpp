@@ -1,15 +1,18 @@
-import React, { useContext } from "react";
-import Block from "views/JobPage/views/Overview/Block";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
-import GroupDetailContext from "../GroupDetailContext";
-
+import HightLight from "./HightLight";
+import Language from "./Language";
+import Statistic from "./Statistic";
+import WeedSchedule from "./WeedSchedule";
 function Right() {
-  const { cover } = useContext(GroupDetailContext);
+  const { t } = useTranslation();
   return (
     <Stack>
-      <Block title="Lịch tuần"></Block>
-      <Block title="Tim nổi bật"></Block>
-      <Block title="Thống kê"></Block>
+      <WeedSchedule />
+      <HightLight />
+      <Statistic />
+      <Language />
     </Stack>
   );
 }

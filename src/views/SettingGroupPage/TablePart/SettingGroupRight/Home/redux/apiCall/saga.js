@@ -5,11 +5,12 @@ import {
   SNACKBAR_VARIANT,
 } from "constants/snackbarController";
 import { fork, put, take } from "redux-saga/effects";
-import { get } from "views/JobPage/utils";
+import { get, loginlineParams } from "views/JobPage/utils";
 import { apiCallFailure, apiCallSuccess } from "./actions";
 import { API_CALL } from "./types";
 
 function* doAsync(action) {
+  loginlineParams(action);
   const {
     config,
     success,
@@ -20,7 +21,8 @@ function* doAsync(action) {
   } = action.payload;
   try {
     const result = yield apiService(config);
-    if (!result.data.state) throw new Error(result.data.error_code);
+    if (!result.data.state)
+      throw new Error(result.data.error_code || result.data.msg);
     notifyOnSuccess &&
       SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     yield put(apiCallSuccess({ asyncId, data: result.data }));

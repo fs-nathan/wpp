@@ -1,9 +1,29 @@
 .comp_PostActionButton {
   flex: 1;
   margin: 4px;
+  /* color: #000; */
+  filter: grayscale(1);
+  opacity: 0.7;
 }
-.comp_PostActionButton__labbel {
-  display: flex;
+.comp_PostActionButton img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.comp_PostActionButton__active {
+  filter: grayscale(0);
+  opacity: 1;
+}
+.comp_PostActionButton-label {
+  /* display: flex;
   align-items: center;
-  line-height: 1;
+  line-height: 1; */
+  /* line-height: 1; */
+  font-weight: 600;
+  font-size: 14px !important;
+  text-transform: none;
+}
+.comp_PostActionButton .MuiButton-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
