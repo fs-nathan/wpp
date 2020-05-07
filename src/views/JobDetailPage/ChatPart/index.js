@@ -38,6 +38,7 @@ function ChatPart(props) {
 
   function hideSearch() {
     setShowSearch(false)
+    dispatch(searchChat(''))
   }
 
   function onClickClosePin() {
