@@ -1,7 +1,30 @@
 // Import actions
 import { lastJobSettingKey } from 'views/JobDetailPage/ListPart/ListHeader/CreateJobSetting';
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
-import { searchTaskByTaskName } from '../../helpers/jobDetail/arrayHelper';
+
+function updateListTaskDetail(listTaskDetail, id, update) {
+    return listTaskDetail.map((data) => {
+        const { tasks } = data;
+        return {
+            ...data,
+            tasks: tasks.map((task) => {
+                if (id === task.id) {
+                    return { ...task, ...update }
+                }
+                return task;
+            })
+        };
+    })
+}
+
+function updateListDataNotRoom(listDataNotRoom, id, update) {
+    return listDataNotRoom.map((data) => {
+        if (id === data.id) {
+            return { ...data, ...update }
+        }
+        return data;
+    })
+}
 
 // Initial state for store
 const initialState = {
@@ -14,6 +37,7 @@ const initialState = {
     listTaskDataType: localStorage.getItem(lastJobSettingKey) || 'include-room',
     listDataNotRoom: [],
     filterTaskType: 0,
+    searchKey: '',
 };
 
 export default function reducer(state = initialState, action) {
@@ -75,7 +99,8 @@ export default function reducer(state = initialState, action) {
         case types.SEARCH_TASK:
             return {
                 ...state,
-                listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }
+                searchKey: action.payload,
+                // listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }
             }
         case types.STATIC_TASK_REQUEST:
             return {
@@ -101,20 +126,24 @@ export default function reducer(state = initialState, action) {
             const { payload, id } = action;
             return {
                 ...state,
-                listTaskDetail: state.listTaskDetail.map((data) => {
-                    const { id } = data;
-                    if (action.id === id) {
-                        return { ...data, name: payload.data_chat.new_task_name }
-                    }
-                    return data;
-                }),
-                listDataNotRoom: state.listDataNotRoom.map((data) => {
-                    const { id } = data;
-                    if (action.id === id) {
-                        return { ...data, name: payload.data_chat.new_task_name }
-                    }
-                    return data;
-                })
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { name: payload.data_chat.new_task_name }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { name: payload.data_chat.new_task_name }),
+            }
+        }
+        case types.STOP_TASK_SUCCESS: {
+            const { payload, id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 4 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 4 }),
+            }
+        }
+        case types.CANCEL_STOP_TASK_SUCCESS: {
+            const { payload, id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 0 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 0 }),
             }
         }
         default:
