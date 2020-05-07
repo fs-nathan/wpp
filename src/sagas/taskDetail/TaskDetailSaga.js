@@ -1452,7 +1452,7 @@ export function* stopTask(payload) {
   try {
     const { task_id } = payload;
     const res = yield call(apiService.post, "/task/stop-task", { task_id });
-    yield put(actions.stopTaskSuccess(res.data));
+    yield put(actions.stopTaskSuccess(res.data, task_id));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.stopTaskFail(error));
@@ -1464,7 +1464,7 @@ export function* cancelStopTask(payload) {
   try {
     const { task_id } = payload;
     const res = yield call(apiService.post, "/task/cancel-stop-task", { task_id });
-    yield put(actions.cancelStopTaskSuccess(res.data));
+    yield put(actions.cancelStopTaskSuccess(res.data, task_id));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.cancelStopTaskFail(error));
@@ -1489,7 +1489,7 @@ export function* updateNameDescription(payload) {
   try {
     const { task_id, name, description } = payload;
     const res = yield call(apiService.put, "/task/update-name-description", { task_id, name, description });
-    yield put(actions.updateNameDescriptionSuccess(res.data));
+    yield put(actions.updateNameDescriptionSuccess(res.data, task_id));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     // yield put(appendChat(res.data));
   } catch (error) {

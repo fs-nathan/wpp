@@ -21,9 +21,9 @@ const ListBanner = props => {
   // console.log('listTaskDetail', value)
   useEffect(() => {
     if (listTaskDataType === listTaskDataTypes[1]) {
-      setData(listTaskDetail ? listTaskDetail.tasks : [])
+      setData(listTaskDetail)
     } else {
-      setData(listDataNotRoom ? listDataNotRoom.tasks : [])
+      setData(listDataNotRoom)
     }
   }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail])
 

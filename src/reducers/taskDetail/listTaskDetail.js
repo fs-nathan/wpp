@@ -5,14 +5,14 @@ import { searchTaskByTaskName } from '../../helpers/jobDetail/arrayHelper';
 
 // Initial state for store
 const initialState = {
-    listTaskDetail: null,
+    listTaskDetail: [],
     isFetching: false,
     dataFetched: false,
     error: false,
     defaultListTaskDetail: [],
     staticTask: [],
     listTaskDataType: localStorage.getItem(lastJobSettingKey) || 'include-room',
-    listDataNotRoom: null,
+    listDataNotRoom: [],
     filterTaskType: 0,
 };
 
@@ -34,10 +34,10 @@ export default function reducer(state = initialState, action) {
             };
             if (action.type_data) {
                 if (action.type_data === 'include-room') {
-                    newData.listTaskDetail = action.payload
+                    newData.listTaskDetail = action.payload.tasks
                     newData.defaultListTaskDetail = action.payload.tasks
                 } else {
-                    newData.listDataNotRoom = action.payload
+                    newData.listDataNotRoom = action.payload.tasks
                 }
             }
             return newData;
@@ -97,6 +97,26 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
+        case types.UPDATE_NAME_DESCRIPTION_SUCCESS: {
+            const { payload, id } = action;
+            return {
+                ...state,
+                listTaskDetail: state.listTaskDetail.map((data) => {
+                    const { id } = data;
+                    if (action.id === id) {
+                        return { ...data, name: payload.data_chat.new_task_name }
+                    }
+                    return data;
+                }),
+                listDataNotRoom: state.listDataNotRoom.map((data) => {
+                    const { id } = data;
+                    if (action.id === id) {
+                        return { ...data, name: payload.data_chat.new_task_name }
+                    }
+                    return data;
+                })
+            }
+        }
         default:
             return state;
     }

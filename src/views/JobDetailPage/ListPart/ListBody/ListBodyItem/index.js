@@ -62,14 +62,14 @@ function JobName(props) {
 }
 
 function JobContent(props) {
-  const { avatar, notify, new_chat, notification = '', ...rest } = props
+  const { avatar, notify, notification = '', ...rest } = props
   return (
     <div className="container-content-lbd">
       <div title={props.name}>
         <Avatar src={avatar} alt="avatar" />
         <ColorTypo color="#7a869a">{props.content}</ColorTypo>
       </div>
-      {new_chat && <div>
+      {notification && <div>
         <ChipMes
           label={'N'}
           size="small"

@@ -33,6 +33,7 @@ export default (state = initialState, action) => produce(state, draft => {
     case types.UPDATE_TASK_PRIORITY_SUCCESS:
       draft.isFetching = false
       draft.dataFetched = true
+      draft.taskDetails.priority_code = action.payload.data_chat.priority;
       break;
     case types.UPDATE_TASK_PRIORITY_FAIL:
       draft.isFetching = false
@@ -56,12 +57,12 @@ export default (state = initialState, action) => produce(state, draft => {
       break;
     case types.STOP_TASK_SUCCESS: {
       const { payload } = action;
-      draft.payload = payload;
+      draft.taskDetails.state_code = 4;
       break;
     }
     case types.CANCEL_STOP_TASK_SUCCESS: {
       const { payload } = action;
-      draft.payload = payload;
+      draft.taskDetails.state_code = 0;
       break;
     }
     case types.DELETE_SHARE_LOCATION_SUCCESS: {
@@ -70,7 +71,8 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case types.UPDATE_NAME_DESCRIPTION_SUCCESS: {
       const { payload } = action;
-      draft.payload = payload;
+      draft.taskDetails.name = payload.data_chat.new_task_name;
+      draft.taskDetails.description = payload.data_chat.new_description;
       break;
     }
     case types.UPDATE_GROUP_TASK_SUCCESS: {

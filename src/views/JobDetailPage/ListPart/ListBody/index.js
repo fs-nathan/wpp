@@ -36,9 +36,9 @@ function ListBody() {
 
   useEffect(() => {
     if (listTaskDataType === listTaskDataTypes[1]) {
-      setData(listTaskDetail ? filterTaskByType(listTaskDetail.tasks, filterTaskType) : [])
+      setData(filterTaskByType(listTaskDetail, filterTaskType))
     } else {
-      setData(listDataNotRoom ? filterNoGroupTaskByType(listDataNotRoom.tasks, filterTaskType) : [])
+      setData(filterNoGroupTaskByType(listDataNotRoom, filterTaskType))
     }
   }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail])
 
