@@ -77,10 +77,8 @@ function AllProjectTable({
   timeType, handleTimeType,
   handleSortType,
   handleShowOrHideProject,
-  handleDeleteProject,
   handleSortProject,
   handleOpenModal,
-  handleTimeRange,
   bgColor,
   showHidePendings,
   canCreate,
@@ -442,10 +440,7 @@ function AllProjectTable({
           anchorEl={timeAnchor}
           setAnchorEl={setTimeAnchor}
           timeOptionDefault={timeType}
-          handleTimeRange={(timeType, startDate, endDate) => {
-            handleTimeType(timeType)
-            handleTimeRange(startDate, endDate)
-          }}
+          handleTimeRange={timeType => handleTimeType(timeType)}
         />
         <Menu
           id="simple-menu"

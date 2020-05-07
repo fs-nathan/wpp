@@ -1,11 +1,12 @@
 import { createProject } from 'actions/project/createProject';
 import { listProject } from 'actions/project/listProject';
 import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
+import { useTimes } from 'components/CustomPopover';
 import { get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Context as ProjectGroupContext } from '../../index';
+import { localOptionSelector } from '../../selectors';
 import CreateNewProjectPresenter from './presenters';
 import { groupsSelector } from './selectors';
 
@@ -16,9 +17,19 @@ function CreateNewProject({
   doListProjectGroup,
   doReload,
   projectGroupId = undefined,
+  localOption,
 }) {
 
-  const { timeRange } = React.useContext(ProjectGroupContext);
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    });
+    // eslint-disable-next-line
+  }, [timeType]);
 
   React.useEffect(() => {
     doListProjectGroup();
@@ -29,6 +40,7 @@ function CreateNewProject({
     <CreateNewProjectPresenter
       open={open} setOpen={setOpen}
       projectGroupId={projectGroupId}
+      timeRange={timeRange}
       doReload={() => doReload({
         groupProject: projectGroupId,
         timeStart: get(timeRange, 'timeStart')
@@ -49,6 +61,7 @@ function CreateNewProject({
 const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
+    localOption: localOptionSelector(state),
   }
 }
 

@@ -28,6 +28,7 @@ function CopyGroupTask({
   handleCopyGroupTask,
   doReload,
   projectId,
+  timeRange,
 }) {
 
   const [selectedGroupTasks, setSelectedGroupTasks] = React.useState([]);
@@ -53,7 +54,7 @@ function CopyGroupTask({
       CustomEventDispose(COPY_GROUP_TASK.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectId]);
+  }, [projectId, timeRange]);
 
   React.useEffect(() => {
     const success = bit => () => {
@@ -73,7 +74,7 @@ function CopyGroupTask({
       CustomEventListener(GET_ALL_GROUP_TASK.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectId]);
+  }, [projectId, timeRange]);
 
   return (
     <React.Fragment>

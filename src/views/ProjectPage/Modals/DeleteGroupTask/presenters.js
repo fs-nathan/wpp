@@ -7,6 +7,7 @@ function GroupTaskDelete({
   handleDeleteGroupTask,
   doReload,
   projectId,
+  timeRange,
 }) {
 
   const [activeLoading, setActiveLoading] = React.useState(false);
@@ -31,7 +32,7 @@ function GroupTaskDelete({
       CustomEventDispose(DELETE_GROUP_TASK.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectId]);
+  }, [projectId, timeRange]);
 
   React.useEffect(() => {
     const success = bit => () => {
@@ -51,7 +52,7 @@ function GroupTaskDelete({
       CustomEventListener(GET_ALL_GROUP_TASK.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectId]);
+  }, [projectId, timeRange]);
 
   return (
     <AlertModal

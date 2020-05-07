@@ -52,6 +52,7 @@ import createLevel, { initialState as createLevelInitialState } from "./level/cr
 import deleteLevel, { initialState as deleteLevelInitialState } from "./level/deleteLevel";
 import listLevel, { initialState as listLevelInitialState } from "./level/listLevel";
 import updateLevel, { initialState as updateLevelInitialState } from "./level/updateLevel";
+import localStorage, { initialState as localStorageInitialState } from './localStorage';
 import createMajor, { initialState as createMajorInitialState } from "./major/createMajor";
 import deleteMajor, { initialState as deleteMajorInitialState } from "./major/deleteMajor";
 import listMajor, { initialState as listMajorInitialState } from "./major/listMajor";
@@ -296,7 +297,8 @@ const rootReducer = combineReducers({
     projectGroupSettingStartingDay, projectGroupAddWorkingDays,
     projectGroupDeleteWorkingDays, projectGroupAddDayOff,
     createPersonalRemindCategory, createPersonalRemind, listRemindProject
-  })
+  }),
+  localStorage,
 });
 
 export const DEFAULT_STATE = {
@@ -443,7 +445,8 @@ export const DEFAULT_STATE = {
     listPersonalRemind: listPersonalRemindInitialState,
     createPersonalRemind: createPersonalRemindInitialState,
     listRemindProject: listRemindProjectInitialState
-  }
+  },
+  localStorage: localStorageInitialState,
 };
 
 export default rootReducer;

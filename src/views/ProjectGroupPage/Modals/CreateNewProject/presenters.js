@@ -26,7 +26,7 @@ function CreateNewProject({
   groups,
   handleCreateProject,
   doReload,
-  projectGroupId,
+  projectGroupId, timeRange
 }) {
 
   const { t } = useTranslation();
@@ -48,7 +48,7 @@ function CreateNewProject({
       CustomEventDispose(CREATE_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectGroupId]);
+  }, [projectGroupId, timeRange]);
 
   React.useEffect(() => {
     const success = () => {
@@ -69,7 +69,7 @@ function CreateNewProject({
       CustomEventDispose(LIST_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectGroupId]);
+  }, [projectGroupId, timeRange]);
 
   return (
     <CustomModal

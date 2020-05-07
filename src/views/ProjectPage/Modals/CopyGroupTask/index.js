@@ -2,14 +2,14 @@ import { copyGroupTask } from 'actions/groupTask/copyGroupTask';
 import { getAllGroupTask } from 'actions/groupTask/getAllGroupTask';
 import { listGroupTask } from 'actions/groupTask/listGroupTask';
 import { listTask } from 'actions/task/listTask';
+import { useTimes } from 'components/CustomPopover';
 import { CustomEventDispose, CustomEventListener, SORT_GROUP_TASK } from 'constants/events';
 import { filter, get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Context as ProjectContext } from '../../index';
-import { viewPermissionsSelector } from '../../selectors';
+import { localOptionSelector, viewPermissionsSelector } from '../../selectors';
 import CopyGroupTaskPresenter from './presenters';
 import { groupTasksSelector } from './selectors';
 
@@ -20,12 +20,20 @@ function CopyGroupTask({
   doGetAllGroupTask,
   viewPermissions,
   doReload,
+  localOption,
 }) {
 
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    });
+    // eslint-disable-next-line
+  }, [timeType]);
   const { projectId } = useParams();
-  const {
-    timeRange,
-  } = React.useContext(ProjectContext);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
@@ -54,6 +62,7 @@ function CopyGroupTask({
     <CopyGroupTaskPresenter
       open={open} setOpen={setOpen}
       projectId={projectId}
+      timeRange={timeRange}
       doReload={() => doReload({
         projectId,
         timeStart: get(timeRange, 'timeStart')
@@ -79,6 +88,7 @@ const mapStateToProps = state => {
   return {
     groupTasks: groupTasksSelector(state),
     viewPermissions: viewPermissionsSelector(state),
+    localOption: localOptionSelector(state),
   }
 }
 
