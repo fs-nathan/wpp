@@ -1059,7 +1059,7 @@
   "LABEL_CHAT_TASK_TAO_DE_XUAT": "Tạo đề xuất",
   "LABEL_CHAT_TASK_TAO_NHAC_HEN_THEO_TIEN_DO": "tạo Nhắc hẹn theo tiến độ",
   "LABEL_CHAT_TASK_KHI_TIEN_DO_KE_HOACH_DAT_MOC": "Khi tiến độ kế hoạch đạt mốc",
-  "LABEL_CHAT_TASK_DA_XOA_DE_XUAT_LUC": "Đã xoá đề xuất lúc",
+  "LABEL_CHAT_TASK_XOA_DE_XUAT": "xoá đề xuất",
   "LABEL_CHAT_TASK_XOA_NHAC_HEN": "Xóa nhắc hẹn",
   "LABEL_CHAT_TASK_HUY_BO_CHIA_SE_VI_TRI": "huỷ bỏ chia sẻ vị trí",
   "LABEL_CHAT_TASK_XOA_CONG_VIEC_CON": "xoá công việc con",

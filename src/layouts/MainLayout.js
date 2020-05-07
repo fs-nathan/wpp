@@ -122,12 +122,12 @@ function MainLayout({
   }
 
   function handleReactEmotion(data) {
-    console.log('handleReactEmotion', data)
-    updateChatState(data.id, { data_emotion: data })
+    // console.log('handleReactEmotion', data)
+    updateChatState(data.id, { data_emotion: data.emotions })
   }
 
   function handleDeleteChat(data) {
-    console.log('handleDeleteChat', data)
+    // console.log('handleDeleteChat', data)
     updateChatState(data.id, { is_deleted: true })
   }
 
@@ -155,7 +155,7 @@ function MainLayout({
       socket.on('WP_VIEW_CHAT_IN_TASK', handleViewChat);
 
       function joinChat({ detail }) {
-        console.log('joinChat', detail)
+        // console.log('joinChat', detail)
         socket.emit('WP_JOIN_TASK', {
           task_id: detail
         })
