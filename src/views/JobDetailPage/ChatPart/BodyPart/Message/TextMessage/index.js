@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { createChatText, deleteFailedChat } from 'actions/chat/chat';
+import { createChatText, removeChatById } from 'actions/chat/chat';
 import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
 import { getRichContent, getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
@@ -57,7 +57,7 @@ const TextMessage = ({
   }
 
   function onClickDeleteChat(data) {
-    dispatch(deleteFailedChat(id));
+    dispatch(removeChatById(id));
   }
 
   function onClickResendChat() {

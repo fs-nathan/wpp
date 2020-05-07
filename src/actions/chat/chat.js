@@ -556,9 +556,9 @@ export function chatQuickLikeFail(error) {
   };
 }
 
-export function deleteFailedChat(id) {
+export function removeChatById(id) {
   return {
-    type: actionTypes.DELETE_FAILED_CHAT,
+    type: actionTypes.REMOVE_CHAT_BY_ID,
     id
   };
 }
@@ -609,5 +609,12 @@ export function getGirdListTaskFail(error) {
   return {
     type: actionTypes.GET_GIRD_LIST_TASK_FAIL,
     error
+  };
+}
+
+export function updateChatState(id, data) {
+  return {
+    type: actionTypes.UPDATE_CHAT_STATE,
+    id, data
   };
 }

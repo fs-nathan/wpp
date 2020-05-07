@@ -1,4 +1,4 @@
-import { appendChat } from "actions/chat/chat";
+// import { appendChat } from "actions/chat/chat";
 import { get } from 'lodash';
 import { call, put } from "redux-saga/effects";
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
@@ -28,7 +28,7 @@ function* updatePriority(action) {
     yield put(actions.updatePrioritySuccess(res));
     yield put(actions.getTaskDetailTabPart(action.payload.task_id));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.updatePriorityFail(error));
@@ -79,7 +79,7 @@ function* postSubTask(action) {
     const res = yield call(doPostSubTask, action.options);
     yield put(actions.postSubTaskSuccess(res));
     yield put(actions.getSubTask({ taskId: action.options.task_id }));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postSubTaskFail(error));
@@ -137,7 +137,7 @@ function* deleteSubTask(action) {
     const res = yield call(doDeleteSubTask, action.options);
     yield put(actions.deleteSubTaskSuccess(res));
     yield put(actions.getSubTask(action.options));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error));
@@ -165,7 +165,7 @@ function* completeSubTask(action) {
     const res = yield call(doCompleteSubTask, { sub_task_id, task_id: taskId });
     yield put(actions.completeSubTaskSuccess(res));
     yield put(actions.getSubTask({ taskId }));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.completeSubTaskFail(error));
@@ -221,7 +221,7 @@ function* postRemindWithTimeDetail(action) {
   try {
     const res = yield call(doPostRemindWithTimeDetail, action.options);
     yield put(actions.getRemind({ taskId: action.options.taskId }));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postRemindWithTimeDetailFail(error));
@@ -248,7 +248,7 @@ function* postRemindDuration(action) {
     const res = yield call(doPostRemindDuration, action.options);
     yield put(actions.postRemindDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.task_id }));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postRemindDurationFail(error));
@@ -276,7 +276,7 @@ function* updateRemindWithTimeDetail(action) {
     yield put(actions.updateRemindWithTimeDetailSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
   } catch (error) {
     yield put(actions.updateRemindWithTimeDetailFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -303,7 +303,7 @@ function* updateRemindWithDuration(action) {
     yield put(actions.updateRemindWithDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
   } catch (error) {
     yield put(actions.updateRemindWithDurationFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -330,7 +330,7 @@ function* deleteRemind(action) {
     const res = yield call(doDeleteRemind, { remind_id, task_id: taskId });
     yield put(actions.deleteRemindSuccess(res));
     yield put(actions.getRemind({ taskId }));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteRemindFail(error));
@@ -347,7 +347,7 @@ function* pinRemind(action) {
     });
     yield put(actions.pinRemindSuccess(res.data));
     yield put(actions.getRemind({ taskId }));
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.pinRemindFail(error));
@@ -364,7 +364,7 @@ function* unpinRemind(action) {
     });
     yield put(actions.unPinRemindSuccess(res.data));
     yield put(actions.getRemind({ taskId }));
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.unPinRemindFail(error));
@@ -401,7 +401,7 @@ function* createOffer(action) {
     const res = yield call(apiService.post, url, action.payload.data);
     yield put(actions.createOfferSuccess(res.data));
     yield put(actions.getOffer({ taskId: action.payload.taskId }));
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createOfferFail(error));
@@ -456,7 +456,7 @@ function* deleteOffer(action) {
     const res = yield call(doDeleteOffer, { offer_id, task_id: taskId })
     yield put(actions.deleteOfferSuccess(res))
     yield put(actions.getOffer({ taskId }))
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteOfferFail(error));
@@ -470,7 +470,7 @@ function* approveOffer(action) {
     const res = yield call(apiService.post, 'task/approve-offer', action.payload)
     yield put(actions.approveOfferSuccess(res))
     yield put(actions.getOffer({ taskId: action.payload.task_id }));
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.approveOfferFail(error));
@@ -721,7 +721,7 @@ function* createCommand(action) {
     const res = yield call(doCreateCommand, action.payload);
     yield put(actions.createCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
-    yield put(appendChat({ data_chat: res.data }));
+    // yield put(appendChat({ data_chat: res.data }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createCommandFail(error));
@@ -755,7 +755,7 @@ function* updateCommand(action) {
     yield put(actions.updateCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.taskId }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(appendChat({ data_chat: res.data }));
+    // yield put(appendChat({ data_chat: res.data }));
   } catch (error) {
     yield put(actions.updateCommandFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -784,7 +784,7 @@ function* deleteCommand(action) {
     });
     yield put(actions.deleteCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
-    yield put(appendChat({ data_chat: res.data }));
+    // yield put(appendChat({ data_chat: res.data }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteCommandFail(error));
@@ -856,7 +856,7 @@ function* createMember(action) {
     yield put(actions.getMember({ task_id: action.payload.task_id }))
     yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
     yield put(actions.createMemberSuccess(res))
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createMemberFail(error));
@@ -884,7 +884,7 @@ function* deleteMember(action) {
     yield put(actions.getMember({ task_id: action.payload.task_id }))
     yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
     yield put(actions.deleteMemberSuccess(res))
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteMemberFail(error));
@@ -1050,7 +1050,7 @@ function* updateRolesForMember(action) {
     yield put(actions.updateRolesForMemberSuccess(res.data))
     yield put(actions.getMember({ task_id: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(appendChat({ data_chat: res.data.data }));
+    // yield put(appendChat({ data_chat: res.data.data }));
   } catch (error) {
     yield put(actions.updateRolesForMemberFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1134,7 +1134,7 @@ function* updateTimeDuration(action) {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateTimeDurationFail);
@@ -1304,7 +1304,7 @@ function* updateNameDescriptionTask(action) {
     const taskId = action.payload.task_id;
     yield put(actions.updateNameDescriptionTaskSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId }));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     // const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
     // yield put(actions.updateTimeDurationSuccess(resTime))
     // yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
@@ -1359,7 +1359,7 @@ function* updateComplete(action) {
     yield put(actions.updateCompleteSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
     yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
-    yield put(appendChat(res));
+    // yield put(appendChat(res));
     yield put(actions.getListTaskDetail(action.payload.projectId));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -1423,7 +1423,7 @@ export function* pinTask({ payload }) {
     yield put(actions.pinTaskSuccess(res.data));
     yield put(actions.getListTaskDetail(projectId));
     yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.pinTaskFail(error));
@@ -1440,7 +1440,7 @@ export function* unPinTask({ payload }) {
     yield put(actions.unPinTaskSuccess(res.data));
     yield put(actions.getListTaskDetail(projectId));
     yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.unPinTaskFail(error));
@@ -1477,7 +1477,7 @@ export function* deleteShareLocation(payload) {
     const { task_id, location_share_id } = payload;
     const res = yield call(apiService.post, "/task/delete-share-location", { task_id, location_share_id });
     yield put(actions.deleteShareLocationSuccess(res.data));
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteShareLocationFail(error));
@@ -1491,7 +1491,7 @@ export function* updateNameDescription(payload) {
     const res = yield call(apiService.put, "/task/update-name-description", { task_id, name, description });
     yield put(actions.updateNameDescriptionSuccess(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
   } catch (error) {
     yield put(actions.updateNameDescriptionFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1504,7 +1504,7 @@ export function* updateGroupTask(payload) {
     const res = yield call(apiService.put, "/task/update-group-task", { task_id, group_task });
     yield put(actions.updateGroupTaskSuccess(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
   } catch (error) {
     yield put(actions.updateGroupTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1516,7 +1516,7 @@ export function* updateTypeAssign(payload) {
     const { task_id, type_assign } = payload;
     const res = yield call(apiService.put, "/task/update-type-assign", { task_id, type_assign });
     yield put(actions.updateTypeAssignSuccess(res.data));
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateTypeAssignFail(error));
@@ -1530,7 +1530,7 @@ export function* updateScheduleTask(payload) {
     const res = yield call(apiService.put, "/task/update-schedule-task", { task_id, schedule_id });
     yield put(actions.updateScheduleTaskSuccess(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(appendChat(res.data));
+    // yield put(appendChat(res.data));
   } catch (error) {
     yield put(actions.updateScheduleTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));

@@ -1,32 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import styled from 'styled-components';
+import { appendChat, getViewedChatSuccess, updateChatState } from "actions/chat/chat";
+import { JOIN_CHAT_EVENT } from 'constants/actions/chat/chat';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Routes } from '../constants/routes';
-import { TOKEN, NOTI_NUMBER, MESS_NUMBER } from '../constants/constants';
-import routes from '../routes';
+import { Route, Switch } from 'react-router-dom';
+import io from 'socket.io-client';
+import styled from 'styled-components';
+import { actioGetSettingDate, actionFetchGroupDetail, actionFetchListColor } from '../actions/setting/setting';
+import { actionChangeNumMessageNotView, actionChangeNumNotificationNotView, actionToast, getNumberMessageNotViewer, getNumberNotificationNotViewer } from '../actions/system/system';
 import { avatar_default_120 } from '../assets';
+import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
+import DrawerComponent from '../components/Drawer/Drawer';
+import GroupModal from '../components/NoticeModal/GroupModal';
+import NoticeModal from '../components/NoticeModal/NoticeModal';
+import SnackbarComponent from '../components/Snackbars';
+import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from '../constants/constants';
+import { Routes } from '../constants/routes';
+import routes from '../routes';
 import LeftBar from '../views/LeftBar';
 import TopBar from '../views/TopBar';
-import SnackbarComponent from '../components/Snackbars';
-import DrawerComponent from '../components/Drawer/Drawer';
-import NoticeModal from '../components/NoticeModal/NoticeModal';
-import GroupModal from '../components/NoticeModal/GroupModal';
-import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
-import {
-  actionFetchGroupDetail,
-  actionFetchListColor,
-  actioGetSettingDate
-} from '../actions/setting/setting';
-import {
-  actionToast,
-  actionChangeNumNotificationNotView,
-  actionChangeNumMessageNotView,
-  getNumberNotificationNotViewer,
-  getNumberMessageNotViewer
-} from '../actions/system/system';
-import io from 'socket.io-client';
 
 const Container = styled.div`
   height: 100vh;
@@ -115,12 +107,34 @@ function MainLayout({
   actionFetchGroupDetail,
   groupDetail,
   isDocumentDetail,
+  appendChat,
+  updateChatState,
+  getViewedChatSuccess,
   actionFetchListColor,
   actioGetSettingDate,
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
+
+  function handleNewChat(data) {
+    appendChat({ data_chat: data })
+  }
+
+  function handleReactEmotion(data) {
+    console.log('handleReactEmotion', data)
+    updateChatState(data.id, { data_emotion: data })
+  }
+
+  function handleDeleteChat(data) {
+    console.log('handleDeleteChat', data)
+    updateChatState(data.id, { is_deleted: true })
+  }
+
+  function handleViewChat(data) {
+    console.log('handleViewChat', data)
+    // getViewedChatSuccess(data)
+  }
 
   useEffect(() => {
     if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
@@ -135,6 +149,24 @@ function MainLayout({
       const socket = io(uri, {});
       socket.on('WP_NEW_NOTIFICATION', res => handleNewNoti());
       socket.on('WP_NEW_NOTIFICATION_MESSAGE_TASK', res => handleNewMessage());
+      socket.on('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+      socket.on('WP_NEW_CHAT_EXPRESS_EMOTION_CHAT', handleReactEmotion);
+      socket.on('WP_DELETE_CHAT_IN_TASK', handleDeleteChat);
+      socket.on('WP_VIEW_CHAT_IN_TASK', handleViewChat);
+
+      function joinChat({ detail }) {
+        console.log('joinChat', detail)
+        socket.emit('WP_JOIN_TASK', {
+          task_id: detail
+        })
+      }
+
+      window.addEventListener(JOIN_CHAT_EVENT, joinChat);
+      return () => {
+        console.log('close socket')
+        window.removeEventListener(JOIN_CHAT_EVENT, joinChat);
+        socket.close();
+      }
     }
     // eslint-disable-next-line
   }, []);
@@ -144,7 +176,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(
@@ -243,6 +275,9 @@ export default connect(
     toast: state.system.toast
   }),
   {
+    appendChat,
+    updateChatState,
+    getViewedChatSuccess,
     actionFetchGroupDetail,
     actionToast,
     actionFetchListColor,

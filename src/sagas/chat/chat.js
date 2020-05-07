@@ -7,7 +7,7 @@ export function* deleteChat(payload) {
     const { task_id, chat_id } = payload;
     const res = yield call(apiService.post, "/task/delete-chat", { task_id, chat_id });
     yield put(actions.deleteChatSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
   } catch (error) {
     yield put(actions.deleteChatFail(error));
   }
@@ -38,7 +38,7 @@ export function* chatImage(payload) {
       });
     yield put(actions.chatImageSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    yield put(actions.appendChat(res.data, id));
+    // yield put(actions.appendChat(res.data, id));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }
@@ -57,7 +57,8 @@ export function* chatFile(payload) {
       });
     yield put(actions.chatFileSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    yield put(actions.appendChat(res.data, id));
+    // yield put(actions.appendChat(res.data, id));
+    yield put(actions.removeChatById(id));
   } catch (error) {
     yield put(actions.chatFileFail(error));
   }
@@ -68,7 +69,7 @@ export function* chatForwardFile(payload) {
     const res = yield call(apiService.post, `/task/create-chat-forward-file?task_id=${task_id}`, { file_ids });
     yield put(actions.chatForwardFileSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    yield put(actions.appendChat(res.data));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatForwardFileFail(error));
   }
@@ -78,7 +79,7 @@ export function* chatSticker(payload) {
     const { task_id, sticker_id } = payload;
     const res = yield call(apiService.post, `/task/create-chat-sticker?task_id=${task_id}`, { sticker_id });
     yield put(actions.chatStickerSuccess(res.data));
-    yield put(actions.appendChat(res.data));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatStickerFail(error));
   }
@@ -145,7 +146,7 @@ export function* chatEmotion(payload) {
     const { task_id, chat_id, emotion } = payload;
     const res = yield call(apiService.post, "/task/chat-create-emotion", { task_id, chat_id, emotion });
     yield put(actions.chatEmotionSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
   } catch (error) {
     yield put(actions.chatEmotionFail(error));
   }
@@ -166,7 +167,8 @@ export function* createChatText(payload) {
     const res = yield call(apiService.post, "/task/create-chat-text", content);
     yield put(actions.createChatTextSuccess(res.data));
     // yield put(actions.loadChat(content.task_id));
-    yield put(actions.appendChat(res.data, resendId));
+    // yield put(actions.appendChat(res.data, resendId));
+    yield put(actions.removeChatById(resendId));
   } catch (error) {
     yield put(actions.createChatTextFail(error, payload.content.id));
   }
@@ -229,7 +231,7 @@ export function* chatQuickLike(payload) {
     const { task_id } = payload;
     const res = yield call(apiService.post, "/task/chat-quick-like", { task_id });
     yield put(actions.chatQuickLikeSuccess(res.data));
-    yield put(actions.appendChat(res.data));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatQuickLikeFail(error));
   }
@@ -240,7 +242,7 @@ export function* createChatFileFromGoogleDriver(payload) {
     const { task_id, google_data } = payload;
     const res = yield call(apiService.post, "/task/create-chat-file-from-google-driver", { task_id, google_data });
     yield put(actions.createChatFileFromGoogleDriverSuccess(res.data));
-    yield put(actions.appendChat(res.data));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.createChatFileFromGoogleDriverFail(error));
   }

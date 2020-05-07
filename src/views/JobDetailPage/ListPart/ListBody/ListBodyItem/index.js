@@ -43,16 +43,16 @@ const getBadgeColor = status_code => {
 };
 
 function JobName(props) {
-  const { isghim = '' } = props
+  const { isghim = '', isNewChat, ...rest } = props
   return (
     <div className="name-container-lbd" variant="space-between">
-      <ColorTypo bold={props.new_chat}>{props.title}</ColorTypo>
+      <ColorTypo bold={isNewChat}>{props.title}</ColorTypo>
       <div>
         <IconPin
           color={'#6e6e6e'}
           path={mdiPin}
           size={0.8}
-          {...props}
+          {...rest}
           isghim={isghim.toString()}
         />
         <BadgeItem color={getBadgeColor(props.status_code)} badge label={props.label} size="small" />
@@ -83,21 +83,29 @@ function JobContent(props) {
 }
 
 function JobUnit(props) {
-  const { chat = {} } = props
+  const {
+    chat = {},
+    name,
+    status_name,
+    status_code,
+    new_chat,
+    is_ghim,
+    updated_time,
+  } = props;
   return (
     <ListItemText disableTypography>
       <JobName
-        title={props.name}
-        label={props.status_name}
-        status_code={props.status_code}
-        new_chat={props.new_chat}
-        isghim={props.is_ghim}
+        title={name}
+        label={status_name}
+        status_code={status_code}
+        isNewChat={new_chat}
+        isghim={is_ghim}
       />
       <JobContent
-        time={props.updated_time}
+        time={updated_time}
         avatar={chat.user_create_avatar}
         content={chat.content}
-        notification={props.new_chat}
+        notification={new_chat}
         name={chat.user_create_name}
       />
     </ListItemText>
@@ -105,6 +113,15 @@ function JobUnit(props) {
 }
 
 function ListBodyItem(props) {
+  const {
+    chat = {},
+    name,
+    status_name,
+    status_code,
+    new_chat,
+    is_ghim,
+    updated_time,
+  } = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
@@ -130,7 +147,15 @@ function ListBodyItem(props) {
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart color={groupActiveColor} percentDone={props.complete} />
       </ListItemAvatar>
-      <JobUnit {...props} />
+      <JobUnit {...{
+        chat,
+        name,
+        status_name,
+        status_code,
+        new_chat,
+        is_ghim,
+        updated_time,
+      }} />
     </div>
   );
 }

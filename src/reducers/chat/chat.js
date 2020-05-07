@@ -4,7 +4,7 @@ import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
 
 export const initialState = {
-  chats: {},
+  chats: { data: [] },
   members: [],
   listStickers: [],
   listTasks: [],
@@ -38,13 +38,13 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.chats = action.payload;
       break;
     case actionTypes.APPEND_CHAT:
-      const idx = findIndex(draft.chats.data, ({ id }) => id === action.replaceId)
+      // const idx = findIndex(draft.chats.data, ({ id }) => id === action.replaceId)
       // console.log('idx', idx, action.replaceId)
-      if (idx !== -1) {
-        draft.chats.data.splice(idx, 1, action.payload.data_chat)
-      } else {
-        draft.chats.data.unshift(action.payload.data_chat)
-      }
+      // if (idx !== -1) {
+      //   draft.chats.data.splice(idx, 1, action.payload.data_chat)
+      // } else {
+      draft.chats.data.unshift(action.payload.data_chat)
+      // }
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;
@@ -233,7 +233,7 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.dataDemand = payload;
       break;
     }
-    case actionTypes.DELETE_FAILED_CHAT: {
+    case actionTypes.REMOVE_CHAT_BY_ID: {
       draft.chats.data = draft.chats.data.filter(({ id }) => id !== action.id)
       break;
     }
@@ -250,6 +250,12 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.GET_GIRD_LIST_TASK_SUCCESS: {
       const { payload } = action;
       draft.gridSettings = payload.girds;
+      break;
+    }
+    case actionTypes.UPDATE_CHAT_STATE: {
+      const idx = findIndex(draft.chats.data, ({ id }) => id === action.id)
+      console.log('idx', idx, action.data);
+      draft.chats.data[idx] = { ...draft.chats.data[idx], ...action.data }
       break;
     }
   }

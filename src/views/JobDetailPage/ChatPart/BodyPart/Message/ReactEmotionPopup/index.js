@@ -28,7 +28,7 @@ const ReactEmotionPopup = ({ chatId }) => {
 }
 
 ReactEmotionPopup.propTypes = {
-  chatId: PropTypes.string.isRequired,
+  chatId: PropTypes.any.isRequired,
 };
 
 export default ReactEmotionPopup;
