@@ -1,5 +1,6 @@
 import { listPersonalRemindCategory } from "actions/calendar/alarmCalendar/listPersonalRemindCategory";
 import { sortPersonalRemindCategory } from "actions/calendar/alarmCalendar/sortPersonalRemindCategory";
+import { listCalendarPermission } from "actions/calendar/permission/listPermission";
 import LoadingBox from "components/LoadingBox";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
 import { CREATE_PERSONAL_REMIND_CATEGORY, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND_CATEGORY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
@@ -18,7 +19,7 @@ const { Provider } = Context;
 
 function CalendarAlarmPage({
   doListPersonalRemindCategory, personalRemindCategories,
-  doSortPersonalRemindCategory,
+  doSortPersonalRemindCategory, doListPermission, permissions
 }) {
 
   const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_CALENDAR_OPTIONS', {
@@ -57,6 +58,12 @@ function CalendarAlarmPage({
     }
   }, [doListPersonalRemindCategory])
 
+  React.useEffect(() => {
+    if (permissions.length === 0) {
+      doListPermission(false);
+    }
+  }, [doListPermission]);
+
   return (
     <TwoColumnsLayout
       leftRenders={[
@@ -64,6 +71,7 @@ function CalendarAlarmPage({
           <CalendarAlramLeftPart
             personalRemindCategories={personalRemindCategories}
             handleSortPersonalAlarm={handleSortPersonalAlarm}
+            permissions={permissions}
           />
       ]}
       rightRender={({ expand, handleExpand }) => (
@@ -71,7 +79,8 @@ function CalendarAlarmPage({
           value={{
             expand, handleExpand,
             setTimeRange, timeRange,
-            localOptions, setLocalOptions
+            localOptions, setLocalOptions,
+            permissions
           }}
         >
           <div>
@@ -100,12 +109,14 @@ const mapDispatchToProps = dispatch => {
   return {
     doListPersonalRemindCategory: (quite) => dispatch(listPersonalRemindCategory(quite)),
     doSortPersonalRemindCategory: ({ category_id, sort_index }, quite) => dispatch(sortPersonalRemindCategory({ category_id, sort_index }, quite)),
+    doListPermission: (quite) => dispatch(listCalendarPermission(quite)),
   };
 };
 
 const mapStateToProps = state => {
   return {
     personalRemindCategories: personalRemindCategoriesSelector(state),
+    permissions: state.calendar.listCalendarPermission.data.permissions,
   };
 };
 

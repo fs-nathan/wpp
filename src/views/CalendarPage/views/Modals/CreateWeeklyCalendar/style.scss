@@ -51,7 +51,7 @@
 
   .left {
     border-right: 1px solid rgba(0, 0, 0, .1);
-    padding: 10px 15px;
+    padding: 10px 23px;
 
     .input_text {
       width: 100%;
@@ -165,7 +165,7 @@
 
     &--paper {
       .MuiList-root {
-        min-height: 60px !important;
+        min-height: 80px !important;
       }
 
       .MuiPaper-root {
@@ -290,12 +290,12 @@ abbr[title] {
 
 .views_createWeeklyCalendar_CustomModal {
   &>div:nth-child(3)>div {
-    min-width: 70vw;
-    max-width: 80vw;
+    min-width: 70vw !important;
+    max-width: 80vw !important;
   }
 
-  .klIdUG.comp_LoadingOverlay___wrapper {
-    height: 90vh;
+  .comp_LoadingOverlay___wrapper {
+    height: 90vh !important;
   }
 
   .comp_CustomModal___scrollbar-main-medium {
@@ -304,5 +304,36 @@ abbr[title] {
 
   .MuiDialogContent-root {
     padding: 0px;
+  }
+}
+
+.view_WeeklyCalendar_rightContainer {
+  &__itemContainer {
+    &>div:nth-child(1)>span:nth-child(1) {
+      font-size: 15px;
+      margin-right: 10px;
+    }
+
+    &>div:nth-child(1)>span:nth-child(2) {
+      color: #FF5722;
+      font-size: 15px;
+    }
+
+    .calendar_item_time {
+      color: red;
+      font-size: 14px;
+    }
+
+    .MuiListItemText-primary {
+      font-weight: 500;
+      font-size: 14px;
+      color: #222;
+    }
+
+    .MuiListItemText-secondary {
+      display: block;
+      font-size: 14px;
+      color: #444;
+    }
   }
 }

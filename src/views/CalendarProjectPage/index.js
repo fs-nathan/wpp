@@ -1,6 +1,7 @@
+import { listCalendarPermission } from "actions/calendar/permission/listPermission";
 import { listProjectSchedule } from "actions/calendar/projectCalendar/listSchedule";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
-import { CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE } from "constants/events";
+import { CREATE_PROJECT_GROUP_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE } from "constants/events";
 import React from 'react';
 import { connect } from 'react-redux';
 import { useMountedState } from "react-use";
@@ -9,7 +10,8 @@ import CalendarProjectRightPart from "./RightPart";
 import { projectGroupScheduleSelector } from "./selectors";
 
 function CalendarProjectPage({
-  doListProjectSchedule, groupSchedules
+  doListProjectSchedule, groupSchedules,
+  doListPermission, permissions
 }) {
   React.useEffect(() => {
     doListProjectSchedule(false);
@@ -17,16 +19,24 @@ function CalendarProjectPage({
       doListProjectSchedule(false);
     }
     CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
+    CustomEventListener(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
     return () => {
+      CustomEventDispose(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
       CustomEventDispose(DELETE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
     }
   }, [doListProjectSchedule, useMountedState()]);
 
+  React.useEffect(() => {
+    if (permissions.length === 0) {
+      doListPermission(false);
+    }
+  }, [doListPermission]);
+
   return (
     <TwoColumnsLayout
-      leftRenders={[() => <CalendarProjectLeftPart groupSchedules={groupSchedules} />]}
+      leftRenders={[() => <CalendarProjectLeftPart groupSchedules={groupSchedules} permissions={permissions} />]}
       rightRender={
-        () => <CalendarProjectRightPart groupSchedules={groupSchedules} />
+        () => <CalendarProjectRightPart groupSchedules={groupSchedules} permissions={permissions} />
       }
     />
   );
@@ -35,12 +45,14 @@ function CalendarProjectPage({
 const mapDispatchToProps = dispatch => {
   return {
     doListProjectSchedule: (quite) => dispatch(listProjectSchedule(quite)),
+    doListPermission: (quite) => dispatch(listCalendarPermission(quite)),
   };
 };
 
 const mapStateToProps = state => {
   return {
     groupSchedules: projectGroupScheduleSelector(state),
+    permissions: state.calendar.listCalendarPermission.data.permissions
   };
 };
 

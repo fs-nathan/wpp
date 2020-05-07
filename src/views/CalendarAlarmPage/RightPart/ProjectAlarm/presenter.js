@@ -1,4 +1,4 @@
-import { Box, Checkbox, Drawer, ExpansionPanel, ExpansionPanelSummary, FormControlLabel, IconButton, List, ListSubheader, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Checkbox, Drawer, ExpansionPanel, ExpansionPanelSummary, FormControlLabel, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import CloseIcon from "@material-ui/icons/Close";
 import { mdiAccount, mdiAlarm, mdiCalendar, mdiDotsVertical, mdiFilterOutline, mdiMenuUp } from "@mdi/js";
@@ -10,8 +10,7 @@ import { TimeRangePopover, useTimes } from 'components/CustomPopover';
 import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
 import LoadingOverlay from "components/LoadingOverlay";
 import SearchInput from 'components/SearchInput';
-import { filter, get, pick, set } from "lodash";
-import moment from "moment";
+import { filter, get, isNull, map, set } from "lodash";
 import React from 'react';
 import Scrollbars from "react-custom-scrollbars";
 import { useTranslation } from 'react-i18next';
@@ -19,7 +18,7 @@ import { useHistory } from "react-router-dom";
 import "../styles.scss";
 
 function CalendarProjectAlarmPresenter({
-  expand, handleExpand, bgColor,
+  expand, handleExpand, bgColor, projects,
   timeType, handleTimeType, handleTimeRange,
   filterOpen, setFilterOpen, projectReminds,
   handleOpenDetail
@@ -35,9 +34,11 @@ function CalendarProjectAlarmPresenter({
   const [filterdListHaveRemind, setFilteredListHaveRemind] = React.useState(projectReminds);
   const [selectedRemind, setSelectedRemind] = React.useState();
   const [remindCheckBoxList, setRemindCheckBoxList] = React.useState([]);
-  const [selectedCheckBox, setSelectedCheckBox] = React.useState({ dataIdx: 0, stateIdx: 0 });
+  const [selectedCheckBox, setSelectedCheckBox] = React.useState();
+  const [projectHaveRemind, setProjectHaveRemind] = React.useState([]);
   const [searchProject, setSearchProject] = React.useState('');
   const [projectHaveRemindSession, setProjectHaveRemindSession] = React.useState({ data: [] });
+  const [projectHaveRemindBeforeSearch, setProjectHaveRemindBeforeSearch] = React.useState([]);
 
   function doOpenMenu(anchorEl, remind) {
     setMenuAnchor(anchorEl);
@@ -66,19 +67,11 @@ function CalendarProjectAlarmPresenter({
   React.useEffect(() => {
     if (projectReminds.data.length !== 0) {
       let filtered = [];
-      let checkBoxList = [];
-      projectReminds.data.map((data) => {
+      projectReminds.data.map((data, index) => {
         if (data.reminds.length !== 0) {
           filtered = filtered.concat(data);
-          let arr = Array.from(new Array(data.reminds.length), (val, index) => ({ idx: index, value: false }));
-          let checkData = {
-            id: data.id,
-            states: arr
-          }
-          checkBoxList = checkBoxList.concat(checkData);
         }
       });
-
       setFilteredListHaveRemind({
         ...projectReminds,
         data: filtered
@@ -86,55 +79,74 @@ function CalendarProjectAlarmPresenter({
       setProjectHaveRemindSession({
         data: filtered
       });
-      setRemindCheckBoxList(checkBoxList);
     }
   }, [projectReminds]);
 
-  const handleCheckBoxChange = (state, stateIdx, dataID, dataIdx) => {
-    let checkBox = remindCheckBoxList[dataIdx];
-    set(checkBox, `states[${stateIdx}].value`, state);
+  React.useEffect(() => {
+    if (projectReminds.data.length !== 0 && projects.data.length !== 0) {
+      let checkBoxList = [];
+      let projectIdList = map(projectReminds.data, "id");
+      let filtered = [];
+      let idx = 0;
+      projects.data.map((item) => {
+        if (Array.isArray(item.projects) && item.projects.length !== 0) {
+          let _projects = filter(item.projects, project => projectIdList.indexOf(project.id) >= 0);
+          if (_projects.length !== 0) {
+            filtered = filtered.concat({ name: item.name, projects: _projects });
+            let checkBox = Array.from(_projects, (v, k) => ({
+              idx: k + idx,
+              id: v.id,
+              state: true
+            }));
+            idx += _projects.length;
+            checkBoxList = checkBoxList.concat(checkBox);
+          }
+        }
+      });
+      if (filtered.length !== 0) {
+        setProjectHaveRemind(filtered);
+        setProjectHaveRemindBeforeSearch(filtered);
+        setRemindCheckBoxList(checkBoxList);
+      }
+    }
+  }, [projectReminds, projects]);
+
+  const handleCheckBoxChange = (state, dataID) => {
+    let checkBox = filter(remindCheckBoxList, item => item.id === dataID);
+    set(checkBox[0], `state`, state);
+    remindCheckBoxList[checkBox[0].idx] = checkBox[0];
     setRemindCheckBoxList(remindCheckBoxList);
     setSelectedCheckBox({
-      dataIdx, stateIdx
+      checkBox
     });
   };
 
   React.useEffect(() => {
-    if (filterdListHaveRemind.data.length !== 0) {
-      let filtered = [];
-      filterdListHaveRemind.data.map((data, idx) => {
-        let states = get(remindCheckBoxList[idx], 'states');
-        let trueStates = filter(states, state => state.value === true, []);
-        if (trueStates.length !== 0) {
-          let filteredRemind = Object.values(pick(data.reminds, trueStates.map(item => item.idx)));
-          let newData = {
-            ...data,
-            reminds: filteredRemind
-          }
-          filtered = filtered.concat(newData);
-        }
-      });
-
-      if (filtered.length !== 0) {
-        setFilteredRemind({
-          ...filterdListHaveRemind,
-          data: filtered
-        });
-      } else {
-        setFilteredRemind({
-          ...filterdListHaveRemind
-        });
-      }
-    }
-  }, [filterdListHaveRemind, remindCheckBoxList, selectedCheckBox]);
+    let filtered = [];
+    let trueStates = filter(remindCheckBoxList, item => item.state === true, []);
+    trueStates.map((item) => {
+      let data = filter(projectHaveRemindSession.data, data => data.id === item.id);
+      filtered = filtered.concat(data);
+    });
+    setFilteredRemind({
+      ...filterdListHaveRemind,
+      data: filtered
+    });
+  }, [remindCheckBoxList, selectedCheckBox]);
 
   React.useEffect(() => {
     let filteredProject = [];
-    filteredProject = filter(projectHaveRemindSession.data, project => get(project, 'name', '').toLowerCase().includes(searchProject.toLowerCase()));
-    setFilteredListHaveRemind({
-      ...filterdListHaveRemind,
-      data: filteredProject
+    projectHaveRemindBeforeSearch.map((item) => {
+      let filtered = filter(item.projects, project => get(project, 'name', '').toLowerCase().includes(searchProject.toLowerCase()));
+      if (filtered.length !== 0) {
+        filteredProject = filteredProject.concat({
+          ...item,
+          projects: filtered
+        });
+      }
     });
+    if (filteredProject.length !== 0) setProjectHaveRemind(filteredProject);
+    else setProjectHaveRemind(projectHaveRemindBeforeSearch);
   }, [searchProject]);
 
   return (
@@ -187,7 +199,7 @@ function CalendarProjectAlarmPresenter({
                                 <div className="alarm_calendar_table_header">
                                   <Typography variant={"h5"}>{get(item, "name", "")}</Typography>
                                   <div className="reminds_count">
-                                    <Icon path={mdiAlarm} size={0.7} color="rgba(0,0,0,0.7)" />
+                                    <Icon path={mdiAlarm} size={0.7} color="#fff" />
                                     {Array.isArray(item.reminds) ? item.reminds.length : 0}
                                   </div>
                                 </div>
@@ -197,31 +209,47 @@ function CalendarProjectAlarmPresenter({
                                       <>
                                         <div className="alarm_calendar_item_container">
                                           <div className="alarm_calendar_item_header">
-                                            <div className="calendar_item_month">{t('IDS_WP_MONTH')} {moment(item.date).format("MM")}</div>
-                                            <div className="calendar_item_day">{moment(item.date).format("DD")}</div>
+                                            {
+                                              isNull(get(remind, "time_remind_next", null)) && (
+                                                <img
+                                                  src={images.ic_alarm_complete}
+                                                  alt="ic_alarm_complete"
+                                                  width="40px"
+                                                />
+                                              )
+                                            }
+                                            {
+                                              !isNull(get(remind, "time_remind_next", null)) && (
+                                                <>
+                                                  <div className="calendar_item_month">{t('IDS_WP_MONTH')} {remind.time_remind_next.month}</div>
+                                                  <div className="calendar_item_day">{remind.time_remind_next.date}</div>
+                                                </>
+                                              )
+                                            }
                                           </div>
                                           <div className="alarm_calendar_item_mainContent">
                                             <div className="alarm_calendar_item_mainContent_content">
                                               <div className="main_conten_top">
                                                 {remind.content}
                                                 <div className="calendar_item_badge calendar_item_badge_bg">
-                                                  <span className="calendar_item_badge_primary">Dự án</span>
-                                                  <span className="calendar_item_badge_secondary calendar_item_badge_secondary_bg">Nhắc theo tin độ</span>
+                                                  <span className="calendar_item_badge_secondary calendar_item_badge_secondary_bg">{remind.category_name}</span>
                                                   <span className="calendar_item_badge_default">
                                                     <Icon path={mdiAccount} size={0.8} color="#FF9B15" /> {remind.members_assign.length}
                                                   </span>
                                                 </div>
                                               </div>
                                               <div className="main_content_auther">
-                                                <CustomAvatar
-                                                  style={{ width: 20, height: 20 }}
-                                                  src={remind.user_create_avatar} alt='avatar'
-                                                />
+                                                <abbr title={remind.user_create_name}>
+                                                  <CustomAvatar
+                                                    style={{ width: 15, height: 15 }}
+                                                    src={remind.user_create_avatar} alt='avatar'
+                                                  />
+                                                </abbr>
                                                 <span>{t('IDS_WP_CREATED_AT')}: {remind.created_at}</span>
                                               </div>
                                               <div className="main_content_alarm">
-                                                <Icon path={mdiAlarm} size={1} color="rgba(0,0,0,0.7)" />
-                                                <span>{t('IDS_WP_REMIND')}: {remind.label_remind_time}</span>
+                                                <Icon path={mdiAlarm} size={0.7} color="rgba(0,0,0,0.7)" />
+                                                <span>{remind.label_remind_time}</span>
                                               </div>
                                             </div>
                                           </div>
@@ -230,7 +258,9 @@ function CalendarProjectAlarmPresenter({
                                               key={item.id}
                                               onClick={evt => doOpenMenu(evt.currentTarget, remind)}
                                             >
-                                              <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />
+                                              <abbr title={t('IDS_WP_MORE')}>
+                                                <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />
+                                              </abbr>
                                             </IconButton>
                                           </div>
                                         </div>
@@ -320,8 +350,8 @@ function CalendarProjectAlarmPresenter({
             </div>
             <Box className="views_FilterViewLayout__contentContainer">
               {
-                filterdListHaveRemind.data.length !== 0 &&
-                filterdListHaveRemind.data.map((item, index) => {
+                projectHaveRemind.length !== 0 &&
+                projectHaveRemind.map((item, index) => {
                   return (
                     <ExpansionPanel
                       key={`project-remind-key-${index}`}
@@ -335,33 +365,29 @@ function CalendarProjectAlarmPresenter({
                         id="panel1bh-header"
                         className="views_FilterViewLayout__contentPanel_Summary"
                       >
-                        <List>
-                          <ListSubheader className="views_FilterViewLayout__contentPanel_title">
-                            <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>
-                              {item.name}
-                            </ColorTypo>
-                          </ListSubheader>
-                        </List>
+                        <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>
+                          {item.name}
+                        </ColorTypo>
                       </ExpansionPanelSummary>
                       <MuiExpansionPanelDetails
                         key={`project-remind-muiExpansionPanel-${index}`}
                         className="views_FilterViewLayout__contentPanel_detail"
                       >
                         {
-                          item.reminds.map((remind, remindIdx) => {
+                          item.projects.map((project, index) => {
                             return (
                               <FormControlLabel
-                                key={`project-remind-content-checkBox-${index}-${remind.id}`}
+                                key={`project-checkBox-${index}-${project.id}`}
                                 control={
                                   <Checkbox
                                     color="primary"
-                                    checked={get(remindCheckBoxList[index], ['states', `${remindIdx}`, 'value'], true)}
-                                    onChange={({ target }) => handleCheckBoxChange(target.checked, remindIdx, item.id, index)}
-                                    name={`checkBox-${index}-${remind.id}`}
-                                    key={`checkBox-${index}-${remind.id}`}
+                                    checked={filter(remindCheckBoxList, cbx => cbx.id === project.id, [{ state: false }])[0].state}
+                                    onChange={({ target }) => handleCheckBoxChange(target.checked, project.id)}
+                                    name={`checkBox-${index}-${project.id}`}
+                                    key={`checkBox-${index}-${project.id}`}
                                   />
                                 }
-                                label={remind.content}
+                                label={project.name}
                               />
                             )
                           })
@@ -404,7 +430,6 @@ function CalendarProjectAlarmPresenter({
           {t("views.calendar_page.right_part.view_detail")}
         </MenuItem>
       </Menu>
-
     </>
   )
 }

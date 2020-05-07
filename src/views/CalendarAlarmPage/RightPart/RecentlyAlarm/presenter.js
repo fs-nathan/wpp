@@ -5,8 +5,7 @@ import * as images from 'assets';
 import CustomAvatar from "components/CustomAvatar";
 import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
 import LoadingOverlay from "components/LoadingOverlay";
-import { filter, get } from 'lodash';
-import moment from "moment";
+import { filter, get, isNull } from 'lodash';
 import React from 'react';
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from 'react-i18next';
@@ -113,14 +112,29 @@ function CalendarRecentlyAlarmPresenter({
                                     <>
                                       <div className="alarm_calendar_item_container">
                                         <div className="alarm_calendar_item_header">
-                                          <div className="calendar_item_month">{t('IDS_WP_MONTH')} {moment(item.date).format("MM")}</div>
-                                          <div className="calendar_item_day">{moment(item.date).format("DD")}</div>
+                                          {
+                                            isNull(get(remind, "time_remind_next", null)) && (
+                                              <img
+                                                src={images.ic_alarm_complete}
+                                                alt="ic_alarm_complete"
+                                                width="40px"
+                                              />
+                                            )
+                                          }
+                                          {
+                                            !isNull(get(remind, "time_remind_next", null)) && (
+                                              <>
+                                                <div className="calendar_item_month">{t('IDS_WP_MONTH')} {remind.time_remind_next.month}</div>
+                                                <div className="calendar_item_day">{remind.time_remind_next.date}</div>
+                                              </>
+                                            )
+                                          }
                                         </div>
                                         <div className="alarm_calendar_item_mainContent">
                                           <div className="alarm_calendar_item_mainContent_content">
                                             <div className="main_conten_top">
                                               {remind.content}
-                                              <div className="calendar_item_badge">
+                                              <div className="calendar_item_badge calendar_item_badge_bg">
                                                 <span className="calendar_item_badge_primary">Dự án</span>
                                                 <span className="calendar_item_badge_secondary">Bạn bè</span>
                                                 <span className="calendar_item_badge_default">
@@ -129,15 +143,17 @@ function CalendarRecentlyAlarmPresenter({
                                               </div>
                                             </div>
                                             <div className="main_content_auther">
-                                              <CustomAvatar
-                                                style={{ width: 20, height: 20 }}
-                                                src={remind.user_create_avatar} alt='avatar'
-                                              />
+                                              <abbr title={remind.user_create_name}>
+                                                <CustomAvatar
+                                                  style={{ width: 15, height: 15 }}
+                                                  src={remind.user_create_avatar} alt='avatar'
+                                                />
+                                              </abbr>
                                               <span>{t('IDS_WP_CREATED_AT')}: {remind.created_at}</span>
                                             </div>
                                             <div className="main_content_alarm">
-                                              <Icon path={mdiAlarm} size={1} color="rgba(0,0,0,0.7)" />
-                                              <span>{t('IDS_WP_REMIND')}: {remind.label_remind_time}</span>
+                                              <Icon path={mdiAlarm} size={0.7} color="rgba(0,0,0,0.7)" />
+                                              <span>{remind.label_remind_time}</span>
                                             </div>
                                           </div>
                                         </div>
@@ -146,7 +162,9 @@ function CalendarRecentlyAlarmPresenter({
                                             key={item.id}
                                             onClick={evt => doOpenMenu(evt.currentTarget, remind)}
                                           >
-                                            <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />
+                                            <abbr title={t('IDS_WP_MORE')}>
+                                              <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />
+                                            </abbr>
                                           </IconButton>
                                         </div>
                                       </div>
@@ -167,7 +185,7 @@ function CalendarRecentlyAlarmPresenter({
                   <img
                     src={images.no_data}
                     alt="no-data"
-                    width="200px"
+                    width="400px"
                   />
                   <span style={{ color: `${bgColor.color}` }} className="title">{t('views.calendar_page.right_part.no_data')}</span>
                   <span className="description">{t('views.calendar_page.right_part.no_data_description_alarm')}</span>

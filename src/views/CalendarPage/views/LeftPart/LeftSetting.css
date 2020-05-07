@@ -8,3 +8,8 @@
   color: rgba(0, 0, 0, 0.54);
   font-size: 14px;
 }
+
+.custom-title-setting-item {
+  color: #222;
+  font-weight: 500;
+}

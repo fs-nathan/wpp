@@ -12,6 +12,7 @@ import listPersonalRemind, { initialState as listPersonalRemindInitialState } fr
 import listPersonalRemindCategory, { initialState as listPersonalRemindCategoryInitialState } from "./calendar/alarmCalendar/listPersonalRemindCategory";
 import listRemindProject, { initialState as listRemindProjectInitialState } from "./calendar/alarmCalendar/listRemindProject";
 import listRemindRecently, { initialState as listRemindRecentlyInitialState } from "./calendar/alarmCalendar/listRemindRecently";
+import listCalendarPermission, { initialState as listCalendarPermissionInitialState } from "./calendar/permission/listPermission";
 import projectGroupAddDayOff, { initialState as projectGroupAddDayOffInitialState } from "./calendar/projectCalendar/addDayOff";
 import projectGroupAddWorkingDays from "./calendar/projectCalendar/addWorkingDay";
 import createProjectGroupSchedule, { initialState as createProjectGroupScheduleInitialState } from "./calendar/projectCalendar/createProjectGroupSchedule";
@@ -23,6 +24,7 @@ import createSchedule, { initialState as createScheduleInitialState } from "./ca
 import deleteSchedule, { initialState as deleteScheduleInitialState } from "./calendar/weeklyCalendar/deleteSchedule";
 import listSchedule, { initialState as listScheduleInitialState } from "./calendar/weeklyCalendar/listSchedule";
 import listScheduleOfWeek, { initialState as listScheduleOfWeekInitialState } from "./calendar/weeklyCalendar/listScheduleOfWeek";
+import listScheduleOfWeekFromModal, { initialState as listScheduleOfWeekFromModalInitialState } from "./calendar/weeklyCalendar/listScheduleOfWeekFromModal";
 import listWeeksInYear, { initialState as listWeeksInYearInitialState } from "./calendar/weeklyCalendar/listWeeksInYear";
 import settingStartingDay, { initialState as settingStartingDayInitialState } from "./calendar/weeklyCalendar/settingStartingDay";
 import chat, { initialState as chatInitialState } from "./chat/chat";
@@ -70,6 +72,7 @@ import deleteProject, { initialState as deleteProjectInitialState } from "./proj
 import deleteTrashProject, { initialState as deleteTrashProjectInitialState } from "./project/deleteTrashProject";
 import detailProject, { initialState as detailProjectInitialState } from "./project/detailProject";
 import hideProject, { initialState as hideProjectInitialState } from "./project/hideProject";
+import listProjectBasicInfo, { initialState as listProjectBasicInfoInitialState } from "./project/listBasicInfo";
 import listDeletedProject, { initialState as listDeletedProjectInitialState } from "./project/listDeletedProject";
 import listProject, { initialState as listProjectInitialState } from "./project/listProject";
 import memberProject, { initialState as memberProjectInitialState } from "./project/memberProject";
@@ -240,6 +243,7 @@ const rootReducer = combineReducers({
     copyProject,
     deleteTrashProject,
     restoreTrashProject,
+    listProjectBasicInfo,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
@@ -285,12 +289,10 @@ const rootReducer = combineReducers({
   inviteOtherPeopleCreateAccount,
   viewPermissions,
   calendar: combineReducers({
-    listSchedule,
-    listScheduleOfWeek,
-    listWeeksInYear,
-    settingStartingDay,
-    listProjectGroupSchedule,
-    createSchedule, updateSchedule,
+    listSchedule, listScheduleOfWeek,
+    listScheduleOfWeekFromModal, listWeeksInYear,
+    settingStartingDay, listProjectGroupSchedule,
+    createSchedule, updateSchedule, listCalendarPermission,
     deleteSchedule, listPersonalRemindCategory,
     listRemindRecently, listPersonalRemind,
     createProjectGroupSchedule, getProjectGroupScheduleDetail,
@@ -387,6 +389,7 @@ export const DEFAULT_STATE = {
     copyProject: copyProjectInitialState,
     deleteTrashProject: deleteTrashProjectInitialState,
     restoreTrashProject: restoreTrashProjectInitialState,
+    listProjectBasicInfo: listProjectBasicInfoInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
       updateStatusDate: updateStatusDateInitialState,
@@ -427,6 +430,7 @@ export const DEFAULT_STATE = {
   calendar: {
     listSchedule: listScheduleInitialState,
     listScheduleOfWeek: listScheduleOfWeekInitialState,
+    listScheduleOfWeekFromModal: listScheduleOfWeekFromModalInitialState,
     listWeeksInYear: listWeeksInYearInitialState,
     settingStartingDay: settingStartingDayInitialState,
     listProjectGroupSchedule: listProjectGroupScheduleInitialState,
@@ -444,9 +448,15 @@ export const DEFAULT_STATE = {
     createPersonalRemindCategory: createPersonalRemindCategoryInitialState,
     listPersonalRemind: listPersonalRemindInitialState,
     createPersonalRemind: createPersonalRemindInitialState,
+<<<<<<< HEAD
     listRemindProject: listRemindProjectInitialState
   },
   localStorage: localStorageInitialState,
+=======
+    listRemindProject: listRemindProjectInitialState,
+    listCalendarPermission: listCalendarPermissionInitialState
+  }
+>>>>>>> master
 };
 
 export default rootReducer;

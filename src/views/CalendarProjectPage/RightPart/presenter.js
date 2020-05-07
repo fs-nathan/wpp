@@ -1,12 +1,11 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, IconButton, InputAdornment, Link, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, IconButton, Link, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiClose, mdiPencilBoxOutline, mdiPlus, mdiTrashCanOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
-import LoadingOverlay from 'components/LoadingOverlay';
+import LoadingBox from 'components/LoadingBox';
 import { ScrollbarsContainer } from "components/TableComponents";
-import { CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE } from "constants/events";
 import { filter, get, set } from "lodash";
 import moment from 'moment';
 import React from 'react';
@@ -19,12 +18,12 @@ import { bgColorSelector } from "../selectors";
 import './style.scss';
 
 function CalendarProjectRightPartPresenter({
-  canDelete, settingDate, scheduleDetail, handleSettingStartingDayOfWeek,
-  handleAddWorkingDay, handleDeleteWorkingDays,
+  havePermission, settingDate, scheduleDetail, handleSettingStartingDayOfWeek,
+  handleAddWorkingDay, handleDeleteWorkingDays, handleDeleteDayOff,
   handleAddDayOff, handleAddWorkingDayInWeek, handleAddWorkingStage,
   handleDeleteWorkingStage, handleUpdateWorkingStage, handleCreateShiftStage,
   hanleDeleteShiftStage, handleUpdateShiftStage, handleDeleteShiftStageAllTime,
-  handleDeleteGroup,
+  handleDeleteGroup, handleEditGroupSchedule
 }) {
 
   const DEFAULT_DATA = {
@@ -50,19 +49,10 @@ function CalendarProjectRightPartPresenter({
   const [selectedWorkingStage, setSelectedWorkingStage] = React.useState();
   const [openShiftStage, setOpenShiftStage] = React.useState(false);
   const [selectedShiftStage, setSelectedShiftStage] = React.useState();
-  const [isDeleted, setIsDeleted] = React.useState(false);
 
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
-
-  const handleDeleteDayOff = (evt) => {
-    let _list = [...dayOffList.list];
-    _list.splice(evt.currentTarget.value, 1);
-    setdayOffList({
-      list: _list
-    })
-  }
 
   const handleAddDay = (evt) => {
     switch (data.selectedWorkingType) {
@@ -105,7 +95,6 @@ function CalendarProjectRightPartPresenter({
       });
       handleChangeData("selectedFistDayInWeek", scheduleDetail.data.day_start_week);
       setWorkingStateAll(scheduleDetail.data.work_hours_of_stage_all);
-      setIsDeleted(false);
     }
   }, [scheduleDetail]);
 
@@ -124,13 +113,17 @@ function CalendarProjectRightPartPresenter({
           value={{
             options: {
               title: t('views.calendar_page.right_part.project_detail'),
-              mainAction: canDelete ? {
+              mainAction: havePermission ? {
                 label: t('views.calendar_page.right_part.delete_calendar'),
-                onClick: () => {
-                  handleDeleteGroup();
-                  CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, setIsDeleted(true));
-                }
+                onClick: () => handleDeleteGroup()
               } : null,
+              subActions: [
+                havePermission ? {
+                  label: t('IDS_WP_EDIT_TEXT'),
+                  iconPath: mdiPencilBoxOutline,
+                  onClick: evt => handleEditGroupSchedule()
+                } : null
+              ]
             }
           }}
         >
@@ -139,25 +132,22 @@ function CalendarProjectRightPartPresenter({
               autoHide
               autoHideTimeout={500}
             >
-              <LoadingOverlay
-                active={scheduleDetail.loading}
-                spinner
-                fadeSpeed={100}
-              >
-                {
-                  !isDeleted && (
+              {
+                scheduleDetail.loading ? (
+                  <LoadingBox />
+                ) : (
                     <Typography component={'div'} className="view_ProjectCalendar_rightContainer">
                       <div className={"uppercase_title"}>{t('views.calendar_page.right_part.label.description')}</div>
-                      <p>{scheduleDetail.data.description}</p>
+                      <p className="view_ProjectCalendar_rightContainer_text">{scheduleDetail.data.description}</p>
                       <div className={"uppercase_title"}>{t('views.calendar_page.right_part.label.setting_calendar')}</div>
-                      <p>{t('views.calendar_page.modal.setting_weekly_calendar.day_begining')}</p>
+                      <p className="view_ProjectCalendar_rightContainer_text">{t('views.calendar_page.modal.setting_weekly_calendar.day_begining')}</p>
                       <FormControl variant="outlined">
                         <Select
                           value={data.selectedFistDayInWeek}
                           onChange={({ target }) => handleSettingStartingDayOfWeek(target.value)}
                           className="selector"
                           MenuProps={{
-                            className: "notify_setting_block__timeTypeSelector--paper",
+                            className: "view_ProjectCalendar_rightContainer_Selector",
                             MenuListProps: {
                               component: Scrollbars,
                             },
@@ -203,7 +193,7 @@ function CalendarProjectRightPartPresenter({
                             className="selector"
                             onChange={({ target }) => handleChangeData('selectedDayType', target.value)}
                             MenuProps={{
-                              className: "notify_setting_block__timeTypeSelector--paper",
+                              className: "view_ProjectCalendar_rightContainer_Selector",
                               MenuListProps: {
                                 component: Scrollbars,
                               },
@@ -226,19 +216,23 @@ function CalendarProjectRightPartPresenter({
                             className="inputDate"
                             autoOk={true}
                           />
-                          <KeyboardDatePicker
-                            disableToolbar
-                            inputVariant="outlined"
-                            variant="inline"
-                            disabled={!data.selectedDayType}
-                            ampm={false}
-                            value={data.selectedDateTo}
-                            minDate={data.selectedDayType === 1 ? moment(data.selectedDateFrom).add(1, 'day') : null}
-                            onChange={value => handleChangeData('selectedDateTo', value)}
-                            format="dd/MM/yyyy"
-                            className="inputDate"
-                            autoOk={true}
-                          />
+                          {
+                            data.selectedDayType === 1 && (
+                              <KeyboardDatePicker
+                                disableToolbar
+                                inputVariant="outlined"
+                                variant="inline"
+                                disabled={!data.selectedDayType}
+                                ampm={false}
+                                value={data.selectedDateTo}
+                                minDate={data.selectedDayType === 1 ? moment(data.selectedDateFrom).add(1, 'day') : null}
+                                onChange={value => handleChangeData('selectedDateTo', value)}
+                                format="dd/MM/yyyy"
+                                className="inputDate"
+                                autoOk={true}
+                              />
+                            )
+                          }
                         </MuiPickersUtilsProvider>
                         <FormControl variant="outlined">
                           <Select
@@ -246,7 +240,7 @@ function CalendarProjectRightPartPresenter({
                             className="selector"
                             onChange={({ target }) => handleChangeData('selectedWorkingType', target.value)}
                             MenuProps={{
-                              className: "notify_setting_block__timeTypeSelector--paper",
+                              className: "view_ProjectCalendar_rightContainer_Selector",
                               MenuListProps: {
                                 component: Scrollbars,
                               },
@@ -269,7 +263,7 @@ function CalendarProjectRightPartPresenter({
                           size="small"
                           onClick={handleAddDay}
                         >
-                          <Icon path={mdiPlus} size={1} color="rgba(0, 0, 0, 0.7)" />
+                          <Icon path={mdiPlus} size={1} color="#fff" />
                         </Button>
                       </Typography>
                       <Typography component={"div"} className="table_working_day">
@@ -285,22 +279,16 @@ function CalendarProjectRightPartPresenter({
                           {
                             get(workingDayList, "list", []).map((item) => {
                               return (
-                                <TextField
-                                  key={get(item, "label", "")}
-                                  value={get(item, "label", "")}
-                                  InputProps={{
-                                    readOnly: true,
-                                    endAdornment: (
-                                      <InputAdornment position="end">
-                                        <IconButton
-                                          onClick={() => handleDeleteWorkingDays(item)}
-                                        >
-                                          <Icon path={mdiClose} size={0.7} color="rgba(0, 0, 0, 0.7)" />
-                                        </IconButton>
-                                      </InputAdornment>
-                                    )
-                                  }}
-                                />
+                                <Box className="table_working_day_item" style={{ backgroundColor: '#deffe0' }}>
+                                  <Typography component={"div"}>
+                                    {get(item, "label", "")}
+                                  </Typography>
+                                  <IconButton
+                                    onClick={() => handleDeleteWorkingDays(item)}
+                                  >
+                                    <Icon path={mdiClose} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                  </IconButton>
+                                </Box>
                               )
                             })
                           }
@@ -309,24 +297,16 @@ function CalendarProjectRightPartPresenter({
                           {
                             get(dayOffList, "list", []).map((item, index) => {
                               return (
-                                <TextField
-                                  key={index}
-                                  value={get(item, "label", "")}
-                                  InputProps={{
-                                    readOnly: true,
-                                    endAdornment: (
-                                      <InputAdornment position="end">
-                                        <IconButton
-                                          key={index}
-                                          value={index}
-                                          onClick={handleDeleteDayOff}
-                                        >
-                                          <Icon path={mdiClose} size={0.7} color="rgba(0, 0, 0, 0.7)" />
-                                        </IconButton>
-                                      </InputAdornment>
-                                    )
-                                  }}
-                                />
+                                <Box className="table_working_day_item" style={{ backgroundColor: '#ffdedb' }}>
+                                  <Typography component={"div"}>
+                                    {get(item, "label", "")}
+                                  </Typography>
+                                  <IconButton
+                                    onClick={() => handleDeleteDayOff(item)}
+                                  >
+                                    <Icon path={mdiClose} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                  </IconButton>
+                                </Box>
                               )
                             })
                           }
@@ -343,13 +323,16 @@ function CalendarProjectRightPartPresenter({
                         <div className={"table_data full_time"}>
                           <span>{t('views.calendar_page.right_part.label.full_time')}</span>
                         </div>
-                        <div className={"table_data"}>
+                        <div className={"table_data table_data_padding1"}>
                           <List dense={false}>
                             {
                               workingStageAll.map((shift, index) => {
                                 return (
                                   <>
-                                    <ListItem alignItems="flex-start" key={`stage_working_all_item_${index}`}>
+                                    <ListItem
+                                      alignItems="flex-start" key={`stage_working_all_item_${index}`}
+                                      className="table_working_stage_workingStageItemContainer"
+                                    >
                                       <ListItemText>{shift.name}</ListItemText>
                                       <ListItemText>{shift.start} - {shift.end}</ListItemText>
                                       <ListItemSecondaryAction>
@@ -368,6 +351,7 @@ function CalendarProjectRightPartPresenter({
                                             <Link
                                               onClick={() => handleDeleteShiftStageAllTime(shift.id)}
                                               color="primary" variant="body2"
+                                              className="table_data_buttonLinkDanger"
                                             >
                                               {t('views.calendar_page.right_part.delete')}
                                             </Link>
@@ -407,7 +391,9 @@ function CalendarProjectRightPartPresenter({
                                           setOpenModalAddTimeWorkingStage(true);
                                         }}
                                       >
-                                        <Icon path={mdiPencilBoxOutline} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                        <abbr title={t('IDS_WP_EDIT')}>
+                                          <Icon path={mdiPencilBoxOutline} size={0.85} color="#9E9E9E" />
+                                        </abbr>
                                       </IconButton>
                                       <IconButton
                                         key={`btn-delete-working-stage-${stage.id}`}
@@ -415,7 +401,9 @@ function CalendarProjectRightPartPresenter({
                                           handleDeleteWorkingStage(stage.id);
                                         }}
                                       >
-                                        <Icon path={mdiTrashCanOutline} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                        <abbr title={t('IDS_WP_DELETE')}>
+                                          <Icon path={mdiTrashCanOutline} size={0.85} color="#9E9E9E" />
+                                        </abbr>
                                       </IconButton>
                                     </Box>
                                   </Box>
@@ -423,13 +411,16 @@ function CalendarProjectRightPartPresenter({
                                     <span className="stage_setting_date_label">{`${stage.start} - ${stage.end}`}</span>
                                   </Box>
                                 </Box>
-                                <Box className="table_data">
+                                <Box className="table_data table_data_padding1">
                                   <List dense={false}>
                                     {
                                       get(stage, "shifts", []).map((shift, shiftIdx) => {
                                         return (
                                           <>
-                                            <ListItem alignItems="flex-start" key={`stage_working_shift_item_${shiftIdx}`}>
+                                            <ListItem
+                                              alignItems="flex-start" key={`stage_working_shift_item_${shiftIdx}`}
+                                              className="table_working_stage_workingStageItemContainer"
+                                            >
                                               <ListItemText>{shift.name}</ListItemText>
                                               <ListItemText>{shift.start} - {shift.end}</ListItemText>
                                               <ListItemSecondaryAction>
@@ -443,16 +434,13 @@ function CalendarProjectRightPartPresenter({
                                                 >
                                                   {t('views.calendar_page.right_part.edit')}
                                                 </Link>
-                                                {
-                                                  stage.can_delete && (
-                                                    <Link
-                                                      onClick={() => hanleDeleteShiftStage(stage.id, shift.id)}
-                                                      color="primary" variant="body2"
-                                                    >
-                                                      {t('views.calendar_page.right_part.delete')}
-                                                    </Link>
-                                                  )
-                                                }
+                                                <Link
+                                                  onClick={() => hanleDeleteShiftStage(stage.id, shift.id)}
+                                                  color="primary" variant="body2"
+                                                  className="table_data_buttonLinkDanger"
+                                                >
+                                                  {t('views.calendar_page.right_part.delete')}
+                                                </Link>
                                               </ListItemSecondaryAction>
                                             </ListItem>
                                             <Divider component="li" />
@@ -490,8 +478,7 @@ function CalendarProjectRightPartPresenter({
                       </Link>
                     </Typography>
                   )
-                }
-              </LoadingOverlay>
+              }
             </ScrollbarsContainer>
           } />
         </CustomTableProvider>

@@ -427,14 +427,14 @@
         "create": "Tạo lịch",
         "recently": "Gần đây",
         "project_alarm": "Nhắc hẹn dự án",
-        "my_alarm": "Nhắc hẹn của tôi"
+        "my_alarm": "Nhắc hẹn theo nhóm"
       },
       "right_part": {
         "add": "+ Tạo Lịch",
         "setting": "Cài đặt",
         "delete": "Xóa",
         "edit": "Sửa",
-        "edit2": "Chỉnh sửa",
+        "edit2": "Cập nhật",
         "delete_calendar": "Xóa lịch",
         "weekly_detail": "Chi tiết lịch tuần",
         "project_detail": "Chi tiết lịch dự án",
@@ -505,7 +505,7 @@
           }
         },
         "edit_weekly_calendar": {
-          "title": "Sửa lịch tuần"
+          "title": "Cập nhập lịch tuần"
         },
         "create_project_calendar": {
           "create_title": "Tạo lịch dự án",
@@ -531,6 +531,7 @@
           "weekly": "Nhắc hằng tuần",
           "monthly": "Nhắc hằng tháng",
           "content": "Nội dung",
+          "remind_content": "Nội dung nhắc hẹn",
           "member_assign": "Gắn thành viên nhận nhắc hẹn",
           "description": "Bạn có lịch hẹn, ghi chú, sự kiên... quan trọng? Hãy tạo nhắc hẹn theo thời gian để hệ thống nhắc nhỏ bạn khi đến hạn.",
           "empty_category_description": "Hiện tại bạn chưa có nhóm nhắc hẹn của bạn được tạo. Hãy tạo mới nhóm nhắc hẹn trước khi tạo nhắc hẹn!"
@@ -1017,6 +1018,7 @@
   "IDS_WP_COMMON_ADD": "Thêm",
   "IDS_WP_PERSONAL": "Cá nhân",
   "IDS_WP_REQUIRED_LABEL": "Bắt buộc",
+  "IDS_WP_MORE": "Thêm",
   "LABEL_CHAT_TASK_CHON_TAI_LIEU": "Chọn tài liệu",
   "LABEL_CHAT_TASK_TAI_TAI_LIEU_TU_MAY_TINH": "Tải tài liệu từ máy tính",
   "LABEL_CHAT_TASK_TAI_LIEU_MOI_TU": "Tài liệu mới từ máy tính của bạn",

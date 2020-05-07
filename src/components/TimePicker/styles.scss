@@ -1,0 +1,11 @@
+.comp_TimePicker {
+  &__dropdownButton {
+    cursor: pointer;
+  }
+
+  &__dropdownList {
+    &>div:nth-child(2) {
+      display: none;
+    }
+  }
+}

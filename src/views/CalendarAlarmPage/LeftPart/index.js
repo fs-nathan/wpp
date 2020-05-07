@@ -10,7 +10,7 @@ import CalendarAlarmLeftPartPresenter from './presenter';
 function CalendarAlramLeftPart({
   personalRemindCategories, handleSortPersonalAlarm,
   doCreatePersonalRemindCategory, doDeletePersonalRemindCategory,
-  doUpdatePersonalRemindCategory,
+  doUpdatePersonalRemindCategory, permissions
 }) {
   const [openPersonalRemindModalCreate, setOpenPersonalRemindModalCreate] = React.useState(false);
   const [openPersonalRemindModalUpdate, setOpenPersonalRemindModalUpdate] = React.useState(false);
@@ -46,6 +46,7 @@ function CalendarAlramLeftPart({
     <>
       <CalendarAlarmLeftPartPresenter
         personalRemindCategories={personalRemindCategories}
+        havePermission={permissions['manage_group_remind'] ?? false}
         handleSortPersonalAlarm={handleSortPersonalAlarm}
         handleOpenModal={(type) => handleOpenModal(type)}
         handleDeleteCategory={(category) => handleDeleteCategory(category)}

@@ -5,13 +5,13 @@ import { mdiBellOutline, mdiCalendarMonthOutline, mdiPencilBoxMultipleOutline, m
 import Icon from '@mdi/react';
 import { createSchedule } from 'actions/calendar/weeklyCalendar/createSchedule';
 import { deleteSchedule } from "actions/calendar/weeklyCalendar/deleteSchedule";
-import { listScheduleOfWeek } from "actions/calendar/weeklyCalendar/listScheduleOfWeek";
+import { listScheduleOfWeek } from "actions/calendar/weeklyCalendar/listScheduleOfWeekFromModal";
 import { updateSchedule } from "actions/calendar/weeklyCalendar/updateSchedule";
 import { listUserOfGroup } from "actions/user/listUserOfGroup";
 import AvatarCircleList from 'components/AvatarCircleList';
 import ColorTypo from 'components/ColorTypo';
 import CustomModal from 'components/CustomModal';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import TimePicker from 'components/TimePicker';
 import WeekSelect from 'components/WeekSelect';
 import YearSelect from 'components/YearSelect';
 import { CREATE_WEEKLY_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_WEEKLY_SCHEDULE, UPDATE_WEEKLY_SCHEDULE } from "constants/events";
@@ -22,7 +22,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useMountedState } from 'react-use';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import { membersSelector, scheduleOfWeekSelector } from './selectors';
 import './style.scss';
@@ -53,7 +52,7 @@ const DateWrapper = ({ className = '', ...props }) =>
   />
 
 const DEFAULT_DATA = {
-  selectedTime: listTimeSelect[16],
+  selectedTime: '08:30',
   selectedDate: moment().toDate(),
   title: "",
   content: "",
@@ -65,10 +64,10 @@ const DEFAULT_DATA = {
 };
 
 function CreateWeeklyCalendar({
-  open, setOpen, dateSetting,
+  open, setOpen, dateSetting, actionType = "CREATE",
   members, WeeksInYear, doListScheduleOfWeek, scheduleOfWeek,
-  doCreateSchedule, handleOnClose, doDeleteSchedule, doListMemebers,
-  doUpdateSchedule
+  doCreateSchedule, doDeleteSchedule, doListMemebers,
+  doUpdateSchedule, test,
 }) {
   const { t } = useTranslation();
   const params = useParams();
@@ -92,13 +91,15 @@ function CreateWeeklyCalendar({
   React.useEffect(() => {
     setReceiverListIndex([]);
     if (!isNil(params.week) && !isNil(params.year)) {
-      handleChangeData("selectedYear", params.year);
-      handleChangeData("selectedWeek", params.week);
+      handleChangeData("selectedYear", parseInt(params.year));
+      handleChangeData("selectedWeek", parseInt(params.week));
     }
-  }, [open, params]);
+  }, [open, params.year, params.week]);
 
   React.useEffect(() => {
-    doListMemebers(false);
+    if (members.members.length === 0) {
+      doListMemebers(false);
+    }
   }, [doListMemebers]);
 
   const days = [
@@ -127,10 +128,13 @@ function CreateWeeklyCalendar({
       });
       handleChangeData("selectedDate", moment(WeeksInYear[data.selectedWeek - 1].start, dateFormatSetting));
     }
-  }, [WeeksInYear, data.selectedWeek])
+  }, [WeeksInYear, data.selectedWeek]);
 
   React.useEffect(() => {
-    doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek });
+    if (open === true) {
+      doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek });
+    }
+
     const reloadListScheduleOfWeek = () => {
       doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek }, false);
     }
@@ -143,7 +147,7 @@ function CreateWeeklyCalendar({
       CustomEventDispose(DELETE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
       CustomEventDispose(UPDATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
     }
-  }, [doListScheduleOfWeek, data.selectedWeek, data.selectedYear, useMountedState()])
+  }, [open, data.selectedWeek, data.selectedYear]);
 
   const setValidationState = (attName, value) => {
     setValidation(prevState => ({ ...prevState, [attName]: value }));
@@ -225,15 +229,21 @@ function CreateWeeklyCalendar({
     }
   }
 
+  function handleFocusTextField(type) {
+    if (type == "title") {
+      setValidationState("title", { error: false, message: "" });
+    } else {
+      setValidationState("content", { error: false, message: "" });
+    }
+  }
+
   return (
     <>
       <CustomModal
-        title={t("views.calendar_page.modal.create_weekly_calendar.title")}
+        title={actionType === "CREATE" ? t("views.calendar_page.modal.create_weekly_calendar.title") : t("views.calendar_page.modal.edit_weekly_calendar.title")}
         open={open}
         setOpen={setOpen}
-        onConfirm={handleOnClose}
-        onCancle={handleOnClose}
-        canConfirm={data.title !== '' && data.content !== ''}
+        canConfirm={data.title !== '' && data.content !== '' && data.selectedTime !== ''}
         height='medium'
         className={"comp_CustomModal views_createWeeklyCalendar_CustomModal"}
       >
@@ -271,13 +281,13 @@ function CreateWeeklyCalendar({
               </abbr>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DateWrapper>
-                  <TimeSelect
-                    className="views_createWeeklyCalendar_timeSelect"
+                  <TimePicker
                     value={data.selectedTime}
-                    onChange={({ target }) => handleChangeData('selectedTime', target.value)}
+                    onChange={(value) => handleChangeData('selectedTime', value)}
                   />
                   <KeyboardDatePicker
                     disableToolbar
+                    contentEditable={false}
                     inputVariant="outlined"
                     variant="inline"
                     invalidDateMessage={null}
@@ -306,6 +316,7 @@ function CreateWeeklyCalendar({
                 error={validation.title.error}
                 helperText={validation.title.message}
                 onChange={({ target }) => handleChangeData('title', target.value)}
+                onFocus={() => handleFocusTextField("title")}
               />
               <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
                 <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.content')}<span className="label_required">*</span></ColorTypo>
@@ -321,6 +332,7 @@ function CreateWeeklyCalendar({
                 rows={2}
                 fullWidth
                 onChange={({ target }) => handleChangeData('content', target.value)}
+                onFocus={() => handleFocusTextField("content")}
               />
               <FormControlLabel
                 control={
@@ -443,12 +455,15 @@ function CreateWeeklyCalendar({
                                 item.schedules.map((schedule) => {
                                   return (
                                     <ListItem
-                                      button key={`views_createWeeklyCalendar_listSchedule_item_${schedule.id}`}
+                                      key={`views_createWeeklyCalendar_listSchedule_item_${schedule.id}`}
                                       className="view_createWeeklyCalendar_list_scheduleItemContainer"
                                     >
                                       <ListItemIcon>
                                         {
-                                          schedule.is_remind && <Icon path={mdiBellOutline} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                          schedule.is_remind && <Icon path={mdiBellOutline} size={0.75} color="#969696" />
+                                        }
+                                        {
+                                          !schedule.is_remind && <Icon path={''} size={0.75} color="#969696" />
                                         }
                                         <div className="calendar_item_time">{schedule.time}</div>
                                       </ListItemIcon>
@@ -474,23 +489,28 @@ function CreateWeeklyCalendar({
                                             />
                                           )
                                         }
-                                        <IconButton
-                                          edge="end"
-                                          onClick={evt => handleEditSchedule(schedule, item.date)}
-                                        >
-                                          <Icon
-                                            path={mdiPencilBoxMultipleOutline}
-                                            size={0.7}
-                                            color="rgba(0, 0, 0, 0.7)"
-
-                                          />
-                                        </IconButton>
-                                        <IconButton edge="end"
-                                          key={`views_createWeeklyCalendar_delete_schedule_btn_${schedule.id}`}
-                                          onClick={evt => handleDeleteSchedule(schedule.id)}
-                                        >
-                                          <Icon path={mdiTrashCanOutline} size={0.7} color="rgba(0, 0, 0, 0.7)" />
-                                        </IconButton>
+                                        {
+                                          schedule.can_modify && (
+                                            <>
+                                              <IconButton
+                                                edge="end"
+                                                onClick={evt => handleEditSchedule(schedule, item.date)}
+                                              >
+                                                <Icon
+                                                  path={mdiPencilBoxMultipleOutline}
+                                                  size={0.75}
+                                                  color="#969696"
+                                                />
+                                              </IconButton>
+                                              <IconButton edge="end"
+                                                key={`views_createWeeklyCalendar_delete_schedule_btn_${schedule.id}`}
+                                                onClick={evt => handleDeleteSchedule(schedule.id)}
+                                              >
+                                                <Icon path={mdiTrashCanOutline} size={0.75} color="#969696" />
+                                              </IconButton>
+                                            </>
+                                          )
+                                        }
                                       </ListItemSecondaryAction>
                                     </ListItem>
                                   )

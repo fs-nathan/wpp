@@ -106,17 +106,17 @@
     "calendar_page": {
       "left_part": {
         "title": "Calendar management",
-        "create": "Create new",
+        "create": "Create calendar",
         "recently": "Recently",
-        "project_alarm": "Project alarm",
-        "my_alarm": "My alarm"
+        "project_alarm": "Project remind",
+        "my_alarm": "Personal remind"
       },
       "right_part": {
         "add": "+ Create",
         "setting": "Setting",
         "delete": "Delete",
         "edit": "Edit",
-        "edit2": "Edit",
+        "edit2": "Update",
         "delete_calendar": "Delete calendar",
         "weekly_detail": "Weekly calendar detail",
         "project_detail": "Project calendar detail",
@@ -184,7 +184,7 @@
           }
         },
         "edit_weekly_calendar": {
-          "title": "edit weekly calendar"
+          "title": "Update weekly calendar"
         },
         "create_project_calendar": {
           "create_title": "Create project calendar",
@@ -210,6 +210,7 @@
           "weekly": "Weekly remind",
           "monthly": "Monthly remind",
           "content": "Content",
+          "remind_content": "Remind content",
           "member_assign": "Select members will recieve remind",
           "description": "You have important appointment, notes, events? Let's create a remind calendar base on your settings time and system will notify you when it's due.",
           "empty_category_description": "You don't have any remind category in this time. At first, please create your remind category before you can operate this action!"
@@ -696,6 +697,7 @@
   "IDS_WP_COMMON_ADD": "Add",
   "IDS_WP_PERSONAL": "Personal",
   "IDS_WP_REQUIRED_LABEL": "Require",
+  "IDS_WP_MORE": "More",
   "LABEL_CHAT_TASK_CHON_TAI_LIEU": "Chọn tài liệu",
   "LABEL_CHAT_TASK_TAI_TAI_LIEU_TU_MAY_TINH": "Tải tài liệu từ máy tính",
   "LABEL_CHAT_TASK_TAI_LIEU_MOI_TU": "Tài liệu mới từ máy tính của bạn",

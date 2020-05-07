@@ -13,9 +13,8 @@ const LeftSetting = props => {
   return (
     <LeftSideContainer
       title={props.title}
-      rightAction={{
-        iconPath: props.iconTitle || null
-      }}
+      rightAction={null}
+      leftAction={null}
     >
       <StyledList>
         {props.listMenu.map((item, index) => (
@@ -44,7 +43,7 @@ const LeftSetting = props => {
               <ListItemText
                 primary={
                   <Primary
-                    className={`title-setting-item ${
+                    className={`custom-title-setting-item ${
                       item.icon ? "" : "none-icon"
                       }`}
                   >

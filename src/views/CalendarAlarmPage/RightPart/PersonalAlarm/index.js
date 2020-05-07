@@ -31,7 +31,7 @@ function CalendarPersonalAlarm({
   const {
     localOptions, setLocalOptions,
     expand, handleExpand,
-    timeRange, setTimeRange
+    timeRange, setTimeRange, permissions
   } = React.useContext(CalendarAlarmContext);
 
   const search = useLocation().search;
@@ -141,6 +141,7 @@ function CalendarPersonalAlarm({
         personalReminds={filteredReminds}
         handleOpenModal={(type, props) => handleOpenModal(type, props)}
         handleDeleteRemind={(remind) => handleDeleteRemind(remind)}
+        havePermission={permissions['manage_remind'] ?? false}
       />
       <CreatePersonalRemind
         open={openModal}
