@@ -1,5 +1,5 @@
 import { List } from '@material-ui/core';
-import { filterNoGroupTaskByType, filterTaskByType } from 'helpers/jobDetail/arrayHelper';
+import { filterNoGroupTaskByType, filterTaskByType, searchNoGroupTaskByName, searchTaskByTaskName } from 'helpers/jobDetail/arrayHelper';
 import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector } from 'react-redux';
@@ -32,15 +32,16 @@ function ListBody() {
   const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
+  const searchKey = useSelector(state => state.taskDetail.listDetailTask.searchKey);
   const [data, setData] = useState([])
 
   useEffect(() => {
     if (listTaskDataType === listTaskDataTypes[1]) {
-      setData(filterTaskByType(listTaskDetail, filterTaskType))
+      setData(filterTaskByType(searchTaskByTaskName(listTaskDetail, searchKey), filterTaskType))
     } else {
-      setData(filterNoGroupTaskByType(listDataNotRoom, filterTaskType))
+      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), filterTaskType))
     }
-  }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail])
+  }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey])
 
   return (
     <Body className="listJobBody"

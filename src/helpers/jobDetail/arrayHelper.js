@@ -107,6 +107,13 @@ export const searchTaskByTaskName = (groups, keyword) => {
         }))
         : groups
 }
+
+export const searchNoGroupTaskByName = (tasks, keyword) => {
+    return keyword
+        ? tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase()))
+        : tasks
+}
+
 export const searchProjectByProjectName = (groups, keyword) => {
     return keyword
         ? groups
