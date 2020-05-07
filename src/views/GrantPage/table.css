@@ -404,7 +404,6 @@ span.ant-checkbox ~ span {
 }
 
 .custom-checkbox--calendar {
-  width: 60px;
   fill: #b9b9b9;
 }
 .custom-checkbox--calendar span {
@@ -511,9 +510,15 @@ span.ant-checkbox ~ span {
 }
 
 #hourwork td div {
-  width: 94%;
+  width: 94% !important;
   margin: 0px auto;
   padding: 10px
+}
+
+.calendar--hour-work__td{
+  display: flex;
+  border-bottom: 0 !important;
+  padding: 0 !important;
 }
 
 #hourwork td, #hourwork th {
@@ -558,7 +563,8 @@ td.table-hourwork-right--border-bottom-none div {
   border-bottom: 1px solid #b9b9b9
 }
 td.table-hourwork-right--border-top-none {
-  border-top: 0 !important
+  border-top: 0 !important;
+text-align: left !important;
 }
 .color-picker-drawer-config {
   position: absolute;
@@ -659,4 +665,9 @@ div.checkbox-colortag--drawer {
 .gantt--group-task__right{
   fill: #cccccc;
   margin-right: 7px;
+}
+
+
+.calendar--hour-work__name {
+  width: 30%;
 }
