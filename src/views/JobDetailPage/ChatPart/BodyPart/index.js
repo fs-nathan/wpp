@@ -105,10 +105,14 @@ const BodyPart = props => {
     user_create = {},
   } = detailTask || {}
   useEffect(() => {
+    let rqId;
     if (chatRef && chatRef.current && chats.data && chats.data.length) {
-      requestAnimationFrame(() => {
+      rqId = requestAnimationFrame(() => {
         chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
       })
+    }
+    return () => {
+      cancelAnimationFrame(rqId);
     }
   }, [chatRef, chats.data]);
   useEffect(() => {

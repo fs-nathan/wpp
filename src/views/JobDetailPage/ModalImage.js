@@ -173,7 +173,7 @@ const FooterDialog = styled(DialogActions)`
         display: flex;
         background: #00000091;
         padding: 3px;
-        border-radius: 2px;
+        border-radius: 10px;
         width: 1200px;
         z-index: 999;
         overflow-x: scroll;
