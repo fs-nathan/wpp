@@ -70,6 +70,7 @@ export const PostCreator = () => {
                 ])(cate);
                 return (
                   <Chip
+                    className="comp_PostCreator__chip"
                     key={id}
                     avatar={<Avatar alt={name} src={logo} />}
                     label={name}
