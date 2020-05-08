@@ -1,11 +1,12 @@
 import { deleteProject } from 'actions/project/deleteProject';
 import { listProject } from 'actions/project/listProject';
+import { useTimes } from 'components/CustomPopover';
 import { get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Context as ProjectGroupContext } from '../../index';
-import DeleteProjectPresenter, { DeleteProjectNoReload as DeleteProjectNoReloadPresenter } from './presenters';
+import { localOptionSelector } from '../../selectors';
+import DeleteProjectPresenter from './presenters';
 
 function ProjectDelete({
   selectedProject = null,
@@ -13,13 +14,24 @@ function ProjectDelete({
   doDeleteProject,
   doReloadProject,
   projectGroupId = undefined,
+  localOption,
 }) {
 
-  const { timeRange } = React.useContext(ProjectGroupContext);
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    });
+    // eslint-disable-next-line
+  }, [timeType]);
 
   return (
     <DeleteProjectPresenter
       projectGroupId={projectGroupId}
+      timeRange={timeRange}
       doReloadProject={() => doReloadProject({
         groupProject: projectGroupId,
         timeStart: get(timeRange, 'timeStart')
@@ -47,28 +59,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  state => ({
+    localOption: localOptionSelector(state),
+  }),
   mapDispatchToProps,
 )(ProjectDelete);
-
-function _ProjectDeleteNoReload({
-  selectedProject = null,
-  open, setOpen,
-  doDeleteProject,
-}) {
-  return (
-    <DeleteProjectNoReloadPresenter
-      open={open} setOpen={setOpen}
-      handleDeleteProject={() =>
-        doDeleteProject({
-          projectId: get(selectedProject, 'id'),
-        })
-      }
-    />
-  )
-}
-
-export const ProjectDeleteNoReload = connect(
-  null,
-  mapDispatchToProps,
-)(_ProjectDeleteNoReload);

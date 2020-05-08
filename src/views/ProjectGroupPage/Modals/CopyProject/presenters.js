@@ -125,7 +125,7 @@ function CopyProject({
   groups,
   handleCopyProject,
   doReload,
-  projectGroupId,
+  projectGroupId, timeRange,
 }) {
 
   const { t } = useTranslation();
@@ -147,7 +147,7 @@ function CopyProject({
       CustomEventDispose(COPY_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectGroupId]);
+  }, [projectGroupId, timeRange]);
 
   React.useEffect(() => {
     const success = () => {
@@ -169,7 +169,7 @@ function CopyProject({
       CustomEventDispose(LIST_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectGroupId]);
+  }, [projectGroupId, timeRange]);
 
   return (
     <CustomModal

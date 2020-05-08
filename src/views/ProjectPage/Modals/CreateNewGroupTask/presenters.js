@@ -11,7 +11,7 @@ function CreateNewOrUpdateGroupTask({
   curGroupTask,
   handleCreateOrUpdateGroupTask,
   doReload,
-  projectId,
+  projectId, timeRange,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 100);
@@ -59,7 +59,7 @@ function CreateNewOrUpdateGroupTask({
       }
     }
     // eslint-disable-next-line
-  }, [projectId, curGroupTask]);
+  }, [projectId, curGroupTask, timeRange]);
 
   React.useEffect(() => {
     const success = bit => () => {
@@ -79,7 +79,7 @@ function CreateNewOrUpdateGroupTask({
       CustomEventListener(GET_ALL_GROUP_TASK.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectId, curGroupTask]);
+  }, [projectId, curGroupTask, timeRange]);
 
   return (
     <CustomModal

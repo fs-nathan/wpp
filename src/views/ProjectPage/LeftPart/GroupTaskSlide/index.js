@@ -19,7 +19,6 @@ function GroupTaskSlide({
   groupTasks,
   doSortGroupTask, doDeleteGroupTask,
   doListGroupTask,
-  doListTask,
   viewPermissions,
 }) {
 

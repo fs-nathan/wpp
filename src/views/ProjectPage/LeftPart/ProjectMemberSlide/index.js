@@ -16,19 +16,14 @@ function ProjectMemberSlide({
 }) {
 
   const { projectId } = useParams();
-  const [id, setId] = React.useState(null);
 
   React.useEffect(() => {
-    setId(projectId);
-  }, [projectId]);
-
-  React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
-    if (id !== null) {
-      doMemberProject({ projectId: id });
+    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (projectId !== null) {
+      doMemberProject({ projectId });
     }
     // eslint-disable-next-line
-  }, [id, viewPermissions]);
+  }, [projectId, viewPermissions]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
