@@ -136,7 +136,10 @@ const FileMessage = ({
                 }
               </div>
             }
-            <div className={clsx("TextMessage--content", { "TextMessage--content__self": is_me })} >
+            <div className={clsx("TextMessage--content", {
+              "TextMessage--content__self": is_me,
+              "TextMessage--content__withReact": data_emotion.length > 0,
+            })} >
               {chat_parent &&
                 <TextMessage {...chat_parent} isReply></TextMessage>
               }

@@ -76,8 +76,8 @@ const BodyPart = props => {
       const messageStyledTypes = [CHAT_TYPE.FILE, CHAT_TYPE.TEXT, CHAT_TYPE.CHAT_FORWARD_FILE];
       if (
         isOneOf(chat.type, messageStyledTypes)
-        && (!prevChat || !isOneOf(prevChat.type, messageStyledTypes))
-        && (!nextChat || !isOneOf(nextChat.type, messageStyledTypes))
+        && (!prevChat || !isOneOf(prevChat.type, messageStyledTypes) || prevChat.user_create_id !== chat.user_create_id)
+        && (!nextChat || !isOneOf(nextChat.type, messageStyledTypes) || nextChat.user_create_id !== chat.user_create_id)
       ) {
         chatPosition = 'one';
       }
@@ -114,7 +114,8 @@ const BodyPart = props => {
     return () => {
       cancelAnimationFrame(rqId);
     }
-  }, [chatRef, chats.data]);
+    // eslint-disable-next-line
+  }, [chatRef, chats.data.length]);
   useEffect(() => {
     const task_id = queryString.parse(props.location.search).task_id
     dispatch(loadChat(task_id));

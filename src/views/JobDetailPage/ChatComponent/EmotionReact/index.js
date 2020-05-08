@@ -1,3 +1,4 @@
+import { ClickAwayListener } from '@material-ui/core';
 import { chatEmotion } from 'actions/chat/chat';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -32,9 +33,18 @@ const EmotionReact = ({
 }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const [isOpenEmo, setOpenEmo] = React.useState(false);
 
   function onClickQuickReact() {
     dispatch(chatEmotion(taskId, chatId, data_emotion[0].value))
+  }
+
+  function onMouseOverEmo() {
+    setOpenEmo(true)
+  }
+
+  function onMouseOutPopup() {
+    setOpenEmo(false)
   }
 
   return (
@@ -54,9 +64,14 @@ const EmotionReact = ({
           {getMembersReact(data_emotion)}
         </div>
       </div>
-      <button className="EmotionReact--button" onClick={onClickQuickReact} >
+      <button className="EmotionReact--button" onClick={onClickQuickReact} onMouseOver={onMouseOverEmo}>
         <img className="EmotionReact--image" src={data_emotion[0].icon} alt="emo"></img>
-        <ReactEmotionPopup chatId={chatId} />
+        {isOpenEmo && <ClickAwayListener onClickAway={onMouseOutPopup}>
+          <div>
+            <ReactEmotionPopup chatId={chatId} />
+          </div>
+        </ClickAwayListener>
+        }
       </button>
     </div>
   );

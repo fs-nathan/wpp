@@ -92,7 +92,7 @@ const TextMessage = ({
           {!is_deleted ? getChatParent(chat_parent) : ''}
           <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
             {
-              ((chatPosition === 'top' && !is_me) || isReply) &&
+              ((chatPosition !== 'bot' && chatPosition !== 'mid' && !is_me) || isReply) &&
               <div className="TextMessage--sender"  >
                 {isReply &&
                   <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />

@@ -5,9 +5,10 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
-import { mdiChevronLeft, mdiChevronRight, mdiDownload, mdiInformation, mdiShare } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiDownload, mdiInformation, mdiRotateLeft, mdiRotateRight, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showImagesList } from 'actions/chat/chat';
+import { openDocumentDetail } from 'actions/system/system';
 import { getFileType } from 'helpers/jobDetail/stringHelper';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +16,7 @@ import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import styled from 'styled-components';
+import ShareDocumentModal from 'views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal';
 
 const styles = theme => ({
   closeButton: {
@@ -75,6 +77,10 @@ const DialogTitle = withStyles(styles)(props => {
   const { children, classes, onClose,
     user_create_avatar, user_create_name, time_create,
     user_create_position, image,
+    onClickShare,
+    onClickDetail,
+    onClickRotateLeft,
+    onClickRotateRight,
     ...other } = props;
 
   function onClickDownload() {
@@ -107,23 +113,31 @@ const DialogTitle = withStyles(styles)(props => {
           </ListItem>
         </TitleImg>
       </Typography>
+      <Typography component={'div'}>
+        <IconButton onClick={onClickRotateLeft}>
+          <Icon path={mdiRotateLeft} size={1} color={'#fff'} />
+        </IconButton>
+        <IconButton onClick={onClickRotateRight}>
+          <Icon path={mdiRotateRight} size={1} color={'#fff'} />
+        </IconButton>
+      </Typography>
       <GroupActionButton component='div'>
         <ButtonAction component='div' onClick={onClickDownload}>
           <Icon path={mdiDownload} size={1} color={'#fff'} />
           <Typography component='div'>{t('LABEL_CHAT_TASK_TAI_XUONG')}</Typography>
         </ButtonAction>
-        <ButtonAction component='div'>
+        <ButtonAction component='div' onClick={onClickShare}>
           <Icon path={mdiShare} size={1} color={'#fff'} />
           <Typography component='div'>{t('LABEL_CHAT_TASK_CHIA_SE')}</Typography>
         </ButtonAction>
-        <ButtonAction component='div'>
+        <ButtonAction component='div' onClick={onClickDetail}>
           <Icon path={mdiInformation} size={1} color={'#fff'} />
           <Typography component='div'>{t('LABEL_CHAT_TASK_CHI_TIET')}</Typography>
         </ButtonAction>
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
       </GroupActionButton>
-      <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-        <CloseIcon />
-      </IconButton>
     </GroupTitle>
   );
 });
@@ -225,10 +239,28 @@ const ModalImage = () => {
   const createUser = useSelector(state => state.chat.createUser);
 
   const [currentImage, setCurrentImage] = useState(selectedImage);
+  const [visible, setVisible] = useState(false);
+  const [rotate, setRotate] = useState(0);
 
   const { name = '', url } = imagesList[currentImage] || {};
   const type = getFileType(name);
   // console.log(type, name)
+
+  function onClickShare() {
+    setVisible(true)
+  }
+
+  function onClickDetail() {
+    dispatch(openDocumentDetail({ ...imagesList[currentImage], type }));
+  }
+
+  function onClickRotateLeft() {
+    setRotate(rotate - 90)
+  }
+
+  function onClickRotateRight() {
+    setRotate(rotate + 90)
+  }
 
   function clickNext() {
     if (currentImage < imagesList.length - 1) {
@@ -251,12 +283,13 @@ const ModalImage = () => {
   }, [selectedImage]);
 
   useEffect(() => {
-    console.log('resetTransform', currentImage)
+    // console.log('resetTransform', currentImage)
     if (transformRef && transformRef.current) {
       var clickEvent = document.createEvent('MouseEvents');
       clickEvent.initEvent('dblclick', true, true);
       transformRef.current.dispatchEvent(clickEvent);
     }
+    setRotate(0)
   }, [currentImage]);
 
   return (
@@ -268,12 +301,21 @@ const ModalImage = () => {
       <DialogTitle id="customized-dialog-title"
         {...createUser}
         image={imagesList[currentImage]}
+        onClickShare={onClickShare}
+        onClickDetail={onClickDetail}
+        onClickRotateLeft={onClickRotateLeft}
+        onClickRotateRight={onClickRotateRight}
         onClose={handleClose}>
       </DialogTitle>
       <ContentDialog>
         {
           (type === 'mp4') ?
-            <ReactPlayer url={url} playing height="750px" width="1100px" controls style={{ margin: 'auto' }} />
+            <ReactPlayer
+              url={url} playing
+              height="750px" width="1100px"
+              controls
+              style={{ margin: 'auto', transform: `rotate(${rotate}deg)` }}
+            />
             :
             <>
               <ButtonImage onClick={clickBack}>
@@ -283,7 +325,11 @@ const ModalImage = () => {
                 options={{ minScale: 0.5 }}
                 doubleClick={{ mode: 'reset' }}>
                 <TransformComponent>
-                  <img ref={transformRef} alt="vtask" src={imagesList[currentImage] && imagesList[currentImage].url} />
+                  <img
+                    ref={transformRef}
+                    alt="vtask"
+                    style={{ transform: `rotate(${rotate}deg)` }}
+                    src={imagesList[currentImage] && imagesList[currentImage].url} />
                 </TransformComponent>
               </TransformWrapper>
               <ButtonImage onClick={clickNext}>
@@ -308,6 +354,14 @@ const ModalImage = () => {
           }
         </div>
       </FooterDialog >
+      {visible && (
+        <ShareDocumentModal
+          onClose={() => {
+            setVisible(false);
+          }}
+          item={imagesList[currentImage]}
+        />
+      )}
     </StyledDialog >
   )
 }

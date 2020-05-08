@@ -40,6 +40,9 @@
     width: 18px;
     height: 18px;
     margin-top: 1px;
+    &:hover {
+      transform: scale(1.3);
+    }
   }
   &--button {
     margin: auto 5px;
@@ -54,9 +57,12 @@
     border-radius: 25px;
     position: relative;
 
-    &:hover .ReactEmotionPopup {
+    .ReactEmotionPopup {
       display: flex;
-      top: -29px;
+      top: -40px;
+    }
+    &:focus {
+      outline: none;
     }
     &QuickReact {
       padding: 3px;
