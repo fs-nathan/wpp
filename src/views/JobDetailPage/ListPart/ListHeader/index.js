@@ -4,10 +4,11 @@ import Icon from '@mdi/react';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-// import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
+import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
 import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
+import CreateGroupTaskModal from './CreateGroupTaskModal';
 import CreateJobModal from './CreateJobModal';
 import CreateJobSetting from './CreateJobSetting';
 
@@ -53,6 +54,7 @@ function ListHeader(props) {
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
+  const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
   const [isOpenSettings, setOpenSettings] = React.useState(false);
 
   function onClickSettings() {
@@ -65,6 +67,11 @@ function ListHeader(props) {
     } else {
       setOpenCreateJobModal(true);
     }
+  }
+
+  function onClickCreateProject() {
+    setOpenCreateGroup(false)
+    setOpenProjectGroup(true)
   }
 
   const searchListTask = e => {
@@ -103,7 +110,14 @@ function ListHeader(props) {
         isOpen={isOpenSettings}
         setOpen={setOpenSettings}
       />
-      {/* <CreateProjectGroup open={isOpenCreateGroup} setOpen={setOpenCreateGroup}></CreateProjectGroup> */}
+      <CreateProjectGroup
+        open={isOpenProjectGroup}
+        setOpen={setOpenProjectGroup} />
+      <CreateGroupTaskModal
+        isOpen={isOpenCreateGroup}
+        setOpen={setOpenCreateGroup}
+        onClickCreate={onClickCreateProject}
+      />
     </div>
   );
 }

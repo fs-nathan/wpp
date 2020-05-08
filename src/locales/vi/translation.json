@@ -1239,5 +1239,9 @@
   "LABEL_CHAT_TASK_TAO_CONG_VIEC": "Tạo công việc",
   "LABEL_CHAT_TASK_NOI_DUNG_NHAC_HEN": "Nội dung nhắc hẹn",
   "LABEL_CHAT_TASK_THU_GON": "Thu gọn",
-  "LABEL_CHAT_TASK_XEM_THEM": "Xem thêm"
+  "LABEL_CHAT_TASK_XEM_THEM": "Xem thêm",
+  "LABEL_CHAT_TASK_THONG_BAO_HE_THONG": "Thông báo hệ thống",
+  "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO": "Hiện tại chưa có <b>Nhóm công việc</b> nào được tạo.",
+  "LABEL_CHAT_TASK_HAY_TAO_MOI_NHOM": "Hãy tạo mới nhóm công việc trước khi tạo mới công việc!",
+  "LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC": "Tạo nhóm công việc"
 }
