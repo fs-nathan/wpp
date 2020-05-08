@@ -51,8 +51,8 @@ const BodyPart = props => {
     // eslint-disable-next-line
   }, [viewedChatMembers])
 
-  const { total_page, page } = chats.paging || {};
-  const currentPage = page === null ? total_page : page
+  const { last_id } = chats || {};
+
   useEffect(() => {
     const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
       return !searchChatKey
@@ -109,7 +109,8 @@ const BodyPart = props => {
     let rqId;
     if (chatRef && chatRef.current && chats.data && chats.data.length) {
       rqId = requestAnimationFrame(() => {
-        chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+        // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+        chatRef.current.scrollToBottom()
       })
     }
     return () => {
@@ -155,28 +156,28 @@ const BodyPart = props => {
 
   function loadMoreChat() {
     // console.log('loadMoreChat', currentPage)
-    if (currentPage > 1)
-      dispatch(loadChat(taskId, currentPage - 1, true));
+    if (last_id)
+      dispatch(loadChat(taskId, last_id, true));
   }
 
   return (
     <div
       className={clsx("bodyChat", { "bodyChat__reply": props.isReply })}
-      ref={chatRef}
     >
-      <Scrollbars autoHide autoHideTimeout={500}>
+      <Scrollbars autoHide autoHideTimeout={500}
+        ref={chatRef}
+      >
         <InfiniteScroll
           className="bodyChat--scroll"
           isReverse
-          pageStart={currentPage}
           loadMore={loadMoreChat}
-          hasMore={currentPage > 1}
+          hasMore={!!last_id}
           loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
           useWindow={false}
-          getScrollParent={() => chatRef.current}
+        // getScrollParent={() => chatRef.current}
         >
           {
-            currentPage === 1 && !searchChatKey &&
+            !last_id && !searchChatKey &&
             <React.Fragment>
               <div className="wrap-time">
                 <div className="time">{date_create}</div>

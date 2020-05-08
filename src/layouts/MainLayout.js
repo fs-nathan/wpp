@@ -118,7 +118,7 @@ function MainLayout({
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
 
   function handleNewChat(data) {
-    // console.log('handleNewChat', data)
+    console.log('handleNewChat', data)
     appendChat({ data_chat: data })
   }
 

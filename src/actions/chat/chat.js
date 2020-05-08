@@ -62,11 +62,11 @@ export function deleteChatFail(error) {
   };
 }
 
-export function loadChat(taskId, page, isMore) {
+export function loadChat(taskId, last_id, isMore) {
   return {
     type: actionTypes.LOAD_CHAT,
     task_id: taskId,
-    page,
+    last_id,
     isMore,
   };
 }

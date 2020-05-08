@@ -58,6 +58,7 @@ export default (state = initialState, action) => produce(state, draft => {
       if (isMore) {
         draft.chats.data.push(...payload.data);
         draft.chats.paging = payload.paging;
+        draft.chats.last_id = payload.last_id;
       } else {
         draft.chats = payload;
       }

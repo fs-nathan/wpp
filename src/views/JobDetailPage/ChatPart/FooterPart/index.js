@@ -316,7 +316,8 @@ const FooterPart = ({
     // console.log('sendMessage', imagesQueue.length)
     if (imagesQueue.length > 0) {
       sendMultipleFiles()
-    } else if (isShowQuickLike) {
+    }
+    if (isShowQuickLike) {
       dispatch(chatQuickLike(taskId))
       editorRef.current.blur();
     } else {
