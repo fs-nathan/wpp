@@ -11,14 +11,18 @@
   &:focus {
     outline: none;
   }
-  &__empty:before {
-    content: attr(placeholder);
+  &--placeholder {
+    display: none;
+    font-size: 15px;
+  }
+  &__empty {
     cursor: text;
     background: none;
     color: #83878d;
     display: block;
     position: absolute;
     left: 11px;
+    top: 23px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

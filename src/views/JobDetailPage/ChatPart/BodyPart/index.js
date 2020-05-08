@@ -6,6 +6,7 @@ import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { getChatDate } from 'helpers/jobDetail/stringHelper';
 import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
@@ -163,84 +164,86 @@ const BodyPart = props => {
       className={clsx("bodyChat", { "bodyChat__reply": props.isReply })}
       ref={chatRef}
     >
-      <InfiniteScroll
-        className="bodyChat--scroll"
-        isReverse
-        pageStart={currentPage}
-        loadMore={loadMoreChat}
-        hasMore={currentPage > 1}
-        loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
-        useWindow={false}
-        getScrollParent={() => chatRef.current}
-      >
-        {
-          currentPage === 1 && !searchChatKey &&
-          <React.Fragment>
-            <div className="wrap-time">
-              <div className="time">{date_create}</div>
-            </div>
-            <div className="wrap-common-row">
-              <div className="bodyChat--project">
-                <Avatar
-                  alt="creator"
-                  src={user_create.avatar}
-                  className="bodyChat--projectAvatar"
-                />
-                <div className="bodyChat--notifyName">{`${user_create.name} đã tạo công việc mới`}</div>
-                <div className="bodyChat--projectName">{name}</div>
-                <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
-                <button onClick={onClickCreateMember}
-                  className="bodyChat--buttonAddMember">{t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}</button>
+      <Scrollbars autoHide autoHideTimeout={500}>
+        <InfiniteScroll
+          className="bodyChat--scroll"
+          isReverse
+          pageStart={currentPage}
+          loadMore={loadMoreChat}
+          hasMore={currentPage > 1}
+          loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
+          useWindow={false}
+          getScrollParent={() => chatRef.current}
+        >
+          {
+            currentPage === 1 && !searchChatKey &&
+            <React.Fragment>
+              <div className="wrap-time">
+                <div className="time">{date_create}</div>
               </div>
-            </div>
-            <div className="bodyChat--introRow">
-              <div className="bodyChat--introImages">
-                <div className="bodyChat--introItem bodyChat--introItem__left">
-                  <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
-                  <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_THAO_LUAN')}</div>
-                </div>
-                <div className="bodyChat--introItem">
-                  <img alt="intro" src="/images/intro/intro-bg-3.png"></img>
-                  <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_QUAN_LY')}</div>
-                </div>
-                <div className="bodyChat--introItem bodyChat--introItem__right">
-                  <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
-                  <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_CHIA_SE')}</div>
+              <div className="wrap-common-row">
+                <div className="bodyChat--project">
+                  <Avatar
+                    alt="creator"
+                    src={user_create.avatar}
+                    className="bodyChat--projectAvatar"
+                  />
+                  <div className="bodyChat--notifyName">{`${user_create.name} đã tạo công việc mới`}</div>
+                  <div className="bodyChat--projectName">{name}</div>
+                  <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
+                  <button onClick={onClickCreateMember}
+                    className="bodyChat--buttonAddMember">{t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}</button>
                 </div>
               </div>
+              <div className="bodyChat--introRow">
+                <div className="bodyChat--introImages">
+                  <div className="bodyChat--introItem bodyChat--introItem__left">
+                    <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
+                    <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_THAO_LUAN')}</div>
+                  </div>
+                  <div className="bodyChat--introItem">
+                    <img alt="intro" src="/images/intro/intro-bg-3.png"></img>
+                    <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_QUAN_LY')}</div>
+                  </div>
+                  <div className="bodyChat--introItem bodyChat--introItem__right">
+                    <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
+                    <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_CHIA_SE')}</div>
+                  </div>
+                </div>
+              </div>
+            </React.Fragment>
+          }
+          {
+            searchChatKey && showedChats.length === 0 &&
+            <div className="bodyChat--searchEmpty">{t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
+          }
+          {
+            showedChats.map((el, id) => <Message {...el}
+              key={id}
+              handleForwardChat={handleForwardChat(el)}
+              handleDetailEmotion={handleDetailEmotion(el)}
+              handleReplyChat={handleReplyChat(el)} />)
+          }
+          {
+            isShowSendStatus && !searchChatKey &&
+            (
+              <div className="bodyChat--sending">
+                {isSending ? 'Đang gửi...' : 'Đã gửi'}
+              </div>
+            )
+          }
+          {
+            viewedChatMembers.length > 0 && !searchChatKey &&
+            <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}{showMembers.map(({ avatar, name }, i) =>
+              <abbr title={name} key={i}>
+                <Avatar className="bodyChat--viewedAvatar" src={avatar} />
+              </abbr>
+            )}
+              {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
             </div>
-          </React.Fragment>
-        }
-        {
-          searchChatKey && showedChats.length === 0 &&
-          <div className="bodyChat--searchEmpty">{t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
-        }
-        {
-          showedChats.map((el, id) => <Message {...el}
-            key={id}
-            handleForwardChat={handleForwardChat(el)}
-            handleDetailEmotion={handleDetailEmotion(el)}
-            handleReplyChat={handleReplyChat(el)} />)
-        }
-        {
-          isShowSendStatus && !searchChatKey &&
-          (
-            <div className="bodyChat--sending">
-              {isSending ? 'Đang gửi...' : 'Đã gửi'}
-            </div>
-          )
-        }
-        {
-          viewedChatMembers.length > 0 && !searchChatKey &&
-          <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}{showMembers.map(({ avatar, name }, i) =>
-            <abbr title={name} key={i}>
-              <Avatar className="bodyChat--viewedAvatar" src={avatar} />
-            </abbr>
-          )}
-            {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
-          </div>
-        }
-      </InfiniteScroll >
+          }
+        </InfiniteScroll >
+      </Scrollbars>
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />

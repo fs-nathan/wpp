@@ -7,6 +7,7 @@ const ChatBoxInput = (props) => {
   const {
     value,
     onChange,
+    placeholder,
     ...rest
   } = props;
 
@@ -21,13 +22,18 @@ const ChatBoxInput = (props) => {
   }
 
   return (
-    <ContentEditable
-      html={value}
-      className={clsx("ChatBoxInput", { 'ChatBoxInput__empty': !value })}
-      onChange={handleChange}
-      onPaste={pasteAsPlainText}
-      {...rest}
-    />
+    <>
+      <ContentEditable
+        html={value}
+        className={clsx("ChatBoxInput")}
+        onChange={handleChange}
+        onPaste={pasteAsPlainText}
+        {...rest}
+      />
+      <div className={clsx("ChatBoxInput--placeholder", { 'ChatBoxInput__empty': !value })}>
+        {placeholder}
+      </div>
+    </>
   );
 }
 
