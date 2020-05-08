@@ -238,10 +238,8 @@ const WeekDetail = connect(
   }
 );
 
-const WeedSchedule = ({ weekScheduleNow = emptyArray }) => {
-  const [currentIndex, setCurrentIndex] = useState(
-    weekScheduleNow.findIndex(({ is_date_now }) => is_date_now)
-  );
+const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
+  const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const [isToggle, toggle] = useToggle();
   const currentDay = weekScheduleNow[currentIndex];
   const canNext = currentIndex < weekScheduleNow.length - 1;
@@ -346,10 +344,18 @@ export default () => {
   useEffect(() => {
     dispatch(weekScheduleModule.actions.loadListSchedule());
   }, [dispatch]);
-  const weekScheduleNow = useSelector(
+  const weekScheduleNowResponse = useSelector(
     weekScheduleModule.selectors.listOfWeekNowSelector
   );
+  const weekScheduleNow = get(weekScheduleNowResponse, "data", emptyArray);
+  const defaultIndex = weekScheduleNow.findIndex(
+    ({ is_date_now }) => is_date_now
+  );
+  if (defaultIndex < 0) return null;
   return (
-    <WeedSchedule weekScheduleNow={get(weekScheduleNow, "data", emptyArray)} />
+    <WeedSchedule
+      weekScheduleNow={weekScheduleNow}
+      defaultIndex={defaultIndex}
+    />
   );
 };
