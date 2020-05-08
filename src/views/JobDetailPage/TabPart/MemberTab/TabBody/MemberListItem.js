@@ -62,9 +62,9 @@ const MemberListItem = ({
 
   return (
     <React.Fragment>
-      <StyledListItem className="memberItem" onClick={handleClickDetail}>
-        <Avatar className="memberItem--avatar" src={avatar} alt='avatar' />
-        <div className="memberItem--textWrap">
+      <StyledListItem className="memberItem">
+        <Avatar className="memberItem--avatar" src={avatar} alt='avatar' onClick={handleClickDetail} />
+        <div className="memberItem--textWrap" onClick={handleClickDetail}>
           <div className="memberItem--name">
             {name}
           </div>

@@ -39,6 +39,7 @@ export function* chatImage(payload) {
     yield put(actions.chatImageSuccess(res.data));
     // yield put(actions.loadChat(task_id));
     // yield put(actions.appendChat(res.data, id));
+    yield put(actions.removeChatById(id));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }

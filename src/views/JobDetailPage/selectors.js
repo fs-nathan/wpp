@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 const taskDetail = state => state.taskDetail.detailTask.taskDetails;
 const commonTask = state => state.taskDetail.commonTaskDetail;
 const colors = state => state.setting.colors;
+const taskMember = state => state.taskDetail.taskMember;
 
 export const selectedTaskSelector = createSelector(
   taskDetail,
@@ -26,5 +27,12 @@ export const currentColorSelector = createSelector(
     // console.log('task detail', task)
     const selectedColor = colors.find(({ selected }) => selected)
     return selectedColor ? selectedColor.color : '#fff'
+  }
+)
+
+export const membersSelector = createSelector(
+  taskMember,
+  (member = {}) => {
+    return member.member
   }
 )

@@ -61,6 +61,10 @@ const FooterPart = ({
   const listStickers = useSelector(state => state.chat.listStickers);
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
   const groupActiveColor = useSelector(currentColorSelector)
+  const members = useSelector(state => state.taskDetail.taskMember.member);
+  const membersRef = useRef([]);
+  const selectedIdRef = useRef(0);
+  const isOpenMentionRef = useRef(false);
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const chatTextRef = useRef('');
@@ -70,6 +74,7 @@ const FooterPart = ({
   const [isShowQuickLike, setShowQuickLike] = useState(false);
   const [isShareFromLib, setShareFromLib] = useState(false);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
+  const [selectedId, setSelectedId] = useState(0);
 
   useEffect(() => {
     async function renderPrepareImages(imagesFiles) {
@@ -227,6 +232,7 @@ const FooterPart = ({
     dispatch(tagMember(mention))
     // console.log('chatTextRef.current.selectionStart', chatTextRef.current.selectionStart)
     // setChatText(newContent)
+    setOpenMention(false)
   }
 
   const focus = () => {
@@ -326,10 +332,19 @@ const FooterPart = ({
   }
 
   function onKeyDown(event) {
-    const keyCode = event.keyCode || event.which
-    // console.log('onKeyDown', imagesQueue.length)
+    const keyCode = event.keyCode || event.which;
+    const members = membersRef.current;
+    const selectedId = selectedIdRef.current;
+    if ((keyCode === 38 || keyCode === 40) && isOpenMentionRef.current) {
+      event.returnValue = false;
+      if (event.preventDefault) event.preventDefault()
+    }
     if (keyCode === 16) {// shift
       isPressShift = true;
+    } else if (keyCode === 13 && isOpenMentionRef.current) {// enter
+      handleClickMention(members[selectedId])
+      event.returnValue = false;
+      if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 13 && !isPressShift) {// enter
       // sendMessage();
       sendButtonRef.current.click();
@@ -338,13 +353,30 @@ const FooterPart = ({
     } else if (keyCode === 50 && isPressShift) {// @
       setOpenMention(true)
       focus()
+    } else if (keyCode === 8) {// backspace
+      const sel = window.getSelection();
+      const range = sel.getRangeAt(0);
+      const content = getChatContent(htmlToText(chatTextRef.current));
+      const delChar = content.charAt(content.length - 1)
+      // console.log('chatText', delChar, content)
+      if (delChar === '@') {
+        setOpenMention(false)
+      }
+    } else if (keyCode === 38) {// up
+      setSelectedId(selectedId === 0 ? members.length - 1 : selectedId - 1)
+    } else if (keyCode === 40) {// down
+      // console.log('selectedId', selectedId, members)
+      setSelectedId(selectedId === members.length - 1 ? 0 : selectedId + 1)
     } else if (keyCode === 32) {// space
       setOpenMention(false)
     }
   }
 
   function onKeyUp(event) {
-    isPressShift = false;
+    const keyCode = event.keyCode || event.which;
+    if (keyCode === 16) {// shift
+      isPressShift = false;
+    }
   }
 
   function clearChatText() {
@@ -366,6 +398,18 @@ const FooterPart = ({
   useEffect(() => {
     chatTextRef.current = chatText;
   }, [chatText])
+
+  useEffect(() => {
+    membersRef.current = members;
+  }, [members]);
+
+  useEffect(() => {
+    selectedIdRef.current = selectedId;
+  }, [selectedId])
+
+  useEffect(() => {
+    isOpenMentionRef.current = isOpenMention;
+  }, [isOpenMention])
 
   return (
     <div className="footer-chat-container">
@@ -448,6 +492,7 @@ const FooterPart = ({
           isOpen={isOpenMention}
           handleClose={handleCloseTag}
           handleClickMention={handleClickMention}
+          selectedId={selectedId}
         />
       }
       {
