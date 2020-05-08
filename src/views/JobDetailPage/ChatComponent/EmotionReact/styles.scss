@@ -57,9 +57,9 @@
     border-radius: 25px;
     position: relative;
 
-    .ReactEmotionPopup {
+    &:hover .ReactEmotionPopup {
       display: flex;
-      top: -40px;
+      top: -38px;
     }
     &:focus {
       outline: none;
