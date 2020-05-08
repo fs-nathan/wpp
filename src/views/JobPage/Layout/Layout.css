@@ -12,9 +12,9 @@
   flex-shrink: 0;
 }
 .comp_JobPageLayout__drawerPaper {
-  top: 70px;
-  height: calc(100% - 75px);
-  position: absolute;
+  top: 125px;
+  height: calc(100vh - 125px);
+  position: fixed;
   width: 400px;
   box-shadow: -18px 8px 24px -10px rgba(0, 0, 0, 0.2);
 }

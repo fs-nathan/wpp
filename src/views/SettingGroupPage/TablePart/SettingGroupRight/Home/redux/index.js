@@ -1,7 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { get } from "views/JobPage/utils";
-import { createAsyncAction } from "./apiCall/utils";
+import { createAsyncAction, createPostAsyncAction } from "./apiCall/utils";
 import { listcreate, listremove, mapPayloadToState } from "./listReducer";
 const rootPath = "/setting-group/home";
 
@@ -42,7 +42,7 @@ const addCategoryList = createAction(
 );
 
 export const createPostCategory = ({ name, logo }) => {
-  return createAsyncAction({
+  return createPostAsyncAction({
     config: {
       url: "/post-category/create",
       method: "post",
@@ -52,7 +52,7 @@ export const createPostCategory = ({ name, logo }) => {
   });
 };
 export const deletePostCategory = ({ category_id }) => {
-  return createAsyncAction({
+  return createPostAsyncAction({
     config: {
       url: "/post-category/delete",
       method: "delete",
