@@ -1,33 +1,12 @@
 import React, { useContext } from "react";
 import GroupDetailContext from "../GroupDetailContext";
-
+import "./Logo.css";
 function Logo() {
-  const { cover } = useContext(GroupDetailContext);
+  const { cover, sologan } = useContext(GroupDetailContext);
   return (
-    <div
-      style={{
-        position: "relative",
-        height: "100%",
-      }}
-    >
-      <img
-        src={cover}
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        alt="cover"
-      ></img>
-      <div
-        style={{
-          color: "#fff",
-          textShadow: "#000 0px 0px 8px",
-          fontWeight: "bold",
-          fontSize: "24px",
-          padding: "20px",
-          position: "absolute",
-          bottom: 0,
-        }}
-      >
-        Workplus - Thên công việc thêm niềm vui
-      </div>
+    <div className="comp_homeCover">
+      <img src={cover} alt="cover"></img>
+      <div>{sologan}</div>
     </div>
   );
 }

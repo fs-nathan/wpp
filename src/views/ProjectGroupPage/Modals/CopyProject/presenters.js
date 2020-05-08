@@ -1,14 +1,15 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { FormControl, FormControlLabel, FormHelperText, ListItemText, ListSubheader, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { FormControl, FormControlLabel, ListItemText, ListSubheader, Radio, RadioGroup, Typography } from '@material-ui/core';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
+import CustomDatePicker from 'components/CustomDatePicker';
 import { Primary, StyledList, StyledListItem } from 'components/CustomList';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import SearchInput from 'components/SearchInput';
-import { COPY_PROJECT, CustomEventDispose, CustomEventListener } from 'constants/events.js';
+import { COPY_PROJECT, CustomEventDispose, CustomEventListener, LIST_PROJECT } from 'constants/events.js';
 import { useMaxlenString, useRequiredDate, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -74,7 +75,7 @@ const RightContainer = ({ className = '', ...props }) =>
 
 const Subtitle = ({ className = '', ...props }) =>
   <Typography
-    className={`view_ProjectGroup_EditProjectModa_Modal___subtitle ${className}`}
+    className={`view_ProjecrGroup_Copy_Project_Modal___subtitle ${className}`}
     {...props}
   />;
 
@@ -123,18 +124,34 @@ function CopyProject({
   searchPatern, setSearchPatern,
   groups,
   handleCopyProject,
-  activeLoading,
+  doReload,
+  projectGroupId, timeRange,
 }) {
 
   const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
+  const [description, setDescription] = useMaxlenString('', 500);
   const [isCopyMember, setIsCopyMember] = React.useState(false);
   const [startDate, setStartDate, errorDate] = useRequiredDate(moment().toDate());
   const [selectedProject, setSelectedProject] = React.useState(null);
+  const [activeLoading, setActiveLoading] = React.useState(false);
 
   React.useEffect(() => {
-    const successClose = () => {
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(COPY_PROJECT.SUCCESS, doReload);
+    CustomEventListener(COPY_PROJECT.FAIL, fail);
+    return () => {
+      CustomEventDispose(COPY_PROJECT.SUCCESS, doReload);
+      CustomEventDispose(COPY_PROJECT.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectGroupId, timeRange]);
+
+  React.useEffect(() => {
+    const success = () => {
+      setActiveLoading(false);
       setOpen(false);
       setName('');
       setDescription('');
@@ -142,10 +159,17 @@ function CopyProject({
       setStartDate(moment().toDate());
       setSelectedProject(null);
     };
-    CustomEventListener(COPY_PROJECT, successClose);
-    return () => CustomEventDispose(COPY_PROJECT, successClose);
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(LIST_PROJECT.SUCCESS, success);
+    CustomEventListener(LIST_PROJECT.FAIL, fail);
+    return () => {
+      CustomEventDispose(LIST_PROJECT.SUCCESS, success);
+      CustomEventDispose(LIST_PROJECT.FAIL, fail);
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [projectGroupId, timeRange]);
 
   return (
     <CustomModal
@@ -153,14 +177,17 @@ function CopyProject({
       fullWidth={true}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName && !errorDescription && !errorDate && selectedProject}
-      onConfirm={() => handleCopyProject(
-        get(selectedProject, 'id'),
-        name,
-        description,
-        moment(startDate).format('YYYY-MM-DD'),
-        isCopyMember
-      )}
+      canConfirm={!errorName && !errorDate && selectedProject}
+      onConfirm={() => {
+        handleCopyProject(
+          get(selectedProject, 'id'),
+          name,
+          description,
+          moment(startDate).format('YYYY-MM-DD'),
+          isCopyMember
+        );
+        setActiveLoading(true);
+      }}
       onCancle={() => setOpen(false)}
       height='tall'
       columns={2}
@@ -196,24 +223,19 @@ function CopyProject({
             <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NAME")}</Header>
             <StyledTypo>{get(selectedProject, 'name', t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.PLACEHOLDER"))}</StyledTypo>
             <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DESC")}</Header>
-            <TextField
+            <CustomTextbox
               value={name}
-              onChange={evt => setName(evt.target.value)}
-              margin="normal"
-              variant="outlined"
+              onChange={value => setName(value)}
               label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_NAME")}
               fullWidth
-              helperText={
-                <ColorTypo variant='caption' color='red'>
-                  {get(errorName, 'message', '')}
-                </ColorTypo>
-              }
+              required={true}
             />
             <CustomTextbox
               value={description}
               onChange={value => setDescription(value)}
               label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_DESC")}
-              helperText={get(errorDescription, 'message', '')}
+              fullWidth
+              multiline={true}
             />
             <StyledFormControl component="div" fullWidth>
               <Subtitle>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}</Subtitle>
@@ -224,18 +246,15 @@ function CopyProject({
             </StyledFormControl>
             <StyledFormControl component="div">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  inputVariant="outlined"
-                  variant="inline"
+                <CustomDatePicker
                   label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DATE")}
                   ampm={false}
                   value={startDate}
                   onChange={setStartDate}
                   format="dd/MM/yyyy"
+                  required={true}
                 />
               </MuiPickersUtilsProvider>
-              <FormHelperText error filled variant='filled'>{get(errorDate, 'message', '')}</FormHelperText>
             </StyledFormControl>
           </RightContainer>,
       }}

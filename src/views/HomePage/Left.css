@@ -1,0 +1,39 @@
+.comp_Left__shortcut {
+  color: rgb(84, 84, 84);
+  display: flex;
+  align-items: flex-start;
+}
+.comp_Left__shortcutGroupTitle {
+  font-weight: bold;
+}
+.comp_Left__profile {
+  text-align: center;
+}
+.comp_Left__avatar {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+.comp_Left__name {
+  font-size: 1.5rem !important;
+  font-weight: bold;
+  line-height: 1.334;
+  letter-spacing: 0em;
+}
+.comp_Left__description {
+  line-height: 1.4;
+  white-space: pre-line;
+}
+.comp_Left__avatar .MuiAvatar-root {
+  width: 140px;
+  height: 140px;
+}
+.comp_Left__shortcutIcon {
+  width: 20px;
+  flex-shrink: 0;
+  fill: currentcolor;
+  margin-right: 10px;
+}
+.comp_Left__shortcutLink {
+  line-height: 20px;
+}

@@ -5,21 +5,17 @@ const detailRoom = state => state.room.detailRoom;
 const getUserOfRoom = state => state.room.getUserOfRoom;
 const sortUser = state => state.user.sortUser;
 const getRequirementJoinGroup = state => state.groupUser.getRequirementJoinGroup;
-const banUserFromGroup = state => state.user.banUserFromGroup;
 const listPosition = state => state.position.listPosition;
-const deleteRoom = state => state.room.deleteRoom;
 const publicMember = state => state.user.publicMember;
 const privateMember = state => state.user.privateMember;
 
 export const roomSelector = createSelector(
-  [detailRoom, getUserOfRoom, listPosition, deleteRoom, sortUser, banUserFromGroup],
-  (detailRoom, getUserOfRoom, listPosition, deleteRoom, sortUser, banUserFromGroup) => {
+  [detailRoom, getUserOfRoom, listPosition, sortUser],
+  (detailRoom, getUserOfRoom, listPosition, sortUser) => {
     const { loading: sortUserLoading, error: sortUserError } = sortUser;
     const { data: { room }, loading: detailRoomLoading, error: detailRoomError, firstTime: detailFirst } = detailRoom;
     const { data: { users }, loading: getUserOfRoomLoading, error: getUserOfRoomError, firstTime: getUserFirst } = getUserOfRoom;
     const { data: { positions } } = listPosition;
-    const { loading: deleteLoading, error: deleteError } = deleteRoom;
-    const { loading: banUserLoading, error: banUserError } = banUserFromGroup;
     const newRoom = {
       ...room,
       users: (isArray(users) ? users : []).map(user => ({
@@ -33,8 +29,8 @@ export const roomSelector = createSelector(
     }
     return {
       room: newRoom,
-      loading: (detailFirst ? false : detailRoomLoading) || (getUserFirst ? false : getUserOfRoomLoading) || sortUserLoading || deleteLoading || banUserLoading,
-      error: detailRoomError || getUserOfRoomError || sortUserError || deleteError || banUserError,
+      loading: (detailFirst ? false : detailRoomLoading) || (getUserFirst ? false : getUserOfRoomLoading) || sortUserLoading,
+      error: detailRoomError || getUserOfRoomError || sortUserError,
       firstTime: detailFirst && getUserFirst,
     }
   }

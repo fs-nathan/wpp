@@ -61,7 +61,7 @@ function AllTaskTable({
   handleSortTask,
   handleOpenModal,
   bgColor, timeType,
-  handleTimeType, handleTimeRange,
+  handleTimeType,
   canUpdateProject, canCreateTask,
 }) {
 
@@ -263,9 +263,8 @@ function AllTaskTable({
           anchorEl={timeAnchor}
           setAnchorEl={setTimeAnchor}
           timeOptionDefault={timeType}
-          handleTimeRange={(timeType, startDate, endDate) => {
+          handleTimeRange={(timeType) => {
             handleTimeType(timeType)
-            handleTimeRange(startDate, endDate)
           }}
         />
       </React.Fragment>

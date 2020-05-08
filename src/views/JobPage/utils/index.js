@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import {
   chunk,
   get,
@@ -7,11 +8,25 @@ import {
   template,
   uniqueId,
 } from "lodash";
+import React from "react";
 import { taskPriorityMap, taskStatusMap } from "../contants/attrs";
 import { emptyObject } from "../contants/defaultValue";
 import * as chart from "./chart";
 import * as time from "./time";
-
+const toFormData = (data = emptyObject) => {
+  let form_data = new FormData();
+  for (let key in data) {
+    const item = data[key];
+    if (Array.isArray(item)) {
+      item.forEach((value) => {
+        form_data.append(key, value);
+      });
+    } else {
+      if (data[key]) form_data.append(key, data[key]);
+    }
+  }
+  return form_data;
+};
 function encodeQueryData(data) {
   const ret = [];
   for (let d in data) {
@@ -86,15 +101,33 @@ const createValidate = (schema) => (values = {}, mapError = {}) => {
       }, {})
     : emptyObject;
 };
+const paging = (data) => {
+  const currentPage = get(data, "paging.page");
+  const totalPage = get(data, "paging.total_page");
+  const hasMore = currentPage && totalPage && currentPage < totalPage;
+  return { currentPage, totalPage, hasMore };
+};
+
+const injectClassName = (classN) => (C = "div") => {
+  return ({ className, ...props }) => {
+    return React.createElement(C, {
+      className: classnames(classN, className),
+      ...props,
+    });
+  };
+};
 export {
+  paging,
   chart,
   time,
+  injectClassName,
   remove,
   get,
   isFunction,
   merge,
   uniqueId,
   chunk,
+  toFormData,
   template,
   createValidate,
   loginlineParams,

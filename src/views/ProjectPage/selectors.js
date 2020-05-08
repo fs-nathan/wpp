@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 
 const profile = state => state.system.profile;
 const viewPermissions = state => state.viewPermissions;
+const localStorage = state => state.localStorage;
 
 export const routeSelector = createSelector(
   [profile],
@@ -21,3 +22,11 @@ export const viewPermissionsSelector = createSelector(
     });
   }
 );
+
+export const localOptionSelector = createSelector(
+  [localStorage],
+  (localStorage) => {
+    const { project } = localStorage;
+    return project;
+  }
+)

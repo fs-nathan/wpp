@@ -5,18 +5,27 @@ import { connect } from "react-redux";
 import { bgColorSelector } from "views/ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import "./EmptyHolder.css";
 function EmptyHolder({
+  image,
   bgColor,
   title = "Không có dữ liệu",
-  description = "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc"
+  description = "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc",
 }) {
   const { t } = useTranslation();
   return (
     <div className="comp_EmptyHolder__wrapper">
-      <img className="comp_EmptyHolder__img" src={noDataImg} alt="empty"></img>
+      {image ? (
+        image
+      ) : (
+        <img
+          className="comp_EmptyHolder__img"
+          src={noDataImg}
+          alt="empty"
+        ></img>
+      )}
       <div
         className="comp_EmptyHolder__title"
         style={{
-          color: bgColor.color
+          color: bgColor.color,
         }}
       >
         {t(title)}
@@ -25,9 +34,9 @@ function EmptyHolder({
     </div>
   );
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    bgColor: bgColorSelector(state)
+    bgColor: bgColorSelector(state),
   };
 };
 export default connect(mapStateToProps)(EmptyHolder);

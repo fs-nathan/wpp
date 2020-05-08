@@ -130,8 +130,7 @@ function GroupTaskSlide({
           <MenuItem onClick={evt => {
             setAnchorEl(null);
             handleOpenModal('ALERT', {
-              content: "Bạn chắc chắn muốn xóa nhóm công việc?",
-              onConfirm: () => handleDeleteGroupTask(curGroupTask)
+              selectedGroupTask: curGroupTask,
             });
           }}>Xóa</MenuItem>
         </Menu>

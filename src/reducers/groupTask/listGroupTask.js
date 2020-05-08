@@ -1,10 +1,6 @@
-import { findIndex, get, remove, slice } from 'lodash';
-import { COPY_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/copyGroupTask';
-import { CREATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/createGroupTask';
-import { DELETE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/deleteGroupTask';
+import { get, remove, slice } from 'lodash';
 import { LIST_GROUP_TASK, LIST_GROUP_TASK_FAIL, LIST_GROUP_TASK_RESET, LIST_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/listGroupTask';
 import { SORT_GROUP_TASK, SORT_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/sortGroupTask';
-import { UPDATE_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/updateGroupTask ';
 
 export const initialState = {
   data: {
@@ -40,6 +36,7 @@ function reducer(state = initialState, action) {
       };
     case LIST_GROUP_TASK_RESET:
       return initialState;
+    /*
     case COPY_GROUP_TASK_SUCCESS: {
       if (get(action.data, 'groupTasks', []).length === 0) {
         return {
@@ -102,6 +99,7 @@ function reducer(state = initialState, action) {
         },
       }
     }
+    */
     case SORT_GROUP_TASK:
     case SORT_GROUP_TASK_SUCCESS: {
       let newGroupTasks = [...get(state.data, 'groupTasks', [])];

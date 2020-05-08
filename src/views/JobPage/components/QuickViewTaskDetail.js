@@ -2,13 +2,11 @@ import { Avatar, Box } from "@material-ui/core";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
 import AvatarCircleList from "components/AvatarCircleList";
 import colors from "helpers/colorPalette";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { taskAtrrs } from "../contants/attrs";
-import { taskDetailLink } from "../contants/links";
-import { JobPageContext } from "../JobPageContext";
 import QuickView from "../Layout/QuickView";
 import { createMapPropsFromAttrs, get, template } from "../utils";
 import InlineBadge from "./InlineBadge";
@@ -118,7 +116,7 @@ export const QuickViewTaskDetailHeader = ({ detailTask }) => {
         </div>
         <div className="comp_QuickViewTaskDetailHeader__date">
           {template(t("Đã được giao ngày <%= date %>"))({
-            date: get(detailTask, taskAtrrs.date_create)
+            date: get(detailTask, taskAtrrs.date_create),
           })}
         </div>
       </div>
@@ -134,40 +132,24 @@ const EditAction = ({ ...props }) => {
   );
 };
 
-function QuickViewTaskDetail({ detailTask }) {
+export function QuickViewTaskDetailStateLess({ detailTask, onClose }) {
   const { t } = useTranslation();
-  const { pin, setPin } = useContext(JobPageContext);
   const history = useHistory();
-  const [project_id, id] = createMapPropsFromAttrs([
+  const [project_id, id, url_redirect] = createMapPropsFromAttrs([
     taskAtrrs.project_id,
-    taskAtrrs.id
+    taskAtrrs.id,
+    taskAtrrs.url_redirect,
   ])(detailTask);
-  const [openEditJob, setOpenEditJob] = useState();
-  const [modal, setModal] = useState(undefined);
-  const openModal = useCallback(
-    modal => {
-      setPin(true);
-      setModal(modal);
-    },
-    [setPin]
-  );
-  const closeModal = useCallback(() => {
-    setPin(false);
-    setModal(undefined);
-  }, [setPin]);
   return (
     <>
       <QuickView
+        onClose={onClose}
         bottom={
           <Box className="comp_QuickViewTaskDetail__bottom">
             <Box
               className="comp_QuickViewTaskDetail__bottomAction__detail cursor-pointer"
               onClick={() => {
-                history.push(
-                  taskDetailLink
-                    .replace("{projectId}", project_id)
-                    .replace("{taskId}", id)
-                );
+                history.push(url_redirect);
               }}
             >
               {t("Xem chi tiết công viêc")}
@@ -184,9 +166,9 @@ function QuickViewTaskDetail({ detailTask }) {
             title={t("TÊN CÔNG VIỆC")}
             actions={
               <EditAction
-                onClick={() => {
-                  setOpenEditJob(true);
-                }}
+              // onClick={() => {
+              //   setOpenEditJob(true);
+              // }}
               />
             }
           >
@@ -247,7 +229,7 @@ const QuickViewTaskDetailContainer = ({
 }) => {
   const dispatch = useDispatch();
   const detailTask = useSelector(
-    state => state.taskDetail.detailTask.taskDetails
+    (state) => state.taskDetail.detailTask.taskDetails
   );
   useEffect(() => {
     dispatch(taskDetailAction.getTaskDetailTabPart({ taskId: taskId }));
@@ -255,13 +237,13 @@ const QuickViewTaskDetailContainer = ({
 
   const finalTask = {
     ...{
-      assign_code: 0
+      assign_code: 0,
     },
     ...defaultTaskDetail,
     ...(detailTask && detailTask !== null && taskId === detailTask.id
       ? detailTask
-      : {})
+      : {}),
   };
-  return <QuickViewTaskDetail detailTask={finalTask} {...props} />;
+  return <QuickViewTaskDetailStateLess detailTask={finalTask} {...props} />;
 };
 export default QuickViewTaskDetailContainer;

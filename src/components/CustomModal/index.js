@@ -155,6 +155,8 @@ function CustomModal({
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
       className={clsx(className, "comp_CustomModal")}
+      disableBackdropClick={true}
+      disableEscapeKeyDown={true}
     >
       <StyledDialogTitle className={clsx({ "comp_CustomModal__renderTitle": titleRender !== null })} id="alert-dialog-slide-title">
         {

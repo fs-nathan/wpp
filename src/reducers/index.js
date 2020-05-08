@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { postModule } from "views/HomePage/redux/post";
+import { weekScheduleModule } from "views/HomePage/redux/weekSchedule";
 import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
@@ -54,6 +55,7 @@ import createLevel, { initialState as createLevelInitialState } from "./level/cr
 import deleteLevel, { initialState as deleteLevelInitialState } from "./level/deleteLevel";
 import listLevel, { initialState as listLevelInitialState } from "./level/listLevel";
 import updateLevel, { initialState as updateLevelInitialState } from "./level/updateLevel";
+import localStorage, { initialState as localStorageInitialState } from './localStorage';
 import createMajor, { initialState as createMajorInitialState } from "./major/createMajor";
 import deleteMajor, { initialState as deleteMajorInitialState } from "./major/deleteMajor";
 import listMajor, { initialState as listMajorInitialState } from "./major/listMajor";
@@ -283,22 +285,36 @@ const rootReducer = combineReducers({
   [settingGroupHome.key]: settingGroupHome.reducer,
   [settingGroupPermission.key]: settingGroupPermission.reducer,
   [postModule.key]: postModule.reducer,
+  [weekScheduleModule.key]: weekScheduleModule.reducer,
 
   apiCall: apiCall,
   inviteOtherPeopleCreateAccount,
   viewPermissions,
   calendar: combineReducers({
-    listSchedule, listScheduleOfWeek,
-    listScheduleOfWeekFromModal, listWeeksInYear,
-    settingStartingDay, listProjectGroupSchedule,
-    createSchedule, updateSchedule, listCalendarPermission,
-    deleteSchedule, listPersonalRemindCategory,
-    listRemindRecently, listPersonalRemind,
-    createProjectGroupSchedule, getProjectGroupScheduleDetail,
-    projectGroupSettingStartingDay, projectGroupAddWorkingDays,
-    projectGroupDeleteWorkingDays, projectGroupAddDayOff,
-    createPersonalRemindCategory, createPersonalRemind, listRemindProject
-  })
+    listSchedule,
+    listScheduleOfWeek,
+    listScheduleOfWeekFromModal,
+    listWeeksInYear,
+    settingStartingDay,
+    listProjectGroupSchedule,
+    createSchedule,
+    updateSchedule,
+    listCalendarPermission,
+    deleteSchedule,
+    listPersonalRemindCategory,
+    listRemindRecently,
+    listPersonalRemind,
+    createProjectGroupSchedule,
+    getProjectGroupScheduleDetail,
+    projectGroupSettingStartingDay,
+    projectGroupAddWorkingDays,
+    projectGroupDeleteWorkingDays,
+    projectGroupAddDayOff,
+    createPersonalRemindCategory,
+    createPersonalRemind,
+    listRemindProject,
+  }),
+  localStorage,
 });
 
 export const DEFAULT_STATE = {
@@ -422,7 +438,7 @@ export const DEFAULT_STATE = {
     getListGroup: getListGroupInitialState,
   },
   register: {
-    inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState
+    inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState,
   },
   viewPermissions: viewPermissionsInitialState,
   calendar: {
@@ -448,7 +464,8 @@ export const DEFAULT_STATE = {
     createPersonalRemind: createPersonalRemindInitialState,
     listRemindProject: listRemindProjectInitialState,
     listCalendarPermission: listCalendarPermissionInitialState
-  }
+  },
+  localStorage: localStorageInitialState,
 };
 
 export default rootReducer;

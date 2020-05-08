@@ -4,7 +4,6 @@ const listRoom = state => state.room.listRoom;
 const listLevel = state => state.level.listLevel;
 const listMajor = state => state.major.listMajor;
 const listPosition = state => state.position.listPosition;
-const updateUser = state => state.user.updateUser;
 
 export const optionsSelector = createSelector(
   [listRoom, listLevel, listMajor, listPosition],
@@ -26,13 +25,5 @@ export const optionsSelector = createSelector(
       error: listRoomError || listPositionError || listMajorError || listLevelError,
       firstTime: roomFirst && positionFirst && majorFirst && levelFirst,
     }
-  }
-);
-
-export const activeLoadingSelector = createSelector(
-  [updateUser],
-  (updateUser) => {
-    const { loading } = updateUser;
-    return loading;
   }
 );

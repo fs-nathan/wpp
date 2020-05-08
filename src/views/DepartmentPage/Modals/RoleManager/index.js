@@ -1,19 +1,19 @@
 import { deleteUserRole } from "actions/userRole/deleteUserRole";
 import { listUserRole } from "actions/userRole/listUserRole";
-import AlertModal from "components/AlertModal";
 import { get } from "lodash";
 import React from "react";
 import { connect } from "react-redux";
 import { RoleManagerContent, RoleManagerContext, RoleManagerModalWrapper } from "./presenters";
 import RoleCreateAndUpdateModal from "./RoleCreateAndUpdate";
+import RoleDeleteModal from "./RoleDelete";
 import { userRolesSelector } from "./selectors";
 
 function RoleManager({ open, setOpen, userRoles, doDeleteUserRole, doListUserRole, children }) {
 
   React.useEffect(() => {
-    if (open) doListUserRole();
+    doListUserRole();
     // eslint-disable-next-line
-  }, [open]);
+  }, []);
 
   const [openCAU, setOpenCAU] = React.useState(false);
   const [CAUProps, setCAUProps] = React.useState({});
@@ -63,7 +63,7 @@ function RoleManager({ open, setOpen, userRoles, doDeleteUserRole, doListUserRol
         setOpen={setOpenCAU}
         {...CAUProps}
       />
-      <AlertModal open={openAlert} setOpen={setOpenAlert} {...alertProps} />
+      <RoleDeleteModal open={openAlert} setOpen={setOpenAlert} {...alertProps} />
     </>
   );
 }
