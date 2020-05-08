@@ -3,6 +3,7 @@ import Icon from '@mdi/react';
 import { find, flattenDeep, get, isNil, join } from 'lodash';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-use';
 import AvatarCircleList from '../../../../components/AvatarCircleList';
 import CustomBadge from '../../../../components/CustomBadge';
 import { DownloadPopover, TimeRangePopover, useTimes } from '../../../../components/CustomPopover';
@@ -66,6 +67,7 @@ function AllTaskTable({
 }) {
 
   const history = useHistory();
+  const { pathname } = useLocation();
 
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
@@ -79,9 +81,9 @@ function AllTaskTable({
             title: 'Danh sách công việc',
             subTitle: () => (
               <SubTitle>
-                <span onClick={evt => history.push(`${get(project.project, 'url_redirect')}`)}>Chat</span>
+                <span onClick={evt => history.push(`${pathname.replace('table', 'chat')}`)}>Chat</span>
                 <span>Table</span>
-                <span>Grant</span>
+                <span onClick={evt => history.push(`${pathname.replace('table', 'gantt')}`)}>Gantt</span>
               </SubTitle>
             ),
             subActions: [canUpdateProject ? {
