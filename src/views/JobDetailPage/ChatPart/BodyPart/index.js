@@ -213,9 +213,7 @@ const BodyPart = props => {
         }
         {
           searchChatKey && showedChats.length === 0 &&
-          <div className="bodyChat--searchEmpty">
-            Không tìm thấy kết quả
-          </div>
+          <div className="bodyChat--searchEmpty">{t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
         }
         {
           showedChats.map((el, id) => <Message {...el}

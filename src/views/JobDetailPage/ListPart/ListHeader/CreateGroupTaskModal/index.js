@@ -1,7 +1,6 @@
 import { Typography } from '@material-ui/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
 
@@ -10,11 +9,6 @@ function CreateGroupTaskModal({
   setOpen,
   onClickCreate }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
-  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-
-
 
   return (
     <JobDetailModalWrap

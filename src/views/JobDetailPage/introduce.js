@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import MobileStepper from "@material-ui/core/MobileStepper";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -68,6 +69,7 @@ const StyledName = styled.span`
 `
 
 function Introduce() {
+  const { t } = useTranslation();
     const classes = useStyles();
     const theme = useTheme();
     const userName = useSelector(state => state.system.profile.name);
@@ -82,8 +84,8 @@ function Introduce() {
     return (
         <div className="container-intro">
             <div>
-                <Typography>Làm việc mê li cùng <b>Workplus PC!</b></Typography>
-                <Typography>Hi <StyledName color={groupActiveColor}>{userName}</StyledName>, chào mừng bạn đến với Workplus. Hãy tạo mới những công việc, chia sẻ và thảo luận cùng đồng nghiệp để hoàn thành chúng tốt nhất.</Typography>
+                <Typography>{t('LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG')}<b>Workplus PC!</b></Typography>
+                <Typography>{t('LABEL_CHAT_TASK_HI')}<StyledName color={groupActiveColor}>{userName}</StyledName>{t('LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN')}</Typography>
                 <div className={classes.root}>
                     <AutoPlaySwipeableViews
                         axis={theme.direction === "rtl" ? "x-reverse" : "x"}

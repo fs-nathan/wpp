@@ -2,6 +2,7 @@ import { IconButton, Typography } from '@material-ui/core';
 import { mdiChevronDown, mdiPlus, mdiSettingsOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
@@ -50,6 +51,7 @@ function ListHeaderSelect({ setShow }) {
 }
 
 function ListHeader(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
@@ -84,7 +86,7 @@ function ListHeader(props) {
         <ListHeaderSelect {...props} />
         <div className="header-bottom-box">
           <SearchInput
-            placeholder="Tìm công việc trong dự án..."
+            placeholder={t('LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN')}
             style={{ height: 'auto' }}
             onChange={e => searchListTask(e)}
           />
