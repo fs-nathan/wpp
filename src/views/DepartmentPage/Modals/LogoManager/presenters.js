@@ -231,24 +231,26 @@ const LogoManagerModalWrapper = ({ children }) => {
               >
                 <Avatar src={get(icon, "url_full")} alt="avatar" />
               </ButtonBase>
-              <ColorButton
-                fullWidth
-                variant="text"
-                size="small"
-                variantColor="red"
-                onClick={() =>
-                  handleOpenModal("ALERT", {
-                    content: t("DMH.VIEW.DP.MODAL.LOGO.ALERT"),
-                    onConfirm: () => handleDeleteIcon(icon),
-                  })
-                }
-              >
-                {mutateIcon.loading ? (
-                  <LoadingBox size={8} />
-                ) : (
-                    t("DMH.VIEW.DP.MODAL.LOGO.DEL")
-                  )}
-              </ColorButton>
+              {canUpload && (
+                <ColorButton
+                  fullWidth
+                  variant="text"
+                  size="small"
+                  variantColor="red"
+                  onClick={() =>
+                    handleOpenModal("ALERT", {
+                      content: t("DMH.VIEW.DP.MODAL.LOGO.ALERT"),
+                      onConfirm: () => handleDeleteIcon(icon),
+                    })
+                  }
+                >
+                  {mutateIcon.loading ? (
+                    <LoadingBox size={8} />
+                  ) : (
+                      t("DMH.VIEW.DP.MODAL.LOGO.DEL")
+                    )}
+                </ColorButton>
+              )}
             </LogoBox>
           ))}
         </LogoList>
