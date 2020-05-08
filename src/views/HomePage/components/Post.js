@@ -502,7 +502,7 @@ export const PostCategory = () => {
   if (!category_name) return null;
   return (
     <ButtonBase
-      className="comp_Post__category"
+      className="comp_Post__category u-link"
       onClick={() => {
         history.push(routes.category.path.replace(":id", category_id));
       }}

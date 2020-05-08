@@ -31,8 +31,8 @@
 .comp_Left__shortcutIcon {
   width: 20px;
   flex-shrink: 0;
-  fill: currentcolor;
   margin-right: 10px;
+  color: #9c9c9c;
 }
 .comp_Left__shortcutLink {
   line-height: 20px;

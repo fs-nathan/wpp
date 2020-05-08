@@ -5,14 +5,45 @@ import StyledTypo from "components/ColorTypo";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { useToggle } from "react-use";
+import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
+import { emptyArray } from "views/JobPage/contants/defaultValue";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
 import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
-export const HightLight = ({ posts }) => {
+
+const HighlightItem = ({ item, history }) => (
+  <ListItemLayout
+    left={<Avatar src={item.user_create_avatar}></Avatar>}
+    title={
+      <span
+        className="cursor-pointer u-link"
+        onClick={() =>
+          history.push(routes.postDetail.path.replace(":id", item.id))
+        }
+      >
+        {item.title}
+      </span>
+    }
+    subTitle={
+      <span
+        onClick={() => {
+          history.push(routes.category.path.replace(":id", item.category_id));
+        }}
+      >
+        <StyledTypo component="span" className="u-link u-colorBlue">
+          # {item.category_name}
+        </StyledTypo>{" "}
+        {item.created_at}
+      </span>
+    }
+  ></ListItemLayout>
+);
+export const HightLight = ({ posts, onMoreClick }) => {
   const { t } = useTranslation();
   const history = useHistory();
   return (
@@ -49,36 +80,7 @@ export const HightLight = ({ posts }) => {
             //   })
             posts.map((item, i) => {
               return (
-                <ListItemLayout
-                  key={i}
-                  left={<Avatar src={item.user_create_avatar}></Avatar>}
-                  title={
-                    <span
-                      className="cursor-pointer"
-                      onClick={() =>
-                        history.push(
-                          routes.postDetail.path.replace(":id", item.id)
-                        )
-                      }
-                    >
-                      {item.title}
-                    </span>
-                  }
-                  subTitle={
-                    <span
-                      onClick={() => {
-                        history.push(
-                          routes.category.path.replace(":id", item.category_id)
-                        );
-                      }}
-                    >
-                      <StyledTypo component="span" color="blue">
-                        # {item.category_name}
-                      </StyledTypo>{" "}
-                      {item.created_at}
-                    </span>
-                  }
-                ></ListItemLayout>
+                <HighlightItem key={i} {...{ item, history }}></HighlightItem>
               );
             })
           }
@@ -86,7 +88,7 @@ export const HightLight = ({ posts }) => {
             <EmptyHolder title={"Không tìm thấy bài post nào"} description="" />
           )}
           <div>
-            <ButtonBase style={{ float: "right" }}>
+            <ButtonBase onClick={onMoreClick} style={{ float: "right" }}>
               <StyledTypo
                 className="u-fontSize12 u-colorBlue"
                 component="span"
@@ -107,5 +109,39 @@ export default (props) => {
   useEffect(() => {
     dispatch(postModule.actions.loadPostHighLightList());
   }, [dispatch]);
-  return <HightLight posts={posts} {...props} />;
+  const [isToggle, toggle] = useToggle();
+  const { t } = useTranslation();
+  const location = useLocation();
+  const history = useHistory();
+  useEffect(() => {
+    toggle(false);
+  }, [location, toggle]);
+  return (
+    <>
+      <HightLight posts={posts} {...props} onMoreClick={() => toggle()} />
+      {isToggle && (
+        <ModalCommon
+          onClose={() => toggle()}
+          title={t("TIN NỔI BẬT")}
+          footerAction={emptyArray}
+        >
+          <Box padding="20px">
+            <Stack small>
+              {posts.map((item, i) => {
+                return (
+                  <HighlightItem key={i} {...{ item, history }}></HighlightItem>
+                );
+              })}
+              {posts.length === 0 && (
+                <EmptyHolder
+                  title={"Không tìm thấy bài post nào"}
+                  description=""
+                />
+              )}
+            </Stack>
+          </Box>
+        </ModalCommon>
+      )}
+    </>
+  );
 };

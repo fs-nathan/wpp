@@ -147,6 +147,7 @@ const FilePreviewField = ({ name }) => {
                     .filter((file) => !isFileImage(file))
                     .map((file, i) => (
                       <Chip
+                        className="comp_PostCreator__chip"
                         label={file.name}
                         onDelete={() => {
                           const newValue = [...files];
@@ -249,6 +250,7 @@ const CategoryField = ({ name, categories }) => {
             <ChipGroup>
               {cate && (
                 <Chip
+                  className="comp_PostCreator__chip"
                   avatar={<Avatar alt={cate.name} src={cate.logo} />}
                   label={cate.name}
                 />

@@ -16,3 +16,6 @@
   padding-top: 4px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
+.comp_PostCreator__chip {
+  background: #f2f2f2;
+}

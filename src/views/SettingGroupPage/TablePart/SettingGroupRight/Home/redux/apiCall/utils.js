@@ -74,10 +74,9 @@ export const createSimpleAsyncReducer = (
   initial = emptyObject
 ) => {
   const load = (requiredFields) => {
-    return {
-      ...actionCreator(requiredFields),
-      success: type,
-    };
+    return actionCreator(requiredFields, {
+      success: createAction(type),
+    });
   };
   const selector = (state) => get(state, type, initial);
   const reducer = createReducer(initial, {

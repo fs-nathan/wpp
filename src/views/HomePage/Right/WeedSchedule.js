@@ -328,12 +328,14 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
       </TasksCard.Content>
       {isToggle && (
         <ModalCommon
-          maxWidth="xl"
+          maxWidth="lg"
           title={t("CHI TIẾT LỊCH TUẦN")}
           footerAction={[]}
           onClose={() => toggle()}
         >
-          <WeekDetail year={year} week={week} />
+          <div style={{ overflowX: "hidden" }}>
+            <WeekDetail year={year} week={week} />
+          </div>
         </ModalCommon>
       )}
     </TasksCard.Container>
