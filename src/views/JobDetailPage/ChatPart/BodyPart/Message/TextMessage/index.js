@@ -88,6 +88,7 @@ const TextMessage = ({
             [`TextMessage--rightContentWrap__self-${chatPosition}`]: is_me,
             "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
           })}
+          style={{ borderLeft: isReply ? `2px solid ${groupActiveColor}` : 'none' }}
         >
           {!is_deleted ? getChatParent(chat_parent) : ''}
           <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
