@@ -1,5 +1,5 @@
 import { Avatar, IconButton } from '@material-ui/core';
-import { mdiArrowDownBold } from '@mdi/js';
+import { mdiMenuDown } from '@mdi/js';
 import Icon from '@mdi/react';
 import { loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
@@ -241,18 +241,19 @@ const BodyPart = props => {
           }
           {
             viewedChatMembers.length > 0 && !searchChatKey &&
-            <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}{showMembers.map(({ avatar, name }, i) =>
-              <abbr title={name} key={i}>
-                <Avatar className="bodyChat--viewedAvatar" src={avatar} />
-              </abbr>
-            )}
+            <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}
+              {showMembers.map(({ avatar, name }, i) =>
+                <abbr title={name} key={i}>
+                  <Avatar className="bodyChat--viewedAvatar" src={avatar} />
+                </abbr>
+              )}
               {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
             </div>
           }
         </InfiniteScroll >
       </Scrollbars>
       <IconButton className="bodyChat--buttonToBot" onClick={scrollToBottom}>
-        <Icon path={mdiArrowDownBold} size={1} ></Icon>
+        <Icon path={mdiMenuDown} size={1.5} ></Icon>
       </IconButton>
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

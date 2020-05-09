@@ -97,48 +97,57 @@ const TextMessage = ({
           style={{ borderLeft: isReply ? `2px solid ${groupActiveColor}` : 'none' }}
         >
           {!is_deleted ? getChatParent(chat_parent) : ''}
-          <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
-            {
-              ((chatPosition !== 'bot' && chatPosition !== 'mid' && !is_me) || isReply) &&
-              <div className="TextMessage--sender"  >
-                {isReply &&
-                  <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
-                }
-                <div className="TextMessage--name"  >
-                  {user_create_name}
-                </div>
-                {user_create_position &&
-                  < div className="TextMessage--position"  >
-                    {' - '}
-                    {user_create_position}
-                  </div>
-                }
-                {user_create_roles[0] &&
-                  <div className="TextMessage--room"  >
-                    {user_create_roles[0]}
-                  </div>
-                }
-              </div>
-            }
-            <div className={clsx("TextMessage--content",
-              is_me ? `TextMessage--content__self-${chatPosition}`
-                : `TextMessage--content__${chatPosition}`,
-              {
-                "TextMessage--content__self": is_me,
-                "TextMessage--content__deleted": is_deleted,
-                "TextMessage--content__withReact": !is_deleted && data_emotion.length > 0,
-              })}
-              style={{ backgroundColor: is_me ? groupActiveColor : isReply ? 'unset' : '#fff' }}
-              dangerouslySetInnerHTML={{
-                __html: is_deleted ?
-                  (!is_me ? t('LABEL_CHAT_TASK_TIN_NHAN_DA_BI_XOA') : t('LABEL_CHAT_TASK_TIN_NHAN_DA_DUOC_XOA'))
-                  : getRichContent(content, tags, getColor())
-              }}
+          <abbr
+            className="TextMessage--tooltip"
+            title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
+            <div
+              className={clsx("TextMessage--contentWrap",
+                is_me ? `TextMessage--content__self-${chatPosition}`
+                  : `TextMessage--content__${chatPosition}`
+              )}
+              style={{ backgroundColor: isReply ? 'unset' : is_me ? groupActiveColor : '#fff' }}
             >
+              {
+                ((chatPosition !== 'bot' && chatPosition !== 'mid' && !is_me) || isReply) &&
+                <div className="TextMessage--sender"  >
+                  {isReply &&
+                    <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
+                  }
+                  <div className="TextMessage--name"  >
+                    {user_create_name}
+                  </div>
+                  {user_create_position &&
+                    < div className="TextMessage--position"  >
+                      {' - '}
+                      {user_create_position}
+                    </div>
+                  }
+                  {user_create_roles[0] &&
+                    <div className="TextMessage--room"  >
+                      {user_create_roles[0]}
+                    </div>
+                  }
+                </div>
+              }
+              <div className={clsx("TextMessage--content",
+                is_me ? `TextMessage--content__self-${chatPosition}`
+                  : `TextMessage--content__${chatPosition}`,
+                {
+                  "TextMessage--content__self": is_me,
+                  "TextMessage--content__deleted": is_deleted,
+                  "TextMessage--content__withReact": !is_deleted && data_emotion.length > 0,
+                })}
+                dangerouslySetInnerHTML={{
+                  __html: is_deleted ?
+                    (!is_me ? t('LABEL_CHAT_TASK_TIN_NHAN_DA_BI_XOA') : t('LABEL_CHAT_TASK_TIN_NHAN_DA_DUOC_XOA'))
+                    : getRichContent(content, tags, getColor())
+                }}
+              >
+              </div>
+              {data_emotion.length > 0 &&
+                <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
+              }
             </div>
-            {data_emotion.length > 0 &&
-              <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
-            }
           </abbr>
         </div>
         {!isReply && !is_me && !is_deleted &&
