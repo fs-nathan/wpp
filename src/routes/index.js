@@ -13,7 +13,7 @@ import RegisterPage from "../views/AccountPage/RegisterPage";
 import ResetPassword from "../views/AccountPage/ResetPassword";
 import DepartmentPage from "../views/DepartmentPage";
 import DocumentPage from "../views/DocumentPage";
-import Grant from '../views/GrantPage/GrantTable';
+import Grant from "../views/GrantPage/GrantTable";
 import HomePage from "../views/HomePage";
 import JobDetailPage from "../views/JobDetailPage";
 import JobPage from "../views/JobPage";
@@ -27,7 +27,7 @@ import SettingAccountPage from "../views/SettingAccountPage";
 import SettingGroupPage from "../views/SettingGroupPage";
 import TestPage from "../__test__";
 
-
+console.log(Routes);
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.POST, component: () => <HomePage /> },

@@ -49,5 +49,5 @@ export const Routes = {
   SETTING_GROUP_ROLE_MANAGER: "/setting-group/role-manager",
   SETTING_GROUP_GROUP_PERMISSION: "/setting-group/group-permission",
   OFFERS: "/offers",
-  PROJECT_GRANT: '/gantt/:projectId'
+  PROJECT_GRANT: "/tasks/gantt/:projectId",
 };
