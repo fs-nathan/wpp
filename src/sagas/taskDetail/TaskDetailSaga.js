@@ -1,6 +1,6 @@
 // import { appendChat } from "actions/chat/chat";
 import { get } from 'lodash';
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import { apiService } from "../../constants/axiosInstance";
@@ -1057,15 +1057,11 @@ function* updateRolesForMember(action) {
   }
 }
 // Get list task detail
-async function doGetListTaskDetail({ project_id, type_data }) {
+async function doGetListTaskDetail({ project_id, type_data }, key) {
   try {
-    let lastType = type_data;
-    if (!type_data) {
-      lastType = localStorage.getItem(lastJobSettingKey) || 'include-room';
-    }
     const config = {
       url: "project/list-task-detail",
-      params: { project_id, type_data: lastType },
+      params: { project_id, type_data },
       method: "get"
     };
     const result = await apiService(config);
@@ -1077,8 +1073,13 @@ async function doGetListTaskDetail({ project_id, type_data }) {
 
 function* getListTaskDetail(action) {
   try {
+    if (!action.type_data) {
+      const userId = yield select(state => state.system.profile.id);
+      const key = `${userId}:${lastJobSettingKey}`;
+      action.type_data = localStorage.getItem(key) || 'include-room';
+    }
     const res = yield call(doGetListTaskDetail, action)
-    yield put(actions.getListTaskDetailSuccess(res, action.type_data || localStorage.getItem(lastJobSettingKey) || 'include-room'))
+    yield put(actions.getListTaskDetailSuccess(res, action.type_data))
   } catch (error) {
     yield put(actions.getListTaskDetailFail(error));
   }

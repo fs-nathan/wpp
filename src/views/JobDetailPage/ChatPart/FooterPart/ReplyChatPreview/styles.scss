@@ -3,7 +3,7 @@
   position: relative;
   background-color: #ffffff;
   border: 1px solid #ececec;
-  padding: 10px 20px;
+  padding: 15px 10px;
   a {
     color: inherit;
     font-size: inherit;
@@ -22,11 +22,12 @@
     }
   }
   &--rightContentWrap {
-    padding: 10px 20px;
+    padding: 0px;
   }
   &--sender {
     display: flex;
     align-items: center;
+    margin-bottom: 5px;
   }
   &--avatarReply {
     margin-right: 6px;
@@ -68,7 +69,7 @@
   &--content {
     font-size: 15px;
     line-height: 19px;
-    color: #000000;
+    color: #858585;
     text-align: left;
     padding: 0px;
     border-radius: 20px;

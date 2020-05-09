@@ -1,5 +1,4 @@
 // Import actions
-import { lastJobSettingKey } from 'views/JobDetailPage/ListPart/ListHeader/CreateJobSetting';
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
 
 function updateListTaskDetail(listTaskDetail, id, update) {
@@ -34,7 +33,7 @@ const initialState = {
     error: false,
     defaultListTaskDetail: [],
     staticTask: [],
-    listTaskDataType: localStorage.getItem(lastJobSettingKey) || 'include-room',
+    listTaskDataType: '',
     listDataNotRoom: [],
     filterTaskType: 0,
     searchKey: '',

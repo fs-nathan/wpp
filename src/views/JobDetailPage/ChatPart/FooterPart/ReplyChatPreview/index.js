@@ -84,7 +84,7 @@ const ReplyChatPreview = ({ id,
         {getContent()}
         <div className="ReplyChatPreview--cancel"
           onClick={cancelReply}>
-          <Icon path={mdiWindowClose} size={1} />
+          <Icon path={mdiWindowClose} size={1} color="#929496" />
         </div>
       </div>
     </div >

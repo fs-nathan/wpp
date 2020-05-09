@@ -14,14 +14,16 @@ function CreateJobSetting(props) {
   const dispatch = useDispatch();
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const userId = useSelector(state => state.system.profile.id);
 
   function onCheck(e, checked) {
+    const key = `${userId}:${lastJobSettingKey}`;
     if (listTaskDataType === listTaskDataTypes[1]) {
       dispatch(getListTaskDetail(projectId, listTaskDataTypes[0]));
-      localStorage.setItem(lastJobSettingKey, listTaskDataTypes[0])
+      localStorage.setItem(key, listTaskDataTypes[0])
     } else {
       dispatch(getListTaskDetail(projectId, listTaskDataTypes[1]));
-      localStorage.setItem(lastJobSettingKey, listTaskDataTypes[1])
+      localStorage.setItem(key, listTaskDataTypes[1])
     }
   }
 

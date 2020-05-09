@@ -1,4 +1,6 @@
-import { Avatar } from '@material-ui/core';
+import { Avatar, IconButton } from '@material-ui/core';
+import { mdiArrowDownBold } from '@mdi/js';
+import Icon from '@mdi/react';
 import { loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
@@ -130,6 +132,10 @@ const BodyPart = props => {
     dispatch(getMemberNotAssigned({ task_id: taskId }))
   }
 
+  function scrollToBottom(data) {
+    chatRef.current.scrollToBottom()
+  }
+
   function handleReplyChat(data) {
     return () => props.setSelectedChat(data)
   }
@@ -245,6 +251,9 @@ const BodyPart = props => {
           }
         </InfiniteScroll >
       </Scrollbars>
+      <IconButton className="bodyChat--buttonToBot" onClick={scrollToBottom}>
+        <Icon path={mdiArrowDownBold} size={1} ></Icon>
+      </IconButton>
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />

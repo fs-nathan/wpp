@@ -73,7 +73,12 @@ const TextMessage = ({
       <div className={clsx("TextMessage", isReply ? `TextMessage__reply` : `TextMessage__${chatPosition}`)}  >
         {!isReply && !is_me &&
           <abbr title={user_create_name}>
-            <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+            <Avatar
+              onClick={onClickAvatar}
+              className={clsx("TextMessage--avatar", {
+                'TextMessage--avatar__hidden': (chatPosition !== 'top' && chatPosition !== 'one')
+              })}
+              src={user_create_avatar} />
           </abbr>
         }
         {!isReply && is_me && !is_deleted &&
@@ -84,7 +89,8 @@ const TextMessage = ({
           {
             "TextMessage--reply": isReply,
             "TextMessage--rightContentWrap__self": is_me,
-            "TextMessage--rightContentWrap__deleted ": is_deleted,
+            "TextMessage--rightContentWrap__deleted ": is_deleted && !is_me,
+            "TextMessage--rightContentWrap__deletedSelf ": is_deleted && is_me,
             [`TextMessage--rightContentWrap__self-${chatPosition}`]: is_me,
             "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
           })}
@@ -122,9 +128,10 @@ const TextMessage = ({
                 "TextMessage--content__deleted": is_deleted,
                 "TextMessage--content__withReact": !is_deleted && data_emotion.length > 0,
               })}
-              style={{ backgroundColor: is_me ? groupActiveColor : isReply ? 'transparent' : '#fff' }}
+              style={{ backgroundColor: is_me ? groupActiveColor : isReply ? 'unset' : '#fff' }}
               dangerouslySetInnerHTML={{
-                __html: is_deleted ? `Tin nhắn đã ${!is_me ? 'bị' : 'được'} xoá!`
+                __html: is_deleted ?
+                  (!is_me ? t('LABEL_CHAT_TASK_TIN_NHAN_DA_BI_XOA') : t('LABEL_CHAT_TASK_TIN_NHAN_DA_DUOC_XOA'))
                   : getRichContent(content, tags, getColor())
               }}
             >
@@ -134,7 +141,7 @@ const TextMessage = ({
             }
           </abbr>
         </div>
-        {!isReply && !is_me &&
+        {!isReply && !is_me && !is_deleted &&
           <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
         }
       </div >
