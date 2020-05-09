@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterTaskByType } from '../../../../actions/taskDetail/taskDetailActions';
 // import { withRouter } from 'react-router-dom';
@@ -6,6 +7,7 @@ import ColorChip from '../../../../components/ColorChip';
 import { listTaskDataTypes } from '../ListHeader/CreateJobSetting';
 
 const ListBanner = props => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
@@ -35,16 +37,12 @@ const ListBanner = props => {
   const allTask = task_waiting + task_doing + task_complete + task_expired + task_stop;
 
   const jobTypes = [
-    'Tất cả (' + allTask + ')',
-    'Đang chờ (' +
-    (task_waiting) +
-    ')', // Waiting
-    'Đang làm (' + (task_doing) + ')', // Doing
-    'Hoàn thành (' +
-    (task_complete) +
-    ')', // Complete
-    'Quá hạn (' + (task_expired) + ')', // Expired
-    'Tạm dừng (' + (task_stop) + ')' // Stop
+    t('LABEL_CHAT_TASK_TAT_CA_COUNT', { allTask }),
+    t('LABEL_CHAT_TASK_DANG_CHO_COUNT', { task_waiting }),
+    t('LABEL_CHAT_TASK_DANG_LAM_COUNT', { task_doing }),
+    t('LABEL_CHAT_TASK_HOAN_THANH_COUNT', { task_complete }),
+    t('LABEL_CHAT_TASK_QUA_HAN_COUNT', { task_expired }),
+    t('LABEL_CHAT_TASK_TAM_DUNG_COUNT', { task_stop })
   ];
   const bgColor = colors.find(item => item.selected === true);
   return (

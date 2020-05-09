@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import DialogWrap from 'components/DialogWrap';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 function AddRoleModal(props) {
   const { t } = useTranslation();
@@ -30,10 +30,10 @@ function AddRoleModal(props) {
 
   return (
     <DialogWrap
-      title={props.isEditRole ? "Chỉnh sửa vai trò" : "Tạo vai trò"}
+      title={props.isEditRole ? t('LABEL_CHAT_TASK_CHINH_SUA_VAI_TRO') : t('LABEL_CHAT_TASK_TAO_VAI_TRO')}
       isOpen={props.isOpen}
       handleClickClose={handleClose}
-      successLabel={"Cập nhật"}
+      successLabel={t('IDS_WP_UPDATE')}
       onClickSuccess={handleSubmit}
       className="AddRoleModal"
     >

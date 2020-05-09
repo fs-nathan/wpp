@@ -750,7 +750,6 @@
   "LABEL_CHAT_TASK_THANG": "Tháng",
   "LABEL_CHAT_TASK_TIEN_DO_KE_HOACH_DAT": "Tiến độ kế hoạch đạt",
   "LABEL_CHAT_TASK_GHIM_NHAC_HEN_LEN": "ghim nhắc hẹn lên bảng thảo luận",
-  "LABEL_CHAT_TASK_GHIM_CONG_VIEC": "ghim công việc",
   "LABEL_CHAT_TASK_TAO_NHAC_HEN": "tạo Nhắc hẹn",
   "LABEL_CHAT_TASK_XOA_THANH_VIEN": "xoá thành viên",
   "LABEL_CHAT_TASK_CHIA_SE_VI_TRI": "Chia sẻ vị trí",
@@ -927,5 +926,17 @@
   "LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN": "Tìm công việc trong dự án...",
   "LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG": "Làm việc mê li cùng",
   "LABEL_CHAT_TASK_HI": "Hi",
-  "LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN": ", chào mừng bạn đến với Workplus. Hãy tạo mới những công việc, chia sẻ và thảo luận cùng đồng nghiệp để hoàn thành chúng tốt nhất."
+  "LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN": ", chào mừng bạn đến với Workplus. Hãy tạo mới những công việc, chia sẻ và thảo luận cùng đồng nghiệp để hoàn thành chúng tốt nhất.",
+  "LABEL_CHAT_TASK_BO_GHIM": "Bỏ ghim",
+  "LABEL_CHAT_TASK_GHIM_CONG_VIEC": "Ghim công việc",
+  "LABEL_CHAT_TASK_NOI_DUNG": "Nội dung",
+  "LABEL_CHAT_TASK_TAT_CA_COUNT": "Tất cả ({{allTask}})",
+  "LABEL_CHAT_TASK_DANG_CHO_COUNT": "Đang chờ {{task_waiting}})",
+  "LABEL_CHAT_TASK_DANG_LAM_COUNT": "Đang làm ({{task_doing}})",
+  "LABEL_CHAT_TASK_HOAN_THANH_COUNT": "Hoàn thành ({{task_complete}})",
+  "LABEL_CHAT_TASK_QUA_HAN_COUNT": "Quá hạn ({{task_expired}})",
+  "LABEL_CHAT_TASK_TAM_DUNG_COUNT": "Tạm dừng ({{task_stop}}",
+  "LABEL_CHAT_TASK_VIEC": "({{task}} việc)",
+  "LABEL_CHAT_TASK_CHINH_SUA_VAI_TRO": "Chỉnh sửa vai trò",
+  "LABEL_CHAT_TASK_TAO_VAI_TRO": "Tạo vai trò"
 }

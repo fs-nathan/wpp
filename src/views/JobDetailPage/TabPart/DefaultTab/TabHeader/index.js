@@ -137,7 +137,7 @@ function TabHeader(props) {
         <MenuItem
           onClick={onClickPin}
         >
-          {isPinned ? 'Bỏ ghim' : 'Ghim công việc'}
+          {isPinned ? t('LABEL_CHAT_TASK_BO_GHIM') : t('LABEL_CHAT_TASK_GHIM_CONG_VIEC')}
         </MenuItem>
         {!pause ? (
           <MenuItem

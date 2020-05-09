@@ -235,7 +235,7 @@ function RemindModal(props) {
       title={t('LABEL_CHAT_TASK_NHAC_HEN')}
       open={isOpenCreateRemind}
       setOpen={setOpenCreate}
-      confirmRender={() => (!isCreateRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
+      confirmRender={() => (!isCreateRemind) ? t('LABEL_CHAT_TASK_CHINH_SUA_NHAC_HEN') : t('LABEL_CHAT_TASK_TAO_NHAC_HEN')}
       onConfirm={handlePressConfirm}
       canConfirm={validate()}
     >

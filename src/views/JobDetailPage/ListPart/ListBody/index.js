@@ -2,6 +2,7 @@ import { List } from '@material-ui/core';
 import { filterNoGroupTaskByType, filterTaskByType, searchNoGroupTaskByName, searchTaskByTaskName } from 'helpers/jobDetail/arrayHelper';
 import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { taskIdSelector } from '../../selectors';
@@ -27,6 +28,7 @@ const Body = styled(Scrollbars)`
 `;
 
 function ListBody() {
+  const { t } = useTranslation();
   const taskId = useSelector(taskIdSelector);
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
   const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
@@ -53,7 +55,7 @@ function ListBody() {
           <StyledList key={key}>
             <ListBodySubHeader
               subPrimary={item.name}
-              subSecondary={"(" + tasks.length + " việc)"}
+              subSecondary={t('LABEL_CHAT_TASK_VIEC', { task: tasks.length })}
             />
             {tasks.map((detail, idx) => (
               <ListBodyItem
