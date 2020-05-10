@@ -8,7 +8,7 @@
     display: none;
   }
   &--scroll {
-    width: 95%;
+    overflow-x: hidden;
   }
   &__reply {
     // height: calc(100% - 300px);
