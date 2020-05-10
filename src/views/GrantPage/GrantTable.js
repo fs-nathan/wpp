@@ -443,6 +443,32 @@ class DragSortingTable extends React.Component {
     try {
       const data = [...this.state.data];
       data[index].complete = complete;
+      let totalComplete = 0;
+      let groupComplete = 0;
+      let countTotalTask = 0;
+      let countGroupTask = 0;
+      let indexGroupTask;
+      let indexTotalTask;
+      data.forEach((item, indexData) => {
+        if (item.id === data[index].group_task) indexGroupTask = indexData;
+        if (item.isTotalDuration) indexTotalTask = indexData;
+        if (item.isGroupTask || item.isTotalDuration) return;
+        totalComplete += item.complete;
+        countTotalTask++;
+        if (item.group_task === data[index].group_task) {
+          groupComplete += item.complete;
+          countGroupTask++;
+        }
+      });
+      data[indexGroupTask].complete = (groupComplete / countGroupTask).toFixed(
+        2
+      );
+      data[indexTotalTask].complete = (totalComplete / countTotalTask).toFixed(
+        2
+      );
+      this.setState({
+        data,
+      });
       changeTaskComplete({ task_id: data[index].id, complete });
     } catch (e) {
       console.log(e);
@@ -462,29 +488,32 @@ class DragSortingTable extends React.Component {
     const { girdInstance } = this.props;
     const { formatString, unit, addUnit } = girdInstance;
     let { resultListTask } = this.state;
+    let dataSource;
     if (!resultListTask || update) {
       resultListTask = await apiService({
         url: `gantt/list-task?project_id=${projectId}&gird=hour`,
       });
       if (!resultListTask.data.state) return;
+      dataSource = resultListTask.data;
       this.setState({
         resultListTask,
       });
-    }
+    } else dataSource = resultListTask.data;
+    console.log(dataSource);
     if (!resultListTask.data.state) return;
     let data = [];
     let startTimeProject;
     let endTimeProject;
 
     startTimeProject = new moment(
-      getFormatStartStringFromObject(resultListTask.data.total_duration.time),
+      getFormatStartStringFromObject(dataSource.total_duration.time),
       formatString
     );
     endTimeProject = new moment(
-      getFormatEndStringFromObject(resultListTask.data.total_duration.time),
+      getFormatEndStringFromObject(dataSource.total_duration.time),
       formatString
     );
-    const totalProjectData = resultListTask.data.total_duration;
+    const totalProjectData = dataSource.total_duration;
     if (!totalProjectData.time) return;
     data.push({
       name: "Tổng tiến độ",
@@ -499,7 +528,7 @@ class DragSortingTable extends React.Component {
       id: "TOTAL_DURATION",
       key: "TOTAL_DURATION",
     });
-    resultListTask.data.tasks.forEach((task, index) => {
+    dataSource.tasks.forEach((task, index) => {
       const { name, time, duration_actual } = task;
       data.push({
         name,

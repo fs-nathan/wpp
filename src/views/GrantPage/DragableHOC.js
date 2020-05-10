@@ -85,12 +85,16 @@ function GanttChart({
     maxWidth = (end.diff(start, girdInstance.unit) + 1) * 48;
   }
   const timeline = dataSource.map((item, index) => {
+    console.log("endPosition");
+
     const startDate = moment(item.start_time, girdInstance.formatString);
     const endDate = moment(item.end_time, girdInstance.formatString);
     const startPosition = Math.ceil(
       startDate.diff(start, girdInstance.unit, true)
     );
     const endPosition = endDate.diff(startDate, girdInstance.unit) + 1;
+    console.log(moment.duration(endDate.diff(startDate)).asMonths());
+    console.log(endPosition);
     return (
       <React.Fragment>
         <div

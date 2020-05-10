@@ -281,15 +281,17 @@ const TimeLine = ({
                   e.stopPropagation();
                 }}
               >
-                <span className="container-icon-drag-duration">
-                  <span>
-                    <Icon
-                      style={{ fill: showResize ? "#d1cfcf" : "transparent" }}
-                      width={10}
-                      path={mdiTriangle}
-                    />
+                {!isGroupTask && !isTotalDuration && (
+                  <span className="container-icon-drag-duration">
+                    <span>
+                      <Icon
+                        style={{ fill: showResize ? "#d1cfcf" : "transparent" }}
+                        width={10}
+                        path={mdiTriangle}
+                      />
+                    </span>
                   </span>
-                </span>
+                )}
               </span>
             )}
           >

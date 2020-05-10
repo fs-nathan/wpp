@@ -193,7 +193,7 @@ export const changeTaskComplete = async ({ task_id, complete }) => {
   try {
     const config = {
       url: "task/update-complete",
-      method: "post",
+      method: "put",
       data: {
         task_id,
         complete,
