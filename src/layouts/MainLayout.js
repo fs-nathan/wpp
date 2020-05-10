@@ -109,7 +109,7 @@ function MainLayout({
   isDocumentDetail,
   appendChat,
   updateChatState,
-  taskDetails,
+  taskDetails = {},
   getViewedChatSuccess,
   actionFetchListColor,
   actioGetSettingDate,
@@ -120,7 +120,7 @@ function MainLayout({
 
   function handleNewChat(data) {
     console.log('handleNewChat', data)
-    if (taskDetails && taskDetails.uuid !== data.uuid) {
+    if (!data.uuid || taskDetails.uuid !== data.uuid) {
       appendChat({ data_chat: data })
     }
   }

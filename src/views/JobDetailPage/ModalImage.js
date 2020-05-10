@@ -14,7 +14,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import styled from 'styled-components';
 import ShareDocumentModal from 'views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal';
 
@@ -49,10 +48,11 @@ const TitleImg = styled(Typography)`
         }
     }
 `
+
 const GroupActionButton = styled(Typography)`
     display : flex;
-    margin-left: -150px;
 `
+
 const ButtonAction = styled(Typography)`
     display: flex;
     flex-direction: column;
@@ -115,10 +115,10 @@ const DialogTitle = withStyles(styles)(props => {
       </Typography>
       <Typography component={'div'}>
         <IconButton onClick={onClickRotateLeft}>
-          <Icon path={mdiRotateLeft} size={1} color={'#fff'} />
+          <Icon path={mdiRotateLeft} size="30px" color={'#fff'} />
         </IconButton>
         <IconButton onClick={onClickRotateRight}>
-          <Icon path={mdiRotateRight} size={1} color={'#fff'} />
+          <Icon path={mdiRotateRight} size="30px" color={'#fff'} />
         </IconButton>
       </Typography>
       <GroupActionButton component='div'>
@@ -166,15 +166,10 @@ const ContentDialog = styled(DialogContent)`
     align-items: center;
     padding: 7px 0 0 0;
     & > div:nth-child(2) {
-        height: 750px;
-        width: 1100px;
+        max-height: 750px;
+        max-width: 1100px;
         background-repeat: no-repeat;
         background-size: cover;
-        & > img {
-            opacity: 1;
-            width: 100%;
-            height: 100%;
-        }
     }
 `
 
@@ -269,7 +264,7 @@ const ModalImage = () => {
   }
 
   function clickBack() {
-    if (currentImage < 0) {
+    if (currentImage > 0) {
       setCurrentImage(currentImage - 1)
     }
   }
@@ -284,13 +279,31 @@ const ModalImage = () => {
 
   useEffect(() => {
     // console.log('resetTransform', currentImage)
-    if (transformRef && transformRef.current) {
-      var clickEvent = document.createEvent('MouseEvents');
-      clickEvent.initEvent('dblclick', true, true);
-      transformRef.current.dispatchEvent(clickEvent);
-    }
     setRotate(0)
   }, [currentImage]);
+
+  const handleZoomImage = evt => {
+    let currentTarget = evt.target;
+    // console.log('deltaY', evt.deltaY)
+    if (evt.deltaY > 0) {
+      if (currentTarget.width < 100 || currentTarget.height < 100) return;
+      let newWidth = currentTarget.width - currentTarget.width * 0.1;
+      let newHeight = currentTarget.height - currentTarget.height * 0.1;
+      evt.target.width = newWidth;
+      evt.target.height = newHeight;
+      evt.target.style.cursor = 'zoom-out';
+      evt.target.style.maxWidth = 'initial';
+      evt.target.style.maxHeight = 'initial';
+    } else if (evt.deltaY < 0) {
+      let newWidth = currentTarget.width + currentTarget.width * 0.1;
+      let newHeight = currentTarget.height + currentTarget.height * 0.1;
+      evt.target.width = newWidth;
+      evt.target.height = newHeight;
+      evt.target.style.cursor = 'zoom-in';
+      evt.target.style.maxWidth = 'initial';
+      evt.target.style.maxHeight = 'initial';
+    }
+  };
 
   return (
     <StyledDialog
@@ -319,21 +332,19 @@ const ModalImage = () => {
             :
             <>
               <ButtonImage onClick={clickBack}>
-                <Icon path={mdiChevronLeft} size={5} />
+                <Icon path={mdiChevronLeft} size="30px" />
               </ButtonImage>
-              <TransformWrapper pan={{ disabled: true }}
-                options={{ minScale: 0.5 }}
-                doubleClick={{ mode: 'reset' }}>
-                <TransformComponent>
-                  <img
-                    ref={transformRef}
-                    alt="vtask"
-                    style={{ transform: `rotate(${rotate}deg)` }}
-                    src={imagesList[currentImage] && imagesList[currentImage].url} />
-                </TransformComponent>
-              </TransformWrapper>
+              <div id="transformImg"
+              >
+                <img
+                  onWheel={handleZoomImage}
+                  ref={transformRef}
+                  alt="vtask"
+                  style={{ transform: `rotate(${rotate}deg)` }}
+                  src={imagesList[currentImage] && imagesList[currentImage].url} />
+              </div>
               <ButtonImage onClick={clickNext}>
-                <Icon path={mdiChevronRight} size={5} />
+                <Icon path={mdiChevronRight} size="30px" />
               </ButtonImage>
             </>
         }
