@@ -9,6 +9,7 @@
   }
   &--scroll {
     overflow-x: hidden;
+    margin-right: 20px;
   }
   &__reply {
     // height: calc(100% - 300px);
@@ -111,7 +112,6 @@
     font-weight: 500;
   }
   &--sending {
-    margin-top: 6px;
     padding-right: 10px;
     color: #666666;
     text-align: right;
@@ -136,7 +136,7 @@
     color: #aaaaaa;
     display: flex;
     cursor: pointer;
-    margin: 20px auto 10px 0;
+    margin-right: auto;
     &Avatar {
       width: 15px;
       height: 15px;
@@ -173,6 +173,7 @@
   &--chatStatus {
     display: flex;
     justify-content: space-evenly;
+    margin: 20px 0 10px;
   }
   .wrap-time {
     position: relative;

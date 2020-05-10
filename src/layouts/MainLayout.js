@@ -120,7 +120,7 @@ function MainLayout({
 
   function handleNewChat(data) {
     console.log('handleNewChat', data)
-    if (!data.uuid || taskDetails.uuid !== data.uuid) {
+    if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
       appendChat({ data_chat: data })
     }
   }
