@@ -115,6 +115,7 @@
     padding-right: 10px;
     color: #666666;
     text-align: right;
+    margin-left: auto;
     &Fail {
       color: #bcbcbc;
       font-size: 12px;
@@ -135,7 +136,7 @@
     color: #aaaaaa;
     display: flex;
     cursor: pointer;
-    margin: 20px 0 10px;
+    margin: 20px auto 10px 0;
     &Avatar {
       width: 15px;
       height: 15px;
@@ -168,6 +169,10 @@
       opacity: 1;
       background-color: #fff;
     }
+  }
+  &--chatStatus {
+    display: flex;
+    justify-content: space-evenly;
   }
   .wrap-time {
     position: relative;

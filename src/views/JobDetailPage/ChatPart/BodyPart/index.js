@@ -33,6 +33,7 @@ const BodyPart = props => {
   const isShowSendStatus = useSelector(state => state.chat.isShowSendStatus);
   const viewedChatMembers = useSelector(state => state.chat.viewedChatMembers);
 
+  const [isShowScroll, setShowScroll] = React.useState(false);
   const [openViewedModal, setOpenViewedModal] = React.useState(false);
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const [isOpenForward, setOpenForward] = React.useState(false);
@@ -165,6 +166,21 @@ const BodyPart = props => {
     if (last_id)
       dispatch(loadChat(taskId, last_id, true));
   }
+  function handleScrollFrame(data) {
+    const { scrollTop, scrollHeight, clientHeight } = data;
+    // console.log('handleScrollFrame', scrollTop < scrollHeight - 1000)
+    if (scrollTop < scrollHeight - clientHeight * 3) {
+      setShowScroll(true)
+    } else {
+      setShowScroll(false)
+    }
+  }
+  function handleScrollStart(data) {
+    // console.log('handleScrollStart', data)
+  }
+  function handleScrollStop(data) {
+    // console.log('handleScrollStop', data)
+  }
 
   return (
     <div
@@ -172,6 +188,9 @@ const BodyPart = props => {
     >
       <Scrollbars autoHide autoHideTimeout={500}
         ref={chatRef}
+        onScrollFrame={handleScrollFrame}
+        onScrollStart={handleScrollStart}
+        onScrollStop={handleScrollStop}
       >
         <InfiniteScroll
           className="bodyChat--scroll"
@@ -231,30 +250,34 @@ const BodyPart = props => {
               handleDetailEmotion={handleDetailEmotion(el)}
               handleReplyChat={handleReplyChat(el)} />)
           }
-          {
-            isShowSendStatus && !searchChatKey &&
-            (
-              <div className="bodyChat--sending">
-                {isSending ? 'Đang gửi...' : 'Đã gửi'}
+          <div className="bodyChat--chatStatus">
+            {
+              isShowSendStatus && !searchChatKey &&
+              (
+                <div className="bodyChat--sending">
+                  {isSending ? t('LABEL_CHAT_TASK_DANG_GUI') : t('LABEL_CHAT_TASK_DA_GUI')}
+                </div>
+              )
+            }
+            {
+              viewedChatMembers.length > 0 && !searchChatKey &&
+              <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}
+                {showMembers.map(({ avatar, name }, i) =>
+                  <abbr title={name} key={i}>
+                    <Avatar className="bodyChat--viewedAvatar" src={avatar} />
+                  </abbr>
+                )}
+                {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
               </div>
-            )
-          }
-          {
-            viewedChatMembers.length > 0 && !searchChatKey &&
-            <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}
-              {showMembers.map(({ avatar, name }, i) =>
-                <abbr title={name} key={i}>
-                  <Avatar className="bodyChat--viewedAvatar" src={avatar} />
-                </abbr>
-              )}
-              {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
-            </div>
-          }
+            }
+          </div>
         </InfiniteScroll >
       </Scrollbars>
-      <IconButton className="bodyChat--buttonToBot" onClick={scrollToBottom}>
-        <Icon path={mdiMenuDown} size={1.5} ></Icon>
-      </IconButton>
+      {isShowScroll &&
+        <IconButton className="bodyChat--buttonToBot" onClick={scrollToBottom}>
+          <Icon path={mdiMenuDown} size={1.5} ></Icon>
+        </IconButton>
+      }
       <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />

@@ -1,6 +1,6 @@
 import * as actions from "actions/chat/chat";
 import { apiService } from "constants/axiosInstance";
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 
 export function* deleteChat(payload) {
   try {
@@ -27,6 +27,8 @@ export function* loadChat(payload) {
 export function* chatImage(payload) {
   try {
     const { task_id, data, onUploading, id } = payload;
+    const uuid = yield select(state => state.taskDetail.detailTask.taskDetails.uuid);
+    data.append("uuid", uuid)
     const res = yield call(apiService.post,
       `/task/create-chat-image?task_id=${task_id}`,
       data,
@@ -38,8 +40,8 @@ export function* chatImage(payload) {
       });
     yield put(actions.chatImageSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    // yield put(actions.appendChat(res.data, id));
-    yield put(actions.removeChatById(id));
+    yield put(actions.appendChat(res.data, id));
+    // yield put(actions.removeChatById(id));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }
@@ -47,6 +49,8 @@ export function* chatImage(payload) {
 export function* chatFile(payload) {
   try {
     const { task_id, data, onUploading, id } = payload;
+    const uuid = yield select(state => state.taskDetail.detailTask.taskDetails.uuid);
+    data.append("uuid", uuid)
     const res = yield call(apiService.post,
       `/task/create-chat-file?task_id=${task_id}`,
       data,
@@ -58,8 +62,8 @@ export function* chatFile(payload) {
       });
     yield put(actions.chatFileSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    // yield put(actions.appendChat(res.data, id));
-    yield put(actions.removeChatById(id));
+    yield put(actions.appendChat(res.data, id));
+    // yield put(actions.removeChatById(id));
   } catch (error) {
     yield put(actions.chatFileFail(error));
   }
@@ -165,12 +169,14 @@ export function* getEmotionsReactMember(payload) {
 export function* createChatText(payload) {
   try {
     const { content, resendId } = payload;
-    const res = yield call(apiService.post, "/task/create-chat-text", content);
+    const uuid = yield select(state => state.taskDetail.detailTask.taskDetails.uuid);
+    const res = yield call(apiService.post, "/task/create-chat-text", { ...content, uuid });
     yield put(actions.createChatTextSuccess(res.data));
     // yield put(actions.loadChat(content.task_id));
-    // yield put(actions.appendChat(res.data, resendId));
-    yield put(actions.removeChatById(resendId));
+    yield put(actions.appendChat(res.data, resendId));
+    // yield put(actions.removeChatById(resendId));
   } catch (error) {
+    console.log('uuid', error)
     yield put(actions.createChatTextFail(error, payload.content.id));
   }
 }

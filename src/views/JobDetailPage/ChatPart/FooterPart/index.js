@@ -74,6 +74,7 @@ const FooterPart = ({
   const [isShowQuickLike, setShowQuickLike] = useState(false);
   const [isShareFromLib, setShareFromLib] = useState(false);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
+  const [clipBoardImages, setClipBoardImages] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
 
   useEffect(() => {
@@ -88,10 +89,10 @@ const FooterPart = ({
         }
         images.push({ url, file, name: file.name })
       }
-      setImagesQueueUrl(images)
+      setImagesQueueUrl([...clipBoardImages, ...images])
     }
     renderPrepareImages(imagesQueue)
-  }, [imagesQueue]);
+  }, [clipBoardImages, imagesQueue]);
 
   useEffect(() => {
     const wordsChat = words(chatText)
@@ -119,13 +120,13 @@ const FooterPart = ({
         //item.
         const file = item.getAsFile();
         const url = await getFileUrl(file)
-        images.push({ url, file })
+        images.push({ url, file, name: `clipboard${i}.png` })
       } else {
         // ignore not images
         // console.log('Discarding not image paste data');
       }
     }
-    setImagesQueueUrl(images)
+    setClipBoardImages(images)
   }
 
   const handleTriggerUpload = id => {
@@ -139,7 +140,7 @@ const FooterPart = ({
   const handleUploadImage = async e => {
     const { files } = e.target;
     // console.log('upload image', files);
-    const images = [];
+    const images = [...clipBoardImages];
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
       const url = await getFileUrl(file)
@@ -158,7 +159,11 @@ const FooterPart = ({
     for (let i = 0; i < files.length; i++) {
       data.append("image", files[i], files[i].name)
     }
+    for (let i = 0; i < clipBoardImages.length; i++) {
+      data.append("image", clipBoardImages[i].file, clipBoardImages[i].name)
+    }
     dispatch(chatImage(taskId, data, onUploadingHandler, id))
+    setClipBoardImages([])
   };
 
   function onClickDeletePreview(i) {
@@ -311,7 +316,7 @@ const FooterPart = ({
         others.push(file)
       }
     }
-    if (images.length > 0)
+    if (images.length > 0 || clipBoardImages.length > 0)
       handleUploadImage({ target: { files: images } });
     if (others.length > 0)
       handleUploadFile({ target: { files: others } });
@@ -320,9 +325,7 @@ const FooterPart = ({
 
   function sendMessage() {
     // console.log('sendMessage', imagesQueue.length)
-    if (imagesQueue.length > 0) {
-      sendMultipleFiles()
-    }
+    sendMultipleFiles()
     if (isShowQuickLike) {
       dispatch(chatQuickLike(taskId))
       editorRef.current.blur();

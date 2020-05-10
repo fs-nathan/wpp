@@ -109,6 +109,7 @@ function MainLayout({
   isDocumentDetail,
   appendChat,
   updateChatState,
+  taskDetails,
   getViewedChatSuccess,
   actionFetchListColor,
   actioGetSettingDate,
@@ -119,7 +120,9 @@ function MainLayout({
 
   function handleNewChat(data) {
     console.log('handleNewChat', data)
-    appendChat({ data_chat: data })
+    if (taskDetails && taskDetails.uuid !== data.uuid) {
+      appendChat({ data_chat: data })
+    }
   }
 
   function handleReactEmotion(data) {
@@ -269,6 +272,7 @@ function MainLayoutWrapper({ ...rest }) {
 
 export default connect(
   state => ({
+    taskDetails: state.taskDetail.detailTask.taskDetails,
     colors: state.setting.colors,
     groupDetail: state.setting.groupDetail,
     isDocumentDetail: state.system.isDocumentDetail,

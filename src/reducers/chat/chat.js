@@ -42,13 +42,13 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.chats = action.payload;
       break;
     case actionTypes.APPEND_CHAT:
-      // const idx = findIndex(draft.chats.data, ({ id }) => id === action.replaceId)
+      const idx = findIndex(draft.chats.data, ({ id }) => id === action.replaceId)
       // console.log('idx', idx, action.replaceId)
-      // if (idx !== -1) {
-      //   draft.chats.data.splice(idx, 1, action.payload.data_chat)
-      // } else {
-      draft.chats.data.unshift(action.payload.data_chat)
-      // }
+      if (idx !== -1) {
+        draft.chats.data.splice(idx, 1, action.payload.data_chat)
+      } else {
+        draft.chats.data.unshift(action.payload.data_chat)
+      }
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;

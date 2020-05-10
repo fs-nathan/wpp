@@ -34,8 +34,13 @@
       display: flex;
       z-index: 100;
       top: -35px;
-      left: -60px;
+      left: unset;
+      right: -30px;
     }
+  }
+  &__self &--buttonEmo:hover .ReactEmotionPopup {
+    left: -60px;
+    right: unset;
   }
 }
 
