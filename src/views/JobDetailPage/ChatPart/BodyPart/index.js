@@ -252,14 +252,6 @@ const BodyPart = props => {
           }
           <div className="bodyChat--chatStatus">
             {
-              isShowSendStatus && !searchChatKey &&
-              (
-                <div className="bodyChat--sending">
-                  {isSending ? t('LABEL_CHAT_TASK_DANG_GUI') : t('LABEL_CHAT_TASK_DA_GUI')}
-                </div>
-              )
-            }
-            {
               viewedChatMembers.length > 0 && !searchChatKey &&
               <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}
                 {showMembers.map(({ avatar, name }, i) =>
@@ -269,6 +261,14 @@ const BodyPart = props => {
                 )}
                 {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
               </div>
+            }
+            {
+              isShowSendStatus && !searchChatKey &&
+              (
+                <div className="bodyChat--sending">
+                  {isSending ? t('LABEL_CHAT_TASK_DANG_GUI') : t('LABEL_CHAT_TASK_DA_GUI')}
+                </div>
+              )
             }
           </div>
         </InfiniteScroll >
