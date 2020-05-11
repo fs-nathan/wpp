@@ -42,6 +42,9 @@
     left: -60px;
     right: unset;
   }
+  &__self &--buttonEmo__short:hover .ReactEmotionPopup {
+    left: -100px;
+  }
 }
 
 .emoMenu {

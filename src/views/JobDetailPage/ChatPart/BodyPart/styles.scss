@@ -165,9 +165,11 @@
     bottom: 10px;
     right: 10px;
     opacity: 0.5;
+    background-color: #fff;
+    padding: 3px;
+    box-shadow: 0 2px 8px 0 rgba(0, 26, 51, 0.31);
     &:hover {
       opacity: 1;
-      background-color: #fff;
     }
   }
   &--chatStatus {

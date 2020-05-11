@@ -1,146 +1,20 @@
-import { Avatar, Dialog, GridListTile, IconButton, ListItem, ListItemText, Typography, withStyles } from '@material-ui/core';
+import { Dialog, GridListTile, IconButton, withStyles } from '@material-ui/core';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import CloseIcon from '@material-ui/icons/Close';
-import { mdiChevronLeft, mdiChevronRight, mdiDownload, mdiInformation, mdiRotateLeft, mdiRotateRight, mdiShare } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showImagesList } from 'actions/chat/chat';
 import { openDocumentDetail } from 'actions/system/system';
 import { getFileType } from 'helpers/jobDetail/stringHelper';
 import React, { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ShareDocumentModal from 'views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal';
-
-const styles = theme => ({
-  closeButton: {
-    color: theme.palette.grey[500],
-  },
-});
-const GroupTitle = styled(MuiDialogTitle)`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: #000;
-    align-items: center;
-    padding: 10px 15px;
-`
-const TitleImg = styled(Typography)`
-    & > li {
-        padding: 10px 10px 10px 0;
-        & > div:nth-child(1) {
-            margin-right: 7px;
-        }
-        & > div:nth-child(2) {
-            & > div:nth-child(1) {
-                color: white;
-                font-size: 15px
-            }
-            & > div:nth-child(2) {
-                color: white;
-                font-size: 13px
-            }
-        }
-    }
-`
-
-const GroupActionButton = styled(Typography)`
-    display : flex;
-`
-
-const ButtonAction = styled(Typography)`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    &&:not(:last-child) {
-        margin-right: 20px;
-    }
-    & > *:first-child {
-        margin-bottom: 3px;
-    }
-    & > *:last-child {
-        text-transform: uppercase;
-        font-size: 12px;
-        color: #fff;
-        font-weight: 200;
-    }
-`
-
-const DialogTitle = withStyles(styles)(props => {
-  const { t } = useTranslation();
-  const { children, classes, onClose,
-    user_create_avatar, user_create_name, time_create,
-    user_create_position, image,
-    onClickShare,
-    onClickDetail,
-    onClickRotateLeft,
-    onClickRotateRight,
-    ...other } = props;
-
-  function onClickDownload() {
-    const link = document.createElement('a');
-    link.href = image.url;
-    link.download = image.name;
-    link.target = '_blank';
-    link.click();
-  }
-
-  return (
-    <GroupTitle disableTypography {...other}>
-      <Typography component={'div'}>
-        <TitleImg component='div'>
-          <ListItem>
-            <Avatar src={user_create_avatar} />
-            <ListItemText
-              style={{ margin: 0 }}
-              primary={
-                <Typography component='div'>
-                  {user_create_position}
-                </Typography>
-              }
-              secondary={
-                <Typography component='div'>
-                  {`${user_create_name} - ${time_create}`}
-                </Typography>
-              }
-            />
-          </ListItem>
-        </TitleImg>
-      </Typography>
-      <Typography component={'div'}>
-        <IconButton onClick={onClickRotateLeft}>
-          <Icon path={mdiRotateLeft} size="30px" color={'#fff'} />
-        </IconButton>
-        <IconButton onClick={onClickRotateRight}>
-          <Icon path={mdiRotateRight} size="30px" color={'#fff'} />
-        </IconButton>
-      </Typography>
-      <GroupActionButton component='div'>
-        <ButtonAction component='div' onClick={onClickDownload}>
-          <Icon path={mdiDownload} size={1} color={'#fff'} />
-          <Typography component='div'>{t('LABEL_CHAT_TASK_TAI_XUONG')}</Typography>
-        </ButtonAction>
-        <ButtonAction component='div' onClick={onClickShare}>
-          <Icon path={mdiShare} size={1} color={'#fff'} />
-          <Typography component='div'>{t('LABEL_CHAT_TASK_CHIA_SE')}</Typography>
-        </ButtonAction>
-        <ButtonAction component='div' onClick={onClickDetail}>
-          <Icon path={mdiInformation} size={1} color={'#fff'} />
-          <Typography component='div'>{t('LABEL_CHAT_TASK_CHI_TIET')}</Typography>
-        </ButtonAction>
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      </GroupActionButton>
-    </GroupTitle>
-  );
-});
+import DialogTitleModalImage from './DialogTitleModalImage';
+import './styles.scss';
 
 const DialogContent = withStyles(theme => ({
   root: {
@@ -166,10 +40,9 @@ const ContentDialog = styled(DialogContent)`
     align-items: center;
     padding: 7px 0 0 0;
     & > div:nth-child(2) {
-        max-height: 750px;
-        max-width: 1100px;
         background-repeat: no-repeat;
         background-size: cover;
+        overflow: hidden;
     }
 `
 
@@ -305,13 +178,31 @@ const ModalImage = () => {
     }
   };
 
+  function onLoadImage(evt) {
+    // console.log('onLoadImage', evt.target.offsetHeight)
+    // console.log('offsetWidth', evt.target.offsetWidth)
+    // console.log(evt.target.naturalWidth, evt.target.naturalHeight);
+    const { offsetHeight, offsetWidth } = document.getElementById('ContentDialog-ImageModal');
+    const { offsetWidth: offsetWidthButton } = document.getElementById('ContentDialog-buttonLeft');
+    const vH = offsetHeight || 0;
+    const vW = offsetWidth ? offsetWidth - offsetWidthButton * 2 : 0;
+    let elmH = evt.target.naturalHeight || 0;
+    let elmW = evt.target.naturalWidth || 0;
+    while (elmH >= vH || elmW >= vW) {
+      elmH *= 0.9;
+      elmW *= 0.9;
+    }
+    evt.target.height = elmH;
+    evt.target.width = elmW;
+  }
+
   return (
     <StyledDialog
       aria-labelledby="customized-dialog-title"
       open={isOpenImagesListModal}
       fullScreen={fullScreen}
     >
-      <DialogTitle id="customized-dialog-title"
+      <DialogTitleModalImage id="customized-dialog-title"
         {...createUser}
         image={imagesList[currentImage]}
         onClickShare={onClickShare}
@@ -319,25 +210,25 @@ const ModalImage = () => {
         onClickRotateLeft={onClickRotateLeft}
         onClickRotateRight={onClickRotateRight}
         onClose={handleClose}>
-      </DialogTitle>
-      <ContentDialog>
+      </DialogTitleModalImage>
+      <ContentDialog id="ContentDialog-ImageModal">
         {
           (type === 'mp4') ?
             <ReactPlayer
               url={url} playing
-              height="750px" width="1100px"
+              height="calc(100vh - 81px)" width="auto"
               controls
               style={{ margin: 'auto', transform: `rotate(${rotate}deg)` }}
             />
             :
             <>
-              <ButtonImage onClick={clickBack}>
+              <ButtonImage onClick={clickBack} id="ContentDialog-buttonLeft">
                 <Icon path={mdiChevronLeft} size="30px" />
               </ButtonImage>
-              <div id="transformImg"
-              >
+              <div id="transformImg">
                 <img
                   onWheel={handleZoomImage}
+                  onLoad={onLoadImage}
                   ref={transformRef}
                   alt="vtask"
                   style={{ transform: `rotate(${rotate}deg)` }}

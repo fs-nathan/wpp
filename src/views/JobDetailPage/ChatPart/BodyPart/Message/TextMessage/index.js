@@ -82,7 +82,11 @@ const TextMessage = ({
           </abbr>
         }
         {!isReply && is_me && !is_deleted &&
-          <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+          <CommonMessageAction isSelf
+            isShortMessage={content.length < 3}
+            chatId={id}
+            handleReplyChat={handleReplyChat}
+            handleForwardChat={handleForwardChat} />}
         <div className={clsx("TextMessage--rightContentWrap",
           is_me ? `TextMessage--rightContentWrap__self-${chatPosition}`
             : `TextMessage--rightContentWrap__${chatPosition}`,

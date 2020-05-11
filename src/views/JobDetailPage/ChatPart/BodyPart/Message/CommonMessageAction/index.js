@@ -18,7 +18,7 @@ const StyledButton = styled.button`
   }
 `
 
-const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSelf }) => {
+const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSelf, isShortMessage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -70,7 +70,10 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
           <Icon className="CommonMessageAction--icon" path={mdiShare} />
         </abbr>
       </StyledButton>
-      <StyledButton className="CommonMessageAction--button CommonMessageAction--buttonEmo"
+      <StyledButton
+        className={clsx("CommonMessageAction--button", "CommonMessageAction--buttonEmo", {
+          "CommonMessageAction--buttonEmo__short": isShortMessage
+        })}
         onClick={handleClickEmotion}
         colorHover={groupActiveColor}>
         <abbr title={t('LABEL_CHAT_TASK_BIEU_CAM')}>

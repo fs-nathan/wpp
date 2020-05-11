@@ -66,7 +66,9 @@ const ImageMessage = ({
       <div className={clsx("ImageMessage--rightContentWrap", {
         "TextMessage--reply": isReply,
         "ImageMessage--rightContentWrap__self": is_me
-      })} >
+      })}
+        style={{ borderLeft: isReply ? `2px solid ${groupActiveColor}` : 'none' }}
+      >
         {
           ((chatPosition === 'top' && !is_me) || isReply) &&
           <div className={clsx("ImageMessage--sender",

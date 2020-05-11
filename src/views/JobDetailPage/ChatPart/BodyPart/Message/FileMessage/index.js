@@ -114,7 +114,10 @@ const FileMessage = ({
             "TextMessage--reply": isReply,
             "TextMessage--rightContentWrap__self": is_me
           })}
-          style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
+          style={{
+            backgroundColor: is_me ? groupActiveColor : '#fff',
+            borderLeft: isReply ? `2px solid ${groupActiveColor}` : 'none'
+          }}
         >
           <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
             {

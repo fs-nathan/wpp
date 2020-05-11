@@ -1,0 +1,20 @@
+.DialogTitleModalImage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #000;
+  align-items: center;
+  padding: 10px 15px;
+  &--user {
+    width: 40%;
+  }
+  &--rotate {
+    width: 20%;
+    text-align: center;
+  }
+  &--GroupActionButton {
+    display: flex;
+    width: 40%;
+    justify-content: flex-end;
+  }
+}

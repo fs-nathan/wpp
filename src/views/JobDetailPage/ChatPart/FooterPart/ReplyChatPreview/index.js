@@ -33,7 +33,7 @@ const ReplyChatPreview = ({ id,
   const file = files[0] || {};
   function getContent() {
     if (type === 1)
-      return <div className={clsx("FileMessage--fileName")}>
+      return <div className={clsx("ReplyChatPreview--fileName")}>
         {file.name}&nbsp;&nbsp;&nbsp;&nbsp;
         <span className={clsx("FileMessage--fileSize")}>
           {getFileType(file.name)} - {file && file.size}
