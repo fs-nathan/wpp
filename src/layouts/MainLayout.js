@@ -98,6 +98,7 @@ const Image = styled.img`
   margin-top: 10px;
 `;
 
+let socket;
 function MainLayout({
   location,
   colors,
@@ -118,8 +119,8 @@ function MainLayout({
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
 
-  function handleNewChat(data) {
-    console.log('handleNewChat', data)
+  const handleNewChat = (data) => {
+    console.log('handleNewChat', data, taskDetails.uuid)
     if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
       appendChat({ data_chat: data })
     }
@@ -150,10 +151,9 @@ function MainLayout({
       handleFetchNoti();
       const uri =
         'https://appapi.workplus.vn?token=' + localStorage.getItem(TOKEN);
-      const socket = io(uri, {});
+      socket = io(uri, {});
       socket.on('WP_NEW_NOTIFICATION', res => handleNewNoti());
       socket.on('WP_NEW_NOTIFICATION_MESSAGE_TASK', res => handleNewMessage());
-      socket.on('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
       socket.on('WP_NEW_CHAT_EXPRESS_EMOTION_CHAT', handleReactEmotion);
       socket.on('WP_DELETE_CHAT_IN_TASK', handleDeleteChat);
       socket.on('WP_VIEW_CHAT_IN_TASK', handleViewChat);
@@ -174,6 +174,17 @@ function MainLayout({
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    console.log('listen chat')
+    socket.on('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+    return () => {
+      console.log('close socket chat')
+      socket.off('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+    }
+    // eslint-disable-next-line
+  }, [taskDetails])
+
   const handleFetchNoti = async () => {
     try {
       const { data } = await getNumberNotificationNotViewer();
