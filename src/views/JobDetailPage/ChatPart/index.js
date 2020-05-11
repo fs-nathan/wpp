@@ -28,9 +28,8 @@ function ChatPart(props) {
   const pinnedRemind = reminds.find(rm => rm.is_ghim);
 
   useEffect(() => {
-    if (taskId && reminds.length === 0)
-      dispatch(getRemind({ taskId }))
-  }, [dispatch, reminds.length, taskId]);
+    dispatch(getRemind({ taskId }))
+  }, [dispatch, taskId]);
 
   function onChangeKey(evt) {
     dispatch(searchChat(evt.target.value))

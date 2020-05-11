@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { openCreateRemind } from 'actions/chat/chat';
 import { getRemind } from 'actions/taskDetail/taskDetailActions';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
@@ -14,9 +14,8 @@ function TabHeader({ setShow }) {
   const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
 
   useEffect(() => {
-    if (reminds.length === 0)
-      dispatch(getRemind({ taskId }))
-  }, [dispatch, reminds.length, taskId]);
+    dispatch(getRemind({ taskId }))
+  }, [dispatch, taskId]);
 
   const handleClickOpen = () => {
     dispatch(openCreateRemind(true, true))

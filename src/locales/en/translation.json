@@ -900,7 +900,7 @@
   "LABEL_CHAT_TASK_NHAP_NOI_DUNG_NHAC_HEN": "Nhập nội dung nhắc hẹn",
   "LABEL_CHAT_TASK_SUA_NHAC_HEN": "Sửa nhắc hẹn",
   "LABEL_CHAT_TASK_CHUA_CO_NHAC_HEN": "Chưa có nhắc hẹn được khởi tạo Click + để tạo mới nhắc hẹn",
-  "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_LUC": "Đã tạo công việc lúc:",
+  "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_LUC": "Đã tạo công việc lúc: {{created_at}}",
   "LABEL_CHAT_TASK_NGAY_HOAN_THANH": "Ngày hoàn thành:",
   "LABEL_CHAT_TASK_KEO_THA_SAP_XEP": "Kéo thả sắp xếp",
   "LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH": "Đánh dấu hoàn thành",

@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { openDetailMember } from 'actions/chat/chat';
 import { deleteMember } from 'actions/taskDetail/taskDetailActions';
 import { detailUser } from 'actions/user/detailUser';
+import compact from 'lodash/compact';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -72,7 +73,7 @@ const MemberListItem = ({
             {group_permission && group_permission.name}
           </div>
           <div className="memberItem--role">
-            {[room, position].join(' - ')}
+            {compact([room, position]).join(' - ')}
           </div>
         </div>
         <ButtonIcon
