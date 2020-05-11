@@ -77,7 +77,7 @@ const BodyPart = props => {
       let chatPosition = 'top';
       const prevChat = chatsWithTime[i - 1];
       const nextChat = chatsWithTime[i + 1];
-      const messageStyledTypes = [CHAT_TYPE.FILE, CHAT_TYPE.TEXT, CHAT_TYPE.CHAT_FORWARD_FILE];
+      const messageStyledTypes = [CHAT_TYPE.FILE, CHAT_TYPE.TEXT, CHAT_TYPE.CHAT_FORWARD_FILE, CHAT_TYPE.QUICK_LIKE];
       if (
         isOneOf(chat.type, messageStyledTypes)
         && (!prevChat || !isOneOf(prevChat.type, messageStyledTypes) || prevChat.user_create_id !== chat.user_create_id)

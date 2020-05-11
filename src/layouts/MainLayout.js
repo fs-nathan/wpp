@@ -141,6 +141,11 @@ function MainLayout({
     // getViewedChatSuccess(data)
   }
 
+  function handleChatInProject(data) {
+    console.log('handleChatInProject', data)
+    // getViewedChatSuccess(data)
+  }
+
   useEffect(() => {
     if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
       actionFetchGroupDetail(true);
@@ -157,6 +162,7 @@ function MainLayout({
       socket.on('WP_NEW_CHAT_EXPRESS_EMOTION_CHAT', handleReactEmotion);
       socket.on('WP_DELETE_CHAT_IN_TASK', handleDeleteChat);
       socket.on('WP_VIEW_CHAT_IN_TASK', handleViewChat);
+      socket.on('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
 
       function joinChat({ detail }) {
         // console.log('joinChat', detail)

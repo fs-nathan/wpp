@@ -346,15 +346,6 @@
     align-items: center;
     justify-content: center;
     & > div:nth-child(1) {
-      // margin-right: 15px;
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      color: white;
-      background-color: red;
-      font-weight: 500;
-      display: flex;
-      margin-right: 5px;
       & > span {
         font-size: 12px;
       }

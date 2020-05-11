@@ -22,7 +22,14 @@ const IconPin = styled(Icon)`
   display: ${props => (props.isghim === 'true' ? 'block' : 'none')};
 `;
 const ChipMes = styled(Chip)`
-  display: ${props => (props.notification === 'true' ? 'block' : 'none')};
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  color: white;
+  background-color: red;
+  font-weight: 500;
+  margin-right: 5px;
+  display: ${props => (props.notification ? 'flex' : 'none')};
 `;
 
 const getBadgeColor = status_code => {
@@ -43,10 +50,10 @@ const getBadgeColor = status_code => {
 };
 
 function JobName(props) {
-  const { isghim = '', isNewChat, ...rest } = props
+  const { isghim = '', new_chat, ...rest } = props
   return (
     <div className="name-container-lbd" variant="space-between">
-      <ColorTypo bold={isNewChat}>{props.title}</ColorTypo>
+      <ColorTypo bold={new_chat > 0}>{props.title}</ColorTypo>
       <div>
         <IconPin
           color={'#6e6e6e'}
@@ -69,15 +76,15 @@ function JobContent(props) {
         <Avatar src={avatar} alt="avatar" />
         <ColorTypo color="#7a869a">{props.content}</ColorTypo>
       </div>
-      {notification && <div>
+      <div>
         <ChipMes
-          label={'N'}
+          label={notification}
           size="small"
           {...rest}
-          notification={notification.toString()}
+          notification={notification > 0}
         />
         <div>{props.time}</div>
-      </div>}
+      </div>
     </div>
   );
 }
@@ -98,7 +105,7 @@ function JobUnit(props) {
         title={name}
         label={status_name}
         status_code={status_code}
-        isNewChat={new_chat}
+        new_chat={new_chat}
         isghim={is_ghim}
       />
       <JobContent
