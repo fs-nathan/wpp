@@ -484,15 +484,14 @@ class DragSortingTable extends React.Component {
       data: newData,
     });
   };
-  fetchListTask = async (projectId, update) => {
+  fetchListTask = async (projectId, update, girdType) => {
     const { girdInstance } = this.props;
     const { formatString, unit, addUnit } = girdInstance;
-    console.log(addUnit, girdInstance);
     let { resultListTask } = this.state;
     let dataSource;
     if (!resultListTask || update) {
       resultListTask = await apiService({
-        url: `gantt/list-task?project_id=${projectId}&gird=hour`,
+        url: `gantt/list-task?project_id=${projectId}&gird=${girdType ? girdType.toLowerCase() : 'hour'}`,
       });
       if (!resultListTask.data.state) return;
       dataSource = resultListTask.data;
@@ -565,7 +564,6 @@ class DragSortingTable extends React.Component {
       );
     });
     startTimeProject = startTimeProject.subtract(6, unit);
-    console.log(addUnit);
     endTimeProject = endTimeProject.add(addUnit, unit);
     this.setRenderTime(
       new moment(startTimeProject),
@@ -580,6 +578,8 @@ class DragSortingTable extends React.Component {
       width: this.tableRef.current.clientWidth,
       minLeft: this.tableRef.current.offsetLeft,
     });
+    return true
+
   };
   setRenderTime = (startTime, endTime, startTimeProject) => {
     const { girdInstance } = this.props;
@@ -626,11 +626,12 @@ class DragSortingTable extends React.Component {
       daysRender,
     });
   };
-  componentDidMount() {
+  async componentDidMount() {
     const { projectId } = this.props.match.params;
     this.fetchSettingGantt(projectId);
-    this.fetchListTask(projectId);
     this.fetchListDetailProject(projectId);
+    await this.fetchListTask(projectId);
+    // this.fetchListTask(projectId, true, this.props.girdType);
   }
   fetchListDetailProject = (project_id) => {
     this.props.getListGroupTask({ project_id });
@@ -740,13 +741,14 @@ class DragSortingTable extends React.Component {
     }
     if (this.props.girdType !== prevProps.girdType) {
       const { projectId } = this.props.match.params;
-      await this.fetchListTask(projectId);
+      this.fetchListTask(projectId);
+      this.fetchListTask(projectId, true, this.props.girdType);
     }
     if (this.props.match.params !== prevProps.match.params) {
       const { projectId } = this.props.match.params;
       this.fetchSettingGantt(projectId);
-      this.fetchListTask(projectId, true);
       this.fetchListDetailProject(projectId);
+      this.fetchListTask(projectId, true, this.props.girdType);
     }
   };
   handleResize = (index) => (e, { size }) => {
@@ -774,6 +776,15 @@ class DragSortingTable extends React.Component {
       })
     );
   };
+  handleChangeTaskduration =async (data) => {
+    try{
+      const { projectId } = this.props.match.params;
+    const result = await changeTaskduration(data);
+    this.fetchListTask(projectId, true, this.props.girdType)
+    } catch(e){
+      console.log(e)
+    }
+  }
   setDataSource = (index, start, end) => {
     const { data, startTimeProject, endTimeProject } = this.state;
     const { girdInstance } = this.props;
@@ -791,7 +802,7 @@ class DragSortingTable extends React.Component {
       end_date: endDate.format("YYYY-MM-DD"),
       end_time: endDate.format("HH:mm"),
     };
-    changeTaskduration(dataPostServer);
+    this.handleChangeTaskduration(dataPostServer);
     let newStartTimeGroup;
     let newEndTimeGroup;
     let groupTask;
