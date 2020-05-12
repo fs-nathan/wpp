@@ -65,6 +65,7 @@ const TimeLine = ({
     setWidth(endPosition * 48);
   }, [endPosition, dataSource, resizeWidth]);
   const handleMouseMove = (e) => {
+    console.log("vo day", dragFirstResize);
     if (!drag) return;
     if (dragFirstResize) {
       handleMouseMoveFirst(e);
@@ -72,6 +73,7 @@ const TimeLine = ({
     }
     const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
     const amountUnitAdd = (newPosition - startPosition * 48) / 48;
+
     const roundAmountUnitAdd =
       amountUnitAdd > 0
         ? Math.ceil(amountUnitAdd - 1, girdInstance.unit)
@@ -102,9 +104,10 @@ const TimeLine = ({
     setStartDateText(
       new moment(startDate).add(roundAmountUnitAdd, girdInstance.unit)
     );
-    // setEndDateText(
-    //   new moment(endDate).add(roundAmountUnitAdd, girdInstance.unit)
-    // );
+    if (!dragFirstResize)
+      setEndDateText(
+        new moment(endDate).add(roundAmountUnitAdd, girdInstance.unit)
+      );
     setLeft(newPosition);
     e.stopPropagation();
     e.preventDefault();
@@ -126,15 +129,16 @@ const TimeLine = ({
   const handleMouseUp = (e) => {
     e.preventDefault();
     if (!drag && !dragFirstResize) return;
-    const newLeft = left - (left % 48);
-    const newWidth = dragFirstResize ? width + left - newLeft : width;
+    const surplus = left % 48;
+    const newLeft = left - surplus;
+    const newWidth = dragFirstResize ? (width + left - newLeft) / 48 : width;
     // setLeft(newLeft)
     // if(dragFirstResize){
     //     setWidth(width + left - newLeft)
     // }
     setDrag(false);
     setDragFirstResize(false);
-    handleChange(newLeft / 48, newLeft / 48 + width / 48);
+    handleChange(newLeft / 48, (left + width) / 48);
   };
   useEffect(() => {
     document.addEventListener("mouseup", handleMouseUp);
