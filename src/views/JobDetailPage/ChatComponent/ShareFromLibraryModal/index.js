@@ -154,6 +154,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       setListData={setListData}
       selectedFiles={selectedFiles}
       setSelectedFiles={setSelectedFiles}
+      isSharedWithMe={selectedMenu.key === 'sharedWithMe'}
     />
   }
 

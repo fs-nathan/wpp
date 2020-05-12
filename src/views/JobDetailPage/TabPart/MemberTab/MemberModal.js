@@ -1,6 +1,8 @@
-import { Avatar, Button, InputAdornment, TextField, Typography } from '@material-ui/core';
+import { Avatar, InputAdornment, TextField, Typography } from '@material-ui/core';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { mdiDownload } from '@mdi/js';
+import Icon from '@mdi/react';
 import { openDetailMember } from 'actions/chat/chat';
 import get from 'lodash/get';
 import React from 'react';
@@ -8,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
-import imgDoc from '../../../../assets/doc.png';
 import ColorTypo from '../../../../components/ColorTypo';
 import colorPal from '../../../../helpers/colorPalette';
 import './styles.scss';
@@ -147,10 +148,20 @@ const MemberModal = () => {
     address,
     room_name,
     position_name,
-    level,
-    specialized,
+    level_name,
+    major_name,
     description,
   } = userDetail || {};
+
+  function onClickDownload(url, name) {
+    return () => {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = name;
+      link.target = '_blank';
+      link.click();
+    }
+  }
 
   return (
     <JobDetailModalWrap
@@ -189,7 +200,7 @@ const MemberModal = () => {
               disabled
             />
             <TextInput
-              value={level}
+              value={level_name}
               InputProps={{
                 startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_TRINH_DO')}</AdornmentInput>,
               }}
@@ -197,7 +208,7 @@ const MemberModal = () => {
               disabled
             />
             <TextInput
-              value={specialized}
+              value={major_name}
               InputProps={{
                 startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUYEN_NGHANH')}</AdornmentInput>,
               }}
@@ -208,7 +219,7 @@ const MemberModal = () => {
             <ContentDescription>
               {description}
             </ContentDescription>
-            <input
+            {/* <input
               accept="image/*"
               className={classes.input}
               id="contained-button-file"
@@ -218,7 +229,19 @@ const MemberModal = () => {
             <label className="button-file" htmlFor="contained-button-file">
               <Button variant="contained" component="span" fullWidth className={classes.button}>
                 <img className="member-image" alt="vtask" src={imgDoc} />{t('LABEL_CHAT_TASK_XEM_FILE_HO_SO')}</Button>
-            </label>
+            </label> */}
+            <TitleDescription>{t('LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM')}</TitleDescription>
+            {documents.map(({ file_icon, name, type, size, url }) => (
+              <div className="MemberModal--file">
+                <img className="MemberModal--fileImg" src={file_icon} alt="file_icon"></img>
+                <div className="MemberModal--fileName">{name}
+                  <div className="MemberModal--fileType">{`${type} - ${size}`}</div>
+                  <div className="MemberModal--fileDownloadButton"
+                    onClick={onClickDownload(url, name)}>
+                    <Icon path={mdiDownload} size="20px" color="#000"></Icon>
+                  </div>
+                </div>
+              </div>))}
           </StyledEmploy>
 
           <StyledStaff component={'div'}>

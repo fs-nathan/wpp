@@ -80,8 +80,8 @@ const ImageMessage = ({
         }
         <div className="ImageMessage--imagesContainer" >
           {
-            showImages.map(({ url }, i) =>
-              <div key={url} onClick={handleClickOpen(i)}
+            showImages.map(({ url_thumbnail }, i) =>
+              <div key={url_thumbnail} onClick={handleClickOpen(i)}
                 className={clsx("ImageMessage--wrap",
                   `ImageMessage--wrap__total${showImages.length}-${i + 1}`,
                   `ImageMessage--wrap__number${i + 1}`,
@@ -91,7 +91,7 @@ const ImageMessage = ({
                 {
                   (plusImage > 0 && !isReply && i === 5) ? (
                     <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
-                      <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
+                      <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail} alt="hd" />
                       <div className={clsx("ImageMessage--plusText")}>
                         <div className={clsx("ImageMessage--plusTextNumber")}>
                           +{plusImage}
@@ -100,7 +100,7 @@ const ImageMessage = ({
                     </div>
                   )
                     :
-                    <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
+                    <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail} alt="hd" />
                 }
                 {!isReply &&
                   <>

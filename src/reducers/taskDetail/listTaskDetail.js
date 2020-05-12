@@ -1,6 +1,12 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
 
+function getNewChat(newChat, current) {
+    if (newChat === 0) return 0
+    if (newChat === 1) return current + 1
+    return undefined
+}
+
 function updateListTaskDetail(listTaskDetail, id, update) {
     return listTaskDetail.map((data) => {
         const { tasks } = data;
@@ -8,7 +14,12 @@ function updateListTaskDetail(listTaskDetail, id, update) {
             ...data,
             tasks: tasks.map((task) => {
                 if (id === task.id) {
-                    return { ...task, ...update }
+                    const { new_chat } = update;
+                    return {
+                        ...task,
+                        ...update,
+                        new_chat: getNewChat(new_chat, task.new_chat)
+                    }
                 }
                 return task;
             })
@@ -19,7 +30,12 @@ function updateListTaskDetail(listTaskDetail, id, update) {
 function updateListDataNotRoom(listDataNotRoom, id, update) {
     return listDataNotRoom.map((data) => {
         if (id === data.id) {
-            return { ...data, ...update }
+            const { new_chat } = update;
+            return {
+                ...data,
+                ...update,
+                new_chat: getNewChat(new_chat, data.new_chat)
+            }
         }
         return data;
     })
@@ -45,11 +61,19 @@ export default function reducer(state = initialState, action) {
     switch (action.type) {
         case types.UPDATE_PROJECT_CHAT:
             const { payload } = action;
-            const { id, taskId } = payload;
+            const { id, task_id, content, new_chat,
+                user_create_avatar, user_create_id,
+                user_create_name } = payload;
+            const update = {
+                new_chat,
+                chat: {
+                    content, user_create_avatar, user_create_name
+                }
+            }
             return {
                 ...state,
-                listTaskDetail: updateListTaskDetail(state.listTaskDetail, taskId, { new_chat: 0 }),
-                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, taskId, { new_chat: 0 }),
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, update),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, update),
             }
         case types.GET_TASK_DETAIL_TABPART_REQUEST:
             const { options } = action;

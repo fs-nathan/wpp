@@ -2,8 +2,9 @@ import { Menu, MenuItem } from '@material-ui/core';
 import { mdiCardsHeart, mdiCommentQuoteOutline, mdiDotsVertical, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import { chatEmotion, deleteChat } from 'actions/chat/chat';
-import { showTab } from 'actions/taskDetail/taskDetailActions';
+import { createCommand, postSubTask } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,8 +19,13 @@ const StyledButton = styled.button`
   }
 `
 
-const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSelf, isShortMessage }) => {
+const CommonMessageAction = ({
+  chatId, handleReplyChat,
+  handleForwardChat,
+  content,
+  isSelf, isShortMessage }) => {
   const { t } = useTranslation();
+  const { enqueueSnackbar } = useSnackbar()
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const emotionsList = useSelector(state => state.chat.emotionsList);
@@ -36,17 +42,26 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
 
   function handleClickCopy() {
     setAnchorEl(null);
-
+    if (content) {
+      window.navigator.clipboard.writeText(content);
+      enqueueSnackbar(`${t('IDS_WP_ALREADY_COPY')} ${content}`, { variant: 'success' });
+    }
   }
 
   function onClickMarkSubTask() {
     setAnchorEl(null);
-    dispatch(showTab(2))
+    if (content) {
+      dispatch(postSubTask({ task_id: taskId, name: content }))
+    }
+    // dispatch(showTab(2))
   }
 
   function onClickMarkDemand() {
     setAnchorEl(null);
-    dispatch(showTab(7))
+    if (content) {
+      dispatch(createCommand({ task_id: taskId, content, type: 0 }))
+    }
+    // dispatch(showTab(7))
   }
 
   function handleDeleteChat() {
@@ -97,10 +112,10 @@ const CommonMessageAction = ({ chatId, handleReplyChat, handleForwardChat, isSel
           horizontal: 'right',
         }}
       >
-        <MenuItem className="memberItem--menuItem" onClick={handleClickCopy}>{t('LABEL_CHAT_TASK_COPY')}</MenuItem>
+        <MenuItem className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })} onClick={handleClickCopy}>{t('LABEL_CHAT_TASK_COPY')}</MenuItem>
         <MenuItem divider></MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={onClickMarkSubTask}>{t('LABEL_CHAT_TASK_DANH_DAU_CONG_VIEC_CON')}</MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={onClickMarkDemand}>{t('LABEL_CHAT_TASK_DANH_DAU_LA_CHI_DAO')}</MenuItem>
+        <MenuItem className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })} onClick={onClickMarkSubTask}>{t('LABEL_CHAT_TASK_DANH_DAU_CONG_VIEC_CON')}</MenuItem>
+        <MenuItem className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })} onClick={onClickMarkDemand}>{t('LABEL_CHAT_TASK_DANH_DAU_LA_CHI_DAO')}</MenuItem>
         <MenuItem divider></MenuItem>
         <MenuItem className="memberItem--menuItem" onClick={handleDeleteChat}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>

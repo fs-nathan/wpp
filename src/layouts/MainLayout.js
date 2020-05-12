@@ -113,6 +113,7 @@ function MainLayout({
   updateChatState,
   updateProjectChat,
   taskDetails = {},
+  userId = '',
   getViewedChatSuccess,
   actionFetchListColor,
   actioGetSettingDate,
@@ -145,7 +146,8 @@ function MainLayout({
 
   function handleChatInProject(data) {
     console.log('handleChatInProject', data)
-    // getViewedChatSuccess(data)
+    const { user_create_id } = data;
+    data.new_chat = user_create_id === userId ? 0 : 1;
     updateProjectChat(data)
   }
 
@@ -165,7 +167,6 @@ function MainLayout({
       socket.on('WP_NEW_CHAT_EXPRESS_EMOTION_CHAT', handleReactEmotion);
       socket.on('WP_DELETE_CHAT_IN_TASK', handleDeleteChat);
       socket.on('WP_VIEW_CHAT_IN_TASK', handleViewChat);
-      socket.on('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
 
       function joinChat({ detail }) {
         // console.log('joinChat', detail)
@@ -183,6 +184,14 @@ function MainLayout({
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    socket.on('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
+    return () => {
+      socket.off('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
+    }
+    // eslint-disable-next-line
+  }, [userId])
 
   useEffect(() => {
     console.log('listen chat')
@@ -293,6 +302,7 @@ function MainLayoutWrapper({ ...rest }) {
 export default connect(
   state => ({
     taskDetails: state.taskDetail.detailTask.taskDetails,
+    userId: state.system.profile.id,
     colors: state.setting.colors,
     groupDetail: state.setting.groupDetail,
     isDocumentDetail: state.system.isDocumentDetail,

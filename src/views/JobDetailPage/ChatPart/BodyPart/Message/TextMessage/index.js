@@ -82,7 +82,7 @@ const TextMessage = ({
           </abbr>
         }
         {!isReply && is_me && !is_deleted &&
-          <CommonMessageAction isSelf
+          <CommonMessageAction content={content} isSelf
             isShortMessage={content.length < 3}
             chatId={id}
             handleReplyChat={handleReplyChat}
@@ -155,7 +155,7 @@ const TextMessage = ({
           </abbr>
         </div>
         {!isReply && !is_me && !is_deleted &&
-          <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+          <CommonMessageAction content={content} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
         }
       </div >
       {
