@@ -34,4 +34,20 @@
     position: absolute;
     right: 10px;
   }
+  &--bottom {
+    display: flex;
+    // justify-content: space-between;
+  }
+  &--name {
+    font-weight: 500;
+    width: 100%;
+  }
+  &--role {
+    color: orange;
+  }
+  &--time {
+    color: #aeaeae;
+    margin-left: auto;
+    margin-right: 10px;
+  }
 }

@@ -942,5 +942,6 @@
   "LABEL_CHAT_TASK_TIN_NHAN_DA_BI_XOA": "Tin nhắn đã bị xoá!",
   "LABEL_CHAT_TASK_TIN_NHAN_DA_DUOC_XOA": "Tin nhắn đã được xoá!",
   "LABEL_CHAT_TASK_DANG_GUI": "Đang gửi...",
-  "LABEL_CHAT_TASK_DA_GUI": "Đã gửi"
+  "LABEL_CHAT_TASK_DA_GUI": "Đã gửi",
+  "LABEL_CHAT_TASK_XEM_LUC": "Xem lúc {{viewed_at}}"
 }
