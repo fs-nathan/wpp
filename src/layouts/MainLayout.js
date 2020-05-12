@@ -1,4 +1,5 @@
 import { appendChat, getViewedChatSuccess, updateChatState } from "actions/chat/chat";
+import { updateProjectChat } from "actions/taskDetail/taskDetailActions";
 import { JOIN_CHAT_EVENT } from 'constants/actions/chat/chat';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -110,6 +111,7 @@ function MainLayout({
   isDocumentDetail,
   appendChat,
   updateChatState,
+  updateProjectChat,
   taskDetails = {},
   getViewedChatSuccess,
   actionFetchListColor,
@@ -144,6 +146,7 @@ function MainLayout({
   function handleChatInProject(data) {
     console.log('handleChatInProject', data)
     // getViewedChatSuccess(data)
+    updateProjectChat(data)
   }
 
   useEffect(() => {
@@ -297,6 +300,7 @@ export default connect(
     toast: state.system.toast
   }),
   {
+    updateProjectChat,
     appendChat,
     updateChatState,
     getViewedChatSuccess,

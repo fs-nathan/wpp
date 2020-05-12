@@ -1,3 +1,4 @@
+import flattenDepth from 'lodash/flattenDepth';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +24,7 @@ const ListBanner = props => {
   // console.log('listTaskDetail', value)
   useEffect(() => {
     if (listTaskDataType === listTaskDataTypes[1]) {
-      setData(listTaskDetail)
+      setData(flattenDepth(listTaskDetail.map(({ tasks }) => tasks)))
     } else {
       setData(listDataNotRoom)
     }

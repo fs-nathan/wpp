@@ -43,12 +43,20 @@ export default function reducer(state = initialState, action) {
     // console.log("reducer text search:::", action.payload);
 
     switch (action.type) {
+        case types.UPDATE_PROJECT_CHAT:
+            const { payload } = action;
+            const { id, taskId } = payload;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, taskId, { new_chat: 0 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, taskId, { new_chat: 0 }),
+            }
         case types.GET_TASK_DETAIL_TABPART_REQUEST:
             const { options } = action;
             return {
                 ...state,
-                listTaskDetail: updateListTaskDetail(state.listTaskDetail, options.taskId, { new_chat: false }),
-                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, options.taskId, { new_chat: false }),
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, options.taskId, { new_chat: 0 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, options.taskId, { new_chat: 0 }),
             }
         case types.GET_LIST_TASK_DETAIL_REQUEST:
             return {

@@ -12,7 +12,8 @@ const ChatBoxInput = (props) => {
   } = props;
 
   const handleChange = evt => {
-    onChange(evt.target.value)
+    const { value } = evt.target
+    onChange(value === '<br>' ? '' : value)
   };
 
   const pasteAsPlainText = event => {
@@ -25,12 +26,12 @@ const ChatBoxInput = (props) => {
     <>
       <ContentEditable
         html={value}
-        className={clsx("ChatBoxInput")}
+        className={clsx("ChatBoxInput", { 'ChatBoxInput__empty': !value })}
         onChange={handleChange}
         onPaste={pasteAsPlainText}
         {...rest}
       />
-      <div className={clsx("ChatBoxInput--placeholder", { 'ChatBoxInput__empty': !value })}>
+      <div className={clsx("ChatBoxInput--placeholder", { 'ChatBoxInput--placeholder__empty': !value })}>
         {placeholder}
       </div>
     </>

@@ -1163,3 +1163,10 @@ export function getSchedulesFail(error) {
         error
     };
 }
+
+export function updateProjectChat(payload) {
+    return {
+        type: types.UPDATE_PROJECT_CHAT,
+        payload
+    };
+}

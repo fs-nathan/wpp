@@ -485,7 +485,7 @@ const FooterPart = ({
         >
           {isShowQuickLike ?
             <QuickLikeIcon color={groupActiveColor} />
-            : "Gửi"
+            : t('LABEL_CHAT_TASK_GUI')
           }
         </div>
       </StyledChatBox>

@@ -3,6 +3,7 @@ import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { cancelStopTask, deleteTask, pinTaskAction, stopTask, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
+import compact from 'lodash/compact';
 import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -42,7 +43,7 @@ function TabHeader(props) {
     if (user_create) {
       avatar = user_create.avatar;
       name = user_create.name;
-      roles = `${user_create.position} - ${user_create.room}`;
+      roles = compact([user_create.room, user_create.position]).join(' - ');
     }
   }
   const handleOpenModalDelete = () => {
