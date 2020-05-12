@@ -2,7 +2,7 @@ import { Avatar } from '@material-ui/core';
 import { mdiWindowClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
-import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
+import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { getFileType, getRichContent } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -32,14 +32,14 @@ const ReplyChatPreview = ({ id,
 
   const file = files[0] || {};
   function getContent() {
-    if (type === 1)
+    if (isOneOf(type, [CHAT_TYPE.CHAT_FILE_FROM_GOOGLE_DRIVER, CHAT_TYPE.CHAT_FORWARD_FILE, CHAT_TYPE.FILE]))
       return <div className={clsx("ReplyChatPreview--fileName")}>
         {file.name}&nbsp;&nbsp;&nbsp;&nbsp;
         <span className={clsx("FileMessage--fileSize")}>
           {getFileType(file.name)} - {file && file.size}
         </span>
       </div>
-    if (type === 2)
+    if (type === CHAT_TYPE.IMAGE)
       return <div >{t('LABEL_CHAT_TASK_HINH_ANH')}</div>
     return <div className={clsx("ReplyChatPreview--content", {
     })}
@@ -66,7 +66,9 @@ const ReplyChatPreview = ({ id,
           <img src={file.file_icon} alt="preview" />
         </>}
       </div>
-      <div className={clsx("ReplyChatPreview--rightContentWrap")} >
+      <div className={clsx("ReplyChatPreview--rightContentWrap", {
+        'ReplyChatPreview--rightContentWrap__image': type === 2
+      })} >
         <div className="ReplyChatPreview--sender"  >
           <Avatar className="ReplyChatPreview--avatarReply" src={user_create_avatar} />
           <div className="ReplyChatPreview--name"  >

@@ -22,9 +22,9 @@ const IconPin = styled(Icon)`
   display: ${props => (props.isghim === 'true' ? 'block' : 'none')};
 `;
 const ChipMes = styled(Chip)`
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
+  border-radius: 10px;
+  width: auto;
+  height: auto;
   color: white;
   background-color: red;
   font-weight: 500;

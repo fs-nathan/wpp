@@ -34,11 +34,11 @@ const StyledDialog = styled(Dialog)`
 `
 const ContentDialog = styled(DialogContent)`
     overflow: hidden;
-    background: #161616c9;
+    background: #3e4041;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 7px 0 0 0;
+    padding: 0;
     & > div:nth-child(2) {
         background-repeat: no-repeat;
         background-size: cover;
@@ -57,7 +57,7 @@ const FooterDialog = styled(DialogActions)`
     padding: 5px 0 5px 0;
     & > div {
         display: flex;
-        background: #00000091;
+        background: #3e4041;
         padding: 3px;
         border-radius: 10px;
         width: 1200px;
@@ -73,13 +73,19 @@ const FooterDialog = styled(DialogActions)`
     }
 `
 const ButtonImage = styled(IconButton)`
-    padding: 0;
+    background: #353535;
+    padding: 10px;
+    margin 20px;
     & > span > svg {
-        width: 6.5rem !important;
-        height: 6.5rem !important;
+        width: 30px !important;
+        height: 30px !important;
+        color: #ccc;
         &:hover {
-            fill: #ccc;
-          }
+          color: #fff;
+        }
+    }
+    &:hover {
+      background: #111;
     }
 `
 
@@ -122,12 +128,29 @@ const ModalImage = () => {
     dispatch(openDocumentDetail({ ...imagesList[currentImage], type }));
   }
 
+  function checkSize() {
+    const { offsetHeight, offsetWidth } = document.getElementById('ContentDialog-ImageModal');
+    const { offsetWidth: offsetWidthButton } = document.getElementById('ContentDialog-buttonLeft');
+    const transformImg = document.getElementById('transformImg');
+    const vH = offsetHeight || 0;
+    const vW = offsetWidth ? offsetWidth - offsetWidthButton * 2 : 0;
+    let elmH = transformImg.naturalHeight || 0;
+    let elmW = transformImg.naturalWidth || 0;
+    while (elmH >= vH || elmW >= vW) {
+      elmH *= 0.9;
+      elmW *= 0.9;
+    }
+    transformImg.height = elmH;
+    transformImg.width = elmW;
+  }
   function onClickRotateLeft() {
     setRotate(rotate - 90)
+    checkSize()
   }
 
   function onClickRotateRight() {
     setRotate(rotate + 90)
+    checkSize()
   }
 
   function clickNext() {
@@ -225,13 +248,16 @@ const ModalImage = () => {
               <ButtonImage onClick={clickBack} id="ContentDialog-buttonLeft">
                 <Icon path={mdiChevronLeft} size="30px" />
               </ButtonImage>
-              <div id="transformImg">
+              <div
+                style={{ transform: `rotate(${rotate}deg)` }}
+              >
                 <img
+                  id="transformImg"
                   onWheel={handleZoomImage}
                   onLoad={onLoadImage}
                   ref={transformRef}
                   alt="vtask"
-                  style={{ transform: `rotate(${rotate}deg)` }}
+                  // style={{ transform: `rotate(${rotate}deg)` }}
                   src={imagesList[currentImage] && imagesList[currentImage].url} />
               </div>
               <ButtonImage onClick={clickNext}>

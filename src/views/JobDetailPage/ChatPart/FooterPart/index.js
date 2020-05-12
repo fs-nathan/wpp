@@ -169,8 +169,17 @@ const FooterPart = ({
   function onClickDeletePreview(i) {
     return () => {
       // console.log(i)
-      const filtered = imagesQueue.filter((img, idx) => idx !== i)
-      setImagesQueue([...filtered]);
+      if (clipBoardImages.length > 0) {
+        if (i === 0) {
+          setClipBoardImages([])
+        } else {
+          const filtered = imagesQueue.filter((img, idx) => idx !== i - 1)
+          setImagesQueue([...filtered]);
+        }
+      } else {
+        const filtered = imagesQueue.filter((img, idx) => idx !== i)
+        setImagesQueue([...filtered]);
+      }
     }
   }
 

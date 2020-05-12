@@ -1,19 +1,17 @@
-import { Avatar, Button, Dialog, IconButton, InputAdornment, TextField, Typography } from '@material-ui/core';
-import MuiDialogActions from '@material-ui/core/DialogActions';
+import { Avatar, Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import { openDetailMember } from 'actions/chat/chat';
 import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import imgDoc from '../../../../assets/doc.png';
 import ColorTypo from '../../../../components/ColorTypo';
 import colorPal from '../../../../helpers/colorPalette';
-
+import './styles.scss';
 
 const StyledEmploy = styled(Typography)`
   width: 700px;
@@ -115,33 +113,11 @@ const styles = theme => ({
   },
 });
 
-const DialogTitle = withStyles(styles)(props => {
-  const { t } = useTranslation();
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
 const DialogContent = withStyles(theme => ({
   root: {
     padding: theme.spacing(2),
   },
 }))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: '15px 24px',
-  },
-}))(MuiDialogActions);
 
 const MemberModal = () => {
   const { t } = useTranslation();
@@ -152,6 +128,10 @@ const MemberModal = () => {
 
   function handleCloseMembers() {
     dispatch(openDetailMember(false))
+  }
+
+  function setOpenMembers(isOpen) {
+    dispatch(openDetailMember(isOpen))
   }
 
   const {
@@ -173,8 +153,15 @@ const MemberModal = () => {
   } = userDetail || {};
 
   return (
-    <Dialog maxWidth={'lg'} onClose={handleCloseMembers} open={isOpenDetailMember} >
-      <DialogTitle onClose={handleCloseMembers}>{t('LABEL_CHAT_TASK_THONG_TIN_CHI_TIET_THANH_VIEN')}</DialogTitle>
+    <JobDetailModalWrap
+      title={t('LABEL_CHAT_TASK_THONG_TIN_CHI_TIET_THANH_VIEN')}
+      open={isOpenDetailMember}
+      setOpen={setOpenMembers}
+      confirmRender={null}
+      cancleRender={() => t('LABEL_CHAT_TASK_DONG')}
+      onCancle={handleCloseMembers}
+      className="MemberModal"
+    >
       <DialogContent dividers>
         <div className="wrapper-member-modal">
           <StyledEmploy component={'div'}>
@@ -265,10 +252,7 @@ const MemberModal = () => {
           </StyledStaff>
         </div>
       </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCloseMembers} color="primary">{t('LABEL_CHAT_TASK_DONG')}</Button>
-      </DialogActions>
-    </Dialog>
+    </JobDetailModalWrap>
   )
 }
 
