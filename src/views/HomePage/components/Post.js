@@ -12,11 +12,11 @@ import { mdiPin, mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
 import colors from "helpers/colorPalette";
+import linkify from "linkifyjs/string";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useToggle } from "react-use";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import {
   createMapPropsFromAttrs,
@@ -40,6 +40,7 @@ import loveImage from "./love-image.png";
 import Message from "./Message";
 import "./Post.css";
 import { PostActionButton } from "./PostActionButton";
+
 const CommentList = ({ comments = emptyArray, onReplyClick }) => {
   return (
     <>
@@ -192,8 +193,8 @@ export const PostMenu = ({
   setMenuAnchor,
 }) => {
   const handleItemClick = handleActionClick;
-  const { is_modify } = useContext(PostContext);
-  if (!is_modify) return null;
+  const { can_modify } = useContext(PostContext);
+  if (!can_modify) return null;
   return (
     <ItemMenu
       onItemClick={handleItemClick}
@@ -284,18 +285,20 @@ export const PostHeader = () => {
           ></TasksCard.HeaderAvatar>
         }
         action={
-          <div>
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setAnchorEl(e.currentTarget);
-              }}
-              size="small"
-              aria-label="settings"
-            >
-              <MoreVert />
-            </IconButton>
-          </div>
+          ((menuoptions && menuoptions.length) || null) && (
+            <div>
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAnchorEl(e.currentTarget);
+                }}
+                size="small"
+                aria-label="settings"
+              >
+                <MoreVert />
+              </IconButton>
+            </div>
+          )
         }
         title={
           <TasksCard.HeaderTitle>
@@ -361,32 +364,48 @@ export const PostFiles = () => {
     );
   return null;
 };
-const Seemore = ({ children }) => {
-  const { t } = useTranslation();
-  const [isToggle, toggle] = useToggle(false);
-  return isToggle ? (
-    <span>
-      {children}{" "}
-      <b className="u-colorBlue" onClick={() => toggle()}>
-        {t("see less")}
-      </b>
-    </span>
-  ) : (
-    <span>
-      ...{" "}
-      <b className="u-colorBlue" onClick={() => toggle()}>
-        {t("see more")}
-      </b>
-    </span>
-  );
-};
+
 const Description = ({ children = "", limit = 100 }) => {
+  const { t } = useTranslation();
+  const [showMore, setShowMore] = useState(false);
+  const hasMore = children.length >= limit;
+  if (!hasMore)
+    return (
+      <span
+        className="comp_Left__description"
+        dangerouslySetInnerHTML={{
+          __html: linkify(children),
+        }}
+      ></span>
+    );
   const sub = children.substring(0, limit);
-  const hasMore = sub.length < children.length;
   return (
     <>
-      {sub}
-      {hasMore > 0 && <Seemore>{children.substring(limit)}</Seemore>}
+      {hasMore && !showMore ? (
+        <span>{sub}</span>
+      ) : (
+        <span
+          className="comp_Left__description"
+          dangerouslySetInnerHTML={{
+            __html: linkify(children),
+          }}
+        ></span>
+      )}
+      {hasMore && showMore ? (
+        <span>
+          {" "}
+          <b className="u-colorBlue" onClick={() => setShowMore(false)}>
+            {t("see less")}
+          </b>
+        </span>
+      ) : (
+        <span>
+          ...{" "}
+          <b className="u-colorBlue" onClick={() => setShowMore(true)}>
+            {t("see more")}
+          </b>
+        </span>
+      )}
     </>
   );
 };
@@ -555,7 +574,7 @@ export const PostContainer = ({ post, children }) => {
     is_pin,
     is_love,
     is_like,
-    is_modify,
+    can_modify,
   ] = createMapPropsFromAttrs([
     postAttr.id,
     postAttr.title,
@@ -581,7 +600,7 @@ export const PostContainer = ({ post, children }) => {
     postAttr.is_pin,
     postAttr.is_love,
     postAttr.is_like,
-    postAttr.is_modify,
+    postAttr.can_modify,
   ])(post);
   const dispatch = useDispatch();
   const handleActionClick = useCallback(
@@ -616,16 +635,18 @@ export const PostContainer = ({ post, children }) => {
   );
   const { t } = useTranslation();
   const menuoptions = useMemo(() => {
-    return [
-      !is_pin
-        ? { key: "pin", label: t("Ghim") }
-        : { key: "cancel-pin", label: t("Bỏ ghim") },
-      !is_highlight
-        ? { key: "highLight", label: t("Nổi bật") }
-        : { key: "cancel-highLight", label: t("Bỏ nổi bật") },
-      { key: "delete", label: t("Xóa") },
-    ];
-  }, [t, is_pin, is_highlight]);
+    return can_modify
+      ? [
+          !is_pin
+            ? { key: "pin", label: t("Ghim") }
+            : { key: "cancel-pin", label: t("Bỏ ghim") },
+          !is_highlight
+            ? { key: "highLight", label: t("Nổi bật") }
+            : { key: "cancel-highLight", label: t("Bỏ nổi bật") },
+          { key: "delete", label: t("Xóa") },
+        ]
+      : emptyArray;
+  }, [can_modify, is_pin, t, is_highlight]);
 
   const handleComment = useCallback(
     (value) => {
@@ -664,7 +685,7 @@ export const PostContainer = ({ post, children }) => {
         is_pin,
         is_love,
         is_like,
-        is_modify,
+        can_modify,
         menuoptions,
         handleActionClick,
         handleComment,

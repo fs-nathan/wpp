@@ -4,11 +4,13 @@
 }
 .comp_Post__creatorName {
   margin-right: 10px;
+  display: inline;
   font-weight: bold;
 }
 .comp_Post__creatorPostition {
   font-size: 1rem;
   font-weight: 400;
+  display: inline;
   line-height: 1.5;
   letter-spacing: 0.00938em;
   color: rgba(0, 0, 0, 0.54);
@@ -25,15 +27,20 @@
 .comp_Post .comp_TasksCard__HeaderTitle {
 }
 .comp_Post__pin {
+  color: #aeaeae;
   transform: rotate(45deg);
   vertical-align: middle;
   padding: 0px 10px;
+  width: 17px;
+  height: 17px;
 }
 .comp_Post__highlight {
+  width: 17px;
+  height: 17px;
   font-size: 1.6rem;
   fill: rgb(253, 126, 20);
   vertical-align: middle;
-  padding: 0px 10px;
+  padding: 0px 10px 0 0;
 }
 .comp_Post__category {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -60,8 +67,8 @@
 .comp_Post__actionsWrap {
   display: flex;
   align-items: stretch;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid #ededed;
+  border-bottom: 1px solid #e5e5e9;
 }
 .comp_Post__fileList {
   padding: 0;
@@ -89,7 +96,7 @@
   color: #3f51b5;
 }
 .u-colorBlue {
-  color: #3f51b5;
+  color: #3f51b5 !important;
 }
 .comp_Post_iconLove {
   width: 15px;

@@ -1,6 +1,8 @@
 import {
   Box,
+  Button,
   ButtonBase,
+  Dialog,
   IconButton,
   List,
   ListItem,
@@ -35,11 +37,15 @@ import {
   listWeeksInYearSelector,
   scheduleOfWeekSelector,
 } from "views/CalendarWeeklyPage/selectors";
-import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
+import ModalCommon, {
+  DialogActions,
+  DialogTitleCus,
+} from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
+import no_calendar_image from "../components/no_calendar.png";
 import TasksCard from "../components/TasksCard";
 import { scheduleAttrs, weekScheduleAttrs } from "../contant/attrs";
 import { weekScheduleModule } from "../redux/weekSchedule";
@@ -84,7 +90,13 @@ const WeedDetailStateLess = ({
 }) => {
   const { t } = useTranslation();
   return (
-    (!calendar && <EmptyHolder title={"no data found"} description="" />) || (
+    (!calendar && (
+      <EmptyHolder
+        imageUrl={no_calendar_image}
+        title={"no data found"}
+        description=""
+      />
+    )) || (
       <>
         <div className="view_WeeklyCalendar_rightContainer">
           <CalendarDetailHeader>
@@ -319,9 +331,13 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
               if (schedule === "empty")
                 return (
                   i === 0 && (
-                    <Typography bold color="textSecondary">
-                      {t("No data found")}
-                    </Typography>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      flexDirection="column"
+                    >
+                      <img src={no_calendar_image} alt="no data found" />
+                    </Box>
                   )
                 );
               return (
@@ -341,16 +357,34 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
               <ButtonBase
                 onClick={() =>
                   setModal(
-                    <ModalCommon
-                      maxWidth="lg"
-                      title={t("CHI TIẾT LỊCH TUẦN")}
-                      footerAction={[]}
+                    <Dialog
                       onClose={() => setModal(null)}
+                      fullWidth={true}
+                      maxWidth={"lg"}
+                      aria-labelledby="customized-dialog-title"
+                      open={true}
+                      className="modal-common-container"
                     >
+                      <DialogTitleCus
+                        id="customized-dialog-title"
+                        onClose={() => setModal(null)}
+                        className="modal-cus"
+                      >
+                        {t("CHI TIẾT LỊCH TUẦN")}
+                      </DialogTitleCus>
                       <div style={{ overflowX: "hidden" }}>
                         <WeekDetail year={year} week={week} />
                       </div>
-                    </ModalCommon>
+                      <DialogActions>
+                        <Button
+                          onClick={() => setModal(null)}
+                          disableRipple
+                          className="common-btn-modal"
+                        >
+                          {t("THOÁT")}
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   )
                 }
                 style={{ float: "right" }}

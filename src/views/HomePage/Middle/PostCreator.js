@@ -23,6 +23,10 @@ export const PostCreator = () => {
     (cate) => {
       setModal(
         <Dialog
+          id="PostCreator"
+          PaperProps={{
+            tabIndex: -1,
+          }}
           onClose={handleClose}
           fullWidth={true}
           maxWidth={"sm"}

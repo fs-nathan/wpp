@@ -60,7 +60,7 @@ export const postAttr = {
   is_pin: "is_pin", // false
   is_love: "is_love", // false
   is_like: "is_like", // false
-  is_modify: "is_modify", //true
+  can_modify: "can_modify", //true
 };
 
 export const weekScheduleAttrs = {

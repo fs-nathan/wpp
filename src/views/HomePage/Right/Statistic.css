@@ -30,9 +30,11 @@
   align-items: center;
   justify-content: center;
 }
-.comp_Statistic__button__image img {
+.comp_Statistic__button__image.MuiAvatar-root {
   width: 70%;
   height: 70%;
+  left: 15%;
+  top: 15%;
 }
 .comp_Statistic__button__number {
   font-size: 24px !important;

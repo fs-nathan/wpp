@@ -53,6 +53,7 @@ const EditCategoryForm = ({
   );
 };
 export default ({ id, logo, name }) => {
+  const { t } = useTranslation();
   const { setModal } = useContext(HomeContext);
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
@@ -65,11 +66,17 @@ export default ({ id, logo, name }) => {
   const handleSubmit = (values) => setAsyncAction(updatePostCategory(values));
   return (
     <EditCategoryForm
-      initialValues={{ category_id: id, logoPreview: logo, logo, name }}
+      initialValues={{
+        category_id: id,
+        logoPreview: !!logo && logo,
+        logo,
+        name,
+      }}
       onSubmit={handleSubmit}
     >
       <>
         <CategoryModal
+          title={t("Sửa thể loại")}
           loading={status === apiCallStatus.loading}
           onClose={onClose}
           toggleLogoModal={toggleLogoModal}

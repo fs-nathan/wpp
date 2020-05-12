@@ -1,4 +1,4 @@
-import { Avatar, Box, ButtonBase } from "@material-ui/core";
+import { Avatar, Box, Button, ButtonBase, Dialog } from "@material-ui/core";
 import { mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
@@ -7,9 +7,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { useToggle } from "react-use";
-import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
+import {
+  DialogActions,
+  DialogTitleCus,
+} from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
-import { emptyArray } from "views/JobPage/contants/defaultValue";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import TasksCard from "../components/TasksCard";
@@ -120,11 +122,21 @@ export default (props) => {
     <>
       <HightLight posts={posts} {...props} onMoreClick={() => toggle()} />
       {isToggle && (
-        <ModalCommon
+        <Dialog
           onClose={() => toggle()}
-          title={t("TIN NỔI BẬT")}
-          footerAction={emptyArray}
+          fullWidth={true}
+          maxWidth={"md"}
+          aria-labelledby="customized-dialog-title"
+          open={true}
+          className="modal-common-container"
         >
+          <DialogTitleCus
+            id="customized-dialog-title"
+            onClose={() => toggle()}
+            className="modal-cus"
+          >
+            {t("TIN NỔI BẬT")}
+          </DialogTitleCus>
           <Box padding="20px">
             <Stack small>
               {posts.map((item, i) => {
@@ -140,7 +152,16 @@ export default (props) => {
               )}
             </Stack>
           </Box>
-        </ModalCommon>
+          <DialogActions>
+            <Button
+              onClick={() => toggle()}
+              disableRipple
+              className="common-btn-modal"
+            >
+              {t("THOÁT")}
+            </Button>
+          </DialogActions>
+        </Dialog>
       )}
     </>
   );

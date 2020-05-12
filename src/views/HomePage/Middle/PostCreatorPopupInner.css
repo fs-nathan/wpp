@@ -54,16 +54,16 @@
 .comp_PostCreatorPopupInner__content .MuiInputLabel-root {
   font-size: 15px;
   line-height: 1.4;
-  top: 50px;
+  top: 80px;
 }
 .comp_PostCreatorPopupInner__content .MuiInputLabel-shrink {
-  transform: translate(0, -44px) scale(0.75);
+  transform: translate(0, -70px) scale(0.75);
 }
 .comp_PostCreatorPopupInner__media {
-  padding: 10px;
   background-color: #f6f6f6;
 }
-.comp_PostCreatorPopupInner__media.showEmpty {
+.comp_PostCreatorPopupInner__media.isDragActive {
+  padding: 0;
   border: 4px dashed #e7e7e7;
   font-size: x-large;
   padding: 0;
