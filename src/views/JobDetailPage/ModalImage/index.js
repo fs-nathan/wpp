@@ -44,6 +44,9 @@ const ContentDialog = styled(DialogContent)`
         background-size: cover;
         overflow: hidden;
     }
+    & > video:focus {
+      outline: none;
+    }
 `
 
 const WrapperImage = styled(GridListTile)`
@@ -224,6 +227,7 @@ const ModalImage = () => {
       aria-labelledby="customized-dialog-title"
       open={isOpenImagesListModal}
       fullScreen={fullScreen}
+      className="ModalImage"
     >
       <DialogTitleModalImage id="customized-dialog-title"
         {...createUser}
@@ -238,6 +242,7 @@ const ModalImage = () => {
         {
           (type === 'mp4') ?
             <ReactPlayer
+              className="ModalImage--video"
               url={url} playing
               height="calc(100vh - 81px)" width="auto"
               controls

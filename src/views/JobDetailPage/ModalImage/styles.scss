@@ -18,3 +18,14 @@
     justify-content: flex-end;
   }
 }
+
+.ModalImage--video {
+  video {
+    &:focus {
+      outline: none;
+    }
+  }
+  &:focus {
+    outline: none;
+  }
+}

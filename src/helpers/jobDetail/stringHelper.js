@@ -179,10 +179,10 @@ export function getRichContent(content = '', tags = [], color = 'inherit') {
   return replaceUrl(ret);
 }
 
-export function getFileType(name) {
+export function getFileType(name = '') {
   const nameSplitted = name.split('.');
   const type = nameSplitted[nameSplitted.length - 1];
-  return type
+  return type.toLowerCase();
 }
 
 export const convertStringAlias = (alias) => {
