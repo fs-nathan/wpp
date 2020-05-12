@@ -1076,10 +1076,10 @@ function* getListTaskDetail(action) {
     if (!action.type_data) {
       const userId = yield select(state => state.system.profile.id);
       const key = `${userId}:${lastJobSettingKey}`;
-      console.log(key, ' getListTaskDetail')
+      // console.log(key, ' getListTaskDetail')
       action.type_data = localStorage.getItem(key) || 'include-room';
     }
-    console.log(action, ' action')
+    // console.log(action, ' action')
     const res = yield call(doGetListTaskDetail, action)
     yield put(actions.getListTaskDetailSuccess(res, action.type_data))
   } catch (error) {

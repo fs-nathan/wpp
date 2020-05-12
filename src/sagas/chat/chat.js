@@ -168,9 +168,11 @@ export function* getEmotionsReactMember(payload) {
 
 export function* createChatText(payload) {
   try {
-    const { content, resendId } = payload;
+    const { content: { parent_id, content, tags, urls, task_id }, resendId } = payload;
     const uuid = yield select(state => state.taskDetail.detailTask.taskDetails.uuid);
-    const res = yield call(apiService.post, "/task/create-chat-text", { ...content, uuid });
+    const res = yield call(apiService.post, "/task/create-chat-text", {
+      parent_id, content, tags, urls, task_id, uuid
+    });
     yield put(actions.createChatTextSuccess(res.data));
     // yield put(actions.loadChat(content.task_id));
     yield put(actions.appendChat(res.data, resendId));
