@@ -1057,7 +1057,7 @@ function* updateRolesForMember(action) {
   }
 }
 // Get list task detail
-async function doGetListTaskDetail({ project_id, type_data }, key) {
+async function doGetListTaskDetail({ project_id, type_data }) {
   try {
     const config = {
       url: "project/list-task-detail",
@@ -1076,8 +1076,10 @@ function* getListTaskDetail(action) {
     if (!action.type_data) {
       const userId = yield select(state => state.system.profile.id);
       const key = `${userId}:${lastJobSettingKey}`;
+      console.log(key, ' getListTaskDetail')
       action.type_data = localStorage.getItem(key) || 'include-room';
     }
+    console.log(action, ' action')
     const res = yield call(doGetListTaskDetail, action)
     yield put(actions.getListTaskDetailSuccess(res, action.type_data))
   } catch (error) {

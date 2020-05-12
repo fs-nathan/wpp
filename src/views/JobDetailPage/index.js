@@ -10,6 +10,7 @@ import '../JobDetailPage/index.scss';
 import ChatPart from './ChatPart';
 import Intro from './introduce';
 import ListPart from './ListPart';
+import { lastJobSettingKey } from './ListPart/ListHeader/CreateJobSetting';
 import ModalImage from './ModalImage';
 import TabPart from './TabPart';
 
@@ -18,6 +19,7 @@ function JobDetailPage(props) {
   const url = new URL(window.location.href);
   const taskId = url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const userId = useSelector(state => state.system.profile.id);
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -32,18 +34,21 @@ function JobDetailPage(props) {
 
   useEffect(() => {
     // console.log('url', url.pathname, 'projectId', projectId)
+    const key = `${userId}:${lastJobSettingKey}`;
+    const type_data = localStorage.getItem(key) || 'include-room';
+    // console.log(key, type_data, ' useEffect')
     const path = url.pathname;
     const id = last(path.split('/'));
     // console.log({ id, path });
-    if (id.length > 0) {
+    if (id.length > 0 && userId) {
       if (id !== projectId) {
         dispatch(taskDetailAction.getProjectListBasic(id));
         // dispatch(taskDetailAction.chooseProject({ id }))
-        dispatch(taskDetailAction.getListTaskDetail(id));
+        dispatch(taskDetailAction.getListTaskDetail(id, type_data));
         dispatch(taskDetailAction.getProjectDetail(id))
       }
     }
-  }, [dispatch, projectId, url]);
+  }, [dispatch, projectId, url, userId]);
 
   useEffect(() => {
     // console.log('taskId', taskId)
@@ -60,15 +65,18 @@ function JobDetailPage(props) {
   }, [dispatch, taskId]);
 
   useEffect(() => {
+    const key = `${userId}:${lastJobSettingKey}`;
+    const type_data = localStorage.getItem(key) || 'include-room';
+    // console.log(key, ' useEffect', type_data)
     // console.log('projectId', projectId)
-    if (projectId !== '') {
+    if (projectId !== '' && userId) {
       dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
-      dispatch(taskDetailAction.getListTaskDetail(projectId));
+      dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
       dispatch(detailStatus({ projectId }));
     }
-  }, [dispatch, projectId]);
+  }, [dispatch, projectId, userId]);
 
   return (
     <div className={taskId ? 'container' : 'container-job-introduce'}>
