@@ -1,4 +1,4 @@
-import * as actionTypes from '../../constants/actions/gantt';
+import * as actionTypes from "../../constants/actions/gantt";
 
 export const initialState = {
   showHeader: true,
@@ -11,10 +11,10 @@ export const initialState = {
     duration: "#ab209d",
   },
   projectInfo: {
-    id: '',
-    name: ''
+    id: "",
+    name: "",
   },
-  indexColumn: [0,1,2,3,4],
+  indexColumn: [0, 1, 2, 3, 4],
   visible: {
     table: {
       name: true,
@@ -23,7 +23,7 @@ export const initialState = {
       duration_actual: true,
       complete: true,
     },
-    gantt: {  
+    gantt: {
       total: true,
       group: true,
       task: true,
@@ -31,88 +31,106 @@ export const initialState = {
       date: true,
       name: true,
       numberDuration: true,
-      numberComplete: true
+      numberComplete: true,
     },
     label: {
       prior: true,
       status: true,
-      member: true
-    }
+      member: true,
+    },
   },
-  previewContent: ["Nội dung 1", "Nội dung 2", "Nội dung 3", "Nội dung 4" ,"Nội dung 5", "Nội dung 6"],
+  previewContent: [
+    "Nội dung 1",
+    "Nội dung 2",
+    "Nội dung 3",
+    "Nội dung 4",
+    "Nội dung 5",
+    "Nội dung 6",
+  ],
   renderFullDay: false,
   filterExportPdf: {
     start: null,
-    end: null
+    end: null,
   },
-  girdType: 'DAY',
+  girdType: "DAY",
   girdAttribute: {
     DAY: {
-      formatString: 'DD/MM/YYYY',
-      unit: 'days',
-      unitText: 'Ngày',
-      parentUnit: 'months',
+      formatString: "DD/MM/YYYY",
+      unit: "days",
+      unitText: "Ngày",
+      parentUnit: "months",
       addUnit: 6,
-      getWidthParent: (moment,first) => first ? (moment.daysInMonth() - moment.format('DD') + 1) * 48 : moment.daysInMonth() * 48,
-      getTextParent: (moment) => moment.format('MM/YYYY'),
+      getWidthParent: (moment, first) =>
+        first
+          ? (moment.daysInMonth() - moment.format("DD") + 1) * 48
+          : moment.daysInMonth() * 48,
+      getTextParent: (moment) => moment.format("MM/YYYY"),
       getTimeCompare: (moment) => moment.format("M"),
-      formatChild: 'DD',
+      formatChild: "DD",
     },
     MONTH: {
-      formatString: 'DD/MM/YYYY HH:mm',
-      unit: 'months',
-      unitText: 'Tháng',
-      parentUnit: 'years',
+      formatString: "DD/MM/YYYY HH:mm",
+      unit: "months",
+      unitText: "Tháng",
+      parentUnit: "years",
       addUnit: 6,
-      getWidthParent: (moment,first) => first ? (12 - moment.format('MM') + 1) * 48 : 12*48,
-      getTextParent: (moment) => moment.format('YYYY'),
+      getWidthParent: (moment, first) =>
+        first ? (12 - moment.format("MM") + 1) * 48 : 12 * 48,
+      getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
-      formatChild: 'MM',
+      formatChild: "MM",
     },
     HOUR: {
-      formatString: 'DD/MM/YYYY HH:mm',
-      unit: 'hours',
-      unitText: 'Giờ',
+      formatString: "DD/MM/YYYY HH:mm",
+      unit: "hours",
+      unitText: "Giờ",
       addUnit: 6,
-      parentUnit: 'days',
-      getWidthParent: (moment,first) => first ? (23 - moment.format('HH') + 1) * 48 : 23*48,
-      getTextParent: (moment) => moment.format('DD/MM/YYYY'),
+      parentUnit: "days",
+      getWidthParent: (moment, first) =>
+        first ? (23 - moment.format("HH") + 1) * 48 : 23 * 48,
+      getTextParent: (moment) => moment.format("DD/MM/YYYY"),
       getTimeCompare: (moment) => moment.format("DD/MM/YYYY"),
-      formatChild: 'HH',
+      formatChild: "HH",
     },
     WEEK: {
-      formatString: 'DD/MM/YYYY HH:mm',
-      unit: 'weeks',
-      unitText: 'Tuần',
+      formatString: "DD/MM/YYYY HH:mm",
+      unit: "weeks",
+      unitText: "Tuần",
       addUnit: 6,
-      parentUnit: 'years',
-      getWidthParent: (moment,first) => first ? (52 - moment.format('W') + 1) * 48 : 52*48,
-      getTextParent: (moment) => moment.format('YYYY'),
+      parentUnit: "years",
+      getWidthParent: (moment, first) =>
+        first ? (52 - moment.format("W") + 1) * 48 : 52 * 48,
+      getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("W"),
-      formatChild: 'W',
+      formatChild: "W",
     },
     QUARTER: {
-      formatString: 'DD/MM/YYYY HH:mm',
-      unit: 'quarters',
-      unitText: 'Quý',
+      formatString: "DD/MM/YYYY HH:mm",
+      unit: "quarters",
+      unitText: "Quý",
       addUnit: 30,
-      parentUnit: 'years',
-      getWidthParent: (moment,first) => first ? (4 - moment.quarter() + 1) * 48 : moment.quarter() * 48,
-      getTextParent: (moment) => moment.format('YYYY'),
+      parentUnit: "years",
+      getWidthParent: (moment, first) =>
+        first ? (4 - moment.quarter() + 1) * 48 : moment.quarter() * 48,
+      getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
-      formatChild: 'Q',
-    }
+      formatChild: "Q",
+    },
   },
   girdInstance: {
-    formatString: 'DD/MM/YYYY HH:mm',
-    unit: 'days',
-    unitText: 'Ngày',
-    parentUnit: 'months',
-    getWidthParent: (moment,first) => first ? (moment.daysInMonth() - moment.format('DD') + 1) * 48 : moment.daysInMonth() * 48,
-    getTextParent: (moment) => moment.format('MM/YYYY'),
+    formatString: "DD/MM/YYYY HH:mm",
+    unit: "days",
+    unitText: "Ngày",
+    addUnit: 6,
+    parentUnit: "months",
+    getWidthParent: (moment, first) =>
+      first
+        ? (moment.daysInMonth() - moment.format("DD") + 1) * 48
+        : moment.daysInMonth() * 48,
+    getTextParent: (moment) => moment.format("MM/YYYY"),
     getTimeCompare: (moment) => moment.format("M"),
-    formatChild: 'DD',
-  }
+    formatChild: "DD",
+  },
 };
 
 const gantt = (state = initialState, action) => {
@@ -124,22 +142,28 @@ const gantt = (state = initialState, action) => {
     case actionTypes.CHANGE_ROW_HOVER:
       return { ...state, rowHover: action.payload };
     case actionTypes.CHANGE_TIMELINE_COLOR:
-      return { ...state, timelineColor: {
-        ...state.timelineColor,
-        [action.payload.type] : action.payload.color,
-        ...action.payload.dataObject
-      } };
+      return {
+        ...state,
+        timelineColor: {
+          ...state.timelineColor,
+          [action.payload.type]: action.payload.color,
+          ...action.payload.dataObject,
+        },
+      };
     case actionTypes.CHANGE_COLUMN_INDEX:
       return { ...state, indexColumn: action.payload };
     case actionTypes.CHANGE_VISIBLE:
-      return { ...state, visible: {
-        ...state.visible,
-        [action.payload.section]: {
-          ...state.visible[action.payload.section],
-          [action.payload.type]: action.payload.visible
+      return {
+        ...state,
+        visible: {
+          ...state.visible,
+          [action.payload.section]: {
+            ...state.visible[action.payload.section],
+            [action.payload.type]: action.payload.visible,
+          },
+          ...action.payload.dataObject,
         },
-        ...action.payload.dataObject
-      } };
+      };
     case actionTypes.CHANGE_CONTENT_PREVIEW_PDF:
       return { ...state, previewContent: action.payload };
     case actionTypes.CHANGE_RENDER_FULL_DAY:
@@ -147,9 +171,13 @@ const gantt = (state = initialState, action) => {
     case actionTypes.CHANGE_FILTER_EXPORT_PDF:
       return { ...state, filterExportPdf: action.payload };
     case actionTypes.CHANGE_INSTANCE_GIRD:
-      return { ...state, girdInstance: state.girdAttribute[action.payload], girdType: action.payload };
+      return {
+        ...state,
+        girdInstance: state.girdAttribute[action.payload],
+        girdType: action.payload,
+      };
     case actionTypes.CHANGE_PROJECT_INFO:
-      return { ...state, projectInfo: action.payload};
+      return { ...state, projectInfo: action.payload };
     default:
       return state;
   }

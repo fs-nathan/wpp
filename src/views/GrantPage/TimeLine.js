@@ -65,23 +65,46 @@ const TimeLine = ({
     setWidth(endPosition * 48);
   }, [endPosition, dataSource, resizeWidth]);
   const handleMouseMove = (e) => {
+    if (!drag) return;
+    if (dragFirstResize) {
+      handleMouseMoveFirst(e);
+      return;
+    }
+    const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
+    const amountUnitAdd = (newPosition - startPosition * 48) / 48;
+    const roundAmountUnitAdd =
+      amountUnitAdd > 0
+        ? Math.ceil(amountUnitAdd - 1, girdInstance.unit)
+        : Math.round(amountUnitAdd - 1, girdInstance.unit);
+    setStartDateText(
+      new moment(startDate).add(roundAmountUnitAdd, girdInstance.unit)
+    );
+    setEndDateText(
+      new moment(endDate).add(roundAmountUnitAdd, girdInstance.unit)
+    );
+    setLeft(newPosition);
+    e.stopPropagation();
+    e.preventDefault();
+  };
+  const handleMouseMoveFirst = (e) => {
     if (!drag && !dragFirstResize) return;
     const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
     if (dragFirstResize) {
       const newWidth = width - (newPosition - left);
+      console.log(newWidth);
       setWidth(newWidth);
     }
     const amountUnitAdd = (newPosition - startPosition * 48) / 48;
     const roundAmountUnitAdd =
       amountUnitAdd > 0
-        ? Math.ceil(amountUnitAdd, girdInstance.unit)
-        : Math.round(amountUnitAdd, girdInstance.unit);
+        ? Math.floor(amountUnitAdd, girdInstance.unit)
+        : Math.floor(amountUnitAdd, girdInstance.unit);
     setStartDateText(
-      new moment(startDate).add(roundAmountUnitAdd - 1, girdInstance.unit)
+      new moment(startDate).add(roundAmountUnitAdd, girdInstance.unit)
     );
-    setEndDateText(
-      new moment(endDate).add(roundAmountUnitAdd - 1, girdInstance.unit)
-    );
+    // setEndDateText(
+    //   new moment(endDate).add(roundAmountUnitAdd, girdInstance.unit)
+    // );
     setLeft(newPosition);
     e.stopPropagation();
     e.preventDefault();
@@ -104,6 +127,7 @@ const TimeLine = ({
     e.preventDefault();
     if (!drag && !dragFirstResize) return;
     const newLeft = left - (left % 48);
+    const newWidth = dragFirstResize ? width + left - newLeft : width;
     // setLeft(newLeft)
     // if(dragFirstResize){
     //     setWidth(width + left - newLeft)
@@ -117,6 +141,7 @@ const TimeLine = ({
     return () => document.removeEventListener("mouseup", handleMouseUp);
   });
   const handleResizeStop = (e, node) => {
+    if (isGroupTask || isTotalDuration) return;
     const newResizeWidth = node.size.width;
     if (newResizeWidth === width) return;
     const add = newResizeWidth > width ? 1 : 0;
@@ -138,6 +163,7 @@ const TimeLine = ({
     setDataSource(index, start, end);
   };
   const handleResizeWidth = (e, node) => {
+    if (isGroupTask || isTotalDuration) return;
     const newResizeWidth = node.size.width;
     const amountUnitAdd = (newResizeWidth - width) / 48;
     const roundAmountUnitAdd =
@@ -145,7 +171,7 @@ const TimeLine = ({
         ? Math.ceil(amountUnitAdd, girdInstance.unit)
         : Math.round(amountUnitAdd, girdInstance.unit);
     setEndDateText(
-      new moment(endDate).add(roundAmountUnitAdd - 1, girdInstance.unit)
+      new moment(endDate).add(roundAmountUnitAdd, girdInstance.unit)
     );
   };
   const b = left ? { left } : {};
@@ -174,7 +200,7 @@ const TimeLine = ({
         }}
         // onMouseUp={handleMouseUp}
         onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
+        onMouseMove={handleMouseMoveFirst}
         style={{
           display: "flex",
           cursor: !isGroupTask && !isTotalDuration ? "move" : "default",
@@ -196,8 +222,15 @@ const TimeLine = ({
           minConstraints={[48, 0]}
           className="container-resizable"
           {...styleWidthGroupTask}
+          lockAspectRatio={!isGroupTask && !isTotalDuration ? false : true}
           handle={() => (
-            <span className={`resize-width react-resizable-handle`}>
+            <span
+              className={
+                !isGroupTask &&
+                !isTotalDuration &&
+                `resize-width react-resizable-handle`
+              }
+            >
               {!isGroupTask && !isTotalDuration && (
                 <Circle show={showResize} left={9} />
               )}

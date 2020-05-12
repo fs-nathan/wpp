@@ -487,6 +487,7 @@ class DragSortingTable extends React.Component {
   fetchListTask = async (projectId, update) => {
     const { girdInstance } = this.props;
     const { formatString, unit, addUnit } = girdInstance;
+    console.log(addUnit, girdInstance);
     let { resultListTask } = this.state;
     let dataSource;
     if (!resultListTask || update) {
@@ -499,7 +500,6 @@ class DragSortingTable extends React.Component {
         resultListTask,
       });
     } else dataSource = resultListTask.data;
-    console.log(dataSource);
     if (!resultListTask.data.state) return;
     let data = [];
     let startTimeProject;
@@ -565,6 +565,7 @@ class DragSortingTable extends React.Component {
       );
     });
     startTimeProject = startTimeProject.subtract(6, unit);
+    console.log(addUnit);
     endTimeProject = endTimeProject.add(addUnit, unit);
     this.setRenderTime(
       new moment(startTimeProject),

@@ -1,7 +1,7 @@
 import { mdiDragVerticalVariant } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { changeRowHover } from "../../actions/gantt";
 import MonthHeader from "./MonthHeader";
@@ -84,50 +84,51 @@ function GanttChart({
   if (renderFullDay) {
     maxWidth = (end.diff(start, girdInstance.unit) + 1) * 48;
   }
-  const timeline = dataSource.map((item, index) => {
-    console.log("endPosition");
-
-    const startDate = moment(item.start_time, girdInstance.formatString);
-    const endDate = moment(item.end_time, girdInstance.formatString);
-    const startPosition = Math.ceil(
-      startDate.diff(start, girdInstance.unit, true)
-    );
-    const endPosition = endDate.diff(startDate, girdInstance.unit) + 1;
-    console.log(moment.duration(endDate.diff(startDate)).asMonths());
-    console.log(endPosition);
-    return (
-      <React.Fragment>
-        <div
-          key={item.id}
-          onMouseEnter={() => changeRowHover(index)}
-          onMouseLeave={() => changeRowHover(-1)}
-          className="gantt--top-timeline-tr"
-          style={{
-            position: "relative",
-            padding: "8.5px 0px",
-            display: "flex",
-            backgroundColor: rowHover === index ? "#fffae6" : "",
-          }}
-        >
-          <div className="gantt--top-timeline"></div>
-          <Timeline
-            setProcessDatasource={setProcessDatasource}
-            isTotalDuration={item.isTotalDuration}
-            isGroupTask={item.isGroupTask}
-            key={item.id + "1"}
-            setDataSource={setDataSource}
-            startDate={startDate}
-            endDate={endDate}
-            key={item.id}
-            dataSource={dataSource}
-            index={index}
-            startPosition={startPosition}
-            endPosition={endPosition}
-          />
-        </div>
-      </React.Fragment>
-    );
-  });
+  const timeline = useMemo(
+    () =>
+      dataSource.map((item, index) => {
+        if (!item.show && !item.isGroupTask) return null;
+        const startDate = moment(item.start_time, girdInstance.formatString);
+        const endDate = moment(item.end_time, girdInstance.formatString);
+        const startPosition = Math.ceil(
+          startDate.diff(start, girdInstance.unit, true)
+        );
+        const endPosition = endDate.diff(startDate, girdInstance.unit) + 1;
+        return (
+          <React.Fragment>
+            <div
+              key={item.id}
+              onMouseEnter={() => changeRowHover(index)}
+              onMouseLeave={() => changeRowHover(-1)}
+              className="gantt--top-timeline-tr"
+              style={{
+                position: "relative",
+                padding: "8.5px 0px",
+                display: "flex",
+                backgroundColor: rowHover === index ? "#fffae6" : "",
+              }}
+            >
+              <div className="gantt--top-timeline"></div>
+              <Timeline
+                setProcessDatasource={setProcessDatasource}
+                isTotalDuration={item.isTotalDuration}
+                isGroupTask={item.isGroupTask}
+                key={item.id + "1"}
+                setDataSource={setDataSource}
+                startDate={startDate}
+                endDate={endDate}
+                key={item.id}
+                dataSource={dataSource}
+                index={index}
+                startPosition={startPosition}
+                endPosition={endPosition}
+              />
+            </div>
+          </React.Fragment>
+        );
+      }),
+    [girdInstance, start, end, dataSource]
+  );
   return (
     <React.Fragment>
       <div
