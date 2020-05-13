@@ -8,11 +8,11 @@ export const updateShiftStage = ({ scheduleGroupID, stageID, shiftID, name, time
   }
 });
 
-export const updateShiftStageSuccess = ({ shifts }, options) => ({
+export const updateShiftStageSuccess = ({ shifts, stage_id }, options) => ({
   type: GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_SUCCESS,
   options,
   data: {
-    shifts
+    shifts, stage_id
   }
 });
 

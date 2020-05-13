@@ -27,8 +27,8 @@ async function doCreateShiftStage({ scheduleGroupID, stageID, name, timeStart, t
 
 function* projectScheduleCreateShiftStage(action) {
   try {
-    const { shifts: shifts } = yield call(doCreateShiftStage, action.options);
-    yield put(createShiftStageSuccess({ shifts }, action.options));
+    const { shifts: shifts, stage_id: stage_id } = yield call(doCreateShiftStage, action.options);
+    yield put(createShiftStageSuccess({ shifts, stage_id }, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE);
   } catch (error) {

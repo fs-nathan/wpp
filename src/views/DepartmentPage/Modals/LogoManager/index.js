@@ -25,9 +25,9 @@ function LogoManager({
 }) {
 
   React.useEffect(() => {
-    if (open) doListIcon();
+    doListIcon();
     // eslint-disable-next-line
-  }, [open]);
+  }, []);
 
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});

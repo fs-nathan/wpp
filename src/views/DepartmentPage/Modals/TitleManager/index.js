@@ -1,19 +1,17 @@
-import { deletePosition } from 'actions/position/deletePosition';
 import { listPosition } from 'actions/position/listPosition';
-import AlertModal from 'components/AlertModal';
-import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import TitleManagerPresenter from './presenters';
 import { positionsSelector } from './selectors';
 import TitleCreateAndUpdateModal from './TitleCreateAndUpdate';
+import TitleDeleteModal from './TitleDelete';
 
-function TitleManager({ open, setOpen, positions, doDeletePosition, doListPosition }) {
+function TitleManager({ open, setOpen, positions, doListPosition }) {
 
   React.useEffect(() => {
-    if (open) doListPosition();
+    doListPosition();
     // eslint-disable-next-line
-  }, [open]);
+  }, []);
 
   const [openCAU, setOpenCAU] = React.useState(false);
   const [CAUProps, setCAUProps] = React.useState({});
@@ -40,13 +38,11 @@ function TitleManager({ open, setOpen, positions, doDeletePosition, doListPositi
       default: return;
     }
   }
-
   return (
     <>
       <TitleManagerPresenter
         open={open} setOpen={setOpen}
         positions={positions}
-        handleDeletePosition={position => doDeletePosition({ positionId: get(position, 'id') })}
         handleOpenModal={doOpenModal}
       />
       <TitleCreateAndUpdateModal
@@ -54,7 +50,7 @@ function TitleManager({ open, setOpen, positions, doDeletePosition, doListPositi
         setOpen={setOpenCAU}
         {...CAUProps}
       />
-      <AlertModal
+      <TitleDeleteModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
@@ -71,7 +67,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doDeletePosition: ({ positionId }) => dispatch(deletePosition({ positionId })),
     doListPosition: (quite) => dispatch(listPosition(quite)),
   }
 };

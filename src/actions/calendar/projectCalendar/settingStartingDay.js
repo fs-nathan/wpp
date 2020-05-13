@@ -8,11 +8,11 @@ export const settingStartingDay = ({ day, scheduleGroupID }, quite = false) => (
   },
 });
 
-export const settingStartingDaySuccess = ({ state }, options) => ({
+export const settingStartingDaySuccess = ({ scheduleGroup }, options) => ({
   type: SETTING_START_DAY_WEEK_SUCCESS,
   options,
   data: {
-    state
+    scheduleGroup
   }
 });
 

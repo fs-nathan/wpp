@@ -1,7 +1,8 @@
 .view_AddWorkingStage {
   &_container {
-    width: 300px;
-    min-height: 150px;
+    width: 400px;
+    min-height: 180px;
+    padding: 10px 20px;
 
     &:nth-child(1) {
       font-weight: 500;

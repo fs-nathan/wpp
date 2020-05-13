@@ -7,13 +7,13 @@ import { banUserFromGroup } from 'actions/user/banUserFromGroup';
 import { privateMember } from 'actions/user/privateMember';
 import { publicMember } from 'actions/user/publicMember';
 import { sortUser } from 'actions/user/sortUser';
-import AlertModal from 'components/AlertModal';
-import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_USER } from 'constants/events';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_USER } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { routeSelector } from '../../../MemberPage/selectors';
+import BanUserModal from '../../Modals/BanUser';
 import CreateAccountModal from '../../Modals/CreateAccount';
 import LevelManagerModal from '../../Modals/LevelManager';
 import LogoManagerModal from '../../Modals/LogoManager';
@@ -77,11 +77,9 @@ function DepartmentUsersTable({
       }
       CustomEventListener(SORT_USER, reloadGetUserOfRoom);
       CustomEventListener(INVITE_USER_JOIN_GROUP, reloadGetUserOfRoom);
-      CustomEventListener(BAN_USER_FROM_GROUP, reloadGetUserOfRoom);
       return () => {
         CustomEventDispose(SORT_USER, reloadGetUserOfRoom);
         CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadGetUserOfRoom);
-        CustomEventDispose(BAN_USER_FROM_GROUP, reloadGetUserOfRoom);
       }
     }
     // eslint-disable-next-line
@@ -180,7 +178,7 @@ function DepartmentUsersTable({
       <TableSettingsModal open={openTableSetting} setOpen={setOpenTableSetting} />
       <CreateAccountModal open={openCreateAccount} setOpen={setOpenCreateAccount} />
       <PermissionSettingsModal open={openPermissionSetting} setOpen={setOpenPermissionSetting} />
-      <AlertModal
+      <BanUserModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}

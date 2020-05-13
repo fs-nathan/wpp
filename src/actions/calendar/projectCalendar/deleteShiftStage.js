@@ -8,11 +8,11 @@ export const deleteShiftStage = ({ scheduleGroupID, stageID, shiftID }, quite = 
   }
 });
 
-export const deleteShiftStageSuccess = ({ shifts }, options) => ({
+export const deleteShiftStageSuccess = ({ shifts, stage_id }, options) => ({
   type: GROUP_SCHEDULE_DELETE_SHIFT_STAGE_SUCCESS,
   options,
   data: {
-    shifts
+    shifts, stage_id
   }
 });
 

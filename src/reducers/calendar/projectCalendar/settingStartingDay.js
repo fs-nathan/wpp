@@ -2,7 +2,7 @@ import { SETTING_START_DAY_WEEK, SETTING_START_DAY_WEEK_FAIL, SETTING_START_DAY_
 
 export const initialState = {
   data: {
-    state: null,
+    scheduleGroup: null,
   },
   error: null,
   loading: false,
@@ -20,7 +20,6 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         ...initialState,
-        data: action.data,
         error: null,
         loading: false,
       };
@@ -28,6 +27,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         ...initialState,
+        data: action.data,
         error: action.error,
         loading: false,
       };

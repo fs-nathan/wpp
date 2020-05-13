@@ -1,38 +1,113 @@
 // Import actions
-import * as types from '../../constants/actions/taskDetail/taskDetailConst'
-import { filterTaskByType, searchTaskByTaskName } from '../../helpers/jobDetail/arrayHelper';
+import * as types from '../../constants/actions/taskDetail/taskDetailConst';
+
+function getNewChat(newChat, current) {
+    if (newChat === 0) return 0
+    if (newChat === 1) return current + 1
+    return undefined
+}
+
+function updateListTaskDetail(listTaskDetail, id, update) {
+    return listTaskDetail.map((data) => {
+        const { tasks } = data;
+        return {
+            ...data,
+            tasks: tasks.map((task) => {
+                if (id === task.id) {
+                    const { new_chat } = update;
+                    return {
+                        ...task,
+                        ...update,
+                        new_chat: getNewChat(new_chat, task.new_chat)
+                    }
+                }
+                return task;
+            })
+        };
+    })
+}
+
+function updateListDataNotRoom(listDataNotRoom, id, update) {
+    return listDataNotRoom.map((data) => {
+        if (id === data.id) {
+            const { new_chat } = update;
+            return {
+                ...data,
+                ...update,
+                new_chat: getNewChat(new_chat, data.new_chat)
+            }
+        }
+        return data;
+    })
+}
 
 // Initial state for store
 const initialState = {
-    listTaskDetail: null,
+    listTaskDetail: [],
     isFetching: false,
     dataFetched: false,
     error: false,
     defaultListTaskDetail: [],
     staticTask: [],
+    listTaskDataType: '',
+    listDataNotRoom: [],
+    filterTaskType: 0,
+    searchKey: '',
 };
 
 export default function reducer(state = initialState, action) {
     // console.log("reducer text search:::", action.payload);
-    
+
     switch (action.type) {
+        case types.UPDATE_PROJECT_CHAT:
+            const { payload } = action;
+            const { id, task_id, content, new_chat,
+                user_create_avatar, user_create_id,
+                user_create_name } = payload;
+            const update = {
+                new_chat,
+                chat: {
+                    content, user_create_avatar, user_create_name
+                }
+            }
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, update),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, update),
+            }
+        case types.GET_TASK_DETAIL_TABPART_REQUEST:
+            const { options } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, options.taskId, { new_chat: 0 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, options.taskId, { new_chat: 0 }),
+            }
         case types.GET_LIST_TASK_DETAIL_REQUEST:
             return {
                 ...state,
                 isFetching: true
             }
         case types.GET_LIST_TASK_DETAIL_SUCCESS:
-            return {
+            const newData = {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
-                listTaskDetail: action.payload,
-                defaultListTaskDetail: action.payload.tasks
+                listTaskDataType: action.type_data,
             };
+            if (action.type_data) {
+                if (action.type_data === 'include-room') {
+                    newData.listTaskDetail = action.payload.tasks
+                    newData.defaultListTaskDetail = action.payload.tasks
+                } else {
+                    newData.listDataNotRoom = action.payload.tasks
+                }
+            }
+            return newData;
         case types.FILTER_TASK_BY_TYPE:
             return {
                 ...state,
-                listTaskDetail: { tasks: filterTaskByType(state.defaultListTaskDetail, action.payload) }
+                filterTaskType: action.payload,
+                // listTaskDetail: { tasks: filterTaskByType(state.defaultListTaskDetail, action.payload) }
             }
         case types.GET_LIST_TASK_DETAIL_FAIL:
             return {
@@ -62,7 +137,8 @@ export default function reducer(state = initialState, action) {
         case types.SEARCH_TASK:
             return {
                 ...state,
-                listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }
+                searchKey: action.payload,
+                // listTaskDetail: { tasks: searchTaskByTaskName(state.defaultListTaskDetail, action.payload) }
             }
         case types.STATIC_TASK_REQUEST:
             return {
@@ -84,6 +160,30 @@ export default function reducer(state = initialState, action) {
                 dataFetched: false,
                 error: true,
             }
+        case types.UPDATE_NAME_DESCRIPTION_SUCCESS: {
+            const { payload, id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { name: payload.data_chat.new_task_name }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { name: payload.data_chat.new_task_name }),
+            }
+        }
+        case types.STOP_TASK_SUCCESS: {
+            const { payload, id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 4 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 4 }),
+            }
+        }
+        case types.CANCEL_STOP_TASK_SUCCESS: {
+            const { payload, id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 0 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 0 }),
+            }
+        }
         default:
             return state;
     }

@@ -16,6 +16,7 @@ async function doCreateSchedule({ schedule }) {
         title: schedule.title,
         content: schedule.content,
         set_remind: schedule.set_remind,
+        remind_before: schedule.remind_before,
         assign_to_all: schedule.assign_to_all,
         user_assign: schedule.user_assign
       }

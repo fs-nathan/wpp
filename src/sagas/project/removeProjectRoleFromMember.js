@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { removeProjectRoleFromMemberSuccess, removeProjectRoleFromMemberFail } from '../../actions/project/removeProjectRoleFromMember';
+import { removeProjectRoleFromMemberFail, removeProjectRoleFromMemberSuccess } from '../../actions/project/removeProjectRoleFromMember';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, REMOVE_PROJECT_ROLE_FROM_MEMBER } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doRemoveProjectRoleFromMember({ projectId, memberId, roleId, }) {
   try {
@@ -27,14 +27,14 @@ function* removeProjectRoleFromMember(action) {
   try {
     yield call(doRemoveProjectRoleFromMember, action.options);
     yield put(removeProjectRoleFromMemberSuccess(action.options));
-    CustomEventEmitter(REMOVE_PROJECT_ROLE_FROM_MEMBER);
+    CustomEventEmitter(REMOVE_PROJECT_ROLE_FROM_MEMBER.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(removeProjectRoleFromMemberFail(error, action.options));
+    CustomEventEmitter(REMOVE_PROJECT_ROLE_FROM_MEMBER.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  removeProjectRoleFromMember,
-}
+export { removeProjectRoleFromMember, };
+

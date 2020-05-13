@@ -107,7 +107,7 @@ function ProjectMemberSlide({
                         }
                         secondary={
                           <Secondary>
-                            {members.members.reduce((sum, member) => sum += get(member, 'number_task', 0), 0)} việc
+                            {get(members, 'totalTask', 0)} việc
                             </Secondary>
                         }
                       />

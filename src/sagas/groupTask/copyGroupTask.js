@@ -30,10 +30,11 @@ function* copyGroupTask(action) {
       id: get(groupTask, '_id'),
     }))
     yield put(copyGroupTaskSuccess({ groupTasks }, action.options));
-    CustomEventEmitter(COPY_GROUP_TASK);
+    CustomEventEmitter(COPY_GROUP_TASK.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(copyGroupTaskFail(error, action.options));
+    CustomEventEmitter(COPY_GROUP_TASK.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

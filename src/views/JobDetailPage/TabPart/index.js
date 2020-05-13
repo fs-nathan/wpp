@@ -7,6 +7,7 @@ import DemandTab from './DemandTab';
 import LocationTab from './LocationTab';
 import MediaTab from './MediaTab';
 import MemberTab from './MemberTab';
+import MemberModal from './MemberTab/MemberModal';
 import OfferTab from './OfferTab';
 import ProgressTab from './ProgressTab';
 import RemindTab from './RemindTab';
@@ -41,7 +42,7 @@ function TabPart(props) {
       <DetailRemind />
       <RemindModal />
       <SubTaskDetailDialog />
-
+      <MemberModal />
     </Container>
   )
 }

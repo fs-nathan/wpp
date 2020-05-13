@@ -1,9 +1,8 @@
-import { FormControl, FormControlLabel, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
+import { FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import MySelect from 'components/MySelect';
-import { CustomEventDispose, CustomEventListener, UPDATE_PROJECT } from 'constants/events.js';
+import { CustomEventDispose, CustomEventListener, DETAIL_PROJECT, LIST_PROJECT, UPDATE_PROJECT } from 'constants/events.js';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
@@ -13,12 +12,6 @@ import './style.scss';
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
     className={`view_ProjectGroup_EditProjectModal___form-control ${className}`}
-    {...props}
-  />;
-
-const CustomTextField = ({ className = '', ...props }) =>
-  <TextField
-    className={`view_ProjectGroup_EditProjectModal___text-field ${className}`}
     {...props}
   />;
 
@@ -33,15 +26,31 @@ function EditProject({
   open, setOpen,
   groups,
   handleEditProject,
-  activeLoading,
+  doReload,
+  projectGroupId, timeRange,
 }) {
 
   const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 500);
+  const [description, setDescription] = useMaxlenString('', 500);
   const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
   const [priority, setPriority] = React.useState(0);
   const [currency, setCurrency] = React.useState(0);
+  const [activeLoading, setActiveLoading] = React.useState(false);
+  const [activeMask, setActiveMask] = React.useState(-1);
+
+  React.useEffect(() => {
+    setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
+    if (activeMask === 3) {
+      setOpen(false);
+      setName('');
+      setDescription('');
+      setPriority(0);
+      setCurrency(0);
+      setCurProjectGroupId(get(groups.groups[0], 'id'));
+    }
+    // eslint-disable-next-line
+  }, [activeMask]);
 
   React.useEffect(() => {
     if (curProject) {
@@ -61,34 +70,54 @@ function EditProject({
   }, [curProject]);
 
   React.useEffect(() => {
-    const successClose = () => {
-      setOpen(false);
-      setName('');
-      setDescription('');
-      setPriority(0);
-      setCurrency(0);
-      setCurProjectGroupId(get(groups.groups[0], 'id'));
+    const fail = () => {
+      setActiveMask(-1);
     };
-    CustomEventListener(UPDATE_PROJECT, successClose);
-    return () => CustomEventDispose(UPDATE_PROJECT, successClose);
+    CustomEventListener(UPDATE_PROJECT.SUCCESS, doReload);
+    CustomEventListener(UPDATE_PROJECT.FAIL, fail);
+    return () => {
+      CustomEventDispose(UPDATE_PROJECT.SUCCESS, doReload);
+      CustomEventDispose(UPDATE_PROJECT.FAIL, fail);
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [projectGroupId, curProject, timeRange]);
+
+  React.useEffect(() => {
+    const success = bit => () => {
+      setActiveMask(oldMask => oldMask | (1 << bit));
+    };
+    const fail = () => {
+      setActiveMask(-1);
+    };
+    CustomEventListener(LIST_PROJECT.SUCCESS, success(0));
+    CustomEventListener(LIST_PROJECT.FAIL, fail);
+    CustomEventListener(DETAIL_PROJECT.SUCCESS, success(1));
+    CustomEventListener(DETAIL_PROJECT.FAIL, fail);
+    return () => {
+      CustomEventDispose(LIST_PROJECT.SUCCESS, success(0));
+      CustomEventDispose(LIST_PROJECT.FAIL, fail);
+      CustomEventDispose(DETAIL_PROJECT.SUCCESS, success(1));
+      CustomEventDispose(DETAIL_PROJECT.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectGroupId, curProject, timeRange]);
 
   return (
     <CustomModal
       title={t("DMH.VIEW.PGP.MODAL.CUP.U_TITLE")}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName && !errorDescription}
-      onConfirm={() => handleEditProject({
-        name,
-        description,
-        priority,
-        currency,
-        projectGroupId: curProjectGroupId !== get(groups.groups[0], 'id')
-          ? curProjectGroupId
-          : undefined,
-      })}
+      canConfirm={!errorName}
+      onConfirm={() => {
+        handleEditProject({
+          name,
+          description,
+          priority,
+          currency,
+          projectGroupId: curProjectGroupId,
+        });
+        setActiveMask(0);
+      }}
       onCancle={() => setOpen(false)}
       loading={groups.loading}
       activeLoading={activeLoading}
@@ -108,24 +137,19 @@ function EditProject({
           onChange={({ value: curProjectGroupId }) => setCurProjectGroupId(curProjectGroupId)}
         />
       </StyledFormControl>
-      <CustomTextField
+      <CustomTextbox
         value={name}
-        onChange={evt => setName(evt.target.value)}
+        onChange={value => setName(value)}
         label={t("DMH.VIEW.PGP.MODAL.CUP.NAME")}
-        margin="normal"
-        variant="outlined"
         fullWidth
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorName, 'message', '')}
-          </ColorTypo>
-        }
+        required={true}
       />
       <CustomTextbox
         value={description}
         onChange={value => setDescription(value)}
         label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
-        helperText={get(errorDescription, 'message', '')}
+        fullWidth
+        multiline={true}
       />
       <StyledFormControl fullWidth>
         <SubTitle>

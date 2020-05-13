@@ -3,6 +3,7 @@ import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { cancelStopTask, deleteTask, pinTaskAction, stopTask, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
+import compact from 'lodash/compact';
 import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +16,9 @@ import './styles.scss';
 function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const isPinned = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.is_ghim'));
+  const taskDetails = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails'));
+  const { is_ghim: isPinned, state_code } = taskDetails || {};
+  const pause = state_code === 4;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [editMode, setEditMode] = React.useState(null);
@@ -27,11 +30,7 @@ function TabHeader(props) {
   function handleCloseMenu() {
     setAnchorEl(null);
   }
-  //  bien tam dung
-  const [pause, setIsPause] = React.useState(true);
-  const handleClickPause = () => {
-    setIsPause(!pause);
-  };
+
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
@@ -44,7 +43,7 @@ function TabHeader(props) {
     if (user_create) {
       avatar = user_create.avatar;
       name = user_create.name;
-      roles = `${user_create.position} - ${user_create.room}`;
+      roles = compact([user_create.room, user_create.position]).join(' - ');
     }
   }
   const handleOpenModalDelete = () => {
@@ -139,9 +138,9 @@ function TabHeader(props) {
         <MenuItem
           onClick={onClickPin}
         >
-          {isPinned ? 'Bỏ ghim' : 'Ghim công việc'}
+          {isPinned ? t('LABEL_CHAT_TASK_BO_GHIM') : t('LABEL_CHAT_TASK_GHIM_CONG_VIEC')}
         </MenuItem>
-        {pause ? (
+        {!pause ? (
           <MenuItem
             onClick={onClickPause}
           >{t('LABEL_CHAT_TASK_TAM_DUNG')}</MenuItem>

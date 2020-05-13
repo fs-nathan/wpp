@@ -1,13 +1,14 @@
 import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { mdiAccountConvert, mdiAccountMinus, mdiCheckCircle, mdiChevronDown, mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
+import ColorTypo from 'components/ColorTypo';
+import CustomAvatar from 'components/CustomAvatar';
+import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
+import CustomModal from 'components/CustomModal';
+import SearchInput from 'components/SearchInput';
+import { ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, UPDATE_STATE_JOIN_TASK } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
-import ColorTypo from '../../../../components/ColorTypo';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import CustomModal from '../../../../components/CustomModal';
-import SearchInput from '../../../../components/SearchInput';
 import './style.scss';
 
 const ListContainer = ({ className = '', ...props }) =>
@@ -230,10 +231,58 @@ function MemberSetting({
   handleUpdateStateJoinTask,
   handleAssignMemberToAllTask,
   handleOpenModal,
+  projectId,
+  doReloadMember,
 }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [curMemberSetting, setCurMemberSetting] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const fail = () => {
+      setLoading(false);
+    };
+    CustomEventListener(ADD_MEMBER_PROJECT.SUCCESS, doReloadMember);
+    CustomEventListener(REMOVE_MEMBER_PROJECT.SUCCESS, doReloadMember);
+    CustomEventListener(UPDATE_STATE_JOIN_TASK.SUCCESS, doReloadMember);
+    CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK.SUCCESS, doReloadMember);
+    CustomEventListener(ADD_MEMBER_PROJECT.FAIL, fail);
+    CustomEventListener(REMOVE_MEMBER_PROJECT.FAIL, fail);
+    CustomEventListener(UPDATE_STATE_JOIN_TASK.FAIL, fail);
+    CustomEventListener(ADD_PROJECT_ROLE_TO_MEMBER.FAIL, fail);
+    CustomEventListener(REMOVE_PROJECT_ROLE_FROM_MEMBER.FAIL, fail);
+    CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK.FAIL, fail);
+    return () => {
+      CustomEventDispose(ADD_MEMBER_PROJECT.SUCCESS, doReloadMember);
+      CustomEventDispose(REMOVE_MEMBER_PROJECT.SUCCESS, doReloadMember);
+      CustomEventDispose(UPDATE_STATE_JOIN_TASK.SUCCESS, doReloadMember);
+      CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK.SUCCESS, doReloadMember);
+      CustomEventDispose(ADD_MEMBER_PROJECT.FAIL, fail);
+      CustomEventDispose(REMOVE_MEMBER_PROJECT.FAIL, fail);
+      CustomEventDispose(UPDATE_STATE_JOIN_TASK.FAIL, fail);
+      CustomEventDispose(ADD_PROJECT_ROLE_TO_MEMBER.FAIL, fail);
+      CustomEventDispose(REMOVE_PROJECT_ROLE_FROM_MEMBER.FAIL, fail);
+      CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectId]);
+
+  React.useEffect(() => {
+    const success = () => {
+      setLoading(false);
+    };
+    const fail = () => {
+      setLoading(false);
+    };
+    CustomEventListener(MEMBER_PROJECT.SUCCESS, success);
+    CustomEventListener(MEMBER_PROJECT.FAIL, fail);
+    return () => {
+      CustomEventDispose(MEMBER_PROJECT.SUCCESS, success);
+      CustomEventDispose(MEMBER_PROJECT.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectId]);
 
   return (
     <CustomModal
@@ -247,7 +296,7 @@ function MemberSetting({
       height='tall'
       maxWidth='lg'
       columns={2}
-      loading={members.loading}
+      loading={members.loading || loading}
       left={{
         title: () => <LeftHeader>Danh sách thành viên</LeftHeader>,
         content: () =>
@@ -384,10 +433,7 @@ function MemberSetting({
                 <CustomMenuItem
                   onClick={evt => {
                     setAnchorEl(null);
-                    handleOpenModal('ALERT', {
-                      content: 'Bạn chắc chắn muốn loại trừ thành viên?',
-                      onConfirm: () => handleRemoveMember(curMemberSetting)
-                    })
+                    handleRemoveMember(curMemberSetting);
                   }}
                 >
                   <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ

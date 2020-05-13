@@ -72,6 +72,12 @@ function CalendarWeeklyPage({
     history.push(Routes.CALENDAR_WEEKLY.replace(":week", get(schedulesExclude, '[0].week', moment().isoWeek())).replace(":year", year));
   }
 
+  React.useEffect(() => {
+    if (calendars.data.length === 0) {
+      history.push(`${Routes.CALENDAR}/weekly`);
+    }
+  }, [calendars]);
+
   return (
     <>
       <TwoColumnsLayout

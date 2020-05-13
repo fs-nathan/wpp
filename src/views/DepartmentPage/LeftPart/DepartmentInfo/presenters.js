@@ -48,8 +48,7 @@ export const DefaultDepartment = ({
 export const NormalDepartment = ({
   viewPermissions,
   room,
-  departmentId,
-  handleDeleteRoom, handleGoBack,
+  handleGoBack,
   handleOpenModal,
 }) => {
 
@@ -113,8 +112,7 @@ export const NormalDepartment = ({
                 <ColorButton
                   onClick={() =>
                     handleOpenModal('ALERT', {
-                      content: t('DMH.VIEW.DP.LEFT.INFO.ALERT'),
-                      onConfirm: () => handleDeleteRoom(departmentId)
+                      selectedRoom: room.detail
                     })
                   }
                   variant="text"

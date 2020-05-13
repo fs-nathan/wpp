@@ -1,28 +1,55 @@
 import { createProject } from 'actions/project/createProject';
+import { listProject } from 'actions/project/listProject';
 import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
+import { useTimes } from 'components/CustomPopover';
+import { get } from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
+import { localOptionSelector } from '../../selectors';
 import CreateNewProjectPresenter from './presenters';
-import { activeLoadingSelector, groupsSelector } from './selectors';
+import { groupsSelector } from './selectors';
 
 function CreateNewProject({
   open, setOpen,
   groups,
   doCreateProject,
   doListProjectGroup,
-  activeLoading,
+  doReload,
+  projectGroupId = undefined,
+  localOption,
 }) {
 
-  React.useEffect(() => {
-    if (open) {
-      doListProjectGroup();
-    }
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    });
     // eslint-disable-next-line
-  }, [open]);
+  }, [timeType]);
+
+  React.useEffect(() => {
+    doListProjectGroup();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CreateNewProjectPresenter
-      open={open} setOpen={setOpen} activeLoading={activeLoading}
+      open={open} setOpen={setOpen}
+      projectGroupId={projectGroupId}
+      timeRange={timeRange}
+      doReload={() => doReload({
+        groupProject: projectGroupId,
+        timeStart: get(timeRange, 'timeStart')
+          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+          : undefined,
+        timeEnd: get(timeRange, 'timeEnd')
+          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+          : undefined,
+      })}
       groups={groups}
       handleCreateProject={({ name, description, projectGroupId, priority, currency }) =>
         doCreateProject({ name, description, projectGroupId, priority, currency })
@@ -34,12 +61,13 @@ function CreateNewProject({
 const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
-    activeLoading: activeLoadingSelector(state),
+    localOption: localOptionSelector(state),
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    doReload: (options) => dispatch(listProject(options, true)),
     doCreateProject: ({ name, description, projectGroupId, priority, currency }) => dispatch(createProject({ name, description, projectGroupId, priority, currency })),
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
   }

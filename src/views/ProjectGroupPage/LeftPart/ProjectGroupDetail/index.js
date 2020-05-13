@@ -2,17 +2,17 @@ import { listProject } from 'actions/project/listProject';
 import { deleteProjectGroup } from 'actions/projectGroup/deleteProjectGroup';
 import { detailProjectGroup } from 'actions/projectGroup/detailProjectGroup';
 import { memberProjectGroup } from 'actions/projectGroup/memberProjectGroup';
-import AlertModal from 'components/AlertModal';
-import { COPY_PROJECT, CREATE_PROJECT, CustomEventDispose, CustomEventListener, DELETE_PROJECT, DELETE_PROJECT_GROUP, SORT_PROJECT, UPDATE_PROJECT } from 'constants/events.js';
+import { useTimes } from 'components/CustomPopover';
+import { CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP, SORT_PROJECT } from 'constants/events.js';
 import { get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { Context as ProjectGroupContext } from '../../index';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
+import DeleteProjectGroup from '../../Modals/DeleteProjectGroup';
 import MembersDetail from '../../Modals/MembersDetail';
-import { routeSelector, viewPermissionsSelector } from '../../selectors';
+import { localOptionSelector, routeSelector, viewPermissionsSelector } from '../../selectors';
 import ProjectGroupDetailPresenter from './presenters';
 import { groupSelector } from './selectors';
 
@@ -22,9 +22,20 @@ function ProjectGroupDetail({
   doListProject,
   doDetailProjectGroup,
   doMemberProjectGroup,
+  localOption,
 }) {
 
-  const { timeRange } = React.useContext(ProjectGroupContext);
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    });
+    // eslint-disable-next-line
+  }, [timeType]);
+
   const { projectGroupId } = useParams();
   const [id, setId] = React.useState(null);
   const history = useHistory();
@@ -37,19 +48,6 @@ function ProjectGroupDetail({
     if (id === 'deleted') return;
     if (id !== null) {
       doDetailProjectGroup({ projectGroupId: id });
-      const reloadDetailProjectGroup = () => {
-        doDetailProjectGroup({ projectGroupId: id });
-      }
-      CustomEventListener(CREATE_PROJECT, reloadDetailProjectGroup);
-      CustomEventListener(UPDATE_PROJECT, reloadDetailProjectGroup);
-      CustomEventListener(DELETE_PROJECT, reloadDetailProjectGroup);
-      CustomEventListener(COPY_PROJECT, reloadDetailProjectGroup);
-      return () => {
-        CustomEventDispose(CREATE_PROJECT, reloadDetailProjectGroup);
-        CustomEventDispose(UPDATE_PROJECT, reloadDetailProjectGroup);
-        CustomEventDispose(DELETE_PROJECT, reloadDetailProjectGroup);
-        CustomEventDispose(COPY_PROJECT, reloadDetailProjectGroup);
-      }
     }
     // eslint-disable-next-line
   }, [id]);
@@ -83,13 +81,9 @@ function ProjectGroupDetail({
             : undefined,
         });
       };
-      CustomEventListener(UPDATE_PROJECT, reloadListProject);
       CustomEventListener(SORT_PROJECT, reloadListProject);
-      CustomEventListener(COPY_PROJECT, reloadListProject);
       return () => {
-        CustomEventDispose(UPDATE_PROJECT, reloadListProject);
         CustomEventDispose(SORT_PROJECT, reloadListProject);
-        CustomEventDispose(COPY_PROJECT, reloadListProject);
       }
     }
     // eslint-disable-next-line
@@ -99,9 +93,9 @@ function ProjectGroupDetail({
     const historyPushHandler = () => {
       history.push(route);
     };
-    CustomEventListener(DELETE_PROJECT_GROUP, historyPushHandler);
+    CustomEventListener(DELETE_PROJECT_GROUP.SUCCESS, historyPushHandler);
     return () => {
-      CustomEventDispose(DELETE_PROJECT_GROUP, historyPushHandler);
+      CustomEventDispose(DELETE_PROJECT_GROUP.SUCCESS, historyPushHandler);
     };
     //eslint-disable-next-line
   }, []);
@@ -157,7 +151,7 @@ function ProjectGroupDetail({
         setOpen={setOpenMember}
         {...memberProps}
       />
-      <AlertModal
+      <DeleteProjectGroup
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
@@ -171,6 +165,7 @@ const mapStateToProps = state => {
     group: groupSelector(state),
     route: routeSelector(state),
     viewPermissions: viewPermissionsSelector(state),
+    localOption: localOptionSelector(state),
   };
 };
 

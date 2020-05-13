@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { updateProjectSuccess, updateProjectFail } from '../../actions/project/updateProject';
+import { updateProjectFail, updateProjectSuccess } from '../../actions/project/updateProject';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPDATE_PROJECT } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doUpdateProject({ projectId, name, description, projectGroupId, priority, currency }) {
   try {
@@ -30,14 +30,14 @@ function* updateProject(action) {
   try {
     const { project } = yield call(doUpdateProject, action.options);
     yield put(updateProjectSuccess({ project }, action.options));
-    CustomEventEmitter(UPDATE_PROJECT);
+    CustomEventEmitter(UPDATE_PROJECT.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(updateProjectFail(error, action.options));
+    CustomEventEmitter(UPDATE_PROJECT.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'messaage', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  updateProject,
-}
+export { updateProject, };
+

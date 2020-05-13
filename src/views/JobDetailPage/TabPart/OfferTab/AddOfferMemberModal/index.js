@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import OfferMemberItem from './OfferMemberItem';
 import './styles.scss';
@@ -23,6 +23,10 @@ function AddOfferMemberModal({
     onChange(selected)
     setOpen(false);
   }
+
+  React.useEffect(() => {
+    setSelected(value);
+  }, [value]);
 
   function onClickMember(i) {
     return () => {
@@ -57,7 +61,7 @@ function AddOfferMemberModal({
       title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
       open={isOpen}
       setOpen={setOpen}
-      confirmRender={() => "Hoàn Thành"}
+      confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={onClickDone}
       className="addOfferMemberModal"
     >

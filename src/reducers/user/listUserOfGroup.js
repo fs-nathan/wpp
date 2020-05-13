@@ -1,10 +1,9 @@
-import { find, findIndex, get, remove, slice } from 'lodash';
+import { findIndex, get, remove, slice } from 'lodash';
 import { SORT_ROOM_SUCCESS } from '../../constants/actions/room/sortRoom';
 import { LIST_USER_OF_GROUP, LIST_USER_OF_GROUP_FAIL, LIST_USER_OF_GROUP_RESET, LIST_USER_OF_GROUP_SUCCESS } from '../../constants/actions/user/listUserOfGroup';
 import { PRIVATE_MEMBER_SUCCESS } from '../../constants/actions/user/privateMember';
 import { PUBLIC_MEMBER_SUCCESS } from '../../constants/actions/user/publicMember';
 import { SORT_USER, SORT_USER_SUCCESS } from '../../constants/actions/user/sortUser';
-import { UPDATE_USER_SUCCESS } from '../../constants/actions/user/updateUser';
 
 export const initialState = {
   data: {
@@ -41,6 +40,7 @@ function reducer(state = initialState, action) {
       };
     case LIST_USER_OF_GROUP_RESET:
       return initialState;
+    /*
     case UPDATE_USER_SUCCESS: {
       let updatedUser = null;
       let newRooms = state.data.rooms;
@@ -100,6 +100,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    */
     case PUBLIC_MEMBER_SUCCESS: {
       let newRooms = state.data.rooms.map(room => {
         let users = get(room, 'users', []);

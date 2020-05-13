@@ -28,8 +28,8 @@ async function doUpdateShiftStage({ scheduleGroupID, stageID, shiftID, name, tim
 
 function* projectScheduleUpdateShiftStage(action) {
   try {
-    const { shifts: shifts } = yield call(doUpdateShiftStage, action.options);
-    yield put(updateShiftStageSuccess({ shifts }, action.options));
+    const { shifts: shifts, stage_id: stage_id } = yield call(doUpdateShiftStage, action.options);
+    yield put(updateShiftStageSuccess({ shifts, stage_id }, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE);
   } catch (error) {

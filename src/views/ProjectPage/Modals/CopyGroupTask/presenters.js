@@ -2,7 +2,7 @@ import { Checkbox, ListItemText } from '@material-ui/core';
 import { Primary, StyledList, StyledListItem } from 'components/CustomList';
 import CustomModal from 'components/CustomModal';
 import SearchInput from 'components/SearchInput';
-import { COPY_GROUP_TASK, CustomEventDispose, CustomEventListener } from 'constants/events';
+import { COPY_GROUP_TASK, CustomEventDispose, CustomEventListener, GET_ALL_GROUP_TASK, LIST_GROUP_TASK } from 'constants/events';
 import { find, get, remove } from 'lodash';
 import React from 'react';
 import './style.scss';
@@ -26,20 +26,55 @@ function CopyGroupTask({
   searchPatern, setSearchPatern,
   groupTasks,
   handleCopyGroupTask,
-  activeLoading,
+  doReload,
+  projectId,
+  timeRange,
 }) {
 
   const [selectedGroupTasks, setSelectedGroupTasks] = React.useState([]);
+  const [activeLoading, setActiveLoading] = React.useState(false);
+  const [activeMask, setActiveMask] = React.useState(-1);
 
   React.useEffect(() => {
-    const successClose = () => {
+    setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
+    if (activeMask === 3) {
       setOpen(false);
-      setSelectedGroupTasks([]);
-    };
-    CustomEventListener(COPY_GROUP_TASK, successClose);
-    return () => CustomEventDispose(COPY_GROUP_TASK, successClose);
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [activeMask]);
+
+  React.useEffect(() => {
+    const fail = () => {
+      setActiveMask(-1);
+    };
+    CustomEventListener(COPY_GROUP_TASK.SUCCESS, doReload);
+    CustomEventListener(COPY_GROUP_TASK.FAIL, fail);
+    return () => {
+      CustomEventDispose(COPY_GROUP_TASK.SUCCESS, doReload);
+      CustomEventDispose(COPY_GROUP_TASK.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectId, timeRange]);
+
+  React.useEffect(() => {
+    const success = bit => () => {
+      setActiveMask(oldMask => oldMask | (1 << bit));
+    };
+    const fail = () => {
+      setActiveMask(-1);
+    };
+    CustomEventListener(LIST_GROUP_TASK.SUCCESS, success(0));
+    CustomEventListener(GET_ALL_GROUP_TASK.SUCCESS, success(1));
+    CustomEventListener(LIST_GROUP_TASK.FAIL, fail);
+    CustomEventListener(GET_ALL_GROUP_TASK.FAIL, fail);
+    return () => {
+      CustomEventListener(LIST_GROUP_TASK.SUCCESS, success(0));
+      CustomEventListener(GET_ALL_GROUP_TASK.SUCCESS, success(1));
+      CustomEventListener(LIST_GROUP_TASK.FAIL, fail);
+      CustomEventListener(GET_ALL_GROUP_TASK.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectId, timeRange]);
 
   return (
     <React.Fragment>
@@ -48,11 +83,14 @@ function CopyGroupTask({
         open={open}
         setOpen={setOpen}
         canConfirm={selectedGroupTasks.length > 0}
-        onConfirm={() => handleCopyGroupTask(selectedGroupTasks)}
+        onConfirm={() => {
+          handleCopyGroupTask(selectedGroupTasks);
+          setActiveMask(0);
+        }}
         onCancle={() => setOpen(false)}
         loading={groupTasks.loading}
         activeLoading={activeLoading}
-        manualClose={false}
+        manualClose={true}
       >
         <SearchInput
           fullWidth

@@ -6,9 +6,9 @@
 
 .chatBox {
   cursor: text;
+  position: relative;
   height: 60px;
   border-radius: 2px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
   .DraftEditor-root {
     height: 100%;
     display: flex;
@@ -41,9 +41,8 @@
     display: flex;
     overflow: hidden;
     padding: 10px 20px;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    background-color: #eeeeee;
+    border-top: 1px solid #ccc;
+    background-color: #f2f2f2;
   }
   &--imagePreviewWrap {
     float: left;

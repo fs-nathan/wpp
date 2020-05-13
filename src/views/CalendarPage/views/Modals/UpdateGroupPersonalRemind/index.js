@@ -11,7 +11,7 @@ const Container = ({ className = '', ...props }) =>
   />;
 
 function UpdateGroupPersonalRemind({
-  open, setOpen, onConfirm, value
+  open, setOpen, onConfirm, value, isLoading = false
 }) {
 
   const { t } = useTranslation();
@@ -46,6 +46,7 @@ function UpdateGroupPersonalRemind({
         onConfirm={() => onConfirm({ id: value.id, title: groupTitle, color: color.color })}
         height='mini'
         maxWidth='sm'
+        actionLoading={isLoading}
       >
         <Container>
           <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="view_CreatPeronsalRemindGroup_container_label">
