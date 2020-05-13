@@ -1,10 +1,18 @@
 .bodyChat {
+  position: relative;
   background-color: #f1f3f4;
-  // height: calc(100% - 230px);
-  padding: 10px;
+  height: calc(100% - 200px);
+  padding-left: 10px;
   overflow-x: hidden;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &--scroll {
+    overflow-x: hidden;
+    margin-right: 20px;
+  }
   &__reply {
-    height: calc(100% - 300px);
+    // height: calc(100% - 300px);
   }
   &--project {
     width: 100%;
@@ -60,7 +68,7 @@
     cursor: pointer;
   }
   &--introRow {
-    margin: 0 45px;
+    margin: 0 45px 20px;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -104,10 +112,10 @@
     font-weight: 500;
   }
   &--sending {
-    margin-top: 6px;
     padding-right: 10px;
     color: #666666;
     text-align: right;
+    margin-left: auto;
     &Fail {
       color: #bcbcbc;
       font-size: 12px;
@@ -125,13 +133,14 @@
     }
   }
   &--viewed {
-    color: #666666;
+    color: #aaaaaa;
     display: flex;
     cursor: pointer;
+    margin-right: auto;
     &Avatar {
       width: 15px;
       height: 15px;
-      margin: 0 2px;
+      margin-left: 10px;
     }
   }
   &--loader {
@@ -143,6 +152,30 @@
     width: fit-content;
     text-align: center;
     margin: 10px auto;
+  }
+  &--searchEmpty {
+    color: #607d8b;
+    text-align: center;
+    line-height: 400px;
+    font-weight: 500;
+    font-size: 15px;
+  }
+  &--buttonToBot {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.5;
+    background-color: #fff;
+    padding: 3px;
+    box-shadow: 0 2px 8px 0 rgba(0, 26, 51, 0.31);
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &--chatStatus {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 20px 0 10px;
   }
   .wrap-time {
     position: relative;

@@ -1,22 +1,23 @@
-import { useTranslation } from 'react-i18next';
-
-import React from 'react';
-import styled from 'styled-components';
-import ColorTypo from '../../../../components/ColorTypo'
-import colorPal from '../../../../helpers/colorPalette';
-import CloseIcon from '@material-ui/icons/Close';
-import { Avatar, IconButton, Typography, Button, Dialog, InputAdornment, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/core/styles';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import { Avatar, InputAdornment, TextField, Typography } from '@material-ui/core';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import imgDoc from '../../../../assets/doc.png'
-import { useDispatch, useSelector } from 'react-redux';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { mdiDownload } from '@mdi/js';
+import Icon from '@mdi/react';
+import { openDetailMember } from 'actions/chat/chat';
+import { actionDownloadFile } from 'actions/documents';
+import DialogWrap from 'components/DialogWrap';
 import get from 'lodash/get';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import ColorTypo from '../../../../components/ColorTypo';
+import colorPal from '../../../../helpers/colorPalette';
+import './styles.scss';
 
 const StyledEmploy = styled(Typography)`
   width: 700px;
+  min-height: 660px;
   border-right: 1px solid #cfcfcf;
   padding: 5px 30px 0 10px;
 `
@@ -115,38 +116,27 @@ const styles = theme => ({
   },
 });
 
-const DialogTitle = withStyles(styles)(props => {
-  const { t } = useTranslation();
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
 const DialogContent = withStyles(theme => ({
   root: {
     padding: theme.spacing(2),
   },
 }))(MuiDialogContent);
 
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: '15px 24px',
-  },
-}))(MuiDialogActions);
-
-const MemberModal = ({ handleCloseMembers, isOpen, }) => {
+const MemberModal = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const classes = useStyles();
   const userDetail = useSelector(state => get(state, 'user.detailUser.data.user'));
+  const isOpenDetailMember = useSelector(state => state.chat.isOpenDetailMember);
+
+  function handleCloseMembers() {
+    dispatch(openDetailMember(false))
+  }
+
+  function setOpenMembers(isOpen) {
+    dispatch(openDetailMember(isOpen))
+  }
+
   const {
     documents = [],
     date_join,
@@ -160,61 +150,79 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
     address,
     room_name,
     position_name,
-    level,
-    specialized,
+    level_name,
+    major_name,
     description,
   } = userDetail || {};
 
+  function onClickDownload(file) {
+    return () => {
+      // const link = document.createElement('a');
+      // link.href = url;
+      // link.download = name;
+      // link.target = '_blank';
+      // link.click();
+      actionDownloadFile(file)
+    }
+  }
+
   return (
-    <Dialog maxWidth={'lg'} onClose={handleCloseMembers} open={isOpen} >
-      <DialogTitle onClose={handleCloseMembers}>{t('LABEL_CHAT_TASK_THONG_TIN_CHI_TIET_THANH_VIEN')}</DialogTitle>
-      <DialogContent dividers>
-        <div className="wrapper-member-modal">
-          <StyledEmploy component={'div'}>
-            <div className="member-general-info">
-              <StyledAvatar src={avatar} alt='avatar' />
-              <div className="general-info">
-                <NameStaff bold uppercase >{name}</NameStaff>
-                <ColorTypo color='gray'  >{t('LABEL_CHAT_TASK_NGAY_THAM_GIA')}{date_join}</ColorTypo>
-              </div>
+    <DialogWrap
+      title={t('LABEL_CHAT_TASK_THONG_TIN_CHI_TIET_THANH_VIEN')}
+      isOpen={isOpenDetailMember}
+      handleClickClose={handleCloseMembers}
+      successLabel={t('LABEL_CHAT_TASK_DONG')}
+      onClickSuccess={handleCloseMembers}
+      maxWidth="lg"
+      isOneButton
+      className="MemberModal"
+    >
+      <DialogContent dividers className="wrapper-member-modal">
+        <StyledEmploy component={'div'}>
+          <div className="member-general-info">
+            <StyledAvatar src={avatar} alt='avatar' />
+            <div className="general-info">
+              <NameStaff bold uppercase >{name}</NameStaff>
+              <ColorTypo color='gray'  >{t('LABEL_CHAT_TASK_NGAY_THAM_GIA')}{date_join}</ColorTypo>
             </div>
-            <TextInput
-              value={room_name}
-              InputProps={{
-                startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_PHONG_BAN')}</AdornmentInput>,
-              }}
-              fullWidth
-              disabled
-            />
-            <TextInput
-              value={position_name}
-              InputProps={{
-                startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUC_DANH')}</AdornmentInput>,
-              }}
-              fullWidth
-              disabled
-            />
-            <TextInput
-              value={level}
-              InputProps={{
-                startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_TRINH_DO')}</AdornmentInput>,
-              }}
-              fullWidth
-              disabled
-            />
-            <TextInput
-              value={specialized}
-              InputProps={{
-                startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUYEN_NGHANH')}</AdornmentInput>,
-              }}
-              fullWidth
-              disabled
-            />
-            <TitleDescription>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</TitleDescription>
-            <ContentDescription>
-              {description}
-            </ContentDescription>
-            <input
+          </div>
+          <TextInput
+            value={room_name}
+            InputProps={{
+              startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_PHONG_BAN')}</AdornmentInput>,
+            }}
+            fullWidth
+            disabled
+          />
+          <TextInput
+            value={position_name}
+            InputProps={{
+              startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUC_DANH')}</AdornmentInput>,
+            }}
+            fullWidth
+            disabled
+          />
+          <TextInput
+            value={level_name}
+            InputProps={{
+              startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_TRINH_DO')}</AdornmentInput>,
+            }}
+            fullWidth
+            disabled
+          />
+          <TextInput
+            value={major_name}
+            InputProps={{
+              startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUYEN_NGHANH')}</AdornmentInput>,
+            }}
+            fullWidth
+            disabled
+          />
+          <TitleDescription>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</TitleDescription>
+          <ContentDescription>
+            {description}
+          </ContentDescription>
+          {/* <input
               accept="image/*"
               className={classes.input}
               id="contained-button-file"
@@ -224,44 +232,52 @@ const MemberModal = ({ handleCloseMembers, isOpen, }) => {
             <label className="button-file" htmlFor="contained-button-file">
               <Button variant="contained" component="span" fullWidth className={classes.button}>
                 <img className="member-image" alt="vtask" src={imgDoc} />{t('LABEL_CHAT_TASK_XEM_FILE_HO_SO')}</Button>
-            </label>
-          </StyledEmploy>
+            </label> */}
+          <TitleDescription>{t('LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM')}</TitleDescription>
+          {documents.map(({ file_icon, name, type, size, url, id }) => (
+            <div className="MemberModal--file" key={id}>
+              <img className="MemberModal--fileImg" src={file_icon} alt="file_icon"></img>
+              <div className="MemberModal--fileName">{name}
+                <div className="MemberModal--fileType">{`${type} - ${size}`}</div>
+                <div className="MemberModal--fileDownloadButton"
+                  onClick={onClickDownload({ url, name, id })}>
+                  <Icon path={mdiDownload} size="20px" color="#000"></Icon>
+                </div>
+              </div>
+            </div>))}
+        </StyledEmploy>
 
-          <StyledStaff component={'div'}>
-            <TextItem >{t('LABEL_CHAT_TASK_THONG_TIN_CA_NHAN')}</TextItem>
-            <WrapperMember component="div" >
-              <MemberDetail component='div'>
-                <TitleText >{t('LABEL_CHAT_TASK_HO_VA_TEN_DAY_DU')}</TitleText>
-                <ContentDescription>{name}</ContentDescription>
-              </MemberDetail>
-              <MemberDetail component='div'>
-                <TitleText >{t('LABEL_CHAT_TASK_NGAY_SINH')}</TitleText>
-                <ContentDescription>{birthday}</ContentDescription>
-              </MemberDetail>
-              <MemberDetail component='div'>
-                <TitleText >{t('LABEL_CHAT_TASK_GIOI_TINH')}</TitleText>
-                <ContentDescription>{gender_name}</ContentDescription>
-              </MemberDetail>
-              <MemberDetail component='div'>
-                <TitleText >{t('LABEL_CHAT_TASK_EMAIL')}</TitleText>
-                <ContentDescription>{email}</ContentDescription>
-              </MemberDetail>
-              <MemberDetail component='div'>
-                <TitleText >{t('LABEL_CHAT_TASK_DIEN_THOAI')}</TitleText>
-                <ContentDescription>{phone}</ContentDescription>
-              </MemberDetail>
-              <MemberDetail component='div'>
-                <TitleText >{t('LABEL_CHAT_TASK_DIA_CHI')}</TitleText>
-                <ContentDescription>{address}</ContentDescription>
-              </MemberDetail>
-            </WrapperMember>
-          </StyledStaff>
-        </div>
+        <StyledStaff component={'div'}>
+          <TextItem >{t('LABEL_CHAT_TASK_THONG_TIN_CA_NHAN')}</TextItem>
+          <WrapperMember component="div" >
+            <MemberDetail component='div'>
+              <TitleText >{t('LABEL_CHAT_TASK_HO_VA_TEN_DAY_DU')}</TitleText>
+              <ContentDescription>{name}</ContentDescription>
+            </MemberDetail>
+            <MemberDetail component='div'>
+              <TitleText >{t('LABEL_CHAT_TASK_NGAY_SINH')}</TitleText>
+              <ContentDescription>{birthday}</ContentDescription>
+            </MemberDetail>
+            <MemberDetail component='div'>
+              <TitleText >{t('LABEL_CHAT_TASK_GIOI_TINH')}</TitleText>
+              <ContentDescription>{gender_name}</ContentDescription>
+            </MemberDetail>
+            <MemberDetail component='div'>
+              <TitleText >{t('LABEL_CHAT_TASK_EMAIL')}</TitleText>
+              <ContentDescription>{email}</ContentDescription>
+            </MemberDetail>
+            <MemberDetail component='div'>
+              <TitleText >{t('LABEL_CHAT_TASK_DIEN_THOAI')}</TitleText>
+              <ContentDescription>{phone}</ContentDescription>
+            </MemberDetail>
+            <MemberDetail component='div'>
+              <TitleText >{t('LABEL_CHAT_TASK_DIA_CHI')}</TitleText>
+              <ContentDescription>{address}</ContentDescription>
+            </MemberDetail>
+          </WrapperMember>
+        </StyledStaff>
       </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCloseMembers} color="primary">{t('LABEL_CHAT_TASK_DONG')}</Button>
-      </DialogActions>
-    </Dialog>
+    </DialogWrap>
   )
 }
 

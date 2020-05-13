@@ -1,3 +1,6 @@
+import { appendChat, getViewedChatSuccess, updateChatState } from "actions/chat/chat";
+import { updateProjectChat } from "actions/taskDetail/taskDetailActions";
+import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from 'constants/actions/chat/chat';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -96,6 +99,7 @@ const Image = styled.img`
   margin-top: 10px;
 `;
 
+let socket;
 function MainLayout({
   location,
   colors,
@@ -105,12 +109,34 @@ function MainLayout({
   actionFetchGroupDetail,
   groupDetail,
   isDocumentDetail,
+  appendChat,
+  updateChatState,
+  updateProjectChat,
+  taskDetails = {},
+  userId = '',
+  language = 'vi',
+  getViewedChatSuccess,
   actionFetchListColor,
   actioGetSettingDate,
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
+
+  function handleReactEmotion(data) {
+    // console.log('handleReactEmotion', data)
+    updateChatState(data.id, { data_emotion: data.emotions })
+  }
+
+  function handleDeleteChat(data) {
+    // console.log('handleDeleteChat', data)
+    updateChatState(data.id, { is_deleted: true })
+  }
+
+  function handleViewChat(data) {
+    console.log('handleViewChat', data)
+    // getViewedChatSuccess(data)
+  }
 
   useEffect(() => {
     if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
@@ -122,12 +148,71 @@ function MainLayout({
       handleFetchNoti();
       const uri =
         'https://appapi.workplus.vn?token=' + localStorage.getItem(TOKEN);
-      const socket = io(uri, {});
+      socket = io(uri, {});
       socket.on('WP_NEW_NOTIFICATION', res => handleNewNoti());
       socket.on('WP_NEW_NOTIFICATION_MESSAGE_TASK', res => handleNewMessage());
+      socket.on('WP_NEW_CHAT_EXPRESS_EMOTION_CHAT', handleReactEmotion);
+      socket.on('WP_DELETE_CHAT_IN_TASK', handleDeleteChat);
+      socket.on('WP_VIEW_CHAT_IN_TASK', handleViewChat);
+
+      function joinChat({ detail }) {
+        // console.log('joinChat', detail)
+        socket.emit('WP_JOIN_TASK', {
+          task_id: detail
+        })
+      }
+
+      function joinProject({ detail }) {
+        socket.emit('WP_JOIN_PROJECT', {
+          project_id: detail
+        })
+      }
+
+      window.addEventListener(JOIN_CHAT_EVENT, joinChat);
+      window.addEventListener(JOIN_PROJECT_EVENT, joinProject);
+      return () => {
+        console.log('close socket')
+        window.removeEventListener(JOIN_CHAT_EVENT, joinChat);
+        window.removeEventListener(JOIN_PROJECT_EVENT, joinProject);
+        socket.close();
+      }
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    function handleChatInProject(data) {
+      console.log('handleChatInProject', data)
+      const { user_create_id } = data;
+      data.new_chat = user_create_id === userId ? 0 : 1;
+      data.content = data.content[language];
+      updateProjectChat(data)
+    }
+
+    socket.on('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
+    return () => {
+      socket.off('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
+    }
+    // eslint-disable-next-line
+  }, [userId, language])
+
+  useEffect(() => {
+    console.log('listen chat')
+    const handleNewChat = (data) => {
+      console.log('handleNewChat', data, taskDetails.uuid)
+      if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
+        appendChat({ data_chat: data })
+      }
+    }
+
+    socket.on('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+    return () => {
+      console.log('close socket chat')
+      socket.off('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+    }
+    // eslint-disable-next-line
+  }, [taskDetails])
+
   const handleFetchNoti = async () => {
     try {
       const { data } = await getNumberNotificationNotViewer();
@@ -226,6 +311,9 @@ function MainLayoutWrapper({ ...rest }) {
 
 export default connect(
   state => ({
+    taskDetails: state.taskDetail.detailTask.taskDetails,
+    userId: state.system.profile.id,
+    language: state.system.profile.language,
     colors: state.setting.colors,
     groupDetail: state.setting.groupDetail,
     isDocumentDetail: state.system.isDocumentDetail,
@@ -233,6 +321,10 @@ export default connect(
     toast: state.system.toast
   }),
   {
+    updateProjectChat,
+    appendChat,
+    updateChatState,
+    getViewedChatSuccess,
     actionFetchGroupDetail,
     actionToast,
     actionFetchListColor,

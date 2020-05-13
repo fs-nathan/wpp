@@ -45,5 +45,8 @@
   }
   &--menuItem {
     padding-right: 30px;
+    &__disabled {
+      color: #cccccc;
+    }
   }
 }

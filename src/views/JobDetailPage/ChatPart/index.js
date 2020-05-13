@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -8,6 +7,7 @@ import clsx from 'clsx';
 import SearchInput from 'components/SearchInput';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { typesRemind } from '../TabPart/RemindTab/TabBody/RemindItem';
 import BodyPart from './BodyPart';
@@ -28,9 +28,8 @@ function ChatPart(props) {
   const pinnedRemind = reminds.find(rm => rm.is_ghim);
 
   useEffect(() => {
-    if (taskId && reminds.length === 0)
-      dispatch(getRemind({ taskId }))
-  }, [dispatch, reminds.length, taskId]);
+    dispatch(getRemind({ taskId }))
+  }, [dispatch, taskId]);
 
   function onChangeKey(evt) {
     dispatch(searchChat(evt.target.value))
@@ -38,6 +37,7 @@ function ChatPart(props) {
 
   function hideSearch() {
     setShowSearch(false)
+    dispatch(searchChat(''))
   }
 
   function onClickClosePin() {
@@ -98,7 +98,7 @@ function ChatPart(props) {
       {isDragActive && (
         <div className="drop-area">
           <div className="dashed-box">
-            <div className="des-drop">{('Thả file vào đây')}</div>
+            <div className="des-drop">{t('LABEL_CHAT_TASK_THA_FILE_VAO_DAY')}</div>
           </div>
         </div>
       )}

@@ -19,10 +19,10 @@ import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLi
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
-import Message from '../BodyPart/Message';
 import '../Chat.scss';
 import ChatBoxInput from './ChatBoxInput';
 import QuickLikeIcon from './QuickLikeIcon';
+import ReplyChatPreview from './ReplyChatPreview';
 import './styles.scss';
 
 const StyledButton = styled.button`
@@ -30,10 +30,17 @@ const StyledButton = styled.button`
   background-color: transparent;
   &:hover {
     color : ${props => props.hoverColor};
-    background-color: #f0f0f0;
+    background-color: #f6f6f6;
   }
   &:focus {
     outline: none;
+  }
+`
+
+const StyledChatBox = styled.div`
+  .ChatBoxInput:focus {
+    background-color: #fff;
+    border-top: 1px solid ${props => props.borderColor};
   }
 `
 let isPressShift = false;
@@ -46,6 +53,7 @@ const FooterPart = ({
 }) => {
   const { t } = useTranslation();
   const editorRef = useRef();
+  const sendButtonRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const tagMembers = useSelector(state => state.chat.tagMembers);
@@ -53,6 +61,10 @@ const FooterPart = ({
   const listStickers = useSelector(state => state.chat.listStickers);
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
   const groupActiveColor = useSelector(currentColorSelector)
+  const members = useSelector(state => state.taskDetail.taskMember.member);
+  const membersRef = useRef([]);
+  const selectedIdRef = useRef(0);
+  const isOpenMentionRef = useRef(false);
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const chatTextRef = useRef('');
@@ -62,6 +74,8 @@ const FooterPart = ({
   const [isShowQuickLike, setShowQuickLike] = useState(false);
   const [isShareFromLib, setShareFromLib] = useState(false);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
+  const [clipBoardImages, setClipBoardImages] = useState([]);
+  const [selectedId, setSelectedId] = useState(0);
 
   useEffect(() => {
     async function renderPrepareImages(imagesFiles) {
@@ -75,10 +89,10 @@ const FooterPart = ({
         }
         images.push({ url, file, name: file.name })
       }
-      setImagesQueueUrl(images)
+      setImagesQueueUrl([...clipBoardImages, ...images])
     }
     renderPrepareImages(imagesQueue)
-  }, [imagesQueue]);
+  }, [clipBoardImages, imagesQueue]);
 
   useEffect(() => {
     const wordsChat = words(chatText)
@@ -106,13 +120,13 @@ const FooterPart = ({
         //item.
         const file = item.getAsFile();
         const url = await getFileUrl(file)
-        images.push({ url, file })
+        images.push({ url, file, name: `clipboard${i}.png` })
       } else {
         // ignore not images
         // console.log('Discarding not image paste data');
       }
     }
-    setImagesQueueUrl(images)
+    setClipBoardImages(images)
   }
 
   const handleTriggerUpload = id => {
@@ -126,14 +140,15 @@ const FooterPart = ({
   const handleUploadImage = async e => {
     const { files } = e.target;
     // console.log('upload image', files);
-    const images = [];
+    const images = [...clipBoardImages];
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
       const url = await getFileUrl(file)
       images.push({ url })
     }
-
+    const id = Date.now();
     const data_chat = {
+      id,
       type: CHAT_TYPE.UPLOADING_IMAGES, images,
       isUploading: true,
       user_create_id: userId,
@@ -144,14 +159,27 @@ const FooterPart = ({
     for (let i = 0; i < files.length; i++) {
       data.append("image", files[i], files[i].name)
     }
-    dispatch(chatImage(taskId, data, onUploadingHandler))
+    for (let i = 0; i < clipBoardImages.length; i++) {
+      data.append("image", clipBoardImages[i].file, clipBoardImages[i].name)
+    }
+    dispatch(chatImage(taskId, data, onUploadingHandler, id))
+    setClipBoardImages([])
   };
 
   function onClickDeletePreview(i) {
     return () => {
       // console.log(i)
-      const filtered = imagesQueue.filter((img, idx) => idx !== i)
-      setImagesQueue([...filtered]);
+      if (clipBoardImages.length > 0) {
+        if (i === 0) {
+          setClipBoardImages([])
+        } else {
+          const filtered = imagesQueue.filter((img, idx) => idx !== i - 1)
+          setImagesQueue([...filtered]);
+        }
+      } else {
+        const filtered = imagesQueue.filter((img, idx) => idx !== i)
+        setImagesQueue([...filtered]);
+      }
     }
   }
 
@@ -218,6 +246,7 @@ const FooterPart = ({
     dispatch(tagMember(mention))
     // console.log('chatTextRef.current.selectionStart', chatTextRef.current.selectionStart)
     // setChatText(newContent)
+    setOpenMention(false)
   }
 
   const focus = () => {
@@ -229,7 +258,7 @@ const FooterPart = ({
     for (let index = 0; index < tagMembers.length; index++) {
       const { name, id } = tagMembers[index];
       const reg = new RegExp(`@${name}`, 'g');
-      ret = ret.replace(reg, `{${id}}`)
+      ret = ret.replace(reg, `@${id}`)
     }
     return ret;
   }
@@ -239,8 +268,9 @@ const FooterPart = ({
     if (content.trim().length === 0) return;
     dispatch(clearTags());
     const chat_parent = isEmpty(parentMessage) ? undefined : { ...parentMessage, isReply: true }
+    const id = Date.now();
     const data_chat = {
-      id: Date.now(),
+      id,
       type: CHAT_TYPE.TEXT,
       is_me: true,
       user_create_id: userId,
@@ -250,7 +280,7 @@ const FooterPart = ({
       tags: tagMembers.map(({ id }) => id)
     };
     dispatch(appendChat({ data_chat: { ...data_chat, tags: tagMembers } }));
-    dispatch(createChatText(data_chat));
+    dispatch(createChatText(data_chat, id));
     setSelectedChat(null)
     clearChatText()
   }
@@ -267,7 +297,9 @@ const FooterPart = ({
         size: humanFileSize(file.size)
       })
     }
+    const id = Date.now();
     const data_chat = {
+      id,
       type: CHAT_TYPE.UPLOADING_FILE, files: images,
       isUploading: true,
       user_create_id: userId,
@@ -278,7 +310,7 @@ const FooterPart = ({
     for (let i = 0; i < files.length; i++) {
       data.append("file", files[i], files[i].name)
     }
-    dispatch(chatFile(taskId, data, onUploadingHandler));
+    dispatch(chatFile(taskId, data, onUploadingHandler, id));
   };
 
   function sendMultipleFiles() {
@@ -293,15 +325,17 @@ const FooterPart = ({
         others.push(file)
       }
     }
-    handleUploadImage({ target: { files: images } });
-    handleUploadFile({ target: { files: others } });
+    if (images.length > 0 || clipBoardImages.length > 0)
+      handleUploadImage({ target: { files: images } });
+    if (others.length > 0)
+      handleUploadFile({ target: { files: others } });
     setImagesQueue([]);
   }
 
   function sendMessage() {
-    if (imagesQueue.length > 0) {
-      sendMultipleFiles()
-    } else if (isShowQuickLike) {
+    // console.log('sendMessage', imagesQueue.length)
+    sendMultipleFiles()
+    if (isShowQuickLike) {
       dispatch(chatQuickLike(taskId))
       editorRef.current.blur();
     } else {
@@ -310,24 +344,51 @@ const FooterPart = ({
   }
 
   function onKeyDown(event) {
-    const keyCode = event.keyCode || event.which
-    if (keyCode === 16) {// shift
-      isPressShift = true;
-    } else if (keyCode === 13 && !isPressShift) {// enter
-      sendChatText();
+    const keyCode = event.keyCode || event.which;
+    const members = membersRef.current;
+    const selectedId = selectedIdRef.current;
+    if ((keyCode === 38 || keyCode === 40) && isOpenMentionRef.current) {
       event.returnValue = false;
       if (event.preventDefault) event.preventDefault()
-      // console.log(chatText)
+    }
+    if (keyCode === 16) {// shift
+      isPressShift = true;
+    } else if (keyCode === 13 && isOpenMentionRef.current) {// enter
+      handleClickMention(members[selectedId])
+      event.returnValue = false;
+      if (event.preventDefault) event.preventDefault()
+    } else if (keyCode === 13 && !isPressShift) {// enter
+      // sendMessage();
+      sendButtonRef.current.click();
+      event.returnValue = false;
+      if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 50 && isPressShift) {// @
       setOpenMention(true)
       focus()
+    } else if (keyCode === 8) {// backspace
+      const sel = window.getSelection();
+      const range = sel.getRangeAt(0);
+      const content = getChatContent(htmlToText(chatTextRef.current));
+      const delChar = content.charAt(content.length - 1)
+      // console.log('chatText', delChar, content)
+      if (delChar === '@') {
+        setOpenMention(false)
+      }
+    } else if (keyCode === 38) {// up
+      setSelectedId(selectedId === 0 ? members.length - 1 : selectedId - 1)
+    } else if (keyCode === 40) {// down
+      // console.log('selectedId', selectedId, members)
+      setSelectedId(selectedId === members.length - 1 ? 0 : selectedId + 1)
     } else if (keyCode === 32) {// space
       setOpenMention(false)
     }
   }
 
   function onKeyUp(event) {
-    isPressShift = false;
+    const keyCode = event.keyCode || event.which;
+    if (keyCode === 16) {// shift
+      isPressShift = false;
+    }
   }
 
   function clearChatText() {
@@ -342,9 +403,25 @@ const FooterPart = ({
     setChatText(value)
   }
 
+  function cancelReply() {
+    setSelectedChat(null)
+  }
+
   useEffect(() => {
     chatTextRef.current = chatText;
   }, [chatText])
+
+  useEffect(() => {
+    membersRef.current = members;
+  }, [members]);
+
+  useEffect(() => {
+    selectedIdRef.current = selectedId;
+  }, [selectedId])
+
+  useEffect(() => {
+    isOpenMentionRef.current = isOpenMention;
+  }, [isOpenMention])
 
   return (
     <div className="footer-chat-container">
@@ -385,7 +462,7 @@ const FooterPart = ({
           </StyledButton>
         </div>
       </div>
-      <Message {...parentMessage} isReply></Message>
+      {parentMessage && <ReplyChatPreview {...parentMessage} cancelReply={cancelReply} />}
       {imagesQueueUrl.length ? <div className="chatBox--preview">
         {imagesQueueUrl.map(({ url, name }, i) =>
           <div key={i} className="chatBox--imagePreviewWrap">
@@ -397,7 +474,8 @@ const FooterPart = ({
           </div>
         )}
       </div> : null}
-      <div className="chatBox" id="input_message"
+      <StyledChatBox className="chatBox" id="input_message"
+        borderColor={groupActiveColor}
         onClick={focus}
         onPaste={onpaste}
       >
@@ -411,20 +489,24 @@ const FooterPart = ({
         />
         <div className="chatBox--send"
           onClick={sendMessage}
+          ref={sendButtonRef}
           style={{ color: groupActiveColor }}
         >
           {isShowQuickLike ?
             <QuickLikeIcon color={groupActiveColor} />
-            : "Gửi"
+            : t('LABEL_CHAT_TASK_GUI')
           }
         </div>
-      </div>
-
-      <TagModal
-        isOpen={isOpenMention}
-        handleClose={handleCloseTag}
-        handleClickMention={handleClickMention}
-      />
+      </StyledChatBox>
+      {
+        isOpenMention &&
+        <TagModal
+          isOpen={isOpenMention}
+          handleClose={handleCloseTag}
+          handleClickMention={handleClickMention}
+          selectedId={selectedId}
+        />
+      }
       {
         isOpenSticker &&
         <StickerModal

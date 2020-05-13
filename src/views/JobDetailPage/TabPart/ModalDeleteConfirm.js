@@ -1,11 +1,11 @@
-import { useTranslation } from 'react-i18next';
-import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ModalDeleteConfirm({
   isOpen,
@@ -20,7 +20,7 @@ export default function ModalDeleteConfirm({
         open={isOpen}
         onClose={handleCloseModalDelete}
       >
-        <DialogTitle>{"Thông báo hệ thống"}</DialogTitle>
+        <DialogTitle>{t("LABEL_CHAT_TASK_THONG_BAO_HE_THONG")}</DialogTitle>
         <DialogContent>
           <DialogContentText >{t('LABEL_CHAT_TASK_BAN_CO_CHAC_MUON_XOA_KHONG')}</DialogContentText>
         </DialogContent>

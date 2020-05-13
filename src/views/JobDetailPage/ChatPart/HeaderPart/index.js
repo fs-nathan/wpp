@@ -9,7 +9,7 @@ import queryString from 'query-string';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import './styles.scss';
 // Fake data
 const tabs = ['Chat', 'Table', 'Gantt'];
@@ -25,7 +25,18 @@ const useStyles = makeStyles({
 });
 
 const TabForm = props => {
+  const history = useHistory()
+  const gridSettings = useSelector(state => state.chat.gridSettings)
+  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const [value, setValue] = React.useState(tabSelected);
+
+  function onClickLabel(value) {
+    const { url = '' } = gridSettings.find(({ name }) => name === value) || {};
+    return () => {
+      history.push(`${url}/${projectId}`)
+    }
+  }
+
   return (
     <FormControl component="fieldset">
       <RadioGroup
@@ -43,6 +54,7 @@ const TabForm = props => {
             control={<Radio />}
             label={label}
             checked={value === label}
+            onClick={onClickLabel(label)}
           />
         ))}
       </RadioGroup>
@@ -78,7 +90,7 @@ const renderAvatars = props => {
       )}
       {
         (plusImage > 0) &&
-        <Avatar className="header-chat-avatar chatHeader--avatar_plus">{plusImage}</Avatar>
+        <Avatar className="header-chat-avatar chatHeader--avatar_plus">{`+${plusImage}`}</Avatar>
       }
     </div>
   );

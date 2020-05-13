@@ -86,7 +86,7 @@ function ProjectDocumentsTable({ isLoading, listData, setInsideProject }) {
       setSortType(prev => prev * -1);
     }
   };
-  return <Table stickyHeader>
+  return <Table stickyHeader className="ProjectDocumentsTable">
     <TableHead>
       <TableRow className="table-header-row">
         <StyledTableHeadCell

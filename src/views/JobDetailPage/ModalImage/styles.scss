@@ -1,0 +1,50 @@
+.DialogTitleModalImage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #303335;
+  align-items: center;
+  padding: 0px 15px;
+  &--user {
+    width: 40%;
+  }
+  &--rotate {
+    width: 20%;
+    text-align: center;
+  }
+  &--GroupActionButton {
+    display: flex;
+    width: 40%;
+    justify-content: flex-end;
+  }
+}
+
+.ModalImage {
+  &--video {
+    video {
+      &:focus {
+        outline: none;
+      }
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  &--scroll {
+    width: 85% !important;
+  }
+  &--imagesList {
+    display: flex;
+    justify-content: center;
+    background: #3e4041;
+    padding: 3px;
+    border-radius: 10px;
+    // width: 1200px;
+    z-index: 999;
+    // overflow-x: scroll;
+    & > * {
+      list-style-type: none;
+      margin: 2px 3px;
+    }
+  }
+}

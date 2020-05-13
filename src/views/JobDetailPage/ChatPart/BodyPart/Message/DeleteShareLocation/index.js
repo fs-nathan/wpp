@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
 import { mdiMapMarkerRemoveOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
@@ -33,6 +33,8 @@ const DeleteShareLocation = ({
         user_create_position,
         time_create,
       }}
+      isHideFooterIcon
+      footerText=""
       taskName={t('LABEL_CHAT_TASK_HUY_BO_CHIA_SE_VI_TRI')}
       onClickViewDetail={onClickViewDetail}
     >

@@ -22,96 +22,116 @@ const IconPin = styled(Icon)`
   display: ${props => (props.isghim === 'true' ? 'block' : 'none')};
 `;
 const ChipMes = styled(Chip)`
-  display: ${props => (props.notification === 'true' ? 'block' : 'none')};
+  border-radius: 10px;
+  width: auto;
+  height: auto;
+  color: white;
+  background-color: red;
+  font-weight: 500;
+  margin-right: 5px;
+  display: ${props => (props.notification ? 'flex' : 'none')};
 `;
 
-const badgeState = label => {
-  let color;
-  switch (label) {
-    case 'Waiting':
-      color = 'orangelight';
-      break;
-    case 'Doing':
-      color = 'indigolight';
-      break;
-    case 'Complete':
-      color = 'light-green';
-      break;
-    case 'Expired':
-      color = 'redlight';
-      break;
-    case 'Stop':
-      color = 'redlight';
-      break;
+const getBadgeColor = status_code => {
+  switch (status_code) {
+    case 0:
+      return 'orangelight';
+    case 1:
+      return 'indigolight';
+    case 2:
+      return 'light-green';
+    case 3:
+      return 'redlight';
+    case 4:
+      return 'dark-gray';
     default:
-      color = 'redlight';
+      return 'redlight';
   }
-
-  return <BadgeItem color={color} badge label={label} size="small" />;
 };
+
 function JobName(props) {
+  const { isghim = '', new_chat, ...rest } = props
   return (
     <div className="name-container-lbd" variant="space-between">
-      <ColorTypo bold>{props.title}</ColorTypo>
+      <ColorTypo bold={new_chat > 0}>{props.title}</ColorTypo>
       <div>
         <IconPin
           color={'#6e6e6e'}
           path={mdiPin}
           size={0.8}
-          {...props}
-          isghim={props.isghim.toString()}
+          {...rest}
+          isghim={isghim.toString()}
         />
-        {badgeState(props.label)}
+        <BadgeItem color={getBadgeColor(props.status_code)} badge label={props.label} size="small" />
       </div>
     </div>
   );
 }
 
 function JobContent(props) {
-  const { avatar, notify = 1, ...rest } = props
+  const { avatar, content, name, notification = 0, time } = props
   return (
     <div className="container-content-lbd">
-      <div title={props.name}>
+      <div title={name}>
         <Avatar src={avatar} alt="avatar" />
-        <ColorTypo color="#7a869a">{props.content}</ColorTypo>
+        <ColorTypo color="#7a869a">{content}</ColorTypo>
       </div>
       <div>
         <ChipMes
-          label={notify}
+          label={notification}
           size="small"
-          {...rest}
-          notification={props.notification.toString()}
+          notification={notification > 0}
         />
-        <div>{props.time}</div>
+        <div>{time}</div>
       </div>
     </div>
   );
 }
 
 function JobUnit(props) {
+  const {
+    chat = {},
+    name,
+    status_name,
+    status_code,
+    new_chat,
+    is_ghim,
+    updated_time,
+  } = props;
   return (
     <ListItemText disableTypography>
       <JobName
-        title={props.name}
-        label={props.status_name}
-        isghim={props.is_ghim}
+        title={name}
+        label={status_name}
+        status_code={status_code}
+        new_chat={new_chat}
+        isghim={is_ghim}
       />
       <JobContent
-        time={props.updated_time}
-        avatar={props.chat.user_create_avatar}
-        content={props.chat.content}
-        notification={props.new_chat}
-        name={props.chat.user_create_name}
+        time={updated_time}
+        avatar={chat.user_create_avatar}
+        content={chat.content}
+        notification={new_chat}
+        name={chat.user_create_name}
       />
     </ListItemText>
   );
 }
 
 function ListBodyItem(props) {
+  const {
+    chat = {},
+    name,
+    status_name,
+    status_code,
+    new_chat,
+    is_ghim,
+    updated_time,
+  } = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
-  // console.log({value})
+  // console.log({ props })
 
   function onClickItem() {
     dispatch(chooseTask(props.id));
@@ -133,7 +153,15 @@ function ListBodyItem(props) {
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
         <SimpleDonutChart color={groupActiveColor} percentDone={props.complete} />
       </ListItemAvatar>
-      <JobUnit {...props} />
+      <JobUnit {...{
+        chat,
+        name,
+        status_name,
+        status_code,
+        new_chat,
+        is_ghim,
+        updated_time,
+      }} />
     </div>
   );
 }

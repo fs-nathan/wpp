@@ -1,3 +1,4 @@
+import { SET_PROJECT, SET_PROJECT_GROUP } from 'constants/actions/localStorage';
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
 import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
@@ -170,6 +171,7 @@ import { createLevel } from "./level/createLevel";
 import { deleteLevel } from "./level/deleteLevel";
 import { listLevel } from "./level/listLevel";
 import { updateLevel } from "./level/updateLevel";
+import { setProject, setProjectGroup } from './localStorage';
 import { createMajor } from "./major/createMajor";
 import { deleteMajor } from "./major/deleteMajor";
 import { listMajor } from "./major/listMajor";
@@ -239,8 +241,6 @@ import { deleteUserRole } from "./userRole/deleteUserRole";
 import { listUserRole } from "./userRole/listUserRole";
 import { updateUserRole } from "./userRole/updateUserRole";
 import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
-import { SET_PROJECT, SET_PROJECT_GROUP } from 'constants/actions/localStorage';
-import { setProject, setProjectGroup } from './localStorage';
 
 function* rootSaga() {
   // Hoang - begin
@@ -646,6 +646,10 @@ function* rootSaga() {
     taskDetailType.GET_SCHEDULES,
     taskDetailSaga.getSchedules
   );
+  yield takeLeading(
+    taskDetailType.DELETE_TASK_REQUEST,
+    taskDetailSaga.deleteTask
+  );
   //chat 
   yield takeLeading(
     chatTypes.DELETE_CHAT,
@@ -734,6 +738,10 @@ function* rootSaga() {
   yield takeLeading(
     chatTypes.GET_DEMAND_DETAIL,
     chatDetailSaga.getDemandDetail
+  );
+  yield takeLeading(
+    chatTypes.GET_GIRD_LIST_TASK,
+    chatDetailSaga.getGirdListTask
   );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
