@@ -9,6 +9,7 @@ import { showImagesList } from 'actions/chat/chat';
 import { openDocumentDetail } from 'actions/system/system';
 import { getFileType } from 'helpers/jobDetail/stringHelper';
 import React, { useEffect, useRef, useState } from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -53,27 +54,11 @@ const WrapperImage = styled(GridListTile)`
     height: 80px
 `
 const FooterDialog = styled(DialogActions)`
-    padding : 0;
-    background: #161616c9;
+    background: #3e4041;
     display: flex;
     justify-content: center;
     padding: 5px 0 5px 0;
-    & > div {
-        display: flex;
-        background: #3e4041;
-        padding: 3px;
-        border-radius: 10px;
-        width: 1200px;
-        z-index: 999;
-        overflow-x: scroll;
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        & > * {
-            list-style-type: none;
-            margin: 2px 3px;
-        }
-    }
+    height: 100px;
 `
 const ButtonImage = styled(IconButton)`
     background: #353535;
@@ -272,20 +257,26 @@ const ModalImage = () => {
         }
       </ContentDialog>
       <FooterDialog>
-        <div>
-          {
-            (type === 'mp4') ? null :
-              imagesList.map((image, index) => {
-                return (
-                  <WrapperImage
-                    onClick={() => setCurrentImage(index)}
-                    key={`1-${index}`}>
-                    <Image src={image.url} alt='avatar' selected={currentImage === index} />
-                  </WrapperImage>
-                );
-              })
-          }
-        </div>
+        <Scrollbars
+          width="85%"
+          className="ModalImage--scroll"
+          renderView={props => <div {...props} className="ModalImage--scrollView" />}
+        >
+          <div className="ModalImage--imagesList">
+            {
+              (type === 'mp4') ? null :
+                imagesList.map((image, index) => {
+                  return (
+                    <WrapperImage
+                      onClick={() => setCurrentImage(index)}
+                      key={`1-${index}`}>
+                      <Image src={image.url} alt='avatar' selected={currentImage === index} />
+                    </WrapperImage>
+                  );
+                })
+            }
+          </div>
+        </Scrollbars>
       </FooterDialog >
       {visible && (
         <ShareDocumentModal

@@ -75,7 +75,7 @@
       border-radius: 0em;
       height: 40px;
       background-color: #fff;
-      border-bottom: 1px solid #f1f3f4;
+      // border-bottom: 1px solid #f1f3f4;
     }
     svg {
       width: 20px !important;
@@ -85,7 +85,7 @@
   }
   &--close {
     position: absolute;
-    bottom: -5px;
+    bottom: -6px;
     right: 0px;
     svg {
       width: 20px !important;
@@ -95,6 +95,9 @@
   }
   &__showSearch {
     display: block;
+    position: relative;
+    padding: 10px;
+    border-bottom: 1px solid #eeeeee;
   }
   &--pinRemind {
     display: flex;
