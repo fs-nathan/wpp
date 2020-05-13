@@ -23,6 +23,7 @@ const TimeLine = ({
   setProcessDatasource,
   girdInstance,
   endPosition,
+  canEdit,
   index,
   setDataSource,
   dataSource,
@@ -44,6 +45,9 @@ const TimeLine = ({
   const [endDateText, setEndDateText] = useState(new moment(endDate));
   const [a, setA] = useState(0);
   const [dragFirstResize, setDragFirstResize] = useState(false);
+  const [widthComplete, setWidthComplete] = useState(
+    (dataSource[index].complete * width) / 100
+  );
   const [drag, setDrag] = useState(0);
   let offsetLeft = 0;
   if (totalTimeRef.current) {
@@ -93,8 +97,8 @@ const TimeLine = ({
     const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
     if (dragFirstResize) {
       const newWidth = width - (newPosition - left);
-      console.log(newWidth);
       setWidth(newWidth);
+      setWidthComplete((dataSource[index].complete * newWidth) / 100);
     }
     const amountUnitAdd = (newPosition - startPosition * 48) / 48;
     const roundAmountUnitAdd =
@@ -114,7 +118,7 @@ const TimeLine = ({
   };
   const handleMouseDown = (e) => {
     e.preventDefault();
-    if (isGroupTask || isTotalDuration) return;
+    if (isGroupTask || isTotalDuration || !canEdit) return;
     const className = e.target.className;
     if (
       !className.indexOf ||
@@ -145,7 +149,7 @@ const TimeLine = ({
     return () => document.removeEventListener("mouseup", handleMouseUp);
   });
   const handleResizeStop = (e, node) => {
-    if (isGroupTask || isTotalDuration) return;
+    if (isGroupTask || isTotalDuration || !canEdit) return;
     const newResizeWidth = node.size.width;
     if (newResizeWidth === width) return;
     const add = newResizeWidth > width ? 1 : 0;
@@ -167,13 +171,14 @@ const TimeLine = ({
     setDataSource(index, start, end);
   };
   const handleResizeWidth = (e, node) => {
-    if (isGroupTask || isTotalDuration) return;
+    if (isGroupTask || isTotalDuration || !canEdit) return;
     const newResizeWidth = node.size.width;
     const amountUnitAdd = (newResizeWidth - width) / 48;
     const roundAmountUnitAdd =
       amountUnitAdd > 0
         ? Math.ceil(amountUnitAdd, girdInstance.unit)
         : Math.round(amountUnitAdd, girdInstance.unit);
+    setWidthComplete((dataSource[index].complete * newResizeWidth) / 100);
     setEndDateText(
       new moment(endDate).add(roundAmountUnitAdd, girdInstance.unit)
     );
@@ -207,7 +212,8 @@ const TimeLine = ({
         onMouseMove={handleMouseMoveFirst}
         style={{
           display: "flex",
-          cursor: !isGroupTask && !isTotalDuration ? "move" : "default",
+          cursor:
+            !isGroupTask && !isTotalDuration && canEdit ? "move" : "default",
           width: "fit-content",
           top: "50%",
           transform: "translateY(-50%)",
@@ -226,12 +232,15 @@ const TimeLine = ({
           minConstraints={[48, 0]}
           className="container-resizable"
           {...styleWidthGroupTask}
-          lockAspectRatio={!isGroupTask && !isTotalDuration ? false : true}
+          lockAspectRatio={
+            !isGroupTask && !isTotalDuration && canEdit ? false : true
+          }
           handle={() => (
             <span
               className={
                 !isGroupTask &&
                 !isTotalDuration &&
+                canEdit &&
                 `resize-width react-resizable-handle`
               }
             >
@@ -254,7 +263,7 @@ const TimeLine = ({
             className="resize-width"
             // onMouseUp={handleMouseUpFirstResize}
           >
-            {!isGroupTask && !isTotalDuration && (
+            {!isGroupTask && !isTotalDuration && canEdit && (
               <Circle show={showResize} left={-15} />
             )}
           </div>
@@ -295,7 +304,7 @@ const TimeLine = ({
           transform: "translateY(-50%)",
           position: "absolute",
           cursor:
-            !isGroupTask && !isTotalDuration && !isTotalDuration
+            !isGroupTask && !isTotalDuration && !isTotalDuration && canEdit
               ? "move"
               : "default",
           ...b,
@@ -307,7 +316,7 @@ const TimeLine = ({
             onResizeStop={handleProcessResizeStop}
             minConstraints={[0, 0]}
             maxConstraints={[width, width]}
-            width={(dataSource[index].complete * width) / 100}
+            width={widthComplete}
             handle={() => (
               <span
                 // style ={{
@@ -318,7 +327,7 @@ const TimeLine = ({
                   e.stopPropagation();
                 }}
               >
-                {!isGroupTask && !isTotalDuration && (
+                {!isGroupTask && !isTotalDuration && canEdit && (
                   <span className="container-icon-drag-duration">
                     <span>
                       <Icon

@@ -110,6 +110,7 @@ function GanttChart({
             >
               <div className="gantt--top-timeline"></div>
               <Timeline
+                canEdit={item.can_edit}
                 setProcessDatasource={setProcessDatasource}
                 isTotalDuration={item.isTotalDuration}
                 isGroupTask={item.isGroupTask}

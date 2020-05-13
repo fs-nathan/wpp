@@ -13,8 +13,8 @@
   z-index: 1;
 }
 
-.gantt-table-col.react-resizable-handle svg{
-  fill: #bfbfbf
+.gantt-table-col.react-resizable-handle svg {
+  fill: #bfbfbf;
 }
 
 tr.drop-over-downward td {
@@ -28,9 +28,9 @@ tr.drop-over-upward td {
   right: 0;
 }
 
-.table-gantt-header thead tr th{
+.table-gantt-header thead tr th {
   padding: 14px !important;
-  white-space: nowrap
+  white-space: nowrap;
 }
 
 .table-gantt-header tbody tr {
@@ -40,7 +40,7 @@ tr.drop-over-upward td {
 .table-gantt-header tbody tr td div {
   height: 20px;
 }
-.grantt-header  thead tr th {
+.grantt-header thead tr th {
   padding: 2px !important;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -59,13 +59,13 @@ tr.drop-over-upward td {
   width: 100%;
   margin: auto;
 }
-.row-grey-table{
+.row-grey-table {
   background: #fafafa;
 }
 .ant-table-content {
   overflow: unset !important;
 }
-.config--drawer--checkbox-section{
+.config--drawer--checkbox-section {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
@@ -80,27 +80,27 @@ body {
   font-weight: bold;
   text-transform: uppercase;
 }
-.config--drawer--title{
+.config--drawer--title {
   margin-top: 10px;
   color: rgb(165, 160, 160);
 }
 
-.checkbox-label--drawer{
+.checkbox-label--drawer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   font-size: 13px;
 }
 
-.checkbox-colortag--drawer{
+.checkbox-colortag--drawer {
   width: 80px;
   height: 16px;
   margin-right: 8px;
   position: absolute;
   right: 0;
 }
-.checkbox-colortag--drawer:hover{
-  background-color: #F2F5FA
+.checkbox-colortag--drawer:hover {
+  background-color: #f2f5fa;
 }
 .ml-0 {
   margin-left: 0 !important;
@@ -118,16 +118,16 @@ body {
 }
 
 .config--drawer--checkbox:hover {
-  background-color: #F2F5FA;
+  background-color: #f2f5fa;
 }
 
 .config--drawer--checkbox span {
   font-size: 1rem;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: 0.00938em;
-    color: black;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+  color: black;
 }
 
 span.ant-checkbox ~ span {
@@ -145,7 +145,7 @@ span.ant-checkbox ~ span {
   justify-content: space-between;
 }
 .title-drawer-config p {
-  margin : 0;
+  margin: 0;
   font-size: 16px;
 }
 .ant-checkbox-checked::after {
@@ -153,10 +153,10 @@ span.ant-checkbox ~ span {
 }
 
 .gantt--title-project {
- font-size: 17px;
- display: flex;
- margin-bottom: 2px;
- font-weight: 500; 
+  font-size: 17px;
+  display: flex;
+  margin-bottom: 2px;
+  font-weight: 500;
 }
 
 .gantt--navigation {
@@ -170,22 +170,22 @@ span.ant-checkbox ~ span {
 .gantt--image-project {
   border-radius: 50%;
 }
-.gantt--button-header-text{
+.gantt--button-header-text {
   text-align: center;
   margin-top: 5px;
   font-size: 11px;
-  color: rgba(0, 0, 0, 0.54)
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .gantt--timeline--container {
-  margin-top:22.5px;
+  margin-top: 22.5px;
 }
 
-.gantt--top-timeline{
+.gantt--top-timeline {
   position: relative;
-              height: 20px;
-              margin: 0;
-              left: -10px;
+  height: 20px;
+  margin: 0;
+  left: -10px;
 }
 
 .gantt--start-timeline {
@@ -208,7 +208,7 @@ span.ant-checkbox ~ span {
   left: 40px;
 }
 
-.gantt--time-task{
+.gantt--time-task {
   width: 100%;
   height: 20px;
   z-index: 1;
@@ -222,9 +222,9 @@ span.ant-checkbox ~ span {
 }
 
 .config--drawer--checkbox .ant-radio-checked .ant-radio-inner::after {
-  transform: translate(0.5px,-0.5px) !important;
+  transform: translate(0.5px, -0.5px) !important;
 }
-.resize-width{
+.resize-width {
   width: 20px;
   right: -14px !important;
   bottom: 0;
@@ -243,22 +243,22 @@ span.ant-checkbox ~ span {
 .asfdfs {
   right: 0 !important;
 }
-.resize-duration{
+.resize-duration {
   width: 10px;
   right: -5px !important;
   bottom: -6.67px;
   padding: 0 !important;
 }
-.container-icon-drag-duration{
+.container-icon-drag-duration {
   width: 20px;
   height: 10px;
   position: absolute;
 }
-.container-icon-drag-duration  span {
+.container-icon-drag-duration span {
   width: 20px;
   cursor: pointer;
 }
-.icon-resize-gantt-chart{
+.icon-resize-gantt-chart {
   position: absolute;
   z-index: 1001;
   width: 1px;
@@ -269,18 +269,18 @@ span.ant-checkbox ~ span {
   height: 30px !important;
   left: -7px;
   position: absolute;
-  top:50%;
+  top: 50%;
   fill: #9a9a9a;
   border-radius: 2px;
-  background: #e8e8e8
+  background: #e8e8e8;
 }
 
 .icon-show-header {
   position: absolute;
-  right:15px;
+  right: 15px;
   z-index: 1;
   width: 40px;
-  height:20px;
+  height: 20px;
   border: 1px solid rgba(230, 230, 230, 0.25);
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
@@ -298,15 +298,24 @@ span.ant-checkbox ~ span {
 .ant-table tbody > tr.ant-table-row:hover > td {
   background: #fffae6 !important;
 }
-.gantt--top-timeline-tr:hover{
+.gantt--top-timeline-tr:hover {
   background: #fffae6 !important;
 }
 
 .row-background-yellow {
   background: #fffae6 !important;
 }
-.name-task-gantt:hover{
+.name-task-gantt:hover {
   color: #0089f6 !important;
+}
+.name-task-gantt {
+  overflow: hidden;
+  width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #000;
+  flex-grow: 1;
 }
 .duration-text-gantt {
   position: relative;
@@ -314,7 +323,7 @@ span.ant-checkbox ~ span {
   text-align: right;
 }
 .right-header-more {
-  margin: 0 !important
+  margin: 0 !important;
 }
 .gantt--icon-setting-task {
   fill: #b9b9b9;
@@ -329,7 +338,7 @@ span.ant-checkbox ~ span {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  vertical-align: middle
+  vertical-align: middle;
 }
 .calendar--left-header div {
   left: 50%;
@@ -343,10 +352,10 @@ span.ant-checkbox ~ span {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  fill: #b9b9b9
+  fill: #b9b9b9;
 }
 
-.calendar--button{
+.calendar--button {
   display: flex;
   position: relative;
   top: 30px;
@@ -356,7 +365,7 @@ span.ant-checkbox ~ span {
 .calendar--button--title {
   margin-left: 20px;
   font-size: 15px;
-  font-weight:400;
+  font-weight: 400;
 }
 
 .calendar--button svg {
@@ -364,15 +373,15 @@ span.ant-checkbox ~ span {
   margin-left: 15px;
   margin-right: 15px;
   display: block;
-  margin-top:auto;
+  margin-top: auto;
   margin-bottom: auto;
   fill: #858483;
 }
-.calendar--button--item__container{
+.calendar--button--item__container {
   height: 60px;
 }
 
-.calendar--button--item__container:hover{
+.calendar--button--item__container:hover {
   background: #b9b9b9;
 }
 .pull-right {
@@ -381,7 +390,7 @@ span.ant-checkbox ~ span {
   top: 50%;
   transform: translateY(-50%);
 }
-.calendar--button--tag-default{
+.calendar--button--tag-default {
   color: #ff9800;
   background: #ff980038;
   margin-top: 3px;
@@ -401,7 +410,7 @@ span.ant-checkbox ~ span {
   font-weight: 400;
 }
 .custom-checkbox-icon--calendar {
-  fill: #48bb78
+  fill: #48bb78;
 }
 
 .custom-checkbox--calendar {
@@ -417,11 +426,11 @@ span.ant-checkbox ~ span {
   margin-left: 30px;
 }
 
-.section--calendar{
+.section--calendar {
   margin: 20px 20px;
   font-weight: 500;
 }
-.sub-section--calendar{
+.sub-section--calendar {
   margin: 20px 20px;
 }
 
@@ -432,22 +441,23 @@ span.ant-checkbox ~ span {
   margin-left: 20px;
 }
 #customers td {
-  padding: 0 ;
+  padding: 0;
 }
 #customers td div {
   width: 94%;
   border-bottom: 1px solid #b9b9b9;
   margin: 0px auto;
-  padding: 10px
+  padding: 10px;
 }
 #customers tr:last-of-type td div {
   width: 100%;
   border-bottom: 1px solid #b9b9b9;
   margin: 0px auto;
-  padding: 10px calc(3% + 10px)
+  padding: 10px calc(3% + 10px);
 }
 
-#customers td, #customers th {
+#customers td,
+#customers th {
   border: 1px solid #b9b9b9;
 }
 #customers th {
@@ -457,7 +467,9 @@ span.ant-checkbox ~ span {
   border-bottom: 0 !important;
   border-top: 0 !important;
 }
-#customers tr:hover {background-color: #b9b9b9;}
+#customers tr:hover {
+  background-color: #b9b9b9;
+}
 
 #customers th {
   padding-top: 12px;
@@ -472,7 +484,7 @@ span.ant-checkbox ~ span {
 }
 #customers th:last-child svg {
   fill: #eb2a2a;
-} 
+}
 .header-table-day-work {
   display: flex;
   text-align: center;
@@ -480,9 +492,9 @@ span.ant-checkbox ~ span {
   width: fit-content;
 }
 .header-table-day-work svg {
- margin-top: auto;
- margin-bottom: auto;
- width: 1rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 1rem;
   height: 1rem;
   margin-right: 5px;
 }
@@ -498,37 +510,40 @@ span.ant-checkbox ~ span {
 #hourwork td {
   padding: 0;
 }
-#hourwork tr th:first-child{
+#hourwork tr th:first-child {
   width: 35%;
 }
 
-#hourwork tr td:first-child{
+#hourwork tr td:first-child {
   text-align: center;
 }
 
-#hourwork tr td:first-child div{
+#hourwork tr td:first-child div {
   width: 100%;
 }
 
 #hourwork td div {
   width: 94% !important;
   margin: 0px auto;
-  padding: 10px
+  padding: 10px;
 }
 
-.calendar--hour-work__td{
+.calendar--hour-work__td {
   display: flex;
   border-bottom: 0 !important;
   padding: 0 !important;
 }
 
-#hourwork td, #hourwork th {
+#hourwork td,
+#hourwork th {
   border: 1px solid #b9b9b9;
 }
-#hourwork th{
+#hourwork th {
   padding: 8px;
 }
-#hourwork td:hover {background-color: #b9b9b9;}
+#hourwork td:hover {
+  background-color: #b9b9b9;
+}
 
 #hourwork th {
   padding-top: 12px;
@@ -553,25 +568,25 @@ span.ant-checkbox ~ span {
 
 td.table-hourwork-left {
   padding: 0 auto !important;
-  border-bottom: 1px solid #b9b9b9 !important; 
+  border-bottom: 1px solid #b9b9b9 !important;
 }
 
 td.table-hourwork-right--border-bottom-none {
-  border-bottom: 0 !important
+  border-bottom: 0 !important;
 }
 
 td.table-hourwork-right--border-bottom-none div {
-  border-bottom: 1px solid #b9b9b9
+  border-bottom: 1px solid #b9b9b9;
 }
 td.table-hourwork-right--border-top-none {
   border-top: 0 !important;
-text-align: left !important;
+  text-align: left !important;
 }
 .color-picker-drawer-config {
   position: absolute;
-    z-index: 15;
-    top: 10px;
-    left: 70px;
+  z-index: 15;
+  top: 10px;
+  left: 70px;
 }
 
 div.checkbox-colortag--drawer {
@@ -587,23 +602,24 @@ div.checkbox-colortag--drawer {
   font-weight: normal;
 }
 
-.ant-drawer-header{
+.ant-drawer-header {
   padding: 15px !important;
 }
 
-.ant-drawer-body{
+.ant-drawer-body {
   padding: 15px !important;
   padding-right: 0 !important;
 }
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #48bb78 !important;
-    border-color: #48bb78 !important;
+  border-color: #48bb78 !important;
 }
 .config--drawer--checkbox-wrapper {
   padding-left: 40px;
 }
-.config--drawer--drag-checkbox-wrapper:hover,.config--drawer--checkbox-wrapper:hover {
-  background-color: #F2F5FA;
+.config--drawer--drag-checkbox-wrapper:hover,
+.config--drawer--checkbox-wrapper:hover {
+  background-color: #f2f5fa;
 }
 .ant-row-end {
   line-height: 50px;
@@ -622,30 +638,30 @@ div.checkbox-colortag--drawer {
   z-index: 0;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 .icon-invisible-header svg {
- fill: rgb(199, 199, 199) !important;
+  fill: rgb(199, 199, 199) !important;
 }
 
 .name-task-gantt__icon-container {
   display: flex;
-    position: absolute;
-    background: #fff;
-    right: 0;
-    top: 0;
-    align-items: center;
-    padding-left: 5px;
-    height: 35px !important;
-    padding-right: 5px;
+  position: absolute;
+  background: #fff;
+  right: 0;
+  top: 0;
+  align-items: center;
+  padding-left: 5px;
+  height: 35px !important;
+  padding-right: 5px;
 }
 
-.gantt-title-table-project { 
+.gantt-title-table-project {
   display: flex;
   margin-left: 20%;
 }
 
-.gantt-title-table-project-icon{
+.gantt-title-table-project-icon {
   width: 20%;
   text-align: right;
   fill: #cccccc;
@@ -655,24 +671,23 @@ div.checkbox-colortag--drawer {
   width: 80%;
 }
 
-.gantt--group-task{
+.gantt--group-task {
   display: flex;
   justify-content: space-between;
 }
 
-.gantt--group-task__left{
+.gantt--group-task__left {
   display: flex;
 }
-.gantt--group-task__right{
+.gantt--group-task__right {
   fill: #cccccc;
   margin-right: 7px;
 }
 
-
 .calendar--hour-work__name {
   width: 30%;
 }
-.gantt-select-project__container{
+.gantt-select-project__container {
   position: absolute;
   background: #fff;
   z-index: 1000;

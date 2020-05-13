@@ -45,6 +45,7 @@ import SubTaskDrawer from "../../components/Drawer/SubTaskDrawer";
 import { apiService } from "../../constants/axiosInstance";
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import QuickViewTaskDetailDrawer from "../../views/JobPage/components/QuickViewTaskDetailDrawer";
+import CreateProject from "../../views/ProjectGroupPage/Modals/CreateProject";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import Header from "./Header";
@@ -97,25 +98,25 @@ function decodePriorityCode(priorityCode) {
       };
     case "WAIT":
       return {
-        color: "#ffffff",
+        color: "#ff9800",
         background: "#596fff",
         name: "Cao",
       };
     case "DOING":
       return {
-        color: "#fe0707",
+        color: "#03a9f4",
         background: "#ff050524",
         name: "Cao",
       };
     case "DONE":
       return {
-        color: "#fe0707",
+        color: "#03c30b",
         background: "#ff050524",
         name: "Cao",
       };
     case "EXPIRE":
       return {
-        color: "#fe0707",
+        color: "#f44336",
         background: "#ff050524",
         name: "Cao",
       };
@@ -272,17 +273,7 @@ class DragSortingTable extends React.Component {
                     path={mdiDragVertical}
                     size={1}
                   />
-                  <div
-                    className="name-task-gantt"
-                    style={{
-                      overflow: "hidden",
-                      width: "200px",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      cursor: "pointer",
-                      flexGrow: 1,
-                    }}
-                  >
+                  <div className="name-task-gantt">
                     <Tooltip title={record.name}>
                       <span>{record.name}</span>
                     </Tooltip>
@@ -424,7 +415,10 @@ class DragSortingTable extends React.Component {
           align: "center",
           width: 100,
           height: 100,
-          render: (text) => `${text} ${this.props.girdInstance.unitText}`,
+          render: (text) =>
+            `${Math.round((parseFloat(text) + Number.EPSILON) * 100) / 100} ${
+              this.props.girdInstance.unitText
+            }`,
         },
         {
           title: "Hoàn thành",
@@ -491,7 +485,9 @@ class DragSortingTable extends React.Component {
     let dataSource;
     if (!resultListTask || update) {
       resultListTask = await apiService({
-        url: `gantt/list-task?project_id=${projectId}&gird=${girdType ? girdType.toLowerCase() : 'hour'}`,
+        url: `gantt/list-task?project_id=${projectId}&gird=${
+          girdType ? girdType.toLowerCase() : "hour"
+        }`,
       });
       if (!resultListTask.data.state) return;
       dataSource = resultListTask.data;
@@ -550,6 +546,7 @@ class DragSortingTable extends React.Component {
           group_task: task.id,
           start_label: subTask.time.start_label,
           end_label: subTask.time.end_label,
+          can_edit: subTask.can_edit,
           start_time: getFormatStartStringFromObject(subTask.time),
           end_time: getFormatEndStringFromObject(subTask.time),
           duration_actual: subTask.duration_actual.value,
@@ -578,8 +575,7 @@ class DragSortingTable extends React.Component {
       width: this.tableRef.current.clientWidth,
       minLeft: this.tableRef.current.offsetLeft,
     });
-    return true
-
+    return true;
   };
   setRenderTime = (startTime, endTime, startTimeProject) => {
     const { girdInstance } = this.props;
@@ -776,15 +772,15 @@ class DragSortingTable extends React.Component {
       })
     );
   };
-  handleChangeTaskduration =async (data) => {
-    try{
+  handleChangeTaskduration = async (data) => {
+    try {
       const { projectId } = this.props.match.params;
-    const result = await changeTaskduration(data);
-    this.fetchListTask(projectId, true, this.props.girdType)
-    } catch(e){
-      console.log(e)
+      const result = await changeTaskduration(data);
+      this.fetchListTask(projectId, true, this.props.girdType);
+    } catch (e) {
+      console.log(e);
     }
-  }
+  };
   setDataSource = (index, start, end) => {
     const { data, startTimeProject, endTimeProject } = this.state;
     const { girdInstance } = this.props;
@@ -924,13 +920,19 @@ class DragSortingTable extends React.Component {
           isOpen={this.state.openCreateJobModal}
           setOpen={this.handleOpenCraeteJobModal}
         />
-        {/* <CreateProject open={this.state.openCreateProjectModal} setOpen={this.handleOpenCreateProjectModal}/> */}
+        <CreateProject
+          open={this.state.openCreateProjectModal}
+          setOpen={this.handleOpenCreateProjectModal}
+        />
         <Header titleProject={this.state.titleProject} />
         <div id="printContent" style={{ display: "flex", width: widthPdf }}>
           <ConfigGanttDrawer height={this.state.height} />
           <SubTaskDrawer height={this.state.height} />
           <ExportPDFDrawer height={this.state.height} />
           <QuickViewTaskDetailDrawer
+            style={{
+              height: this.state.height,
+            }}
             onClose={() =>
               this.setState({
                 quickViewId: null,
