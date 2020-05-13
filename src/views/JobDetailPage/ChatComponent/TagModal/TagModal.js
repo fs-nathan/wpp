@@ -9,6 +9,7 @@ const TagModal = ({
   isOpen,
   handleClose,
   handleClickMention,
+  selectedId,
 }) => {
   const dispatch = useDispatch();
   const members = useSelector(state => state.taskDetail.taskMember.member);
@@ -28,7 +29,9 @@ const TagModal = ({
       >
         {!isEmpty(members) &&
           members.map((el, index) => (
-            <MenuItem key={el.id} className="TagModal--menuItem" onClick={handleClickMember(index)}>
+            <MenuItem key={el.id}
+              className={clsx("TagModal--menuItem", { "TagModal--menuItem__selected": selectedId === index })}
+              onClick={handleClickMember(index)}>
               <Avatar className="TagModal--avatar" src={el.avatar} />
               &nbsp;&nbsp;&nbsp;
               <span>{el.name}</span>

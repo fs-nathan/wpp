@@ -6,6 +6,7 @@ import { listPersonalRemind } from "actions/calendar/alarmCalendar/listPersonalR
 import { updatePersonalRemind } from "actions/calendar/alarmCalendar/updatePersonalRemind";
 import AlertModal from "components/AlertModal";
 import { CREATE_PERSONAL_REMIND, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND, DELETE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND } from "constants/events";
+import { useLocalStorage } from "hooks";
 import moment from "moment";
 import React from 'react';
 import { useTranslation } from "react-i18next";
@@ -29,12 +30,17 @@ function CalendarPersonalAlarm({
 
   const { t } = useTranslation();
   const {
-    localOptions, setLocalOptions,
-    expand, handleExpand,
-    timeRange, setTimeRange, permissions
+    expand, handleExpand, permissions
   } = React.useContext(CalendarAlarmContext);
 
   const search = useLocation().search;
+  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PERSONAL_REMIND_OPTIONS', {
+    timeType: 3
+  });
+  const [timeRange, setTimeRange] = React.useState({
+    start: moment().startOf("isoWeek"),
+    end: moment().endOf("isoWeek")
+  });
   const [timeType, setTimeType] = React.useState(localOptions.timeType);
   const [openModal, setOpenModal] = React.useState(false);
   const [openModalEdit, setOpenModalEdit] = React.useState(false);
@@ -44,6 +50,8 @@ function CalendarPersonalAlarm({
   const [filteredReminds, setFilteredReminds] = React.useState(personalReminds);
   const [categoryID, setCategoryID] = React.useState(null);
   const [selectedRemind, setSelectedRemind] = React.useState();
+  const [alertConfirm, setAlertConfirm] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     let searchParams = new URLSearchParams(search);
@@ -63,6 +71,7 @@ function CalendarPersonalAlarm({
     doListPersonalRemind({ fromTime, toTime }, false);
 
     const refreshListPersonalRemind = () => {
+      setIsLoading(false);
       doListPersonalRemind({ fromTime, toTime }, false);
     }
     CustomEventListener(CREATE_PERSONAL_REMIND, refreshListPersonalRemind);
@@ -140,23 +149,34 @@ function CalendarPersonalAlarm({
         })}
         personalReminds={filteredReminds}
         handleOpenModal={(type, props) => handleOpenModal(type, props)}
-        handleDeleteRemind={(remind) => handleDeleteRemind(remind)}
+        handleDeleteRemind={(remind) => {
+          setSelectedRemind(remind);
+          setAlertConfirm(true);
+        }}
         havePermission={permissions['manage_remind'] ?? false}
       />
       <CreatePersonalRemind
         open={openModal}
         setOpen={setOpenModal}
-        onConfirm={(model) => handleCreateRemind(model)}
+        onConfirm={(model) => {
+          setIsLoading(true);
+          handleCreateRemind(model);
+        }}
         remindCategories={remindCategories.data}
         categoryID={categoryID}
+        isLoading={isLoading}
       />
       <UpdatePersonalRemind
         open={openModalEdit}
         setOpen={setOpenModalEdit}
-        onConfirm={(model) => handleEditRemind(model)}
+        onConfirm={(model) => {
+          setIsLoading(true);
+          handleEditRemind(model);
+        }}
         remindCategories={remindCategories.data}
         categoryID={categoryID}
         remind={selectedRemind}
+        isLoading={isLoading}
       />
       <ViewDetailRemind
         open={openModalDetail}
@@ -193,6 +213,12 @@ function CalendarPersonalAlarm({
         open={openPersonalRemindModalCreate}
         setOpen={setOpenPersonalRemindModalCreate}
         onConfirm={(value) => handleCreateGroupRemind(value)}
+      />
+      <AlertModal
+        open={alertConfirm}
+        setOpen={setAlertConfirm}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={() => handleDeleteRemind(selectedRemind)}
       />
     </>
   )

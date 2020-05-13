@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function SettingWeeklyCalendar({
-  open, setOpen, onConfirm
+  open, setOpen, onConfirm, permission
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -36,6 +36,7 @@ function SettingWeeklyCalendar({
         onConfirm={() => onConfirm(day)}
         height='mini'
         maxWidth='sm'
+        confirmRender={permission ? () => <>{t('IDS_WP_DONE')}</> : () => <></>}
       >
         <Container>
           <p>{t('views.calendar_page.modal.setting_weekly_calendar.day_begining')}</p>

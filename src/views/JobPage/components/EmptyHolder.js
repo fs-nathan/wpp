@@ -6,6 +6,7 @@ import { bgColorSelector } from "views/ProjectGroupPage/RightPart/AllProjectTabl
 import "./EmptyHolder.css";
 function EmptyHolder({
   image,
+  imageUrl = noDataImg,
   bgColor,
   title = "Không có dữ liệu",
   description = "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc",
@@ -16,11 +17,7 @@ function EmptyHolder({
       {image ? (
         image
       ) : (
-        <img
-          className="comp_EmptyHolder__img"
-          src={noDataImg}
-          alt="empty"
-        ></img>
+        <img className="comp_EmptyHolder__img" src={imageUrl} alt="empty"></img>
       )}
       <div
         className="comp_EmptyHolder__title"

@@ -7,7 +7,7 @@ import CustomTable from 'components/CustomTable';
 import LoadingBox from 'components/LoadingBox';
 import { Container, DateBox, LinkSpan, SettingContainer } from 'components/TableComponents';
 import { Routes } from 'constants/routes';
-import { get, remove, slice } from 'lodash';
+import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -73,28 +73,7 @@ function WeeklyCalendarPresenter({
               bool: false
             },
             draggable: {
-              bool: calendars.data !== undefined && calendars.data.length !== 0,
-              onDragEnd: result => {
-                const { source, destination, draggableId } = result;
-                if (!destination) return;
-                if (
-                  destination.droppableId === source.droppableId &&
-                  destination.index === source.index
-                )
-                  return;
-                let sortData = calendars.data;
-                const indexes = sortData.map(data => get(data, 'sort_index'));
-                let removed = remove(sortData, { id: draggableId });
-                sortData = [
-                  ...slice(sortData, 0, destination.index),
-                  ...removed,
-                  ...slice(sortData, destination.index)
-                ].map((data, index) => ({
-                  ...data,
-                  sort_index: indexes[index],
-                }));
-                handleSortCalendar(sortData);
-              }
+              bool: false,
             },
             loading: {
               bool: calendars.loading,

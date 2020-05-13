@@ -1,0 +1,29 @@
+.MemberModal {
+  .MuiDialogContent-root {
+    min-width: 600px;
+    padding: 0;
+  }
+  &--file {
+    display: flex;
+    position: relative;
+    margin: 2px;
+  }
+  &--fileImg {
+    padding: 0 10px;
+    width: 40px;
+    height: 45px;
+  }
+  &--fileName {
+    color: #aeaeae;
+    line-height: 20px;
+  }
+  &--fileType {
+    color: #c0c0c0;
+  }
+  &--fileDownloadButton {
+    position: absolute;
+    right: 0px;
+    top: 10px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,17 @@
+.TitleSectionModal {
+  margin: 25px 0 10px;
+  width: 100%;
+  display: block;
+  position: relative;
+  text-decoration: none;
+  &--titleLabel {
+    color: rgba(0, 0, 0, 0.87);
+    line-height: 15px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  &--asterisk {
+    color: red;
+    margin-left: 5px;
+  }
+}

@@ -7,7 +7,7 @@ function ProjectDelete({
   open, setOpen,
   handleDeleteProject,
   doReloadProject,
-  projectGroupId,
+  projectGroupId, timeRange,
 }) {
 
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ function ProjectDelete({
       CustomEventDispose(DELETE_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectGroupId]);
+  }, [projectGroupId, timeRange]);
 
   React.useEffect(() => {
     const success = () => {
@@ -41,7 +41,7 @@ function ProjectDelete({
       CustomEventDispose(LIST_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectGroupId]);
+  }, [projectGroupId, timeRange]);
 
   return (
     <AlertModal

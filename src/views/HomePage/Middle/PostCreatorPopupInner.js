@@ -54,19 +54,19 @@ const ImageListField = ({
     });
   };
   const fileFiltered = get(field, "value", emptyArray).filter(isFileImage);
-  const showEmpty = !(fileFiltered && fileFiltered.length);
+  const showEmpty = !fileFiltered.length;
   return (
     <DropZone onChange={handleChange}>
       {(getRootProps, getInputProps, isDragActive) => {
+        // if (!isDragActive && showEmpty) return null;
         return (
           <div
-            className={classnames(classes.media, { showEmpty })}
-            {...getRootProps()}
-            tabIndex={undefined}
-            onClick={() => {}}
+            className={classnames(classes.media, {
+              isDragActive: isDragActive,
+            })}
           >
-            {!showEmpty && (
-              <div>
+            {!isDragActive && !showEmpty && (
+              <Box padding="10px">
                 {fileFiltered.map((item, i) => (
                   <ImagePreview
                     file={item}
@@ -83,9 +83,21 @@ const ImageListField = ({
                     }}
                   ></ImagePreview>
                 ))}
-              </div>
+              </Box>
             )}
-            {showEmpty && placeholder}
+            {isDragActive && placeholder}
+            <div
+              {...getRootProps()}
+              style={{
+                zIndex: isDragActive ? "1" : "-1",
+                display: true ? "block" : "none",
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+              }}
+            ></div>
             <input {...getInputProps()} />
           </div>
         );
@@ -147,6 +159,7 @@ const FilePreviewField = ({ name }) => {
                     .filter((file) => !isFileImage(file))
                     .map((file, i) => (
                       <Chip
+                        className="comp_PostCreator__chip"
                         label={file.name}
                         onDelete={() => {
                           const newValue = [...files];
@@ -204,13 +217,32 @@ function isFileImage(file) {
   return file && file["type"].split("/")[0] === "image";
 }
 const DropZone = ({ onChange, children }) => {
+  const [isDragActive, setIsDragActive] = useState();
   const onDrop = useCallback(
     async (files = []) => {
       onChange(files);
     },
     [onChange]
   );
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  useEffect(() => {
+    const handleDragEnter = (e) => {
+      setIsDragActive(true);
+    };
+    const handleDragLeave = (e) => {
+      setIsDragActive(false);
+    };
+    const element = document.querySelector("#PostCreator");
+    element.addEventListener("dragenter", handleDragEnter, true);
+    element.addEventListener("mouseover", handleDragLeave, true);
+    element.addEventListener("drop", handleDragLeave, true);
+    return () => {
+      element.removeEventListener("mouseover", handleDragEnter, true);
+      element.removeEventListener("mouseover", handleDragLeave, true);
+      element.removeEventListener("drop", handleDragLeave, true);
+    };
+  }, []);
+  console.log({ isDragActive });
   return children(getRootProps, getInputProps, isDragActive);
 };
 const SelectCategoryModalField = ({ onClose, name }) => (
@@ -249,6 +281,7 @@ const CategoryField = ({ name, categories }) => {
             <ChipGroup>
               {cate && (
                 <Chip
+                  className="comp_PostCreator__chip"
                   avatar={<Avatar alt={cate.name} src={cate.logo} />}
                   label={cate.name}
                 />
@@ -310,7 +343,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
                   variant: "standard",
                   className: classes.content,
                   size: "medium",
-                  rows: 3,
+                  rows: 5,
                   multiline: true,
                   label: t("Nội dung bài viết..."),
                 }}

@@ -1,13 +1,14 @@
-import { useTranslation } from 'react-i18next';
 import { Avatar, IconButton, ListItem, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
+import { openDetailMember } from 'actions/chat/chat';
 import { deleteMember } from 'actions/taskDetail/taskDetailActions';
 import { detailUser } from 'actions/user/detailUser';
+import compact from 'lodash/compact';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import MemberModal from '../MemberModal';
 import './styles.scss';
 
 const ButtonIcon = styled(IconButton)`
@@ -44,23 +45,14 @@ const MemberListItem = ({
   const handleClose = () => {
     setAnchorEl(null);
   }
-  // modal members
-  const [open, setOpen] = React.useState(false);
 
-  const handleCloseMembers = () => {
-    setOpen(false);
-  };
   const handleDeleteMembers = () => {
-    setOpen(false);
+    dispatch(openDetailMember(false))
     dispatch(deleteMember({ task_id: taskId, member_id: id }))
-  };
-  const handleClickOpen = () => {
-    setOpen(true);
-    setAnchorEl(null);
   };
 
   const handleClickDetail = () => {
-    handleClickOpen();
+    setAnchorEl(null);
     dispatch(detailUser({ userId: id }))
   };
 
@@ -72,8 +64,8 @@ const MemberListItem = ({
   return (
     <React.Fragment>
       <StyledListItem className="memberItem">
-        <Avatar className="memberItem--avatar" src={avatar} alt='avatar' />
-        <div className="memberItem--textWrap">
+        <Avatar className="memberItem--avatar" src={avatar} alt='avatar' onClick={handleClickDetail} />
+        <div className="memberItem--textWrap" onClick={handleClickDetail}>
           <div className="memberItem--name">
             {name}
           </div>
@@ -81,7 +73,7 @@ const MemberListItem = ({
             {group_permission && group_permission.name}
           </div>
           <div className="memberItem--role">
-            {[room, position].join(' - ')}
+            {compact([room, position]).join(' - ')}
           </div>
         </div>
         <ButtonIcon
@@ -90,7 +82,6 @@ const MemberListItem = ({
           <Icon path={mdiDotsVertical} size={1} />
         </ButtonIcon>
       </StyledListItem>
-      <MemberModal isOpen={open} handleCloseMembers={handleCloseMembers} handleOpen={handleClickOpen} />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}

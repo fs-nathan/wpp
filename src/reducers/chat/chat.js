@@ -1,9 +1,10 @@
 import produce from "immer";
+import findIndex from 'lodash/findIndex';
 import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
 
 export const initialState = {
-  chats: {},
+  chats: { data: [] },
   members: [],
   listStickers: [],
   listTasks: [],
@@ -23,10 +24,16 @@ export const initialState = {
   dataRemind: {},
   isOpenDetailSubTask: false,
   dataSubTask: {},
-  isOpenDetailOffer: null,
+  isOpenDetailOffer: false,
   dataOffer: null,
-  isOpenDetailDemand: null,
+  isOpenDetailDemand: false,
   dataDemand: null,
+  isOpenDetailMember: false,
+  gridSettings: [],
+  isOpenImagesListModal: false,
+  imagesList: [],
+  selectedImage: 0,
+  createUser: {},
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -35,7 +42,13 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.chats = action.payload;
       break;
     case actionTypes.APPEND_CHAT:
-      draft.chats.data.unshift(action.payload.data_chat)
+      const idx = findIndex(draft.chats.data, ({ id }) => id === action.replaceId)
+      // console.log('idx', idx, action.replaceId)
+      if (idx !== -1) {
+        draft.chats.data.splice(idx, 1, action.payload.data_chat)
+      } else {
+        draft.chats.data.unshift(action.payload.data_chat)
+      }
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;
@@ -45,6 +58,7 @@ export default (state = initialState, action) => produce(state, draft => {
       if (isMore) {
         draft.chats.data.push(...payload.data);
         draft.chats.paging = payload.paging;
+        draft.chats.last_id = payload.last_id;
       } else {
         draft.chats = payload;
       }
@@ -224,13 +238,37 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.dataDemand = payload;
       break;
     }
-    case actionTypes.DELETE_FAILED_CHAT: {
+    case actionTypes.REMOVE_CHAT_BY_ID: {
       draft.chats.data = draft.chats.data.filter(({ id }) => id !== action.id)
       break;
     }
     case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      break;
+    }
+    case actionTypes.OPEN_DETAIL_MEMBER: {
+      const { isOpen } = action;
+      draft.isOpenDetailMember = isOpen;
+      break;
+    }
+    case actionTypes.GET_GIRD_LIST_TASK_SUCCESS: {
+      const { payload } = action;
+      draft.gridSettings = payload.girds;
+      break;
+    }
+    case actionTypes.UPDATE_CHAT_STATE: {
+      const idx = findIndex(draft.chats.data, ({ id }) => id === action.id)
+      console.log('idx', idx, action.data);
+      draft.chats.data[idx] = { ...draft.chats.data[idx], ...action.data }
+      break;
+    }
+    case actionTypes.SHOW_IMAGES_LIST: {
+      const { isOpen, images, selected, user } = action;
+      draft.isOpenImagesListModal = isOpen;
+      draft.imagesList = images;
+      draft.selectedImage = selected;
+      draft.createUser = user;
       break;
     }
   }

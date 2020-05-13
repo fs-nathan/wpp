@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
 import { updateCommand } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -60,7 +60,7 @@ const DemandModal = (props) => {
       title={t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}
       open={props.isOpen}
       setOpen={props.setOpen}
-      confirmRender={() => (props.isEditDemand) ? "Chỉnh sửa" : "Tạo mới"}
+      confirmRender={() => (props.isEditDemand) ? t('LABEL_CHAT_TASK_CHINH_SUA') : t('IDS_WP_CREATE_NEW')}
       onConfirm={(props.isEditDemand) ? onClickUpdate : onClickCreate}
       canConfirm={validate()}
     >
@@ -72,7 +72,7 @@ const DemandModal = (props) => {
           commandSelect={selector}
         />
         <Text
-          label="Nội dung"
+          label={t('LABEL_CHAT_TASK_NOI_DUNG')}
           fullWidth
           multiline
           rows="7"

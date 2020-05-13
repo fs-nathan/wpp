@@ -24,7 +24,7 @@ const styles = (theme) => ({
     color: theme.palette.grey[500],
   },
 });
-const DialogTitleCus = withStyles(styles)((props) => {
+export const DialogTitleCus = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <DialogTitle disableTypography className={classes.root} {...other}>
@@ -42,7 +42,7 @@ const DialogTitleCus = withStyles(styles)((props) => {
   );
 });
 
-const DialogActions = withStyles((theme) => ({
+export const DialogActions = withStyles((theme) => ({
   root: { margin: 0, padding: theme.spacing(1) },
 }))(MuiDialogActions);
 

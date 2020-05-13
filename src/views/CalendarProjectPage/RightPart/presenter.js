@@ -6,7 +6,8 @@ import Icon from '@mdi/react';
 import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
 import LoadingBox from 'components/LoadingBox';
 import { ScrollbarsContainer } from "components/TableComponents";
-import { filter, get, set } from "lodash";
+import { CustomEventDispose, CustomEventListener, PROJECT_SCHEDULE_ADD_DAY_OFF, PROJECT_SCHEDULE_ADD_WORKING_DAYS, PROJECT_SCHEDULE_CREATE_SHIFT_STAGE, PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_CREATE_WORKING_STAGE, PROJECT_SCHEDULE_DELETE_DAY_OFF, PROJECT_SCHEDULE_DELETE_SHIFT_STAGE, PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_DELETE_WORKING_DAYS, PROJECT_SCHEDULE_DELETE_WORKING_STAGE, PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE, PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_UPDATE_WORKING_STAGE } from "constants/events";
+import { filter, get, isNil, set } from "lodash";
 import moment from 'moment';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -15,6 +16,7 @@ import { connect } from 'react-redux';
 import ShiftStageModal from 'views/CalendarPage/views/Modals/ShiftStageModal';
 import WorkingStageModal from 'views/CalendarPage/views/Modals/WorkingStageModal';
 import { bgColorSelector } from "../selectors";
+import { calendarStateSelector } from "./selectors";
 import './style.scss';
 
 function CalendarProjectRightPartPresenter({
@@ -23,7 +25,7 @@ function CalendarProjectRightPartPresenter({
   handleAddDayOff, handleAddWorkingDayInWeek, handleAddWorkingStage,
   handleDeleteWorkingStage, handleUpdateWorkingStage, handleCreateShiftStage,
   hanleDeleteShiftStage, handleUpdateShiftStage, handleDeleteShiftStageAllTime,
-  handleDeleteGroup, handleEditGroupSchedule
+  handleDeleteGroup, handleEditGroupSchedule, newScheduleDetail,
 }) {
 
   const DEFAULT_DATA = {
@@ -39,6 +41,7 @@ function CalendarProjectRightPartPresenter({
     { value: 1, name: t('views.calendar_page.modal.setting_weekly_calendar.monday') },
     { value: 0, name: t('views.calendar_page.modal.setting_weekly_calendar.sunday') }
   ];
+
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   const [workingDayInWeek, changeWorkingDayInWeek] = React.useState([]);
   const [workingDayList, setWorkingDayList] = React.useState({ list: [] });
@@ -49,12 +52,15 @@ function CalendarProjectRightPartPresenter({
   const [selectedWorkingStage, setSelectedWorkingStage] = React.useState();
   const [openShiftStage, setOpenShiftStage] = React.useState(false);
   const [selectedShiftStage, setSelectedShiftStage] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [actionFrom, setActionFrom] = React.useState();
 
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
 
   const handleAddDay = (evt) => {
+    setIsLoading(true);
     switch (data.selectedWorkingType) {
       case 1:
         data.selectedDayType === 1 ?
@@ -101,10 +107,143 @@ function CalendarProjectRightPartPresenter({
   function handleChangeWorkingInWeek(value, index) {
     let _workingDaysInWeek = [...workingDayInWeek];
     set(_workingDaysInWeek[index], 'worked', value);
-    changeWorkingDayInWeek(_workingDaysInWeek);
     let workingDay = filter(_workingDaysInWeek, { 'worked': true });
     handleAddWorkingDayInWeek(workingDay.map(day => day.value));
   }
+
+  React.useEffect(() => {
+    if (!isNil(newScheduleDetail.afterSettingStartDayOfWeek)) {
+      let dayStartWeek = get(newScheduleDetail.afterSettingStartDayOfWeek, "day_start_week", null);
+      let listDayOfWeek = get(newScheduleDetail.afterSettingStartDayOfWeek, "list_day_of_week", null);
+      if (!isNil(dayStartWeek)) handleChangeData("selectedFistDayInWeek", dayStartWeek);
+      if (!isNil(listDayOfWeek)) changeWorkingDayInWeek(listDayOfWeek);
+    }
+    if (!isNil(newScheduleDetail.afterSettingWorkingDayInWeek)) {
+      let listDayOfWeek = get(newScheduleDetail.afterSettingWorkingDayInWeek, "list_day_of_week", null);
+      if (!isNil(listDayOfWeek)) changeWorkingDayInWeek(listDayOfWeek);
+    }
+  }, [newScheduleDetail]);
+
+  const refeshAfterAddWorkingDay = () => {
+    setIsLoading(false);
+    if (!isNil(newScheduleDetail.afterAddWorkingDay)) {
+      let listWorkingDay = get(newScheduleDetail, "afterAddWorkingDay", []);
+      setWorkingDayList({
+        list: listWorkingDay
+      });
+    }
+  }
+
+  const refreshAfterDeleteWorkingDay = () => {
+    if (!isNil(newScheduleDetail.afterDeleteWorkingDay)) {
+      let listWorkingDay = get(newScheduleDetail, "afterDeleteWorkingDay", []);
+      setWorkingDayList({
+        list: listWorkingDay
+      });
+    }
+  }
+
+  const refreshAfterAddDayOff = () => {
+    setIsLoading(false);
+    if (!isNil(newScheduleDetail.afterAddDayOff)) {
+      let listDayOff = get(newScheduleDetail, "afterAddDayOff", []);
+      setdayOffList({
+        list: listDayOff
+      });
+    }
+  }
+
+  const refreshDeleteAddDayOff = () => {
+    if (!isNil(newScheduleDetail.afterDeleteDayOff)) {
+      let listDayOff = get(newScheduleDetail, "afterDeleteDayOff", []);
+      setdayOffList({
+        list: listDayOff
+      });
+    }
+  }
+
+  const refreshAfterAddWorkingStage = () => {
+    if (!isNil(newScheduleDetail.afterAddWorkingStage)) {
+      let stage = get(newScheduleDetail, "afterAddWorkingStage", null);
+      setWorkingState({
+        list: workingStage.list.concat(stage)
+      });
+    }
+  }
+
+  const refreshAfterUpdateWorkingStage = () => {
+    if (!isNil(newScheduleDetail.afterUpdateWorkingStage)) {
+      let stage = get(newScheduleDetail, "afterUpdateWorkingStage", null);
+      let idx = workingStage.list.findIndex(item => item.id === stage.id);
+      let list = workingStage.list;
+      list[idx] = stage;
+      setWorkingState({
+        list: list
+      });
+    }
+  }
+
+  const refreshAfterDeleteWorkingStage = () => {
+    if (!isNil(newScheduleDetail.afterDeleteWorkingStage)) {
+      let stageID = get(newScheduleDetail, "afterDeleteWorkingStage");
+      let list = workingStage.list;
+      let idx = list.findIndex(item => item.id === stageID);
+      if (idx !== -1) {
+        list.splice(idx, 1);
+        setWorkingState({
+          list: list
+        });
+      }
+    }
+  }
+
+  const refreshAfterOperateShiftStage = () => {
+    if (!isNil(newScheduleDetail.afterOperateShiftStage.shifts)) {
+      if (!isNil(newScheduleDetail.afterOperateShiftStage.stageID)) {
+        let shifts = get(newScheduleDetail, "afterOperateShiftStage.shifts");
+        let stageID = get(newScheduleDetail, "afterOperateShiftStage.stageID");
+        let workingStageList = workingStage.list;
+        let idx = workingStageList.findIndex(item => item.id === stageID);
+        set(workingStageList, `[${idx}].shifts`, shifts);
+        setWorkingState({
+          list: workingStageList
+        });
+      } else {
+        let shifts = get(newScheduleDetail, "afterOperateShiftStage.shifts", []);
+        setWorkingStateAll(shifts);
+      }
+    }
+  }
+
+  React.useEffect(() => {
+    CustomEventListener(PROJECT_SCHEDULE_ADD_WORKING_DAYS, refeshAfterAddWorkingDay);
+    CustomEventListener(PROJECT_SCHEDULE_DELETE_WORKING_DAYS, refreshAfterDeleteWorkingDay);
+    CustomEventListener(PROJECT_SCHEDULE_ADD_DAY_OFF, refreshAfterAddDayOff);
+    CustomEventListener(PROJECT_SCHEDULE_DELETE_DAY_OFF, refreshDeleteAddDayOff);
+    CustomEventListener(PROJECT_SCHEDULE_CREATE_WORKING_STAGE, refreshAfterAddWorkingStage);
+    CustomEventListener(PROJECT_SCHEDULE_DELETE_WORKING_STAGE, refreshAfterDeleteWorkingStage);
+    CustomEventListener(PROJECT_SCHEDULE_UPDATE_WORKING_STAGE, refreshAfterUpdateWorkingStage);
+    CustomEventListener(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE, refreshAfterOperateShiftStage);
+    CustomEventListener(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE, refreshAfterOperateShiftStage);
+    CustomEventListener(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE, refreshAfterOperateShiftStage);
+    CustomEventListener(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
+    CustomEventListener(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
+    CustomEventListener(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
+    return () => {
+      CustomEventDispose(PROJECT_SCHEDULE_ADD_WORKING_DAYS, refeshAfterAddWorkingDay);
+      CustomEventDispose(PROJECT_SCHEDULE_DELETE_WORKING_DAYS, refreshAfterDeleteWorkingDay);
+      CustomEventDispose(PROJECT_SCHEDULE_ADD_DAY_OFF, refreshAfterAddDayOff);
+      CustomEventDispose(PROJECT_SCHEDULE_DELETE_DAY_OFF, refreshDeleteAddDayOff);
+      CustomEventDispose(PROJECT_SCHEDULE_DELETE_WORKING_STAGE, refreshAfterDeleteWorkingStage);
+      CustomEventDispose(PROJECT_SCHEDULE_UPDATE_WORKING_STAGE, refreshAfterUpdateWorkingStage);
+      CustomEventDispose(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE, refreshAfterOperateShiftStage);
+      CustomEventDispose(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE, refreshAfterOperateShiftStage);
+      CustomEventDispose(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE, refreshAfterOperateShiftStage);
+      CustomEventDispose(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
+      CustomEventDispose(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
+      CustomEventDispose(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
+    }
+  }, [newScheduleDetail]);
 
   return (
     <>
@@ -144,6 +283,7 @@ function CalendarProjectRightPartPresenter({
                       <FormControl variant="outlined">
                         <Select
                           value={data.selectedFistDayInWeek}
+                          disabled={!havePermission}
                           onChange={({ target }) => handleSettingStartingDayOfWeek(target.value)}
                           className="selector"
                           MenuProps={{
@@ -173,6 +313,7 @@ function CalendarProjectRightPartPresenter({
                                 value={get(day, "value", "")}
                                 control={
                                   <Checkbox
+                                    disabled={!havePermission}
                                     color="primary"
                                     checked={get(day, "worked", false)}
                                     onChange={({ target }) => handleChangeWorkingInWeek(target.checked, index)}
@@ -247,24 +388,29 @@ function CalendarProjectRightPartPresenter({
                               variant: 'menu'
                             }}
                           >
-                            <MenuItem value={1}>
+                            <MenuItem value={1} key={`select_workingType_1`}>
                               <div className="color_mark_green"></div>
                               {t('views.calendar_page.right_part.label.working_day')}
                             </MenuItem>
-                            <MenuItem value={2}>
+                            <MenuItem value={2} key={`select_workingType_2`}>
                               <div className="color_mark_red"></div>
                               {t('views.calendar_page.right_part.label.off_day')}
                             </MenuItem>
                           </Select>
                         </FormControl>
-                        <Button
-                          variant="outlined"
-                          color="default"
-                          size="small"
-                          onClick={handleAddDay}
-                        >
-                          <Icon path={mdiPlus} size={1} color="#fff" />
-                        </Button>
+                        {
+                          havePermission && (
+                            <Button
+                              variant="outlined"
+                              color="default"
+                              size="small"
+                              disabled={isLoading}
+                              onClick={handleAddDay}
+                            >
+                              <Icon path={mdiPlus} size={1} color="#fff" />
+                            </Button>
+                          )
+                        }
                       </Typography>
                       <Typography component={"div"} className="table_working_day">
                         <div className={"table_header"}>
@@ -277,17 +423,21 @@ function CalendarProjectRightPartPresenter({
                         </div>
                         <div className={"table_data"}>
                           {
-                            get(workingDayList, "list", []).map((item) => {
+                            get(workingDayList, "list", []).map((item, index) => {
                               return (
-                                <Box className="table_working_day_item" style={{ backgroundColor: '#deffe0' }}>
+                                <Box className="table_working_day_item" style={{ backgroundColor: '#deffe0' }} key={`workingDayList_${index}`}>
                                   <Typography component={"div"}>
                                     {get(item, "label", "")}
                                   </Typography>
-                                  <IconButton
-                                    onClick={() => handleDeleteWorkingDays(item)}
-                                  >
-                                    <Icon path={mdiClose} size={0.7} color="rgba(0, 0, 0, 0.7)" />
-                                  </IconButton>
+                                  {
+                                    havePermission && (
+                                      <IconButton
+                                        onClick={() => handleDeleteWorkingDays(item)}
+                                      >
+                                        <Icon path={mdiClose} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                      </IconButton>
+                                    )
+                                  }
                                 </Box>
                               )
                             })
@@ -297,15 +447,19 @@ function CalendarProjectRightPartPresenter({
                           {
                             get(dayOffList, "list", []).map((item, index) => {
                               return (
-                                <Box className="table_working_day_item" style={{ backgroundColor: '#ffdedb' }}>
+                                <Box className="table_working_day_item" style={{ backgroundColor: '#ffdedb' }} key={`workingDay_item_${index}`}>
                                   <Typography component={"div"}>
                                     {get(item, "label", "")}
                                   </Typography>
-                                  <IconButton
-                                    onClick={() => handleDeleteDayOff(item)}
-                                  >
-                                    <Icon path={mdiClose} size={0.7} color="rgba(0, 0, 0, 0.7)" />
-                                  </IconButton>
+                                  {
+                                    havePermission && (
+                                      <IconButton
+                                        onClick={() => handleDeleteDayOff(item)}
+                                      >
+                                        <Icon path={mdiClose} size={0.7} color="rgba(0, 0, 0, 0.7)" />
+                                      </IconButton>
+                                    )
+                                  }
                                 </Box>
                               )
                             })
@@ -336,18 +490,23 @@ function CalendarProjectRightPartPresenter({
                                       <ListItemText>{shift.name}</ListItemText>
                                       <ListItemText>{shift.start} - {shift.end}</ListItemText>
                                       <ListItemSecondaryAction>
-                                        <Link
-                                          onClick={() => {
-                                            setSelectedShiftStage(shift);
-                                            setSelectedWorkingStage(null);
-                                            setOpenShiftStage(true);
-                                          }}
-                                          color="primary" variant="body2"
-                                        >
-                                          {t('views.calendar_page.right_part.edit')}
-                                        </Link>
                                         {
-                                          shift.can_delete && (
+                                          havePermission && (
+                                            <Link
+                                              onClick={() => {
+                                                setSelectedShiftStage(shift);
+                                                setSelectedWorkingStage(null);
+                                                setActionFrom("SHIFT_STAGE_ALL");
+                                                setOpenShiftStage(true);
+                                              }}
+                                              color="primary" variant="body2"
+                                            >
+                                              {t('views.calendar_page.right_part.edit')}
+                                            </Link>
+                                          )
+                                        }
+                                        {
+                                          shift.can_delete && havePermission && (
                                             <Link
                                               onClick={() => handleDeleteShiftStageAllTime(shift.id)}
                                               color="primary" variant="body2"
@@ -364,49 +523,59 @@ function CalendarProjectRightPartPresenter({
                                 )
                               })
                             }
-                            <ListItem key={`Item_control`}>
-                              <Link
-                                onClick={() => {
-                                  setSelectedWorkingStage(null);
-                                  setOpenShiftStage(true);
-                                }}
-                                color="primary"
-                              >
-                                + {t('views.calendar_page.right_part.label.add_stage')}
-                              </Link>
-                            </ListItem>
+                            {
+                              havePermission && (
+                                <ListItem key={`Item_control`}>
+                                  <Link
+                                    onClick={() => {
+                                      setSelectedWorkingStage(null);
+                                      setSelectedShiftStage(null);
+                                      setActionFrom("SHIFT_STAGE_ALL");
+                                      setOpenShiftStage(true);
+                                    }}
+                                    color="primary"
+                                  >
+                                    + {t('views.calendar_page.right_part.label.add_stage')}
+                                  </Link>
+                                </ListItem>
+                              )
+                            }
                           </List>
                         </div>
                         {
                           workingStage.list.map((stage, index) => {
                             return (
                               <>
-                                <Box className={"table_data stage_setting_date"}>
-                                  <Box className="stage_setting_date_control">
-                                    <Box className="stage_setting_date_control_group">
-                                      <IconButton
-                                        key={`btn-edit-working-stage-${stage.id}`}
-                                        onClick={() => {
-                                          setSelectedWorkingStage(stage);
-                                          setOpenModalAddTimeWorkingStage(true);
-                                        }}
-                                      >
-                                        <abbr title={t('IDS_WP_EDIT')}>
-                                          <Icon path={mdiPencilBoxOutline} size={0.85} color="#9E9E9E" />
-                                        </abbr>
-                                      </IconButton>
-                                      <IconButton
-                                        key={`btn-delete-working-stage-${stage.id}`}
-                                        onClick={() => {
-                                          handleDeleteWorkingStage(stage.id);
-                                        }}
-                                      >
-                                        <abbr title={t('IDS_WP_DELETE')}>
-                                          <Icon path={mdiTrashCanOutline} size={0.85} color="#9E9E9E" />
-                                        </abbr>
-                                      </IconButton>
-                                    </Box>
-                                  </Box>
+                                <Box className={"table_data stage_setting_date"} key={`working_stage_item_${index}`}>
+                                  {
+                                    havePermission && (
+                                      <Box className="stage_setting_date_control">
+                                        <Box className="stage_setting_date_control_group">
+                                          <IconButton
+                                            key={`btn-edit-working-stage-${stage.id}`}
+                                            onClick={() => {
+                                              setSelectedWorkingStage(stage);
+                                              setOpenModalAddTimeWorkingStage(true);
+                                            }}
+                                          >
+                                            <abbr title={t('IDS_WP_EDIT')}>
+                                              <Icon path={mdiPencilBoxOutline} size={0.85} color="#9E9E9E" />
+                                            </abbr>
+                                          </IconButton>
+                                          <IconButton
+                                            key={`btn-delete-working-stage-${stage.id}`}
+                                            onClick={() => {
+                                              handleDeleteWorkingStage(stage.id);
+                                            }}
+                                          >
+                                            <abbr title={t('IDS_WP_DELETE')}>
+                                              <Icon path={mdiTrashCanOutline} size={0.85} color="#9E9E9E" />
+                                            </abbr>
+                                          </IconButton>
+                                        </Box>
+                                      </Box>
+                                    )
+                                  }
                                   <Box className="stage_setting_date_label">
                                     <span className="stage_setting_date_label">{`${stage.start} - ${stage.end}`}</span>
                                   </Box>
@@ -423,43 +592,54 @@ function CalendarProjectRightPartPresenter({
                                             >
                                               <ListItemText>{shift.name}</ListItemText>
                                               <ListItemText>{shift.start} - {shift.end}</ListItemText>
-                                              <ListItemSecondaryAction>
-                                                <Link
-                                                  color="primary" variant="body2"
-                                                  onClick={() => {
-                                                    setSelectedShiftStage(shift);
-                                                    setSelectedWorkingStage(stage);
-                                                    setOpenShiftStage(true);
-                                                  }}
-                                                >
-                                                  {t('views.calendar_page.right_part.edit')}
-                                                </Link>
-                                                <Link
-                                                  onClick={() => hanleDeleteShiftStage(stage.id, shift.id)}
-                                                  color="primary" variant="body2"
-                                                  className="table_data_buttonLinkDanger"
-                                                >
-                                                  {t('views.calendar_page.right_part.delete')}
-                                                </Link>
-                                              </ListItemSecondaryAction>
+                                              {
+                                                havePermission && (
+                                                  <ListItemSecondaryAction>
+                                                    <Link
+                                                      color="primary" variant="body2"
+                                                      onClick={() => {
+                                                        setSelectedShiftStage(shift);
+                                                        setSelectedWorkingStage(stage);
+                                                        setActionFrom("SHIFT_STAGE");
+                                                        setOpenShiftStage(true);
+                                                      }}
+                                                    >
+                                                      {t('views.calendar_page.right_part.edit')}
+                                                    </Link>
+                                                    <Link
+                                                      onClick={() => hanleDeleteShiftStage(stage.id, shift.id)}
+                                                      color="primary" variant="body2"
+                                                      className="table_data_buttonLinkDanger"
+                                                    >
+                                                      {t('views.calendar_page.right_part.delete')}
+                                                    </Link>
+                                                  </ListItemSecondaryAction>
+                                                )
+                                              }
                                             </ListItem>
                                             <Divider component="li" />
                                           </>
                                         )
                                       })
                                     }
-                                    <ListItem key={`Item_control_${stage.id}`}>
-                                      <Link
-                                        key={`add_shift_stage_btn_${stage.id}`}
-                                        onClick={() => {
-                                          setSelectedWorkingStage(stage);
-                                          setOpenShiftStage(true);
-                                        }}
-                                        color="primary"
-                                      >
-                                        + {t('views.calendar_page.right_part.label.add_stage')}
-                                      </Link>
-                                    </ListItem>
+                                    {
+                                      havePermission && (
+                                        <ListItem key={`Item_control_${stage.id}`}>
+                                          <Link
+                                            key={`add_shift_stage_btn_${stage.id}`}
+                                            onClick={() => {
+                                              setSelectedWorkingStage(stage);
+                                              setSelectedShiftStage(null);
+                                              setActionFrom("SHIFT_STAGE");
+                                              setOpenShiftStage(true);
+                                            }}
+                                            color="primary"
+                                          >
+                                            + {t('views.calendar_page.right_part.label.add_stage')}
+                                          </Link>
+                                        </ListItem>
+                                      )
+                                    }
                                   </List>
                                 </Box>
                               </>
@@ -467,15 +647,19 @@ function CalendarProjectRightPartPresenter({
                           })
                         }
                       </Typography>
-                      <Link
-                        onClick={() => {
-                          setSelectedWorkingStage(null);
-                          setOpenModalAddTimeWorkingStage(true);
-                        }}
-                        color="primary"
-                      >
-                        + {t('views.calendar_page.right_part.label.add_time')}
-                      </Link>
+                      {
+                        havePermission && (
+                          <Link
+                            onClick={() => {
+                              setSelectedWorkingStage(null);
+                              setOpenModalAddTimeWorkingStage(true);
+                            }}
+                            color="primary"
+                          >
+                            + {t('views.calendar_page.right_part.label.add_time')}
+                          </Link>
+                        )
+                      }
                     </Typography>
                   )
               }
@@ -524,6 +708,7 @@ function CalendarProjectRightPartPresenter({
           }
         }}
         shiftStage={selectedShiftStage}
+        actionFrom={actionFrom}
       />
     </>
   )
@@ -533,6 +718,7 @@ const mapStateToProps = state => {
   return {
     bgColor: bgColorSelector(state),
     settingDate: state.setting.settingDate,
+    newScheduleDetail: calendarStateSelector(state)
   };
 };
 

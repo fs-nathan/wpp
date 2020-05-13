@@ -4,6 +4,7 @@ export const initialState = {
   data: {
     membersAdded: [],
     membersFree: [],
+    totalTask: 0,
   },
   error: null,
   loading: false,

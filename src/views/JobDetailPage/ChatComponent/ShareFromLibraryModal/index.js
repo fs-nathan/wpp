@@ -98,8 +98,10 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     setOpen(false)
     const googleFiles = selectedFiles.filter(({ isGoogleDocument }) => isGoogleDocument)
     const vtaskFiles = selectedFiles.filter(({ isGoogleDocument }) => !isGoogleDocument)
-    dispatch(chatForwardFile(taskId, vtaskFiles.map(({ id }) => id)))
-    dispatch(createChatFileFromGoogleDriver(taskId, googleFiles.map(transformToGoogleFormData)))
+    if (vtaskFiles.length > 0)
+      dispatch(chatForwardFile(taskId, vtaskFiles.map(({ id }) => id)))
+    if (googleFiles.length > 0)
+      dispatch(createChatFileFromGoogleDriver(taskId, googleFiles.map(transformToGoogleFormData)))
     setSelectedFiles([])
   }
 
@@ -152,6 +154,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       setListData={setListData}
       selectedFiles={selectedFiles}
       setSelectedFiles={setSelectedFiles}
+      isSharedWithMe={selectedMenu.key === 'sharedWithMe'}
     />
   }
 

@@ -1,6 +1,6 @@
-import { useTranslation } from 'react-i18next';
 import { getRemindDetail } from 'actions/chat/chat';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
@@ -28,7 +28,8 @@ const DeleteRemind = ({
         user_create_position,
         time_create,
       }}
-      // isHideFooterIcon
+      isHideFooterIcon
+      footerText=""
       onClickViewDetail={onClickViewDetail}
       taskName={t('LABEL_CHAT_TASK_XOA_NHAC_HEN')}
     >

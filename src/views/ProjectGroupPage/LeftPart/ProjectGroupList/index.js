@@ -2,15 +2,15 @@ import { listIcon } from 'actions/icon/listIcon';
 import { listProject } from 'actions/project/listProject';
 import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
 import { sortProjectGroup } from 'actions/projectGroup/sortProjectGroup';
+import { useTimes } from 'components/CustomPopover';
 import { CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP } from 'constants/events.js';
 import { filter, get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Context as ProjectGroupContext } from '../../index';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
-import { routeSelector, viewPermissionsSelector } from '../../selectors';
+import { localOptionSelector, routeSelector, viewPermissionsSelector } from '../../selectors';
 import ProjectGroupListPresenter from './presenters';
 import { groupsSelector } from './selectors';
 
@@ -20,9 +20,20 @@ function ProjectList({
   doListProject,
   doListProjectGroup,
   doListIcon,
+  localOption,
 }) {
 
-  const { timeRange } = React.useContext(ProjectGroupContext);
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    });
+    // eslint-disable-next-line
+  }, [timeType]);
+
   const { projectGroupId } = useParams();
 
   React.useEffect(() => {
@@ -112,6 +123,7 @@ const mapStateToProps = state => {
     groups: groupsSelector(state),
     route: routeSelector(state),
     viewPermissions: viewPermissionsSelector(state),
+    localOption: localOptionSelector(state),
   }
 }
 

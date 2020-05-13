@@ -1,3 +1,4 @@
+import { openDetailMember } from 'actions/chat/chat';
 import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import { detailUserFail, detailUserSuccess } from '../../actions/user/detailUser';
@@ -25,6 +26,7 @@ function* detailUser(action) {
   try {
     const { user } = yield call(doDetailUser, action.options);
     yield put(detailUserSuccess({ user }, action.options));
+    yield put(openDetailMember(true))
     CustomEventEmitter(DETAIL_USER.SUCCESS);
   } catch (error) {
     yield put(detailUserFail(error, action.options));

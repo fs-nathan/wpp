@@ -1,4 +1,5 @@
 import { listGroupTask } from 'actions/groupTask/listGroupTask';
+import { setProject } from 'actions/localStorage';
 import { detailProject } from 'actions/project/detailProject';
 import { hideProject } from 'actions/project/hideProject';
 import { showProject } from 'actions/project/showProject';
@@ -6,7 +7,10 @@ import { createTask } from 'actions/task/createTask';
 import { deleteTask } from 'actions/task/deleteTask';
 import { listTask } from 'actions/task/listTask';
 import { sortTask } from 'actions/task/sortTask';
+import { getListTaskDetail } from 'actions/taskDetail/taskDetailActions';
+import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import AlertModal from 'components/AlertModal';
+import { useTimes } from 'components/CustomPopover';
 import { COPY_GROUP_TASK, CREATE_GROUP_TASK, CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK, UPDATE_GROUP_TASK } from 'constants/events';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -14,9 +18,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import CreateJobModal from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal';
-import { ProjectSettingNoReload as ProjectSettingModal } from '../../../ProjectGroupPage/Modals/ProjectSetting';
-import { Context as ProjectPageContext } from '../../index';
-import { viewPermissionsSelector } from '../../selectors';
+import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting';
+import { localOptionSelector, viewPermissionsSelector } from '../../selectors';
 import AllTaskTablePresenter from './presenters';
 import { bgColorSelector, projectSelector, showHidePendingsSelector, tasksSelector } from './selectors';
 
@@ -32,16 +35,23 @@ function AllTaskTable({
   doDetailProject,
   doListGroupTask,
   doListTask,
+  doGetPermissionViewDetailProject,
+  doGetListTaskDetail,
+  doSetProject,
+  localOption,
 }) {
 
-  const {
-    setTimeRange, timeRange,
-    localOptions, setLocalOptions,
-    doGetPermissionViewDetailProject,
-    doGetListTaskDetail,
-  } = React.useContext(ProjectPageContext);
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    });
+    // eslint-disable-next-line
+  }, [timeType]);
 
-  const [id, setId] = React.useState(null);
   const { projectId } = useParams();
 
   React.useLayoutEffect(() => {
@@ -50,23 +60,9 @@ function AllTaskTable({
   }, [projectId]);
 
   React.useEffect(() => {
-    setId(projectId);
-  }, [projectId]);
-
-  const [timeType, setTimeType] = React.useState(localOptions.timeType);
-
-  React.useEffect(() => {
-    setLocalOptions(pastOptions => ({
-      ...pastOptions,
-      timeType,
-    }));
-    // eslint-disable-next-line
-  }, [timeType]);
-
-  React.useEffect(() => {
-    if (id !== null) {
+    if (projectId !== null) {
       doListTask({
-        projectId: id,
+        projectId,
         timeStart: get(timeRange, 'timeStart')
           ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
           : undefined,
@@ -76,7 +72,7 @@ function AllTaskTable({
       });
       const reloadListTask = () => {
         doListTask({
-          projectId: id,
+          projectId,
           timeStart: get(timeRange, 'timeStart')
             ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
             : undefined,
@@ -95,14 +91,14 @@ function AllTaskTable({
       }
     }
     // eslint-disable-next-line
-  }, [id, timeRange]);
+  }, [projectId, timeRange]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
-    if (id !== null) {
-      doListGroupTask({ projectId: id });
+    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (projectId !== null) {
+      doListGroupTask({ projectId });
       const reloadListGroupTask = () => {
-        doListGroupTask({ projectId: id });
+        doListGroupTask({ projectId });
       }
       CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
       return () => {
@@ -110,16 +106,14 @@ function AllTaskTable({
       }
     }
     // eslint-disable-next-line
-  }, [id, viewPermissions]);
-
-
+  }, [projectId, viewPermissions]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
-    if (id !== null) {
-      doGetListTaskDetail({ projectId: id });
+    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    if (projectId !== null) {
+      doGetListTaskDetail({ projectId });
       const reloadGetListTaskDetail = () => {
-        doGetListTaskDetail({ projectId: id });
+        doGetListTaskDetail({ projectId });
       }
       CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
       CustomEventListener(COPY_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
@@ -133,13 +127,13 @@ function AllTaskTable({
       }
     }
     // eslint-disable-next-line
-  }, [viewPermissions, id]);
+  }, [viewPermissions, projectId]);
 
   React.useEffect(() => {
-    if (id !== null) {
-      doDetailProject({ projectId: id });
+    if (projectId !== null) {
+      doDetailProject({ projectId });
       const reloadDetailProject = () => {
-        doDetailProject({ projectId: id });
+        doDetailProject({ projectId });
       }
       CustomEventListener(CREATE_TASK, reloadDetailProject);
       CustomEventListener(DELETE_TASK, reloadDetailProject);
@@ -149,7 +143,7 @@ function AllTaskTable({
       }
     }
     // eslint-disable-next-line
-  }, [id]);
+  }, [projectId]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openSetting, setOpenSetting] = React.useState(false);
@@ -181,8 +175,8 @@ function AllTaskTable({
       <AllTaskTablePresenter
         expand={expand} handleExpand={handleExpand}
         handleSubSlide={handleSubSlide}
-        canUpdateProject={get(viewPermissions.permissions, [id, 'update_project'], false)}
-        canCreateTask={get(viewPermissions.permissions, [id, 'create_task'], false)}
+        canUpdateProject={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
+        canCreateTask={get(viewPermissions.permissions, [projectId, 'create_task'], false)}
         showHidePendings={showHidePendings}
         tasks={tasks} project={project}
         handleShowOrHideProject={project =>
@@ -204,10 +198,9 @@ function AllTaskTable({
         handleOpenModal={doOpenModal}
         bgColor={bgColor}
         timeType={timeType}
-        handleTimeType={type => setTimeType(type)}
-        handleTimeRange={(start, end) => setTimeRange({
-          timeStart: start,
-          timeEnd: end,
+        handleTimeType={timeType => doSetProject({
+          ...localOption,
+          timeType,
         })}
       />
       <CreateJobModal
@@ -251,6 +244,7 @@ const mapStateToProps = state => {
     bgColor: bgColorSelector(state),
     showHidePendings: showHidePendingsSelector(state),
     viewPermissions: viewPermissionsSelector(state),
+    localOption: localOptionSelector(state),
   }
 }
 
@@ -264,6 +258,9 @@ const mapDispatchToProps = dispatch => {
     doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
+    doGetListTaskDetail: ({ projectId }) => dispatch(getListTaskDetail({ project_id: projectId })),
+    doSetProject: (value) => dispatch(setProject(value)),
+    doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   };
 };
 

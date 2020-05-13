@@ -23,15 +23,34 @@
     display: flex;
     position: relative;
     line-height: 20px;
-    padding: 6px 10px;
+    padding: 10px 24px;
   }
   &--avatar {
-    margin: 6px;
+    margin: 5px 20px 0 0;
     width: 30px;
     height: 30px;
   }
   &--icon {
     position: absolute;
     right: 10px;
+  }
+  &--bottom {
+    display: flex;
+    // justify-content: space-between;
+  }
+  &--name {
+    font-weight: 500;
+    width: 100%;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  &--role {
+    color: #ff5722;
+    font-weight: normal;
+  }
+  &--time {
+    color: #5e5e5e;
+    margin-left: auto;
+    font-weight: normal;
+    // margin-right: 10px;
   }
 }

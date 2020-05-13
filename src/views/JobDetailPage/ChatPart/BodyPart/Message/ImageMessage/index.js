@@ -1,10 +1,12 @@
 import { Avatar } from '@material-ui/core';
+import { showImagesList } from 'actions/chat/chat';
+import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
-import ModalImage from 'views/JobDetailPage/ModalImage';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
@@ -15,9 +17,10 @@ const ImageMessage = ({
   handleDetailEmotion,
   id,
   images = [],
+  user_create_id,
   user_create_avatar,
   user_create_name,
-  time_create,
+  time_create = Date.now(),
   user_create_position,
   user_create_roles = [],
   data_emotion = [],
@@ -26,17 +29,18 @@ const ImageMessage = ({
   is_me,
   chatPosition = "top",
 }) => {
+  const dispatch = useDispatch();
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
   const groupActiveColor = useSelector(currentColorSelector)
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpen = (idx) => () => {
+    const user = { user_create_avatar, user_create_name, time_create, user_create_position };
+    dispatch(showImagesList(true, images, idx, user));
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  function onClickAvatar() {
+    dispatch(detailUser({ userId: user_create_id }))
   }
 
   let showImages = images;
@@ -47,10 +51,14 @@ const ImageMessage = ({
   }
 
   return (
-    <div className={clsx("ImageMessage", `ImageMessage__${chatPosition}`)} >
+    <div className={clsx("ImageMessage", {
+      [`ImageMessage__${chatPosition}`]: !isReply,
+      [`TextMessage__reply`]: isReply,
+    }
+    )} >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
-          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
         </abbr>
       }
       {!isReply && is_me &&
@@ -58,7 +66,9 @@ const ImageMessage = ({
       <div className={clsx("ImageMessage--rightContentWrap", {
         "TextMessage--reply": isReply,
         "ImageMessage--rightContentWrap__self": is_me
-      })} >
+      })}
+        style={{ borderLeft: isReply ? `2px solid ${groupActiveColor}` : 'none' }}
+      >
         {
           ((chatPosition === 'top' && !is_me) || isReply) &&
           <div className={clsx("ImageMessage--sender",
@@ -66,23 +76,12 @@ const ImageMessage = ({
             {isReply &&
               <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
             }
-            {/* <div className="TextMessage--name"  >
-              {user_create_name}
-            </div>
-            <div className="TextMessage--position"  >
-              {user_create_position}
-            </div>
-            {user_create_roles[0] &&
-              <div className="TextMessage--room"  >
-                {user_create_roles[0]}
-              </div>
-            } */}
           </div>
         }
         <div className="ImageMessage--imagesContainer" >
           {
-            showImages.map(({ url }, i) =>
-              <div key={url} onClick={handleClickOpen}
+            showImages.map(({ url_thumbnail, url }, i) =>
+              <div key={url_thumbnail || url} onClick={handleClickOpen(i)}
                 className={clsx("ImageMessage--wrap",
                   `ImageMessage--wrap__total${showImages.length}-${i + 1}`,
                   `ImageMessage--wrap__number${i + 1}`,
@@ -91,8 +90,8 @@ const ImageMessage = ({
 
                 {
                   (plusImage > 0 && !isReply && i === 5) ? (
-                    <div className={clsx("ImageMessage--plus")}>
-                      <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
+                    <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
+                      <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail || url} alt="hd" />
                       <div className={clsx("ImageMessage--plusText")}>
                         <div className={clsx("ImageMessage--plusTextNumber")}>
                           +{plusImage}
@@ -101,7 +100,7 @@ const ImageMessage = ({
                     </div>
                   )
                     :
-                    <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url} alt="hd" />
+                    <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail || url} alt="hd" />
                 }
                 {!isReply &&
                   <>
@@ -133,19 +132,18 @@ const ImageMessage = ({
         </div>
         {!isReply &&
           <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
-            {time_create}
+            {getUpdateProgressDate(time_create, dateFormat)}
           </div>
         }
         {data_emotion.length > 0 &&
-          <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
+          <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
         }
       </div>
-      {!isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
-      <ModalImage images={images}
-        {...{ user_create_avatar, user_create_name, time_create, user_create_position }}
-        isOpen={open} handleClose={handleClose} handleClickOpen={handleClickOpen} />
-    </div>
+      {
+        !isReply && !is_me &&
+        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+      }
+    </div >
   );
 }
 

@@ -1,7 +1,7 @@
 import { Avatar, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { mdiContentCopy, mdiDownloadOutline, mdiSwapVertical, mdiTrashCanOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionDeleteFile, actionDeleteFolder, actionFetchListGoogleDocument, actionFetchListMyDocument, actionSelectedFolder, resetListSelectDocument } from 'actions/documents';
+import { actionDeleteFile, actionDeleteFolder, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionSelectedFolder, resetListSelectDocument } from 'actions/documents';
 import { actionChangeBreadCrumbs, openDocumentDetail } from 'actions/system/system';
 import AlertModal from 'components/AlertModal';
 import { FileType } from 'components/FileType';
@@ -14,31 +14,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_ITEM } from '../MenuList';
 import './styles.scss';
 
-function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles }) {
+function DocumentsTable({
+  listData, setListData,
+  selectedFiles, setSelectedFiles,
+  isSharedWithMe
+}) {
   const dispatch = useDispatch();
   const { t } = useTranslation()
-  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const listProject = useSelector(state => state.documents.listProject);
-  const listDocumentFromMe = useSelector(state => state.documents.listDocumentFromMe);
-  const listDocumentShareToMe = useSelector(state => state.documents.listDocumentShareToMe);
-  const listMyDocument = useSelector(state => state.documents.listMyDocument);
-  const listGoogleDocument = useSelector(state => state.documents.listGoogleDocument);
+
   const currentFolder = useSelector(state => state.documents.currentFolder);
   const breadCrumbs = useSelector(state => state.system.breadCrumbs);
 
   const [selectedMenu, setSelectedMenu] = useState(DEFAULT_ITEM);
   const [alert, setAlert] = useState(false);
-  const [isSearching, setSearching] = useState(false);
   const [isSorted, setSorted] = useState(false);
-  const [searchKey, setSearchKey] = useState('');
   const [fileSelectAction, setFileSelectAction] = useState(null);
 
+  const fetchDocumentAction = isSharedWithMe ? actionFetchListDocumentShare : actionFetchListMyDocument;
   const getListMyDocument = (params = {}, quite = false) => {
     let temp = {};
     if (!isEmpty(currentFolder)) {
       params.folder_id = currentFolder.id;
     }
-    dispatch(actionFetchListMyDocument({ ...temp, ...params }, quite));
+    dispatch(fetchDocumentAction({ ...temp, ...params }, quite));
   };
 
   const handleActionDeleteFile = async () => {
@@ -65,7 +63,7 @@ function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles
   }
 
   function selectAll() {
-    const isSelectedAll = listData.every(({ id }) => findIndex(selectedFiles, ['id', id]) !== -1);
+    const isSelectedAll = listData.every(({ id, type }) => type === 'folder' || findIndex(selectedFiles, ['id', id]) !== -1);
     const allFiles = listData.filter(({ type }) => type !== 'folder')
     if (!isSelectedAll)
       selectedFiles.push(...allFiles);
@@ -116,7 +114,7 @@ function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles
       if (item.isGoogleDocument)
         dispatch(actionFetchListGoogleDocument({ folderId: item.id }, true))
       else
-        dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
+        dispatch(fetchDocumentAction({ folder_id: item.id }, true));
       dispatch(actionSelectedFolder(item));
       // handle bread crumbs
       let newBreadCrumbs = [...breadCrumbs];
@@ -134,7 +132,7 @@ function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles
           name: item.name,
           action: () => {
             dispatch(actionSelectedFolder(item));
-            dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
+            dispatch(fetchDocumentAction({ folder_id: item.id }, true));
           }
         });
       } else {
@@ -143,7 +141,7 @@ function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles
           name: item.name,
           action: () => {
             dispatch(actionSelectedFolder(item));
-            dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
+            dispatch(fetchDocumentAction({ folder_id: item.id }, true));
           }
         });
       }
@@ -158,7 +156,10 @@ function DocumentsTable({ listData, setListData, selectedFiles, setSelectedFiles
       <TableRow className="ShareFromLibraryModal--TableRow" >
         <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" >
           <Checkbox color="primary"
-            checked={listData.length > 0 && listData.every(({ id, type }) => type === 'folder' || selectedFiles.indexOf(id) !== -1)}
+            checked={
+              listData.filter(({ type }) => type !== 'folder').length > 0
+              && listData.every(({ id, type }) => type === 'folder'
+                || findIndex(selectedFiles, ['id', id]) !== -1)}
             onClick={selectAll}
           />
         </TableCell>

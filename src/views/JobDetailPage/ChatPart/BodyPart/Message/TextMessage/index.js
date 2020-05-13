@@ -1,7 +1,8 @@
 import { Avatar } from '@material-ui/core';
-import { createChatText, deleteFailedChat } from 'actions/chat/chat';
+import { createChatText, removeChatById } from 'actions/chat/chat';
+import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
-import { replaceUrl } from 'helpers/jobDetail/stringHelper';
+import { getRichContent, getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,18 +23,6 @@ function getChatParent(chat_parent) {
   return <TextMessage {...chat_parent} isReply></TextMessage>
 }
 
-function getRichContent(content = '', tags, color) {
-  if (!content) return '';
-  let ret = content;
-  tags.forEach(({ id, name }) => {
-    let reg = new RegExp(`{${id}}`, 'g');
-    ret = ret.replace(reg, `<span class="TextMessage--tag" style="color: ${color};">@${name}</span>`);
-  })
-  // console.log(matches)
-  ret = ret.replace('\n', '<br/>');
-  return replaceUrl(ret);
-}
-
 const TextMessage = ({
   handleReplyChat,
   handleForwardChat,
@@ -45,7 +34,7 @@ const TextMessage = ({
   user_create_position,
   user_create_roles = [],
   content,
-  time_create,
+  time_create = Date.now(),
   chat_parent,
   isReply,
   is_me,
@@ -59,6 +48,7 @@ const TextMessage = ({
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const dateFormat = useSelector(state => state.system.profile.format_date);
 
   function getColor() {
     if (isReply) return "#5b5b5b"
@@ -67,73 +57,105 @@ const TextMessage = ({
   }
 
   function onClickDeleteChat(data) {
-    dispatch(deleteFailedChat(id));
+    dispatch(removeChatById(id));
   }
 
   function onClickResendChat() {
     dispatch(createChatText({ content, tags, task_id: taskId, user_create_id }, id));
   }
 
+  function onClickAvatar() {
+    dispatch(detailUser({ userId: user_create_id }))
+  }
+
   return (
     <>
-      <div className={clsx("TextMessage", { [`TextMessage__${chatPosition}`]: !isReply, [`TextMessage__replyPosition`]: isReply })}  >
+      <div className={clsx("TextMessage", isReply ? `TextMessage__reply` : `TextMessage__${chatPosition}`)}  >
         {!isReply && !is_me &&
           <abbr title={user_create_name}>
-            <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+            <Avatar
+              onClick={onClickAvatar}
+              className={clsx("TextMessage--avatar", {
+                'TextMessage--avatar__hidden': (chatPosition !== 'top' && chatPosition !== 'one')
+              })}
+              src={user_create_avatar} />
           </abbr>
         }
         {!isReply && is_me && !is_deleted &&
-          <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+          <CommonMessageAction content={content} isSelf
+            isShortMessage={content.length < 3}
+            chatId={id}
+            handleReplyChat={handleReplyChat}
+            handleForwardChat={handleForwardChat} />}
         <div className={clsx("TextMessage--rightContentWrap",
           is_me ? `TextMessage--rightContentWrap__self-${chatPosition}`
             : `TextMessage--rightContentWrap__${chatPosition}`,
           {
             "TextMessage--reply": isReply,
             "TextMessage--rightContentWrap__self": is_me,
-            "TextMessage--rightContentWrap__deleted ": is_deleted,
+            "TextMessage--rightContentWrap__deleted ": is_deleted && !is_me,
+            "TextMessage--rightContentWrap__deletedSelf ": is_deleted && is_me,
             [`TextMessage--rightContentWrap__self-${chatPosition}`]: is_me,
             "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
           })}
-          style={{ backgroundColor: is_me ? groupActiveColor : '#fff' }}
+          style={{ borderLeft: isReply ? `2px solid ${groupActiveColor}` : 'none' }}
         >
-          <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
-            {
-              ((chatPosition === 'top' && !is_me) || isReply) &&
-              <div className="TextMessage--sender"  >
-                {isReply &&
-                  <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
-                }
-                <div className="TextMessage--name"  >
-                  {user_create_name}
-                </div>
-                <div className="TextMessage--position"  >
-                  {user_create_position}
-                </div>
-                {user_create_roles[0] &&
-                  <div className="TextMessage--room"  >
-                    {user_create_roles[0]}
-                  </div>
-                }
-              </div>
-            }
-            {!is_deleted ? getChatParent(chat_parent) : ''}
-            <div className={clsx("TextMessage--content", {
-              "TextMessage--content__self": is_me,
-              "TextMessage--content__deleted": is_deleted,
-            })}
-              dangerouslySetInnerHTML={{
-                __html: is_deleted ? `Tin nhắn đã ${!is_me ? 'bị' : 'được'} xoá!`
-                  : getRichContent(content, tags, getColor())
-              }}
+          {!is_deleted ? getChatParent(chat_parent) : ''}
+          <abbr
+            className="TextMessage--tooltip"
+            title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
+            <div
+              className={clsx("TextMessage--contentWrap",
+                is_me ? `TextMessage--content__self-${chatPosition}`
+                  : `TextMessage--content__${chatPosition}`
+              )}
+              style={{ backgroundColor: isReply ? 'unset' : is_me ? groupActiveColor : '#fff' }}
             >
+              {
+                ((chatPosition !== 'bot' && chatPosition !== 'mid' && !is_me) || isReply) &&
+                <div className="TextMessage--sender"  >
+                  {isReply &&
+                    <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
+                  }
+                  <div className="TextMessage--name"  >
+                    {user_create_name}
+                  </div>
+                  {user_create_position &&
+                    < div className="TextMessage--position"  >
+                      {' - '}
+                      {user_create_position}
+                    </div>
+                  }
+                  {user_create_roles[0] &&
+                    <div className="TextMessage--room"  >
+                      {user_create_roles[0]}
+                    </div>
+                  }
+                </div>
+              }
+              <div className={clsx("TextMessage--content",
+                is_me ? `TextMessage--content__self-${chatPosition}`
+                  : `TextMessage--content__${chatPosition}`,
+                {
+                  "TextMessage--content__self": is_me,
+                  "TextMessage--content__deleted": is_deleted,
+                  "TextMessage--content__withReact": !is_deleted && data_emotion.length > 0,
+                })}
+                dangerouslySetInnerHTML={{
+                  __html: is_deleted ?
+                    (!is_me ? t('LABEL_CHAT_TASK_TIN_NHAN_DA_BI_XOA') : t('LABEL_CHAT_TASK_TIN_NHAN_DA_DUOC_XOA'))
+                    : getRichContent(content, tags, getColor())
+                }}
+              >
+              </div>
+              {data_emotion.length > 0 &&
+                <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
+              }
             </div>
-            {data_emotion.length > 0 &&
-              <EmotionReact data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
-            }
           </abbr>
         </div>
-        {!isReply && !is_me &&
-          <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+        {!isReply && !is_me && !is_deleted &&
+          <CommonMessageAction content={content} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
         }
       </div >
       {

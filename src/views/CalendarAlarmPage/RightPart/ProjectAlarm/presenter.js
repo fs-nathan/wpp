@@ -46,40 +46,36 @@ function CalendarProjectAlarmPresenter({
   }
 
   React.useEffect(() => {
-    if (projectReminds.data.length !== 0) {
-      let filtered = [];
-      projectReminds.data.map((data) => {
-        let filteredRemind = filter(data.reminds, remind => get(remind, 'content', '').toLowerCase().includes(searchPattern.toLowerCase()));
-        let newData = {
-          ...data,
-          reminds: filteredRemind
-        }
-        filtered = filtered.concat(newData);
-      });
+    let filtered = [];
+    projectReminds.data.map((data) => {
+      let filteredRemind = filter(data.reminds, remind => get(remind, 'content', '').toLowerCase().includes(searchPattern.toLowerCase()));
+      let newData = {
+        ...data,
+        reminds: filteredRemind
+      }
+      filtered = filtered.concat(newData);
+    });
 
-      setFilteredRemind({
-        ...projectReminds,
-        data: filtered
-      });
-    }
+    setFilteredRemind({
+      ...projectReminds,
+      data: filtered
+    });
   }, [projectReminds, searchPattern]);
 
   React.useEffect(() => {
-    if (projectReminds.data.length !== 0) {
-      let filtered = [];
-      projectReminds.data.map((data, index) => {
-        if (data.reminds.length !== 0) {
-          filtered = filtered.concat(data);
-        }
-      });
-      setFilteredListHaveRemind({
-        ...projectReminds,
-        data: filtered
-      });
-      setProjectHaveRemindSession({
-        data: filtered
-      });
-    }
+    let filtered = [];
+    projectReminds.data.map((data, index) => {
+      if (data.reminds.length !== 0) {
+        filtered = filtered.concat(data);
+      }
+    });
+    setFilteredListHaveRemind({
+      ...projectReminds,
+      data: filtered
+    });
+    setProjectHaveRemindSession({
+      data: filtered
+    });
   }, [projectReminds]);
 
   React.useEffect(() => {
@@ -229,8 +225,10 @@ function CalendarProjectAlarmPresenter({
                                           </div>
                                           <div className="alarm_calendar_item_mainContent">
                                             <div className="alarm_calendar_item_mainContent_content">
-                                              <div className="main_conten_top">
-                                                {remind.content}
+                                              <div className="main_content_top">
+                                                <div className="main_content_top_content" onClick={() => handleOpenDetail(remind)}>
+                                                  {remind.content}
+                                                </div>
                                                 <div className="calendar_item_badge calendar_item_badge_bg">
                                                   <span className="calendar_item_badge_secondary calendar_item_badge_secondary_bg">{remind.category_name}</span>
                                                   <span className="calendar_item_badge_default">
