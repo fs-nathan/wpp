@@ -1,4 +1,3 @@
-import { CustomEventEmitter, PROJECT_SCHEDULE_SETTING_WORKING_DAY } from 'constants/events';
 import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import { setWorkingDaysFail, setWorkingDaysSuccess } from '../../../actions/calendar/projectCalendar/setWorkingDay';
@@ -24,14 +23,12 @@ async function doSetWorkingDay({ scheduleGroupID, workingDays }) {
 
 function* projectScheduleSetWorkingDay(action) {
   try {
-    const { schedule_group: schedule_group } = yield call(doSetWorkingDay, action.options);
-    yield put(setWorkingDaysSuccess({ schedule_group }, action.options));
+    const { schedule_group: scheduleGroup } = yield call(doSetWorkingDay, action.options);
+    yield put(setWorkingDaysSuccess({ scheduleGroup }, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    CustomEventEmitter(PROJECT_SCHEDULE_SETTING_WORKING_DAY);
   } catch (error) {
     yield put(setWorkingDaysFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
-    CustomEventEmitter(PROJECT_SCHEDULE_SETTING_WORKING_DAY);
   }
 }
 

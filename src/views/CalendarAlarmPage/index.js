@@ -4,9 +4,7 @@ import { listCalendarPermission } from "actions/calendar/permission/listPermissi
 import LoadingBox from "components/LoadingBox";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
 import { CREATE_PERSONAL_REMIND_CATEGORY, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND_CATEGORY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
-import { useLocalStorage } from "hooks";
 import { get } from "lodash";
-import moment from "moment";
 import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
@@ -21,15 +19,6 @@ function CalendarAlarmPage({
   doListPersonalRemindCategory, personalRemindCategories,
   doSortPersonalRemindCategory, doListPermission, permissions
 }) {
-
-  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_CALENDAR_OPTIONS', {
-    timeType: 3
-  });
-
-  const [timeRange, setTimeRange] = React.useState({
-    start: moment().startOf("isoWeek").toDate(),
-    end: moment().endOf("isoWeek").toDate()
-  });
 
   function handleSortPersonalAlarm(result) {
     if (!result.destination || (result.destination.index === result.source.index)) {
@@ -77,10 +66,7 @@ function CalendarAlarmPage({
       rightRender={({ expand, handleExpand }) => (
         <Provider
           value={{
-            expand, handleExpand,
-            setTimeRange, timeRange,
-            localOptions, setLocalOptions,
-            permissions
+            expand, handleExpand, permissions
           }}
         >
           <div>

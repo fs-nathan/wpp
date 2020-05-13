@@ -14,12 +14,23 @@ import listRemindProject, { initialState as listRemindProjectInitialState } from
 import listRemindRecently, { initialState as listRemindRecentlyInitialState } from "./calendar/alarmCalendar/listRemindRecently";
 import listCalendarPermission, { initialState as listCalendarPermissionInitialState } from "./calendar/permission/listPermission";
 import projectGroupAddDayOff, { initialState as projectGroupAddDayOffInitialState } from "./calendar/projectCalendar/addDayOff";
-import projectGroupAddWorkingDays from "./calendar/projectCalendar/addWorkingDay";
+import projectGroupAddWorkingDays, { initialState as projectGroupAddWorkingDaysInitialState } from "./calendar/projectCalendar/addWorkingDay";
+import projectCalendarAddWorkingStage, { initialState as projectCalendarAddWorkingStageInitialState } from "./calendar/projectCalendar/addWorkingStage";
 import createProjectGroupSchedule, { initialState as createProjectGroupScheduleInitialState } from "./calendar/projectCalendar/createProjectGroupSchedule";
+import projectCalendarCreateShiftStage, { initialState as projectCalendarCreateShiftStageInitialStage } from "./calendar/projectCalendar/createShiftStage";
+import projectCalendarCreateShiftStageAllTime, { initialState as projectCalendarCreateShiftStageAllTimeInitialState } from "./calendar/projectCalendar/createShiftStageAllTime";
+import projectGroupDeleteDayOff, { initialState as projectGroupDeleteDayOffInitialState } from "./calendar/projectCalendar/deleteDayOff";
+import projectCalendarDeleteShiftStage, { initialState as projectCalendarDeleteShiftStageInitialStage } from "./calendar/projectCalendar/deleteShiftStage";
+import projectCalendarDeleteShiftStageAllTime, { initialState as projectCalendarDeleteShiftStageAllTimeInitialState } from "./calendar/projectCalendar/deleteShiftStageAllTime";
 import projectGroupDeleteWorkingDays, { initialState as projectGroupDeleteWorkingDayInitialState } from "./calendar/projectCalendar/deleteWorkingDay";
+import projectCalendarDeleteWorkingStage, { initialState as projectCalendarDeleteWorkingStageInitialState } from "./calendar/projectCalendar/deleteWorkingStage";
 import getProjectGroupScheduleDetail, { initialState as getProjectGroupScheduleDetailInitialState } from "./calendar/projectCalendar/getGroupScheduleDetail";
 import listProjectGroupSchedule, { initialState as listProjectGroupScheduleInitialState } from "./calendar/projectCalendar/listSchedule";
 import projectGroupSettingStartingDay, { initialState as projectGroupSettingStartingDayInitialState } from "./calendar/projectCalendar/settingStartingDay";
+import projectGroupSetWorkingDay, { initialState as projectGroupSetWorkingDayInitialState } from "./calendar/projectCalendar/setWorkingDay";
+import projectCalendarUpdateShiftStage, { initialState as projectCalendarUpdateShiftStageInitialStage } from "./calendar/projectCalendar/updateShiftStage";
+import projectCalendarUpdateShiftStageAllTime, { initialState as projectCalendarUpdateShiftStageAllTimeInitialState } from "./calendar/projectCalendar/updateShiftStageAllTime";
+import projectCalendarUpdateWorkingStage, { initialState as projectCalendarUpdateWorkingStageInitialState } from "./calendar/projectCalendar/updateWorkingStage";
 import createSchedule, { initialState as createScheduleInitialState } from "./calendar/weeklyCalendar/createSchedule";
 import deleteSchedule, { initialState as deleteScheduleInitialState } from "./calendar/weeklyCalendar/deleteSchedule";
 import listSchedule, { initialState as listScheduleInitialState } from "./calendar/weeklyCalendar/listSchedule";
@@ -289,15 +300,17 @@ const rootReducer = combineReducers({
   viewPermissions,
   calendar: combineReducers({
     listSchedule, listScheduleOfWeek,
-    listScheduleOfWeekFromModal, listWeeksInYear,
-    settingStartingDay, listProjectGroupSchedule,
-    createSchedule, updateSchedule, listCalendarPermission,
-    deleteSchedule, listPersonalRemindCategory,
-    listRemindRecently, listPersonalRemind,
-    createProjectGroupSchedule, getProjectGroupScheduleDetail,
-    projectGroupSettingStartingDay, projectGroupAddWorkingDays,
-    projectGroupDeleteWorkingDays, projectGroupAddDayOff,
-    createPersonalRemindCategory, createPersonalRemind, listRemindProject
+    listScheduleOfWeekFromModal, listWeeksInYear, projectGroupSetWorkingDay,
+    settingStartingDay, listProjectGroupSchedule, projectCalendarAddWorkingStage,
+    createSchedule, updateSchedule, listCalendarPermission, projectCalendarUpdateWorkingStage,
+    deleteSchedule, listPersonalRemindCategory, projectCalendarCreateShiftStage,
+    listRemindRecently, listPersonalRemind, projectCalendarDeleteWorkingStage,
+    createProjectGroupSchedule, getProjectGroupScheduleDetail, projectCalendarUpdateShiftStage,
+    projectGroupSettingStartingDay, projectGroupAddWorkingDays, projectCalendarDeleteShiftStage,
+    projectGroupDeleteWorkingDays, projectGroupAddDayOff, projectGroupDeleteDayOff,
+    createPersonalRemindCategory, createPersonalRemind, listRemindProject,
+    projectCalendarCreateShiftStageAllTime, projectCalendarUpdateShiftStageAllTime,
+    projectCalendarDeleteShiftStageAllTime
   })
 });
 
@@ -440,14 +453,25 @@ export const DEFAULT_STATE = {
     createProjectGroupSchedule: createProjectGroupScheduleInitialState,
     getProjectGroupScheduleDetail: getProjectGroupScheduleDetailInitialState,
     projectGroupSettingStartingDay: projectGroupSettingStartingDayInitialState,
-    projectGroupAddWorkingDays: projectGroupSettingStartingDayInitialState,
+    projectGroupSetWorkingDay: projectGroupSetWorkingDayInitialState,
+    projectGroupAddWorkingDays: projectGroupAddWorkingDaysInitialState,
     projectGroupDeleteWorkingDays: projectGroupDeleteWorkingDayInitialState,
     projectGroupAddDayOff: projectGroupAddDayOffInitialState,
+    projectGroupDeleteDayOff: projectGroupDeleteDayOffInitialState,
     createPersonalRemindCategory: createPersonalRemindCategoryInitialState,
     listPersonalRemind: listPersonalRemindInitialState,
     createPersonalRemind: createPersonalRemindInitialState,
     listRemindProject: listRemindProjectInitialState,
-    listCalendarPermission: listCalendarPermissionInitialState
+    listCalendarPermission: listCalendarPermissionInitialState,
+    projectCalendarAddWorkingStage: projectCalendarAddWorkingStageInitialState,
+    projectCalendarUpdateWorkingStage: projectCalendarUpdateWorkingStageInitialState,
+    projectCalendarDeleteWorkingStage: projectCalendarDeleteWorkingStageInitialState,
+    projectCalendarCreateShiftStage: projectCalendarCreateShiftStageInitialStage,
+    projectCalendarUpdateShiftStage: projectCalendarUpdateShiftStageInitialStage,
+    projectCalendarDeleteShiftStage: projectCalendarDeleteShiftStageInitialStage,
+    projectCalendarCreateShiftStageAllTime: projectCalendarCreateShiftStageAllTimeInitialState,
+    projectCalendarUpdateShiftStageAllTime: projectCalendarUpdateShiftStageAllTimeInitialState,
+    projectCalendarDeleteShiftStageAllTime: projectCalendarDeleteShiftStageAllTimeInitialState,
   }
 };
 

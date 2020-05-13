@@ -24,7 +24,7 @@ async function doDeleteWorkingStage({ scheduleGroupID, stageID }) {
 
 function* projectScheduleDeleteWorkingStage(action) {
   try {
-    const { stage: stage } = yield call(doDeleteWorkingStage, action.options);
+    const { stage_id: stage } = yield call(doDeleteWorkingStage, action.options);
     yield put(deleteWorkingStageSuccess({ stage }, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(PROJECT_SCHEDULE_DELETE_WORKING_STAGE);
@@ -35,3 +35,4 @@ function* projectScheduleDeleteWorkingStage(action) {
 }
 
 export { projectScheduleDeleteWorkingStage };
+

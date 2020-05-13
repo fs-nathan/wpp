@@ -2,9 +2,11 @@ import { createProjectSchedule } from "actions/calendar/projectCalendar/createPr
 import { deleteProjectSchedule } from "actions/calendar/projectCalendar/deleteProjectGroupSchedule";
 import { listProjectSchedule } from "actions/calendar/projectCalendar/listSchedule";
 import { updateProjectSchedule } from "actions/calendar/projectCalendar/updateProjectGroupSchedule";
+import AlertModal from "components/AlertModal";
 import { CREATE_PROJECT_GROUP_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE, UPDATE_PROJECT_GROUP_SCHEDULE } from "constants/events";
 import { get, reverse, sortBy } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Context as CalendarPageContext } from '../../index';
 import { bgColorSelector } from '../../selectors';
@@ -22,11 +24,14 @@ function Project({
     handleExpand, permissions
   } = React.useContext(CalendarPageContext);
 
+  const { t } = useTranslation();
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [sortType, setSortType] = React.useState({});
   const [sortedGroupSchedules, setSortedGroupSchedules] = React.useState(groupSchedules);
+  const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [selectedSchedule, setSelectedSchedule] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     let _schedules = groupSchedules.data;
@@ -41,6 +46,7 @@ function Project({
   React.useEffect(() => {
     doListProjectSchedule(false);
     const reloadListProjectSchedule = () => {
+      setIsLoading(false);
       doListProjectSchedule(false);
     }
     CustomEventListener(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
@@ -61,6 +67,10 @@ function Project({
       }
       case "EDIT":
         setOpenEdit(true);
+        setSelectedSchedule(data);
+        return;
+      case "DELETE":
+        setAlertConfirm(true);
         setSelectedSchedule(data);
         return;
       default: return;
@@ -89,7 +99,7 @@ function Project({
     <>
       <ProjectCalendarPresenter
         expand={expand} handleExpand={handleExpand}
-        canCreate={permissions['manage_project_schedule'] ?? false}
+        havePermission={permissions['manage_project_schedule'] ?? false}
         handleOpenModal={doOpenModal}
         bgColor={bgColor}
         handleSortType={type => setSortType(oldType => {
@@ -105,18 +115,32 @@ function Project({
         }}
         groupSchedules={sortedGroupSchedules}
         handleEditSchedule={(schedule) => doOpenModal("EDIT", schedule)}
-        handleDeleteSchedule={(schedule) => handleDeleteSchedule(schedule)}
+        handleDeleteSchedule={(schedule) => doOpenModal("DELETE", schedule)}
       />
       <CreateProjectCalendar
         open={openCreate}
         setOpen={setOpenCreate}
-        onConfirm={(name, description) => handleCreateGroupSchedule(name, description)}
+        onConfirm={(name, description) => {
+          setIsLoading(true);
+          handleCreateGroupSchedule(name, description);
+        }}
+        isLoading={isLoading}
       />
       <UpdateProjectCalendar
         open={openEdit}
         setOpen={setOpenEdit}
         schedule={selectedSchedule}
-        onConfirm={(name, description) => handleUpdateGroupSchedule(name, description)}
+        onConfirm={(name, description) => {
+          setIsLoading(true);
+          handleUpdateGroupSchedule(name, description);
+        }}
+        isLoading={isLoading}
+      />
+      <AlertModal
+        open={alertConfirm}
+        setOpen={setAlertConfirm}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={() => handleDeleteSchedule(selectedSchedule)}
       />
     </>
   );

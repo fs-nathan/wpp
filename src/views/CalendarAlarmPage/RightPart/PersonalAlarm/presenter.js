@@ -32,22 +32,20 @@ function CalendarPersonalAlarmPresenter({
   }
 
   React.useEffect(() => {
-    if (personalReminds.data.length !== 0) {
-      let filtered = [];
-      personalReminds.data.map((data) => {
-        let filteredRemind = filter(get(data, "reminds", []), remind => get(remind, 'content', '').toLowerCase().includes(searchPattern.toLowerCase()));
-        let newData = {
-          ...data,
-          reminds: filteredRemind
-        }
-        filtered = filtered.concat(newData);
-      });
+    let filtered = [];
+    personalReminds.data.map((data) => {
+      let filteredRemind = filter(get(data, "reminds", []), remind => get(remind, 'content', '').toLowerCase().includes(searchPattern.toLowerCase()));
+      let newData = {
+        ...data,
+        reminds: filteredRemind
+      }
+      filtered = filtered.concat(newData);
+    });
 
-      setFilteredRemind({
-        ...personalReminds,
-        data: filtered
-      });
-    }
+    setFilteredRemind({
+      ...personalReminds,
+      data: filtered
+    });
   }, [personalReminds, searchPattern])
 
   return (
@@ -127,8 +125,8 @@ function CalendarPersonalAlarmPresenter({
                                           </div>
                                           <div className="alarm_calendar_item_mainContent">
                                             <div className="alarm_calendar_item_mainContent_content">
-                                              <div className="main_conten_top">
-                                                {remind.content}
+                                              <div className="main_content_top">
+                                                <div className="main_content_top_content" onClick={() => handleOpenModal("VIEW", remind)}>{remind.content}</div>
                                                 <div className="calendar_item_badge">
                                                   <span className="calendar_item_badge_default">
                                                     <Icon path={mdiAccount} size={0.8} color="#FF9B15" /> {remind.members_assign.length}
@@ -151,14 +149,18 @@ function CalendarPersonalAlarmPresenter({
                                             </div>
                                           </div>
                                           <div className="alarm_calendar_item_control">
-                                            <IconButton
-                                              key={item.id}
-                                              onClick={evt => doOpenMenu(remind.can_modifi ? evt.currentTarget : null, remind)}
-                                            >
-                                              <abbr title={t('IDS_WP_MORE')}>
-                                                <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />
-                                              </abbr>
-                                            </IconButton>
+                                            {
+                                              remind.can_modifi && (
+                                                <IconButton
+                                                  key={item.id}
+                                                  onClick={evt => doOpenMenu(remind.can_modifi ? evt.currentTarget : null, remind)}
+                                                >
+                                                  <abbr title={t('IDS_WP_MORE')}>
+                                                    <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />
+                                                  </abbr>
+                                                </IconButton>
+                                              )
+                                            }
                                           </div>
                                         </div>
                                       </>

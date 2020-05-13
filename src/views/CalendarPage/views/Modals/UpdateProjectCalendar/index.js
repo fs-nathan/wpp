@@ -16,7 +16,7 @@ const DEFAULT_DATA = {
 };
 
 function UpdateProjectCalendar({
-  open, setOpen, onConfirm, schedule
+  open, setOpen, onConfirm, schedule, isLoading = false,
 }) {
   const { t } = useTranslation();
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
@@ -39,6 +39,7 @@ function UpdateProjectCalendar({
         maxWidth='sm'
         onConfirm={() => onConfirm(data.name, data.description)}
         canConfirm={data.name !== "" && data.description !== ""}
+        actionLoading={isLoading}
       >
         <Container>
           <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="view_CreateProjectCalendar_label">

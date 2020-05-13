@@ -14,7 +14,7 @@ import "../styles.scss";
 
 function CalendarRecentlyAlarmPresenter({
   expand, handleExpand, bgColor,
-  remindCalendars
+  remindCalendars, handleOpenDetail
 }) {
 
   const { t } = useTranslation();
@@ -39,11 +39,13 @@ function CalendarRecentlyAlarmPresenter({
       let filtered = [];
       remindCalendars.data.map((data) => {
         let filteredRemind = filter(data.reminds, remind => get(remind, 'content', '').toLowerCase().includes(searchPattern.toLowerCase()));
-        let newData = {
-          ...data,
-          reminds: filteredRemind
+        if (filteredRemind.length !== 0) {
+          let newData = {
+            ...data,
+            reminds: filteredRemind
+          }
+          filtered = filtered.concat(newData);
         }
-        filtered = filtered.concat(newData);
       });
 
       setFilteredRemind({
@@ -132,11 +134,16 @@ function CalendarRecentlyAlarmPresenter({
                                         </div>
                                         <div className="alarm_calendar_item_mainContent">
                                           <div className="alarm_calendar_item_mainContent_content">
-                                            <div className="main_conten_top">
-                                              {remind.content}
+                                            <div className="main_content_top">
+                                              <div
+                                                className="main_content_top_content"
+                                                onClick={() => handleOpenDetail(remind)}
+                                              >
+                                                {remind.content}
+                                              </div>
                                               <div className="calendar_item_badge calendar_item_badge_bg">
-                                                <span className="calendar_item_badge_primary">Dự án</span>
-                                                <span className="calendar_item_badge_secondary">Bạn bè</span>
+                                                <span className="calendar_item_badge_primary">{t('LABEL_REMIND_PROJECT')}</span>
+                                                <span className="calendar_item_badge_secondary">{t('LABEL_REMIND_FRIEND')}</span>
                                                 <span className="calendar_item_badge_default">
                                                   <Icon path={mdiAccount} size={0.8} color="#FF9B15" /> {remind.members_assign.length}
                                                 </span>

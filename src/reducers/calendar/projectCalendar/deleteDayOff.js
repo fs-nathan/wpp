@@ -1,4 +1,4 @@
-import { GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_DAY_FAIL, GROUP_SCHEDULE_ADD_WORKING_DAY_SUCCESS } from '../../../constants/actions/calendar/projectCalendar';
+import { GROUP_SCHEDULE_DELETE_DAY_OFF, GROUP_SCHEDULE_DELETE_DAY_OFF_FAIL, GROUP_SCHEDULE_DELETE_DAY_OFF_SUCCESS } from '../../../constants/actions/calendar/projectCalendar';
 
 export const initialState = {
   data: {
@@ -10,14 +10,13 @@ export const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case GROUP_SCHEDULE_ADD_WORKING_DAY:
+    case GROUP_SCHEDULE_DELETE_DAY_OFF:
       return {
         ...state,
         error: null,
-        data: null,
         loading: action.quite ? false : true,
       };
-    case GROUP_SCHEDULE_ADD_WORKING_DAY_SUCCESS:
+    case GROUP_SCHEDULE_DELETE_DAY_OFF_SUCCESS:
       return {
         ...state,
         ...initialState,
@@ -25,12 +24,11 @@ function reducer(state = initialState, action) {
         error: null,
         loading: false,
       };
-    case GROUP_SCHEDULE_ADD_WORKING_DAY_FAIL:
+    case GROUP_SCHEDULE_DELETE_DAY_OFF_FAIL:
       return {
         ...state,
         ...initialState,
         error: action.error,
-        data: null,
         loading: false,
       };
     default:
