@@ -1,7 +1,6 @@
 import { deleteTrashProject } from 'actions/project/deleteTrashProject';
 import { listDeletedProject } from 'actions/project/listDeletedProject';
 import { restoreTrashProject } from 'actions/project/restoreTrashProject';
-import { CustomEventDispose, CustomEventListener, DELETE_PROJECT } from 'constants/events';
 import { get, reverse, sortBy } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -18,13 +17,6 @@ function DeletedProjectTable({
 
   React.useEffect(() => {
     doListDeletedProject({});
-    const reloadListDeletedProject = () => {
-      doListDeletedProject({});
-    }
-    CustomEventListener(DELETE_PROJECT, reloadListDeletedProject);
-    return () => {
-      CustomEventDispose(DELETE_PROJECT, reloadListDeletedProject);
-    }
     // eslint-disable-next-line
   }, []);
 

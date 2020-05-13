@@ -27,10 +27,11 @@ function* updateGroupPermissionMember(action) {
   try {
     yield call(doRemoveProjectRoleFromMember, action.options);
     yield put(updateGroupPermissionMemberSuccess(action.options));
-    CustomEventEmitter(UPDATE_GROUP_PERMISSION_MEMBER);
+    CustomEventEmitter(UPDATE_GROUP_PERMISSION_MEMBER.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(updateGroupPermissionMemberFail(error, action.options));
+    CustomEventEmitter(UPDATE_GROUP_PERMISSION_MEMBER.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }

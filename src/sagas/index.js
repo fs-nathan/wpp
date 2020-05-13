@@ -239,6 +239,8 @@ import { deleteUserRole } from "./userRole/deleteUserRole";
 import { listUserRole } from "./userRole/listUserRole";
 import { updateUserRole } from "./userRole/updateUserRole";
 import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
+import { SET_PROJECT, SET_PROJECT_GROUP } from 'constants/actions/localStorage';
+import { setProject, setProjectGroup } from './localStorage';
 
 function* rootSaga() {
   // Hoang - begin
@@ -352,6 +354,14 @@ function* rootSaga() {
   yield takeLeading(
     GET_PERMISSION_VIEW_DETAIL_PROJECT,
     getPermissionViewDetailProject
+  );
+  yield takeEvery(
+    SET_PROJECT,
+    setProject,
+  );
+  yield takeEvery(
+    SET_PROJECT_GROUP,
+    setProjectGroup,
   );
 
   // Hoang - end

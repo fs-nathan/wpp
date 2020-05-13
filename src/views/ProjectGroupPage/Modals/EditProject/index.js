@@ -1,10 +1,15 @@
+import { detailProject } from 'actions/project/detailProject';
+import { listProject } from 'actions/project/listProject';
 import { updateProject } from 'actions/project/updateProject';
 import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
+import { useTimes } from 'components/CustomPopover';
 import { get } from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
+import { localOptionSelector } from '../../selectors';
 import EditProjectPresenter from './presenters';
-import { activeLoadingSelector, groupsSelector } from './selectors';
+import { groupsSelector } from './selectors';
 
 function EditProject({
   curProject = null,
@@ -12,20 +17,43 @@ function EditProject({
   groups,
   doUpdateProject,
   doListProjectGroup,
-  activeLoading,
+  doReload,
+  projectGroupId = undefined,
+  localOption,
 }) {
 
-  React.useEffect(() => {
-    if (open) {
-      doListProjectGroup();
-    }
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    });
     // eslint-disable-next-line
-  }, [open]);
+  }, [timeType]);
+
+  React.useEffect(() => {
+    doListProjectGroup();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <EditProjectPresenter
       curProject={curProject}
-      activeLoading={activeLoading}
+      projectGroupId={projectGroupId}
+      timeRange={timeRange}
+      doReload={() =>
+        doReload({
+          groupProject: projectGroupId,
+          timeStart: get(timeRange, 'timeStart')
+            ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+            : undefined,
+          timeEnd: get(timeRange, 'timeEnd')
+            ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+            : undefined,
+        }, get(curProject, 'id'))
+      }
       open={open} setOpen={setOpen}
       groups={groups}
       handleEditProject={({ name, description, projectGroupId, priority, currency }) =>
@@ -38,12 +66,16 @@ function EditProject({
 const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
-    activeLoading: activeLoadingSelector(state),
+    localOption: localOptionSelector(state),
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    doReload: (options, projectId) => {
+      options !== null && dispatch(listProject(options, true));
+      dispatch(detailProject({ projectId }, true));
+    },
     doUpdateProject: ({ projectId, name, description, projectGroupId, priority, currency }) => dispatch(updateProject({ projectId, name, description, projectGroupId, priority, currency })),
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
   }

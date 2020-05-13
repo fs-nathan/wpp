@@ -64,7 +64,7 @@ function LeftSideContainer({
   const parseAction = (action) =>
     get(action, "avatar") ? (
       <CustomAvatar src={get(action, "avatar")} alt="avatar" />
-    ) : typeof (get(action, "onClick") === "function") ? (
+    ) : typeof (get(action, "onClick", null) === "function") ? (
       <StyledIconButton size="small" onClick={get(action, "onClick")}>
         <abbr title={get(action, "tooltip", "")}>
           <div>

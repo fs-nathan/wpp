@@ -5,15 +5,25 @@
 }
 .comp_PostCreatorPopupInner__header {
   flex-shrink: 0;
+  background: rgb(245, 246, 247);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 8px 8px 8px 16px;
 }
 .comp_PostCreatorPopupInner__footer {
   flex-shrink: 0;
+  display: flex;
+  padding: 10px;
+  align-items: center;
 }
 .comp_PostCreatorPopupInner__main {
   overflow: auto;
   flex: 1;
 }
 .comp_PostCreatorPopupInner__headerTitle {
+  flex: 1;
 }
 .comp_PostCreatorPopupInner__title .MuiInput-root {
   padding: 10px 0;
@@ -52,6 +62,17 @@
 .comp_PostCreatorPopupInner__media {
   padding: 10px;
   background-color: #f6f6f6;
+}
+.comp_PostCreatorPopupInner__media.showEmpty {
+  border: 4px dashed #e7e7e7;
+  font-size: x-large;
+  padding: 0;
+  color: #cac7c7;
+  text-align: center;
+  height: 122px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .comp_PostCreatorPopupInner__media > div {
   display: grid;

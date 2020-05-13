@@ -4,15 +4,11 @@ import { createSelector } from 'reselect';
 const detailRoom = state => state.room.detailRoom;
 const getUserOfRoom = state => state.room.getUserOfRoom;
 const listIcon = state => state.icon.listIcon;
-const updateRoom = state => state.room.updateRoom;
-const deleteRoom = state => state.room.deleteRoom;
 
 export const roomSelector = createSelector(
-  [detailRoom, getUserOfRoom, listIcon, updateRoom, deleteRoom],
-  (detailRoom, getUserOfRoom, listIcon, updateRoom, deleteRoom) => {
+  [detailRoom, getUserOfRoom, listIcon],
+  (detailRoom, getUserOfRoom, listIcon) => {
     const { data: { room }, loading: detailRoomLoading, error: detailRoomError, firstTime: detailFirst } = detailRoom;
-    const { loading: updateRoomLoading, error: updateRoomError } = updateRoom;
-    const { loading: deleteRoomLoading, error: deleteRoomError } = deleteRoom;
     const { data: { users } } = getUserOfRoom;
     const { data: { icons, defaults } } = listIcon;
     const allIcons = [...icons.map(icon => get(icon, 'url_full')), ...defaults.map(icon => get(icon, 'url_icon'))];
@@ -25,8 +21,8 @@ export const roomSelector = createSelector(
     }
     return ({
       detail: newRooms,
-      loading: (detailFirst ? false : detailRoomLoading) || updateRoomLoading || deleteRoomLoading,
-      error: detailRoomError || updateRoomError || deleteRoomError,
+      loading: (detailFirst ? false : detailRoomLoading),
+      error: detailRoomError,
       firstTime: detailFirst,
     });
   }

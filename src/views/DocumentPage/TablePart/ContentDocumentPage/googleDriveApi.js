@@ -1,6 +1,6 @@
 const CLIENT_ID =
-  '780850113380-fcs9viqab15pjv3dt03ndk1ga2uqarv6.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyCLhLyEKrKpKTe6XcZ-WYhinOBMbaOnODo';
+  '923513358062-8s222ro5m2d9ruicuhvi98uq7h6gd7mr.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyC0iTTmOVJrNX4PXjD8C4ObSGOXCUwJchg';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
 ];

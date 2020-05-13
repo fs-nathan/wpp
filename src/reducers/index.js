@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { postModule } from "views/HomePage/redux/post";
+import { weekScheduleModule } from "views/HomePage/redux/weekSchedule";
 import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
@@ -294,6 +295,7 @@ const rootReducer = combineReducers({
   [settingGroupHome.key]: settingGroupHome.reducer,
   [settingGroupPermission.key]: settingGroupPermission.reducer,
   [postModule.key]: postModule.reducer,
+  [weekScheduleModule.key]: weekScheduleModule.reducer,
 
   apiCall: apiCall,
   inviteOtherPeopleCreateAccount,
@@ -435,7 +437,7 @@ export const DEFAULT_STATE = {
     getListGroup: getListGroupInitialState,
   },
   register: {
-    inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState
+    inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState,
   },
   viewPermissions: viewPermissionsInitialState,
   calendar: {

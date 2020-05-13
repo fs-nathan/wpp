@@ -3,7 +3,6 @@ import { createSelector } from 'reselect';
 
 const listProject = state => state.project.listProject;
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
-const copyProject = state => state.project.copyProject;
 
 export const groupsSelector = createSelector(
   [listProjectGroup, listProject],
@@ -21,13 +20,5 @@ export const groupsSelector = createSelector(
       error: listProjectGroupError || listProjectError,
       firstTime: groupFirst && projectFirst
     }
-  }
-);
-
-export const activeLoadingSelector = createSelector(
-  [copyProject],
-  (copyProject) => {
-    const { loading } = copyProject;
-    return loading;
   }
 );
