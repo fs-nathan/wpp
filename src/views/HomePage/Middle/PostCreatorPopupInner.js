@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { get, loginlineParams, uniqueId } from "views/JobPage/utils";
+import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
 import CssFormControl, {
@@ -322,42 +323,46 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
           <Close />
         </IconButton>
       </div>
-      <div className={classes.main}>
-        <TasksCard.Content>
-          <Stack large>
-            <div>
-              <InputFormControl
-                name="title"
-                inputProps={{
-                  error: false,
-                  variant: "standard",
-                  className: classes.title,
-                  size: "medium",
-                  multiline: true,
-                  label: t("Tiêu đề bài viết..."),
-                }}
-              />
-              <InputFormControl
-                name="content"
-                inputProps={{
-                  variant: "standard",
-                  className: classes.content,
-                  size: "medium",
-                  rows: 5,
-                  multiline: true,
-                  label: t("Nội dung bài viết..."),
-                }}
-              />
-            </div>
-            <CategoryField name="category" categories={categories} />
-            <FilePreviewField name="file" />
-          </Stack>
-        </TasksCard.Content>
-        <ImageListField
-          name="file"
-          placeholder={t("Thả file, hình ảnh vào đây...")}
-        />
-      </div>
+      <Box height="540px">
+        <TasksScrollbar>
+          <div className={classes.main}>
+            <TasksCard.Content>
+              <Stack large>
+                <div>
+                  <InputFormControl
+                    name="title"
+                    inputProps={{
+                      error: false,
+                      variant: "standard",
+                      className: classes.title,
+                      size: "medium",
+                      multiline: true,
+                      label: t("Tiêu đề bài viết..."),
+                    }}
+                  />
+                  <InputFormControl
+                    name="content"
+                    inputProps={{
+                      variant: "standard",
+                      className: classes.content,
+                      size: "medium",
+                      rows: 5,
+                      multiline: true,
+                      label: t("Nội dung bài viết..."),
+                    }}
+                  />
+                </div>
+                <CategoryField name="category" categories={categories} />
+                <FilePreviewField name="file" />
+              </Stack>
+            </TasksCard.Content>
+            <ImageListField
+              name="file"
+              placeholder={t("Thả file, hình ảnh vào đây...")}
+            />
+          </div>
+        </TasksScrollbar>
+      </Box>
       <div className={classes.footer}>
         <FileField name="file">
           {(id) => (
