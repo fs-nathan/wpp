@@ -113,8 +113,9 @@
     &:hover {
       border-width: 1px;
       border-style: solid;
-      border-color: rgb(5, 181, 12);
+      border-color: #05b50c;
       border-image: initial;
+      background-color: #f7fcf0;
     }
     svg {
       width: 20% !important;
@@ -137,6 +138,6 @@
     line-height: 18px;
   }
   &--button:hover &--title {
-    color: rgb(5, 181, 12);
+    color: #05b50c;
   }
 }

@@ -1,7 +1,9 @@
 import { Avatar } from '@material-ui/core';
+import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
 
@@ -9,27 +11,34 @@ const QuickLike = ({
   handleReplyChat,
   id,
   quick_like_web,
+  user_create_id,
   user_create_avatar,
   user_create_name,
-  time_create,
+  time_create = Date.now(),
   user_create_position,
   user_create_roles = [],
   isReply,
   is_me,
   chatPosition = "top",
 }) => {
+  const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
+  const dateFormat = useSelector(state => state.system.profile.format_date);
+
+  function onClickAvatar() {
+    dispatch(detailUser({ userId: user_create_id }))
+  }
 
   return (
     <div className={clsx("QuickLike", `TextMessage__${chatPosition}`)} >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
-          <Avatar className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
         </abbr>
       }
       <div className={clsx("ImageMessage--rightContentWrap", { "ImageMessage--rightContentWrap__self": is_me })} >
         <div className="ImageMessage--imagesContainer" >
-          <abbr className="TextMessage--tooltip" title={!isReply ? time_create : ''}>
+          <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
             {/* <div className={clsx("ImageMessage--wrap")}
             dangerouslySetInnerHTML={{ __html: quick_like_web }} > */}
             <svg version="1.1" x="0px" y="0px" width="50px" height="50px" viewBox="40 40 50 50"><g>

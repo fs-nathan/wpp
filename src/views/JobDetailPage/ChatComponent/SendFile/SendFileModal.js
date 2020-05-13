@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { mdiCloudUpload, mdiLaptop } from '@mdi/js';
 import Icon from '@mdi/react';
 import { appendChat, chatFile, onUploading } from 'actions/chat/chat';
@@ -6,6 +5,7 @@ import { file as file_icon } from 'assets/fileType';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import { humanFileSize } from 'helpers/jobDetail/stringHelper';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomModal from '../../../../components/CustomModal';
 import './SendFileModal.scss';
@@ -33,7 +33,9 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
         size: humanFileSize(file.size)
       })
     }
+    const id = Date.now();
     const data_chat = {
+      id,
       type: CHAT_TYPE.UPLOADING_FILE, files: images,
       isUploading: true,
       user_create_id: userId,
@@ -44,7 +46,7 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
     for (let i = 0; i < files.length; i++) {
       data.append("file", files[i], files[i].name)
     }
-    dispatch(chatFile(taskId, data, onUploadingHandler));
+    dispatch(chatFile(taskId, data, onUploadingHandler, id));
     setOpen(false)
   };
 
@@ -60,7 +62,7 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
       title={t('LABEL_CHAT_TASK_CHON_TAI_LIEU')}
       className="send-file-modal"
       confirmRender={null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
     >
       <div className="send-file-content">
         <div className="SendFileModal--button" onClick={onClickFromComputer}>
@@ -72,7 +74,7 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
             onChange={handleUploadFile}
             ref={fileInputRef}
           />
-          <Icon path={mdiLaptop} size={2}></Icon>
+          <Icon path={mdiLaptop} size={2} color="#ff5722"></Icon>
           <div className="SendFileModal--rightButton">
             <div className="SendFileModal--title">{t('LABEL_CHAT_TASK_TAI_TAI_LIEU_TU_MAY_TINH')}</div>
             <div className="SendFileModal--description">{t('LABEL_CHAT_TASK_TAI_LIEU_MOI_TU')}</div>
@@ -81,7 +83,7 @@ const SendFileModal = ({ open, setOpen, onClickShareFromLibrary }) => {
         <div className="SendFileModal--button"
           onClick={onClickShareFromLibrary}
         >
-          <Icon path={mdiCloudUpload} size={2}></Icon>
+          <Icon path={mdiCloudUpload} size={2} color="#2196f3"></Icon>
           <div className="SendFileModal--rightButton">
             <div className="SendFileModal--title">{t('LABEL_CHAT_TASK_CHON_TAI_LIEU_TU_KHO_LUU_TRU')}</div>
             <div className="SendFileModal--description">{t('LABEL_CHAT_TASK_SU_DUNG_TAI_LIEU')}</div>

@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,6 +12,7 @@ import { openCreateRemind, openDetailRemind } from 'actions/chat/chat';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
@@ -80,13 +80,13 @@ function DetailRemind() {
           </DialogContentText>
           <div className="detailRemind--main">
             <div className="detailRemind--time" style={{ backgroundColor: groupActiveColor }}>
-              <div className="detailRemind--month">{t('LABEL_CHAT_TASK_THANG')}{month}
+              <div className="detailRemind--month">{t('LABEL_CHAT_TASK_THANG', { month })}
               </div>
               <div className="detailRemind--day">
                 {day}
               </div>
             </div>
-            <div className="detailRemind--data" >{t('LABEL_CHAT_TASK_TAO_LUC')}{created_at}
+            <div className="detailRemind--data" >{t('LABEL_CHAT_TASK_TAO_LUC', { created_at })}
               <ColorTypo variant='body1' component="div">
                 {
                   type === 1 ?

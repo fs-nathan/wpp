@@ -4,24 +4,31 @@
   background: #f9f9fd;
   padding: 20px 50px 20px 10px;
   font-size: 15px;
-  // border: 1px solid #ccc;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   max-height: 200px;
   overflow-y: auto;
-  height: 20px;
+  min-height: 20px;
   &:focus {
     outline: none;
   }
-  &__empty:before {
-    content: attr(placeholder);
-    cursor: text;
-    background: none;
-    color: #83878d;
-    display: block;
-    position: absolute;
-    left: 11px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    pointer-events: none;
+  &__empty {
+    padding-right: calc(100% - 10px);
+  }
+  &--placeholder {
+    display: none;
+    font-size: 15px;
+    &__empty {
+      cursor: text;
+      background: none;
+      color: #83878d;
+      display: block;
+      position: absolute;
+      left: 11px;
+      top: 23px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      // pointer-events: none;
+    }
   }
 }

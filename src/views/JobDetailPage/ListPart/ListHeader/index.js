@@ -2,12 +2,14 @@ import { IconButton, Typography } from '@material-ui/core';
 import { mdiChevronDown, mdiPlus, mdiSettingsOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-// import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
+import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
 import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
+import CreateGroupTaskModal from './CreateGroupTaskModal';
 import CreateJobModal from './CreateJobModal';
 import CreateJobSetting from './CreateJobSetting';
 
@@ -49,10 +51,12 @@ function ListHeaderSelect({ setShow }) {
 }
 
 function ListHeader(props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail)
+  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
+  const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
   const [isOpenSettings, setOpenSettings] = React.useState(false);
 
   function onClickSettings() {
@@ -60,13 +64,16 @@ function ListHeader(props) {
   }
 
   function onClickCreateJob() {
-    if (listTaskDetail) {
-      if (listTaskDetail.tasks.length === 0) {
-        setOpenCreateGroup(true)
-        return
-      }
+    if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
+      setOpenCreateGroup(true)
+    } else {
+      setOpenCreateJobModal(true);
     }
-    setOpenCreateJobModal(true);
+  }
+
+  function onClickCreateProject() {
+    setOpenCreateGroup(false)
+    setOpenProjectGroup(true)
   }
 
   const searchListTask = e => {
@@ -79,7 +86,7 @@ function ListHeader(props) {
         <ListHeaderSelect {...props} />
         <div className="header-bottom-box">
           <SearchInput
-            placeholder="Tìm công việc trong dự án..."
+            placeholder={t('LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN')}
             style={{ height: 'auto' }}
             onChange={e => searchListTask(e)}
           />
@@ -87,7 +94,7 @@ function ListHeader(props) {
             className="dropdown-icon"
             onClick={onClickSettings}
           >
-            <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon" />
+            <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon setting-icon" />
           </ButtonIcon>
           <ButtonIcon
             className="dropdown-icon"
@@ -105,7 +112,14 @@ function ListHeader(props) {
         isOpen={isOpenSettings}
         setOpen={setOpenSettings}
       />
-      {/* <CreateProjectGroup open={isOpenCreateGroup} setOpen={setOpenCreateGroup}></CreateProjectGroup> */}
+      <CreateProjectGroup
+        open={isOpenProjectGroup}
+        setOpen={setOpenProjectGroup} />
+      <CreateGroupTaskModal
+        isOpen={isOpenCreateGroup}
+        setOpen={setOpenCreateGroup}
+        onClickCreate={onClickCreateProject}
+      />
     </div>
   );
 }

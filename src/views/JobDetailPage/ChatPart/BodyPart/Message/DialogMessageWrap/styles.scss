@@ -1,7 +1,7 @@
 .DialogMessageWrap {
   background-color: #ffffff;
   border-radius: 15px;
-  max-width: 500px;
+  max-width: 350px;
   width: 66%;
   margin-left: auto;
   margin-right: auto;
@@ -29,12 +29,14 @@
     margin-top: 1px;
   }
   &--name {
-    font-size: 14px;
+    font-size: 13px;
     color: #607d8b;
+    font-weight: 500;
   }
   &--position {
-    font-size: 14px;
-    color: #e47212;
+    font-size: 13px;
+    color: #607d8b;
+    font-weight: 500;
     // margin-left: 5px;
   }
   &--room {
@@ -47,7 +49,7 @@
   }
   &--title {
     margin-bottom: 10px;
-    padding: 0 10px;
+    padding: 0 20px;
   }
   &--task {
     text-transform: lowercase;
@@ -58,7 +60,7 @@
     text-transform: uppercase;
     color: #454545;
     font-weight: 600;
-    padding: 0 15px;
+    padding: 0 20px;
     margin-top: 10px;
     line-height: 20px;
   }
@@ -80,7 +82,7 @@
     cursor: pointer;
     width: 20px;
     height: 20px;
-    transform: translate(-3px, 3px);
+    transform: translate(-3px, 4px);
     fill: #03a9f4;
     path {
       fill: inherit !important;

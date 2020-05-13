@@ -143,6 +143,7 @@
 
 .tabBodyDescription {
   padding: 2px 16px;
+  overflow-wrap: break-word;
   &--more {
     background: none;
     border: none;

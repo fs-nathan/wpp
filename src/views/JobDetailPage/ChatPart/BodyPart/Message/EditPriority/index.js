@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
@@ -28,6 +28,7 @@ const EditPriority = ({
         user_create_name,
         user_create_avatar,
         user_create_position,
+        time_create,
       }}
       isHideFooterIcon
       footerText=""

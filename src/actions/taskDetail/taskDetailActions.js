@@ -770,14 +770,14 @@ export const createGroupTaskFail = (error) => ({
 });
 
 // Get List Task Detail
-export const getListTaskDetail = (payload) => ({
+export const getListTaskDetail = (project_id, type_data) => ({
     type: types.GET_LIST_TASK_DETAIL_REQUEST,
-    payload
+    project_id, type_data
 });
 
-export const getListTaskDetailSuccess = (payload) => ({
+export const getListTaskDetailSuccess = (payload, type_data) => ({
     type: types.GET_LIST_TASK_DETAIL_SUCCESS,
-    payload
+    payload, type_data
 });
 
 export const getListTaskDetailFail = (error) => ({
@@ -1003,10 +1003,10 @@ export function stopTask(task_id) {
     };
 }
 
-export function stopTaskSuccess(payload) {
+export function stopTaskSuccess(payload, task_id) {
     return {
         type: types.STOP_TASK_SUCCESS,
-        payload
+        payload, task_id
     };
 }
 
@@ -1024,10 +1024,10 @@ export function cancelStopTask(task_id) {
     };
 }
 
-export function cancelStopTaskSuccess(payload) {
+export function cancelStopTaskSuccess(payload, task_id) {
     return {
         type: types.CANCEL_STOP_TASK_SUCCESS,
-        payload
+        payload, task_id
     };
 }
 
@@ -1066,10 +1066,10 @@ export function updateNameDescription(task_id, name, description) {
     };
 }
 
-export function updateNameDescriptionSuccess(payload) {
+export function updateNameDescriptionSuccess(payload, id) {
     return {
         type: types.UPDATE_NAME_DESCRIPTION_SUCCESS,
-        payload
+        payload, id
     };
 }
 
@@ -1161,5 +1161,12 @@ export function getSchedulesFail(error) {
     return {
         type: types.GET_SCHEDULES_FAIL,
         error
+    };
+}
+
+export function updateProjectChat(payload) {
+    return {
+        type: types.UPDATE_PROJECT_CHAT,
+        payload
     };
 }

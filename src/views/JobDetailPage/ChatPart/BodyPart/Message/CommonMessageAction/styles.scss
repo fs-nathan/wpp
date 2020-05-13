@@ -28,6 +28,23 @@
       fill: inherit !important;
     }
   }
+  &--buttonEmo {
+    position: relative;
+    &:hover .ReactEmotionPopup {
+      display: flex;
+      z-index: 100;
+      top: -35px;
+      left: unset;
+      right: -30px;
+    }
+  }
+  &__self &--buttonEmo:hover .ReactEmotionPopup {
+    left: -60px;
+    right: unset;
+  }
+  &__self &--buttonEmo__short:hover .ReactEmotionPopup {
+    left: -100px;
+  }
 }
 
 .emoMenu {

@@ -109,7 +109,7 @@ const ListDemand = props => {
       />
       <DemandDetail
         isOpen={openDetail}
-        handleClickClose={() => setOpenDetail(false)}
+        setOpen={setOpenDetail}
         item={selectedItem}
       />
     </React.Fragment>

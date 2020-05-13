@@ -92,6 +92,12 @@ export const filterTaskByType = (groups, idx) => {
         : groups.map(item => ({ ...item, tasks: item.tasks.filter(task => Number(task.status_code) === idx - 1) }))
 }
 
+export const filterNoGroupTaskByType = (tasks, idx) => {
+    return idx === 0
+        ? tasks
+        : tasks.filter(task => Number(task.status_code) === idx - 1)
+}
+
 export const searchTaskByTaskName = (groups, keyword) => {
     const filteredGroup = groups.filter(({ tasks }) => tasks.length);
     return keyword
@@ -101,6 +107,13 @@ export const searchTaskByTaskName = (groups, keyword) => {
         }))
         : groups
 }
+
+export const searchNoGroupTaskByName = (tasks, keyword) => {
+    return keyword
+        ? tasks.filter(task => task.name.toLowerCase().match(keyword.toLowerCase()))
+        : tasks
+}
+
 export const searchProjectByProjectName = (groups, keyword) => {
     return keyword
         ? groups
@@ -154,4 +167,8 @@ export function getFileUrl(file) {
             reject(error)
         }
     })
+}
+
+export function isOneOf(value, list = []) {
+    return list.indexOf(value) !== -1;
 }

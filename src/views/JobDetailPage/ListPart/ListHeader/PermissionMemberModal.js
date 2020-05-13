@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import Radio from "@material-ui/core/Radio";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,6 +11,7 @@ import clsx from "clsx";
 import DialogWrap from 'components/DialogWrap';
 import get from "lodash/get";
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
@@ -85,7 +85,7 @@ function PermissionMemberModal({ memberId, setOpen,
       title={t('LABEL_CHAT_TASK_PHAN_QUYEN_THANH_VIEN')}
       isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel="Hoàn thành"
+      successLabel={t('LABEL_CHAT_TASK_HOAN_THANH')}
       onClickSuccess={handleUpdateMemberPermission}
       maxWidth="md"
       className="permissionMemberModal"

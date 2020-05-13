@@ -3,5 +3,9 @@
   .ImageMessage--img {
     width: 130px;
     height: auto;
+    border-radius: 0;
+  }
+  .ImageMessage--wrap {
+    margin-bottom: 20px;
   }
 }
